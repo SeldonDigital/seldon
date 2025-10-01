@@ -1,0 +1,22 @@
+{
+  "name": "@seldon/base",
+  "version": "0.0.0",
+  "description": " open-source design system and component framework designed for building component-driven UIs with type-safe design tokens",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SeldonDigital/seldon.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "SEE LICENSE IN docs/licenses/noncommercial/LICENSE",
+  "bugs": {
+    "url": "https://github.com/SeldonDigital/seldon/issues"
+  },
+  "homepage": "https://github.com/SeldonDigital/seldon#readme"
+}
