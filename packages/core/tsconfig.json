@@ -1,0 +1,35 @@
+{
+  "extends": "../../scripts/tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "moduleResolution": "node",
+    "module": "ESNext",
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+
+    "rootDir": ".",
+    "outDir": "./dist"
+  },
+  "include": [
+    "./components/**/*.*",
+    "./compute/**/*.*",
+    "./helpers/**/*.*",
+    "./properties/**/*.*",
+    "./rules/**/*.*",
+    "./themes/**/*.*",
+    "./workspace/**/*.*",
+    "./workspace/**/*.json",
+    "./index.ts",
+    "./constants.ts"
+  ],
+  "exclude": [
+    "dist",
+    "node_modules",
+    "**/generated-ai-action-schema.json",
+    "**/*.spec.ts",
+    "**/*.test.ts"
+  ],
+  "references": []
+}

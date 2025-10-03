@@ -1,0 +1,16 @@
+node_modules
+dist
+*.tsbuildinfo
+
+logs
+*.log
+npm-debug.log*
+
+.DS_Store
+
+.eslintcache
+.vscode
+!.vscode/launch.json
+
+.env
+.env.local

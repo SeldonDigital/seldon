@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "noEmit": true,
+    "skipLibCheck": true
+  },
+  "references": [
+    { "path": "./packages/core/tsconfig.json" },
+  ]
+}

@@ -1,0 +1,376 @@
+// Bun Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should turn a node into a component 1`] = `
+{
+  "children": [
+    {
+      "component": "icon",
+      "properties": {
+        "color": {
+          "type": "computed",
+          "value": {
+            "function": "highContrastColor",
+            "input": {
+              "basedOn": "#parent.background.color",
+            },
+          },
+        },
+        "size": {
+          "restrictions": {
+            "allowedValues": [
+              "@size.xsmall",
+              "@size.small",
+              "@size.medium",
+              "@size.large",
+              "@size.xlarge",
+            ],
+          },
+          "type": "computed",
+          "value": {
+            "function": "autoFit",
+            "input": {
+              "basedOn": "#parent.buttonSize",
+              "factor": 0.8,
+            },
+          },
+        },
+      },
+    },
+    {
+      "component": "label",
+      "properties": {
+        "color": {
+          "type": "computed",
+          "value": {
+            "function": "highContrastColor",
+            "input": {
+              "basedOn": "#parent.background.color",
+            },
+          },
+        },
+        "font": {
+          "family": {
+            "type": "empty",
+            "value": null,
+          },
+          "lineHeight": {
+            "type": "empty",
+            "value": null,
+          },
+          "preset": {
+            "restrictions": {
+              "allowedValues": [
+                "@font.label",
+                "@font.body",
+                "@font.code",
+              ],
+            },
+            "type": "theme.categorical",
+            "value": "@font.label",
+          },
+          "size": {
+            "type": "computed",
+            "value": {
+              "function": "autoFit",
+              "input": {
+                "basedOn": "#parent.buttonSize",
+                "factor": 0.8,
+              },
+            },
+          },
+          "weight": {
+            "type": "empty",
+            "value": null,
+          },
+        },
+      },
+    },
+  ],
+  "icon": "button",
+  "id": "button",
+  "intent": "A versatile button component that supports labels and icons, designed for interactive UI elements. It can be customized with various sizes, colors, and styles to fit different design requirements. The button ensures high contrast and optimal padding for better visual alignment.",
+  "level": "element",
+  "name": "Button",
+  "properties": {
+    "align": {
+      "type": "preset",
+      "value": "center",
+    },
+    "background": {
+      "color": {
+        "type": "theme.categorical",
+        "value": "@swatch.primary",
+      },
+    },
+    "border": {
+      "bottomColor": {
+        "type": "computed",
+        "value": {
+          "function": "match",
+          "input": {
+            "basedOn": "#background.color",
+          },
+        },
+      },
+      "bottomOpacity": {
+        "type": "empty",
+        "value": null,
+      },
+      "bottomStyle": {
+        "type": "empty",
+        "value": null,
+      },
+      "bottomWidth": {
+        "type": "empty",
+        "value": null,
+      },
+      "leftColor": {
+        "type": "computed",
+        "value": {
+          "function": "match",
+          "input": {
+            "basedOn": "#background.color",
+          },
+        },
+      },
+      "leftOpacity": {
+        "type": "empty",
+        "value": null,
+      },
+      "leftStyle": {
+        "type": "empty",
+        "value": null,
+      },
+      "leftWidth": {
+        "type": "empty",
+        "value": null,
+      },
+      "preset": {
+        "type": "theme.categorical",
+        "value": "@border.thin",
+      },
+      "rightColor": {
+        "type": "computed",
+        "value": {
+          "function": "match",
+          "input": {
+            "basedOn": "#background.color",
+          },
+        },
+      },
+      "rightOpacity": {
+        "type": "empty",
+        "value": null,
+      },
+      "rightStyle": {
+        "type": "empty",
+        "value": null,
+      },
+      "rightWidth": {
+        "type": "empty",
+        "value": null,
+      },
+      "topColor": {
+        "type": "computed",
+        "value": {
+          "function": "match",
+          "input": {
+            "basedOn": "#background.color",
+          },
+        },
+      },
+      "topOpacity": {
+        "type": "empty",
+        "value": null,
+      },
+      "topStyle": {
+        "type": "empty",
+        "value": null,
+      },
+      "topWidth": {
+        "type": "empty",
+        "value": null,
+      },
+    },
+    "buttonSize": {
+      "restrictions": {
+        "allowedValues": [
+          "@fontSize.xsmall",
+          "@fontSize.small",
+          "@fontSize.medium",
+          "@fontSize.large",
+          "@fontSize.xlarge",
+        ],
+      },
+      "type": "theme.ordinal",
+      "value": "@fontSize.medium",
+    },
+    "corners": {
+      "bottomLeft": {
+        "type": "preset",
+        "value": "rounded",
+      },
+      "bottomRight": {
+        "type": "preset",
+        "value": "rounded",
+      },
+      "topLeft": {
+        "type": "preset",
+        "value": "rounded",
+      },
+      "topRight": {
+        "type": "preset",
+        "value": "rounded",
+      },
+    },
+    "cursor": {
+      "type": "preset",
+      "value": "pointer",
+    },
+    "direction": {
+      "type": "empty",
+      "value": null,
+    },
+    "display": {
+      "type": "preset",
+      "value": "show",
+    },
+    "gap": {
+      "type": "computed",
+      "value": {
+        "function": "opticalPadding",
+        "input": {
+          "basedOn": "#buttonSize",
+          "factor": 0.5,
+        },
+      },
+    },
+    "height": {
+      "type": "preset",
+      "value": "fit",
+    },
+    "margin": {
+      "bottom": {
+        "type": "empty",
+        "value": null,
+      },
+      "left": {
+        "type": "empty",
+        "value": null,
+      },
+      "right": {
+        "type": "empty",
+        "value": null,
+      },
+      "top": {
+        "type": "empty",
+        "value": null,
+      },
+    },
+    "opacity": {
+      "type": "empty",
+      "value": null,
+    },
+    "orientation": {
+      "type": "preset",
+      "value": "horizontal",
+    },
+    "padding": {
+      "bottom": {
+        "type": "computed",
+        "value": {
+          "function": "opticalPadding",
+          "input": {
+            "basedOn": "#buttonSize",
+            "factor": 0.5,
+          },
+        },
+      },
+      "left": {
+        "type": "computed",
+        "value": {
+          "function": "opticalPadding",
+          "input": {
+            "basedOn": "#buttonSize",
+            "factor": 0.75,
+          },
+        },
+      },
+      "right": {
+        "type": "computed",
+        "value": {
+          "function": "opticalPadding",
+          "input": {
+            "basedOn": "#buttonSize",
+            "factor": 0.875,
+          },
+        },
+      },
+      "top": {
+        "type": "computed",
+        "value": {
+          "function": "opticalPadding",
+          "input": {
+            "basedOn": "#buttonSize",
+            "factor": 0.5,
+          },
+        },
+      },
+    },
+    "rotation": {
+      "type": "empty",
+      "value": null,
+    },
+    "shadow": {
+      "blur": {
+        "type": "empty",
+        "value": null,
+      },
+      "color": {
+        "type": "empty",
+        "value": null,
+      },
+      "offsetX": {
+        "type": "empty",
+        "value": null,
+      },
+      "offsetY": {
+        "type": "empty",
+        "value": null,
+      },
+      "opacity": {
+        "type": "empty",
+        "value": null,
+      },
+      "preset": {
+        "type": "empty",
+        "value": null,
+      },
+      "spread": {
+        "type": "empty",
+        "value": null,
+      },
+    },
+    "width": {
+      "type": "preset",
+      "value": "fit",
+    },
+  },
+  "restrictions": {
+    "addChildren": false,
+    "reorderChildren": false,
+  },
+  "tags": [
+    "button",
+    "label",
+    "icon",
+    "interactive",
+    "clickable",
+    "UI",
+    "component",
+    "action",
+    "primary",
+    "secondary",
+  ],
+}
+`;

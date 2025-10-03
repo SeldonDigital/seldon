@@ -1,0 +1,16 @@
+import { SVGAttributes } from "react"
+
+export function IconMaterialSize(props: SVGAttributes<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      height="1em"
+      width="1em"
+      {...props}
+    >
+      <path d="M2 22V15.3333H4.22222V18.2222L7.66667 14.7778L9.22222 16.3333L5.77778 19.7778H8.66667V22H2ZM15.3333 22V19.7778H18.2222L14.7778 16.3333L16.3333 14.7778L19.7778 18.2222V15.3333H22V22H15.3333ZM7.66667 9.22222L4.22222 5.77778V8.66667H2V2H8.66667V4.22222H5.77778L9.22222 7.66667L7.66667 9.22222ZM16.3333 9.22222L14.7778 7.66667L18.2222 4.22222H15.3333V2H22V8.66667H19.7778V5.77778L16.3333 9.22222Z" />
+    </svg>
+  )
+}

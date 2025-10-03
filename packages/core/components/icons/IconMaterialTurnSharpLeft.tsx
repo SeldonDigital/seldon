@@ -1,0 +1,16 @@
+import { SVGAttributes } from "react"
+
+export function IconMaterialTurnSharpLeft(props: SVGAttributes<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      height="1em"
+      width="1em"
+      {...props}
+    >
+      <path d="M7.5 6.83L5.91 8.41L4.5 7L8.5 3L12.5 7L11.09 8.41L9.5 6.83V13H17.5C18.6 13 19.5 13.9 19.5 15V21H17.5V15H9.5C8.4 15 7.5 14.1 7.5 13V6.83Z" />
+    </svg>
+  )
+}

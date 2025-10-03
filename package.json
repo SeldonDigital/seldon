@@ -1,11 +1,10 @@
 {
   "name": "@seldon/base",
   "version": "0.0.0",
-  "description": " open-source design system and component framework designed for building component-driven UIs with type-safe design tokens",
-  "directories": {
-    "doc": "docs"
-  },
+  "description": "Open-source design system and component framework designed for building component-driven UIs with type-safe design tokens",
   "scripts": {
+    "check:types": "tsc --build ./tsconfig.json",
+    "format": "prettier --write \"**/*.{ts,tsx,json,css}\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -14,9 +13,22 @@
   },
   "keywords": [],
   "author": "",
-  "license": "SEE LICENSE IN docs/licenses/noncommercial/LICENSE",
+  "license": "SEE LICENSE IN ./docs/licenses/noncommercial/LICENSE",
   "bugs": {
     "url": "https://github.com/SeldonDigital/seldon/issues"
   },
-  "homepage": "https://github.com/SeldonDigital/seldon#readme"
+  "homepage": "https://github.com/SeldonDigital/seldon#readme",
+  "workspaces": [
+    "packages/core"
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^5.2.2",
+    "@dotenvx/dotenvx": "^1.31.0",
+    "change-case": "^5.4.4",
+    "prettier": "^3.3.3"
+  },
+  "volta": {
+    "node": "22.18.0"
+  }
 }

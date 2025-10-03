@@ -1,0 +1,94 @@
+{
+  "name": "@seldon/core",
+  "type": "module",
+  "scripts": {
+    "build": "tsc --build tsconfig.json",
+    "lint": "echo \"TODO: Add this with the shared eslint config\"",
+    "quality": "bun lint && bun tsc",
+    "format": "prettier --write \"./**/*.{ts,tsx,json}\"",
+    "generate:action-schema": "typescript-json-schema ./tsconfig.schema.json AIAction --out ./workspace/reducers/ai/generated-ai-action-schema.json --noExtraProps --required"
+  },
+  "exports": {
+    ".": {
+      "node": {
+        "development": "./index.ts",
+        "default": "./dist/index.js"
+      },
+      "default": "./index.ts"
+    },
+    "./components/icons": {
+      "node": {
+        "development": "./components/icons/index.ts",
+        "default": "./dist/components/icons/index.js"
+      },
+      "default": "./components/icons/index.ts"
+    },
+    "./helpers/validation": {
+      "node": {
+        "development": "./helpers/validation/index.ts",
+        "default": "./dist/helpers/validation/index.js"
+      },
+      "default": "./helpers/validation/index.ts"
+    },
+    "./properties": {
+      "node": {
+        "development": "./properties/index.ts",
+        "default": "./dist/properties/index.js"
+      },
+      "default": "./properties/index.ts"
+    },
+    "./properties/constants": {
+      "node": {
+        "bun": "./properties/constants/index.ts",
+        "development": "./properties/constants/index.ts",
+        "default": "./dist/properties/constants/index.js"
+      },
+      "default": "./properties/constants/index.ts"
+    },
+    "./properties/types": {
+      "node": {
+        "development": "./properties/types/index.ts",
+        "default": "./dist/properties/types/index.js"
+      },
+      "default": "./properties/types/index.ts"
+    },
+    "./*": {
+      "types": [
+        "./*.ts",
+        "./*.tsx"
+      ],
+      "node": {
+        "development": "./*.ts",
+        "default": "./dist/*.js"
+      },
+      "default": "./*.ts"
+    }
+  },
+  "devDependencies": {
+    "@happy-dom/global-registrator": "^18.0.1",
+    "@testing-library/react": "^16.3.0",
+    "@trivago/prettier-plugin-sort-imports": "^5.2.2",
+    "@types/bun": "1.2.10"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0",
+    "react": "^19.0.0",
+    "@types/react": "^19.0.0"
+  },
+  "dependencies": {
+    "@sentry/nextjs": "^10.17.0",
+    "@types/chroma-js": "^2.4.5",
+    "@types/lodash": "^4.17.20",
+    "@types/lodash.isequal": "^4.5.8",
+    "@types/pluralize": "^0.0.33",
+    "change-case": "^5.4.4",
+    "chroma-js": "^3.1.2",
+    "immer": "^10.1.1",
+    "lodash": "^4.17.21",
+    "lodash.isequal": "^4.5.0",
+    "nanoid": "^5.1.4",
+    "pluralize": "^8.0.0",
+    "tldraw": "^3.12.0",
+    "typescript-json-schema": "^0.65.1"
+  }
+}

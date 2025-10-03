@@ -1,0 +1,13 @@
+# Ignore hidden directories and their contents
+.*/**
+.*/
+
+dist/
+node_modules/
+
+.next/
+.husky/
+.git/
+.github/
+.vscode/
+.DS_Store

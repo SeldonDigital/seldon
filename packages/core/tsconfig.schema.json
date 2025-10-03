@@ -1,0 +1,16 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "types": [],
+    "skipLibCheck": true
+  },
+  "exclude": [
+    "./dist",
+    "node_modules",
+    "**/generated-ai-action-schema.json",
+    "**/*.spec.ts",
+    "**/*.test.ts",
+    "bun-setup.ts",
+    "**/bun-setup.ts"
+  ]
+}

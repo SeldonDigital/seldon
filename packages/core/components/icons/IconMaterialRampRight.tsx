@@ -1,0 +1,16 @@
+import { SVGAttributes } from "react"
+
+export function IconMaterialRampRight(props: SVGAttributes<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      height="1em"
+      width="1em"
+      {...props}
+    >
+      <path d="M12.5 21H14.5V6.83L16.09 8.42L17.5 7L13.5 3L9.5 7L10.91 8.41L12.5 6.83V9C12.5 13.27 8.47 16.13 6.5 17.27L7.96 18.73C9.87 17.56 11.4 16.19 12.5 14.7V21Z" />
+    </svg>
+  )
+}

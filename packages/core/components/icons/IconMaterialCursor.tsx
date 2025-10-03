@@ -1,0 +1,16 @@
+import { SVGAttributes } from "react"
+
+export function IconMaterialCursor(props: SVGAttributes<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      height="1em"
+      width="1em"
+      {...props}
+    >
+      <path d="M2 12.5294V10.4118H5.33333V12.5294H2ZM5.77778 18.4059L4.22222 16.8706L6.55556 14.6471L8.16667 16.1294L5.77778 18.4059ZM6.55556 8.29412L4.22222 6.07059L5.77778 4.53529L8.16667 6.81176L6.55556 8.29412ZM19.7778 21L14.5 15.9706L13.1111 19.9412L9.77778 9.35294L20.8889 12.5294L16.7778 13.9059L22 18.8824L19.7778 21ZM10.8889 6.17647V3H13.1111V6.17647H10.8889ZM17.4444 8.29412L15.8333 6.81176L18.2222 4.53529L19.7778 6.01765L17.4444 8.29412Z" />
+    </svg>
+  )
+}

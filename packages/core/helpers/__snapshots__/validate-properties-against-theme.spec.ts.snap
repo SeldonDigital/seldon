@@ -1,0 +1,39 @@
+// Bun Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`validatePropertyValuesAgainstTheme 3. should replace the property value with the component default if the theme option does not exist 1`] = `
+{
+  "children": [],
+  "component": "button",
+
+  "id": "button-default",
+  "isChild": false,
+  "label": "Frame",
+  "level": "frame",
+  "properties": {
+    "background": {
+      "color": {
+        "type": "empty",
+      },
+    },
+    "border": {
+      "topColor": {
+        "type": "exact",
+        "value": {
+          "hue": 300,
+          "lightness": 48,
+          "saturation": 76,
+        },
+      },
+    },
+    "color": {
+      "type": "exact",
+      "value": {
+        "hue": 300,
+        "lightness": 48,
+        "saturation": 76,
+      },
+    },
+  },
+  "theme": null,
+}
+`;
