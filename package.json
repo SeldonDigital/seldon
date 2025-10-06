@@ -19,7 +19,8 @@
   },
   "homepage": "https://github.com/SeldonDigital/seldon#readme",
   "workspaces": [
-    "packages/core"
+    "packages/core",
+    "packages/factory"
   ],
   "dependencies": {},
   "devDependencies": {

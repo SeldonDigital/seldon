@@ -1,0 +1,36 @@
+{
+  "name": "@seldon/factory",
+  "scripts": {
+    "build": "tsc --build tsconfig.json",
+    "lint": "echo \"TODO: Add this with the shared eslint config\"",
+    "quality": "bun lint && bun tsc",
+    "format": "prettier --write \"./**/*.{ts,tsx,json}\""
+  },
+  "exports": {
+    ".": {
+      "node": {
+        "development": "./index.ts",
+        "default": "./dist/index.js"
+      },
+      "default": "./index.ts"
+    },
+    "./*": {
+      "node": {
+        "development": "./*.ts",
+        "default": "./dist/*.js"
+      },
+      "default": "./*.ts"
+    }
+  },
+  "devDependencies": {
+    "@types/bun": "1.2.10"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@seldon/core": "*",
+    "change-case": "^5.4.4",
+    "csstype": "^3.1.3"
+  }
+}
