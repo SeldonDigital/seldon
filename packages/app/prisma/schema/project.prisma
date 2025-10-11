@@ -1,0 +1,21 @@
+model Project {
+  id   String @id @db.Uuid
+  name String
+
+  assets   Asset[]
+  tree     ProjectTree?
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("project")
+}
+
+model ProjectTree {
+  id      String  @id @db.Uuid
+  project Project @relation(fields: [id], references: [id])
+
+  tree Json @default("{}")
+
+  @@map("project_tree")
+}

@@ -1,0 +1,15 @@
+model Asset {
+  id String @id @db.Uuid
+
+  projectId String?  @map("project_id") @db.Uuid
+  project   Project? @relation(fields: [projectId], references: [id], onDelete: SetNull)
+
+  // e.g., "image", "video", "document"
+  type String
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([projectId])
+  @@map("asset")
+}

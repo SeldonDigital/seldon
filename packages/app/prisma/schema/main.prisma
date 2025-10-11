@@ -1,0 +1,14 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider        = "prisma-client-js"
+  output          = "../../client"
+  previewFeatures = ["relationJoins", "queryCompiler", "driverAdapters"]
+}
+
+generator json {
+  provider = "prisma-json-types-generator"
+}
