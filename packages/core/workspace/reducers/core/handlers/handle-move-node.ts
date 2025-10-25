@@ -62,7 +62,6 @@ export function handleMoveNode(
 
     // For AI operations, we want to be more strict about validation failures
     if (options.isAiOperation && !validation.isValid) {
-      console.warn(`Move node validation failed:`, validation.errors)
       // Continue execution but log the issues for AI debugging
     }
   }

@@ -1,5 +1,7 @@
 import { getComponentSchema } from "../../components/catalog"
 import { ComponentId, isComponentId } from "../../components/constants"
+import { Properties } from "../../properties"
+import { validatePropertyValue } from "../../properties/schemas/helpers"
 import { ThemeStaticSwatchId } from "../../themes/types"
 import { ErrorMessages } from "../constants"
 import { areBoardVariantsInUse } from "../helpers/are-board-variants-in-use"
@@ -267,6 +269,45 @@ const validators = {
       check(swatch, ErrorMessages.swatchNotFound(id))
     },
   },
+  property: {
+    /**
+     * Validates property values using the property schema validation system.
+     * Throws an error if any property value is invalid.
+     */
+    values: (properties: Properties) => {
+      for (const [key, value] of Object.entries(properties)) {
+        if (!value || typeof value !== "object" || !("type" in value)) continue
+
+        const actualProperty = getActualPropertyName(key)
+        const valueType = value.type
+
+        // For exact values with string content, validate using property schema
+        if (valueType === "exact" && typeof value.value === "string") {
+          if (!validatePropertyValue(actualProperty, "exact", value.value)) {
+            throw new Error(`Invalid ${actualProperty} value: ${value.value}`)
+          }
+        }
+
+        // For exact values with object content (RGB/HSL/LCH objects), validate structure
+        if (valueType === "exact" && typeof value.value === "object") {
+          if (!validatePropertyValue(actualProperty, "exact", value.value)) {
+            throw new Error(
+              `Invalid ${actualProperty} value: ${JSON.stringify(value.value)}`,
+            )
+          }
+        }
+      }
+    },
+  },
+}
+
+// Helper function
+function getActualPropertyName(propertyKey: string): string {
+  if (propertyKey.includes(".")) {
+    const parts = propertyKey.split(".")
+    return parts[parts.length - 1]
+  }
+  return propertyKey
 }
 
 /**
@@ -304,7 +345,14 @@ export const validationMiddleware: Middleware =
         }
 
         case "ai_set_node_properties":
-        case "set_node_properties":
+        case "set_node_properties": {
+          const nodeId = action.payload.nodeId as InstanceId | VariantId
+
+          validators.node.exists(workspace, nodeId)
+          validators.property.values(action.payload.properties)
+          break
+        }
+
         case "ai_set_node_theme":
         case "set_node_theme": {
           const nodeId = action.payload.nodeId as InstanceId | VariantId
@@ -324,7 +372,14 @@ export const validationMiddleware: Middleware =
         }
 
         case "ai_set_board_properties":
-        case "set_board_properties":
+        case "set_board_properties": {
+          const componentId = action.payload.componentId
+
+          validators.board.exists(workspace, componentId)
+          validators.property.values(action.payload.properties)
+          break
+        }
+
         case "ai_set_board_theme":
         case "set_board_theme": {
           const componentId = action.payload.componentId

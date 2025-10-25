@@ -102,10 +102,6 @@ export class TypeCheckingService {
       const schema = getComponentSchema(node.component)
       return schema.restrictions?.addChildren !== false
     } catch (error) {
-      console.warn(
-        `Failed to get schema for component ${node.component}, assuming node cannot have children:`,
-        error,
-      )
       return false
     }
   }
@@ -126,10 +122,6 @@ export class TypeCheckingService {
 
       return rules.componentLevels[parentLevel].mayContain.includes(childLevel)
     } catch (error) {
-      console.warn(
-        `Failed to validate component relationship between ${parentId} and ${childId}, assuming invalid:`,
-        error,
-      )
       return false
     }
   }

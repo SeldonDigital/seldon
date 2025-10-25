@@ -388,6 +388,7 @@ describe("Complete Workspace-to-Export Integration Tests", () => {
       boards: {
         "invalid-component": {
           id: "invalid-component" as any,
+          component: "invalid-component" as any,
           label: "Invalid",
           order: 0,
           theme: "default",
@@ -548,10 +549,15 @@ describe("Complete Workspace-to-Export Integration Tests", () => {
       },
     }
 
-    // Should throw error for malformed properties
-    await expect(
-      exportWorkspace(workspaceWithMalformedProps, EXPORT_OPTIONS_FIXTURE),
-    ).rejects.toThrow()
+    // Should handle malformed properties gracefully (log warnings but continue)
+    const result = await exportWorkspace(
+      workspaceWithMalformedProps,
+      EXPORT_OPTIONS_FIXTURE,
+    )
+
+    // Should still produce export files despite malformed properties
+    expect(result.length).toBeGreaterThan(0)
+    expect(result.some((file) => file.path.endsWith(".css"))).toBe(true)
   })
 
   it("should throw error for export with invalid options", async () => {

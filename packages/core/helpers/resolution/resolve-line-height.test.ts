@@ -1,6 +1,6 @@
 import { describe, expect, it } from "bun:test"
 import { Unit, ValueType } from "../../index"
-import { EmptyValue } from "../../properties/values/shared/empty"
+import { EmptyValue } from "../../properties/values/shared/empty/empty"
 import { NumberValue } from "../../properties/values/shared/number"
 import {
   LineHeightThemeValue,
@@ -38,7 +38,7 @@ describe("resolveLineHeight", () => {
     expect(result).toEqual(emptyLineHeight)
   })
 
-  it("should resolve theme ordinal line heights to exact values", () => {
+  it("should resolve theme ordinal tight line height to exact value", () => {
     const themeLineHeight: LineHeightThemeValue = {
       type: ValueType.THEME_ORDINAL,
       value: "@lineHeight.tight",
@@ -54,7 +54,7 @@ describe("resolveLineHeight", () => {
     expect(result.value).toHaveProperty("value", 1.25)
   })
 
-  it("should resolve different theme line height values", () => {
+  it("should resolve theme ordinal cozy line height to exact value", () => {
     const cozyLineHeight: LineHeightThemeValue = {
       type: ValueType.THEME_ORDINAL,
       value: "@lineHeight.cozy",
@@ -70,6 +70,53 @@ describe("resolveLineHeight", () => {
     expect(result.value).toHaveProperty("value", 1.5)
   })
 
+  it("should resolve theme ordinal comfortable line height to exact value", () => {
+    const comfortableLineHeight: LineHeightThemeValue = {
+      type: ValueType.THEME_ORDINAL,
+      value: "@lineHeight.comfortable",
+    }
+
+    const result = resolveLineHeight({
+      lineHeight: comfortableLineHeight,
+      theme: testTheme,
+    })
+
+    expect(result.type).toBe(ValueType.EXACT)
+    expect(result.value).toHaveProperty("unit", Unit.NUMBER)
+    expect(result.value).toHaveProperty("value", 2.0)
+  })
+
+  it("should throw error for computed values", () => {
+    const computedLineHeight = {
+      type: ValueType.COMPUTED,
+      value: {
+        function: "auto_fit",
+        input: { basedOn: "#parent.lineHeight", factor: 1.5 },
+      },
+    }
+
+    expect(() => {
+      resolveLineHeight({
+        lineHeight: computedLineHeight as LineHeightValue,
+        theme: testTheme,
+      })
+    }).toThrow("Invalid line height type computed")
+  })
+
+  it("should throw error for non-existent theme values", () => {
+    const invalidThemeLineHeight = {
+      type: ValueType.THEME_ORDINAL,
+      value: "@lineHeight.nonexistent",
+    }
+
+    expect(() => {
+      resolveLineHeight({
+        lineHeight: invalidThemeLineHeight as LineHeightValue,
+        theme: testTheme,
+      })
+    }).toThrow("Theme value @lineHeight.nonexistent not found")
+  })
+
   it("should throw error for invalid line height types", () => {
     const invalidLineHeight = {
       type: "INVALID",
@@ -78,7 +125,7 @@ describe("resolveLineHeight", () => {
 
     expect(() => {
       resolveLineHeight({
-        lineHeight: invalidLineHeight as unknown as LineHeightValue,
+        lineHeight: invalidLineHeight as LineHeightValue,
         theme: testTheme,
       })
     }).toThrow("Invalid line height type INVALID")

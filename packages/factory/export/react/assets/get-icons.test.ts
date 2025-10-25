@@ -41,15 +41,19 @@ const mockReadFileSync = mock((filePath: string) => {
   return ""
 })
 
+const mockExistsSync = mock(() => true)
+
 mock.module("node:fs", () => ({
   readdirSync: mockReaddirSync,
   readFileSync: mockReadFileSync,
+  existsSync: mockExistsSync,
 }))
 
 // Reset mocks before each test to ensure test isolation
 beforeEach(() => {
   mockReaddirSync.mockClear()
   mockReadFileSync.mockClear()
+  mockExistsSync.mockClear()
 })
 
 describe("getIcons", () => {

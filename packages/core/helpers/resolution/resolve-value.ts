@@ -1,5 +1,5 @@
 import { Value } from "../../properties/types/value"
-import { EmptyValue } from "../../properties/values/shared/empty"
+import { EmptyValue } from "../../properties/values/shared/empty/empty"
 import { isEmptyValue } from "../type-guards/value/is-empty-value"
 
 /**

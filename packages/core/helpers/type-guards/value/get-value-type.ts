@@ -1,4 +1,4 @@
-import { ValueType } from "../../../properties/constants/value-types"
+import { ValueType } from "../../../properties"
 
 /**
  * Determines the appropriate ValueType for a theme value string

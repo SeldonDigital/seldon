@@ -1,6 +1,6 @@
 import { describe, expect, it } from "bun:test"
 import { Properties, ValueType } from "../../index"
-import { BorderStyle } from "../../properties/constants/border-styles"
+import { BorderStyle } from "../../properties"
 import { removeAllowedValuesFromProperties } from "./remove-allowed-values"
 
 describe("removeAllowedValuesFromProperties", () => {

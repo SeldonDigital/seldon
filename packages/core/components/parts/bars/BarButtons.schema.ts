@@ -1,4 +1,4 @@
-import * as Sdn from "../../../properties/constants"
+import * as Sdn from "../../../properties"
 import { ComponentId } from "../../constants"
 import * as Seldon from "../../constants"
 import { ComponentExport, ComponentSchema } from "../../types"
@@ -82,7 +82,7 @@ export const schema = {
     },
     align: {
       type: Sdn.ValueType.PRESET,
-      value: Sdn.Alignment.CENTER_RIGHT,
+      value: Sdn.Align.CENTER_RIGHT,
     },
     wrapChildren: {
       type: Sdn.ValueType.EXACT,
@@ -139,18 +139,22 @@ export const schema = {
       topColor: { type: Sdn.ValueType.EMPTY, value: null },
       topWidth: { type: Sdn.ValueType.EMPTY, value: null },
       topOpacity: { type: Sdn.ValueType.EMPTY, value: null },
+      topBrightness: { type: Sdn.ValueType.EMPTY, value: null },
       rightStyle: { type: Sdn.ValueType.EMPTY, value: null },
       rightColor: { type: Sdn.ValueType.EMPTY, value: null },
       rightWidth: { type: Sdn.ValueType.EMPTY, value: null },
       rightOpacity: { type: Sdn.ValueType.EMPTY, value: null },
+      rightBrightness: { type: Sdn.ValueType.EMPTY, value: null },
       bottomStyle: { type: Sdn.ValueType.EMPTY, value: null },
       bottomColor: { type: Sdn.ValueType.EMPTY, value: null },
       bottomWidth: { type: Sdn.ValueType.EMPTY, value: null },
       bottomOpacity: { type: Sdn.ValueType.EMPTY, value: null },
+      bottomBrightness: { type: Sdn.ValueType.EMPTY, value: null },
       leftStyle: { type: Sdn.ValueType.EMPTY, value: null },
       leftColor: { type: Sdn.ValueType.EMPTY, value: null },
       leftWidth: { type: Sdn.ValueType.EMPTY, value: null },
       leftOpacity: { type: Sdn.ValueType.EMPTY, value: null },
+      leftBrightness: { type: Sdn.ValueType.EMPTY, value: null },
     },
     corners: {
       topLeft: { type: Sdn.ValueType.EMPTY, value: null },

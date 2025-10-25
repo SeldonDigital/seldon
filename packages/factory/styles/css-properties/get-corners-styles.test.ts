@@ -1,5 +1,5 @@
 import { describe, expect, it } from "bun:test"
-import { Properties, Unit, ValueType } from "@seldon/core"
+import { Corner, Properties, Unit, ValueType } from "@seldon/core"
 import testTheme from "@seldon/core/themes/test/test-theme"
 import { getCornersStyles } from "./get-corners-styles"
 
@@ -108,6 +108,64 @@ describe("getCornersStyles", () => {
     }
     expect(getCornersStyles({ properties, theme: testTheme })).toEqual({
       borderTopLeftRadius: "0.25rem",
+    })
+  })
+
+  it("should handle corner rounded preset values", () => {
+    const properties: Properties = {
+      corners: {
+        topLeft: {
+          type: ValueType.PRESET,
+          value: Corner.ROUNDED,
+        },
+        topRight: {
+          type: ValueType.PRESET,
+          value: Corner.ROUNDED,
+        },
+        bottomLeft: {
+          type: ValueType.PRESET,
+          value: Corner.ROUNDED,
+        },
+        bottomRight: {
+          type: ValueType.PRESET,
+          value: Corner.ROUNDED,
+        },
+      },
+    }
+    expect(getCornersStyles({ properties, theme: testTheme })).toEqual({
+      borderTopLeftRadius: "99999px",
+      borderTopRightRadius: "99999px",
+      borderBottomLeftRadius: "99999px",
+      borderBottomRightRadius: "99999px",
+    })
+  })
+
+  it("should handle corner squared preset values", () => {
+    const properties: Properties = {
+      corners: {
+        topLeft: {
+          type: ValueType.PRESET,
+          value: Corner.SQUARED,
+        },
+        topRight: {
+          type: ValueType.PRESET,
+          value: Corner.SQUARED,
+        },
+        bottomLeft: {
+          type: ValueType.PRESET,
+          value: Corner.SQUARED,
+        },
+        bottomRight: {
+          type: ValueType.PRESET,
+          value: Corner.SQUARED,
+        },
+      },
+    }
+    expect(getCornersStyles({ properties, theme: testTheme })).toEqual({
+      borderTopLeftRadius: "0px",
+      borderTopRightRadius: "0px",
+      borderBottomLeftRadius: "0px",
+      borderBottomRightRadius: "0px",
     })
   })
 })

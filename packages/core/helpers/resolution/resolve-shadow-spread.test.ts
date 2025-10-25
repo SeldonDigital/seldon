@@ -38,7 +38,21 @@ describe("resolveShadowSpread", () => {
     expect(result).toEqual(exactSpread)
   })
 
-  it("should resolve theme ordinal spread values to rem values", () => {
+  it("should return empty values unchanged", () => {
+    const emptySpread = {
+      type: ValueType.EMPTY,
+      value: null,
+    }
+
+    const result = resolveShadowSpread({
+      spread: emptySpread as ShadowSpreadValue,
+      theme: testTheme,
+    })
+
+    expect(result).toEqual(emptySpread)
+  })
+
+  it("should resolve theme ordinal medium spread to exact value", () => {
     const themeSpread: ShadowSpreadThemeValue = {
       type: ValueType.THEME_ORDINAL,
       value: "@spread.medium",
@@ -54,7 +68,7 @@ describe("resolveShadowSpread", () => {
     expect(result.value).toHaveProperty("value")
   })
 
-  it("should resolve different theme spread values", () => {
+  it("should resolve theme ordinal small spread to exact value", () => {
     const smallSpread: ShadowSpreadThemeValue = {
       type: ValueType.THEME_ORDINAL,
       value: "@spread.small",
@@ -70,6 +84,53 @@ describe("resolveShadowSpread", () => {
     expect(result.value).toHaveProperty("value")
   })
 
+  it("should resolve theme ordinal large spread to exact value", () => {
+    const largeSpread: ShadowSpreadThemeValue = {
+      type: ValueType.THEME_ORDINAL,
+      value: "@spread.large",
+    }
+
+    const result = resolveShadowSpread({
+      spread: largeSpread,
+      theme: testTheme,
+    })
+
+    expect(result.type).toBe(ValueType.EXACT)
+    expect(result.value).toHaveProperty("unit", Unit.REM)
+    expect(result.value).toHaveProperty("value")
+  })
+
+  it("should throw error for computed values", () => {
+    const computedSpread = {
+      type: ValueType.COMPUTED,
+      value: {
+        function: "auto_fit",
+        input: { basedOn: "#parent.spread", factor: 1.5 },
+      },
+    }
+
+    expect(() => {
+      resolveShadowSpread({
+        spread: computedSpread as ShadowSpreadValue,
+        theme: testTheme,
+      })
+    }).toThrow("Invalid spread type computed")
+  })
+
+  it("should throw error for non-existent theme values", () => {
+    const invalidThemeSpread = {
+      type: ValueType.THEME_ORDINAL,
+      value: "@spread.nonexistent",
+    }
+
+    expect(() => {
+      resolveShadowSpread({
+        spread: invalidThemeSpread as ShadowSpreadValue,
+        theme: testTheme,
+      })
+    }).toThrow("Theme value @spread.nonexistent not found")
+  })
+
   it("should throw error for invalid spread types", () => {
     const invalidSpread = {
       type: "INVALID",
@@ -78,7 +139,7 @@ describe("resolveShadowSpread", () => {
 
     expect(() => {
       resolveShadowSpread({
-        spread: invalidSpread as unknown as ShadowSpreadValue,
+        spread: invalidSpread as ShadowSpreadValue,
         theme: testTheme,
       })
     }).toThrow("Invalid spread type INVALID")

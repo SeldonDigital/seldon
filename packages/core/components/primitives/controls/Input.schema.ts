@@ -1,5 +1,5 @@
 import { InputType } from "../../../index"
-import * as Sdn from "../../../properties/constants"
+import * as Sdn from "../../../properties"
 import * as Seldon from "../../constants"
 import { ComponentExport, ComponentSchema } from "../../types"
 
@@ -161,12 +161,12 @@ export const schema = {
       size: { type: Sdn.ValueType.EMPTY, value: null },
       weight: { type: Sdn.ValueType.EMPTY, value: null },
       lineHeight: { type: Sdn.ValueType.EMPTY, value: null },
+      textCase: {
+        type: Sdn.ValueType.PRESET,
+        value: Sdn.TextCasing.NORMAL,
+      },
     },
     letterSpacing: { type: Sdn.ValueType.EMPTY, value: null },
-    textCase: {
-      type: Sdn.ValueType.PRESET,
-      value: Sdn.TextCasing.NORMAL,
-    },
     textDecoration: {
       type: Sdn.ValueType.PRESET,
       value: Sdn.TextDecoration.NONE,

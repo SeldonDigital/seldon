@@ -1,6 +1,6 @@
 import { describe, expect, it } from "bun:test"
-import { HSL } from "../../properties/values/color/hsl"
-import { RGB } from "../../properties/values/color/rgb"
+import { HSL } from "../../properties/values/shared/hsl"
+import { RGB } from "../../properties/values/shared/rgb"
 import {
   hexToHSLObject,
   hexToHSLString,
@@ -70,7 +70,7 @@ describe("toHSLString", () => {
 
     expect(() => {
       toHSLString(invalidRgb)
-    }).toThrow("Invalid RGB value: rgb(255, 0)")
+    }).toThrow("Invalid color value: rgb(255, 0)")
   })
 })
 

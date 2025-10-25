@@ -19,7 +19,7 @@ describe("handleSetCustomThemeFontValue", () => {
       },
       workspace,
     )
-    expect(result.customTheme.font.display.value.family).toEqual({
+    expect(result.customTheme.font.display.parameters.family).toEqual({
       type: ValueType.PRESET,
       value: "Arial",
     })

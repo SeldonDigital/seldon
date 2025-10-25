@@ -130,14 +130,15 @@ export function computeProperties(
         "type" in value &&
         value.type === ValueType.COMPUTED
       ) {
-        // @ts-expect-error - Computed values for primitive properties are not yet fully typed
-        computedProperties[propertyKey] = computeValue(
-          value as ComputedValue,
-          context,
-          { propertyKey },
-        )
+        const computedValue = value as ComputedValue
+        const computedResult = computeValue(computedValue, context, {
+          propertyKey,
+        })
+        // Use Object.assign to avoid complex union type issues
+        Object.assign(computedProperties, { [propertyKey]: computedResult })
       } else {
-        computedProperties[propertyKey] = value
+        // Use Object.assign to avoid complex union type issues
+        Object.assign(computedProperties, { [propertyKey]: value })
       }
     }
   })

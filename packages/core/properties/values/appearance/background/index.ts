@@ -1,11 +1,7 @@
 import { ThemeBackgroundKey, ThemeSwatchKey } from "../../../../themes/types"
-import {
-  BackgroundPosition,
-  BackgroundRepeat,
-  ImageFit,
-} from "../../../constants"
 import { Restricted } from "../../../types/helpers"
-import { EmptyValue } from "../../shared/empty"
+import { BackgroundPosition, BackgroundRepeat, ImageFit } from "../../../values"
+import { EmptyValue } from "../../shared/empty/empty"
 import { BackgroundBrightnessValue } from "./background-brightness"
 import { BackgroundColorValue } from "./background-color"
 import { BackgroundImageValue } from "./background-image"

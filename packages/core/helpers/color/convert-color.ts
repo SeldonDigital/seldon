@@ -1,5 +1,5 @@
-import { HSL } from "../../properties/values/color/hsl"
-import { RGB } from "../../properties/values/color/rgb"
+import { HSL } from "../../properties/values/shared/exact/hsl"
+import { RGB } from "../../properties/values/shared/exact/rgb"
 import { isHSLString, isHex, isRGBString } from "../validation/color"
 import { HSLObjectToString } from "./hsl-object-to-string"
 
@@ -39,6 +39,42 @@ export function toHSLString(value: string): string {
     return HSLObjectToString(hsl)
   }
   throw new Error(`Invalid color value: ${value}`)
+}
+
+/**
+ * Parse an HSL string into an HSL object.
+ *
+ * @param value - The HSL string to parse (e.g., "hsl(120, 50%, 50%)" or "hsl(120 50% 50%)")
+ * @returns An HSL object with hue, saturation, and lightness properties
+ */
+export function parseHSLString(value: string): HSL {
+  // Handle both formats: "hsl(120, 50%, 50%)" and "hsl(120 50% 50%)"
+  const match = value.match(
+    /^hsl\(\s*(\d+)(?:deg)?\s*[,]?\s*(\d+)%?\s*[,]?\s*(\d+)%?\s*\)$/i,
+  )
+  if (!match) {
+    throw new Error(`Invalid HSL string: ${value}`)
+  }
+
+  const [, hueStr, saturationStr, lightnessStr] = match
+  const hue = parseInt(hueStr, 10)
+  const saturation = parseInt(saturationStr, 10)
+  const lightness = parseInt(lightnessStr, 10)
+
+  if (isNaN(hue) || isNaN(saturation) || isNaN(lightness)) {
+    throw new Error(`Invalid HSL string: ${value}`)
+  }
+  if (hue < 0 || hue > 360) {
+    throw new Error(`Invalid HSL string: ${value} - hue must be 0-360`)
+  }
+  if (saturation < 0 || saturation > 100) {
+    throw new Error(`Invalid HSL string: ${value} - saturation must be 0-100`)
+  }
+  if (lightness < 0 || lightness > 100) {
+    throw new Error(`Invalid HSL string: ${value} - lightness must be 0-100`)
+  }
+
+  return { hue, saturation, lightness }
 }
 
 /**

@@ -7,7 +7,7 @@ import {
   Unit,
   ValueType,
 } from "@seldon/core"
-import { Alignment } from "@seldon/core/properties/constants"
+import { Align } from "@seldon/core/properties"
 import testTheme from "@seldon/core/themes/test/test-theme"
 import { getLayoutStyles } from "./get-layout-styles"
 
@@ -90,7 +90,7 @@ describe("getLayoutStyles", () => {
       nodeProperties: {
         align: {
           type: ValueType.PRESET,
-          value: Alignment.CENTER,
+          value: Align.CENTER,
         },
       },
       theme: testTheme,
@@ -107,7 +107,7 @@ describe("getLayoutStyles", () => {
       nodeProperties: {
         align: {
           type: ValueType.PRESET,
-          value: Alignment.TOP_LEFT,
+          value: Align.TOP_LEFT,
         },
       },
       theme: testTheme,
@@ -124,7 +124,7 @@ describe("getLayoutStyles", () => {
       nodeProperties: {
         align: {
           type: ValueType.PRESET,
-          value: Alignment.BOTTOM_RIGHT,
+          value: Align.BOTTOM_RIGHT,
         },
       },
       theme: testTheme,
@@ -141,7 +141,7 @@ describe("getLayoutStyles", () => {
       nodeProperties: {
         align: {
           type: ValueType.PRESET,
-          value: Alignment.CENTER_LEFT,
+          value: Align.CENTER_LEFT,
         },
       },
       theme: testTheme,
@@ -158,7 +158,7 @@ describe("getLayoutStyles", () => {
       nodeProperties: {
         align: {
           type: ValueType.PRESET,
-          value: Alignment.CENTER_RIGHT,
+          value: Align.CENTER_RIGHT,
         },
       },
       theme: testTheme,
@@ -175,7 +175,7 @@ describe("getLayoutStyles", () => {
       nodeProperties: {
         align: {
           type: ValueType.PRESET,
-          value: Alignment.TOP_CENTER,
+          value: Align.TOP_CENTER,
         },
       },
       theme: testTheme,
@@ -192,7 +192,7 @@ describe("getLayoutStyles", () => {
       nodeProperties: {
         align: {
           type: ValueType.PRESET,
-          value: Alignment.BOTTOM_CENTER,
+          value: Align.BOTTOM_CENTER,
         },
       },
       theme: testTheme,
@@ -209,7 +209,7 @@ describe("getLayoutStyles", () => {
       nodeProperties: {
         align: {
           type: ValueType.PRESET,
-          value: Alignment.AUTO,
+          value: Align.AUTO,
         },
       },
       theme: testTheme,
@@ -234,7 +234,7 @@ describe("getLayoutStyles", () => {
         },
         align: {
           type: ValueType.PRESET,
-          value: Alignment.CENTER_LEFT,
+          value: Align.CENTER_LEFT,
         },
       },
       theme: testTheme,
@@ -260,7 +260,7 @@ describe("getLayoutStyles", () => {
         },
         align: {
           type: ValueType.PRESET,
-          value: Alignment.CENTER_LEFT,
+          value: Align.CENTER_LEFT,
         },
       },
       theme: testTheme,
@@ -384,7 +384,7 @@ describe("getLayoutStyles", () => {
         },
         align: {
           type: ValueType.PRESET,
-          value: Alignment.CENTER,
+          value: Align.CENTER,
         },
         wrapChildren: {
           type: ValueType.EXACT,
@@ -416,7 +416,7 @@ describe("getLayoutStyles", () => {
         },
         align: {
           type: ValueType.PRESET,
-          value: Alignment.TOP_RIGHT,
+          value: Align.TOP_RIGHT,
         },
       },
       theme: testTheme,
@@ -442,7 +442,7 @@ describe("getLayoutStyles", () => {
         },
         align: {
           type: ValueType.PRESET,
-          value: Alignment.TOP_RIGHT,
+          value: Align.TOP_RIGHT,
         },
       },
       theme: testTheme,

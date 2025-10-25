@@ -1,7 +1,7 @@
 import { describe, expect, it } from "bun:test"
 import { Resize, Unit, ValueType } from "../../../index"
-import { CompoundValue } from "../../../properties/types/compound-value"
-import { PrimitiveValue } from "../../../properties/types/primitive-value"
+import { AtomicValue } from "../../../properties/types/value-atomic"
+import { CompoundValue } from "../../../properties/types/value-compound"
 import { isCompoundValue } from "./is-compound-value"
 
 describe("isCompoundValue", () => {
@@ -33,14 +33,14 @@ describe("isCompoundValue", () => {
   })
 
   it("should return false for primitive property values", () => {
-    const primitiveValues: PrimitiveValue[] = [
+    const atomicValues: AtomicValue[] = [
       { type: ValueType.PRESET, value: Resize.FILL },
       { type: ValueType.EXACT, value: "#ff0000" },
       { type: ValueType.THEME_CATEGORICAL, value: "@swatch.primary" },
       { type: ValueType.EMPTY, value: null },
     ]
 
-    primitiveValues.forEach((value) => {
+    atomicValues.forEach((value) => {
       expect(isCompoundValue(value)).toBe(false)
     })
   })
@@ -50,7 +50,7 @@ describe("isCompoundValue", () => {
 
     invalidValues.forEach((value) => {
       expect(
-        isCompoundValue(value as unknown as CompoundValue | PrimitiveValue),
+        isCompoundValue(value as unknown as CompoundValue | AtomicValue),
       ).toBe(false)
     })
   })

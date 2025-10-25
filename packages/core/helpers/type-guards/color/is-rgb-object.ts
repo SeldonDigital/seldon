@@ -1,4 +1,4 @@
-import { RGB } from "../../../properties/values/color/rgb"
+import { RGB } from "../../../properties/values/shared/exact/rgb"
 
 /**
  * Type guard that checks if a value is a valid RGB color object

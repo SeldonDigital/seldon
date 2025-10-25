@@ -101,11 +101,14 @@ const mockReadFileSync = mock(
   () => "export const HTMLButton = () => <button />",
 )
 
+const mockExistsSync = mock(() => true)
+
 // Mock the node:fs module
 mock.module("node:fs", () => ({
   default: {
     readdirSync: mockReaddirSync,
     readFileSync: mockReadFileSync,
+    existsSync: mockExistsSync,
   },
 }))
 

@@ -23,7 +23,21 @@ describe("resolveFontWeight", () => {
     expect(result).toEqual(exactFontWeight)
   })
 
-  it("should resolve theme ordinal font weights to exact values", () => {
+  it("should return empty values unchanged", () => {
+    const emptyFontWeight = {
+      type: ValueType.EMPTY,
+      value: null,
+    }
+
+    const result = resolveFontWeight({
+      fontWeight: emptyFontWeight as FontWeightValue,
+      theme: testTheme,
+    })
+
+    expect(result).toEqual(emptyFontWeight)
+  })
+
+  it("should resolve theme ordinal bold font weight to exact value", () => {
     const themeFontWeight: FontWeightThemeValue = {
       type: ValueType.THEME_ORDINAL,
       value: "@fontWeight.bold",
@@ -39,7 +53,7 @@ describe("resolveFontWeight", () => {
     expect(result.value).toHaveProperty("value", 700)
   })
 
-  it("should resolve different theme font weight values", () => {
+  it("should resolve theme ordinal normal font weight to exact value", () => {
     const normalFontWeight: FontWeightThemeValue = {
       type: ValueType.THEME_ORDINAL,
       value: "@fontWeight.normal",
@@ -55,6 +69,53 @@ describe("resolveFontWeight", () => {
     expect(result.value).toHaveProperty("value", 400)
   })
 
+  it("should resolve theme ordinal light font weight to exact value", () => {
+    const lightFontWeight: FontWeightThemeValue = {
+      type: ValueType.THEME_ORDINAL,
+      value: "@fontWeight.light",
+    }
+
+    const result = resolveFontWeight({
+      fontWeight: lightFontWeight,
+      theme: testTheme,
+    })
+
+    expect(result.type).toBe(ValueType.EXACT)
+    expect(result.value).toHaveProperty("unit", Unit.NUMBER)
+    expect(result.value).toHaveProperty("value", 300)
+  })
+
+  it("should throw error for computed values", () => {
+    const computedFontWeight = {
+      type: ValueType.COMPUTED,
+      value: {
+        function: "auto_fit",
+        input: { basedOn: "#parent.fontWeight", factor: 1.5 },
+      },
+    }
+
+    expect(() => {
+      resolveFontWeight({
+        fontWeight: computedFontWeight as FontWeightValue,
+        theme: testTheme,
+      })
+    }).toThrow("Invalid font weight type computed")
+  })
+
+  it("should throw error for non-existent theme values", () => {
+    const invalidThemeFontWeight = {
+      type: ValueType.THEME_ORDINAL,
+      value: "@fontWeight.nonexistent",
+    }
+
+    expect(() => {
+      resolveFontWeight({
+        fontWeight: invalidThemeFontWeight as FontWeightValue,
+        theme: testTheme,
+      })
+    }).toThrow("Theme value @fontWeight.nonexistent not found")
+  })
+
   it("should throw error for invalid font weight types", () => {
     const invalidFontWeight = {
       type: "INVALID",
@@ -63,7 +124,7 @@ describe("resolveFontWeight", () => {
 
     expect(() => {
       resolveFontWeight({
-        fontWeight: invalidFontWeight as unknown as FontWeightValue,
+        fontWeight: invalidFontWeight as FontWeightValue,
         theme: testTheme,
       })
     }).toThrow("Invalid font weight type INVALID")

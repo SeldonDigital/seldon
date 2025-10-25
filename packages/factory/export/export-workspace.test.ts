@@ -26,6 +26,7 @@ describe("exportWorkspace", () => {
       boards: {
         [ComponentId.BUTTON]: {
           id: ComponentId.BUTTON,
+          component: ComponentId.BUTTON,
           label: "Buttons",
           order: 0,
           theme: "default",
@@ -104,6 +105,7 @@ describe("exportWorkspace", () => {
       boards: {
         [ComponentId.BUTTON]: {
           id: ComponentId.BUTTON,
+          component: ComponentId.BUTTON,
           label: "Buttons",
           order: 0,
           theme: "default",
@@ -112,6 +114,7 @@ describe("exportWorkspace", () => {
         },
         [ComponentId.ICON]: {
           id: ComponentId.ICON,
+          component: ComponentId.ICON,
           label: "Icons",
           order: 1,
           theme: "default",
@@ -198,6 +201,7 @@ describe("exportWorkspace", () => {
       boards: {
         [ComponentId.BUTTON]: {
           id: ComponentId.BUTTON,
+          component: ComponentId.BUTTON,
           label: "Buttons",
           order: 0,
           theme: "default",
@@ -241,6 +245,7 @@ describe("exportWorkspace", () => {
       boards: {
         [ComponentId.BUTTON]: {
           id: ComponentId.BUTTON,
+          component: ComponentId.BUTTON,
           label: "Buttons",
           order: 0,
           theme: "default",
@@ -314,5 +319,31 @@ describe("exportWorkspace", () => {
     // Note: Asset files are only generated when there are actual images in the workspace
     // Since this test workspace has no images, no asset files should be generated
     expect(assetFiles.length).toBe(0) // No assets in this workspace
+  })
+
+  it("should throw error for unsupported framework", async () => {
+    const unsupportedOptions: ExportOptions = {
+      rootDirectory: process.cwd(),
+      target: {
+        framework: "vue" as any, // Unsupported framework
+        styles: "css-properties" as const,
+      },
+      output: {
+        componentsFolder: "/components",
+        assetsFolder: "/assets",
+        assetPublicPath: "/assets",
+      },
+    }
+
+    const workspace: Workspace = {
+      version: 1,
+      customTheme,
+      boards: {},
+      byId: {},
+    }
+
+    await expect(
+      exportWorkspace(workspace, unsupportedOptions),
+    ).rejects.toThrow("Unsupported target.framework: vue")
   })
 })

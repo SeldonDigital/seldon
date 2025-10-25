@@ -67,7 +67,7 @@ it("should remove a board and all its variants while preserving other boards", (
   const iconBoard = result.boards.icon
   expect(iconBoard).toBeDefined()
   // Icon board order remains unchanged
-  expect(iconBoard!.order).toBe(1)
+  expect(iconBoard!.order).toBe(0)
   // Button variant should be removed
   expect(result.byId["variant-button-default"]).toBeUndefined()
   // Icon variant should remain

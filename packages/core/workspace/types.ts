@@ -28,6 +28,7 @@ export type Workspace = {
 // It is the second level of the tree.
 export interface Board {
   id: ComponentId
+  component: ComponentId
   label: string
   order: number
   theme: ThemeId

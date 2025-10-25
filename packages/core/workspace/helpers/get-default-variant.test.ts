@@ -15,10 +15,10 @@ describe("getDefaultVariant", () => {
   })
 
   it("should return default variant for different component", () => {
-    const variant = getDefaultVariant(ComponentId.TAGLINE, WORKSPACE_FIXTURE)
+    const variant = getDefaultVariant("icon" as ComponentId, WORKSPACE_FIXTURE)
 
-    expect(variant.id).toEqual("variant-tagline-default")
-    expect(variant.component).toEqual(ComponentId.TAGLINE)
+    expect(variant.id).toEqual("variant-icon-default")
+    expect(variant.component).toEqual("icon")
     expect(variant.level).toEqual(ComponentLevel.PRIMITIVE)
     expect(variant.isChild).toBe(false)
   })

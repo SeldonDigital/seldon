@@ -1,6 +1,6 @@
 import { describe, expect, it } from "bun:test"
 import { ComputedFunction, Properties, Unit, ValueType } from "@seldon/core"
-import { BorderStyle } from "@seldon/core/properties/constants/border-styles"
+import { BorderStyle } from "@seldon/core"
 import testTheme from "@seldon/core/themes/test/test-theme"
 import { StyleGenerationContext } from "../types"
 import { getCssFromProperties } from "./get-css-from-properties"

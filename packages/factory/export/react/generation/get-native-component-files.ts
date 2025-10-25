@@ -11,10 +11,17 @@ export function getNativeComponentFiles(
   options: ExportOptions,
 ): FileToExport[] {
   const primitives: FileToExport[] = []
-  const entries = fs.readdirSync(
-    path.join(options.rootDirectory, "packages/core/components/native-react"),
-    { withFileTypes: true },
+  const nativeReactPath = path.join(
+    options.rootDirectory,
+    "packages/core/components/native-react",
   )
+
+  // Check if the directory exists before trying to read it
+  if (!fs.existsSync(nativeReactPath)) {
+    return primitives
+  }
+
+  const entries = fs.readdirSync(nativeReactPath, { withFileTypes: true })
 
   for (const entry of entries) {
     if (entry.isFile()) {

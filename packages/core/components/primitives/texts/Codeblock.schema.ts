@@ -1,4 +1,4 @@
-import * as Sdn from "../../../properties/constants"
+import * as Sdn from "../../../properties"
 import * as Seldon from "../../constants"
 import { ComponentExport, ComponentSchema } from "../../types"
 
@@ -100,13 +100,13 @@ export const schema = {
       },
       weight: { type: Sdn.ValueType.EMPTY, value: null },
       lineHeight: { type: Sdn.ValueType.EMPTY, value: null },
+      textCase: {
+        type: Sdn.ValueType.PRESET,
+        value: Sdn.TextCasing.NORMAL,
+      },
     },
     textAlign: { type: Sdn.ValueType.EMPTY, value: null },
     letterSpacing: { type: Sdn.ValueType.EMPTY, value: null },
-    textCase: {
-      type: Sdn.ValueType.PRESET,
-      value: Sdn.TextCasing.NORMAL,
-    },
     textDecoration: {
       type: Sdn.ValueType.PRESET,
       value: Sdn.TextDecoration.NONE,

@@ -155,6 +155,69 @@ describe("mergeProperties", () => {
           },
         } as Properties,
       },
+      {
+        name: "shorthand property merging with mergeSubProperties true",
+        props1: {
+          color: {
+            type: ValueType.THEME_CATEGORICAL,
+            value: "@swatch.primary",
+          },
+          margin: {
+            top: {
+              type: ValueType.EXACT,
+              value: { unit: "px", value: 16 },
+            },
+            right: {
+              type: ValueType.EXACT,
+              value: { unit: "px", value: 16 },
+            },
+            bottom: {
+              type: ValueType.EXACT,
+              value: { unit: "px", value: 16 },
+            },
+            left: {
+              type: ValueType.EXACT,
+              value: { unit: "px", value: 16 },
+            },
+          },
+        } as Properties,
+        props2: {
+          margin: {
+            top: {
+              type: ValueType.EXACT,
+              value: { unit: "px", value: 24 },
+            },
+            left: {
+              type: ValueType.EXACT,
+              value: { unit: "px", value: 24 },
+            },
+          },
+        } as Properties,
+        expected: {
+          color: {
+            type: ValueType.THEME_CATEGORICAL,
+            value: "@swatch.primary",
+          },
+          margin: {
+            top: {
+              type: ValueType.EXACT,
+              value: { unit: "px", value: 24 },
+            },
+            right: {
+              type: ValueType.EXACT,
+              value: { unit: "px", value: 16 },
+            },
+            bottom: {
+              type: ValueType.EXACT,
+              value: { unit: "px", value: 16 },
+            },
+            left: {
+              type: ValueType.EXACT,
+              value: { unit: "px", value: 24 },
+            },
+          },
+        } as Properties,
+      },
     ]
 
     testCases.forEach(({ name, props1, props2, options, expected }) => {

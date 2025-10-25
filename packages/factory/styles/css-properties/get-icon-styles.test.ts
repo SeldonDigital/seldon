@@ -1,6 +1,6 @@
 import { describe, expect, it } from "bun:test"
 import { Properties, Unit, ValueType } from "@seldon/core"
-import { Display } from "@seldon/core/properties/constants"
+import { Display } from "@seldon/core/properties"
 import testTheme from "@seldon/core/themes/test/test-theme"
 import { getIconStyles } from "./get-icon-styles"
 

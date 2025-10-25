@@ -53,45 +53,89 @@ export function getCssObjectFromProperties(
   const computedProperties = computeProperties(propertiesSubset, context)
 
   const { properties: originalProperties, parentContext, theme } = context
+
+  // Helper function to safely generate styles - returns empty object if error occurs
+  const safeGetStyles = (styleFunction: () => CSSObject): CSSObject => {
+    try {
+      return styleFunction()
+    } catch (error) {
+      // Log the error for debugging but don't crash the CSS generation
+      console.warn(`CSS generation error for ${styleFunction.name}:`, error)
+      return {}
+    }
+  }
+
   let styles: CSSObject = {
-    ...getDisplayStyles({ properties: computedProperties }),
+    ...safeGetStyles(() =>
+      getDisplayStyles({ properties: computedProperties }),
+    ),
     // styles.backgroundImage is based on multiple properties, so we need to pass in the nodeProperties
-    ...getBackgroundStyles({
-      properties: originalProperties,
-      parentContext,
-      theme,
-    }),
-    ...getCursorStyles({ properties: computedProperties }),
-    ...getBorderStyles({
-      properties: computedProperties,
-      parentContext,
-      theme,
-    }),
-    ...getClipStyles({ properties: computedProperties }),
-    ...getColorStyles({ properties: computedProperties, parentContext, theme }),
-    ...getCornersStyles({ properties: computedProperties, theme }),
-    ...getImageStyles({ properties: computedProperties }),
-    ...getLayoutStyles({
-      computedProperties: computedProperties,
-      nodeProperties: originalProperties,
-      theme,
-    }),
-    ...getMarginStyles({ properties: computedProperties, theme }),
-    ...getOpacityStyles({ properties: computedProperties }),
-    ...getPaddingStyles({ properties: computedProperties, theme }),
-    ...getRotationStyles({ properties: computedProperties }),
-    ...getRTLStyles({ properties: computedProperties }),
-    ...getShadowStyles({
-      properties: computedProperties,
-      parentContext,
-      theme,
-    }),
-    ...getSizeStyles({ properties: computedProperties, parentContext, theme }),
-    ...getTextStyles({ properties: computedProperties, parentContext, theme }),
-    ...getScrollStyles({ properties: computedProperties }),
-    ...getIconStyles({ properties: computedProperties, parentContext, theme }),
-    ...getTableStyles({ properties: computedProperties, theme }),
-    ...getPositionStyles({ properties: computedProperties, theme }),
+    ...safeGetStyles(() =>
+      getBackgroundStyles({
+        properties: originalProperties,
+        parentContext,
+        theme,
+      }),
+    ),
+    ...safeGetStyles(() => getCursorStyles({ properties: computedProperties })),
+    ...safeGetStyles(() =>
+      getBorderStyles({
+        properties: computedProperties,
+        parentContext,
+        theme,
+      }),
+    ),
+    ...safeGetStyles(() => getScrollStyles({ properties: computedProperties })),
+    ...safeGetStyles(() => getClipStyles({ properties: computedProperties })),
+    ...safeGetStyles(() =>
+      getColorStyles({ properties: computedProperties, parentContext, theme }),
+    ),
+    ...safeGetStyles(() =>
+      getCornersStyles({ properties: computedProperties, theme }),
+    ),
+    ...safeGetStyles(() => getImageStyles({ properties: computedProperties })),
+    ...safeGetStyles(() =>
+      getLayoutStyles({
+        computedProperties: computedProperties,
+        nodeProperties: originalProperties,
+        theme,
+      }),
+    ),
+    ...safeGetStyles(() =>
+      getMarginStyles({ properties: computedProperties, theme }),
+    ),
+    ...safeGetStyles(() =>
+      getOpacityStyles({ properties: computedProperties }),
+    ),
+    ...safeGetStyles(() =>
+      getPaddingStyles({ properties: computedProperties, theme }),
+    ),
+    ...safeGetStyles(() =>
+      getRotationStyles({ properties: computedProperties }),
+    ),
+    ...safeGetStyles(() => getRTLStyles({ properties: computedProperties })),
+    ...safeGetStyles(() =>
+      getShadowStyles({
+        properties: computedProperties,
+        parentContext,
+        theme,
+      }),
+    ),
+    ...safeGetStyles(() =>
+      getSizeStyles({ properties: computedProperties, parentContext, theme }),
+    ),
+    ...safeGetStyles(() =>
+      getTextStyles({ properties: computedProperties, parentContext, theme }),
+    ),
+    ...safeGetStyles(() =>
+      getIconStyles({ properties: computedProperties, parentContext, theme }),
+    ),
+    ...safeGetStyles(() =>
+      getTableStyles({ properties: computedProperties, theme }),
+    ),
+    ...safeGetStyles(() =>
+      getPositionStyles({ properties: computedProperties, theme }),
+    ),
   }
 
   styles = removeUndefinedStyles(styles)

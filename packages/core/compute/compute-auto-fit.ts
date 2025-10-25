@@ -14,8 +14,14 @@ import { getBasedOnValue } from "./get-based-on-value"
 import { ComputeContext } from "./types"
 
 /**
+ * Display name for this computed function (used by editor UI)
+ */
+export const AUTO_FIT_DISPLAY_NAME = "Auto Fit"
+
+/**
  * Computes a scaled value based on a reference value and factor.
  * Supports exact values (numbers and units) and fontSize theme values.
+ * Handles missing parameters with sensible defaults.
  *
  * @param value - The computed auto fit value with basedOn reference and factor
  * @param context - The computation context containing theme and parent data
@@ -25,13 +31,26 @@ export function computeAutoFit(
   value: ComputedAutoFitValue,
   context: ComputeContext,
 ) {
-  const basedOnValue = getBasedOnValue(value, context)
+  // Use defaults if not provided
+  const basedOn = value.value.input.basedOn || "#parent.buttonSize"
+  const factor = value.value.input.factor ?? 1.0
+
+  // Create value with defaults applied
+  const valueWithDefaults = {
+    ...value,
+    value: {
+      ...value.value,
+      input: { basedOn, factor },
+    },
+  }
+
+  const basedOnValue = getBasedOnValue(valueWithDefaults, context)
 
   if (basedOnValue.type === ValueType.EXACT) {
     if (typeof basedOnValue.value === "number") {
       return {
         ...basedOnValue,
-        value: round(basedOnValue.value * value.value.input.factor),
+        value: round(basedOnValue.value * factor),
       }
     }
 
@@ -40,7 +59,7 @@ export function computeAutoFit(
         ...basedOnValue,
         value: {
           ...basedOnValue.value,
-          value: round(basedOnValue.value.value * value.value.input.factor),
+          value: round(basedOnValue.value.value * factor),
         },
       }
     }
@@ -74,7 +93,7 @@ export function computeAutoFit(
               step: themeOption.parameters.step,
             },
             { round: false },
-          ) * value.value.input.factor,
+          ) * factor,
         ),
       },
     }

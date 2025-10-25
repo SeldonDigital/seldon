@@ -1,5 +1,5 @@
-import { CompoundValue } from "../../../properties/types/compound-value"
 import { Value } from "../../../properties/types/value"
+import { CompoundValue } from "../../../properties/types/value-compound"
 
 /**
  * Type guard that checks if a property value is a compound value

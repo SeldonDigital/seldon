@@ -4,6 +4,7 @@ import { ComponentId } from "../../components/constants"
 import { getThemeOption } from "../../helpers/theme/get-theme-option"
 import { migrateNodePropertiesToTheme } from "../../helpers/theme/migrate-properties-to-theme"
 import { isCompoundValue } from "../../helpers/type-guards/compound/is-compound-value"
+import { isAtomicValue } from "../../helpers/type-guards/value/is-atomic-value"
 import {
   HSLValue,
   Properties,
@@ -12,7 +13,7 @@ import {
   ValueType,
 } from "../../properties"
 import { mergeProperties } from "../../properties/helpers/merge-properties"
-import { PrimitiveValue, ThemeValue, Value } from "../../properties/types"
+import { AtomicValue, ThemeValue, Value } from "../../properties/types"
 import {
   Theme,
   ThemeId,
@@ -202,8 +203,7 @@ export class WorkspaceMutationService {
           : nodeRetrievalService.getBoard(objectId as ComponentId, draft)
 
       if (subpropertyKey) {
-        // @ts-expect-error - subpropertyKey is a string, but we know it's a valid key
-        delete object.properties[propertyKey][subpropertyKey]
+        delete (object.properties[propertyKey] as any)[subpropertyKey]
       } else {
         delete object.properties[propertyKey]
       }
@@ -326,9 +326,13 @@ export class WorkspaceMutationService {
                 })
               }
             })
-          } else if (this._isThemeValue(value) && value.value === key) {
+          } else if (
+            isAtomicValue(value) &&
+            this._isThemeValue(value) &&
+            value.value === key
+          ) {
             Object.assign(node.properties, {
-              [propertyKey]: exactValue,
+              [propertyKey]: exactValue as AtomicValue,
             })
           }
         })
@@ -343,17 +347,21 @@ export class WorkspaceMutationService {
     return Object.values(workspace.byId).filter((node) =>
       Object.values(node.properties).some((value: Value) => {
         if (isCompoundValue(value)) {
-          return Object.values(value).some((subValue: PrimitiveValue) => {
+          return Object.values(value).some((subValue: AtomicValue) => {
             return this._isThemeValue(subValue) && subValue.value === key
           })
         }
 
-        return this._isThemeValue(value) && value.value === key
+        return (
+          isAtomicValue(value) &&
+          this._isThemeValue(value) &&
+          value.value === key
+        )
       }),
     )
   }
 
-  private _isThemeValue(value: PrimitiveValue): value is ThemeValue {
+  private _isThemeValue(value: AtomicValue): value is ThemeValue {
     return (
       value.type === ValueType.THEME_CATEGORICAL ||
       value.type === ValueType.THEME_ORDINAL

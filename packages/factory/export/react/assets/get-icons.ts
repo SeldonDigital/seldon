@@ -19,10 +19,20 @@ export function getIcons(
   const iconNamesToInclude = usedIconIds
     ? Array.from(usedIconIds).map((id) => `${getIconComponentName(id)}.tsx`)
     : []
-  const entries = fs.readdirSync(
-    path.join(options.rootDirectory, "packages", "core", "components", "icons"),
-    { withFileTypes: true },
+  const iconsPath = path.join(
+    options.rootDirectory,
+    "packages",
+    "core",
+    "components",
+    "icons",
   )
+
+  // Check if the directory exists before trying to read it
+  if (!fs.existsSync(iconsPath)) {
+    return icons
+  }
+
+  const entries = fs.readdirSync(iconsPath, { withFileTypes: true })
 
   /**
    * Filter entries to exclude:

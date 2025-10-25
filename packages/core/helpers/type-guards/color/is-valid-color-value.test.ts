@@ -1,6 +1,6 @@
 import { describe, expect, it } from "bun:test"
 import { ColorValue, EmptyValue, ValueType } from "../../../index"
-import { Color } from "../../../properties/constants/colors"
+import { Color } from "../../../properties/values/appearance/color"
 import { isValidColorValue } from "./is-valid-color-value"
 
 describe("isValidColorValue", () => {

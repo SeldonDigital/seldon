@@ -1,6 +1,6 @@
 import { describe, expect, it } from "bun:test"
 import { WORKSPACE_FIXTURE } from "../../../../helpers/fixtures/workspace"
-import { Display } from "../../../../properties/constants"
+import { Display } from "../../../../properties"
 import { InstanceId, VariantId, Workspace } from "../../../types"
 import { handleRemoveNode } from "./handle-remove-node"
 

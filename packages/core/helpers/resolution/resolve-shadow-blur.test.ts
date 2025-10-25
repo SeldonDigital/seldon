@@ -38,7 +38,21 @@ describe("resolveShadowBlur", () => {
     expect(result).toEqual(exactBlur)
   })
 
-  it("should resolve theme ordinal blur values to rem values", () => {
+  it("should return empty values unchanged", () => {
+    const emptyBlur = {
+      type: ValueType.EMPTY,
+      value: null,
+    }
+
+    const result = resolveShadowBlur({
+      blur: emptyBlur as ShadowBlurValue,
+      theme: testTheme,
+    })
+
+    expect(result).toEqual(emptyBlur)
+  })
+
+  it("should resolve theme ordinal medium blur to exact value", () => {
     const themeBlur: ShadowBlurThemeValue = {
       type: ValueType.THEME_ORDINAL,
       value: "@blur.medium",
@@ -54,7 +68,7 @@ describe("resolveShadowBlur", () => {
     expect(result.value).toHaveProperty("value")
   })
 
-  it("should resolve different theme blur values", () => {
+  it("should resolve theme ordinal small blur to exact value", () => {
     const smallBlur: ShadowBlurThemeValue = {
       type: ValueType.THEME_ORDINAL,
       value: "@blur.small",
@@ -70,6 +84,53 @@ describe("resolveShadowBlur", () => {
     expect(result.value).toHaveProperty("value")
   })
 
+  it("should resolve theme ordinal large blur to exact value", () => {
+    const largeBlur: ShadowBlurThemeValue = {
+      type: ValueType.THEME_ORDINAL,
+      value: "@blur.large",
+    }
+
+    const result = resolveShadowBlur({
+      blur: largeBlur,
+      theme: testTheme,
+    })
+
+    expect(result.type).toBe(ValueType.EXACT)
+    expect(result.value).toHaveProperty("unit", Unit.REM)
+    expect(result.value).toHaveProperty("value")
+  })
+
+  it("should throw error for computed values", () => {
+    const computedBlur = {
+      type: ValueType.COMPUTED,
+      value: {
+        function: "auto_fit",
+        input: { basedOn: "#parent.blur", factor: 1.5 },
+      },
+    }
+
+    expect(() => {
+      resolveShadowBlur({
+        blur: computedBlur as ShadowBlurValue,
+        theme: testTheme,
+      })
+    }).toThrow("Invalid blur type computed")
+  })
+
+  it("should throw error for non-existent theme values", () => {
+    const invalidThemeBlur = {
+      type: ValueType.THEME_ORDINAL,
+      value: "@blur.nonexistent",
+    }
+
+    expect(() => {
+      resolveShadowBlur({
+        blur: invalidThemeBlur as ShadowBlurValue,
+        theme: testTheme,
+      })
+    }).toThrow("Theme value @blur.nonexistent not found")
+  })
+
   it("should throw error for invalid blur types", () => {
     const invalidBlur = {
       type: "INVALID",
@@ -78,7 +139,7 @@ describe("resolveShadowBlur", () => {
 
     expect(() => {
       resolveShadowBlur({
-        blur: invalidBlur as unknown as ShadowBlurValue,
+        blur: invalidBlur as ShadowBlurValue,
         theme: testTheme,
       })
     }).toThrow("Invalid blur type INVALID")

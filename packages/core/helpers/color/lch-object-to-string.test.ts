@@ -1,5 +1,5 @@
 import { describe, expect, it } from "bun:test"
-import { LCH } from "../../properties/values/color/lch"
+import { LCH } from "../../properties/values/shared/lch"
 import { LCHObjectToString } from "./lch-object-to-string"
 
 describe("LCHObjectToString", () => {

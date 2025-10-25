@@ -14,7 +14,7 @@ describe("getVariantSiblingIds", () => {
 
   it("should return empty array for variant with no siblings", () => {
     const siblings = getVariantSiblingIds(
-      "variant-tagline-default",
+      "variant-barButtons-default",
       WORKSPACE_FIXTURE,
     )
     expect(siblings).toEqual([])

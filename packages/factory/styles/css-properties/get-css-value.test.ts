@@ -63,7 +63,7 @@ describe("getCssValue", () => {
         type: ValueType.THEME_ORDINAL,
         value: "@corners.tight",
       }),
-    ).toThrow("Theme values must be resolved first")
+    ).toThrow('Theme ordinal value "@corners.tight" must be resolved first')
   })
 
   it("should throw error for invalid value types", () => {
@@ -73,6 +73,6 @@ describe("getCssValue", () => {
         type: ValueType.THEME_CATEGORICAL,
         value: "@corners.tight",
       }),
-    ).toThrow("Invalid value type theme.categorical")
+    ).toThrow('Invalid value type "theme.categorical"')
   })
 })

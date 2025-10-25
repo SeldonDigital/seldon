@@ -546,10 +546,8 @@ export function logValidationResult(
   options: ValidationOptions = {},
 ): void {
   if (result.errors.length > 0) {
-    console.warn(`Validation errors for ${operation}:`, result.errors)
   }
 
   if (result.warnings.length > 0 && (options.isAiOperation || options.strict)) {
-    console.warn(`Validation warnings for ${operation}:`, result.warnings)
   }
 }

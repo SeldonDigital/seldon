@@ -29,7 +29,6 @@ describe("isCompoundProperty", () => {
       "height",
       "size",
       "textAlign",
-      "textCase",
       "textDecoration",
       "checked",
       "clip",

@@ -1,457 +1,189 @@
-# Core Properties
+# Seldon Properties
 
-The properties system is the foundation of Seldon's design system, providing a type-safe way to define, validate, and process component properties. It supports theme integration, compound properties, and various value types.
+Properties provide a comprehensive type-safe property definition and processing system. Properties control how components look and behave, serving as the bridge between design intent and production code.
 
-## Quick Start
+## What Are Properties
 
-### For Engineers
-```typescript
-import { Properties, Sdn } from "@seldon/core"
+Properties are configuration values that define component appearance and behavior. They serve dual purposes: as styling configuration for visual appearance and as a type-safe value system for consistent data handling across the entire design system.
 
-// Simple properties
-const buttonProps: Properties = {
-  color: { type: Sdn.ValueType.THEME_CATEGORICAL, value: "@swatch.primary" },
-  fontSize: { type: Sdn.ValueType.THEME_ORDINAL, value: "@fontSize.medium" }
-}
+Properties flow through a resolution pipeline that merges values from multiple sources: component schemas provide defaults, workspace customizations apply user changes, themes supply design tokens, and the system resolves everything for export to production code.
 
-// Compound properties
-const layoutProps: Properties = {
-  margin: {
-    top: { type: Sdn.ValueType.THEME_ORDINAL, value: "@margin.medium" },
-    bottom: { type: Sdn.ValueType.EXACT, value: { unit: "px", value: 16 } }
-  }
-}
-```
-
-### For Designers
-- **7 Value Types**: EXACT, PRESET, THEME_CATEGORICAL, THEME_ORDINAL, COMPUTED, EMPTY, INHERIT
-- **Theme References**: Use `@swatch.primary`, `@fontSize.large` for consistent styling
-- **Compound Properties**: Group related properties like `margin.top`, `border.color`
-- **Type Safety**: All properties are validated at compile time
-
-## 🎯 Core Concepts
-
-### Value Types
-
-The properties system uses a hierarchical value type system:
-
-```typescript
-enum ValueType {
-  PRESET = "preset",                    // Predefined options
-  THEME_ORDINAL = "theme.ordinal",      // Sequential theme values
-  THEME_CATEGORICAL = "theme.categorical", // Non-sequential theme values
-  EXACT = "exact",                      // Custom values (colors, sizes, etc.)
-  COMPUTED = "computed",                // Derived values
-  EMPTY = "empty",                      // Unset values
-  INHERIT = "inherit",                  // Inherited values
-}
-```
+## Core Concepts
 
 ### Property Categories
 
-#### **Primitive Properties**
-Simple, single-value properties:
-```typescript
-type Properties = {
-  color: ColorValue | EmptyValue
-  fontSize: FontSizeValue | EmptyValue
-  opacity: PercentageValue | EmptyValue
-  display: DisplayValue | EmptyValue
-  // ... many more
-}
-```
+Properties come in three forms: atomic, compound, and shorthand. Each category serves a different purpose in the property system.
 
-#### **Compound Properties**
-Properties with multiple sub-properties:
-```typescript
-type Properties = {
-  background: BackgroundValue    // color, image, position, etc.
-  border: BorderValue           // width, style, color, etc.
-  margin: MarginValue           // top, right, bottom, left
-  padding: PaddingValue         // top, right, bottom, left
-  font: FontValue              // family, size, weight, etc.
-  shadow: ShadowValue          // blur, spread, color, etc.
-  // ... more compound properties
-}
-```
+**Atomic properties** are single values like color or font size. These represent individual styling attributes that cannot be broken down further.
 
-## 🎨 Value Types
+Atomic properties have these behaviors:
 
-### Color Values
+- **Override indication**: Atomic properties show as overrides whenever their value differs from the schema's default value
 
-Support for multiple color formats with theme integration:
+**Compound properties** group related styling values together as a collection of atomic sub-properties, such as background (with color, image, position, and size) or font (with family, size, weight, and style). These properties use dot notation for access, allowing you to reference specific sub-properties like `background.color` or `font.size`. This structure keeps related styling organized while maintaining granular control over individual aspects.
 
-```typescript
-type ColorValue = 
-  | ColorThemeValue      // @swatch.primary
-  | HSLValue            // { type: "exact", value: { hue: 0, saturation: 100, lightness: 50 } }
-  | RGBValue            // { type: "exact", value: { red: 255, green: 0, blue: 0 } }
-  | HexValue            // { type: "exact", value: "#ff0000" }
-  | LCHValue            // { type: "exact", value: { lightness: 50, chroma: 100, hue: 0 } }
-  | TransparentValue    // { type: "exact", value: "transparent" }
-```
+Compound properties have these behaviors:
 
-### Theme Values
+- **Preset property**: All compound properties include a "preset" sub-property that can reference predefined theme configurations. When no theme preset is available, this property displays as "None"
+- **Preset application**: When you select a theme preset, it applies the preset's defined values to the appropriate sibling properties and resets any sibling properties not defined in that preset to EMPTY, effectively clearing any previous customizations
+- **Custom state triggering**: Whenever you modify any sibling property value—whether it's part of the selected preset or not—the preset automatically becomes "Custom", indicating that the compound property has been customized beyond its theme definition
 
-Theme values reference design system tokens:
+**Shorthand properties** provide convenient ways to set multiple related values at once, similar to CSS shorthand properties. These allow you to set multiple atomic properties through a single property definition, reducing redundancy and improving maintainability.
 
-```typescript
-// Categorical theme values (non-sequential)
-type ColorThemeValue = {
-  type: ValueType.THEME_CATEGORICAL
-  value: ThemeSwatchKey  // "@swatch.primary", "@swatch.secondary"
-}
+Shorthand properties have these behaviors:
 
-// Ordinal theme values (sequential)
-type FontSizeThemeValue = {
-  type: ValueType.THEME_ORDINAL
-  value: ThemeFontSizeKey  // "@fontSize.small", "@fontSize.medium", "@fontSize.large"
-}
-```
+- **Value display**: Shorthand properties either show a single value (when all sub-properties are the same) or multiple values that reflect each sub-property, in the order of the sub-properties
+- **Value application**: Selecting a shorthand value from its options will apply that value to all sub-property values
+- **Override indication**: Shorthand values show as overrides whenever any one or all of the sub-properties differs from the schema's default value
 
-### Dimension Values
+### Overrides
 
-Sizing with multiple units:
+Overrides indicate when property values differ from their schema-defined defaults. The system tracks overrides to help users understand which properties have been customized and to provide visual feedback about the current state of component styling.
 
-```typescript
-type DimensionValue = 
-  | PixelValue      // { type: "exact", value: { unit: "px", value: 16 } }
-  | RemValue        // { type: "exact", value: { unit: "rem", value: 1 } }
-  | PercentageValue // { type: "exact", value: { unit: "%", value: 100 } }
-  | DimensionThemeValue // { type: "theme.ordinal", value: "@size.small" }
-```
+**Override detection** occurs when any property value differs from its schema's default value. This applies to atomic properties (single values), compound properties (when any sub-property differs), and shorthand properties (when any sub-property differs).
 
-## 🏗️ Compound Properties
+**Override indication** provides visual feedback in the interface, typically through styling changes like highlighting, icons, or color coding. This helps users quickly identify which properties have been customized from their default state.
 
-### Background Properties
+**Override management** allows users to reset properties back to their default values, either individually or in groups. This is particularly useful when experimenting with different styling options or when reverting changes.
 
-```typescript
-interface BackgroundValue {
-  preset?: BackgroundPresetValue    // Theme background preset
-  color?: BackgroundColorValue      // Background color
-  brightness?: BackgroundBrightnessValue // Brightness adjustment
-  opacity?: BackgroundOpacityValue  // Opacity level
-  image?: BackgroundImageValue      // Background image
-  position?: BackgroundPositionValue // Image position
-  size?: BackgroundSizeValue        // Image size
-  repeat?: BackgroundRepeatValue    // Image repeat
-}
-```
+### Value Types
 
-### Border Properties
+Properties use seven distinct value types to handle different data sources and behaviors. Each type serves a specific purpose in the property resolution system:
 
-```typescript
-interface BorderValue {
-  preset?: BorderPresetValue        // Theme border preset
-  width?: BorderWidthValue          // Border width
-  style?: BorderStyleValue          // Border style (solid, dashed, etc.)
-  color?: BorderColorValue          // Border color
-  opacity?: BorderOpacityValue      // Border opacity
-}
-```
+**EMPTY** values represent unset properties that are resolved by the platform or inherited from defaults. When a property is EMPTY, the system allows inheritance from parent components or platform defaults to take effect.
 
-### Margin/Padding Properties
+**INHERIT** values explicitly inherit from parent components. This creates a direct inheritance chain where child components can reference parent property values.
 
-```typescript
-interface MarginValue {
-  top?: MarginSideValue
-  right?: MarginSideValue
-  bottom?: MarginSideValue
-  left?: MarginSideValue
-}
+**EXACT** values are custom direct values like specific colors, sizes, or text content. These are concrete values that don't reference other properties or themes.
 
-// Each side can be:
-type MarginSideValue = 
-  | MarginSideThemeValue  // @margin.small
-  | PixelValue           // 16px
-  | RemValue             // 1rem
-  | EmptyValue           // Not set
-```
+**PRESET** values use predefined options from a controlled set of choices. These ensure consistency by limiting property values to valid options defined in the system.
 
-## 🔧 Property Processing
+**COMPUTED** values are calculated from other properties using mathematical functions. These enable dynamic relationships between properties, such as a button size being 80% of its parent's width.
 
-### Merging Properties
+**THEME_CATEGORICAL** values reference non-sequential theme tokens like colors and font families. These create connections to the design system's color palette and typography choices.
 
-The `mergeProperties` helper combines property objects:
+**THEME_ORDINAL** values reference sequential theme tokens like sizes and spacing values. These connect to the design system's spacing scale and size hierarchy.
 
-```typescript
-import { mergeProperties } from '@seldon/core/properties'
+### Property Resolution Pipeline
 
-const baseProperties = {
-  color: { type: 'exact', value: '#000000' },
-  fontSize: { type: 'theme.ordinal', value: '@fontSize.medium' }
-}
+Properties flow through a resolution pipeline that determines their final values from multiple sources. This pipeline ensures that properties are resolved in the correct order and that overrides work properly.
 
-const overrides = {
-  color: { type: 'exact', value: '#ff0000' },
-  background: { 
-    color: { type: 'exact', value: '#ffffff' }
-  }
-}
+**Unset properties** automatically use default values from the component schema or platform defaults. When a property is not specified, the system provides a sensible default.
 
-const merged = mergeProperties(baseProperties, overrides)
-// Result: color overridden, fontSize preserved, background added
-```
+**Component instances** inherit properties from their variant definition. When you create multiple instances of the same component, they all start with the same properties from the variant, but each instance can override specific properties as needed.
 
-### Property Validation
+**Explicit inheritance** uses the INHERIT value type to explicitly reference parent component properties. This is different from CSS inheritance - it's an explicit way to say "use the same value as my parent component."
 
-Properties include validation through TypeScript types:
+**Computed properties** can reference other properties using `#parent.propertyName` syntax. This allows properties to automatically adjust based on other values, such as a button size being calculated from its parent's width.
 
-```typescript
-// ✅ Valid properties
-const validProps: Properties = {
-  color: { type: 'theme.categorical', value: '@swatch.primary' },
-  fontSize: { type: 'exact', value: { unit: 'rem', value: 1.5 } },
-  margin: {
-    top: { type: 'theme.ordinal', value: '@margin.small' },
-    bottom: { type: 'exact', value: { unit: 'px', value: 16 } }
-  }
-}
+This resolution pipeline ensures that properties are resolved in the correct order, with explicit overrides taking precedence over inherited values.
 
-// ❌ TypeScript will catch invalid properties
-const invalidProps: Properties = {
-  color: { type: 'invalid', value: 'red' }, // Type error
-  fontSize: { type: 'exact', value: 'large' } // Type error - should be object
-}
-```
+### Missing Properties in Schemas
 
-## 🎨 Theme Integration
+When a property is missing from a component schema, it is intentionally excluded from that component's capabilities. This is a deliberate design choice that serves several purposes:
 
-### Theme Value Resolution
+Component specialization ensures each component only exposes the properties it actually needs, keeping interfaces clean and focused. Type safety prevents invalid configurations by ensuring missing properties cannot be set on components. Validation maintains security by ensuring only properties declared in the schema can be overridden through nested overrides. Inheritance control allows missing properties to inherit from parent components or platform defaults.
 
-Properties automatically resolve theme values:
+For example, an Icon component might not have a `padding` property in its schema, meaning it cannot have padding set directly. Instead, it inherits spacing from its parent container, which is the intended behavior for an icon element.
+
+## Theme Integration
+
+Themes provide design tokens that properties can reference. Theme values resolve to actual values in the editor and during export, creating a bridge between component properties and theme tokens that enables consistent styling across the design system.
+
+### Theme Resolution
+
+Theme values resolve to actual values in multiple contexts. A theme reference like `@swatch.primary` resolves to an actual color value like `#3b82f6`. This resolution happens during property computation for display in the editor, as well as during the export process to generate production code.
+
+The theme system provides several benefits: consistency ensures all components use the same design tokens, maintainability allows changing themes once to update everywhere, scalability makes it easy to create new themes, and type safety validates theme references at compile time.
+
+## Property Processing
+
+Properties flow through a resolution pipeline that merges values from multiple sources. This pipeline ensures that properties are resolved in the correct order and that inheritance works properly throughout the component hierarchy.
+
+### Resolution Pipeline
+
+The property resolution pipeline follows this sequence:
+
+1. **Schema Properties** provide component defaults from the component definition
+2. **Variant Properties** apply base styling from the component variant
+3. **Instance Properties** apply user customizations to specific instances
+4. **Computed Properties** calculate dynamic values from other properties
+5. **Theme Resolution** converts theme references to actual values
+
+**Note**: Children overrides and nested overrides are processed during component instantiation, not during property resolution. They allow parent components to explicitly override properties on their child components when the components are created.
+
+### Property Merging
+
+Property merging combines values from multiple sources while respecting inheritance and override precedence. The system merges properties in a specific order, with later sources taking precedence over earlier ones. This ensures that user customizations override defaults, and that inheritance flows properly through the component hierarchy.
+
+### Validation
+
+Properties include multiple layers of validation to ensure correctness and type safety. TypeScript compilation catches invalid property structures at compile time. Value type validation ensures correct value formats. Theme reference validation verifies that theme tokens exist. Runtime validation handles property constraints, theme resolution, and computed property validation.
+
+## Integration with the Core
+
+Properties integrate with other parts of the system:
+
+### Component Integration
+
+Properties are specified in component schemas and used to configure component appearance and behavior. The component system uses properties to determine what styling options are available for each component type, creating a bridge between component structure and visual design.
+
+### Theme Integration
+
+Properties connect to themes through theme tokens that automatically update when themes change. This creates a bridge between component styling and design tokens, enabling consistent styling across the entire design system.
+
+### Compute Integration
+
+The compute system processes computed properties, resolving dynamic values and inheritance relationships. This system handles the mathematical calculations and property references that enable dynamic styling and responsive design.
+
+### Workspace Integration
+
+Properties are managed within the workspace system, which tracks their values, manages their inheritance, and ensures consistency across the design system. The workspace handles the complex task of maintaining property hierarchies while allowing for customization and theme changes.
+
+This property system provides a robust foundation for building consistent, maintainable user interfaces while supporting the flexibility needed for real-world applications.
+
+## Best Practices
+
+### Property Design
+
+Use theme references for design system consistency, ensuring that components use the same design tokens throughout the system. Prefer compound properties for related styling, keeping related values organized together. Use specific value types for better validation, ensuring that properties have the correct structure and constraints. Follow naming conventions for property keys, maintaining consistency across the system.
+
+### Development Workflow
+
+Define value types and constants first before implementing new properties, ensuring that the property structure is well-defined. This means creating the TypeScript interfaces and enums before adding the property to the main Properties type. Add comprehensive tests for all new properties, verifying that they work correctly in all scenarios. Update documentation when adding properties, keeping the system documentation current. Validate theme integration for theme-referenced properties, ensuring that theme references work correctly.
+
+### Performance Considerations
+
+Minimize computed properties, using them only when necessary to avoid unnecessary calculations. Cache resolved values when possible, improving performance for frequently accessed properties. Optimize property merging for large workspaces, ensuring that the system scales well with complex designs. Use efficient validation for runtime checks, balancing thoroughness with performance.
+
+### Error Handling
+
+Provide clear error messages for invalid properties, helping developers understand and fix issues. Handle missing theme values gracefully, providing fallbacks when theme references cannot be resolved. Validate property constraints at runtime, ensuring that property values are within acceptable ranges. Log property resolution issues for debugging, providing visibility into system behavior.
+
+## Property Schema System
+
+Each property can define its own schema that specifies supported value types, validation rules, and available options. This system reduces adding new properties from 4+ files to 1 file.
+
+### Schema Structure
+
+Property schemas define:
+- **Supported Value Types**: Which value types the property accepts
+- **Validation Rules**: How to validate values for each type
+- **Available Options**: Preset options and theme integration
+- **Computed Functions**: Available computed value functions
+
+### Usage
 
 ```typescript
-// Theme value
-const themeColor = { type: 'theme.categorical', value: '@swatch.primary' }
+import { getPropertySchema, validatePropertyValue, getPropertyOptions } from '@seldon/core/properties'
 
-// Resolved to actual color value
-const resolved = resolveColor(themeColor, theme) // "#007bff"
+const schema = getPropertySchema('color')
+const isValid = validatePropertyValue('color', 'exact', '#ff0000')
+const options = getPropertyOptions('color', 'preset')
 ```
 
-### Theme Migration
+For complete documentation and examples, see the [Schema System Documentation](./schemas/README.md).
 
-Properties support theme migration:
+## Technical Implementation
 
-```typescript
-import { migrateNodePropertiesToTheme } from '@seldon/core/helpers'
-
-// Migrate properties from one theme to another
-const updatedWorkspace = migrateNodePropertiesToTheme(
-  nodeId,
-  'old-theme',
-  'new-theme',
-  workspace
-)
-```
-
-## 📝 Usage Examples
-
-### Creating Properties
-
-```typescript
-import { Properties, ValueType } from '@seldon/core/properties'
-
-// Simple color property
-const colorProp: Properties = {
-  color: { type: ValueType.THEME_CATEGORICAL, value: '@swatch.primary' }
-}
-
-// Compound background property
-const backgroundProp: Properties = {
-  background: {
-    color: { type: ValueType.EXACT, value: '#ffffff' },
-    opacity: { type: ValueType.EXACT, value: { unit: '%', value: 90 } }
-  }
-}
-
-// Layout properties
-const layoutProps: Properties = {
-  margin: {
-    top: { type: ValueType.THEME_ORDINAL, value: '@margin.medium' },
-    bottom: { type: ValueType.EXACT, value: { unit: 'px', value: 24 } }
-  },
-  padding: {
-    left: { type: ValueType.EXACT, value: { unit: 'rem', value: 1 } },
-    right: { type: ValueType.EXACT, value: { unit: 'rem', value: 1 } }
-  }
-}
-```
-
-### Processing Properties
-
-```typescript
-import { 
-  mergeProperties, 
-  processNestedOverridesProps,
-  resolveValue 
-} from '@seldon/core/properties'
-
-// Merge multiple property sets
-const merged = mergeProperties(defaultProps, userProps, themeProps)
-
-// Process parent-to-child property inheritance
-const processed = processNestedOverridesProps(
-  childProperties,
-  parentNestedOverrides,
-  'Button'
-)
-
-// Resolve theme values
-const resolved = resolveValue(themeProperty)
-```
-
-## 🛡️ Type Safety
-
-### Property Keys
-
-All property keys are strongly typed:
-
-```typescript
-type PropertyKey = keyof Properties
-// "color" | "fontSize" | "background" | "margin" | ...
-
-type CompoundPropertyKey = 
-  | "background" | "border" | "margin" | "padding" 
-  | "font" | "shadow" | "gradient" | "corners" | "position"
-
-type SubPropertyKey = 
-  | keyof BackgroundValue    // "color" | "image" | "position" | ...
-  | keyof BorderValue        // "width" | "style" | "color" | ...
-  | keyof MarginValue        // "top" | "right" | "bottom" | "left"
-  // ... more sub-properties
-```
-
-### Property Paths
-
-Property paths support dot notation for compound properties:
-
-```typescript
-type PropertyPath = 
-  | PropertyKey                    // "color", "fontSize"
-  | `background.${keyof BackgroundValue}`  // "background.color", "background.image"
-  | `border.${keyof BorderValue}`          // "border.width", "border.style"
-  | `margin.${keyof MarginValue}`          // "margin.top", "margin.bottom"
-```
-
-## 🔄 Value Processing
-
-### Empty Values
-
-Empty values represent unset properties:
-
-```typescript
-const EMPTY_VALUE = {
-  type: ValueType.EMPTY,
-  value: null
-} as const
-
-// Check if value is empty
-if (value.type === ValueType.EMPTY) {
-  // Property is not set
-}
-```
-
-### Computed Values
-
-Computed values derive from other properties:
-
-```typescript
-type ComputedValue = {
-  type: ValueType.COMPUTED
-  value: {
-    basedOn: PropertyKey
-    // ... computation parameters
-  }
-}
-```
-
-## 📦 Importing Properties
-
-```typescript
-// Import specific types
-import { Properties, ValueType, ColorValue } from '@seldon/core/properties'
-
-// Import from specific modules
-import { Properties } from '@seldon/core/properties/types'
-import { ColorValue } from '@seldon/core/properties/values/color'
-
-// Import constants
-import { EMPTY_VALUE, ValueType } from '@seldon/core/properties/constants'
-
-// Import helpers
-import { mergeProperties } from '@seldon/core/properties/helpers'
-```
-
-## 🎯 Best Practices
-
-1. **Use theme values** for design system consistency
-2. **Prefer compound properties** for complex styling
-3. **Validate properties** before processing
-4. **Use type guards** for runtime type checking
-5. **Leverage property merging** for inheritance
-6. **Handle empty values** appropriately
-
-## 🔄 Migration and Updates
-
-When updating properties:
-
-1. **Use migration helpers** for theme changes
-2. **Validate property structure** after updates
-3. **Handle backward compatibility** for existing properties
-4. **Update type definitions** when adding new properties
-
-## 🐛 Error Handling
-
-Properties include error handling:
-
-- **TypeScript compilation errors** for invalid property structures
-- **Runtime validation** for theme value resolution
-- **Graceful fallbacks** for missing theme values
-- **Clear error messages** for invalid property values
-
-The properties system provides a type-safe foundation for managing component styling and behavior in the Seldon design system.
-
-## Usage as Source of Truth
-
-This README serves as the authoritative documentation for the Core Properties System. When making changes to the properties functionality:
-
-1. **Update this README first** to reflect the intended property behavior and processing workflow
-2. **Implement changes** to match the documented specifications and processing stages
-3. **Verify that the property processing pipeline** follows the documented workflow from value types through theme integration
-4. **Ensure property validation** maintains the documented type safety and constraint checking
-5. **Validate that theme integration** follows the documented property inheritance patterns
-
-The properties system is designed to be:
-- **Type-Safe**: Full TypeScript support with documented property types and value constraints
-- **Theme-Aware**: Consistent integration with the design system themes and design tokens
-- **Extensible**: Easy to add new properties following documented patterns
-- **Predictable**: Property behavior should match documentation exactly
-- **Validated**: Multiple layers of validation and verification
-- **Consistent**: All property types follow the documented value type system
-
-### Property Development Workflow
-
-When creating or modifying properties:
-
-1. **Define Value Types**: Document the property's value type and constraints
-2. **Validate Type Safety**: Ensure properties match documented ValueType specifications
-3. **Implement Processing**: Use documented property processing and merging patterns
-4. **Test Integration**: Verify theme integration and property inheritance
-5. **Update Documentation**: Keep this README current with property changes
-
-### Property Validation
-
-All properties must validate against their documented specifications:
-- **Value Types**: Must match documented ValueType specifications (EXACT, PRESET, THEME_CATEGORICAL, THEME_ORDINAL, COMPUTED, EMPTY, INHERIT)
-- **Constraints**: Must respect documented allowed values and restrictions
-- **Theme Integration**: Must use documented theme reference patterns (@swatch.*, @fontSize.*, etc.)
-- **Compound Properties**: Must follow documented nested property structures
-
-This ensures consistency across the entire properties system and maintains the reliability of the design system architecture.
-
-For detailed implementation information, see the specific subsystem documentation:
-- [Core README](../README.md) - Core engine and property computation
-- [Themes README](../themes/README.md) - Theme integration and design tokens
-- [Compute README](../compute/README.md) - Property computation and inheritance
-- [Workspace README](../workspace/README.md) - Workspace state management and property processing
+For detailed implementation information, code examples, and technical specifications, see the [Technical Reference](./TECHNICAL.md) document. This includes information about adding new properties, type safety implementation, code export processes, and testing requirements.

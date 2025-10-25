@@ -93,27 +93,18 @@ export function getSchemaAwareReferenceMap(
   // Validate that the added node exists in workspace
   const addedNode = workspace.byId[addedNodeId]
   if (!addedNode) {
-    console.warn(
-      `Node ${addedNodeId} not found in workspace, returning minimal reference map`,
-    )
     return map
   }
 
   // Get component ID from the node to validate schema exists
   const componentId = getComponentIdFromNode(addedNodeId, workspace)
   if (!componentId) {
-    console.warn(
-      `Could not determine component ID for node ${addedNodeId}, returning minimal reference map`,
-    )
     return map
   }
 
   // Validate schema exists before proceeding
   const schema = getComponentSchema(componentId)
   if (!schema) {
-    console.warn(
-      `Schema not found for component ${componentId}, returning minimal reference map`,
-    )
     return map
   }
 
@@ -138,9 +129,6 @@ function buildReferenceMapForVariant(
 ): void {
   const variant = workspace.byId[variantId]
   if (!variant) {
-    console.warn(
-      `Variant ${variantId} not found in workspace during reference map building`,
-    )
     return
   }
 
@@ -160,9 +148,6 @@ function buildReferenceMapForVariant(
         // Recursively build references for the child's children
         buildReferenceMapForVariant(childRef, childId, workspace, referenceMap)
       } else {
-        console.warn(
-          `Child ${childId} at index ${index} not found in workspace during reference map building`,
-        )
       }
     })
   }
@@ -185,24 +170,15 @@ export function buildExpectedReferenceMap(
   try {
     schema = getComponentSchema(componentId)
   } catch (error) {
-    console.warn(
-      `Schema not found for component ${componentId}, returning empty reference map`,
-    )
     return map
   }
 
   if (!schema) {
-    console.warn(
-      `Schema not found for component ${componentId}, returning empty reference map`,
-    )
     return map
   }
 
   // Validate expected structure is valid
   if (!expectedStructure || typeof expectedStructure !== "object") {
-    console.warn(
-      `Invalid expected structure for component ${componentId}, returning empty reference map`,
-    )
     return map
   }
 
@@ -224,9 +200,6 @@ function buildReferencesFromStructure(
 ): void {
   // Limit recursion depth to prevent infinite loops
   if (depth > 10) {
-    console.warn(
-      `Maximum recursion depth reached for component ${componentId} at reference ${baseRef}`,
-    )
     return
   }
 
@@ -235,16 +208,10 @@ function buildReferencesFromStructure(
   try {
     schema = getComponentSchema(componentId)
   } catch (error) {
-    console.warn(
-      `Schema not found for component ${componentId} during structure building`,
-    )
     return
   }
 
   if (!schema) {
-    console.warn(
-      `Schema not found for component ${componentId} during structure building`,
-    )
     return
   }
 
@@ -265,9 +232,6 @@ function buildReferencesFromStructure(
           depth + 1,
         )
       } else {
-        console.warn(
-          `Could not determine component type for child at index ${index} of component ${componentId}`,
-        )
       }
     })
   }
@@ -396,16 +360,10 @@ function validateReferenceMapConsistency(
   try {
     schema = getComponentSchema(componentId)
   } catch (error) {
-    console.warn(
-      `Cannot validate reference map consistency: schema not found for component ${componentId}`,
-    )
     return
   }
 
   if (!schema) {
-    console.warn(
-      `Cannot validate reference map consistency: schema not found for component ${componentId}`,
-    )
     return
   }
 
@@ -413,9 +371,6 @@ function validateReferenceMapConsistency(
   for (const [ref, nodeId] of Object.entries(referenceMap)) {
     const node = workspace.byId[nodeId]
     if (!node) {
-      console.warn(
-        `Reference map inconsistency: reference ${ref} points to non-existent node ${nodeId}`,
-      )
     }
   }
 
@@ -469,9 +424,6 @@ function validateReferenceMapAgainstStructure(
   expectedStructure.children.forEach((child: any, index: number) => {
     const expectedRef = `${baseRef}.${index}` as ReferenceId
     if (!referenceMap[expectedRef]) {
-      console.warn(
-        `Reference map missing expected reference ${expectedRef} for component ${componentId}`,
-      )
     }
   })
 }

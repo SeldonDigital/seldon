@@ -33,26 +33,52 @@ export function isValidExactColor(value: string) {
 }
 
 /**
- * Validates HSL color strings (e.g., "hsl(120, 50%, 50%)").
+ * Validates HSL color strings with range validation (e.g., "hsl(120, 50%, 50%)").
  *
  * @param value - The string to validate
- * @returns True if the value is a valid HSL color
+ * @returns True if the value is a valid HSL color with proper ranges
  */
 export function isHSLString(value: string) {
-  return /^hsl\(\d{1,3}(deg)?,?\s*(100|[1-9][0-9]?|[0-9])%?,?\s*(100|[1-9][0-9]?|[0-9])%?\)$/i.test(
-    value,
+  return (
+    /^hsl\(\s*\d{1,3}(?:deg)?\s*[,]?\s*(?:100|[1-9][0-9]?|[0-9])%?\s*[,]?\s*(?:100|[1-9][0-9]?|[0-9])%?\s*\)$/i.test(
+      value,
+    ) &&
+    (() => {
+      const match = value.match(
+        /^hsl\(\s*(\d{1,3})(?:deg)?\s*[,]?\s*(\d{1,3})%?\s*[,]?\s*(\d{1,3})%?\s*\)$/i,
+      )
+      if (!match) return false
+      const [, hue, saturation, lightness] = match
+      const h = parseInt(hue)
+      const s = parseInt(saturation)
+      const l = parseInt(lightness)
+      return h >= 0 && h <= 360 && s >= 0 && s <= 100 && l >= 0 && l <= 100
+    })()
   )
 }
 
 /**
- * Validates RGB color strings (e.g., "rgb(255, 0, 0)").
+ * Validates RGB color strings with range validation (e.g., "rgb(255, 0, 0)").
  *
  * @param value - The string to validate
- * @returns True if the value is a valid RGB color
+ * @returns True if the value is a valid RGB color with proper ranges
  */
 export function isRGBString(value: string) {
-  return /^rgb\(\s*\d{1,3}(\s*,\s*|\s+)?\d{1,3}(\s*,\s*|\s+)?\d{1,3}\s*\)$/i.test(
-    value,
+  return (
+    /^rgb\(\s*\d{1,3}(\s*,\s*|\s+)?\d{1,3}(\s*,\s*|\s+)?\d{1,3}\s*\)$/i.test(
+      value,
+    ) &&
+    (() => {
+      const match = value.match(
+        /^rgb\(\s*(\d{1,3})(\s*,\s*|\s+)(\d{1,3})(\s*,\s*|\s+)(\d{1,3})\s*\)$/i,
+      )
+      if (!match) return false
+      const [, red, , green, , blue] = match
+      const r = parseInt(red)
+      const g = parseInt(green)
+      const b = parseInt(blue)
+      return r >= 0 && r <= 255 && g >= 0 && g <= 255 && b >= 0 && b <= 255
+    })()
   )
 }
 

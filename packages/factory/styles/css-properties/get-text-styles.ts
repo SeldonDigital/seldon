@@ -1,9 +1,4 @@
-import {
-  TextAlignment,
-  TextCasing,
-  TextDecoration,
-  ValueType,
-} from "@seldon/core"
+import { TextAlign, TextCasing, TextDecoration, ValueType } from "@seldon/core"
 import { resolveFontFamily } from "@seldon/core/helpers/resolution/resolve-font-family"
 import { resolveFontSize } from "@seldon/core/helpers/resolution/resolve-font-size"
 import { resolveValue } from "@seldon/core/helpers/resolution/resolve-value"
@@ -25,28 +20,31 @@ export function getTextStyles({
 
   const family =
     resolveValue(properties.font?.family) ||
-    resolveFontFamily({ fontFamily: themeFont?.value.family, theme })
+    resolveFontFamily({ fontFamily: themeFont?.parameters.family, theme })
 
   const style =
-    resolveValue(properties.font?.style) || resolveValue(themeFont?.value.style)
+    resolveValue(properties.font?.style) ||
+    resolveValue(themeFont?.parameters.style)
 
   const weight =
     resolveValue(properties.font?.weight) ||
-    resolveValue(themeFont?.value.weight)
+    resolveValue(themeFont?.parameters.weight)
 
   const size =
-    resolveValue(properties.font?.size) || resolveValue(themeFont?.value.size)
+    resolveValue(properties.font?.size) ||
+    resolveValue(themeFont?.parameters.size)
 
   const lineHeight =
     resolveValue(properties.font?.lineHeight) ||
-    resolveValue(themeFont?.value.lineHeight)
+    resolveValue(themeFont?.parameters.lineHeight)
 
   const letterSpacing =
     resolveValue(properties.letterSpacing) ||
-    resolveValue(themeFont?.value.letterSpacing)
+    resolveValue(themeFont?.parameters.letterSpacing)
 
   const textCase =
-    resolveValue(properties.textCase) || resolveValue(themeFont?.value.textCase)
+    resolveValue(properties.font?.textCase) ||
+    resolveValue(themeFont?.parameters.textCase)
 
   const textAlign = resolveValue(properties.textAlign)
   const textDecoration = resolveValue(properties.textDecoration)
@@ -68,7 +66,8 @@ export function getTextStyles({
   // Only apply if font.weight is defined in the schema
   if (weight && properties.font?.weight) {
     if (weight.type === ValueType.EXACT) {
-      styles.fontWeight = weight.value.value
+      styles.fontWeight =
+        typeof weight.value === "number" ? weight.value : weight.value.value
     } else if (weight.type === ValueType.THEME_ORDINAL) {
       const themeValue = getThemeOption(weight.value, theme)
       styles.fontWeight = themeValue.value
@@ -95,10 +94,10 @@ export function getTextStyles({
     }
   }
 
-  if (textAlign) {
+  if (textAlign && properties.textAlign) {
     // Using start ensures that the text is aligned to the left in LTR and right in RTL
     styles.textAlign =
-      textAlign.value === TextAlignment.AUTO ? "start" : textAlign.value
+      textAlign.value === TextAlign.AUTO ? "start" : textAlign.value
   }
 
   // Only apply if letterSpacing is defined in the schema
@@ -107,7 +106,7 @@ export function getTextStyles({
   }
 
   // Only apply if textCase is defined in the schema
-  if (textCase && properties.textCase) {
+  if (textCase && properties.font?.textCase) {
     if (textCase.value !== TextCasing.NORMAL) {
       styles.textTransform = textCase.value
     }
@@ -124,8 +123,10 @@ export function getTextStyles({
       if (lines) {
         styles.overflow = "hidden"
         styles.display = "-webkit-box"
-        styles.WebkitLineClamp = lines.value
-        styles.lineClamp = lines.value
+        styles.WebkitLineClamp =
+          typeof lines.value === "number" ? lines.value : lines.value.value
+        styles.lineClamp =
+          typeof lines.value === "number" ? lines.value : lines.value.value
         styles.WebkitBoxOrient = "vertical"
         styles.boxOrient = "vertical"
       }

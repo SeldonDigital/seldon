@@ -1,9 +1,9 @@
-import { ValueType } from "../../../properties/constants/value-types"
+import { ValueType } from "../../../properties"
 import { Value } from "../../../properties/types/value"
-import { DegreesValue } from "../../../properties/values/shared/degrees"
-import { PercentageValue } from "../../../properties/values/shared/percentage"
-import { PixelValue } from "../../../properties/values/shared/pixel"
-import { RemValue } from "../../../properties/values/shared/rem"
+import { DegreesValue } from "../../../properties/values/shared/exact/degrees"
+import { PercentageValue } from "../../../properties/values/shared/exact/percentage"
+import { PixelValue } from "../../../properties/values/shared/exact/pixel"
+import { RemValue } from "../../../properties/values/shared/exact/rem"
 
 /**
  * Type guard that checks if a value is a unit value (px, rem, %, deg).

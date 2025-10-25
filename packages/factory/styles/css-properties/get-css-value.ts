@@ -31,6 +31,11 @@ export function getCssValue(
 ): string | number {
   switch (value.type) {
     case ValueType.EXACT:
+      // Handle plain number values
+      if (typeof value.value === "number") {
+        return value.value
+      }
+      // Handle object values with units
       switch (value.value.unit) {
         case Unit.PX:
           return value.value.value + "px"
@@ -63,7 +68,9 @@ export function getCssValue(
 
     case ValueType.THEME_ORDINAL: {
       throw new Error(
-        "Theme values must be resolved first. This function only accepts pixels, rems, percentages or corner values",
+        `Theme ordinal value "${(value as any).value}" must be resolved first. ` +
+          `This function only accepts resolved values (pixels, rems, percentages, or corner presets). ` +
+          `Theme values should be resolved by functions like resolveSize(), resolveFontSize(), etc.`,
       )
     }
 
@@ -72,8 +79,10 @@ export function getCssValue(
     }
 
     default: {
-      // @ts-expect-error
-      throw new Error("Invalid value type " + value.type)
+      throw new Error(
+        `Invalid value type "${(value as any).type}" ${(value as any).value ? `with value "${(value as any).value}"` : ""}. ` +
+          `Expected EXACT, PRESET, or EMPTY. Theme values must be resolved before calling getCssValue().`,
+      )
     }
   }
 }

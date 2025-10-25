@@ -14,6 +14,7 @@ export const FACTORY_WORKSPACE_FIXTURE: Workspace = {
   boards: {
     [ComponentId.BUTTON]: {
       id: ComponentId.BUTTON,
+      component: ComponentId.BUTTON,
       label: "Buttons",
       order: 0,
       theme: "default",
@@ -22,6 +23,7 @@ export const FACTORY_WORKSPACE_FIXTURE: Workspace = {
     },
     [ComponentId.ICON]: {
       id: ComponentId.ICON,
+      component: ComponentId.ICON,
       label: "Icons",
       order: 1,
       theme: "default",
@@ -30,6 +32,7 @@ export const FACTORY_WORKSPACE_FIXTURE: Workspace = {
     },
     [ComponentId.LABEL]: {
       id: ComponentId.LABEL,
+      component: ComponentId.LABEL,
       label: "Labels",
       order: 2,
       theme: "default",
@@ -38,6 +41,7 @@ export const FACTORY_WORKSPACE_FIXTURE: Workspace = {
     },
     [ComponentId.BAR_BUTTONS]: {
       id: ComponentId.BAR_BUTTONS,
+      component: ComponentId.BAR_BUTTONS,
       label: "Button Bars",
       order: 3,
       theme: "default",
@@ -379,6 +383,7 @@ export const SIMPLE_WORKSPACE_FIXTURE: Workspace = {
   boards: {
     [ComponentId.BUTTON]: {
       id: ComponentId.BUTTON,
+      component: ComponentId.BUTTON,
       label: "Buttons",
       order: 0,
       theme: "default",
@@ -416,6 +421,7 @@ export const COMPUTED_WORKSPACE_FIXTURE: Workspace = {
   boards: {
     [ComponentId.BUTTON]: {
       id: ComponentId.BUTTON,
+      component: ComponentId.BUTTON,
       label: "Buttons",
       order: 0,
       theme: "default",

@@ -1,6 +1,6 @@
 import {
+  BackgroundPositionValue,
   Properties,
-  SingleBackgroundPositionValue,
   SingleBackgroundSizeValue,
 } from "@seldon/core"
 import { resolveValue } from "@seldon/core/helpers/resolution/resolve-value"
@@ -61,7 +61,7 @@ export function getBackgroundImageStyles({
       styles.backgroundPosition = `${x.value}${x.unit} ${y.value}${y.unit}`
     } else {
       styles.backgroundPosition = getBackgroundPositionStyle(
-        position as SingleBackgroundPositionValue,
+        position as BackgroundPositionValue,
       )
     }
   }

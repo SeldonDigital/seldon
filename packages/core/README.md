@@ -1,587 +1,232 @@
-# @seldon/core
+# Seldon Core Engine
 
-The Seldon Core Engine provides type-safe design system architecture with component management, property computation, theme integration, and workspace state management. It uses a hierarchical component structure with property inheritance and computed values.
+The Seldon Core Engine is a design system engine that manages component-based design systems. It provides the foundation for creating, organizing, and maintaining design systems through a hierarchical architecture of components, properties, themes, and workspace state management.
 
-## Quick Start
+This system serves both designers and engineers. Designers use it to organize, customize, and build component libraries. Engineers use it as a state management system with hierarchical architecture for building production applications.
 
-### For Engineers
-```typescript
-import { Component, Workspace, Sdn } from "@seldon/core"
+## Components
 
-// Create a simple component
-const button: Component = {
-  component: Sdn.ComponentId.BUTTON,
-  properties: {
-    color: { type: Sdn.ValueType.THEME_CATEGORICAL, value: "@swatch.primary" }
-  }
-}
+Components are the building blocks of the design system. They are reusable UI building blocks defined by schemas that specify their structure, properties, and behavior.
 
-// Create a workspace
-const workspace: Workspace = {
-  version: 1,
-  boards: {},
-  byId: {},
-  customTheme: customTheme
-}
-```
+### Component Schemas
+
+Component schemas are blueprints that define what a component can do. Each schema specifies the component's identity, classification, available properties, and child components. Schemas serve as the source of truth for component capabilities and constraints.
+
+### Five-Level Hierarchy
+
+Components follow a strict five-level hierarchy that governs how they can be nested and combined:
+
+**SCREEN → MODULE → PART → ELEMENT → PRIMITIVE**
+
+Plus **FRAME** as a special container that can hold any component level.
+
+- **Screens** are complete user interfaces that contain everything needed for a full page
+- **Modules** are complex functional units like headers, sidebars, or navigation systems
+- **Parts** are reusable UI sections like cards, forms, or content blocks
+- **Elements** are interactive components like buttons, inputs, or toggles
+- **Primitives** are atomic building blocks like text, icons, or images that cannot contain other components
+- **Frames** are universal containers that can hold any component level
+
+### Nesting Rules
+
+Components can only contain equal or lower-level components. This creates a natural hierarchy where complex components are built from simpler ones.
+
+**Technical enforcement**: An ELEMENT can contain PRIMITIVE, ELEMENT, or FRAME components. A PART can contain PRIMITIVE, ELEMENT, PART, or FRAME components. This pattern continues up the hierarchy.
+
+**Design pattern**: This structure enables building complex user interfaces from simple building blocks. You start with primitives, combine them into elements, group elements into parts, organize parts into modules, and assemble modules into complete screens.
+
+### Schema-Driven Architecture
+
+The system is schema-driven, meaning component capabilities are defined by their schemas rather than hardcoded. Schemas serve as blueprints for component structure and behavior, but they also play a critical role in verification and validation during code export and style generation. How schemas are specified directly determines how components behave in the workspace, making schema definition crucial to the entire system's operation.
+
+### Component Instantiation
+
+Components are created from schemas and used within the workspace. When a component is instantiated, it inherits its default properties from its schema which can then be customized through the workspace.
+
+## Properties
+
+Properties are configuration values that control how components look and behave. They serve dual purposes: as styling configuration for visual appearance and as a type-safe value system for consistent data handling.
+
+### Seven Value Types
+
+Properties use seven distinct value types to handle different data sources and behaviors:
+
+- **EMPTY**: Unset values that are resolved by the platform or inherited from defaults
+- **INHERIT**: Values explicitly inherited from parent components
+- **EXACT**: Custom direct values like specific colors, sizes, or text content
+- **PRESET**: Predefined options from a controlled set of choices
+- **COMPUTED**: Values calculated from other properties using mathematical functions
+- **THEME_CATEGORICAL**: Non-sequential theme references like colors and font families
+- **THEME_ORDINAL**: Sequential theme references like sizes and spacing values
+
+### Missing Properties in Schemas
+
+When a property is missing from a component schema, it is intentionally excluded from that component's capabilities. This is a deliberate design choice that serves several purposes:
+
+- **Component specialization**: Each component only exposes the properties it actually needs, keeping interfaces clean and focused
+- **Type safety**: Missing properties cannot be set on components, preventing invalid configurations
+- **Validation**: Only properties declared in the schema can be overridden through nested overrides, maintaining security
+- **Inheritance control**: Missing properties allow inheritance from parent components or platform defaults to take effect
+
+For example, a Text component might not have a `background` property in its schema, meaning it cannot have a background color set directly. Instead, it inherits the background from its parent container, which might be the intended behavior for a text element.
+
+### Property Categories
+
+Properties come in three forms. Atomic properties are single values like color or font size. Compound properties group related styling values together, such as background (with color, image, position, and size) or font (with family, size, weight, and style). Shorthand properties provide convenient ways to set multiple related values at once, such as margin (with top, right, bottom, left) or padding (with top, right, bottom, left).
+
+### Property Inheritance
+
+Property inheritance is fundamentally based on EMPTY values and unset properties. When a property is set to EMPTY or is unset, the system allows inheritance from parent components or defaults. Child components inherit properties from their parent components through instance relationships, where instances inherit from their variants. 
+
+Parent components can also override child component properties through nested overrides, but only for properties declared in the child's schema. The compute pipeline enables properties to reference parent properties using `#parent.propertyName` syntax, traversing up the component hierarchy to resolve values. 
+
+This inheritance flows through the component hierarchy, allowing parent components to establish default styling that children can override when needed. EMPTY values are filtered out during property merging, enabling the inheritance chain to work properly.
+
+### Computed Properties
+
+Computed properties enable dynamic value calculation based on other properties. For example, a button's size might be computed as 80% of its parent's width, or a text color might be automatically calculated to ensure sufficient contrast against a background color.
+
+### Property Resolution Pipeline
+
+Properties flow through a resolution pipeline: Schema provides defaults, Workspace applies user customizations, Theme supplies design tokens, and the system resolves everything for export to production code.
+
+## Themes
+
+Themes are collections of design tokens that define the visual design of an application. They provide consistent styling through reusable values for colors, typography, spacing, and visual effects.
+
+### Design Tokens
+
+Design tokens are the building blocks of themes. They include colors, typography settings, spacing values, shadow definitions, and other visual properties. These tokens ensure consistency across the entire design system.
+
+### Theme Structure
+
+Each theme contains core values that define its fundamental characteristics: a base color, typography settings, spacing ratios, and visual effect parameters. The theme system uses these core values to generate a complete set of design tokens.
+
+Themes are built around a core configuration that includes a base color (defined in HSL format), color harmony settings (complementary, triadic, analogous, etc.), and mathematical ratios for spacing and typography. From these core values, the system automatically generates a complete palette of colors, calculates spacing values using modular scales, and creates typography hierarchies that maintain visual consistency.
+
+The core values act as the foundation for all other design tokens. For example, the base color determines the primary color palette through color theory algorithms, while the spacing ratio creates a consistent scale for margins, paddings, and gaps. The typography settings establish font families and size relationships that work harmoniously with the color system and spacing scale.
+
+While the core configuration provides a systematic approach to design tokens, it's also possible to set exact values for individual tokens when the core configuration is too restrictive. This allows for fine-tuning specific design tokens without disrupting the overall theme structure, providing flexibility when the mathematical relationships don't meet specific design requirements.
+
+### Theme References in Properties
+
+Properties connect to themes through references like `@swatch.primary` or `@fontSize.large`. These references create a bridge between component properties and theme tokens, enabling consistent styling across the design system.
+
+## Workspace
+
+The workspace is a state container for organizing and building components. It manages the entire design system state through a hierarchical architecture that maintains relationships between components and ensures consistency.
 
 ### For Designers
-- **Components**: Choose from 6 levels (Screen → Module → Part → Element → Primitive)
-- **Themes**: Select from 10+ predefined themes or create custom ones
-- **Properties**: Use theme references like `@swatch.primary` for consistent styling
-- **Inheritance**: Child components automatically inherit parent styling
 
-## Architecture Overview
+The workspace serves as a tool to organize, customize, and build component libraries. Designers can create variants of components, customize their properties, apply themes, and organize everything into a coherent design system.
 
-The system organizes components into a six-level hierarchy:
+### For Engineers
 
-```
-SCREEN (highest) → MODULE → PART → ELEMENT → PRIMITIVE (lowest)
-FRAME (special - can contain anything at any level)
-```
+The workspace functions as a state management system with hierarchical architecture. It tracks component relationships, manages property inheritance, handles theme application, and maintains data integrity throughout the system.
 
-### Component Hierarchy Diagram
-```
-┌─────────────────────────────────────────────────────────────┐
-│                        SCREEN                               │
-│  ┌─────────────────────────────────────────────────────┐    │
-│  │                    MODULE                           │    │
-│  │  ┌─────────────────────────────────────────────┐    │    │
-│  │  │                  PART                       │    │    │
-│  │  │  ┌─────────────────────────────────────┐    │    │    │
-│  │  │  │              ELEMENT               │    │    │    │
-│  │  │  │  ┌─────────────────────────────┐    │    │    │    │
-│  │  │  │  │         PRIMITIVE           │    │    │    │    │
-│  │  │  │  │  (Text, Icon, Image)        │    │    │    │    │
-│  │  │  │  └─────────────────────────────┘    │    │    │    │
-│  │  │  └─────────────────────────────────────┘    │    │    │
-│  │  └─────────────────────────────────────────────┘    │    │
-│  └─────────────────────────────────────────────────────┘    │
-└─────────────────────────────────────────────────────────────┘
+### Four-Level Hierarchy
 
-┌─────────────────────────────────────────────────────────────┐
-│                        FRAME                                │
-│  (Can contain any component level - special exception)      │
-└─────────────────────────────────────────────────────────────┘
-```
+The workspace organizes components into a four-level hierarchy:
 
-- **Screen**: Full page layouts
-- **Module**: Major sections (headers, sidebars)
-- **Part**: Complex components (cards, forms)
-- **Element**: Simple components (buttons, inputs)
-- **Primitive**: Atomic building blocks (text, icons, images)
-- **Frame**: Universal container that can hold any component level
+- **Projects**: The top-level container for the entire design system (implemented as workspaces in the system)
+- **Boards**: Organize all variants of a component type (one board per component type)
+- **Variants**: Templates and definitions that can be default (from schema) or custom (created by users)
+- **Instances**: Actual component usage within other components
 
-## Core Subsystems
+### How It Works
 
-### Workspace System
+The workspace manages several key processes with a specific workflow designed to maintain consistency and proper override precedence:
 
-The Core Workspace System provides state management for component-based workspaces with a hierarchical architecture:
+**Component instantiation**: Creating components from schemas with proper property inheritance and child relationships. When components are instantiated, they inherit their default properties from their schema and can be customized through the workspace system.
 
-- **Workspaces** contain multiple **Boards** (one per component type)
-- **Boards** contain multiple **Variants** (default and user-created)
-- **Variants** can contain **Instances** (child components)
-- **Instances** can contain other **Instances** (nested components)
+**Property precedence and workflow**: The system follows a strict precedence order where overrides always win. The proper workflow is to make changes at the appropriate level in the hierarchy:
 
-The workspace system handles:
+1. **Create variants for core property differences**: When you need a component to behave differently from the default, create a new variant rather than modifying the default variant. This preserves the original design while allowing customization.
 
-- Component instantiation and hierarchy management
-- Property propagation between variants and instances
-- Theme management and custom theme creation
-- AI-driven workspace modifications
-- Validation and middleware systems
+2. **Set properties on variants before instances**: Changes to variants propagate to all their instances, so set properties on the variant level when you want the change to affect all uses of that component type.
 
-For detailed workspace documentation, see [packages/core/workspace/README.md](./workspace/README.md).
+3. **Use instance overrides for specific cases**: Only set properties on individual instances when you need a specific instance to differ from its variant. Instance overrides always take precedence over variant properties.
 
-### Properties System
+**Theme switching considerations**: This precedence system is especially important for theme switching. When switching themes, the system applies the new theme to variants first, then instances inherit those changes unless they have specific overrides. This means that if you want a component to respond to theme changes, you should set its properties on the variant level, not on individual instances.
 
-Type-safe property definitions and validation for all design system components with seven value types:
+**Property propagation**: Changes flow from variants to their instances, ensuring that modifications to a variant affect all its uses throughout the design system. However, instance overrides always take precedence, so specific instances can maintain their custom properties even when the variant changes.
 
-1. **EXACT**: Direct values (`#ff0000`, `16px`, `true`)
-2. **PRESET**: Predefined options (`"material-add"`, `"__default__"`)
-3. **THEME_CATEGORICAL**: Theme colors (`"@swatch.primary"`)
-4. **THEME_ORDINAL**: Theme dimensions (`"@fontSize.large"`)
-5. **COMPUTED**: Calculated values based on other properties
-6. **EMPTY**: Unset values (distinct from null/undefined)
-7. **INHERIT**: Values inherited from parent components
+**Theme management**: Themes are applied and inherited through the component hierarchy, maintaining visual consistency. The system ensures that theme changes propagate correctly through the variant-instance relationship.
 
-For detailed property system documentation, see [packages/core/properties/README.md](./properties/README.md).
+**Hierarchy management**: Parent-child relationships are maintained and validated, ensuring the component structure remains coherent. The system enforces proper nesting rules and validates all operations.
 
-### Themes System
+**Mutation system**: Changes are applied and propagated through the hierarchy according to defined rules, maintaining consistency while allowing flexibility. The system uses a rules-based approach to control what operations are allowed and how they propagate.
 
-Theming with predefined themes, dynamic color generation, and custom theme creation. Includes design tokens for colors, typography, spacing, and visual effects.
+**Validation and integrity**: The system ensures the workspace remains consistent and valid after every operation, with comprehensive validation at multiple levels.
 
-**Key Features**:
+## System Integration
 
-- Dynamic color generation using color theory algorithms
-- Predefined stock themes with consistent design tokens
-- Theme-aware property references (`@swatch.*`, `@fontSize.*`, etc.)
-- Extensible theme architecture for custom themes
+These four concepts work together to create a cohesive design system:
 
-For detailed theme documentation, see [packages/core/themes/README.md](./themes/README.md).
+Components are defined by schemas that specify their capabilities and constraints. Properties configure components with values that can reference themes or be computed from other properties. Themes provide consistent design tokens that flow through the component hierarchy. The workspace manages the entire design system state, ensuring that changes propagate correctly and relationships are maintained.
 
-### Compute System
+This integration creates a system where designers can build complex, consistent user interfaces while engineers have a reliable foundation for production applications.
 
-Property computation engine that resolves design values through inheritance and mathematical calculations. Provides computation functions for dynamic value calculation.
+## Subsystem Documentation
 
-**Current Functions**: AUTO_FIT, HIGH_CONTRAST_COLOR, OPTICAL_PADDING, MATCH
+Seldon Core is organized into specialized subsystems, each handling specific aspects of the design system architecture. For detailed implementation information, see the specific subsystem documentation:
 
-For detailed compute system documentation, see [packages/core/compute/README.md](./compute/README.md).
+### Core Subsystems
 
-## Property System Details
+- **[Properties README](./properties/README.md)** - **Property System & Value Types**
+  - Defines type-safe property structures, value types (EXACT, THEME_CATEGORICAL, COMPUTED, etc.)
+  - Handles compound properties (border, margin, padding) and shorthand properties
+  - Provides property validation, merging, and inheritance logic
+  - Manages preset options and allowed values for component properties
 
-### Compound Properties
+- **[Themes README](./themes/README.md)** - **Theme System & Design Tokens**
+  - Manages design tokens including colors, typography, spacing, and visual effects
+  - Provides dynamic color generation with harmony algorithms (complementary, triadic, etc.)
+  - Handles theme inheritance, customization, and migration between themes
+  - Includes stock themes (Material, Earth, Industrial, etc.) and custom theme creation
 
-Properties with multiple sub-properties:
+- **[Compute README](./compute/README.md)** - **Property Computation & Inheritance**
+  - Resolves computed properties using mathematical functions (AUTO_FIT, OPTICAL_PADDING, etc.)
+  - Handles property inheritance chains from parent to child components
+  - Manages context resolution for theme values and property references
+  - Provides high-contrast color generation and optical spacing calculations
 
-#### Background Properties
+- **[Workspace README](./workspace/README.md)** - **Workspace State Management**
+  - Manages component boards, variants, and instances in hierarchical structures
+  - Handles workspace operations (add, remove, move, duplicate components)
+  - Provides middleware for validation, migration, and debugging
+  - Manages custom themes and workspace-level configuration
 
-```typescript
-background: {
-  color: { type: ValueType.THEME_CATEGORICAL, value: "@swatch.primary" },
-  opacity: { type: ValueType.EXACT, value: { unit: Unit.PERCENT, value: 90 } },
-  image: { type: ValueType.EXACT, value: "url('/pattern.jpg')" },
-  position: { type: ValueType.PRESET, value: BackgroundPosition.CENTER },
-  size: { type: ValueType.PRESET, value: "cover" }
-}
-```
+- **[Helpers README](./helpers/README.md)** - **Utility Functions & Helpers**
+  - Provides color manipulation, conversion, and contrast calculation utilities
+  - Handles property processing, merging, and nested overrides
+  - Offers resolution helpers for converting properties to concrete CSS values
+  - Includes type guards and validation utilities for runtime type checking
 
-#### Border Properties
+- **[Rules README](./rules/README.md)** - **Rules Configuration & Authorization**
+  - Defines operation authorization rules for workspace mutations
+  - Controls what operations are allowed on different entity types
+  - Manages propagation rules for property changes across component hierarchies
+  - Provides configuration for workspace constraints and business rules
 
-```typescript
-border: {
-  width: { type: ValueType.THEME_ORDINAL, value: "@borderWidth.thin" },
-  style: { type: ValueType.PRESET, value: BorderStyle.SOLID },
-  color: { type: ValueType.THEME_CATEGORICAL, value: "@swatch.border" },
-  opacity: { type: ValueType.EXACT, value: { unit: Unit.PERCENT, value: 80 } }
-}
-```
+### Extended Subsystems
 
-#### Spacing Properties
+- **[Components README](../components/README.md)** - **Component System & Schemas**
+  - Defines component hierarchy (Primitive → Element → Part → Module → Screen)
+  - Manages component schemas with properties, restrictions, and validation rules
+  - Handles component instantiation, duplication, and relationship management
+  - Provides component catalog and registry for all available components
 
-```typescript
-margin: {
-  top: { type: ValueType.THEME_ORDINAL, value: "@margin.medium" },
-  right: { type: ValueType.EXACT, value: { unit: Unit.PX, value: 16 } },
-  bottom: { type: ValueType.THEME_ORDINAL, value: "@margin.medium" },
-  left: { type: ValueType.EXACT, value: { unit: Unit.PX, value: 16 } }
-}
-```
-
-### Override System
-
-The override system handles property inheritance and modification through two distinct mechanisms:
-
-#### Schema Overrides
-
-Property overrides defined in component schemas. These are part of the component definition and specify default property values for child components.
-
-#### Nested Overrides (Runtime)
-
-Parent components can modify child component properties during node instantiation. These are applied at runtime when components are created from schemas and **become regular overrides** on the child component once instantiated.
-
-#### Nested Override Example
-
-A BAR_BUTTONS component can customize individual buttons:
-
-```typescript
-// BAR_BUTTONS component with nested overrides
-{
-  component: ComponentId.BAR_BUTTONS,
-  children: [
-    {
-      component: ComponentId.BUTTON,
-      nestedOverrides: {
-        icon: { symbol: "material-add" },
-        label: { content: "Add Item" },
-        background: { color: "@swatch.primary" }
-      }
-    }
-  ]
-}
-```
-
-#### Flattening Process
-
-The system converts nested object syntax to flattened dot notation:
-
-```typescript
-// Nested syntax (what designers write)
-{
-  icon: { symbol: "material-add" },
-  label: { content: "Add Item" }
-}
-
-// Flattened syntax (what the system processes)
-{
-  "icon.symbol": "material-add",
-  "label.content": "Add Item"
-}
-```
-
-## Workspace State Management
-
-The workspace state management system coordinates all systems, ensuring changes are applied consistently and relationships are maintained.
-
-### Dual Reducer System
-
-The system operates with two distinct reducer systems:
-
-#### Core Reducer
-
-Handles direct user interactions—immediate, precise, and predictable.
-
-#### AI Reducer
-
-Handles AI-generated actions—batch processing with intelligent reconciliation.
-
-### Middleware Pipeline
-
-Every action passes through a middleware pipeline:
-
-1. **Validation Middleware**: Ensures action payloads are valid
-2. **Sentry Breadcrumb Middleware**: Logs actions for debugging
-3. **Action Processing**: Core reducer logic with rules-based authorization
-4. **Migration Middleware**: Applies necessary data migrations
-5. **Verification Middleware**: Validates workspace integrity
-6. **Debug Logging**: Development-only logging of state changes
-
-### Rules-Based Authorization System
-
-The system includes a comprehensive rules system that controls operations:
-
-- **Component Level Rules**: Enforce hierarchy constraints
-- **Mutation Rules**: Control operations per entity type
-- **Propagation Types**: Control how changes flow through the system
-
-## Mutation System
-
-The mutation system controls how changes are applied throughout the workspace, creating propagation patterns that maintain consistency while respecting the hierarchical nature of the design system.
-
-### Entity Type Hierarchy
-
-The mutation system operates on four distinct entity types:
-
-#### 1. Board
-
-Top-level containers that hold all variants of a component type:
-
-- **Creation**: Allowed - new component types can be added
-- **Deletion**: Allowed with downstream propagation - removing a board affects all its variants
-- **Property Setting**: Allowed with no propagation - board properties don't affect variants
-- **Theme Setting**: Allowed with downstream propagation - board themes affect all variants
-- **Renaming**: Not allowed - board names are system-managed
-- **Reordering**: Allowed - boards can be reordered in the workspace
-
-#### 2. Default Variant
-
-System-generated from schemas and represent the canonical form:
-
-- **Creation**: Not allowed - only system can create default variants
-- **Deletion**: Not allowed - default variants are protected
-- **Property Setting**: Allowed with no propagation - can be customized
-- **Theme Setting**: Allowed with downstream propagation - themes affect instances
-- **Renaming**: Not allowed - default variant names are system-managed
-- **Reordering**: Not allowed - default variants maintain their position
-
-#### 3. User Variant
-
-Custom creations that extend or modify the default behavior:
-
-- **Creation**: Allowed - users can create custom variants
-- **Deletion**: Allowed with downstream propagation - affects all instances
-- **Property Setting**: Allowed with no propagation - properties are overrides
-- **Theme Setting**: Allowed with downstream propagation - themes affect instances
-- **Renaming**: Allowed with downstream propagation - name changes affect instances
-- **Reordering**: Allowed - variants can be reordered within boards
-
-#### 4. Instance
-
-Actual components that exist within other components:
-
-- **Creation**: Allowed with downstream propagation - affects child instances
-- **Deletion**: Allowed with conditional behavior - schema-defined instances are hidden, manually-added instances are deleted
-- **Property Setting**: Allowed with no propagation - properties are overrides
-- **Theme Setting**: Allowed with downstream propagation - themes affect child instances
-- **Renaming**: Not allowed - instance names are system-managed
-- **Reordering**: Allowed with downstream propagation - affects child instances
-- **Moving**: Allowed with downstream propagation - can be moved between parents
-
-### Propagation System
-
-The propagation system determines how changes flow through the workspace hierarchy.
-
-#### None Propagation
-
-Changes apply only to the target node:
-
-```typescript
-// Property changes typically use none propagation
-setProperties: {
-  board: { allowed: true, propagation: "none" },
-  userVariant: { allowed: true, propagation: "none" },
-  defaultVariant: { allowed: true, propagation: "none" },
-  instance: { allowed: true, propagation: "none" }
-}
-```
-
-Used for property overrides where each component maintains its own properties independently.
-
-#### Downstream Propagation
-
-Changes flow from variants to their instances:
-
-```typescript
-// Theme changes typically use downstream propagation
-setTheme: {
-  board: { allowed: true, propagation: "downstream" },
-  userVariant: { allowed: true, propagation: "downstream" },
-  defaultVariant: { allowed: true, propagation: "downstream" },
-  instance: { allowed: true, propagation: "downstream" }
-}
-```
-
-Ensures that when a variant's theme changes, all instances of that variant inherit the new theme.
-
-### Component Level Hierarchy
-
-The mutation system enforces component hierarchy constraints, ensuring that components can only contain appropriate child components:
-
-```typescript
-componentLevels: {
-  [ComponentLevel.PRIMITIVE]: { mayContain: [] },
-  [ComponentLevel.ELEMENT]: {
-    mayContain: [PRIMITIVE, ELEMENT, FRAME]
-  },
-  [ComponentLevel.PART]: {
-    mayContain: [PRIMITIVE, ELEMENT, PART, FRAME]
-  },
-  [ComponentLevel.MODULE]: {
-    mayContain: [PRIMITIVE, ELEMENT, PART, MODULE, FRAME]
-  },
-  [ComponentLevel.SCREEN]: {
-    mayContain: [PRIMITIVE, ELEMENT, PART, MODULE, FRAME, SCREEN]
-  },
-  [ComponentLevel.FRAME]: {
-    mayContain: [PRIMITIVE, ELEMENT, PART, MODULE, FRAME]
-  }
-}
-```
-
-This ensures that:
-
-- Primitives cannot contain other components
-- Elements can contain primitives, other elements, and frames
-- Parts can contain primitives, elements, other parts, and frames
-- Modules can contain primitives, elements, parts, other modules, and frames
-- Screens can contain everything
-- Frames can contain everything except screens
-
-## Type Safety System
-
-The Seldon Core Engine is built with type safety throughout. Every property, value, and relationship is typed and validated.
-
-### Property Keys
-
-All property keys are strongly typed, ensuring that only valid properties can be set on components.
-
-### Property Paths
-
-Property paths support dot notation for compound properties, allowing navigation of complex property hierarchies with type safety.
-
-### Value Types
-
-Every value has a type that carries semantic meaning. A color value is a `ColorValue` that could be a theme reference, an exact color, or a computed value.
-
-## Integration Points
-
-The Seldon Core Engine integrates with the broader Seldon ecosystem:
-
-### Factory System Integration
-
-The core engine integrates with the factory system to transform workspaces into production-ready code. The compute system ensures that all computed values are resolved before CSS generation and component creation.
-
-### Component System Integration
-
-The core engine provides the foundation for the component system, defining the schemas, properties, and relationships that components use.
-
-### AI System Integration
-
-The core engine includes AI integration, with reference-based targeting, schema-workspace reconciliation, and variant creation.
-
-## Usage
-
-To use the core types and utilities in your project:
-
-1. Add `"@seldon/core": "workspace:*"` to your dependencies in package.json
-2. Run `bun install`
-3. Import the types you need from the package
-
-```typescript
-import { Component, Instance, Variant, Workspace } from "@seldon/core"
-```
-
-### Type Definitions
-
-The examples in this document use the following types:
-
-```typescript
-import { ComponentId } from "@seldon/core/components/constants"
-import { BackgroundPosition } from "@seldon/core/properties/constants/background-positions"
-import { BorderStyle } from "@seldon/core/properties/constants/border-styles"
-import { ComputedFunction } from "@seldon/core/properties/constants/computed-functions"
-import { Unit } from "@seldon/core/properties/constants/units"
-import { ValueType } from "@seldon/core/properties/constants/value-types"
-```
-
-## Best Practices
-
-### Workspace Management
-
-#### ✅ DO
-
-- Use variants as reusable templates, instances for actual usage
-- Respect the workspace → boards → variants → instances hierarchy
-- Validate workspace operations before execution
-- Use middleware pipeline for validation and verification
-- Understand how changes propagate between variants and instances
-- Ensure workspace integrity after all operations
-
-#### ❌ DON'T
-
-- Modify variants with active instances without considering propagation
-- Skip validation middleware in production
-- Ignore workspace validation errors
-- Create circular dependencies between components
-- Ignore workspace version migrations
-
-### Property System
-
-#### ✅ DO
-
-- Use defined property types and value constraints
-- Ensure properties match their schema definitions
-- Use theme references for consistent styling
-- Understand property inheritance between variants and instances
-- Implement computed properties for dynamic behavior
-
-#### ❌ DON'T
-
-- Use property types not defined in the schema
-- Use values outside the allowed restrictions
-- Skip property validation
-- Create invalid theme or computed property references
-
-### Theme System
-
-#### ✅ DO
-
-- Start with predefined themes before creating custom ones
-- Ensure all theme values follow the design system
-- Reference theme values consistently across components
-- Ensure all theme values are valid and accessible
-- Understand how themes propagate through the component hierarchy
-
-#### ❌ DON'T
-
-- Create themes that break design system consistency
-- Reference non-existent theme values
-- Skip theme validation
-- Create circular references in theme definitions
-
-### Compute System
-
-#### ✅ DO
-
-- Implement computed properties for dynamic calculations
-- Ensure computed property references are valid
-- Understand how computed properties inherit from parent components
-- Use mathematical calculations for responsive behavior
-- Verify computed property calculations are correct
-
-#### ❌ DON'T
-
-- Reference non-existent properties in computations
-- Skip validation of computed property calculations
-- Create circular references in computed properties
-- Skip validation of mathematical operations
-
-### General Core System
-
-#### ✅ DO
-
-- Use TypeScript types and interfaces
-- Validate all operations before execution
-- Implement proper error handling and recovery
-- Use middleware system for cross-cutting concerns
-- Keep documentation current with system changes
-- Implement comprehensive tests for all core functionality
-
-#### ❌ DON'T
-
-- Use `any` types or skip type checking
-- Ignore or suppress errors
-- Bypass validation in any core operations
-- Create APIs that break established patterns
-- Ignore performance implications of core operations
-
-### Development Workflow
-
-1. Document intended changes before implementation
-2. Update TypeScript types first
-3. Add proper validation for all new functionality
-4. Implement comprehensive tests
-5. Keep all documentation current
-6. Ensure changes work with all subsystems
-
-## Usage as Source of Truth
-
-This README serves as the authoritative documentation for the Seldon Core Engine. When making changes to the core functionality:
-
-1. **Update this README first** to reflect the intended core behavior and architecture
-2. **Implement changes** to match the documented specifications and subsystem integration
-3. **Update subsystem documentation** to maintain consistency across all core components
-4. **Validate that the core engine** follows the documented architecture and integration patterns
-5. **Ensure all subsystems** work together as documented in the integration points
-
-The core engine is designed to be:
-
-- **Central Hub**: Serves as the foundation for all design system operations
-- **Type-Safe**: Full TypeScript support with documented interfaces and type definitions
-- **Integrated**: Seamless integration between all subsystems (workspace, properties, themes, compute)
-- **Extensible**: Easy to add new functionality following documented patterns
-- **Predictable**: System behavior should match documentation exactly
-- **Validated**: Comprehensive validation and error handling throughout
-- **Consistent**: All subsystems follow the documented architectural principles
-
-### Core Development Workflow
-
-When creating or modifying core functionality:
-
-1. **Define Architecture**: Document the system's role in the overall design system
-2. **Update Subsystems**: Ensure all affected subsystems are updated accordingly
-3. **Implement Integration**: Follow documented integration patterns between subsystems
-4. **Test Integration**: Verify all subsystems work together as documented
-5. **Update Documentation**: Keep this README and all subsystem READMEs current
-
-### Core System Validation
-
-All core functionality must validate against documented specifications:
-
-- **Subsystem Integration**: Must follow documented integration patterns
-- **Type Safety**: Must maintain documented TypeScript interfaces and type definitions
-- **Architecture Compliance**: Must follow documented architectural principles
-- **Error Handling**: Must implement documented error handling and recovery patterns
-
-This ensures consistency across the entire core system and maintains the reliability of the design system architecture.
-
-For detailed implementation information, see the specific subsystem documentation:
-
-- [Properties README](./properties/README.md) - Property system and value types
-- [Themes README](./themes/README.md) - Theme system and design tokens
-- [Compute README](./compute/README.md) - Property computation and inheritance
-- [Workspace README](./workspace/README.md) - Workspace state management and component processing
-- [Helpers README](./helpers/README.md) - Utility functions and helpers
-- [Rules README](./rules/README.md) - Rules configuration and authorization
-- [Components README](../components/README.md) - Component system and schemas
-- [Factory README](../factory/README.md) - Code generation and export systems
+- **[Factory README](../factory/README.md)** - **Code Generation & Export Systems**
+  - Transforms design workspaces into production-ready code (React, CSS, etc.)
+  - Handles asset processing (images, icons, fonts) and optimization
+  - Provides export pipelines for different frameworks and styling approaches
+  - Manages code formatting, import organization, and build optimization
+
+### Reference Documentation
+
+- **[Technical Reference](./TECHNICAL.md)** - **Code Examples & Implementation Details**
+  - Comprehensive code examples for all major subsystems
+  - Implementation patterns and best practices
+  - API reference and function signatures
+  - Integration examples and usage patterns

@@ -18,16 +18,23 @@ export const migrationMiddleware: Middleware =
       return nextWorkspace
     }
 
-    const currentVersion = nextWorkspace.version || 1
+    let currentVersion = nextWorkspace.version || 1
+
+    // Handle baselining: check for structural indicators of legacy workspaces
+    // Legacy workspaces have boards without the 'component' field, which was added in migration 3
+    const hasLegacyBoards = Object.values(nextWorkspace.boards || {}).some(
+      (board) => !("component" in board),
+    )
+
+    // If workspace has legacy board structure, baseline it to 0 for full migration
+    if (hasLegacyBoards) {
+      currentVersion = 0
+    }
 
     // If workspace is already at current version, no migration needed
     if (currentVersion >= CURRENT_WORKSPACE_VERSION) {
       return nextWorkspace
     }
-
-    console.group(
-      `Migrating workspace from version ${currentVersion} to ${CURRENT_WORKSPACE_VERSION}`,
-    )
 
     // Apply migrations in sequence
     let migratedWorkspace = { ...nextWorkspace }
@@ -37,10 +44,8 @@ export const migrationMiddleware: Middleware =
 
     for (const migration of alwaysRunMigrations) {
       try {
-        console.log(`🔄 Applying migration ${migration.description}`)
         migratedWorkspace = migration.migrate(migratedWorkspace)
       } catch (error) {
-        console.error(`❌ Migration ${migration.description} failed:`, error)
         throw new Error(
           `Migration ${migration.description} failed: ${error instanceof Error ? error.message : "Unknown error"}`,
         )
@@ -53,9 +58,6 @@ export const migrationMiddleware: Middleware =
         migration.version <= CURRENT_WORKSPACE_VERSION
       ) {
         try {
-          console.log(
-            `🔄 Applying migration ${migration.description} introduced in version ${migration.version}`,
-          )
           migratedWorkspace = migration.migrate(migratedWorkspace)
 
           // Update version after successful migration by creating a new object
@@ -64,7 +66,6 @@ export const migrationMiddleware: Middleware =
             version: migration.version,
           }
         } catch (error) {
-          console.error(`❌ Migration ${migration.version} failed:`, error)
           throw new Error(
             `Migration ${migration.version} failed: ${error instanceof Error ? error.message : "Unknown error"}`,
           )
@@ -77,13 +78,6 @@ export const migrationMiddleware: Middleware =
       ...migratedWorkspace,
       version: CURRENT_WORKSPACE_VERSION,
     }
-
-    console.log(
-      "Finished migrating workspace to version",
-      migratedWorkspace.version,
-    )
-
-    console.groupEnd()
 
     return migratedWorkspace
   }

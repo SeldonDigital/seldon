@@ -1,7 +1,7 @@
 import { describe, expect, it } from "bun:test"
 import { ValueType } from "../../../index"
-import { HexValue } from "../../../properties/values/color/hex"
-import { EmptyValue } from "../../../properties/values/shared/empty"
+import { EmptyValue } from "../../../properties/values/shared/empty/empty"
+import { HexValue } from "../../../properties/values/shared/hex"
 import { isEmptyValue } from "./is-empty-value"
 
 describe("isEmptyValue", () => {

@@ -192,12 +192,7 @@ export class NodeRelationshipService {
         ) {
           return currentNode
         }
-      } catch (error) {
-        console.warn(
-          `Failed to get schema for component ${currentNode.component}, skipping container check:`,
-          error,
-        )
-      }
+      } catch (error) {}
 
       const parentNode = nodeTraversalService.findParentNode(
         currentNode,

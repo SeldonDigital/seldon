@@ -3,6 +3,9 @@ import { Properties, ValueType } from "../../index"
 /**
  * Merges two sets of properties with optional sub-property merging.
  *
+ * Sub-property merging applies to compound and shorthand properties,
+ * which have nested sub-properties (e.g., background.color, margin.top).
+ *
  * @param properties1 - Base properties to merge into
  * @param properties2 - Properties to merge from
  * @param options - Merge configuration options
@@ -20,12 +23,34 @@ export function mergeProperties(
   const { mergeSubProperties = true } = options ?? {}
 
   return keys.reduce((merged, key) => {
-    const value =
-      key in properties1
-        ? mergeSubProperties
-          ? Object.assign({}, properties1[key], properties2[key])
-          : properties2[key]
-        : properties2[key]
+    let value: any
+
+    if (key in properties1) {
+      if (mergeSubProperties) {
+        // Check if this is a compound or shorthand property
+        const existingValue = properties1[key]
+        const newValue = properties2[key]
+
+        if (
+          existingValue &&
+          typeof existingValue === "object" &&
+          !("type" in existingValue) &&
+          newValue &&
+          typeof newValue === "object" &&
+          !("type" in newValue)
+        ) {
+          // This is a compound or shorthand property - do a deep merge
+          value = { ...existingValue, ...newValue }
+        } else {
+          // This is an atomic property - use shallow merge
+          value = Object.assign({}, existingValue, newValue)
+        }
+      } else {
+        value = properties2[key]
+      }
+    } else {
+      value = properties2[key]
+    }
 
     // Skip empty values to allow inheritance from defaults
     if (

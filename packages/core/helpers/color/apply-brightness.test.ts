@@ -1,7 +1,7 @@
 import { describe, expect, it } from "bun:test"
-import { HSL } from "../../properties/values/color/hsl"
-import { LCH } from "../../properties/values/color/lch"
-import { RGB } from "../../properties/values/color/rgb"
+import { HSL } from "../../properties/values/shared/hsl"
+import { LCH } from "../../properties/values/shared/lch"
+import { RGB } from "../../properties/values/shared/rgb"
 import { applyBrightness, convertAndApplyBrightness } from "./apply-brightness"
 
 describe("applyBrightness", () => {

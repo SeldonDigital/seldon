@@ -1,6 +1,6 @@
-import { ValueType } from "../../../properties/constants/value-types"
-import { ThemeValue } from "../../../properties/types/theme-value"
+import { ValueType } from "../../../properties"
 import { Value } from "../../../properties/types/value"
+import { ThemeValue } from "../../../properties/types/value-theme"
 import { isCompoundValue } from "../compound/is-compound-value"
 
 /**

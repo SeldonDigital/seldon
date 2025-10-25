@@ -200,10 +200,6 @@ export function handleAddBoard(
 
     // For AI operations, we want to be more strict about validation failures
     if (options.isAiOperation && !validation.isValid) {
-      console.warn(
-        `Add board validation failed for component ${payload.componentId}:`,
-        validation.errors,
-      )
       // Continue execution but log the issues for AI debugging
     }
   }
@@ -246,6 +242,7 @@ export function handleAddBoard(
         draft.boards[componentId] = {
           label: workspaceService.getInitialBoardLabel(componentId),
           id: componentId,
+          component: componentId,
           theme: "default",
           variants: [newVariantId],
           properties: {},

@@ -1,6 +1,6 @@
 import { ThemeShadowKey, ThemeSwatchKey } from "../../../../themes/types"
 import { Restricted } from "../../../types/helpers"
-import { EmptyValue } from "../../shared/empty"
+import { EmptyValue } from "../../shared/empty/empty"
 import { ShadowBlurValue } from "./shadow-blur"
 import { ShadowBrightnessValue } from "./shadow-brightness"
 import { ShadowColorValue } from "./shadow-color"

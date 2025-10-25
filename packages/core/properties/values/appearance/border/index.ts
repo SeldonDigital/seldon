@@ -3,9 +3,9 @@ import {
   ThemeBorderWidthKey,
   ThemeSwatchKey,
 } from "../../../../themes/types"
-import { BorderStyle } from "../../../constants"
 import { Restricted } from "../../../types/helpers"
-import { EmptyValue } from "../../shared/empty"
+import { BorderStyle } from "../../../values"
+import { EmptyValue } from "../../shared/empty/empty"
 import { BorderBrightnessValue } from "./border-brightness"
 import { BorderColorValue } from "./border-color"
 import { BorderOpacityValue } from "./border-opacity"

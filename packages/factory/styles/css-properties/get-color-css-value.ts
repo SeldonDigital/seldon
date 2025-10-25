@@ -7,7 +7,9 @@ import {
 import { applyBrightness } from "@seldon/core/helpers/color/apply-brightness"
 import {
   hexToHSLObject,
+  parseHSLString,
   rgbToHSL,
+  toHSLString,
 } from "@seldon/core/helpers/color/convert-color"
 import { HSLObjectToString } from "@seldon/core/helpers/color/hsl-object-to-string"
 import { LCHObjectToString } from "@seldon/core/helpers/color/lch-object-to-string"
@@ -17,7 +19,11 @@ import { resolveValue } from "@seldon/core/helpers/resolution/resolve-value"
 import { isHSLObject } from "@seldon/core/helpers/type-guards/color/is-hsl-object"
 import { isLCHObject } from "@seldon/core/helpers/type-guards/color/is-lch-object"
 import { isRGBObject } from "@seldon/core/helpers/type-guards/color/is-rgb-object"
-import { isHex } from "@seldon/core/helpers/validation"
+import {
+  isHSLString,
+  isHex,
+  isRGBString,
+} from "@seldon/core/helpers/validation"
 import { Theme } from "@seldon/core/themes/types"
 
 /**
@@ -66,8 +72,31 @@ export function getColorCSSValue({
           const hsl = hexToHSLObject(resolvedColor.value)
           const correctedHSL = applyBrightness(hsl, resolvedBrightness)
           return HSLObjectToString(correctedHSL, resolvedOpacity)
+        } else if (isHSLString(resolvedColor.value)) {
+          // brightness is undefined or 0: don't convert to HSL
+          if (!resolvedBrightness) {
+            return resolvedColor.value
+          }
+
+          const hsl = parseHSLString(resolvedColor.value)
+          const correctedHSL = applyBrightness(hsl, resolvedBrightness)
+          return HSLObjectToString(correctedHSL, resolvedOpacity)
+        } else if (isRGBString(resolvedColor.value)) {
+          // brightness is undefined or 0: don't convert to HSL
+          if (!resolvedBrightness) {
+            return resolvedColor.value
+          }
+
+          const hslString = toHSLString(resolvedColor.value)
+          const hsl = parseHSLString(hslString)
+          const correctedHSL = applyBrightness(hsl, resolvedBrightness)
+          return HSLObjectToString(correctedHSL, resolvedOpacity)
         } else {
-          throw new Error(`Invalid color string: ${resolvedColor.value}`)
+          // Handle invalid color strings gracefully - fall back to transparent
+          console.warn(
+            `Invalid color string: ${resolvedColor.value}. Falling back to transparent.`,
+          )
+          return "transparent"
         }
       }
 
@@ -83,22 +112,40 @@ export function getColorCSSValue({
       }
 
       if (isHSLObject(resolvedColor.value)) {
-        const correctedHSL = applyBrightness(
-          resolvedColor.value,
-          resolvedBrightness,
-        )
-        return HSLObjectToString(correctedHSL, resolvedOpacity)
+        try {
+          const correctedHSL = applyBrightness(
+            resolvedColor.value,
+            resolvedBrightness,
+          )
+          return HSLObjectToString(correctedHSL, resolvedOpacity)
+        } catch (error) {
+          console.warn(
+            `Failed to process HSL object: ${JSON.stringify(resolvedColor.value)}. Falling back to transparent.`,
+          )
+          return "transparent"
+        }
       }
 
       if (isLCHObject(resolvedColor.value)) {
-        const correctedLCH = applyBrightness(
-          resolvedColor.value,
-          resolvedBrightness,
-        )
-        return LCHObjectToString(correctedLCH, resolvedOpacity)
+        try {
+          const correctedLCH = applyBrightness(
+            resolvedColor.value,
+            resolvedBrightness,
+          )
+          return LCHObjectToString(correctedLCH, resolvedOpacity)
+        } catch (error) {
+          console.warn(
+            `Failed to process LCH object: ${JSON.stringify(resolvedColor.value)}. Falling back to transparent.`,
+          )
+          return "transparent"
+        }
       }
 
-      throw new Error(`Invalid exact color: ${JSON.stringify(resolvedColor)}`)
+      // Handle invalid exact colors gracefully - fall back to transparent
+      console.warn(
+        `Invalid exact color: ${JSON.stringify(resolvedColor)}. Falling back to transparent.`,
+      )
+      return "transparent"
     default:
       // @ts-expect-error - We should never reach this point
       throw new Error(`Invalid color type: ${resolvedColor.type}`)

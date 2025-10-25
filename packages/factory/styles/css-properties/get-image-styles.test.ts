@@ -1,6 +1,6 @@
 import { describe, expect, it } from "bun:test"
 import { Properties, ValueType } from "@seldon/core"
-import { ImageFit } from "@seldon/core/properties/constants"
+import { ImageFit } from "@seldon/core/properties"
 import { getImageStyles } from "./get-image-styles"
 
 describe("getImageStyles", () => {

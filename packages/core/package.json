@@ -53,10 +53,6 @@
       "default": "./properties/types/index.ts"
     },
     "./*": {
-      "types": [
-        "./*.ts",
-        "./*.tsx"
-      ],
       "node": {
         "development": "./*.ts",
         "default": "./dist/*.js"

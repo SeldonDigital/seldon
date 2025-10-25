@@ -12,10 +12,6 @@ export function handleSchemaError(
   operation: string,
   error: unknown,
 ): string {
-  console.warn(
-    `Failed to get schema for component ${componentId} during ${operation}, using fallback:`,
-    error,
-  )
   return `Unknown Component (${componentId})`
 }
 
@@ -37,8 +33,4 @@ export function generateFallbackId(type: string, originalId: string): string {
 export function handleNodeNotFoundError(
   nodeId: string,
   operation: string,
-): void {
-  console.warn(
-    `Node ${nodeId} not found in workspace during ${operation}, skipping operation`,
-  )
-}
+): void {}

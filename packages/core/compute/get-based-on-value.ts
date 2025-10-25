@@ -1,8 +1,8 @@
 import { isCompoundValue } from "../helpers/type-guards/compound/is-compound-value"
 import { findInObject } from "../helpers/utils/find-in-object"
 import {
+  AtomicValue,
   ComputedValue,
-  PrimitiveValue,
   Value,
   ValueType,
   invariant,
@@ -21,7 +21,7 @@ export function getBasedOnValue(
   computedValue: ComputedValue,
   // Theme is not needed for this function and is not available when creating or resolving tokens
   context: Omit<ComputeContext, "theme">,
-): PrimitiveValue {
+): AtomicValue {
   let value: Value | undefined = undefined
   const { basedOn } = computedValue.value.input
 
@@ -54,7 +54,6 @@ export function getBasedOnValue(
   }
 
   if (!value) {
-    console.error(context)
     throw new Error(`Based on value not found for ${basedOn}.`)
   }
 
@@ -63,5 +62,5 @@ export function getBasedOnValue(
     `Based on value must be a primitive value, got ${JSON.stringify(value)}`,
   )
 
-  return value as PrimitiveValue
+  return value as AtomicValue
 }

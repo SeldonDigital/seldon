@@ -5,7 +5,7 @@ import {
   ComponentLevel,
 } from "../../components/constants"
 import { ComponentSchema } from "../../components/types"
-import { Display, Unit, ValueType } from "../../index"
+import { Display, Resize, Unit, ValueType } from "../../index"
 import { validateComponent } from "./validate-component"
 
 const validComponent: ComponentSchema = {
@@ -47,6 +47,14 @@ const validComponent: ComponentSchema = {
     opacity: {
       type: ValueType.EMPTY,
       value: null,
+    },
+    width: {
+      type: ValueType.PRESET,
+      value: Resize.FIT,
+    },
+    height: {
+      type: ValueType.PRESET,
+      value: Resize.FIT,
     },
     rotation: {
       type: ValueType.EMPTY,

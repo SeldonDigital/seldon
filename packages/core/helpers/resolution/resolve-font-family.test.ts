@@ -1,6 +1,6 @@
 import { describe, expect, it } from "bun:test"
 import { ValueType } from "../../index"
-import { EmptyValue } from "../../properties/values/shared/empty"
+import { EmptyValue } from "../../properties/values/shared/empty/empty"
 import {
   FontFamilyPresetValue,
   FontFamilyValue,
@@ -10,6 +10,23 @@ import testTheme from "../../themes/test/test-theme"
 import { resolveFontFamily } from "./resolve-font-family"
 
 describe("resolveFontFamily", () => {
+  it("should return exact font family values unchanged", () => {
+    const exactFontFamily: FontFamilyPresetValue = {
+      type: ValueType.EXACT,
+      value: "Arial, sans-serif",
+    }
+
+    const result = resolveFontFamily({
+      fontFamily: exactFontFamily,
+      theme: testTheme,
+    })
+
+    expect(result).toEqual({
+      type: ValueType.PRESET,
+      value: "Arial, sans-serif",
+    })
+  })
+
   it("should return preset font family values unchanged", () => {
     const presetFontFamily: FontFamilyPresetValue = {
       type: ValueType.PRESET,
@@ -47,7 +64,7 @@ describe("resolveFontFamily", () => {
     expect(result).toBeUndefined()
   })
 
-  it("should resolve theme categorical primary font family", () => {
+  it("should resolve theme categorical primary font family to preset value", () => {
     const themeFontFamily: FontFamilyThemeValue = {
       type: ValueType.THEME_CATEGORICAL,
       value: "@fontFamily.primary",
@@ -64,7 +81,7 @@ describe("resolveFontFamily", () => {
     })
   })
 
-  it("should resolve theme categorical secondary font family", () => {
+  it("should resolve theme categorical secondary font family to preset value", () => {
     const themeFontFamily: FontFamilyThemeValue = {
       type: ValueType.THEME_CATEGORICAL,
       value: "@fontFamily.secondary",
@@ -92,10 +109,12 @@ describe("resolveFontFamily", () => {
 
     expect(() => {
       resolveFontFamily({
-        fontFamily: computedFontFamily as unknown as FontFamilyValue,
+        fontFamily: computedFontFamily as FontFamilyValue,
         theme: testTheme,
       })
-    }).toThrow("resolveFontFamily received a COMPUTED value")
+    }).toThrow(
+      "resolveFontFamily received a COMPUTED value. This should have been computed in the compute function.",
+    )
   })
 
   it("should throw error for non-existent theme values", () => {
@@ -106,7 +125,7 @@ describe("resolveFontFamily", () => {
 
     expect(() => {
       resolveFontFamily({
-        fontFamily: invalidThemeFontFamily as unknown as FontFamilyValue,
+        fontFamily: invalidThemeFontFamily as FontFamilyValue,
         theme: testTheme,
       })
     }).toThrow("Theme value @fontFamily.nonexistent not found")
@@ -120,9 +139,9 @@ describe("resolveFontFamily", () => {
 
     expect(() => {
       resolveFontFamily({
-        fontFamily: invalidFontFamily as unknown as FontFamilyValue,
+        fontFamily: invalidFontFamily as FontFamilyValue,
         theme: testTheme,
       })
-    }).toThrow("Invalid font family type")
+    }).toThrow("Invalid font family type INVALID")
   })
 })

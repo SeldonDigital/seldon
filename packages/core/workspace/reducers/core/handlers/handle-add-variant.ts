@@ -28,10 +28,6 @@ export function handleAddVariant(
 
     // For AI operations, we want to be more strict about validation failures
     if (options.isAiOperation && !validation.isValid) {
-      console.warn(
-        `Add variant validation failed for component ${payload.componentId}:`,
-        validation.errors,
-      )
       // Continue execution but log the issues for AI debugging
     }
   }

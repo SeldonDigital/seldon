@@ -665,10 +665,6 @@ function analyzeDesiredStructure(
     return applyAIActionsToStructure(baseStructure, actions, componentId)
   } catch (error) {
     // Handle invalid component IDs gracefully
-    console.warn(
-      `Failed to analyze desired structure for component ${componentId}:`,
-      error,
-    )
     return {
       component: componentId,
       children: [],
@@ -981,9 +977,6 @@ function validatePropertyValue(
     }
 
     if (!allowedValues.includes(valueToCompare)) {
-      console.warn(
-        `Property ${propertyKey} value ${valueToCompare} is not allowed for component ${componentId}. Allowed values: ${allowedValues.join(", ")}`,
-      )
       return false
     }
   }
@@ -1028,9 +1021,6 @@ function validateCompoundProperty(
       }
 
       if (!allowedValues.includes(valueToCompare)) {
-        console.warn(
-          `Property ${propertyKey}.${subPropertyKey} value ${valueToCompare} is not allowed for component ${componentId}. Allowed values: ${allowedValues.join(", ")}`,
-        )
         return false
       }
     }
@@ -1344,9 +1334,6 @@ export function createMissingVariants(
     try {
       // Validate the desired structure before processing
       if (!validateComponentStructure(componentId, desiredStructure)) {
-        console.warn(
-          `Invalid structure for component ${componentId}, skipping variant creation`,
-        )
         continue
       }
 
@@ -1380,16 +1367,9 @@ export function createMissingVariants(
             workspaceWithVariant,
           )
         } else {
-          console.warn(
-            `Created variant ${newVariantId} does not match desired structure for component ${componentId}`,
-          )
         }
       }
     } catch (error) {
-      console.warn(
-        `Failed to create variant for component ${componentId}:`,
-        error,
-      )
       // Continue processing other components instead of failing completely
     }
   }
@@ -1425,10 +1405,6 @@ function validateComponentStructure(
 
     return true
   } catch (error) {
-    console.warn(
-      `Error validating structure for component ${componentId}:`,
-      error,
-    )
     return false
   }
 }
@@ -1454,7 +1430,6 @@ function validateCreatedVariant(
     // Compare the created structure with the desired structure
     return compareComponentStructures(desiredStructure, createdStructure)
   } catch (error) {
-    console.warn(`Error validating created variant ${variantId}:`, error)
     return false
   }
 }
@@ -1616,10 +1591,6 @@ function createCustomVariant(
                     childInstances.push(level3Instance)
                     level3Ids.push(level3Id)
                   } catch (error) {
-                    console.warn(
-                      `Failed to create level3 child ${level3Structure.component}:`,
-                      error,
-                    )
                     // Continue with other children
                   }
                 }
@@ -1629,10 +1600,6 @@ function createCustomVariant(
               childInstances.push(level2Instance)
               level2Ids.push(level2Id)
             } catch (error) {
-              console.warn(
-                `Failed to create level2 child ${level2Structure.component}:`,
-                error,
-              )
               // Continue with other children
             }
           }
@@ -1642,10 +1609,6 @@ function createCustomVariant(
         childInstances.push(childInstance)
         childIds.push(childId)
       } catch (error) {
-        console.warn(
-          `Failed to create child ${childStructure.component}:`,
-          error,
-        )
         // Continue with other children
       }
     }
@@ -1670,10 +1633,6 @@ function createCustomVariant(
 
     return { variantId, workspace: updatedWorkspace }
   } catch (error) {
-    console.warn(
-      `Failed to create custom variant for component ${componentId}:`,
-      error,
-    )
     // Return the original workspace if variant creation fails
     return {
       variantId: `variant-${componentId}-failed-${Date.now()}`,

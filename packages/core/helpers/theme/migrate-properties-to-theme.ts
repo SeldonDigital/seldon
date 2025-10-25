@@ -1,11 +1,11 @@
 import { WritableDraft } from "immer"
 import { isEqual } from "lodash"
 import { Workspace } from "../../index"
-import { ValueType } from "../../properties/constants/value-types"
+import { ValueType } from "../../properties"
 import { PropertyKey, SubPropertyKey } from "../../properties/types/properties"
-import { ThemeValue } from "../../properties/types/theme-value"
 import { Value } from "../../properties/types/value"
-import { HSL } from "../../properties/values/color/hsl"
+import { ThemeValue } from "../../properties/types/value-theme"
+import { HSL } from "../../properties/values/shared/exact/hsl"
 import { Theme, ThemeId, ThemeOption } from "../../themes/types"
 import { canNodeHaveChildren } from "../../workspace/helpers/can-node-have-children"
 import { getNodeProperties } from "../../workspace/helpers/get-node-properties"
@@ -14,6 +14,7 @@ import { workspaceService } from "../../workspace/services/workspace.service"
 import { Instance, InstanceId, Variant, VariantId } from "../../workspace/types"
 import { isCompoundProperty } from "../type-guards/compound/is-compound-property"
 import { isThemeValue } from "../type-guards/value/is-theme-value"
+import { isThemeValueKey } from "../validation/theme"
 import { getThemeKeyComponents } from "./get-theme-key-components"
 import { getThemeOption } from "./get-theme-option"
 
@@ -158,6 +159,17 @@ function findMatchingThemeOption(
  */
 function migrateSwatchValue(context: MigrationContext): boolean {
   const { value, newTheme, node, propertyKey, subpropertyKey } = context
+
+  // Handle null values
+  if (!value.value) {
+    return false
+  }
+
+  // Validate that the value is a valid theme key
+  if (!isThemeValueKey(value.value)) {
+    return false
+  }
+
   const { section, optionId } = getThemeKeyComponents(value.value)
 
   let currentOption: ThemeOption | undefined
@@ -212,6 +224,17 @@ function migrateSwatchValue(context: MigrationContext): boolean {
 function migrateNonSwatchValue(context: MigrationContext): boolean {
   const { value, currentTheme, newTheme, node, propertyKey, subpropertyKey } =
     context
+
+  // Handle null values
+  if (!value.value) {
+    return false
+  }
+
+  // Validate that the value is a valid theme key
+  if (!isThemeValueKey(value.value)) {
+    return false
+  }
+
   const { section, optionId } = getThemeKeyComponents(value.value)
 
   let currentOption: ThemeOption | undefined
@@ -320,6 +343,16 @@ function migrateThemeValue({
   propertyKey: PropertyKey
   subpropertyKey?: SubPropertyKey
 }) {
+  // Handle null values
+  if (!value.value) {
+    return
+  }
+
+  // Validate that the value is a valid theme key
+  if (!isThemeValueKey(value.value)) {
+    return
+  }
+
   const { section } = getThemeKeyComponents(value.value)
 
   const context: MigrationContext = {
@@ -381,6 +414,11 @@ function detachThemeValue({
   propertyKey: PropertyKey
   subpropertyKey?: SubPropertyKey
 }) {
+  // Handle null values
+  if (!value.value) {
+    return
+  }
+
   const themeOption = getThemeOption(value.value, currentTheme)
 
   if (

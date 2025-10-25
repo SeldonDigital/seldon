@@ -13,8 +13,8 @@ export function handleSetCustomThemeFontValue(
   workspace: Workspace,
 ): Workspace {
   return produce(workspace, (draft) => {
-    draft.customTheme.font[payload.key].value = {
-      ...draft.customTheme.font[payload.key].value,
+    draft.customTheme.font[payload.key].parameters = {
+      ...draft.customTheme.font[payload.key].parameters,
       ...payload.value,
     }
   })

@@ -1,4 +1,4 @@
-import { EmptyValue } from "../values/shared/empty"
+import { EmptyValue } from "../values/shared/empty/empty"
 
 export type Restricted<T, R> = T & {
   restrictions?: {

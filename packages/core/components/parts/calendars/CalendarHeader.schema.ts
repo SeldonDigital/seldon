@@ -1,4 +1,4 @@
-import * as Sdn from "../../../properties/constants"
+import * as Sdn from "../../../properties"
 import * as Seldon from "../../constants"
 import { ComponentExport, ComponentSchema } from "../../types"
 
@@ -51,7 +51,7 @@ export const schema = {
     },
     align: {
       type: Sdn.ValueType.PRESET,
-      value: Sdn.Alignment.CENTER_LEFT,
+      value: Sdn.Align.CENTER_LEFT,
     },
     width: {
       type: Sdn.ValueType.PRESET,

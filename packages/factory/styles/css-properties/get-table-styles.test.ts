@@ -1,5 +1,5 @@
 import { describe, expect, it } from "bun:test"
-import { Alignment, BorderCollapse, Properties, ValueType } from "@seldon/core"
+import { Align, BorderCollapse, Properties, ValueType } from "@seldon/core"
 import testTheme from "@seldon/core/themes/test/test-theme"
 import { getTableStyles } from "./get-table-styles"
 
@@ -42,7 +42,7 @@ describe("getTableStyles", () => {
     const properties: Properties = {
       cellAlign: {
         type: ValueType.PRESET,
-        value: Alignment.TOP_LEFT,
+        value: Align.TOP_LEFT,
       },
     }
 
@@ -56,7 +56,7 @@ describe("getTableStyles", () => {
     const properties: Properties = {
       cellAlign: {
         type: ValueType.PRESET,
-        value: Alignment.TOP_CENTER,
+        value: Align.TOP_CENTER,
       },
     }
 
@@ -70,7 +70,7 @@ describe("getTableStyles", () => {
     const properties: Properties = {
       cellAlign: {
         type: ValueType.PRESET,
-        value: Alignment.TOP_RIGHT,
+        value: Align.TOP_RIGHT,
       },
     }
 
@@ -84,7 +84,7 @@ describe("getTableStyles", () => {
     const properties: Properties = {
       cellAlign: {
         type: ValueType.PRESET,
-        value: Alignment.CENTER_LEFT,
+        value: Align.CENTER_LEFT,
       },
     }
 
@@ -98,7 +98,7 @@ describe("getTableStyles", () => {
     const properties: Properties = {
       cellAlign: {
         type: ValueType.PRESET,
-        value: Alignment.CENTER,
+        value: Align.CENTER,
       },
     }
 
@@ -112,7 +112,7 @@ describe("getTableStyles", () => {
     const properties: Properties = {
       cellAlign: {
         type: ValueType.PRESET,
-        value: Alignment.CENTER_RIGHT,
+        value: Align.CENTER_RIGHT,
       },
     }
 
@@ -126,7 +126,7 @@ describe("getTableStyles", () => {
     const properties: Properties = {
       cellAlign: {
         type: ValueType.PRESET,
-        value: Alignment.BOTTOM_LEFT,
+        value: Align.BOTTOM_LEFT,
       },
     }
 
@@ -140,7 +140,7 @@ describe("getTableStyles", () => {
     const properties: Properties = {
       cellAlign: {
         type: ValueType.PRESET,
-        value: Alignment.BOTTOM_CENTER,
+        value: Align.BOTTOM_CENTER,
       },
     }
 
@@ -154,7 +154,7 @@ describe("getTableStyles", () => {
     const properties: Properties = {
       cellAlign: {
         type: ValueType.PRESET,
-        value: Alignment.BOTTOM_RIGHT,
+        value: Align.BOTTOM_RIGHT,
       },
     }
 
@@ -168,7 +168,7 @@ describe("getTableStyles", () => {
     const properties: Properties = {
       cellAlign: {
         type: ValueType.PRESET,
-        value: Alignment.AUTO,
+        value: Align.AUTO,
       },
     }
 
@@ -208,7 +208,7 @@ describe("getTableStyles", () => {
     const properties: Properties = {
       cellAlign: {
         type: ValueType.PRESET,
-        value: Alignment.CENTER,
+        value: Align.CENTER,
       },
       borderCollapse: {
         type: ValueType.PRESET,
@@ -253,7 +253,7 @@ describe("getTableStyles", () => {
     const properties: Properties = {
       cellAlign: {
         type: ValueType.PRESET,
-        value: Alignment.TOP_LEFT,
+        value: Align.TOP_LEFT,
       },
     }
 
@@ -267,7 +267,7 @@ describe("getTableStyles", () => {
     const properties: Properties = {
       cellAlign: {
         type: ValueType.PRESET,
-        value: Alignment.CENTER,
+        value: Align.CENTER,
       },
     }
 
@@ -281,7 +281,7 @@ describe("getTableStyles", () => {
     const properties: Properties = {
       cellAlign: {
         type: ValueType.PRESET,
-        value: Alignment.CENTER,
+        value: Align.CENTER,
       },
     }
 
@@ -295,7 +295,7 @@ describe("getTableStyles", () => {
     const properties: Properties = {
       cellAlign: {
         type: ValueType.PRESET,
-        value: Alignment.CENTER,
+        value: Align.CENTER,
       },
     }
 
@@ -361,7 +361,7 @@ describe("getTableStyles", () => {
     const properties: Properties = {
       cellAlign: {
         type: ValueType.PRESET,
-        value: Alignment.TOP_LEFT,
+        value: Align.TOP_LEFT,
       },
       borderCollapse: {
         type: ValueType.PRESET,
@@ -386,7 +386,7 @@ describe("getTableStyles", () => {
     const properties: Properties = {
       cellAlign: {
         type: ValueType.PRESET,
-        value: Alignment.CENTER,
+        value: Align.CENTER,
       },
       borderCollapse: {
         type: ValueType.PRESET,
@@ -405,15 +405,15 @@ describe("getTableStyles", () => {
 
   it("should handle all alignment values", () => {
     const alignments = [
-      Alignment.TOP_LEFT,
-      Alignment.TOP_CENTER,
-      Alignment.TOP_RIGHT,
-      Alignment.CENTER_LEFT,
-      Alignment.CENTER,
-      Alignment.CENTER_RIGHT,
-      Alignment.BOTTOM_LEFT,
-      Alignment.BOTTOM_CENTER,
-      Alignment.BOTTOM_RIGHT,
+      Align.TOP_LEFT,
+      Align.TOP_CENTER,
+      Align.TOP_RIGHT,
+      Align.CENTER_LEFT,
+      Align.CENTER,
+      Align.CENTER_RIGHT,
+      Align.BOTTOM_LEFT,
+      Align.BOTTOM_CENTER,
+      Align.BOTTOM_RIGHT,
     ]
 
     alignments.forEach((alignment) => {
@@ -492,7 +492,7 @@ describe("getTableStyles", () => {
     const properties: Properties = {
       cellAlign: {
         type: ValueType.PRESET,
-        value: Alignment.AUTO,
+        value: Align.AUTO,
       },
     }
 

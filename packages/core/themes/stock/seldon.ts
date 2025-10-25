@@ -1,12 +1,14 @@
-import { BackgroundRepeat } from "../../properties/constants/background-repeats"
-import { BorderStyle } from "../../properties/constants/border-styles"
-import { BorderWidth } from "../../properties/constants/border-widths"
-import { FontStyle } from "../../properties/constants/font-styles"
-import { GradientType } from "../../properties/constants/gradient-types"
-import { ImageFit } from "../../properties/constants/image-fits"
-import { TextCasing } from "../../properties/constants/text-cases"
-import { Unit } from "../../properties/constants/units"
-import { ValueType } from "../../properties/constants/value-types"
+import {
+  BackgroundRepeat,
+  BorderStyle,
+  BorderWidth,
+  FontStyle,
+  GradientType,
+  ImageFit,
+  TextCasing,
+  Unit,
+  ValueType,
+} from "../../properties"
 import { computeTheme } from "../helpers/compute-theme"
 import { Harmony, Ratio, StaticTheme } from "../types"
 
@@ -135,6 +137,18 @@ const theme: StaticTheme = {
       type: "hsl",
       value: { hue: 300, saturation: 76, lightness: 48 },
     },
+    custom6: {
+      name: "Charcoal",
+      intent: "Background color for dark mode",
+      type: "hsl",
+      value: { hue: 0, saturation: 0, lightness: 15 },
+    },
+    custom7: {
+      name: "Pearl",
+      intent: "Background color for light mode",
+      type: "hsl",
+      value: { hue: 0, saturation: 0, lightness: 96 },
+    },
   },
 
   // Background values
@@ -247,7 +261,7 @@ const theme: StaticTheme = {
     display: {
       name: "Display",
       intent: "For display text, often H1",
-      value: {
+      parameters: {
         family: {
           type: ValueType.THEME_CATEGORICAL,
           value: "@fontFamily.secondary",
@@ -269,7 +283,7 @@ const theme: StaticTheme = {
     heading: {
       name: "Heading",
       intent: "For heading text, often H2",
-      value: {
+      parameters: {
         family: {
           type: ValueType.THEME_CATEGORICAL,
           value: "@fontFamily.secondary",
@@ -291,7 +305,7 @@ const theme: StaticTheme = {
     subheading: {
       name: "Subheading",
       intent: "For subheading text, often H3",
-      value: {
+      parameters: {
         family: {
           type: ValueType.THEME_CATEGORICAL,
           value: "@fontFamily.secondary",
@@ -310,7 +324,7 @@ const theme: StaticTheme = {
     title: {
       name: "Title",
       intent: "For title text, often H4",
-      value: {
+      parameters: {
         family: {
           type: ValueType.THEME_CATEGORICAL,
           value: "@fontFamily.primary",
@@ -329,7 +343,7 @@ const theme: StaticTheme = {
     subtitle: {
       name: "Subtitle",
       intent: "For subtitle text, often H5",
-      value: {
+      parameters: {
         family: {
           type: ValueType.THEME_CATEGORICAL,
           value: "@fontFamily.primary",
@@ -348,7 +362,7 @@ const theme: StaticTheme = {
     callout: {
       name: "Callout",
       intent: "For callout text, sometimes H6",
-      value: {
+      parameters: {
         family: {
           type: ValueType.THEME_CATEGORICAL,
           value: "@fontFamily.primary",
@@ -367,7 +381,7 @@ const theme: StaticTheme = {
     body: {
       name: "Body",
       intent: "For general text",
-      value: {
+      parameters: {
         family: {
           type: ValueType.THEME_CATEGORICAL,
           value: "@fontFamily.primary",
@@ -386,7 +400,7 @@ const theme: StaticTheme = {
     label: {
       name: "Label",
       intent: "For labels on form elements",
-      value: {
+      parameters: {
         family: {
           type: ValueType.THEME_CATEGORICAL,
           value: "@fontFamily.primary",
@@ -408,7 +422,7 @@ const theme: StaticTheme = {
     tagline: {
       name: "Tagline",
       intent: "For supporting text on images and diagrams",
-      value: {
+      parameters: {
         family: {
           type: ValueType.THEME_CATEGORICAL,
           value: "@fontFamily.primary",
@@ -427,7 +441,7 @@ const theme: StaticTheme = {
     code: {
       name: "Code",
       intent: "For displaying code-like snippets",
-      value: {
+      parameters: {
         family: { type: ValueType.PRESET, value: "Inconsolata" },
         style: { type: ValueType.PRESET, value: FontStyle.NORMAL },
         weight: { type: ValueType.THEME_ORDINAL, value: "@fontWeight.normal" },

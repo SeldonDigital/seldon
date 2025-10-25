@@ -87,7 +87,7 @@ export class NodeOperationsService {
     componentId: ComponentId,
     workspace: Workspace,
   ): Workspace {
-    return mutateWorkspace(workspace, (draft) => {
+    const workspaceAfterDeletion = mutateWorkspace(workspace, (draft) => {
       const board = draft.boards[componentId]
       if (!board) return
 
@@ -110,6 +110,9 @@ export class NodeOperationsService {
 
       delete draft.boards[componentId]
     })
+
+    // Realign board order after deletion to fix order indices
+    return workspaceService.realignBoardOrder(workspaceAfterDeletion)
   }
 
   /**
@@ -321,10 +324,6 @@ export class NodeOperationsService {
 
       return { newId, workspace: newWorkspace }
     } catch (error) {
-      console.warn(
-        `Failed to duplicate variant ${nodeId}, returning fallback:`,
-        error,
-      )
       return {
         newId: generateFallbackId("variant", nodeId) as VariantId,
         workspace,
@@ -367,10 +366,6 @@ export class NodeOperationsService {
 
       return { newId, workspace: newWorkspace }
     } catch (error) {
-      console.warn(
-        `Failed to duplicate instance ${nodeId}, returning fallback:`,
-        error,
-      )
       return {
         newId: generateFallbackId("instance", nodeId) as InstanceId,
         workspace,
@@ -396,10 +391,6 @@ export class NodeOperationsService {
 
       return this._instantiateVariant(node.id, workspace)
     } catch (error) {
-      console.warn(
-        `Failed to instantiate node ${nodeId}, returning fallback:`,
-        error,
-      )
       return {
         newId: generateFallbackId("node", nodeId) as InstanceId,
         workspace,
@@ -459,10 +450,6 @@ export class NodeOperationsService {
 
       return { newId, workspace: newWorkspace }
     } catch (error) {
-      console.warn(
-        `Failed to instantiate variant ${nodeId}, returning fallback:`,
-        error,
-      )
       return {
         newId: generateFallbackId("variant-instance", nodeId) as InstanceId,
         workspace,
@@ -507,10 +494,6 @@ export class NodeOperationsService {
 
       return { newId, workspace: newWorkspace }
     } catch (error) {
-      console.warn(
-        `Failed to instantiate instance ${nodeId}, returning fallback:`,
-        error,
-      )
       return {
         newId: generateFallbackId("instance-instance", nodeId) as InstanceId,
         workspace,

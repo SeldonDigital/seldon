@@ -1,6 +1,6 @@
 import { describe, expect, it } from "bun:test"
 import { ComputedFunction, Properties, Unit, ValueType } from "@seldon/core"
-import { BorderStyle } from "@seldon/core/properties/constants/border-styles"
+import { BorderStyle } from "@seldon/core"
 import testTheme from "@seldon/core/themes/test/test-theme"
 import { StyleGenerationContext } from "../types"
 import { getCssObjectFromProperties } from "./get-css-object-from-properties"
@@ -429,5 +429,28 @@ describe("getCssObjectFromProperties", () => {
     const result = getCssObjectFromProperties(properties, context)
 
     expect(result).toEqual({}) // No border styles generated
+  })
+
+  it("should handle invalid color values gracefully without crashing", () => {
+    const properties: Properties = {
+      color: {
+        type: ValueType.EXACT,
+        value: "rgb(0 0 280)", // Invalid RGB value (blue component out of range)
+      },
+    }
+
+    const context: StyleGenerationContext = {
+      properties,
+      parentContext: null,
+      theme: testTheme,
+    }
+
+    // This should not throw an error, but should return empty styles for the invalid color
+    const result = getCssObjectFromProperties(properties, context)
+
+    // The result should not contain the invalid color property
+    expect(result.color).toBeUndefined()
+    // But other valid properties should still be processed
+    expect(result).toBeDefined()
   })
 })

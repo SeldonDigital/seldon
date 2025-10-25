@@ -169,4 +169,26 @@ describe("getAbsoluteSizeCssValue", () => {
     expect(result).toContain("rem")
     expect(result).not.toContain("px")
   })
+
+  it("should handle corner rounded preset values", () => {
+    const roundedValue: CornerRoundedValue = {
+      type: ValueType.PRESET,
+      value: Corner.ROUNDED,
+    }
+
+    const result = getAbsoluteSizeCssValue(roundedValue, testTheme)
+
+    expect(result).toBe("99999px")
+  })
+
+  it("should handle corner squared preset values", () => {
+    const squaredValue: CornerSquaredValue = {
+      type: ValueType.PRESET,
+      value: Corner.SQUARED,
+    }
+
+    const result = getAbsoluteSizeCssValue(squaredValue, testTheme)
+
+    expect(result).toBe("0px")
+  })
 })

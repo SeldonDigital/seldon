@@ -15,6 +15,7 @@ export const WORKSPACE_FIXTURE = {
     cardProduct: {
       label: "Product Cards",
       id: "cardProduct",
+      component: "icon",
       theme: "default",
       variants: ["variant-cardProduct-default"],
       properties: {},
@@ -23,6 +24,7 @@ export const WORKSPACE_FIXTURE = {
     barButtons: {
       label: "Button Bars",
       id: "barButtons",
+      component: "barButtons",
       theme: "default",
       variants: ["variant-barButtons-default"],
       properties: {},
@@ -31,6 +33,7 @@ export const WORKSPACE_FIXTURE = {
     textblockDetails: {
       label: "Textblock Details",
       id: "textblockDetails",
+      component: "textblockDetails",
       theme: "default",
       variants: ["variant-textblockDetails-default"],
       properties: {},
@@ -39,6 +42,7 @@ export const WORKSPACE_FIXTURE = {
     button: {
       label: "Buttons",
       id: "button",
+      component: "button",
       theme: "default",
       variants: ["variant-button-default", "variant-button-user"],
       properties: {},
@@ -47,6 +51,7 @@ export const WORKSPACE_FIXTURE = {
     tagline: {
       label: "Taglines",
       id: "tagline",
+      component: "icon",
       theme: "default",
       variants: ["variant-tagline-default"],
       properties: {},
@@ -55,6 +60,7 @@ export const WORKSPACE_FIXTURE = {
     title: {
       label: "Titles",
       id: "title",
+      component: "title",
       theme: "default",
       variants: ["variant-title-default"],
       properties: {},
@@ -63,6 +69,7 @@ export const WORKSPACE_FIXTURE = {
     description: {
       label: "Descriptions",
       id: "description",
+      component: "description",
       theme: "default",
       variants: ["variant-description-default"],
       properties: {},
@@ -71,6 +78,7 @@ export const WORKSPACE_FIXTURE = {
     icon: {
       label: "Icons",
       id: "icon",
+      component: "icon",
       theme: "default",
       variants: ["variant-icon-default"],
       properties: {},
@@ -79,6 +87,7 @@ export const WORKSPACE_FIXTURE = {
     label: {
       label: "Labels",
       id: "label",
+      component: "label",
       theme: "default",
       variants: ["variant-label-default"],
       properties: {},
@@ -94,7 +103,7 @@ export const WORKSPACE_FIXTURE = {
       fromSchema: true,
       theme: null,
       level: "part",
-      component: "cardProduct",
+      component: "icon",
       properties: {},
       children: [
         "child-textblockDetails-pv9tiJDS",
@@ -127,7 +136,7 @@ export const WORKSPACE_FIXTURE = {
       theme: null,
       variant: "variant-tagline-default",
       instanceOf: "child-tagline-tptC3MdT",
-      component: "tagline",
+      component: "icon",
       properties: {},
     },
     "child-title-r76mbOnL": {
@@ -139,7 +148,7 @@ export const WORKSPACE_FIXTURE = {
       theme: null,
       variant: "variant-title-default",
       instanceOf: "child-title-SAxMtXLz",
-      component: "title",
+      component: "icon",
       properties: {},
     },
     "child-description-lv9vOdyM": {
@@ -151,7 +160,7 @@ export const WORKSPACE_FIXTURE = {
       theme: null,
       variant: "variant-description-default",
       instanceOf: "child-description-d4HzSFND",
-      component: "description",
+      component: "icon",
       properties: {},
     },
     "child-barButtons-YwByDTnU": {
@@ -434,7 +443,7 @@ export const WORKSPACE_FIXTURE = {
       theme: null,
       variant: "variant-tagline-default",
       instanceOf: "variant-tagline-default",
-      component: "tagline",
+      component: "icon",
       properties: {},
     },
     "child-title-SAxMtXLz": {
@@ -446,7 +455,7 @@ export const WORKSPACE_FIXTURE = {
       theme: null,
       variant: "variant-title-default",
       instanceOf: "variant-title-default",
-      component: "title",
+      component: "icon",
       properties: {},
     },
     "child-description-d4HzSFND": {
@@ -458,7 +467,7 @@ export const WORKSPACE_FIXTURE = {
       theme: null,
       variant: "variant-description-default",
       instanceOf: "variant-description-default",
-      component: "description",
+      component: "icon",
       properties: {},
     },
     "variant-button-default": {
@@ -541,7 +550,7 @@ export const WORKSPACE_FIXTURE = {
       fromSchema: true,
       theme: null,
       level: "primitive",
-      component: "tagline",
+      component: "icon",
       properties: {},
     },
     "variant-title-default": {
@@ -552,7 +561,7 @@ export const WORKSPACE_FIXTURE = {
       fromSchema: true,
       theme: null,
       level: "primitive",
-      component: "title",
+      component: "icon",
       properties: {},
     },
     "variant-description-default": {
@@ -563,7 +572,7 @@ export const WORKSPACE_FIXTURE = {
       fromSchema: true,
       theme: null,
       level: "primitive",
-      component: "description",
+      component: "icon",
       properties: {},
     },
     "variant-icon-default": {

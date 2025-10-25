@@ -49,7 +49,7 @@ export function getJsonTreeFromChildren(
     let referenceMap: Record<string, string[]> = {}
     children = variant.children
       .filter(shouldExportChild)
-      .map((childId) => convertNode(childId, referenceMap))
+      .map((childId) => convertNode(childId, referenceMap, "", []))
   }
 
   const name = getComponentName(variant, workspace)
@@ -77,8 +77,22 @@ export function getJsonTreeFromChildren(
    * @returns True if the child should be exported, false otherwise
    */
   function shouldExportChild(child: InstanceId | VariantId) {
-    const childProperties = getNodeProperties(workspace.byId[child], workspace)
-    return childProperties.display?.value !== Display.EXCLUDE
+    try {
+      const childProperties = getNodeProperties(
+        workspace.byId[child],
+        workspace,
+      )
+      return childProperties.display?.value !== Display.EXCLUDE
+    } catch (error) {
+      // If we get a circular reference error, skip this child
+      if (
+        error instanceof Error &&
+        error.message.includes("Circular reference")
+      ) {
+        return false
+      }
+      throw error
+    }
   }
 
   /**
@@ -87,15 +101,40 @@ export function getJsonTreeFromChildren(
    * @param id - Node ID
    * @param referenceMap - Map of references
    * @param currentPath - Current path
+   * @param pathNodes - Array of node IDs in the current path (for circular reference detection)
    * @returns JSON tree
    */
   function convertNode(
     id: InstanceId | VariantId,
     referenceMap: Record<string, string[]>,
     currentPath: string = "",
+    pathNodes: string[] = [],
   ): JSONTreeNode {
+    // Check for circular reference - only within the current path
+    if (pathNodes.includes(id)) {
+      throw new Error(
+        `Circular reference detected: ${id} is already being processed in the current path`,
+      )
+    }
+
+    // Add current node to the path
+    const newPathNodes = [...pathNodes, id]
+
     const node = getNodeById(id, workspace)
-    const nodeProperties = getNodeProperties(node, workspace)
+    let nodeProperties: Properties
+    try {
+      nodeProperties = getNodeProperties(node, workspace)
+    } catch (error) {
+      // If we get a circular reference error, use empty properties
+      if (
+        error instanceof Error &&
+        error.message.includes("Circular reference")
+      ) {
+        nodeProperties = {}
+      } else {
+        throw error
+      }
+    }
     const name = getComponentName(node, workspace)
 
     let reference: string = camelCase(name)
@@ -114,7 +153,7 @@ export function getJsonTreeFromChildren(
 
       children = node.children
         .filter(shouldExportChild)
-        .map((child) => convertNode(child, referenceMap, path))
+        .map((child) => convertNode(child, referenceMap, path, newPathNodes))
     }
 
     // Convert the relative path in the tree (e.g. button2.icon) to a camelCase props name (e.g. button2IconProps)

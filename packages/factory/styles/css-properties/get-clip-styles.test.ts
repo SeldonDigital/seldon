@@ -42,4 +42,82 @@ describe("getClipStyles", () => {
 
     expect(result).toEqual({})
   })
+
+  it("should set overflow hidden when clip value is string 'true'", () => {
+    const properties: Properties = {
+      clip: { type: ValueType.EXACT, value: "true" },
+    }
+
+    const result = getClipStyles({ properties })
+
+    expect(result).toEqual({
+      overflow: "hidden",
+    })
+  })
+
+  it("should set overflow hidden when clip value is string 'on'", () => {
+    const properties: Properties = {
+      clip: { type: ValueType.EXACT, value: "on" },
+    }
+
+    const result = getClipStyles({ properties })
+
+    expect(result).toEqual({
+      overflow: "hidden",
+    })
+  })
+
+  it("should set overflow hidden when clip value is string 'On'", () => {
+    const properties: Properties = {
+      clip: { type: ValueType.EXACT, value: "On" },
+    }
+
+    const result = getClipStyles({ properties })
+
+    expect(result).toEqual({
+      overflow: "hidden",
+    })
+  })
+
+  it("should set overflow hidden when clip value is number 1", () => {
+    const properties: Properties = {
+      clip: { type: ValueType.EXACT, value: 1 },
+    }
+
+    const result = getClipStyles({ properties })
+
+    expect(result).toEqual({
+      overflow: "hidden",
+    })
+  })
+
+  it("should return empty object when clip value is string 'false'", () => {
+    const properties: Properties = {
+      clip: { type: ValueType.EXACT, value: "false" },
+    }
+
+    const result = getClipStyles({ properties })
+
+    expect(result).toEqual({})
+  })
+
+  it("should return empty object when clip value is string 'off'", () => {
+    const properties: Properties = {
+      clip: { type: ValueType.EXACT, value: "off" },
+    }
+
+    const result = getClipStyles({ properties })
+
+    expect(result).toEqual({})
+  })
+
+  it("should return empty object when clip value is number 0", () => {
+    const properties: Properties = {
+      clip: { type: ValueType.EXACT, value: 0 },
+    }
+
+    const result = getClipStyles({ properties })
+
+    expect(result).toEqual({})
+  })
 })

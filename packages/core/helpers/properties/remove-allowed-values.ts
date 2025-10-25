@@ -9,12 +9,54 @@ import { isCompoundValue } from "../type-guards/compound/is-compound-value"
  * @returns A new Properties object with allowedValues removed from all values
  */
 export function removeAllowedValuesFromProperties(properties: Properties) {
+  // Check for circular references before using Immer
+  const visited = new Set<object>()
+  if (hasCircularReference(properties, visited)) {
+    throw new Error("Circular reference detected in properties object")
+  }
+
   return produce(properties, (draft) => {
     for (const key in draft) {
       const value = draft[key as PropertyKey]
       removeAllowedValuesFromValue(value!, new Set())
     }
   })
+}
+
+/**
+ * Checks if an object has circular references
+ */
+function hasCircularReference(
+  obj: any,
+  visited: Set<object>,
+  depth = 0,
+): boolean {
+  // Prevent infinite recursion with depth limit
+  if (depth > 10) {
+    return true
+  }
+
+  if (obj === null || typeof obj !== "object") {
+    return false
+  }
+
+  if (visited.has(obj)) {
+    return true
+  }
+
+  visited.add(obj)
+
+  try {
+    for (const key in obj) {
+      if (hasCircularReference(obj[key], visited, depth + 1)) {
+        return true
+      }
+    }
+  } finally {
+    visited.delete(obj)
+  }
+
+  return false
 }
 
 /**

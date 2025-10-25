@@ -25,7 +25,7 @@
     "./constants.ts"
   ],
   "exclude": [
-    "dist",
+    "./dist",
     "node_modules",
     "**/generated-ai-action-schema.json",
     "**/*.spec.ts",

@@ -1,6 +1,3 @@
-/**
- * Unit values for measurements and dimensions.
- */
 export enum Unit {
   PX = "px",
   REM = "rem",

@@ -1,9 +1,9 @@
 import { getComponentSchema } from "../../components/catalog"
+import { ComponentId, isComponentId } from "../../components/constants"
 import { processNestedOverridesProps } from "../../helpers/properties/process-nested-overrides-props"
 import { removeAllowedValuesFromProperties } from "../../helpers/properties/remove-allowed-values"
 import { Board, Instance, Variant, Workspace } from "../../index"
 import { Properties } from "../../properties"
-import { DEFAULT_BOARD_PROPERTIES } from "../../properties/constants/default-board-properties"
 import { mergeProperties } from "../../properties/helpers/merge-properties"
 import { getNodeById } from "./get-node-by-id"
 import { isBoard } from "./is-board"
@@ -19,19 +19,43 @@ export function getNodeProperties(
   node: Variant | Instance | Board,
   workspace: Workspace,
 ): Properties {
-  if (isBoard(node)) {
-    return mergeProperties(DEFAULT_BOARD_PROPERTIES, node.properties)
-  }
+  // Boards always use the Board schema, regardless of their component field
+  const componentId = isBoard(node) ? ComponentId.BOARD : node.component
 
-  const schema = getComponentSchema(node.component)
-  if (!schema) {
+  // Validate component ID before trying to get schema
+  if (!isComponentId(componentId)) {
     console.warn(
-      `Schema not found for component ${node.component}, returning empty properties`,
+      `Invalid component ID: ${componentId}. Falling back to node properties.`,
     )
     return node.properties || {}
   }
-  const schemaProperties = removeAllowedValuesFromProperties(schema.properties)
 
+  const schema = getComponentSchema(componentId)
+  if (!schema) {
+    return node.properties || {}
+  }
+  let schemaProperties: Properties
+  try {
+    schemaProperties = removeAllowedValuesFromProperties(schema.properties)
+  } catch (error) {
+    // If we get a circular reference error from Immer, use the original properties
+    if (
+      error instanceof Error &&
+      (error.message.includes("Maximum call stack size exceeded") ||
+        error.message.includes("Circular reference"))
+    ) {
+      schemaProperties = schema.properties
+    } else {
+      throw error
+    }
+  }
+
+  // Boards don't inherit from variants - they only use their own properties + schema
+  if (isBoard(node)) {
+    return mergeProperties(schemaProperties, node.properties)
+  }
+
+  // For variants and instances, do the inheritance chain traversal
   let original = node
   let mergedProperties = node.properties
 

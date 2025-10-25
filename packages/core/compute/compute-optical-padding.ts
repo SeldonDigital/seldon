@@ -5,9 +5,11 @@ import { isUnitValue } from "../helpers/type-guards/value/is-unit-value"
 import { invariant } from "../helpers/utils/invariant"
 import { ThemeModulation, ThemeValueKey, Unit, ValueType } from "../index"
 import { SubPropertyKey } from "../properties/types/properties"
-import { ComputedOpticalPaddingValue } from "../properties/values/computed/optical-padding"
+import { ComputedOpticalPaddingValue } from "../properties/values/shared/computed/optical-padding"
 import { getBasedOnValue } from "./get-based-on-value"
 import { ComputeContext, ComputeKeys } from "./types"
+
+export const OPTICAL_PADDING_DISPLAY_NAME = "Optical Padding"
 
 const LEFT_PADDING_RATIO = 0.64
 const RIGHT_PADDING_RATIO = 0.8
@@ -16,6 +18,7 @@ const Y_PADDING_RATIO = 0.4
 /**
  * Computes visually balanced padding values based on typography and design principles.
  * Uses different ratios for different sides to create optical balance.
+ * Handles missing parameters with sensible defaults.
  *
  * @param value - The computed optical padding value with basedOn reference and factor
  * @param context - The computation context containing theme and parent data
@@ -27,14 +30,27 @@ export function computeOpticalPadding(
   context: ComputeContext,
   keys: ComputeKeys,
 ) {
-  const basedOnValue = getBasedOnValue(value, context)
+  // Use defaults if not provided
+  const basedOn = value.value.input.basedOn || "#parent.fontSize"
+  const factor = value.value.input.factor ?? 1.5
+
+  // Create value with defaults applied
+  const valueWithDefaults = {
+    ...value,
+    value: {
+      ...value.value,
+      input: { basedOn, factor },
+    },
+  }
+
+  const basedOnValue = getBasedOnValue(valueWithDefaults, context)
   const ratio = getRatio(keys.subPropertyKey)
 
   if (basedOnValue.type === ValueType.EXACT) {
     if (typeof basedOnValue.value === "number") {
       return {
         ...basedOnValue,
-        value: round(basedOnValue.value * ratio * value.value.input.factor),
+        value: round(basedOnValue.value * ratio * factor),
       }
     }
 
@@ -43,9 +59,7 @@ export function computeOpticalPadding(
         ...basedOnValue,
         value: {
           ...basedOnValue.value,
-          value: round(
-            basedOnValue.value.value * ratio * value.value.input.factor,
-          ),
+          value: round(basedOnValue.value.value * ratio * factor),
         },
       }
     }
@@ -79,7 +93,7 @@ export function computeOpticalPadding(
               step: themeOption.parameters.step,
             },
             { round: false },
-          ) * value.value.input.factor,
+          ) * factor,
         ),
       },
     }

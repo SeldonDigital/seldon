@@ -4,6 +4,18 @@
     "types": [],
     "skipLibCheck": true
   },
+  "include": [
+    "./components/**/*.*",
+    "./compute/**/*.*",
+    "./helpers/**/*.*",
+    "./properties/**/*.*",
+    "./rules/**/*.*",
+    "./themes/**/*.*",
+    "./workspace/**/*.*",
+    "./workspace/**/*.json",
+    "./index.ts",
+    "./constants.ts"
+  ],
   "exclude": [
     "./dist",
     "node_modules",

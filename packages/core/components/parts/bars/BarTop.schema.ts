@@ -1,4 +1,4 @@
-import * as Sdn from "../../../properties/constants"
+import * as Sdn from "../../../properties"
 import * as Seldon from "../../constants"
 import { ComponentExport, ComponentSchema } from "../../types"
 
@@ -32,7 +32,7 @@ export const schema = {
         },
         align: {
           type: Sdn.ValueType.PRESET,
-          value: Sdn.Alignment.CENTER_LEFT,
+          value: Sdn.Align.CENTER_LEFT,
         },
         width: {
           type: Sdn.ValueType.PRESET,
@@ -94,7 +94,7 @@ export const schema = {
         },
         align: {
           type: Sdn.ValueType.PRESET,
-          value: Sdn.Alignment.CENTER,
+          value: Sdn.Align.CENTER,
         },
         width: {
           type: Sdn.ValueType.PRESET,
@@ -156,7 +156,7 @@ export const schema = {
         },
         align: {
           type: Sdn.ValueType.PRESET,
-          value: Sdn.Alignment.CENTER_RIGHT,
+          value: Sdn.Align.CENTER_RIGHT,
         },
         width: {
           type: Sdn.ValueType.PRESET,
@@ -226,7 +226,7 @@ export const schema = {
     },
     align: {
       type: Sdn.ValueType.PRESET,
-      value: Sdn.Alignment.CENTER_LEFT,
+      value: Sdn.Align.CENTER_LEFT,
     },
     position: {
       top: {
@@ -295,10 +295,12 @@ export const schema = {
       topColor: { type: Sdn.ValueType.EMPTY, value: null },
       topWidth: { type: Sdn.ValueType.EMPTY, value: null },
       topOpacity: { type: Sdn.ValueType.EMPTY, value: null },
+      topBrightness: { type: Sdn.ValueType.EMPTY, value: null },
       rightStyle: { type: Sdn.ValueType.EMPTY, value: null },
       rightColor: { type: Sdn.ValueType.EMPTY, value: null },
       rightWidth: { type: Sdn.ValueType.EMPTY, value: null },
       rightOpacity: { type: Sdn.ValueType.EMPTY, value: null },
+      rightBrightness: { type: Sdn.ValueType.EMPTY, value: null },
       bottomStyle: { type: Sdn.ValueType.EMPTY, value: null },
       bottomColor: { type: Sdn.ValueType.EMPTY, value: null },
       bottomWidth: { type: Sdn.ValueType.EMPTY, value: null },
@@ -313,6 +315,7 @@ export const schema = {
       leftColor: { type: Sdn.ValueType.EMPTY, value: null },
       leftWidth: { type: Sdn.ValueType.EMPTY, value: null },
       leftOpacity: { type: Sdn.ValueType.EMPTY, value: null },
+      leftBrightness: { type: Sdn.ValueType.EMPTY, value: null },
     },
     corners: {
       topLeft: { type: Sdn.ValueType.EMPTY, value: null },

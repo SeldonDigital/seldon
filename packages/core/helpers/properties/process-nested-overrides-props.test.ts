@@ -1,7 +1,7 @@
 import { describe, expect, it } from "bun:test"
 import { Properties, ValueType } from "../../index"
-import { BorderStyle } from "../../properties/constants/border-styles"
-import { Unit } from "../../properties/constants/units"
+import { BorderStyle } from "../../properties"
+import { Unit } from "../properties"
 import { processNestedOverridesProps } from "./process-nested-overrides-props"
 
 describe("processNestedOverridesProps", () => {

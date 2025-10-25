@@ -1,6 +1,6 @@
 import * as compoundProperties from "../../helpers/properties/compound-properties"
 import { Orientation, Unit, ValueType } from "../../index"
-import * as Sdn from "../../properties/constants"
+import * as Sdn from "../../properties"
 import * as Seldon from "../constants"
 import { ComponentExport, ComponentSchema } from "../types"
 

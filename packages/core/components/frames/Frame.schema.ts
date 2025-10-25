@@ -1,4 +1,4 @@
-import * as Sdn from "../../properties/constants"
+import * as Sdn from "../../properties"
 import * as Seldon from "../constants"
 import { ComponentExport, ComponentSchema } from "../types"
 
@@ -73,6 +73,7 @@ export const schema = {
     brightness: { type: Sdn.ValueType.EMPTY, value: null },
     opacity: { type: Sdn.ValueType.EMPTY, value: null },
     background: {
+      preset: { type: Sdn.ValueType.EMPTY, value: null },
       color: { type: Sdn.ValueType.EMPTY, value: null },
       brightness: { type: Sdn.ValueType.EMPTY, value: null },
       image: { type: Sdn.ValueType.EMPTY, value: null },
@@ -92,18 +93,22 @@ export const schema = {
       topColor: { type: Sdn.ValueType.EMPTY, value: null },
       topWidth: { type: Sdn.ValueType.EMPTY, value: null },
       topOpacity: { type: Sdn.ValueType.EMPTY, value: null },
+      topBrightness: { type: Sdn.ValueType.EMPTY, value: null },
       rightStyle: { type: Sdn.ValueType.EMPTY, value: null },
       rightColor: { type: Sdn.ValueType.EMPTY, value: null },
       rightWidth: { type: Sdn.ValueType.EMPTY, value: null },
       rightOpacity: { type: Sdn.ValueType.EMPTY, value: null },
+      rightBrightness: { type: Sdn.ValueType.EMPTY, value: null },
       bottomStyle: { type: Sdn.ValueType.EMPTY, value: null },
       bottomColor: { type: Sdn.ValueType.EMPTY, value: null },
       bottomWidth: { type: Sdn.ValueType.EMPTY, value: null },
       bottomOpacity: { type: Sdn.ValueType.EMPTY, value: null },
+      bottomBrightness: { type: Sdn.ValueType.EMPTY, value: null },
       leftStyle: { type: Sdn.ValueType.EMPTY, value: null },
       leftColor: { type: Sdn.ValueType.EMPTY, value: null },
       leftWidth: { type: Sdn.ValueType.EMPTY, value: null },
       leftOpacity: { type: Sdn.ValueType.EMPTY, value: null },
+      leftBrightness: { type: Sdn.ValueType.EMPTY, value: null },
     },
     corners: {
       topLeft: { type: Sdn.ValueType.EMPTY, value: null },
@@ -118,9 +123,11 @@ export const schema = {
       gradientType: { type: Sdn.ValueType.EMPTY, value: null },
       angle: { type: Sdn.ValueType.EMPTY, value: null },
       startColor: { type: Sdn.ValueType.EMPTY, value: null },
+      startBrightness: { type: Sdn.ValueType.EMPTY, value: null },
       startOpacity: { type: Sdn.ValueType.EMPTY, value: null },
       startPosition: { type: Sdn.ValueType.EMPTY, value: null },
       endColor: { type: Sdn.ValueType.EMPTY, value: null },
+      endBrightness: { type: Sdn.ValueType.EMPTY, value: null },
       endOpacity: { type: Sdn.ValueType.EMPTY, value: null },
       endPosition: { type: Sdn.ValueType.EMPTY, value: null },
     },

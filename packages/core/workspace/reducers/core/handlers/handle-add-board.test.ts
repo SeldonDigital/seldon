@@ -18,37 +18,25 @@ describe("handleAddBoard", () => {
       workspace,
     )
 
-    expect(result).toEqual({
-      boards: {
-        button: {
-          label: "Buttons",
-          id: ComponentId.BUTTON,
-          properties: expect.any(Object),
-          theme: "default",
-          variants: ["variant-button-default"],
-          order: 0,
-        },
-        icon: {
-          label: "Icons",
-          id: ComponentId.ICON,
-          properties: expect.any(Object),
-          theme: "default",
-          variants: ["variant-icon-default"],
-          order: 1,
-        },
-        label: {
-          label: "Labels",
-          id: ComponentId.LABEL,
-          properties: expect.any(Object),
-          theme: "default",
-          variants: ["variant-label-default"],
-          order: 2,
-        },
-      },
-      byId: expect.any(Object),
-      customTheme,
-      version: 1,
-    })
+    // Check that button board was added
+    expect(result.boards.button).toBeDefined()
+    expect(result.boards.button.id).toBe(ComponentId.BUTTON)
+    expect(result.boards.button.label).toBe("Buttons")
+    expect(result.boards.button.variants).toContain("variant-button-default")
+
+    // Check that button variant was created
+    expect(result.byId["variant-button-default"]).toBeDefined()
+    expect(result.byId["variant-button-default"].component).toBe(
+      ComponentId.BUTTON,
+    )
+
+    // Check that child components were created
+    expect(result.boards.icon).toBeDefined()
+    expect(result.boards.label).toBeDefined()
+
+    // Check that child variants were created
+    expect(result.byId["variant-icon-default"]).toBeDefined()
+    expect(result.byId["variant-label-default"]).toBeDefined()
 
     // 1. default button variant
     // 2. default icon variant

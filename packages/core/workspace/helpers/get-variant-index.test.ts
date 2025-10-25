@@ -15,7 +15,7 @@ describe("getVariantIndex", () => {
   })
 
   it("should return correct index for different component variant", () => {
-    const index = getVariantIndex("variant-tagline-default", WORKSPACE_FIXTURE)
+    const index = getVariantIndex("variant-icon-default", WORKSPACE_FIXTURE)
     expect(index).toEqual(0)
   })
 

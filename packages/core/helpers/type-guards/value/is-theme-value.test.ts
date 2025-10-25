@@ -1,11 +1,11 @@
 import { describe, expect, it } from "bun:test"
 import { Resize, ValueType } from "../../../index"
-import { PrimitiveValue } from "../../../properties/types/primitive-value"
+import { AtomicValue } from "../../../properties/types/value-atomic"
 import { isThemeValue } from "./is-theme-value"
 
 describe("isThemeValue", () => {
   it("should return true for theme values", () => {
-    const themeValues: PrimitiveValue[] = [
+    const themeValues: AtomicValue[] = [
       {
         type: ValueType.THEME_ORDINAL,
         value: "@gap.comfortable",
@@ -30,7 +30,7 @@ describe("isThemeValue", () => {
   })
 
   it("should return false for non-theme values", () => {
-    const nonThemeValues: PrimitiveValue[] = [
+    const nonThemeValues: AtomicValue[] = [
       {
         type: ValueType.PRESET,
         value: Resize.FILL,

@@ -5,15 +5,14 @@ import { BorderColorValue } from "../properties/values/appearance/border/border-
 import { BorderOpacityValue } from "../properties/values/appearance/border/border-opacity"
 import { BorderStyleValue } from "../properties/values/appearance/border/border-style"
 import { BorderWidthValue } from "../properties/values/appearance/border/border-width"
-import { GradientValue } from "../properties/values/appearance/gradient"
+import { ColorValue } from "../properties/values/appearance/color"
 import { SizeValue } from "../properties/values/appearance/size"
-import { ColorValue } from "../properties/values/color/color"
-import { HSL } from "../properties/values/color/hsl"
 import { ShadowValue } from "../properties/values/effects/shadow"
-import { EmptyValue } from "../properties/values/shared/empty"
-import { PixelValue } from "../properties/values/shared/pixel"
-import { RemValue } from "../properties/values/shared/rem"
-import { TextCaseValue } from "../properties/values/typography/case"
+import { GradientValue } from "../properties/values/gradients"
+import { EmptyValue } from "../properties/values/shared/empty/empty"
+import { HSL } from "../properties/values/shared/exact/hsl"
+import { PixelValue } from "../properties/values/shared/exact/pixel"
+import { RemValue } from "../properties/values/shared/exact/rem"
 import {
   FontFamilyThemeValue,
   FontFamilyValue,
@@ -23,6 +22,7 @@ import { FontStyleValue } from "../properties/values/typography/font/font-style"
 import { FontWeightValue } from "../properties/values/typography/font/font-weight"
 import { LineHeightValue } from "../properties/values/typography/font/line-height"
 import { LetterSpacingValue } from "../properties/values/typography/letter-spacing"
+import { TextCaseValue } from "../properties/values/typography/text-case"
 
 export enum Ratio {
   "15:16" = 1.067,
@@ -114,7 +114,7 @@ export interface FontParameters {
 export interface ThemeFont {
   name: string
   intent: string
-  value: FontParameters
+  parameters: FontParameters
 }
 
 export type ShadowParameters = Omit<ShadowValue, "preset">

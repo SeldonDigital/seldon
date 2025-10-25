@@ -27,7 +27,6 @@ export function handleInsertNode(
 
     // For AI operations, we want to be more strict about validation failures
     if (options.isAiOperation && !validation.isValid) {
-      console.warn(`Insert node validation failed:`, validation.errors)
       // Continue execution but log the issues for AI debugging
     }
   }

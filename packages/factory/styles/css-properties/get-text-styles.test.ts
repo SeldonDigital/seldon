@@ -1,5 +1,5 @@
 import { describe, expect, it } from "bun:test"
-import { Properties, TextAlignment, Unit, ValueType } from "@seldon/core"
+import { Align, Properties, TextAlign, Unit, ValueType } from "@seldon/core"
 import testTheme from "@seldon/core/themes/test/test-theme"
 import { getTextStyles } from "./get-text-styles"
 
@@ -106,7 +106,7 @@ describe("getTextStyles", () => {
 
   it("should generate text align center style", () => {
     const properties: Properties = {
-      textAlign: { type: ValueType.PRESET, value: TextAlignment.CENTER },
+      textAlign: { type: ValueType.PRESET, value: TextAlign.CENTER },
     }
 
     const result = getTextStyles({
@@ -122,7 +122,7 @@ describe("getTextStyles", () => {
 
   it("should generate text align right style", () => {
     const properties: Properties = {
-      textAlign: { type: ValueType.PRESET, value: TextAlignment.RIGHT },
+      textAlign: { type: ValueType.PRESET, value: TextAlign.RIGHT },
     }
 
     const result = getTextStyles({

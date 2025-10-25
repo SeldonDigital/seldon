@@ -1,4 +1,4 @@
-import { HSL } from "../../../properties/values/color/hsl"
+import { HSL } from "../../../properties/values/shared/exact/hsl"
 
 /**
  * Type guard that checks if a value is a valid HSL color object

@@ -1,6 +1,6 @@
-import { ValueType } from "../../../properties/constants/value-types"
+import { ValueType } from "../../../properties"
 import { Value } from "../../../properties/types/value"
-import { EmptyValue } from "../../../properties/values/shared/empty"
+import { EmptyValue } from "../../../properties/values/shared/empty/empty"
 
 /**
  * Type guard that checks if a value is an empty value.

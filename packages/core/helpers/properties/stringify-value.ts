@@ -1,7 +1,6 @@
-import { Unit } from "../../properties/constants/units"
-import { ValueType } from "../../properties/constants/value-types"
+import { ComputedFunction, Unit, ValueType } from "../../properties"
 import { Value } from "../../properties/types/value"
-import { EmptyValue } from "../../properties/values/shared/empty"
+import { EmptyValue } from "../../properties/values/shared/empty/empty"
 import { HSLObjectToString } from "../color/hsl-object-to-string"
 import { LCHObjectToString } from "../color/lch-object-to-string"
 import { RGBObjectToString } from "../color/rgb-object-to-string"
@@ -25,7 +24,7 @@ export function stringifyValue(
   value: Value | EmptyValue | undefined,
 ): string | undefined {
   if (!value || isEmptyValue(value)) {
-    return
+    return undefined
   }
 
   if (isCompoundValue(value)) {
@@ -41,9 +40,37 @@ export function stringifyValue(
     return "Custom"
   }
 
+  // Check if value has a type property (atomic values)
+  if (!("type" in value)) {
+    return "Custom"
+  }
+
   switch (value.type) {
     case ValueType.COMPUTED:
-      return ValueType.COMPUTED
+      // Extract function name from computed value
+      if (
+        value &&
+        typeof value === "object" &&
+        "value" in value &&
+        value.value &&
+        typeof value.value === "object" &&
+        "function" in value.value
+      ) {
+        const functionName = value.value.function
+        switch (functionName) {
+          case ComputedFunction.AUTO_FIT:
+            return "Auto Fit"
+          case ComputedFunction.HIGH_CONTRAST_COLOR:
+            return "High Contrast Color"
+          case ComputedFunction.OPTICAL_PADDING:
+            return "Optical Padding"
+          case ComputedFunction.MATCH:
+            return "Match"
+          default:
+            return "Computed"
+        }
+      }
+      return "Computed"
 
     case ValueType.EXACT: {
       switch (typeof value.value) {
@@ -83,8 +110,9 @@ export function stringifyValue(
               case Unit.NUMBER:
                 return `${value.value.value}`
               default:
-                // @ts-expect-error: We forgot to handle this unit!
-                throw new Error(`Unknown unit: ${value.value.unit}`)
+                throw new Error(
+                  `Unknown unit: ${(value.value as { unit: string }).unit}`,
+                )
             }
           }
         }
@@ -102,7 +130,6 @@ export function stringifyValue(
       return "Inherit"
 
     default:
-      // @ts-expect-error: This means we forgot to handle a value type!
-      throw new Error(`Unknown value type: ${value.type}`)
+      throw new Error(`Unknown value type: ${(value as { type: string }).type}`)
   }
 }

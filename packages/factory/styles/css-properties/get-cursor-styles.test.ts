@@ -1,6 +1,6 @@
 import { describe, expect, it } from "bun:test"
 import { Properties, ValueType } from "@seldon/core"
-import { Cursor } from "@seldon/core/properties/constants/cursors"
+import { Cursor } from "@seldon/core"
 import { getCursorStyles } from "./get-cursor-styles"
 
 describe("getCursorStyles", () => {

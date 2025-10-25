@@ -14,10 +14,10 @@ describe("getVariantById", () => {
   })
 
   it("should return different variant by id", () => {
-    const variant = getVariantById("variant-tagline-default", WORKSPACE_FIXTURE)
+    const variant = getVariantById("variant-icon-default", WORKSPACE_FIXTURE)
 
-    expect(variant.id).toEqual("variant-tagline-default")
-    expect(variant.component).toEqual(ComponentId.TAGLINE)
+    expect(variant.id).toEqual("variant-icon-default")
+    expect(variant.component).toEqual("icon")
     expect(variant.level).toEqual(ComponentLevel.PRIMITIVE)
     expect(variant.isChild).toBe(false)
   })

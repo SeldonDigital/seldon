@@ -35,4 +35,31 @@ describe("getNodeProperties", () => {
     expect(properties).toBeDefined()
     expect(typeof properties).toBe("object")
   })
+
+  it("should handle invalid component IDs gracefully", () => {
+    const nodeWithInvalidComponent = {
+      id: "test-invalid-component",
+      component: "invalid-component" as any,
+      level: ComponentLevel.ELEMENT,
+      label: "Test",
+      isChild: false,
+      fromSchema: true,
+      theme: null,
+      type: "defaultVariant" as const,
+      properties: {
+        color: { type: "exact" as const, value: "#ff0000" },
+      },
+      children: [],
+    }
+
+    const properties = getNodeProperties(
+      nodeWithInvalidComponent,
+      WORKSPACE_FIXTURE,
+    )
+
+    // Should return the node's properties without throwing an error
+    expect(properties).toEqual({
+      color: { type: "exact", value: "#ff0000" },
+    })
+  })
 })

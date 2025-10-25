@@ -1,5 +1,5 @@
 import * as componentConstants from "./components/constants"
-import * as propertiesConstants from "./properties/constants"
+import * as propertiesConstants from "./properties"
 import * as propertiesValues from "./properties/values"
 
 export namespace Seldon {
@@ -18,9 +18,8 @@ export * from "./components/types"
 export * from "./components/catalog"
 export * from "./helpers/utils/get-google-font-url"
 export * from "./helpers/utils/invariant"
-export * from "./properties/constants"
-export * from "./properties/types"
-export * from "./properties/values"
+export * from "./properties"
+export * from "./compute"
 export * from "./themes/helpers/get-dynamic-colors"
 export * from "./themes/types"
 export * from "./workspace/types"

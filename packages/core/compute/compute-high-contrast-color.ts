@@ -3,21 +3,27 @@ import { isDarkBackgroundColor } from "../helpers/color/contrast"
 import { resolveColor } from "../helpers/resolution/resolve-color"
 import { resolveValue } from "../helpers/resolution/resolve-value"
 import { getThemeOption } from "../helpers/theme/get-theme-option"
-import { ComputedFunction } from "../properties/constants/computed-functions"
-import { ValueType } from "../properties/constants/value-types"
-import { ColorValue } from "../properties/values/color/color"
-import { ComputedValue } from "../properties/values/computed/computed-value"
-import { ComputedHighContrastValue } from "../properties/values/computed/high-contrast-color"
-import { BasedOnPropertyKey } from "../properties/values/shared/based-on-property-key"
-import { EmptyValue } from "../properties/values/shared/empty"
-import { PercentageValue } from "../properties/values/shared/percentage"
+import { ValueType } from "../properties"
+import { ColorValue } from "../properties/values/appearance/color"
+import { BasedOnPropertyKey } from "../properties/values/shared/computed/based-on-property-key"
+import { ComputedFunction } from "../properties/values/shared/computed/computed-functions"
+import { ComputedValue } from "../properties/values/shared/computed/computed-value"
+import { ComputedHighContrastValue } from "../properties/values/shared/computed/high-contrast-color"
+import { EmptyValue } from "../properties/values/shared/empty/empty"
+import { PercentageValue } from "../properties/values/shared/exact/percentage"
 import { ThemeSwatch } from "../themes/types"
 import { getBasedOnValue } from "./get-based-on-value"
 import { ComputeContext } from "./types"
 
 /**
+ * Display name for this computed function (used by editor UI)
+ */
+export const HIGH_CONTRAST_COLOR_DISPLAY_NAME = "High Contrast"
+
+/**
  * Computes a high contrast color (white or black) based on a background color.
  * Applies brightness adjustments if the based-on node has a brightness property.
+ * Handles missing parameters with sensible defaults.
  *
  * @param value - The computed high contrast color value with basedOn reference
  * @param context - The computation context containing theme and parent data
@@ -27,9 +33,21 @@ export function computeHighContrastColor(
   value: ComputedHighContrastValue,
   context: ComputeContext,
 ) {
-  const basedOnValue = getBasedOnValue(value, context)
+  // Use default if basedOn not provided
+  const basedOn = value.value.input.basedOn || "#parent.background.color"
 
-  const brightness = maybeGetBrightness(value, context)
+  // Create value with defaults applied
+  const valueWithDefaults = {
+    ...value,
+    value: {
+      ...value.value,
+      input: { basedOn },
+    },
+  }
+
+  const basedOnValue = getBasedOnValue(valueWithDefaults, context)
+
+  const brightness = maybeGetBrightness(valueWithDefaults, context)
 
   let color = resolveValue(
     resolveColor({

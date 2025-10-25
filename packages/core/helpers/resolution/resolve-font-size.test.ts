@@ -1,8 +1,5 @@
 import { describe, expect, it } from "bun:test"
-import { Unit, ValueType } from "../../index"
-import { EmptyValue } from "../../properties/values/shared/empty"
-import { PixelValue } from "../../properties/values/shared/pixel"
-import { RemValue } from "../../properties/values/shared/rem"
+import { EmptyValue, PixelValue, RemValue, Unit, ValueType } from "../../index"
 import {
   FontSizeThemeValue,
   FontSizeValue,
@@ -11,7 +8,21 @@ import testTheme from "../../themes/test/test-theme"
 import { resolveFontSize } from "./resolve-font-size"
 
 describe("resolveFontSize", () => {
-  it("should return exact font size values unchanged", () => {
+  it("should return exact pixel font size values unchanged", () => {
+    const exactFontSize: PixelValue = {
+      type: ValueType.EXACT,
+      value: { unit: Unit.PX, value: 16 },
+    }
+
+    const result = resolveFontSize({
+      fontSize: exactFontSize,
+      theme: testTheme,
+    })
+
+    expect(result).toEqual(exactFontSize)
+  })
+
+  it("should return exact rem font size values unchanged", () => {
     const exactFontSize: RemValue = {
       type: ValueType.EXACT,
       value: { unit: Unit.REM, value: 1.5 },
@@ -39,10 +50,42 @@ describe("resolveFontSize", () => {
     expect(result).toEqual(emptyFontSize)
   })
 
-  it("should resolve theme ordinal font sizes to exact values", () => {
+  it("should resolve theme ordinal medium font size to exact value", () => {
     const themeFontSize: FontSizeThemeValue = {
       type: ValueType.THEME_ORDINAL,
       value: "@fontSize.medium",
+    }
+
+    const result = resolveFontSize({
+      fontSize: themeFontSize,
+      theme: testTheme,
+    })
+
+    expect(result.type).toBe(ValueType.EXACT)
+    expect(result.value).toHaveProperty("unit", Unit.REM)
+    expect(result.value).toHaveProperty("value")
+  })
+
+  it("should resolve theme ordinal large font size to exact value", () => {
+    const themeFontSize: FontSizeThemeValue = {
+      type: ValueType.THEME_ORDINAL,
+      value: "@fontSize.large",
+    }
+
+    const result = resolveFontSize({
+      fontSize: themeFontSize,
+      theme: testTheme,
+    })
+
+    expect(result.type).toBe(ValueType.EXACT)
+    expect(result.value).toHaveProperty("unit", Unit.REM)
+    expect(result.value).toHaveProperty("value")
+  })
+
+  it("should resolve theme ordinal small font size to exact value", () => {
+    const themeFontSize: FontSizeThemeValue = {
+      type: ValueType.THEME_ORDINAL,
+      value: "@fontSize.small",
     }
 
     const result = resolveFontSize({
@@ -66,10 +109,12 @@ describe("resolveFontSize", () => {
 
     expect(() => {
       resolveFontSize({
-        fontSize: computedFontSize as unknown as FontSizeValue,
+        fontSize: computedFontSize as FontSizeValue,
         theme: testTheme,
       })
-    }).toThrow("resolveFontSize received a COMPUTED value")
+    }).toThrow(
+      "resolveFontSize received a COMPUTED value. This should have been computed in the compute function.",
+    )
   })
 
   it("should throw error for non-existent theme values", () => {
@@ -80,7 +125,7 @@ describe("resolveFontSize", () => {
 
     expect(() => {
       resolveFontSize({
-        fontSize: invalidThemeFontSize as unknown as FontSizeValue,
+        fontSize: invalidThemeFontSize as FontSizeValue,
         theme: testTheme,
       })
     }).toThrow("Theme value @fontSize.nonexistent not found")
@@ -94,7 +139,7 @@ describe("resolveFontSize", () => {
 
     expect(() => {
       resolveFontSize({
-        fontSize: invalidFontSize as unknown as FontSizeValue,
+        fontSize: invalidFontSize as FontSizeValue,
         theme: testTheme,
       })
     }).toThrow("Invalid font size type INVALID")

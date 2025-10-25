@@ -1,8 +1,8 @@
 import { produce } from "immer"
 import isEqual from "lodash.isequal"
 import { getComponentSchema } from "../../../../components/catalog"
+import { ComponentId } from "../../../../components/constants"
 import { isCompoundProperty } from "../../../../helpers/type-guards/compound/is-compound-property"
-import { DEFAULT_BOARD_PROPERTIES } from "../../../../properties/constants/default-board-properties"
 import { Workspace } from "../../../types"
 
 /**
@@ -14,27 +14,27 @@ import { Workspace } from "../../../types"
 export function removePropertiesThatArentOverrides(workspace: Workspace) {
   return produce(workspace, (draft) => {
     for (const board of Object.values(draft.boards)) {
+      // Get the Board schema for default properties
+      const boardSchema = getComponentSchema(ComponentId.BOARD)
+      const defaultProperties = boardSchema.properties
+
       for (const [key, value] of Object.entries(board.properties)) {
-        const propertyKey = key as keyof typeof DEFAULT_BOARD_PROPERTIES
+        const propertyKey = key as keyof typeof defaultProperties
         if (
-          !DEFAULT_BOARD_PROPERTIES[propertyKey] ||
-          isEqual(value, DEFAULT_BOARD_PROPERTIES[propertyKey])
+          !defaultProperties[propertyKey] ||
+          isEqual(value, defaultProperties[propertyKey])
         ) {
           delete board.properties[propertyKey]
         } else if (isCompoundProperty(propertyKey)) {
           for (const subProperty of Object.keys(value)) {
             if (
-              // @ts-expect-error - TODO: fix this
-              !DEFAULT_BOARD_PROPERTIES[propertyKey][subProperty] ||
+              !(defaultProperties[propertyKey] as any)?.[subProperty] ||
               isEqual(
-                // @ts-expect-error - TODO: fix this
-                value[subProperty],
-                // @ts-expect-error - TODO: fix this
-                DEFAULT_BOARD_PROPERTIES[propertyKey][subProperty],
+                (value as any)[subProperty],
+                (defaultProperties[propertyKey] as any)[subProperty],
               )
             ) {
-              // @ts-expect-error - TODO: fix this
-              delete value[subProperty]
+              delete (value as any)[subProperty]
             }
           }
         }
@@ -46,9 +46,6 @@ export function removePropertiesThatArentOverrides(workspace: Workspace) {
       try {
         schema = getComponentSchema(node.component)
       } catch (error) {
-        console.warn(
-          `Skipping node ${node.id} with invalid component ID: ${node.component}`,
-        )
         continue
       }
 

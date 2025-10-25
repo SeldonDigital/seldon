@@ -109,10 +109,6 @@ export class OperationPropagationService {
 
           return aBoard.order - bBoard.order
         } catch (error) {
-          console.warn(
-            `Failed to get schema for components ${aId} or ${bId}, maintaining current order:`,
-            error,
-          )
           return aBoard.order - bBoard.order
         }
       })

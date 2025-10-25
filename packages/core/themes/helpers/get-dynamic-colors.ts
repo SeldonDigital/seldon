@@ -1,4 +1,4 @@
-import { HSL } from "../../properties/values/color/hsl"
+import { HSL } from "../../properties/values/shared/exact/hsl"
 import { StaticTheme, Theme } from "../types"
 import { Harmony } from "../types"
 

@@ -1,8 +1,8 @@
 import { describe, expect, it } from "bun:test"
-import { ComputedFunction } from "../../properties/constants/computed-functions"
-import { Unit } from "../../properties/constants/units"
-import { ValueType } from "../../properties/constants/value-types"
 import { Value } from "../../properties/types/value"
+import { ComputedFunction } from "../../properties/values/shared/computed/computed-functions"
+import { Unit } from "../properties"
+import { ValueType } from "../properties"
 import { stringifyValue } from "./stringify-value"
 
 describe("stringifyValue", () => {
@@ -138,7 +138,7 @@ describe("stringifyValue", () => {
       value: { function: ComputedFunction.MATCH, input: { basedOn: "#align" } },
     }
     const result = stringifyValue(value)
-    expect(result).toBe(ValueType.COMPUTED)
+    expect(result).toBe("Match")
   })
 
   it("should handle compound values with identical sub-values", () => {
