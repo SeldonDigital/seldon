@@ -1,15 +1,22 @@
 import { join } from "node:path"
 
+import tailwindcss from "@tailwindcss/vite"
 import react from "@vitejs/plugin-react"
 import { defineConfig } from "vite"
 
+const editorHome = join(process.cwd(), "./packages/editor")
+
 export default defineConfig({
-  root: "./packages/editor",
+  root: editorHome,
+  css: {
+    postcss: join(process.cwd(), "postcss.config.js"),
+  },
   build: {
+    assetsDir: "./public",
     outDir: "../../dist/editor",
     emptyOutDir: true,
     rollupOptions: {
-      input: join(process.cwd(), "./packages/editor/index.html"),
+      input: join(editorHome, "index.html"),
     },
   },
   server: {
@@ -20,4 +27,14 @@ export default defineConfig({
     },
   },
   plugins: [react()],
+  resolve: {
+    alias: {
+      "@components": join(editorHome, "components"),
+      "@lib": join(editorHome, "lib"),
+      "@types": join(editorHome, "app/types.ts"),
+      "@catalog": join(editorHome, "../core/components/catalog"),
+      "@seldon/core": join(editorHome, "../core"),
+      "@seldon/factory": join(editorHome, "../factory"),
+    },
+  },
 })

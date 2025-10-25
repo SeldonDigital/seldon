@@ -1,0 +1,31 @@
+/*
+ * This code was generated using Seldon (https://seldon.app)
+ *
+ * Licensed under the Terms of Use: https://seldon.digital/terms-of-service
+ * Do not redistribute or sublicense without permission.
+ *
+ * You may not use this software, or any derivative works of it,
+ * in whole or in part, for the purposes of training, fine-tuning,
+ * or otherwise improving (directly or indirectly) any machine learning
+ * or artificial intelligence system.
+ */
+import { SVGAttributes } from "react"
+
+export function IconMaterialThumbP(props: SVGAttributes<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      height="1em"
+      width="1em"
+      {...props}
+    >
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M14.3567 4.56328C14.4567 4.66244 14.5398 4.79669 14.6041 4.96668C14.6682 5.13637 14.6994 5.29916 14.6995 5.45474V5.75231L13.7566 9.45012H19.2861C19.7431 9.45023 20.1425 9.62072 20.4852 9.9606C20.828 10.3005 20.9999 10.6965 21 11.1496V12.8504C21 12.9494 20.9858 13.0559 20.9573 13.1691C20.9288 13.2823 20.9005 13.3888 20.8719 13.4878L18.3005 19.4791C18.172 19.7623 17.9576 20.0041 17.6576 20.2024C17.3578 20.4007 17.0431 20.4999 16.7147 20.5H3V9.45012H7.2853L13.2857 3.5L14.3567 4.56328ZM4.71387 11.1496V18.7993H7.2853V11.1496H4.71387ZM9.00042 10.1723V18.7993H16.7147L19.2861 12.8504V11.1496H11.5718L12.7282 6.47568L9.00042 10.1723Z"
+      />
+    </svg>
+  )
+}

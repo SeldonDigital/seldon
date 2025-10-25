@@ -158,7 +158,7 @@ export const workspaceVerificationMiddleware: Middleware =
     const nextWorkspace = next(workspace, action)
 
     try {
-      const isDev = process.env.NODE_ENV === "development"
+      const isDev = import.meta.env.DEV
       isDev && console.groupCollapsed("🔍 Verifying workspace")
 
       validators.allChildrenExist(nextWorkspace)
@@ -207,12 +207,12 @@ export const workspaceVerificationMiddleware: Middleware =
   }
 
 const log = (message: any) => {
-  const isDev = process.env.NODE_ENV === "development"
+  const isDev = import.meta.env.DEV
   isDev && console.log(message)
 }
 
 const logError = (message: any, error: Error) => {
-  const isDev = process.env.NODE_ENV === "development"
+  const isDev = import.meta.env.DEV
   isDev && console.error(message)
   isDev && console.error(error)
 }

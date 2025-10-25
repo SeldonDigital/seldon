@@ -5,31 +5,34 @@ This document provides technical implementation details, code examples, and spec
 ## Quick Start
 
 ### For Engineers
+
 ```typescript
-import { Workspace, coreReducer, Sdn } from "@seldon/core"
+import { Sdn, Workspace, coreReducer } from "@seldon/core"
 
 // Create a workspace
 const workspace: Workspace = {
   version: 1,
   boards: {},
   byId: {},
-  customTheme: customTheme
+  customTheme: customTheme,
 }
 
 // Add a component board
 const updatedWorkspace = coreReducer(workspace, {
   type: "add_board",
-  payload: { componentId: Sdn.ComponentId.BUTTON }
+  payload: { componentId: Sdn.ComponentId.BUTTON },
 })
 ```
 
 ### For Designers
+
 - **Hierarchical Structure**: Workspace → Boards → Variants → Instances
 - **Component Management**: Create, modify, and organize design components
 - **Property Inheritance**: Changes propagate through the component hierarchy
 - **Theme Integration**: Apply themes across entire component systems
 
 ## Workspace Structure Diagram
+
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                        WORKSPACE                            │
@@ -57,31 +60,39 @@ const updatedWorkspace = coreReducer(workspace, {
 ### Main Entry Points
 
 #### 1. Core Workspace Reducer
+
 ```typescript
-import { coreReducer } from './reducers/core/reducer'
+import { coreReducer } from "./reducers/core/reducer"
 
 const updatedWorkspace = coreReducer(workspace, action)
 ```
 
 #### 2. AI Workspace Reducer
+
 ```typescript
-import { processAiActions } from './reducers/ai/helpers/process-ai-actions'
+import { processAiActions } from "./reducers/ai/helpers/process-ai-actions"
 
 const updatedWorkspace = processAiActions(workspace, actions)
 ```
 
 #### 3. Workspace Service
+
 ```typescript
-import { workspaceService } from './services/workspace.service'
+import { workspaceService } from "./services/workspace.service"
 
 // Direct workspace manipulation
 const node = workspaceService.getNode(nodeId, workspace)
-const updatedWorkspace = workspaceService.setNodeProperties(nodeId, properties, workspace)
+const updatedWorkspace = workspaceService.setNodeProperties(
+  nodeId,
+  properties,
+  workspace,
+)
 ```
 
 #### 4. Theme Service
+
 ```typescript
-import { themeService } from './services/theme.service'
+import { themeService } from "./services/theme.service"
 
 // Theme management
 const theme = themeService.getNodeTheme(nodeId, workspace)
@@ -89,6 +100,7 @@ const updatedWorkspace = themeService.setNodeTheme(nodeId, themeId, workspace)
 ```
 
 ### Sample Workspace Structure
+
 ```typescript
 const workspace: Workspace = {
   version: 1,
@@ -100,8 +112,8 @@ const workspace: Workspace = {
       order: 0,
       theme: "default",
       properties: {},
-      variants: ["variant-button-default", "variant-button-custom"]
-    }
+      variants: ["variant-button-default", "variant-button-custom"],
+    },
   },
   byId: {
     "variant-button-default": {
@@ -114,7 +126,7 @@ const workspace: Workspace = {
       fromSchema: true,
       theme: null,
       properties: {},
-      children: ["child-icon-1", "child-label-1"]
+      children: ["child-icon-1", "child-label-1"],
     },
     "child-icon-1": {
       id: "child-icon-1",
@@ -128,20 +140,21 @@ const workspace: Workspace = {
       variant: "variant-icon-default",
       instanceOf: "variant-icon-default",
       properties: {},
-      children: []
-    }
-  }
+      children: [],
+    },
+  },
 }
 ```
 
 ### Sample Actions
 
 #### Core Actions
+
 ```typescript
 // Board Management
 const addBoardAction = {
   type: "add_board",
-  payload: { componentId: ComponentId.BUTTON }
+  payload: { componentId: ComponentId.BUTTON },
 }
 
 // Node Operations
@@ -152,10 +165,10 @@ const setPropertiesAction = {
     properties: {
       screenWidth: {
         type: ValueType.EXACT,
-        value: { value: 600, unit: Unit.PX }
-      }
-    }
-  }
+        value: { value: 600, unit: Unit.PX },
+      },
+    },
+  },
 }
 
 // Structural Changes
@@ -165,52 +178,56 @@ const insertNodeAction = {
     nodeId: "variant-icon-default",
     target: {
       parentId: "variant-button-default",
-      index: 0
-    }
-  }
+      index: 0,
+    },
+  },
 }
 ```
 
 #### AI Actions
+
 ```typescript
 const aiActions = [
   {
     type: "ai_add_component",
     payload: {
       componentId: ComponentId.CARD_PRODUCT,
-      ref: "$ref1"
-    }
+      ref: "$ref1",
+    },
   },
   {
     type: "ai_set_node_properties",
     payload: {
       nodeId: "$ref1.0.1",
       properties: {
-        content: { type: ValueType.EXACT, value: "NewTextValue" }
-      }
-    }
-  }
+        content: { type: ValueType.EXACT, value: "NewTextValue" },
+      },
+    },
+  },
 ]
 ```
 
 ## Data Processing and Architecture
 
 ### 1. Middleware Pipeline Architecture
+
 The workspace system uses a middleware pipeline for all operations:
 
 ```typescript
 // Middleware execution order
 const middlewares = [
-  validationMiddleware,        // 1. Validate action payload
-  sentryBreadcrumbMiddleware,  // 2. Log for debugging
+  validationMiddleware, // 1. Validate action payload
+  sentryBreadcrumbMiddleware, // 2. Log for debugging
   // ... action processing ...
-  migrationMiddleware,         // 3. Apply data migrations
-  workspaceVerificationMiddleware // 4. Verify workspace integrity
+  migrationMiddleware, // 3. Apply data migrations
+  workspaceVerificationMiddleware, // 4. Verify workspace integrity
 ]
 ```
 
 #### Validation Middleware
+
 Validates action payloads before processing:
+
 - Node existence checks
 - Parent-child relationship validation
 - Component level hierarchy enforcement
@@ -218,7 +235,9 @@ Validates action payloads before processing:
 - Custom theme swatch existence
 
 #### Verification Middleware
+
 Validates workspace integrity after processing:
+
 - All children exist in workspace
 - All variants exist in boards
 - All instances reference valid parents
@@ -230,6 +249,7 @@ Validates workspace integrity after processing:
 ### 2. Action Processing Flow
 
 #### Core Actions Flow
+
 ```typescript
 // 1. Validation - Ensures action payload is valid
 // 2. Sentry Breadcrumb - Logs action for debugging
@@ -240,6 +260,7 @@ Validates workspace integrity after processing:
 ```
 
 #### AI Actions Flow
+
 ```typescript
 // 1. Preprocessing - Analyze required structures and create missing variants
 // 2. Reference Mapping - Build reference map for AI action targeting
@@ -249,6 +270,7 @@ Validates workspace integrity after processing:
 ```
 
 ### 3. Rules-Based Authorization System
+
 All operations are controlled by a rules system:
 
 ```typescript
@@ -272,22 +294,26 @@ if (allowed) {
 ```
 
 #### Propagation Types
+
 - **none**: Operation applies only to target node
 - **downstream**: Operation propagates to all instances
 - **bidirectional**: Operation propagates in both directions
 
 #### Entity Types
+
 - **board**: Component boards containing variants
 - **userVariant**: User-created variants
 - **defaultVariant**: System-generated default variants
 - **instance**: Instances of variants within other components
 
 ### 4. Component Instantiation System
+
 System for creating component hierarchies:
 
 #### Bottom-Up Creation Strategy
+
 ```typescript
-// Process components in reverse order to ensure parent components 
+// Process components in reverse order to ensure parent components
 // have access to their children's variant IDs
 for (const componentId of components.reverse()) {
   if (draft.boards[componentId]) {
@@ -299,7 +325,7 @@ for (const componentId of components.reverse()) {
       componentId,
       registry,
     )
-    
+
     draft.byId = { ...draft.byId, ...newInstancesById }
     draft.boards[componentId] = {
       label: workspaceService.getInitialBoardLabel(componentId),
@@ -314,7 +340,9 @@ for (const componentId of components.reverse()) {
 ```
 
 #### Nested Overrides Processing
+
 Handles complex property inheritance patterns:
+
 ```typescript
 // Example: ButtonBar with multiple buttons
 // "button1.icon.symbol" -> First button's icon symbol
@@ -323,13 +351,14 @@ Handles complex property inheritance patterns:
 ```
 
 ### 5. Reference Mapping System (AI)
+
 AI actions use reference IDs for targeting specific nodes:
 
 ```typescript
 // Example reference map for a ProductCard component:
 {
   "$ref": "variant-cardProduct-default",
-  "$ref.0": "child-textblockDetails-x", 
+  "$ref.0": "child-textblockDetails-x",
   "$ref.0.1": "child-title-x",
   "$ref.1": "child-buttonBar-x",
   "$ref.1.0": "child-button-x",
@@ -339,9 +368,11 @@ AI actions use reference IDs for targeting specific nodes:
 ```
 
 ### 6. Schema-Workspace Reconciliation (AI)
+
 Handling of mismatches between AI expectations and workspace state:
 
 #### Reconciliation Logic
+
 1. **Exact Match**: If workspace matches schema → use existing variant
 2. **Partial Match**: If existing variant can be used → reuse it
 3. **Instance Analysis**: Check if existing instances can be reused or if their patterns suggest a different approach
@@ -351,6 +382,7 @@ Handling of mismatches between AI expectations and workspace state:
 4. **No Match**: If no suitable variant or instance exists → create new custom variant
 
 ### 7. Immutable State Management
+
 All operations use Immer for immutable state updates:
 
 ```typescript
@@ -367,9 +399,11 @@ return produce(workspace, (draft) => {
 ### Core Actions
 
 #### Workspace Management
+
 - `set_workspace` - Completely replaces the workspace with a new state
 
 #### Board Management
+
 - `add_board` - Creates a new component board with default variant
 - `add_board_and_insert_default_variant` - Creates board and inserts default variant into target
 - `remove_board` - Removes a component board and all its variants
@@ -379,9 +413,11 @@ return produce(workspace, (draft) => {
 - `set_board_theme` - Applies a theme to a component board
 
 #### Variant Management
+
 - `add_variant` - Creates a new variant by duplicating the default variant
 
 #### Node Operations
+
 - `insert_node` - Inserts a node into another node at a specific position
 - `remove_node` - Removes a node from the workspace
 - `duplicate_node` - Creates a copy of a node
@@ -389,18 +425,21 @@ return produce(workspace, (draft) => {
 - `reorder_node` - Changes the order of a node within its parent
 
 #### Property Management
+
 - `set_node_properties` - Sets multiple properties on a node
 - `reset_node_property` - Resets a specific node property to default
 - `set_node_label` - Updates a node's display label
 - `set_node_theme` - Applies a theme to a node
 
 #### Custom Theme Management
+
 - `reset_custom_theme` - Resets the custom theme to defaults
 - `add_custom_theme_swatch` - Adds a new color swatch
 - `remove_custom_theme_swatch` - Removes a color swatch
 - `update_custom_theme_swatch` - Updates an existing swatch
 
 #### Custom Theme Property Setters (40+ actions)
+
 - `set_custom_theme_core_ratio` - Sets the core ratio
 - `set_custom_theme_core_font_size` - Sets the core font size
 - `set_custom_theme_core_size` - Sets the core size
@@ -430,36 +469,43 @@ return produce(workspace, (draft) => {
 - `set_custom_theme_scrollbar_value` - Sets scrollbar parameters
 
 #### Transcript Management
+
 - `transcript_add_message` - Adds messages to the transcript
 
 ### AI Actions
 
 #### Component Management
+
 - `ai_add_component` - Creates a new component board
 - `ai_remove_component` - Removes a component board
 - `ai_reorder_board` - Reorders component boards
 
-#### Variant Management  
+#### Variant Management
+
 - `ai_add_variant` - Creates a new variant for a component
 - `ai_duplicate_node` - Duplicates a node structure
 - `ai_insert_node` - Inserts a node at a specific position
 
 #### Node Operations
+
 - `ai_remove_node` - Removes a node from the workspace
 - `ai_move_node` - Moves a node to a different parent/position
 - `ai_reorder_node` - Changes the order of a node within its parent
 
 #### Property Management
+
 - `ai_set_node_properties` - Sets multiple properties on a node
 - `ai_reset_node_property` - Resets a specific property to default
 - `ai_set_node_label` - Updates a node's display label
 - `ai_set_node_theme` - Applies a theme to a node
 
 #### Board Operations
+
 - `ai_set_board_properties` - Sets properties on a component board
 - `ai_set_board_theme` - Applies a theme to a component board
 
 #### Custom Theme Management
+
 - `ai_reset_custom_theme` - Resets the custom theme to defaults
 - `ai_add_custom_theme_swatch` - Adds a new color swatch
 - `ai_remove_custom_theme_swatch` - Removes a color swatch
@@ -467,11 +513,13 @@ return produce(workspace, (draft) => {
 - `ai_set_custom_theme_*` - Various theme property setters (40+ actions)
 
 #### Transcript Management
+
 - `ai_transcript_add_message` - Adds messages to the AI transcript
 
 ## Workspace Service Functions
 
 ### Node Retrieval Methods
+
 ```typescript
 // Get a board from the workspace
 workspaceService.getBoard(componentId, workspace): Board
@@ -487,6 +535,7 @@ workspaceService.getNodes(workspace): (Variant | Instance)[]
 ```
 
 ### Node Manipulation Methods
+
 ```typescript
 // Set properties on a node
 workspaceService.setNodeProperties(nodeId, properties, workspace, options): Workspace
@@ -505,6 +554,7 @@ workspaceService.duplicateNode(nodeId, workspace): Workspace
 ```
 
 ### Component Instantiation
+
 ```typescript
 // Create a new component board with all child components
 workspaceService.createBoard(componentId, workspace): Workspace
@@ -514,6 +564,7 @@ workspaceService.instantiateComponent(componentId, registry): { newInstancesById
 ```
 
 ### Property Management
+
 ```typescript
 // Merge properties with existing node properties
 workspaceService.mergeNodeProperties(nodeId, properties, workspace): Workspace
@@ -528,6 +579,7 @@ workspaceService.processNestedOverridesProps(childProperties, parentNestedOverri
 ## Theme Service Functions
 
 ### Theme Retrieval
+
 ```typescript
 // Get the theme ID of an object (board, variant, or instance)
 themeService.getObjectThemeId(object, workspace): ThemeId
@@ -543,6 +595,7 @@ themeService.getNodeTheme(nodeId, workspace): Theme
 ```
 
 ### Theme Management
+
 ```typescript
 // Set a theme on a node
 themeService.setNodeTheme(nodeId, themeId, workspace): Workspace
@@ -557,6 +610,7 @@ themeService.getNextCustomSwatchId(workspace): string
 ## Helper Functions
 
 ### Node Operations
+
 ```typescript
 // Node retrieval and traversal
 getNodeById(nodeId, workspace): Variant | Instance
@@ -575,6 +629,7 @@ isOnlyChild(nodeId, workspace): boolean
 ```
 
 ### Board Operations
+
 ```typescript
 // Board retrieval
 getBoardById(componentId, workspace): Board
@@ -587,6 +642,7 @@ areBoardVariantsInUse(board, workspace): boolean
 ```
 
 ### Variant Operations
+
 ```typescript
 // Variant retrieval
 getVariantById(variantId, workspace): Variant
@@ -601,6 +657,7 @@ isVariantNode(node): boolean
 ```
 
 ### Component Operations
+
 ```typescript
 // Component instantiation
 getChildrenFromSchema(componentId): Component[]
@@ -641,6 +698,7 @@ if (isActionReferencingNonExistentNode(action, workspace)) {
 ## Advanced Features
 
 ### 1. Indexed Nested Overrides
+
 The system supports complex property inheritance patterns:
 
 ```typescript
@@ -651,6 +709,7 @@ The system supports complex property inheritance patterns:
 ```
 
 ### 2. Component Registry System
+
 During board creation, a registry maintains component relationships:
 
 ```typescript
@@ -664,6 +723,7 @@ type NodeRegister = {
 ```
 
 ### 3. Path-Based Node Finding
+
 The system can find nodes by their hierarchical path:
 
 ```typescript
@@ -671,11 +731,12 @@ The system can find nodes by their hierarchical path:
 const node = workspaceService.findNodeByPath(
   rootNode,
   ["ButtonBar", "Button", "Icon"],
-  workspace
+  workspace,
 )
 ```
 
 ### 4. Migration System
+
 Automatic data migration for workspace format changes:
 
 ```typescript
@@ -687,6 +748,7 @@ const migrationMiddleware: Middleware = (next) => (workspace, action) => {
 ```
 
 ### 5. Component Level Hierarchy
+
 Enforces strict component containment rules:
 
 ```typescript
@@ -704,6 +766,7 @@ componentLevels: {
 ## System Architecture
 
 ### Directory Structure
+
 ```
 packages/core/workspace/
 ├── constants.ts              # Error messages and constants
@@ -718,7 +781,6 @@ packages/core/workspace/
 │   ├── validation.ts
 │   ├── verification.ts
 │   ├── debug.ts
-│   ├── sentry.ts
 │   └── migration/           # Data migration system
 ├── reducers/                # Action reducers
 │   ├── core/               # Core workspace actions
@@ -738,6 +800,7 @@ packages/core/workspace/
 ### Key Subsystems
 
 #### 1. Core Reducer System
+
 - Handles direct user interactions
 - 98 action handlers for workspace operations
 - Rules-based authorization
@@ -745,6 +808,7 @@ packages/core/workspace/
 - Component instantiation
 
 #### 2. AI Reducer System
+
 - Processes AI-generated actions
 - 48 action handlers for AI operations
 - Schema-workspace reconciliation
@@ -752,6 +816,7 @@ packages/core/workspace/
 - Custom variant creation
 
 #### 3. Middleware System
+
 - Validation middleware
 - Verification middleware
 - Migration middleware
@@ -759,12 +824,14 @@ packages/core/workspace/
 - Sentry breadcrumb middleware
 
 #### 4. Service Layer
+
 - Workspace service (1735 lines)
 - Theme service (180 lines)
 - Centralized business logic
 - Type-safe operations
 
 #### 5. Helper System
+
 - 40+ utility functions
 - Node manipulation
 - Board management
@@ -789,6 +856,7 @@ All actions result in structural changes, property updates, and consistency main
 ## Key Results
 
 ### 1. Structural Changes
+
 - New component boards created with proper hierarchy
 - Variants added, removed, or modified
 - Node hierarchies restructured (moved, inserted, duplicated)
@@ -796,6 +864,7 @@ All actions result in structural changes, property updates, and consistency main
 - Custom variants created when schema doesn't match workspace
 
 ### 2. Property Updates
+
 - Node properties updated with validation
 - Board properties modified
 - Custom theme properties applied
@@ -803,6 +872,7 @@ All actions result in structural changes, property updates, and consistency main
 - Theme applications applied
 
 ### 3. Consistency Maintenance
+
 - All instances updated through propagation
 - Variant relationships preserved
 - Schema compliance maintained
@@ -814,11 +884,12 @@ All actions result in structural changes, property updates, and consistency main
 This technical reference serves as the authoritative documentation for the Core Workspace System implementation. When making changes:
 
 1. **Update this document first** to reflect the intended behavior
-2. **Implement changes** to match the documented behavior  
+2. **Implement changes** to match the documented behavior
 3. **Update tests** to verify the documented behavior
 4. **Validate** that the system behaves as documented
 
 The system is designed to be:
+
 - **Predictable**: Behavior should match documentation exactly
 - **Robust**: Handle edge cases gracefully without breaking
 - **Extensible**: Easy to add new action types and behaviors

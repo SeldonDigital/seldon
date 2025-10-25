@@ -1,0 +1,11 @@
+<svg id="uuid-e635b602-a417-4b87-acad-eca2d5b9de7d" data-name="Cubes" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320">
+  <g id="uuid-887e1c75-93f7-4348-b256-77cf6287ec33" data-name="cube blue">
+    <polyline points="149.745 193.824 72.73 273.814 184.157 285.55" fill="none" stroke="#8f8f8f" stroke-linecap="round" stroke-linejoin="round" stroke-width="22"/>
+    <polyline points="189.587 179.323 300 191.094 222.183 271.71" fill="none" stroke="#8f8f8f" stroke-linecap="round" stroke-linejoin="round" stroke-width="22"/>
+    <line x1="184.157" y1="285.55" x2="189.587" y2="179.323" fill="none" stroke="#3fb5ff" stroke-linecap="round" stroke-linejoin="round" stroke-width="22"/>
+    <line x1="300" y1="191.094" x2="247.27" y2="46.22" fill="none" stroke="#3fb5ff" stroke-linecap="round" stroke-linejoin="round" stroke-width="22"/>
+    <line x1="72.73" y1="273.814" x2="20" y2="128.939" fill="none" stroke="#3fb5ff" stroke-linecap="round" stroke-linejoin="round" stroke-width="22"/>
+    <polyline points="97.017 48.953 20 128.939 131.427 140.676" fill="none" stroke="#8f8f8f" stroke-linecap="round" stroke-linejoin="round" stroke-width="22"/>
+    <polyline points="136.854 34.45 247.27 46.22 169.455 126.839" fill="none" stroke="#8f8f8f" stroke-linecap="round" stroke-linejoin="round" stroke-width="22"/>
+  </g>
+</svg>

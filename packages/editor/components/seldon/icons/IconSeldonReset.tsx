@@ -1,0 +1,27 @@
+/*
+ * This code was generated using Seldon (https://seldon.app)
+ *
+ * Licensed under the Terms of Use: https://seldon.digital/terms-of-service
+ * Do not redistribute or sublicense without permission.
+ *
+ * You may not use this software, or any derivative works of it,
+ * in whole or in part, for the purposes of training, fine-tuning,
+ * or otherwise improving (directly or indirectly) any machine learning
+ * or artificial intelligence system.
+ */
+import { SVGAttributes } from "react"
+
+export function IconSeldonReset(props: SVGAttributes<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      height="1em"
+      width="1em"
+      {...props}
+    >
+      <path d="M5.9875 18.7125C7.69583 20.2375 9.7 21 12 21C13.25 21 14.4208 20.7625 15.5125 20.2875C16.6042 19.8125 17.5542 19.1708 18.3625 18.3625C19.1708 17.5542 19.8125 16.6042 20.2875 15.5125C20.7625 14.4208 21 13.25 21 12C21 10.75 20.7625 9.57917 20.2875 8.4875C19.8125 7.39583 19.1708 6.44583 18.3625 5.6375C17.5542 4.82917 16.6042 4.1875 15.5125 3.7125C14.4208 3.2375 13.25 3 12 3C10.6333 3 9.3375 3.29167 8.1125 3.875C6.8875 4.45833 5.85 5.28333 5 6.35V4H3V10H9V8H6.25C6.93333 7.06667 7.775 6.33333 8.775 5.8C9.775 5.26667 10.85 5 12 5C13.95 5 15.6042 5.67917 16.9625 7.0375C18.3208 8.39583 19 10.05 19 12C19 13.95 18.3208 15.6042 16.9625 16.9625C15.6042 18.3208 13.95 19 12 19C10.25 19 8.72083 18.4333 7.4125 17.3L5.9875 18.7125Z" />
+    </svg>
+  )
+}

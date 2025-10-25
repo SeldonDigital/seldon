@@ -1,0 +1,86 @@
+@import "./components/seldon/styles.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .no-spinner {
+    -moz-appearance: textfield;
+  }
+
+  .no-spinner::-webkit-outer-spin-button,
+  .no-spinner::-webkit-inner-spin-button {
+    margin: 0;
+    -webkit-appearance: none;
+  }
+}
+
+@layer reset {
+  html,
+  :host {
+    font-family: theme(
+      "fontFamily.sans",
+      ui-sans-serif,
+      system-ui,
+      sans-serif,
+      "Apple Color Emoji",
+      "Segoe UI Emoji",
+      "Segoe UI Symbol",
+      "Noto Color Emoji"
+    ); /* 4 */
+    font-feature-settings: theme(
+      "fontFamily.sans[1].fontFeatureSettings",
+      normal
+    ); /* 5 */
+    font-variation-settings: theme(
+      "fontFamily.sans[1].fontVariationSettings",
+      normal
+    ); /* 6 */
+  }
+}
+
+:root {
+  --separator-border: #000 !important;
+  --hairline: 1px;
+}
+
+*[contenteditable] {
+  outline: none;
+}
+
+@layer components {
+  .scrollbar-gutter-stable {
+    scrollbar-gutter: stable;
+  }
+}
+
+/* For devices with a 2x pixel ratio */
+@media only screen and (-webkit-min-device-pixel-ratio: 2),
+  only screen and (min-resolution: 192dpi) {
+  :root {
+    --hairline: 0.5px;
+  }
+}
+
+/* For devices with a 3x pixel ratio */
+@media only screen and (-webkit-min-device-pixel-ratio: 3),
+  only screen and (min-resolution: 288dpi) {
+  :root {
+    --hairline: 0.33px;
+  }
+}
+
+/* For devices with a 4x pixel ratio */
+@media only screen and (-webkit-min-device-pixel-ratio: 4),
+  only screen and (min-resolution: 384dpi) {
+  :root {
+    --hairline: 0.25px;
+  }
+}
+
+/* Override for react-pan-zoom-pinch to allow images to be clickable */
+/* hhttps://github.com/BetterTyped/react-zoom-pan-pinch/issues/135 */
+body .react-transform-wrapper img {
+  pointer-events: auto;
+}

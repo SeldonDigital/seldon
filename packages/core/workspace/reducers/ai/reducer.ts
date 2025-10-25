@@ -1,7 +1,6 @@
 import { applyMiddleware } from "../../middleware/apply-middleware"
 import { debugMiddleware } from "../../middleware/debug"
 import { migrationMiddleware } from "../../middleware/migration/middleware"
-import { sentryBreadcrumbMiddleware } from "../../middleware/sentry"
 import { validationMiddleware } from "../../middleware/validation"
 import { Workspace } from "../../types"
 import { handleAiAddVariant } from "./handlers/divergent/handle-ai-add-variant"
@@ -203,10 +202,10 @@ function reducer(workspace: Workspace, action: AIAction): Workspace {
   }
 }
 
-let preReducerMiddlewares = [validationMiddleware, sentryBreadcrumbMiddleware]
+let preReducerMiddlewares = [validationMiddleware]
 
 const postReducerMiddlewares = [migrationMiddleware]
-if (process.env.NODE_ENV === "development") {
+if (import.meta.env.DEV) {
   preReducerMiddlewares.push(debugMiddleware)
 }
 

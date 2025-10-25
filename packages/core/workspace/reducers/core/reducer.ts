@@ -1,7 +1,6 @@
 import { applyMiddleware } from "../../middleware/apply-middleware"
 import { debugMiddleware } from "../../middleware/debug"
 import { migrationMiddleware } from "../../middleware/migration/middleware"
-import { sentryBreadcrumbMiddleware } from "../../middleware/sentry"
 import { validationMiddleware } from "../../middleware/validation"
 import { workspaceVerificationMiddleware } from "../../middleware/verification"
 import { Workspace } from "../../types"
@@ -188,14 +187,14 @@ function reducer(workspace: Workspace, action: CoreAction): Workspace {
   }
 }
 
-let preReducerMiddlewares = [validationMiddleware, sentryBreadcrumbMiddleware]
+let preReducerMiddlewares = [validationMiddleware]
 
 const postReducerMiddlewares = [
   migrationMiddleware,
   workspaceVerificationMiddleware,
 ]
 
-if (process.env.NODE_ENV === "development") {
+if (import.meta.env.DEV) {
   preReducerMiddlewares.push(debugMiddleware)
 }
 

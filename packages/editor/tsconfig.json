@@ -3,8 +3,20 @@
   "compilerOptions": {
     /* Bundler mode */
     "outDir": "../../dist/editor",
-    "rootDir": "."
+    "rootDir": ".",
+
+    "paths": {
+      "@components/*": ["./components/*"],
+      "@lib/*": ["./lib/*"],
+      "@types": ["./app/types.ts"],
+      "@catalog/*": ["../core/components/catalog/*"],
+      "@seldon/core/*": ["../core/*"],
+      "@seldon/factory/*": ["../factory/*"]
+    }
   },
   "include": ["./**/*"],
-  "references": []
+  "references": [
+    { "path": "../core/tsconfig.json" },
+    { "path": "../factory/tsconfig.json" }
+  ]
 }

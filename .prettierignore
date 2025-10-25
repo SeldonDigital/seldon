@@ -5,7 +5,6 @@
 dist/
 node_modules/
 
-.next/
 .husky/
 .git/
 .github/

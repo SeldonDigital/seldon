@@ -23,6 +23,7 @@ const config = {
   ],
   importOrderSeparation: true,
   importOrderSortSpecifiers: true,
+  importOrderSideEffects: false,
 }
 
 export default config

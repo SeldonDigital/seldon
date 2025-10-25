@@ -1,0 +1,27 @@
+/*
+ * This code was generated using Seldon (https://seldon.app)
+ *
+ * Licensed under the Terms of Use: https://seldon.digital/terms-of-service
+ * Do not redistribute or sublicense without permission.
+ *
+ * You may not use this software, or any derivative works of it,
+ * in whole or in part, for the purposes of training, fine-tuning,
+ * or otherwise improving (directly or indirectly) any machine learning
+ * or artificial intelligence system.
+ */
+import { SVGAttributes } from "react"
+
+export function IconSeldonToolArrow(props: SVGAttributes<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      height="1em"
+      width="1em"
+      {...props}
+    >
+      <path d="M12.8662 15.1252L8.74899 20.6081C8.61548 20.7927 8.45344 20.9102 8.26288 20.9607C8.07232 21.0111 7.89048 21.013 7.71736 20.9664C7.54423 20.9197 7.38875 20.8226 7.25091 20.6752C7.11306 20.5277 7.03221 20.3405 7.00833 20.1134L5.50972 4.08053C5.48164 3.86933 5.5144 3.68301 5.608 3.52158C5.7016 3.36014 5.82823 3.23306 5.98788 3.14034C6.14752 3.04762 6.32023 3.00084 6.50601 3.00001C6.69178 2.99918 6.86856 3.0638 7.03634 3.19387L20.0893 12.5159C20.2728 12.6502 20.3936 12.8143 20.4516 13.0081C20.5097 13.2019 20.5155 13.3859 20.4691 13.5601C20.4227 13.7343 20.3301 13.8917 20.1914 14.0325C20.0527 14.1733 19.8705 14.2557 19.6448 14.2797L12.8662 15.1252ZM16.9152 12.6531L7.64697 6.03117L8.71343 17.4167L11.7947 13.2582L16.9152 12.6531Z" />
+    </svg>
+  )
+}
