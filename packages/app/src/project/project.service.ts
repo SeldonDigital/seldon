@@ -1,6 +1,6 @@
 import { $repeatable } from "../db.js"
 import { logger } from "../logger.js"
-import type { ProtectedRequestContext } from "../types.js"
+import type { RequestContext } from '../types.js';
 import * as repo from "./project.repo.js"
 import type {
   NewProjectInput,
@@ -10,22 +10,18 @@ import type {
 } from "./project.type.js"
 
 export async function getAllProjects(
-  ctx: ProtectedRequestContext,
+  ctx: RequestContext,
 ): Promise<ProjectListItem[]> {
-  const { userId } = ctx
-
-  const projects = await repo.getUserProjects(ctx.prisma, userId)
+  const projects = await repo.getProjects(ctx.prisma)
 
   return projects
 }
 
 export async function getProject(
-  ctx: ProtectedRequestContext,
+  ctx: RequestContext,
   projectId: string,
 ) {
-  const { userId } = ctx
-
-  const project = await repo.findProjectById(ctx.prisma, projectId, userId)
+  const project = await repo.findProjectById(ctx.prisma, projectId)
 
   if (!project) {
     logger.info(`Project not found: ${projectId}`)
@@ -36,13 +32,11 @@ export async function getProject(
 }
 
 export async function updateProject(
-  ctx: ProtectedRequestContext,
+  ctx: RequestContext,
   projectId: string,
   input: UpdateProjectInput,
 ) {
-  const { userId } = ctx
-
-  const project = await repo.findProjectById(ctx.prisma, projectId, userId)
+  const project = await repo.findProjectById(ctx.prisma, projectId)
 
   await repo.updateProject(ctx.prisma, projectId, input)
 
@@ -50,16 +44,10 @@ export async function updateProject(
 }
 
 export async function createProject(
-  ctx: ProtectedRequestContext,
+  ctx: RequestContext,
   input: NewProjectInput,
 ): Promise<Project> {
-  const { userId, prisma, priviledgedUser } = ctx
-
-  const currentCount = await repo.getUserProjects(prisma, userId)
-
-  if (!priviledgedUser && currentCount.length >= 5) {
-    throw new Error("You can create maximum of 5 projects")
-  }
+  const { prisma } = ctx
 
   return $repeatable(prisma, async (tx) => {
     const newProject = await repo.createProject(tx, input)
@@ -69,10 +57,10 @@ export async function createProject(
 }
 
 export async function deleteProject(
-  ctx: ProtectedRequestContext,
+  ctx: RequestContext,
   projectId: string,
 ): Promise<boolean> {
-  const { prisma, userId } = ctx
+  const { prisma } = ctx
 
   await $repeatable(prisma, async (tx) => {
     await repo.deleteProject(tx, projectId)

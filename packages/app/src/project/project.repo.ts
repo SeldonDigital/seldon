@@ -14,51 +14,27 @@ export async function getProjectsCount(
   prisma: PrismaClient,
   userId: string,
 ): Promise<number> {
-  const count = await prisma.projectAccess.count({
-    where: {
-      userId,
-    },
-  })
+  const count = await prisma.project.count({})
 
   return count
 }
 
-export async function getUserProjects(
+export async function getProjects(
   prisma: PrismaClient,
-  userId: string,
 ): Promise<ProjectListItem[]> {
-  const projects = await prisma.projectAccess.findMany({
-    include: {
-      project: true,
-    },
-    where: {
-      userId,
-    },
-  })
-
-  if (projects.length === 0) {
-    return []
-  }
-
-  return projects.map(({ project }) => project)
+  return await prisma.project.findMany({});
 }
 
 export async function findProjectById(
   prisma: PrismaClient,
   projectId: string,
-  userId: string,
 ): Promise<Project | null> {
-  const result = await prisma.projectAccess.findFirst({
-    where: {
-      projectId,
-      userId,
-    },
+  const result = await prisma.project.findFirst({
     include: {
-      project: {
-        include: {
-          tree: true,
-        },
-      },
+      tree: true,
+    },
+    where: {
+      id: projectId,
     },
   })
 
@@ -67,8 +43,8 @@ export async function findProjectById(
   }
 
   return {
-    ...result.project,
-    tree: (result.project.tree?.tree as any) || {},
+    ...result,
+    tree: (result.tree?.tree as any) || {},
   }
 }
 

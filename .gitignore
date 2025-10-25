@@ -12,5 +12,9 @@ npm-debug.log*
 .vscode
 !.vscode/launch.json
 
+# Keep environment variables out of version control
 .env
 .env.local
+
+# Prisma generated client
+client/

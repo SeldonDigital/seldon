@@ -2,10 +2,13 @@
   "name": "@seldon/base",
   "version": "0.0.0",
   "description": "Open-source design system and component framework designed for building component-driven UIs with type-safe design tokens",
+  "type": "module",
   "scripts": {
     "check:types": "tsc --build ./tsconfig.json",
+    "dev": "node ./script/dev.ts",
     "format": "prettier --write \"**/*.{ts,tsx,json,css}\"",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node dist/index.js",
+    "start:migrate": "prisma migrate deploy && node dist/index.js"
   },
   "repository": {
     "type": "git",
@@ -20,15 +23,41 @@
   "homepage": "https://github.com/SeldonDigital/seldon#readme",
   "workspaces": [
     "packages/core",
-    "packages/factory",
-    "packages/app"
+    "packages/factory"
   ],
-  "dependencies": {},
+  "imports": {
+    "#db": "./client/index.js"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.741.0",
+    "@hono/node-server": "^1.13.8",
+    "@hono/zod-validator": "0.7.0",
+    "@prisma/adapter-pg": "^6.13.0",
+    "@prisma/client": "^6.13.0",
+    "consola": "^3.4.0",
+    "cryptr": "^6.3.0",
+    "csstype": "^3.1.3",
+    "file-type": "^20.1.0",
+    "hono": "^4.6.20",
+    "mime-types": "^2.1.35",
+    "nanoid": "3.3.8",
+    "uuid": "^11.1.0",
+    "zod": "^3.25.0"
+  },
   "devDependencies": {
-    "@trivago/prettier-plugin-sort-imports": "^5.2.2",
     "@dotenvx/dotenvx": "^1.31.0",
+    "@trivago/prettier-plugin-sort-imports": "^5.2.2",
+    "@types/mime-types": "^2.1.4",
+    "@types/node": "^22.4.1",
     "change-case": "^5.4.4",
-    "prettier": "^3.3.3"
+    "concurrently": "^9.2.1",
+    "eslint": "^9.19.0",
+    "eslint-plugin-bedrock": "^1.0.26",
+    "prettier": "^3.3.3",
+    "prisma": "^6.13.0",
+    "prisma-json-types-generator": "^3.5.2",
+    "tsx": "4.19.2",
+    "typescript": "^5.9.3"
   },
   "volta": {
     "node": "22.18.0"
