@@ -1,0 +1,10 @@
+{
+  "extends": "../../scripts/tsconfig.base.json",
+  "compilerOptions": {
+    /* Bundler mode */
+    "outDir": "../../dist/editor",
+    "rootDir": "."
+  },
+  "include": ["./**/*"],
+  "references": []
+}

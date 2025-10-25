@@ -3,9 +3,12 @@
     "noEmit": true,
     "skipLibCheck": true
   },
+  "include": [],
   "references": [
+    { "path": "./tsconfig.infra.json" },
     { "path": "./packages/core/tsconfig.json" },
     { "path": "./packages/factory/tsconfig.json" },
-    { "path": "./packages/app/tsconfig.json" }
+    { "path": "./packages/api/tsconfig.json" },
+    { "path": "./packages/editor/tsconfig.json" }
   ]
 }

@@ -1,0 +1,14 @@
+{
+  "extends": "./scripts/tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "./dist/infra",
+    "rootDir": ".",
+
+    "noEmit": false,
+
+    "allowSyntheticDefaultImports": false,
+    "esModuleInterop": true
+  },
+  "include": ["./scripts/**/*.ts", "./vite.config.ts"],
+  "references": []
+}

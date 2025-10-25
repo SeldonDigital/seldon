@@ -3,9 +3,9 @@
   "compilerOptions": {
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
-    "rootDir": "./src",
+    "rootDir": ".",
     "noEmit": false,
-    "outDir": "./dist",
+    "outDir": "../../dist/api",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "erasableSyntaxOnly": true,
@@ -13,7 +13,7 @@
     /* Interop Constraints */
     "verbatimModuleSyntax": true
   },
-  "include": ["src/**/*"],
+  "include": ["**/*"],
   "exclude": [
     "node_modules",
     "**/*.spec.ts",

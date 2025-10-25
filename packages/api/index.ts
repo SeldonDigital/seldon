@@ -9,6 +9,7 @@ import { parseEnv } from "./env.js"
 import { logger } from "./logger.js"
 import { makeApp, startApp } from "./server/app.js"
 import { makePublicApp } from "./server/public.js"
+import { makeSPAApp } from "./ui/editor.js"
 
 async function main() {
   const appEnv = parseEnv()
@@ -31,6 +32,7 @@ async function main() {
   const app = makeApp(appEnv)
 
   app.route("/", makePublicApp(appEnv, prisma, assetClient))
+  app.route("/", await makeSPAApp(appEnv))
 
   const server = await startApp(app, appEnv)
 

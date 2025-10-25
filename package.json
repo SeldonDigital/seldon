@@ -5,7 +5,13 @@
   "type": "module",
   "scripts": {
     "check:types": "tsc --build ./tsconfig.json",
-    "dev": "node ./script/dev.ts",
+    "env": "dotenvx run -f .env.local",
+    "dev": "npm run env -- -- node ./scripts/dev.ts",
+    "dev:api": "tsx --watch ./packages/api/index.ts",
+    "dev:ui": "vite",
+    "build:editor": "vite build",
+    "build:api": "tsc --build ./packages/api/tsconfig.build.json",
+    "build": "npm run build:editor && npm run build:api",
     "format": "prettier --write \"**/*.{ts,tsx,json,css}\"",
     "start": "node dist/index.js",
     "start:migrate": "prisma migrate deploy && node dist/index.js"
@@ -49,6 +55,7 @@
     "@trivago/prettier-plugin-sort-imports": "^5.2.2",
     "@types/mime-types": "^2.1.4",
     "@types/node": "^22.4.1",
+    "@vitejs/plugin-react": "^5.1.0",
     "change-case": "^5.4.4",
     "concurrently": "^9.2.1",
     "eslint": "^9.19.0",
@@ -57,7 +64,8 @@
     "prisma": "^6.13.0",
     "prisma-json-types-generator": "^3.5.2",
     "tsx": "4.19.2",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vite": "^7.1.12"
   },
   "volta": {
     "node": "22.18.0"
