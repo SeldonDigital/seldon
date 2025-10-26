@@ -1,14 +1,14 @@
 import { randomUUID } from "node:crypto"
 
 import { PrismaClient } from "#db"
-
-import type { PrismaTSClient } from "../db.js"
 import type {
   NewProjectInput,
   Project,
   ProjectListItem,
   UpdateProjectInput,
-} from "./project.type.js"
+} from "#shared/project.type.js"
+
+import type { PrismaTSClient } from "../db.js"
 
 export async function getProjectsCount(
   prisma: PrismaClient,
@@ -22,7 +22,7 @@ export async function getProjectsCount(
 export async function getProjects(
   prisma: PrismaClient,
 ): Promise<ProjectListItem[]> {
-  return await prisma.project.findMany({});
+  return await prisma.project.findMany({})
 }
 
 export async function findProjectById(

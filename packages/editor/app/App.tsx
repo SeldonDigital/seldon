@@ -1,4 +1,5 @@
 import { StrictMode } from "react"
+import { Route, Switch } from "wouter"
 
 import { Homepage } from "./Homepage"
 import { Layout } from "./Layout"
@@ -9,7 +10,9 @@ export function App(props: AppProps) {
   return (
     <StrictMode>
       <Layout>
-        <Homepage />
+        <Switch>
+          <Route path="/" component={Homepage} />
+        </Switch>
       </Layout>
     </StrictMode>
   )

@@ -6,6 +6,8 @@
     "declarationMap": true,
     "incremental": true,
 
+    "customConditions": ["seldon-dev"],
+
     "target": "ES2022",
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "module": "ESNext",

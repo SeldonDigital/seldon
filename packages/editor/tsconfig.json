@@ -17,6 +17,7 @@
   "include": ["./**/*"],
   "references": [
     { "path": "../core/tsconfig.json" },
-    { "path": "../factory/tsconfig.json" }
+    { "path": "../factory/tsconfig.json" },
+    { "path": "../shared/tsconfig.json" }
   ]
 }

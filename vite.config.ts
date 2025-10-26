@@ -28,6 +28,7 @@ export default defineConfig({
   },
   plugins: [react()],
   resolve: {
+    conditions: ["seldon-dev"],
     alias: {
       "@components": join(editorHome, "components"),
       "@lib": join(editorHome, "lib"),

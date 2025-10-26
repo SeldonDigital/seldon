@@ -9,9 +9,10 @@ import {
 import { fileTypeFromBuffer } from "file-type"
 import * as mime from "mime-types"
 
+import type { UploadResponse } from "#shared/asset.type.js"
+
 import { logger } from "../logger.js"
 import type { AppEnv } from "../types.js"
-import type { UploadResponse } from "./asset.type.js"
 
 export class AssetClient {
   #client: S3Client

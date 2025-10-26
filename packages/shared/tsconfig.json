@@ -5,7 +5,7 @@
     "moduleResolution": "NodeNext",
     "rootDir": ".",
     "noEmit": false,
-    "outDir": "../../dist/api",
+    "outDir": "../../dist/shared",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "erasableSyntaxOnly": true,
@@ -14,9 +14,6 @@
     "verbatimModuleSyntax": true
   },
   "include": ["**/*"],
-  "exclude": ["node_modules", "**/*.spec.ts", "**/*.test.ts"],
-  "references": [
-    { "path": "../core/tsconfig.json" },
-    { "path": "../shared/tsconfig.json" }
-  ]
+  "exclude": [],
+  "references": [{ "path": "../core/tsconfig.json" }]
 }

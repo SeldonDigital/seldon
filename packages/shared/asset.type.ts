@@ -1,16 +1,16 @@
-export type AssetContent = {
+export interface AssetContent {
   Body: ReadableStream
   ContentType: string
 }
 
-export type NewAssetResult = {
+export interface NewAssetResult {
   assetId: string
   projectId: string
   contentType: string
   url: string
 }
 
-export type UploadResponse = {
+export interface UploadResponse {
   assetId: string
   contentType: string
   url: string

@@ -1,15 +1,16 @@
 "use client"
 
 import { useProjectDelete } from "@lib/api/hooks/use-project-delete"
-import { ApiProjectListItem } from "@lib/api/types"
 import { useState } from "react"
+
+import { type ProjectListItem } from "#shared/project.type.js"
 
 import { Card } from "./Card"
 import { RelativeTime } from "./RelativeTime"
 import { ProjectTitleAndRename } from "./project-title-and-rename/ProjectTitleAndRename"
 
 type Props = {
-  project: ApiProjectListItem
+  project: ProjectListItem
   testId?: string
 }
 

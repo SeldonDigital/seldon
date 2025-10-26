@@ -1,12 +1,14 @@
-import { ApiProjectListItem } from "@lib/api/types"
+import { Input } from "@components/ui/Input"
+import { useProjectUpdate } from "@lib/api/hooks/use-project-update"
 import { cn, cnMerge } from "@lib/utils/cn"
 import { useState } from "react"
-import { useProjectUpdate } from "@lib/api/hooks/use-project-update"
+
+import { ProjectListItem } from "#shared/project.type.js"
+
 import { useFocusOnMount } from "./hooks/use-focus-on-mount"
-import { Input } from "@components/ui/Input"
 
 type ProjectTitleAndRenameProps = {
-  project: ApiProjectListItem
+  project: ProjectListItem
   isEditing: boolean
   setIsEditing: (isEditing: boolean) => void
 }

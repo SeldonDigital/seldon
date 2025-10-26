@@ -1,8 +1,9 @@
 import { File } from "node:buffer"
 
+import type { AssetContent, NewAssetResult } from "#shared/asset.type.js"
+
 import type { RequestContext } from "../types.js"
 import * as repo from "./asset.repo.js"
-import type { AssetContent, NewAssetResult } from "./asset.type.js"
 
 export async function getAssetContent(
   ctx: RequestContext,

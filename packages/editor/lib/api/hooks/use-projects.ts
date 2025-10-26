@@ -1,8 +1,10 @@
-import { ApiProjectAllResponse, api } from "@lib/api/client"
 import { QueryKeys } from "@lib/api/query-keys"
 import { useQuery } from "@tanstack/react-query"
 
-export function useProjects(initialData?: ApiProjectAllResponse) {
+import { api } from "#shared/client.js"
+import { type ProjectAllResponse } from "#shared/project.type.js"
+
+export function useProjects(initialData?: ProjectAllResponse) {
   return useQuery({
     queryKey: QueryKeys.projects,
     queryFn: async () => {

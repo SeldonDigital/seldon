@@ -7,7 +7,7 @@
     "check:types": "tsc --build ./tsconfig.json",
     "env": "dotenvx run -f .env.local",
     "dev": "npm run env -- -- node ./scripts/dev.ts",
-    "dev:api": "tsx --watch ./packages/api/index.ts",
+    "dev:api": "npm run env -- -- tsx --watch ./packages/api/index.ts",
     "dev:ui": "vite",
     "build:editor": "vite build",
     "build:api": "tsc --build ./packages/api/tsconfig.build.json",
@@ -32,7 +32,11 @@
     "packages/factory"
   ],
   "imports": {
-    "#db": "./client/index.js"
+    "#db": "./client/index.js",
+    "#shared/*.js": {
+      "seldon-dev": "./packages/shared/*.ts",
+      "default": "./dist/shared/*.js"
+    }
   },
   "dependencies": {
     "@atlaskit/pragmatic-drag-and-drop": "^1.7.4",

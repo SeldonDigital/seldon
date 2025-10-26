@@ -1,13 +1,14 @@
-import { $repeatable } from "../db.js"
-import { logger } from "../logger.js"
-import type { RequestContext } from '../types.js';
-import * as repo from "./project.repo.js"
 import type {
   NewProjectInput,
   Project,
   ProjectListItem,
   UpdateProjectInput,
-} from "./project.type.js"
+} from "#shared/project.type.js"
+
+import { $repeatable } from "../db.js"
+import { logger } from "../logger.js"
+import type { RequestContext } from "../types.js"
+import * as repo from "./project.repo.js"
 
 export async function getAllProjects(
   ctx: RequestContext,
@@ -17,10 +18,7 @@ export async function getAllProjects(
   return projects
 }
 
-export async function getProject(
-  ctx: RequestContext,
-  projectId: string,
-) {
+export async function getProject(ctx: RequestContext, projectId: string) {
   const project = await repo.findProjectById(ctx.prisma, projectId)
 
   if (!project) {
