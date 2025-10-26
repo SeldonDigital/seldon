@@ -8,10 +8,10 @@ const envDecoder = z.object({
 
   DATABASE_URL: z.string(),
 
-  R2_ACCESS_KEY_ID: z.string(),
-  R2_SECRET_ACCESS_KEY: z.string(),
-  CLOUDFLARE_ACCOUNT_ID: z.string(),
-  R2_BUCKET_NAME: z.string(),
+  R2_ACCESS_KEY_ID: z.string().default(""),
+  R2_SECRET_ACCESS_KEY: z.string().default(""),
+  CLOUDFLARE_ACCOUNT_ID: z.string().default(""),
+  R2_BUCKET_NAME: z.string().default(""),
 })
 
 export function parseEnv(): AppEnv {

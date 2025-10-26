@@ -1,0 +1,40 @@
+services:
+  app:
+    container_name: app
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/seldon-dev?schema=public
+      - API_URL=http://localhost:2300
+      - NODE_ENV=development
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      args:
+        NODE_ENV: development
+    volumes:
+      - .:/app
+    command: >
+      sh -c "npx prisma generate && npx prisma migrate deploy && npm run dev"
+    ports:
+      # For the main app
+      - "2300:2300"
+      # For Vite HMR
+      - "2301:2301"
+    depends_on:
+      - db
+
+  db:
+    container_name: seldon-db
+    image: postgres:16.9
+    attach: false
+    logging:
+      driver: none
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 2s
+      timeout: 5s
+      retries: 5
+    ports:
+      - "5432:5432"

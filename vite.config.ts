@@ -20,6 +20,7 @@ export default defineConfig({
     },
   },
   server: {
+    host: true,
     origin: "http://localhost:2300",
     port: 2301,
     hmr: {
