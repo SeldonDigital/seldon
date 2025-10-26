@@ -1,6 +1,9 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useAddToast } from "@components/toaster/use-add-toast"
-import { ApiProject, api } from "../client"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
+
+import { api } from "#shared/client.js"
+import { Project } from "#shared/project.type.js"
+
 import { QueryKeys } from "../query-keys"
 
 export function useProjectUpdate() {
@@ -12,7 +15,7 @@ export function useProjectUpdate() {
     onSuccess: (_, variables) => {
       queryClient.setQueryData(
         [...QueryKeys.projects, variables.id],
-        (old: ApiProject) => {
+        (old: Project) => {
           return {
             ...old,
             ...variables.input,

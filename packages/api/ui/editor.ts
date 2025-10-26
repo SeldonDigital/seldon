@@ -29,8 +29,6 @@ async function devServerApp() {
   app.get("*", async (c) => {
     const url = makeUrl(c.req.url, VITE_HOST)
 
-    console.log("Fetching Vite URL:", c.req.url, url)
-
     const response = await fetchVite(url, c.req.raw.headers)
     const content = await response.text()
 

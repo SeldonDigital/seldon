@@ -17,11 +17,11 @@ import { ImageUploadPanel } from "./floating-panels/image-upload-panel/ImageUplo
 import { ObjectsPanel } from "./objects-panel/ObjectsPanel"
 import { PropertiesPaneNew } from "./properties-panel/properties-pane/PropertiesPaneNew"
 import { Spinner } from "./seldon/custom/Spinner"
-import { Toasts } from "./toaster/Toaster"
 
-export default function Editor() {
+export function Editor() {
   const { showPanels } = useEditorConfig()
   const { isInPreviewMode } = usePreview()
+
   const { isLoading } = useCurrentProject()
   const showSidePanels = showPanels && !isInPreviewMode
 
@@ -64,9 +64,6 @@ export default function Editor() {
           </Allotment>
         </motion.div>
       </AnimatePresence>
-
-      {/* Toaster for error messages */}
-      <Toasts />
 
       {/* Floating panels */}
       <ImageUploadPanel.Controller />

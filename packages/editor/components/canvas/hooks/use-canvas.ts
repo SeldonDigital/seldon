@@ -1,23 +1,25 @@
+import { useAddToast } from "@components/toaster/use-add-toast"
+import { useDialog } from "@lib/hooks/use-dialog"
+import { usePreview } from "@lib/hooks/use-preview"
+import { useTool } from "@lib/hooks/use-tool"
 import { getSuggestTaskForObject } from "@lib/suggest/get-suggest-variables-for-target"
+import { useSelection } from "@lib/workspace/use-selection"
+import { useWorkspace } from "@lib/workspace/use-workspace"
 import { MouseEventHandler, useCallback } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
 import { useThrottledCallback } from "use-debounce"
+
 import { InstanceId, VariantId, invariant } from "@seldon/core"
 import { getComponentSchema } from "@seldon/core/components/catalog"
 import { ComponentId } from "@seldon/core/components/constants"
 import { ErrorMessages } from "@seldon/core/workspace/constants"
 import { getNodeOrientation } from "@seldon/core/workspace/helpers/get-node-orientation"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
-import { useDialog } from "@lib/hooks/use-dialog"
-import { usePreview } from "@lib/hooks/use-preview"
-import { useTool } from "@lib/hooks/use-tool"
+
 import {
   HoverState,
   useCanvasHoverState,
-} from "../../../../lib/hooks/use-canvas-hover-state"
-import { useSelection } from "@lib/workspace/use-selection"
-import { useWorkspace } from "@lib/workspace/use-workspace"
-import { useAddToast } from "@components/toaster/use-add-toast"
+} from "../../../lib/hooks/use-canvas-hover-state"
 import { getBoardIdForEventTarget } from "../helpers/get-board-id-for-event-target"
 import { getChildNodesWithNodeId } from "../helpers/get-child-nodes-with-node-id"
 import { getNodeIdForEventTarget } from "../helpers/get-node-id-for-event-target"

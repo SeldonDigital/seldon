@@ -13,7 +13,6 @@ import { useNodeClipboardActions } from "@lib/hooks/use-node-clipboard-actions"
 import { usePreview } from "@lib/hooks/use-preview"
 import { useTool } from "@lib/hooks/use-tool"
 import { useZoomControls } from "@lib/hooks/use-zoom-controls"
-import { useProjectId } from "@lib/project/hooks/use-project-id"
 import { selectFile } from "@lib/utils/select-file"
 import { useHistory } from "@lib/workspace/use-history"
 import { useSelection } from "@lib/workspace/use-selection"
@@ -46,18 +45,17 @@ export function useMenuConfig(): HeaderConfig {
   const { showActionDebugger, toggleActionDebugger } = useActionDebugger()
   const { debugModeEnabled, toggleDebugMode } = useDebugMode()
   const { copyNode, cutNode, pasteNode } = useNodeClipboardActions()
-  const {
-    exportWorkspaceToFile,
-    exportCustomTheme,
-    exportSelectionToClipboard,
-    importWorkspaceFromFile,
-  } = useImportExport()
+  // const {
+  //   exportWorkspaceToFile,
+  //   exportCustomTheme,
+  //   exportSelectionToClipboard,
+  //   importWorkspaceFromFile,
+  // } = useImportExport()
   const { deleteSelection, duplicateSelection } = useAddRemoveCommands()
   const { moveSelectionDown, moveSelectionUp } = useMoveCommands()
   const { selectOriginalNode, selectVariant } = useSelectCommands()
   const { undo, redo } = useHistory()
   const { selectedNode, selection } = useSelection()
-  const { projectId } = useProjectId()
 
   const addToast = useAddToast()
 
@@ -147,51 +145,52 @@ export function useMenuConfig(): HeaderConfig {
       )
     }
 
-    items.push(
-      "separator",
-      {
-        id: "import-file",
-        label: "Import Workspace",
-        action: async () => {
-          const result = await selectFile()
-          if (!result.success) return
-          await importWorkspaceFromFile(result.file)
-        },
-        visibleIn: ["edit", "preview"], // Not visible in project view
-      },
-      {
-        id: "export-workspace",
-        label: "Export Workspace",
-        action: exportWorkspaceToFile,
-        visibleIn: ["edit", "preview"], // Not visible in project view
-      },
-      {
-        id: "export-custom-theme",
-        label: "Export Custom Theme",
-        action: exportCustomTheme,
-        visibleIn: ["edit", "preview"], // Not visible in project view
-      },
-    )
+    // TODO: OPENSOURCE MIGRATION
+    // items.push(
+    //   "separator",
+    //   {
+    //     id: "import-file",
+    //     label: "Import Workspace",
+    //     action: async () => {
+    //       const result = await selectFile()
+    //       if (!result.success) return
+    //       await importWorkspaceFromFile(result.file)
+    //     },
+    //     visibleIn: ["edit", "preview"], // Not visible in project view
+    //   },
+    //   {
+    //     id: "export-workspace",
+    //     label: "Export Workspace",
+    //     action: exportWorkspaceToFile,
+    //     visibleIn: ["edit", "preview"], // Not visible in project view
+    //   },
+    //   {
+    //     id: "export-custom-theme",
+    //     label: "Export Custom Theme",
+    //     action: exportCustomTheme,
+    //     visibleIn: ["edit", "preview"], // Not visible in project view
+    //   },
+    // )
 
-    if (debugModeEnabled) {
-      items.push({
-        id: "export-selected-node",
-        label: "Copy Selection to Clipboard",
-        action: exportSelectionToClipboard,
-        visibleIn: ["edit", "preview"], // Not visible in project view
-      })
-    }
+    // if (debugModeEnabled) {
+    //   items.push({
+    //     id: "export-selected-node",
+    //     label: "Copy Selection to Clipboard",
+    //     action: exportSelectionToClipboard,
+    //     visibleIn: ["edit", "preview"], // Not visible in project view
+    //   })
+    // }
 
     return items
   }, [
     addToast,
     debugModeEnabled,
-    exportCustomTheme,
-    exportSelectionToClipboard,
+    // exportCustomTheme,
+    // exportSelectionToClipboard,
     exportToGithub,
-    exportWorkspaceToFile,
+    // exportWorkspaceToFile,
     goToProjects,
-    importWorkspaceFromFile,
+    // importWorkspaceFromFile,
     renameProject,
     dispatch,
     setActiveTool,

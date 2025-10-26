@@ -1,15 +1,18 @@
 "use client"
 
-import { ApiProject } from "@lib/api/client"
-import { useEffect } from "react"
-import { coreReducer } from "@seldon/core/workspace/reducers/core/reducer"
 import { INITIAL_WORKSPACE, useHistory } from "@lib/workspace/use-history"
+import { useEffect } from "react"
 
-export function ProjectInitialize({
-  initialData,
-}: {
-  initialData: ApiProject
-}) {
+import { type Workspace } from "@seldon/core"
+import { coreReducer } from "@seldon/core/workspace/reducers/core/reducer"
+
+import { Project } from "#shared/project.type.js"
+
+export interface ProjectInitializeProps {
+  initialData: Project
+}
+
+export function ProjectInitialize({ initialData }: ProjectInitializeProps) {
   const { reset } = useHistory()
 
   useEffect(() => {
@@ -21,7 +24,8 @@ export function ProjectInitialize({
     const verified = coreReducer(INITIAL_WORKSPACE, {
       type: "set_workspace",
       payload: {
-        workspace: initialData.tree,
+        // TODO: Improve type safety here later.
+        workspace: initialData.tree as Workspace,
       },
     })
 

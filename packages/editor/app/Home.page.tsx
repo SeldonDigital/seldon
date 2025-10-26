@@ -4,19 +4,22 @@ import { DesignSystemsSection } from "@components/projects/sections/DesignSystem
 import { HeroSection } from "@components/projects/sections/HeroSection"
 import { ProjectsSection } from "@components/projects/sections/ProjectsSection"
 import { TemplatesSection } from "@components/projects/sections/TemplatesSection"
-import { QueryKeys } from "@lib/api/query-keys"
+import { UnifiedHeader } from "@components/unified-header/UnifiedHeader"
 
 export function Homepage() {
   return (
-    <ProjectsScreen>
-      <HeroSection firstName={"creator"} />
-      <HasProjects>
-        <ProjectsSection />
+    <>
+      <UnifiedHeader />
+      <ProjectsScreen>
+        <HeroSection firstName={"creator"} />
+        <HasProjects>
+          <ProjectsSection />
+          <hr className="border-charcoal mt-8" />
+        </HasProjects>
+        <TemplatesSection />
         <hr className="border-charcoal mt-8" />
-      </HasProjects>
-      <TemplatesSection />
-      <hr className="border-charcoal mt-8" />
-      <DesignSystemsSection />
-    </ProjectsScreen>
+        <DesignSystemsSection />
+      </ProjectsScreen>
+    </>
   )
 }

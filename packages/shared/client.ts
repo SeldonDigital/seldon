@@ -24,8 +24,8 @@ export async function getHeaders(
 }
 
 export function getEndpointUrl(path: string): string {
-  // TODO: Future: Support different environments
-  return path
+  // TODO: OPENSOURCE MIGRATION
+  return `/api${path}`
 }
 
 export const api = {

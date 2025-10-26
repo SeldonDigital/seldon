@@ -1,7 +1,11 @@
+import { Hono } from "hono"
+
 import type { AppEnv, PublicApp } from "../types.js"
 
-export function addRootRoute(app: PublicApp, appEnv: AppEnv) {
-  app.get("/health", async (c) => {
+export function makeHealthApp() {
+  const app: PublicApp = new Hono()
+
+  app.get("/", async (c) => {
     return c.json({
       ok: true,
       servedAt: new Date(),

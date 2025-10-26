@@ -2,6 +2,8 @@
   "extends": "../../scripts/tsconfig.base.json",
   "compilerOptions": {
     "noEmit": false,
+    "customConditions": null,
+
     "moduleResolution": "node",
     "module": "ESNext",
     "target": "ES2022",

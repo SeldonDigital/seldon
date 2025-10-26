@@ -3,14 +3,13 @@ import { useParams } from "wouter"
 export function useProjectId() {
   const params = useParams()
 
+  if (params.projectId === undefined) {
+    throw new Error("You can only use `useProjectId` inside a project route")
+  }
+
   if (import.meta.env.MODE === "test") {
     return { projectId: "test" }
   }
 
-  // Type guard
-  if (Array.isArray(params.id)) {
-    throw new Error("useProjectId expects a single id")
-  }
-
-  return { projectId: params.id as string }
+  return { projectId: params.projectId as string }
 }

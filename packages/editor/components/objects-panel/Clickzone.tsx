@@ -1,13 +1,15 @@
+import { useCanvasHoverState } from "@lib/hooks/use-canvas-hover-state"
+import { useDialog } from "@lib/hooks/use-dialog"
+import { useTool } from "@lib/hooks/use-tool"
 import { Placement } from "@lib/types"
 import { cn } from "@lib/utils/cn"
+import { useWorkspace } from "@lib/workspace/use-workspace"
 import { useCallback, useMemo } from "react"
+
 import { Variant, invariant } from "@seldon/core"
 import { Instance } from "@seldon/core/index"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
-import { useDialog } from "@lib/hooks/use-dialog"
-import { useTool } from "@lib/hooks/use-tool"
-import { useCanvasHoverState } from "../../../lib/hooks/use-canvas-hover-state"
-import { useWorkspace } from "@lib/workspace/use-workspace"
+
 import { Indicator } from "./Indicator"
 
 type ClickzoneProps = {

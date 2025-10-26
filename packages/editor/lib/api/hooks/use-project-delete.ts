@@ -1,6 +1,8 @@
-import { QueryKeys } from "@lib/api/query-keys"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { api } from "../client"
+
+import { api } from "#shared/client.js"
+
+import { QueryKeys } from "../query-keys"
 
 export function useProjectDelete() {
   const queryClient = useQueryClient()

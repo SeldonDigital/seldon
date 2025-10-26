@@ -1,21 +1,25 @@
 "use client"
 
+import { useAddToast } from "@components/toaster/use-add-toast"
 import { selectFile } from "@lib/utils/select-file"
+import { INITIAL_WORKSPACE } from "@lib/workspace/use-history"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { sentenceCase } from "change-case"
+
 import { Workspace } from "@seldon/core"
 import { coreReducer } from "@seldon/core/workspace/reducers/core/reducer"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
-import { INITIAL_WORKSPACE } from "@lib/workspace/use-history"
-import { useAddToast } from "@components/toaster/use-add-toast"
-import { ApiProject, api } from "../client"
+
+import { api } from "#shared/client.js"
+import { Project } from "#shared/project.type.js"
+
 import { QueryKeys } from "../query-keys"
 import { useProjectUpdate } from "./use-project-update"
 
 export const useProjectImport = ({
   onSuccess,
 }: {
-  onSuccess: (project: ApiProject) => void
+  onSuccess: (project: Project) => void
 }) => {
   const queryClient = useQueryClient()
   const addToast = useAddToast()

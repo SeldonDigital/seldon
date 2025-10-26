@@ -7,24 +7,22 @@ import { addGetAssetRoute, addUploadAssetRoute } from "../asset/asset.route.js"
 import { makeProjectApp } from "../project/project.route.js"
 import type { AppEnv, PublicApp } from "../types.js"
 import { makeRequestContextMiddleware } from "./context.js"
-import { addRootRoute } from "./health.js"
+import { makeHealthApp } from "./health.js"
 
-export function makePublicApp(
+export function makeApiApp(
   appEnv: AppEnv,
   prisma: PrismaClient,
   assetClient: AssetClient,
 ): PublicApp {
-  const publicApp: PublicApp = new Hono()
+  const app: PublicApp = new Hono()
 
-  publicApp.use(makeRequestContextMiddleware(appEnv, prisma, assetClient))
+  app.use(makeRequestContextMiddleware(appEnv, prisma, assetClient))
 
-  publicApp.route("/projects", makeProjectApp())
+  app.route("/projects", makeProjectApp())
 
-  addUploadAssetRoute(publicApp)
+  addUploadAssetRoute(app)
 
-  // The health check route
-  addRootRoute(publicApp, appEnv)
-  addGetAssetRoute(publicApp)
+  addGetAssetRoute(app)
 
-  return publicApp
+  return app
 }

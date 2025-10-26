@@ -52,7 +52,7 @@ export function ProjectCard({ project, testId }: Props) {
       }
       subtitle={<RelativeTime date={project.updatedAt} />}
       dropdownMenuItems={dropdownMenuItems}
-      to={`/${project.id}`}
+      to={`/projects/${project.id}`}
       isLoading={isDeleting}
       testId={testId}
       data-project-id={project.id}

@@ -13,11 +13,11 @@ export function Layout({
   children,
   testId,
 }: PropsWithChildren<{ testId?: string }>) {
-  const { showPanels } = useEditorConfig()
-  const { appState } = useAppState()
+  // const { showPanels } = useEditorConfig()
+  // const { appState } = useAppState()
 
   // In project view, we always show the header
-  const shouldShowHeader = appState === "project" || showPanels
+  // const shouldShowHeader = appState === "project" || showPanels
 
   return (
     <Providers>
@@ -25,7 +25,7 @@ export function Layout({
       <LoadEditorFonts />
       <div style={styles.layout} data-testid={testId}>
         {/* Header is always visible in project view, or when panels are shown in other views */}
-        {shouldShowHeader && <UnifiedHeader />}
+        {/* {shouldShowHeader && <UnifiedHeader />} */}
 
         {/* Main content area */}
         {children}

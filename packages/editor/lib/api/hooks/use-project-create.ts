@@ -1,6 +1,9 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useAddToast } from "@components/toaster/use-add-toast"
-import { ApiProjectCreateResponse, api } from "../client"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
+
+import { api } from "#shared/client.js"
+import type { NewProjectResponse, Project } from "#shared/project.type.js"
+
 import { MutationKeys } from "../mutation-keys"
 import { QueryKeys } from "../query-keys"
 
@@ -9,7 +12,7 @@ export function useProjectCreate({
   onError,
   invalidateQueries = true,
 }: {
-  onSuccess?: (project: ApiProjectCreateResponse["data"]) => void
+  onSuccess?: (project: Project) => void
   onError?: (error: Error) => void
   invalidateQueries?: boolean
 } = {}) {
@@ -21,7 +24,7 @@ export function useProjectCreate({
     mutationFn: async () => {
       return api.project.create()
     },
-    onSuccess: (response: ApiProjectCreateResponse) => {
+    onSuccess: (response: NewProjectResponse) => {
       if (invalidateQueries)
         queryClient.invalidateQueries({ queryKey: QueryKeys.projects })
 

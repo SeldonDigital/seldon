@@ -7,8 +7,9 @@ import { PrismaClient } from "#db"
 import { AssetClient } from "./asset/asset.client.js"
 import { parseEnv } from "./env.js"
 import { logger } from "./logger.js"
+import { makeApiApp } from "./server/api.js"
 import { makeApp, startApp } from "./server/app.js"
-import { makePublicApp } from "./server/public.js"
+import { makeHealthApp } from "./server/health.js"
 import { makeSPAApp } from "./ui/editor.js"
 
 async function main() {
@@ -31,7 +32,9 @@ async function main() {
   // Create the Hono app.
   const app = makeApp(appEnv)
 
-  app.route("/", makePublicApp(appEnv, prisma, assetClient))
+  // The health check route
+  app.route("/health", makeHealthApp())
+  app.route("/api", makeApiApp(appEnv, prisma, assetClient))
   app.route("/", await makeSPAApp(appEnv))
 
   const server = await startApp(app, appEnv)
