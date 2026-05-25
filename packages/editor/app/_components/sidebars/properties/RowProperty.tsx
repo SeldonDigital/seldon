@@ -308,6 +308,20 @@ export function RowProperty({
     [property.key, showUploadPanel, supportsUpload],
   )
 
+  const handleMenuClick = useCallback(
+    (event: React.MouseEvent) => {
+      event.stopPropagation()
+      if (
+        !property.isDimmed &&
+        !isEditingProperty &&
+        (property.controlType === "menu" || property.controlType === "combo")
+      ) {
+        setIsEditingProperty(true)
+      }
+    },
+    [property.isDimmed, property.controlType, isEditingProperty],
+  )
+
   // Build ListItemTreeInput props
   const listItemProps = useMemo(() => {
     const iconStyle = (opacity?: number) => ({
@@ -436,14 +450,29 @@ export function RowProperty({
             },
 
       buttonIconic3: {
-        onClick: supportsUpload ? handleUploadClick : undefined,
+        onClick: supportsUpload
+          ? handleUploadClick
+          : property.controlType === "menu" || property.controlType === "combo"
+            ? handleMenuClick
+            : undefined,
         style: supportsUpload
           ? { pointerEvents: "auto" as const }
           : property.key.startsWith("calculated.")
             ? { display: "none" as const }
-            : { pointerEvents: "none" as const },
-        "aria-label": supportsUpload ? "Upload image" : undefined,
-        className: supportsUpload ? TOGGLE_BUTTON_CLASS : undefined,
+            : property.controlType === "menu" || property.controlType === "combo"
+              ? { pointerEvents: "auto" as const }
+              : { pointerEvents: "none" as const },
+        "aria-label": supportsUpload
+          ? "Upload image"
+          : property.controlType === "menu" || property.controlType === "combo"
+            ? "Open menu"
+            : undefined,
+        className:
+          supportsUpload ||
+          property.controlType === "menu" ||
+          property.controlType === "combo"
+            ? TOGGLE_BUTTON_CLASS
+            : undefined,
       },
       icon3: {
         icon: supportsUpload
@@ -492,6 +521,7 @@ export function RowProperty({
     shouldShowMenuIcon,
     handleLabel2Click,
     handleUploadClick,
+    handleMenuClick,
     supportsUpload,
     themeEditingContext,
   ])
