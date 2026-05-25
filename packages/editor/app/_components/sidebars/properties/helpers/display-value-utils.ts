@@ -2,7 +2,7 @@
  * Utility functions for formatting display values in property controls
  */
 import { Theme, Value, ValueType, Workspace } from "@seldon/core"
-import { formatValue } from "@seldon/core/helpers/properties/properties-ui-bridge"
+import { formatValue } from "@seldon/core/helpers/properties/properties-bridge"
 import { stringifyValue } from "@seldon/core/helpers/properties/stringify-value"
 import {
   COMPUTED_FUNCTION_DISPLAY_NAMES,

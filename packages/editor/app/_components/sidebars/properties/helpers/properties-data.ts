@@ -49,7 +49,7 @@ import {
   getCompoundPropertyStructure,
   getEffectiveProperties as coreGetEffectiveProperties,
   getPropertyStatus as coreGetPropertyStatus,
-} from "@seldon/core/helpers/properties/properties-ui-bridge"
+} from "@seldon/core/helpers/properties/properties-bridge"
 import {
   getCompoundSubPropertySchema,
   getPropertyCategory,

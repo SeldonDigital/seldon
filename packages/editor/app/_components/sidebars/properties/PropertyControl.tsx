@@ -10,7 +10,7 @@ import {
 } from "@seldon/core"
 import {
   getWorkspaceThemePickerOptions,
-} from "@seldon/core/helpers/properties/properties-ui-bridge"
+} from "@seldon/core/helpers/properties/properties-bridge"
 import { isThemeValueKey } from "@seldon/core/helpers/validation/theme"
 import { IconId } from "@seldon/core/icons"
 import { IconSeldonMissing } from "@seldon/core/icons/sets/seldon/user-interface/actions/IconSeldonMissing"

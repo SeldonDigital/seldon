@@ -3,7 +3,7 @@ import {
   applyCompoundPreset as coreApplyCompoundPreset,
   formatCompoundDisplay as coreFormatCompoundDisplay,
   matchCompoundPreset as coreMatchCompoundPreset,
-} from "@seldon/core/helpers/properties/properties-ui-bridge"
+} from "@seldon/core/helpers/properties/properties-bridge"
 import { Board, Instance, Variant } from "@seldon/core/workspace/types"
 import {
   getCompoundLayerValue,

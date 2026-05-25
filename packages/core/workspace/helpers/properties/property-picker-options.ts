@@ -21,6 +21,7 @@ import type { Properties } from "../../../properties/types/properties"
 import { Resize } from "../../../properties/values/layout/resize"
 import { getEffectiveNodeProperties } from "../../compute/compute-node-properties"
 import type { WorkspacePropertySource } from "../../compute/compute-node-properties"
+import { getCompoundLayerValue } from "./shared"
 
 export type PropertyPickerOption = { value: string; name: string }
 
@@ -65,20 +66,6 @@ function getParentPathForPreset(presetPath: string): string {
     return segments[0]!
   }
   return presetPath.replace(/\.preset$/, "")
-}
-
-function getCompoundLayerValue(
-  value: unknown,
-): Record<string, unknown> | null {
-  if (!value || typeof value !== "object") return null
-  if (Array.isArray(value)) {
-    const layer = value[Number(LAYERED_PAINT_LAYER_INDEX)]
-    if (!layer || typeof layer !== "object" || Array.isArray(layer)) {
-      return null
-    }
-    return layer as Record<string, unknown>
-  }
-  return value as Record<string, unknown>
 }
 
 function resolveValueAtPropertyPath(
@@ -202,9 +189,9 @@ function buildPresetOptions(
       )(workspace)
     }
     if (!Array.isArray(presetOptions) && theme !== undefined) {
-      presetOptions = (schema.presetOptions as (theme?: Theme) => unknown[])(
-        theme,
-      )
+      presetOptions = (
+        schema.presetOptions as unknown as (theme?: Theme) => unknown[]
+      )(theme)
     }
     if (!Array.isArray(presetOptions)) {
       presetOptions = (schema.presetOptions as () => unknown[])()

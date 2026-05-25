@@ -4,7 +4,7 @@ import {
   type PropertyPickerInput,
   type PropertyPickerOption,
   type PropertyPickerResult,
-} from "@seldon/core/helpers/properties/properties-ui-bridge"
+} from "@seldon/core/helpers/properties/properties-bridge"
 import { isBoard } from "@seldon/core/workspace/helpers/is-board"
 import { Board, Instance, Variant } from "@seldon/core/workspace/types"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
