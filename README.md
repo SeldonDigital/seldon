@@ -22,19 +22,6 @@ npm run dev
 
 Open `http://localhost:3000`.
 
-You can also work directly from `packages/editor`:
-
-```bash
-cd packages/editor
-npm install
-npm run dev
-```
-
-## What the baseline keeps
-
-- Workspaces stored locally in IndexedDB
-- Import/export of `workspace.json`
-- Shared editor logic in the `core` and `factory` packages
 
 ## License
 
