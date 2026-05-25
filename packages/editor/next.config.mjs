@@ -8,9 +8,6 @@ const corePackageRoot = path.join(__dirname, "../core")
 const nextConfig = {
   reactStrictMode: true,
   transpilePackages: ["@seldon/core", "@seldon/factory"],
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
   typescript: {
     // Core package has known TS drift; editor paths are validated via `npm run quality`.
     ignoreBuildErrors: true,
