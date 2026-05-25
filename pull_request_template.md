@@ -19,7 +19,7 @@
 
 - [ ] `@seldon/core`
 - [ ] `@seldon/factory`
-- [ ] `services/editor`
+- [ ] `@seldon/editor-local`
 
 
 ## 📸 Screenshots/Videos

@@ -35,11 +35,5 @@ npm-debug.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# Sentry Config File
-.sentryclirc
-
 # Export from tools
 __exports__
-
-# clerk configuration (can include secrets)
-/.clerk/

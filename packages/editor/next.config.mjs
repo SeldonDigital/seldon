@@ -12,7 +12,7 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   typescript: {
-    // Core package has known TS drift; editor paths are validated via `bun run quality` scope fixes.
+    // Core package has known TS drift; editor paths are validated via `npm run quality`.
     ignoreBuildErrors: true,
   },
   experimental: {

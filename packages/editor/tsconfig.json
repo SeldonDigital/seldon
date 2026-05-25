@@ -27,15 +27,13 @@
       "@seldon/factory/*": ["../../packages/factory/*"]
     },
     "downlevelIteration": true, // allow looping over HTMLCollection for example
-    "types": ["bun-types"],
     "target": "ES2017"
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts",
-    "../../scripts/export/export-test.ts"
+    ".next/types/**/*.ts"
   ],
   "exclude": [
     "node_modules",

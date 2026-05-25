@@ -1,7 +1,6 @@
 import { applyMiddleware } from "../middleware/compose/apply-middleware"
 import { debugMiddleware } from "../middleware/observability/debug.middleware"
 import { migrationMiddleware } from "../middleware/migration/middleware"
-import { sentryBreadcrumbMiddleware } from "../middleware/observability/sentry.middleware"
 import { validationMiddleware } from "../middleware/validation/validation.middleware"
 import { workspaceVerificationMiddleware } from "../middleware/verification/verification.middleware"
 import type { Workspace } from "../model/workspace"
@@ -394,7 +393,7 @@ function reducer(workspace: Workspace, action: WorkspaceAction): Workspace {
   }
 }
 
-let preReducerMiddlewares = [validationMiddleware, sentryBreadcrumbMiddleware]
+let preReducerMiddlewares = [validationMiddleware]
 
 const postReducerMiddlewares = [
   migrationMiddleware,

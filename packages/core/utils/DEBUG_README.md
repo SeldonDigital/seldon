@@ -1,42 +1,37 @@
 # Debug Logger Usage Guide
 
-The Seldon debug logger provides structured logging for debugging the system. Logs appear in different places depending on where the code runs.
+The Seldon debug logger provides structured local logging for the baseline app.
 
 ## Where Logs Appear
 
-### Client-Side Operations (Browser)
-- **Location**: Browser DevTools Console (F12 or Cmd+Option+I)
-- **Examples**: 
-  - Workspace manipulation (duplicate, delete, insert, reorder nodes)
-  - Schema conversion (adding boards)
+### Client-Side Operations
+- **Location**: Browser DevTools console
+- **Examples**:
+  - Workspace manipulation
+  - Schema conversion
   - Property setting
 
-### Server-Side Operations (Node.js)
-- **Location**: Terminal/Console where the server is running
+### Server-Side Operations
+- **Location**: Terminal where the Next.js server is running
 - **Examples**:
-  - Factory export to GitHub (runs in Next.js API route)
-  - Factory export scripts
-  - Server-side workspace computation (orchestration and resolution in core—see [`../workspace/compute/README.md`](../workspace/compute/README.md))
+  - Server-rendered code paths
+  - Local Node-side compute utilities
 
 ## Enabling Debug Mode
 
-### Client-Side (Browser)
-1. **Via Menu**: Help > Enable Debug Mode
-2. **Via Console**: 
+### Browser
+1. Use **Help -> Enable Debug Mode**
+2. Or set the persisted flag manually:
    ```javascript
-   localStorage.setItem("debug-mode", JSON.stringify({state:{enabled:true},version:0}))
+   localStorage.setItem("debug-mode", JSON.stringify({ state: { enabled: true }, version: 0 }))
    ```
 
-### Server-Side (Terminal)
-1. **Environment Variable**: Set `DEBUG_MODE=true` in your `.env` file
-2. **Command Line**: 
-   ```bash
-   DEBUG_MODE=true npm run dev
-   ```
-3. **Permanent**: Add to `.env.local`:
-   ```
-   DEBUG_MODE=true
-   ```
+### Terminal
+Run the app with `DEBUG_MODE=true`:
+
+```bash
+DEBUG_MODE=true npm run dev
+```
 
 ## Testing Debug Logger
 
@@ -45,45 +40,21 @@ The Seldon debug logger provides structured logging for debugging the system. Lo
 window.testDebugLogger()
 ```
 
-### Terminal (Node.js)
+### Terminal
 ```typescript
 import { testDebugLogger } from "@seldon/core/utils/debug-logger"
+
 testDebugLogger()
-```
-
-## Debug Categories
-
-The logger uses categories to organize messages:
-- **Schema**: Schema conversion into workspace nodes
-- **Workspace**: Workspace manipulation (duplicate, delete, insert, reorder)
-- **Factory**: Factory export from workspace into React components
-
-## Example Output
-
-```
-[Factory: computeWorkspace] Computing workspace properties
-[Factory: computeWorkspace] Starting workspace computation
-  {
-    "totalNodes": 42
-  }
-[Factory: computeWorkspace] Workspace computation complete
-**********
 ```
 
 ## Troubleshooting
 
 ### No logs in browser console
-1. Check that "Enable Debug Mode" is toggled on in the menu
-2. Run `window.testDebugLogger()` to verify
-3. Check localStorage: `localStorage.getItem("debug-mode")`
+1. Check that debug mode is enabled in the Help menu
+2. Run `window.testDebugLogger()`
+3. Check `localStorage.getItem("debug-mode")`
 
 ### No logs in terminal
-1. Set `DEBUG_MODE=true` environment variable
-2. Restart your dev server
-3. Check that you're looking at the correct terminal (where the server is running)
-
-### Mixed client/server operations
-- Client-side operations → Browser console
-- Server-side operations → Terminal
-- Some operations (like GitHub export) run server-side, so logs appear in terminal
+1. Start the app with `DEBUG_MODE=true`
+2. Restart the dev server after changing the environment
 

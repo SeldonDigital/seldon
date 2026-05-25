@@ -6,7 +6,7 @@
     "format": "prettier --write \"./**/*.{ts,tsx,json}\""
   },
   "devDependencies": {
-    "@seldon/core": "workspace:*",
+    "@seldon/core": "file:../core",
     "@types/bun": "1.2.10"
   },
   "peerDependencies": {

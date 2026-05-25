@@ -1,5 +1,4 @@
 import { Workspace } from "@seldon/core"
-import { setServerDebugMode } from "@seldon/core/utils/debug-logger"
 import { exportReact } from "./react/export-react"
 import { ExportOptions, FileToExport } from "./types"
 
@@ -15,10 +14,6 @@ export async function exportWorkspace(
   workspace: Workspace,
   opts: ExportOptions,
 ): Promise<FileToExport[]> {
-  // Set debug mode from options if provided
-  if (opts.debugMode !== undefined) {
-    setServerDebugMode(opts.debugMode)
-  }
   // Use the provided folder paths directly without automatic seldon folder addition
   const assetReader =
     opts.assetReader ??

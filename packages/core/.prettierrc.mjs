@@ -1,4 +1,3 @@
-// Reuse the editor config
-import editorConfig from "../../services/editor/.prettierrc.mjs"
+import baseConfig from "../../.prettierrc.mjs"
 
-export default editorConfig
+export default baseConfig

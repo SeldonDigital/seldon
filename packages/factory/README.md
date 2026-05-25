@@ -116,7 +116,7 @@ Each generated component includes TypeScript interfaces with fully typed props, 
 
 ## Testing
 
-For local testing, you can export to disk by copying workspace data to `services/editor/scripts/test-workspace.ts` and running `bun scripts/export.ts` from the `services/editor` directory. Files will be written to `services/export-test-app/` (git ignored) for rapid iteration during development.
+For local testing, export a `workspace.json` file from `packages/editor` and feed that workspace data into the factory entrypoints directly. The older hosted export harness is not part of this baseline repo.
 
 ## Export Requirements
 
