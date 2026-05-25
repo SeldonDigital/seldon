@@ -1,0 +1,267 @@
+import { Display, InstanceId, Properties, VariantId, ValueType } from "@seldon/core"
+import { WrapperElement } from "@seldon/core/properties"
+import { ComponentLevel } from "@seldon/core/components/constants"
+import { getComponentSchema } from "@seldon/core/components/catalog"
+import { isComponentId } from "@seldon/core/components/constants"
+import { IconId } from "@seldon/core/icons"
+import { getChildrenIds } from "@seldon/core/workspace/helpers/components/get-children-ids"
+import { getComponentByNodeId } from "@seldon/core/workspace/helpers/components/get-component-by-node-id"
+import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
+import { getNodeById } from "@seldon/core/workspace/helpers/nodes/get-node-by-id"
+import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-catalog-id"
+import { isVariantNode } from "@seldon/core/workspace/helpers/nodes/is-variant-node"
+import { isComponentBoard } from "@seldon/core/workspace/model/components"
+import { typeCheckingService } from "@seldon/core/workspace/services"
+import type { EntryNode, Workspace } from "@seldon/core/workspace/types"
+import { getTemplateSourceNodeId } from "../../../helpers/workspace-nodes"
+import { DataBinding, JSONTreeNode } from "../../types"
+import { camelCase, pascalCase } from "../utils/case-utils"
+import { getComponentName } from "./get-component-name"
+import { getNodeOriginChain } from "./get-node-origin-chain"
+import { getUsedIconIds } from "./get-used-icon-ids"
+
+export function getJsonTreeFromChildren(
+  variant: EntryNode & { type: "default" | "variant" },
+  workspace: Workspace,
+  nodeIdToClass: Record<string, string>,
+): JSONTreeNode {
+  const board = getComponentByNodeId(workspace, variant.id)
+  if (!board || !isComponentBoard(board)) {
+    throw new Error(`Component board not found for variant ${variant.id}`)
+  }
+
+  const childIds = getChildrenIds(board, variant.id)
+  let referenceMap: Record<string, string[]> = {}
+  const children = childIds
+    .filter((childId) => shouldExportChild(childId))
+    .map((childId) => convertNode(childId, referenceMap, "", []))
+
+  const name = getComponentName(variant, workspace)
+  const variantProperties = getNodeProperties(variant, workspace)
+  const catalogId = getNodeCatalogId(variant, workspace)
+  const schema = catalogId && isComponentId(catalogId)
+    ? getComponentSchema(catalogId)
+    : null
+
+  const componentLevel = schema?.level ?? ComponentLevel.ELEMENT
+
+  const tree = {
+    name,
+    nodeId: variant.id,
+    level: componentLevel,
+    dataBinding: {
+      interfaceName: name + "Props",
+      path: camelCase(name),
+      props: getVariantProps(
+        variantProperties,
+        schema?.properties ?? {},
+        workspace,
+      ),
+    },
+    children: children.length > 0 ? children : null,
+    classNames: getNodeOriginChain(variant, workspace)
+      .map((node) => nodeIdToClass[node.id])
+      .filter(Boolean),
+  }
+
+  return tree
+
+  function shouldExportChild(child: InstanceId | VariantId) {
+    try {
+      const childNode = getNodeById(child, workspace)
+      const childProperties = getNodeProperties(childNode, workspace)
+      return childProperties.display?.value !== Display.EXCLUDE
+    } catch (error) {
+      if (
+        error instanceof Error &&
+        error.message.includes("Circular reference")
+      ) {
+        return false
+      }
+      throw error
+    }
+  }
+
+  function convertNode(
+    id: InstanceId | VariantId,
+    referenceMap: Record<string, string[]>,
+    currentPath: string = "",
+    pathNodes: string[] = [],
+  ): JSONTreeNode {
+    if (pathNodes.includes(id)) {
+      throw new Error(
+        `Circular reference detected: ${id} is already being processed in the current path`,
+      )
+    }
+
+    const newPathNodes = [...pathNodes, id]
+    const node = getNodeById(id, workspace)
+
+    let nodeProperties: Properties
+    try {
+      nodeProperties = getNodeProperties(node, workspace)
+    } catch (error) {
+      if (
+        error instanceof Error &&
+        error.message.includes("Circular reference")
+      ) {
+        nodeProperties = {}
+      } else {
+        throw error
+      }
+    }
+
+    const name = getComponentName(node, workspace)
+    const catalogId = getNodeCatalogId(node, workspace) ?? node.id
+
+    let reference: string = camelCase(name)
+    if (referenceMap[catalogId]) {
+      reference += referenceMap[catalogId].length + 1
+      referenceMap[catalogId].push(node.id)
+    } else {
+      referenceMap[catalogId] = [node.id]
+    }
+
+    const path = currentPath ? `${currentPath}.${reference}` : reference
+
+    const nodeBoard = getComponentByNodeId(workspace, node.id)
+    let children: JSONTreeNode[] | null = null
+    if (nodeBoard && isComponentBoard(nodeBoard)) {
+      const childReferenceMap: Record<string, string[]> = {}
+      const childIds = getChildrenIds(nodeBoard, node.id)
+      children = childIds
+        .filter((childId) => shouldExportChild(childId))
+        .map((childId) =>
+          convertNode(childId, childReferenceMap, path, newPathNodes),
+        )
+    }
+
+    const referenceName = pascalCase(reference) + "Props"
+    const interfaceName = pascalCase(name) + "Props"
+
+    let classNamesArray: string[] = []
+
+    if (typeCheckingService.isVariant(node)) {
+      const variantClass = nodeIdToClass[node.id]
+      if (variantClass) {
+        classNamesArray.push(variantClass)
+      }
+    } else if (typeCheckingService.isInstance(node)) {
+      const sourceId = getTemplateSourceNodeId(node)
+      if (sourceId) {
+        const variantClass = nodeIdToClass[sourceId]
+        const instanceClass = nodeIdToClass[node.id]
+        if (variantClass) {
+          classNamesArray.push(variantClass)
+        }
+        if (instanceClass) {
+          classNamesArray.push(instanceClass)
+        }
+      }
+    } else {
+      classNamesArray = getNodeOriginChain(node, workspace)
+        .map((n) => nodeIdToClass[n.id])
+        .filter(Boolean)
+    }
+
+    const childCatalogId = getNodeCatalogId(node, workspace)
+    const childSchema =
+      childCatalogId && isComponentId(childCatalogId)
+        ? getComponentSchema(childCatalogId)
+        : null
+
+    return {
+      name,
+      nodeId: node.id,
+      level: childSchema?.level ?? ComponentLevel.ELEMENT,
+      dataBinding: {
+        interfaceName,
+        referenceName,
+        path,
+        props: getChildNodeProps(nodeProperties),
+      },
+      children,
+      classNames: classNamesArray,
+    }
+  }
+}
+
+function getChildNodeProps(properties: Properties) {
+  const props: DataBinding["props"] = {}
+  const { content, symbol, source, htmlElement, wrapperElement, inputType } =
+    properties
+  if (content?.value) {
+    props.children = { defaultValue: escapeHtml(content.value) }
+  }
+  if (symbol?.value) {
+    props.icon = { defaultValue: symbol.value }
+  }
+  if (source?.value) {
+    props.src = { defaultValue: source.value }
+  }
+  if (htmlElement?.value) {
+    props.htmlElement = { defaultValue: htmlElement.value }
+  }
+  if (wrapperElement?.value) {
+    props.wrapperElement = { defaultValue: wrapperElement.value }
+  }
+  if (inputType?.value) {
+    props.type = { defaultValue: inputType.value }
+  }
+
+  return props
+}
+
+function getVariantProps(
+  properties: Properties,
+  schemaProperties: Properties,
+  workspace: Workspace,
+) {
+  const props: DataBinding["props"] = getChildNodeProps(properties)
+  const { symbol, htmlElement, wrapperElement, inputType } = schemaProperties
+
+  if (htmlElement && htmlElement.restrictions?.allowedValues) {
+    props.htmlElement = {
+      defaultValue:
+        properties.htmlElement?.value ||
+        htmlElement.restrictions.allowedValues[0],
+      options: htmlElement.restrictions.allowedValues,
+    }
+  }
+
+  if (wrapperElement?.type === ValueType.OPTION && wrapperElement.value) {
+    props.wrapperElement = {
+      defaultValue:
+        (properties.wrapperElement?.value as string) ?? wrapperElement.value,
+      options: wrapperElement.restrictions?.allowedValues?.length
+        ? wrapperElement.restrictions.allowedValues
+        : Object.values(WrapperElement),
+    }
+  }
+
+  if (inputType && inputType.restrictions?.allowedValues) {
+    props.type = {
+      defaultValue:
+        properties.inputType?.value || inputType.restrictions.allowedValues[0],
+      options: inputType.restrictions.allowedValues,
+    }
+  }
+  if (symbol) {
+    const options: IconId[] = Array.from(getUsedIconIds(workspace))
+    props.icon = {
+      defaultValue: properties.symbol?.value || options[0],
+      options,
+    }
+  }
+
+  return props
+}
+
+function escapeHtml(text: string): string {
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;")
+}

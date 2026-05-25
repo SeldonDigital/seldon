@@ -1,0 +1,20 @@
+import { SVGAttributes } from "react"
+
+export function IconMaterialSignalCellularNull(
+  props: SVGAttributes<SVGSVGElement>,
+) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 -960 960 960"
+      fill="currentColor"
+      height="1em"
+      width="1em"
+      {...props}
+    >
+      <g transform="translate(0, -960) scale(40)">
+        <path d="M20 6.83V20H6.83L20 6.83M22 2 2 22h20V2z" />
+      </g>
+    </svg>
+  )
+}

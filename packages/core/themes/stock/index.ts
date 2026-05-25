@@ -1,0 +1,59 @@
+import seldonStock from "./seldon"
+import { computeTheme } from "../helpers/compute-theme"
+import type { ComputedTheme, StockTheme } from "../types/theme"
+import type { ThemeTemplateId } from "../types/theme-id"
+import defaultStock, { defaultTheme } from "./default"
+import earthStock from "./earth"
+import industrialStock from "./industrial"
+import materialStock from "./material"
+import popStock from "./pop"
+import royalAzureStock from "./royal-azure"
+import skyStock from "./sky"
+import sunsetBlueStock from "./sunset-blue"
+import wildberryStock from "./wildberry"
+
+/** Packaged stock theme definitions (`stock/*.ts`), display order. */
+export const STOCK_THEMES: StockTheme[] = [
+  defaultStock,
+  earthStock,
+  industrialStock,
+  materialStock,
+  popStock,
+  royalAzureStock,
+  seldonStock,
+  skyStock,
+  sunsetBlueStock,
+  wildberryStock,
+]
+
+export const STOCK_THEMES_BY_ID = Object.fromEntries(
+  STOCK_THEMES.map((t) => [t.metadata.id, t]),
+) as Record<ThemeTemplateId, StockTheme>
+
+/** Computed packaged themes, same order as `STOCK_THEMES`. */
+export const THEMES: ComputedTheme[] = STOCK_THEMES.map(computeTheme)
+
+export const THEMES_BY_ID = Object.fromEntries(
+  THEMES.map((theme) => [theme.id, theme]),
+) as Record<ThemeTemplateId, ComputedTheme>
+
+const computedDefaultTheme = computeTheme(defaultStock)
+
+/**
+ * Transitional singleton theme id `"custom"` (fixtures / editor until `workspace.themes` is fully adopted).
+ *
+ * @deprecated Prefer workspace `themes` rows plus `instantiateTheme` (themes/compute) and
+ *   `computeTheme` (themes/helpers).
+ */
+export const customTheme: ComputedTheme = {
+  ...computedDefaultTheme,
+  id: "custom",
+  metadata: {
+    ...computedDefaultTheme.metadata,
+    id: "custom",
+    name: "Custom",
+  },
+}
+
+export { computeTheme }
+export { defaultTheme }

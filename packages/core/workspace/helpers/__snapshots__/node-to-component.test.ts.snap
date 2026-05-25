@@ -1,0 +1,49 @@
+// Bun Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should turn a node into a component 1`] = `
+{
+  "children": [
+    {
+      "component": "icon",
+      "properties": {},
+    },
+    {
+      "component": "label",
+      "properties": {},
+    },
+  ],
+  "icon": "button",
+  "id": "button",
+  "intent": "A versatile button component that supports labels and icons, designed for interactive UI elements. It can be customized with various sizes, colors, and styles to fit different design requirements. The button ensures high contrast and optimal padding for better visual alignment.",
+  "level": "element",
+  "name": "Button",
+  "properties": {
+    "background": {
+      "color": {
+        "type": "theme.categorical",
+        "value": "@swatch.primary",
+      },
+    },
+    "height": {
+      "type": "preset",
+      "value": "fit",
+    },
+    "width": {
+      "type": "preset",
+      "value": "fit",
+    },
+  },
+  "tags": [
+    "button",
+    "label",
+    "icon",
+    "interactive",
+    "clickable",
+    "UI",
+    "component",
+    "action",
+    "primary",
+    "secondary",
+  ],
+}
+`;

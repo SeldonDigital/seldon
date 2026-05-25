@@ -1,0 +1,12 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "WorkspaceAction",
+  "description": "Permissive placeholder for catalog sync; replace when typescript-json-schema runs on a clean compile.",
+  "type": "object",
+  "required": ["type"],
+  "properties": {
+    "type": { "type": "string" },
+    "payload": {}
+  },
+  "additionalProperties": true
+}

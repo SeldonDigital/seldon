@@ -1,0 +1,48 @@
+{
+  "compilerOptions": {
+    "lib": ["DOM", "DOM.Iterable", "ES2021"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "noErrorTruncation": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@components/*": ["./app/_components/*"],
+      "@lib/*": ["./lib/*"],
+      "@types": ["./app/types.ts"],
+      "@catalog/*": ["../../packages/core/components/catalog/*"],
+      "@seldon/core/*": ["../../packages/core/*"],
+      "@seldon/factory/*": ["../../packages/factory/*"]
+    },
+    "downlevelIteration": true, // allow looping over HTMLCollection for example
+    "types": ["bun-types"],
+    "target": "ES2017"
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "../../scripts/export/export-test.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/generated-ai-action-schema.json",
+    ".next",
+    "dist",
+    "**/*.spec.ts",
+    "**/*.test.ts"
+  ]
+}

@@ -1,0 +1,18 @@
+import { SVGAttributes } from "react"
+
+export function IconCarbonCloseOutline(props: SVGAttributes<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 -960 960 960"
+      fill="currentColor"
+      height="1em"
+      width="1em"
+      {...props}
+    >
+      <g transform="translate(0, -960) scale(30)">
+        <path d="M16,2C8.2,2,2,8.2,2,16s6.2,14,14,14s14-6.2,14-14S23.8,2,16,2z M16,28C9.4,28,4,22.6,4,16S9.4,4,16,4s12,5.4,12,12 S22.6,28,16,28z" />
+      </g>
+    </svg>
+  )
+}

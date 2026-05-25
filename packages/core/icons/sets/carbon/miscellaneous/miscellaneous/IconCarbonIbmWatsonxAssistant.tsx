@@ -1,0 +1,20 @@
+import { SVGAttributes } from "react"
+
+export function IconCarbonIbmWatsonxAssistant(
+  props: SVGAttributes<SVGSVGElement>,
+) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 -960 960 960"
+      fill="currentColor"
+      height="1em"
+      width="1em"
+      {...props}
+    >
+      <g transform="translate(0, -960) scale(30)">
+        <path d="M28 2h-10c-1.1035 0-2 .8965-2 2v6c0 1.1035.8965 2 2 2h2.4229s1.7314 3 1.7314 3l1.7324-1-2.3096-4h-3.5771V4h10v6h-3s0 2 0 2h3c1.1035 0 2-.8965 2-2V4c0-1.1035-.8965-2-2-2zM14.6904 31l-1.7324-1 3.4648-6h5.5771c1.1046 0 2-.8954 2-2v-5h2v5c0 2.2091-1.7909 4-4 4h-4.4229l-2.8867 5z" />
+      </g>
+    </svg>
+  )
+}

@@ -1,0 +1,18 @@
+import { SVGAttributes } from "react"
+
+export function IconCarbonFunnelSort(props: SVGAttributes<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 -960 960 960"
+      fill="currentColor"
+      height="1em"
+      width="1em"
+      {...props}
+    >
+      <g transform="translate(0, -960) scale(30)">
+        <path d="M21.4,15.6l2.6,2.6h0l2.6-2.6,1.4,1.4-4,4-4-4,1.4-1.4ZM21.4,13.4l2.6-2.6h0l2.6,2.6,1.4-1.4-4-4-4,4,1.4,1.4ZM26,4H4c-1.1,0-2,.9-2,2v3.2c0,.5.2,1,.6,1.4l7.4,7.4v8c0,1.1.9,2,2,2h4c1.1,0,2-.9,2-2v-4h-2v4h-4v-8.8l-.6-.6-7.4-7.4v-3.2h22v-2h0Z" />
+      </g>
+    </svg>
+  )
+}

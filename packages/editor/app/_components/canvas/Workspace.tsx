@@ -1,0 +1,80 @@
+"use client"
+
+import React, { Profiler } from "react"
+import { Board } from "@seldon/core"
+import {
+  isIconSetBoard,
+  isThemeBoard,
+} from "@seldon/core/workspace/model/components"
+import { isSpecialBoardType } from "@seldon/core/workspace/helpers/is-special-board-type"
+import { useDebugMode } from "@lib/hooks/use-debug-mode"
+import { usePreview } from "@lib/hooks/use-preview"
+import { useCanvas } from "./hooks/use-canvas"
+import { useActiveBoard } from "@lib/workspace/use-active-board"
+import { AssemblyBoard } from "./boards/Assembly"
+import { CanvasBoard as RegularCanvasBoard } from "./boards/Board"
+import { IconSetBoardPlaceholder } from "./boards/IconSetBoardPlaceholder"
+import { ThemeBoard } from "./boards/Theme"
+
+export function CanvasWorkspace() {
+  const { onCanvasMouseMove, onCanvasMouseLeave, onCanvasClick } = useCanvas()
+
+  const { isInPreviewMode } = usePreview()
+
+  return (
+    <div
+      id="root-tree"
+      onClick={isInPreviewMode ? undefined : onCanvasClick}
+      onMouseLeave={isInPreviewMode ? undefined : onCanvasMouseLeave}
+      onMouseMove={isInPreviewMode ? undefined : onCanvasMouseMove}
+    >
+      <MemoizedActiveBoard />
+    </div>
+  )
+}
+
+function renderBoard(board: Board) {
+  // Check if this is a special board type (IconSet, Theme, or Assembly)
+  if (isSpecialBoardType(board)) {
+    if (isIconSetBoard(board)) {
+      return <IconSetBoardPlaceholder board={board} />
+    }
+    if (isThemeBoard(board)) {
+      return <ThemeBoard board={board} />
+    }
+    if (board.label === "Assembly") {
+      return <AssemblyBoard board={board} />
+    }
+  }
+
+  // Default to regular board rendering
+  return <RegularCanvasBoard board={board} />
+}
+
+function ActiveBoard() {
+  const { debugModeEnabled } = useDebugMode()
+  const { activeBoard } = useActiveBoard()
+
+  const board = activeBoard ? renderBoard(activeBoard) : null
+
+  if (debugModeEnabled) {
+    return (
+      <Profiler
+        id="canvas"
+        onRender={(_id, _phase, actualDuration) =>
+          console.info(
+            "[performance] Canvas rendering took: " +
+              Math.round(actualDuration) +
+              "ms",
+          )
+        }
+      >
+        {board}
+      </Profiler>
+    )
+  }
+
+  return board
+}
+
+const MemoizedActiveBoard = React.memo(ActiveBoard)

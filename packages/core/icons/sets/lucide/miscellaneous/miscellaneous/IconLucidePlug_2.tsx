@@ -1,0 +1,22 @@
+import { SVGAttributes } from "react"
+
+export function IconLucidePlug_2(props: SVGAttributes<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 -960 960 960"
+      fill="currentColor"
+      height="1em"
+      width="1em"
+      {...props}
+    >
+      <g transform="translate(0, -960) scale(40)">
+        <path d="M9 2v6" />
+        <path d="M15 2v6" />
+        <path d="M12 17v5" />
+        <path d="M5 8h14" />
+        <path d="M6 11V8h12v3a6 6 0 1 1-12 0Z" />
+      </g>
+    </svg>
+  )
+}

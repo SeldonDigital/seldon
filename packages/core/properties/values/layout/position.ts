@@ -1,0 +1,41 @@
+import { Unit } from "../../constants"
+import { PropertySchema } from "../../types/schema"
+import { EmptyValue } from "../shared/empty/empty"
+import { PixelValue } from "../shared/exact/pixel"
+import { RemValue } from "../shared/exact/rem"
+
+/** Optional offsets from each edge when using positioned layout. */
+export interface PositionValue {
+  top?: PositionSideValue
+  right?: PositionSideValue
+  bottom?: PositionSideValue
+  left?: PositionSideValue
+}
+
+/** One edge offset as unset, pixels, or root-relative length. */
+export type PositionSideValue = EmptyValue | PixelValue | RemValue
+
+export const positionSchema: PropertySchema = {
+  name: "position",
+  description: "Sets inset offsets on top, right, bottom, and left for positioned layout.",
+  supports: ["empty", "inherit", "exact"] as const,
+  units: {
+    allowed: [Unit.PX, Unit.REM],
+    default: Unit.PX,
+    validation: "both",
+  },
+  validation: {
+    empty: () => true,
+    inherit: () => true,
+    exact: (value: any) => {
+      if (
+        typeof value === "object" &&
+        value.value !== undefined &&
+        value.unit !== undefined
+      )
+        return true
+      if (typeof value === "number") return true
+      return false
+    },
+  },
+}

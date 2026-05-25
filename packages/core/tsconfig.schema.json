@@ -1,0 +1,29 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "types": [],
+    "skipLibCheck": true
+  },
+  "include": [
+    "./components/**/*.*",
+    "./helpers/**/*.*",
+    "./icons/**/*.*",
+    "./properties/**/*.*",
+    "./rules/**/*.*",
+    "./themes/**/*.*",
+    "./utils/**/*.*",
+    "./workspace/**/*.*",
+    "./workspace/**/*.json",
+    "./index.ts",
+    "./constants.ts"
+  ],
+  "exclude": [
+    "./dist",
+    "node_modules",
+    "**/generated-workspace-action-schema.json",
+    "**/*.spec.ts",
+    "**/*.test.ts",
+    "bun-setup.ts",
+    "**/bun-setup.ts"
+  ]
+}

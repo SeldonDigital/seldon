@@ -1,0 +1,18 @@
+import { SVGAttributes } from "react"
+
+export function IconCarbonCloseFilled(props: SVGAttributes<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 -960 960 960"
+      fill="currentColor"
+      height="1em"
+      width="1em"
+      {...props}
+    >
+      <g transform="translate(0, -960) scale(60)">
+        <path d="M8,1C4.1,1,1,4.1,1,8s3.1,7,7,7s7-3.1,7-7S11.9,1,8,1z M10.7,11.5L8,8.8l-2.7,2.7l-0.8-0.8L7.2,8L4.5,5.3l0.8-0.8L8,7.2 l2.7-2.7l0.8,0.8L8.8,8l2.7,2.7L10.7,11.5z" />
+      </g>
+    </svg>
+  )
+}

@@ -1,0 +1,80 @@
+import { useCallback, useEffect } from "react"
+import { create } from "zustand"
+import { useShallow } from "zustand/react/shallow"
+import { createEmptyWorkspace } from "@seldon/core"
+import type { Workspace } from "@seldon/core/workspace/types"
+
+const REVISION_LIMIT = 50
+
+interface HistoryState {
+  history: Workspace[]
+  currentIndex: number
+  push: (workspace: Workspace) => void
+  undo: () => void
+  redo: () => void
+  reset: (state: Workspace) => void
+}
+
+export const INITIAL_WORKSPACE: Workspace = createEmptyWorkspace()
+
+export const useStore = create<HistoryState>()((set) => ({
+  history: [INITIAL_WORKSPACE],
+  currentIndex: 0,
+
+  push: (workspace: Workspace) =>
+    set((store) => {
+      const newHistory = store.history.slice(0, store.currentIndex + 1)
+      newHistory.push(workspace)
+      if (newHistory.length > REVISION_LIMIT) {
+        newHistory.shift()
+      }
+      return {
+        history: newHistory,
+        currentIndex: newHistory.length - 1,
+      }
+    }),
+
+  undo: () =>
+    set((store) => {
+      if (store.currentIndex > 0) {
+        return { currentIndex: store.currentIndex - 1 }
+      }
+      return store
+    }),
+
+  redo: () =>
+    set((store) => {
+      if (store.currentIndex < store.history.length - 1) {
+        return { currentIndex: store.currentIndex + 1 }
+      }
+      return store
+    }),
+
+  reset: (state: Workspace) =>
+    set(() => ({
+      history: [state],
+      currentIndex: 0,
+    })),
+}))
+
+export function useHistory() {
+  const { push, undo, redo, reset: storeReset } = useStore()
+  const current = useStore(
+    useShallow((state) => state.history[state.currentIndex]),
+  )
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && (window as { Cypress?: unknown }).Cypress) {
+      ;(window as { workspace?: Workspace }).workspace = current
+    }
+  }, [current])
+
+  const reset = useCallback(
+    (state: Workspace) => {
+      storeReset(state)
+    },
+    [storeReset],
+  )
+
+  return { current, reset, push, undo, redo }
+}

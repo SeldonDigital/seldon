@@ -1,0 +1,16 @@
+{
+  "extends": [
+    "plugin:@typescript-eslint/strict",
+    "plugin:@seldon/react-factory/recommended"
+  ],
+  "plugins": ["@seldon/react-factory"],
+  "rules": {
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      {
+        "argsIgnorePattern": "^_"
+      }
+    ]
+  }
+}

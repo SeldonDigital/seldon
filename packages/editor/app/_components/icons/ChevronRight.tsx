@@ -1,0 +1,20 @@
+import { cn } from "@lib/utils/cn"
+import { SVGProps } from "react"
+
+export const IconChevronRight = (props: SVGProps<SVGSVGElement>) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      width="1em"
+      height="1em"
+      className={cn("shrink-0", props.className)}
+      {...props}
+    >
+      <path
+        fill="currentColor"
+        d="M13.6 12L9 7.4 10.4 6l6 6-6 6L9 16.6l4.6-4.6z"
+      />
+    </svg>
+  )
+}

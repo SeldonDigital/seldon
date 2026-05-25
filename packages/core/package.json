@@ -1,0 +1,177 @@
+{
+  "name": "@seldon/core",
+  "type": "module",
+  "scripts": {
+    "build": "tsc --build tsconfig.json",
+    "lint": "echo \"TODO: Add this with the shared eslint config\"",
+    "quality": "bun lint && bun tsc",
+    "format": "prettier --write \"./**/*.{ts,tsx,json}\"",
+    "generate:action-schema": "typescript-json-schema ./tsconfig.schema.json WorkspaceAction --out ./workspace/reducers/generated-workspace-action-schema.json --noExtraProps --required"
+  },
+  "exports": {
+    ".": {
+      "node": {
+        "development": "./index.ts",
+        "default": "./dist/index.js"
+      },
+      "default": "./index.ts"
+    },
+    "./components/icons": {
+      "node": {
+        "development": "./icons/index.ts",
+        "default": "./dist/icons/index.js"
+      },
+      "default": "./icons/index.ts"
+    },
+    "./helpers/validation": {
+      "node": {
+        "development": "./helpers/validation/index.ts",
+        "default": "./dist/helpers/validation/index.js"
+      },
+      "default": "./helpers/validation/index.ts"
+    },
+    "./properties": {
+      "node": {
+        "development": "./properties/index.ts",
+        "default": "./dist/properties/index.js"
+      },
+      "default": "./properties/index.ts"
+    },
+    "./properties/constants": {
+      "node": {
+        "bun": "./properties/constants/index.ts",
+        "development": "./properties/constants/index.ts",
+        "default": "./dist/properties/constants/index.js"
+      },
+      "default": "./properties/constants/index.ts"
+    },
+    "./properties/types": {
+      "node": {
+        "development": "./properties/types/index.ts",
+        "default": "./dist/properties/types/index.js"
+      },
+      "default": "./properties/types/index.ts"
+    },
+    "./properties/types/schema": {
+      "node": {
+        "development": "./properties/types/schema.ts",
+        "default": "./dist/properties/types/schema.js"
+      },
+      "default": "./properties/types/schema.ts"
+    },
+    "./properties/types/properties": {
+      "node": {
+        "development": "./properties/types/properties.ts",
+        "default": "./dist/properties/types/properties.js"
+      },
+      "default": "./properties/types/properties.ts"
+    },
+    "./properties/schemas": {
+      "node": {
+        "development": "./properties/schemas/index.ts",
+        "default": "./dist/properties/schemas/index.js"
+      },
+      "default": "./properties/schemas/index.ts"
+    },
+    "./properties/schemas/helpers": {
+      "node": {
+        "development": "./properties/schemas/helpers/index.ts",
+        "default": "./dist/properties/schemas/helpers/index.js"
+      },
+      "default": "./properties/schemas/helpers/index.ts"
+    },
+    "./properties/values": {
+      "node": {
+        "development": "./properties/values/index.ts",
+        "default": "./dist/properties/values/index.js"
+      },
+      "default": "./properties/values/index.ts"
+    },
+    "./properties/helpers": {
+      "node": {
+        "development": "./properties/helpers/index.ts",
+        "default": "./dist/properties/helpers/index.js"
+      },
+      "default": "./properties/helpers/index.ts"
+    },
+    "./properties/compute": {
+      "node": {
+        "development": "./properties/compute/index.ts",
+        "default": "./dist/properties/compute/index.js"
+      },
+      "default": "./properties/compute/index.ts"
+    },
+    "./workspace/compute": {
+      "node": {
+        "development": "./workspace/compute/index.ts",
+        "default": "./dist/workspace/compute/index.js"
+      },
+      "default": "./workspace/compute/index.ts"
+    },
+    "./themes/compute": {
+      "node": {
+        "development": "./themes/compute/index.ts",
+        "default": "./dist/themes/compute/index.js"
+      },
+      "default": "./themes/compute/index.ts"
+    },
+    "./themes/types": {
+      "node": {
+        "development": "./themes/types/index.ts",
+        "default": "./dist/themes/types/index.js"
+      },
+      "default": "./themes/types/index.ts"
+    },
+    "./themes/values": {
+      "node": {
+        "development": "./themes/values/index.ts",
+        "default": "./dist/themes/values/index.js"
+      },
+      "default": "./themes/values/index.ts"
+    },
+    "./helpers/math": {
+      "node": {
+        "development": "./helpers/math/index.ts",
+        "default": "./dist/helpers/math/index.js"
+      },
+      "default": "./helpers/math/index.ts"
+    },
+    "./*": {
+      "node": {
+        "development": "./*.ts",
+        "default": "./dist/*.js"
+      },
+      "default": "./*.ts"
+    }
+  },
+  "devDependencies": {
+    "@happy-dom/global-registrator": "^18.0.1",
+    "@testing-library/react": "^16.3.0",
+    "@trivago/prettier-plugin-sort-imports": "^5.2.2",
+    "@types/bun": "1.2.10"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0",
+    "react": "^19.0.0",
+    "@types/react": "^19.0.0"
+  },
+  "dependencies": {
+    "@carbon/icons-react": "^11.71.0",
+    "@material-design-icons/svg": "^0.14.15",
+    "@sentry/nextjs": "^10.17.0",
+    "@types/chroma-js": "^2.4.5",
+    "@types/lodash": "^4.17.20",
+    "@types/lodash.isequal": "^4.5.8",
+    "@types/pluralize": "^0.0.33",
+    "change-case": "^5.4.4",
+    "chroma-js": "^3.1.2",
+    "immer": "^10.1.1",
+    "lodash": "^4.17.21",
+    "lodash.isequal": "^4.5.0",
+    "lucide-react": "^0.555.0",
+    "nanoid": "^5.1.4",
+    "pluralize": "^8.0.0",
+    "tldraw": "^3.12.0",
+    "typescript-json-schema": "^0.65.1"
+  }
+}

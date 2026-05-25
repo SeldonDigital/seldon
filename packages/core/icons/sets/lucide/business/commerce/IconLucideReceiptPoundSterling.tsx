@@ -1,0 +1,22 @@
+import { SVGAttributes } from "react"
+
+export function IconLucideReceiptPoundSterling(
+  props: SVGAttributes<SVGSVGElement>,
+) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 -960 960 960"
+      fill="currentColor"
+      height="1em"
+      width="1em"
+      {...props}
+    >
+      <g transform="translate(0, -960) scale(40)">
+        <path d="M8 13h5" />
+        <path d="M10 17V9.5a2.5 2.5 0 0 1 5 0" />
+        <path d="M8 17h7" />
+      </g>
+    </svg>
+  )
+}

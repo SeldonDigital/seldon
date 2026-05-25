@@ -1,0 +1,18 @@
+import { SVGAttributes } from "react"
+
+export function IconCarbonLicenseDraft(props: SVGAttributes<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 -960 960 960"
+      fill="currentColor"
+      height="1em"
+      width="1em"
+      {...props}
+    >
+      <g transform="translate(0, -960) scale(30)">
+        <path d="M8 6H20V8H8zM8 10H20V12H8zM8 14H14V16H8zM8 24H12V26H8z" />
+      </g>
+    </svg>
+  )
+}

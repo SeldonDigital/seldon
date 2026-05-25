@@ -1,0 +1,54 @@
+import { Theme } from "../../../themes/types"
+import { ComputedFunction, Unit } from "../../constants"
+import { PropertySchema } from "../../types/schema"
+import { EmptyValue } from "../shared/empty/empty"
+import { DimensionValue } from "./dimension"
+import { Resize } from "./resize"
+
+/** Horizontal edge length using the same value shapes as the shared dimension model. */
+export type WidthValue = EmptyValue | DimensionValue
+
+export const widthSchema: PropertySchema = {
+  name: "width",
+  description:
+    "Sets horizontal size using lengths, theme scale steps, resize choices, or computed rules.",
+  supports: [
+    "empty",
+    "inherit",
+    "exact",
+    "option",
+    "computed",
+    "themeOrdinal",
+  ] as const,
+  units: {
+    allowed: [Unit.PX, Unit.REM],
+    default: Unit.PX,
+    validation: "both",
+  },
+  validation: {
+    empty: () => true,
+    inherit: () => true,
+    exact: (value: any) => {
+      if (
+        typeof value === "object" &&
+        value.value !== undefined &&
+        value.unit !== undefined
+      )
+        return true
+      if (typeof value === "number" && value > 0) return true
+      return false
+    },
+    option: (value: unknown) =>
+      typeof value === "string" &&
+      (Object.values(Resize) as string[]).includes(value),
+    computed: (value: any) =>
+      typeof value === "object" && value.function !== undefined,
+    themeOrdinal: (value: any, theme?: Theme) => {
+      if (!theme) return false
+      return value in theme.dimension
+    },
+  },
+  presetOptions: () => Object.values(Resize),
+  themeOrdinalKeys: (theme: Theme) => Object.keys(theme.dimension),
+  computedFunctions: () => [ComputedFunction.AUTO_FIT, ComputedFunction.MATCH],
+}
