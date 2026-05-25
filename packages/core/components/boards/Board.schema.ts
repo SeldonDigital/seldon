@@ -14,21 +14,15 @@ export const schema = {
     board: {
       preset: {
         type: Sdn.ValueType.OPTION,
-        value: "ipad",
+        value: Sdn.Resize.FIT,
       },
       width: {
-        type: Sdn.ValueType.EXACT,
-        value: {
-          value: 820,
-          unit: Sdn.Unit.PX,
-        },
+        type: Sdn.ValueType.OPTION,
+        value: Sdn.Resize.FIT,
       },
       height: {
-        type: Sdn.ValueType.EXACT,
-        value: {
-          value: 1180,
-          unit: Sdn.Unit.PX,
-        },
+        type: Sdn.ValueType.OPTION,
+        value: Sdn.Resize.FIT,
       },
     },
     direction: {

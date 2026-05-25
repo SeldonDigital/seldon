@@ -18,6 +18,7 @@ import {
   type PropertyKey,
 } from "../../../properties/types/property-keys"
 import type { Properties } from "../../../properties/types/properties"
+import { Resize } from "../../../properties/values/layout/resize"
 import { getEffectiveNodeProperties } from "../../compute/compute-node-properties"
 import type { WorkspacePropertySource } from "../../compute/compute-node-properties"
 
@@ -213,6 +214,33 @@ function buildPresetOptions(
   }
 
   return normalizeOptions(presetOptions, theme)
+}
+
+function groupPresetOptions(
+  schema: PropertySchema,
+  presetOptions: PropertyPickerOption[],
+): PropertyPickerOption[][] {
+  if (presetOptions.length === 0) {
+    return []
+  }
+
+  if (schema.name !== "boardPreset") {
+    return [presetOptions]
+  }
+
+  const fitOptions = presetOptions.filter((option) => option.value === Resize.FIT)
+  const deviceOptions = presetOptions.filter(
+    (option) => option.value !== Resize.FIT,
+  )
+
+  const groups: PropertyPickerOption[][] = []
+  if (fitOptions.length > 0) {
+    groups.push(fitOptions)
+  }
+  if (deviceOptions.length > 0) {
+    groups.push(deviceOptions)
+  }
+  return groups
 }
 
 function getCurrentValueOption(
@@ -428,7 +456,7 @@ function buildPropertyOptionsFromSchema(
 
   const presetOptions = buildPresetOptions(schema, input.theme, input.workspace)
   if (presetOptions.length > 0) {
-    groups.push(presetOptions)
+    groups.push(...groupPresetOptions(schema, presetOptions))
   }
 
   const currentValueOptions = buildCurrentValueOption(
@@ -497,7 +525,7 @@ function buildCompoundPresetPickerOptions(
 
   const presetOptions = buildPresetOptions(schema, input.theme, input.workspace)
   if (presetOptions.length > 0) {
-    groups.push(presetOptions)
+    groups.push(...groupPresetOptions(schema, presetOptions))
   }
 
   const theme = input.theme

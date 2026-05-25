@@ -6,7 +6,7 @@ import { isCompoundProperty } from "@seldon/core/helpers/type-guards/compound/is
 import { getThemeValueName } from "@seldon/core/helpers/theme/get-theme-value-name"
 import { isIconSetVariant } from "@seldon/core/icons/helpers/is-icon-set-variant"
 import {
-  applyBoardDevicePreset,
+  applyBoardPreset,
   buildBoardCompoundReset,
   matchBoardCompoundPreset,
   resolveBoardPresetIdFromPickerValue,
@@ -681,7 +681,7 @@ export function applyCompoundPreset(
   if (propertyKey === "board") {
     const presetId = resolveBoardPresetIdFromPickerValue(preset)
     if (presetId) {
-      return { board: applyBoardDevicePreset(presetId) }
+      return { board: applyBoardPreset(presetId) }
     }
     return {}
   }
