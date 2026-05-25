@@ -20,9 +20,12 @@ Use the local code first. Follow nearby patterns, public APIs, and domain rules 
 
 ### Naming
 
-- Use lowercase kebab-case for TypeScript file names, such as `set-node-properties.ts`.
+- Match the local filename convention of the area you are editing.
+- Most general TypeScript modules use lowercase kebab-case, such as `set-node-properties.ts`.
+- Component schema files use `PascalCase.schema.ts`.
+- Service and helper modules keep their existing suffix-based names, such as `theme.service.ts` and `workspace-mutation.helper.ts`.
 - Match exported reducer handler names to their file names in camelCase verb+noun form, such as `set-node-properties.ts` -> `setNodeProperties`.
-- Group workspace reducer handlers by action verb, such as `add/`, `remove/`, `set/`, `reset/`, `insert/`, `move/`, `reorder/`, and `duplicate/`.
+- Group workspace reducer handlers by action verb, such as `add/`, `remove/`, `set/`, `reset/`, `insert/`, `move/`, `reorder/`, and `duplicate/`. Use support folders such as `shared/`, `normalize/`, and `stubs/` only when the file is not a direct action handler and matches the existing structure.
 - Avoid `handle*` prefixes for reducer handlers unless nearby code already uses that pattern.
 
 ### Change Scope

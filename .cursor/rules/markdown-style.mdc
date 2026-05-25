@@ -26,7 +26,7 @@ Before giving Markdown text, check the draft for:
 
 - Undefined jargon. Use only terms from `packages/core/GLOSSARY.md`.
 - Overly specific wording. Write `a property`, not `one property` or `the one property`.
-- Parentheticals, semicolons, and em dash sentences.
-- Long sentences that carry more than one idea.
-- Near synonyms for the same concept.
-- Casual metaphors or invented wording.
+- Parentheticals, semicolons, and em dash sentences. These should never be used.
+- Long sentences that carry more than one idea. Write simple active sentences.
+- Near synonyms for the same concept. Never use these.
+- Casual metaphors or invented wording. Avoid conceptual or marketing speak.

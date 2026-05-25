@@ -14,7 +14,7 @@ Use `packages/core/properties/PROPERTIES.md` as the canonical reference for prop
 Properties use three primary shapes:
 
 - `atomic`: one stored value is one style decision, such as `color`, `gap`, `opacity`, or `display`.
-- `compound`: related facets live under one property, such as `border.color`, `border.width`, or `font.size`.
+- `compound`: related facets live under one property, such as `border.color`, `border.width`, `font.size`, or `board.width`.
 - `shorthand`: one property controls parallel fields, such as `margin.top`, `padding.left`, or `corners.topLeft`.
 
 Layered paint properties are stored as arrays of compound layers:
@@ -69,7 +69,7 @@ Workspace files store raw authoring state only. Node entries persist `template` 
 
 Authoritative property path unions live in `types/property-keys.ts`. They include top-level keys, compound facets, shorthand sides, and layered paint facets with bracket indices in type literals, such as `background[0].color`.
 
-Runtime paths used by `getBasedOnValue` and `findInObject` are dot-separated only. Use `background.0.color` and `shadow.0.offsetX`, not `background[0].color`.
+Runtime lookup paths used by `findInObject` are dot-separated. Type unions still use bracket indices such as `background[0].color`. Authored computed `basedOn` paths can use schema-style layered paint paths such as `#background.color` and `#parent.background.color`; `getBasedOnValue` normalizes those to layer `0` lookup paths.
 
 Theme references are validated by restricted theme key unions where properties opt in. Use `@` token paths that match the property type.
 
@@ -84,9 +84,8 @@ The main `@seldon/core/properties` barrel does not re-export the compute pipelin
 When adding a property:
 
 1. Add it to `types/properties.ts`.
-2. Create or update the value type under `values/` in the right category.
+2. Create or update the value module under the appropriate existing `values/` subfolder, following nearby patterns. Do not assume the display category matches the filesystem path.
 3. Update compound or shorthand constants when merge and compute walkers need to know the shape.
 4. Update `PROPERTY_DISPLAY_ORDER` and `schemas/data/property-schemas.ts` together.
 5. Export new values from `values/index.ts` and constants from `constants/index.ts` when needed.
 6. Keep option enums or maps beside the value module unless a shared constant is truly needed.
-7. Add focused tests using real property values and project testing standards.

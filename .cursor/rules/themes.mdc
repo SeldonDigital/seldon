@@ -9,6 +9,8 @@ Themes package reusable visual decisions as tokens. Components reference theme t
 
 Use `packages/core/themes/THEMES.md` as the canonical reference for theme shape, token cells, type safety, imports, and adding theme content.
 
+Use `packages/core/properties/PROPERTIES.md` for the property-style tagged values used inside look token `parameters`.
+
 ### Stock Themes
 
 Stock theme template ids are:
@@ -44,7 +46,7 @@ Theme files use fixed top-level sections in this order:
 
 ### Token References
 
-Use `ValueType.THEME_ORDINAL` for ordered scales, such as `@fontSize.medium`, `@margin.compact`, and `@borderWidth.hairline`.
+Use `ValueType.THEME_ORDINAL` for ordered scales, such as `@fontSize.medium`, `@margin.compact`, and `@borderWidth.small`.
 
 Use `ValueType.THEME_CATEGORICAL` for named sets, such as `@swatch.primary`, `@font.body`, `@background.background1`, and `@shadow.moderate`.
 
@@ -88,8 +90,7 @@ When adding a stock theme:
 
 1. Add the id to `ThemeTemplateId` in `types/theme-id.ts`.
 2. Create the stock file under `stock/` with every section from `THEMES.md`.
-3. Register it in `stock/index.ts` through `STOCK_THEMES` and `THEMES_BY_ID`.
+3. Register it in `stock/index.ts` by adding the import and including it in `STOCK_THEMES`.
 4. Do not edit token id unions unless adding reserved keys or sections.
-5. Add tests that compute the theme and assert key token output.
 
 When adding a new token kind or section, update the matching types, values, constants, schemas, exports, and section ordering described in `THEMES.md`.
