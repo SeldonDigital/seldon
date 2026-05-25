@@ -1,7 +1,0 @@
-export * from "./properties"
-export * from "./value-compound"
-export * from "./value-atomic"
-export * from "./value-shorthand"
-export * from "./value-theme"
-export * from "./value"
-export * from "./schema"
