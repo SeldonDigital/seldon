@@ -11,7 +11,7 @@ import {
   matchBoardCompoundPreset,
   resolveBoardPresetIdFromPickerValue,
   type BoardCompound,
-} from "@seldon/core/properties/values/layout/board"
+} from "../../../properties/values/layout/board"
 import { COMPUTED_FUNCTION_DISPLAY_NAMES } from "@seldon/core/properties/compute"
 import { getPropertyCategory } from "@seldon/core/properties/schemas"
 import {

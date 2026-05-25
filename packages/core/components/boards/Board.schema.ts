@@ -24,8 +24,11 @@ export const schema = {
         },
       },
       height: {
-        type: Sdn.ValueType.OPTION,
-        value: Sdn.Resize.FIT,
+        type: Sdn.ValueType.EXACT,
+        value: {
+          value: 1180,
+          unit: Sdn.Unit.PX,
+        },
       },
     },
     direction: {

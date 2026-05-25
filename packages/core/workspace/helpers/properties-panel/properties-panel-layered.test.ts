@@ -1,9 +1,10 @@
 import { describe, expect, it } from "bun:test"
-import { ValueType } from "@seldon/core"
+import { Resize, ValueType } from "@seldon/core"
 import { ComponentId } from "@seldon/core/components/constants"
 import testTheme from "@seldon/core/themes/test/test-theme"
+import { applyBoardDevicePreset } from "../../../properties/values/layout/board"
 import type { Workspace } from "../../types"
-import { applyCompoundPreset } from "./properties-panel"
+import { applyCompoundPreset, formatCompoundDisplay } from "./properties-panel"
 
 function createVariantWorkspace(): Workspace {
   return {
@@ -69,5 +70,81 @@ describe("applyCompoundPreset for layered paint", () => {
         }),
       }),
     )
+  })
+})
+
+describe("formatCompoundDisplay for board", () => {
+  it("shows the preset name when board facets still match a preset", () => {
+    const workspace = {
+      metadata: {
+        version: 0,
+        label: "Test",
+        owner: "",
+        lastUpdate: "",
+        intent: "",
+        tags: [],
+      },
+      components: {
+        calendar: {
+          type: "component" as const,
+          level: "module" as const,
+          catalogId: "calendar",
+          label: "Calendars",
+          author: "Test",
+          componentTheme: "default",
+          componentProperties: {
+            board: applyBoardDevicePreset("ipad"),
+          },
+          variants: [{ id: "component-calendar-default" }],
+        },
+      },
+      nodes: {},
+      themes: {},
+      "font-collections": {},
+      "icon-sets": {},
+      media: {},
+    } satisfies Workspace
+
+    expect(formatCompoundDisplay("board", "calendar", workspace)).toBe("iPad")
+  })
+
+  it("shows Custom when board dimensions no longer match the stored preset", () => {
+    const workspace = {
+      metadata: {
+        version: 0,
+        label: "Test",
+        owner: "",
+        lastUpdate: "",
+        intent: "",
+        tags: [],
+      },
+      components: {
+        calendar: {
+          type: "component" as const,
+          level: "module" as const,
+          catalogId: "calendar",
+          label: "Calendars",
+          author: "Test",
+          componentTheme: "default",
+          componentProperties: {
+            board: {
+              ...applyBoardDevicePreset("ipad"),
+              width: {
+                type: ValueType.OPTION,
+                value: Resize.FIT,
+              },
+            },
+          },
+          variants: [{ id: "component-calendar-default" }],
+        },
+      },
+      nodes: {},
+      themes: {},
+      "font-collections": {},
+      "icon-sets": {},
+      media: {},
+    } satisfies Workspace
+
+    expect(formatCompoundDisplay("board", "calendar", workspace)).toBe("Custom")
   })
 })

@@ -6,10 +6,7 @@ import {
   type BoardDevicePresetId,
   getBoardDevicePreset,
   isBoardDevicePresetId,
-  matchBoardDevicePresetFromDimensions,
 } from "./device-presets"
-import { Resize } from "../resize"
-
 /** Applies a device preset id to a board compound facet map. */
 export function applyBoardDevicePreset(
   presetId: BoardDevicePresetId,
@@ -45,43 +42,40 @@ export function getBoardPresetDisplayName(
   return null
 }
 
-/** Matches effective board width and height to a device preset name. */
+function isSameBoardFacetValue(
+  left: BoardCompound["width"] | BoardCompound["height"],
+  right: BoardCompound["width"] | BoardCompound["height"],
+): boolean {
+  return JSON.stringify(left ?? null) === JSON.stringify(right ?? null)
+}
+
+/** Matches a board compound against the current preset's canonical state. */
 export function matchBoardCompoundPreset(
   board: BoardCompound | undefined,
 ): string | null {
-  const display = getBoardPresetDisplayName(board)
-  if (display) return display
-
-  const width = board?.width
-  const height = board?.height
-
-  const widthPx =
-    width &&
-    typeof width === "object" &&
-    "type" in width &&
-    width.type === ValueType.EXACT &&
-    typeof width.value === "object" &&
-    width.value !== null &&
-    "unit" in width.value &&
-    width.value.unit === Unit.PX
-      ? width.value.value
+  const preset = board?.preset
+  const presetId =
+    preset &&
+    typeof preset === "object" &&
+    "type" in preset &&
+    preset.type === ValueType.OPTION &&
+    isBoardDevicePresetId(preset.value)
+      ? preset.value
       : null
 
-  const heightPx =
-    height &&
-    typeof height === "object" &&
-    "type" in height &&
-    height.type === ValueType.EXACT &&
-    typeof height.value === "object" &&
-    height.value !== null &&
-    "unit" in height.value &&
-    height.value.unit === Unit.PX
-      ? height.value.value
-      : null
+  if (!presetId) {
+    return null
+  }
 
-  const matched = matchBoardDevicePresetFromDimensions(widthPx, heightPx)
-  if (!matched) return null
-  return getBoardDevicePreset(matched).name
+  const expected = applyBoardDevicePreset(presetId)
+  const sameWidth = isSameBoardFacetValue(board?.width, expected.width)
+  const sameHeight = isSameBoardFacetValue(board?.height, expected.height)
+
+  if (sameWidth && sameHeight) {
+    return getBoardDevicePreset(presetId).name
+  }
+
+  return null
 }
 
 export function isBoardCompoundPresetReset(preset: string): boolean {
