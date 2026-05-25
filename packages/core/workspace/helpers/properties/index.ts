@@ -9,7 +9,7 @@ export {
   getEffectiveProperties,
   getPropertyStatus,
   matchCompoundPreset,
-} from "./properties-panel"
+} from "./properties"
 export {
   getPropertyPickerOptions,
   type PropertyPickerInput,

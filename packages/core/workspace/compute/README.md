@@ -53,6 +53,6 @@ Theme compute lives in `packages/core/themes/compute`. Property compute lives in
 
 Use `@seldon/core/workspace/compute` for workspace theme and node compute. Use `@seldon/core/properties/compute` when calling property compute directly.
 
-`../helpers/properties-panel/properties-panel.ts` uses `getEffectiveNodeProperties` for editor merge behavior.
+`../helpers/properties/properties.ts` uses `getEffectiveNodeProperties` for editor merge behavior.
 
 `@seldon/factory/helpers/compute-workspace` handles legacy export data. It computes a copy for the factory pipeline and stays separate from this selector path.

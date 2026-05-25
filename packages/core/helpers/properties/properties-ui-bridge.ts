@@ -10,12 +10,12 @@ export {
   getPropertyPickerOptions,
   getPropertyStatus,
   matchCompoundPreset,
-} from "../../workspace/helpers/properties-panel"
+} from "../../workspace/helpers/properties"
 export type {
   PropertyPickerInput,
   PropertyPickerOption,
   PropertyPickerResult,
-} from "../../workspace/helpers/properties-panel/property-picker-options"
+} from "../../workspace/helpers/properties/property-picker-options"
 export { getWorkspaceThemePickerOptions } from "../../workspace/helpers/themes/get-workspace-theme-picker-options"
 export type {
   WorkspaceThemePickerOption,
