@@ -4,7 +4,7 @@ import { setCustomNativeDragPreview } from "@atlaskit/pragmatic-drag-and-drop/el
 import { useEffect, useRef, useState } from "react"
 import { createRoot } from "react-dom/client"
 import { Board, Instance, Variant } from "@seldon/core"
-import { isBoard } from "@seldon/core/workspace/helpers/is-board"
+import { isComponentEntry } from "@seldon/core/workspace/helpers/components/is-component-entry"
 import { ListItemTree } from "../../../../seldon/elements/ListItemTree"
 import { IconProps } from "../../../../seldon/primitives/Icon"
 import { useNodeIcon } from "./use-node-icon"
@@ -34,7 +34,7 @@ export function useDraggable({
     const el = ref.current
 
     if (!el || !enable) return
-    const isBoardTarget = isBoard(target)
+    const isBoardTarget = isComponentEntry(target)
 
     return draggable({
       element: el,

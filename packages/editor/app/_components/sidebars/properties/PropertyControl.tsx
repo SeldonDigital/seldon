@@ -14,7 +14,7 @@ import {
 import { isThemeValueKey } from "@seldon/core/helpers/validation/theme"
 import { IconId } from "@seldon/core/icons"
 import { IconSeldonMissing } from "@seldon/core/icons/sets/seldon/user-interface/actions/IconSeldonMissing"
-import { isBoard } from "@seldon/core/workspace/helpers/is-board"
+import { isComponentEntry } from "@seldon/core/workspace/helpers/components/is-component-entry"
 import { getComponentLevelThemeRef } from "@seldon/core/workspace/helpers/components/get-component-level-theme-ref"
 import { themeService } from "@seldon/core/workspace/services/theme/theme.service"
 import { useComboboxState } from "./controls/combobox/hooks/use-combobox-state"
@@ -165,7 +165,7 @@ export function PropertyControl({
 
     if (property.key === "theme" && subject) {
       const newThemeId = newValue === "none" ? null : (newValue as ThemeId)
-      if (isBoard(subject)) {
+      if (isComponentEntry(subject)) {
         dispatch({
           type: "set_component_theme",
           payload: {
@@ -342,19 +342,19 @@ export function PropertyControl({
       return [
         getWorkspaceThemePickerOptions({
           workspace,
-          allowInherit: !(subject && isBoard(subject)),
+          allowInherit: !(subject && isComponentEntry(subject)),
         }),
       ]
     }
 
     const componentId: ComponentId | undefined =
-      subject && isBoard(subject)
+      subject && isComponentEntry(subject)
         ? (getComponentKey(subject) as ComponentId)
         : subject
           ? (getNodeCatalogComponentId(subject, workspace) ?? undefined)
           : undefined
     const componentLevel =
-      subject && isBoard(subject) ? undefined : subject?.level
+      subject && isComponentEntry(subject) ? undefined : subject?.level
 
     const result = generatePropertyOptions(
       property,
@@ -373,10 +373,10 @@ export function PropertyControl({
 
   const comboboxStoredValue = useMemo(() => {
     if (property.key === "theme") {
-      if (subject && isBoard(subject)) {
+      if (subject && isComponentEntry(subject)) {
         return getComponentLevelThemeRef(subject) || "none"
       }
-      if (subject && !isBoard(subject)) {
+      if (subject && !isComponentEntry(subject)) {
         return subject.theme ?? "none"
       }
       return "none"
@@ -387,7 +387,11 @@ export function PropertyControl({
   const displayValue = getDisplayValue(
     propertyValue,
     property.key,
-    subject && !isBoard(subject) ? subject.id : subject && isBoard(subject) ? getComponentKey(subject) : "",
+    subject && !isComponentEntry(subject)
+      ? subject.id
+      : subject && isComponentEntry(subject)
+        ? getComponentKey(subject)
+        : "",
     workspace,
     theme,
     options,

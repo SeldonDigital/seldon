@@ -6,7 +6,7 @@ import {
   SubPropertyKey,
   invariant,
 } from "@seldon/core"
-import { isBoard } from "@seldon/core/workspace/helpers/is-board"
+import { isComponentEntry } from "@seldon/core/workspace/helpers/components/is-component-entry"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { useSelection } from "./use-selection"
 import { useWorkspace } from "./use-workspace"
@@ -58,7 +58,7 @@ export function useObjectProperties() {
   const setProperties = useCallback(
     (properties: Properties, options?: { mergeSubProperties?: boolean }) => {
       invariant(selection, "Nothing selected")
-      if (isBoard(selection)) {
+      if (isComponentEntry(selection)) {
         setBoardProperties({
           componentKey: getComponentKey(selection),
           properties: properties,
@@ -78,7 +78,7 @@ export function useObjectProperties() {
     (propertyKey: PropertyKey, subpropertyKey?: SubPropertyKey) => {
       invariant(selection, "Nothing selected")
 
-      if (isBoard(selection)) {
+      if (isComponentEntry(selection)) {
         resetBoardProperty({
           componentKey: getComponentKey(selection),
           propertyKey,

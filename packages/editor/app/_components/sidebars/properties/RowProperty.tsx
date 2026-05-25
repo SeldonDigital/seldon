@@ -8,7 +8,7 @@ import {
   Workspace,
 } from "@seldon/core"
 import { isAtomicValue } from "@seldon/core/helpers/type-guards/value/is-atomic-value"
-import { isBoard } from "@seldon/core/workspace/helpers/is-board"
+import { isComponentEntry } from "@seldon/core/workspace/helpers/components/is-component-entry"
 import { getNodeCatalogComponentId } from "@lib/workspace/node-tree"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { useDebugMode } from "@lib/hooks/use-debug-mode"
@@ -95,10 +95,10 @@ export function RowProperty({
       return undefined
     }
 
-    const componentId = isBoard(node)
+    const componentId = isComponentEntry(node)
       ? getComponentKey(node)
       : (getNodeCatalogComponentId(node, workspace) ?? "")
-    const componentLevel = isBoard(node) ? undefined : node.level
+    const componentLevel = isComponentEntry(node) ? undefined : node.level
 
     const result = generatePropertyOptions(
       property,

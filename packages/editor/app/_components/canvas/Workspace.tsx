@@ -6,7 +6,7 @@ import {
   isIconSetBoard,
   isThemeBoard,
 } from "@seldon/core/workspace/model/components"
-import { isSpecialBoardType } from "@seldon/core/workspace/helpers/is-special-board-type"
+import { isResourceType } from "@seldon/core/workspace/helpers/components/is-resource-type"
 import { useDebugMode } from "@lib/hooks/use-debug-mode"
 import { usePreview } from "@lib/hooks/use-preview"
 import { useCanvas } from "./hooks/use-canvas"
@@ -34,8 +34,8 @@ export function CanvasWorkspace() {
 }
 
 function renderBoard(board: Board) {
-  // Check if this is a special board type (IconSet, Theme, or Assembly)
-  if (isSpecialBoardType(board)) {
+  // Check if this is a resource board type.
+  if (isResourceType(board)) {
     if (isIconSetBoard(board)) {
       return <IconSetBoardPlaceholder board={board} />
     }

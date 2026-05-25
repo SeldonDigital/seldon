@@ -5,7 +5,7 @@ import { Board, Instance, Variant, Workspace, invariant } from "@seldon/core"
 import { getComponentSchema } from "@seldon/core/components/catalog"
 import { isComponentId } from "@seldon/core/components/constants"
 import { rules } from "@seldon/core/rules/config/rules.config"
-import { isBoard } from "@seldon/core/workspace/helpers/is-board"
+import { isComponentEntry } from "@seldon/core/workspace/helpers/components/is-component-entry"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
 import type { ComponentEntry, EntryNode } from "@seldon/core/workspace/types"
 import { getNodeCatalogComponentId } from "@lib/workspace/node-tree"
@@ -31,7 +31,7 @@ export function useDropzone({
   const ref = useRef(null)
   const [isValidDropTarget, setValidDropTarget] = useState(false)
   const { workspace } = useWorkspace({ usePreview: false })
-  const isBoardTarget = isBoard(target)
+  const isBoardTarget = isComponentEntry(target)
 
   useEffect(() => {
     const el = ref.current

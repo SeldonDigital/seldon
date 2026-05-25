@@ -5,8 +5,8 @@ import {
   isComponentId,
   ORDERED_COMPONENT_LEVELS,
 } from "@seldon/core/components/constants"
+import { isResourceType } from "@seldon/core/workspace/helpers/components/is-resource-type"
 import { isComponentBoard, isPlaygroundBoard } from "@seldon/core/workspace/model"
-import { isSpecialBoardType } from "@seldon/core/workspace/helpers/is-special-board-type"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 
 export const SECTION_LABELS: Record<ComponentLevel, string> = {
@@ -41,9 +41,9 @@ function getBoardComponentLevel(board: BoardType): ComponentLevel | null {
 }
 
 export function getBoardSections(boards: BoardType[]): BoardSection[] {
-  const specialBoards = boards.filter((board) => isSpecialBoardType(board))
+  const specialBoards = boards.filter((board) => isResourceType(board))
 
-  const regularBoards = boards.filter((board) => !isSpecialBoardType(board))
+  const regularBoards = boards.filter((board) => !isResourceType(board))
 
   // Group regular boards by component level
   const sections = [...ORDERED_COMPONENT_LEVELS].reduce<BoardSection[]>(

@@ -56,7 +56,7 @@ import {
 } from "@seldon/core/properties/schemas"
 import { getPresetOptions } from "@seldon/core/properties/schemas/helpers/property-options"
 import { validatePropertyValue } from "@seldon/core/properties/schemas/helpers"
-import { isBoard } from "@seldon/core/workspace/helpers/is-board"
+import { isComponentEntry } from "@seldon/core/workspace/helpers/components/is-component-entry"
 import { ControlType, getPropertyRegistryEntry } from "./properties-registry"
 import { getAllPropertyKeys } from "./properties-registry-utils"
 import { isCompoundProperty, isShorthandProperty } from "./property-types"
@@ -163,7 +163,7 @@ function subPropertyPathFor(parentKey: string, subKey: string): string {
 }
 
 export function getPropertiesSubjectId(node: Variant | Instance | Board): string {
-  if (isBoard(node)) return getComponentKey(node)
+  if (isComponentEntry(node)) return getComponentKey(node)
   return node.id
 }
 
@@ -590,7 +590,7 @@ function getSchemaPropertyKeysForSubject(
   node: Variant | Instance | Board,
   workspace: Workspace,
 ): string[] {
-  if (isBoard(node)) {
+  if (isComponentEntry(node)) {
     return Object.keys(getComponentPropertyDefaults())
   }
 

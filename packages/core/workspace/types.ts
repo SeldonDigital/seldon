@@ -8,7 +8,7 @@ export { WORKSPACE_SPEC_VERSION } from "./model"
 export type { WorkspaceFileStringMap } from "./model"
 export type { WorkspaceFileMetadata } from "./model"
 export type { ComponentResourceRef, ComponentTreeRef } from "./model"
-export type { Board } from "./helpers/is-board"
+export type { ComponentEntry as Board } from "./model"
 export type {
   ComponentEntry,
   ComponentCatalogLevel,

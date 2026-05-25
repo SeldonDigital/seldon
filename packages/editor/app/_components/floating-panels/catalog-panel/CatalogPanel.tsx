@@ -6,7 +6,7 @@ import { ComponentSchema } from "@seldon/core/components/types"
 import { VariantId } from "@seldon/core/index"
 import { getComponentVariantRootIds } from "@seldon/core/workspace/helpers/components/get-component-variant-root-ids"
 import { getVariantById } from "@seldon/core/workspace/helpers/general/get-variant-by-id"
-import { isSpecialBoardVariant } from "@seldon/core/workspace/helpers/is-special-board-variant"
+import { isSpecialComponentVariant } from "@seldon/core/workspace/helpers/general/is-special-component-variant"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
 import { useSearchComponents } from "@lib/api/hooks/use-search-components"
 import { useWorkspace } from "@lib/workspace/use-workspace"
@@ -97,7 +97,7 @@ export function CatalogPanel({
               const variant = getVariantById(variantId, workspace)
               // For special board variants, use the actual label even for default variants
               // For regular boards, show "Default" for default variants
-              const isSpecial = isSpecialBoardVariant(variant, workspace)
+              const isSpecial = isSpecialComponentVariant(variant, workspace)
               const description =
                 workspaceService.isDefaultVariant(variant) && !isSpecial
                   ? "Default"
