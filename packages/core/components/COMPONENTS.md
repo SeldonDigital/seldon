@@ -406,13 +406,11 @@ export const exportConfig: ComponentExport = {
 
 Place property keys inside `properties` in [`PROPERTY_DISPLAY_ORDER`](../properties/constants/property-display.ts) order: attributes → layout → appearance → typography → effects. Within compound objects, follow the facet order shown in [PROPERTIES.md → Property Categories](../properties/PROPERTIES.md#property-categories-ordering-and-types).
 
-**4. Regenerate the catalog constants**
+**4. Sync the catalog files**
 
-Run the catalog generator so `constants.ts` picks up the new id. The schemas array and `exportConfig` map live in [`catalog.ts`](./catalog.ts) and must be edited by hand at the same time as the schema file:
+After editing a schema, sync [`catalog.ts`](./catalog.ts) and `constants.ts` so the imports, catalog arrays, export config map, and `ComponentId` values stay aligned with the schema files.
 
-```bash
-bun scripts/catalog/generate-catalog.ts
-```
+Invoke `@components-catalog`.
 
 **5. Wire downstream consumers**
 

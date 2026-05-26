@@ -1,10 +1,9 @@
 /**
- * Hand-maintained catalog of every component schema in the package.
+ * To sync this file after component schema changes, invoke `@components-catalog`.
  *
- * Adding a component:
- *   1. Author the schema under the matching level directory (`elements/`, `primitives/`, etc.).
- *   2. Add the corresponding imports + array entry + export-config entry below.
- *   3. Run `bun scripts/catalog/generate-catalog.ts` so `constants.ts` picks up the new ComponentId.
+ * The `@components-catalog` rule treats the `.schema.ts` files under
+ * `packages/core/components/` as the source of truth and updates this file and
+ * `packages/core/components/constants.ts` together.
  */
 import { invariant } from "../helpers/utils/invariant"
 import { ComponentId } from "./constants"

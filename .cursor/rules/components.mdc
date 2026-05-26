@@ -121,4 +121,4 @@ When adding a component:
 4. Add `exportConfig`.
 5. Keep property keys and compound facets in documented order from `PROPERTIES.md`.
 6. Update `packages/core/components/catalog.ts` afterwards to include new components.
-7. Regenerate catalog constants with `bun scripts/catalog/generate-catalog.ts`.
+7. Invoke `@components-catalog` to sync `packages/core/components/catalog.ts` and `packages/core/components/constants.ts` from the schema files.
