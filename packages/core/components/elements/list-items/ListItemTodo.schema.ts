@@ -551,7 +551,8 @@ export const schema = {
         ],
       },
       {
-        component: Seldon.ComponentId.CHIP_COUNT,
+        component: Seldon.ComponentId.CHIP,
+        variant: "count",
         overrides: {
           display: {
             type: Sdn.ValueType.OPTION,

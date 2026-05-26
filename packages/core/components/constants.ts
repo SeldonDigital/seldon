@@ -29,7 +29,6 @@ export enum ComponentId {
   CARD_STACKED = "cardStacked",
   CHECKBOX = "checkbox",
   CHIP = "chip",
-  CHIP_COUNT = "chipCount",
   CITE = "cite",
   CODEBLOCK = "codeblock",
   DESCRIPTION = "description",

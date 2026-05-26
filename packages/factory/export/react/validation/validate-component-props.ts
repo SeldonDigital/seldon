@@ -207,7 +207,6 @@ export function getComponentIdFromName(
     Calendar: ComponentId.CALENDAR,
     // Other components
     Chip: ComponentId.CHIP,
-    ChipCount: ComponentId.CHIP_COUNT,
     Screen: ComponentId.SCREEN,
     PanelDialog: ComponentId.PANEL_DIALOG,
     // Add more mappings as needed

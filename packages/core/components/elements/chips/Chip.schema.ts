@@ -471,6 +471,100 @@ export const schema = {
       },
     ],
   },
+  variants: [
+    {
+      id: "count",
+      label: "Chip Count",
+      intent:
+        "Displays a numeric count, often used for notifications, filters, or grouped item indicators.",
+      overrides: {
+        padding: {
+          top: {
+            type: Sdn.ValueType.EMPTY,
+            value: null,
+          },
+          right: {
+            type: Sdn.ValueType.COMPUTED,
+            value: {
+              function: Sdn.ComputedFunction.OPTICAL_PADDING,
+              input: {
+                basedOn: "#buttonSize",
+                factor: 0.75,
+              },
+            },
+          },
+          bottom: {
+            type: Sdn.ValueType.EMPTY,
+            value: null,
+          },
+          left: {
+            type: Sdn.ValueType.EMPTY,
+            value: null,
+          },
+        },
+        gap: {
+          type: Sdn.ValueType.EMPTY,
+          value: null,
+        },
+      },
+      children: [
+        {
+          component: Seldon.ComponentId.LABEL,
+          overrides: {
+            content: {
+              type: Sdn.ValueType.EXACT,
+              value: "1",
+            },
+            color: {
+              type: Sdn.ValueType.COMPUTED,
+              value: {
+                function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+                input: {
+                  basedOn: "#parent.background.color",
+                },
+              },
+            },
+            font: {
+              preset: {
+                type: Sdn.ValueType.EMPTY,
+                value: null,
+              },
+              family: {
+                type: Sdn.ValueType.EMPTY,
+                value: null,
+              },
+              style: {
+                type: Sdn.ValueType.EMPTY,
+                value: null,
+              },
+              weight: {
+                type: Sdn.ValueType.EMPTY,
+                value: null,
+              },
+              size: {
+                type: Sdn.ValueType.COMPUTED,
+                value: {
+                  function: Sdn.ComputedFunction.AUTO_FIT,
+                  input: {
+                    basedOn: "#parent.buttonSize",
+                    factor: 0.8,
+                  },
+                },
+              },
+              lineHeight: {
+                type: Sdn.ValueType.EMPTY,
+                value: null,
+              },
+              textCase: {
+                type: Sdn.ValueType.EMPTY,
+                value: null,
+              },
+            },
+          },
+        },
+      ],
+    },
+  ],
 } as const satisfies ComponentSchema
 
 export const exportConfig: ComponentExport = {
