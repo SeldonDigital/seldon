@@ -1,9 +1,8 @@
 import { CSSProperties } from "react"
 import { ComponentToExport, DataBinding, JSONTreeNode } from "../../../types"
 import {
-  getComponentIdFromComponent,
-  getComponentIdFromName,
-  validateComponentProps,
+  validateExportedComponentProps,
+  validateTreeNodeProps,
 } from "../../validation/validate-component-props"
 
 /**
@@ -43,21 +42,7 @@ export function generateCustomComponentDefaultProps(
   > = {}
 
   // Get validation for root component to determine conditional props
-  const componentId = getComponentIdFromComponent(component)
-  const rootValidation =
-    componentId && Array.isArray(component.tree.children)
-      ? validateComponentProps(
-          component.name,
-          componentId,
-          component.tree.children as JSONTreeNode[],
-        )
-      : {
-          validProps: (Array.isArray(component.tree.children)
-            ? component.tree.children
-            : []) as JSONTreeNode[],
-          invalidProps: [],
-          componentHasFewerPropsThanSchema: false,
-        }
+  const rootValidation = validateExportedComponentProps(component)
 
   function isConditionalProp(
     propPath: string,
@@ -129,14 +114,7 @@ export function generateCustomComponentDefaultProps(
     // Process children (grandchildren)
     if (Array.isArray(node.children)) {
       // Determine validation for this node's children
-      const childComponentId = getComponentIdFromName(node.name)
-      const childValidation = childComponentId
-        ? validateComponentProps(node.name, childComponentId, node.children)
-        : {
-            validProps: node.children,
-            invalidProps: [],
-            componentHasFewerPropsThanSchema: false,
-          }
+      const childValidation = validateTreeNodeProps(node)
 
       // Recursively process grandchildren (depth + 1)
       // Grandchildren are always included in defaults regardless of parent being conditional

@@ -5,8 +5,7 @@ import {
 import { Instance, Variant, Workspace } from "@seldon/core/workspace/types"
 import { ComponentToExport } from "../../../types"
 import {
-  getComponentIdFromComponent,
-  validateComponentProps,
+  validateExportedComponentProps,
 } from "../../validation/validate-component-props"
 import { isInlineComponent } from "../inline-components/is-inline-component"
 
@@ -48,24 +47,13 @@ export function isDefaultComponent(
     return false
   }
 
-  // Validate children against schema
-  const componentId = getComponentIdFromComponent(component)
-  if (!componentId) {
-    // If no component ID, can't validate - treat as default if variant is default
-    return true
-  }
-
   // If no children, it's a default component (simple component)
   if (!Array.isArray(component.tree.children)) {
     return true
   }
 
   // Validate direct children props against schema
-  const validation = validateComponentProps(
-    component.name,
-    componentId,
-    component.tree.children,
-  )
+  const validation = validateExportedComponentProps(component)
 
   // Default components must have all valid props matching the schema
   // (no invalid props, but can have fewer props if some are excluded)

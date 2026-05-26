@@ -1,13 +1,8 @@
 import { VariantId } from "@seldon/core"
-import { getNodeById } from "@seldon/core/workspace/helpers/nodes/get-node-by-id"
-import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-catalog-id"
+import { componentBoardSchemaVariantNodeId } from "@seldon/core/workspace/helpers/components/entry-node-ids"
+import { nodeRetrievalService } from "@seldon/core/workspace/services"
 import { Workspace } from "@seldon/core/workspace/types"
 import { ComponentToExport, JSONTreeNode } from "../../../types"
-import {
-  getComponentIdFromComponent,
-  getComponentIdFromName,
-  validateComponentProps,
-} from "../../validation/validate-component-props"
 import { ComponentMetadataStorage } from "../component-metadata"
 import { JSXNode } from "./types"
 
@@ -73,19 +68,17 @@ export function extractPropKeysFromJSX(
 ): Map<string, string> {
   const propKeysMap = new Map<string, string>()
 
-  const componentId = getComponentIdFromComponent(component)
-  const validation =
-    componentId && Array.isArray(component.tree.children)
-      ? validateComponentProps(
-          component.name,
-          componentId,
-          component.tree.children,
-        )
-      : {
-          validProps: component.tree.children || [],
-          invalidProps: [],
-          componentHasFewerPropsThanSchema: false,
-        }
+  function getMetadataVariantId(node: JSONTreeNode): VariantId {
+    if (node.schemaVariantId) {
+      return componentBoardSchemaVariantNodeId(
+        node.componentId,
+        node.schemaVariantId,
+      ) as VariantId
+    }
+
+    return nodeRetrievalService.getDefaultVariant(node.componentId, workspace)
+      .id as VariantId
+  }
 
   function findJSXNodeByPath(
     root: JSXNode,
@@ -156,38 +149,11 @@ export function extractPropKeysFromJSX(
       // We're at the parent of the target, need to look up the final segment
       const finalSegment = pathParts[pathParts.length - 1]
 
-      let componentId: string | null = null
-      try {
-        const workspaceNode = getNodeById(currentNode.nodeId, workspace)
-        componentId = getNodeCatalogId(workspaceNode, workspace)
-      } catch (error) {
-        componentId = getComponentIdFromName(currentNode.name)
-      }
+      const componentId = currentNode.componentId
 
-      if (!componentId) {
-        throw new Error(
-          `Component ID not found for node "${currentNode.name}" ` +
-            `when processing grandchild "${grandchildPath}" in component "${component.name}".`,
-        )
-      }
+      const variantId = getMetadataVariantId(currentNode)
 
-      let variantId: string | null = null
-      for (const [vid, metadata] of componentMetadataStorage.entries()) {
-        if (metadata.componentId === componentId) {
-          variantId = vid
-          break
-        }
-      }
-
-      if (!variantId) {
-        throw new Error(
-          `Variant ID not found for component "${componentId}" ` +
-            `when processing grandchild "${grandchildPath}" in component "${component.name}". ` +
-            `This indicates that the component has not been processed yet or metadata is missing.`,
-        )
-      }
-
-      const metadata = componentMetadataStorage.get(variantId as VariantId)
+      const metadata = componentMetadataStorage.get(variantId)
       if (!metadata || !metadata.propKeysMap) {
         throw new Error(
           `Metadata or propKeysMap not found for variant "${variantId}" ` +

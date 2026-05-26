@@ -112,6 +112,8 @@ export type ImageToExportMap = Record<
  */
 export type JSONTreeNode = {
   name: string
+  componentId: ComponentId
+  schemaVariantId: string | null
   nodeId: InstanceId | VariantId
   children?: null | string | JSONTreeNode[]
   level: ComponentLevel

@@ -15,7 +15,6 @@ export function generateInlineComponent(
   childValidation: {
     validProps: JSONTreeNode[]
     invalidProps: JSONTreeNode[]
-    componentHasFewerPropsThanSchema: boolean
   },
   componentMetadataStorage: ComponentMetadataStorage,
 ): string {

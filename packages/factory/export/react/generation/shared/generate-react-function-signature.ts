@@ -1,8 +1,7 @@
 import { ComponentToExport, JSONTreeNode } from "../../../types"
 import {
-  getComponentIdFromComponent,
-  getComponentIdFromName,
-  validateComponentProps,
+  validateExportedComponentProps,
+  validateTreeNodeProps,
 } from "../../validation/validate-component-props"
 
 /**
@@ -94,14 +93,7 @@ export function generatePropsSpread(
       // Process children with updated conditional status
       if (Array.isArray(node.children)) {
         // Get validation for this node's children
-        const childComponentId = getComponentIdFromName(node.name)
-        const childValidation = childComponentId
-          ? validateComponentProps(node.name, childComponentId, node.children)
-          : {
-              validProps: node.children,
-              invalidProps: [],
-              componentHasFewerPropsThanSchema: false,
-            }
+        const childValidation = validateTreeNodeProps(node)
 
         node.children.forEach((child) =>
           traverseTreeAndAddProps(
@@ -114,14 +106,7 @@ export function generatePropsSpread(
     } else {
       // Even if prop name already used, still need to process children
       if (Array.isArray(node.children)) {
-        const childComponentId = getComponentIdFromName(node.name)
-        const childValidation = childComponentId
-          ? validateComponentProps(node.name, childComponentId, node.children)
-          : {
-              validProps: node.children,
-              invalidProps: [],
-              componentHasFewerPropsThanSchema: false,
-            }
+        const childValidation = validateTreeNodeProps(node)
 
         const isConditional = isConditionalProp(
           node.dataBinding.path,
@@ -142,18 +127,7 @@ export function generatePropsSpread(
 
   if (Array.isArray(component.tree.children)) {
     // Validate component props and include ALL props in the spread (both valid and invalid)
-    const componentId = getComponentIdFromComponent(component)
-    const validation = componentId
-      ? validateComponentProps(
-          component.name,
-          componentId,
-          component.tree.children,
-        )
-      : {
-          validProps: component.tree.children,
-          invalidProps: [],
-          componentHasFewerPropsThanSchema: false,
-        }
+    const validation = validateExportedComponentProps(component)
 
     // Traverse all children and pass the validation results
     component.tree.children.forEach((child) =>

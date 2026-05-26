@@ -1,9 +1,4 @@
 import { ComponentToExport, JSONTreeNode } from "../../../types"
-import {
-  getComponentIdFromComponent,
-  getComponentIdFromName,
-  validateComponentProps,
-} from "../../validation/validate-component-props"
 
 /**
  * Generate interface content for inline component children props
@@ -20,21 +15,6 @@ export function generateInlineComponentChildrenProps(
 ): string {
   let content = ""
   const addedPropNames = new Set<string>()
-
-  // Validate component props against schema
-  const componentId = getComponentIdFromComponent(component)
-  const validation =
-    componentId && Array.isArray(component.tree.children)
-      ? validateComponentProps(
-          component.name,
-          componentId,
-          component.tree.children,
-        )
-      : {
-          validProps: component.tree.children || [],
-          invalidProps: [],
-          componentHasFewerPropsThanSchema: false,
-        }
 
   function traverse(node: JSONTreeNode, depth: number = 1) {
     // For direct children (depth 1), use propKeysMap

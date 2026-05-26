@@ -1,10 +1,11 @@
 import { Display, InstanceId, Properties, VariantId, ValueType } from "@seldon/core"
-import { WrapperElement } from "@seldon/core/properties"
-import { ComponentLevel } from "@seldon/core/components/constants"
+import { ComponentId, ComponentLevel, isComponentId } from "@seldon/core/components/constants"
 import { getComponentSchema } from "@seldon/core/components/catalog"
-import { isComponentId } from "@seldon/core/components/constants"
+import { isComplexSchema } from "@seldon/core/components/types"
+import { WrapperElement } from "@seldon/core/properties"
 import { IconId } from "@seldon/core/icons"
 import { getChildrenIds } from "@seldon/core/workspace/helpers/components/get-children-ids"
+import { componentBoardSchemaVariantNodeId } from "@seldon/core/workspace/helpers/components/entry-node-ids"
 import { getComponentByNodeId } from "@seldon/core/workspace/helpers/components/get-component-by-node-id"
 import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
 import { getNodeById } from "@seldon/core/workspace/helpers/nodes/get-node-by-id"
@@ -38,15 +39,15 @@ export function getJsonTreeFromChildren(
 
   const name = getComponentName(variant, workspace)
   const variantProperties = getNodeProperties(variant, workspace)
-  const catalogId = getNodeCatalogId(variant, workspace)
-  const schema = catalogId && isComponentId(catalogId)
-    ? getComponentSchema(catalogId)
-    : null
-
-  const componentLevel = schema?.level ?? ComponentLevel.ELEMENT
+  const componentId = getComponentIdOrThrow(variant, workspace)
+  const schema = getComponentSchema(componentId)
+  const componentLevel = schema.level
+  const schemaVariantId = getSchemaVariantId(variant, componentId, workspace)
 
   const tree = {
     name,
+    componentId,
+    schemaVariantId,
     nodeId: variant.id,
     level: componentLevel,
     dataBinding: {
@@ -164,16 +165,20 @@ export function getJsonTreeFromChildren(
         .filter(Boolean)
     }
 
-    const childCatalogId = getNodeCatalogId(node, workspace)
-    const childSchema =
-      childCatalogId && isComponentId(childCatalogId)
-        ? getComponentSchema(childCatalogId)
-        : null
+    const childComponentId = getComponentIdOrThrow(node, workspace)
+    const childSchema = getComponentSchema(childComponentId)
+    const childSchemaVariantId = getSchemaVariantId(
+      node,
+      childComponentId,
+      workspace,
+    )
 
     return {
       name,
+      componentId: childComponentId,
+      schemaVariantId: childSchemaVariantId,
       nodeId: node.id,
-      level: childSchema?.level ?? ComponentLevel.ELEMENT,
+      level: childSchema.level,
       dataBinding: {
         interfaceName,
         referenceName,
@@ -184,6 +189,55 @@ export function getJsonTreeFromChildren(
       classNames: classNamesArray,
     }
   }
+}
+
+function getComponentIdOrThrow(
+  node: EntryNode,
+  workspace: Workspace,
+): ComponentId {
+  const catalogId = getNodeCatalogId(node, workspace)
+  if (!catalogId || !isComponentId(catalogId)) {
+    throw new Error(`Component id not found for node ${node.id}`)
+  }
+  return catalogId
+}
+
+function getSchemaVariantId(
+  node: EntryNode,
+  componentId: ComponentId,
+  workspace: Workspace,
+): string | null {
+  const schema = getComponentSchema(componentId)
+  if (!isComplexSchema(schema) || !schema.variants?.length) {
+    return null
+  }
+
+  const schemaVariantIdByNodeId = new Map<string, string>(
+    schema.variants.map((variant) => [
+      componentBoardSchemaVariantNodeId(componentId, variant.id),
+      variant.id,
+    ]),
+  )
+
+  const visited = new Set<string>()
+  let current: EntryNode | undefined = node
+
+  while (current && !visited.has(current.id)) {
+    visited.add(current.id)
+    const schemaVariantId = schemaVariantIdByNodeId.get(current.id)
+    if (schemaVariantId) {
+      return schemaVariantId
+    }
+
+    const sourceNodeId = getTemplateSourceNodeId(current)
+    if (!sourceNodeId) {
+      return null
+    }
+
+    current = getNodeById(sourceNodeId, workspace)
+  }
+
+  return null
 }
 
 function getChildNodeProps(properties: Properties) {

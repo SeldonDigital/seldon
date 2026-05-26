@@ -1,9 +1,8 @@
 import { CSSProperties } from "react"
 import { ComponentToExport, DataBinding, JSONTreeNode } from "../../../types"
 import {
-  getComponentIdFromComponent,
-  getComponentIdFromName,
-  validateComponentProps,
+  validateExportedComponentProps,
+  validateTreeNodeProps,
 } from "../../validation/validate-component-props"
 
 /**
@@ -32,21 +31,7 @@ export function generateInlineComponentDefaultProps(
   > = {}
 
   // Get validation for root component
-  const componentId = getComponentIdFromComponent(component)
-  const rootValidation =
-    componentId && Array.isArray(component.tree.children)
-      ? validateComponentProps(
-          component.name,
-          componentId,
-          component.tree.children as JSONTreeNode[],
-        )
-      : {
-          validProps: (Array.isArray(component.tree.children)
-            ? component.tree.children
-            : []) as JSONTreeNode[],
-          invalidProps: [],
-          componentHasFewerPropsThanSchema: false,
-        }
+  const rootValidation = validateExportedComponentProps(component)
 
   function isConditionalProp(
     propPath: string,
@@ -97,14 +82,7 @@ export function generateInlineComponentDefaultProps(
     // Process children recursively
     if (Array.isArray(node.children)) {
       // Determine validation for this node's children
-      const childComponentId = getComponentIdFromName(node.name)
-      const childValidation = childComponentId
-        ? validateComponentProps(node.name, childComponentId, node.children)
-        : {
-            validProps: node.children,
-            invalidProps: [],
-            componentHasFewerPropsThanSchema: false,
-          }
+      const childValidation = validateTreeNodeProps(node)
 
       node.children.forEach((child) => {
         // Pass down: child's validProps and increment depth

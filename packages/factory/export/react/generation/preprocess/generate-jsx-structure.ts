@@ -4,9 +4,8 @@ import { NodeIdToClass } from "../../../css/types"
 import { ComponentToExport, JSONTreeNode } from "../../../types"
 import { camelCase } from "../../utils/case-utils"
 import {
-  getComponentIdFromComponent,
-  getComponentIdFromName,
-  validateComponentProps,
+  validateExportedComponentProps,
+  validateTreeNodeProps,
 } from "../../validation/validate-component-props"
 import { ComponentMetadataStorage } from "../component-metadata"
 import { isCustomComponent } from "../custom-components/is-custom-component"
@@ -65,15 +64,7 @@ export function generateJSXStructure(
   })
 
   // Validate component props
-  const componentId = getComponentIdFromComponent(component)
-  const validation =
-    componentId && Array.isArray(tree.children)
-      ? validateComponentProps(component.name, componentId, tree.children)
-      : {
-          validProps: tree.children || [],
-          invalidProps: [],
-          componentHasFewerPropsThanSchema: false,
-        }
+  const validation = validateExportedComponentProps(component)
 
   const rootIsInline = isInlineComponent(component)
   const rootIsCustom = isCustomComponent(component, workspace)
@@ -127,14 +118,7 @@ export function generateJSXStructure(
 
     if (Array.isArray(node.children)) {
       // Check if this node has grandchildren that should be passed as props
-      const childComponentId = getComponentIdFromName(node.name)
-      const childValidation = childComponentId
-        ? validateComponentProps(node.name, childComponentId, node.children)
-        : {
-            validProps: node.children,
-            invalidProps: [],
-            componentHasFewerPropsThanSchema: false,
-          }
+      const childValidation = validateTreeNodeProps(node)
 
       const hasValidGrandchildren =
         childValidation.invalidProps.length === 0 && node.children.length > 0

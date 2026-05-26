@@ -107,24 +107,23 @@ import { getUsedIconIds } from './discovery/get-used-icon-ids'
 import { validateComponentProps } from './validation/validate-component-props'
 
 export function validateComponentProps(
-  componentName: string,
   componentId: ComponentId,
+  schemaVariantId: string | null,
   children: JSONTreeNode[],
 ): ComponentPropsValidation
 ```
 
 **Validation Process:**
-- Compares proposed children against component schema
+- Compares proposed direct children against the active schema branch
 - Separates valid props (matching schema) from invalid props (extra props)
-- Determines if component uses fewer props than specified in schema
-- Maps component names to ComponentIds for validation
+- Uses stable `componentId` and `schemaVariantId` metadata from the export tree
+- Respects schema variants instead of unioning `default` and every variant
 
 **Validation Results:**
 ```typescript
 interface ComponentPropsValidation {
   validProps: JSONTreeNode[]           // Props that match the component schema
   invalidProps: JSONTreeNode[]         // Extra props not in the schema
-  componentHasFewerPropsThanSchema: boolean  // Whether component is missing expected props
 }
 ```
 

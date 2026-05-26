@@ -1,8 +1,4 @@
 import { ComponentToExport, JSONTreeNode } from "../../../types"
-import {
-  getComponentIdFromComponent,
-  validateComponentProps,
-} from "../../validation/validate-component-props"
 
 /**
  * Generate interface content for custom component children props
@@ -23,21 +19,6 @@ export function generateCustomComponentChildrenProps(
 ): string {
   let content = ""
   const addedPropNames = new Set<string>()
-
-  // Validate component props against schema to distinguish valid/invalid props
-  const componentId = getComponentIdFromComponent(component)
-  const validation =
-    componentId && Array.isArray(component.tree.children)
-      ? validateComponentProps(
-          component.name,
-          componentId,
-          component.tree.children,
-        )
-      : {
-          validProps: component.tree.children || [],
-          invalidProps: [],
-          componentHasFewerPropsThanSchema: false,
-        }
 
   // Process direct children and all descendants recursively
   // Direct children: Process from component.tree.children

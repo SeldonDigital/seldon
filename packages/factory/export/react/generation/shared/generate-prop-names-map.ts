@@ -1,16 +1,13 @@
 import { VariantId } from "@seldon/core"
 import { ComponentId, ComponentLevel } from "@seldon/core/components/constants"
-import { getNodeById } from "@seldon/core/workspace/helpers/nodes/get-node-by-id"
-import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-catalog-id"
+import { componentBoardSchemaVariantNodeId } from "@seldon/core/workspace/helpers/components/entry-node-ids"
 import { nodeRetrievalService } from "@seldon/core/workspace/services"
 import { Workspace } from "@seldon/core/workspace/types"
 import { ComponentToExport, JSONTreeNode } from "../../../types"
 import { getHumanReadablePropName } from "../../discovery/get-human-readable-prop-name"
 import { camelCase } from "../../utils/case-utils"
 import {
-  getComponentIdFromComponent,
-  getComponentIdFromName,
-  validateComponentProps,
+  validateExportedComponentProps,
 } from "../../validation/validate-component-props"
 import { ComponentMetadataStorage } from "../component-metadata"
 import { isCustomComponent } from "../custom-components/is-custom-component"
@@ -40,21 +37,7 @@ export function generatePropValuesMap(
   const propValuesMap = new Map<string, string>()
   const scopedBaseNameCounts = new Map<string, Map<string, number>>()
 
-  const componentId = getComponentIdFromComponent(component)
-  const rootValidation =
-    componentId && Array.isArray(component.tree.children)
-      ? validateComponentProps(
-          component.name,
-          componentId,
-          component.tree.children,
-        )
-      : {
-          validProps: Array.isArray(component.tree.children)
-            ? component.tree.children
-            : [],
-          invalidProps: [],
-          componentHasFewerPropsThanSchema: false,
-        }
+  const rootValidation = validateExportedComponentProps(component)
 
   const rootIsInline = isInlineComponent(component)
   const rootIsCustom = workspace
@@ -319,6 +302,18 @@ export function generatePropKeysMap(
 ): Map<string, string> {
   const propKeysMap = new Map<string, string>()
 
+  function getMetadataVariantId(node: JSONTreeNode): VariantId | null {
+    if (node.schemaVariantId) {
+      return componentBoardSchemaVariantNodeId(
+        node.componentId,
+        node.schemaVariantId,
+      ) as VariantId
+    }
+
+    return nodeRetrievalService.getDefaultVariant(node.componentId, workspace)
+      .id as VariantId
+  }
+
   const hasChildren =
     Array.isArray(component.tree.children) && component.tree.children.length > 0
   if (!hasChildren || !Array.isArray(component.tree.children)) {
@@ -428,44 +423,10 @@ export function generatePropKeysMap(
 
           propKeysMap.set(nodePath, propKey)
         } else {
-          // Get component ID from workspace node
-          let directChildComponentId: ComponentId | null = null
-          try {
-            const directChildWorkspaceNode = getNodeById(
-              directChildNode.nodeId,
-              workspace,
-            )
-            directChildComponentId = getNodeCatalogId(
-              directChildWorkspaceNode,
-              workspace,
-            ) as ComponentId | null
-          } catch (error) {
-            directChildComponentId = getComponentIdFromName(
-              directChildNode.name,
-            )
-          }
+          const directChildComponentId: ComponentId = directChildNode.componentId
 
           if (directChildComponentId) {
-            // Find direct child variant ID from metadata storage
-            let directChildVariantId: VariantId | null = null
-            for (const [
-              variantId,
-              metadata,
-            ] of componentMetadataStorage.entries()) {
-              if (metadata.componentId === directChildComponentId) {
-                const defaultVariant = nodeRetrievalService.getDefaultVariant(
-                  directChildComponentId,
-                  workspace,
-                )
-                if (defaultVariant && defaultVariant.id === variantId) {
-                  directChildVariantId = variantId
-                  break
-                }
-                if (!directChildVariantId) {
-                  directChildVariantId = variantId
-                }
-              }
-            }
+            const directChildVariantId = getMetadataVariantId(directChildNode)
 
             if (directChildVariantId) {
               const directChildMetadata =

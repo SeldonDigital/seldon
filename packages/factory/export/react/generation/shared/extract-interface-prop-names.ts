@@ -1,8 +1,7 @@
 import { ComponentToExport, JSONTreeNode } from "../../../types"
 import {
-  getComponentIdFromComponent,
-  getComponentIdFromName,
-  validateComponentProps,
+  validateExportedComponentProps,
+  validateTreeNodeProps,
 } from "../../validation/validate-component-props"
 
 /**
@@ -24,19 +23,7 @@ export function extractInterfacePropNames(
   const interfacePropNames = new Set<string>()
 
   // Validate component props against schema
-  const componentId = getComponentIdFromComponent(component)
-  const validation =
-    componentId && Array.isArray(component.tree.children)
-      ? validateComponentProps(
-          component.name,
-          componentId,
-          component.tree.children,
-        )
-      : {
-          validProps: component.tree.children || [],
-          invalidProps: [],
-          componentHasFewerPropsThanSchema: false,
-        }
+  const validation = validateExportedComponentProps(component)
 
   function traverse(node: JSONTreeNode) {
     // Get the final prop name from the centralized map
@@ -48,14 +35,7 @@ export function extractInterfacePropNames(
 
     if (Array.isArray(node.children)) {
       // Check if this component will be rendered inline
-      const componentId = getComponentIdFromName(node.name)
-      const childValidation = componentId
-        ? validateComponentProps(node.name, componentId, node.children)
-        : {
-            validProps: node.children,
-            invalidProps: [],
-            componentHasFewerPropsThanSchema: false,
-          }
+      const childValidation = validateTreeNodeProps(node)
 
       const willRenderInline = childValidation.invalidProps.length > 0
 

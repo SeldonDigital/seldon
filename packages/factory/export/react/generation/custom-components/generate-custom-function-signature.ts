@@ -1,8 +1,7 @@
 import { ComponentToExport, JSONTreeNode } from "../../../types"
 import {
-  getComponentIdFromComponent,
-  getComponentIdFromName,
-  validateComponentProps,
+  validateExportedComponentProps,
+  validateTreeNodeProps,
 } from "../../validation/validate-component-props"
 
 /**
@@ -34,21 +33,7 @@ export function generateCustomComponentPropsSpread(
   }
 
   // Validate component props to determine which are conditional (invalid at depth 1)
-  const componentId = getComponentIdFromComponent(component)
-  const validation =
-    componentId && Array.isArray(component.tree.children)
-      ? validateComponentProps(
-          component.name,
-          componentId,
-          component.tree.children as JSONTreeNode[],
-        )
-      : {
-          validProps: (Array.isArray(component.tree.children)
-            ? component.tree.children
-            : []) as JSONTreeNode[],
-          invalidProps: [],
-          componentHasFewerPropsThanSchema: false,
-        }
+  const validation = validateExportedComponentProps(component)
 
   /**
    * Traverse tree and add props with correct default handling
@@ -85,14 +70,7 @@ export function generateCustomComponentPropsSpread(
     // Always process children (grandchildren) recursively, regardless of whether parent prop was found
     // This ensures grandchildren props are added even if parent prop wasn't in propValuesMap or was already used
     if (Array.isArray(node.children)) {
-      const childComponentId = getComponentIdFromName(node.name)
-      const childValidation = childComponentId
-        ? validateComponentProps(node.name, childComponentId, node.children)
-        : {
-            validProps: node.children,
-            invalidProps: [],
-            componentHasFewerPropsThanSchema: false,
-          }
+      const childValidation = validateTreeNodeProps(node)
 
       // Recursively process grandchildren (depth + 1)
       node.children.forEach((child) =>

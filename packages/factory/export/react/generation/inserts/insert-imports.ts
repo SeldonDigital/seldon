@@ -13,9 +13,7 @@ import {
   transformSource,
 } from "../../utils/transform-source"
 import {
-  getComponentIdFromComponent,
-  getComponentIdFromName,
-  validateComponentProps,
+  validateTreeNodeProps,
 } from "../../validation/validate-component-props"
 import { JSXNode } from "../preprocess/types"
 
@@ -135,15 +133,7 @@ export function insertImports(
 
     if (Array.isArray(node.children)) {
       // Check if this component will be rendered inline
-      const componentId = getComponentIdFromName(node.name)
-
-      const validation = componentId
-        ? validateComponentProps(node.name, componentId, node.children)
-        : {
-            validProps: node.children,
-            invalidProps: [],
-            componentHasFewerPropsThanSchema: false,
-          }
+      const validation = validateTreeNodeProps(node)
 
       // If component has invalid props, it will be rendered inline
       // So we need to import only the interfaces that are actually rendered
@@ -247,15 +237,7 @@ export function insertImports(
 
     if (Array.isArray(node.children)) {
       // Check if this component will be rendered inline
-      const componentId = getComponentIdFromName(node.name)
-
-      const validation = componentId
-        ? validateComponentProps(node.name, componentId, node.children)
-        : {
-            validProps: node.children,
-            invalidProps: [],
-            componentHasFewerPropsThanSchema: false,
-          }
+      const validation = validateTreeNodeProps(node)
 
       // If component has invalid props, it will be rendered inline
       // So we need to import only the components that are actually rendered
@@ -278,21 +260,13 @@ export function insertImports(
           }
 
           // Check if child has invalid props to determine if grandchildren are rendered or passed as props
-          const childComponentId = getComponentIdFromName(child.name)
           const childChildren = Array.isArray(child.children)
             ? child.children
             : []
-          const childValidation = childComponentId
-            ? validateComponentProps(
-                child.name,
-                childComponentId,
-                childChildren,
-              )
-            : {
-                validProps: childChildren,
-                invalidProps: [],
-                componentHasFewerPropsThanSchema: false,
-              }
+          const childValidation = validateTreeNodeProps({
+            ...child,
+            children: childChildren,
+          })
 
           // Only import grandchildren as components if child has invalid props
           // (meaning grandchildren will be rendered inline as JSX components)
