@@ -107,11 +107,11 @@ import {
 import {
   exportConfig as iabExportConfig,
   schema as iabSchema,
-} from "./parts/advertisements/IAB.schema"
+} from "./parts/ads/IAB.schema"
 import {
   exportConfig as socialMediaExportConfig,
   schema as socialMediaSchema,
-} from "./parts/advertisements/SocialMedia.schema"
+} from "./parts/ads/SocialMedia.schema"
 import {
   exportConfig as barButtonsExportConfig,
   schema as barButtonsSchema,
