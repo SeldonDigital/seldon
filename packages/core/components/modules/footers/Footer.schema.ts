@@ -374,7 +374,8 @@ export const schema = {
   default: {
     children: [
       {
-        component: Seldon.ComponentId.SECTION_BRAND,
+        component: Seldon.ComponentId.SECTION,
+        variant: "brand",
         children: [
           {
             component: Seldon.ComponentId.TITLE,
@@ -423,16 +424,19 @@ export const schema = {
         ],
       },
       {
-        component: Seldon.ComponentId.SECTION_NAV,
+        component: Seldon.ComponentId.SECTION,
       },
       {
-        component: Seldon.ComponentId.SECTION_SOCIAL,
+        component: Seldon.ComponentId.SECTION,
+        variant: "social",
       },
       {
-        component: Seldon.ComponentId.SECTION_NEWSLETTER,
+        component: Seldon.ComponentId.SECTION,
+        variant: "newsletter",
       },
       {
-        component: Seldon.ComponentId.SECTION_LEGAL,
+        component: Seldon.ComponentId.SECTION,
+        variant: "legal",
       },
     ],
   },

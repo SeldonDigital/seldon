@@ -63,25 +63,9 @@ import {
   schema as itemSchema,
 } from "./elements/Item.schema"
 import {
-  exportConfig as sectionBrandExportConfig,
-  schema as sectionBrandSchema,
-} from "./elements/sections/SectionBrand.schema"
-import {
-  exportConfig as sectionLegalExportConfig,
-  schema as sectionLegalSchema,
-} from "./elements/sections/SectionLegal.schema"
-import {
-  exportConfig as sectionNavExportConfig,
-  schema as sectionNavSchema,
-} from "./elements/sections/SectionNav.schema"
-import {
-  exportConfig as sectionNewsletterExportConfig,
-  schema as sectionNewsletterSchema,
-} from "./elements/sections/SectionNewsletter.schema"
-import {
-  exportConfig as sectionSocialExportConfig,
-  schema as sectionSocialSchema,
-} from "./elements/sections/SectionSocial.schema"
+  exportConfig as sectionExportConfig,
+  schema as sectionSchema,
+} from "./elements/Section.schema"
 import {
   exportConfig as tableRowDataExportConfig,
   schema as tableRowDataSchema,
@@ -392,11 +376,7 @@ const elements: ComponentSchema[] = [
   headerActionSchema,
   headerCardSchema,
   itemSchema,
-  sectionBrandSchema,
-  sectionLegalSchema,
-  sectionNavSchema,
-  sectionNewsletterSchema,
-  sectionSocialSchema,
+  sectionSchema,
   tableRowDataSchema,
   textblockSchema,
   textblockAvatarSchema,
@@ -535,11 +515,7 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   [ComponentId.HEADER_ACTION]: headerActionExportConfig,
   [ComponentId.HEADER_CARD]: headerCardExportConfig,
   [ComponentId.ITEM]: itemExportConfig,
-  [ComponentId.SECTION_BRAND]: sectionBrandExportConfig,
-  [ComponentId.SECTION_LEGAL]: sectionLegalExportConfig,
-  [ComponentId.SECTION_NAV]: sectionNavExportConfig,
-  [ComponentId.SECTION_NEWSLETTER]: sectionNewsletterExportConfig,
-  [ComponentId.SECTION_SOCIAL]: sectionSocialExportConfig,
+  [ComponentId.SECTION]: sectionExportConfig,
   [ComponentId.TABLE_ROW_DATA]: tableRowDataExportConfig,
   [ComponentId.TEXTBLOCK]: textblockExportConfig,
   [ComponentId.TEXTBLOCK_AVATAR]: textblockAvatarExportConfig,
