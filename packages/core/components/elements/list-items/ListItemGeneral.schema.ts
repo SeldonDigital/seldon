@@ -354,13 +354,25 @@ export const schema = {
   default: {
     children: [
       {
-        component: Seldon.ComponentId.AVATAR_ICON,
+        component: Seldon.ComponentId.AVATAR,
         overrides: {
           width: {
             type: Sdn.ValueType.OPTION,
             value: Sdn.Resize.FILL,
           },
+          gap: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@gap.compact",
+          },
         },
+        children: [
+          {
+            component: Seldon.ComponentId.ICON,
+          },
+          {
+            component: Seldon.ComponentId.TEXTBLOCK_AVATAR,
+          },
+        ],
       },
     ],
   },

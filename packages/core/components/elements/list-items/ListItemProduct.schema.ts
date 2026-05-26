@@ -367,13 +367,49 @@ export const schema = {
         },
       },
       {
-        component: Seldon.ComponentId.AVATAR_PRODUCT,
+        component: Seldon.ComponentId.AVATAR,
         overrides: {
           width: {
             type: Sdn.ValueType.OPTION,
             value: Sdn.Resize.FILL,
           },
         },
+        children: [
+          {
+            component: Seldon.ComponentId.IMAGE,
+            overrides: {
+              width: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@dimension.large",
+              },
+              height: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@dimension.large",
+              },
+              corners: {
+                topLeft: {
+                  type: Sdn.ValueType.THEME_ORDINAL,
+                  value: "@corners.tight",
+                },
+                topRight: {
+                  type: Sdn.ValueType.THEME_ORDINAL,
+                  value: "@corners.tight",
+                },
+                bottomLeft: {
+                  type: Sdn.ValueType.THEME_ORDINAL,
+                  value: "@corners.tight",
+                },
+                bottomRight: {
+                  type: Sdn.ValueType.THEME_ORDINAL,
+                  value: "@corners.tight",
+                },
+              },
+            },
+          },
+          {
+            component: Seldon.ComponentId.TEXTBLOCK_AVATAR,
+          },
+        ],
       },
       {
         component: Seldon.ComponentId.BUTTON,

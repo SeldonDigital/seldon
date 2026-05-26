@@ -16,14 +16,6 @@ import {
   schema as avatarSchema,
 } from "./elements/avatars/Avatar.schema"
 import {
-  exportConfig as avatarIconExportConfig,
-  schema as avatarIconSchema,
-} from "./elements/avatars/AvatarIcon.schema"
-import {
-  exportConfig as avatarProductExportConfig,
-  schema as avatarProductSchema,
-} from "./elements/avatars/AvatarProduct.schema"
-import {
   exportConfig as buttonExportConfig,
   schema as buttonSchema,
 } from "./elements/buttons/Button.schema"
@@ -417,8 +409,6 @@ import {
 
 const elements: ComponentSchema[] = [
   avatarSchema,
-  avatarIconSchema,
-  avatarProductSchema,
   buttonSchema,
   chipSchema,
   chipCountSchema,
@@ -569,8 +559,6 @@ export function getComponentSchema(id: ComponentId): ComponentSchema {
 const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   // Elements
   [ComponentId.AVATAR]: avatarExportConfig,
-  [ComponentId.AVATAR_ICON]: avatarIconExportConfig,
-  [ComponentId.AVATAR_PRODUCT]: avatarProductExportConfig,
   [ComponentId.BUTTON]: buttonExportConfig,
   [ComponentId.CHIP]: chipExportConfig,
   [ComponentId.CHIP_COUNT]: chipCountExportConfig,

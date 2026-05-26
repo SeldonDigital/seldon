@@ -495,6 +495,69 @@ export const schema = {
       },
     ],
   },
+  variants: [
+    {
+      id: "icon",
+      label: "Iconic Avatar",
+      intent:
+        "Renders an icon-based avatar for representing users, roles, or statuses.",
+      overrides: {
+        gap: {
+          type: Sdn.ValueType.THEME_ORDINAL,
+          value: "@gap.compact",
+        },
+      },
+      children: [
+        {
+          component: Seldon.ComponentId.ICON,
+        },
+        {
+          component: Seldon.ComponentId.TEXTBLOCK_AVATAR,
+        },
+      ],
+    },
+    {
+      id: "product",
+      label: "Product Avatar",
+      intent: "Represents products or items visually using an image or icon.",
+      children: [
+        {
+          component: Seldon.ComponentId.IMAGE,
+          overrides: {
+            width: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@dimension.large",
+            },
+            height: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@dimension.large",
+            },
+            corners: {
+              topLeft: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@corners.tight",
+              },
+              topRight: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@corners.tight",
+              },
+              bottomLeft: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@corners.tight",
+              },
+              bottomRight: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@corners.tight",
+              },
+            },
+          },
+        },
+        {
+          component: Seldon.ComponentId.TEXTBLOCK_AVATAR,
+        },
+      ],
+    },
+  ],
 } as const satisfies ComponentSchema
 
 export const exportConfig: ComponentExport = {

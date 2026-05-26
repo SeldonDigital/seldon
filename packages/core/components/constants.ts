@@ -10,8 +10,6 @@ export enum ComponentId {
   AD_IAB = "adIab",
   AD_SOCIAL_MEDIA = "adSocialMedia",
   AVATAR = "avatar",
-  AVATAR_ICON = "avatarIcon",
-  AVATAR_PRODUCT = "avatarProduct",
   BAR_BUTTONS = "barButtons",
   BAR_FOOTER = "barFooter",
   BAR_HEADER = "barHeader",

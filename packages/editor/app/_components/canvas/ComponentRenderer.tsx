@@ -8,7 +8,6 @@ import {
   InstanceId,
   Properties,
   VariantId,
-  ValueType,
   invariant,
 } from "@seldon/core"
 import { WrapperElement } from "@seldon/core/properties"
@@ -142,20 +141,30 @@ export const ComponentRenderer = ({
   }
 
   const Component = getComponent(componentId, properties, renderAsDiv)
+  const isVoidPrimitive = isVoidComponent(componentId, renderAsDiv)
 
   return (
     <>
       <CssPortal>
         <style data-seldon-style-for={className}>{css}</style>
       </CssPortal>
-      {/* @ts-expect-error - Component can be any valid component */}
-      <Component
-        className={className}
-        {...htmlAttributes}
-        style={Object.assign({}, htmlAttributes?.style, styleOverrides)}
-      >
-        {renderChildren()}
-      </Component>
+      {isVoidPrimitive ? (
+        /* @ts-expect-error - Component can be any valid component */
+        <Component
+          className={className}
+          {...htmlAttributes}
+          style={Object.assign({}, htmlAttributes?.style, styleOverrides)}
+        />
+      ) : (
+        /* @ts-expect-error - Component can be any valid component */
+        <Component
+          className={className}
+          {...htmlAttributes}
+          style={Object.assign({}, htmlAttributes?.style, styleOverrides)}
+        >
+          {renderChildren()}
+        </Component>
+      )}
     </>
   )
 
@@ -197,9 +206,7 @@ function getComponent(
   if (config.react.returns === "wrapperElement") {
     const raw = properties.wrapperElement?.value
     const tag =
-      raw &&
-      typeof raw === "string" &&
-      properties.wrapperElement?.type !== ValueType.EMPTY
+      typeof raw === "string" && raw.length > 0
         ? raw
         : WrapperElement.DIV
     const item = Object.entries(NATIVE_REACT_PRIMITIVES).find(
@@ -238,6 +245,33 @@ function getComponent(
     `Could not find a native primitive for component ${componentId}`,
   )
   return primitive
+}
+
+const VOID_NATIVE_REACT_PRIMITIVES = new Set<NativeReactPrimitive>([
+  "HTMLHr",
+  "HTMLImg",
+  "HTMLInput",
+  "HTMLSource",
+  "HTMLTrack",
+])
+
+function isVoidComponent(
+  componentId: ComponentId,
+  renderAsDiv = false,
+): boolean {
+  if (renderAsDiv) {
+    return false
+  }
+
+  const config = getComponentExportConfig(componentId)
+
+  return (
+    config.react.returns !== "Frame" &&
+    config.react.returns !== "wrapperElement" &&
+    config.react.returns !== "htmlElement" &&
+    config.react.returns !== "iconMap" &&
+    VOID_NATIVE_REACT_PRIMITIVES.has(config.react.returns)
+  )
 }
 
 export const PRIMITIVES: Record<

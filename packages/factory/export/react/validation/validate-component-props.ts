@@ -183,9 +183,6 @@ export function getComponentIdFromName(
     InputDropdown: ComponentId.INPUT_DROPDOWN,
     InputSearch: ComponentId.INPUT_SEARCH,
     InputText: ComponentId.INPUT_TEXT,
-    // Avatar variations
-    AvatarIcon: ComponentId.AVATAR_ICON,
-    AvatarProduct: ComponentId.AVATAR_PRODUCT,
     // List variations
     ListItem: ComponentId.LIST_ITEM,
     ListStandard: ComponentId.LIST_STANDARD,
