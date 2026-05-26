@@ -13,11 +13,11 @@ import { ComponentExport, ComponentSchema } from "./types"
 import {
   exportConfig as avatarExportConfig,
   schema as avatarSchema,
-} from "./elements/avatars/Avatar.schema"
+} from "./elements/Avatar.schema"
 import {
   exportConfig as buttonExportConfig,
   schema as buttonSchema,
-} from "./elements/buttons/Button.schema"
+} from "./elements/Button.schema"
 import {
   exportConfig as chipExportConfig,
   schema as chipSchema,

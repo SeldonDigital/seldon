@@ -229,7 +229,7 @@ When placing or pasting a component from another workspace, the rules are:
     "componentTheme": "seldonTheme",
     "componentProperties": { /* ... properties */ },
     "variants": [
-      { /* Default button variant. Based on: core/components/elements/buttons/Button.schema.ts */
+      { /* Default button variant. Based on: core/components/elements/Button.schema.ts */
         "id": "component-button-default",
         "children": [
           { "id": "component-icon-default" },
