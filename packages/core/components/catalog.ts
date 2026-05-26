@@ -59,9 +59,9 @@ import {
   schema as headerCardSchema,
 } from "./elements/headers/HeaderCard.schema"
 import {
-  exportConfig as listItemStandardExportConfig,
-  schema as listItemStandardSchema,
-} from "./elements/ListItemStandard.schema"
+  exportConfig as itemExportConfig,
+  schema as itemSchema,
+} from "./elements/Item.schema"
 import {
   exportConfig as sectionBrandExportConfig,
   schema as sectionBrandSchema,
@@ -391,7 +391,7 @@ const elements: ComponentSchema[] = [
   optionGroupSchema,
   headerActionSchema,
   headerCardSchema,
-  listItemStandardSchema,
+  itemSchema,
   sectionBrandSchema,
   sectionLegalSchema,
   sectionNavSchema,
@@ -534,7 +534,7 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   [ComponentId.OPTION_GROUP]: optionGroupExportConfig,
   [ComponentId.HEADER_ACTION]: headerActionExportConfig,
   [ComponentId.HEADER_CARD]: headerCardExportConfig,
-  [ComponentId.LIST_ITEM_STANDARD]: listItemStandardExportConfig,
+  [ComponentId.ITEM]: itemExportConfig,
   [ComponentId.SECTION_BRAND]: sectionBrandExportConfig,
   [ComponentId.SECTION_LEGAL]: sectionLegalExportConfig,
   [ComponentId.SECTION_NAV]: sectionNavExportConfig,

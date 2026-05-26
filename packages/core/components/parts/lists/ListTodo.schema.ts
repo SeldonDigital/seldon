@@ -368,7 +368,7 @@ export const schema = {
   default: {
     children: [
       {
-        component: Seldon.ComponentId.LIST_ITEM_STANDARD,
+        component: Seldon.ComponentId.ITEM,
         variant: "todo",
         overrides: {
           border: {
@@ -619,7 +619,7 @@ export const schema = {
         ],
       },
       {
-        component: Seldon.ComponentId.LIST_ITEM_STANDARD,
+        component: Seldon.ComponentId.ITEM,
         variant: "todo",
         overrides: {
           border: {
@@ -874,7 +874,7 @@ export const schema = {
         ],
       },
       {
-        component: Seldon.ComponentId.LIST_ITEM_STANDARD,
+        component: Seldon.ComponentId.ITEM,
         variant: "todo",
         overrides: {
           border: {
@@ -1165,7 +1165,7 @@ export const schema = {
         ],
       },
       {
-        component: Seldon.ComponentId.LIST_ITEM_STANDARD,
+        component: Seldon.ComponentId.ITEM,
         variant: "todo",
         overrides: {
           border: {

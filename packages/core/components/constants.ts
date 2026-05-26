@@ -60,7 +60,7 @@ export enum ComponentId {
   LIST_CONTACTS = "listContacts",
   LIST_GRID = "listGrid",
   LIST_ITEM = "listItem",
-  LIST_ITEM_STANDARD = "listItemStandard",
+  ITEM = "item",
   LIST_PRODUCTS = "listProducts",
   LIST_STANDARD = "listStandard",
   LIST_TODO = "listTodo",

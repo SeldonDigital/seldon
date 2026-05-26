@@ -3,8 +3,8 @@ import * as Seldon from "../constants"
 import { ComponentExport, ComponentSchema } from "../types"
 
 export const schema = {
-  name: "List Items",
-  id: Seldon.ComponentId.LIST_ITEM_STANDARD,
+  name: "Item",
+  id: Seldon.ComponentId.ITEM,
   intent: "Default list item used for general content with flexible layout.",
   tags: [
     "list",
@@ -396,44 +396,6 @@ export const schema = {
     ],
   },
   variants: [
-    {
-      id: "general",
-      label: "Simple List Item",
-      intent: "Basic list item with optional title, subtitle, and accessory.",
-      overrides: {
-        width: {
-          type: Sdn.ValueType.OPTION,
-          value: Sdn.Resize.FIT,
-        },
-        wrapChildren: {
-          type: Sdn.ValueType.EXACT,
-          value: false,
-        },
-      },
-      children: [
-        {
-          component: Seldon.ComponentId.AVATAR,
-          overrides: {
-            width: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FILL,
-            },
-            gap: {
-              type: Sdn.ValueType.THEME_ORDINAL,
-              value: "@gap.compact",
-            },
-          },
-          children: [
-            {
-              component: Seldon.ComponentId.ICON,
-            },
-            {
-              component: Seldon.ComponentId.TEXTBLOCK_AVATAR,
-            },
-          ],
-        },
-      ],
-    },
     {
       id: "avatar",
       label: "Avatar Item",
