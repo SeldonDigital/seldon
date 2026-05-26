@@ -21,11 +21,12 @@ interface BaseComponentSchema {
   tags: string[]
 }
 
-// A child entry inside a SchemaTree. `overrides` is the only authoring surface for child-level differences against the
-// child component's schema defaults. `children` carries inner-tree composition without the default/variant tagging that
-// only applies at the top level.
+// A child entry inside a SchemaTree. `variant` selects a named child schema variant when present. `overrides` and
+// nested `children` layer on top of the selected child baseline. `children` carries inner-tree composition without the
+// default/variant tagging that only applies at the top level.
 export interface SchemaChild {
   component: ComponentId
+  variant?: string
   overrides?: Properties
   children?: SchemaChild[]
 }

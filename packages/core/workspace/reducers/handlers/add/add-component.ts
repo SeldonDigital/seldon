@@ -6,8 +6,8 @@
 import { produce } from "immer"
 import { getInitialBoardComponentProperties } from "../../../helpers/components/get-initial-board-component-properties"
 import { getComponentSchema } from "../../../../components/catalog"
-import { ComponentId } from "../../../../components/constants"
-import { ComponentSchema, SchemaChild, isComplexSchema } from "../../../../components/types"
+import { ComponentId, isComponentId } from "../../../../components/constants"
+import { SchemaChild, isComplexSchema } from "../../../../components/types"
 import { mergeProperties } from "../../../../properties/helpers/merge-properties"
 import { ExtractPayload, Properties, Workspace, invariant } from "../../../../index"
 import { rules } from "../../../../rules/config/rules.config"
@@ -18,9 +18,11 @@ import {
   componentBoardUniqueNodeId,
 } from "../../../helpers/components/entry-node-ids"
 import { getWorkspaceNodes } from "../../../helpers/general/get-workspace-nodes"
+import { getNodeCatalogId } from "../../../helpers/nodes/get-node-catalog-id"
 import { getComponentDescendantIds } from "../../../helpers/nodes/get-descendant-ids"
+import { resolveSchemaChild } from "../../../helpers/nodes/resolve-schema-child"
 import { WORKSPACE_EDITABLE_THEME_ENTRY_ID } from "../../../helpers/themes/workspace-editable-theme"
-import { formatNodeCatalog, formatNodeLink, parseNodeCatalog } from "../../../model/template-ref"
+import { formatNodeCatalog, formatNodeLink } from "../../../model/template-ref"
 import type { ValidationOptions } from "../../helpers/validation"
 import type { ComponentBoard, ComponentTreeRef, EntryNode } from "../../../types"
 import {
@@ -65,11 +67,14 @@ function nodeRegisterFromComponentBoard(
   function walkRef(ref: ComponentTreeRef): NodeRegister {
     const node = nodes[ref.id]
     invariant(node, `Missing node ${ref.id}`)
-    const cat = parseNodeCatalog(node.template)
-    invariant(cat, `Expected catalog template on ${ref.id}`)
+    const catalogId = getNodeCatalogId(node, workspace)
+    invariant(
+      catalogId && isComponentId(catalogId),
+      `Expected catalog template on ${ref.id}`,
+    )
     const reg: NodeRegister = {
       id: ref.id,
-      component: cat.componentId as ComponentId,
+      component: catalogId,
     }
     if (ref.children?.length) {
       reg.children = ref.children.map(walkRef)
@@ -97,12 +102,13 @@ function instantiateSchemaChildrenFromSlots(
     registerToWriteTo: NodeRegister,
     slot: SchemaChild,
   ): void {
+    const resolvedChild = resolveSchemaChild(slot)
+
     invariant(
-      registry[slot.component],
-      `Register for ${slot.component} not found`,
+      registry[resolvedChild.componentId],
+      `Register for ${resolvedChild.componentId} not found`,
     )
-    const registerToReadFrom = registry[slot.component]!
-    const childSchema = getComponentSchema(slot.component)
+    const childSchema = resolvedChild.schema
     const id = componentBoardUniqueNodeId(childSchema.id)
     const processedOverrides = mergeProperties({}, slot.overrides ?? {})
 
@@ -110,9 +116,9 @@ function instantiateSchemaChildrenFromSlots(
       id,
       type: "instance",
       level: childSchema.level as EntryNode["level"],
-      label: childSchema.name,
+      label: resolvedChild.label,
       theme: null,
-      template: formatNodeLink(registerToReadFrom.id),
+      template: formatNodeLink(resolvedChild.templateNodeId),
       overrides: processedOverrides as EntryNode["overrides"],
       __editor: { initialOverrides: structuredClone(processedOverrides) },
     }
@@ -127,9 +133,7 @@ function instantiateSchemaChildrenFromSlots(
 
     const childSlots: SchemaChild[] = slot.children?.length
       ? slot.children
-      : isComplexSchema(childSchema) && childSchema.default.children?.length
-        ? childSchema.default.children
-        : []
+      : resolvedChild.fallbackChildren
 
     childSlots.forEach((childSlot) => instantiateFromSlot(newChild, childSlot))
   }

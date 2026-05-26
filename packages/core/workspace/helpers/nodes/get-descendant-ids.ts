@@ -1,10 +1,11 @@
 import { getComponentSchema } from "../../../components/catalog"
 import { ComponentId } from "../../../components/constants"
 import {
-  Component,
   ComponentSchema,
+  SchemaChild,
   isComplexSchema,
 } from "../../../components/types"
+import { resolveSchemaChild } from "./resolve-schema-child"
 
 /**
  * Recursively collects all descendant component IDs from a component's schema.
@@ -13,20 +14,20 @@ import {
  * @returns Array of component IDs with parents before children
  */
 function getCompositionChildren(
-  component: ComponentSchema | Component,
-): Component[] {
-  const slots: Component[] = []
-
-  if ("children" in component && component.children?.length) {
-    slots.push(...component.children)
+  component: ComponentSchema | SchemaChild,
+): SchemaChild[] {
+  if (!("id" in component) && component.children?.length) {
+    return component.children
   }
 
-  const componentKey = (
-    "id" in component ? component.id : component.component
-  ) as ComponentId
-  const schema = getComponentSchema(componentKey)
+  if ("id" in component) {
+    const schema = getComponentSchema(component.id as ComponentId)
+    const slots: SchemaChild[] = []
 
-  if ("id" in component && isComplexSchema(schema)) {
+    if (!isComplexSchema(schema)) {
+      return slots
+    }
+
     if (schema.default.children?.length) {
       slots.push(...schema.default.children)
     }
@@ -38,17 +39,7 @@ function getCompositionChildren(
     return slots
   }
 
-  if (isComplexSchema(schema) && schema.default.children?.length) {
-    const seen = new Set(slots.map((slot) => slot.component))
-    for (const defaultSlot of schema.default.children) {
-      if (!seen.has(defaultSlot.component)) {
-        slots.push(defaultSlot)
-        seen.add(defaultSlot.component)
-      }
-    }
-  }
-
-  return slots
+  return resolveSchemaChild(component).fallbackChildren
 }
 
 export function getComponentDescendantIds(
@@ -60,7 +51,7 @@ export function getComponentDescendantIds(
 
   addIdsForComponent(schema)
 
-  function addIdsForComponent(component: ComponentSchema | Component) {
+  function addIdsForComponent(component: ComponentSchema | SchemaChild) {
     const id = ("id" in component ? component.id : component.component) as ComponentId
 
     if (seenIds.has(id)) {

@@ -6,6 +6,7 @@ import { getNodeCatalogId } from "../../../helpers/nodes/get-node-catalog-id"
 import { isEntryNodeForRules } from "../../../helpers/rules/rules-node-subject"
 import type { EntryNode } from "../../../model/entry-node"
 import { isEntryNodeVariant } from "../../../model/entry-node"
+import { parseNodeLink } from "../../../model/template-ref"
 import {
   nodeRetrievalService,
   nodeTraversalService,
@@ -19,6 +20,13 @@ import {
 
 function defaultLabelForNode(node: EntryNode, workspace: Workspace): string {
   if (isEntryNodeVariant(node)) return "Custom"
+  const linkedTemplate = parseNodeLink(node.template)
+  if (linkedTemplate?.kind === "node") {
+    const templateNode = workspace.nodes[linkedTemplate.nodeId]
+    if (templateNode?.label) {
+      return templateNode.label
+    }
+  }
   const catalogId = getNodeCatalogId(node, workspace)
   if (catalogId && isComponentId(catalogId)) {
     try {

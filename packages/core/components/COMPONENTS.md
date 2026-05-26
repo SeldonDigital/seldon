@@ -74,6 +74,7 @@ interface SchemaVariant extends SchemaTree {
 
 interface SchemaChild {
   component: ComponentId
+  variant?: string
   overrides?: Properties
   children?: SchemaChild[]
 }
@@ -208,6 +209,8 @@ Complex components are created by listing other components inside `default.child
 
 When the parent wants the child to start with values different from its schema defaults, it adds an `overrides` block on the child entry. Anything listed in `overrides` is matched against the target schema's properties and supplied as the starting value. Anything left out uses the child schema's default. Properties that are not declared in the child's schema cannot be overridden — they are simply not part of that component's vocabulary.
 
+A child entry may also set `variant: "..."` to use a named variant from the referenced child schema as its baseline. If `variant` is omitted, the child uses the referenced schema's `default` tree. If `variant` is present, it must match a `SchemaVariant.id` on the referenced child schema or instantiation throws an error. If a child entry also defines `children`, those nested entries override the selected baseline tree for that child.
+
 Children can themselves have children. There is no special syntax for reaching further down: nest another `children` entry on a `SchemaChild`.
 
 A complex schema always declares its canonical tree under `default`:
@@ -217,6 +220,7 @@ A complex schema always declares its canonical tree under `default`:
     children: [
       {
         component: Seldon.ComponentId.BUTTON,
+        variant: "social",
         overrides: {
           display: { type: Sdn.ValueType.OPTION, value: Sdn.Display.SHOW },
           background: [
