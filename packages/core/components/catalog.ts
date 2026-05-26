@@ -23,10 +23,6 @@ import {
   schema as chipSchema,
 } from "./elements/chips/Chip.schema"
 import {
-  exportConfig as chipCountExportConfig,
-  schema as chipCountSchema,
-} from "./elements/chips/ChipCount.schema"
-import {
   exportConfig as inputCheckboxExportConfig,
   schema as inputCheckboxSchema,
 } from "./elements/forms/InputCheckbox.schema"
@@ -410,7 +406,6 @@ const elements: ComponentSchema[] = [
   avatarSchema,
   buttonSchema,
   chipSchema,
-  chipCountSchema,
   inputCheckboxSchema,
   inputDropdownSchema,
   inputIconicSchema,
@@ -560,7 +555,6 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   [ComponentId.AVATAR]: avatarExportConfig,
   [ComponentId.BUTTON]: buttonExportConfig,
   [ComponentId.CHIP]: chipExportConfig,
-  [ComponentId.CHIP_COUNT]: chipCountExportConfig,
   [ComponentId.INPUT_CHECKBOX]: inputCheckboxExportConfig,
   [ComponentId.INPUT_DROPDOWN]: inputDropdownExportConfig,
   [ComponentId.INPUT_ICONIC]: inputIconicExportConfig,
