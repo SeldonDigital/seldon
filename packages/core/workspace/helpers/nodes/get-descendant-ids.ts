@@ -13,33 +13,42 @@ import { resolveSchemaChild } from "./resolve-schema-child"
  * @param componentId - The root component ID to traverse
  * @returns Array of component IDs with parents before children
  */
-function getCompositionChildren(
-  component: ComponentSchema | SchemaChild,
-): SchemaChild[] {
-  if (!("id" in component) && component.children?.length) {
-    return component.children
-  }
+function getSchemaCompositionChildren(schema: ComponentSchema): SchemaChild[] {
+  const slots: SchemaChild[] = []
 
-  if ("id" in component) {
-    const schema = getComponentSchema(component.id as ComponentId)
-    const slots: SchemaChild[] = []
-
-    if (!isComplexSchema(schema)) {
-      return slots
-    }
-
-    if (schema.default.children?.length) {
-      slots.push(...schema.default.children)
-    }
-    for (const variant of schema.variants ?? []) {
-      if (variant.children?.length) {
-        slots.push(...variant.children)
-      }
-    }
+  if (!isComplexSchema(schema)) {
     return slots
   }
 
-  return resolveSchemaChild(component).fallbackChildren
+  if (schema.default.children?.length) {
+    slots.push(...schema.default.children)
+  }
+  for (const variant of schema.variants ?? []) {
+    if (variant.children?.length) {
+      slots.push(...variant.children)
+    }
+  }
+
+  return slots
+}
+
+function getCompositionChildren(
+  component: ComponentSchema | SchemaChild,
+): SchemaChild[] {
+  if ("id" in component) {
+    return getSchemaCompositionChildren(
+      getComponentSchema(component.id as ComponentId),
+    )
+  }
+
+  const schemaChildren = getSchemaCompositionChildren(
+    getComponentSchema(component.component),
+  )
+  const slotChildren = component.children?.length
+    ? component.children
+    : resolveSchemaChild(component).fallbackChildren
+
+  return [...schemaChildren, ...slotChildren]
 }
 
 export function getComponentDescendantIds(
@@ -49,25 +58,32 @@ export function getComponentDescendantIds(
   const seenIds = new Set<ComponentId>()
   const schema = getComponentSchema(componentId)
 
-  addIdsForComponent(schema)
+  addIdsForComponent(schema, new Set<ComponentId>())
 
-  function addIdsForComponent(component: ComponentSchema | SchemaChild) {
+  function addIdsForComponent(
+    component: ComponentSchema | SchemaChild,
+    visitingIds: Set<ComponentId>,
+  ) {
     const id = ("id" in component ? component.id : component.component) as ComponentId
 
     if (seenIds.has(id)) {
-      const index = componentIds.indexOf(id)
-      if (index > -1) {
-        componentIds.splice(index, 1)
-      }
+      return
     }
 
-    componentIds.push(id)
-    seenIds.add(id)
+    if (visitingIds.has(id)) {
+      return
+    }
+
+    visitingIds.add(id)
 
     getCompositionChildren(component).forEach((child) =>
-      addIdsForComponent(child),
+      addIdsForComponent(child, visitingIds),
     )
+
+    visitingIds.delete(id)
+    componentIds.push(id)
+    seenIds.add(id)
   }
 
-  return componentIds
+  return componentIds.reverse()
 }
