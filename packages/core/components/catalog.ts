@@ -21,7 +21,7 @@ import {
 import {
   exportConfig as chipExportConfig,
   schema as chipSchema,
-} from "./elements/chips/Chip.schema"
+} from "./elements/Chip.schema"
 import {
   exportConfig as inputCheckboxExportConfig,
   schema as inputCheckboxSchema,
@@ -59,33 +59,9 @@ import {
   schema as headerCardSchema,
 } from "./elements/headers/HeaderCard.schema"
 import {
-  exportConfig as listItemAvatarExportConfig,
-  schema as listItemAvatarSchema,
-} from "./elements/list-items/ListItemAvatar.schema"
-import {
-  exportConfig as listItemGeneralExportConfig,
-  schema as listItemGeneralSchema,
-} from "./elements/list-items/ListItemGeneral.schema"
-import {
-  exportConfig as listItemInputExportConfig,
-  schema as listItemInputSchema,
-} from "./elements/list-items/ListItemInput.schema"
-import {
-  exportConfig as listItemProductExportConfig,
-  schema as listItemProductSchema,
-} from "./elements/list-items/ListItemProduct.schema"
-import {
   exportConfig as listItemStandardExportConfig,
   schema as listItemStandardSchema,
-} from "./elements/list-items/ListItemStandard.schema"
-import {
-  exportConfig as listItemTodoExportConfig,
-  schema as listItemTodoSchema,
-} from "./elements/list-items/ListItemTodo.schema"
-import {
-  exportConfig as listItemTreeExportConfig,
-  schema as listItemTreeSchema,
-} from "./elements/list-items/ListItemTree.schema"
+} from "./elements/ListItemStandard.schema"
 import {
   exportConfig as sectionBrandExportConfig,
   schema as sectionBrandSchema,
@@ -415,13 +391,7 @@ const elements: ComponentSchema[] = [
   optionGroupSchema,
   headerActionSchema,
   headerCardSchema,
-  listItemAvatarSchema,
-  listItemGeneralSchema,
-  listItemInputSchema,
-  listItemProductSchema,
   listItemStandardSchema,
-  listItemTodoSchema,
-  listItemTreeSchema,
   sectionBrandSchema,
   sectionLegalSchema,
   sectionNavSchema,
@@ -564,13 +534,7 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   [ComponentId.OPTION_GROUP]: optionGroupExportConfig,
   [ComponentId.HEADER_ACTION]: headerActionExportConfig,
   [ComponentId.HEADER_CARD]: headerCardExportConfig,
-  [ComponentId.LIST_ITEM_AVATAR]: listItemAvatarExportConfig,
-  [ComponentId.LIST_ITEM_GENERAL]: listItemGeneralExportConfig,
-  [ComponentId.LIST_ITEM_INPUT]: listItemInputExportConfig,
-  [ComponentId.LIST_ITEM_PRODUCT]: listItemProductExportConfig,
   [ComponentId.LIST_ITEM_STANDARD]: listItemStandardExportConfig,
-  [ComponentId.LIST_ITEM_TODO]: listItemTodoExportConfig,
-  [ComponentId.LIST_ITEM_TREE]: listItemTreeExportConfig,
   [ComponentId.SECTION_BRAND]: sectionBrandExportConfig,
   [ComponentId.SECTION_LEGAL]: sectionLegalExportConfig,
   [ComponentId.SECTION_NAV]: sectionNavExportConfig,

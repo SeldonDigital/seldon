@@ -368,7 +368,8 @@ export const schema = {
   default: {
     children: [
       {
-        component: Seldon.ComponentId.LIST_ITEM_AVATAR,
+        component: Seldon.ComponentId.LIST_ITEM_STANDARD,
+        variant: "avatar",
         overrides: {
           border: {
             preset: {
@@ -526,7 +527,8 @@ export const schema = {
         },
       },
       {
-        component: Seldon.ComponentId.LIST_ITEM_AVATAR,
+        component: Seldon.ComponentId.LIST_ITEM_STANDARD,
+        variant: "avatar",
         overrides: {
           border: {
             preset: {
@@ -684,7 +686,8 @@ export const schema = {
         },
       },
       {
-        component: Seldon.ComponentId.LIST_ITEM_AVATAR,
+        component: Seldon.ComponentId.LIST_ITEM_STANDARD,
+        variant: "avatar",
         overrides: {
           border: {
             preset: {
@@ -842,7 +845,8 @@ export const schema = {
         },
       },
       {
-        component: Seldon.ComponentId.LIST_ITEM_AVATAR,
+        component: Seldon.ComponentId.LIST_ITEM_STANDARD,
+        variant: "avatar",
         overrides: {
           border: {
             preset: {
@@ -1000,7 +1004,8 @@ export const schema = {
         },
       },
       {
-        component: Seldon.ComponentId.LIST_ITEM_AVATAR,
+        component: Seldon.ComponentId.LIST_ITEM_STANDARD,
+        variant: "avatar",
       },
     ],
   },

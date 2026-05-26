@@ -368,7 +368,8 @@ export const schema = {
   default: {
     children: [
       {
-        component: Seldon.ComponentId.LIST_ITEM_TODO,
+        component: Seldon.ComponentId.LIST_ITEM_STANDARD,
+        variant: "todo",
         overrides: {
           border: {
             preset: {
@@ -618,7 +619,8 @@ export const schema = {
         ],
       },
       {
-        component: Seldon.ComponentId.LIST_ITEM_TODO,
+        component: Seldon.ComponentId.LIST_ITEM_STANDARD,
+        variant: "todo",
         overrides: {
           border: {
             preset: {
@@ -872,7 +874,8 @@ export const schema = {
         ],
       },
       {
-        component: Seldon.ComponentId.LIST_ITEM_TODO,
+        component: Seldon.ComponentId.LIST_ITEM_STANDARD,
+        variant: "todo",
         overrides: {
           border: {
             preset: {
@@ -1162,7 +1165,8 @@ export const schema = {
         ],
       },
       {
-        component: Seldon.ComponentId.LIST_ITEM_TODO,
+        component: Seldon.ComponentId.LIST_ITEM_STANDARD,
+        variant: "todo",
         overrides: {
           border: {
             preset: {
