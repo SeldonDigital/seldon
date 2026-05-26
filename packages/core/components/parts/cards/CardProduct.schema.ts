@@ -416,8 +416,16 @@ export const schema = {
   default: {
     children: [
       {
-        component: Seldon.ComponentId.TEXTBLOCK_DETAILS,
+        component: Seldon.ComponentId.FRAME,
         overrides: {
+          height: {
+            type: Sdn.ValueType.OPTION,
+            value: Sdn.Resize.FIT,
+          },
+          gap: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@gap.tight",
+          },
           margin: {
             top: {
               type: Sdn.ValueType.THEME_ORDINAL,
@@ -437,6 +445,72 @@ export const schema = {
             },
           },
         },
+        children: [
+          {
+            component: Seldon.ComponentId.TAGLINE,
+            overrides: {
+              content: {
+                type: Sdn.ValueType.EXACT,
+                value: "Tagline",
+              },
+            },
+          },
+          {
+            component: Seldon.ComponentId.TITLE,
+            overrides: {
+              content: {
+                type: Sdn.ValueType.EXACT,
+                value: "Product Card Title",
+              },
+              margin: {
+                bottom: {
+                  type: Sdn.ValueType.THEME_ORDINAL,
+                  value: "@margin.compact",
+                },
+              },
+              font: {
+                preset: {
+                  type: Sdn.ValueType.THEME_CATEGORICAL,
+                  value: "@font.heading",
+                },
+                family: {
+                  type: Sdn.ValueType.EMPTY,
+                  value: null,
+                },
+                style: {
+                  type: Sdn.ValueType.EMPTY,
+                  value: null,
+                },
+                weight: {
+                  type: Sdn.ValueType.EMPTY,
+                  value: null,
+                },
+                size: {
+                  type: Sdn.ValueType.EMPTY,
+                  value: null,
+                },
+                lineHeight: {
+                  type: Sdn.ValueType.EMPTY,
+                  value: null,
+                },
+                textCase: {
+                  type: Sdn.ValueType.EMPTY,
+                  value: null,
+                },
+              },
+            },
+          },
+          {
+            component: Seldon.ComponentId.DESCRIPTION,
+            overrides: {
+              content: {
+                type: Sdn.ValueType.EXACT,
+                value:
+                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus.",
+              },
+            },
+          },
+        ],
       },
       {
         component: Seldon.ComponentId.BAR_BUTTONS,

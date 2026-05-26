@@ -376,13 +376,49 @@ export const schema = {
         },
       },
       {
-        component: Seldon.ComponentId.TEXTBLOCK_TITLE,
+        component: Seldon.ComponentId.FRAME,
         overrides: {
           width: {
             type: Sdn.ValueType.OPTION,
             value: Sdn.Resize.FILL,
           },
+          height: {
+            type: Sdn.ValueType.OPTION,
+            value: Sdn.Resize.FIT,
+          },
+          gap: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@gap.tight",
+          },
+          clip: {
+            type: Sdn.ValueType.EXACT,
+            value: true,
+          },
         },
+        children: [
+          {
+            component: Seldon.ComponentId.TITLE,
+            overrides: {
+              content: {
+                type: Sdn.ValueType.EXACT,
+                value: "Title",
+              },
+            },
+          },
+          {
+            component: Seldon.ComponentId.SUBTITLE,
+            overrides: {
+              content: {
+                type: Sdn.ValueType.EXACT,
+                value: "Subtitle",
+              },
+              lines: {
+                type: Sdn.ValueType.EXACT,
+                value: 3,
+              },
+            },
+          },
+        ],
       },
       {
         component: Seldon.ComponentId.BUTTON,
@@ -489,7 +525,105 @@ export const schema = {
               },
             },
             {
-              component: Seldon.ComponentId.TEXTBLOCK_AVATAR,
+              component: Seldon.ComponentId.FRAME,
+              overrides: {
+                height: {
+                  type: Sdn.ValueType.OPTION,
+                  value: Sdn.Resize.FIT,
+                },
+                gap: {
+                  type: Sdn.ValueType.THEME_ORDINAL,
+                  value: "@gap.tight",
+                },
+              },
+              children: [
+                {
+                  component: Seldon.ComponentId.TITLE,
+                  overrides: {
+                    content: {
+                      type: Sdn.ValueType.EXACT,
+                      value: "Default Title",
+                    },
+                    color: {
+                      type: Sdn.ValueType.THEME_CATEGORICAL,
+                      value: "@swatch.black",
+                    },
+                    font: {
+                      preset: {
+                        type: Sdn.ValueType.EMPTY,
+                        value: null,
+                      },
+                      family: {
+                        type: Sdn.ValueType.EMPTY,
+                        value: null,
+                      },
+                      style: {
+                        type: Sdn.ValueType.EMPTY,
+                        value: null,
+                      },
+                      weight: {
+                        type: Sdn.ValueType.EMPTY,
+                        value: null,
+                      },
+                      size: {
+                        type: Sdn.ValueType.THEME_ORDINAL,
+                        value: "@fontSize.medium",
+                      },
+                      lineHeight: {
+                        type: Sdn.ValueType.EMPTY,
+                        value: null,
+                      },
+                      textCase: {
+                        type: Sdn.ValueType.EMPTY,
+                        value: null,
+                      },
+                    },
+                  },
+                },
+                {
+                  component: Seldon.ComponentId.SUBTITLE,
+                  overrides: {
+                    content: {
+                      type: Sdn.ValueType.EXACT,
+                      value: "Details",
+                    },
+                    color: {
+                      type: Sdn.ValueType.THEME_CATEGORICAL,
+                      value: "@swatch.black",
+                    },
+                    font: {
+                      preset: {
+                        type: Sdn.ValueType.EMPTY,
+                        value: null,
+                      },
+                      family: {
+                        type: Sdn.ValueType.EMPTY,
+                        value: null,
+                      },
+                      style: {
+                        type: Sdn.ValueType.EMPTY,
+                        value: null,
+                      },
+                      weight: {
+                        type: Sdn.ValueType.EMPTY,
+                        value: null,
+                      },
+                      size: {
+                        type: Sdn.ValueType.THEME_ORDINAL,
+                        value: "@fontSize.small",
+                      },
+                      lineHeight: {
+                        type: Sdn.ValueType.EMPTY,
+                        value: null,
+                      },
+                      textCase: {
+                        type: Sdn.ValueType.EMPTY,
+                        value: null,
+                      },
+                    },
+                  },
+                },
+              ],
             },
           ],
         },

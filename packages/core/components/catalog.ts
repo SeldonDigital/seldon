@@ -70,26 +70,6 @@ import {
   exportConfig as tableRowDataExportConfig,
   schema as tableRowDataSchema,
 } from "./elements/tables/TableRowData.schema"
-import {
-  exportConfig as textblockExportConfig,
-  schema as textblockSchema,
-} from "./elements/textblocks/Textblock.schema"
-import {
-  exportConfig as textblockAvatarExportConfig,
-  schema as textblockAvatarSchema,
-} from "./elements/textblocks/TextblockAvatar.schema"
-import {
-  exportConfig as textblockDetailsExportConfig,
-  schema as textblockDetailsSchema,
-} from "./elements/textblocks/TextblockDetails.schema"
-import {
-  exportConfig as textblockHeaderExportConfig,
-  schema as textblockHeaderSchema,
-} from "./elements/textblocks/TextblockHeader.schema"
-import {
-  exportConfig as textblockTitleExportConfig,
-  schema as textblockTitleSchema,
-} from "./elements/textblocks/TextblockTitle.schema"
 
 // Frames
 import {
@@ -378,11 +358,6 @@ const elements: ComponentSchema[] = [
   itemSchema,
   sectionSchema,
   tableRowDataSchema,
-  textblockSchema,
-  textblockAvatarSchema,
-  textblockDetailsSchema,
-  textblockHeaderSchema,
-  textblockTitleSchema,
 ]
 
 const primitives: ComponentSchema[] = [
@@ -517,11 +492,6 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   [ComponentId.ITEM]: itemExportConfig,
   [ComponentId.SECTION]: sectionExportConfig,
   [ComponentId.TABLE_ROW_DATA]: tableRowDataExportConfig,
-  [ComponentId.TEXTBLOCK]: textblockExportConfig,
-  [ComponentId.TEXTBLOCK_AVATAR]: textblockAvatarExportConfig,
-  [ComponentId.TEXTBLOCK_DETAILS]: textblockDetailsExportConfig,
-  [ComponentId.TEXTBLOCK_HEADER]: textblockHeaderExportConfig,
-  [ComponentId.TEXTBLOCK_TITLE]: textblockTitleExportConfig,
 
   // Frames
   [ComponentId.FRAME]: frameExportConfig,

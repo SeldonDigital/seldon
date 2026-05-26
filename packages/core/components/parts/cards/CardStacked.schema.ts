@@ -496,8 +496,20 @@ export const schema = {
         },
       },
       {
-        component: Seldon.ComponentId.TEXTBLOCK_TITLE,
+        component: Seldon.ComponentId.FRAME,
         overrides: {
+          height: {
+            type: Sdn.ValueType.OPTION,
+            value: Sdn.Resize.FIT,
+          },
+          gap: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@gap.tight",
+          },
+          clip: {
+            type: Sdn.ValueType.EXACT,
+            value: true,
+          },
           margin: {
             top: {
               type: Sdn.ValueType.THEME_ORDINAL,
@@ -667,6 +679,30 @@ export const schema = {
             },
           },
         },
+        children: [
+          {
+            component: Seldon.ComponentId.TITLE,
+            overrides: {
+              content: {
+                type: Sdn.ValueType.EXACT,
+                value: "Title",
+              },
+            },
+          },
+          {
+            component: Seldon.ComponentId.SUBTITLE,
+            overrides: {
+              content: {
+                type: Sdn.ValueType.EXACT,
+                value: "Subtitle",
+              },
+              lines: {
+                type: Sdn.ValueType.EXACT,
+                value: 3,
+              },
+            },
+          },
+        ],
       },
       {
         component: Seldon.ComponentId.DESCRIPTION,

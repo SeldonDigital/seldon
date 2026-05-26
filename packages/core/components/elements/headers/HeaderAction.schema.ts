@@ -366,7 +366,7 @@ export const schema = {
   default: {
     children: [
       {
-        component: Seldon.ComponentId.TEXTBLOCK_HEADER,
+        component: Seldon.ComponentId.FRAME,
         overrides: {
           width: {
             type: Sdn.ValueType.EXACT,
@@ -375,6 +375,10 @@ export const schema = {
               value: 40,
             },
           },
+          height: {
+            type: Sdn.ValueType.OPTION,
+            value: Sdn.Resize.FIT,
+          },
           margin: {
             right: {
               type: Sdn.ValueType.THEME_ORDINAL,
@@ -382,6 +386,64 @@ export const schema = {
             },
           },
         },
+        children: [
+          {
+            component: Seldon.ComponentId.TITLE,
+            overrides: {
+              content: {
+                type: Sdn.ValueType.EXACT,
+                value: "Header Title",
+              },
+            },
+          },
+          {
+            component: Seldon.ComponentId.TEXT,
+            overrides: {
+              content: {
+                type: Sdn.ValueType.EXACT,
+                value: "Provide additional context or information.",
+              },
+              color: {
+                type: Sdn.ValueType.THEME_CATEGORICAL,
+                value: "@swatch.primary",
+              },
+              font: {
+                preset: {
+                  type: Sdn.ValueType.THEME_CATEGORICAL,
+                  value: "@font.tagline",
+                },
+                family: {
+                  type: Sdn.ValueType.EMPTY,
+                  value: null,
+                },
+                style: {
+                  type: Sdn.ValueType.EMPTY,
+                  value: null,
+                },
+                weight: {
+                  type: Sdn.ValueType.EMPTY,
+                  value: null,
+                },
+                size: {
+                  type: Sdn.ValueType.EMPTY,
+                  value: null,
+                },
+                lineHeight: {
+                  type: Sdn.ValueType.EMPTY,
+                  value: null,
+                },
+                textCase: {
+                  type: Sdn.ValueType.EMPTY,
+                  value: null,
+                },
+              },
+              lines: {
+                type: Sdn.ValueType.EXACT,
+                value: 2,
+              },
+            },
+          },
+        ],
       },
       {
         component: Seldon.ComponentId.FRAME,
