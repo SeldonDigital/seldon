@@ -4,7 +4,7 @@ Commercial use of this software is **not permitted** under the
 PolyForm Noncommercial License.
 
 To use this software in a commercial context (including SaaS, proprietary
-applications, or internal business systems), you must obtain a commercial
-license from [Your Company/Name].
+applications, internal business systems, or as training data for AI or LLMs), 
+you must obtain a commercial license from Seldon Digital, B.V.
 
-Contact: [your email or website link]
+Contact: admin@seldon.digital
