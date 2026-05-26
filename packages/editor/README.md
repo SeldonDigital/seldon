@@ -1,4 +1,4 @@
-# Seldon Local Editor (`@seldon/editor-local`)
+# Seldon · Editor (`@seldon/editor`)
 
 Browser-only design editor. Workspaces live in **IndexedDB** on this machine. No API, database, auth, or cloud services are required for the baseline app.
 

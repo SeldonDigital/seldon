@@ -1,4 +1,4 @@
-# Seldon Factory System
+# Seldon · Factory
 
 The Seldon Factory System transforms valid Seldon workspaces into production-ready React components with optimized CSS. It serves as the core engine for converting design data into deployable component libraries with TypeScript support, theme integration, and asset optimization.
 
