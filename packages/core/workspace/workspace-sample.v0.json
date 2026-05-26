@@ -19,7 +19,7 @@
       "author": "Imported",
       "intent": "",
       "tags": [],
-      "componentTheme": "seldon",
+      "componentTheme": "default",
       "componentProperties": {
         "background": {
           "color": {
@@ -166,7 +166,7 @@
       "author": "Imported",
       "intent": "",
       "tags": [],
-      "componentTheme": "seldon",
+      "componentTheme": "default",
       "componentProperties": {
         "background": {
           "color": {
@@ -269,7 +269,7 @@
       "author": "Imported",
       "intent": "",
       "tags": [],
-      "componentTheme": "seldon",
+      "componentTheme": "default",
       "componentProperties": {
         "background": {
           "color": {
@@ -307,7 +307,7 @@
       "author": "Imported",
       "intent": "",
       "tags": [],
-      "componentTheme": "seldon",
+      "componentTheme": "default",
       "componentProperties": {
         "gap": {
           "type": "theme.ordinal",
@@ -515,7 +515,7 @@
       "author": "Imported",
       "intent": "",
       "tags": [],
-      "componentTheme": "seldon",
+      "componentTheme": "default",
       "componentProperties": {
         "background": {
           "color": {
@@ -554,7 +554,7 @@
       "author": "Imported",
       "intent": "",
       "tags": [],
-      "componentTheme": "seldon",
+      "componentTheme": "default",
       "componentProperties": {
         "background": {
           "color": {
@@ -660,7 +660,7 @@
       "intent": "",
       "tags": [],
       "componentPreview": "seldonThemePreview",
-      "componentTheme": "seldon",
+      "componentTheme": "default",
       "componentProperties": {},
       "variants": [
         {

@@ -16,11 +16,11 @@
 export type ThemeTemplateId =
   | "default"
   | "earth"
+  | "highContrast"
   | "industrial"
   | "material"
   | "pop"
   | "royalAzure"
-  | "seldon"
   | "sky"
   | "sunsetBlue"
   | "wildberry"

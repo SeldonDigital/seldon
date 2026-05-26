@@ -1,9 +1,9 @@
-import seldonStock from "./seldon"
 import { computeTheme } from "../helpers/compute-theme"
 import type { ComputedTheme, StockTheme } from "../types/theme"
 import type { ThemeTemplateId } from "../types/theme-id"
 import defaultStock, { defaultTheme } from "./default"
 import earthStock from "./earth"
+import highContrastStock from "./high-contrast"
 import industrialStock from "./industrial"
 import materialStock from "./material"
 import popStock from "./pop"
@@ -16,11 +16,11 @@ import wildberryStock from "./wildberry"
 export const STOCK_THEMES: StockTheme[] = [
   defaultStock,
   earthStock,
+  highContrastStock,
   industrialStock,
   materialStock,
   popStock,
   royalAzureStock,
-  seldonStock,
   skyStock,
   sunsetBlueStock,
   wildberryStock,

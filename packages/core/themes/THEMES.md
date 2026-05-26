@@ -16,13 +16,13 @@ Stock themes ship with Seldon as starting points and reference implementations. 
 
 | Stock Theme ID | Description |
 | --- | --- |
-| `default` | Baseline theme for custom variants and stock theme authoring examples. |
+| `default` | Seldon brand theme used as the default stock preset. |
 | `earth` | Warm natural swatches with analogous harmony, humanist type tone, and comfortable scales. |
+| `highContrast` | Neutral high-contrast theme with simple typography and strong readability. |
 | `industrial` | Cool steel tones with monochromatic harmony, dense rhythm, and stronger weight choices. |
 | `material` | Vivid app-oriented theme inspired by Material-style type and spacing. |
 | `pop` | Expressive split-complementary theme with high contrast and punchy scales. |
 | `royalAzure` | Deep blue complementary theme with refined typography and stable scales. |
-| `seldon` | Seldon brand theme with tuned scales for Seldon interfaces. |
 | `sky` | Light complementary theme with airy contrast and open spacing. |
 | `sunsetBlue` | Warm-cool split-complementary theme with relaxed typography. |
 | `wildberry` | Rich square-harmony theme with saturated berry colors and bold styling. |
@@ -755,8 +755,8 @@ const invalidRef: BorderColorValue = {
 ```typescript
 // 10 packaged stock rows, plus the transitional singleton "custom"
 export type ThemeTemplateId =
-  | "default" | "earth" | "industrial" | "material" | "pop"
-  | "royalAzure" | "seldon" | "sky" | "sunsetBlue" | "wildberry"
+  | "default" | "earth" | "highContrast" | "industrial" | "material"
+  | "pop" | "royalAzure" | "sky" | "sunsetBlue" | "wildberry"
 
 export type ThemeInstanceId = ThemeTemplateId | "custom"
 ```

@@ -35,13 +35,13 @@ Each module exports one `StockTheme` as its default. `metadata.id` matches the f
 
 | Type or Function | File | Purpose and use |
 | --- | --- | --- |
-| default export | `default.ts` | Baseline stock theme. Also exports `defaultTheme` as a precomputed `ComputedTheme`. |
+| default export | `default.ts` | Default Seldon brand preset. Also exports `defaultTheme` as a precomputed `ComputedTheme`. |
 | default export | `earth.ts` | Warm natural preset. |
+| default export | `high-contrast.ts` | Neutral high-contrast preset. |
 | default export | `industrial.ts` | Cool dense preset. |
 | default export | `material.ts` | App-oriented vivid preset. |
 | default export | `pop.ts` | High-contrast expressive preset. |
 | default export | `royal-azure.ts` | Deep blue complementary preset. |
-| default export | `seldon.ts` | Seldon brand preset. |
 | default export | `sky.ts` | Light airy preset. |
 | default export | `sunset-blue.ts` | Warm-cool split preset. |
 | default export | `wildberry.ts` | Saturated square-harmony preset. |

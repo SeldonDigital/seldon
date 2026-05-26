@@ -15,11 +15,9 @@ import { Colorspace, Harmony, Ratio, StockTheme, TokenType } from "../types"
 const theme: StockTheme = {
   metadata: {
     id: "default",
-    name: "Clean",
-    description:
-      "A clean and versatile theme with a neutral color palette. It features a range of customizable typography, layout, and color options to suit various design needs.",
-    intent:
-      "To provide a modern and professional look with high contrast and readability, suitable for a wide range of applications.",
+    name: "Default",
+    description: "Theme for Seldon's Editor.",
+    intent: "Default theme for Seldon's Editor interface.",
   },
   core: {
     ratio: Ratio.MajorThird,
@@ -27,19 +25,19 @@ const theme: StockTheme = {
     size: 1,
   },
   color: {
-    baseColor: { hue: 0, saturation: 0, lightness: 0 }, // Base color for the swatches
+    baseColor: { hue: 203, saturation: 100, lightness: 62 }, // Seldon Blue
     harmony: Harmony.Monochromatic, // Harmony type for the swatches
-    angle: 20, // Used to determine angle from primary hue in harmonies that allow it
-    step: 20, // Steps between tints and shades; (+) values create tints, (-) values create shades
-    whitePoint: 100, // Used to determine lightness value for white
+    angle: 24, // Used to determine angle from primary hue in harmonies that allow it
+    step: 6, // Steps between tints and shades; (+) values create tints, (-) values create shades
+    whitePoint: 98, // Used to determine lightness value for white
     grayPoint: 50, // Used to determine lightness value for gray
-    blackPoint: 0, // Used to determine lightness value for black
+    blackPoint: 8, // Used to determine lightness value for black
     bleed: 0, // Determines how much the hue bleeds into white, gray, and black
     contrastRatio: 2.5, // Contrast ratio (1-21) at which to switch from black to white text
   },
   fontFamily: {
-    primary: { type: TokenType.FONT_FAMILY, parameters: "Inter" },
-    secondary: { type: TokenType.FONT_FAMILY, parameters: "Inter" },
+    primary: { type: TokenType.FONT_FAMILY, parameters: "IBM Plex Sans" },
+    secondary: { type: TokenType.FONT_FAMILY, parameters: "IBM Plex Serif" },
   },
   size: {
     tiny: {
@@ -470,34 +468,46 @@ const theme: StockTheme = {
       parameters: { colorspace: Colorspace.HSL, value: { hue: 0, saturation: 4, lightness: 8 } },
     },
     custom1: {
-      name: "Seldon Red",
-      intent: "Seldon Red",
+      name: "Punch",
+      intent: "Punch color for all important actions",
       type: TokenType.SWATCH,
-      parameters: { colorspace: Colorspace.HSL, value: { hue: 0, saturation: 100, lightness: 65 } },
+      parameters: { colorspace: Colorspace.HSL, value: { hue: 20, saturation: 95, lightness: 60 } },
     },
     custom2: {
-      name: "Seldon Green",
-      intent: "Seldon Green",
+      name: "Positive",
+      intent: "Actions that are successful or correct",
       type: TokenType.SWATCH,
       parameters: { colorspace: Colorspace.HSL, value: { hue: 135, saturation: 76, lightness: 59 } },
     },
     custom3: {
-      name: "Seldon Blue",
-      intent: "Seldon Blue",
+      name: "Negative",
+      intent: "Actions that are unsuccessful or incorrect",
       type: TokenType.SWATCH,
-      parameters: { colorspace: Colorspace.HSL, value: { hue: 203, saturation: 100, lightness: 62 } },
+      parameters: { colorspace: Colorspace.HSL, value: { hue: 0, saturation: 100, lightness: 65 } },
     },
     custom4: {
-      name: "Seldon Yellow",
-      intent: "Seldon Yellow",
+      name: "Warning",
+      intent: "Used to indicate caution or attention",
       type: TokenType.SWATCH,
-      parameters: { colorspace: Colorspace.HSL, value: { hue: 60, saturation: 100, lightness: 46 } },
+      parameters: { colorspace: Colorspace.HSL, value: { hue: 60, saturation: 100, lightness: 58 } },
     },
     custom5: {
-      name: "Seldon Purple",
-      intent: "Seldon Purple",
+      name: "Accent",
+      intent: "To act as an accent color",
       type: TokenType.SWATCH,
       parameters: { colorspace: Colorspace.HSL, value: { hue: 300, saturation: 76, lightness: 48 } },
+    },
+    custom6: {
+      name: "Charcoal",
+      intent: "Background color for dark mode",
+      type: TokenType.SWATCH,
+      parameters: { colorspace: Colorspace.HSL, value: { hue: 0, saturation: 0, lightness: 15 } },
+    },
+    custom7: {
+      name: "Pearl",
+      intent: "Background color for light mode",
+      type: TokenType.SWATCH,
+      parameters: { colorspace: Colorspace.HSL, value: { hue: 0, saturation: 0, lightness: 96 } },
     },
   },
   font: {

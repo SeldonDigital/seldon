@@ -9,14 +9,17 @@ import {
   Unit,
   ValueType,
 } from "../../properties"
+import { computeTheme } from "../helpers/compute-theme"
 import { Colorspace, Harmony, Ratio, StockTheme, TokenType } from "../types"
 
 const theme: StockTheme = {
   metadata: {
-    id: "seldon",
-    name: "Seldon",
-    description: "Theme for Seldon's Editor.",
-    intent: "Dark mode for Seldon's Editor interface.",
+    id: "highContrast",
+    name: "High Contrast",
+    description:
+      "A clean and versatile theme with a neutral color palette. It features a range of customizable typography, layout, and color options to suit various design needs.",
+    intent:
+      "To provide a modern and professional look with high contrast and readability, suitable for a wide range of applications.",
   },
   core: {
     ratio: Ratio.MajorThird,
@@ -24,19 +27,19 @@ const theme: StockTheme = {
     size: 1,
   },
   color: {
-    baseColor: { hue: 203, saturation: 100, lightness: 62 }, // Seldon Blue
+    baseColor: { hue: 0, saturation: 0, lightness: 0 }, // Base color for the swatches
     harmony: Harmony.Monochromatic, // Harmony type for the swatches
-    angle: 24, // Used to determine angle from primary hue in harmonies that allow it
-    step: 6, // Steps between tints and shades; (+) values create tints, (-) values create shades
-    whitePoint: 98, // Used to determine lightness value for white
+    angle: 20, // Used to determine angle from primary hue in harmonies that allow it
+    step: 20, // Steps between tints and shades; (+) values create tints, (-) values create shades
+    whitePoint: 100, // Used to determine lightness value for white
     grayPoint: 50, // Used to determine lightness value for gray
-    blackPoint: 8, // Used to determine lightness value for black
+    blackPoint: 0, // Used to determine lightness value for black
     bleed: 0, // Determines how much the hue bleeds into white, gray, and black
     contrastRatio: 2.5, // Contrast ratio (1-21) at which to switch from black to white text
   },
   fontFamily: {
-    primary: { type: TokenType.FONT_FAMILY, parameters: "IBM Plex Sans" },
-    secondary: { type: TokenType.FONT_FAMILY, parameters: "IBM Plex Serif" },
+    primary: { type: TokenType.FONT_FAMILY, parameters: "Inter" },
+    secondary: { type: TokenType.FONT_FAMILY, parameters: "Inter" },
   },
   size: {
     tiny: {
@@ -467,46 +470,34 @@ const theme: StockTheme = {
       parameters: { colorspace: Colorspace.HSL, value: { hue: 0, saturation: 4, lightness: 8 } },
     },
     custom1: {
-      name: "Punch",
-      intent: "Punch color for all important actions",
+      name: "Seldon Red",
+      intent: "Seldon Red",
       type: TokenType.SWATCH,
-      parameters: { colorspace: Colorspace.HSL, value: { hue: 20, saturation: 95, lightness: 60 } },
+      parameters: { colorspace: Colorspace.HSL, value: { hue: 0, saturation: 100, lightness: 65 } },
     },
     custom2: {
-      name: "Positive",
-      intent: "Actions that are successful or correct",
+      name: "Seldon Green",
+      intent: "Seldon Green",
       type: TokenType.SWATCH,
       parameters: { colorspace: Colorspace.HSL, value: { hue: 135, saturation: 76, lightness: 59 } },
     },
     custom3: {
-      name: "Negative",
-      intent: "Actions that are unsuccessful or incorrect",
+      name: "Seldon Blue",
+      intent: "Seldon Blue",
       type: TokenType.SWATCH,
-      parameters: { colorspace: Colorspace.HSL, value: { hue: 0, saturation: 100, lightness: 65 } },
+      parameters: { colorspace: Colorspace.HSL, value: { hue: 203, saturation: 100, lightness: 62 } },
     },
     custom4: {
-      name: "Warning",
-      intent: "Used to indicate caution or attention",
+      name: "Seldon Yellow",
+      intent: "Seldon Yellow",
       type: TokenType.SWATCH,
-      parameters: { colorspace: Colorspace.HSL, value: { hue: 60, saturation: 100, lightness: 58 } },
+      parameters: { colorspace: Colorspace.HSL, value: { hue: 60, saturation: 100, lightness: 46 } },
     },
     custom5: {
-      name: "Accent",
-      intent: "To act as an accent color",
+      name: "Seldon Purple",
+      intent: "Seldon Purple",
       type: TokenType.SWATCH,
       parameters: { colorspace: Colorspace.HSL, value: { hue: 300, saturation: 76, lightness: 48 } },
-    },
-    custom6: {
-      name: "Charcoal",
-      intent: "Background color for dark mode",
-      type: TokenType.SWATCH,
-      parameters: { colorspace: Colorspace.HSL, value: { hue: 0, saturation: 0, lightness: 15 } },
-    },
-    custom7: {
-      name: "Pearl",
-      intent: "Background color for light mode",
-      type: TokenType.SWATCH,
-      parameters: { colorspace: Colorspace.HSL, value: { hue: 0, saturation: 0, lightness: 96 } },
     },
   },
   font: {
@@ -1029,5 +1020,7 @@ const theme: StockTheme = {
     },
   },
 }
+
+export const highContrastTheme = computeTheme(theme)
 
 export default theme
