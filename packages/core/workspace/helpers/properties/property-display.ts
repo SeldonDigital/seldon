@@ -169,6 +169,10 @@ function formatDisplayValue(value: unknown, theme?: Theme): string {
     return formatComputedValue(value.value)
   }
 
+  if (value.type === ValueType.INHERIT) {
+    return "Inherit"
+  }
+
   return "Has value"
 }
 
