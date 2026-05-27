@@ -22,6 +22,10 @@ import { useImageUploadPanel } from "@components/floating-panels/image-upload-pa
 import { FramerExpandable } from "../shared/FramerExpandable"
 import { PropertyControl } from "./PropertyControl"
 import { getDisplayValue } from "./helpers/display-value-utils"
+import {
+  getThemeTokenIconColorFromPropertyValue,
+  isSwatchIconPropertyKey,
+} from "./helpers/theme-token-icon-color"
 import { generatePropertyOptions } from "./helpers/options-utils"
 import {
   FlatProperty,
@@ -175,6 +179,13 @@ export function RowProperty({
   )
 
   const labelColor = labelStyle.color
+
+  const swatchChipColor = useMemo(() => {
+    if (!theme || !isSwatchIconPropertyKey(property.key)) {
+      return undefined
+    }
+    return getThemeTokenIconColorFromPropertyValue(property.value, theme)
+  }, [property.key, property.value, theme])
 
   // Check if this is a custom theme property
   const isCustomTheme = useMemo(() => {
@@ -364,28 +375,29 @@ export function RowProperty({
         style: { pointerEvents: "none" as const },
       },
       icon2: {
-        icon: iconId as IconProps["icon"],
-              // For swatch properties and color point properties, use the HSL color string
-              // For swatches: use actualValue (HSL string)
-              // For baseColor and color points: use iconColorValue stored in property (these already incorporate bleed)
-              // For other properties: use labelColor for icon tinting
-              color: (() => {
-                if (property.key.startsWith("swatch.") && property.actualValue) {
-                  return property.actualValue as string
-                }
-                // Check for baseColor and color point properties (whitePoint, grayPoint, blackPoint)
-                // These use computed swatch colors which already incorporate bleed
-                if ((property.key === "color.baseColor" ||
-                     property.key === "color.whitePoint" || 
-                     property.key === "color.grayPoint" || 
-                     property.key === "color.blackPoint") &&
-                    (property as any).iconColorValue) {
-                  return (property as any).iconColorValue as string
-                }
-                return labelColor || undefined
-              })(),
-              style: iconStyle(),
-            },
+        icon: (swatchChipColor
+          ? "icon-custom-color-value"
+          : iconId) as IconProps["icon"],
+        color: (() => {
+          if (swatchChipColor) {
+            return swatchChipColor
+          }
+          if (property.key.startsWith("swatch.") && property.actualValue) {
+            return property.actualValue as string
+          }
+          if (
+            (property.key === "color.baseColor" ||
+              property.key === "color.whitePoint" ||
+              property.key === "color.grayPoint" ||
+              property.key === "color.blackPoint") &&
+            (property as { iconColorValue?: string }).iconColorValue
+          ) {
+            return (property as { iconColorValue: string }).iconColorValue
+          }
+          return labelColor || undefined
+        })(),
+        style: iconStyle(),
+      },
 
       label2: {
         children: (() => {
@@ -508,6 +520,7 @@ export function RowProperty({
     labelStyle,
     labelColor,
     iconId,
+    swatchChipColor,
     value,
     unit,
     isNumericValue,

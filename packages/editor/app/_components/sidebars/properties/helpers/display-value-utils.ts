@@ -1,13 +1,11 @@
 /**
  * Utility functions for formatting display values in property controls
  */
-import { Theme, Value, ValueType, Workspace } from "@seldon/core"
+import { ComputedFunction, Theme, Value, ValueType, Workspace } from "@seldon/core"
 import { formatValue } from "@seldon/core/helpers/properties/properties-bridge"
 import { stringifyValue } from "@seldon/core/helpers/properties/stringify-value"
-import {
-  COMPUTED_FUNCTION_DISPLAY_NAMES,
-  DEFAULT_COMPUTED_DISPLAY,
-} from "./property-control-constants"
+import { COMPUTED_FUNCTION_DISPLAY_NAMES } from "@seldon/core/properties/compute"
+import { DEFAULT_COMPUTED_DISPLAY } from "./property-control-constants"
 
 type Option = { value: string; name: string }
 type OptionGroup = Option[]
@@ -17,6 +15,7 @@ type OptionGroup = Option[]
  */
 export function formatComputedDisplayValue(
   propertyValue: Value,
+  options?: Option[] | OptionGroup[],
 ): string | null {
   if (
     !propertyValue ||
@@ -36,10 +35,22 @@ export function formatComputedDisplayValue(
   ) {
     const functionName = (propertyValue.value as Record<string, unknown>)
       .function as string
+
+    if (options) {
+      const flatOptions = Array.isArray(options[0])
+        ? (options as OptionGroup[]).flat()
+        : (options as Option[])
+      const matchingOption = flatOptions.find(
+        (option) => option.value === functionName,
+      )
+      if (matchingOption) {
+        return matchingOption.name
+      }
+    }
+
     return (
-      COMPUTED_FUNCTION_DISPLAY_NAMES[
-        functionName as keyof typeof COMPUTED_FUNCTION_DISPLAY_NAMES
-      ] || DEFAULT_COMPUTED_DISPLAY
+      COMPUTED_FUNCTION_DISPLAY_NAMES[functionName as ComputedFunction] ||
+      DEFAULT_COMPUTED_DISPLAY
     )
   }
 
@@ -137,7 +148,7 @@ export function getDisplayValue(
   options?: Option[] | OptionGroup[],
 ): string {
   // Check for computed value first (handled consistently)
-  const computedDisplay = formatComputedDisplayValue(propertyValue)
+  const computedDisplay = formatComputedDisplayValue(propertyValue, options)
   if (computedDisplay) return computedDisplay
 
   // For exact enum values (like Harmony), try option matching

@@ -30,6 +30,7 @@ import { useWorkspace } from "@lib/workspace/use-workspace"
 import { LoadEditorIcons } from "@components/LoadEditorIcons"
 import { useImageUploadPanel } from "@components/floating-panels/image-upload-panel/use-upload-image-panel"
 import { IconTokenValue } from "@components/icons/values/Token"
+import { IconCustomColorValue } from "../../../seldon/custom-icons"
 import { serializeValue } from "@lib/properties-ui/serialize-value"
 import { ThemeSwatches } from "@components/ui/ThemeSwatches"
 import { useThemes } from "@lib/themes/hooks/use-themes"
@@ -40,7 +41,9 @@ import { ComboboxOptions } from "./controls/combobox/Options"
 import { createPresetPropertyUpdate } from "./helpers/compound-properties"
 import { handleComputedValueChange } from "./helpers/computed-property-handler"
 import { isComputedFunctionOption } from "./helpers/computed-utils"
+import { getComboboxStoredValue } from "./helpers/combobox-stored-value"
 import { getDisplayValue } from "./helpers/display-value-utils"
+import { getThemeTokenIconColor } from "./helpers/theme-token-icon-color"
 import { generatePropertyOptions } from "./helpers/options-utils"
 import { FlatProperty } from "./helpers/properties-data"
 import { RESET_VALUES } from "./helpers/property-control-constants"
@@ -381,7 +384,7 @@ export function PropertyControl({
       }
       return "none"
     }
-    return ""
+    return getComboboxStoredValue(property.value)
   }, [property.key, property.value, subject])
 
   const displayValue = getDisplayValue(
@@ -404,10 +407,7 @@ export function PropertyControl({
     return themes.find((t) => t.id === displayThemeId) ?? null
   }, [property.pickerVariant, subject, workspace, themes])
 
-  const comboboxControlValue =
-    property.key === "theme"
-      ? comboboxStoredValue
-      : displayValue
+  const comboboxControlValue = comboboxStoredValue
 
   const {
     open: comboboxOpen,
@@ -443,13 +443,13 @@ export function PropertyControl({
   // Track original value when combobox opens
   useEffect(() => {
     if (comboboxOpen && originalValueRef.current === undefined) {
-      originalValueRef.current = displayValue
+      originalValueRef.current = comboboxStoredValue
       hasSelectionRef.current = false
     } else if (!comboboxOpen) {
       originalValueRef.current = undefined
       hasSelectionRef.current = false
     }
-  }, [comboboxOpen, displayValue])
+  }, [comboboxOpen, comboboxStoredValue])
 
   const hasSections =
     filteredOptions.length > 0 && Array.isArray(filteredOptions[0])
@@ -539,8 +539,14 @@ export function PropertyControl({
     value: string
     name: string
   }): React.ReactNode => {
-    if (option && isThemeValueKey(option.value)) {
-      return <IconTokenValue />
+    if (option) {
+      const swatchColor = getThemeTokenIconColor(option.value, theme)
+      if (swatchColor) {
+        return <IconCustomColorValue color={swatchColor} />
+      }
+      if (isThemeValueKey(option.value)) {
+        return <IconTokenValue />
+      }
     }
 
     if (property.key === "symbol" && option) {
