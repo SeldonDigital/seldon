@@ -24,6 +24,7 @@ import { getComponentLevelThemeRef } from "../../helpers/components/get-componen
 import { getSpecialComponentVariantLabel } from "../../helpers/general/get-special-component-variant-label"
 import { getWorkspaceNodes } from "../../helpers/general/get-workspace-nodes"
 import { applyResetUserVariantToDefaultVariant } from "../../helpers/nodes/apply-reset-user-variant-to-default-variant"
+import { resolveNodePropertyResetPatch } from "../../helpers/nodes/resolve-node-property-reset"
 import { isEntryNodeForRules } from "../../helpers/rules/rules-node-subject"
 import { walkComponentTreeRefs } from "../../helpers/components/walk-component-tree-refs"
 import {
@@ -274,7 +275,20 @@ export class WorkspaceMutationService {
       )
 
       if (!isEntryNodeForRules(node)) return
-      if (subpropertyKey) {
+
+      const patch = resolveNodePropertyResetPatch(
+        node,
+        draft,
+        propertyKey,
+        subpropertyKey,
+      )
+
+      if (patch.action === "delete") {
+        delete node.overrides[propertyKey]
+        return
+      }
+
+      if (patch.action === "delete-sub" && subpropertyKey) {
         const overrideBag = node.overrides[propertyKey]
         if (Array.isArray(overrideBag) && overrideBag[0]) {
           delete (overrideBag[0] as Record<string, unknown>)[subpropertyKey]
@@ -285,8 +299,13 @@ export class WorkspaceMutationService {
         ) {
           delete (overrideBag as Record<string, unknown>)[subpropertyKey]
         }
-      } else {
-        delete node.overrides[propertyKey]
+        return
+      }
+
+      if (patch.action === "set") {
+        node.overrides = mergeProperties(node.overrides, patch.properties, {
+          mergeSubProperties: true,
+        })
       }
     })
   }

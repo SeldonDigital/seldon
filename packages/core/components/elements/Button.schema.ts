@@ -489,6 +489,26 @@ export const schema = {
       id: "label",
       label: "Label",
       intent: "Text-only button with a single label and no icon.",
+      overrides: {
+        padding: {
+          top: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@padding.compact",
+          },
+          right: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@padding.cozy",    
+          },
+          bottom: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@padding.compact",
+          },
+          left: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@padding.cozy",
+          },
+        },
+      },
       children: [
         {
           component: Seldon.ComponentId.LABEL,

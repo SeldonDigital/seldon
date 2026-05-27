@@ -280,6 +280,25 @@ function getTemplatePropertySources(
   ]
 }
 
+/** Merges catalog schema defaults with the template chain, excluding the target node's overrides. */
+export function getInheritedNodeProperties(
+  targetId: string,
+  workspace: WorkspacePropertySource,
+): Properties {
+  const node = getNodes(workspace)[targetId]
+  if (!node) {
+    throw new Error(`Workspace node ${targetId} not found`)
+  }
+
+  const componentId = getNodeComponentId(node, workspace)
+  const schemaProperties = componentId ? getSchemaProperties(componentId) : {}
+
+  return mergeEffectiveProperties([
+    schemaProperties,
+    ...getTemplatePropertySources(node, workspace, new Set([node.id])),
+  ])
+}
+
 export function getEffectiveNodeProperties(
   targetId: string,
   workspace: WorkspacePropertySource,
