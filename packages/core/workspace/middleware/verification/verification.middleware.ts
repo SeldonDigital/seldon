@@ -69,27 +69,6 @@ const validators = {
       throw new Error(ErrorMessages.duplicateIds(duplicateIds))
     }
   },
-  /** Validates that tree child ref ids are unique across the workspace. */
-  uniqueInstanceIds: (workspace: Workspace) => {
-    const childIds: string[] = []
-    for (const board of Object.values(workspace.components)) {
-      walkComponentTreeRefs(board.variants, (ref) => {
-        for (const child of ref.children ?? []) {
-          childIds.push(child.id)
-        }
-      })
-    }
-
-    const uniqueIds = new Set(childIds)
-
-    if (childIds.length !== uniqueIds.size) {
-      const duplicateIds = childIds.filter(
-        (id, index) => childIds.indexOf(id) !== index,
-      )
-      throw new Error(ErrorMessages.duplicateInstanceIds(duplicateIds))
-    }
-  },
-
   /** Validates that each variant node appears in some board tree. */
   noDanglingVariants: (workspace: Workspace) => {
     const treeIds = collectComponentTreeNodeIds(workspace)
@@ -204,10 +183,7 @@ export const workspaceVerificationMiddleware: Middleware =
       log("✅ One default variant per board")
 
       validators.uniqueIds(nextWorkspace)
-      log("✅ All ids are unique")
-
-      validators.uniqueInstanceIds(nextWorkspace)
-      log("✅ All child ids are unique")
+      log("✅ All node map ids are unique")
 
       validators.noDanglingVariants(nextWorkspace)
       log("✅ No dangling variants found")

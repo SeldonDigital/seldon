@@ -26,6 +26,7 @@ import {
 import { getComponentDescendantIds } from "../../../helpers/nodes/get-descendant-ids"
 import { resolveSchemaChild } from "../../../helpers/nodes/resolve-schema-child"
 import { applyVariantFallbackToSlot } from "../../../helpers/nodes/schema-composition-children"
+import { getSchemaSlotFingerprint } from "../../../helpers/nodes/schema-slot-fingerprint"
 import { WORKSPACE_EDITABLE_THEME_ENTRY_ID } from "../../../helpers/themes/workspace-editable-theme"
 import { formatNodeCatalog, formatNodeLink } from "../../../model/template-ref"
 import type { ValidationOptions } from "../../helpers/validation"
@@ -116,6 +117,8 @@ function instantiateSchemaChildrenFromSlots(
   registry: NodeRegistry,
   newInstancesById: Record<string, EntryNode>,
   options: InstantiateComponentOptions,
+  canonicalInstanceByFingerprint: Map<string, string>,
+  writeCanonical: boolean,
 ): void {
   register.children = []
 
@@ -131,18 +134,37 @@ function instantiateSchemaChildrenFromSlots(
       `Register for ${resolvedChild.componentId} not found`,
     )
     const childSchema = resolvedChild.schema
-    const id = componentBoardUniqueNodeId(childSchema.id)
-    const processedOverrides = mergeProperties({}, resolvedSlot.overrides ?? {})
+    const fingerprint = getSchemaSlotFingerprint(resolvedSlot, {
+      variantFallbacks: options.variantFallbacks,
+    })
+    const reused =
+      !writeCanonical && canonicalInstanceByFingerprint.has(fingerprint)
+    const id = reused
+      ? canonicalInstanceByFingerprint.get(fingerprint)!
+      : componentBoardUniqueNodeId(childSchema.id)
 
-    newInstancesById[id] = {
-      id,
-      type: "instance",
-      level: childSchema.level as EntryNode["level"],
-      label: resolvedChild.label,
-      theme: null,
-      template: formatNodeLink(resolvedChild.templateNodeId),
-      overrides: processedOverrides as EntryNode["overrides"],
-      __editor: { initialOverrides: structuredClone(processedOverrides) },
+    if (!reused) {
+      const processedOverrides = mergeProperties({}, resolvedSlot.overrides ?? {})
+
+      if (writeCanonical) {
+        canonicalInstanceByFingerprint.set(fingerprint, id)
+      }
+
+      newInstancesById[id] = {
+        id,
+        type: "instance",
+        level: childSchema.level as EntryNode["level"],
+        label: resolvedChild.label,
+        theme: null,
+        template: formatNodeLink(resolvedChild.templateNodeId),
+        overrides: processedOverrides as EntryNode["overrides"],
+        __editor: { initialOverrides: structuredClone(processedOverrides) },
+      }
+    } else {
+      invariant(
+        newInstancesById[id],
+        `Missing canonical instance ${id} for fingerprint on ${componentId}`,
+      )
     }
 
     const newChild: NodeRegister = {
@@ -180,6 +202,8 @@ function instantiateVariantTree(
   registry: NodeRegistry,
   newInstancesById: Record<string, EntryNode>,
   options: InstantiateComponentOptions,
+  canonicalInstanceByFingerprint: Map<string, string>,
+  writeCanonical: boolean,
 ): NodeRegister {
   const register: NodeRegister = {
     id: variantRootId,
@@ -203,6 +227,8 @@ function instantiateVariantTree(
       registry,
       newInstancesById,
       options,
+      canonicalInstanceByFingerprint,
+      writeCanonical,
     )
   }
 
@@ -257,6 +283,8 @@ function instantiateComponent(
     }
   }
 
+  const canonicalInstanceByFingerprint = new Map<string, string>()
+
   const restrictedVariantIds =
     options.restrictedCatalogVariantIds ??
     (options.embeddedVariantId ? [options.embeddedVariantId] : undefined)
@@ -276,6 +304,8 @@ function instantiateComponent(
       registry,
       newInstancesById,
       options,
+      canonicalInstanceByFingerprint,
+      true,
     )
     variantTreeRefs.push(variantTreeRefFromRegister(defaultRegister))
 
@@ -308,6 +338,8 @@ function instantiateComponent(
         registry,
         newInstancesById,
         options,
+        canonicalInstanceByFingerprint,
+        false,
       )
       variantTreeRefs.push(variantTreeRefFromRegister(variantRegister))
     }
@@ -329,6 +361,8 @@ function instantiateComponent(
     registry,
     newInstancesById,
     options,
+    canonicalInstanceByFingerprint,
+    true,
   )
   variantTreeRefs.push(variantTreeRefFromRegister(defaultRegister))
 
@@ -359,6 +393,8 @@ function instantiateComponent(
       registry,
       newInstancesById,
       options,
+      canonicalInstanceByFingerprint,
+      false,
     )
     variantTreeRefs.push(variantTreeRefFromRegister(variantRegister))
   }

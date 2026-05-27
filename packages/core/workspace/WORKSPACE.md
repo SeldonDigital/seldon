@@ -611,6 +611,8 @@ An instance is a reference to a default or variant node, used within other nodes
 
 Instances allow for deeper customization in larger, more complex components. Custom button styling with contextual text nested inside a calendar or product card is a typical use of an instance. Whenever an editor modifies an instance, it is always modifying this node, which creates the effect of propagating those change to all of the same instance throughout the workspace.
 
+When a component board is first added from the catalog, child instance ids are shared across variant trees when the schema child slot matches the default tree (same component, variant reference, overrides, and nested children). Slots that differ get their own instance row.
+
 Validation, export, and editors use this node's `template`, not the parent’s.
 
 The **`template`** field then chooses how properties are obtained for the instance:
