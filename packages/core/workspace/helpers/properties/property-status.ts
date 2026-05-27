@@ -1,6 +1,8 @@
 import { type PropertyKey, type Workspace } from "@seldon/core"
 import { isCompoundProperty } from "@seldon/core/helpers/type-guards/compound/is-compound-property"
 import type { Properties } from "@seldon/core/properties/types/properties"
+import { getNodeComputeContext } from "../../compute/compute-node-properties"
+import { matchCompoundPreset } from "./compound-presets"
 import {
   compoundSubPropertyPath,
   getCompoundLayerValue,
@@ -108,6 +110,7 @@ function calculateSubPropertyStatus(
   hasSubDefault: boolean,
   parentProperty: Record<string, unknown> | null,
   schemaSubValue: unknown,
+  matchedCompoundPresetName: string | null,
 ): PropertyStatus {
   if (hasSubOverride) {
     if (isCompoundProperty(key as PropertyKey)) {
@@ -134,6 +137,7 @@ function calculateSubPropertyStatus(
       isValueEmpty(parentProperty?.[siblingKey]),
     )
     if (allSiblingsUnset) return "unset"
+    if (matchedCompoundPresetName) return "set"
     return hasNonEmptySubProperties(parentProperty) ? "override" : "set"
   }
 
@@ -173,6 +177,7 @@ export function getPropertyStatus(
 
   const effective = getEffectiveProperties(nodeId, workspace)
   const bag = getPropertyOverridesBag(node)
+  const { theme } = getNodeComputeContext(nodeId, workspace)
 
   for (const key of Object.keys(effective)) {
     const hasNodeOverride = hasPropertyOverride(node, key)
@@ -204,6 +209,12 @@ export function getPropertyStatus(
         const schemaLayer = getCompoundLayerValue(
           (schemaProperties as Record<string, unknown> | null)?.[key],
         )
+        const matchedCompoundPresetName = matchCompoundPreset(
+          key,
+          nodeId,
+          workspace,
+          theme,
+        )
         const subStatuses: PropertyStatus[] = []
         for (const subKey of subKeys) {
           const hasSubDefault = hasSchemaSubProperty(
@@ -220,9 +231,12 @@ export function getPropertyStatus(
             hasSubDefault,
             compoundLayer,
             schemaSubValue,
+            matchedCompoundPresetName,
           )
           status[compoundSubPropertyPath(key, subKey)] = subStatus
-          subStatuses.push(subStatus)
+          if (subKey !== "preset") {
+            subStatuses.push(subStatus)
+          }
         }
         status[key] = aggregateSubPropertyStatuses(subStatuses)
       }
@@ -252,6 +266,7 @@ export function getPropertyStatus(
           hasSubDefault,
           (effective as Record<string, Record<string, unknown> | null>)[key] ?? null,
           schemaSubValue,
+          null,
         )
 
         status[`${key}.${subKey}`] = subStatus
