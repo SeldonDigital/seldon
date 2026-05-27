@@ -36,5 +36,8 @@ export const directionSchema: PropertySchema = {
     exact: (value: any) => typeof value === "string" && value.length > 0,
     option: (value: any) => Object.values(Direction).includes(value),
   },
-  presetOptions: () => Object.values(Direction),
+  presetOptions: () => [
+    { value: Direction.LTR, name: "Left to Right" },
+    { value: Direction.RTL, name: "Right to Left" },
+  ],
 }
