@@ -398,7 +398,7 @@ function createThemeOptions(
     themeSection === "swatch" ? sortSwatchKeys(themeKeys) : themeKeys
 
   return sortedKeys.map((key) => {
-    const themeKey = `@${themeSection}.${key}`
+    const themeKey = key.startsWith("@") ? key : `@${themeSection}.${key}`
     return {
       value: themeKey,
       name: getThemeValueName(themeKey, theme),
