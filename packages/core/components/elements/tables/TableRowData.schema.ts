@@ -97,8 +97,8 @@ export const schema = {
     background: [
       {
         preset: {
-          type: Sdn.ValueType.EMPTY,
-          value: null,
+          type: Sdn.ValueType.THEME_CATEGORICAL,
+          value: "@background.none",
         },
         image: {
           type: Sdn.ValueType.EMPTY,
@@ -140,8 +140,8 @@ export const schema = {
     ],
     border: {
       preset: {
-        type: Sdn.ValueType.EMPTY,
-        value: null,
+        type: Sdn.ValueType.THEME_CATEGORICAL,
+        value: "@border.none",
       },
       style: {
         type: Sdn.ValueType.EMPTY,
@@ -313,8 +313,8 @@ export const schema = {
     shadow: [
       {
         preset: {
-          type: Sdn.ValueType.EMPTY,
-          value: null,
+          type: Sdn.ValueType.THEME_CATEGORICAL,
+          value: "@shadow.none",
         },
         offsetX: {
           type: Sdn.ValueType.EMPTY,

@@ -12,5 +12,6 @@ export {
   customTheme,
   defaultTheme,
 } from "./stock"
+export * from "./looks"
 export * from "./schemas"
 export * from "./types"

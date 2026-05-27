@@ -76,7 +76,7 @@ properties.border.color
 
 Compound behavior:
 
-- The theme can list **preset options** for a compound (for example `border.hairline` with width, style, color). The editor lets you pick one and copies those parameters onto the compound. If none apply, show None. Stored values stay on the usual sub-properties (e.g., `border.width`, `border.color`).
+- The theme can list **looks** for a compound (for example `border.hairline` with width, style, color). The editor lets you pick one and copies those parameters onto the compound. **Built-in cleared looks** (`@shadow.none`, `@gradient.none`, `@background.none`, `@border.none`, `@font.normal`) are injected at theme compute time, set every facet to **EMPTY**, and appear in the picker like stock looks. Stored values stay on the usual sub-properties (e.g., `border.width`, `border.color`).
 - Applying a preset overwrites every parameter that preset defines. Any parameter the preset does not mention is set to **EMPTY**, which clears older values.
 - If the user changes any sub-field by hand, treat the compound as **Custom** until it matches one of the theme’s named presets again.
 
@@ -305,7 +305,7 @@ Properties that control the visual appearance and styling of components.
 | `opacity` | `atomic` | `empty` \| `inherit` \| `exact: %, 0–100` |
 | `background` | `array` | `background[]`, ordered, `background[0]` topmost |
 | └ **Each Background** | `compound` | `preset: image, position, size, repeat, color, blendMode, filter, brightness, opacity` |
-| └ └ `background[].preset` | `atomic` | `empty` \| `inherit` \| `theme.categorical: @background.*` \| `option: None` |
+| └ └ `background[].preset` | `atomic` | `empty` \| `inherit` \| `theme.categorical: @background.*` (built-in `@background.none`) |
 | └ └ `background[].image` | `atomic` | `empty` \| `inherit` \| `exact: string` |
 | └ └ `background[].position` | `atomic` | `empty` \| `inherit` \| `option: default, top-left, top-center, top-right, center-left, center, center-right, bottom-left, bottom-center, bottom-right` \| `exact: px, rem, %` \| `exact: DoubleAxisValue` |
 | └ └ `background[].size` | `atomic` | `empty` \| `inherit` \| `option: original, contain, cover, stretch` \| `exact: px, rem, %` \| `exact: paired` |
@@ -316,7 +316,7 @@ Properties that control the visual appearance and styling of components.
 | └ └ `background[].brightness` | `atomic` | `empty` \| `inherit` \| `exact: %, 0–100` |
 | └ └ `background[].opacity` | `atomic` | `empty` \| `inherit` \| `exact: %, 0–100` |
 | `border` | `compound` | `preset: style, color, width, brightness, opacity, collapse` |
-| └ `border.preset` | `atomic` | `empty` \| `inherit` \| `theme.categorical: @border.*` \| `option: None` |
+| └ `border.preset` | `atomic` | `empty` \| `inherit` \| `theme.categorical: @border.*` (built-in `@border.none`) |
 | └ `border.style` | `atomic` | `empty` \| `inherit` \| `option: none, solid, dashed, dotted, double, groove, ridge, inset, outset, hidden` |
 | └ `border.color` | `atomic` | `empty` \| `inherit` \| `exact: hex, hsl, rgb, lch` \| `option: transparent` \| `theme.categorical: @swatch.*` \| `computed: highContrastColor, match` |
 | └ `border.width` | `atomic` | `empty` \| `inherit` \| `exact: px, rem` \| `option: hairline` \| `theme.ordinal: @borderWidth.*` |
@@ -324,7 +324,7 @@ Properties that control the visual appearance and styling of components.
 | └ `border.opacity` | `atomic` | `empty` \| `inherit` \| `exact: %, 0–100` |
 | └ `border.collapse` | `atomic` | `empty` \| `inherit` \| `option: separate, collapse` |
 | `borderTop` | `compound` | `preset: style, color, width, brightness, opacity, collapse` |
-| └ `borderTop.preset` | `atomic` | `empty` \| `inherit` \| `theme.categorical: @border.*` \| `option: None` |
+| └ `borderTop.preset` | `atomic` | `empty` \| `inherit` \| `theme.categorical: @border.*` (built-in `@border.none`) |
 | └ `borderTop.style` | `atomic` | `empty` \| `inherit` \| `option: none, solid, dashed, dotted, double, groove, ridge, inset, outset, hidden` |
 | └ `borderTop.color` | `atomic` | `empty` \| `inherit` \| `exact: hex, hsl, rgb, lch` \| `option: transparent` \| `theme.categorical: @swatch.*` \| `computed: highContrastColor, match` |
 | └ `borderTop.width` | `atomic` | `empty` \| `inherit` \| `exact: px, rem` \| `option: hairline` \| `theme.ordinal: @borderWidth.*` |
@@ -332,7 +332,7 @@ Properties that control the visual appearance and styling of components.
 | └ `borderTop.opacity` | `atomic` | `empty` \| `inherit` \| `exact: %, 0–100` |
 | └ `borderTop.collapse` | `atomic` | `empty` \| `inherit` \| `option: separate, collapse` |
 | `borderRight` | `compound` | `preset: style, color, width, brightness, opacity, collapse` |
-| └ `borderRight.preset` | `atomic` | `empty` \| `inherit` \| `theme.categorical: @border.*` \| `option: None` |
+| └ `borderRight.preset` | `atomic` | `empty` \| `inherit` \| `theme.categorical: @border.*` (built-in `@border.none`) |
 | └ `borderRight.style` | `atomic` | `empty` \| `inherit` \| `option: none, solid, dashed, dotted, double, groove, ridge, inset, outset, hidden` |
 | └ `borderRight.color` | `atomic` | `empty` \| `inherit` \| `exact: hex, hsl, rgb, lch` \| `option: transparent` \| `theme.categorical: @swatch.*` \| `computed: highContrastColor, match` |
 | └ `borderRight.width` | `atomic` | `empty` \| `inherit` \| `exact: px, rem` \| `option: hairline` \| `theme.ordinal: @borderWidth.*` |
@@ -340,7 +340,7 @@ Properties that control the visual appearance and styling of components.
 | └ `borderRight.opacity` | `atomic` | `empty` \| `inherit` \| `exact: %, 0–100` |
 | └ `borderRight.collapse` | `atomic` | `empty` \| `inherit` \| `option: separate, collapse` |
 | `borderBottom` | `compound` | `preset: style, color, width, brightness, opacity, collapse` |
-| └ `borderBottom.preset` | `atomic` | `empty` \| `inherit` \| `theme.categorical: @border.*` \| `option: None` |
+| └ `borderBottom.preset` | `atomic` | `empty` \| `inherit` \| `theme.categorical: @border.*` (built-in `@border.none`) |
 | └ `borderBottom.style` | `atomic` | `empty` \| `inherit` \| `option: none, solid, dashed, dotted, double, groove, ridge, inset, outset, hidden` |
 | └ `borderBottom.color` | `atomic` | `empty` \| `inherit` \| `exact: hex, hsl, rgb, lch` \| `option: transparent` \| `theme.categorical: @swatch.*` \| `computed: highContrastColor, match` |
 | └ `borderBottom.width` | `atomic` | `empty` \| `inherit` \| `exact: px, rem` \| `option: hairline` \| `theme.ordinal: @borderWidth.*` |
@@ -348,7 +348,7 @@ Properties that control the visual appearance and styling of components.
 | └ `borderBottom.opacity` | `atomic` | `empty` \| `inherit` \| `exact: %, 0–100` |
 | └ `borderBottom.collapse` | `atomic` | `empty` \| `inherit` \| `option: separate, collapse` |
 | `borderLeft` | `compound` | `preset: style, color, width, brightness, opacity, collapse` |
-| └ `borderLeft.preset` | `atomic` | `empty` \| `inherit` \| `theme.categorical: @border.*` \| `option: None` |
+| └ `borderLeft.preset` | `atomic` | `empty` \| `inherit` \| `theme.categorical: @border.*` (built-in `@border.none`) |
 | └ `borderLeft.style` | `atomic` | `empty` \| `inherit` \| `option: none, solid, dashed, dotted, double, groove, ridge, inset, outset, hidden` |
 | └ `borderLeft.color` | `atomic` | `empty` \| `inherit` \| `exact: hex, hsl, rgb, lch` \| `option: transparent` \| `theme.categorical: @swatch.*` \| `computed: highContrastColor, match` |
 | └ `borderLeft.width` | `atomic` | `empty` \| `inherit` \| `exact: px, rem` \| `option: hairline` \| `theme.ordinal: @borderWidth.*` |
@@ -370,7 +370,7 @@ Properties that control text styling, fonts, and typography.
 | Property | Type | Values |
 | --- | --- | --- |
 | `font` | `compound` | `preset: family, style, weight, size, lineHeight, textCase` |
-| └ `font.preset` | `atomic` | `empty` \| `inherit` \| `theme.categorical: @font.*` \| `option: None` |
+| └ `font.preset` | `atomic` | `empty` \| `inherit` \| `theme.categorical: @font.*` (built-in `@font.normal`) |
 | └ `font.family` | `atomic` | `empty` \| `inherit` \| `theme.categorical: @fontFamily.*` \| `option: string` \| `exact: string` |
 | └ `font.style` | `atomic` | `empty` \| `inherit` \| `option: normal, italic, oblique` \| `exact: string` |
 | └ `font.weight` | `atomic` | `empty` \| `inherit` \| `exact: number, 100–900` \| `theme.ordinal: @fontWeight.*` |
@@ -400,7 +400,7 @@ Properties that control visual effects and interactions.
 | --- | --- | --- |
 | `gradient` | `array` | `gradient[]`, ordered, `gradient[0]` topmost |
 | └ **Each Gradient** | `compound` | `preset: gradientType, angle, startColor, startOpacity, startBrightness, startPosition, endColor, endOpacity, endBrightness, endPosition` |
-| └ └ `gradient[].preset` | `atomic` | `empty` \| `inherit` \| `theme.categorical: @gradient.*` \| `option: None` |
+| └ └ `gradient[].preset` | `atomic` | `empty` \| `inherit` \| `theme.categorical: @gradient.*` (built-in `@gradient.none`) |
 | └ └ `gradient[].gradientType` | `atomic` | `empty` \| `inherit` \| `option: linear, radial` |
 | └ └ `gradient[].angle` | `atomic` | `empty` \| `inherit` \| `exact: degrees` |
 | └ └ `gradient[].startColor` | `atomic` | `empty` \| `inherit` \| `exact: hex, hsl, rgb, lch` \| `option: transparent` \| `theme.categorical: @swatch.*` \| `computed: highContrastColor, match` |
@@ -413,7 +413,7 @@ Properties that control visual effects and interactions.
 | └ └ `gradient[].endPosition` | `atomic` | `empty` \| `inherit` \| `exact: %, 0–100` |
 | `shadow` | `array` | `shadow[]`, ordered, `shadow[0]` topmost |
 | └ **Each Shadow** | `compound` | `preset: offsetX, offsetY, blur, color, brightness, opacity, spread` |
-| └ └ `shadow[].preset` | `atomic` | `empty` \| `inherit` \| `theme.categorical: @shadow.*` \| `option: None` |
+| └ └ `shadow[].preset` | `atomic` | `empty` \| `inherit` \| `theme.categorical: @shadow.*` (built-in `@shadow.none`) |
 | └ └ `shadow[].offsetX` | `atomic` | `empty` \| `inherit` \| `exact: px, rem` |
 | └ └ `shadow[].offsetY` | `atomic` | `empty` \| `inherit` \| `exact: px, rem` |
 | └ └ `shadow[].blur` | `atomic` | `empty` \| `inherit` \| `exact: px, rem` \| `theme.ordinal: @blur.*` |

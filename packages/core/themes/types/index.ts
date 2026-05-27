@@ -64,6 +64,13 @@ export type { ThemeInstanceId, ThemeTemplateId } from "./theme-id"
 
 // Token table ids and `@` path segments
 export type {
+  BuiltInThemeClearedLookId,
+  BuiltInThemeFontLookId,
+  StockThemeBackgroundId,
+  StockThemeBorderId,
+  StockThemeFontId,
+  StockThemeGradientId,
+  StockThemeShadowId,
   ThemeBackgroundId,
   ThemeBorderId,
   ThemeBorderWidthId,

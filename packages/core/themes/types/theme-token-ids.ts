@@ -42,7 +42,11 @@ export type ThemeCornersId = ThemeSpacingId
 
 export type ThemeFontFamilyId = "primary" | "secondary"
 
+/** Cleared font look injected at compute time; not authored in `stock/`. */
+export type BuiltInThemeFontLookId = "normal"
+
 export type ThemeFontId =
+  | BuiltInThemeFontLookId
   | "display"
   | "heading"
   | "subheading"
@@ -136,7 +140,11 @@ export type ThemeSwatchId =
 
 export type ThemeCustomSwatchId = `custom${number}`
 
+/** Cleared look injected at compute time; not authored in `stock/`. */
+export type BuiltInThemeClearedLookId = "none"
+
 export type ThemeShadowId =
+  | BuiltInThemeClearedLookId
   | "xlight"
   | "light"
   | "moderate"
@@ -145,12 +153,14 @@ export type ThemeShadowId =
   | `custom${number}`
 
 export type ThemeGradientId =
+  | BuiltInThemeClearedLookId
   | "primary"
   | "gradient1"
   | "gradient2"
   | `custom${number}`
 
 export type ThemeBackgroundId =
+  | BuiltInThemeClearedLookId
   | "primary"
   | "background1"
   | "background2"
@@ -159,12 +169,19 @@ export type ThemeBackgroundId =
 export type ThemeScrollbarId = "primary" | `custom${number}`
 
 export type ThemeBorderId =
+  | BuiltInThemeClearedLookId
   | "hairline"
   | "thin"
   | "normal"
   | "thick"
   | "bevel"
   | `custom${number}`
+
+export type StockThemeFontId = Exclude<ThemeFontId, BuiltInThemeFontLookId>
+export type StockThemeShadowId = Exclude<ThemeShadowId, BuiltInThemeClearedLookId>
+export type StockThemeGradientId = Exclude<ThemeGradientId, BuiltInThemeClearedLookId>
+export type StockThemeBackgroundId = Exclude<ThemeBackgroundId, BuiltInThemeClearedLookId>
+export type StockThemeBorderId = Exclude<ThemeBorderId, BuiltInThemeClearedLookId>
 
 export type ThemeOptionId =
   | ThemeBackgroundId

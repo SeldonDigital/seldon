@@ -21,6 +21,13 @@ import type { Properties } from "../../../properties/types/properties"
 import { Resize } from "../../../properties/values/layout/resize"
 import { getEffectiveNodeProperties } from "../../compute/compute-node-properties"
 import type { WorkspacePropertySource } from "../../compute/compute-node-properties"
+import {
+  getBuiltInLookSectionForPropertyKey,
+  getThemeLookPickerToken,
+  getThemeLookSection,
+  isThemeLookPresetSchemaName,
+  listThemeLookIds,
+} from "@seldon/core/themes/looks"
 import { getCompoundLayerValue } from "./shared"
 
 export type PropertyPickerOption = { value: string; name: string }
@@ -520,15 +527,15 @@ function buildCompoundPresetPickerOptions(
   const groups: PropertyPickerOption[][] = []
   groups.push(buildDefaultOptions(schema))
 
-  const presetOptions = buildPresetOptions(schema, input.theme, input.workspace)
-  if (presetOptions.length > 0) {
-    groups.push(...groupPresetOptions(schema, presetOptions))
+  if (!isThemeLookPresetSchemaName(schema.name)) {
+    const presetOptions = buildPresetOptions(schema, input.theme, input.workspace)
+    if (presetOptions.length > 0) {
+      groups.push(...groupPresetOptions(schema, presetOptions))
+    }
   }
 
   const theme = input.theme
-  const section = theme
-    ? (theme as Record<string, unknown>)[parentKey]
-    : undefined
+  const section = theme ? getThemeLookSection(theme, parentKey) : undefined
 
   if (!section || typeof section !== "object") {
     const effective = getEffectiveNodeProperties(
@@ -542,14 +549,22 @@ function buildCompoundPresetPickerOptions(
     }
   }
 
-  const presetGroup: PropertyPickerOption[] = Object.entries(section)
-    .filter(
-      ([, v]: [string, unknown]) => v && typeof v === "object" && "name" in v,
-    )
-    .map(([id, v]: [string, unknown]) => ({
-      value: `@${parentKey}.${String(id)}`,
-      name: String((v as Record<string, unknown>).name),
-    }))
+  const lookSection = getBuiltInLookSectionForPropertyKey(parentKey)
+  const presetGroup: PropertyPickerOption[] =
+    lookSection === null
+      ? []
+      : listThemeLookIds(theme, lookSection)
+          .map((id) => {
+            const v = section[id]
+            if (!v || typeof v !== "object" || !("name" in v)) {
+              return null
+            }
+            return {
+              value: getThemeLookPickerToken(parentKey, id),
+              name: String((v as Record<string, unknown>).name),
+            }
+          })
+          .filter((option): option is PropertyPickerOption => option !== null)
 
   if (presetGroup.length > 0) {
     groups.push(presetGroup)

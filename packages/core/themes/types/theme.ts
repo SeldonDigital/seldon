@@ -25,6 +25,11 @@ import {
 import { ThemeTokenTable } from "./helpers"
 import { ThemeInstanceId, ThemeTemplateId } from "./theme-id"
 import {
+  StockThemeBackgroundId,
+  StockThemeBorderId,
+  StockThemeFontId,
+  StockThemeGradientId,
+  StockThemeShadowId,
   ThemeBackgroundId,
   ThemeBorderId,
   ThemeBorderWidthId,
@@ -41,6 +46,22 @@ import {
   ThemeSpacingId,
   ThemeSwatchId,
 } from "./theme-token-ids"
+
+type ThemeLookTableIdMap = {
+  font: ThemeFontId
+  border: ThemeBorderId
+  background: ThemeBackgroundId
+  gradient: ThemeGradientId
+  shadow: ThemeShadowId
+}
+
+type StockThemeLookTableIdMap = {
+  font: StockThemeFontId
+  border: StockThemeBorderId
+  background: StockThemeBackgroundId
+  gradient: StockThemeGradientId
+  shadow: StockThemeShadowId
+}
 
 /**
  * Swatch table on a stock theme.
@@ -61,7 +82,11 @@ export interface ThemeMetadata<TId extends string = ThemeTemplateId> {
   intent: string
 }
 
-type BaseTheme<TSwatch, TId extends string = ThemeTemplateId> = {
+type BaseTheme<
+  TSwatch,
+  TId extends string = ThemeTemplateId,
+  TLookIds extends ThemeLookTableIdMap = ThemeLookTableIdMap,
+> = {
   metadata: ThemeMetadata<TId>
   core: {
     ratio: Ratio
@@ -93,30 +118,35 @@ type BaseTheme<TSwatch, TId extends string = ThemeTemplateId> = {
   fontSize: ThemeTokenTable<ThemeFontSizeId, ThemeScaleToken>
   fontWeight: ThemeTokenTable<ThemeFontWeightId, ThemeExact>
   lineHeight: ThemeTokenTable<ThemeLineHeightId, ThemeExact>
-  font: ThemeTokenTable<ThemeFontId, ThemeFont>
+  font: ThemeTokenTable<TLookIds["font"], ThemeFont>
   borderWidth: ThemeTokenTable<ThemeBorderWidthId, ThemeBorderWidth>
-  border: ThemeTokenTable<ThemeBorderId, ThemeBorder>
+  border: ThemeTokenTable<TLookIds["border"], ThemeBorder>
   iconSet: {
     intent: string
     set: IconSetId
     defaultColor: ColorValue
     defaultSize: SizeValue
   }
-  background: ThemeTokenTable<ThemeBackgroundId, ThemeBackground>
-  gradient: ThemeTokenTable<ThemeGradientId, ThemeGradient>
+  background: ThemeTokenTable<TLookIds["background"], ThemeBackground>
+  gradient: ThemeTokenTable<TLookIds["gradient"], ThemeGradient>
   blur: ThemeTokenTable<ThemeSizeId, ThemeScaleToken>
   spread: ThemeTokenTable<ThemeSizeId, ThemeScaleToken>
-  shadow: ThemeTokenTable<ThemeShadowId, ThemeShadow>
+  shadow: ThemeTokenTable<TLookIds["shadow"], ThemeShadow>
   scrollbar: ThemeTokenTable<ThemeScrollbarId, ThemeScrollbar>
 }
 
 /** Packaged theme schema (`stock/`); palette slots use `StockThemeSwatch` (incl. `TokenType.DYNAMIC_SWATCH`). */
-export type StockTheme = BaseTheme<StockThemeSwatches, ThemeTemplateId>
+export type StockTheme = BaseTheme<
+  StockThemeSwatches,
+  ThemeTemplateId,
+  StockThemeLookTableIdMap
+>
 
 /** Complete theme in memory, including generated swatch slots and optional `custom` id. */
 export type ComputedTheme = BaseTheme<
   ThemeTokenTable<ThemeSwatchId, ThemeSwatch>,
-  ThemeInstanceId
+  ThemeInstanceId,
+  ThemeLookTableIdMap
 > & {
   id: ThemeInstanceId
   swatch: ThemeTokenTable<ThemeSwatchId, ThemeSwatch>

@@ -1,4 +1,13 @@
 import { type Theme, ValueType, type Workspace } from "@seldon/core"
+import {
+  getBuiltInLookSectionForPropertyKey,
+  getThemeLookSection,
+  isThemeLookPreset,
+  readPresetThemeLookRef,
+  resolveBuiltInLookApplyName,
+  resolveThemeLook,
+  type ThemeLookPreset,
+} from "@seldon/core/themes/looks"
 import type { Properties } from "@seldon/core/properties/types/properties"
 import {
   applyBoardPreset,
@@ -17,24 +26,11 @@ import {
   wrapCompoundPropertyValue,
 } from "./shared"
 
-type ThemePreset = {
-  name: string
-  parameters?: Record<string, unknown>
-}
-
-function isThemePreset(value: unknown): value is ThemePreset {
-  return !!(
-    value &&
-    typeof value === "object" &&
-    "name" in value &&
-    typeof value.name === "string"
-  )
-}
-
 function isResetPreset(preset: string): boolean {
   return (
     preset === "Default" ||
     preset === "None" ||
+    preset === "Normal" ||
     preset === "unset" ||
     preset === ""
   )
@@ -64,25 +60,6 @@ function buildResetProperties(
   return wrapCompoundPropertyValue(propertyKey, facets)
 }
 
-function findPresetInTheme(
-  theme: Theme,
-  propertyKey: string,
-  presetName: string,
-): ThemePreset | null {
-  const themeSection = (theme as Record<string, unknown>)[propertyKey]
-  if (!themeSection || typeof themeSection !== "object") {
-    return null
-  }
-
-  for (const presetValue of Object.values(themeSection)) {
-    if (isThemePreset(presetValue) && presetValue.name === presetName) {
-      return presetValue
-    }
-  }
-
-  return null
-}
-
 function convertPresetValue(subValue: unknown): unknown {
   if (typeof subValue === "string" && subValue.startsWith("@")) {
     return {
@@ -109,7 +86,7 @@ function convertPresetValue(subValue: unknown): unknown {
 
 function buildPresetProperties(
   propertyKey: string,
-  preset: ThemePreset,
+  preset: ThemeLookPreset,
   subKeys: string[],
 ): Properties {
   const facets: Record<string, unknown> = {}
@@ -136,6 +113,19 @@ function applyBoardPresetSelection(preset: string): Properties {
   return { board: applyBoardPreset(presetId) }
 }
 
+function layerMatchesLookParameters(
+  parentLayer: Record<string, unknown>,
+  parameters: Record<string, unknown>,
+): boolean {
+  const entries = Object.entries(parameters)
+  if (entries.length === 0) {
+    return false
+  }
+  return entries.every(([subKey, expectedValue]) =>
+    propertyValuesMatch(parentLayer[subKey], expectedValue),
+  )
+}
+
 function matchThemePreset(
   propertyKey: string,
   effectiveProperties: Properties,
@@ -144,23 +134,33 @@ function matchThemePreset(
   const parentLayer = getCompoundLayerValue(
     (effectiveProperties as Record<string, unknown>)[propertyKey],
   )
-  const themeSection = (theme as Record<string, unknown>)[propertyKey]
-  if (!themeSection || typeof themeSection !== "object" || !parentLayer) {
+  if (!parentLayer) {
+    return null
+  }
+
+  const presetRef = readPresetThemeLookRef(parentLayer)
+  if (presetRef) {
+    const tetheredLook = resolveThemeLook(theme, propertyKey, presetRef)
+    if (
+      tetheredLook &&
+      layerMatchesLookParameters(parentLayer, tetheredLook.parameters ?? {})
+    ) {
+      return tetheredLook.name ?? null
+    }
+  }
+
+  const themeSection = getThemeLookSection(theme, propertyKey)
+  if (!themeSection) {
     return null
   }
 
   for (const presetValue of Object.values(themeSection)) {
-    if (!isThemePreset(presetValue) || !presetValue.parameters) {
+    if (!isThemeLookPreset(presetValue) || !presetValue.parameters) {
       continue
     }
 
-    const matches = Object.entries(presetValue.parameters).every(
-      ([subKey, expectedValue]) =>
-        propertyValuesMatch(parentLayer[subKey], expectedValue),
-    )
-
-    if (matches) {
-      return presetValue.name
+    if (layerMatchesLookParameters(parentLayer, presetValue.parameters)) {
+      return presetValue.name ?? null
     }
   }
 
@@ -209,7 +209,24 @@ export function applyCompoundPreset(
         | undefined
       return buildBoardCompoundReset(schemaBoard)
     }
-    return buildResetProperties(propertyKey, subKeys, schemaProperty)
+
+    const builtInSection = getBuiltInLookSectionForPropertyKey(propertyKey)
+
+    if (preset === "Default" || !builtInSection) {
+      return buildResetProperties(propertyKey, subKeys, schemaProperty)
+    }
+
+    const builtInApplyName = resolveBuiltInLookApplyName(propertyKey, preset)
+    if (!builtInApplyName || !theme) {
+      return buildResetProperties(propertyKey, subKeys, schemaProperty)
+    }
+
+    const builtInLook = resolveThemeLook(theme, propertyKey, builtInApplyName)
+    if (!builtInLook) {
+      return buildResetProperties(propertyKey, subKeys, schemaProperty)
+    }
+
+    return buildPresetProperties(propertyKey, builtInLook, subKeys)
   }
 
   if (propertyKey === "board") {
@@ -219,7 +236,8 @@ export function applyCompoundPreset(
   if (!theme) {
     return {}
   }
-  const presetValue = findPresetInTheme(theme, propertyKey, preset)
+
+  const presetValue = resolveThemeLook(theme, propertyKey, preset)
   if (!presetValue) {
     return {}
   }

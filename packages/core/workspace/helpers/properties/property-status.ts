@@ -2,6 +2,7 @@ import { type PropertyKey, type Workspace } from "@seldon/core"
 import { isCompoundProperty } from "@seldon/core/helpers/type-guards/compound/is-compound-property"
 import type { Properties } from "@seldon/core/properties/types/properties"
 import { getNodeComputeContext } from "../../compute/compute-node-properties"
+import { isBuiltInClearedLookToken } from "@seldon/core/themes/looks"
 import { matchCompoundPreset } from "./compound-presets"
 import {
   compoundSubPropertyPath,
@@ -136,7 +137,16 @@ function calculateSubPropertyStatus(
     const allSiblingsUnset = siblingKeys.every((siblingKey) =>
       isValueEmpty(parentProperty?.[siblingKey]),
     )
-    if (allSiblingsUnset) return "unset"
+    if (allSiblingsUnset) {
+      const presetValue = parentProperty?.preset
+      if (
+        isBuiltInClearedLookToken(key, presetValue) ||
+        isValueEmpty(presetValue)
+      ) {
+        return "set"
+      }
+      return "unset"
+    }
     if (matchedCompoundPresetName) return "set"
     return hasNonEmptySubProperties(parentProperty) ? "override" : "set"
   }

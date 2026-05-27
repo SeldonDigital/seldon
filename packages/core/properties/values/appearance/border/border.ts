@@ -1,4 +1,8 @@
 import { Theme, ThemeBorderKey } from "../../../../themes/types"
+import {
+  listThemeLookIds,
+  validateThemeLookPresetRef,
+} from "../../../../themes/looks"
 import { ValueType } from "../../../constants"
 import { PropertySchema } from "../../../types/schema"
 
@@ -11,17 +15,13 @@ export interface BorderValue {
 export const borderPresetSchema: PropertySchema = {
   name: "borderPreset",
   description:
-    "Selects a named border recipe from the theme or clears it with None.",
-  supports: ["empty", "inherit", "option", "themeCategorical"] as const,
+    "Selects a named border recipe from the theme, including the built-in None look.",
+  supports: ["empty", "inherit", "themeCategorical"] as const,
   validation: {
     empty: () => true,
     inherit: () => true,
-    option: (value: unknown) => value === "None",
-    themeCategorical: (value: unknown, theme?: Theme) => {
-      if (!theme || typeof value !== "string") return false
-      return value in theme.border
-    },
+    themeCategorical: (value: unknown, theme?: Theme) =>
+      validateThemeLookPresetRef("border", value, theme),
   },
-  presetOptions: () => ["None"],
-  themeCategoricalKeys: (theme: Theme) => Object.keys(theme.border),
+  themeCategoricalKeys: (theme: Theme) => listThemeLookIds(theme, "border"),
 }

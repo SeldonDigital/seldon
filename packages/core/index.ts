@@ -22,6 +22,13 @@ export * from "./properties"
 export * from "./properties/compute"
 export * from "./themes/compute/get-dynamic-swatch-color"
 export * from "./themes/types"
+export {
+  SHADOW_LOOK_NONE,
+  GRADIENT_LOOK_NONE,
+  BACKGROUND_LOOK_NONE,
+  BORDER_LOOK_NONE,
+  FONT_LOOK_NORMAL,
+} from "./themes/looks/built-in-looks"
 export * from "./workspace/compute"
 export * from "./workspace/types"
 export * from "./workspace/services/index"

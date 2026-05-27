@@ -6,6 +6,7 @@ import type { ComputedTheme, StockTheme } from "../types/theme"
 import type { ThemePaletteSlot, ThemeSwatch } from "../values"
 import { TokenType } from "../values"
 import { isDynamicSwatchToken, isSwatchToken } from "../values"
+import { injectBuiltInLooks } from "../looks/built-in-looks"
 import { toRecomputableStockInput } from "./to-recomputable-stock"
 
 function defaultIntentForPaletteSlot(role: ThemePaletteSlot): string {
@@ -49,9 +50,9 @@ export function computeTheme(theme: StockTheme | ComputedTheme): ComputedTheme {
     }
   }
 
-  return {
+  return injectBuiltInLooks({
     ...normalized,
     id: normalized.metadata.id,
     swatch: resolvedSwatch as ComputedTheme["swatch"],
-  }
+  })
 }

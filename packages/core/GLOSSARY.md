@@ -26,6 +26,7 @@ This file inventories architectural vocabulary used across `packages/core/`. Use
 | Shorthand property | A shorthand property is a top-level style key that applies the same kind of value to several child keys, such as the sides of margin or padding. |
 | Layered paint stack | A layered paint stack is an ordered list of paint layers. Common examples are `background`, `gradient`, and `shadow`. |
 | Preset facet | A preset facet is the `preset` field on a compound property. It usually holds a theme LOOK reference such as `@font.body`. It is not the same as `ValueType.OPTION`. |
+| Built-in look | A built-in look is a reserved theme LOOK injected at compute time. Examples are `@shadow.none` and `@font.normal`. It clears every facet on the compound and appears in the preset picker like stock looks. |
 | EMPTY value | An EMPTY value is unset. The platform or merge pipeline may fill it from defaults or inheritance. Wire type is `"empty"`. |
 | INHERIT value | An INHERIT value takes the parent component value explicitly. Wire type is `"inherit"`. |
 | EXACT value | An EXACT value is a concrete literal such as a color, size, or string. Wire type is `"exact"`. |

@@ -331,8 +331,8 @@ export const schema = {
     gradient: [
       {
         preset: {
-          type: Sdn.ValueType.EMPTY,
-          value: null,
+          type: Sdn.ValueType.THEME_CATEGORICAL,
+          value: "@gradient.none",
         },
         gradientType: {
           type: Sdn.ValueType.EMPTY,
@@ -379,8 +379,8 @@ export const schema = {
     shadow: [
       {
         preset: {
-          type: Sdn.ValueType.EMPTY,
-          value: null,
+          type: Sdn.ValueType.THEME_CATEGORICAL,
+          value: "@shadow.none",
         },
         offsetX: {
           type: Sdn.ValueType.EMPTY,

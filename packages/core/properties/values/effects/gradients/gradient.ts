@@ -1,4 +1,8 @@
 import { Theme, ThemeGradientKey } from "../../../../themes/types"
+import {
+  listThemeLookIds,
+  validateThemeLookPresetRef,
+} from "../../../../themes/looks"
 import { ValueType } from "../../../constants"
 import { PropertySchema } from "../../../types/schema"
 
@@ -12,17 +16,13 @@ export interface GradientValue {
 export const gradientPresetSchema: PropertySchema = {
   name: "gradientPreset",
   description:
-    "Selects a named gradient recipe from the theme or clears it with None.",
-  supports: ["empty", "inherit", "option", "themeCategorical"] as const,
+    "Selects a named gradient recipe from the theme, including the built-in None look.",
+  supports: ["empty", "inherit", "themeCategorical"] as const,
   validation: {
     empty: () => true,
     inherit: () => true,
-    option: (value: unknown) => value === "None",
-    themeCategorical: (value: unknown, theme?: Theme) => {
-      if (!theme || typeof value !== "string") return false
-      return value in theme.gradient
-    },
+    themeCategorical: (value: unknown, theme?: Theme) =>
+      validateThemeLookPresetRef("gradient", value, theme),
   },
-  presetOptions: () => ["None"],
-  themeCategoricalKeys: (theme: Theme) => Object.keys(theme.gradient),
+  themeCategoricalKeys: (theme: Theme) => listThemeLookIds(theme, "gradient"),
 }

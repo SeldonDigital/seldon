@@ -1,4 +1,8 @@
 import { Theme, ThemeFontKey } from "../../../../themes/types"
+import {
+  listThemeLookIds,
+  validateThemeLookPresetRef,
+} from "../../../../themes/looks"
 import { ValueType } from "../../../constants"
 import { PropertySchema } from "../../../types/schema"
 
@@ -12,17 +16,13 @@ export interface FontValue {
 export const fontPresetSchema: PropertySchema = {
   name: "fontPreset",
   description:
-    "Selects a named font recipe from the theme or clears it with None.",
-  supports: ["empty", "inherit", "option", "themeCategorical"] as const,
+    "Selects a named font recipe from the theme, including the built-in Normal look.",
+  supports: ["empty", "inherit", "themeCategorical"] as const,
   validation: {
     empty: () => true,
     inherit: () => true,
-    option: (value: unknown) => value === "None",
-    themeCategorical: (value: unknown, theme?: Theme) => {
-      if (!theme || typeof value !== "string") return false
-      return value in theme.font
-    },
+    themeCategorical: (value: unknown, theme?: Theme) =>
+      validateThemeLookPresetRef("font", value, theme),
   },
-  presetOptions: () => ["None"],
-  themeCategoricalKeys: (theme: Theme) => Object.keys(theme.font),
+  themeCategoricalKeys: (theme: Theme) => listThemeLookIds(theme, "font"),
 }

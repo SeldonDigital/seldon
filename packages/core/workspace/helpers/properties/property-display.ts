@@ -13,6 +13,7 @@ import {
   getPropertySchema,
 } from "@seldon/core/properties/schemas/helpers"
 import type { PropertyValueType } from "@seldon/core/properties/types/schema"
+import { getBuiltInLookSectionForPropertyKey } from "@seldon/core/themes/looks"
 import { matchCompoundPreset } from "./compound-presets"
 import {
   getCompoundLayerValue,
@@ -210,7 +211,12 @@ export function formatCompoundDisplay(
     .some((key) => isValueSet(parentLayer[key]))
   if (hasCustomValue) return "Custom"
 
-  return "Unset"
+  const builtInSection = getBuiltInLookSectionForPropertyKey(propertyKey)
+  if (builtInSection) {
+    return builtInSection === "font" ? "Normal" : "None"
+  }
+
+  return "Default"
 }
 
 export function formatShorthandDisplay(

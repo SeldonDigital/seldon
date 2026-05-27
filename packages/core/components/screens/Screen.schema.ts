@@ -60,7 +60,10 @@ export const schema = {
     },
     background: [
       {
-        preset: { type: Sdn.ValueType.EMPTY, value: null },
+        preset: {
+          type: Sdn.ValueType.THEME_CATEGORICAL,
+          value: "@background.none",
+        },
         image: { type: Sdn.ValueType.EMPTY, value: null },
         position: { type: Sdn.ValueType.EMPTY, value: null },
         size: { type: Sdn.ValueType.EMPTY, value: null },
@@ -74,7 +77,10 @@ export const schema = {
     ],
     gradient: [
       {
-        preset: { type: Sdn.ValueType.EMPTY, value: null },
+        preset: {
+          type: Sdn.ValueType.THEME_CATEGORICAL,
+          value: "@gradient.none",
+        },
         gradientType: { type: Sdn.ValueType.EMPTY, value: null },
         angle: { type: Sdn.ValueType.EMPTY, value: null },
         startColor: { type: Sdn.ValueType.EMPTY, value: null },
