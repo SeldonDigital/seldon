@@ -1,6 +1,10 @@
-import * as Sdn from "../../../properties"
-import * as Seldon from "../../constants"
-import { ComponentExport, ComponentSchema } from "../../types"
+import * as Sdn from "../../../properties";
+import * as Seldon from "../../constants";
+import { ComponentExport, ComponentSchema } from "../../types";
+
+
+
+
 
 export const schema = {
   name: "Calendar",
@@ -381,6 +385,10 @@ export const schema = {
           {
             component: Seldon.ComponentId.FRAME,
             overrides: {
+              orientation: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.Orientation.HORIZONTAL,
+              },
               wrapperElement: {
                 type: Sdn.ValueType.OPTION,
                 value: Sdn.WrapperElement.TR,
@@ -451,6 +459,10 @@ export const schema = {
           {
             component: Seldon.ComponentId.FRAME,
             overrides: {
+              orientation: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.Orientation.HORIZONTAL,
+              },
               wrapperElement: {
                 type: Sdn.ValueType.OPTION,
                 value: Sdn.WrapperElement.TR,
@@ -510,6 +522,10 @@ export const schema = {
           {
             component: Seldon.ComponentId.FRAME,
             overrides: {
+              orientation: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.Orientation.HORIZONTAL,
+              },
               wrapperElement: {
                 type: Sdn.ValueType.OPTION,
                 value: Sdn.WrapperElement.TR,
@@ -569,6 +585,10 @@ export const schema = {
           {
             component: Seldon.ComponentId.FRAME,
             overrides: {
+              orientation: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.Orientation.HORIZONTAL,
+              },
               wrapperElement: {
                 type: Sdn.ValueType.OPTION,
                 value: Sdn.WrapperElement.TR,
@@ -628,6 +648,10 @@ export const schema = {
           {
             component: Seldon.ComponentId.FRAME,
             overrides: {
+              orientation: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.Orientation.HORIZONTAL,
+              },
               wrapperElement: {
                 type: Sdn.ValueType.OPTION,
                 value: Sdn.WrapperElement.TR,
@@ -687,6 +711,10 @@ export const schema = {
           {
             component: Seldon.ComponentId.FRAME,
             overrides: {
+              orientation: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.Orientation.HORIZONTAL,
+              },
               wrapperElement: {
                 type: Sdn.ValueType.OPTION,
                 value: Sdn.WrapperElement.TR,

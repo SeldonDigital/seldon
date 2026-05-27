@@ -41,14 +41,11 @@ function getCompositionChildren(
     )
   }
 
-  const schemaChildren = getSchemaCompositionChildren(
-    getComponentSchema(component.component),
-  )
-  const slotChildren = component.children?.length
-    ? component.children
-    : resolveSchemaChild(component).fallbackChildren
+  if (component.children?.length) {
+    return component.children
+  }
 
-  return [...schemaChildren, ...slotChildren]
+  return resolveSchemaChild(component).fallbackChildren
 }
 
 export function getComponentDescendantIds(
@@ -58,31 +55,17 @@ export function getComponentDescendantIds(
   const seenIds = new Set<ComponentId>()
   const schema = getComponentSchema(componentId)
 
-  addIdsForComponent(schema, new Set<ComponentId>())
+  addIdsForComponent(schema)
 
-  function addIdsForComponent(
-    component: ComponentSchema | SchemaChild,
-    visitingIds: Set<ComponentId>,
-  ) {
+  function addIdsForComponent(component: ComponentSchema | SchemaChild) {
     const id = ("id" in component ? component.id : component.component) as ComponentId
 
-    if (seenIds.has(id)) {
-      return
+    getCompositionChildren(component).forEach((child) => addIdsForComponent(child))
+
+    if (!seenIds.has(id)) {
+      componentIds.push(id)
+      seenIds.add(id)
     }
-
-    if (visitingIds.has(id)) {
-      return
-    }
-
-    visitingIds.add(id)
-
-    getCompositionChildren(component).forEach((child) =>
-      addIdsForComponent(child, visitingIds),
-    )
-
-    visitingIds.delete(id)
-    componentIds.push(id)
-    seenIds.add(id)
   }
 
   return componentIds.reverse()
