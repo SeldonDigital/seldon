@@ -220,6 +220,7 @@ export type WorkspaceAction =
       type: "add_component"
       payload: {
         componentId: ComponentKey
+        variantFallbacks?: string[]
       }
     }
   | {
@@ -341,6 +342,7 @@ export type WorkspaceAction =
       type: "add_component_and_insert_default_instance"
       payload: {
         componentId: ComponentKey
+        variantFallbacks?: string[]
         target: {
           parentId: VariantId | InstanceId
           index?: number

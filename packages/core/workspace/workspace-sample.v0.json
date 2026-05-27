@@ -11,10 +11,10 @@
     ]
   },
   "components": {
-    "panelSidebar": {
+    "sidebar": {
       "type": "component",
       "level": "module",
-      "catalogId": "panelSidebar",
+      "catalogId": "sidebar",
       "label": "Sidebars",
       "author": "Imported",
       "intent": "",
@@ -34,7 +34,7 @@
       },
       "variants": [
         {
-          "id": "component-panelSidebar-default",
+          "id": "component-sidebar-default",
           "children": [
             {
               "id": "component-barTabs-QL1gMzKt",
@@ -94,7 +94,7 @@
           ]
         },
         {
-          "id": "component-panelSidebar-WOLBWkup",
+          "id": "component-sidebar-WOLBWkup",
           "children": [
             {
               "id": "component-barTabs-leKJ4Tda",
@@ -6967,8 +6967,8 @@
       "type": "default",
       "template": "catalog:listItemTree"
     },
-    "component-panelSidebar-default": {
-      "id": "component-panelSidebar-default",
+    "component-sidebar-default": {
+      "id": "component-sidebar-default",
       "level": "module",
       "label": "Sidebar",
       "theme": null,
@@ -6995,7 +6995,7 @@
         }
       },
       "type": "default",
-      "template": "catalog:panelSidebar"
+      "template": "catalog:sidebar"
     },
     "component-listItemTree-Mvj7hMjZ": {
       "id": "component-listItemTree-Mvj7hMjZ",
@@ -7954,8 +7954,8 @@
       "type": "variant",
       "template": "node:component-listItemTree-default"
     },
-    "component-panelSidebar-WOLBWkup": {
-      "id": "component-panelSidebar-WOLBWkup",
+    "component-sidebar-WOLBWkup": {
+      "id": "component-sidebar-WOLBWkup",
       "level": "module",
       "label": "Objects",
       "theme": null,
@@ -7988,7 +7988,7 @@
         "initialOverrides": {}
       },
       "type": "variant",
-      "template": "node:component-panelSidebar-default"
+      "template": "node:component-sidebar-default"
     }
   },
   "themes": {

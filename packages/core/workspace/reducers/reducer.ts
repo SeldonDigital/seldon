@@ -168,8 +168,11 @@ function reducer(workspace: Workspace, action: WorkspaceAction): Workspace {
     case "add_playground":
       return addPlayground(action.payload, workspace)
     case "add_component_and_insert_default_instance": {
-      const { componentId, target } = action.payload
-      const workspaceWithBoard = addComponent({ componentId }, workspace)
+      const { componentId, target, variantFallbacks } = action.payload
+      const workspaceWithBoard = addComponent(
+        { componentId, variantFallbacks },
+        workspace,
+      )
       const board = workspaceWithBoard.components[componentId]
       const rootId = board?.variants[0]?.id
       if (!rootId) return workspaceWithBoard

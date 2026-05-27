@@ -369,6 +369,7 @@ export const schema = {
     children: [
       {
         component: Seldon.ComponentId.BUTTON,
+        variant: "label",
         children: [
           {
             component: Seldon.ComponentId.LABEL,
@@ -383,6 +384,7 @@ export const schema = {
       },
       {
         component: Seldon.ComponentId.BUTTON,
+        variant: "label",
         children: [
           {
             component: Seldon.ComponentId.LABEL,
@@ -397,6 +399,7 @@ export const schema = {
       },
       {
         component: Seldon.ComponentId.BUTTON,
+        variant: "label",
         children: [
           {
             component: Seldon.ComponentId.LABEL,

@@ -4,6 +4,7 @@ import { Target } from "@lib/types"
 import { useCallback } from "react"
 import { invariant } from "@seldon/core"
 import { validateComponentInsertionForUI } from "@seldon/core/workspace/reducers/helpers/validation"
+import { confirmMissingSchemaVariants } from "@lib/workspace/confirm-missing-schema-variants"
 import { InstanceId, VariantId } from "@seldon/core/workspace/types"
 import { useDialog } from "@lib/hooks/use-dialog"
 import { useTool } from "@lib/hooks/use-tool"
@@ -34,10 +35,18 @@ export function InsertVariantPanel({
 
     // If the variant doesn't exist yet, create it
     if (!item.variantId) {
+      const variantFallbacks = await confirmMissingSchemaVariants(item.componentId)
+      if (variantFallbacks === null) {
+        return
+      }
+
       dispatchWithAutoSelect({
         type: "add_component_and_insert_default_instance",
         payload: {
           componentId: item.componentId,
+          variantFallbacks: variantFallbacks.length
+            ? variantFallbacks
+            : undefined,
           target: {
             parentId: target.nodeId as VariantId | InstanceId,
             index: target.index,

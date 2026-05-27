@@ -33,6 +33,22 @@ describe("getComponentDescendantIds", () => {
     expectParentBeforeChild(ids, ComponentId.TABLE, ComponentId.FRAME)
   })
 
+  it("does not include default-only children when a narrower variant is selected", () => {
+    const ids = getComponentDescendantIds(ComponentId.SIDEBAR)
+
+    expect(ids).toContain(ComponentId.BUTTON)
+    expect(ids).toContain(ComponentId.LABEL)
+    expect(ids).not.toContain(ComponentId.ICON)
+  })
+
+  it("orders icon before barHeader when dialog uses a partial barHeader slot", () => {
+    const loopOrder = getComponentDescendantIds(ComponentId.DIALOG).reverse()
+
+    expect(loopOrder.indexOf(ComponentId.ICON)).toBeLessThan(
+      loopOrder.indexOf(ComponentId.BAR_HEADER),
+    )
+  })
+
   it("orders parents before children for button composition", () => {
     const ids = getComponentDescendantIds(ComponentId.BUTTON)
 

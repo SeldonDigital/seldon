@@ -61,7 +61,7 @@ export function PanelDialog({
   ...props
 }: PanelDialogProps) {
   return (
-    <HTMLDiv className={"variant-panelDialog-default " + className} {...props}>
+    <HTMLDiv className={"variant-dialog-default " + className} {...props}>
       <HeaderPanelsClose
         {...{ ...seldon.headerPanelsCloseProps, ...headerPanelsCloseProps }}
         className={

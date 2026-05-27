@@ -37,8 +37,8 @@ export function AddBoardPanel({ onClose }: { onClose: () => void }) {
   )
 
   // Add the board and close the dialog
-  const handlePick = (item: CatalogItem) => {
-    addBoard(item.componentId)
+  const handlePick = async (item: CatalogItem) => {
+    await addBoard(item.componentId)
     selectBoard(item.componentId)
   }
 

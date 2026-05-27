@@ -1,22 +1,13 @@
-import * as Sdn from "../../../properties"
-import * as Seldon from "../../constants"
-import { ComponentExport, ComponentSchema } from "../../types"
+import * as Sdn from "../../properties"
+import * as Seldon from "../constants"
+import { ComponentExport, ComponentSchema } from "../types"
 
 export const schema = {
-  name: "Sidebar",
-  id: Seldon.ComponentId.PANEL_SIDEBAR,
+  name: "To-Do Widget",
+  id: Seldon.ComponentId.WIDGET_TODO,
   intent:
-    "Provides a structured sidebar panel with tabbed navigation, content area, and status footer for application interfaces.",
-  tags: [
-    "sidebar",
-    "panel",
-    "module",
-    "ui",
-    "layout",
-    "navigation",
-    "tabs",
-    "structured",
-  ],
+    "Compact UI widget for displaying and managing to-do items, supporting quick add, update, and complete actions.",
+  tags: ["todo", "widget", "tasks", "ui", "quick", "add", "update", "complete"],
   level: Seldon.ComponentLevel.MODULE,
   icon: Seldon.ComponentIcon.COMPONENT,
   properties: {
@@ -45,17 +36,14 @@ export const schema = {
       value: null,
     },
     width: {
-      type: Sdn.ValueType.EXACT,
-      value: {
-        unit: Sdn.Unit.PX,
-        value: 450,
-      },
+      type: Sdn.ValueType.OPTION,
+      value: Sdn.Resize.FILL,
     },
     height: {
       type: Sdn.ValueType.EXACT,
       value: {
         unit: Sdn.Unit.PX,
-        value: 350,
+        value: 250,
       },
     },
     margin: {
@@ -95,8 +83,8 @@ export const schema = {
       },
     },
     gap: {
-      type: Sdn.ValueType.OPTION,
-      value: Sdn.Gap.EVENLY_SPACED,
+      type: Sdn.ValueType.THEME_ORDINAL,
+      value: "@gap.tight",
     },
     wrapChildren: {
       type: Sdn.ValueType.EXACT,
@@ -317,20 +305,20 @@ export const schema = {
     },
     corners: {
       topLeft: {
-        type: Sdn.ValueType.EMPTY,
-        value: null,
+        type: Sdn.ValueType.THEME_ORDINAL,
+        value: "@corners.compact",
       },
       topRight: {
-        type: Sdn.ValueType.EMPTY,
-        value: null,
+        type: Sdn.ValueType.THEME_ORDINAL,
+        value: "@corners.compact",
       },
       bottomLeft: {
-        type: Sdn.ValueType.EMPTY,
-        value: null,
+        type: Sdn.ValueType.THEME_ORDINAL,
+        value: "@corners.compact",
       },
       bottomRight: {
-        type: Sdn.ValueType.EMPTY,
-        value: null,
+        type: Sdn.ValueType.THEME_ORDINAL,
+        value: "@corners.compact",
       },
     },
     shadow: [
@@ -373,11 +361,29 @@ export const schema = {
   default: {
     children: [
       {
-        component: Seldon.ComponentId.BAR_TABS,
+        component: Seldon.ComponentId.BAR_HEADER,
         overrides: {
           height: {
             type: Sdn.ValueType.OPTION,
             value: Sdn.Resize.FIT,
+          },
+          padding: {
+            top: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@padding.compact",
+            },
+            right: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@padding.compact",
+            },
+            bottom: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@padding.compact",
+            },
+            left: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@padding.cozy",
+            },
           },
           background: [
             {
@@ -414,8 +420,11 @@ export const schema = {
                 value: null,
               },
               brightness: {
-                type: Sdn.ValueType.EMPTY,
-                value: null,
+                type: Sdn.ValueType.EXACT,
+                value: {
+                  unit: Sdn.Unit.PERCENT,
+                  value: 35,
+                },
               },
               opacity: {
                 type: Sdn.ValueType.EMPTY,
@@ -423,51 +432,6 @@ export const schema = {
               },
             },
           ],
-          corners: {
-            bottomRight: {
-              type: Sdn.ValueType.EMPTY,
-              value: null,
-            },
-            bottomLeft: {
-              type: Sdn.ValueType.EMPTY,
-              value: null,
-            },
-          },
-        },
-      },
-      {
-        component: Seldon.ComponentId.FRAME,
-        overrides: {
-          width: {
-            type: Sdn.ValueType.OPTION,
-            value: Sdn.Resize.FILL,
-          },
-          height: {
-            type: Sdn.ValueType.OPTION,
-            value: Sdn.Resize.FILL,
-          },
-          padding: {
-            top: {
-              type: Sdn.ValueType.THEME_ORDINAL,
-              value: "@padding.tight",
-            },
-            right: {
-              type: Sdn.ValueType.THEME_ORDINAL,
-              value: "@padding.tight",
-            },
-            bottom: {
-              type: Sdn.ValueType.THEME_ORDINAL,
-              value: "@padding.tight",
-            },
-            left: {
-              type: Sdn.ValueType.THEME_ORDINAL,
-              value: "@padding.tight",
-            },
-          },
-          gap: {
-            type: Sdn.ValueType.EMPTY,
-            value: null,
-          },
           border: {
             preset: {
               type: Sdn.ValueType.EMPTY,
@@ -498,59 +462,210 @@ export const schema = {
               value: null,
             },
           },
+          borderTop: {
+            preset: {
+              type: Sdn.ValueType.EMPTY,
+              value: null,
+            },
+            style: {
+              type: Sdn.ValueType.EMPTY,
+              value: null,
+            },
+            color: {
+              type: Sdn.ValueType.EMPTY,
+              value: null,
+            },
+            width: {
+              type: Sdn.ValueType.EMPTY,
+              value: null,
+            },
+            brightness: {
+              type: Sdn.ValueType.EMPTY,
+              value: null,
+            },
+            opacity: {
+              type: Sdn.ValueType.EMPTY,
+              value: null,
+            },
+            collapse: {
+              type: Sdn.ValueType.EMPTY,
+              value: null,
+            },
+          },
+          borderRight: {
+            preset: {
+              type: Sdn.ValueType.EMPTY,
+              value: null,
+            },
+            style: {
+              type: Sdn.ValueType.EMPTY,
+              value: null,
+            },
+            color: {
+              type: Sdn.ValueType.EMPTY,
+              value: null,
+            },
+            width: {
+              type: Sdn.ValueType.EMPTY,
+              value: null,
+            },
+            brightness: {
+              type: Sdn.ValueType.EMPTY,
+              value: null,
+            },
+            opacity: {
+              type: Sdn.ValueType.EMPTY,
+              value: null,
+            },
+            collapse: {
+              type: Sdn.ValueType.EMPTY,
+              value: null,
+            },
+          },
+          borderBottom: {
+            preset: {
+              type: Sdn.ValueType.EMPTY,
+              value: null,
+            },
+            style: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.BorderStyle.SOLID,
+            },
+            color: {
+              type: Sdn.ValueType.THEME_CATEGORICAL,
+              value: "@swatch.primary",
+            },
+            width: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.BorderWidth.HAIRLINE,
+            },
+            brightness: {
+              type: Sdn.ValueType.EMPTY,
+              value: null,
+            },
+            opacity: {
+              type: Sdn.ValueType.EMPTY,
+              value: null,
+            },
+            collapse: {
+              type: Sdn.ValueType.EMPTY,
+              value: null,
+            },
+          },
+          borderLeft: {
+            preset: {
+              type: Sdn.ValueType.EMPTY,
+              value: null,
+            },
+            style: {
+              type: Sdn.ValueType.EMPTY,
+              value: null,
+            },
+            color: {
+              type: Sdn.ValueType.EMPTY,
+              value: null,
+            },
+            width: {
+              type: Sdn.ValueType.EMPTY,
+              value: null,
+            },
+            brightness: {
+              type: Sdn.ValueType.EMPTY,
+              value: null,
+            },
+            opacity: {
+              type: Sdn.ValueType.EMPTY,
+              value: null,
+            },
+            collapse: {
+              type: Sdn.ValueType.EMPTY,
+              value: null,
+            },
+          },
+          corners: {
+            bottomRight: {
+              type: Sdn.ValueType.EMPTY,
+              value: null,
+            },
+            bottomLeft: {
+              type: Sdn.ValueType.EMPTY,
+              value: null,
+            },
+          },
+        },
+        children: [
+          {
+            component: Seldon.ComponentId.TITLE,
+            overrides: {
+              content: {
+                type: Sdn.ValueType.EXACT,
+                value: "To Do's",
+              },
+              color: {
+                type: Sdn.ValueType.COMPUTED,
+                value: {
+                  function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+                  input: {
+                    basedOn: "#parent.background.color",
+                  },
+                },
+              },
+            },
+          },
+        ],
+      },
+      {
+        component: Seldon.ComponentId.INPUT_SEARCH,
+        overrides: {
+          margin: {
+            top: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@margin.tight",
+            },
+            right: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@margin.compact",
+            },
+            bottom: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@margin.tight",
+            },
+            left: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@margin.compact",
+            },
+          },
         },
       },
       {
-        component: Seldon.ComponentId.BAR_STATUS,
+        component: Seldon.ComponentId.LIST_TODO,
         overrides: {
+          width: {
+            type: Sdn.ValueType.OPTION,
+            value: Sdn.Resize.FILL,
+          },
           height: {
             type: Sdn.ValueType.OPTION,
-            value: Sdn.Resize.FIT,
+            value: Sdn.Resize.FILL,
           },
-          background: [
-            {
-              preset: {
-                type: Sdn.ValueType.EMPTY,
-                value: null,
-              },
-              image: {
-                type: Sdn.ValueType.EMPTY,
-                value: null,
-              },
-              position: {
-                type: Sdn.ValueType.EMPTY,
-                value: null,
-              },
-              size: {
-                type: Sdn.ValueType.EMPTY,
-                value: null,
-              },
-              repeat: {
-                type: Sdn.ValueType.EMPTY,
-                value: null,
-              },
-              color: {
-                type: Sdn.ValueType.THEME_CATEGORICAL,
-                value: "@swatch.primary",
-              },
-              blendMode: {
-                type: Sdn.ValueType.EMPTY,
-                value: null,
-              },
-              filter: {
-                type: Sdn.ValueType.EMPTY,
-                value: null,
-              },
-              brightness: {
-                type: Sdn.ValueType.EMPTY,
-                value: null,
-              },
-              opacity: {
-                type: Sdn.ValueType.EMPTY,
-                value: null,
-              },
+          margin: {
+            top: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@margin.tight",
             },
-          ],
+            right: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@margin.compact",
+            },
+            bottom: {
+              type: Sdn.ValueType.EMPTY,
+              value: null,
+            },
+            left: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@margin.compact",
+            },
+          },
         },
       },
     ],

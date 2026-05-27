@@ -1,25 +1,21 @@
-import * as Sdn from "../../../properties";
-import * as Seldon from "../../constants";
-import { ComponentExport, ComponentSchema } from "../../types";
-
-
-
-
+import * as Sdn from "../../properties"
+import * as Seldon from "../constants"
+import { ComponentExport, ComponentSchema } from "../types"
 
 export const schema = {
-  name: "Calendar",
-  id: Seldon.ComponentId.CALENDAR,
+  name: "Table",
+  id: Seldon.ComponentId.TABLE,
   intent:
-    "Schema for a full calendar component supporting month, week, and day views with events, navigation, and selection logic.",
+    "Schema for a standard data table with configurable columns, sorting, filtering, and row rendering options.",
   tags: [
-    "calendar",
+    "table",
+    "standard",
     "ui",
-    "month",
-    "week",
-    "day",
-    "events",
-    "navigation",
-    "selection",
+    "data",
+    "columns",
+    "rows",
+    "filter",
+    "sort",
   ],
   level: Seldon.ComponentLevel.MODULE,
   icon: Seldon.ComponentIcon.COMPONENT,
@@ -37,14 +33,6 @@ export const schema = {
       value: false,
     },
     direction: {
-      type: Sdn.ValueType.EMPTY,
-      value: null,
-    },
-    orientation: {
-      type: Sdn.ValueType.OPTION,
-      value: Sdn.Orientation.VERTICAL,
-    },
-    align: {
       type: Sdn.ValueType.EMPTY,
       value: null,
     },
@@ -92,10 +80,6 @@ export const schema = {
         value: null,
       },
     },
-    gap: {
-      type: Sdn.ValueType.OPTION,
-      value: Sdn.Gap.EVENLY_SPACED,
-    },
     wrapChildren: {
       type: Sdn.ValueType.EXACT,
       value: false,
@@ -103,6 +87,10 @@ export const schema = {
     clip: {
       type: Sdn.ValueType.EXACT,
       value: true,
+    },
+    cellAlign: {
+      type: Sdn.ValueType.EMPTY,
+      value: null,
     },
     color: {
       type: Sdn.ValueType.EMPTY,
@@ -155,11 +143,8 @@ export const schema = {
           value: null,
         },
         opacity: {
-          type: Sdn.ValueType.EXACT,
-          value: {
-            unit: Sdn.Unit.PERCENT,
-            value: 100,
-          },
+          type: Sdn.ValueType.EMPTY,
+          value: null,
         },
       },
     ],
@@ -334,6 +319,10 @@ export const schema = {
         value: "@corners.tight",
       },
     },
+    borderCollapse: {
+      type: Sdn.ValueType.OPTION,
+      value: Sdn.BorderCollapse.COLLAPSE,
+    },
     shadow: [
       {
         preset: {
@@ -375,72 +364,90 @@ export const schema = {
     children: [
       {
         component: Seldon.ComponentId.FRAME,
-        overrides: {
-          wrapperElement: {
-            type: Sdn.ValueType.OPTION,
-            value: Sdn.WrapperElement.THEAD,
-          },
-        },
         children: [
           {
             component: Seldon.ComponentId.FRAME,
-            overrides: {
-              orientation: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.Orientation.HORIZONTAL,
-              },
-              wrapperElement: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.WrapperElement.TR,
-              },
-            },
             children: [
               {
                 component: Seldon.ComponentId.TABLE_HEADER,
                 overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "Jan" },
+                  content: { type: Sdn.ValueType.EXACT, value: "Name" },
+                  columns: {
+                    type: Sdn.ValueType.EXACT,
+                    value: { unit: Sdn.Unit.NUMBER, value: 2 },
+                  },
                 },
               },
               {
                 component: Seldon.ComponentId.TABLE_HEADER,
                 overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "Mon" },
+                  display: {
+                    type: Sdn.ValueType.OPTION,
+                    value: Sdn.Display.EXCLUDE,
+                  },
                 },
               },
               {
                 component: Seldon.ComponentId.TABLE_HEADER,
                 overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "Tue" },
+                  content: { type: Sdn.ValueType.EXACT, value: "Details" },
+                  columns: {
+                    type: Sdn.ValueType.EXACT,
+                    value: { unit: Sdn.Unit.NUMBER, value: 3 },
+                  },
                 },
               },
               {
                 component: Seldon.ComponentId.TABLE_HEADER,
                 overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "Wed" },
+                  display: {
+                    type: Sdn.ValueType.OPTION,
+                    value: Sdn.Display.EXCLUDE,
+                  },
                 },
               },
               {
                 component: Seldon.ComponentId.TABLE_HEADER,
                 overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "Thu" },
+                  display: {
+                    type: Sdn.ValueType.OPTION,
+                    value: Sdn.Display.EXCLUDE,
+                  },
+                },
+              },
+            ],
+          },
+          {
+            component: Seldon.ComponentId.FRAME,
+            children: [
+              {
+                component: Seldon.ComponentId.TABLE_HEADER,
+                overrides: {
+                  content: { type: Sdn.ValueType.EXACT, value: "First" },
                 },
               },
               {
                 component: Seldon.ComponentId.TABLE_HEADER,
                 overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "Fri" },
+                  content: { type: Sdn.ValueType.EXACT, value: "Last" },
                 },
               },
               {
                 component: Seldon.ComponentId.TABLE_HEADER,
                 overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "Sat" },
+                  content: { type: Sdn.ValueType.EXACT, value: "Email" },
                 },
               },
               {
                 component: Seldon.ComponentId.TABLE_HEADER,
                 overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "Sun" },
+                  content: { type: Sdn.ValueType.EXACT, value: "Location" },
+                },
+              },
+              {
+                component: Seldon.ComponentId.TABLE_HEADER,
+                overrides: {
+                  content: { type: Sdn.ValueType.EXACT, value: "Role" },
                 },
               },
             ],
@@ -449,324 +456,214 @@ export const schema = {
       },
       {
         component: Seldon.ComponentId.FRAME,
-        overrides: {
-          wrapperElement: {
-            type: Sdn.ValueType.OPTION,
-            value: Sdn.WrapperElement.TBODY,
-          },
-        },
         children: [
           {
-            component: Seldon.ComponentId.FRAME,
-            overrides: {
-              orientation: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.Orientation.HORIZONTAL,
-              },
-              wrapperElement: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.WrapperElement.TR,
-              },
-            },
+            component: Seldon.ComponentId.TABLE_ROW_DATA,
             children: [
               {
                 component: Seldon.ComponentId.TABLE_DATA,
                 overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "01" },
+                  content: { type: Sdn.ValueType.EXACT, value: "Hari" },
                 },
               },
               {
                 component: Seldon.ComponentId.TABLE_DATA,
                 overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "" },
+                  content: { type: Sdn.ValueType.EXACT, value: "Seldon" },
                 },
               },
               {
                 component: Seldon.ComponentId.TABLE_DATA,
                 overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "" },
+                  content: {
+                    type: Sdn.ValueType.EXACT,
+                    value: "hari@fakeseldon.com",
+                  },
                 },
               },
               {
                 component: Seldon.ComponentId.TABLE_DATA,
                 overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "" },
+                  content: { type: Sdn.ValueType.EXACT, value: "Trantor" },
                 },
               },
               {
                 component: Seldon.ComponentId.TABLE_DATA,
                 overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "01" },
-                },
-              },
-              {
-                component: Seldon.ComponentId.TABLE_DATA,
-                overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "02" },
-                },
-              },
-              {
-                component: Seldon.ComponentId.TABLE_DATA,
-                overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "03" },
-                },
-              },
-              {
-                component: Seldon.ComponentId.TABLE_DATA,
-                overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "04" },
+                  content: {
+                    type: Sdn.ValueType.EXACT,
+                    value: "Psychohistorian",
+                  },
                 },
               },
             ],
           },
           {
-            component: Seldon.ComponentId.FRAME,
-            overrides: {
-              orientation: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.Orientation.HORIZONTAL,
-              },
-              wrapperElement: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.WrapperElement.TR,
-              },
-            },
+            component: Seldon.ComponentId.TABLE_ROW_DATA,
             children: [
               {
                 component: Seldon.ComponentId.TABLE_DATA,
                 overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "02" },
+                  content: { type: Sdn.ValueType.EXACT, value: "Salvor" },
                 },
               },
               {
                 component: Seldon.ComponentId.TABLE_DATA,
                 overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "05" },
+                  content: { type: Sdn.ValueType.EXACT, value: "Hardin" },
                 },
               },
               {
                 component: Seldon.ComponentId.TABLE_DATA,
                 overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "06" },
+                  content: {
+                    type: Sdn.ValueType.EXACT,
+                    value: "salvor@terminus.gov",
+                  },
                 },
               },
               {
                 component: Seldon.ComponentId.TABLE_DATA,
                 overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "07" },
+                  content: { type: Sdn.ValueType.EXACT, value: "Foundation" },
                 },
               },
               {
                 component: Seldon.ComponentId.TABLE_DATA,
                 overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "08" },
-                },
-              },
-              {
-                component: Seldon.ComponentId.TABLE_DATA,
-                overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "09" },
-                },
-              },
-              {
-                component: Seldon.ComponentId.TABLE_DATA,
-                overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "10" },
-                },
-              },
-              {
-                component: Seldon.ComponentId.TABLE_DATA,
-                overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "11" },
+                  content: { type: Sdn.ValueType.EXACT, value: "Mayor" },
                 },
               },
             ],
           },
           {
-            component: Seldon.ComponentId.FRAME,
-            overrides: {
-              orientation: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.Orientation.HORIZONTAL,
-              },
-              wrapperElement: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.WrapperElement.TR,
-              },
-            },
+            component: Seldon.ComponentId.TABLE_ROW_DATA,
             children: [
               {
                 component: Seldon.ComponentId.TABLE_DATA,
                 overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "03" },
+                  content: { type: Sdn.ValueType.EXACT, value: "Hober" },
                 },
               },
               {
                 component: Seldon.ComponentId.TABLE_DATA,
                 overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "12" },
+                  content: { type: Sdn.ValueType.EXACT, value: "Mallow" },
                 },
               },
               {
                 component: Seldon.ComponentId.TABLE_DATA,
                 overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "13" },
+                  content: {
+                    type: Sdn.ValueType.EXACT,
+                    value: "hober@korell.trade",
+                  },
                 },
               },
               {
                 component: Seldon.ComponentId.TABLE_DATA,
                 overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "14" },
+                  content: { type: Sdn.ValueType.EXACT, value: "Korell" },
                 },
               },
               {
                 component: Seldon.ComponentId.TABLE_DATA,
                 overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "15" },
-                },
-              },
-              {
-                component: Seldon.ComponentId.TABLE_DATA,
-                overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "16" },
-                },
-              },
-              {
-                component: Seldon.ComponentId.TABLE_DATA,
-                overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "17" },
-                },
-              },
-              {
-                component: Seldon.ComponentId.TABLE_DATA,
-                overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "18" },
+                  content: { type: Sdn.ValueType.EXACT, value: "Merchant" },
                 },
               },
             ],
           },
           {
-            component: Seldon.ComponentId.FRAME,
-            overrides: {
-              orientation: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.Orientation.HORIZONTAL,
-              },
-              wrapperElement: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.WrapperElement.TR,
-              },
-            },
+            component: Seldon.ComponentId.TABLE_ROW_DATA,
             children: [
               {
                 component: Seldon.ComponentId.TABLE_DATA,
                 overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "04" },
+                  content: { type: Sdn.ValueType.EXACT, value: "Bel" },
                 },
               },
               {
                 component: Seldon.ComponentId.TABLE_DATA,
                 overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "19" },
+                  content: { type: Sdn.ValueType.EXACT, value: "Riose" },
                 },
               },
               {
                 component: Seldon.ComponentId.TABLE_DATA,
                 overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "20" },
+                  content: {
+                    type: Sdn.ValueType.EXACT,
+                    value: "bel.riose@empire.mil",
+                  },
                 },
               },
               {
                 component: Seldon.ComponentId.TABLE_DATA,
                 overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "21" },
+                  content: { type: Sdn.ValueType.EXACT, value: "Empire" },
                 },
               },
               {
                 component: Seldon.ComponentId.TABLE_DATA,
                 overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "22" },
-                },
-              },
-              {
-                component: Seldon.ComponentId.TABLE_DATA,
-                overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "23" },
-                },
-              },
-              {
-                component: Seldon.ComponentId.TABLE_DATA,
-                overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "24" },
-                },
-              },
-              {
-                component: Seldon.ComponentId.TABLE_DATA,
-                overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "25" },
+                  content: { type: Sdn.ValueType.EXACT, value: "Military" },
                 },
               },
             ],
           },
+        ],
+      },
+      {
+        component: Seldon.ComponentId.FRAME,
+        children: [
           {
-            component: Seldon.ComponentId.FRAME,
-            overrides: {
-              orientation: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.Orientation.HORIZONTAL,
-              },
-              wrapperElement: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.WrapperElement.TR,
-              },
-            },
+            component: Seldon.ComponentId.TABLE_ROW_DATA,
             children: [
               {
                 component: Seldon.ComponentId.TABLE_DATA,
                 overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "05" },
+                  display: {
+                    type: Sdn.ValueType.OPTION,
+                    value: Sdn.Display.EXCLUDE,
+                  },
                 },
               },
               {
                 component: Seldon.ComponentId.TABLE_DATA,
                 overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "26" },
+                  display: {
+                    type: Sdn.ValueType.OPTION,
+                    value: Sdn.Display.EXCLUDE,
+                  },
                 },
               },
               {
                 component: Seldon.ComponentId.TABLE_DATA,
                 overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "27" },
+                  display: {
+                    type: Sdn.ValueType.OPTION,
+                    value: Sdn.Display.EXCLUDE,
+                  },
                 },
               },
               {
                 component: Seldon.ComponentId.TABLE_DATA,
                 overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "28" },
+                  display: {
+                    type: Sdn.ValueType.OPTION,
+                    value: Sdn.Display.EXCLUDE,
+                  },
                 },
               },
               {
                 component: Seldon.ComponentId.TABLE_DATA,
                 overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "29" },
-                },
-              },
-              {
-                component: Seldon.ComponentId.TABLE_DATA,
-                overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "30" },
-                },
-              },
-              {
-                component: Seldon.ComponentId.TABLE_DATA,
-                overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "31" },
-                },
-              },
-              {
-                component: Seldon.ComponentId.TABLE_DATA,
-                overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "" },
+                  content: { type: Sdn.ValueType.EXACT, value: "Total: 4" },
+                  columns: {
+                    type: Sdn.ValueType.EXACT,
+                    value: { unit: Sdn.Unit.NUMBER, value: 5 },
+                  },
                 },
               },
             ],

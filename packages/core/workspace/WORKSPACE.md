@@ -797,7 +797,7 @@ The `metadata` object **must** include a `version` key. The value is a non-negat
 
 The `catalogId` field uses camelCase to identify catalog schemas.
 
-Examples: `button`, `icon`, `label`, `text`, `title`, `input`, `frame`, `barTabs`, `barStatus`, `listItemTree`, `panelSidebar`, `iconSet`, `theme`
+Examples: `button`, `icon`, `label`, `text`, `title`, `input`, `frame`, `barTabs`, `barStatus`, `listItemTree`, `sidebar`, `iconSet`, `theme`
 
 ### Template Strings
 

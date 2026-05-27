@@ -2,6 +2,7 @@ import { useCallback } from "react"
 import { ComponentId } from "@seldon/core/components/constants"
 import { InstanceId, VariantId } from "@seldon/core/index"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
+import { confirmMissingSchemaVariants } from "@lib/workspace/confirm-missing-schema-variants"
 import { useSelection } from "@lib/workspace/use-selection"
 import { useWorkspace } from "@lib/workspace/use-workspace"
 import { useAddToast } from "@components/toaster/use-add-toast"
@@ -23,11 +24,19 @@ export function useAddRemoveCommands() {
   const addToast = useAddToast()
 
   const addBoard = useCallback(
-    (componentId: ComponentId) => {
+    async (componentId: ComponentId) => {
+      const variantFallbacks = await confirmMissingSchemaVariants(componentId)
+      if (variantFallbacks === null) {
+        return
+      }
+
       dispatch({
         type: "add_component",
         payload: {
           componentId,
+          variantFallbacks: variantFallbacks.length
+            ? variantFallbacks
+            : undefined,
         },
       })
 

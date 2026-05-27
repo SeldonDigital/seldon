@@ -84,7 +84,7 @@ export function FloatingPanel({
           dragConstraints={dragConstraints}
           dragListener={false}
           data-testid={testId}
-          className="variant-panelDialog-default"
+          className="variant-dialog-default"
         >
           <HeaderPanelsClose
             onPointerDown={(event) => moveControls.start(event)}

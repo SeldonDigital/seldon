@@ -5478,7 +5478,7 @@ html {
   padding: 0.5rem;
 }
 
-.variant-panelDialog-default:not(.seldon-instance) {
+.variant-dialog-default:not(.seldon-instance) {
   background-color: hsl(0deg 0% 15%);
   overflow: hidden;
   flex-wrap: nowrap;

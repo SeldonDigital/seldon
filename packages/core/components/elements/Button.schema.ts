@@ -482,6 +482,71 @@ export const schema = {
   },
   variants: [
     {
+      id: "label",
+      label: "Label",
+      intent: "Text-only button with a single label and no icon.",
+      children: [
+        {
+          component: Seldon.ComponentId.LABEL,
+          overrides: {
+            display: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.Display.SHOW,
+            },
+            content: {
+              type: Sdn.ValueType.EXACT,
+              value: "Button",
+            },
+            color: {
+              type: Sdn.ValueType.COMPUTED,
+              value: {
+                function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+                input: {
+                  basedOn: "#parent.background.color",
+                },
+              },
+            },
+            font: {
+              preset: {
+                type: Sdn.ValueType.EMPTY,
+                value: null,
+              },
+              family: {
+                type: Sdn.ValueType.EMPTY,
+                value: null,
+              },
+              style: {
+                type: Sdn.ValueType.EMPTY,
+                value: null,
+              },
+              weight: {
+                type: Sdn.ValueType.EMPTY,
+                value: null,
+              },
+              size: {
+                type: Sdn.ValueType.COMPUTED,
+                value: {
+                  function: Sdn.ComputedFunction.AUTO_FIT,
+                  input: {
+                    basedOn: "#parent.buttonSize",
+                    factor: 0.8,
+                  },
+                },
+              },
+              lineHeight: {
+                type: Sdn.ValueType.EMPTY,
+                value: null,
+              },
+              textCase: {
+                type: Sdn.ValueType.EMPTY,
+                value: null,
+              },
+            },
+          },
+        },
+      ],
+    },
+    {
       id: "social",
       label: "Social Media Button",
       intent:
