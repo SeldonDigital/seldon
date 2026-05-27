@@ -63,9 +63,9 @@ function hasOverriddenSiblingProperties(
 ): boolean {
   const bag = getPropertyOverridesBag(node)
   if (!bag || !(key in bag)) return false
-  const propertyValue = (bag as Record<string, unknown>)[key]
-  if (!propertyValue || typeof propertyValue !== "object") return false
-  return Object.keys(propertyValue)
+  const layer = getCompoundLayerValue((bag as Record<string, unknown>)[key])
+  if (!layer) return false
+  return Object.keys(layer)
     .filter((subKey) => subKey !== "preset")
     .some((subKey) => hasSubPropertyOverride(node, key, subKey))
 }
@@ -144,7 +144,7 @@ function calculateSubPropertyStatus(
   return "not used"
 }
 
-function calculateShorthandMainPropertyStatus(
+function aggregateSubPropertyStatuses(
   subStatuses: PropertyStatus[],
 ): PropertyStatus {
   if (subStatuses.length === 0) {
@@ -204,6 +204,7 @@ export function getPropertyStatus(
         const schemaLayer = getCompoundLayerValue(
           (schemaProperties as Record<string, unknown> | null)?.[key],
         )
+        const subStatuses: PropertyStatus[] = []
         for (const subKey of subKeys) {
           const hasSubDefault = hasSchemaSubProperty(
             schemaProperties,
@@ -212,7 +213,7 @@ export function getPropertyStatus(
           )
           const schemaSubValue = hasSubDefault ? schemaLayer?.[subKey] : null
 
-          status[compoundSubPropertyPath(key, subKey)] = calculateSubPropertyStatus(
+          const subStatus = calculateSubPropertyStatus(
             key,
             subKey,
             hasSubPropertyOverride(node, key, subKey),
@@ -220,7 +221,10 @@ export function getPropertyStatus(
             compoundLayer,
             schemaSubValue,
           )
+          status[compoundSubPropertyPath(key, subKey)] = subStatus
+          subStatuses.push(subStatus)
         }
+        status[key] = aggregateSubPropertyStatuses(subStatuses)
       }
     }
 
@@ -254,7 +258,7 @@ export function getPropertyStatus(
         subStatuses.push(subStatus)
       }
 
-      status[key] = calculateShorthandMainPropertyStatus(subStatuses)
+      status[key] = aggregateSubPropertyStatuses(subStatuses)
     }
   }
 
