@@ -1,9 +1,11 @@
 import { getComponentSchema } from "../../../components/catalog"
 import { ComponentId } from "../../../components/constants"
 import { ComponentSchema, SchemaChild, isComplexSchema } from "../../../components/types"
+import { collectComponentInstantiationPlans } from "./collect-component-instantiation-plans"
 import {
   applyVariantFallbackToSlot,
   getCompositionChildren,
+  getSchemaCompositionChildren,
 } from "./schema-composition-children"
 
 /**
@@ -19,14 +21,43 @@ export function getComponentDescendantIds(
   const componentIds: ComponentId[] = []
   const seenIds = new Set<ComponentId>()
   const schema = getComponentSchema(componentId)
+  const instantiationPlans = collectComponentInstantiationPlans(
+    componentId,
+    variantFallbacks,
+  )
+  const expandingCatalog = new Set<ComponentId>()
 
   addIdsForComponent(schema)
 
-  function addIdsForComponent(component: ComponentSchema | SchemaChild) {
-    const id = ("id" in component ? component.id : component.component) as ComponentId
+  function registerComponentId(id: ComponentId) {
+    if (seenIds.has(id) || expandingCatalog.has(id)) {
+      return
+    }
 
-    getCompositionChildren(component).forEach((childSlot) => {
-      const slot = applyVariantFallbackToSlot(childSlot, variantFallbacks)
+    const plan = instantiationPlans.get(id)
+    if (plan?.fullCatalog) {
+      expandingCatalog.add(id)
+      const catalogSchema = getComponentSchema(id)
+      if (isComplexSchema(catalogSchema)) {
+        for (const catalogSlot of getSchemaCompositionChildren(catalogSchema)) {
+          const slot = applyVariantFallbackToSlot(catalogSlot, variantFallbacks)
+          addIdsForComponent(slot)
+          registerComponentId(slot.component as ComponentId)
+        }
+      }
+      expandingCatalog.delete(id)
+    }
+
+    componentIds.push(id)
+    seenIds.add(id)
+  }
+
+  function addIdsForComponent(component: ComponentSchema | SchemaChild) {
+    const compositionChildren = getCompositionChildren(component).map(
+      (childSlot) => applyVariantFallbackToSlot(childSlot, variantFallbacks),
+    )
+
+    compositionChildren.forEach((slot) => {
       addIdsForComponent(slot)
     })
 
@@ -44,9 +75,12 @@ export function getComponentDescendantIds(
       }
     }
 
-    if (!seenIds.has(id)) {
-      componentIds.push(id)
-      seenIds.add(id)
+    for (const slot of compositionChildren) {
+      registerComponentId(slot.component as ComponentId)
+    }
+
+    if ("id" in component) {
+      registerComponentId(component.id as ComponentId)
     }
   }
 

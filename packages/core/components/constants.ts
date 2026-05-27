@@ -18,7 +18,6 @@ export enum ComponentId {
   BAR_NAVIGATION = "barNavigation",
   BAR_STATUS = "barStatus",
   BAR_TABS = "barTabs",
-  BAR_TOP = "barTop",
   BLOCKQUOTE = "blockquote",
   BOARD = "board",
   BUTTON = "button",

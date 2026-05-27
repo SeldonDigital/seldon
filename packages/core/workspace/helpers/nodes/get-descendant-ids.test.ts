@@ -49,6 +49,21 @@ describe("getComponentDescendantIds", () => {
     )
   })
 
+  it("orders icon before section when footer repeats section slots", () => {
+    const loopOrder = getComponentDescendantIds(ComponentId.FOOTER).reverse()
+
+    expect(loopOrder.indexOf(ComponentId.ICON)).toBeLessThan(
+      loopOrder.indexOf(ComponentId.SECTION),
+    )
+  })
+
+  it("includes frame and image when full-catalog boards embed them only in catalog variants", () => {
+    const ids = getComponentDescendantIds(ComponentId.FOOTER)
+
+    expect(ids).toContain(ComponentId.FRAME)
+    expect(ids).toContain(ComponentId.IMAGE)
+  })
+
   it("orders parents before children for button composition", () => {
     const ids = getComponentDescendantIds(ComponentId.BUTTON)
 

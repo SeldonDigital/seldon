@@ -137,10 +137,6 @@ import {
   schema as barTabsSchema,
 } from "./parts/bars/BarTabs.schema"
 import {
-  exportConfig as barTopExportConfig,
-  schema as barTopSchema,
-} from "./parts/bars/BarTop.schema"
-import {
   exportConfig as cardHorizontalExportConfig,
   schema as cardHorizontalSchema,
 } from "./parts/cards/CardHorizontal.schema"
@@ -408,7 +404,6 @@ const parts: ComponentSchema[] = [
   barNavigationSchema,
   barStatusSchema,
   barTabsSchema,
-  barTopSchema,
   cardHorizontalSchema,
   cardProductSchema,
   cardStackedSchema,
@@ -513,7 +508,6 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   [ComponentId.BAR_NAVIGATION]: barNavigationExportConfig,
   [ComponentId.BAR_STATUS]: barStatusExportConfig,
   [ComponentId.BAR_TABS]: barTabsExportConfig,
-  [ComponentId.BAR_TOP]: barTopExportConfig,
   [ComponentId.CARD_HORIZONTAL]: cardHorizontalExportConfig,
   [ComponentId.CARD_PRODUCT]: cardProductExportConfig,
   [ComponentId.CARD_STACKED]: cardStackedExportConfig,

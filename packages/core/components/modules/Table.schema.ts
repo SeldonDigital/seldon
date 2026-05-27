@@ -364,9 +364,25 @@ export const schema = {
     children: [
       {
         component: Seldon.ComponentId.FRAME,
+        overrides: {
+          wrapperElement: {
+            type: Sdn.ValueType.OPTION,
+            value: Sdn.WrapperElement.THEAD,
+          },
+        },
         children: [
           {
             component: Seldon.ComponentId.FRAME,
+            overrides: {
+              orientation: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.Orientation.HORIZONTAL,
+              },
+              wrapperElement: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.WrapperElement.TR,
+              },
+            },
             children: [
               {
                 component: Seldon.ComponentId.TABLE_HEADER,
@@ -419,6 +435,16 @@ export const schema = {
           },
           {
             component: Seldon.ComponentId.FRAME,
+            overrides: {
+              orientation: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.Orientation.HORIZONTAL,
+              },
+              wrapperElement: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.WrapperElement.TR,
+              },
+            },
             children: [
               {
                 component: Seldon.ComponentId.TABLE_HEADER,
@@ -456,6 +482,12 @@ export const schema = {
       },
       {
         component: Seldon.ComponentId.FRAME,
+        overrides: {
+          wrapperElement: {
+            type: Sdn.ValueType.OPTION,
+            value: Sdn.WrapperElement.TBODY,
+          },
+        },
         children: [
           {
             component: Seldon.ComponentId.TABLE_ROW_DATA,
@@ -616,6 +648,12 @@ export const schema = {
       },
       {
         component: Seldon.ComponentId.FRAME,
+        overrides: {
+          wrapperElement: {
+            type: Sdn.ValueType.OPTION,
+            value: Sdn.WrapperElement.TFOOT,
+          },
+        },
         children: [
           {
             component: Seldon.ComponentId.TABLE_ROW_DATA,
