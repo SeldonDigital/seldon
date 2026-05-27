@@ -187,9 +187,7 @@ export function usePropertyControlData({
     if (property.controlType === "color") {
       return false
     }
-    // Don't show chevron for compound properties with preset options (they'll have a menu)
-    // Note: This check is approximate - the actual check happens in RowProperty where we have access to children
-    if (property.isCompound) {
+    if (property.isCompound && !property.controlType) {
       return false
     }
     // Show chevron (transparent) for properties without options (text/number)

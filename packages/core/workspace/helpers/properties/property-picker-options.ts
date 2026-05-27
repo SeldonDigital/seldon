@@ -78,11 +78,21 @@ function resolveValueAtPropertyPath(
   }
 
   const segments = path.split(".").filter(Boolean)
-  if (segments.length === 2) {
-    const [root, facet] = segments
-    if (root && facet && isLayeredPaintProperty(root as PropertyKey)) {
-      const layer = getCompoundLayerValue(properties[root as keyof Properties])
-      return layer?.[facet]
+  const root = segments[0]
+  if (root && isLayeredPaintProperty(root as PropertyKey)) {
+    if (segments.length === 3 && segments[1] === LAYERED_PAINT_LAYER_INDEX) {
+      const facet = segments[2]
+      if (facet) {
+        const layer = getCompoundLayerValue(properties[root as keyof Properties])
+        return layer?.[facet]
+      }
+    }
+    if (segments.length === 2) {
+      const facet = segments[1]
+      if (facet) {
+        const layer = getCompoundLayerValue(properties[root as keyof Properties])
+        return layer?.[facet]
+      }
     }
   }
 

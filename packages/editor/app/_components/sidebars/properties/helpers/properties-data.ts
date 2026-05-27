@@ -369,13 +369,16 @@ export function createFlatProperty(
     finalStatus = "error"
   }
 
+  const usesCompoundPresetPicker =
+    isCompound && hasCompoundPresetOptions(propertyKey, theme, workspace)
+
   return {
     key: propertyKey,
     label: registryEntry?.label || formatPropertyLabel(propertyKey),
     value: propertyValue || EMPTY_VALUE,
     actualValue,
     valueType: getValueType(propertyValue),
-    controlType: registryEntry?.control,
+    controlType: usesCompoundPresetPicker ? "combo" : registryEntry?.control,
     isCompound,
     isShorthand,
     isSubProperty: propertyKey.includes(".") && !isCompound && !isShorthand,
