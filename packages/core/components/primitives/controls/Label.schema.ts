@@ -114,15 +114,16 @@ export const schema = {
         type: Sdn.ValueType.EMPTY,
         value: null,
       },
+      letterSpacing: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
     },
     textAlign: {
       type: Sdn.ValueType.EMPTY,
       value: null,
     },
-    letterSpacing: {
-      type: Sdn.ValueType.EMPTY,
-      value: null,
-    },
+
     textDecoration: {
       type: Sdn.ValueType.EMPTY,
       value: null,

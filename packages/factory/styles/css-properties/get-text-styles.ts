@@ -39,7 +39,7 @@ export function getTextStyles({
     resolveValue(themeFont?.parameters.lineHeight)
 
   const letterSpacing =
-    resolveValue(properties.letterSpacing) ||
+    resolveValue(properties.font?.letterSpacing) ||
     resolveValue(themeFont?.parameters.letterSpacing)
 
   const textCase =
@@ -100,8 +100,8 @@ export function getTextStyles({
       textAlign.value === TextAlign.AUTO ? "start" : textAlign.value
   }
 
-  // Only apply if letterSpacing is defined in the schema
-  if (letterSpacing && properties.letterSpacing) {
+  // Only apply if font.letterSpacing is defined in the schema
+  if (letterSpacing && properties.font?.letterSpacing) {
     styles.letterSpacing = getCssValue(letterSpacing) as string // We're sure that the value is a string since its an EmptyValue, PixelValue or PercentageValue
   }
 

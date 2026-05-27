@@ -331,11 +331,12 @@ export const schema = {
         type: Sdn.ValueType.OPTION,
         value: Sdn.TextCasing.NORMAL,
       },
+      letterSpacing: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
     },
-    letterSpacing: {
-      type: Sdn.ValueType.EMPTY,
-      value: null,
-    },
+
     textDecoration: {
       type: Sdn.ValueType.OPTION,
       value: Sdn.TextDecoration.NONE,

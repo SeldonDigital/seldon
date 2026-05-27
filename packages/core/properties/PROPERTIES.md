@@ -369,7 +369,7 @@ Properties that control text styling, fonts, and typography.
 
 | Property | Type | Values |
 | --- | --- | --- |
-| `font` | `compound` | `preset: family, style, weight, size, lineHeight, textCase` |
+| `font` | `compound` | `preset: family, style, weight, size, lineHeight, textCase, letterSpacing` |
 | └ `font.preset` | `atomic` | `empty` \| `inherit` \| `theme.categorical: @font.*` (built-in `@font.normal`) |
 | └ `font.family` | `atomic` | `empty` \| `inherit` \| `theme.categorical: @fontFamily.*` \| `option: string` \| `exact: string` |
 | └ `font.style` | `atomic` | `empty` \| `inherit` \| `option: normal, italic, oblique` \| `exact: string` |
@@ -377,8 +377,8 @@ Properties that control text styling, fonts, and typography.
 | └ `font.size` | `atomic` | `empty` \| `inherit` \| `exact: px, rem` \| `theme.ordinal: @fontSize.*` \| `computed: autoFit, match` |
 | └ `font.lineHeight` | `atomic` | `empty` \| `inherit` \| `exact: px, rem, %` \| `exact: unitless number, >0` \| `theme.ordinal: @lineHeight.*` |
 | └ `font.textCase` | `atomic` | `empty` \| `inherit` \| `option: normal, lowercase, uppercase, capitalize` |
+| └ `font.letterSpacing` | `atomic` | `empty` \| `inherit` \| `exact: px, rem` |
 | `textAlign` | `atomic` | `empty` \| `inherit` \| `option: auto, left, right, center, justify` |
-| `letterSpacing` | `atomic` | `empty` \| `inherit` \| `exact: px, rem` |
 | `textCase` | `atomic` | `empty` \| `inherit` \| `option: normal, lowercase, uppercase, capitalize` |
 | `textDecoration` | `atomic` | `empty` \| `inherit` \| `option: none, underline, overline, line-through` |
 | `wrapText` | `atomic` | `empty` \| `inherit` \| `exact: boolean` \| `option: true, false` |

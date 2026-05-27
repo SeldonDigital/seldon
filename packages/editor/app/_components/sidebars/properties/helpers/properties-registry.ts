@@ -596,15 +596,15 @@ const UI_OVERRIDES: PropertyRegistry = {
         icon: "IconTokenValue",
         control: "menu",
       },
+      letterSpacing: {
+        icon: "IconLetterSpacingValue",
+        control: "number",
+      },
     },
   },
   textAlign: {
     icon: "IconTextAlignValue",
     control: "menu",
-  },
-  letterSpacing: {
-    icon: "IconLetterSpacingValue",
-    control: "number",
   },
   textDecoration: {
     icon: "IconTextDecoration",

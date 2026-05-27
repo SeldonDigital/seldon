@@ -58,9 +58,17 @@ export function propertyValuesMatch(
   expectedValue: unknown,
 ): boolean {
   if (!isTypedPropertyValue(currentValue)) {
-    return false
+    return isValueEmpty(expectedValue)
   }
   return storedValueMatches(currentValue.value, expectedValue)
+}
+
+export function compoundFacetMatches(
+  parentLayer: Record<string, unknown>,
+  subKey: string,
+  expectedValue: unknown,
+): boolean {
+  return propertyValuesMatch(parentLayer[subKey], expectedValue)
 }
 
 export function compoundSubPropertyPath(

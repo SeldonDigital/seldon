@@ -47,7 +47,6 @@ import {
   ImageFitValue,
   ImageSourceValue,
   InputTypeValue,
-  LetterSpacingValue,
   LinesValue,
   MarginValue,
   OpacityValue,
@@ -136,7 +135,6 @@ export type Properties = Partial<{
 
   font: FontCompound
   textAlign: Restricted<TextAlignValue | EmptyValue, TextAlign>
-  letterSpacing: Restricted<LetterSpacingValue | EmptyValue, number>
   textCase: Restricted<TextCaseValue | EmptyValue, TextCasing>
   textDecoration: Restricted<TextDecorationValue | EmptyValue, TextDecoration>
   wrapText: BooleanValue | EmptyValue

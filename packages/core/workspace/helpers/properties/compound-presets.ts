@@ -22,7 +22,7 @@ import {
   getSchemaProperties,
   getSubPropertyKeysFromSchema,
   getTypedNode,
-  propertyValuesMatch,
+  compoundFacetMatches,
   wrapCompoundPropertyValue,
 } from "./shared"
 
@@ -122,7 +122,7 @@ function layerMatchesLookParameters(
     return false
   }
   return entries.every(([subKey, expectedValue]) =>
-    propertyValuesMatch(parentLayer[subKey], expectedValue),
+    compoundFacetMatches(parentLayer, subKey, expectedValue),
   )
 }
 
