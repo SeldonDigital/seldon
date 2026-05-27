@@ -100,7 +100,6 @@ const PROPERTY_CATEGORY_MAP: Record<string, PropertyCategoryType> = {
   // Typography
   font: "typography",
   textAlign: "typography",
-  textCase: "typography",
   textDecoration: "typography",
   wrapText: "typography",
   lines: "typography",

@@ -140,7 +140,6 @@ export const PROPERTY_DISPLAY_ORDER: ReadonlyArray<{
       "fontTextCase",
       "fontLetterSpacing",
       "textAlign",
-      "textCase",
       "textDecoration",
       "wrapText",
       "lines",

@@ -163,8 +163,8 @@ export const schema = {
         value: null,
       },
       textCase: {
-        type: Sdn.ValueType.OPTION,
-        value: Sdn.TextCasing.NORMAL,
+        type: Sdn.ValueType.EMPTY,
+        value: null,
       },
       letterSpacing: {
         type: Sdn.ValueType.EMPTY,

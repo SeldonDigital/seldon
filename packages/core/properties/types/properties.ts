@@ -19,7 +19,6 @@ import {
   Scroll,
   ScrollbarStyle,
   TextAlign,
-  TextCasing,
   TextDecoration,
 } from "../values"
 import {
@@ -67,7 +66,6 @@ import {
   SizeValue,
   SymbolValue,
   TextAlignValue,
-  TextCaseValue,
   TextDecorationValue,
 } from "../values"
 import { CursorValue } from "../values/attributes/cursor"
@@ -135,7 +133,6 @@ export type Properties = Partial<{
 
   font: FontCompound
   textAlign: Restricted<TextAlignValue | EmptyValue, TextAlign>
-  textCase: Restricted<TextCaseValue | EmptyValue, TextCasing>
   textDecoration: Restricted<TextDecorationValue | EmptyValue, TextDecoration>
   wrapText: BooleanValue | EmptyValue
   lines: Restricted<LinesValue | EmptyValue, number>

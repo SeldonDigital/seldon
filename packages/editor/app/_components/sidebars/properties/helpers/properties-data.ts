@@ -55,7 +55,11 @@ import {
   getPropertyCategory,
 } from "@seldon/core/properties/schemas"
 import { getPresetOptions } from "@seldon/core/properties/schemas/helpers/property-options"
-import { validatePropertyValue } from "@seldon/core/properties/schemas/helpers"
+import {
+  getCatalogKeyForPropertyPath,
+  getPropertySchema,
+  validatePropertyValue,
+} from "@seldon/core/properties/schemas/helpers"
 import { isComponentEntry } from "@seldon/core/workspace/helpers/components/is-component-entry"
 import { ControlType, getPropertyRegistryEntry } from "./properties-registry"
 import { getAllPropertyKeys } from "./properties-registry-utils"
@@ -69,6 +73,13 @@ import {
 const EMPTY_VALUE = { type: ValueType.EMPTY, value: null }
 const UNKNOWN_VALUE = "unknown"
 const UNKNOWN_DISPLAY = "Error"
+
+function facetAllowsAuthoredComputed(subPropertyPath: string): boolean {
+  const catalogKey = getCatalogKeyForPropertyPath(subPropertyPath)
+  if (!catalogKey) return false
+  const schema = getPropertySchema(catalogKey)
+  return schema?.supports.includes("computed") ?? false
+}
 
 type PropertyStatus = "set" | "unset" | "override" | "not used" | "error"
 type PropertyType = "atomic" | "compound" | "shorthand"
@@ -403,14 +414,13 @@ export function createFlatSubProperty(
   const subPropertyPath = subPropertyPathFor(propertyKey, subKey)
   const subRegistryEntry = getPropertyRegistryEntry(subPropertyPath)
 
-  // Sub-properties should be dimmed if they have a computed value
-  // For shorthand properties, computed values are set on each sub-property individually
   const isDimmed =
     subValue &&
     typeof subValue === "object" &&
     subValue !== null &&
     "type" in subValue &&
-    subValue.type === ValueType.COMPUTED
+    subValue.type === ValueType.COMPUTED &&
+    !facetAllowsAuthoredComputed(subPropertyPath)
 
   return {
     key: subPropertyPath,

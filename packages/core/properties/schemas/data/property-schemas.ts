@@ -200,7 +200,6 @@ const PROPERTY_SCHEMAS_RAW = {
   fontTextCase: textCaseSchema,
   fontLetterSpacing: letterSpacingSchema,
   textAlign: textAlignSchema,
-  textCase: textCaseSchema,
   textDecoration: textDecorationSchema,
   wrapText: wrapTextSchema,
   lines: linesSchema,
