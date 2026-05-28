@@ -7,8 +7,12 @@ import {
   Variant,
   Workspace,
 } from "@seldon/core"
+import { getWorkspaceThemePickerOptions } from "@seldon/core/helpers/properties/properties-bridge"
 import { isAtomicValue } from "@seldon/core/helpers/type-guards/value/is-atomic-value"
 import { isComponentEntry } from "@seldon/core/workspace/helpers/components/is-component-entry"
+import { themeService } from "@seldon/core/workspace/services/theme/theme.service"
+import { ThemeSwatches } from "@components/ui/ThemeSwatches"
+import { useThemes } from "@lib/themes/hooks/use-themes"
 import { getNodeCatalogComponentId } from "@lib/workspace/node-tree"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { useDebugMode } from "@lib/hooks/use-debug-mode"
@@ -89,6 +93,14 @@ export function RowProperty({
     usePropertyControlData({ property, theme })
 
   const propertyValue = getPropertyValueForDisplay()
+  const isThemeAssignment = property.pickerVariant === "themeAssignment"
+  const themes = useThemes()
+
+  const themeForSwatches = useMemo(() => {
+    if (!isThemeAssignment) return null
+    const displayThemeId = themeService.getObjectThemeId(node, workspace)
+    return themes.find((t) => t.id === displayThemeId) ?? null
+  }, [isThemeAssignment, node, workspace, themes])
 
   // Get options for theme value matching (UI optimization)
   const options = useMemo(() => {
@@ -97,6 +109,15 @@ export function RowProperty({
       (property.controlType !== "combo" && property.controlType !== "menu")
     ) {
       return undefined
+    }
+
+    if (property.key === "theme") {
+      return [
+        getWorkspaceThemePickerOptions({
+          workspace,
+          allowInherit: !isComponentEntry(node),
+        }),
+      ]
     }
 
     const componentId = isComponentEntry(node)
@@ -371,53 +392,96 @@ export function RowProperty({
         },
       },
 
-      buttonIconic2: {
-        style: { pointerEvents: "none" as const },
-      },
-      icon2: {
-        icon: (swatchChipColor
-          ? "icon-custom-color-value"
-          : iconId) as IconProps["icon"],
-        color: (() => {
-          if (swatchChipColor) {
-            return swatchChipColor
+      buttonIconic2: isThemeAssignment
+        ? {
+            style: {
+              display: "none" as const,
+              pointerEvents: "none" as const,
+            },
           }
-          if (property.key.startsWith("swatch.") && property.actualValue) {
-            return property.actualValue as string
+        : {
+            style: { pointerEvents: "none" as const },
+          },
+      icon2: isThemeAssignment
+        ? {
+            icon: iconId as IconProps["icon"],
+            style: { display: "none" as const },
           }
-          if (
-            (property.key === "color.baseColor" ||
-              property.key === "color.whitePoint" ||
-              property.key === "color.grayPoint" ||
-              property.key === "color.blackPoint") &&
-            (property as { iconColorValue?: string }).iconColorValue
-          ) {
-            return (property as { iconColorValue: string }).iconColorValue
-          }
-          return labelColor || undefined
-        })(),
-        style: iconStyle(),
-      },
+        : {
+            icon: (swatchChipColor
+              ? "icon-custom-color-value"
+              : iconId) as IconProps["icon"],
+            color: (() => {
+              if (swatchChipColor) {
+                return swatchChipColor
+              }
+              if (property.key.startsWith("swatch.") && property.actualValue) {
+                return property.actualValue as string
+              }
+              if (
+                (property.key === "color.baseColor" ||
+                  property.key === "color.whitePoint" ||
+                  property.key === "color.grayPoint" ||
+                  property.key === "color.blackPoint") &&
+                (property as { iconColorValue?: string }).iconColorValue
+              ) {
+                return (property as { iconColorValue: string }).iconColorValue
+              }
+              return labelColor || undefined
+            })(),
+            style: iconStyle(),
+          },
 
       label2: {
         children: (() => {
           const shouldShowControl = Boolean(property.controlType)
+          const valueContent =
+            isEditingProperty && shouldShowControl ? (
+              <PropertyControl
+                property={property}
+                propertySubject={node}
+                theme={theme}
+                frameRef={frameRef}
+                isEditing={isEditingProperty}
+                onEditChange={setIsEditingProperty}
+                onBlur={() => setIsEditingProperty(false)}
+                color={labelColor}
+                themeEditingContext={themeEditingContext}
+              />
+            ) : (
+              (value ?? "")
+            )
 
-          return isEditingProperty && shouldShowControl ? (
-            <PropertyControl
-              property={property}
-              propertySubject={node}
-              theme={theme}
-              frameRef={frameRef}
-              isEditing={isEditingProperty}
-              onEditChange={setIsEditingProperty}
-              onBlur={() => setIsEditingProperty(false)}
-              color={labelColor}
-              themeEditingContext={themeEditingContext}
-            />
-          ) : (
-            (value ?? "")
-          )
+          if (isThemeAssignment && themeForSwatches) {
+            return (
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.375rem",
+                  width: "100%",
+                  minWidth: 0,
+                }}
+              >
+                <div style={{ flexShrink: 0 }}>
+                  <ThemeSwatches theme={themeForSwatches} />
+                </div>
+                <div
+                  style={{
+                    flex: 1,
+                    minWidth: 0,
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {valueContent}
+                </div>
+              </div>
+            )
+          }
+
+          return valueContent
         })(),
         htmlElement: "label" as const,
         onClick: handleLabel2Click,
@@ -520,6 +584,8 @@ export function RowProperty({
     labelStyle,
     labelColor,
     iconId,
+    isThemeAssignment,
+    themeForSwatches,
     swatchChipColor,
     value,
     unit,

@@ -5,11 +5,10 @@ import {
   Board,
   Instance,
   Theme,
-  ValueType,
   Variant,
   Workspace,
 } from "@seldon/core"
-import { themeService } from "@seldon/core/workspace/services/theme/theme.service"
+import { buildThemeAssignmentProperty } from "./helpers/theme-assignment-display"
 import { Frame } from "../../../seldon/frames/Frame"
 import { FramerExpandable } from "../shared/FramerExpandable"
 import { CssBlock } from "./CssBlock"
@@ -62,29 +61,7 @@ export function PropertyTree({
 
     const leadingProperties: FlatProperty[] = []
 
-    const themeProperty: FlatProperty = {
-      key: "theme",
-      propertyType: "atomic",
-      label: "Theme",
-      icon: "IconSeldonComponent",
-      value: node.theme
-        ? { type: ValueType.EXACT, value: node.theme }
-        : { type: ValueType.EMPTY, value: null },
-      actualValue:
-        themeService.getTheme(
-          themeService.getObjectThemeId(node, workspace),
-          workspace,
-        )?.name ||
-        themeService.getObjectThemeId(node, workspace) ||
-        "Inherit",
-      valueType: node.theme ? ValueType.EXACT : ValueType.EMPTY,
-      controlType: "menu",
-      pickerVariant: "themeAssignment",
-      isCompound: false,
-      isShorthand: false,
-      isSubProperty: false,
-      status: node.theme ? "set" : "unset",
-    }
+    const themeProperty = buildThemeAssignmentProperty(node, workspace)
 
     const propertiesWithTheme = [...leadingProperties, themeProperty, ...properties]
 
@@ -114,29 +91,7 @@ export function PropertyTree({
     }
     const leadingProperties: FlatProperty[] = []
 
-    const themeProperty: FlatProperty = {
-      key: "theme",
-      propertyType: "atomic",
-      label: "Theme",
-      icon: "IconSeldonComponent",
-      value: node.theme
-        ? { type: ValueType.EXACT, value: node.theme }
-        : { type: ValueType.EMPTY, value: null },
-      actualValue:
-        themeService.getTheme(
-          themeService.getObjectThemeId(node, workspace),
-          workspace,
-        )?.name ||
-        themeService.getObjectThemeId(node, workspace) ||
-        "Inherit",
-      valueType: node.theme ? ValueType.EXACT : ValueType.EMPTY,
-      controlType: "menu",
-      pickerVariant: "themeAssignment",
-      isCompound: false,
-      isShorthand: false,
-      isSubProperty: false,
-      status: node.theme ? "set" : "unset",
-    }
+    const themeProperty = buildThemeAssignmentProperty(node, workspace)
     return [...leadingProperties, themeProperty, ...properties]
   }, [properties, node, workspace, themeEditingContext])
 

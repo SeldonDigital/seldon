@@ -15,7 +15,7 @@ import { isThemeValueKey } from "@seldon/core/helpers/validation/theme"
 import { IconId } from "@seldon/core/icons"
 import { IconSeldonMissing } from "@seldon/core/icons/sets/seldon/user-interface/actions/IconSeldonMissing"
 import { isComponentEntry } from "@seldon/core/workspace/helpers/components/is-component-entry"
-import { getComponentLevelThemeRef } from "@seldon/core/workspace/helpers/components/get-component-level-theme-ref"
+import { getBoardThemeRef } from "./helpers/theme-assignment-display"
 import { themeService } from "@seldon/core/workspace/services/theme/theme.service"
 import { useComboboxState } from "./controls/combobox/hooks/use-combobox-state"
 import { useComboboxPosition } from "./hooks/use-combobox-position"
@@ -377,7 +377,7 @@ export function PropertyControl({
   const comboboxStoredValue = useMemo(() => {
     if (property.key === "theme") {
       if (subject && isComponentEntry(subject)) {
-        return getComponentLevelThemeRef(subject) || "none"
+        return getBoardThemeRef(subject)
       }
       if (subject && !isComponentEntry(subject)) {
         return subject.theme ?? "none"
@@ -401,11 +401,6 @@ export function PropertyControl({
   )
 
   const themes = useThemes()
-  const themeForSwatches = useMemo(() => {
-    if (property.pickerVariant !== "themeAssignment" || !subject) return null
-    const displayThemeId = themeService.getObjectThemeId(subject, workspace)
-    return themes.find((t) => t.id === displayThemeId) ?? null
-  }, [property.pickerVariant, subject, workspace, themes])
 
   const comboboxControlValue = comboboxStoredValue
 
@@ -539,6 +534,17 @@ export function PropertyControl({
     value: string
     name: string
   }): React.ReactNode => {
+    if (property.key === "theme" && option) {
+      if (option.value === "none") {
+        return null
+      }
+      const optionTheme = themes.find((t) => t.id === option.value)
+      if (optionTheme) {
+        return <ThemeSwatches theme={optionTheme} />
+      }
+      return null
+    }
+
     if (option) {
       const swatchColor = getThemeTokenIconColor(option.value, theme)
       if (swatchColor) {
@@ -699,16 +705,8 @@ export function PropertyControl({
             display: "flex",
             alignItems: "center",
             cursor: "pointer",
-            ...(property.pickerVariant === "themeAssignment"
-              ? { gap: "0.375rem" }
-              : {}),
           }}
         >
-          {property.pickerVariant === "themeAssignment" && themeForSwatches ? (
-            <div style={{ flexShrink: 0 }}>
-              <ThemeSwatches theme={themeForSwatches} />
-            </div>
-          ) : null}
           {comboboxField}
           <ComboboxOptions
             open={comboboxOpen && hasFilteredOptions}
