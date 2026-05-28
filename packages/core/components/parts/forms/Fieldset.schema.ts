@@ -374,13 +374,14 @@ export const schema = {
         component: Seldon.ComponentId.LEGEND,
       },
       {
-        component: Seldon.ComponentId.INPUT_TEXT,
+        component: Seldon.ComponentId.FORM_CONTROL,
       },
       {
-        component: Seldon.ComponentId.INPUT_TEXT,
+        component: Seldon.ComponentId.FORM_CONTROL,
       },
       {
-        component: Seldon.ComponentId.INPUT_DROPDOWN,
+        component: Seldon.ComponentId.FORM_CONTROL,
+        variant: "dropdown",
       },
     ],
   },

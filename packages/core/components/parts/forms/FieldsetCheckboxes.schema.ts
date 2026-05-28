@@ -374,13 +374,16 @@ export const schema = {
         component: Seldon.ComponentId.LEGEND,
       },
       {
-        component: Seldon.ComponentId.INPUT_CHECKBOX,
+        component: Seldon.ComponentId.FORM_CONTROL,
+        variant: "checkbox",
       },
       {
-        component: Seldon.ComponentId.INPUT_CHECKBOX,
+        component: Seldon.ComponentId.FORM_CONTROL,
+        variant: "checkbox",
       },
       {
-        component: Seldon.ComponentId.INPUT_CHECKBOX,
+        component: Seldon.ComponentId.FORM_CONTROL,
+        variant: "checkbox",
       },
     ],
   },

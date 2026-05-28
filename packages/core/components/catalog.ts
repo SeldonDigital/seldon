@@ -23,33 +23,13 @@ import {
   schema as chipSchema,
 } from "./elements/Chip.schema"
 import {
-  exportConfig as inputCheckboxExportConfig,
-  schema as inputCheckboxSchema,
-} from "./elements/forms/InputCheckbox.schema"
-import {
-  exportConfig as inputDropdownExportConfig,
-  schema as inputDropdownSchema,
-} from "./elements/forms/InputDropdown.schema"
-import {
-  exportConfig as inputIconicExportConfig,
-  schema as inputIconicSchema,
-} from "./elements/forms/InputIconic.schema"
-import {
-  exportConfig as inputRadioExportConfig,
-  schema as inputRadioSchema,
-} from "./elements/forms/InputRadio.schema"
-import {
-  exportConfig as inputSearchExportConfig,
-  schema as inputSearchSchema,
-} from "./elements/forms/InputSearch.schema"
-import {
-  exportConfig as inputTextExportConfig,
-  schema as inputTextSchema,
-} from "./elements/forms/InputText.schema"
+  exportConfig as formControlExportConfig,
+  schema as formControlSchema,
+} from "./elements/FormControl.schema"
 import {
   exportConfig as optionGroupExportConfig,
   schema as optionGroupSchema,
-} from "./elements/forms/OptionGroup.schema"
+} from "./elements/OptionGroup.schema"
 import {
   exportConfig as headerActionExportConfig,
   schema as headerActionSchema,
@@ -342,12 +322,7 @@ const elements: ComponentSchema[] = [
   avatarSchema,
   buttonSchema,
   chipSchema,
-  inputCheckboxSchema,
-  inputDropdownSchema,
-  inputIconicSchema,
-  inputRadioSchema,
-  inputSearchSchema,
-  inputTextSchema,
+  formControlSchema,
   optionGroupSchema,
   headerActionSchema,
   headerCardSchema,
@@ -475,12 +450,7 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   [ComponentId.AVATAR]: avatarExportConfig,
   [ComponentId.BUTTON]: buttonExportConfig,
   [ComponentId.CHIP]: chipExportConfig,
-  [ComponentId.INPUT_CHECKBOX]: inputCheckboxExportConfig,
-  [ComponentId.INPUT_DROPDOWN]: inputDropdownExportConfig,
-  [ComponentId.INPUT_ICONIC]: inputIconicExportConfig,
-  [ComponentId.INPUT_RADIO]: inputRadioExportConfig,
-  [ComponentId.INPUT_SEARCH]: inputSearchExportConfig,
-  [ComponentId.INPUT_TEXT]: inputTextExportConfig,
+  [ComponentId.FORM_CONTROL]: formControlExportConfig,
   [ComponentId.OPTION_GROUP]: optionGroupExportConfig,
   [ComponentId.HEADER_ACTION]: headerActionExportConfig,
   [ComponentId.HEADER_CARD]: headerCardExportConfig,

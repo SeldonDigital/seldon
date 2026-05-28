@@ -858,7 +858,8 @@ export const schema = {
           },
         },
         {
-          component: Seldon.ComponentId.INPUT_ICONIC,
+          component: Seldon.ComponentId.FORM_CONTROL,
+          variant: "iconic",
           overrides: {
             width: {
               type: Sdn.ValueType.EXACT,

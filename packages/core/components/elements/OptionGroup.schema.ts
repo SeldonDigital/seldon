@@ -1,27 +1,23 @@
-import * as Sdn from "../../../properties"
-import * as Seldon from "../../constants"
-import { ComponentExport, ComponentSchema } from "../../types"
+import * as Sdn from "../../properties"
+import * as Seldon from "../constants"
+import { ComponentExport, ComponentSchema } from "../types"
 
 export const schema = {
-  name: "Dropdown Input",
-  id: Seldon.ComponentId.INPUT_DROPDOWN,
-  intent: "Lets users pick one option from a collapsible list.",
-  tags: [
-    "dropdown",
-    "select",
-    "form",
-    "input",
-    "options",
-    "UI",
-    "menu",
-    "single choice",
-  ],
+  name: "Option Group",
+  id: Seldon.ComponentId.OPTION_GROUP,
+  intent:
+    "Groups related options within a select input for better organization.",
+  tags: ["option group", "select", "dropdown", "form", "element", "categorize"],
   level: Seldon.ComponentLevel.ELEMENT,
-  icon: Seldon.ComponentIcon.COMPONENT,
+  icon: Seldon.ComponentIcon.INPUT,
   properties: {
     display: {
       type: Sdn.ValueType.EMPTY,
       value: null,
+    },
+    htmlElement: {
+      type: Sdn.ValueType.OPTION,
+      value: Sdn.HtmlElement.OPTGROUP,
     },
     ariaLabel: {
       type: Sdn.ValueType.EMPTY,
@@ -37,11 +33,11 @@ export const schema = {
     },
     orientation: {
       type: Sdn.ValueType.OPTION,
-      value: Sdn.Orientation.HORIZONTAL,
+      value: Sdn.Orientation.VERTICAL,
     },
     align: {
-      type: Sdn.ValueType.OPTION,
-      value: Sdn.Align.CENTER_LEFT,
+      type: Sdn.ValueType.EMPTY,
+      value: null,
     },
     width: {
       type: Sdn.ValueType.OPTION,
@@ -89,17 +85,9 @@ export const schema = {
     },
     gap: {
       type: Sdn.ValueType.THEME_ORDINAL,
-      value: "@gap.compact",
+      value: "@gap.cozy",
     },
     rotation: {
-      type: Sdn.ValueType.EMPTY,
-      value: null,
-    },
-    wrapChildren: {
-      type: Sdn.ValueType.EXACT,
-      value: false,
-    },
-    clip: {
       type: Sdn.ValueType.EMPTY,
       value: null,
     },
@@ -162,26 +150,23 @@ export const schema = {
     border: {
       preset: {
         type: Sdn.ValueType.THEME_CATEGORICAL,
-        value: "@border.none",
+        value: "@border.normal",
       },
       style: {
         type: Sdn.ValueType.EMPTY,
         value: null,
       },
       color: {
-        type: Sdn.ValueType.THEME_CATEGORICAL,
-        value: "@swatch.black",
+        type: Sdn.ValueType.EMPTY,
+        value: null,
       },
       width: {
         type: Sdn.ValueType.EMPTY,
         value: null,
       },
       brightness: {
-        type: Sdn.ValueType.EXACT,
-        value: {
-          unit: Sdn.Unit.PERCENT,
-          value: 25,
-        },
+        type: Sdn.ValueType.EMPTY,
+        value: null,
       },
       opacity: {
         type: Sdn.ValueType.EMPTY,
@@ -258,8 +243,8 @@ export const schema = {
         value: null,
       },
       style: {
-        type: Sdn.ValueType.OPTION,
-        value: Sdn.BorderStyle.SOLID,
+        type: Sdn.ValueType.EMPTY,
+        value: null,
       },
       color: {
         type: Sdn.ValueType.EMPTY,
@@ -370,90 +355,18 @@ export const schema = {
   default: {
     children: [
       {
-        component: Seldon.ComponentId.LABEL,
-        overrides: {
-          content: {
-            type: Sdn.ValueType.EXACT,
-            value: "Label",
-          },
-          width: {
-            type: Sdn.ValueType.EXACT,
-            value: {
-              unit: Sdn.Unit.PERCENT,
-              value: 30,
-            },
-          },
-          font: {
-            preset: {
-              type: Sdn.ValueType.THEME_CATEGORICAL,
-              value: "@font.normal",
-            },
-            family: {
-              type: Sdn.ValueType.EMPTY,
-              value: null,
-            },
-            style: {
-              type: Sdn.ValueType.EMPTY,
-              value: null,
-            },
-            weight: {
-              type: Sdn.ValueType.EMPTY,
-              value: null,
-            },
-            size: {
-              type: Sdn.ValueType.THEME_ORDINAL,
-              value: "@fontSize.small",
-            },
-            lineHeight: {
-              type: Sdn.ValueType.EMPTY,
-              value: null,
-            },
-            textCase: {
-              type: Sdn.ValueType.EMPTY,
-              value: null,
-            },
-          },
-        },
+        component: Seldon.ComponentId.OPTION,
       },
       {
-        component: Seldon.ComponentId.SELECT,
-        overrides: {
-          font: {
-            preset: {
-              type: Sdn.ValueType.THEME_CATEGORICAL,
-              value: "@font.normal",
-            },
-            family: {
-              type: Sdn.ValueType.EMPTY,
-              value: null,
-            },
-            style: {
-              type: Sdn.ValueType.EMPTY,
-              value: null,
-            },
-            weight: {
-              type: Sdn.ValueType.EMPTY,
-              value: null,
-            },
-            size: {
-              type: Sdn.ValueType.THEME_ORDINAL,
-              value: "@fontSize.small",
-            },
-            lineHeight: {
-              type: Sdn.ValueType.EMPTY,
-              value: null,
-            },
-            textCase: {
-              type: Sdn.ValueType.EMPTY,
-              value: null,
-            },
-          },
-        },
+        component: Seldon.ComponentId.OPTION,
+      },
+      {
+        component: Seldon.ComponentId.OPTION,
       },
     ],
   },
 } as const satisfies ComponentSchema
 
 export const exportConfig: ComponentExport = {
-  react: { returns: "Frame" },
+  react: { returns: "htmlElement" },
 }

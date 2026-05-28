@@ -374,13 +374,16 @@ export const schema = {
         component: Seldon.ComponentId.LEGEND,
       },
       {
-        component: Seldon.ComponentId.INPUT_RADIO,
+        component: Seldon.ComponentId.FORM_CONTROL,
+        variant: "radio",
       },
       {
-        component: Seldon.ComponentId.INPUT_RADIO,
+        component: Seldon.ComponentId.FORM_CONTROL,
+        variant: "radio",
       },
       {
-        component: Seldon.ComponentId.INPUT_RADIO,
+        component: Seldon.ComponentId.FORM_CONTROL,
+        variant: "radio",
       },
     ],
   },

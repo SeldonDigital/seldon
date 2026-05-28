@@ -615,7 +615,8 @@ export const schema = {
         ],
       },
       {
-        component: Seldon.ComponentId.INPUT_SEARCH,
+        component: Seldon.ComponentId.FORM_CONTROL,
+        variant: "search",
         overrides: {
           margin: {
             top: {
