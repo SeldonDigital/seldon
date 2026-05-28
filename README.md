@@ -32,7 +32,7 @@ Play.
 
 Definitely play.
 
-The pupose for releasing this project with a simple flat fee access price and a PolyForm Noncommercial license  is to provide a codebase that allows for multiple paths for exploration to as many people as possible. To give folks an inexpensive way to learn what they can and cannot do with AI tools.
+The pupose for releasing this project is to provide a codebase that allows for multiple paths for exploration to as many people as possible. To give folks an inexpensive way to learn what they can and cannot do with AI tools.
 
 No one knows where the future will land. There are a lot of ideas out there of what LLMs and AI mean for humanity. Most of thoe ideas are silly. Many of them are just plain wrong. Some of them have some value. One thing that should become clear over time however is that humanity doesn't need AI or LLMs to waste enormous amounts of energy and money to write a Button component. 
 
