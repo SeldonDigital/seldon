@@ -38,7 +38,7 @@ export function useVisibleNodes() {
     }
 
     return nodes
-  }, [activeBoard])
+  }, [activeBoard, workspace])
 
   return { visibleNodes }
 }

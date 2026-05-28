@@ -7,14 +7,23 @@ import { useNodeRect } from "../../hooks/use-node-rect"
 import { getHtmlElementByNodeId } from "../../../canvas/helpers/get-html-element-by-node-id"
 import { calculateNodeRect } from "../../utils/calculate-node-rect"
 
+export type SelectTrackingProps = {
+  nodeId: string
+  isSelected?: boolean
+  isHovered?: boolean
+  showWireframe?: boolean
+}
+
 /**
- * Canvas tracking component for select mode.
- * Shows a dashed wireframe outline around the hovered node on the canvas.
- * Falls back to direct DOM measurement if the node isn't tracked in the store.
- *
- * @param nodeId - The ID of the node to show tracking for
+ * Canvas tracking for select mode: dashed wireframes and hover outlines.
+ * Solid selection border is rendered by IndicatorSelect.
  */
-export function SelectTracking({ nodeId }: { nodeId: string }) {
+export function SelectTracking({
+  nodeId,
+  isSelected = false,
+  isHovered = false,
+  showWireframe = false,
+}: SelectTrackingProps) {
   const trackedRect = useNodeRect(nodeId)
   const [directRect, setDirectRect] = useState<{
     top: number
@@ -23,7 +32,14 @@ export function SelectTracking({ nodeId }: { nodeId: string }) {
     height: number
   } | null>(null)
 
+  const showOutline = showWireframe || (isHovered && !isSelected)
+
   useEffect(() => {
+    if (!showOutline) {
+      setDirectRect(null)
+      return
+    }
+
     if (trackedRect) {
       setDirectRect(null)
       return
@@ -58,7 +74,9 @@ export function SelectTracking({ nodeId }: { nodeId: string }) {
       window.removeEventListener("scroll", handleUpdate, true)
       window.removeEventListener("resize", handleUpdate)
     }
-  }, [nodeId, trackedRect])
+  }, [nodeId, trackedRect, showOutline])
+
+  if (!showOutline) return null
 
   const rect = trackedRect || directRect
 

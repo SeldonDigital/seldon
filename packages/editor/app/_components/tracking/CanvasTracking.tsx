@@ -32,37 +32,24 @@ export function CanvasTracking() {
 
   return (
     <>
-      {visibleNodes.map((node) => {
-        if (!nodeBelongsToActiveBoard(node.id)) return null
+      {activeTool === "select" &&
+        visibleNodes.map((node) => {
+          if (!nodeBelongsToActiveBoard(node.id)) return null
 
-        if (activeTool === "select") {
           return (
             <SelectTracking
               key={node.id}
-              objectId={node.id}
+              nodeId={node.id}
               isSelected={selectedNodeId === node.id}
               isHovered={hoverState?.objectId === node.id}
               showWireframe={showWireframes}
             />
           )
-        }
-
-        if (activeTool === "component") {
-          return (
-            <InsertTracking
-              key={node.id}
-              objectId={node.id}
-              isHovered={hoverState?.objectId === node.id}
-              showWireframe={showWireframes}
-            />
-          )
-        }
-
-        return null
-      })}
+        })}
       {activeTool === "select" && selectedNodeId && (
-        <IndicatorSelect objectId={selectedNodeId} />
+        <IndicatorSelect nodeId={selectedNodeId} variant="selection" />
       )}
+      {activeTool === "component" && hoverState && <InsertTracking />}
     </>
   )
 }
