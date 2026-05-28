@@ -28,7 +28,7 @@ import { useExpansion } from "./use-expansion"
 import { useRowButton } from "./use-row-button"
 import { useRowClick } from "./use-row-click"
 import { useRowToggle } from "./use-row-toggle"
-import { useSectionExpansion } from "./use-section-expansion"
+import { useSectionExpansion } from "../../helpers/use-section-expansion"
 
 /**
  * Hook that provides all state and handlers for rendering a node row in the objects sidebar.

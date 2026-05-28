@@ -1,7 +1,11 @@
-import { cn } from "@lib/utils/cn"
-import React from "react"
+import React, { useState } from "react"
 import { HSL } from "@seldon/core"
 import { Frame } from "../../../../../seldon/frames/Frame"
+import {
+  comboboxOptionIconStyle,
+  comboboxOptionLabelStyle,
+  getOptionFrameStyle,
+} from "./combobox-styles"
 
 interface ComboboxOptionProps<ItemT> {
   handleSelect: (value: string) => void
@@ -13,6 +17,8 @@ interface ComboboxOptionProps<ItemT> {
   highlighted?: boolean
   onHighlight?: (value: string) => void
 }
+
+const optionHoverBackground = "hsl(0 0% 100% / 0.1)"
 
 export function ComboboxOption<
   ItemT extends { name: string; value: string; color?: HSL; hidden?: boolean },
@@ -26,15 +32,20 @@ export function ComboboxOption<
   highlighted = false,
   onHighlight,
 }: ComboboxOptionProps<ItemT>) {
-  const fontProps: React.CSSProperties = {
-    fontFamily: `var(--sdn-seldon-font-family-primary)`,
-    fontSize: `var(--sdn-font-size-xsmall)`,
-    fontWeight: `var(--sdn-font-weight-medium)`,
-    lineHeight: `var(--sdn-line-height-solid)`,
-    letterSpacing: "0.1px",
-  }
+  const [isHovered, setIsHovered] = useState(false)
 
   const isSelected = option.value.toLowerCase() === value?.toLowerCase()
+  const showHighlight = isSelected || highlighted || (isHovered && !disabled)
+
+  const frameStyle: React.CSSProperties = {
+    ...getOptionFrameStyle({
+      isSelected,
+      highlighted,
+      disabled,
+      hidden,
+    }),
+    ...(showHighlight && !hidden ? { backgroundColor: optionHoverBackground } : {}),
+  }
 
   return (
     <Frame
@@ -46,30 +57,22 @@ export function ComboboxOption<
         event.preventDefault()
         handleSelect(option.value)
       }}
-      onMouseEnter={() => !disabled && !hidden && onHighlight?.(option.value)}
+      onMouseEnter={() => {
+        if (!disabled && !hidden) {
+          setIsHovered(true)
+          onHighlight?.(option.value)
+        }
+      }}
+      onMouseLeave={() => setIsHovered(false)}
       data-active={isSelected}
       data-disabled={disabled}
-      className={cn(
-        "text-neutral-100",
-        "relative flex h-8 w-full items-center gap-[6px] px-1.5 outline-none",
-        "data-[active=false]:not([data-disabled=true]):hover:bg-white/10",
-        "data-[selected=true]:bg-white/10",
-        "data-[active=true]:text-blue focus:data-[active=true]:text-blue",
-        highlighted && "bg-white/10",
-        "data-[disabled=true]:opacity-50 focus:bg-neutral-600",
-        "cursor-pointer",
-        hidden && "hidden",
-        disabled && "cursor-not-allowed",
-      )}
-      style={fontProps}
+      style={frameStyle}
     >
-      <span className="shrink-0" style={fontProps}>
+      <span style={comboboxOptionIconStyle}>
         {renderIcon &&
           (typeof renderIcon === "function" ? renderIcon(option) : renderIcon)}
       </span>
-      <span className="truncate overflow-ellipsis" style={fontProps}>
-        {option.name}
-      </span>
+      <span style={comboboxOptionLabelStyle}>{option.name}</span>
     </Frame>
   )
 }

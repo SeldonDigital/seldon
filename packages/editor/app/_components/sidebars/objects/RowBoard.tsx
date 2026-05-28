@@ -12,6 +12,7 @@ import { useRowBoard } from "./hooks/use-row-board"
 import { useRowHover } from "./hooks/use-row-hover"
 import { ListItemTreeNode as SeldonNode } from "../../../seldon/elements/ListItemTreeNode"
 import { LabelProps } from "../../../seldon/primitives/Label"
+import { relativeFullWidthStyle } from "../helpers/sidebar-styles"
 import { IndentationLevel } from "../helpers/use-indentation"
 import { FramerExpandable } from "../shared/FramerExpandable"
 import { RowIconSetEntry } from "./RowIconSetEntry"
@@ -123,7 +124,7 @@ export function RowBoard({
   return (
     <>
       <div ref={ref} style={rowWrapperStyle}>
-        <div className="relative w-full">
+        <div style={relativeFullWidthStyle}>
           <SeldonNode
             buttonIconic={buttonIconic}
             icon={coloredIcon}

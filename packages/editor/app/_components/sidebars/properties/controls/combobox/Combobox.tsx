@@ -1,6 +1,10 @@
-import { cnMerge } from "@lib/utils/cn"
 import { RefObject, useEffect, useRef, useState } from "react"
 import { useKeyboardNavigation } from "./hooks/use-keyboard-navigation"
+import {
+  comboboxFrameStyle,
+  comboboxInputStyle,
+  comboboxWrapperStyle,
+} from "./combobox-styles"
 import { Frame } from "../../../../../seldon/frames/Frame"
 import { InputEditor } from "../../../../../seldon/primitives/InputEditor"
 import { IconChevronDown } from "@components/icons/ChevronDown"
@@ -324,14 +328,7 @@ export function Combobox({
   }
 
   const baseInputStyle: React.CSSProperties = {
-    flex: 1,
-    padding: 0,
-    border: "none",
-    borderRadius: 0,
-    outline: "none",
-    backgroundColor: "transparent",
-    lineHeight: "var(--sdn-line-height-solid)",
-    fontSize: "var(--sdn-font-size-xsmall)",
+    ...comboboxInputStyle,
     ...style,
   }
 
@@ -347,11 +344,7 @@ export function Combobox({
       <Frame
         className="sdn-frame"
         style={{
-          background: "transparent",
-          border: "none",
-          padding: 0,
-          margin: 0,
-          cursor: "pointer",
+          ...comboboxFrameStyle,
           ...style,
         }}
         onClick={(e) => {
@@ -366,10 +359,7 @@ export function Combobox({
           }
         }}
       >
-        <div
-          ref={wrapperRef}
-          style={{ flex: 1, display: "flex", cursor: "pointer" }}
-        >
+        <div ref={wrapperRef} style={comboboxWrapperStyle}>
           <InputEditor
             value={internalValue}
             onChange={(event) => {
@@ -386,10 +376,7 @@ export function Combobox({
               }
             }}
             onKeyDown={handleKeyDown}
-            className={cnMerge(
-              "bg-transparent border-none outline-none",
-              className,
-            )}
+            className={className}
             style={{
               ...baseInputStyle,
               ...(inputPropsStyle as React.CSSProperties | undefined),
@@ -434,7 +421,7 @@ export function Combobox({
       onDoubleClick={(e) => e.stopPropagation()}
       placeholder={placeholder}
       disabled={disabled}
-      className={cnMerge(className)}
+      className={className}
       style={baseInputStyle}
       {...inputPropsCommon}
       {...inputProps}

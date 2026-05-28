@@ -99,6 +99,8 @@ export interface FlatProperty {
   pickerVariant?: "themeAssignment"
   isDimmed?: boolean
   status: PropertyStatus
+  /** Theme color-point rows set this for swatch icon preview in the properties tree. */
+  iconColorValue?: string
 }
 
 /**

@@ -3,11 +3,16 @@ import {
   Board,
   Instance,
   Theme,
-  ThemeId,
   Value,
   ValueType,
   Variant,
 } from "@seldon/core"
+import { ComponentId, ComponentLevel } from "@seldon/core/components/constants"
+import type {
+  PropertyKey,
+  SubPropertyKey,
+} from "@seldon/core/properties/types/property-keys"
+import type { ThemeInstanceId } from "@seldon/core/themes/types/theme-id"
 import {
   getWorkspaceThemePickerOptions,
 } from "@seldon/core/helpers/properties/properties-bridge"
@@ -23,7 +28,6 @@ import { usePropertyControlData } from "./hooks/use-property-control-data"
 import { usePropertyValidation } from "./hooks/use-property-validation"
 import { useObjectProperties } from "@lib/workspace/use-object-properties"
 import { useSelection } from "@lib/workspace/use-selection"
-import { ComponentId } from "@seldon/core/components/constants"
 import { getNodeCatalogComponentId } from "@lib/workspace/node-tree"
 import { getComponentKey, resolveComponentKey } from "@lib/workspace/workspace-accessors"
 import { useWorkspace } from "@lib/workspace/use-workspace"
@@ -55,6 +59,11 @@ import {
 } from "@lib/properties-ui/property-paths"
 import type { LayeredPaintKey } from "@seldon/core/properties/types/property-keys"
 import { updateProperty } from "./helpers/property-update-handler"
+import {
+  propertyControlInnerStyle,
+  propertyControlTextStyle,
+  propertyControlWrapperStyle,
+} from "../helpers/sidebar-styles"
 
 function compoundPresetPropertyKey(propertyKey: string): string {
   if (isLayeredPaintRoot(propertyKey)) {
@@ -167,7 +176,8 @@ export function PropertyControl({
     const subject = propertySubject ?? selection ?? null
 
     if (property.key === "theme" && subject) {
-      const newThemeId = newValue === "none" ? null : (newValue as ThemeId)
+      const newThemeId =
+        newValue === "none" ? null : (newValue as ThemeInstanceId)
       if (isComponentEntry(subject)) {
         dispatch({
           type: "set_component_theme",
@@ -357,7 +367,9 @@ export function PropertyControl({
           ? (getNodeCatalogComponentId(subject, workspace) ?? undefined)
           : undefined
     const componentLevel =
-      subject && isComponentEntry(subject) ? undefined : subject?.level
+      subject && isComponentEntry(subject)
+        ? undefined
+        : (subject?.level as ComponentLevel | undefined)
 
     const result = generatePropertyOptions(
       property,
@@ -573,12 +585,7 @@ export function PropertyControl({
 
   const placeholder = formatPlaceholder()
 
-  // Color controls should render as text inputs (like regular color properties)
-  if (
-    effectiveControlType === "text" ||
-    effectiveControlType === "number" ||
-    effectiveControlType === "color"
-  ) {
+  if (effectiveControlType === "text" || effectiveControlType === "number") {
     return (
       <div
         onBlur={onBlur}
@@ -601,8 +608,7 @@ export function PropertyControl({
           style={{
             width: "100%",
             minWidth: 0,
-            fontFamily: "IBM Plex Sans",
-            fontSize: "0.75rem",
+            ...propertyControlTextStyle,
             background: "transparent",
             border: "none",
             padding: 0,
@@ -653,7 +659,6 @@ export function PropertyControl({
         flex: property.pickerVariant === "themeAssignment" ? 1 : undefined,
         ...(color ? { color } : {}),
       }}
-      className=""
     />
   )
 
@@ -687,26 +692,13 @@ export function PropertyControl({
         height: "100%",
         display: "flex",
         alignItems: "center",
-        fontFamily: "IBM Plex Sans",
-        fontSize: "0.75rem",
+        ...propertyControlTextStyle,
         cursor: "pointer",
         ...(property.isDimmed ? { opacity: 0.5 } : {}),
       }}
     >
-      <div
-        className="group relative text-inherit"
-        style={{ width: "100%", height: "100%", cursor: "pointer" }}
-      >
-        <div
-          className="relative"
-          style={{
-            width: "100%",
-            height: "100%",
-            display: "flex",
-            alignItems: "center",
-            cursor: "pointer",
-          }}
-        >
+      <div style={propertyControlWrapperStyle}>
+        <div style={propertyControlInnerStyle}>
           {comboboxField}
           <ComboboxOptions
             open={comboboxOpen && hasFilteredOptions}

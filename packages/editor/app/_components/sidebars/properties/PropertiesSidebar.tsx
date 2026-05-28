@@ -1,6 +1,7 @@
-import { COLORS } from "@lib/ui/colors"
-import { CSSProperties, useMemo, useRef } from "react"
+import { useMemo, useRef } from "react"
+import { Board, Instance, Variant } from "@seldon/core"
 import { getComputedTheme } from "@seldon/core/workspace/compute"
+import { isThemeBoard } from "@seldon/core/workspace/model/components"
 import { themeService } from "@seldon/core/workspace/services/theme/theme.service"
 import { useEditorConfig } from "@lib/hooks/use-editor-config"
 import {
@@ -9,9 +10,14 @@ import {
 } from "@lib/themes/resolve-active-theme-entry-id"
 import { useSelection } from "@lib/workspace/use-selection"
 import { useWorkspace } from "@lib/workspace/use-workspace"
+import {
+  sidebarNoSelectionStyle,
+  sidebarNoSelectionTextStyle,
+  sidebarShellStyle,
+} from "../helpers/sidebar-styles"
 import { SidebarContainer } from "../../../seldon/elements/SidebarContainer"
 import { PropertyTree } from "./PropertyTree"
-import { flattenNodeProperties } from "./helpers/properties-data"
+import { FlatProperty, flattenNodeProperties } from "./helpers/properties-data"
 import { flattenThemeProperties } from "./helpers/theme-properties-data"
 import { getThemePropertyControlType } from "./helpers/get-theme-property-controls"
 import { useThemeProperties } from "./hooks/use-theme-properties"
@@ -88,7 +94,11 @@ export function PropertiesSidebar() {
     return themeService.getObjectTheme(selection, workspace)
   }, [selection, workspace, isThemeEditingMode, editedTheme])
 
-  const themeEditingContext = useMemo(() => {
+  const themeEditingContext = useMemo((): {
+    isThemeEditing: true
+    updateThemeProperty: (property: FlatProperty, newValue: string) => void
+    themeProperties: FlatProperty[]
+  } | null => {
     if (!isThemeEditingMode) return null
     return {
       isThemeEditing: true,
@@ -97,27 +107,48 @@ export function PropertiesSidebar() {
     }
   }, [isThemeEditingMode, updateThemeProperty, themeProperties])
 
-  const propertyTreeNode = useMemo(() => {
-    if (isThemeEditingMode && activeThemeEntryId) {
-      return selection ?? selectedBoard
+  const propertyTreeNode = useMemo((): Variant | Instance | Board | null => {
+    if (selection) {
+      return selection as Variant | Instance | Board
     }
-    return selection
-  }, [isThemeEditingMode, activeThemeEntryId, selection, selectedBoard])
+    if (selectedBoard) {
+      return selectedBoard
+    }
+    if (isThemeEditingMode) {
+      for (const entry of Object.values(workspace.components)) {
+        if (isThemeBoard(entry)) {
+          return entry
+        }
+      }
+    }
+    return null
+  }, [selection, selectedBoard, isThemeEditingMode, workspace.components])
 
   if (!selection && !isThemeEditingMode) {
     return (
-      <SidebarContainer style={styles.noSelection}>
-        <span style={styles.noSelectionText}>Nothing selected</span>
+      <SidebarContainer style={sidebarNoSelectionStyle}>
+        <span style={sidebarNoSelectionTextStyle}>Nothing selected</span>
+      </SidebarContainer>
+    )
+  }
+
+  if (!propertyTreeNode) {
+    return (
+      <SidebarContainer style={sidebarNoSelectionStyle}>
+        <span style={sidebarNoSelectionTextStyle}>Nothing selected</span>
       </SidebarContainer>
     )
   }
 
   return (
-    <SidebarContainer style={styles.container} data-testid="properties-sidebar">
+    <SidebarContainer
+      style={sidebarShellStyle}
+      data-testid="properties-sidebar"
+    >
       <PropertyTree
         properties={flatProperties}
         workspace={workspace}
-        node={propertyTreeNode ?? selectedBoard}
+        node={propertyTreeNode}
         theme={theme}
         scrollerRef={scrollerRef}
         dispatch={dispatch}
@@ -127,28 +158,3 @@ export function PropertiesSidebar() {
   )
 }
 
-const styles: Record<string, CSSProperties> = {
-  container: {
-    display: "flex",
-    flexDirection: "column",
-    width: "100%",
-    height: "100%",
-    minHeight: 0,
-    minWidth: 0,
-    overflow: "hidden",
-    backgroundColor: COLORS.charcoal[500],
-  },
-  noSelection: {
-    height: "100%",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    padding: "1rem",
-    backgroundColor: COLORS.charcoal[500],
-  },
-  noSelectionText: {
-    fontFamily: "IBM Plex Sans",
-    fontSize: "0.8125rem",
-    color: "hsl(0deg 0% 100% / 0.6)",
-  },
-}

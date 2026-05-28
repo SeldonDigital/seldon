@@ -1,6 +1,6 @@
 import { CSSProperties } from "react"
-import { Theme } from "@seldon/core"
 import { FlatProperty } from "./properties-data"
+import { subPropertyRowBackground } from "../../helpers/sidebar-styles"
 import { getPropertyDisplayColor } from "./property-styling"
 
 /**
@@ -23,7 +23,6 @@ export function getPropertyDisplayColorValue(
  * Gets the style object for a property row using Seldon theme tokens
  */
 export function getPropertyRowStyle(
-  theme: Theme,
   property: FlatProperty,
   debugMode: boolean = false,
 ): CSSProperties {
@@ -31,12 +30,12 @@ export function getPropertyRowStyle(
 
   return {
     color,
-    paddingRight: theme.padding.tight.value,
-    paddingTop: theme.padding.tight.value,
-    paddingBottom: theme.padding.tight.value,
+    paddingRight: "var(--sdn-padding-tight)",
+    paddingTop: "var(--sdn-padding-tight)",
+    paddingBottom: "var(--sdn-padding-tight)",
     ...(property.isSubProperty
       ? {
-          backgroundColor: "hsl(0 0% 15% / 0.3)", // Equivalent to bg-neutral-900/30
+          backgroundColor: subPropertyRowBackground,
         }
       : {}),
   }
@@ -46,7 +45,6 @@ export function getPropertyRowStyle(
  * Gets the style object for a property label using Seldon theme tokens
  */
 export function getPropertyLabelStyle(
-  theme: Theme,
   property: FlatProperty,
   debugMode: boolean = false,
 ): CSSProperties {
@@ -72,10 +70,10 @@ export function getPropertyLabelStyle(
 /**
  * Gets the style object for debug info display
  */
-export function getPropertyDebugInfoStyle(theme: Theme): CSSProperties {
+export function getPropertyDebugInfoStyle(): CSSProperties {
   return {
-    fontFamily: theme.fontFamily.primary,
-    fontSize: theme.fontSize.xsmall.value,
-    marginBottom: theme.margin.tight.value,
+    fontFamily: "var(--sdn-seldon-font-family-primary)",
+    fontSize: "var(--sdn-font-size-xsmall)",
+    marginBottom: "var(--sdn-margin-tight)",
   }
 }

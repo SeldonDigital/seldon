@@ -9,6 +9,7 @@ import {
 } from "@seldon/core"
 import { getWorkspaceThemePickerOptions } from "@seldon/core/helpers/properties/properties-bridge"
 import { isAtomicValue } from "@seldon/core/helpers/type-guards/value/is-atomic-value"
+import { ComponentId, ComponentLevel } from "@seldon/core/components/constants"
 import { isComponentEntry } from "@seldon/core/workspace/helpers/components/is-component-entry"
 import { themeService } from "@seldon/core/workspace/services/theme/theme.service"
 import { ThemeSwatches } from "@components/ui/ThemeSwatches"
@@ -121,9 +122,11 @@ export function RowProperty({
     }
 
     const componentId = isComponentEntry(node)
-      ? getComponentKey(node)
-      : (getNodeCatalogComponentId(node, workspace) ?? "")
-    const componentLevel = isComponentEntry(node) ? undefined : node.level
+      ? (getComponentKey(node) as ComponentId)
+      : (getNodeCatalogComponentId(node, workspace) ?? undefined)
+    const componentLevel = isComponentEntry(node)
+      ? undefined
+      : (node.level as ComponentLevel)
 
     const result = generatePropertyOptions(
       property,
@@ -137,11 +140,13 @@ export function RowProperty({
     return result.options
   }, [property, theme, node, workspace])
 
+  const nodeId = isComponentEntry(node) ? getComponentKey(node) : node.id
+
   // Use getDisplayValue for consistent capitalization
   let value = getDisplayValue(
     propertyValue,
     property.key,
-    node.id,
+    nodeId,
     workspace,
     theme,
     options,
@@ -190,13 +195,12 @@ export function RowProperty({
   }
 
   const rowStyle = useMemo(
-    () => (theme ? getPropertyRowStyle(theme, property, debugModeEnabled) : {}),
-    [theme, property, debugModeEnabled],
+    () => getPropertyRowStyle(property, debugModeEnabled),
+    [property, debugModeEnabled],
   )
   const labelStyle = useMemo(
-    () =>
-      theme ? getPropertyLabelStyle(theme, property, debugModeEnabled) : {},
-    [theme, property, debugModeEnabled],
+    () => getPropertyLabelStyle(property, debugModeEnabled),
+    [property, debugModeEnabled],
   )
 
   const labelColor = labelStyle.color
@@ -423,9 +427,9 @@ export function RowProperty({
                   property.key === "color.whitePoint" ||
                   property.key === "color.grayPoint" ||
                   property.key === "color.blackPoint") &&
-                (property as { iconColorValue?: string }).iconColorValue
+                property.iconColorValue
               ) {
-                return (property as { iconColorValue: string }).iconColorValue
+                return property.iconColorValue
               }
               return labelColor || undefined
             })(),

@@ -1,4 +1,3 @@
-import { COLORS } from "@lib/ui/colors"
 import { MouseEvent } from "react"
 import { IconProps } from "../../../../seldon/primitives/Icon"
 
@@ -41,7 +40,7 @@ export function useRowButton({
     if (!hasChildren) {
       style.color = "transparent"
     } else if (isSelected) {
-      style.color = COLORS.primary[500]
+      style.color = "var(--sdn-seldon-swatch-primary)"
     }
     return {
       icon: "material-chevronRight" as const,
@@ -58,7 +57,9 @@ export function useRowButton({
 
   const createIcon2 = (iconId: IconProps["icon"]) => ({
     icon: iconId,
-    ...(isSelected ? { style: { color: COLORS.primary[500] } } : {}),
+    ...(isSelected
+      ? { style: { color: "var(--sdn-seldon-swatch-primary)" } }
+      : {}),
   })
 
   return {

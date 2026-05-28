@@ -1,6 +1,6 @@
 import { LayoutGroup } from "framer-motion"
 import { CSSProperties, Fragment, RefObject } from "react"
-import { Frame } from "@components/seldon/frames/Frame"
+import { Frame } from "../../../seldon/frames/Frame"
 import { BoardSection } from "../helpers/get-board-sections"
 import { useSectionExpansion } from "../helpers/use-section-expansion"
 import { FramerExpandable } from "../shared/FramerExpandable"

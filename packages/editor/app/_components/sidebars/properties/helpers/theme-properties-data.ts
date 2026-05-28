@@ -6,6 +6,7 @@ import {
 } from "@seldon/core/themes/schemas"
 import { FlatProperty } from "./properties-data"
 import { HSLObjectToString } from "@seldon/core/helpers/color/hsl-object-to-string"
+import { themeSwatchToCssBackground } from "@seldon/core/helpers/color/theme-swatch-to-css-background"
 import { stringifyValue } from "@seldon/core/helpers/properties/stringify-value"
 import type { HSL } from "@seldon/core/properties/values/shared/exact/hsl"
 
@@ -309,15 +310,12 @@ function createFlatPropertyFromSchema(
   if (schema.key === "color.baseColor" && value && typeof value === "object" && "hue" in value) {
     // Base color HSL object
     iconColorValue = HSLObjectToString(value as { hue: number; saturation: number; lightness: number })
-  } else if (schema.key === "color.whitePoint" && theme.swatch.white) {
-    // White point color already uses bleed in its saturation calculation
-    iconColorValue = HSLObjectToString(theme.swatch.white.value)
-  } else if (schema.key === "color.grayPoint" && theme.swatch.gray) {
-    // Gray point color already uses bleed in its saturation calculation
-    iconColorValue = HSLObjectToString(theme.swatch.gray.value)
-  } else if (schema.key === "color.blackPoint" && theme.swatch.black) {
-    // Black point color already uses bleed in its saturation calculation
-    iconColorValue = HSLObjectToString(theme.swatch.black.value)
+  } else if (schema.key === "color.whitePoint") {
+    iconColorValue = themeSwatchToCssBackground(theme.swatch.white)
+  } else if (schema.key === "color.grayPoint") {
+    iconColorValue = themeSwatchToCssBackground(theme.swatch.gray)
+  } else if (schema.key === "color.blackPoint") {
+    iconColorValue = themeSwatchToCssBackground(theme.swatch.black)
   }
   
   // Use IconColorValue for swatch properties and color point properties to show color-filled icons
@@ -355,7 +353,7 @@ function createFlatPropertyFromSchema(
   const flatProperty: FlatProperty = {
     key: schema.key,
     propertyType: "atomic",
-    label: schema.label,
+    label: schema.label ?? schema.key,
     icon,
     value: { type: ValueType.EXACT, value: formattedValue },
     actualValue,
@@ -365,14 +363,13 @@ function createFlatPropertyFromSchema(
     isShorthand: false,
     isSubProperty: false,
     status: "set",
-    allowedValues: schema.options?.map((opt) => String(opt.value)),
-    isDimmed: isCalculatedSwatch, // Mark calculated swatches as read-only
+    isDimmed: isCalculatedSwatch,
   }
   
   // Store color value for color point properties in a custom property
   // RowProperty will use this to pass color to icon
   if (iconColorValue) {
-    ;(flatProperty as any).iconColorValue = iconColorValue
+    flatProperty.iconColorValue = iconColorValue
   }
   
   return flatProperty

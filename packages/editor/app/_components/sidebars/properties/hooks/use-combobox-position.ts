@@ -66,7 +66,7 @@ export function useComboboxPosition({
 
       // Position menu above the control if in bottom 40%, otherwise below
       // Note: When positioning above, we subtract a small gap (2px) from the top
-      // The menu's max-height (max-h-96 = 384px) will handle overflow if needed
+      // The menu max height (24rem) handles overflow when needed
       const yPosition = isInBottomThird
         ? rect.top - 2 // Position above with 2px gap
         : rect.top + rect.height + 2 // Position below with 2px gap

@@ -1,8 +1,5 @@
 "use client"
 
-import { COLORS } from "@lib/ui/colors"
-import Link from "next/link"
-import { CSSProperties } from "react"
 import { useRouter } from "next/navigation"
 import { useCallback, useEffect, useMemo } from "react"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
@@ -19,6 +16,7 @@ import { useWorkspace } from "@lib/workspace/use-workspace"
 import { SidebarContainer } from "../../../seldon/elements/SidebarContainer"
 import { BarTabsProject } from "../../../seldon/parts/BarTabsProject"
 import { getBoardSections } from "../helpers/get-board-sections"
+import { sidebarShellStyle } from "../helpers/sidebar-styles"
 import { ProjectTree } from "./ProjectTree"
 
 export function ObjectsSidebar() {
@@ -62,11 +60,11 @@ export function ObjectsSidebar() {
   if (!record) return null
 
   return (
-    <SidebarContainer style={styles.container} data-testid="objects-sidebar">
+    <SidebarContainer style={sidebarShellStyle} data-testid="objects-sidebar">
       <BarTabsProject
         button={{ onClick: handleWorkspacesClick }}
         icon={{ icon: "material-chevronDoubleLeft" }}
-        label={{ children: <Link href="/">Workspaces</Link> }}
+        label={{ children: "Workspaces" }}
         text={{
           children: record.name,
           style: {
@@ -84,15 +82,3 @@ export function ObjectsSidebar() {
   )
 }
 
-const styles: Record<string, CSSProperties> = {
-  container: {
-    display: "flex",
-    flexDirection: "column",
-    width: "100%",
-    height: "100%",
-    minHeight: 0,
-    minWidth: 0,
-    overflow: "hidden",
-    backgroundColor: COLORS.charcoal[500],
-  },
-}

@@ -1,5 +1,3 @@
-import { COLORS } from "@lib/ui/colors"
-import { lcha } from "@lib/ui/colors"
 import { useMemo, useState } from "react"
 
 /**
@@ -11,10 +9,12 @@ export function useRowHover(isSelected: boolean, hoverOpacity: number = 10) {
 
   const style = useMemo(
     () => ({
-      ...(isSelected ? { borderColor: COLORS.primary[500] } : {}),
+      ...(isSelected
+        ? { borderColor: "var(--sdn-seldon-swatch-primary)" }
+        : {}),
       ...(isHovered && !isSelected
         ? {
-            backgroundColor: lcha(COLORS.pearl[500], hoverOpacity / 100),
+            backgroundColor: `hsl(0 0% 100% / ${hoverOpacity / 100})`,
           }
         : {}),
     }),

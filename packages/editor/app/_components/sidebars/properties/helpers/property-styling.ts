@@ -1,21 +1,26 @@
-import { COLORS } from "@lib/ui/colors"
 import { isCompoundProperty, isShorthandProperty } from "./property-types"
+import {
+  COLOR_DEBUG_COMPOUND,
+  COLOR_DEBUG_SHORTHAND,
+  COLOR_ERROR,
+  COLOR_NOT_USED,
+  COLOR_OVERRIDE,
+  COLOR_SET,
+  COLOR_UNSET,
+} from "../../helpers/sidebar-styles"
 
-// Property status colors
-export const COLOR_SET = COLORS.pearl[500]
-export const COLOR_UNSET = COLORS.pearl[700]
-export const COLOR_NOT_USED = COLORS.charcoal[400]
-export const COLOR_ERROR = COLORS.negative[500]
-export const COLOR_OVERRIDE = COLORS.primary[500]
-
-// Debug mode colors
-export const COLOR_DEBUG_COMPOUND = COLORS.accent[500]
-export const COLOR_DEBUG_SHORTHAND = COLORS.warning[500]
+export {
+  COLOR_SET,
+  COLOR_UNSET,
+  COLOR_NOT_USED,
+  COLOR_ERROR,
+  COLOR_OVERRIDE,
+  COLOR_DEBUG_COMPOUND,
+  COLOR_DEBUG_SHORTHAND,
+}
 
 /**
  * Checks if a property is a shorthand compound property
- * @param property - Property object with type and key
- * @returns True if property is shorthand type and has shorthand key
  */
 export function isShorthandCompoundProperty(property: {
   propertyType: string
@@ -28,8 +33,6 @@ export function isShorthandCompoundProperty(property: {
 
 /**
  * Checks if a property is a compound compound property
- * @param property - Property object with type and key
- * @returns True if property is compound type and has compound key
  */
 export function isCompoundCompoundProperty(property: {
   propertyType: string
@@ -42,9 +45,6 @@ export function isCompoundCompoundProperty(property: {
 
 /**
  * Gets the display color for a property based on its status and type
- * @param property - Property object with type, key, status, and sub-property flag
- * @param debugMode - Whether to use debug color scheme
- * @returns CSS color value (LCH format)
  */
 export function getPropertyDisplayColor(
   property: {

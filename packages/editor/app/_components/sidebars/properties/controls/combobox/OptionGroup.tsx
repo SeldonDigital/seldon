@@ -1,5 +1,5 @@
-import { cn } from "@lib/utils/cn"
 import React from "react"
+import { getOptionGroupStyle } from "./combobox-styles"
 
 type ComboboxOptionGroupProps = {
   isLast: boolean
@@ -10,14 +10,5 @@ export function ComboboxOptionGroup({
   isLast,
   children,
 }: ComboboxOptionGroupProps) {
-  return (
-    <div
-      className={cn(
-        "border-b border-solid border-white/10",
-        isLast && "border-none",
-      )}
-    >
-      {children}
-    </div>
-  )
+  return <div style={getOptionGroupStyle(isLast)}>{children}</div>
 }
