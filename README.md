@@ -7,9 +7,9 @@ Browser-only local editor baseline for Seldon. This branch is intentionally scop
 
 ## Packages
 
-- `packages/editor`: Next.js local editor UI
-- `packages/core`: workspace, theme, and reducer logic used by the editor
-- `packages/factory`: shared CSS/export helpers still imported by the editor
+- `packages/core`: workspace, theme, and reducer logic used by an editor or agent to mutate workspace.json files
+- `packages/editor`: Next.js visual editor run on localhost
+- `packages/factory`: Component Export, CSS, and code generation from a valid workspace.json file
 
 ## Run locally
 
@@ -40,7 +40,7 @@ You must pay the agreed flat fee to access the private GitHub repository (view, 
 
 The default software license is the **PolyForm Noncommercial License 1.0.0**.
 
-- You may use, copy, modify, and share this software for **noncommercial purposes** (e.g. research, education, personal projects).
+- You may use, copy, and modify this software for **noncommercial purposes** (e.g. research, education, personal projects).
 - Commercial use is **not permitted** under this license.
 - See [license/noncommercial/LICENSE.md](license/noncommercial/LICENSE.md) for the summary and link to the full PolyForm text.
 
