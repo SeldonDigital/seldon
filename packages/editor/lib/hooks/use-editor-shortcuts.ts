@@ -17,7 +17,8 @@ export function useEditorShortcuts() {
   const { undo, redo } = useHistory()
   const { setActiveTool } = useTool()
   const { copyNode, pasteNode, cutNode } = useNodeClipboardActions()
-  const { togglePanels, toggleWireframeMode } = useEditorConfig()
+  const { togglePanels, toggleShowSelection, toggleWireframeMode } =
+    useEditorConfig()
   const { togglePreviewMode, setDevice, isInPreviewMode } = usePreview()
   const { activeDialog } = useDialog()
 
@@ -93,6 +94,9 @@ export function useEditorShortcuts() {
 
   // Preview mode
   useHotkeys("p", () => togglePreviewMode(), { preventDefault: true })
+
+  // Selection overlay visibility
+  useHotkeys("h", () => toggleShowSelection(), { preventDefault: true })
 
   // Wireframe mode
   useHotkeys("w", () => toggleWireframeMode(), { preventDefault: true })

@@ -29,6 +29,8 @@ export function useMenuConfig(): HeaderConfig {
   const {
     showPanels,
     togglePanels,
+    showSelection,
+    toggleShowSelection,
     wireframeMode,
     toggleWireframeMode,
     autoScrollToSelection,
@@ -300,6 +302,13 @@ export function useMenuConfig(): HeaderConfig {
           },
           "separator",
           {
+            id: "show-selection",
+            label: "Show Selection",
+            action: toggleShowSelection,
+            active: showSelection,
+            shortcut: "H",
+          },
+          {
             id: "wireframe-mode",
             label: "Show Wireframes",
             action: toggleWireframeMode,
@@ -369,6 +378,8 @@ export function useMenuConfig(): HeaderConfig {
       isInPreviewMode,
       togglePanels,
       showPanels,
+      toggleShowSelection,
+      showSelection,
       toggleWireframeMode,
       wireframeMode,
       autoExpandOnSelection,

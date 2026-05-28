@@ -19,7 +19,7 @@ export function CanvasTracking() {
   const { visibleNodes } = useVisibleNodes()
   const { hoverState } = useCanvasHoverState()
   const nodeIds = visibleNodes.map((node) => node.id)
-  const { wireframeMode } = useEditorConfig()
+  const { showSelection, wireframeMode } = useEditorConfig()
   const { nodeBelongsToActiveBoard } = useBelongsToActiveBoard()
 
   const showWireframes =
@@ -32,7 +32,8 @@ export function CanvasTracking() {
 
   return (
     <>
-      {activeTool === "select" &&
+      {showSelection &&
+        activeTool === "select" &&
         visibleNodes.map((node) => {
           if (!nodeBelongsToActiveBoard(node.id)) return null
 
@@ -46,7 +47,7 @@ export function CanvasTracking() {
             />
           )
         })}
-      {activeTool === "select" && selectedNodeId && (
+      {showSelection && activeTool === "select" && selectedNodeId && (
         <IndicatorSelect
           nodeId={selectedNodeId}
           variant="selection"

@@ -4,6 +4,10 @@ import { persist } from "zustand/middleware"
 import { useShallow } from "zustand/react/shallow"
 
 interface EditorConfigState {
+  // Canvas selection and hover overlay boxes in select mode
+  showSelection: boolean
+  setShowSelection: (enabled: boolean) => void
+
   // Wireframe settings
   wireframeMode: "auto" | "on" | "off"
   toggleWireframeMode: (mode?: "on" | "off") => void
@@ -32,6 +36,10 @@ interface EditorConfigState {
 const useStore = create<EditorConfigState>()(
   persist(
     (set) => ({
+      showSelection: true,
+      setShowSelection: (enabled) =>
+        set((state) => ({ ...state, showSelection: enabled })),
+
       // Wireframe settings
       wireframeMode: "auto",
       toggleWireframeMode: (mode) =>
@@ -72,6 +80,7 @@ const useStore = create<EditorConfigState>()(
     {
       name: "editor-config",
       partialize: (state) => ({
+        showSelection: state.showSelection,
         wireframeMode: state.wireframeMode,
         showPanels: state.showPanels,
         autoScrollToSelection: state.autoScrollToSelection,
@@ -85,6 +94,8 @@ const useStore = create<EditorConfigState>()(
 
 export function useEditorConfig() {
   const {
+    showSelection,
+    setShowSelection,
     wireframeMode,
     toggleWireframeMode,
     showPanels,
@@ -99,6 +110,8 @@ export function useEditorConfig() {
     setUseRefactoredSidebars,
   } = useStore(
     useShallow((state) => ({
+      showSelection: state.showSelection,
+      setShowSelection: state.setShowSelection,
       wireframeMode: state.wireframeMode,
       toggleWireframeMode: state.toggleWireframeMode,
       showPanels: state.showPanels,
@@ -118,6 +131,10 @@ export function useEditorConfig() {
     setShowPanels(!showPanels)
   }, [setShowPanels, showPanels])
 
+  const toggleShowSelection = useCallback(() => {
+    setShowSelection(!showSelection)
+  }, [setShowSelection, showSelection])
+
   const toggleAutoScrollToSelection = useCallback(() => {
     setAutoScrollToSelection(!autoScrollToSelection)
   }, [setAutoScrollToSelection, autoScrollToSelection])
@@ -135,6 +152,10 @@ export function useEditorConfig() {
   }, [setUseRefactoredSidebars, useRefactoredSidebars])
 
   return {
+    showSelection,
+    setShowSelection,
+    toggleShowSelection,
+
     // Wireframe methods
     wireframeMode,
     toggleWireframeMode,
