@@ -23,15 +23,17 @@ export function getCssStringFromCssObject(
 
   const entries = Object.entries(cssObject)
 
-  // If the css object contains no values, return an empty string
-  if (entries.length === 0) {
-    return ""
-  }
-
+  // Process entries even if empty - we want empty classes to exist as rules
   for (const [key, value] of entries) {
-    if (value !== undefined && value !== null) {
+    // Filter out undefined, null, and empty strings to avoid invalid CSS like "color:;"
+    if (value !== undefined && value !== null && value !== "") {
       styles.push(`${kebabCase(key)}: ${value};`)
     }
+  }
+
+  // If the css object contains no valid values, return empty rule to ensure classname exists
+  if (styles.length === 0) {
+    return `.${className} {}`
   }
 
   return `.${className} {${styles.join("\n")}}`

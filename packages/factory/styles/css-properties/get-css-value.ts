@@ -1,6 +1,7 @@
 import {
   BorderWidth,
   BorderWidthHairlineValue,
+  Color,
   Corner,
   CornerValue,
   DegreesValue,
@@ -9,6 +10,7 @@ import {
   PercentageValue,
   PixelValue,
   RemValue,
+  TransparentValue,
   Unit,
   ValueType,
 } from "@seldon/core"
@@ -27,6 +29,7 @@ export function getCssValue(
     | NumberValue
     | BorderWidthHairlineValue
     | DegreesValue
+    | TransparentValue
     | EmptyValue,
 ): string | number {
   switch (value.type) {
@@ -52,7 +55,7 @@ export function getCssValue(
           throw new Error("Invalid exact value with unit " + value.value.unit)
       }
 
-    case ValueType.PRESET: {
+    case ValueType.OPTION: {
       switch (value.value) {
         case BorderWidth.HAIRLINE:
           return "var(--hairline)"
@@ -60,9 +63,11 @@ export function getCssValue(
           return "99999px"
         case Corner.SQUARED:
           return "0px"
+        case Color.TRANSPARENT:
+          return "transparent"
         default:
           // @ts-expect-error
-          throw new Error("Invalid preset value " + value.value)
+          throw new Error("Invalid option value " + value.value)
       }
     }
 
@@ -81,7 +86,7 @@ export function getCssValue(
     default: {
       throw new Error(
         `Invalid value type "${(value as any).type}" ${(value as any).value ? `with value "${(value as any).value}"` : ""}. ` +
-          `Expected EXACT, PRESET, or EMPTY. Theme values must be resolved before calling getCssValue().`,
+          `Expected EXACT, OPTION, or EMPTY. Theme values must be resolved before calling getCssValue().`,
       )
     }
   }

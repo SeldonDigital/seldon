@@ -1,0 +1,18 @@
+import { SVGAttributes } from "react"
+
+export function IconCarbonSkipForward(props: SVGAttributes<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 -960 960 960"
+      fill="currentColor"
+      height="1em"
+      width="1em"
+      {...props}
+    >
+      <g transform="translate(0, -960) scale(30)">
+        <path d="M5 28a1 1 0 01-1-1V5a1 1 0 01.5-.87 1 1 0 011 0l19 11a1 1 0 010 1.74l-19 11A1 1 0 015 28zM6 6.73V25.27L22 16zM28 4H30V28H28z" />
+      </g>
+    </svg>
+  )
+}

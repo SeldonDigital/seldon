@@ -13,7 +13,7 @@ export function getBackgroundPositionStyle(position: BackgroundPositionValue) {
     }
   }
 
-  if (position.type === ValueType.PRESET) {
+  if (position.type === ValueType.OPTION) {
     return backgroundPositionMap[position.value]
   }
 }

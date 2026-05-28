@@ -33,7 +33,7 @@ export function getLayoutStyles({
   const gap = resolveValue(computedProperties.gap)
 
   const isRtl =
-    direction?.type === ValueType.PRESET && direction.value === Direction.RTL
+    direction?.type === ValueType.OPTION && direction.value === Direction.RTL
 
   if (wrapChildren) {
     styles.flexWrap = wrapChildren?.value ? "wrap" : "nowrap"
@@ -121,7 +121,7 @@ export function getLayoutStyles({
         styles.gap = getCssValue(gap) as string // We're sure that the value is a string since its an PixelValue or RemValue
         break
 
-      case ValueType.PRESET:
+      case ValueType.OPTION:
         if (gap.value === Gap.EVENLY_SPACED) {
           styles.gap = "auto"
           styles.justifyContent = "space-between"

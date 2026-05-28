@@ -10,9 +10,14 @@ export const schema = {
   level: Seldon.ComponentLevel.PRIMITIVE,
   icon: Seldon.ComponentIcon.STUB,
   properties: {
-    // This is a basic schema - developers will expand it as needed
-    display: { type: Sdn.ValueType.EMPTY, value: null },
-    source: { type: Sdn.ValueType.EMPTY, value: null },
+    display: {
+      type: Sdn.ValueType.EMPTY,
+      value: null,
+    },
+    source: {
+      type: Sdn.ValueType.EMPTY,
+      value: null,
+    },
   },
 } as const satisfies ComponentSchema
 

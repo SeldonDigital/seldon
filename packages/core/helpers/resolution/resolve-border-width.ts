@@ -1,4 +1,3 @@
-import { ComputeContext } from "../../compute/types"
 import {
   BorderWidth,
   BorderWidthHairlineValue,
@@ -9,13 +8,15 @@ import {
   Unit,
   ValueType,
 } from "../../index"
+import type { ComputeContext } from "../../properties/compute/types"
+import { modulateWithTheme } from "../../themes/helpers/modulate"
 import { Theme } from "../../themes/types"
-import { modulateWithTheme } from "../math/modulate"
+import { isModulatedToken, isThemeExactToken } from "../../themes/types"
 import { getThemeOption } from "../theme/get-theme-option"
 
 /**
  * Resolves border width values to concrete PixelValue, RemValue, BorderWidthHairlineValue, or EmptyValue.
- * Handles EMPTY, EXACT, PRESET, and THEME_ORDINAL value types.
+ * Handles EMPTY, EXACT, OPTION, and THEME_ORDINAL value types.
  *
  * @param borderWidth - The border width value to resolve
  * @param theme - The theme object containing border width tokens
@@ -34,28 +35,39 @@ export function resolveBorderWidth({
   switch (borderWidth.type) {
     case ValueType.EMPTY:
     case ValueType.EXACT:
-    case ValueType.PRESET:
+    case ValueType.OPTION:
       return borderWidth
     case ValueType.THEME_ORDINAL: {
       const themeValue = getThemeOption(borderWidth.value as string, theme)
 
       if ((themeValue as any).value === "hairline") {
         return {
-          type: ValueType.PRESET,
+          type: ValueType.OPTION,
           value: BorderWidth.HAIRLINE,
         }
       }
 
-      return {
-        type: ValueType.EXACT,
-        value: {
-          unit: Unit.REM,
-          value: modulateWithTheme({
-            theme,
-            parameters: (themeValue as any).parameters,
-          }),
-        },
+      if (isModulatedToken(themeValue)) {
+        const n = modulateWithTheme({
+          theme,
+          parameters: themeValue.parameters,
+        })
+        return {
+          type: ValueType.EXACT,
+          value: { unit: Unit.REM, value: n },
+        }
       }
+      if (isThemeExactToken(themeValue)) {
+        const { unit, value: n } = themeValue.value
+        return (
+          unit === Unit.PX
+            ? { type: ValueType.EXACT, value: { unit: Unit.PX, value: n } }
+            : { type: ValueType.EXACT, value: { unit: Unit.REM, value: n } }
+        ) as PixelValue | RemValue
+      }
+      throw new Error(
+        `Theme value ${borderWidth.value as string} must resolve to MODULATED or EXACT length`,
+      )
     }
     default:
       throw new Error(

@@ -1,12 +1,22 @@
 node_modules
 dist
+.next
+/out
+/build
+/coverage
+/cypress/snapshots/actual
+/cypress/snapshots/diff
+/.pnp
+.pnp.js
 *.tsbuildinfo
+next-env.d.ts
 
 logs
 *.log
 npm-debug.log*
 
 .DS_Store
+*.pem
 
 .eslintcache
 .vscode
@@ -16,5 +26,6 @@ npm-debug.log*
 .env
 .env.local
 
-# Prisma generated client
-client/
+.vercel
+__exports__
+

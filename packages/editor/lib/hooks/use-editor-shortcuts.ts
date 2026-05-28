@@ -3,7 +3,6 @@ import { useHistory } from "@lib/workspace/use-history"
 import { useAddRemoveCommands } from "./commands/use-add-remove-commands"
 import { useMoveCommands } from "./commands/use-move-commands"
 import { useSelectCommands } from "./commands/use-select-commands"
-import { useChat } from "./use-chat"
 import { useDialog } from "./use-dialog"
 import { useEditorConfig } from "./use-editor-config"
 import { useNodeClipboardActions } from "./use-node-clipboard-actions"
@@ -17,9 +16,9 @@ export function useEditorShortcuts() {
 
   const { undo, redo } = useHistory()
   const { setActiveTool } = useTool()
-  const { toggleChat } = useChat()
   const { copyNode, pasteNode, cutNode } = useNodeClipboardActions()
-  const { togglePanels, toggleWireframeMode } = useEditorConfig()
+  const { togglePanels, toggleShowSelection, toggleWireframeMode } =
+    useEditorConfig()
   const { togglePreviewMode, setDevice, isInPreviewMode } = usePreview()
   const { activeDialog } = useDialog()
 
@@ -57,9 +56,6 @@ export function useEditorShortcuts() {
     preventDefault: true,
   })
 
-  // Chat
-  useHotkeys("/", toggleChat, { preventDefault: true })
-
   // Toggle panels
   useHotkeys("backslash", togglePanels, { preventDefault: true })
 
@@ -83,19 +79,24 @@ export function useEditorShortcuts() {
     preventDefault: true,
   })
 
-  // Chat & catalog tab
   useHotkeys("esc", () => togglePreviewMode(false), {
     enabled: isInPreviewMode,
-  }) // we want this to work even if the chat input is focussed
+  })
 
   // Header tools
   useHotkeys("c", () => setActiveTool("component"), {
     preventDefault: true,
   }) // prevent the character from being typed after the trigger
   useHotkeys("v", () => setActiveTool("select"))
+  useHotkeys("k", () => setActiveTool("sketch"), {
+    preventDefault: true,
+  })
 
   // Preview mode
   useHotkeys("p", () => togglePreviewMode(), { preventDefault: true })
+
+  // Selection overlay visibility
+  useHotkeys("h", () => toggleShowSelection(), { preventDefault: true })
 
   // Wireframe mode
   useHotkeys("w", () => toggleWireframeMode(), { preventDefault: true })

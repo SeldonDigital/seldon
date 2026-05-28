@@ -121,7 +121,7 @@ export function stringifyValue(
       throw new Error(`Unable to stringify value: ${JSON.stringify(value)}`)
     }
 
-    case ValueType.PRESET:
+    case ValueType.OPTION:
     case ValueType.THEME_ORDINAL:
     case ValueType.THEME_CATEGORICAL:
       return value.value

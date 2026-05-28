@@ -50,11 +50,6 @@ export interface DeleteConfig {
   instance: DeleteEntityConfig
 }
 
-/**
- * Root rules configuration type
- */
-export type RuleId = "setProperties" | "rename" | "delete" | "reorder"
-
 export interface MutationRules {
   create: Config
   insertInto: Config
@@ -67,6 +62,8 @@ export interface MutationRules {
   reorder: Config
   move: Config
 }
+
+export type RuleId = keyof MutationRules
 
 export interface ComponentLevelConfig {
   mayContain: ComponentLevel[]

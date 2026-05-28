@@ -18,72 +18,114 @@ export const schema = {
   level: Seldon.ComponentLevel.PRIMITIVE,
   icon: Seldon.ComponentIcon.INPUT,
   properties: {
-    // COMPONENT
-    display: { type: Sdn.ValueType.EMPTY, value: null },
+    display: {
+      type: Sdn.ValueType.EMPTY,
+      value: null,
+    },
+    inputType: {
+      type: Sdn.ValueType.OPTION,
+      value: Sdn.InputType.CHECKBOX,
+    },
+    checked: {
+      type: Sdn.ValueType.EXACT,
+      value: false,
+    },
     buttonSize: {
       type: Sdn.ValueType.THEME_ORDINAL,
       value: "@fontSize.medium",
-      restrictions: {
-        allowedValues: [
-          "@fontSize.xsmall",
-          "@fontSize.small",
-          "@fontSize.medium",
-          "@fontSize.large",
-          "@fontSize.xlarge",
-        ],
-      },
-    },
-    checked: { type: Sdn.ValueType.EXACT, value: false },
-    inputType: {
-      type: Sdn.ValueType.PRESET,
-      value: Sdn.InputType.CHECKBOX,
-      restrictions: {
-        allowedValues: [Sdn.InputType.CHECKBOX],
-      },
-    },
-
-    // LAYOUT
-    margin: {
-      top: { type: Sdn.ValueType.EMPTY, value: null },
-      right: { type: Sdn.ValueType.EMPTY, value: null },
-      bottom: { type: Sdn.ValueType.EMPTY, value: null },
-      left: { type: Sdn.ValueType.EMPTY, value: null },
-    },
-    padding: {
-      top: { type: Sdn.ValueType.EMPTY, value: null },
-      right: { type: Sdn.ValueType.EMPTY, value: null },
-      bottom: { type: Sdn.ValueType.EMPTY, value: null },
-      left: { type: Sdn.ValueType.EMPTY, value: null },
     },
     width: {
-      type: Sdn.ValueType.PRESET,
+      type: Sdn.ValueType.OPTION,
       value: Sdn.Resize.FIT,
     },
-    // APPEARANCE
+    margin: {
+      top: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
+      right: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
+      bottom: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
+      left: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
+    },
+    padding: {
+      top: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
+      right: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
+      bottom: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
+      left: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
+    },
     color: {
       type: Sdn.ValueType.THEME_CATEGORICAL,
       value: "@swatch.black",
     },
-    brightness: { type: Sdn.ValueType.EMPTY, value: null },
     accentColor: {
       type: Sdn.ValueType.THEME_CATEGORICAL,
       value: "@swatch.primary",
     },
-    opacity: { type: Sdn.ValueType.EMPTY, value: null },
-
-    // TYPOGRAPHY
-    // GRADIENTS
-    // SHADOWS
-    shadow: {
-      preset: { type: Sdn.ValueType.EMPTY, value: null },
-      offsetX: { type: Sdn.ValueType.EMPTY, value: null },
-      offsetY: { type: Sdn.ValueType.EMPTY, value: null },
-      blur: { type: Sdn.ValueType.EMPTY, value: null },
-      spread: { type: Sdn.ValueType.EMPTY, value: null },
-      color: { type: Sdn.ValueType.EMPTY, value: null },
-      brightness: { type: Sdn.ValueType.EMPTY, value: null },
-      opacity: { type: Sdn.ValueType.EMPTY, value: null },
+    brightness: {
+      type: Sdn.ValueType.EMPTY,
+      value: null,
     },
+    opacity: {
+      type: Sdn.ValueType.EMPTY,
+      value: null,
+    },
+    shadow: [
+      {
+        preset: {
+          type: Sdn.ValueType.THEME_CATEGORICAL,
+          value: "@shadow.none",
+        },
+        offsetX: {
+          type: Sdn.ValueType.EMPTY,
+          value: null,
+        },
+        offsetY: {
+          type: Sdn.ValueType.EMPTY,
+          value: null,
+        },
+        blur: {
+          type: Sdn.ValueType.EMPTY,
+          value: null,
+        },
+        color: {
+          type: Sdn.ValueType.EMPTY,
+          value: null,
+        },
+        brightness: {
+          type: Sdn.ValueType.EMPTY,
+          value: null,
+        },
+        opacity: {
+          type: Sdn.ValueType.EMPTY,
+          value: null,
+        },
+        spread: {
+          type: Sdn.ValueType.EMPTY,
+          value: null,
+        },
+      },
+    ],
   },
 } as const satisfies ComponentSchema
 

@@ -2,6 +2,7 @@ import { ValueType } from "../../constants"
 import { PropertySchema } from "../../types/schema"
 import { EmptyValue } from "../shared/empty/empty"
 
+/** HTML input type strings the catalog exposes as fixed choices. */
 export enum InputType {
   TEXT = "text",
   NUMBER = "number",
@@ -16,22 +17,29 @@ export enum InputType {
   RADIO = "radio",
 }
 
-export interface InputTypePresetValue {
-  type: ValueType.PRESET
+/** Records which input type keyword is selected. */
+export interface InputTypeOptionValue {
+  type: ValueType.OPTION
   value: InputType
 }
 
-export type InputTypeValue = EmptyValue | InputTypePresetValue
+/** Empty, or an input type keyword from the list above. */
+export type InputTypeValue = EmptyValue | InputTypeOptionValue
 
+/** Defines labels, allowed shapes, checks, and preset choices for `inputType`. */
 export const inputTypeSchema: PropertySchema = {
   name: "inputType",
-  description: "Input element type for forms",
-  supports: ["empty", "inherit", "exact", "preset"] as const,
+  description:
+    "Input type for form components (text, email, password, etc.)",
+  supports: ["empty", "inherit", "exact", "option"] as const,
   validation: {
     empty: () => true,
     inherit: () => true,
-    exact: (value: any) => typeof value === "string" && value.length > 0,
-    preset: (value: any) => Object.values(InputType).includes(value),
+    exact: (value: unknown) =>
+      typeof value === "string" && value.length > 0,
+    option: (value: unknown) =>
+      typeof value === "string" &&
+      (Object.values(InputType) as string[]).includes(value),
   },
   presetOptions: () => Object.values(InputType),
 }

@@ -1,7 +1,9 @@
+import { Properties } from "@seldon/core"
 import { resolveValue } from "@seldon/core/helpers/resolution/resolve-value"
 import { getThemeOption } from "@seldon/core/helpers/theme/get-theme-option"
 import { StyleGenerationContext } from "../types"
 import { getColorCSSValue } from "./get-color-css-value"
+import { getLayeredPaintLayer } from "./get-layered-paint-layer"
 import { CSSObject } from "./types"
 
 export function getBackgroundColorStyles({
@@ -9,25 +11,26 @@ export function getBackgroundColorStyles({
   theme,
 }: StyleGenerationContext): CSSObject {
   const styles: CSSObject = {}
-  const preset = resolveValue(properties.background?.preset)
+  const layer = getLayeredPaintLayer(properties, "background")
+  if (!layer) return styles
+
+  const preset = resolveValue(layer.preset)
   const themeBackground = preset
     ? getThemeOption(preset.value, theme)
     : undefined
 
   const opacity =
-    resolveValue(properties.background?.opacity) ??
+    resolveValue(layer.opacity) ??
     resolveValue(themeBackground?.parameters?.opacity)
 
   const brightness =
-    resolveValue(properties.background?.brightness) ??
+    resolveValue(layer.brightness) ??
     resolveValue(themeBackground?.parameters?.brightness)
 
   const color =
-    resolveValue(properties.background?.color) ??
-    resolveValue(themeBackground?.parameters?.color)
+    resolveValue(layer.color) ?? resolveValue(themeBackground?.parameters?.color)
 
-  // Only apply if background.color is defined in the schema
-  if (color && properties.background?.color) {
+  if (color && layer.color) {
     styles.backgroundColor = getColorCSSValue({
       color,
       brightness,

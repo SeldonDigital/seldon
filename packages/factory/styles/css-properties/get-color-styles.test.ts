@@ -31,7 +31,7 @@ describe("getColorStyles", () => {
     })
 
     expect(result).toEqual({
-      color: "hsl(0 0% 15%)",
+      color: "hsl(0 0% 0%)",
     })
   })
 
@@ -50,7 +50,7 @@ describe("getColorStyles", () => {
     })
 
     expect(result).toEqual({
-      accentColor: "hsl(0 0% 15%)",
+      accentColor: "hsl(0 0% 0%)",
     })
   })
 
@@ -73,8 +73,8 @@ describe("getColorStyles", () => {
     })
 
     expect(result).toEqual({
-      color: "hsl(0 0% 15%)",
-      accentColor: "hsl(0 0% 30%)",
+      color: "hsl(0 0% 0%)",
+      accentColor: "hsl(0 0% 20%)",
     })
   })
 
@@ -97,7 +97,7 @@ describe("getColorStyles", () => {
     })
 
     expect(result).toEqual({
-      color: "hsl(0 0% 32%)",
+      color: "hsl(0 0% 20%)",
     })
   })
 
@@ -168,7 +168,7 @@ describe("getColorStyles", () => {
     })
 
     expect(result).toEqual({
-      accentColor: "hsl(0 0% 15%)",
+      accentColor: "hsl(0 0% 0%)",
     })
   })
 
@@ -197,7 +197,7 @@ describe("getColorStyles", () => {
     })
 
     expect(result).toEqual({
-      accentColor: "hsl(0 0% 15%)",
+      accentColor: "hsl(0 0% 0%)",
     })
   })
 
@@ -216,7 +216,7 @@ describe("getColorStyles", () => {
     })
 
     expect(result).toEqual({
-      color: "hsl(0 12% 98%)",
+      color: "hsl(0 0% 100%)",
     })
   })
 

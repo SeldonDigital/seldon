@@ -1,5 +1,5 @@
 import { Orientation, Resize, ScreenSize, ValueType } from "@seldon/core"
-import { modulateWithTheme } from "@seldon/core/helpers/math/modulate"
+import { modulateWithTheme } from "@seldon/core/themes/helpers/modulate"
 import { resolveValue } from "@seldon/core/helpers/resolution/resolve-value"
 import { getThemeOption } from "@seldon/core/helpers/theme/get-theme-option"
 import { ThemeModulation } from "@seldon/core/themes/types"
@@ -29,6 +29,23 @@ function getScreenSizePixelValue(screenSize: ScreenSize): number {
   }
 }
 
+function applyBoardDimensionStyle(
+  dimension: ReturnType<typeof resolveValue>,
+  axis: "width" | "height",
+  styles: CSSObject,
+): void {
+  if (!dimension) return
+
+  if (dimension.type === ValueType.EXACT) {
+    styles[axis] = getCssValue(dimension) as string
+    return
+  }
+
+  if (dimension.type === ValueType.OPTION && dimension.value === Resize.FIT) {
+    styles[axis] = "fit-content"
+  }
+}
+
 export function getSizeStyles({
   properties,
   parentContext,
@@ -39,6 +56,16 @@ export function getSizeStyles({
   const parentOrientation = parentContext?.properties?.orientation
     ? resolveValue(parentContext.properties.orientation)?.value
     : Orientation.VERTICAL
+
+  const ownOrientation = properties.orientation
+    ? resolveValue(properties.orientation)?.value
+    : null
+
+  const boardWidth = resolveValue(properties.board?.width)
+  const boardHeight = resolveValue(properties.board?.height)
+
+  applyBoardDimensionStyle(boardWidth, "width", styles)
+  applyBoardDimensionStyle(boardHeight, "height", styles)
 
   const screenWidth = resolveValue(properties.screenWidth)
   const screenHeight = resolveValue(properties.screenHeight)
@@ -56,7 +83,7 @@ export function getSizeStyles({
       } else {
         styles.width = getCssValue(screenWidth) as string // We're sure that the value is a string since its a RemValue or a PixelValue
       }
-    } else if (screenWidth.type === ValueType.PRESET) {
+    } else if (screenWidth.type === ValueType.OPTION) {
       const value = (screenWidth as any).value
       if (value === Resize.FIT) {
         styles.width = "fit-content"
@@ -86,7 +113,7 @@ export function getSizeStyles({
       } else {
         styles.height = getCssValue(screenHeight) as string // We're sure that the value is a string since its a RemValue or a PixelValue
       }
-    } else if (screenHeight.type === ValueType.PRESET) {
+    } else if (screenHeight.type === ValueType.OPTION) {
       const value = (screenHeight as any).value
       if (value === Resize.FIT) {
         styles.height = "fit-content"
@@ -118,10 +145,20 @@ export function getSizeStyles({
       // Do nothing for EMPTY values
     } else if (!width) {
       // Width defaults to Resize.FILL
-      if (parentOrientation === Orientation.VERTICAL) {
-        styles.alignSelf = "stretch"
+      if (ownOrientation) {
+        if (parentOrientation === Orientation.HORIZONTAL) {
+          styles.flex = "1 0 0"
+        } else {
+          // Parent is a flex container (VERTICAL), use alignSelf: stretch
+          // instead of width: 100% to prevent overflow with padding
+          styles.alignSelf = "stretch"
+        }
       } else {
-        styles.flex = "1 0 0"
+        if (parentOrientation === Orientation.VERTICAL) {
+          styles.alignSelf = "stretch"
+        } else {
+          styles.flex = "1 0 0"
+        }
       }
     } else if (width.type === ValueType.EXACT) {
       styles.width = getCssValue(width) as string // We're sure that the value is a string since its a RemValue or a PixelValue
@@ -141,12 +178,22 @@ export function getSizeStyles({
       if (parentOrientation === Orientation.HORIZONTAL) {
         styles.flexShrink = 0
       }
-    } else if (width.type === ValueType.PRESET) {
+    } else if (width.type === ValueType.OPTION) {
       if (width.value === Resize.FILL) {
-        if (parentOrientation === Orientation.VERTICAL) {
-          styles.alignSelf = "stretch"
+        if (ownOrientation) {
+          if (parentOrientation === Orientation.HORIZONTAL) {
+            styles.flex = "1 0 0"
+          } else {
+            // Parent is a flex container (VERTICAL), use alignSelf: stretch
+            // instead of width: 100% to prevent overflow with padding
+            styles.alignSelf = "stretch"
+          }
         } else {
-          styles.flex = "1 0 0"
+          if (parentOrientation === Orientation.VERTICAL) {
+            styles.alignSelf = "stretch"
+          } else {
+            styles.flex = "1 0 0"
+          }
         }
       } else {
         styles.width = "fit-content"
@@ -188,12 +235,20 @@ export function getSizeStyles({
       if (parentOrientation === Orientation.VERTICAL) {
         styles.flexShrink = 0
       }
-    } else if (height.type === ValueType.PRESET) {
+    } else if (height.type === ValueType.OPTION) {
       if (height.value === Resize.FILL) {
-        if (parentOrientation === Orientation.VERTICAL) {
-          styles.flex = "1 0 0"
+        if (ownOrientation) {
+          if (parentOrientation === Orientation.VERTICAL) {
+            styles.flex = "1 0 0"
+          } else {
+            styles.height = "100%"
+          }
         } else {
-          styles.alignSelf = "stretch"
+          if (parentOrientation === Orientation.VERTICAL) {
+            styles.flex = "1 0 0"
+          } else {
+            styles.alignSelf = "stretch"
+          }
         }
       } else {
         styles.height = "fit-content"

@@ -2,8 +2,16 @@ import { useCallback } from "react"
 import { getComponentSchema } from "@seldon/core/components/catalog"
 import { ComponentId } from "@seldon/core/components/constants"
 import { InstanceId, VariantId, invariant } from "@seldon/core/index"
-import { nodeAllowsReordering } from "@seldon/core/workspace/helpers/node-allows-reordering"
+import { getComponentOrder } from "@seldon/core/workspace/helpers/components/component-sort-order"
+import { getComponentVariantRootIds } from "@seldon/core/workspace/helpers/components/get-component-variant-root-ids"
+import { findParentNode } from "@seldon/core/workspace/helpers/nodes/find-parent-node"
+import { nodeAllowsReordering } from "@seldon/core/workspace/helpers/nodes/node-allows-reordering"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
+import {
+  getNodeCatalogComponentId,
+  getNodeChildIds,
+} from "@lib/workspace/node-tree"
+import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { useSelection } from "@lib/workspace/use-selection"
 import { useWorkspace } from "@lib/workspace/use-workspace"
 import { useAddToast } from "@components/toaster/use-add-toast"
@@ -23,12 +31,12 @@ export function useMoveCommands() {
   const moveBoardUpOrDown = useCallback(
     (boardId: ComponentId, direction: "up" | "down") => {
       const board = workspaceService.getBoard(boardId, workspace)
-      const currentOrder = board.order
+      const currentOrder = getComponentOrder(board)
 
       dispatch({
         type: "reorder_board",
         payload: {
-          componentId: boardId,
+          componentKey: boardId,
           // When moving down, we need to index to be higher than the next item whos index is 1 higher
           newIndex: direction === "up" ? currentOrder - 1 : currentOrder + 2,
         },
@@ -53,30 +61,33 @@ export function useMoveCommands() {
 
   const moveChildUpOrDown = useCallback(
     (nodeId: InstanceId, direction: "up" | "down") => {
-      const parent = workspaceService.findParentNode(nodeId, workspace)
+      const parent = findParentNode(nodeId, workspace)
       invariant(parent, "Parent not found")
-      invariant(parent.children, "Parent does not have children")
+      const childIds = getNodeChildIds(parent, workspace)
+      invariant(childIds.length > 0, "Parent does not have children")
 
       if (!nodeAllowsReordering(parent.id, workspace)) {
-        const schema = getComponentSchema(parent.component)
+        const catalogId = getNodeCatalogComponentId(parent, workspace)
+        invariant(catalogId, "Parent catalog id not found")
+        const schema = getComponentSchema(catalogId)
         addToast(
           `${schema.name} component does not allow reordering of child components`,
         )
         return
       }
 
-      const currentIndex = parent.children.indexOf(nodeId)
+      const currentIndex = childIds.indexOf(nodeId)
       const isAtLimit =
         direction === "up"
           ? currentIndex <= 0
-          : currentIndex === -1 || currentIndex >= parent.children.length - 1
+          : currentIndex === -1 || currentIndex >= childIds.length - 1
 
       if (isAtLimit) return
 
       dispatch({
-        type: "reorder_node",
+        type: "reorder_instance_in_parent",
         payload: {
-          nodeId: nodeId,
+          instanceId: nodeId,
           newIndex: currentIndex + (direction === "up" ? -1 : 1),
         },
       })
@@ -101,14 +112,20 @@ export function useMoveCommands() {
   const moveVariant = useCallback(
     (variantId: VariantId, index: number) => {
       const variant = workspaceService.getVariant(variantId, workspace)
+      const board = workspaceService.findBoardForVariant(variant, workspace)
+      invariant(board, "Board not found")
       if (workspaceService.isDefaultVariant(variant) || index === 0) {
         addToast("Default variant cannot be moved or replaced")
         return
       }
 
       dispatch({
-        type: "reorder_node",
-        payload: { nodeId: variantId, newIndex: index },
+        type: "reorder_variant_in_board",
+        payload: {
+          componentKey: getComponentKey(board),
+          variantRootId: variantId,
+          newIndex: index,
+        },
       })
     },
     [workspace, dispatch, addToast],
@@ -125,7 +142,8 @@ export function useMoveCommands() {
       const board = workspaceService.findBoardForVariant(variant, workspace)
       invariant(board, "Board not found")
 
-      const currentIndex = board.variants.indexOf(variantId)
+      const variantRootIds = getComponentVariantRootIds(board)
+      const currentIndex = variantRootIds.indexOf(variantId)
       if (currentIndex <= 1) {
         if (currentIndex === 1) {
           addToast("Variant is already at the top position")
@@ -149,9 +167,10 @@ export function useMoveCommands() {
       const board = workspaceService.findBoardForVariant(variant, workspace)
       invariant(board, "Board not found")
 
-      const currentIndex = board.variants.indexOf(variantId)
-      if (currentIndex === -1 || currentIndex >= board.variants.length - 1) {
-        if (currentIndex === board.variants.length - 1) {
+      const variantRootIds = getComponentVariantRootIds(board)
+      const currentIndex = variantRootIds.indexOf(variantId)
+      if (currentIndex === -1 || currentIndex >= variantRootIds.length - 1) {
+        if (currentIndex === variantRootIds.length - 1) {
           addToast("Variant is already at the bottom position")
         }
         return
@@ -166,7 +185,7 @@ export function useMoveCommands() {
     if (!selection) return
 
     if (workspaceService.isBoard(selection)) {
-      moveBoardUp(selection.id)
+      moveBoardUp(getComponentKey(selection) as ComponentId)
     } else {
       if (workspaceService.isInstance(selection)) {
         moveChildUp(selection.id)
@@ -181,7 +200,7 @@ export function useMoveCommands() {
     if (!selection) return
 
     if (workspaceService.isBoard(selection)) {
-      moveBoardDown(selection.id)
+      moveBoardDown(getComponentKey(selection) as ComponentId)
     } else {
       if (workspaceService.isInstance(selection)) {
         moveChildDown(selection.id)

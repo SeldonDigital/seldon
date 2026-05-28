@@ -1,23 +1,17 @@
-import { useLocation } from "wouter"
+"use client"
 
+import { usePathname } from "next/navigation"
 import { usePreview } from "./use-preview"
 
-/**
- * Application states
- */
 export type AppState = "project" | "edit" | "preview"
 
-/**
- * Hook to access the current application state
- */
 export function useAppState() {
   const { isInPreviewMode } = usePreview()
-  const [location] = useLocation()
+  const pathname = usePathname()
 
   let appState: AppState = "edit"
 
-  // Check if we're on the project list page
-  const isProjectPage = location === "/" || location === "/new-project"
+  const isProjectPage = pathname === "/"
 
   if (isProjectPage) {
     appState = "project"

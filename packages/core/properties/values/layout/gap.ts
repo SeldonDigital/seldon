@@ -6,36 +6,41 @@ import { EmptyValue } from "../shared/empty/empty"
 import { PixelValue } from "../shared/exact/pixel"
 import { RemValue } from "../shared/exact/rem"
 
+/** Catalog spacing choice between children when not using fixed lengths or theme steps. */
 export enum Gap {
   EVENLY_SPACED = "evenly-spaced",
 }
 
-export interface GapPresetValue {
-  type: ValueType.PRESET
+/** Picks one spacing option from the Gap enum. */
+export interface GapOptionValue {
+  type: ValueType.OPTION
   value: Gap
 }
 
+/** Ordinal reference into the theme gap scale. */
 export interface GapThemeValue {
   type: ValueType.THEME_ORDINAL
   value: ThemeGapKey
 }
 
+/** All ways gap may be stored between flex or grid children. */
 export type GapValue =
   | EmptyValue
   | PixelValue
   | RemValue
   | ComputedMatchValue
-  | GapPresetValue
+  | GapOptionValue
   | GapThemeValue
 
 export const gapSchema: PropertySchema = {
   name: "gap",
-  description: "Spacing between elements",
+  description:
+    "Sets space between child elements using px, rem, theme steps, the catalog option, or computed match.",
   supports: [
     "empty",
     "inherit",
     "exact",
-    "preset",
+    "option",
     "computed",
     "themeOrdinal",
   ] as const,
@@ -57,7 +62,7 @@ export const gapSchema: PropertySchema = {
       if (typeof value === "number" && value >= 0) return true
       return false
     },
-    preset: (value: any) => Object.values(Gap).includes(value),
+    option: (value: any) => Object.values(Gap).includes(value),
     computed: (value: any) =>
       typeof value === "object" && value.function !== undefined,
     themeOrdinal: (value: any, theme?: Theme) => {

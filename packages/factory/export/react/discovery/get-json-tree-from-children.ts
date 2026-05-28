@@ -1,90 +1,78 @@
-import {
-  Display,
-  InstanceId,
-  Properties,
-  Variant,
-  VariantId,
-  Workspace,
-} from "@seldon/core"
-import { IconId } from "@seldon/core/components/icons"
-import { getNodeById } from "@seldon/core/workspace/helpers/get-node-by-id"
-import { getNodeProperties } from "@seldon/core/workspace/helpers/get-node-properties"
+import { Display, InstanceId, Properties, VariantId, ValueType } from "@seldon/core"
+import { ComponentId, ComponentLevel, isComponentId } from "@seldon/core/components/constants"
+import { getComponentSchema } from "@seldon/core/components/catalog"
+import { isComplexSchema } from "@seldon/core/components/types"
+import { WrapperElement } from "@seldon/core/properties"
+import { IconId } from "@seldon/core/icons"
+import { getChildrenIds } from "@seldon/core/workspace/helpers/components/get-children-ids"
+import { componentBoardSchemaVariantNodeId } from "@seldon/core/workspace/helpers/components/entry-node-ids"
+import { getComponentByNodeId } from "@seldon/core/workspace/helpers/components/get-component-by-node-id"
+import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
+import { getNodeById } from "@seldon/core/workspace/helpers/nodes/get-node-by-id"
+import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-catalog-id"
+import { isVariantNode } from "@seldon/core/workspace/helpers/nodes/is-variant-node"
+import { isComponentBoard } from "@seldon/core/workspace/model/components"
+import { typeCheckingService } from "@seldon/core/workspace/services"
+import type { EntryNode, Workspace } from "@seldon/core/workspace/types"
+import { getTemplateSourceNodeId } from "../../../helpers/workspace-nodes"
 import { DataBinding, JSONTreeNode } from "../../types"
 import { camelCase, pascalCase } from "../utils/case-utils"
 import { getComponentName } from "./get-component-name"
 import { getNodeOriginChain } from "./get-node-origin-chain"
 import { getUsedIconIds } from "./get-used-icon-ids"
 
-/**
- * Get the JSON tree from a component variant
- * The JSON tree is used to generate the needed import statements, props pass trough, and JSX string for creating the template
- *
- * For example it will return (simplified):
- * {
- *   type: "Button",
- *   children: [{
- *     type: "Icon",
- *     props: {
- *       icon: "arrow-right",
- *     },
- *   }, {
- *     type: "Text",
- *     props: {
- *       text: "Click me",
- *     },
- *   }],
- * }
- *
- * @param variant - Component variant
- * @param tree - Workspace
- * @returns JSON tree
- */
 export function getJsonTreeFromChildren(
-  variant: Variant,
+  variant: EntryNode & { type: "default" | "variant" },
   workspace: Workspace,
   nodeIdToClass: Record<string, string>,
 ): JSONTreeNode {
-  let children: JSONTreeNode[] = []
-  if ("children" in variant && variant.children) {
-    let referenceMap: Record<string, string[]> = {}
-    children = variant.children
-      .filter(shouldExportChild)
-      .map((childId) => convertNode(childId, referenceMap, "", []))
+  const board = getComponentByNodeId(workspace, variant.id)
+  if (!board || !isComponentBoard(board)) {
+    throw new Error(`Component board not found for variant ${variant.id}`)
   }
+
+  const childIds = getChildrenIds(board, variant.id)
+  let referenceMap: Record<string, string[]> = {}
+  const children = childIds
+    .filter((childId) => shouldExportChild(childId))
+    .map((childId) => convertNode(childId, referenceMap, "", []))
 
   const name = getComponentName(variant, workspace)
   const variantProperties = getNodeProperties(variant, workspace)
+  const componentId = getComponentIdOrThrow(variant, workspace)
+  const schema = getComponentSchema(componentId)
+  const componentLevel = schema.level
+  const schemaVariantId = getSchemaVariantId(variant, componentId, workspace)
 
-  return {
+  const tree = {
     name,
+    componentId,
+    schemaVariantId,
     nodeId: variant.id,
-    level: variant.level,
+    level: componentLevel,
     dataBinding: {
       interfaceName: name + "Props",
       path: camelCase(name),
-      props: getVariantProps(variantProperties, workspace),
+      props: getVariantProps(
+        variantProperties,
+        schema?.properties ?? {},
+        workspace,
+      ),
     },
     children: children.length > 0 ? children : null,
-    classNames: getNodeOriginChain(variant, workspace).map(
-      (node) => nodeIdToClass[node.id],
-    ),
+    classNames: getNodeOriginChain(variant, workspace)
+      .map((node) => nodeIdToClass[node.id])
+      .filter(Boolean),
   }
 
-  /**
-   * If a child has display: hide, it should not be exported
-   *
-   * @param child - Child to check
-   * @returns True if the child should be exported, false otherwise
-   */
+  return tree
+
   function shouldExportChild(child: InstanceId | VariantId) {
     try {
-      const childProperties = getNodeProperties(
-        workspace.byId[child],
-        workspace,
-      )
+      const childNode = getNodeById(child, workspace)
+      const childProperties = getNodeProperties(childNode, workspace)
       return childProperties.display?.value !== Display.EXCLUDE
     } catch (error) {
-      // If we get a circular reference error, skip this child
       if (
         error instanceof Error &&
         error.message.includes("Circular reference")
@@ -95,37 +83,25 @@ export function getJsonTreeFromChildren(
     }
   }
 
-  /**
-   * Convert a single node to a JSON tree
-   *
-   * @param id - Node ID
-   * @param referenceMap - Map of references
-   * @param currentPath - Current path
-   * @param pathNodes - Array of node IDs in the current path (for circular reference detection)
-   * @returns JSON tree
-   */
   function convertNode(
     id: InstanceId | VariantId,
     referenceMap: Record<string, string[]>,
     currentPath: string = "",
     pathNodes: string[] = [],
   ): JSONTreeNode {
-    // Check for circular reference - only within the current path
     if (pathNodes.includes(id)) {
       throw new Error(
         `Circular reference detected: ${id} is already being processed in the current path`,
       )
     }
 
-    // Add current node to the path
     const newPathNodes = [...pathNodes, id]
-
     const node = getNodeById(id, workspace)
+
     let nodeProperties: Properties
     try {
       nodeProperties = getNodeProperties(node, workspace)
     } catch (error) {
-      // If we get a circular reference error, use empty properties
       if (
         error instanceof Error &&
         error.message.includes("Circular reference")
@@ -135,35 +111,74 @@ export function getJsonTreeFromChildren(
         throw error
       }
     }
+
     const name = getComponentName(node, workspace)
+    const catalogId = getNodeCatalogId(node, workspace) ?? node.id
 
     let reference: string = camelCase(name)
-    if (referenceMap[node.component]) {
-      reference += referenceMap[node.component].length
-      referenceMap[node.component].push(node.id)
+    if (referenceMap[catalogId]) {
+      reference += referenceMap[catalogId].length + 1
+      referenceMap[catalogId].push(node.id)
     } else {
-      referenceMap[node.component] = [node.id]
+      referenceMap[catalogId] = [node.id]
     }
 
     const path = currentPath ? `${currentPath}.${reference}` : reference
 
-    let children: JSONTreeNode[] | string | null = null
-    if (node.children) {
-      let referenceMap: Record<string, string[]> = {}
-
-      children = node.children
-        .filter(shouldExportChild)
-        .map((child) => convertNode(child, referenceMap, path, newPathNodes))
+    const nodeBoard = getComponentByNodeId(workspace, node.id)
+    let children: JSONTreeNode[] | null = null
+    if (nodeBoard && isComponentBoard(nodeBoard)) {
+      const childReferenceMap: Record<string, string[]> = {}
+      const childIds = getChildrenIds(nodeBoard, node.id)
+      children = childIds
+        .filter((childId) => shouldExportChild(childId))
+        .map((childId) =>
+          convertNode(childId, childReferenceMap, path, newPathNodes),
+        )
     }
 
-    // Convert the relative path in the tree (e.g. button2.icon) to a camelCase props name (e.g. button2IconProps)
-    const referenceName = pascalCase(reference) + "Props" // Results in Button2Props
-    const interfaceName = pascalCase(name) + "Props" // Results in ButtonProps
+    const referenceName = pascalCase(reference) + "Props"
+    const interfaceName = pascalCase(name) + "Props"
+
+    let classNamesArray: string[] = []
+
+    if (typeCheckingService.isVariant(node)) {
+      const variantClass = nodeIdToClass[node.id]
+      if (variantClass) {
+        classNamesArray.push(variantClass)
+      }
+    } else if (typeCheckingService.isInstance(node)) {
+      const sourceId = getTemplateSourceNodeId(node)
+      if (sourceId) {
+        const variantClass = nodeIdToClass[sourceId]
+        const instanceClass = nodeIdToClass[node.id]
+        if (variantClass) {
+          classNamesArray.push(variantClass)
+        }
+        if (instanceClass) {
+          classNamesArray.push(instanceClass)
+        }
+      }
+    } else {
+      classNamesArray = getNodeOriginChain(node, workspace)
+        .map((n) => nodeIdToClass[n.id])
+        .filter(Boolean)
+    }
+
+    const childComponentId = getComponentIdOrThrow(node, workspace)
+    const childSchema = getComponentSchema(childComponentId)
+    const childSchemaVariantId = getSchemaVariantId(
+      node,
+      childComponentId,
+      workspace,
+    )
 
     return {
       name,
+      componentId: childComponentId,
+      schemaVariantId: childSchemaVariantId,
       nodeId: node.id,
-      level: node.level,
+      level: childSchema.level,
       dataBinding: {
         interfaceName,
         referenceName,
@@ -171,24 +186,64 @@ export function getJsonTreeFromChildren(
         props: getChildNodeProps(nodeProperties),
       },
       children,
-      classNames: getNodeOriginChain(node, workspace).map(
-        (node) => nodeIdToClass[node.id],
-      ),
+      classNames: classNamesArray,
     }
   }
 }
 
-/**
- * Return a props object based on the workspace node properties
- * Basically this is a simple key-value map of the properties where some properties are mapped to specific props
- * E.g. src for overrides.source and children for overrides.content
- *
- * @param properties
- * @returns
- */
+function getComponentIdOrThrow(
+  node: EntryNode,
+  workspace: Workspace,
+): ComponentId {
+  const catalogId = getNodeCatalogId(node, workspace)
+  if (!catalogId || !isComponentId(catalogId)) {
+    throw new Error(`Component id not found for node ${node.id}`)
+  }
+  return catalogId
+}
+
+function getSchemaVariantId(
+  node: EntryNode,
+  componentId: ComponentId,
+  workspace: Workspace,
+): string | null {
+  const schema = getComponentSchema(componentId)
+  if (!isComplexSchema(schema) || !schema.variants?.length) {
+    return null
+  }
+
+  const schemaVariantIdByNodeId = new Map<string, string>(
+    schema.variants.map((variant) => [
+      componentBoardSchemaVariantNodeId(componentId, variant.id),
+      variant.id,
+    ]),
+  )
+
+  const visited = new Set<string>()
+  let current: EntryNode | undefined = node
+
+  while (current && !visited.has(current.id)) {
+    visited.add(current.id)
+    const schemaVariantId = schemaVariantIdByNodeId.get(current.id)
+    if (schemaVariantId) {
+      return schemaVariantId
+    }
+
+    const sourceNodeId = getTemplateSourceNodeId(current)
+    if (!sourceNodeId) {
+      return null
+    }
+
+    current = getNodeById(sourceNodeId, workspace)
+  }
+
+  return null
+}
+
 function getChildNodeProps(properties: Properties) {
   const props: DataBinding["props"] = {}
-  const { content, symbol, source, htmlElement, inputType } = properties
+  const { content, symbol, source, htmlElement, wrapperElement, inputType } =
+    properties
   if (content?.value) {
     props.children = { defaultValue: escapeHtml(content.value) }
   }
@@ -201,43 +256,54 @@ function getChildNodeProps(properties: Properties) {
   if (htmlElement?.value) {
     props.htmlElement = { defaultValue: htmlElement.value }
   }
+  if (wrapperElement?.value) {
+    props.wrapperElement = { defaultValue: wrapperElement.value }
+  }
   if (inputType?.value) {
-    props.inputType = { defaultValue: inputType.value }
+    props.type = { defaultValue: inputType.value }
   }
 
   return props
 }
 
-/**
- * Variant props are roughly similar to child props but they also need to have options for some properties like htmlElement and inputType
- *
- * @param properties
- * @param workspace
- * @returns
- */
-function getVariantProps(properties: Properties, workspace: Workspace) {
+function getVariantProps(
+  properties: Properties,
+  schemaProperties: Properties,
+  workspace: Workspace,
+) {
   const props: DataBinding["props"] = getChildNodeProps(properties)
-  const { symbol, htmlElement, inputType } = properties
+  const { symbol, htmlElement, wrapperElement, inputType } = schemaProperties
 
   if (htmlElement && htmlElement.restrictions?.allowedValues) {
     props.htmlElement = {
       defaultValue:
-        htmlElement.value || htmlElement.restrictions.allowedValues[0],
+        properties.htmlElement?.value ||
+        htmlElement.restrictions.allowedValues[0],
       options: htmlElement.restrictions.allowedValues,
     }
   }
 
+  if (wrapperElement?.type === ValueType.OPTION && wrapperElement.value) {
+    props.wrapperElement = {
+      defaultValue:
+        (properties.wrapperElement?.value as string) ?? wrapperElement.value,
+      options: wrapperElement.restrictions?.allowedValues?.length
+        ? wrapperElement.restrictions.allowedValues
+        : Object.values(WrapperElement),
+    }
+  }
+
   if (inputType && inputType.restrictions?.allowedValues) {
-    props.inputType = {
-      defaultValue: inputType.value || inputType.restrictions.allowedValues[0],
+    props.type = {
+      defaultValue:
+        properties.inputType?.value || inputType.restrictions.allowedValues[0],
       options: inputType.restrictions.allowedValues,
     }
   }
   if (symbol) {
-    // Get all icons in the workspace and add them as options for the icon prop
     const options: IconId[] = Array.from(getUsedIconIds(workspace))
     props.icon = {
-      defaultValue: symbol.value || options[0],
+      defaultValue: properties.symbol?.value || options[0],
       options,
     }
   }
@@ -245,9 +311,6 @@ function getVariantProps(properties: Properties, workspace: Workspace) {
   return props
 }
 
-/**
- * Escapes HTML special characters in a string
- */
 function escapeHtml(text: string): string {
   return text
     .replace(/&/g, "&amp;")

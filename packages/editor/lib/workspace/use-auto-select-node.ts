@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef } from "react"
 import { Action } from "@seldon/core/index"
-import { getNodeIdAddedByAction } from "@seldon/core/workspace/helpers/get-node-id-added-by-action"
+import { getNodeIdAddedByAction } from "@seldon/core/workspace/helpers/nodes/get-node-id-added-by-action"
 import { useSelection } from "./use-selection"
 import { useWorkspace } from "./use-workspace"
 
@@ -23,7 +23,7 @@ export function useAutoSelectNode() {
       const action = pendingActionRef.current
 
       const addedNodeId = getNodeIdAddedByAction(action, workspace)
-      if (workspace.byId[addedNodeId]) {
+      if (addedNodeId && workspace.nodes[addedNodeId]) {
         // Select the added node
         selectNode(addedNodeId)
       }

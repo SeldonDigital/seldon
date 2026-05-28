@@ -6,7 +6,8 @@ import {
   SubPropertyKey,
   invariant,
 } from "@seldon/core"
-import { isBoard } from "@seldon/core/workspace/helpers/is-board"
+import { isComponentEntry } from "@seldon/core/workspace/helpers/components/is-component-entry"
+import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { useSelection } from "./use-selection"
 import { useWorkspace } from "./use-workspace"
 
@@ -35,9 +36,9 @@ export function useObjectProperties() {
   )
 
   const resetBoardProperty = useCallback(
-    (input: ExtractPayload<"reset_board_property">) => {
+    (input: ExtractPayload<"reset_component_property">) => {
       dispatch({
-        type: "reset_board_property",
+        type: "reset_component_property",
         payload: input,
       })
     },
@@ -45,9 +46,9 @@ export function useObjectProperties() {
   )
 
   const setBoardProperties = useCallback(
-    (input: ExtractPayload<"set_board_properties">) => {
+    (input: ExtractPayload<"set_component_properties">) => {
       dispatch({
-        type: "set_board_properties",
+        type: "set_component_properties",
         payload: input,
       })
     },
@@ -57,9 +58,9 @@ export function useObjectProperties() {
   const setProperties = useCallback(
     (properties: Properties, options?: { mergeSubProperties?: boolean }) => {
       invariant(selection, "Nothing selected")
-      if (isBoard(selection)) {
+      if (isComponentEntry(selection)) {
         setBoardProperties({
-          componentId: selection.id,
+          componentKey: getComponentKey(selection),
           properties: properties,
         })
       } else {
@@ -77,9 +78,9 @@ export function useObjectProperties() {
     (propertyKey: PropertyKey, subpropertyKey?: SubPropertyKey) => {
       invariant(selection, "Nothing selected")
 
-      if (isBoard(selection)) {
+      if (isComponentEntry(selection)) {
         resetBoardProperty({
-          componentId: selection.id,
+          componentKey: getComponentKey(selection),
           propertyKey,
           subpropertyKey,
         })

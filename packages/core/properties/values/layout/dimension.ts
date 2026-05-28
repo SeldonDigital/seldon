@@ -1,6 +1,5 @@
-import { Theme } from "../../../themes/types"
-import { ValueType } from "../../constants"
-import { ComputedFunction } from "../../constants"
+import { Theme, ThemeDimensionKey } from "../../../themes/types"
+import { ComputedFunction, ValueType } from "../../constants"
 import { PropertySchema } from "../../types/schema"
 import { ComputedAutoFitValue } from "../shared/computed/auto-fit"
 import { ComputedMatchValue } from "../shared/computed/match"
@@ -10,29 +9,33 @@ import { PixelValue } from "../shared/exact/pixel"
 import { RemValue } from "../shared/exact/rem"
 import { Resize } from "./resize"
 
+/** Ordinal reference into the theme dimension scale for width or height. */
 export interface DimensionThemeValue {
   type: ValueType.THEME_ORDINAL
-  value: string // Theme dimension key
+  value: ThemeDimensionKey
 }
 
-export interface DimensionResizePresetValue {
-  type: ValueType.PRESET
+/** Resize fit or fill choice stored as an option value. */
+export interface DimensionResizeOptionValue {
+  type: ValueType.OPTION
   value: Resize
 }
 
+/** Full set of ways width and height may be stored on a node. */
 export type DimensionValue =
   | EmptyValue
   | DimensionThemeValue
-  | DimensionResizePresetValue
+  | DimensionResizeOptionValue
   | PixelValue
   | RemValue
   | PercentageValue
   | ComputedAutoFitValue
   | ComputedMatchValue
 
+/** Dimension shapes that exclude theme ordinal picks. */
 export type DimensionResizeValue =
   | EmptyValue
-  | DimensionResizePresetValue
+  | DimensionResizeOptionValue
   | PixelValue
   | RemValue
   | ComputedAutoFitValue
@@ -40,12 +43,13 @@ export type DimensionResizeValue =
 
 export const dimensionSchema: PropertySchema = {
   name: "dimension",
-  description: "Element dimensions (width, height)",
+  description:
+    "Length on an element edge using exact units, theme scale steps, resize options, or computed rules.",
   supports: [
     "empty",
     "inherit",
     "exact",
-    "preset",
+    "option",
     "computed",
     "themeOrdinal",
   ] as const,
@@ -62,7 +66,7 @@ export const dimensionSchema: PropertySchema = {
       if (typeof value === "number" && value > 0) return true
       return false
     },
-    preset: (value: any) => Object.values(Resize).includes(value),
+    option: (value: any) => Object.values(Resize).includes(value),
     computed: (value: any) =>
       typeof value === "object" && value.function !== undefined,
     themeOrdinal: (value: any, theme?: Theme) => {

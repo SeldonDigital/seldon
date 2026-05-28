@@ -1,4 +1,3 @@
-import { ComputeContext } from "../../compute/types"
 import {
   EmptyValue,
   FontSizeValue,
@@ -8,7 +7,9 @@ import {
   ValueType,
   invariant,
 } from "../../index"
+import type { ComputeContext } from "../../properties/compute/types"
 import { Theme } from "../../themes/types"
+import { isModulatedToken, isThemeExactToken } from "../../themes/types"
 import { modulate } from "../math/modulate"
 import { getThemeOption } from "../theme/get-theme-option"
 
@@ -42,21 +43,32 @@ export function resolveFontSize({
       return fontSize as EmptyValue
     case ValueType.EXACT:
       return fontSize as PixelValue | RemValue
-    case ValueType.THEME_ORDINAL:
+    case ValueType.THEME_ORDINAL: {
       const themeValue = getThemeOption(fontSize.value as string, theme)
       invariant(themeValue, `Theme value ${fontSize.value} not found`)
-
-      return {
-        type: ValueType.EXACT,
-        value: {
-          unit: Unit.REM,
-          value: modulate({
-            ratio: theme.core.ratio,
-            size: theme.core.fontSize / 16,
-            step: (themeValue as any).parameters.step,
-          }),
-        },
+      if (isModulatedToken(themeValue)) {
+        const n = modulate({
+          ratio: theme.core.ratio,
+          size: theme.core.fontSize / 16,
+          step: themeValue.parameters.step,
+        })
+        return {
+          type: ValueType.EXACT,
+          value: { unit: Unit.REM, value: n },
+        }
       }
+      if (isThemeExactToken(themeValue)) {
+        const { unit, value: n } = themeValue.value
+        return (
+          unit === Unit.PX
+            ? { type: ValueType.EXACT, value: { unit: Unit.PX, value: n } }
+            : { type: ValueType.EXACT, value: { unit: Unit.REM, value: n } }
+        ) as PixelValue | RemValue
+      }
+      throw new Error(
+        `Theme value ${fontSize.value as string} must resolve to MODULATED or EXACT length`,
+      )
+    }
     default:
       throw new Error(`Invalid font size type ${(fontSize as any).type}`)
   }

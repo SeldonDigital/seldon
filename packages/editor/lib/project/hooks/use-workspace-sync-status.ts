@@ -9,13 +9,13 @@ const useStore = create<WorkspaceSyncStatusState>()(() => ({
 }))
 
 export function setIsLocalWorkspaceDirty(isDirty: boolean) {
-  useStore.setState(() => ({
-    isDirty,
-  }))
+  useStore.setState({ isDirty })
 }
 
-export function useWorkspaceSyncStatus() {
-  const { isDirty } = useStore()
+export function getIsLocalWorkspaceDirty(): boolean {
+  return useStore.getState().isDirty
+}
 
-  return { isDirty }
+export function useWorkspaceSyncStatus(_workspaceId?: string) {
+  return useStore((state) => state.isDirty)
 }

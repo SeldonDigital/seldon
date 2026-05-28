@@ -29,7 +29,20 @@ describe("getBorderStyles", () => {
       theme: testTheme,
     })
 
-    expect(result).toEqual({})
+    expect(result).toEqual({
+      borderBottomColor: "hsl(0 0% 15%)",
+      borderBottomStyle: "solid",
+      borderBottomWidth: "0.125rem",
+      borderLeftColor: "hsl(0 0% 15%)",
+      borderLeftStyle: "solid",
+      borderLeftWidth: "0.125rem",
+      borderRightColor: "hsl(0 0% 15%)",
+      borderRightStyle: "solid",
+      borderRightWidth: "0.125rem",
+      borderTopColor: "hsl(0 0% 15%)",
+      borderTopStyle: "solid",
+      borderTopWidth: "0.125rem",
+    })
   })
 
   it("should override individual border side properties", () => {
@@ -53,6 +66,15 @@ describe("getBorderStyles", () => {
     })
 
     expect(result).toEqual({
+      borderBottomColor: "hsl(0 0% 15%)",
+      borderBottomStyle: "solid",
+      borderBottomWidth: "0.125rem",
+      borderLeftColor: "hsl(0 0% 15%)",
+      borderLeftStyle: "solid",
+      borderLeftWidth: "0.125rem",
+      borderRightColor: "hsl(0 0% 15%)",
+      borderRightStyle: "solid",
+      borderRightWidth: "0.125rem",
       borderTopColor: "hsl(0 12% 98% / 50%)",
       borderTopStyle: "dotted",
       borderTopWidth: "2px",

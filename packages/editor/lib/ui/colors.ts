@@ -1,50 +1,125 @@
 export const COLORS = {
-  white: "hsl(0, 0%, 100%)",
-  charcoal: "hsl(0, 0%, 15%)",
-  pearl: "hsl(0, 0%, 96%)",
-  yellow: {
-    50: "hsl(60, 100%, 95%)",
-    100: "hsl(60, 100%, 90%)",
-    200: "hsl(60, 100%, 80%)",
-    300: "hsl(60, 100%, 70%)",
-    400: "hsl(60, 100%, 60%)",
-    500: "hsl(60, 100%, 46%)",
-    600: "hsl(60, 100%, 36%)",
-    700: "hsl(60, 100%, 26%)",
-    800: "hsl(60, 100%, 16%)",
-    900: "hsl(60, 100%, 6%)",
+  white: "lch(98% 0 203deg)",
+  charcoal: {
+    50: "lch(95% 0 0deg)",
+    100: "lch(79% 0 0deg)",
+    200: "lch(63% 0 0deg)",
+    300: "lch(47% 0 0deg)",
+    400: "lch(31% 0 0deg)",
+    500: "lch(15% 0 0deg)",
+    600: "lch(14% 0 0deg)",
+    700: "lch(13% 0 0deg)",
+    800: "lch(12% 0 0deg)",
+    900: "lch(10% 0 0deg)",
   },
-  magenta: {
-    50: "hsl(300, 100%, 95%)",
-    100: "hsl(300, 100%, 90%)",
-    200: "hsl(300, 100%, 80%)",
-    300: "hsl(300, 100%, 70%)",
-    400: "hsl(300, 100%, 60%)",
-    500: "hsl(300, 100%, 50%)",
-    600: "hsl(300, 100%, 40%)",
-    700: "hsl(300, 100%, 30%)",
-    800: "hsl(300, 100%, 20%)",
-    900: "hsl(300, 100%, 10%)",
+  pearl: {
+    50: "lch(100% 0 0deg)",
+    100: "lch(100% 0 0deg)",
+    200: "lch(99% 0 0deg)",
+    300: "lch(98% 0 0deg)",
+    400: "lch(97% 0 0deg)",
+    500: "lch(96% 0 0deg)",
+    600: "lch(77% 0 0deg)",
+    700: "lch(58% 0 0deg)",
+    800: "lch(39% 0 0deg)",
+    900: "lch(10% 0 0deg)",
   },
-  blue: {
-    50: "hsl(203, 100%, 95%)",
-    100: "hsl(203, 100%, 90%)",
-    200: "hsl(203, 100%, 82%)",
-    300: "hsl(203, 100%, 72%)",
-    400: "hsl(203, 100%, 67%)",
-    500: "hsl(203, 100%, 62%)",
-    600: "hsl(203, 100%, 52%)",
-    700: "hsl(203, 100%, 42%)",
-    800: "hsl(203, 100%, 32%)",
-    900: "hsl(203, 100%, 22%)",
+  primary: {
+    50: "lch(95% 46.8 259.4deg)",
+    100: "lch(88.8% 46.8 259.4deg)",
+    200: "lch(82.7% 46.8 259.4deg)",
+    300: "lch(76.5% 46.8 259.4deg)",
+    400: "lch(70.3% 46.8 259.4deg)",
+    500: "lch(70.3% 46.8 259.4deg)",
+    600: "lch(58.2% 46.8 259.4deg)",
+    700: "lch(46.2% 46.8 259.4deg)",
+    800: "lch(34.1% 46.8 259.4deg)",
+    900: "lch(10% 46.8 259.4deg)",
+  },
+  punch: {
+    50: "lch(95% 72.5 51.2deg)",
+    100: "lch(87.5% 72.5 51.2deg)",
+    200: "lch(80.1% 72.5 51.2deg)",
+    300: "lch(72.6% 72.5 51.2deg)",
+    400: "lch(65.1% 72.5 51.2deg)",
+    500: "lch(65.1% 72.5 51.2deg)",
+    600: "lch(54.1% 72.5 51.2deg)",
+    700: "lch(43.1% 72.5 51.2deg)",
+    800: "lch(32% 72.5 51.2deg)",
+    900: "lch(10% 72.5 51.2deg)",
+  },
+  positive: {
+    50: "lch(95% 80 144.9deg)",
+    100: "lch(91.6% 80 144.9deg)",
+    200: "lch(88.2% 80 144.9deg)",
+    300: "lch(84.7% 80 144.9deg)",
+    400: "lch(81.3% 80 144.9deg)",
+    500: "lch(81.3% 80 144.9deg)",
+    600: "lch(67% 80 144.9deg)",
+    700: "lch(52.8% 80 144.9deg)",
+    800: "lch(38.5% 80 144.9deg)",
+    900: "lch(10% 80 144.9deg)",
+  },
+  negative: {
+    50: "lch(95% 77.9 30.7deg)",
+    100: "lch(86% 77.9 30.7deg)",
+    200: "lch(77% 77.9 30.7deg)",
+    300: "lch(68% 77.9 30.7deg)",
+    400: "lch(59% 77.9 30.7deg)",
+    500: "lch(59% 77.9 30.7deg)",
+    600: "lch(49.2% 77.9 30.7deg)",
+    700: "lch(39.4% 77.9 30.7deg)",
+    800: "lch(29.6% 77.9 30.7deg)",
+    900: "lch(10% 77.9 30.7deg)",
+  },
+  warning: {
+    50: "lch(95% 92.2 103.2deg)",
+    100: "lch(95.6% 92.2 103.2deg)",
+    200: "lch(96.1% 92.2 103.2deg)",
+    300: "lch(96.7% 92.2 103.2deg)",
+    400: "lch(97.2% 92.2 103.2deg)",
+    500: "lch(97.2% 92.2 103.2deg)",
+    600: "lch(79.8% 92.2 103.2deg)",
+    700: "lch(62.3% 92.2 103.2deg)",
+    800: "lch(44.9% 92.2 103.2deg)",
+    900: "lch(10% 92.2 103.2deg)",
+  },
+  accent: {
+    50: "lch(95% 98.3 328.1deg)",
+    100: "lch(84.3% 98.3 328.1deg)",
+    200: "lch(73.6% 98.3 328.1deg)",
+    300: "lch(62.9% 98.3 328.1deg)",
+    400: "lch(52.2% 98.3 328.1deg)",
+    500: "lch(52.2% 98.3 328.1deg)",
+    600: "lch(43.8% 98.3 328.1deg)",
+    700: "lch(35.3% 98.3 328.1deg)",
+    800: "lch(26.9% 98.3 328.1deg)",
+    900: "lch(10% 98.3 328.1deg)",
+  },
+  gray: {
+    50: "lch(95% 0 203deg)",
+    100: "lch(83% 0 203deg)",
+    200: "lch(71% 0 203deg)",
+    300: "lch(59% 0 203deg)",
+    400: "lch(55% 0 203deg)",
+    500: "lch(50% 0 203deg)",
+    600: "lch(42% 0 203deg)",
+    700: "lch(34% 0 203deg)",
+    800: "lch(26% 0 203deg)",
+    900: "lch(10% 0 203deg)",
   },
 }
 
-export function hsla(hsl: string, alpha: number) {
-  const matches = hsl.match(/\d+/g)
-  if (!matches || matches.length !== 3) {
-    throw new Error("Invalid HSL color format")
+export function lcha(lch: string, alpha: number) {
+  // Parse LCH format: lch(lightness% chroma huedeg) or lch(lightness% chroma huedeg / opacity%)
+  const match = lch.match(
+    /lch\((\d+(?:\.\d+)?)%\s+(\d+(?:\.\d+)?)\s+(\d+(?:\.\d+)?)deg\)/,
+  )
+  if (!match) {
+    throw new Error("Invalid LCH color format")
   }
-  const [h, s, l] = matches
-  return `hsla(${h}, ${s}%, ${l}%, ${alpha})`
+  const [, lightness, chroma, hue] = match
+  // Convert alpha from 0-1 range to percentage (0-100%)
+  const alphaPercent = alpha <= 1 ? alpha * 100 : alpha
+  return `lch(${lightness}% ${chroma} ${hue}deg / ${alphaPercent}%)`
 }

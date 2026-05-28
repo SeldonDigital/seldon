@@ -1,49 +1,52 @@
 import { ValueType, Workspace } from "@seldon/core"
 import { getComponentSchema } from "@seldon/core/components/catalog"
-import { IconId } from "@seldon/core/components/icons"
-import { getNodeProperties } from "@seldon/core/workspace/helpers/get-node-properties"
-
-/**
- * Collect all icon IDs used in a workspace
- *
- * This function recursively traverses the workspace and collects all icon IDs
- * used in component properties, including nestedOverrides properties.
- *
- * @param workspace - The workspace to analyze
- * @returns Set of used icon IDs
- */
+import { isComponentId } from "@seldon/core/components/constants"
+import { IconId } from "@seldon/core/icons"
+import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
+import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-catalog-id"
+import { getWorkspaceNodeList } from "../../../helpers/workspace-nodes"
 
 export function getUsedIconIds(workspace: Workspace): Set<IconId> {
-  const usedIcons = new Set<IconId>(["__default__"]) // Always include default
-  const values = Object.values(workspace.byId)
+  const usedIcons = new Set<IconId>(["__default__"])
 
-  for (const value of values) {
-    // Check direct symbol properties
-    const properties = getNodeProperties(value, workspace)
+  for (const node of getWorkspaceNodeList(workspace)) {
+    const properties = getNodeProperties(node, workspace)
     if (
       properties?.symbol?.value &&
-      properties.symbol.type === ValueType.PRESET
+      properties.symbol.type === ValueType.OPTION
     ) {
       usedIcons.add(properties.symbol.value as IconId)
     }
 
-    // Check nestedOverrides properties in the component schema
-    const schema = getComponentSchema(value.component)
-    if ("children" in schema && schema.children) {
-      for (const child of schema.children) {
-        if (child.nestedOverrides) {
-          for (const [key, nestedOverridesValue] of Object.entries(
-            child.nestedOverrides,
-          )) {
-            // Check if this is an icon.symbol nestedOverrides property
-            if (
-              key === "icon.symbol" &&
-              typeof nestedOverridesValue === "string"
-            ) {
-              usedIcons.add(nestedOverridesValue as IconId)
-            }
-          }
+    const catalogId = getNodeCatalogId(node, workspace)
+    if (!catalogId || !isComponentId(catalogId)) continue
+
+    const schema = getComponentSchema(catalogId)
+    if (!("default" in schema)) continue
+
+    const walkSchemaChildren = (
+      children: typeof schema.default.children,
+    ) => {
+      if (!children) return
+      for (const child of children) {
+        const symbolOverride = child.overrides?.symbol
+        if (
+          symbolOverride &&
+          symbolOverride.type === ValueType.EXACT &&
+          typeof symbolOverride.value === "string"
+        ) {
+          usedIcons.add(symbolOverride.value as IconId)
         }
+        if (child.children) {
+          walkSchemaChildren(child.children)
+        }
+      }
+    }
+
+    walkSchemaChildren(schema.default.children)
+    if ("variants" in schema && schema.variants) {
+      for (const variant of schema.variants) {
+        walkSchemaChildren(variant.children)
       }
     }
   }

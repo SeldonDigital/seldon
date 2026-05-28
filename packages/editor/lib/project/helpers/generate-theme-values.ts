@@ -8,7 +8,7 @@ import {
   ThemeSizeId,
   ThemeSpacingId,
 } from "@seldon/core"
-import { modulateWithTheme } from "@seldon/core/helpers/math/modulate"
+import { modulateWithTheme } from "@seldon/core/themes/helpers/modulate"
 
 export function generateThemeValues(theme: Theme) {
   return produce(theme, (draft) => {

@@ -1,0 +1,129 @@
+import { Properties, Value } from "@seldon/core"
+import {
+  isLayeredPaintProperty,
+  type LayeredPaintKey,
+  type PropertyKey,
+} from "@seldon/core/properties/types/property-keys"
+
+export const LAYERED_PAINT_LAYER_INDEX = "0"
+
+const LAYERED_PAINT_ROOTS = new Set<string>(["background", "gradient", "shadow"])
+
+export function isLayeredPaintRoot(propertyKey: string): propertyKey is LayeredPaintKey {
+  return LAYERED_PAINT_ROOTS.has(propertyKey)
+}
+
+export type ParsedPropertyPath =
+  | { kind: "top-level"; key: string }
+  | { kind: "facet"; root: string; facet: string }
+  | { kind: "layered-facet"; root: LayeredPaintKey; facet: string }
+
+export function parsePropertyPath(path: string): ParsedPropertyPath {
+  const segments = path.split(".").filter(Boolean)
+  if (segments.length === 1) {
+    return { kind: "top-level", key: segments[0]! }
+  }
+  if (
+    segments.length === 3 &&
+    LAYERED_PAINT_ROOTS.has(segments[0]!) &&
+    segments[1] === LAYERED_PAINT_LAYER_INDEX
+  ) {
+    return {
+      kind: "layered-facet",
+      root: segments[0] as LayeredPaintKey,
+      facet: segments[2]!,
+    }
+  }
+  if (segments.length === 2) {
+    return { kind: "facet", root: segments[0]!, facet: segments[1]! }
+  }
+  return { kind: "top-level", key: path }
+}
+
+export function isLayeredFacetPath(path: string): boolean {
+  return parsePropertyPath(path).kind === "layered-facet"
+}
+
+export function layeredFacetPath(root: LayeredPaintKey, facet: string): string {
+  return `${root}.${LAYERED_PAINT_LAYER_INDEX}.${facet}`
+}
+
+export function getLayeredFacetPaths(
+  root: LayeredPaintKey,
+  facets: string[],
+): string[] {
+  return facets.map((facet) => layeredFacetPath(root, facet))
+}
+
+export function getCompoundLayerValue(
+  value: unknown,
+): Record<string, unknown> | null {
+  if (!value || typeof value !== "object") return null
+  if (Array.isArray(value)) {
+    const layer = value[Number(LAYERED_PAINT_LAYER_INDEX)]
+    if (!layer || typeof layer !== "object" || Array.isArray(layer)) {
+      return null
+    }
+    return layer as Record<string, unknown>
+  }
+  return value as Record<string, unknown>
+}
+
+export function getLayeredWritePayload(
+  root: LayeredPaintKey,
+  existing: unknown,
+  facet: string,
+  value: Value,
+): Properties {
+  const layer = {
+    ...(getCompoundLayerValue(existing) ?? {}),
+    [facet]: value,
+  }
+  return { [root]: [layer] } as Properties
+}
+
+/** Compound root key for core preset helpers (e.g. `background` from `background.0.preset`). */
+export function getParentPathForPreset(presetPath: string): string {
+  const parsed = parsePropertyPath(presetPath)
+  if (parsed.kind === "layered-facet") {
+    return parsed.root
+  }
+  if (parsed.kind === "facet") {
+    return parsed.root
+  }
+  return presetPath.replace(/\.preset$/, "")
+}
+
+export function isPresetPropertyPath(path: string): boolean {
+  return path.endsWith(".preset")
+}
+
+export function getLayeredRootFromPath(path: string): LayeredPaintKey | null {
+  const parsed = parsePropertyPath(path)
+  if (parsed.kind === "layered-facet") return parsed.root
+  if (parsed.kind === "top-level" && isLayeredPaintRoot(parsed.key)) {
+    return parsed.key
+  }
+  return null
+}
+
+export function childPathsUnderCompoundParent(
+  parentKey: string,
+  childPath: string,
+): boolean {
+  const segments = childPath.split(".")
+  if (isLayeredPaintRoot(parentKey)) {
+    return (
+      segments[0] === parentKey &&
+      segments[1] === LAYERED_PAINT_LAYER_INDEX &&
+      segments.length === 3
+    )
+  }
+  return segments[0] === parentKey && segments.length === 2
+}
+
+export function isLayeredPaintPropertyKey(
+  propertyKey: string,
+): propertyKey is PropertyKey {
+  return isLayeredPaintProperty(propertyKey as PropertyKey)
+}

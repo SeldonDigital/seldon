@@ -1,11 +1,12 @@
-import { ValueType } from "../../../constants"
+import { Unit, ValueType } from "../../../constants"
 import { PropertySchema } from "../../../types/schema"
 import { EmptyValue } from "../../shared/empty/empty"
 import { PercentageValue } from "../../shared/exact/percentage"
 import { PixelValue } from "../../shared/exact/pixel"
 import { RemValue } from "../../shared/exact/rem"
-import { DoubleAxisValue } from "../../shared/preset/double-axis"
+import { DoubleAxisValue } from "../../shared/option/double-axis"
 
+/** Named anchors for where the picture sits inside the layer box. */
 export enum BackgroundPosition {
   DEFAULT = "default",
   TOP_LEFT = "top-left",
@@ -19,37 +20,53 @@ export enum BackgroundPosition {
   BOTTOM_RIGHT = "bottom-right",
 }
 
-export interface BackgroundPositionPresetValue {
-  type: ValueType.PRESET
+/** Stores one named anchor as an option pick. */
+export interface BackgroundPositionOptionValue {
+  type: ValueType.OPTION
   value: BackgroundPosition
 }
 
+/** Where the picture sits for one layer: empty, lengths, named anchor, or paired lengths. */
 export type BackgroundPositionValue =
   | EmptyValue
   | PixelValue
   | RemValue
   | PercentageValue
-  | BackgroundPositionPresetValue
+  | BackgroundPositionOptionValue
   | DoubleAxisValue
 
+function isMeasurePayload(u: unknown): boolean {
+  if (typeof u !== "object" || u === null) return false
+  const m = u as { value?: unknown; unit?: unknown }
+  if (typeof m.value !== "number" || !Number.isFinite(m.value)) return false
+  return m.unit === Unit.PX || m.unit === Unit.REM || m.unit === Unit.PERCENT
+}
+
+/** Validates position storage on one background paint layer. */
 export const backgroundPositionSchema: PropertySchema = {
   name: "backgroundPosition",
-  description: "Background image position",
-  supports: ["empty", "inherit", "exact", "preset"] as const,
+  description:
+    "Sets where the picture sits in this layer using named anchors or measured offsets.",
+  supports: ["empty", "inherit", "exact", "option"] as const,
+  units: {
+    allowed: [Unit.PX, Unit.REM, Unit.PERCENT],
+    default: Unit.PX,
+    validation: "both",
+  },
   validation: {
     empty: () => true,
     inherit: () => true,
-    exact: (value: any) => {
-      if (
-        typeof value === "object" &&
-        value.value !== undefined &&
-        value.unit !== undefined
-      )
-        return true
-      if (typeof value === "number" && value >= 0) return true
-      return false
+    exact: (value: unknown) => {
+      if (typeof value !== "object" || value === null) return false
+      const v = value as Record<string, unknown>
+      if ("x" in v && "y" in v) {
+        return isMeasurePayload(v.x) && isMeasurePayload(v.y)
+      }
+      return isMeasurePayload(value)
     },
-    preset: (value: any) => Object.values(BackgroundPosition).includes(value),
+    option: (value: unknown) =>
+      typeof value === "string" &&
+      (Object.values(BackgroundPosition) as string[]).includes(value),
   },
   presetOptions: () => Object.values(BackgroundPosition),
 }

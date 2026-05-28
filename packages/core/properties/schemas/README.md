@@ -1,111 +1,82 @@
-# Property Schemas
+# Schemas
 
-Defines property validation, options, and behavior in property value files.
+This folder holds the flattened property schema catalog, inspector section grouping, and lookup helpers. Each `PropertySchema` drives validation, picker data, and optional unit rules for one catalog key.
 
-## What It Does
+---
 
-Each property schema specifies:
-- Supported value types
-- Validation rules for each type
-- Available options for each type
-- Theme integration
+## Flow
 
-## Schema Structure
-
-```typescript
-export interface PropertySchema {
-  name: string
-  description: string
-  supports: readonly PropertyValueType[]
-  validation: {
-    empty?: () => boolean
-    inherit?: () => boolean
-    exact?: (value: any) => boolean
-    preset?: (value: any) => boolean
-    computed?: (value: any) => boolean
-    themeCategorical?: (value: any, theme?: Theme) => boolean
-    themeOrdinal?: (value: any, theme?: Theme) => boolean
-  }
-  presetOptions?: () => any[]
-  themeCategoricalKeys?: (theme: Theme) => string[]
-  themeOrdinalKeys?: (theme: Theme) => string[]
-  computedFunctions?: () => ComputedFunction[]
-}
+```mermaid
+flowchart LR
+  key[Property key or path] --> lookup[getPropertySchema]
+  lookup --> validate[validatePropertyValue]
+  lookup --> options[getPropertyOptions]
+  validate --> editor[Editor or theme token check]
 ```
 
-## Value Types
+## Major Types And Functions
 
-- **empty**: Unset properties
-- **inherit**: Inherit from parent
-- **exact**: Custom values (colors, sizes, text)
-- **preset**: Predefined options
-- **computed**: Calculated from other properties
-- **themeCategorical**: Non-sequential theme tokens (colors, fonts)
-- **themeOrdinal**: Sequential theme tokens (sizes, spacing)
+### Catalog and sections
 
-## Example
+| Type or Function | File | Purpose and use |
+| --- | --- | --- |
+| `PROPERTY_SCHEMAS` | `data/property-schemas.ts` | Flat map from catalog key to merged `PropertySchema`. Primary registry for validation and pickers. |
+| `PROPERTY_SCHEMA_CATALOG` | `data/property-schemas.ts` | Alias of `PROPERTY_SCHEMAS` for vocabulary consistency. Same map under an alternate export name. |
+| `PropertyName` | `data/property-schemas.ts` | Union of keys in `PROPERTY_SCHEMAS`. Typing for catalog lookups. |
+| `PropertySectionSchema` | `sections.ts` | One inspector panel section with ordered catalog keys. Describes Attributes, Layout, and other blocks. |
+| `PROPERTY_SECTIONS` | `sections.ts` | Ordered list of panel sections from `PROPERTY_DISPLAY_ORDER`. Inspector navigation and section APIs. |
+| `getPropertySectionSchema` | `sections.ts` | Returns one section by category id. Section-scoped UI and tests. |
+| `getAllPropertySectionSchemas` | `sections.ts` | Returns all sections sorted by `order`. Lists every inspector block. |
+| `getCatalogKeysForPropertySection` | `sections.ts` | Lists catalog keys under one section id. Filters properties for a panel tab. |
+| `getPropertySchemasBySection` | `helpers/get-property-schemas-by-section.ts` | Returns schemas grouped under one display category. Section-scoped schema lists in tooling. |
 
-```typescript
-export const colorSchema: PropertySchema = {
-  name: 'color',
-  description: 'Element color styling',
-  supports: ['empty', 'inherit', 'exact', 'preset', 'themeCategorical'] as const,
-  validation: {
-    empty: () => true,
-    inherit: () => true,
-    exact: (value: any) => typeof value === 'string' && value.startsWith('#'),
-    preset: (value: any) => Object.values(Color).includes(value),
-    themeCategorical: (value: any, theme?: Theme) => theme && value in theme.swatch
-  },
-  presetOptions: () => Object.values(Color),
-  themeCategoricalKeys: (theme: Theme) => Object.keys(theme.swatch)
-}
-```
+### Lookup and category
 
-## Usage
+| Type or Function | File | Purpose and use |
+| --- | --- | --- |
+| `getAllPropertySchemas` | `helpers/get-all-property-schemas.ts` | Returns the full `PROPERTY_SCHEMAS` map. Bulk export, docs, and diagnostics. |
+| `getPropertySchema` | `helpers/get-property-schema.ts` | Returns one schema by flattened catalog key. Validation, pickers, and unit helpers. |
+| `PropertyCategory` | `helpers/property-category.ts` | Union of `atomic`, `compound`, and `shorthand`. Classifies storage shape for a top-level key. |
+| `getPropertyCategory` | `helpers/property-category.ts` | Returns atomic, compound, or shorthand for a key. Merge, compute, and UI branching. |
+| `getSubPropertySchema` | `helpers/property-category.ts` | Resolves a schema for a shorthand facet path. Facet editors under margin, padding, or corners. |
+| `getCompoundSubPropertySchema` | `helpers/property-category.ts` | Resolves a schema for a compound facet and returns joined catalog key. Dot-path editors and `borderColor`-style keys. |
 
-```typescript
-import { getPropertySchema, validatePropertyValue, getPropertyOptions } from '@seldon/core/properties'
+### Paths and wire typing
 
-// Get schema
-const schema = getPropertySchema('color')
+| Type or Function | File | Purpose and use |
+| --- | --- | --- |
+| `valueTypeWireToPropertyValueType` | `helpers/property-path.ts` | Maps `ValueType` wire strings to `PropertyValueType` labels. Bridges stored cells to schema `supports` checks. |
+| `getCatalogKeyForPropertyPath` | `helpers/property-path.ts` | Maps a dot or bracket path to one flattened catalog key. Path-based validation and picker routing. |
 
-// Validate value
-const isValid = validatePropertyValue('color', 'exact', '#ff0000')
+### Options and validation
 
-// Get options
-const options = getPropertyOptions('color', 'preset')
-```
+| Type or Function | File | Purpose and use |
+| --- | --- | --- |
+| `getPropertyOptions` | `helpers/property-options.ts` | Lists allowed values for one storage shape on a property. Inspector pickers for option and theme types. |
+| `getPresetOptions` | `helpers/property-options.ts` | Lists `ValueType.OPTION` choices for a property. Option pickers on property fields. |
+| `getPresetOptionsAsLabelValue` | `helpers/property-options.ts` | Returns preset options as label-value pairs for UI. Dropdown rendering in the editor. |
+| `formatOptionsForUI` | `helpers/property-options.ts` | Formats raw option lists for display controls. Shared UI formatting for pickers. |
+| `getPropertySupportedValueTypes` | `helpers/property-options.ts` | Lists `PropertyValueType` entries a property allows. Storage-type toggles in the inspector. |
+| `validatePropertyValue` | `helpers/validate-property-value.ts` | Runs the schema validator for one key, storage shape, and payload. Editor saves and theme token checks. |
+| `isThemeTokenFiniteNumber` | `helpers/shared/theme-token-atomic-validators.ts` | Validates finite numeric theme token payloads. Theme schema validation delegates here. |
+| `isThemeTokenPercentageNumber` | `helpers/shared/theme-token-atomic-validators.ts` | Validates percentage numeric theme token payloads. Theme token exact validators. |
+| `isThemeTokenBoolean` | `helpers/shared/theme-token-atomic-validators.ts` | Validates boolean theme token payloads. Theme token exact validators. |
+| `isThemeTokenText` | `helpers/shared/theme-token-atomic-validators.ts` | Validates text theme token payloads. Theme token exact validators. |
+| `isThemeTokenColor` | `helpers/shared/theme-token-atomic-validators.ts` | Validates color theme token payloads. Theme token exact validators. |
+| `isThemeTokenEnumValue` | `helpers/shared/theme-token-atomic-validators.ts` | Validates enum theme token payloads against allowed keys. Theme token option validators. |
+| `isThemeTokenPxRemLength` | `helpers/shared/theme-token-atomic-validators.ts` | Validates px or rem length theme token payloads. Theme size and spacing validators. |
 
-## Adding New Properties
+---
 
-1. **Create property file with schema**:
+## Notes
 
-```typescript
-// values/appearance/z-index.ts
-import { PropertySchema } from "../../types/schema"
+- Node paths use dot form such as `border.color`. The registry uses joined keys such as `borderColor`.
+- `PropertyValueType` uses camelCase. Stored cells use wire strings such as `theme.categorical` on `ValueType`.
+- Schema callback `presetOptions` lists `ValueType.OPTION` choices. Compound facet key `preset` holds theme LOOK references and is unrelated.
+- Theme token editors with `propertyKey` call `validateThemeTokenValue` in `@seldon/core/themes/schemas`, which delegates to `validatePropertyValue`.
 
-export const zIndexSchema: PropertySchema = {
-  name: 'zIndex',
-  description: 'Layer stacking order',
-  supports: ['empty', 'inherit', 'exact'] as const,
-  validation: {
-    empty: () => true,
-    inherit: () => true,
-    exact: (value: any) => typeof value === 'number' && Number.isInteger(value)
-  }
-}
-```
+---
 
-2. **Add to `schemas/index.ts`**:
+## Related Docs
 
-```typescript
-import { zIndexSchema } from '../values/appearance/z-index'
-
-export const PROPERTY_SCHEMAS = {
-  // ... existing schemas
-  zIndex: zIndexSchema,
-} as const
-```
-
-Done. Property is now integrated.
+- [`PROPERTIES.md`](../PROPERTIES.md)

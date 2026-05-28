@@ -1,6 +1,6 @@
 import { ValueType } from "../../../constants"
 import { BasedOnPropertyKey } from "./based-on-property-key"
-import { ComputedFunction } from "./computed-functions"
+import { ComputedFunction } from "./computed"
 
 export type ComputedMatchValue = {
   type: ValueType.COMPUTED

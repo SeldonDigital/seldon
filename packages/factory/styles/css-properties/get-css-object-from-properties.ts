@@ -1,5 +1,6 @@
 import { Properties } from "@seldon/core"
-import { computeProperties } from "@seldon/core/compute/compute-properties"
+import { computeProperties } from "@seldon/core/properties/compute"
+import { debugLog } from "@seldon/core/utils/debug-logger"
 import { StyleGenerationContext } from "../types"
 import { getBackgroundStyles } from "./get-background-styles"
 import { getBorderStyles } from "./get-border-styles"
@@ -60,7 +61,15 @@ export function getCssObjectFromProperties(
       return styleFunction()
     } catch (error) {
       // Log the error for debugging but don't crash the CSS generation
-      console.warn(`CSS generation error for ${styleFunction.name}:`, error)
+      debugLog(
+        "Factory",
+        "getCssObjectFromProperties",
+        "CSS generation error",
+        {
+          styleFunction: styleFunction.name,
+          error: error instanceof Error ? error.message : String(error),
+        },
+      )
       return {}
     }
   }

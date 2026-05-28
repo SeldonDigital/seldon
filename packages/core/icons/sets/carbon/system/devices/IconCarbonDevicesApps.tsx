@@ -1,0 +1,18 @@
+import { SVGAttributes } from "react"
+
+export function IconCarbonDevicesApps(props: SVGAttributes<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 -960 960 960"
+      fill="currentColor"
+      height="1em"
+      width="1em"
+      {...props}
+    >
+      <g transform="translate(0, -960) scale(30)">
+        <path d="M26 2H30V6H26zM26 8H30V12H26zM20 2H24V6H20zM20 8H24V12H20zM28 20h-14v2h2v4h-2v2h9v-2h-5v-4h10c.5304 0 1.0392-.2108 1.4142-.5858s.5858-.8838.5858-1.4142v-6h-2v6zM6 6h12v-2H6c-.5304 0-1.0392.2107-1.4142.5858-.3751.375-.5858.8838-.5858 1.4142v6h2v-6zM10 14H4c-.5304 0-1.0392.2107-1.4142.5858-.3751.375-.5858.8838-.5858 1.4142v12c0 .5304.2107 1.0392.5858 1.4142.375.375.8838.5858 1.4142.5858h6c.5304 0 1.0392-.2108 1.4142-.5858.3751-.375.5858-.8838.5858-1.4142v-12c0-.5304-.2107-1.0392-.5858-1.4142-.375-.3751-.8838-.5858-1.4142-.5858zm0 14H4v-12h6v12z" />
+      </g>
+    </svg>
+  )
+}

@@ -2,6 +2,7 @@ import { ValueType } from "../../constants"
 import { PropertySchema } from "../../types/schema"
 import { EmptyValue } from "../shared/empty/empty"
 
+/** Horizontal alignment choices for text inside its container. */
 export enum TextAlign {
   AUTO = "auto",
   LEFT = "left",
@@ -10,22 +11,26 @@ export enum TextAlign {
   JUSTIFY = "justify",
 }
 
-export interface TextAlignPresetValue {
-  type: ValueType.PRESET
+/** Stores one text alignment choice from the enum. */
+export interface TextAlignOptionValue {
+  type: ValueType.OPTION
   value: TextAlign
 }
 
-export type TextAlignValue = EmptyValue | TextAlignPresetValue
+/** Empty or one named horizontal alignment choice. */
+export type TextAlignValue = EmptyValue | TextAlignOptionValue
 
+/** Validates stored text alignment values. */
 export const textAlignSchema: PropertySchema = {
   name: "textAlign",
-  description: "Text alignment within element",
-  supports: ["empty", "inherit", "exact", "preset"] as const,
+  description: "Sets horizontal text alignment from auto through justify.",
+  supports: ["empty", "inherit", "option"] as const,
   validation: {
     empty: () => true,
     inherit: () => true,
-    exact: (value: any) => typeof value === "string" && value.length > 0,
-    preset: (value: any) => Object.values(TextAlign).includes(value),
+    option: (value: unknown) =>
+      typeof value === "string" &&
+      (Object.values(TextAlign) as string[]).includes(value),
   },
   presetOptions: () => Object.values(TextAlign),
 }

@@ -1,9 +1,6 @@
-import { EmptyValue } from "../values/shared/empty/empty"
-
+/** Value shaped like T with optional restrictions.allowedValues drawn from R. */
 export type Restricted<T, R> = T & {
   restrictions?: {
     allowedValues?: R[]
   }
 }
-
-export type Optional<T> = T | EmptyValue

@@ -1,16 +1,17 @@
-import { ComputeContext } from "../../compute/types"
+import type { ComputeContext } from "../../properties/compute/types"
 import { ValueType } from "../../properties"
 import { EmptyValue } from "../../properties/values/shared/empty/empty"
 import {
   FontFamilyPresetValue,
   FontFamilyValue,
 } from "../../properties/values/typography/font/font-family"
+import { TokenType } from "../../themes/constants/token-type"
 import { Theme } from "../../themes/types"
 import { getThemeOption } from "../theme/get-theme-option"
 
 /**
  * Resolves font family values to concrete FontFamilyPresetValue or undefined.
- * Handles EMPTY, EXACT, PRESET, and THEME_CATEGORICAL value types.
+ * Handles EMPTY, INHERIT, EXACT, OPTION, and THEME_CATEGORICAL value types.
  *
  * @param fontFamily - The font family value to resolve
  * @param theme - The theme object containing font family tokens
@@ -20,7 +21,7 @@ import { getThemeOption } from "../theme/get-theme-option"
 export function resolveFontFamily({
   fontFamily,
   theme,
-  parentContext,
+  parentContext: _parentContext,
 }: {
   fontFamily:
     | FontFamilyValue
@@ -32,34 +33,36 @@ export function resolveFontFamily({
 }): FontFamilyPresetValue | undefined {
   if (!fontFamily) return undefined
 
-  // Handle computed values first to narrow the type
   if (fontFamily.type === ValueType.COMPUTED) {
     throw new Error(
       `resolveFontFamily received a COMPUTED value. This should have been computed in the compute function.`,
     )
   }
 
-  // Type assertion to help TypeScript narrow the type
-  const fontFamilyTyped = fontFamily as
-    | FontFamilyValue
-    | EmptyValue
-    | { type: ValueType.EXACT; value: string }
+  const fontFamilyTyped = fontFamily as FontFamilyValue | EmptyValue
 
   switch (fontFamilyTyped.type) {
     case ValueType.EMPTY:
       return undefined
-    case ValueType.PRESET:
-      return fontFamilyTyped as FontFamilyPresetValue
-    case ValueType.THEME_CATEGORICAL:
-      const themeValue = getThemeOption(fontFamilyTyped.value as string, theme)
+    case ValueType.INHERIT:
+      return undefined
+    case ValueType.OPTION:
       return {
-        type: ValueType.PRESET,
-        value: themeValue as string,
+        type: ValueType.OPTION,
+        value: fontFamilyTyped.value as string,
       }
-    case ValueType.EXACT:
-      // Handle exact values that aren't part of FontFamilyValue
+    case ValueType.THEME_CATEGORICAL: {
+      const themeValue = getThemeOption(fontFamilyTyped.value as string, theme)
+      const stack =
+        themeValue.type === TokenType.FAMILY ? themeValue.value : String(themeValue)
       return {
-        type: ValueType.PRESET,
+        type: ValueType.OPTION,
+        value: stack,
+      }
+    }
+    case ValueType.EXACT:
+      return {
+        type: ValueType.OPTION,
         value: fontFamilyTyped.value as string,
       }
     default:

@@ -1,0 +1,26 @@
+import { SVGAttributes } from "react"
+
+export function IconLucideTheater(props: SVGAttributes<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 -960 960 960"
+      fill="currentColor"
+      height="1em"
+      width="1em"
+      {...props}
+    >
+      <g transform="translate(0, -960) scale(40)">
+        <path d="M2 10s3-3 3-8" />
+        <path d="M22 10s-3-3-3-8" />
+        <path d="M10 2c0 4.4-3.6 8-8 8" />
+        <path d="M14 2c0 4.4 3.6 8 8 8" />
+        <path d="M2 10s2 2 2 5" />
+        <path d="M22 10s-2 2-2 5" />
+        <path d="M8 15h8" />
+        <path d="M2 22v-1a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1" />
+        <path d="M14 22v-1a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1" />
+      </g>
+    </svg>
+  )
+}

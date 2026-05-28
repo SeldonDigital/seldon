@@ -1,20 +1,19 @@
 import { ComponentId } from "../components/constants"
-import { ThemeSwatchId } from "../themes/types"
 import { InstanceId, VariantId } from "./types"
 
 export const ErrorMessages = {
   nodeNotFound: (id: InstanceId | VariantId) => `Node ${id} not found.`,
-  boardNotFound: (id: ComponentId) => `Board ${id} not found.`,
-  boardAlreadyExists: (id: ComponentId) => `Board ${id} already exists.`,
-  boardNotFoundForVariant: (id: VariantId) =>
-    `Board not found for variant ${id}.`,
+  componentNotFound: (id: string) => `ComponentEntry ${id} not found.`,
+  componentAlreadyExists: (id: string) => `ComponentEntry ${id} already exists.`,
+  componentNotFoundForVariant: (id: VariantId) =>
+    `ComponentEntry not found for variant ${id}.`,
   tooManyDefaultVariants: (id: ComponentId) =>
-    `Board ${id} has more than one default variant.`,
+    `ComponentEntry ${id} has more than one default variant.`,
   invalidBoardIndex: (id: ComponentId, index: number, expected: number) =>
-    `Board ${id} has an invalid index of ${index} (expected ${expected}).`,
+    `ComponentEntry ${id} has an invalid index of ${index} (expected ${expected}).`,
   nodeOrBoardNotFound: (id: InstanceId | VariantId | ComponentId) =>
     `No node or board found with id ${id}.`,
-  boardVariantsInUse: (id: ComponentId) =>
+  componentVariantsInUse: (id: ComponentId) =>
     `One or more variants of this board are in use in other components. Remove them first before deleting the board.`,
   variantNotFound: (id: VariantId) => `Variant ${id} not found.`,
   variantLabelNotUnique: (label: string) =>
@@ -62,6 +61,4 @@ export const ErrorMessages = {
     childComponent: string,
   ) =>
     `${parentComponent} cannot contain a ${childComponent} due to level constraints.`,
-  swatchNotFound: (id: ThemeSwatchId) =>
-    `A swatch with the id ${id} does not exist.`,
 } as const

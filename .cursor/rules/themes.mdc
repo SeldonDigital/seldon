@@ -1,0 +1,96 @@
+---
+description: Seldon theme and token conventions
+alwaysApply: true
+---
+
+## Seldon Themes
+
+Themes package reusable visual decisions as tokens. Components reference theme tokens with `@` paths, such as `@fontSize.medium`, `@swatch.primary`, and `@font.body`.
+
+Use `packages/core/themes/THEMES.md` as the canonical reference for theme shape, token cells, type safety, imports, and adding theme content.
+
+Use `packages/core/properties/PROPERTIES.md` for the property-style tagged values used inside look token `parameters`.
+
+### Stock Themes
+
+Stock theme template ids are:
+
+- `default`
+- `earth`
+- `industrial`
+- `material`
+- `pop`
+- `royalAzure`
+- `seldon`
+- `sky`
+- `sunsetBlue`
+- `wildberry`
+
+`ThemeTemplateId` is the stock template id union. `ThemeInstanceId` also includes the transitional `custom` singleton. Workspace theme refs and keys in `workspace.themes` are opaque strings at workspace boundaries until workspace theme types are aligned.
+
+### Theme Structure
+
+Theme files use fixed top-level sections in this order:
+
+1. `metadata`
+2. `core`
+3. `color`
+4. `fontFamily`
+5. `size`, `dimension`, `margin`, `padding`, `gap`, `corners`, `borderWidth`, `blur`, `spread`
+6. `fontSize`, `fontWeight`, `lineHeight`
+7. `iconSet`
+8. `swatch`
+9. `font`, `border`, `background`, `gradient`, `shadow`, `scrollbar`
+
+`iconSet` is not a token table. It has no `TokenType`, no `@iconSet.*` reference path, no `customN` slots, and no `THEME_TOKEN_SECTIONS` entry. It selects the active icon set and default render values.
+
+### Token References
+
+Use `ValueType.THEME_ORDINAL` for ordered scales, such as `@fontSize.medium`, `@margin.compact`, and `@borderWidth.small`.
+
+Use `ValueType.THEME_CATEGORICAL` for named sets, such as `@swatch.primary`, `@font.body`, `@background.background1`, and `@shadow.moderate`.
+
+Reference types live in `types/theme-reference-keys.ts`. Token id unions live in `types/theme-token-ids.ts`.
+
+### Token Tables
+
+Token tables use `ThemeTokenTable<TUnion, TCell>`. Reserved keys are required. `customN` keys are optional. Do not add ordinary custom slots to `theme-token-ids.ts`; only edit those unions for new reserved keys or new sections.
+
+Every token except `@fontFamily.*` can accept `customN` keys. `@fontFamily.*` only has fixed `primary` and `secondary` slots.
+
+`@swatch.swatch1` through `@swatch.swatch4` are reserved dynamic palette slots, not custom slots.
+
+### Token Types
+
+Theme token cells use `TokenType`:
+
+- `MODULATED` for scale steps against `core.size` and `core.ratio`.
+- `EXACT` for fixed numeric values with units.
+- `DYNAMIC_SWATCH` for palette roles resolved from `color.*` by `computeTheme`.
+- `SWATCH` for explicit color values.
+- `FONT_FAMILY` for `fontFamily.primary` and `fontFamily.secondary`.
+- `OPTION` for discrete option keys.
+- `LOOK` for compound recipes under `font`, `border`, `background`, `gradient`, `shadow`, and `scrollbar`.
+
+Look token `parameters` contain property-style tagged values. Resolving an `@<scope>.<key>` reference into CSS values is property-side work in `helpers/resolution`, not the themes module.
+
+### Materialization
+
+Use `computeTheme(stockTheme)` to normalize a full theme object and resolve dynamic swatches into a `ComputedTheme`.
+
+Use `instantiateTheme(templateId, overrides, STOCK_THEMES_BY_ID)` to derive a theme from a stock template and overrides. Empty overrides skip the merge and compute the base theme.
+
+Import `instantiateTheme`, `normalizeThemeInput`, `getDynamicSwatchColors`, `getPalette`, and colorspace helpers from `@seldon/core/themes/compute`. Import `computeTheme`, `normalizeTheme`, `THEMES_BY_ID`, `STOCK_THEMES_BY_ID`, and `defaultTheme` from `@seldon/core/themes`.
+
+Workspace files store raw theme authoring state only. Computed theme rows come from read-side selectors such as `computeWorkspaceThemes` and `getComputedTheme`; they are not persisted.
+
+### Adding Themes And Tokens
+
+When adding a stock theme:
+
+1. Add the id to `ThemeTemplateId` in `types/theme-id.ts`.
+2. Create the stock file under `stock/` with every section from `THEMES.md`.
+3. Register it in `stock/index.ts` by adding the import and including it in `STOCK_THEMES`.
+4. Do not edit token id unions unless adding reserved keys or sections.
+
+When adding a new token kind or section, update the matching types, values, constants, schemas, exports, and section ordering described in `THEMES.md`.

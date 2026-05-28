@@ -16,7 +16,7 @@ export function getCursorStyles({
   if (properties.cursor.type !== ValueType.EMPTY) {
     const cursorType = properties.cursor.type
     // Only support PRESET cursor values, throw error for all other types
-    if (cursorType === ValueType.PRESET) {
+    if (cursorType === ValueType.OPTION) {
       styles.cursor = properties.cursor.value
     } else {
       throw new Error(`Unknown cursor type: ${cursorType}`)

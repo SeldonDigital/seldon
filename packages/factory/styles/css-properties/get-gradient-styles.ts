@@ -9,6 +9,7 @@ import { resolveValue } from "@seldon/core/helpers/resolution/resolve-value"
 import { getThemeOption } from "@seldon/core/helpers/theme/get-theme-option"
 import { StyleGenerationContext } from "../types"
 import { getColorCSSValue } from "./get-color-css-value"
+import { getLayeredPaintLayer } from "./get-layered-paint-layer"
 import { CSSObject } from "./types"
 
 const DEFAULTS = {
@@ -24,8 +25,7 @@ export function getGradientStyles({
   properties,
   theme,
 }: StyleGenerationContext): CSSObject {
-  const { gradient } = properties
-
+  const gradient = getLayeredPaintLayer(properties, "gradient")
   if (!gradient) return {}
 
   const {

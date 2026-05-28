@@ -27,7 +27,7 @@ export function isDarkBackgroundColor(
     throw new Error("Empty color value")
   }
 
-  if (color.type === ValueType.PRESET && color.value === "transparent") {
+  if (color.type === ValueType.OPTION && color.value === "transparent") {
     throw new Error("Unable to parse transparent color")
   }
 
@@ -86,7 +86,7 @@ function toString(color: ColorValue): string {
     }
   }
 
-  if (color.type === ValueType.PRESET) {
+  if (color.type === ValueType.OPTION) {
     return color.value
   }
 

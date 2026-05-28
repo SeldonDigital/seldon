@@ -16,5 +16,3 @@
 export type BasedOnPropertyKey =
   | `#${string}`
   | `#parent.${string}`
-  | `#${string}`
-  | `#parent.${string}`

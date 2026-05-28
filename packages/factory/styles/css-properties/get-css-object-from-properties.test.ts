@@ -428,7 +428,9 @@ describe("getCssObjectFromProperties", () => {
 
     const result = getCssObjectFromProperties(properties, context)
 
-    expect(result).toEqual({}) // No border styles generated
+    expect(result).toEqual({
+      border: "2px solid hsl(0 0% 15%)",
+    })
   })
 
   it("should handle invalid color values gracefully without crashing", () => {

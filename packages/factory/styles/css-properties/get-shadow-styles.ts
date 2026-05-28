@@ -3,6 +3,7 @@ import { getThemeOption } from "@seldon/core/helpers/theme/get-theme-option"
 import { StyleGenerationContext } from "../types"
 import { getColorCSSValue } from "./get-color-css-value"
 import { getCssValue } from "./get-css-value"
+import { getLayeredPaintLayer } from "./get-layered-paint-layer"
 import { getShadowBlurCSSValue } from "./get-shadow-blur-css-value"
 import { getShadowSpreadCSSValue } from "./get-shadow-spread-css-value"
 import { CSSObject } from "./types"
@@ -11,13 +12,13 @@ export function getShadowStyles({
   properties,
   theme,
 }: StyleGenerationContext): CSSObject {
-  const preset = resolveValue(properties.shadow?.preset)
-  const themeShadow = preset ? getThemeOption(preset.value, theme) : undefined
-  const { shadow } = properties
-
+  const shadow = getLayeredPaintLayer(properties, "shadow")
   if (!shadow) {
     return {}
   }
+
+  const preset = resolveValue(shadow.preset)
+  const themeShadow = preset ? getThemeOption(preset.value, theme) : undefined
 
   const { offsetX, offsetY, opacity, blur, spread, brightness, color } = shadow
 

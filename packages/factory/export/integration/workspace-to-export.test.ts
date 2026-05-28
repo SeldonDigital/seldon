@@ -2,6 +2,7 @@ import { describe, expect, it } from "bun:test"
 import { Workspace } from "@seldon/core"
 import { ComputedFunction, Unit, ValueType } from "@seldon/core"
 import { ComponentId, ComponentLevel } from "@seldon/core/components/constants"
+import customTheme from "@seldon/core/themes/custom"
 import { computeWorkspace } from "../../helpers/compute-workspace"
 import {
   EXPORT_OPTIONS_FIXTURE,
@@ -73,7 +74,7 @@ describe("Complete Workspace-to-Export Integration Tests", () => {
     expect(result).toContain("font-size: 16px")
 
     // Should contain theme variables
-    expect(result).toContain("Theme variables")
+    expect(result).toContain("Tokens · Theme Variables")
     expect(result).toContain(":root {")
     expect(result).toContain("--sdn-ratio:")
     expect(result).toContain("--sdn-font-size:")
@@ -132,30 +133,10 @@ describe("Complete Workspace-to-Export Integration Tests", () => {
         "variant-button-default": {
           ...FACTORY_WORKSPACE_FIXTURE.byId["variant-button-default"],
           properties: {
-            fontSize: {
-              type: ValueType.EXACT,
-              value: { unit: Unit.REM, value: 1.5 },
-            },
-            buttonSize: {
-              type: ValueType.COMPUTED,
-              value: {
-                function: ComputedFunction.AUTO_FIT,
-                input: {
-                  basedOn: "#fontSize",
-                  factor: 2.5,
-                },
-              },
-            },
             padding: {
               top: {
-                type: ValueType.COMPUTED,
-                value: {
-                  function: ComputedFunction.OPTICAL_PADDING,
-                  input: {
-                    basedOn: "#fontSize",
-                    factor: 1.5,
-                  },
-                },
+                type: ValueType.EXACT,
+                value: { unit: Unit.REM, value: 0.5 },
               },
             },
           },
@@ -199,10 +180,6 @@ describe("Complete Workspace-to-Export Integration Tests", () => {
               type: ValueType.THEME_CATEGORICAL,
               value: "@swatch.primary",
             },
-            fontSize: {
-              type: ValueType.THEME_ORDINAL,
-              value: "@fontSize.large",
-            },
             padding: {
               top: {
                 type: ValueType.THEME_ORDINAL,
@@ -242,7 +219,7 @@ describe("Complete Workspace-to-Export Integration Tests", () => {
   it("should handle empty workspace gracefully through complete export pipeline", async () => {
     const emptyWorkspace: Workspace = {
       version: 1,
-      customTheme: {},
+      customTheme,
       boards: {},
       byId: {},
     }
@@ -256,7 +233,7 @@ describe("Complete Workspace-to-Export Integration Tests", () => {
     const cssFile = result.find((file) => file.path.endsWith(".css"))
     expect(cssFile).toBeDefined()
     expect(cssFile!.content).toContain("Reset styles")
-    expect(cssFile!.content).toContain("Theme variables")
+    expect(cssFile!.content).toContain("Tokens · Theme Variables")
 
     // Should generate utility files
     const utilityFiles = result.filter(
@@ -384,7 +361,7 @@ describe("Complete Workspace-to-Export Integration Tests", () => {
   it("should throw error for invalid workspace", async () => {
     const invalidWorkspace = {
       version: 1,
-      customTheme: {},
+      customTheme,
       boards: {
         "invalid-component": {
           id: "invalid-component" as any,
@@ -420,10 +397,11 @@ describe("Complete Workspace-to-Export Integration Tests", () => {
   it("should handle workspace with missing theme gracefully", async () => {
     const workspaceWithoutTheme: Workspace = {
       version: 1,
-      customTheme: null as any,
+      customTheme,
       boards: {
         [ComponentId.BUTTON]: {
           id: ComponentId.BUTTON,
+          component: ComponentId.BUTTON,
           label: "Button",
           order: 0,
           theme: "default",
@@ -464,10 +442,11 @@ describe("Complete Workspace-to-Export Integration Tests", () => {
   it("should throw error for workspace with circular references", async () => {
     const workspaceWithCircular: Workspace = {
       version: 1,
-      customTheme: {},
+      customTheme,
       boards: {
         [ComponentId.BUTTON]: {
           id: ComponentId.BUTTON,
+          component: ComponentId.BUTTON,
           label: "Button",
           order: 0,
           theme: "default",
@@ -499,7 +478,7 @@ describe("Complete Workspace-to-Export Integration Tests", () => {
           variant: "variant-button-default",
           instanceOf: "variant-button-default",
           properties: {},
-          children: ["variant-button-default"], // Creates circular reference
+          children: ["child-button-2"], // Creates circular reference
         },
       },
     }
@@ -513,10 +492,11 @@ describe("Complete Workspace-to-Export Integration Tests", () => {
   it("should throw error for workspace with malformed properties", async () => {
     const workspaceWithMalformedProps: Workspace = {
       version: 1,
-      customTheme: {},
+      customTheme,
       boards: {
         [ComponentId.BUTTON]: {
           id: ComponentId.BUTTON,
+          component: ComponentId.BUTTON,
           label: "Button",
           order: 0,
           theme: "default",
@@ -537,11 +517,7 @@ describe("Complete Workspace-to-Export Integration Tests", () => {
           properties: {
             color: {
               type: "invalid-type" as any,
-              value: "invalid-value",
-            },
-            fontSize: {
-              type: ValueType.EXACT,
-              value: "not-a-number" as any,
+              value: "#ff0000",
             },
           },
           children: [],

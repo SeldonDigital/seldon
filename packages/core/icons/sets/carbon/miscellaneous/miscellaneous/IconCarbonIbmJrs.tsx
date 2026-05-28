@@ -1,0 +1,18 @@
+import { SVGAttributes } from "react"
+
+export function IconCarbonIbmJrs(props: SVGAttributes<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 -960 960 960"
+      fill="currentColor"
+      height="1em"
+      width="1em"
+      {...props}
+    >
+      <g transform="translate(0, -960) scale(30)">
+        <path d="M12 18L10 18 10 6 7 6 7 18 5 18 5 4 12 4 12 18zM21 26L19 26 19 12 16 12 16 21.9946 14 21.9946 14 10 21 10 21 26zM30 26L28 26 28 18 25 18 25 26 23 26 23 16 30 16 30 26zM4 20L4 22 8.5859 22 2 28.5859 3.4141 30 10 23.4141 10 28 12 28 12 20 4 20z" />
+      </g>
+    </svg>
+  )
+}

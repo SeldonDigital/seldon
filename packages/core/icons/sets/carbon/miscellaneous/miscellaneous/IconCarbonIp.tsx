@@ -1,0 +1,18 @@
+import { SVGAttributes } from "react"
+
+export function IconCarbonIp(props: SVGAttributes<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 -960 960 960"
+      fill="currentColor"
+      height="1em"
+      width="1em"
+      {...props}
+    >
+      <g transform="translate(0, -960) scale(30)">
+        <path d="M19 23h-2v-14h6c1.103 0 2 .897 2 2v5c0 1.103-.897 2-2 2h-4v5zm0-7h4v-5.0015h-4v5.0015zM7 11L10 11 10 21 7 21 7 23 15 23 15 21 12 21 12 11 15 11 15 9 7 9 7 11z" />
+      </g>
+    </svg>
+  )
+}

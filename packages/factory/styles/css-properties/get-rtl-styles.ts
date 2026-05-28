@@ -8,7 +8,7 @@ export function getRTLStyles({
 }): CSSObject {
   const styles: CSSObject = {}
 
-  if (properties.direction?.type === ValueType.PRESET) {
+  if (properties.direction?.type === ValueType.OPTION) {
     const { value } = properties.direction
 
     if (value === Direction.RTL) {

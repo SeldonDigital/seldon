@@ -4,46 +4,30 @@ import {
   ThemeSwatchKey,
 } from "../../../../themes/types"
 import { Restricted } from "../../../types/helpers"
-import { BorderStyle } from "../../../values"
+import { BorderCollapse, BorderStyle } from "../../../values"
 import { EmptyValue } from "../../shared/empty/empty"
+import { BorderCollapseValue } from "../border-collapse"
 import { BorderBrightnessValue } from "./border-brightness"
 import { BorderColorValue } from "./border-color"
 import { BorderOpacityValue } from "./border-opacity"
-import { BorderPresetValue } from "./border-preset"
 import { BorderStyleValue } from "./border-style"
 import { BorderWidthValue } from "./border-width"
+import type { BorderValue } from "./border"
 
-export interface BorderValue {
-  preset?: Restricted<BorderPresetValue | EmptyValue, ThemeBorderKey>
+/** One border compound with optional theme recipe and per-field picks. */
+export interface BorderCompound {
+  preset?: Restricted<BorderValue | EmptyValue, ThemeBorderKey>
   style?: Restricted<BorderStyleValue | EmptyValue, BorderStyle>
   color?: Restricted<BorderColorValue | EmptyValue, ThemeSwatchKey>
   width?: Restricted<BorderWidthValue | EmptyValue, ThemeBorderWidthKey>
-  opacity?: BorderOpacityValue | EmptyValue
   brightness?: BorderBrightnessValue | EmptyValue
-  topStyle?: Restricted<BorderStyleValue | EmptyValue, BorderStyle>
-  topColor?: Restricted<BorderColorValue | EmptyValue, ThemeSwatchKey>
-  topWidth?: Restricted<BorderWidthValue | EmptyValue, ThemeBorderWidthKey>
-  topOpacity?: BorderOpacityValue | EmptyValue
-  topBrightness?: BorderBrightnessValue | EmptyValue
-  rightStyle?: Restricted<BorderStyleValue | EmptyValue, BorderStyle>
-  rightColor?: Restricted<BorderColorValue | EmptyValue, ThemeSwatchKey>
-  rightWidth?: Restricted<BorderWidthValue | EmptyValue, ThemeBorderWidthKey>
-  rightOpacity?: BorderOpacityValue | EmptyValue
-  rightBrightness?: BorderBrightnessValue | EmptyValue
-  bottomStyle?: Restricted<BorderStyleValue | EmptyValue, BorderStyle>
-  bottomColor?: Restricted<BorderColorValue | EmptyValue, ThemeSwatchKey>
-  bottomWidth?: Restricted<BorderWidthValue | EmptyValue, ThemeBorderWidthKey>
-  bottomOpacity?: BorderOpacityValue | EmptyValue
-  bottomBrightness?: BorderBrightnessValue | EmptyValue
-  leftStyle?: Restricted<BorderStyleValue | EmptyValue, BorderStyle>
-  leftColor?: Restricted<BorderColorValue | EmptyValue, ThemeSwatchKey>
-  leftWidth?: Restricted<BorderWidthValue | EmptyValue, ThemeBorderWidthKey>
-  leftOpacity?: BorderOpacityValue | EmptyValue
-  leftBrightness?: BorderBrightnessValue | EmptyValue
+  opacity?: BorderOpacityValue | EmptyValue
+  collapse?: Restricted<BorderCollapseValue | EmptyValue, BorderCollapse>
 }
 
-export * from "./border-color"
-export * from "./border-opacity"
-export * from "./border-preset"
+export * from "./border"
 export * from "./border-style"
+export * from "./border-color"
 export * from "./border-width"
+export * from "./border-brightness"
+export * from "./border-opacity"

@@ -1,0 +1,239 @@
+import { Properties, type PropertyKey, ValueType } from "@seldon/core"
+import { getComponentSchema } from "@seldon/core/components/catalog"
+import { ComponentId, isComponentId } from "@seldon/core/components/constants"
+import { isCompoundProperty } from "@seldon/core/helpers/type-guards/compound/is-compound-property"
+import { isIconSetVariant } from "@seldon/core/icons/helpers/is-icon-set-variant"
+import { getPropertyCategory } from "@seldon/core/properties/schemas"
+import {
+  isLayeredPaintProperty,
+  type PropertyKey as CorePropertyKey,
+} from "@seldon/core/properties/types/property-keys"
+import {
+  getEffectiveNodeProperties,
+  type WorkspacePropertySource,
+} from "@seldon/core/workspace/compute"
+import { getComponentPropertyDefaults } from "@seldon/core/workspace/helpers/components/get-component-property-defaults"
+import { isComponentEntry } from "@seldon/core/workspace/helpers/components/is-component-entry"
+import { getNodeById } from "@seldon/core/workspace/helpers/nodes/get-node-by-id"
+import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-catalog-id"
+import type {
+  ComponentEntry,
+  EntryNode,
+  Workspace,
+} from "@seldon/core/workspace/types"
+
+type TypedPropertyValue = {
+  type: unknown
+  value: unknown
+}
+
+export type PropertyPanelSubject = ComponentEntry | EntryNode
+
+export const LAYERED_PAINT_LAYER_INDEX = 0
+
+function isTypedPropertyValue(value: unknown): value is TypedPropertyValue {
+  return !!(
+    value &&
+    typeof value === "object" &&
+    "type" in value &&
+    "value" in value
+  )
+}
+
+function storedValueMatches(currentValue: unknown, expectedValue: unknown): boolean {
+  if (isTypedPropertyValue(expectedValue)) {
+    return storedValueMatches(currentValue, expectedValue.value)
+  }
+  if (typeof expectedValue === "string" && expectedValue.startsWith("@")) {
+    return currentValue === expectedValue
+  }
+  if (expectedValue && typeof expectedValue === "object") {
+    return JSON.stringify(currentValue) === JSON.stringify(expectedValue)
+  }
+  return currentValue === expectedValue
+}
+
+export function propertyValuesMatch(
+  currentValue: unknown,
+  expectedValue: unknown,
+): boolean {
+  if (!isTypedPropertyValue(currentValue)) {
+    return isValueEmpty(expectedValue)
+  }
+  return storedValueMatches(currentValue.value, expectedValue)
+}
+
+export function compoundFacetMatches(
+  parentLayer: Record<string, unknown>,
+  subKey: string,
+  expectedValue: unknown,
+): boolean {
+  return propertyValuesMatch(parentLayer[subKey], expectedValue)
+}
+
+export function compoundSubPropertyPath(
+  propertyKey: string,
+  subKey: string,
+): string {
+  if (isLayeredPaintProperty(propertyKey as CorePropertyKey)) {
+    return `${propertyKey}.${LAYERED_PAINT_LAYER_INDEX}.${subKey}`
+  }
+  return `${propertyKey}.${subKey}`
+}
+
+export function getCompoundLayerValue(
+  value: unknown,
+): Record<string, unknown> | null {
+  if (!value || typeof value !== "object") return null
+  if (Array.isArray(value)) {
+    const layer = value[LAYERED_PAINT_LAYER_INDEX]
+    if (!layer || typeof layer !== "object" || Array.isArray(layer)) {
+      return null
+    }
+    return layer as Record<string, unknown>
+  }
+  return value as Record<string, unknown>
+}
+
+export function wrapCompoundPropertyValue(
+  propertyKey: string,
+  facets: Record<string, unknown>,
+): Properties {
+  if (isLayeredPaintProperty(propertyKey as CorePropertyKey)) {
+    return { [propertyKey]: [facets] } as Properties
+  }
+  return { [propertyKey]: facets } as Properties
+}
+
+export function getPropertyOverridesBag(
+  subject: PropertyPanelSubject,
+): Properties | undefined {
+  if (isComponentEntry(subject)) {
+    return subject.componentProperties
+  }
+  return subject.overrides
+}
+
+export function resolveComponentId(
+  subject: PropertyPanelSubject,
+  workspace: Workspace,
+): ComponentId | undefined {
+  if (isComponentEntry(subject)) {
+    if (subject.type === "component" && isComponentId(subject.catalogId)) {
+      return subject.catalogId
+    }
+    return undefined
+  }
+  const catalogId = getNodeCatalogId(subject, workspace)
+  if (catalogId && isComponentId(catalogId)) {
+    return catalogId
+  }
+  return undefined
+}
+
+export function getTypedNode(
+  nodeId: string,
+  workspace: Workspace,
+): PropertyPanelSubject {
+  const catalogRow = workspace.components[nodeId]
+  if (catalogRow) {
+    return catalogRow
+  }
+  return getNodeById(nodeId, workspace)
+}
+
+export function isValueEmpty(value: unknown): boolean {
+  return (
+    !value ||
+    (typeof value === "object" &&
+      value !== null &&
+      "type" in value &&
+      value.type === ValueType.EMPTY)
+  )
+}
+
+export function isValueSet(value: unknown): boolean {
+  return (
+    !!value &&
+    typeof value === "object" &&
+    value !== null &&
+    "type" in value &&
+    value.type !== ValueType.EMPTY
+  )
+}
+
+export function hasSchemaSubProperty(
+  schemaProperties: Properties,
+  key: string,
+  subKey: string,
+): boolean {
+  const layer = getCompoundLayerValue(
+    (schemaProperties as Record<string, unknown> | null)?.[key],
+  )
+  return !!(layer && subKey in layer)
+}
+
+export function getEffectiveProperties(
+  nodeId: string,
+  workspace: Workspace,
+): Properties {
+  return getEffectiveNodeProperties(nodeId, workspace as WorkspacePropertySource)
+}
+
+export function getSchemaProperties(
+  node: PropertyPanelSubject,
+  workspace?: Workspace,
+): Properties | null {
+  if (isComponentEntry(node)) {
+    return getComponentPropertyDefaults()
+  }
+
+  if (workspace && isIconSetVariant(node, workspace)) {
+    const iconSchema = getComponentSchema(ComponentId.ICON)
+    if (!iconSchema) return null
+    return iconSchema.properties
+  }
+
+  if (!workspace?.nodes) return null
+
+  const componentId = resolveComponentId(node, workspace)
+  if (!componentId) return null
+  const schema = getComponentSchema(componentId)
+  if (!schema) return null
+  return schema.properties
+}
+
+export function isShorthandProperty(propertyKey: string): boolean {
+  return getPropertyCategory(propertyKey) === "shorthand"
+}
+
+function getSubPropertyKeysFromObject(propertyValue: unknown): string[] {
+  const layer = getCompoundLayerValue(propertyValue)
+  if (!layer) return []
+  return Object.keys(layer)
+}
+
+export function getSubPropertyKeysFromSchema(
+  propertyKey: string,
+  node: PropertyPanelSubject,
+  workspace: Workspace,
+): string[] {
+  const schemaProps = getSchemaProperties(node, workspace)
+  const schemaProp = (schemaProps as Record<string, unknown> | null)?.[propertyKey]
+  const layer = getCompoundLayerValue(schemaProp)
+  return layer ? Object.keys(layer) : []
+}
+
+export function getCompoundPropertyStructure(
+  propertyKey: string,
+  propertyValue: unknown,
+  node: PropertyPanelSubject,
+  workspace: Workspace,
+): string[] {
+  const actualKeys = getSubPropertyKeysFromObject(propertyValue)
+  const schemaKeys = getSubPropertyKeysFromSchema(propertyKey, node, workspace)
+  if (isCompoundProperty(propertyKey as PropertyKey)) {
+    return [...new Set([...actualKeys, ...schemaKeys])]
+  }
+  return schemaKeys
+}

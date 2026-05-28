@@ -2,6 +2,8 @@ import { CSSProperties } from "react"
 import { InstanceId, VariantId } from "@seldon/core"
 import { ComponentId, ComponentLevel } from "@seldon/core/components/constants"
 import { ComponentExport } from "@seldon/core/components/types"
+import type { ExportAssetReader } from "./asset-reader"
+import type { IconId } from "@seldon/core/icons"
 
 /**
  * Export options
@@ -16,6 +18,10 @@ export type ExportOptions = {
     componentsFolder: string
     assetPublicPath: string
   }
+  publishAll?: boolean
+  debugMode?: boolean
+  assetReader?: ExportAssetReader
+  skipFormat?: boolean
 }
 
 type ExportTarget = {
@@ -106,6 +112,8 @@ export type ImageToExportMap = Record<
  */
 export type JSONTreeNode = {
   name: string
+  componentId: ComponentId
+  schemaVariantId: string | null
   nodeId: InstanceId | VariantId
   children?: null | string | JSONTreeNode[]
   level: ComponentLevel

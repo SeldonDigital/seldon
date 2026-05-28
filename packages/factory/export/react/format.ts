@@ -1,6 +1,12 @@
 import prettier from "prettier"
 
-export async function format(content: string) {
+export async function format(
+  content: string,
+  options?: { skipFormat?: boolean },
+) {
+  if (options?.skipFormat) {
+    return content
+  }
   // We have to run this twice to make sure the imports (but first without the plugin)
   // to make sure each import has it's own line
   // https://github.com/trivago/prettier-plugin-sort-imports/issues/222

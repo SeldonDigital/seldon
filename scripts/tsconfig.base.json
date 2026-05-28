@@ -1,28 +1,19 @@
 {
   "compilerOptions": {
-    /* For project references */
     "composite": true,
     "declaration": true,
     "declarationMap": true,
     "incremental": true,
-
-    "customConditions": ["seldon-dev"],
-
     "target": "ES2022",
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "moduleDetection": "force",
-
-    /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": false,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "allowJs": true,
-
-    /* Linting */
     "strict": true,
     "skipLibCheck": true,
     "noUnusedLocals": false,

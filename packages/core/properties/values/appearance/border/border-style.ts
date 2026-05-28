@@ -2,6 +2,7 @@ import { ValueType } from "../../../constants"
 import { PropertySchema } from "../../../types/schema"
 import { EmptyValue } from "../../shared/empty/empty"
 
+/** Named line drawing for border strokes. */
 export enum BorderStyle {
   NONE = "none",
   SOLID = "solid",
@@ -15,22 +16,27 @@ export enum BorderStyle {
   HIDDEN = "hidden",
 }
 
-export interface BorderStylePresetValue {
-  type: ValueType.PRESET
+/** Stores one border style choice from the enum. */
+export interface BorderStyleOptionValue {
+  type: ValueType.OPTION
   value: BorderStyle
 }
 
-export type BorderStyleValue = EmptyValue | BorderStylePresetValue
+/** Empty or one named border line style. */
+export type BorderStyleValue = EmptyValue | BorderStyleOptionValue
 
+/** Validates stored border style values. */
 export const borderStyleSchema: PropertySchema = {
   name: "borderStyle",
-  description: "Border line style",
-  supports: ["empty", "inherit", "exact", "preset"] as const,
+  description:
+    "Sets which stroke pattern the border uses, including when no line shows.",
+  supports: ["empty", "inherit", "option"] as const,
   validation: {
     empty: () => true,
     inherit: () => true,
-    exact: (value: any) => typeof value === "string" && value.length > 0,
-    preset: (value: any) => Object.values(BorderStyle).includes(value),
+    option: (value: unknown) =>
+      typeof value === "string" &&
+      (Object.values(BorderStyle) as string[]).includes(value),
   },
   presetOptions: () => Object.values(BorderStyle),
 }

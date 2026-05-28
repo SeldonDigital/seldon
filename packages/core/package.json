@@ -6,7 +6,7 @@
     "lint": "echo \"TODO: Add this with the shared eslint config\"",
     "quality": "bun lint && bun tsc",
     "format": "prettier --write \"./**/*.{ts,tsx,json}\"",
-    "generate:action-schema": "typescript-json-schema ./tsconfig.schema.json AIAction --out ./workspace/reducers/ai/generated-ai-action-schema.json --noExtraProps --required"
+    "generate:action-schema": "typescript-json-schema ./tsconfig.schema.json WorkspaceAction --out ./workspace/reducers/generated-workspace-action-schema.json --noExtraProps --required"
   },
   "exports": {
     ".": {
@@ -18,10 +18,10 @@
     },
     "./components/icons": {
       "node": {
-        "development": "./components/icons/index.ts",
-        "default": "./dist/components/icons/index.js"
+        "development": "./icons/index.ts",
+        "default": "./dist/icons/index.js"
       },
-      "default": "./components/icons/index.ts"
+      "default": "./icons/index.ts"
     },
     "./helpers/validation": {
       "node": {
@@ -52,6 +52,90 @@
       },
       "default": "./properties/types/index.ts"
     },
+    "./properties/types/schema": {
+      "node": {
+        "development": "./properties/types/schema.ts",
+        "default": "./dist/properties/types/schema.js"
+      },
+      "default": "./properties/types/schema.ts"
+    },
+    "./properties/types/properties": {
+      "node": {
+        "development": "./properties/types/properties.ts",
+        "default": "./dist/properties/types/properties.js"
+      },
+      "default": "./properties/types/properties.ts"
+    },
+    "./properties/schemas": {
+      "node": {
+        "development": "./properties/schemas/index.ts",
+        "default": "./dist/properties/schemas/index.js"
+      },
+      "default": "./properties/schemas/index.ts"
+    },
+    "./properties/schemas/helpers": {
+      "node": {
+        "development": "./properties/schemas/helpers/index.ts",
+        "default": "./dist/properties/schemas/helpers/index.js"
+      },
+      "default": "./properties/schemas/helpers/index.ts"
+    },
+    "./properties/values": {
+      "node": {
+        "development": "./properties/values/index.ts",
+        "default": "./dist/properties/values/index.js"
+      },
+      "default": "./properties/values/index.ts"
+    },
+    "./properties/helpers": {
+      "node": {
+        "development": "./properties/helpers/index.ts",
+        "default": "./dist/properties/helpers/index.js"
+      },
+      "default": "./properties/helpers/index.ts"
+    },
+    "./properties/compute": {
+      "node": {
+        "development": "./properties/compute/index.ts",
+        "default": "./dist/properties/compute/index.js"
+      },
+      "default": "./properties/compute/index.ts"
+    },
+    "./workspace/compute": {
+      "node": {
+        "development": "./workspace/compute/index.ts",
+        "default": "./dist/workspace/compute/index.js"
+      },
+      "default": "./workspace/compute/index.ts"
+    },
+    "./themes/compute": {
+      "node": {
+        "development": "./themes/compute/index.ts",
+        "default": "./dist/themes/compute/index.js"
+      },
+      "default": "./themes/compute/index.ts"
+    },
+    "./themes/types": {
+      "node": {
+        "development": "./themes/types/index.ts",
+        "default": "./dist/themes/types/index.js"
+      },
+      "default": "./themes/types/index.ts"
+    },
+    "./themes/values": {
+      "node": {
+        "development": "./themes/values/index.ts",
+        "default": "./dist/themes/values/index.js"
+      },
+      "default": "./themes/values/index.ts"
+    },
+    "./helpers/math": {
+      "node": {
+        "development": "./helpers/math/index.ts",
+        "default": "./dist/helpers/math/index.js"
+      },
+      "default": "./helpers/math/index.ts"
+    },
     "./*": {
       "node": {
         "development": "./*.ts",
@@ -61,17 +145,19 @@
     }
   },
   "devDependencies": {
-    "@happy-dom/global-registrator": "^18.0.1",
+    "@happy-dom/global-registrator": "^20.9.0",
     "@testing-library/react": "^16.3.0",
     "@trivago/prettier-plugin-sort-imports": "^5.2.2",
     "@types/bun": "1.2.10"
   },
   "peerDependencies": {
-    "typescript": "^5.0.0",
+    "@types/react": "^19.0.0",
     "react": "^19.0.0",
-    "@types/react": "^19.0.0"
+    "typescript": "^5.0.0"
   },
   "dependencies": {
+    "@carbon/icons-react": "^11.71.0",
+    "@material-design-icons/svg": "^0.14.15",
     "@types/chroma-js": "^2.4.5",
     "@types/lodash": "^4.17.20",
     "@types/lodash.isequal": "^4.5.8",
@@ -81,6 +167,7 @@
     "immer": "^10.1.1",
     "lodash": "^4.17.21",
     "lodash.isequal": "^4.5.0",
+    "lucide-react": "^0.555.0",
     "nanoid": "^5.1.4",
     "pluralize": "^8.0.0",
     "tldraw": "^3.12.0",

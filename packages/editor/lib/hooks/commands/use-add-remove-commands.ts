@@ -2,6 +2,7 @@ import { useCallback } from "react"
 import { ComponentId } from "@seldon/core/components/constants"
 import { InstanceId, VariantId } from "@seldon/core/index"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
+import { confirmMissingSchemaVariants } from "@lib/workspace/confirm-missing-schema-variants"
 import { useSelection } from "@lib/workspace/use-selection"
 import { useWorkspace } from "@lib/workspace/use-workspace"
 import { useAddToast } from "@components/toaster/use-add-toast"
@@ -23,11 +24,19 @@ export function useAddRemoveCommands() {
   const addToast = useAddToast()
 
   const addBoard = useCallback(
-    (componentId: ComponentId) => {
+    async (componentId: ComponentId) => {
+      const variantFallbacks = await confirmMissingSchemaVariants(componentId)
+      if (variantFallbacks === null) {
+        return
+      }
+
       dispatch({
-        type: "add_board",
+        type: "add_component",
         payload: {
           componentId,
+          variantFallbacks: variantFallbacks.length
+            ? variantFallbacks
+            : undefined,
         },
       })
 
@@ -49,7 +58,7 @@ export function useAddRemoveCommands() {
     })
   }, [selectedNode, dispatch, addToast])
 
-  const removeNode = useCallback(
+  const removeSelectedNode = useCallback(
     (nodeId: VariantId | InstanceId) => {
       const node = workspaceService.getNode(nodeId, workspace)
       if (selectedNode?.id === nodeId) {
@@ -63,9 +72,17 @@ export function useAddRemoveCommands() {
         setHoverState(null)
       }
 
+      if (workspaceService.isVariant(node)) {
+        dispatch({
+          type: "remove_variant",
+          payload: { variantRootId: nodeId as VariantId },
+        })
+        return
+      }
+
       dispatch({
-        type: "remove_node",
-        payload: { nodeId },
+        type: "remove_instance",
+        payload: { instanceId: nodeId as InstanceId },
       })
     },
     [
@@ -85,7 +102,7 @@ export function useAddRemoveCommands() {
       }
 
       dispatch({
-        type: "remove_board",
+        type: "remove_component",
         payload: {
           componentId,
         },
@@ -96,13 +113,13 @@ export function useAddRemoveCommands() {
 
   const deleteSelection = useCallback(() => {
     if (selectedNode) {
-      removeNode(selectedNode.id)
+      removeSelectedNode(selectedNode.id)
     }
 
     if (selectedBoard) {
       removeBoard(selectedBoard.id)
     }
-  }, [selectedNode, selectedBoard, removeNode, removeBoard])
+  }, [selectedNode, selectedBoard, removeSelectedNode, removeBoard])
 
   const duplicateSelection = useCallback(() => {
     if (!selectedNode) return

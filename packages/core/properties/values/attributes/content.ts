@@ -1,16 +1,13 @@
 import { PropertySchema } from "../../types/schema"
-import { EmptyValue } from "../shared/empty/empty"
-import { StringValue } from "../shared/exact/string"
 
-export type ContentValue = EmptyValue | StringValue
-
+/** Defines labels, allowed shapes, and checks for `content`. */
 export const contentSchema: PropertySchema = {
   name: "content",
-  description: "Text content for elements",
+  description: "Text content for text-based components",
   supports: ["empty", "inherit", "exact"] as const,
   validation: {
     empty: () => true,
     inherit: () => true,
-    exact: (value: any) => typeof value === "string",
+    exact: (value: unknown) => typeof value === "string",
   },
 }

@@ -4,11 +4,11 @@ import { ValueType } from "../../../properties"
  * Determines the appropriate ValueType for a theme value string
  *
  * @param value - The value string to analyze
- * @returns The appropriate ValueType (THEME_CATEGORICAL, THEME_ORDINAL, or PRESET)
+ * @returns The appropriate ValueType (THEME_CATEGORICAL, THEME_ORDINAL, or OPTION)
  */
 export function getValueType(value: string): ValueType {
   if (!value.startsWith("@")) {
-    return ValueType.PRESET
+    return ValueType.OPTION
   }
 
   const themeSection = value.split(".")[0] as `@${string}`
@@ -38,6 +38,6 @@ export function getValueType(value: string): ValueType {
       return ValueType.THEME_ORDINAL
 
     default:
-      return ValueType.PRESET
+      return ValueType.OPTION
   }
 }

@@ -1,6 +1,4 @@
-/**
- * Shorthand value types - properties with same type sub-properties (margin, padding, corners)
- */
+/** Objects that hold the same kind of value on each side, edge offset, or corner. */
 import {
   CornersValue,
   MarginValue,
@@ -8,11 +6,9 @@ import {
   PositionValue,
 } from "../values"
 
+/** Every shorthand payload assignable to a property value on a node. */
 export type ShorthandValue =
-  // LAYOUT
-  | MarginValue // Margin (top, right, bottom, left) - layout shorthand
-  | PaddingValue // Padding (top, right, bottom, left) - layout shorthand
-  | PositionValue // Position (top, right, bottom, left) - layout shorthand
-
-  // APPEARANCE
-  | CornersValue // Border radius (topLeft, topRight, bottomLeft, bottomRight) - appearance shorthand
+  | MarginValue
+  | PaddingValue
+  | PositionValue
+  | CornersValue

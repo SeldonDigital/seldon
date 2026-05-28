@@ -62,6 +62,10 @@ export const rules: RulesConfig = {
         ComponentLevel.SCREEN,
       ],
     },
+    // Boards are editor-only shells and are not placed in composition trees
+    [ComponentLevel.BOARD]: {
+      mayContain: [],
+    },
   },
 
   mutations: {
@@ -100,7 +104,7 @@ export const rules: RulesConfig = {
         propagation: "downstream",
       },
       defaultVariant: {
-        allowed: true,
+        allowed: false,
         propagation: "downstream",
       },
       instance: {

@@ -5,25 +5,38 @@
 const config = {
   semi: false,
   plugins: ["@trivago/prettier-plugin-sort-imports"],
-
   importOrder: [
-    // Node built-ins
     "^node:(.*)$",
-
-    // Packages
     "<THIRD_PARTY_MODULES>",
-
-    // Types and Constants
     "^@seldon/core",
-
-    // Internal Aliases
     "^#(.*)$",
-
     "^[./]",
   ],
   importOrderSeparation: true,
   importOrderSortSpecifiers: true,
   importOrderSideEffects: false,
+  overrides: [
+    {
+      files: ["packages/editor/**/*.{ts,tsx,js,mjs}"],
+      options: {
+        importOrderSeparation: false,
+        importOrder: [
+          "<THIRD_PARTY_MODULES>",
+          "^@seldon/core",
+          "^@lib/(.*)/hooks/(.*)",
+          "^@lib/hooks/(.*)",
+          "^[./].*hooks.*",
+          "^@lib/workspace/(.*)",
+          "^@lib/api/hooks/(.*)",
+          "^@components/seldon/(.*)",
+          "^[./].*seldon.*",
+          "^@components/(.*)",
+          "^[./].*ui.*",
+          "^[./]",
+        ],
+      },
+    },
+  ],
 }
 
 export default config

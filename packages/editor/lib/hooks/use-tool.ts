@@ -1,6 +1,6 @@
 import { create } from "zustand"
 
-export type Tool = "select" | "sketch" | "component"
+export type Tool = "select" | "component"
 
 interface ToolState {
   activeTool: Tool

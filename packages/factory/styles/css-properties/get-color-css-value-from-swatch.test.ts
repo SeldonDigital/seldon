@@ -9,7 +9,7 @@ describe("getColorCSSValueFromSwatch", () => {
       theme: testTheme,
     })
 
-    expect(result).toBe("hsl(0 0% 15%)")
+    expect(result).toBe("hsl(0 0% 0%)")
   })
 
   it("should return correct value for swatch1", () => {
@@ -18,7 +18,7 @@ describe("getColorCSSValueFromSwatch", () => {
       theme: testTheme,
     })
 
-    expect(result).toBe("hsl(0 0% 30%)")
+    expect(result).toBe("hsl(0 0% 20%)")
   })
 
   it("should return palette value with opacity", () => {
@@ -28,7 +28,7 @@ describe("getColorCSSValueFromSwatch", () => {
       theme: testTheme,
     })
 
-    expect(result).toBe("hsl(0 0% 15% / 75%)")
+    expect(result).toBe("hsl(0 0% 0% / 75%)")
   })
 
   it("should handle zero opacity", () => {
@@ -38,7 +38,7 @@ describe("getColorCSSValueFromSwatch", () => {
       theme: testTheme,
     })
 
-    expect(result).toBe("hsl(0 0% 15% / 0%)")
+    expect(result).toBe("hsl(0 0% 0% / 0%)")
   })
 
   it("should handle null opacity", () => {
@@ -48,7 +48,7 @@ describe("getColorCSSValueFromSwatch", () => {
       theme: testTheme,
     })
 
-    expect(result).toBe("hsl(0 0% 15%)")
+    expect(result).toBe("hsl(0 0% 0%)")
   })
 
   it("should handle undefined opacity", () => {
@@ -57,7 +57,7 @@ describe("getColorCSSValueFromSwatch", () => {
       theme: testTheme,
     })
 
-    expect(result).toBe("hsl(0 0% 15%)")
+    expect(result).toBe("hsl(0 0% 0%)")
   })
 
   it("should handle 100% opacity", () => {
@@ -67,6 +67,6 @@ describe("getColorCSSValueFromSwatch", () => {
       theme: testTheme,
     })
 
-    expect(result).toBe("hsl(0 0% 15%)")
+    expect(result).toBe("hsl(0 0% 0%)")
   })
 })

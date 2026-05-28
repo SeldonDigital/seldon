@@ -1,5 +1,5 @@
 import { describe, expect, it } from "bun:test"
-import { BorderWidth, Corner, Unit, ValueType } from "@seldon/core"
+import { BorderWidth, Color, Corner, Unit, ValueType } from "@seldon/core"
 import { getCssValue } from "./get-css-value"
 
 describe("getCssValue", () => {
@@ -55,6 +55,15 @@ describe("getCssValue", () => {
     })
 
     expect(result).toBe("var(--hairline)")
+  })
+
+  it("should convert transparent values to CSS", () => {
+    const result = getCssValue({
+      type: ValueType.PRESET,
+      value: Color.TRANSPARENT,
+    })
+
+    expect(result).toBe("transparent")
   })
 
   it("should throw error for theme values", () => {

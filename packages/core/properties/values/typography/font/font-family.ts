@@ -1,67 +1,82 @@
-import { Theme } from "../../../../themes/types"
+import { Theme, ThemeFontFamilyKey } from "../../../../themes/types"
+import { Workspace } from "../../../../workspace/types"
 import { GOOGLE_FONT_FAMILIES, ValueType } from "../../../constants"
 import { PropertySchema } from "../../../types/schema"
+import { StringValue } from "../../shared/exact/string"
 import { EmptyValue } from "../../shared/empty/empty"
+import { InheritValue } from "../../shared/inherit/inherit"
 
-export interface FontFamilyPresetValue {
-  type: ValueType.PRESET
+/** Picks one catalog or bundled font name as an option value. */
+export interface FontFamilyOptionValue {
+  type: ValueType.OPTION
   value: string
 }
 
+/** References a named font family slot from the theme. */
 export interface FontFamilyThemeValue {
   type: ValueType.THEME_CATEGORICAL
-  value: "@fontFamily.primary" | "@fontFamily.secondary"
+  value: ThemeFontFamilyKey
 }
 
+/**
+ * Resolved font family as a concrete string, stored like a fixed picker choice
+ * for downstream CSS (`ValueType.OPTION`).
+ */
+export type FontFamilyPresetValue = {
+  type: ValueType.OPTION
+  value: string
+}
+
+/** Empty, inherit, theme slot, bundled list entry, or a custom family string (`exact`). */
 export type FontFamilyValue =
   | EmptyValue
-  | FontFamilyPresetValue
+  | InheritValue
+  | StringValue
+  | FontFamilyOptionValue
   | FontFamilyThemeValue
 
+/** Validates stored font family values. */
 export const fontFamilySchema: PropertySchema = {
   name: "fontFamily",
-  description: "Font family for text styling",
+  description:
+    "Sets the typeface from theme slots, the bundled list, or a custom name you type.",
   supports: [
     "empty",
     "inherit",
     "exact",
-    "preset",
+    "option",
     "themeCategorical",
   ] as const,
   validation: {
     empty: () => true,
     inherit: () => true,
-    exact: (value: any) => typeof value === "string" && value.length > 0,
-    preset: (value: any) => typeof value === "string" && value.length > 0,
-    themeCategorical: (value: any, theme?: Theme) => {
-      if (!theme) return false
-      return value in theme.fontFamily
+    exact: (value: unknown) =>
+      typeof value === "string" && value.length > 0,
+    option: (value: unknown) => {
+      if (typeof value !== "string" || value.length === 0) return false
+      if (value.startsWith("@fontFamily.")) return true
+      return GOOGLE_FONT_FAMILIES.some((f) => f.family === value)
+    },
+    themeCategorical: (value: unknown, theme?: Theme) => {
+      if (!theme || typeof value !== "string") return false
+      return (Object.keys(theme.fontFamily) as string[]).some(
+        (id) => value === `@fontFamily.${id}`,
+      )
     },
   },
-  presetOptions: (theme?: Theme) => {
-    const options = []
-
-    // Add theme font families with descriptive names
-    if (theme) {
-      options.push(
-        {
-          value: "@fontFamily.primary",
-          name: `${theme.fontFamily.primary} (Primary)`,
-        },
-        {
-          value: "@fontFamily.secondary",
-          name: `${theme.fontFamily.secondary} (Secondary)`,
-        },
-      )
-    }
-
-    // Add all Google Fonts
+  presetOptions: (_workspace?: Workspace) => {
+    const options = [
+      { value: "@fontFamily.primary", name: "Primary" },
+      { value: "@fontFamily.secondary", name: "Secondary" },
+    ]
     const googleFonts = GOOGLE_FONT_FAMILIES.map((font) => ({
       value: font.family,
       name: font.family,
     }))
-
     return [...options, ...googleFonts]
   },
-  themeCategoricalKeys: (theme: Theme) => Object.keys(theme.fontFamily),
+  themeCategoricalKeys: (theme: Theme) =>
+    (Object.keys(theme.fontFamily) as string[]).map(
+      (id) => `@fontFamily.${id}` as ThemeFontFamilyKey,
+    ),
 }

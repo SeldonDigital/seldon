@@ -21,7 +21,8 @@ describe("getCssStringFromCssObject", () => {
 
     const result = getCssStringFromCssObject(cssObject, "empty")
 
-    expect(result).toBe("")
+    // Empty CSS objects should still generate an empty rule to ensure the classname exists
+    expect(result).toBe(".empty {}")
   })
 
   it("should convert camelCase properties to kebab-case", () => {

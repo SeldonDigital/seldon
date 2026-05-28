@@ -4,5 +4,5 @@ export const HTMLDiv = ({
   style,
   ...props
 }: HTMLAttributes<HTMLDivElement>) => {
-  return <div style={{ display: "flex", ...style }} {...props} />
+  return <div style={style} {...props} />
 }

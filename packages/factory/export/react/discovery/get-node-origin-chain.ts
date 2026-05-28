@@ -1,19 +1,20 @@
-import { Node, Workspace } from "@seldon/core"
-import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
+import { Workspace } from "@seldon/core"
+import type { EntryNode } from "@seldon/core/workspace/types"
+import { getNodeById } from "@seldon/core/workspace/helpers/nodes/get-node-by-id"
+import { getTemplateSourceNodeId } from "../../../helpers/workspace-nodes"
 
-/**
- * Gets all the original nodes of the given nodes until we reach the default variant
- * @param node - The node to get the lineage of
- * @param workspace - The workspace to get the lineage from
- * @returns The lineage of the node
- */
-export const getNodeOriginChain = (node: Node, workspace: Workspace) => {
-  let original = node
+export const getNodeOriginChain = (
+  node: EntryNode,
+  workspace: Workspace,
+): EntryNode[] => {
   const nodes = [node]
+  let current: EntryNode = node
 
-  while ("instanceOf" in original) {
-    original = workspaceService.getNode(original.instanceOf, workspace)
-    nodes.push(original)
+  while (true) {
+    const sourceId = getTemplateSourceNodeId(current)
+    if (!sourceId) break
+    current = getNodeById(sourceId, workspace)
+    nodes.push(current)
   }
 
   return nodes

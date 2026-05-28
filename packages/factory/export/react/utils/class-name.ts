@@ -14,17 +14,17 @@ export function getClassName(
 
 /**
  * Get the variant class names for a component
+ * Custom variants have complete styles, so they don't need the default variant class.
  */
 export function getVariantClassNames(
   component: ComponentToExport,
   nodeIdToClass: NodeIdToClass,
 ): string {
-  const { defaultVariantId, variantId } = component
+  const { variantId } = component
   const map = (id: InstanceId | VariantId) => nodeIdToClass[id as string]
 
-  if (defaultVariantId === variantId) return map(variantId)
-
-  return `${map(defaultVariantId)} ${map(variantId)}`
+  // Always use only the variant's own class (custom variants have complete styles)
+  return map(variantId) || ""
 }
 
 /**

@@ -1,12 +1,13 @@
-import { ValueType } from "../../../constants"
+import { Unit } from "../../../constants"
 import { PropertySchema } from "../../../types/schema"
 import { EmptyValue } from "../../shared/empty/empty"
 import { PercentageValue } from "../../shared/exact/percentage"
 import { PixelValue } from "../../shared/exact/pixel"
 import { RemValue } from "../../shared/exact/rem"
-import { DoubleAxisValue } from "../../shared/preset/double-axis"
-import { ImageFitValue } from "../../shared/utilities/image-fit"
+import { DoubleAxisValue } from "../../shared/option/double-axis"
+import { ImageFit, ImageFitValue } from "../../shared/utilities/image-fit"
 
+/** One size choice before pairing: empty, lengths, or a named fit. */
 export type SingleBackgroundSizeValue =
   | EmptyValue
   | PixelValue
@@ -14,34 +15,44 @@ export type SingleBackgroundSizeValue =
   | PercentageValue
   | ImageFitValue
 
+/** All size shapes for one background layer. */
 export type BackgroundSizeValue =
   | EmptyValue
   | SingleBackgroundSizeValue
   | DoubleAxisValue
 
+function isMeasurePayload(u: unknown): boolean {
+  if (typeof u !== "object" || u === null) return false
+  const m = u as { value?: unknown; unit?: unknown }
+  if (typeof m.value !== "number" || !Number.isFinite(m.value)) return false
+  return m.unit === Unit.PX || m.unit === Unit.REM || m.unit === Unit.PERCENT
+}
+
+/** Validates size storage on one background paint layer. */
 export const backgroundSizeSchema: PropertySchema = {
   name: "backgroundSize",
-  description: "Background image size",
-  supports: ["empty", "inherit", "exact", "preset"] as const,
+  description:
+    "Sets how the picture scales in this layer using a fit name, lengths, or width and height together.",
+  supports: ["empty", "inherit", "exact", "option"] as const,
+  units: {
+    allowed: [Unit.PX, Unit.REM, Unit.PERCENT],
+    default: Unit.PX,
+    validation: "both",
+  },
   validation: {
     empty: () => true,
     inherit: () => true,
-    exact: (value: any) => {
-      if (
-        typeof value === "object" &&
-        value.value !== undefined &&
-        value.unit !== undefined
-      )
-        return true
-      if (typeof value === "number" && value >= 0) return true
-      return false
+    exact: (value: unknown) => {
+      if (typeof value !== "object" || value === null) return false
+      const v = value as Record<string, unknown>
+      if ("x" in v && "y" in v) {
+        return isMeasurePayload(v.x) && isMeasurePayload(v.y)
+      }
+      return isMeasurePayload(value)
     },
-    preset: (value: any) => {
-      return (
-        typeof value === "string" &&
-        ["original", "contain", "cover", "stretch"].includes(value)
-      )
-    },
+    option: (value: unknown) =>
+      typeof value === "string" &&
+      (Object.values(ImageFit) as string[]).includes(value),
   },
-  presetOptions: () => ["original", "contain", "cover", "stretch"],
+  presetOptions: () => Object.values(ImageFit),
 }

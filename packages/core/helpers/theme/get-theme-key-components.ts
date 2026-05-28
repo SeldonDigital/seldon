@@ -1,4 +1,4 @@
-import { ThemeOptionId, ThemeSection, ThemeValueKey } from "../../themes/types"
+import { ThemeOptionId, ThemeTokenNamespace, ThemeValueKey } from "../../themes/types"
 import { isThemeValueKey } from "../validation/theme"
 
 /**
@@ -9,7 +9,7 @@ import { isThemeValueKey } from "../validation/theme"
  * @throws Error if the key is not a valid theme value key
  */
 export function getThemeKeyComponents(key: ThemeValueKey): {
-  section: ThemeSection
+  section: ThemeTokenNamespace
   optionId: ThemeOptionId
 } {
   if (!isThemeValueKey(key)) {
@@ -19,7 +19,7 @@ export function getThemeKeyComponents(key: ThemeValueKey): {
   const [section, optionId] = key.substring(1).split(".")
 
   return {
-    section: section as ThemeSection,
+    section: section as ThemeTokenNamespace,
     optionId: optionId as ThemeOptionId,
   }
 }

@@ -1,15 +1,31 @@
-import { Theme } from "../../../themes/types"
-import { Unit } from "../../constants"
+import { ComputedFunction, Unit, ValueType } from "../../constants"
 import { PropertySchema } from "../../types/schema"
+import { ComputedAutoFitValue } from "../shared/computed/auto-fit"
 import { EmptyValue } from "../shared/empty/empty"
-import { DimensionValue } from "./dimension"
+import { PixelValue } from "../shared/exact/pixel"
+import { RemValue } from "../shared/exact/rem"
+import { Resize } from "./resize"
+import { ScreenSize } from "./screen-size"
 
-export type ScreenHeightValue = EmptyValue | DimensionValue
+/** Picks fit, fill, or a device size band for board height. */
+export interface ScreenHeightOptionValue {
+  type: ValueType.OPTION
+  value: Resize | ScreenSize
+}
+
+/** Board height as unset, px or rem lengths, auto-fit computed, or a resize or device option. */
+export type ScreenHeightValue =
+  | EmptyValue
+  | ScreenHeightOptionValue
+  | PixelValue
+  | RemValue
+  | ComputedAutoFitValue
 
 export const screenHeightSchema: PropertySchema = {
   name: "screenHeight",
-  description: "Screen height dimension",
-  supports: ["empty", "exact", "preset"] as const,
+  description:
+    "Sets board height using pixels, root lengths, auto-fit, or a resize or device size choice.",
+  supports: ["empty", "exact", "option", "computed"] as const,
   units: {
     allowed: [Unit.PX, Unit.REM],
     default: Unit.PX,
@@ -27,20 +43,13 @@ export const screenHeightSchema: PropertySchema = {
       if (typeof value === "number" && value > 0) return true
       return false
     },
-    preset: (value: any) => typeof value === "string" && value.length > 0,
-    themeOrdinal: (value: any, theme?: Theme) => {
-      if (!theme) return false
-      return value in theme.dimension
-    },
+    option: (value: unknown) =>
+      typeof value === "string" &&
+      ((Object.values(Resize) as string[]).includes(value) ||
+        (Object.values(ScreenSize) as string[]).includes(value)),
+    computed: (value: any) =>
+      typeof value === "object" && value.function !== undefined,
   },
-  presetOptions: () => [
-    "fit",
-    "fill",
-    "desktop",
-    "laptop",
-    "tablet",
-    "mobile",
-    "watch",
-    "television",
-  ],
+  presetOptions: () => [...Object.values(Resize), ...Object.values(ScreenSize)],
+  computedFunctions: () => [ComputedFunction.AUTO_FIT],
 }

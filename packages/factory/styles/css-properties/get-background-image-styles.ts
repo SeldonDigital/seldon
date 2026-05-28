@@ -8,6 +8,7 @@ import { getThemeOption } from "@seldon/core/helpers/theme/get-theme-option"
 import { Theme, ThemeBackground } from "@seldon/core/themes/types"
 import { getBackgroundPositionStyle } from "./get-background-position-style"
 import { getBackgroundSizeStyle } from "./get-background-size-style"
+import { getLayeredPaintLayer } from "./get-layered-paint-layer"
 import { CSSObject } from "./types"
 
 export function getBackgroundImageStyles({
@@ -18,45 +19,43 @@ export function getBackgroundImageStyles({
   theme: Theme
 }): CSSObject {
   const styles: CSSObject = {}
-  const preset = resolveValue(properties.background?.preset)
+  const layer = getLayeredPaintLayer(properties, "background")
+  if (!layer) return styles
+
+  const preset = resolveValue(layer.preset)
   const themeBackground = preset
     ? (getThemeOption(preset.value, theme) as ThemeBackground)
     : undefined
 
   const image =
-    resolveValue(properties.background?.image) ??
+    resolveValue(layer.image) ??
     resolveValue(themeBackground?.parameters.image)
 
   const repeat =
-    resolveValue(properties.background?.repeat) ??
+    resolveValue(layer.repeat) ??
     resolveValue(themeBackground?.parameters.repeat)
 
   const position =
-    resolveValue(properties.background?.position) ??
+    resolveValue(layer.position) ??
     resolveValue(themeBackground?.parameters.position)
 
   const size =
-    resolveValue(properties.background?.size) ??
-    resolveValue(themeBackground?.parameters.size)
+    resolveValue(layer.size) ?? resolveValue(themeBackground?.parameters.size)
 
-  // Only apply if background.image is defined in the schema
-  if (image && properties.background?.image) {
+  if (image && layer.image) {
     styles.backgroundImage = `url(${image.value})`
   }
 
-  // Only apply if background.repeat is defined in the schema
-  if (repeat && properties.background?.repeat) {
+  if (repeat && layer.repeat) {
     styles.backgroundRepeat = repeat.value
   }
 
-  // Only apply if background.position is defined in the schema
-  if (position && properties.background?.position) {
+  if (position && layer.position) {
     if (
       typeof position.value === "object" &&
       "x" in position.value &&
       "y" in position.value
     ) {
-      // Value is a DoubleAxisValue
       const { x, y } = position.value
       styles.backgroundPosition = `${x.value}${x.unit} ${y.value}${y.unit}`
     } else {
@@ -66,14 +65,12 @@ export function getBackgroundImageStyles({
     }
   }
 
-  // Only apply if background.size is defined in the schema
-  if (size && properties.background?.size) {
+  if (size && layer.size) {
     if (
       typeof size.value === "object" &&
       "x" in size.value &&
       "y" in size.value
     ) {
-      // Value is a DoubleAxisValue
       const { x, y } = size.value
       styles.backgroundSize = `${x.value}${x.unit} ${y.value}${y.unit}`
     } else {

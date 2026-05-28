@@ -11,47 +11,78 @@ export const schema = {
   level: Seldon.ComponentLevel.PRIMITIVE,
   icon: Seldon.ComponentIcon.TEXT,
   properties: {
-    // COMPONENT
-    display: { type: Sdn.ValueType.EMPTY, value: null },
+    display: {
+      type: Sdn.ValueType.EMPTY,
+      value: null,
+    },
+    htmlElement: {
+      type: Sdn.ValueType.OPTION,
+      value: Sdn.HtmlElement.P,
+    },
     content: {
       type: Sdn.ValueType.EXACT,
       value: "Description",
     },
-    htmlElement: {
-      type: Sdn.ValueType.PRESET,
-      value: Sdn.HtmlElement.P,
-      restrictions: {
-        allowedValues: [Sdn.HtmlElement.P, Sdn.HtmlElement.SPAN],
-      },
+    cursor: {
+      type: Sdn.ValueType.INHERIT,
+      value: null,
     },
-    // LAYOUT
-    direction: { type: Sdn.ValueType.EMPTY, value: null },
+    direction: {
+      type: Sdn.ValueType.EMPTY,
+      value: null,
+    },
     width: {
-      type: Sdn.ValueType.PRESET,
+      type: Sdn.ValueType.OPTION,
       value: Sdn.Resize.FILL,
     },
     height: {
-      type: Sdn.ValueType.PRESET,
+      type: Sdn.ValueType.OPTION,
       value: Sdn.Resize.FIT,
     },
     margin: {
-      top: { type: Sdn.ValueType.EMPTY, value: null },
-      right: { type: Sdn.ValueType.EMPTY, value: null },
-      bottom: { type: Sdn.ValueType.EMPTY, value: null },
-      left: { type: Sdn.ValueType.EMPTY, value: null },
+      top: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
+      right: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
+      bottom: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
+      left: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
     },
     padding: {
-      top: { type: Sdn.ValueType.EMPTY, value: null },
-      right: { type: Sdn.ValueType.EMPTY, value: null },
-      bottom: { type: Sdn.ValueType.EMPTY, value: null },
-      left: { type: Sdn.ValueType.EMPTY, value: null },
+      top: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
+      right: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
+      bottom: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
+      left: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
     },
-    // APPEARANCE
     color: {
       type: Sdn.ValueType.THEME_CATEGORICAL,
       value: "@swatch.black",
     },
-    brightness: { type: Sdn.ValueType.EMPTY, value: null },
+    brightness: {
+      type: Sdn.ValueType.EMPTY,
+      value: null,
+    },
     opacity: {
       type: Sdn.ValueType.EXACT,
       value: {
@@ -59,64 +90,137 @@ export const schema = {
         unit: Sdn.Unit.PERCENT,
       },
     },
-    background: {
-      color: { type: Sdn.ValueType.EMPTY, value: null },
-      brightness: { type: Sdn.ValueType.EMPTY, value: null },
-      opacity: { type: Sdn.ValueType.EMPTY, value: null },
-    },
-    // TYPOGRAPHY
+    background: [
+      {
+        preset: {
+          type: Sdn.ValueType.THEME_CATEGORICAL,
+          value: "@background.none",
+        },
+        image: {
+          type: Sdn.ValueType.EMPTY,
+          value: null,
+        },
+        position: {
+          type: Sdn.ValueType.EMPTY,
+          value: null,
+        },
+        size: {
+          type: Sdn.ValueType.EMPTY,
+          value: null,
+        },
+        repeat: {
+          type: Sdn.ValueType.EMPTY,
+          value: null,
+        },
+        color: {
+          type: Sdn.ValueType.EMPTY,
+          value: null,
+        },
+        blendMode: {
+          type: Sdn.ValueType.EMPTY,
+          value: null,
+        },
+        filter: {
+          type: Sdn.ValueType.EMPTY,
+          value: null,
+        },
+        brightness: {
+          type: Sdn.ValueType.EMPTY,
+          value: null,
+        },
+        opacity: {
+          type: Sdn.ValueType.EMPTY,
+          value: null,
+        },
+      },
+    ],
     font: {
       preset: {
         type: Sdn.ValueType.THEME_CATEGORICAL,
         value: "@font.body",
-        restrictions: {
-          allowedValues: ["@font.body", "@font.tagline", "@font.code"],
-        },
       },
-      family: { type: Sdn.ValueType.EMPTY, value: null },
-      style: { type: Sdn.ValueType.EMPTY, value: null },
+      family: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
+      style: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
+      weight: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
       size: {
         type: Sdn.ValueType.EMPTY,
         value: null,
-        restrictions: {
-          allowedValues: [
-            "@fontSize.xxsmall",
-            "@fontSize.xsmall",
-            "@fontSize.small",
-            "@fontSize.medium",
-            "@fontSize.large",
-          ],
-        },
       },
-      weight: { type: Sdn.ValueType.EMPTY, value: null },
-      lineHeight: { type: Sdn.ValueType.EMPTY, value: null },
+      lineHeight: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
       textCase: {
-        type: Sdn.ValueType.PRESET,
-        value: Sdn.TextCasing.NORMAL,
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
+      letterSpacing: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
       },
     },
-    textAlign: { type: Sdn.ValueType.EMPTY, value: null },
-    letterSpacing: { type: Sdn.ValueType.EMPTY, value: null },
+    textAlign: {
+      type: Sdn.ValueType.EMPTY,
+      value: null,
+    },
+
     textDecoration: {
-      type: Sdn.ValueType.PRESET,
+      type: Sdn.ValueType.OPTION,
       value: Sdn.TextDecoration.NONE,
     },
     wrapText: {
       type: Sdn.ValueType.EXACT,
       value: true,
     },
-    lines: { type: Sdn.ValueType.EMPTY, value: null },
-    // EFFECTS
-    shadow: {
-      preset: { type: Sdn.ValueType.EMPTY, value: null },
-      offsetX: { type: Sdn.ValueType.EMPTY, value: null },
-      offsetY: { type: Sdn.ValueType.EMPTY, value: null },
-      blur: { type: Sdn.ValueType.EMPTY, value: null },
-      spread: { type: Sdn.ValueType.EMPTY, value: null },
-      color: { type: Sdn.ValueType.EMPTY, value: null },
-      brightness: { type: Sdn.ValueType.EMPTY, value: null },
-      opacity: { type: Sdn.ValueType.EMPTY, value: null },
+    lines: {
+      type: Sdn.ValueType.EMPTY,
+      value: null,
     },
+    shadow: [
+      {
+        preset: {
+          type: Sdn.ValueType.THEME_CATEGORICAL,
+          value: "@shadow.none",
+        },
+        offsetX: {
+          type: Sdn.ValueType.EMPTY,
+          value: null,
+        },
+        offsetY: {
+          type: Sdn.ValueType.EMPTY,
+          value: null,
+        },
+        blur: {
+          type: Sdn.ValueType.EMPTY,
+          value: null,
+        },
+        color: {
+          type: Sdn.ValueType.EMPTY,
+          value: null,
+        },
+        brightness: {
+          type: Sdn.ValueType.EMPTY,
+          value: null,
+        },
+        opacity: {
+          type: Sdn.ValueType.EMPTY,
+          value: null,
+        },
+        spread: {
+          type: Sdn.ValueType.EMPTY,
+          value: null,
+        },
+      },
+    ],
   },
 } as const satisfies ComponentSchema
 

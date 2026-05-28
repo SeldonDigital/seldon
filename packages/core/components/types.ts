@@ -4,11 +4,14 @@ import { ComponentIcon, ComponentId, ComponentLevel } from "./constants"
 /**
  * SCHEMA TYPES
  *
- * Schemas are like blueprints. They describe the available properties (and their default values) component and its children.
- * They are used to generate instances called nodes.
+ * Schemas are like blueprints. They describe the available properties (and their default values) of a component, its
+ * default composition tree, and any alternate variant trees the component ships with.
+ *
+ * Composition trees are fully flattened: every parent declares the entire descendant tree it owns. Variants mirror the
+ * workspace concept of `default` and `variant` entries on a board (see `workspace/model/entry-node.ts`).
  */
 
-// Base interface with common properties that is shared between primitive and complex components
+// Base fields shared by every schema regardless of level.
 interface BaseComponentSchema {
   id: ComponentId
   name: string
@@ -18,23 +21,66 @@ interface BaseComponentSchema {
   tags: string[]
 }
 
-// A primitive component is a component that cannot contain other components
-export interface PrimitiveComponentSchema extends BaseComponentSchema {
-  level: ComponentLevel.PRIMITIVE
-  restrictions?: never
+// A child entry inside a SchemaTree. `variant` selects a named child schema variant when present. `overrides` and
+// nested `children` layer on top of the selected child baseline. `children` carries inner-tree composition without the
+// default/variant tagging that only applies at the top level.
+export interface SchemaChild {
+  component: ComponentId
+  variant?: string
+  overrides?: Properties
+  children?: SchemaChild[]
 }
 
-// A complex component is a component that can contain other components
+// A composition tree (the default tree of a complex schema or any of its variant trees).
+export interface SchemaTree {
+  children?: SchemaChild[]
+}
+
+// An alternate variant of a complex schema. Carries its own complete child tree plus identity metadata used to address
+// it (`id` is unique within the parent, e.g. "social" on `Button`).
+export interface SchemaVariant extends SchemaTree {
+  id: string
+  label: string
+  intent: string
+  /** Root property overrides for this catalog variant (for example width and height). */
+  overrides?: Properties
+}
+
+// Primitives are leaves: no default tree, no variants, no children.
+export interface PrimitiveComponentSchema extends BaseComponentSchema {
+  level: ComponentLevel.PRIMITIVE
+}
+
+// Complex schemas always declare a `default` tree and may declare alternate `variants` of the same component.
 export interface ComplexComponentSchema extends BaseComponentSchema {
   level: Exclude<ComponentLevel, "primitive">
-  restrictions?: {
-    addChildren?: boolean // Disable the addition of child components
-    reorderChildren?: boolean // Disable the reordering of child components
-  }
-  children?: Component[]
+  default: SchemaTree
+  variants?: SchemaVariant[]
 }
 
 export type ComponentSchema = PrimitiveComponentSchema | ComplexComponentSchema
+
+export function isComplexSchema(
+  schema: ComponentSchema,
+): schema is ComplexComponentSchema {
+  return schema.level !== ComponentLevel.PRIMITIVE
+}
+
+export function hasVariants(
+  schema: ComponentSchema,
+): schema is ComplexComponentSchema & { variants: SchemaVariant[] } {
+  return (
+    isComplexSchema(schema) &&
+    Array.isArray(schema.variants) &&
+    schema.variants.length > 0
+  )
+}
+
+export function isVariantTree(
+  tree: SchemaTree | SchemaVariant,
+): tree is SchemaVariant {
+  return "id" in tree && "label" in tree && "intent" in tree
+}
 
 /**
  * COMPONENT INSTANCE TYPES
@@ -42,36 +88,10 @@ export type ComponentSchema = PrimitiveComponentSchema | ComplexComponentSchema
  * These types represent actual component instances (nodes) that are created from schemas.
  */
 
-/**
- * NestedOverrides value types that can be passed from parent to child components
- */
-export type NestedOverridesValue =
-  | string // Simple strings, theme values (@fontSize.large), icon IDs
-  | number // Simple numbers
-  | boolean // Simple booleans
-  | { unit: string; value: number } // Complex values with units (e.g., { unit: "rem", value: 2 })
-  | NestedOverridesObject // Nested objects for nested property overrides
-
-/**
- * NestedOverrides object structure for nested property overrides
- */
-export type NestedOverridesObject = {
-  [key: string]: NestedOverridesValue
-}
-
-/**
- * NestedOverrides props that can be passed from parent to child components
- * Maps component IDs to their property overrides
- */
-export type NestedOverrides = {
-  [componentId: string]: NestedOverridesObject
-}
-
 export interface Component {
   component: ComponentId
   properties?: Properties
   overrides?: Properties
-  nestedOverrides?: NestedOverrides
   children?: Component[]
 }
 
@@ -135,6 +155,11 @@ export type NativeReactPrimitive =
 
 export interface ComponentExport {
   react: {
-    returns: NativeReactPrimitive | "htmlElement" | "iconMap" | "Frame"
+    returns:
+      | NativeReactPrimitive
+      | "htmlElement"
+      | "wrapperElement"
+      | "iconMap"
+      | "Frame"
   }
 }

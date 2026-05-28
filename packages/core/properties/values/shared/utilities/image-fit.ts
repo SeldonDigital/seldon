@@ -22,22 +22,31 @@ export const IMAGE_FIT_OPTIONS: { name: string; value: ImageFit }[] = [
   { name: "Stretch", value: ImageFit.STRETCH },
 ]
 
-export interface ImageFitPresetValue {
-  type: ValueType.PRESET
+/** Stores an image fit keyword as a freeform exact value from the ImageFit enum. */
+export interface ImageFitExactValue {
+  type: ValueType.EXACT
   value: ImageFit
 }
 
-export type ImageFitValue = EmptyValue | ImageFitPresetValue
+export interface ImageFitOptionValue {
+  type: ValueType.OPTION
+  value: ImageFit
+}
+
+export type ImageFitValue =
+  | EmptyValue
+  | ImageFitExactValue
+  | ImageFitOptionValue
 
 export const imageFitSchema: PropertySchema = {
   name: "imageFit",
   description: "Image sizing behavior",
-  supports: ["empty", "inherit", "exact", "preset"] as const,
+  supports: ["empty", "inherit", "exact", "option"] as const,
   validation: {
     empty: () => true,
     inherit: () => true,
     exact: (value: any) => typeof value === "string" && value.length > 0,
-    preset: (value: any) => Object.values(ImageFit).includes(value),
+    option: (value: any) => Object.values(ImageFit).includes(value),
   },
   presetOptions: () => Object.values(ImageFit),
 }

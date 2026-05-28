@@ -6,7 +6,7 @@ export function getBackgroundSizeStyle(size: SingleBackgroundSizeValue) {
     return `${size.value.value}${size.value.unit}`
   }
 
-  if (size.type === ValueType.PRESET) {
+  if (size.type === ValueType.OPTION) {
     return backgroundSizeMap[size.value]
   }
 }

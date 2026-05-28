@@ -1,50 +1,46 @@
 import { Unit } from "../constants"
-import { getPropertySchema } from "../schemas/helpers"
+import {
+  getCompoundSubPropertySchema,
+  getPropertySchema,
+} from "../schemas/helpers"
 
-/**
- * Gets available units for a property from its schema
- * @param propertyKey - The property key to get units for
- * @returns Array of available unit strings
- */
+/** Maps a dot path to the catalog key that carries `units` on its schema. */
+function resolveSchemaKeyForUnits(propertyKey: string): string {
+  if (!propertyKey.includes(".")) {
+    return propertyKey
+  }
+  const parts = propertyKey.split(".")
+  const first = parts[0]!
+  const last = parts[parts.length - 1]!
+  const compoundFacet = getCompoundSubPropertySchema(first, last)
+  if (compoundFacet) {
+    return compoundFacet.name
+  }
+  if (parts.length === 2 && getPropertySchema(first)) {
+    return first
+  }
+  return last
+}
+
+/** Lists allowed unit suffixes for measured values on this property. */
 export function getUnitsForProperty(propertyKey: string): string[] {
-  const actualProperty = propertyKey.includes(".")
-    ? propertyKey.split(".").pop()!
-    : propertyKey
-  const schema = getPropertySchema(actualProperty)
-
+  const schema = getPropertySchema(resolveSchemaKeyForUnits(propertyKey))
   if (schema?.units?.allowed) {
     return schema.units.allowed.map((unit) => unit)
   }
-
-  // Fallback for compound properties and unknown properties
-  // This matches the original hardcoded behavior
-  return ["px", "rem", "%"]
+  return [Unit.PX, Unit.REM, Unit.PERCENT]
 }
 
-/**
- * Gets the default unit for a property from its schema
- * @param propertyKey - The property key to get default unit for
- * @returns The default unit for the property
- */
+/** Returns the default unit when the editor inserts a new measured value. */
 export function getDefaultUnitForProperty(propertyKey: string): Unit {
-  const actualProperty = propertyKey.includes(".")
-    ? propertyKey.split(".").pop()!
-    : propertyKey
-  const schema = getPropertySchema(actualProperty)
-  return schema?.units?.default || Unit.PX
+  const schema = getPropertySchema(resolveSchemaKeyForUnits(propertyKey))
+  return schema?.units?.default ?? Unit.PX
 }
 
-/**
- * Gets number validation type for a property from its schema
- * @param propertyKey - The property key to get validation type for
- * @returns The validation type: "number", "percentage", or "both"
- */
+/** Returns how strict numeric input is for lengths versus percentages. */
 export function getNumberValidation(
   propertyKey: string,
 ): "number" | "percentage" | "both" {
-  const actualProperty = propertyKey.includes(".")
-    ? propertyKey.split(".").pop()!
-    : propertyKey
-  const schema = getPropertySchema(actualProperty)
-  return schema?.units?.validation || "both"
+  const schema = getPropertySchema(resolveSchemaKeyForUnits(propertyKey))
+  return schema?.units?.validation ?? "both"
 }

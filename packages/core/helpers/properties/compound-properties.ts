@@ -1,12 +1,12 @@
 import { ValueType } from "../../properties"
-import { BackgroundValue } from "../../properties/values/appearance/background"
-import { BorderValue } from "../../properties/values/appearance/border"
+import { BackgroundLayer } from "../../properties/values/appearance/background"
+import { BorderCompound } from "../../properties/values/appearance/border"
 import { CornersValue } from "../../properties/values/appearance/corners"
-import { ShadowValue } from "../../properties/values/effects/shadow"
-import { GradientValue } from "../../properties/values/gradients"
+import { ShadowCompound } from "../../properties/values/effects/shadow"
+import { GradientCompound } from "../../properties/values/effects/gradients"
 import { MarginValue } from "../../properties/values/layout/margin"
 import { PaddingValue } from "../../properties/values/layout/padding"
-import { FontValue } from "../../properties/values/typography/font"
+import { FontCompound } from "../../properties/values/typography/font"
 
 /**
  * Default compound property definitions for testing and initialization.
@@ -25,7 +25,7 @@ export const font = {
   size: { type: ValueType.EMPTY, value: null },
   weight: { type: ValueType.EMPTY, value: null },
   lineHeight: { type: ValueType.EMPTY, value: null },
-} satisfies FontValue
+} as FontCompound
 
 export const background = {
   preset: { type: ValueType.EMPTY, value: null },
@@ -35,7 +35,7 @@ export const background = {
   repeat: { type: ValueType.EMPTY, value: null },
   color: { type: ValueType.EMPTY, value: null },
   opacity: { type: ValueType.EMPTY, value: null },
-} satisfies BackgroundValue
+} as BackgroundLayer
 
 export const shadow = {
   preset: { type: ValueType.EMPTY, value: null },
@@ -44,7 +44,7 @@ export const shadow = {
   blur: { type: ValueType.EMPTY, value: null },
   color: { type: ValueType.EMPTY, value: null },
   opacity: { type: ValueType.EMPTY, value: null },
-} satisfies ShadowValue
+} as ShadowCompound
 
 export const border = {
   preset: { type: ValueType.EMPTY, value: null },
@@ -64,7 +64,7 @@ export const border = {
   leftColor: { type: ValueType.EMPTY, value: null },
   leftWidth: { type: ValueType.EMPTY, value: null },
   leftOpacity: { type: ValueType.EMPTY, value: null },
-} satisfies BorderValue
+} as BorderCompound
 
 export const gradient = {
   preset: { type: ValueType.EMPTY, value: null },
@@ -76,25 +76,25 @@ export const gradient = {
   endColor: { type: ValueType.EMPTY, value: null },
   endOpacity: { type: ValueType.EMPTY, value: null },
   endPosition: { type: ValueType.EMPTY, value: null },
-} satisfies GradientValue
+} as GradientCompound
 
 export const margin = {
   top: { type: ValueType.EMPTY, value: null },
   right: { type: ValueType.EMPTY, value: null },
   bottom: { type: ValueType.EMPTY, value: null },
   left: { type: ValueType.EMPTY, value: null },
-} satisfies MarginValue
+} as MarginValue
 
 export const padding = {
   top: { type: ValueType.EMPTY, value: null },
   right: { type: ValueType.EMPTY, value: null },
   bottom: { type: ValueType.EMPTY, value: null },
   left: { type: ValueType.EMPTY, value: null },
-} satisfies PaddingValue
+} as PaddingValue
 
 export const corners = {
   topRight: { type: ValueType.EMPTY, value: null },
   bottomRight: { type: ValueType.EMPTY, value: null },
   bottomLeft: { type: ValueType.EMPTY, value: null },
   topLeft: { type: ValueType.EMPTY, value: null },
-} satisfies CornersValue
+} as CornersValue

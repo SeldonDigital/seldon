@@ -15,6 +15,7 @@ import {
   ThemeDimensionId,
   ThemeDimensionKey,
   ThemeFont,
+  ThemeFamilyToken,
   ThemeFontFamilyId,
   ThemeFontFamilyKey,
   ThemeFontId,
@@ -29,15 +30,14 @@ import {
   ThemeGradientKey,
   ThemeLineHeightId,
   ThemeLineHeightKey,
+  ThemeExact,
   ThemeMarginKey,
-  ThemeModulation,
-  ThemeNumber,
   ThemeOption,
   ThemePaddingKey,
+  ThemeScaleToken,
   ThemeScrollbar,
   ThemeScrollbarId,
   ThemeScrollbarKey,
-  ThemeSection,
   ThemeShadow,
   ThemeShadowId,
   ThemeShadowKey,
@@ -48,6 +48,7 @@ import {
   ThemeSwatch,
   ThemeSwatchId,
   ThemeSwatchKey,
+  ThemeTokenNamespace,
 } from "../../themes/types"
 import { isThemeValueKey } from "../validation/theme"
 
@@ -60,33 +61,36 @@ import { isThemeValueKey } from "../validation/theme"
  * @throws Error if the key is invalid or the value is not found
  */
 export function getThemeOption(key: ThemeFontKey, theme: Theme): ThemeFont
-export function getThemeOption(key: ThemeFontFamilyKey, theme: Theme): string
+export function getThemeOption(
+  key: ThemeFontFamilyKey,
+  theme: Theme,
+): ThemeFamilyToken
 export function getThemeOption(
   key: ThemeFontSizeKey,
   theme: Theme,
-): ThemeModulation
+): ThemeScaleToken
 export function getThemeOption(
   key: ThemeFontWeightKey,
   theme: Theme,
-): ThemeNumber
+): ThemeExact
 export function getThemeOption(
   key: ThemeLineHeightKey,
   theme: Theme,
-): ThemeNumber
+): ThemeExact
 export function getThemeOption(
   key: ThemeMarginKey,
   theme: Theme,
-): ThemeModulation
+): ThemeScaleToken
 export function getThemeOption(
   key: ThemePaddingKey,
   theme: Theme,
-): ThemeModulation
-export function getThemeOption(key: ThemeGapKey, theme: Theme): ThemeModulation
-export function getThemeOption(key: ThemeSizeKey, theme: Theme): ThemeModulation
+): ThemeScaleToken
+export function getThemeOption(key: ThemeGapKey, theme: Theme): ThemeScaleToken
+export function getThemeOption(key: ThemeSizeKey, theme: Theme): ThemeScaleToken
 export function getThemeOption(
   key: ThemeDimensionKey,
   theme: Theme,
-): ThemeModulation
+): ThemeScaleToken
 export function getThemeOption(key: ThemeSwatchKey, theme: Theme): ThemeSwatch
 export function getThemeOption(
   key: ThemeBorderWidthKey,
@@ -95,7 +99,7 @@ export function getThemeOption(
 export function getThemeOption(
   key: ThemeCornersKey,
   theme: Theme,
-): ThemeModulation
+): ThemeScaleToken
 export function getThemeOption(key: ThemeShadowKey, theme: Theme): ThemeShadow
 export function getThemeOption(
   key: ThemeScrollbarKey,
@@ -109,11 +113,11 @@ export function getThemeOption(
   key: ThemeBackgroundKey,
   theme: Theme,
 ): ThemeBackground
-export function getThemeOption(key: ThemeBlurKey, theme: Theme): ThemeModulation
+export function getThemeOption(key: ThemeBlurKey, theme: Theme): ThemeScaleToken
 export function getThemeOption(
   key: ThemeSpreadKey,
   theme: Theme,
-): ThemeModulation
+): ThemeScaleToken
 export function getThemeOption(key: ThemeBorderKey, theme: Theme): ThemeBorder
 export function getThemeOption(key: string, theme: Theme): ThemeOption
 
@@ -126,7 +130,7 @@ export function getThemeOption(key: string, theme: Theme): ThemeOption {
 
   let result: ThemeOption
 
-  switch (section as `@${ThemeSection}`) {
+  switch (section as `@${ThemeTokenNamespace}`) {
     case "@fontFamily":
       result = theme.fontFamily[optionId as ThemeFontFamilyId]
       break

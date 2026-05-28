@@ -1,25 +1,41 @@
 import { Workspace } from "@seldon/core"
+import { buildExportContext } from "../../helpers/build-export-context"
 import { buildStyleRegistry } from "./discovery/get-style-registry"
-import { generateStylesheet } from "./generation/generate-css-stylesheet"
+import { generateComponentStylesheet } from "./generation/generate-css-stylesheet"
+import {
+  generateThemeStylesheetFiles,
+  type ThemeStylesheetFile,
+} from "./generation/insert-theme-variables"
 
-/**
- * Exports CSS stylesheet for a workspace
- *
- * @param workspace - The workspace to export CSS for
- * @returns The generated CSS stylesheet
- */
-export async function exportCss(workspace: Workspace): Promise<string> {
-  // Build the style registry from the workspace
-  const { classes, nodeIdToClass, classNameToNodeId, nodeTreeDepths } =
-    buildStyleRegistry(workspace)
+export type CssExportResult = {
+  componentStylesheet: string
+  themeStylesheets: ThemeStylesheetFile[]
+}
 
-  // Generate the complete CSS stylesheet
-  const stylesheet = await generateStylesheet(
+export async function exportCss(
+  workspace: Workspace,
+  componentsFolder: string,
+  forceRegeneration: boolean = false,
+): Promise<CssExportResult> {
+  const { parentIndex } = buildExportContext(workspace)
+
+  const { classes, classNameToNodeId, nodeTreeDepths } = buildStyleRegistry(
+    workspace,
+    forceRegeneration,
+    parentIndex,
+  )
+
+  const componentStylesheet = await generateComponentStylesheet(
     classes,
     workspace,
     classNameToNodeId,
     nodeTreeDepths,
   )
 
-  return stylesheet
+  const themeStylesheets = await generateThemeStylesheetFiles(
+    workspace,
+    componentsFolder,
+  )
+
+  return { componentStylesheet, themeStylesheets }
 }

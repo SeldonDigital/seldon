@@ -38,7 +38,7 @@ export function getAbsoluteSizeCssValue(
     )
   }
 
-  if (value.type === ValueType.PRESET) {
+  if (value.type === ValueType.OPTION) {
     return String(getCssValue(value))
   }
 

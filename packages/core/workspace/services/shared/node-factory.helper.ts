@@ -1,107 +1,84 @@
-import { createNodeId } from "../../../helpers/utils/create-node-id"
+import { ComponentId } from "../../../components/constants"
+import type { Properties } from "../../../properties/types/properties"
+import { componentBoardUniqueNodeId } from "../../helpers/components/entry-node-ids"
+import type { EntryNode } from "../../model/entry-node"
 import {
-  Instance,
-  InstanceId,
-  UserVariant,
-  Variant,
-  VariantId,
-} from "../../types"
+  formatNodeCatalog,
+  formatNodeLink,
+  parseNodeCatalog,
+} from "../../model/template-ref"
+import { Instance, InstanceId, Variant, VariantId } from "../../types"
 
 export interface NodeCreationOptions {
   isDefaultVariant?: boolean
-  fromSchema?: boolean
-  properties?: Record<string, any>
+  overrides?: Properties
   label?: string
-  instanceOf?: string
-  variant?: string
+  templateNodeId?: string
+}
+
+function catalogComponentId(node: Variant | Instance): ComponentId {
+  const parsed = parseNodeCatalog(node.template)
+  if (parsed?.kind === "catalog") {
+    return parsed.componentId as ComponentId
+  }
+  throw new Error(`Expected catalog template on node ${node.id}`)
 }
 
 /**
- * Creates a new variant node with the specified options.
- * @param sourceNode - The source variant to base the new node on
- * @param options - Creation options
- * @returns The new variant ID and node
+ * Creates a new variant entry node.
  */
 export function createVariantNode(
   sourceNode: Variant,
   options: NodeCreationOptions = {},
 ): { newId: VariantId; newNode: Variant } {
-  const id = `variant-${sourceNode.component}-${createNodeId()}` as VariantId
-  const isDefaultVariant = options.isDefaultVariant ?? false
+  const componentId = catalogComponentId(sourceNode)
+  const id = componentBoardUniqueNodeId(componentId) as VariantId
+  const isDefault = options.isDefaultVariant ?? false
+  const overrides = options.overrides ?? structuredClone(sourceNode.overrides)
 
-  const newNode = isDefaultVariant
-    ? ({
-        id,
-        type: "defaultVariant" as const,
-        component: sourceNode.component,
-        level: sourceNode.level,
-        theme: sourceNode.theme,
-        isChild: false,
-        fromSchema: true,
-        properties: {},
-        __editor: {
-          initialOverrides: {},
-        },
-        instanceOf: sourceNode.id,
-        label: options.label ?? `Variant-${createNodeId().slice(0, 4)}`,
-      } as Variant)
-    : ({
-        id,
-        type: "userVariant" as const,
-        component: sourceNode.component,
-        level: sourceNode.level,
-        theme: sourceNode.theme,
-        isChild: false,
-        fromSchema: options.fromSchema ?? false,
-        properties: options.properties ?? sourceNode.properties,
-        __editor: {
-          initialOverrides: options.properties ?? sourceNode.properties,
-        },
-        // UserVariant has instanceOf property, default variants don't
-        instanceOf: (sourceNode as UserVariant).instanceOf,
-        label: options.label ?? `Variant-${createNodeId().slice(0, 4)}`,
-      } as Variant)
+  const newNode = {
+    id,
+    type: isDefault ? "default" : "variant",
+    level: sourceNode.level,
+    theme: sourceNode.theme,
+    template: isDefault
+      ? formatNodeCatalog(componentId)
+      : formatNodeLink(options.templateNodeId ?? sourceNode.id),
+    overrides,
+    label: options.label ?? sourceNode.label,
+    __editor: { initialOverrides: structuredClone(overrides) },
+  } as EntryNode
 
-  return { newId: id, newNode }
+  return { newId: id, newNode: newNode as Variant }
 }
 
 /**
- * Creates a new instance node with the specified options.
- * @param sourceNode - The source instance to base the new node on
- * @param options - Creation options
- * @returns The new instance ID and node
+ * Creates a new instance entry node from a source row.
  */
 export function createInstanceNode(
   sourceNode: Instance,
   options: NodeCreationOptions = {},
 ): { newId: InstanceId; newNode: Instance } {
-  const id = `child-${sourceNode.component}-${createNodeId()}` as InstanceId
+  const componentId = catalogComponentId(sourceNode)
+  const id = componentBoardUniqueNodeId(componentId) as InstanceId
+  const overrides = options.overrides ?? structuredClone(sourceNode.overrides)
 
-  const newNode: Instance = {
+  const newNode: EntryNode = {
     id,
-    // Use provided instanceOf, or sourceNode.id for default variants, or sourceNode.instanceOf for others
-    instanceOf:
-      (options.instanceOf as VariantId | InstanceId) ??
-      (options.isDefaultVariant ? sourceNode.id : sourceNode.instanceOf),
-    theme: sourceNode.theme,
-    component: sourceNode.component,
+    type: "instance",
     level: sourceNode.level,
-    isChild: true,
-    fromSchema: options.fromSchema ?? false,
-    variant: (options.variant as VariantId) ?? sourceNode.variant,
+    theme: sourceNode.theme,
+    template: formatNodeLink(options.templateNodeId ?? sourceNode.id),
+    overrides,
     label: options.label ?? sourceNode.label,
-    properties: options.properties ?? sourceNode.properties,
-    __editor: { initialOverrides: options.properties ?? sourceNode.properties },
+    __editor: { initialOverrides: structuredClone(overrides) },
   }
 
-  return { newId: id, newNode }
+  return { newId: id, newNode: newNode as Instance }
 }
 
 /**
  * Inserts an item after another item in an array.
- * @param array - The array to modify
- * @param afterItem - The item to insert after
- * @param newItem - The item to insert
  */
 export function insertAfter<T>(array: T[], afterItem: T, newItem: T): void {
   const index = array.indexOf(afterItem)

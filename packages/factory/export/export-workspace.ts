@@ -1,5 +1,4 @@
 import { Workspace } from "@seldon/core"
-import { SELDON_EXPORT_FOLDER } from "./constants"
 import { exportReact } from "./react/export-react"
 import { ExportOptions, FileToExport } from "./types"
 
@@ -15,21 +14,22 @@ export async function exportWorkspace(
   workspace: Workspace,
   opts: ExportOptions,
 ): Promise<FileToExport[]> {
-  // Make sure we always export to a seldon folder
+  // Use the provided folder paths directly without automatic seldon folder addition
+  const assetReader =
+    opts.assetReader ??
+    (await import("./asset-reader")).createNodeExportAssetReader(opts.rootDirectory)
+
   const options: ExportOptions = {
+    assetReader,
     ...opts,
   }
-  options.output.componentsFolder += `/${SELDON_EXPORT_FOLDER}`
-  options.output.componentsFolder = options.output.componentsFolder.replaceAll(
-    "//",
-    "/",
-  ) // To make the API more resilient to user input, make sure that we are handle both inputs with and without a trailing slash
-
-  options.output.assetsFolder += `/${SELDON_EXPORT_FOLDER}`
-  options.output.assetsFolder = options.output.assetsFolder.replaceAll(
-    "//",
-    "/",
-  ) // To make the API more resilient to user input, make sure that we are handle both inputs with and without a trailing slash
+  // Normalize paths to handle both inputs with and without trailing slashes
+  options.output.componentsFolder = options.output.componentsFolder
+    .replaceAll("//", "/")
+    .replace(/\/$/, "") // Remove trailing slash
+  options.output.assetsFolder = options.output.assetsFolder
+    .replaceAll("//", "/")
+    .replace(/\/$/, "") // Remove trailing slash
 
   if (options.target.framework === "react") {
     return await exportReact(workspace, options)

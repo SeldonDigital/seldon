@@ -11,46 +11,68 @@ export const schema = {
   level: Seldon.ComponentLevel.PRIMITIVE,
   icon: Seldon.ComponentIcon.ICON,
   properties: {
-    display: { type: Sdn.ValueType.EMPTY, value: null },
+    display: {
+      type: Sdn.ValueType.EMPTY,
+      value: null,
+    },
     symbol: {
-      type: Sdn.ValueType.PRESET,
+      type: Sdn.ValueType.OPTION,
       value: "__default__",
+    },
+    ariaHidden: {
+      type: Sdn.ValueType.EXACT,
+      value: false,
+    },
+    size: {
+      type: Sdn.ValueType.THEME_ORDINAL,
+      value: "@size.medium",
+    },
+    cursor: {
+      type: Sdn.ValueType.INHERIT,
+      value: null,
+    },
+    width: {
+      type: Sdn.ValueType.OPTION,
+      value: Sdn.Resize.FIT,
+    },
+    height: {
+      type: Sdn.ValueType.OPTION,
+      value: Sdn.Resize.FIT,
+    },
+    margin: {
+      top: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
+      right: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
+      bottom: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
+      left: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
+    },
+    rotation: {
+      type: Sdn.ValueType.EMPTY,
+      value: null,
     },
     color: {
       type: Sdn.ValueType.THEME_CATEGORICAL,
       value: "@swatch.black",
     },
-    brightness: { type: Sdn.ValueType.EMPTY, value: null },
-    opacity: { type: Sdn.ValueType.EMPTY, value: null },
-    size: {
-      type: Sdn.ValueType.THEME_ORDINAL,
-      value: "@size.medium",
-      restrictions: {
-        allowedValues: [
-          "@size.xsmall",
-          "@size.small",
-          "@size.medium",
-          "@size.large",
-          "@size.xlarge",
-        ],
-      },
+    brightness: {
+      type: Sdn.ValueType.EMPTY,
+      value: null,
     },
-    width: {
-      type: Sdn.ValueType.PRESET,
-      value: Sdn.Resize.FIT,
+    opacity: {
+      type: Sdn.ValueType.EMPTY,
+      value: null,
     },
-    height: {
-      type: Sdn.ValueType.PRESET,
-      value: Sdn.Resize.FIT,
-    },
-    rotation: { type: Sdn.ValueType.EMPTY, value: null },
-    margin: {
-      top: { type: Sdn.ValueType.EMPTY, value: null },
-      right: { type: Sdn.ValueType.EMPTY, value: null },
-      bottom: { type: Sdn.ValueType.EMPTY, value: null },
-      left: { type: Sdn.ValueType.EMPTY, value: null },
-    },
-    ariaHidden: { type: Sdn.ValueType.EXACT, value: false },
   },
 } as const satisfies ComponentSchema
 

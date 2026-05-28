@@ -31,7 +31,6 @@ async function getArrayBuffer(url: string, token?: ExportOptions["token"]) {
     const response = await fetch(url, { headers })
     return response.arrayBuffer()
   } catch (error) {
-    console.error(error)
     throw new Error(`Unable to fetch image from ${url}`)
   }
 }

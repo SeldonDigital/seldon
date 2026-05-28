@@ -4,14 +4,13 @@ import { format } from "../utils/format"
 import { insertBaseStyles } from "./insert-base-styles"
 import { insertNodeStyles } from "./insert-node-styles"
 import { insertResetStyles } from "./insert-reset-styles"
-import { insertThemeVariables } from "./insert-theme-variables"
 
-export async function generateStylesheet(
+export async function generateComponentStylesheet(
   classes: Classes,
   workspace: Workspace,
   classNameToNodeId?: Record<string, string>,
   nodeTreeDepths?: Record<string, number>,
-) {
+): Promise<string> {
   let stylesheet = ""
 
   stylesheet = insertResetStyles(stylesheet)
@@ -19,12 +18,10 @@ export async function generateStylesheet(
   stylesheet = insertNodeStyles(
     stylesheet,
     classes,
+    workspace,
     classNameToNodeId,
     nodeTreeDepths,
   )
-  stylesheet = insertThemeVariables(stylesheet, workspace)
 
-  stylesheet = await format(stylesheet)
-
-  return stylesheet
+  return format(stylesheet)
 }

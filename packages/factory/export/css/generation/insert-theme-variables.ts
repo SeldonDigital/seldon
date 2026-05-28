@@ -1,58 +1,32 @@
 import { Theme } from "@seldon/core"
 import { HSLObjectToString } from "@seldon/core/helpers/color/hsl-object-to-string"
 import { modulate } from "@seldon/core/helpers/math/modulate"
-import { getPaletteSwatchName } from "@seldon/core/themes/helpers/get-palette-swatch-name"
-import { themeService } from "@seldon/core/workspace/services/theme.service"
+import { Colorspace } from "@seldon/core/themes/constants/colorspace"
+import {
+  colorspaceLiteralToHsl,
+  getDynamicSwatchName,
+} from "@seldon/core/themes/compute"
+import {
+  isModulatedToken,
+  isThemeExactToken,
+} from "@seldon/core/themes/values"
+import type { ThemeScaleToken, ThemeSwatch } from "@seldon/core/themes/values"
+import { workspaceThemeService } from "@seldon/core/workspace/services"
 import { Workspace } from "@seldon/core/workspace/types"
+import { kebabCase } from "../../react/utils/case-utils"
+import { format } from "../utils/format"
 
-/**
- * Inserts CSS variables for all used themes
- */
-export function insertThemeVariables(
-  stylesheet: string,
-  workspace: Workspace,
-): string {
-  // Collect all themes used in the workspace
-  const usedThemeIds = themeService.collectUsedThemes(workspace)
-
-  let themeCSS = `
-  
-/********************************************
- *                                          *
- *           Theme variables                *
- *                                          *
- ********************************************/
-
-  `
-
-  usedThemeIds.forEach((themeId) => {
-    const theme = themeService.getTheme(themeId, workspace)
-    if (theme) {
-      themeCSS += generateThemeCSSVariables(theme, themeId)
-    }
-  })
-
-  stylesheet += `\n/* Theme Variables */\n:root {\n${themeCSS}}\n`
-
-  return stylesheet
-}
-
-/**
- * Helper function to ensure unique swatch names by appending numbers when duplicates exist
- */
 function ensureUniqueSwatchNames(
   swatchNames: Record<string, string>,
 ): Record<string, string> {
   const nameCount = new Map<string, number>()
   const result: Record<string, string> = {}
 
-  // First pass: count occurrences of each name
   Object.values(swatchNames).forEach((name) => {
     const currentCount = nameCount.get(name) || 0
     nameCount.set(name, currentCount + 1)
   })
 
-  // Second pass: append numbers to duplicates
   const nameInstanceCount = new Map<string, number>()
   Object.entries(swatchNames).forEach(([key, name]) => {
     if (nameCount.get(name)! > 1) {
@@ -67,16 +41,44 @@ function ensureUniqueSwatchNames(
   return result
 }
 
-/**
- * Generates CSS variables for a theme's tokens with --sdn-<themeid>- prefix
- */
+function swatchToCssString(swatch: ThemeSwatch): string {
+  const { parameters } = swatch
+  if (parameters.colorspace === Colorspace.HSL) {
+    return HSLObjectToString(parameters.value)
+  }
+  if (parameters.colorspace === Colorspace.HEX) {
+    return parameters.value
+  }
+  if (parameters.colorspace === Colorspace.NAME) {
+    return parameters.value
+  }
+  return String(parameters.value)
+}
+
+function exactTokenCss(token: ThemeScaleToken): string {
+  if (isThemeExactToken(token)) {
+    const { unit, value } = token.parameters
+    if (unit === "number") {
+      return String(value)
+    }
+    if (unit === "rem" || unit === "px") {
+      return `${value}${unit}`
+    }
+    if (unit === "%") {
+      return `${value}%`
+    }
+    if (unit === "deg") {
+      return `${value}deg`
+    }
+  }
+  return "0"
+}
+
 function generateThemeCSSVariables(theme: Theme, themeId: string): string {
   const prefix = themeId === "default" ? `--sdn-` : `--sdn-${themeId}-`
   let cssVariables = ""
 
-  // Add theme label for non-default themes
   if (themeId !== "default") {
-    // Convert kebab-case to Title Case for display
     const themeDisplayName = themeId
       .split("-")
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
@@ -84,7 +86,6 @@ function generateThemeCSSVariables(theme: Theme, themeId: string): string {
     cssVariables += `\n  /* Theme: ${themeDisplayName} */\n`
   }
 
-  // Core values
   if (theme.core) {
     cssVariables += `  /* Core */\n`
     cssVariables += `  ${prefix}ratio: ${theme.core.ratio};\n`
@@ -92,18 +93,17 @@ function generateThemeCSSVariables(theme: Theme, themeId: string): string {
     cssVariables += `  ${prefix}size: ${theme.core.size};\n`
   }
 
-  // Font families
   if (theme.fontFamily) {
     cssVariables += `  /* Font Families */\n`
     cssVariables += `  ${prefix}font-family-primary: "${theme.fontFamily.primary}";\n`
     cssVariables += `  ${prefix}font-family-secondary: "${theme.fontFamily.secondary}";\n`
   }
 
-  // Color values
+  const baseHsl = colorspaceLiteralToHsl(theme.color.baseColor)
   cssVariables += `  /* Colors */\n`
-  cssVariables += `  ${prefix}color-base-hue: ${theme.color.baseColor.hue};\n`
-  cssVariables += `  ${prefix}color-base-saturation: ${theme.color.baseColor.saturation}%;\n`
-  cssVariables += `  ${prefix}color-base-lightness: ${theme.color.baseColor.lightness}%;\n`
+  cssVariables += `  ${prefix}color-base-hue: ${baseHsl.hue};\n`
+  cssVariables += `  ${prefix}color-base-saturation: ${baseHsl.saturation}%;\n`
+  cssVariables += `  ${prefix}color-base-lightness: ${baseHsl.lightness}%;\n`
   cssVariables += `  ${prefix}color-harmony: ${theme.color.harmony};\n`
   cssVariables += `  ${prefix}color-angle: ${theme.color.angle}deg;\n`
   cssVariables += `  ${prefix}color-step: ${theme.color.step};\n`
@@ -113,14 +113,12 @@ function generateThemeCSSVariables(theme: Theme, themeId: string): string {
   cssVariables += `  ${prefix}color-bleed: ${theme.color.bleed};\n`
   cssVariables += `  ${prefix}color-contrast-ratio: ${theme.color.contrastRatio};\n`
 
-  // Swatch tokens - as single color values using HSLObjectToString
   cssVariables += `  /* Swatches */\n`
 
-  // First, collect all swatch names to handle duplicates
   const swatchNames: Record<string, string> = {}
   Object.entries(theme.swatch).forEach(([key, value]) => {
-    if (key.startsWith("custom")) {
-      // Use the swatch name for custom swatches
+    if (!value) return
+    if (key.startsWith("custom") && value.name) {
       swatchNames[key] = value.name
         .toLowerCase()
         .trim()
@@ -132,8 +130,7 @@ function generateThemeCSSVariables(theme: Theme, themeId: string): string {
       key === "swatch3" ||
       key === "swatch4"
     ) {
-      // Use computed palette names for swatch1-4
-      const paletteName = getPaletteSwatchName(
+      const paletteName = getDynamicSwatchName(
         key as "swatch1" | "swatch2" | "swatch3" | "swatch4",
         theme,
       )
@@ -143,108 +140,127 @@ function generateThemeCSSVariables(theme: Theme, themeId: string): string {
         .replace(/[^a-z0-9]+/g, "-")
         .replace(/^-|-$/g, "")
     } else {
-      // Use the key for other swatches (background, white, gray, black, primary)
       swatchNames[key] = key
     }
   })
 
-  // Ensure unique names by appending numbers to duplicates
   const uniqueSwatchNames = ensureUniqueSwatchNames(swatchNames)
 
-  // Generate CSS variables
   Object.entries(theme.swatch).forEach(([key, value]) => {
-    const colorString = HSLObjectToString(value.value)
+    if (!value) return
+    const colorString = swatchToCssString(value)
     const swatchName = uniqueSwatchNames[key]
     cssVariables += `  ${prefix}swatch-${swatchName}: ${colorString};\n`
   })
 
-  // Size tokens - using calculated values
-  cssVariables += `  /* Sizes */\n`
-  Object.entries(theme.size).forEach(([key, value]) => {
-    const calculatedSize = modulate({
-      ratio: theme.core.ratio,
-      size: theme.core.size,
-      step: value.parameters.step,
+  const writeModulatedScale = (
+    label: string,
+    table: Record<string, ThemeScaleToken | undefined>,
+    unitSuffix: "rem" = "rem",
+  ) => {
+    cssVariables += `  /* ${label} */\n`
+    Object.entries(table).forEach(([key, value]) => {
+      if (!value) return
+      if (isModulatedToken(value)) {
+        const resolved =
+          value.value ??
+          modulate({
+            ratio: theme.core.ratio,
+            size: theme.core.size,
+            step: value.parameters.step,
+          })
+        cssVariables += `  ${prefix}${label.toLowerCase()}-${key}: ${resolved}${unitSuffix};\n`
+        return
+      }
+      cssVariables += `  ${prefix}${label.toLowerCase()}-${key}: ${exactTokenCss(value)};\n`
     })
-    cssVariables += `  ${prefix}size-${key}: ${calculatedSize}rem;\n`
-  })
+  }
 
-  // Spacing tokens - using calculated values
-  cssVariables += `  /* Margins */\n`
-  Object.entries(theme.margin).forEach(([key, value]) => {
-    const calculatedMargin = modulate({
-      ratio: theme.core.ratio,
-      size: theme.core.size,
-      step: value.parameters.step,
-    })
-    cssVariables += `  ${prefix}margin-${key}: ${calculatedMargin}rem;\n`
-  })
+  writeModulatedScale("Sizes", theme.size)
+  writeModulatedScale("Margins", theme.margin)
+  writeModulatedScale("Paddings", theme.padding)
+  writeModulatedScale("Gaps", theme.gap)
+  writeModulatedScale("Corners", theme.corners)
 
-  cssVariables += `  /* Paddings */\n`
-  Object.entries(theme.padding).forEach(([key, value]) => {
-    const calculatedPadding = modulate({
-      ratio: theme.core.ratio,
-      size: theme.core.size,
-      step: value.parameters.step,
-    })
-    cssVariables += `  ${prefix}padding-${key}: ${calculatedPadding}rem;\n`
-  })
-
-  cssVariables += `  /* Gaps */\n`
-  Object.entries(theme.gap).forEach(([key, value]) => {
-    const calculatedGap = modulate({
-      ratio: theme.core.ratio,
-      size: theme.core.size,
-      step: value.parameters.step,
-    })
-    cssVariables += `  ${prefix}gap-${key}: ${calculatedGap}rem;\n`
-  })
-
-  // Corner tokens - using calculated values
-  cssVariables += `  /* Corners */\n`
-  Object.entries(theme.corners).forEach(([key, value]) => {
-    const calculatedCorner = modulate({
-      ratio: theme.core.ratio,
-      size: theme.core.size,
-      step: value.parameters.step,
-    })
-    cssVariables += `  ${prefix}corners-${key}: ${calculatedCorner}rem;\n`
-  })
-
-  // Font size tokens - using calculated values
   cssVariables += `  /* Font Sizes */\n`
   Object.entries(theme.fontSize).forEach(([key, value]) => {
-    const calculatedFontSize = modulate({
-      ratio: theme.core.ratio,
-      size: theme.core.fontSize / 16, // Convert to rem base
-      step: value.parameters.step,
-    })
-    cssVariables += `  ${prefix}font-size-${key}: ${calculatedFontSize}rem;\n`
+    if (!value) return
+    if (isModulatedToken(value)) {
+      const calculatedFontSize =
+        value.value ??
+        modulate({
+          ratio: theme.core.ratio,
+          size: theme.core.fontSize / 16,
+          step: value.parameters.step,
+        })
+      cssVariables += `  ${prefix}font-size-${key}: ${calculatedFontSize}rem;\n`
+      return
+    }
+    cssVariables += `  ${prefix}font-size-${key}: ${exactTokenCss(value)};\n`
   })
 
-  // Font weight tokens
   cssVariables += `  /* Font Weights */\n`
   Object.entries(theme.fontWeight).forEach(([key, value]) => {
-    cssVariables += `  ${prefix}font-weight-${key}: ${value.value};\n`
+    if (!value) return
+    cssVariables += `  ${prefix}font-weight-${key}: ${exactTokenCss(value)};\n`
   })
 
-  // Line height tokens
   cssVariables += `  /* Line Heights */\n`
   Object.entries(theme.lineHeight).forEach(([key, value]) => {
-    cssVariables += `  ${prefix}line-height-${key}: ${value.value};\n`
+    if (!value) return
+    cssVariables += `  ${prefix}line-height-${key}: ${exactTokenCss(value)};\n`
   })
 
-  // Border width tokens - using calculated values
   cssVariables += `  /* Border Widths */\n`
   Object.entries(theme.borderWidth).forEach(([key, value]) => {
-    if ("parameters" in value) {
-      const calculatedBorderWidth = modulate({
+    if (!value || !isModulatedToken(value)) return
+    const calculatedBorderWidth =
+      value.value ??
+      modulate({
         ratio: theme.core.ratio,
         size: theme.core.size,
         step: value.parameters.step,
       })
-      cssVariables += `  ${prefix}border-width-${key}: ${calculatedBorderWidth}rem;\n`
-    }
+    cssVariables += `  ${prefix}border-width-${key}: ${calculatedBorderWidth}rem;\n`
   })
+
   return cssVariables
+}
+
+export function generateThemeStylesheet(
+  themeId: string,
+  theme: Theme,
+): string {
+  const variables = generateThemeCSSVariables(theme, themeId)
+  return `:root {\n${variables}}\n`
+}
+
+export type ThemeStylesheetFile = {
+  themeId: string
+  path: string
+  content: string
+}
+
+export async function generateThemeStylesheetFiles(
+  workspace: Workspace,
+  componentsFolder: string,
+): Promise<ThemeStylesheetFile[]> {
+  const usedThemeIds = workspaceThemeService.collectUsedThemes(workspace)
+  const files: ThemeStylesheetFile[] = []
+
+  for (const themeId of usedThemeIds) {
+    const theme = workspaceThemeService.getTheme(themeId, workspace)
+    if (!theme) continue
+
+    const fileSlug = themeId === "default" ? "default" : kebabCase(themeId)
+    const content = await format(generateThemeStylesheet(themeId, theme))
+
+    files.push({
+      themeId,
+      path: `${componentsFolder}/styles-${fileSlug}.css`,
+      content,
+    })
+  }
+
+  return files
 }

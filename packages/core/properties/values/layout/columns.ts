@@ -3,11 +3,12 @@ import { PropertySchema } from "../../types/schema"
 import { EmptyValue } from "../shared/empty/empty"
 import { NumberValue } from "../shared/exact/number"
 
+/** Unset or a positive integer column count stored as an exact number value. */
 export type ColumnCountValue = EmptyValue | NumberValue
 
 export const columnsSchema: PropertySchema = {
   name: "columns",
-  description: "Number of columns in grid layout",
+  description: "How many columns the grid uses, between 1 and 100.",
   supports: ["empty", "inherit", "exact"] as const,
   units: {
     allowed: [],
@@ -17,7 +18,17 @@ export const columnsSchema: PropertySchema = {
   validation: {
     empty: () => true,
     inherit: () => true,
-    exact: (value: any) =>
-      typeof value === "number" && Number.isInteger(value) && value > 0,
+    exact: (value: unknown) => {
+      const raw =
+        typeof value === "number"
+          ? value
+          : typeof value === "object" &&
+              value !== null &&
+              "value" in value &&
+              typeof (value as { value: unknown }).value === "number"
+            ? (value as { value: number }).value
+            : NaN
+      return Number.isInteger(raw) && raw >= 1 && raw <= 100
+    },
   },
 }

@@ -1,4 +1,4 @@
-import { ComputeContext } from "../../compute/types"
+import type { ComputeContext } from "../../properties/compute/types"
 import {
   FontWeightThemeValue,
   FontWeightValue,
@@ -6,7 +6,8 @@ import {
   Unit,
   ValueType,
 } from "../../index"
-import { Theme } from "../../themes/types"
+import type { Theme } from "../../themes/types"
+import type { ThemeExact } from "../../themes/values"
 import { getThemeOption } from "../theme/get-theme-option"
 
 /**
@@ -32,11 +33,17 @@ export function resolveFontWeight({
     case ValueType.EXACT:
       return fontWeight as Exclude<FontWeightValue, FontWeightThemeValue>
     case ValueType.THEME_ORDINAL: {
-      const themeValue = getThemeOption(fontWeight.value as string, theme)
+      const themeValue = getThemeOption(
+        fontWeight.value as string,
+        theme,
+      ) as ThemeExact
 
       return {
         type: ValueType.EXACT,
-        value: { value: (themeValue as any).value, unit: Unit.NUMBER },
+        value: {
+          value: themeValue.value.value,
+          unit: Unit.NUMBER,
+        },
       }
     }
     default:

@@ -249,6 +249,32 @@ describe("getSizeStyles", () => {
     expect(result).toHaveProperty("alignSelf", "stretch")
   })
 
+  it("should generate alignSelf stretch for FILL width in vertical parent when child has orientation", () => {
+    const context = createContextWithParent(
+      {
+        width: {
+          type: ValueType.PRESET,
+          value: Resize.FILL,
+        },
+        orientation: {
+          type: ValueType.PRESET,
+          value: Orientation.VERTICAL,
+        },
+      },
+      {
+        orientation: {
+          type: ValueType.PRESET,
+          value: Orientation.VERTICAL,
+        },
+      },
+    )
+
+    const result = getSizeStyles(context)
+
+    expect(result).toHaveProperty("alignSelf", "stretch")
+    expect(result).not.toHaveProperty("width")
+  })
+
   it("should generate flex 1 0 0 for FILL width in horizontal parent", () => {
     const context = createContextWithParent(
       {
@@ -354,6 +380,29 @@ describe("getSizeStyles", () => {
     const result = getSizeStyles(context)
 
     expect(result).toHaveProperty("alignSelf", "stretch")
+  })
+
+  it("should generate alignSelf stretch for empty width in vertical parent when child has orientation", () => {
+    const context = createContextWithParent(
+      {
+        width: undefined,
+        orientation: {
+          type: ValueType.PRESET,
+          value: Orientation.VERTICAL,
+        },
+      },
+      {
+        orientation: {
+          type: ValueType.PRESET,
+          value: Orientation.VERTICAL,
+        },
+      },
+    )
+
+    const result = getSizeStyles(context)
+
+    expect(result).toHaveProperty("alignSelf", "stretch")
+    expect(result).not.toHaveProperty("width")
   })
 
   it("should generate flex 1 0 0 for empty width in horizontal parent", () => {

@@ -1,23 +1,41 @@
-import { useAddToast } from "@components/toaster/use-add-toast"
-import { useProjectId } from "@lib/project/hooks/use-project-id"
-import { useMutation } from "@tanstack/react-query"
+import { useCallback, useState } from "react"
+import { convertBlobToBase64 } from "@lib/utils/convert-blob-to-base64"
 
-import { api } from "#shared/client.js"
+type UploadStatus = "idle" | "pending" | "success" | "error"
 
+/**
+ * Local editor image upload: reads the file in the browser and returns a data URL
+ * suitable for `source` / `background.image` workspace properties. No remote API.
+ */
 export function useImageUpload() {
-  const addToast = useAddToast()
+  const [status, setStatus] = useState<UploadStatus>("idle")
+  const [error, setError] = useState<Error | null>(null)
 
-  const { projectId } = useProjectId()
+  const reset = useCallback(() => {
+    setStatus("idle")
+    setError(null)
+  }, [])
 
-  return useMutation({
-    mutationFn: (imageData: Blob) => {
-      return api.upload.create({
-        projectId,
-        imageData,
-      })
-    },
-    onError: (error) => {
-      addToast(error.message)
-    },
-  })
+  const mutateAsync = useCallback(async (imageData: Blob | File) => {
+    setStatus("pending")
+    setError(null)
+    try {
+      const url = await convertBlobToBase64(imageData)
+      setStatus("success")
+      return { url }
+    } catch (cause) {
+      const err =
+        cause instanceof Error ? cause : new Error("Failed to read image file")
+      setError(err)
+      setStatus("error")
+      throw err
+    }
+  }, [])
+
+  return {
+    mutateAsync,
+    status,
+    error,
+    reset,
+  }
 }

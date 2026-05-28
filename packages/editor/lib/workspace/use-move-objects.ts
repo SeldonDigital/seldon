@@ -1,7 +1,6 @@
 import { Placement } from "@lib/types"
 import { useCallback } from "react"
 import {
-  Board,
   Instance,
   InstanceId,
   Variant,
@@ -9,12 +8,20 @@ import {
   invariant,
 } from "@seldon/core"
 import { getComponentSchema } from "@seldon/core/components/catalog"
-import { findParentNode } from "@seldon/core/workspace/helpers/find-parent-node"
-import { getVariantById } from "@seldon/core/workspace/helpers/get-variant-by-id"
-import { getVariantIndex } from "@seldon/core/workspace/helpers/get-variant-index"
-import { isDefaultVariant } from "@seldon/core/workspace/helpers/is-default-variant"
-import { nodeAllowsReordering } from "@seldon/core/workspace/helpers/node-allows-reordering"
+import { getComponentOrder } from "@seldon/core/workspace/helpers/components/component-sort-order"
+import { getComponentVariantRootIds } from "@seldon/core/workspace/helpers/components/get-component-variant-root-ids"
+import { findParentNode } from "@seldon/core/workspace/helpers/nodes/find-parent-node"
+import { getVariantById } from "@seldon/core/workspace/helpers/general/get-variant-by-id"
+import { getVariantIndex } from "@seldon/core/workspace/helpers/general/get-variant-index"
+import { isDefaultVariant } from "@seldon/core/workspace/helpers/general/is-default-variant"
+import { nodeAllowsReordering } from "@seldon/core/workspace/helpers/nodes/node-allows-reordering"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
+import type { ComponentEntry } from "@seldon/core/workspace/types"
+import {
+  getNodeCatalogComponentId,
+  getNodeChildIds,
+} from "@lib/workspace/node-tree"
+import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { useAddToast } from "@components/toaster/use-add-toast"
 import { useWorkspace } from "./use-workspace"
 
@@ -31,8 +38,8 @@ export function useMoveObjects() {
     ) => {
       dispatch(
         {
-          type: "move_node",
-          payload: { nodeId: nodeId, target: { parentId, index } },
+          type: "move_instance",
+          payload: { instanceId: nodeId, target: { parentId, index } },
         },
         isPreview,
       )
@@ -44,29 +51,32 @@ export function useMoveObjects() {
     (nodeId: InstanceId, direction: "up" | "down", isPreview = false) => {
       const parent = findParentNode(nodeId, workspace)
       invariant(parent, "Parent not found")
-      invariant(parent.children, "Parent does not have children")
+      const childIds = getNodeChildIds(parent, workspace)
+      invariant(childIds.length > 0, "Parent does not have children")
 
       if (!nodeAllowsReordering(parent.id, workspace)) {
-        const schema = getComponentSchema(parent.component)
+        const catalogId = getNodeCatalogComponentId(parent, workspace)
+        invariant(catalogId, "Parent catalog id not found")
+        const schema = getComponentSchema(catalogId)
         addToast(
           `${schema.name} component does not allow reordering of child components`,
         )
         return
       }
 
-      const currentIndex = parent.children.indexOf(nodeId)
+      const currentIndex = childIds.indexOf(nodeId)
       const isAtLimit =
         direction === "up"
           ? currentIndex <= 0
-          : currentIndex === -1 || currentIndex >= parent.children.length - 1
+          : currentIndex === -1 || currentIndex >= childIds.length - 1
 
       if (isAtLimit) return
 
       dispatch(
         {
-          type: "reorder_node",
+          type: "reorder_instance_in_parent",
           payload: {
-            nodeId: nodeId,
+            instanceId: nodeId,
             newIndex: currentIndex + (direction === "up" ? -1 : 1),
           },
         },
@@ -97,23 +107,20 @@ export function useMoveObjects() {
       position,
       isPreview = false,
     }: {
-      targetBoard: Board
-      subjectBoard: Board
+      targetBoard: ComponentEntry
+      subjectBoard: ComponentEntry
       position: Placement
       isPreview?: boolean
     }) => {
-      if (targetBoard.order === undefined) {
-        addToast("Target board does not have an index")
-        return
-      }
+      const targetOrder = getComponentOrder(targetBoard)
 
       dispatch(
         {
           type: "reorder_board",
           payload: {
-            componentId: subjectBoard.id,
+            componentKey: getComponentKey(subjectBoard),
             newIndex:
-              position === "before" ? targetBoard.order : targetBoard.order + 1,
+              position === "before" ? targetOrder : targetOrder + 1,
           },
         },
         isPreview,
@@ -125,6 +132,8 @@ export function useMoveObjects() {
   const reorderVariant = useCallback(
     (variantId: VariantId, index: number, isPreview = false) => {
       const variant = getVariantById(variantId, workspace)
+      const board = workspaceService.findBoardForVariant(variant, workspace)
+      invariant(board, "Board not found")
       if (isDefaultVariant(variant) || index === 0) {
         addToast("Default variant cannot be moved or replaced")
         return
@@ -132,8 +141,12 @@ export function useMoveObjects() {
 
       dispatch(
         {
-          type: "reorder_node",
-          payload: { nodeId: variantId, newIndex: index },
+          type: "reorder_variant_in_board",
+          payload: {
+            componentKey: getComponentKey(board),
+            variantRootId: variantId,
+            newIndex: index,
+          },
         },
         isPreview,
       )
@@ -163,17 +176,18 @@ export function useMoveObjects() {
 
         const parent = findParentNode(targetNode.id, workspace)
         invariant(parent, "Parent not found")
-        invariant(parent.children, "Parent does not have children")
+        const childIds = getNodeChildIds(parent, workspace)
+        invariant(childIds.length > 0, "Parent does not have children")
 
         let newIndex
 
         // If we're moving inside a node, we move the subject at the end of the target node
         if (position === "inside") {
-          newIndex = parent!.children!.length
+          newIndex = childIds.length
         }
 
-        const targetIndex = parent.children.indexOf(targetNode.id)
-        const subjectIndex = parent.children.indexOf(subjectNode.id)
+        const targetIndex = childIds.indexOf(targetNode.id)
+        const subjectIndex = childIds.indexOf(subjectNode.id)
         newIndex = position === "before" ? targetIndex : targetIndex + 1
 
         // If we're reordering within the same parent, we need to take the subject index into account
@@ -205,11 +219,12 @@ export function useMoveObjects() {
     }) => {
       const isChild = workspaceService.isInstance(subjectNode)
 
-      if (isChild && targetNode.children) {
+      const targetChildIds = getNodeChildIds(targetNode, workspace)
+      if (isChild && targetChildIds.length > 0) {
         return moveChildTo(
           subjectNode.id,
           targetNode.id,
-          targetNode.children!.length,
+          targetChildIds.length,
           isPreview,
         )
       } else {

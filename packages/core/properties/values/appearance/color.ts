@@ -1,7 +1,6 @@
 import { isValidColor } from "../../../helpers/validation/color"
 import { Theme, ThemeSwatchKey } from "../../../themes/types"
-import { ComputedFunction } from "../../constants"
-import { ValueType } from "../../constants/value-types"
+import { ComputedFunction, ValueType } from "../../constants"
 import { PropertySchema } from "../../types/schema"
 import { ComputedHighContrastValue } from "../shared/computed/high-contrast-color"
 import { ComputedMatchValue } from "../shared/computed/match"
@@ -10,22 +9,26 @@ import { HexValue } from "../shared/exact/hex"
 import { HSLValue } from "../shared/exact/hsl"
 import { LCHValue } from "../shared/exact/lch"
 import { RGBValue } from "../shared/exact/rgb"
-import { TransparentValue } from "../shared/exact/transparent"
+import { TransparentValue } from "../shared/option/transparent"
 
+/** Fully transparent paint, using the transparent keyword. */
 export enum Color {
   TRANSPARENT = "transparent",
 }
 
-export interface ColorPresetValue {
-  type: ValueType.PRESET
+/** Stores transparent as an option pick. */
+export interface ColorOptionValue {
+  type: ValueType.OPTION
   value: Color
 }
 
+/** References a named swatch from the theme. */
 export interface ColorThemeValue {
   type: ValueType.THEME_CATEGORICAL
   value: ThemeSwatchKey
 }
 
+/** Unset or paint from literals, structured color objects, swatches, transparent, or computed rules. */
 export type ColorValue =
   | EmptyValue
   | HexValue
@@ -33,43 +36,45 @@ export type ColorValue =
   | LCHValue
   | RGBValue
   | TransparentValue
-  | ColorPresetValue
+  | ColorOptionValue
   | ColorThemeValue
   | ComputedHighContrastValue
   | ComputedMatchValue
 
 export const colorSchema: PropertySchema = {
   name: "color",
-  description: "Element color styling",
+  description:
+    "Sets the color of text and foreground content using literals, objects, swatches, or computed rules.",
   supports: [
     "empty",
     "inherit",
     "exact",
-    "preset",
+    "option",
     "computed",
     "themeCategorical",
   ] as const,
   validation: {
     empty: () => true,
     inherit: () => true,
-    exact: (value: any) => {
-      // For string values, use comprehensive validation
+    exact: (value: unknown) => {
       if (typeof value === "string") {
         return isValidColor(value)
       }
-      // For object values (RGB/HSL/LCH objects), check structure
-      if (
-        typeof value === "object" &&
-        (value.red !== undefined || value.hue !== undefined)
-      )
-        return true
+      if (typeof value === "object" && value !== null) {
+        const o = value as Record<string, unknown>
+        return o.red !== undefined || o.hue !== undefined
+      }
       return false
     },
-    preset: (value: any) => Object.values(Color).includes(value),
-    computed: (value: any) =>
-      typeof value === "object" && value.function !== undefined,
-    themeCategorical: (value: any, theme?: Theme) => {
-      if (!theme) return false
+    option: (value: unknown) =>
+      typeof value === "string" &&
+      (Object.values(Color) as string[]).includes(value),
+    computed: (value: unknown) =>
+      typeof value === "object" &&
+      value !== null &&
+      (value as { function?: unknown }).function !== undefined,
+    themeCategorical: (value: unknown, theme?: Theme) => {
+      if (!theme || typeof value !== "string") return false
       return value in theme.swatch
     },
   },

@@ -67,8 +67,8 @@ function getBorderSideStyles(
     resolveValue(border.width) ||
     resolveValue(themeBorder?.parameters.width)
 
-  // Only apply if border[side]Width is defined in the schema
-  if (width && border[`${side}Width`]) {
+  // Apply if width is resolved (from side, shorthand, or theme)
+  if (width) {
     styles[`border${capitalizedSide}Width` as BorderWidthKey] =
       getBorderWidthCSSValue(width, theme) as CSSObject["borderWidth"]
   }
@@ -79,8 +79,8 @@ function getBorderSideStyles(
     resolveValue(border.style) ||
     resolveValue(themeBorder?.parameters.style)
 
-  // Only apply if border.[side]Style is defined in the schema
-  if (style && border[`${side}Style`]) {
+  // Apply if style is resolved (from side, shorthand, or theme)
+  if (style) {
     styles[`border${capitalizedSide}Style` as BorderSideKey] = style.value
   }
 
@@ -100,8 +100,9 @@ function getBorderSideStyles(
     resolveValue(border.opacity) ||
     resolveValue(themeBorder?.parameters.opacity)
 
-  // Only apply if border.[side]Color is defined in the schema
-  if (color && border[`${side}Color`]) {
+  // Apply if color is resolved (from side, shorthand, or theme)
+  // This allows instances with only brightness to still generate border CSS
+  if (color) {
     styles[`border${capitalizedSide}Color` as BorderColorKey] =
       getColorCSSValue({
         color,

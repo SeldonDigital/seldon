@@ -1,206 +1,140 @@
-import { getComponentSchema } from "@seldon/core/components/catalog"
 import { ComponentId } from "@seldon/core/components/constants"
+import { getComponentSchema } from "@seldon/core/components/catalog"
+import { isComplexSchema, SchemaChild } from "@seldon/core/components/types"
 import { ComponentToExport, JSONTreeNode } from "../../types"
 
 /**
- * Validates if props are valid for a component and splits them into valid and invalid groups
+ * Validation result for component props.
+ *
+ * Splits proposed children into valid (matching schema) and invalid (not matching schema) groups.
  */
 export interface ComponentPropsValidation {
+  /** Children that match the component's schema */
   validProps: JSONTreeNode[]
+  /** Children that don't match the component's schema */
   invalidProps: JSONTreeNode[]
-  componentHasFewerPropsThanSchema: boolean
 }
 
+/**
+ * Validates proposed direct children against the active schema branch.
+ *
+ * Compares proposed children with the currently active schema tree to determine which
+ * are valid schema-backed props and which are inline extras.
+ */
 export function validateComponentProps(
-  componentName: string,
   componentId: ComponentId,
+  schemaVariantId: string | null,
   proposedChildren: JSONTreeNode[],
 ): ComponentPropsValidation {
   try {
-    const schema = getComponentSchema(componentId)
+    const expectedChildren = getActiveSchemaChildren(componentId, schemaVariantId)
 
-    // Get expected children component IDs from schema
-    const expectedChildren: ComponentId[] = []
-
-    // Only complex components have children
-    if ("children" in schema && schema.children) {
-      schema.children.forEach((child) => {
-        expectedChildren.push(child.component)
-      })
+    // Special handling for Frame: Frame has no schema restrictions (children: []),
+    // which means any children are allowed. Treat all children as valid.
+    if (componentId === ComponentId.FRAME && expectedChildren.length === 0) {
+      return {
+        validProps: proposedChildren,
+        invalidProps: [],
+      }
     }
 
     // Separate valid and invalid props based on type compatibility
     const validProps: JSONTreeNode[] = []
     const invalidProps: JSONTreeNode[] = []
 
-    // Create a map of expected component types and their counts
-    const expectedComponentCounts = new Map<ComponentId, number>()
-    expectedChildren.forEach((componentId) => {
-      expectedComponentCounts.set(
-        componentId,
-        (expectedComponentCounts.get(componentId) || 0) + 1,
+    // Create a map of expected child signatures and their counts.
+    const expectedChildCounts = new Map<string, number>()
+    expectedChildren.forEach((slot) => {
+      const childKey = getChildValidationKey(slot.component, slot.variant ?? null)
+      expectedChildCounts.set(
+        childKey,
+        (expectedChildCounts.get(childKey) || 0) + 1,
       )
     })
 
-    // Track how many of each component type we've used
-    const usedComponentCounts = new Map<ComponentId, number>()
+    // Track how many of each child signature we've used
+    const usedChildCounts = new Map<string, number>()
 
     for (const child of proposedChildren) {
-      // Convert component name to ComponentId for comparison
-      const childComponentId = getComponentIdFromName(child.name)
+      const childKey = getChildValidationKey(
+        child.componentId,
+        child.schemaVariantId,
+      )
+      const expectedCount = expectedChildCounts.get(childKey) || 0
+      const usedCount = usedChildCounts.get(childKey) || 0
 
-      if (childComponentId) {
-        const expectedCount = expectedComponentCounts.get(childComponentId) || 0
-        const usedCount = usedComponentCounts.get(childComponentId) || 0
-
-        // If this component type is expected in the schema and we haven't exceeded the expected count
-        if (expectedCount > 0 && usedCount < expectedCount) {
-          validProps.push(child)
-          usedComponentCounts.set(childComponentId, usedCount + 1)
-        } else {
-          // Component type not in schema or we've exceeded the expected count
-          invalidProps.push(child)
-        }
+      // If this child signature is expected in the active schema branch and we
+      // haven't exceeded the expected count, treat it as valid.
+      if (expectedCount > 0 && usedCount < expectedCount) {
+        validProps.push(child)
+        usedChildCounts.set(childKey, usedCount + 1)
       } else {
-        // Unknown component type
         invalidProps.push(child)
       }
     }
 
-    // Check if component uses fewer props than specified in schema
-    const expectedChildrenCount = expectedChildren.length
-    const componentHasFewerPropsThanSchema =
-      validProps.length < expectedChildrenCount
-
     return {
       validProps,
       invalidProps,
-      componentHasFewerPropsThanSchema,
     }
-  } catch (error) {
+  } catch {
     // If we can't find the schema, treat all props as valid to maintain existing behavior
     return {
       validProps: proposedChildren,
       invalidProps: [],
-      componentHasFewerPropsThanSchema: false,
     }
   }
 }
 
 /**
- * Maps component names to ComponentIds
- * This mapping should cover the most common component name patterns
+ * Validates a single exported tree node against the active schema branch encoded
+ * on the node itself.
  */
-export function getComponentIdFromName(
-  componentName: string,
-): ComponentId | null {
-  // Create a mapping from component names to IDs
-  const nameToIdMap: Record<string, ComponentId> = {
-    Button: ComponentId.BUTTON,
-    Icon: ComponentId.ICON,
-    Title: ComponentId.TITLE,
-    Subtitle: ComponentId.SUBTITLE,
-    Text: ComponentId.TEXT,
-    Tagline: ComponentId.TAGLINE,
-    Description: ComponentId.DESCRIPTION,
-    Input: ComponentId.INPUT,
-    Label: ComponentId.LABEL,
-    Avatar: ComponentId.AVATAR,
-    Checkbox: ComponentId.CHECKBOX,
-    Image: ComponentId.IMAGE,
-    Radio: ComponentId.RADIO,
-    Select: ComponentId.SELECT,
-    Option: ComponentId.OPTION,
-    Fieldset: ComponentId.FIELDSET,
-    Legend: ComponentId.LEGEND,
-    Hr: ComponentId.HR,
-    Nav: ComponentId.NAV,
-    Frame: ComponentId.FRAME,
-    Heading: ComponentId.HEADING,
-    Subheading: ComponentId.SUBHEADING,
-    Display: ComponentId.DISPLAY,
-    Blockquote: ComponentId.BLOCKQUOTE,
-    Cite: ComponentId.CITE,
-    Codeblock: ComponentId.CODEBLOCK,
-    Table: ComponentId.TABLE,
-    Video: ComponentId.VIDEO,
-    Footer: ComponentId.FOOTER,
-    Source: ComponentId.SOURCE,
-    Track: ComponentId.TRACK,
-    TextblockDetails: ComponentId.TEXTBLOCK_DETAILS,
-    TextblockTitle: ComponentId.TEXTBLOCK_TITLE,
-    TextblockHeader: ComponentId.TEXTBLOCK_HEADER,
-    TextblockAvatar: ComponentId.TEXTBLOCK_AVATAR,
-    Textblock: ComponentId.TEXTBLOCK,
-    // Button variations
-    BarButtons: ComponentId.BAR_BUTTONS,
-    ButtonSegmented: ComponentId.BUTTON_SEGMENTED,
-    ButtonTools: ComponentId.BUTTON_TOOLS,
-    // Input variations
-    InputCheckbox: ComponentId.INPUT_CHECKBOX,
-    InputRadio: ComponentId.INPUT_RADIO,
-    InputIconic: ComponentId.INPUT_ICONIC,
-    InputDropdown: ComponentId.INPUT_DROPDOWN,
-    InputSearch: ComponentId.INPUT_SEARCH,
-    InputText: ComponentId.INPUT_TEXT,
-    // Avatar variations
-    AvatarIcon: ComponentId.AVATAR_ICON,
-    AvatarProduct: ComponentId.AVATAR_PRODUCT,
-    // List variations
-    ListItem: ComponentId.LIST_ITEM,
-    ListStandard: ComponentId.LIST_STANDARD,
-    ListGrid: ComponentId.LIST_GRID,
-    ListItemStandard: ComponentId.LIST_ITEM_STANDARD,
-    ListItemAvatar: ComponentId.LIST_ITEM_AVATAR,
-    ListItemProduct: ComponentId.LIST_ITEM_PRODUCT,
-    ListItemGeneral: ComponentId.LIST_ITEM_GENERAL,
-    ListItemTodo: ComponentId.LIST_ITEM_TODO,
-    // Header variations
-    HeaderAction: ComponentId.HEADER_ACTION,
-    HeaderCard: ComponentId.HEADER_CARD,
-    // Card variations
-    CardProduct: ComponentId.CARD_PRODUCT,
-    CardStacked: ComponentId.CARD_STACKED,
-    CardHorizontal: ComponentId.CARD_HORIZONTAL,
-    // Frame variations (Frame already defined above)
-    // Table variations
-    TableBody: ComponentId.TABLE_BODY,
-    TableData: ComponentId.TABLE_DATA,
-    TableFoot: ComponentId.TABLE_FOOT,
-    TableHead: ComponentId.TABLE_HEAD,
-    TableHeader: ComponentId.TABLE_HEADER,
-    TableInput: ComponentId.TABLE_INPUT,
-    TableRowData: ComponentId.TABLE_ROW_DATA,
-    TableRowFooter: ComponentId.TABLE_FOOT,
-    TableRowHeader: ComponentId.TABLE_ROW_HEADER,
-    // Calendar variations
-    Calendar: ComponentId.CALENDAR,
-    CalendarHeader: ComponentId.CALENDAR_HEADER,
-    CalendarMonth: ComponentId.CALENDAR_MONTH,
-    CalendarWeek: ComponentId.CALENDAR_WEEK,
-    CalendarWeekdays: ComponentId.CALENDAR_WEEKDAYS,
-    // Other components
-    Chip: ComponentId.CHIP,
-    ChipCount: ComponentId.CHIP_COUNT,
-    Screen: ComponentId.SCREEN,
-    PanelDialog: ComponentId.PANEL_DIALOG,
-    // Add more mappings as needed
-  }
-
-  return nameToIdMap[componentName] || null
+export function validateTreeNodeProps(node: JSONTreeNode): ComponentPropsValidation {
+  return validateComponentProps(
+    node.componentId,
+    node.schemaVariantId,
+    Array.isArray(node.children) ? node.children : [],
+  )
 }
 
 /**
- * Gets the ComponentId for a given component name by looking it up in the component tree
+ * Validates the root export tree for a component.
  */
-export function getComponentIdFromComponent(
+export function validateExportedComponentProps(
   component: ComponentToExport,
-): ComponentId | null {
-  // Try to extract ComponentId from the component's tree
-  if (component.componentId) {
-    return component.componentId
+): ComponentPropsValidation {
+  return validateTreeNodeProps(component.tree)
+}
+
+function getActiveSchemaChildren(
+  componentId: ComponentId,
+  schemaVariantId: string | null,
+): SchemaChild[] {
+  const schema = getComponentSchema(componentId)
+  if (!isComplexSchema(schema)) {
+    return []
   }
 
-  // Fallback: try to map from name
-  return getComponentIdFromName(component.name)
+  if (!schemaVariantId) {
+    return schema.default.children ?? []
+  }
+
+  const selectedVariant =
+    schema.variants?.find((variant) => variant.id === schemaVariantId) ?? null
+
+  if (!selectedVariant) {
+    return schema.default.children ?? []
+  }
+
+  return selectedVariant.children?.length
+    ? selectedVariant.children
+    : (schema.default.children ?? [])
+}
+
+function getChildValidationKey(
+  componentId: ComponentId,
+  schemaVariantId: string | null,
+): string {
+  return `${componentId}:${schemaVariantId ?? "__default__"}`
 }

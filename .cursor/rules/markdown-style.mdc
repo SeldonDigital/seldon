@@ -1,0 +1,32 @@
+---
+description: Markdown writing style for Seldon docs
+globs: **/*.{md,mdc}
+alwaysApply: true
+---
+
+## Markdown Style
+
+When writing or editing Markdown files:
+
+- Use active language and straightforward descriptions.
+- Avoid parentheticals, semicolons, and em dash sentences.
+- Use simple grammar. Prefer short sentences. Split any sentence that carries more than one idea.
+- Avoid jargon. Use terminology from `packages/core/GLOSSARY.md` and do not invent new terms.
+- Use one term for each concept. Do not swap between near synonyms unless `GLOSSARY.md` defines both.
+- Avoid metaphors unless the glossary uses that wording. Skip casual metaphors for technical behavior.
+- Avoid overly specific notation when simple wording is clearer. For example, write `a schema`, not `the one schema`.
+- Prefer `Note:` and `Important:` callouts only when the reader must stop. Otherwise use a plain sentence.
+- Avoid stock phrases like `source of truth`, `canonical`, and `authoritative` unless the doc states a real ownership rule.
+- When explaining a data shape, show the smallest valid example before long prose or large tables.
+- Prefer `X does Y` over `X is used to Y`. Prefer `Use X to Y` over `It is important to use X`. Prefer concrete subjects over vague ones like `the thing that`.
+
+### Before Answering
+
+Before giving Markdown text, check the draft for:
+
+- Undefined jargon. Use only terms from `packages/core/GLOSSARY.md`.
+- Overly specific wording. Write `a property`, not `one property` or `the one property`.
+- Parentheticals, semicolons, and em dash sentences. These should never be used.
+- Long sentences that carry more than one idea. Write simple active sentences.
+- Near synonyms for the same concept. Never use these.
+- Casual metaphors or invented wording. Avoid conceptual or marketing speak.

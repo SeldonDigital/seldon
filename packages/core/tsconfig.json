@@ -3,7 +3,6 @@
   "compilerOptions": {
     "noEmit": false,
     "customConditions": null,
-
     "moduleResolution": "node",
     "module": "ESNext",
     "target": "ES2022",
@@ -16,11 +15,12 @@
   },
   "include": [
     "./components/**/*.*",
-    "./compute/**/*.*",
     "./helpers/**/*.*",
+    "./icons/**/*.*",
     "./properties/**/*.*",
     "./rules/**/*.*",
     "./themes/**/*.*",
+    "./utils/**/*.*",
     "./workspace/**/*.*",
     "./workspace/**/*.json",
     "./index.ts",

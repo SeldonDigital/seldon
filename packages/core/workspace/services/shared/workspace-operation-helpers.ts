@@ -1,16 +1,17 @@
-import { ComponentId } from "../../../components/constants"
 import { invariant } from "../../../index"
 import { ErrorMessages } from "../../constants"
 import {
-  Board,
+  ComponentEntry,
+  ComponentKey,
   Instance,
   InstanceId,
   Variant,
   VariantId,
   Workspace,
 } from "../../types"
-import { nodeRetrievalService } from "../node-retrieval.service"
-import { nodeTraversalService } from "../node-traversal.service"
+import { nodeRelationshipService } from "../nodes/node-relationship.service"
+import { nodeRetrievalService } from "../nodes/node-retrieval.service"
+import { nodeTraversalService } from "../nodes/node-traversal.service"
 import { mutateWorkspace } from "./workspace-mutation.helper"
 
 /**
@@ -38,18 +39,18 @@ export function withNodeMutation(
 
 /**
  * Executes a mutation operation on a board with automatic retrieval and validation.
- * @param componentId - The component ID to operate on
+ * @param componentKey - Key of the board in `workspace.components`
  * @param workspace - The workspace
  * @param operation - The operation to perform on the board
  * @returns The updated workspace
  */
-export function withBoardMutation(
-  componentId: ComponentId,
+export function withComponentMutation(
+  componentKey: ComponentKey,
   workspace: Workspace,
-  operation: (board: Board, draft: Workspace) => void,
+  operation: (board: ComponentEntry, draft: Workspace) => void,
 ): Workspace {
   return mutateWorkspace(workspace, (draft) => {
-    const board = nodeRetrievalService.getBoard(componentId, draft)
+    const board = nodeRetrievalService.getComponent(componentKey, draft)
     operation(board, draft)
   })
 }
@@ -89,14 +90,15 @@ export function withParentNode<T = void>(
  * @param operation - The operation to perform on both variant and board
  * @returns The updated workspace
  */
-export function withVariantAndBoardMutation(
+export function withVariantAndComponentMutation(
   variantId: VariantId,
   workspace: Workspace,
-  operation: (variant: Variant, board: Board, draft: Workspace) => void,
+  operation: (variant: Variant, board: ComponentEntry, draft: Workspace) => void,
 ): Workspace {
   return mutateWorkspace(workspace, (draft) => {
     const variant = nodeRetrievalService.getVariant(variantId, draft)
-    const board = nodeRetrievalService.getBoard(variant.component, draft)
+    const board = nodeRelationshipService.findComponentForVariant(variant, draft)
+    invariant(board, ErrorMessages.componentNotFoundForVariant(variantId))
     operation(variant, board, draft)
   })
 }

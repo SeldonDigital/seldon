@@ -1,0 +1,124 @@
+---
+description: Seldon component schema conventions
+alwaysApply: true
+---
+
+## Seldon Components
+
+Components are catalog schemas, not workspace state. A schema declares identity, hierarchy level, default `Properties`, and optional composition trees. Workspaces own variants, instances, user edits, ids, and runtime state.
+
+Use `packages/core/components/COMPONENTS.md` for schema shapes, hierarchy, composition, and child-tree rules.
+
+Use `packages/core/properties/PROPERTIES.md` for property shapes, value types, theme references, and property ordering.
+
+### Hierarchy
+
+- `screen` may contain anything.
+- `module` may contain modules, parts, elements, primitives, and frames.
+- `part` may contain parts, elements, primitives, and frames.
+- `element` may contain elements, primitives, and frames.
+- `primitive` has no `default`, `variants`, or children.
+- `frame` is the cross-level container and may appear anywhere.
+
+### Schema Shapes
+
+All schemas share `id`, `name`, `intent`, `icon`, `tags`, and `properties`.
+
+Primitives use `level: ComponentLevel.PRIMITIVE` and stop there.
+
+Complex schemas use `default: { children: [...] }` for the canonical tree and may use `variants: [...]` for alternate trees. A variant may also define root `overrides`. Composition trees should be fully flattened. Keep intermediate schemas only when they are reusable across multiple parents.
+
+Author schemas with `as const satisfies ComponentSchema` so TypeScript validates the shape while preserving literal property and option values.
+
+### Properties
+
+Schema properties use the same shapes as the properties system:
+
+- atomic values use `{ type: ValueType, value: ... }`
+- compound values are objects of tagged sub-values
+- shorthand values are objects of tagged side or corner values
+- layered paint values are arrays of compound layers
+
+Properties absent from a schema are not part of that component's vocabulary and cannot be set or overridden for that component.
+
+Use these value types in schemas:
+
+- `EMPTY` for exposed but unset properties.
+- `INHERIT` to take the parent value.
+- `EXACT` for literals.
+- `OPTION` for fixed enum-style choices.
+- `THEME_CATEGORICAL` for named token sets like swatches and font families.
+- `THEME_ORDINAL` for ordered token scales like sizes and spacing.
+- `COMPUTED` for values resolved from another property at compute time.
+
+Follow property ordering from `PROPERTY_DISPLAY_ORDER`: attributes, layout, appearance, typography, effects. Within compounds, follow the facet order in `PROPERTIES.md`.
+
+### Children And Overrides
+
+Complex schemas declare children inside `default.children` and optional `variants[i].children`. Each child entry is a `SchemaChild` record.
+
+```typescript
+default: {
+  children: [
+    {
+      component: Seldon.ComponentId.BUTTON,
+      overrides: {
+        buttonSize: {
+          type: Sdn.ValueType.THEME_ORDINAL,
+          value: "@fontSize.medium",
+        },
+      },
+      children: [
+        {
+          component: Seldon.ComponentId.LABEL,
+          overrides: {
+            content: { type: Sdn.ValueType.EXACT, value: "Add" },
+          },
+        },
+      ],
+    },
+  ],
+},
+variants: [
+  {
+    id: "secondary",
+    label: "Secondary",
+    intent: "Alternate button for a lower-emphasis action.",
+    children: [
+      {
+        component: Seldon.ComponentId.BUTTON,
+        children: [
+          {
+            component: Seldon.ComponentId.LABEL,
+            overrides: {
+              content: { type: Sdn.ValueType.EXACT, value: "Cancel" },
+            },
+          },
+        ],
+      },
+    ],
+  },
+],
+```
+
+Use `overrides` in component schemas. Overrides must use full typed property values and are matched against the target child schema. Unknown override keys are dropped by merge logic. Do not invent child properties that the referenced schema does not expose.
+
+Use `@token.id` for theme references, e.g. `@swatch.primary`, `@size.medium`, `@font.body`. 
+
+Use `#property.path` for computed-property inputs, e.g. `#parent.buttonSize`.
+
+### Catalog Access
+
+Use `getComponentSchema(id)` from `@seldon/core/components/catalog` when resolving a schema by id. Do not reach into per-level catalog arrays unless you specifically need to iterate a level bucket.
+
+### Adding Components
+
+When adding a component:
+
+1. Pick the correct level and folder.
+2. Start from a sibling schema at the same level and follow its authoring pattern.
+3. Author the schema with `as const satisfies ComponentSchema`.
+4. Add `exportConfig`.
+5. Keep property keys and compound facets in documented order from `PROPERTIES.md`.
+6. Update `packages/core/components/catalog.ts` afterwards to include new components.
+7. Invoke `@components-catalog` to sync `packages/core/components/catalog.ts` and `packages/core/components/constants.ts` from the schema files.

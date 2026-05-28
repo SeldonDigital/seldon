@@ -1,5 +1,4 @@
-import { ThemeLineHeightKey } from "../../../../themes/types"
-import { Theme } from "../../../../themes/types"
+import { Theme, ThemeLineHeightKey } from "../../../../themes/types"
 import { ValueType } from "../../../constants"
 import { PropertySchema } from "../../../types/schema"
 import { EmptyValue } from "../../shared/empty/empty"
@@ -8,11 +7,13 @@ import { PercentageValue } from "../../shared/exact/percentage"
 import { PixelValue } from "../../shared/exact/pixel"
 import { RemValue } from "../../shared/exact/rem"
 
+/** References one named line height step from the theme. */
 export interface LineHeightThemeValue {
   type: ValueType.THEME_ORDINAL
   value: ThemeLineHeightKey
 }
 
+/** Unset, lengths, a unitless multiplier, or a theme line height token. */
 export type LineHeightValue =
   | EmptyValue
   | PixelValue
@@ -21,27 +22,35 @@ export type LineHeightValue =
   | NumberValue
   | LineHeightThemeValue
 
+/** Validates stored line height values. */
 export const lineHeightSchema: PropertySchema = {
   name: "lineHeight",
-  description: "Line height for text styling",
+  description:
+    "Sets space between lines using the theme scale, lengths, a multiplier, or a percentage.",
   supports: ["empty", "inherit", "exact", "themeOrdinal"] as const,
   validation: {
     empty: () => true,
     inherit: () => true,
-    exact: (value: any) => {
+    exact: (value: unknown) => {
       if (
         typeof value === "object" &&
-        value.value !== undefined &&
-        value.unit !== undefined
-      )
+        value !== null &&
+        "value" in value &&
+        "unit" in value
+      ) {
         return true
-      if (typeof value === "number" && value > 0) return true
-      return false
+      }
+      return typeof value === "number" && value > 0
     },
-    themeOrdinal: (value: any, theme?: Theme) => {
-      if (!theme) return false
-      return value in theme.lineHeight
+    themeOrdinal: (value: unknown, theme?: Theme) => {
+      if (!theme || typeof value !== "string") return false
+      return (Object.keys(theme.lineHeight) as string[]).some(
+        (id) => value === `@lineHeight.${id}`,
+      )
     },
   },
-  themeOrdinalKeys: (theme: Theme) => Object.keys(theme.lineHeight),
+  themeOrdinalKeys: (theme: Theme) =>
+    (Object.keys(theme.lineHeight) as string[]).map(
+      (id) => `@lineHeight.${id}` as ThemeLineHeightKey,
+    ),
 }

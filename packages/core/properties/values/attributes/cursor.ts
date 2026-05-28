@@ -1,7 +1,10 @@
 import { ValueType } from "../../constants"
 import { PropertySchema } from "../../types/schema"
+import { StringValue } from "../shared/exact/string"
 import { EmptyValue } from "../shared/empty/empty"
+import { InheritValue } from "../shared/inherit/inherit"
 
+/** Cursor keywords the catalog exposes as fixed choices. */
 export enum Cursor {
   DEFAULT = "default",
   NONE = "none",
@@ -40,22 +43,31 @@ export enum Cursor {
   ZOOM_OUT = "zoom-out",
 }
 
-export interface CursorPresetValue {
-  type: ValueType.PRESET
+/** Records which cursor keyword is selected. */
+export interface CursorOptionValue {
+  type: ValueType.OPTION
   value: Cursor
 }
 
-export type CursorValue = EmptyValue | CursorPresetValue
+/** Empty, inherit, a catalog cursor keyword, or a custom CSS cursor string (`exact`). */
+export type CursorValue =
+  | EmptyValue
+  | InheritValue
+  | CursorOptionValue
+  | StringValue
 
+/** Defines labels, allowed shapes, checks, and preset choices for `cursor`. */
 export const cursorSchema: PropertySchema = {
   name: "cursor",
-  description: "Mouse cursor style",
-  supports: ["empty", "inherit", "exact", "preset"] as const,
+  description: "Cursor type on hover",
+  supports: ["empty", "inherit", "exact", "option"] as const,
   validation: {
     empty: () => true,
     inherit: () => true,
-    exact: (value: any) => typeof value === "string" && value.length > 0,
-    preset: (value: any) => Object.values(Cursor).includes(value),
+    exact: (value: unknown) =>
+      typeof value === "string" && value.length > 0,
+    option: (value: unknown) =>
+      typeof value === "string" && (Object.values(Cursor) as string[]).includes(value),
   },
   presetOptions: () => Object.values(Cursor),
 }

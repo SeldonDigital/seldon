@@ -1,0 +1,75 @@
+import { rules } from "../../../../rules/config/rules.config"
+import {
+  debugGroup,
+  debugGroupEnd,
+  debugLog,
+} from "../../../../utils/debug-logger"
+import {
+  nodeRetrievalService,
+  nodeTraversalService,
+  nodeRelationshipService,
+  nodeOperationsService,
+  workspaceMutationService,
+  workspaceThemeService,
+  workspacePropagationService,
+  typeCheckingService,
+} from "../../../services"
+import { ExtractPayload, Workspace } from "../../../types"
+
+export function removeVariant(
+  payload: ExtractPayload<"remove_variant">,
+  workspace: Workspace,
+): Workspace {
+  const node = nodeRetrievalService.getNode(payload.variantRootId, workspace)
+  const entityType = typeCheckingService.getEntityType(node)
+  const isVariant = typeCheckingService.isVariant(node)
+  const isDefaultVariant = typeCheckingService.isDefaultVariant(node)
+
+  debugGroup("Workspace", "removeVariant", "Removing variant")
+  debugLog("Workspace", "removeVariant", "Variant details", {
+    variantRootId: payload.variantRootId,
+    entityType,
+    isVariant,
+    isDefaultVariant,
+  })
+
+  if (!isVariant || isDefaultVariant) {
+    debugLog(
+      "Workspace",
+      "removeVariant",
+      "Removal not allowed for non-user variant",
+    )
+    debugGroupEnd(
+      "Workspace",
+      "removeVariant",
+      "Removal not allowed for non-user variant",
+    )
+    return workspace
+  }
+
+  const { allowed, propagation } = rules.mutations.delete[entityType]
+  if (!allowed) {
+    debugLog("Workspace", "removeVariant", "Removal not allowed for variant")
+    debugGroupEnd(
+      "Workspace",
+      "removeVariant",
+      "Removal not allowed for variant",
+    )
+    return workspace
+  }
+
+  const result = workspacePropagationService.propagateNodeOperation({
+    nodeId: payload.variantRootId,
+    propagation,
+    apply: (node, workspace) => {
+      if (!typeCheckingService.isVariant(node)) return workspace
+      if (typeCheckingService.isDefaultVariant(node)) return workspace
+      return nodeOperationsService.deleteVariant(node.id, workspace)
+    },
+    workspace,
+  })
+
+  debugLog("Workspace", "removeVariant", "Variant removal complete")
+  debugGroupEnd("Workspace", "removeVariant", "Variant removal complete")
+  return result
+}

@@ -1,49 +1,71 @@
 import { isEqual } from "lodash"
 import { Workspace } from "@seldon/core"
-import { getComponentSchema } from "@seldon/core/components/catalog"
-import { mergeProperties } from "@seldon/core/properties/helpers/merge-properties"
-import { getNodeProperties } from "@seldon/core/workspace/helpers/get-node-properties"
-import { themeService } from "@seldon/core/workspace/services/theme.service"
-import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
-import { buildContext } from "../../../helpers/compute-workspace"
+import type { EntryNode } from "@seldon/core/workspace/types"
+import type { NodeParentIndex } from "@seldon/core/workspace/compute"
+import { getVariantById } from "@seldon/core/workspace/helpers/general/get-variant-by-id"
+import { isDefaultVariant } from "@seldon/core/workspace/helpers/general/is-default-variant"
+import { findParentNode } from "@seldon/core/workspace/helpers/nodes/find-parent-node"
+import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-catalog-id"
+import { isVariantNode } from "@seldon/core/workspace/helpers/nodes/is-variant-node"
+import { isEntryNodeInstance } from "@seldon/core/workspace/model/entry-node"
+import { typeCheckingService } from "@seldon/core/workspace/services"
+import { getStyleContext } from "../../../helpers/build-export-context"
+import {
+  getTemplateSourceNodeId,
+  getWorkspaceNodeList,
+} from "../../../helpers/workspace-nodes"
 import { getCssObjectFromProperties } from "../../../styles/css-properties/get-css-object-from-properties"
+import { CSSObject } from "../../../styles/css-properties/types"
 import { Classes, NodeIdToClass } from "../types"
-import { getClassNameForNodeId } from "./get-class-name"
-import { getComponentIdFromClassName } from "./get-component-id-from-class-name"
+import { getClassNameForNode } from "./get-class-name"
 
-/**
- * Calculate the tree depth of a node
- */
-const getNodeTreeDepth = (nodeId: string, workspace: Workspace): number => {
-  const node = workspace.byId[nodeId]
-  if (!node || workspaceService.isVariant(node)) {
+function getNodeTreeDepth(nodeId: string, workspace: Workspace): number {
+  const node = workspace.nodes[nodeId]
+  if (!node || isVariantNode(node)) {
     return 0
   }
 
   let depth = 0
-  let current = node
-  let parent = workspaceService.findParentNode(current, workspace)
+  let currentId: string | null = nodeId
 
-  while (parent) {
+  while (currentId) {
+    const parent = findParentNode(currentId, workspace)
+    if (!parent) break
     depth++
-    if (workspaceService.isVariant(parent)) {
-      break
-    }
-    current = parent
-    parent = workspaceService.findParentNode(current, workspace)
+    if (isVariantNode(parent)) break
+    currentId = parent.id
   }
 
   return depth
 }
 
-/**
- * Build the style registry for the workspace.
- * Returns a map of node ids to class names (nodeIdToClass) and a map of class names to CSS objects (classes).
- *
- * @param workspace - The workspace to build the style registry for.
- */
+function calculateCssDifferences(
+  baseCss: CSSObject,
+  instanceCss: CSSObject,
+): CSSObject {
+  const differences: CSSObject = {}
+
+  for (const [key, value] of Object.entries(instanceCss)) {
+    const baseValue = baseCss[key as keyof CSSObject]
+    if (baseValue === undefined || !isEqual(baseValue, value)) {
+      differences[key as keyof CSSObject] = value
+    }
+  }
+
+  return differences
+}
+
+function isInstanceWithTemplateSource(node: EntryNode): boolean {
+  return (
+    typeCheckingService.isInstance(node) &&
+    getTemplateSourceNodeId(node) !== null
+  )
+}
+
 export const buildStyleRegistry = (
   workspace: Workspace,
+  forceRegeneration: boolean = false,
+  parentIndex: NodeParentIndex,
 ): {
   classes: Classes
   nodeIdToClass: NodeIdToClass
@@ -54,74 +76,154 @@ export const buildStyleRegistry = (
   const nodeIdToClass: NodeIdToClass = {}
   const classNameToNodeId: Record<string, string> = {}
   const nodeTreeDepths: Record<string, number> = {}
+  const classNameToComponentId: Record<string, string> = {}
 
-  // First pass: process all nodes to create CSS classes
-  Object.values(workspace.byId).forEach((node) => {
-    let properties = node.properties
-    const className = getClassNameForNodeId(node.id)
+  const sortedNodes = getWorkspaceNodeList(workspace).sort((a, b) => {
+    const aIsDefault = typeCheckingService.isVariant(a) && isDefaultVariant(a)
+    const bIsDefault = typeCheckingService.isVariant(b) && isDefaultVariant(b)
+    const aIsVariant = typeCheckingService.isVariant(a)
+    const bIsVariant = typeCheckingService.isVariant(b)
+    const aIsInstance = typeCheckingService.isInstance(a)
+    const bIsInstance = typeCheckingService.isInstance(b)
 
-    // Calculate tree depth for this node
+    if (aIsDefault && !bIsDefault) return -1
+    if (!aIsDefault && bIsDefault) return 1
+    if (aIsVariant && !bIsVariant) return -1
+    if (!aIsVariant && bIsVariant) return 1
+    if (aIsInstance && !bIsInstance) return -1
+    if (!aIsInstance && bIsInstance) return 1
+    return 0
+  })
+
+  sortedNodes.forEach((node) => {
+    const className = getClassNameForNode(node, workspace)
     nodeTreeDepths[node.id] = getNodeTreeDepth(node.id, workspace)
 
-    // If the node is a default variant, we need to merge the properties with the schema properties
-    // With this change that default variants do not hold the properties of the schema anymore, we need to add them before we can compute the css
-    // We cannot compute the CSS of schema properties without a variant, because the schema properties define theme values, and we need to know which theme to apply
-    // That theme selection lives on the variant.
-    if (workspaceService.isDefaultVariant(node)) {
-      const schema = getComponentSchema(node.component)
-      properties = mergeProperties(schema.properties, properties)
+    const templateSourceId = getTemplateSourceNodeId(node)
+    const hasTemplateSource =
+      typeCheckingService.isInstance(node) && templateSourceId !== null
+
+    let css: CSSObject
+
+    if (hasTemplateSource && templateSourceId) {
+      const variant = getVariantById(templateSourceId, workspace)
+      const variantContext = getStyleContext(variant.id, workspace, parentIndex)
+      const instanceContext = getStyleContext(node.id, workspace, parentIndex)
+
+      const variantCss = getCssObjectFromProperties(variantContext.properties, {
+        properties: variantContext.properties,
+        parentContext: variantContext.parentContext,
+        theme: variantContext.theme,
+      })
+
+      const instanceCss = getCssObjectFromProperties(
+        instanceContext.properties,
+        {
+          properties: instanceContext.properties,
+          parentContext: instanceContext.parentContext,
+          theme: instanceContext.theme,
+        },
+      )
+
+      css = calculateCssDifferences(variantCss, instanceCss)
+    } else {
+      const context = getStyleContext(node.id, workspace, parentIndex)
+      css = getCssObjectFromProperties(context.properties, {
+        properties: context.properties,
+        parentContext: context.parentContext,
+        theme: context.theme,
+      })
     }
 
-    // For child nodes (instances), use the fully resolved properties including inheritance
-    // This ensures child nodes inherit styling from their parent instances
-    const finalProperties =
-      "instanceOf" in node ? getNodeProperties(node, workspace) : properties
+    const isDefault =
+      typeCheckingService.isVariant(node) && isDefaultVariant(node)
 
-    const css = getCssObjectFromProperties(finalProperties, {
-      properties: finalProperties,
-      parentContext: buildContext(node, workspace),
-      theme: themeService.getNodeTheme(node.id, workspace),
-    })
-
-    if (Object.keys(css).length === 0) {
+    if (
+      !forceRegeneration &&
+      Object.keys(css).length === 0 &&
+      !isDefault &&
+      !hasTemplateSource
+    ) {
       return
     }
 
-    // Deduplicate classes: if a class with identical CSS and componentId exists, reuse it
-    const componentId = getComponentIdFromClassName(className)
+    const componentId = getNodeCatalogId(node, workspace) ?? node.id
+
     const existing = Object.entries(classes).find(
       ([existingClassName, existingCss]) => {
-        const existingComponentId =
-          getComponentIdFromClassName(existingClassName)
+        const existingComponentId = classNameToComponentId[existingClassName]
         return isEqual(existingCss, css) && existingComponentId === componentId
       },
     )
 
     if (existing) {
-      // Reuse the existing className for this node
       nodeIdToClass[node.id] = existing[0]
       classNameToNodeId[existing[0]] = node.id
+      if (!classNameToComponentId[existing[0]]) {
+        classNameToComponentId[existing[0]] = componentId
+      }
     } else {
-      // Otherwise, create a new class for this node
       classes[className] = css
       nodeIdToClass[node.id] = className
       classNameToNodeId[className] = node.id
+      classNameToComponentId[className] = componentId
     }
   })
 
-  // Second pass: for child nodes without CSS classes, map them to their variant's class
-  Object.values(workspace.byId).forEach((node) => {
+  if (forceRegeneration) {
+    getWorkspaceNodeList(workspace).forEach((node) => {
+      const hasTemplateSource = isInstanceWithTemplateSource(node)
+
+      if (!nodeIdToClass[node.id] && !hasTemplateSource) {
+        const className = getClassNameForNode(node, workspace)
+        const componentId = getNodeCatalogId(node, workspace) ?? node.id
+
+        const existing = Object.entries(classes).find(
+          ([existingClassName, existingCss]) => {
+            const existingComponentId =
+              classNameToComponentId[existingClassName]
+            return (
+              Object.keys(existingCss).length === 0 &&
+              existingComponentId === componentId
+            )
+          },
+        )
+
+        if (existing) {
+          nodeIdToClass[node.id] = existing[0]
+          classNameToNodeId[existing[0]] = node.id
+          if (!classNameToComponentId[existing[0]]) {
+            classNameToComponentId[existing[0]] = componentId
+          }
+        } else {
+          nodeIdToClass[node.id] = className
+          classNameToNodeId[className] = node.id
+          classNameToComponentId[className] = componentId
+          if (!classes[className]) {
+            classes[className] = {}
+          }
+        }
+      }
+    })
+  }
+
+  getWorkspaceNodeList(workspace).forEach((node) => {
+    const templateSourceId = getTemplateSourceNodeId(node)
     if (
-      workspaceService.isInstance(node) &&
-      "variant" in node &&
-      node.variant &&
+      isEntryNodeInstance(node) &&
+      templateSourceId &&
       !nodeIdToClass[node.id]
     ) {
-      const variantClassName = nodeIdToClass[node.variant]
-      if (variantClassName) {
-        nodeIdToClass[node.id] = variantClassName
-        classNameToNodeId[variantClassName] = node.id
+      const className = getClassNameForNode(node, workspace)
+      const componentId = getNodeCatalogId(node, workspace) ?? node.id
+
+      if (!classes[className]) {
+        classes[className] = {}
       }
+
+      nodeIdToClass[node.id] = className
+      classNameToNodeId[className] = node.id
+      classNameToComponentId[className] = componentId
     }
   })
 

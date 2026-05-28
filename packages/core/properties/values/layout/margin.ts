@@ -1,16 +1,17 @@
-import { ThemeMarginKey } from "../../../themes/types"
-import { Theme } from "../../../themes/types"
+import { Theme, ThemeMarginKey } from "../../../themes/types"
 import { Unit, ValueType } from "../../constants"
 import { PropertySchema } from "../../types/schema"
 import { EmptyValue } from "../shared/empty/empty"
 import { PixelValue } from "../shared/exact/pixel"
 import { RemValue } from "../shared/exact/rem"
 
+/** Ordinal reference into the theme margin scale for one side. */
 export interface MarginSideThemeValue {
   type: ValueType.THEME_ORDINAL
   value: ThemeMarginKey
 }
 
+/** Optional spacing on each edge outside the element bounds. */
 export interface MarginValue {
   top?: MarginSideValue
   right?: MarginSideValue
@@ -18,6 +19,7 @@ export interface MarginValue {
   left?: MarginSideValue
 }
 
+/** One side value: unset, px or rem lengths, or a theme margin step. */
 export type MarginSideValue =
   | EmptyValue
   | PixelValue
@@ -26,7 +28,8 @@ export type MarginSideValue =
 
 export const marginSchema: PropertySchema = {
   name: "margin",
-  description: "Element margin spacing",
+  description:
+    "Sets outside spacing on each edge using lengths or theme margin steps.",
   supports: ["empty", "inherit", "exact", "themeOrdinal"] as const,
   units: {
     allowed: [Unit.PX, Unit.REM],

@@ -1,15 +1,45 @@
-import { Properties, ValueType } from "../../index"
+import { ValueType } from "../constants"
+import type { Properties } from "../types/properties"
+import { mergeTaggedValues } from "./merge-tagged-value"
+import {
+  LAYERED_PAINT_KEYS,
+  OBJECT_FACET_PROPERTY_KEYS,
+  type LayeredPaintKey,
+  type ObjectFacetPropertyKey,
+} from "../types/property-keys"
+
+/** Aligns two paint stacks by index and merges plain layer objects when asked. */
+function mergeLayerArrays<T extends Record<string, unknown>>(
+  base: T[],
+  next: T[],
+  mergeSubProperties: boolean,
+): T[] {
+  if (!mergeSubProperties) return next
+  const len = Math.max(base.length, next.length)
+  return Array.from({ length: len }, (_, i) => {
+    const a = base[i]
+    const b = next[i]
+    if (b === undefined) return a as T
+    if (a === undefined) return b as T
+    if (
+      a &&
+      typeof a === "object" &&
+      !("type" in a) &&
+      b &&
+      typeof b === "object" &&
+      !("type" in b)
+    ) {
+      return { ...a, ...b } as T
+    }
+    return b as T
+  })
+}
 
 /**
- * Merges two sets of properties with optional sub-property merging.
- *
- * Sub-property merging applies to compound and shorthand properties,
- * which have nested sub-properties (e.g., background.color, margin.top).
- *
- * @param properties1 - Base properties to merge into
- * @param properties2 - Properties to merge from
- * @param options - Merge configuration options
- * @returns Merged properties with empty values filtered out
+ * Writes `properties2` onto `properties1` and returns the combined snapshot.
+ * When `mergeSubProperties` is true, nested facet maps merge field by field.
+ * Paint arrays merge by slot for background, gradient, and shadow.
+ * Empty patch values are skipped so the base value or catalog default can show through.
  */
 export function mergeProperties(
   properties1: Properties = {},
@@ -23,27 +53,39 @@ export function mergeProperties(
   const { mergeSubProperties = true } = options ?? {}
 
   return keys.reduce((merged, key) => {
-    let value: any
+    let value: unknown
 
     if (key in properties1) {
       if (mergeSubProperties) {
-        // Check if this is a compound or shorthand property
         const existingValue = properties1[key]
         const newValue = properties2[key]
 
         if (
+          LAYERED_PAINT_KEYS.has(key as LayeredPaintKey) &&
+          Array.isArray(existingValue) &&
+          Array.isArray(newValue)
+        ) {
+          value = mergeLayerArrays(
+            existingValue as Record<string, unknown>[],
+            newValue as Record<string, unknown>[],
+            mergeSubProperties,
+          )
+        } else if (LAYERED_PAINT_KEYS.has(key as LayeredPaintKey)) {
+          value = newValue
+        } else if (
+          OBJECT_FACET_PROPERTY_KEYS.has(key as ObjectFacetPropertyKey) &&
           existingValue &&
           typeof existingValue === "object" &&
+          !Array.isArray(existingValue) &&
           !("type" in existingValue) &&
           newValue &&
           typeof newValue === "object" &&
+          !Array.isArray(newValue) &&
           !("type" in newValue)
         ) {
-          // This is a compound or shorthand property - do a deep merge
           value = { ...existingValue, ...newValue }
         } else {
-          // This is an atomic property - use shallow merge
-          value = Object.assign({}, existingValue, newValue)
+          value = mergeTaggedValues(existingValue, newValue)
         }
       } else {
         value = properties2[key]
@@ -52,7 +94,6 @@ export function mergeProperties(
       value = properties2[key]
     }
 
-    // Skip empty values to allow inheritance from defaults
     if (
       value &&
       typeof value === "object" &&

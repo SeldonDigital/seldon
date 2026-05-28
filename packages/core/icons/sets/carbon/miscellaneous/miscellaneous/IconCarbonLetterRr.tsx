@@ -1,0 +1,18 @@
+import { SVGAttributes } from "react"
+
+export function IconCarbonLetterRr(props: SVGAttributes<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 -960 960 960"
+      fill="currentColor"
+      height="1em"
+      width="1em"
+      {...props}
+    >
+      <g transform="translate(0, -960) scale(30)">
+        <path d="M16 15V11a2 2 0 00-2-2H8V23h2V17h1.48l2.34 6H16l-2.33-6H14A2 2 0 0016 15zm-6-4h4v4H10zM24 13L18 13 18 23 20 23 20 15 24 15 24 13z" />
+      </g>
+    </svg>
+  )
+}

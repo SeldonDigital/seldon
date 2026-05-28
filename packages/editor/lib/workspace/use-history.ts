@@ -1,9 +1,8 @@
 import { useCallback, useEffect } from "react"
 import { create } from "zustand"
 import { useShallow } from "zustand/react/shallow"
-import { Workspace } from "@seldon/core"
-import customTheme from "@seldon/core/themes/custom"
-import { CURRENT_WORKSPACE_VERSION } from "@seldon/core/workspace/middleware/migration/middleware"
+import { createEmptyWorkspace } from "@seldon/core"
+import type { Workspace } from "@seldon/core/workspace/types"
 
 const REVISION_LIMIT = 50
 
@@ -16,12 +15,7 @@ interface HistoryState {
   reset: (state: Workspace) => void
 }
 
-export const INITIAL_WORKSPACE: Workspace = {
-  version: CURRENT_WORKSPACE_VERSION,
-  customTheme,
-  boards: {},
-  byId: {},
-}
+export const INITIAL_WORKSPACE: Workspace = createEmptyWorkspace()
 
 export const useStore = create<HistoryState>()((set) => ({
   history: [INITIAL_WORKSPACE],
@@ -29,11 +23,8 @@ export const useStore = create<HistoryState>()((set) => ({
 
   push: (workspace: Workspace) =>
     set((store) => {
-      // Remove any future states if we're not at the end
       const newHistory = store.history.slice(0, store.currentIndex + 1)
-      // Add new state
       newHistory.push(workspace)
-      // Limit history size
       if (newHistory.length > REVISION_LIMIT) {
         newHistory.shift()
       }
@@ -72,11 +63,9 @@ export function useHistory() {
     useShallow((state) => state.history[state.currentIndex]),
   )
 
-  // Expose the current workspace to the window object so
-  // that we can read from it in Cypress tests
   useEffect(() => {
-    if (window.Cypress) {
-      window.workspace = current
+    if (typeof window !== "undefined" && (window as { Cypress?: unknown }).Cypress) {
+      ;(window as { workspace?: Workspace }).workspace = current
     }
   }, [current])
 

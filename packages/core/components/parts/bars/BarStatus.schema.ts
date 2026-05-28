@@ -8,135 +8,58 @@ export const schema = {
   intent:
     "Provides a status bar for displaying application or system information.",
   tags: ["status", "bar", "UI", "footer", "section", "information"],
-  level: Seldon.ComponentLevel.ELEMENT,
+  level: Seldon.ComponentLevel.PART,
   icon: Seldon.ComponentIcon.COMPONENT,
-  restrictions: {
-    addChildren: true,
-    reorderChildren: true,
-  },
-  children: [
-    {
-      component: Seldon.ComponentId.TEXT,
-      overrides: {
-        content: { type: Sdn.ValueType.EXACT, value: "Left status" },
-        color: {
-          type: Sdn.ValueType.COMPUTED,
-          value: {
-            function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-            input: { basedOn: "#parent.background.color" },
-          },
-        },
-        font: {
-          preset: {
-            type: Sdn.ValueType.THEME_CATEGORICAL,
-            value: "@font.code",
-            restrictions: {
-              allowedValues: ["@font.tagline", "@font.body", "@font.code"],
-            },
-          },
-          size: {
-            type: Sdn.ValueType.THEME_ORDINAL,
-            value: "@fontSize.xsmall",
-          },
-        },
-        align: {
-          type: Sdn.ValueType.PRESET,
-          value: Sdn.Align.CENTER_LEFT,
-        },
-      },
-    },
-    {
-      component: Seldon.ComponentId.TEXT,
-      overrides: {
-        content: { type: Sdn.ValueType.EXACT, value: "Middle status" },
-        color: {
-          type: Sdn.ValueType.COMPUTED,
-          value: {
-            function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-            input: { basedOn: "#parent.background.color" },
-          },
-        },
-        font: {
-          preset: {
-            type: Sdn.ValueType.THEME_CATEGORICAL,
-            value: "@font.code",
-            restrictions: {
-              allowedValues: ["@font.tagline", "@font.body", "@font.code"],
-            },
-          },
-          size: {
-            type: Sdn.ValueType.THEME_ORDINAL,
-            value: "@fontSize.xsmall",
-          },
-        },
-        align: {
-          type: Sdn.ValueType.PRESET,
-          value: Sdn.Align.CENTER,
-        },
-      },
-    },
-    {
-      component: Seldon.ComponentId.TEXT,
-      overrides: {
-        content: { type: Sdn.ValueType.EXACT, value: "Right status" },
-        color: {
-          type: Sdn.ValueType.COMPUTED,
-          value: {
-            function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-            input: { basedOn: "#parent.background.color" },
-          },
-        },
-        font: {
-          preset: {
-            type: Sdn.ValueType.THEME_CATEGORICAL,
-            value: "@font.code",
-            restrictions: {
-              allowedValues: ["@font.tagline", "@font.body", "@font.code"],
-            },
-          },
-          size: {
-            type: Sdn.ValueType.THEME_ORDINAL,
-            value: "@fontSize.xsmall",
-          },
-        },
-        align: {
-          type: Sdn.ValueType.PRESET,
-          value: Sdn.Align.CENTER_RIGHT,
-        },
-      },
-    },
-  ],
   properties: {
-    // COMPONENT
-    display: { type: Sdn.ValueType.EMPTY, value: null },
-    ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
+    display: {
+      type: Sdn.ValueType.EMPTY,
+      value: null,
+    },
+    ariaLabel: {
+      type: Sdn.ValueType.EMPTY,
+      value: null,
+    },
     ariaHidden: {
       type: Sdn.ValueType.EXACT,
       value: false,
     },
-    // LAYOUT
-    direction: { type: Sdn.ValueType.EMPTY, value: null },
+    direction: {
+      type: Sdn.ValueType.EMPTY,
+      value: null,
+    },
     orientation: {
-      type: Sdn.ValueType.PRESET,
+      type: Sdn.ValueType.OPTION,
       value: Sdn.Orientation.HORIZONTAL,
     },
     align: {
-      type: Sdn.ValueType.PRESET,
+      type: Sdn.ValueType.OPTION,
       value: Sdn.Align.CENTER_LEFT,
     },
     width: {
-      type: Sdn.ValueType.PRESET,
+      type: Sdn.ValueType.OPTION,
       value: Sdn.Resize.FILL,
     },
     height: {
-      type: Sdn.ValueType.PRESET,
+      type: Sdn.ValueType.OPTION,
       value: Sdn.Resize.FIT,
     },
     margin: {
-      top: { type: Sdn.ValueType.EMPTY, value: null },
-      right: { type: Sdn.ValueType.EMPTY, value: null },
-      bottom: { type: Sdn.ValueType.EMPTY, value: null },
-      left: { type: Sdn.ValueType.EMPTY, value: null },
+      top: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
+      right: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
+      bottom: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
+      left: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
     },
     padding: {
       top: {
@@ -157,78 +80,441 @@ export const schema = {
       },
     },
     gap: {
-      type: Sdn.ValueType.PRESET,
+      type: Sdn.ValueType.OPTION,
       value: Sdn.Gap.EVENLY_SPACED,
     },
-    rotation: { type: Sdn.ValueType.EMPTY, value: null },
+    rotation: {
+      type: Sdn.ValueType.EMPTY,
+      value: null,
+    },
     wrapChildren: {
       type: Sdn.ValueType.EXACT,
       value: false,
     },
-    clip: { type: Sdn.ValueType.EMPTY, value: null },
-    // APPEARANCE
-    color: { type: Sdn.ValueType.EMPTY, value: null },
-    brightness: { type: Sdn.ValueType.EMPTY, value: null },
-    opacity: { type: Sdn.ValueType.EMPTY, value: null },
-    background: {
-      color: {
-        type: Sdn.ValueType.THEME_CATEGORICAL,
-        value: "@swatch.black",
-      },
-      brightness: { type: Sdn.ValueType.EMPTY, value: null },
-      image: { type: Sdn.ValueType.EMPTY, value: null },
-      size: { type: Sdn.ValueType.EMPTY, value: null },
-      position: { type: Sdn.ValueType.EMPTY, value: null },
-      repeat: { type: Sdn.ValueType.EMPTY, value: null },
-      opacity: { type: Sdn.ValueType.EMPTY, value: null },
+    clip: {
+      type: Sdn.ValueType.EMPTY,
+      value: null,
     },
+    color: {
+      type: Sdn.ValueType.EMPTY,
+      value: null,
+    },
+    brightness: {
+      type: Sdn.ValueType.EMPTY,
+      value: null,
+    },
+    opacity: {
+      type: Sdn.ValueType.EMPTY,
+      value: null,
+    },
+    background: [
+      {
+        preset: {
+          type: Sdn.ValueType.THEME_CATEGORICAL,
+          value: "@background.none",
+        },
+        image: {
+          type: Sdn.ValueType.EMPTY,
+          value: null,
+        },
+        position: {
+          type: Sdn.ValueType.EMPTY,
+          value: null,
+        },
+        size: {
+          type: Sdn.ValueType.EMPTY,
+          value: null,
+        },
+        repeat: {
+          type: Sdn.ValueType.EMPTY,
+          value: null,
+        },
+        color: {
+          type: Sdn.ValueType.THEME_CATEGORICAL,
+          value: "@swatch.black",
+        },
+        blendMode: {
+          type: Sdn.ValueType.EMPTY,
+          value: null,
+        },
+        filter: {
+          type: Sdn.ValueType.EMPTY,
+          value: null,
+        },
+        brightness: {
+          type: Sdn.ValueType.EMPTY,
+          value: null,
+        },
+        opacity: {
+          type: Sdn.ValueType.EMPTY,
+          value: null,
+        },
+      },
+    ],
     border: {
-      preset: { type: Sdn.ValueType.EMPTY, value: null },
-      style: { type: Sdn.ValueType.EMPTY, value: null },
-      color: { type: Sdn.ValueType.EMPTY, value: null },
-      brightness: { type: Sdn.ValueType.EMPTY, value: null },
-      width: { type: Sdn.ValueType.EMPTY, value: null },
-      opacity: { type: Sdn.ValueType.EMPTY, value: null },
-      topStyle: { type: Sdn.ValueType.EMPTY, value: null },
-      topColor: { type: Sdn.ValueType.EMPTY, value: null },
-      topWidth: { type: Sdn.ValueType.EMPTY, value: null },
-      topOpacity: { type: Sdn.ValueType.EMPTY, value: null },
-      topBrightness: { type: Sdn.ValueType.EMPTY, value: null },
-      rightStyle: { type: Sdn.ValueType.EMPTY, value: null },
-      rightColor: { type: Sdn.ValueType.EMPTY, value: null },
-      rightWidth: { type: Sdn.ValueType.EMPTY, value: null },
-      rightOpacity: { type: Sdn.ValueType.EMPTY, value: null },
-      rightBrightness: { type: Sdn.ValueType.EMPTY, value: null },
-      bottomStyle: { type: Sdn.ValueType.EMPTY, value: null },
-      bottomColor: { type: Sdn.ValueType.EMPTY, value: null },
-      bottomWidth: { type: Sdn.ValueType.EMPTY, value: null },
-      bottomOpacity: { type: Sdn.ValueType.EMPTY, value: null },
-      bottomBrightness: { type: Sdn.ValueType.EMPTY, value: null },
-      leftStyle: { type: Sdn.ValueType.EMPTY, value: null },
-      leftColor: { type: Sdn.ValueType.EMPTY, value: null },
-      leftWidth: { type: Sdn.ValueType.EMPTY, value: null },
-      leftOpacity: { type: Sdn.ValueType.EMPTY, value: null },
-      leftBrightness: { type: Sdn.ValueType.EMPTY, value: null },
+      preset: {
+        type: Sdn.ValueType.THEME_CATEGORICAL,
+        value: "@border.none",
+      },
+      style: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
+      color: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
+      width: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
+      brightness: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
+      opacity: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
+      collapse: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
+    },
+    borderTop: {
+      preset: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
+      style: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
+      color: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
+      width: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
+      brightness: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
+      opacity: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
+      collapse: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
+    },
+    borderRight: {
+      preset: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
+      style: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
+      color: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
+      width: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
+      brightness: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
+      opacity: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
+      collapse: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
+    },
+    borderBottom: {
+      preset: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
+      style: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
+      color: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
+      width: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
+      brightness: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
+      opacity: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
+      collapse: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
+    },
+    borderLeft: {
+      preset: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
+      style: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
+      color: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
+      width: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
+      brightness: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
+      opacity: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
+      collapse: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
     },
     corners: {
-      topLeft: { type: Sdn.ValueType.EMPTY, value: null },
-      topRight: { type: Sdn.ValueType.EMPTY, value: null },
-      bottomLeft: { type: Sdn.ValueType.EMPTY, value: null },
-      bottomRight: { type: Sdn.ValueType.EMPTY, value: null },
+      topLeft: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
+      topRight: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
+      bottomLeft: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
+      bottomRight: {
+        type: Sdn.ValueType.EMPTY,
+        value: null,
+      },
     },
-    // TYPOGRAPHY
-    // GRADIENTS
-    // EFFECTS
-    shadow: {
-      preset: { type: Sdn.ValueType.EMPTY, value: null },
-      offsetX: { type: Sdn.ValueType.EMPTY, value: null },
-      offsetY: { type: Sdn.ValueType.EMPTY, value: null },
-      color: { type: Sdn.ValueType.EMPTY, value: null },
-      brightness: { type: Sdn.ValueType.EMPTY, value: null },
-      blur: { type: Sdn.ValueType.EMPTY, value: null },
-      spread: { type: Sdn.ValueType.EMPTY, value: null },
-      opacity: { type: Sdn.ValueType.EMPTY, value: null },
-    },
+    shadow: [
+      {
+        preset: {
+          type: Sdn.ValueType.THEME_CATEGORICAL,
+          value: "@shadow.none",
+        },
+        offsetX: {
+          type: Sdn.ValueType.EMPTY,
+          value: null,
+        },
+        offsetY: {
+          type: Sdn.ValueType.EMPTY,
+          value: null,
+        },
+        blur: {
+          type: Sdn.ValueType.EMPTY,
+          value: null,
+        },
+        color: {
+          type: Sdn.ValueType.EMPTY,
+          value: null,
+        },
+        brightness: {
+          type: Sdn.ValueType.EMPTY,
+          value: null,
+        },
+        opacity: {
+          type: Sdn.ValueType.EMPTY,
+          value: null,
+        },
+        spread: {
+          type: Sdn.ValueType.EMPTY,
+          value: null,
+        },
+      },
+    ],
+  },
+  default: {
+    children: [
+      {
+        component: Seldon.ComponentId.TEXT,
+        overrides: {
+          content: {
+            type: Sdn.ValueType.EXACT,
+            value: "Left status",
+          },
+          align: {
+            type: Sdn.ValueType.OPTION,
+            value: Sdn.Align.CENTER_LEFT,
+          },
+          color: {
+            type: Sdn.ValueType.COMPUTED,
+            value: {
+              function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+              input: {
+                basedOn: "#parent.background.color",
+              },
+            },
+          },
+          font: {
+            preset: {
+              type: Sdn.ValueType.THEME_CATEGORICAL,
+              value: "@font.code",
+            },
+            family: {
+              type: Sdn.ValueType.EMPTY,
+              value: null,
+            },
+            style: {
+              type: Sdn.ValueType.EMPTY,
+              value: null,
+            },
+            weight: {
+              type: Sdn.ValueType.EMPTY,
+              value: null,
+            },
+            size: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@fontSize.xsmall",
+            },
+            lineHeight: {
+              type: Sdn.ValueType.EMPTY,
+              value: null,
+            },
+            textCase: {
+              type: Sdn.ValueType.EMPTY,
+              value: null,
+            },
+          },
+        },
+      },
+      {
+        component: Seldon.ComponentId.TEXT,
+        overrides: {
+          content: {
+            type: Sdn.ValueType.EXACT,
+            value: "Middle status",
+          },
+          align: {
+            type: Sdn.ValueType.OPTION,
+            value: Sdn.Align.CENTER,
+          },
+          color: {
+            type: Sdn.ValueType.COMPUTED,
+            value: {
+              function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+              input: {
+                basedOn: "#parent.background.color",
+              },
+            },
+          },
+          font: {
+            preset: {
+              type: Sdn.ValueType.THEME_CATEGORICAL,
+              value: "@font.code",
+            },
+            family: {
+              type: Sdn.ValueType.EMPTY,
+              value: null,
+            },
+            style: {
+              type: Sdn.ValueType.EMPTY,
+              value: null,
+            },
+            weight: {
+              type: Sdn.ValueType.EMPTY,
+              value: null,
+            },
+            size: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@fontSize.xsmall",
+            },
+            lineHeight: {
+              type: Sdn.ValueType.EMPTY,
+              value: null,
+            },
+            textCase: {
+              type: Sdn.ValueType.EMPTY,
+              value: null,
+            },
+          },
+        },
+      },
+      {
+        component: Seldon.ComponentId.TEXT,
+        overrides: {
+          content: {
+            type: Sdn.ValueType.EXACT,
+            value: "Right status",
+          },
+          align: {
+            type: Sdn.ValueType.OPTION,
+            value: Sdn.Align.CENTER_RIGHT,
+          },
+          color: {
+            type: Sdn.ValueType.COMPUTED,
+            value: {
+              function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+              input: {
+                basedOn: "#parent.background.color",
+              },
+            },
+          },
+          font: {
+            preset: {
+              type: Sdn.ValueType.THEME_CATEGORICAL,
+              value: "@font.code",
+            },
+            family: {
+              type: Sdn.ValueType.EMPTY,
+              value: null,
+            },
+            style: {
+              type: Sdn.ValueType.EMPTY,
+              value: null,
+            },
+            weight: {
+              type: Sdn.ValueType.EMPTY,
+              value: null,
+            },
+            size: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@fontSize.xsmall",
+            },
+            lineHeight: {
+              type: Sdn.ValueType.EMPTY,
+              value: null,
+            },
+            textCase: {
+              type: Sdn.ValueType.EMPTY,
+              value: null,
+            },
+          },
+        },
+      },
+    ],
   },
 } as const satisfies ComponentSchema
 

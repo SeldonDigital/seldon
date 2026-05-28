@@ -1,6 +1,5 @@
 import { ValueType } from "../../../properties"
-import { Value } from "../../../properties/types/value"
-import { ThemeValue } from "../../../properties/types/value-theme"
+import { ThemeValue, Value } from "../../../properties/types"
 import { isCompoundValue } from "../compound/is-compound-value"
 
 /**

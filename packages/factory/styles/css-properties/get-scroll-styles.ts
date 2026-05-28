@@ -17,7 +17,7 @@ export function getScrollStyles({
   }
 
   // Handle preset values
-  if (scroll.type === ValueType.PRESET) {
+  if (scroll.type === ValueType.OPTION) {
     if (scroll.value === "none") {
       styles.overflow = "hidden"
     } else if (scroll.value === "horizontal") {

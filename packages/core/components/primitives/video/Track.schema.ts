@@ -18,9 +18,14 @@ export const schema = {
   level: Seldon.ComponentLevel.PRIMITIVE,
   icon: Seldon.ComponentIcon.INPUT,
   properties: {
-    // This is a basic schema - developers will expand it as needed
-    source: { type: Sdn.ValueType.EMPTY, value: null },
-    content: { type: Sdn.ValueType.EMPTY, value: null },
+    content: {
+      type: Sdn.ValueType.EMPTY,
+      value: null,
+    },
+    source: {
+      type: Sdn.ValueType.EMPTY,
+      value: null,
+    },
   },
 } as const satisfies ComponentSchema
 

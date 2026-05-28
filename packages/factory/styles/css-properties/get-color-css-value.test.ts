@@ -116,7 +116,7 @@ describe("getColorCSSValue", () => {
       },
       theme: testTheme,
     })
-    expect(result).toBe("hsl(0 0% 15%)")
+    expect(result).toBe("hsl(0 0% 0%)")
   })
 
   it("should return theme color with brightness adjustment", () => {
@@ -131,7 +131,7 @@ describe("getColorCSSValue", () => {
       },
       theme: testTheme,
     })
-    expect(result).toBe("hsl(0 0% 32%)")
+    expect(result).toBe("hsl(0 0% 20%)")
   })
 
   it("should return empty string for empty color", () => {

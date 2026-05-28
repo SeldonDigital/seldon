@@ -3,24 +3,18 @@ import { Target } from "./use-target"
 import { useTool } from "./use-tool"
 
 export type DialogType =
-  | "sketch"
-  | "suggest"
   | "add-board"
   | "component"
   | "image-upload"
   | null
 
 type OpenDialogArgs =
-  | [activeDialog: "sketch", target: Target]
-  | [activeDialog: "suggest", target: Target]
   | [activeDialog: "add-board", target?: undefined]
   | [activeDialog: "component", target?: Target]
   | [activeDialog: "image-upload", target?: undefined]
   | [activeDialog: null, target?: undefined]
 
 type ActiveDialog =
-  | { activeDialog: "sketch"; target: Target }
-  | { activeDialog: "suggest"; target: Target }
   | { activeDialog: "add-board"; target?: undefined }
   | { activeDialog: "component"; target?: Target }
   | { activeDialog: "image-upload"; target?: undefined }
@@ -36,12 +30,6 @@ const useStore = create<DialogState>((set) => ({
   target: undefined,
   openDialog: (...args: OpenDialogArgs) => {
     switch (args[0]) {
-      case "sketch":
-        set({ activeDialog: args[0], target: args[1] })
-        break
-      case "suggest":
-        set({ activeDialog: args[0], target: args[1] })
-        break
       case "component":
         set({ activeDialog: args[0], target: args[1] })
         break
@@ -60,17 +48,30 @@ const useStore = create<DialogState>((set) => ({
 }))
 
 export function useDialog() {
-  const { activeDialog, openDialog, closeDialog, target } = useStore()
+  const store = useStore()
   const { setActiveTool } = useTool()
 
+  const target =
+    store.activeDialog !== null && store.activeDialog === "component"
+      ? (
+          store.activeDialog as unknown as {
+            activeDialog: "component"
+            target?: Target
+          }
+        ).target
+      : undefined
+
   return {
-    activeDialog,
-    openDialog,
+    activeDialog: store.activeDialog,
+    openDialog: store.openDialog,
     closeDialog: () => {
-      if (activeDialog !== "image-upload") {
+      if (
+        store.activeDialog !== "image-upload" &&
+        store.activeDialog !== null
+      ) {
         setActiveTool("select")
       }
-      closeDialog()
+      store.closeDialog()
     },
     target,
   }

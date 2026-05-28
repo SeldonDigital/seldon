@@ -1,5 +1,3 @@
-import * as compoundProperties from "../../helpers/properties/compound-properties"
-import { Orientation, Unit, ValueType } from "../../index"
 import * as Sdn from "../../properties"
 import * as Seldon from "../constants"
 import { ComponentExport, ComponentSchema } from "../types"
@@ -11,51 +9,92 @@ export const schema = {
   tags: ["screen"],
   level: Seldon.ComponentLevel.SCREEN,
   icon: Seldon.ComponentIcon.STUB,
-  restrictions: {
-    addChildren: true,
-    reorderChildren: true,
-  },
   properties: {
-    background: compoundProperties.background,
-    gradient: compoundProperties.gradient,
-    direction: { type: ValueType.EMPTY, value: null },
-    orientation: {
-      type: ValueType.PRESET,
-      value: Orientation.VERTICAL,
+    screenWidth: {
+      type: Sdn.ValueType.EXACT,
+      value: {
+        value: 600,
+        unit: Sdn.Unit.PX,
+      },
     },
-    align: { type: ValueType.EMPTY, value: null },
-    gap: {
-      type: ValueType.THEME_ORDINAL,
-      value: "@gap.comfortable",
+    screenHeight: {
+      type: Sdn.ValueType.EXACT,
+      value: {
+        value: 600,
+        unit: Sdn.Unit.PX,
+      },
+    },
+    direction: {
+      type: Sdn.ValueType.EMPTY,
+      value: null,
+    },
+    orientation: {
+      type: Sdn.ValueType.OPTION,
+      value: Sdn.Orientation.VERTICAL,
+    },
+    align: {
+      type: Sdn.ValueType.EMPTY,
+      value: null,
     },
     padding: {
       top: {
-        type: ValueType.THEME_ORDINAL,
+        type: Sdn.ValueType.THEME_ORDINAL,
         value: "@padding.compact",
       },
       right: {
-        type: ValueType.THEME_ORDINAL,
+        type: Sdn.ValueType.THEME_ORDINAL,
         value: "@padding.compact",
       },
       bottom: {
-        type: ValueType.THEME_ORDINAL,
+        type: Sdn.ValueType.THEME_ORDINAL,
         value: "@padding.compact",
       },
       left: {
-        type: ValueType.THEME_ORDINAL,
+        type: Sdn.ValueType.THEME_ORDINAL,
         value: "@padding.compact",
       },
     },
-    screenWidth: {
-      type: ValueType.EXACT,
-      value: { value: 600, unit: Unit.PX },
+    gap: {
+      type: Sdn.ValueType.THEME_ORDINAL,
+      value: "@gap.comfortable",
     },
-    screenHeight: {
-      type: ValueType.EXACT,
-      value: { value: 600, unit: Unit.PX },
-    },
+    background: [
+      {
+        preset: {
+          type: Sdn.ValueType.THEME_CATEGORICAL,
+          value: "@background.none",
+        },
+        image: { type: Sdn.ValueType.EMPTY, value: null },
+        position: { type: Sdn.ValueType.EMPTY, value: null },
+        size: { type: Sdn.ValueType.EMPTY, value: null },
+        repeat: { type: Sdn.ValueType.EMPTY, value: null },
+        color: { type: Sdn.ValueType.EMPTY, value: null },
+        blendMode: { type: Sdn.ValueType.EMPTY, value: null },
+        filter: { type: Sdn.ValueType.EMPTY, value: null },
+        brightness: { type: Sdn.ValueType.EMPTY, value: null },
+        opacity: { type: Sdn.ValueType.EMPTY, value: null },
+      },
+    ],
+    gradient: [
+      {
+        preset: {
+          type: Sdn.ValueType.THEME_CATEGORICAL,
+          value: "@gradient.none",
+        },
+        gradientType: { type: Sdn.ValueType.EMPTY, value: null },
+        angle: { type: Sdn.ValueType.EMPTY, value: null },
+        startColor: { type: Sdn.ValueType.EMPTY, value: null },
+        startOpacity: { type: Sdn.ValueType.EMPTY, value: null },
+        startBrightness: { type: Sdn.ValueType.EMPTY, value: null },
+        startPosition: { type: Sdn.ValueType.EMPTY, value: null },
+        endColor: { type: Sdn.ValueType.EMPTY, value: null },
+        endOpacity: { type: Sdn.ValueType.EMPTY, value: null },
+        endBrightness: { type: Sdn.ValueType.EMPTY, value: null },
+        endPosition: { type: Sdn.ValueType.EMPTY, value: null },
+      },
+    ],
   },
-  children: [],
+  default: { children: [] },
 } as const satisfies ComponentSchema
 
 export const exportConfig: ComponentExport = {

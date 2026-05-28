@@ -1,24 +1,30 @@
 /**
- * Compound value types - properties with different type sub-properties (background, font, border)
+ * Untagged objects that appear as the compound branch of {@link Value}.
+ * Border and font shapes match the full stored object on `Properties` for those keys.
+ * Background, gradient, and shadow shapes match one layer inside the node's array, not the whole array.
  */
 import {
-  BackgroundValue,
-  BorderValue,
-  FontValue,
-  GradientValue,
-  ShadowValue,
+  BackgroundLayer,
+  BoardCompound,
+  BorderCompound,
+  FontCompound,
+  GradientCompound,
+  ShadowCompound,
 } from "../values"
 
-export type CompoundValue =
-  // APPEARANCE
-  | BackgroundValue // Background (color, image, position, size, repeat) - compound
-  | BorderValue // Border (width, style, color, opacity) - compound
+/** One stored border, font, or board facet map. */
+export type ObjectFacetCompoundValue =
+  | BorderCompound
+  | FontCompound
+  | BoardCompound
 
-  // TYPOGRAPHY
-  | FontValue // Font (family, size, weight, style, lineHeight) - compound
+/** One layer in a background, gradient, or shadow list. */
+export type PaintStackLayerValue =
+  | BackgroundLayer
+  | GradientCompound
+  | ShadowCompound
 
-  // GRADIENTS
-  | GradientValue // Gradient (type, angle, stops) - compound
-
-  // EFFECTS
-  | ShadowValue // Shadow (offset, blur, spread, color, opacity) - compound
+/** Union of facet maps and single paint layers for the compound branch of {@link Value}. */
+export type CompoundBranchPayload =
+  | ObjectFacetCompoundValue
+  | PaintStackLayerValue

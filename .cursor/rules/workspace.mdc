@@ -1,0 +1,85 @@
+---
+description: Seldon workspace file format conventions
+alwaysApply: true
+---
+
+## Seldon Workspace
+
+Workspaces are serialized design files. They store catalog rows, node entries, theme entries, and resource entries as flat maps. Runtime reducers and services may use helper shapes, but `packages/core/workspace/WORKSPACE.md` is the canonical reference for the saved JSON format.
+
+Use `packages/core/workspace/WORKSPACE.md` as the source for field names, id patterns, referential integrity, and migration behavior.
+
+### Top-Level Shape
+
+Serialized workspaces use these top-level keys in this order:
+
+1. `metadata`
+2. `components`
+3. `nodes`
+4. `themes`
+5. `font-collections`
+6. `icon-sets`
+7. `media`
+
+`components` is the catalog row index. It does not hold node properties directly. Rows point to entries in `nodes`, `themes`, `font-collections`, `icon-sets`, or `media`.
+
+### Catalog Rows
+
+`components` rows may have these `type` values:
+
+- `component`
+- `playground`
+- `theme`
+- `font-collection`
+- `icon-set`
+- `media`
+
+Component and playground rows reference `nodes`. Theme rows reference `themes`. Resource rows reference their matching resource map.
+
+The first item in every row's `variants` list is the default variant. Default rows must stay aligned with the catalog. Change the shipped default through `overrides`, not by changing default structure.
+
+### Nodes
+
+`nodes` is a flat map for component and playground nodes only. It does not store themes, icon sets, font collections, or media.
+
+Node entries use:
+
+- `type`: `"default"`, `"variant"`, or `"instance"`
+- `template`: `catalog:{ComponentId}` or `node:{nodeId}`
+- `overrides`: property values layered over the template
+- `theme`: a `ThemeInstanceId` or `null`
+
+Default nodes use `template: catalog:{ComponentId}`. Variant and instance nodes may use `template: node:{nodeId}`. Instance nodes may also use `template: catalog:{ComponentId}` when they point straight to a catalog schema.
+
+Only write property keys in `overrides` when the referenced template exposes those properties. Unknown override keys are ignored by merge logic.
+
+### Themes
+
+`themes` is a flat map for theme entries.
+
+Theme entries use:
+
+- `type`: `"default"` or `"variant"`
+- `template`: `catalog:{ThemeTemplateId}` or `theme:{themeId}`
+- `overrides`: token values layered over the template
+
+Default themes use `template: catalog:{ThemeTemplateId}`. Variant themes use `template: theme:{themeId}`.
+
+### Integrity Rules
+
+When editing workspace code or docs:
+
+- Keep catalog row `variants` references in the map required by the row `type`.
+- Use `children` only for `component` and `playground` row trees.
+- Keep theme, font collection, icon set, and media `variants` entries as `{ "id" }` only.
+- Keep template references in `{prefix}:{suffix}` form.
+- Reject template prefixes that are not valid for the entry type.
+- Keep component and playground child graphs acyclic.
+- Keep theme template graphs acyclic.
+- Keep top-level map keys unique.
+
+### Naming And Migration
+
+Use camelCase catalog ids and component keys. Use id patterns from `WORKSPACE.md`, such as `component-{componentKey}-{suffix}`, `playground-{componentKey}-{suffix}`, and `theme-{componentKey}-{suffix}`.
+
+`metadata.version` is the migration counter. It is separate from the file format specification version. Migrations live in `packages/core/workspace/middleware/migration/migrations/`.

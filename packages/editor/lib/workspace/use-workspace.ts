@@ -1,16 +1,14 @@
-import { useAddToast } from "@components/toaster/use-add-toast"
-import { useDebugMode } from "@lib/hooks/use-debug-mode"
-import { setIsLocalWorkspaceDirty } from "@lib/project/hooks/use-workspace-sync-status"
+"use client"
+
 import { useCallback } from "react"
-
 import { Action, invariant } from "@seldon/core/index"
-import { WorkspaceValidationError } from "@seldon/core/workspace/middleware/validation"
-import { coreReducer } from "@seldon/core/workspace/reducers/core/reducer"
-
+import { WorkspaceValidationError } from "@seldon/core/workspace/middleware/validation/validation.middleware"
+import { workspaceReducer } from "@seldon/core/workspace/reducers/reducer"
+import { setIsLocalWorkspaceDirty } from "@lib/project/hooks/use-workspace-sync-status"
+import { useDebugMode } from "@lib/hooks/use-debug-mode"
+import { useAddToast } from "@components/toaster/use-add-toast"
 import { useHistory } from "./use-history"
 import { usePreviewStore } from "./use-preview-store"
-
-const isProduction = import.meta.env.PROD
 
 export function useWorkspace({
   usePreview = true,
@@ -19,7 +17,6 @@ export function useWorkspace({
   const { debugModeEnabled } = useDebugMode()
   const addToast = useAddToast()
 
-  // Cache, update and reset the preview workspace
   const { preview, initialize, update, reset } = usePreviewStore()
 
   const dispatch = useCallback(
@@ -33,17 +30,14 @@ export function useWorkspace({
       }
 
       try {
-        const newState = coreReducer(current, action)
+        const newState = workspaceReducer(current, action)
 
         if (isPreview) {
-          // Update the preview store
           update(newState)
         } else {
-          // Normal dispatch - add to history
           push(newState)
         }
 
-        // Mark the workspace as dirty which will trigger a sync to the server
         setIsLocalWorkspaceDirty(true)
 
         if (debugModeEnabled) {
@@ -56,15 +50,8 @@ export function useWorkspace({
       } catch (error) {
         if (error instanceof WorkspaceValidationError) {
           addToast(error.message)
-        } else {
-          if (error instanceof Error) {
-            addToast(
-              isProduction
-                ? "Unable to save your changes. Our developers have been notified of this issue."
-                : error.message,
-            )
-          }
-
+        } else if (error instanceof Error) {
+          addToast(error.message)
           throw error
         }
       }
@@ -78,12 +65,10 @@ export function useWorkspace({
 
   const commitPreview = useCallback(() => {
     invariant(preview, "Preview is not initialized")
-    // Apply the preview workspace to the actual workspace
     dispatch({
       type: "set_workspace",
       payload: { workspace: preview },
     })
-    // Clear the preview store
     reset()
   }, [dispatch, preview, reset])
 
@@ -91,9 +76,11 @@ export function useWorkspace({
     reset()
   }, [reset])
 
+  const raw = usePreview ? preview || current : current
+
   return {
     dispatch,
-    workspace: usePreview ? preview || current : current,
+    workspace: raw,
     startPreviewSession,
     commitPreview,
     rollbackPreview,

@@ -6,16 +6,17 @@ import {
 } from "../../../../themes/types"
 import { FontStyle, TextCasing } from "../../../values"
 import { EmptyValue } from "../../shared/empty/empty"
-import { TextCaseValue } from "../text-case"
+import { LetterSpacingValue } from "../letter-spacing"
+import { TextCaseValue } from "../text-casing"
 import { FontFamilyValue } from "./font-family"
-import { FontPresetValue } from "./font-preset"
+import type { FontValue } from "./font"
 import { FontSizeValue } from "./font-size"
 import { FontStyleValue } from "./font-style"
 import { FontWeightValue } from "./font-weight"
 import { LineHeightValue } from "./line-height"
 
-export type FontValue = {
-  preset?: (FontPresetValue | EmptyValue) & {
+export type FontCompound = {
+  preset?: (FontValue | EmptyValue) & {
     restrictions?: {
       allowedValues?: ThemeFontKey[]
     }
@@ -50,11 +51,16 @@ export type FontValue = {
       allowedValues?: TextCasing[]
     }
   }
+  letterSpacing?: (LetterSpacingValue | EmptyValue) & {
+    restrictions?: {
+      allowedValues?: string[]
+    }
+  }
 }
 
+export * from "./font"
 export * from "./font-family"
-export * from "./font-preset"
-export * from "./font-size"
 export * from "./font-style"
 export * from "./font-weight"
+export * from "./font-size"
 export * from "./line-height"

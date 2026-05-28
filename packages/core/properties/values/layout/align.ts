@@ -1,7 +1,8 @@
 import { PropertySchema } from "../../types/schema"
 import { EmptyValue } from "../shared/empty/empty"
-import { AlignPresetValue } from "../shared/preset/align"
+import { AlignExactValue, AlignOptionValue } from "../shared/option/align"
 
+/** Preset anchors for where content sits inside its container. */
 export enum Align {
   AUTO = "auto",
   TOP_LEFT = "top-left",
@@ -15,17 +16,18 @@ export enum Align {
   BOTTOM_RIGHT = "bottom-right",
 }
 
-export type AlignValue = EmptyValue | AlignPresetValue
+/** Unset, a freeform exact value, or one named anchor from Align. */
+export type AlignValue = EmptyValue | AlignExactValue | AlignOptionValue
 
 export const alignSchema: PropertySchema = {
   name: "align",
-  description: "Element alignment options",
-  supports: ["empty", "inherit", "exact", "preset"] as const,
+  description: "Anchors content inside the container using named positions.",
+  supports: ["empty", "inherit", "exact", "option"] as const,
   validation: {
     empty: () => true,
     inherit: () => true,
     exact: (value: any) => typeof value === "string" && value.length > 0,
-    preset: (value: any) => Object.values(Align).includes(value),
+    option: (value: any) => Object.values(Align).includes(value),
   },
   presetOptions: () => Object.values(Align),
 }

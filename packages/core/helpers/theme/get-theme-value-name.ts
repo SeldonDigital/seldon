@@ -1,4 +1,6 @@
+import { TokenType } from "../../themes/constants/token-type"
 import { Theme } from "../../themes/types"
+import { formatPresetValue } from "../properties/format-preset-value"
 import { isThemeValueKey } from "../validation/theme"
 import { getThemeOption } from "./get-theme-option"
 
@@ -22,9 +24,21 @@ export function getThemeValueName(key: string, theme: Theme): string {
       return option
     }
 
+    if (
+      typeof option === "object" &&
+      option !== null &&
+      "type" in option &&
+      option.type === TokenType.FAMILY &&
+      "value" in option &&
+      typeof (option as { value: unknown }).value === "string"
+    ) {
+      return (option as { value: string }).value
+    }
+
     // All other theme options have name property
     if (typeof option === "object" && option !== null && "name" in option) {
-      return option.name
+      const name = (option as { name?: string }).name
+      if (typeof name === "string") return name
     }
 
     // Fallback for unexpected option types
@@ -37,13 +51,32 @@ export function getThemeValueName(key: string, theme: Theme): string {
 
 /**
  * Formats raw value names (without @ prefix) into friendly display names
+ * Converts camelCase to PascalCase (e.g., "fontSize" → "FontSize")
  * @param valueName - The raw value name to format
  * @returns Formatted display name
  */
 function formatRawValueName(valueName: string): string {
+  if (!valueName) return valueName
+
+  // Handle malformed theme keys that start with @ but don't have a dot
+  // Preserve them as-is (e.g., "@fontSize" → "@fontSize")
+  if (valueName.startsWith("@")) {
+    return valueName
+  }
+
+  // Handle custom values
   if (valueName.startsWith("custom")) {
     const number = valueName.replace("custom", "")
     return `Custom ${number}`
   }
-  return valueName.charAt(0).toUpperCase() + valueName.slice(1)
+
+  // Convert camelCase to PascalCase (capitalize first letter, keep rest as-is)
+  // e.g., "fontSize" → "FontSize", "lineHeight" → "LineHeight"
+  const camelCaseRegex = /^[a-z]/
+  if (camelCaseRegex.test(valueName)) {
+    return valueName.charAt(0).toUpperCase() + valueName.slice(1)
+  }
+
+  // If already starts with uppercase, return as-is
+  return valueName
 }

@@ -1,19 +1,8 @@
+import { isCompoundCatalogProperty } from "../../../properties/constants/shared/compound-properties"
 import {
   CompoundPropertyKey,
   PropertyKey,
-} from "../../../properties/types/properties"
-
-const COMPOUND_PROPERTY_KEYS: PropertyKey[] = [
-  "background",
-  "border",
-  "corners",
-  "font",
-  "gradient",
-  "margin",
-  "padding",
-  "position",
-  "shadow",
-]
+} from "../../../properties/types/property-keys"
 
 /**
  * Type guard that checks if a property key is a compound property
@@ -24,5 +13,5 @@ const COMPOUND_PROPERTY_KEYS: PropertyKey[] = [
 export function isCompoundProperty(
   key: PropertyKey,
 ): key is CompoundPropertyKey {
-  return COMPOUND_PROPERTY_KEYS.includes(key)
+  return isCompoundCatalogProperty(key)
 }

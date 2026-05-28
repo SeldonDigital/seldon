@@ -1,0 +1,39 @@
+---
+description: TypeScript engineering guidance for Seldon
+alwaysApply: true
+---
+
+## Engineering Guidance
+
+Use the local code first. Follow nearby patterns, public APIs, and domain rules before adding a new abstraction.
+
+### TypeScript
+
+- Prefer named exports and pure functions for shared TypeScript modules.
+- Use classes only when matching existing code or when stateful encapsulation is justified.
+- Use descriptive names. Do not force auxiliary verbs on every variable.
+- Avoid `any` in production code unless the boundary is unknown data, migration, legacy compatibility, or a narrow type escape.
+- Allow enums where they are already part of the public or serialized API. Do not apply a blanket `avoid enums` rule.
+- All comments should be about current behavior, not legacy, deprecated, past behavior, or anything that is not relevant going forward. 
+- Do not add comments that are obvious or referential to markdown files. 
+- Add JSDocs as needed.
+
+### Naming
+
+- Match the local filename convention of the area you are editing.
+- Most general TypeScript modules use lowercase kebab-case, such as `set-node-properties.ts`.
+- Component schema files use `PascalCase.schema.ts`.
+- Service and helper modules keep their existing suffix-based names, such as `theme.service.ts` and `workspace-mutation.helper.ts`.
+- Match exported reducer handler names to their file names in camelCase verb+noun form, such as `set-node-properties.ts` -> `setNodeProperties`.
+- Group workspace reducer handlers by action verb, such as `add/`, `remove/`, `set/`, `reset/`, `insert/`, `move/`, `reorder/`, and `duplicate/`. Use support folders such as `shared/`, `normalize/`, and `stubs/` only when the file is not a direct action handler and matches the existing structure.
+- Avoid `handle*` prefixes for reducer handlers unless nearby code already uses that pattern.
+
+### Change Scope
+
+- Keep edits scoped to the requested behavior.
+- Avoid unrelated refactors, formatting churn, and metadata changes.
+- Add abstractions only when they reduce real duplication or match an established local pattern.
+
+### Framework Guidance
+
+Keep React, Next.js, Web Vitals, image, and URL-state guidance out of this global rule. Add a file-scoped rule for app code if the repo needs one later.

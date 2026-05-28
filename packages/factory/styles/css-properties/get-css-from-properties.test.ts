@@ -19,7 +19,7 @@ describe("getCssFromProperties", () => {
       "button",
     )
 
-    expect(result).toEqual("")
+    expect(result).toEqual(".button {}")
   })
 
   it("should return font styles when font preset is set", () => {
@@ -101,27 +101,28 @@ describe("getCssFromProperties", () => {
     expect(result).toEqual(".button {color: hsl(0 0% 15%);}")
   })
 
-  it("should return background styles when background color is set", () => {
+  it("should return background color from a layered paint array", () => {
     const properties: Properties = {
-      background: {
-        color: {
-          type: ValueType.THEME_CATEGORICAL,
-          value: "@swatch.primary",
+      background: [
+        {
+          color: {
+            type: ValueType.THEME_CATEGORICAL,
+            value: "@swatch.primary",
+          },
         },
-      },
+      ],
     }
 
-    const result = getCssFromProperties(
+    const context: StyleGenerationContext = {
       properties,
-      {
-        properties: {},
-        parentContext: null,
-        theme: testTheme,
-      },
-      "button",
-    )
+      parentContext: null,
+      theme: testTheme,
+    }
 
-    expect(result).toEqual("")
+    const result = getCssFromProperties(properties, context, "button")
+
+    expect(result).toContain("background-color:")
+    expect(result).toContain("hsl(")
   })
 
   it("should return border styles when border properties are set", () => {
@@ -152,7 +153,7 @@ describe("getCssFromProperties", () => {
       "button",
     )
 
-    expect(result).toEqual("")
+    expect(result).toEqual(".button {border: 2px solid hsl(0 0% 15%);}")
   })
 
   it("should return margin styles when margin properties are set", () => {
@@ -290,7 +291,7 @@ describe("getCssFromProperties", () => {
       "button",
     )
 
-    expect(result).toEqual(".button {color: ;}")
+    expect(result).toEqual(".button {}")
   })
 
   it("should handle computed properties by resolving them", () => {

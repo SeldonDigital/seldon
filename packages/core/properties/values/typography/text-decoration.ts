@@ -2,6 +2,7 @@ import { ValueType } from "../../constants"
 import { PropertySchema } from "../../types/schema"
 import { EmptyValue } from "../shared/empty/empty"
 
+/** Line styles drawn on text such as underlines and strike-through. */
 export enum TextDecoration {
   NONE = "none",
   UNDERLINE = "underline",
@@ -9,22 +10,26 @@ export enum TextDecoration {
   LINE_THROUGH = "line-through",
 }
 
-export interface TextDecorationPresetValue {
-  type: ValueType.PRESET
+/** Stores one decoration choice from the enum. */
+export interface TextDecorationOptionValue {
+  type: ValueType.OPTION
   value: TextDecoration
 }
 
-export type TextDecorationValue = EmptyValue | TextDecorationPresetValue
+/** Empty or one named decoration choice. */
+export type TextDecorationValue = EmptyValue | TextDecorationOptionValue
 
+/** Validates stored text decoration values. */
 export const textDecorationSchema: PropertySchema = {
   name: "textDecoration",
-  description: "Text decoration styling",
-  supports: ["empty", "inherit", "exact", "preset"] as const,
+  description: "Sets underlines and similar marks on the text, or none.",
+  supports: ["empty", "inherit", "option"] as const,
   validation: {
     empty: () => true,
     inherit: () => true,
-    exact: (value: any) => typeof value === "string" && value.length > 0,
-    preset: (value: any) => Object.values(TextDecoration).includes(value),
+    option: (value: unknown) =>
+      typeof value === "string" &&
+      (Object.values(TextDecoration) as string[]).includes(value),
   },
   presetOptions: () => Object.values(TextDecoration),
 }

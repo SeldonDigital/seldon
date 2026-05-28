@@ -25,6 +25,7 @@ import {
   isRGBString,
 } from "@seldon/core/helpers/validation"
 import { Theme } from "@seldon/core/themes/types"
+import { debugLog } from "@seldon/core/utils/debug-logger"
 
 /**
  * Retrieves the CSS color value based on the provided color value and theme.
@@ -57,7 +58,7 @@ export function getColorCSSValue({
       : (resolveValue(brightness)?.value.value ?? 0)
 
   switch (resolvedColor.type) {
-    case ValueType.PRESET:
+    case ValueType.OPTION:
       return resolvedColor.value
     case ValueType.EMPTY:
       return ""
@@ -93,8 +94,13 @@ export function getColorCSSValue({
           return HSLObjectToString(correctedHSL, resolvedOpacity)
         } else {
           // Handle invalid color strings gracefully - fall back to transparent
-          console.warn(
-            `Invalid color string: ${resolvedColor.value}. Falling back to transparent.`,
+          debugLog(
+            "Factory",
+            "getColorCSSValue",
+            "Invalid color string, falling back to transparent",
+            {
+              colorValue: resolvedColor.value,
+            },
           )
           return "transparent"
         }
@@ -119,8 +125,14 @@ export function getColorCSSValue({
           )
           return HSLObjectToString(correctedHSL, resolvedOpacity)
         } catch (error) {
-          console.warn(
-            `Failed to process HSL object: ${JSON.stringify(resolvedColor.value)}. Falling back to transparent.`,
+          debugLog(
+            "Factory",
+            "getColorCSSValue",
+            "Failed to process HSL object, falling back to transparent",
+            {
+              hslObject: JSON.stringify(resolvedColor.value),
+              error: error instanceof Error ? error.message : String(error),
+            },
           )
           return "transparent"
         }
@@ -134,16 +146,27 @@ export function getColorCSSValue({
           )
           return LCHObjectToString(correctedLCH, resolvedOpacity)
         } catch (error) {
-          console.warn(
-            `Failed to process LCH object: ${JSON.stringify(resolvedColor.value)}. Falling back to transparent.`,
+          debugLog(
+            "Factory",
+            "getColorCSSValue",
+            "Failed to process LCH object, falling back to transparent",
+            {
+              lchObject: JSON.stringify(resolvedColor.value),
+              error: error instanceof Error ? error.message : String(error),
+            },
           )
           return "transparent"
         }
       }
 
       // Handle invalid exact colors gracefully - fall back to transparent
-      console.warn(
-        `Invalid exact color: ${JSON.stringify(resolvedColor)}. Falling back to transparent.`,
+      debugLog(
+        "Factory",
+        "getColorCSSValue",
+        "Invalid exact color, falling back to transparent",
+        {
+          resolvedColor: JSON.stringify(resolvedColor),
+        },
       )
       return "transparent"
     default:
