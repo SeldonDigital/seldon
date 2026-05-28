@@ -18,7 +18,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "SEE LICENSE IN ./docs/licenses/noncommercial/LICENSE",
+  "license": "SEE LICENSE IN ./license/noncommercial/LICENSE.md",
   "bugs": {
     "url": "https://github.com/SeldonDigital/seldon/issues"
   },

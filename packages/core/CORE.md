@@ -160,23 +160,29 @@ const files = await exportWorkspace(workspace, {
 
 ## Licensing
 
-License and contributor documents live at the **repository root** under [`docs/LICENSES/`](../../docs/LICENSES/README-NOTICE.md) (full tree: `terminus/docs/LICENSES/`). Links in this section resolve from `packages/core/` via `../../docs/…`.
+License and contributor documents live at the repository root under [`license/`](../../license/README.md). Links in this section resolve from `packages/core/` via `../../license/…`.
 
-This project uses a **dual-licensing model**:
+This project uses a **layered licensing model**:
 
-- **Noncommercial Use** → Licensed under the [PolyForm Noncommercial License](../../docs/LICENSES/noncommercial/LICENSE)
-- **Commercial Use** → Requires a paid license. See [Commercial License Options](../../docs/LICENSES/commercial/COMMERCIAL-LICENSE-README.md)
-- **Contributors** → Must follow [Contributing Guidelines](../../docs/LICENSES/contributors/CONTRIBUTING.md) and sign the [Contributor License Agreement](../../docs/LICENSES/contributors/CLA.md)
+- **Repository Access** → Paid fee to access the private GitHub repository. See [REPOSITORY-ACCESS.md](../../license/access/REPOSITORY-ACCESS.md)
+- **Noncommercial Use** → Licensed under the [PolyForm Noncommercial License](../../license/noncommercial/LICENSE.md) after lawful access
+- **Commercial Use** → Requires a separate paid license. See [Commercial License Options](../../license/commercial/COMMERCIAL-LICENSE-README.md)
+- **Contributors** → Must follow [Contributing Guidelines](../../license/contributors/CONTRIBUTING.md) and sign the [Contributor License Agreement](../../license/contributors/CLA.md)
 
 ### Quick Links
 
-- [Noncommercial License (default)](../../docs/LICENSES/noncommercial/LICENSE)
-- [Dual-License Terms](../../docs/LICENSES/noncommercial/DUAL-LICENSE.md)
-- [Commercial License – Overview](../../docs/LICENSES/commercial/COMMERCIAL-LICENSE-README.md)
-- [Commercial license terms (full text)](../../docs/LICENSES/commercial/COMMERCIAL-LICENSE.md) — short-form/long-form **.docx** agreements are not stored in this repo; use the overview link or maintainers for executed templates.
-- [CLA – Contributor License Agreement](../../docs/LICENSES/contributors/CLA.md)
+- [License index](../../license/README.md)
+- [Repository access terms](../../license/access/REPOSITORY-ACCESS.md)
+- [Noncommercial License (default)](../../license/noncommercial/LICENSE.md)
+- [Licensing overview](../../README.md#licensing-overview)
+- [Commercial License – Overview](../../license/commercial/COMMERCIAL-LICENSE-README.md)
+- [Commercial license terms (full text)](../../license/commercial/COMMERCIAL-LICENSE.md)
+- [Commercial license short-form template](../../license/commercial/COMMERCIAL-LICENSE-SHORT-FORM.md)
+- [Commercial license long-form template](../../license/commercial/COMMERCIAL-LICENSE-LONG-FORM.md)
+- [CLA – Contributor License Agreement](../../license/contributors/CLA.md)
+- [Official repository notice](../../license/NOTICE.md)
 
-**Reminder:** If you are using this software in a business, SaaS product, or any commercial context, you **must obtain a commercial license**.
+**Reminder:** Repository access does not grant commercial-use rights. If you use this software in a business, SaaS product, or any commercial context, you **must obtain a commercial license**.
 
 ---
 
