@@ -6,6 +6,10 @@ import { CSSProperties } from "react"
 import { useNodeRect } from "../../hooks/use-node-rect"
 import { getHtmlElementByNodeId } from "../../../canvas/helpers/get-html-element-by-node-id"
 import { calculateNodeRect } from "../../utils/calculate-node-rect"
+import {
+  getHighlightOverlayBox,
+  getWireframeOverlayBox,
+} from "../../utils/canvas-overlay"
 
 export type SelectTrackingProps = {
   nodeId: string
@@ -15,8 +19,8 @@ export type SelectTrackingProps = {
 }
 
 /**
- * Canvas tracking for select mode: dashed wireframes and hover outlines.
- * Solid selection border is rendered by IndicatorSelect.
+ * Canvas tracking for select mode: primary wireframes and charcoal hover outlines.
+ * Selection border is rendered by IndicatorSelect.
  */
 export function SelectTracking({
   nodeId,
@@ -32,7 +36,9 @@ export function SelectTracking({
     height: number
   } | null>(null)
 
-  const showOutline = showWireframe || (isHovered && !isSelected)
+  const isWireframe = showWireframe && !isSelected
+  const isHoverHighlight = isHovered && !isSelected && !showWireframe
+  const showOutline = isWireframe || isHoverHighlight
 
   useEffect(() => {
     if (!showOutline) {
@@ -82,16 +88,21 @@ export function SelectTracking({
 
   if (!rect) return null
 
+  const box = isWireframe
+    ? getWireframeOverlayBox(rect)
+    : getHighlightOverlayBox(rect)
+
   const style: CSSProperties = {
-    top: `${rect.top}px`,
-    left: `${rect.left}px`,
-    width: `${rect.width}px`,
-    height: `${rect.height}px`,
+    top: `${box.top}px`,
+    left: `${box.left}px`,
+    width: `${box.width}px`,
+    height: `${box.height}px`,
     position: "absolute",
     pointerEvents: "none",
-    outlineStyle: "dashed",
-    outlineColor: COLORS.primary[500],
-    outlineWidth: 1,
+    boxSizing: box.boxSizing,
+    borderStyle: "dashed",
+    borderColor: isWireframe ? COLORS.primary[500] : COLORS.charcoal[400],
+    borderWidth: box.borderWidth,
     zIndex: 1,
   }
 

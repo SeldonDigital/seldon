@@ -47,7 +47,11 @@ export function CanvasTracking() {
           )
         })}
       {activeTool === "select" && selectedNodeId && (
-        <IndicatorSelect nodeId={selectedNodeId} variant="selection" />
+        <IndicatorSelect
+          nodeId={selectedNodeId}
+          variant="selection"
+          showWireframe={showWireframes}
+        />
       )}
       {activeTool === "component" && hoverState && <InsertTracking />}
     </>
