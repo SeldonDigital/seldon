@@ -1,9 +1,4 @@
-import { Properties, Value } from "@seldon/core"
-import {
-  isLayeredPaintProperty,
-  type LayeredPaintKey,
-  type PropertyKey,
-} from "@seldon/core/properties/types/property-keys"
+import { type LayeredPaintKey } from "@seldon/core/properties/types/property-keys"
 
 export const LAYERED_PAINT_LAYER_INDEX = "0"
 
@@ -40,19 +35,8 @@ export function parsePropertyPath(path: string): ParsedPropertyPath {
   return { kind: "top-level", key: path }
 }
 
-export function isLayeredFacetPath(path: string): boolean {
-  return parsePropertyPath(path).kind === "layered-facet"
-}
-
 export function layeredFacetPath(root: LayeredPaintKey, facet: string): string {
   return `${root}.${LAYERED_PAINT_LAYER_INDEX}.${facet}`
-}
-
-export function getLayeredFacetPaths(
-  root: LayeredPaintKey,
-  facets: string[],
-): string[] {
-  return facets.map((facet) => layeredFacetPath(root, facet))
 }
 
 export function getCompoundLayerValue(
@@ -69,19 +53,6 @@ export function getCompoundLayerValue(
   return value as Record<string, unknown>
 }
 
-export function getLayeredWritePayload(
-  root: LayeredPaintKey,
-  existing: unknown,
-  facet: string,
-  value: Value,
-): Properties {
-  const layer = {
-    ...(getCompoundLayerValue(existing) ?? {}),
-    [facet]: value,
-  }
-  return { [root]: [layer] } as Properties
-}
-
 /** Compound root key for core preset helpers (e.g. `background` from `background.0.preset`). */
 export function getParentPathForPreset(presetPath: string): string {
   const parsed = parsePropertyPath(presetPath)
@@ -92,19 +63,6 @@ export function getParentPathForPreset(presetPath: string): string {
     return parsed.root
   }
   return presetPath.replace(/\.preset$/, "")
-}
-
-export function isPresetPropertyPath(path: string): boolean {
-  return path.endsWith(".preset")
-}
-
-export function getLayeredRootFromPath(path: string): LayeredPaintKey | null {
-  const parsed = parsePropertyPath(path)
-  if (parsed.kind === "layered-facet") return parsed.root
-  if (parsed.kind === "top-level" && isLayeredPaintRoot(parsed.key)) {
-    return parsed.key
-  }
-  return null
 }
 
 export function childPathsUnderCompoundParent(
@@ -120,10 +78,4 @@ export function childPathsUnderCompoundParent(
     )
   }
   return segments[0] === parentKey && segments.length === 2
-}
-
-export function isLayeredPaintPropertyKey(
-  propertyKey: string,
-): propertyKey is PropertyKey {
-  return isLayeredPaintProperty(propertyKey as PropertyKey)
 }

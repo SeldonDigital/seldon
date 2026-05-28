@@ -1,4 +1,4 @@
-import { COLORS } from "@lib/ui/colors"
+import { COLORS } from "@lib/utils/colors"
 import { useNodeRect } from "../../hooks/use-node-rect"
 import {
   getHighlightOverlayBox,

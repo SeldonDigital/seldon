@@ -35,7 +35,7 @@ import { LoadEditorIcons } from "@components/LoadEditorIcons"
 import { useImageUploadPanel } from "@components/floating-panels/image-upload-panel/use-upload-image-panel"
 import { IconTokenValue } from "@components/icons/values/Token"
 import { IconCustomColorValue } from "../../../seldon/custom-icons"
-import { serializeValue } from "@lib/properties-ui/serialize-value"
+import { serializeValue } from "@lib/properties/serialize-value"
 import { ThemeSwatches } from "@components/ui/ThemeSwatches"
 import { useThemes } from "@lib/themes/hooks/use-themes"
 import { Combobox } from "./controls/combobox/Combobox"
@@ -56,7 +56,7 @@ import {
   isLayeredPaintRoot,
   layeredFacetPath,
   parsePropertyPath,
-} from "@lib/properties-ui/property-paths"
+} from "@lib/properties/property-paths"
 import type { LayeredPaintKey } from "@seldon/core/properties/types/property-keys"
 import { updateProperty } from "./helpers/property-update-handler"
 import {

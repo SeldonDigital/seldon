@@ -1,4 +1,4 @@
-import { COLORS } from "@lib/ui/colors"
+import { COLORS } from "@lib/utils/colors"
 import { useMemo } from "react"
 import { CSSProperties } from "react"
 import { Instance, Variant } from "@seldon/core"

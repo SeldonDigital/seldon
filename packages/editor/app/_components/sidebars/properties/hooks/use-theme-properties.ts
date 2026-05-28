@@ -22,10 +22,12 @@ import {
   Unit,
   ValueType,
 } from "@seldon/core"
-import { toHSLString } from "@seldon/core/helpers/color/convert-color"
-import { getHSLComponents } from "@lib/properties-ui/get-hsl-components"
-import { serializeColor } from "@lib/properties-ui/serialize-color"
-import { serializeValue } from "@lib/properties-ui/serialize-value"
+import {
+  parseHSLString,
+  toHSLString,
+} from "@seldon/core/helpers/color/convert-color"
+import { serializeColor } from "@lib/properties/serialize-color"
+import { serializeValue } from "@lib/properties/serialize-value"
 import { useThemeEntryEditor } from "@lib/themes/use-theme-entry-editor"
 import type { EntryThemeId } from "@seldon/core/workspace/types"
 import { FlatProperty } from "../helpers/properties-data"
@@ -86,7 +88,7 @@ export function useThemeProperties(themeEntryId: EntryThemeId | null) {
 
       // Color properties
       if (key === "color.baseColor") {
-        const hsl = getHSLComponents(toHSLString(newValue))
+        const hsl = parseHSLString(toHSLString(newValue))
         setBaseColor(hsl)
         return
       }

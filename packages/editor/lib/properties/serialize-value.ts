@@ -229,7 +229,7 @@ function getDefaultUnitForProperty(propertyKey: string): Unit {
  * Check if a property key is a color-related property
  * Uses the core properties system for authoritative color property detection
  */
-export function isColorProperty(propertyKey: string): boolean {
+function isColorProperty(propertyKey: string): boolean {
   // Handle sub-properties by checking the full path
   const actualProperty = propertyKey.includes(".")
     ? propertyKey.split(".").pop()!

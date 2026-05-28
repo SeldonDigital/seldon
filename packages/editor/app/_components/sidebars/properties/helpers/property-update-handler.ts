@@ -2,7 +2,7 @@
  * Handles property value updates (non-computed values)
  */
 import { Properties, Value } from "@seldon/core"
-import { parsePropertyPath } from "@lib/properties-ui/property-paths"
+import { parsePropertyPath } from "@lib/properties/property-paths"
 import { FlatProperty } from "./properties-data"
 import {
   getSubPropertyKeys,

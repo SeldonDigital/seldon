@@ -1,5 +1,5 @@
 import { getPropertyCategory } from "@seldon/core/properties/schemas"
-import { parsePropertyPath } from "@lib/properties-ui/property-paths"
+import { parsePropertyPath } from "@lib/properties/property-paths"
 // Import custom icons from seldon/custom-icons
 import {
   IconCustomAlignValue,

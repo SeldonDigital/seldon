@@ -3,6 +3,9 @@ export { applyBrightness, convertAndApplyBrightness } from "./apply-brightness"
 export { isDarkBackgroundColor, getContrastRatio } from "./contrast"
 export {
   toHSLString,
+  parseHSLString,
+  parseRGBString,
+  parseLCHString,
   hexToHSLString,
   hexToHSLObject,
   rgbToHSL,

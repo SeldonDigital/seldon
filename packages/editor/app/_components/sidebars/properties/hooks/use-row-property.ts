@@ -12,7 +12,7 @@ import { getUnitsForProperty } from "@seldon/core/properties"
 import {
   childPathsUnderCompoundParent,
   parsePropertyPath,
-} from "@lib/properties-ui/property-paths"
+} from "@lib/properties/property-paths"
 import { useObjectProperties } from "@lib/workspace/use-object-properties"
 import { FlatProperty } from "../helpers/properties-data"
 import { ICON_MAP } from "../helpers/properties-registry"

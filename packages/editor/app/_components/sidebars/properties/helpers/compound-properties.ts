@@ -4,7 +4,7 @@ import { Board, Instance, Variant } from "@seldon/core/workspace/types"
 import {
   getCompoundLayerValue,
   isLayeredPaintRoot,
-} from "@lib/properties-ui/property-paths"
+} from "@lib/properties/property-paths"
 import { getPropertiesSubjectId } from "./properties-data"
 import { getParentPropertyKey } from "./property-types"
 

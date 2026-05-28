@@ -1,5 +1,5 @@
 import { Placement } from "@lib/types"
-import { COLORS } from "@lib/ui/colors"
+import { COLORS } from "@lib/utils/colors"
 import { FC } from "react"
 import { CSSProperties } from "react"
 import { useIndentation } from "../../../sidebars/helpers/use-indentation"

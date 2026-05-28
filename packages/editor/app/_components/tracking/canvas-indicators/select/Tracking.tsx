@@ -1,6 +1,6 @@
 "use client"
 
-import { COLORS } from "@lib/ui/colors"
+import { COLORS } from "@lib/utils/colors"
 import { useEffect, useState } from "react"
 import { CSSProperties } from "react"
 import { useNodeRect } from "../../hooks/use-node-rect"

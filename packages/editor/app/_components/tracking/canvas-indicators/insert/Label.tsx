@@ -1,4 +1,4 @@
-import { COLORS } from "@lib/ui/colors"
+import { COLORS } from "@lib/utils/colors"
 import { CSSProperties } from "react"
 import { IconCatalog } from "@components/icons/Catalog"
 

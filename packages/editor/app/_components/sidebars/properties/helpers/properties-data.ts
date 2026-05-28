@@ -38,7 +38,7 @@ import {
   getCompoundLayerValue,
   isLayeredPaintRoot,
   layeredFacetPath,
-} from "@lib/properties-ui/property-paths"
+} from "@lib/properties/property-paths"
 import { getComponentPropertyDefaults } from "@seldon/core/workspace/helpers/components/get-component-property-defaults"
 import { getNodeCatalogComponentId } from "@lib/workspace/node-tree"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"

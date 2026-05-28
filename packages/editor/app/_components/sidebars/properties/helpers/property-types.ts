@@ -1,5 +1,5 @@
 import { getPropertyCategory } from "@seldon/core/properties/schemas"
-import { getParentPathForPreset } from "@lib/properties-ui/property-paths"
+import { getParentPathForPreset } from "@lib/properties/property-paths"
 import { getPropertyRegistryEntry } from "./properties-registry"
 
 /**

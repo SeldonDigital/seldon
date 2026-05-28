@@ -1,4 +1,4 @@
-import { COLORS } from "@lib/ui/colors"
+import { COLORS } from "@lib/utils/colors"
 import { InstanceId, VariantId } from "@seldon/core/index"
 import { useNodeRect } from "../../hooks/use-node-rect"
 import { Label } from "./Label"
