@@ -57,12 +57,12 @@ import {
 import { getPresetOptions } from "@seldon/core/properties/schemas/helpers/property-options"
 import {
   getCatalogKeyForPropertyPath,
+  getInspectorRootPropertyKeys,
   getPropertySchema,
   validatePropertyValue,
 } from "@seldon/core/properties/schemas/helpers"
 import { isComponentEntry } from "@seldon/core/workspace/helpers/components/is-component-entry"
 import { ControlType, getPropertyRegistryEntry } from "./properties-registry"
-import { getAllPropertyKeys } from "./properties-registry-utils"
 import { isCompoundProperty, isShorthandProperty } from "./property-types"
 import {
   createSubPropertyLabel,
@@ -650,9 +650,9 @@ export function flattenNodeProperties(
 
   const schemaPropertyKeys = getSchemaPropertyKeysForSubject(node, workspace)
 
-  // Include ALL properties (both in schema and not in schema)
-  // Properties not in schema will have status "not used"
-  const allPropertyKeys = getAllPropertyKeys()
+  // Iterate the full catalog of top-level inspector rows. Keys not on the subject's
+  // schema get status "not used" and are filtered out unless unused rows are shown.
+  const allPropertyKeys = getInspectorRootPropertyKeys()
 
   for (const propertyKey of allPropertyKeys) {
     const propertyValue = resolvePropertyValueForDisplay(

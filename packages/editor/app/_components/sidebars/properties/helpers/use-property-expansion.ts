@@ -19,7 +19,6 @@ const DEFAULT_REGULAR_CATEGORIES: Record<PropertyCategoryType, boolean> = {
   layout: true,
   appearance: true,
   typography: true,
-  gradients: true,
   effects: true,
   css: true,
 }

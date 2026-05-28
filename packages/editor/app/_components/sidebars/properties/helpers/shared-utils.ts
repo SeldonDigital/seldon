@@ -1,18 +1,4 @@
-import { Theme, ValueType } from "@seldon/core"
-import { getThemeValueName } from "@seldon/core/helpers/theme"
-
-/**
- * Converts theme value names to friendly, sentence-case names
- * @param valueName - The theme value name or key to convert
- * @param theme - Theme object for name lookup (required)
- * @returns Friendly display name for the theme value
- */
-export function getFriendlyThemeValueName(
-  valueName: string,
-  theme: Theme,
-): string {
-  return getThemeValueName(valueName, theme)
-}
+import { ValueType } from "@seldon/core"
 
 /**
  * Extracts the actual property name from a property key (handles sub-properties)

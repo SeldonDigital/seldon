@@ -66,14 +66,3 @@ export function getPropertyLabelStyle(
       : {}),
   }
 }
-
-/**
- * Gets the style object for debug info display
- */
-export function getPropertyDebugInfoStyle(): CSSProperties {
-  return {
-    fontFamily: "var(--sdn-seldon-font-family-primary)",
-    fontSize: "var(--sdn-font-size-xsmall)",
-    marginBottom: "var(--sdn-margin-tight)",
-  }
-}

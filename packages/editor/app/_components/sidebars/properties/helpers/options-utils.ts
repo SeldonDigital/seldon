@@ -8,11 +8,7 @@ import {
 import { isComponentEntry } from "@seldon/core/workspace/helpers/components/is-component-entry"
 import { Board, Instance, Variant } from "@seldon/core/workspace/types"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
-
-export type FlatProperty = {
-  key: string
-  value: unknown
-}
+import { FlatProperty } from "./properties-data"
 
 export type { PropertyPickerOption, PropertyPickerResult }
 

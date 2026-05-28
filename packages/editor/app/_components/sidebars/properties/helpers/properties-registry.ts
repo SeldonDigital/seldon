@@ -722,8 +722,6 @@ const UI_OVERRIDES: PropertyRegistry = {
   },
 }
 
-let __registryMemo: PropertyRegistry | null = null
-
 function mapCategoryToType(
   category?: string,
 ): "atomic" | "compound" | "shorthand" {
@@ -802,45 +800,35 @@ function buildBaseEntry(propertyKey: string): PropertyRegistryEntry {
   return mergeEntry(base, override)
 }
 
-function getPropertyRegistry(): PropertyRegistry {
-  if (__registryMemo) return __registryMemo
-  const result: PropertyRegistry = {}
-  // Seed from UI overrides to keep ordering stable and ensure coverage
-  for (const key of Object.keys(UI_OVERRIDES)) {
-    result[key] = buildBaseEntry(key)
+const __rootEntryCache = new Map<string, PropertyRegistryEntry>()
+
+/**
+ * Builds (and caches) the presentation entry for a top-level property key.
+ * Works for any catalog key, not only those with a `UI_OVERRIDES` row: schema category
+ * supplies the default control and `IconTokenValue` is the default icon.
+ */
+function getRootEntry(rootKey: string): PropertyRegistryEntry {
+  let entry = __rootEntryCache.get(rootKey)
+  if (!entry) {
+    entry = buildBaseEntry(rootKey)
+    __rootEntryCache.set(rootKey, entry)
   }
-  __registryMemo = result
-  return result
-}
-
-// Clear cache to ensure changes take effect
-__registryMemo = null
-
-export const PROPERTY_REGISTRY: PropertyRegistry = getPropertyRegistry()
-
-// Force cache clear for the new changes
-clearPropertyRegistryCache()
-
-export function clearPropertyRegistryCache(): void {
-  __registryMemo = null
+  return entry
 }
 
 export function getPropertyRegistryEntry(
   propertyPath: string,
 ): PropertyRegistryEntry | undefined {
   const parsed = parsePropertyPath(propertyPath)
-  if (parsed.kind === "layered-facet") {
-    return PROPERTY_REGISTRY[parsed.root]?.subProperties?.[parsed.facet]
-  }
-  if (parsed.kind === "facet") {
-    return PROPERTY_REGISTRY[parsed.root]?.subProperties?.[parsed.facet]
+  if (parsed.kind === "layered-facet" || parsed.kind === "facet") {
+    return getRootEntry(parsed.root).subProperties?.[parsed.facet]
   }
 
   const parts = propertyPath.split(".")
-  let current: PropertyRegistryEntry | undefined = PROPERTY_REGISTRY[parts[0]]
+  let current: PropertyRegistryEntry | undefined = getRootEntry(parts[0]!)
 
   for (let i = 1; i < parts.length && current; i++) {
-    current = current.subProperties?.[parts[i]]
+    current = current.subProperties?.[parts[i]!]
   }
 
   return current

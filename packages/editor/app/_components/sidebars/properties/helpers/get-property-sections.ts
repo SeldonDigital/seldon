@@ -2,33 +2,22 @@ import { Board, Instance, Variant, Workspace } from "@seldon/core"
 import { getComponentSchema } from "@seldon/core/components/catalog"
 import { isComponentId } from "@seldon/core/components/constants"
 import { isComponentEntry } from "@seldon/core/workspace/helpers/components/is-component-entry"
+import {
+  PROPERTY_DISPLAY_META,
+  PropertyDisplayCategory,
+  getAllPropertySectionSchemas,
+  getCatalogKeyForPropertyPath,
+} from "@seldon/core/properties/schemas"
 import { getNodeCatalogComponentId } from "@lib/workspace/node-tree"
-import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { FlatProperty } from "./properties-data"
 
-export type PropertyCategoryType =
-  | "attributes"
-  | "layout"
-  | "appearance"
-  | "typography"
-  | "gradients"
-  | "effects"
-  | "css"
+/** Inspector section ids: the core property display categories plus the editor-only CSS block. */
+export type PropertyCategoryType = PropertyDisplayCategory | "css"
 
 export interface PropertySection {
   label: string
   category: PropertyCategoryType
   properties: FlatProperty[] // Main properties only (not sub-properties)
-}
-
-const SECTION_LABELS: Record<PropertyCategoryType, string> = {
-  attributes: "Attributes",
-  layout: "Layout",
-  appearance: "Appearance",
-  typography: "Typography",
-  gradients: "Gradients",
-  effects: "Effects",
-  css: "CSS",
 }
 
 /**
@@ -57,114 +46,64 @@ function getComponentNameForAttributes(
   return node.label
 }
 
-// Property key to category mapping based on PROPERTIES_ORDER.md
-const PROPERTY_CATEGORY_MAP: Record<string, PropertyCategoryType> = {
-  // Attributes
-  content: "attributes",
-  symbol: "attributes",
-  htmlElement: "attributes",
-  wrapperElement: "attributes",
-  inputType: "attributes",
-  cursor: "attributes",
-  board: "attributes",
-
-  // Layout
-  direction: "layout",
-  position: "layout",
-  orientation: "layout",
-  align: "layout",
-  cellAlign: "layout",
-  width: "layout",
-  height: "layout",
-  screenWidth: "layout",
-  screenHeight: "layout",
-  margin: "layout",
-  padding: "layout",
-  gap: "layout",
-  rotation: "layout",
-  wrapChildren: "layout",
-  clip: "layout",
-  columns: "layout",
-  rows: "layout",
-
-  // Appearance
-  color: "appearance",
-  accentColor: "appearance",
-  brightness: "appearance",
-  opacity: "appearance",
-  background: "appearance",
-  border: "appearance",
-  corners: "appearance",
-  borderCollapse: "appearance",
-
-  // Typography
-  font: "typography",
-  textAlign: "typography",
-  textDecoration: "typography",
-  wrapText: "typography",
-  lines: "typography",
-
-  // Gradients
-  gradient: "gradients",
-
-  // Effects
-  shadow: "effects",
-  scroll: "effects",
-  scrollbarStyle: "effects",
+/**
+ * Resolves the inspector section for a top-level property row from core display metadata.
+ * Compound parents resolve through a representative `.preset` facet; unknown keys fall back
+ * to the attributes section.
+ */
+function getSectionForProperty(propertyKey: string): PropertyDisplayCategory {
+  const catalogKey =
+    getCatalogKeyForPropertyPath(propertyKey) ??
+    getCatalogKeyForPropertyPath(`${propertyKey}.preset`)
+  const category = catalogKey
+    ? PROPERTY_DISPLAY_META[catalogKey]?.displayCategory
+    : undefined
+  return category ?? PropertyDisplayCategory.ATTRIBUTES
 }
 
-const CATEGORY_ORDER: PropertyCategoryType[] = [
-  "attributes",
-  "layout",
-  "appearance",
-  "typography",
-  "gradients",
-  "effects",
-  "css",
-]
-
 /**
- * Groups flat properties into sections based on their category.
- * Filters out sub-properties (they'll be rendered as children of their parent properties).
+ * Groups flat properties into sections using core display categories and section order.
+ * Filters out sub-properties (they render as children of their parent properties).
  */
 export function getPropertySections(
   properties: FlatProperty[],
   node?: Variant | Instance | Board,
   workspace?: Workspace,
 ): PropertySection[] {
-  // Filter out sub-properties - they'll be rendered as nested children
   const mainProperties = properties.filter(
     (property) => !property.isSubProperty,
   )
 
-  // Group properties by category
-  const propertiesByCategory = new Map<PropertyCategoryType, FlatProperty[]>()
-
+  const propertiesByCategory = new Map<PropertyDisplayCategory, FlatProperty[]>()
   for (const property of mainProperties) {
-    const category = PROPERTY_CATEGORY_MAP[property.key] || "attributes"
+    const category = getSectionForProperty(property.key)
     if (!propertiesByCategory.has(category)) {
       propertiesByCategory.set(category, [])
     }
     propertiesByCategory.get(category)!.push(property)
   }
 
-  // Convert to sections array in the correct order
   const sections: PropertySection[] = []
-  for (const category of CATEGORY_ORDER) {
-    const categoryProperties = propertiesByCategory.get(category)
-    if (categoryProperties && categoryProperties.length > 0) {
-      // Use component name for "attributes" section if node and workspace are provided
-      let label = SECTION_LABELS[category]
-      if (category === "attributes" && node && workspace) {
-        label = getComponentNameForAttributes(node, workspace)
-      }
-
-      sections.push({
-        label,
-        category,
-        properties: categoryProperties,
-      })
+  for (const sectionSchema of getAllPropertySectionSchemas()) {
+    const categoryProperties = propertiesByCategory.get(sectionSchema.id)
+    if (!categoryProperties || categoryProperties.length === 0) {
+      continue
     }
+
+    let label = sectionSchema.label
+    if (
+      sectionSchema.id === PropertyDisplayCategory.ATTRIBUTES &&
+      node &&
+      workspace
+    ) {
+      label = getComponentNameForAttributes(node, workspace)
+    }
+
+    sections.push({
+      label,
+      category: sectionSchema.id,
+      properties: categoryProperties,
+    })
   }
 
   return sections

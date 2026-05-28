@@ -4,6 +4,7 @@
  */
 
 export { getAllPropertySchemas } from "./get-all-property-schemas"
+export { getInspectorRootPropertyKeys } from "./inspector-roots"
 export { getPropertySchema } from "./get-property-schema"
 export { getPropertySchemasBySection } from "./get-property-schemas-by-section"
 export {

@@ -1,41 +1,20 @@
 import { getPropertyCategory } from "@seldon/core/properties/schemas"
 import { getParentPathForPreset } from "@lib/properties-ui/property-paths"
-import {
-  PROPERTY_REGISTRY,
-  getPropertyRegistryEntry,
-} from "./properties-registry"
+import { getPropertyRegistryEntry } from "./properties-registry"
 
 /**
- * UI-specific property type definitions and utilities
- * Core property type checking is handled by getPropertyCategory from @seldon/core
+ * UI-specific property type definitions and utilities.
+ * Property category checks delegate to `getPropertyCategory` from @seldon/core.
  */
 
 export type PropertyType = "atomic" | "compound" | "shorthand"
-
-export type ShorthandPropertyKey = {
-  [K in keyof typeof PROPERTY_REGISTRY]: ReturnType<
-    typeof getPropertyCategory
-  > extends "shorthand"
-    ? K
-    : never
-}[keyof typeof PROPERTY_REGISTRY]
-
-export type CompoundPropertyKey = {
-  [K in keyof typeof PROPERTY_REGISTRY]: ReturnType<
-    typeof getPropertyCategory
-  > extends "compound"
-    ? K
-    : never
-}[keyof typeof PROPERTY_REGISTRY]
 
 /**
  * Checks if a property key is a shorthand property
  * @param propertyKey - The property key to check
  * @returns True if the property is a shorthand property
  */
-export function isShorthandProperty(
-  propertyKey: string,
-): propertyKey is ShorthandPropertyKey {
+export function isShorthandProperty(propertyKey: string): boolean {
   return getPropertyCategory(propertyKey) === "shorthand"
 }
 
@@ -44,9 +23,7 @@ export function isShorthandProperty(
  * @param propertyKey - The property key to check
  * @returns True if the property is a compound property
  */
-export function isCompoundProperty(
-  propertyKey: string,
-): propertyKey is CompoundPropertyKey {
+export function isCompoundProperty(propertyKey: string): boolean {
   return getPropertyCategory(propertyKey) === "compound"
 }
 
@@ -57,16 +34,6 @@ export function isCompoundProperty(
  */
 export function isPresetProperty(propertyKey: string): boolean {
   return propertyKey.endsWith(".preset")
-}
-
-/**
- * Checks if a property key is either compound or shorthand
- * @param propertyKey - The property key to check
- * @returns True if the property is compound or shorthand
- */
-export function isCompoundOrShorthandProperty(propertyKey: string): boolean {
-  const category = getPropertyCategory(propertyKey)
-  return category === "shorthand" || category === "compound"
 }
 
 /**
@@ -109,15 +76,4 @@ export function shouldUseShorthandMainPropertyBehavior(
  */
 export function shouldUsePresetPropertyBehavior(propertyKey: string): boolean {
   return isPresetProperty(propertyKey)
-}
-
-/**
- * Determines if a property should use compound main property behavior
- * @param propertyKey - The property key to check
- * @returns True if the property is a compound property
- */
-export function shouldUseCompoundMainPropertyBehavior(
-  propertyKey: string,
-): boolean {
-  return isCompoundProperty(propertyKey)
 }
