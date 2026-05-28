@@ -36,7 +36,10 @@ export function UnifiedHeader() {
 
       <div className="flex flex-1 justify-center">
         {appState === "edit" && !isInPreviewMode && (
-          <div className="flex items-center gap-4 border-l border-r border-neutral-800">
+          <div
+            className="flex items-center gap-4 border-l border-r border-neutral-800"
+            style={{ display: "none" }}
+          >
             <Toolbar />
           </div>
         )}

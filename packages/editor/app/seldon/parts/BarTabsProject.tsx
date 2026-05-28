@@ -61,9 +61,9 @@ export function BarTabsProject({
   button2 = sdn.button2,
   icon2 = sdn.icon2,
   label2 = sdn.label2,
-  button3 = sdn.button3,
-  icon3 = sdn.icon3,
-  label3 = sdn.label3,
+  button3,
+  icon3,
+  label3,
   ...props
 }: BarTabsProjectProps) {
   const barTabsProjectClassName = combineClassNames(
@@ -105,28 +105,43 @@ export function BarTabsProject({
     ...label2,
     className: combineClassNames(sdn.label2?.className, label2?.className),
   }
-  const button3Props = {
-    ...sdn.button3,
-    ...button3,
-    className: combineClassNames(sdn.button3?.className, button3?.className),
-  }
-  const icon3Props = {
-    ...sdn.icon3,
-    ...icon3,
-    className: combineClassNames(sdn.icon3?.className, icon3?.className),
-  }
-  const label3Props = {
-    ...sdn.label3,
-    ...label3,
-    className: combineClassNames(sdn.label3?.className, label3?.className),
-  }
+  const button3Props = button3
+    ? {
+        ...button3,
+        className: combineClassNames(
+          "sdn-button sdn-button--9f85",
+          button3.className,
+        ),
+      }
+    : undefined
+  const icon3Props = button3
+    ? {
+        ...icon3,
+        className: combineClassNames(
+          "sdn-icon sdn-icon--fvvj",
+          icon3?.className,
+        ),
+      }
+    : undefined
+  const label3Props = button3
+    ? {
+        htmlElement: "label" as const,
+        ...label3,
+        className: combineClassNames(
+          "sdn-label sdn-label--3dyv",
+          label3?.className,
+        ),
+      }
+    : undefined
 
   return (
     <Frame className={barTabsProjectClassName} {...props}>
       <Button {...buttonProps} icon={iconProps} label={labelProps} />
       {text && <Text {...textProps} />}
       <Button {...button2Props} icon={icon2Props} label={label2Props} />
-      <Button {...button3Props} icon={icon3Props} label={label3Props} />
+      {button3 && button3Props && (
+        <Button {...button3Props} icon={icon3Props} label={label3Props} />
+      )}
     </Frame>
   )
 }
@@ -159,18 +174,6 @@ const sdn: BarTabsProjectProps = {
   },
   label2: {
     children: "Add",
-    htmlElement: "label",
-    className: "sdn-label sdn-label--3dyv",
-  },
-  button3: {
-    className: "sdn-button sdn-button--9f85",
-  },
-  icon3: {
-    icon: "material-bolt",
-    className: "sdn-icon sdn-icon--fvvj",
-  },
-  label3: {
-    children: "Build",
     htmlElement: "label",
     className: "sdn-label sdn-label--3dyv",
   },
