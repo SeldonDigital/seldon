@@ -1,4 +1,5 @@
 ---
+description: Sync catalog.ts and constants.ts from component schema files. Use when invoking @components-catalog or when asked to sync or verify the component catalog.
 alwaysApply: false
 ---
 
