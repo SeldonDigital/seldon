@@ -11,7 +11,8 @@ import { usePreview } from "./use-preview"
 import { useTool } from "./use-tool"
 
 export function useEditorShortcuts() {
-  const { deleteSelection, duplicateSelection } = useAddRemoveCommands()
+  const { addVariant, deleteSelection, duplicateSelection } =
+    useAddRemoveCommands()
   const { moveSelectionDown, moveSelectionUp } = useMoveCommands()
   const { selectOriginalNode, selectVariant } = useSelectCommands()
 
@@ -21,7 +22,7 @@ export function useEditorShortcuts() {
   const { togglePanels, toggleShowSelection, toggleWireframeMode } =
     useEditorConfig()
   const { togglePreviewMode, setDevice, isInPreviewMode } = usePreview()
-  const { activeDialog } = useDialog()
+  const { activeDialog, openDialog } = useDialog()
   const router = useRouter()
 
   // Undo redo
@@ -41,6 +42,17 @@ export function useEditorShortcuts() {
     preventDefault: true,
     enableOnFormTags: true,
   })
+
+  // Add component (opens the add-board dialog) / add variant
+  useHotkeys(
+    "a",
+    () => {
+      openDialog("add-board")
+      setActiveTool("select")
+    },
+    { preventDefault: true },
+  )
+  useHotkeys("shift+a", addVariant, { preventDefault: true })
   useHotkeys("mod+[", moveSelectionUp, {
     preventDefault: true,
   })

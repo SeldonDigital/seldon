@@ -1,4 +1,4 @@
-import { WritableDraft, isDraft, produce } from "immer"
+import { WritableDraft, current, isDraft, produce } from "immer"
 import { ComponentId } from "../../../components/constants"
 import { invariant } from "../../../index"
 import { debugLog } from "../../../utils/debug-logger"
@@ -250,10 +250,9 @@ export class NodeOperationsService {
     return withInstanceAndParentMutation(
       instanceId,
       workspace,
-      (_instance, parent, draft) => {
-        const board = getComponentByNodeId(draft, parent.id)
-        invariant(board, `Board not found for parent ${parent.id}`)
-        removeComponentTreeChild(board, instanceId)
+      (_instance, _parent, draft) => {
+        // `_deleteSubtreeFromDraft` collects the descendant ids and removes the
+        // tree child itself, so the ref must stay in place until it runs.
         this._deleteSubtreeFromDraft(instanceId, draft)
       },
     )
@@ -299,12 +298,6 @@ export class NodeOperationsService {
 
   public deleteVariant(variantId: VariantId, workspace: Workspace): Workspace {
     return withNodeMutation(variantId, workspace, (_variant, draft) => {
-      for (const board of Object.values(draft.components)) {
-        if (!board) continue
-        board.variants = board.variants.filter((ref) => ref.id !== variantId)
-        walkRemoveVariantRefs(board.variants, variantId)
-      }
-
       for (const [id, node] of Object.entries(draft.nodes)) {
         if (!typeCheckingService.isInstance(node)) continue
         const linkedVariant = parseNodeLink(node.template)?.nodeId
@@ -313,7 +306,16 @@ export class NodeOperationsService {
         }
       }
 
+      // Delete the variant subtree while its tree ref still exists, then drop the
+      // dangling refs from every board. Removing the refs first would leave the
+      // descendant nodes orphaned.
       this._deleteSubtreeFromDraft(variantId, draft)
+
+      for (const board of Object.values(draft.components)) {
+        if (!board) continue
+        board.variants = board.variants.filter((ref) => ref.id !== variantId)
+        walkRemoveVariantRefs(board.variants, variantId)
+      }
     })
   }
 
@@ -372,7 +374,12 @@ export class NodeOperationsService {
           `duplicateNode: unsupported board type for ${node.id}`,
         )
 
-        const componentId = nodeCatalogComponentId(node)
+        const defaultVariantRow = getWorkspaceNodes(
+          draft as unknown as Workspace,
+        )[located.board.variants[0]?.id as string]
+        const componentId =
+          nodeCatalogComponentId(node) ??
+          nodeCatalogComponentId(defaultVariantRow)
         invariant(
           componentId,
           `duplicateNode: missing catalog template for variant ${node.id}`,
@@ -413,23 +420,47 @@ export class NodeOperationsService {
       )
       invariant(located, ErrorMessages.parentNotFound(nodeId))
 
-      const row = getWorkspaceNodes(draft as unknown as Workspace)[node.id]
-      invariant(row, ErrorMessages.nodeNotFound(node.id))
-
-      const newId = componentBoardUniqueNodeId(located.componentKey)
-      const clone = structuredClone(row)
-      clone.id = newId
-      draft.nodes[newId] = clone
+      const liveNodes = getWorkspaceNodes(draft as unknown as Workspace)
+      const nodes = isDraft(liveNodes) ? current(liveNodes) : liveNodes
+      const sourceRow = nodes[node.id]
+      invariant(sourceRow, ErrorMessages.nodeNotFound(node.id))
 
       const board = draft.components[located.componentKey as ComponentKey]
+      const tree = getVariantTree(board, node.id)
+
+      const newRootId = componentBoardUniqueNodeId(located.componentKey)
+      const idMap = new Map<string, string>()
+      idMap.set(node.id, newRootId)
+
+      let newTreeRef: ComponentTreeRef = { id: newRootId }
+      if (tree) {
+        for (const id of collectDescendantTreeIds(tree)) {
+          if (id === node.id) continue
+          idMap.set(id, componentBoardUniqueNodeId(located.componentKey))
+        }
+        newTreeRef = remapTreeRef(tree, node.id, newRootId, idMap)
+      }
+
+      for (const [oldId, newId] of idMap) {
+        const row = nodes[oldId]
+        if (!row) continue
+        const clone = structuredClone(row)
+        clone.id = newId
+        const link = parseNodeLink(clone.template)
+        if (link?.kind === "node" && idMap.has(link.nodeId)) {
+          clone.template = formatNodeLink(idMap.get(link.nodeId)!)
+        }
+        draft.nodes[newId] = clone
+      }
+
       const inserted = insertComponentTreeInstanceAfterSibling(
         board,
         node.id,
-        newId,
+        newTreeRef,
       )
       invariant(
         inserted,
-        `duplicateNode: could not insert instance ${newId} after ${node.id}`,
+        `duplicateNode: could not insert instance ${newRootId} after ${node.id}`,
       )
     })
   }

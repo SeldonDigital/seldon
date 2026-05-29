@@ -1,3 +1,4 @@
+import { current, isDraft } from "immer"
 import type { ComponentEntry, ComponentTreeRef, EntryNode, Workspace } from "../../types"
 import { isComponentBoard, isPlaygroundBoard } from "../../model/components"
 import { isEntryNodeDefault, isEntryNodeVariant } from "../../model/entry-node"
@@ -49,19 +50,23 @@ export function findComponentContainingTreeNodeId(
 
 /**
  * Inserts a new instance ref immediately after an existing sibling in the board tree.
+ * Accepts either an instance id (inserted as a leaf ref) or a full `ComponentTreeRef`
+ * so duplicated instance subtrees keep their children.
  */
 export function insertComponentTreeInstanceAfterSibling(
   board: ComponentEntry,
   afterInstanceId: string,
-  newInstanceId: string,
+  newInstance: string | ComponentTreeRef,
 ): boolean {
+  const newRef: ComponentTreeRef =
+    typeof newInstance === "string" ? { id: newInstance } : newInstance
   let inserted = false
   walkComponentTreeRefs(board.variants, (ref) => {
     const children = ref.children
     if (!children?.length) return
     const idx = children.findIndex((c) => c.id === afterInstanceId)
     if (idx < 0) return
-    children.splice(idx + 1, 0, { id: newInstanceId })
+    children.splice(idx + 1, 0, newRef)
     inserted = true
     return true
   })
@@ -88,7 +93,8 @@ export function buildDuplicateEntryVariantSubtreePlan(
 ): DuplicateEntryVariantPlan | null {
   if (!isComponentBoard(board) && !isPlaygroundBoard(board)) return null
 
-  const nodes = getWorkspaceNodes(workspace)
+  const liveNodes = getWorkspaceNodes(workspace)
+  const nodes = isDraft(liveNodes) ? current(liveNodes) : liveNodes
   const sourceNode = nodes[sourceRootId]
   if (!sourceNode) return null
 
@@ -145,6 +151,7 @@ export function buildDuplicateEntryVariantSubtreePlan(
       newNodes[newId] = cloneEntryNodeWithIdRemap(row, newId, idMap)
     }
   } else {
+    const defaultVariantId = board.variants[0]?.id
     for (const [oldId, newId] of idMap) {
       const row = nodes[oldId]
       if (!row) continue
@@ -154,7 +161,7 @@ export function buildDuplicateEntryVariantSubtreePlan(
           id: newId,
           type: "variant",
           label: newVariantLabel,
-          template: formatNodeLink(sourceRootId),
+          template: formatNodeLink(defaultVariantId ?? sourceRootId),
           overrides: structuredClone(row.overrides),
         }
       } else {

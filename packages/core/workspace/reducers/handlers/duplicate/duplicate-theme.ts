@@ -1,4 +1,4 @@
-import { produce } from "immer"
+import { current, isDraft, produce } from "immer"
 import type { EntryTheme } from "../../../model/entry-theme"
 import { isEntryThemeDefault } from "../../../model/entry-theme"
 import type { ExtractPayload, Workspace } from "../../../../index"
@@ -26,8 +26,12 @@ export function duplicateTheme(
   workspace: Workspace,
 ): Workspace {
   return produce(workspace, (draft) => {
-    const entry = draft.themes[payload.themeId] as EntryTheme | undefined
-    if (!entry) return
+    const draftEntry = draft.themes[payload.themeId] as EntryTheme | undefined
+    if (!draftEntry) return
+
+    const entry = (
+      isDraft(draftEntry) ? current(draftEntry) : draftEntry
+    ) as EntryTheme
 
     const componentKey = themeComponentKeyFromThemeId(payload.themeId)
     if (!componentKey) return

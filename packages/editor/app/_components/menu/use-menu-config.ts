@@ -7,6 +7,7 @@ import { useAddRemoveCommands } from "@lib/hooks/commands/use-add-remove-command
 import { useMoveCommands } from "@lib/hooks/commands/use-move-commands"
 import { useSelectCommands } from "@lib/hooks/commands/use-select-commands"
 import { useDebugMode } from "@lib/hooks/use-debug-mode"
+import { useDialog } from "@lib/hooks/use-dialog"
 import { useEditorConfig } from "@lib/hooks/use-editor-config"
 import { useImportExport } from "@lib/hooks/use-import-export"
 import { useNodeClipboardActions } from "@lib/hooks/use-node-clipboard-actions"
@@ -49,7 +50,8 @@ export function useMenuConfig(): HeaderConfig {
     importWorkspaceFromFile,
     exportToFolder,
   } = useImportExport()
-  const { deleteSelection, duplicateSelection } = useAddRemoveCommands()
+  const { addVariant, deleteSelection, duplicateSelection } =
+    useAddRemoveCommands()
   const { moveSelectionDown, moveSelectionUp } = useMoveCommands()
   const {
     selectOriginalNode,
@@ -58,9 +60,10 @@ export function useMenuConfig(): HeaderConfig {
     canSelectVariant,
   } = useSelectCommands()
   const { undo, redo } = useHistory()
-  const { selectedNode, selection } = useSelection()
+  const { selectedNode, selectedBoard, selection } = useSelection()
   const addToast = useAddToast()
   const { setActiveTool } = useTool()
+  const { openDialog } = useDialog()
 
   const goToProjects = useCallback(() => {
     router.push("/")
@@ -179,6 +182,23 @@ export function useMenuConfig(): HeaderConfig {
       },
       "separator",
       {
+        id: "add-component",
+        label: "Add Component",
+        action: () => {
+          openDialog("add-board")
+          setActiveTool("select")
+        },
+        shortcut: "A",
+      },
+      {
+        id: "add-variant",
+        label: "Add Variant",
+        action: addVariant,
+        shortcut: "⇧ A",
+        enabled: Boolean(selectedBoard),
+      },
+      "separator",
+      {
         id: "delete",
         label: "Delete",
         action: deleteSelection,
@@ -192,19 +212,6 @@ export function useMenuConfig(): HeaderConfig {
         shortcut: "⌘ D",
         enabled: Boolean(selectedNode),
       },
-      "separator",
-      {
-        id: "select",
-        label: "Select",
-        action: () => setActiveTool("select"),
-        shortcut: "V",
-      },
-      {
-        id: "insert-component",
-        label: "Insert Component",
-        action: () => setActiveTool("component"),
-        shortcut: "C",
-      },
     ]
 
     return items
@@ -214,11 +221,14 @@ export function useMenuConfig(): HeaderConfig {
     cutNode,
     copyNode,
     pasteNode,
+    openDialog,
+    setActiveTool,
+    addVariant,
+    selectedBoard,
     deleteSelection,
     selection,
     duplicateSelection,
     selectedNode,
-    setActiveTool,
   ])
 
   const selectionMenuItems = useMemo(() => {

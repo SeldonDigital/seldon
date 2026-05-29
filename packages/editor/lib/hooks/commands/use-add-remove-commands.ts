@@ -1,10 +1,17 @@
 import { useCallback } from "react"
 import { ComponentId } from "@seldon/core/components/constants"
 import { InstanceId, VariantId } from "@seldon/core/index"
+import {
+  isIconSetBoard,
+  isThemeBoard,
+} from "@seldon/core/workspace/model/components"
+import type { ComponentKey } from "@seldon/core/workspace/types"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
 import { confirmMissingSchemaVariants } from "@lib/workspace/confirm-missing-schema-variants"
+import { useAutoSelectNode } from "@lib/workspace/use-auto-select-node"
 import { useSelection } from "@lib/workspace/use-selection"
 import { useWorkspace } from "@lib/workspace/use-workspace"
+import { useTool } from "@lib/hooks/use-tool"
 import { useAddToast } from "@components/toaster/use-add-toast"
 import { useCanvasHoverState } from "../use-canvas-hover-state"
 
@@ -20,6 +27,8 @@ export function useAddRemoveCommands() {
     selectedBoardId,
   } = useSelection()
   const { workspace, dispatch } = useWorkspace()
+  const { dispatchWithAutoSelect } = useAutoSelectNode()
+  const { setActiveTool } = useTool()
   const { setHoverState, hoverState } = useCanvasHoverState()
   const addToast = useAddToast()
 
@@ -44,6 +53,41 @@ export function useAddRemoveCommands() {
     },
     [dispatch, selectBoard],
   )
+
+  const addVariant = useCallback(() => {
+    const board = selectedBoard
+    if (!board || !selectedBoardId) {
+      addToast("No board selected")
+      return
+    }
+
+    if (isThemeBoard(board)) {
+      const defaultThemeId = board.variants[0]?.id
+      if (!defaultThemeId) return
+      dispatch({
+        type: "duplicate_theme",
+        payload: { themeId: defaultThemeId },
+      })
+      setActiveTool("select")
+      return
+    }
+
+    if (isIconSetBoard(board)) {
+      return
+    }
+
+    dispatchWithAutoSelect({
+      type: "add_variant",
+      payload: { componentKey: selectedBoardId as ComponentKey },
+    })
+  }, [
+    selectedBoard,
+    selectedBoardId,
+    dispatch,
+    dispatchWithAutoSelect,
+    setActiveTool,
+    addToast,
+  ])
 
   const duplicateSelectedNode = useCallback(() => {
     const nodeId = selectedNode?.id
@@ -129,6 +173,7 @@ export function useAddRemoveCommands() {
 
   return {
     addBoard,
+    addVariant,
     deleteSelection,
     duplicateSelection,
   }
