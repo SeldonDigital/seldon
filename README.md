@@ -56,9 +56,11 @@ But we fully expect that wasting money and energy on Button code will still not 
 
 ## The Gist
 
-- `packages/core`: workspace, theme, and reducer logic used by an editor or agent to mutate workspace.json files
-- `packages/editor`: Next.js visual editor run on localhost
-- `packages/factory`: Component Export, CSS, and code generation from a valid workspace.json file
+If you want the lowdown, these three documents are a great way to get into what this codebase offers, and where it is going.
+
+- `packages/core` [packages/core/CORE.md](packages/core/CORE.md): This is the workspace, theme, and reducer logic used by an editor or agent to mutate workspace.json files
+- `packages/editor`  [packages/editor/EDITOR.md](packages/editor/EDITOR.md): Next.js visual editor run on localhost
+- `packages/factory`  [packages/factory/FACTORY.md](packages/factory/FACTORY.md): Component Export, CSS, and code generation from a valid workspace.json file
 
 ## Prerequisites
 
@@ -156,7 +158,7 @@ Here's all of the documentation for code under `packages/`. Do not assume all of
 
 ---
 
-## Licensing overview
+## Licensing
 
 Seldon is offered under a **layered model**: repository access, then software use licenses.
 
