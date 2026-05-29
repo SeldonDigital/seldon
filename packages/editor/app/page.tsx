@@ -35,8 +35,9 @@ export default function HomePage() {
   }, [router])
 
   const handleImport = useCallback(async () => {
-    const file = await selectFile({ accept: ".json,application/json" })
-    if (!file) return
+    const result = await selectFile({ accept: ".json,application/json" })
+    if (!result.success) return
+    const { file } = result
     const text = await file.text()
     const workspace = workspacePropagationService.parseWorkspace(text) as Workspace
     const name = file.name.replace(/\.json$/i, "") || "Imported workspace"

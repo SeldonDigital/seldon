@@ -11,10 +11,17 @@ type SelectFileResult =
       success: false
     }
 
-export const selectFile = () => {
+interface SelectFileOptions {
+  accept?: string
+}
+
+export const selectFile = (options: SelectFileOptions = {}) => {
   return new Promise<SelectFileResult>((resolve) => {
     const input = document.createElement("input")
     input.type = "file"
+    if (options.accept) {
+      input.accept = options.accept
+    }
     input.onchange = () => {
       const files = Array.from(input.files ?? [])
       const file = files[0]
