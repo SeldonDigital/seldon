@@ -1,3 +1,4 @@
+import merge from "lodash/merge"
 import { instantiateTheme } from "../../themes/compute/instantiate-theme"
 import {
   STOCK_THEMES_BY_ID,
@@ -19,8 +20,10 @@ interface WorkspaceThemeEntry {
   overrides?: Record<string, unknown>
 }
 
+type WorkspaceThemeEntries = Record<string, WorkspaceThemeEntry>
+
 interface WorkspaceThemeSource {
-  themes?: Record<string, WorkspaceThemeEntry>
+  themes?: WorkspaceThemeEntries
 }
 
 function normalizeThemeId(themeId: string): string {
@@ -30,11 +33,42 @@ function normalizeThemeId(themeId: string): string {
   return themeId
 }
 
-function materializeWorkspaceTheme(entry: WorkspaceThemeEntry): ComputedTheme {
+/**
+ * Resolves the stock template id and the override layers for a theme entry.
+ *
+ * Variant themes use `template: theme:{themeId}`, so the chain walks parent
+ * entries until it reaches a `catalog:{themeCatalogId}` template. Override layers
+ * return base-first: parent overrides come before the entry's own overrides so
+ * the entry wins on merge.
+ */
+function resolveThemeChain(
+  entry: WorkspaceThemeEntry,
+  themesById: WorkspaceThemeEntries,
+  seen: Set<string>,
+): {
+  templateId: ThemeTemplateId
+  overrides: Array<Record<string, unknown> | undefined>
+} {
+  if (seen.has(entry.id)) {
+    throw new Error(`Theme template cycle detected at: ${entry.id}`)
+  }
+  seen.add(entry.id)
+
   const parsed = entry.template ? parseThemeTemplate(entry.template) : null
 
   if (parsed?.kind === "theme") {
-    throw new Error(`Nested theme templates are not supported: ${entry.template}`)
+    const parentEntry = themesById[parsed.themeId]
+    if (!parentEntry) {
+      return {
+        templateId: "default" as ThemeTemplateId,
+        overrides: [entry.overrides],
+      }
+    }
+    const parent = resolveThemeChain(parentEntry, themesById, seen)
+    return {
+      templateId: parent.templateId,
+      overrides: [...parent.overrides, entry.overrides],
+    }
   }
 
   const templateId =
@@ -42,11 +76,25 @@ function materializeWorkspaceTheme(entry: WorkspaceThemeEntry): ComputedTheme {
       ? (parsed.themeCatalogId as ThemeTemplateId)
       : ("default" as ThemeTemplateId)
 
-  const computed = instantiateTheme(
-    templateId,
-    entry.overrides,
-    STOCK_THEMES_BY_ID,
+  return { templateId, overrides: [entry.overrides] }
+}
+
+function materializeWorkspaceTheme(
+  entry: WorkspaceThemeEntry,
+  themesById: WorkspaceThemeEntries,
+): ComputedTheme {
+  const { templateId, overrides } = resolveThemeChain(
+    entry,
+    themesById,
+    new Set<string>(),
   )
+
+  const mergedOverrides = merge(
+    {},
+    ...overrides.map((layer) => layer ?? {}),
+  ) as Record<string, unknown>
+
+  const computed = instantiateTheme(templateId, mergedOverrides, STOCK_THEMES_BY_ID)
 
   return {
     ...computed,
@@ -86,8 +134,9 @@ export function computeWorkspaceThemes(
     THEMES.map((theme) => [theme.id, theme]),
   )
 
-  Object.values(themesSource ?? {}).forEach((entry) => {
-    const computedTheme = materializeWorkspaceTheme(entry)
+  const themesById = themesSource ?? {}
+  Object.values(themesById).forEach((entry) => {
+    const computedTheme = materializeWorkspaceTheme(entry, themesById)
     byId.set(computedTheme.id, computedTheme)
   })
 

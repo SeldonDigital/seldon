@@ -11,6 +11,7 @@ import { useTool } from "@lib/hooks/use-tool"
 import { useAutoSelectNode } from "@lib/workspace/use-auto-select-node"
 import { useSelection } from "@lib/workspace/use-selection"
 import { useSelectionRelations } from "./use-selection-relations"
+import { useWorkspace } from "@lib/workspace/use-workspace"
 import { IconProps } from "../../../../seldon/primitives/Icon"
 import { useDraggable } from "./use-draggable"
 import { useExpansion, useIsExpanded } from "./use-expansion"
@@ -38,7 +39,8 @@ export function useRowBoard(
   const { selectBoard, selectedBoardId, selectedNodeId, selectedThemeEntryId } =
     useSelection()
   const { selectedNodeBoardKey } = useSelectionRelations()
-  const { dispatch, dispatchWithAutoSelect } = useAutoSelectNode()
+  const { dispatch } = useWorkspace({ usePreview: false })
+  const { dispatchWithAutoSelect } = useAutoSelectNode()
 
   // Expansion state: toggle, expand/collapse, get descendants
   const { toggle, expandObjects, collapseObjects, getAllDescendantNodeIds } =
