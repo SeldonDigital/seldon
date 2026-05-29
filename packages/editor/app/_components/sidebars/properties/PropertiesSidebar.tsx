@@ -33,19 +33,13 @@ export function PropertiesSidebar() {
       resolveActiveThemeEntryId({
         workspace,
         selectedThemeEntryId,
-        selectedBoard: selectedBoard ?? null,
       }),
-    [workspace, selectedThemeEntryId, selectedBoard],
+    [workspace, selectedThemeEntryId],
   )
 
   const isThemeEditingMode = useMemo(
-    () =>
-      isThemeEditingSelection(
-        workspace,
-        selectedThemeEntryId,
-        selectedBoard ?? null,
-      ),
-    [workspace, selectedThemeEntryId, selectedBoard],
+    () => isThemeEditingSelection(workspace, selectedThemeEntryId),
+    [workspace, selectedThemeEntryId],
   )
 
   const { updateThemeProperty } = useThemeProperties(activeThemeEntryId)

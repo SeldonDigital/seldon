@@ -1,4 +1,5 @@
 import type { Workspace } from "../model/workspace"
+import { seedDefaultThemeBoard } from "./themes/seed-default-theme-board"
 import { createDefaultEditableThemeEntry } from "./themes/workspace-editable-theme"
 
 /** Baseline version matching `CURRENT_WORKSPACE_VERSION`. */
@@ -9,7 +10,7 @@ const EMPTY_WORKSPACE_FILE_VERSION = 0
  */
 export function createEmptyWorkspace(): Workspace {
   const themeDefault = createDefaultEditableThemeEntry()
-  return {
+  const workspace: Workspace = {
     metadata: {
       version: EMPTY_WORKSPACE_FILE_VERSION,
       label: "",
@@ -23,4 +24,6 @@ export function createEmptyWorkspace(): Workspace {
     "icon-sets": {},
     media: {},
   }
+  seedDefaultThemeBoard(workspace)
+  return workspace
 }

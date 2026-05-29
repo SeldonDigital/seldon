@@ -30,6 +30,10 @@ const validators = {
   allChildrenExist: (workspace: Workspace) => {
     const nodes = getWorkspaceNodes(workspace)
     for (const board of Object.values(workspace.components)) {
+      // Resource boards (theme, icon-set, media) reference their own maps, not nodes.
+      if (isResourceType(board)) {
+        continue
+      }
       walkComponentTreeRefs(board.variants, (ref) => {
         for (const child of ref.children ?? []) {
           check(nodes[child.id], ErrorMessages.nodeNotFound(child.id))
@@ -41,6 +45,10 @@ const validators = {
   allVariantsExist: (workspace: Workspace) => {
     const nodes = getWorkspaceNodes(workspace)
     for (const board of Object.values(workspace.components)) {
+      // Resource boards (theme, icon-set, media) reference their own maps, not nodes.
+      if (isResourceType(board)) {
+        continue
+      }
       walkComponentTreeRefs(board.variants, (ref) => {
         check(nodes[ref.id], ErrorMessages.missingVariant(ref.id))
       })

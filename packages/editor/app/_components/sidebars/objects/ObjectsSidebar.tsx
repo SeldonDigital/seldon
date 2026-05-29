@@ -24,7 +24,8 @@ export function ObjectsSidebar() {
   const { record } = useWorkspaceRecord(workspaceId)
   const { workspace } = useWorkspace({ usePreview: false })
   const { activeBoard } = useActiveBoard()
-  const { selectBoard, selectedNodeId, selectedBoardId } = useSelection()
+  const { selectBoard, selectedNodeId, selectedBoardId, selectedThemeEntryId } =
+    useSelection()
   const { openDialog } = useDialog()
   const { setActiveTool } = useTool()
   const router = useRouter()
@@ -38,11 +39,19 @@ export function ObjectsSidebar() {
       !activeBoard &&
       !selectedNodeId &&
       !selectedBoardId &&
+      !selectedThemeEntryId &&
       boards.length > 0
     ) {
       selectBoard(getComponentKey(boards[0]))
     }
-  }, [workspace, activeBoard, selectBoard, selectedNodeId, selectedBoardId])
+  }, [
+    workspace,
+    activeBoard,
+    selectBoard,
+    selectedNodeId,
+    selectedBoardId,
+    selectedThemeEntryId,
+  ])
 
   const sections = useMemo(() => {
     return getBoardSections(workspaceService.getBoards(workspace))

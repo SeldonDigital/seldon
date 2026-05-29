@@ -15,7 +15,7 @@ import { Colorspace, Harmony, Ratio, StockTheme, TokenType } from "../types"
 const theme: StockTheme = {
   metadata: {
     id: "default",
-    name: "Default",
+    name: "Seldon",
     description: "Theme for Seldon's Editor.",
     intent: "Default theme for Seldon's Editor interface.",
   },

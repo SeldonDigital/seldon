@@ -7,7 +7,7 @@ import {
   Variant,
   Workspace,
 } from "@seldon/core"
-import { getWorkspaceThemePickerOptions } from "@seldon/core/helpers/properties/properties-bridge"
+import { getThemePickerOptions } from "@seldon/core/helpers/properties/properties-bridge"
 import { isAtomicValue } from "@seldon/core/helpers/type-guards/value/is-atomic-value"
 import { ComponentId, ComponentLevel } from "@seldon/core/components/constants"
 import { isComponentEntry } from "@seldon/core/workspace/helpers/components/is-component-entry"
@@ -114,7 +114,7 @@ export function RowProperty({
 
     if (property.key === "theme") {
       return [
-        getWorkspaceThemePickerOptions({
+        getThemePickerOptions({
           workspace,
           allowInherit: !isComponentEntry(node),
         }),

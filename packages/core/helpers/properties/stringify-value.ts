@@ -115,6 +115,11 @@ export function stringifyValue(
                 )
             }
           }
+
+          // An EXACT value can wrap another tagged value; unwrap and stringify it.
+          if ("type" in value.value) {
+            return stringifyValue(value.value as Value)
+          }
         }
       }
 

@@ -28,6 +28,7 @@ import {
   isThemeLookPresetSchemaName,
   listThemeLookIds,
 } from "@seldon/core/themes/looks"
+import { resolveThemeTokenEntry } from "@seldon/core/themes/schemas"
 import { getCompoundLayerValue } from "./shared"
 
 export type PropertyPickerOption = { value: string; name: string }
@@ -582,6 +583,68 @@ function buildCompoundPresetPickerOptions(
   }
 }
 
+/** Drops the synthetic `Default`/`Inherit` entries so theme tokens list only real choices. */
+function stripDefaultInherit(
+  groups: PropertyPickerOption[][],
+): PropertyPickerOption[][] {
+  return groups
+    .map((group) =>
+      group.filter((option) => option.value !== "" && option.value !== "inherit"),
+    )
+    .filter((group) => group.length > 0)
+}
+
+/**
+ * Builds picker options for a theme token path. Theme tokens are not in
+ * `PROPERTY_SCHEMAS`, so options come from the bridged property schema, inline
+ * token options, or an On/Off pair for boolean controls.
+ */
+function buildThemeTokenPickerOptions(
+  input: PropertyPickerInput,
+): PropertyPickerResult | null {
+  const tokenSchema = resolveThemeTokenEntry(input.path, input.theme)
+  if (!tokenSchema) {
+    return null
+  }
+
+  if (tokenSchema.propertyKey) {
+    const prop = getPropertySchema(tokenSchema.propertyKey)
+    if (prop) {
+      const result = buildPropertyOptionsFromSchema(input, prop)
+      return { ...result, options: stripDefaultInherit(result.options) }
+    }
+  }
+
+  if (tokenSchema.options && tokenSchema.options.length > 0) {
+    return {
+      options: [
+        tokenSchema.options.map((option) => ({
+          name: option.label,
+          value: String(option.value),
+        })),
+      ],
+      hasCurrentValue: false,
+    }
+  }
+
+  if (
+    tokenSchema.controlType === "boolean" ||
+    tokenSchema.supports.includes("boolean")
+  ) {
+    return {
+      options: [
+        [
+          { name: "On", value: "true" },
+          { name: "Off", value: "false" },
+        ],
+      ],
+      hasCurrentValue: false,
+    }
+  }
+
+  return null
+}
+
 function buildHarmonyPickerOptions(): PropertyPickerResult {
   return {
     options: [
@@ -637,6 +700,10 @@ export function getPropertyPickerOptions(
 
   const schema = getPropertySchemaForPath(input.path)
   if (!schema) {
+    const themeTokenOptions = buildThemeTokenPickerOptions(input)
+    if (themeTokenOptions) {
+      return themeTokenOptions
+    }
     return {
       options: [
         [{ value: "ERROR", name: `No schema found for ${input.path}` }],

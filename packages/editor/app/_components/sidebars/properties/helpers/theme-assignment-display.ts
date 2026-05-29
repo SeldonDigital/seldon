@@ -8,6 +8,7 @@ import {
 } from "@seldon/core"
 import { getComponentLevelThemeRef } from "@seldon/core/workspace/helpers/components/get-component-level-theme-ref"
 import { isComponentEntry } from "@seldon/core/workspace/helpers/components/is-component-entry"
+import { getThemeEntryDisplayName } from "@seldon/core/workspace/helpers/themes/get-theme-entry-display-name"
 import { themeService } from "@seldon/core/workspace/services/theme/theme.service"
 import { FlatProperty } from "./properties-data"
 
@@ -20,12 +21,15 @@ export function getBoardThemeRef(board: Board): ThemeInstanceId {
   return getComponentLevelThemeRef(board) ?? DEFAULT_BOARD_THEME_ID
 }
 
-function getThemeDisplayName(
-  themeId: ThemeInstanceId,
-  workspace: Workspace,
-): string {
+function getThemeDisplayName(themeId: string, workspace: Workspace): string {
+  const composedName = getThemeEntryDisplayName(themeId, workspace)
+  if (composedName) {
+    return composedName
+  }
+
   try {
-    return themeService.getTheme(themeId, workspace).metadata.name
+    return themeService.getTheme(themeId as ThemeInstanceId, workspace).metadata
+      .name
   } catch {
     return themeId
   }

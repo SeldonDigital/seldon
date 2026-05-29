@@ -6,7 +6,11 @@ import {
   ORDERED_COMPONENT_LEVELS,
 } from "@seldon/core/components/constants"
 import { isResourceType } from "@seldon/core/workspace/helpers/components/is-resource-type"
-import { isComponentBoard, isPlaygroundBoard } from "@seldon/core/workspace/model"
+import {
+  isComponentBoard,
+  isPlaygroundBoard,
+  isThemeBoard,
+} from "@seldon/core/workspace/model"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 
 export const SECTION_LABELS: Record<ComponentLevel, string> = {
@@ -21,13 +25,14 @@ export const SECTION_LABELS: Record<ComponentLevel, string> = {
 
 export interface BoardSection {
   label: string
-  level: ComponentLevel | "CORE"
+  level: ComponentLevel | "THEME" | "CORE"
   boards: BoardType[]
 }
 
 /**
  * Groups boards into sections based on their component level.
- * IconSet and Theme boards are placed in a special "Assets" section at the end.
+ * Theme boards get their own "Themes" section directly below the Frames section.
+ * IconSet and media boards are placed in a special "Assets" section at the end.
  * This is a helper function for organizing workspace boards for display.
  */
 function getBoardComponentLevel(board: BoardType): ComponentLevel | null {
@@ -41,7 +46,11 @@ function getBoardComponentLevel(board: BoardType): ComponentLevel | null {
 }
 
 export function getBoardSections(boards: BoardType[]): BoardSection[] {
-  const specialBoards = boards.filter((board) => isResourceType(board))
+  const themeBoards = boards.filter((board) => isThemeBoard(board))
+
+  const assetBoards = boards.filter(
+    (board) => isResourceType(board) && !isThemeBoard(board),
+  )
 
   const regularBoards = boards.filter((board) => !isResourceType(board))
 
@@ -70,12 +79,26 @@ export function getBoardSections(boards: BoardType[]): BoardSection[] {
     [],
   )
 
+  // Insert the Themes section directly below the Frames section.
+  if (themeBoards.length > 0) {
+    const themesSection: BoardSection = {
+      label: "Themes",
+      level: "THEME",
+      boards: themeBoards,
+    }
+    const framesIndex = sections.findIndex(
+      (section) => section.level === ComponentLevel.FRAME,
+    )
+    const insertIndex = framesIndex === -1 ? sections.length : framesIndex + 1
+    sections.splice(insertIndex, 0, themesSection)
+  }
+
   // Add Assets section at the end
-  if (specialBoards.length > 0) {
+  if (assetBoards.length > 0) {
     const assetsSection: BoardSection = {
       label: "Assets",
       level: "CORE",
-      boards: specialBoards,
+      boards: assetBoards,
     }
     sections.push(assetsSection)
   }

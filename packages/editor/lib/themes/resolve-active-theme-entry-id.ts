@@ -1,29 +1,22 @@
-import { isThemeBoard } from "@seldon/core/workspace/model/components"
-import type { ComponentEntry, EntryThemeId, Workspace } from "@seldon/core/workspace/types"
+import type { EntryThemeId, Workspace } from "@seldon/core/workspace/types"
 
 type ResolveInput = {
   workspace: Workspace
   selectedThemeEntryId: EntryThemeId | null
-  selectedBoard: ComponentEntry | null
 }
 
 /**
  * Resolves which `workspace.themes` entry the properties sidebar should edit.
+ *
+ * Theme editing applies only when a theme entry (default or variant) is
+ * selected. Selecting the theme board itself shows board properties instead.
  */
 export function resolveActiveThemeEntryId({
   workspace,
   selectedThemeEntryId,
-  selectedBoard,
 }: ResolveInput): EntryThemeId | null {
   if (selectedThemeEntryId && workspace.themes[selectedThemeEntryId]) {
     return selectedThemeEntryId
-  }
-
-  if (selectedBoard && isThemeBoard(selectedBoard)) {
-    const defaultRef = selectedBoard.variants[0]
-    if (defaultRef?.id && workspace.themes[defaultRef.id]) {
-      return defaultRef.id
-    }
   }
 
   return null
@@ -32,11 +25,11 @@ export function resolveActiveThemeEntryId({
 export function isThemeEditingSelection(
   workspace: Workspace,
   selectedThemeEntryId: EntryThemeId | null,
-  selectedBoard: ComponentEntry | null,
 ): boolean {
-  return resolveActiveThemeEntryId({
-    workspace,
-    selectedThemeEntryId,
-    selectedBoard,
-  }) !== null
+  return (
+    resolveActiveThemeEntryId({
+      workspace,
+      selectedThemeEntryId,
+    }) !== null
+  )
 }

@@ -8,6 +8,7 @@ import {
   Variant,
   Workspace,
 } from "@seldon/core"
+import { isThemeBoard } from "@seldon/core/workspace/model/components"
 import { buildThemeAssignmentProperty } from "./helpers/theme-assignment-display"
 import { Frame } from "../../../seldon/frames/Frame"
 import { FramerExpandable } from "../shared/FramerExpandable"
@@ -61,9 +62,15 @@ export function PropertyTree({
 
     const leadingProperties: FlatProperty[] = []
 
-    const themeProperty = buildThemeAssignmentProperty(node, workspace)
-
-    const propertiesWithTheme = [...leadingProperties, themeProperty, ...properties]
+    // Theme boards are always rendered with their own theme, so they do not
+    // expose a theme-assignment picker.
+    const propertiesWithTheme = isThemeBoard(node as Board)
+      ? [...leadingProperties, ...properties]
+      : [
+          ...leadingProperties,
+          buildThemeAssignmentProperty(node, workspace),
+          ...properties,
+        ]
 
     const regularSections = getPropertySections(
       propertiesWithTheme,
@@ -90,6 +97,10 @@ export function PropertyTree({
       return properties
     }
     const leadingProperties: FlatProperty[] = []
+
+    if (isThemeBoard(node as Board)) {
+      return [...leadingProperties, ...properties]
+    }
 
     const themeProperty = buildThemeAssignmentProperty(node, workspace)
     return [...leadingProperties, themeProperty, ...properties]

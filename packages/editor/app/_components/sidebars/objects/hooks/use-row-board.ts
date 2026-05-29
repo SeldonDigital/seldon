@@ -214,6 +214,7 @@ export function useRowBoard(
     isBoardSelected,
     boardIsActive,
     boardContainsSelectedNode,
+    boardContainsSelectedThemeEntry,
     dragging,
     ref,
     variants: variantRootIds,

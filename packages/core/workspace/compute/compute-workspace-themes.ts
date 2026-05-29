@@ -54,7 +54,7 @@ function materializeWorkspaceTheme(entry: WorkspaceThemeEntry): ComputedTheme {
     metadata: {
       ...computed.metadata,
       id: entry.id as ThemeInstanceId,
-      name: entry.label ?? computed.metadata.name,
+      name: computed.metadata.name,
     },
   }
 }

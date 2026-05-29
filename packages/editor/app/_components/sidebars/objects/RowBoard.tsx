@@ -56,6 +56,7 @@ export function RowBoard({
     isBoardSelected,
     boardIsActive,
     boardContainsSelectedNode,
+    boardContainsSelectedThemeEntry,
     dragging,
     ref,
     variants,
@@ -68,7 +69,8 @@ export function RowBoard({
     { isSelected: boardIsActive },
   )
   const combinedRowStyle =
-    boardContainsSelectedNode && !isBoardSelected
+    (boardContainsSelectedNode || boardContainsSelectedThemeEntry) &&
+    !isBoardSelected
       ? { ...hoverStyle, ...rowStyle, borderColor: undefined }
       : { ...hoverStyle, ...rowStyle }
 

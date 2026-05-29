@@ -16,8 +16,8 @@ export type {
   PropertyPickerOption,
   PropertyPickerResult,
 } from "../../workspace/helpers/properties/property-picker-options"
-export { getWorkspaceThemePickerOptions } from "../../workspace/helpers/themes/get-workspace-theme-picker-options"
+export { getThemePickerOptions } from "../../workspace/helpers/themes/get-theme-picker-option"
 export type {
-  WorkspaceThemePickerOption,
-  WorkspaceThemePickerOptionsInput,
-} from "../../workspace/helpers/themes/get-workspace-theme-picker-options"
+  ThemePickerOption,
+  ThemePickerOptionsInput,
+} from "../../workspace/helpers/themes/get-theme-picker-option"

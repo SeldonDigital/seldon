@@ -14,7 +14,7 @@ import type {
 } from "@seldon/core/properties/types/property-keys"
 import type { ThemeInstanceId } from "@seldon/core/themes/types/theme-id"
 import {
-  getWorkspaceThemePickerOptions,
+  getThemePickerOptions,
 } from "@seldon/core/helpers/properties/properties-bridge"
 import { isThemeValueKey } from "@seldon/core/helpers/validation/theme"
 import { IconId } from "@seldon/core/icons"
@@ -353,7 +353,7 @@ export function PropertyControl({
 
     if (property.key === "theme") {
       return [
-        getWorkspaceThemePickerOptions({
+        getThemePickerOptions({
           workspace,
           allowInherit: !(subject && isComponentEntry(subject)),
         }),

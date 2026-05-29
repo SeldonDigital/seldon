@@ -1,3 +1,5 @@
+import { produce } from "immer"
+import { seedDefaultThemeBoard } from "../../../helpers/themes/seed-default-theme-board"
 import type { Workspace } from "../../../types"
 
 export type MigrationFunction = (workspace: Workspace) => Workspace
@@ -16,4 +18,12 @@ export interface AlwaysRunMigrationRecord {
 export const migrations: MigrationRecord[] = [
 ]
 
-export const alwaysRunMigrations: AlwaysRunMigrationRecord[] = []
+export const alwaysRunMigrations: AlwaysRunMigrationRecord[] = [
+  {
+    description: "Ensure the default theme board exists.",
+    migrate: (workspace) =>
+      produce(workspace, (draft) => {
+        seedDefaultThemeBoard(draft)
+      }),
+  },
+]
