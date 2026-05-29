@@ -60,23 +60,44 @@ function materializeWorkspaceTheme(entry: WorkspaceThemeEntry): ComputedTheme {
 }
 
 /**
+ * Caches computed themes by the workspace `themes` object reference. Reducers build
+ * new `themes` references through Immer when a theme changes, so unchanged workspaces
+ * (selection, expansion, and edits that do not touch themes) reuse the cached result.
+ */
+const computedThemesCache = new WeakMap<object, ComputedTheme[]>()
+
+/**
  * Returns every computed theme available to a workspace without mutating or persisting
  * derived theme rows. Stock themes come from the catalog; workspace custom/entry themes
- * are materialized from raw source data on demand and can be memoized by callers.
+ * are materialized from raw source data on demand. Results are memoized by the workspace
+ * `themes` reference.
  */
 export function computeWorkspaceThemes(
   workspace: WorkspaceThemeSource,
 ): ComputedTheme[] {
+  const themesSource = workspace.themes
+
+  if (themesSource) {
+    const cached = computedThemesCache.get(themesSource)
+    if (cached) return cached
+  }
+
   const byId = new Map<string, ComputedTheme>(
     THEMES.map((theme) => [theme.id, theme]),
   )
 
-  Object.values(workspace.themes ?? {}).forEach((entry) => {
+  Object.values(themesSource ?? {}).forEach((entry) => {
     const computedTheme = materializeWorkspaceTheme(entry)
     byId.set(computedTheme.id, computedTheme)
   })
 
-  return Array.from(byId.values())
+  const result = Array.from(byId.values())
+
+  if (themesSource) {
+    computedThemesCache.set(themesSource, result)
+  }
+
+  return result
 }
 
 /**

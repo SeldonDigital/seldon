@@ -1,7 +1,7 @@
 import { getComponentSchema } from "../../components/catalog"
 import { ComponentId, isComponentId } from "../../components/constants"
 import { getComponentPropertyDefaults } from "../helpers/components/get-component-property-defaults"
-import { buildNodeParentIndex } from "../helpers/graph/build-node-parent-index"
+import { getNodeParentIndex } from "../helpers/graph/build-node-parent-index"
 import type { ComponentEntry } from "../types"
 import { computeProperties } from "../../properties/compute"
 import type { ComputeContext } from "../../properties/compute"
@@ -389,7 +389,7 @@ export function getNodeComputeContext(
   }
 
   const compositionParentByChild =
-    options.parentIndex ?? buildNodeParentIndex(workspace)
+    options.parentIndex ?? getNodeParentIndex(workspace)
 
   return buildComputeContext(
     node,
@@ -423,7 +423,7 @@ export function computeNodeProperties(
   }
 
   const compositionParentByChild =
-    options.parentIndex ?? buildNodeParentIndex(workspace)
+    options.parentIndex ?? getNodeParentIndex(workspace)
 
   const context = buildComputeContext(
     node,

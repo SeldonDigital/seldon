@@ -1,6 +1,5 @@
 import { EntryNode, EntryNodeId, Workspace } from "../../types"
-import { findComponentByTreeNodeId } from "../components/find-component-by-tree-node-id"
-import { getImmediateParentId } from "../components/get-parent-ids"
+import { getImmediateParentIdInWorkspace } from "../components/get-node-parent-id"
 
 /**
  * Finds the parent node of a child node by searching through all variants in the workspace.
@@ -17,9 +16,7 @@ export function findParentNode(
   if (!node) {
     return null
   }
-  const board = findComponentByTreeNodeId(workspace, nodeId)
-  if (!board) return null
-  const parentId = getImmediateParentId(board, nodeId)
+  const parentId = getImmediateParentIdInWorkspace(workspace, nodeId)
   if (!parentId) return null
   return workspace.nodes[parentId] ?? null
 }

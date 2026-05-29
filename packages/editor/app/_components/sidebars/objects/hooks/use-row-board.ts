@@ -5,16 +5,15 @@ import {
   isThemeBoard,
 } from "@seldon/core/workspace/model/components"
 import { getVariantRootIds } from "@lib/workspace/component-tree"
-import { getComponentKey, getNode } from "@lib/workspace/workspace-accessors"
-import { findComponentForNode } from "@lib/workspace/node-tree"
+import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
 import { useTool } from "@lib/hooks/use-tool"
 import { useAutoSelectNode } from "@lib/workspace/use-auto-select-node"
 import { useSelection } from "@lib/workspace/use-selection"
-import { useWorkspace } from "@lib/workspace/use-workspace"
+import { useSelectionRelations } from "./use-selection-relations"
 import { IconProps } from "../../../../seldon/primitives/Icon"
 import { useDraggable } from "./use-draggable"
-import { useExpansion } from "./use-expansion"
+import { useExpansion, useIsExpanded } from "./use-expansion"
 import { useRowButton } from "./use-row-button"
 import { useRowClick } from "./use-row-click"
 import { useRowToggle } from "./use-row-toggle"
@@ -35,20 +34,15 @@ export function useRowBoard(
   },
 ) {
   // Core workspace and tool state
-  const { workspace } = useWorkspace({ usePreview: false })
   const { activeTool, setActiveTool } = useTool()
   const { selectBoard, selectedBoardId, selectedNodeId, selectedThemeEntryId } =
     useSelection()
+  const { selectedNodeBoardKey } = useSelectionRelations()
   const { dispatch, dispatchWithAutoSelect } = useAutoSelectNode()
 
   // Expansion state: toggle, expand/collapse, get descendants
-  const {
-    toggle,
-    isExpanded,
-    expandObjects,
-    collapseObjects,
-    getAllDescendantNodeIds,
-  } = useExpansion()
+  const { toggle, expandObjects, collapseObjects, getAllDescendantNodeIds } =
+    useExpansion()
 
   // Options and configuration
   const show = options?.show ?? true
@@ -67,20 +61,8 @@ export function useRowBoard(
     selectedThemeEntryId !== null &&
     variantRootIds.includes(selectedThemeEntryId)
 
-  const boardContainsSelectedNode = selectedNodeId
-    ? (() => {
-        const selectedNode = getNode(workspace, selectedNodeId)
-        if (!selectedNode) return false
-        const boardForSelectedNode = findComponentForNode(
-          selectedNode,
-          workspace,
-        )
-        return (
-          boardForSelectedNode !== null &&
-          getComponentKey(boardForSelectedNode) === componentKey
-        )
-      })()
-    : false
+  const boardContainsSelectedNode =
+    selectedNodeBoardKey !== null && selectedNodeBoardKey === componentKey
   const boardIsActive =
     isBoardSelected ||
     boardContainsSelectedNode ||
@@ -89,7 +71,7 @@ export function useRowBoard(
 
   // Expansion state
   const expandedId = componentKey
-  const isExpandedState = isExpanded(expandedId)
+  const isExpandedState = useIsExpanded(expandedId)
 
   // Drag and drop: enable dragging when visible
   const { dragging, ref } = useDraggable({

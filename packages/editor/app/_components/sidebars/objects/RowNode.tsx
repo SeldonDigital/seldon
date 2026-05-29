@@ -1,4 +1,4 @@
-import { CSSProperties, useCallback } from "react"
+import { CSSProperties, memo, useCallback } from "react"
 import { VariantId } from "@seldon/core"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
 import type { EntryNode } from "@seldon/core/workspace/types"
@@ -29,7 +29,7 @@ interface RowNodeProps {
   onSelect?: () => void
 }
 
-function RowNodeInner({
+const RowNodeInner = memo(function RowNodeInner({
   node,
   show,
   parentIsSelected,
@@ -187,7 +187,7 @@ function RowNodeInner({
                 nodeId={childNodeId}
                 show={show}
                 parentIsSelected={isSelected}
-                onSelect={() => onSelect?.()}
+                onSelect={onSelect}
               />
             ))}
           </IndentationLevel>
@@ -195,9 +195,9 @@ function RowNodeInner({
       )}
     </>
   )
-}
+})
 
-export function RowNode({
+export const RowNode = memo(function RowNode({
   nodeId,
   node: nodeProp,
   show = true,
@@ -219,4 +219,4 @@ export function RowNode({
       onSelect={onSelect}
     />
   )
-}
+})

@@ -58,7 +58,10 @@ export const useStore = create<HistoryState>()((set) => ({
 }))
 
 export function useHistory() {
-  const { push, undo, redo, reset: storeReset } = useStore()
+  const push = useStore((state) => state.push)
+  const undo = useStore((state) => state.undo)
+  const redo = useStore((state) => state.redo)
+  const storeReset = useStore((state) => state.reset)
   const current = useStore(
     useShallow((state) => state.history[state.currentIndex]),
   )

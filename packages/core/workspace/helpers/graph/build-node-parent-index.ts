@@ -1,3 +1,4 @@
+import { isDraft } from "immer"
 import type { ComponentTreeRef } from "../../types"
 
 /**
@@ -65,4 +66,30 @@ export function buildNodeParentIndex(
   }
 
   return parentByChild
+}
+
+/**
+ * Caches the parent index by the `components` object reference. Reducers build a
+ * new `components` reference through Immer when a board tree changes, so compute
+ * passes over an unchanged workspace reuse one index instead of rebuilding it per
+ * node. Drafts bypass the cache because they mutate in place during a reducer pass.
+ */
+const parentIndexCache = new WeakMap<object, Map<string, string>>()
+
+export function getNodeParentIndex(
+  source: WorkspaceComponentTreeSource,
+): Map<string, string> {
+  const boards = source.components
+
+  if (!boards || isDraft(source) || isDraft(boards)) {
+    return buildNodeParentIndex(source)
+  }
+
+  let index = parentIndexCache.get(boards)
+  if (!index) {
+    index = buildNodeParentIndex(source)
+    parentIndexCache.set(boards, index)
+  }
+
+  return index
 }

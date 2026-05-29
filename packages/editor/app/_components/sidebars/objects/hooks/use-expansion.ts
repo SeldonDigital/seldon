@@ -42,10 +42,24 @@ function getAllDescendantNodeIds(
 }
 
 /**
+ * Reactive subscription to a single object's expansion state.
+ *
+ * Rows use this so toggling one subtree only re-renders the affected rows
+ * instead of every consumer of the expansion store.
+ */
+export const useIsExpanded = (id: string): boolean =>
+  useStore((state) => state.expandedObjects.has(id))
+
+/**
  * Unified hook for expanding and collapsing objects in the objects panel.
+ *
+ * Subscribes only to the action functions, never to `expandedObjects`, so it
+ * does not re-render its consumers on every toggle. Read reactive state through
+ * `useIsExpanded`.
  */
 export const useExpansion = () => {
-  const store = useStore()
+  const expandObjects = useStore((state) => state.expandObjects)
+  const collapseObjects = useStore((state) => state.collapseObjects)
   const { workspace } = useWorkspace({ usePreview: false })
 
   const toggle = useCallback(
@@ -54,13 +68,14 @@ export const useExpansion = () => {
       shouldExpand?: boolean,
       options?: { includeAncestors?: boolean },
     ) => {
-      const expand = shouldExpand ?? !store.expandedObjects.has(id)
+      const expand =
+        shouldExpand ?? !useStore.getState().expandedObjects.has(id)
 
       if (!options?.includeAncestors) {
         if (expand) {
-          store.expandObjects([id])
+          expandObjects([id])
         } else {
-          store.collapseObjects([id])
+          collapseObjects([id])
         }
       } else {
         const node = getNode(workspace, id as InstanceId | VariantId)
@@ -88,20 +103,23 @@ export const useExpansion = () => {
         }
 
         if (expand) {
-          store.expandObjects(idsToToggle)
+          expandObjects(idsToToggle)
         } else {
-          store.collapseObjects(idsToToggle)
+          collapseObjects(idsToToggle)
         }
       }
     },
-    [store, workspace],
+    [expandObjects, collapseObjects, workspace],
   )
 
   return {
     toggle,
-    isExpanded: (id: string) => store.expandedObjects.has(id),
-    expandObjects: store.expandObjects,
-    collapseObjects: store.collapseObjects,
+    isExpanded: useCallback(
+      (id: string) => useStore.getState().expandedObjects.has(id),
+      [],
+    ),
+    expandObjects,
+    collapseObjects,
     getAllDescendantNodeIds: useCallback(
       (nodeId: string) => getAllDescendantNodeIds(nodeId, workspace),
       [workspace],

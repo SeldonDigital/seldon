@@ -7,7 +7,7 @@ import { useCanvasHoverState } from "@lib/hooks/use-canvas-hover-state"
 import { useTool } from "@lib/hooks/use-tool"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { useActiveBoard } from "@lib/workspace/use-active-board"
-import { useSelection } from "@lib/workspace/use-selection"
+import { useIsNodeSelected } from "@lib/workspace/use-selection"
 import { useWorkspace } from "@lib/workspace/use-workspace"
 import { checkInsertionAllowed } from "../utils/check-insertion-allowed"
 
@@ -29,13 +29,11 @@ export function useSidebarRowStyling(
   const { activeTool } = useTool()
   const { hoverState } = useCanvasHoverState()
   const { activeBoard } = useActiveBoard()
-  const { selectedNodeId } = useSelection()
+  const isNodeSelected = useIsNodeSelected(node.id)
 
   // Allow override of selection state (for boards) or use default node selection check
   const isSelected =
-    options?.isSelected !== undefined
-      ? options.isSelected
-      : selectedNodeId === node.id
+    options?.isSelected !== undefined ? options.isSelected : isNodeSelected
 
   // Get fresh node from workspace to ensure we have latest data
   // Check if node exists in workspace (virtual nodes like categories don't exist)

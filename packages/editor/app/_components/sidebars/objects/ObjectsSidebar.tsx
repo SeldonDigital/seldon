@@ -16,6 +16,7 @@ import { SidebarContainer } from "../../../seldon/elements/SidebarContainer"
 import { BarTabsProject } from "../../../seldon/parts/BarTabsProject"
 import { getBoardSections } from "../helpers/get-board-sections"
 import { sidebarShellStyle } from "../helpers/sidebar-styles"
+import { SelectionRelationsProvider } from "./hooks/use-selection-relations"
 import { ProjectTree } from "./ProjectTree"
 
 export function ObjectsSidebar() {
@@ -78,7 +79,9 @@ export function ObjectsSidebar() {
         button2={{ onClick: handleAddClick }}
         icon2={{ icon: "seldon-component" }}
       />
-      <ProjectTree sections={sections} scrollerRef={scrollerRef} />
+      <SelectionRelationsProvider>
+        <ProjectTree sections={sections} scrollerRef={scrollerRef} />
+      </SelectionRelationsProvider>
     </SidebarContainer>
   )
 }

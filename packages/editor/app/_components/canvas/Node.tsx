@@ -1,5 +1,6 @@
 "use client"
 
+import { memo, useMemo } from "react"
 import { buildContext } from "@seldon/factory/helpers/compute-workspace"
 import {
   Board,
@@ -32,7 +33,7 @@ export type CanvasNodeProps = {
   initialThemeId: ThemeId
   isRoot?: boolean
 }
-export function CanvasNode({
+export const CanvasNode = memo(function CanvasNode({
   nodeId,
   initialThemeId,
   isRoot = false,
@@ -46,6 +47,13 @@ export function CanvasNode({
 
   // Add the font family to the editor fonts - must be called before any early returns
   useAddNodeFontFamily(nodeId)
+
+  // Memoize the compute context so it stays referentially stable while the node
+  // and workspace are unchanged, letting ComponentRenderer's CSS memo hit.
+  const computeContext = useMemo(
+    () => buildContext(node, workspace),
+    [node, workspace],
+  )
 
   /**
    * For the children of the root screen initialThemeId is set to the theme of the screen
@@ -98,7 +106,7 @@ export function CanvasNode({
 
   return (
     <ComponentRenderer
-      computeContext={buildContext(node, workspace)}
+      computeContext={computeContext}
       styleOverrides={isRoot ? { position: "relative" } : undefined}
       componentId={component.id}
       htmlAttributes={getHTMLAttributes(node, nodeProperties)}
@@ -172,4 +180,4 @@ export function CanvasNode({
 
     return htmlAttributes
   }
-}
+})

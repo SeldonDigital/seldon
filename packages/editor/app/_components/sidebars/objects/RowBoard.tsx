@@ -1,4 +1,4 @@
-import { CSSProperties, useCallback } from "react"
+import { CSSProperties, memo, useCallback } from "react"
 import { Board as BoardType, Variant } from "@seldon/core"
 import {
   isIconSetBoard,
@@ -35,7 +35,7 @@ interface RowBoardProps {
  * Handles board selection, expansion, and canvas tracking.
  * Uses useRowHover for hover background (boards don't use tracking system styling).
  */
-export function RowBoard({
+export const RowBoard = memo(function RowBoard({
   board,
   show = true,
   disableReordering = false,
@@ -184,4 +184,4 @@ export function RowBoard({
       </FramerExpandable>
     </>
   )
-}
+})

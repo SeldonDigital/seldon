@@ -4,7 +4,7 @@ import { invariant } from "../../../index"
 import { ErrorMessages } from "../../constants"
 import { getComponentByNodeId } from "../../helpers/components/get-component-by-node-id"
 import { getChildrenIds } from "../../helpers/components/get-children-ids"
-import { getImmediateParentId } from "../../helpers/components/get-parent-ids"
+import { getImmediateParentIdInWorkspace } from "../../helpers/components/get-node-parent-id"
 import { isEntryNodeForRules } from "../../helpers/rules/rules-node-subject"
 import { parseNodeCatalog, parseNodeLink } from "../../model/template-ref"
 import {
@@ -234,14 +234,11 @@ export class NodeRelationshipService {
     let currentId: InstanceId | VariantId = subject
 
     while (true) {
-      const board = getComponentByNodeId(workspace, currentId)
-      if (!board) return false
-
-      const parentId = getImmediateParentId(board, currentId)
+      const parentId = getImmediateParentIdInWorkspace(workspace, currentId)
       if (!parentId) return false
       if (parentId === possibleParent) return true
 
-      currentId = parentId
+      currentId = parentId as InstanceId | VariantId
     }
   }
 

@@ -18,13 +18,14 @@ import { useDebugMode } from "@lib/hooks/use-debug-mode"
 import { useEditorConfig } from "@lib/hooks/use-editor-config"
 import { useTool } from "@lib/hooks/use-tool"
 import { useSelection } from "@lib/workspace/use-selection"
+import { useSelectionRelations } from "./use-selection-relations"
 import { useWorkspace } from "@lib/workspace/use-workspace"
 import { IconProps } from "../../../../seldon/primitives/Icon"
 import { LabelProps } from "../../../../seldon/primitives/Label"
 import { useAddToast } from "@components/toaster/use-add-toast"
 import { useDraggable } from "./use-draggable"
 import { useEditState } from "./use-edit-state"
-import { useExpansion } from "./use-expansion"
+import { useExpansion, useIsExpanded } from "./use-expansion"
 import { useRowButton } from "./use-row-button"
 import { useRowClick } from "./use-row-click"
 import { useRowToggle } from "./use-row-toggle"
@@ -45,18 +46,15 @@ export function useRowNode(
 ) {
   const { workspace } = useWorkspace({ usePreview: false })
   const { activeTool } = useTool()
-  const { selectNode, selectedNodeId } = useSelection()
+  const { selectNode } = useSelection()
+  const { selectedNodeId, parentOfSelectedNodeId, ancestorIdsOfSelected } =
+    useSelectionRelations()
   const { debugModeEnabled } = useDebugMode()
   const { autoScrollToSelection } = useEditorConfig()
   const addToast = useAddToast()
 
-  const {
-    toggle,
-    isExpanded,
-    expandObjects,
-    collapseObjects,
-    getAllDescendantNodeIds,
-  } = useExpansion()
+  const { toggle, expandObjects, collapseObjects, getAllDescendantNodeIds } =
+    useExpansion()
   const { toggleSection } = useSectionExpansion()
 
   const { isEditingName, setEditingName } = useEditState(node)
@@ -71,7 +69,7 @@ export function useRowNode(
     ? getNodeProperties(node, workspace)
     : {}
   const expandedId = node.id
-  const isExpandedState = isExpanded(expandedId)
+  const isExpandedState = useIsExpanded(expandedId)
 
   const children = nodeExistsInWorkspace
     ? getNodeChildIds(node, workspace)
@@ -79,18 +77,8 @@ export function useRowNode(
   const hasChildren = children.length > 0
 
   const isSelected = selectedNodeId === node.id
-  const selectedNodeExists = selectedNodeId
-    ? hasNode(workspace, selectedNodeId)
-    : false
-  const selectedNodeIsWithin =
-    selectedNodeId && selectedNodeExists
-      ? workspaceService.isParentOfNode(node.id, selectedNodeId, workspace)
-      : false
-  const parentOfSelectedNode =
-    selectedNodeId && selectedNodeExists
-      ? workspaceService.findParentNode(selectedNodeId, workspace)
-      : null
-  const isParentOfSelectedNode = parentOfSelectedNode?.id === node.id
+  const selectedNodeIsWithin = ancestorIdsOfSelected.has(node.id)
+  const isParentOfSelectedNode = parentOfSelectedNodeId === node.id
   const isNodeActive =
     parentIsSelected || isParentOfSelectedNode || selectedNodeIsWithin
 

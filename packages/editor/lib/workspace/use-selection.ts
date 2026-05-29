@@ -56,19 +56,32 @@ export const useStore = create<SelectionState>()((set) => ({
   },
 }))
 
+/**
+ * Reactive subscription to whether a specific node is the selected node.
+ *
+ * Rows use this so selecting a node only re-renders the previously and newly
+ * selected rows instead of every consumer of the selection store.
+ */
+export const useIsNodeSelected = (id: VariantId | InstanceId): boolean =>
+  useStore((state) => state.selectedNodeId === id)
+
+/**
+ * Reactive subscription to the selected node id only.
+ */
+export const useSelectedNodeId = (): VariantId | InstanceId | null =>
+  useStore((state) => state.selectedNodeId)
+
 export function useSelection() {
   const { toggleSection } = useSectionExpansion()
   const { toggle: toggleObject, isExpanded } = useExpansion()
   const { autoExpandOnSelection } = useEditorConfig()
 
-  const {
-    selectBoard,
-    selectNode,
-    selectThemeEntry,
-    selectedBoardId,
-    selectedNodeId,
-    selectedThemeEntryId,
-  } = useStore()
+  const selectBoard = useStore((state) => state.selectBoard)
+  const selectNode = useStore((state) => state.selectNode)
+  const selectThemeEntry = useStore((state) => state.selectThemeEntry)
+  const selectedBoardId = useStore((state) => state.selectedBoardId)
+  const selectedNodeId = useStore((state) => state.selectedNodeId)
+  const selectedThemeEntryId = useStore((state) => state.selectedThemeEntryId)
   const { workspace } = useWorkspace()
 
   const selectedNode = selectedNodeId
