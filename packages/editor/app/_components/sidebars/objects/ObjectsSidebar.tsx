@@ -1,6 +1,5 @@
 "use client"
 
-import { useRouter } from "next/navigation"
 import { useCallback, useEffect, useMemo } from "react"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
 import { useDialog } from "@lib/hooks/use-dialog"
@@ -28,7 +27,6 @@ export function ObjectsSidebar() {
     useSelection()
   const { openDialog } = useDialog()
   const { setActiveTool } = useTool()
-  const router = useRouter()
   const scrollerRef = useScrollSelection()
 
   useDraggableMonitor()
@@ -57,10 +55,6 @@ export function ObjectsSidebar() {
     return getBoardSections(workspaceService.getBoards(workspace))
   }, [workspace])
 
-  const handleWorkspacesClick = useCallback(() => {
-    router.push("/")
-  }, [router])
-
   const handleAddClick = useCallback(() => {
     openDialog("add-board")
     setActiveTool("select")
@@ -71,9 +65,7 @@ export function ObjectsSidebar() {
   return (
     <SidebarContainer style={sidebarShellStyle} data-testid="objects-sidebar">
       <BarTabsProject
-        button={{ onClick: handleWorkspacesClick }}
-        icon={{ icon: "material-chevronDoubleLeft" }}
-        label={{ children: "Workspaces" }}
+        button={{ style: { display: "none" } }}
         text={{
           children: record.name,
           style: {

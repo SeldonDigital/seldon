@@ -72,12 +72,6 @@ export function useMenuConfig(): HeaderConfig {
   const fileMenuItems = useMemo(() => {
     const items = [
       {
-        id: "projects",
-        label: "All workspaces…",
-        action: goToProjects,
-      },
-      "separator",
-      {
         id: "export-folder",
         label: "Export to folder…",
         action: exportToFolder,
@@ -126,6 +120,16 @@ export function useMenuConfig(): HeaderConfig {
         visibleIn: ["edit", "preview"], // Not visible in project view
       })
     }
+
+    items.push(
+      "separator",
+      {
+        id: "projects",
+        label: "Back to Workspaces…",
+        action: goToProjects,
+        shortcut: "⇧ Q",
+      },
+    )
 
     return items
   }, [

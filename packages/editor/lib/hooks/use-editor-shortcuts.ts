@@ -1,3 +1,4 @@
+import { useRouter } from "next/navigation"
 import { useHotkeys } from "react-hotkeys-hook"
 import { useHistory } from "@lib/workspace/use-history"
 import { useAddRemoveCommands } from "./commands/use-add-remove-commands"
@@ -21,6 +22,7 @@ export function useEditorShortcuts() {
     useEditorConfig()
   const { togglePreviewMode, setDevice, isInPreviewMode } = usePreview()
   const { activeDialog } = useDialog()
+  const router = useRouter()
 
   // Undo redo
   useHotkeys("mod+z", undo, { preventDefault: true })
@@ -100,4 +102,7 @@ export function useEditorShortcuts() {
 
   // Wireframe mode
   useHotkeys("w", () => toggleWireframeMode(), { preventDefault: true })
+
+  // Back to workspaces
+  useHotkeys("shift+q", () => router.push("/"), { preventDefault: true })
 }
