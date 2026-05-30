@@ -4,7 +4,7 @@ These terms govern paid access to the Seldon source repository on GitHub. They a
 
 **Licensor:** Seldon Digital, B.V.
 
-**Contact:** admin@seldon.digital
+**Contact:** info@seldon.digital
 
 
 ## 1. Grant of access
