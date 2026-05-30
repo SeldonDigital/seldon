@@ -23,7 +23,7 @@ See [Commercial License](../commercial/COMMERCIAL-LICENSE.md) for details on com
 
 **Term and renewal.** Each subscription period runs for twelve (12) months from the date access is granted or from the prior renewal date. Unless you cancel before the end of the current period, the subscription renews automatically for another twelve (12) month period at the then-current annual fee.
 
-**Cancellation.** You may cancel renewal by following the cancellation process stated at purchase or by contacting admin@seldon.digital before the next renewal date. Cancellation takes effect at the end of the current paid period.
+**Cancellation.** You may cancel renewal by following the cancellation process stated at purchase or by contacting info@seldon.digital before the next renewal date. Cancellation takes effect at the end of the current paid period.
 
 **Refunds.** Paid fees are non-refundable, including if you cancel during a subscription period. Nothing in this section limits any refund or withdrawal right that applicable mandatory law grants you and that cannot be waived by contract.
 
