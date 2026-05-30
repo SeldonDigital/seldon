@@ -275,6 +275,11 @@ export class NodeOperationsService {
 
       const oldBoard = getComponentByNodeId(draft, currentParent.id)
       invariant(oldBoard, `Board not found for parent ${currentParent.id}`)
+
+      // Capture the full tree ref before removing it so the instance keeps its
+      // child subtree. Inserting a bare { id } ref would orphan every child node.
+      const treeRef = findTreeRef(oldBoard, instanceId)
+      invariant(treeRef, `Tree ref not found for instance ${instanceId}`)
       removeComponentTreeChild(oldBoard, instanceId)
 
       const newBoard = getComponentByNodeId(draft, newPosition.parentId)
@@ -286,7 +291,7 @@ export class NodeOperationsService {
       const inserted = insertComponentTreeChild(
         newBoard,
         newPosition.parentId,
-        { id: instanceId },
+        treeRef,
         newPosition.index,
       )
       invariant(

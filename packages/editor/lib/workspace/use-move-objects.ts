@@ -195,6 +195,22 @@ export function useMoveObjects() {
           newIndex -= 1
         }
 
+        // Same-parent reorder. `move_instance` resolves nodes by catalog path and
+        // no-ops on `node:` linked instances, so reorder the instance directly.
+        if (subjectIndex !== -1) {
+          dispatch(
+            {
+              type: "reorder_instance_in_parent",
+              payload: {
+                instanceId: subjectNode.id as InstanceId,
+                newIndex,
+              },
+            },
+            isPreview,
+          )
+          return
+        }
+
         return moveChildTo(subjectNode.id, parent.id, newIndex, isPreview)
       } else {
         const targetVariant = targetNode as Variant
@@ -204,7 +220,7 @@ export function useMoveObjects() {
         return reorderVariant(subjectVariant.id, currentIndex, isPreview)
       }
     },
-    [workspace, moveChildTo, addToast, reorderVariant],
+    [workspace, moveChildTo, dispatch, addToast, reorderVariant],
   )
 
   const moveNodeInside = useCallback(
@@ -219,19 +235,36 @@ export function useMoveObjects() {
     }) => {
       const isChild = workspaceService.isInstance(subjectNode)
 
+      // Append after any existing children. An empty container yields index 0,
+      // so nesting into an empty container inserts the object as the first child.
       const targetChildIds = getNodeChildIds(targetNode, workspace)
-      if (isChild && targetChildIds.length > 0) {
-        return moveChildTo(
-          subjectNode.id,
-          targetNode.id,
-          targetChildIds.length,
+
+      // A variant subject cannot be moved; instantiate it as a new child instance.
+      if (!isChild) {
+        dispatch(
+          {
+            type: "insert_variant_instance",
+            payload: {
+              variantId: subjectNode.id as VariantId,
+              target: {
+                parentId: targetNode.id,
+                index: targetChildIds.length,
+              },
+            },
+          },
           isPreview,
         )
-      } else {
-        addToast("Variants cannot be moved inside other variants")
+        return
       }
+
+      return moveChildTo(
+        subjectNode.id,
+        targetNode.id,
+        targetChildIds.length,
+        isPreview,
+      )
     },
-    [moveChildTo, addToast],
+    [workspace, moveChildTo, dispatch],
   )
 
   return {

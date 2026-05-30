@@ -188,6 +188,33 @@ function isValidTargetForSubjectNode(
     return true
   }
 
+  // Variant subject dropped inside a container instantiates a new child instance.
+  // The insertInto allowance for the target was already checked above; here we
+  // confirm the variant can be instantiated and the container accepts its level.
+  if (
+    workspaceService.isVariant(subject) &&
+    placement === "inside" &&
+    subjectComponentId &&
+    targetComponentId
+  ) {
+    const subjectEntityType = workspaceService.getEntityType(subject)
+    if (!rules.mutations.instantiate[subjectEntityType].allowed) {
+      return false
+    }
+
+    return (
+      workspaceService.canComponentBeParentOf(
+        targetComponentId,
+        subjectComponentId,
+      ) &&
+      !workspaceService.hasAncestorWithComponentId(
+        subjectComponentId,
+        target,
+        workspace,
+      )
+    )
+  }
+
   if (
     workspaceService.isVariant(subject) &&
     workspaceService.isVariant(target) &&

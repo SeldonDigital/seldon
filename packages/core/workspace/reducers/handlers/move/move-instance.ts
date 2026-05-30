@@ -42,25 +42,41 @@ export function moveInstance(
     nodeId: rootVariant.id,
     propagation,
     apply: (node, workspace) => {
-      const instanceNode = nodeTraversalService.findNodeByPath(
+      const resolvedInstance = nodeTraversalService.findNodeByPath(
         node,
         instanceNodePath,
         workspace,
       )
-      const targetNode = nodeTraversalService.findNodeByPath(
+      const resolvedTarget = nodeTraversalService.findNodeByPath(
         node,
         targetNodePath,
         workspace,
       )
 
       if (
-        instanceNode &&
-        typeCheckingService.isInstance(instanceNode) &&
-        targetNode
+        resolvedInstance &&
+        typeCheckingService.isInstance(resolvedInstance) &&
+        resolvedTarget
       ) {
         return nodeOperationsService.moveInstance(
-          instanceNode.id,
-          { parentId: targetNode.id, index },
+          resolvedInstance.id,
+          { parentId: resolvedTarget.id, index },
+          workspace,
+        )
+      }
+
+      // Path resolution stops short for `node:` linked instances because their
+      // componentId cannot be derived, so `findNodeByPath` returns the root
+      // variant instead of the instance. On the originating variant, fall back to
+      // the concrete payload ids so the move still applies. Downstream copies are
+      // left untouched since their placement cannot be expressed as a tree path.
+      if (
+        node.id === rootVariant.id &&
+        typeCheckingService.isInstance(instanceNode)
+      ) {
+        return nodeOperationsService.moveInstance(
+          instanceNodeId,
+          { parentId: targetNodeId, index },
           workspace,
         )
       }

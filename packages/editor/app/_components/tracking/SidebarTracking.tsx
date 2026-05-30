@@ -1,5 +1,5 @@
 import { Placement } from "@lib/types"
-import { MouseEvent, ReactNode, useCallback } from "react"
+import { CSSProperties, MouseEvent, ReactNode, useCallback } from "react"
 import { Instance, Variant } from "@seldon/core"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
 import { useDialog } from "@lib/hooks/use-dialog"
@@ -62,7 +62,8 @@ export function SidebarTracking({
   const { workspace } = useWorkspace({ usePreview: false })
   const { openDialog } = useDialog()
   const { activeTool } = useTool()
-  const { isPlacementAllowed, parentNode } = useSidebarPlacementTracking(node)
+  const { isPlacementAllowed, parentNode, canHaveChildren } =
+    useSidebarPlacementTracking(node)
 
   const handlePlacementClick = useCallback(
     (placement: Placement) => {
@@ -128,25 +129,30 @@ export function SidebarTracking({
         <DragDropZone
           target={node}
           placement="before"
+          bandStyle={getZoneBandStyle("before", canHaveChildren, isExpanded)}
           onClick={handleRowClickWrapper}
           onDoubleClick={handleRowDoubleClickWrapper}
           onCanvasTrackingEnter={onCanvasTrackingEnter}
           onCanvasTrackingLeave={onCanvasTrackingLeave}
           onHoverChange={onHoverChange}
         />
-        <DragDropZone
-          target={node}
-          placement="inside"
-          onClick={handleRowClickWrapper}
-          onDoubleClick={handleRowDoubleClickWrapper}
-          onCanvasTrackingEnter={onCanvasTrackingEnter}
-          onCanvasTrackingLeave={onCanvasTrackingLeave}
-          onHoverChange={onHoverChange}
-        />
+        {canHaveChildren && (
+          <DragDropZone
+            target={node}
+            placement="inside"
+            bandStyle={getZoneBandStyle("inside", canHaveChildren, isExpanded)}
+            onClick={handleRowClickWrapper}
+            onDoubleClick={handleRowDoubleClickWrapper}
+            onCanvasTrackingEnter={onCanvasTrackingEnter}
+            onCanvasTrackingLeave={onCanvasTrackingLeave}
+            onHoverChange={onHoverChange}
+          />
+        )}
         {!isExpanded && (
           <DragDropZone
             target={node}
             placement="after"
+            bandStyle={getZoneBandStyle("after", canHaveChildren, isExpanded)}
             onClick={handleRowClickWrapper}
             onDoubleClick={handleRowDoubleClickWrapper}
             onCanvasTrackingEnter={onCanvasTrackingEnter}
@@ -189,9 +195,47 @@ export function SidebarTracking({
   )
 }
 
+/**
+ * Computes the vertical band a select drop zone occupies within a row so that
+ * pointer position chooses the placement. Without distinct bands the zones fully
+ * overlap and only the topmost one is ever reachable.
+ *
+ * - Container, collapsed: before (top 30%), inside (middle 40%), after (bottom 30%).
+ * - Container, expanded: before (top 50%), inside (bottom 50%); the after-sibling
+ *   position stays reachable through the next sibling's before band.
+ * - Leaf: before (top 50%), after (bottom 50%); no inside band is rendered.
+ */
+function getZoneBandStyle(
+  placement: Placement,
+  canHaveChildren: boolean,
+  isExpanded: boolean,
+): CSSProperties {
+  const base: CSSProperties = {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    pointerEvents: "auto",
+  }
+
+  if (canHaveChildren && !isExpanded) {
+    if (placement === "before") return { ...base, top: 0, height: "30%" }
+    if (placement === "inside") return { ...base, top: "30%", height: "40%" }
+    return { ...base, bottom: 0, height: "30%" }
+  }
+
+  if (canHaveChildren && isExpanded) {
+    if (placement === "before") return { ...base, top: 0, height: "50%" }
+    return { ...base, bottom: 0, height: "50%" }
+  }
+
+  if (placement === "before") return { ...base, top: 0, height: "50%" }
+  return { ...base, bottom: 0, height: "50%" }
+}
+
 interface DragDropZoneProps {
   target: Variant | Instance
   placement: Placement
+  bandStyle: CSSProperties
   onClick?: (event?: MouseEvent<HTMLElement>) => void
   onDoubleClick?: (event?: MouseEvent<HTMLElement>) => void
   onCanvasTrackingEnter?: () => void
@@ -206,6 +250,7 @@ interface DragDropZoneProps {
 function DragDropZone({
   target,
   placement,
+  bandStyle,
   onClick,
   onDoubleClick,
   onCanvasTrackingEnter,
@@ -228,22 +273,29 @@ function DragDropZone({
   }
 
   return (
-    <div
-      ref={ref}
-      style={{ position: "absolute", inset: 0, pointerEvents: "auto" }}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      onClick={(event) => {
-        if (isButtonTarget(event)) return
-        onClick?.(event)
-      }}
-      onDoubleClick={(event) => {
-        if (isButtonTarget(event)) return
-        onDoubleClick?.(event)
-      }}
-      data-testid={`node-${target.id}-dropzone-${placement}`}
-    >
-      {isValidDropTarget && <IndicatorSelect placement={placement} />}
-    </div>
+    <>
+      <div
+        ref={ref}
+        style={bandStyle}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        onClick={(event) => {
+          if (isButtonTarget(event)) return
+          onClick?.(event)
+        }}
+        onDoubleClick={(event) => {
+          if (isButtonTarget(event)) return
+          onDoubleClick?.(event)
+        }}
+        data-testid={`node-${target.id}-dropzone-${placement}`}
+      />
+      {/* The hit area is only a band of the row, but the indicator line must sit
+          on the row edge, so render it in a full-row, non-interactive overlay. */}
+      {isValidDropTarget && (
+        <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
+          <IndicatorSelect placement={placement} />
+        </div>
+      )}
+    </>
   )
 }
