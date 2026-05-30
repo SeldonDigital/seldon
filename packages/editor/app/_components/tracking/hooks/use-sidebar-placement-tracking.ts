@@ -1,10 +1,13 @@
 import { Placement } from "@lib/types"
 import { useCallback, useMemo } from "react"
 import { Instance, Variant } from "@seldon/core"
+import { getComponentSchema } from "@seldon/core/components/catalog"
+import { rules } from "@seldon/core/rules/config/rules.config"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
 import { useCanvasHoverState } from "@lib/hooks/use-canvas-hover-state"
 import { useTool } from "@lib/hooks/use-tool"
 import { isInsertionAllowed } from "@lib/workspace/helpers/is-insertion-allowed"
+import { getNodeCatalogComponentId } from "@lib/workspace/node-tree"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { useActiveBoard } from "@lib/workspace/use-active-board"
 import { useWorkspace } from "@lib/workspace/use-workspace"
@@ -23,10 +26,19 @@ export function useSidebarPlacementTracking(node: Variant | Instance) {
   const { workspace } = useWorkspace({ usePreview: false })
   const { activeTool } = useTool()
 
-  const canHaveChildren = useMemo(
-    () => workspaceService.canNodeHaveChildren(node),
-    [node],
-  )
+  // Resolve the catalog component id through `node:` links so composed container
+  // instances (Frames, Elements, Parts, Modules) are recognized, then base the
+  // result on the COMPONENTS.md containment rule rather than the raw template.
+  const canHaveChildren = useMemo(() => {
+    const componentId = getNodeCatalogComponentId(node, workspace)
+    if (!componentId) return false
+    const schema = getComponentSchema(componentId)
+    const mayContain = rules.componentLevels[schema.level].mayContain
+    const addChildren = (
+      schema as { restrictions?: { addChildren?: boolean } }
+    ).restrictions?.addChildren
+    return mayContain.length > 0 && addChildren !== false
+  }, [node, workspace])
 
   const parentNode = useMemo(() => {
     try {
@@ -84,7 +96,7 @@ export function useSidebarPlacementTracking(node: Variant | Instance) {
 
   const handlePlacementEnter = useCallback(
     (placement: Placement) => {
-      if (activeTool !== "component" && activeTool !== "sketch") {
+      if (activeTool !== "component") {
         return
       }
 
@@ -179,7 +191,7 @@ export function useSidebarPlacementTracking(node: Variant | Instance) {
 
   const isPlacementAllowed = useCallback(
     (placement: Placement) => {
-      if (activeTool !== "component" && activeTool !== "sketch") {
+      if (activeTool !== "component") {
         return true
       }
 

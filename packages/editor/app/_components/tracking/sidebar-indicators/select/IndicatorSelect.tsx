@@ -14,11 +14,26 @@ type IndicatorSelectProps = {
  */
 export const IndicatorSelect: FC<IndicatorSelectProps> = ({ placement }) => {
   const indentation = useIndentation()
-  // For "inside" placement, use next indentation level (where children would be inserted)
-  // For "before" and "after", use current indentation level (same as the node)
-  const effectiveIndentation =
-    placement === "inside" ? indentation + 1 : indentation
-  const position = calculateIndicatorPosition(placement, effectiveIndentation)
+
+  // "inside" nests the dragged object, so outline the whole target row like a
+  // selection instead of drawing an edge line.
+  if (placement === "inside") {
+    return (
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          zIndex: 20,
+          pointerEvents: "none",
+          border: `1px solid ${COLORS.primary[600]}`,
+          borderRadius: "4px",
+          boxSizing: "border-box",
+        }}
+      />
+    )
+  }
+
+  const position = calculateIndicatorPosition(placement, indentation)
 
   const lineStyle: CSSProperties = {
     position: "absolute",
@@ -43,9 +58,9 @@ export const IndicatorSelect: FC<IndicatorSelectProps> = ({ placement }) => {
     <div style={lineStyle}>
       <div
         style={{
-          ...(placement === "inside"
-            ? { left: "-8px", top: "0.5px", transform: "translateY(-50%)" }
-            : { left: "-8px", top: "0.5px", transform: "translateY(-50%)" }),
+          left: "-8px",
+          top: "0.5px",
+          transform: "translateY(-50%)",
           ...circleStyle,
         }}
       />

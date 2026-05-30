@@ -234,14 +234,29 @@ export function useMoveObjects() {
       isPreview?: boolean
     }) => {
       const isChild = workspaceService.isInstance(subjectNode)
+
+      // Append after any existing children. An empty container yields index 0,
+      // so nesting into an empty container inserts the object as the first child.
+      const targetChildIds = getNodeChildIds(targetNode, workspace)
+
+      // A variant subject cannot be moved; instantiate it as a new child instance.
       if (!isChild) {
-        addToast("Variants cannot be moved inside other objects")
+        dispatch(
+          {
+            type: "insert_variant_instance",
+            payload: {
+              variantId: subjectNode.id as VariantId,
+              target: {
+                parentId: targetNode.id,
+                index: targetChildIds.length,
+              },
+            },
+          },
+          isPreview,
+        )
         return
       }
 
-      // Append after any existing children. An empty container yields index 0,
-      // so nesting into an empty Frame inserts the instance as the first child.
-      const targetChildIds = getNodeChildIds(targetNode, workspace)
       return moveChildTo(
         subjectNode.id,
         targetNode.id,
@@ -249,7 +264,7 @@ export function useMoveObjects() {
         isPreview,
       )
     },
-    [workspace, moveChildTo, addToast],
+    [workspace, moveChildTo, dispatch],
   )
 
   return {
