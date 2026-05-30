@@ -234,20 +234,22 @@ export function useMoveObjects() {
       isPreview?: boolean
     }) => {
       const isChild = workspaceService.isInstance(subjectNode)
-
-      const targetChildIds = getNodeChildIds(targetNode, workspace)
-      if (isChild && targetChildIds.length > 0) {
-        return moveChildTo(
-          subjectNode.id,
-          targetNode.id,
-          targetChildIds.length,
-          isPreview,
-        )
-      } else {
-        addToast("Variants cannot be moved inside other variants")
+      if (!isChild) {
+        addToast("Variants cannot be moved inside other objects")
+        return
       }
+
+      // Append after any existing children. An empty container yields index 0,
+      // so nesting into an empty Frame inserts the instance as the first child.
+      const targetChildIds = getNodeChildIds(targetNode, workspace)
+      return moveChildTo(
+        subjectNode.id,
+        targetNode.id,
+        targetChildIds.length,
+        isPreview,
+      )
     },
-    [moveChildTo, addToast],
+    [workspace, moveChildTo, addToast],
   )
 
   return {
