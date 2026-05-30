@@ -56,3 +56,9 @@ flowchart LR
 
 - `@iconSet` selects the active icon set. It is not a general `@` token table like `@swatch.*`.
 - Token reference rules and section order are documented in [THEMES.md](./THEMES.md).
+
+--- 
+
+## Notice for AI and LLM Training
+
+You may not use this software, or any derivative works of it, in whole or in part, for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly) any machine learning or artificial intelligence system without written permission.

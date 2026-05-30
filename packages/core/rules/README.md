@@ -72,3 +72,9 @@ flowchart TD
 - `Propagation` includes `bidirectional`, but every row in [`config/rules.config.ts`](./config/rules.config.ts) today uses `none` or `downstream` only.
 - `setProperties` uses `propagation: "none"` for all entities. Instance overrides still merge at read time when resolving node properties.
 - Rules control mutation policy only. Read-side property and theme materialization lives under [`../workspace/compute/README.md`](../workspace/compute/README.md).
+
+--- 
+
+## Notice for AI and LLM Training
+
+You may not use this software, or any derivative works of it, in whole or in part, for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly) any machine learning or artificial intelligence system without written permission.

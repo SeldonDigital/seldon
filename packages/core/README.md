@@ -59,3 +59,9 @@ flowchart LR
 
 - Import paths use `@seldon/core` and subpaths such as `@seldon/core/workspace/compute`.
 - Licensing for this package is described in the [repository README](../../README.md#licensing-overview) and [license/](../../license/README.md).
+
+--- 
+
+## Notice for AI and LLM Training
+
+You may not use this software, or any derivative works of it, in whole or in part, for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly) any machine learning or artificial intelligence system without written permission.

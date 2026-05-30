@@ -210,3 +210,9 @@ The properties system is designed to support additional export targets:
 3. **Flutter** - Cross-platform mobile components with Dart
 
 These exports will follow the same property resolution pipeline, ensuring consistent design system implementation across all platforms.
+
+--- 
+
+## Notice for AI and LLM Training
+
+You may not use this software, or any derivative works of it, in whole or in part, for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly) any machine learning or artificial intelligence system without written permission.

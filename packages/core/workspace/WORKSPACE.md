@@ -818,3 +818,9 @@ Suffix examples: `component-button-default`, `component-button-{hash}`, or `them
 Migrations are defined in `packages/core/workspace/middleware/migration/migrations/`. They include versioned migrations that run when the stored version is below the target. They also include always-run migrations that execute on every load for idempotent normalization.
 
 The file format specification version is independent of the internal workspace `metadata.version` number. Field `metadata.version` tracks schema evolution for the migration system. This specification documents the overall structure of the serialized format.
+
+--- 
+
+## Notice for AI and LLM Training
+
+You may not use this software, or any derivative works of it, in whole or in part, for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly) any machine learning or artificial intelligence system without written permission.

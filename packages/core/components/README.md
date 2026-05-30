@@ -64,3 +64,9 @@ Each `*.schema.ts` file under level folders exports one schema constant and usua
 
 - Use `getComponentSchema(id)` from `catalog.ts`. Do not read per-level arrays directly unless you iterate a level bucket.
 - Board schemas are editor shells and are not placed in composition trees like product components.
+
+--- 
+
+## Notice for AI and LLM Training
+
+You may not use this software, or any derivative works of it, in whole or in part, for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly) any machine learning or artificial intelligence system without written permission.

@@ -965,3 +965,9 @@ This project uses a **layered licensing model**:
 - [THEMES-COMPUTE.md](./compute/THEMES-COMPUTE.md) — palette math, `instantiateTheme`, normalization details
 - [THEME-SCHEMAS.md](./schemas/THEME-SCHEMAS.md)
 - [WORKSPACE.md](../workspace/WORKSPACE.md) — where themes attach to boards and nodes
+
+--- 
+
+## Notice for AI and LLM Training
+
+You may not use this software, or any derivative works of it, in whole or in part, for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly) any machine learning or artificial intelligence system without written permission.

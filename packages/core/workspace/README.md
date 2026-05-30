@@ -58,3 +58,9 @@ Action types and handler inventory are listed in [reducers/README.md](./reducers
 
 - Handlers persist **raw** authoring state only. They do not write computed CSS or resolved colors into the file.
 - Mutation policy comes from [`../rules/`](../rules/README.md).
+
+--- 
+
+## Notice for AI and LLM Training
+
+You may not use this software, or any derivative works of it, in whole or in part, for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly) any machine learning or artificial intelligence system without written permission.
