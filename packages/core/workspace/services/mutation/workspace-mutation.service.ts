@@ -21,6 +21,7 @@ import {
   ThemeValueKey,
 } from "../../../themes/types"
 import { getComponentLevelThemeRef } from "../../helpers/components/get-component-level-theme-ref"
+import { getNextVariantLabel } from "../../helpers/general/get-next-variant-label"
 import { getSpecialComponentVariantLabel } from "../../helpers/general/get-special-component-variant-label"
 import { getWorkspaceNodes } from "../../helpers/general/get-workspace-nodes"
 import { applyResetUserVariantToDefaultVariant } from "../../helpers/nodes/apply-reset-user-variant-to-default-variant"
@@ -106,14 +107,15 @@ export class WorkspaceMutationService {
     )
     const existingLabels = new Set(nodes.map((node) => node.label))
 
-    let number = 1
-    let nextLabel = number < 10 ? `Variant0${number}` : `Variant${number}`
-    while (existingLabels.has(nextLabel)) {
-      number++
-      nextLabel = number < 10 ? `Variant0${number}` : `Variant${number}`
-    }
+    const defaultVariant = boardForFilter
+      ? nodeRetrievalService.getDefaultVariant(componentId, workspace)
+      : undefined
+    const base =
+      defaultVariant?.label && defaultVariant.label !== "Default"
+        ? defaultVariant.label
+        : (boardForFilter?.label ?? defaultVariant?.label ?? "Variant")
 
-    return nextLabel
+    return getNextVariantLabel(base, existingLabels)
   }
 
   /**

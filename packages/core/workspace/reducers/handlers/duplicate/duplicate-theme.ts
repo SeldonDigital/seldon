@@ -2,6 +2,7 @@ import { current, isDraft, produce } from "immer"
 import type { EntryTheme } from "../../../model/entry-theme"
 import { isEntryThemeDefault } from "../../../model/entry-theme"
 import type { ExtractPayload, Workspace } from "../../../../index"
+import { getNextVariantLabel } from "../../../helpers/general/get-next-variant-label"
 import { formatThemeLink } from "../../../model/template-ref"
 
 function themeComponentKeyFromThemeId(themeId: string): string | null {
@@ -40,19 +41,30 @@ export function duplicateTheme(
 
     if (draft.themes[newId]) return
 
+    const board = draft.components[componentKey]
+    const isThemeBoard = board?.type === "theme"
+
+    const base = isThemeBoard ? board.label : entry.label
+    const existing = new Set<string>()
+    if (isThemeBoard && board.variants) {
+      for (const ref of board.variants) {
+        const existingLabel = draft.themes[ref.id]?.label
+        if (existingLabel) existing.add(existingLabel)
+      }
+    }
+
     const clone: EntryTheme = {
       ...entry,
       id: newId,
       type: "variant",
-      label: `${entry.label} copy`,
+      label: getNextVariantLabel(base, existing),
       template: formatThemeLink(payload.themeId),
       overrides: structuredClone(entry.overrides) as EntryTheme["overrides"],
     }
 
     draft.themes[newId] = clone
 
-    const board = draft.components[componentKey]
-    if (board?.type === "theme" && board.variants) {
+    if (isThemeBoard && board.variants) {
       board.variants.push({ id: newId })
     }
   })
