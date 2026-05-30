@@ -195,6 +195,22 @@ export function useMoveObjects() {
           newIndex -= 1
         }
 
+        // Same-parent reorder. `move_instance` resolves nodes by catalog path and
+        // no-ops on `node:` linked instances, so reorder the instance directly.
+        if (subjectIndex !== -1) {
+          dispatch(
+            {
+              type: "reorder_instance_in_parent",
+              payload: {
+                instanceId: subjectNode.id as InstanceId,
+                newIndex,
+              },
+            },
+            isPreview,
+          )
+          return
+        }
+
         return moveChildTo(subjectNode.id, parent.id, newIndex, isPreview)
       } else {
         const targetVariant = targetNode as Variant
@@ -204,7 +220,7 @@ export function useMoveObjects() {
         return reorderVariant(subjectVariant.id, currentIndex, isPreview)
       }
     },
-    [workspace, moveChildTo, addToast, reorderVariant],
+    [workspace, moveChildTo, dispatch, addToast, reorderVariant],
   )
 
   const moveNodeInside = useCallback(

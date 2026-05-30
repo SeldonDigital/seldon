@@ -3,18 +3,17 @@ import { Placement } from "@lib/types"
 import { useEffect } from "react"
 import { Board, Instance, Variant, invariant } from "@seldon/core"
 import { useMoveObjects } from "@lib/workspace/use-move-objects"
-import { useWorkspace } from "@lib/workspace/use-workspace"
 
 /**
  * Global monitor for drag-and-drop operations in the objects sidebar.
- * Listens for board reordering and node movement events, applies preview changes,
- * and commits or rolls back workspace operations on drop.
+ * Listens for board reordering and node movement events and commits the
+ * reorder once when the drag is released.
  *
- * Uses preview sessions to show changes before committing, allowing rollback on errors.
+ * The move is applied a single time on drop, computed from committed state,
+ * so nothing changes while dragging beyond the local drop indicator.
  */
 export function useDraggableMonitor() {
   const { moveNodeNextTo, moveBoardNextTo, moveNodeInside } = useMoveObjects()
-  const { startPreviewSession, commitPreview, rollbackPreview } = useWorkspace()
 
   useEffect(() => {
     return monitorForElements({
@@ -22,19 +21,7 @@ export function useDraggableMonitor() {
         source.data.action === "object-panel-move-node" ||
         source.data.action === "object-panel-reorder-board",
 
-      onDragStart: () => {
-        startPreviewSession()
-      },
-
-      onDrop() {
-        try {
-          commitPreview()
-        } catch (error) {
-          rollbackPreview()
-          throw error
-        }
-      },
-      onDropTargetChange({ source, location }) {
+      onDrop({ source, location }) {
         const destination = location.current.dropTargets[0]
         const { action } = source.data
 
@@ -54,7 +41,7 @@ export function useDraggableMonitor() {
               targetBoard,
               subjectBoard,
               position: placement,
-              isPreview: true,
+              isPreview: false,
             })
             break
           }
@@ -71,14 +58,14 @@ export function useDraggableMonitor() {
               moveNodeInside({
                 targetNode,
                 subjectNode,
-                isPreview: true,
+                isPreview: false,
               })
             } else {
               moveNodeNextTo({
                 targetNode,
                 subjectNode,
                 position: placement,
-                isPreview: true,
+                isPreview: false,
               })
             }
             break
@@ -89,12 +76,5 @@ export function useDraggableMonitor() {
         }
       },
     })
-  }, [
-    moveNodeNextTo,
-    moveBoardNextTo,
-    moveNodeInside,
-    startPreviewSession,
-    commitPreview,
-    rollbackPreview,
-  ])
+  }, [moveNodeNextTo, moveBoardNextTo, moveNodeInside])
 }
