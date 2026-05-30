@@ -8,7 +8,6 @@ import {
   useTransformContext,
 } from "react-zoom-pan-pinch"
 import { useThrottledCallback } from "use-debounce"
-import { invariant } from "@seldon/core"
 import { useCanvasHoverState } from "@lib/hooks/use-canvas-hover-state"
 import { useDialog } from "@lib/hooks/use-dialog"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
@@ -32,7 +31,9 @@ export const Canvas = () => {
   // set the hover state to null
   const onMouseMove = useThrottledCallback((event) => {
     const rootTree = document.querySelector("#root-tree")
-    invariant(rootTree, "root-tree not found")
+    // The tree can be transiently absent (no active board, unmount, Fast Refresh),
+    // so a missing #root-tree is expected rather than an invariant violation.
+    if (!rootTree) return
 
     if (!rootTree.contains(event.target as Node)) {
       setHoverState(null)
