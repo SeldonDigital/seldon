@@ -1,4 +1,3 @@
-import { cn } from "@lib/utils/cn"
 import { IconCatalog } from "@components/icons/Catalog"
 import { IconCircle } from "@components/icons/Circle"
 import { IconCursor } from "@components/icons/Cursor"
@@ -64,13 +63,25 @@ export function ToolbarButton({
       title={title}
       onClick={onClick}
       state={isSelected ? "selected" : "default"}
-      className={cn(
-        `flex h-8 items-center justify-center text-2xl`,
-        label ? "gap-2 px-2" : "w-8",
-        // Needed because tldraw overrides the outline style
-        isSelected && "!outline !outline-1 !outline-blue",
-        className,
-      )}
+      className={className}
+      style={{
+        display: "flex",
+        height: "2rem",
+        alignItems: "center",
+        justifyContent: "center",
+        fontSize: "var(--sdn-font-size-large)",
+        ...(label
+          ? {
+              gap: "var(--sdn-gap-compact)",
+              paddingLeft: "var(--sdn-padding-compact)",
+              paddingRight: "var(--sdn-padding-compact)",
+            }
+          : { width: "2rem" }),
+        // Inline outline beats tldraw's outline rule for the selected state
+        ...(isSelected
+          ? { outline: "1px solid var(--sdn-swatch-seldon-blue)" }
+          : {}),
+      }}
       data-testid={testId}
       data-is-selected={isSelected}
     >
@@ -92,7 +103,16 @@ export function ToolbarButton({
       {icon === "spark" && <IconSpark />}
       {icon === "screens" && <IconScreens />}
       {icon === "text" && <IconTextAlt />}
-      {label && <span className="text-[14px] font-normal">{label}</span>}
+      {label && (
+        <span
+          style={{
+            fontSize: "var(--sdn-font-size-small)",
+            fontWeight: "var(--sdn-font-weight-normal)",
+          }}
+        >
+          {label}
+        </span>
+      )}
     </Selectable>
   )
 }

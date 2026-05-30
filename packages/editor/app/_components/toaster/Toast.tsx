@@ -19,11 +19,17 @@ export function Toast({ message }: ToastProps) {
       initial="initial"
       animate="animate"
       exit="exit"
-      className={
-        "px-6 py-4 bg-pearl rounded-xl shadow-lg outline outline-1 outline-black text-black"
-      }
+      style={{
+        padding: "1rem 1.5rem",
+        backgroundColor: "#F5F5F5",
+        borderRadius: "0.75rem",
+        boxShadow:
+          "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
+        outline: "1px solid var(--sdn-swatch-black)",
+        color: "var(--sdn-swatch-black)",
+      }}
     >
-      <p className="text-sm">{message}</p>
+      <p style={{ fontSize: "var(--sdn-font-size-small)" }}>{message}</p>
     </motion.div>
   )
 }

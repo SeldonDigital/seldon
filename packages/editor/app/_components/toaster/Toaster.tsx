@@ -9,7 +9,18 @@ export function Toasts() {
   const toasts = useToastStore(useShallow((state) => state.toasts))
 
   return (
-    <div className="absolute bottom-12 left-1/2 z-50 flex -translate-x-1/2 flex-col gap-2">
+    <div
+      style={{
+        position: "absolute",
+        bottom: "3rem",
+        left: "50%",
+        zIndex: 50,
+        display: "flex",
+        flexDirection: "column",
+        gap: "var(--sdn-gap-compact)",
+        transform: "translateX(-50%)",
+      }}
+    >
       <AnimatePresence mode="popLayout">
         {toasts.map((toast) => (
           <Toast key={toast.id} {...toast} />

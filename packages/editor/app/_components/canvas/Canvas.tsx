@@ -1,6 +1,5 @@
 "use client"
 
-import { cn } from "@lib/utils/cn"
 import { useEffect } from "react"
 import { isHotkeyPressed } from "react-hotkeys-hook"
 import {
@@ -47,7 +46,13 @@ export const Canvas = () => {
         if (activeBoard) selectBoard(getComponentKey(activeBoard))
         else selectNode(null)
       }}
-      className="absolute inset-0 h-full w-full subpixel-antialiased"
+      style={{
+        position: "absolute",
+        inset: 0,
+        height: "100%",
+        width: "100%",
+        WebkitFontSmoothing: "auto",
+      }}
       onMouseMove={activeDialog ? undefined : onMouseMove}
     >
       <CanvasTracking />
@@ -80,10 +85,19 @@ const CanvasContainer = () => {
 
   return (
     <TransformComponent
-      wrapperClass={cn(
-        "!w-full !h-full bg-canvas flex items-start justify-center",
-        isPanning ? "cursor-grabbing" : isSpacebarPressed && "cursor-grab",
-      )}
+      wrapperStyle={{
+        width: "100%",
+        height: "100%",
+        backgroundColor: "#141414",
+        display: "flex",
+        alignItems: "flex-start",
+        justifyContent: "center",
+        cursor: isPanning
+          ? "grabbing"
+          : isSpacebarPressed
+            ? "grab"
+            : undefined,
+      }}
     >
       <CanvasWorkspace />
     </TransformComponent>

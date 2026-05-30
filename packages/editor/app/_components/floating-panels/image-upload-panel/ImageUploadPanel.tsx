@@ -18,8 +18,16 @@ export function ImageUploadPanel({ onClose }: { onClose: () => void }) {
       handleClose={onClose}
       title="Choose image"
     >
-      <div className="flex h-full flex-col">
-        <main className="flex-1 flex items-center justify-center bg-tldraw-background">
+      <div style={{ display: "flex", height: "100%", flexDirection: "column" }}>
+        <main
+          style={{
+            flex: 1,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            backgroundColor: "#101011",
+          }}
+        >
           {status === "success" ? (
             <div></div>
           ) : (

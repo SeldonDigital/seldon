@@ -1,4 +1,3 @@
-import { cn } from "@lib/utils/cn"
 import { useState } from "react"
 import { useObjectURL } from "@lib/hooks/use-object-url"
 import { IconUpload } from "@components/icons/Upload"
@@ -55,27 +54,39 @@ export function ImageDropzone({
       <input
         type="file"
         ref={fileInputRef}
-        className="hidden"
+        style={{ display: "none" }}
         accept="image/*"
         onChange={handleFileSelect}
       />
       <div
-        className={cn(
-          "w-full h-full cursor-pointer flex items-center justify-center",
-          isDragging ? "text-blue border-2 border-blue" : "text-pearl",
-          currentFile ? "relative" : "gap-1",
-        )}
+        style={{
+          width: "100%",
+          height: "100%",
+          cursor: "pointer",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          ...(isDragging
+            ? {
+                color: "var(--sdn-swatch-seldon-blue)",
+                border: "2px solid var(--sdn-swatch-seldon-blue)",
+              }
+            : { color: "#F5F5F5" }),
+          ...(currentFile
+            ? { position: "relative" }
+            : { gap: "var(--sdn-gap-tight)" }),
+        }}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
         onClick={handleDropZoneClick}
       >
         {previewUrl ? (
-          <div className="absolute inset-4">
+          <div style={{ position: "absolute", inset: "1rem" }}>
             <img
               src={previewUrl}
               alt="Preview"
-              className="w-full h-full object-contain"
+              style={{ width: "100%", height: "100%", objectFit: "contain" }}
               onError={() => {
                 // Handle image loading error
                 onFileChange(null)
@@ -85,8 +96,8 @@ export function ImageDropzone({
           </div>
         ) : (
           <>
-            <IconUpload className="text-lg" />
-            <p className="text-sm">
+            <IconUpload style={{ fontSize: "1.125rem" }} />
+            <p style={{ fontSize: "var(--sdn-font-size-small)" }}>
               {isDragging ? "Drop image here..." : "Select or drop image…"}
             </p>
           </>

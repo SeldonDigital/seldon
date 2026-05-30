@@ -1,4 +1,3 @@
-import { cn } from "@lib/utils/cn"
 import React, { useEffect, useRef, useState } from "react"
 
 type ResizableContainerProps = {
@@ -14,6 +13,7 @@ export function ResizableContainer({
 }: ResizableContainerProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [isDragging, setIsDragging] = useState(false)
+  const [isHandleHovered, setIsHandleHovered] = useState(false)
   const [startY, setStartY] = useState(0)
   const [startHeight, setStartHeight] = useState(0)
 
@@ -53,26 +53,51 @@ export function ResizableContainer({
   }, [id])
 
   return (
-    <div className="relative flex flex-col">
+    <div style={{ position: "relative", display: "flex", flexDirection: "column" }}>
       <div
         ref={containerRef}
-        className={cn("h-auto overflow-auto", className)}
+        className={className}
         style={{
+          height: "auto",
+          overflow: "auto",
           maxHeight: "480px",
         }}
       >
         {children}
       </div>
-      <div className="flex w-full items-center justify-center">
+      <div
+        style={{
+          display: "flex",
+          width: "100%",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
         <button
-          className={cn(
-            "flex h-3 w-16 cursor-grab items-center justify-center opacity-30 outline-none transition-opacity duration-150",
-            "hover:opacity-50",
-            isDragging && "cursor-grabbing",
-          )}
+          style={{
+            display: "flex",
+            height: "0.75rem",
+            width: "4rem",
+            cursor: isDragging ? "grabbing" : "grab",
+            alignItems: "center",
+            justifyContent: "center",
+            opacity: isHandleHovered ? 0.5 : 0.3,
+            outline: "none",
+            transition: "opacity 150ms",
+          }}
+          onMouseEnter={() => setIsHandleHovered(true)}
+          onMouseLeave={() => setIsHandleHovered(false)}
           onMouseDown={handleMouseDown}
         >
-          <span className="block h-[3px] w-8 rounded bg-pearl"></span>
+          <span
+            style={{
+              display: "block",
+              height: "3px",
+              width: "2rem",
+              borderRadius: "var(--sdn-corners-tight)",
+              backgroundColor: "#F5F5F5",
+            }}
+          ></span>
         </button>
       </div>
     </div>

@@ -1,5 +1,5 @@
-import { cn, cnMerge } from "@lib/utils/cn"
-import { FC } from "react"
+import { cn } from "@lib/utils/cn"
+import { CSSProperties, FC, useState } from "react"
 import { ComponentIcon } from "@seldon/core/components/constants"
 import { Icon } from "@components/ui/Icon"
 import { Text } from "@components/ui/Text"
@@ -25,26 +25,60 @@ export const ComponentButton: FC<ComponentButtonProps> = ({
   isSelected,
   testId,
 }) => {
+  const [isHovered, setIsHovered] = useState(false)
+
+  const backgroundColor = isHovered
+    ? "hsl(0 0% 100% / 0.1)"
+    : isSelected
+      ? "color-mix(in srgb, var(--sdn-swatch-seldon-blue) 20%, transparent)"
+      : undefined
+
+  const buttonStyle: CSSProperties = {
+    display: "flex",
+    alignItems: "center",
+    borderRadius: "var(--sdn-corners-compact)",
+    border: `1px solid ${isSelected ? "var(--sdn-swatch-seldon-blue)" : "transparent"}`,
+    paddingLeft: "var(--sdn-padding-tight)",
+    paddingRight: "var(--sdn-padding-compact)",
+    height: "2.5rem",
+    color: isSelected ? "var(--sdn-swatch-seldon-blue)" : "var(--sdn-swatch-white)",
+    opacity: disabled ? 0.5 : undefined,
+    backgroundColor,
+  }
+
   return (
     <button
       role="option"
       aria-selected={isSelected}
       disabled={disabled}
-      className={cnMerge(
-        "group flex items-center rounded-lg border border-transparent px-1 pr-2 text-white h-10",
-        "hover:bg-white/10",
-        "data-[selected=true]:bg-white/10",
-        isSelected && "border-blue bg-blue/20 text-blue",
-        disabled && "opacity-50",
-      )}
+      style={buttonStyle}
+      onPointerEnter={() => setIsHovered(true)}
+      onPointerLeave={() => setIsHovered(false)}
       onClick={onClick}
       onDoubleClick={onDoubleClick}
       data-testid={testId}
     >
-      <div className={cn("flex h-8 w-8 items-center justify-center")}>
+      <div
+        style={{
+          display: "flex",
+          height: "2rem",
+          width: "2rem",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
         <Icon icon={icon} className="text-2xl" />
       </div>
-      <div className="flex flex-1 flex-col items-start overflow-hidden gap-0.5">
+      <div
+        style={{
+          display: "flex",
+          flex: 1,
+          flexDirection: "column",
+          alignItems: "flex-start",
+          overflow: "hidden",
+          gap: "0.125rem",
+        }}
+      >
         <Text
           variant="body-small"
           className={cn(

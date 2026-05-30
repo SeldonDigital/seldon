@@ -23,23 +23,24 @@ export default function Editor() {
     <main style={styles.main}>
       <AnimatePresence mode="popLayout" initial={false}>
         <motion.div
-          className="flex-1"
+          style={{ flex: 1 }}
           key={isInPreviewMode ? "preview" : "editor"}
           initial={{ opacity: 0, scale: 0.98 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.98 }}
           transition={{ duration: 0.25 }}
         >
-          <Allotment className="flex-1" proportionalLayout={false}>
+          <Allotment proportionalLayout={false}>
             <Allotment.Pane
               minSize={280}
               maxSize={600}
               preferredSize={SIDEBAR_INITIAL_WIDTH}
               visible={showSidePanels}
               priority={LayoutPriority.Low}
-              className="z-[1] bg-background"
             >
-              <ObjectsSidebar />
+              <div style={styles.objectsPane}>
+                <ObjectsSidebar />
+              </div>
             </Allotment.Pane>
             <Allotment.Pane priority={LayoutPriority.High}>
               <Canvas />
@@ -74,6 +75,13 @@ const styles: Record<string, CSSProperties> = {
     WebkitFontSmoothing: "antialiased",
     MozOsxFontSmoothing: "grayscale",
     zIndex: 0,
+  },
+  objectsPane: {
+    position: "relative",
+    zIndex: 1,
+    height: "100%",
+    width: "100%",
+    backgroundColor: "#1F1F1F",
   },
 }
 

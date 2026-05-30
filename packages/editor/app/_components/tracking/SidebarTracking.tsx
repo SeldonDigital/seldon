@@ -160,11 +160,11 @@ export function SidebarTracking({
 
   // Component rows and other targets without a node id skip placement tracking
   if (!node.id) {
-    return <div className="relative w-full">{children}</div>
+    return <div style={{ position: "relative", width: "100%" }}>{children}</div>
   }
 
   return (
-    <div className="relative w-full">
+    <div style={{ position: "relative", width: "100%" }}>
       {children}
       {activeTool === "select" ? (
         renderSelectDropzones()
@@ -230,7 +230,7 @@ function DragDropZone({
   return (
     <div
       ref={ref}
-      className="absolute inset-0 pointer-events-auto"
+      style={{ position: "absolute", inset: 0, pointerEvents: "auto" }}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onClick={(event) => {

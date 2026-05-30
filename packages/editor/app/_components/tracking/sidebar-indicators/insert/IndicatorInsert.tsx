@@ -21,19 +21,27 @@ export const IndicatorInsert: FC<IndicatorInsertProps> = ({ placement }) => {
   const position = calculateIndicatorPosition(placement, effectiveIndentation)
 
   const lineStyle: CSSProperties = {
+    position: "absolute",
+    zIndex: 20,
+    pointerEvents: "none",
     backgroundColor: COLORS.accent[500],
     ...position,
   }
 
   const circleStyle: CSSProperties = {
+    position: "absolute",
+    height: "var(--sdn-size-xsmall)",
+    width: "var(--sdn-size-xsmall)",
+    borderRadius: "9999px",
+    borderWidth: "1px",
+    borderStyle: "solid",
     borderColor: COLORS.accent[500],
     backgroundColor: COLORS.charcoal[500],
   }
 
   return (
-    <div className="pointer-events-none absolute z-20" style={lineStyle}>
+    <div style={lineStyle}>
       <div
-        className="absolute h-2 w-2 rounded-full border"
         style={{
           ...(placement === "inside"
             ? { left: "-8px", top: "0.5px", transform: "translateY(-50%)" }

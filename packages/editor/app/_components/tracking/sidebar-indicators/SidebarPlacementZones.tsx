@@ -1,7 +1,6 @@
 "use client"
 
 import { Placement } from "@lib/types"
-import { cn } from "@lib/utils/cn"
 import { Instance, Variant } from "@seldon/core"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
 import { useTool } from "@lib/hooks/use-tool"
@@ -103,8 +102,10 @@ export function SidebarPlacementZones({
   }
 
   return (
-    <div className="absolute inset-0 pointer-events-none">
-      <div className="relative w-full h-full">{renderZones()}</div>
+    <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
+      <div style={{ position: "relative", width: "100%", height: "100%" }}>
+        {renderZones()}
+      </div>
     </div>
   )
 }
@@ -135,10 +136,12 @@ function PlacementZone({
 
   return (
     <div
-      className={cn(
-        "absolute inset-0 pointer-events-auto",
-        !isAllowed ? "cursor-not-allowed" : "cursor-copy",
-      )}
+      style={{
+        position: "absolute",
+        inset: 0,
+        pointerEvents: "auto",
+        cursor: !isAllowed ? "not-allowed" : "copy",
+      }}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
       onClick={(event) => {

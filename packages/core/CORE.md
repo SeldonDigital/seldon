@@ -1,6 +1,6 @@
 # Seldon · Core
 
-Seldon Core is the kernel for component-based design systems. It ships the **catalog** of building blocks, the **property** and **theme** models those blocks use, and the **workspace** engine that stores and changes a design file. Editors, agents, and other tools load a workspace, apply typed **actions** through a reducer, and save JSON. When the design is ready, that workspace passes to **Factory** for React, CSS, and asset generation.
+Seldon Core is the engine for component-based design systems. It ships a **catalog** of building blocks, the **property** and **theme** models those blocks use, and the **workspace** engine that stores and changes a design file. Editors, agents, and other tools load a workspace, apply typed **actions** through a reducer, and save JSON. When the design is ready, that workspace passes to **Factory** for React, CSS, and asset generation.
 
 Core owns design-time state and rules. Factory owns export and production code generation.
 

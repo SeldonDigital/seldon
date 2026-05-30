@@ -1,18 +1,20 @@
 "use client"
 
-import { cn } from "@lib/utils/cn"
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu"
-import { useState } from "react"
+import { CSSProperties, useState } from "react"
 import { useAppState } from "@lib/hooks/use-app-state"
-import { MenuDropdown as MenuDropdownType } from "./types"
+import { MenuDropdown as MenuDropdownType, MenuItem } from "./types"
 
 interface MenuDropdownProps {
   menu: MenuDropdownType
 }
 
+const HIGHLIGHT_BACKGROUND = "hsl(0 0% 100% / 0.1)"
+
 export function MenuDropdown({ menu }: MenuDropdownProps) {
   const { appState } = useAppState()
   const [open, setOpen] = useState(false)
+  const [isTriggerHovered, setIsTriggerHovered] = useState(false)
 
   // Check if this menu should be visible in the current app state
   if (menu.visibleIn && !menu.visibleIn.includes(appState)) {
@@ -28,12 +30,17 @@ export function MenuDropdown({ menu }: MenuDropdownProps) {
     <DropdownMenu.Root open={open} onOpenChange={setOpen}>
       <DropdownMenu.Trigger asChild>
         <button
-          className={cn(
-            "rounded px-3 py-2 text-sm text-pearl",
-            "hover:bg-white/10",
-            "focus:outline-none",
-            "data-[state=open]:bg-white/10",
-          )}
+          style={{
+            borderRadius: "var(--sdn-corners-tight)",
+            padding: "0.5rem 0.75rem",
+            fontSize: "var(--sdn-font-size-small)",
+            color: "#F5F5F5",
+            outline: "none",
+            backgroundColor:
+              open || isTriggerHovered ? HIGHLIGHT_BACKGROUND : undefined,
+          }}
+          onPointerEnter={() => setIsTriggerHovered(true)}
+          onPointerLeave={() => setIsTriggerHovered(false)}
           data-testid={`menu-${menu.id}`}
         >
           {menu.label}
@@ -41,7 +48,18 @@ export function MenuDropdown({ menu }: MenuDropdownProps) {
       </DropdownMenu.Trigger>
 
       <DropdownMenu.Content
-        className="z-50 min-w-[220px] rounded-md border border-neutral-800 bg-gray py-1 text-pearl shadow-md"
+        style={{
+          zIndex: 50,
+          minWidth: "220px",
+          borderRadius: "0.375rem",
+          border: "1px solid #262626",
+          backgroundColor: "#333333",
+          paddingTop: "var(--sdn-padding-tight)",
+          paddingBottom: "var(--sdn-padding-tight)",
+          color: "#F5F5F5",
+          boxShadow:
+            "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
+        }}
         sideOffset={5}
         align="start"
       >
@@ -50,7 +68,11 @@ export function MenuDropdown({ menu }: MenuDropdownProps) {
             return (
               <DropdownMenu.Separator
                 key={index}
-                className="mx-3 my-1 h-px bg-white/10"
+                style={{
+                  margin: "0.25rem 0.75rem",
+                  height: "1px",
+                  backgroundColor: HIGHLIGHT_BACKGROUND,
+                }}
               />
             )
           }
@@ -61,31 +83,12 @@ export function MenuDropdown({ menu }: MenuDropdownProps) {
           }
 
           return (
-            <DropdownMenu.Item
+            <DropdownItem
               key={item.id}
-              className={cn(
-                "flex cursor-pointer select-none items-center justify-between rounded-sm py-2 text-sm outline-none px-3",
-                "hover:bg-background-hover focus:bg-background-hover",
-                "data-[highlighted]:bg-white/10",
-                item.disabled && "pointer-events-none opacity-50",
-              )}
-              disabled={item.disabled}
+              item={item}
+              hasActiveItem={hasActiveItem}
               onSelect={() => handleSelect(item.action)}
-              data-testid={`menu-item-${item.id}`}
-            >
-              <div className="flex items-center gap-2">
-                {item.active && (
-                  <span className="text-blue font-bold w-3 text-right">✓</span>
-                )}
-                {!item.active && hasActiveItem && <span className="w-3" />}
-                <span className="truncate">{item.label}</span>
-              </div>
-              {item.shortcut && (
-                <span className="ml-4 text-xs text-neutral-400">
-                  {item.shortcut}
-                </span>
-              )}
-            </DropdownMenu.Item>
+            />
           )
         })}
       </DropdownMenu.Content>
@@ -100,4 +103,86 @@ export function MenuDropdown({ menu }: MenuDropdownProps) {
 
     action?.()
   }
+}
+
+interface DropdownItemProps {
+  item: MenuItem
+  hasActiveItem: boolean
+  onSelect: () => void
+}
+
+function DropdownItem({ item, hasActiveItem, onSelect }: DropdownItemProps) {
+  const [isHighlighted, setIsHighlighted] = useState(false)
+
+  const itemStyle: CSSProperties = {
+    display: "flex",
+    cursor: item.disabled ? undefined : "pointer",
+    userSelect: "none",
+    alignItems: "center",
+    justifyContent: "space-between",
+    borderRadius: "0.125rem",
+    padding: "0.5rem 0.75rem",
+    fontSize: "var(--sdn-font-size-small)",
+    outline: "none",
+    pointerEvents: item.disabled ? "none" : undefined,
+    opacity: item.disabled ? 0.5 : undefined,
+    backgroundColor: isHighlighted ? HIGHLIGHT_BACKGROUND : undefined,
+  }
+
+  return (
+    <DropdownMenu.Item
+      style={itemStyle}
+      disabled={item.disabled}
+      onSelect={onSelect}
+      onPointerEnter={() => setIsHighlighted(true)}
+      onPointerLeave={() => setIsHighlighted(false)}
+      onFocus={() => setIsHighlighted(true)}
+      onBlur={() => setIsHighlighted(false)}
+      data-testid={`menu-item-${item.id}`}
+    >
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "var(--sdn-gap-compact)",
+        }}
+      >
+        {item.active && (
+          <span
+            style={{
+              color: "var(--sdn-swatch-seldon-blue)",
+              fontWeight: "var(--sdn-font-weight-bold)",
+              width: "0.75rem",
+              textAlign: "right",
+            }}
+          >
+            ✓
+          </span>
+        )}
+        {!item.active && hasActiveItem && (
+          <span style={{ width: "0.75rem" }} />
+        )}
+        <span
+          style={{
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+          }}
+        >
+          {item.label}
+        </span>
+      </div>
+      {item.shortcut && (
+        <span
+          style={{
+            marginLeft: "1rem",
+            fontSize: "var(--sdn-font-size-xsmall)",
+            color: "#a3a3a3",
+          }}
+        >
+          {item.shortcut}
+        </span>
+      )}
+    </DropdownMenu.Item>
+  )
 }
