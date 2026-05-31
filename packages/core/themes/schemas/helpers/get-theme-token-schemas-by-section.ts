@@ -4,13 +4,9 @@ import type {
   ThemeTokenSchemaUnresolved,
   ThemeTokenSectionId,
 } from "../../types/schema"
+import { isLookSection } from "../../looks/look-facets"
 import {
-  generateBackgroundSchemas,
-  generateBorderSchemas,
-  generateFontSchemas,
-  generateGradientSchemas,
-  generateScrollbarSchemas,
-  generateShadowSchemas,
+  generateLookSchemas,
   generateSwatchSchemas,
 } from "../data/theme-dynamic-schemas"
 import { THEME_TOKEN_SCHEMAS } from "../data/theme-token-schemas"
@@ -33,28 +29,10 @@ export function getThemeTokenSchemasBySection(
   if (theme) {
     let dynamicSchemas: ThemeTokenSchemaUnresolved[] = []
 
-    switch (sectionId) {
-      case "swatch":
-        dynamicSchemas = generateSwatchSchemas(theme)
-        break
-      case "shadow":
-        dynamicSchemas = generateShadowSchemas(theme)
-        break
-      case "border":
-        dynamicSchemas = generateBorderSchemas(theme)
-        break
-      case "gradient":
-        dynamicSchemas = generateGradientSchemas(theme)
-        break
-      case "background":
-        dynamicSchemas = generateBackgroundSchemas(theme)
-        break
-      case "font":
-        dynamicSchemas = generateFontSchemas(theme)
-        break
-      case "scrollbar":
-        dynamicSchemas = generateScrollbarSchemas(theme)
-        break
+    if (sectionId === "swatch") {
+      dynamicSchemas = generateSwatchSchemas(theme)
+    } else if (isLookSection(sectionId)) {
+      dynamicSchemas = generateLookSchemas(theme, sectionId)
     }
 
     schemas.push(...dynamicSchemas.map((s) => resolveThemeTokenSchema(s)))

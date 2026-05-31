@@ -31,12 +31,7 @@ export type {
   ThemeTokenSectionSchema,
 } from "../types/schema"
 export {
-  generateBackgroundSchemas,
-  generateBorderSchemas,
-  generateFontSchemas,
-  generateGradientSchemas,
-  generateScrollbarSchemas,
-  generateShadowSchemas,
+  generateLookSchemas,
   generateSwatchSchemas,
 } from "./data/theme-dynamic-schemas"
 export type { ThemeOrStock } from "./data/theme-dynamic-schemas"

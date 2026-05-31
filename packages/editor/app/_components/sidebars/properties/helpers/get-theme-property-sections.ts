@@ -98,7 +98,13 @@ export function getThemePropertySections(
     FlatProperty[]
   >()
 
-  for (const property of properties) {
+  // Facet rows render nested inside their look parent via the disclosure, so keep
+  // them out of the top-level section list to avoid rendering them twice.
+  const topLevelProperties = properties.filter(
+    (property) => !property.isSubProperty,
+  )
+
+  for (const property of topLevelProperties) {
     // Try to get schema from static registry first
     let schema = getThemeTokenSchema(property.key)
     let sectionId: ThemePropertyCategoryType | null = null

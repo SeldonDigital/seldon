@@ -14,6 +14,18 @@ export {
 } from "./built-in-looks"
 export type { BuiltInLookSection } from "./built-in-looks"
 export {
+  LOOK_FACETS,
+  isBridgedLookFacet,
+  isLookSection,
+} from "./look-facets"
+export type {
+  BridgedLookFacet,
+  InlineLookFacet,
+  LookFacetControlType,
+  LookFacetEntry,
+  LookSection,
+} from "./look-facets"
+export {
   getThemeLookPickerToken,
   getThemeLookSection,
   isBuiltInClearedLookToken,

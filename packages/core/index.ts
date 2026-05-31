@@ -29,6 +29,18 @@ export {
   BORDER_LOOK_NONE,
   FONT_LOOK_NORMAL,
 } from "./themes/looks/built-in-looks"
+export {
+  LOOK_FACETS,
+  isBridgedLookFacet,
+  isLookSection,
+} from "./themes/looks/look-facets"
+export type {
+  BridgedLookFacet,
+  InlineLookFacet,
+  LookFacetControlType,
+  LookFacetEntry,
+  LookSection,
+} from "./themes/looks/look-facets"
 export * from "./workspace/compute"
 export * from "./workspace/types"
 export * from "./workspace/services/index"

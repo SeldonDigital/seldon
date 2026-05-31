@@ -96,6 +96,8 @@ export interface FlatProperty {
   isCompound: boolean
   isShorthand: boolean
   isSubProperty: boolean
+  /** Theme look parent row: groups facet sub-rows under a disclosure arrow only. */
+  isLookParent?: boolean
   pickerVariant?: "themeAssignment"
   isDimmed?: boolean
   status: PropertyStatus

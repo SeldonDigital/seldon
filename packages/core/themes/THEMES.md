@@ -894,7 +894,7 @@ export interface ThemeFont {
 
 - **`constants/`** — `TokenType`, `Colorspace`, `Harmony`, `Ratio`. Update only when introducing a new token kind or harmony.
 - **`schemas/data/theme-token-schemas.ts`** + **`schemas/data/theme-dynamic-schemas.ts`** — register the new schema so editor menus can render it.
-- **`schemas/sections.ts`** — add a row to `RAW_THEME_TOKEN_SECTIONS` and a `TOKEN_FIELD_SECTION_ANCHOR` entry pointing at the catalog key it should sort against, so the section orders correctly against `PROPERTY_DISPLAY_ORDER`.
+- **`schemas/sections.ts`** — add a row to `THEME_TOKEN_SECTION_ORDER` at the position where the section should render. The list order is the sidebar order. Look sections render after the scale sections they relate to.
 
 **4. Update exports**
 

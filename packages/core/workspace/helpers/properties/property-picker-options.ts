@@ -361,21 +361,15 @@ function getThemeSectionFromSchema(
   const keys = getKeys(theme)
   if (keys.length === 0) return null
 
-  const specialMappings: Record<string, string> = {
-    color: "swatch",
-    fontSize: "fontSize",
-    buttonSize: "fontSize",
-    corners: "corners",
-    shadowBlur: "blur",
-    shadowSpread: "spread",
-  }
-
-  const propertyName = schema.name
-  if (
-    specialMappings[propertyName] &&
-    theme[specialMappings[propertyName] as keyof Theme]
-  ) {
-    return specialMappings[propertyName]
+  // Full token keys already name their section (`@fontWeight.thin` -> `fontWeight`),
+  // so derive it directly. This avoids matching a property name against the theme
+  // and works for any schema that returns `@`-prefixed keys.
+  const firstKey = keys[0]!
+  if (firstKey.startsWith("@")) {
+    const section = firstKey.slice(1).split(".")[0]
+    if (section && theme[section as keyof Theme]) {
+      return section
+    }
   }
 
   for (const [sectionName, sectionData] of Object.entries(theme)) {
@@ -538,7 +532,7 @@ function buildCompoundPresetPickerOptions(
   const theme = input.theme
   const section = theme ? getThemeLookSection(theme, parentKey) : undefined
 
-  if (!section || typeof section !== "object") {
+  if (!theme || !section || typeof section !== "object") {
     const effective = getEffectiveNodeProperties(
       input.subjectId,
       input.workspace as WorkspacePropertySource,
@@ -695,6 +689,17 @@ export function getPropertyPickerOptions(
     return {
       ...harmony,
       options: applyRestrictionsFilter(harmony.options, restrictionAllowed),
+    }
+  }
+
+  // Theme look facets (for example `font.callout.size`) share their last path
+  // segment with unrelated catalog keys (`size`, `width`, `color`), so resolving by
+  // path would pick the wrong schema. When the path matches a theme token entry,
+  // build options from that entry's bridged `propertyKey` instead.
+  if (input.theme && resolveThemeTokenEntry(input.path, input.theme)) {
+    const themeTokenOptions = buildThemeTokenPickerOptions(input)
+    if (themeTokenOptions) {
+      return themeTokenOptions
     }
   }
 

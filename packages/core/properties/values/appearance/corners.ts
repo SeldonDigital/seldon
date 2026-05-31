@@ -82,5 +82,6 @@ export const cornersSchema: PropertySchema = {
     },
   },
   presetOptions: () => Object.values(Corner),
-  themeOrdinalKeys: (theme: Theme) => Object.keys(theme.corners),
+  themeOrdinalKeys: (theme: Theme) =>
+    Object.keys(theme.corners).map((id) => `@corners.${id}`),
 }

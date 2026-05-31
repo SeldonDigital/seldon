@@ -23,14 +23,9 @@ So you've accessed the repo and you're asking, "Now what?"
 - **Explore** ways to use AI or LLMs to build components or even try to write features in the editor to see where it works and where it falls on its face. 
 - **Test ideas** out without the pressure of OKRs, MVP targets, Product Requirements, or other bullshit being tossed your way by some corporate overload who doesn't understand what `console.log("Hello, world!")` even means.
 - **Break the code** on purpose to see where the limits of the model are. 
-
-Build sandcastles.
-
-Try things. Why? Just because. 
-
-Play.
-
-Definitely play.
+- Build sandcastles.
+- Try things. Why? Just because. 
+- Play. Definitely play.
 
 The pupose for releasing this project is to provide a codebase that allows for multiple paths for exploration to as many people as possible. To give folks an inexpensive way to learn what they can and cannot do with AI tools.
 

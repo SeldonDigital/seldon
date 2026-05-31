@@ -3,28 +3,17 @@ import { getComputedTheme } from "@seldon/core/workspace/compute"
 import { getThemeOverrides } from "@seldon/core/workspace/helpers/themes/get-theme-overrides"
 import type { EntryThemeId } from "@seldon/core/workspace/types"
 import type {
-  BackgroundParameters,
-  BorderParameters,
-  FontParameters,
-  GradientParameters,
   HSL,
   Harmony,
-  ModulationParameters,
+  LookSection,
   Ratio,
-  ScrollbarParameters,
-  ShadowParameters,
-  ThemeBackgroundId,
-  ThemeBorderId,
   ThemeBorderWidthId,
   ThemeCustomSwatchId,
   ThemeDimensionId,
   ThemeFontFamilyId,
   ThemeFontId,
   ThemeFontSizeId,
-  ThemeGradientId,
   ThemeLineHeightId,
-  ThemeScrollbarId,
-  ThemeShadowId,
   ThemeSizeId,
   ThemeSpacingId,
 } from "@seldon/core"
@@ -200,63 +189,14 @@ export function useThemeEntryEditor(themeEntryId: EntryThemeId | null) {
     [mergeOverride],
   )
 
-  const setShadowValue = useCallback(
-    (key: ThemeShadowId, value: Partial<ShadowParameters>) => {
-      const patch: Record<string, unknown> = {}
-      if (value.offsetX !== undefined || value.offsetY !== undefined) {
-        const offset: Record<string, unknown> = {}
-        if (value.offsetX !== undefined) offset.x = value.offsetX
-        if (value.offsetY !== undefined) offset.y = value.offsetY
-        patch.offset = offset
-      }
-      if (value.blur !== undefined) patch.blur = value.blur
-      if (value.spread !== undefined) patch.spread = value.spread
-      if (value.color !== undefined) patch.color = value.color
-      mergeOverride(`shadow.${key}.parameters`, patch)
-    },
-    [mergeOverride],
-  )
-
-  const setBorderValue = useCallback(
-    (key: ThemeBorderId, value: Partial<BorderParameters>) => {
-      mergeOverride(`border.${key}.parameters`, value as Record<string, unknown>)
-    },
-    [mergeOverride],
-  )
-
-  const setBackgroundValue = useCallback(
-    (key: ThemeBackgroundId, value: Partial<BackgroundParameters>) => {
-      mergeOverride(
-        `background.${key}.parameters`,
-        value as Record<string, unknown>,
-      )
-    },
-    [mergeOverride],
-  )
-
-  const setGradientValue = useCallback(
-    (key: ThemeGradientId, value: Partial<GradientParameters>) => {
-      mergeOverride(
-        `gradient.${key}.parameters`,
-        value as Record<string, unknown>,
-      )
-    },
-    [mergeOverride],
-  )
-
-  const setFontValue = useCallback(
-    (key: ThemeFontId, value: Partial<FontParameters>) => {
-      mergeOverride(`font.${key}.parameters`, value as Record<string, unknown>)
-    },
-    [mergeOverride],
-  )
-
-  const setScrollbarValue = useCallback(
-    (key: ThemeScrollbarId, value: Partial<ScrollbarParameters>) => {
-      mergeOverride(
-        `scrollbar.${key}.parameters`,
-        value as Record<string, unknown>,
-      )
+  /**
+   * Merges a facet patch into one look's `parameters`. Drives every look
+   * section (shadow, border, background, gradient, font, scrollbar) so facet
+   * keys map straight onto stored parameters with no per-section handling.
+   */
+  const setLookParameter = useCallback(
+    (section: LookSection, key: string, patch: Record<string, unknown>) => {
+      mergeOverride(`${section}.${key}.parameters`, patch)
     },
     [mergeOverride],
   )
@@ -398,14 +338,9 @@ export function useThemeEntryEditor(themeEntryId: EntryThemeId | null) {
     setFontWeightValue,
     setBorderWidthValue,
     setCornersValue,
-    setShadowValue,
-    setBorderValue,
     setBlurValue,
     setSpreadValue,
-    setGradientValue,
-    setBackgroundValue,
-    setScrollbarValue,
-    setFontValue,
+    setLookParameter,
     addCustomSwatch,
     removeCustomSwatch,
     setSwatchValue,

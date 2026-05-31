@@ -198,12 +198,23 @@ export function resolveThemeTokenSchema(
         ? row.validation
         : undefined
 
+    // A look facet picks one token from a set, so it renders as a combobox when its
+    // property can reference a token scale or enum. Facets that only take an exact
+    // value (for example shadow offset, gradient angle) keep their derived control.
+    const canPickToken =
+      prop.supports.includes("themeOrdinal") ||
+      prop.supports.includes("themeCategorical") ||
+      prop.supports.includes("option")
+    const controlType =
+      row.controlType ??
+      (row.isSubProperty && canPickToken ? "combo" : derived.controlType)
+
     return {
       ...row,
       label: row.label ?? derived.label,
       supports: rowSupports ?? derived.supports,
       validation: rowValidation ?? derived.validation,
-      controlType: row.controlType ?? derived.controlType,
+      controlType,
       unit: row.unit ?? derived.unit,
       description: row.description ?? derived.description,
     }

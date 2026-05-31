@@ -58,6 +58,7 @@ export const sizeSchema: PropertySchema = {
       return value in theme.size
     },
   },
-  themeOrdinalKeys: (theme: Theme) => Object.keys(theme.size),
+  themeOrdinalKeys: (theme: Theme) =>
+    Object.keys(theme.size).map((id) => `@size.${id}`),
   computedFunctions: () => [ComputedFunction.AUTO_FIT, ComputedFunction.MATCH],
 }

@@ -54,5 +54,6 @@ export const marginSchema: PropertySchema = {
       return value in theme.margin
     },
   },
-  themeOrdinalKeys: (theme: Theme) => Object.keys(theme.margin),
+  themeOrdinalKeys: (theme: Theme) =>
+    Object.keys(theme.margin).map((id) => `@margin.${id}`),
 }

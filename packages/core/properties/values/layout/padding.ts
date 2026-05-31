@@ -60,7 +60,8 @@ export const paddingSchema: PropertySchema = {
       return value in theme.padding
     },
   },
-  themeOrdinalKeys: (theme: Theme) => Object.keys(theme.padding),
+  themeOrdinalKeys: (theme: Theme) =>
+    Object.keys(theme.padding).map((id) => `@padding.${id}`),
   computedFunctions: () => [
     ComputedFunction.OPTICAL_PADDING,
     ComputedFunction.MATCH,

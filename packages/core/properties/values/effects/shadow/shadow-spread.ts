@@ -43,5 +43,6 @@ export const shadowSpreadSchema: PropertySchema = {
       return value in theme.spread
     },
   },
-  themeOrdinalKeys: (theme: Theme) => Object.keys(theme.spread),
+  themeOrdinalKeys: (theme: Theme) =>
+    Object.keys(theme.spread).map((id) => `@spread.${id}`),
 }
