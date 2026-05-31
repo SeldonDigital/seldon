@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 import { getHtmlElementByNodeId } from "../../canvas/helpers/get-html-element-by-node-id"
-import { calculateNodeRect } from "../utils/calculate-node-rect"
+import { calculateSelectionOutline } from "../utils/calculate-selection-outline"
 import { useNodeRectsStore } from "./use-node-rects-store"
 
 /**
@@ -26,7 +26,7 @@ export function useTrackNodeRects(nodeIds: string[]) {
       }
 
       try {
-        const rect = calculateNodeRect({ nodeEl })
+        const rect = calculateSelectionOutline({ nodeEl })
         store.updateRect(nodeId, rect)
       } catch {
         store.updateRect(nodeId, null)

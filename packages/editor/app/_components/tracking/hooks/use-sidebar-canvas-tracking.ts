@@ -6,7 +6,7 @@ import { useTool } from "@lib/hooks/use-tool"
 import { useActiveBoard } from "@lib/workspace/use-active-board"
 import { getComponentKey, hasNode } from "@lib/workspace/workspace-accessors"
 import { useWorkspace } from "@lib/workspace/use-workspace"
-import { checkInsertionAllowed } from "../utils/check-insertion-allowed"
+import { checkInsertionPoint } from "../utils/check-insertion-point"
 
 /**
  * Hook that handles canvas hover tracking for sidebar rows (nodes).
@@ -53,7 +53,7 @@ export function useSidebarCanvasTracking(node: Variant | Instance) {
         lastChildNodeBeforeCursor: null,
       })
     } else if (activeTool === "component" || activeTool === "sketch") {
-      const insertionAllowed = checkInsertionAllowed(
+      const insertionAllowed = checkInsertionPoint(
         node.id,
         "node",
         "inside",

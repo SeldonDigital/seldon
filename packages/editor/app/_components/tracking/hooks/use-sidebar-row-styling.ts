@@ -9,7 +9,7 @@ import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { useActiveBoard } from "@lib/workspace/use-active-board"
 import { useIsNodeSelected } from "@lib/workspace/use-selection"
 import { useWorkspace } from "@lib/workspace/use-workspace"
-import { checkInsertionAllowed } from "../utils/check-insertion-allowed"
+import { checkInsertionPoint } from "../utils/check-insertion-point"
 
 /**
  * Hook that provides styling for sidebar rows based on selection and tracking state.
@@ -63,7 +63,7 @@ export function useSidebarRowStyling(
         return false
       }
 
-      return checkInsertionAllowed(
+      return checkInsertionPoint(
         currentNode.id,
         "node",
         hoverState.placement || "inside",
@@ -103,7 +103,7 @@ export function useSidebarRowStyling(
         return false
       }
 
-      return checkInsertionAllowed(
+      return checkInsertionPoint(
         currentNode.id,
         "node",
         hoverState.placement || "inside",

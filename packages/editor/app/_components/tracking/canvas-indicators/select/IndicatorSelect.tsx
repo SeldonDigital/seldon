@@ -1,9 +1,10 @@
 import { COLORS } from "@lib/utils/colors"
 import { useNodeRect } from "../../hooks/use-node-rect"
 import {
-  getHighlightOverlayBox,
-  getWireframeOverlayBox,
-} from "../../utils/canvas-overlay"
+  getSelectionMode,
+  getWireframeMode,
+} from "../../utils/canvas-outline-modes"
+import { calculateClippingBox } from "../../utils/calculate-clipping-box"
 
 type IndicatorSelectProps = {
   nodeId: string
@@ -24,10 +25,14 @@ export function IndicatorSelect({
 
   if (!rect) return null
 
-  const box =
-    showWireframe && variant === "selection"
-      ? getWireframeOverlayBox(rect)
-      : getHighlightOverlayBox(rect)
+  let box
+  if (showWireframe && variant === "selection") {
+    const clippedRect = calculateClippingBox({ nodeId, rect })
+    if (!clippedRect) return null
+    box = getWireframeMode(clippedRect)
+  } else {
+    box = getSelectionMode(rect)
+  }
 
   return (
     <div

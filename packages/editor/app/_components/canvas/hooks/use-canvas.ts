@@ -18,7 +18,7 @@ import { getNodeCatalogComponentId, getNodeChildIds } from "@lib/workspace/node-
 import { useSelection } from "@lib/workspace/use-selection"
 import { useWorkspace } from "@lib/workspace/use-workspace"
 import { useAddToast } from "@components/toaster/use-add-toast"
-import { checkInsertionAllowed } from "../../tracking/utils/check-insertion-allowed"
+import { checkInsertionPoint } from "../../tracking/utils/check-insertion-point"
 import { getBoardIdForEventTarget } from "../helpers/get-board-id-for-event-target"
 import { getChildNodesWithNodeId } from "../helpers/get-child-nodes-with-node-id"
 import { getNodeIdForEventTarget } from "../helpers/get-node-id-for-event-target"
@@ -116,7 +116,7 @@ export function useCanvas() {
         (activeTool === "component" || activeTool === "sketch") &&
         objectType === "node"
       ) {
-        const insertionAllowed = checkInsertionAllowed(
+        const insertionAllowed = checkInsertionPoint(
           objectId as InstanceId | VariantId,
           objectType,
           placement,
