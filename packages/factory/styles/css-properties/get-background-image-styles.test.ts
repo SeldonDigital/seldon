@@ -84,7 +84,7 @@ describe("getBackgroundImageStyles", () => {
 
       expect(result).toEqual({
         backgroundImage:
-          "url(https://img.freepik.com/premium-photo/white-abstract-background-with-subtle-d-texture_947794-79438.jpg)",
+          "url(https://static.seldon.app/background-default-light.jpg)",
         backgroundRepeat: "no-repeat",
         backgroundSize: "contain",
       })
@@ -107,7 +107,7 @@ describe("getBackgroundImageStyles", () => {
 
       expect(result).toEqual({
         backgroundImage:
-          "url(https://img.freepik.com/premium-photo/white-abstract-background-with-subtle-d-texture_947794-79438.jpg)",
+          "url(https://static.seldon.app/background-default-light.jpg)",
         backgroundRepeat: "repeat",
         backgroundSize: "auto",
       })
