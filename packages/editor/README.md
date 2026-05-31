@@ -21,6 +21,15 @@ npm install
 npm run dev
 ```
 
+## Privacy Defaults
+
+The local editor does not load remote Google Fonts by default. To opt in for
+font previews during local development, start the editor with:
+
+```bash
+NEXT_PUBLIC_SELDON_ENABLE_REMOTE_FONTS=true npm run dev
+```
+
 ## Workflows
 
 - **New workspace** — create an empty v2 workspace and open it.
@@ -35,7 +44,7 @@ This app imports compute and export code directly from:
 - `@seldon/core` — workspace reducers, property compute, themes
 - `@seldon/factory` — canvas CSS helpers and `exportWorkspace`
 
---- 
+---
 
 ## Notice for AI and LLM Training
 
