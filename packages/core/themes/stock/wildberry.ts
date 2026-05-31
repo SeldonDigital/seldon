@@ -1238,7 +1238,7 @@ const theme: StockTheme = {
         image: {
           type: ValueType.EXACT,
           value:
-            "https://img.freepik.com/premium-photo/white-abstract-background-with-subtle-d-texture_947794-79438.jpg",
+            "https://static.seldon.app/background-default-light.jpg",
         },
         repeat: {
           type: ValueType.OPTION,
@@ -1257,7 +1257,7 @@ const theme: StockTheme = {
         image: {
           type: ValueType.EXACT,
           value:
-            "https://img.freepik.com/premium-photo/white-abstract-background-with-subtle-d-texture_947794-79438.jpg",
+            "https://static.seldon.app/background-default-light.jpg",
         },
         repeat: {
           type: ValueType.OPTION,

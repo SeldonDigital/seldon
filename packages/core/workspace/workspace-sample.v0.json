@@ -9448,7 +9448,7 @@
               },
               "image": {
                 "type": "exact",
-                "value": "https://img.freepik.com/premium-photo/white-abstract-background-with-subtle-d-texture_947794-79438.jpg"
+                "value": "https://static.seldon.app/background-default-light.jpg"
               },
               "repeat": {
                 "type": "preset",
@@ -9465,7 +9465,7 @@
               },
               "image": {
                 "type": "exact",
-                "value": "https://img.freepik.com/premium-photo/white-abstract-background-with-subtle-d-texture_947794-79438.jpg"
+                "value": "https://static.seldon.app/background-default-light.jpg"
               },
               "repeat": {
                 "type": "preset",
