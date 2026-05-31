@@ -13,7 +13,7 @@ export type OverlayBox = {
 }
 
 /** Outside box for selection and hover highlights. */
-export function getHighlightOverlayBox(
+export function getSelectionMode(
   rect: NodeRect,
   borderPx: number = CANVAS_OVERLAY_BORDER_PX,
 ): OverlayBox {
@@ -28,7 +28,7 @@ export function getHighlightOverlayBox(
 }
 
 /** Outside box for wireframe mode outlines. */
-export function getWireframeOverlayBox(
+export function getWireframeMode(
   rect: NodeRect,
   borderPx: number = CANVAS_OVERLAY_BORDER_PX,
 ): OverlayBox {

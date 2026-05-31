@@ -5,11 +5,12 @@ import { useEffect, useState } from "react"
 import { CSSProperties } from "react"
 import { useNodeRect } from "../../hooks/use-node-rect"
 import { getHtmlElementByNodeId } from "../../../canvas/helpers/get-html-element-by-node-id"
-import { calculateNodeRect } from "../../utils/calculate-node-rect"
+import { calculateSelectionOutline } from "../../utils/calculate-selection-outline"
 import {
-  getHighlightOverlayBox,
-  getWireframeOverlayBox,
-} from "../../utils/canvas-overlay"
+  getSelectionMode,
+  getWireframeMode,
+} from "../../utils/canvas-outline-modes"
+import { calculateClippingBox } from "../../utils/calculate-clipping-box"
 
 export type SelectTrackingProps = {
   nodeId: string
@@ -55,7 +56,7 @@ export function SelectTracking({
       const nodeEl = getHtmlElementByNodeId(nodeId)
       if (nodeEl) {
         try {
-          const rect = calculateNodeRect({ nodeEl: nodeEl })
+          const rect = calculateSelectionOutline({ nodeEl: nodeEl })
           setDirectRect(rect)
         } catch {
           setDirectRect(null)
@@ -88,9 +89,14 @@ export function SelectTracking({
 
   if (!rect) return null
 
-  const box = isWireframe
-    ? getWireframeOverlayBox(rect)
-    : getHighlightOverlayBox(rect)
+  let box
+  if (isWireframe) {
+    const clippedRect = calculateClippingBox({ nodeId, rect })
+    if (!clippedRect) return null
+    box = getWireframeMode(clippedRect)
+  } else {
+    box = getSelectionMode(rect)
+  }
 
   const style: CSSProperties = {
     top: `${box.top}px`,

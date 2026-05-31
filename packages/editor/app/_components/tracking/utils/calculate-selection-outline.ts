@@ -8,7 +8,7 @@ import { NodeRect } from "../hooks/use-node-rects-store"
  * @param nodeEl - The HTML element representing the node
  * @returns The node's rectangle relative to the canvas, or throws if canvas not found
  */
-export function calculateNodeRect({
+export function calculateSelectionOutline({
   nodeEl,
 }: {
   nodeEl: HTMLElement

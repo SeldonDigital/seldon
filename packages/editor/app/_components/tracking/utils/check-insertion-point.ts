@@ -14,7 +14,7 @@ import { isInsertionAllowed } from "@lib/workspace/helpers/is-insertion-allowed"
  * @param tool - The active tool ("component" or "sketch")
  * @returns `true` if insertion is allowed, `false` otherwise
  */
-export function checkInsertionAllowed(
+export function checkInsertionPoint(
   objectId: InstanceId | VariantId | string,
   objectType: "node" | "board",
   placement: Placement,
