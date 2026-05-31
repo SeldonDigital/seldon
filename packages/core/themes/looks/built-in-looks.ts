@@ -18,6 +18,7 @@ import { TokenType } from "../values"
 import type { ThemeBackground } from "../values/appearance/background"
 import type { ThemeBorder } from "../values/appearance/border"
 import type { ThemeGradient } from "../values/effects/gradient"
+import type { ThemeScrollbar } from "../values/effects/scrollbar"
 import type { ThemeShadow } from "../values/effects/shadow"
 import type { ThemeFont } from "../values/typography/font"
 
@@ -95,6 +96,67 @@ const FONT_PARAMETER_KEYS = [
   "textCase",
   "letterSpacing",
 ] as const
+
+const SCROLLBAR_PARAMETER_KEYS = [
+  "trackSize",
+  "trackColor",
+  "thumbColor",
+  "thumbHoverColor",
+  "rounded",
+] as const
+
+/** Every look section that must always carry its full reserved id set. */
+export type ReservedLookSection = BuiltInLookSection | "scrollbar"
+
+const PARAMETER_KEYS_BY_SECTION: Record<ReservedLookSection, readonly string[]> =
+  {
+    shadow: SHADOW_PARAMETER_KEYS,
+    gradient: GRADIENT_PARAMETER_KEYS,
+    background: BACKGROUND_PARAMETER_KEYS,
+    border: BORDER_PARAMETER_KEYS,
+    font: FONT_PARAMETER_KEYS,
+    scrollbar: SCROLLBAR_PARAMETER_KEYS,
+  }
+
+/**
+ * Reserved (named) look ids per section. These must always be present in a
+ * computed theme so their rows never disappear from the editor, even when a
+ * theme or variant fails to author one. Mirrors the reserved keys in
+ * `types/theme-token-ids.ts`.
+ */
+const RESERVED_LOOK_IDS: Record<ReservedLookSection, readonly string[]> = {
+  shadow: ["none", "xlight", "light", "moderate", "strong", "xstrong"],
+  gradient: ["none", "primary", "gradient1", "gradient2"],
+  background: ["none", "primary", "background1", "background2"],
+  border: ["none", "hairline", "thin", "normal", "thick", "bevel"],
+  font: [
+    "normal",
+    "display",
+    "heading",
+    "subheading",
+    "title",
+    "subtitle",
+    "callout",
+    "body",
+    "label",
+    "tagline",
+    "code",
+  ],
+  scrollbar: ["primary"],
+}
+
+const RESERVED_LOOK_SECTIONS: readonly ReservedLookSection[] = [
+  "shadow",
+  "gradient",
+  "background",
+  "border",
+  "font",
+  "scrollbar",
+] as const
+
+function humanizeLookId(id: string): string {
+  return id.charAt(0).toUpperCase() + id.slice(1)
+}
 
 const EMPTY_PROPERTY_VALUE = {
   type: ValueType.EMPTY,
@@ -190,11 +252,30 @@ export function getBuiltInLookSectionForPropertyKey(
   return null
 }
 
+function buildReservedLookCell(
+  section: ReservedLookSection,
+  id: string,
+):
+  | ThemeShadow
+  | ThemeGradient
+  | ThemeBackground
+  | ThemeBorder
+  | ThemeFont
+  | ThemeScrollbar {
+  return {
+    type: TokenType.LOOK,
+    name: humanizeLookId(id),
+    intent: `Reserved ${id} look for ${section}.`,
+    parameters: buildEmptyParameters(PARAMETER_KEYS_BY_SECTION[section]),
+  }
+}
+
 export function injectBuiltInLooks<T extends StockTheme | ComputedTheme>(
   theme: T,
 ): T {
   const next = { ...theme } as T & Record<string, unknown>
 
+  // Force the cleared built-in look (`none` / `normal`) so it always reads empty.
   for (const section of BUILT_IN_LOOK_SECTIONS) {
     const definition = BUILT_IN_LOOK_DEFINITIONS[section]
     const existing = (next[section] ?? {}) as Record<string, unknown>
@@ -203,6 +284,19 @@ export function injectBuiltInLooks<T extends StockTheme | ComputedTheme>(
       [definition.id]: buildBuiltInLookCell(section),
       ...rest,
     }
+  }
+
+  // Guarantee the full reserved id set per look section. Authored and custom
+  // cells are preserved; only missing reserved ids get an empty fallback cell.
+  for (const section of RESERVED_LOOK_SECTIONS) {
+    const existing = (next[section] ?? {}) as Record<string, unknown>
+    const filled: Record<string, unknown> = { ...existing }
+    for (const id of RESERVED_LOOK_IDS[section]) {
+      if (filled[id] === undefined || filled[id] === null) {
+        filled[id] = buildReservedLookCell(section, id)
+      }
+    }
+    ;(next as Record<string, unknown>)[section] = filled
   }
 
   return next

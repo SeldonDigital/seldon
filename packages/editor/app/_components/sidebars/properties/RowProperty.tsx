@@ -406,7 +406,7 @@ export function RowProperty({
         : {
             style: { pointerEvents: "none" as const },
           },
-      icon2: isThemeAssignment
+      icon2: isThemeAssignment || property.isLookParent
         ? {
             icon: iconId as IconProps["icon"],
             style: { display: "none" as const },
@@ -438,6 +438,11 @@ export function RowProperty({
 
       label2: {
         children: (() => {
+          // Look parent rows are a pure disclosure grouping: label plus arrow,
+          // with an empty value cell and no control.
+          if (property.isLookParent) {
+            return ""
+          }
           const shouldShowControl = Boolean(property.controlType)
           const valueContent =
             isEditingProperty && shouldShowControl ? (
