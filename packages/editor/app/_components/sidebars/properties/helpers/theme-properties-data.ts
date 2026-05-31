@@ -34,6 +34,7 @@ const MODULATION_STEP_SECTIONS = new Set([
   "borderWidth",
   "corners",
   "blur",
+  "spread",
 ])
 
 /** Look-token sections whose facets read from `parameters[facet]`. */
@@ -201,17 +202,11 @@ function getThemeValueByKey(theme: Theme, key: string): unknown {
     if (!isRecord(item) || !isRecord(item.parameters)) return undefined
     const params = item.parameters
 
-    if (section === "shadow") {
-      if (facet === "offsetX" && isRecord(params.offset) && "x" in params.offset) {
-        return params.offset.x
-      }
-      if (facet === "offsetY" && isRecord(params.offset) && "y" in params.offset) {
-        return params.offset.y
-      }
-    }
-
     if (facet in params) return params[facet]
-    return undefined
+    // A look exposes every facet in its descriptor. Facets the look has not
+    // authored read as EMPTY (unset) so their rows still render, matching the
+    // built-in cleared look rather than being dropped as `undefined`.
+    return { type: ValueType.EMPTY, value: null }
   }
 
   return undefined

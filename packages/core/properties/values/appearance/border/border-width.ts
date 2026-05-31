@@ -60,5 +60,6 @@ export const borderWidthSchema: PropertySchema = {
     },
   },
   presetOptions: () => Object.values(BorderWidth),
-  themeOrdinalKeys: (theme: Theme) => Object.keys(theme.borderWidth),
+  themeOrdinalKeys: (theme: Theme) =>
+    Object.keys(theme.borderWidth).map((id) => `@borderWidth.${id}`),
 }

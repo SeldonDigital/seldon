@@ -21,6 +21,7 @@ import type { ThemeGradient } from "../values/effects/gradient"
 import type { ThemeScrollbar } from "../values/effects/scrollbar"
 import type { ThemeShadow } from "../values/effects/shadow"
 import type { ThemeFont } from "../values/typography/font"
+import { LOOK_FACETS } from "./look-facets"
 
 export const SHADOW_LOOK_NONE = "@shadow.none" as const satisfies ThemeShadowKey
 export const GRADIENT_LOOK_NONE = "@gradient.none" as const satisfies ThemeGradientKey
@@ -44,79 +45,18 @@ export const BUILT_IN_LOOK_SECTIONS: readonly BuiltInLookSection[] = [
   "font",
 ] as const
 
-const SHADOW_PARAMETER_KEYS = [
-  "offsetX",
-  "offsetY",
-  "blur",
-  "color",
-  "brightness",
-  "opacity",
-  "spread",
-] as const
-
-const GRADIENT_PARAMETER_KEYS = [
-  "gradientType",
-  "angle",
-  "startColor",
-  "startOpacity",
-  "startBrightness",
-  "startPosition",
-  "endColor",
-  "endOpacity",
-  "endBrightness",
-  "endPosition",
-] as const
-
-const BACKGROUND_PARAMETER_KEYS = [
-  "image",
-  "position",
-  "size",
-  "repeat",
-  "color",
-  "blendMode",
-  "filter",
-  "brightness",
-  "opacity",
-] as const
-
-const BORDER_PARAMETER_KEYS = [
-  "style",
-  "color",
-  "width",
-  "brightness",
-  "opacity",
-] as const
-
-const FONT_PARAMETER_KEYS = [
-  "family",
-  "style",
-  "weight",
-  "size",
-  "lineHeight",
-  "textCase",
-  "letterSpacing",
-] as const
-
-const SCROLLBAR_PARAMETER_KEYS = [
-  "trackSize",
-  "trackColor",
-  "thumbColor",
-  "thumbHoverColor",
-  "rounded",
-] as const
-
 /** Every look section that must always carry its full reserved id set. */
 export type ReservedLookSection = BuiltInLookSection | "scrollbar"
 
-const PARAMETER_KEYS_BY_SECTION: Record<ReservedLookSection, readonly string[]> =
-  {
-    shadow: SHADOW_PARAMETER_KEYS,
-    gradient: GRADIENT_PARAMETER_KEYS,
-    background: BACKGROUND_PARAMETER_KEYS,
-    border: BORDER_PARAMETER_KEYS,
-    font: FONT_PARAMETER_KEYS,
-    scrollbar: SCROLLBAR_PARAMETER_KEYS,
-  }
+/** Facet keys per section, derived from the shared {@link LOOK_FACETS} descriptor. */
+const PARAMETER_KEYS_BY_SECTION = {
+  shadow: LOOK_FACETS.shadow.map((facet) => facet.facet),
+  gradient: LOOK_FACETS.gradient.map((facet) => facet.facet),
+  background: LOOK_FACETS.background.map((facet) => facet.facet),
+  border: LOOK_FACETS.border.map((facet) => facet.facet),
+  font: LOOK_FACETS.font.map((facet) => facet.facet),
+  scrollbar: LOOK_FACETS.scrollbar.map((facet) => facet.facet),
+} satisfies Record<ReservedLookSection, readonly string[]>
 
 /**
  * Reserved (named) look ids per section. These must always be present in a
@@ -175,38 +115,13 @@ function buildEmptyParameters(
 
 const BUILT_IN_LOOK_DEFINITIONS: Record<
   BuiltInLookSection,
-  { id: string; name: string; token: string; parameterKeys: readonly string[] }
+  { id: string; name: string; token: string }
 > = {
-  shadow: {
-    id: "none",
-    name: "None",
-    token: SHADOW_LOOK_NONE,
-    parameterKeys: SHADOW_PARAMETER_KEYS,
-  },
-  gradient: {
-    id: "none",
-    name: "None",
-    token: GRADIENT_LOOK_NONE,
-    parameterKeys: GRADIENT_PARAMETER_KEYS,
-  },
-  background: {
-    id: "none",
-    name: "None",
-    token: BACKGROUND_LOOK_NONE,
-    parameterKeys: BACKGROUND_PARAMETER_KEYS,
-  },
-  border: {
-    id: "none",
-    name: "None",
-    token: BORDER_LOOK_NONE,
-    parameterKeys: BORDER_PARAMETER_KEYS,
-  },
-  font: {
-    id: "normal",
-    name: "Normal",
-    token: FONT_LOOK_NORMAL,
-    parameterKeys: FONT_PARAMETER_KEYS,
-  },
+  shadow: { id: "none", name: "None", token: SHADOW_LOOK_NONE },
+  gradient: { id: "none", name: "None", token: GRADIENT_LOOK_NONE },
+  background: { id: "none", name: "None", token: BACKGROUND_LOOK_NONE },
+  border: { id: "none", name: "None", token: BORDER_LOOK_NONE },
+  font: { id: "normal", name: "Normal", token: FONT_LOOK_NORMAL },
 }
 
 function buildBuiltInLookCell(
@@ -217,7 +132,7 @@ function buildBuiltInLookCell(
     type: TokenType.LOOK,
     name: definition.name,
     intent: `Built-in ${definition.name.toLowerCase()} look for ${section}.`,
-    parameters: buildEmptyParameters(definition.parameterKeys),
+    parameters: buildEmptyParameters(PARAMETER_KEYS_BY_SECTION[section]),
   }
 }
 

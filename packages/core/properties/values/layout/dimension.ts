@@ -75,6 +75,7 @@ export const dimensionSchema: PropertySchema = {
     },
   },
   presetOptions: () => Object.values(Resize),
-  themeOrdinalKeys: (theme: Theme) => Object.keys(theme.dimension),
+  themeOrdinalKeys: (theme: Theme) =>
+    Object.keys(theme.dimension).map((id) => `@dimension.${id}`),
   computedFunctions: () => [ComputedFunction.AUTO_FIT, ComputedFunction.MATCH],
 }
