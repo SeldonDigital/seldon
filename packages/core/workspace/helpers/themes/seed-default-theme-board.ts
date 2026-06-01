@@ -11,10 +11,10 @@ import {
 import { getInitialBoardComponentProperties } from "../components/get-initial-board-component-properties"
 
 /** Catalog row key for the default theme board (matches the `default` stock template id). */
-export const DEFAULT_THEME_BOARD_KEY = "default" as const
+export const DEFAULT_THEME_BOARD_KEY = "seldon" as const
 
 /** Theme entry id for the default board's default variant. This is the editable workspace theme. */
-export const DEFAULT_THEME_ENTRY_ID = "theme-default-default" as const
+export const DEFAULT_THEME_ENTRY_ID = "theme-seldon-default" as const
 
 type SeedableWorkspace = Pick<Workspace, "components" | "themes">
 
@@ -23,7 +23,7 @@ export function createDefaultThemeEntry(): EntryTheme {
   return {
     id: DEFAULT_THEME_ENTRY_ID,
     type: "default",
-    label: "Default",
+    label: "Seldon",
     template: formatThemeCatalog(DEFAULT_THEME_BOARD_KEY),
     overrides: {},
   }
@@ -32,7 +32,7 @@ export function createDefaultThemeEntry(): EntryTheme {
 /**
  * Adds the default theme board and its default theme entry when missing.
  *
- * Idempotent: returns early when a theme board already exists for the `default`
+ * Idempotent: returns early when a theme board already exists for the `seldon`
  * stock template. Mutates the passed workspace in place.
  */
 export function seedDefaultThemeBoard(workspace: SeedableWorkspace): void {

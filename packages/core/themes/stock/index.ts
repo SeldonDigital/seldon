@@ -1,7 +1,7 @@
 import { computeTheme } from "../helpers/compute-theme"
 import type { ComputedTheme, StockTheme } from "../types/theme"
 import type { ThemeTemplateId } from "../types/theme-id"
-import defaultStock, { defaultTheme } from "./default"
+import defaultStock, { defaultTheme } from "./seldon"
 import earthStock from "./earth"
 import highContrastStock from "./high-contrast"
 import industrialStock from "./industrial"

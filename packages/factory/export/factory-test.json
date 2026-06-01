@@ -4,23 +4,23 @@
     "label": ""
   },
   "components": {
-    "default": {
+    "seldon": {
       "type": "theme",
-      "catalogId": "default",
+      "catalogId": "seldon",
       "label": "Seldon",
       "author": "Seldon Digital",
       "componentPreview": "seldonThemePreview",
-      "componentTheme": "theme-default-default",
+      "componentTheme": "theme-seldon-default",
       "componentProperties": {},
       "variants": [
         {
-          "id": "theme-default-default"
+          "id": "theme-seldon-default"
         },
         {
-          "id": "theme-default-0geyh88d"
+          "id": "theme-seldon-0geyh88d"
         },
         {
-          "id": "theme-default-usdqxfug"
+          "id": "theme-seldon-usdqxfug"
         }
       ],
       "__editor": {
@@ -33,7 +33,7 @@
       "catalogId": "icon",
       "label": "Icons",
       "author": "Seldon Digital",
-      "componentTheme": "theme-default-default",
+      "componentTheme": "theme-seldon-default",
       "componentProperties": {},
       "variants": [
         {
@@ -50,7 +50,7 @@
       "catalogId": "label",
       "label": "Labels",
       "author": "Seldon Digital",
-      "componentTheme": "theme-default-default",
+      "componentTheme": "theme-seldon-default",
       "componentProperties": {},
       "variants": [
         {
@@ -67,7 +67,7 @@
       "catalogId": "title",
       "label": "Titles",
       "author": "Seldon Digital",
-      "componentTheme": "theme-default-default",
+      "componentTheme": "theme-seldon-default",
       "componentProperties": {},
       "variants": [
         {
@@ -84,7 +84,7 @@
       "catalogId": "button",
       "label": "Buttons",
       "author": "Seldon Digital",
-      "componentTheme": "theme-default-default",
+      "componentTheme": "theme-seldon-default",
       "componentProperties": {},
       "variants": [
         {
@@ -204,7 +204,7 @@
       "catalogId": "barHeader",
       "label": "Panel Headers",
       "author": "Seldon Digital",
-      "componentTheme": "theme-default-default",
+      "componentTheme": "theme-seldon-default",
       "componentProperties": {},
       "variants": [
         {
@@ -237,7 +237,7 @@
       "catalogId": "frame",
       "label": "Frames",
       "author": "Seldon Digital",
-      "componentTheme": "theme-default-default",
+      "componentTheme": "theme-seldon-default",
       "componentProperties": {},
       "variants": [
         {
@@ -254,7 +254,7 @@
       "catalogId": "barFooter",
       "label": "Panel Footers",
       "author": "Seldon Digital",
-      "componentTheme": "theme-default-default",
+      "componentTheme": "theme-seldon-default",
       "componentProperties": {},
       "variants": [
         {
@@ -295,7 +295,7 @@
       "catalogId": "dialog",
       "label": "Dialogs",
       "author": "Seldon Digital",
-      "componentTheme": "theme-default-0geyh88d",
+      "componentTheme": "theme-seldon-0geyh88d",
       "componentProperties": {},
       "variants": [
         {
@@ -4164,18 +4164,18 @@
     }
   },
   "themes": {
-    "theme-default-default": {
-      "id": "theme-default-default",
+    "theme-seldon-default": {
+      "id": "theme-seldon-default",
       "type": "default",
-      "label": "Default",
-      "template": "catalog:default",
+      "label": "Seldon",
+      "template": "catalog:seldon",
       "overrides": {}
     },
-    "theme-default-0geyh88d": {
-      "id": "theme-default-0geyh88d",
+    "theme-seldon-0geyh88d": {
+      "id": "theme-seldon-0geyh88d",
       "type": "variant",
       "label": "Red",
-      "template": "theme:theme-default-default",
+      "template": "theme:theme-seldon-default",
       "overrides": {
         "color": {
           "baseColor": {
@@ -4186,11 +4186,11 @@
         }
       }
     },
-    "theme-default-usdqxfug": {
-      "id": "theme-default-usdqxfug",
+    "theme-seldon-usdqxfug": {
+      "id": "theme-seldon-usdqxfug",
       "type": "variant",
       "label": "Green",
-      "template": "theme:theme-default-default",
+      "template": "theme:theme-seldon-default",
       "overrides": {
         "color": {
           "baseColor": {

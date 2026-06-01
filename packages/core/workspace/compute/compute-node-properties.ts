@@ -205,7 +205,7 @@ function getEffectiveThemeId(
   }
 
   const board = findComponentForNode(node, workspace, compositionParentByChild)
-  return normalizeThemeRef(board ? getComponentThemeRef(board) : null) ?? "default"
+  return normalizeThemeRef(board ? getComponentThemeRef(board) : null) ?? "seldon"
 }
 
 function mergeLayerArrays<T extends Record<string, unknown>>(
@@ -379,7 +379,7 @@ export function getNodeComputeContext(
     const board = workspace.components?.[targetId]
     const effectiveProperties = getEffectiveNodeProperties(targetId, workspace)
     const themeId = normalizeThemeRef(board ? getComponentThemeRef(board) : null)
-    const theme = getComputedTheme(themeId ?? "default", workspace)
+    const theme = getComputedTheme(themeId ?? "seldon", workspace)
     return {
       properties: effectiveProperties,
       parentContext: null,
@@ -413,7 +413,7 @@ export function computeNodeProperties(
   if (!node) {
     const board = workspace.components?.[targetId]
     const themeId = normalizeThemeRef(board ? getComponentThemeRef(board) : null)
-    const theme = getComputedTheme(themeId ?? "default", workspace)
+    const theme = getComputedTheme(themeId ?? "seldon", workspace)
     return computeProperties(effectiveProperties, {
       properties: effectiveProperties,
       parentContext: null,

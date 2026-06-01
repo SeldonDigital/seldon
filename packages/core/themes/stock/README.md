@@ -26,7 +26,7 @@ flowchart LR
 | `THEMES` | `index.ts` | Ordered array of `ComputedTheme` for every stock preset. Used when apps need resolved tokens without calling `computeTheme` again. |
 | `THEMES_BY_ID` | `index.ts` | Map from theme id to `ComputedTheme`. Used for quick lookup by template id. |
 | `computeTheme` | `index.ts` | Re-export from `helpers/compute-theme.ts`. Materializes one stock or resolved theme. Used by `THEMES` construction and direct callers. |
-| `defaultTheme` | `index.ts` | Re-export from `default.ts`: precomputed `ComputedTheme` for the default stock preset. |
+| `defaultTheme` | `index.ts` | Re-export from `seldon.ts`: precomputed `ComputedTheme` for the default stock preset. |
 
 ### Authoring modules (default export)
 
@@ -34,7 +34,7 @@ Each module exports one `StockTheme` as its default. `metadata.id` matches the f
 
 | Type or Function | File | Purpose and use |
 | --- | --- | --- |
-| default export | `default.ts` | Default Seldon brand preset. Also exports `defaultTheme` as a precomputed `ComputedTheme`. |
+| default export | `seldon.ts` | Default Seldon brand preset. Also exports `defaultTheme` as a precomputed `ComputedTheme`. |
 | default export | `earth.ts` | Warm natural preset. |
 | default export | `high-contrast.ts` | Neutral high-contrast preset. |
 | default export | `industrial.ts` | Cool dense preset. |

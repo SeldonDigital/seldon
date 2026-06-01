@@ -322,7 +322,7 @@ export class WorkspaceMutationService {
   ): Workspace {
     return withComponentMutation(componentKey, workspace, (board, draft) => {
       const currentTheme =
-        getComponentLevelThemeRef(board) ?? ("default" as ThemeInstanceId)
+        getComponentLevelThemeRef(board) ?? ("seldon" as ThemeInstanceId)
       board.componentTheme = theme
 
       for (const ref of board.variants) {
@@ -395,10 +395,10 @@ export class WorkspaceMutationService {
     }
 
     if (!board) {
-      return "default" as ThemeInstanceId
+      return "seldon" as ThemeInstanceId
     }
 
-    return getComponentLevelThemeRef(board) ?? ("default" as ThemeInstanceId)
+    return getComponentLevelThemeRef(board) ?? ("seldon" as ThemeInstanceId)
   }
 
   /**

@@ -85,7 +85,7 @@ export function getThemeSwatchVarReference(
   const name = getThemeSwatchVarNames(theme)[id]
   if (!name) return undefined
 
-  const slug = themeSlug || (theme.id as string) || "default"
-  const prefix = slug === "default" ? "--sdn-" : `--sdn-${slug}-`
+  const slug = themeSlug || (theme.id as string) || "seldon"
+  const prefix = slug === "seldon" ? "--sdn-" : `--sdn-${slug}-`
   return `var(${prefix}swatch-${name})`
 }

@@ -48,10 +48,10 @@ function exactTokenCss(token: ThemeScaleToken): string {
 }
 
 function generateThemeCSSVariables(theme: Theme, slug: string): string {
-  const prefix = slug === "default" ? `--sdn-` : `--sdn-${slug}-`
+  const prefix = slug === "seldon" ? `--sdn-` : `--sdn-${slug}-`
   let cssVariables = ""
 
-  if (slug !== "default") {
+  if (slug !== "seldon") {
     const themeDisplayName = slug
       .split("-")
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
@@ -190,7 +190,7 @@ export async function generateThemeStylesheetFiles(
 ): Promise<ThemeStylesheetFile[]> {
   const themeIds = Object.keys(workspace.themes ?? {})
   if (themeIds.length === 0) {
-    themeIds.push("default")
+    themeIds.push("seldon")
   }
 
   const files: ThemeStylesheetFile[] = []

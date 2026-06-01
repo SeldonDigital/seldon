@@ -13,7 +13,7 @@
  */
 
 export type ThemeTemplateId =
-  | "default"
+  | "seldon"
   | "earth"
   | "highContrast"
   | "industrial"

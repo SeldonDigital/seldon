@@ -27,7 +27,7 @@ export class WorkspaceThemeService {
     workspace: Workspace,
   ): ThemeInstanceId {
     if (typeCheckingService.isComponentEntry(object)) {
-      return getComponentLevelThemeRef(object) ?? ("default" as ThemeInstanceId)
+      return getComponentLevelThemeRef(object) ?? ("seldon" as ThemeInstanceId)
     }
 
     return this.getNodeThemeId(object.id, workspace)
@@ -76,7 +76,7 @@ export class WorkspaceThemeService {
 
     invariant(board, `Unable to find board for variant ${rootNode.id}`)
 
-    return getComponentLevelThemeRef(board) ?? ("default" as ThemeInstanceId)
+    return getComponentLevelThemeRef(board) ?? ("seldon" as ThemeInstanceId)
   }
 
   /**
@@ -162,7 +162,7 @@ export class WorkspaceThemeService {
     })
 
     if (usedThemeIds.size === 0) {
-      usedThemeIds.add("default")
+      usedThemeIds.add("seldon")
     }
 
     return usedThemeIds

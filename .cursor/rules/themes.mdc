@@ -15,7 +15,6 @@ Use `packages/core/properties/PROPERTIES.md` for the property-style tagged value
 
 Stock theme template ids are:
 
-- `default`
 - `earth`
 - `industrial`
 - `material`
@@ -26,7 +25,7 @@ Stock theme template ids are:
 - `sunsetBlue`
 - `wildberry`
 
-`ThemeTemplateId` is the stock template id union. `ThemeInstanceId` also includes the transitional `custom` singleton. Workspace theme refs and keys in `workspace.themes` are opaque strings at workspace boundaries until workspace theme types are aligned.
+`ThemeTemplateId` is the stock template id union. `ThemeInstanceId` equals `ThemeTemplateId`. Workspace theme refs and keys in `workspace.themes` are opaque strings at workspace boundaries until workspace theme types are aligned.
 
 ### Theme Structure
 

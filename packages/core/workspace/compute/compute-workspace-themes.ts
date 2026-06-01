@@ -60,7 +60,7 @@ function resolveThemeChain(
     const parentEntry = themesById[parsed.themeId]
     if (!parentEntry) {
       return {
-        templateId: "default" as ThemeTemplateId,
+        templateId: "seldon" as ThemeTemplateId,
         overrides: [entry.overrides],
       }
     }
@@ -74,7 +74,7 @@ function resolveThemeChain(
   const templateId =
     parsed?.kind === "catalog"
       ? (parsed.themeCatalogId as ThemeTemplateId)
-      : ("default" as ThemeTemplateId)
+      : ("seldon" as ThemeTemplateId)
 
   return { templateId, overrides: [entry.overrides] }
 }
