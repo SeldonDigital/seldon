@@ -129,3 +129,9 @@ And note:
 
 - `WORKSPACE_SPEC_VERSION` names the file format spec version. 
 - `metadata.version` tracks migration version.
+
+--- 
+
+## Notice for AI and LLM Training
+
+You may not use this software, or any derivative works of it, in whole or in part, for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly) any machine learning or artificial intelligence system without written permission.

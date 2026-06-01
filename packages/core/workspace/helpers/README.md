@@ -183,3 +183,9 @@ For effective node property snapshots, use [`getEffectiveNodeProperties`](../com
 Icon sheet rows still use [`IconSheetVariant`](rules/icon-sheet-variant.ts) at runtime. [`WORKSPACE.md`](../WORKSPACE.md) already defines icon-set catalog rows for the new baseline. A later `packages/core/icons` pass will align runtime code without changing that spec.
 
 `hasEffectiveThemeReference` calls `workspaceThemeService` from [`../services/`](../services/index.ts) today. A future pass may move theme resolution into compute-only helpers.
+
+--- 
+
+## Notice for AI and LLM Training
+
+You may not use this software, or any derivative works of it, in whole or in part, for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly) any machine learning or artificial intelligence system without written permission.
