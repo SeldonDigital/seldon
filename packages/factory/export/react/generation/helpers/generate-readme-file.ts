@@ -67,17 +67,17 @@ These elements have default values and always appear in the component:
 These elements only appear when you explicitly provide them with meaningful content:
 
 \`\`\`tsx
-// These elements only render when provided with content
+// These elements only render when you pass their prop. Omit a prop to skip it.
 <CardProductInline
   button2={{ onClick: () => alert("Button 2!") }}  // Will render
-  button3={{}}                                      // Will NOT render (empty object)
   button7={{ onClick: () => alert("Button 7!") }}  // Will render
   tagline={{ children: "My Tagline" }}             // Will render
   titleProps={{ children: "My Title" }}            // Will render
+  // button3 is omitted, so it does not render
 />
 \`\`\`
 
-**Key Rule**: Elements without defaults in the function signature require meaningful content to appear. Empty objects (\`{}\`) will not render anything.
+**Key Rule**: Elements without defaults in the function signature render only when you pass their prop. The render guard is a truthy check (\`{prop && ...}\`), so even an empty object (\`button3={{}}\`) renders the element with its default content. To skip an element, omit its prop entirely.
 
 ## Function Signatures Guide
 
@@ -122,7 +122,7 @@ export function CardProduct({
 \`\`\`tsx
 <CardProductInline
   button={{ onClick: () => window.open("/product/123") }}
-  icon={{ icon: "material-shopping-cart" }}
+  icon={{ icon: "material-shoppingCart" }}
   label={{ children: "Add to Cart" }}
   button2={{ onClick: () => setFavorite(true) }}
   icon2={{ icon: "material-favorite" }}
@@ -160,7 +160,7 @@ function ProductCard({ showActions, isLoggedIn }) {
       {/* Only show actions if enabled */}
       {...(showActions && {
         button2: { onClick: () => addToCart() },
-        icon2: { icon: "material-shopping-cart" },
+        icon2: { icon: "material-shoppingCart" },
         label2: { children: "Add to Cart" }
       })}
       
@@ -181,8 +181,8 @@ Seldon components use Material Icons by default. Common icons include:
 
 - \`material-add\` - Plus sign
 - \`material-favorite\` - Heart
-- \`material-shopping-cart\` - Shopping cart
-- \`material-arrow-forward\` - Right arrow
+- \`material-shoppingCart\` - Shopping cart
+- \`material-arrowForward\` - Right arrow
 - \`material-star\` - Star
 - \`material-check\` - Checkmark
 
@@ -190,7 +190,7 @@ Seldon components use Material Icons by default. Common icons include:
 <CardProduct 
   icon={{ icon: "material-star" }}
   icon2={{ icon: "material-favorite" }}
-  icon3={{ icon: "material-shopping-cart" }}
+  icon3={{ icon: "material-shoppingCart" }}
 />
 \`\`\`
 
@@ -201,14 +201,17 @@ Seldon components use Material Icons by default. Common icons include:
 Every component includes CSS classes for styling:
 
 \`\`\`css
-/* Global component styles */
-.sdn-cardProduct { /* Base card styles */ }
+/* Base component styles (default variant) */
+.sdn-card-product { /* Base card styles */ }
 .sdn-button { /* Base button styles */ }
 .sdn-tagline { /* Base tagline styles */ }
 
-/* Specific variant styles */
-.sdn-button-3D4pvOBS { /* Specific button variant */ }
-.sdn-textblockDetails-Njjvy0sD { /* Specific text block variant */ }
+/* Named variant styles */
+.sdn-button-iconic { /* A "iconic" button variant */ }
+
+/* Instance styles (variant class + -- + short hash) */
+.sdn-button-iconic--abc12 { /* A specific button instance */ }
+.sdn-textblock-details--njjv0 { /* A specific text block instance */ }
 \`\`\`
 
 ### Custom Styling
@@ -254,7 +257,9 @@ You can override styles in several ways:
 
 #### Design Tokens via Theme Variables
 
-The exported stylesheet includes CSS design tokens (theme variables) that you can use for consistent theming across your application. This can be useful for integrating Seldon components with existing components:
+The exported stylesheets include CSS design tokens (theme variables) that you can use for consistent theming across your application. This can be useful for integrating Seldon components with existing components.
+
+The default \`seldon\` theme uses bare \`--sdn-\` variables and ships as \`styles-seldon.css\`. Every other theme uses a \`--sdn-{slug}-\` prefix and ships as \`styles-{slug}.css\`, for example \`--sdn-seldon-red-swatch-primary\` in \`styles-seldon-red.css\`:
 
 \`\`\`css
 /* Available theme variables include: */
@@ -313,10 +318,11 @@ function MyExistingButton({ children, ...props }) {
 
 ## TypeScript Support
 
-All components are fully typed. Use the exported interfaces for custom implementations:
+All components are fully typed. Each component and its props interface are exported from their own file under the matching level folder (for example \`elements/Button.tsx\`, \`parts/CardProduct.tsx\`). Import them by path:
 
 \`\`\`tsx
-import { CardProductProps, ButtonProps, TaglineProps } from './components'
+import { CardProduct, CardProductProps } from './parts/CardProduct'
+import { ButtonProps } from './elements/Button'
 
 function CustomProduct(props: CardProductProps) {
   const buttonConfig: ButtonProps = {
@@ -354,13 +360,13 @@ Begin with minimal props and gradually add customizations:
 \`\`\`
 
 ### 2. Use Conditional Rendering Wisely
-Only provide props for conditional elements when you want them to appear:
+Only pass props for conditional elements when you want them to appear. Omit the prop to skip the element:
 
 \`\`\`tsx
-// ❌ Don't do this (empty objects render nothing)
+// ❌ Don't do this (empty objects still render the element with default content)
 <CardProductInline button2={{}} button3={{}} />
 
-// ✅ Do this (provide meaningful content)
+// ✅ Do this (pass meaningful content, omit what you don't need)
 <CardProductInline 
   button2={{ onClick: handleAction }}
   icon2={{ icon: "material-star" }}
@@ -397,31 +403,31 @@ Always provide meaningful labels and ARIA attributes:
 
 ### Elements Not Rendering
 - Check if the element has a default value in the function signature (look for \`= sdn.something\`)
-- Elements without defaults need meaningful props to render (not empty objects \`{}\`)
-- **Note**: You may see examples with empty objects like \`tagline={{}}\` - these are valid but won't display any content
+- Elements without defaults render only when you pass their prop; omit the prop to skip the element
+- **Note**: the render guard is a truthy check, so even \`tagline={{}}\` renders the element with its default content
 - For buttons, make sure to provide the button prop itself, plus icon and label if needed
 - Verify that required nested props are included (e.g., \`children\` for labels, \`icon\` for icons)
 
 ### Styling Issues
-- Import \`styles.css\` and each \`styles-{theme}.css\` file your workspace uses
+- Import \`styles.css\` and each \`styles-{slug}.css\` file your workspace exports
 - Check CSS class conflicts with your existing styles
-- Use browser dev tools to inspect generated class names (they include unique IDs like \`sdn-button-3D4pvOBS\`)
+- Use browser dev tools to inspect generated class names (instance classes end with a short hash like \`sdn-button-iconic--abc12\`)
 
 ### TypeScript Errors
 - Ensure you're importing the correct prop interfaces
 - Check that all required properties are provided
 - Use optional chaining for nested props: \`button?.onClick\`
-- Remember that empty objects \`{}\` are valid TypeScript but won't render content
+- Remember that an empty object \`{}\` is truthy, so it still renders the element; omit the prop to skip it
 
 ## Getting Help
 
 Your exported components include:
 - \`Fonts.tsx\` - Font loading component  
 - \`styles.css\` - Reset, base, and component styles
-- \`styles-{theme}.css\` - Theme token variables per used theme
+- \`styles-{slug}.css\` - Theme token variables, one file per workspace theme
 - Individual component files with full TypeScript definitions
 
-For more information about Seldon, visit [seldon.app](https://seldon.app)
+For more information about Seldon, visit [github.com/SeldonDigital/seldon](https://github.com/SeldonDigital/seldon)
 `
 
   return {
