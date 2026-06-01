@@ -75,31 +75,8 @@ export function useMenuConfig(): HeaderConfig {
   const fileMenuItems = useMemo(() => {
     const items = [
       {
-        id: "export-folder",
-        label: "Export to folder…",
-        action: exportToFolder,
-        visibleIn: ["edit", "preview"],
-      },
-    ]
-
-    if (process.env.NODE_ENV === "development") {
-      items.push(
-        "separator",
-        {
-          id: "import-test-workspace",
-          label: "Import Test Workspace",
-          action: () => {
-            addToast("Test workspace fixture is not available yet.")
-          },
-        },
-      )
-    }
-
-    items.push(
-      "separator",
-      {
         id: "import-file",
-        label: "Import Workspace",
+        label: "Import Workspace…",
         action: async () => {
           const result = await selectFile()
           if (!result.success) return
@@ -107,13 +84,48 @@ export function useMenuConfig(): HeaderConfig {
         },
         visibleIn: ["edit", "preview"], // Not visible in project view
       },
+      "separator",
       {
         id: "export-workspace",
-        label: "Export Workspace JSON",
+        label: "Export Workspace…",
         action: exportWorkspaceToFile,
         visibleIn: ["edit", "preview"],
       },
-    )
+      {
+        id: "export-folder",
+        label: "Export Components…",
+        action: exportToFolder,
+        visibleIn: ["edit", "preview"],
+      },
+      "separator",
+      {
+        id: "projects",
+        label: "Back to Workspaces…",
+        action: goToProjects,
+        shortcut: "⇧ Q",
+      },
+    ]
+
+    return items
+  }, [
+    exportToFolder,
+    exportWorkspaceToFile,
+    goToProjects,
+    importWorkspaceFromFile,
+  ])
+
+  const debugMenuItems = useMemo(() => {
+    const items: MenuItem[] = []
+
+    if (process.env.NODE_ENV === "development") {
+      items.push({
+        id: "load-editor-workspace",
+        label: "Load Editor Workspace",
+        action: () => {
+          addToast("Test workspace fixture is not available yet.")
+        },
+      })
+    }
 
     if (debugModeEnabled) {
       items.push({
@@ -124,27 +136,20 @@ export function useMenuConfig(): HeaderConfig {
       })
     }
 
-    items.push(
-      "separator",
-      {
-        id: "projects",
-        label: "Back to Workspaces…",
-        action: goToProjects,
-        shortcut: "⇧ Q",
-      },
-    )
+    items.push({
+      id: "debug-mode",
+      label: "Enable Debug Mode",
+      action: toggleDebugMode,
+      active: debugModeEnabled,
+      visibleIn: ["edit", "preview"], // Not visible in project view
+    })
 
     return items
   }, [
     addToast,
     debugModeEnabled,
     exportSelectionToClipboard,
-    exportToFolder,
-    exportWorkspaceToFile,
-    goToProjects,
-    importWorkspaceFromFile,
-    dispatch,
-    workspace,
+    toggleDebugMode,
   ])
 
   const editMenuItems = useMemo(() => {
@@ -371,23 +376,16 @@ export function useMenuConfig(): HeaderConfig {
         ],
       },
       {
-        id: "help",
-        label: "Help",
-        items: [
-          {
-            id: "debug-mode",
-            label: "Enable Debug Mode",
-            action: toggleDebugMode,
-            active: debugModeEnabled,
-            visibleIn: ["edit", "preview"], // Not visible in project view
-          },
-        ],
+        id: "debug",
+        label: "Debug",
+        items: debugMenuItems as MenuItem[],
       },
     ],
     [
       fileMenuItems,
       editMenuItems,
       selectionMenuItems,
+      debugMenuItems,
       togglePreviewMode,
       isInPreviewMode,
       togglePanels,
