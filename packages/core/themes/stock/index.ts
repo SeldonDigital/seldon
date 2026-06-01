@@ -37,23 +37,5 @@ export const THEMES_BY_ID = Object.fromEntries(
   THEMES.map((theme) => [theme.id, theme]),
 ) as Record<ThemeTemplateId, ComputedTheme>
 
-const computedDefaultTheme = computeTheme(defaultStock)
-
-/**
- * Transitional singleton theme id `"custom"` (fixtures / editor until `workspace.themes` is fully adopted).
- *
- * @deprecated Prefer workspace `themes` rows plus `instantiateTheme` (themes/compute) and
- *   `computeTheme` (themes/helpers).
- */
-export const customTheme: ComputedTheme = {
-  ...computedDefaultTheme,
-  id: "custom",
-  metadata: {
-    ...computedDefaultTheme.metadata,
-    id: "custom",
-    name: "Custom",
-  },
-}
-
 export { computeTheme }
 export { defaultTheme }

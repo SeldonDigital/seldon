@@ -9,22 +9,31 @@ import {
   setComponentOrder,
 } from "../components/component-sort-order"
 import { getInitialBoardComponentProperties } from "../components/get-initial-board-component-properties"
-import { WORKSPACE_EDITABLE_THEME_ENTRY_ID } from "./workspace-editable-theme"
 
 /** Catalog row key for the default theme board (matches the `default` stock template id). */
 export const DEFAULT_THEME_BOARD_KEY = "default" as const
 
-/** Theme entry id for the default board's default variant. */
+/** Theme entry id for the default board's default variant. This is the editable workspace theme. */
 export const DEFAULT_THEME_ENTRY_ID = "theme-default-default" as const
 
 type SeedableWorkspace = Pick<Workspace, "components" | "themes">
+
+/** Builds the default theme entry (the editable workspace theme row). */
+export function createDefaultThemeEntry(): EntryTheme {
+  return {
+    id: DEFAULT_THEME_ENTRY_ID,
+    type: "default",
+    label: "Default",
+    template: formatThemeCatalog(DEFAULT_THEME_BOARD_KEY),
+    overrides: {},
+  }
+}
 
 /**
  * Adds the default theme board and its default theme entry when missing.
  *
  * Idempotent: returns early when a theme board already exists for the `default`
- * stock template. Mutates the passed workspace in place, matching
- * `ensureWorkspaceEditableThemeEntry`.
+ * stock template. Mutates the passed workspace in place.
  */
 export function seedDefaultThemeBoard(workspace: SeedableWorkspace): void {
   if (!workspace.components) {
@@ -41,14 +50,7 @@ export function seedDefaultThemeBoard(workspace: SeedableWorkspace): void {
     return
   }
 
-  const defaultEntry: EntryTheme = {
-    id: DEFAULT_THEME_ENTRY_ID,
-    type: "default",
-    label: "Default",
-    template: formatThemeCatalog(DEFAULT_THEME_BOARD_KEY),
-    overrides: {},
-  }
-  workspace.themes[DEFAULT_THEME_ENTRY_ID] = defaultEntry
+  workspace.themes[DEFAULT_THEME_ENTRY_ID] = createDefaultThemeEntry()
 
   const existingBoards = Object.values(workspace.components)
   const maxOrder =
@@ -62,7 +64,7 @@ export function seedDefaultThemeBoard(workspace: SeedableWorkspace): void {
     label: STOCK_THEMES_BY_ID[DEFAULT_THEME_BOARD_KEY].metadata.name,
     author: "Seldon Digital",
     componentPreview: "seldonThemePreview",
-    componentTheme: WORKSPACE_EDITABLE_THEME_ENTRY_ID,
+    componentTheme: DEFAULT_THEME_ENTRY_ID,
     componentProperties: getInitialBoardComponentProperties("theme"),
     variants: [{ id: DEFAULT_THEME_ENTRY_ID }],
   }

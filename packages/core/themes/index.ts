@@ -9,7 +9,6 @@ export {
   STOCK_THEMES_BY_ID,
   THEMES,
   THEMES_BY_ID,
-  customTheme,
   defaultTheme,
 } from "./stock"
 export * from "./looks"

@@ -100,7 +100,10 @@ export class WorkspaceThemeService {
    * @param workspace - The workspace
    * @returns The theme
    */
-  public getTheme(themeId: ThemeInstanceId, workspace: Workspace): Theme {
+  public getTheme(
+    themeId: ThemeInstanceId | string,
+    workspace: Workspace,
+  ): Theme {
     return getComputedTheme(themeId, workspace as any)
   }
 

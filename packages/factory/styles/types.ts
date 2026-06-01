@@ -11,4 +11,10 @@ export type StyleGenerationContext = {
    * receives concrete colors.
    */
   useThemeVariableReferences?: boolean
+  /**
+   * Slug of the node's theme (for example `default` or `default-red`). Names the
+   * `--sdn-{slug}-` prefix the export references must match. Only the export
+   * pipeline sets it, alongside `useThemeVariableReferences`.
+   */
+  themeSlug?: string
 }

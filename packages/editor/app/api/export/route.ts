@@ -67,7 +67,7 @@ export async function POST(request: NextRequest) {
       rootDirectory,
       target: { framework: "react", styles: "css-properties" },
       output: {
-        componentsFolder: "components",
+        componentsFolder: "seldon",
         assetsFolder: "assets",
         assetPublicPath: "/assets",
       },

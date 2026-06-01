@@ -49,7 +49,6 @@ interface WorkspacePropertySource {
   byId?: NodeRecord
   nodes?: NodeRecord
   components?: BoardRecord
-  customTheme?: any
   themes?: any
 }
 

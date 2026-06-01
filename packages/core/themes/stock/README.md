@@ -25,7 +25,6 @@ flowchart LR
 | `STOCK_THEMES_BY_ID` | `index.ts` | Map from `ThemeTemplateId` to authoring theme. Passed to `instantiateTheme` as the preset catalog. |
 | `THEMES` | `index.ts` | Ordered array of `ComputedTheme` for every stock preset. Used when apps need resolved tokens without calling `computeTheme` again. |
 | `THEMES_BY_ID` | `index.ts` | Map from theme id to `ComputedTheme`. Used for quick lookup by template id. |
-| `customTheme` | `index.ts` | Transitional `ComputedTheme` with id `"custom"`. Deprecated: prefer workspace `themes` rows plus `instantiateTheme`. |
 | `computeTheme` | `index.ts` | Re-export from `helpers/compute-theme.ts`. Materializes one stock or resolved theme. Used by `THEMES` construction and direct callers. |
 | `defaultTheme` | `index.ts` | Re-export from `default.ts`: precomputed `ComputedTheme` for the default stock preset. |
 

@@ -10,9 +10,9 @@ import {
 import type { ThemeScaleToken, ThemeSwatch } from "@seldon/core/themes/values"
 import { workspaceThemeService } from "@seldon/core/workspace/services"
 import { Workspace } from "@seldon/core/workspace/types"
-import { kebabCase } from "../../react/utils/case-utils"
 import { getThemeSwatchVarNames } from "../../../styles/css-properties/get-theme-swatch-names"
 import { format } from "../utils/format"
+import { getThemeSlug } from "./get-theme-slug"
 
 function swatchToCssString(swatch: ThemeSwatch): string {
   const { parameters } = swatch
@@ -47,12 +47,12 @@ function exactTokenCss(token: ThemeScaleToken): string {
   return "0"
 }
 
-function generateThemeCSSVariables(theme: Theme, themeId: string): string {
-  const prefix = themeId === "default" ? `--sdn-` : `--sdn-${themeId}-`
+function generateThemeCSSVariables(theme: Theme, slug: string): string {
+  const prefix = slug === "default" ? `--sdn-` : `--sdn-${slug}-`
   let cssVariables = ""
 
-  if (themeId !== "default") {
-    const themeDisplayName = themeId
+  if (slug !== "default") {
+    const themeDisplayName = slug
       .split("-")
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(" ")
@@ -173,11 +173,8 @@ function generateThemeCSSVariables(theme: Theme, themeId: string): string {
   return cssVariables
 }
 
-export function generateThemeStylesheet(
-  themeId: string,
-  theme: Theme,
-): string {
-  const variables = generateThemeCSSVariables(theme, themeId)
+export function generateThemeStylesheet(slug: string, theme: Theme): string {
+  const variables = generateThemeCSSVariables(theme, slug)
   return `:root {\n${variables}}\n`
 }
 
@@ -191,19 +188,23 @@ export async function generateThemeStylesheetFiles(
   workspace: Workspace,
   componentsFolder: string,
 ): Promise<ThemeStylesheetFile[]> {
-  const usedThemeIds = workspaceThemeService.collectUsedThemes(workspace)
+  const themeIds = Object.keys(workspace.themes ?? {})
+  if (themeIds.length === 0) {
+    themeIds.push("default")
+  }
+
   const files: ThemeStylesheetFile[] = []
 
-  for (const themeId of usedThemeIds) {
+  for (const themeId of themeIds) {
     const theme = workspaceThemeService.getTheme(themeId, workspace)
     if (!theme) continue
 
-    const fileSlug = themeId === "default" ? "default" : kebabCase(themeId)
-    const content = await format(generateThemeStylesheet(themeId, theme))
+    const slug = getThemeSlug(themeId, workspace)
+    const content = await format(generateThemeStylesheet(slug, theme))
 
     files.push({
       themeId,
-      path: `${componentsFolder}/styles-${fileSlug}.css`,
+      path: `${componentsFolder}/styles-${slug}.css`,
       content,
     })
   }

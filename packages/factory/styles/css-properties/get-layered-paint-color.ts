@@ -19,12 +19,14 @@ export function getLayeredPaintColor({
   opacity,
   theme,
   useThemeVariableReferences = false,
+  themeSlug,
 }: {
   color: ColorValue | EmptyValue
   brightness?: PercentageValue | EmptyValue
   opacity?: PercentageValue | EmptyValue | number
   theme: Theme
   useThemeVariableReferences?: boolean
+  themeSlug?: string
 }): string {
   if (useThemeVariableReferences) {
     const brightnessNum =
@@ -48,6 +50,7 @@ export function getLayeredPaintColor({
       const reference = getThemeSwatchVarReference(
         String((color as { value: unknown }).value),
         theme,
+        themeSlug,
       )
       if (reference) return reference
     }

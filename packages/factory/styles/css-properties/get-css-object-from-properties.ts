@@ -58,6 +58,7 @@ export function getCssObjectFromProperties(
     parentContext,
     theme,
     useThemeVariableReferences,
+    themeSlug,
   } = context
 
   // Helper function to safely generate styles - returns empty object if error occurs
@@ -90,6 +91,7 @@ export function getCssObjectFromProperties(
         parentContext,
         theme,
         useThemeVariableReferences,
+        themeSlug,
       }),
     ),
     ...safeGetStyles(() => getCursorStyles({ properties: computedProperties })),
@@ -135,6 +137,7 @@ export function getCssObjectFromProperties(
         parentContext,
         theme,
         useThemeVariableReferences,
+        themeSlug,
       }),
     ),
     ...safeGetStyles(() =>

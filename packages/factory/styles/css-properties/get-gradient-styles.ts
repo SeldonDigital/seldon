@@ -27,12 +27,13 @@ export function getGradientStyles({
   properties,
   theme,
   useThemeVariableReferences,
+  themeSlug,
 }: StyleGenerationContext): CSSObject {
   const layers = getLayeredPaintLayers(properties, "gradient")
 
   const gradients = layers
     .map((layer) =>
-      resolveGradientLayer(layer, theme, useThemeVariableReferences),
+      resolveGradientLayer(layer, theme, useThemeVariableReferences, themeSlug),
     )
     .filter((gradient): gradient is string => gradient !== undefined)
 
@@ -58,6 +59,7 @@ function resolveGradientLayer(
   gradient: GradientCompound,
   theme: Theme,
   useThemeVariableReferences?: boolean,
+  themeSlug?: string,
 ): string | undefined {
   const {
     gradientType,
@@ -136,6 +138,7 @@ function resolveGradientLayer(
     opacity: resolvedStartOpacity,
     theme,
     useThemeVariableReferences,
+    themeSlug,
   })
 
   const endColorString = getLayeredPaintColor({
@@ -144,6 +147,7 @@ function resolveGradientLayer(
     opacity: resolvedEndOpacity,
     theme,
     useThemeVariableReferences,
+    themeSlug,
   })
 
   return resolvedType === GradientType.LINEAR

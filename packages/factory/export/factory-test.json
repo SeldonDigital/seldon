@@ -10,17 +10,17 @@
       "label": "Seldon",
       "author": "Seldon Digital",
       "componentPreview": "seldonThemePreview",
-      "componentTheme": "custom",
+      "componentTheme": "theme-default-default",
       "componentProperties": {},
       "variants": [
         {
           "id": "theme-default-default"
         },
         {
-          "id": "theme-default-z8ndr535"
+          "id": "theme-default-0geyh88d"
         },
         {
-          "id": "theme-default-nuiayc46"
+          "id": "theme-default-usdqxfug"
         }
       ],
       "__editor": {
@@ -33,7 +33,7 @@
       "catalogId": "icon",
       "label": "Icons",
       "author": "Seldon Digital",
-      "componentTheme": "custom",
+      "componentTheme": "theme-default-default",
       "componentProperties": {},
       "variants": [
         {
@@ -50,7 +50,7 @@
       "catalogId": "label",
       "label": "Labels",
       "author": "Seldon Digital",
-      "componentTheme": "custom",
+      "componentTheme": "theme-default-default",
       "componentProperties": {},
       "variants": [
         {
@@ -67,7 +67,7 @@
       "catalogId": "title",
       "label": "Titles",
       "author": "Seldon Digital",
-      "componentTheme": "custom",
+      "componentTheme": "theme-default-default",
       "componentProperties": {},
       "variants": [
         {
@@ -84,17 +84,17 @@
       "catalogId": "button",
       "label": "Buttons",
       "author": "Seldon Digital",
-      "componentTheme": "custom",
+      "componentTheme": "theme-default-default",
       "componentProperties": {},
       "variants": [
         {
           "id": "component-button-default",
           "children": [
             {
-              "id": "component-icon-3kKwwya3"
+              "id": "component-icon-9UmaGbwx"
             },
             {
-              "id": "component-label-IcRtXzwW"
+              "id": "component-label-IbN2EQq3"
             }
           ]
         },
@@ -102,7 +102,7 @@
           "id": "component-button-label",
           "children": [
             {
-              "id": "component-label-IcRtXzwW"
+              "id": "component-label-IbN2EQq3"
             }
           ]
         },
@@ -110,10 +110,10 @@
           "id": "component-button-social",
           "children": [
             {
-              "id": "component-icon-JXMv86vA"
+              "id": "component-icon-CAhpeDHK"
             },
             {
-              "id": "component-label-vl1rxSVV"
+              "id": "component-label-WXUiv5jL"
             }
           ]
         },
@@ -121,35 +121,35 @@
           "id": "component-button-tools",
           "children": [
             {
-              "id": "component-button-b5cclj8X",
+              "id": "component-button-TxQHnWmx",
               "children": [
                 {
-                  "id": "component-icon-3WUSrjuL"
+                  "id": "component-icon-z20jphQd"
                 },
                 {
-                  "id": "component-label-fTkxRok7"
+                  "id": "component-label-KgILWoEz"
                 }
               ]
             },
             {
-              "id": "component-button-3Fo78rW2",
+              "id": "component-button-NU6rTzPA",
               "children": [
                 {
-                  "id": "component-icon-gmPAAxRB"
+                  "id": "component-icon-GtowfP4N"
                 },
                 {
-                  "id": "component-label-tnS1R9RV"
+                  "id": "component-label-iItsD7Ki"
                 }
               ]
             },
             {
-              "id": "component-button-3NJ5cjX9",
+              "id": "component-button-v8zeu5fQ",
               "children": [
                 {
-                  "id": "component-icon-wTBz75j1"
+                  "id": "component-icon-dvoK6NFx"
                 },
                 {
-                  "id": "component-label-TeKubnYU"
+                  "id": "component-label-ixGNcfmK"
                 }
               ]
             }
@@ -159,35 +159,35 @@
           "id": "component-button-segmented",
           "children": [
             {
-              "id": "component-button-cZyz6kQ6",
+              "id": "component-button-WX0Y6EAY",
               "children": [
                 {
-                  "id": "component-icon-3kKwwya3"
+                  "id": "component-icon-9UmaGbwx"
                 },
                 {
-                  "id": "component-label-IcRtXzwW"
+                  "id": "component-label-IbN2EQq3"
                 }
               ]
             },
             {
-              "id": "component-button-NavXcDKC",
+              "id": "component-button-zrNScSUe",
               "children": [
                 {
-                  "id": "component-icon-3kKwwya3"
+                  "id": "component-icon-9UmaGbwx"
                 },
                 {
-                  "id": "component-label-IcRtXzwW"
+                  "id": "component-label-IbN2EQq3"
                 }
               ]
             },
             {
-              "id": "component-button-FrCiDvYA",
+              "id": "component-button-UEA70Z3E",
               "children": [
                 {
-                  "id": "component-icon-3kKwwya3"
+                  "id": "component-icon-9UmaGbwx"
                 },
                 {
-                  "id": "component-label-IcRtXzwW"
+                  "id": "component-label-IbN2EQq3"
                 }
               ]
             }
@@ -204,23 +204,23 @@
       "catalogId": "barHeader",
       "label": "Panel Headers",
       "author": "Seldon Digital",
-      "componentTheme": "custom",
+      "componentTheme": "theme-default-default",
       "componentProperties": {},
       "variants": [
         {
           "id": "component-barHeader-default",
           "children": [
             {
-              "id": "component-title-TyC9rdlk"
+              "id": "component-title-20o37WcC"
             },
             {
-              "id": "component-button-IefRdVzz",
+              "id": "component-button-YNVUJt0b",
               "children": [
                 {
-                  "id": "component-icon-IXpk2iNS"
+                  "id": "component-icon-EkRQTtrb"
                 },
                 {
-                  "id": "component-label-7RK2k2BZ"
+                  "id": "component-label-TM5iyMam"
                 }
               ]
             }
@@ -237,7 +237,7 @@
       "catalogId": "frame",
       "label": "Frames",
       "author": "Seldon Digital",
-      "componentTheme": "custom",
+      "componentTheme": "theme-default-default",
       "componentProperties": {},
       "variants": [
         {
@@ -254,31 +254,31 @@
       "catalogId": "barFooter",
       "label": "Panel Footers",
       "author": "Seldon Digital",
-      "componentTheme": "custom",
+      "componentTheme": "theme-default-default",
       "componentProperties": {},
       "variants": [
         {
           "id": "component-barFooter-default",
           "children": [
             {
-              "id": "component-button-5H4pysnH",
+              "id": "component-button-n8VMXu0E",
               "children": [
                 {
-                  "id": "component-icon-cZwoRqrx"
+                  "id": "component-icon-grTuMw3U"
                 },
                 {
-                  "id": "component-label-rBiDW6SM"
+                  "id": "component-label-pWRg2883"
                 }
               ]
             },
             {
-              "id": "component-button-SPGl6LtO",
+              "id": "component-button-hnnHzqTT",
               "children": [
                 {
-                  "id": "component-icon-2r01AcqR"
+                  "id": "component-icon-5HKtjhOF"
                 },
                 {
-                  "id": "component-label-wOb4jd5n"
+                  "id": "component-label-URRwqb3B"
                 }
               ]
             }
@@ -295,45 +295,45 @@
       "catalogId": "dialog",
       "label": "Dialogs",
       "author": "Seldon Digital",
-      "componentTheme": "custom",
+      "componentTheme": "theme-default-0geyh88d",
       "componentProperties": {},
       "variants": [
         {
           "id": "component-dialog-default",
           "children": [
             {
-              "id": "component-barHeader-Uxn2G9ZJ",
+              "id": "component-barHeader-ku5oV0Gm",
               "children": [
                 {
-                  "id": "component-title-28WfvRQq"
+                  "id": "component-title-2JP0aRZH"
                 }
               ]
             },
             {
-              "id": "component-frame-oVI8jzuF"
+              "id": "component-frame-iCCZeHwF"
             },
             {
-              "id": "component-barFooter-mylvhilJ",
+              "id": "component-barFooter-z19P1Zs8",
               "children": [
                 {
-                  "id": "component-button-76QtjCMg",
+                  "id": "component-button-fsZX9fzL",
                   "children": [
                     {
-                      "id": "component-icon-8RnZb13e"
+                      "id": "component-icon-MzQ4XPGL"
                     },
                     {
-                      "id": "component-label-f5diPKUg"
+                      "id": "component-label-RFR2QXbU"
                     }
                   ]
                 },
                 {
-                  "id": "component-button-OWeg469h",
+                  "id": "component-button-5FWiBhk5",
                   "children": [
                     {
-                      "id": "component-icon-8OV6jelH"
+                      "id": "component-icon-es59FVob"
                     },
                     {
-                      "id": "component-label-uO8bHTvt"
+                      "id": "component-label-ht8IOqnh"
                     }
                   ]
                 }
@@ -375,8 +375,8 @@
       "template": "catalog:title",
       "overrides": {}
     },
-    "component-icon-3kKwwya3": {
-      "id": "component-icon-3kKwwya3",
+    "component-icon-9UmaGbwx": {
+      "id": "component-icon-9UmaGbwx",
       "type": "instance",
       "level": "primitive",
       "label": "Icon",
@@ -443,8 +443,8 @@
         }
       }
     },
-    "component-label-IcRtXzwW": {
-      "id": "component-label-IcRtXzwW",
+    "component-label-IbN2EQq3": {
+      "id": "component-label-IbN2EQq3",
       "type": "instance",
       "level": "primitive",
       "label": "Label",
@@ -625,8 +625,8 @@
         }
       }
     },
-    "component-icon-JXMv86vA": {
-      "id": "component-icon-JXMv86vA",
+    "component-icon-CAhpeDHK": {
+      "id": "component-icon-CAhpeDHK",
       "type": "instance",
       "level": "primitive",
       "label": "Icon",
@@ -685,8 +685,8 @@
         }
       }
     },
-    "component-label-vl1rxSVV": {
-      "id": "component-label-vl1rxSVV",
+    "component-label-WXUiv5jL": {
+      "id": "component-label-WXUiv5jL",
       "type": "instance",
       "level": "primitive",
       "label": "Label",
@@ -809,8 +809,8 @@
         "initialOverrides": {}
       }
     },
-    "component-button-b5cclj8X": {
-      "id": "component-button-b5cclj8X",
+    "component-button-TxQHnWmx": {
+      "id": "component-button-TxQHnWmx",
       "type": "instance",
       "level": "element",
       "label": "Button",
@@ -1061,8 +1061,8 @@
         }
       }
     },
-    "component-icon-3WUSrjuL": {
-      "id": "component-icon-3WUSrjuL",
+    "component-icon-z20jphQd": {
+      "id": "component-icon-z20jphQd",
       "type": "instance",
       "level": "primitive",
       "label": "Icon",
@@ -1091,8 +1091,8 @@
         }
       }
     },
-    "component-label-fTkxRok7": {
-      "id": "component-label-fTkxRok7",
+    "component-label-KgILWoEz": {
+      "id": "component-label-KgILWoEz",
       "type": "instance",
       "level": "primitive",
       "label": "Label",
@@ -1113,8 +1113,8 @@
         }
       }
     },
-    "component-button-3Fo78rW2": {
-      "id": "component-button-3Fo78rW2",
+    "component-button-NU6rTzPA": {
+      "id": "component-button-NU6rTzPA",
       "type": "instance",
       "level": "element",
       "label": "Button",
@@ -1365,8 +1365,8 @@
         }
       }
     },
-    "component-icon-gmPAAxRB": {
-      "id": "component-icon-gmPAAxRB",
+    "component-icon-GtowfP4N": {
+      "id": "component-icon-GtowfP4N",
       "type": "instance",
       "level": "primitive",
       "label": "Icon",
@@ -1395,8 +1395,8 @@
         }
       }
     },
-    "component-label-tnS1R9RV": {
-      "id": "component-label-tnS1R9RV",
+    "component-label-iItsD7Ki": {
+      "id": "component-label-iItsD7Ki",
       "type": "instance",
       "level": "primitive",
       "label": "Label",
@@ -1417,8 +1417,8 @@
         }
       }
     },
-    "component-button-3NJ5cjX9": {
-      "id": "component-button-3NJ5cjX9",
+    "component-button-v8zeu5fQ": {
+      "id": "component-button-v8zeu5fQ",
       "type": "instance",
       "level": "element",
       "label": "Button",
@@ -1669,8 +1669,8 @@
         }
       }
     },
-    "component-icon-wTBz75j1": {
-      "id": "component-icon-wTBz75j1",
+    "component-icon-dvoK6NFx": {
+      "id": "component-icon-dvoK6NFx",
       "type": "instance",
       "level": "primitive",
       "label": "Icon",
@@ -1699,8 +1699,8 @@
         }
       }
     },
-    "component-label-TeKubnYU": {
-      "id": "component-label-TeKubnYU",
+    "component-label-ixGNcfmK": {
+      "id": "component-label-ixGNcfmK",
       "type": "instance",
       "level": "primitive",
       "label": "Label",
@@ -1787,8 +1787,8 @@
         }
       }
     },
-    "component-button-cZyz6kQ6": {
-      "id": "component-button-cZyz6kQ6",
+    "component-button-WX0Y6EAY": {
+      "id": "component-button-WX0Y6EAY",
       "type": "instance",
       "level": "element",
       "label": "Button",
@@ -1921,8 +1921,8 @@
         }
       }
     },
-    "component-button-NavXcDKC": {
-      "id": "component-button-NavXcDKC",
+    "component-button-zrNScSUe": {
+      "id": "component-button-zrNScSUe",
       "type": "instance",
       "level": "element",
       "label": "Button",
@@ -2055,8 +2055,8 @@
         }
       }
     },
-    "component-button-FrCiDvYA": {
-      "id": "component-button-FrCiDvYA",
+    "component-button-UEA70Z3E": {
+      "id": "component-button-UEA70Z3E",
       "type": "instance",
       "level": "element",
       "label": "Button",
@@ -2211,8 +2211,8 @@
         }
       }
     },
-    "component-title-TyC9rdlk": {
-      "id": "component-title-TyC9rdlk",
+    "component-title-20o37WcC": {
+      "id": "component-title-20o37WcC",
       "type": "instance",
       "level": "primitive",
       "label": "Title",
@@ -2319,8 +2319,8 @@
         }
       }
     },
-    "component-button-IefRdVzz": {
-      "id": "component-button-IefRdVzz",
+    "component-button-YNVUJt0b": {
+      "id": "component-button-YNVUJt0b",
       "type": "instance",
       "level": "element",
       "label": "Button",
@@ -2369,8 +2369,8 @@
         }
       }
     },
-    "component-icon-IXpk2iNS": {
-      "id": "component-icon-IXpk2iNS",
+    "component-icon-EkRQTtrb": {
+      "id": "component-icon-EkRQTtrb",
       "type": "instance",
       "level": "primitive",
       "label": "Icon",
@@ -2391,8 +2391,8 @@
         }
       }
     },
-    "component-label-7RK2k2BZ": {
-      "id": "component-label-7RK2k2BZ",
+    "component-label-TM5iyMam": {
+      "id": "component-label-TM5iyMam",
       "type": "instance",
       "level": "primitive",
       "label": "Label",
@@ -2437,8 +2437,8 @@
         "initialOverrides": {}
       }
     },
-    "component-button-5H4pysnH": {
-      "id": "component-button-5H4pysnH",
+    "component-button-n8VMXu0E": {
+      "id": "component-button-n8VMXu0E",
       "type": "instance",
       "level": "element",
       "label": "Button",
@@ -2539,8 +2539,8 @@
         }
       }
     },
-    "component-icon-cZwoRqrx": {
-      "id": "component-icon-cZwoRqrx",
+    "component-icon-grTuMw3U": {
+      "id": "component-icon-grTuMw3U",
       "type": "instance",
       "level": "primitive",
       "label": "Icon",
@@ -2561,8 +2561,8 @@
         }
       }
     },
-    "component-label-rBiDW6SM": {
-      "id": "component-label-rBiDW6SM",
+    "component-label-pWRg2883": {
+      "id": "component-label-pWRg2883",
       "type": "instance",
       "level": "primitive",
       "label": "Label",
@@ -2583,8 +2583,8 @@
         }
       }
     },
-    "component-button-SPGl6LtO": {
-      "id": "component-button-SPGl6LtO",
+    "component-button-hnnHzqTT": {
+      "id": "component-button-hnnHzqTT",
       "type": "instance",
       "level": "element",
       "label": "Button",
@@ -2685,8 +2685,8 @@
         }
       }
     },
-    "component-icon-2r01AcqR": {
-      "id": "component-icon-2r01AcqR",
+    "component-icon-5HKtjhOF": {
+      "id": "component-icon-5HKtjhOF",
       "type": "instance",
       "level": "primitive",
       "label": "Icon",
@@ -2707,8 +2707,8 @@
         }
       }
     },
-    "component-label-wOb4jd5n": {
-      "id": "component-label-wOb4jd5n",
+    "component-label-URRwqb3B": {
+      "id": "component-label-URRwqb3B",
       "type": "instance",
       "level": "primitive",
       "label": "Label",
@@ -2741,8 +2741,8 @@
         "initialOverrides": {}
       }
     },
-    "component-barHeader-Uxn2G9ZJ": {
-      "id": "component-barHeader-Uxn2G9ZJ",
+    "component-barHeader-ku5oV0Gm": {
+      "id": "component-barHeader-ku5oV0Gm",
       "type": "instance",
       "level": "part",
       "label": "Panel Header",
@@ -3217,8 +3217,8 @@
         }
       }
     },
-    "component-title-28WfvRQq": {
-      "id": "component-title-28WfvRQq",
+    "component-title-2JP0aRZH": {
+      "id": "component-title-2JP0aRZH",
       "type": "instance",
       "level": "primitive",
       "label": "Title",
@@ -3257,8 +3257,8 @@
         }
       }
     },
-    "component-frame-oVI8jzuF": {
-      "id": "component-frame-oVI8jzuF",
+    "component-frame-iCCZeHwF": {
+      "id": "component-frame-iCCZeHwF",
       "type": "instance",
       "level": "frame",
       "label": "Frame",
@@ -3391,8 +3391,8 @@
         }
       }
     },
-    "component-barFooter-mylvhilJ": {
-      "id": "component-barFooter-mylvhilJ",
+    "component-barFooter-z19P1Zs8": {
+      "id": "component-barFooter-z19P1Zs8",
       "type": "instance",
       "level": "part",
       "label": "Panel Footer",
@@ -3847,8 +3847,8 @@
         }
       }
     },
-    "component-button-76QtjCMg": {
-      "id": "component-button-76QtjCMg",
+    "component-button-fsZX9fzL": {
+      "id": "component-button-fsZX9fzL",
       "type": "instance",
       "level": "element",
       "label": "Button",
@@ -3949,8 +3949,8 @@
         }
       }
     },
-    "component-icon-8RnZb13e": {
-      "id": "component-icon-8RnZb13e",
+    "component-icon-MzQ4XPGL": {
+      "id": "component-icon-MzQ4XPGL",
       "type": "instance",
       "level": "primitive",
       "label": "Icon",
@@ -3971,8 +3971,8 @@
         }
       }
     },
-    "component-label-f5diPKUg": {
-      "id": "component-label-f5diPKUg",
+    "component-label-RFR2QXbU": {
+      "id": "component-label-RFR2QXbU",
       "type": "instance",
       "level": "primitive",
       "label": "Label",
@@ -3993,8 +3993,8 @@
         }
       }
     },
-    "component-button-OWeg469h": {
-      "id": "component-button-OWeg469h",
+    "component-button-5FWiBhk5": {
+      "id": "component-button-5FWiBhk5",
       "type": "instance",
       "level": "element",
       "label": "Button",
@@ -4095,8 +4095,8 @@
         }
       }
     },
-    "component-icon-8OV6jelH": {
-      "id": "component-icon-8OV6jelH",
+    "component-icon-es59FVob": {
+      "id": "component-icon-es59FVob",
       "type": "instance",
       "level": "primitive",
       "label": "Icon",
@@ -4117,8 +4117,8 @@
         }
       }
     },
-    "component-label-uO8bHTvt": {
-      "id": "component-label-uO8bHTvt",
+    "component-label-ht8IOqnh": {
+      "id": "component-label-ht8IOqnh",
       "type": "instance",
       "level": "primitive",
       "label": "Label",
@@ -4144,7 +4144,7 @@
       "type": "default",
       "level": "module",
       "label": "Dialog",
-      "theme": "theme-default-z8ndr535",
+      "theme": null,
       "template": "catalog:dialog",
       "overrides": {
         "border": {
@@ -4164,13 +4164,6 @@
     }
   },
   "themes": {
-    "custom": {
-      "id": "custom",
-      "type": "default",
-      "label": "Custom",
-      "template": "catalog:default",
-      "overrides": {}
-    },
     "theme-default-default": {
       "id": "theme-default-default",
       "type": "default",
@@ -4178,8 +4171,8 @@
       "template": "catalog:default",
       "overrides": {}
     },
-    "theme-default-z8ndr535": {
-      "id": "theme-default-z8ndr535",
+    "theme-default-0geyh88d": {
+      "id": "theme-default-0geyh88d",
       "type": "variant",
       "label": "Red",
       "template": "theme:theme-default-default",
@@ -4193,8 +4186,8 @@
         }
       }
     },
-    "theme-default-nuiayc46": {
-      "id": "theme-default-nuiayc46",
+    "theme-default-usdqxfug": {
+      "id": "theme-default-usdqxfug",
       "type": "variant",
       "label": "Green",
       "template": "theme:theme-default-default",

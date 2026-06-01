@@ -16,6 +16,7 @@ import {
 } from "../../../helpers/workspace-nodes"
 import { getCssObjectFromProperties } from "../../../styles/css-properties/get-css-object-from-properties"
 import { CSSObject } from "../../../styles/css-properties/types"
+import { getThemeSlug } from "../generation/get-theme-slug"
 import { Classes, NodeIdToClass } from "../types"
 import { getClassNameForNode } from "./get-class-name"
 
@@ -115,6 +116,7 @@ export const buildStyleRegistry = (
         parentContext: variantContext.parentContext,
         theme: variantContext.theme,
         useThemeVariableReferences: true,
+        themeSlug: getThemeSlug(variantContext.theme.id as string, workspace),
       })
 
       const instanceCss = getCssObjectFromProperties(
@@ -124,6 +126,10 @@ export const buildStyleRegistry = (
           parentContext: instanceContext.parentContext,
           theme: instanceContext.theme,
           useThemeVariableReferences: true,
+          themeSlug: getThemeSlug(
+            instanceContext.theme.id as string,
+            workspace,
+          ),
         },
       )
 
@@ -135,6 +141,7 @@ export const buildStyleRegistry = (
         parentContext: context.parentContext,
         theme: context.theme,
         useThemeVariableReferences: true,
+        themeSlug: getThemeSlug(context.theme.id as string, workspace),
       })
     }
 

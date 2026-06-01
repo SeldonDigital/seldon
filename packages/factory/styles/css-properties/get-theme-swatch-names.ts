@@ -74,6 +74,7 @@ export function getThemeSwatchVarNames(theme: Theme): Record<string, string> {
 export function getThemeSwatchVarReference(
   swatchKey: string,
   theme: Theme,
+  themeSlug?: string,
 ): string | undefined {
   if (!swatchKey.startsWith("@swatch.")) return undefined
   const id = swatchKey.slice("@swatch.".length)
@@ -84,7 +85,7 @@ export function getThemeSwatchVarReference(
   const name = getThemeSwatchVarNames(theme)[id]
   if (!name) return undefined
 
-  const themeId = (theme.id as string) || "default"
-  const prefix = themeId === "default" ? "--sdn-" : `--sdn-${themeId}-`
+  const slug = themeSlug || (theme.id as string) || "default"
+  const prefix = slug === "default" ? "--sdn-" : `--sdn-${slug}-`
   return `var(${prefix}swatch-${name})`
 }

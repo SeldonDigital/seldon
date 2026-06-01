@@ -753,12 +753,12 @@ const invalidRef: BorderColorValue = {
 [`types/theme-id.ts`](./types/theme-id.ts) exposes the catalog union and the workspace-instance union:
 
 ```typescript
-// 10 packaged stock rows, plus the transitional singleton "custom"
+// 10 packaged stock rows
 export type ThemeTemplateId =
   | "default" | "earth" | "highContrast" | "industrial" | "material"
   | "pop" | "royalAzure" | "sky" | "sunsetBlue" | "wildberry"
 
-export type ThemeInstanceId = ThemeTemplateId | "custom"
+export type ThemeInstanceId = ThemeTemplateId
 ```
 
 In a workspace file, **board theme refs, node `theme` fields, and keys in the `themes` map** are opaque **strings** (for example `theme-skyBlue-default`); resolution happens through `getComputedTheme` / `computeWorkspaceThemes`. Treat those refs as `string` at workspace boundaries until workspace types are aligned.
