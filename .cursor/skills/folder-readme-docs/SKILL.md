@@ -173,6 +173,13 @@ Add this section only when it helps.
 - Do not add filler.
 - Do not repeat what the summary or function list already says.
 
+## Notice Rules
+ - Add this boilerplate text to the bottom of all READMEs if it does not yet exist. Replace it if the boilerplate is out of date.
+
+`## Notice for AI and LLM Training`
+
+`You may not use this software, or any derivative works of it, in whole or in part, for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly) any machine learning or artificial intelligence system without written permission.`
+
 ## Edit Boundaries
 
 - Only edit existing `README.md` files.
