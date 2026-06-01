@@ -1,10 +1,41 @@
 import type { FileToExport } from "@seldon/factory/export/types"
 
+type SafeExportPath = {
+  directories: string[]
+  fileName: string
+}
+
+function normalizeExportPath(path: string): SafeExportPath | null {
+  const normalized = path.replace(/\\/g, "/").replace(/^\/+/, "")
+  const parts = normalized.split("/").filter(Boolean)
+
+  if (parts.length === 0) {
+    return null
+  }
+
+  for (const part of parts) {
+    if (
+      part === "." ||
+      part === ".." ||
+      part.includes("\0") ||
+      part.includes(":")
+    ) {
+      throw new Error(`Unsafe export path "${path}"`)
+    }
+  }
+
+  const fileName = parts.pop()
+  if (!fileName) {
+    return null
+  }
+
+  return { directories: parts, fileName }
+}
+
 async function ensureDirectory(
   parent: FileSystemDirectoryHandle,
-  relativePath: string,
+  parts: string[],
 ): Promise<FileSystemDirectoryHandle> {
-  const parts = relativePath.split("/").filter(Boolean)
   let current = parent
   for (const part of parts) {
     current = await current.getDirectoryHandle(part, { create: true })
@@ -19,24 +50,21 @@ export async function writeExportToDirectory(
   let written = 0
 
   for (const file of files) {
-    const normalized = file.path.replace(/\\/g, "/").replace(/^\/+/, "")
-    const segments = normalized.split("/")
-    const fileName = segments.pop()
-    if (!fileName) continue
+    const safePath = normalizeExportPath(file.path)
+    if (!safePath) continue
 
     const dir =
-      segments.length > 0
-        ? await ensureDirectory(directory, segments.join("/"))
+      safePath.directories.length > 0
+        ? await ensureDirectory(directory, safePath.directories)
         : directory
 
-    const handle = await dir.getFileHandle(fileName, { create: true })
+    const handle = await dir.getFileHandle(safePath.fileName, { create: true })
     const writable = await handle.createWritable()
-    if (typeof file.content === "string") {
+    try {
       await writable.write(file.content)
-    } else {
-      await writable.write(file.content)
+    } finally {
+      await writable.close()
     }
-    await writable.close()
     written += 1
   }
 
