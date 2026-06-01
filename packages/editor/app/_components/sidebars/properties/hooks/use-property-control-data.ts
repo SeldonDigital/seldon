@@ -11,6 +11,74 @@ interface UsePropertyControlDataOptions {
   // theme is kept for future use but currently unused
 }
 
+/** Reads the unit of an EXACT dimension value, or undefined for other values. */
+function getUnitFromExactValue(value: unknown): string | undefined {
+  if (
+    value &&
+    typeof value === "object" &&
+    value !== null &&
+    "type" in value &&
+    (value as { type: ValueType }).type === ValueType.EXACT &&
+    "value" in value &&
+    typeof (value as { value: unknown }).value === "object" &&
+    (value as { value: unknown }).value !== null &&
+    "unit" in (value as { value: object }).value
+  ) {
+    return String(((value as { value: { unit: string } }).value).unit)
+  }
+  return undefined
+}
+
+function isEmptyValue(value: unknown): boolean {
+  return (
+    !!value &&
+    typeof value === "object" &&
+    value !== null &&
+    "type" in value &&
+    (value as { type: ValueType }).type === ValueType.EMPTY
+  )
+}
+
+/**
+ * Resolves the display unit from a property value. Collapses shorthand values
+ * (margin, padding, ...) to a single unit when every present side is an exact
+ * dimension that shares it. Returns undefined for compound values that mix in
+ * non-dimension facets (border, font, ...), so only true dimensions show a unit.
+ */
+export function resolveUnitFromValue(value: unknown): string | undefined {
+  const direct = getUnitFromExactValue(value)
+  if (direct) {
+    return direct
+  }
+
+  if (
+    !value ||
+    typeof value !== "object" ||
+    value === null ||
+    "type" in value
+  ) {
+    return undefined
+  }
+
+  let resolved: string | undefined
+  for (const subValue of Object.values(value)) {
+    if (isEmptyValue(subValue)) {
+      continue
+    }
+    const subUnit = getUnitFromExactValue(subValue)
+    if (!subUnit) {
+      return undefined
+    }
+    if (resolved === undefined) {
+      resolved = subUnit
+    } else if (resolved !== subUnit) {
+      return undefined
+    }
+  }
+
+  return resolved
+}
+
 /**
  * Hook that provides data and helper functions for property controls.
  * Used by both EditableProperty (for rendering) and RowProperty (for inactive state).
@@ -110,10 +178,8 @@ export function usePropertyControlData({
 
   // Get unit (PX/REM) for label2Props
   const getUnit = (): string | undefined => {
-    // Don't show units for combo/menu controls (they have their own dropdowns)
-    if (property.controlType === "combo" || property.controlType === "menu") {
-      return undefined
-    }
+    const isPickerControl =
+      property.controlType === "combo" || property.controlType === "menu"
 
     // Exclude units for theme properties that should be plain numbers (check first)
     // This includes properties ending with .step (e.g., dimension.huge.step, margin.cozy.step)
@@ -147,27 +213,26 @@ export function usePropertyControlData({
       return "%"
     }
 
-    // First, try to get the unit from the actual property value
-    const propertyValue = getPropertyValueForDisplay()
-
-    if (
-      propertyValue &&
-      typeof propertyValue === "object" &&
-      propertyValue !== null &&
-      "type" in propertyValue &&
-      propertyValue.type === ValueType.EXACT &&
-      "value" in propertyValue &&
-      typeof propertyValue.value === "object" &&
-      propertyValue.value !== null &&
-      "unit" in propertyValue.value
-    ) {
-      const unit = (propertyValue.value as { unit: string }).unit
+    // Try to get the unit from the raw stored value. Shorthand values (margin,
+    // padding, ...) collapse to a uniform side unit; other values read the unit
+    // directly from an exact dimension. The display value is not used here
+    // because it flattens shorthands to a plain string without a unit object.
+    const unit = property.isShorthand
+      ? resolveUnitFromValue(property.value)
+      : getUnitFromExactValue(property.value)
+    if (unit) {
       // Map unit values to display format
       if (unit === "px") return "PX"
       if (unit === "rem") return "REM"
       if (unit === "%") return "%"
       if (unit === "deg") return "DEG"
       return unit.toUpperCase()
+    }
+
+    // Picker controls list their choices in a dropdown. Only show a unit when the
+    // value itself carries one, never a fallback for presets or theme tokens.
+    if (isPickerControl) {
+      return undefined
     }
 
     // Fallback: return the first allowed unit if no value is set

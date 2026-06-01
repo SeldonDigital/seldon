@@ -4,7 +4,17 @@ import {
   ValueType,
   type Workspace,
 } from "@seldon/core"
+import {
+  HSLObjectToString,
+  LCHObjectToString,
+  RGBObjectToString,
+} from "@seldon/core/helpers/color"
 import { formatPresetValue } from "@seldon/core/helpers/properties/format-preset-value"
+import {
+  isHSLObject,
+  isLCHObject,
+  isRGBObject,
+} from "@seldon/core/helpers/type-guards"
 import { getThemeValueName } from "@seldon/core/helpers/theme/get-theme-value-name"
 import { COMPUTED_FUNCTION_DISPLAY_NAMES } from "@seldon/core/properties/compute"
 import {
@@ -140,6 +150,18 @@ function formatDisplayValue(value: unknown, theme?: Theme): string {
 
   if (value.type === ValueType.EXACT && isDimensionValue(value.value)) {
     return `${value.value.value}${value.value.unit}`
+  }
+
+  if (value.type === ValueType.EXACT) {
+    if (isHSLObject(value.value)) {
+      return HSLObjectToString(value.value)
+    }
+    if (isRGBObject(value.value)) {
+      return RGBObjectToString(value.value)
+    }
+    if (isLCHObject(value.value)) {
+      return LCHObjectToString(value.value)
+    }
   }
 
   if (

@@ -17,7 +17,10 @@ import { useThemes } from "@lib/themes/hooks/use-themes"
 import { getNodeCatalogComponentId } from "@lib/workspace/node-tree"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { useDebugMode } from "@lib/hooks/use-debug-mode"
-import { usePropertyControlData } from "./hooks/use-property-control-data"
+import {
+  resolveUnitFromValue,
+  usePropertyControlData,
+} from "./hooks/use-property-control-data"
 import { usePropertyFrameHover } from "./hooks/use-property-frame-hover"
 import { useRowProperty } from "./hooks/use-row-property"
 import { ListItemTreeInput } from "../../../seldon/elements/ListItemTreeInput"
@@ -162,25 +165,22 @@ export function RowProperty({
     ) {
       return false
     }
-    if (
-      !isAtomicValue(property.value) ||
-      property.value.type !== ValueType.EXACT
-    ) {
-      return false
+    if (isAtomicValue(property.value) && property.value.type === ValueType.EXACT) {
+      if (typeof property.value.value === "number") {
+        return true
+      }
+      if (
+        typeof property.value.value === "object" &&
+        property.value.value !== null &&
+        "unit" in property.value.value &&
+        typeof property.value.value.value === "number"
+      ) {
+        return true
+      }
     }
-    if (typeof property.value.value === "number") {
-      return true
-    }
-    if (
-      typeof property.value.value === "object" &&
-      property.value.value !== null &&
-      "unit" in property.value.value &&
-      typeof property.value.value.value === "number"
-    ) {
-      return true
-    }
-    return false
-  }, [property.value])
+    // Shorthand dimensions (margin, padding, ...) resolve to a single unit.
+    return property.isShorthand && resolveUnitFromValue(property.value) !== undefined
+  }, [property.value, property.isShorthand])
 
   // Strip unit suffix from display value when unit label is shown
   // This prevents redundant display like "10px PX" when the label already shows the unit
@@ -516,8 +516,10 @@ export function RowProperty({
       } as LabelProps,
 
       label3:
-        // Don't show units for combo/menu controls (they have their own dropdowns)
-        unit && isNumericValue && property.controlType !== "combo" && property.controlType !== "menu"
+        // Show the unit whenever the active value is an exact numeric value,
+        // including picker controls that hold a literal dimension (for example
+        // a margin set to 24px renders as "24" with a "PX" label).
+        unit && isNumericValue
           ? {
               children: unit,
               htmlElement: "label" as const,

@@ -1,9 +1,14 @@
 import { ComponentLevel, ComputedFunction, Theme, ValueType, Workspace } from "@seldon/core"
 import { Harmony } from "../../../themes/constants/enums"
 import { HSLObjectToString } from "../../../helpers/color/hsl-object-to-string"
+import { LCHObjectToString } from "../../../helpers/color/lch-object-to-string"
+import { RGBObjectToString } from "../../../helpers/color/rgb-object-to-string"
+import { stringifyValue } from "../../../helpers/properties/stringify-value"
 import { getThemeValueName } from "../../../helpers/theme/get-theme-value-name"
 import { findInObject } from "../../../helpers/utils/find-in-object"
 import { isHSLObject } from "../../../helpers/type-guards/color/is-hsl-object"
+import { isLCHObject } from "../../../helpers/type-guards/color/is-lch-object"
+import { isRGBObject } from "../../../helpers/type-guards/color/is-rgb-object"
 import { COMPUTED_FUNCTION_DISPLAY_NAMES } from "../../../properties/compute"
 import { isCompoundCatalogProperty } from "../../../properties/constants/shared/compound-properties"
 import {
@@ -248,22 +253,60 @@ function groupPresetOptions(
   return groups
 }
 
+/**
+ * Collapses a shorthand or compound value (margin, padding, border, ...) to a
+ * single representative sub-value when all present sub-values resolve to the
+ * same string. Atomic values are returned as-is. Mixed values return null.
+ */
+function resolveAtomicValue(
+  value: unknown,
+): { type: ValueType; value?: unknown } | null {
+  if (!value || typeof value !== "object") {
+    return null
+  }
+  if ("type" in value) {
+    return value as { type: ValueType; value?: unknown }
+  }
+
+  const subValues = Object.values(value).filter(
+    (subValue): subValue is object =>
+      typeof subValue === "object" && subValue !== null,
+  )
+  if (subValues.length === 0) {
+    return null
+  }
+
+  const strings = subValues.map((subValue) => {
+    try {
+      return stringifyValue(subValue as never)
+    } catch {
+      return undefined
+    }
+  })
+  const first = strings[0]
+  if (first === undefined || !strings.every((entry) => entry === first)) {
+    return null
+  }
+
+  const representative = subValues[0]
+  return representative && "type" in representative
+    ? (representative as { type: ValueType; value?: unknown })
+    : null
+}
+
 function getCurrentValueOption(
   property: { value: unknown },
   theme?: Theme,
 ): PropertyPickerOption | null {
+  const atomic = resolveAtomicValue(property.value)
   if (
-    !property.value ||
-    typeof property.value !== "object" ||
-    property.value === null ||
-    !("type" in property.value) ||
-    (property.value.type !== ValueType.EXACT &&
-      property.value.type !== ValueType.OPTION)
+    !atomic ||
+    (atomic.type !== ValueType.EXACT && atomic.type !== ValueType.OPTION)
   ) {
     return null
   }
 
-  const raw = "value" in property.value ? property.value.value : null
+  const raw = "value" in atomic ? atomic.value : null
   if (raw === null || raw === undefined) return null
 
   if (typeof raw === "string") {
@@ -289,6 +332,16 @@ function getCurrentValueOption(
       return { value: colorString, name: colorString }
     }
 
+    if (isRGBObject(raw)) {
+      const colorString = RGBObjectToString(raw)
+      return { value: colorString, name: colorString }
+    }
+
+    if (isLCHObject(raw)) {
+      const colorString = LCHObjectToString(raw)
+      return { value: colorString, name: colorString }
+    }
+
     if ("value" in raw && "unit" in raw) {
       const dimensionString = `${(raw as { value: number }).value}${(raw as { unit: string }).unit}`
       return { value: dimensionString, name: dimensionString }
@@ -298,21 +351,32 @@ function getCurrentValueOption(
   return null
 }
 
-function buildCurrentValueOption(
-  property: { value: unknown },
-  presetOptions: PropertyPickerOption[],
-  theme?: Theme,
-): PropertyPickerOption[] {
-  const currentValueOption = getCurrentValueOption(property, theme)
+/**
+ * Inserts the active exact value as its own group directly below the
+ * Default/Inherit group, so it renders between separators as the current
+ * selection. Skips values already represented by a preset or theme option.
+ */
+function insertCurrentValueGroup(
+  groups: PropertyPickerOption[][],
+  input: PropertyPickerInput,
+): PropertyPickerOption | undefined {
+  const currentValueOption = getCurrentValueOption(
+    { value: input.value },
+    input.theme,
+  )
   if (!currentValueOption) {
-    return []
+    return undefined
   }
 
-  const isPresetValue = presetOptions.some(
-    (preset) => preset.value === currentValueOption.value,
+  const alreadyListed = groups.some((group) =>
+    group.some((option) => option.value === currentValueOption.value),
   )
+  if (alreadyListed) {
+    return undefined
+  }
 
-  return isPresetValue ? [] : [currentValueOption]
+  groups.splice(1, 0, [currentValueOption])
+  return currentValueOption
 }
 
 function buildComputedOptions(
@@ -458,15 +522,6 @@ function buildPropertyOptionsFromSchema(
     groups.push(...groupPresetOptions(schema, presetOptions))
   }
 
-  const currentValueOptions = buildCurrentValueOption(
-    { value: input.value },
-    presetOptions,
-    input.theme,
-  )
-  if (currentValueOptions.length > 0) {
-    groups.push(currentValueOptions)
-  }
-
   if (schema.computedFunctions) {
     const computedOptions = buildComputedOptions(
       schema.computedFunctions(),
@@ -485,8 +540,9 @@ function buildPropertyOptionsFromSchema(
     }
   }
 
-  const currentValueOption =
-    currentValueOptions.length > 0 ? currentValueOptions[0] : undefined
+  // Place the active exact value in its own separated group directly below
+  // Default/Inherit so it reads as the current selection.
+  const currentValueOption = insertCurrentValueGroup(groups, input)
 
   const effective = getEffectiveNodeProperties(
     input.subjectId,
@@ -533,6 +589,7 @@ function buildCompoundPresetPickerOptions(
   const section = theme ? getThemeLookSection(theme, parentKey) : undefined
 
   if (!theme || !section || typeof section !== "object") {
+    const currentValueOption = insertCurrentValueGroup(groups, input)
     const effective = getEffectiveNodeProperties(
       input.subjectId,
       input.workspace as WorkspacePropertySource,
@@ -540,7 +597,8 @@ function buildCompoundPresetPickerOptions(
     const restrictionAllowed = getRestrictionsAllowedValues(effective, input.path)
     return {
       options: applyRestrictionsFilter(groups, restrictionAllowed),
-      hasCurrentValue: false,
+      hasCurrentValue: currentValueOption !== undefined,
+      currentValueOption,
     }
   }
 
@@ -565,6 +623,8 @@ function buildCompoundPresetPickerOptions(
     groups.push(presetGroup)
   }
 
+  const currentValueOption = insertCurrentValueGroup(groups, input)
+
   const effective = getEffectiveNodeProperties(
     input.subjectId,
     input.workspace as WorkspacePropertySource,
@@ -573,7 +633,8 @@ function buildCompoundPresetPickerOptions(
 
   return {
     options: applyRestrictionsFilter(groups, restrictionAllowed),
-    hasCurrentValue: false,
+    hasCurrentValue: currentValueOption !== undefined,
+    currentValueOption,
   }
 }
 
