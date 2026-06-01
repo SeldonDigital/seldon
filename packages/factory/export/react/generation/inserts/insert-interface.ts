@@ -1,15 +1,9 @@
-import { Workspace } from "@seldon/core/workspace/types"
 import { ComponentToExport } from "../../../types"
 import {
   TransformStrategy,
   transformSource,
 } from "../../utils/transform-source"
-import { generateCustomComponentChildrenProps } from "../custom-components/generate-custom-interface"
-import { isCustomComponent } from "../custom-components/is-custom-component"
-import { generateDefaultComponentChildrenProps } from "../default-components/generate-default-interface"
-import { isDefaultComponent } from "../default-components/is-default-component"
-import { generateInlineComponentChildrenProps } from "../inline-components/generate-inline-interface"
-import { isInlineComponent } from "../inline-components/is-inline-component"
+import { generateChildrenProps } from "../shared/generate-children-props"
 import {
   generateOwnPropsContent,
   getGenericAndParameters,
@@ -23,43 +17,18 @@ import {
  *
  * @param source
  * @param component
- * @param propKeysMap - Map of node paths to prop key names (for JSX attributes and direct children interface keys)
- * @param propValuesMap - Map of node paths to prop value names (for grandchildren interface keys and function signatures)
- * @param workspace - Workspace for variant type detection
+ * @param propNames - Map of node paths to prop names (for interface keys)
  * @returns Updated source content with TypeScript interface
  */
 export function insertInterface(
   source: string,
   component: ComponentToExport,
-  propKeysMap: Map<string, string>,
-  propValuesMap: Map<string, string>,
-  workspace: Workspace,
+  propNames: Map<string, string>,
 ) {
   const { generic, parameters } = getGenericAndParameters(component)
 
   const ownProps = generateOwnPropsContent(component)
-  // Use component-type-specific generator based on variant type and frame presence
-  const isInline = isInlineComponent(component)
-  const isDefault = isDefaultComponent(component, workspace)
-  const isCustom = isCustomComponent(component, workspace)
-
-  const childrenProps = isInline
-    ? generateInlineComponentChildrenProps(
-        component,
-        propKeysMap,
-        propValuesMap,
-      )
-    : isDefault
-      ? generateDefaultComponentChildrenProps(
-          component,
-          propKeysMap,
-          propValuesMap,
-        )
-      : generateCustomComponentChildrenProps(
-          component,
-          propKeysMap,
-          propValuesMap,
-        )
+  const childrenProps = generateChildrenProps(component, propNames)
 
   // Build props array with proper formatting
   const allProps = ["className?: string"]

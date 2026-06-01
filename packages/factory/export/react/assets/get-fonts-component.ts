@@ -24,13 +24,23 @@ export async function getFontsComponent(
     }
   }
 
+  // TODO: font collections are not yet refactored in core. For now read the
+  // first family from each font-family token's raw stack string.
+  const addFontStackIfValid = (stack: unknown) => {
+    if (typeof stack !== "string") return
+    const first = stack.split(",")[0]?.trim().replace(/^["']|["']$/g, "")
+    addFontIfValid(first)
+  }
+
   const usedThemeIds = workspaceThemeService.collectUsedThemes(workspace)
 
   usedThemeIds.forEach((themeId) => {
     try {
       const theme = workspaceThemeService.getTheme(themeId, workspace)
       if (theme?.fontFamily) {
-        Object.values(theme.fontFamily).forEach(addFontIfValid)
+        Object.values(theme.fontFamily).forEach((token) =>
+          addFontStackIfValid(token?.parameters),
+        )
       }
     } catch {
       // Continue if theme is not found
@@ -40,7 +50,9 @@ export async function getFontsComponent(
   const allThemes = workspaceThemeService.getThemes(workspace)
   allThemes.forEach((theme) => {
     if (theme?.fontFamily) {
-      Object.values(theme.fontFamily).forEach(addFontIfValid)
+      Object.values(theme.fontFamily).forEach((token) =>
+        addFontStackIfValid(token?.parameters),
+      )
     }
   })
 
@@ -51,7 +63,7 @@ export async function getFontsComponent(
       try {
         const font = resolveValue(properties.font)
         if (font?.family?.value && typeof font.family.value === "string") {
-          addFontIfValid(font.family.value)
+          addFontStackIfValid(font.family.value)
         }
       } catch {
         // Continue if font resolution fails

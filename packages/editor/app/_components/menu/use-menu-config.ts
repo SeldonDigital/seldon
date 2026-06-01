@@ -84,13 +84,13 @@ export function useMenuConfig(): HeaderConfig {
         },
         visibleIn: ["edit", "preview"], // Not visible in project view
       },
-      "separator",
       {
         id: "export-workspace",
-        label: "Export Workspace…",
+        label: "Export Workspace JSON…",
         action: exportWorkspaceToFile,
         visibleIn: ["edit", "preview"],
       },
+      "separator",
       {
         id: "export-folder",
         label: "Export Components…",
@@ -100,7 +100,7 @@ export function useMenuConfig(): HeaderConfig {
       "separator",
       {
         id: "projects",
-        label: "Back to Workspaces…",
+        label: "Back to Workspaces",
         action: goToProjects,
         shortcut: "⇧ Q",
       },

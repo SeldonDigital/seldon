@@ -16,7 +16,7 @@ Stock themes ship with Seldon as starting points and reference implementations. 
 
 | Stock Theme ID | Description |
 | --- | --- |
-| `default` | Seldon brand theme used as the default stock preset. |
+| `seldon` | Seldon brand theme used as the default stock preset. |
 | `earth` | Warm natural swatches with analogous harmony, humanist type tone, and comfortable scales. |
 | `highContrast` | Neutral high-contrast theme with simple typography and strong readability. |
 | `industrial` | Cool steel tones with monochromatic harmony, dense rhythm, and stronger weight choices. |
@@ -691,7 +691,7 @@ import { instantiateTheme } from "@seldon/core/themes/compute"
 import { STOCK_THEMES_BY_ID } from "@seldon/core/themes"
 
 const branded = instantiateTheme(
-  "default",
+  "seldon",
   { color: { baseColor: { hue: 200, saturation: 70, lightness: 45 } } },
   STOCK_THEMES_BY_ID,
 )
@@ -753,12 +753,12 @@ const invalidRef: BorderColorValue = {
 [`types/theme-id.ts`](./types/theme-id.ts) exposes the catalog union and the workspace-instance union:
 
 ```typescript
-// 10 packaged stock rows, plus the transitional singleton "custom"
+// 10 packaged stock rows
 export type ThemeTemplateId =
-  | "default" | "earth" | "highContrast" | "industrial" | "material"
+  | "seldon" | "earth" | "highContrast" | "industrial" | "material"
   | "pop" | "royalAzure" | "sky" | "sunsetBlue" | "wildberry"
 
-export type ThemeInstanceId = ThemeTemplateId | "custom"
+export type ThemeInstanceId = ThemeTemplateId
 ```
 
 In a workspace file, **board theme refs, node `theme` fields, and keys in the `themes` map** are opaque **strings** (for example `theme-skyBlue-default`); resolution happens through `getComputedTheme` / `computeWorkspaceThemes`. Treat those refs as `string` at workspace boundaries until workspace types are aligned.

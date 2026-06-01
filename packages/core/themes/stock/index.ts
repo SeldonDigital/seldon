@@ -1,7 +1,7 @@
 import { computeTheme } from "../helpers/compute-theme"
 import type { ComputedTheme, StockTheme } from "../types/theme"
 import type { ThemeTemplateId } from "../types/theme-id"
-import defaultStock, { defaultTheme } from "./default"
+import defaultStock, { defaultTheme } from "./seldon"
 import earthStock from "./earth"
 import highContrastStock from "./high-contrast"
 import industrialStock from "./industrial"
@@ -36,24 +36,6 @@ export const THEMES: ComputedTheme[] = STOCK_THEMES.map(computeTheme)
 export const THEMES_BY_ID = Object.fromEntries(
   THEMES.map((theme) => [theme.id, theme]),
 ) as Record<ThemeTemplateId, ComputedTheme>
-
-const computedDefaultTheme = computeTheme(defaultStock)
-
-/**
- * Transitional singleton theme id `"custom"` (fixtures / editor until `workspace.themes` is fully adopted).
- *
- * @deprecated Prefer workspace `themes` rows plus `instantiateTheme` (themes/compute) and
- *   `computeTheme` (themes/helpers).
- */
-export const customTheme: ComputedTheme = {
-  ...computedDefaultTheme,
-  id: "custom",
-  metadata: {
-    ...computedDefaultTheme.metadata,
-    id: "custom",
-    name: "Custom",
-  },
-}
 
 export { computeTheme }
 export { defaultTheme }

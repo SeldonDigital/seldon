@@ -7,9 +7,11 @@ import {
 } from "@seldon/core"
 import { resolveValue } from "@seldon/core/helpers/resolution/resolve-value"
 import { getThemeOption } from "@seldon/core/helpers/theme/get-theme-option"
+import { Theme } from "@seldon/core/themes/types"
+import type { GradientCompound } from "@seldon/core/properties/values/effects/gradients"
 import { StyleGenerationContext } from "../types"
-import { getColorCSSValue } from "./get-color-css-value"
-import { getLayeredPaintLayer } from "./get-layered-paint-layer"
+import { getLayeredPaintColor } from "./get-layered-paint-color"
+import { getLayeredPaintLayers } from "./get-layered-paint-layer"
 import { CSSObject } from "./types"
 
 const DEFAULTS = {
@@ -24,10 +26,41 @@ const DEFAULTS = {
 export function getGradientStyles({
   properties,
   theme,
+  useThemeVariableReferences,
+  themeSlug,
 }: StyleGenerationContext): CSSObject {
-  const gradient = getLayeredPaintLayer(properties, "gradient")
-  if (!gradient) return {}
+  const layers = getLayeredPaintLayers(properties, "gradient")
 
+  const gradients = layers
+    .map((layer) =>
+      resolveGradientLayer(layer, theme, useThemeVariableReferences, themeSlug),
+    )
+    .filter((gradient): gradient is string => gradient !== undefined)
+
+  if (gradients.length === 0) return {}
+
+  const styles: CSSObject = {
+    backgroundImage: gradients.join(", "),
+  }
+
+  if (properties.content) {
+    styles.color = "transparent"
+    styles.backgroundClip = "text"
+  }
+
+  return styles
+}
+
+/**
+ * Resolves a single gradient layer to a CSS gradient function string, or
+ * undefined when the layer is missing its required start and end stop colors.
+ */
+function resolveGradientLayer(
+  gradient: GradientCompound,
+  theme: Theme,
+  useThemeVariableReferences?: boolean,
+  themeSlug?: string,
+): string | undefined {
   const {
     gradientType,
     angle,
@@ -52,7 +85,7 @@ export function getGradientStyles({
 
   // Start and end colors are required for the gradient. These do not have defaults.
   if (!startColor || !endColor || !resolvedStartColor || !resolvedEndColor) {
-    return {}
+    return undefined
   }
 
   const resolvedType = resolvePreset(
@@ -99,37 +132,32 @@ export function getGradientStyles({
     DEFAULTS.END_POSITION,
   )
 
-  const startColorString = getColorCSSValue({
+  const startColorString = getLayeredPaintColor({
     color: resolvedStartColor,
     brightness: resolvedStartBrightness,
     opacity: resolvedStartOpacity,
     theme,
+    useThemeVariableReferences,
+    themeSlug,
   })
 
-  const endColorString = getColorCSSValue({
+  const endColorString = getLayeredPaintColor({
     color: resolvedEndColor,
     brightness: resolvedEndBrightness,
     opacity: resolvedEndOpacity,
     theme,
+    useThemeVariableReferences,
+    themeSlug,
   })
 
-  const styles: CSSObject = {
-    backgroundImage:
-      resolvedType === GradientType.LINEAR
-        ? `linear-gradient(${resolvedAngle}deg, ${startColorString} ${resolvedStartPosition}%, ${endColorString} ${resolvedEndPosition}%)`
-        : `radial-gradient(${startColorString} ${resolvedStartPosition}%, ${endColorString} ${resolvedEndPosition}%)`,
-  }
-
-  if (properties.content) {
-    styles.color = "transparent"
-    styles.backgroundClip = "text"
-  }
-
-  return styles
+  return resolvedType === GradientType.LINEAR
+    ? `linear-gradient(${resolvedAngle}deg, ${startColorString} ${resolvedStartPosition}%, ${endColorString} ${resolvedEndPosition}%)`
+    : `radial-gradient(${startColorString} ${resolvedStartPosition}%, ${endColorString} ${resolvedEndPosition}%)`
 }
 
-// These resolve functions check if the gradient subvalue is defined on properties.gradient, if not check the preset in the theme.
-// If still not defined, return the default value.
+// These resolve functions check if the gradient subvalue is defined on the
+// layer, if not check the preset in the theme. If still not defined, return the
+// default value.
 function resolveOpacity(
   propertiesValue: PercentageValue | EmptyValue | undefined,
   themeValue: PercentageValue | EmptyValue | undefined,

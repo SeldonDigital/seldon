@@ -358,7 +358,7 @@ export const schema = {
       },
     },
     textDecoration: {
-      type: Sdn.ValueType.EMPTY,
+      type: Sdn.ValueType.OPTION,
       value: Sdn.TextDecoration.UNDERLINE,
     },
     shadow: [

@@ -44,7 +44,7 @@ export function resolveLineHeight({
       return {
         type: ValueType.EXACT,
         value: {
-          value: themeValue.value.value,
+          value: themeValue.parameters.value,
           unit: Unit.NUMBER,
         },
       }

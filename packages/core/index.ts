@@ -46,7 +46,6 @@ export * from "./workspace/types"
 export * from "./workspace/services/index"
 export {
   WORKSPACE_EDITABLE_THEME_ENTRY_ID,
-  createDefaultEditableThemeEntry,
   ensureWorkspaceEditableThemeEntry,
 } from "./workspace/helpers/themes/workspace-editable-theme"
 export { createEmptyWorkspace } from "./workspace/helpers/create-empty-workspace"

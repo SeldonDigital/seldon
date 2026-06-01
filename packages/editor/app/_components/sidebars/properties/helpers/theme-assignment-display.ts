@@ -12,7 +12,7 @@ import { getThemeEntryDisplayName } from "@seldon/core/workspace/helpers/themes/
 import { themeService } from "@seldon/core/workspace/services/theme/theme.service"
 import { FlatProperty } from "./properties-data"
 
-const DEFAULT_BOARD_THEME_ID = "default" as ThemeInstanceId
+const DEFAULT_BOARD_THEME_ID = "seldon" as ThemeInstanceId
 
 /**
  * Theme ref for a catalog board. Boards always resolve a theme; missing refs use Default.

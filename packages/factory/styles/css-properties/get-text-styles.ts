@@ -70,7 +70,7 @@ export function getTextStyles({
         typeof weight.value === "number" ? weight.value : weight.value.value
     } else if (weight.type === ValueType.THEME_ORDINAL) {
       const themeValue = getThemeOption(weight.value, theme)
-      styles.fontWeight = themeValue.value
+      styles.fontWeight = themeValue.parameters.value
     }
   }
 
@@ -90,7 +90,7 @@ export function getTextStyles({
       styles.lineHeight = getCssValue(lineHeight)
     } else if (lineHeight.type === ValueType.THEME_ORDINAL) {
       const themeValue = getThemeOption(lineHeight.value, theme)
-      styles.lineHeight = themeValue.value
+      styles.lineHeight = themeValue.parameters.value
     }
   }
 

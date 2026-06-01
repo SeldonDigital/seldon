@@ -1,29 +1,47 @@
 import type { Properties } from "@seldon/core"
-import type { LayeredPaintKey } from "@seldon/core/properties/types/property-keys"
+import type { BackgroundLayer } from "@seldon/core/properties/values/appearance/background"
+import type { GradientCompound } from "@seldon/core/properties/values/effects/gradients"
+import type { ShadowCompound } from "@seldon/core/properties/values/effects/shadow"
+
+type LayeredPaintLayerMap = {
+  background: BackgroundLayer
+  gradient: GradientCompound
+  shadow: ShadowCompound
+}
 
 const LAYER_INDEX = 0
 
 /**
- * Reads the top layer (index 0) of a layered paint stack, or a legacy single-object shape.
+ * Reads every layer of a layered paint stack as a typed array. Index 0 is the
+ * topmost layer. A legacy single-object shape is normalized to a one-item list.
  */
-export function getLayeredPaintLayer(
+export function getLayeredPaintLayers<K extends keyof LayeredPaintLayerMap>(
   properties: Properties,
-  key: LayeredPaintKey,
-): Record<string, unknown> | undefined {
+  key: K,
+): LayeredPaintLayerMap[K][] {
   const stack = properties[key] as unknown
-  if (!stack) return undefined
+  if (!stack) return []
 
   if (Array.isArray(stack)) {
-    const layer = stack[LAYER_INDEX]
-    if (layer && typeof layer === "object" && !Array.isArray(layer)) {
-      return layer as Record<string, unknown>
-    }
-    return undefined
+    return stack.filter(
+      (layer): layer is LayeredPaintLayerMap[K] =>
+        !!layer && typeof layer === "object" && !Array.isArray(layer),
+    )
   }
 
   if (typeof stack === "object") {
-    return stack as Record<string, unknown>
+    return [stack as LayeredPaintLayerMap[K]]
   }
 
-  return undefined
+  return []
+}
+
+/**
+ * Reads the top layer (index 0) of a layered paint stack as a typed layer.
+ */
+export function getLayeredPaintLayer<K extends keyof LayeredPaintLayerMap>(
+  properties: Properties,
+  key: K,
+): LayeredPaintLayerMap[K] | undefined {
+  return getLayeredPaintLayers(properties, key)[LAYER_INDEX]
 }

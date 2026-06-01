@@ -1,5 +1,3 @@
-import { ComponentToExport, JSONTreeNode } from "../../../types"
-
 /**
  * JSX Node types for structured JSX representation
  */
@@ -18,16 +16,19 @@ export type JSXNode = {
   condition?: string // For conditional rendering (prop name that controls visibility)
   className?: string
   grandchildProps?: Array<{
-    propKey: string
-    propVarName: string
+    propKeyName: string // child component's slot name, e.g. "icon"
+    propVarName: string // parent's variable name, e.g. "buttonIconicIconProps"
   }> // For grandchildren passed as props
 }
 
 /**
- * JSX Structure containing the root node and extracted prop maps
+ * JSX Structure containing the root node and the prop name map.
+ *
+ * `propNames` maps a node path to the parent component's prop name for that
+ * node. It is the single name map consumed by the interface, signature,
+ * declaration, and default-prop generators.
  */
 export type JSXStructure = {
   root: JSXNode
-  propValuesMap: Map<string, string>
-  propKeysMap: Map<string, string>
+  propNames: Map<string, string>
 }

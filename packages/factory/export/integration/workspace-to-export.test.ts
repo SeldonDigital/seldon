@@ -2,7 +2,6 @@ import { describe, expect, it } from "bun:test"
 import { Workspace } from "@seldon/core"
 import { ComputedFunction, Unit, ValueType } from "@seldon/core"
 import { ComponentId, ComponentLevel } from "@seldon/core/components/constants"
-import customTheme from "@seldon/core/themes/custom"
 import { computeWorkspace } from "../../helpers/compute-workspace"
 import {
   EXPORT_OPTIONS_FIXTURE,
@@ -219,7 +218,6 @@ describe("Complete Workspace-to-Export Integration Tests", () => {
   it("should handle empty workspace gracefully through complete export pipeline", async () => {
     const emptyWorkspace: Workspace = {
       version: 1,
-      customTheme,
       boards: {},
       byId: {},
     }
@@ -361,7 +359,6 @@ describe("Complete Workspace-to-Export Integration Tests", () => {
   it("should throw error for invalid workspace", async () => {
     const invalidWorkspace = {
       version: 1,
-      customTheme,
       boards: {
         "invalid-component": {
           id: "invalid-component" as any,
@@ -397,7 +394,6 @@ describe("Complete Workspace-to-Export Integration Tests", () => {
   it("should handle workspace with missing theme gracefully", async () => {
     const workspaceWithoutTheme: Workspace = {
       version: 1,
-      customTheme,
       boards: {
         [ComponentId.BUTTON]: {
           id: ComponentId.BUTTON,
@@ -442,7 +438,6 @@ describe("Complete Workspace-to-Export Integration Tests", () => {
   it("should throw error for workspace with circular references", async () => {
     const workspaceWithCircular: Workspace = {
       version: 1,
-      customTheme,
       boards: {
         [ComponentId.BUTTON]: {
           id: ComponentId.BUTTON,
@@ -492,7 +487,6 @@ describe("Complete Workspace-to-Export Integration Tests", () => {
   it("should throw error for workspace with malformed properties", async () => {
     const workspaceWithMalformedProps: Workspace = {
       version: 1,
-      customTheme,
       boards: {
         [ComponentId.BUTTON]: {
           id: ComponentId.BUTTON,

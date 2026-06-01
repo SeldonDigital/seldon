@@ -134,9 +134,8 @@ flowchart LR
 | `isDefaultThemeVariant` | `is-default-theme-variant.ts` | True when theme entry `type` is `default`. \| Used by theme validation. |
 | `isUserThemeVariant` | `is-user-theme-variant.ts` | True when theme entry `type` is `variant`. \| Used by theme handlers. |
 | `deleteOverrideAtPath` | `theme-override-paths.ts` | Removes a nested key from theme overrides. \| Used when resetting custom tokens. |
-| `WORKSPACE_EDITABLE_THEME_ENTRY_ID` | `workspace-editable-theme.ts` | Constant id `custom` for the editable theme row. \| Matches `ThemeInstanceId` `custom`. |
-| `createDefaultEditableThemeEntry` | `workspace-editable-theme.ts` | Builds the default `themes.custom` row. \| Used by `createEmptyWorkspace`. |
-| `ensureWorkspaceEditableThemeEntry` | `workspace-editable-theme.ts` | Adds `themes.custom` when missing. \| Used by `set_workspace` and creation paths. |
+| `WORKSPACE_EDITABLE_THEME_ENTRY_ID` | `workspace-editable-theme.ts` | Constant id `theme-seldon-default` for the editable theme row. \| The stock default theme entry. |
+| `ensureWorkspaceEditableThemeEntry` | `workspace-editable-theme.ts` | Adds the `theme-seldon-default` row when missing. \| Used by `set_workspace` and creation paths. |
 
 ### Removal guards (`removal/`)
 

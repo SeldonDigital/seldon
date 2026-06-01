@@ -1,4 +1,4 @@
-import { ValueType } from "../../properties"
+import { ValueType } from "../../properties/constants"
 import type {
   ThemeBackgroundKey,
   ThemeBorderKey,

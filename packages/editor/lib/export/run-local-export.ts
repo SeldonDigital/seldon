@@ -1,12 +1,56 @@
 import type { Workspace } from "@seldon/core/workspace/types"
 import type { FileToExport } from "@seldon/factory/export/types"
 
+type WireFile = {
+  path: string
+  encoding: "utf8" | "base64"
+  content: string
+}
+
+function base64ToBytes(base64: string): Uint8Array {
+  const binary = atob(base64)
+  const bytes = new Uint8Array(binary.length)
+  for (let i = 0; i < binary.length; i += 1) {
+    bytes[i] = binary.charCodeAt(i)
+  }
+  return bytes
+}
+
+function fromWireFile(file: WireFile): FileToExport {
+  if (file.encoding === "utf8") {
+    return { path: file.path, content: file.content }
+  }
+  return {
+    path: file.path,
+    content: base64ToBytes(file.content).buffer as ArrayBuffer,
+  }
+}
+
 /**
- * Browser-local export is not wired yet. Factory export still depends on Node fs/path
- * in several modules. Use JSON export from the menu until this path is browser-safe.
+ * Runs the factory export against the workspace via the local Next server route.
+ * The route reads icon and native-react source from disk and formats the output,
+ * then returns files the browser writes to the chosen folder.
  */
-export async function runLocalExport(_workspace: Workspace): Promise<FileToExport[]> {
-  throw new Error(
-    "Folder export is not available in the local editor yet. Use Export workspace JSON instead.",
-  )
+export async function runLocalExport(
+  workspace: Workspace,
+): Promise<FileToExport[]> {
+  const response = await fetch("/api/export", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ workspace }),
+  })
+
+  if (!response.ok) {
+    let message = "Export failed."
+    try {
+      const data = (await response.json()) as { error?: string }
+      if (data?.error) message = data.error
+    } catch {
+      // Response was not JSON; keep the default message.
+    }
+    throw new Error(message)
+  }
+
+  const data = (await response.json()) as { files: WireFile[] }
+  return data.files.map(fromWireFile)
 }

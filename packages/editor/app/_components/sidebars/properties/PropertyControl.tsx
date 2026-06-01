@@ -184,7 +184,7 @@ export function PropertyControl({
           payload: {
             componentKey:
               selectedBoardId ?? resolveComponentKey(subject, workspace),
-            theme: newThemeId || "default",
+            theme: newThemeId || "seldon",
           },
         })
       } else {
