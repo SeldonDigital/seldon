@@ -29,9 +29,9 @@ So you've accessed the repo and you're asking, "Now what?"
 
 The pupose for releasing this project is to provide a codebase that allows for multiple paths for exploration to as many people as possible. To give folks an inexpensive way to learn what they can and cannot do with AI tools.
 
-No one knows where the future will land. There are a lot of ideas out there of what LLMs and AI mean for humanity. Most of thoe ideas are silly. Many of them are just plain wrong. Some of them have some value. One thing that should become clear over time however is that humanity doesn't need AI or LLMs to waste enormous amounts of energy and money to write a Button component. 
+No one knows where the future will land. There are a lot of ideas out there of what LLMs and AI mean for humanity. Most of those ideas are silly. Many of them are just plain wrong. Some of them have some value. One thing that should become clear over time however is that humanity doesn't need AI or LLMs to waste enormous amounts of energy and money to write teh code for a Button component. 
 
-The model Seldon is offering is simple: A workspace defines everything needed as simple key value pairs in JSON. A core engine defines everything about a workspace, has the code to mutate data, and validation to make sure a workspace file is valid. Then a code factory (written by humans) takes that workspace file and processes that data for whatever platform is needed. Code is exported, and its bullet proof.
+The model Seldon is offering is simple: A workspace defines everything needed as simple key value pairs in JSON. A core engine defines everything about a workspace, has the code to mutate data, and validation to make sure a workspace file is valid. Then a code factory takes that workspace file and processes that data for whatever platform is needed, be it React, Swift, Java, or whatever is needed. Code is exported, and it just works.
 
 And as a bonus, there's an editor provided that runs locally to allow you to do this visually instead of as code.
 
@@ -39,13 +39,15 @@ And as a bonus, there's an editor provided that runs locally to allow you to do 
 
 ## Where to go from here
 
-At the time of this writing, Seldon is far from complete. It is missing many features, behaviors, code export languages, and a host of other things. But rather than wait until its all done and build in a closed environment, we're going to build it out in the open and evolve it based on your feedback.
+At the time of this writing, Seldon is far from complete. It is missing many features, behaviors, code export languages, and a host of other things. But rather than wait until it's all done and build in a closed environment, we're going to build it out in the open and evolve it based on your feedback.
 
-In various parts of the codebase, you'll find README docs that contain feature lists and priorities for that section of the codebase. As features come online, they will be pushed to main and you'll have access to them immediately. There's a lot to do, so we also need feedback on what is working, what is not, and what should be added sooner than later.
+In various parts of the codebase, you'll find README docs that contain feature lists and priorities for that section of the codebase. As features come online, they will be pushed to main and you'll have access to them immediately. 
 
-By the end of the first year, we expect to have a fairly robust codebase that will be able to do a whole of things not easily possible today. As that begins to take shape, we'll all be able to better see where the future is going.
+There's a lot to do, so we also need feedback on what is working, what is not, and what should be added sooner than later.
 
-But we fully expect that wasting money and energy on Button code will still not be a thing.
+By the end of the first year, we expect to have a fairly robust codebase that will be able to do a whole host of things not easily possible today. As that begins to take shape, we'll all be able to better see where the future is going.
+
+But we fully expect that wasting money and energy on writing Button code will still not be a thing.
 
 ---
 
@@ -56,6 +58,8 @@ If you want the lowdown, these three documents are a great way to get into what 
 - `packages/core` [packages/core/CORE.md](packages/core/CORE.md): This is the workspace, theme, and reducer logic used by an editor or agent to mutate workspace.json files
 - `packages/editor`  [packages/editor/EDITOR.md](packages/editor/EDITOR.md): Next.js visual editor run on localhost
 - `packages/factory`  [packages/factory/FACTORY.md](packages/factory/FACTORY.md): Component Export, CSS, and code generation from a valid workspace.json file
+
+---
 
 ## Prerequisites
 
@@ -187,14 +191,14 @@ The commercial license may grant:
 
 See [COMMERCIAL-LICENSE.md](license/commercial/COMMERCIAL-LICENSE.md).
 
-### 4. Obtaining a commercial license
+To obtain a commercial license
 
 Contact:
 
 - **Licensor:** Seldon Digital, B.V.
 - **Email:** info@seldon.digital
 
-### 5. Summary
+### 4. Summary
 
 | Role | Requirement |
 |------|-------------|
