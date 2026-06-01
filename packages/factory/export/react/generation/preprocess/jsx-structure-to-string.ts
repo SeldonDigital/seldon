@@ -10,14 +10,12 @@ import { JSXNode } from "./types"
  * @param jsxRoot - Root JSX node of the structure
  * @param component - Component being processed
  * @param classNameVarName - Variable name for the component's className
- * @param propKeysMap - Map of node paths to prop key names (for resolving grandchild prop keys)
  * @returns JSX string for the component return statement
  */
 export function jsxStructureToString(
   jsxRoot: JSXNode,
   component: ComponentToExport,
   classNameVarName: string,
-  propKeysMap: Map<string, string>,
 ): string {
   const { config } = component
 
@@ -66,20 +64,8 @@ export function jsxStructureToString(
 
       if (node.grandchildProps && node.grandchildProps.length > 0) {
         // Component with grandchildren passed as props
-        // Resolve prop keys from propKeysMap (grandchildProps stores paths, not keys)
         const grandchildPropsString = node.grandchildProps
-          .map((gp) => {
-            // gp.propKey is actually the path, look up the actual prop key
-            const actualPropKey = propKeysMap.get(gp.propKey)
-            if (!actualPropKey) {
-              throw new Error(
-                `Prop key not found in propKeysMap for path "${gp.propKey}" ` +
-                  `when processing "${node.name}" at path "${node.path}" in component "${component.name}". ` +
-                  `This indicates a bug in prop key extraction.`,
-              )
-            }
-            return `${actualPropKey}={${gp.propVarName}}`
-          })
+          .map((gp) => `${gp.propKeyName}={${gp.propVarName}}`)
           .join(" ")
         content += `\n${indentStr}  <${node.name} {...${node.propVarName}} ${grandchildPropsString} />`
       } else if (node.children && node.children.length > 0) {
@@ -100,20 +86,8 @@ export function jsxStructureToString(
       // Regular component
       if (node.grandchildProps && node.grandchildProps.length > 0) {
         // Component with grandchildren passed as props
-        // Resolve prop keys from propKeysMap (grandchildProps stores paths, not keys)
         const grandchildPropsString = node.grandchildProps
-          .map((gp) => {
-            // gp.propKey is actually the path, look up the actual prop key
-            const actualPropKey = propKeysMap.get(gp.propKey)
-            if (!actualPropKey) {
-              throw new Error(
-                `Prop key not found in propKeysMap for path "${gp.propKey}" ` +
-                  `when processing "${node.name}" at path "${node.path}" in component "${component.name}". ` +
-                  `This indicates a bug in prop key extraction.`,
-              )
-            }
-            return `${actualPropKey}={${gp.propVarName}}`
-          })
+          .map((gp) => `${gp.propKeyName}={${gp.propVarName}}`)
           .join(" ")
         return `\n${indentStr}<${node.name} {...${node.propVarName}} ${grandchildPropsString} />`
       } else if (node.children && node.children.length > 0) {

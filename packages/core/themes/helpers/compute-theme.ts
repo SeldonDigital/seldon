@@ -50,9 +50,12 @@ export function computeTheme(theme: StockTheme | ComputedTheme): ComputedTheme {
     }
   }
 
+  // `injectBuiltInLooks` fills the reserved look ids (including the `normal`
+  // font) at runtime, so the materialized object satisfies `ComputedTheme`
+  // even though the generic return type mirrors the stock input shape.
   return injectBuiltInLooks({
     ...normalized,
     id: normalized.metadata.id,
     swatch: resolvedSwatch as ComputedTheme["swatch"],
-  })
+  }) as ComputedTheme
 }

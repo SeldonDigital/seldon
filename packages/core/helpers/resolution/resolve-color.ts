@@ -1,15 +1,13 @@
 import type { ComputeContext } from "../../properties/compute/types"
-import {
-  ColorValue,
-  EmptyValue,
-  HSLValue,
-  HexValue,
-  LCHValue,
-  RGBValue,
-  ValueType,
-  invariant,
-} from "../../index"
-import { TransparentValue } from "../../properties/values/shared/exact/transparent"
+import type { ColorValue } from "../../properties/values/appearance/color"
+import type { EmptyValue } from "../../properties/values/shared/empty/empty"
+import type { HexValue } from "../../properties/values/shared/exact/hex"
+import type { HSLValue } from "../../properties/values/shared/exact/hsl"
+import type { LCHValue } from "../../properties/values/shared/exact/lch"
+import type { RGBValue } from "../../properties/values/shared/exact/rgb"
+import type { TransparentValue } from "../../properties/values/shared/option/transparent"
+import { ValueType } from "../../properties/constants/shared/value-types"
+import { invariant } from "../utils/invariant"
 import { Theme } from "../../themes/types"
 import { debugLog } from "../../utils/debug-logger"
 import { themeSwatchToColorValue } from "../color/theme-swatch-to-color-value"

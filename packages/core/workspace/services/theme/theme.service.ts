@@ -65,7 +65,7 @@ export class WorkspaceThemeService {
 
     while (currentNode) {
       if (currentNode.theme) {
-        return currentNode.theme
+        return currentNode.theme as ThemeInstanceId
       }
 
       currentNode = nodeTraversalService.findParentNode(currentNode.id, workspace)
@@ -154,7 +154,7 @@ export class WorkspaceThemeService {
 
     Object.values(workspace.nodes).forEach((node) => {
       if (node.theme) {
-        usedThemeIds.add(node.theme)
+        usedThemeIds.add(node.theme as ThemeInstanceId)
       }
     })
 

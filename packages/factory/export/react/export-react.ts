@@ -18,7 +18,6 @@ import { replaceImagesWithRelativePaths } from "./assets/transform-image-paths"
 import { getComponentsToExport } from "./discovery/get-components-to-export"
 import { getUsedIconIds } from "./discovery/get-used-icon-ids"
 import { format } from "./format"
-import { ComponentMetadataStorage } from "./generation/component-metadata"
 import { generateComponentFiles } from "./generation/helpers/generate-component-files"
 import { generateFrameComponent } from "./generation/helpers/generate-frame-component"
 import { generateReadmeFile } from "./generation/helpers/generate-readme-file"
@@ -84,20 +83,17 @@ export async function exportReact(
   const imagesToExport = await getImagesToExport(workspace, options)
   workspace = replaceImagesWithRelativePaths(workspace, imagesToExport)
 
-  const componentMetadataStorage: ComponentMetadataStorage = new Map()
-
   try {
     const componentFiles = await generateComponentFiles(
       componentsToExport,
       workspace,
       nodeIdToClass,
-      componentMetadataStorage,
       usedIconIds,
       options,
     )
     filesToExport.push(...componentFiles)
-  } finally {
-    componentMetadataStorage.clear()
+  } catch {
+    // Failed to generate component files
   }
 
   try {

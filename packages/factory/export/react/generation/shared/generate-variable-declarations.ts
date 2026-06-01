@@ -4,29 +4,28 @@ import { camelCase } from "../../utils/case-utils"
 import { getVariantClassNames } from "../../utils/class-name"
 
 /**
- * Generate variable declarations for inline components
- * Inline components include all props (valid and invalid) in variable declarations
- * Similar to custom components but with grandchildren handling
+ * Generates the component's variable declarations.
+ *
+ * Always declares the component className. Then, for every node in the tree,
+ * declares a merged props variable that layers the passed-in prop over the
+ * default (`sdn`) entry and combines class names. Declarations are deduplicated
+ * by variable name.
  */
-export function generateInlineComponentVariableDeclarations(
+export function generateVariableDeclarations(
   component: ComponentToExport,
   nodeIdToClass: NodeIdToClass,
-  propValuesMap: Map<string, string>,
+  propNames: Map<string, string>,
 ): { declarations: string; classNameVarName: string } {
   const { tree } = component
 
-  // Generate component-specific className variable name
   const classNameVarName = `${camelCase(component.name)}ClassName`
 
   const declarations: string[] = []
-
-  // Always generate component-specific className declaration
   const variantClassNames = getVariantClassNames(component, nodeIdToClass)
   declarations.push(
     `const ${classNameVarName} = combineClassNames("${variantClassNames}", className)`,
   )
 
-  // Only process children if they exist
   if (!Array.isArray(tree.children)) {
     return {
       declarations: "\n  " + declarations.join("\n  ") + "\n",
@@ -34,34 +33,30 @@ export function generateInlineComponentVariableDeclarations(
     }
   }
 
-  const declaredPropNames = new Set<string>()
+  const declared = new Set<string>()
 
-  function traverseAndGenerateDeclarations(node: JSONTreeNode) {
-    const propsName = propValuesMap.get(node.dataBinding.path)
+  function traverse(node: JSONTreeNode) {
+    const propsName = propNames.get(node.dataBinding.path)
     if (!propsName) {
       throw new Error(
-        `Prop path "${node.dataBinding.path}" not found in propValuesMap for component "${component.name}"`,
+        `Prop path "${node.dataBinding.path}" not found in prop names for component "${component.name}"`,
       )
     }
 
     const propsVarName = `${propsName}Props`
-
-    // Only declare if we haven't already declared this prop name
-    // Inline components include ALL props (valid and invalid) in declarations
-    if (!declaredPropNames.has(propsVarName)) {
-      declaredPropNames.add(propsVarName)
+    if (!declared.has(propsVarName)) {
+      declared.add(propsVarName)
       declarations.push(
         `const ${propsVarName} = { ...sdn.${propsName}, ...${propsName}, className: combineClassNames(sdn.${propsName}?.className, ${propsName}?.className) }`,
       )
     }
 
-    // Process children recursively (including grandchildren)
     if (Array.isArray(node.children)) {
-      node.children.forEach(traverseAndGenerateDeclarations)
+      node.children.forEach(traverse)
     }
   }
 
-  tree.children.forEach(traverseAndGenerateDeclarations)
+  tree.children.forEach(traverse)
 
   return {
     declarations:

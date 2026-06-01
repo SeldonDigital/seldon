@@ -1,16 +1,10 @@
 import { CSSProperties } from "react"
-import { Workspace } from "@seldon/core/workspace/types"
 import { ComponentToExport } from "../../../types"
 import {
   TransformStrategy,
   transformSource,
 } from "../../utils/transform-source"
-import { generateCustomComponentDefaultProps } from "../custom-components/generate-custom-default-props"
-import { isCustomComponent } from "../custom-components/is-custom-component"
-import { generateDefaultComponentDefaultProps } from "../default-components/generate-default-default-props"
-import { isDefaultComponent } from "../default-components/is-default-component"
-import { generateInlineComponentDefaultProps } from "../inline-components/generate-inline-default-props"
-import { isInlineComponent } from "../inline-components/is-inline-component"
+import { generateDefaultProps } from "../shared/generate-default-props"
 
 /**
  * We build a defaultProps object to make sure nested children have
@@ -23,52 +17,22 @@ import { isInlineComponent } from "../inline-components/is-inline-component"
  * @param source
  * @param component
  * @param nodeIdToClass - Mapping of node IDs to CSS class names for themed components
- * @param propValuesMap - Map of node paths to prop value names (for variable names)
- * @param workspace - Workspace for variant type detection
+ * @param propNames - Map of node paths to prop names
  * @returns Updated source content with default props
  */
 export function insertDefaultProps(
   source: string,
   component: ComponentToExport,
   nodeIdToClass: Record<string, string> | undefined,
-  propValuesMap: Map<string, string>,
-  workspace: Workspace,
+  propNames: Map<string, string>,
 ) {
-  // Use component-type-specific generator based on variant type and frame presence
-  const isInline = isInlineComponent(component)
-  const isDefault = isDefaultComponent(component, workspace)
-  const isCustom = isCustomComponent(component, workspace)
-
-  let defaultProps: Record<
+  const defaultProps: Record<
     string,
     Record<
       string,
       string | CSSProperties | boolean | number | object | string[] | number[]
     >
-  > = {}
-
-  if (isInline) {
-    // Inline components: exclude invalid grandchildren but include valid grandchildren
-    defaultProps = generateInlineComponentDefaultProps(
-      component,
-      nodeIdToClass,
-      propValuesMap,
-    )
-  } else if (isDefault) {
-    // Default components: use simplified generator
-    defaultProps = generateDefaultComponentDefaultProps(
-      component,
-      nodeIdToClass,
-      propValuesMap,
-    )
-  } else {
-    // Custom components: exclude conditional props but include grandchildren
-    defaultProps = generateCustomComponentDefaultProps(
-      component,
-      nodeIdToClass,
-      propValuesMap,
-    )
-  }
+  > = generateDefaultProps(component, nodeIdToClass, propNames)
 
   if (Object.keys(defaultProps).length === 0) {
     return source
