@@ -8,6 +8,7 @@ import { CSSObject } from "./types"
 export function getBackgroundColorStyles({
   properties,
   theme,
+  useThemeVariableReferences,
 }: StyleGenerationContext): CSSObject {
   const styles: CSSObject = {}
   const layers = getLayeredPaintLayers(properties, "background")
@@ -38,6 +39,7 @@ export function getBackgroundColorStyles({
       brightness,
       opacity,
       theme,
+      useThemeVariableReferences,
     })
   }
 

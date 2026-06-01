@@ -13,12 +13,15 @@ import { CSSObject } from "./types"
 export function getShadowStyles({
   properties,
   theme,
+  useThemeVariableReferences,
 }: StyleGenerationContext): CSSObject {
   const layers = getLayeredPaintLayers(properties, "shadow")
   const isText = !!properties.content
 
   const shadows = layers
-    .map((layer) => resolveShadowLayer(layer, theme, isText))
+    .map((layer) =>
+      resolveShadowLayer(layer, theme, isText, useThemeVariableReferences),
+    )
     .filter((shadow): shadow is string => shadow !== undefined)
 
   if (shadows.length === 0) return {}
@@ -35,6 +38,7 @@ function resolveShadowLayer(
   shadow: ShadowCompound,
   theme: Theme,
   isText: boolean,
+  useThemeVariableReferences?: boolean,
 ): string | undefined {
   const preset = resolveValue(shadow.preset)
   const themeShadow = preset ? getThemeOption(preset.value, theme) : undefined
@@ -72,6 +76,7 @@ function resolveShadowLayer(
     opacity: resolvedOpacity,
     brightness: resolvedBrightness,
     theme,
+    useThemeVariableReferences,
   })
 
   // Text shadows do not support a spread value.

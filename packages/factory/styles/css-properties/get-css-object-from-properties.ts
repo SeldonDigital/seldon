@@ -53,7 +53,12 @@ export function getCssObjectFromProperties(
    */
   const computedProperties = computeProperties(propertiesSubset, context)
 
-  const { properties: originalProperties, parentContext, theme } = context
+  const {
+    properties: originalProperties,
+    parentContext,
+    theme,
+    useThemeVariableReferences,
+  } = context
 
   // Helper function to safely generate styles - returns empty object if error occurs
   const safeGetStyles = (styleFunction: () => CSSObject): CSSObject => {
@@ -84,6 +89,7 @@ export function getCssObjectFromProperties(
         properties: originalProperties,
         parentContext,
         theme,
+        useThemeVariableReferences,
       }),
     ),
     ...safeGetStyles(() => getCursorStyles({ properties: computedProperties })),
@@ -128,6 +134,7 @@ export function getCssObjectFromProperties(
         properties: computedProperties,
         parentContext,
         theme,
+        useThemeVariableReferences,
       }),
     ),
     ...safeGetStyles(() =>

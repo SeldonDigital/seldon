@@ -114,6 +114,7 @@ export const buildStyleRegistry = (
         properties: variantContext.properties,
         parentContext: variantContext.parentContext,
         theme: variantContext.theme,
+        useThemeVariableReferences: true,
       })
 
       const instanceCss = getCssObjectFromProperties(
@@ -122,6 +123,7 @@ export const buildStyleRegistry = (
           properties: instanceContext.properties,
           parentContext: instanceContext.parentContext,
           theme: instanceContext.theme,
+          useThemeVariableReferences: true,
         },
       )
 
@@ -132,6 +134,7 @@ export const buildStyleRegistry = (
         properties: context.properties,
         parentContext: context.parentContext,
         theme: context.theme,
+        useThemeVariableReferences: true,
       })
     }
 

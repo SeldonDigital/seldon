@@ -7,45 +7,50 @@ import { getThemeSwatchVarReference } from "./get-theme-swatch-names"
 /**
  * Resolves a layered paint color (background, gradient stop, or shadow) to CSS.
  *
- * When the color is a plain swatch reference with no brightness or opacity
- * adjustment, it returns the theme `var(--sdn-...swatch-*)` reference so the
- * exported CSS tracks the theme. Otherwise it falls back to a resolved literal,
- * since a CSS variable cannot carry a brightness or opacity transform.
+ * Live rendering always receives a resolved literal color. The code export sets
+ * `useThemeVariableReferences` so a plain swatch with no brightness or opacity
+ * adjustment becomes a `var(--sdn-...swatch-*)` reference that tracks the
+ * exported theme stylesheet. A CSS variable cannot carry a brightness or
+ * opacity transform, so adjusted colors still resolve to a literal.
  */
 export function getLayeredPaintColor({
   color,
   brightness,
   opacity,
   theme,
+  useThemeVariableReferences = false,
 }: {
   color: ColorValue | EmptyValue
   brightness?: PercentageValue | EmptyValue
   opacity?: PercentageValue | EmptyValue | number
   theme: Theme
+  useThemeVariableReferences?: boolean
 }): string {
-  const brightnessNum =
-    typeof brightness === "number"
-      ? brightness
-      : (resolveValue(brightness)?.value.value ?? 0)
+  if (useThemeVariableReferences) {
+    const brightnessNum =
+      typeof brightness === "number"
+        ? brightness
+        : (resolveValue(brightness)?.value.value ?? 0)
 
-  const opacityNum =
-    typeof opacity === "number"
-      ? opacity
-      : (resolveValue(opacity)?.value.value ?? 100)
+    const opacityNum =
+      typeof opacity === "number"
+        ? opacity
+        : (resolveValue(opacity)?.value.value ?? 100)
 
-  const isPlainSwatch =
-    !!color &&
-    typeof color === "object" &&
-    color.type === ValueType.THEME_CATEGORICAL &&
-    brightnessNum === 0 &&
-    opacityNum === 100
+    const isPlainSwatch =
+      !!color &&
+      typeof color === "object" &&
+      color.type === ValueType.THEME_CATEGORICAL &&
+      brightnessNum === 0 &&
+      opacityNum === 100
 
-  if (isPlainSwatch) {
-    const reference = getThemeSwatchVarReference(
-      String((color as { value: unknown }).value),
-      theme,
-    )
-    if (reference) return reference
+    if (isPlainSwatch) {
+      const reference = getThemeSwatchVarReference(
+        String((color as { value: unknown }).value),
+        theme,
+      )
+      if (reference) return reference
+    }
   }
 
   return getColorCSSValue({ color, brightness, opacity, theme })
