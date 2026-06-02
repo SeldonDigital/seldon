@@ -7,7 +7,7 @@ import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node
 import { isThemeBoard } from "@seldon/core/workspace/model/components"
 import { themeService } from "@seldon/core/workspace/services/theme/theme.service"
 import type { Workspace } from "@seldon/core/workspace/types"
-import { getDialogPreviewBase } from "@lib/themes/build-dialog-preview-workspace"
+import { getDialogPreviewBase } from "@lib/themes/build-dialog-preview"
 import { usePreview } from "@lib/hooks/use-preview"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { useWorkspace } from "@lib/workspace/use-workspace"

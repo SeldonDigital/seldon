@@ -7,7 +7,7 @@ import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node
 import { isFontCollectionBoard } from "@seldon/core/workspace/model/components"
 import { themeService } from "@seldon/core/workspace/services/theme/theme.service"
 import type { Workspace } from "@seldon/core/workspace/types"
-import { getCalendarPreviewBase } from "@lib/font-collections/build-calendar-preview-workspace"
+import { getTypeSpecimenPreviewBase } from "@lib/font-collections/build-type-specimen-preview"
 import { usePreview } from "@lib/hooks/use-preview"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { useWorkspace } from "@lib/workspace/use-workspace"
@@ -20,9 +20,9 @@ export type FontCollectionBoardProps = {
 }
 
 /**
- * Font collection board canvas: board chrome plus one Calendar preview per collection entry.
+ * Font collection board canvas: board chrome plus one Type Specimen preview per collection entry.
  *
- * Mirrors the theme board, swapping the Dialog preview for a Calendar preview.
+ * Mirrors the theme board, swapping the Dialog preview for a Type Specimen preview.
  */
 export function FontCollectionBoard({ board }: FontCollectionBoardProps) {
   const { workspace } = useWorkspace()
@@ -91,7 +91,7 @@ export function FontCollectionBoard({ board }: FontCollectionBoardProps) {
         }}
       >
         {variantEntryIds.map((variantEntryId) => (
-          <FontCollectionCalendar
+          <FontCollectionTypeSpecimen
             key={variantEntryId}
             variantEntryId={variantEntryId}
             themes={workspace.themes}
@@ -103,34 +103,34 @@ export function FontCollectionBoard({ board }: FontCollectionBoardProps) {
   )
 }
 
-type FontCollectionCalendarProps = {
+type FontCollectionTypeSpecimenProps = {
   variantEntryId: string
   themes: Workspace["themes"]
   boardThemeId: string
 }
 
-/** Renders a single Calendar preview for one font collection entry. */
-function FontCollectionCalendar({
+/** Renders a single Type Specimen preview for one font collection entry. */
+function FontCollectionTypeSpecimen({
   variantEntryId,
   themes,
   boardThemeId,
-}: FontCollectionCalendarProps) {
-  const { workspace: calendarBase, rootId } = getCalendarPreviewBase()
+}: FontCollectionTypeSpecimenProps) {
+  const { workspace: typeSpecimenBase, rootId } = getTypeSpecimenPreviewBase()
 
   const previewWorkspace = useMemo(() => {
     if (!rootId) {
       return null
     }
-    const root = calendarBase.nodes[rootId]
+    const root = typeSpecimenBase.nodes[rootId]
     return {
-      ...calendarBase,
+      ...typeSpecimenBase,
       themes,
       nodes: {
-        ...calendarBase.nodes,
+        ...typeSpecimenBase.nodes,
         [rootId]: { ...root, theme: boardThemeId },
       },
     } as Workspace
-  }, [calendarBase, rootId, themes, boardThemeId])
+  }, [typeSpecimenBase, rootId, themes, boardThemeId])
 
   if (!previewWorkspace || !rootId) {
     return null

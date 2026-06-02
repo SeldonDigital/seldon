@@ -3,29 +3,29 @@ import { createEmptyWorkspace } from "@seldon/core/workspace/helpers/create-empt
 import { addComponent } from "@seldon/core/workspace/reducers/handlers/add/add-component"
 import type { Workspace } from "@seldon/core/workspace/types"
 
-type CalendarPreviewBase = {
+type TypeSpecimenPreviewBase = {
   workspace: Workspace
   rootId: string | null
 }
 
-let cached: CalendarPreviewBase | null = null
+let cached: TypeSpecimenPreviewBase | null = null
 
 /**
- * Builds a throwaway workspace containing a single Calendar board and its nodes.
+ * Builds a throwaway workspace containing a single Type Specimen board and its nodes.
  *
  * The result is deterministic, so it is instantiated once and cached. Font
- * collection board previews clone this base and point the Calendar root at a board theme.
+ * collection board previews clone this base and point the Type Specimen root at a board theme.
  */
-export function getCalendarPreviewBase(): CalendarPreviewBase {
+export function getTypeSpecimenPreviewBase(): TypeSpecimenPreviewBase {
   if (cached) {
     return cached
   }
 
   const workspace = addComponent(
-    { componentId: ComponentId.CALENDAR },
+    { componentId: ComponentId.TYPE_SPECIMEN },
     createEmptyWorkspace(),
   )
-  const board = workspace.components[ComponentId.CALENDAR]
+  const board = workspace.components[ComponentId.TYPE_SPECIMEN]
   const rootId = board?.variants?.[0]?.id ?? null
 
   cached = { workspace, rootId }
