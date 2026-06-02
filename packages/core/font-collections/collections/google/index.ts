@@ -1,8 +1,8 @@
-import { GOOGLE_FONT_FAMILIES } from "../../properties/constants/typography/font-families"
+import { GOOGLE_FONT_FAMILIES } from "../../../properties/constants/typography/font-families"
 import type {
   FontFamilyEntry,
   StockFontCollection,
-} from "../types/font-collection"
+} from "../../types/font-collection"
 
 /** Builds a stable family slot id from a family name, such as `IBM Plex Sans` -> `ibm-plex-sans`. */
 function slugify(family: string): string {
