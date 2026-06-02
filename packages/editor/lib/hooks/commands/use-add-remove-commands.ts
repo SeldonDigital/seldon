@@ -5,11 +5,18 @@ import {
   isIconSetBoard,
   isThemeBoard,
 } from "@seldon/core/workspace/model/components"
+import { isEntryThemeDefault } from "@seldon/core/workspace/model/entry-theme"
+import { isEntryFontCollectionDefault } from "@seldon/core/workspace/model/entry-font-collection"
 import type { ComponentKey } from "@seldon/core/workspace/types"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
 import { confirmMissingSchemaVariants } from "@lib/workspace/confirm-missing-schema-variants"
+import {
+  findFontCollectionBoard,
+  findThemeBoard,
+} from "@lib/workspace/resource-boards"
 import { useAutoSelectNode } from "@lib/workspace/use-auto-select-node"
 import { useSelection } from "@lib/workspace/use-selection"
+import { resolveComponentKey } from "@lib/workspace/workspace-accessors"
 import { useWorkspace } from "@lib/workspace/use-workspace"
 import { useTool } from "@lib/hooks/use-tool"
 import { useAddToast } from "@components/toaster/use-add-toast"
@@ -28,6 +35,8 @@ export function useAddRemoveCommands() {
     selectNode,
     selectBoard,
     selectedBoardId,
+    selectedThemeEntryId,
+    selectedFontCollectionEntryId,
   } = useSelection()
   const { workspace, dispatch } = useWorkspace()
   const { dispatchWithAutoSelect } = useAutoSelectNode()
@@ -151,15 +160,85 @@ export function useAddRemoveCommands() {
     [selectedBoardId, selectBoard, dispatch],
   )
 
+  const removeSelectedThemeEntry = useCallback(
+    (themeId: string) => {
+      const entry = workspace.themes[themeId]
+      if (!entry || isEntryThemeDefault(entry)) return
+
+      if (getHoverStateSnapshot()?.objectId === themeId) {
+        setHoverState(null)
+      }
+
+      dispatch({
+        type: "delete_theme",
+        payload: { themeId },
+      })
+
+      if (selectedThemeEntryId === themeId) {
+        const board = findThemeBoard(workspace)
+        selectBoard(board ? resolveComponentKey(board, workspace) : null)
+      }
+    },
+    [workspace, selectedThemeEntryId, selectBoard, dispatch, setHoverState],
+  )
+
+  const removeSelectedFontCollectionEntry = useCallback(
+    (fontCollectionId: string) => {
+      const entry = workspace["font-collections"][fontCollectionId]
+      if (!entry || isEntryFontCollectionDefault(entry)) return
+
+      if (getHoverStateSnapshot()?.objectId === fontCollectionId) {
+        setHoverState(null)
+      }
+
+      dispatch({
+        type: "delete_font_collection",
+        payload: { fontCollectionId },
+      })
+
+      if (selectedFontCollectionEntryId === fontCollectionId) {
+        const board = findFontCollectionBoard(workspace)
+        selectBoard(board ? resolveComponentKey(board, workspace) : null)
+      }
+    },
+    [
+      workspace,
+      selectedFontCollectionEntryId,
+      selectBoard,
+      dispatch,
+      setHoverState,
+    ],
+  )
+
   const deleteSelection = useCallback(() => {
     if (selectedNode) {
       removeSelectedNode(selectedNode.id)
+      return
+    }
+
+    if (selectedThemeEntryId) {
+      removeSelectedThemeEntry(selectedThemeEntryId)
+      return
+    }
+
+    if (selectedFontCollectionEntryId) {
+      removeSelectedFontCollectionEntry(selectedFontCollectionEntryId)
+      return
     }
 
     if (selectedBoard) {
       removeBoard(selectedBoard.id)
     }
-  }, [selectedNode, selectedBoard, removeSelectedNode, removeBoard])
+  }, [
+    selectedNode,
+    selectedThemeEntryId,
+    selectedFontCollectionEntryId,
+    selectedBoard,
+    removeSelectedNode,
+    removeSelectedThemeEntry,
+    removeSelectedFontCollectionEntry,
+    removeBoard,
+  ])
 
   const duplicateSelection = useCallback(() => {
     if (!selectedNode) return
