@@ -7,7 +7,6 @@ import {
 } from "@seldon/core/workspace/model/components"
 import { useSidebarCanvasTrackingBoard } from "../../tracking/hooks/use-sidebar-canvas-tracking"
 import { useSidebarRowStyling } from "../../tracking/hooks/use-sidebar-row-styling"
-import { workspaceFontCollectionService } from "@seldon/core/workspace/services/font-collection/font-collection.service"
 import { useWorkspace } from "@lib/workspace/use-workspace"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { useRowBoard } from "./hooks/use-row-board"
@@ -17,7 +16,7 @@ import { LabelProps } from "../../../seldon/primitives/Label"
 import { relativeFullWidthStyle } from "../helpers/sidebar-styles"
 import { IndentationLevel } from "../helpers/use-indentation"
 import { FramerExpandable } from "../shared/FramerExpandable"
-import { RowFontFamilyEntry } from "./RowFontFamilyEntry"
+import { RowFontCollectionEntry } from "./RowFontCollectionEntry"
 import { RowIconSetEntry } from "./RowIconSetEntry"
 import { RowNode } from "./RowNode"
 import { RowThemeEntry } from "./RowThemeEntry"
@@ -60,6 +59,7 @@ export const RowBoard = memo(function RowBoard({
     boardIsActive,
     boardContainsSelectedNode,
     boardContainsSelectedThemeEntry,
+    boardContainsSelectedFontCollectionEntry,
     dragging,
     ref,
     variants,
@@ -72,7 +72,9 @@ export const RowBoard = memo(function RowBoard({
     { isSelected: boardIsActive },
   )
   const combinedRowStyle =
-    (boardContainsSelectedNode || boardContainsSelectedThemeEntry) &&
+    (boardContainsSelectedNode ||
+      boardContainsSelectedThemeEntry ||
+      boardContainsSelectedFontCollectionEntry) &&
     !isBoardSelected
       ? { ...hoverStyle, ...rowStyle, borderColor: undefined }
       : { ...hoverStyle, ...rowStyle }
@@ -162,17 +164,11 @@ export const RowBoard = memo(function RowBoard({
                 />
               ))
             : isFontCollectionBoard(board)
-              ? Object.entries(
-                  workspaceFontCollectionService.getBoardFontCollection(
-                    getComponentKey(board),
-                    workspace,
-                  )?.families ?? {},
-                ).map(([slot, family]) => (
-                  <RowFontFamilyEntry
-                    key={slot}
+              ? variants.map((entryId) => (
+                  <RowFontCollectionEntry
+                    key={entryId}
                     componentKey={getComponentKey(board)}
-                    slot={slot}
-                    family={family}
+                    fontCollectionEntryId={entryId}
                     show={show}
                     parentIsSelected={boardIsActive}
                   />

@@ -1,13 +1,20 @@
 import { useMemo } from "react"
 import { isComponentEntry } from "@seldon/core/workspace/helpers/components/is-component-entry"
-import { isThemeBoard } from "@seldon/core/workspace/model/components"
+import {
+  isFontCollectionBoard,
+  isThemeBoard,
+} from "@seldon/core/workspace/model/components"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
 import { useSelection } from "./use-selection"
 import { useWorkspace } from "./use-workspace"
 
 export function useActiveBoard() {
-  const { selection, selectedThemeEntryId, selectedResourceItemKey } =
-    useSelection()
+  const {
+    selection,
+    selectedThemeEntryId,
+    selectedFontCollectionEntryId,
+    selectedResourceItemKey,
+  } = useSelection()
   const { workspace } = useWorkspace()
 
   return {
@@ -31,8 +38,23 @@ export function useActiveBoard() {
         )
       }
 
+      // Editing a font collection variant keeps its board active so the canvas
+      // keeps rendering it and the auto-select-first-board effect does not fire.
+      if (selectedFontCollectionEntryId) {
+        return (
+          Object.values(workspace.components).find(
+            (entry) =>
+              isFontCollectionBoard(entry) &&
+              entry.variants.some(
+                (variant) => variant.id === selectedFontCollectionEntryId,
+              ),
+          ) ?? null
+        )
+      }
+
       // Selecting a resource item (a font family row, and later icon/media rows)
-      // keeps its board active. The key is `${resource}:${componentKey}:${slot}`.
+      // keeps its board active. The key is
+      // `${resource}:${componentKey}:${entryId}:${slot}`.
       if (selectedResourceItemKey) {
         const componentKey = selectedResourceItemKey.split(":")[1]
         return componentKey
@@ -41,6 +63,12 @@ export function useActiveBoard() {
       }
 
       return null
-    }, [selection, selectedThemeEntryId, selectedResourceItemKey, workspace]),
+    }, [
+      selection,
+      selectedThemeEntryId,
+      selectedFontCollectionEntryId,
+      selectedResourceItemKey,
+      workspace,
+    ]),
   }
 }

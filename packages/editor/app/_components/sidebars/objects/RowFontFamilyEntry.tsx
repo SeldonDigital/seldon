@@ -25,6 +25,7 @@ const rowWrapperStyle: CSSProperties = {
 
 type RowFontFamilyEntryProps = {
   componentKey: string
+  fontCollectionId: string
   slot: string
   family: FontFamilyEntry
   show?: boolean
@@ -38,6 +39,7 @@ type RowFontFamilyEntryProps = {
  */
 export function RowFontFamilyEntry({
   componentKey,
+  fontCollectionId,
   slot,
   family,
   show = true,
@@ -49,6 +51,7 @@ export function RowFontFamilyEntry({
   const selectionKey = formatResourceItemKey({
     resource: "font-collection",
     componentKey,
+    entryId: fontCollectionId,
     slot,
   })
   const isSelected = useIsResourceItemSelected(selectionKey)

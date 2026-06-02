@@ -16,17 +16,17 @@ function readFamilies(
   return { ...(current as Record<string, FontFamilyEntry>) }
 }
 
-/** Returns the next free `customN` family id, starting at `custom1`. */
+/** Returns the next free `familyNN` slot id, starting at `family01`. */
 export function getNextCustomFamilyId(entry: EntryFontCollection): string {
   const families = readFamilies(entry)
-  const customIds = Object.keys(families).filter((id) => id.startsWith("custom"))
-  if (customIds.length === 0) return "custom1"
-  const highest = customIds
-    .map((id) => parseInt(id.replace("custom", ""), 10))
+  const familyIds = Object.keys(families).filter((id) => id.startsWith("family"))
+  const highest = familyIds
+    .map((id) => parseInt(id.replace("family", ""), 10))
     .filter((n) => !Number.isNaN(n))
     .sort((a, b) => a - b)
     .at(-1)
-  return `custom${(highest ?? 0) + 1}`
+  const next = (highest ?? 0) + 1
+  return `family${next < 10 ? `0${next}` : next}`
 }
 
 /** Writes `family` under `id` in `entry.overrides.families`. Mutates `entry`. */

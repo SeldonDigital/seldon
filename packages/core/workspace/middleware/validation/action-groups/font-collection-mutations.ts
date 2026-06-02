@@ -18,6 +18,7 @@ export function validateFontCollectionMutation(
     case "set_font_collection_label":
     case "set_font_collection_editor_data":
     case "set_font_collection_override":
+    case "duplicate_font_collection":
       fontCollectionEntryValidators.exists(workspace, fontCollectionIdOf(action))
       break
     case "delete_font_collection": {

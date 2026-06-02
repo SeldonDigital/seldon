@@ -105,7 +105,7 @@ export class WorkspaceFontCollectionService {
     return used
   }
 
-  /** Returns the next free `customN` family id for a `font-collections` entry, starting at `custom1`. */
+  /** Returns the next free `familyNN` slot id for a `font-collections` entry, starting at `family01`. */
   public getNextCustomFamilyId(
     workspace: Workspace,
     fontCollectionId: string,
@@ -114,14 +114,14 @@ export class WorkspaceFontCollectionService {
       | EntryFontCollection
       | undefined
     const bag = (entry?.overrides?.families ?? {}) as Record<string, unknown>
-    const customIds = Object.keys(bag).filter((id) => id.startsWith("custom"))
-    if (customIds.length === 0) return "custom1"
-    const highest = customIds
-      .map((id) => parseInt(id.replace("custom", ""), 10))
+    const familyIds = Object.keys(bag).filter((id) => id.startsWith("family"))
+    const highest = familyIds
+      .map((id) => parseInt(id.replace("family", ""), 10))
       .filter((n) => !Number.isNaN(n))
       .sort((a, b) => a - b)
       .at(-1)
-    return `custom${(highest ?? 0) + 1}`
+    const next = (highest ?? 0) + 1
+    return `family${next < 10 ? `0${next}` : next}`
   }
 }
 

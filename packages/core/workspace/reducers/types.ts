@@ -21,6 +21,8 @@
  * | add_theme_custom_{swatch,font,border,background,gradient,shadow,scrollbar,size,dimension,margin,padding,gap,corners,borderWidth,blur,spread,fontSize,fontWeight,lineHeight} | themes (variant rows only) |
  * | remove_theme_custom_{...same 19 tables...} | themes (variant rows only) |
  * | delete_theme, duplicate_theme | themes (+ components.variants for theme row) |
+ * | set_font_collection_{label,editor_data,override}, reset_font_collection_{label,editor_data,override}, add_font_collection_custom_family, remove_font_collection_custom_family | font-collections (variant rows only for families) |
+ * | delete_font_collection, duplicate_font_collection | font-collections (+ components.variants for font-collection row) |
  * | stubs_* (font / icon / media) | reserved — no-op until spec |
  * | transcript_add_message | none (no-op) |
  */
@@ -601,6 +603,13 @@ export type WorkspaceAction =
   | {
       type: "delete_font_collection"
       payload: { fontCollectionId: string }
+    }
+  | {
+      type: "duplicate_font_collection"
+      payload: {
+        fontCollectionId: string
+        newFontCollectionId?: string
+      }
     }
   | {
       type: "add_font_collection_custom_family"

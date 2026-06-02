@@ -24,8 +24,13 @@ export function ObjectsSidebar() {
   const { record } = useWorkspaceRecord(workspaceId)
   const { workspace } = useWorkspace({ usePreview: false })
   const { activeBoard } = useActiveBoard()
-  const { selectBoard, selectedNodeId, selectedBoardId, selectedThemeEntryId } =
-    useSelection()
+  const {
+    selectBoard,
+    selectedNodeId,
+    selectedBoardId,
+    selectedThemeEntryId,
+    selectedFontCollectionEntryId,
+  } = useSelection()
   const { openDialog } = useDialog()
   const { setActiveTool } = useTool()
   const scrollerRef = useScrollSelection()
@@ -39,6 +44,7 @@ export function ObjectsSidebar() {
       !selectedNodeId &&
       !selectedBoardId &&
       !selectedThemeEntryId &&
+      !selectedFontCollectionEntryId &&
       boards.length > 0
     ) {
       selectBoard(getComponentKey(boards[0]))
@@ -50,6 +56,7 @@ export function ObjectsSidebar() {
     selectedNodeId,
     selectedBoardId,
     selectedThemeEntryId,
+    selectedFontCollectionEntryId,
   ])
 
   const sections = useMemo(() => {

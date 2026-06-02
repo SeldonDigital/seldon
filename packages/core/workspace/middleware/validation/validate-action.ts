@@ -130,6 +130,7 @@ export function validateAction(workspace: Workspace, action: Action): void {
     case "set_font_collection_editor_data":
     case "set_font_collection_override":
     case "delete_font_collection":
+    case "duplicate_font_collection":
       validateFontCollectionMutation(workspace, action)
       return
     case "set_component_label":

@@ -29,8 +29,8 @@ export interface FontCollectionMetadata<
   intent: string
 }
 
-/** Custom family key convention for user-added families. */
-export type FontCollectionCustomKey = `custom${number}`
+/** Slot key convention for user-added families, such as `family01`. */
+export type FontCollectionCustomKey = `family${number}`
 
 /** Family map keyed by family slot id. */
 export type FontFamilyTable = Record<string, FontFamilyEntry>

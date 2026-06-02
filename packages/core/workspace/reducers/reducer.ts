@@ -33,6 +33,7 @@ import { addThemeCustomSpread } from "./handlers/add/add-theme-custom-spread"
 import { addThemeCustomSwatch } from "./handlers/add/add-theme-custom-swatch"
 import { addVariant } from "./handlers/add/add-variant"
 import { duplicateComponent } from "./handlers/duplicate/duplicate-component"
+import { duplicateFontCollection } from "./handlers/duplicate/duplicate-font-collection"
 import { duplicateNode } from "./handlers/duplicate/duplicate-node"
 import { duplicateTheme } from "./handlers/duplicate/duplicate-theme"
 import { insertDefaultInstance } from "./handlers/insert/insert-default-instance"
@@ -400,6 +401,8 @@ function reducer(workspace: Workspace, action: WorkspaceAction): Workspace {
       return resetFontCollectionOverride(action.payload, workspace)
     case "delete_font_collection":
       return deleteFontCollection(action.payload, workspace)
+    case "duplicate_font_collection":
+      return duplicateFontCollection(action.payload, workspace)
     case "add_font_collection_custom_family":
       return addFontCollectionCustomFamily(action.payload, workspace)
     case "remove_font_collection_custom_family":

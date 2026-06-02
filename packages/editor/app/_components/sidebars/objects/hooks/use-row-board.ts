@@ -37,8 +37,13 @@ export function useRowBoard(
 ) {
   // Core workspace and tool state
   const { activeTool, setActiveTool } = useTool()
-  const { selectBoard, selectedBoardId, selectedNodeId, selectedThemeEntryId } =
-    useSelection()
+  const {
+    selectBoard,
+    selectedBoardId,
+    selectedNodeId,
+    selectedThemeEntryId,
+    selectedFontCollectionEntryId,
+  } = useSelection()
   const { selectedNodeBoardKey } = useSelectionRelations()
   const { dispatch } = useWorkspace({ usePreview: false })
   const { dispatchWithAutoSelect } = useAutoSelectNode()
@@ -58,18 +63,24 @@ export function useRowBoard(
   const isBoardSelected =
     selectedBoardId === componentKey &&
     selectedNodeId === null &&
-    selectedThemeEntryId === null
+    selectedThemeEntryId === null &&
+    selectedFontCollectionEntryId === null
 
   const boardContainsSelectedThemeEntry =
     selectedThemeEntryId !== null &&
     variantRootIds.includes(selectedThemeEntryId)
+
+  const boardContainsSelectedFontCollectionEntry =
+    selectedFontCollectionEntryId !== null &&
+    variantRootIds.includes(selectedFontCollectionEntryId)
 
   const boardContainsSelectedNode =
     selectedNodeBoardKey !== null && selectedNodeBoardKey === componentKey
   const boardIsActive =
     isBoardSelected ||
     boardContainsSelectedNode ||
-    boardContainsSelectedThemeEntry
+    boardContainsSelectedThemeEntry ||
+    boardContainsSelectedFontCollectionEntry
   const hasVariantChildren = variantRootIds.length > 0
 
   // Expansion state
@@ -121,8 +132,15 @@ export function useRowBoard(
       return
     }
     if (isFontCollectionBoard(board)) {
-      // Font collection boards have no variants. Rows are the collection's
-      // families. Adding families arrives with the Google add flow.
+      // Duplicate the default entry to create a new font collection variant,
+      // mirroring the theme add-variant flow.
+      const defaultFontCollectionId = board.variants[0]?.id
+      if (!defaultFontCollectionId) return
+      dispatch({
+        type: "duplicate_font_collection",
+        payload: { fontCollectionId: defaultFontCollectionId },
+      })
+      setActiveTool("select")
       return
     }
     if (isIconSetBoard(board)) {
@@ -171,11 +189,6 @@ export function useRowBoard(
       return { icon: undefined, button: undefined }
     }
 
-    // Font collection boards do not add variants from the sidebar.
-    if (isFontCollectionBoard(board)) {
-      return { icon: undefined, button: undefined }
-    }
-
     return {
       icon: { icon: "material-add" as const } as IconProps,
       button: {
@@ -210,6 +223,7 @@ export function useRowBoard(
     boardIsActive,
     boardContainsSelectedNode,
     boardContainsSelectedThemeEntry,
+    boardContainsSelectedFontCollectionEntry,
     dragging,
     ref,
     variants: variantRootIds,

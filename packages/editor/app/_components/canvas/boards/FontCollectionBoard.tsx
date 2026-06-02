@@ -5,6 +5,7 @@ import { useEffect, useMemo, useRef } from "react"
 import { Board, Properties, Scroll, Unit, ValueType } from "@seldon/core"
 import { ComponentId } from "@seldon/core/components/constants"
 import type { FontFamilyEntry } from "@seldon/core/font-collections/types"
+import { isFontCollectionBoard } from "@seldon/core/workspace/model/components"
 import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
 import { themeService } from "@seldon/core/workspace/services/theme/theme.service"
 import { workspaceFontCollectionService } from "@seldon/core/workspace/services/font-collection/font-collection.service"
@@ -44,13 +45,23 @@ export function FontCollectionBoard({ board }: FontCollectionBoardProps) {
     [board, workspace],
   )
 
-  const families = useMemo(() => {
-    const collection = workspaceFontCollectionService.getBoardFontCollection(
-      boardKey,
-      workspace,
-    )
-    return collection ? Object.entries(collection.families) : []
-  }, [boardKey, workspace])
+  const specimens = useMemo(() => {
+    const entryIds = isFontCollectionBoard(board)
+      ? board.variants.map((variant) => variant.id)
+      : []
+    return entryIds.flatMap((entryId) => {
+      const collection = workspaceFontCollectionService.getFontCollection(
+        entryId,
+        workspace,
+      )
+      if (!collection) return []
+      return Object.entries(collection.families).map(([slot, family]) => ({
+        entryId,
+        slot,
+        family,
+      }))
+    })
+  }, [board, workspace])
 
   const computedProperties: Properties = isInPreviewMode
     ? {
@@ -102,16 +113,17 @@ export function FontCollectionBoard({ board }: FontCollectionBoardProps) {
           padding: "2rem",
         }}
       >
-        {families.map(([slot, family]) => {
+        {specimens.map(({ entryId, slot, family }) => {
           const selectionKey = formatResourceItemKey({
             resource: "font-collection",
             componentKey: boardKey,
+            entryId,
             slot,
           })
           return (
             <FontCollectionTypeSpecimen
-              key={slot}
-              scope={`${boardKey}-${slot}`}
+              key={`${entryId}-${slot}`}
+              scope={`${boardKey}-${entryId}-${slot}`}
               family={family}
               themes={workspace.themes}
               boardThemeId={board.componentTheme}
