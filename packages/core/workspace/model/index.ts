@@ -48,7 +48,16 @@ export type {
   EntryThemeType,
 } from "./entry-theme"
 export { isEntryThemeDefault, isEntryThemeVariant } from "./entry-theme"
-export type { EntryFontCollection, EntryFontCollectionId } from "./entry-font-collection"
+export type {
+  EntryFontCollection,
+  EntryFontCollectionId,
+  EntryFontCollectionOverrides,
+  EntryFontCollectionType,
+} from "./entry-font-collection"
+export {
+  isEntryFontCollectionDefault,
+  isEntryFontCollectionVariant,
+} from "./entry-font-collection"
 export type { EntryIconSet, EntryIconSetId } from "./entry-icon-set"
 export type { EntryMedia, EntryMediaId } from "./entry-media"
 export {
@@ -60,10 +69,16 @@ export {
   formatThemeCatalog,
   formatThemeLinkTemplateRef,
   formatThemeLink,
+  formatFontCollectionCatalogTemplateRef,
+  formatFontCollectionCatalog,
+  formatFontCollectionLinkTemplateRef,
+  formatFontCollectionLink,
   getNodeTemplateComponentId,
   getNodeTemplateNodeId,
   getThemeTemplateCatalogId,
   getThemeTemplateThemeId,
+  getFontCollectionTemplateCatalogId,
+  getFontCollectionTemplateFontCollectionId,
   parseNodeCatalogTemplateRef,
   parseNodeCatalog,
   parseNodeLinkTemplateRef,
@@ -76,11 +91,17 @@ export {
   parseThemeLink,
   parseThemeTemplateRef,
   parseThemeTemplate,
+  parseFontCollectionCatalogTemplateRef,
+  parseFontCollectionLinkTemplateRef,
+  parseFontCollectionTemplateRef,
+  parseFontCollectionTemplate,
 } from "./template-ref"
 export type {
   ParsedNodeTemplate,
   ParsedNodeTemplateRef,
   ParsedThemeTemplate,
   ParsedThemeTemplateRef,
+  ParsedFontCollectionTemplate,
+  ParsedFontCollectionTemplateRef,
 } from "./template-ref"
 export type { Workspace } from "./workspace"

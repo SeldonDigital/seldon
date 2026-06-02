@@ -327,6 +327,11 @@ export class WorkspaceMutationService {
 
       for (const ref of board.variants) {
         const variantId = ref.id as VariantId
+        // Resource boards (theme, font collection, icon set, media) reference
+        // entries outside the node map, so there is no node theme to remap.
+        if (!getWorkspaceNodes(draft)[variantId]) {
+          continue
+        }
         const variant = nodeRetrievalService.getVariant(variantId, draft)
 
         if (variant.theme === null) {

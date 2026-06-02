@@ -138,7 +138,7 @@ Resolution expects cells that are already computed. A `ValueType.COMPUTED` cell 
 
 ## Notes
 
-Import from `@seldon/core/helpers` or a subpath such as `@seldon/core/helpers/resolution`. Vocabulary for workspace and property terms is in [`../GLOSSARY.md`](../GLOSSARY.md). Workspace file shape is in [`../workspace/WORKSPACE.md`](../workspace/WORKSPACE.md). Property cells and value types are in [`../properties/PROPERTIES.md`](../properties/PROPERTIES.md). The compute pipeline is in [`../workspace/compute/README.md`](../workspace/compute/README.md).
+Import from `@seldon/core/helpers` or a subpath such as `@seldon/core/helpers/resolution`. Vocabulary for workspace and property terms is in [`GLOSSARY.md`](../../../GLOSSARY.md). Workspace file shape is in [`../workspace/WORKSPACE.md`](../workspace/WORKSPACE.md). Property cells and value types are in [`../properties/PROPERTIES.md`](../properties/PROPERTIES.md). The compute pipeline is in [`../workspace/compute/README.md`](../workspace/compute/README.md).
 
 `parseHSLString` in `color/convert-color.ts` is not re-exported from `color/index.ts`. Import the file directly if you need it.
 

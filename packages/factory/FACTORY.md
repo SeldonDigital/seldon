@@ -154,7 +154,7 @@ Each component file includes a TypeScript interface, a React component, resolved
 | React export | [export/react/README.md](./export/react/README.md) |
 | CSS export | [export/css/README.md](./export/css/README.md) |
 | Code examples | [TECHNICAL.md](./TECHNICAL.md) |
-| Vocabulary | [../core/GLOSSARY.md](../core/GLOSSARY.md) |
+| Vocabulary | [GLOSSARY.md](../../GLOSSARY.md) |
 
 Note: parts of [TECHNICAL.md](./TECHNICAL.md) predate the current API. Treat this document and the source files as the current reference for entry points and options.
 

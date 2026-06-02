@@ -134,6 +134,9 @@ export const CanvasNode = memo(function CanvasNode({
       getNodeCatalogComponentId(node, workspace) ?? catalogComponentId
     const htmlAttributes: Record<string, string> = {
       "data-canvas-node-id": node.id,
+      "data-canvas-selection-id": node.id,
+      "data-selection-id": node.id,
+      "data-selection-kind": "node",
       "data-component-id": componentId,
     }
 

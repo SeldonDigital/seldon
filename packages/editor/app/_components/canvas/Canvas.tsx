@@ -8,7 +8,7 @@ import {
   useTransformContext,
 } from "react-zoom-pan-pinch"
 import { useThrottledCallback } from "use-debounce"
-import { useCanvasHoverState } from "@lib/hooks/use-canvas-hover-state"
+import { useSetHoverState } from "@lib/hooks/use-canvas-hover-state"
 import { useDialog } from "@lib/hooks/use-dialog"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { useActiveBoard } from "@lib/workspace/use-active-board"
@@ -24,7 +24,7 @@ import { CanvasWorkspace } from "./Workspace"
 export const Canvas = () => {
   const { selectBoard, selectNode } = useSelection()
   const { activeBoard } = useActiveBoard()
-  const { setHoverState } = useCanvasHoverState()
+  const setHoverState = useSetHoverState()
   const { activeDialog } = useDialog()
 
   // We want to check if the mouse is outside the root tree and if so,

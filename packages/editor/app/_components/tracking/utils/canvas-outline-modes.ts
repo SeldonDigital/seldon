@@ -1,7 +1,30 @@
+import { COLORS } from "@lib/utils/colors"
+import type { CSSProperties } from "react"
 import type { NodeRect } from "../hooks/use-node-rects-store"
 
 /** Canvas overlay stroke width (px). */
 export const CANVAS_OVERLAY_BORDER_PX = 1
+
+/**
+ * Shared dashed-border styling for canvas selection and hover outlines.
+ *
+ * Used by both the tracked node-selection indicator and the board preview
+ * outlines (theme variants, font specimens) so every highlight matches.
+ */
+export function getSelectionOutlineStyle(
+  variant: "selection" | "hover" = "selection",
+): Pick<
+  CSSProperties,
+  "borderStyle" | "borderColor" | "borderWidth" | "boxSizing"
+> {
+  return {
+    borderStyle: "dashed",
+    borderColor:
+      variant === "hover" ? COLORS.charcoal[400] : COLORS.charcoal[700],
+    borderWidth: CANVAS_OVERLAY_BORDER_PX,
+    boxSizing: "border-box",
+  }
+}
 
 export type OverlayBox = {
   top: number

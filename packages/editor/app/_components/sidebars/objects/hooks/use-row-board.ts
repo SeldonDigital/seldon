@@ -1,6 +1,7 @@
 import { MouseEvent } from "react"
 import { Board as BoardType } from "@seldon/core"
 import {
+  isFontCollectionBoard,
   isIconSetBoard,
   isThemeBoard,
 } from "@seldon/core/workspace/model/components"
@@ -36,8 +37,13 @@ export function useRowBoard(
 ) {
   // Core workspace and tool state
   const { activeTool, setActiveTool } = useTool()
-  const { selectBoard, selectedBoardId, selectedNodeId, selectedThemeEntryId } =
-    useSelection()
+  const {
+    selectBoard,
+    selectedBoardId,
+    selectedNodeId,
+    selectedThemeEntryId,
+    selectedFontCollectionEntryId,
+  } = useSelection()
   const { selectedNodeBoardKey } = useSelectionRelations()
   const { dispatch } = useWorkspace({ usePreview: false })
   const { dispatchWithAutoSelect } = useAutoSelectNode()
@@ -57,18 +63,24 @@ export function useRowBoard(
   const isBoardSelected =
     selectedBoardId === componentKey &&
     selectedNodeId === null &&
-    selectedThemeEntryId === null
+    selectedThemeEntryId === null &&
+    selectedFontCollectionEntryId === null
 
   const boardContainsSelectedThemeEntry =
     selectedThemeEntryId !== null &&
     variantRootIds.includes(selectedThemeEntryId)
+
+  const boardContainsSelectedFontCollectionEntry =
+    selectedFontCollectionEntryId !== null &&
+    variantRootIds.includes(selectedFontCollectionEntryId)
 
   const boardContainsSelectedNode =
     selectedNodeBoardKey !== null && selectedNodeBoardKey === componentKey
   const boardIsActive =
     isBoardSelected ||
     boardContainsSelectedNode ||
-    boardContainsSelectedThemeEntry
+    boardContainsSelectedThemeEntry ||
+    boardContainsSelectedFontCollectionEntry
   const hasVariantChildren = variantRootIds.length > 0
 
   // Expansion state
@@ -115,6 +127,18 @@ export function useRowBoard(
       dispatch({
         type: "duplicate_theme",
         payload: { themeId: defaultThemeId },
+      })
+      setActiveTool("select")
+      return
+    }
+    if (isFontCollectionBoard(board)) {
+      // Duplicate the default entry to create a new font collection variant,
+      // mirroring the theme add-variant flow.
+      const defaultFontCollectionId = board.variants[0]?.id
+      if (!defaultFontCollectionId) return
+      dispatch({
+        type: "duplicate_font_collection",
+        payload: { fontCollectionId: defaultFontCollectionId },
       })
       setActiveTool("select")
       return
@@ -199,6 +223,7 @@ export function useRowBoard(
     boardIsActive,
     boardContainsSelectedNode,
     boardContainsSelectedThemeEntry,
+    boardContainsSelectedFontCollectionEntry,
     dragging,
     ref,
     variants: variantRootIds,

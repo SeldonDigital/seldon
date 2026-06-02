@@ -32,6 +32,11 @@ html {
   font-size: ${baseFontSize};
 }
 
+html,
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+
 :root {
 --hairline: 1px;
 }

@@ -24,6 +24,12 @@ export type ParsedThemeTemplateRef =
 
 export type ParsedThemeTemplate = ParsedThemeTemplateRef
 
+export type ParsedFontCollectionTemplateRef =
+  | { kind: "catalog"; fontCollectionCatalogId: string }
+  | { kind: "font-collection"; fontCollectionId: string }
+
+export type ParsedFontCollectionTemplate = ParsedFontCollectionTemplateRef
+
 export function parseNodeTemplateRef(
   value: string,
 ): ParsedNodeTemplateRef | null {
@@ -96,6 +102,50 @@ export function formatThemeLink(themeId: string): string {
   return formatThemeLinkTemplateRef(themeId)
 }
 
+export function parseFontCollectionTemplateRef(
+  value: string,
+): ParsedFontCollectionTemplateRef | null {
+  const parts = splitTemplateRef(value)
+  if (!parts) {
+    return null
+  }
+  if (parts.prefix === "catalog") {
+    return { kind: "catalog", fontCollectionCatalogId: parts.suffix }
+  }
+  if (parts.prefix === "font-collection") {
+    return { kind: "font-collection", fontCollectionId: parts.suffix }
+  }
+  return null
+}
+
+export function parseFontCollectionTemplate(
+  value: string,
+): ParsedFontCollectionTemplateRef | null {
+  return parseFontCollectionTemplateRef(value)
+}
+
+export function formatFontCollectionCatalogTemplateRef(
+  fontCollectionCatalogId: string,
+): string {
+  return `catalog:${fontCollectionCatalogId}`
+}
+
+export function formatFontCollectionCatalog(
+  fontCollectionCatalogId: string,
+): string {
+  return formatFontCollectionCatalogTemplateRef(fontCollectionCatalogId)
+}
+
+export function formatFontCollectionLinkTemplateRef(
+  fontCollectionId: string,
+): string {
+  return `font-collection:${fontCollectionId}`
+}
+
+export function formatFontCollectionLink(fontCollectionId: string): string {
+  return formatFontCollectionLinkTemplateRef(fontCollectionId)
+}
+
 export function parseNodeCatalogTemplateRef(
   value: string,
 ): Extract<ParsedNodeTemplateRef, { kind: "catalog" }> | null {
@@ -162,4 +212,32 @@ export function getThemeTemplateCatalogId(value: string): string | null {
 
 export function getThemeTemplateThemeId(value: string): string | null {
   return parseThemeLinkTemplateRef(value)?.themeId ?? null
+}
+
+export function parseFontCollectionCatalogTemplateRef(
+  value: string,
+): Extract<ParsedFontCollectionTemplateRef, { kind: "catalog" }> | null {
+  const p = parseFontCollectionTemplateRef(value)
+  return p?.kind === "catalog" ? p : null
+}
+
+export function parseFontCollectionLinkTemplateRef(
+  value: string,
+): Extract<ParsedFontCollectionTemplateRef, { kind: "font-collection" }> | null {
+  const p = parseFontCollectionTemplateRef(value)
+  return p?.kind === "font-collection" ? p : null
+}
+
+export function getFontCollectionTemplateCatalogId(
+  value: string,
+): string | null {
+  return (
+    parseFontCollectionCatalogTemplateRef(value)?.fontCollectionCatalogId ?? null
+  )
+}
+
+export function getFontCollectionTemplateFontCollectionId(
+  value: string,
+): string | null {
+  return parseFontCollectionLinkTemplateRef(value)?.fontCollectionId ?? null
 }

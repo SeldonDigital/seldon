@@ -80,6 +80,7 @@ export enum ComponentId {
   TEXT = "text",
   TITLE = "title",
   TRACK = "track",
+  TYPE_SPECIMEN = "typeSpecimen",
   UNORDERED_LIST = "unorderedList",
   VIDEO = "video",
   WIDGET_TODO = "widgetTodo",

@@ -4,7 +4,11 @@ import { Instance, Variant } from "@seldon/core"
 import { getComponentSchema } from "@seldon/core/components/catalog"
 import { rules } from "@seldon/core/rules/config/rules.config"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
-import { useCanvasHoverState } from "@lib/hooks/use-canvas-hover-state"
+import {
+  getHoverStateSnapshot,
+  useHoverStateForObjects,
+  useSetHoverState,
+} from "@lib/hooks/use-canvas-hover-state"
 import { useTool } from "@lib/hooks/use-tool"
 import { isInsertionAllowed } from "@lib/workspace/helpers/is-insertion-allowed"
 import { getNodeCatalogComponentId } from "@lib/workspace/node-tree"
@@ -21,7 +25,7 @@ import { useWorkspace } from "@lib/workspace/use-workspace"
  * @returns Object containing placement handlers, hover state checks, and node metadata
  */
 export function useSidebarPlacementTracking(node: Variant | Instance) {
-  const { hoverState, setHoverState } = useCanvasHoverState()
+  const setHoverState = useSetHoverState()
   const { activeBoard } = useActiveBoard()
   const { workspace } = useWorkspace({ usePreview: false })
   const { activeTool } = useTool()
@@ -51,6 +55,11 @@ export function useSidebarPlacementTracking(node: Variant | Instance) {
       return null
     }
   }, [node, workspace])
+
+  // Placement zones for this row react to hover on the row itself (inside) or
+  // its parent (before/after among siblings). Subscribing only to those ids
+  // keeps an unrelated hover move from re-rendering every sidebar row.
+  const hoverState = useHoverStateForObjects([node.id, parentNode?.id])
 
   const shouldTrackCanvas = useMemo(() => {
     if (!activeBoard) return true
@@ -145,13 +154,14 @@ export function useSidebarPlacementTracking(node: Variant | Instance) {
   )
 
   const handlePlacementLeave = useCallback(() => {
+    const hoverState = getHoverStateSnapshot()
     if (
       hoverState?.objectId === node.id ||
       hoverState?.objectId === parentNode?.id
     ) {
       setHoverState(null)
     }
-  }, [hoverState, node.id, parentNode?.id, setHoverState])
+  }, [node.id, parentNode?.id, setHoverState])
 
   const isPlacementHovered = useCallback(
     (placement: Placement) => {

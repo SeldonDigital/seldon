@@ -4,6 +4,7 @@ import { getChildrenIds } from "../components/get-children-ids"
 import { getComponentByNodeId } from "../components/get-component-by-node-id"
 import { getComponentVariantRootIds } from "../components/get-component-variant-root-ids"
 import { getImmediateParentId } from "../components/get-parent-ids"
+import { fontCollectionBoardKeyFromEntryId } from "../font-collections/font-collection-id"
 
 /**
  * Determines the ID of the node that was added by a workspace action.
@@ -127,6 +128,16 @@ export function getNodeIdAddedByAction(
       if (!componentKey) return null
       const board = workspace.components[componentKey]
       if (!board || board.type !== "theme") return null
+      return board.variants.at(-1)?.id ?? null
+    }
+
+    case "duplicate_font_collection": {
+      const componentKey = fontCollectionBoardKeyFromEntryId(
+        payload.fontCollectionId,
+      )
+      if (!componentKey) return null
+      const board = workspace.components[componentKey]
+      if (!board || board.type !== "font-collection") return null
       return board.variants.at(-1)?.id ?? null
     }
 

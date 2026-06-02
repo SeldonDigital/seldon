@@ -419,7 +419,7 @@ html {
   width: fit-content;
   height: fit-content;
   flex-shrink: 0;
-  font-family: Inter;
+  font-family: Inter, "IBM Plex Sans";
   font-style: normal;
   font-synthesis-style: none;
   font-weight: 500;
@@ -532,7 +532,7 @@ html {
   align-self: stretch;
   height: fit-content;
   flex-shrink: 0;
-  font-family: Inter;
+  font-family: Inter, "IBM Plex Sans";
   font-style: normal;
   font-synthesis-style: none;
   font-weight: 400;
@@ -546,7 +546,7 @@ html {
   align-self: stretch;
   height: fit-content;
   flex-shrink: 0;
-  font-family: Inter;
+  font-family: Inter, "IBM Plex Sans";
   font-style: normal;
   font-synthesis-style: none;
   font-weight: 500;
@@ -771,7 +771,7 @@ html {
   align-items: center;
   justify-content: center;
   flex: 1 0 0;
-  font-family: Inconsolata;
+  font-family: Inconsolata, "IBM Plex Sans";
   font-size: 0.75rem;
 }
 
@@ -780,7 +780,7 @@ html {
   align-items: center;
   justify-content: start;
   flex: 1 0 0;
-  font-family: Inconsolata;
+  font-family: Inconsolata, "IBM Plex Sans";
   font-size: 0.75rem;
 }
 
@@ -789,7 +789,7 @@ html {
   align-items: center;
   justify-content: end;
   flex: 1 0 0;
-  font-family: Inconsolata;
+  font-family: Inconsolata, "IBM Plex Sans";
   font-size: 0.75rem;
 }
 
@@ -811,7 +811,7 @@ html {
   align-items: center;
   justify-content: start;
   flex: 1 0 0;
-  font-family: Inconsolata;
+  font-family: Inconsolata, "IBM Plex Sans";
   font-size: 0.75rem;
 }
 
@@ -835,7 +835,7 @@ html {
   align-items: center;
   justify-content: end;
   flex: 1 0 0;
-  font-family: Inconsolata;
+  font-family: Inconsolata, "IBM Plex Sans";
   font-size: 0.75rem;
 }
 
@@ -844,7 +844,7 @@ html {
   align-items: center;
   justify-content: center;
   flex: 1 0 0;
-  font-family: Inconsolata;
+  font-family: Inconsolata, "IBM Plex Sans";
   font-size: 0.75rem;
 }
 

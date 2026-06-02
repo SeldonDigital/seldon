@@ -1,12 +1,12 @@
 import { create } from "zustand"
 import { ComponentLevel } from "@seldon/core/components/constants"
 
-type ExpandableSection = ComponentLevel | "THEME"
+type ExpandableSection = ComponentLevel | "THEME" | "FONT_COLLECTION"
 
 interface SectionExpansionState {
   sections: Record<ExpandableSection, boolean>
   toggleSection: (
-    section: ComponentLevel | "THEME" | "CORE",
+    section: ComponentLevel | "THEME" | "FONT_COLLECTION" | "CORE",
     shouldExpand?: boolean,
   ) => void
 }
@@ -15,6 +15,7 @@ const useStore = create<SectionExpansionState>((set) => ({
   sections: {
     [ComponentLevel.FRAME]: true,
     THEME: true,
+    FONT_COLLECTION: true,
     [ComponentLevel.PRIMITIVE]: true,
     [ComponentLevel.ELEMENT]: true,
     [ComponentLevel.PART]: true,
@@ -23,7 +24,7 @@ const useStore = create<SectionExpansionState>((set) => ({
     [ComponentLevel.BOARD]: true,
   },
   toggleSection: (
-    section: ComponentLevel | "THEME" | "CORE",
+    section: ComponentLevel | "THEME" | "FONT_COLLECTION" | "CORE",
     shouldExpand?: boolean,
   ) =>
     set((state) => {
@@ -49,7 +50,9 @@ export const useSectionExpansion = () => {
 
   return {
     toggleSection,
-    isSectionExpanded: (section: ComponentLevel | "THEME" | "CORE") => {
+    isSectionExpanded: (
+      section: ComponentLevel | "THEME" | "FONT_COLLECTION" | "CORE",
+    ) => {
       if (section === "CORE") {
         // CORE section is always expanded (no collapse state)
         return true

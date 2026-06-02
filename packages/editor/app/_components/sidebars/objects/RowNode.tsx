@@ -1,12 +1,12 @@
-import { CSSProperties, memo, useCallback } from "react"
+import { CSSProperties, memo } from "react"
 import { VariantId } from "@seldon/core"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
 import type { EntryNode } from "@seldon/core/workspace/types"
 import { getNode } from "@lib/workspace/workspace-accessors"
+import { useRowHighlightStyle } from "@lib/workspace/use-object-hover"
 import { useWorkspace } from "@lib/workspace/use-workspace"
 import { useSidebarCanvasTracking } from "../../tracking/hooks/use-sidebar-canvas-tracking"
 import { useSidebarRowStyling } from "../../tracking/hooks/use-sidebar-row-styling"
-import { useRowHover } from "./hooks/use-row-hover"
 import { useRowNode } from "./hooks/use-row-node"
 import { ListItemTreeNode as SeldonNode } from "../../../seldon/elements/ListItemTreeNode"
 import { LabelProps } from "../../../seldon/primitives/Label"
@@ -73,21 +73,11 @@ const RowNodeInner = memo(function RowNodeInner({
   })
 
   const { rowStyle, iconColor, labelColor } = useSidebarRowStyling(node)
-  const { setIsHovered, style: hoverStyle } = useRowHover(isSelected)
+  const hoverStyle = useRowHighlightStyle(node.id, isSelected)
   const combinedRowStyle = { ...hoverStyle, ...rowStyle }
 
   const { handleCanvasTrackingEnter, handleCanvasTrackingLeave } =
     useSidebarCanvasTracking(node)
-
-  const handleRowMouseEnter = useCallback(() => {
-    setIsHovered(true)
-    handleCanvasTrackingEnter()
-  }, [setIsHovered, handleCanvasTrackingEnter])
-
-  const handleRowMouseLeave = useCallback(() => {
-    setIsHovered(false)
-    handleCanvasTrackingLeave()
-  }, [setIsHovered, handleCanvasTrackingLeave])
 
   const applyTrackingColor = <T extends { style?: React.CSSProperties }>(
     item: T | undefined,
@@ -143,13 +133,17 @@ const RowNodeInner = memo(function RowNodeInner({
 
   return (
     <>
-      <div ref={ref} style={rowWrapperStyle}>
+      <div
+        ref={ref}
+        style={rowWrapperStyle}
+        data-selection-id={node.id}
+        data-selection-kind="node"
+      >
         <SidebarTracking
           node={node}
           isExpanded={isExpanded}
           onRowClick={onClick}
           onRowDoubleClick={onDoubleClick}
-          onHoverChange={setIsHovered}
           onCanvasTrackingEnter={handleCanvasTrackingEnter}
           onCanvasTrackingLeave={handleCanvasTrackingLeave}
         >
@@ -165,8 +159,8 @@ const RowNodeInner = memo(function RowNodeInner({
             icon4={coloredIcon4}
             onClick={onClick}
             onDoubleClick={onDoubleClick}
-            onMouseEnter={handleRowMouseEnter}
-            onMouseLeave={handleRowMouseLeave}
+            onMouseEnter={handleCanvasTrackingEnter}
+            onMouseLeave={handleCanvasTrackingLeave}
             data-testid={dataTestId}
             data-nodeid={dataNodeId}
             data-node-type={dataNodeType}

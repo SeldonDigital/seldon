@@ -6,28 +6,22 @@ import { CSSProperties } from "react"
 import { useNodeRect } from "../../hooks/use-node-rect"
 import { getHtmlElementByNodeId } from "../../../canvas/helpers/get-html-element-by-node-id"
 import { calculateSelectionOutline } from "../../utils/calculate-selection-outline"
-import {
-  getSelectionMode,
-  getWireframeMode,
-} from "../../utils/canvas-outline-modes"
+import { getWireframeMode } from "../../utils/canvas-outline-modes"
 import { calculateClippingBox } from "../../utils/calculate-clipping-box"
 
 export type SelectTrackingProps = {
   nodeId: string
   isSelected?: boolean
-  isHovered?: boolean
-  showWireframe?: boolean
 }
 
 /**
- * Canvas tracking for select mode: primary wireframes and charcoal hover outlines.
- * Selection border is rendered by IndicatorSelect.
+ * Wireframe outline for one node in wireframe mode. Hover and selection borders
+ * are drawn by the single canvas overlays, so this is wireframe-only and the
+ * selected node is skipped (its selection outline covers it).
  */
 export function SelectTracking({
   nodeId,
   isSelected = false,
-  isHovered = false,
-  showWireframe = false,
 }: SelectTrackingProps) {
   const trackedRect = useNodeRect(nodeId)
   const [directRect, setDirectRect] = useState<{
@@ -37,9 +31,7 @@ export function SelectTracking({
     height: number
   } | null>(null)
 
-  const isWireframe = showWireframe && !isSelected
-  const isHoverHighlight = isHovered && !isSelected && !showWireframe
-  const showOutline = isWireframe || isHoverHighlight
+  const showOutline = !isSelected
 
   useEffect(() => {
     if (!showOutline) {
@@ -89,14 +81,9 @@ export function SelectTracking({
 
   if (!rect) return null
 
-  let box
-  if (isWireframe) {
-    const clippedRect = calculateClippingBox({ nodeId, rect })
-    if (!clippedRect) return null
-    box = getWireframeMode(clippedRect)
-  } else {
-    box = getSelectionMode(rect)
-  }
+  const clippedRect = calculateClippingBox({ nodeId, rect })
+  if (!clippedRect) return null
+  const box = getWireframeMode(clippedRect)
 
   const style: CSSProperties = {
     top: `${box.top}px`,
@@ -107,7 +94,7 @@ export function SelectTracking({
     pointerEvents: "none",
     boxSizing: box.boxSizing,
     borderStyle: "dashed",
-    borderColor: isWireframe ? COLORS.primary[500] : COLORS.charcoal[400],
+    borderColor: COLORS.primary[500],
     borderWidth: box.borderWidth,
     zIndex: 1,
   }

@@ -15,6 +15,29 @@ There is no Docker setup, standalone API, or external database in this repo. Thi
 
 ---
 
+## Prerequisites
+
+Install **Node.js** and **npm** before you run the editor. This repo targets **Node 22** (see `volta.node` in [package.json](package.json), currently `22.18.0`). Use [nodejs.org](https://nodejs.org/) or a version manager such as [Volta](https://volta.sh/) or [nvm](https://github.com/nvm-sh/nvm).
+
+The editor is implemented with Next.js 16 (App Router). Next is installed via `npm install`; you do not install it separately.
+
+`@seldon/core` and `@seldon/factory` are not tied to Next. If you build your own editor, you can use any React setup (or no React at all for headless tooling). Replacing Next in `packages/editor` would be a deliberate port of that app, not a supported one-line switch.
+
+## Run Locally
+
+Once you have the prerequisites, clone the repository and then from the repo root in your terminal:
+
+```bash
+npm install
+npm run dev
+```
+
+---
+
+Then open `http://localhost:3000` in your browser. You should now have the editor running locally.
+
+---
+
 ## What to do with Seldon?
 
 So you've accessed the repo and you're asking, "Now what?"
@@ -61,29 +84,6 @@ If you want the lowdown, these three documents are a great way to get into what 
 
 ---
 
-## Prerequisites
-
-Install **Node.js** and **npm** before you run the editor. This repo targets **Node 22** (see `volta.node` in [package.json](package.json), currently `22.18.0`). Use [nodejs.org](https://nodejs.org/) or a version manager such as [Volta](https://volta.sh/) or [nvm](https://github.com/nvm-sh/nvm).
-
-The editor is implemented with Next.js 16 (App Router). Next is installed via `npm install`; you do not install it separately.
-
-`@seldon/core` and `@seldon/factory` are not tied to Next. If you build your own editor, you can use any React setup (or no React at all for headless tooling). Replacing Next in `packages/editor` would be a deliberate port of that app, not a supported one-line switch.
-
-## Run Locally
-
-Once you have the prerequisites, clone the repository and then from the repo root in your terminal:
-
-```bash
-npm install
-npm run dev
-```
-
----
-
-Then open `http://localhost:3000` in your browser. You should now have the editor running locally.
-
----
-
 ## The Full Breakdown
 
 Here's all of the documentation for code under `packages/`. Do not assume all of these documents are correct. There is a lot to work through, and some documents may have not been updated properly as code was pushed. If you find any errors, please report them so we can make these documents as clear and accurate as possible.
@@ -99,7 +99,7 @@ Here's all of the documentation for code under `packages/`. Do not assume all of
 | --------------------- | ----------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
 | Core Package          | Package overview, areas, and main `@seldon/core` exports    | [packages/core/README.md](packages/core/README.md)                                                               |
 | Architecture          | How catalog, properties, themes, and workspace fit together | [packages/core/CORE.md](packages/core/CORE.md)                                                                   |
-| Glossary              | Shared terms for workspace, properties, and themes          | [packages/core/GLOSSARY.md](packages/core/GLOSSARY.md)                                                           |
+| Glossary              | Shared terms for workspace, properties, and themes          | [GLOSSARY.md](GLOSSARY.md)                                                           |
 | Components            | Catalog layout and schema lookup API                        | [packages/core/components/README.md](packages/core/components/README.md)                                         |
 | └ Reference           | Schema shapes, hierarchy, and composition rules             | [packages/core/components/COMPONENTS.md](packages/core/components/COMPONENTS.md)                                 |
 | Properties            | Property pipeline folders and entry points                  | [packages/core/properties/README.md](packages/core/properties/README.md)                                         |

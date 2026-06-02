@@ -1,6 +1,8 @@
 "use client"
 
 import { selectFile } from "@lib/utils/select-file"
+import { isEntryThemeDefault } from "@seldon/core/workspace/model/entry-theme"
+import { isEntryFontCollectionDefault } from "@seldon/core/workspace/model/entry-font-collection"
 import { useRouter } from "next/navigation"
 import { useCallback, useMemo } from "react"
 import { useAddRemoveCommands } from "@lib/hooks/commands/use-add-remove-commands"
@@ -60,10 +62,37 @@ export function useMenuConfig(): HeaderConfig {
     canSelectVariant,
   } = useSelectCommands()
   const { undo, redo } = useHistory()
-  const { selectedNode, selectedBoard, selection } = useSelection()
+  const {
+    selectedNode,
+    selectedBoard,
+    selection,
+    selectedThemeEntryId,
+    selectedFontCollectionEntryId,
+  } = useSelection()
   const addToast = useAddToast()
   const { setActiveTool } = useTool()
   const { openDialog } = useDialog()
+
+  const canDeleteSelection = useMemo(() => {
+    if (selection) return true
+
+    if (selectedThemeEntryId) {
+      const entry = workspace.themes[selectedThemeEntryId]
+      return Boolean(entry) && !isEntryThemeDefault(entry)
+    }
+
+    if (selectedFontCollectionEntryId) {
+      const entry = workspace["font-collections"][selectedFontCollectionEntryId]
+      return Boolean(entry) && !isEntryFontCollectionDefault(entry)
+    }
+
+    return false
+  }, [
+    selection,
+    selectedThemeEntryId,
+    selectedFontCollectionEntryId,
+    workspace,
+  ])
 
   const goToProjects = useCallback(() => {
     router.push("/")
@@ -208,7 +237,7 @@ export function useMenuConfig(): HeaderConfig {
         label: "Delete",
         action: deleteSelection,
         shortcut: "Delete",
-        enabled: Boolean(selection),
+        enabled: canDeleteSelection,
       },
       {
         id: "duplicate",
@@ -231,7 +260,7 @@ export function useMenuConfig(): HeaderConfig {
     addVariant,
     selectedBoard,
     deleteSelection,
-    selection,
+    canDeleteSelection,
     duplicateSelection,
     selectedNode,
   ])
@@ -337,13 +366,13 @@ export function useMenuConfig(): HeaderConfig {
           "separator",
           {
             id: "auto-expand-selection",
-            label: "Auto Expand on Selection",
+            label: "Expand Tree on Selection",
             action: toggleAutoExpandOnSelection,
             active: autoExpandOnSelection,
           },
           {
             id: "auto-scroll-selection",
-            label: "Auto Scroll To Selection",
+            label: "Scroll to Selection",
             action: toggleAutoScrollToSelection,
             active: autoScrollToSelection,
           },

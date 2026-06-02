@@ -1,26 +1,29 @@
 "use client"
 
-import { useCanvasHoverState } from "@lib/hooks/use-canvas-hover-state"
+import { useHasHoverState } from "@lib/hooks/use-canvas-hover-state"
 import { useEditorConfig } from "@lib/hooks/use-editor-config"
 import { usePreview } from "@lib/hooks/use-preview"
 import { useTool } from "@lib/hooks/use-tool"
-import { useBelongsToActiveBoard } from "./hooks/use-belongs-to-active-board"
+import { useSelectedNodeId } from "@lib/workspace/use-selection"
+import { useNodeBelongsToActiveBoard } from "./hooks/use-belongs-to-active-board"
 import { useTrackNodeRects } from "./hooks/use-track-node-rects"
 import { useVisibleNodes } from "./hooks/use-visible-nodes"
-import { useSelection } from "@lib/workspace/use-selection"
 import { InsertTracking } from "./canvas-indicators/insert/Tracking"
-import { IndicatorSelect } from "./canvas-indicators/select/IndicatorSelect"
+import {
+  CanvasHoverOutline,
+  CanvasSelectionOutline,
+} from "./canvas-indicators/select/SelectionOverlays"
 import { SelectTracking } from "./canvas-indicators/select/Tracking"
 
 export function CanvasTracking() {
-  const { selectedNodeId } = useSelection()
+  const selectedNodeId = useSelectedNodeId()
   const { activeTool } = useTool()
   const { isInPreviewMode } = usePreview()
   const { visibleNodes } = useVisibleNodes()
-  const { hoverState } = useCanvasHoverState()
+  const hasHoverState = useHasHoverState()
   const nodeIds = visibleNodes.map((node) => node.id)
   const { showSelection, wireframeMode } = useEditorConfig()
-  const { nodeBelongsToActiveBoard } = useBelongsToActiveBoard()
+  const nodeBelongsToActiveBoard = useNodeBelongsToActiveBoard()
 
   const showWireframes =
     wireframeMode === "on" ||
@@ -34,6 +37,7 @@ export function CanvasTracking() {
     <>
       {showSelection &&
         activeTool === "select" &&
+        showWireframes &&
         visibleNodes.map((node) => {
           if (!nodeBelongsToActiveBoard(node.id)) return null
 
@@ -42,19 +46,12 @@ export function CanvasTracking() {
               key={node.id}
               nodeId={node.id}
               isSelected={selectedNodeId === node.id}
-              isHovered={hoverState?.objectId === node.id}
-              showWireframe={showWireframes}
             />
           )
         })}
-      {showSelection && activeTool === "select" && selectedNodeId && (
-        <IndicatorSelect
-          nodeId={selectedNodeId}
-          variant="selection"
-          showWireframe={showWireframes}
-        />
-      )}
-      {activeTool === "component" && hoverState && <InsertTracking />}
+      {showSelection && activeTool === "select" && <CanvasSelectionOutline />}
+      {showSelection && activeTool === "select" && <CanvasHoverOutline />}
+      {activeTool === "component" && hasHoverState && <InsertTracking />}
     </>
   )
 }

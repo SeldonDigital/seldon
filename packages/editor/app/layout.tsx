@@ -1,9 +1,9 @@
 import "allotment/dist/style.css"
 import type { Metadata } from "next"
-import { Fonts } from "@components/seldon/Fonts"
 import { LoadEditorFonts } from "@components/LoadEditorFonts"
 import { Toasts } from "@components/toaster/Toaster"
 import { Providers } from "./_components/Providers"
+import { plexSans } from "./plex/fonts"
 import "./globals.css"
 
 export const metadata: Metadata = {
@@ -19,10 +19,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className="scrollbar-track-transparent scrollbar-thumb-white/30 scrollbar-thumb-rounded-full"
+      className={`${plexSans.variable} scrollbar-track-transparent scrollbar-thumb-white/30 scrollbar-thumb-rounded-full`}
     >
       <body className="bg-black">
-        <Fonts />
         <LoadEditorFonts />
         <Providers>{children}</Providers>
         <Toasts />

@@ -1,82 +1,33 @@
-import { Workspace, getGoogleFontURL } from "@seldon/core"
-import { resolveValue } from "@seldon/core/helpers/resolution/resolve-value"
-import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
-import { workspaceThemeService } from "@seldon/core/workspace/services"
-import { getWorkspaceNodeList } from "../../../helpers/workspace-nodes"
+import { Workspace, getRemoteFontUrl } from "@seldon/core"
+import { workspaceFontCollectionService } from "@seldon/core/workspace/services"
 import { ExportOptions, FileToExport } from "../../types"
 import { format } from "../format"
 
+/**
+ * Builds the exported `Fonts` component from the workspace's font collections.
+ *
+ * Local and system families need no network request, so they emit nothing here.
+ * Remote families only emit a font host link when `options.enableRemoteFonts` is set.
+ */
 export async function getFontsComponent(
   workspace: Workspace,
   options: ExportOptions,
 ): Promise<FileToExport> {
-  const fonts: Set<string> = new Set()
+  const links: string[] = []
 
-  const addFontIfValid = (font: unknown) => {
-    if (
-      typeof font === "string" &&
-      font !== "inherit" &&
-      font !== "serif" &&
-      font !== "sans-serif" &&
-      font !== "monospace"
-    ) {
-      fonts.add(font)
+  if (options.enableRemoteFonts) {
+    const seen = new Set<string>()
+    const families =
+      workspaceFontCollectionService.collectWorkspaceFamilies(workspace)
+
+    for (const family of families) {
+      if (family.origin !== "remote") continue
+      const url = getRemoteFontUrl(family.name)
+      if (!url || seen.has(url)) continue
+      seen.add(url)
+      links.push(`    <link rel="stylesheet" href="${url}" />`)
     }
   }
-
-  // TODO: font collections are not yet refactored in core. For now read the
-  // first family from each font-family token's raw stack string.
-  const addFontStackIfValid = (stack: unknown) => {
-    if (typeof stack !== "string") return
-    const first = stack.split(",")[0]?.trim().replace(/^["']|["']$/g, "")
-    addFontIfValid(first)
-  }
-
-  const usedThemeIds = workspaceThemeService.collectUsedThemes(workspace)
-
-  usedThemeIds.forEach((themeId) => {
-    try {
-      const theme = workspaceThemeService.getTheme(themeId, workspace)
-      if (theme?.fontFamily) {
-        Object.values(theme.fontFamily).forEach((token) =>
-          addFontStackIfValid(token?.parameters),
-        )
-      }
-    } catch {
-      // Continue if theme is not found
-    }
-  })
-
-  const allThemes = workspaceThemeService.getThemes(workspace)
-  allThemes.forEach((theme) => {
-    if (theme?.fontFamily) {
-      Object.values(theme.fontFamily).forEach((token) =>
-        addFontStackIfValid(token?.parameters),
-      )
-    }
-  })
-
-  for (const node of getWorkspaceNodeList(workspace)) {
-    const properties = getNodeProperties(node, workspace)
-
-    if (properties.font) {
-      try {
-        const font = resolveValue(properties.font)
-        if (font?.family?.value && typeof font.family.value === "string") {
-          addFontStackIfValid(font.family.value)
-        }
-      } catch {
-        // Continue if font resolution fails
-      }
-    }
-  }
-
-  const fontLinks = Array.from(fonts)
-    .map((font) => {
-      const url = getGoogleFontURL(font)
-      return `    <link rel="stylesheet" href="${url}" />`
-    })
-    .join("\n")
 
   const content = await format(
     `import React from "react"
@@ -84,7 +35,7 @@ export async function getFontsComponent(
 export function Fonts() {
   return (
     <>
-${fontLinks}
+${links.join("\n")}
     </>
   )
 }

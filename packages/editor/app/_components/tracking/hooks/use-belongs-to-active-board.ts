@@ -14,16 +14,20 @@ export type BelongsToActiveBoardResult = {
 }
 
 /**
- * Checks board membership for canvas hover targets and for individual node ids.
+ * Per-node board-membership checker without any hover subscription.
  *
- * @returns Hover flag for insertion/select overlays and a per-node checker for visible-node filtering.
+ * Consumers that only filter nodes by board (e.g. visible-node tracking) use
+ * this so they never re-render on hover changes.
+ *
+ * @returns A checker for whether a node id belongs to the active board.
  */
-export function useBelongsToActiveBoard(): BelongsToActiveBoardResult {
-  const { hoverState } = useCanvasHoverState()
+export function useNodeBelongsToActiveBoard(): (
+  nodeId: VariantId | InstanceId,
+) => boolean {
   const { activeBoard } = useActiveBoard()
   const { workspace } = useWorkspace()
 
-  const nodeBelongsToActiveBoard = useCallback(
+  return useCallback(
     (nodeId: VariantId | InstanceId) => {
       if (!activeBoard) return false
 
@@ -40,6 +44,17 @@ export function useBelongsToActiveBoard(): BelongsToActiveBoardResult {
     },
     [activeBoard, workspace],
   )
+}
+
+/**
+ * Checks board membership for canvas hover targets and for individual node ids.
+ *
+ * @returns Hover flag for insertion/select overlays and a per-node checker for visible-node filtering.
+ */
+export function useBelongsToActiveBoard(): BelongsToActiveBoardResult {
+  const { hoverState } = useCanvasHoverState()
+  const { activeBoard } = useActiveBoard()
+  const nodeBelongsToActiveBoard = useNodeBelongsToActiveBoard()
 
   const hoverBelongsToActiveBoard = useMemo(() => {
     if (!hoverState || !activeBoard) return false
