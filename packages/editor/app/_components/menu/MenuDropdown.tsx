@@ -33,7 +33,7 @@ export function MenuDropdown({ menu }: MenuDropdownProps) {
           style={{
             borderRadius: "var(--sdn-corners-tight)",
             padding: "0.5rem 0.75rem",
-            fontSize: "var(--sdn-font-size-small)",
+            fontSize: "var(--sdn-font-size-xsmall)",
             color: "#F5F5F5",
             outline: "none",
             backgroundColor:
@@ -122,7 +122,7 @@ function DropdownItem({ item, hasActiveItem, onSelect }: DropdownItemProps) {
     justifyContent: "space-between",
     borderRadius: "0.125rem",
     padding: "0.5rem 0.75rem",
-    fontSize: "var(--sdn-font-size-small)",
+    fontSize: "var(--sdn-font-size-xsmall)",
     outline: "none",
     pointerEvents: item.disabled ? "none" : undefined,
     opacity: item.disabled ? 0.5 : undefined,

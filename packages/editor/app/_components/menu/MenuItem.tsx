@@ -26,7 +26,7 @@ export function MenuItem({ item, onSelect }: MenuItemProps) {
     alignItems: "center",
     paddingLeft: "var(--sdn-padding-compact)",
     paddingRight: "var(--sdn-padding-compact)",
-    fontSize: "var(--sdn-font-size-small)",
+    fontSize: "var(--sdn-font-size-xsmall)",
     color: active
       ? "var(--sdn-swatch-seldon-blue)"
       : "var(--sdn-swatch-white)",
