@@ -99,7 +99,7 @@ Here's all of the documentation for code under `packages/`. Do not assume all of
 | --------------------- | ----------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
 | Core Package          | Package overview, areas, and main `@seldon/core` exports    | [packages/core/README.md](packages/core/README.md)                                                               |
 | Architecture          | How catalog, properties, themes, and workspace fit together | [packages/core/CORE.md](packages/core/CORE.md)                                                                   |
-| Glossary              | Shared terms for workspace, properties, and themes          | [packages/core/GLOSSARY.md](packages/core/GLOSSARY.md)                                                           |
+| Glossary              | Shared terms for workspace, properties, and themes          | [GLOSSARY.md](GLOSSARY.md)                                                           |
 | Components            | Catalog layout and schema lookup API                        | [packages/core/components/README.md](packages/core/components/README.md)                                         |
 | └ Reference           | Schema shapes, hierarchy, and composition rules             | [packages/core/components/COMPONENTS.md](packages/core/components/COMPONENTS.md)                                 |
 | Properties            | Property pipeline folders and entry points                  | [packages/core/properties/README.md](packages/core/properties/README.md)                                         |

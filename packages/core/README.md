@@ -7,7 +7,7 @@ Seldon Core is the design-time kernel: the **catalog** of components, the **prop
 ## Related Docs
 
 - [`CORE.md`](./CORE.md)
-- [`GLOSSARY.md`](./GLOSSARY.md)
+- [`GLOSSARY.md`](../../GLOSSARY.md)
 
 ---
 
