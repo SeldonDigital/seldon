@@ -13,7 +13,7 @@ import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { useWorkspace } from "@lib/workspace/use-workspace"
 import { Frame } from "../../seldon/frames/Frame"
 import { CssPortal } from "../CssPortal"
-import { ThemePreviewNode } from "./ThemePreviewNode"
+import { BoardPreviewNode } from "./BoardPreviewNode"
 
 export type ThemeBoardProps = {
   board: Board
@@ -134,7 +134,7 @@ function ThemeVariantDialog({ variantEntryId, themes }: ThemeVariantDialogProps)
   }
 
   return (
-    <ThemePreviewNode
+    <BoardPreviewNode
       nodeId={rootId}
       workspace={previewWorkspace}
       scope={variantEntryId}

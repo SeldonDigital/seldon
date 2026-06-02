@@ -4,15 +4,17 @@ import { Board } from "@seldon/core"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { Label } from "@components/seldon/primitives/Label"
 
-export type AssemblyBoardProps = {
+export type PlaygroundBoardPlaceholderProps = {
   board: Board
 }
 
 /**
- * Assembly board component that displays a "No Content" message.
- * This is a placeholder until proper Assembly content rendering is implemented.
+ * Playground board placeholder that displays a "No Content" message.
+ * This is a stub until playground rendering is implemented.
  */
-export function AssemblyBoard({ board }: AssemblyBoardProps) {
+export function PlaygroundBoardPlaceholder({
+  board,
+}: PlaygroundBoardPlaceholderProps) {
   return (
     <div
       data-board-id={getComponentKey(board)}

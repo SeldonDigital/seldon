@@ -10,26 +10,27 @@ import {
 } from "@lib/workspace/node-tree"
 import { ComponentRenderer } from "../ComponentRenderer"
 
-type ThemePreviewNodeProps = {
+type BoardPreviewNodeProps = {
   nodeId: string
   workspace: Workspace
-  /** Per-variant className scope so identical node ids do not share CSS across previews. */
+  /** Per-preview className scope so identical node ids do not share CSS across previews. */
   scope: string
   isRoot?: boolean
 }
 
 /**
- * Renders one node of a non-persisted preview tree (e.g. a themed Dialog).
+ * Renders one node of a non-persisted preview tree (e.g. a themed Dialog or a
+ * font specimen).
  *
  * Mirrors `CanvasNode` but reads from the passed workspace instead of the
- * editor store, so the same component tree can be drawn once per theme variant.
+ * editor store, so the same component tree can be drawn once per preview item.
  */
-export function ThemePreviewNode({
+export function BoardPreviewNode({
   nodeId,
   workspace,
   scope,
   isRoot = false,
-}: ThemePreviewNodeProps) {
+}: BoardPreviewNodeProps) {
   const node = workspace.nodes[nodeId]
   if (!node) {
     return null
@@ -68,7 +69,7 @@ export function ThemePreviewNode({
       nodeId={`${cssScope}-${nodeId}` as VariantId}
     >
       {childNodeIds.map((childNodeId) => (
-        <ThemePreviewNode
+        <BoardPreviewNode
           key={childNodeId}
           nodeId={childNodeId}
           workspace={workspace}

@@ -14,10 +14,10 @@ import { useWorkspace } from "@lib/workspace/use-workspace"
 import { CssPortal } from "../CssPortal"
 import { CanvasNode } from "../Node"
 
-export type CanvasBoardProps = {
+export type ComponentBoardProps = {
   board: Board
 }
-export function CanvasBoard({ board }: CanvasBoardProps) {
+export function ComponentBoard({ board }: ComponentBoardProps) {
   const { workspace } = useWorkspace()
   const { selectedBoardId } = useSelection()
   const boardKey =

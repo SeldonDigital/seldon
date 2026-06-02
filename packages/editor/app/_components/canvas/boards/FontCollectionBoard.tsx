@@ -20,7 +20,7 @@ import {
 import { useWorkspace } from "@lib/workspace/use-workspace"
 import { Frame } from "../../seldon/frames/Frame"
 import { CssPortal } from "../CssPortal"
-import { ThemePreviewNode } from "./ThemePreviewNode"
+import { BoardPreviewNode } from "./BoardPreviewNode"
 
 export type FontCollectionBoardProps = {
   board: Board
@@ -213,7 +213,7 @@ function FontCollectionTypeSpecimen({
         outlineOffset: "4px",
       }}
     >
-      <ThemePreviewNode
+      <BoardPreviewNode
         nodeId={rootId}
         workspace={previewWorkspace}
         scope={scope}
