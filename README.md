@@ -15,6 +15,29 @@ There is no Docker setup, standalone API, or external database in this repo. Thi
 
 ---
 
+## Prerequisites
+
+Install **Node.js** and **npm** before you run the editor. This repo targets **Node 22** (see `volta.node` in [package.json](package.json), currently `22.18.0`). Use [nodejs.org](https://nodejs.org/) or a version manager such as [Volta](https://volta.sh/) or [nvm](https://github.com/nvm-sh/nvm).
+
+The editor is implemented with Next.js 16 (App Router). Next is installed via `npm install`; you do not install it separately.
+
+`@seldon/core` and `@seldon/factory` are not tied to Next. If you build your own editor, you can use any React setup (or no React at all for headless tooling). Replacing Next in `packages/editor` would be a deliberate port of that app, not a supported one-line switch.
+
+## Run Locally
+
+Once you have the prerequisites, clone the repository and then from the repo root in your terminal:
+
+```bash
+npm install
+npm run dev
+```
+
+---
+
+Then open `http://localhost:3000` in your browser. You should now have the editor running locally.
+
+---
+
 ## What to do with Seldon?
 
 So you've accessed the repo and you're asking, "Now what?"
@@ -58,29 +81,6 @@ If you want the lowdown, these three documents are a great way to get into what 
 - `packages/core` [packages/core/CORE.md](packages/core/CORE.md): This is the workspace, theme, and reducer logic used by an editor or agent to mutate workspace.json files
 - `packages/editor`  [packages/editor/EDITOR.md](packages/editor/EDITOR.md): Next.js visual editor run on localhost
 - `packages/factory`  [packages/factory/FACTORY.md](packages/factory/FACTORY.md): Component Export, CSS, and code generation from a valid workspace.json file
-
----
-
-## Prerequisites
-
-Install **Node.js** and **npm** before you run the editor. This repo targets **Node 22** (see `volta.node` in [package.json](package.json), currently `22.18.0`). Use [nodejs.org](https://nodejs.org/) or a version manager such as [Volta](https://volta.sh/) or [nvm](https://github.com/nvm-sh/nvm).
-
-The editor is implemented with Next.js 16 (App Router). Next is installed via `npm install`; you do not install it separately.
-
-`@seldon/core` and `@seldon/factory` are not tied to Next. If you build your own editor, you can use any React setup (or no React at all for headless tooling). Replacing Next in `packages/editor` would be a deliberate port of that app, not a supported one-line switch.
-
-## Run Locally
-
-Once you have the prerequisites, clone the repository and then from the repo root in your terminal:
-
-```bash
-npm install
-npm run dev
-```
-
----
-
-Then open `http://localhost:3000` in your browser. You should now have the editor running locally.
 
 ---
 

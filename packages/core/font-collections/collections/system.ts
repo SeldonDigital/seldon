@@ -13,20 +13,50 @@ const collection: StockFontCollection = {
     intent: "Default font collection. Uses fonts already available on the device.",
   },
   families: {
-    sans: {
-      name: "System Sans",
+    system: {
+      name: "System",
       origin: "local",
-      stack: "system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
+      stack: "system-ui",
     },
-    serif: {
-      name: "System Serif",
+    appleSystem: {
+      name: "Apple System",
       origin: "local",
-      stack: "Georgia, Cambria, 'Times New Roman', Times, serif",
+      stack: "-apple-system",
     },
-    mono: {
-      name: "System Mono",
+    cantarell: {
+      name: "Cantarell",
       origin: "local",
-      stack: "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace",
+      stack: "Cantarell",
+    },
+    helveticaNeue: {
+      name: "Helvetica Neue",
+      origin: "local",
+      stack: '"Helvetica Neue"',
+    },
+    openSans: {
+      name: "Open Sans",
+      origin: "local",
+      stack: '"Open Sans"',
+    },
+    roboto: {
+      name: "Roboto",
+      origin: "local",
+      stack: "Roboto",
+    },
+    segoe: {
+      name: "Segoe",
+      origin: "local",
+      stack: '"Segoe UI"',
+    },
+    sansSerif: {
+      name: "Sans Serif",
+      origin: "local",
+      stack: "sans-serif",
+    },
+    ubuntu: {
+      name: "Ubuntu",
+      origin: "local",
+      stack: "Ubuntu",
     },
   },
 }

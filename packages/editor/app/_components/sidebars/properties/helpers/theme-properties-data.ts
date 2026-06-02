@@ -1,5 +1,6 @@
 import { Theme } from "@seldon/core/themes/types"
 import { ValueType } from "@seldon/core/properties"
+import { getFamilyNameByValue } from "@seldon/core"
 import { getAllThemeTokenSchemas } from "@seldon/core/themes/schemas"
 import type { ThemeTokenSchema } from "@seldon/core/themes/schemas"
 import { FlatProperty } from "./properties-data"
@@ -265,6 +266,16 @@ function createFlatPropertyFromSchema(
     if (matchingOption) {
       actualValue = matchingOption.label
     }
+  }
+
+  // Font slot options come from the workspace at the picker layer, so they are not
+  // on the static schema. Map the stored CSS token back to its friendly family name.
+  if (
+    (schema.key === "fontFamily.primary" ||
+      schema.key === "fontFamily.secondary") &&
+    typeof value === "string"
+  ) {
+    actualValue = getFamilyNameByValue(value) ?? value
   }
 
   const isColorKey =

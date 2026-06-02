@@ -12,6 +12,7 @@ export {
   normalizeFontCollection,
   getRemoteFontUrl,
   isRemoteFontFamily,
+  getFamilyNameByValue,
 } from "./helpers"
 export {
   STOCK_FONT_COLLECTIONS,

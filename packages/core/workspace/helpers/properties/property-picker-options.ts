@@ -231,7 +231,7 @@ function buildPresetOptions(
   if (schema.name === "fontFamily" && workspace) {
     const familyOptions = workspaceFontCollectionService
       .collectWorkspaceFamilies(workspace)
-      .map((family) => ({ value: family.name, name: family.name }))
+      .map((family) => ({ name: family.name, value: family.stack ?? family.name }))
     return [...normalized, ...familyOptions]
   }
 
@@ -529,6 +529,16 @@ function buildPropertyOptionsFromSchema(
 
   groups.push(buildDefaultOptions(schema))
 
+  // Font family lists the theme slots (Primary/Secondary) first as their own group,
+  // then a separated group of font-collection families. Other properties keep theme
+  // options last.
+  const isFontFamily = schema.name === "fontFamily"
+  const themeOptions = input.theme ? buildThemeOptions(schema, input.theme) : []
+
+  if (isFontFamily && themeOptions.length > 0) {
+    groups.push(themeOptions)
+  }
+
   const presetOptions = buildPresetOptions(schema, input.theme, input.workspace)
   if (presetOptions.length > 0) {
     groups.push(...groupPresetOptions(schema, presetOptions))
@@ -545,11 +555,8 @@ function buildPropertyOptionsFromSchema(
     }
   }
 
-  if (input.theme) {
-    const themeOptions = buildThemeOptions(schema, input.theme)
-    if (themeOptions.length > 0) {
-      groups.push(themeOptions)
-    }
+  if (!isFontFamily && themeOptions.length > 0) {
+    groups.push(themeOptions)
   }
 
   // Place the active exact value in its own separated group directly below
@@ -672,6 +679,21 @@ function buildThemeTokenPickerOptions(
   const tokenSchema = resolveThemeTokenEntry(input.path, input.theme)
   if (!tokenSchema) {
     return null
+  }
+
+  // The theme font slots pick from the workspace's font collection boards, like the
+  // node-level `fontFamily` picker. Local families store their CSS token; remote
+  // families store their name.
+  if (
+    input.path === "fontFamily.primary" ||
+    input.path === "fontFamily.secondary"
+  ) {
+    const familyOptions = workspaceFontCollectionService
+      .collectWorkspaceFamilies(input.workspace)
+      .map((family) => ({ name: family.name, value: family.stack ?? family.name }))
+    if (familyOptions.length > 0) {
+      return { options: [familyOptions], hasCurrentValue: false }
+    }
   }
 
   if (tokenSchema.propertyKey) {

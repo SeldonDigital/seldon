@@ -7,10 +7,14 @@ import { StringValue } from "../../shared/exact/string"
 import { EmptyValue } from "../../shared/empty/empty"
 import { InheritValue } from "../../shared/inherit/inherit"
 
-/** Family names from every packaged collection (`system` + `googleFonts`). Used to validate option values. */
-const PACKAGED_FAMILY_NAMES: ReadonlySet<string> = new Set(
+/**
+ * Stored option values from every packaged collection (`system` + `googleFonts`). Local
+ * families store their CSS token (`family.stack`); remote families store their `name`.
+ * Used to validate option values.
+ */
+const PACKAGED_FAMILY_VALUES: ReadonlySet<string> = new Set(
   FONT_COLLECTIONS.flatMap((collection) =>
-    Object.values(collection.families).map((family) => family.name),
+    Object.values(collection.families).map((family) => family.stack ?? family.name),
   ),
 )
 
@@ -63,7 +67,7 @@ export const fontFamilySchema: PropertySchema = {
     option: (value: unknown) => {
       if (typeof value !== "string" || value.length === 0) return false
       if (value.startsWith("@fontFamily.")) return true
-      return PACKAGED_FAMILY_NAMES.has(value)
+      return PACKAGED_FAMILY_VALUES.has(value)
     },
     themeCategorical: (value: unknown, theme?: Theme) => {
       if (!theme || typeof value !== "string") return false
@@ -74,11 +78,9 @@ export const fontFamilySchema: PropertySchema = {
   },
   presetOptions: (_workspace?: Workspace) => {
     // Families come from the workspace's font collection boards, injected by the
-    // picker layer. The schema only contributes the theme font slots here.
-    return [
-      { value: "@fontFamily.primary", name: "Primary" },
-      { value: "@fontFamily.secondary", name: "Secondary" },
-    ]
+    // picker layer. Theme font slots come from `themeCategoricalKeys` below, so
+    // this list stays empty to avoid duplicating them.
+    return []
   },
   themeCategoricalKeys: (theme: Theme) =>
     (Object.keys(theme.fontFamily) as string[]).map(
