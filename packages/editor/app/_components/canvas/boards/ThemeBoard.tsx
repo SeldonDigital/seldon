@@ -134,11 +134,18 @@ function ThemeVariantDialog({ variantEntryId, themes }: ThemeVariantDialogProps)
   }
 
   return (
-    <BoardPreviewNode
-      nodeId={rootId}
-      workspace={previewWorkspace}
-      scope={variantEntryId}
-      isRoot
-    />
+    <div
+      data-canvas-selection-id={variantEntryId}
+      data-selection-id={variantEntryId}
+      data-selection-kind="theme"
+      style={{ position: "relative" }}
+    >
+      <BoardPreviewNode
+        nodeId={rootId}
+        workspace={previewWorkspace}
+        scope={variantEntryId}
+        isRoot
+      />
+    </div>
   )
 }

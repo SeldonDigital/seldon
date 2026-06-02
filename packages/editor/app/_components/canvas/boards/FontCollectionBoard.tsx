@@ -1,7 +1,7 @@
 "use client"
 
 import { getCssFromProperties } from "@seldon/factory/styles/css-properties/get-css-from-properties"
-import { useEffect, useMemo, useRef } from "react"
+import { useMemo } from "react"
 import { Board, Properties, Scroll, Unit, ValueType } from "@seldon/core"
 import { ComponentId } from "@seldon/core/components/constants"
 import type { FontFamilyEntry } from "@seldon/core/font-collections/types"
@@ -14,13 +14,11 @@ import { getTypeSpecimenPreviewBase } from "@lib/font-collections/build-type-spe
 import { usePreview } from "@lib/hooks/use-preview"
 import { getNodeCatalogComponentId } from "@lib/workspace/node-tree"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
-import {
-  formatResourceItemKey,
-  useSelectedResourceItemKey,
-} from "@lib/workspace/use-selection"
+import { formatResourceItemKey } from "@lib/workspace/use-selection"
 import { useWorkspace } from "@lib/workspace/use-workspace"
 import { Frame } from "../../seldon/frames/Frame"
 import { CssPortal } from "../CssPortal"
+import { canvasSelectionId } from "../helpers/canvas-selection-target"
 import { BoardPreviewNode } from "./BoardPreviewNode"
 
 export type FontCollectionBoardProps = {
@@ -38,7 +36,6 @@ export function FontCollectionBoard({ board }: FontCollectionBoardProps) {
   const className = `board-${boardKey}`
   const properties = getNodeProperties(board, workspace)
   const { device, isInPreviewMode } = usePreview()
-  const selectedResourceItemKey = useSelectedResourceItemKey()
 
   const boardTheme = useMemo(
     () => themeService.getObjectTheme(board, workspace),
@@ -124,10 +121,11 @@ export function FontCollectionBoard({ board }: FontCollectionBoardProps) {
             <FontCollectionTypeSpecimen
               key={`${entryId}-${slot}`}
               scope={`${boardKey}-${entryId}-${slot}`}
+              entryId={entryId}
+              resourceItemKey={selectionKey}
               family={family}
               themes={workspace.themes}
               boardThemeId={board.componentTheme}
-              isSelected={selectedResourceItemKey === selectionKey}
             />
           )
         })}
@@ -138,10 +136,11 @@ export function FontCollectionBoard({ board }: FontCollectionBoardProps) {
 
 type FontCollectionTypeSpecimenProps = {
   scope: string
+  entryId: string
+  resourceItemKey: string
   family: FontFamilyEntry
   themes: Workspace["themes"]
   boardThemeId: string
-  isSelected: boolean
 }
 
 /**
@@ -154,13 +153,13 @@ type FontCollectionTypeSpecimenProps = {
  */
 function FontCollectionTypeSpecimen({
   scope,
+  entryId,
+  resourceItemKey,
   family,
   themes,
   boardThemeId,
-  isSelected,
 }: FontCollectionTypeSpecimenProps) {
   const { workspace: typeSpecimenBase, rootId } = getTypeSpecimenPreviewBase()
-  const containerRef = useRef<HTMLDivElement>(null)
 
   const fontValue = family.stack ?? family.name
 
@@ -203,27 +202,16 @@ function FontCollectionTypeSpecimen({
     } as Workspace
   }, [typeSpecimenBase, rootId, themes, boardThemeId, fontValue, family.name])
 
-  useEffect(() => {
-    if (isSelected && containerRef.current) {
-      containerRef.current.scrollIntoView({
-        behavior: "smooth",
-        block: "nearest",
-      })
-    }
-  }, [isSelected])
-
   if (!previewWorkspace || !rootId) {
     return null
   }
 
   return (
     <div
-      ref={containerRef}
-      style={{
-        borderRadius: "0.5rem",
-        outline: isSelected ? "2px solid var(--seldon-accent, #3b82f6)" : "none",
-        outlineOffset: "4px",
-      }}
+      data-canvas-selection-id={canvasSelectionId(resourceItemKey, entryId)}
+      data-selection-id={resourceItemKey}
+      data-selection-kind="resourceItem"
+      style={{ position: "relative" }}
     >
       <BoardPreviewNode
         nodeId={rootId}

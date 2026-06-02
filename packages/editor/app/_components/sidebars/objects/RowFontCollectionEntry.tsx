@@ -6,13 +6,13 @@ import { isEntryFontCollectionDefault } from "@seldon/core/workspace/model/entry
 import { workspaceFontCollectionService } from "@seldon/core/workspace/services/font-collection/font-collection.service"
 import { useTool } from "@lib/hooks/use-tool"
 import { useSelection } from "@lib/workspace/use-selection"
+import { useRowHighlightStyle } from "@lib/workspace/use-object-hover"
 import { useWorkspace } from "@lib/workspace/use-workspace"
 import { useSidebarRowStyling } from "../../tracking/hooks/use-sidebar-row-styling"
 import { useEditState } from "./hooks/use-edit-state"
 import { useExpansion, useIsExpanded } from "./hooks/use-expansion"
 import { useRowButton } from "./hooks/use-row-button"
 import { useRowClick } from "./hooks/use-row-click"
-import { useRowHover } from "./hooks/use-row-hover"
 import { useRowToggle } from "./hooks/use-row-toggle"
 import { ListItemTreeNode as SeldonNode } from "../../../seldon/elements/ListItemTreeNode"
 import { LabelProps } from "../../../seldon/primitives/Label"
@@ -95,16 +95,8 @@ export function RowFontCollectionEntry({
     { id: fontCollectionEntryId } as unknown as Variant,
     { isSelected },
   )
-  const { setIsHovered, style: hoverStyle } = useRowHover(isSelected)
+  const hoverStyle = useRowHighlightStyle(fontCollectionEntryId, isSelected)
   const combinedRowStyle = { ...hoverStyle, ...rowStyle }
-
-  const handleMouseEnter = useCallback(() => {
-    if (!isActive) setIsHovered(true)
-  }, [isActive, setIsHovered])
-
-  const handleMouseLeave = useCallback(() => {
-    setIsHovered(false)
-  }, [setIsHovered])
 
   const { createToggleButton, createToggleIcon, createStaticButton2, createIcon2 } =
     useRowButton({
@@ -145,7 +137,11 @@ export function RowFontCollectionEntry({
 
   return (
     <>
-      <div style={rowWrapperStyle}>
+      <div
+        style={rowWrapperStyle}
+        data-selection-id={fontCollectionEntryId}
+        data-selection-kind="fontCollection"
+      >
         <div style={relativeFullWidthStyle}>
           <SeldonNode
             buttonIconic={createToggleButton()}
@@ -155,8 +151,6 @@ export function RowFontCollectionEntry({
             label={label}
             onClick={onClick}
             onDoubleClick={onDoubleClick}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
             data-testid="objects-sidebar-font-collection-entry"
             data-font-collection-entry-id={fontCollectionEntryId}
             data-active={isActive}

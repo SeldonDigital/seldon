@@ -1,10 +1,10 @@
 "use client"
 
-import { CSSProperties, useCallback } from "react"
+import { CSSProperties } from "react"
 import type { EntryIconSetId } from "@seldon/core/workspace/types"
 import { useTool } from "@lib/hooks/use-tool"
+import { useRowHighlightStyle } from "@lib/workspace/use-object-hover"
 import { useRowClick } from "./hooks/use-row-click"
-import { useRowHover } from "./hooks/use-row-hover"
 import { ListItemTreeNode as SeldonNode } from "../../../seldon/elements/ListItemTreeNode"
 import { LabelProps } from "../../../seldon/primitives/Label"
 
@@ -38,15 +38,7 @@ export function RowIconSetEntry({
     onSelect: () => {},
   })
 
-  const { setIsHovered, style: hoverStyle } = useRowHover(false)
-
-  const handleMouseEnter = useCallback(() => {
-    if (!isActive) setIsHovered(true)
-  }, [isActive, setIsHovered])
-
-  const handleMouseLeave = useCallback(() => {
-    setIsHovered(false)
-  }, [setIsHovered])
+  const hoverStyle = useRowHighlightStyle(iconSetEntryId, false)
 
   const labelProps: LabelProps = {
     children: label,
@@ -55,13 +47,15 @@ export function RowIconSetEntry({
   if (!show) return null
 
   return (
-    <div style={rowWrapperStyle}>
+    <div
+      style={rowWrapperStyle}
+      data-selection-id={iconSetEntryId}
+      data-selection-kind="resourceItem"
+    >
       <SeldonNode
         icon={{ icon: "seldon-icon" }}
         label={labelProps}
         onClick={onClick}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
         data-testid="objects-sidebar-icon-set-entry"
         data-icon-set-entry-id={iconSetEntryId}
         data-active={isActive}

@@ -7,10 +7,10 @@ import {
 } from "@seldon/core/workspace/model/components"
 import { useSidebarCanvasTrackingBoard } from "../../tracking/hooks/use-sidebar-canvas-tracking"
 import { useSidebarRowStyling } from "../../tracking/hooks/use-sidebar-row-styling"
+import { useRowHighlightStyle } from "@lib/workspace/use-object-hover"
 import { useWorkspace } from "@lib/workspace/use-workspace"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { useRowBoard } from "./hooks/use-row-board"
-import { useRowHover } from "./hooks/use-row-hover"
 import { ListItemTreeNode as SeldonNode } from "../../../seldon/elements/ListItemTreeNode"
 import { LabelProps } from "../../../seldon/primitives/Label"
 import { relativeFullWidthStyle } from "../helpers/sidebar-styles"
@@ -34,8 +34,8 @@ interface RowBoardProps {
 
 /**
  * Renders a board row in the objects sidebar.
- * Handles board selection, expansion, and canvas tracking.
- * Uses useRowHover for hover background (boards don't use tracking system styling).
+ * Handles board selection, expansion, and canvas tracking. Hover highlight comes
+ * from the shared hover bridge via the tree-root controller.
  */
 export const RowBoard = memo(function RowBoard({
   board,
@@ -66,7 +66,8 @@ export const RowBoard = memo(function RowBoard({
   } = useRowBoard(board, { show, disableReordering })
 
   // Styling: row colors, icon colors, hover effects
-  const { setIsHovered, style: hoverStyle } = useRowHover(isBoardSelected)
+  const boardKey = getComponentKey(board)
+  const hoverStyle = useRowHighlightStyle(boardKey, isBoardSelected)
   const { rowStyle, iconColor, labelColor } = useSidebarRowStyling(
     board as unknown as Variant,
     { isSelected: boardIsActive },
@@ -83,18 +84,17 @@ export const RowBoard = memo(function RowBoard({
   const { handleCanvasTrackingEnter, handleCanvasTrackingLeave } =
     useSidebarCanvasTrackingBoard(board)
 
-  // Event handlers: combine hover state with canvas tracking
+  // Event handlers: canvas insertion tracking only; hover highlight is driven
+  // centrally by the tree-root controller via the shared hover bridge.
   const handleRowMouseEnter = useCallback(() => {
     if (!boardIsActive) {
-      setIsHovered(true)
       handleCanvasTrackingEnter()
     }
-  }, [boardIsActive, setIsHovered, handleCanvasTrackingEnter])
+  }, [boardIsActive, handleCanvasTrackingEnter])
 
   const handleRowMouseLeave = useCallback(() => {
-    setIsHovered(false)
     handleCanvasTrackingLeave()
-  }, [setIsHovered, handleCanvasTrackingLeave])
+  }, [handleCanvasTrackingLeave])
 
   // Apply tracking colors: icons get color
   const applyTrackingColor = <T extends { style?: React.CSSProperties }>(
@@ -124,13 +124,18 @@ export const RowBoard = memo(function RowBoard({
 
   // Data attributes
   const dataTestId = "objects-sidebar-board"
-  const dataComponentId = getComponentKey(board)
+  const dataComponentId = boardKey
 
   if (!show) return null
 
   return (
     <>
-      <div ref={ref} style={rowWrapperStyle}>
+      <div
+        ref={ref}
+        style={rowWrapperStyle}
+        data-selection-id={boardKey}
+        data-selection-kind="board"
+      >
         <div style={relativeFullWidthStyle}>
           <SeldonNode
             buttonIconic={buttonIconic}

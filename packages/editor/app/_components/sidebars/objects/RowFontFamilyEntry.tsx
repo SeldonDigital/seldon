@@ -1,6 +1,6 @@
 "use client"
 
-import { CSSProperties, useCallback } from "react"
+import { CSSProperties } from "react"
 import { Variant } from "@seldon/core"
 import type { FontFamilyEntry } from "@seldon/core/font-collections/types"
 import { useFontAvailable } from "@lib/hooks/use-font-available"
@@ -11,9 +11,9 @@ import {
   useIsResourceItemSelected,
   useSelection,
 } from "@lib/workspace/use-selection"
+import { useRowHighlightStyle } from "@lib/workspace/use-object-hover"
 import { useSidebarRowStyling } from "../../tracking/hooks/use-sidebar-row-styling"
 import { useRowClick } from "./hooks/use-row-click"
-import { useRowHover } from "./hooks/use-row-hover"
 import { ListItemTreeNode as SeldonNode } from "../../../seldon/elements/ListItemTreeNode"
 import { IconProps } from "../../../seldon/primitives/Icon"
 import { LabelProps } from "../../../seldon/primitives/Label"
@@ -67,16 +67,8 @@ export function RowFontFamilyEntry({
     { id: selectionKey } as unknown as Variant,
     { isSelected },
   )
-  const { setIsHovered, style: hoverStyle } = useRowHover(isSelected)
+  const hoverStyle = useRowHighlightStyle(selectionKey, isSelected)
   const combinedRowStyle = { ...hoverStyle, ...rowStyle }
-
-  const handleMouseEnter = useCallback(() => {
-    if (!parentIsSelected && !isSelected) setIsHovered(true)
-  }, [parentIsSelected, isSelected, setIsHovered])
-
-  const handleMouseLeave = useCallback(() => {
-    setIsHovered(false)
-  }, [setIsHovered])
 
   if (!show) return null
 
@@ -98,7 +90,11 @@ export function RowFontFamilyEntry({
   } as unknown as LabelProps
 
   return (
-    <div style={rowWrapperStyle}>
+    <div
+      style={rowWrapperStyle}
+      data-selection-id={selectionKey}
+      data-selection-kind="resourceItem"
+    >
       <SeldonNode
         buttonIconic={{}}
         icon={{ style: { color: "transparent" } }}
@@ -106,8 +102,6 @@ export function RowFontFamilyEntry({
         icon2={icon2}
         label={label}
         onClick={onClick}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
         data-testid="objects-sidebar-font-family-entry"
         data-font-family-key={selectionKey}
         data-active={isSelected || parentIsSelected}

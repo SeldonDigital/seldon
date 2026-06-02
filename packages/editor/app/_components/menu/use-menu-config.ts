@@ -337,13 +337,13 @@ export function useMenuConfig(): HeaderConfig {
           "separator",
           {
             id: "auto-expand-selection",
-            label: "Auto Expand on Selection",
+            label: "Expand Tree on Selection",
             action: toggleAutoExpandOnSelection,
             active: autoExpandOnSelection,
           },
           {
             id: "auto-scroll-selection",
-            label: "Auto Scroll To Selection",
+            label: "Scroll to Selection",
             action: toggleAutoScrollToSelection,
             active: autoScrollToSelection,
           },

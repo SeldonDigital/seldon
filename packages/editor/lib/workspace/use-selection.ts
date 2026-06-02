@@ -253,22 +253,32 @@ export function useSelection() {
     (id: string | null) => {
       if (id === selectedThemeEntryId) return
       selectThemeEntry(id)
-      if (id) {
+      if (id && autoExpandOnSelection) {
         toggleObject(id, true)
       }
     },
-    [selectThemeEntry, selectedThemeEntryId, toggleObject],
+    [
+      selectThemeEntry,
+      selectedThemeEntryId,
+      toggleObject,
+      autoExpandOnSelection,
+    ],
   )
 
   const _selectFontCollectionEntry = useCallback(
     (id: string | null) => {
       if (id === selectedFontCollectionEntryId) return
       selectFontCollectionEntry(id)
-      if (id) {
+      if (id && autoExpandOnSelection) {
         toggleObject(id, true)
       }
     },
-    [selectFontCollectionEntry, selectedFontCollectionEntryId, toggleObject],
+    [
+      selectFontCollectionEntry,
+      selectedFontCollectionEntryId,
+      toggleObject,
+      autoExpandOnSelection,
+    ],
   )
 
   const _selectResourceItem = useCallback(

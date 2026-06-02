@@ -1,7 +1,10 @@
 import { useCallback } from "react"
 import { Board, Instance, Variant } from "@seldon/core"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
-import { useCanvasHoverState } from "@lib/hooks/use-canvas-hover-state"
+import {
+  getHoverStateSnapshot,
+  useSetHoverState,
+} from "@lib/hooks/use-canvas-hover-state"
 import { useTool } from "@lib/hooks/use-tool"
 import { useActiveBoard } from "@lib/workspace/use-active-board"
 import { getComponentKey, hasNode } from "@lib/workspace/workspace-accessors"
@@ -21,7 +24,7 @@ import { checkInsertionPoint } from "../utils/check-insertion-point"
  * @returns Object containing canvas tracking enter/leave handlers
  */
 export function useSidebarCanvasTracking(node: Variant | Instance) {
-  const { hoverState, setHoverState } = useCanvasHoverState()
+  const setHoverState = useSetHoverState()
   const { activeBoard } = useActiveBoard()
   const { workspace } = useWorkspace({ usePreview: false })
   const { activeTool } = useTool()
@@ -45,14 +48,9 @@ export function useSidebarCanvasTracking(node: Variant | Instance) {
       return
     }
 
-    if (activeTool === "select") {
-      setHoverState({
-        objectId: node.id,
-        objectType: "node",
-        placement: "inside",
-        lastChildNodeBeforeCursor: null,
-      })
-    } else if (activeTool === "component" || activeTool === "sketch") {
+    // Select-mode highlighting flows through the shared hover bridge now; this
+    // hook only feeds component/sketch insertion previews.
+    if (activeTool === "component" || activeTool === "sketch") {
       const insertionAllowed = checkInsertionPoint(
         node.id,
         "node",
@@ -80,10 +78,11 @@ export function useSidebarCanvasTracking(node: Variant | Instance) {
   ])
 
   const handleCanvasTrackingLeave = useCallback(() => {
+    const hoverState = getHoverStateSnapshot()
     if (hoverState?.objectId === node.id && hoverState?.objectType === "node") {
       setHoverState(null)
     }
-  }, [hoverState, node.id, setHoverState])
+  }, [node.id, setHoverState])
 
   return {
     handleCanvasTrackingEnter,
@@ -100,11 +99,15 @@ export function useSidebarCanvasTracking(node: Variant | Instance) {
  * @returns Object containing canvas tracking enter/leave handlers
  */
 export function useSidebarCanvasTrackingBoard(board: Board) {
-  const { hoverState, setHoverState } = useCanvasHoverState()
+  const setHoverState = useSetHoverState()
   const { activeBoard } = useActiveBoard()
+  const { activeTool } = useTool()
   const boardKey = getComponentKey(board)
 
   const handleCanvasTrackingEnter = useCallback(() => {
+    // Board insertion preview is a component-tool concern; select-mode hover
+    // runs through the shared hover bridge.
+    if (activeTool !== "component") return
     if (!activeBoard || boardKey !== getComponentKey(activeBoard)) return
 
     setHoverState({
@@ -113,16 +116,17 @@ export function useSidebarCanvasTrackingBoard(board: Board) {
       placement: "inside",
       lastChildNodeBeforeCursor: null,
     })
-  }, [boardKey, activeBoard, setHoverState])
+  }, [boardKey, activeBoard, activeTool, setHoverState])
 
   const handleCanvasTrackingLeave = useCallback(() => {
+    const hoverState = getHoverStateSnapshot()
     if (
       hoverState?.objectId === boardKey &&
       hoverState?.objectType === "board"
     ) {
       setHoverState(null)
     }
-  }, [hoverState, boardKey, setHoverState])
+  }, [boardKey, setHoverState])
 
   return {
     handleCanvasTrackingEnter,

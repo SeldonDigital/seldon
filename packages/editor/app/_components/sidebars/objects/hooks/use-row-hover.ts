@@ -1,8 +1,10 @@
 import { useMemo, useState } from "react"
 
 /**
- * Shared hook for managing hover state and styles in row components.
- * Provides consistent hover behavior across RowBoard, RowNode, and RowSection.
+ * Local hover state and style for non-selectable header rows (sections and
+ * property categories). Selectable rows (nodes, boards, themes, font entries)
+ * use the shared hover bridge instead; this stays only for rows that have no
+ * selection id and only need a self-contained hover background.
  */
 export function useRowHover(isSelected: boolean, hoverOpacity: number = 10) {
   const [isHovered, setIsHovered] = useState(false)

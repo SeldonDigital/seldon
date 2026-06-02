@@ -13,7 +13,10 @@ import { useSelection } from "@lib/workspace/use-selection"
 import { useWorkspace } from "@lib/workspace/use-workspace"
 import { useTool } from "@lib/hooks/use-tool"
 import { useAddToast } from "@components/toaster/use-add-toast"
-import { useCanvasHoverState } from "../use-canvas-hover-state"
+import {
+  getHoverStateSnapshot,
+  useSetHoverState,
+} from "../use-canvas-hover-state"
 
 /**
  * Commands for adding and removing nodes and boards
@@ -29,7 +32,7 @@ export function useAddRemoveCommands() {
   const { workspace, dispatch } = useWorkspace()
   const { dispatchWithAutoSelect } = useAutoSelectNode()
   const { setActiveTool } = useTool()
-  const { setHoverState, hoverState } = useCanvasHoverState()
+  const setHoverState = useSetHoverState()
   const addToast = useAddToast()
 
   const addBoard = useCallback(
@@ -112,7 +115,7 @@ export function useAddRemoveCommands() {
             null,
         )
       }
-      if (hoverState?.objectId === nodeId) {
+      if (getHoverStateSnapshot()?.objectId === nodeId) {
         setHoverState(null)
       }
 
@@ -129,14 +132,7 @@ export function useAddRemoveCommands() {
         payload: { instanceId: nodeId as InstanceId },
       })
     },
-    [
-      workspace,
-      selectedNode?.id,
-      hoverState?.objectId,
-      dispatch,
-      selectNode,
-      setHoverState,
-    ],
+    [workspace, selectedNode?.id, dispatch, selectNode, setHoverState],
   )
 
   const removeBoard = useCallback(
