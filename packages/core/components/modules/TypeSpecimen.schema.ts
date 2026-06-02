@@ -110,8 +110,8 @@ export const schema = {
     background: [
       {
         preset: {
-          type: Sdn.ValueType.THEME_CATEGORICAL,
-          value: "@background.none",
+          type: Sdn.ValueType.EMPTY,
+          value: null,
         },
         image: {
           type: Sdn.ValueType.EMPTY,

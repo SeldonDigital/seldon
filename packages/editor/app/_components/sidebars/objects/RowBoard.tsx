@@ -7,6 +7,7 @@ import {
 } from "@seldon/core/workspace/model/components"
 import { useSidebarCanvasTrackingBoard } from "../../tracking/hooks/use-sidebar-canvas-tracking"
 import { useSidebarRowStyling } from "../../tracking/hooks/use-sidebar-row-styling"
+import { workspaceFontCollectionService } from "@seldon/core/workspace/services/font-collection/font-collection.service"
 import { useWorkspace } from "@lib/workspace/use-workspace"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { useRowBoard } from "./hooks/use-row-board"
@@ -16,7 +17,7 @@ import { LabelProps } from "../../../seldon/primitives/Label"
 import { relativeFullWidthStyle } from "../helpers/sidebar-styles"
 import { IndentationLevel } from "../helpers/use-indentation"
 import { FramerExpandable } from "../shared/FramerExpandable"
-import { RowFontCollectionEntry } from "./RowFontCollectionEntry"
+import { RowFontFamilyEntry } from "./RowFontFamilyEntry"
 import { RowIconSetEntry } from "./RowIconSetEntry"
 import { RowNode } from "./RowNode"
 import { RowThemeEntry } from "./RowThemeEntry"
@@ -161,10 +162,17 @@ export const RowBoard = memo(function RowBoard({
                 />
               ))
             : isFontCollectionBoard(board)
-              ? variants.map((fontCollectionEntryId) => (
-                  <RowFontCollectionEntry
-                    key={fontCollectionEntryId}
-                    fontCollectionEntryId={fontCollectionEntryId}
+              ? Object.entries(
+                  workspaceFontCollectionService.getBoardFontCollection(
+                    getComponentKey(board),
+                    workspace,
+                  )?.families ?? {},
+                ).map(([slot, family]) => (
+                  <RowFontFamilyEntry
+                    key={slot}
+                    componentKey={getComponentKey(board)}
+                    slot={slot}
+                    family={family}
                     show={show}
                     parentIsSelected={boardIsActive}
                   />

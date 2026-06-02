@@ -7,7 +7,9 @@ import {
   getComponentOrder,
   setComponentOrder,
 } from "../../../helpers/components/component-sort-order"
+import { FONT_COLLECTION_COMPONENT_CATALOG_IDS } from "../../../helpers/components/resource-component-catalog-ids"
 import { getInitialBoardComponentProperties } from "../../../helpers/components/get-initial-board-component-properties"
+import { DEFAULT_FONT_COLLECTION_BOARD_KEY } from "../../../helpers/font-collections/seed-default-font-collection-board"
 import { WORKSPACE_EDITABLE_THEME_ENTRY_ID } from "../../../helpers/themes/workspace-editable-theme"
 import { formatFontCollectionCatalog } from "../../../model/template-ref"
 import { workspacePropagationService } from "../../../services"
@@ -33,6 +35,14 @@ export function addFontCollection(
     }
     const componentKey = payload.catalogId
     if (draft.components[componentKey]) {
+      return draft
+    }
+    // System is the seeded, non-deletable base collection and is never added.
+    // Only packaged stock collections (currently just Google) can be added.
+    if (
+      componentKey === DEFAULT_FONT_COLLECTION_BOARD_KEY ||
+      !FONT_COLLECTION_COMPONENT_CATALOG_IDS.has(componentKey)
+    ) {
       return draft
     }
 

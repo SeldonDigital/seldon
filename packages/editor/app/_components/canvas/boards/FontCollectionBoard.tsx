@@ -1,15 +1,22 @@
 "use client"
 
 import { getCssFromProperties } from "@seldon/factory/styles/css-properties/get-css-from-properties"
-import { useMemo } from "react"
+import { useEffect, useMemo, useRef } from "react"
 import { Board, Properties, Scroll, Unit, ValueType } from "@seldon/core"
+import { ComponentId } from "@seldon/core/components/constants"
+import type { FontFamilyEntry } from "@seldon/core/font-collections/types"
 import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
-import { isFontCollectionBoard } from "@seldon/core/workspace/model/components"
 import { themeService } from "@seldon/core/workspace/services/theme/theme.service"
+import { workspaceFontCollectionService } from "@seldon/core/workspace/services/font-collection/font-collection.service"
 import type { Workspace } from "@seldon/core/workspace/types"
 import { getTypeSpecimenPreviewBase } from "@lib/font-collections/build-type-specimen-preview"
 import { usePreview } from "@lib/hooks/use-preview"
+import { getNodeCatalogComponentId } from "@lib/workspace/node-tree"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
+import {
+  formatResourceItemKey,
+  useSelectedResourceItemKey,
+} from "@lib/workspace/use-selection"
 import { useWorkspace } from "@lib/workspace/use-workspace"
 import { Frame } from "../../seldon/frames/Frame"
 import { CssPortal } from "../CssPortal"
@@ -30,15 +37,20 @@ export function FontCollectionBoard({ board }: FontCollectionBoardProps) {
   const className = `board-${boardKey}`
   const properties = getNodeProperties(board, workspace)
   const { device, isInPreviewMode } = usePreview()
+  const selectedResourceItemKey = useSelectedResourceItemKey()
 
   const boardTheme = useMemo(
     () => themeService.getObjectTheme(board, workspace),
     [board, workspace],
   )
 
-  const variantEntryIds = isFontCollectionBoard(board)
-    ? board.variants.map((variant) => variant.id)
-    : []
+  const families = useMemo(() => {
+    const collection = workspaceFontCollectionService.getBoardFontCollection(
+      boardKey,
+      workspace,
+    )
+    return collection ? Object.entries(collection.families) : []
+  }, [boardKey, workspace])
 
   const computedProperties: Properties = isInPreviewMode
     ? {
@@ -90,58 +102,123 @@ export function FontCollectionBoard({ board }: FontCollectionBoardProps) {
           padding: "2rem",
         }}
       >
-        {variantEntryIds.map((variantEntryId) => (
-          <FontCollectionTypeSpecimen
-            key={variantEntryId}
-            variantEntryId={variantEntryId}
-            themes={workspace.themes}
-            boardThemeId={board.componentTheme}
-          />
-        ))}
+        {families.map(([slot, family]) => {
+          const selectionKey = formatResourceItemKey({
+            resource: "font-collection",
+            componentKey: boardKey,
+            slot,
+          })
+          return (
+            <FontCollectionTypeSpecimen
+              key={slot}
+              scope={`${boardKey}-${slot}`}
+              family={family}
+              themes={workspace.themes}
+              boardThemeId={board.componentTheme}
+              isSelected={selectedResourceItemKey === selectionKey}
+            />
+          )
+        })}
       </Frame>
     </>
   )
 }
 
 type FontCollectionTypeSpecimenProps = {
-  variantEntryId: string
+  scope: string
+  family: FontFamilyEntry
   themes: Workspace["themes"]
   boardThemeId: string
+  isSelected: boolean
 }
 
-/** Renders a single Type Specimen preview for one font collection entry. */
+/**
+ * Renders a single Type Specimen preview for one font family.
+ *
+ * The family's CSS stack is injected as a `font.family` override on every node
+ * of the cloned preview workspace, so the whole specimen renders in that family.
+ * This per-item wrapper is generic: icon sets and media will reuse it by swapping
+ * the preview base and the injected property.
+ */
 function FontCollectionTypeSpecimen({
-  variantEntryId,
+  scope,
+  family,
   themes,
   boardThemeId,
+  isSelected,
 }: FontCollectionTypeSpecimenProps) {
   const { workspace: typeSpecimenBase, rootId } = getTypeSpecimenPreviewBase()
+  const containerRef = useRef<HTMLDivElement>(null)
+
+  const fontValue = family.stack ?? family.name
 
   const previewWorkspace = useMemo(() => {
     if (!rootId) {
       return null
     }
-    const root = typeSpecimenBase.nodes[rootId]
+    const nodes = Object.fromEntries(
+      Object.entries(typeSpecimenBase.nodes).map(([id, node]) => {
+        // The subheading shows the specimen title. Swap its placeholder content
+        // for the family name. This is an editor-only preview override.
+        const isSubheading =
+          getNodeCatalogComponentId(node, typeSpecimenBase) ===
+          ComponentId.SUBHEADING
+        return [
+          id,
+          {
+            ...node,
+            overrides: {
+              ...node.overrides,
+              font: {
+                ...(node.overrides?.font ?? {}),
+                family: { type: ValueType.OPTION, value: fontValue },
+              },
+              ...(isSubheading
+                ? {
+                    content: { type: ValueType.EXACT, value: family.name },
+                  }
+                : {}),
+            },
+            ...(id === rootId ? { theme: boardThemeId } : {}),
+          },
+        ]
+      }),
+    )
     return {
       ...typeSpecimenBase,
       themes,
-      nodes: {
-        ...typeSpecimenBase.nodes,
-        [rootId]: { ...root, theme: boardThemeId },
-      },
+      nodes,
     } as Workspace
-  }, [typeSpecimenBase, rootId, themes, boardThemeId])
+  }, [typeSpecimenBase, rootId, themes, boardThemeId, fontValue, family.name])
+
+  useEffect(() => {
+    if (isSelected && containerRef.current) {
+      containerRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+      })
+    }
+  }, [isSelected])
 
   if (!previewWorkspace || !rootId) {
     return null
   }
 
   return (
-    <ThemePreviewNode
-      nodeId={rootId}
-      workspace={previewWorkspace}
-      scope={variantEntryId}
-      isRoot
-    />
+    <div
+      ref={containerRef}
+      style={{
+        borderRadius: "0.5rem",
+        outline: isSelected ? "2px solid var(--seldon-accent, #3b82f6)" : "none",
+        outlineOffset: "4px",
+      }}
+    >
+      <ThemePreviewNode
+        nodeId={rootId}
+        workspace={previewWorkspace}
+        scope={scope}
+        isRoot
+      />
+    </div>
   )
 }

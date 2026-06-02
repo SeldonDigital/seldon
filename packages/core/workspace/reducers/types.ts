@@ -603,13 +603,6 @@ export type WorkspaceAction =
       payload: { fontCollectionId: string }
     }
   | {
-      type: "duplicate_font_collection"
-      payload: {
-        fontCollectionId: string
-        newFontCollectionId?: string
-      }
-    }
-  | {
       type: "add_font_collection_custom_family"
       payload: {
         fontCollectionId: string

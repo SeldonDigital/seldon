@@ -54,13 +54,18 @@ export function ThemePreviewNode({
 
   const childNodeIds = getNodeChildIds(node, workspace)
 
+  // The scope becomes part of a CSS class name. Resource item scopes such as
+  // `font-collection:system:appleSystem` contain colons, which would parse as
+  // pseudo-selectors and void the whole rule, so reduce it to a safe identifier.
+  const cssScope = scope.replace(/[^a-zA-Z0-9_-]/g, "-")
+
   return (
     <ComponentRenderer
       computeContext={getNodeComputeContext(nodeId, workspace)}
       styleOverrides={isRoot ? { position: "relative" } : undefined}
       componentId={component.id}
       htmlAttributes={{ "data-preview-node-id": node.id }}
-      nodeId={`${scope}-${nodeId}` as VariantId}
+      nodeId={`${cssScope}-${nodeId}` as VariantId}
     >
       {childNodeIds.map((childNodeId) => (
         <ThemePreviewNode

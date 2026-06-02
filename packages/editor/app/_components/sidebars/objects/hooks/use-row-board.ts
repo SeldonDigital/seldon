@@ -121,13 +121,8 @@ export function useRowBoard(
       return
     }
     if (isFontCollectionBoard(board)) {
-      const defaultEntryId = board.variants[0]?.id
-      if (!defaultEntryId) return
-      dispatch({
-        type: "duplicate_font_collection",
-        payload: { fontCollectionId: defaultEntryId },
-      })
-      setActiveTool("select")
+      // Font collection boards have no variants. Rows are the collection's
+      // families. Adding families arrives with the Google add flow.
       return
     }
     if (isIconSetBoard(board)) {
@@ -173,6 +168,11 @@ export function useRowBoard(
   // Shown when board is active (selected or contains selected node)
   const createAddVariantButton = () => {
     if (!boardIsActive) {
+      return { icon: undefined, button: undefined }
+    }
+
+    // Font collection boards do not add variants from the sidebar.
+    if (isFontCollectionBoard(board)) {
       return { icon: undefined, button: undefined }
     }
 

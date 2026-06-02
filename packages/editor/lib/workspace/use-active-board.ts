@@ -6,7 +6,8 @@ import { useSelection } from "./use-selection"
 import { useWorkspace } from "./use-workspace"
 
 export function useActiveBoard() {
-  const { selection, selectedThemeEntryId } = useSelection()
+  const { selection, selectedThemeEntryId, selectedResourceItemKey } =
+    useSelection()
   const { workspace } = useWorkspace()
 
   return {
@@ -30,7 +31,16 @@ export function useActiveBoard() {
         )
       }
 
+      // Selecting a resource item (a font family row, and later icon/media rows)
+      // keeps its board active. The key is `${resource}:${componentKey}:${slot}`.
+      if (selectedResourceItemKey) {
+        const componentKey = selectedResourceItemKey.split(":")[1]
+        return componentKey
+          ? (workspace.components[componentKey] ?? null)
+          : null
+      }
+
       return null
-    }, [selection, selectedThemeEntryId, workspace]),
+    }, [selection, selectedThemeEntryId, selectedResourceItemKey, workspace]),
   }
 }

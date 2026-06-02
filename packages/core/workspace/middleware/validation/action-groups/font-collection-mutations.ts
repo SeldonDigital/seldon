@@ -32,12 +32,6 @@ export function validateFontCollectionMutation(
       }
       break
     }
-    case "duplicate_font_collection":
-      fontCollectionEntryValidators.exists(
-        workspace,
-        action.payload.fontCollectionId,
-      )
-      break
   }
 }
 
