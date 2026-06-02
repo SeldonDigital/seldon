@@ -7,6 +7,7 @@ import type { Workspace } from "../model/workspace"
 import type { VariantId, WorkspaceAction } from "../types"
 import { addComponent } from "./handlers/add/add-component"
 import { addFontCollection } from "./handlers/add/add-font-collection"
+import { addFontCollectionCustomFamily } from "./handlers/add/add-font-collection-custom-family"
 import { addIconSet } from "./handlers/add/add-icon-set"
 import { addMedia } from "./handlers/add/add-media"
 import { addPlayground } from "./handlers/add/add-playground"
@@ -32,6 +33,7 @@ import { addThemeCustomSpread } from "./handlers/add/add-theme-custom-spread"
 import { addThemeCustomSwatch } from "./handlers/add/add-theme-custom-swatch"
 import { addVariant } from "./handlers/add/add-variant"
 import { duplicateComponent } from "./handlers/duplicate/duplicate-component"
+import { duplicateFontCollection } from "./handlers/duplicate/duplicate-font-collection"
 import { duplicateNode } from "./handlers/duplicate/duplicate-node"
 import { duplicateTheme } from "./handlers/duplicate/duplicate-theme"
 import { insertDefaultInstance } from "./handlers/insert/insert-default-instance"
@@ -39,9 +41,11 @@ import { insertDuplicateInstance } from "./handlers/insert/insert-duplicate-inst
 import { insertVariantInstance } from "./handlers/insert/insert-variant-instance"
 import { moveInstance } from "./handlers/move/move-instance"
 import { normalizeMetadataVersion } from "./handlers/normalize/normalize-metadata-version"
+import { deleteFontCollection } from "./handlers/remove/delete-font-collection"
 import { deleteTheme } from "./handlers/remove/delete-theme"
 import { removeComponent } from "./handlers/remove/remove-component"
 import { removeFontCollection } from "./handlers/remove/remove-font-collection"
+import { removeFontCollectionCustomFamily } from "./handlers/remove/remove-font-collection-custom-family"
 import { removeIconSet } from "./handlers/remove/remove-icon-set"
 import { removeInstance } from "./handlers/remove/remove-instance"
 import { removeMedia } from "./handlers/remove/remove-media"
@@ -82,6 +86,9 @@ import { resetComponentTags } from "./handlers/reset/reset-component-tags"
 import { resetNodeEditorData } from "./handlers/reset/reset-node-editor-data"
 import { resetNodeLabel } from "./handlers/reset/reset-node-label"
 import { resetNodeProperty } from "./handlers/reset/reset-node-property"
+import { resetFontCollectionEditorData } from "./handlers/reset/reset-font-collection-editor-data"
+import { resetFontCollectionLabel } from "./handlers/reset/reset-font-collection-label"
+import { resetFontCollectionOverride } from "./handlers/reset/reset-font-collection-override"
 import { resetThemeEditorData } from "./handlers/reset/reset-theme-editor-data"
 import { resetThemeLabel } from "./handlers/reset/reset-theme-label"
 import { resetThemeOverride } from "./handlers/reset/reset-theme-override"
@@ -107,6 +114,9 @@ import { setNodeEditorData } from "./handlers/set/set-node-editor-data"
 import { setNodeLabel } from "./handlers/set/set-node-label"
 import { setNodeProperties } from "./handlers/set/set-node-properties"
 import { setNodeTheme } from "./handlers/set/set-node-theme"
+import { setFontCollectionEditorData } from "./handlers/set/set-font-collection-editor-data"
+import { setFontCollectionLabel } from "./handlers/set/set-font-collection-label"
+import { setFontCollectionOverride } from "./handlers/set/set-font-collection-override"
 import { setThemeEditorData } from "./handlers/set/set-theme-editor-data"
 import { setThemeLabel } from "./handlers/set/set-theme-label"
 import { setThemeOverride } from "./handlers/set/set-theme-override"
@@ -376,6 +386,27 @@ function reducer(workspace: Workspace, action: WorkspaceAction): Workspace {
       return deleteTheme(action.payload, workspace)
     case "duplicate_theme":
       return duplicateTheme(action.payload, workspace)
+
+    case "set_font_collection_label":
+      return setFontCollectionLabel(action.payload, workspace)
+    case "set_font_collection_editor_data":
+      return setFontCollectionEditorData(action.payload, workspace)
+    case "set_font_collection_override":
+      return setFontCollectionOverride(action.payload, workspace)
+    case "reset_font_collection_label":
+      return resetFontCollectionLabel(action.payload, workspace)
+    case "reset_font_collection_editor_data":
+      return resetFontCollectionEditorData(action.payload, workspace)
+    case "reset_font_collection_override":
+      return resetFontCollectionOverride(action.payload, workspace)
+    case "delete_font_collection":
+      return deleteFontCollection(action.payload, workspace)
+    case "duplicate_font_collection":
+      return duplicateFontCollection(action.payload, workspace)
+    case "add_font_collection_custom_family":
+      return addFontCollectionCustomFamily(action.payload, workspace)
+    case "remove_font_collection_custom_family":
+      return removeFontCollectionCustomFamily(action.payload, workspace)
 
     case "stubs_add_font_collection_row":
     case "stubs_remove_font_collection_row":

@@ -1,4 +1,5 @@
 import type { Workspace } from "../model/workspace"
+import { seedDefaultFontCollectionBoard } from "./font-collections/seed-default-font-collection-board"
 import { seedDefaultThemeBoard } from "./themes/seed-default-theme-board"
 
 /** Baseline version matching `CURRENT_WORKSPACE_VERSION`. */
@@ -21,5 +22,6 @@ export function createEmptyWorkspace(): Workspace {
     media: {},
   }
   seedDefaultThemeBoard(workspace)
+  seedDefaultFontCollectionBoard(workspace)
   return workspace
 }

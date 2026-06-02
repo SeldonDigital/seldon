@@ -17,6 +17,10 @@ export * from "./components/constants"
 export * from "./components/types"
 export * from "./components/catalog"
 export * from "./helpers/utils/get-google-font-url"
+export {
+  getRemoteFontUrl,
+  isRemoteFontFamily,
+} from "./font-collections/helpers/remote-font-url"
 export * from "./helpers/utils/invariant"
 export * from "./properties"
 export * from "./properties/compute"

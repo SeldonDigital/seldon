@@ -23,6 +23,11 @@ export {
   WorkspaceThemeService,
 } from "./theme/theme.service"
 export {
+  workspaceFontCollectionService,
+  WorkspaceFontCollectionService,
+} from "./font-collection/font-collection.service"
+export type { WorkspaceFontFamily } from "./font-collection/font-collection.service"
+export {
   workspacePropagationService,
   WorkspacePropagationService,
 } from "./propagation/workspace-propagation.service"

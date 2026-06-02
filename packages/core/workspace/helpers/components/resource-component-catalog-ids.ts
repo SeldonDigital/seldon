@@ -1,3 +1,4 @@
+import { packagedFontCollectionCatalogIds } from "../../../font-collections/catalog-ids"
 import { STOCK_THEMES } from "../../../themes"
 import type { StockTheme } from "../../../themes/types"
 
@@ -18,15 +19,11 @@ export function resolvePackagedThemeByCatalogId(
 }
 
 /**
- * Stub allowlist until `core/font-collections/` exposes a generated catalog id registry.
- *
- * // import { packagedFontCollectionCatalogIds } from "../../../font-collections/catalog-ids"
- * // export const FONT_COLLECTION_COMPONENT_CATALOG_IDS = new Set<string>(
- * //   packagedFontCollectionCatalogIds,
- * // )
+ * Packaged font collection catalog ids from `core/font-collections`. Use for font collection
+ * board `catalogId` validation.
  */
 export const FONT_COLLECTION_COMPONENT_CATALOG_IDS: ReadonlySet<string> =
-  new Set<string>(["seldonFonts", "googleFonts"])
+  new Set<string>(packagedFontCollectionCatalogIds)
 
 /**
  * Stub allowlist until `core/icon-sets/` exposes a generated catalog id registry.

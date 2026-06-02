@@ -1,6 +1,7 @@
 import { MouseEvent } from "react"
 import { Board as BoardType } from "@seldon/core"
 import {
+  isFontCollectionBoard,
   isIconSetBoard,
   isThemeBoard,
 } from "@seldon/core/workspace/model/components"
@@ -115,6 +116,16 @@ export function useRowBoard(
       dispatch({
         type: "duplicate_theme",
         payload: { themeId: defaultThemeId },
+      })
+      setActiveTool("select")
+      return
+    }
+    if (isFontCollectionBoard(board)) {
+      const defaultEntryId = board.variants[0]?.id
+      if (!defaultEntryId) return
+      dispatch({
+        type: "duplicate_font_collection",
+        payload: { fontCollectionId: defaultEntryId },
       })
       setActiveTool("select")
       return

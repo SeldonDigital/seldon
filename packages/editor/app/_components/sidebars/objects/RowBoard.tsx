@@ -1,6 +1,7 @@
 import { CSSProperties, memo, useCallback } from "react"
 import { Board as BoardType, Variant } from "@seldon/core"
 import {
+  isFontCollectionBoard,
   isIconSetBoard,
   isThemeBoard,
 } from "@seldon/core/workspace/model/components"
@@ -15,6 +16,7 @@ import { LabelProps } from "../../../seldon/primitives/Label"
 import { relativeFullWidthStyle } from "../helpers/sidebar-styles"
 import { IndentationLevel } from "../helpers/use-indentation"
 import { FramerExpandable } from "../shared/FramerExpandable"
+import { RowFontCollectionEntry } from "./RowFontCollectionEntry"
 import { RowIconSetEntry } from "./RowIconSetEntry"
 import { RowNode } from "./RowNode"
 import { RowThemeEntry } from "./RowThemeEntry"
@@ -158,20 +160,29 @@ export const RowBoard = memo(function RowBoard({
                   parentIsSelected={boardIsActive}
                 />
               ))
-            : isIconSetBoard(board)
-              ? variants.map((iconSetEntryId) => (
-                  <RowIconSetEntry
-                    key={iconSetEntryId}
-                    iconSetEntryId={iconSetEntryId}
-                    label={
-                      workspace["icon-sets"]?.[iconSetEntryId]?.id ??
-                      iconSetEntryId
-                    }
+            : isFontCollectionBoard(board)
+              ? variants.map((fontCollectionEntryId) => (
+                  <RowFontCollectionEntry
+                    key={fontCollectionEntryId}
+                    fontCollectionEntryId={fontCollectionEntryId}
                     show={show}
                     parentIsSelected={boardIsActive}
                   />
                 ))
-              : variants.map((variantId, index) => (
+              : isIconSetBoard(board)
+                ? variants.map((iconSetEntryId) => (
+                    <RowIconSetEntry
+                      key={iconSetEntryId}
+                      iconSetEntryId={iconSetEntryId}
+                      label={
+                        workspace["icon-sets"]?.[iconSetEntryId]?.id ??
+                        iconSetEntryId
+                      }
+                      show={show}
+                      parentIsSelected={boardIsActive}
+                    />
+                  ))
+                : variants.map((variantId, index) => (
                   <RowNode
                     key={variantId}
                     nodeId={variantId}

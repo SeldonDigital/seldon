@@ -26,6 +26,7 @@ import type { Properties } from "../../../properties/types/properties"
 import { Resize } from "../../../properties/values/layout/resize"
 import { getEffectiveNodeProperties } from "../../compute/compute-node-properties"
 import type { WorkspacePropertySource } from "../../compute/compute-node-properties"
+import { workspaceFontCollectionService } from "../../services/font-collection/font-collection.service"
 import {
   getBuiltInLookSectionForPropertyKey,
   getThemeLookPickerToken,
@@ -223,7 +224,18 @@ function buildPresetOptions(
     presetOptions = schema.presetOptions as unknown[]
   }
 
-  return normalizeOptions(presetOptions, theme)
+  const normalized = normalizeOptions(presetOptions, theme)
+
+  // Font families come from the workspace's font collection boards. Theme slots
+  // (`@fontFamily.*`) stay in the schema; collection families are appended here.
+  if (schema.name === "fontFamily" && workspace) {
+    const familyOptions = workspaceFontCollectionService
+      .collectWorkspaceFamilies(workspace)
+      .map((family) => ({ value: family.name, name: family.name }))
+    return [...normalized, ...familyOptions]
+  }
+
+  return normalized
 }
 
 function groupPresetOptions(

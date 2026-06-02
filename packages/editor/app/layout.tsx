@@ -1,6 +1,5 @@
 import "allotment/dist/style.css"
 import type { Metadata } from "next"
-import { Fonts } from "@components/seldon/Fonts"
 import { LoadEditorFonts } from "@components/LoadEditorFonts"
 import { Toasts } from "@components/toaster/Toaster"
 import { Providers } from "./_components/Providers"
@@ -22,7 +21,6 @@ export default function RootLayout({
       className="scrollbar-track-transparent scrollbar-thumb-white/30 scrollbar-thumb-rounded-full"
     >
       <body className="bg-black">
-        <Fonts />
         <LoadEditorFonts />
         <Providers>{children}</Providers>
         <Toasts />

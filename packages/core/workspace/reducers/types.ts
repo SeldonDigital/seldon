@@ -24,6 +24,7 @@
  * | stubs_* (font / icon / media) | reserved — no-op until spec |
  * | transcript_add_message | none (no-op) |
  */
+import type { FontOrigin } from "../../font-collections/types"
 import { Properties, PropertyKey, SubPropertyKey } from "../../properties"
 import {
   BackgroundParameters,
@@ -565,6 +566,62 @@ export type WorkspaceAction =
         themeId: string
         newThemeId?: string
       }
+    }
+  | {
+      type: "set_font_collection_label"
+      payload: { fontCollectionId: string; label: string }
+    }
+  | {
+      type: "set_font_collection_editor_data"
+      payload: {
+        fontCollectionId: string
+        editorData: Record<string, unknown> | undefined
+      }
+    }
+  | {
+      type: "set_font_collection_override"
+      payload: {
+        fontCollectionId: string
+        path: string
+        value: unknown | null
+      }
+    }
+  | {
+      type: "reset_font_collection_label"
+      payload: { fontCollectionId: string }
+    }
+  | {
+      type: "reset_font_collection_editor_data"
+      payload: { fontCollectionId: string }
+    }
+  | {
+      type: "reset_font_collection_override"
+      payload: { fontCollectionId: string; path: string }
+    }
+  | {
+      type: "delete_font_collection"
+      payload: { fontCollectionId: string }
+    }
+  | {
+      type: "duplicate_font_collection"
+      payload: {
+        fontCollectionId: string
+        newFontCollectionId?: string
+      }
+    }
+  | {
+      type: "add_font_collection_custom_family"
+      payload: {
+        fontCollectionId: string
+        name: string
+        origin?: FontOrigin
+        stack?: string
+        variants?: string[]
+      }
+    }
+  | {
+      type: "remove_font_collection_custom_family"
+      payload: { fontCollectionId: string; key: string }
     }
   /** @internal Reserved payload; no-op until `font-collections` spec is finalized. */
   | { type: "stubs_add_font_collection_row"; payload: { id?: string } }

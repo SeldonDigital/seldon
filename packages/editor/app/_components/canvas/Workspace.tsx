@@ -3,6 +3,7 @@
 import React, { Profiler } from "react"
 import { Board } from "@seldon/core"
 import {
+  isFontCollectionBoard,
   isIconSetBoard,
   isThemeBoard,
 } from "@seldon/core/workspace/model/components"
@@ -13,6 +14,7 @@ import { useCanvas } from "./hooks/use-canvas"
 import { useActiveBoard } from "@lib/workspace/use-active-board"
 import { AssemblyBoard } from "./boards/Assembly"
 import { CanvasBoard as RegularCanvasBoard } from "./boards/Board"
+import { FontCollectionBoard } from "./boards/FontCollectionBoard"
 import { IconSetBoardPlaceholder } from "./boards/IconSetBoardPlaceholder"
 import { ThemeBoard } from "./boards/Theme"
 
@@ -41,6 +43,9 @@ function renderBoard(board: Board) {
     }
     if (isThemeBoard(board)) {
       return <ThemeBoard board={board} />
+    }
+    if (isFontCollectionBoard(board)) {
+      return <FontCollectionBoard board={board} />
     }
     if (board.label === "Assembly") {
       return <AssemblyBoard board={board} />
