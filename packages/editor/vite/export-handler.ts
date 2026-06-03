@@ -1,18 +1,19 @@
 import fs from "node:fs"
 import path from "node:path"
-import { NextRequest, NextResponse } from "next/server"
 import type { Workspace } from "@seldon/core/workspace/types"
 import { createNodeExportAssetReader } from "@seldon/factory/export/asset-reader"
 import { exportWorkspace } from "@seldon/factory/export/export-workspace"
 import type { ExportOptions, FileToExport } from "@seldon/factory/export/types"
 
-export const runtime = "nodejs"
-export const dynamic = "force-dynamic"
-
-type WireFile = {
+export type WireFile = {
   path: string
   encoding: "utf8" | "base64"
   content: string
+}
+
+export type ExportRequestBody = {
+  workspace: Workspace
+  options?: Partial<ExportOptions>
 }
 
 /**
@@ -47,41 +48,33 @@ function toWireFile(file: FileToExport): WireFile {
   }
 }
 
-export async function POST(request: NextRequest) {
-  try {
-    const body = (await request.json()) as {
-      workspace: Workspace
-      options?: Partial<ExportOptions>
-    }
-
-    if (!body?.workspace) {
-      return NextResponse.json(
-        { error: "Missing workspace in request body." },
-        { status: 400 },
-      )
-    }
-
-    const rootDirectory = resolveRepoRoot()
-
-    const options: ExportOptions = {
-      rootDirectory,
-      target: { framework: "react", styles: "css-properties" },
-      output: {
-        componentsFolder: "seldon",
-        assetsFolder: "assets",
-        assetPublicPath: "/assets",
-      },
-      assetReader: createNodeExportAssetReader(rootDirectory),
-      ...body.options,
-    }
-
-    const files = await exportWorkspace(body.workspace, options)
-
-    return NextResponse.json({ files: files.map(toWireFile) })
-  } catch (error) {
-    return NextResponse.json(
-      { error: error instanceof Error ? error.message : "Export failed." },
-      { status: 500 },
-    )
+/**
+ * Runs the factory export against a workspace and returns the wire-encoded
+ * files the browser writes to the chosen folder. Reads icon and native-react
+ * source from disk, so it must run in a Node context.
+ */
+export async function runExport(
+  body: ExportRequestBody,
+): Promise<{ files: WireFile[] }> {
+  if (!body?.workspace) {
+    throw new Error("Missing workspace in request body.")
   }
+
+  const rootDirectory = resolveRepoRoot()
+
+  const options: ExportOptions = {
+    rootDirectory,
+    target: { framework: "react", styles: "css-properties" },
+    output: {
+      componentsFolder: "seldon",
+      assetsFolder: "assets",
+      assetPublicPath: "/assets",
+    },
+    assetReader: createNodeExportAssetReader(rootDirectory),
+    ...body.options,
+  }
+
+  const files = await exportWorkspace(body.workspace, options)
+
+  return { files: files.map(toWireFile) }
 }

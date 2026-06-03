@@ -1,5 +1,4 @@
-import { cnMerge } from "@lib/utils/cn"
-import { HTMLAttributes } from "react"
+import { CSSProperties, HTMLAttributes } from "react"
 
 type As =
   | "div"
@@ -29,27 +28,34 @@ export type TextProps = HTMLAttributes<HTMLElement> & {
   htmlFor?: string
 }
 
+const variantStyles: Record<Variant, CSSProperties> = {
+  "label-small": { fontSize: "11px", fontWeight: 600 },
+  callout: { fontSize: "12px", fontWeight: 600 },
+  label: { fontSize: "13px", fontWeight: 600 },
+  "body-small": { fontSize: "13px", fontWeight: 400 },
+  body: { fontSize: "14px", fontWeight: 400 },
+  title: { fontSize: "16px", fontWeight: 600 },
+  headline: { fontSize: "18px", fontWeight: 700 },
+  display: {
+    fontSize: "20px",
+    fontWeight: 800,
+    lineHeight: 1,
+    letterSpacing: "-0.025em",
+  },
+}
+
 export function Text({
   variant = "regular" as Variant,
   children,
   className = "",
   as: Component = "p",
+  style,
   ...rest
 }: TextProps) {
   return (
     <Component
-      className={cnMerge(
-        variant === "label-small" && "text-[11px] font-semibold",
-        variant === "callout" && "text-[12px] font-semibold",
-        variant === "label" && "text-[13px] font-semibold",
-        variant === "body-small" && "text-[13px] font-normal",
-        variant === "body" && "text-[14px] font-normal",
-        variant === "title" && "text-[16px] font-semibold",
-        variant === "headline" && "text-[18px] font-bold",
-        variant === "display" &&
-          "text-[20px] font-extrabold leading-none tracking-tight",
-        className,
-      )}
+      className={className}
+      style={{ ...variantStyles[variant], ...style }}
       {...rest}
     >
       {children}

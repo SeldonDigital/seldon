@@ -1,6 +1,6 @@
 "use client"
 
-import { cnMerge } from "@lib/utils/cn"
+import { cn } from "@lib/utils/cn"
 import { ButtonHTMLAttributes, HTMLAttributes, Ref } from "react"
 
 type SelectableProps = {
@@ -26,42 +26,22 @@ export const Selectable = ({
   variant = "outline",
   ...rest
 }: SelectableButton | SelectableDiv) => {
-  const finalClassName = cnMerge(
-    variant === "outline" &&
-      "text-sm rounded-md focus-visible:outline focus-visible:outline-1 focus-visible:outline-blue/25",
-    variant === "ghost" && "text-xs font-medium",
-    // Activate hover when component is not active, selected or static
-    state === "default" && variant === "outline" && "hover:bg-white/10",
-    state === "default" &&
-      variant === "ghost" &&
-      "bg-white/10 hover:bg-white/20",
-    // Active state, component is activated but not selected
-    // Example: this group item is active, but another item in the group is selected
-    state === "active" &&
-      variant === "outline" &&
-      "text-blue hover:bg-white/10",
-    // Selected state, component is selected
-    // Example: this group item is active and selected
-    state === "selected" &&
-      variant === "outline" &&
-      "text-blue outline outline-1 outline-blue",
-    className,
-  )
+  const sharedProps = {
+    "data-state": state,
+    "data-variant": variant,
+    className: cn("selectable", className),
+  }
+
   if (as === "button") {
     return (
       <button
         {...(rest as ButtonHTMLAttributes<HTMLButtonElement>)}
-        data-state={state}
-        className={finalClassName}
+        {...sharedProps}
       />
     )
   }
 
   return (
-    <div
-      {...(rest as HTMLAttributes<HTMLDivElement>)}
-      data-state={state}
-      className={finalClassName}
-    />
+    <div {...(rest as HTMLAttributes<HTMLDivElement>)} {...sharedProps} />
   )
 }

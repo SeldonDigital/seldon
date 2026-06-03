@@ -1,13 +1,13 @@
 "use client"
 
-import { usePathname } from "next/navigation"
+import { useLocation } from "react-router"
 import { usePreview } from "./use-preview"
 
 export type AppState = "project" | "edit" | "preview"
 
 export function useAppState() {
   const { isInPreviewMode } = usePreview()
-  const pathname = usePathname()
+  const { pathname } = useLocation()
 
   let appState: AppState = "edit"
 

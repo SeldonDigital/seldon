@@ -12,7 +12,6 @@ import { useSelection } from "@lib/workspace/use-selection"
 import { useWorkspace } from "@lib/workspace/use-workspace"
 import {
   sidebarNoSelectionStyle,
-  sidebarNoSelectionTextStyle,
   sidebarShellStyle,
 } from "../helpers/sidebar-styles"
 import { SidebarContainer } from "../../../seldon/elements/SidebarContainer"
@@ -119,19 +118,11 @@ export function PropertiesSidebar() {
   }, [selection, selectedBoard, isThemeEditingMode, workspace.components])
 
   if (!selection && !isThemeEditingMode) {
-    return (
-      <SidebarContainer style={sidebarNoSelectionStyle}>
-        <span style={sidebarNoSelectionTextStyle}>Nothing selected</span>
-      </SidebarContainer>
-    )
+    return <SidebarContainer style={sidebarNoSelectionStyle} />
   }
 
   if (!propertyTreeNode) {
-    return (
-      <SidebarContainer style={sidebarNoSelectionStyle}>
-        <span style={sidebarNoSelectionTextStyle}>Nothing selected</span>
-      </SidebarContainer>
-    )
+    return <SidebarContainer style={sidebarNoSelectionStyle} />
   }
 
   return (

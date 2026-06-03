@@ -1,4 +1,3 @@
-import { cn } from "@lib/utils/cn"
 import { Theme, ThemeSwatchKey } from "@seldon/core"
 import { themeSwatchToCssBackground } from "@seldon/core/helpers/color/theme-swatch-to-css-background"
 import { getThemeOption } from "@seldon/core/helpers/theme/get-theme-option"
@@ -22,7 +21,7 @@ export const ThemeSwatches = ({
   ]
 
   return (
-    <div className="relative flex">
+    <div style={{ position: "relative", display: "flex" }}>
       {swatches.map((swatch, i) => renderSwatch(swatch, i, isSelected))}
     </div>
   )
@@ -36,14 +35,16 @@ export const ThemeSwatches = ({
     return (
       <span
         key={i}
+        className="shadow-dieter-rams-button"
         style={{
           zIndex: 5 - i,
-          ...(backgroundColor ? { backgroundColor } : {}),
+          display: "block",
+          height: "0.75rem",
+          width: "0.75rem",
+          borderRadius: "9999px",
+          backgroundColor: backgroundColor ?? "var(--color-blue)",
+          marginRight: i < 4 ? (isSelected ? "-7px" : "-10px") : undefined,
         }}
-        className={cn(
-          "block h-3 w-3 rounded-full bg-blue shadow-dieter-rams-button",
-          i < 4 ? (isSelected ? "-mr-[7px]" : "-mr-[10px]") : "",
-        )}
       />
     )
   }

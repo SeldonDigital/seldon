@@ -1,7 +1,6 @@
 "use client"
 
 import { DeviceId } from "@lib/devices/types"
-import { cn } from "@lib/utils/cn"
 import { Selectable } from "@components/ui/Selectable"
 import { IconDesktop } from "../icons/Desktop"
 import { IconFullScreen } from "../icons/FullScreen"
@@ -39,10 +38,15 @@ export function DeviceButton({
       onClick={onClick}
       as="button"
       state={isSelected ? "selected" : "default"}
-      className={cn(
-        `flex h-8 w-8 items-center justify-center text-lg`,
-        isSelected === false && "text-white/40",
-      )}
+      style={{
+        display: "flex",
+        height: "2rem",
+        width: "2rem",
+        alignItems: "center",
+        justifyContent: "center",
+        fontSize: "1rem",
+        color: isSelected ? undefined : "rgba(255, 255, 255, 0.4)",
+      }}
     >
       {device === "custom" && <IconFullScreen />}
       {device === "desktop" && <IconDesktop />}

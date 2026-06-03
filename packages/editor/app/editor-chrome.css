@@ -1,0 +1,62 @@
+/*
+ * Editor chrome styles that replaced the former Tailwind utilities. Holds the
+ * few design tokens still in use plus the window scrollbar styling and the
+ * Selectable primitive states.
+ */
+
+:root {
+  --color-blue: #3fb5ff;
+  --color-pearl: #f5f5f5;
+  --color-background: #1f1f1f;
+}
+
+body {
+  background: #000;
+}
+
+/* Window scrollbars (was tailwind-scrollbar on <html>). */
+html::-webkit-scrollbar-track {
+  background: transparent;
+}
+html::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 9999px;
+}
+
+.shadow-dieter-rams-button {
+  box-shadow:
+    0px 1px 0px 0px rgba(255, 255, 255, 0.25) inset,
+    0px 1px 1px 0px rgba(0, 0, 0, 0.25);
+}
+
+/* Selectable primitive: variant + state driven by data attributes. */
+.selectable[data-variant="outline"] {
+  font-size: 0.8125rem;
+  border-radius: 0.375rem;
+}
+.selectable[data-variant="outline"]:focus-visible {
+  outline: 1px solid rgba(63, 181, 255, 0.25);
+}
+.selectable[data-variant="ghost"] {
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+.selectable[data-variant="outline"][data-state="default"]:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+.selectable[data-variant="ghost"][data-state="default"] {
+  background: rgba(255, 255, 255, 0.1);
+}
+.selectable[data-variant="ghost"][data-state="default"]:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+.selectable[data-variant="outline"][data-state="active"] {
+  color: var(--color-blue);
+}
+.selectable[data-variant="outline"][data-state="active"]:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+.selectable[data-variant="outline"][data-state="selected"] {
+  color: var(--color-blue);
+  outline: 1px solid var(--color-blue);
+}

@@ -4,9 +4,9 @@
   "private": true,
   "scripts": {
     "fonts:fallback": "node scripts/append-chrome-font-fallback.mjs",
-    "dev": "node scripts/append-chrome-font-fallback.mjs && next dev --webpack",
-    "build": "node scripts/append-chrome-font-fallback.mjs && next build --webpack",
-    "start": "next start",
+    "dev": "node scripts/append-chrome-font-fallback.mjs && vite",
+    "build": "node scripts/append-chrome-font-fallback.mjs && vite build",
+    "start": "vite preview",
     "lint": "eslint .",
     "format": "prettier --write \"./**/*.{ts,tsx,json,css}\"",
     "quality": "tsc -p tsconfig.json"
@@ -29,15 +29,13 @@
     "immer": "^10.1.1",
     "lodash.isequal": "^4.5.0",
     "nanoid": "^5.1.5",
-    "next": "^16.2.6",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-hotkeys-hook": "^4.6.2",
     "react-intersection-observer": "^9.16.0",
+    "react-router": "^7.16.0",
     "react-syntax-highlighter": "^16.1.1",
     "react-zoom-pan-pinch": "^3.7.0",
-    "tailwind-merge": "^2.6.0",
-    "tailwind-scrollbar": "^3.1.0",
     "use-debounce": "^10.0.5",
     "zod": "^3.25.76",
     "zustand": "^4.5.7"
@@ -51,13 +49,12 @@
     "@types/react": "^19.1.9",
     "@types/react-dom": "^19.1.7",
     "@types/react-syntax-highlighter": "^15.5.13",
-    "autoprefixer": "^10.4.21",
+    "@vitejs/plugin-react": "^6.0.0",
+    "esbuild": "^0.28.0",
     "eslint": "^9.39.4",
-    "eslint-config-next": "^16.2.6",
-    "postcss": "^8.5.15",
     "prettier": "^3.4.2",
-    "tailwindcss": "^3.4.17",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "vite": "^8.0.0"
   },
   "volta": {
     "node": "22.18.0"
