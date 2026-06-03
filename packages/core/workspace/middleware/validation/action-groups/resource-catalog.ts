@@ -175,7 +175,7 @@ export function validateRemoveBoard(
       }
       if (catalogId === DEFAULT_FONT_COLLECTION_BOARD_KEY) {
         throw new WorkspaceValidationError(
-          "Cannot remove the System font collection board",
+          "Cannot remove the System font collection board. Every workspace requires the system fonts and the Seldon theme, so this board is always kept.",
           action,
         )
       }
@@ -214,7 +214,7 @@ export function validateRemoveBoard(
       )
     case "remove_theme":
       throw new WorkspaceValidationError(
-        "Cannot remove theme catalog board",
+        "Cannot remove the theme board. Every workspace requires the Seldon theme, so this board is always kept.",
         action,
       )
   }

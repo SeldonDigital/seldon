@@ -3,7 +3,10 @@ import { InstanceId, VariantId } from "./types"
 
 export const ErrorMessages = {
   nodeNotFound: (id: InstanceId | VariantId) => `Node ${id} not found.`,
-  componentNotFound: (id: string) => `ComponentEntry ${id} not found.`,
+  componentNotFound: (id: string) =>
+    id
+      ? `ComponentEntry ${id} not found.`
+      : `ComponentEntry id is missing (received ${id}).`,
   componentAlreadyExists: (id: string) => `ComponentEntry ${id} already exists.`,
   componentNotFoundForVariant: (id: VariantId) =>
     `ComponentEntry not found for variant ${id}.`,

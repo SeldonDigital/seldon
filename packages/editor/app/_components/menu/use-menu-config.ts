@@ -1,8 +1,16 @@
 "use client"
 
 import { selectFile } from "@lib/utils/select-file"
+import {
+  isComponentBoard,
+  isFontCollectionBoard,
+  isMediaBoard,
+  isPlaygroundBoard,
+} from "@seldon/core/workspace/model/components"
 import { isEntryThemeDefault } from "@seldon/core/workspace/model/entry-theme"
 import { isEntryFontCollectionDefault } from "@seldon/core/workspace/model/entry-font-collection"
+import { DEFAULT_FONT_COLLECTION_BOARD_KEY } from "@seldon/core/workspace/helpers/font-collections/seed-default-font-collection-board"
+import { resolveComponentKey } from "@lib/workspace/workspace-accessors"
 import { useNavigate } from "react-router"
 import { useCallback, useMemo } from "react"
 import { useAddRemoveCommands } from "@lib/hooks/commands/use-add-remove-commands"
@@ -74,7 +82,25 @@ export function useMenuConfig(): HeaderConfig {
   const { openDialog } = useDialog()
 
   const canDeleteSelection = useMemo(() => {
-    if (selection) return true
+    if (selectedNode) return true
+
+    if (selectedBoard) {
+      if (
+        isComponentBoard(selectedBoard) ||
+        isPlaygroundBoard(selectedBoard) ||
+        isMediaBoard(selectedBoard)
+      ) {
+        return true
+      }
+      // Theme and icon-set catalog boards cannot be removed.
+      if (isFontCollectionBoard(selectedBoard)) {
+        return (
+          resolveComponentKey(selectedBoard, workspace) !==
+          DEFAULT_FONT_COLLECTION_BOARD_KEY
+        )
+      }
+      return false
+    }
 
     if (selectedThemeEntryId) {
       const entry = workspace.themes[selectedThemeEntryId]
@@ -88,7 +114,8 @@ export function useMenuConfig(): HeaderConfig {
 
     return false
   }, [
-    selection,
+    selectedNode,
+    selectedBoard,
     selectedThemeEntryId,
     selectedFontCollectionEntryId,
     workspace,
