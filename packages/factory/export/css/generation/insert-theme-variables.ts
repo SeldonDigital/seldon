@@ -2,10 +2,7 @@ import { Theme } from "@seldon/core"
 import { HSLObjectToString } from "@seldon/core/helpers/color/hsl-object-to-string"
 import { modulate } from "@seldon/core/helpers/math/modulate"
 import { Colorspace } from "@seldon/core/themes/constants/colorspace"
-import {
-  colorspaceLiteralToHsl,
-  getDynamicSwatchName,
-} from "@seldon/core/themes/compute"
+import { colorspaceLiteralToHsl } from "@seldon/core/themes/compute"
 import {
   isModulatedToken,
   isThemeExactToken,
@@ -13,33 +10,9 @@ import {
 import type { ThemeScaleToken, ThemeSwatch } from "@seldon/core/themes/values"
 import { workspaceThemeService } from "@seldon/core/workspace/services"
 import { Workspace } from "@seldon/core/workspace/types"
-import { kebabCase } from "../../react/utils/case-utils"
+import { getThemeSwatchVarNames } from "../../../styles/css-properties/get-theme-swatch-names"
 import { format } from "../utils/format"
-
-function ensureUniqueSwatchNames(
-  swatchNames: Record<string, string>,
-): Record<string, string> {
-  const nameCount = new Map<string, number>()
-  const result: Record<string, string> = {}
-
-  Object.values(swatchNames).forEach((name) => {
-    const currentCount = nameCount.get(name) || 0
-    nameCount.set(name, currentCount + 1)
-  })
-
-  const nameInstanceCount = new Map<string, number>()
-  Object.entries(swatchNames).forEach(([key, name]) => {
-    if (nameCount.get(name)! > 1) {
-      const instanceCount = (nameInstanceCount.get(name) || 0) + 1
-      nameInstanceCount.set(name, instanceCount)
-      result[key] = `${name}${instanceCount}`
-    } else {
-      result[key] = name
-    }
-  })
-
-  return result
-}
+import { getThemeSlug } from "./get-theme-slug"
 
 function swatchToCssString(swatch: ThemeSwatch): string {
   const { parameters } = swatch
@@ -74,12 +47,12 @@ function exactTokenCss(token: ThemeScaleToken): string {
   return "0"
 }
 
-function generateThemeCSSVariables(theme: Theme, themeId: string): string {
-  const prefix = themeId === "default" ? `--sdn-` : `--sdn-${themeId}-`
+function generateThemeCSSVariables(theme: Theme, slug: string): string {
+  const prefix = slug === "seldon" ? `--sdn-` : `--sdn-${slug}-`
   let cssVariables = ""
 
-  if (themeId !== "default") {
-    const themeDisplayName = themeId
+  if (slug !== "seldon") {
+    const themeDisplayName = slug
       .split("-")
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(" ")
@@ -94,9 +67,11 @@ function generateThemeCSSVariables(theme: Theme, themeId: string): string {
   }
 
   if (theme.fontFamily) {
+    // TODO: font collections are not yet refactored in core. For now emit the
+    // raw font stack stored on each family token.
     cssVariables += `  /* Font Families */\n`
-    cssVariables += `  ${prefix}font-family-primary: "${theme.fontFamily.primary}";\n`
-    cssVariables += `  ${prefix}font-family-secondary: "${theme.fontFamily.secondary}";\n`
+    cssVariables += `  ${prefix}font-family-primary: ${theme.fontFamily.primary.parameters};\n`
+    cssVariables += `  ${prefix}font-family-secondary: ${theme.fontFamily.secondary.parameters};\n`
   }
 
   const baseHsl = colorspaceLiteralToHsl(theme.color.baseColor)
@@ -115,36 +90,7 @@ function generateThemeCSSVariables(theme: Theme, themeId: string): string {
 
   cssVariables += `  /* Swatches */\n`
 
-  const swatchNames: Record<string, string> = {}
-  Object.entries(theme.swatch).forEach(([key, value]) => {
-    if (!value) return
-    if (key.startsWith("custom") && value.name) {
-      swatchNames[key] = value.name
-        .toLowerCase()
-        .trim()
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/^-|-$/g, "")
-    } else if (
-      key === "swatch1" ||
-      key === "swatch2" ||
-      key === "swatch3" ||
-      key === "swatch4"
-    ) {
-      const paletteName = getDynamicSwatchName(
-        key as "swatch1" | "swatch2" | "swatch3" | "swatch4",
-        theme,
-      )
-      swatchNames[key] = paletteName
-        .toLowerCase()
-        .trim()
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/^-|-$/g, "")
-    } else {
-      swatchNames[key] = key
-    }
-  })
-
-  const uniqueSwatchNames = ensureUniqueSwatchNames(swatchNames)
+  const uniqueSwatchNames = getThemeSwatchVarNames(theme)
 
   Object.entries(theme.swatch).forEach(([key, value]) => {
     if (!value) return
@@ -227,11 +173,8 @@ function generateThemeCSSVariables(theme: Theme, themeId: string): string {
   return cssVariables
 }
 
-export function generateThemeStylesheet(
-  themeId: string,
-  theme: Theme,
-): string {
-  const variables = generateThemeCSSVariables(theme, themeId)
+export function generateThemeStylesheet(slug: string, theme: Theme): string {
+  const variables = generateThemeCSSVariables(theme, slug)
   return `:root {\n${variables}}\n`
 }
 
@@ -245,19 +188,23 @@ export async function generateThemeStylesheetFiles(
   workspace: Workspace,
   componentsFolder: string,
 ): Promise<ThemeStylesheetFile[]> {
-  const usedThemeIds = workspaceThemeService.collectUsedThemes(workspace)
+  const themeIds = Object.keys(workspace.themes ?? {})
+  if (themeIds.length === 0) {
+    themeIds.push("seldon")
+  }
+
   const files: ThemeStylesheetFile[] = []
 
-  for (const themeId of usedThemeIds) {
+  for (const themeId of themeIds) {
     const theme = workspaceThemeService.getTheme(themeId, workspace)
     if (!theme) continue
 
-    const fileSlug = themeId === "default" ? "default" : kebabCase(themeId)
-    const content = await format(generateThemeStylesheet(themeId, theme))
+    const slug = getThemeSlug(themeId, workspace)
+    const content = await format(generateThemeStylesheet(slug, theme))
 
     files.push({
       themeId,
-      path: `${componentsFolder}/styles-${fileSlug}.css`,
+      path: `${componentsFolder}/styles-${slug}.css`,
       content,
     })
   }

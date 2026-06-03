@@ -20,24 +20,52 @@ import { useExpansion } from "@components/sidebars/objects/hooks/use-expansion"
 import { useSectionExpansion } from "@components/sidebars/helpers/use-section-expansion"
 import { useWorkspace } from "./use-workspace"
 
+/** Resource board kinds whose rows are selectable items (families, icons, media). */
+export type ResourceItemKind = "font-collection" | "icon-set" | "media"
+
+/** Serializes a resource item selection as `${resource}:${componentKey}:${entryId}:${slot}`. */
+export function formatResourceItemKey(args: {
+  resource: ResourceItemKind
+  componentKey: string
+  entryId: string
+  slot: string
+}): string {
+  return `${args.resource}:${args.componentKey}:${args.entryId}:${args.slot}`
+}
+
 type SelectionState = {
   selectedBoardId: ComponentKey | null
   selectedNodeId: VariantId | InstanceId | null
   selectedThemeEntryId: string | null
+  selectedFontCollectionEntryId: string | null
+  /**
+   * Selected resource item (a row inside a resource board), serialized via
+   * `formatResourceItemKey` as `${resource}:${componentKey}:${entryId}:${slot}`.
+   * The entry id keeps families unique across variant entries of the same board.
+   * Font collection families use this now; icon sets and media reuse the same
+   * field as they adopt the same board model.
+   */
+  selectedResourceItemKey: string | null
   selectBoard: (id: ComponentKey | null) => void
   selectNode: (id: VariantId | InstanceId | null) => void
   selectThemeEntry: (id: string | null) => void
+  selectFontCollectionEntry: (id: string | null) => void
+  selectResourceItem: (key: string | null) => void
 }
 
 export const useStore = create<SelectionState>()((set) => ({
   selectedBoardId: null,
   selectedNodeId: null,
   selectedThemeEntryId: null,
+  selectedFontCollectionEntryId: null,
+  selectedResourceItemKey: null,
   selectBoard: (id: ComponentKey | null) => {
     set({
       selectedBoardId: id,
       selectedNodeId: null,
       selectedThemeEntryId: null,
+      selectedFontCollectionEntryId: null,
+      selectedResourceItemKey: null,
     })
   },
   selectNode: (id: VariantId | InstanceId | null) => {
@@ -45,6 +73,8 @@ export const useStore = create<SelectionState>()((set) => ({
       selectedNodeId: id,
       selectedBoardId: null,
       selectedThemeEntryId: null,
+      selectedFontCollectionEntryId: null,
+      selectedResourceItemKey: null,
     })
   },
   selectThemeEntry: (id: string | null) => {
@@ -52,6 +82,26 @@ export const useStore = create<SelectionState>()((set) => ({
       selectedThemeEntryId: id,
       selectedNodeId: null,
       selectedBoardId: null,
+      selectedFontCollectionEntryId: null,
+      selectedResourceItemKey: null,
+    })
+  },
+  selectFontCollectionEntry: (id: string | null) => {
+    set({
+      selectedFontCollectionEntryId: id,
+      selectedThemeEntryId: null,
+      selectedNodeId: null,
+      selectedBoardId: null,
+      selectedResourceItemKey: null,
+    })
+  },
+  selectResourceItem: (key: string | null) => {
+    set({
+      selectedResourceItemKey: key,
+      selectedNodeId: null,
+      selectedBoardId: null,
+      selectedThemeEntryId: null,
+      selectedFontCollectionEntryId: null,
     })
   },
 }))
@@ -71,6 +121,14 @@ export const useIsNodeSelected = (id: VariantId | InstanceId): boolean =>
 export const useSelectedNodeId = (): VariantId | InstanceId | null =>
   useStore((state) => state.selectedNodeId)
 
+/** Reactive subscription to the selected resource item key only. */
+export const useSelectedResourceItemKey = (): string | null =>
+  useStore((state) => state.selectedResourceItemKey)
+
+/** Reactive subscription to whether a specific resource item is selected. */
+export const useIsResourceItemSelected = (key: string): boolean =>
+  useStore((state) => state.selectedResourceItemKey === key)
+
 export function useSelection() {
   const { toggleSection } = useSectionExpansion()
   const { toggle: toggleObject, isExpanded } = useExpansion()
@@ -79,9 +137,19 @@ export function useSelection() {
   const selectBoard = useStore((state) => state.selectBoard)
   const selectNode = useStore((state) => state.selectNode)
   const selectThemeEntry = useStore((state) => state.selectThemeEntry)
+  const selectFontCollectionEntry = useStore(
+    (state) => state.selectFontCollectionEntry,
+  )
+  const selectResourceItem = useStore((state) => state.selectResourceItem)
   const selectedBoardId = useStore((state) => state.selectedBoardId)
   const selectedNodeId = useStore((state) => state.selectedNodeId)
   const selectedThemeEntryId = useStore((state) => state.selectedThemeEntryId)
+  const selectedFontCollectionEntryId = useStore(
+    (state) => state.selectedFontCollectionEntryId,
+  )
+  const selectedResourceItemKey = useStore(
+    (state) => state.selectedResourceItemKey,
+  )
   const { workspace } = useWorkspace()
 
   const selectedNode = selectedNodeId
@@ -185,23 +253,60 @@ export function useSelection() {
     (id: string | null) => {
       if (id === selectedThemeEntryId) return
       selectThemeEntry(id)
-      if (id) {
+      if (id && autoExpandOnSelection) {
         toggleObject(id, true)
       }
     },
-    [selectThemeEntry, selectedThemeEntryId, toggleObject],
+    [
+      selectThemeEntry,
+      selectedThemeEntryId,
+      toggleObject,
+      autoExpandOnSelection,
+    ],
+  )
+
+  const _selectFontCollectionEntry = useCallback(
+    (id: string | null) => {
+      if (id === selectedFontCollectionEntryId) return
+      selectFontCollectionEntry(id)
+      if (id && autoExpandOnSelection) {
+        toggleObject(id, true)
+      }
+    },
+    [
+      selectFontCollectionEntry,
+      selectedFontCollectionEntryId,
+      toggleObject,
+      autoExpandOnSelection,
+    ],
+  )
+
+  const _selectResourceItem = useCallback(
+    (key: string | null) => {
+      if (key === selectedResourceItemKey) return
+      selectResourceItem(key)
+    },
+    [selectResourceItem, selectedResourceItemKey],
   )
 
   return {
     selectBoard: _selectBoard,
     selectNode: _selectNode,
     selectThemeEntry: _selectThemeEntry,
+    selectFontCollectionEntry: _selectFontCollectionEntry,
+    selectResourceItem: _selectResourceItem,
     selectedNodeId,
     selectedBoardId,
     selectedThemeEntryId,
+    selectedFontCollectionEntryId,
+    selectedResourceItemKey,
     selectedNode,
     selectedBoard,
-    selectedId: selectedNodeId ?? selectedBoardId ?? selectedThemeEntryId,
+    selectedId:
+      selectedNodeId ??
+      selectedBoardId ??
+      selectedThemeEntryId ??
+      selectedFontCollectionEntryId,
     selection,
   }
 }

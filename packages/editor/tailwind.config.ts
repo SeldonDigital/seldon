@@ -10,9 +10,7 @@ const config: Config = {
   ],
   theme: {
     fontFamily: {
-      sans: [
-        '"SF Pro", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
-      ],
+      sans: ["var(--font-plex-sans)", "system-ui", "sans-serif"],
     },
     fontSize: {
       xs: ["0.75rem", { lineHeight: "1rem" }], // 12px

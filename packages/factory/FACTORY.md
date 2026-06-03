@@ -118,7 +118,7 @@ function getCssFromProperties(
 
 It computes property values, applies inheritance from the parent context, resolves theme tokens, and writes optimized CSS. It drops unset values.
 
-Class names use the `sdn-` prefix. The prefix is applied in [export/css/discovery/get-class-name.ts](./export/css/discovery/get-class-name.ts). Theme variables use `--sdn-` for the default theme and `--sdn-{themeId}-` for other themes. The CSS section markers and section list live in [export/css/constants.ts](./export/css/constants.ts).
+Class names use the `sdn-` prefix. The prefix is applied in [export/css/discovery/get-class-name.ts](./export/css/discovery/get-class-name.ts). Theme variables use a per-theme prefix: bare `--sdn-` for the default `seldon` theme and `--sdn-{slug}-` for every other theme. The slug is a stable, human-readable name built from the theme label in [export/css/generation/get-theme-slug.ts](./export/css/generation/get-theme-slug.ts). A default-type theme slugs from its label, such as `seldon`. A variant theme prepends its root slug, such as `seldon-red`. The CSS section markers and section list live in [export/css/constants.ts](./export/css/constants.ts).
 
 ---
 
@@ -135,9 +135,11 @@ icons/index.ts              # icon index
 utils/class-name.ts         # combineClassNames helper
 Fonts.tsx                   # font loading component
 styles.css                  # component stylesheet
-styles-{theme}.css          # one stylesheet per used theme
+styles-{slug}.css           # one stylesheet per workspace theme
 README.md                   # generated usage guide
 ```
+
+Factory writes one theme stylesheet for every entry in `workspace.themes`, both default themes and their variants. Each file is named by its slug, such as `styles-seldon.css` and `styles-seldon-red.css`, with no hash. `generateThemeStylesheetFiles` in [export/css/generation/insert-theme-variables.ts](./export/css/generation/insert-theme-variables.ts) produces them.
 
 Each component file includes a TypeScript interface, a React component, resolved CSS classes, and tree-shaken imports.
 
@@ -152,7 +154,7 @@ Each component file includes a TypeScript interface, a React component, resolved
 | React export | [export/react/README.md](./export/react/README.md) |
 | CSS export | [export/css/README.md](./export/css/README.md) |
 | Code examples | [TECHNICAL.md](./TECHNICAL.md) |
-| Vocabulary | [../core/GLOSSARY.md](../core/GLOSSARY.md) |
+| Vocabulary | [GLOSSARY.md](../../GLOSSARY.md) |
 
 Note: parts of [TECHNICAL.md](./TECHNICAL.md) predate the current API. Treat this document and the source files as the current reference for entry points and options.
 

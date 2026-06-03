@@ -58,7 +58,7 @@ export function resolveFontSize({
         }
       }
       if (isThemeExactToken(themeValue)) {
-        const { unit, value: n } = themeValue.value
+        const { unit, value: n } = themeValue.parameters
         return (
           unit === Unit.PX
             ? { type: ValueType.EXACT, value: { unit: Unit.PX, value: n } }

@@ -8,7 +8,7 @@ import {
   Variant,
   Workspace,
 } from "@seldon/core"
-import { isThemeBoard } from "@seldon/core/workspace/model/components"
+import { isResourceType } from "@seldon/core/workspace/helpers/components/is-resource-type"
 import { buildThemeAssignmentProperty } from "./helpers/theme-assignment-display"
 import { Frame } from "../../../seldon/frames/Frame"
 import { FramerExpandable } from "../shared/FramerExpandable"
@@ -62,9 +62,10 @@ export function PropertyTree({
 
     const leadingProperties: FlatProperty[] = []
 
-    // Theme boards are always rendered with their own theme, so they do not
-    // expose a theme-assignment picker.
-    const propertiesWithTheme = isThemeBoard(node as Board)
+    // Resource boards (theme, font collection, icon set, media) render with their
+    // own preview theme and have no component theme, so they do not expose a
+    // theme-assignment picker.
+    const propertiesWithTheme = isResourceType(node as Board)
       ? [...leadingProperties, ...properties]
       : [
           ...leadingProperties,
@@ -98,7 +99,7 @@ export function PropertyTree({
     }
     const leadingProperties: FlatProperty[] = []
 
-    if (isThemeBoard(node as Board)) {
+    if (isResourceType(node as Board)) {
       return [...leadingProperties, ...properties]
     }
 

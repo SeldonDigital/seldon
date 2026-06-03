@@ -8,6 +8,7 @@ import {
 import { modulate } from "@seldon/core/helpers/math/modulate"
 import { getThemeOption } from "@seldon/core/helpers/theme/get-theme-option"
 import { Theme, ThemeMarginKey } from "@seldon/core/themes/types"
+import { isModulatedToken } from "@seldon/core/themes/types"
 import { getCssValue } from "./get-css-value"
 
 export function getAbsoluteSizeCssValue(
@@ -17,19 +18,25 @@ export function getAbsoluteSizeCssValue(
   if (value.type === ValueType.THEME_ORDINAL) {
     const themeValue = getThemeOption(value.value as ThemeMarginKey, theme)
 
-    return String(
-      getCssValue({
-        type: ValueType.EXACT,
-        value: {
-          unit: Unit.REM,
-          value: modulate({
-            ratio: theme.core.ratio,
-            size: theme.core.size,
-            step: themeValue.parameters.step,
-          }),
-        },
-      }),
-    )
+    if (isModulatedToken(themeValue)) {
+      return String(
+        getCssValue({
+          type: ValueType.EXACT,
+          value: {
+            unit: Unit.REM,
+            value: modulate({
+              ratio: theme.core.ratio,
+              size: theme.core.size,
+              step: themeValue.parameters.step,
+            }),
+          },
+        }),
+      )
+    }
+
+    const { unit, value: exactValue } = themeValue.parameters
+    const suffix = unit === Unit.PX ? "px" : unit === Unit.PERCENT ? "%" : "rem"
+    return `${exactValue}${suffix}`
   }
 
   if (value.type === ValueType.COMPUTED) {

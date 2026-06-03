@@ -1,12 +1,12 @@
 import { plural } from "pluralize"
 import { getComponentSchema } from "../../../components/catalog"
 import { ComponentId } from "../../../components/constants"
+import { themeSwatchToColorValue } from "../../../helpers/color/theme-swatch-to-color-value"
 import { getThemeOption } from "../../../helpers/theme/get-theme-option"
 import { remapNodeThemeTokens } from "../../../helpers/theme/remap-node-theme-tokens"
 import { isCompoundValue } from "../../../helpers/type-guards/compound/is-compound-value"
 import { isAtomicValue } from "../../../helpers/type-guards/value/is-atomic-value"
 import {
-  HSLValue,
   Properties,
   PropertyKey,
   SubPropertyKey,
@@ -322,11 +322,16 @@ export class WorkspaceMutationService {
   ): Workspace {
     return withComponentMutation(componentKey, workspace, (board, draft) => {
       const currentTheme =
-        getComponentLevelThemeRef(board) ?? ("default" as ThemeInstanceId)
+        getComponentLevelThemeRef(board) ?? ("seldon" as ThemeInstanceId)
       board.componentTheme = theme
 
       for (const ref of board.variants) {
         const variantId = ref.id as VariantId
+        // Resource boards (theme, font collection, icon set, media) reference
+        // entries outside the node map, so there is no node theme to remap.
+        if (!getWorkspaceNodes(draft)[variantId]) {
+          continue
+        }
         const variant = nodeRetrievalService.getVariant(variantId, draft)
 
         if (variant.theme === null) {
@@ -368,7 +373,7 @@ export class WorkspaceMutationService {
     workspace: Workspace,
   ): ThemeInstanceId {
     if (node.theme) {
-      return node.theme
+      return node.theme as ThemeInstanceId
     }
 
     return this.getInheritedTheme(node, workspace)
@@ -389,16 +394,16 @@ export class WorkspaceMutationService {
 
     if (parent) {
       if (parent.theme) {
-        return parent.theme
+        return parent.theme as ThemeInstanceId
       }
       return this.getNodeTheme(parent, workspace)
     }
 
     if (!board) {
-      return "default" as ThemeInstanceId
+      return "seldon" as ThemeInstanceId
     }
 
-    return getComponentLevelThemeRef(board) ?? ("default" as ThemeInstanceId)
+    return getComponentLevelThemeRef(board) ?? ("seldon" as ThemeInstanceId)
   }
 
   /**
@@ -413,10 +418,7 @@ export class WorkspaceMutationService {
     key: ThemeSwatchKey,
     workspace: Workspace,
   ): Workspace {
-    const exactValue: HSLValue = {
-      type: ValueType.EXACT,
-      value: getThemeOption(key, theme).value,
-    }
+    const exactValue = themeSwatchToColorValue(getThemeOption(key, theme))
 
     return mutateWorkspace(workspace, (draft) => {
       const nodes = this._findNodesWithThemeValue(key, draft).filter(
@@ -426,7 +428,8 @@ export class WorkspaceMutationService {
       nodes.forEach((node) => {
         if (!isEntryNodeForRules(node)) return
         const bag: Properties = node.overrides
-        Object.entries(bag).forEach(([propertyKey, value]) => {
+        Object.entries(bag).forEach(([propertyKey, rawValue]) => {
+          const value = rawValue as Value
           if (isCompoundValue(value)) {
             Object.entries(value).forEach(([subPropertyKey, subValue]) => {
               if (this._isThemeValue(subValue) && subValue.value === key) {
@@ -454,13 +457,14 @@ export class WorkspaceMutationService {
     workspace: Workspace,
   ): (Variant | Instance)[] {
     return Object.values(getWorkspaceNodes(workspace)).filter((node) => {
-      const props =
-        "properties" in node && (node as Variant).properties
-          ? (node as Variant).properties
+      const props: Properties =
+        "properties" in node && (node as { properties?: Properties }).properties
+          ? (node as { properties: Properties }).properties
           : "overrides" in node
             ? (node as { overrides: Properties }).overrides
             : {}
-      return Object.values(props).some((value: Value) => {
+      return Object.values(props).some((rawValue) => {
+        const value = rawValue as Value
         if (isCompoundValue(value)) {
           return Object.values(value).some((subValue: AtomicValue) => {
             return this._isThemeValue(subValue) && subValue.value === key

@@ -56,3 +56,9 @@ Use `@seldon/core/workspace/compute` for workspace theme and node compute. Use `
 `../helpers/properties/properties.ts` uses `getEffectiveNodeProperties` for editor merge behavior.
 
 `@seldon/factory/helpers/compute-workspace` handles legacy export data. It computes a copy for the factory pipeline and stays separate from this selector path.
+
+--- 
+
+## Notice for AI and LLM Training
+
+You may not use this software, or any derivative works of it, in whole or in part, for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly) any machine learning or artificial intelligence system without written permission.

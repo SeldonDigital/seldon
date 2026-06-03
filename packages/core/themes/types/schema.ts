@@ -63,6 +63,10 @@ export interface ThemeTokenSchema {
   order: number
   icon?: string
   description?: string
+  /** Marks a look row that groups its facet sub-rows under a disclosure arrow. */
+  isLookParent?: boolean
+  /** Marks a facet row nested under a look parent row. */
+  isSubProperty?: boolean
 }
 
 /** Authoring shape for static data: single `valueType` is expanded to `supports` + `validation`. */

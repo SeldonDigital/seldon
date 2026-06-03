@@ -7,11 +7,11 @@ import { isEntryThemeDefault } from "@seldon/core/workspace/model/entry-theme"
 import type { EntryThemeId } from "@seldon/core/workspace/types"
 import { useTool } from "@lib/hooks/use-tool"
 import { useSelection } from "@lib/workspace/use-selection"
+import { useRowHighlightStyle } from "@lib/workspace/use-object-hover"
 import { useWorkspace } from "@lib/workspace/use-workspace"
 import { useSidebarRowStyling } from "../../tracking/hooks/use-sidebar-row-styling"
 import { useEditState } from "./hooks/use-edit-state"
 import { useRowClick } from "./hooks/use-row-click"
-import { useRowHover } from "./hooks/use-row-hover"
 import { ListItemTreeNode as SeldonNode } from "../../../seldon/elements/ListItemTreeNode"
 import { IconProps } from "../../../seldon/primitives/Icon"
 import { LabelProps } from "../../../seldon/primitives/Label"
@@ -60,16 +60,8 @@ export function RowThemeEntry({
     { id: themeEntryId } as unknown as Variant,
     { isSelected },
   )
-  const { setIsHovered, style: hoverStyle } = useRowHover(isSelected)
+  const hoverStyle = useRowHighlightStyle(themeEntryId, isSelected)
   const combinedRowStyle = { ...hoverStyle, ...rowStyle }
-
-  const handleMouseEnter = useCallback(() => {
-    if (!isActive) setIsHovered(true)
-  }, [isActive, setIsHovered])
-
-  const handleMouseLeave = useCallback(() => {
-    setIsHovered(false)
-  }, [setIsHovered])
 
   if (!show || !entry) return null
 
@@ -101,7 +93,11 @@ export function RowThemeEntry({
   }
 
   return (
-    <div style={rowWrapperStyle}>
+    <div
+      style={rowWrapperStyle}
+      data-selection-id={themeEntryId}
+      data-selection-kind="theme"
+    >
       <SeldonNode
         buttonIconic={{}}
         icon={{ style: { color: "transparent" } }}
@@ -110,8 +106,6 @@ export function RowThemeEntry({
         label={label}
         onClick={onClick}
         onDoubleClick={onDoubleClick}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
         data-testid="objects-sidebar-theme-entry"
         data-theme-entry-id={themeEntryId}
         data-active={isActive}

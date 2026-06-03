@@ -77,5 +77,10 @@ export function childPathsUnderCompoundParent(
       segments.length === 3
     )
   }
-  return segments[0] === parentKey && segments.length === 2
+  // The child is the parent key plus exactly one more segment. Covers a
+  // top-level compound (`margin` -> `margin.top`) and a look parent
+  // (`font.callout` -> `font.callout.size`).
+  if (!childPath.startsWith(`${parentKey}.`)) return false
+  const remainder = childPath.slice(parentKey.length + 1)
+  return remainder.length > 0 && !remainder.includes(".")
 }

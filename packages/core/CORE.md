@@ -149,7 +149,7 @@ const files = await exportWorkspace(workspace, {
 
 | Topic | Document |
 | --- | --- |
-| Vocabulary | [GLOSSARY.md](./GLOSSARY.md) |
+| Vocabulary | [GLOSSARY.md](../../GLOSSARY.md) |
 | Workspace file spec | [WORKSPACE.md](./workspace/WORKSPACE.md) |
 | Reducer actions | [workspace/reducers/README.md](./workspace/reducers/README.md) |
 | Rules and propagation | [rules/README.md](./rules/README.md) |

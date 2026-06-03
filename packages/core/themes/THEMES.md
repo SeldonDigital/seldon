@@ -16,7 +16,7 @@ Stock themes ship with Seldon as starting points and reference implementations. 
 
 | Stock Theme ID | Description |
 | --- | --- |
-| `default` | Seldon brand theme used as the default stock preset. |
+| `seldon` | Seldon brand theme used as the default stock preset. |
 | `earth` | Warm natural swatches with analogous harmony, humanist type tone, and comfortable scales. |
 | `highContrast` | Neutral high-contrast theme with simple typography and strong readability. |
 | `industrial` | Cool steel tones with monochromatic harmony, dense rhythm, and stronger weight choices. |
@@ -691,7 +691,7 @@ import { instantiateTheme } from "@seldon/core/themes/compute"
 import { STOCK_THEMES_BY_ID } from "@seldon/core/themes"
 
 const branded = instantiateTheme(
-  "default",
+  "seldon",
   { color: { baseColor: { hue: 200, saturation: 70, lightness: 45 } } },
   STOCK_THEMES_BY_ID,
 )
@@ -753,12 +753,12 @@ const invalidRef: BorderColorValue = {
 [`types/theme-id.ts`](./types/theme-id.ts) exposes the catalog union and the workspace-instance union:
 
 ```typescript
-// 10 packaged stock rows, plus the transitional singleton "custom"
+// 10 packaged stock rows
 export type ThemeTemplateId =
-  | "default" | "earth" | "highContrast" | "industrial" | "material"
+  | "seldon" | "earth" | "highContrast" | "industrial" | "material"
   | "pop" | "royalAzure" | "sky" | "sunsetBlue" | "wildberry"
 
-export type ThemeInstanceId = ThemeTemplateId | "custom"
+export type ThemeInstanceId = ThemeTemplateId
 ```
 
 In a workspace file, **board theme refs, node `theme` fields, and keys in the `themes` map** are opaque **strings** (for example `theme-skyBlue-default`); resolution happens through `getComputedTheme` / `computeWorkspaceThemes`. Treat those refs as `string` at workspace boundaries until workspace types are aligned.
@@ -894,7 +894,7 @@ export interface ThemeFont {
 
 - **`constants/`** — `TokenType`, `Colorspace`, `Harmony`, `Ratio`. Update only when introducing a new token kind or harmony.
 - **`schemas/data/theme-token-schemas.ts`** + **`schemas/data/theme-dynamic-schemas.ts`** — register the new schema so editor menus can render it.
-- **`schemas/sections.ts`** — add a row to `RAW_THEME_TOKEN_SECTIONS` and a `TOKEN_FIELD_SECTION_ANCHOR` entry pointing at the catalog key it should sort against, so the section orders correctly against `PROPERTY_DISPLAY_ORDER`.
+- **`schemas/sections.ts`** — add a row to `THEME_TOKEN_SECTION_ORDER` at the position where the section should render. The list order is the sidebar order. Look sections render after the scale sections they relate to.
 
 **4. Update exports**
 

@@ -23,8 +23,8 @@ npm run dev
 
 ## Privacy Defaults
 
-The local editor does not load remote Google Fonts by default. To opt in for
-font previews during local development, start the editor with:
+The local editor does not load remote font hosts by default. To opt in for
+remote font previews during local development, start the editor with:
 
 ```bash
 NEXT_PUBLIC_SELDON_ENABLE_REMOTE_FONTS=true npm run dev

@@ -4,10 +4,10 @@
  * see `helpers/resolve-theme-token-schema.ts`. Static entries live in `theme-static-schemas.ts`.
  */
 import { getDynamicSwatchName } from "../../compute/get-dynamic-swatch-names"
+import { LOOK_FACETS, isBridgedLookFacet } from "../../looks/look-facets"
+import type { LookSection } from "../../looks/look-facets"
 import type { ComputedTheme, StockTheme } from "../../types/theme"
 import type {
-  ThemeTokenCatalogDraft,
-  ThemeTokenSchema,
   ThemeTokenSchemaUnresolved,
 } from "../../types/schema"
 import type { StockThemeSwatch, ThemeSwatch } from "../../values"
@@ -103,279 +103,63 @@ export function generateSwatchSchemas(
 }
 
 /**
- * Generate schemas for shadow properties
+ * Generate schemas for one look section.
+ *
+ * Each look emits a parent row (the disclosure group) followed by one row per
+ * facet from {@link LOOK_FACETS}. Bridged facets carry a `propertyKey` so their
+ * control and options resolve from the property schema. Inline facets carry
+ * explicit `valueType` / `controlType` and are finalized here.
  */
-export function generateShadowSchemas(
+export function generateLookSchemas(
   theme: ThemeOrStock,
+  section: LookSection,
 ): ThemeTokenSchemaUnresolved[] {
   const schemas: ThemeTokenSchemaUnresolved[] = []
-  let order = 0
+  const facets = LOOK_FACETS[section]
+  const stride = facets.length + 1
+  const lookTable = (theme as unknown as Record<string, Record<string, { name?: string }>>)[
+    section
+  ]
+  if (!lookTable) return schemas
 
-  Object.entries(theme.shadow).forEach(([shadowId, shadow]) => {
-    if (!shadow) return
-    const baseOrder = order * 5
+  let index = 0
+  for (const [lookId, look] of Object.entries(lookTable)) {
+    if (!look) continue
+    const baseOrder = index * stride
 
-    schemas.push(
-      {
-        key: `shadow.${shadowId}.offsetX`,
-        propertyKey: "shadowOffsetX",
-        label: `${shadow.name} - Offset X`,
-        section: "shadow",
-        order: baseOrder,
-      },
-      {
-        key: `shadow.${shadowId}.offsetY`,
-        propertyKey: "shadowOffsetY",
-        label: `${shadow.name} - Offset Y`,
-        section: "shadow",
-        order: baseOrder + 1,
-      },
-      {
-        key: `shadow.${shadowId}.blur`,
-        propertyKey: "shadowBlur",
-        label: `${shadow.name} - Blur`,
-        section: "shadow",
-        order: baseOrder + 2,
-      },
-      {
-        key: `shadow.${shadowId}.spread`,
-        propertyKey: "shadowSpread",
-        label: `${shadow.name} - Spread`,
-        section: "shadow",
-        order: baseOrder + 3,
-      },
-      {
-        key: `shadow.${shadowId}.color`,
-        propertyKey: "shadowColor",
-        label: `${shadow.name} - Color`,
-        section: "shadow",
-        order: baseOrder + 4,
-      },
-    )
-
-    order++
-  })
-
-  return schemas
-}
-
-/**
- * Generate schemas for border properties
- */
-export function generateBorderSchemas(
-  theme: ThemeOrStock,
-): ThemeTokenSchemaUnresolved[] {
-  const schemas: ThemeTokenSchemaUnresolved[] = []
-  let order = 0
-
-  Object.entries(theme.border).forEach(([borderId, border]) => {
-    if (!border) return
-    const baseOrder = order * 3
-
-    schemas.push(
-      {
-        key: `border.${borderId}.width`,
-        propertyKey: "borderWidth",
-        label: `${border.name} - Width`,
-        section: "border",
-        order: baseOrder,
-      },
-      {
-        key: `border.${borderId}.style`,
-        propertyKey: "borderStyle",
-        label: `${border.name} - Style`,
-        section: "border",
-        order: baseOrder + 1,
-      },
-      {
-        key: `border.${borderId}.color`,
-        propertyKey: "borderColor",
-        label: `${border.name} - Color`,
-        section: "border",
-        order: baseOrder + 2,
-      },
-    )
-
-    order++
-  })
-
-  return schemas
-}
-
-/**
- * Generate schemas for gradient properties
- */
-export function generateGradientSchemas(
-  theme: ThemeOrStock,
-): ThemeTokenSchemaUnresolved[] {
-  const schemas: ThemeTokenSchemaUnresolved[] = []
-  let order = 0
-
-  Object.entries(theme.gradient).forEach(([gradientId, gradient]) => {
-    if (!gradient) return
-    const baseOrder = order * 3
-
-    schemas.push(
-      {
-        key: `gradient.${gradientId}.angle`,
-        propertyKey: "gradientAngle",
-        label: `${gradient.name} - Angle`,
-        section: "gradient",
-        order: baseOrder,
-      },
-      {
-        key: `gradient.${gradientId}.startColor`,
-        propertyKey: "gradientStartColor",
-        label: `${gradient.name} - Start Color`,
-        section: "gradient",
-        order: baseOrder + 1,
-      },
-      {
-        key: `gradient.${gradientId}.endColor`,
-        propertyKey: "gradientEndColor",
-        label: `${gradient.name} - End Color`,
-        section: "gradient",
-        order: baseOrder + 2,
-      },
-    )
-
-    order++
-  })
-
-  return schemas
-}
-
-/**
- * Generate schemas for background properties
- */
-export function generateBackgroundSchemas(
-  theme: ThemeOrStock,
-): ThemeTokenSchemaUnresolved[] {
-  const schemas: ThemeTokenSchemaUnresolved[] = []
-  let order = 0
-
-  Object.entries(theme.background).forEach(([backgroundId, background]) => {
-    if (!background) return
     schemas.push({
-      key: `background.${backgroundId}.color`,
-      propertyKey: "backgroundColor",
-      label: `${background.name} - Color`,
-      section: "background",
-      order: order++,
+      key: `${section}.${lookId}`,
+      label: look.name ?? lookId,
+      section,
+      order: baseOrder,
+      supports: [],
+      validation: {},
+      isLookParent: true,
     })
-  })
+
+    facets.forEach((facet, facetIndex) => {
+      const base = {
+        key: `${section}.${lookId}.${facet.facet}`,
+        label: facet.label,
+        section,
+        order: baseOrder + facetIndex + 1,
+        isSubProperty: true,
+      }
+      if (isBridgedLookFacet(facet)) {
+        schemas.push({ ...base, propertyKey: facet.propertyKey })
+      } else {
+        schemas.push(
+          finalizeThemeTokenSchema({
+            ...base,
+            valueType: facet.valueType,
+            controlType: facet.controlType,
+          }),
+        )
+      }
+    })
+
+    index++
+  }
 
   return schemas
-}
-
-/**
- * Generate schemas for font properties (font presets)
- */
-export function generateFontSchemas(
-  theme: ThemeOrStock,
-): ThemeTokenSchemaUnresolved[] {
-  const schemas: ThemeTokenSchemaUnresolved[] = []
-  let order = 0
-
-  Object.entries(theme.font).forEach(([fontId, font]) => {
-    if (!font) return
-    const baseOrder = order * 4
-
-    schemas.push(
-      {
-        key: `font.${fontId}.family`,
-        propertyKey: "fontFamily",
-        label: `${font.name} - Family`,
-        section: "font",
-        order: baseOrder,
-      },
-      {
-        key: `font.${fontId}.size`,
-        propertyKey: "fontSize",
-        label: `${font.name} - Size`,
-        section: "font",
-        order: baseOrder + 1,
-      },
-      {
-        key: `font.${fontId}.weight`,
-        propertyKey: "fontWeight",
-        label: `${font.name} - Weight`,
-        section: "font",
-        order: baseOrder + 2,
-      },
-      {
-        key: `font.${fontId}.lineHeight`,
-        propertyKey: "fontLineHeight",
-        label: `${font.name} - Line Height`,
-        section: "font",
-        order: baseOrder + 3,
-      },
-    )
-
-    order++
-  })
-
-  return schemas
-}
-
-/**
- * Generate schemas for scrollbar properties
- */
-export function generateScrollbarSchemas(
-  theme: ThemeOrStock,
-): ThemeTokenSchema[] {
-  const schemas: ThemeTokenCatalogDraft[] = []
-  let order = 0
-
-  Object.entries(theme.scrollbar).forEach(([scrollbarId, scrollbar]) => {
-    if (!scrollbar) return
-    const baseOrder = order * 5
-
-    schemas.push(
-      {
-        key: `scrollbar.${scrollbarId}.trackSize`,
-        label: `${scrollbar.name} - Track Size`,
-        valueType: "text",
-        controlType: "text",
-        section: "scrollbar",
-        order: baseOrder,
-      },
-      {
-        key: `scrollbar.${scrollbarId}.trackColor`,
-        label: `${scrollbar.name} - Track Color`,
-        valueType: "color",
-        controlType: "color",
-        section: "scrollbar",
-        order: baseOrder + 1,
-      },
-      {
-        key: `scrollbar.${scrollbarId}.thumbColor`,
-        label: `${scrollbar.name} - Thumb Color`,
-        valueType: "color",
-        controlType: "color",
-        section: "scrollbar",
-        order: baseOrder + 2,
-      },
-      {
-        key: `scrollbar.${scrollbarId}.thumbHoverColor`,
-        label: `${scrollbar.name} - Thumb Hover Color`,
-        valueType: "color",
-        controlType: "color",
-        section: "scrollbar",
-        order: baseOrder + 3,
-      },
-      {
-        key: `scrollbar.${scrollbarId}.rounded`,
-        label: `${scrollbar.name} - Rounded`,
-        valueType: "boolean",
-        controlType: "boolean",
-        section: "scrollbar",
-        order: baseOrder + 4,
-      },
-    )
-
-    order++
-  })
-
-  return schemas.map(finalizeThemeTokenSchema)
 }

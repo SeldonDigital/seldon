@@ -1,6 +1,5 @@
 import { WritableDraft } from "immer"
 import { isEqual } from "lodash"
-import { getComponentSchema } from "../../components/catalog"
 import { isComponentId, type ComponentId } from "../../components/constants"
 import { Workspace } from "../../index"
 import { ValueType } from "../../properties"
@@ -13,7 +12,7 @@ import {
 import { HSL } from "../../properties/values/shared/exact/hsl"
 import { TokenType } from "../../themes/constants/token-type"
 import { Theme, ThemeInstanceId, ThemeOption } from "../../themes/types"
-import type { ThemeFamilyToken } from "../../themes/values"
+import type { ThemeFontFamilyToken } from "../../themes/values"
 import { getChildrenIds } from "../../workspace/helpers/components/get-children-ids"
 import { getComponentByNodeId } from "../../workspace/helpers/components/get-component-by-node-id"
 import { parseNodeCatalog } from "../../workspace/model/template-ref"
@@ -65,11 +64,11 @@ function themeOptionComparableName(
   if ("name" in option && typeof option.name === "string") return option.name
   if (
     "type" in option &&
-    option.type === TokenType.FAMILY &&
-    "value" in option &&
-    typeof (option as ThemeFamilyToken).value === "string"
+    option.type === TokenType.FONT_FAMILY &&
+    "parameters" in option &&
+    typeof (option as ThemeFontFamilyToken).parameters === "string"
   ) {
-    return (option as ThemeFamilyToken).value
+    return (option as ThemeFontFamilyToken).parameters
   }
   return undefined
 }
@@ -342,12 +341,7 @@ export function remapNodeThemeTokens(
       ? catalogParsed.componentId
       : undefined
 
-  if (
-    componentId &&
-    isComponentId(componentId) &&
-    getComponentSchema(componentId).restrictions?.addChildren !== false &&
-    childIds.length > 0
-  ) {
+  if (componentId && isComponentId(componentId) && childIds.length > 0) {
     for (const childId of childIds) {
       remapNodeThemeTokens(
         childId as InstanceId,

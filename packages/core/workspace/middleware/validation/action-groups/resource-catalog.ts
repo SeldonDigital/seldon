@@ -14,6 +14,7 @@ import {
   isThemeBoard,
 } from "../../../model/components"
 import { shouldBlockDeletableComponentRemoval } from "../../../helpers/removal/component-removal-guards"
+import { DEFAULT_FONT_COLLECTION_BOARD_KEY } from "../../../helpers/font-collections/seed-default-font-collection-board"
 import { ErrorMessages } from "../../../constants"
 import { componentValidators, isPackagedCatalogBoard } from "../validators"
 import { WorkspaceValidationError } from "../workspace-validation-error"
@@ -169,6 +170,12 @@ export function validateRemoveBoard(
       if (!board || !isFontCollectionBoard(board)) {
         throw new WorkspaceValidationError(
           `Expected a font collection board at ${catalogId}`,
+          action,
+        )
+      }
+      if (catalogId === DEFAULT_FONT_COLLECTION_BOARD_KEY) {
+        throw new WorkspaceValidationError(
+          "Cannot remove the System font collection board",
           action,
         )
       }

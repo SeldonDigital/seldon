@@ -145,7 +145,7 @@ function normalizeMetadata(
     intent?: string
   }
   return {
-    id: (legacy.id ?? "default") as ThemeMetadata["id"],
+    id: (legacy.id ?? "seldon") as ThemeMetadata["id"],
     name: legacy.name ?? "",
     description: legacy.description ?? "",
     intent: legacy.intent ?? "",

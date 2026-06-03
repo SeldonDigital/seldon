@@ -67,6 +67,10 @@ import {
   schema as dialogSchema,
 } from "./modules/Dialog.schema"
 import {
+  exportConfig as typeSpecimenExportConfig,
+  schema as typeSpecimenSchema,
+} from "./modules/TypeSpecimen.schema"
+import {
   exportConfig as footerExportConfig,
   schema as footerSchema,
 } from "./modules/Footer.schema"
@@ -395,6 +399,7 @@ const parts: ComponentSchema[] = [
 const modules: ComponentSchema[] = [
   calendarSchema,
   dialogSchema,
+  typeSpecimenSchema,
   footerSchema,
   sidebarSchema,
   tableSchema,
@@ -465,6 +470,7 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   [ComponentId.CALENDAR]: calendarExportConfig,
   [ComponentId.FOOTER]: footerExportConfig,
   [ComponentId.DIALOG]: dialogExportConfig,
+  [ComponentId.TYPE_SPECIMEN]: typeSpecimenExportConfig,
   [ComponentId.SIDEBAR]: sidebarExportConfig,
   [ComponentId.TABLE]: tableExportConfig,
   [ComponentId.WIDGET_TODO]: widgetTodoExportConfig,

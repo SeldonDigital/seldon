@@ -26,7 +26,7 @@ flowchart LR
 | --- | --- | --- |
 | `THEME_TOKEN_SCHEMAS` | `data/theme-token-schemas.ts` | Static key to `ThemeTokenSchema` map. Populated at module load from static schema arrays. |
 | `THEME_TOKEN_SCHEMA_CATALOG` | `data/theme-token-schemas.ts` | Alias of `THEME_TOKEN_SCHEMAS`. |
-| `THEME_TOKEN_SECTIONS` | `sections.ts` | Ordered UI sections for token lists. Anchors sort to property display order. |
+| `THEME_TOKEN_SECTIONS` | `sections.ts` | Ordered UI sections for token lists. Order is defined explicitly in `THEME_TOKEN_SECTION_ORDER`. |
 | `getThemeTokenSectionSchema` | `sections.ts` | Returns one section definition by id. |
 | `getAllThemeTokenSectionSchemas` | `sections.ts` | Returns every section definition. |
 
@@ -50,12 +50,7 @@ flowchart LR
 | --- | --- | --- |
 | `ThemeOrStock` | `data/theme-dynamic-schemas.ts` | `StockTheme` or `ComputedTheme` input for dynamic catalog builders. |
 | `generateSwatchSchemas` | `data/theme-dynamic-schemas.ts` | Per-swatch editor entries from theme `swatch` keys. |
-| `generateShadowSchemas` | `data/theme-dynamic-schemas.ts` | Per-shadow recipe facet entries. |
-| `generateBorderSchemas` | `data/theme-dynamic-schemas.ts` | Per-border recipe facet entries. |
-| `generateGradientSchemas` | `data/theme-dynamic-schemas.ts` | Per-gradient recipe facet entries. |
-| `generateBackgroundSchemas` | `data/theme-dynamic-schemas.ts` | Per-background recipe facet entries. |
-| `generateFontSchemas` | `data/theme-dynamic-schemas.ts` | Per-font look facet entries. |
-| `generateScrollbarSchemas` | `data/theme-dynamic-schemas.ts` | Scrollbar entries without property bridge. |
+| `generateLookSchemas` | `data/theme-dynamic-schemas.ts` | Per-look parent and facet entries for one look section, driven by `LOOK_FACETS`. |
 
 ### Static schema arrays
 

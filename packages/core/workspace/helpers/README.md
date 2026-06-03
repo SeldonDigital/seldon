@@ -134,9 +134,8 @@ flowchart LR
 | `isDefaultThemeVariant` | `is-default-theme-variant.ts` | True when theme entry `type` is `default`. \| Used by theme validation. |
 | `isUserThemeVariant` | `is-user-theme-variant.ts` | True when theme entry `type` is `variant`. \| Used by theme handlers. |
 | `deleteOverrideAtPath` | `theme-override-paths.ts` | Removes a nested key from theme overrides. \| Used when resetting custom tokens. |
-| `WORKSPACE_EDITABLE_THEME_ENTRY_ID` | `workspace-editable-theme.ts` | Constant id `custom` for the editable theme row. \| Matches `ThemeInstanceId` `custom`. |
-| `createDefaultEditableThemeEntry` | `workspace-editable-theme.ts` | Builds the default `themes.custom` row. \| Used by `createEmptyWorkspace`. |
-| `ensureWorkspaceEditableThemeEntry` | `workspace-editable-theme.ts` | Adds `themes.custom` when missing. \| Used by `set_workspace` and creation paths. |
+| `WORKSPACE_EDITABLE_THEME_ENTRY_ID` | `workspace-editable-theme.ts` | Constant id `theme-seldon-default` for the editable theme row. \| The stock default theme entry. |
+| `ensureWorkspaceEditableThemeEntry` | `workspace-editable-theme.ts` | Adds the `theme-seldon-default` row when missing. \| Used by `set_workspace` and creation paths. |
 
 ### Removal guards (`removal/`)
 
@@ -183,3 +182,9 @@ For effective node property snapshots, use [`getEffectiveNodeProperties`](../com
 Icon sheet rows still use [`IconSheetVariant`](rules/icon-sheet-variant.ts) at runtime. [`WORKSPACE.md`](../WORKSPACE.md) already defines icon-set catalog rows for the new baseline. A later `packages/core/icons` pass will align runtime code without changing that spec.
 
 `hasEffectiveThemeReference` calls `workspaceThemeService` from [`../services/`](../services/index.ts) today. A future pass may move theme resolution into compute-only helpers.
+
+--- 
+
+## Notice for AI and LLM Training
+
+You may not use this software, or any derivative works of it, in whole or in part, for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly) any machine learning or artificial intelligence system without written permission.

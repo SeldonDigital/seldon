@@ -16,6 +16,11 @@ import {
 } from "../../../../lib/hooks/use-canvas-hover-state"
 import { getNodeCatalogComponentId, getNodeChildIds } from "@lib/workspace/node-tree"
 import { useSelection } from "@lib/workspace/use-selection"
+import {
+  getSelectionTarget,
+  selectFromTarget,
+} from "@lib/workspace/selection-target"
+import { useSetHoveredId } from "@lib/workspace/use-object-hover"
 import { useWorkspace } from "@lib/workspace/use-workspace"
 import { useAddToast } from "@components/toaster/use-add-toast"
 import { checkInsertionPoint } from "../../tracking/utils/check-insertion-point"
@@ -24,11 +29,18 @@ import { getChildNodesWithNodeId } from "../helpers/get-child-nodes-with-node-id
 import { getNodeIdForEventTarget } from "../helpers/get-node-id-for-event-target"
 
 export function useCanvas() {
-  const { selectNode } = useSelection()
+  const {
+    selectNode,
+    selectBoard,
+    selectThemeEntry,
+    selectFontCollectionEntry,
+    selectResourceItem,
+  } = useSelection()
   const { workspace } = useWorkspace()
   const { activeTool } = useTool()
   const { openDialog } = useDialog()
   const { hoverState, setHoverState } = useCanvasHoverState()
+  const setHoveredId = useSetHoveredId()
   const { isInPreviewMode } = usePreview()
   const addToast = useAddToast()
 
@@ -41,6 +53,16 @@ export function useCanvas() {
       // Don't show highlights in preview mode
       if (isInPreviewMode) {
         setHoverState(null)
+        setHoveredId(null)
+        return
+      }
+
+      // Select tool: one path resolves the hovered selectable (node, theme
+      // variant, font specimen) and feeds the shared hover bridge. Insertion
+      // placement below is component/sketch only.
+      if (activeTool === "select") {
+        const target = getSelectionTarget(event.target as Element)
+        setHoveredId(target?.id ?? null)
         return
       }
 
@@ -65,8 +87,16 @@ export function useCanvas() {
       const orientation = getNodeOrientation(objectId, workspace)
       const { clientX, clientY } = event
 
+      // The child-before-cursor lookup is only used to place insertion
+      // indicators for the component/sketch tools. The select tool never reads
+      // it, so skip the per-child measurement loop to keep hover cheap.
+      const needsChildLookup =
+        activeTool === "component" || activeTool === "sketch"
+
       // Find all children that have a data-node-id attribute
-      const nodesWithNodeId = getChildNodesWithNodeId(element)
+      const nodesWithNodeId = needsChildLookup
+        ? getChildNodesWithNodeId(element)
+        : []
 
       // If there are children with a data-node-id attribute, we want to find the last child before the cursor
       // That means we want to find the child that is closest to the left for horizontal oriented nodes
@@ -162,6 +192,7 @@ export function useCanvas() {
       hoverState?.placement,
       hoverState?.lastChildNodeBeforeCursor,
       setHoverState,
+      setHoveredId,
     ],
   )
 
@@ -261,11 +292,6 @@ export function useCanvas() {
     }
 
     switch (activeTool) {
-      case "select":
-        if (hoverState.objectType === "node") {
-          selectNode(hoverState.objectId)
-        }
-        break
       case "component":
       case "sketch":
         if (hoverState.objectType === "node") {
@@ -287,7 +313,6 @@ export function useCanvas() {
   }, [
     hoverState,
     activeTool,
-    selectNode,
     workspace,
     insertNextToChild,
     insertIntoNode,
@@ -302,15 +327,39 @@ export function useCanvas() {
     (event) => {
       event.stopPropagation()
 
+      // Select tool: select whatever selectable was clicked, using the same
+      // typed setters the sidebar rows use, so canvas and sidebar clicks match.
+      if (activeTool === "select") {
+        const target = getSelectionTarget(event.target as Element)
+        if (target) {
+          selectFromTarget(target, {
+            selectNode,
+            selectBoard,
+            selectThemeEntry,
+            selectFontCollectionEntry,
+            selectResourceItem,
+          })
+        }
+        return
+      }
+
       executeToolAction()
     },
-    [executeToolAction],
+    [
+      activeTool,
+      executeToolAction,
+      selectNode,
+      selectBoard,
+      selectThemeEntry,
+      selectFontCollectionEntry,
+      selectResourceItem,
+    ],
   )
 
-  const handleMouseLeave: MouseEventHandler<HTMLDivElement> = useCallback(
-    () => setHoverState(null),
-    [setHoverState],
-  )
+  const handleMouseLeave: MouseEventHandler<HTMLDivElement> = useCallback(() => {
+    setHoverState(null)
+    setHoveredId(null)
+  }, [setHoverState, setHoveredId])
 
   // Update the indicator position no more than 60 times per second (60 FPS)
   const throttledMouseMove = useThrottledCallback(handleMouseMove, 1000 / 60)

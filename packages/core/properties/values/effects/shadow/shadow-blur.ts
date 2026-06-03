@@ -44,5 +44,6 @@ export const shadowBlurSchema: PropertySchema = {
       return value in theme.blur
     },
   },
-  themeOrdinalKeys: (theme: Theme) => Object.keys(theme.blur),
+  themeOrdinalKeys: (theme: Theme) =>
+    Object.keys(theme.blur).map((id) => `@blur.${id}`),
 }

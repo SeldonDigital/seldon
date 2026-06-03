@@ -1,7 +1,9 @@
 import { BackgroundPositionValue, ValueType } from "@seldon/core"
 import { backgroundPositionMap } from "./background-position-map"
 
-export function getBackgroundPositionStyle(position: BackgroundPositionValue) {
+export function getBackgroundPositionStyle(
+  position: BackgroundPositionValue,
+): string {
   if (position.type === ValueType.EXACT) {
     // Handle single value case
     if ("value" in position.value && "unit" in position.value) {
@@ -14,6 +16,8 @@ export function getBackgroundPositionStyle(position: BackgroundPositionValue) {
   }
 
   if (position.type === ValueType.OPTION) {
-    return backgroundPositionMap[position.value]
+    return String(backgroundPositionMap[position.value] ?? "")
   }
+
+  return ""
 }

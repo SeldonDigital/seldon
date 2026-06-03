@@ -27,7 +27,7 @@ export class WorkspaceThemeService {
     workspace: Workspace,
   ): ThemeInstanceId {
     if (typeCheckingService.isComponentEntry(object)) {
-      return getComponentLevelThemeRef(object) ?? ("default" as ThemeInstanceId)
+      return getComponentLevelThemeRef(object) ?? ("seldon" as ThemeInstanceId)
     }
 
     return this.getNodeThemeId(object.id, workspace)
@@ -65,7 +65,7 @@ export class WorkspaceThemeService {
 
     while (currentNode) {
       if (currentNode.theme) {
-        return currentNode.theme
+        return currentNode.theme as ThemeInstanceId
       }
 
       currentNode = nodeTraversalService.findParentNode(currentNode.id, workspace)
@@ -76,7 +76,7 @@ export class WorkspaceThemeService {
 
     invariant(board, `Unable to find board for variant ${rootNode.id}`)
 
-    return getComponentLevelThemeRef(board) ?? ("default" as ThemeInstanceId)
+    return getComponentLevelThemeRef(board) ?? ("seldon" as ThemeInstanceId)
   }
 
   /**
@@ -100,7 +100,10 @@ export class WorkspaceThemeService {
    * @param workspace - The workspace
    * @returns The theme
    */
-  public getTheme(themeId: ThemeInstanceId, workspace: Workspace): Theme {
+  public getTheme(
+    themeId: ThemeInstanceId | string,
+    workspace: Workspace,
+  ): Theme {
     return getComputedTheme(themeId, workspace as any)
   }
 
@@ -154,12 +157,12 @@ export class WorkspaceThemeService {
 
     Object.values(workspace.nodes).forEach((node) => {
       if (node.theme) {
-        usedThemeIds.add(node.theme)
+        usedThemeIds.add(node.theme as ThemeInstanceId)
       }
     })
 
     if (usedThemeIds.size === 0) {
-      usedThemeIds.add("default")
+      usedThemeIds.add("seldon")
     }
 
     return usedThemeIds

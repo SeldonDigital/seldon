@@ -2,76 +2,57 @@ import { ComponentLevel } from "@seldon/core/components/constants"
 import { Workspace } from "@seldon/core/workspace/types"
 import { NodeIdToClass } from "../../../css/types"
 import { ComponentToExport, JSONTreeNode } from "../../../types"
-import { camelCase } from "../../utils/case-utils"
 import {
   validateExportedComponentProps,
   validateTreeNodeProps,
 } from "../../validation/validate-component-props"
-import { ComponentMetadataStorage } from "../component-metadata"
-import { isCustomComponent } from "../custom-components/is-custom-component"
-import { isInlineComponent } from "../inline-components/is-inline-component"
-import { JSXNode, JSXNodeType } from "./types"
+import { assignPropNames } from "../shared/assign-prop-names"
+import { JSXNode, JSXNodeType, JSXStructure } from "./types"
 
 /**
- * Generates JSX structure with correct sequential prop names.
+ * Generates the JSX structure for a component along with its prop name map.
  *
- * This function creates a structured JSX representation where:
- * - All components (direct children + Frame children + grandchildren) are numbered sequentially
- * - Sequential numbering is global across the entire tree
- * - Prop names are correct from the start (no post-processing needed)
+ * Prop names are assigned once via {@link assignPropNames} and carried directly
+ * on each JSX node. Grandchildren that are passed as props resolve their target
+ * slot name from the child component's own numbering, so no name is re-derived
+ * from generated strings or looked up through stored component metadata.
  *
  * @param component - Component to generate JSX structure for
  * @param nodeIdToClass - Mapping of node IDs to CSS class names
- * @param componentMetadataStorage - Storage for component metadata lookup
  * @param workspace - Workspace for variant type detection
- * @returns JSX structure with correct prop names
+ * @returns JSX structure with the root node and the path-to-prop-name map
  */
 export function generateJSXStructure(
   component: ComponentToExport,
   nodeIdToClass: NodeIdToClass,
-  componentMetadataStorage: ComponentMetadataStorage,
   workspace: Workspace,
-): JSXNode {
+): JSXStructure {
   const { tree, config } = component
 
-  // Collect ALL nodes in the tree (direct children + Frame children + grandchildren)
-  // We'll assign sequential numbers globally based on component base name
-  const allNodes: JSONTreeNode[] = []
+  const treeChildren = Array.isArray(tree.children) ? tree.children : []
 
-  function collectAllNodes(node: JSONTreeNode) {
-    allNodes.push(node)
+  // Single source of prop names for this component, keyed by node id.
+  const nodeIdToPropName = assignPropNames(treeChildren)
+
+  // Path-keyed view consumed by interface, signature, and default-prop generators.
+  const propNames = new Map<string, string>()
+  function collectPropNames(node: JSONTreeNode) {
+    const propName = nodeIdToPropName.get(node.nodeId)
+    if (propName) {
+      propNames.set(node.dataBinding.path, propName)
+    }
     if (Array.isArray(node.children)) {
-      node.children.forEach((child) => collectAllNodes(child))
+      node.children.forEach(collectPropNames)
     }
   }
-
-  if (Array.isArray(tree.children)) {
-    tree.children.forEach((child) => collectAllNodes(child))
-  }
-
-  // Assign sequential numbers globally based on component base name
-  const baseNameCounts = new Map<string, number>()
-  const nodeToPropName = new Map<JSONTreeNode, string>()
-
-  allNodes.forEach((node) => {
-    const baseName = camelCase(node.name).replace(/\d+$/, "")
-    const currentCount = baseNameCounts.get(baseName) || 0
-    const newCount = currentCount + 1
-    baseNameCounts.set(baseName, newCount)
-
-    const propName = newCount === 1 ? baseName : `${baseName}${newCount}`
-    nodeToPropName.set(node, propName)
-  })
+  treeChildren.forEach(collectPropNames)
 
   // Validate component props
   const validation = validateExportedComponentProps(component)
 
-  const rootIsInline = isInlineComponent(component)
-  const rootIsCustom = isCustomComponent(component, workspace)
-
   // Build JSX structure recursively
   function buildJSXNode(node: JSONTreeNode): JSXNode {
-    const propName = nodeToPropName.get(node)
+    const propName = nodeIdToPropName.get(node.nodeId)
     if (!propName) {
       throw new Error(
         `Prop name not found for node "${node.name}" at path "${node.dataBinding.path}" in component "${component.name}". ` +
@@ -86,35 +67,27 @@ export function generateJSXStructure(
     let nodeType: JSXNodeType = "component"
     let condition: string | undefined
 
-    // Check if this is a Frame
+    const isValidProp = Array.isArray(validation.validProps)
+      ? validation.validProps.some(
+          (validNode) => validNode.dataBinding.path === node.dataBinding.path,
+        )
+      : false
+
     if (node.level === ComponentLevel.FRAME) {
       nodeType = "frame"
       // Frame should be conditionally rendered if it's an invalid prop
-      const isValidProp = Array.isArray(validation.validProps)
-        ? validation.validProps.some(
-            (validNode) => validNode.dataBinding.path === node.dataBinding.path,
-          )
-        : false
       if (!isValidProp) {
         condition = propName
       }
-    } else {
-      // Check if this should be conditionally rendered
-      const isValidProp = Array.isArray(validation.validProps)
-        ? validation.validProps.some(
-            (validNode) => validNode.dataBinding.path === node.dataBinding.path,
-          )
-        : false
-
-      if (!isValidProp) {
-        nodeType = "conditional"
-        condition = propName
-      }
+    } else if (!isValidProp) {
+      nodeType = "conditional"
+      condition = propName
     }
 
     // Handle children
     const children: JSXNode[] = []
-    const grandchildProps: Array<{ propKey: string; propVarName: string }> = []
+    const grandchildProps: Array<{ propKeyName: string; propVarName: string }> =
+      []
 
     if (Array.isArray(node.children)) {
       // Check if this node has grandchildren that should be passed as props
@@ -124,23 +97,24 @@ export function generateJSXStructure(
         childValidation.invalidProps.length === 0 && node.children.length > 0
 
       if (hasValidGrandchildren && node.level !== ComponentLevel.FRAME) {
-        // Grandchildren should be passed as props (not rendered as children)
-        // This works for default, custom, AND inline components
-        // when grandchildren are valid props of the child component
+        // Grandchildren are passed as props to this child component. The JSX
+        // attribute name is the child component's own slot name for each
+        // grandchild, derived from the child's own numbering.
+        const childSlotNames = assignPropNames(node.children)
+
         node.children.forEach((grandchild) => {
-          const grandchildPropValue = nodeToPropName.get(grandchild)
-          if (!grandchildPropValue) {
+          const grandchildPropValue = nodeIdToPropName.get(grandchild.nodeId)
+          const slotName = childSlotNames.get(grandchild.nodeId)
+          if (!grandchildPropValue || !slotName) {
             throw new Error(
               `Prop name not found for grandchild "${grandchild.name}" at path "${grandchild.dataBinding.path}" in component "${component.name}". ` +
                 `This indicates a bug in prop name assignment.`,
             )
           }
-          const grandchildPropVarName = `${grandchildPropValue}Props`
 
-          // Store grandchild path for later prop key lookup
           grandchildProps.push({
-            propKey: grandchild.dataBinding.path,
-            propVarName: grandchildPropVarName,
+            propKeyName: slotName,
+            propVarName: `${grandchildPropValue}Props`,
           })
         })
       } else {
@@ -164,19 +138,17 @@ export function generateJSXStructure(
   }
 
   // Build root node (wrapper for the component)
-  const rootChildren: JSXNode[] = []
+  const rootChildren: JSXNode[] = treeChildren.map((child) =>
+    buildJSXNode(child),
+  )
 
-  if (Array.isArray(tree.children) && tree.children.length > 0) {
-    tree.children.forEach((child) => {
-      rootChildren.push(buildJSXNode(child))
-    })
-  }
-
-  return {
+  const root: JSXNode = {
     type: "component",
     name: config.react.returns || "div",
     path: tree.dataBinding.path,
     propVarName: "props",
     children: rootChildren.length > 0 ? rootChildren : undefined,
   }
+
+  return { root, propNames }
 }

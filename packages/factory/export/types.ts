@@ -22,6 +22,8 @@ export type ExportOptions = {
   debugMode?: boolean
   assetReader?: ExportAssetReader
   skipFormat?: boolean
+  /** Opt-in to emitting remote font host links. Off by default to keep exports request-free. */
+  enableRemoteFonts?: boolean
 }
 
 type ExportTarget = {

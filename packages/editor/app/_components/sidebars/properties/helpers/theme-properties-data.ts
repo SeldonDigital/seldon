@@ -1,5 +1,6 @@
 import { Theme } from "@seldon/core/themes/types"
 import { ValueType } from "@seldon/core/properties"
+import { getFamilyNameByValue } from "@seldon/core"
 import { getAllThemeTokenSchemas } from "@seldon/core/themes/schemas"
 import type { ThemeTokenSchema } from "@seldon/core/themes/schemas"
 import { FlatProperty } from "./properties-data"
@@ -34,6 +35,7 @@ const MODULATION_STEP_SECTIONS = new Set([
   "borderWidth",
   "corners",
   "blur",
+  "spread",
 ])
 
 /** Look-token sections whose facets read from `parameters[facet]`. */
@@ -158,13 +160,33 @@ function getThemeValueByKey(theme: Theme, key: string): unknown {
 
   if (section === "swatch" && id) {
     const swatch = getNestedValue(themeObj, ["swatch", id])
-    if (isRecord(swatch) && "value" in swatch) return swatch.value
+    // Computed dynamic swatches expose a resolved top-level `value`. Custom
+    // `TokenType.SWATCH` cells keep their color under `parameters.value`.
+    if (isRecord(swatch)) {
+      if ("value" in swatch) return swatch.value
+      if (isRecord(swatch.parameters) && "value" in swatch.parameters) {
+        return swatch.parameters.value
+      }
+    }
     return undefined
   }
 
   if (section === "fontWeight" && id) {
     const fontWeight = getNestedValue(themeObj, ["fontWeight", id])
-    if (isRecord(fontWeight) && "value" in fontWeight) return fontWeight.value
+    // Font weight cells are `EXACT`, with the numeric weight at `parameters.value`.
+    if (isRecord(fontWeight) && isRecord(fontWeight.parameters)) {
+      return fontWeight.parameters.value
+    }
+    return undefined
+  }
+
+  // Line height cells are `EXACT` with the value at `parameters.value`, even
+  // though the schema keys them under a `.step` facet like the modulated scales.
+  if (section === "lineHeight" && id && facet === "step") {
+    const item = getNestedValue(themeObj, [section, id])
+    if (isRecord(item) && isRecord(item.parameters)) {
+      return item.parameters.value
+    }
     return undefined
   }
 
@@ -181,17 +203,11 @@ function getThemeValueByKey(theme: Theme, key: string): unknown {
     if (!isRecord(item) || !isRecord(item.parameters)) return undefined
     const params = item.parameters
 
-    if (section === "shadow") {
-      if (facet === "offsetX" && isRecord(params.offset) && "x" in params.offset) {
-        return params.offset.x
-      }
-      if (facet === "offsetY" && isRecord(params.offset) && "y" in params.offset) {
-        return params.offset.y
-      }
-    }
-
     if (facet in params) return params[facet]
-    return undefined
+    // A look exposes every facet in its descriptor. Facets the look has not
+    // authored read as EMPTY (unset) so their rows still render, matching the
+    // built-in cleared look rather than being dropped as `undefined`.
+    return { type: ValueType.EMPTY, value: null }
   }
 
   return undefined
@@ -205,6 +221,27 @@ function createFlatPropertyFromSchema(
   value: unknown,
   theme: Theme,
 ): FlatProperty {
+  // Look parent rows only group their facets under a disclosure arrow. They have
+  // no editable value and no control, so the value cell renders blank and no menu
+  // chevron shows. The facets nested beneath remain individually editable.
+  if (schema.isLookParent) {
+    return {
+      key: schema.key,
+      propertyType: "compound",
+      label: schema.label ?? schema.key,
+      icon: schema.icon ?? "IconSeldonComponent",
+      value: { type: ValueType.EMPTY, value: null },
+      actualValue: "",
+      valueType: ValueType.EMPTY,
+      controlType: undefined,
+      isCompound: true,
+      isShorthand: false,
+      isSubProperty: false,
+      isLookParent: true,
+      status: "set",
+    }
+  }
+
   let formattedValue = value
   let actualValue = String(value)
 
@@ -229,6 +266,16 @@ function createFlatPropertyFromSchema(
     if (matchingOption) {
       actualValue = matchingOption.label
     }
+  }
+
+  // Font slot options come from the workspace at the picker layer, so they are not
+  // on the static schema. Map the stored CSS token back to its friendly family name.
+  if (
+    (schema.key === "fontFamily.primary" ||
+      schema.key === "fontFamily.secondary") &&
+    typeof value === "string"
+  ) {
+    actualValue = getFamilyNameByValue(value) ?? value
   }
 
   const isColorKey =
@@ -290,7 +337,7 @@ function createFlatPropertyFromSchema(
     controlType,
     isCompound: false,
     isShorthand: false,
-    isSubProperty: false,
+    isSubProperty: schema.isSubProperty ?? false,
     status: "set",
     isDimmed: isCalculatedSwatch,
   }
@@ -350,7 +397,9 @@ export function flattenThemeProperties(theme: Theme): FlatProperty[] {
 
   for (const schema of schemasWithLabels) {
     const value = getThemeValueByKey(theme, schema.key)
-    if (value === undefined) {
+    // Look parent rows have no backing value of their own; they exist to group
+    // their facet rows under a disclosure arrow, so always keep them.
+    if (value === undefined && !schema.isLookParent) {
       continue
     }
     properties.push(createFlatPropertyFromSchema(schema, value, theme))

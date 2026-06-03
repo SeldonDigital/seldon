@@ -4,6 +4,37 @@ import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node
 import { getWorkspaceNodeList } from "../../../helpers/workspace-nodes"
 import { ExportOptions, ImageToExportMap } from "../../types"
 
+const DATA_URL_EXTENSIONS: Record<string, string> = {
+  "image/png": "png",
+  "image/jpeg": "jpg",
+  "image/jpg": "jpg",
+  "image/gif": "gif",
+  "image/webp": "webp",
+  "image/svg+xml": "svg",
+  "image/avif": "avif",
+  "image/bmp": "bmp",
+}
+
+/**
+ * Stable short hash so the same data URL maps to the same exported filename
+ * across runs.
+ */
+function hashString(value: string): string {
+  let hash = 0x811c9dc5
+  for (let i = 0; i < value.length; i += 1) {
+    hash ^= value.charCodeAt(i)
+    hash = Math.imul(hash, 0x01000193)
+  }
+  return (hash >>> 0).toString(16)
+}
+
+function getDataUrlFilename(value: string): string {
+  const match = value.match(/^data:([^;,]+)/)
+  const mime = match?.[1] ?? "image/png"
+  const ext = DATA_URL_EXTENSIONS[mime] ?? "png"
+  return `image-${hashString(value)}.${ext}`
+}
+
 export async function getImagesToExport(
   workspace: Workspace,
   options: ExportOptions,
@@ -27,10 +58,14 @@ export async function getImagesToExport(
       return
     }
 
-    let filename = value.split("/").pop()
-
-    if (!filename || !filename.includes(".")) {
-      filename = `${filename ?? "image"}.png`
+    let filename: string
+    if (value.startsWith("data:")) {
+      filename = getDataUrlFilename(value)
+    } else {
+      filename = value.split("/").pop() ?? ""
+      if (!filename || !filename.includes(".")) {
+        filename = `${filename || "image"}.png`
+      }
     }
 
     const relativePath = path.posix.join(

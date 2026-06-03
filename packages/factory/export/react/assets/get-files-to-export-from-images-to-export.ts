@@ -23,6 +23,10 @@ export async function getFilesToExportFromImagesToExport(
 }
 
 async function getArrayBuffer(url: string, token?: ExportOptions["token"]) {
+  if (url.startsWith("data:")) {
+    return decodeDataUrl(url)
+  }
+
   try {
     const headers: HeadersInit = {}
     if (token) {
@@ -33,4 +37,34 @@ async function getArrayBuffer(url: string, token?: ExportOptions["token"]) {
   } catch (error) {
     throw new Error(`Unable to fetch image from ${url}`)
   }
+}
+
+function decodeBase64ToArrayBuffer(base64: string): ArrayBuffer {
+  if (typeof Buffer !== "undefined") {
+    const buffer = Buffer.from(base64, "base64")
+    return buffer.buffer.slice(
+      buffer.byteOffset,
+      buffer.byteOffset + buffer.byteLength,
+    )
+  }
+  const binary = atob(base64)
+  const bytes = new Uint8Array(binary.length)
+  for (let i = 0; i < binary.length; i += 1) {
+    bytes[i] = binary.charCodeAt(i)
+  }
+  return bytes.buffer
+}
+
+function decodeDataUrl(url: string): ArrayBuffer {
+  const commaIndex = url.indexOf(",")
+  if (commaIndex === -1) {
+    throw new Error("Malformed data URL")
+  }
+  const meta = url.slice(0, commaIndex)
+  const data = url.slice(commaIndex + 1)
+  if (meta.includes(";base64")) {
+    return decodeBase64ToArrayBuffer(data)
+  }
+  const bytes = new TextEncoder().encode(decodeURIComponent(data))
+  return bytes.buffer
 }

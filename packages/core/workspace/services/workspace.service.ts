@@ -19,8 +19,10 @@ import { nodeOperationsService } from "./nodes/node-operations.service"
 import { nodeRelationshipService } from "./nodes/node-relationship.service"
 import { nodeRetrievalService } from "./nodes/node-retrieval.service"
 import { nodeTraversalService } from "./nodes/node-traversal.service"
-import { workspacePropagationService } from "./propagation/workspace-propagation.service"
-import { OperationResult } from "./shared/types"
+import {
+  workspacePropagationService,
+  type OperationResult,
+} from "./propagation/workspace-propagation.service"
 import { typeCheckingService } from "./type-checking/type-checking.service"
 import { workspaceMutationService } from "./mutation/workspace-mutation.service"
 
@@ -485,18 +487,6 @@ class WorkspaceService {
     return workspaceMutationService.getInheritedTheme(node, workspace)
   }
 
-  public migrateSwatchToExactValue(
-    theme: any,
-    key: any,
-    workspace: Workspace,
-  ): Workspace {
-    return workspaceMutationService.migrateSwatchToExactValue(
-      theme,
-      key,
-      workspace,
-    )
-  }
-
   /**
    * Propagates an operation across multiple nodes based on propagation rules.
    * @param params - Propagation parameters
@@ -566,7 +556,7 @@ class WorkspaceService {
   public isBoard(
     node: RulesNodeOrComponent | undefined,
   ): node is ComponentEntry {
-    return this.isComponentEntry(node)
+    return node !== undefined && this.isComponentEntry(node)
   }
 
   /** @deprecated Use `findComponentForNode` */

@@ -11,7 +11,11 @@ import {
 import type { ComputeContext } from "../../properties/compute/types"
 import { modulateWithTheme } from "../../themes/helpers/modulate"
 import { Theme } from "../../themes/types"
-import { isModulatedToken, isThemeExactToken } from "../../themes/types"
+import {
+  isModulatedToken,
+  isOptionToken,
+  isThemeExactToken,
+} from "../../themes/types"
 import { getThemeOption } from "../theme/get-theme-option"
 
 /**
@@ -40,7 +44,7 @@ export function resolveBorderWidth({
     case ValueType.THEME_ORDINAL: {
       const themeValue = getThemeOption(borderWidth.value as string, theme)
 
-      if ((themeValue as any).value === "hairline") {
+      if (isOptionToken(themeValue) && themeValue.parameters === "hairline") {
         return {
           type: ValueType.OPTION,
           value: BorderWidth.HAIRLINE,
@@ -58,7 +62,7 @@ export function resolveBorderWidth({
         }
       }
       if (isThemeExactToken(themeValue)) {
-        const { unit, value: n } = themeValue.value
+        const { unit, value: n } = themeValue.parameters
         return (
           unit === Unit.PX
             ? { type: ValueType.EXACT, value: { unit: Unit.PX, value: n } }

@@ -1,26 +1,20 @@
 import { useCallback } from "react"
 import {
-  FontParameters,
   HSL,
   Harmony,
+  LOOK_FACETS,
   Ratio,
-  ScrollbarParameters,
-  ThemeBackgroundId,
-  ThemeBorderId,
   ThemeBorderWidthId,
   ThemeCustomSwatchId,
   ThemeDimensionId,
   ThemeFontFamilyId,
   ThemeFontId,
   ThemeFontSizeId,
-  ThemeGradientId,
   ThemeLineHeightId,
-  ThemeScrollbarId,
-  ThemeShadowId,
   ThemeSizeId,
   ThemeSpacingId,
-  Unit,
-  ValueType,
+  isBridgedLookFacet,
+  isLookSection,
 } from "@seldon/core"
 import {
   parseHSLString,
@@ -54,14 +48,9 @@ export function useThemeProperties(themeEntryId: EntryThemeId | null) {
     setFontWeightValue,
     setBorderWidthValue,
     setCornersValue,
-    setShadowValue,
-    setBorderValue,
     setBlurValue,
     setSpreadValue,
-    setGradientValue,
-    setBackgroundValue,
-    setScrollbarValue,
-    setFontValue,
+    setLookParameter,
     addCustomSwatch,
     removeCustomSwatch,
     setSwatchValue,
@@ -218,151 +207,36 @@ export function useThemeProperties(themeEntryId: EntryThemeId | null) {
         return
       }
 
-      // Shadow properties
-      if (key.startsWith("shadow.")) {
-        const parts = key.split(".")
-        const shadowId = parts[1] as ThemeShadowId
-        const subProperty = parts[2]
+      // Look facets (shadow, border, background, gradient, font, scrollbar).
+      // Every look section flows through one descriptor-driven path: the facet
+      // entry decides how to serialize, then the value merges onto the look's
+      // parameters under its facet key.
+      const [section, lookId, facet] = key.split(".")
+      if (isLookSection(section) && lookId && facet) {
+        const entry = LOOK_FACETS[section].find((item) => item.facet === facet)
+        if (!entry) {
+          console.warn(`Unhandled theme look facet: ${key}`)
+          return
+        }
 
-        if (subProperty === "offsetX") {
-          setShadowValue(shadowId, {
-            offsetX: serializeValue(newValue, { defaultUnit: Unit.PX }) as any,
-          })
-          return
+        let serialized: unknown
+        if (isBridgedLookFacet(entry)) {
+          serialized = serializeValue(
+            newValue,
+            undefined,
+            undefined,
+            entry.propertyKey,
+          )
+        } else if (entry.valueType === "color") {
+          serialized = serializeColor(newValue)
+        } else if (entry.valueType === "boolean") {
+          serialized = newValue === "true" || newValue === "On"
+        } else {
+          serialized = serializeValue(newValue)
         }
-        if (subProperty === "offsetY") {
-          setShadowValue(shadowId, {
-            offsetY: serializeValue(newValue, { defaultUnit: Unit.PX }) as any,
-          })
-          return
-        }
-        if (subProperty === "blur") {
-          setShadowValue(shadowId, {
-            blur: serializeValue(newValue) as any,
-          })
-          return
-        }
-        if (subProperty === "spread") {
-          setShadowValue(shadowId, {
-            spread: serializeValue(newValue) as any,
-          })
-          return
-        }
-        if (subProperty === "color") {
-          setShadowValue(shadowId, { color: serializeColor(newValue) as any })
-          return
-        }
-      }
 
-      // Border properties
-      if (key.startsWith("border.")) {
-        const parts = key.split(".")
-        const borderId = parts[1] as ThemeBorderId
-        const subProperty = parts[2]
-
-        if (subProperty === "width") {
-          setBorderValue(borderId, { width: newValue })
-          return
-        }
-        if (subProperty === "style") {
-          setBorderValue(borderId, { style: newValue })
-          return
-        }
-        if (subProperty === "color") {
-          setBorderValue(borderId, { color: newValue })
-          return
-        }
-      }
-
-      // Background properties
-      if (key.startsWith("background.") && key.includes("color")) {
-        const parts = key.split(".")
-        const backgroundId = parts[1] as ThemeBackgroundId
-        setBackgroundValue(backgroundId, { color: newValue })
+        setLookParameter(section, lookId, { [facet]: serialized })
         return
-      }
-
-      // Gradient properties
-      if (key.startsWith("gradient.")) {
-        const parts = key.split(".")
-        const gradientId = parts[1] as ThemeGradientId
-        const subProperty = parts[2]
-
-        if (subProperty === "angle") {
-          setGradientValue(gradientId, { angle: Number(newValue) })
-          return
-        }
-        if (subProperty === "startColor") {
-          setGradientValue(gradientId, { startColor: newValue })
-          return
-        }
-        if (subProperty === "endColor") {
-          setGradientValue(gradientId, { endColor: newValue })
-          return
-        }
-      }
-
-      // Font properties (font presets)
-      if (key.startsWith("font.")) {
-        const parts = key.split(".")
-        const fontId = parts[1] as ThemeFontId
-        const subProperty = parts[2]
-
-        const update: Partial<FontParameters> = {}
-        if (subProperty === "family") {
-          update.family = serializeValue(newValue) as FontParameters["family"]
-          setFontValue(fontId, update)
-          return
-        }
-        if (subProperty === "size") {
-          update.size = serializeValue(newValue) as FontParameters["size"]
-          setFontValue(fontId, update)
-          return
-        }
-        if (subProperty === "weight") {
-          update.weight = serializeValue(newValue) as FontParameters["weight"]
-          setFontValue(fontId, update)
-          return
-        }
-        if (subProperty === "lineHeight") {
-          update.lineHeight = serializeValue(newValue) as FontParameters["lineHeight"]
-          setFontValue(fontId, update)
-          return
-        }
-      }
-
-      // Scrollbar properties
-      if (key.startsWith("scrollbar.")) {
-        const parts = key.split(".")
-        const scrollbarId = parts[1] as ThemeScrollbarId
-        const subProperty = parts[2]
-
-        const update: Partial<ScrollbarParameters> = {}
-        if (subProperty === "trackSize") {
-          update.trackSize = serializeValue(newValue) as ScrollbarParameters["trackSize"]
-          setScrollbarValue(scrollbarId, update)
-          return
-        }
-        if (subProperty === "trackColor") {
-          update.trackColor = serializeColor(newValue) as ScrollbarParameters["trackColor"]
-          setScrollbarValue(scrollbarId, update)
-          return
-        }
-        if (subProperty === "thumbColor") {
-          update.thumbColor = serializeColor(newValue) as ScrollbarParameters["thumbColor"]
-          setScrollbarValue(scrollbarId, update)
-          return
-        }
-        if (subProperty === "thumbHoverColor") {
-          update.thumbHoverColor = serializeColor(newValue) as ScrollbarParameters["thumbHoverColor"]
-          setScrollbarValue(scrollbarId, update)
-          return
-        }
-        if (subProperty === "rounded") {
-          update.rounded = newValue === "true" || newValue === "On"
-          setScrollbarValue(scrollbarId, update)
-          return
-        }
       }
 
       console.warn(`Unhandled theme property: ${key}`)
@@ -385,14 +259,9 @@ export function useThemeProperties(themeEntryId: EntryThemeId | null) {
       setFontWeightValue,
       setBorderWidthValue,
       setCornersValue,
-      setShadowValue,
-      setBorderValue,
       setBlurValue,
       setSpreadValue,
-      setGradientValue,
-      setBackgroundValue,
-      setScrollbarValue,
-      setFontValue,
+      setLookParameter,
     ],
   )
 

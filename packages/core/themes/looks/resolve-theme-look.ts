@@ -1,4 +1,5 @@
-import { ValueType, type Theme } from "@seldon/core"
+import { ValueType } from "../../properties/constants"
+import type { Theme } from "../types"
 import {
   BUILT_IN_LOOK_SECTIONS,
   type BuiltInLookSection,

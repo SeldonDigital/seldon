@@ -54,7 +54,9 @@ export function resolveFontFamily({
     case ValueType.THEME_CATEGORICAL: {
       const themeValue = getThemeOption(fontFamilyTyped.value as string, theme)
       const stack =
-        themeValue.type === TokenType.FAMILY ? themeValue.value : String(themeValue)
+        themeValue.type === TokenType.FONT_FAMILY
+          ? themeValue.parameters
+          : String(themeValue)
       return {
         type: ValueType.OPTION,
         value: stack,

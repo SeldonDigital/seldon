@@ -1,6 +1,8 @@
 "use client"
 
 import { selectFile } from "@lib/utils/select-file"
+import { isEntryThemeDefault } from "@seldon/core/workspace/model/entry-theme"
+import { isEntryFontCollectionDefault } from "@seldon/core/workspace/model/entry-font-collection"
 import { useRouter } from "next/navigation"
 import { useCallback, useMemo } from "react"
 import { useAddRemoveCommands } from "@lib/hooks/commands/use-add-remove-commands"
@@ -60,10 +62,37 @@ export function useMenuConfig(): HeaderConfig {
     canSelectVariant,
   } = useSelectCommands()
   const { undo, redo } = useHistory()
-  const { selectedNode, selectedBoard, selection } = useSelection()
+  const {
+    selectedNode,
+    selectedBoard,
+    selection,
+    selectedThemeEntryId,
+    selectedFontCollectionEntryId,
+  } = useSelection()
   const addToast = useAddToast()
   const { setActiveTool } = useTool()
   const { openDialog } = useDialog()
+
+  const canDeleteSelection = useMemo(() => {
+    if (selection) return true
+
+    if (selectedThemeEntryId) {
+      const entry = workspace.themes[selectedThemeEntryId]
+      return Boolean(entry) && !isEntryThemeDefault(entry)
+    }
+
+    if (selectedFontCollectionEntryId) {
+      const entry = workspace["font-collections"][selectedFontCollectionEntryId]
+      return Boolean(entry) && !isEntryFontCollectionDefault(entry)
+    }
+
+    return false
+  }, [
+    selection,
+    selectedThemeEntryId,
+    selectedFontCollectionEntryId,
+    workspace,
+  ])
 
   const goToProjects = useCallback(() => {
     router.push("/")
@@ -75,31 +104,8 @@ export function useMenuConfig(): HeaderConfig {
   const fileMenuItems = useMemo(() => {
     const items = [
       {
-        id: "export-folder",
-        label: "Export to folder…",
-        action: exportToFolder,
-        visibleIn: ["edit", "preview"],
-      },
-    ]
-
-    if (process.env.NODE_ENV === "development") {
-      items.push(
-        "separator",
-        {
-          id: "import-test-workspace",
-          label: "Import Test Workspace",
-          action: () => {
-            addToast("Test workspace fixture is not available yet.")
-          },
-        },
-      )
-    }
-
-    items.push(
-      "separator",
-      {
         id: "import-file",
-        label: "Import Workspace",
+        label: "Import Workspace…",
         action: async () => {
           const result = await selectFile()
           if (!result.success) return
@@ -109,11 +115,46 @@ export function useMenuConfig(): HeaderConfig {
       },
       {
         id: "export-workspace",
-        label: "Export Workspace JSON",
+        label: "Export Workspace JSON…",
         action: exportWorkspaceToFile,
         visibleIn: ["edit", "preview"],
       },
-    )
+      "separator",
+      {
+        id: "export-folder",
+        label: "Export Components…",
+        action: exportToFolder,
+        visibleIn: ["edit", "preview"],
+      },
+      "separator",
+      {
+        id: "projects",
+        label: "Back to Workspaces",
+        action: goToProjects,
+        shortcut: "⇧ Q",
+      },
+    ]
+
+    return items
+  }, [
+    exportToFolder,
+    exportWorkspaceToFile,
+    goToProjects,
+    importWorkspaceFromFile,
+  ])
+
+  const debugMenuItems = useMemo(() => {
+    const items: MenuItem[] = []
+
+    if (process.env.NODE_ENV === "development") {
+      items.push({
+        id: "load-editor-workspace",
+        label: "Load Editor Workspace",
+        action: () => {
+          addToast("Test workspace fixture is not available yet.")
+        },
+      })
+    }
 
     if (debugModeEnabled) {
       items.push({
@@ -124,27 +165,20 @@ export function useMenuConfig(): HeaderConfig {
       })
     }
 
-    items.push(
-      "separator",
-      {
-        id: "projects",
-        label: "Back to Workspaces…",
-        action: goToProjects,
-        shortcut: "⇧ Q",
-      },
-    )
+    items.push({
+      id: "debug-mode",
+      label: "Enable Debug Mode",
+      action: toggleDebugMode,
+      active: debugModeEnabled,
+      visibleIn: ["edit", "preview"], // Not visible in project view
+    })
 
     return items
   }, [
     addToast,
     debugModeEnabled,
     exportSelectionToClipboard,
-    exportToFolder,
-    exportWorkspaceToFile,
-    goToProjects,
-    importWorkspaceFromFile,
-    dispatch,
-    workspace,
+    toggleDebugMode,
   ])
 
   const editMenuItems = useMemo(() => {
@@ -203,7 +237,7 @@ export function useMenuConfig(): HeaderConfig {
         label: "Delete",
         action: deleteSelection,
         shortcut: "Delete",
-        enabled: Boolean(selection),
+        enabled: canDeleteSelection,
       },
       {
         id: "duplicate",
@@ -226,7 +260,7 @@ export function useMenuConfig(): HeaderConfig {
     addVariant,
     selectedBoard,
     deleteSelection,
-    selection,
+    canDeleteSelection,
     duplicateSelection,
     selectedNode,
   ])
@@ -332,13 +366,13 @@ export function useMenuConfig(): HeaderConfig {
           "separator",
           {
             id: "auto-expand-selection",
-            label: "Auto Expand on Selection",
+            label: "Expand Tree on Selection",
             action: toggleAutoExpandOnSelection,
             active: autoExpandOnSelection,
           },
           {
             id: "auto-scroll-selection",
-            label: "Auto Scroll To Selection",
+            label: "Scroll to Selection",
             action: toggleAutoScrollToSelection,
             active: autoScrollToSelection,
           },
@@ -371,23 +405,16 @@ export function useMenuConfig(): HeaderConfig {
         ],
       },
       {
-        id: "help",
-        label: "Help",
-        items: [
-          {
-            id: "debug-mode",
-            label: "Enable Debug Mode",
-            action: toggleDebugMode,
-            active: debugModeEnabled,
-            visibleIn: ["edit", "preview"], // Not visible in project view
-          },
-        ],
+        id: "debug",
+        label: "Debug",
+        items: debugMenuItems as MenuItem[],
       },
     ],
     [
       fileMenuItems,
       editMenuItems,
       selectionMenuItems,
+      debugMenuItems,
       togglePreviewMode,
       isInPreviewMode,
       togglePanels,

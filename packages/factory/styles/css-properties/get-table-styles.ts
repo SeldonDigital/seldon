@@ -31,8 +31,12 @@ export function getTableStyles({
     Object.assign(styles, alignmentStyles[cellAlign.value])
   }
 
-  const borderCollapse = resolveValue(properties.borderCollapse)
-  if (borderCollapse) {
+  const borderCollapse = properties.borderCollapse
+  if (
+    borderCollapse &&
+    (borderCollapse.type === ValueType.EXACT ||
+      borderCollapse.type === ValueType.OPTION)
+  ) {
     styles.borderCollapse = borderCollapse.value
   }
 

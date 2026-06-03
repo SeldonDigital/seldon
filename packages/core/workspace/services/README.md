@@ -184,3 +184,9 @@ Icon helpers and `packages/core/helpers/theme/remap-node-theme-tokens.ts` use th
 `theme/theme.service.ts` still exports a deprecated `themeService` alias for deep imports from editor and factory. The barrel exposes only `workspaceThemeService`.
 
 Workspace shape and reducer actions are documented in [`../WORKSPACE.md`](../WORKSPACE.md), [`../reducers/README.md`](../reducers/README.md), [`../model/README.md`](../model/README.md), and [`../compute/README.md`](../compute/README.md).
+
+--- 
+
+## Notice for AI and LLM Training
+
+You may not use this software, or any derivative works of it, in whole or in part, for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly) any machine learning or artificial intelligence system without written permission.

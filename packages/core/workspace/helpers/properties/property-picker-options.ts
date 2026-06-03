@@ -1,9 +1,14 @@
 import { ComponentLevel, ComputedFunction, Theme, ValueType, Workspace } from "@seldon/core"
 import { Harmony } from "../../../themes/constants/enums"
 import { HSLObjectToString } from "../../../helpers/color/hsl-object-to-string"
+import { LCHObjectToString } from "../../../helpers/color/lch-object-to-string"
+import { RGBObjectToString } from "../../../helpers/color/rgb-object-to-string"
+import { stringifyValue } from "../../../helpers/properties/stringify-value"
 import { getThemeValueName } from "../../../helpers/theme/get-theme-value-name"
 import { findInObject } from "../../../helpers/utils/find-in-object"
 import { isHSLObject } from "../../../helpers/type-guards/color/is-hsl-object"
+import { isLCHObject } from "../../../helpers/type-guards/color/is-lch-object"
+import { isRGBObject } from "../../../helpers/type-guards/color/is-rgb-object"
 import { COMPUTED_FUNCTION_DISPLAY_NAMES } from "../../../properties/compute"
 import { isCompoundCatalogProperty } from "../../../properties/constants/shared/compound-properties"
 import {
@@ -21,6 +26,7 @@ import type { Properties } from "../../../properties/types/properties"
 import { Resize } from "../../../properties/values/layout/resize"
 import { getEffectiveNodeProperties } from "../../compute/compute-node-properties"
 import type { WorkspacePropertySource } from "../../compute/compute-node-properties"
+import { workspaceFontCollectionService } from "../../services/font-collection/font-collection.service"
 import {
   getBuiltInLookSectionForPropertyKey,
   getThemeLookPickerToken,
@@ -218,7 +224,18 @@ function buildPresetOptions(
     presetOptions = schema.presetOptions as unknown[]
   }
 
-  return normalizeOptions(presetOptions, theme)
+  const normalized = normalizeOptions(presetOptions, theme)
+
+  // Font families come from the workspace's font collection boards. Theme slots
+  // (`@fontFamily.*`) stay in the schema; collection families are appended here.
+  if (schema.name === "fontFamily" && workspace) {
+    const familyOptions = workspaceFontCollectionService
+      .collectWorkspaceFamilies(workspace)
+      .map((family) => ({ name: family.name, value: family.stack ?? family.name }))
+    return [...normalized, ...familyOptions]
+  }
+
+  return normalized
 }
 
 function groupPresetOptions(
@@ -248,22 +265,60 @@ function groupPresetOptions(
   return groups
 }
 
+/**
+ * Collapses a shorthand or compound value (margin, padding, border, ...) to a
+ * single representative sub-value when all present sub-values resolve to the
+ * same string. Atomic values are returned as-is. Mixed values return null.
+ */
+function resolveAtomicValue(
+  value: unknown,
+): { type: ValueType; value?: unknown } | null {
+  if (!value || typeof value !== "object") {
+    return null
+  }
+  if ("type" in value) {
+    return value as { type: ValueType; value?: unknown }
+  }
+
+  const subValues = Object.values(value).filter(
+    (subValue): subValue is object =>
+      typeof subValue === "object" && subValue !== null,
+  )
+  if (subValues.length === 0) {
+    return null
+  }
+
+  const strings = subValues.map((subValue) => {
+    try {
+      return stringifyValue(subValue as never)
+    } catch {
+      return undefined
+    }
+  })
+  const first = strings[0]
+  if (first === undefined || !strings.every((entry) => entry === first)) {
+    return null
+  }
+
+  const representative = subValues[0]
+  return representative && "type" in representative
+    ? (representative as { type: ValueType; value?: unknown })
+    : null
+}
+
 function getCurrentValueOption(
   property: { value: unknown },
   theme?: Theme,
 ): PropertyPickerOption | null {
+  const atomic = resolveAtomicValue(property.value)
   if (
-    !property.value ||
-    typeof property.value !== "object" ||
-    property.value === null ||
-    !("type" in property.value) ||
-    (property.value.type !== ValueType.EXACT &&
-      property.value.type !== ValueType.OPTION)
+    !atomic ||
+    (atomic.type !== ValueType.EXACT && atomic.type !== ValueType.OPTION)
   ) {
     return null
   }
 
-  const raw = "value" in property.value ? property.value.value : null
+  const raw = "value" in atomic ? atomic.value : null
   if (raw === null || raw === undefined) return null
 
   if (typeof raw === "string") {
@@ -289,6 +344,16 @@ function getCurrentValueOption(
       return { value: colorString, name: colorString }
     }
 
+    if (isRGBObject(raw)) {
+      const colorString = RGBObjectToString(raw)
+      return { value: colorString, name: colorString }
+    }
+
+    if (isLCHObject(raw)) {
+      const colorString = LCHObjectToString(raw)
+      return { value: colorString, name: colorString }
+    }
+
     if ("value" in raw && "unit" in raw) {
       const dimensionString = `${(raw as { value: number }).value}${(raw as { unit: string }).unit}`
       return { value: dimensionString, name: dimensionString }
@@ -298,21 +363,32 @@ function getCurrentValueOption(
   return null
 }
 
-function buildCurrentValueOption(
-  property: { value: unknown },
-  presetOptions: PropertyPickerOption[],
-  theme?: Theme,
-): PropertyPickerOption[] {
-  const currentValueOption = getCurrentValueOption(property, theme)
+/**
+ * Inserts the active exact value as its own group directly below the
+ * Default/Inherit group, so it renders between separators as the current
+ * selection. Skips values already represented by a preset or theme option.
+ */
+function insertCurrentValueGroup(
+  groups: PropertyPickerOption[][],
+  input: PropertyPickerInput,
+): PropertyPickerOption | undefined {
+  const currentValueOption = getCurrentValueOption(
+    { value: input.value },
+    input.theme,
+  )
   if (!currentValueOption) {
-    return []
+    return undefined
   }
 
-  const isPresetValue = presetOptions.some(
-    (preset) => preset.value === currentValueOption.value,
+  const alreadyListed = groups.some((group) =>
+    group.some((option) => option.value === currentValueOption.value),
   )
+  if (alreadyListed) {
+    return undefined
+  }
 
-  return isPresetValue ? [] : [currentValueOption]
+  groups.splice(1, 0, [currentValueOption])
+  return currentValueOption
 }
 
 function buildComputedOptions(
@@ -361,21 +437,15 @@ function getThemeSectionFromSchema(
   const keys = getKeys(theme)
   if (keys.length === 0) return null
 
-  const specialMappings: Record<string, string> = {
-    color: "swatch",
-    fontSize: "fontSize",
-    buttonSize: "fontSize",
-    corners: "corners",
-    shadowBlur: "blur",
-    shadowSpread: "spread",
-  }
-
-  const propertyName = schema.name
-  if (
-    specialMappings[propertyName] &&
-    theme[specialMappings[propertyName] as keyof Theme]
-  ) {
-    return specialMappings[propertyName]
+  // Full token keys already name their section (`@fontWeight.thin` -> `fontWeight`),
+  // so derive it directly. This avoids matching a property name against the theme
+  // and works for any schema that returns `@`-prefixed keys.
+  const firstKey = keys[0]!
+  if (firstKey.startsWith("@")) {
+    const section = firstKey.slice(1).split(".")[0]
+    if (section && theme[section as keyof Theme]) {
+      return section
+    }
   }
 
   for (const [sectionName, sectionData] of Object.entries(theme)) {
@@ -459,18 +529,19 @@ function buildPropertyOptionsFromSchema(
 
   groups.push(buildDefaultOptions(schema))
 
+  // Font family lists the theme slots (Primary/Secondary) first as their own group,
+  // then a separated group of font-collection families. Other properties keep theme
+  // options last.
+  const isFontFamily = schema.name === "fontFamily"
+  const themeOptions = input.theme ? buildThemeOptions(schema, input.theme) : []
+
+  if (isFontFamily && themeOptions.length > 0) {
+    groups.push(themeOptions)
+  }
+
   const presetOptions = buildPresetOptions(schema, input.theme, input.workspace)
   if (presetOptions.length > 0) {
     groups.push(...groupPresetOptions(schema, presetOptions))
-  }
-
-  const currentValueOptions = buildCurrentValueOption(
-    { value: input.value },
-    presetOptions,
-    input.theme,
-  )
-  if (currentValueOptions.length > 0) {
-    groups.push(currentValueOptions)
   }
 
   if (schema.computedFunctions) {
@@ -484,15 +555,13 @@ function buildPropertyOptionsFromSchema(
     }
   }
 
-  if (input.theme) {
-    const themeOptions = buildThemeOptions(schema, input.theme)
-    if (themeOptions.length > 0) {
-      groups.push(themeOptions)
-    }
+  if (!isFontFamily && themeOptions.length > 0) {
+    groups.push(themeOptions)
   }
 
-  const currentValueOption =
-    currentValueOptions.length > 0 ? currentValueOptions[0] : undefined
+  // Place the active exact value in its own separated group directly below
+  // Default/Inherit so it reads as the current selection.
+  const currentValueOption = insertCurrentValueGroup(groups, input)
 
   const effective = getEffectiveNodeProperties(
     input.subjectId,
@@ -538,7 +607,8 @@ function buildCompoundPresetPickerOptions(
   const theme = input.theme
   const section = theme ? getThemeLookSection(theme, parentKey) : undefined
 
-  if (!section || typeof section !== "object") {
+  if (!theme || !section || typeof section !== "object") {
+    const currentValueOption = insertCurrentValueGroup(groups, input)
     const effective = getEffectiveNodeProperties(
       input.subjectId,
       input.workspace as WorkspacePropertySource,
@@ -546,7 +616,8 @@ function buildCompoundPresetPickerOptions(
     const restrictionAllowed = getRestrictionsAllowedValues(effective, input.path)
     return {
       options: applyRestrictionsFilter(groups, restrictionAllowed),
-      hasCurrentValue: false,
+      hasCurrentValue: currentValueOption !== undefined,
+      currentValueOption,
     }
   }
 
@@ -571,6 +642,8 @@ function buildCompoundPresetPickerOptions(
     groups.push(presetGroup)
   }
 
+  const currentValueOption = insertCurrentValueGroup(groups, input)
+
   const effective = getEffectiveNodeProperties(
     input.subjectId,
     input.workspace as WorkspacePropertySource,
@@ -579,7 +652,8 @@ function buildCompoundPresetPickerOptions(
 
   return {
     options: applyRestrictionsFilter(groups, restrictionAllowed),
-    hasCurrentValue: false,
+    hasCurrentValue: currentValueOption !== undefined,
+    currentValueOption,
   }
 }
 
@@ -605,6 +679,21 @@ function buildThemeTokenPickerOptions(
   const tokenSchema = resolveThemeTokenEntry(input.path, input.theme)
   if (!tokenSchema) {
     return null
+  }
+
+  // The theme font slots pick from the workspace's font collection boards, like the
+  // node-level `fontFamily` picker. Local families store their CSS token; remote
+  // families store their name.
+  if (
+    input.path === "fontFamily.primary" ||
+    input.path === "fontFamily.secondary"
+  ) {
+    const familyOptions = workspaceFontCollectionService
+      .collectWorkspaceFamilies(input.workspace)
+      .map((family) => ({ name: family.name, value: family.stack ?? family.name }))
+    if (familyOptions.length > 0) {
+      return { options: [familyOptions], hasCurrentValue: false }
+    }
   }
 
   if (tokenSchema.propertyKey) {
@@ -695,6 +784,17 @@ export function getPropertyPickerOptions(
     return {
       ...harmony,
       options: applyRestrictionsFilter(harmony.options, restrictionAllowed),
+    }
+  }
+
+  // Theme look facets (for example `font.callout.size`) share their last path
+  // segment with unrelated catalog keys (`size`, `width`, `color`), so resolving by
+  // path would pick the wrong schema. When the path matches a theme token entry,
+  // build options from that entry's bridged `propertyKey` instead.
+  if (input.theme && resolveThemeTokenEntry(input.path, input.theme)) {
+    const themeTokenOptions = buildThemeTokenPickerOptions(input)
+    if (themeTokenOptions) {
+      return themeTokenOptions
     }
   }
 

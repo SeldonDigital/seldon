@@ -15,6 +15,7 @@
   },
   "include": [
     "./components/**/*.*",
+    "./font-collections/**/*.*",
     "./helpers/**/*.*",
     "./icons/**/*.*",
     "./properties/**/*.*",

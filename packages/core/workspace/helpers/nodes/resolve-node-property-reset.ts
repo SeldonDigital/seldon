@@ -1,9 +1,11 @@
 import { ComponentId } from "../../../components/constants"
 import { findInObject } from "../../../helpers/utils/find-in-object"
 import { isLayeredPaintProperty } from "../../../properties/types/property-keys"
-import type { PropertyKey } from "../../../properties/types/property-keys"
+import type {
+  PropertyKey,
+  SubPropertyKey,
+} from "../../../properties/types/property-keys"
 import type { Properties } from "../../../properties/types/properties"
-import type { SubPropertyKey } from "../../../properties/types/properties"
 import { mergeProperties } from "../../../properties/helpers/merge-properties"
 import { getInheritedNodeProperties } from "../../compute/compute-node-properties"
 import type { EntryNode, Workspace } from "../../types"
@@ -50,6 +52,10 @@ function readPropertySlice(
 
   if (bag && typeof bag === "object" && !Array.isArray(bag) && !("type" in bag)) {
     return (bag as Record<string, unknown>)[subpropertyKey]
+  }
+
+  if (!bag || typeof bag !== "object") {
+    return undefined
   }
 
   return findInObject(bag, subpropertyKey)

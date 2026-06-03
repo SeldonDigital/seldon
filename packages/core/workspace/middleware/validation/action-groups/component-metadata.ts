@@ -1,6 +1,7 @@
 import { invariant } from "../../../../index"
-import type { ComponentId } from "../../../../components/constants"
+import { ComponentId } from "../../../../components/constants"
 import { ValueType } from "../../../../properties"
+import { isResourceType } from "../../../helpers/components/is-resource-type"
 import {
   componentValidators,
   propertyValidators,
@@ -137,21 +138,30 @@ export function validateComponentMetadata(
     case "set_component_properties": {
       const componentKey = action.payload.componentKey
       componentValidators.exists(workspace, componentKey)
-      propertyValidators.keys(
-        action.payload.properties,
-        componentKey as ComponentId,
-        workspace.components[componentKey],
-      )
+      const board = workspace.components[componentKey]
+      // Resource boards (theme, font collection, icon set, media) key by their
+      // resource id, not a ComponentId. They only carry board-level properties,
+      // so validate those against the BOARD schema.
+      const componentId =
+        board && isResourceType(board)
+          ? ComponentId.BOARD
+          : (componentKey as ComponentId)
+      propertyValidators.keys(action.payload.properties, componentId, board)
       propertyValidators.values(
         action.payload.properties,
         workspace,
-        workspace.components[componentKey]?.componentTheme,
+        board?.componentTheme,
       )
       break
     }
     case "reset_component_property": {
       const componentKey = action.payload.componentKey
       componentValidators.exists(workspace, componentKey)
+      const board = workspace.components[componentKey]
+      const componentId =
+        board && isResourceType(board)
+          ? ComponentId.BOARD
+          : (componentKey as ComponentId)
       propertyValidators.keys(
         {
           [action.payload.propertyKey]: {
@@ -159,8 +169,8 @@ export function validateComponentMetadata(
             value: null,
           },
         },
-        componentKey as ComponentId,
-        workspace.components[componentKey],
+        componentId,
+        board,
       )
       break
     }

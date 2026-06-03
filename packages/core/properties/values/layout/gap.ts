@@ -71,6 +71,7 @@ export const gapSchema: PropertySchema = {
     },
   },
   presetOptions: () => Object.values(Gap),
-  themeOrdinalKeys: (theme: Theme) => Object.keys(theme.gap),
+  themeOrdinalKeys: (theme: Theme) =>
+    Object.keys(theme.gap).map((id) => `@gap.${id}`),
   computedFunctions: () => [ComputedFunction.MATCH],
 }

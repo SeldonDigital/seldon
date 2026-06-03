@@ -20,7 +20,7 @@ export function getColorCSSValueFromSwatch({
 
   return getColorCSSValue({
     color: themeSwatchToColorValue(swatch),
-    opacity,
+    opacity: opacity ?? undefined,
     theme,
   })
 }

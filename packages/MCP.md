@@ -195,4 +195,4 @@ const files = await exportWorkspace(session.workspace, {
 | Workspace compute | [core/workspace/compute/README.md](./core/workspace/compute/README.md) |
 | Workspace file spec | [core/workspace/WORKSPACE.md](./core/workspace/WORKSPACE.md) |
 | Factory export | [factory/FACTORY.md](./factory/FACTORY.md) |
-| Vocabulary | [core/GLOSSARY.md](./core/GLOSSARY.md) |
+| Vocabulary | [GLOSSARY.md](../GLOSSARY.md) |

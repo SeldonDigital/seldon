@@ -16,7 +16,7 @@ export function getIconStyles({
 
   if (symbol && properties.size && properties.size.type !== ValueType.EMPTY) {
     styles.fontSize = getSizeCSSValue({
-      size: resolveValue(properties.size) ?? theme.icon.defaultSize,
+      size: resolveValue(properties.size) ?? theme.iconSet.defaultSize,
       parentContext,
       theme,
     })

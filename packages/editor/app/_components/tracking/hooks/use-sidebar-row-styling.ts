@@ -3,7 +3,7 @@ import { useMemo } from "react"
 import { CSSProperties } from "react"
 import { Instance, Variant } from "@seldon/core"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
-import { useCanvasHoverState } from "@lib/hooks/use-canvas-hover-state"
+import { useHoverStateForObject } from "@lib/hooks/use-canvas-hover-state"
 import { useTool } from "@lib/hooks/use-tool"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { useActiveBoard } from "@lib/workspace/use-active-board"
@@ -27,7 +27,9 @@ export function useSidebarRowStyling(
 ) {
   const { workspace } = useWorkspace({ usePreview: false })
   const { activeTool } = useTool()
-  const { hoverState } = useCanvasHoverState()
+  // Only subscribe to hover for this node, so unrelated hover moves do not
+  // re-render every sidebar row.
+  const hoverState = useHoverStateForObject(node.id)
   const { activeBoard } = useActiveBoard()
   const isNodeSelected = useIsNodeSelected(node.id)
 

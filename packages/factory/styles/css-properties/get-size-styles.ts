@@ -1,4 +1,12 @@
-import { Orientation, Resize, ScreenSize, ValueType } from "@seldon/core"
+import {
+  BoardHeightValue,
+  BoardWidthValue,
+  EmptyValue,
+  Orientation,
+  Resize,
+  ScreenSize,
+  ValueType,
+} from "@seldon/core"
 import { modulateWithTheme } from "@seldon/core/themes/helpers/modulate"
 import { resolveValue } from "@seldon/core/helpers/resolution/resolve-value"
 import { getThemeOption } from "@seldon/core/helpers/theme/get-theme-option"
@@ -30,7 +38,7 @@ function getScreenSizePixelValue(screenSize: ScreenSize): number {
 }
 
 function applyBoardDimensionStyle(
-  dimension: ReturnType<typeof resolveValue>,
+  dimension: Exclude<BoardWidthValue | BoardHeightValue, EmptyValue> | undefined,
   axis: "width" | "height",
   styles: CSSObject,
 ): void {

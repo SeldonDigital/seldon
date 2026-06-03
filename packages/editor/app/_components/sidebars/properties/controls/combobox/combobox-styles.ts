@@ -35,7 +35,14 @@ export const comboboxWrapperStyle: CSSProperties = {
   cursor: "pointer",
 }
 
-const optionHoverBackground = "hsl(0 0% 100% / 0.1)"
+const optionHoverBackground =
+  "color-mix(in srgb, var(--sdn-seldon-swatch-pearl) 30%, transparent)"
+const panelShadowColor =
+  "color-mix(in srgb, var(--sdn-seldon-swatch-black) 50%, transparent)"
+const panelOutlineColor =
+  "color-mix(in srgb, var(--sdn-seldon-swatch-pearl) 10%, transparent)"
+const groupSeparatorColor =
+  "color-mix(in srgb, var(--sdn-seldon-swatch-pearl) 10%, transparent)"
 
 export function getOptionFrameStyle(options: {
   isSelected: boolean
@@ -99,20 +106,16 @@ export function getOptionsPanelStyle(open: boolean): CSSProperties {
     minWidth: "8rem",
     overflow: open ? "auto" : "hidden",
     borderRadius: "var(--sdn-corners-tight)",
-    border: "1px solid hsl(0 0% 0% / 0.1)",
+    border: `1px solid ${panelShadowColor}`,
     backgroundColor: "var(--sdn-seldon-swatch-charcoal)",
     color: "var(--sdn-seldon-swatch-pearl)",
     opacity: open ? 1 : 0,
     pointerEvents: open ? "auto" : "none",
-    boxShadow: "0 4px 6px -1px hsl(0 0% 0% / 0.1), 0 2px 4px -2px hsl(0 0% 0% / 0.1)",
-    outline: "1px solid hsl(0 0% 0% / 0.15)",
+    boxShadow: `0 4px 6px 0px ${panelShadowColor}, 0 2px 4px 0px ${panelShadowColor}`,
+    outline: `1px solid ${panelOutlineColor}`,
   }
 }
 
 export function getOptionGroupStyle(isLast: boolean): CSSProperties {
-  return isLast
-    ? {}
-    : {
-        borderBottom: "1px solid hsl(0 0% 100% / 0.1)",
-      }
+  return isLast ? {} : { borderBottom: `1px solid ${groupSeparatorColor}` }
 }

@@ -34,7 +34,7 @@ flowchart LR
 | Type or Function | File | Purpose and use |
 | --- | --- | --- |
 | `ThemeTemplateId` | `theme-id.ts` | Union of packaged stock template ids. Used in `STOCK_THEMES_BY_ID` and workspace `catalog:` templates. |
-| `ThemeInstanceId` | `theme-id.ts` | Template id plus transitional `"custom"`. Used on computed themes and workspace theme refs. |
+| `ThemeInstanceId` | `theme-id.ts` | Stock template id. Used on computed themes and workspace theme refs. |
 
 ### Token table slot ids (`theme-token-ids.ts`)
 

@@ -8,6 +8,7 @@ import {
 import { isResourceType } from "@seldon/core/workspace/helpers/components/is-resource-type"
 import {
   isComponentBoard,
+  isFontCollectionBoard,
   isPlaygroundBoard,
   isThemeBoard,
 } from "@seldon/core/workspace/model"
@@ -25,7 +26,7 @@ export const SECTION_LABELS: Record<ComponentLevel, string> = {
 
 export interface BoardSection {
   label: string
-  level: ComponentLevel | "THEME" | "CORE"
+  level: ComponentLevel | "THEME" | "FONT_COLLECTION" | "CORE"
   boards: BoardType[]
 }
 
@@ -48,8 +49,15 @@ function getBoardComponentLevel(board: BoardType): ComponentLevel | null {
 export function getBoardSections(boards: BoardType[]): BoardSection[] {
   const themeBoards = boards.filter((board) => isThemeBoard(board))
 
+  const fontCollectionBoards = boards.filter((board) =>
+    isFontCollectionBoard(board),
+  )
+
   const assetBoards = boards.filter(
-    (board) => isResourceType(board) && !isThemeBoard(board),
+    (board) =>
+      isResourceType(board) &&
+      !isThemeBoard(board) &&
+      !isFontCollectionBoard(board),
   )
 
   const regularBoards = boards.filter((board) => !isResourceType(board))
@@ -91,6 +99,24 @@ export function getBoardSections(boards: BoardType[]): BoardSection[] {
     )
     const insertIndex = framesIndex === -1 ? sections.length : framesIndex + 1
     sections.splice(insertIndex, 0, themesSection)
+  }
+
+  // Insert the Font Collections section directly below the Themes section.
+  if (fontCollectionBoards.length > 0) {
+    const fontCollectionsSection: BoardSection = {
+      label: "Font Collections",
+      level: "FONT_COLLECTION",
+      boards: fontCollectionBoards,
+    }
+    const themesIndex = sections.findIndex(
+      (section) => section.level === "THEME",
+    )
+    const framesIndex = sections.findIndex(
+      (section) => section.level === ComponentLevel.FRAME,
+    )
+    const anchorIndex = themesIndex !== -1 ? themesIndex : framesIndex
+    const insertIndex = anchorIndex === -1 ? sections.length : anchorIndex + 1
+    sections.splice(insertIndex, 0, fontCollectionsSection)
   }
 
   // Add Assets section at the end

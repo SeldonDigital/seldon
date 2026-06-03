@@ -66,7 +66,7 @@ Full customization beyond overrides is done with **`variants`** -- a **`node`** 
     "productCard": { "...": "..." },
     "seldonTheme": { "...": "..." },
     "skyBlue": { "...": "..." },
-    "seldonFonts": { "...": "..." },
+    "system": { "...": "..." },
     "googleFonts": { "...": "..." },
     "seldonIcons": { "...": "..." },
     "googleMaterial": { "...": "..." },
@@ -94,7 +94,7 @@ Full customization beyond overrides is done with **`variants`** -- a **`node`** 
     "theme-skyBlue-6d903c11": { "...": "..." }
   },
   "font-collections": {
-    "font-collection-seldonFonts-default": { "...": "..." },
+    "font-collection-system-default": { "...": "..." },
     "font-collection-googleFonts-default": { "...": "..." },
     "font-collection-googleFonts-3a7f0c9e": { "...": "..." },
     "font-collection-googleFonts-8e22d501": { "...": "..." }
@@ -178,7 +178,7 @@ There are six catalog row types:
 | `component` | A component based on a `core/components/` component schema. Only one catalog row is used per component, with variants and instances of that component stored as references from `nodes`. | `button`, `searchField`, `productCard`, `calendar` |
 | `playground` | A playground is used for mockups and prototyping. Playgrounds are excluded from the factory export flow to allow flexibility in design exploration. | `searchResults`, `productListing` |
 | `theme` | A theme definition including its design tokens. A base `seldonTheme` theme defined in the workspace is initially created from `core/themes/` and is non-deletable. | `seldonTheme`, `skyBlue` |
-| `font-collection` | A set of fonts, including font families, weights, and emphasis. A base `seldonFonts` font collection in the workspace is initially created from `core/font-collections/` and is non-deletable. | `seldonFonts`, `googleFonts` |
+| `font-collection` | A set of fonts, including font families, weights, and emphasis. A base `system` font collection in the workspace is initially created from `core/font-collections/` and is non-deletable. | `system`, `googleFonts` |
 | `icon-set` | A set of icons, with all icons in that set created using SVG. A base `seldonIcons` set defined in the workspace is initially created from `core/icon-sets/` and is non-deletable. | `seldonIcons`, `googleMaterial`, `ibmCarbon` |
 | `media` | Media assets and variants that include images, video, or 3D content. A base `seldonMedia` set defined in the workspace is initially created from `core/media/` and is non-deletable. | `seldonMedia`, `adobeStockMedia` |
 
@@ -726,7 +726,72 @@ A user-created variant, with `type` set to `"variant"`. Whenever an editor modif
 
 ## Font Collections
 
-The `font-collections` object contains font collection definitions and configurations referenced by font boards. Structure TBD.
+The `font-collections` object is a flat map of all default and variant font collection entries used within the workspace. A `system` font collection is always present and stored within each workspace, and cannot be removed. Each font collection gets its own catalog row, allowing for variants and customization for different collections added to the workspace.
+
+Font collection keys are font collection ID strings and must match each value's `id` field. All metadata and other important information is retrieved from the font collection template.
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `id` | `string` | Unique entry identifier; must equal the key used for this font collection in the `font-collections` map. |
+| `type` | `string` | Entry type discriminator. One of: `"default"`, `"variant"`. |
+| `label` | `string` | Display name for the entry. |
+| `template` | `string` | Where the font collection gets its metadata, along with its list of **families** and subsequent default values, which are resolved before `overrides` are applied. This value is either `catalog:{FontCollectionTemplateId}` or `font-collection:{collectionId}`. See **Default Font Collection** and **Variant Font Collection** below. |
+| `overrides` | `Families` | Family overrides for this font collection, which is derived from either `catalog:{FontCollectionTemplateId}` or `font-collection:{collectionId}`. Can be an empty object `{}`. Custom families live under the `families` map keyed by `familyNN` slots. |
+| `__editor` | `object` | Editor-only metadata. |
+
+---
+
+### Default Font Collection
+
+Default rows follow **Default catalog alignment** (Workspace Structure): family shape stays catalog-true; customize through **`overrides`** (and **`label`** where editors allow).
+
+The canonical root for a font collection catalog row, with `type` set to `"default"`. Whenever an editor modifies this default font collection, changes propagate to other variant font collections that reference this one as their template. Default font collections are commonly created through adding catalog collections into the workspace.
+
+- The **`template`** field is always **`catalog:{FontCollectionTemplateId}`**. This entry's families and defaults are defined by schemas under `core/font-collections/collections/<font-collection-template-id>.ts`, with the default baseline being the result of `template` families with `overrides` applied on top.
+
+- The **`overrides`** field applies family values on top of catalog baseline; keys not present in `overrides` use `template` defaults.
+
+```json
+"font-collections": {
+  "font-collection-system-default": {
+    "id": "font-collection-system-default",
+    "type": "default",
+    "label": "Default",
+    "template": "catalog:system",
+    "overrides": {}
+  }
+}
+```
+
+---
+
+### Variant Font Collection
+
+A user-created variant, with `type` set to `"variant"`. Whenever an editor modifies this variant, changes propagate to other variant font collections that reference this one as their template.
+
+- The **`template`** field for variants is always a **`font-collection:{collectionId}`**. This entry's families and defaults are defined by that collection, with the variant baseline being the result of `template` families applied with `template` overrides, then variant `overrides` applied on top.
+
+- The **`overrides`** field carries a `families` map of user-added families on top of the `template` baseline; keys not present in `overrides` use `template` defaults. Each family slot uses a `familyNN` key, and each entry is a `FontFamilyEntry` with `name`, `origin` (`local` or `remote`), an optional `stack` CSS fallback, and an optional `variants` list of weights and styles.
+
+```json
+"font-collections": {
+  "font-collection-googleFonts-3a7f0c9e": {
+    "id": "font-collection-googleFonts-3a7f0c9e",
+    "type": "variant",
+    "label": "Google Fonts",
+    "template": "font-collection:font-collection-googleFonts-default",
+    "overrides": {
+      "families": {
+        "family01": {
+          "name": "Inter",
+          "origin": "remote",
+          "variants": [ "400", "500", "700" ]
+        }
+      }
+    }
+  }
+}
+```
 
 ---
 

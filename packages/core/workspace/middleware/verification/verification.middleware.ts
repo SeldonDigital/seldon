@@ -8,7 +8,11 @@ import { getWorkspaceNodes } from "../../helpers/general/get-workspace-nodes"
 import { isResourceType } from "../../helpers/components/is-resource-type"
 import { isVariantNode } from "../../helpers/nodes/is-variant-node"
 import { isEntryNodeForRules } from "../../helpers/rules/rules-node-subject"
-import { isIconSetBoard, isThemeBoard } from "../../model/components"
+import {
+  isFontCollectionBoard,
+  isIconSetBoard,
+  isThemeBoard,
+} from "../../model/components"
 import { parseNodeLink } from "../../model/template-ref"
 import { typeCheckingService } from "../../services"
 import { Middleware, Workspace } from "../../types"
@@ -130,7 +134,11 @@ const validators = {
   oneDefaultVariantPerComponent: (workspace: Workspace) => {
     const nodes = getWorkspaceNodes(workspace)
     Object.values(workspace.components).forEach((board) => {
-      if (isIconSetBoard(board) || isThemeBoard(board)) {
+      if (
+        isIconSetBoard(board) ||
+        isThemeBoard(board) ||
+        isFontCollectionBoard(board)
+      ) {
         return
       }
 

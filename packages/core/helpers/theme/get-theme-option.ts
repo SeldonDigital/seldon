@@ -15,7 +15,7 @@ import {
   ThemeDimensionId,
   ThemeDimensionKey,
   ThemeFont,
-  ThemeFamilyToken,
+  ThemeFontFamilyToken,
   ThemeFontFamilyId,
   ThemeFontFamilyKey,
   ThemeFontId,
@@ -64,7 +64,7 @@ export function getThemeOption(key: ThemeFontKey, theme: Theme): ThemeFont
 export function getThemeOption(
   key: ThemeFontFamilyKey,
   theme: Theme,
-): ThemeFamilyToken
+): ThemeFontFamilyToken
 export function getThemeOption(
   key: ThemeFontSizeKey,
   theme: Theme,
@@ -128,7 +128,7 @@ export function getThemeOption(key: string, theme: Theme): ThemeOption {
 
   const [section, optionId] = key.split(".")
 
-  let result: ThemeOption
+  let result: ThemeOption | undefined
 
   switch (section as `@${ThemeTokenNamespace}`) {
     case "@fontFamily":

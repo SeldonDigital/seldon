@@ -1,5 +1,10 @@
 import { validateComponentMetadata } from "./action-groups/component-metadata"
 import {
+  validateAddFontCollectionCustomFamily,
+  validateFontCollectionMutation,
+  validateRemoveFontCollectionCustomFamily,
+} from "./action-groups/font-collection-mutations"
+import {
   validateAddVariant,
   validateDuplicateNode,
   validateInsertMutation,
@@ -38,6 +43,16 @@ export function validateAction(workspace: Workspace, action: Action): void {
 
   if (action.type.startsWith("remove_theme_custom_")) {
     validateRemoveThemeCustomToken(workspace, action)
+    return
+  }
+
+  if (action.type === "add_font_collection_custom_family") {
+    validateAddFontCollectionCustomFamily(workspace, action)
+    return
+  }
+
+  if (action.type === "remove_font_collection_custom_family") {
+    validateRemoveFontCollectionCustomFamily(workspace, action)
     return
   }
 
@@ -107,6 +122,16 @@ export function validateAction(workspace: Workspace, action: Action): void {
     case "delete_theme":
     case "duplicate_theme":
       validateThemeMutation(workspace, action)
+      return
+    case "reset_font_collection_label":
+    case "reset_font_collection_editor_data":
+    case "reset_font_collection_override":
+    case "set_font_collection_label":
+    case "set_font_collection_editor_data":
+    case "set_font_collection_override":
+    case "delete_font_collection":
+    case "duplicate_font_collection":
+      validateFontCollectionMutation(workspace, action)
       return
     case "set_component_label":
     case "set_component_intent":

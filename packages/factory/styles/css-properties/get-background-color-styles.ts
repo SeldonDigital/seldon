@@ -1,18 +1,22 @@
-import { Properties } from "@seldon/core"
 import { resolveValue } from "@seldon/core/helpers/resolution/resolve-value"
 import { getThemeOption } from "@seldon/core/helpers/theme/get-theme-option"
 import { StyleGenerationContext } from "../types"
-import { getColorCSSValue } from "./get-color-css-value"
-import { getLayeredPaintLayer } from "./get-layered-paint-layer"
+import { getLayeredPaintColor } from "./get-layered-paint-color"
+import { getLayeredPaintLayers } from "./get-layered-paint-layer"
 import { CSSObject } from "./types"
 
 export function getBackgroundColorStyles({
   properties,
   theme,
+  useThemeVariableReferences,
+  themeSlug,
 }: StyleGenerationContext): CSSObject {
   const styles: CSSObject = {}
-  const layer = getLayeredPaintLayer(properties, "background")
-  if (!layer) return styles
+  const layers = getLayeredPaintLayers(properties, "background")
+  if (layers.length === 0) return styles
+
+  // The bottom-most layer paints the element's solid background color.
+  const layer = layers[layers.length - 1]
 
   const preset = resolveValue(layer.preset)
   const themeBackground = preset
@@ -31,11 +35,13 @@ export function getBackgroundColorStyles({
     resolveValue(layer.color) ?? resolveValue(themeBackground?.parameters?.color)
 
   if (color && layer.color) {
-    styles.backgroundColor = getColorCSSValue({
+    styles.backgroundColor = getLayeredPaintColor({
       color,
       brightness,
       opacity,
-      theme: theme,
+      theme,
+      useThemeVariableReferences,
+      themeSlug,
     })
   }
 

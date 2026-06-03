@@ -135,7 +135,7 @@ Pipeline detail lives in [../factory/FACTORY.md](../factory/FACTORY.md).
 | Core kernel | [../core/CORE.md](../core/CORE.md) |
 | Factory export | [../factory/FACTORY.md](../factory/FACTORY.md) |
 | Run steps | [README.md](./README.md) |
-| Vocabulary | [../core/GLOSSARY.md](../core/GLOSSARY.md) |
+| Vocabulary | [GLOSSARY.md](../../GLOSSARY.md) |
 | Workspace file spec | [../core/workspace/WORKSPACE.md](../core/workspace/WORKSPACE.md) |
 | Reducer actions | [../core/workspace/reducers/README.md](../core/workspace/reducers/README.md) |
 

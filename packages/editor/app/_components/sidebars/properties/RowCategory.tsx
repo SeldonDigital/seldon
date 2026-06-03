@@ -25,7 +25,7 @@ export function RowCategory({ section }: RowCategoryProps) {
     if ((event.target as HTMLElement).closest("button")) {
       return
     }
-    onToggle()
+    onToggle(event)
   }
 
   const handleMouseEnter = () => setIsHovered(true)
