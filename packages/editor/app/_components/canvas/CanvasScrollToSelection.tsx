@@ -13,6 +13,14 @@ import {
 const SCROLL_ANIMATION_MS = 300
 
 /**
+ * Vertical landing point for the selection as a fraction of canvas height.
+ * `0.5` centers it; lower values bias the selection higher up the canvas. The
+ * bias is applied against the canvas height, not the target height, so every
+ * selection lands in the same place regardless of its own size.
+ */
+const VERTICAL_BIAS = 0.25
+
+/**
  * Frames to wait for the target element to mount before giving up. Selecting a
  * node can switch the active board, and the new board's DOM renders a frame or
  * two later, so the target is not measurable on the first pass.
@@ -94,17 +102,17 @@ export function CanvasScrollToSelection() {
 
       const canvasRect = canvasEl.getBoundingClientRect()
 
-      // Pan so the target center lands on the visible canvas center. The
+      // Pan so the target center lands at the canvas's vertical bias point. The
       // transform translate maps 1:1 to screen pixels regardless of scale, so
-      // the delta between the current target center and the canvas center can
-      // be added directly to the current position. Scale is preserved.
+      // the delta between the current target center and that point can be added
+      // directly to the current position. Scale is preserved.
       const { scale, positionX, positionY } =
         transformContextRef.current.transformState
       const deltaX =
         canvasRect.left + canvasRect.width / 2 - (target.left + target.width / 2)
       const deltaY =
         canvasRect.top +
-        canvasRect.height / 2 -
+        canvasRect.height * VERTICAL_BIAS -
         (target.top + target.height / 2)
 
       setTransformRef.current(

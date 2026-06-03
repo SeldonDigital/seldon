@@ -102,10 +102,10 @@ export function FontCollectionBoard({ board }: FontCollectionBoardProps) {
         style={{
           position: "static",
           display: "flex",
-          flexWrap: "wrap",
+          flexDirection: "column",
+          flexWrap: "nowrap",
           gap: "2rem",
-          alignItems: "flex-start",
-          justifyContent: "center",
+          alignItems: "stretch",
           minHeight: "100%",
           padding: "2rem",
         }}
@@ -211,7 +211,12 @@ function FontCollectionTypeSpecimen({
       data-canvas-selection-id={canvasSelectionId(resourceItemKey, entryId)}
       data-selection-id={resourceItemKey}
       data-selection-kind="resourceItem"
-      style={{ position: "relative" }}
+      style={{
+        position: "relative",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
     >
       <BoardPreviewNode
         nodeId={rootId}

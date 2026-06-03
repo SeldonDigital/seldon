@@ -2,10 +2,6 @@ import * as Sdn from "../../properties";
 import * as Seldon from "../constants";
 import { ComponentExport, ComponentSchema } from "../types";
 
-
-
-
-
 export const schema = {
   name: "Type Specimen",
   id: Seldon.ComponentId.TYPE_SPECIMEN,
@@ -41,7 +37,7 @@ export const schema = {
     },
     width: {
       type: Sdn.ValueType.OPTION,
-      value: Sdn.Resize.FIT,
+      value: Sdn.Resize.FILL,
     },
     height: {
       type: Sdn.ValueType.OPTION,
