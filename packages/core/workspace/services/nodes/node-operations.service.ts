@@ -117,13 +117,19 @@ export class NodeOperationsService {
     })
 
     let newId: InstanceId
+    // Read the source subtree from a plain snapshot. `_instantiateNode` only
+    // reads to build the new nodes, and `structuredClone` throws on Immer draft
+    // proxies, so cloning must operate on non-draft data.
+    const sourceWorkspace = isDraft(workspace)
+      ? (current(workspace) as Workspace)
+      : workspace
     const updatedWorkspace = produce(workspace, (draft) => {
       const parentBoard = getComponentByNodeId(draft, parentId)
       invariant(parentBoard, `Board not found for parent ${parentId}`)
 
       const { newId: newNodeId, newTreeRef, newNodes } = this._instantiateNode(
         nodeId,
-        draft as unknown as Workspace,
+        sourceWorkspace,
         parentBoard,
       )
 

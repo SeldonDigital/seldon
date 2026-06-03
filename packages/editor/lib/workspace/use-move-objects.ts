@@ -267,6 +267,107 @@ export function useMoveObjects() {
     [workspace, moveChildTo, dispatch],
   )
 
+  // Shared duplicate primitive. Holds the only variant-vs-instance branch so
+  // paste and option-drag stay in lockstep: a variant subject is instantiated,
+  // an instance subject is duplicated, both into the same (parentId, index).
+  const duplicateNodeInto = useCallback(
+    (
+      subjectNode: Instance | Variant,
+      parentId: VariantId | InstanceId,
+      index: number,
+      isPreview = false,
+    ) => {
+      if (workspaceService.isVariant(subjectNode)) {
+        return dispatch(
+          {
+            type: "insert_variant_instance",
+            payload: {
+              variantId: subjectNode.id as VariantId,
+              target: { parentId, index },
+            },
+          },
+          isPreview,
+        )
+      }
+
+      return dispatch(
+        {
+          type: "insert_duplicate_instance",
+          payload: {
+            instanceId: subjectNode.id as InstanceId,
+            target: { parentId, index },
+          },
+        },
+        isPreview,
+      )
+    },
+    [dispatch],
+  )
+
+  const duplicateVariantOnBoard = useCallback(
+    (variantId: VariantId, isPreview = false) => {
+      return dispatch(
+        {
+          type: "duplicate_node",
+          payload: { nodeId: variantId },
+        },
+        isPreview,
+      )
+    },
+    [dispatch],
+  )
+
+  const duplicateNodeInside = useCallback(
+    ({
+      targetNode,
+      subjectNode,
+      isPreview = false,
+    }: {
+      targetNode: Instance | Variant
+      subjectNode: Instance | Variant
+      isPreview?: boolean
+    }) => {
+      // Append after any existing children, mirroring moveNodeInside.
+      const targetChildIds = getNodeChildIds(targetNode, workspace)
+      return duplicateNodeInto(
+        subjectNode,
+        targetNode.id,
+        targetChildIds.length,
+        isPreview,
+      )
+    },
+    [workspace, duplicateNodeInto],
+  )
+
+  const duplicateNodeNextTo = useCallback(
+    ({
+      targetNode,
+      subjectNode,
+      position,
+      isPreview = false,
+    }: {
+      targetNode: Instance | Variant
+      subjectNode: Instance | Variant
+      position: Placement
+      isPreview?: boolean
+    }) => {
+      // A variant target lives at the board top level; duplicating next to it
+      // produces a new variant on the board, matching the board paste case.
+      if (workspaceService.isVariant(targetNode)) {
+        return duplicateVariantOnBoard(subjectNode.id as VariantId, isPreview)
+      }
+
+      const parent = findParentNode(targetNode.id, workspace)
+      invariant(parent, "Parent not found")
+      const childIds = getNodeChildIds(parent, workspace)
+      const targetIndex = childIds.indexOf(targetNode.id)
+      // No same-parent index subtraction: duplicate leaves the subject in place.
+      const index = position === "before" ? targetIndex : targetIndex + 1
+      return duplicateNodeInto(subjectNode, parent.id, index, isPreview)
+    },
+    [workspace, duplicateNodeInto, duplicateVariantOnBoard],
+  )
+
   return {
     moveChildTo,
     moveChildUp,
@@ -275,5 +376,9 @@ export function useMoveObjects() {
     moveNodeNextTo,
     moveBoardNextTo,
     moveNodeInside,
+    duplicateNodeInto,
+    duplicateNodeInside,
+    duplicateNodeNextTo,
+    duplicateVariantOnBoard,
   }
 }
