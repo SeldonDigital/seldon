@@ -1,4 +1,4 @@
-import { produce } from "immer"
+import { current, produce } from "immer"
 import type { ComponentTreeRef, Workspace } from "../../types"
 import { isComponentBoard, isPlaygroundBoard } from "../../model/components"
 import { isEntryNodeVariant } from "../../model/entry-node"
@@ -55,7 +55,9 @@ export function applyResetUserVariantToDefaultVariant(
     const newRef: ComponentTreeRef = {
       id: userRef.id,
       children: defaultRef.children
-        ? (structuredClone(defaultRef.children) as ComponentTreeRef[])
+        ? (structuredClone(
+            current(defaultRef.children),
+          ) as ComponentTreeRef[])
         : undefined,
     }
     board.variants[idx] = newRef
