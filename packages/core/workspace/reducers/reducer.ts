@@ -86,6 +86,7 @@ import { resetComponentTags } from "./handlers/reset/reset-component-tags"
 import { resetNodeEditorData } from "./handlers/reset/reset-node-editor-data"
 import { resetNodeLabel } from "./handlers/reset/reset-node-label"
 import { resetNodeProperty } from "./handlers/reset/reset-node-property"
+import { resetNode } from "./handlers/reset/reset-node"
 import { resetFontCollectionEditorData } from "./handlers/reset/reset-font-collection-editor-data"
 import { resetFontCollectionLabel } from "./handlers/reset/reset-font-collection-label"
 import { resetFontCollectionOverride } from "./handlers/reset/reset-font-collection-override"
@@ -263,6 +264,8 @@ function reducer(workspace: Workspace, action: WorkspaceAction): Workspace {
       return setNodeProperties(action.payload, workspace)
     case "reset_node_property":
       return resetNodeProperty(action.payload, workspace)
+    case "reset_node":
+      return resetNode(action.payload, workspace)
     case "set_node_label":
       return setNodeLabel(action.payload, workspace)
     case "set_node_theme":

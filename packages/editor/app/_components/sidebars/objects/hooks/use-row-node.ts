@@ -1,12 +1,13 @@
 import { removeNewLines } from "@lib/utils/new-lines"
 import { CSSProperties, MouseEvent } from "react"
-import { Display, Properties } from "@seldon/core"
+import { Display, Properties, VariantId } from "@seldon/core"
 import { getComponentSchema } from "@seldon/core/components/catalog"
 import { ComponentId, isComponentId } from "@seldon/core/components/constants"
 import { isEmptyValue } from "@seldon/core/helpers/type-guards/value/is-empty-value"
 import { IconId, iconLabels } from "@seldon/core/icons"
 import { rules } from "@seldon/core/rules/config/rules.config"
 import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
+import { nodeSubtreeHasOverrides } from "@seldon/core/workspace/helpers/nodes/get-node-subtree-ids"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
 import type { EntryNode } from "@seldon/core/workspace/types"
 import {
@@ -44,7 +45,7 @@ export function useRowNode(
     onSelect?: () => void
   },
 ) {
-  const { workspace } = useWorkspace({ usePreview: false })
+  const { workspace, dispatch } = useWorkspace({ usePreview: false })
   const { activeTool } = useTool()
   const { selectNode } = useSelection()
   const { selectedNodeId, parentOfSelectedNodeId, ancestorIdsOfSelected } =
@@ -230,7 +231,36 @@ export function useRowNode(
   let icon4: IconProps | undefined
   let buttonIconic4: React.ButtonHTMLAttributes<HTMLButtonElement> | undefined
 
-  const resetButton = createActionButton("seldon-reset")
+  const isResettableType =
+    workspaceService.isDefaultVariant(node) ||
+    workspaceService.isUserVariant(node) ||
+    workspaceService.isInstance(node)
+  // Detecting subtree overrides walks the variant tree, so only run it for the
+  // selected resettable row rather than on every rendered row.
+  const canReset =
+    isSelected &&
+    isResettableType &&
+    nodeExistsInWorkspace &&
+    nodeSubtreeHasOverrides(node.id, workspace)
+
+  function handleReset(event: MouseEvent<HTMLButtonElement>) {
+    event.stopPropagation()
+    if (workspaceService.isUserVariant(node)) {
+      dispatch({
+        type: "reset_user_variant_to_default",
+        payload: { variantRootId: node.id as VariantId },
+      })
+    } else {
+      dispatch({
+        type: "reset_node",
+        payload: { nodeId: node.id as VariantId },
+      })
+    }
+  }
+
+  const resetButton = canReset
+    ? createActionButton("seldon-reset", handleReset)
+    : { icon: undefined, button: undefined }
   const moreButton = createActionButton("seldon-more")
   icon3 = resetButton.icon
   buttonIconic3 = resetButton.button

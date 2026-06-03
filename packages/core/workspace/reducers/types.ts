@@ -14,7 +14,7 @@
  * | add_variant | components.variants + nodes |
  * | insert_variant_instance, insert_duplicate_instance, insert_default_instance, add_component_and_insert_default_instance | components tree + nodes |
  * | remove_instance, remove_variant, duplicate_node, move_instance, reorder_instance_in_parent | components tree + nodes |
- * | set_node_properties, reset_node_property, set_node_label, set_node_theme, set_node_editor_data | nodes |
+ * | set_node_properties, reset_node_property, reset_node, set_node_label, set_node_theme, set_node_editor_data | nodes |
  * | reset_node_label, reset_node_editor_data | nodes |
  * | reset_user_variant_to_default | components.variants tree + nodes |
  * | set_theme_label, set_theme_editor_data, set_theme_override, reset_theme_tokens, reset_theme_label, reset_theme_editor_data, reset_theme_override | themes |
@@ -386,6 +386,12 @@ export type WorkspaceAction =
         nodeId: InstanceId | VariantId
         propertyKey: PropertyKey
         subpropertyKey?: SubPropertyKey
+      }
+    }
+  | {
+      type: "reset_node"
+      payload: {
+        nodeId: InstanceId | VariantId
       }
     }
   | {

@@ -26,6 +26,7 @@ import { getSpecialComponentVariantLabel } from "../../helpers/general/get-speci
 import { getWorkspaceNodes } from "../../helpers/general/get-workspace-nodes"
 import { applyResetUserVariantToDefaultVariant } from "../../helpers/nodes/apply-reset-user-variant-to-default-variant"
 import { resolveNodePropertyResetPatch } from "../../helpers/nodes/resolve-node-property-reset"
+import { getNodeSubtreeIds } from "../../helpers/nodes/get-node-subtree-ids"
 import { isEntryNodeForRules } from "../../helpers/rules/rules-node-subject"
 import { walkComponentTreeRefs } from "../../helpers/components/walk-component-tree-refs"
 import {
@@ -178,6 +179,29 @@ export class WorkspaceMutationService {
       { propertyKey, subpropertyKey },
       workspace,
     )
+  }
+
+  /**
+   * Clears every override on a node and all descendants in its variant tree,
+   * reverting the subtree to its template baseline.
+   * @param nodeId - The node ID
+   * @param workspace - The workspace
+   * @returns The updated workspace
+   */
+  public resetNodeOverrides(
+    nodeId: VariantId | InstanceId,
+    workspace: Workspace,
+  ): Workspace {
+    const subtreeIds = getNodeSubtreeIds(nodeId, workspace)
+    return mutateWorkspace(workspace, (draft) => {
+      const nodes = getWorkspaceNodes(draft)
+      for (const id of subtreeIds) {
+        const node = nodes[id]
+        if (node && isEntryNodeForRules(node)) {
+          node.overrides = {}
+        }
+      }
+    })
   }
 
   /**

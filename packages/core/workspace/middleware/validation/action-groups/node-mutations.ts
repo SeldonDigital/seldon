@@ -265,6 +265,7 @@ export function validateNodeMutation(
     case "set_node_editor_data":
     case "reset_node_label":
     case "reset_node_editor_data":
+    case "reset_node":
       nodeValidators.exists(workspace, action.payload.nodeId)
       break
     case "reset_user_variant_to_default": {

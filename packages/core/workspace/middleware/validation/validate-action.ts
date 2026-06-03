@@ -104,6 +104,7 @@ export function validateAction(workspace: Workspace, action: Action): void {
     case "remove_variant":
     case "set_node_properties":
     case "reset_node_property":
+    case "reset_node":
     case "set_node_theme":
     case "set_node_label":
     case "set_node_editor_data":
