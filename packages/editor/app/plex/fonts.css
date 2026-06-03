@@ -1,0 +1,7 @@
+/*
+ * Editor chrome font variable. Points at the self-hosted "IBM Plex Sans"
+ * family whose @font-face blocks are declared in globals.css.
+ */
+:root {
+  --font-plex-sans: "IBM Plex Sans", system-ui, sans-serif;
+}

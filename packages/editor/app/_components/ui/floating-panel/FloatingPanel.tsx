@@ -1,4 +1,3 @@
-import { cn } from "@lib/utils/cn"
 import * as Portal from "@radix-ui/react-portal"
 import { motion } from "framer-motion"
 import { CSSProperties } from "react"
@@ -62,7 +61,7 @@ export function FloatingPanel({
       {(closeOnClickOutside || preventInteractionOutside) && (
         <div
           onClick={closeOnClickOutside ? handleClose : undefined}
-          className="z-30 fixed inset-0"
+          style={{ position: "fixed", inset: 0, zIndex: 30 }}
         />
       )}
       <Portal.Root>
@@ -113,21 +112,7 @@ export function FloatingPanel({
               key={side}
               onPan={(_event, info) => handleResize(side, info)}
               onPointerDown={handleResizeStart}
-              className={cn(
-                "absolute touch-none",
-                side.includes("bottom") && "bottom-0 h-2",
-                side.includes("left") && "left-0 w-2",
-                side.includes("right") && "right-0 w-2",
-                side.includes("top") && "top-0 h-2",
-                side === "top" && "left-2 right-2 cursor-ns-resize",
-                side === "right" && "bottom-2 top-2 cursor-ew-resize",
-                side === "bottom" && " left-2 right-2 cursor-ns-resize",
-                side === "left" && "bottom-2 top-2 cursor-ew-resize",
-                side === "top-left" && "cursor-nwse-resize",
-                side === "top-right" && "cursor-nesw-resize",
-                side === "bottom-left" && "cursor-nesw-resize",
-                side === "bottom-right" && "cursor-nwse-resize",
-              )}
+              style={getResizeHandleStyle(side)}
             />
           ))}
         </motion.div>
@@ -143,4 +128,62 @@ const styles: Record<string, CSSProperties> = {
     flex: "1 0 0",
     fontSize: "14px",
   },
+}
+
+type ResizeSide =
+  | "top"
+  | "right"
+  | "bottom"
+  | "left"
+  | "top-left"
+  | "top-right"
+  | "bottom-left"
+  | "bottom-right"
+
+const EDGE = "0.5rem"
+
+function getResizeHandleStyle(side: ResizeSide): CSSProperties {
+  const style: CSSProperties = { position: "absolute", touchAction: "none" }
+
+  if (side.includes("bottom")) {
+    style.bottom = 0
+    style.height = EDGE
+  }
+  if (side.includes("left")) {
+    style.left = 0
+    style.width = EDGE
+  }
+  if (side.includes("right")) {
+    style.right = 0
+    style.width = EDGE
+  }
+  if (side.includes("top")) {
+    style.top = 0
+    style.height = EDGE
+  }
+
+  switch (side) {
+    case "top":
+    case "bottom":
+      style.left = EDGE
+      style.right = EDGE
+      style.cursor = "ns-resize"
+      break
+    case "left":
+    case "right":
+      style.top = EDGE
+      style.bottom = EDGE
+      style.cursor = "ew-resize"
+      break
+    case "top-left":
+    case "bottom-right":
+      style.cursor = "nwse-resize"
+      break
+    case "top-right":
+    case "bottom-left":
+      style.cursor = "nesw-resize"
+      break
+  }
+
+  return style
 }

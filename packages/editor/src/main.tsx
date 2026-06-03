@@ -1,0 +1,42 @@
+import { StrictMode, Suspense, lazy } from "react"
+import { createRoot } from "react-dom/client"
+import { RouterProvider, createBrowserRouter } from "react-router"
+import "allotment/dist/style.css"
+import { LoadEditorFonts } from "@components/LoadEditorFonts"
+import { Providers } from "@components/Providers"
+import { Toasts } from "@components/toaster/Toaster"
+import HomePage from "../app/HomePage"
+import "../app/globals.css"
+import "../app/plex/fonts.css"
+import "../app/editor-chrome.css"
+
+const EditorPage = lazy(() => import("../app/EditorPage"))
+
+const router = createBrowserRouter([
+  { path: "/", element: <HomePage /> },
+  {
+    path: "/:id",
+    element: (
+      <Suspense
+        fallback={<p style={{ padding: "2rem", color: "#fff" }}>Loading…</p>}
+      >
+        <EditorPage />
+      </Suspense>
+    ),
+  },
+])
+
+const container = document.getElementById("root")
+if (!container) {
+  throw new Error("Root container #root not found.")
+}
+
+createRoot(container).render(
+  <StrictMode>
+    <Providers>
+      <LoadEditorFonts />
+      <RouterProvider router={router} />
+      <Toasts />
+    </Providers>
+  </StrictMode>,
+)

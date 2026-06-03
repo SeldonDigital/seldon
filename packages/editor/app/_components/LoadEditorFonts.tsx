@@ -5,7 +5,7 @@ import { useEditorFonts } from "@lib/hooks/use-editor-fonts"
 
 /** Opt-in flag for loading remote font hosts. System and local fonts never make a request. */
 const REMOTE_FONTS_ENABLED =
-  process.env.NEXT_PUBLIC_SELDON_ENABLE_REMOTE_FONTS === "true"
+  import.meta.env.VITE_SELDON_ENABLE_REMOTE_FONTS === "true"
 
 export function LoadEditorFonts() {
   const { fonts } = useEditorFonts()

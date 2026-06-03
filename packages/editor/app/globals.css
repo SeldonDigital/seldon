@@ -1,10 +1,6 @@
 @import "./_components/seldon/styles.css";
 @import "./seldon/styles.css";
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 /*
  * Self-hosted IBM Plex Sans registered under its literal family name so the editor
  * chrome can fall back to it when a declared font is inaccessible. local() first lets
@@ -46,25 +42,21 @@
   src: local("IBM Plex Sans"), url("./plex/IBMPlexSans-Bold.woff2") format("woff2");
 }
 
-@layer components {
-  .no-spinner {
-    -moz-appearance: textfield;
-  }
-
-  .no-spinner::-webkit-outer-spin-button,
-  .no-spinner::-webkit-inner-spin-button {
-    margin: 0;
-    -webkit-appearance: none;
-  }
+.no-spinner {
+  -moz-appearance: textfield;
 }
 
-@layer reset {
-  html,
-  :host {
-    font-family: var(--font-plex-sans), system-ui, sans-serif;
-    font-feature-settings: normal;
-    font-variation-settings: normal;
-  }
+.no-spinner::-webkit-outer-spin-button,
+.no-spinner::-webkit-inner-spin-button {
+  margin: 0;
+  -webkit-appearance: none;
+}
+
+html,
+:host {
+  font-family: var(--font-plex-sans), system-ui, sans-serif;
+  font-feature-settings: normal;
+  font-variation-settings: normal;
 }
 
 :root {
@@ -92,10 +84,8 @@
   outline: none;
 }
 
-@layer components {
-  .scrollbar-gutter-stable {
-    scrollbar-gutter: stable;
-  }
+.scrollbar-gutter-stable {
+  scrollbar-gutter: stable;
 }
 
 /* For devices with a 2x pixel ratio */

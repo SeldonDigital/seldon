@@ -1,4 +1,3 @@
-import { cn } from "@lib/utils/cn"
 import { SVGProps } from "react"
 
 export const IconRefresh = (props: SVGProps<SVGSVGElement>) => {
@@ -8,8 +7,8 @@ export const IconRefresh = (props: SVGProps<SVGSVGElement>) => {
       viewBox="0 -960 960 960"
       width="1em"
       height="1em"
-      className={cn("shrink-0", props.className)}
       {...props}
+      style={{ flexShrink: 0, ...props.style }}
     >
       <path
         fill="currentColor"

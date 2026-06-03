@@ -1,8 +1,13 @@
-import { ClassNameValue, twJoin, twMerge } from "tailwind-merge"
+type ClassValue = string | number | null | undefined | false
 
-export function cn(...args: ClassNameValue[]) {
-  return twJoin(args)
+function join(args: ClassValue[]): string {
+  return args.filter(Boolean).join(" ")
 }
-export function cnMerge(...args: ClassNameValue[]): string {
-  return twMerge(args)
+
+export function cn(...args: ClassValue[]): string {
+  return join(args)
+}
+
+export function cnMerge(...args: ClassValue[]): string {
+  return join(args)
 }

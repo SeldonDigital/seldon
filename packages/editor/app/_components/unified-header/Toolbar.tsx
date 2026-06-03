@@ -24,7 +24,7 @@ export const Toolbar = () => {
 
   return (
     <>
-      <style jsx global>{`
+      <style>{`
         .seldon-tool-button {
           cursor: pointer;
         }

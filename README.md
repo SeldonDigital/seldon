@@ -9,7 +9,7 @@ Seldon is a component-based design engine that has many moving parts.
 - A **workspace** is a JSON file that indexes components, stores **nodes** (defaults, variants, and instances with overrides), and holds theme and resource entries. 
 - Property values merge from schema defaults, template chains, workspace overrides, and the active theme, and then are computed for use in the editor and for code export.
 
-This repository ships that core library, a **local editor** (`packages/editor`) that edits workspaces in the browser, and **factory** export (`packages/factory`) for React and CSS. The editor runs as a single Next.js app on `localhost:3000`. Workspaces persist in IndexedDB on your machine. 
+This repository ships that core library, a **local editor** (`packages/editor`) that edits workspaces in the browser, and **factory** export (`packages/factory`) for React and CSS. The editor runs as a single Vite app on `localhost:5173`. Workspaces persist in IndexedDB on your machine. 
 
 There is no Docker setup, standalone API, or external database in this repo. This is intentional.
 
@@ -17,11 +17,11 @@ There is no Docker setup, standalone API, or external database in this repo. Thi
 
 ## Prerequisites
 
-Install **Node.js** and **npm** before you run the editor. This repo targets **Node 22** (see `volta.node` in [package.json](package.json), currently `22.18.0`). Use [nodejs.org](https://nodejs.org/) or a version manager such as [Volta](https://volta.sh/) or [nvm](https://github.com/nvm-sh/nvm).
+Install **Node.js** and **npm** before you run the editor.
 
-The editor is implemented with Next.js 16 (App Router). Next is installed via `npm install`; you do not install it separately.
+The editor is a single-page app built with Vite and React Router. Its dependencies install with `npm install`. You do not install them separately.
 
-`@seldon/core` and `@seldon/factory` are not tied to Next. If you build your own editor, you can use any React setup (or no React at all for headless tooling). Replacing Next in `packages/editor` would be a deliberate port of that app, not a supported one-line switch.
+`@seldon/core` and `@seldon/factory` are not tied to the editor. If you build your own editor, you can use any React setup (or no React at all for headless tooling).
 
 ## Run Locally
 
@@ -34,7 +34,7 @@ npm run dev
 
 ---
 
-Then open `http://localhost:3000` in your browser. You should now have the editor running locally.
+Then open `http://localhost:5173` in your browser. You should now have the editor running locally.
 
 ---
 
@@ -79,7 +79,7 @@ But we fully expect that wasting money and energy on writing Button code will st
 If you want the lowdown, these three documents are a great way to get into what this codebase offers, and where it is going.
 
 - `packages/core` [packages/core/CORE.md](packages/core/CORE.md): This is the workspace, theme, and reducer logic used by an editor or agent to mutate workspace.json files
-- `packages/editor`  [packages/editor/EDITOR.md](packages/editor/EDITOR.md): Next.js visual editor run on localhost
+- `packages/editor`  [packages/editor/EDITOR.md](packages/editor/EDITOR.md): Vite visual editor run on localhost
 - `packages/factory`  [packages/factory/FACTORY.md](packages/factory/FACTORY.md): Component Export, CSS, and code generation from a valid workspace.json file
 
 ---
@@ -142,7 +142,7 @@ Here's all of the documentation for code under `packages/`. Do not assume all of
 
 | Topic        | Summary                                           | Link                                                                         |
 | ------------ | ------------------------------------------------- | ---------------------------------------------------------------------------- |
-| Editor       | Local Next.js editor, run commands, and workflows | [packages/editor/README.md](packages/editor/README.md)                       |
+| Editor       | Local Vite editor, run commands, and workflows    | [packages/editor/README.md](packages/editor/README.md)                       |
 | └ Components | Generated and maintained UI component reference   | [packages/editor/app/seldon/README.md](packages/editor/app/seldon/README.md) |
 
 

@@ -3,7 +3,7 @@
 import { selectFile } from "@lib/utils/select-file"
 import { isEntryThemeDefault } from "@seldon/core/workspace/model/entry-theme"
 import { isEntryFontCollectionDefault } from "@seldon/core/workspace/model/entry-font-collection"
-import { useRouter } from "next/navigation"
+import { useNavigate } from "react-router"
 import { useCallback, useMemo } from "react"
 import { useAddRemoveCommands } from "@lib/hooks/commands/use-add-remove-commands"
 import { useMoveCommands } from "@lib/hooks/commands/use-move-commands"
@@ -27,7 +27,7 @@ import { HeaderConfig, MenuConfig, MenuItem, ToolbarConfig } from "./types"
  */
 export function useMenuConfig(): HeaderConfig {
   // Import all the necessary hooks for the menu actions
-  const router = useRouter()
+  const navigate = useNavigate()
   const { isInPreviewMode, togglePreviewMode } = usePreview()
   const {
     showPanels,
@@ -95,8 +95,8 @@ export function useMenuConfig(): HeaderConfig {
   ])
 
   const goToProjects = useCallback(() => {
-    router.push("/")
-  }, [router])
+    navigate("/")
+  }, [navigate])
 
   // Get zoom controls from the hook
   const { zoomIn, zoomOut, resetZoom } = useZoomControls()

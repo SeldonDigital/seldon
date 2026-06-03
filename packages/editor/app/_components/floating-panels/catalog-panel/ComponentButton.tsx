@@ -1,4 +1,3 @@
-import { cn } from "@lib/utils/cn"
 import { CSSProperties, FC, useState } from "react"
 import { ComponentIcon } from "@seldon/core/components/constants"
 import { Icon } from "@components/ui/Icon"
@@ -67,7 +66,7 @@ export const ComponentButton: FC<ComponentButtonProps> = ({
           justifyContent: "center",
         }}
       >
-        <Icon icon={icon} className="text-2xl" />
+        <Icon icon={icon} style={{ fontSize: "1.25rem" }} />
       </div>
       <div
         style={{
@@ -81,20 +80,24 @@ export const ComponentButton: FC<ComponentButtonProps> = ({
       >
         <Text
           variant="body-small"
-          className={cn(
-            "overflow-hidden text-ellipsis whitespace-nowrap",
-            isSelected ? "text-blue" : "text-white",
-          )}
+          style={{
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+            color: isSelected ? "var(--color-blue)" : "#fff",
+          }}
         >
           {name}
         </Text>
         {description && (
           <Text
             variant="label-small"
-            className={cn(
-              "overflow-hidden text-ellipsis whitespace-nowrap",
-              isSelected ? "text-blue" : "text-pearl/60",
-            )}
+            style={{
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+              color: isSelected ? "var(--color-blue)" : "rgba(245, 245, 245, 0.6)",
+            }}
           >
             {description}
           </Text>

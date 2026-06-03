@@ -1,27 +1,26 @@
-"use client"
-
-import dynamic from "next/dynamic"
-import { useWorkspaceId } from "@lib/project/hooks/use-workspace-id"
-import { useWorkspaceRecord } from "@lib/local-workspace/use-workspace-record"
+import type { CSSProperties } from "react"
+import Editor from "@components/Editor"
 import { LocalWorkspaceShell } from "@components/LocalWorkspaceShell"
 import { ProjectInitialize } from "@components/ProjectInitialize"
+import { useWorkspaceRecord } from "@lib/local-workspace/use-workspace-record"
+import { useWorkspaceId } from "@lib/project/hooks/use-workspace-id"
 
-const Editor = dynamic(() => import("@components/Editor"), { ssr: false })
+const message: CSSProperties = { padding: "2rem", color: "#fff" }
 
 export default function EditorPage() {
   const workspaceId = useWorkspaceId()
   const { record, loading, error } = useWorkspaceRecord(workspaceId)
 
   if (!workspaceId) {
-    return <p className="p-8 text-white">Missing workspace id.</p>
+    return <p style={message}>Missing workspace id.</p>
   }
 
   if (loading) {
-    return <p className="p-8 text-white">Loading workspace…</p>
+    return <p style={message}>Loading workspace…</p>
   }
 
   if (error || !record) {
-    return <p className="p-8 text-white">{error ?? "Workspace not found"}</p>
+    return <p style={message}>{error ?? "Workspace not found"}</p>
   }
 
   return (
