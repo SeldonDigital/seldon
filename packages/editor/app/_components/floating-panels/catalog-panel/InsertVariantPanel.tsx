@@ -10,11 +10,12 @@ import { useDialog } from "@lib/hooks/use-dialog"
 import { useTool } from "@lib/hooks/use-tool"
 import { useAutoSelectNode } from "@lib/workspace/use-auto-select-node"
 import { useWorkspace } from "@lib/workspace/use-workspace"
+import { CatalogPanel } from "./CatalogPanel"
 import {
-  CatalogItem,
-  CatalogPanel,
+  CatalogComponentItem,
   FilterComponentPredicate,
-} from "./CatalogPanel"
+  useComponentCatalog,
+} from "./use-component-catalog"
 
 /**
  * This panel is used to insert an existing variant into another node
@@ -30,7 +31,7 @@ export function InsertVariantPanel({
   const { dispatchWithAutoSelect } = useAutoSelectNode()
   const { workspace } = useWorkspace()
 
-  const handlePick = async (item: CatalogItem) => {
+  const handlePick = async (item: CatalogComponentItem) => {
     invariant(target, "No target selected")
 
     // If the variant doesn't exist yet, create it
@@ -89,15 +90,24 @@ export function InsertVariantPanel({
     [target, workspace],
   )
 
+  const { categories, query, setQuery, submit, isFetching } =
+    useComponentCatalog({
+      shouldShowComponent,
+      task: "search_all",
+      target,
+    })
+
   return (
     <CatalogPanel
       onClose={onClose}
       onPick={handlePick}
-      shouldShowComponent={shouldShowComponent}
+      categories={categories}
+      query={query}
+      onQueryChange={setQuery}
+      onSubmitSearch={submit}
+      isSearching={isFetching}
       confirmButtonText="Insert component"
       title="Insert component"
-      target={target}
-      task="search_all"
     />
   )
 }

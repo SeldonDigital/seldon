@@ -62,64 +62,53 @@ export function getBoardSections(boards: BoardType[]): BoardSection[] {
 
   const regularBoards = boards.filter((board) => !isResourceType(board))
 
-  // Group regular boards by component level
-  const sections = [...ORDERED_COMPONENT_LEVELS].reduce<BoardSection[]>(
-    (acc, level) => {
-      const boardsAtThisLevel = regularBoards.filter((board) => {
-        const boardLevel = getBoardComponentLevel(board)
-        if (boardLevel === null) {
-          console.warn(
-            `Skipping board ${getComponentKey(board)} with unknown component level`,
-          )
-          return false
-        }
-        return boardLevel === level
-      })
-      if (boardsAtThisLevel.length > 0) {
-        acc.push({
-          label: SECTION_LABELS[level],
-          level,
-          boards: boardsAtThisLevel,
-        })
+  // Always emit a section for every component level, even when empty, so the
+  // user can add a component at that level.
+  const sections = [...ORDERED_COMPONENT_LEVELS].map<BoardSection>((level) => {
+    const boardsAtThisLevel = regularBoards.filter((board) => {
+      const boardLevel = getBoardComponentLevel(board)
+      if (boardLevel === null) {
+        console.warn(
+          `Skipping board ${getComponentKey(board)} with unknown component level`,
+        )
+        return false
       }
-      return acc
-    },
-    [],
-  )
-
-  // Insert the Themes section directly below the Frames section.
-  if (themeBoards.length > 0) {
-    const themesSection: BoardSection = {
-      label: "Themes",
-      level: "THEME",
-      boards: themeBoards,
+      return boardLevel === level
+    })
+    return {
+      label: SECTION_LABELS[level],
+      level,
+      boards: boardsAtThisLevel,
     }
-    const framesIndex = sections.findIndex(
-      (section) => section.level === ComponentLevel.FRAME,
-    )
-    const insertIndex = framesIndex === -1 ? sections.length : framesIndex + 1
-    sections.splice(insertIndex, 0, themesSection)
+  })
+
+  // Insert the Themes section directly below the Frames section. Always shown.
+  const themesSection: BoardSection = {
+    label: "Themes",
+    level: "THEME",
+    boards: themeBoards,
   }
+  const framesIndex = sections.findIndex(
+    (section) => section.level === ComponentLevel.FRAME,
+  )
+  const themesInsertIndex =
+    framesIndex === -1 ? sections.length : framesIndex + 1
+  sections.splice(themesInsertIndex, 0, themesSection)
 
   // Insert the Font Collections section directly below the Themes section.
-  if (fontCollectionBoards.length > 0) {
-    const fontCollectionsSection: BoardSection = {
-      label: "Font Collections",
-      level: "FONT_COLLECTION",
-      boards: fontCollectionBoards,
-    }
-    const themesIndex = sections.findIndex(
-      (section) => section.level === "THEME",
-    )
-    const framesIndex = sections.findIndex(
-      (section) => section.level === ComponentLevel.FRAME,
-    )
-    const anchorIndex = themesIndex !== -1 ? themesIndex : framesIndex
-    const insertIndex = anchorIndex === -1 ? sections.length : anchorIndex + 1
-    sections.splice(insertIndex, 0, fontCollectionsSection)
+  // Always shown.
+  const fontCollectionsSection: BoardSection = {
+    label: "Font Collections",
+    level: "FONT_COLLECTION",
+    boards: fontCollectionBoards,
   }
+  const themesIndex = sections.findIndex(
+    (section) => section.level === "THEME",
+  )
+  sections.splice(themesIndex + 1, 0, fontCollectionsSection)
 
-  // Add Assets section at the end
+  // Add Assets section at the end. It has no add flow, so it stays hidden when
+  // empty.
   if (assetBoards.length > 0) {
     const assetsSection: BoardSection = {
       label: "Assets",

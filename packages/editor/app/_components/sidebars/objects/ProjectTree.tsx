@@ -9,6 +9,7 @@ import { FramerExpandable } from "../shared/FramerExpandable"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { RowBoard } from "./RowBoard"
 import { RowSection } from "./RowSection"
+import { RowSectionEmpty } from "./RowSectionEmpty"
 
 interface ProjectTreeProps {
   sections: BoardSection[]
@@ -25,7 +26,7 @@ export function ProjectTree({ sections, scrollerRef }: ProjectTreeProps) {
 
   const sectionsWithExpansion = sections.map((section) => ({
     section,
-    isExpanded: isSectionExpanded(section.level),
+    isExpanded: isSectionExpanded(section.level, section.boards.length > 0),
   }))
 
   // One hover controller for the whole tree: resolve the row under the pointer
@@ -57,9 +58,15 @@ export function ProjectTree({ sections, scrollerRef }: ProjectTreeProps) {
             <Fragment key={section.label}>
               <RowSection section={section} />
               <FramerExpandable isExpanded={isExpanded}>
-                {section.boards.map((board) => (
-                  <RowBoard key={getComponentKey(board)} board={board} />
-                ))}
+                {section.boards.length === 0 ? (
+                  <RowSectionEmpty
+                    label={`No ${section.label.toLowerCase()}`}
+                  />
+                ) : (
+                  section.boards.map((board) => (
+                    <RowBoard key={getComponentKey(board)} board={board} />
+                  ))
+                )}
               </FramerExpandable>
             </Fragment>
           ))}

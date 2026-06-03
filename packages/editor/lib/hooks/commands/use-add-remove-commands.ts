@@ -71,6 +71,28 @@ export function useAddRemoveCommands() {
     [dispatch, selectBoard],
   )
 
+  const addTheme = useCallback(
+    (themeId: string) => {
+      dispatch({
+        type: "add_theme",
+        payload: { componentKey: themeId as ComponentKey },
+      })
+      selectBoard(themeId)
+    },
+    [dispatch, selectBoard],
+  )
+
+  const addFontCollection = useCallback(
+    (catalogId: string) => {
+      dispatch({
+        type: "add_font_collection",
+        payload: { catalogId },
+      })
+      selectBoard(catalogId)
+    },
+    [dispatch, selectBoard],
+  )
+
   const addVariant = useCallback(() => {
     const board = selectedBoard
     if (!board || !selectedBoardId) {
@@ -165,8 +187,9 @@ export function useAddRemoveCommands() {
       const board = workspace.components[componentKey]
       if (!board) return
 
-      // Dispatch the removal that matches the board type. Theme and icon-set
-      // boards are rejected by validation with an explanatory toast.
+      // Dispatch the removal that matches the board type. The default Seldon
+      // theme board and icon-set boards are rejected by validation with an
+      // explanatory toast.
       let result
       if (isComponentBoard(board)) {
         result = dispatch({
@@ -298,6 +321,8 @@ export function useAddRemoveCommands() {
 
   return {
     addBoard,
+    addTheme,
+    addFontCollection,
     addVariant,
     deleteSelection,
     duplicateSelection,

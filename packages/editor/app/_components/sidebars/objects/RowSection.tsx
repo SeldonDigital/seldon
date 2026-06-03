@@ -13,7 +13,8 @@ interface RowSectionProps {
  * Sections use useRowHover for hover styling (not the tracking system).
  */
 export function RowSection({ section }: RowSectionProps) {
-  const { label, icon, buttonIconic2, onToggle } = useRowSection(section)
+  const { label, icon, buttonIconic1, buttonIconic2, onToggle } =
+    useRowSection(section)
   const { setIsHovered, style: hoverStyle } = useRowHover(false, 25)
 
   const handleClick = (event: MouseEvent<HTMLElement>) => {
@@ -30,6 +31,7 @@ export function RowSection({ section }: RowSectionProps) {
     <SeldonSection
       label={{ children: label }}
       icon={{ icon }}
+      buttonIconic1={buttonIconic1}
       buttonIconic2={buttonIconic2}
       style={hoverStyle}
       onMouseEnter={handleMouseEnter}

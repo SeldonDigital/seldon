@@ -1,11 +1,13 @@
 import { ExtractPayload, Workspace } from "../../../../index"
+import { applyComponentKeyDeletion } from "./remove-component-catalog"
 
 /**
- * Theme catalog boards are never deleted; validation rejects this action.
+ * Removes a theme board and its `themes` entries. Validation keeps the default
+ * Seldon theme board, which every workspace requires.
  */
 export function removeTheme(
-  _payload: ExtractPayload<"remove_theme">,
+  payload: ExtractPayload<"remove_theme">,
   workspace: Workspace,
 ): Workspace {
-  return workspace
+  return applyComponentKeyDeletion(payload.componentKey, workspace)
 }

@@ -22,6 +22,7 @@ import {
   isIconSetBoard,
   isMediaBoard,
   isPlaygroundBoard,
+  isThemeBoard,
 } from "../../model/components"
 import type { ComponentKey } from "../../model/components"
 import type { ComponentTreeRef } from "../../model/component-tree"
@@ -194,6 +195,18 @@ export class NodeOperationsService {
       return workspacePropagationService.realignComponentOrder(
         workspaceAfterDeletion,
       )
+    }
+
+    if (isThemeBoard(board)) {
+      const next = mutateWorkspace(workspace, (draft) => {
+        const b = draft.components[componentKey]
+        if (!b || !isThemeBoard(b)) return
+        for (const ref of b.variants) {
+          delete draft.themes[ref.id]
+        }
+        delete draft.components[componentKey]
+      })
+      return workspacePropagationService.realignComponentOrder(next)
     }
 
     if (isFontCollectionBoard(board)) {
