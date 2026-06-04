@@ -102,6 +102,8 @@ export class WorkspaceFontCollectionService {
       const selection = this.getVariantSelection(defaultEntryId, workspace)
       for (const [slot, family] of Object.entries(collection.families)) {
         if (!family || family.origin !== "remote" || !family.variants) continue
+        // An empty array means preset None (no weights requested); an absent key
+        // means no explicit selection, which callers treat as all weights.
         byFamily[family.name] = getEnabledVariants(
           selection[slot],
           family.variants,

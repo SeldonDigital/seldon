@@ -32,6 +32,21 @@ export function fontVariantDisplayLabel(variant: string): string {
 }
 
 /**
+ * Sorts variant strings into a stable order: uprights before italics, then
+ * ascending by weight. Google lists variants per the font's upstream metadata,
+ * which is inconsistent across families, so normalize here. Returns a new array.
+ */
+export function sortFontVariants(variants: string[]): string[] {
+  return [...variants].sort((a, b) => {
+    const pa = parseFontVariant(a)
+    const pb = parseFontVariant(b)
+    return (
+      Number(pa.italic) - Number(pb.italic) || pa.weight - pb.weight
+    )
+  })
+}
+
+/**
  * Builds the `ital,wght@...` family axis parameter from variant strings. Tuples
  * are deduped and sorted ascending by italic then weight, as Google requires.
  * Returns an empty string when no variants are given.

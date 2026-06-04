@@ -24,7 +24,10 @@ export async function getFontsComponent(
 
     for (const family of families) {
       if (family.origin !== "remote") continue
-      const url = getRemoteFontUrl(family.name, enabledByFamily[family.name])
+      const enabled = enabledByFamily[family.name]
+      // An explicit empty selection (preset None) requests no weights, so skip.
+      if (enabled && enabled.length === 0) continue
+      const url = getRemoteFontUrl(family.name, enabled)
       if (!url || seen.has(url)) continue
       seen.add(url)
       links.push(`    <link rel="stylesheet" href="${url}" />`)

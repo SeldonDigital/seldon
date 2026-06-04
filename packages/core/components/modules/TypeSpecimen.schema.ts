@@ -2,6 +2,10 @@ import * as Sdn from "../../properties";
 import * as Seldon from "../constants";
 import { ComponentExport, ComponentSchema } from "../types";
 
+
+
+
+
 export const schema = {
   name: "Type Specimen",
   id: Seldon.ComponentId.TYPE_SPECIMEN,
@@ -363,6 +367,30 @@ export const schema = {
           content: {
             type: Sdn.ValueType.EXACT,
             value: "Font Name",
+          },
+          color: {
+            type: Sdn.ValueType.COMPUTED,
+            value: {
+              function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+              input: {
+                basedOn: "#parent.background.color",
+              },
+            },
+          },
+        },
+      },
+      {
+        component: Seldon.ComponentId.TEXT,
+        overrides: {
+          content: {
+            type: Sdn.ValueType.EXACT,
+            value: "Font weights",
+          },
+          font: {
+            size: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@fontSize.xsmall",
+            },
           },
           margin: {
             bottom: {

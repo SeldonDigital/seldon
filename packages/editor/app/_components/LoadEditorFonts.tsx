@@ -26,7 +26,12 @@ export function LoadEditorFonts() {
   return (
     <>
       {fonts.map((font) => {
-        const url = getRemoteFontUrl(font, enabledByFamily[font])
+        const enabled = enabledByFamily[font]
+        // An explicit empty selection (preset None) requests no weights, so skip.
+        if (enabled && enabled.length === 0) {
+          return null
+        }
+        const url = getRemoteFontUrl(font, enabled)
         if (!url) {
           return null
         }

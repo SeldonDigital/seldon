@@ -6,6 +6,7 @@ export {
   fontVariantDisplayLabel,
   fontVariantToAxisTuple,
   parseFontVariant,
+  sortFontVariants,
   type ParsedFontVariant,
 } from "./font-variant"
 export { getGoogleFontURL } from "./get-google-font-url"

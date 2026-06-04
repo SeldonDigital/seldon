@@ -1,7 +1,10 @@
 import { produce } from "immer"
 import { STOCK_FONT_COLLECTIONS_BY_ID } from "../../../../font-collections/catalog"
+import { GOOGLE_DEFAULT_ENABLED_FAMILIES } from "../../../../font-collections/catalog/google/default-enabled-families"
 import type { FontCollectionTemplateId } from "../../../../font-collections/types"
 import { ExtractPayload, Workspace } from "../../../../index"
+import type { EntryFontCollection } from "../../../model/entry-font-collection"
+import { setFamilyVariantPreset } from "../shared/font-collection-variant-selection"
 import { rules } from "../../../../rules/config/rules.config"
 import {
   getComponentOrder,
@@ -60,13 +63,30 @@ export function addFontCollection(
       ? stock.metadata.name
       : formatLabelFromCatalogId(componentKey, "Font collection")
 
-    draft["font-collections"][defaultEntryId] = {
+    const defaultEntry: EntryFontCollection = {
       id: defaultEntryId,
       type: "default",
       label: "Default",
       template: formatFontCollectionCatalog(componentKey),
       overrides: {},
     }
+
+    // Adding the Google collection enables only a curated set of families. Each
+    // curated family is written as an explicit `All`; every other family is
+    // left absent, which means `None`.
+    if (stock && stock.metadata.id === "googleFonts") {
+      for (const [slot, family] of Object.entries(stock.families)) {
+        if (
+          family.variants &&
+          family.variants.length > 0 &&
+          GOOGLE_DEFAULT_ENABLED_FAMILIES.has(family.name)
+        ) {
+          setFamilyVariantPreset(defaultEntry, slot, "all", family.variants)
+        }
+      }
+    }
+
+    draft["font-collections"][defaultEntryId] = defaultEntry
 
     const board = {
       type: "font-collection" as const,

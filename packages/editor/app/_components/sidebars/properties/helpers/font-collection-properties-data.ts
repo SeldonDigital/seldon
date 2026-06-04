@@ -4,7 +4,10 @@ import {
   isVariantEnabled,
   type VariantSelection,
 } from "@seldon/core/font-collections"
-import { fontVariantDisplayLabel } from "@seldon/core/helpers/utils/font-variant"
+import {
+  fontVariantDisplayLabel,
+  sortFontVariants,
+} from "@seldon/core/helpers/utils/font-variant"
 import { ValueType } from "@seldon/core/properties"
 import { getFontLicenseHref } from "@lib/font-collections/font-license"
 import { FlatProperty } from "./properties-data"
@@ -28,6 +31,7 @@ function createMenuRow(
   options: Array<{ name: string; value: string }>,
   isSubProperty: boolean,
   isCompound: boolean,
+  status: FlatProperty["status"],
 ): FlatProperty {
   return {
     key,
@@ -41,7 +45,7 @@ function createMenuRow(
     isCompound,
     isShorthand: false,
     isSubProperty,
-    status: "set",
+    status,
     options,
   }
 }
@@ -114,6 +118,7 @@ export function flattenFontCollectionFamilies(
     const presetValue =
       preset === "all" ? "All" : preset === "none" ? "None" : "Custom"
 
+    // None is the baseline; an enabled family (any weight on) is an override.
     rows.push(
       createMenuRow(
         `family.${slot}`,
@@ -122,10 +127,11 @@ export function flattenFontCollectionFamilies(
         PRESET_OPTIONS,
         false,
         true,
+        preset === "none" ? "set" : "override",
       ),
     )
 
-    for (const variant of variants) {
+    for (const variant of sortFontVariants(variants)) {
       const enabled = isVariantEnabled(slotSelection, variant)
       rows.push(
         createMenuRow(
@@ -135,6 +141,7 @@ export function flattenFontCollectionFamilies(
           TOGGLE_OPTIONS,
           true,
           false,
+          enabled ? "override" : "set",
         ),
       )
     }

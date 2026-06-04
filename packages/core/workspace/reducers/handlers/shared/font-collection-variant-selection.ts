@@ -49,7 +49,11 @@ export function readFamilyVariantSelection(
   return { ...slotSelection }
 }
 
-/** Sets one variant on or off for a family slot. Mutates `entry`. */
+/**
+ * Sets one variant on or off for a family slot. Enabling writes an explicit
+ * `true`; disabling removes the key, since an absent variant is disabled. The
+ * slot entry is dropped when it becomes empty. Mutates `entry`.
+ */
 export function setFamilyVariant(
   entry: EntryFontCollection,
   slot: string,
@@ -59,16 +63,24 @@ export function setFamilyVariant(
   const selection = readSelection(entry)
   const slotSelection: FamilyVariantSelection = {
     ...readFamilyVariantSelection(entry, slot),
-    [variant]: enabled,
   }
-  selection[slot] = slotSelection
+  if (enabled) {
+    slotSelection[variant] = true
+  } else {
+    delete slotSelection[variant]
+  }
+  if (Object.keys(slotSelection).length === 0) {
+    delete selection[slot]
+  } else {
+    selection[slot] = slotSelection
+  }
   writeSelection(entry, selection)
 }
 
 /**
- * Applies a preset to a family slot. `all` clears the slot override so every
- * variant defaults to enabled. `none` disables every available variant.
- * Mutates `entry`.
+ * Applies a preset to a family slot. `all` writes an explicit `true` for every
+ * available variant. `none` clears the slot override, since an absent slot is
+ * disabled. Mutates `entry`.
  */
 export function setFamilyVariantPreset(
   entry: EntryFontCollection,
@@ -77,12 +89,12 @@ export function setFamilyVariantPreset(
   availableVariants: string[],
 ): void {
   const selection = readSelection(entry)
-  if (preset === "all") {
+  if (preset === "none") {
     delete selection[slot]
   } else {
     const slotSelection: FamilyVariantSelection = {}
     for (const variant of availableVariants) {
-      slotSelection[variant] = false
+      slotSelection[variant] = true
     }
     selection[slot] = slotSelection
   }
