@@ -88,8 +88,8 @@ Workspace files store raw theme authoring state only. Computed theme rows come f
 When adding a stock theme:
 
 1. Add the id to `ThemeTemplateId` in `types/theme-id.ts`.
-2. Create the stock file under `stock/` with every section from `THEMES.md`.
-3. Register it in `stock/index.ts` by adding the import and including it in `STOCK_THEMES`.
+2. Create the stock file under `catalog/` with every section from `THEMES.md`.
+3. Register it in `catalog/index.ts` by adding the import and including it in `STOCK_THEMES`.
 4. Do not edit token id unions unless adding reserved keys or sections.
 
 When adding a new token kind or section, update the matching types, values, constants, schemas, exports, and section ordering described in `THEMES.md`.

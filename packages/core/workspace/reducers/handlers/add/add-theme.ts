@@ -9,7 +9,7 @@ import {
 } from "../../../helpers/components/component-sort-order"
 import { WORKSPACE_EDITABLE_THEME_ENTRY_ID } from "../../../helpers/themes/workspace-editable-theme"
 import { formatThemeCatalog } from "../../../model/template-ref"
-import { STOCK_THEMES_BY_ID } from "../../../../themes/stock"
+import { STOCK_THEMES_BY_ID } from "../../../../themes/catalog"
 import type { ThemeTemplateId } from "../../../../themes/types/theme-id"
 import {
   workspaceMutationService,

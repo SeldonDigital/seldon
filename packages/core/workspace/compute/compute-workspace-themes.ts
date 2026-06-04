@@ -4,7 +4,7 @@ import {
   STOCK_THEMES_BY_ID,
   THEMES,
   THEMES_BY_ID,
-} from "../../themes/stock"
+} from "../../themes/catalog"
 import type { ComputedTheme } from "../../themes/types/theme"
 import type {
   ThemeInstanceId,

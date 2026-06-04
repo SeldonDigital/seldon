@@ -1,12 +1,12 @@
 // Downloads the curated Google font families into per-family folders under
-// `collections/google/`. For each family it resolves a redistributable license
+// `catalog/google/`. For each family it resolves a redistributable license
 // (OFL / Apache / UFL), downloads the manifest's `.woff2` variants from
 // google-webfonts-helper, and writes the license `.txt` alongside the fonts.
 //
 // Run from the repo with Node 22.18+ (TypeScript manifest import relies on
 // built-in type stripping):
 //
-//   node packages/core/font-collections/collections/google/google-fonts.mjs
+//   node packages/core/font-collections/catalog/google/google-fonts.mjs
 //
 // Optional: pass family names to download only a subset, e.g.
 //   node .../google-fonts.mjs "Roboto" "Inter"

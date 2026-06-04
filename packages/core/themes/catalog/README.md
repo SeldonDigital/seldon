@@ -1,6 +1,6 @@
-# Stock
+# Catalog
 
-Packaged `StockTheme` authoring objects and precomputed theme catalogs. Each file under `stock/` is a full theme document. `index.ts` aggregates them and runs `computeTheme` so callers get ready-to-use `ComputedTheme` maps.
+Packaged `StockTheme` authoring objects and precomputed theme catalogs. Each file under `catalog/` is a full theme document. `index.ts` aggregates them and runs `computeTheme` so callers get ready-to-use `ComputedTheme` maps.
 
 ---
 
@@ -8,7 +8,7 @@ Packaged `StockTheme` authoring objects and precomputed theme catalogs. Each fil
 
 ```mermaid
 flowchart LR
-  files[stock/*.ts authoring] --> list[STOCK_THEMES]
+  files[catalog/*.ts authoring] --> list[STOCK_THEMES]
   list --> compute[computeTheme]
   compute --> maps[THEMES and THEMES_BY_ID]
 ```
@@ -50,7 +50,7 @@ Each module exports one `StockTheme` as its default. `metadata.id` matches the f
 ## Notes
 
 - Stock theme ids and descriptions are listed in [`../THEMES.md`](../THEMES.md).
-- `stock/` imports `computeTheme` from `helpers/`, not from `compute/`, to avoid import cycles with `themes/compute`.
+- `catalog/` imports `computeTheme` from `helpers/`, not from `compute/`, to avoid import cycles with `themes/compute`.
 - Workspace theme entries should merge overrides into a stock row, then call `instantiateTheme` in `themes/compute/`.
 
 ---

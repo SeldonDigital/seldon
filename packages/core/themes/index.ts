@@ -10,7 +10,7 @@ export {
   THEMES,
   THEMES_BY_ID,
   defaultTheme,
-} from "./stock"
+} from "./catalog"
 export * from "./looks"
 export * from "./schemas"
 export * from "./types"

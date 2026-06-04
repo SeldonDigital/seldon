@@ -1,6 +1,6 @@
 # Seldon · Font Collections
 
-A font collection lists font families a workspace can use. Collections work like themes. A packaged collection ships under `collections/`. A workspace references a collection through a catalog row and layers `overrides` on top.
+A font collection lists font families a workspace can use. Collections work like themes. A packaged collection ships under `catalog/`. A workspace references a collection through a catalog row and layers `overrides` on top.
 
 ## Smallest valid collection
 
@@ -38,7 +38,7 @@ Each family in `families` is a `FontFamilyEntry`:
 
 ## Module layout
 
-- `collections/` holds one file per packaged collection plus `index.ts`. `index.ts` exports `STOCK_FONT_COLLECTIONS`, `STOCK_FONT_COLLECTIONS_BY_ID`, `FONT_COLLECTIONS`, `FONT_COLLECTIONS_BY_ID`, and `defaultFontCollection`.
+- `catalog/` holds one file per packaged collection plus `index.ts`. `index.ts` exports `STOCK_FONT_COLLECTIONS`, `STOCK_FONT_COLLECTIONS_BY_ID`, `FONT_COLLECTIONS`, `FONT_COLLECTIONS_BY_ID`, and `defaultFontCollection`.
 - `types/` holds the document and id types.
 - `constants/` holds the `FontOrigin` type and values.
 - `helpers/` holds `computeFontCollection` and `normalizeFontCollection`.

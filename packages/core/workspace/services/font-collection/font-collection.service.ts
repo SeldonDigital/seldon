@@ -1,5 +1,5 @@
 import merge from "lodash/merge"
-import { STOCK_FONT_COLLECTIONS_BY_ID } from "../../../font-collections/collections"
+import { STOCK_FONT_COLLECTIONS_BY_ID } from "../../../font-collections/catalog"
 import { instantiateFontCollection } from "../../../font-collections/compute"
 import type {
   ComputedFontCollection,

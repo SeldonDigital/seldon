@@ -4,11 +4,11 @@
  * This module intentionally re-exports only the model surface defined by
  * `WORKSPACE.md` and `workspace/model/*`.
  */
-export { WORKSPACE_SPEC_VERSION } from "./model"
-export type { WorkspaceFileStringMap } from "./model"
-export type { WorkspaceFileMetadata } from "./model"
-export type { ComponentResourceRef, ComponentTreeRef } from "./model"
-export type { ComponentEntry as Board } from "./model"
+export { WORKSPACE_SPEC_VERSION } from "../model"
+export type { WorkspaceFileStringMap } from "../model"
+export type { WorkspaceFileMetadata } from "../model"
+export type { ComponentResourceRef, ComponentTreeRef } from "../model"
+export type { ComponentEntry as Board } from "../model"
 export type {
   ComponentEntry,
   ComponentCatalogLevel,
@@ -20,7 +20,7 @@ export type {
   PlaygroundBoard,
   ThemeBoard,
   ComponentThemeRef,
-} from "./model"
+} from "../model"
 export {
   isComponentBoard,
   isFontCollectionBoard,
@@ -28,7 +28,7 @@ export {
   isMediaBoard,
   isPlaygroundBoard,
   isThemeBoard,
-} from "./model"
+} from "../model"
 export type {
   EntryNode,
   EntryNodeId,
@@ -36,18 +36,18 @@ export type {
   EntryNodeThemeRef,
   EntryNodeType,
   NodeOrigin,
-} from "./model"
-export { isEntryNodeDefault, isEntryNodeInstance, isEntryNodeVariant } from "./model"
+} from "../model"
+export { isEntryNodeDefault, isEntryNodeInstance, isEntryNodeVariant } from "../model"
 export type {
   EntryTheme,
   EntryThemeId,
   EntryThemeTokenOverrides,
   EntryThemeType,
-} from "./model"
-export { isEntryThemeDefault, isEntryThemeVariant } from "./model"
-export type { EntryFontCollection, EntryFontCollectionId } from "./model"
-export type { EntryIconSet, EntryIconSetId } from "./model"
-export type { EntryMedia, EntryMediaId } from "./model"
+} from "../model"
+export { isEntryThemeDefault, isEntryThemeVariant } from "../model"
+export type { EntryFontCollection, EntryFontCollectionId } from "../model"
+export type { EntryIconSet, EntryIconSetId } from "../model"
+export type { EntryMedia, EntryMediaId } from "../model"
 export {
   formatNodeCatalog,
   formatNodeLink,
@@ -59,25 +59,25 @@ export {
   parseThemeCatalog,
   parseThemeLink,
   parseThemeTemplate,
-} from "./model"
-export type { Workspace } from "./model"
+} from "../model"
+export type { Workspace } from "../model"
 export type {
   DefaultVariant,
   Instance,
   RulesNodeOrComponent,
   UserVariant,
   Variant,
-} from "./helpers/rules/rules-node-subject"
-export { isEntryNodeForRules } from "./helpers/rules/rules-node-subject"
+} from "../helpers/rules/rules-node-subject"
+export { isEntryNodeForRules } from "../helpers/rules/rules-node-subject"
 export type {
   InstanceId,
   NodePath,
   ReferenceId,
   VariantId,
-} from "./helpers/rules/workspace-node-ids"
+} from "../helpers/rules/workspace-node-ids"
 export type {
   ExtractPayload,
   InsertDefaultInstance,
   WorkspaceAction,
-} from "./reducers/types"
-export type { Action, Middleware } from "./middleware/compose/action-types"
+} from "../reducers/types"
+export type { Action, Middleware } from "../middleware/compose/action-types"

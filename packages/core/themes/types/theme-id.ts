@@ -3,7 +3,7 @@
  *
  * **`ThemeTemplateId`** — Use these exact strings as the suffix in `catalog:{id}` template
  * references (see [THEMES.md](../THEMES.md) and [WORKSPACE.md](../../workspace/WORKSPACE.md)).
- * They match `metadata.id` on stock themes under `themes/stock/`.
+ * They match `metadata.id` on stock themes under `themes/catalog/`.
  *
  * **`ThemeInstanceId`** — TypeScript models the **catalog** identity of a computed stock row
  * (`ThemeTemplateId`). In a workspace file, **node `theme` fields, board theme refs, and keys in

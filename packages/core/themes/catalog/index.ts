@@ -12,7 +12,7 @@ import skyStock from "./sky"
 import sunsetBlueStock from "./sunset-blue"
 import wildberryStock from "./wildberry"
 
-/** Packaged stock theme definitions (`stock/*.ts`), display order. */
+/** Packaged stock theme definitions (`catalog/*.ts`), display order. */
 export const STOCK_THEMES: StockTheme[] = [
   defaultStock,
   earthStock,

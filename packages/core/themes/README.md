@@ -714,7 +714,7 @@ Workspace pipelines pick a stock template by id and apply user-supplied override
 
 ### Computed resolution (imports)
 
-The main [`@seldon/core/themes`](./index.ts) barrel re-exports `computeTheme` and `normalizeTheme` from [`./helpers`](./helpers/index.ts), but keeps palette math, `instantiateTheme`, and the input normalizer in **[`@seldon/core/themes/compute`](./compute/index.ts)** to avoid an import cycle with `themes/stock`. Use **`@seldon/core/themes/compute`** for `instantiateTheme`, `normalizeThemeInput`, `getDynamicSwatchColors`, `getPalette`, and the colorspace helpers. Resolving an `@<scope>.<key>` reference into a concrete CSS value is **property-side** (`helpers/resolution`), not this package; behavior and palette rules for theme materialization are documented in [`compute/THEMES-COMPUTE.md`](./compute/THEMES-COMPUTE.md).
+The main [`@seldon/core/themes`](./index.ts) barrel re-exports `computeTheme` and `normalizeTheme` from [`./helpers`](./helpers/index.ts), but keeps palette math, `instantiateTheme`, and the input normalizer in **[`@seldon/core/themes/compute`](./compute/index.ts)** to avoid an import cycle with `themes/catalog`. Use **`@seldon/core/themes/compute`** for `instantiateTheme`, `normalizeThemeInput`, `getDynamicSwatchColors`, `getPalette`, and the colorspace helpers. Resolving an `@<scope>.<key>` reference into a concrete CSS value is **property-side** (`helpers/resolution`), not this package; behavior and palette rules for theme materialization are documented in [`compute/THEMES-COMPUTE.md`](./compute/THEMES-COMPUTE.md).
 
 ---
 
@@ -820,7 +820,7 @@ export type ThemeMarginKey   = `@margin.${ThemeSpacingId}`
 **Note:** The bullets below are **general engineering guidance** for systems that use themes heavily. They are not a guarantee that every optimization is implemented or measured inside this package.
 
 ### Optimization Strategies
-1. **Prefer the precomputed constants** — use `THEMES_BY_ID`, `THEMES`, and `defaultTheme` from `themes/stock` instead of recomputing stock rows on each access.
+1. **Prefer the precomputed constants** — use `THEMES_BY_ID`, `THEMES`, and `defaultTheme` from `themes/catalog` instead of recomputing stock rows on each access.
 2. **Let `instantiateTheme` short-circuit** — calling it with no `overrides` skips the merge and runs `computeTheme(base)` only.
 3. **Cache dynamic palettes** — results from `getDynamicSwatchColors` and `getPalette` are stable for a given `core` + `color` block; reuse the surrounding `ComputedTheme` instance.
 4. **Prefer `@token` references** — reach for stock palette and scale slots before introducing inline `customN` swatches or one-off exact values.
@@ -906,8 +906,8 @@ export interface ThemeFont {
 Most theme work goes through this sub-recipe rather than touching token kinds:
 
 1. Add the new id to **`ThemeTemplateId`** in [`types/theme-id.ts`](./types/theme-id.ts).
-2. Create the file under **`stock/`** with every section listed in [Theme Structure](#theme-structure).
-3. Register it in [`stock/index.ts`](./stock/index.ts) (`STOCK_THEMES`, `THEMES_BY_ID`).
+2. Create the file under **`catalog/`** with every section listed in [Theme Structure](#theme-structure).
+3. Register it in [`catalog/index.ts`](./catalog/index.ts) (`STOCK_THEMES`, `THEMES_BY_ID`).
 4. Touch [`types/theme-token-ids.ts`](./types/theme-token-ids.ts) **only when** introducing genuinely new reserved keys or sections. Ordinary new themes do not need this — `customN` slots are built into every token table via `ThemeTokenTable`.
 5. Run tests and validate `@`-paths against property schemas.
 
@@ -916,7 +916,7 @@ Most theme work goes through this sub-recipe rather than touching token kinds:
 Create test files following the existing patterns alongside [`test/test-theme.ts`](./test/test-theme.ts):
 
 ```typescript
-// /packages/core/themes/stock/<id>.test.ts
+// /packages/core/themes/catalog/<id>.test.ts
 import { describe, expect, it } from "bun:test"
 import { computeTheme, STOCK_THEMES_BY_ID } from "@seldon/core/themes"
 

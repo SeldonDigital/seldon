@@ -1,90 +1,18 @@
 /**
  * Keep this file aligned with the component schemas and
- * `packages/core/components/catalog.ts`.
+ * `packages/core/components/catalog`.
  *
  * To sync it after schema changes, invoke `@components-catalog`.
+ *
+ * `ComponentId` lives in `./component-id` and is re-exported here for callers that
+ * import component constants and the id from one place.
  */
 import { IconId } from "@seldon/core/icons"
 import { HtmlElement, WrapperElement } from "@seldon/core/properties"
-import { NativeReactPrimitive } from "./types"
+import { NativeReactPrimitive } from "../types"
+import { ComponentId, isComponentId } from "../types/component-id"
 
-export enum ComponentId {
-  AD_IAB = "adIab",
-  AD_SOCIAL_MEDIA = "adSocialMedia",
-  AVATAR = "avatar",
-  BAR_BUTTONS = "barButtons",
-  BAR_FOOTER = "barFooter",
-  BAR_HEADER = "barHeader",
-  BAR_NAVIGATION = "barNavigation",
-  BAR_STATUS = "barStatus",
-  BAR_TABS = "barTabs",
-  BLOCKQUOTE = "blockquote",
-  BOARD = "board",
-  BUTTON = "button",
-  CALENDAR = "calendar",
-  CALLOUT = "callout",
-  CARD_HORIZONTAL = "cardHorizontal",
-  CARD_PRODUCT = "cardProduct",
-  CARD_STACKED = "cardStacked",
-  CHECKBOX = "checkbox",
-  CHIP = "chip",
-  CITE = "cite",
-  CODEBLOCK = "codeblock",
-  DESCRIPTION = "description",
-  DESCRIPTION_DETAILS = "descriptionDetails",
-  DESCRIPTION_LIST = "descriptionList",
-  DESCRIPTION_TERM = "descriptionTerm",
-  DISPLAY = "display",
-  DIALOG = "dialog",
-  FIELDSET = "fieldset",
-  FIELDSET_CHECKBOXES = "fieldsetCheckboxes",
-  FIELDSET_RADIOS = "fieldsetRadios",
-  FOOTER = "footer",
-  FORM_CONTROL = "formControl",
-  FRAME = "frame",
-  HEADER_ACTION = "headerAction",
-  HEADER_CARD = "headerCard",
-  HEADING = "heading",
-  HR = "hr",
-  ICON = "icon",
-  IMAGE = "image",
-  INPUT = "input",
-  LABEL = "label",
-  LEGEND = "legend",
-  LINK = "link",
-  LIST_CONTACTS = "listContacts",
-  LIST_GRID = "listGrid",
-  LIST_ITEM = "listItem",
-  ITEM = "item",
-  LIST_PRODUCTS = "listProducts",
-  LIST_STANDARD = "listStandard",
-  LIST_TODO = "listTodo",
-  NAV = "nav",
-  OPTION = "option",
-  OPTION_GROUP = "optionGroup",
-  ORDERED_LIST = "orderedList",
-  RADIO = "radio",
-  SCREEN = "screen",
-  SECTION = "section",
-  SELECT = "select",
-  SIDEBAR = "sidebar",
-  SOURCE = "source",
-  SUBHEADING = "subheading",
-  SUBTITLE = "subtitle",
-  TABLE = "table",
-  TABLE_DATA = "tableData",
-  TABLE_HEADER = "tableHeader",
-  TABLE_INPUT = "tableInput",
-  TABLE_ROW_DATA = "tableRowData",
-  TAGLINE = "tagline",
-  TEXT = "text",
-  TITLE = "title",
-  TRACK = "track",
-  TYPE_SPECIMEN = "typeSpecimen",
-  UNORDERED_LIST = "unorderedList",
-  VIDEO = "video",
-  WIDGET_TODO = "widgetTodo",
-}
+export { ComponentId, isComponentId }
 
 export const LABEL_DEFAULT = "Label"
 export const DEFAULT_ICON: IconId = "__default__"
@@ -154,10 +82,6 @@ export const ORDERED_COMPONENT_LEVELS: ComponentLevel[] = [
   // Frames are an exception to components. They can contain anything.
   ComponentLevel.FRAME,
 ]
-
-export const isComponentId = (id: string): id is ComponentId => {
-  return Object.values(ComponentId).includes(id as ComponentId)
-}
 
 // All available native react primitives
 export const NATIVE_REACT_PRIMITIVES: Record<

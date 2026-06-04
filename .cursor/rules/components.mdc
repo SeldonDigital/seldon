@@ -120,5 +120,5 @@ When adding a component:
 3. Author the schema with `as const satisfies ComponentSchema`.
 4. Add `exportConfig`.
 5. Keep property keys and compound facets in documented order from `PROPERTIES.md`.
-6. Update `packages/core/components/catalog.ts` afterwards to include new components.
-7. Invoke `@components-catalog` to sync `packages/core/components/catalog.ts` and `packages/core/components/constants.ts` from the schema files.
+6. Update `packages/core/components/catalog/index.ts` afterwards to include new components.
+7. Invoke `@components-catalog` to sync `packages/core/components/catalog/index.ts`, `packages/core/components/constants/index.ts`, and `packages/core/components/types/component-id.ts` from the schema files.

@@ -1,5 +1,5 @@
 import { produce } from "immer"
-import { STOCK_FONT_COLLECTIONS_BY_ID } from "../../../../font-collections/collections"
+import { STOCK_FONT_COLLECTIONS_BY_ID } from "../../../../font-collections/catalog"
 import type { FontCollectionTemplateId } from "../../../../font-collections/types"
 import { ExtractPayload, Workspace } from "../../../../index"
 import { rules } from "../../../../rules/config/rules.config"

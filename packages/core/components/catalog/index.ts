@@ -2,325 +2,326 @@
  * To sync this file after component schema changes, invoke `@components-catalog`.
  *
  * The `@components-catalog` rule treats the `.schema.ts` files under
- * `packages/core/components/` as the source of truth and updates this file and
- * `packages/core/components/constants.ts` together.
+ * `packages/core/components/` as the source of truth and updates this file, the
+ * `packages/core/components/constants/` index, and `components/types/component-id.ts`
+ * together.
  */
-import { invariant } from "../helpers/utils/invariant"
-import { ComponentId } from "./constants"
-import { ComponentExport, ComponentSchema } from "./types"
+import { invariant } from "../../helpers/utils/invariant"
+import { ComponentId } from "../constants"
+import { ComponentExport, ComponentSchema } from "../types"
 
 // Elements
 import {
   exportConfig as avatarExportConfig,
   schema as avatarSchema,
-} from "./elements/Avatar.schema"
+} from "../elements/Avatar.schema"
 import {
   exportConfig as buttonExportConfig,
   schema as buttonSchema,
-} from "./elements/Button.schema"
+} from "../elements/Button.schema"
 import {
   exportConfig as chipExportConfig,
   schema as chipSchema,
-} from "./elements/Chip.schema"
+} from "../elements/Chip.schema"
 import {
   exportConfig as formControlExportConfig,
   schema as formControlSchema,
-} from "./elements/FormControl.schema"
+} from "../elements/FormControl.schema"
 import {
   exportConfig as optionGroupExportConfig,
   schema as optionGroupSchema,
-} from "./elements/OptionGroup.schema"
+} from "../elements/OptionGroup.schema"
 import {
   exportConfig as headerActionExportConfig,
   schema as headerActionSchema,
-} from "./elements/headers/HeaderAction.schema"
+} from "../elements/headers/HeaderAction.schema"
 import {
   exportConfig as headerCardExportConfig,
   schema as headerCardSchema,
-} from "./elements/headers/HeaderCard.schema"
+} from "../elements/headers/HeaderCard.schema"
 import {
   exportConfig as itemExportConfig,
   schema as itemSchema,
-} from "./elements/Item.schema"
+} from "../elements/Item.schema"
 import {
   exportConfig as sectionExportConfig,
   schema as sectionSchema,
-} from "./elements/Section.schema"
+} from "../elements/Section.schema"
 import {
   exportConfig as tableRowDataExportConfig,
   schema as tableRowDataSchema,
-} from "./elements/tables/TableRowData.schema"
+} from "../elements/tables/TableRowData.schema"
 
 // Frames
 import {
   exportConfig as frameExportConfig,
   schema as frameSchema,
-} from "./frames/Frame.schema"
+} from "../frames/Frame.schema"
 
 // Modules
 import {
   exportConfig as calendarExportConfig,
   schema as calendarSchema,
-} from "./modules/Calendar.schema"
+} from "../modules/Calendar.schema"
 import {
   exportConfig as dialogExportConfig,
   schema as dialogSchema,
-} from "./modules/Dialog.schema"
+} from "../modules/Dialog.schema"
 import {
   exportConfig as typeSpecimenExportConfig,
   schema as typeSpecimenSchema,
-} from "./modules/TypeSpecimen.schema"
+} from "../modules/TypeSpecimen.schema"
 import {
   exportConfig as footerExportConfig,
   schema as footerSchema,
-} from "./modules/Footer.schema"
+} from "../modules/Footer.schema"
 import {
   exportConfig as sidebarExportConfig,
   schema as sidebarSchema,
-} from "./modules/Sidebar.schema"
+} from "../modules/Sidebar.schema"
 import {
   exportConfig as tableExportConfig,
   schema as tableSchema,
-} from "./modules/Table.schema"
+} from "../modules/Table.schema"
 import {
   exportConfig as widgetTodoExportConfig,
   schema as widgetTodoSchema,
-} from "./modules/WidgetTodo.schema"
+} from "../modules/WidgetTodo.schema"
 
 // Parts
 import {
   exportConfig as iabExportConfig,
   schema as iabSchema,
-} from "./parts/ads/IAB.schema"
+} from "../parts/ads/IAB.schema"
 import {
   exportConfig as socialMediaExportConfig,
   schema as socialMediaSchema,
-} from "./parts/ads/SocialMedia.schema"
+} from "../parts/ads/SocialMedia.schema"
 import {
   exportConfig as barButtonsExportConfig,
   schema as barButtonsSchema,
-} from "./parts/bars/BarButtons.schema"
+} from "../parts/bars/BarButtons.schema"
 import {
   exportConfig as barFooterExportConfig,
   schema as barFooterSchema,
-} from "./parts/bars/BarFooter.schema"
+} from "../parts/bars/BarFooter.schema"
 import {
   exportConfig as barHeaderExportConfig,
   schema as barHeaderSchema,
-} from "./parts/bars/BarHeader.schema"
+} from "../parts/bars/BarHeader.schema"
 import {
   exportConfig as barNavigationExportConfig,
   schema as barNavigationSchema,
-} from "./parts/bars/BarNavigation.schema"
+} from "../parts/bars/BarNavigation.schema"
 import {
   exportConfig as barStatusExportConfig,
   schema as barStatusSchema,
-} from "./parts/bars/BarStatus.schema"
+} from "../parts/bars/BarStatus.schema"
 import {
   exportConfig as barTabsExportConfig,
   schema as barTabsSchema,
-} from "./parts/bars/BarTabs.schema"
+} from "../parts/bars/BarTabs.schema"
 import {
   exportConfig as cardHorizontalExportConfig,
   schema as cardHorizontalSchema,
-} from "./parts/cards/CardHorizontal.schema"
+} from "../parts/cards/CardHorizontal.schema"
 import {
   exportConfig as cardProductExportConfig,
   schema as cardProductSchema,
-} from "./parts/cards/CardProduct.schema"
+} from "../parts/cards/CardProduct.schema"
 import {
   exportConfig as cardStackedExportConfig,
   schema as cardStackedSchema,
-} from "./parts/cards/CardStacked.schema"
+} from "../parts/cards/CardStacked.schema"
 import {
   exportConfig as fieldsetExportConfig,
   schema as fieldsetSchema,
-} from "./parts/forms/Fieldset.schema"
+} from "../parts/forms/Fieldset.schema"
 import {
   exportConfig as fieldsetCheckboxesExportConfig,
   schema as fieldsetCheckboxesSchema,
-} from "./parts/forms/FieldsetCheckboxes.schema"
+} from "../parts/forms/FieldsetCheckboxes.schema"
 import {
   exportConfig as fieldsetRadiosExportConfig,
   schema as fieldsetRadiosSchema,
-} from "./parts/forms/FieldsetRadios.schema"
+} from "../parts/forms/FieldsetRadios.schema"
 import {
   exportConfig as listContactsExportConfig,
   schema as listContactsSchema,
-} from "./parts/lists/ListContacts.schema"
+} from "../parts/lists/ListContacts.schema"
 import {
   exportConfig as listGridExportConfig,
   schema as listGridSchema,
-} from "./parts/lists/ListGrid.schema"
+} from "../parts/lists/ListGrid.schema"
 import {
   exportConfig as listProductsExportConfig,
   schema as listProductsSchema,
-} from "./parts/lists/ListProducts.schema"
+} from "../parts/lists/ListProducts.schema"
 import {
   exportConfig as listStandardExportConfig,
   schema as listStandardSchema,
-} from "./parts/lists/ListStandard.schema"
+} from "../parts/lists/ListStandard.schema"
 import {
   exportConfig as listTodoExportConfig,
   schema as listTodoSchema,
-} from "./parts/lists/ListTodo.schema"
+} from "../parts/lists/ListTodo.schema"
 // Primitives
 import {
   exportConfig as hrExportConfig,
   schema as hrSchema,
-} from "./primitives/Hr.schema"
+} from "../primitives/Hr.schema"
 import {
   exportConfig as iconExportConfig,
   schema as iconSchema,
-} from "./primitives/Icon.schema"
+} from "../primitives/Icon.schema"
 import {
   exportConfig as imageExportConfig,
   schema as imageSchema,
-} from "./primitives/Image.schema"
+} from "../primitives/Image.schema"
 import {
   exportConfig as navExportConfig,
   schema as navSchema,
-} from "./primitives/Nav.schema"
+} from "../primitives/Nav.schema"
 import {
   exportConfig as checkboxExportConfig,
   schema as checkboxSchema,
-} from "./primitives/controls/Checkbox.schema"
+} from "../primitives/controls/Checkbox.schema"
 import {
   exportConfig as inputExportConfig,
   schema as inputSchema,
-} from "./primitives/controls/Input.schema"
+} from "../primitives/controls/Input.schema"
 import {
   exportConfig as labelExportConfig,
   schema as labelSchema,
-} from "./primitives/controls/Label.schema"
+} from "../primitives/controls/Label.schema"
 import {
   exportConfig as legendExportConfig,
   schema as legendSchema,
-} from "./primitives/controls/Legend.schema"
+} from "../primitives/controls/Legend.schema"
 import {
   exportConfig as optionExportConfig,
   schema as optionSchema,
-} from "./primitives/controls/Option.schema"
+} from "../primitives/controls/Option.schema"
 import {
   exportConfig as radioExportConfig,
   schema as radioSchema,
-} from "./primitives/controls/Radio.schema"
+} from "../primitives/controls/Radio.schema"
 import {
   exportConfig as selectExportConfig,
   schema as selectSchema,
-} from "./primitives/controls/Select.schema"
+} from "../primitives/controls/Select.schema"
 import {
   exportConfig as descriptionDetailsExportConfig,
   schema as descriptionDetailsSchema,
-} from "./primitives/lists/DescriptionDetails.schema"
+} from "../primitives/lists/DescriptionDetails.schema"
 import {
   exportConfig as descriptionListExportConfig,
   schema as descriptionListSchema,
-} from "./primitives/lists/DescriptionList.schema"
+} from "../primitives/lists/DescriptionList.schema"
 import {
   exportConfig as descriptionTermExportConfig,
   schema as descriptionTermSchema,
-} from "./primitives/lists/DescriptionTerm.schema"
+} from "../primitives/lists/DescriptionTerm.schema"
 import {
   exportConfig as listItemExportConfig,
   schema as listItemSchema,
-} from "./primitives/lists/ListItem.schema"
+} from "../primitives/lists/ListItem.schema"
 import {
   exportConfig as orderedListExportConfig,
   schema as orderedListSchema,
-} from "./primitives/lists/OrderedList.schema"
+} from "../primitives/lists/OrderedList.schema"
 import {
   exportConfig as unorderedListExportConfig,
   schema as unorderedListSchema,
-} from "./primitives/lists/UnorderedList.schema"
+} from "../primitives/lists/UnorderedList.schema"
 import {
   exportConfig as tableDataExportConfig,
   schema as tableDataSchema,
-} from "./primitives/tables/TableData.schema"
+} from "../primitives/tables/TableData.schema"
 import {
   exportConfig as tableHeaderExportConfig,
   schema as tableHeaderSchema,
-} from "./primitives/tables/TableHeader.schema"
+} from "../primitives/tables/TableHeader.schema"
 import {
   exportConfig as tableInputExportConfig,
   schema as tableInputSchema,
-} from "./primitives/tables/TableInput.schema"
+} from "../primitives/tables/TableInput.schema"
 import {
   exportConfig as blockquoteExportConfig,
   schema as blockquoteSchema,
-} from "./primitives/texts/Blockquote.schema"
+} from "../primitives/texts/Blockquote.schema"
 import {
   exportConfig as calloutExportConfig,
   schema as calloutSchema,
-} from "./primitives/texts/Callout.schema"
+} from "../primitives/texts/Callout.schema"
 import {
   exportConfig as citeExportConfig,
   schema as citeSchema,
-} from "./primitives/texts/Cite.schema"
+} from "../primitives/texts/Cite.schema"
 import {
   exportConfig as codeblockExportConfig,
   schema as codeblockSchema,
-} from "./primitives/texts/Codeblock.schema"
+} from "../primitives/texts/Codeblock.schema"
 import {
   exportConfig as descriptionExportConfig,
   schema as descriptionSchema,
-} from "./primitives/texts/Description.schema"
+} from "../primitives/texts/Description.schema"
 import {
   exportConfig as displayExportConfig,
   schema as displaySchema,
-} from "./primitives/texts/Display.schema"
+} from "../primitives/texts/Display.schema"
 import {
   exportConfig as headingExportConfig,
   schema as headingSchema,
-} from "./primitives/texts/Heading.schema"
+} from "../primitives/texts/Heading.schema"
 import {
   exportConfig as linkExportConfig,
   schema as linkSchema,
-} from "./primitives/texts/Link.schema"
+} from "../primitives/texts/Link.schema"
 import {
   exportConfig as subheadingExportConfig,
   schema as subheadingSchema,
-} from "./primitives/texts/Subheading.schema"
+} from "../primitives/texts/Subheading.schema"
 import {
   exportConfig as subtitleExportConfig,
   schema as subtitleSchema,
-} from "./primitives/texts/Subtitle.schema"
+} from "../primitives/texts/Subtitle.schema"
 import {
   exportConfig as taglineExportConfig,
   schema as taglineSchema,
-} from "./primitives/texts/Tagline.schema"
+} from "../primitives/texts/Tagline.schema"
 import {
   exportConfig as textExportConfig,
   schema as textSchema,
-} from "./primitives/texts/Text.schema"
+} from "../primitives/texts/Text.schema"
 import {
   exportConfig as titleExportConfig,
   schema as titleSchema,
-} from "./primitives/texts/Title.schema"
+} from "../primitives/texts/Title.schema"
 import {
   exportConfig as sourceExportConfig,
   schema as sourceSchema,
-} from "./primitives/video/Source.schema"
+} from "../primitives/video/Source.schema"
 import {
   exportConfig as trackExportConfig,
   schema as trackSchema,
-} from "./primitives/video/Track.schema"
+} from "../primitives/video/Track.schema"
 import {
   exportConfig as videoExportConfig,
   schema as videoSchema,
-} from "./primitives/video/Video.schema"
+} from "../primitives/video/Video.schema"
 
 // Boards
 import {
   exportConfig as boardExportConfig,
   schema as boardSchema,
-} from "./boards/Board.schema"
+} from "../boards/Board.schema"
 
 // Screens
 import {
   exportConfig as screenExportConfig,
   schema as screenSchema,
-} from "./screens/Screen.schema"
+} from "../screens/Screen.schema"
 
 const elements: ComponentSchema[] = [
   avatarSchema,

@@ -1,5 +1,5 @@
-import { ComponentId } from "../components/constants"
-import { InstanceId, VariantId } from "./types"
+import { ComponentId } from "../../components/constants"
+import { InstanceId, VariantId } from "../types"
 
 export const ErrorMessages = {
   nodeNotFound: (id: InstanceId | VariantId) => `Node ${id} not found.`,

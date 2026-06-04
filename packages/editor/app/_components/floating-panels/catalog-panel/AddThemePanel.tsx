@@ -1,7 +1,7 @@
 "use client"
 
 import { useMemo, useState } from "react"
-import { STOCK_THEMES } from "@seldon/core/themes/stock"
+import { STOCK_THEMES } from "@seldon/core/themes/catalog"
 import { useAddRemoveCommands } from "@lib/hooks/commands/use-add-remove-commands"
 import { useDialog } from "@lib/hooks/use-dialog"
 import { useWorkspace } from "@lib/workspace/use-workspace"

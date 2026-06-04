@@ -1,5 +1,5 @@
 import { getGoogleFontURL } from "../../helpers/utils/get-google-font-url"
-import { FONT_COLLECTIONS } from "../collections"
+import { FONT_COLLECTIONS } from "../catalog"
 
 /** Family names from every packaged collection whose `origin` is `remote`. */
 const REMOTE_FAMILY_NAMES: ReadonlySet<string> = new Set(

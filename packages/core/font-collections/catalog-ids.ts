@@ -1,4 +1,4 @@
-import { STOCK_FONT_COLLECTIONS } from "./collections"
+import { STOCK_FONT_COLLECTIONS } from "./catalog"
 
 /** Packaged collection catalog ids. Use for font collection board `catalogId` validation. */
 export const packagedFontCollectionCatalogIds: string[] =

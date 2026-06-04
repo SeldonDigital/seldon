@@ -20,7 +20,7 @@ export {
   FONT_COLLECTIONS,
   FONT_COLLECTIONS_BY_ID,
   defaultFontCollection,
-} from "./collections"
+} from "./catalog"
 export {
   instantiateFontCollection,
   type PresetFontCollectionsById,

@@ -1,5 +1,8 @@
-import { Properties } from "../properties"
-import { ComponentIcon, ComponentId, ComponentLevel } from "./constants"
+import { Properties } from "../../properties"
+import { ComponentIcon, ComponentLevel } from "../constants"
+import { ComponentId } from "./component-id"
+
+export { ComponentId, isComponentId } from "./component-id"
 
 /**
  * SCHEMA TYPES

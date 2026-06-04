@@ -22,7 +22,7 @@ flowchart LR
 
 | Type or Function | File | Purpose and use |
 | --- | --- | --- |
-| `computeTheme` | `compute-theme.ts` | Normalizes input, resolves dynamic swatches, returns `ComputedTheme`. Used by `stock/index.ts`, workspace read paths, and factory when a full theme is needed. |
+| `computeTheme` | `compute-theme.ts` | Normalizes input, resolves dynamic swatches, returns `ComputedTheme`. Used by `catalog/index.ts`, workspace read paths, and factory when a full theme is needed. |
 | `normalizeTheme` | `normalize-theme.ts` | Coerces unknown or resolved theme JSON into `StockTheme` via `normalizeThemeInput`. Used before merge or recompute when workspace data is loose. |
 | `isResolvedTheme` | `to-recomputable-stock.ts` | Detects whether swatch cells are already materialized. Used by `toRecomputableStockInput` before recompute. |
 | `toRecomputableStock` | `to-recomputable-stock.ts` | Strips resolved dynamic swatches back to `StockTheme` shape. Used when recomputing from a `ComputedTheme`. |
@@ -53,7 +53,7 @@ flowchart LR
 
 ## Notes
 
-- Import `instantiateTheme` from `@seldon/core/themes/compute`, not from here, so `stock/` does not cycle through this barrel.
+- Import `instantiateTheme` from `@seldon/core/themes/compute`, not from here, so `catalog/` does not cycle through this barrel.
 - `normalizeThemeInput` lives in `compute/normalize-theme.ts`. `normalizeTheme` wraps it with `toRecomputableStockInput`.
 - Property `@` resolution uses a `ComputedTheme` on `ComputeContext`. That path is in `properties/compute`, not this folder.
 

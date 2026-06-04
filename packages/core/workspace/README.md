@@ -676,7 +676,7 @@ Default rows follow **Default catalog alignment** (Workspace Structure): token s
 
 The canonical root for a theme catalog row, with `type` set to `"default"`. Whenever an editor modifies this default theme, changes propagate to other variant themes that reference this one as their template. Default themes are commonly created through adding catalog themes into the workspace.
 
-- The **`template`** field is always **`catalog:{ThemeTemplateId}`**. This node's tokens and defaults are defined by schemas under `core/themes/stock/<theme-template-id>.ts`, with the default baseline being the result of `template` tokens with `overrides` applied on top.
+- The **`template`** field is always **`catalog:{ThemeTemplateId}`**. This node's tokens and defaults are defined by schemas under `core/themes/catalog/<theme-template-id>.ts`, with the default baseline being the result of `template` tokens with `overrides` applied on top.
 
 - The **`overrides`** field applies token values on top of catalog baseline; keys not present in `overrides` use `template` defaults. Token keys should generally not appear in `overrides` unless the template definition allows them.
 
@@ -749,7 +749,7 @@ Default rows follow **Default catalog alignment** (Workspace Structure): family 
 
 The canonical root for a font collection catalog row, with `type` set to `"default"`. Whenever an editor modifies this default font collection, changes propagate to other variant font collections that reference this one as their template. Default font collections are commonly created through adding catalog collections into the workspace.
 
-- The **`template`** field is always **`catalog:{FontCollectionTemplateId}`**. This entry's families and defaults are defined by schemas under `core/font-collections/collections/<font-collection-template-id>.ts`, with the default baseline being the result of `template` families with `overrides` applied on top.
+- The **`template`** field is always **`catalog:{FontCollectionTemplateId}`**. This entry's families and defaults are defined by schemas under `core/font-collections/catalog/<font-collection-template-id>.ts`, with the default baseline being the result of `template` families with `overrides` applied on top.
 
 - The **`overrides`** field applies family values on top of catalog baseline; keys not present in `overrides` use `template` defaults.
 

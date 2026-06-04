@@ -283,7 +283,7 @@ Variant root and instance node ids in `workspace.json` follow `component-{boardK
 
 ## Catalog
 
-The `catalog.ts` is the main entry point. It wraps the generated per-level arrays in a typed `Catalog` object and exposes a single resolver:
+The `catalog/index.ts` is the main entry point. It wraps the generated per-level arrays in a typed `Catalog` object and exposes a single resolver:
 
 ```typescript
 export type Catalog = {
@@ -412,7 +412,7 @@ Place property keys inside `properties` in [`PROPERTY_DISPLAY_ORDER`](../propert
 
 **4. Sync the catalog files**
 
-After editing a schema, sync [`catalog.ts`](./catalog.ts) and `constants.ts` so the imports, catalog arrays, export config map, and `ComponentId` values stay aligned with the schema files.
+After editing a schema, sync [`catalog/index.ts`](./catalog/index.ts), `constants/index.ts`, and `types/component-id.ts` so the imports, catalog arrays, export config map, and `ComponentId` values stay aligned with the schema files.
 
 Invoke `@components-catalog`.
 
