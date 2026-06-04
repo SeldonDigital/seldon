@@ -19,10 +19,12 @@ export async function getFontsComponent(
     const seen = new Set<string>()
     const families =
       workspaceFontCollectionService.collectWorkspaceFamilies(workspace)
+    const enabledByFamily =
+      workspaceFontCollectionService.getEnabledVariantsByFamily(workspace)
 
     for (const family of families) {
       if (family.origin !== "remote") continue
-      const url = getRemoteFontUrl(family.name)
+      const url = getRemoteFontUrl(family.name, enabledByFamily[family.name])
       if (!url || seen.has(url)) continue
       seen.add(url)
       links.push(`    <link rel="stylesheet" href="${url}" />`)

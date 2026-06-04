@@ -78,6 +78,14 @@ interface ThemeEditingContext {
   themeProperties: FlatProperty[]
 }
 
+interface FontCollectionEditingContext {
+  isFontCollectionEditing: true
+  updateFontCollectionProperty: (
+    property: FlatProperty,
+    newValue: string,
+  ) => void
+}
+
 interface PropertyControlProps {
   property: FlatProperty
   propertySubject?: Variant | Instance | Board
@@ -88,6 +96,7 @@ interface PropertyControlProps {
   onBlur?: () => void
   color?: string
   themeEditingContext?: ThemeEditingContext | null
+  fontCollectionEditingContext?: FontCollectionEditingContext | null
 }
 
 export function PropertyControl({
@@ -100,6 +109,7 @@ export function PropertyControl({
   onBlur,
   color,
   themeEditingContext,
+  fontCollectionEditingContext,
 }: PropertyControlProps) {
   const { setProperties, resetProperty } = useObjectProperties()
   const { workspace, dispatch } = useWorkspace({ usePreview: false })
@@ -174,6 +184,18 @@ export function PropertyControl({
 
   const handleChange = (newValue: string) => {
     const subject = propertySubject ?? selection ?? null
+
+    // Font collection family rows route edits straight to the workspace through
+    // the editing context, bypassing the node/theme property paths.
+    if (fontCollectionEditingContext?.isFontCollectionEditing) {
+      fontCollectionEditingContext.updateFontCollectionProperty(
+        property,
+        newValue,
+      )
+      setIsEditing(false)
+      onBlur?.()
+      return
+    }
 
     if (property.key === "theme" && subject) {
       const newThemeId =
@@ -349,6 +371,12 @@ export function PropertyControl({
       (property.controlType !== "combo" && property.controlType !== "menu")
     ) {
       return undefined
+    }
+
+    // Rows that carry their own options (font collection family rows) are not
+    // backed by the property schema, so use the supplied options directly.
+    if (property.options) {
+      return [property.options]
     }
 
     if (property.key === "theme") {

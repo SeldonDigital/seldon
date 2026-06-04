@@ -1,6 +1,8 @@
 import merge from "lodash/merge"
 import { STOCK_FONT_COLLECTIONS_BY_ID } from "../../../font-collections/catalog"
 import { instantiateFontCollection } from "../../../font-collections/compute"
+import { getEnabledVariants } from "../../../font-collections/helpers"
+import type { VariantSelection } from "../../../font-collections/helpers"
 import type {
   ComputedFontCollection,
   FontCollectionTemplateId,
@@ -58,6 +60,55 @@ export class WorkspaceFontCollectionService {
     }
 
     return null
+  }
+
+  /**
+   * Reads the per-family variant selection stored on a `font-collections` entry.
+   * Returns an empty map when the entry or its selection is missing.
+   */
+  public getVariantSelection(
+    fontCollectionId: string,
+    workspace: Workspace,
+  ): VariantSelection {
+    const entry = workspace["font-collections"][fontCollectionId] as
+      | EntryFontCollection
+      | undefined
+    const selection = entry?.overrides?.["variantSelection"]
+    if (
+      typeof selection !== "object" ||
+      selection === null ||
+      Array.isArray(selection)
+    ) {
+      return {}
+    }
+    return selection as VariantSelection
+  }
+
+  /**
+   * Lists the enabled variants for every remote family across the workspace's
+   * font collection boards, keyed by family name. Used by font loading and
+   * export to request only the selected weights.
+   */
+  public getEnabledVariantsByFamily(
+    workspace: Workspace,
+  ): Record<string, string[]> {
+    const byFamily: Record<string, string[]> = {}
+    for (const board of Object.values(workspace.components)) {
+      if (!board || !isFontCollectionBoard(board)) continue
+      const defaultEntryId = board.variants[0]?.id
+      if (!defaultEntryId) continue
+      const collection = this.getFontCollection(defaultEntryId, workspace)
+      if (!collection) continue
+      const selection = this.getVariantSelection(defaultEntryId, workspace)
+      for (const [slot, family] of Object.entries(collection.families)) {
+        if (!family || family.origin !== "remote" || !family.variants) continue
+        byFamily[family.name] = getEnabledVariants(
+          selection[slot],
+          family.variants,
+        )
+      }
+    }
+    return byFamily
   }
 
   /** Resolves the collection for a board through its default (first) variant entry. */

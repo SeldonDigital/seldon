@@ -116,6 +116,8 @@ import { setNodeLabel } from "./handlers/set/set-node-label"
 import { setNodeProperties } from "./handlers/set/set-node-properties"
 import { setNodeTheme } from "./handlers/set/set-node-theme"
 import { setFontCollectionEditorData } from "./handlers/set/set-font-collection-editor-data"
+import { setFontCollectionFamilyPreset } from "./handlers/set/set-font-collection-family-preset"
+import { setFontCollectionFamilyVariant } from "./handlers/set/set-font-collection-family-variant"
 import { setFontCollectionLabel } from "./handlers/set/set-font-collection-label"
 import { setFontCollectionOverride } from "./handlers/set/set-font-collection-override"
 import { setThemeEditorData } from "./handlers/set/set-theme-editor-data"
@@ -396,6 +398,10 @@ function reducer(workspace: Workspace, action: WorkspaceAction): Workspace {
       return setFontCollectionEditorData(action.payload, workspace)
     case "set_font_collection_override":
       return setFontCollectionOverride(action.payload, workspace)
+    case "set_font_collection_family_variant":
+      return setFontCollectionFamilyVariant(action.payload, workspace)
+    case "set_font_collection_family_preset":
+      return setFontCollectionFamilyPreset(action.payload, workspace)
     case "reset_font_collection_label":
       return resetFontCollectionLabel(action.payload, workspace)
     case "reset_font_collection_editor_data":

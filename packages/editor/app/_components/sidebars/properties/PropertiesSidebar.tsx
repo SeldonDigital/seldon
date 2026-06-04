@@ -29,6 +29,7 @@ import { buildMetadataProperties } from "./helpers/metadata-properties-data"
 import { FlatProperty, flattenNodeProperties } from "./helpers/properties-data"
 import { flattenThemeProperties } from "./helpers/theme-properties-data"
 import { getThemePropertyControlType } from "./helpers/get-theme-property-controls"
+import { useFontCollectionProperties } from "./hooks/use-font-collection-properties"
 import { useThemeProperties } from "./hooks/use-theme-properties"
 
 export function PropertiesSidebar() {
@@ -184,10 +185,36 @@ export function PropertiesSidebar() {
     workspace,
   ])
 
+  const fontVariantSelection = useMemo(() => {
+    if (!isFontCollectionEditingMode || !activeFontCollectionEntryId) return {}
+    return workspaceFontCollectionService.getVariantSelection(
+      activeFontCollectionEntryId,
+      workspace,
+    )
+  }, [isFontCollectionEditingMode, activeFontCollectionEntryId, workspace])
+
   const familyProperties = useMemo<FlatProperty[] | undefined>(() => {
     if (!isFontCollectionEditingMode || !editedFontCollection) return undefined
-    return flattenFontCollectionFamilies(editedFontCollection)
-  }, [isFontCollectionEditingMode, editedFontCollection])
+    return flattenFontCollectionFamilies(editedFontCollection, fontVariantSelection)
+  }, [isFontCollectionEditingMode, editedFontCollection, fontVariantSelection])
+
+  const { updateFontCollectionProperty } = useFontCollectionProperties(
+    activeFontCollectionEntryId,
+  )
+
+  const fontCollectionEditingContext = useMemo((): {
+    isFontCollectionEditing: true
+    updateFontCollectionProperty: (
+      property: FlatProperty,
+      newValue: string,
+    ) => void
+  } | null => {
+    if (!isFontCollectionEditingMode) return null
+    return {
+      isFontCollectionEditing: true,
+      updateFontCollectionProperty,
+    }
+  }, [isFontCollectionEditingMode, updateFontCollectionProperty])
 
   const propertyTreeNode = useMemo((): Variant | Instance | Board | null => {
     if (selection) {
@@ -246,6 +273,7 @@ export function PropertiesSidebar() {
         scrollerRef={scrollerRef}
         dispatch={dispatch}
         themeEditingContext={themeEditingContext}
+        fontCollectionEditingContext={fontCollectionEditingContext}
         metadataProperties={metadataProperties}
         familyProperties={familyProperties}
       />

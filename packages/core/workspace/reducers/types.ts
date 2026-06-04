@@ -22,6 +22,7 @@
  * | remove_theme_custom_{...same 19 tables...} | themes (variant rows only) |
  * | delete_theme, duplicate_theme | themes (+ components.variants for theme row) |
  * | set_font_collection_{label,editor_data,override}, reset_font_collection_{label,editor_data,override}, add_font_collection_custom_family, remove_font_collection_custom_family | font-collections (variant rows only for families) |
+ * | set_font_collection_family_variant, set_font_collection_family_preset | font-collections (any entry; per-family variant selection) |
  * | delete_font_collection, duplicate_font_collection | font-collections (+ components.variants for font-collection row) |
  * | stubs_* (font / icon / media) | reserved — no-op until spec |
  * | transcript_add_message | none (no-op) |
@@ -630,6 +631,23 @@ export type WorkspaceAction =
   | {
       type: "remove_font_collection_custom_family"
       payload: { fontCollectionId: string; key: string }
+    }
+  | {
+      type: "set_font_collection_family_variant"
+      payload: {
+        fontCollectionId: string
+        slot: string
+        variant: string
+        enabled: boolean
+      }
+    }
+  | {
+      type: "set_font_collection_family_preset"
+      payload: {
+        fontCollectionId: string
+        slot: string
+        preset: "all" | "none"
+      }
     }
   /** @internal Reserved payload; no-op until `font-collections` spec is finalized. */
   | { type: "stubs_add_font_collection_row"; payload: { id?: string } }

@@ -13,6 +13,12 @@ export {
   getRemoteFontUrl,
   isRemoteFontFamily,
   getFamilyNameByValue,
+  deriveVariantPreset,
+  getEnabledVariants,
+  isVariantEnabled,
+  type FamilyVariantSelection,
+  type VariantPreset,
+  type VariantSelection,
 } from "./helpers"
 export {
   STOCK_FONT_COLLECTIONS,

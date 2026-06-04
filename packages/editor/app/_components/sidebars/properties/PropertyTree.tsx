@@ -33,6 +33,14 @@ interface ThemeEditingContext {
   themeProperties: FlatProperty[]
 }
 
+interface FontCollectionEditingContext {
+  isFontCollectionEditing: true
+  updateFontCollectionProperty: (
+    property: FlatProperty,
+    newValue: string,
+  ) => void
+}
+
 interface PropertyTreeProps {
   properties: FlatProperty[]
   workspace: Workspace
@@ -41,9 +49,13 @@ interface PropertyTreeProps {
   scrollerRef?: RefObject<HTMLDivElement | null>
   dispatch: (action: Action) => void
   themeEditingContext?: ThemeEditingContext | null
+  fontCollectionEditingContext?: FontCollectionEditingContext | null
   /** Read-only Metadata rows rendered as the first section, when provided. */
   metadataProperties?: FlatProperty[]
-  /** Read-only Families rows rendered as the last section, when provided. */
+  /**
+   * Families rows for the Families section, when provided. Holds parent family
+   * rows and their child variant and license rows in one flat list.
+   */
   familyProperties?: FlatProperty[]
 }
 
@@ -59,6 +71,7 @@ export function PropertyTree({
   scrollerRef,
   dispatch,
   themeEditingContext,
+  fontCollectionEditingContext,
   metadataProperties,
   familyProperties,
 }: PropertyTreeProps) {
@@ -81,7 +94,9 @@ export function PropertyTree({
         ? {
             label: "Families",
             category: "families",
-            properties: familyProperties,
+            // Only parent family rows render at the section level; child variant
+            // and license rows nest under their parent via allProperties.
+            properties: familyProperties.filter((p) => !p.isSubProperty),
           }
         : null
 
@@ -178,8 +193,17 @@ export function PropertyTree({
                       workspace={workspace}
                       node={node}
                       theme={theme}
-                      allProperties={allProperties}
+                      allProperties={
+                        section.category === "families" && familyProperties
+                          ? familyProperties
+                          : allProperties
+                      }
                       themeEditingContext={themeEditingContext}
+                      fontCollectionEditingContext={
+                        section.category === "families"
+                          ? fontCollectionEditingContext
+                          : null
+                      }
                     />
                   ))
                 )}
