@@ -35,6 +35,7 @@ export type {
   EntryNodeLevel,
   EntryNodeThemeRef,
   EntryNodeType,
+  NodeOrigin,
 } from "./model"
 export { isEntryNodeDefault, isEntryNodeInstance, isEntryNodeVariant } from "./model"
 export type {

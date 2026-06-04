@@ -180,8 +180,8 @@ export const rules: RulesConfig = {
         allowed: true,
         propagation: "downstream",
         removalBehavior: {
-          schemaDefined: "hide", // Auto-generated from parent component schema
-          manuallyAdded: "delete", // User manually added this instance
+          schemaDefined: "hide", // origin "schema": required by the component schema
+          manuallyAdded: "delete", // origin "user": inserted, pasted, or duplicated
         },
       },
     },

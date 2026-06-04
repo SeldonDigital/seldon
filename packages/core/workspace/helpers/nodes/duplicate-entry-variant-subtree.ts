@@ -162,6 +162,7 @@ export function buildDuplicateEntryVariantSubtreePlan(
         type: "instance",
         template,
         overrides: {},
+        origin: "schema",
         __editor: { initialOverrides: {} },
       }
     }

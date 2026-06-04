@@ -98,12 +98,13 @@ export class TypeCheckingService {
   }
 
   /**
-   * Checks if an instance is schema-defined (auto-generated from component schema).
+   * Checks if an instance is schema-defined. Reads the engine-maintained
+   * `origin` classification set when the instance was created.
    * @param node - The instance to check
-   * @returns True if the instance is schema-defined
+   * @returns True when the instance originated from a component schema
    */
-  public isSchemaDefinedInstance(_node: Instance): boolean {
-    return false
+  public isSchemaDefinedInstance(node: Instance): boolean {
+    return node.origin === "schema"
   }
 
   /**

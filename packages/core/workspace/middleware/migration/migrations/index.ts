@@ -1,6 +1,7 @@
 import { produce } from "immer"
 import { seedDefaultThemeBoard } from "../../../helpers/themes/seed-default-theme-board"
 import type { Workspace } from "../../../types"
+import { backfillInstanceOrigin } from "./backfill-instance-origin"
 
 export type MigrationFunction = (workspace: Workspace) => Workspace
 
@@ -16,6 +17,11 @@ export interface AlwaysRunMigrationRecord {
 }
 
 export const migrations: MigrationRecord[] = [
+  {
+    version: 5,
+    description: "Backfill instance origin classification (schema vs user).",
+    migrate: backfillInstanceOrigin,
+  },
 ]
 
 export const alwaysRunMigrations: AlwaysRunMigrationRecord[] = [

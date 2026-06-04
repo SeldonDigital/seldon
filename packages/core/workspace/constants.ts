@@ -44,6 +44,8 @@ export const ErrorMessages = {
   missingVariant: (id: VariantId) => `Variant ${id} not found.`,
   danglingChildNode: (id: InstanceId) =>
     `Child node ${id} is not used in any node.`,
+  instanceMissingOrigin: (id: InstanceId) =>
+    `Instance ${id} is missing a valid origin classification.`,
   missingInstance: (
     id: InstanceId | VariantId,
     instance: InstanceId | VariantId,

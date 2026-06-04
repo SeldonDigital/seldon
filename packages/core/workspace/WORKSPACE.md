@@ -613,6 +613,8 @@ Instances allow for deeper customization in larger, more complex components. Cus
 
 When a component board is first added from the catalog, child instance ids are shared across variant trees when the schema child slot matches the default tree (same component, variant reference, overrides, and nested children). Slots that differ get their own instance row.
 
+An instance also carries an `origin` field set to `"schema"` or `"user"`. `schema` means the instance exists because a component schema composition requires it. `user` means a person inserted, pasted, or duplicated it. The engine sets and maintains `origin`. It is not user editable. The field drives removal behavior, described in **Composition Rules**.
+
 Validation, export, and editors use this node's `template`, not the parent’s.
 
 The **`template`** field then chooses how properties are obtained for the instance:
@@ -886,9 +888,13 @@ When a board is first added, child instance ids are shared across variant trees 
 
 Instances are the only node type that editors insert, duplicate, reorder, and move inside trees. Default and user variant roots are not moved or reordered inside trees.
 
-Removal of an instance depends on its origin. A schema-defined instance is configured to hide on removal. A manually added instance is configured to delete on removal. 
+Each instance carries an engine-maintained `origin` of `"schema"` or `"user"`. The engine sets it at creation:
 
-Current behavior resolves every instance removal to delete, because schema-defined detection is not yet active.
+- Schema children created when a board is added are `"schema"`.
+- User-variant children that mirror the default tree are `"schema"`, and reset to default keeps them `"schema"`.
+- Instances created by insert, paste, or duplicate are `"user"`.
+
+Removal of an instance depends on its `origin`. A `"schema"` instance hides on removal by setting `display` to `EXCLUDE`. A `"user"` instance deletes on removal. Validation already blocks removing a direct child of the default variant, so the hide path applies to nested instances and instances in user variants.
 
 ---
 

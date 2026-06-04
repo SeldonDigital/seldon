@@ -71,6 +71,7 @@ function cloneEntryNodeAsInstance(
   clone.id = newId
   clone.type = "instance"
   clone.template = formatNodeLink(templateNodeId)
+  clone.origin = "user"
   const link = parseNodeLink(row.template)
   if (link?.kind === "node" && idMap.has(link.nodeId)) {
     clone.template = formatNodeLink(idMap.get(link.nodeId)!)
@@ -599,6 +600,7 @@ export class NodeOperationsService {
       overrides: structuredClone(
         (source as import("../../model/entry-node").EntryNode).overrides,
       ),
+      origin: "user",
     }
 
     for (const [oldId, mappedId] of idMap) {
@@ -639,6 +641,7 @@ export class NodeOperationsService {
       id: newRootId,
       type: "instance",
       template: formatNodeLink(nodeId),
+      origin: "user",
     }
 
     let newTreeRef: ComponentTreeRef = { id: newRootId }

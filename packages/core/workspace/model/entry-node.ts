@@ -16,6 +16,14 @@ export type EntryNodeLevel =
 
 export type EntryNodeThemeRef = string
 
+/**
+ * Creation origin of an instance node. `schema` means the instance exists
+ * because a component schema composition requires it. `user` means a person
+ * inserted, pasted, or duplicated it. Engine-owned and not user editable.
+ * Only meaningful on `type: "instance"` nodes.
+ */
+export type NodeOrigin = "schema" | "user"
+
 export interface EntryNode {
   id: EntryNodeId
   type: EntryNodeType
@@ -24,6 +32,7 @@ export interface EntryNode {
   theme: EntryNodeThemeRef | null
   template: string
   overrides: EntryNodePropertyOverrides
+  origin?: NodeOrigin
   __editor?: Record<string, unknown>
 }
 
