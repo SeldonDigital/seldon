@@ -1,8 +1,11 @@
-import { current, produce } from "immer"
+import { produce } from "immer"
 import type { ComponentTreeRef, Workspace } from "../../types"
 import { isComponentBoard, isPlaygroundBoard } from "../../model/components"
 import { isEntryNodeVariant } from "../../model/entry-node"
-import { findComponentContainingTreeNodeId } from "./duplicate-entry-variant-subtree"
+import {
+  buildDuplicateEntryVariantSubtreePlan,
+  findComponentContainingTreeNodeId,
+} from "./duplicate-entry-variant-subtree"
 import { walkComponentTreeRefs } from "../components/walk-component-tree-refs"
 
 function collectTreeRefIds(ref: ComponentTreeRef): string[] {
@@ -24,8 +27,12 @@ function collectAllComponentTreeNodeIds(workspace: Workspace): Set<string> {
 }
 
 /**
- * Rewires a user variant’s board tree to match the default variant’s child refs,
- * clears that variant root’s overrides, and drops `nodes` rows that nothing references anymore.
+ * Resets a user variant to the default variant. Rebuilds the user variant's
+ * children as a fresh instance chain that templates from the default variant's
+ * children, clears the variant root's overrides and theme, and drops `nodes`
+ * rows that nothing references anymore. The user variant keeps its own root id
+ * and stays independent from the default while still inheriting default-child
+ * changes.
  */
 export function applyResetUserVariantToDefaultVariant(
   workspace: Workspace,
@@ -40,7 +47,7 @@ export function applyResetUserVariantToDefaultVariant(
       return
     }
 
-    const { board } = located
+    const { board, componentKey } = located
     const idx = board.variants.findIndex((v) => v.id === variantRootId)
     if (idx <= 0) return
 
@@ -52,15 +59,30 @@ export function applyResetUserVariantToDefaultVariant(
     if (!userNode || !isEntryNodeVariant(userNode)) return
 
     const oldIds = new Set(collectTreeRefIds(userRef))
+
+    // Reuse the variant-creation plan so reset produces the same inheritance
+    // chain as a fresh user variant. The plan's generated root is discarded so
+    // the existing user root id and template are preserved.
+    const plan = buildDuplicateEntryVariantSubtreePlan(
+      draft as unknown as Workspace,
+      board,
+      componentKey,
+      defaultRef.id,
+      userNode.label,
+    )
+
     const newRef: ComponentTreeRef = {
-      id: userRef.id,
-      children: defaultRef.children
-        ? (structuredClone(
-            current(defaultRef.children),
-          ) as ComponentTreeRef[])
-        : undefined,
+      id: variantRootId,
+      children: plan?.newRootTreeRef.children,
     }
     board.variants[idx] = newRef
+
+    if (plan) {
+      for (const [id, node] of Object.entries(plan.newNodes)) {
+        if (id === plan.newRootId) continue
+        draft.nodes[id] = node
+      }
+    }
 
     userNode.overrides = {}
     userNode.theme = null

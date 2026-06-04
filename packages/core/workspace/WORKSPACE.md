@@ -807,6 +807,150 @@ The `media` object contains media definitions and configurations referenced by m
 
 ---
 
+## Composition Rules
+
+This section describes how `component` and `playground` boards compose object trees using `nodes` and how mutations keep them valid. Static structures are defined by component level hierarchy. Mutation rules come from rules configuration found in `packages/core/rules/`, validation middleware, and verification middleware.
+
+### Component Tree Hierarchy
+
+A node may contain a child only when the parent level lists the child level. The level hierarchy defines the allowed pairs.
+
+| Parent | Children allowed |
+| --- | --- |
+| `screen` | `screen`, `module`, `part`, `element`, `primitive`, `frame` |
+| `module` | `module`, `part`, `element`, `primitive`, `frame` |
+| `part` | `part`, `element`, `primitive`, `frame` |
+| `element` | `element`, `primitive`, `frame` |
+| `frame` | `module`, `part`, `element`, `primitive`, `frame` |
+| `primitive` | none |
+
+A `primitive` is a leaf and holds no children. 
+
+A `board` is a shell and is not placed into object trees, but used by editors to provide a canvas to display onto.
+
+A `frame` is a cross-level container and may appear at any level. When a `frame` is inserted, each child already inside the frame is also checked against the new parent. A frame holding a `module` cannot enter an `element`, even though an `element` accepts a `frame`.
+
+A schema may refuse children. When a component schema sets `restrictions.addChildren` to `false`, the node accepts no children.
+
+A node cannot contain its own component or any ancestor component. This keeps trees acyclic. A `frame` inside a `frame` is the one exception, because a frame carries no component identity.
+
+---
+
+### Default Variant Behavior
+
+The first entry on a board is the default variant. It always references the catalog schema as described in **Catalog alignment**. Its child tree matches the schema and cannot be rewired onto another component board.
+
+The default variant is locked against structural change. These operations are not allowed on a default variant:
+
+- create another default variant
+- insert a child into a default variant
+- delete a default variant
+- rename a default variant
+- reorder or move a default variant
+- move any variant into or out of index `0`
+
+The default variant still accepts these operations: 
+
+- set properties as overrdies
+- set theme
+- instantiate
+- duplicate 
+
+---
+
+### User Variant Behavior
+
+A user variant has `type: "variant"`. Its root templates from the default variant root, so default-root changes flow through unless the user variant overrides them.
+
+Creating a user variant also clones each child of the default tree. Each cloned child is an instance that templates from the default variant's matching child, with empty `overrides`. This forms a chain: the component default, then the default-variant child, then the user-variant child.
+
+This chain produces three edit behaviors:
+
+- Editing the component default updates all copies.
+- Editing the default-variant child updates that child and the user-variant child, but not the component default.
+- Editing the user-variant child updates only that child.
+
+Writing any override at a level shadows inherited values from above that point.
+
+Editors can insert, remove, reorder, and move instances inside a user variant, subject to the same hierarchy and self-containment rules above.
+
+The `reset_user_variant_to_default` action rebuilds a user variant back to the default. It rebuilds the user root's children as a fresh instance chain that templates from the default variant's children with empty `overrides`, the same shape produced at creation. It clears any user `overrides`, sets its `theme` to `null`, and removes node rows that reference nothing. The user variant keeps its own `id`.
+
+---
+
+### Instance Behavior
+
+An instance has `type: "instance"`. It is a reference node whose `template` is `catalog:{ComponentId}` or `node:{nodeId}`. Editing an instance edits that node everywhere the node appears, so the same change shows in every place that uses the instance.
+
+When a board is first added, child instance ids are shared across variant trees where a schema child slot matches the default tree. A slot that differs gets its own instance row.
+
+Instances are the only node type that editors insert, duplicate, reorder, and move inside trees. Default and user variant roots are not moved or reordered inside trees.
+
+Removal of an instance depends on its origin. A schema-defined instance is configured to hide on removal. A manually added instance is configured to delete on removal. 
+
+Current behavior resolves every instance removal to delete, because schema-defined detection is not yet active.
+
+---
+
+### Reordering and Moving
+
+Reorder and move both act on instances only. They differ in whether the parent changes.
+
+| Aspect | Reorder | Move |
+| --- | --- | --- |
+| Parent | Same parent, new index | New parent and index |
+| Applies to | Instances | Instances |
+| Default variant | Cannot reorder inside a default variant | Cannot move into a default variant |
+| Cross-variant | Not applicable | Rejected, must stay in the same root variant |
+
+A reorder keeps the instance under its current parent and changes its index. A schema may forbid reordering when it sets `restrictions.reorderChildren` to `false`.
+
+A move places the instance under a new parent. The target must be able to accept the child level, must not be a default variant, and must belong to the same root variant as the source. Moves across variants are rejected.
+
+Variant order inside a board uses the `reorder_variant_in_board` action. It blocks any move into or out of index `0`, which keeps the default variant at index `0`.
+
+---
+
+### Insertion and Paste
+
+Insertion uses two gates. The target gate asks whether the target can receive children. The source gate asks whether the source can be instantiated. Insertion never targets a default variant.
+
+| Action | Source | Result |
+| --- | --- | --- |
+| `insert_variant_instance` | a variant | a new instance of the variant under the target |
+| `insert_duplicate_instance` | an instance | a duplicate of the instance under the target |
+| `insert_default_instance` | a component | an instance of the component's default variant |
+| `add_component_and_insert_default_instance` | a component not yet in the workspace | adds the board, then inserts its default variant |
+
+Placement is either inside a node or before or after a sibling. Insertion is blocked anywhere inside a default variant subtree.
+
+Paste in the objects sidebar resolves a target from the current selection:
+
+- A node is selected. Paste tries to go inside the selected node. When the node does not accept the object, paste falls back to placing it as a sibling. Level and cycle rules still apply.
+- A board is selected. Only a variant that belongs to that board may paste, which duplicates the variant on the board. Any other paste shows an error.
+- Nothing is selected. Paste shows an error.
+
+Pasting a variant creates an instance. Pasting an instance duplicates that instance.
+
+---
+
+### Board and Node Validity Invariants
+
+After every action, the workspace is checked against these invariants:
+
+- Every child ref in a board tree resolves to a node row.
+- Every variant ref in a board tree resolves to a node row.
+- Every `node:{nodeId}` template target exists.
+- Each component board has exactly one default variant root.
+- Node ids are unique across the `nodes` map.
+- No variant node is missing from all board trees.
+- No instance node is missing from all board trees.
+- No variant override is a computed value that reads from `#parent`.
+
+See **Referential Integrity** for the static file-level constraints that a stored workspace must satisfy.
+
+---
+
 ## Referential Integrity
 
 A valid workspace file must satisfy the following constraints.

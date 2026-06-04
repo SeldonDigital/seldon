@@ -148,7 +148,22 @@ export function buildDuplicateEntryVariantSubtreePlan(
     for (const [oldId, newId] of idMap) {
       const row = nodes[oldId]
       if (!row) continue
-      newNodes[newId] = cloneEntryNodeWithIdRemap(row, newId, idMap)
+      // Chain the new child from the default variant's matching child so edits
+      // to the default child propagate into the user variant. Start with empty
+      // overrides so inherited values are not shadowed by a copy.
+      let template = formatNodeLink(oldId)
+      const link = parseNodeLink(row.template)
+      if (link?.kind === "node" && idMap.has(link.nodeId)) {
+        template = formatNodeLink(idMap.get(link.nodeId)!)
+      }
+      newNodes[newId] = {
+        ...structuredClone(row),
+        id: newId,
+        type: "instance",
+        template,
+        overrides: {},
+        __editor: { initialOverrides: {} },
+      }
     }
   } else {
     const defaultVariantId = board.variants[0]?.id
