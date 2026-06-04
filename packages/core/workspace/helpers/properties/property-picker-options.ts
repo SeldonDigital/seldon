@@ -224,18 +224,26 @@ function buildPresetOptions(
     presetOptions = schema.presetOptions as unknown[]
   }
 
-  const normalized = normalizeOptions(presetOptions, theme)
+  return normalizeOptions(presetOptions, theme)
+}
 
-  // Font families come from the workspace's font collection boards. Theme slots
-  // (`@fontFamily.*`) stay in the schema; collection families are appended here.
-  if (schema.name === "fontFamily" && workspace) {
-    const familyOptions = workspaceFontCollectionService
-      .collectWorkspaceFamilies(workspace)
-      .map((family) => ({ name: family.name, value: family.stack ?? family.name }))
-    return [...normalized, ...familyOptions]
-  }
-
-  return normalized
+/**
+ * Builds one picker group per workspace font collection, each listing that
+ * collection's enabled families. Used by the font family pickers so collections
+ * render as separated groups.
+ */
+function buildFontCollectionFamilyGroups(
+  workspace: Workspace,
+): PropertyPickerOption[][] {
+  return workspaceFontCollectionService
+    .collectWorkspaceFamilyGroups(workspace)
+    .map((group) =>
+      group.map((family) => ({
+        name: family.name,
+        value: family.stack ?? family.name,
+      })),
+    )
+    .filter((group) => group.length > 0)
 }
 
 function groupPresetOptions(
@@ -544,6 +552,12 @@ function buildPropertyOptionsFromSchema(
     groups.push(...groupPresetOptions(schema, presetOptions))
   }
 
+  // Font families come from the workspace's font collection boards. Each
+  // collection is its own separated group; theme slots stay above (lines 538-540).
+  if (isFontFamily && input.workspace) {
+    groups.push(...buildFontCollectionFamilyGroups(input.workspace))
+  }
+
   if (schema.computedFunctions) {
     const computedOptions = buildComputedOptions(
       schema.computedFunctions(),
@@ -688,11 +702,9 @@ function buildThemeTokenPickerOptions(
     input.path === "fontFamily.primary" ||
     input.path === "fontFamily.secondary"
   ) {
-    const familyOptions = workspaceFontCollectionService
-      .collectWorkspaceFamilies(input.workspace)
-      .map((family) => ({ name: family.name, value: family.stack ?? family.name }))
-    if (familyOptions.length > 0) {
-      return { options: [familyOptions], hasCurrentValue: false }
+    const familyGroups = buildFontCollectionFamilyGroups(input.workspace)
+    if (familyGroups.length > 0) {
+      return { options: familyGroups, hasCurrentValue: false }
     }
   }
 

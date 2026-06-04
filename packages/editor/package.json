@@ -5,8 +5,9 @@
   "scripts": {
     "fonts:fallback": "node scripts/append-chrome-font-fallback.mjs",
     "fonts:licenses": "node scripts/copy-font-licenses.mjs",
-    "dev": "node scripts/append-chrome-font-fallback.mjs && node scripts/copy-font-licenses.mjs && vite",
-    "build": "node scripts/append-chrome-font-fallback.mjs && node scripts/copy-font-licenses.mjs && vite build",
+    "fonts:files": "node scripts/copy-font-files.mjs",
+    "dev": "node scripts/append-chrome-font-fallback.mjs && node scripts/copy-font-licenses.mjs && node scripts/copy-font-files.mjs && vite",
+    "build": "node scripts/append-chrome-font-fallback.mjs && node scripts/copy-font-licenses.mjs && node scripts/copy-font-files.mjs && vite build",
     "start": "vite preview",
     "lint": "eslint .",
     "format": "prettier --write \"./**/*.{ts,tsx,json,css}\"",
