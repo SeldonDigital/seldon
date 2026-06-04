@@ -55,7 +55,7 @@ export default function HomePage() {
   return (
     <main className="home">
       <header>
-        <h1 className="home-title">Seldon Local Editor</h1>
+        <h1 className="home-title">Seldon · Editor</h1>
         <p className="home-subtitle">
           Workspaces are stored in this browser only. Open a workspace.json file
           or create a new workspace.

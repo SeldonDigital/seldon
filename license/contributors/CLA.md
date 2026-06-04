@@ -2,8 +2,6 @@
 
 Thank you for your interest in contributing to Seldon!
 
-Repository access may require a paid subscription. See [REPOSITORY-ACCESS.md](../access/REPOSITORY-ACCESS.md). Contact info@seldon.digital if you are unsure whether you need access before contributing.
-
 This Contributor License Agreement ("Agreement") documents the rights granted by contributors to the project maintainers.
 
 By submitting a pull request, you agree to the following terms:

@@ -1,215 +1,215 @@
 # Seldon · Factory
 
-The Seldon Factory System transforms valid Seldon workspaces into production-ready React components with optimized CSS. It serves as the core engine for converting design data into deployable component libraries with TypeScript support, theme integration, and asset optimization.
+Seldon Factory turns a valid Seldon workspace into production code. It consumes a **workspace** object and produces React components, CSS, and processed assets as a list of files. Factory reads design-time state from Core, resolves properties and themes, and generates output. It does not change the workspace file.
 
-## System Architecture
-
-The factory operates through a multi-stage pipeline that processes workspace data into exportable code. The system is organized into logical directories that reflect the pipeline stages:
-
-1. **Workspace Computation** (`helpers/`) - Resolves all properties and inheritance relationships
-2. **Style Generation** (`styles/`) - Converts design properties to CSS classes and stylesheets  
-3. **Component Export** (`export/`) - Creates React components, CSS stylesheets, and asset processing
-4. **Asset Processing** - Handles images, icons, fonts, and other media assets
-5. **File Assembly** - Combines all generated content into exportable files
-
-## Core Systems
-
-### 1. Workspace Computation (`helpers/`)
-
-The foundation of the factory system that resolves all property inheritance and computes property values.
-
-#### Workspace Processing (`helpers/compute-workspace.ts`)
-
-Resolves all property inheritance chains from parent to child components, computes complex property values, and builds complete property contexts for each node in the workspace.
-
-**Key Features:**
-- **Property Inheritance**: Automatic resolution of inherited properties from parent components
-- **Computed Functions**: Handles computed functions like high contrast colors and optical padding
-- **Theme Integration**: Applies theme variables and design tokens throughout the workspace
-- **Context Building**: Creates complete property contexts for each component node
-
-### 2. Style Generation (`styles/`)
-
-The core style generation system that converts Seldon design properties into CSS.
-
-#### CSS Properties Conversion (`styles/css-properties/get-css-from-properties.ts`)
-
-Converts Seldon design properties to CSS properties, handles property inheritance from parent components, and applies theme variables and design tokens.
-
-**Key Features:**
-- **Property Resolution**: Computes property values (e.g., high contrast colors, computed functions)
-- **Inheritance**: Handles property inheritance from parent components
-- **Theme Integration**: Applies theme variables and design tokens
-- **CSS Optimization**: Generates shorthand properties and removes undefined values
-- **Comprehensive Coverage**: Supports all CSS properties including layout, typography, colors, shadows, borders, etc.
-
-### 3. Component Export (`export/`)
-
-The export system creates production-ready React components and CSS stylesheets. The system is organized into specialized subsystems:
-
-- **[CSS Export System](./export/css/README.md)** - Generates production-ready stylesheets with "Tokens · Theme Variables" support
-- **[React Export System](./export/react/README.md)** - Creates React components with full TypeScript support
-
-#### Main Export Orchestration (`export/export-workspace.ts`)
-
-The main orchestration function that coordinates the entire export process through a structured pipeline.
-
-### 4. Asset Processing
-
-The factory handles all media assets used in the workspace including images, icons, and fonts. Asset processing includes extraction, path transformation, optimization, tree-shaking, and component generation.
-
-## Export Pipeline
-
-The factory processes workspaces through a structured pipeline that maintains consistency and proper override precedence:
-
-**Generation Order:**
-1. **Workspace Computation**: Resolves all properties and inheritance chains
-2. **Style Registry**: Builds CSS class mappings with proper override hierarchy
-3. **Component Discovery**: Identifies exportable variants and builds component trees
-4. **Asset Processing**: Handles images, icons, fonts, and other media
-5. **Code Generation**: Creates React components, CSS stylesheets, and utility files
-6. **File Assembly**: Combines all generated content into exportable files
-
-## Key Features
-
-### Property Inheritance and Merging
-
-The factory system handles property inheritance across component hierarchies with automatic inheritance from parent components, selective override capabilities, and complete property context building.
-
-### Theme System Integration
-
-Theme support with CSS custom properties and design tokens that flow through the component hierarchy, maintaining visual consistency across the entire design system. The system generates comprehensive tokens and theme variables in CSS output.
-
-### CSS Cascade Optimization
-
-CSS ordering ensures proper cascade and specificity with intelligent class ordering, depth-based hierarchy, and optimized specificity management.
-
-### Type Safety and TypeScript Integration
-
-TypeScript support with generated interfaces, proper HTML element typing, union types for restricted props, and generic type parameters for flexibility.
-
-### Asset Optimization and Tree Shaking
-
-Asset management with tree shaking that only includes assets actually used in the workspace, automatic image processing and format conversion, path transformation from absolute to relative export paths, and bundle optimization through efficient asset management.
-
-### Responsive Design Support
-
-Built-in responsive design features with media query integration, high-DPI support, and cross-device compatibility.
-
-### Code Generation Optimization
-
-Code generation with Prettier integration for automatic formatting, import sorting with custom import order, JSDoc generation for automatic documentation, and proper licensing headers for generated files.
-
-## Generated Output
-
-The factory produces a complete component library structure organized by component levels:
-
-- **Primitives**: HTML primitives (Button, Input, Icon, etc.)
-- **Elements**: Design elements (ButtonBar, Card, Navigation, etc.)
-- **Parts**: Composite parts (Header, Footer, Sidebar, etc.)
-- **Modules**: Complete modules (Navigation, Dashboard, etc.)
-- **Icons**: Tree-shaken icon components
-- **Utils**: Utility functions including CSS class name combination
-- **Assets**: Images and other media with optimized paths
-
-Each generated component includes TypeScript interfaces with fully typed props, React components with proper JSX structure, CSS classes with optimized styles, JSDoc comments for documentation, tree-shaken imports, and full theme integration support.
-
-## Testing
-
-For local testing, export a `workspace.json` file from `packages/editor` and feed that workspace data into the factory entrypoints directly. The older hosted export harness is not part of this baseline repo.
-
-## Export Requirements
-
-**Input Requirements:**
-- Valid Seldon workspace with computed properties
-- Export options specifying target framework and output paths
-- Component variants properly configured in workspace
-- Theme configuration properly set up
-
-**Generated Output:**
-- TypeScript interfaces for all components
-- Optimized JSX structures with proper prop inheritance
-- CSS class integration and stylesheet generation
-- Tree-shaken imports and asset processing
-- Production-ready React components and CSS
-
-## Supporting Systems
-
-### Constants and Configuration
-
-The factory uses a comprehensive constants system for configuration including component levels, CSS prefixes, and default themes.
-
-### Code Formatting
-
-Handles code formatting with Prettier integration, import sorting with custom import order, and multi-format support for both TypeScript and CSS.
-
-### Utility Functions
-
-Shared utility functions including class name management, source transformation with append/prepend strategies, component utilities, and TypeScript utility types.
-
-## Usage as Source of Truth
-
-This README serves as the authoritative documentation for the Seldon Factory System. When making changes to the factory functionality:
-
-1. **Update this README first** to reflect the intended export behavior and processing workflow
-2. **Implement changes** to match the documented specifications and processing stages
-3. **Verify that the export pipeline** follows the documented workflow from workspace computation through file generation
-4. **Ensure style override processing** maintains the documented class merging and cascade optimization
-5. **Validate that component processing** follows the documented validation and rendering strategies
-
-The factory system transforms valid Seldon workspaces through a structured pipeline that must maintain consistency with this documentation to ensure reliable component generation and proper style inheritance.
-
-## Subsystem Documentation
-
-For detailed implementation information, see the specific subsystem documentation:
-
-- **[CSS Export System](./export/css/README.md)** - CSS generation with "Tokens · Theme Variables" support and cascade optimization
-- **[React Export System](./export/react/README.md)** - React component generation with TypeScript support
-- **[Technical Reference](./TECHNICAL.md)** - Code examples and implementation details
-
-
-
-
+Core owns design-time state and rules. Factory owns export and production code generation.
 
 ---
 
-## Code Export Pipeline
+## What The Factory Contains
 
-### CSS Export Process
-1. **Property Resolution** → Resolve all theme and computed values
-2. **CSS Generation** → Convert properties to CSS classes
-3. **Theme Variables** → Generate CSS custom properties as tokens for special case use in a project
-4. **Class Deduplication** → Optimize CSS output by removing matching styles and combining classes.
+Factory groups three stages that work together:
+
+| Area | Role | Deep reference |
+| --- | --- | --- |
+| **Helpers** | Build the export context and node index, compute node properties through Core | [helpers/](./helpers) |
+| **Styles** | Convert resolved properties into CSS for one class | [styles/css-properties/](./styles/css-properties) |
+| **Export** | Orchestrate React, CSS, and asset generation into files | [export/](./export) |
+
+The export stage splits into two subsystems with their own guides:
+
+- **[React export](./export/react/README.md)** generates components with TypeScript interfaces.
+- **[CSS export](./export/css/README.md)** generates stylesheets with theme variables and cascade ordering.
+
+Factory imports compute logic from `@seldon/core`. It does not fork property or theme rules.
+
+---
+
+## How Callers Use The Factory
+
+The entry point is `exportWorkspace` in [export/export-workspace.ts](./export/export-workspace.ts). It takes a workspace and export options and returns a promise of files to write.
 
 ```typescript
-import { exportCss } from '@seldon/factory/export/css'
+import { exportWorkspace } from "./export/export-workspace"
 
-// Export CSS from workspace
-const stylesheet = await exportCss(workspace)
+const files = await exportWorkspace(workspace, {
+  rootDirectory: "./my-app",
+  target: { framework: "react", styles: "css-properties" },
+  output: {
+    componentsFolder: "/src/components",
+    assetsFolder: "/public/assets",
+    assetPublicPath: "/assets",
+  },
+})
 ```
 
-### React Export Process
-1. **Component Discovery** → Identify components to export
-2. **Property Resolution** → Resolve all property values
-3. **Interface Generation** → Create TypeScript interfaces
-4. **Component Generation** → Generate React components
+Factory has no `exports` field and no top-level barrel. Import the concrete file paths shown here, not a bare `@seldon/factory` specifier.
+
+`exportWorkspace` resolves an asset reader, normalizes the components and assets folders, and delegates to React generation when `target.framework` is `"react"`. It throws for any other framework.
+
+### Export options
+
+The real `ExportOptions` type lives in [export/types.ts](./export/types.ts):
 
 ```typescript
-import { exportReact } from '@seldon/factory/export/react'
-
-// Export React components from workspace
-const components = await exportReact(workspace, options)
+type ExportOptions = {
+  rootDirectory: string
+  token?: string
+  target: { framework: "react"; styles: "css-properties" }
+  output: {
+    assetsFolder: string
+    componentsFolder: string
+    assetPublicPath: string
+  }
+  publishAll?: boolean
+  debugMode?: boolean
+  assetReader?: ExportAssetReader
+  skipFormat?: boolean
+}
 ```
 
-### Future Code Exports
+---
 
-The properties system is designed to support additional export targets:
+## From Workspace To Files
 
-1. **Swift** - Native iOS components with UIKit/SwiftUI
-2. **Java** - Android components with native Android views
-3. **Flutter** - Cross-platform mobile components with Dart
+The real orchestration runs in [export/react/export-react.ts](./export/react/export-react.ts). It builds the export context, resolves styles, discovers components and assets, then generates each kind of file.
 
-These exports will follow the same property resolution pipeline, ensuring consistent design system implementation across all platforms.
+```mermaid
+flowchart TD
+  workspace[Workspace] --> context[buildExportContext — parent index]
+  context --> registry[buildStyleRegistry — classes and node map]
+  registry --> discover[getComponentsToExport — sorted by level]
+  discover --> icons[getUsedIconIds]
+  icons --> css[Component stylesheet plus per-theme stylesheets]
+  css --> images[getImagesToExport then rewrite to relative paths]
+  images --> files[Component, native, frame, icon, fonts, readme, utility files]
+  files --> license[Insert license into every text file]
+  license --> output[Files to export]
+```
+
+- **Context** indexes parents so property compute can resolve inheritance.
+- **Style registry** maps each node to a class and records tree depths for cascade order.
+- **Discovery** finds exportable components and orders them by component level.
+- **Generation** writes one file per component plus shared files, then inserts a license header into every text file.
+
+`exportReact` inlines its CSS generation through `generateComponentStylesheet` and `generateThemeStylesheetFiles`. The standalone `exportCss` in [export/css/export-css.ts](./export/css/export-css.ts) is a separate entry. It takes the workspace and a components folder and returns an object:
+
+```typescript
+async function exportCss(
+  workspace: Workspace,
+  componentsFolder: string,
+  forceRegeneration?: boolean,
+): Promise<{ componentStylesheet: string; themeStylesheets: ThemeStylesheetFile[] }>
+```
+
+---
+
+## Style Generation
+
+[styles/css-properties/get-css-from-properties.ts](./styles/css-properties/get-css-from-properties.ts) converts resolved properties into CSS for one class.
+
+```typescript
+function getCssFromProperties(
+  propertiesSubset: Properties,
+  context: StyleGenerationContext,
+  className: string,
+): string
+```
+
+It computes property values, applies inheritance from the parent context, resolves theme tokens, and writes optimized CSS. It drops unset values.
+
+Class names use the `sdn-` prefix. The prefix is applied in [export/css/discovery/get-class-name.ts](./export/css/discovery/get-class-name.ts). Theme variables use a per-theme prefix: bare `--sdn-` for the default `seldon` theme and `--sdn-{slug}-` for every other theme. The slug is a stable, human-readable name built from the theme label in [export/css/generation/get-theme-slug.ts](./export/css/generation/get-theme-slug.ts). A default-type theme slugs from its label, such as `seldon`. A variant theme prepends its root slug, such as `seldon-red`. The CSS section markers and section list live in [export/css/constants.ts](./export/css/constants.ts).
+
+---
+
+## Generated Output
+
+Factory produces a component library under `output.componentsFolder`, with images under `output.assetsFolder`. Paths below are relative to the components folder.
+
+```
+{level-plural}/{Name}.tsx   # primitives, elements, parts, modules, frames, screens
+frames/Frame.tsx            # universal container component
+native-react/{stem}.tsx     # native HTML primitive components
+icons/                      # tree-shaken icon components
+icons/index.ts              # icon index
+utils/class-name.ts         # combineClassNames helper
+Fonts.tsx                   # font loading component
+styles.css                  # component stylesheet
+styles-{slug}.css           # one stylesheet per workspace theme
+README.md                   # generated usage guide
+```
+
+Factory writes one theme stylesheet for every entry in `workspace.themes`, both default themes and their variants. Each file is named by its slug, such as `styles-seldon.css` and `styles-seldon-red.css`, with no hash. `generateThemeStylesheetFiles` in [export/css/generation/insert-theme-variables.ts](./export/css/generation/insert-theme-variables.ts) produces them.
+
+Each component file includes a TypeScript interface, a React component, resolved CSS classes, and tree-shaken imports.
+
+---
+
+## Further Reading
+
+| Topic | Document |
+| --- | --- |
+| Core kernel | [../core/CORE.md](../core/CORE.md) |
+| Editor client | [../editor/EDITOR.md](../editor/EDITOR.md) |
+| React export | [export/react/README.md](./export/react/README.md) |
+| CSS export | [export/css/README.md](./export/css/README.md) |
+| Code examples | [TECHNICAL.md](./TECHNICAL.md) |
+| Vocabulary | [GLOSSARY.md](../../GLOSSARY.md) |
+
+Note: parts of [TECHNICAL.md](./TECHNICAL.md) predate the current API. Treat this document and the source files as the current reference for entry points and options.
+
+---
+
+## Licensing
+
+Seldon is offered under the **PolyForm Noncommercial License 1.0.0** by default, with a separate commercial license for commercial use.
+
+### 1. Noncommercial license
+
+The default software license is the **PolyForm Noncommercial License 1.0.0**.
+
+- You may use, copy, and modify this software for **noncommercial purposes** (e.g. research, education, personal projects).
+- Commercial use is **not permitted** under this license.
+- See [license/noncommercial/LICENSE.md](../../license/noncommercial/LICENSE.md) for the summary and link to the full PolyForm text.
+
+### 2. Commercial license
+
+For commercial use (including proprietary software, SaaS platforms, internal business tools, or use as training data for AI or LLMs), you need a **commercial license**.
+
+The commercial license may grant:
+
+- Use in commercial or for-profit contexts.
+- Ability to create proprietary derivative works (as stated in your agreement).
+- Long-term support, security updates, and priority bug fixes if offered by the licensor.
+- Optional custom terms negotiated with the licensor.
+
+See [COMMERCIAL-LICENSE.md](../../license/commercial/COMMERCIAL-LICENSE.md).
+
+### 3. Obtaining a commercial license
+
+Contact:
+
+- **Licensor:** Seldon Digital, B.V.
+- **Email:** info@seldon.digital
+
+### 4. Summary
+
+| Use | Requirement |
+|------|-------------|
+| Noncommercial use | PolyForm Noncommercial License 1.0.0 |
+| Commercial use | Paid commercial license |
+
+---
+
+## Links
+
+- [Core kernel](../core/CORE.md)
+- [Editor client](../editor/EDITOR.md)
+- [React export](./export/react/README.md)
+- [CSS export](./export/css/README.md)
+- [Official Website](https://seldon.digital)
+- [Documentation](https://docs.seldon.digital)
+- [Issues & Discussions](https://github.com/seldon/issues)
 
 --- 
 
