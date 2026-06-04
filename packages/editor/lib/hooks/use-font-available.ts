@@ -23,8 +23,8 @@ const GENERIC_FAMILIES: ReadonlySet<string> = new Set([
 ])
 
 /** Reads the first family token from a CSS font stack and strips quotes. */
-function firstFamily(stack: string): string {
-  const first = stack.split(",")[0]?.trim() ?? ""
+function firstFamily(stack: string | undefined): string {
+  const first = stack?.split(",")[0]?.trim() ?? ""
   return first.replace(/^["']|["']$/g, "")
 }
 
@@ -72,7 +72,7 @@ function probeFontInstalled(family: string): boolean {
  * Editor-only: relies on the DOM and runs after `document.fonts.ready` to avoid
  * false negatives while web fonts are still loading.
  */
-export function useFontAvailable(stack: string): boolean {
+export function useFontAvailable(stack: string | undefined): boolean {
   const [available, setAvailable] = useState(true)
 
   useEffect(() => {

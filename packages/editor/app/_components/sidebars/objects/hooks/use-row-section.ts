@@ -1,5 +1,8 @@
-import { MouseEvent } from "react"
+import { MouseEvent, useMemo } from "react"
 import { ComponentLevel } from "@seldon/core/components/constants"
+import { useDialog } from "@lib/hooks/use-dialog"
+import { useTool } from "@lib/hooks/use-tool"
+import { ButtonIconicProps } from "../../../../seldon/elements/ButtonIconic"
 import { IconProps } from "../../../../seldon/primitives/Icon"
 import { BoardSection } from "../../helpers/get-board-sections"
 import { useSectionExpansion } from "../../helpers/use-section-expansion"
@@ -20,9 +23,14 @@ export function useRowSection(section: BoardSection) {
   const { isSectionExpanded, toggleSection } = useSectionExpansion()
   const { expandObjects, collapseObjects, getAllDescendantNodeIds } =
     useExpansion()
+  const { openDialog } = useDialog()
+  const { setActiveTool } = useTool()
 
   // Section expansion state
-  const isExpanded = isSectionExpanded(section.level)
+  const isExpanded = isSectionExpanded(
+    section.level,
+    section.boards.length > 0,
+  )
 
   // Event handlers: toggle section with Alt+click support for all descendants
   const onToggle = useRowToggle({
@@ -71,7 +79,7 @@ export function useRowSection(section: BoardSection) {
       // CORE section doesn't toggle
       return
     }
-    toggleSection(section.level)
+    toggleSection(section.level, !isExpanded)
   }
 
   // Icon: changes based on expansion state
@@ -86,9 +94,32 @@ export function useRowSection(section: BoardSection) {
     "aria-label": isExpanded ? "Collapse" : "Expand",
   }
 
+  // Add button: opens the add dialog scoped to this section. The Assets (CORE)
+  // section has no add flow, so it gets no button.
+  const buttonIconic1 = useMemo<ButtonIconicProps | undefined>(() => {
+    const level = section.level
+    if (level === "CORE") return undefined
+
+    return {
+      onClick: (event) => {
+        event.stopPropagation()
+        if (level === "THEME") {
+          openDialog("add-theme")
+        } else if (level === "FONT_COLLECTION") {
+          openDialog("add-font-collection")
+        } else {
+          openDialog("add-board", { level })
+        }
+        setActiveTool("select")
+      },
+      "aria-label": "Add",
+    }
+  }, [section.level, openDialog, setActiveTool])
+
   return {
     label: section.label,
     icon: iconId,
+    buttonIconic1,
     buttonIconic2,
     onToggle: onToggleSection,
   }

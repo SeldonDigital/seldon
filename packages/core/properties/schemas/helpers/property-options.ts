@@ -108,6 +108,9 @@ export function getPropertySupportedValueTypes(
 
 /** Title-cases hyphenated strings; otherwise stringifies the value. */
 function formatLabel(value: unknown): string {
+  if (typeof value === "boolean") {
+    return value ? "On" : "Off"
+  }
   if (typeof value === "string") {
     return value
       .split("-")

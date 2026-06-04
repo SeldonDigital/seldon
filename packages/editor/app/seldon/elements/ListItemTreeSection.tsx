@@ -24,6 +24,8 @@ export interface ListItemTreeSectionProps
   buttonIconic?: ButtonIconicProps
   icon?: IconProps
   label?: LabelProps
+  buttonIconic1?: ButtonIconicProps
+  icon1?: IconProps
   buttonIconic2?: ButtonIconicProps
   icon2?: IconProps
 }
@@ -50,6 +52,8 @@ export function ListItemTreeSection({
   buttonIconic,
   icon = sdn.icon,
   label = sdn.label,
+  buttonIconic1,
+  icon1 = sdn.icon1,
   buttonIconic2,
   icon2 = sdn.icon2,
   ...props
@@ -76,6 +80,19 @@ export function ListItemTreeSection({
     ...label,
     className: combineClassNames(sdn.label?.className, label?.className),
   }
+  const buttonIconic1Props = {
+    ...sdn.buttonIconic1,
+    ...buttonIconic1,
+    className: combineClassNames(
+      sdn.buttonIconic1?.className,
+      buttonIconic1?.className,
+    ),
+  }
+  const icon1Props = {
+    ...sdn.icon1,
+    ...icon1,
+    className: combineClassNames(sdn.icon1?.className, icon1?.className),
+  }
   const buttonIconic2Props = {
     ...sdn.buttonIconic2,
     ...buttonIconic2,
@@ -94,6 +111,9 @@ export function ListItemTreeSection({
     <HTMLLi className={listItemTreeSectionClassName} {...props}>
       {buttonIconic && <ButtonIconic {...buttonIconicProps} icon={iconProps} />}
       <Label {...labelProps} />
+      {buttonIconic1 && (
+        <ButtonIconic {...buttonIconic1Props} icon={icon1Props} />
+      )}
       {buttonIconic2 && (
         <ButtonIconic {...buttonIconic2Props} icon={icon2Props} />
       )}
@@ -116,6 +136,13 @@ const sdn: ListItemTreeSectionProps = {
     children: "Section Name",
     htmlElement: "label",
     className: "sdn-label sdn-label--j5nz",
+  },
+  buttonIconic1: {
+    className: "sdn-button-iconic sdn-button-iconic--x8g1",
+  },
+  icon1: {
+    icon: "material-add",
+    className: "sdn-icon sdn-icon--cjc4",
   },
   buttonIconic2: {
     className: "sdn-button-iconic sdn-button-iconic--x8g1",

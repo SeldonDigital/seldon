@@ -1,4 +1,4 @@
-import { STOCK_THEMES_BY_ID } from "../../../themes/stock"
+import { STOCK_THEMES_BY_ID } from "../../../themes/catalog"
 import type { ComponentCatalogEntry, ThemeBoard } from "../../model/components"
 import { isThemeBoard } from "../../model/components"
 import type { EntryTheme } from "../../model/entry-theme"

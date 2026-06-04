@@ -111,8 +111,7 @@ flowchart LR
 | `areSiblingNodes` | `are-sibling-nodes.ts` | True when two nodes share a parent ref. \| Used by placement validation. |
 | `isOnlyChild` | `is-only-child.ts` | True when a node is the only child under its parent. \| Used by deletion rules. |
 | `isVariantNode` | `is-variant-node.ts` | True for `default` or `variant` rows. \| Used before variant-only logic runs. |
-| `canNodeHaveChildren` | `can-node-have-children.ts` | True when schema allows children for the node catalog id. \| Used before insert validation. |
-| `nodeAllowsReordering` | `node-allows-reordering.ts` | True when schema allows reordering children. \| Used by reorder validation. |
+| `canNodeHaveChildren` | `can-node-have-children.ts` | True when the node maps to a component catalog id. \| Used before insert validation. |
 | `moveItemInArray` | `move-utils.ts` | Moves one array element to a new index. \| Used by move and reorder handlers. |
 | `duplicateNode` | `duplicate-node.ts` | Clones a node row with a new id. \| Used by duplicate flows. |
 | `getNodeIdAddedByAction` | `get-node-id-added-by-action.ts` | Infers the node id created by an action. \| Used after add or insert actions. |

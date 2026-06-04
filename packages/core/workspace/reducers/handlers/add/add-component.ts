@@ -158,6 +158,7 @@ function instantiateSchemaChildrenFromSlots(
         theme: null,
         template: formatNodeLink(resolvedChild.templateNodeId),
         overrides: processedOverrides as EntryNode["overrides"],
+        origin: "schema",
         __editor: { initialOverrides: structuredClone(processedOverrides) },
       }
     } else {

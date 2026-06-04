@@ -18,6 +18,8 @@ export function validateFontCollectionMutation(
     case "set_font_collection_label":
     case "set_font_collection_editor_data":
     case "set_font_collection_override":
+    case "set_font_collection_family_variant":
+    case "set_font_collection_family_preset":
     case "duplicate_font_collection":
       fontCollectionEntryValidators.exists(workspace, fontCollectionIdOf(action))
       break

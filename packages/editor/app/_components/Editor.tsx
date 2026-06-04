@@ -9,6 +9,8 @@ import { usePreview } from "@lib/hooks/use-preview"
 import { Canvas } from "./canvas/Canvas"
 import { SIDEBAR_INITIAL_WIDTH } from "./constants"
 import { AddBoardPanel } from "./floating-panels/catalog-panel/AddBoardPanel"
+import { AddFontCollectionPanel } from "./floating-panels/catalog-panel/AddFontCollectionPanel"
+import { AddThemePanel } from "./floating-panels/catalog-panel/AddThemePanel"
 import { InsertVariantPanel } from "./floating-panels/catalog-panel/InsertVariantPanel"
 import { ImageUploadPanel } from "./floating-panels/image-upload-panel/ImageUploadPanel"
 import { ObjectsSidebar } from "./sidebars/objects/ObjectsSidebar"
@@ -61,6 +63,8 @@ export default function Editor() {
       <ImageUploadPanel.Controller />
       <InsertVariantPanel.Controller />
       <AddBoardPanel.Controller />
+      <AddThemePanel.Controller />
+      <AddFontCollectionPanel.Controller />
       <EditorShortcuts />
     </main>
   )

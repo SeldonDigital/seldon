@@ -23,7 +23,7 @@ flowchart LR
 | --- | --- | --- |
 | `StockThemeSwatches` | `theme.ts` | Swatch table type on a `StockTheme` with palette slots and `background`. |
 | `ThemeMetadata` | `theme.ts` | `id`, `name`, `description`, and `intent` for one theme. |
-| `StockTheme` | `theme.ts` | Full authoring theme shape from `stock/`. Includes dynamic swatch cells. |
+| `StockTheme` | `theme.ts` | Full authoring theme shape from `catalog/`. Includes dynamic swatch cells. |
 | `ComputedTheme` | `theme.ts` | Materialized theme with resolved swatches and `id` at top level. |
 | `Theme` | `theme.ts` | Alias for `ComputedTheme`. Used in older signatures. |
 | `ThemePipelineInput` | `theme.ts` | Union accepted by normalize and palette helpers. |

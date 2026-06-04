@@ -2,9 +2,14 @@ import { useCallback } from "react"
 import { ComponentId } from "@seldon/core/components/constants"
 import { InstanceId, VariantId } from "@seldon/core/index"
 import {
+  isComponentBoard,
+  isFontCollectionBoard,
   isIconSetBoard,
+  isMediaBoard,
+  isPlaygroundBoard,
   isThemeBoard,
 } from "@seldon/core/workspace/model/components"
+import { isVariantInUse } from "@seldon/core/workspace/helpers/general/is-variant-in-use"
 import { isEntryThemeDefault } from "@seldon/core/workspace/model/entry-theme"
 import { isEntryFontCollectionDefault } from "@seldon/core/workspace/model/entry-font-collection"
 import type { ComponentKey } from "@seldon/core/workspace/types"
@@ -66,6 +71,28 @@ export function useAddRemoveCommands() {
     [dispatch, selectBoard],
   )
 
+  const addTheme = useCallback(
+    (themeId: string) => {
+      dispatch({
+        type: "add_theme",
+        payload: { componentKey: themeId as ComponentKey },
+      })
+      selectBoard(themeId)
+    },
+    [dispatch, selectBoard],
+  )
+
+  const addFontCollection = useCallback(
+    (catalogId: string) => {
+      dispatch({
+        type: "add_font_collection",
+        payload: { catalogId },
+      })
+      selectBoard(catalogId)
+    },
+    [dispatch, selectBoard],
+  )
+
   const addVariant = useCallback(() => {
     const board = selectedBoard
     if (!board || !selectedBoardId) {
@@ -117,6 +144,17 @@ export function useAddRemoveCommands() {
   const removeSelectedNode = useCallback(
     (nodeId: VariantId | InstanceId) => {
       const node = workspaceService.getNode(nodeId, workspace)
+      const isVariant = workspaceService.isVariant(node)
+
+      // Deleting a variant also removes every instance of it across all other
+      // components, so confirm before discarding those usages.
+      if (isVariant && isVariantInUse(nodeId, workspace)) {
+        const confirmed = window.confirm(
+          "This variant is used in other components. Deleting it will also remove it from those components. Delete anyway?",
+        )
+        if (!confirmed) return
+      }
+
       if (selectedNode?.id === nodeId) {
         selectNode(
           workspaceService.findAdjacent(node, "before", workspace)?.id ??
@@ -128,7 +166,7 @@ export function useAddRemoveCommands() {
         setHoverState(null)
       }
 
-      if (workspaceService.isVariant(node)) {
+      if (isVariant) {
         dispatch({
           type: "remove_variant",
           payload: { variantRootId: nodeId as VariantId },
@@ -145,19 +183,53 @@ export function useAddRemoveCommands() {
   )
 
   const removeBoard = useCallback(
-    (componentId: ComponentId) => {
-      if (componentId === selectedBoardId) {
-        selectBoard(null)
+    (componentKey: ComponentKey) => {
+      const board = workspace.components[componentKey]
+      if (!board) return
+
+      // Dispatch the removal that matches the board type. The default Seldon
+      // theme board and icon-set boards are rejected by validation with an
+      // explanatory toast.
+      let result
+      if (isComponentBoard(board)) {
+        result = dispatch({
+          type: "remove_component",
+          payload: { componentId: componentKey as ComponentId },
+        })
+      } else if (isPlaygroundBoard(board)) {
+        result = dispatch({
+          type: "remove_playground",
+          payload: { componentKey },
+        })
+      } else if (isFontCollectionBoard(board)) {
+        result = dispatch({
+          type: "remove_font_collection",
+          payload: { catalogId: componentKey },
+        })
+      } else if (isMediaBoard(board)) {
+        result = dispatch({
+          type: "remove_media",
+          payload: { catalogId: componentKey },
+        })
+      } else if (isThemeBoard(board)) {
+        result = dispatch({
+          type: "remove_theme",
+          payload: { componentKey },
+        })
+      } else if (isIconSetBoard(board)) {
+        result = dispatch({
+          type: "remove_icon_set",
+          payload: { catalogId: componentKey },
+        })
       }
 
-      dispatch({
-        type: "remove_component",
-        payload: {
-          componentId,
-        },
-      })
+      // Only clear the selection when the board was actually removed. A rejected
+      // removal (e.g. the Seldon theme board) leaves the selection unchanged.
+      if (result && componentKey === selectedBoardId) {
+        selectBoard(null)
+      }
     },
-    [selectedBoardId, selectBoard, dispatch],
+    [workspace, selectedBoardId, selectBoard, dispatch],
   )
 
   const removeSelectedThemeEntry = useCallback(
@@ -226,14 +298,15 @@ export function useAddRemoveCommands() {
       return
     }
 
-    if (selectedBoard) {
-      removeBoard(selectedBoard.id)
+    if (selectedBoard && selectedBoardId) {
+      removeBoard(selectedBoardId)
     }
   }, [
     selectedNode,
     selectedThemeEntryId,
     selectedFontCollectionEntryId,
     selectedBoard,
+    selectedBoardId,
     removeSelectedNode,
     removeSelectedThemeEntry,
     removeSelectedFontCollectionEntry,
@@ -248,6 +321,8 @@ export function useAddRemoveCommands() {
 
   return {
     addBoard,
+    addTheme,
+    addFontCollection,
     addVariant,
     deleteSelection,
     duplicateSelection,

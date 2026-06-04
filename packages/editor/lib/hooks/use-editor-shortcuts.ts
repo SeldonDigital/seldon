@@ -19,8 +19,13 @@ export function useEditorShortcuts() {
   const { undo, redo } = useHistory()
   const { setActiveTool } = useTool()
   const { copyNode, pasteNode, cutNode } = useNodeClipboardActions()
-  const { togglePanels, toggleShowSelection, toggleWireframeMode } =
-    useEditorConfig()
+  const {
+    togglePanels,
+    toggleShowSelection,
+    toggleWireframeMode,
+    toggleShowUnusedProperties,
+    toggleShowUnusedFonts,
+  } = useEditorConfig()
   const { togglePreviewMode, setDevice, isInPreviewMode } = usePreview()
   const { activeDialog, openDialog } = useDialog()
   const navigate = useNavigate()
@@ -114,6 +119,10 @@ export function useEditorShortcuts() {
 
   // Wireframe mode
   useHotkeys("w", () => toggleWireframeMode(), { preventDefault: true })
+
+  // Show unused properties / fonts in the properties sidebar
+  useHotkeys("r", () => toggleShowUnusedProperties(), { preventDefault: true })
+  useHotkeys("f", () => toggleShowUnusedFonts(), { preventDefault: true })
 
   // Back to workspaces
   useHotkeys("shift+q", () => navigate("/"), { preventDefault: true })

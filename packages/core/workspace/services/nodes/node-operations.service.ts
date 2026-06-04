@@ -22,6 +22,7 @@ import {
   isIconSetBoard,
   isMediaBoard,
   isPlaygroundBoard,
+  isThemeBoard,
 } from "../../model/components"
 import type { ComponentKey } from "../../model/components"
 import type { ComponentTreeRef } from "../../model/component-tree"
@@ -70,6 +71,7 @@ function cloneEntryNodeAsInstance(
   clone.id = newId
   clone.type = "instance"
   clone.template = formatNodeLink(templateNodeId)
+  clone.origin = "user"
   const link = parseNodeLink(row.template)
   if (link?.kind === "node" && idMap.has(link.nodeId)) {
     clone.template = formatNodeLink(idMap.get(link.nodeId)!)
@@ -116,13 +118,19 @@ export class NodeOperationsService {
     })
 
     let newId: InstanceId
+    // Read the source subtree from a plain snapshot. `_instantiateNode` only
+    // reads to build the new nodes, and `structuredClone` throws on Immer draft
+    // proxies, so cloning must operate on non-draft data.
+    const sourceWorkspace = isDraft(workspace)
+      ? (current(workspace) as Workspace)
+      : workspace
     const updatedWorkspace = produce(workspace, (draft) => {
       const parentBoard = getComponentByNodeId(draft, parentId)
       invariant(parentBoard, `Board not found for parent ${parentId}`)
 
       const { newId: newNodeId, newTreeRef, newNodes } = this._instantiateNode(
         nodeId,
-        draft as unknown as Workspace,
+        sourceWorkspace,
         parentBoard,
       )
 
@@ -157,11 +165,7 @@ export class NodeOperationsService {
       if (!board) return
 
       for (const rootId of getComponentVariantRootIds(board)) {
-        const workspaceWithoutVariant = this.deleteVariant(
-          rootId as VariantId,
-          draft,
-        )
-        Object.assign(draft.nodes, workspaceWithoutVariant.nodes)
+        this._deleteVariantFromDraft(rootId as VariantId, draft)
       }
 
       delete draft.components[componentId]
@@ -189,11 +193,7 @@ export class NodeOperationsService {
         if (!b || !isPlaygroundBoard(b)) return
 
         for (const rootId of getComponentVariantRootIds(b)) {
-          const workspaceWithoutVariant = this.deleteVariant(
-            rootId as VariantId,
-            draft,
-          )
-          Object.assign(draft.nodes, workspaceWithoutVariant.nodes)
+          this._deleteVariantFromDraft(rootId as VariantId, draft)
         }
 
         delete draft.components[componentKey]
@@ -202,6 +202,18 @@ export class NodeOperationsService {
       return workspacePropagationService.realignComponentOrder(
         workspaceAfterDeletion,
       )
+    }
+
+    if (isThemeBoard(board)) {
+      const next = mutateWorkspace(workspace, (draft) => {
+        const b = draft.components[componentKey]
+        if (!b || !isThemeBoard(b)) return
+        for (const ref of b.variants) {
+          delete draft.themes[ref.id]
+        }
+        delete draft.components[componentKey]
+      })
+      return workspacePropagationService.realignComponentOrder(next)
     }
 
     if (isFontCollectionBoard(board)) {
@@ -303,25 +315,38 @@ export class NodeOperationsService {
 
   public deleteVariant(variantId: VariantId, workspace: Workspace): Workspace {
     return withNodeMutation(variantId, workspace, (_variant, draft) => {
-      for (const [id, node] of Object.entries(draft.nodes)) {
-        if (!typeCheckingService.isInstance(node)) continue
-        const linkedVariant = parseNodeLink(node.template)?.nodeId
-        if (linkedVariant === variantId) {
-          this._deleteSubtreeFromDraft(id as InstanceId, draft)
-        }
-      }
-
-      // Delete the variant subtree while its tree ref still exists, then drop the
-      // dangling refs from every board. Removing the refs first would leave the
-      // descendant nodes orphaned.
-      this._deleteSubtreeFromDraft(variantId, draft)
-
-      for (const board of Object.values(draft.components)) {
-        if (!board) continue
-        board.variants = board.variants.filter((ref) => ref.id !== variantId)
-        walkRemoveVariantRefs(board.variants, variantId)
-      }
+      this._deleteVariantFromDraft(variantId, draft)
     })
+  }
+
+  /**
+   * Removes a variant, every instance that links to it, and all board refs to it,
+   * mutating the draft in place. Callers that already hold a draft (board deletion)
+   * use this directly so node deletions propagate; merging a nested result with
+   * `Object.assign` would silently keep deleted node ids.
+   */
+  private _deleteVariantFromDraft(
+    variantId: VariantId,
+    draft: WritableDraft<Workspace>,
+  ): void {
+    for (const [id, node] of Object.entries(draft.nodes)) {
+      if (!typeCheckingService.isInstance(node)) continue
+      const linkedVariant = parseNodeLink(node.template)?.nodeId
+      if (linkedVariant === variantId) {
+        this._deleteSubtreeFromDraft(id as InstanceId, draft)
+      }
+    }
+
+    // Delete the variant subtree while its tree ref still exists, then drop the
+    // dangling refs from every board. Removing the refs first would leave the
+    // descendant nodes orphaned.
+    this._deleteSubtreeFromDraft(variantId, draft)
+
+    for (const board of Object.values(draft.components)) {
+      if (!board) continue
+      board.variants = board.variants.filter((ref) => ref.id !== variantId)
+      walkRemoveVariantRefs(board.variants, variantId)
+    }
   }
 
   private _deleteSubtreeFromDraft(
@@ -575,6 +600,7 @@ export class NodeOperationsService {
       overrides: structuredClone(
         (source as import("../../model/entry-node").EntryNode).overrides,
       ),
+      origin: "user",
     }
 
     for (const [oldId, mappedId] of idMap) {
@@ -615,6 +641,7 @@ export class NodeOperationsService {
       id: newRootId,
       type: "instance",
       template: formatNodeLink(nodeId),
+      origin: "user",
     }
 
     let newTreeRef: ComponentTreeRef = { id: newRootId }

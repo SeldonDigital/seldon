@@ -15,6 +15,7 @@ import {
 } from "../../../model/components"
 import { shouldBlockDeletableComponentRemoval } from "../../../helpers/removal/component-removal-guards"
 import { DEFAULT_FONT_COLLECTION_BOARD_KEY } from "../../../helpers/font-collections/seed-default-font-collection-board"
+import { DEFAULT_THEME_BOARD_KEY } from "../../../helpers/themes/seed-default-theme-board"
 import { ErrorMessages } from "../../../constants"
 import { componentValidators, isPackagedCatalogBoard } from "../validators"
 import { WorkspaceValidationError } from "../workspace-validation-error"
@@ -175,7 +176,7 @@ export function validateRemoveBoard(
       }
       if (catalogId === DEFAULT_FONT_COLLECTION_BOARD_KEY) {
         throw new WorkspaceValidationError(
-          "Cannot remove the System font collection board",
+          "Cannot remove the System font collection board. Every workspace requires the system fonts and the Seldon theme, so this board is always kept.",
           action,
         )
       }
@@ -212,10 +213,29 @@ export function validateRemoveBoard(
         "Cannot remove icon set catalog board",
         action,
       )
-    case "remove_theme":
-      throw new WorkspaceValidationError(
-        "Cannot remove theme catalog board",
-        action,
-      )
+    case "remove_theme": {
+      const componentKey = action.payload.componentKey
+      componentValidators.exists(workspace, componentKey)
+      const board = workspace.components[componentKey]
+      if (!board || !isThemeBoard(board)) {
+        throw new WorkspaceValidationError(
+          `Expected a theme board at ${componentKey}`,
+          action,
+        )
+      }
+      if (componentKey === DEFAULT_THEME_BOARD_KEY) {
+        throw new WorkspaceValidationError(
+          "Cannot remove the Seldon theme board. Every workspace requires the Seldon theme, so this board is always kept.",
+          action,
+        )
+      }
+      if (shouldBlockDeletableComponentRemoval(board, workspace, componentKey)) {
+        throw new WorkspaceValidationError(
+          "Theme catalog rows are still referenced in another board",
+          action,
+        )
+      }
+      break
+    }
   }
 }

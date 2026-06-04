@@ -55,6 +55,14 @@ interface ThemeEditingContext {
   themeProperties: FlatProperty[]
 }
 
+interface FontCollectionEditingContext {
+  isFontCollectionEditing: true
+  updateFontCollectionProperty: (
+    property: FlatProperty,
+    newValue: string,
+  ) => void
+}
+
 interface RowPropertyProps {
   property: FlatProperty
   workspace: Workspace
@@ -62,6 +70,7 @@ interface RowPropertyProps {
   theme?: Theme
   allProperties: FlatProperty[]
   themeEditingContext?: ThemeEditingContext | null
+  fontCollectionEditingContext?: FontCollectionEditingContext | null
 }
 
 export function RowProperty({
@@ -71,6 +80,7 @@ export function RowProperty({
   theme,
   allProperties,
   themeEditingContext,
+  fontCollectionEditingContext,
 }: RowPropertyProps) {
   const { debugModeEnabled } = useDebugMode()
   const frameRef = useRef<HTMLDivElement>(null)
@@ -113,6 +123,12 @@ export function RowProperty({
       (property.controlType !== "combo" && property.controlType !== "menu")
     ) {
       return undefined
+    }
+
+    // Rows that carry their own options (font collection family rows) are not
+    // backed by the property schema, so use the supplied options directly.
+    if (property.options) {
+      return [property.options]
     }
 
     if (property.key === "theme") {
@@ -443,6 +459,20 @@ export function RowProperty({
           if (property.isLookParent) {
             return ""
           }
+          // License rows render their value as an external link.
+          if (property.linkHref) {
+            return (
+              <a
+                href={property.linkHref}
+                target="_blank"
+                rel="noreferrer"
+                onClick={(event) => event.stopPropagation()}
+                style={{ color: "inherit", textDecoration: "underline" }}
+              >
+                {value || "View"}
+              </a>
+            )
+          }
           const shouldShowControl = Boolean(property.controlType)
           const valueContent =
             isEditingProperty && shouldShowControl ? (
@@ -456,6 +486,7 @@ export function RowProperty({
                 onBlur={() => setIsEditingProperty(false)}
                 color={labelColor}
                 themeEditingContext={themeEditingContext}
+                fontCollectionEditingContext={fontCollectionEditingContext}
               />
             ) : (
               (value ?? "")
@@ -571,9 +602,11 @@ export function RowProperty({
             ? 0 // Hide chevron for calculated properties
             : supportsUpload
               ? 1 // Always show upload icon for image properties
-              : shouldShowMenuIcon()
-                ? 0
-                : 1,
+              : !property.controlType
+                ? 0 // Hide chevron for read-only rows with no control
+                : shouldShowMenuIcon()
+                  ? 0
+                  : 1,
         ),
       },
 
@@ -614,6 +647,7 @@ export function RowProperty({
     handleMenuClick,
     supportsUpload,
     themeEditingContext,
+    fontCollectionEditingContext,
   ])
 
   return (
@@ -674,6 +708,7 @@ export function RowProperty({
               theme={theme}
               allProperties={allProperties}
               themeEditingContext={themeEditingContext}
+              fontCollectionEditingContext={fontCollectionEditingContext}
             />
           ))}
         </FramerExpandable>

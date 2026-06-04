@@ -38,6 +38,7 @@ export type {
   EntryNodePropertyOverrides,
   EntryNodeThemeRef,
   EntryNodeType,
+  NodeOrigin,
 } from "./entry-node"
 export { isEntryNodeDefault, isEntryNodeInstance, isEntryNodeVariant } from "./entry-node"
 export type {

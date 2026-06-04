@@ -2,7 +2,7 @@
 
 Normalizes packaged theme rows, runs palette harmony math, and supports `instantiateTheme` when a catalog id plus overrides must become a `ComputedTheme`. This folder is not `properties/compute`. It does not walk component `Properties` or resolve `@` picks on nodes.
 
-Prefer `computeTheme` from `@seldon/core/themes/helpers` for the usual materialize-one-theme path. Import this package when you need `instantiateTheme`, normalization helpers, or palette utilities without pulling `stock/` into a cycle.
+Prefer `computeTheme` from `@seldon/core/themes/helpers` for the usual materialize-one-theme path. Import this package when you need `instantiateTheme`, normalization helpers, or palette utilities without pulling `catalog/` into a cycle.
 
 ---
 
@@ -27,7 +27,7 @@ flowchart TD
 
 | Type or Function | File | Purpose and use |
 | --- | --- | --- |
-| `PresetThemesById` | `instantiate-theme.ts` | Map of `ThemeTemplateId` to `StockTheme`. Pass `STOCK_THEMES_BY_ID` from `stock/`. |
+| `PresetThemesById` | `instantiate-theme.ts` | Map of `ThemeTemplateId` to `StockTheme`. Pass `STOCK_THEMES_BY_ID` from `catalog/`. |
 | `instantiateTheme` | `instantiate-theme.ts` | Deep-merges overrides into a stock preset, then `computeTheme`. Used for workspace theme variants and catalog-driven authoring. |
 | `normalizeThemeInput` | `normalize-theme.ts` | Coerces loose JSON into `ThemePipelineInput` shape. Throws when `core` or `color` is missing. Called before palette math and from `normalizeTheme` in helpers. |
 | `normalizeThemeNumber` | `normalize-theme-value.ts` | Strips unit objects and strings to plain numbers. Used while walking theme tables during normalize. |

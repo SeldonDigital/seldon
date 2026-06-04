@@ -1,8 +1,18 @@
 "use client"
 
 import { selectFile } from "@lib/utils/select-file"
+import {
+  isComponentBoard,
+  isFontCollectionBoard,
+  isMediaBoard,
+  isPlaygroundBoard,
+  isThemeBoard,
+} from "@seldon/core/workspace/model/components"
 import { isEntryThemeDefault } from "@seldon/core/workspace/model/entry-theme"
 import { isEntryFontCollectionDefault } from "@seldon/core/workspace/model/entry-font-collection"
+import { DEFAULT_FONT_COLLECTION_BOARD_KEY } from "@seldon/core/workspace/helpers/font-collections/seed-default-font-collection-board"
+import { DEFAULT_THEME_BOARD_KEY } from "@seldon/core/workspace/helpers/themes/seed-default-theme-board"
+import { resolveComponentKey } from "@lib/workspace/workspace-accessors"
 import { useNavigate } from "react-router"
 import { useCallback, useMemo } from "react"
 import { useAddRemoveCommands } from "@lib/hooks/commands/use-add-remove-commands"
@@ -42,6 +52,8 @@ export function useMenuConfig(): HeaderConfig {
     toggleAutoExpandOnSelection,
     showUnusedProperties,
     toggleShowUnusedProperties,
+    showUnusedFonts,
+    toggleShowUnusedFonts,
   } = useEditorConfig()
   const { dispatch, workspace } = useWorkspace()
   const { debugModeEnabled, toggleDebugMode } = useDebugMode()
@@ -74,7 +86,33 @@ export function useMenuConfig(): HeaderConfig {
   const { openDialog } = useDialog()
 
   const canDeleteSelection = useMemo(() => {
-    if (selection) return true
+    if (selectedNode) return true
+
+    if (selectedBoard) {
+      if (
+        isComponentBoard(selectedBoard) ||
+        isPlaygroundBoard(selectedBoard) ||
+        isMediaBoard(selectedBoard)
+      ) {
+        return true
+      }
+      // The default Seldon theme board and the System font collection board are
+      // always kept. Other theme and font collection boards can be removed.
+      if (isThemeBoard(selectedBoard)) {
+        return (
+          resolveComponentKey(selectedBoard, workspace) !==
+          DEFAULT_THEME_BOARD_KEY
+        )
+      }
+      if (isFontCollectionBoard(selectedBoard)) {
+        return (
+          resolveComponentKey(selectedBoard, workspace) !==
+          DEFAULT_FONT_COLLECTION_BOARD_KEY
+        )
+      }
+      // Icon-set catalog boards cannot be removed.
+      return false
+    }
 
     if (selectedThemeEntryId) {
       const entry = workspace.themes[selectedThemeEntryId]
@@ -88,7 +126,8 @@ export function useMenuConfig(): HeaderConfig {
 
     return false
   }, [
-    selection,
+    selectedNode,
+    selectedBoard,
     selectedThemeEntryId,
     selectedFontCollectionEntryId,
     workspace,
@@ -382,6 +421,14 @@ export function useMenuConfig(): HeaderConfig {
             label: "Show Unused Properties",
             action: toggleShowUnusedProperties,
             active: showUnusedProperties,
+            shortcut: "R",
+          },
+          {
+            id: "show-unused-fonts",
+            label: "Show Unused Fonts",
+            action: toggleShowUnusedFonts,
+            active: showUnusedFonts,
+            shortcut: "F",
           },
           "separator",
           {
@@ -434,6 +481,8 @@ export function useMenuConfig(): HeaderConfig {
       debugModeEnabled,
       showUnusedProperties,
       toggleShowUnusedProperties,
+      showUnusedFonts,
+      toggleShowUnusedFonts,
     ],
   )
 

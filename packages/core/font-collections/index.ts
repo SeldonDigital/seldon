@@ -13,6 +13,12 @@ export {
   getRemoteFontUrl,
   isRemoteFontFamily,
   getFamilyNameByValue,
+  deriveVariantPreset,
+  getEnabledVariants,
+  isVariantEnabled,
+  type FamilyVariantSelection,
+  type VariantPreset,
+  type VariantSelection,
 } from "./helpers"
 export {
   STOCK_FONT_COLLECTIONS,
@@ -20,7 +26,7 @@ export {
   FONT_COLLECTIONS,
   FONT_COLLECTIONS_BY_ID,
   defaultFontCollection,
-} from "./collections"
+} from "./catalog"
 export {
   instantiateFontCollection,
   type PresetFontCollectionsById,

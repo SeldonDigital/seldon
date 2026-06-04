@@ -172,7 +172,6 @@ export const RowBoard = memo(function RowBoard({
               ? variants.map((entryId) => (
                   <RowFontCollectionEntry
                     key={entryId}
-                    componentKey={getComponentKey(board)}
                     fontCollectionEntryId={entryId}
                     show={show}
                     parentIsSelected={boardIsActive}

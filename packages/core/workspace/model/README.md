@@ -78,6 +78,7 @@ flowchart LR
 | `EntryNodePropertyOverrides` | `entry-node.ts` | Stores property overrides for node entries. \| Used when reading or writing `EntryNode.overrides`. |
 | `EntryNodeLevel` | `entry-node.ts` | Lists saved node levels. \| Used when node entries carry component level data. |
 | `EntryNodeThemeRef` | `entry-node.ts` | Names a theme ref stored on a node. \| Used by theme helpers and mutation services. |
+| `NodeOrigin` | `entry-node.ts` | Creation origin of an instance, `"schema"` or `"user"`. \| Drives remove_instance hide-vs-delete. |
 | `EntryNode` | `entry-node.ts` | Describes default, variant, and instance node rows. \| Used by most workspace graph code. |
 | `isEntryNodeDefault` | `entry-node.ts` | Checks whether a node row is a default node. \| Used before default-node behavior runs. |
 | `isEntryNodeVariant` | `entry-node.ts` | Checks whether a node row is a variant node. \| Used before variant behavior runs. |

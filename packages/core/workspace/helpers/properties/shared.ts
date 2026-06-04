@@ -2,6 +2,7 @@ import { Properties, type PropertyKey, ValueType } from "@seldon/core"
 import { getComponentSchema } from "@seldon/core/components/catalog"
 import { ComponentId, isComponentId } from "@seldon/core/components/constants"
 import { isCompoundProperty } from "@seldon/core/helpers/type-guards/compound/is-compound-property"
+import { COMPOUND_FACET_DISPLAY_ORDER } from "@seldon/core/properties/constants"
 import { isIconSetVariant } from "@seldon/core/icons/helpers/is-icon-set-variant"
 import { getPropertyCategory } from "@seldon/core/properties/schemas"
 import {
@@ -224,6 +225,26 @@ export function getSubPropertyKeysFromSchema(
   return layer ? Object.keys(layer) : []
 }
 
+/**
+ * Orders facet keys by `COMPOUND_FACET_DISPLAY_ORDER` for the parent compound.
+ * Listed facets come first in their declared order. Facets without an entry keep
+ * their incoming relative order after the listed ones.
+ */
+function orderCompoundFacetKeys(
+  propertyKey: string,
+  keys: string[],
+): string[] {
+  const order = COMPOUND_FACET_DISPLAY_ORDER[propertyKey]
+  if (!order) return keys
+  const rank = new Map(order.map((facet, index) => [facet, index]))
+  return [...keys].sort((a, b) => {
+    const rankA = rank.get(a) ?? order.length
+    const rankB = rank.get(b) ?? order.length
+    if (rankA !== rankB) return rankA - rankB
+    return keys.indexOf(a) - keys.indexOf(b)
+  })
+}
+
 export function getCompoundPropertyStructure(
   propertyKey: string,
   propertyValue: unknown,
@@ -233,7 +254,8 @@ export function getCompoundPropertyStructure(
   const actualKeys = getSubPropertyKeysFromObject(propertyValue)
   const schemaKeys = getSubPropertyKeysFromSchema(propertyKey, node, workspace)
   if (isCompoundProperty(propertyKey as PropertyKey)) {
-    return [...new Set([...actualKeys, ...schemaKeys])]
+    const merged = [...new Set([...actualKeys, ...schemaKeys])]
+    return orderCompoundFacetKeys(propertyKey, merged)
   }
   return schemaKeys
 }

@@ -98,18 +98,19 @@ export class TypeCheckingService {
   }
 
   /**
-   * Checks if an instance is schema-defined (auto-generated from component schema).
+   * Checks if an instance is schema-defined. Reads the engine-maintained
+   * `origin` classification set when the instance was created.
    * @param node - The instance to check
-   * @returns True if the instance is schema-defined
+   * @returns True when the instance originated from a component schema
    */
-  public isSchemaDefinedInstance(_node: Instance): boolean {
-    return false
+  public isSchemaDefinedInstance(node: Instance): boolean {
+    return node.origin === "schema"
   }
 
   /**
-   * Checks if a node can have children based on component schema restrictions.
+   * Checks if a node can have children based on its component catalog template.
    * @param node - The node to check
-   * @returns True if the node can have children
+   * @returns True if the node maps to a component catalog id
    */
   public canNodeHaveChildren(node: RulesNodeOrComponent): boolean {
     if (this.isComponentEntry(node)) return false
@@ -117,14 +118,7 @@ export class TypeCheckingService {
 
     try {
       const parsed = parseNodeTemplate(node.template)
-      if (parsed?.kind !== "catalog" || !isComponentId(parsed.componentId)) {
-        return false
-      }
-      const schema = getComponentSchema(parsed.componentId)
-      const restrictions = (
-        schema as { restrictions?: { addChildren?: boolean } }
-      ).restrictions
-      return restrictions?.addChildren !== false
+      return parsed?.kind === "catalog" && isComponentId(parsed.componentId)
     } catch {
       return false
     }

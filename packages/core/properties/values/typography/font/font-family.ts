@@ -1,4 +1,4 @@
-import { FONT_COLLECTIONS } from "../../../../font-collections/collections"
+import { FONT_COLLECTIONS } from "../../../../font-collections/catalog"
 import { Theme, ThemeFontFamilyKey } from "../../../../themes/types"
 import { Workspace } from "../../../../workspace/types"
 import { ValueType } from "../../../constants"

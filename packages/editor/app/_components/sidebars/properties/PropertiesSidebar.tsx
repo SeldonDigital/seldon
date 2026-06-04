@@ -1,9 +1,17 @@
 import { useMemo, useRef } from "react"
 import { Board, Instance, Variant } from "@seldon/core"
 import { getComputedTheme } from "@seldon/core/workspace/compute"
-import { isThemeBoard } from "@seldon/core/workspace/model/components"
+import {
+  isFontCollectionBoard,
+  isThemeBoard,
+} from "@seldon/core/workspace/model/components"
 import { themeService } from "@seldon/core/workspace/services/theme/theme.service"
+import { workspaceFontCollectionService } from "@seldon/core/workspace/services/font-collection/font-collection.service"
 import { useEditorConfig } from "@lib/hooks/use-editor-config"
+import {
+  isFontCollectionEditingSelection,
+  resolveActiveFontCollectionEntryId,
+} from "@lib/font-collections/resolve-active-font-collection-entry-id"
 import {
   isThemeEditingSelection,
   resolveActiveThemeEntryId,
@@ -16,15 +24,23 @@ import {
 } from "../helpers/sidebar-styles"
 import { SidebarContainer } from "../../../seldon/elements/SidebarContainer"
 import { PropertyTree } from "./PropertyTree"
+import { flattenFontCollectionFamilies } from "./helpers/font-collection-properties-data"
+import { buildMetadataProperties } from "./helpers/metadata-properties-data"
 import { FlatProperty, flattenNodeProperties } from "./helpers/properties-data"
 import { flattenThemeProperties } from "./helpers/theme-properties-data"
 import { getThemePropertyControlType } from "./helpers/get-theme-property-controls"
+import { useFontCollectionProperties } from "./hooks/use-font-collection-properties"
 import { useThemeProperties } from "./hooks/use-theme-properties"
 
 export function PropertiesSidebar() {
-  const { selection, selectedBoard, selectedThemeEntryId } = useSelection()
+  const {
+    selection,
+    selectedBoard,
+    selectedThemeEntryId,
+    selectedFontCollectionEntryId,
+  } = useSelection()
   const { workspace, dispatch } = useWorkspace({ usePreview: false })
-  const { showUnusedProperties } = useEditorConfig()
+  const { showUnusedProperties, showUnusedFonts } = useEditorConfig()
   const scrollerRef = useRef<HTMLDivElement>(null)
 
   const activeThemeEntryId = useMemo(
@@ -40,6 +56,34 @@ export function PropertiesSidebar() {
     () => isThemeEditingSelection(workspace, selectedThemeEntryId),
     [workspace, selectedThemeEntryId],
   )
+
+  const activeFontCollectionEntryId = useMemo(
+    () =>
+      resolveActiveFontCollectionEntryId({
+        workspace,
+        selectedFontCollectionEntryId,
+      }),
+    [workspace, selectedFontCollectionEntryId],
+  )
+
+  const isFontCollectionEditingMode = useMemo(
+    () =>
+      isFontCollectionEditingSelection(
+        workspace,
+        selectedFontCollectionEntryId,
+      ),
+    [workspace, selectedFontCollectionEntryId],
+  )
+
+  const editedFontCollection = useMemo(() => {
+    if (!isFontCollectionEditingMode || !activeFontCollectionEntryId) {
+      return null
+    }
+    return workspaceFontCollectionService.getFontCollection(
+      activeFontCollectionEntryId,
+      workspace,
+    )
+  }, [isFontCollectionEditingMode, activeFontCollectionEntryId, workspace])
 
   const { updateThemeProperty } = useThemeProperties(activeThemeEntryId)
 
@@ -100,6 +144,87 @@ export function PropertiesSidebar() {
     }
   }, [isThemeEditingMode, updateThemeProperty, themeProperties])
 
+  const metadataProperties = useMemo<FlatProperty[] | undefined>(() => {
+    if (isThemeEditingMode && editedTheme && activeThemeEntryId) {
+      const entry = workspace.themes[activeThemeEntryId]
+      const board = Object.values(workspace.components).find(
+        (component) =>
+          isThemeBoard(component) &&
+          component.variants.some(
+            (variant) => variant.id === activeThemeEntryId,
+          ),
+      )
+      const author = board && isThemeBoard(board) ? board.author : undefined
+      return buildMetadataProperties({
+        name: entry?.label ?? editedTheme.metadata.name,
+        description: editedTheme.metadata.description,
+        intent: editedTheme.metadata.intent,
+        author,
+      })
+    }
+    if (
+      isFontCollectionEditingMode &&
+      editedFontCollection &&
+      activeFontCollectionEntryId
+    ) {
+      const entry = workspace["font-collections"][activeFontCollectionEntryId]
+      return buildMetadataProperties({
+        name: entry?.label ?? editedFontCollection.metadata.name,
+        description: editedFontCollection.metadata.description,
+        intent: editedFontCollection.metadata.intent,
+      })
+    }
+    return undefined
+  }, [
+    isThemeEditingMode,
+    editedTheme,
+    activeThemeEntryId,
+    isFontCollectionEditingMode,
+    editedFontCollection,
+    activeFontCollectionEntryId,
+    workspace,
+  ])
+
+  const fontVariantSelection = useMemo(() => {
+    if (!isFontCollectionEditingMode || !activeFontCollectionEntryId) return {}
+    return workspaceFontCollectionService.getVariantSelection(
+      activeFontCollectionEntryId,
+      workspace,
+    )
+  }, [isFontCollectionEditingMode, activeFontCollectionEntryId, workspace])
+
+  const familyProperties = useMemo<FlatProperty[] | undefined>(() => {
+    if (!isFontCollectionEditingMode || !editedFontCollection) return undefined
+    return flattenFontCollectionFamilies(
+      editedFontCollection,
+      fontVariantSelection,
+      showUnusedFonts,
+    )
+  }, [
+    isFontCollectionEditingMode,
+    editedFontCollection,
+    fontVariantSelection,
+    showUnusedFonts,
+  ])
+
+  const { updateFontCollectionProperty } = useFontCollectionProperties(
+    activeFontCollectionEntryId,
+  )
+
+  const fontCollectionEditingContext = useMemo((): {
+    isFontCollectionEditing: true
+    updateFontCollectionProperty: (
+      property: FlatProperty,
+      newValue: string,
+    ) => void
+  } | null => {
+    if (!isFontCollectionEditingMode) return null
+    return {
+      isFontCollectionEditing: true,
+      updateFontCollectionProperty,
+    }
+  }, [isFontCollectionEditingMode, updateFontCollectionProperty])
+
   const propertyTreeNode = useMemo((): Variant | Instance | Board | null => {
     if (selection) {
       return selection as Variant | Instance | Board
@@ -114,10 +239,29 @@ export function PropertiesSidebar() {
         }
       }
     }
+    if (isFontCollectionEditingMode && activeFontCollectionEntryId) {
+      for (const entry of Object.values(workspace.components)) {
+        if (
+          isFontCollectionBoard(entry) &&
+          entry.variants.some(
+            (variant) => variant.id === activeFontCollectionEntryId,
+          )
+        ) {
+          return entry
+        }
+      }
+    }
     return null
-  }, [selection, selectedBoard, isThemeEditingMode, workspace.components])
+  }, [
+    selection,
+    selectedBoard,
+    isThemeEditingMode,
+    isFontCollectionEditingMode,
+    activeFontCollectionEntryId,
+    workspace.components,
+  ])
 
-  if (!selection && !isThemeEditingMode) {
+  if (!selection && !isThemeEditingMode && !isFontCollectionEditingMode) {
     return <SidebarContainer style={sidebarNoSelectionStyle} />
   }
 
@@ -138,6 +282,9 @@ export function PropertiesSidebar() {
         scrollerRef={scrollerRef}
         dispatch={dispatch}
         themeEditingContext={themeEditingContext}
+        fontCollectionEditingContext={fontCollectionEditingContext}
+        metadataProperties={metadataProperties}
+        familyProperties={familyProperties}
       />
     </SidebarContainer>
   )

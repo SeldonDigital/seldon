@@ -3,7 +3,7 @@ import { computeTheme } from "../helpers/compute-theme"
 import type { ComputedTheme, StockTheme } from "../types/theme"
 import type { ThemeTemplateId } from "../types/theme-id"
 
-/** Stock theme definitions keyed by catalog id (pass {@link STOCK_THEMES_BY_ID} from `themes/stock`). */
+/** Stock theme definitions keyed by catalog id (pass {@link STOCK_THEMES_BY_ID} from `themes/catalog`). */
 export type PresetThemesById = Record<ThemeTemplateId, StockTheme>
 
 /**

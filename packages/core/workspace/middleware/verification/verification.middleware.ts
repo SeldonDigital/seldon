@@ -99,6 +99,17 @@ const validators = {
         check(treeIds.has(child.id), ErrorMessages.danglingChildNode(child.id))
       })
   },
+  /** Validates that each instance node carries a valid origin classification. */
+  instancesHaveOrigin: (workspace: Workspace) => {
+    Object.values(getWorkspaceNodes(workspace))
+      .filter(typeCheckingService.isInstance)
+      .forEach((instance) => {
+        check(
+          instance.origin === "schema" || instance.origin === "user",
+          ErrorMessages.instanceMissingOrigin(instance.id),
+        )
+      })
+  },
 
   /** Validates that variants don't have computed overrides referencing parent nodes. */
   checkNoVariantsWithComputedProperties: (workspace: Workspace) => {
@@ -206,6 +217,9 @@ export const workspaceVerificationMiddleware: Middleware =
 
       validators.noDanglingChildNodes(nextWorkspace)
       log("✅ No dangling child nodes found")
+
+      validators.instancesHaveOrigin(nextWorkspace)
+      log("✅ All instances have an origin classification")
 
       validators.checkNoVariantsWithComputedProperties(nextWorkspace)
       log("✅ No variants with computed properties referencing parent nodes")

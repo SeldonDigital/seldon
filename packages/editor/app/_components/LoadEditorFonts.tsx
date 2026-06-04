@@ -1,28 +1,27 @@
 "use client"
 
-import { getRemoteFontUrl } from "@seldon/core"
-import { useEditorFonts } from "@lib/hooks/use-editor-fonts"
+import { useMemo } from "react"
+import { workspaceFontCollectionService } from "@seldon/core/workspace/services"
+import { buildFontFaceCss } from "@lib/font-collections/build-font-face-css"
+import { useWorkspace } from "@lib/workspace/use-workspace"
 
-/** Opt-in flag for loading remote font hosts. System and local fonts never make a request. */
-const REMOTE_FONTS_ENABLED =
-  import.meta.env.VITE_SELDON_ENABLE_REMOTE_FONTS === "true"
-
+/**
+ * Self-hosts every enabled font-collection family for the canvas. The enabled
+ * families' woff2 files are served from `public/font-files`, so this injects a
+ * single `@font-face` stylesheet and makes no network request to a font host.
+ */
 export function LoadEditorFonts() {
-  const { fonts } = useEditorFonts()
+  const { workspace } = useWorkspace({ usePreview: false })
 
-  if (!REMOTE_FONTS_ENABLED) {
+  const fontFaceCss = useMemo(() => {
+    const families =
+      workspaceFontCollectionService.getEnabledRemoteFamilies(workspace)
+    return buildFontFaceCss(families)
+  }, [workspace])
+
+  if (!fontFaceCss) {
     return null
   }
 
-  return (
-    <>
-      {fonts.map((font) => {
-        const url = getRemoteFontUrl(font)
-        if (!url) {
-          return null
-        }
-        return <link key={font} href={url} rel="stylesheet" />
-      })}
-    </>
-  )
+  return <style>{fontFaceCss}</style>
 }

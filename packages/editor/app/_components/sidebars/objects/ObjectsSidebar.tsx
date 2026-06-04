@@ -1,10 +1,9 @@
 "use client"
 
-import { useCallback, useEffect, useMemo } from "react"
+import { useEffect, useMemo } from "react"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
-import { useDialog } from "@lib/hooks/use-dialog"
-import { useTool } from "@lib/hooks/use-tool"
 import { useWorkspaceId } from "@lib/project/hooks/use-workspace-id"
+import { useEditableWorkspaceName } from "@lib/local-workspace/use-editable-workspace-name"
 import { useWorkspaceRecord } from "@lib/local-workspace/use-workspace-record"
 import { useDraggableMonitor } from "./hooks/use-draggable-monitor"
 import { useScrollSelection } from "./hooks/use-scroll-selection"
@@ -21,7 +20,7 @@ import { ProjectTree } from "./ProjectTree"
 
 export function ObjectsSidebar() {
   const workspaceId = useWorkspaceId()
-  const { record } = useWorkspaceRecord(workspaceId)
+  const { record, updateRecord } = useWorkspaceRecord(workspaceId)
   const { workspace } = useWorkspace({ usePreview: false })
   const { activeBoard } = useActiveBoard()
   const {
@@ -31,8 +30,6 @@ export function ObjectsSidebar() {
     selectedThemeEntryId,
     selectedFontCollectionEntryId,
   } = useSelection()
-  const { openDialog } = useDialog()
-  const { setActiveTool } = useTool()
   const scrollerRef = useScrollSelection()
 
   useDraggableMonitor()
@@ -63,28 +60,31 @@ export function ObjectsSidebar() {
     return getBoardSections(workspaceService.getBoards(workspace))
   }, [workspace])
 
-  const handleAddClick = useCallback(() => {
-    openDialog("add-board")
-    setActiveTool("select")
-  }, [openDialog, setActiveTool])
+  const editableNameProps = useEditableWorkspaceName({
+    name: record?.name ?? "",
+    onRename: (name) => updateRecord({ name }),
+  })
 
   if (!record) return null
 
   return (
     <SidebarContainer style={sidebarShellStyle} data-testid="objects-sidebar">
       <BarTabsProject
+        style={{ height: "var(--sdn-size-xlarge)" }}
         button={{ style: { display: "none" } }}
         text={{
           children: record.name,
+          ...editableNameProps,
           style: {
             alignSelf: "unset",
             minWidth: 0,
             display: "block",
             maxWidth: "100%",
+            cursor: "text",
+            outline: "none",
           },
         }}
-        button2={{ onClick: handleAddClick }}
-        icon2={{ icon: "seldon-component" }}
+        button2={{ style: { display: "none" } }}
       />
       <SelectionRelationsProvider>
         <ProjectTree sections={sections} scrollerRef={scrollerRef} />

@@ -13,7 +13,13 @@ import { useMoveObjects } from "@lib/workspace/use-move-objects"
  * so nothing changes while dragging beyond the local drop indicator.
  */
 export function useDraggableMonitor() {
-  const { moveNodeNextTo, moveBoardNextTo, moveNodeInside } = useMoveObjects()
+  const {
+    moveNodeNextTo,
+    moveBoardNextTo,
+    moveNodeInside,
+    duplicateNodeInside,
+    duplicateNodeNextTo,
+  } = useMoveObjects()
 
   useEffect(() => {
     return monitorForElements({
@@ -49,24 +55,42 @@ export function useDraggableMonitor() {
             const targetNode = destination.data.targetNode as Variant | Instance
             const placement = destination.data.placement as Placement
             const subjectNode = source.data.subjectNode as Variant | Instance
+            const duplicate = destination.data.duplicate === true
 
             invariant(targetNode, "targetNode was not set")
             invariant(placement, "placement was not set")
             invariant(subjectNode, "subjectNode was not set")
 
             if (placement === "inside") {
-              moveNodeInside({
-                targetNode,
-                subjectNode,
-                isPreview: false,
-              })
+              if (duplicate) {
+                duplicateNodeInside({
+                  targetNode,
+                  subjectNode,
+                  isPreview: false,
+                })
+              } else {
+                moveNodeInside({
+                  targetNode,
+                  subjectNode,
+                  isPreview: false,
+                })
+              }
             } else {
-              moveNodeNextTo({
-                targetNode,
-                subjectNode,
-                position: placement,
-                isPreview: false,
-              })
+              if (duplicate) {
+                duplicateNodeNextTo({
+                  targetNode,
+                  subjectNode,
+                  position: placement,
+                  isPreview: false,
+                })
+              } else {
+                moveNodeNextTo({
+                  targetNode,
+                  subjectNode,
+                  position: placement,
+                  isPreview: false,
+                })
+              }
             }
             break
           }
@@ -76,5 +100,11 @@ export function useDraggableMonitor() {
         }
       },
     })
-  }, [moveNodeNextTo, moveBoardNextTo, moveNodeInside])
+  }, [
+    moveNodeNextTo,
+    moveBoardNextTo,
+    moveNodeInside,
+    duplicateNodeInside,
+    duplicateNodeNextTo,
+  ])
 }

@@ -1,0 +1,123 @@
+import { ComponentId } from "@seldon/core/components/constants"
+import { InstanceId, VariantId, Workspace } from "@seldon/core/index"
+import { findParentNode } from "@seldon/core/workspace/helpers/nodes/find-parent-node"
+import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
+import type { ComponentKey, EntryNode } from "@seldon/core/workspace/types"
+import {
+  getNodeCatalogComponentId,
+  getNodeChildIds,
+} from "@lib/workspace/node-tree"
+import { getComponentKey, getNode } from "@lib/workspace/workspace-accessors"
+
+/**
+ * Where a paste should land, resolved from the clipboard subject and the current
+ * selection. The subject-kind branch (variant vs instance) is deliberately not
+ * decided here; it lives only in `duplicateNodeInto` so paste and option-drag
+ * share one implementation.
+ */
+export type PasteTargetResult =
+  | {
+      action: "duplicate-into"
+      parentId: VariantId | InstanceId
+      index: number
+    }
+  | { action: "duplicate-variant"; variantId: VariantId }
+  | { action: "error"; message: string }
+
+/** Level rule plus cycle guard, matching the drag validator but variant-agnostic. */
+function canPasteInto(
+  targetComponentId: ComponentId,
+  subjectComponentId: ComponentId,
+  targetNode: EntryNode,
+  workspace: Workspace,
+): boolean {
+  return (
+    workspaceService.canComponentBeParentOf(
+      targetComponentId,
+      subjectComponentId,
+    ) &&
+    !workspaceService.hasAncestorWithComponentId(
+      subjectComponentId,
+      targetNode,
+      workspace,
+    )
+  )
+}
+
+function isDefaultVariantTarget(node: EntryNode): boolean {
+  return workspaceService.isVariant(node) && workspaceService.isDefaultVariant(node)
+}
+
+export function resolvePasteTarget({
+  subjectId,
+  selectedNode,
+  selectedBoardId,
+  workspace,
+}: {
+  subjectId: VariantId | InstanceId
+  selectedNode: EntryNode | null
+  selectedBoardId: ComponentKey | null
+  workspace: Workspace
+}): PasteTargetResult {
+  const subject = getNode(workspace, subjectId)
+  if (!subject) {
+    return { action: "error", message: "The copied object no longer exists" }
+  }
+
+  const subjectComponentId = getNodeCatalogComponentId(subject, workspace)
+  if (!subjectComponentId) {
+    return { action: "error", message: "This object cannot be pasted" }
+  }
+
+  // A node is selected: try to paste inside it, otherwise below it as a sibling.
+  if (selectedNode) {
+    const targetComponentId = getNodeCatalogComponentId(selectedNode, workspace)
+    if (
+      targetComponentId &&
+      !isDefaultVariantTarget(selectedNode) &&
+      canPasteInto(targetComponentId, subjectComponentId, selectedNode, workspace)
+    ) {
+      const index = getNodeChildIds(selectedNode, workspace).length
+      return { action: "duplicate-into", parentId: selectedNode.id, index }
+    }
+
+    const parent = findParentNode(selectedNode.id, workspace)
+    if (parent) {
+      const parentComponentId = getNodeCatalogComponentId(parent, workspace)
+      if (
+        parentComponentId &&
+        !isDefaultVariantTarget(parent) &&
+        canPasteInto(parentComponentId, subjectComponentId, parent, workspace)
+      ) {
+        const childIds = getNodeChildIds(parent, workspace)
+        const targetIndex = childIds.indexOf(selectedNode.id)
+        const index = targetIndex === -1 ? childIds.length : targetIndex + 1
+        return { action: "duplicate-into", parentId: parent.id, index }
+      }
+    }
+
+    return { action: "error", message: "This object cannot be pasted here" }
+  }
+
+  // A board is selected with no node: only a variant of that board may paste.
+  if (selectedBoardId) {
+    if (!workspaceService.isVariant(subject)) {
+      return {
+        action: "error",
+        message: "Only variants can be pasted onto a board",
+      }
+    }
+
+    const board = workspaceService.findComponentForVariant(subject, workspace)
+    if (!board || getComponentKey(board) !== selectedBoardId) {
+      return {
+        action: "error",
+        message: "A variant can only be pasted onto its own board",
+      }
+    }
+
+    return { action: "duplicate-variant", variantId: subject.id }
+  }
+
+  return { action: "error", message: "Select where to paste" }
+}

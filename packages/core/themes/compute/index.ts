@@ -1,6 +1,6 @@
 /**
  * Theme completion and normalization (not `properties/compute`). Prefer `computeTheme` from
- * `@seldon/core/themes/helpers` or this entry to avoid import cycles with `themes/stock`.
+ * `@seldon/core/themes/helpers` or this entry to avoid import cycles with `themes/catalog`.
  */
 export { computeTheme } from "../helpers/compute-theme"
 export { getDynamicSwatchColors, getPalette } from "./get-dynamic-swatch-color"

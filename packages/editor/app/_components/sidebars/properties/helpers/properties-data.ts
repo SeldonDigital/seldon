@@ -103,6 +103,10 @@ export interface FlatProperty {
   status: PropertyStatus
   /** Theme color-point rows set this for swatch icon preview in the properties tree. */
   iconColorValue?: string
+  /** Menu/combo options supplied directly, for rows not backed by the property schema. */
+  options?: Array<{ name: string; value: string }>
+  /** When set, the value cell renders as a link to this URL (read-only rows). */
+  linkHref?: string
 }
 
 /**

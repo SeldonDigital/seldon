@@ -4,7 +4,9 @@ import { getCssFromProperties } from "@seldon/factory/styles/css-properties/get-
 import { useMemo } from "react"
 import { Board, Properties, Scroll, Unit, ValueType } from "@seldon/core"
 import { ComponentId } from "@seldon/core/components/constants"
+import { getEnabledVariants } from "@seldon/core/font-collections"
 import type { FontFamilyEntry } from "@seldon/core/font-collections/types"
+import { fontVariantDisplayLabel } from "@seldon/core/helpers/utils/font-variant"
 import { isFontCollectionBoard } from "@seldon/core/workspace/model/components"
 import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
 import { themeService } from "@seldon/core/workspace/services/theme/theme.service"
@@ -52,11 +54,23 @@ export function FontCollectionBoard({ board }: FontCollectionBoardProps) {
         workspace,
       )
       if (!collection) return []
-      return Object.entries(collection.families).map(([slot, family]) => ({
+      const selection = workspaceFontCollectionService.getVariantSelection(
         entryId,
-        slot,
-        family,
-      }))
+        workspace,
+      )
+      return Object.entries(collection.families).flatMap(([slot, family]) => {
+        const variants = family.variants ?? []
+        // Families without weight variants (local/system) always show and have
+        // no weights line.
+        if (variants.length === 0) {
+          return [{ entryId, slot, family, weightsLabel: "" }]
+        }
+        const enabled = getEnabledVariants(selection[slot], variants)
+        // A family shows only when at least one weight is enabled.
+        if (enabled.length === 0) return []
+        const weightsLabel = enabled.map(fontVariantDisplayLabel).join(", ")
+        return [{ entryId, slot, family, weightsLabel }]
+      })
     })
   }, [board, workspace])
 
@@ -110,7 +124,7 @@ export function FontCollectionBoard({ board }: FontCollectionBoardProps) {
           padding: "2rem",
         }}
       >
-        {specimens.map(({ entryId, slot, family }) => {
+        {specimens.map(({ entryId, slot, family, weightsLabel }) => {
           const selectionKey = formatResourceItemKey({
             resource: "font-collection",
             componentKey: boardKey,
@@ -124,6 +138,7 @@ export function FontCollectionBoard({ board }: FontCollectionBoardProps) {
               entryId={entryId}
               resourceItemKey={selectionKey}
               family={family}
+              weightsLabel={weightsLabel}
               themes={workspace.themes}
               boardThemeId={board.componentTheme}
             />
@@ -139,6 +154,8 @@ type FontCollectionTypeSpecimenProps = {
   entryId: string
   resourceItemKey: string
   family: FontFamilyEntry
+  /** Enabled weight labels for this family, such as `"400, 700, 400 Italic"`. */
+  weightsLabel: string
   themes: Workspace["themes"]
   boardThemeId: string
 }
@@ -156,6 +173,7 @@ function FontCollectionTypeSpecimen({
   entryId,
   resourceItemKey,
   family,
+  weightsLabel,
   themes,
   boardThemeId,
 }: FontCollectionTypeSpecimenProps) {
@@ -174,6 +192,11 @@ function FontCollectionTypeSpecimen({
         const isSubheading =
           getNodeCatalogComponentId(node, typeSpecimenBase) ===
           ComponentId.SUBHEADING
+        // The "Font weights" text node lists the family's enabled weights. Swap
+        // its placeholder content the same way the family name is swapped.
+        const isFontWeights =
+          (node.overrides?.content as { value?: unknown } | undefined)
+            ?.value === "Font weights"
         return [
           id,
           {
@@ -189,6 +212,11 @@ function FontCollectionTypeSpecimen({
                     content: { type: ValueType.EXACT, value: family.name },
                   }
                 : {}),
+              ...(isFontWeights && weightsLabel
+                ? {
+                    content: { type: ValueType.EXACT, value: weightsLabel },
+                  }
+                : {}),
             },
             ...(id === rootId ? { theme: boardThemeId } : {}),
           },
@@ -200,7 +228,15 @@ function FontCollectionTypeSpecimen({
       themes,
       nodes,
     } as Workspace
-  }, [typeSpecimenBase, rootId, themes, boardThemeId, fontValue, family.name])
+  }, [
+    typeSpecimenBase,
+    rootId,
+    themes,
+    boardThemeId,
+    fontValue,
+    family.name,
+    weightsLabel,
+  ])
 
   if (!previewWorkspace || !rootId) {
     return null

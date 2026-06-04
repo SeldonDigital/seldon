@@ -86,6 +86,7 @@ import { resetComponentTags } from "./handlers/reset/reset-component-tags"
 import { resetNodeEditorData } from "./handlers/reset/reset-node-editor-data"
 import { resetNodeLabel } from "./handlers/reset/reset-node-label"
 import { resetNodeProperty } from "./handlers/reset/reset-node-property"
+import { resetNode } from "./handlers/reset/reset-node"
 import { resetFontCollectionEditorData } from "./handlers/reset/reset-font-collection-editor-data"
 import { resetFontCollectionLabel } from "./handlers/reset/reset-font-collection-label"
 import { resetFontCollectionOverride } from "./handlers/reset/reset-font-collection-override"
@@ -115,6 +116,8 @@ import { setNodeLabel } from "./handlers/set/set-node-label"
 import { setNodeProperties } from "./handlers/set/set-node-properties"
 import { setNodeTheme } from "./handlers/set/set-node-theme"
 import { setFontCollectionEditorData } from "./handlers/set/set-font-collection-editor-data"
+import { setFontCollectionFamilyPreset } from "./handlers/set/set-font-collection-family-preset"
+import { setFontCollectionFamilyVariant } from "./handlers/set/set-font-collection-family-variant"
 import { setFontCollectionLabel } from "./handlers/set/set-font-collection-label"
 import { setFontCollectionOverride } from "./handlers/set/set-font-collection-override"
 import { setThemeEditorData } from "./handlers/set/set-theme-editor-data"
@@ -263,6 +266,8 @@ function reducer(workspace: Workspace, action: WorkspaceAction): Workspace {
       return setNodeProperties(action.payload, workspace)
     case "reset_node_property":
       return resetNodeProperty(action.payload, workspace)
+    case "reset_node":
+      return resetNode(action.payload, workspace)
     case "set_node_label":
       return setNodeLabel(action.payload, workspace)
     case "set_node_theme":
@@ -393,6 +398,10 @@ function reducer(workspace: Workspace, action: WorkspaceAction): Workspace {
       return setFontCollectionEditorData(action.payload, workspace)
     case "set_font_collection_override":
       return setFontCollectionOverride(action.payload, workspace)
+    case "set_font_collection_family_variant":
+      return setFontCollectionFamilyVariant(action.payload, workspace)
+    case "set_font_collection_family_preset":
+      return setFontCollectionFamilyPreset(action.payload, workspace)
     case "reset_font_collection_label":
       return resetFontCollectionLabel(action.payload, workspace)
     case "reset_font_collection_editor_data":

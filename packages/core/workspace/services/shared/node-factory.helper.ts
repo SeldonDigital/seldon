@@ -71,6 +71,7 @@ export function createInstanceNode(
     template: formatNodeLink(options.templateNodeId ?? sourceNode.id),
     overrides,
     label: options.label ?? sourceNode.label,
+    origin: "user",
     __editor: { initialOverrides: structuredClone(overrides) },
   }
 

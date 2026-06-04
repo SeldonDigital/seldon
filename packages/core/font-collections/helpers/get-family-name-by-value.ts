@@ -1,4 +1,4 @@
-import { FONT_COLLECTIONS } from "../collections"
+import { FONT_COLLECTIONS } from "../catalog"
 
 /**
  * Finds the display name for a stored font family value across packaged collections.

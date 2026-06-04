@@ -6,16 +6,33 @@ import { useAddRemoveCommands } from "@lib/hooks/commands/use-add-remove-command
 import { useDialog } from "@lib/hooks/use-dialog"
 import { useSelection } from "@lib/workspace/use-selection"
 import { useWorkspace } from "@lib/workspace/use-workspace"
+import { CatalogPanel } from "./CatalogPanel"
 import {
-  CatalogItem,
-  CatalogPanel,
+  CatalogComponentItem,
   FilterComponentPredicate,
-} from "./CatalogPanel"
+  useComponentCatalog,
+} from "./use-component-catalog"
+
+const LEVEL_LABELS: Partial<Record<ComponentLevel, string>> = {
+  [ComponentLevel.SCREEN]: "screen",
+  [ComponentLevel.MODULE]: "module",
+  [ComponentLevel.PART]: "part",
+  [ComponentLevel.ELEMENT]: "element",
+  [ComponentLevel.PRIMITIVE]: "primitive",
+  [ComponentLevel.FRAME]: "frame",
+}
 
 /**
- * This panel is used to add a boards to the workspace
+ * This panel is used to add a board to the workspace. When `level` is provided
+ * the catalog is scoped to that component level (e.g. only elements).
  */
-export function AddBoardPanel({ onClose }: { onClose: () => void }) {
+export function AddBoardPanel({
+  onClose,
+  level,
+}: {
+  onClose: () => void
+  level?: ComponentLevel
+}) {
   const { workspace } = useWorkspace()
   const { addBoard } = useAddRemoveCommands()
   const { selectBoard } = useSelection()
@@ -24,42 +41,59 @@ export function AddBoardPanel({ onClose }: { onClose: () => void }) {
 
   const shouldShowComponent: FilterComponentPredicate = useCallback(
     (schema) => {
-      // Don't show frames or boards in boards panel
-      if (
-        schema.level === ComponentLevel.FRAME ||
-        schema.level === ComponentLevel.BOARD
-      )
+      // Board-level schemas are never offered in this panel.
+      if (schema.level === ComponentLevel.BOARD) return false
+
+      if (level) {
+        // Scoped add: only the requested level (frames included when asked for).
+        if (schema.level !== level) return false
+      } else if (schema.level === ComponentLevel.FRAME) {
+        // Unscoped add: hide frames, matching the global add behavior.
         return false
+      }
 
       return !currentBoards.includes(schema.id)
     },
-    [currentBoards],
+    [currentBoards, level],
   )
 
   // Add the board and close the dialog
-  const handlePick = async (item: CatalogItem) => {
+  const handlePick = async (item: CatalogComponentItem) => {
     await addBoard(item.componentId)
     selectBoard(item.componentId)
   }
+
+  const { categories, query, setQuery, submit, isFetching } =
+    useComponentCatalog({
+      shouldShowComponent,
+      task: "search_catalog",
+    })
+
+  const title = level
+    ? `Add ${LEVEL_LABELS[level] ?? "component"}`
+    : "Add component"
 
   return (
     <CatalogPanel
       onClose={onClose}
       onPick={handlePick}
-      shouldShowComponent={shouldShowComponent}
-      confirmButtonText="Add component"
-      title="Add component"
-      task="search_catalog"
+      categories={categories}
+      query={query}
+      onQueryChange={setQuery}
+      onSubmitSearch={submit}
+      isSearching={isFetching}
+      confirmButtonText={title}
+      title={title}
     />
   )
 }
 
 const Controller = () => {
-  const { activeDialog, closeDialog } = useDialog()
+  const { activeDialog, dialogLevel, closeDialog } = useDialog()
 
   if (activeDialog !== "add-board") return null
 
-  return <AddBoardPanel onClose={closeDialog} />
+  return <AddBoardPanel onClose={closeDialog} level={dialogLevel} />
 }
 
 AddBoardPanel.Controller = Controller

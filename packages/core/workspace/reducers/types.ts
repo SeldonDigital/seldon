@@ -14,7 +14,7 @@
  * | add_variant | components.variants + nodes |
  * | insert_variant_instance, insert_duplicate_instance, insert_default_instance, add_component_and_insert_default_instance | components tree + nodes |
  * | remove_instance, remove_variant, duplicate_node, move_instance, reorder_instance_in_parent | components tree + nodes |
- * | set_node_properties, reset_node_property, set_node_label, set_node_theme, set_node_editor_data | nodes |
+ * | set_node_properties, reset_node_property, reset_node, set_node_label, set_node_theme, set_node_editor_data | nodes |
  * | reset_node_label, reset_node_editor_data | nodes |
  * | reset_user_variant_to_default | components.variants tree + nodes |
  * | set_theme_label, set_theme_editor_data, set_theme_override, reset_theme_tokens, reset_theme_label, reset_theme_editor_data, reset_theme_override | themes |
@@ -22,6 +22,7 @@
  * | remove_theme_custom_{...same 19 tables...} | themes (variant rows only) |
  * | delete_theme, duplicate_theme | themes (+ components.variants for theme row) |
  * | set_font_collection_{label,editor_data,override}, reset_font_collection_{label,editor_data,override}, add_font_collection_custom_family, remove_font_collection_custom_family | font-collections (variant rows only for families) |
+ * | set_font_collection_family_variant, set_font_collection_family_preset | font-collections (any entry; per-family variant selection) |
  * | delete_font_collection, duplicate_font_collection | font-collections (+ components.variants for font-collection row) |
  * | stubs_* (font / icon / media) | reserved — no-op until spec |
  * | transcript_add_message | none (no-op) |
@@ -389,6 +390,12 @@ export type WorkspaceAction =
       }
     }
   | {
+      type: "reset_node"
+      payload: {
+        nodeId: InstanceId | VariantId
+      }
+    }
+  | {
       type: "set_component_properties"
       payload: {
         componentKey: ComponentKey
@@ -624,6 +631,23 @@ export type WorkspaceAction =
   | {
       type: "remove_font_collection_custom_family"
       payload: { fontCollectionId: string; key: string }
+    }
+  | {
+      type: "set_font_collection_family_variant"
+      payload: {
+        fontCollectionId: string
+        slot: string
+        variant: string
+        enabled: boolean
+      }
+    }
+  | {
+      type: "set_font_collection_family_preset"
+      payload: {
+        fontCollectionId: string
+        slot: string
+        preset: "all" | "none"
+      }
     }
   /** @internal Reserved payload; no-op until `font-collections` spec is finalized. */
   | { type: "stubs_add_font_collection_row"; payload: { id?: string } }

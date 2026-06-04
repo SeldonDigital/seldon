@@ -2,7 +2,7 @@ import type { Middleware } from "../../types"
 import { alwaysRunMigrations, migrations } from "./migrations"
 
 /** Current workspace file migration counter (`metadata.version`). */
-export const CURRENT_WORKSPACE_VERSION = 4
+export const CURRENT_WORKSPACE_VERSION = 5
 
 function runVersionedMigrations(workspace: import("../../types").Workspace) {
   let current = workspace
