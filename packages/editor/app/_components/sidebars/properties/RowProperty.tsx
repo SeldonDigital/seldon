@@ -571,9 +571,11 @@ export function RowProperty({
             ? 0 // Hide chevron for calculated properties
             : supportsUpload
               ? 1 // Always show upload icon for image properties
-              : shouldShowMenuIcon()
-                ? 0
-                : 1,
+              : !property.controlType
+                ? 0 // Hide chevron for read-only rows with no control
+                : shouldShowMenuIcon()
+                  ? 0
+                  : 1,
         ),
       },
 

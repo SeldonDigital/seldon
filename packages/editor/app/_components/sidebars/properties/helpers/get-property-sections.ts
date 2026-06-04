@@ -11,8 +11,16 @@ import {
 import { getNodeCatalogComponentId } from "@lib/workspace/node-tree"
 import { FlatProperty } from "./properties-data"
 
-/** Inspector section ids: the core property display categories plus the editor-only CSS block. */
-export type PropertyCategoryType = PropertyDisplayCategory | "css"
+/**
+ * Inspector section ids: the core property display categories, the editor-only
+ * CSS block, and the read-only `metadata` and `families` sections used by themes
+ * and font collections.
+ */
+export type PropertyCategoryType =
+  | PropertyDisplayCategory
+  | "css"
+  | "metadata"
+  | "families"
 
 export interface PropertySection {
   label: string
