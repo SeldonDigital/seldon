@@ -1,16 +1,11 @@
 import { useCallback } from "react"
-import { getComponentSchema } from "@seldon/core/components/catalog"
 import { ComponentId } from "@seldon/core/components/constants"
 import { InstanceId, VariantId, invariant } from "@seldon/core/index"
 import { getComponentOrder } from "@seldon/core/workspace/helpers/components/component-sort-order"
 import { getComponentVariantRootIds } from "@seldon/core/workspace/helpers/components/get-component-variant-root-ids"
 import { findParentNode } from "@seldon/core/workspace/helpers/nodes/find-parent-node"
-import { nodeAllowsReordering } from "@seldon/core/workspace/helpers/nodes/node-allows-reordering"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
-import {
-  getNodeCatalogComponentId,
-  getNodeChildIds,
-} from "@lib/workspace/node-tree"
+import { getNodeChildIds } from "@lib/workspace/node-tree"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { useSelection } from "@lib/workspace/use-selection"
 import { useWorkspace } from "@lib/workspace/use-workspace"
@@ -65,16 +60,6 @@ export function useMoveCommands() {
       invariant(parent, "Parent not found")
       const childIds = getNodeChildIds(parent, workspace)
       invariant(childIds.length > 0, "Parent does not have children")
-
-      if (!nodeAllowsReordering(parent.id, workspace)) {
-        const catalogId = getNodeCatalogComponentId(parent, workspace)
-        invariant(catalogId, "Parent catalog id not found")
-        const schema = getComponentSchema(catalogId)
-        addToast(
-          `${schema.name} component does not allow reordering of child components`,
-        )
-        return
-      }
 
       const currentIndex = childIds.indexOf(nodeId)
       const isAtLimit =

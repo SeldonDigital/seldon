@@ -38,10 +38,7 @@ export function useSidebarPlacementTracking(node: Variant | Instance) {
     if (!componentId) return false
     const schema = getComponentSchema(componentId)
     const mayContain = rules.componentLevels[schema.level].mayContain
-    const addChildren = (
-      schema as { restrictions?: { addChildren?: boolean } }
-    ).restrictions?.addChildren
-    return mayContain.length > 0 && addChildren !== false
+    return mayContain.length > 0
   }, [node, workspace])
 
   const parentNode = useMemo(() => {

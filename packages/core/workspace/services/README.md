@@ -145,7 +145,7 @@ flowchart LR
 | `TypeCheckingService.isComponentEntry` | `type-checking/type-checking.service.ts` | Type guard for board rows. \| Called when a subject may be a board or entry. |
 | `TypeCheckingService.isNode` | `type-checking/type-checking.service.ts` | Type guard for variant or instance entries. \| Called when excluding board rows. |
 | `TypeCheckingService.isSchemaDefinedInstance` | `type-checking/type-checking.service.ts` | Reports whether an instance is schema-defined. \| Always false in the v0 model. Reserved for future catalog instances. |
-| `TypeCheckingService.canNodeHaveChildren` | `type-checking/type-checking.service.ts` | Reads catalog restrictions from a catalog template. \| Called when finding a container node. |
+| `TypeCheckingService.canNodeHaveChildren` | `type-checking/type-checking.service.ts` | True when the node maps to a component catalog id. \| Called when finding a container node. |
 | `TypeCheckingService.canComponentBeParentOf` | `type-checking/type-checking.service.ts` | Checks component level containment rules. \| Called by insert validation. |
 | `typeCheckingService` | `type-checking/type-checking.service.ts` | Default `TypeCheckingService` instance. \| Re-exported from the barrel. |
 

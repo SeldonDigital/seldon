@@ -830,7 +830,7 @@ A `board` is a shell and is not placed into object trees, but used by editors to
 
 A `frame` is a cross-level container and may appear at any level. When a `frame` is inserted, each child already inside the frame is also checked against the new parent. A frame holding a `module` cannot enter an `element`, even though an `element` accepts a `frame`.
 
-A schema may refuse children. When a component schema sets `restrictions.addChildren` to `false`, the node accepts no children.
+A node accepts a child only when its component level `mayContain` rule allows that child level.
 
 A node cannot contain its own component or any ancestor component. This keeps trees acyclic. A `frame` inside a `frame` is the one exception, because a frame carries no component identity.
 
@@ -903,7 +903,7 @@ Reorder and move both act on instances only. They differ in whether the parent c
 | Default variant | Cannot reorder inside a default variant | Cannot move into a default variant |
 | Cross-variant | Not applicable | Rejected, must stay in the same root variant |
 
-A reorder keeps the instance under its current parent and changes its index. A schema may forbid reordering when it sets `restrictions.reorderChildren` to `false`.
+A reorder keeps the instance under its current parent and changes its index.
 
 A move places the instance under a new parent. The target must be able to accept the child level, must not be a default variant, and must belong to the same root variant as the source. Moves across variants are rejected.
 

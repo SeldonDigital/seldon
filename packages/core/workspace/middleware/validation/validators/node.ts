@@ -5,7 +5,6 @@ import { getChildrenIds } from "../../../helpers/components/get-children-ids"
 import { getComponentByNodeId } from "../../../helpers/components/get-component-by-node-id"
 import { isDefaultVariant } from "../../../helpers/general/is-default-variant"
 import { canNodeHaveChildren } from "../../../helpers/nodes/can-node-have-children"
-import { nodeAllowsReordering } from "../../../helpers/nodes/node-allows-reordering"
 import { isVariantInUse } from "../../../helpers/general/is-variant-in-use"
 import { getVariantById } from "../../../helpers/general/get-variant-by-id"
 import { ErrorMessages } from "../../../constants"
@@ -116,10 +115,6 @@ export const nodeValidators = {
       const parent = nodeTraversalService.findParentNode(node, workspace)
       if (!parent) {
         throw new Error(ErrorMessages.parentNotFound(id))
-      }
-
-      if (!nodeAllowsReordering(parent.id, workspace)) {
-        throw new Error(ErrorMessages.moveNotAllowed(id))
       }
     } else {
       const board = nodeRelationshipService.findComponentForVariant(

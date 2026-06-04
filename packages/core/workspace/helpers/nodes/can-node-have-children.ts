@@ -1,4 +1,3 @@
-import { getComponentSchema } from "../../../components/catalog"
 import { isComponentId } from "../../../components/constants"
 import { EntryNode, Workspace } from "../../types"
 import { getNodeCatalogId } from "./get-node-catalog-id"
@@ -8,7 +7,7 @@ import { getNodeCatalogId } from "./get-node-catalog-id"
  *
  * @param node Node to check.
  * @param workspace Workspace that contains the node chain.
- * @returns True when the node maps to a schema that allows children.
+ * @returns True when the node maps to a component catalog id.
  */
 export function canNodeHaveChildren(
   node: EntryNode | null,
@@ -17,8 +16,5 @@ export function canNodeHaveChildren(
   if (!node) return false
 
   const catalogId = getNodeCatalogId(node, workspace)
-  if (!catalogId || !isComponentId(catalogId)) return false
-
-  const schema = getComponentSchema(catalogId)
-  return schema.restrictions?.addChildren !== false
+  return !!catalogId && isComponentId(catalogId)
 }

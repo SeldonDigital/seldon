@@ -7,20 +7,15 @@ import {
   VariantId,
   invariant,
 } from "@seldon/core"
-import { getComponentSchema } from "@seldon/core/components/catalog"
 import { getComponentOrder } from "@seldon/core/workspace/helpers/components/component-sort-order"
 import { getComponentVariantRootIds } from "@seldon/core/workspace/helpers/components/get-component-variant-root-ids"
 import { findParentNode } from "@seldon/core/workspace/helpers/nodes/find-parent-node"
 import { getVariantById } from "@seldon/core/workspace/helpers/general/get-variant-by-id"
 import { getVariantIndex } from "@seldon/core/workspace/helpers/general/get-variant-index"
 import { isDefaultVariant } from "@seldon/core/workspace/helpers/general/is-default-variant"
-import { nodeAllowsReordering } from "@seldon/core/workspace/helpers/nodes/node-allows-reordering"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
 import type { ComponentEntry } from "@seldon/core/workspace/types"
-import {
-  getNodeCatalogComponentId,
-  getNodeChildIds,
-} from "@lib/workspace/node-tree"
+import { getNodeChildIds } from "@lib/workspace/node-tree"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { useAddToast } from "@components/toaster/use-add-toast"
 import { useWorkspace } from "./use-workspace"
@@ -53,16 +48,6 @@ export function useMoveObjects() {
       invariant(parent, "Parent not found")
       const childIds = getNodeChildIds(parent, workspace)
       invariant(childIds.length > 0, "Parent does not have children")
-
-      if (!nodeAllowsReordering(parent.id, workspace)) {
-        const catalogId = getNodeCatalogComponentId(parent, workspace)
-        invariant(catalogId, "Parent catalog id not found")
-        const schema = getComponentSchema(catalogId)
-        addToast(
-          `${schema.name} component does not allow reordering of child components`,
-        )
-        return
-      }
 
       const currentIndex = childIds.indexOf(nodeId)
       const isAtLimit =

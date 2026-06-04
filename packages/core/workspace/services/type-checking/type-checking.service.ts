@@ -107,9 +107,9 @@ export class TypeCheckingService {
   }
 
   /**
-   * Checks if a node can have children based on component schema restrictions.
+   * Checks if a node can have children based on its component catalog template.
    * @param node - The node to check
-   * @returns True if the node can have children
+   * @returns True if the node maps to a component catalog id
    */
   public canNodeHaveChildren(node: RulesNodeOrComponent): boolean {
     if (this.isComponentEntry(node)) return false
@@ -117,14 +117,7 @@ export class TypeCheckingService {
 
     try {
       const parsed = parseNodeTemplate(node.template)
-      if (parsed?.kind !== "catalog" || !isComponentId(parsed.componentId)) {
-        return false
-      }
-      const schema = getComponentSchema(parsed.componentId)
-      const restrictions = (
-        schema as { restrictions?: { addChildren?: boolean } }
-      ).restrictions
-      return restrictions?.addChildren !== false
+      return parsed?.kind === "catalog" && isComponentId(parsed.componentId)
     } catch {
       return false
     }
