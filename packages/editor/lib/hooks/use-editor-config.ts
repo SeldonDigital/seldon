@@ -28,6 +28,10 @@ interface EditorConfigState {
   showUnusedProperties: boolean
   setShowUnusedProperties: (enabled: boolean) => void
 
+  // Font collection settings
+  showUnusedFonts: boolean
+  setShowUnusedFonts: (enabled: boolean) => void
+
   // Sidebar refactor settings
   useRefactoredSidebars: boolean
   setUseRefactoredSidebars: (enabled: boolean) => void
@@ -72,6 +76,11 @@ const useStore = create<EditorConfigState>()(
       setShowUnusedProperties: (enabled) =>
         set((state) => ({ ...state, showUnusedProperties: enabled })),
 
+      // Font collection settings
+      showUnusedFonts: false,
+      setShowUnusedFonts: (enabled) =>
+        set((state) => ({ ...state, showUnusedFonts: enabled })),
+
       // Sidebar refactor settings
       useRefactoredSidebars: false,
       setUseRefactoredSidebars: (enabled) =>
@@ -86,6 +95,7 @@ const useStore = create<EditorConfigState>()(
         autoScrollToSelection: state.autoScrollToSelection,
         autoExpandOnSelection: state.autoExpandOnSelection,
         showUnusedProperties: state.showUnusedProperties,
+        showUnusedFonts: state.showUnusedFonts,
         useRefactoredSidebars: state.useRefactoredSidebars,
       }),
     },
@@ -106,6 +116,8 @@ export function useEditorConfig() {
     setAutoExpandOnSelection,
     showUnusedProperties,
     setShowUnusedProperties,
+    showUnusedFonts,
+    setShowUnusedFonts,
     useRefactoredSidebars,
     setUseRefactoredSidebars,
   } = useStore(
@@ -122,6 +134,8 @@ export function useEditorConfig() {
       setAutoExpandOnSelection: state.setAutoExpandOnSelection,
       showUnusedProperties: state.showUnusedProperties,
       setShowUnusedProperties: state.setShowUnusedProperties,
+      showUnusedFonts: state.showUnusedFonts,
+      setShowUnusedFonts: state.setShowUnusedFonts,
       useRefactoredSidebars: state.useRefactoredSidebars,
       setUseRefactoredSidebars: state.setUseRefactoredSidebars,
     })),
@@ -146,6 +160,10 @@ export function useEditorConfig() {
   const toggleShowUnusedProperties = useCallback(() => {
     setShowUnusedProperties(!showUnusedProperties)
   }, [setShowUnusedProperties, showUnusedProperties])
+
+  const toggleShowUnusedFonts = useCallback(() => {
+    setShowUnusedFonts(!showUnusedFonts)
+  }, [setShowUnusedFonts, showUnusedFonts])
 
   const toggleRefactoredSidebars = useCallback(() => {
     setUseRefactoredSidebars(!useRefactoredSidebars)
@@ -179,6 +197,11 @@ export function useEditorConfig() {
     showUnusedProperties,
     setShowUnusedProperties,
     toggleShowUnusedProperties,
+
+    // Font collection methods
+    showUnusedFonts,
+    setShowUnusedFonts,
+    toggleShowUnusedFonts,
 
     // Sidebar refactor methods
     useRefactoredSidebars,

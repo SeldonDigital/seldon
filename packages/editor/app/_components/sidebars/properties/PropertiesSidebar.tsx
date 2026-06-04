@@ -40,7 +40,7 @@ export function PropertiesSidebar() {
     selectedFontCollectionEntryId,
   } = useSelection()
   const { workspace, dispatch } = useWorkspace({ usePreview: false })
-  const { showUnusedProperties } = useEditorConfig()
+  const { showUnusedProperties, showUnusedFonts } = useEditorConfig()
   const scrollerRef = useRef<HTMLDivElement>(null)
 
   const activeThemeEntryId = useMemo(
@@ -195,8 +195,17 @@ export function PropertiesSidebar() {
 
   const familyProperties = useMemo<FlatProperty[] | undefined>(() => {
     if (!isFontCollectionEditingMode || !editedFontCollection) return undefined
-    return flattenFontCollectionFamilies(editedFontCollection, fontVariantSelection)
-  }, [isFontCollectionEditingMode, editedFontCollection, fontVariantSelection])
+    return flattenFontCollectionFamilies(
+      editedFontCollection,
+      fontVariantSelection,
+      showUnusedFonts,
+    )
+  }, [
+    isFontCollectionEditingMode,
+    editedFontCollection,
+    fontVariantSelection,
+    showUnusedFonts,
+  ])
 
   const { updateFontCollectionProperty } = useFontCollectionProperties(
     activeFontCollectionEntryId,

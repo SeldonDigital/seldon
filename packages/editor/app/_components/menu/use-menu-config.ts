@@ -52,6 +52,8 @@ export function useMenuConfig(): HeaderConfig {
     toggleAutoExpandOnSelection,
     showUnusedProperties,
     toggleShowUnusedProperties,
+    showUnusedFonts,
+    toggleShowUnusedFonts,
   } = useEditorConfig()
   const { dispatch, workspace } = useWorkspace()
   const { debugModeEnabled, toggleDebugMode } = useDebugMode()
@@ -419,6 +421,14 @@ export function useMenuConfig(): HeaderConfig {
             label: "Show Unused Properties",
             action: toggleShowUnusedProperties,
             active: showUnusedProperties,
+            shortcut: "R",
+          },
+          {
+            id: "show-unused-fonts",
+            label: "Show Unused Fonts",
+            action: toggleShowUnusedFonts,
+            active: showUnusedFonts,
+            shortcut: "F",
           },
           "separator",
           {
@@ -471,6 +481,8 @@ export function useMenuConfig(): HeaderConfig {
       debugModeEnabled,
       showUnusedProperties,
       toggleShowUnusedProperties,
+      showUnusedFonts,
+      toggleShowUnusedFonts,
     ],
   )
 

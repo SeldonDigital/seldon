@@ -102,6 +102,7 @@ function createPlainFamilyRow(slot: string, name: string, origin: string): FlatP
 export function flattenFontCollectionFamilies(
   collection: ComputedFontCollection,
   selection: VariantSelection,
+  showUnusedFonts: boolean = true,
 ): FlatProperty[] {
   const rows: FlatProperty[] = []
 
@@ -115,6 +116,13 @@ export function flattenFontCollectionFamilies(
     }
 
     const preset = deriveVariantPreset(slotSelection, variants)
+
+    // A `None` family is unused, so hide it (parent, weights, and license)
+    // unless the view explicitly shows unused fonts.
+    if (preset === "none" && !showUnusedFonts) {
+      continue
+    }
+
     const presetValue =
       preset === "all" ? "All" : preset === "none" ? "None" : "Custom"
 
