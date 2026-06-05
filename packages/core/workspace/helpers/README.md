@@ -57,9 +57,8 @@ flowchart LR
 | `getComponentOrder` | `component-sort-order.ts` | Reads sort order from `__editor`. \| Used when listing catalog rows in UI order. |
 | `setComponentOrder` | `component-sort-order.ts` | Writes sort order on `__editor`. \| Used after reordering catalog rows. |
 | `getComponentLevelThemeRef` | `get-component-level-theme-ref.ts` | Reads `componentTheme` on a catalog row. \| Used for theme inheritance and effective-theme checks. |
-| `THEME_COMPONENT_CATALOG_IDS` | `resource-component-catalog-ids.ts` | Allowlist of packaged theme template ids. \| Used when validating theme row `catalogId`. |
-| `resolvePackagedThemeByCatalogId` | `resource-component-catalog-ids.ts` | Finds stock theme data for a theme row `catalogId`. \| Used when theme boards reference packaged themes. |
-| `FONT_COLLECTION_COMPONENT_CATALOG_IDS` | `resource-component-catalog-ids.ts` | Allowlist of font-collection catalog ids. \| Used when validating font-collection rows. |
+| `THEME_COMPONENT_CATALOG_IDS` | `resource-component-catalog-ids.ts` | Allowlist built from `core/themes` `packagedThemeCatalogIds`. \| Used when validating theme row `catalogId`. |
+| `FONT_COLLECTION_COMPONENT_CATALOG_IDS` | `resource-component-catalog-ids.ts` | Allowlist built from `core/font-collections` `packagedFontCollectionCatalogIds`. \| Used when validating font-collection rows. |
 | `ICON_SET_COMPONENT_CATALOG_IDS` | `resource-component-catalog-ids.ts` | Allowlist of icon-set catalog ids. \| Used when validating icon-set rows. |
 | `MEDIA_COMPONENT_CATALOG_IDS` | `resource-component-catalog-ids.ts` | Allowlist of media catalog ids. \| Used when validating media rows. |
 

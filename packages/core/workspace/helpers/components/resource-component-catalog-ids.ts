@@ -1,22 +1,12 @@
 import { packagedFontCollectionCatalogIds } from "../../../font-collections/catalog-ids"
-import { STOCK_THEMES } from "../../../themes"
-import type { StockTheme } from "../../../themes/types"
+import { packagedThemeCatalogIds } from "../../../themes"
 
 /**
- * Packaged stock theme template ids from `STOCK_THEMES` metadata. Use for theme board `catalogId` validation.
+ * Packaged theme catalog ids from `core/themes`. Use for theme board `catalogId` validation.
  */
-export const THEME_COMPONENT_CATALOG_IDS: ReadonlySet<string> = new Set(
-  STOCK_THEMES.map((theme) => theme.metadata.id),
+export const THEME_COMPONENT_CATALOG_IDS: ReadonlySet<string> = new Set<string>(
+  packagedThemeCatalogIds,
 )
-
-/**
- * Resolves a theme board `catalogId` to the matching packaged stock theme row, or null.
- */
-export function resolvePackagedThemeByCatalogId(
-  catalogId: string,
-): StockTheme | null {
-  return STOCK_THEMES.find((theme) => theme.metadata.id === catalogId) ?? null
-}
 
 /**
  * Packaged font collection catalog ids from `core/font-collections`. Use for font collection
@@ -26,10 +16,9 @@ export const FONT_COLLECTION_COMPONENT_CATALOG_IDS: ReadonlySet<string> =
   new Set<string>(packagedFontCollectionCatalogIds)
 
 /**
- * Stub allowlist until `core/icon-sets/` exposes a generated catalog id registry.
- *
- * // import { packagedIconSetCatalogIds } from "../../../icon-sets/catalog-ids"
- * // export const ICON_SET_COMPONENT_CATALOG_IDS = new Set<string>(packagedIconSetCatalogIds)
+ * Stub allowlist until `core/icon-sets/` exposes a `catalog-ids.ts` registry. Replace with
+ * `new Set<string>(packagedIconSetCatalogIds)` once that module lands, matching themes and
+ * font-collections.
  */
 export const ICON_SET_COMPONENT_CATALOG_IDS: ReadonlySet<string> = new Set<string>([
   "seldonIcons",
@@ -38,10 +27,9 @@ export const ICON_SET_COMPONENT_CATALOG_IDS: ReadonlySet<string> = new Set<strin
 ])
 
 /**
- * Stub allowlist until `core/media/` exposes a generated catalog id registry.
- *
- * // import { packagedMediaCatalogIds } from "../../../media/catalog-ids"
- * // export const MEDIA_COMPONENT_CATALOG_IDS = new Set<string>(packagedMediaCatalogIds)
+ * Stub allowlist until `core/media/` exposes a `catalog-ids.ts` registry. Replace with
+ * `new Set<string>(packagedMediaCatalogIds)` once that module lands, matching themes and
+ * font-collections.
  */
 export const MEDIA_COMPONENT_CATALOG_IDS: ReadonlySet<string> = new Set<string>([
   "seldonMedia",
