@@ -1,9 +1,9 @@
 import { SVGAttributes } from "react"
-import { IconId } from "@seldon/core/icons"
-import * as CarbonIcons from "@seldon/core/icons/sets/carbon"
-import * as LucideIcons from "@seldon/core/icons/sets/lucide"
-import * as MaterialIcons from "@seldon/core/icons/sets/material"
-import * as SeldonIcons from "@seldon/core/icons/sets/seldon"
+import { IconId } from "@seldon/core/icon-sets"
+import * as CarbonIcons from "@seldon/core/icon-sets/sets/carbon"
+import * as LucideIcons from "@seldon/core/icon-sets/sets/lucide"
+import * as MaterialIcons from "@seldon/core/icon-sets/sets/material"
+import * as SeldonIcons from "@seldon/core/icon-sets/sets/seldon"
 import { IconDefault } from "./seldon/custom-icons/IconDefault"
 import { IconMissing } from "./seldon/custom-icons/IconMissing"
 
@@ -15,7 +15,7 @@ export type LoadEditorIconsProps = SVGAttributes<SVGSVGElement> & {
  * Dynamically loads icon components from icon sets based on iconId.
  *
  * Supports all icon sets: material, carbon, lucide, seldon
- * Icons are loaded from the index.ts files in core/icons/sets/{setName}/
+ * Icons are loaded from the index.ts files in core/icon-sets/sets/{setName}/
  * which contain the top 100 icons for each set.
  *
  * Icon ID format: "{setName}-{iconName}"

@@ -7,7 +7,7 @@
   "include": [
     "./components/**/*.*",
     "./helpers/**/*.*",
-    "./icons/**/*.*",
+    "./icon-sets/**/*.*",
     "./properties/**/*.*",
     "./rules/**/*.*",
     "./themes/**/*.*",

@@ -10,8 +10,8 @@
  * or artificial intelligence system.
  */
 import { SVGAttributes } from "react"
-import { IconMaterialBlock } from "@seldon/core/icons/sets/material/system/security/IconMaterialBlock"
-import { IconMaterialVisibilityOff } from "@seldon/core/icons/sets/material/user-interface/status/IconMaterialVisibilityOff"
+import { IconMaterialBlock } from "@seldon/core/icon-sets/sets/material/system/security/IconMaterialBlock"
+import { IconMaterialVisibilityOff } from "@seldon/core/icon-sets/sets/material/user-interface/status/IconMaterialVisibilityOff"
 import { IconDefault } from "../../icons/IconDefault"
 import { IconMaterialAdd } from "../../icons/IconMaterialAdd"
 import { IconMaterialBolt } from "../../icons/IconMaterialBolt"

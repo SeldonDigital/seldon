@@ -15,7 +15,7 @@ import { useCanvas } from "./hooks/use-canvas"
 import { useActiveBoard } from "@lib/workspace/hooks/use-active-board"
 import { ComponentBoard } from "./boards/ComponentBoard"
 import { FontCollectionBoard } from "./boards/FontCollectionBoard"
-import { IconSetBoardPlaceholder } from "./boards/IconSetBoardPlaceholder"
+import { IconSetBoard } from "./boards/IconSetBoard"
 import { PlaygroundBoardPlaceholder } from "./boards/PlaygroundBoardPlaceholder"
 import { ThemeBoard } from "./boards/ThemeBoard"
 
@@ -40,7 +40,7 @@ function renderBoard(board: Board) {
   // Check if this is a resource board type.
   if (isResourceType(board)) {
     if (isIconSetBoard(board)) {
-      return <IconSetBoardPlaceholder board={board} />
+      return <IconSetBoard board={board} />
     }
     if (isThemeBoard(board)) {
       return <ThemeBoard board={board} />

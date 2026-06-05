@@ -1,5 +1,5 @@
 import { getComponentSchema } from "@seldon/core/components/catalog"
-import { IconId } from "@seldon/core/icons"
+import { IconId } from "@seldon/core/icon-sets"
 import {
   isIconSetBoard,
   isThemeBoard,

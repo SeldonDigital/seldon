@@ -1,4 +1,4 @@
-import { IconId } from "../../icons"
+import { IconId } from "../../icon-sets"
 import {
   ThemeDimensionKey,
   ThemeFontSizeKey,

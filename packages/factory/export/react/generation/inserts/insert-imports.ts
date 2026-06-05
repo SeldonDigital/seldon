@@ -2,7 +2,7 @@ import {
   ComponentLevel,
   NATIVE_REACT_PRIMITIVES,
 } from "@seldon/core/components/constants"
-import { IconId } from "@seldon/core/icons"
+import { IconId } from "@seldon/core/icon-sets"
 import { ComponentToExport, ExportOptions, JSONTreeNode } from "../../../types"
 import { getIconComponentName } from "../../discovery/get-icon-component-name"
 import { pascalCase } from "../../utils/case-utils"

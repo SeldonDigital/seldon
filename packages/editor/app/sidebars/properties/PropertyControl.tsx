@@ -17,8 +17,8 @@ import {
   getThemePickerOptions,
 } from "@seldon/core/helpers/properties/properties-bridge"
 import { isThemeValueKey } from "@seldon/core/helpers/validation/theme"
-import { IconId } from "@seldon/core/icons"
-import { IconSeldonMissing } from "@seldon/core/icons/sets/seldon/user-interface/actions/IconSeldonMissing"
+import { IconId } from "@seldon/core/icon-sets"
+import { IconSeldonMissing } from "@seldon/core/icon-sets/sets/seldon/user-interface/actions/IconSeldonMissing"
 import { isComponentEntry } from "@seldon/core/workspace/helpers/components/is-component-entry"
 import { getBoardThemeRef } from "./helpers/theme-assignment-display"
 import { themeService } from "@seldon/core/workspace/services/theme/theme.service"

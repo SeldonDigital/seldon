@@ -1,5 +1,6 @@
 import {
   isFontCollectionBoard,
+  isIconSetBoard,
   isThemeBoard,
 } from "@seldon/core/workspace/model/components"
 import type { ComponentEntry, Workspace } from "@seldon/core/workspace/types"
@@ -19,6 +20,15 @@ export function findFontCollectionBoard(
 ): ComponentEntry | null {
   for (const board of Object.values(getWorkspaceComponentMap(workspace))) {
     if (isFontCollectionBoard(board)) {
+      return board
+    }
+  }
+  return null
+}
+
+export function findIconSetBoard(workspace: Workspace): ComponentEntry | null {
+  for (const board of Object.values(getWorkspaceComponentMap(workspace))) {
+    if (isIconSetBoard(board)) {
       return board
     }
   }

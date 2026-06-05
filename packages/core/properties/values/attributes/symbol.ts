@@ -1,5 +1,5 @@
-import { IconId, iconIds, iconLabels } from "../../../icons"
-import { getAvailableIcons } from "../../../icons/helpers/get-available-icons"
+import { IconId, iconIds, iconLabels } from "../../../icon-sets"
+import { getAvailableIcons } from "../../../icon-sets/helpers/get-available-icons"
 import { Workspace } from "../../../workspace/types"
 import { ValueType } from "../../constants"
 import { PropertySchema } from "../../types/schema"

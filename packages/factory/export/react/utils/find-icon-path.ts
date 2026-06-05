@@ -1,6 +1,6 @@
 import fs from "node:fs"
 import path from "node:path"
-import { IconId } from "@seldon/core/icons"
+import { IconId } from "@seldon/core/icon-sets"
 import { getIconComponentName } from "../discovery/get-icon-component-name"
 
 /**
@@ -73,7 +73,7 @@ export function getIconPath(iconId: IconId, rootDirectory: string): string {
     rootDirectory,
     "packages",
     "core",
-    "icons",
+    "icon-sets",
     "sets",
   )
 

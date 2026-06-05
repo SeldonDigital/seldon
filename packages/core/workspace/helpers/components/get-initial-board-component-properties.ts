@@ -19,7 +19,15 @@ export function getInitialBoardComponentProperties(
     return {
       orientation: {
         type: ValueType.OPTION,
-        value: Orientation.VERTICAL,
+        value: Orientation.HORIZONTAL,
+      },
+      wrapChildren: {
+        type: ValueType.EXACT,
+        value: true,
+      },
+      clip: {
+        type: ValueType.EXACT,
+        value: false,
       },
     }
   }

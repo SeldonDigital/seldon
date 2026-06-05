@@ -225,10 +225,6 @@ export function getNodeIdAddedByAction(
     case "stubs_remove_font_collection_row":
     case "stubs_set_font_collection_field":
     case "stubs_duplicate_font_collection_row":
-    case "stubs_add_icon_set_row":
-    case "stubs_remove_icon_set_row":
-    case "stubs_set_icon_set_field":
-    case "stubs_duplicate_icon_set_row":
     case "stubs_add_media_row":
     case "stubs_remove_media_row":
     case "stubs_set_media_field":

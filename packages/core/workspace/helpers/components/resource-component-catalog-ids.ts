@@ -1,4 +1,5 @@
 import { packagedFontCollectionCatalogIds } from "../../../font-collections/catalog-ids"
+import { packagedIconSetCatalogIds } from "../../../icon-sets/catalog-ids"
 import { packagedThemeCatalogIds } from "../../../themes"
 
 /**
@@ -16,15 +17,11 @@ export const FONT_COLLECTION_COMPONENT_CATALOG_IDS: ReadonlySet<string> =
   new Set<string>(packagedFontCollectionCatalogIds)
 
 /**
- * Stub allowlist until `core/icon-sets/` exposes a `catalog-ids.ts` registry. Replace with
- * `new Set<string>(packagedIconSetCatalogIds)` once that module lands, matching themes and
- * font-collections.
+ * Packaged icon set catalog ids from `core/icon-sets`. Use for icon set board
+ * `catalogId` validation.
  */
-export const ICON_SET_COMPONENT_CATALOG_IDS: ReadonlySet<string> = new Set<string>([
-  "seldonIcons",
-  "googleMaterial",
-  "ibmCarbon",
-])
+export const ICON_SET_COMPONENT_CATALOG_IDS: ReadonlySet<string> =
+  new Set<string>(packagedIconSetCatalogIds)
 
 /**
  * Stub allowlist until `core/media/` exposes a `catalog-ids.ts` registry. Replace with

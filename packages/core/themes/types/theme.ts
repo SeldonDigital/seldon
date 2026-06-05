@@ -1,7 +1,7 @@
 /**
  * `StockTheme` — packaged theme schema in `stock/` (incl. dynamic palette slots); `Theme` — computed tokens from `computeTheme`.
  */
-import { IconSetId } from "../../icons"
+import { IconSetId } from "../../icon-sets"
 import { ColorValue } from "../../properties/values/appearance/color"
 import { SizeValue } from "../../properties/values/appearance/size"
 import { Harmony, Ratio } from "../constants"

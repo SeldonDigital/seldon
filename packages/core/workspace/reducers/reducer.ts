@@ -34,6 +34,7 @@ import { addThemeCustomSwatch } from "./handlers/add/add-theme-custom-swatch"
 import { addVariant } from "./handlers/add/add-variant"
 import { duplicateComponent } from "./handlers/duplicate/duplicate-component"
 import { duplicateFontCollection } from "./handlers/duplicate/duplicate-font-collection"
+import { duplicateIconSet } from "./handlers/duplicate/duplicate-icon-set"
 import { duplicateNode } from "./handlers/duplicate/duplicate-node"
 import { duplicateTheme } from "./handlers/duplicate/duplicate-theme"
 import { insertDefaultInstance } from "./handlers/insert/insert-default-instance"
@@ -90,6 +91,7 @@ import { resetNode } from "./handlers/reset/reset-node"
 import { resetFontCollectionEditorData } from "./handlers/reset/reset-font-collection-editor-data"
 import { resetFontCollectionLabel } from "./handlers/reset/reset-font-collection-label"
 import { resetFontCollectionOverride } from "./handlers/reset/reset-font-collection-override"
+import { resetIconSetOverride } from "./handlers/reset/reset-icon-set-override"
 import { resetThemeEditorData } from "./handlers/reset/reset-theme-editor-data"
 import { resetThemeLabel } from "./handlers/reset/reset-theme-label"
 import { resetThemeOverride } from "./handlers/reset/reset-theme-override"
@@ -120,6 +122,7 @@ import { setFontCollectionFamilyPreset } from "./handlers/set/set-font-collectio
 import { setFontCollectionFamilyVariant } from "./handlers/set/set-font-collection-family-variant"
 import { setFontCollectionLabel } from "./handlers/set/set-font-collection-label"
 import { setFontCollectionOverride } from "./handlers/set/set-font-collection-override"
+import { setIconSetOverride } from "./handlers/set/set-icon-set-override"
 import { setThemeEditorData } from "./handlers/set/set-theme-editor-data"
 import { setThemeLabel } from "./handlers/set/set-theme-label"
 import { setThemeOverride } from "./handlers/set/set-theme-override"
@@ -417,14 +420,17 @@ function reducer(workspace: Workspace, action: WorkspaceAction): Workspace {
     case "remove_font_collection_custom_family":
       return removeFontCollectionCustomFamily(action.payload, workspace)
 
+    case "set_icon_set_override":
+      return setIconSetOverride(action.payload, workspace)
+    case "reset_icon_set_override":
+      return resetIconSetOverride(action.payload, workspace)
+    case "duplicate_icon_set":
+      return duplicateIconSet(action.payload, workspace)
+
     case "stubs_add_font_collection_row":
     case "stubs_remove_font_collection_row":
     case "stubs_set_font_collection_field":
     case "stubs_duplicate_font_collection_row":
-    case "stubs_add_icon_set_row":
-    case "stubs_remove_icon_set_row":
-    case "stubs_set_icon_set_field":
-    case "stubs_duplicate_icon_set_row":
     case "stubs_add_media_row":
     case "stubs_remove_media_row":
     case "stubs_set_media_field":
