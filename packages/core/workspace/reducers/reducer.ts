@@ -34,6 +34,7 @@ import { addThemeCustomSwatch } from "./handlers/add/add-theme-custom-swatch"
 import { addVariant } from "./handlers/add/add-variant"
 import { duplicateComponent } from "./handlers/duplicate/duplicate-component"
 import { duplicateFontCollection } from "./handlers/duplicate/duplicate-font-collection"
+import { duplicateIconSet } from "./handlers/duplicate/duplicate-icon-set"
 import { duplicateNode } from "./handlers/duplicate/duplicate-node"
 import { duplicateTheme } from "./handlers/duplicate/duplicate-theme"
 import { insertDefaultInstance } from "./handlers/insert/insert-default-instance"
@@ -42,6 +43,7 @@ import { insertVariantInstance } from "./handlers/insert/insert-variant-instance
 import { moveInstance } from "./handlers/move/move-instance"
 import { normalizeMetadataVersion } from "./handlers/normalize/normalize-metadata-version"
 import { deleteFontCollection } from "./handlers/remove/delete-font-collection"
+import { deleteIconSet } from "./handlers/remove/delete-icon-set"
 import { deleteTheme } from "./handlers/remove/delete-theme"
 import { removeComponent } from "./handlers/remove/remove-component"
 import { removeFontCollection } from "./handlers/remove/remove-font-collection"
@@ -90,6 +92,7 @@ import { resetNode } from "./handlers/reset/reset-node"
 import { resetFontCollectionEditorData } from "./handlers/reset/reset-font-collection-editor-data"
 import { resetFontCollectionLabel } from "./handlers/reset/reset-font-collection-label"
 import { resetFontCollectionOverride } from "./handlers/reset/reset-font-collection-override"
+import { resetIconSetOverride } from "./handlers/reset/reset-icon-set-override"
 import { resetThemeEditorData } from "./handlers/reset/reset-theme-editor-data"
 import { resetThemeLabel } from "./handlers/reset/reset-theme-label"
 import { resetThemeOverride } from "./handlers/reset/reset-theme-override"
@@ -120,6 +123,9 @@ import { setFontCollectionFamilyPreset } from "./handlers/set/set-font-collectio
 import { setFontCollectionFamilyVariant } from "./handlers/set/set-font-collection-family-variant"
 import { setFontCollectionLabel } from "./handlers/set/set-font-collection-label"
 import { setFontCollectionOverride } from "./handlers/set/set-font-collection-override"
+import { setIconSetLabel } from "./handlers/set/set-icon-set-label"
+import { setIconSetOverride } from "./handlers/set/set-icon-set-override"
+import { setIconSetSubcategoryPreset } from "./handlers/set/set-icon-set-subcategory-preset"
 import { setThemeEditorData } from "./handlers/set/set-theme-editor-data"
 import { setThemeLabel } from "./handlers/set/set-theme-label"
 import { setThemeOverride } from "./handlers/set/set-theme-override"
@@ -417,14 +423,23 @@ function reducer(workspace: Workspace, action: WorkspaceAction): Workspace {
     case "remove_font_collection_custom_family":
       return removeFontCollectionCustomFamily(action.payload, workspace)
 
+    case "set_icon_set_label":
+      return setIconSetLabel(action.payload, workspace)
+    case "set_icon_set_override":
+      return setIconSetOverride(action.payload, workspace)
+    case "reset_icon_set_override":
+      return resetIconSetOverride(action.payload, workspace)
+    case "set_icon_set_subcategory_preset":
+      return setIconSetSubcategoryPreset(action.payload, workspace)
+    case "delete_icon_set":
+      return deleteIconSet(action.payload, workspace)
+    case "duplicate_icon_set":
+      return duplicateIconSet(action.payload, workspace)
+
     case "stubs_add_font_collection_row":
     case "stubs_remove_font_collection_row":
     case "stubs_set_font_collection_field":
     case "stubs_duplicate_font_collection_row":
-    case "stubs_add_icon_set_row":
-    case "stubs_remove_icon_set_row":
-    case "stubs_set_icon_set_field":
-    case "stubs_duplicate_icon_set_row":
     case "stubs_add_media_row":
     case "stubs_remove_media_row":
     case "stubs_set_media_field":

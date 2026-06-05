@@ -12,19 +12,21 @@ import {
 import { isVariantInUse } from "@seldon/core/workspace/helpers/general/is-variant-in-use"
 import { isEntryThemeDefault } from "@seldon/core/workspace/model/entry-theme"
 import { isEntryFontCollectionDefault } from "@seldon/core/workspace/model/entry-font-collection"
+import { isEntryIconSetDefault } from "@seldon/core/workspace/model/entry-icon-set"
 import type { ComponentKey } from "@seldon/core/workspace/types"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
 import { confirmMissingSchemaVariants } from "@lib/workspace/confirm-missing-schema-variants"
 import {
   findFontCollectionBoard,
+  findIconSetBoard,
   findThemeBoard,
 } from "@lib/workspace/resource-boards"
-import { useAutoSelectNode } from "@lib/workspace/use-auto-select-node"
-import { useSelection } from "@lib/workspace/use-selection"
+import { useAutoSelectNode } from "@lib/workspace/hooks/use-auto-select-node"
+import { useSelection } from "@lib/workspace/hooks/use-selection"
 import { resolveComponentKey } from "@lib/workspace/workspace-accessors"
-import { useWorkspace } from "@lib/workspace/use-workspace"
+import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useTool } from "@lib/hooks/use-tool"
-import { useAddToast } from "@components/toaster/use-add-toast"
+import { useAddToast } from "@components/toaster/hooks/use-add-toast"
 import {
   getHoverStateSnapshot,
   useSetHoverState,
@@ -42,6 +44,7 @@ export function useAddRemoveCommands() {
     selectedBoardId,
     selectedThemeEntryId,
     selectedFontCollectionEntryId,
+    selectedIconSetEntryId,
   } = useSelection()
   const { workspace, dispatch } = useWorkspace()
   const { dispatchWithAutoSelect } = useAutoSelectNode()
@@ -86,6 +89,17 @@ export function useAddRemoveCommands() {
     (catalogId: string) => {
       dispatch({
         type: "add_font_collection",
+        payload: { catalogId },
+      })
+      selectBoard(catalogId)
+    },
+    [dispatch, selectBoard],
+  )
+
+  const addIconSet = useCallback(
+    (catalogId: string) => {
+      dispatch({
+        type: "add_icon_set",
         payload: { catalogId },
       })
       selectBoard(catalogId)
@@ -282,6 +296,28 @@ export function useAddRemoveCommands() {
     ],
   )
 
+  const removeSelectedIconSetEntry = useCallback(
+    (iconSetId: string) => {
+      const entry = workspace["icon-sets"][iconSetId]
+      if (!entry || isEntryIconSetDefault(entry)) return
+
+      if (getHoverStateSnapshot()?.objectId === iconSetId) {
+        setHoverState(null)
+      }
+
+      dispatch({
+        type: "delete_icon_set",
+        payload: { iconSetId },
+      })
+
+      if (selectedIconSetEntryId === iconSetId) {
+        const board = findIconSetBoard(workspace)
+        selectBoard(board ? resolveComponentKey(board, workspace) : null)
+      }
+    },
+    [workspace, selectedIconSetEntryId, selectBoard, dispatch, setHoverState],
+  )
+
   const deleteSelection = useCallback(() => {
     if (selectedNode) {
       removeSelectedNode(selectedNode.id)
@@ -298,6 +334,11 @@ export function useAddRemoveCommands() {
       return
     }
 
+    if (selectedIconSetEntryId) {
+      removeSelectedIconSetEntry(selectedIconSetEntryId)
+      return
+    }
+
     if (selectedBoard && selectedBoardId) {
       removeBoard(selectedBoardId)
     }
@@ -305,11 +346,13 @@ export function useAddRemoveCommands() {
     selectedNode,
     selectedThemeEntryId,
     selectedFontCollectionEntryId,
+    selectedIconSetEntryId,
     selectedBoard,
     selectedBoardId,
     removeSelectedNode,
     removeSelectedThemeEntry,
     removeSelectedFontCollectionEntry,
+    removeSelectedIconSetEntry,
     removeBoard,
   ])
 
@@ -323,6 +366,7 @@ export function useAddRemoveCommands() {
     addBoard,
     addTheme,
     addFontCollection,
+    addIconSet,
     addVariant,
     deleteSelection,
     duplicateSelection,

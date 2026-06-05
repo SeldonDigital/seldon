@@ -1,4 +1,4 @@
-import { IconId } from "@seldon/core/icons"
+import { IconId } from "@seldon/core/icon-sets"
 import { getIconComponentName } from "../../discovery/get-icon-component-name"
 import {
   TransformStrategy,

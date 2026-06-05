@@ -4,6 +4,7 @@ import {
   validateFontCollectionMutation,
   validateRemoveFontCollectionCustomFamily,
 } from "./action-groups/font-collection-mutations"
+import { validateIconSetMutation } from "./action-groups/icon-set-mutations"
 import {
   validateAddVariant,
   validateDuplicateNode,
@@ -135,6 +136,14 @@ export function validateAction(workspace: Workspace, action: Action): void {
     case "delete_font_collection":
     case "duplicate_font_collection":
       validateFontCollectionMutation(workspace, action)
+      return
+    case "set_icon_set_label":
+    case "set_icon_set_override":
+    case "reset_icon_set_override":
+    case "set_icon_set_subcategory_preset":
+    case "delete_icon_set":
+    case "duplicate_icon_set":
+      validateIconSetMutation(workspace, action)
       return
     case "set_component_label":
     case "set_component_intent":

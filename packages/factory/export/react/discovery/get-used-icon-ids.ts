@@ -1,7 +1,7 @@
 import { ValueType, Workspace } from "@seldon/core"
 import { getComponentSchema } from "@seldon/core/components/catalog"
 import { isComponentId } from "@seldon/core/components/constants"
-import { IconId } from "@seldon/core/icons"
+import { IconId } from "@seldon/core/icon-sets"
 import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
 import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-catalog-id"
 import { getWorkspaceNodeList } from "../../../helpers/workspace-nodes"

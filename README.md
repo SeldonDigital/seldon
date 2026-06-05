@@ -100,13 +100,18 @@ If you want the lowdown, these three documents are a great way to get into what 
 
 Seldon is offered under the **PolyForm Noncommercial License 1.0.0** by default, with a separate commercial license for commercial use.
 
+| Use               | Requirement                          |
+| ----------------- | ------------------------------------ |
+| Noncommercial use | PolyForm Noncommercial License 1.0.0 |
+| Commercial use    | Paid commercial license              |
+
 ### 1. Noncommercial license
 
 The default software license is the **PolyForm Noncommercial License 1.0.0**.
 
 - You may use, copy, and modify this software for **noncommercial purposes** (e.g. research, education, personal projects).
 - Commercial use is **not permitted** under this license.
-- See [license/noncommercial/LICENSE.md](license/noncommercial/LICENSE.md) for the summary and link to the full PolyForm text.
+- See [license/noncommercial/LICENSE.md](license/noncommercial/LICENSE.md).
 
 ### 2. Commercial license
 
@@ -118,21 +123,12 @@ The commercial license may grant:
 - Ability to create proprietary derivative works (as stated in your agreement).
 - Long-term support, security updates, and priority bug fixes if offered by the licensor.
 - Optional custom terms negotiated with the licensor.
-
-See [COMMERCIAL-LICENSE.md](license/commercial/COMMERCIAL-LICENSE.md).
+- See [COMMERCIAL-LICENSE.md](license/commercial/COMMERCIAL-LICENSE.md).
 
 To obtain a commercial license, contact:
 
 - **Licensor:** Seldon Digital, B.V.
 - **Email:** [info@seldon.digital](mailto:info@seldon.digital)
-
-### 3. Summary
-
-
-| Use               | Requirement                          |
-| ----------------- | ------------------------------------ |
-| Noncommercial use | PolyForm Noncommercial License 1.0.0 |
-| Commercial use    | Paid commercial license              |
 
 ---
 

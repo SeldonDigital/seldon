@@ -1,8 +1,8 @@
 import { useCallback } from "react"
 import { parseNodeLink } from "@seldon/core/workspace/model/template-ref"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
-import { useSelection } from "@lib/workspace/use-selection"
-import { useWorkspace } from "@lib/workspace/use-workspace"
+import { useSelection } from "@lib/workspace/hooks/use-selection"
+import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 
 /**
  * Commands for selecting nodes and boards

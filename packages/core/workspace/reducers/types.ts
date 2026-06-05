@@ -24,7 +24,12 @@
  * | set_font_collection_{label,editor_data,override}, reset_font_collection_{label,editor_data,override}, add_font_collection_custom_family, remove_font_collection_custom_family | font-collections (variant rows only for families) |
  * | set_font_collection_family_variant, set_font_collection_family_preset | font-collections (any entry; per-family variant selection) |
  * | delete_font_collection, duplicate_font_collection | font-collections (+ components.variants for font-collection row) |
- * | stubs_* (font / icon / media) | reserved — no-op until spec |
+ * | set_icon_set_label | icon-sets |
+ * | set_icon_set_override, reset_icon_set_override | icon-sets (per-icon inclusion under includedIcons) |
+ * | set_icon_set_subcategory_preset | icon-sets (per-subcategory inclusion under includedIcons) |
+ * | delete_icon_set | icon-sets (variant rows only; drops board ref) |
+ * | duplicate_icon_set | icon-sets (+ components.variants for icon-set row) |
+ * | stubs_* (font / media) | reserved — no-op until spec |
  * | transcript_add_message | none (no-op) |
  */
 import type { FontOrigin } from "../../font-collections/types"
@@ -657,14 +662,41 @@ export type WorkspaceAction =
   | { type: "stubs_set_font_collection_field"; payload: { id?: string } }
   /** @internal */
   | { type: "stubs_duplicate_font_collection_row"; payload: { id?: string } }
-  /** @internal Reserved payload; no-op until `icon-sets` spec is finalized. */
-  | { type: "stubs_add_icon_set_row"; payload: { id?: string } }
-  /** @internal */
-  | { type: "stubs_remove_icon_set_row"; payload: { id?: string } }
-  /** @internal */
-  | { type: "stubs_set_icon_set_field"; payload: { id?: string } }
-  /** @internal */
-  | { type: "stubs_duplicate_icon_set_row"; payload: { id?: string } }
+  | {
+      type: "set_icon_set_label"
+      payload: { iconSetId: string; label: string }
+    }
+  | {
+      type: "set_icon_set_override"
+      payload: {
+        iconSetId: string
+        path: string
+        value: unknown | null
+      }
+    }
+  | {
+      type: "reset_icon_set_override"
+      payload: { iconSetId: string; path: string }
+    }
+  | {
+      type: "set_icon_set_subcategory_preset"
+      payload: {
+        iconSetId: string
+        subcategory: string
+        preset: "all" | "none"
+      }
+    }
+  | {
+      type: "delete_icon_set"
+      payload: { iconSetId: string }
+    }
+  | {
+      type: "duplicate_icon_set"
+      payload: {
+        iconSetId: string
+        newIconSetId?: string
+      }
+    }
   /** @internal Reserved payload; no-op until `media` spec is finalized. */
   | { type: "stubs_add_media_row"; payload: { id?: string } }
   /** @internal */

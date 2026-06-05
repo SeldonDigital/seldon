@@ -1,4 +1,5 @@
 import { produce } from "immer"
+import { seedDefaultIconSetBoard } from "../../../helpers/icon-sets/seed-default-icon-set-board"
 import { seedDefaultThemeBoard } from "../../../helpers/themes/seed-default-theme-board"
 import type { Workspace } from "../../../types"
 import { backfillInstanceOrigin } from "./backfill-instance-origin"
@@ -30,6 +31,13 @@ export const alwaysRunMigrations: AlwaysRunMigrationRecord[] = [
     migrate: (workspace) =>
       produce(workspace, (draft) => {
         seedDefaultThemeBoard(draft)
+      }),
+  },
+  {
+    description: "Ensure the default Seldon icon set board exists.",
+    migrate: (workspace) =>
+      produce(workspace, (draft) => {
+        seedDefaultIconSetBoard(draft)
       }),
   },
 ]

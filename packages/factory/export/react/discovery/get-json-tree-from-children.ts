@@ -3,7 +3,7 @@ import { ComponentId, ComponentLevel, isComponentId } from "@seldon/core/compone
 import { getComponentSchema } from "@seldon/core/components/catalog"
 import { isComplexSchema } from "@seldon/core/components/types"
 import { WrapperElement } from "@seldon/core/properties"
-import { IconId } from "@seldon/core/icons"
+import { IconId } from "@seldon/core/icon-sets"
 import { getChildrenIds } from "@seldon/core/workspace/helpers/components/get-children-ids"
 import { componentBoardSchemaVariantNodeId } from "@seldon/core/workspace/helpers/components/entry-node-ids"
 import { getComponentByNodeId } from "@seldon/core/workspace/helpers/components/get-component-by-node-id"

@@ -17,7 +17,7 @@
     "./components/**/*.*",
     "./font-collections/**/*.*",
     "./helpers/**/*.*",
-    "./icons/**/*.*",
+    "./icon-sets/**/*.*",
     "./properties/**/*.*",
     "./rules/**/*.*",
     "./themes/**/*.*",

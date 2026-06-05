@@ -16,12 +16,12 @@
       },
       "default": "./index.ts"
     },
-    "./components/icons": {
+    "./icon-sets": {
       "node": {
-        "development": "./icons/index.ts",
-        "default": "./dist/icons/index.js"
+        "development": "./icon-sets/index.ts",
+        "default": "./dist/icon-sets/index.js"
       },
-      "default": "./icons/index.ts"
+      "default": "./icon-sets/index.ts"
     },
     "./helpers/validation": {
       "node": {

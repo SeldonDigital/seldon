@@ -3,7 +3,6 @@ import { getComponentSchema } from "@seldon/core/components/catalog"
 import { ComponentId, isComponentId } from "@seldon/core/components/constants"
 import { isCompoundProperty } from "@seldon/core/helpers/type-guards/compound/is-compound-property"
 import { COMPOUND_FACET_DISPLAY_ORDER } from "@seldon/core/properties/constants"
-import { isIconSetVariant } from "@seldon/core/icons/helpers/is-icon-set-variant"
 import { getPropertyCategory } from "@seldon/core/properties/schemas"
 import {
   isLayeredPaintProperty,
@@ -187,12 +186,6 @@ export function getSchemaProperties(
 ): Properties | null {
   if (isComponentEntry(node)) {
     return getComponentPropertyDefaults()
-  }
-
-  if (workspace && isIconSetVariant(node, workspace)) {
-    const iconSchema = getComponentSchema(ComponentId.ICON)
-    if (!iconSchema) return null
-    return iconSchema.properties
   }
 
   if (!workspace?.nodes) return null

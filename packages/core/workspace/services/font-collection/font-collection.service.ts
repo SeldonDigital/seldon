@@ -6,6 +6,7 @@ import {
   getEnabledVariants,
 } from "../../../font-collections/helpers"
 import type { VariantSelection } from "../../../font-collections/helpers"
+import { sortFontVariants } from "../../../helpers/utils/font-variant"
 import type {
   ComputedFontCollection,
   FontCollectionTemplateId,
@@ -98,79 +99,87 @@ export class WorkspaceFontCollectionService {
 
   /**
    * Lists the enabled variants for every remote family across the workspace's
-   * font collection boards, keyed by family name. Used by font loading and
-   * export to request only the selected weights.
+   * font collection boards, keyed by family name. Iterates every entry of each
+   * board (default and custom variants) and unions the enabled weights, so a
+   * weight enabled in any variant is requested once. Used by font loading and
+   * export.
    */
   public getEnabledVariantsByFamily(
     workspace: Workspace,
   ): Record<string, string[]> {
-    const byFamily: Record<string, string[]> = {}
+    const byFamily: Record<string, Set<string>> = {}
     for (const board of Object.values(workspace.components)) {
       if (!board || !isFontCollectionBoard(board)) continue
-      const defaultEntryId = board.variants[0]?.id
-      if (!defaultEntryId) continue
-      const collection = this.getFontCollection(defaultEntryId, workspace)
-      if (!collection) continue
-      const selection = this.getVariantSelection(defaultEntryId, workspace)
-      for (const [slot, family] of Object.entries(collection.families)) {
-        if (!family || family.origin !== "remote" || !family.variants) continue
-        // An empty array means preset None (no weights requested); an absent key
-        // means no explicit selection, which callers treat as all weights.
-        byFamily[family.name] = getEnabledVariants(
-          selection[slot],
-          family.variants,
-        )
+      for (const variant of board.variants ?? []) {
+        const collection = this.getFontCollection(variant.id, workspace)
+        if (!collection) continue
+        const selection = this.getVariantSelection(variant.id, workspace)
+        for (const [slot, family] of Object.entries(collection.families)) {
+          if (!family || family.origin !== "remote" || !family.variants) continue
+          const enabled = (byFamily[family.name] ??= new Set<string>())
+          for (const weight of getEnabledVariants(
+            selection[slot],
+            family.variants,
+          )) {
+            enabled.add(weight)
+          }
+        }
       }
     }
-    return byFamily
+    const result: Record<string, string[]> = {}
+    for (const [name, weights] of Object.entries(byFamily)) {
+      result[name] = sortFontVariants([...weights])
+    }
+    return result
   }
 
   /**
    * Lists enabled remote families across the workspace's font collection
-   * boards, each with its slot and enabled-variant subset. Families with zero
-   * enabled variants are skipped. Deduped by name. Used to self-host fonts for
-   * the canvas.
+   * boards, each with its slot and enabled-variant subset. Iterates every entry
+   * of each board (default and custom variants), unions the enabled weights per
+   * family, and dedupes by name. Families with zero enabled variants across all
+   * entries are skipped. Used to self-host fonts for the canvas.
    */
   public getEnabledRemoteFamilies(workspace: Workspace): EnabledRemoteFamily[] {
-    const seen = new Set<string>()
-    const families: EnabledRemoteFamily[] = []
+    const byName = new Map<string, { slot: string; variants: Set<string> }>()
+    const order: string[] = []
     for (const board of Object.values(workspace.components)) {
       if (!board || !isFontCollectionBoard(board)) continue
-      const defaultEntryId = board.variants[0]?.id
-      if (!defaultEntryId) continue
-      const collection = this.getFontCollection(defaultEntryId, workspace)
-      if (!collection) continue
-      const selection = this.getVariantSelection(defaultEntryId, workspace)
-      for (const [slot, family] of Object.entries(collection.families)) {
-        if (!family || family.origin !== "remote" || !family.variants) continue
-        if (seen.has(family.name)) continue
-        const enabled = getEnabledVariants(selection[slot], family.variants)
-        if (enabled.length === 0) continue
-        seen.add(family.name)
-        families.push({ name: family.name, slot, variants: enabled })
+      for (const variant of board.variants ?? []) {
+        const collection = this.getFontCollection(variant.id, workspace)
+        if (!collection) continue
+        const selection = this.getVariantSelection(variant.id, workspace)
+        for (const [slot, family] of Object.entries(collection.families)) {
+          if (!family || family.origin !== "remote" || !family.variants) continue
+          const enabled = getEnabledVariants(selection[slot], family.variants)
+          if (enabled.length === 0) continue
+          let record = byName.get(family.name)
+          if (!record) {
+            record = { slot, variants: new Set<string>() }
+            byName.set(family.name, record)
+            order.push(family.name)
+          }
+          for (const weight of enabled) record.variants.add(weight)
+        }
       }
     }
-    return families
-  }
-
-  /** Resolves the collection for a board through its default (first) variant entry. */
-  public getBoardFontCollection(
-    componentKey: string,
-    workspace: Workspace,
-  ): ComputedFontCollection | null {
-    const board = workspace.components[componentKey]
-    if (!board || !isFontCollectionBoard(board)) return null
-    const defaultEntryId = board.variants[0]?.id
-    if (!defaultEntryId) return null
-    return this.getFontCollection(defaultEntryId, workspace)
+    return order.map((name) => {
+      const record = byName.get(name)!
+      return {
+        name,
+        slot: record.slot,
+        variants: sortFontVariants([...record.variants]),
+      }
+    })
   }
 
   /**
    * Lists enabled families across the workspace's font collection boards,
    * grouped by collection in board order. Each group is one collection's
-   * families. A remote family is included only when at least one of its variants
-   * is enabled (preset `All` or `Custom`); families without variants always
-   * show. Families are deduped by name across all groups.
+   * families, unioned across every entry of the board (default and custom
+   * variants). A remote family is included when at least one of its variants is
+   * enabled (preset `All` or `Custom`) in any entry; families without variants
+   * always show. Families are deduped by name across all groups.
    */
   public collectWorkspaceFamilyGroups(
     workspace: Workspace,
@@ -178,27 +187,30 @@ export class WorkspaceFontCollectionService {
     const seen = new Set<string>()
     const groups: WorkspaceFontFamily[][] = []
 
-    for (const [componentKey, board] of Object.entries(workspace.components)) {
+    for (const board of Object.values(workspace.components)) {
       if (!board || !isFontCollectionBoard(board)) continue
-      const collection = this.getBoardFontCollection(componentKey, workspace)
-      if (!collection) continue
-      const defaultEntryId = board.variants[0]?.id
-      const selection = defaultEntryId
-        ? this.getVariantSelection(defaultEntryId, workspace)
-        : {}
       const group: WorkspaceFontFamily[] = []
-      for (const [slot, family] of Object.entries(collection.families)) {
-        if (!family || seen.has(family.name)) continue
-        const variants = family.variants ?? []
-        if (
-          variants.length > 0 &&
-          deriveVariantPreset(selection[slot], variants) === "none"
-        ) {
-          continue
+      const groupSeen = new Set<string>()
+      for (const variant of board.variants ?? []) {
+        const collection = this.getFontCollection(variant.id, workspace)
+        if (!collection) continue
+        const selection = this.getVariantSelection(variant.id, workspace)
+        for (const [slot, family] of Object.entries(collection.families)) {
+          if (!family || seen.has(family.name) || groupSeen.has(family.name)) {
+            continue
+          }
+          const variants = family.variants ?? []
+          if (
+            variants.length > 0 &&
+            deriveVariantPreset(selection[slot], variants) === "none"
+          ) {
+            continue
+          }
+          groupSeen.add(family.name)
+          group.push({ ...family, collectionId: collection.id, slot })
         }
-        seen.add(family.name)
-        group.push({ ...family, collectionId: collection.id, slot })
       }
+      for (const family of group) seen.add(family.name)
       if (group.length > 0) groups.push(group)
     }
 

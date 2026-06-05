@@ -30,6 +30,12 @@ export type ParsedFontCollectionTemplateRef =
 
 export type ParsedFontCollectionTemplate = ParsedFontCollectionTemplateRef
 
+export type ParsedIconSetTemplateRef =
+  | { kind: "catalog"; iconSetCatalogId: string }
+  | { kind: "icon-set"; iconSetId: string }
+
+export type ParsedIconSetTemplate = ParsedIconSetTemplateRef
+
 export function parseNodeTemplateRef(
   value: string,
 ): ParsedNodeTemplateRef | null {
@@ -240,4 +246,64 @@ export function getFontCollectionTemplateFontCollectionId(
   value: string,
 ): string | null {
   return parseFontCollectionLinkTemplateRef(value)?.fontCollectionId ?? null
+}
+
+export function parseIconSetTemplateRef(
+  value: string,
+): ParsedIconSetTemplateRef | null {
+  const parts = splitTemplateRef(value)
+  if (!parts) {
+    return null
+  }
+  if (parts.prefix === "catalog") {
+    return { kind: "catalog", iconSetCatalogId: parts.suffix }
+  }
+  if (parts.prefix === "icon-set") {
+    return { kind: "icon-set", iconSetId: parts.suffix }
+  }
+  return null
+}
+
+export function parseIconSetTemplate(
+  value: string,
+): ParsedIconSetTemplateRef | null {
+  return parseIconSetTemplateRef(value)
+}
+
+export function formatIconSetCatalogTemplateRef(iconSetCatalogId: string): string {
+  return `catalog:${iconSetCatalogId}`
+}
+
+export function formatIconSetCatalog(iconSetCatalogId: string): string {
+  return formatIconSetCatalogTemplateRef(iconSetCatalogId)
+}
+
+export function formatIconSetLinkTemplateRef(iconSetId: string): string {
+  return `icon-set:${iconSetId}`
+}
+
+export function formatIconSetLink(iconSetId: string): string {
+  return formatIconSetLinkTemplateRef(iconSetId)
+}
+
+export function parseIconSetCatalogTemplateRef(
+  value: string,
+): Extract<ParsedIconSetTemplateRef, { kind: "catalog" }> | null {
+  const p = parseIconSetTemplateRef(value)
+  return p?.kind === "catalog" ? p : null
+}
+
+export function parseIconSetLinkTemplateRef(
+  value: string,
+): Extract<ParsedIconSetTemplateRef, { kind: "icon-set" }> | null {
+  const p = parseIconSetTemplateRef(value)
+  return p?.kind === "icon-set" ? p : null
+}
+
+export function getIconSetTemplateCatalogId(value: string): string | null {
+  return parseIconSetCatalogTemplateRef(value)?.iconSetCatalogId ?? null
+}
+
+export function getIconSetTemplateIconSetId(value: string): string | null {
+  return parseIconSetLinkTemplateRef(value)?.iconSetId ?? null
 }

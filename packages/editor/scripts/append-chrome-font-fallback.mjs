@@ -22,7 +22,7 @@ const editorRoot = join(dirname(fileURLToPath(import.meta.url)), "..")
 
 const targets = [
   "app/seldon/styles.css",
-  "app/_components/seldon/styles.css",
+  "app/seldon/chrome/styles.css",
 ]
 
 let changedFiles = 0

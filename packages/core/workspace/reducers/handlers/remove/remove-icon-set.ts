@@ -1,11 +1,13 @@
 import { ExtractPayload, Workspace } from "../../../../index"
+import { applyComponentKeyDeletion } from "./remove-component-catalog"
 
 /**
- * Icon set catalog boards are never deleted; validation rejects this action.
+ * Removes an icon set catalog board and its rows. Validation blocks removal of
+ * the default Seldon icon set board.
  */
 export function removeIconSet(
-  _payload: ExtractPayload<"remove_icon_set">,
+  payload: ExtractPayload<"remove_icon_set">,
   workspace: Workspace,
 ): Workspace {
-  return workspace
+  return applyComponentKeyDeletion(payload.catalogId, workspace)
 }

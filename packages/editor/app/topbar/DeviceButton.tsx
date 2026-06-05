@@ -1,0 +1,60 @@
+"use client"
+
+import { DeviceId } from "@lib/devices/types"
+import { Selectable } from "@components/ui/Selectable"
+import { IconDesktop } from "@components/seldon/custom-icons/Desktop"
+import { IconFullScreen } from "@components/seldon/custom-icons/FullScreen"
+import { IconLaptop } from "@components/seldon/custom-icons/Laptop"
+import { IconPhone } from "@components/seldon/custom-icons/Phone"
+import { IconTablet } from "@components/seldon/custom-icons/Tablet"
+import { IconTV } from "@components/seldon/custom-icons/Tv"
+import { IconWatch } from "@components/seldon/custom-icons/Watch"
+
+export type Icon =
+  | "custom"
+  | "desktop"
+  | "laptop"
+  | "phone"
+  | "tablet"
+  | "tv"
+  | "watch"
+
+interface IconButtonProps {
+  title: string
+  isSelected?: boolean
+  device: DeviceId | "custom"
+  onClick: () => void
+}
+
+export function DeviceButton({
+  title,
+  isSelected = false,
+  device,
+  onClick,
+}: IconButtonProps) {
+  return (
+    <Selectable
+      title={title}
+      onClick={onClick}
+      as="button"
+      state={isSelected ? "selected" : "default"}
+      style={{
+        display: "flex",
+        height: "2rem",
+        width: "2rem",
+        alignItems: "center",
+        justifyContent: "center",
+        fontSize: "1rem",
+        color: isSelected ? undefined : "rgba(255, 255, 255, 0.4)",
+      }}
+    >
+      {device === "custom" && <IconFullScreen />}
+      {device === "desktop" && <IconDesktop />}
+      {device === "laptop" && <IconLaptop />}
+      {device === "phone" && <IconPhone />}
+      {device === "tablet" && <IconTablet />}
+      {device === "tv" && <IconTV />}
+      {device === "watch" && <IconWatch />}
+    </Selectable>
+  )
+}

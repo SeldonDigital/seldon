@@ -7,6 +7,7 @@ export type DialogType =
   | "add-board"
   | "add-theme"
   | "add-font-collection"
+  | "add-icon-set"
   | "component"
   | "image-upload"
   | null
@@ -15,6 +16,7 @@ type OpenDialogArgs =
   | [activeDialog: "add-board", options?: { level?: ComponentLevel }]
   | [activeDialog: "add-theme", options?: undefined]
   | [activeDialog: "add-font-collection", options?: undefined]
+  | [activeDialog: "add-icon-set", options?: undefined]
   | [activeDialog: "component", options?: Target]
   | [activeDialog: "image-upload", options?: undefined]
   | [activeDialog: null, options?: undefined]
@@ -45,6 +47,7 @@ const useStore = create<DialogState>((set) => ({
         break
       case "add-theme":
       case "add-font-collection":
+      case "add-icon-set":
       case "image-upload":
         set({ activeDialog: args[0], target: undefined, dialogLevel: undefined })
         break

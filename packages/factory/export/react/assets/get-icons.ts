@@ -1,15 +1,15 @@
 import fs from "node:fs"
 import path from "node:path"
-import { IconId } from "@seldon/core/icons"
+import { IconId } from "@seldon/core/icon-sets"
 import { ExportOptions, FileToExport } from "../../types"
 import { getIconComponentName } from "../discovery/get-icon-component-name"
 import { getIconPath } from "../utils/find-icon-path"
 
 /**
- * Recursively find an icon component file in the icons/sets directory structure
+ * Recursively find an icon component file in the icon-sets/catalog directory structure
  *
  * @param componentName - The component name (e.g., "IconMaterialAdd")
- * @param rootDir - Root directory to search from (icons/sets)
+ * @param rootDir - Root directory to search from (icon-sets/catalog)
  * @returns Relative path from rootDir to the component file, or null if not found
  */
 function findIconComponentFile(
@@ -46,7 +46,7 @@ function findIconComponentFile(
 }
 
 /**
- * Get icon files to export from icons/sets directory structure
+ * Get icon files to export from icon-sets/catalog directory structure
  *
  * @param usedIconIds - Set of icon IDs that are used in the workspace (for tree shaking)
  * @param options - Export options
@@ -61,11 +61,11 @@ export function getIcons(
     options.rootDirectory,
     "packages",
     "core",
-    "icons",
-    "sets",
+    "icon-sets",
+    "catalog",
   )
 
-  // Check if the icons/sets directory exists
+  // Check if the icon-sets/catalog directory exists
   if (!fs.existsSync(iconsSetsPath)) {
     return icons
   }
@@ -132,7 +132,7 @@ export function IconDefault(props: SVGAttributes<SVGSVGElement>) {
     // Get the relative path for this icon
     const iconRelativePath = getIconPath(iconId, options.rootDirectory)
 
-    // Use the path from icons/sets/
+    // Use the path from icon-sets/catalog/
     const sourcePath = path.join(iconsSetsPath, `${iconRelativePath}.tsx`)
     const outputPath = path.join(
       options.output.componentsFolder,

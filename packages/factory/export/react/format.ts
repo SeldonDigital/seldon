@@ -33,7 +33,6 @@ export async function format(
       "^@lib/workspace/(.*)",
       "^@lib/api/hooks/(.*)",
       // Seldon Components
-      "^@components/seldon/(.*)",
       "^[./].*seldon.*",
       // Components
       "^@components/(.*)",

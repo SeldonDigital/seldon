@@ -1,6 +1,6 @@
 import fs from "node:fs"
 import path from "node:path"
-import type { IconId } from "@seldon/core/icons"
+import type { IconId } from "@seldon/core/icon-sets"
 
 export type IconExportSource = {
   relativePath: string

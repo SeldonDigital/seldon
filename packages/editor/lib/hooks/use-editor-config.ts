@@ -32,6 +32,10 @@ interface EditorConfigState {
   showUnusedFonts: boolean
   setShowUnusedFonts: (enabled: boolean) => void
 
+  // Icon set settings
+  showUnusedIcons: boolean
+  setShowUnusedIcons: (enabled: boolean) => void
+
   // Sidebar refactor settings
   useRefactoredSidebars: boolean
   setUseRefactoredSidebars: (enabled: boolean) => void
@@ -81,6 +85,11 @@ const useStore = create<EditorConfigState>()(
       setShowUnusedFonts: (enabled) =>
         set((state) => ({ ...state, showUnusedFonts: enabled })),
 
+      // Icon set settings
+      showUnusedIcons: false,
+      setShowUnusedIcons: (enabled) =>
+        set((state) => ({ ...state, showUnusedIcons: enabled })),
+
       // Sidebar refactor settings
       useRefactoredSidebars: false,
       setUseRefactoredSidebars: (enabled) =>
@@ -96,6 +105,7 @@ const useStore = create<EditorConfigState>()(
         autoExpandOnSelection: state.autoExpandOnSelection,
         showUnusedProperties: state.showUnusedProperties,
         showUnusedFonts: state.showUnusedFonts,
+        showUnusedIcons: state.showUnusedIcons,
         useRefactoredSidebars: state.useRefactoredSidebars,
       }),
     },
@@ -118,6 +128,8 @@ export function useEditorConfig() {
     setShowUnusedProperties,
     showUnusedFonts,
     setShowUnusedFonts,
+    showUnusedIcons,
+    setShowUnusedIcons,
     useRefactoredSidebars,
     setUseRefactoredSidebars,
   } = useStore(
@@ -136,6 +148,8 @@ export function useEditorConfig() {
       setShowUnusedProperties: state.setShowUnusedProperties,
       showUnusedFonts: state.showUnusedFonts,
       setShowUnusedFonts: state.setShowUnusedFonts,
+      showUnusedIcons: state.showUnusedIcons,
+      setShowUnusedIcons: state.setShowUnusedIcons,
       useRefactoredSidebars: state.useRefactoredSidebars,
       setUseRefactoredSidebars: state.setUseRefactoredSidebars,
     })),
@@ -164,6 +178,10 @@ export function useEditorConfig() {
   const toggleShowUnusedFonts = useCallback(() => {
     setShowUnusedFonts(!showUnusedFonts)
   }, [setShowUnusedFonts, showUnusedFonts])
+
+  const toggleShowUnusedIcons = useCallback(() => {
+    setShowUnusedIcons(!showUnusedIcons)
+  }, [setShowUnusedIcons, showUnusedIcons])
 
   const toggleRefactoredSidebars = useCallback(() => {
     setUseRefactoredSidebars(!useRefactoredSidebars)
@@ -202,6 +220,11 @@ export function useEditorConfig() {
     showUnusedFonts,
     setShowUnusedFonts,
     toggleShowUnusedFonts,
+
+    // Icon set methods
+    showUnusedIcons,
+    setShowUnusedIcons,
+    toggleShowUnusedIcons,
 
     // Sidebar refactor methods
     useRefactoredSidebars,

@@ -5,7 +5,7 @@ interface DebugState {
   enabled: boolean
   toggle: (enable?: boolean) => void
 }
-export const useStore = create<DebugState>()(
+const useDebugStore = create<DebugState>()(
   persist(
     (set) => ({
       enabled: false,
@@ -21,7 +21,7 @@ export const useStore = create<DebugState>()(
 )
 
 export function useDebugMode() {
-  const { enabled, toggle } = useStore()
+  const { enabled, toggle } = useDebugStore()
 
   return { toggleDebugMode: toggle, debugModeEnabled: enabled }
 }

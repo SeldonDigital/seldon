@@ -28,6 +28,10 @@ export {
 } from "./font-collection/font-collection.service"
 export type { WorkspaceFontFamily } from "./font-collection/font-collection.service"
 export {
+  workspaceIconSetService,
+  WorkspaceIconSetService,
+} from "./icon-set/icon-set.service"
+export {
   workspacePropagationService,
   WorkspacePropagationService,
 } from "./propagation/workspace-propagation.service"
