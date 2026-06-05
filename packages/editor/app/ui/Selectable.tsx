@@ -1,6 +1,5 @@
 "use client"
 
-import { cn } from "@lib/helpers/cn"
 import { ButtonHTMLAttributes, HTMLAttributes, Ref } from "react"
 
 type SelectableProps = {
@@ -29,7 +28,7 @@ export const Selectable = ({
   const sharedProps = {
     "data-state": state,
     "data-variant": variant,
-    className: cn("selectable", className),
+    className: ["selectable", className].filter(Boolean).join(" "),
   }
 
   if (as === "button") {

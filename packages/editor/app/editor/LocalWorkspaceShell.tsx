@@ -2,7 +2,7 @@
 
 import { Layout as LayoutComponent } from "@components/Layout"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
-import { useWorkspaceAutosave } from "@lib/local-workspace/hooks/use-workspace-autosave"
+import { useWorkspaceAutosave } from "@lib/persistence/hooks/use-workspace-autosave"
 import { useWorkspaceSyncStatus } from "@lib/project/hooks/use-workspace-sync-status"
 import type { StoredWorkspace } from "@lib/storage/workspace-store"
 

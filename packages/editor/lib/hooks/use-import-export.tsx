@@ -13,7 +13,7 @@ import {
   writeExportToDirectory,
 } from "@lib/export/write-export-to-directory"
 import { useWorkspaceId } from "@lib/project/hooks/use-workspace-id"
-import { useWorkspaceRecord } from "@lib/local-workspace/hooks/use-workspace-record"
+import { useWorkspaceRecord } from "@lib/persistence/hooks/use-workspace-record"
 
 export function useImportExport() {
   const workspaceId = useWorkspaceId()
