@@ -13,7 +13,7 @@ import {
   childPathsUnderCompoundParent,
   parsePropertyPath,
 } from "@lib/properties/property-paths"
-import { useObjectProperties } from "@lib/workspace/use-object-properties"
+import { useObjectProperties } from "@lib/workspace/hooks/use-object-properties"
 import { FlatProperty } from "../helpers/properties-data"
 import { ICON_MAP } from "../helpers/properties-registry"
 import { getPropertyPlaceholder } from "../helpers/shared-utils"

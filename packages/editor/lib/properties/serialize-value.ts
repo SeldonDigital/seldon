@@ -42,7 +42,6 @@ import {
   ThemeLineHeightKey,
   ThemeMarginKey,
   ThemePaddingKey,
-  ThemeSection,
   ThemeShadowKey,
   ThemeSizeKey,
   ThemeSpreadKey,
@@ -340,9 +339,8 @@ export function serializeValue(
     }
   }
 
-  // TODO: Fix this by adding theme metadata
   if (isThemeValueKey(value)) {
-    const themeSection = value.split(".")[0] as `@${ThemeSection}`
+    const themeSection = value.split(".")[0]
     switch (themeSection) {
       case "@border":
         return {

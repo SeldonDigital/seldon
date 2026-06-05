@@ -9,8 +9,8 @@ import { getComponentVariantRootIds } from "@seldon/core/workspace/helpers/compo
 import { resolveComponentKey } from "@lib/workspace/workspace-accessors"
 import { themeService } from "@seldon/core/workspace/services/theme/theme.service"
 import { usePreview } from "@lib/hooks/use-preview"
-import { useSelection } from "@lib/workspace/use-selection"
-import { useWorkspace } from "@lib/workspace/use-workspace"
+import { useSelection } from "@lib/workspace/hooks/use-selection"
+import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { CssPortal } from "../CssPortal"
 import { CanvasNode } from "../Node"
 

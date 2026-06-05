@@ -7,7 +7,7 @@ import {
   listStoredWorkspaces,
   type StoredWorkspace,
 } from "@lib/storage/workspace-store"
-import { selectFile } from "@lib/utils/select-file"
+import { selectFile } from "@lib/helpers/select-file"
 import { workspacePropagationService } from "@seldon/core/workspace/services/propagation/workspace-propagation.service"
 import type { Workspace } from "@seldon/core/workspace/types"
 import "./home.css"

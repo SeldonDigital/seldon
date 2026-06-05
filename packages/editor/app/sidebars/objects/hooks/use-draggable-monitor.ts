@@ -2,7 +2,7 @@ import { monitorForElements } from "@atlaskit/pragmatic-drag-and-drop/element/ad
 import { Placement } from "@lib/types"
 import { useEffect } from "react"
 import { Board, Instance, Variant, invariant } from "@seldon/core"
-import { useMoveObjects } from "@lib/workspace/use-move-objects"
+import { useMoveObjects } from "@lib/workspace/hooks/use-move-objects"
 
 /**
  * Global monitor for drag-and-drop operations in the objects sidebar.

@@ -1,6 +1,6 @@
 "use client"
 
-import { cn } from "@lib/utils/cn"
+import { cn } from "@lib/helpers/cn"
 import { ButtonHTMLAttributes, HTMLAttributes, Ref } from "react"
 
 type SelectableProps = {

@@ -5,7 +5,7 @@ import { STOCK_FONT_COLLECTIONS } from "@seldon/core/font-collections/catalog"
 import { DEFAULT_FONT_COLLECTION_BOARD_KEY } from "@seldon/core/workspace/helpers/font-collections/seed-default-font-collection-board"
 import { useAddRemoveCommands } from "@lib/hooks/commands/use-add-remove-commands"
 import { useDialog } from "@lib/hooks/use-dialog"
-import { useWorkspace } from "@lib/workspace/use-workspace"
+import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { CatalogPanel, CatalogPanelItem } from "./CatalogPanel"
 
 const FONT_COLLECTION_ICON = "material-fontDownload"

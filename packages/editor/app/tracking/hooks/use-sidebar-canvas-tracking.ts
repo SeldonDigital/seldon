@@ -6,9 +6,9 @@ import {
   useSetHoverState,
 } from "@lib/hooks/use-canvas-hover-state"
 import { useTool } from "@lib/hooks/use-tool"
-import { useActiveBoard } from "@lib/workspace/use-active-board"
+import { useActiveBoard } from "@lib/workspace/hooks/use-active-board"
 import { getComponentKey, hasNode } from "@lib/workspace/workspace-accessors"
-import { useWorkspace } from "@lib/workspace/use-workspace"
+import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { checkInsertionPoint } from "../helpers/check-insertion-point"
 
 /**

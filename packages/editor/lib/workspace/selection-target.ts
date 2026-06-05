@@ -1,6 +1,6 @@
 import { InstanceId, VariantId } from "@seldon/core"
 import type { ComponentKey } from "@seldon/core/workspace/types"
-import { useStore as useSelectionStore } from "./use-selection"
+import { useStore as useSelectionStore } from "./hooks/use-selection"
 
 /**
  * The kinds of object a single click or hover can target. Every selectable
@@ -49,10 +49,6 @@ export function useSelectedId(): string | null {
       null,
   )
 }
-
-/** Selection setters keyed by kind, used by the canvas click controller. */
-export type SelectByTarget = (target: SelectionTarget) => void
-
 /**
  * Dispatches a selection target to the matching typed setter. The setters carry
  * their existing side effects (tree expansion, sidebar scroll), so clicking on

@@ -1,7 +1,8 @@
+import { Tool } from "@lib/hooks/use-tool"
 import { Placement } from "@lib/types"
 import { Workspace } from "@seldon/core"
 import { InstanceId, VariantId } from "@seldon/core/index"
-import { isInsertionAllowed } from "@lib/workspace/helpers/is-insertion-allowed"
+import { isInsertionAllowed } from "@lib/workspace/is-insertion-allowed"
 
 /**
  * Checks if insertion is allowed for a given object, placement, and tool.
@@ -11,7 +12,7 @@ import { isInsertionAllowed } from "@lib/workspace/helpers/is-insertion-allowed"
  * @param objectType - The type of object ("node" or "board")
  * @param placement - The placement position ("before", "after", or "inside")
  * @param workspace - The workspace context
- * @param tool - The active tool ("component" or "sketch")
+ * @param tool - The active tool
  * @returns `true` if insertion is allowed, `false` otherwise
  */
 export function checkInsertionPoint(
@@ -19,7 +20,7 @@ export function checkInsertionPoint(
   objectType: "node" | "board",
   placement: Placement,
   workspace: Workspace,
-  tool: "component" | "sketch",
+  tool: Tool,
 ): boolean {
   if (objectType === "board") {
     return true

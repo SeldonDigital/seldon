@@ -7,7 +7,3 @@ function join(args: ClassValue[]): string {
 export function cn(...args: ClassValue[]): string {
   return join(args)
 }
-
-export function cnMerge(...args: ClassValue[]): string {
-  return join(args)
-}

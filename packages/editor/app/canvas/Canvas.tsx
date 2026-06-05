@@ -11,8 +11,8 @@ import { useThrottledCallback } from "use-debounce"
 import { useSetHoverState } from "@lib/hooks/use-canvas-hover-state"
 import { useDialog } from "@lib/hooks/use-dialog"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
-import { useActiveBoard } from "@lib/workspace/use-active-board"
-import { useSelection } from "@lib/workspace/use-selection"
+import { useActiveBoard } from "@lib/workspace/hooks/use-active-board"
+import { useSelection } from "@lib/workspace/hooks/use-selection"
 import { CanvasTracking } from "../tracking/CanvasTracking"
 import {
   TRANSFORM_WRAPPER_INITIAL_POSITION_X,

@@ -22,7 +22,7 @@ import {
 } from "@seldon/core/helpers/color/convert-color"
 import { serializeColor } from "@lib/properties/serialize-color"
 import { serializeValue } from "@lib/properties/serialize-value"
-import { useThemeEntryEditor } from "@lib/themes/use-theme-entry-editor"
+import { useThemeEntryEditor } from "@lib/themes/hooks/use-theme-entry-editor"
 import type { EntryThemeId } from "@seldon/core/workspace/types"
 import { FlatProperty } from "../helpers/properties-data"
 

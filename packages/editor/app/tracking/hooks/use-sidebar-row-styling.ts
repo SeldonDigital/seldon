@@ -1,4 +1,4 @@
-import { COLORS } from "@lib/utils/colors"
+import { COLORS } from "@lib/helpers/colors"
 import { useMemo } from "react"
 import { CSSProperties } from "react"
 import { Instance, Variant } from "@seldon/core"
@@ -6,9 +6,9 @@ import { workspaceService } from "@seldon/core/workspace/services/workspace.serv
 import { useHoverStateForObject } from "@lib/hooks/use-canvas-hover-state"
 import { useTool } from "@lib/hooks/use-tool"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
-import { useActiveBoard } from "@lib/workspace/use-active-board"
-import { useIsNodeSelected } from "@lib/workspace/use-selection"
-import { useWorkspace } from "@lib/workspace/use-workspace"
+import { useActiveBoard } from "@lib/workspace/hooks/use-active-board"
+import { useIsNodeSelected } from "@lib/workspace/hooks/use-selection"
+import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { checkInsertionPoint } from "../helpers/check-insertion-point"
 
 /**
@@ -110,7 +110,7 @@ export function useSidebarRowStyling(
         "node",
         hoverState.placement || "inside",
         workspace,
-        "sketch",
+        "component",
       )
     } catch (error) {
       // Node doesn't exist in workspace (virtual node), skip tracking

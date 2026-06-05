@@ -5,13 +5,13 @@ import { Variant } from "@seldon/core"
 import type { FontFamilyEntry } from "@seldon/core/font-collections/types"
 import { useFontAvailable } from "@lib/hooks/use-font-available"
 import { useTool } from "@lib/hooks/use-tool"
-import { COLORS } from "@lib/utils/colors"
+import { COLORS } from "@lib/helpers/colors"
 import {
   formatResourceItemKey,
   useIsResourceItemSelected,
   useSelection,
-} from "@lib/workspace/use-selection"
-import { useRowHighlightStyle } from "@lib/workspace/use-object-hover"
+} from "@lib/workspace/hooks/use-selection"
+import { useRowHighlightStyle } from "@lib/workspace/hooks/use-object-hover"
 import { useSidebarRowStyling } from "../../tracking/hooks/use-sidebar-row-styling"
 import { useRowClick } from "./hooks/use-row-click"
 import { ListItemTreeNode as SeldonNode } from "../../seldon/elements/ListItemTreeNode"

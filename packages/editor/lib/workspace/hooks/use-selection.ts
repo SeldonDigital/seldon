@@ -121,10 +121,6 @@ export const useIsNodeSelected = (id: VariantId | InstanceId): boolean =>
 export const useSelectedNodeId = (): VariantId | InstanceId | null =>
   useStore((state) => state.selectedNodeId)
 
-/** Reactive subscription to the selected resource item key only. */
-export const useSelectedResourceItemKey = (): string | null =>
-  useStore((state) => state.selectedResourceItemKey)
-
 /** Reactive subscription to whether a specific resource item is selected. */
 export const useIsResourceItemSelected = (key: string): boolean =>
   useStore((state) => state.selectedResourceItemKey === key)

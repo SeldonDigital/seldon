@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react"
 import { useTransformContext } from "react-zoom-pan-pinch"
-import { useHoveredId } from "@lib/workspace/use-object-hover"
+import { useHoveredId } from "@lib/workspace/hooks/use-object-hover"
 import { useSelectedId } from "@lib/workspace/selection-target"
 import type { NodeRect } from "../tracking/hooks/use-node-rects-store"
 import {

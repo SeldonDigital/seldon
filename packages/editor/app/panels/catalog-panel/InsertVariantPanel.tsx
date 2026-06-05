@@ -8,8 +8,8 @@ import { confirmMissingSchemaVariants } from "@lib/workspace/confirm-missing-sch
 import { InstanceId, VariantId } from "@seldon/core/workspace/types"
 import { useDialog } from "@lib/hooks/use-dialog"
 import { useTool } from "@lib/hooks/use-tool"
-import { useAutoSelectNode } from "@lib/workspace/use-auto-select-node"
-import { useWorkspace } from "@lib/workspace/use-workspace"
+import { useAutoSelectNode } from "@lib/workspace/hooks/use-auto-select-node"
+import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { CatalogPanel } from "./CatalogPanel"
 import {
   CatalogComponentItem,

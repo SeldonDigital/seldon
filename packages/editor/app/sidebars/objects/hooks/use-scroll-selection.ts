@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react"
 import { useEditorConfig } from "@lib/hooks/use-editor-config"
-import { useSelection } from "@lib/workspace/use-selection"
+import { useSelection } from "@lib/workspace/hooks/use-selection"
 
 const SCROLL_OFFSET_TOP = 130
 

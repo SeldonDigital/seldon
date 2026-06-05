@@ -16,8 +16,8 @@ import {
   isThemeEditingSelection,
   resolveActiveThemeEntryId,
 } from "@lib/themes/resolve-active-theme-entry-id"
-import { useSelection } from "@lib/workspace/use-selection"
-import { useWorkspace } from "@lib/workspace/use-workspace"
+import { useSelection } from "@lib/workspace/hooks/use-selection"
+import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import {
   sidebarNoSelectionStyle,
   sidebarShellStyle,

@@ -3,7 +3,7 @@
 import { CSSProperties } from "react"
 import type { EntryIconSetId } from "@seldon/core/workspace/types"
 import { useTool } from "@lib/hooks/use-tool"
-import { useRowHighlightStyle } from "@lib/workspace/use-object-hover"
+import { useRowHighlightStyle } from "@lib/workspace/hooks/use-object-hover"
 import { useRowClick } from "./hooks/use-row-click"
 import { ListItemTreeNode as SeldonNode } from "../../seldon/elements/ListItemTreeNode"
 import { LabelProps } from "../../seldon/primitives/Label"

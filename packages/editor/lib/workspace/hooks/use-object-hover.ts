@@ -7,7 +7,7 @@ import { create } from "zustand"
  * canvas write this id on pointer move and read it to highlight, so hovering one
  * surface lights up the matching row or canvas object on the other.
  *
- * Kept separate from the component/sketch insertion hover (`use-canvas-hover-state`)
+ * Kept separate from the component insertion hover (`use-canvas-hover-state`)
  * so select-mode highlighting and insertion tracking stay decoupled.
  */
 interface ObjectHoverState {
@@ -32,9 +32,6 @@ export const useHoveredId = (): string | null =>
 /** Whether the given id is the hovered one. Only matching rows re-render. */
 export const useIsHovered = (id: string): boolean =>
   useStore((state) => state.hoveredId === id)
-
-/** Imperative read for handlers that should not subscribe. */
-export const getHoveredId = (): string | null => useStore.getState().hoveredId
 
 /**
  * Shared row highlight style: selected border or hover background. Replaces the

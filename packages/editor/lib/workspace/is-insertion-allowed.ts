@@ -1,3 +1,4 @@
+import { Tool } from "@lib/hooks/use-tool"
 import { Placement } from "@lib/types"
 import {
   Instance,
@@ -17,15 +18,10 @@ import { workspaceService } from "@seldon/core/workspace/services/workspace.serv
  * - Prevents insertion into any ancestor that is a default variant
  * - Checks rules.mutations.insertInto for variants
  *
- * For "sketch" tool:
- * - Prevents insertion into instances (sketch doesn't work on instances)
- * - Prevents insertion into default variants
- * - Prevents insertion into any ancestor that is a default variant (covers all nested children)
- *
  * @param objectId - The ID of the object being hovered/clicked
  * @param placement - The placement ("inside", "before", "after")
  * @param workspace - The workspace
- * @param tool - The active tool ("component" | "sketch")
+ * @param tool - The active tool
  * @param node - Optional: The node object (if already retrieved, avoids duplicate lookup)
  * @returns true if insertion is allowed, false otherwise
  */
@@ -33,7 +29,7 @@ export function isInsertionAllowed(
   objectId: InstanceId | VariantId,
   placement: Placement,
   workspace: Workspace,
-  tool: "component" | "sketch",
+  tool: Tool,
   node?: Variant | Instance,
 ): boolean {
   try {
@@ -61,50 +57,6 @@ export function isInsertionAllowed(
         if (!parent) break
         currentNode = parent
       }
-      return true
-    }
-
-    // For sketch tool, don't allow insertion into instances or default variants
-    if (tool === "sketch") {
-      // Don't allow insertion into instances
-      if (workspaceService.isInstance(targetNode)) {
-        return false
-      }
-
-      // Determine the actual target node where insertion will happen
-      let insertionTargetNode: Variant | Instance
-
-      if (placement === "inside") {
-        // For "inside" placement, find the container node
-        try {
-          insertionTargetNode = workspaceService.findContainerNode(
-            objectId,
-            workspace,
-          )
-        } catch {
-          // If container not found, fall back to checking the node itself
-          insertionTargetNode = targetNode
-        }
-      } else {
-        // For "before"/"after" placement, the target is the parent
-        const parentNode = workspaceService.findParentNode(objectId, workspace)
-        if (!parentNode) {
-          return true // No parent means it's a root variant, allow insertion
-        }
-        insertionTargetNode = parentNode
-      }
-
-      // Check the target node and all its ancestors for default variants
-      if (!checkNodeAndAncestors(insertionTargetNode)) {
-        return false
-      }
-
-      // Also check the original hovered node and its ancestors
-      // This catches cases where we hover over child instances of default variants
-      if (!checkNodeAndAncestors(targetNode)) {
-        return false
-      }
-
       return true
     }
 

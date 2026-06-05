@@ -6,7 +6,7 @@ import { useDialog } from "@lib/hooks/use-dialog"
 import { useTool } from "@lib/hooks/use-tool"
 import { useDropzone } from "../sidebars/objects/hooks/use-dropzone"
 import { useSidebarPlacementTracking } from "./hooks/use-sidebar-placement-tracking"
-import { useWorkspace } from "@lib/workspace/use-workspace"
+import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { SidebarPlacementZones } from "./sidebar-indicators/SidebarPlacementZones"
 import { IndicatorSelect } from "./sidebar-indicators/select/IndicatorSelect"
 

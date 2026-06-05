@@ -1,7 +1,7 @@
 import { invariant } from "@seldon/core"
 import { themeService } from "@seldon/core/workspace/services/theme/theme.service"
-import { useSelection } from "@lib/workspace/use-selection"
-import { useWorkspace } from "@lib/workspace/use-workspace"
+import { useSelection } from "@lib/workspace/hooks/use-selection"
+import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 
 export function useSelectionTheme() {
   const { selection } = useSelection()

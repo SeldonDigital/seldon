@@ -15,13 +15,13 @@ import {
   useCanvasHoverState,
 } from "../../../lib/hooks/use-canvas-hover-state"
 import { getNodeCatalogComponentId, getNodeChildIds } from "@lib/workspace/node-tree"
-import { useSelection } from "@lib/workspace/use-selection"
+import { useSelection } from "@lib/workspace/hooks/use-selection"
 import {
   getSelectionTarget,
   selectFromTarget,
 } from "@lib/workspace/selection-target"
-import { useSetHoveredId } from "@lib/workspace/use-object-hover"
-import { useWorkspace } from "@lib/workspace/use-workspace"
+import { useSetHoveredId } from "@lib/workspace/hooks/use-object-hover"
+import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useAddToast } from "@components/toaster/hooks/use-add-toast"
 import { checkInsertionPoint } from "../../tracking/helpers/check-insertion-point"
 import { getBoardIdForEventTarget } from "../helpers/get-board-id-for-event-target"

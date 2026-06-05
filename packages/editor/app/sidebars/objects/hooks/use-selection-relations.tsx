@@ -1,9 +1,9 @@
 import { createContext, useContext, useMemo, type ReactNode } from "react"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
 import { findComponentForNode } from "@lib/workspace/node-tree"
-import { useSelectedNodeId } from "@lib/workspace/use-selection"
+import { useSelectedNodeId } from "@lib/workspace/hooks/use-selection"
 import { getComponentKey, getNode } from "@lib/workspace/workspace-accessors"
-import { useWorkspace } from "@lib/workspace/use-workspace"
+import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 
 /**
  * Selection facts that are identical for every row in the objects tree.

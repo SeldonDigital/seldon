@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
 import { Instance, Variant } from "@seldon/core"
-import { useSelection } from "@lib/workspace/use-selection"
+import { useSelection } from "@lib/workspace/hooks/use-selection"
 
 /**
  * Centralized edit state management for objects panel.

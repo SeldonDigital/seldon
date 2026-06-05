@@ -2,8 +2,8 @@
 
 import React, { useCallback, useEffect, useState } from "react"
 import { ValueType } from "@seldon/core"
-import { useSelection } from "@lib/workspace/use-selection"
-import { useWorkspace } from "@lib/workspace/use-workspace"
+import { useSelection } from "@lib/workspace/hooks/use-selection"
+import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 
 type CanvasTextInputProps = {
   nodeId?: string

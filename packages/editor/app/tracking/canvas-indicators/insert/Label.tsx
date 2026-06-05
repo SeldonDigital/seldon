@@ -1,4 +1,4 @@
-import { COLORS } from "@lib/utils/colors"
+import { COLORS } from "@lib/helpers/colors"
 import { CSSProperties } from "react"
 import { IconCatalog } from "@components/seldon/custom-icons/Catalog"
 

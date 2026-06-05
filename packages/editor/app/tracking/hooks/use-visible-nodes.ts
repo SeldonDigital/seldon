@@ -4,8 +4,8 @@ import {
   getChildNodeIds,
   getVariantRootIds,
 } from "@lib/workspace/component-tree"
-import { useActiveBoard } from "@lib/workspace/use-active-board"
-import { useWorkspace } from "@lib/workspace/use-workspace"
+import { useActiveBoard } from "@lib/workspace/hooks/use-active-board"
+import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 
 export interface VisibleNode {
   id: VariantId | InstanceId

@@ -1,7 +1,7 @@
 import { LayoutGroup } from "framer-motion"
 import { CSSProperties, Fragment, PointerEvent, RefObject, useCallback } from "react"
 import { getSelectionTarget } from "@lib/workspace/selection-target"
-import { useSetHoveredId } from "@lib/workspace/use-object-hover"
+import { useSetHoveredId } from "@lib/workspace/hooks/use-object-hover"
 import { Frame } from "../../seldon/frames/Frame"
 import { BoardSection } from "../helpers/get-board-sections"
 import { useSectionExpansion } from "../hooks/use-section-expansion"

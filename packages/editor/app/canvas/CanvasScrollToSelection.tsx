@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react"
 import { useControls, useTransformContext } from "react-zoom-pan-pinch"
 import { useEditorConfig } from "@lib/hooks/use-editor-config"
-import { useSelection } from "@lib/workspace/use-selection"
+import { useSelection } from "@lib/workspace/hooks/use-selection"
 import {
   getCanvasSelectionElements,
   getUnionRect,

@@ -1,19 +1,19 @@
 "use client"
 
-import { triggerDownload } from "@lib/utils/trigger-download"
+import { triggerDownload } from "@lib/helpers/trigger-download"
 import { kebabCase } from "change-case"
 import { useCallback } from "react"
 import type { Workspace } from "@seldon/core/workspace/types"
 import { workspacePropagationService } from "@seldon/core/workspace/services/propagation/workspace-propagation.service"
-import { useSelection } from "@lib/workspace/use-selection"
-import { useWorkspace } from "@lib/workspace/use-workspace"
+import { useSelection } from "@lib/workspace/hooks/use-selection"
+import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useAddToast } from "@components/toaster/hooks/use-add-toast"
 import {
   pickExportDirectory,
   writeExportToDirectory,
 } from "@lib/export/write-export-to-directory"
 import { useWorkspaceId } from "@lib/project/hooks/use-workspace-id"
-import { useWorkspaceRecord } from "@lib/local-workspace/use-workspace-record"
+import { useWorkspaceRecord } from "@lib/local-workspace/hooks/use-workspace-record"
 
 export function useImportExport() {
   const workspaceId = useWorkspaceId()

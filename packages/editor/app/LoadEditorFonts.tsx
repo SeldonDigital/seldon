@@ -3,7 +3,7 @@
 import { useMemo } from "react"
 import { workspaceFontCollectionService } from "@seldon/core/workspace/services"
 import { buildFontFaceCss } from "@lib/font-collections/build-font-face-css"
-import { useWorkspace } from "@lib/workspace/use-workspace"
+import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 
 /**
  * Self-hosts every enabled font-collection family for the canvas. The enabled

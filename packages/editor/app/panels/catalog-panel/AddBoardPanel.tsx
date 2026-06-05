@@ -4,8 +4,8 @@ import { useCallback } from "react"
 import { ComponentLevel } from "@seldon/core/components/constants"
 import { useAddRemoveCommands } from "@lib/hooks/commands/use-add-remove-commands"
 import { useDialog } from "@lib/hooks/use-dialog"
-import { useSelection } from "@lib/workspace/use-selection"
-import { useWorkspace } from "@lib/workspace/use-workspace"
+import { useSelection } from "@lib/workspace/hooks/use-selection"
+import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { CatalogPanel } from "./CatalogPanel"
 import {
   CatalogComponentItem,

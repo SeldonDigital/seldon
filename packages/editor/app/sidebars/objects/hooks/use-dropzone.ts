@@ -10,7 +10,7 @@ import { workspaceService } from "@seldon/core/workspace/services/workspace.serv
 import type { ComponentEntry, EntryNode } from "@seldon/core/workspace/types"
 import { getNodeCatalogComponentId } from "@lib/workspace/node-tree"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
-import { useWorkspace } from "@lib/workspace/use-workspace"
+import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 
 export type DropzoneParams = {
   target: Board | ComponentEntry | Variant | Instance | EntryNode

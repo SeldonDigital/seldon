@@ -7,4 +7,4 @@ The software is licensed as follows:
 
 Full index of license documents: [license/README.md](license/README.md).
 
-Contact: admin@seldon.digital
+Contact: info@seldon.digital

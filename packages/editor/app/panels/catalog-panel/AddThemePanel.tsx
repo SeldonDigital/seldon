@@ -4,7 +4,7 @@ import { useMemo, useState } from "react"
 import { STOCK_THEMES } from "@seldon/core/themes/catalog"
 import { useAddRemoveCommands } from "@lib/hooks/commands/use-add-remove-commands"
 import { useDialog } from "@lib/hooks/use-dialog"
-import { useWorkspace } from "@lib/workspace/use-workspace"
+import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { CatalogPanel, CatalogPanelItem } from "./CatalogPanel"
 
 const THEME_ICON = "material-palette"

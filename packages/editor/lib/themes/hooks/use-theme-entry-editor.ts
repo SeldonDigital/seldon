@@ -2,22 +2,23 @@ import { useCallback, useMemo } from "react"
 import { getComputedTheme } from "@seldon/core/workspace/compute"
 import { getThemeOverrides } from "@seldon/core/workspace/helpers/themes/get-theme-overrides"
 import type { EntryThemeId } from "@seldon/core/workspace/types"
-import type {
-  HSL,
-  Harmony,
-  LookSection,
-  Ratio,
-  ThemeBorderWidthId,
-  ThemeCustomSwatchId,
-  ThemeDimensionId,
-  ThemeFontFamilyId,
-  ThemeFontId,
-  ThemeFontSizeId,
-  ThemeLineHeightId,
-  ThemeSizeId,
-  ThemeSpacingId,
+import {
+  Colorspace,
+  type HSL,
+  type Harmony,
+  type LookSection,
+  type Ratio,
+  type ThemeBorderWidthId,
+  type ThemeCustomSwatchId,
+  type ThemeDimensionId,
+  type ThemeFontFamilyId,
+  type ThemeFontId,
+  type ThemeFontSizeId,
+  type ThemeLineHeightId,
+  type ThemeSizeId,
+  type ThemeSpacingId,
 } from "@seldon/core"
-import { useWorkspace } from "@lib/workspace/use-workspace"
+import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 
 function getOverrideAtPath(
   overrides: Record<string, unknown>,
@@ -286,7 +287,10 @@ export function useThemeEntryEditor(themeEntryId: EntryThemeId | null) {
         themeId: themeEntryId,
         name: "New Swatch",
         intent: "Custom Swatch",
-        parameters: { hue: 0, saturation: 0, lightness: 0 },
+        parameters: {
+          colorspace: Colorspace.HSL,
+          value: { hue: 0, saturation: 0, lightness: 0 },
+        },
       },
     })
   }, [dispatch, themeEntryId])

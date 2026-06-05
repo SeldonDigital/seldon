@@ -19,10 +19,10 @@ import {
   findFontCollectionBoard,
   findThemeBoard,
 } from "@lib/workspace/resource-boards"
-import { useAutoSelectNode } from "@lib/workspace/use-auto-select-node"
-import { useSelection } from "@lib/workspace/use-selection"
+import { useAutoSelectNode } from "@lib/workspace/hooks/use-auto-select-node"
+import { useSelection } from "@lib/workspace/hooks/use-selection"
 import { resolveComponentKey } from "@lib/workspace/workspace-accessors"
-import { useWorkspace } from "@lib/workspace/use-workspace"
+import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useTool } from "@lib/hooks/use-tool"
 import { useAddToast } from "@components/toaster/hooks/use-add-toast"
 import {

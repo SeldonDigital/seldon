@@ -24,7 +24,7 @@ import {
   getNodeChildIds,
 } from "@lib/workspace/node-tree"
 import { useAddNodeFontFamily } from "./hooks/use-add-node-font-family"
-import { useWorkspace } from "@lib/workspace/use-workspace"
+import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { ComponentRenderer } from "./ComponentRenderer"
 
 export type CanvasNodeProps = {

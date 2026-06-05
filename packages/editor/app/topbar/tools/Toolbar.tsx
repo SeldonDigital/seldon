@@ -1,6 +1,6 @@
 "use client"
 
-import { COLORS, lcha } from "@lib/utils/colors"
+import { COLORS, lcha } from "@lib/helpers/colors"
 import { useDialog } from "@lib/hooks/use-dialog"
 import { useTool } from "@lib/hooks/use-tool"
 import { BarToolsSeldon } from "../../seldon/chrome/elements/BarToolsSeldon"

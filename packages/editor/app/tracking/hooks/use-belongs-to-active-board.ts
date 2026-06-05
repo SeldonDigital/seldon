@@ -3,8 +3,8 @@ import { InstanceId, VariantId } from "@seldon/core/index"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
 import { useCanvasHoverState } from "@lib/hooks/use-canvas-hover-state"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
-import { useActiveBoard } from "@lib/workspace/use-active-board"
-import { useWorkspace } from "@lib/workspace/use-workspace"
+import { useActiveBoard } from "@lib/workspace/hooks/use-active-board"
+import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 
 export type BelongsToActiveBoardResult = {
   /** Whether the current canvas hover target belongs to the active board. */

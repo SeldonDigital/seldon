@@ -17,7 +17,7 @@ interface HistoryState {
 
 export const INITIAL_WORKSPACE: Workspace = createEmptyWorkspace()
 
-export const useStore = create<HistoryState>()((set) => ({
+const useHistoryStore = create<HistoryState>()((set) => ({
   history: [INITIAL_WORKSPACE],
   currentIndex: 0,
 
@@ -58,11 +58,11 @@ export const useStore = create<HistoryState>()((set) => ({
 }))
 
 export function useHistory() {
-  const push = useStore((state) => state.push)
-  const undo = useStore((state) => state.undo)
-  const redo = useStore((state) => state.redo)
-  const storeReset = useStore((state) => state.reset)
-  const current = useStore(
+  const push = useHistoryStore((state) => state.push)
+  const undo = useHistoryStore((state) => state.undo)
+  const redo = useHistoryStore((state) => state.redo)
+  const storeReset = useHistoryStore((state) => state.reset)
+  const current = useHistoryStore(
     useShallow((state) => state.history[state.currentIndex]),
   )
 

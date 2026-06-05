@@ -12,7 +12,7 @@ import { isResourceType } from "@seldon/core/workspace/helpers/components/is-res
 import { useDebugMode } from "@lib/hooks/use-debug-mode"
 import { usePreview } from "@lib/hooks/use-preview"
 import { useCanvas } from "./hooks/use-canvas"
-import { useActiveBoard } from "@lib/workspace/use-active-board"
+import { useActiveBoard } from "@lib/workspace/hooks/use-active-board"
 import { ComponentBoard } from "./boards/ComponentBoard"
 import { FontCollectionBoard } from "./boards/FontCollectionBoard"
 import { IconSetBoardPlaceholder } from "./boards/IconSetBoardPlaceholder"

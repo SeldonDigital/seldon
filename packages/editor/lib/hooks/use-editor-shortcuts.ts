@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router"
 import { useHotkeys } from "react-hotkeys-hook"
-import { useHistory } from "@lib/workspace/use-history"
+import { useHistory } from "@lib/workspace/hooks/use-history"
 import { useAddRemoveCommands } from "./commands/use-add-remove-commands"
 import { useMoveCommands } from "./commands/use-move-commands"
 import { useSelectCommands } from "./commands/use-select-commands"
@@ -107,9 +107,6 @@ export function useEditorShortcuts() {
     preventDefault: true,
   }) // prevent the character from being typed after the trigger
   useHotkeys("v", () => setActiveTool("select"))
-  useHotkeys("k", () => setActiveTool("sketch"), {
-    preventDefault: true,
-  })
 
   // Preview mode
   useHotkeys("p", () => togglePreviewMode(), { preventDefault: true })

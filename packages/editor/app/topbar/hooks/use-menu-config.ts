@@ -1,6 +1,6 @@
 "use client"
 
-import { selectFile } from "@lib/utils/select-file"
+import { selectFile } from "@lib/helpers/select-file"
 import {
   isComponentBoard,
   isFontCollectionBoard,
@@ -26,9 +26,9 @@ import { useNodeClipboardActions } from "@lib/hooks/use-node-clipboard-actions"
 import { usePreview } from "@lib/hooks/use-preview"
 import { useTool } from "@lib/hooks/use-tool"
 import { useZoomControls } from "@lib/hooks/use-zoom-controls"
-import { useHistory } from "@lib/workspace/use-history"
-import { useSelection } from "@lib/workspace/use-selection"
-import { useWorkspace } from "@lib/workspace/use-workspace"
+import { useHistory } from "@lib/workspace/hooks/use-history"
+import { useSelection } from "@lib/workspace/hooks/use-selection"
+import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useAddToast } from "@components/toaster/hooks/use-add-toast"
 import { HeaderConfig, MenuConfig, MenuItem, ToolbarConfig } from "../menus/types"
 

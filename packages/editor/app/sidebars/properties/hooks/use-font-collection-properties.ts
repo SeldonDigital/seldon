@@ -1,5 +1,5 @@
 import { useCallback } from "react"
-import { useWorkspace } from "@lib/workspace/use-workspace"
+import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { FlatProperty } from "../helpers/properties-data"
 
 /**

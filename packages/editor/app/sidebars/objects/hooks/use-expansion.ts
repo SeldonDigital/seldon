@@ -6,7 +6,7 @@ import type { EntryNode } from "@seldon/core/workspace/types"
 import { collectDescendantNodeIds } from "@lib/workspace/component-tree"
 import { findComponentForNode } from "@lib/workspace/node-tree"
 import { getComponentKey, getNode } from "@lib/workspace/workspace-accessors"
-import { useWorkspace } from "@lib/workspace/use-workspace"
+import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 
 const useStore = create<{
   expandedObjects: Set<string>

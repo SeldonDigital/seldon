@@ -7,8 +7,8 @@ import { findParentNode } from "@seldon/core/workspace/helpers/nodes/find-parent
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
 import { getNodeChildIds } from "@lib/workspace/node-tree"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
-import { useSelection } from "@lib/workspace/use-selection"
-import { useWorkspace } from "@lib/workspace/use-workspace"
+import { useSelection } from "@lib/workspace/hooks/use-selection"
+import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useAddToast } from "@components/toaster/hooks/use-add-toast"
 
 /**

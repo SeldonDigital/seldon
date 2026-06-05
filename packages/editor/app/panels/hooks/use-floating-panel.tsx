@@ -1,4 +1,4 @@
-import { getWindowInnerSize } from "@lib/utils/get-window-inner-size"
+import { getWindowInnerSize } from "@lib/helpers/get-window-inner-size"
 import {
   BoundingBox,
   PanInfo,

@@ -1,7 +1,7 @@
 "use client"
 
 import type { CSSProperties } from "react"
-import { useHoveredId } from "@lib/workspace/use-object-hover"
+import { useHoveredId } from "@lib/workspace/hooks/use-object-hover"
 import { useSelectedId } from "@lib/workspace/selection-target"
 import { useCanvasOverlayStore } from "../../../canvas/hooks/use-canvas-overlay-store"
 import type { NodeRect } from "../../hooks/use-node-rects-store"
