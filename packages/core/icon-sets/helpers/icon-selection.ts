@@ -1,5 +1,9 @@
 import type { IconId } from "../../icon-sets"
-import type { IconCategory } from "../constants/categories"
+import {
+  categorySubcategories,
+  iconCategories,
+  type IconCategory,
+} from "../constants/categories"
 import type { ComputedIconSet } from "../types/icon-set"
 import { getIconCategoryFromId } from "./get-icon-category-from-id"
 
@@ -40,12 +44,46 @@ export function isIconIncluded(
   return isIconEnabledByDefault(set, iconId)
 }
 
-/** Resolves the included icons for an entry, applying overrides on the defaults. */
+/**
+ * Orders a set's icons by category then subcategory, matching the order the
+ * properties panel renders them (`iconCategories` -> `categorySubcategories` ->
+ * icons within each subcategory). Icons whose category path is not represented
+ * are appended last, preserving their original order.
+ */
+export function getIconsInCategoryOrder(set: ComputedIconSet): IconId[] {
+  const ordered: IconId[] = []
+  const seen = new Set<IconId>()
+  for (const category of iconCategories) {
+    for (const subcategory of categorySubcategories[category]) {
+      for (const iconId of getIconsInSubcategory(
+        set,
+        `${category}/${subcategory}`,
+      )) {
+        if (seen.has(iconId)) continue
+        ordered.push(iconId)
+        seen.add(iconId)
+      }
+    }
+  }
+  for (const iconId of set.icons) {
+    if (seen.has(iconId)) continue
+    ordered.push(iconId)
+    seen.add(iconId)
+  }
+  return ordered
+}
+
+/**
+ * Resolves the included icons for an entry in category then subcategory order,
+ * matching the properties panel. Applies overrides on the defaults.
+ */
 export function getIncludedIcons(
   set: ComputedIconSet,
   inclusion: IconInclusion | undefined,
 ): IconId[] {
-  return set.icons.filter((iconId) => isIconIncluded(set, inclusion, iconId))
+  return getIconsInCategoryOrder(set).filter((iconId) =>
+    isIconIncluded(set, inclusion, iconId),
+  )
 }
 
 /** Preset for a subcategory, derived from how many of its icons are on. */

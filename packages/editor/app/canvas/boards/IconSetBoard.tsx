@@ -27,9 +27,9 @@ export type IconSetBoardProps = {
 }
 
 /**
- * Icon set board canvas: board chrome plus one Iconic Avatar preview per
- * included icon. The avatars wrap into a grid. Mirrors the font collection
- * board, swapping the Type Specimen preview for an Iconic Avatar preview.
+ * Icon set board canvas: board chrome plus one Icon preview per included icon.
+ * The icons wrap into a grid and show their name in a hover tooltip. Mirrors the
+ * font collection board, swapping the Type Specimen preview for an Icon preview.
  */
 export function IconSetBoard({ board }: IconSetBoardProps) {
   const { workspace } = useWorkspace()
@@ -113,7 +113,7 @@ export function IconSetBoard({ board }: IconSetBoardProps) {
             slot: iconId,
           })
           return (
-            <IconAvatarPreview
+            <IconPreview
               key={`${entryId}-${iconId}`}
               scope={`${boardKey}-${entryId}-${iconId}`}
               entryId={entryId}
@@ -129,7 +129,7 @@ export function IconSetBoard({ board }: IconSetBoardProps) {
   )
 }
 
-type IconAvatarPreviewProps = {
+type IconPreviewProps = {
   scope: string
   entryId: string
   resourceItemKey: string
@@ -139,21 +139,22 @@ type IconAvatarPreviewProps = {
 }
 
 /**
- * Renders a single Iconic Avatar preview for one icon.
+ * Renders a single Icon preview for one icon.
  *
  * The icon id is injected as a `symbol` override on every Icon node of the
- * cloned preview workspace, so the avatar shows that icon. Mirrors the font
- * collection type specimen, swapping the injected property.
+ * cloned preview workspace, so the preview shows that icon. The icon name is
+ * shown in a hover tooltip. Mirrors the font collection type specimen, swapping
+ * the injected property.
  */
-function IconAvatarPreview({
+function IconPreview({
   scope,
   entryId,
   resourceItemKey,
   iconId,
   themes,
   boardThemeId,
-}: IconAvatarPreviewProps) {
-  const { workspace: avatarBase, rootId } = getIconSheetPreviewBase()
+}: IconPreviewProps) {
+  const { workspace: iconBase, rootId } = getIconSheetPreviewBase()
 
   const label = iconLabels[iconId as keyof typeof iconLabels] ?? iconId
 
@@ -162,11 +163,9 @@ function IconAvatarPreview({
       return null
     }
     const nodes = Object.fromEntries(
-      Object.entries(avatarBase.nodes).map(([id, node]) => {
+      Object.entries(iconBase.nodes).map(([id, node]) => {
         const isIcon =
-          getNodeCatalogComponentId(node, avatarBase) === ComponentId.ICON
-        const isTitle =
-          getNodeCatalogComponentId(node, avatarBase) === ComponentId.TITLE
+          getNodeCatalogComponentId(node, iconBase) === ComponentId.ICON
         return [
           id,
           {
@@ -178,11 +177,6 @@ function IconAvatarPreview({
                     symbol: { type: ValueType.OPTION, value: iconId },
                   }
                 : {}),
-              ...(isTitle
-                ? {
-                    content: { type: ValueType.EXACT, value: label },
-                  }
-                : {}),
             },
             ...(id === rootId ? { theme: boardThemeId } : {}),
           },
@@ -190,11 +184,11 @@ function IconAvatarPreview({
       }),
     )
     return {
-      ...avatarBase,
+      ...iconBase,
       themes,
       nodes,
     } as Workspace
-  }, [avatarBase, rootId, themes, boardThemeId, iconId, label])
+  }, [iconBase, rootId, themes, boardThemeId, iconId])
 
   if (!previewWorkspace || !rootId) {
     return null
@@ -202,6 +196,7 @@ function IconAvatarPreview({
 
   return (
     <div
+      title={label}
       data-canvas-selection-id={canvasSelectionId(resourceItemKey, entryId)}
       data-selection-id={resourceItemKey}
       data-selection-kind="resourceItem"

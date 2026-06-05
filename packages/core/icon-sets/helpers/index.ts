@@ -6,6 +6,7 @@ export {
   isIconIncluded,
   getIconsInSubcategory,
   getIconsInCategory,
+  getIconsInCategoryOrder,
   deriveSubcategoryPreset,
   type IconInclusion,
   type IconSubcategoryPreset,
