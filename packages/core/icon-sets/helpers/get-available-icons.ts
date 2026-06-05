@@ -1,10 +1,10 @@
 import { isIconSetBoard } from "../../workspace/model/components"
 import { Workspace } from "../../workspace/types"
 import { IconId } from "../../icon-sets"
-import { carbonIconIds } from "../sets/carbon"
-import { lucideIconIds } from "../sets/lucide"
-import { materialIconIds } from "../sets/material"
-import { seldonIconIds } from "../sets/seldon"
+import { carbonIconIds } from "../catalog/carbon"
+import { lucideIconIds } from "../catalog/lucide"
+import { materialIconIds } from "../catalog/material"
+import { seldonIconIds } from "../catalog/seldon"
 import { IconSetId } from "../types"
 
 const ICON_SET_CATALOG_TO_SET_ID: Record<string, IconSetId> = {

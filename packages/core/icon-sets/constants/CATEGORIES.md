@@ -113,13 +113,13 @@ When an icon cannot be categorized or its category cannot be determined, it defa
 
 Icons are physically organized in the file system following this category structure:
 ```
-packages/core/icons/sets/{iconSet}/{category}/{subcategory}/{IconFile}.tsx
+packages/core/icon-sets/catalog/{iconSet}/{category}/{subcategory}/{IconFile}.tsx
 ```
 
 For example:
-- `packages/core/icons/sets/material/user-interface/actions/IconMaterialAdd.tsx`
-- `packages/core/icons/sets/material/business/commerce/IconMaterialShoppingCart.tsx`
-- `packages/core/icons/sets/material/miscellaneous/miscellaneous/IconMaterialSync.tsx`
+- `packages/core/icon-sets/catalog/material/user-interface/actions/IconMaterialAdd.tsx`
+- `packages/core/icon-sets/catalog/material/business/commerce/IconMaterialShoppingCart.tsx`
+- `packages/core/icon-sets/catalog/material/miscellaneous/miscellaneous/IconMaterialSync.tsx`
 
 The file location is the **source of truth** for an icon's category. Category information is extracted from the file path structure.
 
@@ -140,7 +140,7 @@ const categoryPath = getIconCategoryFromId(iconId)
 
 ```typescript
 import { parseCategoryPath } from "@seldon/core/icon-sets/helpers/get-icon-category-from-path"
-import { IconCategoryPath } from "@seldon/core/icon-sets/categories"
+import { IconCategoryPath } from "@seldon/core/icon-sets/constants"
 
 const categoryPath: IconCategoryPath = "user-interface/actions"
 const { category, subcategory } = parseCategoryPath(categoryPath)
@@ -150,7 +150,7 @@ const { category, subcategory } = parseCategoryPath(categoryPath)
 ### Validating Category Paths
 
 ```typescript
-import { categoryPaths, DEFAULT_CATEGORY_PATH } from "@seldon/core/icon-sets/categories"
+import { categoryPaths, DEFAULT_CATEGORY_PATH } from "@seldon/core/icon-sets/constants"
 
 // Check if a path is valid
 const isValid = categoryPaths.includes("user-interface/actions") // true
@@ -163,9 +163,9 @@ const category = getIconCategoryFromId(unknownIconId) || DEFAULT_CATEGORY_PATH
 
 When working with icon categories:
 
-1. **File location is authoritative**: An icon's category is determined by its file path in `packages/core/icons/sets/{iconSet}/{category}/{subcategory}/`
+1. **File location is authoritative**: An icon's category is determined by its file path in `packages/core/icon-sets/catalog/{iconSet}/{category}/{subcategory}/`
 
-2. **Category paths are fixed**: The list of valid categories and subcategories is fixed and defined in `packages/core/icons/categories.ts`. Do not create new categories without updating this file.
+2. **Category paths are fixed**: The list of valid categories and subcategories is fixed and defined in `packages/core/icon-sets/constants/categories.ts`. Do not create new categories without updating this file.
 
 3. **Default fallback**: Icons that cannot be categorized default to `miscellaneous/miscellaneous`
 
@@ -173,4 +173,4 @@ When working with icon categories:
 
 5. **Icon set independence**: Categories are shared across all icon sets (material, carbon, lucide, seldon)
 
-6. **Static mapping**: Category mappings are generated at build time from `index-all.ts` files and stored per icon set in `packages/core/icons/mappings/{iconSet}.ts` (e.g., `material.ts`, `carbon.ts`, `lucide.ts`, `seldon.ts`)
+6. **Static mapping**: Category mappings are stored per icon set in `packages/core/icon-sets/catalog/{iconSet}/category-map.ts` (e.g., `catalog/material/category-map.ts`, `catalog/carbon/category-map.ts`, `catalog/lucide/category-map.ts`, `catalog/seldon/category-map.ts`)

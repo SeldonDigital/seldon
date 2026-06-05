@@ -4,10 +4,10 @@ import { IconId } from "@seldon/core/icon-sets"
 import { getIconComponentName } from "../discovery/get-icon-component-name"
 
 /**
- * Recursively find an icon component file in the icons/sets directory structure
+ * Recursively find an icon component file in the icon-sets/catalog directory structure
  *
  * @param componentName - The component name (e.g., "IconMaterialAdd")
- * @param rootDir - Root directory to search from (icons/sets)
+ * @param rootDir - Root directory to search from (icon-sets/catalog)
  * @returns Relative path from rootDir to the component file (without .tsx extension), or null if not found
  */
 function findIconComponentFile(
@@ -68,13 +68,13 @@ export function getIconPath(iconId: IconId, rootDirectory: string): string {
     return "seldon/user-interface/actions/IconSeldonMissing"
   }
 
-  // Search in icons/sets/ for regular icons
+  // Search in icon-sets/catalog/ for regular icons
   const iconsSetsPath = path.join(
     rootDirectory,
     "packages",
     "core",
     "icon-sets",
-    "sets",
+    "catalog",
   )
 
   const foundPath = findIconComponentFile(componentName, iconsSetsPath)

@@ -6,8 +6,8 @@
  * Last generated: 2026-02-11T11:59:25.357Z
  */
 
-import type { IconId } from "../../icon-sets"
-import type { IconCategoryPath } from "../categories"
+import type { IconId } from "@seldon/core/icon-sets"
+import type { IconCategoryPath } from "../../constants/categories"
 
 export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "material-appsOutage": "business/commerce" as IconCategoryPath,

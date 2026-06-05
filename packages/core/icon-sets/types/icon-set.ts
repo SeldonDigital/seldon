@@ -1,5 +1,5 @@
 import type { IconId } from "../../icon-sets"
-import type { IconCategory } from "../categories"
+import type { IconCategory } from "../constants/categories"
 import type { IconSetTemplateId, IconSetInstanceId } from "./icon-set-id"
 import type { IconSetId } from "./icon-source"
 

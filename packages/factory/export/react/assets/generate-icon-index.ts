@@ -5,7 +5,7 @@ import { getIconPath } from "../utils/find-icon-path"
 
 /**
  * Generate an index file that exports all used icons as named exports
- * Uses relative paths from icons/sets/ structure
+ * Uses relative paths from icon-sets/catalog/ structure
  *
  * @param usedIconIds - Set of icon IDs that are used in the workspace
  * @param options - Export options

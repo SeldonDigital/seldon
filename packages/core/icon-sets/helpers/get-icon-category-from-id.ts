@@ -1,9 +1,9 @@
-import { iconCategoryMapping as seldonMapping } from "../mappings/seldon"
+import { iconCategoryMapping as seldonMapping } from "../catalog/seldon/category-map"
 import { IconId } from "../../icon-sets"
-import { DEFAULT_CATEGORY_PATH, IconCategoryPath } from "../categories"
-import { iconCategoryMapping as carbonMapping } from "../mappings/carbon"
-import { iconCategoryMapping as lucideMapping } from "../mappings/lucide"
-import { iconCategoryMapping as materialMapping } from "../mappings/material"
+import { DEFAULT_CATEGORY_PATH, IconCategoryPath } from "../constants/categories"
+import { iconCategoryMapping as carbonMapping } from "../catalog/carbon/category-map"
+import { iconCategoryMapping as lucideMapping } from "../catalog/lucide/category-map"
+import { iconCategoryMapping as materialMapping } from "../catalog/material/category-map"
 import { IconSetId } from "../types"
 
 /**

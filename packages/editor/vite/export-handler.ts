@@ -24,7 +24,7 @@ export type ExportRequestBody = {
 function resolveRepoRoot(): string {
   let current = process.cwd()
   while (true) {
-    if (fs.existsSync(path.join(current, "packages/core/icon-sets/sets"))) {
+    if (fs.existsSync(path.join(current, "packages/core/icon-sets/catalog"))) {
       return current
     }
     const parent = path.dirname(current)

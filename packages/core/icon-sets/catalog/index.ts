@@ -1,7 +1,7 @@
 import { computeIconSet } from "../helpers/compute-icon-set"
 import type { ComputedIconSet, StockIconSet } from "../types/icon-set"
 import type { IconSetTemplateId } from "../types/icon-set-id"
-import seldonStock, { defaultIconSet } from "./seldon"
+import seldonStock, { defaultIconSet } from "./seldon/stock"
 
 /** Packaged icon set definitions (`catalog/*.ts`), display order. */
 export const STOCK_ICON_SETS: StockIconSet[] = [seldonStock]

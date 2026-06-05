@@ -1,7 +1,7 @@
-import { computeIconSet } from "../helpers/compute-icon-set"
-import type { IconCategory } from "../categories"
-import { seldonIconIds } from "../sets/seldon"
-import type { StockIconSet } from "../types/icon-set"
+import { computeIconSet } from "../../helpers/compute-icon-set"
+import type { IconCategory } from "../../constants/categories"
+import { seldonIconIds } from "."
+import type { StockIconSet } from "../../types/icon-set"
 
 /**
  * Categories enabled when the Seldon icon set is added to a workspace. Icons in

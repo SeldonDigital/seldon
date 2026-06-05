@@ -4,7 +4,7 @@ import {
   IconCategoryPath,
   type IconSubcategory,
   categoryPaths,
-} from "../categories"
+} from "../constants/categories"
 
 /**
  * Extracts category path from a file path
