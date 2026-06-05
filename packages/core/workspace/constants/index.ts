@@ -40,6 +40,10 @@ export const ErrorMessages = {
     `Node ${id} is not allowed to be moved.`,
   cannotMoveToDifferentVariant: () =>
     `A component cannot be moved to a different variant or board.`,
+  cannotMoveIntoOwnSubtree: (id: InstanceId | VariantId) =>
+    `Node ${id} cannot be moved into itself or one of its own descendants.`,
+  cyclicComponentTree: (id: string) =>
+    `Component tree contains a cycle at node ${id}.`,
   danglingVariant: (id: VariantId) => `Variant ${id} is not used in any board.`,
   missingVariant: (id: VariantId) => `Variant ${id} not found.`,
   danglingChildNode: (id: InstanceId) =>

@@ -121,6 +121,7 @@ export function validateInsertMutation(
       )
       nodeValidators.canHaveChildren(workspace, parentId)
       nodeValidators.isNotInstanceOfSelf(workspace, instanceId, parentId)
+      nodeValidators.notIntoOwnSubtree(workspace, instanceId, parentId)
       nodeValidators.isWithinSameVariant(workspace, instanceId, parentId)
       nodeValidators.canBeParentOf(workspace, parentId, instanceId)
       break

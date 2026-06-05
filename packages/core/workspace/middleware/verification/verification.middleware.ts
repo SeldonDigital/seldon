@@ -3,6 +3,7 @@ import { ValueType } from "../../../properties"
 import { debugLog, isDebugEnabled } from "../../../utils/debug-logger"
 import { ErrorMessages } from "../../constants"
 import { getComponentId } from "../../helpers/components/get-component-ids"
+import { findComponentTreeCycleId } from "../../helpers/components/find-tree-cycle"
 import { walkComponentTreeRefs } from "../../helpers/components/walk-component-tree-refs"
 import { getWorkspaceNodes } from "../../helpers/general/get-workspace-nodes"
 import { isResourceType } from "../../helpers/components/is-resource-type"
@@ -30,6 +31,17 @@ function collectComponentTreeNodeIds(workspace: Workspace): Set<string> {
 }
 
 const validators = {
+  /**
+   * Validates that no board variant tree contains a cycle. Runs before the
+   * recursive tree walkers so a cyclic tree fails with a clear message instead
+   * of overflowing the call stack.
+   */
+  noCyclicTrees: (workspace: Workspace) => {
+    const cycleId = findComponentTreeCycleId(workspace)
+    if (cycleId) {
+      throw new Error(ErrorMessages.cyclicComponentTree(cycleId))
+    }
+  },
   /** Validates that every child ref in board trees points at a node row. */
   allChildrenExist: (workspace: Workspace) => {
     const nodes = getWorkspaceNodes(workspace)
@@ -196,6 +208,9 @@ export const workspaceVerificationMiddleware: Middleware =
       const shouldLogVerification =
         process.env.NODE_ENV === "development" && isDebugEnabled()
       shouldLogVerification && console.groupCollapsed("🔍 Verifying workspace")
+
+      validators.noCyclicTrees(nextWorkspace)
+      log("✅ No cyclic component trees")
 
       validators.allChildrenExist(nextWorkspace)
       log("✅ All children exist")

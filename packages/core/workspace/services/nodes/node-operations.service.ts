@@ -292,6 +292,14 @@ export class NodeOperationsService {
       // child subtree. Inserting a bare { id } ref would orphan every child node.
       const treeRef = findTreeRef(oldBoard, instanceId)
       invariant(treeRef, `Tree ref not found for instance ${instanceId}`)
+
+      // Reinserting a live subtree under its own descendant would make the tree
+      // ref contain itself, which overflows Immer when it freezes the draft.
+      // Validation rejects this earlier; bail out as a no-op if it slips through.
+      if (collectDescendantTreeIds(treeRef).includes(newPosition.parentId)) {
+        return
+      }
+
       removeComponentTreeChild(oldBoard, instanceId)
 
       const newBoard = getComponentByNodeId(draft, newPosition.parentId)

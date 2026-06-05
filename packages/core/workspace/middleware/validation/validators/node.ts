@@ -3,6 +3,10 @@ import { ComponentId, isComponentId } from "../../../../components/constants"
 import { rules } from "../../../../rules/config/rules.config"
 import { getChildrenIds } from "../../../helpers/components/get-children-ids"
 import { getComponentByNodeId } from "../../../helpers/components/get-component-by-node-id"
+import {
+  collectDescendantTreeIds,
+  findTreeRef,
+} from "../../../services/shared/component-tree-helpers"
 import { isDefaultVariant } from "../../../helpers/general/is-default-variant"
 import { canNodeHaveChildren } from "../../../helpers/nodes/can-node-have-children"
 import { isVariantInUse } from "../../../helpers/general/is-variant-in-use"
@@ -77,6 +81,23 @@ export const nodeValidators = {
         workspace,
       ),
       ErrorMessages.cannotAddSelfAsInstance(),
+    )
+  },
+  notIntoOwnSubtree: (
+    workspace: Workspace,
+    nodeId: InstanceId | VariantId,
+    parentId: InstanceId | VariantId,
+  ) => {
+    const board = getComponentByNodeId(workspace, nodeId)
+    if (!board) return
+    const treeRef = findTreeRef(board, nodeId)
+    if (!treeRef) return
+    // `collectDescendantTreeIds` includes the node itself, so this also rejects
+    // moving a node directly under itself.
+    const subtreeIds = new Set(collectDescendantTreeIds(treeRef))
+    check(
+      !subtreeIds.has(parentId),
+      ErrorMessages.cannotMoveIntoOwnSubtree(nodeId),
     )
   },
   isWithinSameVariant: (
