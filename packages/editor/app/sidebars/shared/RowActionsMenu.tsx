@@ -22,6 +22,11 @@ export function RowActionsMenu({
   color,
   "aria-label": ariaLabel = "Row actions",
 }: RowActionsMenuProps) {
+  // Always render the same trigger button so the slot keeps its footprint. When
+  // there are no actions, hide the icon with opacity and disable interaction,
+  // mirroring how the reset button was previously hidden.
+  const hasActions = items.length > 0
+
   return (
     <DropdownMenu
       items={items}
@@ -32,13 +37,22 @@ export function RowActionsMenu({
           {...triggerProps}
           type="button"
           aria-label={ariaLabel}
+          aria-hidden={hasActions ? undefined : true}
+          tabIndex={hasActions ? undefined : -1}
           className={TRIGGER_CLASS}
-          style={{ position: "relative", zIndex: 10 }}
+          style={{
+            position: "relative",
+            zIndex: 10,
+            ...(hasActions ? null : { pointerEvents: "none" }),
+          }}
         >
           <Icon
             icon="seldon-more"
             className="sdn-icon sdn-icon--1aaz"
-            style={color ? { color } : undefined}
+            style={{
+              opacity: hasActions ? 1 : 0,
+              ...(color ? { color } : {}),
+            }}
           />
         </button>
       )}

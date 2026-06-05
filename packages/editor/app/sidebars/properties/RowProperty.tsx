@@ -12,7 +12,7 @@ import { isAtomicValue } from "@seldon/core/helpers/type-guards/value/is-atomic-
 import { ComponentId, ComponentLevel } from "@seldon/core/components/constants"
 import { isComponentEntry } from "@seldon/core/workspace/helpers/components/is-component-entry"
 import { themeService } from "@seldon/core/workspace/services/theme/theme.service"
-import { ThemeSwatches } from "@components/ui/ThemeSwatches"
+import { ThemeSwatches } from "../../ui/ThemeSwatches"
 import { useThemes } from "@lib/themes/hooks/use-themes"
 import { getNodeCatalogComponentId } from "@lib/workspace/node-tree"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
@@ -26,7 +26,7 @@ import { useRowProperty } from "./hooks/use-row-property"
 import { ListItemTreeInput } from "../../seldon/elements/ListItemTreeInput"
 import { IconProps } from "../../seldon/primitives/Icon"
 import { LabelProps } from "../../seldon/primitives/Label"
-import { useImageUploadPanel } from "@components/panels/hooks/use-upload-image-panel"
+import { useImageUploadPanel } from "../../panels/hooks/use-upload-image-panel"
 import { MenuEntry } from "@lib/menus"
 import { FramerExpandable } from "../shared/FramerExpandable"
 import { RowActionsMenu } from "../shared/RowActionsMenu"
@@ -640,12 +640,10 @@ export function RowProperty({
         {...listItemProps}
         onClick={handleRowClick}
         actionsSlot={
-          resetActions.length > 0 ? (
-            <RowActionsMenu
-              items={resetActions}
-              color={labelColor as string | undefined}
-            />
-          ) : undefined
+          <RowActionsMenu
+            items={resetActions}
+            color={labelColor as string | undefined}
+          />
         }
         frame={
           {
