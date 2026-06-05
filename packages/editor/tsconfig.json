@@ -19,7 +19,7 @@
     "incremental": true,
     "paths": {
       "@components/*": [
-        "./app/_components/*"
+        "./app/*"
       ],
       "@lib/*": [
         "./lib/*"
