@@ -32,8 +32,7 @@ export function useCanvas() {
   const {
     selectNode,
     selectBoard,
-    selectThemeEntry,
-    selectFontCollectionEntry,
+    selectResourceEntry,
     selectResourceItem,
   } = useSelection()
   const { workspace } = useWorkspace()
@@ -335,8 +334,7 @@ export function useCanvas() {
           selectFromTarget(target, {
             selectNode,
             selectBoard,
-            selectThemeEntry,
-            selectFontCollectionEntry,
+            selectResourceEntry,
             selectResourceItem,
           })
         }
@@ -350,8 +348,7 @@ export function useCanvas() {
       executeToolAction,
       selectNode,
       selectBoard,
-      selectThemeEntry,
-      selectFontCollectionEntry,
+      selectResourceEntry,
       selectResourceItem,
     ],
   )

@@ -37,10 +37,6 @@ export function useRowSection(section: BoardSection) {
     expandedId: section.level,
     isExpanded,
     toggle: (level, expanded) => {
-      if (level === "CORE") {
-        // CORE section doesn't toggle, just return
-        return
-      }
       toggleSection(level as ComponentLevel, expanded)
     },
     expandObjects,
@@ -75,10 +71,6 @@ export function useRowSection(section: BoardSection) {
   }
 
   function onToggleSection() {
-    if (section.level === "CORE") {
-      // CORE section doesn't toggle
-      return
-    }
     toggleSection(section.level, !isExpanded)
   }
 
@@ -94,11 +86,11 @@ export function useRowSection(section: BoardSection) {
     "aria-label": isExpanded ? "Collapse" : "Expand",
   }
 
-  // Add button: opens the add dialog scoped to this section. The Assets (CORE)
-  // section has no add flow, so it gets no button.
+  // Add button: opens the add dialog scoped to this section. The Icon Sets and
+  // Media resource sections have no add flow, so they get no button.
   const buttonIconic1 = useMemo<ButtonIconicProps | undefined>(() => {
     const level = section.level
-    if (level === "CORE") return undefined
+    if (level === "ICON_SET" || level === "MEDIA") return undefined
 
     return {
       onClick: (event) => {

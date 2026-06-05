@@ -9,6 +9,8 @@ import { isResourceType } from "@seldon/core/workspace/helpers/components/is-res
 import {
   isComponentBoard,
   isFontCollectionBoard,
+  isIconSetBoard,
+  isMediaBoard,
   isPlaygroundBoard,
   isThemeBoard,
 } from "@seldon/core/workspace/model"
@@ -26,14 +28,15 @@ export const SECTION_LABELS: Record<ComponentLevel, string> = {
 
 export interface BoardSection {
   label: string
-  level: ComponentLevel | "THEME" | "FONT_COLLECTION" | "CORE"
+  level: ComponentLevel | "THEME" | "FONT_COLLECTION" | "ICON_SET" | "MEDIA"
   boards: BoardType[]
 }
 
 /**
  * Groups boards into sections based on their component level.
  * Theme boards get their own "Themes" section directly below the Frames section.
- * IconSet and media boards are placed in a special "Assets" section at the end.
+ * Icon set boards get an "Icon Sets" section below Font Collections.
+ * Media boards get a "Media" section at the end.
  * This is a helper function for organizing workspace boards for display.
  */
 function getBoardComponentLevel(board: BoardType): ComponentLevel | null {
@@ -53,12 +56,9 @@ export function getBoardSections(boards: BoardType[]): BoardSection[] {
     isFontCollectionBoard(board),
   )
 
-  const assetBoards = boards.filter(
-    (board) =>
-      isResourceType(board) &&
-      !isThemeBoard(board) &&
-      !isFontCollectionBoard(board),
-  )
+  const iconSetBoards = boards.filter((board) => isIconSetBoard(board))
+
+  const mediaBoards = boards.filter((board) => isMediaBoard(board))
 
   const regularBoards = boards.filter((board) => !isResourceType(board))
 
@@ -107,15 +107,27 @@ export function getBoardSections(boards: BoardType[]): BoardSection[] {
   )
   sections.splice(themesIndex + 1, 0, fontCollectionsSection)
 
-  // Add Assets section at the end. It has no add flow, so it stays hidden when
-  // empty.
-  if (assetBoards.length > 0) {
-    const assetsSection: BoardSection = {
-      label: "Assets",
-      level: "CORE",
-      boards: assetBoards,
+  // Insert the Icon Sets section directly below the Font Collections section.
+  // Always shown, mirroring the seeded Font Collections resource.
+  const iconSetsSection: BoardSection = {
+    label: "Icon Sets",
+    level: "ICON_SET",
+    boards: iconSetBoards,
+  }
+  const fontCollectionsIndex = sections.findIndex(
+    (section) => section.level === "FONT_COLLECTION",
+  )
+  sections.splice(fontCollectionsIndex + 1, 0, iconSetsSection)
+
+  // Add the Media section at the end. It has no add flow, so it stays hidden
+  // when empty.
+  if (mediaBoards.length > 0) {
+    const mediaSection: BoardSection = {
+      label: "Media",
+      level: "MEDIA",
+      boards: mediaBoards,
     }
-    sections.push(assetsSection)
+    sections.push(mediaSection)
   }
 
   return sections

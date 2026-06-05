@@ -3,12 +3,12 @@ import { Board as BoardType, Variant } from "@seldon/core"
 import {
   isFontCollectionBoard,
   isIconSetBoard,
+  isMediaBoard,
   isThemeBoard,
 } from "@seldon/core/workspace/model/components"
 import { useSidebarCanvasTrackingBoard } from "../../tracking/hooks/use-sidebar-canvas-tracking"
 import { useSidebarRowStyling } from "../../tracking/hooks/use-sidebar-row-styling"
 import { useRowHighlightStyle } from "@lib/workspace/hooks/use-object-hover"
-import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { useRowBoard } from "./hooks/use-row-board"
 import { ListItemTreeNode as SeldonNode } from "../../seldon/elements/ListItemTreeNode"
@@ -16,10 +16,8 @@ import { LabelProps } from "../../seldon/primitives/Label"
 import { relativeFullWidthStyle } from "../helpers/sidebar-styles"
 import { IndentationLevel } from "../hooks/use-indentation"
 import { FramerExpandable } from "../shared/FramerExpandable"
-import { RowFontCollectionEntry } from "./RowFontCollectionEntry"
-import { RowIconSetEntry } from "./RowIconSetEntry"
 import { RowNode } from "./RowNode"
-import { RowThemeEntry } from "./RowThemeEntry"
+import { RESOURCE_ROW_CONFIG, RowResourceEntry } from "./RowResourceEntry"
 
 const rowWrapperStyle: CSSProperties = {
   width: "100%",
@@ -42,8 +40,6 @@ export const RowBoard = memo(function RowBoard({
   show = true,
   disableReordering = false,
 }: RowBoardProps) {
-  const { workspace } = useWorkspace({ usePreview: false })
-
   // Core board data: buttons, icons, handlers, state
   const {
     label: baseLabel,
@@ -58,8 +54,7 @@ export const RowBoard = memo(function RowBoard({
     isBoardSelected,
     boardIsActive,
     boardContainsSelectedNode,
-    boardContainsSelectedThemeEntry,
-    boardContainsSelectedFontCollectionEntry,
+    boardContainsSelectedResourceEntry,
     dragging,
     ref,
     variants,
@@ -73,9 +68,7 @@ export const RowBoard = memo(function RowBoard({
     { isSelected: boardIsActive },
   )
   const combinedRowStyle =
-    (boardContainsSelectedNode ||
-      boardContainsSelectedThemeEntry ||
-      boardContainsSelectedFontCollectionEntry) &&
+    (boardContainsSelectedNode || boardContainsSelectedResourceEntry) &&
     !isBoardSelected
       ? { ...hoverStyle, ...rowStyle, borderColor: undefined }
       : { ...hoverStyle, ...rowStyle }
@@ -160,45 +153,54 @@ export const RowBoard = memo(function RowBoard({
       <FramerExpandable isExpanded={isExpanded}>
         <IndentationLevel>
           {isThemeBoard(board)
-            ? variants.map((themeEntryId) => (
-                <RowThemeEntry
-                  key={themeEntryId}
-                  themeEntryId={themeEntryId}
+            ? variants.map((entryId) => (
+                <RowResourceEntry
+                  key={entryId}
+                  config={RESOURCE_ROW_CONFIG.theme}
+                  entryId={entryId}
                   show={show}
                   parentIsSelected={boardIsActive}
                 />
               ))
             : isFontCollectionBoard(board)
               ? variants.map((entryId) => (
-                  <RowFontCollectionEntry
+                  <RowResourceEntry
                     key={entryId}
-                    fontCollectionEntryId={entryId}
+                    config={RESOURCE_ROW_CONFIG.fontCollection}
+                    entryId={entryId}
                     show={show}
                     parentIsSelected={boardIsActive}
                   />
                 ))
               : isIconSetBoard(board)
-                ? variants.map((iconSetEntryId) => (
-                    <RowIconSetEntry
-                      key={iconSetEntryId}
-                      iconSetEntryId={iconSetEntryId}
-                      label={
-                        workspace["icon-sets"]?.[iconSetEntryId]?.id ??
-                        iconSetEntryId
-                      }
+                ? variants.map((entryId) => (
+                    <RowResourceEntry
+                      key={entryId}
+                      config={RESOURCE_ROW_CONFIG.iconSet}
+                      entryId={entryId}
                       show={show}
                       parentIsSelected={boardIsActive}
                     />
                   ))
-                : variants.map((variantId, index) => (
-                  <RowNode
-                    key={variantId}
-                    nodeId={variantId}
-                    show={show}
-                    parentIsSelected={boardIsActive}
-                    disableReordering={index === 0}
-                  />
-                ))}
+                : isMediaBoard(board)
+                  ? variants.map((entryId) => (
+                      <RowResourceEntry
+                        key={entryId}
+                        config={RESOURCE_ROW_CONFIG.media}
+                        entryId={entryId}
+                        show={show}
+                        parentIsSelected={boardIsActive}
+                      />
+                    ))
+                  : variants.map((variantId, index) => (
+                      <RowNode
+                        key={variantId}
+                        nodeId={variantId}
+                        show={show}
+                        parentIsSelected={boardIsActive}
+                        disableReordering={index === 0}
+                      />
+                    ))}
         </IndentationLevel>
       </FramerExpandable>
     </>

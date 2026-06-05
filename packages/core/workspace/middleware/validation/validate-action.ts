@@ -137,6 +137,7 @@ export function validateAction(workspace: Workspace, action: Action): void {
     case "duplicate_font_collection":
       validateFontCollectionMutation(workspace, action)
       return
+    case "set_icon_set_label":
     case "set_icon_set_override":
     case "reset_icon_set_override":
     case "duplicate_icon_set":

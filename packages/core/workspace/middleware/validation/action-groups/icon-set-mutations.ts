@@ -10,6 +10,7 @@ export function validateIconSetMutation(
   action: Action,
 ): void {
   switch (action.type) {
+    case "set_icon_set_label":
     case "set_icon_set_override":
     case "reset_icon_set_override":
     case "duplicate_icon_set":

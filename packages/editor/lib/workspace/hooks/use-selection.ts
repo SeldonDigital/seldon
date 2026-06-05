@@ -23,6 +23,12 @@ import { useWorkspace } from "./use-workspace"
 /** Resource board kinds whose rows are selectable items (families, icons, media). */
 export type ResourceItemKind = "font-collection" | "icon-set" | "media"
 
+/** Resource board kinds whose variant entries are selectable as a unit. */
+export type ResourceEntryKind = "theme" | "fontCollection" | "iconSet" | "media"
+
+/** A selected resource board variant entry, identified by its kind and entry id. */
+export type SelectedResourceEntry = { kind: ResourceEntryKind; id: string }
+
 /** Serializes a resource item selection as `${resource}:${componentKey}:${entryId}:${slot}`. */
 export function formatResourceItemKey(args: {
   resource: ResourceItemKind
@@ -36,8 +42,11 @@ export function formatResourceItemKey(args: {
 type SelectionState = {
   selectedBoardId: ComponentKey | null
   selectedNodeId: VariantId | InstanceId | null
-  selectedThemeEntryId: string | null
-  selectedFontCollectionEntryId: string | null
+  /**
+   * Selected resource board variant entry (theme, font collection, icon set, or
+   * media). One field covers every resource board so rows share one model.
+   */
+  selectedResourceEntry: SelectedResourceEntry | null
   /**
    * Selected resource item (a row inside a resource board), serialized via
    * `formatResourceItemKey` as `${resource}:${componentKey}:${entryId}:${slot}`.
@@ -48,23 +57,20 @@ type SelectionState = {
   selectedResourceItemKey: string | null
   selectBoard: (id: ComponentKey | null) => void
   selectNode: (id: VariantId | InstanceId | null) => void
-  selectThemeEntry: (id: string | null) => void
-  selectFontCollectionEntry: (id: string | null) => void
+  selectResourceEntry: (kind: ResourceEntryKind, id: string | null) => void
   selectResourceItem: (key: string | null) => void
 }
 
 export const useStore = create<SelectionState>()((set) => ({
   selectedBoardId: null,
   selectedNodeId: null,
-  selectedThemeEntryId: null,
-  selectedFontCollectionEntryId: null,
+  selectedResourceEntry: null,
   selectedResourceItemKey: null,
   selectBoard: (id: ComponentKey | null) => {
     set({
       selectedBoardId: id,
       selectedNodeId: null,
-      selectedThemeEntryId: null,
-      selectedFontCollectionEntryId: null,
+      selectedResourceEntry: null,
       selectedResourceItemKey: null,
     })
   },
@@ -72,24 +78,13 @@ export const useStore = create<SelectionState>()((set) => ({
     set({
       selectedNodeId: id,
       selectedBoardId: null,
-      selectedThemeEntryId: null,
-      selectedFontCollectionEntryId: null,
+      selectedResourceEntry: null,
       selectedResourceItemKey: null,
     })
   },
-  selectThemeEntry: (id: string | null) => {
+  selectResourceEntry: (kind: ResourceEntryKind, id: string | null) => {
     set({
-      selectedThemeEntryId: id,
-      selectedNodeId: null,
-      selectedBoardId: null,
-      selectedFontCollectionEntryId: null,
-      selectedResourceItemKey: null,
-    })
-  },
-  selectFontCollectionEntry: (id: string | null) => {
-    set({
-      selectedFontCollectionEntryId: id,
-      selectedThemeEntryId: null,
+      selectedResourceEntry: id ? { kind, id } : null,
       selectedNodeId: null,
       selectedBoardId: null,
       selectedResourceItemKey: null,
@@ -100,8 +95,7 @@ export const useStore = create<SelectionState>()((set) => ({
       selectedResourceItemKey: key,
       selectedNodeId: null,
       selectedBoardId: null,
-      selectedThemeEntryId: null,
-      selectedFontCollectionEntryId: null,
+      selectedResourceEntry: null,
     })
   },
 }))
@@ -121,9 +115,16 @@ export const useIsNodeSelected = (id: VariantId | InstanceId): boolean =>
 export const useSelectedNodeId = (): VariantId | InstanceId | null =>
   useStore((state) => state.selectedNodeId)
 
-/** Reactive subscription to whether a specific resource item is selected. */
-export const useIsResourceItemSelected = (key: string): boolean =>
-  useStore((state) => state.selectedResourceItemKey === key)
+/** Reactive subscription to whether a specific resource board entry is selected. */
+export const useIsResourceEntrySelected = (
+  kind: ResourceEntryKind,
+  id: string,
+): boolean =>
+  useStore(
+    (state) =>
+      state.selectedResourceEntry?.kind === kind &&
+      state.selectedResourceEntry?.id === id,
+  )
 
 export function useSelection() {
   const { toggleSection } = useSectionExpansion()
@@ -132,21 +133,31 @@ export function useSelection() {
 
   const selectBoard = useStore((state) => state.selectBoard)
   const selectNode = useStore((state) => state.selectNode)
-  const selectThemeEntry = useStore((state) => state.selectThemeEntry)
-  const selectFontCollectionEntry = useStore(
-    (state) => state.selectFontCollectionEntry,
-  )
+  const selectResourceEntry = useStore((state) => state.selectResourceEntry)
   const selectResourceItem = useStore((state) => state.selectResourceItem)
   const selectedBoardId = useStore((state) => state.selectedBoardId)
   const selectedNodeId = useStore((state) => state.selectedNodeId)
-  const selectedThemeEntryId = useStore((state) => state.selectedThemeEntryId)
-  const selectedFontCollectionEntryId = useStore(
-    (state) => state.selectedFontCollectionEntryId,
+  const selectedResourceEntry = useStore(
+    (state) => state.selectedResourceEntry,
   )
   const selectedResourceItemKey = useStore(
     (state) => state.selectedResourceItemKey,
   )
   const { workspace } = useWorkspace()
+
+  // Derived per-kind selected entry ids. These are computed projections of the
+  // single `selectedResourceEntry` field, not separate state, so existing
+  // read-only consumers keep their named accessors.
+  const selectedThemeEntryId =
+    selectedResourceEntry?.kind === "theme" ? selectedResourceEntry.id : null
+  const selectedFontCollectionEntryId =
+    selectedResourceEntry?.kind === "fontCollection"
+      ? selectedResourceEntry.id
+      : null
+  const selectedIconSetEntryId =
+    selectedResourceEntry?.kind === "iconSet" ? selectedResourceEntry.id : null
+  const selectedMediaEntryId =
+    selectedResourceEntry?.kind === "media" ? selectedResourceEntry.id : null
 
   const selectedNode = selectedNodeId
     ? getNode(workspace, selectedNodeId)
@@ -245,33 +256,22 @@ export function useSelection() {
     ],
   )
 
-  const _selectThemeEntry = useCallback(
-    (id: string | null) => {
-      if (id === selectedThemeEntryId) return
-      selectThemeEntry(id)
+  const _selectResourceEntry = useCallback(
+    (kind: ResourceEntryKind, id: string | null) => {
+      if (
+        selectedResourceEntry?.kind === kind &&
+        selectedResourceEntry?.id === id
+      ) {
+        return
+      }
+      selectResourceEntry(kind, id)
       if (id && autoExpandOnSelection) {
         toggleObject(id, true)
       }
     },
     [
-      selectThemeEntry,
-      selectedThemeEntryId,
-      toggleObject,
-      autoExpandOnSelection,
-    ],
-  )
-
-  const _selectFontCollectionEntry = useCallback(
-    (id: string | null) => {
-      if (id === selectedFontCollectionEntryId) return
-      selectFontCollectionEntry(id)
-      if (id && autoExpandOnSelection) {
-        toggleObject(id, true)
-      }
-    },
-    [
-      selectFontCollectionEntry,
-      selectedFontCollectionEntryId,
+      selectResourceEntry,
+      selectedResourceEntry,
       toggleObject,
       autoExpandOnSelection,
     ],
@@ -288,21 +288,23 @@ export function useSelection() {
   return {
     selectBoard: _selectBoard,
     selectNode: _selectNode,
-    selectThemeEntry: _selectThemeEntry,
-    selectFontCollectionEntry: _selectFontCollectionEntry,
+    selectResourceEntry: _selectResourceEntry,
     selectResourceItem: _selectResourceItem,
     selectedNodeId,
     selectedBoardId,
+    selectedResourceEntry,
     selectedThemeEntryId,
     selectedFontCollectionEntryId,
+    selectedIconSetEntryId,
+    selectedMediaEntryId,
     selectedResourceItemKey,
     selectedNode,
     selectedBoard,
     selectedId:
       selectedNodeId ??
       selectedBoardId ??
-      selectedThemeEntryId ??
-      selectedFontCollectionEntryId,
+      selectedResourceEntry?.id ??
+      null,
     selection,
   }
 }

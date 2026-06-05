@@ -1,6 +1,9 @@
 import { InstanceId, VariantId } from "@seldon/core"
 import type { ComponentKey } from "@seldon/core/workspace/types"
-import { useStore as useSelectionStore } from "./hooks/use-selection"
+import {
+  type ResourceEntryKind,
+  useStore as useSelectionStore,
+} from "./hooks/use-selection"
 
 /**
  * The kinds of object a single click or hover can target. Every selectable
@@ -12,7 +15,19 @@ export type SelectionKind =
   | "board"
   | "theme"
   | "fontCollection"
+  | "iconSet"
+  | "media"
   | "resourceItem"
+
+/** Maps a resource-entry selection kind to the unified resource entry kind. */
+const RESOURCE_ENTRY_KIND_BY_SELECTION_KIND: Partial<
+  Record<SelectionKind, ResourceEntryKind>
+> = {
+  theme: "theme",
+  fontCollection: "fontCollection",
+  iconSet: "iconSet",
+  media: "media",
+}
 
 export const SELECTION_ID_ATTR = "data-selection-id"
 export const SELECTION_KIND_ATTR = "data-selection-kind"
@@ -44,8 +59,7 @@ export function useSelectedId(): string | null {
     (state) =>
       state.selectedResourceItemKey ??
       state.selectedNodeId ??
-      state.selectedThemeEntryId ??
-      state.selectedFontCollectionEntryId ??
+      state.selectedResourceEntry?.id ??
       null,
   )
 }
@@ -59,8 +73,7 @@ export function selectFromTarget(
   setters: {
     selectNode: (id: VariantId | InstanceId | null) => void
     selectBoard: (id: ComponentKey | null) => void
-    selectThemeEntry: (id: string | null) => void
-    selectFontCollectionEntry: (id: string | null) => void
+    selectResourceEntry: (kind: ResourceEntryKind, id: string | null) => void
     selectResourceItem: (key: string | null) => void
   },
 ): void {
@@ -72,10 +85,13 @@ export function selectFromTarget(
       setters.selectBoard(target.id as ComponentKey)
       return
     case "theme":
-      setters.selectThemeEntry(target.id)
-      return
     case "fontCollection":
-      setters.selectFontCollectionEntry(target.id)
+    case "iconSet":
+    case "media":
+      setters.selectResourceEntry(
+        RESOURCE_ENTRY_KIND_BY_SELECTION_KIND[target.kind] as ResourceEntryKind,
+        target.id,
+      )
       return
     case "resourceItem":
       setters.selectResourceItem(target.id)

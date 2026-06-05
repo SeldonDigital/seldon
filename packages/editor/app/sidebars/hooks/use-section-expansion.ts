@@ -1,8 +1,13 @@
 import { create } from "zustand"
 import { ComponentLevel } from "@seldon/core/components/constants"
 
-type ExpandableSection = ComponentLevel | "THEME" | "FONT_COLLECTION"
-type ToggleableSection = ExpandableSection | "CORE"
+type ExpandableSection =
+  | ComponentLevel
+  | "THEME"
+  | "FONT_COLLECTION"
+  | "ICON_SET"
+  | "MEDIA"
+type ToggleableSection = ExpandableSection
 
 interface SectionExpansionState {
   // Sparse map of explicit user toggles. Sections without an entry fall back to
@@ -14,18 +19,12 @@ interface SectionExpansionState {
 const useStore = create<SectionExpansionState>((set) => ({
   overrides: {},
   toggleSection: (section: ToggleableSection, expanded: boolean) =>
-    set((state) => {
-      if (section === "CORE") {
-        // CORE section doesn't have expansion state, just return
-        return state
-      }
-      return {
-        overrides: {
-          ...state.overrides,
-          [section]: expanded,
-        },
-      }
-    }),
+    set((state) => ({
+      overrides: {
+        ...state.overrides,
+        [section]: expanded,
+      },
+    })),
 }))
 
 /**
@@ -37,10 +36,6 @@ export const useSectionExpansion = () => {
   return {
     toggleSection,
     isSectionExpanded: (section: ToggleableSection, hasContent = false) => {
-      if (section === "CORE") {
-        // CORE section is always expanded (no collapse state)
-        return true
-      }
       // Until the user toggles a section, empty sections start collapsed and
       // sections with content start expanded.
       return overrides[section] ?? hasContent

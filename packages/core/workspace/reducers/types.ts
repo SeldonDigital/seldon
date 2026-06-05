@@ -24,6 +24,7 @@
  * | set_font_collection_{label,editor_data,override}, reset_font_collection_{label,editor_data,override}, add_font_collection_custom_family, remove_font_collection_custom_family | font-collections (variant rows only for families) |
  * | set_font_collection_family_variant, set_font_collection_family_preset | font-collections (any entry; per-family variant selection) |
  * | delete_font_collection, duplicate_font_collection | font-collections (+ components.variants for font-collection row) |
+ * | set_icon_set_label | icon-sets |
  * | set_icon_set_override, reset_icon_set_override | icon-sets (per-icon inclusion under includedIcons) |
  * | duplicate_icon_set | icon-sets (+ components.variants for icon-set row) |
  * | stubs_* (font / media) | reserved — no-op until spec |
@@ -659,6 +660,10 @@ export type WorkspaceAction =
   | { type: "stubs_set_font_collection_field"; payload: { id?: string } }
   /** @internal */
   | { type: "stubs_duplicate_font_collection_row"; payload: { id?: string } }
+  | {
+      type: "set_icon_set_label"
+      payload: { iconSetId: string; label: string }
+    }
   | {
       type: "set_icon_set_override"
       payload: {

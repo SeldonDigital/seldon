@@ -27,8 +27,7 @@ export function ObjectsSidebar() {
     selectBoard,
     selectedNodeId,
     selectedBoardId,
-    selectedThemeEntryId,
-    selectedFontCollectionEntryId,
+    selectedResourceEntry,
   } = useSelection()
   const scrollerRef = useScrollSelection()
 
@@ -40,8 +39,7 @@ export function ObjectsSidebar() {
       !activeBoard &&
       !selectedNodeId &&
       !selectedBoardId &&
-      !selectedThemeEntryId &&
-      !selectedFontCollectionEntryId &&
+      !selectedResourceEntry &&
       boards.length > 0
     ) {
       selectBoard(getComponentKey(boards[0]))
@@ -52,8 +50,7 @@ export function ObjectsSidebar() {
     selectBoard,
     selectedNodeId,
     selectedBoardId,
-    selectedThemeEntryId,
-    selectedFontCollectionEntryId,
+    selectedResourceEntry,
   ])
 
   const sections = useMemo(() => {

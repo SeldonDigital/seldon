@@ -41,8 +41,7 @@ export function useRowBoard(
     selectBoard,
     selectedBoardId,
     selectedNodeId,
-    selectedThemeEntryId,
-    selectedFontCollectionEntryId,
+    selectedResourceEntry,
   } = useSelection()
   const { selectedNodeBoardKey } = useSelectionRelations()
   const { dispatch } = useWorkspace({ usePreview: false })
@@ -63,24 +62,20 @@ export function useRowBoard(
   const isBoardSelected =
     selectedBoardId === componentKey &&
     selectedNodeId === null &&
-    selectedThemeEntryId === null &&
-    selectedFontCollectionEntryId === null
+    selectedResourceEntry === null
 
-  const boardContainsSelectedThemeEntry =
-    selectedThemeEntryId !== null &&
-    variantRootIds.includes(selectedThemeEntryId)
-
-  const boardContainsSelectedFontCollectionEntry =
-    selectedFontCollectionEntryId !== null &&
-    variantRootIds.includes(selectedFontCollectionEntryId)
+  // Covers any resource board variant entry (theme, font collection, icon set,
+  // or media) that lives under this board.
+  const boardContainsSelectedResourceEntry =
+    selectedResourceEntry !== null &&
+    variantRootIds.includes(selectedResourceEntry.id)
 
   const boardContainsSelectedNode =
     selectedNodeBoardKey !== null && selectedNodeBoardKey === componentKey
   const boardIsActive =
     isBoardSelected ||
     boardContainsSelectedNode ||
-    boardContainsSelectedThemeEntry ||
-    boardContainsSelectedFontCollectionEntry
+    boardContainsSelectedResourceEntry
   const hasVariantChildren = variantRootIds.length > 0
 
   // Expansion state
@@ -222,8 +217,7 @@ export function useRowBoard(
     isBoardSelected,
     boardIsActive,
     boardContainsSelectedNode,
-    boardContainsSelectedThemeEntry,
-    boardContainsSelectedFontCollectionEntry,
+    boardContainsSelectedResourceEntry,
     dragging,
     ref,
     variants: variantRootIds,

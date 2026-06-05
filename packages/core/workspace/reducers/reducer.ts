@@ -122,6 +122,7 @@ import { setFontCollectionFamilyPreset } from "./handlers/set/set-font-collectio
 import { setFontCollectionFamilyVariant } from "./handlers/set/set-font-collection-family-variant"
 import { setFontCollectionLabel } from "./handlers/set/set-font-collection-label"
 import { setFontCollectionOverride } from "./handlers/set/set-font-collection-override"
+import { setIconSetLabel } from "./handlers/set/set-icon-set-label"
 import { setIconSetOverride } from "./handlers/set/set-icon-set-override"
 import { setThemeEditorData } from "./handlers/set/set-theme-editor-data"
 import { setThemeLabel } from "./handlers/set/set-theme-label"
@@ -420,6 +421,8 @@ function reducer(workspace: Workspace, action: WorkspaceAction): Workspace {
     case "remove_font_collection_custom_family":
       return removeFontCollectionCustomFamily(action.payload, workspace)
 
+    case "set_icon_set_label":
+      return setIconSetLabel(action.payload, workspace)
     case "set_icon_set_override":
       return setIconSetOverride(action.payload, workspace)
     case "reset_icon_set_override":
