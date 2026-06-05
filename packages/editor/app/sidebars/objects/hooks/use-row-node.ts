@@ -50,7 +50,7 @@ export function useRowNode(
   const { selectNode } = useSelection()
   const { selectedNodeId, parentOfSelectedNodeId, ancestorIdsOfSelected } =
     useSelectionRelations()
-  const { debugModeEnabled } = useDebugMode()
+  const { showNodeIds } = useDebugMode()
   const { autoScrollToSelection } = useEditorConfig()
 
   const { toggle, expandObjects, collapseObjects, getAllDescendantNodeIds } =
@@ -155,7 +155,7 @@ export function useRowNode(
   }
 
   function getNodeLabel() {
-    if (debugModeEnabled) {
+    if (showNodeIds) {
       return `ID: ${node.id} / TEMPLATE: ${node.template}`
     }
 

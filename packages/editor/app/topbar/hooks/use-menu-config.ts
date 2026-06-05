@@ -61,7 +61,20 @@ export function useMenuConfig(): HeaderConfig {
     toggleShowUnusedIcons,
   } = useEditorConfig()
   const { dispatch, workspace } = useWorkspace()
-  const { debugModeEnabled, toggleDebugMode } = useDebugMode()
+  const {
+    canvasProfiling,
+    toggleCanvasProfiling,
+    showNodeIds,
+    toggleShowNodeIds,
+    showPropertyTypes,
+    toggleShowPropertyTypes,
+    verboseLogging,
+    toggleVerboseLogging,
+    dispatchLogging,
+    toggleDispatchLogging,
+    workspaceLogging,
+    toggleWorkspaceLogging,
+  } = useDebugMode()
   const { copyNode, cutNode, pasteNode } = useNodeClipboardActions()
   const {
     exportWorkspaceToFile,
@@ -201,10 +214,63 @@ export function useMenuConfig(): HeaderConfig {
     importWorkspaceFromFile,
   ])
 
-  const debugMenuItems = useMemo(() => {
-    const items: MenuItem[] = []
+  const devMenuItems = useMemo(() => {
+    const items: (MenuItem | "separator")[] = [
+      {
+        id: "export-selected-node",
+        label: "Copy Selection to Clipboard",
+        action: exportSelectionToClipboard,
+        visibleIn: ["edit", "preview"], // Not visible in project view
+      },
+      "separator",
+      {
+        id: "canvas-profiling",
+        label: "Canvas Profiling",
+        action: toggleCanvasProfiling,
+        active: canvasProfiling,
+        visibleIn: ["edit", "preview"],
+      },
+      "separator",
+      {
+        id: "show-node-ids",
+        label: "Show Node IDs",
+        action: toggleShowNodeIds,
+        active: showNodeIds,
+        visibleIn: ["edit", "preview"],
+      },
+      {
+        id: "show-property-types",
+        label: "Show Property Types",
+        action: toggleShowPropertyTypes,
+        active: showPropertyTypes,
+        visibleIn: ["edit", "preview"],
+      },
+      "separator",
+      {
+        id: "dispatch-logging",
+        label: "Dispatch Logging",
+        action: toggleDispatchLogging,
+        active: dispatchLogging,
+        visibleIn: ["edit", "preview"],
+      },
+      {
+        id: "verbose-logging",
+        label: "Verbose Logging",
+        action: toggleVerboseLogging,
+        active: verboseLogging,
+        visibleIn: ["edit", "preview"],
+      },
+      {
+        id: "workspace-logging",
+        label: "Workspace Logging",
+        action: toggleWorkspaceLogging,
+        active: workspaceLogging,
+        visibleIn: ["edit", "preview"],
+      },
+    ]
 
     if (process.env.NODE_ENV === "development") {
+      items.push("separator")
       items.push({
         id: "load-editor-workspace",
         label: "Load Editor Workspace",
@@ -214,29 +280,22 @@ export function useMenuConfig(): HeaderConfig {
       })
     }
 
-    if (debugModeEnabled) {
-      items.push({
-        id: "export-selected-node",
-        label: "Copy Selection to Clipboard",
-        action: exportSelectionToClipboard,
-        visibleIn: ["edit", "preview"], // Not visible in project view
-      })
-    }
-
-    items.push({
-      id: "debug-mode",
-      label: "Enable Debug Mode",
-      action: toggleDebugMode,
-      active: debugModeEnabled,
-      visibleIn: ["edit", "preview"], // Not visible in project view
-    })
-
     return items
   }, [
     addToast,
-    debugModeEnabled,
     exportSelectionToClipboard,
-    toggleDebugMode,
+    canvasProfiling,
+    toggleCanvasProfiling,
+    showNodeIds,
+    toggleShowNodeIds,
+    showPropertyTypes,
+    toggleShowPropertyTypes,
+    verboseLogging,
+    toggleVerboseLogging,
+    dispatchLogging,
+    toggleDispatchLogging,
+    workspaceLogging,
+    toggleWorkspaceLogging,
   ])
 
   const editMenuItems = useMemo(() => {
@@ -478,16 +537,16 @@ export function useMenuConfig(): HeaderConfig {
         ],
       },
       {
-        id: "debug",
-        label: "Debug",
-        items: debugMenuItems as MenuItem[],
+        id: "dev",
+        label: "Dev",
+        items: devMenuItems,
       },
     ],
     [
       fileMenuItems,
       editMenuItems,
       selectionMenuItems,
-      debugMenuItems,
+      devMenuItems,
       togglePreviewMode,
       isInPreviewMode,
       togglePanels,
@@ -503,8 +562,6 @@ export function useMenuConfig(): HeaderConfig {
       resetZoom,
       zoomIn,
       zoomOut,
-      toggleDebugMode,
-      debugModeEnabled,
       showUnusedProperties,
       toggleShowUnusedProperties,
       showUnusedFonts,

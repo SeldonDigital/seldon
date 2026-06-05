@@ -1,6 +1,6 @@
 import { isComponentId } from "../../../components/constants"
 import { ValueType } from "../../../properties"
-import { debugLog, isDebugEnabled } from "../../../utils/debug-logger"
+import { isWorkspaceLoggingEnabled } from "../../../utils/debug-logger"
 import { ErrorMessages } from "../../constants"
 import { getComponentId } from "../../helpers/components/get-component-ids"
 import { findComponentTreeCycleId } from "../../helpers/components/find-tree-cycle"
@@ -206,7 +206,7 @@ export const workspaceVerificationMiddleware: Middleware =
 
     try {
       const shouldLogVerification =
-        process.env.NODE_ENV === "development" && isDebugEnabled()
+        process.env.NODE_ENV === "development" && isWorkspaceLoggingEnabled()
       shouldLogVerification && console.groupCollapsed("🔍 Verifying workspace")
 
       validators.noCyclicTrees(nextWorkspace)
@@ -256,11 +256,13 @@ export const workspaceVerificationMiddleware: Middleware =
   }
 
 const log = (message: any) => {
-  debugLog("Workspace", "verificationMiddleware", String(message))
+  if (!isWorkspaceLoggingEnabled()) return
+  console.log(`🐶 verificationMiddleware · ${String(message)}`)
 }
 
 const logError = (message: any, error: Error) => {
-  debugLog("Workspace", "verificationMiddleware", String(message), {
+  if (!isWorkspaceLoggingEnabled()) return
+  console.log(`🐶 verificationMiddleware · ${String(message)}`, {
     error: error.message,
   })
 }

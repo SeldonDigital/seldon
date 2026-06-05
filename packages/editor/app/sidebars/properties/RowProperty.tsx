@@ -89,7 +89,7 @@ export function RowProperty({
   fontCollectionEditingContext,
   iconSetEditingContext,
 }: RowPropertyProps) {
-  const { debugModeEnabled } = useDebugMode()
+  const { showPropertyTypes } = useDebugMode()
   const frameRef = useRef<HTMLDivElement>(null)
   const [isEditingProperty, setIsEditingProperty] = useState(false)
 
@@ -218,12 +218,12 @@ export function RowProperty({
   }
 
   const rowStyle = useMemo(
-    () => getPropertyRowStyle(property, debugModeEnabled),
-    [property, debugModeEnabled],
+    () => getPropertyRowStyle(property, showPropertyTypes),
+    [property, showPropertyTypes],
   )
   const labelStyle = useMemo(
-    () => getPropertyLabelStyle(property, debugModeEnabled),
-    [property, debugModeEnabled],
+    () => getPropertyLabelStyle(property, showPropertyTypes),
+    [property, showPropertyTypes],
   )
 
   const labelColor = labelStyle.color
