@@ -5,12 +5,12 @@ import "allotment/dist/style.css"
 import { LoadEditorFonts } from "@components/LoadEditorFonts"
 import { Providers } from "@components/Providers"
 import { Toasts } from "@components/toaster/Toaster"
-import HomePage from "../app/HomePage"
+import HomePage from "../app/home/HomePage"
 import "../app/globals.css"
 import "../app/plex/fonts.css"
 import "../app/editor-chrome.css"
 
-const EditorPage = lazy(() => import("../app/EditorPage"))
+const EditorPage = lazy(() => import("../app/editor/EditorPage"))
 
 const router = createBrowserRouter([
   { path: "/", element: <HomePage /> },

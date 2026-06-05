@@ -6,7 +6,7 @@ import { TextEditSearch } from "../../seldon/chrome/elements/TextEditSearch"
 import { FrameScroller } from "../../seldon/chrome/frames/FrameScroller"
 import { IconProps } from "../../seldon/chrome/primitives/Icon"
 import { Label } from "../../seldon/chrome/primitives/Label"
-import { FloatingPanel } from "@components/ui/floating-panel/FloatingPanel"
+import { FloatingPanel } from "@components/panels/floating-panel/FloatingPanel"
 
 export type CatalogPanelItem = {
   id: string

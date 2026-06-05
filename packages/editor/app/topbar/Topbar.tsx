@@ -5,10 +5,10 @@ import { DEVICE_VIEWS } from "@lib/devices/constants"
 import { DeviceId } from "@lib/devices/types"
 import { useAppState } from "@lib/hooks/use-app-state"
 import { usePreview } from "@lib/hooks/use-preview"
-import { Menu, useMenuConfig } from "@components/menu"
+import { Menu, useMenuConfig } from "@components/topbar/menus"
 import { HEADER_HEIGHT } from "../constants"
 import { DeviceButton } from "./DeviceButton"
-import { Toolbar } from "./Toolbar"
+import { Toolbar } from "./tools/Toolbar"
 
 const headerStyle: CSSProperties = {
   position: "relative",
@@ -91,7 +91,7 @@ const exitButtonStyle: CSSProperties = {
   cursor: "pointer",
 }
 
-export function UnifiedHeader() {
+export function Topbar() {
   const { appState } = useAppState()
   const { menuConfig } = useMenuConfig()
   const { isInPreviewMode, togglePreviewMode } = usePreview()

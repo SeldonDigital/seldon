@@ -34,7 +34,7 @@ The editor and an autonomous agent follow the same contract. Both hold a **works
 ### Load
 
 1. The route `app/[id]/page.tsx` reads the workspace id and loads the stored record through `useWorkspaceRecord`.
-2. [ProjectInitialize.tsx](./app/ProjectInitialize.tsx) re-runs the record through the reducer with a `set_workspace` action so **migration** can upgrade `metadata.version` and normalize the file.
+2. [ProjectInitialize.tsx](./app/editor/ProjectInitialize.tsx) re-runs the record through the reducer with a `set_workspace` action so **migration** can upgrade `metadata.version` and normalize the file.
 3. The verified workspace becomes the first snapshot in history.
 
 ### Edit

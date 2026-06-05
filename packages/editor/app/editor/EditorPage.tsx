@@ -1,7 +1,7 @@
 import type { CSSProperties } from "react"
-import Editor from "@components/Editor"
-import { LocalWorkspaceShell } from "@components/LocalWorkspaceShell"
-import { ProjectInitialize } from "@components/ProjectInitialize"
+import Editor from "@components/editor/Editor"
+import { LocalWorkspaceShell } from "@components/editor/LocalWorkspaceShell"
+import { ProjectInitialize } from "@components/editor/ProjectInitialize"
 import { useWorkspaceRecord } from "@lib/local-workspace/use-workspace-record"
 import { useWorkspaceId } from "@lib/project/hooks/use-workspace-id"
 
