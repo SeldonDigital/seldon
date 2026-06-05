@@ -1,5 +1,6 @@
 import { removeNewLines } from "@lib/helpers/new-lines"
-import { CSSProperties, MouseEvent } from "react"
+import { CSSProperties } from "react"
+import { MenuItem } from "@lib/menus"
 import { Display, Properties, VariantId } from "@seldon/core"
 import { getComponentSchema } from "@seldon/core/components/catalog"
 import { ComponentId, isComponentId } from "@seldon/core/components/constants"
@@ -23,7 +24,6 @@ import { useSelectionRelations } from "./use-selection-relations"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { IconProps } from "../../../seldon/primitives/Icon"
 import { LabelProps } from "../../../seldon/primitives/Label"
-import { useAddToast } from "@components/toaster/hooks/use-add-toast"
 import { useDraggable } from "./use-draggable"
 import { useEditState } from "./use-edit-state"
 import { useExpansion, useIsExpanded } from "./use-expansion"
@@ -52,7 +52,6 @@ export function useRowNode(
     useSelectionRelations()
   const { debugModeEnabled } = useDebugMode()
   const { autoScrollToSelection } = useEditorConfig()
-  const addToast = useAddToast()
 
   const { toggle, expandObjects, collapseObjects, getAllDescendantNodeIds } =
     useExpansion()
@@ -200,37 +199,6 @@ export function useRowNode(
   }
   const buttonIconic2 = createStaticButton2()
 
-  const createActionButton = (
-    iconName: IconProps["icon"],
-    onClick?: (event: MouseEvent<HTMLButtonElement>) => void,
-  ) => {
-    if (!isSelected) {
-      return { icon: undefined, button: undefined }
-    }
-
-    return {
-      icon: { icon: iconName } as IconProps,
-      button: {
-        onClick:
-          onClick ||
-          ((event: MouseEvent<HTMLButtonElement>) => {
-            event?.stopPropagation()
-            addToast("This feature is coming soon")
-          }),
-        className: "sdn-button-iconic sdn-button-iconic--0urv",
-        style: {
-          position: "relative" as const,
-          zIndex: 10,
-        },
-      },
-    }
-  }
-
-  let icon3: IconProps | undefined
-  let buttonIconic3: React.ButtonHTMLAttributes<HTMLButtonElement> | undefined
-  let icon4: IconProps | undefined
-  let buttonIconic4: React.ButtonHTMLAttributes<HTMLButtonElement> | undefined
-
   const isResettableType =
     workspaceService.isDefaultVariant(node) ||
     workspaceService.isUserVariant(node) ||
@@ -243,8 +211,7 @@ export function useRowNode(
     nodeExistsInWorkspace &&
     nodeSubtreeHasOverrides(node.id, workspace)
 
-  function handleReset(event: MouseEvent<HTMLButtonElement>) {
-    event.stopPropagation()
+  function handleReset() {
     if (workspaceService.isUserVariant(node)) {
       dispatch({
         type: "reset_user_variant_to_default",
@@ -258,14 +225,22 @@ export function useRowNode(
     }
   }
 
-  const resetButton = canReset
-    ? createActionButton("seldon-reset", handleReset)
-    : { icon: undefined, button: undefined }
-  const moreButton = createActionButton("seldon-more")
-  icon3 = resetButton.icon
-  buttonIconic3 = resetButton.button
-  icon4 = moreButton.icon
-  buttonIconic4 = moreButton.button
+  function getResetLabel(): string {
+    if (workspaceService.isDefaultVariant(node)) return "Reset default"
+    if (workspaceService.isUserVariant(node)) return "Reset variant"
+    return "Reset"
+  }
+
+  const resetActions: MenuItem[] = canReset
+    ? [
+        {
+          id: "reset",
+          label: getResetLabel(),
+          onSelect: handleReset,
+          testId: `object-panel-node-${node.id}-reset`,
+        },
+      ]
+    : []
 
   function checkIfExcluded(): boolean {
     if (!nodeExistsInWorkspace) {
@@ -316,10 +291,7 @@ export function useRowNode(
     icon,
     buttonIconic2,
     icon2,
-    buttonIconic3,
-    icon3,
-    buttonIconic4,
-    icon4,
+    resetActions,
     onClick,
     onDoubleClick: handleDoubleClick,
     isExpanded: isExpandedState,

@@ -27,7 +27,9 @@ import { ListItemTreeInput } from "../../seldon/elements/ListItemTreeInput"
 import { IconProps } from "../../seldon/primitives/Icon"
 import { LabelProps } from "../../seldon/primitives/Label"
 import { useImageUploadPanel } from "@components/panels/hooks/use-upload-image-panel"
+import { MenuEntry } from "@lib/menus"
 import { FramerExpandable } from "../shared/FramerExpandable"
+import { RowActionsMenu } from "../shared/RowActionsMenu"
 import { PropertyControl } from "./PropertyControl"
 import { getDisplayValue } from "./helpers/display-value-utils"
 import {
@@ -46,8 +48,6 @@ import {
 
 const TOGGLE_BUTTON_CLASS = "sdn-button-iconic sdn-button-iconic--0urv"
 const CHEVRON_ICON = "material-chevronRight" as const
-const RESET_ICON = "seldon-reset" as const
-const EDIT_ICON = "icon-custom-edit" as const
 
 interface ThemeEditingContext {
   isThemeEditing: true
@@ -235,21 +235,6 @@ export function RowProperty({
     return getThemeTokenIconColorFromPropertyValue(property.value, theme)
   }, [property.key, property.value, theme])
 
-  // Check if this is a custom theme property
-  const isCustomTheme = useMemo(() => {
-    return (
-      property.key === "theme" &&
-      property.value &&
-      typeof property.value === "object" &&
-      property.value !== null &&
-      "type" in property.value &&
-      "value" in property.value &&
-      property.value.type === ValueType.EXACT &&
-      typeof property.value.value === "string" &&
-      property.value.value === "custom"
-    )
-  }, [property.controlType, property.value])
-
   // Hover effect for Frame component
   const rowColor = rowStyle.color as string | undefined
   const { setIsHovered, style: hoverStyle } = usePropertyFrameHover(rowColor)
@@ -332,13 +317,16 @@ export function RowProperty({
     handleToggle()
   }
 
-  const handleResetClick = useCallback(
-    (event: React.MouseEvent) => {
-      event.stopPropagation()
-      handleReset()
-    },
-    [handleReset],
-  )
+  const resetActions: MenuEntry[] = canReset
+    ? [
+        {
+          id: "reset",
+          label: `Reset ${labelText}`,
+          onSelect: handleReset,
+          testId: `property-row-${property.key}-reset`,
+        },
+      ]
+    : []
 
   const { show: showUploadPanel } = useImageUploadPanel()
 
@@ -617,16 +605,6 @@ export function RowProperty({
                   : 1,
         ),
       },
-
-      buttonIconic4: {
-        onClick: handleResetClick,
-        "aria-label": isCustomTheme ? "Edit theme" : "Reset property",
-        className: TOGGLE_BUTTON_CLASS,
-      },
-      icon4: {
-        icon: isCustomTheme ? EDIT_ICON : RESET_ICON,
-        style: iconStyle(isCustomTheme || canReset ? 1 : 0),
-      },
     }
   }, [
     handleToggle,
@@ -642,9 +620,6 @@ export function RowProperty({
     value,
     unit,
     isNumericValue,
-    handleResetClick,
-    canReset,
-    isCustomTheme,
     isEditingProperty,
     property,
     theme,
@@ -664,6 +639,14 @@ export function RowProperty({
       <ListItemTreeInput
         {...listItemProps}
         onClick={handleRowClick}
+        actionsSlot={
+          resetActions.length > 0 ? (
+            <RowActionsMenu
+              items={resetActions}
+              color={labelColor as string | undefined}
+            />
+          ) : undefined
+        }
         frame={
           {
             "data-frame-ref": "true",

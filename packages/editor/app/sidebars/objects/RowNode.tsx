@@ -14,6 +14,7 @@ import { SidebarTracking } from "../../tracking/SidebarTracking"
 import { IndentationLevel } from "../hooks/use-indentation"
 import { Combobox } from "../properties/controls/combobox/Combobox"
 import { FramerExpandable } from "../shared/FramerExpandable"
+import { RowActionsMenu } from "../shared/RowActionsMenu"
 
 const rowWrapperStyle: CSSProperties = {
   width: "100%",
@@ -49,10 +50,7 @@ const RowNodeInner = memo(function RowNodeInner({
     icon,
     buttonIconic2,
     icon2,
-    buttonIconic3,
-    icon3,
-    buttonIconic4,
-    icon4,
+    resetActions,
     onClick,
     onDoubleClick,
     isExpanded,
@@ -92,10 +90,6 @@ const RowNodeInner = memo(function RowNodeInner({
 
   const coloredIcon = hasChildren ? applyTrackingColor(icon, "color") : icon
   const coloredIcon2 = applyTrackingColor(icon2, "color")
-  const coloredIcon3 = applyTrackingColor(icon3, "color")
-  const coloredIcon4 = applyTrackingColor(icon4, "color")
-  const coloredButtonIconic3 = buttonIconic3
-  const coloredButtonIconic4 = buttonIconic4
 
   const label: LabelProps = {
     ...baseLabel,
@@ -153,10 +147,11 @@ const RowNodeInner = memo(function RowNodeInner({
             buttonIconic2={buttonIconic2}
             icon2={coloredIcon2}
             label={label}
-            buttonIconic3={coloredButtonIconic3}
-            icon3={coloredIcon3}
-            buttonIconic4={coloredButtonIconic4}
-            icon4={coloredIcon4}
+            actionsSlot={
+              resetActions.length > 0 ? (
+                <RowActionsMenu items={resetActions} color={iconColor} />
+              ) : undefined
+            }
             onClick={onClick}
             onDoubleClick={onDoubleClick}
             onMouseEnter={handleCanvasTrackingEnter}
