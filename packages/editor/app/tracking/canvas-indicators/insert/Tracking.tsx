@@ -6,7 +6,7 @@ import { useCanvasHoverState } from "@lib/hooks/use-canvas-hover-state"
 import { useTool } from "@lib/hooks/use-tool"
 import { useBelongsToActiveBoard } from "../../hooks/use-belongs-to-active-board"
 import { useWorkspace } from "@lib/workspace/use-workspace"
-import { checkInsertionPoint } from "../../utils/check-insertion-point"
+import { checkInsertionPoint } from "../../helpers/check-insertion-point"
 import { IndicatorInsert } from "./IndicatorInsert"
 
 /**

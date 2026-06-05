@@ -9,7 +9,7 @@ import { useTool } from "@lib/hooks/use-tool"
 import { useActiveBoard } from "@lib/workspace/use-active-board"
 import { getComponentKey, hasNode } from "@lib/workspace/workspace-accessors"
 import { useWorkspace } from "@lib/workspace/use-workspace"
-import { checkInsertionPoint } from "../utils/check-insertion-point"
+import { checkInsertionPoint } from "../helpers/check-insertion-point"
 
 /**
  * Hook that handles canvas hover tracking for sidebar rows (nodes).

@@ -29,8 +29,8 @@ import { useZoomControls } from "@lib/hooks/use-zoom-controls"
 import { useHistory } from "@lib/workspace/use-history"
 import { useSelection } from "@lib/workspace/use-selection"
 import { useWorkspace } from "@lib/workspace/use-workspace"
-import { useAddToast } from "@components/toaster/use-add-toast"
-import { HeaderConfig, MenuConfig, MenuItem, ToolbarConfig } from "./types"
+import { useAddToast } from "@components/toaster/hooks/use-add-toast"
+import { HeaderConfig, MenuConfig, MenuItem, ToolbarConfig } from "../menus/types"
 
 /**
  * Builds header configuration with all required menus and actions

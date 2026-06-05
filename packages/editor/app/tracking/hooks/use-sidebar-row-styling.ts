@@ -9,7 +9,7 @@ import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { useActiveBoard } from "@lib/workspace/use-active-board"
 import { useIsNodeSelected } from "@lib/workspace/use-selection"
 import { useWorkspace } from "@lib/workspace/use-workspace"
-import { checkInsertionPoint } from "../utils/check-insertion-point"
+import { checkInsertionPoint } from "../helpers/check-insertion-point"
 
 /**
  * Hook that provides styling for sidebar rows based on selection and tracking state.

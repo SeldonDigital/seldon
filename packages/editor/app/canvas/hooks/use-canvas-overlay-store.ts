@@ -1,5 +1,5 @@
 import { create } from "zustand"
-import type { NodeRect } from "../tracking/hooks/use-node-rects-store"
+import type { NodeRect } from "../../tracking/hooks/use-node-rects-store"
 
 /**
  * Canvas-relative rects for the single hover and selection outlines. Written by

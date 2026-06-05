@@ -15,7 +15,7 @@ import {
   CatalogComponentItem,
   FilterComponentPredicate,
   useComponentCatalog,
-} from "./use-component-catalog"
+} from "../hooks/use-component-catalog"
 
 /**
  * This panel is used to insert an existing variant into another node

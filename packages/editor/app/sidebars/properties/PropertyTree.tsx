@@ -25,7 +25,7 @@ import {
   getThemePropertySections,
 } from "./helpers/get-theme-property-sections"
 import { FlatProperty } from "./helpers/properties-data"
-import { usePropertyExpansion } from "./helpers/use-property-expansion"
+import { usePropertyExpansion } from "./hooks/use-property-expansion"
 
 interface ThemeEditingContext {
   isThemeEditing: true

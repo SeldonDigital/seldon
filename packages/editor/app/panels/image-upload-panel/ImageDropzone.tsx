@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { useObjectURL } from "@lib/hooks/use-object-url"
 import { IconUpload } from "@components/icons/Upload"
-import { useAddToast } from "@components/toaster/use-add-toast"
+import { useAddToast } from "@components/toaster/hooks/use-add-toast"
 
 export interface ImageDropzoneProps {
   onFileChange: (file: File | null) => void

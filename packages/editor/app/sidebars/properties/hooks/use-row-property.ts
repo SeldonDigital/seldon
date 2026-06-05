@@ -17,7 +17,7 @@ import { useObjectProperties } from "@lib/workspace/use-object-properties"
 import { FlatProperty } from "../helpers/properties-data"
 import { ICON_MAP } from "../helpers/properties-registry"
 import { getPropertyPlaceholder } from "../helpers/shared-utils"
-import { usePropertyExpansion } from "../helpers/use-property-expansion"
+import { usePropertyExpansion } from "./use-property-expansion"
 
 interface UseRowPropertyOptions {
   property: FlatProperty

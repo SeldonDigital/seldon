@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 import { getHtmlElementByNodeId } from "../../canvas/helpers/get-html-element-by-node-id"
-import { calculateSelectionOutline } from "../utils/calculate-selection-outline"
+import { calculateSelectionOutline } from "../helpers/calculate-selection-outline"
 import { useNodeRectsStore } from "./use-node-rects-store"
 
 /**

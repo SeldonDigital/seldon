@@ -9,7 +9,7 @@ import { getNodeChildIds } from "@lib/workspace/node-tree"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { useSelection } from "@lib/workspace/use-selection"
 import { useWorkspace } from "@lib/workspace/use-workspace"
-import { useAddToast } from "@components/toaster/use-add-toast"
+import { useAddToast } from "@components/toaster/hooks/use-add-toast"
 
 /**
  * Commands for moving nodes and boards

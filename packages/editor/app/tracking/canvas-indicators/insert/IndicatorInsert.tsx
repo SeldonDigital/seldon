@@ -8,7 +8,7 @@ import { workspaceService } from "@seldon/core/workspace/services/workspace.serv
 import { useWorkspace } from "@lib/workspace/use-workspace"
 import { getHtmlElementByBoardId } from "../../../canvas/helpers/get-html-element-by-board-id"
 import { getHtmlElementByNodeId } from "../../../canvas/helpers/get-html-element-by-node-id"
-import { calculateIndicatorPosition } from "../utils/calculate-indicator-position"
+import { calculateIndicatorPosition } from "../helpers/calculate-indicator-position"
 import { Label } from "./Label"
 
 type IndicatorInsertProps = {

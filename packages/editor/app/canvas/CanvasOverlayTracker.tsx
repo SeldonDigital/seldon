@@ -9,7 +9,7 @@ import {
   getCanvasSelectionElements,
   getUnionRect,
 } from "./helpers/canvas-selection-target"
-import { useCanvasOverlayStore } from "./use-canvas-overlay-store"
+import { useCanvasOverlayStore } from "./hooks/use-canvas-overlay-store"
 
 /** Frames to wait for a target to mount after a board switch before giving up. */
 const MAX_TARGET_FRAMES = 30

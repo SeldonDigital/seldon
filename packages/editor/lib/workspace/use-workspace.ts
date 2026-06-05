@@ -6,7 +6,7 @@ import { WorkspaceValidationError } from "@seldon/core/workspace/middleware/vali
 import { workspaceReducer } from "@seldon/core/workspace/reducers/reducer"
 import { setIsLocalWorkspaceDirty } from "@lib/project/hooks/use-workspace-sync-status"
 import { useDebugMode } from "@lib/hooks/use-debug-mode"
-import { useAddToast } from "@components/toaster/use-add-toast"
+import { useAddToast } from "@components/toaster/hooks/use-add-toast"
 import { useHistory } from "./use-history"
 import { usePreviewStore } from "./use-preview-store"
 

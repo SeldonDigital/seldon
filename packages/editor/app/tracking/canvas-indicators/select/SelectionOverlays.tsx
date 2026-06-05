@@ -3,12 +3,12 @@
 import type { CSSProperties } from "react"
 import { useHoveredId } from "@lib/workspace/use-object-hover"
 import { useSelectedId } from "@lib/workspace/selection-target"
-import { useCanvasOverlayStore } from "../../../canvas/use-canvas-overlay-store"
+import { useCanvasOverlayStore } from "../../../canvas/hooks/use-canvas-overlay-store"
 import type { NodeRect } from "../../hooks/use-node-rects-store"
 import {
   getSelectionMode,
   getSelectionOutlineStyle,
-} from "../../utils/canvas-outline-modes"
+} from "../../helpers/canvas-outline-modes"
 
 function outlineStyle(
   rect: NodeRect,

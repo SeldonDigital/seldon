@@ -10,7 +10,7 @@ import { isSpecialComponentVariant } from "@seldon/core/workspace/helpers/genera
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
 import { useSearchComponents } from "@lib/api/hooks/use-search-components"
 import { useWorkspace } from "@lib/workspace/use-workspace"
-import { CatalogPanelCategory, CatalogPanelItem } from "./CatalogPanel"
+import { CatalogPanelCategory, CatalogPanelItem } from "../catalog-panel/CatalogPanel"
 
 export type CatalogComponentItem = CatalogPanelItem & {
   componentId: ComponentId

@@ -23,14 +23,14 @@ import { useSelectionRelations } from "./use-selection-relations"
 import { useWorkspace } from "@lib/workspace/use-workspace"
 import { IconProps } from "../../../seldon/primitives/Icon"
 import { LabelProps } from "../../../seldon/primitives/Label"
-import { useAddToast } from "@components/toaster/use-add-toast"
+import { useAddToast } from "@components/toaster/hooks/use-add-toast"
 import { useDraggable } from "./use-draggable"
 import { useEditState } from "./use-edit-state"
 import { useExpansion, useIsExpanded } from "./use-expansion"
 import { useRowButton } from "./use-row-button"
 import { useRowClick } from "./use-row-click"
 import { useRowToggle } from "./use-row-toggle"
-import { useSectionExpansion } from "../../helpers/use-section-expansion"
+import { useSectionExpansion } from "../../hooks/use-section-expansion"
 
 /**
  * Hook that provides all state and handlers for rendering a node row in the objects sidebar.

@@ -7,7 +7,7 @@ import type { Workspace } from "@seldon/core/workspace/types"
 import { workspacePropagationService } from "@seldon/core/workspace/services/propagation/workspace-propagation.service"
 import { useSelection } from "@lib/workspace/use-selection"
 import { useWorkspace } from "@lib/workspace/use-workspace"
-import { useAddToast } from "@components/toaster/use-add-toast"
+import { useAddToast } from "@components/toaster/hooks/use-add-toast"
 import {
   pickExportDirectory,
   writeExportToDirectory,

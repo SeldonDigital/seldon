@@ -17,7 +17,7 @@ import {
 } from "@lib/workspace/workspace-accessors"
 import { useEditorConfig } from "@lib/hooks/use-editor-config"
 import { useExpansion } from "@components/sidebars/objects/hooks/use-expansion"
-import { useSectionExpansion } from "@components/sidebars/helpers/use-section-expansion"
+import { useSectionExpansion } from "@components/sidebars/hooks/use-section-expansion"
 import { useWorkspace } from "./use-workspace"
 
 /** Resource board kinds whose rows are selectable items (families, icons, media). */

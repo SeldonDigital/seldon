@@ -4,7 +4,7 @@ import css from "react-syntax-highlighter/dist/esm/languages/hljs/css"
 import { atomOneDarkReasonable } from "react-syntax-highlighter/dist/esm/styles/hljs"
 import { HTMLButton } from "../../seldon/native-react/HTML.Button"
 import { Icon } from "../../seldon/primitives/Icon"
-import { useAddToast } from "@components/toaster/use-add-toast"
+import { useAddToast } from "@components/toaster/hooks/use-add-toast"
 
 SyntaxHighlighter.registerLanguage("css", css)
 

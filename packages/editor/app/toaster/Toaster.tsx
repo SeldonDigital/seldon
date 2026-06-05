@@ -3,7 +3,7 @@
 import { AnimatePresence } from "framer-motion"
 import { useShallow } from "zustand/react/shallow"
 import { Toast } from "./Toast"
-import { useToastStore } from "./use-toast-store"
+import { useToastStore } from "./hooks/use-toast-store"
 
 export function Toasts() {
   const toasts = useToastStore(useShallow((state) => state.toasts))

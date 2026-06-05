@@ -5,9 +5,9 @@ import { useEffect, useState } from "react"
 import { CSSProperties } from "react"
 import { useNodeRect } from "../../hooks/use-node-rect"
 import { getHtmlElementByNodeId } from "../../../canvas/helpers/get-html-element-by-node-id"
-import { calculateSelectionOutline } from "../../utils/calculate-selection-outline"
-import { getWireframeMode } from "../../utils/canvas-outline-modes"
-import { calculateClippingBox } from "../../utils/calculate-clipping-box"
+import { calculateSelectionOutline } from "../../helpers/calculate-selection-outline"
+import { getWireframeMode } from "../../helpers/canvas-outline-modes"
+import { calculateClippingBox } from "../../helpers/calculate-clipping-box"
 
 export type SelectTrackingProps = {
   nodeId: string

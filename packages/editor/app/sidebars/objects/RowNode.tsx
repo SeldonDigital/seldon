@@ -11,7 +11,7 @@ import { useRowNode } from "./hooks/use-row-node"
 import { ListItemTreeNode as SeldonNode } from "../../seldon/elements/ListItemTreeNode"
 import { LabelProps } from "../../seldon/primitives/Label"
 import { SidebarTracking } from "../../tracking/SidebarTracking"
-import { IndentationLevel } from "../helpers/use-indentation"
+import { IndentationLevel } from "../hooks/use-indentation"
 import { Combobox } from "../properties/controls/combobox/Combobox"
 import { FramerExpandable } from "../shared/FramerExpandable"
 

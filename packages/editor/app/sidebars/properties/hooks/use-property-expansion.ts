@@ -1,6 +1,6 @@
 import { create } from "zustand"
-import { PropertyCategoryType } from "./get-property-sections"
-import { ThemePropertyCategoryType } from "./get-theme-property-sections"
+import { PropertyCategoryType } from "../helpers/get-property-sections"
+import { ThemePropertyCategoryType } from "../helpers/get-theme-property-sections"
 
 type AllCategoryType = PropertyCategoryType | ThemePropertyCategoryType
 

@@ -17,7 +17,7 @@ import { workspaceService } from "@seldon/core/workspace/services/workspace.serv
 import type { ComponentEntry } from "@seldon/core/workspace/types"
 import { getNodeChildIds } from "@lib/workspace/node-tree"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
-import { useAddToast } from "@components/toaster/use-add-toast"
+import { useAddToast } from "@components/toaster/hooks/use-add-toast"
 import { useWorkspace } from "./use-workspace"
 
 export function useMoveObjects() {

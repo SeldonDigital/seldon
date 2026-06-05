@@ -2,8 +2,8 @@ import { Placement } from "@lib/types"
 import { COLORS } from "@lib/utils/colors"
 import { FC } from "react"
 import { CSSProperties } from "react"
-import { useIndentation } from "../../../sidebars/helpers/use-indentation"
-import { calculateIndicatorPosition } from "../utils/calculate-indicator-position"
+import { useIndentation } from "../../../sidebars/hooks/use-indentation"
+import { calculateIndicatorPosition } from "../helpers/calculate-indicator-position"
 
 type IndicatorInsertProps = {
   placement: Placement

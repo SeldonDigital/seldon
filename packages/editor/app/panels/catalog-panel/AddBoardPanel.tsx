@@ -11,7 +11,7 @@ import {
   CatalogComponentItem,
   FilterComponentPredicate,
   useComponentCatalog,
-} from "./use-component-catalog"
+} from "../hooks/use-component-catalog"
 
 const LEVEL_LABELS: Partial<Record<ComponentLevel, string>> = {
   [ComponentLevel.SCREEN]: "screen",

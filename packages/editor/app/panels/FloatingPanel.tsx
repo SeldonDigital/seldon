@@ -1,10 +1,10 @@
-import * as Portal from "@radix-ui/react-portal"
 import { motion } from "framer-motion"
 import { CSSProperties } from "react"
+import { createPortal } from "react-dom"
 import { useHotkeys } from "react-hotkeys-hook"
-import { HeaderPanelsClose } from "../../seldon/chrome/elements/HeaderPanelsClose"
-import { PANEL_INITIAL_HEIGHT, PANEL_INITIAL_WIDTH } from "../../constants"
-import { useFloatingPanel } from "./use-floating-panel"
+import { HeaderPanelsClose } from "../seldon/chrome/elements/HeaderPanelsClose"
+import { PANEL_INITIAL_HEIGHT, PANEL_INITIAL_WIDTH } from "../constants"
+import { useFloatingPanel } from "./hooks/use-floating-panel"
 
 export type FloatingPanelProps = {
   handleClose: () => void
@@ -64,7 +64,7 @@ export function FloatingPanel({
           style={{ position: "fixed", inset: 0, zIndex: 30 }}
         />
       )}
-      <Portal.Root>
+      {createPortal(
         <motion.div
           drag
           style={{
@@ -115,8 +115,9 @@ export function FloatingPanel({
               style={getResizeHandleStyle(side)}
             />
           ))}
-        </motion.div>
-      </Portal.Root>
+        </motion.div>,
+        document.body,
+      )}
     </>
   )
 }

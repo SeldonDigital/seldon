@@ -2,7 +2,7 @@ import { MouseEvent } from "react"
 import { IconProps } from "../../../seldon/primitives/Icon"
 import { PropertySection } from "../helpers/get-property-sections"
 import { ThemePropertySection } from "../helpers/get-theme-property-sections"
-import { usePropertyExpansion } from "../helpers/use-property-expansion"
+import { usePropertyExpansion } from "./use-property-expansion"
 
 /**
  * Hook that provides state and handlers for rendering a category header in the properties sidebar.
