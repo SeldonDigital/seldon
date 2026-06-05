@@ -1,11 +1,11 @@
 import React, { CSSProperties, useState } from "react"
-import { Grid } from "@components/seldon/custom/Grid"
-import { AvatarIcon } from "@components/seldon/elements/AvatarIcon"
-import { ButtonBarPrimary } from "@components/seldon/elements/ButtonBarPrimary"
-import { TextEditSearch } from "@components/seldon/elements/TextEditSearch"
-import { FrameScroller } from "@components/seldon/frames/FrameScroller"
-import { IconProps } from "@components/seldon/primitives/Icon"
-import { Label } from "@components/seldon/primitives/Label"
+import { Grid } from "../../../seldon/chrome/custom/Grid"
+import { AvatarIcon } from "../../../seldon/chrome/elements/AvatarIcon"
+import { ButtonBarPrimary } from "../../../seldon/chrome/elements/ButtonBarPrimary"
+import { TextEditSearch } from "../../../seldon/chrome/elements/TextEditSearch"
+import { FrameScroller } from "../../../seldon/chrome/frames/FrameScroller"
+import { IconProps } from "../../../seldon/chrome/primitives/Icon"
+import { Label } from "../../../seldon/chrome/primitives/Label"
 import { FloatingPanel } from "@components/ui/floating-panel/FloatingPanel"
 
 export type CatalogPanelItem = {

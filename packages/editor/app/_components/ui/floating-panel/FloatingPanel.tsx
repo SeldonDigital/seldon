@@ -2,7 +2,7 @@ import * as Portal from "@radix-ui/react-portal"
 import { motion } from "framer-motion"
 import { CSSProperties } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
-import { HeaderPanelsClose } from "@components/seldon/elements/HeaderPanelsClose"
+import { HeaderPanelsClose } from "../../../seldon/chrome/elements/HeaderPanelsClose"
 import { PANEL_INITIAL_HEIGHT, PANEL_INITIAL_WIDTH } from "../../constants"
 import { useFloatingPanel } from "./use-floating-panel"
 

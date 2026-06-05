@@ -2,7 +2,7 @@
 
 import { Board } from "@seldon/core"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
-import { Label } from "@components/seldon/primitives/Label"
+import { Label } from "../../../seldon/chrome/primitives/Label"
 
 export type PlaygroundBoardPlaceholderProps = {
   board: Board

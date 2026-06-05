@@ -3,7 +3,7 @@
 import { COLORS, lcha } from "@lib/utils/colors"
 import { useDialog } from "@lib/hooks/use-dialog"
 import { useTool } from "@lib/hooks/use-tool"
-import { BarToolsSeldon } from "@components/seldon/elements/BarToolsSeldon"
+import { BarToolsSeldon } from "../../seldon/chrome/elements/BarToolsSeldon"
 
 export const Toolbar = () => {
   const { activeTool, setActiveTool } = useTool()

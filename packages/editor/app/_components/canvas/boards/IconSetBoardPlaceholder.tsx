@@ -7,7 +7,7 @@ import { themeService } from "@seldon/core/workspace/services/theme/theme.servic
 import { usePreview } from "@lib/hooks/use-preview"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { useWorkspace } from "@lib/workspace/use-workspace"
-import { Frame } from "../../seldon/frames/Frame"
+import { Frame } from "../../../seldon/chrome/frames/Frame"
 import { CssPortal } from "../CssPortal"
 
 export type IconSetBoardPlaceholderProps = {

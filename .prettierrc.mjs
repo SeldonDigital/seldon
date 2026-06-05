@@ -28,7 +28,6 @@ const config = {
           "^[./].*hooks.*",
           "^@lib/workspace/(.*)",
           "^@lib/api/hooks/(.*)",
-          "^@components/seldon/(.*)",
           "^[./].*seldon.*",
           "^@components/(.*)",
           "^[./].*ui.*",
