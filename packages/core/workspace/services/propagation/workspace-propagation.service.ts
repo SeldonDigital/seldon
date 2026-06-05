@@ -11,6 +11,7 @@ import {
   setComponentOrder,
 } from "../../helpers/components/component-sort-order"
 import { componentBoardDefaultNodeId } from "../../helpers/components/entry-node-ids"
+import { isComponentBoard } from "../../model/components"
 import {
   ComponentEntry,
   Instance,
@@ -160,6 +161,13 @@ export class WorkspacePropagationService {
 
           if (aLevelIndex !== bLevelIndex) {
             return aLevelIndex - bLevelIndex
+          }
+
+          // Component boards within a level sort alphabetically by their
+          // displayed label so sections stay A->Z. Resource boards keep their
+          // stored order.
+          if (isComponentBoard(aBoard) && isComponentBoard(bBoard)) {
+            return aBoard.label.localeCompare(bBoard.label)
           }
 
           return getComponentOrder(aBoard) - getComponentOrder(bBoard)

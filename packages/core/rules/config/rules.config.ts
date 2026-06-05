@@ -262,7 +262,7 @@ export const rules: RulesConfig = {
      */
     reorder: {
       board: {
-        allowed: true,
+        allowed: false,
         propagation: "none",
       },
       userVariant: {

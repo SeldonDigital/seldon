@@ -64,7 +64,11 @@ export function ProjectTree({ sections, scrollerRef }: ProjectTreeProps) {
                   />
                 ) : (
                   section.boards.map((board) => (
-                    <RowBoard key={getComponentKey(board)} board={board} />
+                    <RowBoard
+                      key={getComponentKey(board)}
+                      board={board}
+                      disableReordering
+                    />
                   ))
                 )}
               </FramerExpandable>
