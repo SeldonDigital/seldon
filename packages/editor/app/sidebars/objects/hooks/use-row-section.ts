@@ -86,11 +86,11 @@ export function useRowSection(section: BoardSection) {
     "aria-label": isExpanded ? "Collapse" : "Expand",
   }
 
-  // Add button: opens the add dialog scoped to this section. The Icon Sets and
-  // Media resource sections have no add flow, so they get no button.
+  // Add button: opens the add dialog scoped to this section. The Media resource
+  // section has no add flow, so it gets no button.
   const buttonIconic1 = useMemo<ButtonIconicProps | undefined>(() => {
     const level = section.level
-    if (level === "ICON_SET" || level === "MEDIA") return undefined
+    if (level === "MEDIA") return undefined
 
     return {
       onClick: (event) => {
@@ -99,6 +99,8 @@ export function useRowSection(section: BoardSection) {
           openDialog("add-theme")
         } else if (level === "FONT_COLLECTION") {
           openDialog("add-font-collection")
+        } else if (level === "ICON_SET") {
+          openDialog("add-icon-set")
         } else {
           openDialog("add-board", { level })
         }

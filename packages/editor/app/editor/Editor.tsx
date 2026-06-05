@@ -10,6 +10,7 @@ import { Canvas } from "../canvas/Canvas"
 import { SIDEBAR_INITIAL_WIDTH } from "../constants"
 import { AddBoardPanel } from "../panels/catalog-panel/AddBoardPanel"
 import { AddFontCollectionPanel } from "../panels/catalog-panel/AddFontCollectionPanel"
+import { AddIconSetPanel } from "../panels/catalog-panel/AddIconSetPanel"
 import { AddThemePanel } from "../panels/catalog-panel/AddThemePanel"
 import { InsertVariantPanel } from "../panels/catalog-panel/InsertVariantPanel"
 import { ImageUploadPanel } from "../panels/image-upload-panel/ImageUploadPanel"
@@ -65,6 +66,7 @@ export default function Editor() {
       <AddBoardPanel.Controller />
       <AddThemePanel.Controller />
       <AddFontCollectionPanel.Controller />
+      <AddIconSetPanel.Controller />
       <EditorShortcuts />
     </main>
   )

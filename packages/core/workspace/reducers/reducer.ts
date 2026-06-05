@@ -43,6 +43,7 @@ import { insertVariantInstance } from "./handlers/insert/insert-variant-instance
 import { moveInstance } from "./handlers/move/move-instance"
 import { normalizeMetadataVersion } from "./handlers/normalize/normalize-metadata-version"
 import { deleteFontCollection } from "./handlers/remove/delete-font-collection"
+import { deleteIconSet } from "./handlers/remove/delete-icon-set"
 import { deleteTheme } from "./handlers/remove/delete-theme"
 import { removeComponent } from "./handlers/remove/remove-component"
 import { removeFontCollection } from "./handlers/remove/remove-font-collection"
@@ -430,6 +431,8 @@ function reducer(workspace: Workspace, action: WorkspaceAction): Workspace {
       return resetIconSetOverride(action.payload, workspace)
     case "set_icon_set_subcategory_preset":
       return setIconSetSubcategoryPreset(action.payload, workspace)
+    case "delete_icon_set":
+      return deleteIconSet(action.payload, workspace)
     case "duplicate_icon_set":
       return duplicateIconSet(action.payload, workspace)
 

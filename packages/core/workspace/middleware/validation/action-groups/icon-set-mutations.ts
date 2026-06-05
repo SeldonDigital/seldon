@@ -1,4 +1,6 @@
+import { isEntryIconSetDefault } from "../../../model/entry-icon-set"
 import { iconSetEntryValidators } from "../validators/icon-set-entry"
+import { WorkspaceValidationError } from "../workspace-validation-error"
 import type { Action, Workspace } from "../../../types"
 
 function iconSetIdOf(action: Action): string {
@@ -17,5 +19,17 @@ export function validateIconSetMutation(
     case "duplicate_icon_set":
       iconSetEntryValidators.exists(workspace, iconSetIdOf(action))
       break
+    case "delete_icon_set": {
+      const id = iconSetIdOf(action)
+      iconSetEntryValidators.exists(workspace, id)
+      const entry = workspace["icon-sets"][id]
+      if (entry && isEntryIconSetDefault(entry)) {
+        throw new WorkspaceValidationError(
+          "Cannot remove default icon set entry",
+          action,
+        )
+      }
+      break
+    }
   }
 }

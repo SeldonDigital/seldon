@@ -27,6 +27,7 @@
  * | set_icon_set_label | icon-sets |
  * | set_icon_set_override, reset_icon_set_override | icon-sets (per-icon inclusion under includedIcons) |
  * | set_icon_set_subcategory_preset | icon-sets (per-subcategory inclusion under includedIcons) |
+ * | delete_icon_set | icon-sets (variant rows only; drops board ref) |
  * | duplicate_icon_set | icon-sets (+ components.variants for icon-set row) |
  * | stubs_* (font / media) | reserved — no-op until spec |
  * | transcript_add_message | none (no-op) |
@@ -684,6 +685,10 @@ export type WorkspaceAction =
         subcategory: string
         preset: "all" | "none"
       }
+    }
+  | {
+      type: "delete_icon_set"
+      payload: { iconSetId: string }
     }
   | {
       type: "duplicate_icon_set"

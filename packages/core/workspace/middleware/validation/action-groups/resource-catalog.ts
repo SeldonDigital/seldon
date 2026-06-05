@@ -15,6 +15,7 @@ import {
 } from "../../../model/components"
 import { shouldBlockDeletableComponentRemoval } from "../../../helpers/removal/component-removal-guards"
 import { DEFAULT_FONT_COLLECTION_BOARD_KEY } from "../../../helpers/font-collections/seed-default-font-collection-board"
+import { DEFAULT_ICON_SET_BOARD_KEY } from "../../../helpers/icon-sets/seed-default-icon-set-board"
 import { DEFAULT_THEME_BOARD_KEY } from "../../../helpers/themes/seed-default-theme-board"
 import { ErrorMessages } from "../../../constants"
 import { componentValidators, isPackagedCatalogBoard } from "../validators"
@@ -208,11 +209,30 @@ export function validateRemoveBoard(
       }
       break
     }
-    case "remove_icon_set":
-      throw new WorkspaceValidationError(
-        "Cannot remove icon set catalog board",
-        action,
-      )
+    case "remove_icon_set": {
+      const catalogId = action.payload.catalogId
+      componentValidators.exists(workspace, catalogId)
+      const board = workspace.components[catalogId]
+      if (!board || !isIconSetBoard(board)) {
+        throw new WorkspaceValidationError(
+          `Expected an icon set board at ${catalogId}`,
+          action,
+        )
+      }
+      if (catalogId === DEFAULT_ICON_SET_BOARD_KEY) {
+        throw new WorkspaceValidationError(
+          "Cannot remove the Seldon icon set board. Every workspace requires the Seldon icon set, so this board is always kept.",
+          action,
+        )
+      }
+      if (shouldBlockDeletableComponentRemoval(board, workspace, catalogId)) {
+        throw new WorkspaceValidationError(
+          "Icon set catalog rows are still referenced in another board",
+          action,
+        )
+      }
+      break
+    }
     case "remove_theme": {
       const componentKey = action.payload.componentKey
       componentValidators.exists(workspace, componentKey)

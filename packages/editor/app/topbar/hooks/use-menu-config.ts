@@ -4,13 +4,16 @@ import { selectFile } from "@lib/helpers/select-file"
 import {
   isComponentBoard,
   isFontCollectionBoard,
+  isIconSetBoard,
   isMediaBoard,
   isPlaygroundBoard,
   isThemeBoard,
 } from "@seldon/core/workspace/model/components"
 import { isEntryThemeDefault } from "@seldon/core/workspace/model/entry-theme"
 import { isEntryFontCollectionDefault } from "@seldon/core/workspace/model/entry-font-collection"
+import { isEntryIconSetDefault } from "@seldon/core/workspace/model/entry-icon-set"
 import { DEFAULT_FONT_COLLECTION_BOARD_KEY } from "@seldon/core/workspace/helpers/font-collections/seed-default-font-collection-board"
+import { DEFAULT_ICON_SET_BOARD_KEY } from "@seldon/core/workspace/helpers/icon-sets/seed-default-icon-set-board"
 import { DEFAULT_THEME_BOARD_KEY } from "@seldon/core/workspace/helpers/themes/seed-default-theme-board"
 import { resolveComponentKey } from "@lib/workspace/workspace-accessors"
 import { useNavigate } from "react-router"
@@ -82,6 +85,7 @@ export function useMenuConfig(): HeaderConfig {
     selection,
     selectedThemeEntryId,
     selectedFontCollectionEntryId,
+    selectedIconSetEntryId,
   } = useSelection()
   const addToast = useAddToast()
   const { setActiveTool } = useTool()
@@ -112,7 +116,14 @@ export function useMenuConfig(): HeaderConfig {
           DEFAULT_FONT_COLLECTION_BOARD_KEY
         )
       }
-      // Icon-set catalog boards cannot be removed.
+      // The default Seldon icon set board is always kept. Other icon set boards
+      // can be removed.
+      if (isIconSetBoard(selectedBoard)) {
+        return (
+          resolveComponentKey(selectedBoard, workspace) !==
+          DEFAULT_ICON_SET_BOARD_KEY
+        )
+      }
       return false
     }
 
@@ -126,12 +137,18 @@ export function useMenuConfig(): HeaderConfig {
       return Boolean(entry) && !isEntryFontCollectionDefault(entry)
     }
 
+    if (selectedIconSetEntryId) {
+      const entry = workspace["icon-sets"][selectedIconSetEntryId]
+      return Boolean(entry) && !isEntryIconSetDefault(entry)
+    }
+
     return false
   }, [
     selectedNode,
     selectedBoard,
     selectedThemeEntryId,
     selectedFontCollectionEntryId,
+    selectedIconSetEntryId,
     workspace,
   ])
 

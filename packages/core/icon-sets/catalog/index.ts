@@ -1,10 +1,18 @@
 import { computeIconSet } from "../helpers/compute-icon-set"
 import type { ComputedIconSet, StockIconSet } from "../types/icon-set"
 import type { IconSetTemplateId } from "../types/icon-set-id"
+import carbonStock from "./carbon/stock"
+import lucideStock from "./lucide/stock"
+import materialStock from "./material/stock"
 import seldonStock, { defaultIconSet } from "./seldon/stock"
 
 /** Packaged icon set definitions (`catalog/*.ts`), display order. */
-export const STOCK_ICON_SETS: StockIconSet[] = [seldonStock]
+export const STOCK_ICON_SETS: StockIconSet[] = [
+  seldonStock,
+  materialStock,
+  carbonStock,
+  lucideStock,
+]
 
 export const STOCK_ICON_SETS_BY_ID = Object.fromEntries(
   STOCK_ICON_SETS.map((s) => [s.metadata.id, s]),
