@@ -9,7 +9,15 @@ import { IconMissing } from "./seldon/custom-icons/IconMissing"
 
 export type LoadEditorIconsProps = SVGAttributes<SVGSVGElement> & {
   iconId?: IconId
+  /**
+   * When true the icon's set is in the workspace but the icon is turned off, so
+   * it renders as a red Missing icon regardless of whether the id resolves.
+   */
+  unavailable?: boolean
 }
+
+/** Red used for an icon that is turned off in its workspace icon set. */
+const UNAVAILABLE_ICON_COLOR = "#E5484D"
 
 /**
  * Dynamically loads icon components from icon sets based on iconId.
@@ -24,7 +32,20 @@ export type LoadEditorIconsProps = SVGAttributes<SVGSVGElement> & {
  *          "lucide-file" -> IconLucideFile
  *          "seldon-alignTop" -> IconSeldonAlignTop
  */
-export function LoadEditorIcons({ iconId, ...props }: LoadEditorIconsProps) {
+export function LoadEditorIcons({
+  iconId,
+  unavailable,
+  ...props
+}: LoadEditorIconsProps) {
+  if (unavailable) {
+    return (
+      <IconMissing
+        {...props}
+        style={{ color: UNAVAILABLE_ICON_COLOR, ...props.style }}
+      />
+    )
+  }
+
   if (!iconId) {
     console.warn(`[LoadEditorIcons] No iconId provided`)
     return <IconMissing {...props} />

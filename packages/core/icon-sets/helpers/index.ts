@@ -20,3 +20,8 @@ export {
   parseCategoryPath,
 } from "./get-icon-category-from-path"
 export { getAvailableIcons } from "./get-available-icons"
+export {
+  getWorkspaceEnabledIcons,
+  getAddedIconSetPrefixes,
+  isIconUnavailable,
+} from "./get-workspace-enabled-icons"

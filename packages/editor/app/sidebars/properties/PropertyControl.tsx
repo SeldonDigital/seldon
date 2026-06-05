@@ -17,8 +17,9 @@ import {
   getThemePickerOptions,
 } from "@seldon/core/helpers/properties/properties-bridge"
 import { isThemeValueKey } from "@seldon/core/helpers/validation/theme"
-import { IconId } from "@seldon/core/icon-sets"
+import { IconId, iconLabels } from "@seldon/core/icon-sets"
 import { IconSeldonMissing } from "@seldon/core/icon-sets/catalog/seldon/user-interface/actions/IconSeldonMissing"
+import { isWorkspaceIconUnavailable } from "@lib/icon-sets/icon-availability"
 import { isComponentEntry } from "@seldon/core/workspace/helpers/components/is-component-entry"
 import { getBoardThemeRef } from "./helpers/theme-assignment-display"
 import { themeService } from "@seldon/core/workspace/services/theme/theme.service"
@@ -424,6 +425,29 @@ export function PropertyControl({
       subject ?? undefined,
     )
 
+    // The symbol picker lists only enabled icons. Keep the current value
+    // selectable even when it is turned off so the row still shows it.
+    if (property.key === "symbol" && result.options) {
+      const currentId = getComboboxStoredValue(property.value)
+      if (typeof currentId === "string" && currentId.length > 0) {
+        const groups = result.options as Array<Array<{ value: string; name: string }>>
+        const present = groups.some((group) =>
+          group.some((option) => option.value === currentId),
+        )
+        if (!present) {
+          const synthetic = {
+            value: currentId,
+            name: iconLabels[currentId as IconId] ?? currentId,
+          }
+          if (groups.length > 0) {
+            groups[groups.length - 1] = [...groups[groups.length - 1], synthetic]
+          } else {
+            groups.push([synthetic])
+          }
+        }
+      }
+    }
+
     return result.options
   }, [property, theme, subject, workspace])
 
@@ -612,6 +636,10 @@ export function PropertyControl({
     }
 
     if (property.key === "symbol" && option) {
+      // Icon turned off in its workspace set renders as a red Missing icon.
+      if (isWorkspaceIconUnavailable(option.value as IconId, workspace)) {
+        return <LoadEditorIcons iconId={option.value as IconId} unavailable />
+      }
       // Check if this is an unused icon (missing from iconLabels)
       if (option.name === "[Unused Icon]") {
         return <IconSeldonMissing />

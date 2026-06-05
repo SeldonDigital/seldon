@@ -82,6 +82,8 @@ type TemplateProps = {
   styleOverrides?: CSSProperties
   /** Avoid invalid `<button>` inside `<button>` when a button groups other buttons. */
   renderAsDiv?: boolean
+  /** For Icon components: the symbol's set is added but the icon is turned off. */
+  iconUnavailable?: boolean
 }
 
 /**
@@ -99,6 +101,7 @@ export const ComponentRenderer = ({
   nodeId,
   styleOverrides,
   renderAsDiv = false,
+  iconUnavailable = false,
 }: TemplateProps) => {
   const { properties, parentContext: _parentContext } = computeContext // eslint-disable-line @typescript-eslint/no-unused-vars
   const className = `node-${nodeId}`
@@ -133,6 +136,7 @@ export const ComponentRenderer = ({
         </CssPortal>
         <LoadEditorIcons
           iconId={properties.symbol?.value as IconId | undefined}
+          unavailable={iconUnavailable}
           className={className}
           {...htmlAttributes}
         />

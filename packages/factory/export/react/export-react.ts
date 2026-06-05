@@ -1,5 +1,6 @@
 import { Workspace } from "@seldon/core"
 import { getComponentSchema } from "@seldon/core/components/catalog"
+import { getWorkspaceEnabledIcons } from "@seldon/core/icon-sets/helpers"
 import {
   ComponentLevel,
   ORDERED_COMPONENT_LEVELS,
@@ -57,7 +58,12 @@ export async function exportReact(
     return aLevelIndex - bLevelIndex
   })
 
+  // Every icon turned on in the workspace's icon sets exports, even when no
+  // component references it, so users can ship complete icon sets.
   const usedIconIds = getUsedIconIds(workspace)
+  for (const iconId of getWorkspaceEnabledIcons(workspace)) {
+    usedIconIds.add(iconId)
+  }
 
   filesToExport.push({
     path: `${options.output.componentsFolder}/styles.css`,

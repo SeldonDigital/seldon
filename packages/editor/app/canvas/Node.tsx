@@ -25,6 +25,8 @@ import {
 } from "@lib/workspace/node-tree"
 import { useAddNodeFontFamily } from "./hooks/use-add-node-font-family"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
+import { isWorkspaceIconUnavailable } from "@lib/icon-sets/icon-availability"
+import type { IconId } from "@seldon/core/icon-sets"
 import { ComponentRenderer } from "./ComponentRenderer"
 
 export type CanvasNodeProps = {
@@ -104,6 +106,13 @@ export const CanvasNode = memo(function CanvasNode({
       )
     })
 
+  const iconUnavailable =
+    catalogComponentId === ComponentId.ICON &&
+    isWorkspaceIconUnavailable(
+      nodeProperties?.symbol?.value as IconId | undefined,
+      workspace,
+    )
+
   return (
     <ComponentRenderer
       computeContext={computeContext}
@@ -112,6 +121,7 @@ export const CanvasNode = memo(function CanvasNode({
       htmlAttributes={getHTMLAttributes(node, nodeProperties)}
       nodeId={nodeId}
       renderAsDiv={renderAsDiv}
+      iconUnavailable={iconUnavailable}
     >
       {childNodeIds.map((childNodeId) => (
         <CanvasNode
