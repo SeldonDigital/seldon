@@ -8,19 +8,21 @@ import {
   getAllPropertySectionSchemas,
   getCatalogKeyForPropertyPath,
 } from "@seldon/core/properties/schemas"
+import type { IconCategory } from "@seldon/core/icon-sets/constants"
 import { getNodeCatalogComponentId } from "@lib/workspace/node-tree"
 import { FlatProperty } from "./properties-data"
 
 /**
  * Inspector section ids: the core property display categories, the editor-only
- * CSS block, and the read-only `metadata` and `families` sections used by themes
- * and font collections.
+ * CSS block, the read-only `metadata` and `families` sections used by themes and
+ * font collections, and one entry per icon category for icon set editing.
  */
 export type PropertyCategoryType =
   | PropertyDisplayCategory
   | "css"
   | "metadata"
   | "families"
+  | IconCategory
 
 export interface PropertySection {
   label: string

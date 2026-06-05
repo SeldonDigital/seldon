@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router"
 import { useHotkeys } from "react-hotkeys-hook"
+import { useHasHoverState } from "@lib/hooks/use-canvas-hover-state"
 import { useHistory } from "@lib/workspace/hooks/use-history"
 import { useAddRemoveCommands } from "./commands/use-add-remove-commands"
 import { useMoveCommands } from "./commands/use-move-commands"
@@ -25,10 +26,12 @@ export function useEditorShortcuts() {
     toggleWireframeMode,
     toggleShowUnusedProperties,
     toggleShowUnusedFonts,
+    toggleShowUnusedIcons,
   } = useEditorConfig()
   const { togglePreviewMode, setDevice, isInPreviewMode } = usePreview()
   const { activeDialog, openDialog } = useDialog()
   const navigate = useNavigate()
+  const isHoveringCanvas = useHasHoverState()
 
   // Undo redo
   useHotkeys("mod+z", undo, { preventDefault: true })
@@ -117,9 +120,15 @@ export function useEditorShortcuts() {
   // Wireframe mode
   useHotkeys("w", () => toggleWireframeMode(), { preventDefault: true })
 
-  // Show unused properties / fonts in the properties sidebar
+  // Show unused properties / fonts / icons in the properties sidebar.
+  // The canvas binds `i` to its tool action while hovering, so gate this global
+  // toggle to fire only when the canvas is not hovered.
   useHotkeys("r", () => toggleShowUnusedProperties(), { preventDefault: true })
   useHotkeys("f", () => toggleShowUnusedFonts(), { preventDefault: true })
+  useHotkeys("i", () => toggleShowUnusedIcons(), {
+    preventDefault: true,
+    enabled: !isHoveringCanvas,
+  })
 
   // Back to workspaces
   useHotkeys("shift+q", () => navigate("/"), { preventDefault: true })

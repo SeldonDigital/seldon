@@ -86,6 +86,11 @@ interface FontCollectionEditingContext {
   ) => void
 }
 
+interface IconSetEditingContext {
+  isIconSetEditing: true
+  updateIconSetProperty: (property: FlatProperty, newValue: string) => void
+}
+
 interface PropertyControlProps {
   property: FlatProperty
   propertySubject?: Variant | Instance | Board
@@ -97,6 +102,7 @@ interface PropertyControlProps {
   color?: string
   themeEditingContext?: ThemeEditingContext | null
   fontCollectionEditingContext?: FontCollectionEditingContext | null
+  iconSetEditingContext?: IconSetEditingContext | null
 }
 
 export function PropertyControl({
@@ -110,6 +116,7 @@ export function PropertyControl({
   color,
   themeEditingContext,
   fontCollectionEditingContext,
+  iconSetEditingContext,
 }: PropertyControlProps) {
   const { setProperties, resetProperty } = useObjectProperties()
   const { workspace, dispatch } = useWorkspace({ usePreview: false })
@@ -192,6 +199,15 @@ export function PropertyControl({
         property,
         newValue,
       )
+      setIsEditing(false)
+      onBlur?.()
+      return
+    }
+
+    // Icon set rows route edits straight to the workspace through the editing
+    // context, bypassing the node/theme property paths.
+    if (iconSetEditingContext?.isIconSetEditing) {
+      iconSetEditingContext.updateIconSetProperty(property, newValue)
       setIsEditing(false)
       onBlur?.()
       return

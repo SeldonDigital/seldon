@@ -24,6 +24,10 @@ import {
   ThemePropertySection,
   getThemePropertySections,
 } from "./helpers/get-theme-property-sections"
+import {
+  getIconRowCategory,
+  iconCategoryLabel,
+} from "./helpers/icon-set-properties-data"
 import { FlatProperty } from "./helpers/properties-data"
 import { usePropertyExpansion } from "./hooks/use-property-expansion"
 
@@ -41,6 +45,11 @@ interface FontCollectionEditingContext {
   ) => void
 }
 
+interface IconSetEditingContext {
+  isIconSetEditing: true
+  updateIconSetProperty: (property: FlatProperty, newValue: string) => void
+}
+
 interface PropertyTreeProps {
   properties: FlatProperty[]
   workspace: Workspace
@@ -50,6 +59,7 @@ interface PropertyTreeProps {
   dispatch: (action: Action) => void
   themeEditingContext?: ThemeEditingContext | null
   fontCollectionEditingContext?: FontCollectionEditingContext | null
+  iconSetEditingContext?: IconSetEditingContext | null
   /** Read-only Metadata rows rendered as the first section, when provided. */
   metadataProperties?: FlatProperty[]
   /**
@@ -57,6 +67,11 @@ interface PropertyTreeProps {
    * rows and their child variant and license rows in one flat list.
    */
   familyProperties?: FlatProperty[]
+  /**
+   * Icon rows for the per-category icon set sections, when provided. Holds
+   * parent subcategory rows and their child icon rows in one flat list.
+   */
+  iconProperties?: FlatProperty[]
 }
 
 /**
@@ -72,8 +87,10 @@ export function PropertyTree({
   dispatch,
   themeEditingContext,
   fontCollectionEditingContext,
+  iconSetEditingContext,
   metadataProperties,
   familyProperties,
+  iconProperties,
 }: PropertyTreeProps) {
   const { isCategoryExpanded } = usePropertyExpansion()
   const cssStrings = useCssStrings(node)
@@ -137,6 +154,25 @@ export function PropertyTree({
       allSections.push(familiesSection)
     }
 
+    // One section per icon category. Parent subcategory rows render at the
+    // section level; their child icon rows nest under them via allProperties.
+    if (iconProperties && iconProperties.length > 0) {
+      const parentRows = iconProperties.filter((p) => !p.isSubProperty)
+      const seen = new Set<string>()
+      for (const row of parentRows) {
+        const category = getIconRowCategory(row.key)
+        if (!category || seen.has(category)) continue
+        seen.add(category)
+        allSections.push({
+          label: iconCategoryLabel(category),
+          category,
+          properties: parentRows.filter(
+            (p) => getIconRowCategory(p.key) === category,
+          ),
+        })
+      }
+    }
+
     // Add CSS section at the end if there are any CSS strings
     if (cssStrings.length > 0) {
       allSections.push({
@@ -156,6 +192,7 @@ export function PropertyTree({
     theme,
     metadataProperties,
     familyProperties,
+    iconProperties,
   ])
 
   // Combine all properties for RowProperty's allProperties prop
@@ -186,26 +223,36 @@ export function PropertyTree({
                 {section.category === "css" ? (
                   <CssBlock cssProperties={cssStrings} />
                 ) : (
-                  section.properties.map((property) => (
-                    <RowProperty
-                      key={property.key}
-                      property={property}
-                      workspace={workspace}
-                      node={node}
-                      theme={theme}
-                      allProperties={
-                        section.category === "families" && familyProperties
-                          ? familyProperties
-                          : allProperties
-                      }
-                      themeEditingContext={themeEditingContext}
-                      fontCollectionEditingContext={
-                        section.category === "families"
-                          ? fontCollectionEditingContext
-                          : null
-                      }
-                    />
-                  ))
+                  section.properties.map((property) => {
+                    const isIconCategory =
+                      !!iconProperties &&
+                      getIconRowCategory(`icon.${section.category}`) !== null
+                    return (
+                      <RowProperty
+                        key={property.key}
+                        property={property}
+                        workspace={workspace}
+                        node={node}
+                        theme={theme}
+                        allProperties={
+                          section.category === "families" && familyProperties
+                            ? familyProperties
+                            : isIconCategory && iconProperties
+                              ? iconProperties
+                              : allProperties
+                        }
+                        themeEditingContext={themeEditingContext}
+                        fontCollectionEditingContext={
+                          section.category === "families"
+                            ? fontCollectionEditingContext
+                            : null
+                        }
+                        iconSetEditingContext={
+                          isIconCategory ? iconSetEditingContext : null
+                        }
+                      />
+                    )
+                  })
                 )}
               </FramerExpandable>
             </Fragment>

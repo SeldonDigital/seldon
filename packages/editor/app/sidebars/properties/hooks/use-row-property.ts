@@ -147,10 +147,13 @@ export function useRowProperty({
   // g. Can reset: property can be reset if it has been overridden (status === "override")
   // This works for all property types: atomic, compound, and shorthand
   // Status "set" means it matches schema default, so resetting wouldn't change anything visible
-  // Font collection family rows (`family.*`) carry an override status only to
-  // render blue; they have no node-property reset, so the affordance is hidden.
+  // Font collection family rows (`family.*`) and icon set rows (`icon.*`) carry
+  // an override status only to render blue; they have no node-property reset, so
+  // the affordance is hidden.
   const canReset =
-    property.status === "override" && !property.key.startsWith("family.")
+    property.status === "override" &&
+    !property.key.startsWith("family.") &&
+    !property.key.startsWith("icon.")
 
   return {
     // a. Open/closed state

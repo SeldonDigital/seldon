@@ -26,6 +26,7 @@
  * | delete_font_collection, duplicate_font_collection | font-collections (+ components.variants for font-collection row) |
  * | set_icon_set_label | icon-sets |
  * | set_icon_set_override, reset_icon_set_override | icon-sets (per-icon inclusion under includedIcons) |
+ * | set_icon_set_subcategory_preset | icon-sets (per-subcategory inclusion under includedIcons) |
  * | duplicate_icon_set | icon-sets (+ components.variants for icon-set row) |
  * | stubs_* (font / media) | reserved — no-op until spec |
  * | transcript_add_message | none (no-op) |
@@ -675,6 +676,14 @@ export type WorkspaceAction =
   | {
       type: "reset_icon_set_override"
       payload: { iconSetId: string; path: string }
+    }
+  | {
+      type: "set_icon_set_subcategory_preset"
+      payload: {
+        iconSetId: string
+        subcategory: string
+        preset: "all" | "none"
+      }
     }
   | {
       type: "duplicate_icon_set"

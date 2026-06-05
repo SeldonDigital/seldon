@@ -63,6 +63,11 @@ interface FontCollectionEditingContext {
   ) => void
 }
 
+interface IconSetEditingContext {
+  isIconSetEditing: true
+  updateIconSetProperty: (property: FlatProperty, newValue: string) => void
+}
+
 interface RowPropertyProps {
   property: FlatProperty
   workspace: Workspace
@@ -71,6 +76,7 @@ interface RowPropertyProps {
   allProperties: FlatProperty[]
   themeEditingContext?: ThemeEditingContext | null
   fontCollectionEditingContext?: FontCollectionEditingContext | null
+  iconSetEditingContext?: IconSetEditingContext | null
 }
 
 export function RowProperty({
@@ -81,6 +87,7 @@ export function RowProperty({
   allProperties,
   themeEditingContext,
   fontCollectionEditingContext,
+  iconSetEditingContext,
 }: RowPropertyProps) {
   const { debugModeEnabled } = useDebugMode()
   const frameRef = useRef<HTMLDivElement>(null)
@@ -487,6 +494,7 @@ export function RowProperty({
                 color={labelColor}
                 themeEditingContext={themeEditingContext}
                 fontCollectionEditingContext={fontCollectionEditingContext}
+                iconSetEditingContext={iconSetEditingContext}
               />
             ) : (
               (value ?? "")
@@ -648,6 +656,7 @@ export function RowProperty({
     supportsUpload,
     themeEditingContext,
     fontCollectionEditingContext,
+    iconSetEditingContext,
   ])
 
   return (
@@ -709,6 +718,7 @@ export function RowProperty({
               allProperties={allProperties}
               themeEditingContext={themeEditingContext}
               fontCollectionEditingContext={fontCollectionEditingContext}
+              iconSetEditingContext={iconSetEditingContext}
             />
           ))}
         </FramerExpandable>

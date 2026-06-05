@@ -54,6 +54,8 @@ export function useMenuConfig(): HeaderConfig {
     toggleShowUnusedProperties,
     showUnusedFonts,
     toggleShowUnusedFonts,
+    showUnusedIcons,
+    toggleShowUnusedIcons,
   } = useEditorConfig()
   const { dispatch, workspace } = useWorkspace()
   const { debugModeEnabled, toggleDebugMode } = useDebugMode()
@@ -430,6 +432,13 @@ export function useMenuConfig(): HeaderConfig {
             active: showUnusedFonts,
             shortcut: "F",
           },
+          {
+            id: "show-unused-icons",
+            label: "Show Unused Icons",
+            action: toggleShowUnusedIcons,
+            active: showUnusedIcons,
+            shortcut: "I",
+          },
           "separator",
           {
             id: "actual-size",
@@ -483,6 +492,8 @@ export function useMenuConfig(): HeaderConfig {
       toggleShowUnusedProperties,
       showUnusedFonts,
       toggleShowUnusedFonts,
+      showUnusedIcons,
+      toggleShowUnusedIcons,
     ],
   )
 

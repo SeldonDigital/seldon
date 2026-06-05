@@ -4,7 +4,11 @@ export {
   getIncludedIcons,
   isIconEnabledByDefault,
   isIconIncluded,
+  getIconsInSubcategory,
+  getIconsInCategory,
+  deriveSubcategoryPreset,
   type IconInclusion,
+  type IconSubcategoryPreset,
 } from "./icon-selection"
 export {
   getIconCategoryFromId,

@@ -124,6 +124,7 @@ import { setFontCollectionLabel } from "./handlers/set/set-font-collection-label
 import { setFontCollectionOverride } from "./handlers/set/set-font-collection-override"
 import { setIconSetLabel } from "./handlers/set/set-icon-set-label"
 import { setIconSetOverride } from "./handlers/set/set-icon-set-override"
+import { setIconSetSubcategoryPreset } from "./handlers/set/set-icon-set-subcategory-preset"
 import { setThemeEditorData } from "./handlers/set/set-theme-editor-data"
 import { setThemeLabel } from "./handlers/set/set-theme-label"
 import { setThemeOverride } from "./handlers/set/set-theme-override"
@@ -427,6 +428,8 @@ function reducer(workspace: Workspace, action: WorkspaceAction): Workspace {
       return setIconSetOverride(action.payload, workspace)
     case "reset_icon_set_override":
       return resetIconSetOverride(action.payload, workspace)
+    case "set_icon_set_subcategory_preset":
+      return setIconSetSubcategoryPreset(action.payload, workspace)
     case "duplicate_icon_set":
       return duplicateIconSet(action.payload, workspace)
 

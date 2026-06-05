@@ -13,6 +13,7 @@ export function validateIconSetMutation(
     case "set_icon_set_label":
     case "set_icon_set_override":
     case "reset_icon_set_override":
+    case "set_icon_set_subcategory_preset":
     case "duplicate_icon_set":
       iconSetEntryValidators.exists(workspace, iconSetIdOf(action))
       break

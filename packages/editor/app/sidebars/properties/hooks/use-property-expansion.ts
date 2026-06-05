@@ -14,7 +14,7 @@ interface PropertyExpansionState {
   toggleProperty: (propertyKey: string, shouldExpand?: boolean) => void
 }
 
-const DEFAULT_REGULAR_CATEGORIES: Record<PropertyCategoryType, boolean> = {
+const DEFAULT_REGULAR_CATEGORIES: Partial<Record<PropertyCategoryType, boolean>> = {
   attributes: true,
   layout: true,
   appearance: true,

@@ -47,3 +47,40 @@ export function getIncludedIcons(
 ): IconId[] {
   return set.icons.filter((iconId) => isIconIncluded(set, inclusion, iconId))
 }
+
+/** Preset for a subcategory, derived from how many of its icons are on. */
+export type IconSubcategoryPreset = "all" | "none" | "custom"
+
+/** Icons in the set that belong to a `category/subcategory` path. */
+export function getIconsInSubcategory(
+  set: ComputedIconSet,
+  subcategoryPath: string,
+): IconId[] {
+  return set.icons.filter(
+    (iconId) => getIconCategoryFromId(iconId) === subcategoryPath,
+  )
+}
+
+/** Icons in the set that belong to a top-level category. */
+export function getIconsInCategory(
+  set: ComputedIconSet,
+  category: IconCategory,
+): IconId[] {
+  return set.icons.filter((iconId) => getIconTopCategory(iconId) === category)
+}
+
+/** Derives the preset for a subcategory from its icons' inclusion. */
+export function deriveSubcategoryPreset(
+  set: ComputedIconSet,
+  inclusion: IconInclusion | undefined,
+  subcategoryPath: string,
+): IconSubcategoryPreset {
+  const icons = getIconsInSubcategory(set, subcategoryPath)
+  if (icons.length === 0) return "none"
+  const enabled = icons.filter((iconId) =>
+    isIconIncluded(set, inclusion, iconId),
+  ).length
+  if (enabled === icons.length) return "all"
+  if (enabled === 0) return "none"
+  return "custom"
+}

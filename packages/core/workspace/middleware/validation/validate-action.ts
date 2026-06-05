@@ -140,6 +140,7 @@ export function validateAction(workspace: Workspace, action: Action): void {
     case "set_icon_set_label":
     case "set_icon_set_override":
     case "reset_icon_set_override":
+    case "set_icon_set_subcategory_preset":
     case "duplicate_icon_set":
       validateIconSetMutation(workspace, action)
       return
