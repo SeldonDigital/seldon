@@ -7,7 +7,7 @@ import {
 } from "./combobox-styles"
 import { Frame } from "../../../../seldon/frames/Frame"
 import { InputEditor } from "../../../../seldon/primitives/InputEditor"
-import { IconChevronDown } from "@components/icons/ChevronDown"
+import { IconChevronDown } from "@components/seldon/custom-icons/ChevronDown"
 
 export interface InputProps {
   mode?: "combobox" | "standalone"

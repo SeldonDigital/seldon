@@ -33,7 +33,7 @@ import { getComponentKey, resolveComponentKey } from "@lib/workspace/workspace-a
 import { useWorkspace } from "@lib/workspace/use-workspace"
 import { LoadEditorIcons } from "@components/LoadEditorIcons"
 import { useImageUploadPanel } from "@components/panels/hooks/use-upload-image-panel"
-import { IconTokenValue } from "@components/icons/values/Token"
+import { IconTokenValue } from "@components/seldon/custom-icons/TokenValue"
 import { IconCustomColorValue } from "../../seldon/custom-icons"
 import { serializeValue } from "@lib/properties/serialize-value"
 import { ThemeSwatches } from "@components/ui/ThemeSwatches"

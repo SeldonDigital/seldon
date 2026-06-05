@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { useObjectURL } from "@lib/hooks/use-object-url"
-import { IconUpload } from "@components/icons/Upload"
+import { IconUpload } from "@components/seldon/custom-icons/Upload"
 import { useAddToast } from "@components/toaster/hooks/use-add-toast"
 
 export interface ImageDropzoneProps {

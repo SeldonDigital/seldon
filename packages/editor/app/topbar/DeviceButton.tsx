@@ -2,13 +2,13 @@
 
 import { DeviceId } from "@lib/devices/types"
 import { Selectable } from "@components/ui/Selectable"
-import { IconDesktop } from "../icons/Desktop"
-import { IconFullScreen } from "../icons/FullScreen"
-import { IconLaptop } from "../icons/Laptop"
-import { IconPhone } from "../icons/Phone"
-import { IconTablet } from "../icons/Tablet"
-import { IconTV } from "../icons/Tv"
-import { IconWatch } from "../icons/Watch"
+import { IconDesktop } from "@components/seldon/custom-icons/Desktop"
+import { IconFullScreen } from "@components/seldon/custom-icons/FullScreen"
+import { IconLaptop } from "@components/seldon/custom-icons/Laptop"
+import { IconPhone } from "@components/seldon/custom-icons/Phone"
+import { IconTablet } from "@components/seldon/custom-icons/Tablet"
+import { IconTV } from "@components/seldon/custom-icons/Tv"
+import { IconWatch } from "@components/seldon/custom-icons/Watch"
 
 export type Icon =
   | "custom"
