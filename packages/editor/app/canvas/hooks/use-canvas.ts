@@ -61,7 +61,7 @@ export function useCanvas() {
       // placement below is component/sketch only.
       if (activeTool === "select") {
         const target = getSelectionTarget(event.target as Element)
-        setHoveredId(target?.id ?? null)
+        setHoveredId(target?.id ?? null, target?.kind, target?.rootId)
         return
       }
 

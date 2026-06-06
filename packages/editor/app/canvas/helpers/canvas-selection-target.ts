@@ -35,6 +35,33 @@ export function getCanvasSelectionElements(selectionId: string): HTMLElement[] {
   )
 }
 
+/** Attribute carrying a single node's id, used to find its owning column. */
+const CANVAS_NODE_ID_ATTR = "data-canvas-node-id"
+
+/**
+ * Resolves a node selection to the single canvas element inside its column.
+ *
+ * A child node id is shared across variant columns, so it can appear on several
+ * canvas elements at once. Selection carries the variant-root id of the column
+ * the user clicked, so the matching copy is the one whose nearest ancestor (or
+ * self) carries that root id. Without a root id, or when no copy matches, the
+ * first element in document order is used, which is the default variant column.
+ */
+export function getScopedSelectionElement(
+  selectionId: string,
+  rootId: string | null | undefined,
+): HTMLElement | null {
+  const elements = getCanvasSelectionElements(selectionId)
+  if (elements.length === 0) return null
+  if (rootId) {
+    const scoped = elements.find((element) =>
+      element.closest(`[${CANVAS_NODE_ID_ATTR}="${rootId}"]`),
+    )
+    if (scoped) return scoped
+  }
+  return elements[0]
+}
+
 /** Union of the elements' viewport rects, or null when there are none. */
 export function getUnionRect(elements: HTMLElement[]): DOMRect | null {
   if (elements.length === 0) return null

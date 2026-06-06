@@ -2,11 +2,20 @@
 
 import { useEffect, useRef } from "react"
 import { useTransformContext } from "react-zoom-pan-pinch"
-import { useHoveredId } from "@lib/workspace/hooks/use-object-hover"
+import {
+  useHoveredId,
+  useHoveredKind,
+  useHoveredRootId,
+} from "@lib/workspace/hooks/use-object-hover"
 import { useSelectedId } from "@lib/workspace/selection-target"
+import {
+  useSelectedNodeId,
+  useSelectedNodeRootId,
+} from "@lib/workspace/hooks/use-selection"
 import type { NodeRect } from "../tracking/hooks/use-node-rects-store"
 import {
   getCanvasSelectionElements,
+  getScopedSelectionElement,
   getUnionRect,
 } from "./helpers/canvas-selection-target"
 import { useCanvasOverlayStore } from "./hooks/use-canvas-overlay-store"
@@ -14,19 +23,33 @@ import { useCanvasOverlayStore } from "./hooks/use-canvas-overlay-store"
 /** Frames to wait for a target to mount after a board switch before giving up. */
 const MAX_TARGET_FRAMES = 30
 
-/** Canvas-relative union rect of every element registered under the id. */
-function measure(id: string | null): NodeRect | null {
-  if (!id) return null
-  const union = getUnionRect(getCanvasSelectionElements(id))
-  if (!union) return null
+/** Converts a viewport rect to one relative to the canvas origin. */
+function toCanvasRect(rect: DOMRect | null): NodeRect | null {
+  if (!rect) return null
   const canvas = document.getElementById("canvas")?.getBoundingClientRect()
   if (!canvas) return null
   return {
-    top: union.top - canvas.top,
-    left: union.left - canvas.left,
-    width: union.width,
-    height: union.height,
+    top: rect.top - canvas.top,
+    left: rect.left - canvas.left,
+    width: rect.width,
+    height: rect.height,
   }
+}
+
+/** Canvas-relative union rect of every element registered under the id. */
+function measure(id: string | null): NodeRect | null {
+  if (!id) return null
+  return toCanvasRect(getUnionRect(getCanvasSelectionElements(id)))
+}
+
+/**
+ * Canvas-relative rect of a single node, scoped to its variant-root column so a
+ * child id shared across columns outlines only the clicked copy.
+ */
+function measureNode(id: string | null, rootId: string | null): NodeRect | null {
+  if (!id) return null
+  const element = getScopedSelectionElement(id, rootId)
+  return toCanvasRect(element ? element.getBoundingClientRect() : null)
 }
 
 function rectsEqual(a: NodeRect | null, b: NodeRect | null): boolean {
@@ -50,7 +73,11 @@ function rectsEqual(a: NodeRect | null, b: NodeRect | null): boolean {
 export function CanvasOverlayTracker() {
   const transformContext = useTransformContext()
   const hoveredId = useHoveredId()
+  const hoveredKind = useHoveredKind()
+  const hoveredRootId = useHoveredRootId()
   const selectedId = useSelectedId()
+  const selectedNodeId = useSelectedNodeId()
+  const selectedNodeRootId = useSelectedNodeRootId()
 
   const transformContextRef = useRef(transformContext)
   transformContextRef.current = transformContext
@@ -61,8 +88,15 @@ export function CanvasOverlayTracker() {
 
     const apply = () => {
       const store = useCanvasOverlayStore.getState()
-      const hover = measure(hoveredId)
-      const selection = measure(selectedId)
+      // Node hover/selection scopes to the hovered or clicked column; other
+      // kinds (theme variant, font specimen group) keep the grouped union.
+      const hover =
+        hoveredKind === "node"
+          ? measureNode(hoveredId, hoveredRootId)
+          : measure(hoveredId)
+      const selection = selectedNodeId
+        ? measureNode(selectedNodeId, selectedNodeRootId)
+        : measure(selectedId)
       if (!rectsEqual(store.hoverRect, hover)) store.setHoverRect(hover)
       if (!rectsEqual(store.selectionRect, selection)) {
         store.setSelectionRect(selection)
@@ -85,7 +119,14 @@ export function CanvasOverlayTracker() {
       window.removeEventListener("scroll", apply, true)
       window.removeEventListener("resize", apply)
     }
-  }, [hoveredId, selectedId])
+  }, [
+    hoveredId,
+    hoveredKind,
+    hoveredRootId,
+    selectedId,
+    selectedNodeId,
+    selectedNodeRootId,
+  ])
 
   return null
 }

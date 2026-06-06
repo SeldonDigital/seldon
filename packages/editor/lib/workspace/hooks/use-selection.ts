@@ -43,6 +43,13 @@ type SelectionState = {
   selectedBoardId: ComponentKey | null
   selectedNodeId: VariantId | InstanceId | null
   /**
+   * The variant-root id of the column the selected node was clicked in. A child
+   * node id is shared across variant columns, so this tells the canvas which
+   * copy to outline. Null when the column is unknown (e.g. sidebar selection),
+   * which falls back to the default variant column.
+   */
+  selectedNodeRootId: string | null
+  /**
    * Selected resource board variant entry (theme, font collection, icon set, or
    * media). One field covers every resource board so rows share one model.
    */
@@ -56,7 +63,7 @@ type SelectionState = {
    */
   selectedResourceItemKey: string | null
   selectBoard: (id: ComponentKey | null) => void
-  selectNode: (id: VariantId | InstanceId | null) => void
+  selectNode: (id: VariantId | InstanceId | null, rootId?: string | null) => void
   selectResourceEntry: (kind: ResourceEntryKind, id: string | null) => void
   selectResourceItem: (key: string | null) => void
 }
@@ -64,19 +71,22 @@ type SelectionState = {
 export const useStore = create<SelectionState>()((set) => ({
   selectedBoardId: null,
   selectedNodeId: null,
+  selectedNodeRootId: null,
   selectedResourceEntry: null,
   selectedResourceItemKey: null,
   selectBoard: (id: ComponentKey | null) => {
     set({
       selectedBoardId: id,
       selectedNodeId: null,
+      selectedNodeRootId: null,
       selectedResourceEntry: null,
       selectedResourceItemKey: null,
     })
   },
-  selectNode: (id: VariantId | InstanceId | null) => {
+  selectNode: (id: VariantId | InstanceId | null, rootId?: string | null) => {
     set({
       selectedNodeId: id,
+      selectedNodeRootId: id ? (rootId ?? null) : null,
       selectedBoardId: null,
       selectedResourceEntry: null,
       selectedResourceItemKey: null,
@@ -86,6 +96,7 @@ export const useStore = create<SelectionState>()((set) => ({
     set({
       selectedResourceEntry: id ? { kind, id } : null,
       selectedNodeId: null,
+      selectedNodeRootId: null,
       selectedBoardId: null,
       selectedResourceItemKey: null,
     })
@@ -94,6 +105,7 @@ export const useStore = create<SelectionState>()((set) => ({
     set({
       selectedResourceItemKey: key,
       selectedNodeId: null,
+      selectedNodeRootId: null,
       selectedBoardId: null,
       selectedResourceEntry: null,
     })
@@ -114,6 +126,12 @@ export const useIsNodeSelected = (id: VariantId | InstanceId): boolean =>
  */
 export const useSelectedNodeId = (): VariantId | InstanceId | null =>
   useStore((state) => state.selectedNodeId)
+
+/**
+ * Reactive subscription to the variant-root column of the selected node.
+ */
+export const useSelectedNodeRootId = (): string | null =>
+  useStore((state) => state.selectedNodeRootId)
 
 /** Reactive subscription to whether a specific resource board entry is selected. */
 export const useIsResourceEntrySelected = (
@@ -205,10 +223,10 @@ export function useSelection() {
   )
 
   const _selectNode = useCallback(
-    (id: VariantId | InstanceId | null) => {
+    (id: VariantId | InstanceId | null, rootId?: string | null) => {
       if (id === selectedNodeId) return
 
-      selectNode(id)
+      selectNode(id, rootId)
       if (id) {
         // Check if node exists in workspace (virtual category nodes won't exist)
         const node = getNode(workspace, id)

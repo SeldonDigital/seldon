@@ -31,8 +31,37 @@ const RESOURCE_ENTRY_KIND_BY_SELECTION_KIND: Partial<
 
 export const SELECTION_ID_ATTR = "data-selection-id"
 export const SELECTION_KIND_ATTR = "data-selection-kind"
+const CANVAS_NODE_ID_ATTR = "data-canvas-node-id"
+const BOARD_ID_ATTR = "data-board-id"
 
-export type SelectionTarget = { id: string; kind: SelectionKind }
+/**
+ * A resolved selection. For nodes, `rootId` is the id of the variant-root
+ * column the element lives in, so the canvas can outline the clicked copy of a
+ * child id that several variant columns share.
+ */
+export type SelectionTarget = {
+  id: string
+  kind: SelectionKind
+  rootId?: string
+}
+
+/**
+ * The variant-root id of the column a clicked node lives in: the topmost
+ * element carrying a node id below the board container. Used to pick the right
+ * copy of a child node id that several variant columns render.
+ */
+function getVariantRootId(element: HTMLElement): string | null {
+  const board = element.closest(`[${BOARD_ID_ATTR}]`)
+  if (!board) return null
+  let current: HTMLElement | null = element
+  let rootId: string | null = null
+  while (current && current !== board) {
+    const id = current.getAttribute(CANVAS_NODE_ID_ATTR)
+    if (id) rootId = id
+    current = current.parentElement
+  }
+  return rootId
+}
 
 /**
  * Resolves the selection target from an event target by walking up to the
@@ -46,6 +75,9 @@ export function getSelectionTarget(
   const id = match.getAttribute(SELECTION_ID_ATTR)
   const kind = match.getAttribute(SELECTION_KIND_ATTR) as SelectionKind | null
   if (!id || !kind) return null
+  if (kind === "node") {
+    return { id, kind, rootId: getVariantRootId(match) ?? undefined }
+  }
   return { id, kind }
 }
 
@@ -71,7 +103,10 @@ export function useSelectedId(): string | null {
 export function selectFromTarget(
   target: SelectionTarget,
   setters: {
-    selectNode: (id: VariantId | InstanceId | null) => void
+    selectNode: (
+      id: VariantId | InstanceId | null,
+      rootId?: string | null,
+    ) => void
     selectBoard: (id: ComponentKey | null) => void
     selectResourceEntry: (kind: ResourceEntryKind, id: string | null) => void
     selectResourceItem: (key: string | null) => void
@@ -79,7 +114,7 @@ export function selectFromTarget(
 ): void {
   switch (target.kind) {
     case "node":
-      setters.selectNode(target.id as VariantId | InstanceId)
+      setters.selectNode(target.id as VariantId | InstanceId, target.rootId)
       return
     case "board":
       setters.selectBoard(target.id as ComponentKey)

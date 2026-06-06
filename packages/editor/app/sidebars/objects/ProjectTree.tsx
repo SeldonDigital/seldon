@@ -35,7 +35,7 @@ export function ProjectTree({ sections, scrollerRef }: ProjectTreeProps) {
   const handlePointerMove = useCallback(
     (event: PointerEvent<HTMLDivElement>) => {
       const target = getSelectionTarget(event.target as Element)
-      setHoveredId(target?.id ?? null)
+      setHoveredId(target?.id ?? null, target?.kind, target?.rootId)
     },
     [setHoveredId],
   )
