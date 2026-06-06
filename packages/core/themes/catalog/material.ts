@@ -14,7 +14,7 @@ import { Colorspace, Harmony, Ratio, StockTheme, TokenType } from "../types"
 const theme: StockTheme = {
   metadata: {
     id: "material",
-    name: "Material",
+    name: "Google Material",
     description: "",
     intent: "",
   },

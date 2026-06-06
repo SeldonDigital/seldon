@@ -14,7 +14,7 @@ export const MATERIAL_DEFAULT_ENABLED_CATEGORIES: IconCategory[] = [
 const iconSet: StockIconSet = {
   metadata: {
     id: "googleMaterial",
-    name: "Material",
+    name: "Google Symbols",
     description: "Google Material Symbols icon set.",
     intent: "Provides Google Material Symbols for interface and content icons.",
   },
