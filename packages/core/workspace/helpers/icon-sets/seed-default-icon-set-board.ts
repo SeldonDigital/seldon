@@ -1,7 +1,14 @@
 import { STOCK_ICON_SETS_BY_ID } from "../../../icon-sets/catalog"
-import type { ComponentCatalogEntry, IconSetBoard } from "../../model/components"
+import type { IconSetTemplateId } from "../../../icon-sets/types/icon-set-id"
+import type {
+  ComponentCatalogEntry,
+  IconSetBoard,
+} from "../../model/components"
 import { isIconSetBoard } from "../../model/components"
-import type { EntryIconSet } from "../../model/entry-icon-set"
+import type {
+  EntryIconSet,
+  EntryIconSetOverrides,
+} from "../../model/entry-icon-set"
 import { formatIconSetCatalog } from "../../model/template-ref"
 import type { Workspace } from "../../model/workspace"
 import {
@@ -17,26 +24,49 @@ export const DEFAULT_ICON_SET_BOARD_KEY = "seldonIcons" as const
 /** Icon set entry id for the default board's default variant. */
 export const DEFAULT_ICON_SET_ENTRY_ID = "icon-set-seldonIcons-default" as const
 
+/** Extra icon set boards seeded into every new workspace alongside Seldon. Deletable. */
+export const ADDITIONAL_ICON_SET_BOARD_KEYS = [
+  "googleMaterial",
+] as const satisfies IconSetTemplateId[]
+
 type SeedableWorkspace = Pick<Workspace, "components" | "icon-sets">
 
-/** Builds the default icon set entry (the default Seldon variant row). */
+/**
+ * Builds inclusion overrides that turn on every icon in a set, so each
+ * subcategory derives the `all` preset.
+ */
+function createAllIncludedIconsOverrides(
+  catalogId: IconSetTemplateId,
+): EntryIconSetOverrides {
+  const includedIcons: Record<string, boolean> = {}
+  for (const iconId of STOCK_ICON_SETS_BY_ID[catalogId].icons) {
+    includedIcons[iconId] = true
+  }
+  return { includedIcons }
+}
+
+/**
+ * Builds the default Seldon icon set entry with every icon enabled, so all
+ * subcategories start on `all`.
+ */
 export function createDefaultIconSetEntry(): EntryIconSet {
   return {
     id: DEFAULT_ICON_SET_ENTRY_ID,
     type: "default",
     label: "Default",
     template: formatIconSetCatalog(DEFAULT_ICON_SET_BOARD_KEY),
-    overrides: {},
+    overrides: createAllIncludedIconsOverrides(DEFAULT_ICON_SET_BOARD_KEY),
   }
 }
 
 /**
- * Adds the default Seldon icon set board and its default entry when missing.
+ * Adds the default Seldon icon set board plus the extra stock icon sets
+ * (`googleMaterial`) when missing.
  *
- * Idempotent: returns early when an icon set board already exists for the
- * `seldonIcons` set. Mutates the passed workspace in place. The default entry
- * carries no inclusion overrides, so only the set's default categories
- * (user-interface) start on.
+ * Idempotent per board: skips any icon set board that already exists. Mutates
+ * the passed workspace in place. Seldon is the protected base; the extras are
+ * deletable like any added stock icon set. Both seeded entries enable every
+ * icon, so all subcategories start on `all`.
  */
 export function seedDefaultIconSetBoard(workspace: SeedableWorkspace): void {
   if (!workspace.components) {
@@ -46,14 +76,37 @@ export function seedDefaultIconSetBoard(workspace: SeedableWorkspace): void {
     workspace["icon-sets"] = {}
   }
 
-  const existing = workspace.components[DEFAULT_ICON_SET_BOARD_KEY] as
+  seedIconSetBoard(
+    workspace,
+    DEFAULT_ICON_SET_BOARD_KEY,
+    createDefaultIconSetEntry(),
+  )
+
+  for (const boardKey of ADDITIONAL_ICON_SET_BOARD_KEYS) {
+    seedIconSetBoard(workspace, boardKey, {
+      id: `icon-set-${boardKey}-default`,
+      type: "default",
+      label: "Default",
+      template: formatIconSetCatalog(boardKey),
+      overrides: createAllIncludedIconsOverrides(boardKey),
+    })
+  }
+}
+
+/** Seeds one icon set board and its entry when the board is missing. */
+function seedIconSetBoard(
+  workspace: SeedableWorkspace,
+  boardKey: IconSetTemplateId,
+  entry: EntryIconSet,
+): void {
+  const existing = workspace.components[boardKey] as
     | ComponentCatalogEntry
     | undefined
   if (existing && isIconSetBoard(existing)) {
     return
   }
 
-  workspace["icon-sets"][DEFAULT_ICON_SET_ENTRY_ID] = createDefaultIconSetEntry()
+  workspace["icon-sets"][entry.id] = entry
 
   const existingBoards = Object.values(workspace.components)
   const maxOrder =
@@ -63,13 +116,13 @@ export function seedDefaultIconSetBoard(workspace: SeedableWorkspace): void {
 
   const board: IconSetBoard = {
     type: "icon-set",
-    catalogId: DEFAULT_ICON_SET_BOARD_KEY,
-    label: STOCK_ICON_SETS_BY_ID[DEFAULT_ICON_SET_BOARD_KEY].metadata.name,
+    catalogId: boardKey,
+    label: STOCK_ICON_SETS_BY_ID[boardKey].metadata.name,
     componentPreview: "seldonIconsPreview",
     componentTheme: WORKSPACE_EDITABLE_THEME_ENTRY_ID,
     componentProperties: getInitialBoardComponentProperties("icon-set"),
-    variants: [{ id: DEFAULT_ICON_SET_ENTRY_ID }],
+    variants: [{ id: entry.id }],
   }
   setComponentOrder(board, maxOrder + 1)
-  workspace.components[DEFAULT_ICON_SET_BOARD_KEY] = board
+  workspace.components[boardKey] = board
 }

@@ -1,4 +1,5 @@
 import { STOCK_THEMES_BY_ID } from "../../../themes/catalog"
+import type { ThemeTemplateId } from "../../../themes/types/theme-id"
 import type { ComponentCatalogEntry, ThemeBoard } from "../../model/components"
 import { isThemeBoard } from "../../model/components"
 import type { EntryTheme } from "../../model/entry-theme"
@@ -16,6 +17,12 @@ export const DEFAULT_THEME_BOARD_KEY = "seldon" as const
 /** Theme entry id for the default board's default variant. This is the editable workspace theme. */
 export const DEFAULT_THEME_ENTRY_ID = "theme-seldon-default" as const
 
+/** Extra theme boards seeded into every new workspace alongside the Seldon default. Deletable. */
+export const ADDITIONAL_THEME_BOARD_KEYS = [
+  "highContrast",
+  "material",
+] as const satisfies ThemeTemplateId[]
+
 type SeedableWorkspace = Pick<Workspace, "components" | "themes">
 
 /** Builds the default theme entry (the editable workspace theme row). */
@@ -30,10 +37,12 @@ export function createDefaultThemeEntry(): EntryTheme {
 }
 
 /**
- * Adds the default theme board and its default theme entry when missing.
+ * Adds the default Seldon theme board plus the extra stock theme boards
+ * (`highContrast`, `material`) when missing.
  *
- * Idempotent: returns early when a theme board already exists for the `seldon`
- * stock template. Mutates the passed workspace in place.
+ * Idempotent per board: skips any theme board that already exists. Mutates the
+ * passed workspace in place. The Seldon board is the protected base; the extras
+ * are deletable like any added stock theme.
  */
 export function seedDefaultThemeBoard(workspace: SeedableWorkspace): void {
   if (!workspace.components) {
@@ -43,14 +52,36 @@ export function seedDefaultThemeBoard(workspace: SeedableWorkspace): void {
     workspace.themes = {}
   }
 
-  const existing = workspace.components[DEFAULT_THEME_BOARD_KEY] as
+  seedThemeBoard(workspace, DEFAULT_THEME_BOARD_KEY, createDefaultThemeEntry())
+
+  for (const boardKey of ADDITIONAL_THEME_BOARD_KEYS) {
+    seedThemeBoard(workspace, boardKey, {
+      id: `theme-${boardKey}-default`,
+      type: "default",
+      label: "Default",
+      template: formatThemeCatalog(boardKey),
+      overrides: {},
+    })
+  }
+}
+
+/**
+ * Seeds one theme board and its theme entry when the board is missing. Every
+ * board points its editable theme at the Seldon default entry.
+ */
+function seedThemeBoard(
+  workspace: SeedableWorkspace,
+  boardKey: ThemeTemplateId,
+  entry: EntryTheme,
+): void {
+  const existing = workspace.components[boardKey] as
     | ComponentCatalogEntry
     | undefined
   if (existing && isThemeBoard(existing)) {
     return
   }
 
-  workspace.themes[DEFAULT_THEME_ENTRY_ID] = createDefaultThemeEntry()
+  workspace.themes[entry.id] = entry
 
   const existingBoards = Object.values(workspace.components)
   const maxOrder =
@@ -60,14 +91,14 @@ export function seedDefaultThemeBoard(workspace: SeedableWorkspace): void {
 
   const board: ThemeBoard = {
     type: "theme",
-    catalogId: DEFAULT_THEME_BOARD_KEY,
-    label: STOCK_THEMES_BY_ID[DEFAULT_THEME_BOARD_KEY].metadata.name,
+    catalogId: boardKey,
+    label: STOCK_THEMES_BY_ID[boardKey].metadata.name,
     author: "Seldon Digital",
     componentPreview: "seldonThemePreview",
     componentTheme: DEFAULT_THEME_ENTRY_ID,
     componentProperties: getInitialBoardComponentProperties("theme"),
-    variants: [{ id: DEFAULT_THEME_ENTRY_ID }],
+    variants: [{ id: entry.id }],
   }
   setComponentOrder(board, maxOrder + 1)
-  workspace.components[DEFAULT_THEME_BOARD_KEY] = board
+  workspace.components[boardKey] = board
 }

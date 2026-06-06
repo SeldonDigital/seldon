@@ -1,4 +1,6 @@
 import { STOCK_FONT_COLLECTIONS_BY_ID } from "../../../font-collections/catalog"
+import { GOOGLE_DEFAULT_ENABLED_FAMILIES } from "../../../font-collections/catalog/google/default-enabled-families"
+import type { FontCollectionTemplateId } from "../../../font-collections/types"
 import type {
   ComponentCatalogEntry,
   FontCollectionBoard,
@@ -7,6 +9,7 @@ import { isFontCollectionBoard } from "../../model/components"
 import type { EntryFontCollection } from "../../model/entry-font-collection"
 import { formatFontCollectionCatalog } from "../../model/template-ref"
 import type { Workspace } from "../../model/workspace"
+import { setFamilyVariantPreset } from "../../reducers/handlers/shared/font-collection-variant-selection"
 import {
   getComponentOrder,
   setComponentOrder,
@@ -35,10 +38,40 @@ export function createDefaultFontCollectionEntry(): EntryFontCollection {
 }
 
 /**
- * Adds the default System font collection board and its default entry when missing.
+ * Builds the Google Fonts entry seeded into new workspaces. Mirrors the
+ * `add_font_collection` flow: every curated family is enabled as `All`; every
+ * other family is left absent, which means `None`.
+ */
+function createGoogleFontCollectionEntry(): EntryFontCollection {
+  const entry: EntryFontCollection = {
+    id: "font-collection-googleFonts-default",
+    type: "default",
+    label: "Default",
+    template: formatFontCollectionCatalog("googleFonts"),
+    overrides: {},
+  }
+
+  const stock = STOCK_FONT_COLLECTIONS_BY_ID["googleFonts"]
+  for (const [slot, family] of Object.entries(stock.families)) {
+    if (
+      family.variants &&
+      family.variants.length > 0 &&
+      GOOGLE_DEFAULT_ENABLED_FAMILIES.has(family.name)
+    ) {
+      setFamilyVariantPreset(entry, slot, "all", family.variants)
+    }
+  }
+
+  return entry
+}
+
+/**
+ * Adds the default System font collection board plus the extra stock collections
+ * (`googleFonts`) when missing.
  *
- * Idempotent: returns early when a font collection board already exists for the `system`
- * collection. Mutates the passed workspace in place.
+ * Idempotent per board: skips any font collection board that already exists.
+ * Mutates the passed workspace in place. System is the protected base; the
+ * extras are deletable like any added stock collection.
  */
 export function seedDefaultFontCollectionBoard(
   workspace: SeedableWorkspace,
@@ -50,15 +83,33 @@ export function seedDefaultFontCollectionBoard(
     workspace["font-collections"] = {}
   }
 
-  const existing = workspace.components[DEFAULT_FONT_COLLECTION_BOARD_KEY] as
+  seedFontCollectionBoard(
+    workspace,
+    DEFAULT_FONT_COLLECTION_BOARD_KEY,
+    createDefaultFontCollectionEntry(),
+  )
+
+  seedFontCollectionBoard(
+    workspace,
+    "googleFonts",
+    createGoogleFontCollectionEntry(),
+  )
+}
+
+/** Seeds one font collection board and its entry when the board is missing. */
+function seedFontCollectionBoard(
+  workspace: SeedableWorkspace,
+  boardKey: FontCollectionTemplateId,
+  entry: EntryFontCollection,
+): void {
+  const existing = workspace.components[boardKey] as
     | ComponentCatalogEntry
     | undefined
   if (existing && isFontCollectionBoard(existing)) {
     return
   }
 
-  workspace["font-collections"][DEFAULT_FONT_COLLECTION_ENTRY_ID] =
-    createDefaultFontCollectionEntry()
+  workspace["font-collections"][entry.id] = entry
 
   const existingBoards = Object.values(workspace.components)
   const maxOrder =
@@ -68,14 +119,13 @@ export function seedDefaultFontCollectionBoard(
 
   const board: FontCollectionBoard = {
     type: "font-collection",
-    catalogId: DEFAULT_FONT_COLLECTION_BOARD_KEY,
-    label: STOCK_FONT_COLLECTIONS_BY_ID[DEFAULT_FONT_COLLECTION_BOARD_KEY]
-      .metadata.name,
+    catalogId: boardKey,
+    label: STOCK_FONT_COLLECTIONS_BY_ID[boardKey].metadata.name,
     componentPreview: "seldonFontsPreview",
     componentTheme: WORKSPACE_EDITABLE_THEME_ENTRY_ID,
     componentProperties: getInitialBoardComponentProperties("font-collection"),
-    variants: [{ id: DEFAULT_FONT_COLLECTION_ENTRY_ID }],
+    variants: [{ id: entry.id }],
   }
   setComponentOrder(board, maxOrder + 1)
-  workspace.components[DEFAULT_FONT_COLLECTION_BOARD_KEY] = board
+  workspace.components[boardKey] = board
 }
