@@ -4,12 +4,17 @@
  * nodes, and instance trees, then normalizes board sort order.
  */
 import { produce } from "immer"
-import { getInitialBoardComponentProperties } from "../../../helpers/components/get-initial-board-component-properties"
+
 import { getComponentSchema } from "../../../../components/catalog"
 import { ComponentId, isComponentId } from "../../../../components/constants"
 import { SchemaChild, isComplexSchema } from "../../../../components/types"
+import {
+  ExtractPayload,
+  Properties,
+  Workspace,
+  invariant,
+} from "../../../../index"
 import { mergeProperties } from "../../../../properties/helpers/merge-properties"
-import { ExtractPayload, Properties, Workspace, invariant } from "../../../../index"
 import { rules } from "../../../../rules/config/rules.config"
 import { setComponentOrder } from "../../../helpers/components/component-sort-order"
 import {
@@ -17,24 +22,29 @@ import {
   componentBoardSchemaVariantNodeId,
   componentBoardUniqueNodeId,
 } from "../../../helpers/components/entry-node-ids"
+import { getInitialBoardComponentProperties } from "../../../helpers/components/get-initial-board-component-properties"
 import { getWorkspaceNodes } from "../../../helpers/general/get-workspace-nodes"
-import { getNodeCatalogId } from "../../../helpers/nodes/get-node-catalog-id"
 import {
   collectComponentInstantiationPlans,
   getInstantiationOptionsForComponent,
 } from "../../../helpers/nodes/collect-component-instantiation-plans"
 import { getComponentDescendantIds } from "../../../helpers/nodes/get-descendant-ids"
+import { getNodeCatalogId } from "../../../helpers/nodes/get-node-catalog-id"
 import { resolveSchemaChild } from "../../../helpers/nodes/resolve-schema-child"
 import { applyVariantFallbackToSlot } from "../../../helpers/nodes/schema-composition-children"
 import { getSchemaSlotFingerprint } from "../../../helpers/nodes/schema-slot-fingerprint"
 import { WORKSPACE_EDITABLE_THEME_ENTRY_ID } from "../../../helpers/themes/workspace-editable-theme"
 import { formatNodeCatalog, formatNodeLink } from "../../../model/template-ref"
-import type { ValidationOptions } from "../../helpers/validation"
-import type { ComponentBoard, ComponentTreeRef, EntryNode } from "../../../types"
 import {
   workspaceMutationService,
   workspacePropagationService,
 } from "../../../services"
+import type {
+  ComponentBoard,
+  ComponentTreeRef,
+  EntryNode,
+} from "../../../types"
+import type { ValidationOptions } from "../../helpers/validation"
 
 type NodeRegistry = Partial<Record<ComponentId, NodeRegister>>
 
@@ -126,7 +136,10 @@ function instantiateSchemaChildrenFromSlots(
     registerToWriteTo: NodeRegister,
     slot: SchemaChild,
   ): void {
-    const resolvedSlot = applyVariantFallbackToSlot(slot, options.variantFallbacks)
+    const resolvedSlot = applyVariantFallbackToSlot(
+      slot,
+      options.variantFallbacks,
+    )
     const resolvedChild = resolveSchemaChild(resolvedSlot)
 
     invariant(
@@ -144,7 +157,10 @@ function instantiateSchemaChildrenFromSlots(
       : componentBoardUniqueNodeId(childSchema.id)
 
     if (!reused) {
-      const processedOverrides = mergeProperties({}, resolvedSlot.overrides ?? {})
+      const processedOverrides = mergeProperties(
+        {},
+        resolvedSlot.overrides ?? {},
+      )
 
       if (writeCanonical) {
         canonicalInstanceByFingerprint.set(fingerprint, id)
@@ -180,13 +196,14 @@ function instantiateSchemaChildrenFromSlots(
       ? resolvedSlot.children
       : resolvedChild.fallbackChildren
 
-    childSlots.forEach((childSlot) =>
-      instantiateFromSlot(newChild, childSlot),
-    )
+    childSlots.forEach((childSlot) => instantiateFromSlot(newChild, childSlot))
   }
 
   slots.forEach((slot) =>
-    instantiateFromSlot(register, applyVariantFallbackToSlot(slot, options.variantFallbacks)),
+    instantiateFromSlot(
+      register,
+      applyVariantFallbackToSlot(slot, options.variantFallbacks),
+    ),
   )
 }
 
@@ -213,7 +230,10 @@ function instantiateVariantTree(
 
   if (treeOptions.children?.length) {
     for (const slot of treeOptions.children) {
-      const resolvedSlot = applyVariantFallbackToSlot(slot, options.variantFallbacks)
+      const resolvedSlot = applyVariantFallbackToSlot(
+        slot,
+        options.variantFallbacks,
+      )
       if (!registry[resolvedSlot.component]) {
         registry[resolvedSlot.component] = {
           id: componentBoardDefaultNodeId(resolvedSlot.component),
@@ -269,6 +289,8 @@ function instantiateComponent(
   }
 
   if (!isComplexSchema(schema)) {
+    const variantTreeRefs: ComponentTreeRef[] = []
+
     newInstancesById[defaultVariantRootId] = {
       id: defaultVariantRootId,
       type: "default",
@@ -278,9 +300,48 @@ function instantiateComponent(
       template: formatNodeCatalog(componentId),
       overrides: {},
     }
+    variantTreeRefs.push({ id: defaultVariantRootId })
+
+    const restrictedVariantIds =
+      options.restrictedCatalogVariantIds ??
+      (options.embeddedVariantId ? [options.embeddedVariantId] : undefined)
+    const primitiveVariantIds =
+      restrictedVariantIds ??
+      (schema.variants ?? []).map((variant) => variant.id)
+
+    for (const variantId of primitiveVariantIds) {
+      const catalogVariant = schema.variants?.find(
+        (candidate) => candidate.id === variantId,
+      )
+      invariant(
+        catalogVariant,
+        `Schema child ${componentId} references missing variant "${variantId}"`,
+      )
+
+      const variantRootId = componentBoardSchemaVariantNodeId(
+        componentId,
+        catalogVariant.id,
+      )
+      const variantOverrides = mergeProperties(
+        {},
+        catalogVariant.overrides ?? {},
+      )
+      newInstancesById[variantRootId] = {
+        id: variantRootId,
+        type: "variant",
+        level: schema.level as EntryNode["level"],
+        label: catalogVariant.label,
+        theme: null,
+        template: formatNodeLink(defaultVariantRootId),
+        overrides: variantOverrides as EntryNode["overrides"],
+        __editor: { initialOverrides: structuredClone(variantOverrides) },
+      }
+      variantTreeRefs.push({ id: variantRootId })
+    }
+
     return {
       nodesById: newInstancesById,
-      variantTreeRefs: [{ id: defaultVariantRootId }],
+      variantTreeRefs,
     }
   }
 
@@ -374,10 +435,7 @@ function instantiateComponent(
       componentId,
       catalogVariant.id,
     )
-    const variantOverrides = mergeProperties(
-      {},
-      catalogVariant.overrides ?? {},
-    )
+    const variantOverrides = mergeProperties({}, catalogVariant.overrides ?? {})
     const variantChildSlots = catalogVariant.children?.length
       ? catalogVariant.children
       : defaultChildSlots
@@ -473,7 +531,8 @@ export function addComponent(
       }
     }
 
-    const updatedWorkspace = workspacePropagationService.realignComponentOrder(draft)
+    const updatedWorkspace =
+      workspacePropagationService.realignComponentOrder(draft)
     Object.assign(draft.components, updatedWorkspace.components)
   })
 }

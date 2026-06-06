@@ -1,10 +1,6 @@
-import * as Sdn from "../../properties";
-import * as Seldon from "../constants";
-import { ComponentExport, ComponentSchema } from "../types";
-
-
-
-
+import * as Sdn from "../../properties"
+import * as Seldon from "../constants"
+import { ComponentExport, ComponentSchema } from "../types"
 
 export const schema = {
   name: "Type Specimen",
@@ -362,7 +358,8 @@ export const schema = {
   default: {
     children: [
       {
-        component: Seldon.ComponentId.SUBHEADING,
+        component: Seldon.ComponentId.TEXT,
+        variant: "subheading",
         overrides: {
           content: {
             type: Sdn.ValueType.EXACT,

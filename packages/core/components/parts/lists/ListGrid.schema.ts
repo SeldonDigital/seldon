@@ -397,7 +397,8 @@ export const schema = {
             },
             children: [
               {
-                component: Seldon.ComponentId.TITLE,
+                component: Seldon.ComponentId.TEXT,
+                variant: "title",
                 overrides: {
                   content: {
                     type: Sdn.ValueType.EXACT,
@@ -440,7 +441,8 @@ export const schema = {
                 },
               },
               {
-                component: Seldon.ComponentId.SUBTITLE,
+                component: Seldon.ComponentId.TEXT,
+                variant: "subtitle",
                 overrides: {
                   content: {
                     type: Sdn.ValueType.EXACT,
@@ -516,7 +518,8 @@ export const schema = {
             },
             children: [
               {
-                component: Seldon.ComponentId.TITLE,
+                component: Seldon.ComponentId.TEXT,
+                variant: "title",
                 overrides: {
                   content: {
                     type: Sdn.ValueType.EXACT,
@@ -559,7 +562,8 @@ export const schema = {
                 },
               },
               {
-                component: Seldon.ComponentId.SUBTITLE,
+                component: Seldon.ComponentId.TEXT,
+                variant: "subtitle",
                 overrides: {
                   content: {
                     type: Sdn.ValueType.EXACT,
@@ -635,7 +639,8 @@ export const schema = {
             },
             children: [
               {
-                component: Seldon.ComponentId.TITLE,
+                component: Seldon.ComponentId.TEXT,
+                variant: "title",
                 overrides: {
                   content: {
                     type: Sdn.ValueType.EXACT,
@@ -678,7 +683,8 @@ export const schema = {
                 },
               },
               {
-                component: Seldon.ComponentId.SUBTITLE,
+                component: Seldon.ComponentId.TEXT,
+                variant: "subtitle",
                 overrides: {
                   content: {
                     type: Sdn.ValueType.EXACT,
@@ -754,7 +760,8 @@ export const schema = {
             },
             children: [
               {
-                component: Seldon.ComponentId.TITLE,
+                component: Seldon.ComponentId.TEXT,
+                variant: "title",
                 overrides: {
                   content: {
                     type: Sdn.ValueType.EXACT,
@@ -797,7 +804,8 @@ export const schema = {
                 },
               },
               {
-                component: Seldon.ComponentId.SUBTITLE,
+                component: Seldon.ComponentId.TEXT,
+                variant: "subtitle",
                 overrides: {
                   content: {
                     type: Sdn.ValueType.EXACT,
@@ -873,7 +881,8 @@ export const schema = {
             },
             children: [
               {
-                component: Seldon.ComponentId.TITLE,
+                component: Seldon.ComponentId.TEXT,
+                variant: "title",
                 overrides: {
                   content: {
                     type: Sdn.ValueType.EXACT,
@@ -916,7 +925,8 @@ export const schema = {
                 },
               },
               {
-                component: Seldon.ComponentId.SUBTITLE,
+                component: Seldon.ComponentId.TEXT,
+                variant: "subtitle",
                 overrides: {
                   content: {
                     type: Sdn.ValueType.EXACT,
@@ -992,7 +1002,8 @@ export const schema = {
             },
             children: [
               {
-                component: Seldon.ComponentId.TITLE,
+                component: Seldon.ComponentId.TEXT,
+                variant: "title",
                 overrides: {
                   content: {
                     type: Sdn.ValueType.EXACT,
@@ -1035,7 +1046,8 @@ export const schema = {
                 },
               },
               {
-                component: Seldon.ComponentId.SUBTITLE,
+                component: Seldon.ComponentId.TEXT,
+                variant: "subtitle",
                 overrides: {
                   content: {
                     type: Sdn.ValueType.EXACT,

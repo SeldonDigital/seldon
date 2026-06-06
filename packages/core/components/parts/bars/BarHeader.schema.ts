@@ -367,7 +367,8 @@ export const schema = {
   default: {
     children: [
       {
-        component: Seldon.ComponentId.TITLE,
+        component: Seldon.ComponentId.TEXT,
+        variant: "title",
         overrides: {
           content: {
             type: Sdn.ValueType.EXACT,
@@ -420,7 +421,6 @@ export const schema = {
             type: Sdn.ValueType.EMPTY,
             value: null,
           },
-
         },
       },
       {
@@ -456,7 +456,8 @@ export const schema = {
             },
           },
           {
-            component: Seldon.ComponentId.LABEL,
+            component: Seldon.ComponentId.TEXT,
+            variant: "label",
             overrides: {
               display: {
                 type: Sdn.ValueType.OPTION,

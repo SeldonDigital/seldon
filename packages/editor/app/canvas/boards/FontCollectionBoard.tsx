@@ -1,23 +1,21 @@
 "use client"
 
+import { getTypeSpecimenPreviewBase } from "@lib/font-collections/build-type-specimen-preview"
 import { getCssFromProperties } from "@seldon/factory/styles/css-properties/get-css-from-properties"
 import { useMemo } from "react"
 import { Board, Properties, Scroll, Unit, ValueType } from "@seldon/core"
-import { ComponentId } from "@seldon/core/components/constants"
 import { getEnabledVariants } from "@seldon/core/font-collections"
 import type { FontFamilyEntry } from "@seldon/core/font-collections/types"
 import { fontVariantDisplayLabel } from "@seldon/core/helpers/utils/font-variant"
-import { isFontCollectionBoard } from "@seldon/core/workspace/model/components"
 import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
-import { themeService } from "@seldon/core/workspace/services/theme/theme.service"
+import { isFontCollectionBoard } from "@seldon/core/workspace/model/components"
 import { workspaceFontCollectionService } from "@seldon/core/workspace/services/font-collection/font-collection.service"
+import { themeService } from "@seldon/core/workspace/services/theme/theme.service"
 import type { Workspace } from "@seldon/core/workspace/types"
-import { getTypeSpecimenPreviewBase } from "@lib/font-collections/build-type-specimen-preview"
-import { usePreview } from "@lib/hooks/use-preview"
-import { getNodeCatalogComponentId } from "@lib/workspace/node-tree"
-import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { formatResourceItemKey } from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
+import { usePreview } from "@lib/hooks/use-preview"
+import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { Frame } from "../../seldon/chrome/frames/Frame"
 import { CssPortal } from "../CssPortal"
 import { canvasSelectionId } from "../helpers/canvas-selection-target"
@@ -187,11 +185,11 @@ function FontCollectionTypeSpecimen({
     }
     const nodes = Object.fromEntries(
       Object.entries(typeSpecimenBase.nodes).map(([id, node]) => {
-        // The subheading shows the specimen title. Swap its placeholder content
+        // The specimen title shows the family name. Swap its placeholder content
         // for the family name. This is an editor-only preview override.
         const isSubheading =
-          getNodeCatalogComponentId(node, typeSpecimenBase) ===
-          ComponentId.SUBHEADING
+          (node.overrides?.content as { value?: unknown } | undefined)
+            ?.value === "Font Name"
         // The "Font weights" text node lists the family's enabled weights. Swap
         // its placeholder content the same way the family name is swapped.
         const isFontWeights =

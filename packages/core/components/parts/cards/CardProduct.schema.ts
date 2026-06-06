@@ -447,7 +447,8 @@ export const schema = {
         },
         children: [
           {
-            component: Seldon.ComponentId.TAGLINE,
+            component: Seldon.ComponentId.TEXT,
+            variant: "tagline",
             overrides: {
               content: {
                 type: Sdn.ValueType.EXACT,
@@ -456,7 +457,8 @@ export const schema = {
             },
           },
           {
-            component: Seldon.ComponentId.TITLE,
+            component: Seldon.ComponentId.TEXT,
+            variant: "title",
             overrides: {
               content: {
                 type: Sdn.ValueType.EXACT,

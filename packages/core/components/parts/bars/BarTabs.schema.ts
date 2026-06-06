@@ -372,7 +372,8 @@ export const schema = {
         variant: "label",
         children: [
           {
-            component: Seldon.ComponentId.LABEL,
+            component: Seldon.ComponentId.TEXT,
+            variant: "label",
             overrides: {
               content: {
                 type: Sdn.ValueType.EXACT,
@@ -387,7 +388,8 @@ export const schema = {
         variant: "label",
         children: [
           {
-            component: Seldon.ComponentId.LABEL,
+            component: Seldon.ComponentId.TEXT,
+            variant: "label",
             overrides: {
               content: {
                 type: Sdn.ValueType.EXACT,
@@ -402,7 +404,8 @@ export const schema = {
         variant: "label",
         children: [
           {
-            component: Seldon.ComponentId.LABEL,
+            component: Seldon.ComponentId.TEXT,
+            variant: "label",
             overrides: {
               content: {
                 type: Sdn.ValueType.EXACT,

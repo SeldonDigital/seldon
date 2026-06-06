@@ -191,10 +191,6 @@ import {
   schema as inputSchema,
 } from "../primitives/controls/Input.schema"
 import {
-  exportConfig as labelExportConfig,
-  schema as labelSchema,
-} from "../primitives/controls/Label.schema"
-import {
   exportConfig as legendExportConfig,
   schema as legendSchema,
 } from "../primitives/controls/Legend.schema"
@@ -251,10 +247,6 @@ import {
   schema as blockquoteSchema,
 } from "../primitives/texts/Blockquote.schema"
 import {
-  exportConfig as calloutExportConfig,
-  schema as calloutSchema,
-} from "../primitives/texts/Callout.schema"
-import {
   exportConfig as citeExportConfig,
   schema as citeSchema,
 } from "../primitives/texts/Cite.schema"
@@ -267,37 +259,13 @@ import {
   schema as descriptionSchema,
 } from "../primitives/texts/Description.schema"
 import {
-  exportConfig as displayExportConfig,
-  schema as displaySchema,
-} from "../primitives/texts/Display.schema"
-import {
-  exportConfig as headingExportConfig,
-  schema as headingSchema,
-} from "../primitives/texts/Heading.schema"
-import {
   exportConfig as linkExportConfig,
   schema as linkSchema,
 } from "../primitives/texts/Link.schema"
 import {
-  exportConfig as subheadingExportConfig,
-  schema as subheadingSchema,
-} from "../primitives/texts/Subheading.schema"
-import {
-  exportConfig as subtitleExportConfig,
-  schema as subtitleSchema,
-} from "../primitives/texts/Subtitle.schema"
-import {
-  exportConfig as taglineExportConfig,
-  schema as taglineSchema,
-} from "../primitives/texts/Tagline.schema"
-import {
   exportConfig as textExportConfig,
   schema as textSchema,
 } from "../primitives/texts/Text.schema"
-import {
-  exportConfig as titleExportConfig,
-  schema as titleSchema,
-} from "../primitives/texts/Title.schema"
 import {
   exportConfig as sourceExportConfig,
   schema as sourceSchema,
@@ -343,7 +311,6 @@ const primitives: ComponentSchema[] = [
   navSchema,
   checkboxSchema,
   inputSchema,
-  labelSchema,
   legendSchema,
   optionSchema,
   radioSchema,
@@ -358,18 +325,11 @@ const primitives: ComponentSchema[] = [
   tableHeaderSchema,
   tableInputSchema,
   blockquoteSchema,
-  calloutSchema,
   citeSchema,
   codeblockSchema,
   descriptionSchema,
-  displaySchema,
-  headingSchema,
   linkSchema,
-  subheadingSchema,
-  subtitleSchema,
-  taglineSchema,
   textSchema,
-  titleSchema,
   sourceSchema,
   trackSchema,
   videoSchema,
@@ -504,7 +464,6 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   [ComponentId.NAV]: navExportConfig,
   [ComponentId.CHECKBOX]: checkboxExportConfig,
   [ComponentId.INPUT]: inputExportConfig,
-  [ComponentId.LABEL]: labelExportConfig,
   [ComponentId.LEGEND]: legendExportConfig,
   [ComponentId.OPTION]: optionExportConfig,
   [ComponentId.RADIO]: radioExportConfig,
@@ -519,18 +478,11 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   [ComponentId.TABLE_HEADER]: tableHeaderExportConfig,
   [ComponentId.TABLE_INPUT]: tableInputExportConfig,
   [ComponentId.BLOCKQUOTE]: blockquoteExportConfig,
-  [ComponentId.CALLOUT]: calloutExportConfig,
   [ComponentId.CITE]: citeExportConfig,
   [ComponentId.CODEBLOCK]: codeblockExportConfig,
   [ComponentId.DESCRIPTION]: descriptionExportConfig,
-  [ComponentId.DISPLAY]: displayExportConfig,
-  [ComponentId.HEADING]: headingExportConfig,
   [ComponentId.LINK]: linkExportConfig,
-  [ComponentId.SUBHEADING]: subheadingExportConfig,
-  [ComponentId.SUBTITLE]: subtitleExportConfig,
-  [ComponentId.TAGLINE]: taglineExportConfig,
   [ComponentId.TEXT]: textExportConfig,
-  [ComponentId.TITLE]: titleExportConfig,
   [ComponentId.SOURCE]: sourceExportConfig,
   [ComponentId.TRACK]: trackExportConfig,
   [ComponentId.VIDEO]: videoExportConfig,

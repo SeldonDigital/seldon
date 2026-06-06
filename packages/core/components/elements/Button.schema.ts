@@ -1,10 +1,6 @@
-import * as Sdn from "../../properties";
-import * as Seldon from "../constants";
-import { ComponentExport, ComponentSchema } from "../types";
-
-
-
-
+import * as Sdn from "../../properties"
+import * as Seldon from "../constants"
+import { ComponentExport, ComponentSchema } from "../types"
 
 export const schema = {
   name: "Button",
@@ -425,7 +421,8 @@ export const schema = {
         },
       },
       {
-        component: Seldon.ComponentId.LABEL,
+        component: Seldon.ComponentId.TEXT,
+        variant: "label",
         overrides: {
           display: {
             type: Sdn.ValueType.OPTION,
@@ -511,7 +508,8 @@ export const schema = {
       },
       children: [
         {
-          component: Seldon.ComponentId.LABEL,
+          component: Seldon.ComponentId.TEXT,
+          variant: "label",
           overrides: {
             display: {
               type: Sdn.ValueType.OPTION,
@@ -927,7 +925,7 @@ export const schema = {
             type: Sdn.ValueType.EMPTY,
             value: null,
           },
-        }
+        },
       },
       children: [
         {
