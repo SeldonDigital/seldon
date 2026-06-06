@@ -125,8 +125,9 @@ export function getLayoutStyles({
         if (gap.value === Gap.EVENLY_SPACED) {
           styles.gap = "auto"
           styles.justifyContent = "space-between"
+        } else if (gap.value === Gap.NONE) {
+          styles.gap = "0"
         } else {
-          // @ts-expect-error - unknown preset
           throw new Error(`Unknown gap preset: ${gap.value}`)
         }
         break

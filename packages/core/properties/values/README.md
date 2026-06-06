@@ -95,10 +95,14 @@ flowchart LR
 | `widthSchema` | `layout/width.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
 | `HeightValue` | `layout/height.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
 | `heightSchema` | `layout/height.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
+| `Margin` | `layout/margin.ts` | Fixed enum choices for ValueType.OPTION storage. Imported by property value modules, types, or schema validators. |
+| `MarginSideOptionValue` | `layout/margin.ts` | Tagged wire shape that stores a Margin option choice. Assigned on workspace overrides and merged before compute or export. |
 | `MarginSideThemeValue` | `layout/margin.ts` | Tagged wire shape that stores a theme token reference. Assigned on workspace overrides and merged before compute or export. |
 | `MarginValue` | `layout/margin.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
 | `MarginSideValue` | `layout/margin.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
 | `marginSchema` | `layout/margin.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
+| `Padding` | `layout/padding.ts` | Fixed enum choices for ValueType.OPTION storage. Imported by property value modules, types, or schema validators. |
+| `PaddingSideOptionValue` | `layout/padding.ts` | Tagged wire shape that stores a Padding option choice. Assigned on workspace overrides and merged before compute or export. |
 | `PaddingSideThemeValue` | `layout/padding.ts` | Tagged wire shape that stores a theme token reference. Assigned on workspace overrides and merged before compute or export. |
 | `PaddingValue` | `layout/padding.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
 | `PaddingSideValue` | `layout/padding.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
