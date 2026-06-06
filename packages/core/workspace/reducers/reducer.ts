@@ -1,6 +1,6 @@
 import { applyMiddleware } from "../middleware/compose/apply-middleware"
-import { debugMiddleware } from "../middleware/observability/debug.middleware"
 import { migrationMiddleware } from "../middleware/migration/middleware"
+import { debugMiddleware } from "../middleware/observability/debug.middleware"
 import { validationMiddleware } from "../middleware/validation/validation.middleware"
 import { workspaceVerificationMiddleware } from "../middleware/verification/verification.middleware"
 import type { Workspace } from "../model/workspace"
@@ -85,14 +85,15 @@ import { resetComponentLicense } from "./handlers/reset/reset-component-license"
 import { resetComponentPreview } from "./handlers/reset/reset-component-preview"
 import { resetComponentProperty } from "./handlers/reset/reset-component-property"
 import { resetComponentTags } from "./handlers/reset/reset-component-tags"
-import { resetNodeEditorData } from "./handlers/reset/reset-node-editor-data"
-import { resetNodeLabel } from "./handlers/reset/reset-node-label"
-import { resetNodeProperty } from "./handlers/reset/reset-node-property"
-import { resetNode } from "./handlers/reset/reset-node"
+import { resetDefaultVariantToCatalog } from "./handlers/reset/reset-default-variant-to-catalog"
 import { resetFontCollectionEditorData } from "./handlers/reset/reset-font-collection-editor-data"
 import { resetFontCollectionLabel } from "./handlers/reset/reset-font-collection-label"
 import { resetFontCollectionOverride } from "./handlers/reset/reset-font-collection-override"
 import { resetIconSetOverride } from "./handlers/reset/reset-icon-set-override"
+import { resetNode } from "./handlers/reset/reset-node"
+import { resetNodeEditorData } from "./handlers/reset/reset-node-editor-data"
+import { resetNodeLabel } from "./handlers/reset/reset-node-label"
+import { resetNodeProperty } from "./handlers/reset/reset-node-property"
 import { resetThemeEditorData } from "./handlers/reset/reset-theme-editor-data"
 import { resetThemeLabel } from "./handlers/reset/reset-theme-label"
 import { resetThemeOverride } from "./handlers/reset/reset-theme-override"
@@ -114,10 +115,6 @@ import { setComponentPreview } from "./handlers/set/set-component-preview"
 import { setComponentProperties } from "./handlers/set/set-component-properties"
 import { setComponentTags } from "./handlers/set/set-component-tags"
 import { setComponentTheme } from "./handlers/set/set-component-theme"
-import { setNodeEditorData } from "./handlers/set/set-node-editor-data"
-import { setNodeLabel } from "./handlers/set/set-node-label"
-import { setNodeProperties } from "./handlers/set/set-node-properties"
-import { setNodeTheme } from "./handlers/set/set-node-theme"
 import { setFontCollectionEditorData } from "./handlers/set/set-font-collection-editor-data"
 import { setFontCollectionFamilyPreset } from "./handlers/set/set-font-collection-family-preset"
 import { setFontCollectionFamilyVariant } from "./handlers/set/set-font-collection-family-variant"
@@ -126,6 +123,10 @@ import { setFontCollectionOverride } from "./handlers/set/set-font-collection-ov
 import { setIconSetLabel } from "./handlers/set/set-icon-set-label"
 import { setIconSetOverride } from "./handlers/set/set-icon-set-override"
 import { setIconSetSubcategoryPreset } from "./handlers/set/set-icon-set-subcategory-preset"
+import { setNodeEditorData } from "./handlers/set/set-node-editor-data"
+import { setNodeLabel } from "./handlers/set/set-node-label"
+import { setNodeProperties } from "./handlers/set/set-node-properties"
+import { setNodeTheme } from "./handlers/set/set-node-theme"
 import { setThemeEditorData } from "./handlers/set/set-theme-editor-data"
 import { setThemeLabel } from "./handlers/set/set-theme-label"
 import { setThemeOverride } from "./handlers/set/set-theme-override"
@@ -298,6 +299,8 @@ function reducer(workspace: Workspace, action: WorkspaceAction): Workspace {
       return duplicateNode(action.payload, workspace)
     case "reset_user_variant_to_default":
       return resetUserVariantToDefault(action.payload, workspace)
+    case "reset_default_variant_to_catalog":
+      return resetDefaultVariantToCatalog(action.payload, workspace)
     case "move_instance":
       return moveInstance(action.payload, workspace)
     case "reorder_instance_in_parent":

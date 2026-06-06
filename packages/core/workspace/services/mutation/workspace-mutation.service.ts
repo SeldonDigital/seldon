@@ -1,4 +1,5 @@
 import { plural } from "pluralize"
+
 import { getComponentSchema } from "../../../components/catalog"
 import { ComponentId } from "../../../components/constants"
 import { themeSwatchToColorValue } from "../../../helpers/color/theme-swatch-to-color-value"
@@ -21,14 +22,15 @@ import {
   ThemeValueKey,
 } from "../../../themes/types"
 import { getComponentLevelThemeRef } from "../../helpers/components/get-component-level-theme-ref"
+import { walkComponentTreeRefs } from "../../helpers/components/walk-component-tree-refs"
 import { getNextVariantLabel } from "../../helpers/general/get-next-variant-label"
 import { getSpecialComponentVariantLabel } from "../../helpers/general/get-special-component-variant-label"
 import { getWorkspaceNodes } from "../../helpers/general/get-workspace-nodes"
+import { applyResetDefaultVariantToCatalog } from "../../helpers/nodes/apply-reset-default-variant-to-catalog"
 import { applyResetUserVariantToDefaultVariant } from "../../helpers/nodes/apply-reset-user-variant-to-default-variant"
-import { resolveNodePropertyResetPatch } from "../../helpers/nodes/resolve-node-property-reset"
 import { getNodeSubtreeIds } from "../../helpers/nodes/get-node-subtree-ids"
+import { resolveNodePropertyResetPatch } from "../../helpers/nodes/resolve-node-property-reset"
 import { isEntryNodeForRules } from "../../helpers/rules/rules-node-subject"
-import { walkComponentTreeRefs } from "../../helpers/components/walk-component-tree-refs"
 import {
   ComponentEntry,
   ComponentKey,
@@ -38,8 +40,8 @@ import {
   VariantId,
   Workspace,
 } from "../../types"
-import { nodeRetrievalService } from "../nodes/node-retrieval.service"
 import { nodeRelationshipService } from "../nodes/node-relationship.service"
+import { nodeRetrievalService } from "../nodes/node-retrieval.service"
 import { nodeTraversalService } from "../nodes/node-traversal.service"
 import { handleSchemaError } from "../shared/error-handling.helper"
 import { mutateWorkspace } from "../shared/workspace-mutation.helper"
@@ -261,6 +263,16 @@ export class WorkspaceMutationService {
     workspace: Workspace,
   ): Workspace {
     return applyResetUserVariantToDefaultVariant(workspace, variantRootId)
+  }
+
+  /**
+   * Rebuilds a default variant’s composition tree to match its catalog schema default.
+   */
+  public resetDefaultVariantToCatalog(
+    defaultVariantRootId: VariantId,
+    workspace: Workspace,
+  ): Workspace {
+    return applyResetDefaultVariantToCatalog(workspace, defaultVariantRootId)
   }
 
   private _resetObjectProperty(
