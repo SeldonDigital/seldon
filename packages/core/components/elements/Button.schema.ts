@@ -882,26 +882,52 @@ export const schema = {
       overrides: {
         padding: {
           top: {
-            type: Sdn.ValueType.THEME_ORDINAL,
-            value: "@padding.tight",
+            type: Sdn.ValueType.OPTION,
+            value: Sdn.Padding.NONE,
           },
           right: {
-            type: Sdn.ValueType.THEME_ORDINAL,
-            value: "@padding.tight",
+            type: Sdn.ValueType.OPTION,
+            value: Sdn.Padding.NONE,
           },
           bottom: {
-            type: Sdn.ValueType.THEME_ORDINAL,
-            value: "@padding.tight",
+            type: Sdn.ValueType.OPTION,
+            value: Sdn.Padding.NONE,
           },
           left: {
-            type: Sdn.ValueType.THEME_ORDINAL,
-            value: "@padding.tight",
+            type: Sdn.ValueType.OPTION,
+            value: Sdn.Padding.NONE,
           },
         },
         gap: {
           type: Sdn.ValueType.OPTION,
           value: Sdn.Gap.EVENLY_SPACED,
         },
+        border: {
+          preset: {
+            type: Sdn.ValueType.THEME_CATEGORICAL,
+            value: "@border.none",
+          },
+          color: {
+            type: Sdn.ValueType.EMPTY,
+            value: null,
+          },
+          width: {
+            type: Sdn.ValueType.EMPTY,
+            value: null,
+          },
+          brightness: {
+            type: Sdn.ValueType.EMPTY,
+            value: null,
+          },
+          opacity: {
+            type: Sdn.ValueType.EMPTY,
+            value: null,
+          },
+          collapse: {
+            type: Sdn.ValueType.EMPTY,
+            value: null,
+          },
+        }
       },
       children: [
         {
