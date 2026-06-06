@@ -477,7 +477,8 @@ export const schema = {
       intent: "Allows users to select one or more binary options in a form.",
       children: [
         {
-          component: Seldon.ComponentId.CHECKBOX,
+          component: Seldon.ComponentId.INPUT,
+          variant: "checkbox",
           overrides: {
             width: {
               type: Sdn.ValueType.OPTION,
@@ -538,7 +539,8 @@ export const schema = {
         "Allows selection of a single option among multiple mutually exclusive choices.",
       children: [
         {
-          component: Seldon.ComponentId.RADIO,
+          component: Seldon.ComponentId.INPUT,
+          variant: "radio",
           overrides: {
             width: {
               type: Sdn.ValueType.OPTION,

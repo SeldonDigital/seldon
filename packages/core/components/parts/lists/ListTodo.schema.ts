@@ -527,7 +527,8 @@ export const schema = {
         },
         children: [
           {
-            component: Seldon.ComponentId.CHECKBOX,
+            component: Seldon.ComponentId.INPUT,
+            variant: "checkbox",
             overrides: {
               accentColor: {
                 type: Sdn.ValueType.THEME_CATEGORICAL,
@@ -779,7 +780,8 @@ export const schema = {
         },
         children: [
           {
-            component: Seldon.ComponentId.CHECKBOX,
+            component: Seldon.ComponentId.INPUT,
+            variant: "checkbox",
             overrides: {
               checked: {
                 type: Sdn.ValueType.EXACT,
@@ -1035,7 +1037,8 @@ export const schema = {
         },
         children: [
           {
-            component: Seldon.ComponentId.CHECKBOX,
+            component: Seldon.ComponentId.INPUT,
+            variant: "checkbox",
             overrides: {
               accentColor: {
                 type: Sdn.ValueType.THEME_CATEGORICAL,
@@ -1327,7 +1330,8 @@ export const schema = {
         },
         children: [
           {
-            component: Seldon.ComponentId.CHECKBOX,
+            component: Seldon.ComponentId.INPUT,
+            variant: "checkbox",
             overrides: {
               accentColor: {
                 type: Sdn.ValueType.THEME_CATEGORICAL,

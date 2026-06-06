@@ -363,7 +363,8 @@ export const schema = {
   default: {
     children: [
       {
-        component: Seldon.ComponentId.CHECKBOX,
+        component: Seldon.ComponentId.INPUT,
+        variant: "checkbox",
         overrides: {
           align: {
             type: Sdn.ValueType.OPTION,
@@ -440,7 +441,8 @@ export const schema = {
       intent: "List item that includes an avatar to represent an entity.",
       children: [
         {
-          component: Seldon.ComponentId.CHECKBOX,
+          component: Seldon.ComponentId.INPUT,
+          variant: "checkbox",
           overrides: {
             width: {
               type: Sdn.ValueType.OPTION,
@@ -474,7 +476,8 @@ export const schema = {
       intent: "List item format optimized for showing product-related info.",
       children: [
         {
-          component: Seldon.ComponentId.CHECKBOX,
+          component: Seldon.ComponentId.INPUT,
+          variant: "checkbox",
           overrides: {
             align: {
               type: Sdn.ValueType.OPTION,
@@ -1265,7 +1268,8 @@ export const schema = {
       },
       children: [
         {
-          component: Seldon.ComponentId.CHECKBOX,
+          component: Seldon.ComponentId.INPUT,
+          variant: "checkbox",
           overrides: {
             checked: {
               type: Sdn.ValueType.EXACT,

@@ -7,9 +7,12 @@
  * together.
  */
 import { invariant } from "../../helpers/utils/invariant"
+// Boards
+import {
+  exportConfig as boardExportConfig,
+  schema as boardSchema,
+} from "../boards/Board.schema"
 import { ComponentId } from "../constants"
-import { ComponentExport, ComponentSchema } from "../types"
-
 // Elements
 import {
   exportConfig as avatarExportConfig,
@@ -28,9 +31,17 @@ import {
   schema as formControlSchema,
 } from "../elements/FormControl.schema"
 import {
+  exportConfig as itemExportConfig,
+  schema as itemSchema,
+} from "../elements/Item.schema"
+import {
   exportConfig as optionGroupExportConfig,
   schema as optionGroupSchema,
 } from "../elements/OptionGroup.schema"
+import {
+  exportConfig as sectionExportConfig,
+  schema as sectionSchema,
+} from "../elements/Section.schema"
 import {
   exportConfig as headerActionExportConfig,
   schema as headerActionSchema,
@@ -40,24 +51,14 @@ import {
   schema as headerCardSchema,
 } from "../elements/headers/HeaderCard.schema"
 import {
-  exportConfig as itemExportConfig,
-  schema as itemSchema,
-} from "../elements/Item.schema"
-import {
-  exportConfig as sectionExportConfig,
-  schema as sectionSchema,
-} from "../elements/Section.schema"
-import {
   exportConfig as tableRowDataExportConfig,
   schema as tableRowDataSchema,
 } from "../elements/tables/TableRowData.schema"
-
 // Frames
 import {
   exportConfig as frameExportConfig,
   schema as frameSchema,
 } from "../frames/Frame.schema"
-
 // Modules
 import {
   exportConfig as calendarExportConfig,
@@ -67,10 +68,6 @@ import {
   exportConfig as dialogExportConfig,
   schema as dialogSchema,
 } from "../modules/Dialog.schema"
-import {
-  exportConfig as typeSpecimenExportConfig,
-  schema as typeSpecimenSchema,
-} from "../modules/TypeSpecimen.schema"
 import {
   exportConfig as footerExportConfig,
   schema as footerSchema,
@@ -84,10 +81,13 @@ import {
   schema as tableSchema,
 } from "../modules/Table.schema"
 import {
+  exportConfig as typeSpecimenExportConfig,
+  schema as typeSpecimenSchema,
+} from "../modules/TypeSpecimen.schema"
+import {
   exportConfig as widgetTodoExportConfig,
   schema as widgetTodoSchema,
 } from "../modules/WidgetTodo.schema"
-
 // Parts
 import {
   exportConfig as iabExportConfig,
@@ -183,10 +183,6 @@ import {
   schema as navSchema,
 } from "../primitives/Nav.schema"
 import {
-  exportConfig as checkboxExportConfig,
-  schema as checkboxSchema,
-} from "../primitives/controls/Checkbox.schema"
-import {
   exportConfig as inputExportConfig,
   schema as inputSchema,
 } from "../primitives/controls/Input.schema"
@@ -198,10 +194,6 @@ import {
   exportConfig as optionExportConfig,
   schema as optionSchema,
 } from "../primitives/controls/Option.schema"
-import {
-  exportConfig as radioExportConfig,
-  schema as radioSchema,
-} from "../primitives/controls/Radio.schema"
 import {
   exportConfig as selectExportConfig,
   schema as selectSchema,
@@ -278,18 +270,12 @@ import {
   exportConfig as videoExportConfig,
   schema as videoSchema,
 } from "../primitives/video/Video.schema"
-
-// Boards
-import {
-  exportConfig as boardExportConfig,
-  schema as boardSchema,
-} from "../boards/Board.schema"
-
 // Screens
 import {
   exportConfig as screenExportConfig,
   schema as screenSchema,
 } from "../screens/Screen.schema"
+import { ComponentExport, ComponentSchema } from "../types"
 
 const elements: ComponentSchema[] = [
   avatarSchema,
@@ -309,11 +295,9 @@ const primitives: ComponentSchema[] = [
   iconSchema,
   imageSchema,
   navSchema,
-  checkboxSchema,
   inputSchema,
   legendSchema,
   optionSchema,
-  radioSchema,
   selectSchema,
   descriptionDetailsSchema,
   descriptionListSchema,
@@ -462,11 +446,9 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   [ComponentId.ICON]: iconExportConfig,
   [ComponentId.IMAGE]: imageExportConfig,
   [ComponentId.NAV]: navExportConfig,
-  [ComponentId.CHECKBOX]: checkboxExportConfig,
   [ComponentId.INPUT]: inputExportConfig,
   [ComponentId.LEGEND]: legendExportConfig,
   [ComponentId.OPTION]: optionExportConfig,
-  [ComponentId.RADIO]: radioExportConfig,
   [ComponentId.SELECT]: selectExportConfig,
   [ComponentId.DESCRIPTION_DETAILS]: descriptionDetailsExportConfig,
   [ComponentId.DESCRIPTION_LIST]: descriptionListExportConfig,
