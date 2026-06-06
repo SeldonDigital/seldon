@@ -35,9 +35,11 @@ const CANVAS_NODE_ID_ATTR = "data-canvas-node-id"
 const BOARD_ID_ATTR = "data-board-id"
 
 /**
- * A resolved selection. For nodes, `rootId` is the id of the variant-root
- * column the element lives in, so the canvas can outline the clicked copy of a
- * child id that several variant columns share.
+ * A resolved selection. For nodes, `rootId` is the ordered node-id path of the
+ * element's column on the canvas, from the variant-root down to the element,
+ * joined by "/". A child node id is shared both across variant columns and
+ * across sibling copies inside one column, so the full path is what uniquely
+ * identifies the clicked or hovered copy.
  */
 export type SelectionTarget = {
   id: string
@@ -46,21 +48,25 @@ export type SelectionTarget = {
 }
 
 /**
- * The variant-root id of the column a clicked node lives in: the topmost
- * element carrying a node id below the board container. Used to pick the right
- * copy of a child node id that several variant columns render.
+ * The ordered node-id path of the element's column, from the variant-root down
+ * to the element itself, joined by "/". A child node id is shared across
+ * variant columns and across sibling copies inside one column, so the full
+ * ancestor path is what uniquely identifies the clicked or hovered copy on the
+ * canvas. Returns null outside a board (for example sidebar rows), where the
+ * canvas path does not apply.
  */
-function getVariantRootId(element: HTMLElement): string | null {
+export function getElementNodePath(element: HTMLElement): string | null {
   const board = element.closest(`[${BOARD_ID_ATTR}]`)
   if (!board) return null
+  const ids: string[] = []
   let current: HTMLElement | null = element
-  let rootId: string | null = null
   while (current && current !== board) {
     const id = current.getAttribute(CANVAS_NODE_ID_ATTR)
-    if (id) rootId = id
+    if (id) ids.push(id)
     current = current.parentElement
   }
-  return rootId
+  if (ids.length === 0) return null
+  return ids.reverse().join("/")
 }
 
 /**
@@ -76,7 +82,7 @@ export function getSelectionTarget(
   const kind = match.getAttribute(SELECTION_KIND_ATTR) as SelectionKind | null
   if (!id || !kind) return null
   if (kind === "node") {
-    return { id, kind, rootId: getVariantRootId(match) ?? undefined }
+    return { id, kind, rootId: getElementNodePath(match) ?? undefined }
   }
   return { id, kind }
 }

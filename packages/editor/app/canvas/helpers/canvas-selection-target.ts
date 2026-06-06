@@ -8,6 +8,8 @@
  * current selection through this single attribute, so nodes, theme variants,
  * font families, and font-collection variants all use the exact same path.
  */
+import { getElementNodePath } from "@lib/workspace/selection-target"
+
 export const CANVAS_SELECTION_ID_ATTR = "data-canvas-selection-id"
 
 /** Joins the selection ids an element belongs to into the attribute value. */
@@ -35,27 +37,25 @@ export function getCanvasSelectionElements(selectionId: string): HTMLElement[] {
   )
 }
 
-/** Attribute carrying a single node's id, used to find its owning column. */
-const CANVAS_NODE_ID_ATTR = "data-canvas-node-id"
-
 /**
- * Resolves a node selection to the single canvas element inside its column.
+ * Resolves a node selection to the single canvas element matching its path.
  *
- * A child node id is shared across variant columns, so it can appear on several
- * canvas elements at once. Selection carries the variant-root id of the column
- * the user clicked, so the matching copy is the one whose nearest ancestor (or
- * self) carries that root id. Without a root id, or when no copy matches, the
- * first element in document order is used, which is the default variant column.
+ * A child node id is shared both across variant columns and across sibling
+ * copies inside one column, so it can appear on several canvas elements at
+ * once. Selection carries the full ancestor node-id path of the copy the user
+ * clicked or hovered, so the matching copy is the one whose own path is equal.
+ * Without a path, or when no copy matches, the first element in document order
+ * is used, which is the default variant column.
  */
 export function getScopedSelectionElement(
   selectionId: string,
-  rootId: string | null | undefined,
+  pathKey: string | null | undefined,
 ): HTMLElement | null {
   const elements = getCanvasSelectionElements(selectionId)
   if (elements.length === 0) return null
-  if (rootId) {
-    const scoped = elements.find((element) =>
-      element.closest(`[${CANVAS_NODE_ID_ATTR}="${rootId}"]`),
+  if (pathKey) {
+    const scoped = elements.find(
+      (element) => getElementNodePath(element) === pathKey,
     )
     if (scoped) return scoped
   }

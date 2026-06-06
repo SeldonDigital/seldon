@@ -155,6 +155,7 @@ export function useSelection() {
   const selectResourceItem = useStore((state) => state.selectResourceItem)
   const selectedBoardId = useStore((state) => state.selectedBoardId)
   const selectedNodeId = useStore((state) => state.selectedNodeId)
+  const selectedNodeRootId = useStore((state) => state.selectedNodeRootId)
   const selectedResourceEntry = useStore(
     (state) => state.selectedResourceEntry,
   )
@@ -224,7 +225,11 @@ export function useSelection() {
 
   const _selectNode = useCallback(
     (id: VariantId | InstanceId | null, rootId?: string | null) => {
-      if (id === selectedNodeId) return
+      // Re-select when the same child id is clicked in a different variant-root
+      // column so the selection moves to the clicked copy instead of sticking.
+      if (id === selectedNodeId && (rootId ?? null) === selectedNodeRootId) {
+        return
+      }
 
       selectNode(id, rootId)
       if (id) {
@@ -265,6 +270,7 @@ export function useSelection() {
     },
     [
       selectedNodeId,
+      selectedNodeRootId,
       selectNode,
       toggleObject,
       workspace,

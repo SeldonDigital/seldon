@@ -1,7 +1,11 @@
 "use client"
 
 import type { CSSProperties } from "react"
-import { useHoveredId } from "@lib/workspace/hooks/use-object-hover"
+import {
+  useHoveredId,
+  useHoveredRootId,
+} from "@lib/workspace/hooks/use-object-hover"
+import { useSelectedNodeRootId } from "@lib/workspace/hooks/use-selection"
 import { useSelectedId } from "@lib/workspace/selection-target"
 import { useCanvasOverlayStore } from "../../../canvas/hooks/use-canvas-overlay-store"
 import type { NodeRect } from "../../hooks/use-node-rects-store"
@@ -39,8 +43,16 @@ export function CanvasSelectionOutline() {
 export function CanvasHoverOutline() {
   const rect = useCanvasOverlayStore((state) => state.hoverRect)
   const hoveredId = useHoveredId()
+  const hoveredRootId = useHoveredRootId()
   const selectedId = useSelectedId()
-  // Suppress the hover outline when it coincides with the selection outline.
-  if (!rect || (hoveredId !== null && hoveredId === selectedId)) return null
+  const selectedRootId = useSelectedNodeRootId()
+  // Suppress the hover outline only when it coincides with the selection
+  // outline in the same variant-root column. A child id shared across columns
+  // must still highlight the hovered copy when a different copy is selected.
+  const coincidesWithSelection =
+    hoveredId !== null &&
+    hoveredId === selectedId &&
+    hoveredRootId === selectedRootId
+  if (!rect || coincidesWithSelection) return null
   return <div style={outlineStyle(rect, "hover")} />
 }
