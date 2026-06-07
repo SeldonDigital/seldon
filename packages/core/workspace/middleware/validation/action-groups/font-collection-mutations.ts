@@ -26,15 +26,24 @@ export function validateFontCollectionMutation(
     case "delete_font_collection": {
       const id = action.payload.fontCollectionId
       fontCollectionEntryValidators.exists(workspace, id)
-      const entry = workspace["font-collections"][id]
-      if (entry && isEntryFontCollectionDefault(entry)) {
-        throw new WorkspaceValidationError(
-          "Cannot remove default font collection entry",
-          action,
-        )
-      }
+      assertFontCollectionDeletable(workspace, id, action)
       break
     }
+  }
+}
+
+/** Rejects deleting the default font collection entry. */
+function assertFontCollectionDeletable(
+  workspace: Workspace,
+  id: string,
+  action: Action,
+): void {
+  const entry = workspace["font-collections"][id]
+  if (entry && isEntryFontCollectionDefault(entry)) {
+    throw new WorkspaceValidationError(
+      "Cannot remove default font collection entry",
+      action,
+    )
   }
 }
 

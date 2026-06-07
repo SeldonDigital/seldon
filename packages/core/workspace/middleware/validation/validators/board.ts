@@ -1,31 +1,16 @@
 import { getComponentSchema } from "../../../../components/catalog"
-import { ComponentId, isComponentId } from "../../../../components/constants"
-import { areBoardVariantsInUse } from "../../../helpers/components/are-board-variants-in-use"
+import { ComponentId } from "../../../../components/constants"
 import { getComponentPropertyDefaults } from "../../../helpers/components/get-component-property-defaults"
-import { isIconSetBoard, isThemeBoard } from "../../../model/components"
 import { ErrorMessages } from "../../../constants"
 import { check } from "../check"
 import type { Workspace } from "../../../types"
 
-export const componentValidators = {
+export const boardValidators = {
   exists: (workspace: Workspace, id: string) => {
     check(workspace.components[id], ErrorMessages.componentNotFound(id))
   },
   doesNotExist: (workspace: Workspace, id: string) => {
     check(!workspace.components[id], ErrorMessages.componentAlreadyExists(id))
-  },
-  notInUse: (workspace: Workspace, id: ComponentId) => {
-    const board = workspace.components[id]
-    if (board && areBoardVariantsInUse(board, workspace)) {
-      throw new Error(ErrorMessages.componentVariantsInUse(id))
-    }
-  },
-  hasDefaultVariant: (workspace: Workspace, id: ComponentId) => {
-    const board = workspace.components[id]!
-    if (isIconSetBoard(board) || isThemeBoard(board)) {
-      return
-    }
-    check(board.variants.length > 0, ErrorMessages.defaultVariantNotFound(id))
   },
   allowedPropertyKeys: (
     componentId: ComponentId,

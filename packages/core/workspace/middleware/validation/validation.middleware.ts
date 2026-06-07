@@ -6,7 +6,6 @@ export { WorkspaceValidationError } from "./workspace-validation-error"
 export { check } from "./check"
 export { getNodeComponentId } from "./node-component-id"
 export { validateAction } from "./validate-action"
-export { validateComponentCanBeInserted } from "./validators"
 
 /**
  * Middleware that validates actions before they're processed by the reducer.

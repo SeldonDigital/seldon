@@ -4,7 +4,7 @@ import { invariant } from "../../../index"
 import { getNodeCatalogId } from "../../helpers/nodes/get-node-catalog-id"
 import type { EntryNode, Workspace } from "../../types"
 
-/** Resolves the catalog component id for a v0 {@link EntryNode}. */
+/** Resolves the catalog component id for an {@link EntryNode}. */
 export function getNodeComponentId(
   node: EntryNode,
   workspace: Workspace,

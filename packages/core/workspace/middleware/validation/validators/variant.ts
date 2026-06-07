@@ -4,12 +4,9 @@ import { isVariantNode } from "../../../helpers/nodes/is-variant-node"
 import { ErrorMessages } from "../../../constants"
 import { getNodeComponentId } from "../node-component-id"
 import { check } from "../check"
-import type { InstanceId, Variant, VariantId, Workspace } from "../../../types"
+import type { InstanceId, VariantId, Workspace } from "../../../types"
 
 export const variantValidators = {
-  exists: (workspace: Workspace, id: VariantId) => {
-    check(workspace.nodes[id], ErrorMessages.variantNotFound(id))
-  },
   labelIsUnique: (
     workspace: Workspace,
     { nodeId, label }: { nodeId: VariantId | InstanceId; label: string },
@@ -47,5 +44,3 @@ export const variantValidators = {
     }
   },
 }
-
-export type { Variant }

@@ -20,7 +20,7 @@ import { Middleware, Workspace } from "../../types"
 import { check } from "../validation/check"
 import { WorkspaceValidationError } from "../validation/workspace-validation-error"
 
-function collectComponentTreeNodeIds(workspace: Workspace): Set<string> {
+function collectBoardTreeNodeIds(workspace: Workspace): Set<string> {
   const ids = new Set<string>()
   for (const board of Object.values(workspace.components)) {
     walkBoardTreeRefs(board.variants, (ref) => {
@@ -28,6 +28,24 @@ function collectComponentTreeNodeIds(workspace: Workspace): Set<string> {
     })
   }
   return ids
+}
+
+/** Reports whether a variant override computes from a `#parent` reference. */
+function overrideReferencesParentNode(property: unknown): boolean {
+  return (
+    !!property &&
+    typeof property === "object" &&
+    "type" in property &&
+    property.type === ValueType.COMPUTED &&
+    "value" in property &&
+    !!property.value &&
+    typeof property.value === "object" &&
+    "input" in property.value &&
+    !!property.value.input &&
+    typeof (property.value.input as { basedOn?: string }).basedOn ===
+      "string" &&
+    (property.value.input as { basedOn: string }).basedOn.startsWith("#parent")
+  )
 }
 
 const validators = {
@@ -95,7 +113,7 @@ const validators = {
   },
   /** Validates that each variant node appears in some board tree. */
   noDanglingVariants: (workspace: Workspace) => {
-    const treeIds = collectComponentTreeNodeIds(workspace)
+    const treeIds = collectBoardTreeNodeIds(workspace)
     Object.values(getWorkspaceNodes(workspace))
       .filter(isVariantNode)
       .forEach((variant) => {
@@ -104,7 +122,7 @@ const validators = {
   },
   /** Validates that each instance node appears in some board tree. */
   noDanglingChildNodes: (workspace: Workspace) => {
-    const treeIds = collectComponentTreeNodeIds(workspace)
+    const treeIds = collectBoardTreeNodeIds(workspace)
     Object.values(getWorkspaceNodes(workspace))
       .filter(typeCheckingService.isInstance)
       .forEach((child) => {
@@ -129,32 +147,15 @@ const validators = {
       .filter(isVariantNode)
       .forEach((variant) => {
         Object.entries(variant.overrides).forEach(([key, property]) => {
-          if (
-            property &&
-            typeof property === "object" &&
-            "type" in property &&
-            property.type === ValueType.COMPUTED &&
-            "value" in property &&
-            property.value &&
-            typeof property.value === "object" &&
-            "input" in property.value &&
-            property.value.input &&
-            typeof (property.value.input as { basedOn?: string }).basedOn ===
-              "string" &&
-            (property.value.input as { basedOn: string }).basedOn.startsWith(
-              "#parent",
-            )
-          ) {
-            throw new Error(
-              ErrorMessages.variantRefersToParent(variant.id, key),
-            )
+          if (overrideReferencesParentNode(property)) {
+            throw new Error(ErrorMessages.variantRefersToParent(variant.id, key))
           }
         })
       })
   },
 
   /** Validates that each component board has exactly one default variant root. */
-  oneDefaultVariantPerComponent: (workspace: Workspace) => {
+  oneDefaultVariantPerBoard: (workspace: Workspace) => {
     const nodes = getWorkspaceNodes(workspace)
     Object.values(workspace.components).forEach((board) => {
       if (
@@ -221,7 +222,7 @@ export const workspaceVerificationMiddleware: Middleware =
       validators.allNodeTemplateTargetsExist(nextWorkspace)
       log("✅ All node template targets exist")
 
-      validators.oneDefaultVariantPerComponent(nextWorkspace)
+      validators.oneDefaultVariantPerBoard(nextWorkspace)
       log("✅ One default variant per board")
 
       validators.uniqueIds(nextWorkspace)
@@ -255,14 +256,14 @@ export const workspaceVerificationMiddleware: Middleware =
     return nextWorkspace
   }
 
-const log = (message: any) => {
+const log = (message: string) => {
   if (!isWorkspaceLoggingEnabled()) return
-  console.log(`🐶 verificationMiddleware · ${String(message)}`)
+  console.log(`🐶 verificationMiddleware · ${message}`)
 }
 
-const logError = (message: any, error: Error) => {
+const logError = (message: string, error: Error) => {
   if (!isWorkspaceLoggingEnabled()) return
-  console.log(`🐶 verificationMiddleware · ${String(message)}`, {
+  console.log(`🐶 verificationMiddleware · ${message}`, {
     error: error.message,
   })
 }

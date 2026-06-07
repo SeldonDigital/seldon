@@ -1,29 +1,12 @@
 import type { Middleware } from "../../types"
-import { alwaysRunMigrations, migrations } from "./migrations"
-
-/** Current workspace file migration counter (`metadata.version`). */
-export const CURRENT_WORKSPACE_VERSION = 5
-
-function runVersionedMigrations(workspace: import("../../types").Workspace) {
-  let current = workspace
-  const startVersion = workspace.metadata.version ?? 0
-
-  for (const migration of migrations) {
-    if (migration.version > startVersion) {
-      current = migration.migrate(current)
-    }
-  }
-
-  for (const migration of alwaysRunMigrations) {
-    current = migration.migrate(current)
-  }
-
-  return current
-}
 
 /**
- * On `set_workspace`, runs versioned migrations and normalizes `metadata.version`.
+ * Current workspace file version. The flattened v0 baseline ships no historical
+ * migrations, so files saved before v0 are not guaranteed to load.
  */
+export const CURRENT_WORKSPACE_VERSION = 0
+
+/** On `set_workspace`, normalizes `metadata.version` to the current baseline. */
 export const migrationMiddleware: Middleware =
   (next) => (workspace, action) => {
     const nextWorkspace = next(workspace, action)
@@ -32,12 +15,10 @@ export const migrationMiddleware: Middleware =
       return nextWorkspace
     }
 
-    const migrated = runVersionedMigrations(nextWorkspace)
-
     return {
-      ...migrated,
+      ...nextWorkspace,
       metadata: {
-        ...migrated.metadata,
+        ...nextWorkspace.metadata,
         version: CURRENT_WORKSPACE_VERSION,
       },
     }

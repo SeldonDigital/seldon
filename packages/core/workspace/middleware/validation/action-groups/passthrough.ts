@@ -1,7 +1,7 @@
 import type { Action } from "../../../types"
 
 /** Actions that need no pre-reducer validation. */
-export const PASSTHROUGH_ACTION_TYPES = new Set<Action["type"]>([
+const PASSTHROUGH_ACTION_TYPES = new Set<Action["type"]>([
   "set_workspace",
   "set_workspace_owner",
   "set_workspace_label",

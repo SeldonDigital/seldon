@@ -1,4 +1,4 @@
-import { validateComponentMetadata } from "./action-groups/component-metadata"
+import { validateBoardMetadata } from "./action-groups/board-metadata"
 import {
   validateAddFontCollectionCustomFamily,
   validateFontCollectionMutation,
@@ -24,7 +24,7 @@ import {
   validateAddThemeCustomToken,
   validateRemoveThemeCustomToken,
 } from "./action-groups/theme-custom-tokens"
-import { componentValidators } from "./validators"
+import { boardValidators } from "./validators"
 import { WorkspaceValidationError } from "./workspace-validation-error"
 import type { Action, Workspace } from "../../types"
 
@@ -59,7 +59,7 @@ export function validateAction(workspace: Workspace, action: Action): void {
 
   switch (action.type) {
     case "add_component":
-      componentValidators.doesNotExist(workspace, action.payload.boardKey)
+      boardValidators.doesNotExist(workspace, action.payload.boardKey)
       return
     case "add_font_collection":
     case "add_media":
@@ -68,7 +68,7 @@ export function validateAction(workspace: Workspace, action: Action): void {
       validateAddResourceCatalog(workspace, action)
       return
     case "add_playground":
-      componentValidators.doesNotExist(workspace, action.payload.boardKey)
+      boardValidators.doesNotExist(workspace, action.payload.boardKey)
       return
     case "add_variant":
       validateAddVariant(workspace, action)
@@ -165,7 +165,7 @@ export function validateAction(workspace: Workspace, action: Action): void {
     case "set_component_properties":
     case "reset_component_property":
     case "set_component_theme":
-      validateComponentMetadata(workspace, action)
+      validateBoardMetadata(workspace, action)
       return
     default:
       if (process.env.NODE_ENV === "development") {

@@ -196,37 +196,54 @@ export const nodeValidators = {
     )
 
     if (childComponent === ComponentId.FRAME) {
-      const board = getBoardByNodeId(workspace, childId)
-      if (!board) return
-
-      const frameChildIds = getChildrenIds(board, childId)
-      for (const grandChildId of frameChildIds) {
-        const grandChildNode = workspace.nodes[grandChildId]
-        if (grandChildNode) {
-          const grandChildComponent = getNodeComponentId(
-            grandChildNode,
-            workspace,
-          )
-          const canContainGrandChild =
-            typeCheckingService.canComponentBeParentOf(
-              parentComponentId,
-              grandChildComponent,
-            )
-
-          if (!canContainGrandChild) {
-            const grandChildSchema = getComponentSchema(grandChildComponent)
-            check(
-              false,
-              ErrorMessages.invalidParentChildRelationship(
-                parentSchema.name,
-                `${childSchema.name} containing ${grandChildSchema.name}`,
-              ),
-            )
-          }
-        }
-      }
+      assertFrameGrandchildrenAllowed(
+        workspace,
+        parentComponentId,
+        childId,
+        parentSchema,
+        childSchema,
+      )
     }
   },
+}
+
+/**
+ * Frames inherit their parent's containment rules, so every frame grandchild
+ * must also be allowed directly under the frame's parent component.
+ */
+function assertFrameGrandchildrenAllowed(
+  workspace: Workspace,
+  parentComponentId: ComponentId,
+  frameId: InstanceId | VariantId,
+  parentSchema: ReturnType<typeof getComponentSchema>,
+  frameSchema: ReturnType<typeof getComponentSchema>,
+): void {
+  const board = getBoardByNodeId(workspace, frameId)
+  if (!board) return
+
+  for (const grandChildId of getChildrenIds(board, frameId)) {
+    const grandChildNode = workspace.nodes[grandChildId]
+    if (!grandChildNode) continue
+
+    const grandChildComponent = getNodeComponentId(grandChildNode, workspace)
+    if (
+      typeCheckingService.canComponentBeParentOf(
+        parentComponentId,
+        grandChildComponent,
+      )
+    ) {
+      continue
+    }
+
+    const grandChildSchema = getComponentSchema(grandChildComponent)
+    check(
+      false,
+      ErrorMessages.invalidParentChildRelationship(
+        parentSchema.name,
+        `${frameSchema.name} containing ${grandChildSchema.name}`,
+      ),
+    )
+  }
 }
 
 export function validateComponentCanBeInserted(
