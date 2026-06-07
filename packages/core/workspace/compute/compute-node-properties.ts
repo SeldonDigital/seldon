@@ -1,21 +1,21 @@
 import { getComponentSchema } from "../../components/catalog"
 import { ComponentId, isComponentId } from "../../components/constants"
-import { getComponentPropertyDefaults } from "../helpers/components/get-component-property-defaults"
-import { getNodeParentIndex } from "../helpers/graph/build-node-parent-index"
-import type { ComponentEntry } from "../types"
 import { computeProperties } from "../../properties/compute"
 import type { ComputeContext } from "../../properties/compute"
-import type { Properties } from "../../properties/types/properties"
 import { mergeTaggedValues } from "../../properties/helpers/merge-tagged-value"
+import type { Properties } from "../../properties/types/properties"
 import {
   LAYERED_PAINT_KEYS,
-  OBJECT_FACET_PROPERTY_KEYS,
   type LayeredPaintKey,
+  OBJECT_FACET_PROPERTY_KEYS,
   type ObjectFacetPropertyKey,
   type PropertyKey,
 } from "../../properties/types/property-keys"
+import { getComponentPropertyDefaults } from "../helpers/components/get-component-property-defaults"
+import { getNodeParentIndex } from "../helpers/graph/build-node-parent-index"
 import { getNodeCatalogId } from "../helpers/nodes/get-node-catalog-id"
 import { parseNodeTemplate, parseThemeTemplate } from "../model/template-ref"
+import type { ComponentEntry } from "../types"
 import type { EntryNode, Workspace } from "../types"
 import { getComputedTheme } from "./compute-workspace-themes"
 
@@ -70,11 +70,15 @@ function getNodes(workspace: WorkspacePropertySource): NodeRecord {
   return workspace.byId ?? workspace.nodes ?? {}
 }
 
-function getOwnProperties(source: WorkspaceNode | WorkspaceComponent): Properties {
+function getOwnProperties(
+  source: WorkspaceNode | WorkspaceComponent,
+): Properties {
   return (
     ("properties" in source ? source.properties : undefined) ??
     ("overrides" in source ? source.overrides : undefined) ??
-    ("componentProperties" in source ? source.componentProperties : undefined) ??
+    ("componentProperties" in source
+      ? source.componentProperties
+      : undefined) ??
     {}
   )
 }
@@ -94,10 +98,7 @@ function getNodeComponentId(
     return parsed.componentId
   }
 
-  const catalogId = getNodeCatalogId(
-    node as EntryNode,
-    workspace as Workspace,
-  )
+  const catalogId = getNodeCatalogId(node as EntryNode, workspace as Workspace)
   if (catalogId && isComponentId(catalogId)) return catalogId
 
   return null
@@ -205,7 +206,9 @@ function getEffectiveThemeId(
   }
 
   const board = findComponentForNode(node, workspace, compositionParentByChild)
-  return normalizeThemeRef(board ? getComponentThemeRef(board) : null) ?? "seldon"
+  return (
+    normalizeThemeRef(board ? getComponentThemeRef(board) : null) ?? "seldon"
+  )
 }
 
 function mergeLayerArrays<T extends Record<string, unknown>>(
@@ -378,7 +381,9 @@ export function getNodeComputeContext(
   if (!node) {
     const board = workspace.components?.[targetId]
     const effectiveProperties = getEffectiveNodeProperties(targetId, workspace)
-    const themeId = normalizeThemeRef(board ? getComponentThemeRef(board) : null)
+    const themeId = normalizeThemeRef(
+      board ? getComponentThemeRef(board) : null,
+    )
     const theme = getComputedTheme(themeId ?? "seldon", workspace)
     return {
       properties: effectiveProperties,
@@ -412,7 +417,9 @@ export function computeNodeProperties(
 
   if (!node) {
     const board = workspace.components?.[targetId]
-    const themeId = normalizeThemeRef(board ? getComponentThemeRef(board) : null)
+    const themeId = normalizeThemeRef(
+      board ? getComponentThemeRef(board) : null,
+    )
     const theme = getComputedTheme(themeId ?? "seldon", workspace)
     return computeProperties(effectiveProperties, {
       properties: effectiveProperties,

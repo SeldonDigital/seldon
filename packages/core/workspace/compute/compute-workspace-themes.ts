@@ -1,10 +1,7 @@
 import merge from "lodash/merge"
+
+import { STOCK_THEMES_BY_ID, THEMES, THEMES_BY_ID } from "../../themes/catalog"
 import { instantiateTheme } from "../../themes/compute/instantiate-theme"
-import {
-  STOCK_THEMES_BY_ID,
-  THEMES,
-  THEMES_BY_ID,
-} from "../../themes/catalog"
 import type { ComputedTheme } from "../../themes/types/theme"
 import type {
   ThemeInstanceId,
@@ -94,7 +91,11 @@ function materializeWorkspaceTheme(
     ...overrides.map((layer) => layer ?? {}),
   ) as Record<string, unknown>
 
-  const computed = instantiateTheme(templateId, mergedOverrides, STOCK_THEMES_BY_ID)
+  const computed = instantiateTheme(
+    templateId,
+    mergedOverrides,
+    STOCK_THEMES_BY_ID,
+  )
 
   return {
     ...computed,

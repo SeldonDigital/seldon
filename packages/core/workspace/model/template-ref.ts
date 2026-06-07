@@ -1,6 +1,8 @@
 const COLON = ":"
 
-function splitTemplateRef(value: string): { prefix: string; suffix: string } | null {
+function splitTemplateRef(
+  value: string,
+): { prefix: string; suffix: string } | null {
   const first = value.indexOf(COLON)
   const last = value.lastIndexOf(COLON)
 
@@ -72,7 +74,9 @@ export function parseThemeTemplateRef(
   return null
 }
 
-export function parseThemeTemplate(value: string): ParsedThemeTemplateRef | null {
+export function parseThemeTemplate(
+  value: string,
+): ParsedThemeTemplateRef | null {
   return parseThemeTemplateRef(value)
 }
 
@@ -229,7 +233,10 @@ export function parseFontCollectionCatalogTemplateRef(
 
 export function parseFontCollectionLinkTemplateRef(
   value: string,
-): Extract<ParsedFontCollectionTemplateRef, { kind: "font-collection" }> | null {
+): Extract<
+  ParsedFontCollectionTemplateRef,
+  { kind: "font-collection" }
+> | null {
   const p = parseFontCollectionTemplateRef(value)
   return p?.kind === "font-collection" ? p : null
 }
@@ -238,7 +245,8 @@ export function getFontCollectionTemplateCatalogId(
   value: string,
 ): string | null {
   return (
-    parseFontCollectionCatalogTemplateRef(value)?.fontCollectionCatalogId ?? null
+    parseFontCollectionCatalogTemplateRef(value)?.fontCollectionCatalogId ??
+    null
   )
 }
 
@@ -270,7 +278,9 @@ export function parseIconSetTemplate(
   return parseIconSetTemplateRef(value)
 }
 
-export function formatIconSetCatalogTemplateRef(iconSetCatalogId: string): string {
+export function formatIconSetCatalogTemplateRef(
+  iconSetCatalogId: string,
+): string {
   return `catalog:${iconSetCatalogId}`
 }
 
