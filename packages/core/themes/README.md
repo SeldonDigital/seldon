@@ -710,13 +710,13 @@ Workspace pipelines pick a stock template by id and apply user-supplied override
 
 ### Workspace serialization
 
-[`workspace.json`](../workspace/WORKSPACE.md) holds **raw authoring state** only: each board / node references a theme by **`ThemeInstanceId`** (for example `theme-skyBlue-default`) and the editable theme source rows live under the top-level `themes` map. Computed theme rows are produced by read-side selectors (`computeWorkspaceThemes`, `getComputedTheme`); they are **not** persisted back into the file.
+[`workspace.json`](../workspace/README.md) holds **raw authoring state** only: each board / node references a theme by **`ThemeInstanceId`** (for example `theme-skyBlue-default`) and the editable theme source rows live under the top-level `themes` map. Computed theme rows are produced by read-side selectors (`computeWorkspaceThemes`, `getComputedTheme`); they are **not** persisted back into the file.
 
 [`catalog-ids.ts`](./catalog-ids.ts) exports `packagedThemeCatalogIds` and `resolvePackagedThemeByCatalogId`. Workspace validation uses the ids to check theme board `catalogId` values.
 
 ### Computed resolution (imports)
 
-The main [`@seldon/core/themes`](./index.ts) barrel re-exports `computeTheme` and `normalizeTheme` from [`./helpers`](./helpers/index.ts), but keeps palette math, `instantiateTheme`, and the input normalizer in **[`@seldon/core/themes/compute`](./compute/index.ts)** to avoid an import cycle with `themes/catalog`. Use **`@seldon/core/themes/compute`** for `instantiateTheme`, `normalizeThemeInput`, `getDynamicSwatchColors`, `getPalette`, and the colorspace helpers. Resolving an `@<scope>.<key>` reference into a concrete CSS value is **property-side** (`helpers/resolution`), not this package; behavior and palette rules for theme materialization are documented in [`compute/THEMES-COMPUTE.md`](./compute/THEMES-COMPUTE.md).
+The main [`@seldon/core/themes`](./index.ts) barrel re-exports `computeTheme` and `normalizeTheme` from [`./helpers`](./helpers/index.ts), but keeps palette math, `instantiateTheme`, and the input normalizer in **[`@seldon/core/themes/compute`](./compute/index.ts)** to avoid an import cycle with `themes/catalog`. Use **`@seldon/core/themes/compute`** for `instantiateTheme`, `normalizeThemeInput`, `getDynamicSwatchColors`, `getPalette`, and the colorspace helpers. Resolving an `@<scope>.<key>` reference into a concrete CSS value is **property-side** (`helpers/resolution`), not this package; behavior and palette rules for theme materialization are documented in [`compute/README.md`](./compute/README.md).
 
 ---
 
@@ -961,10 +961,10 @@ This project is licensed as follows:
 
 ## Links
 
-- [PROPERTIES.md](../properties/PROPERTIES.md) — `ValueType`, wire notation, property categories
-- [THEMES-COMPUTE.md](./compute/THEMES-COMPUTE.md) — palette math, `instantiateTheme`, normalization details
-- [THEME-SCHEMAS.md](./schemas/THEME-SCHEMAS.md)
-- [WORKSPACE.md](../workspace/WORKSPACE.md) — where themes attach to boards and nodes
+- [properties/README.md](../properties/README.md) — `ValueType`, wire notation, property categories
+- [compute/README.md](./compute/README.md) — palette math, `instantiateTheme`, normalization details
+- [schemas/README.md](./schemas/README.md)
+- [workspace/README.md](../workspace/README.md) — where themes attach to boards and nodes
 
 --- 
 

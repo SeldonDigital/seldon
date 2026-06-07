@@ -536,6 +536,7 @@ The result of this is that an editor's properties panel will display and edit al
 | `theme` | `ThemeInstanceId` or `null` | The theme used for this node, or `null` to inherit from its parent. |
 | `template` | `string` | Where the node gets its metadata, along with its list of **properties** and subsequent default values which are resolved before `overrides` are applied. This value is either `catalog:{ComponentId}` or `node:{nodeId}`. See **Default Node**, **Variant Node**, and **Instance Node** below. |
 | `overrides` | `Properties` | Property overrides for this node, which is derived from either `catalog:{ComponentId}` or `node:{nodeId}`. Can be an empty object `{}`. If a property is not declared in the `template`, the overridden value is ignored. |
+| `origin` | `string` | Optional creation origin, one of `"schema"` or `"user"`. Only meaningful on `type: "instance"` nodes. The engine sets and maintains it, and it drives removal behavior. See **Instance Node** and **Composition Rules** below. |
 | `__editor` | `object` | Editor-only metadata. |
 
 When code consults [`rules.mutations.*`](../rules/config/rules.config.ts), index by internal [`Entity`](../rules/types/rule-config-types.ts) keys (`defaultVariant`, `userVariant`, …), not raw `type` strings. Map serialized `EntryNode.type` with [`mapEntryNodeTypeToRulesEntity`](./helpers/rules/map-entry-node-type-to-rules-entity.ts); see [Rules README](../rules/README.md) (Entity vocabulary vs workspace `nodes`).
@@ -799,7 +800,76 @@ A user-created variant, with `type` set to `"variant"`. Whenever an editor modif
 
 ## Icon Sets
 
-The `icon-sets` object contains icon set definitions and configurations referenced by icon set boards. Structure TBD.
+The `icon-sets` object is a flat map of all default and variant icon set entries used within the workspace. A `seldonIcons` icon set is always present and stored within each workspace, and cannot be removed. Each icon set gets its own catalog row, allowing for variants and curated subsets added to the workspace.
+
+Icon set keys are icon set ID strings and must match each value's `id` field. All metadata and other important information is retrieved from the icon set template.
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `id` | `string` | Unique entry identifier; must equal the key used for this icon set in the `icon-sets` map. |
+| `type` | `string` | Entry type discriminator. One of: `"default"`, `"variant"`. |
+| `label` | `string` | Display name for the entry. |
+| `template` | `string` | Where the icon set gets its metadata, along with its list of **icons** and subsequent default values, which are resolved before `overrides` are applied. This value is either `catalog:{IconSetTemplateId}` or `icon-set:{iconSetId}`. See **Default Icon Set** and **Variant Icon Set** below. |
+| `overrides` | `object` | Icon selection overrides for this icon set, derived from either `catalog:{IconSetTemplateId}` or `icon-set:{iconSetId}`. Can be an empty object `{}`. The per-icon selection lives under `includedIcons`, a map keyed by icon id where each value is a boolean. An absent icon falls back to the set's default categories. |
+| `__editor` | `object` | Editor-only metadata. |
+
+---
+
+### Default Icon Set
+
+Default rows follow **Default catalog alignment** (Workspace Structure): icon shape stays catalog-true; customize through **`overrides`** (and **`label`** where editors allow).
+
+The canonical root for an icon set catalog row, with `type` set to `"default"`. Whenever an editor modifies this default icon set, changes propagate to other variant icon sets that reference this one as their template. Default icon sets are commonly created through adding catalog icon sets into the workspace.
+
+- The **`template`** field is always **`catalog:{IconSetTemplateId}`**. This entry's icons and defaults are defined by schemas under `core/icon-sets/catalog/<icon-set-template-id>/`, with the default baseline being the result of `template` icons with `overrides` applied on top.
+
+- The **`overrides`** field carries the per-icon selection under `includedIcons`; an icon absent from the map falls back to the set's default categories.
+
+```json
+"icon-sets": {
+  "icon-set-seldonIcons-default": {
+    "id": "icon-set-seldonIcons-default",
+    "type": "default",
+    "label": "Default",
+    "template": "catalog:seldonIcons",
+    "overrides": {
+      "includedIcons": {
+        "seldon-add": true,
+        "seldon-close": true
+        /* ... other icon selections */
+      }
+    }
+  }
+}
+```
+
+---
+
+### Variant Icon Set
+
+A user-created variant, with `type` set to `"variant"`. Whenever an editor modifies this variant, changes propagate to other variant icon sets that reference this one as their template.
+
+- The **`template`** field for variants is always an **`icon-set:{iconSetId}`**. This entry's icons and defaults are defined by that icon set, with the variant baseline being the result of `template` icons applied with `template` overrides, then variant `overrides` applied on top.
+
+- The **`overrides`** field carries a `includedIcons` map on top of the `template` baseline. Icons absent from the map fall back to the template selection. Curated subsets turn icons off by setting their value to `false`.
+
+```json
+"icon-sets": {
+  "icon-set-googleMaterial-5c11a0b2": {
+    "id": "icon-set-googleMaterial-5c11a0b2",
+    "type": "variant",
+    "label": "Mobile",
+    "template": "icon-set:icon-set-googleMaterial-default",
+    "overrides": {
+      "includedIcons": {
+        "material-home": true,
+        "material-settings": false
+        /* ... other icon selections */
+      }
+    }
+  }
+}
+```
 
 ---
 

@@ -8,6 +8,8 @@ This folder holds declarative policy for workspace mutations and catalog nesting
 
 Each catalog [`ComponentLevel`](../components/constants/index.ts) maps to a `mayContain` list of levels allowed as schema children. [`TypeCheckingService.canComponentBeParentOf`](../workspace/services/type-checking/type-checking.service.ts) uses this map when validating catalog parent and child pairs. Board variant trees use separate placement rules in the workspace layer.
 
+The map covers `primitive`, `frame`, `element`, `part`, `module`, `screen`, and `board`. `board` is an editor-only shell with an empty `mayContain`, so it holds no composition children.
+
 Values live in [`config/rules.config.ts`](./config/rules.config.ts).
 
 ---
