@@ -3,8 +3,8 @@ import { Properties, PropertyKey, SubPropertyKey } from "../../properties"
 import { Entity, Propagation } from "../../rules/types/rule-config-types"
 import { ThemeInstanceId } from "../../themes/types"
 import {
-  ComponentEntry,
-  ComponentKey,
+  Board,
+  BoardKey,
   DefaultVariant,
   Instance,
   InstanceId,
@@ -15,6 +15,7 @@ import {
   VariantId,
   Workspace,
 } from "../types"
+import { boardOrderService } from "./components/board-order.service"
 import { nodeOperationsService } from "./nodes/node-operations.service"
 import { nodeRelationshipService } from "./nodes/node-relationship.service"
 import { nodeRetrievalService } from "./nodes/node-retrieval.service"
@@ -32,11 +33,11 @@ import { workspaceMutationService } from "./mutation/workspace-mutation.service"
  * @deprecated Use individual services directly for new code
  */
 class WorkspaceService {
-  public getComponent(
-    componentKey: ComponentKey,
+  public getBoard(
+    boardKey: BoardKey,
     workspace: Workspace,
-  ): ComponentEntry {
-    return nodeRetrievalService.getComponent(componentKey, workspace)
+  ): Board {
+    return nodeRetrievalService.getBoard(boardKey, workspace)
   }
 
   public getNode(
@@ -49,7 +50,7 @@ class WorkspaceService {
   public getObject(
     objectId: InstanceId | VariantId | ComponentId,
     workspace: Workspace,
-  ): Variant | Instance | ComponentEntry {
+  ): Variant | Instance | Board {
     return nodeRetrievalService.getObject(objectId, workspace)
   }
 
@@ -104,8 +105,10 @@ class WorkspaceService {
     return typeCheckingService.isUserVariant(node)
   }
 
-  public isComponentEntry(node: RulesNodeOrComponent): node is ComponentEntry {
-    return typeCheckingService.isComponentEntry(node)
+  public isBoard(
+    node: RulesNodeOrComponent | undefined,
+  ): node is Board {
+    return node !== undefined && typeCheckingService.isBoard(node)
   }
 
   public isNode(node: RulesNodeOrComponent): node is Variant | Instance {
@@ -163,18 +166,18 @@ class WorkspaceService {
     )
   }
 
-  public findComponentForVariant(
+  public findBoardForVariant(
     variant: Variant,
     workspace: Workspace,
-  ): ComponentEntry | null {
-    return nodeRelationshipService.findComponentForVariant(variant, workspace)
+  ): Board | null {
+    return nodeRelationshipService.findBoardForVariant(variant, workspace)
   }
 
-  public findComponentForNode(
+  public findBoardForNode(
     node: Variant | Instance,
     workspace: Workspace,
-  ): ComponentEntry | null {
-    return nodeRelationshipService.findComponentForNode(node, workspace)
+  ): Board | null {
+    return nodeRelationshipService.findBoardForNode(node, workspace)
   }
 
   public findContainerNode(
@@ -270,18 +273,18 @@ class WorkspaceService {
     return nodeOperationsService.insertNode(params, workspace)
   }
 
-  public deleteComponent(
+  public deleteBoard(
     componentId: ComponentId,
     workspace: Workspace,
   ): Workspace {
-    return nodeOperationsService.deleteComponent(componentId, workspace)
+    return nodeOperationsService.deleteBoard(componentId, workspace)
   }
 
-  public deleteComponentByKey(
-    componentKey: ComponentKey,
+  public deleteBoardByKey(
+    boardKey: BoardKey,
     workspace: Workspace,
   ): Workspace {
-    return nodeOperationsService.deleteComponentByKey(componentKey, workspace)
+    return nodeOperationsService.deleteBoardByKey(boardKey, workspace)
   }
 
   public deleteInstance(
@@ -417,19 +420,19 @@ class WorkspaceService {
   }
 
   public setComponentProperties(
-    componentKey: ComponentKey,
+    boardKey: BoardKey,
     properties: Properties,
     workspace: Workspace,
   ): Workspace {
     return workspaceMutationService.setComponentProperties(
-      componentKey,
+      boardKey,
       properties,
       workspace,
     )
   }
 
   public resetComponentProperty(
-    componentKey: ComponentKey,
+    boardKey: BoardKey,
     params: {
       propertyKey: PropertyKey
       subpropertyKey?: SubPropertyKey
@@ -437,7 +440,7 @@ class WorkspaceService {
     workspace: Workspace,
   ): Workspace {
     return workspaceMutationService.resetComponentProperty(
-      componentKey,
+      boardKey,
       params,
       workspace,
     )
@@ -454,12 +457,12 @@ class WorkspaceService {
   }
 
   public setComponentTheme(
-    componentKey: ComponentKey,
+    boardKey: BoardKey,
     theme: ThemeInstanceId,
     workspace: Workspace,
   ): Workspace {
     return workspaceMutationService.setComponentTheme(
-      componentKey,
+      boardKey,
       theme,
       workspace,
     )
@@ -517,69 +520,33 @@ class WorkspaceService {
 
   public hasAncestorWithComponentId(
     componentId: ComponentId,
-    node: Variant | Instance | ComponentEntry,
+    node: Variant | Instance | Board,
     workspace: Workspace,
   ): boolean {
-    return workspacePropagationService.hasAncestorWithComponentId(
+    return nodeRelationshipService.hasAncestorWithComponentId(
       componentId,
       node,
       workspace,
     )
   }
 
-  public realignComponentOrder(workspace: Workspace): Workspace {
-    return workspacePropagationService.realignComponentOrder(workspace)
+  public realignBoardOrder(workspace: Workspace): Workspace {
+    return boardOrderService.realignBoardOrder(workspace)
   }
 
-  public getComponents(workspace: Workspace): ComponentEntry[] {
-    return workspacePropagationService.getComponents(workspace)
+  public getBoards(workspace: Workspace): Board[] {
+    return boardOrderService.getBoards(workspace)
   }
 
   public parseWorkspace(json: string): Workspace {
     return workspacePropagationService.parseWorkspace(json)
-  }
-
-  /** @deprecated Use `getComponents` */
-  public getBoards(workspace: Workspace): ComponentEntry[] {
-    return this.getComponents(workspace)
-  }
-
-  /** @deprecated Use `getComponent` */
-  public getBoard(
-    componentKey: ComponentKey,
-    workspace: Workspace,
-  ): ComponentEntry {
-    return this.getComponent(componentKey, workspace)
-  }
-
-  /** @deprecated Use `isComponentEntry` */
-  public isBoard(
-    node: RulesNodeOrComponent | undefined,
-  ): node is ComponentEntry {
-    return node !== undefined && this.isComponentEntry(node)
-  }
-
-  /** @deprecated Use `findComponentForNode` */
-  public findBoardForNode(
-    node: Variant | Instance,
-    workspace: Workspace,
-  ): ComponentEntry | null {
-    return this.findComponentForNode(node, workspace)
-  }
-
-  /** @deprecated Use `findComponentForVariant` */
-  public findBoardForVariant(
-    variant: Variant,
-    workspace: Workspace,
-  ): ComponentEntry | null {
-    return this.findComponentForVariant(variant, workspace)
   }
 }
 
 export const workspaceService = new WorkspaceService()
 
 export type {
-  ComponentEntry,
+  Board,
   DefaultVariant,
   Instance,
   InstanceId,

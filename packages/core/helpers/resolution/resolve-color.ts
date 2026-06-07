@@ -20,7 +20,6 @@ import { isSwatchToken } from "../../themes/values"
  *
  * @param color - The color value to resolve
  * @param theme - The theme object containing color tokens
- * @param parentContext - The parent context for computed value resolution
  * @returns The resolved color value
  */
 export function resolveColor({

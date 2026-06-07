@@ -14,6 +14,7 @@ import { isModulatedToken, isThemeExactToken } from "../../themes/types"
 import { modulate } from "../math/modulate"
 import { getThemeOption } from "../theme/get-theme-option"
 import { findInObject } from "../utils/find-in-object"
+import { exactTokenToLength } from "./resolve-length-token"
 
 /**
  * Resolves size values to concrete PixelValue, RemValue, or EmptyValue.
@@ -101,12 +102,7 @@ export function resolveSize({
         }
       }
       if (isThemeExactToken(themeValue)) {
-        const { unit, value: n } = themeValue.parameters
-        return (
-          unit === Unit.PX
-            ? { type: ValueType.EXACT, value: { unit: Unit.PX, value: n } }
-            : { type: ValueType.EXACT, value: { unit: Unit.REM, value: n } }
-        ) as PixelValue | RemValue
+        return exactTokenToLength(themeValue.parameters)
       }
       throw new Error(
         `Theme key ${size.value as string} must resolve to MODULATED or EXACT length`,

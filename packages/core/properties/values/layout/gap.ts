@@ -9,6 +9,7 @@ import { RemValue } from "../shared/exact/rem"
 /** Catalog spacing choice between children when not using fixed lengths or theme steps. */
 export enum Gap {
   EVENLY_SPACED = "evenly-spaced",
+  NONE = "none",
 }
 
 /** Picks one spacing option from the Gap enum. */

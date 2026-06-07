@@ -363,7 +363,8 @@ export const schema = {
   default: {
     children: [
       {
-        component: Seldon.ComponentId.CHECKBOX,
+        component: Seldon.ComponentId.INPUT,
+        variant: "checkbox",
         overrides: {
           align: {
             type: Sdn.ValueType.OPTION,
@@ -397,7 +398,8 @@ export const schema = {
         },
         children: [
           {
-            component: Seldon.ComponentId.TITLE,
+            component: Seldon.ComponentId.TEXT,
+            variant: "title",
             overrides: {
               content: {
                 type: Sdn.ValueType.EXACT,
@@ -406,7 +408,8 @@ export const schema = {
             },
           },
           {
-            component: Seldon.ComponentId.SUBTITLE,
+            component: Seldon.ComponentId.TEXT,
+            variant: "subtitle",
             overrides: {
               content: {
                 type: Sdn.ValueType.EXACT,
@@ -438,7 +441,8 @@ export const schema = {
       intent: "List item that includes an avatar to represent an entity.",
       children: [
         {
-          component: Seldon.ComponentId.CHECKBOX,
+          component: Seldon.ComponentId.INPUT,
+          variant: "checkbox",
           overrides: {
             width: {
               type: Sdn.ValueType.OPTION,
@@ -472,7 +476,8 @@ export const schema = {
       intent: "List item format optimized for showing product-related info.",
       children: [
         {
-          component: Seldon.ComponentId.CHECKBOX,
+          component: Seldon.ComponentId.INPUT,
+          variant: "checkbox",
           overrides: {
             align: {
               type: Sdn.ValueType.OPTION,
@@ -538,7 +543,8 @@ export const schema = {
               },
               children: [
                 {
-                  component: Seldon.ComponentId.TITLE,
+                  component: Seldon.ComponentId.TEXT,
+                  variant: "title",
                   overrides: {
                     content: {
                       type: Sdn.ValueType.EXACT,
@@ -581,7 +587,8 @@ export const schema = {
                   },
                 },
                 {
-                  component: Seldon.ComponentId.SUBTITLE,
+                  component: Seldon.ComponentId.TEXT,
+                  variant: "subtitle",
                   overrides: {
                     content: {
                       type: Sdn.ValueType.EXACT,
@@ -804,7 +811,8 @@ export const schema = {
               },
             },
             {
-              component: Seldon.ComponentId.LABEL,
+              component: Seldon.ComponentId.TEXT,
+              variant: "label",
               overrides: {
                 display: {
                   type: Sdn.ValueType.OPTION,
@@ -815,7 +823,8 @@ export const schema = {
           ],
         },
         {
-          component: Seldon.ComponentId.LABEL,
+          component: Seldon.ComponentId.TEXT,
+          variant: "label",
           overrides: {
             content: {
               type: Sdn.ValueType.EXACT,
@@ -1067,7 +1076,8 @@ export const schema = {
               },
             },
             {
-              component: Seldon.ComponentId.LABEL,
+              component: Seldon.ComponentId.TEXT,
+              variant: "label",
               overrides: {
                 display: {
                   type: Sdn.ValueType.OPTION,
@@ -1210,7 +1220,8 @@ export const schema = {
               },
             },
             {
-              component: Seldon.ComponentId.LABEL,
+              component: Seldon.ComponentId.TEXT,
+              variant: "label",
               overrides: {
                 display: {
                   type: Sdn.ValueType.OPTION,
@@ -1257,7 +1268,8 @@ export const schema = {
       },
       children: [
         {
-          component: Seldon.ComponentId.CHECKBOX,
+          component: Seldon.ComponentId.INPUT,
+          variant: "checkbox",
           overrides: {
             checked: {
               type: Sdn.ValueType.EXACT,
@@ -1282,7 +1294,8 @@ export const schema = {
           },
         },
         {
-          component: Seldon.ComponentId.LABEL,
+          component: Seldon.ComponentId.TEXT,
+          variant: "label",
           overrides: {
             content: {
               type: Sdn.ValueType.EXACT,
@@ -1365,7 +1378,8 @@ export const schema = {
               },
             },
             {
-              component: Seldon.ComponentId.LABEL,
+              component: Seldon.ComponentId.TEXT,
+              variant: "label",
               overrides: {
                 content: {
                   type: Sdn.ValueType.EXACT,
@@ -1442,7 +1456,8 @@ export const schema = {
               },
             },
             {
-              component: Seldon.ComponentId.LABEL,
+              component: Seldon.ComponentId.TEXT,
+              variant: "label",
               overrides: {
                 content: {
                   type: Sdn.ValueType.EXACT,
@@ -1511,7 +1526,8 @@ export const schema = {
           },
           children: [
             {
-              component: Seldon.ComponentId.LABEL,
+              component: Seldon.ComponentId.TEXT,
+              variant: "label",
               overrides: {
                 content: {
                   type: Sdn.ValueType.EXACT,
@@ -1688,7 +1704,8 @@ export const schema = {
               },
             },
             {
-              component: Seldon.ComponentId.LABEL,
+              component: Seldon.ComponentId.TEXT,
+              variant: "label",
               overrides: {
                 display: {
                   type: Sdn.ValueType.OPTION,
@@ -1739,7 +1756,8 @@ export const schema = {
           },
         },
         {
-          component: Seldon.ComponentId.LABEL,
+          component: Seldon.ComponentId.TEXT,
+          variant: "label",
           overrides: {
             content: {
               type: Sdn.ValueType.EXACT,
@@ -1914,7 +1932,8 @@ export const schema = {
               },
             },
             {
-              component: Seldon.ComponentId.LABEL,
+              component: Seldon.ComponentId.TEXT,
+              variant: "label",
               overrides: {
                 display: {
                   type: Sdn.ValueType.OPTION,
@@ -2057,7 +2076,8 @@ export const schema = {
               },
             },
             {
-              component: Seldon.ComponentId.LABEL,
+              component: Seldon.ComponentId.TEXT,
+              variant: "label",
               overrides: {
                 display: {
                   type: Sdn.ValueType.OPTION,

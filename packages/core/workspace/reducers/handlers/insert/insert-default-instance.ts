@@ -7,24 +7,18 @@ import {
 } from "../../../../utils/debug-logger"
 import {
   nodeRetrievalService,
-  nodeTraversalService,
-  nodeRelationshipService,
   nodeOperationsService,
-  workspaceMutationService,
-  workspaceThemeService,
   workspacePropagationService,
   typeCheckingService,
 } from "../../../services"
 import type { InsertDefaultInstance, Workspace } from "../../../types"
-import type { ValidationOptions } from "../../helpers/validation"
 
 export function insertDefaultInstance(
   payload: InsertDefaultInstance,
   workspace: Workspace,
-  options: ValidationOptions = {},
 ): Workspace {
   const defaultVariant = nodeRetrievalService.getDefaultVariant(
-    payload.componentKey as ComponentId,
+    payload.boardKey as ComponentId,
     workspace,
   )
   const targetNode = nodeRetrievalService.getNode(payload.parentId, workspace)

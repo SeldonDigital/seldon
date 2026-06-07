@@ -8,7 +8,6 @@ import { HSLObjectToString } from "./hsl-object-to-string"
 import { LCHObjectToString } from "./lch-object-to-string"
 import { RGBObjectToString } from "./rgb-object-to-string"
 
-// A threshold of 2.5 is the same as Andrei's method with a threshold of 0.19
 const DARK_COLOR_THRESHOLD = 2.5
 
 /**
@@ -32,25 +31,6 @@ export function isDarkBackgroundColor(
   }
 
   return getContrastRatio(color) > threshold
-}
-
-// This method is not currently used, but it's a cleaned up version of Andrei's original POC
-// in case we ever want to revert back. It's exactly the same as using isDarkBackgroundColor
-// with a threshold of 3.78.
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function isDarkBackgroundColorAccordingToAndrei(color: ColorValue) {
-  const stringColor = toString(color)
-  const chromaColor = chroma(stringColor)
-
-  const [r, g, b] = chromaColor.rgb().map((value: number) => {
-    const asFraction = value / 255
-
-    return asFraction <= 0.03928
-      ? asFraction / 12.92
-      : Math.pow((asFraction + 0.055) / 1.055, 2.4)
-  })
-
-  return 0.2126 * r + 0.7152 * g + 0.0722 * b < 0.22
 }
 
 /**

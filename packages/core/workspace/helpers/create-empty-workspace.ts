@@ -1,7 +1,7 @@
 import type { Workspace } from "../model/workspace"
-import { seedDefaultFontCollectionBoard } from "./font-collections/seed-default-font-collection-board"
-import { seedDefaultIconSetBoard } from "./icon-sets/seed-default-icon-set-board"
-import { seedDefaultThemeBoard } from "./themes/seed-default-theme-board"
+import { seedDefaultFontCollectionBoard } from "./seed/seed-default-font-collection-board"
+import { seedDefaultIconSetBoard } from "./seed/seed-default-icon-set-board"
+import { seedDefaultThemeBoard } from "./seed/seed-default-theme-board"
 
 /** Baseline version matching `CURRENT_WORKSPACE_VERSION`. */
 const EMPTY_WORKSPACE_FILE_VERSION = 0
@@ -15,7 +15,7 @@ export function createEmptyWorkspace(): Workspace {
       version: EMPTY_WORKSPACE_FILE_VERSION,
       label: "",
     },
-    components: {},
+    boards: {},
     nodes: {},
     themes: {},
     "font-collections": {},

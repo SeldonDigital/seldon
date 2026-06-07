@@ -17,9 +17,9 @@ export function deleteIconSet(
 
     delete draft["icon-sets"][payload.iconSetId]
 
-    const componentKey = iconSetBoardKeyFromEntryId(payload.iconSetId)
-    if (!componentKey) return
-    const board = draft.components[componentKey]
+    const boardKey = iconSetBoardKeyFromEntryId(payload.iconSetId)
+    if (!boardKey) return
+    const board = draft.boards[boardKey]
     if (board?.type !== "icon-set" || !board.variants) return
     board.variants = board.variants.filter((r) => r.id !== payload.iconSetId)
   })

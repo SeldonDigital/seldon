@@ -1,9 +1,7 @@
-import { getComponentLevelThemeRef } from "../components/get-component-level-theme-ref"
+import { getBoardThemeRef } from "../components/get-board-theme-ref"
 import { getWorkspaceNodes } from "../general/get-workspace-nodes"
 import { workspaceThemeService } from "../../services"
 import type { VariantId, Workspace } from "../../types"
-
-export { getComponentLevelThemeRef }
 
 /**
  * True when any board uses `themeId` as its catalog theme ref, or any node
@@ -13,9 +11,9 @@ export function hasEffectiveThemeReference(
   workspace: Workspace,
   themeId: string,
 ): boolean {
-  for (const board of Object.values(workspace.components)) {
+  for (const board of Object.values(workspace.boards)) {
     if (!board) continue
-    const ref = getComponentLevelThemeRef(board)
+    const ref = getBoardThemeRef(board)
     if (ref === themeId) return true
   }
 

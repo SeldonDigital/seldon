@@ -1,6 +1,6 @@
 import { getComponentSchema } from "../../../components/catalog"
 import { ComponentId } from "../../../components/constants"
-import { isComplexSchema, type SchemaChild } from "../../../components/types"
+import { type SchemaChild, hasVariants } from "../../../components/types"
 import {
   formatSchemaVariantLabel,
   getSchemaVariantSlotKey,
@@ -29,13 +29,9 @@ export function getMissingSchemaVariantIssueForSlot(
   }
 
   const childSchema = getComponentSchema(slot.component)
-  if (!isComplexSchema(childSchema)) {
-    return null
-  }
-
-  const variantExists = childSchema.variants?.some(
-    (candidate) => candidate.id === slot.variant,
-  )
+  const variantExists =
+    hasVariants(childSchema) &&
+    childSchema.variants.some((candidate) => candidate.id === slot.variant)
   if (variantExists) {
     return null
   }

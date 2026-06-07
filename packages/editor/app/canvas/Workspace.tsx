@@ -59,12 +59,12 @@ function renderBoard(board: Board) {
 }
 
 function ActiveBoard() {
-  const { debugModeEnabled } = useDebugMode()
+  const { canvasProfiling } = useDebugMode()
   const { activeBoard } = useActiveBoard()
 
   const board = activeBoard ? renderBoard(activeBoard) : null
 
-  if (debugModeEnabled) {
+  if (canvasProfiling) {
     return (
       <Profiler
         id="canvas"

@@ -49,9 +49,11 @@ export interface SchemaVariant extends SchemaTree {
   overrides?: Properties
 }
 
-// Primitives are leaves: no default tree, no variants, no children.
+// Primitives are leaves: no default tree and no composition children. They may declare leaf `variants` that carry only
+// root property overrides, never child trees.
 export interface PrimitiveComponentSchema extends BaseComponentSchema {
   level: ComponentLevel.PRIMITIVE
+  variants?: SchemaVariant[]
 }
 
 // Complex schemas always declare a `default` tree and may declare alternate `variants` of the same component.
@@ -71,12 +73,8 @@ export function isComplexSchema(
 
 export function hasVariants(
   schema: ComponentSchema,
-): schema is ComplexComponentSchema & { variants: SchemaVariant[] } {
-  return (
-    isComplexSchema(schema) &&
-    Array.isArray(schema.variants) &&
-    schema.variants.length > 0
-  )
+): schema is ComponentSchema & { variants: SchemaVariant[] } {
+  return Array.isArray(schema.variants) && schema.variants.length > 0
 }
 
 export function isVariantTree(

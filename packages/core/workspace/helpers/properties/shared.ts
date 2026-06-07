@@ -13,11 +13,11 @@ import {
   type WorkspacePropertySource,
 } from "@seldon/core/workspace/compute"
 import { getComponentPropertyDefaults } from "@seldon/core/workspace/helpers/components/get-component-property-defaults"
-import { isComponentEntry } from "@seldon/core/workspace/helpers/components/is-component-entry"
+import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { getNodeById } from "@seldon/core/workspace/helpers/nodes/get-node-by-id"
 import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-catalog-id"
 import type {
-  ComponentEntry,
+  Board,
   EntryNode,
   Workspace,
 } from "@seldon/core/workspace/types"
@@ -27,9 +27,9 @@ type TypedPropertyValue = {
   value: unknown
 }
 
-export type PropertyPanelSubject = ComponentEntry | EntryNode
+export type PropertyPanelSubject = Board | EntryNode
 
-export const LAYERED_PAINT_LAYER_INDEX = 0
+const LAYERED_PAINT_LAYER_INDEX = 0
 
 function isTypedPropertyValue(value: unknown): value is TypedPropertyValue {
   return !!(
@@ -108,17 +108,17 @@ export function wrapCompoundPropertyValue(
 export function getPropertyOverridesBag(
   subject: PropertyPanelSubject,
 ): Properties | undefined {
-  if (isComponentEntry(subject)) {
+  if (isBoard(subject)) {
     return subject.componentProperties
   }
   return subject.overrides
 }
 
-export function resolveComponentId(
+function resolveComponentId(
   subject: PropertyPanelSubject,
   workspace: Workspace,
 ): ComponentId | undefined {
-  if (isComponentEntry(subject)) {
+  if (isBoard(subject)) {
     if (subject.type === "component" && isComponentId(subject.catalogId)) {
       return subject.catalogId
     }
@@ -135,7 +135,7 @@ export function getTypedNode(
   nodeId: string,
   workspace: Workspace,
 ): PropertyPanelSubject {
-  const catalogRow = workspace.components[nodeId]
+  const catalogRow = workspace.boards[nodeId]
   if (catalogRow) {
     return catalogRow
   }
@@ -184,7 +184,7 @@ export function getSchemaProperties(
   node: PropertyPanelSubject,
   workspace?: Workspace,
 ): Properties | null {
-  if (isComponentEntry(node)) {
+  if (isBoard(node)) {
     return getComponentPropertyDefaults()
   }
 

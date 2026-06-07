@@ -19,7 +19,6 @@ import {
 import type { PropertySchema } from "../../../properties/types/schema"
 import {
   isLayeredPaintProperty,
-  type LayeredPaintKey,
   type PropertyKey,
 } from "../../../properties/types/property-keys"
 import type { Properties } from "../../../properties/types/properties"
@@ -590,6 +589,25 @@ function buildPropertyOptionsFromSchema(
   }
 }
 
+/**
+ * Maps one theme look id to a picker option, or null when the section entry has
+ * no usable name.
+ */
+function themeLookPickerOption(
+  parentKey: string,
+  section: Record<string, unknown>,
+  id: string,
+): PropertyPickerOption | null {
+  const entry = section[id]
+  if (!entry || typeof entry !== "object" || !("name" in entry)) {
+    return null
+  }
+  return {
+    value: getThemeLookPickerToken(parentKey, id),
+    name: String((entry as Record<string, unknown>).name),
+  }
+}
+
 function buildCompoundPresetPickerOptions(
   input: PropertyPickerInput,
 ): PropertyPickerResult {
@@ -640,16 +658,9 @@ function buildCompoundPresetPickerOptions(
     lookSection === null
       ? []
       : listThemeLookIds(theme, lookSection)
-          .map((id) => {
-            const v = section[id]
-            if (!v || typeof v !== "object" || !("name" in v)) {
-              return null
-            }
-            return {
-              value: getThemeLookPickerToken(parentKey, id),
-              name: String((v as Record<string, unknown>).name),
-            }
-          })
+          .map((id) =>
+            themeLookPickerOption(parentKey, section as Record<string, unknown>, id),
+          )
           .filter((option): option is PropertyPickerOption => option !== null)
 
   if (presetGroup.length > 0) {

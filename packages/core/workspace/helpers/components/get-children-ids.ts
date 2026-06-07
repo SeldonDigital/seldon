@@ -1,5 +1,5 @@
-import type { ComponentEntry, EntryNodeId } from "../../types"
-import { walkComponentTreeRefs } from "./walk-component-tree-refs"
+import type { Board, EntryNodeId } from "../../types"
+import { walkBoardTreeRefs } from "./walk-board-tree-refs"
 
 /**
  * Lists every child node id under this parent inside the board variant tree.
@@ -7,13 +7,13 @@ import { walkComponentTreeRefs } from "./walk-component-tree-refs"
  *
  * Returns an empty array when this parent has no children or does not appear in the tree.
  *
- * @param board ComponentEntry whose variants hold the tree.
+ * @param board Board whose variants hold the tree.
  * @param parentId Node id for the parent whose children you need.
  */
-export function getChildrenIds(board: ComponentEntry, parentId: EntryNodeId): EntryNodeId[] {
+export function getChildrenIds(board: Board, parentId: EntryNodeId): EntryNodeId[] {
   let childIds: EntryNodeId[] = []
 
-  walkComponentTreeRefs(board.variants, (ref) => {
+  walkBoardTreeRefs(board.variants, (ref) => {
     if (ref.id !== parentId) return
     childIds = (ref.children ?? []).map((child) => child.id)
     return true

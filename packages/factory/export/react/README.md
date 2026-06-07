@@ -1,173 +1,133 @@
 # Factory React Export System
 
-The Factory React Export System is a code generation engine that transforms Seldon design workspaces into production-ready React components with full TypeScript support. It handles complex component hierarchies, prop inheritance, and generates optimized JSX structures.
+The Factory React Export System turns a Seldon workspace into a React component library. It generates one `.tsx` file per component variant, the CSS files, native primitives, icons, fonts, utilities, and a package README. Every text file gets a license header.
 
-The React export system operates through a multi-stage pipeline that converts workspace data into complete React component files. The system is organized into logical directories that reflect the pipeline stages:
+## Entry Point
 
-1. **Component Discovery** (`discovery/`) - Identifies components to export and creates JSON representation of component hierarchies
-2. **Validation** (`validation/`) - Validates component props and schemas
-3. **Code Generation** (`generation/`) - Generates TypeScript interfaces, React components, imports, and all code
-4. **Asset Processing** (`assets/`) - Handles images, icons, fonts, and other assets
-5. **Utilities** (`utils/`) - Shared utility functions and helpers
+`exportReact` in `export-react.ts` is the entry point.
 
-## System Architecture
+```typescript
+async function exportReact(
+  input: Workspace,
+  options: ExportOptions,
+): Promise<FileToExport[]>
+```
 
-### Pipeline Stages
+`exportReact` runs these steps:
 
-#### 1. Component Discovery (`discovery/`)
+1. Build the export context with `buildExportContext` to get the parent index.
+2. Build the CSS style registry with `buildStyleRegistry` from the CSS export.
+3. Discover components with `getComponentsToExport`, then sort them by level.
+4. Collect icon ids from `getUsedIconIds` and every icon enabled in the workspace icon sets.
+5. Emit `styles.css` with `generateComponentStylesheet`.
+6. Emit one theme file per theme with `generateThemeStylesheetFiles`.
+7. Transform image paths to relative paths with `replaceImagesWithRelativePaths`.
+8. Generate component files, native primitives, the Frame component, icons, the icon index, the Fonts component, the package README, utility files, and image files.
+9. Add a license header to every string file with `insertLicense`.
 
-**Component Identification** (`discovery/get-components-to-export.ts`)
-The entry point for discovering which components to export from a workspace. Filters workspace variants, maps each variant to a ComponentToExport object, determines output paths based on component level, creates JSON tree representation for each component, and associates export configuration for each component type.
+Each generation step runs inside a `try/catch` so one failure does not stop the others.
 
-**Tree Building** (`discovery/get-json-tree-from-children.ts`)
-Converts workspace component hierarchies into structured JSON trees that represent the component structure with hierarchical structure maintenance, property mapping to React props, reference management for duplicate component names, display filtering for hidden components, and CSS class integration.
+## Directory Layout
 
-**Data Extraction Functions**
-- **`get-component-name.ts`**: Extracts and formats component names from workspace nodes
-- **`get-human-readable-prop-name.ts`**: Converts technical prop paths to human-readable names
-- **`get-icon-component-name.ts`**: Generates icon component names from icon IDs
-- **`get-node-origin-chain.ts`**: Traces the origin chain of component nodes
-- **`get-simple-prop-name.ts`**: Extracts simple prop names from complex paths
-- **`get-used-icon-ids.ts`**: Identifies all icons used in workspace for tree shaking
+The code is grouped by pipeline stage:
 
-#### 2. Validation (`validation/`)
+1. **Discovery** (`discovery/`) finds components to export and builds their JSON trees.
+2. **Validation** (`validation/`) checks proposed children against the component schema.
+3. **Generation** (`generation/`) builds interfaces, functions, props, and imports.
+4. **Assets** (`assets/`) builds icons, fonts, images, and the icon index.
+5. **Utilities** (`utils/`) holds shared helpers.
 
-**Component Prop Validation** (`validation/validate-component-props.ts`)
-Validates component props against their schemas to determine rendering strategy by comparing proposed children against component schema, separating valid props from invalid props, determining if component uses fewer props than specified in schema, and mapping component names to ComponentIds for validation.
+`constants.ts` defines the source markers. `format.ts` formats TypeScript.
 
-#### 3. Code Generation (`generation/`)
+## Discovery
 
-**Interface Generation** (`generation/insert-interface.ts`)
-Generates TypeScript interfaces that extend appropriate HTML element types by determining base HTML element type from component configuration, generating own props from component properties, adding children props for nested components, creating union types for props with multiple options, and extending appropriate HTML attributes interface.
+**Components to export** (`discovery/get-components-to-export.ts`)
+`getComponentsToExport` collects every variant on a component board, skips `Frame`, and maps each one to a `ComponentToExport`. It sets the output path from the pluralized component level, such as `components/buttons/Button.tsx`. It builds the JSON tree with `getJsonTreeFromChildren` and attaches the export config.
 
-**Component Function Generation** (`generation/insert-component-function.ts`)
-Creates the main React component function with proper JSX structure through prop names mapping for consistent prop names across interface and JSX, variable declarations for prop variable declarations with class merging, return statement creation based on component type, and JSDoc comment addition for component documentation.
+**JSON tree** (`discovery/get-json-tree-from-children.ts`)
+`getJsonTreeFromChildren` walks the component children into a `JSONTreeNode` tree. It drops children with `display: EXCLUDE`, guards against circular references, numbers repeated component names, records the CSS class names per node, escapes text content, and resolves prop options for icons and HTML elements.
 
-**JSX Structure Generation** (`generation/preprocess/generate-jsx-structure.ts`)
-The core JSX structure generation engine that creates structured JSX representation with correct sequential prop names. The system uses a preprocess pipeline that:
-- Generates JSX structure with correct prop names from the start
-- Handles grandchildren passed as props
-- Supports sequential numbering across the entire tree
-- Converts JSX structure to string via `jsx-structure-to-string.ts`
+**Other discovery helpers**
 
-**Component Rendering Strategies**:
-- **Regular Component**: Components with valid props matching the schema (with or without children)
-- **Custom Component**: Components with invalid props (extra props not in schema), rendered conditionally
-- **Inline Component**: Components with invalid child props, wrapped in a Frame with inline rendering
-- **Regular Inline Component**: Components with all valid child props that have grandchildren. Only used when grandchildren are present and a Frame wrapper is needed (unlike Inline Component which wraps invalid props in a Frame)
-- **Custom Inline Component**: Components with invalid props (extra props not in schema), rendered conditionally, with children and grandchildren
+- `get-component-name.ts` formats a component name from a node.
+- `get-icon-component-name.ts` builds an icon component name from an icon id.
+- `get-node-origin-chain.ts` traces the origin chain of a node for class names.
+- `get-used-icon-ids.ts` collects the icon ids referenced in the workspace.
+- `get-used-native-components.ts` finds the native primitives a workspace uses.
+- `native-html-file-stem.ts` maps used elements to native file names.
 
-**Return Statement Generation** (`generation/generate-react-component-return-statements.ts`)
-Generates different types of return statements based on component configuration including icon map returns for dynamic icon rendering with fallback handling, HTML element returns with switch statements for dynamic HTML element rendering, and simple returns for direct component returns for basic components.
+## Validation
 
-**Interface Base Generation** (`generation/generate-typescript-interface-base.ts`)
-Handles the base structure and generic types for TypeScript interfaces with generic type resolution for appropriate HTML element types, icon map support for SVG generic types, HTML element support for union types, and own props generation for component-specific props.
+**Component props** (`validation/validate-component-props.ts`)
+`validateComponentProps` splits proposed children into `validProps` and `invalidProps`. It matches each child against the active schema branch, the default tree or a selected schema variant. `Frame` allows any children. When the schema cannot be found, it treats all children as valid. `validateTreeNodeProps` and `validateExportedComponentProps` apply this to a tree node and to a component root.
 
-**Children Props Generation** (`generation/generate-typescript-interface-children-props.ts`)
-Generates interface content for child component props with validation awareness using validation integration to determine interface structure, inline component support for props rendered inline, hierarchical traversal for recursive component tree processing, and prop name consistency using the same prop names map as the component function.
+## Generation
 
-**Prop Names Generation** (`generation/shared/generate-prop-names-map.ts`)
-Generates prop value names map for variable names in generated code. The naming strategy varies based on depth and component type (inline, custom, default), with direct children using base names with numbering and grandchildren inheriting parent numbering or using component-specific logic. Prop keys are extracted from JSX structure via `generation/preprocess/extract-prop-names-from-jsx.ts`.
+**Component files** (`generation/helpers/generate-component-files.ts`)
+`generateComponentFiles` builds each component file. For each component it builds the JSX structure, then inserts the interface, the function, the default props, and the imports. When the config returns `iconMap`, it inserts the icon map. It formats the result.
 
-**Default Props** (`generation/insert-default-props.ts`)
-Generates default prop objects for component initialization with structured default prop objects for component initialization.
+**JSX structure** (`generation/preprocess/generate-jsx-structure.ts`)
+`generateJSXStructure` returns the root JSX node and a map of prop names. It assigns prop names once with `assignPropNames` and carries them on each node. It marks invalid props and frames as conditional. When a child has only valid children, it passes the grandchildren as props instead of rendering them. `jsx-structure-to-string.ts` turns the structure into JSX text.
 
-**Function Signature** (`generation/generate-react-function-signature.ts`)
-Creates the component function signature with proper prop destructuring.
+**Inserts** (`generation/inserts/`)
 
-**Import Management** (`generation/insert-imports.ts`)
-Intelligently manages all necessary imports for the component with import categories for React types, component imports, interface imports, icon imports, utility imports, and native imports, plus smart import logic with tree shaking, inline detection, validation awareness, and path resolution.
+- `insert-interface.ts` writes the TypeScript interface that extends the right HTML element type.
+- `insert-component-function.ts` writes the component function, its variable declarations, and its return statement.
+- `insert-default-props.ts` writes the default prop objects.
+- `insert-imports.ts` writes the imports. It walks the tree and the JSX structure, imports only the components and interfaces that render, resolves icon and native paths, and always imports `combineClassNames`.
+- `insert-icon-map.ts` writes the icon map for components that return `iconMap`.
+- `insert-license.ts` adds the license header.
 
-#### 4. Asset Processing (`assets/`)
+**Shared generators** (`generation/shared/`)
 
-**Image Path Transformation** (`assets/transform-image-paths.ts`)
-Transforms absolute image paths to relative paths for export with path resolution, background image updates, source image updates, and Immer integration for immutable workspace modification.
+- `assign-prop-names.ts` assigns one prop name per node.
+- `generate-children-props.ts` builds the child prop fields for an interface.
+- `generate-typescript-interface-base.ts` builds the interface base and generic types.
+- `generate-react-component-return-statements.ts` builds the return statement, including icon maps and dynamic HTML elements.
+- `generate-variable-declarations.ts`, `generate-props-spread.ts`, `generate-default-props.ts`, `generate-jsdoc-comment.ts`, and `get-conditional-prop-paths.ts` support these steps.
 
-**Asset Management Functions**
-- **`get-files-to-export-from-images-to-export.ts`**: Processes image files for export
-- **`get-fonts-component.ts`**: Generates font component files
-- **`get-icons.ts`**: Creates icon component files with tree shaking
-- **`get-images-to-export.ts`**: Identifies and processes images for export
+**Rendering strategy** (`generation/inline-components/`, `custom-components/`, `default-components/`)
+Three predicates classify a component:
 
-#### 5. Utilities (`utils/`)
+- `isInlineComponent` is true when the component has a `Frame` as a direct child.
+- `isCustomComponent` is true when the variant is a user variant and the component is not inline.
+- `isDefaultComponent` is true when the variant is the default variant, the component is not inline, and all direct children are valid against the schema.
 
-**Core Utility Functions**
-- **`class-name.ts`**: CSS class name combination and management
-- **`generate-utility-file-contents.ts`**: Generates utility file contents
-- **`pluralize-level.ts`**: Pluralizes component level names
-- **`transform-source.ts`**: Universal source transformation with append/prepend strategies
+**Helpers** (`generation/helpers/`)
 
-## Component Generation Pipeline
+- `generate-frame-component.ts` writes the shared `Frame` component.
+- `get-native-component-files.ts` reads the native primitive files for the used elements.
+- `generate-readme-file.ts` writes the package README.
 
-### 1. Main Export Process (`export-react.ts`)
-The main orchestration function that coordinates the entire export process through workspace computation, style registry building, component discovery, icon collection, stylesheet generation, image processing, component generation, supporting files generation, and license addition.
+## Assets
 
-### 2. Component File Generation
-For each component, the system generates a complete file through interface generation, component function generation, default props generation, import management, special handling for icon maps, and code formatting.
+- `assets/get-images-to-export.ts` finds the images a workspace uses.
+- `assets/transform-image-paths.ts` rewrites absolute image paths to relative export paths.
+- `assets/get-files-to-export-from-images-to-export.ts` reads image files for export.
+- `assets/get-icons.ts` reads the icon component file for each used icon id, with a generated fallback for the default icon.
+- `assets/generate-icon-index.ts` writes the icon index file.
+- `assets/get-fonts-component.ts` writes the `Fonts` component. It emits font host links for remote families only when `options.enableRemoteFonts` is set.
 
-### 3. Generated Component Example
-**Input**: ButtonBar component with two buttons and an icon
+## Utilities
 
-**Generated Output**: Complete TypeScript interface with HTML element extension, React component function with proper JSX structure, default prop objects, and comprehensive import management.
+- `utils/class-name.ts` provides class name helpers used during generation.
+- `utils/generate-utility-file-contents.ts` writes the exported `utils/class-name.ts` file with `combineClassNames`.
+- `utils/pluralize-level.ts` pluralizes a component level for output paths.
+- `utils/transform-source.ts` appends or prepends content to a source string.
+- `utils/case-utils.ts` and `utils/find-icon-path.ts` support naming and icon paths.
 
-## Supporting Systems
+## Formatting
 
-### Constants and Markers (`constants.ts`)
-The constants file defines markers used throughout the code generation process for content insertion and removal with remove block markers, component body insertion points, and before/after component insertion points.
+`format.ts` runs Prettier with the `typescript` parser and no semicolons. It runs twice so the import sort plugin puts each import on its own line. It honors a `skipFormat` option.
 
-### Code Formatting (`format.ts`)
-Handles code formatting with Prettier integration, import sorting with custom import order, and double formatting for proper import organization.
+## Constants
 
-## Advanced Features
-
-### 1. Prop Inheritance and Merging
-The system handles complex prop inheritance across component hierarchies with automatic inheritance from parent components, selective override capabilities, and complete property context building.
-
-### 2. Style Override Processing
-The system processes style overrides through CSS class generation and ordering, class name merging in components, class deduplication, and CSS cascade optimization.
-
-### 3. Component Rendering Strategies
-The system automatically determines component rendering based on prop validation:
-- **Regular Component**: Rendered as standard imports for valid props matching the schema
-- **Custom Component**: Rendered conditionally for invalid props (extra props not in schema)
-- **Inline Component**: Wrapped in a Frame with inline rendering for invalid child props
-- **Regular Inline Component**: Standard rendering with grandchildren prop mapping. Only used when grandchildren are present and a Frame wrapper is needed (unlike Inline Component which wraps invalid props in a Frame)
-
-### 4. Dynamic HTML Elements
-Components can render different HTML elements based on props with union type support for dynamic HTML element rendering.
-
-### 5. Icon Tree Shaking
-Only used icons are imported and included in the final bundle for optimal performance.
-
-### 6. Type Safety
-Full TypeScript support with generated interfaces for all components, proper HTML element typing, union types for restricted props, and generic type parameters for flexibility.
-
-## Usage
-
-The React export system is used through the main factory export function or through individual functions for more granular control. The system requires a valid Seldon workspace with computed properties, export options specifying target framework and output paths, and component variants properly configured in workspace.
+`constants.ts` defines the `MARKERS` used during generation: remove-block markers and insertion points for the component body, before the component, and after the component.
 
 ## Generated Output
 
-The system produces a complete component library structure organized by component levels with primitives, elements, parts, modules, icons, utils, and assets. Each generated component includes TypeScript interfaces with fully typed props, React components with proper JSX structure, CSS classes with optimized styles, JSDoc comments for documentation, tree-shaken imports, and full theme integration support.
+`exportReact` returns an array of `FileToExport`. The output is a component library grouped by level, plus `styles.css`, one theme file per theme, native primitives under `native-react/`, the `Frame` component, icons under `icons/`, the `Fonts` component, the `utils/class-name.ts` helper, image files, and a package README. Every component file holds a typed interface, a React function, CSS class wiring, and tree-shaken imports.
 
-## Integration with Factory System
+## Icons
 
-The React export system integrates seamlessly with the complete Factory system to ensure that all computed values are resolved before component generation, providing a complete and consistent design system.
-
-## Usage as Source of Truth
-
-This README serves as the authoritative documentation for the Factory React Export System. When making changes to the React export functionality:
-
-1. **Update this README first** to reflect the intended export behavior and processing workflow
-2. **Implement changes** to match the documented specifications and processing stages
-3. **Verify that the export pipeline** follows the documented workflow from workspace computation through file generation
-4. **Ensure style override processing** maintains the documented class merging and cascade optimization
-5. **Validate that component processing** follows the documented validation and rendering strategies
-
-The React export system transforms valid Seldon workspaces through a structured pipeline that must maintain consistency with this documentation to ensure reliable component generation and proper style inheritance.
-
-## Subsystem Documentation
-
-For detailed implementation information, see the specific subsystem documentation:
-
-- **[Technical Reference](./TECHNICAL.md)** - Code examples and implementation details
+Used icons come from two sources. `getUsedIconIds` collects icons referenced by components. The export also adds every icon enabled in the workspace icon sets, so a shipped icon set stays complete even when a component does not reference an icon.

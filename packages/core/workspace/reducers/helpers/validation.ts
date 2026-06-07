@@ -8,11 +8,6 @@ export interface ValidationResult {
   warnings: string[]
 }
 
-export interface ValidationOptions {
-  strict?: boolean
-  isAiOperation?: boolean
-}
-
 /**
  * Validate that a component can be inserted into a target node for UI filtering.
  */

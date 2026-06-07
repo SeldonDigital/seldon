@@ -114,7 +114,7 @@ Stock themes ship with Core. Workspace theme rows customize them. Full token tab
 
 ### Workspace
 
-A **workspace** is one design file: `metadata`, `components` (catalog rows), `nodes`, `themes`, `font-collections`, `icon-sets`, and `media`. **Catalog rows** index boards. **Entry nodes** in `nodes` hold `type`, `template`, `theme`, and `overrides`. Variant trees on rows list child node ids; the flat `nodes` map holds each node's payload.
+A **workspace** is one design file: `metadata`, `boards` (catalog rows), `nodes`, `themes`, `font-collections`, `icon-sets`, and `media`. **Catalog rows** index boards. **Entry nodes** in `nodes` hold `type`, `template`, `theme`, and `overrides`. Variant trees on rows list child node ids; the flat `nodes` map holds each node's payload.
 
 Precedence for styling: prefer **variant**-level edits when a change should flow to all instances. Use **instance** overrides only for one-off differences. Instance overrides win over variant values. Theme switching follows the same idea. Details and examples are in [WORKSPACE.md](./workspace/WORKSPACE.md).
 

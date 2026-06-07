@@ -527,7 +527,8 @@ export const schema = {
         },
         children: [
           {
-            component: Seldon.ComponentId.CHECKBOX,
+            component: Seldon.ComponentId.INPUT,
+            variant: "checkbox",
             overrides: {
               accentColor: {
                 type: Sdn.ValueType.THEME_CATEGORICAL,
@@ -536,7 +537,8 @@ export const schema = {
             },
           },
           {
-            component: Seldon.ComponentId.LABEL,
+            component: Seldon.ComponentId.TEXT,
+            variant: "label",
             overrides: {
               content: {
                 type: Sdn.ValueType.EXACT,
@@ -778,7 +780,8 @@ export const schema = {
         },
         children: [
           {
-            component: Seldon.ComponentId.CHECKBOX,
+            component: Seldon.ComponentId.INPUT,
+            variant: "checkbox",
             overrides: {
               checked: {
                 type: Sdn.ValueType.EXACT,
@@ -791,7 +794,8 @@ export const schema = {
             },
           },
           {
-            component: Seldon.ComponentId.LABEL,
+            component: Seldon.ComponentId.TEXT,
+            variant: "label",
             overrides: {
               content: {
                 type: Sdn.ValueType.EXACT,
@@ -1033,7 +1037,8 @@ export const schema = {
         },
         children: [
           {
-            component: Seldon.ComponentId.CHECKBOX,
+            component: Seldon.ComponentId.INPUT,
+            variant: "checkbox",
             overrides: {
               accentColor: {
                 type: Sdn.ValueType.THEME_CATEGORICAL,
@@ -1042,7 +1047,8 @@ export const schema = {
             },
           },
           {
-            component: Seldon.ComponentId.LABEL,
+            component: Seldon.ComponentId.TEXT,
+            variant: "label",
             overrides: {
               content: {
                 type: Sdn.ValueType.EXACT,
@@ -1324,7 +1330,8 @@ export const schema = {
         },
         children: [
           {
-            component: Seldon.ComponentId.CHECKBOX,
+            component: Seldon.ComponentId.INPUT,
+            variant: "checkbox",
             overrides: {
               accentColor: {
                 type: Sdn.ValueType.THEME_CATEGORICAL,
@@ -1333,7 +1340,8 @@ export const schema = {
             },
           },
           {
-            component: Seldon.ComponentId.LABEL,
+            component: Seldon.ComponentId.TEXT,
+            variant: "label",
             overrides: {
               content: {
                 type: Sdn.ValueType.EXACT,

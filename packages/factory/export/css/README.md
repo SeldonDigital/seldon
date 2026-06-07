@@ -1,112 +1,92 @@
 # Factory CSS Export System
 
-The Factory CSS Export System is a code generation engine that transforms Seldon design workspaces into production-ready CSS stylesheets with full theme support, component styling, and optimized class generation. It handles complex style inheritance, theme variables, and generates optimized CSS structures.
+The Factory CSS Export System turns a Seldon workspace into CSS. It produces one component stylesheet and one theme stylesheet file per theme. The component stylesheet holds reset styles, base styles, and component classes. Each theme file holds the CSS custom properties for one theme.
 
-The CSS export system operates through a multi-stage pipeline that converts workspace data into complete CSS stylesheets. The system is organized into logical directories that reflect the pipeline stages:
+## Entry Point
 
-1. **Style Discovery** (`discovery/`) - Identifies styles to export and creates style registry
-2. **CSS Generation** (`generation/`) - Generates CSS stylesheets, theme variables, and component styles
-3. **Utilities** (`utils/`) - Shared utility functions and helpers
+`exportCss` in `export-css.ts` is the entry point.
 
-## System Architecture
+```typescript
+async function exportCss(
+  workspace: Workspace,
+  componentsFolder: string,
+  forceRegeneration?: boolean,
+): Promise<{ componentStylesheet: string; themeStylesheets: ThemeStylesheetFile[] }>
+```
 
-### Pipeline Stages
+`exportCss` runs three steps:
 
-#### 1. Style Discovery (`discovery/`)
+1. Build the export context with `buildExportContext` to get the parent index.
+2. Build the style registry with `buildStyleRegistry`.
+3. Generate the component stylesheet with `generateComponentStylesheet` and the theme files with `generateThemeStylesheetFiles`.
 
-**Style Registry Building** (`discovery/get-style-registry.ts`)
-The core function that builds the complete style registry from a workspace. Processes all nodes in the workspace to create CSS classes, handles default variant property merging with schema properties, implements child node property inheritance, deduplicates identical CSS classes across components, maps child nodes to their variant's classes when appropriate, and calculates tree depths for proper CSS cascade ordering.
+The React export reuses `generateComponentStylesheet` and `generateThemeStylesheetFiles` directly.
 
-**Class Name Generation** (`discovery/get-class-name.ts`)
-Generates consistent CSS class names from node IDs by removing "child-" and "variant-" prefixes, removing "-default" suffix, and adding "sdn-" prefix for consistent naming.
+## Directory Layout
 
-**Component ID Extraction** (`discovery/get-component-id-from-class-name.ts`)
-Extracts component IDs from generated class names for deduplication logic.
+The code is grouped by pipeline stage:
 
-#### 2. CSS Generation (`generation/`)
+1. **Discovery** (`discovery/`) builds the style registry and class names.
+2. **Generation** (`generation/`) builds the component stylesheet and theme files.
+3. **Utilities** (`utils/`) holds shared helpers.
 
-**Main Stylesheet Generation** (`generation/generate-css-stylesheet.ts`)
-The main orchestration function that coordinates the entire CSS generation process through a structured pipeline that inserts reset styles, base styles, component styles, theme variables, and applies formatting.
+`types.ts` defines `Classes` and `NodeIdToClass`. `constants.ts` defines the section markers.
 
-**Style Insertion Functions:**
+## Discovery
 
-**Reset Styles** (`generation/insert-reset-styles.ts`)
-Inserts comprehensive CSS reset styles that handle box-sizing, margins, padding, and form elements to ensure consistent cross-browser styling.
+**Style registry** (`discovery/get-style-registry.ts`)
+`buildStyleRegistry` walks every workspace node and builds a CSS class for each one. It sorts nodes so defaults come first, then variants, then instances. For an instance that points to a template variant, it stores only the CSS that differs from the variant. It deduplicates classes that share the same CSS and the same catalog id. It records the tree depth of each node for cascade ordering. It returns `classes`, `nodeIdToClass`, `classNameToNodeId`, and `nodeTreeDepths`.
 
-**Base Styles** (`generation/insert-base-styles.ts`)
-Inserts base font size (16px) and creates hairline variable for high-DPI displays with responsive hairline adjustments for 2x, 3x, and 4x pixel ratios.
+**Class names** (`discovery/get-class-name.ts`)
+`getClassNameForNode` builds a class name from the node catalog id and type:
 
-**Component Styles** (`generation/insert-node-styles.ts`)
-Inserts styles for all workspace components with intelligent CSS cascade ordering where base classes come first, variant classes follow by tree depth (shallower first), and alphabetical ordering within same depth ensures proper CSS specificity and cascade.
+- Default variant: `sdn-button`
+- Custom variant: `sdn-button-iconic`
+- Instance: `sdn-button-iconic--abc12`, the variant class plus a four-character hash
 
-**Theme Variables** (`generation/insert-theme-variables.ts`)
-Generates CSS custom properties for all used themes with theme-specific variable prefixes, comprehensive token coverage including core values, font families, color system, size tokens, spacing tokens, typography tokens, and border and corner tokens.
+**Component id from class name** (`discovery/get-component-id-from-class-name.ts`)
+`getComponentIdFromClassName` drops the last dash segment of a class name.
 
-#### 3. Utilities (`utils/`)
+## Generation
 
-**CSS Formatting** (`utils/format.ts`)
-Handles CSS code formatting with Prettier integration using CSS parser for proper formatting.
+**Component stylesheet** (`generation/generate-css-stylesheet.ts`)
+`generateComponentStylesheet` builds the component stylesheet. It inserts reset styles, then base styles, then component styles, then formats the result. It does not insert theme variables.
 
-## Advanced Features
+**Reset styles** (`generation/insert-reset-styles.ts`)
+`insertResetStyles` inserts a CSS reset that handles box-sizing, margins, padding, and form elements for consistent cross-browser styling.
 
-#### 1. Theme System Integration
-The CSS export system provides comprehensive theme support with multi-theme support that handles multiple themes in a single workspace, semantic naming that uses semantic swatch names instead of generic identifiers, variable prefixing with theme-specific CSS variable prefixes, and token calculation with real-time calculation of size, spacing, and typography tokens.
+**Base styles** (`generation/insert-base-styles.ts`)
+`insertBaseStyles` sets the base font size to `16px`, sets a default font family on `html` and `body`, and defines a `--hairline` variable with media query overrides for 2x, 3x, and 4x pixel ratios.
 
-#### 2. CSS Cascade Optimization
-Intelligent CSS ordering ensures proper cascade with base classes first, depth-based ordering where shallower nodes override deeper ones, alphabetical consistency for predictable ordering within same depth, and specificity management for proper CSS specificity handling.
+**Component styles** (`generation/insert-node-styles.ts`)
+`insertNodeStyles` sorts the registry classes and appends them under a component styles header. Non-instance classes come before instance classes. Among non-instances, variant classes come first, then shallower tree depths, then alphabetical order. Empty rules are dropped.
 
-#### 3. Class Deduplication
-Efficient class management with identical CSS reuse where same styles across components share classes, component-aware deduplication that only deduplicates within same component type, and memory optimization that reduces CSS bundle size.
+**Theme files** (`generation/insert-theme-variables.ts`)
+`generateThemeStylesheetFiles` writes one CSS file per entry in `workspace.themes`. When the workspace has no themes, it writes a single `seldon` file. Each file is a `:root` block of CSS custom properties for one theme, named `styles-{slug}.css`. The prefix is `--sdn-` for the `seldon` theme and `--sdn-{slug}-` for other themes. Tokens include core values, font families, the color system, swatches, sizes, margins, paddings, gaps, corners, font sizes, font weights, line heights, and border widths. `generateThemeStylesheet` builds the block for one theme.
 
-#### 4. High-DPI Support
-Responsive design features with hairline variables that provide dynamic hairline width for different pixel ratios, media query integration with automatic responsive adjustments, and cross-device compatibility for consistent appearance across devices.
+**Theme slug** (`generation/get-theme-slug.ts`)
+`getThemeSlug` maps a workspace theme id to a slug. The slug names both the theme file and its CSS variable prefix. A default theme slugs from its stock catalog id. A variant prepends its root default slug and appends its own label, such as `seldon-red`.
 
-## Usage
+## Utilities
 
-The CSS export system is used through the main export function or through individual functions for more granular control. The system requires a valid Seldon workspace with computed properties, component variants with styling, and proper theme configuration.
+**Formatting** (`utils/format.ts`)
+`format` runs Prettier with the CSS parser.
 
 ## Generated Output
 
-The system produces a complete CSS stylesheet with reset styles for consistent cross-browser behavior, base styles with responsive design support, component-specific styles with proper cascade ordering, theme variables for comprehensive design token support, optimized class names and deduplication, and production-ready, formatted CSS.
+`exportCss` returns:
 
-## Key Features
+- `componentStylesheet`: a formatted stylesheet with reset styles, base styles, and component classes.
+- `themeStylesheets`: an array of `ThemeStylesheetFile`. Each item has a `themeId`, a `path` under the components folder, and the CSS `content` for one theme.
 
-### Property Inheritance and Merging
-The factory system handles property inheritance across component hierarchies with automatic inheritance from parent components, selective override capabilities, and complete property context building.
+## Theme Variable References
 
-### Theme System Integration
-Theme support with CSS custom properties and design tokens that flow through the component hierarchy, maintaining visual consistency across the entire design system.
+Component classes reference theme tokens through CSS custom properties. `buildStyleRegistry` resolves properties with `useThemeVariableReferences` enabled and passes the theme slug, so a class points at `--sdn-{slug}-` variables. The matching values live in the theme files. This keeps one set of component classes that can switch themes by swapping the theme file.
 
-### CSS Cascade Optimization
-CSS ordering ensures proper cascade and specificity with intelligent class ordering, depth-based hierarchy, and optimized specificity management.
+## Class Deduplication
 
-### Asset Optimization and Tree Shaking
-Asset management with tree shaking that only includes assets actually used in the workspace, automatic image processing and format conversion, path transformation from absolute to relative export paths, and bundle optimization through efficient asset management.
+`buildStyleRegistry` reuses a class when another node has the same CSS and the same catalog id. Deduplication stays within one component type. This keeps the component stylesheet smaller.
 
-### Responsive Design Support
-Built-in responsive design features with media query integration, high-DPI support, and cross-device compatibility.
+## Cascade Ordering
 
-### Code Generation Optimization
-Code generation with Prettier integration for automatic formatting, import sorting with custom import order, JSDoc generation for automatic documentation, and proper licensing headers for generated files.
-
-## Integration with Factory System
-
-The CSS export system integrates seamlessly with the complete Factory system to ensure that all computed values are resolved before CSS generation, providing a complete and consistent design system.
-
-## Usage as Source of Truth
-
-This README serves as the authoritative documentation for the Factory CSS Export System. When making changes to the CSS export functionality:
-
-1. **Update this README first** to reflect the intended export behavior and processing workflow
-2. **Implement changes** to match the documented specifications and processing stages
-3. **Verify that the CSS generation pipeline** follows the documented workflow from style discovery through formatting
-4. **Ensure style override processing** maintains the documented class generation and cascade optimization
-5. **Validate that theme variable generation** follows the documented token calculation and variable prefixing
-
-The CSS export system transforms valid Seldon workspaces through a structured pipeline that must maintain consistency with this documentation to ensure reliable stylesheet generation and proper style inheritance.
-
-## Subsystem Documentation
-
-For detailed implementation information, see the specific subsystem documentation:
-
-- **[Technical Reference](./TECHNICAL.md)** - Code examples and implementation details
+`insertNodeStyles` orders classes so the cascade resolves correctly. Variant classes come before instance classes. Shallower nodes come before deeper nodes. Classes at the same depth fall back to alphabetical order.

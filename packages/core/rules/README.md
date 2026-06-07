@@ -8,15 +8,17 @@ This folder holds declarative policy for workspace mutations and catalog nesting
 
 Each catalog [`ComponentLevel`](../components/constants/index.ts) maps to a `mayContain` list of levels allowed as schema children. [`TypeCheckingService.canComponentBeParentOf`](../workspace/services/type-checking/type-checking.service.ts) uses this map when validating catalog parent and child pairs. Board variant trees use separate placement rules in the workspace layer.
 
+The map covers `primitive`, `frame`, `element`, `part`, `module`, `screen`, and `board`. `board` is an editor-only shell with an empty `mayContain`, so it holds no composition children.
+
 Values live in [`config/rules.config.ts`](./config/rules.config.ts).
 
 ---
 
 ## `mutations`
 
-Ten mutation keys form `RuleId`: `create`, `insertInto`, `instantiate`, `duplicate`, `delete`, `setProperties`, `setTheme`, `rename`, `reorder`, and `move`. Each key indexes four [`Entity`](./types/rule-config-types.ts) rows: `board`, `userVariant`, `defaultVariant`, and `instance`.
+Eleven mutation keys form `RuleId`: `create`, `insertInto`, `instantiate`, `duplicate`, `delete`, `setProperties`, `reset`, `setTheme`, `rename`, `reorder`, and `move`. Each key indexes four [`Entity`](./types/rule-config-types.ts) rows: `board`, `userVariant`, `defaultVariant`, and `instance`.
 
-Every row has `allowed` and `propagation`. Delete rows also set `removalBehavior` for hide versus delete, including conditional behavior on instances.
+Every row has `allowed` and `propagation`. The `delete` instance row also sets `removalBehavior` for hide versus delete, with conditional behavior per instance origin. The other delete rows always delete outright.
 
 Reducers resolve the target entity with [`TypeCheckingService.getEntityType`](../workspace/services/type-checking/type-checking.service.ts), read `rules.mutations[operation][entityType]`, and return the workspace unchanged when `allowed` is false. When allowed, they call [`workspacePropagationService.propagateNodeOperation`](../workspace/services/propagation/workspace-propagation.service.ts) with the configured `propagation`.
 
@@ -55,9 +57,9 @@ flowchart TD
 | `Propagation` | `types/rule-config-types.ts` | Union `none`, `downstream`, or `bidirectional`. Passed into propagation service calls from reducers. |
 | `EntityConfig` | `types/rule-config-types.ts` | `allowed` flag plus `propagation` for one entity row. Base shape for most mutation entries. |
 | `RemovalBehavior` | `types/rule-config-types.ts` | Delete-only behavior: plain `delete` or `hide`, or per-origin object for instances. Read by `remove-instance` handlers. |
-| `DeleteEntityConfig` | `types/rule-config-types.ts` | Extends `EntityConfig` with `removalBehavior`. Types each row under `mutations.delete`. |
-| `DeleteConfig` | `types/rule-config-types.ts` | Maps each `Entity` to `DeleteEntityConfig`. Types the delete mutation block. |
-| `MutationRules` | `types/rule-config-types.ts` | Groups all ten mutation operation configs. Used as the `mutations` field on `RulesConfig`. |
+| `DeleteInstanceConfig` | `types/rule-config-types.ts` | Extends `EntityConfig` with `removalBehavior`. Types only the `instance` row under `mutations.delete`. |
+| `DeleteConfig` | `types/rule-config-types.ts` | Maps board and variant rows to `EntityConfig` and the instance row to `DeleteInstanceConfig`. Types the delete mutation block. |
+| `MutationRules` | `types/rule-config-types.ts` | Groups all eleven mutation operation configs. Used as the `mutations` field on `RulesConfig`. |
 | `RuleId` | `types/rule-config-types.ts` | `keyof MutationRules`. Names the supported mutation operations in policy. |
 | `ComponentLevelConfig` | `types/rule-config-types.ts` | Holds `mayContain` for one catalog level. Used in `componentLevels` records. |
 | `RulesConfig` | `types/rule-config-types.ts` | Top-level shape for `rules`: `mutations` plus `componentLevels`. Matches the exported config object. |
@@ -71,6 +73,7 @@ flowchart TD
 - [`rules-node-subject`](../workspace/helpers/rules/rules-node-subject.ts) and `TypeCheckingService` classify boards, entry nodes, and icon sheet variants before policy lookup.
 - `Propagation` includes `bidirectional`, but every row in [`config/rules.config.ts`](./config/rules.config.ts) today uses `none` or `downstream` only.
 - `setProperties` uses `propagation: "none"` for all entities. Instance overrides still merge at read time when resolving node properties.
+- `reset` uses `propagation: "none"` for all entities. Resets clear overrides or rebuild structure on the targeted subtree only.
 - Rules control mutation policy only. Read-side property and theme materialization lives under [`../workspace/compute/README.md`](../workspace/compute/README.md).
 
 --- 

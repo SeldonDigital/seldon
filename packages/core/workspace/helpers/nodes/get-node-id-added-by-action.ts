@@ -1,8 +1,8 @@
 import { WorkspaceAction } from "../../reducers/types"
 import { EntryNodeId, Workspace } from "../../types"
 import { getChildrenIds } from "../components/get-children-ids"
-import { getComponentByNodeId } from "../components/get-component-by-node-id"
-import { getComponentVariantRootIds } from "../components/get-component-variant-root-ids"
+import { getBoardByNodeId } from "../components/get-board-by-node-id"
+import { getBoardVariantRootIds } from "../components/get-board-variant-root-ids"
 import { getImmediateParentId } from "../components/get-parent-ids"
 import { fontCollectionBoardKeyFromEntryId } from "../font-collections/font-collection-id"
 
@@ -20,7 +20,7 @@ export function getNodeIdAddedByAction(
   switch (type) {
     case "insert_variant_instance":
     case "insert_duplicate_instance": {
-      const board = getComponentByNodeId(
+      const board = getBoardByNodeId(
         workspace,
         payload.target.parentId as EntryNodeId,
       )
@@ -35,7 +35,7 @@ export function getNodeIdAddedByAction(
     }
 
     case "insert_default_instance": {
-      const board = getComponentByNodeId(
+      const board = getBoardByNodeId(
         workspace,
         payload.parentId as EntryNodeId,
       )
@@ -47,9 +47,9 @@ export function getNodeIdAddedByAction(
     }
 
     case "add_component": {
-      const board = workspace.components[payload.componentId]
+      const board = workspace.boards[payload.boardKey]
       if (!board) return null
-      const lastVariant = getComponentVariantRootIds(board).at(-1)
+      const lastVariant = getBoardVariantRootIds(board).at(-1)
       if (!lastVariant) {
         return null
       }
@@ -59,9 +59,9 @@ export function getNodeIdAddedByAction(
     case "add_variant":
     case "add_theme":
     case "add_playground": {
-      const board = workspace.components[payload.componentKey]
+      const board = workspace.boards[payload.boardKey]
       if (!board) return null
-      const lastVariant = getComponentVariantRootIds(board).at(-1)
+      const lastVariant = getBoardVariantRootIds(board).at(-1)
       if (!lastVariant) {
         return null
       }
@@ -69,7 +69,7 @@ export function getNodeIdAddedByAction(
     }
 
     case "add_component_and_insert_default_instance": {
-      const board = getComponentByNodeId(
+      const board = getBoardByNodeId(
         workspace,
         payload.target.parentId as EntryNodeId,
       )
@@ -85,12 +85,12 @@ export function getNodeIdAddedByAction(
 
     case "duplicate_node": {
       const sourceId = payload.nodeId as EntryNodeId
-      const board = getComponentByNodeId(workspace, sourceId)
+      const board = getBoardByNodeId(workspace, sourceId)
       if (!board) return null
 
       const parentId = getImmediateParentId(board, sourceId)
       if (!parentId) {
-        const variantIds = getComponentVariantRootIds(board)
+        const variantIds = getBoardVariantRootIds(board)
         const sourceIndex = variantIds.indexOf(sourceId)
         if (sourceIndex < 0) return null
         return variantIds[sourceIndex + 1] ?? null
@@ -102,17 +102,17 @@ export function getNodeIdAddedByAction(
       return siblingIds[sourceIndex + 1] ?? null
     }
     case "duplicate_component": {
-      const board = workspace.components[payload.newComponentKey]
+      const board = workspace.boards[payload.newBoardKey]
       if (!board) return null
-      return getComponentVariantRootIds(board).at(-1) ?? null
+      return getBoardVariantRootIds(board).at(-1) ?? null
     }
 
     case "add_font_collection":
     case "add_media":
     case "add_icon_set": {
-      const board = workspace.components[payload.catalogId]
+      const board = workspace.boards[payload.catalogId]
       if (!board) return null
-      const lastVariant = getComponentVariantRootIds(board).at(-1)
+      const lastVariant = getBoardVariantRootIds(board).at(-1)
       if (!lastVariant) return null
       return lastVariant
     }
@@ -122,21 +122,21 @@ export function getNodeIdAddedByAction(
       const afterTheme = id.startsWith("theme-")
         ? id.slice("theme-".length)
         : ""
-      const componentKey = afterTheme.includes("-")
+      const boardKey = afterTheme.includes("-")
         ? afterTheme.slice(0, afterTheme.lastIndexOf("-"))
         : null
-      if (!componentKey) return null
-      const board = workspace.components[componentKey]
+      if (!boardKey) return null
+      const board = workspace.boards[boardKey]
       if (!board || board.type !== "theme") return null
       return board.variants.at(-1)?.id ?? null
     }
 
     case "duplicate_font_collection": {
-      const componentKey = fontCollectionBoardKeyFromEntryId(
+      const boardKey = fontCollectionBoardKeyFromEntryId(
         payload.fontCollectionId,
       )
-      if (!componentKey) return null
-      const board = workspace.components[componentKey]
+      if (!boardKey) return null
+      const board = workspace.boards[boardKey]
       if (!board || board.type !== "font-collection") return null
       return board.variants.at(-1)?.id ?? null
     }
@@ -198,22 +198,22 @@ export function getNodeIdAddedByAction(
     case "reset_workspace_intent":
     case "reset_workspace_tags":
     case "reset_workspace_license":
-    case "set_component_label":
-    case "set_component_intent":
-    case "set_component_tags":
-    case "set_component_license":
-    case "set_component_author":
-    case "set_component_credentials":
-    case "set_component_preview":
-    case "set_component_editor_data":
-    case "reset_component_label":
-    case "reset_component_intent":
-    case "reset_component_tags":
-    case "reset_component_license":
-    case "reset_component_author":
-    case "reset_component_credentials":
-    case "reset_component_preview":
-    case "reset_component_editor_data":
+    case "set_board_label":
+    case "set_board_intent":
+    case "set_board_tags":
+    case "set_board_license":
+    case "set_board_author":
+    case "set_board_credentials":
+    case "set_board_preview":
+    case "set_board_editor_data":
+    case "reset_board_label":
+    case "reset_board_intent":
+    case "reset_board_tags":
+    case "reset_board_license":
+    case "reset_board_author":
+    case "reset_board_credentials":
+    case "reset_board_preview":
+    case "reset_board_editor_data":
     case "set_theme_label":
     case "set_theme_editor_data":
     case "set_node_editor_data":

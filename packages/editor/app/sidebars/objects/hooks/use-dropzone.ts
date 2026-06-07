@@ -5,15 +5,15 @@ import { Board, Instance, Variant, Workspace, invariant } from "@seldon/core"
 import { getComponentSchema } from "@seldon/core/components/catalog"
 import { isComponentId } from "@seldon/core/components/constants"
 import { rules } from "@seldon/core/rules/config/rules.config"
-import { isComponentEntry } from "@seldon/core/workspace/helpers/components/is-component-entry"
+import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
-import type { ComponentEntry, EntryNode } from "@seldon/core/workspace/types"
+import type { EntryNode } from "@seldon/core/workspace/types"
 import { getNodeCatalogComponentId } from "@lib/workspace/node-tree"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 
 export type DropzoneParams = {
-  target: Board | ComponentEntry | Variant | Instance | EntryNode
+  target: Board | Variant | Instance | EntryNode
   placement: Placement
   onDragEnter?: () => void
   onDragLeave?: () => void
@@ -31,7 +31,7 @@ export function useDropzone({
   const ref = useRef(null)
   const [isValidDropTarget, setValidDropTarget] = useState(false)
   const { workspace } = useWorkspace({ usePreview: false })
-  const isBoardTarget = isComponentEntry(target)
+  const isBoardTarget = isBoard(target)
 
   useEffect(() => {
     const el = ref.current
@@ -115,7 +115,7 @@ export function useDropzone({
   }
 }
 
-function getBoardCatalogId(board: Board | ComponentEntry): string | null {
+function getBoardCatalogId(board: Board): string | null {
   if ("catalogId" in board && board.catalogId) {
     return board.catalogId
   }
@@ -124,8 +124,8 @@ function getBoardCatalogId(board: Board | ComponentEntry): string | null {
 }
 
 function isValidTargetForSubjectBoard(
-  target: Board | ComponentEntry,
-  subject: Board | ComponentEntry,
+  target: Board,
+  subject: Board,
 ): boolean {
   if (getComponentKey(target) === getComponentKey(subject)) return false
 

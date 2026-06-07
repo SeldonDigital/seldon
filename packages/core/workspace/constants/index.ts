@@ -5,15 +5,15 @@ export const ErrorMessages = {
   nodeNotFound: (id: InstanceId | VariantId) => `Node ${id} not found.`,
   componentNotFound: (id: string) =>
     id
-      ? `ComponentEntry ${id} not found.`
-      : `ComponentEntry id is missing (received ${id}).`,
-  componentAlreadyExists: (id: string) => `ComponentEntry ${id} already exists.`,
+      ? `Board ${id} not found.`
+      : `Board id is missing (received ${id}).`,
+  componentAlreadyExists: (id: string) => `Board ${id} already exists.`,
   componentNotFoundForVariant: (id: VariantId) =>
-    `ComponentEntry not found for variant ${id}.`,
+    `Board not found for variant ${id}.`,
   tooManyDefaultVariants: (id: ComponentId) =>
-    `ComponentEntry ${id} has more than one default variant.`,
+    `Board ${id} has more than one default variant.`,
   invalidBoardIndex: (id: ComponentId, index: number, expected: number) =>
-    `ComponentEntry ${id} has an invalid index of ${index} (expected ${expected}).`,
+    `Board ${id} has an invalid index of ${index} (expected ${expected}).`,
   nodeOrBoardNotFound: (id: InstanceId | VariantId | ComponentId) =>
     `No node or board found with id ${id}.`,
   componentVariantsInUse: (id: ComponentId) =>
@@ -40,6 +40,10 @@ export const ErrorMessages = {
     `Node ${id} is not allowed to be moved.`,
   cannotMoveToDifferentVariant: () =>
     `A component cannot be moved to a different variant or board.`,
+  cannotMoveIntoOwnSubtree: (id: InstanceId | VariantId) =>
+    `Node ${id} cannot be moved into itself or one of its own descendants.`,
+  cyclicComponentTree: (id: string) =>
+    `Component tree contains a cycle at node ${id}.`,
   danglingVariant: (id: VariantId) => `Variant ${id} is not used in any board.`,
   missingVariant: (id: VariantId) => `Variant ${id} not found.`,
   danglingChildNode: (id: InstanceId) =>

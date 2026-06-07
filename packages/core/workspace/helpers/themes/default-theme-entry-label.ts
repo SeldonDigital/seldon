@@ -16,7 +16,7 @@ export function getDefaultThemeEntryLabel(
   if (!catalogId) return theme.label
 
   if (isEntryThemeDefault(theme)) {
-    const board = workspace.components[catalogId]
+    const board = workspace.boards[catalogId]
     if (board?.label) return board.label
     if (isComponentId(catalogId)) {
       try {

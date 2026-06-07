@@ -1,18 +1,4 @@
-import { isNumber } from "./number"
 import { isPercentage } from "./percentage"
-import { isThemeValueKey } from "./theme"
-
-/**
- * Validates if a string is a valid size value (px, rem, number, or theme value).
- *
- * @param value - The string to validate
- * @returns True if the value is a valid size format
- */
-export function isValidSize(value: string) {
-  return (
-    isPx(value) || isRem(value) || isThemeValueKey(value) || isNumber(value)
-  )
-}
 
 /**
  * Validates if a string is a valid position value (px, rem, or percentage).

@@ -1,4 +1,4 @@
-import type { ComponentEntry } from "../../model/components"
+import type { Board } from "../../model/components"
 import {
   isFontCollectionBoard,
   isIconSetBoard,
@@ -7,7 +7,7 @@ import {
 } from "../../model/components"
 
 /** True for theme, font-collection, icon-set, or media catalog rows. */
-export function isResourceType(board: ComponentEntry): boolean {
+export function isResourceType(board: Board): boolean {
   return (
     isThemeBoard(board) ||
     isIconSetBoard(board) ||

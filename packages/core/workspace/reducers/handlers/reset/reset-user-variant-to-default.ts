@@ -2,12 +2,7 @@ import { ExtractPayload, Workspace } from "../../../../index"
 import { rules } from "../../../../rules/config/rules.config"
 import {
   nodeRetrievalService,
-  nodeTraversalService,
-  nodeRelationshipService,
-  nodeOperationsService,
   workspaceMutationService,
-  workspaceThemeService,
-  workspacePropagationService,
   typeCheckingService,
 } from "../../../services"
 
@@ -18,7 +13,7 @@ export function resetUserVariantToDefault(
   payload: ExtractPayload<"reset_user_variant_to_default">,
   workspace: Workspace,
 ): Workspace {
-  if (rules.mutations.duplicate.userVariant.allowed === false) {
+  if (rules.mutations.reset.userVariant.allowed === false) {
     return workspace
   }
 

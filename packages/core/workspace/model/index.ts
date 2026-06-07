@@ -1,6 +1,6 @@
 export { WORKSPACE_SPEC_VERSION } from "./constants"
-export type { WorkspaceFileStringMap, WorkspaceStringMap } from "./string-maps"
-export type { WorkspaceFileMetadata, WorkspaceMetadata } from "./metadata"
+export type { WorkspaceStringMap } from "./string-maps"
+export type { WorkspaceMetadata } from "./metadata"
 export type {
   ComponentResourceRef,
   ComponentTreeRef,
@@ -11,11 +11,8 @@ export type {
 } from "./component-tree"
 export type {
   ComponentBoard,
-  ComponentCatalogLevel,
-  ComponentCatalogEntry,
-  ComponentEntry,
-  ComponentKey,
-  WorkspaceComponentLevel,
+  Board,
+  BoardKey,
   FontCollectionBoard,
   IconSetBoard,
   ComponentThemeRef,
@@ -40,12 +37,15 @@ export type {
   EntryNodeType,
   NodeOrigin,
 } from "./entry-node"
-export { isEntryNodeDefault, isEntryNodeInstance, isEntryNodeVariant } from "./entry-node"
+export {
+  isEntryNodeDefault,
+  isEntryNodeInstance,
+  isEntryNodeVariant,
+} from "./entry-node"
 export type {
   EntryTheme,
   EntryThemeId,
   EntryThemeOverrides,
-  EntryThemeTokenOverrides,
   EntryThemeType,
 } from "./entry-theme"
 export { isEntryThemeDefault, isEntryThemeVariant } from "./entry-theme"
@@ -62,47 +62,29 @@ export {
 export type { EntryIconSet, EntryIconSetId } from "./entry-icon-set"
 export type { EntryMedia, EntryMediaId } from "./entry-media"
 export {
-  formatNodeCatalogTemplateRef,
   formatNodeCatalog,
-  formatNodeLinkTemplateRef,
   formatNodeLink,
-  formatThemeCatalogTemplateRef,
   formatThemeCatalog,
-  formatThemeLinkTemplateRef,
   formatThemeLink,
-  formatFontCollectionCatalogTemplateRef,
   formatFontCollectionCatalog,
-  formatFontCollectionLinkTemplateRef,
   formatFontCollectionLink,
-  getNodeTemplateComponentId,
-  getNodeTemplateNodeId,
-  getThemeTemplateCatalogId,
+  formatIconSetCatalog,
+  formatIconSetLink,
   getThemeTemplateThemeId,
+  normalizeThemeTemplateRef,
   getFontCollectionTemplateCatalogId,
   getFontCollectionTemplateFontCollectionId,
-  parseNodeCatalogTemplateRef,
+  getIconSetTemplateCatalogId,
+  getIconSetTemplateIconSetId,
   parseNodeCatalog,
-  parseNodeLinkTemplateRef,
   parseNodeLink,
-  parseNodeTemplateRef,
   parseNodeTemplate,
-  parseThemeCatalogTemplateRef,
-  parseThemeCatalog,
-  parseThemeLinkTemplateRef,
-  parseThemeLink,
-  parseThemeTemplateRef,
   parseThemeTemplate,
-  parseFontCollectionCatalogTemplateRef,
-  parseFontCollectionLinkTemplateRef,
-  parseFontCollectionTemplateRef,
-  parseFontCollectionTemplate,
 } from "./template-ref"
 export type {
   ParsedNodeTemplate,
-  ParsedNodeTemplateRef,
   ParsedThemeTemplate,
-  ParsedThemeTemplateRef,
   ParsedFontCollectionTemplate,
-  ParsedFontCollectionTemplateRef,
+  ParsedIconSetTemplate,
 } from "./template-ref"
 export type { Workspace } from "./workspace"

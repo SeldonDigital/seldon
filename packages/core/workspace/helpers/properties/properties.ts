@@ -9,8 +9,4 @@ export {
   formatValue,
   getAllowedValues,
 } from "./property-display"
-export {
-  applyCompoundPreset,
-  expandShorthand,
-  matchCompoundPreset,
-} from "./compound-presets"
+export { applyCompoundPreset, matchCompoundPreset } from "./compound-presets"

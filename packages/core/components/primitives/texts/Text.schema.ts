@@ -20,7 +20,7 @@ export const schema = {
     },
     content: {
       type: Sdn.ValueType.EXACT,
-      value: "Text",
+      value: "Body",
     },
     cursor: {
       type: Sdn.ValueType.INHERIT,
@@ -233,6 +233,199 @@ export const schema = {
       },
     ],
   },
+  variants: [
+    {
+      id: "display",
+      label: "Display",
+      intent:
+        "Large format text for page-level headings or prominent statements.",
+      overrides: {
+        htmlElement: { type: Sdn.ValueType.OPTION, value: Sdn.HtmlElement.H1 },
+        content: { type: Sdn.ValueType.EXACT, value: "Display" },
+        font: {
+          preset: {
+            type: Sdn.ValueType.THEME_CATEGORICAL,
+            value: "@font.display",
+          },
+          family: { type: Sdn.ValueType.EMPTY, value: null },
+          style: { type: Sdn.ValueType.EMPTY, value: null },
+          weight: { type: Sdn.ValueType.EMPTY, value: null },
+          size: { type: Sdn.ValueType.EMPTY, value: null },
+          lineHeight: { type: Sdn.ValueType.EMPTY, value: null },
+          textCase: { type: Sdn.ValueType.EMPTY, value: null },
+          letterSpacing: { type: Sdn.ValueType.EMPTY, value: null },
+        },
+        lines: { type: Sdn.ValueType.EXACT, value: 3 },
+      },
+    },
+    {
+      id: "heading",
+      label: "Heading",
+      intent: "Standard heading element to structure content hierarchy.",
+      overrides: {
+        htmlElement: { type: Sdn.ValueType.OPTION, value: Sdn.HtmlElement.H2 },
+        content: { type: Sdn.ValueType.EXACT, value: "Heading" },
+        font: {
+          preset: {
+            type: Sdn.ValueType.THEME_CATEGORICAL,
+            value: "@font.heading",
+          },
+          family: { type: Sdn.ValueType.EMPTY, value: null },
+          style: { type: Sdn.ValueType.EMPTY, value: null },
+          weight: { type: Sdn.ValueType.EMPTY, value: null },
+          size: { type: Sdn.ValueType.EMPTY, value: null },
+          lineHeight: { type: Sdn.ValueType.EMPTY, value: null },
+          textCase: { type: Sdn.ValueType.EMPTY, value: null },
+          letterSpacing: { type: Sdn.ValueType.EMPTY, value: null },
+        },
+        lines: { type: Sdn.ValueType.EXACT, value: 3 },
+      },
+    },
+    {
+      id: "subheading",
+      label: "Subheading",
+      intent: "Secondary heading to support or extend a main heading.",
+      overrides: {
+        htmlElement: { type: Sdn.ValueType.OPTION, value: Sdn.HtmlElement.H3 },
+        content: { type: Sdn.ValueType.EXACT, value: "Subheading" },
+        font: {
+          preset: {
+            type: Sdn.ValueType.THEME_CATEGORICAL,
+            value: "@font.subheading",
+          },
+          family: { type: Sdn.ValueType.EMPTY, value: null },
+          style: { type: Sdn.ValueType.EMPTY, value: null },
+          weight: { type: Sdn.ValueType.EMPTY, value: null },
+          size: { type: Sdn.ValueType.EMPTY, value: null },
+          lineHeight: { type: Sdn.ValueType.EMPTY, value: null },
+          textCase: { type: Sdn.ValueType.EMPTY, value: null },
+          letterSpacing: { type: Sdn.ValueType.EMPTY, value: null },
+        },
+        lines: { type: Sdn.ValueType.EXACT, value: 3 },
+      },
+    },
+    {
+      id: "title",
+      label: "Title",
+      intent: "Prominent title text used at the top of sections or views.",
+      overrides: {
+        htmlElement: { type: Sdn.ValueType.OPTION, value: Sdn.HtmlElement.H4 },
+        content: { type: Sdn.ValueType.EXACT, value: "Title" },
+        font: {
+          preset: {
+            type: Sdn.ValueType.THEME_CATEGORICAL,
+            value: "@font.title",
+          },
+          family: { type: Sdn.ValueType.EMPTY, value: null },
+          style: { type: Sdn.ValueType.EMPTY, value: null },
+          weight: { type: Sdn.ValueType.EMPTY, value: null },
+          size: { type: Sdn.ValueType.EMPTY, value: null },
+          lineHeight: { type: Sdn.ValueType.EMPTY, value: null },
+          textCase: { type: Sdn.ValueType.EMPTY, value: null },
+          letterSpacing: { type: Sdn.ValueType.EMPTY, value: null },
+        },
+        lines: { type: Sdn.ValueType.EXACT, value: 2 },
+      },
+    },
+    {
+      id: "subtitle",
+      label: "Subtitle",
+      intent: "Displays supporting text under a main title or heading.",
+      overrides: {
+        htmlElement: { type: Sdn.ValueType.OPTION, value: Sdn.HtmlElement.H5 },
+        content: { type: Sdn.ValueType.EXACT, value: "Subtitle" },
+        font: {
+          preset: {
+            type: Sdn.ValueType.THEME_CATEGORICAL,
+            value: "@font.subtitle",
+          },
+          family: { type: Sdn.ValueType.EMPTY, value: null },
+          style: { type: Sdn.ValueType.EMPTY, value: null },
+          weight: { type: Sdn.ValueType.EMPTY, value: null },
+          size: { type: Sdn.ValueType.EMPTY, value: null },
+          lineHeight: { type: Sdn.ValueType.EMPTY, value: null },
+          textCase: { type: Sdn.ValueType.EMPTY, value: null },
+          letterSpacing: { type: Sdn.ValueType.EMPTY, value: null },
+        },
+        lines: { type: Sdn.ValueType.EXACT, value: 2 },
+      },
+    },
+    {
+      id: "callout",
+      label: "Callout",
+      intent: "Highlights important messages or warnings within a UI.",
+      overrides: {
+        htmlElement: { type: Sdn.ValueType.OPTION, value: Sdn.HtmlElement.H6 },
+        content: { type: Sdn.ValueType.EXACT, value: "Callout" },
+        font: {
+          preset: {
+            type: Sdn.ValueType.THEME_CATEGORICAL,
+            value: "@font.callout",
+          },
+          family: { type: Sdn.ValueType.EMPTY, value: null },
+          style: { type: Sdn.ValueType.EMPTY, value: null },
+          weight: { type: Sdn.ValueType.EMPTY, value: null },
+          size: { type: Sdn.ValueType.EMPTY, value: null },
+          lineHeight: { type: Sdn.ValueType.EMPTY, value: null },
+          textCase: { type: Sdn.ValueType.EMPTY, value: null },
+          letterSpacing: { type: Sdn.ValueType.EMPTY, value: null },
+        },
+        lines: { type: Sdn.ValueType.EXACT, value: 2 },
+      },
+    },
+    {
+      id: "tagline",
+      label: "Tagline",
+      intent:
+        "Brief descriptive or marketing phrase used in branding or headers.",
+      overrides: {
+        htmlElement: { type: Sdn.ValueType.OPTION, value: Sdn.HtmlElement.P },
+        content: { type: Sdn.ValueType.EXACT, value: "Tagline" },
+        font: {
+          preset: {
+            type: Sdn.ValueType.THEME_CATEGORICAL,
+            value: "@font.tagline",
+          },
+          family: { type: Sdn.ValueType.EMPTY, value: null },
+          style: { type: Sdn.ValueType.EMPTY, value: null },
+          weight: { type: Sdn.ValueType.EMPTY, value: null },
+          size: { type: Sdn.ValueType.EMPTY, value: null },
+          lineHeight: { type: Sdn.ValueType.EMPTY, value: null },
+          textCase: { type: Sdn.ValueType.EMPTY, value: null },
+          letterSpacing: { type: Sdn.ValueType.EMPTY, value: null },
+        },
+        lines: { type: Sdn.ValueType.EXACT, value: 2 },
+      },
+    },
+    {
+      id: "label",
+      label: "Label",
+      intent: "Associates readable text with a form control for accessibility.",
+      overrides: {
+        htmlElement: {
+          type: Sdn.ValueType.OPTION,
+          value: Sdn.HtmlElement.LABEL,
+        },
+        content: { type: Sdn.ValueType.EXACT, value: "Label" },
+        width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+        font: {
+          preset: {
+            type: Sdn.ValueType.THEME_CATEGORICAL,
+            value: "@font.label",
+          },
+          family: { type: Sdn.ValueType.EMPTY, value: null },
+          style: { type: Sdn.ValueType.EMPTY, value: null },
+          weight: { type: Sdn.ValueType.EMPTY, value: null },
+          size: { type: Sdn.ValueType.EMPTY, value: null },
+          lineHeight: { type: Sdn.ValueType.EMPTY, value: null },
+          textCase: { type: Sdn.ValueType.EMPTY, value: null },
+          letterSpacing: { type: Sdn.ValueType.EMPTY, value: null },
+        },
+        textDecoration: { type: Sdn.ValueType.EMPTY, value: null },
+        wrapText: { type: Sdn.ValueType.EXACT, value: false },
+      },
+    },
+  ],
 } as const satisfies ComponentSchema
 
 export const exportConfig: ComponentExport = {

@@ -6,25 +6,16 @@ import type {
   MediaEntryRef,
   ThemeEntryRef,
 } from "./component-tree"
+import type { EntryNodeLevel } from "./entry-node"
 import type { WorkspaceStringMap } from "./string-maps"
 
-export type ComponentKey = string
+export type BoardKey = string
 
 export type ComponentThemeRef = string
 
-export type WorkspaceComponentLevel =
-  | "screen"
-  | "module"
-  | "part"
-  | "element"
-  | "primitive"
-  | "frame"
-
-export type ComponentCatalogLevel = WorkspaceComponentLevel
-
 export interface ComponentBoard {
   type: "component"
-  level: WorkspaceComponentLevel
+  level: EntryNodeLevel
   catalogId: string
   label: string
   author: string
@@ -108,7 +99,7 @@ export interface MediaBoard {
   __editor?: Record<string, unknown>
 }
 
-export type ComponentCatalogEntry =
+export type Board =
   | ComponentBoard
   | PlaygroundBoard
   | ThemeBoard
@@ -116,36 +107,32 @@ export type ComponentCatalogEntry =
   | IconSetBoard
   | MediaBoard
 
-export type ComponentEntry = ComponentCatalogEntry
-
 export function isComponentBoard(
-  entry: ComponentCatalogEntry,
+  entry: Board,
 ): entry is ComponentBoard {
   return entry.type === "component"
 }
 
 export function isPlaygroundBoard(
-  entry: ComponentCatalogEntry,
+  entry: Board,
 ): entry is PlaygroundBoard {
   return entry.type === "playground"
 }
 
-export function isThemeBoard(entry: ComponentCatalogEntry): entry is ThemeBoard {
+export function isThemeBoard(entry: Board): entry is ThemeBoard {
   return entry.type === "theme"
 }
 
 export function isFontCollectionBoard(
-  entry: ComponentCatalogEntry,
+  entry: Board,
 ): entry is FontCollectionBoard {
   return entry.type === "font-collection"
 }
 
-export function isIconSetBoard(
-  entry: ComponentCatalogEntry,
-): entry is IconSetBoard {
+export function isIconSetBoard(entry: Board): entry is IconSetBoard {
   return entry.type === "icon-set"
 }
 
-export function isMediaBoard(entry: ComponentCatalogEntry): entry is MediaBoard {
+export function isMediaBoard(entry: Board): entry is MediaBoard {
   return entry.type === "media"
 }

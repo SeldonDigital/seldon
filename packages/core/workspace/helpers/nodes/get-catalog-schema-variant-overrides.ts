@@ -1,6 +1,5 @@
 import { getComponentSchema } from "../../../components/catalog"
 import { ComponentId } from "../../../components/constants"
-import { isComplexSchema } from "../../../components/types"
 import type { Properties } from "../../../properties/types/properties"
 import { componentBoardSchemaVariantNodeId } from "../components/entry-node-ids"
 
@@ -12,9 +11,6 @@ export function getCatalogSchemaVariantOverridesForNode(
   componentId: ComponentId,
 ): Properties {
   const schema = getComponentSchema(componentId)
-  if (!isComplexSchema(schema)) {
-    return {}
-  }
 
   for (const variant of schema.variants ?? []) {
     if (componentBoardSchemaVariantNodeId(componentId, variant.id) === nodeId) {

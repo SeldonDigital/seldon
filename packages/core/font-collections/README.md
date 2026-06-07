@@ -38,12 +38,13 @@ Each family in `families` is a `FontFamilyEntry`:
 
 ## Module layout
 
-- `catalog/` holds one file per packaged collection plus `index.ts`. `index.ts` exports `STOCK_FONT_COLLECTIONS`, `STOCK_FONT_COLLECTIONS_BY_ID`, `FONT_COLLECTIONS`, `FONT_COLLECTIONS_BY_ID`, and `defaultFontCollection`.
+- `catalog/` holds `system.ts` for the `system` collection and the `google/` folder for the `googleFonts` collection. The `google/` folder holds `index.ts`, `google-fonts-manifest.ts`, `default-enabled-families.ts`, and the `.woff2` assets. The google collection builds its families from `GOOGLE_FONT_FAMILIES`. `catalog/index.ts` exports `STOCK_FONT_COLLECTIONS`, `STOCK_FONT_COLLECTIONS_BY_ID`, `FONT_COLLECTIONS`, `FONT_COLLECTIONS_BY_ID`, `defaultFontCollection`, and `computeFontCollection`.
 - `types/` holds the document and id types.
-- `constants/` holds the `FontOrigin` type and values.
-- `helpers/` holds `computeFontCollection` and `normalizeFontCollection`.
-- `compute/` holds `instantiateFontCollection` and the input normalizer.
+- `constants/` holds the `FontOrigin` type and the `FontOriginValue` values.
+- `helpers/` holds `computeFontCollection`, `normalizeFontCollection`, `getRemoteFontUrl`, `isRemoteFontFamily`, `getFamilyNameByValue`, and the variant selection helpers `deriveVariantPreset`, `getEnabledVariants`, and `isVariantEnabled`.
+- `compute/` holds `instantiateFontCollection` and the input normalizer `normalizeFontCollectionInput`.
 - `catalog-ids.ts` exports `packagedFontCollectionCatalogIds`.
+- `index.ts` re-exports the catalog, helpers, compute, constants, catalog ids, and types.
 
 ## Materialization
 

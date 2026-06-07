@@ -2,7 +2,7 @@
   "name": "seldon",
   "version": "0.0.0",
   "private": true,
-  "description": "Browser-only Seldon local editor baseline",
+  "description": "Seldon · Core, Editor, and Factory",
   "type": "module",
   "scripts": {
     "dev": "npm run dev --workspace @seldon/editor-local",

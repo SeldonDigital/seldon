@@ -14,18 +14,18 @@ Use `packages/core/workspace/WORKSPACE.md` as the source for field names, id pat
 Serialized workspaces use these top-level keys in this order:
 
 1. `metadata`
-2. `components`
+2. `boards`
 3. `nodes`
 4. `themes`
 5. `font-collections`
 6. `icon-sets`
 7. `media`
 
-`components` is the catalog row index. It does not hold node properties directly. Rows point to entries in `nodes`, `themes`, `font-collections`, `icon-sets`, or `media`.
+`boards` is the catalog row index. It does not hold node properties directly. Rows point to entries in `nodes`, `themes`, `font-collections`, `icon-sets`, or `media`.
 
 ### Catalog Rows
 
-`components` rows may have these `type` values:
+`boards` rows may have these `type` values:
 
 - `component`
 - `playground`

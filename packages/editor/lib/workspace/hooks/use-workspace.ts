@@ -14,14 +14,14 @@ export function useWorkspace({
   usePreview = true,
 }: { usePreview?: boolean } = {}) {
   const { push, current } = useHistory()
-  const { debugModeEnabled } = useDebugMode()
+  const { dispatchLogging } = useDebugMode()
   const addToast = useAddToast()
 
   const { preview, initialize, update, reset } = usePreviewStore()
 
   const dispatch = useCallback(
     (action: Action, isPreview = false) => {
-      if (debugModeEnabled) {
+      if (dispatchLogging) {
         console.groupCollapsed(`[dispatch] ${action.type}`)
         console.info("--- PAYLOAD ---")
         console.dir(action.payload)
@@ -40,7 +40,7 @@ export function useWorkspace({
 
         setIsLocalWorkspaceDirty(true)
 
-        if (debugModeEnabled) {
+        if (dispatchLogging) {
           console.info("--- AFTER ---")
           console.dir(newState)
           console.groupEnd()
@@ -56,7 +56,7 @@ export function useWorkspace({
         }
       }
     },
-    [debugModeEnabled, current, push, addToast, update],
+    [dispatchLogging, current, push, addToast, update],
   )
 
   const startPreviewSession = useCallback(() => {

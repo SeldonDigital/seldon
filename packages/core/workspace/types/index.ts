@@ -5,17 +5,15 @@
  * `WORKSPACE.md` and `workspace/model/*`.
  */
 export { WORKSPACE_SPEC_VERSION } from "../model"
-export type { WorkspaceFileStringMap } from "../model"
-export type { WorkspaceFileMetadata } from "../model"
+export type { WorkspaceStringMap } from "../model"
+export type { WorkspaceMetadata } from "../model"
 export type { ComponentResourceRef, ComponentTreeRef } from "../model"
-export type { ComponentEntry as Board } from "../model"
 export type {
-  ComponentEntry,
-  ComponentCatalogLevel,
+  Board,
   ComponentBoard,
   FontCollectionBoard,
   IconSetBoard,
-  ComponentKey,
+  BoardKey,
   MediaBoard,
   PlaygroundBoard,
   ThemeBoard,
@@ -37,11 +35,15 @@ export type {
   EntryNodeType,
   NodeOrigin,
 } from "../model"
-export { isEntryNodeDefault, isEntryNodeInstance, isEntryNodeVariant } from "../model"
+export {
+  isEntryNodeDefault,
+  isEntryNodeInstance,
+  isEntryNodeVariant,
+} from "../model"
 export type {
   EntryTheme,
   EntryThemeId,
-  EntryThemeTokenOverrides,
+  EntryThemeOverrides,
   EntryThemeType,
 } from "../model"
 export { isEntryThemeDefault, isEntryThemeVariant } from "../model"
@@ -56,8 +58,6 @@ export {
   parseNodeCatalog,
   parseNodeLink,
   parseNodeTemplate,
-  parseThemeCatalog,
-  parseThemeLink,
   parseThemeTemplate,
 } from "../model"
 export type { Workspace } from "../model"

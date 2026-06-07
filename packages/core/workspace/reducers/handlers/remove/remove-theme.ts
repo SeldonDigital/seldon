@@ -1,5 +1,5 @@
 import { ExtractPayload, Workspace } from "../../../../index"
-import { applyComponentKeyDeletion } from "./remove-component-catalog"
+import { removeBoardByKey } from "./remove-board-by-key"
 
 /**
  * Removes a theme board and its `themes` entries. Validation keeps the default
@@ -9,5 +9,5 @@ export function removeTheme(
   payload: ExtractPayload<"remove_theme">,
   workspace: Workspace,
 ): Workspace {
-  return applyComponentKeyDeletion(payload.componentKey, workspace)
+  return removeBoardByKey(payload.boardKey, workspace)
 }

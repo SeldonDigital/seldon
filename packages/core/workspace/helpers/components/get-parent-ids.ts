@@ -1,7 +1,7 @@
-import type { ComponentEntry, ComponentTreeRef, EntryNodeId } from "../../types"
+import type { Board, ComponentTreeRef, EntryNodeId } from "../../types"
 
 /** Result of {@link getParentIds}. */
-export interface ComponentParentIds {
+interface BoardParentIds {
   ancestors: EntryNodeId[]
   immediateParent: EntryNodeId | null
   inTree: boolean
@@ -37,10 +37,10 @@ function findAncestorIds(
  *
  * The node id may belong to a default, variant, or instance node that appears as a ref in that tree.
  *
- * @param board ComponentEntry whose variants hold the tree.
+ * @param board Board whose variants hold the tree.
  * @param nodeId Node id whose parents you need.
  */
-export function getParentIds(board: ComponentEntry, nodeId: EntryNodeId): ComponentParentIds {
+function getParentIds(board: Board, nodeId: EntryNodeId): BoardParentIds {
   for (const root of board.variants) {
     const ancestors = findAncestorIds(root, [], nodeId)
     if (ancestors !== null) {
@@ -67,11 +67,11 @@ export function getParentIds(board: ComponentEntry, nodeId: EntryNodeId): Compon
  * Returns null when the node is a root ref, when it is not in this board tree, 
  * or when it has no parent in that tree.
  *
- * @param board ComponentEntry whose variants hold the tree.
+ * @param board Board whose variants hold the tree.
  * @param nodeId Node id whose parent you need.
  */
 export function getImmediateParentId(
-  board: ComponentEntry,
+  board: Board,
   nodeId: EntryNodeId,
 ): EntryNodeId | null {
   return getParentIds(board, nodeId).immediateParent

@@ -2,13 +2,13 @@ import { getComponentSchema } from "../../../components/catalog"
 import { ComponentId, isComponentId } from "../../../components/constants"
 import { invariant } from "../../../index"
 import { ErrorMessages } from "../../constants"
-import { getComponentByNodeId } from "../../helpers/components/get-component-by-node-id"
+import { getBoardByNodeId } from "../../helpers/components/get-board-by-node-id"
 import { getChildrenIds } from "../../helpers/components/get-children-ids"
 import { getImmediateParentIdInWorkspace } from "../../helpers/components/get-node-parent-id"
 import { isEntryNodeForRules } from "../../helpers/rules/rules-node-subject"
 import { parseNodeCatalog, parseNodeLink } from "../../model/template-ref"
 import {
-  ComponentEntry,
+  Board,
   Instance,
   InstanceId,
   Variant,
@@ -40,7 +40,7 @@ function nodeCatalogComponentId(node: Variant | Instance): ComponentId | null {
 export class NodeRelationshipService {
   public getInstanceIndex(node: Instance, workspace: Workspace): number {
     const { result } = withParentNode(node, workspace, (parent) => {
-      const board = getComponentByNodeId(workspace, parent.id)
+      const board = getBoardByNodeId(workspace, parent.id)
       invariant(board, `Board not found for parent ${parent.id}`)
       const childIds = getChildrenIds(board, parent.id)
       return childIds.indexOf(node.id)
@@ -49,7 +49,7 @@ export class NodeRelationshipService {
   }
 
   public getVariantIndex(node: Variant, workspace: Workspace): number {
-    const board = this.findComponentForVariant(node, workspace)
+    const board = this.findBoardForVariant(node, workspace)
     invariant(board, ErrorMessages.componentNotFoundForVariant(node.id))
 
     return board.variants.findIndex((ref) => ref.id === node.id)
@@ -76,7 +76,7 @@ export class NodeRelationshipService {
     const targetIndex = placement === "before" ? ownIndex - 1 : ownIndex + 1
 
     const { result } = withParentNode(node, workspace, (parent) => {
-      const board = getComponentByNodeId(workspace, parent.id)
+      const board = getBoardByNodeId(workspace, parent.id)
       if (!board) return null
 
       const childIds = getChildrenIds(board, parent.id)
@@ -97,7 +97,7 @@ export class NodeRelationshipService {
     const ownIndex = this.getVariantIndex(node, workspace)
     const targetIndex = placement === "before" ? ownIndex - 1 : ownIndex + 1
 
-    const board = this.findComponentForVariant(node, workspace)
+    const board = this.findBoardForVariant(node, workspace)
     if (!board) return null
 
     const refs = board.variants
@@ -108,18 +108,18 @@ export class NodeRelationshipService {
     return typeCheckingService.isVariant(child) ? child : null
   }
 
-  public findComponentForVariant(
+  public findBoardForVariant(
     variant: Variant,
     workspace: Workspace,
-  ): ComponentEntry | null {
-    return getComponentByNodeId(workspace, variant.id)
+  ): Board | null {
+    return getBoardByNodeId(workspace, variant.id)
   }
 
-  public findComponentForNode(
+  public findBoardForNode(
     node: Variant | Instance,
     workspace: Workspace,
-  ): ComponentEntry | null {
-    return getComponentByNodeId(workspace, node.id)
+  ): Board | null {
+    return getBoardByNodeId(workspace, node.id)
   }
 
   public findContainerNode(
@@ -276,6 +276,30 @@ export class NodeRelationshipService {
       }
       return "Unknown Component"
     }
+  }
+
+  /** True when the node, or any of its ancestors, maps to the given component id. */
+  public hasAncestorWithComponentId(
+    componentId: ComponentId,
+    node: Variant | Instance | Board,
+    workspace: Workspace,
+  ): boolean {
+    if (typeCheckingService.isBoard(node)) {
+      return node.type === "component" && node.catalogId === componentId
+    }
+
+    let parentNode: Variant | Instance | null = node
+    while (parentNode) {
+      if (
+        isEntryNodeForRules(parentNode) &&
+        nodeCatalogComponentId(parentNode) === componentId
+      ) {
+        return true
+      }
+      parentNode = nodeTraversalService.findParentNode(parentNode.id, workspace)
+    }
+
+    return false
   }
 }
 

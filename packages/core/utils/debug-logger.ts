@@ -13,18 +13,18 @@ const SEPARATOR = "**********"
 type DebugPayload = Record<string, unknown> | unknown
 
 /**
- * Check if debug mode is enabled.
+ * Read a boolean flag from the persisted debug-mode state.
  *
- * Client-side: checks localStorage for the persisted debug-mode flag.
- * Server-side: checks DEBUG_MODE in the environment.
+ * Client-side: reads the named flag from localStorage.
+ * Server-side: falls back to DEBUG_MODE in the environment.
  */
-export function isDebugEnabled(): boolean {
+function isDebugFlagEnabled(flag: string): boolean {
   if (typeof window !== "undefined") {
     try {
       const debugMode = localStorage.getItem("debug-mode")
       if (debugMode) {
         const parsed = JSON.parse(debugMode)
-        return parsed?.state?.enabled === true
+        return parsed?.state?.[flag] === true
       }
     } catch {
       // Ignore malformed persisted values and fall through.
@@ -32,6 +32,26 @@ export function isDebugEnabled(): boolean {
   }
 
   return process.env.DEBUG_MODE === "true"
+}
+
+/**
+ * Check if verbose structured logging is enabled.
+ *
+ * Client-side: checks the persisted verboseLogging flag.
+ * Server-side: checks DEBUG_MODE in the environment.
+ */
+export function isDebugEnabled(): boolean {
+  return isDebugFlagEnabled("verboseLogging")
+}
+
+/**
+ * Check if workspace verification logging is enabled.
+ *
+ * Client-side: checks the persisted workspaceLogging flag.
+ * Server-side: checks DEBUG_MODE in the environment.
+ */
+export function isWorkspaceLoggingEnabled(): boolean {
+  return isDebugFlagEnabled("workspaceLogging")
 }
 
 /**

@@ -4,9 +4,9 @@ import { catalog } from "@seldon/core/components/catalog"
 import { ComponentId } from "@seldon/core/components/constants"
 import { ComponentSchema } from "@seldon/core/components/types"
 import { VariantId } from "@seldon/core/index"
-import { getComponentVariantRootIds } from "@seldon/core/workspace/helpers/components/get-component-variant-root-ids"
+import { getBoardVariantRootIds } from "@seldon/core/workspace/helpers/components/get-board-variant-root-ids"
 import { getVariantById } from "@seldon/core/workspace/helpers/general/get-variant-by-id"
-import { isSpecialComponentVariant } from "@seldon/core/workspace/helpers/general/is-special-component-variant"
+import { isSpecialBoardVariant } from "@seldon/core/workspace/helpers/general/is-special-board-variant"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
 import { useSearchComponents } from "@lib/api/hooks/use-search-components"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
@@ -63,15 +63,15 @@ export function useComponentCatalog({
       const items: CatalogComponentItem[] = schemas
         .filter((schema) => shouldShowComponent(schema))
         .flatMap((schema) => {
-          const board = workspace.components[schema.id]
+          const board = workspace.boards[schema.id]
 
           if (board) {
             // If board exists, get all variants
-            return getComponentVariantRootIds(board).map((variantId) => {
+            return getBoardVariantRootIds(board).map((variantId) => {
               const variant = getVariantById(variantId, workspace)
               // For special board variants, use the actual label even for default variants
               // For regular boards, show "Default" for default variants
-              const isSpecial = isSpecialComponentVariant(variant, workspace)
+              const isSpecial = isSpecialBoardVariant(variant, workspace)
               const description =
                 workspaceService.isDefaultVariant(variant) && !isSpecial
                   ? "Default"

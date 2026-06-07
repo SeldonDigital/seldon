@@ -7,11 +7,8 @@ import {
 } from "../../../../utils/debug-logger"
 import {
   nodeRetrievalService,
-  nodeTraversalService,
-  nodeRelationshipService,
   nodeOperationsService,
   workspaceMutationService,
-  workspaceThemeService,
   workspacePropagationService,
   typeCheckingService,
 } from "../../../services"
@@ -49,7 +46,7 @@ export function removeInstance(
     return workspace
   }
 
-  const config = rules.mutations.delete[entityType]
+  const config = rules.mutations.delete.instance
   const removalBehavior =
     typeof config.removalBehavior === "string"
       ? config.removalBehavior

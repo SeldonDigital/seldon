@@ -16,8 +16,10 @@ import {
   HtmlElement,
   ImageFit,
   InputType,
+  Margin,
   NumberValue,
   Orientation,
+  Padding,
   PercentageValue,
   PixelValue,
   RemValue,
@@ -85,6 +87,16 @@ function initializePresetMappings() {
   // Gap presets
   Object.entries(Gap).forEach(([key, value]) => {
     PRESET_MAPPINGS.set(value, Gap[key as keyof typeof Gap])
+  })
+
+  // Margin presets
+  Object.entries(Margin).forEach(([key, value]) => {
+    PRESET_MAPPINGS.set(value, Margin[key as keyof typeof Margin])
+  })
+
+  // Padding presets
+  Object.entries(Padding).forEach(([key, value]) => {
+    PRESET_MAPPINGS.set(value, Padding[key as keyof typeof Padding])
   })
 
   // Resize presets
@@ -217,6 +229,22 @@ function tryPresetValue(value: string): Value | null {
 }
 
 /**
+ * Whether a property exposes an explicit "none" option (margin, padding, gap).
+ * These keep "none" as a real OPTION value instead of collapsing it to EMPTY,
+ * so "None" stays distinct from "Default".
+ */
+function supportsNoneOption(propertyKey?: string): boolean {
+  if (!propertyKey) return false
+  const baseKey = propertyKey.split(".")[0]
+  try {
+    const schema = getPropertySchema(baseKey)
+    return schema?.validation?.option?.("none") === true
+  } catch {
+    return false
+  }
+}
+
+/**
  * Get default unit for a property based on its name
  * Uses the core properties system for authoritative unit information
  */
@@ -317,7 +345,13 @@ export function serializeValue(
   node?: Variant | Instance | Board,
   propertyKey?: string,
 ): Value {
-  if (value === "" || value == "none" || value === "default") {
+  if (value === "" || value === "default") {
+    return { type: ValueType.EMPTY, value: null }
+  }
+
+  // "none" is Default (EMPTY) for most properties, but margin/padding/gap expose
+  // it as a real OPTION (CSS 0), so keep it distinct for those.
+  if (value === "none" && !supportsNoneOption(propertyKey)) {
     return { type: ValueType.EMPTY, value: null }
   }
 

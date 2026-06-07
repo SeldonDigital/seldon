@@ -1,7 +1,5 @@
 export * from "./color"
 export * from "./number"
 export * from "./percentage"
-export * from "./positive-integer"
 export * from "./size"
 export * from "./theme"
-export * from "./url"

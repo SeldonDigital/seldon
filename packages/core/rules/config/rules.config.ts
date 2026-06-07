@@ -164,17 +164,14 @@ export const rules: RulesConfig = {
       board: {
         allowed: true,
         propagation: "downstream",
-        removalBehavior: "delete",
       },
       userVariant: {
         allowed: true,
         propagation: "downstream",
-        removalBehavior: "delete",
       },
       defaultVariant: {
         allowed: false,
         propagation: "downstream",
-        removalBehavior: "delete",
       },
       instance: {
         allowed: true,
@@ -195,6 +192,31 @@ export const rules: RulesConfig = {
      * Check the `getNodeProperties` function for more details.
      */
     setProperties: {
+      board: {
+        allowed: true,
+        propagation: "none",
+      },
+      userVariant: {
+        allowed: true,
+        propagation: "none",
+      },
+      defaultVariant: {
+        allowed: true,
+        propagation: "none",
+      },
+      instance: {
+        allowed: true,
+        propagation: "none",
+      },
+    },
+
+    /**
+     * Rules for resetting an entity back to its template baseline.
+     * Covers reset_node, reset_node_property, reset_user_variant_to_default,
+     * and reset_default_variant_to_catalog. Resets are local to the targeted
+     * subtree, so propagation stays "none".
+     */
+    reset: {
       board: {
         allowed: true,
         propagation: "none",
@@ -262,7 +284,7 @@ export const rules: RulesConfig = {
      */
     reorder: {
       board: {
-        allowed: true,
+        allowed: false,
         propagation: "none",
       },
       userVariant: {

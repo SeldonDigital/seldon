@@ -6,7 +6,11 @@ import {
   CornerValue,
   DegreesValue,
   EmptyValue,
+  Margin,
+  MarginSideOptionValue,
   NumberValue,
+  Padding,
+  PaddingSideOptionValue,
   PercentageValue,
   PixelValue,
   RemValue,
@@ -30,6 +34,8 @@ export function getCssValue(
     | BorderWidthHairlineValue
     | DegreesValue
     | TransparentValue
+    | MarginSideOptionValue
+    | PaddingSideOptionValue
     | EmptyValue,
 ): string | number {
   switch (value.type) {
@@ -63,6 +69,10 @@ export function getCssValue(
           return "99999px"
         case Corner.SQUARED:
           return "0px"
+        // Margin.NONE and Padding.NONE share the "none" value; unitless 0 zeros any unit.
+        case Margin.NONE:
+        case Padding.NONE:
+          return "0"
         case Color.TRANSPARENT:
           return "transparent"
         default:

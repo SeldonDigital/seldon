@@ -37,7 +37,7 @@ export function AddBoardPanel({
   const { addBoard } = useAddRemoveCommands()
   const { selectBoard } = useSelection()
 
-  const currentBoards = Object.keys(workspace.components)
+  const currentBoards = Object.keys(workspace.boards)
 
   const shouldShowComponent: FilterComponentPredicate = useCallback(
     (schema) => {

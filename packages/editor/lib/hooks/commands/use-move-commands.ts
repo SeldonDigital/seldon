@@ -1,8 +1,8 @@
 import { useCallback } from "react"
 import { ComponentId } from "@seldon/core/components/constants"
 import { InstanceId, VariantId, invariant } from "@seldon/core/index"
-import { getComponentOrder } from "@seldon/core/workspace/helpers/components/component-sort-order"
-import { getComponentVariantRootIds } from "@seldon/core/workspace/helpers/components/get-component-variant-root-ids"
+import { getBoardOrder } from "@seldon/core/workspace/helpers/components/board-sort-order"
+import { getBoardVariantRootIds } from "@seldon/core/workspace/helpers/components/get-board-variant-root-ids"
 import { findParentNode } from "@seldon/core/workspace/helpers/nodes/find-parent-node"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
 import { getNodeChildIds } from "@lib/workspace/node-tree"
@@ -26,12 +26,12 @@ export function useMoveCommands() {
   const moveBoardUpOrDown = useCallback(
     (boardId: ComponentId, direction: "up" | "down") => {
       const board = workspaceService.getBoard(boardId, workspace)
-      const currentOrder = getComponentOrder(board)
+      const currentOrder = getBoardOrder(board)
 
       dispatch({
         type: "reorder_board",
         payload: {
-          componentKey: boardId,
+          boardKey: boardId,
           // When moving down, we need to index to be higher than the next item whos index is 1 higher
           newIndex: direction === "up" ? currentOrder - 1 : currentOrder + 2,
         },
@@ -107,7 +107,7 @@ export function useMoveCommands() {
       dispatch({
         type: "reorder_variant_in_board",
         payload: {
-          componentKey: getComponentKey(board),
+          boardKey: getComponentKey(board),
           variantRootId: variantId,
           newIndex: index,
         },
@@ -127,7 +127,7 @@ export function useMoveCommands() {
       const board = workspaceService.findBoardForVariant(variant, workspace)
       invariant(board, "Board not found")
 
-      const variantRootIds = getComponentVariantRootIds(board)
+      const variantRootIds = getBoardVariantRootIds(board)
       const currentIndex = variantRootIds.indexOf(variantId)
       if (currentIndex <= 1) {
         if (currentIndex === 1) {
@@ -152,7 +152,7 @@ export function useMoveCommands() {
       const board = workspaceService.findBoardForVariant(variant, workspace)
       invariant(board, "Board not found")
 
-      const variantRootIds = getComponentVariantRootIds(board)
+      const variantRootIds = getBoardVariantRootIds(board)
       const currentIndex = variantRootIds.indexOf(variantId)
       if (currentIndex === -1 || currentIndex >= variantRootIds.length - 1) {
         if (currentIndex === variantRootIds.length - 1) {

@@ -1,5 +1,6 @@
 import { removeNewLines } from "@lib/helpers/new-lines"
-import { CSSProperties, MouseEvent } from "react"
+import { MenuItem } from "@lib/menus"
+import { CSSProperties } from "react"
 import { Display, Properties, VariantId } from "@seldon/core"
 import { getComponentSchema } from "@seldon/core/components/catalog"
 import { ComponentId, isComponentId } from "@seldon/core/components/constants"
@@ -10,27 +11,30 @@ import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node
 import { nodeSubtreeHasOverrides } from "@seldon/core/workspace/helpers/nodes/get-node-subtree-ids"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
 import type { EntryNode } from "@seldon/core/workspace/types"
+import { useSelection } from "@lib/workspace/hooks/use-selection"
+import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
+import { useDebugMode } from "@lib/hooks/use-debug-mode"
+import { useEditorConfig } from "@lib/hooks/use-editor-config"
+import { useTool } from "@lib/hooks/use-tool"
+import { useSectionExpansion } from "../../hooks/use-section-expansion"
 import {
   getNodeCatalogComponentId,
   getNodeChildIds,
 } from "@lib/workspace/node-tree"
-import { getComponentKey, getNode, hasNode } from "@lib/workspace/workspace-accessors"
-import { useDebugMode } from "@lib/hooks/use-debug-mode"
-import { useEditorConfig } from "@lib/hooks/use-editor-config"
-import { useTool } from "@lib/hooks/use-tool"
-import { useSelection } from "@lib/workspace/hooks/use-selection"
-import { useSelectionRelations } from "./use-selection-relations"
-import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
+import {
+  getComponentKey,
+  getNode,
+  hasNode,
+} from "@lib/workspace/workspace-accessors"
 import { IconProps } from "../../../seldon/primitives/Icon"
 import { LabelProps } from "../../../seldon/primitives/Label"
-import { useAddToast } from "@components/toaster/hooks/use-add-toast"
 import { useDraggable } from "./use-draggable"
 import { useEditState } from "./use-edit-state"
 import { useExpansion, useIsExpanded } from "./use-expansion"
 import { useRowButton } from "./use-row-button"
 import { useRowClick } from "./use-row-click"
 import { useRowToggle } from "./use-row-toggle"
-import { useSectionExpansion } from "../../hooks/use-section-expansion"
+import { useSelectionRelations } from "./use-selection-relations"
 
 /**
  * Hook that provides all state and handlers for rendering a node row in the objects sidebar.
@@ -50,9 +54,8 @@ export function useRowNode(
   const { selectNode } = useSelection()
   const { selectedNodeId, parentOfSelectedNodeId, ancestorIdsOfSelected } =
     useSelectionRelations()
-  const { debugModeEnabled } = useDebugMode()
+  const { showNodeIds } = useDebugMode()
   const { autoScrollToSelection } = useEditorConfig()
-  const addToast = useAddToast()
 
   const { toggle, expandObjects, collapseObjects, getAllDescendantNodeIds } =
     useExpansion()
@@ -72,9 +75,7 @@ export function useRowNode(
   const expandedId = node.id
   const isExpandedState = useIsExpanded(expandedId)
 
-  const children = nodeExistsInWorkspace
-    ? getNodeChildIds(node, workspace)
-    : []
+  const children = nodeExistsInWorkspace ? getNodeChildIds(node, workspace) : []
   const hasChildren = children.length > 0
 
   const isSelected = selectedNodeId === node.id
@@ -156,7 +157,7 @@ export function useRowNode(
   }
 
   function getNodeLabel() {
-    if (debugModeEnabled) {
+    if (showNodeIds) {
       return `ID: ${node.id} / TEMPLATE: ${node.template}`
     }
 
@@ -200,52 +201,36 @@ export function useRowNode(
   }
   const buttonIconic2 = createStaticButton2()
 
-  const createActionButton = (
-    iconName: IconProps["icon"],
-    onClick?: (event: MouseEvent<HTMLButtonElement>) => void,
-  ) => {
-    if (!isSelected) {
-      return { icon: undefined, button: undefined }
-    }
-
-    return {
-      icon: { icon: iconName } as IconProps,
-      button: {
-        onClick:
-          onClick ||
-          ((event: MouseEvent<HTMLButtonElement>) => {
-            event?.stopPropagation()
-            addToast("This feature is coming soon")
-          }),
-        className: "sdn-button-iconic sdn-button-iconic--0urv",
-        style: {
-          position: "relative" as const,
-          zIndex: 10,
-        },
-      },
-    }
-  }
-
-  let icon3: IconProps | undefined
-  let buttonIconic3: React.ButtonHTMLAttributes<HTMLButtonElement> | undefined
-  let icon4: IconProps | undefined
-  let buttonIconic4: React.ButtonHTMLAttributes<HTMLButtonElement> | undefined
-
   const isResettableType =
     workspaceService.isDefaultVariant(node) ||
     workspaceService.isUserVariant(node) ||
     workspaceService.isInstance(node)
+  // A catalog-backed default variant can always reset to its catalog schema,
+  // so offer "Reset to Catalog" whenever such a row is selected. The action is
+  // idempotent when the tree already matches the catalog.
+  const catalogComponentId = nodeExistsInWorkspace
+    ? getNodeCatalogComponentId(node, workspace)
+    : null
+  const isCatalogBackedDefaultVariant =
+    workspaceService.isDefaultVariant(node) &&
+    !!catalogComponentId &&
+    isComponentId(catalogComponentId)
   // Detecting subtree overrides walks the variant tree, so only run it for the
   // selected resettable row rather than on every rendered row.
   const canReset =
     isSelected &&
     isResettableType &&
     nodeExistsInWorkspace &&
-    nodeSubtreeHasOverrides(node.id, workspace)
+    (isCatalogBackedDefaultVariant ||
+      nodeSubtreeHasOverrides(node.id, workspace))
 
-  function handleReset(event: MouseEvent<HTMLButtonElement>) {
-    event.stopPropagation()
-    if (workspaceService.isUserVariant(node)) {
+  function handleReset() {
+    if (workspaceService.isDefaultVariant(node)) {
+      dispatch({
+        type: "reset_default_variant_to_catalog",
+        payload: { defaultVariantRootId: node.id as VariantId },
+      })
+    } else if (workspaceService.isUserVariant(node)) {
       dispatch({
         type: "reset_user_variant_to_default",
         payload: { variantRootId: node.id as VariantId },
@@ -258,14 +243,22 @@ export function useRowNode(
     }
   }
 
-  const resetButton = canReset
-    ? createActionButton("seldon-reset", handleReset)
-    : { icon: undefined, button: undefined }
-  const moreButton = createActionButton("seldon-more")
-  icon3 = resetButton.icon
-  buttonIconic3 = resetButton.button
-  icon4 = moreButton.icon
-  buttonIconic4 = moreButton.button
+  function getResetLabel(): string {
+    if (workspaceService.isDefaultVariant(node)) return "Reset to Catalog"
+    if (workspaceService.isUserVariant(node)) return "Reset to Default"
+    return "Reset"
+  }
+
+  const resetActions: MenuItem[] = canReset
+    ? [
+        {
+          id: "reset",
+          label: getResetLabel(),
+          onSelect: handleReset,
+          testId: `object-panel-node-${node.id}-reset`,
+        },
+      ]
+    : []
 
   function checkIfExcluded(): boolean {
     if (!nodeExistsInWorkspace) {
@@ -316,10 +309,7 @@ export function useRowNode(
     icon,
     buttonIconic2,
     icon2,
-    buttonIconic3,
-    icon3,
-    buttonIconic4,
-    icon4,
+    resetActions,
     onClick,
     onDoubleClick: handleDoubleClick,
     isExpanded: isExpandedState,

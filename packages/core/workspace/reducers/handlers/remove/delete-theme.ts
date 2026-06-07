@@ -24,9 +24,9 @@ export function deleteTheme(
 
     delete draft.themes[payload.themeId]
 
-    const componentKey = themeComponentKeyFromThemeId(payload.themeId)
-    if (!componentKey) return
-    const board = draft.components[componentKey]
+    const boardKey = themeComponentKeyFromThemeId(payload.themeId)
+    if (!boardKey) return
+    const board = draft.boards[boardKey]
     if (board?.type !== "theme" || !board.variants) return
     board.variants = board.variants.filter((r) => r.id !== payload.themeId)
   })

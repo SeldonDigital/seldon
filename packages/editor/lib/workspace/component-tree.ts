@@ -1,13 +1,13 @@
 import { getChildrenIds } from "@seldon/core/workspace/helpers/components/get-children-ids"
-import { walkComponentTreeRefs } from "@seldon/core/workspace/helpers/components/walk-component-tree-refs"
+import { walkBoardTreeRefs } from "@seldon/core/workspace/helpers/components/walk-board-tree-refs"
 import type {
-  ComponentEntry,
+  Board,
   ComponentTreeRef,
   EntryNode,
   EntryNodeId,
   Workspace,
 } from "@seldon/core/workspace/types"
-import { getComponentVariantRootIds } from "./workspace-accessors"
+import { getBoardVariantRootIds } from "./workspace-accessors"
 
 export type SidebarTreeRef = {
   id: EntryNodeId
@@ -15,13 +15,13 @@ export type SidebarTreeRef = {
 }
 
 /** Top-level variant roots for a catalog row. */
-export function getVariantRootIds(board: ComponentEntry): EntryNodeId[] {
-  return getComponentVariantRootIds(board)
+export function getVariantRootIds(board: Board): EntryNodeId[] {
+  return getBoardVariantRootIds(board)
 }
 
 /** Direct child node ids from the board variant tree, not from `nodes`. */
 export function getChildNodeIds(
-  board: ComponentEntry,
+  board: Board,
   parentId: EntryNodeId,
 ): EntryNodeId[] {
   return getChildrenIds(board, parentId)
@@ -29,12 +29,12 @@ export function getChildNodeIds(
 
 /** Direct child refs for a parent in the board tree. */
 export function getChildRefs(
-  board: ComponentEntry,
+  board: Board,
   parentId: EntryNodeId,
 ): ComponentTreeRef[] {
   let refs: ComponentTreeRef[] = []
 
-  walkComponentTreeRefs(board.variants, (ref) => {
+  walkBoardTreeRefs(board.variants, (ref) => {
     if (ref.id !== parentId) return
     refs = ref.children ?? []
     return true
@@ -44,13 +44,13 @@ export function getChildRefs(
 }
 
 export function walkComponentTree(
-  board: ComponentEntry,
+  board: Board,
   visit: (
     ref: ComponentTreeRef,
     parent: ComponentTreeRef | null,
   ) => boolean | void,
 ): void {
-  walkComponentTreeRefs(board.variants, visit)
+  walkBoardTreeRefs(board.variants, visit)
 }
 
 export function getEntryNode(
@@ -61,7 +61,7 @@ export function getEntryNode(
 }
 
 export function collectDescendantNodeIds(
-  board: ComponentEntry,
+  board: Board,
   rootId: EntryNodeId,
 ): EntryNodeId[] {
   const ids: EntryNodeId[] = []

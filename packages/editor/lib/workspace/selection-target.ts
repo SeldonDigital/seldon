@@ -1,5 +1,5 @@
 import { InstanceId, VariantId } from "@seldon/core"
-import type { ComponentKey } from "@seldon/core/workspace/types"
+import type { BoardKey } from "@seldon/core/workspace/types"
 import {
   type ResourceEntryKind,
   useStore as useSelectionStore,
@@ -31,8 +31,43 @@ const RESOURCE_ENTRY_KIND_BY_SELECTION_KIND: Partial<
 
 export const SELECTION_ID_ATTR = "data-selection-id"
 export const SELECTION_KIND_ATTR = "data-selection-kind"
+const CANVAS_NODE_ID_ATTR = "data-canvas-node-id"
+const BOARD_ID_ATTR = "data-board-id"
 
-export type SelectionTarget = { id: string; kind: SelectionKind }
+/**
+ * A resolved selection. For nodes, `rootId` is the ordered node-id path of the
+ * element's column on the canvas, from the variant-root down to the element,
+ * joined by "/". A child node id is shared both across variant columns and
+ * across sibling copies inside one column, so the full path is what uniquely
+ * identifies the clicked or hovered copy.
+ */
+export type SelectionTarget = {
+  id: string
+  kind: SelectionKind
+  rootId?: string
+}
+
+/**
+ * The ordered node-id path of the element's column, from the variant-root down
+ * to the element itself, joined by "/". A child node id is shared across
+ * variant columns and across sibling copies inside one column, so the full
+ * ancestor path is what uniquely identifies the clicked or hovered copy on the
+ * canvas. Returns null outside a board (for example sidebar rows), where the
+ * canvas path does not apply.
+ */
+export function getElementNodePath(element: HTMLElement): string | null {
+  const board = element.closest(`[${BOARD_ID_ATTR}]`)
+  if (!board) return null
+  const ids: string[] = []
+  let current: HTMLElement | null = element
+  while (current && current !== board) {
+    const id = current.getAttribute(CANVAS_NODE_ID_ATTR)
+    if (id) ids.push(id)
+    current = current.parentElement
+  }
+  if (ids.length === 0) return null
+  return ids.reverse().join("/")
+}
 
 /**
  * Resolves the selection target from an event target by walking up to the
@@ -46,6 +81,9 @@ export function getSelectionTarget(
   const id = match.getAttribute(SELECTION_ID_ATTR)
   const kind = match.getAttribute(SELECTION_KIND_ATTR) as SelectionKind | null
   if (!id || !kind) return null
+  if (kind === "node") {
+    return { id, kind, rootId: getElementNodePath(match) ?? undefined }
+  }
   return { id, kind }
 }
 
@@ -71,18 +109,21 @@ export function useSelectedId(): string | null {
 export function selectFromTarget(
   target: SelectionTarget,
   setters: {
-    selectNode: (id: VariantId | InstanceId | null) => void
-    selectBoard: (id: ComponentKey | null) => void
+    selectNode: (
+      id: VariantId | InstanceId | null,
+      rootId?: string | null,
+    ) => void
+    selectBoard: (id: BoardKey | null) => void
     selectResourceEntry: (kind: ResourceEntryKind, id: string | null) => void
     selectResourceItem: (key: string | null) => void
   },
 ): void {
   switch (target.kind) {
     case "node":
-      setters.selectNode(target.id as VariantId | InstanceId)
+      setters.selectNode(target.id as VariantId | InstanceId, target.rootId)
       return
     case "board":
-      setters.selectBoard(target.id as ComponentKey)
+      setters.selectBoard(target.id as BoardKey)
       return
     case "theme":
     case "fontCollection":

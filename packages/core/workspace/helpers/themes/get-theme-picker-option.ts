@@ -1,6 +1,6 @@
 import { isThemeBoard } from "../../model/components"
 import type { Workspace } from "../../types"
-import { getComponentOrder } from "../components/component-sort-order"
+import { getBoardOrder } from "../components/board-sort-order"
 import { getThemeEntryDisplayName } from "./get-theme-entry-display-name"
 
 export type ThemePickerOption = {
@@ -29,9 +29,9 @@ export function getThemePickerOptions({
     options.push({ value: "none", name: "Inherit" })
   }
 
-  const themeBoards = Object.values(workspace.components ?? {})
+  const themeBoards = Object.values(workspace.boards ?? {})
     .filter(isThemeBoard)
-    .sort((a, b) => getComponentOrder(a) - getComponentOrder(b))
+    .sort((a, b) => getBoardOrder(a) - getBoardOrder(b))
 
   for (const board of themeBoards) {
     board.variants.forEach((variantRef) => {

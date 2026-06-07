@@ -11,7 +11,11 @@
     "skipLibCheck": true,
 
     "rootDir": ".",
-    "outDir": "./dist"
+    "outDir": "./dist",
+    "paths": {
+      "@seldon/core": ["./index.ts"],
+      "@seldon/core/*": ["./*"]
+    }
   },
   "include": [
     "./components/**/*.*",

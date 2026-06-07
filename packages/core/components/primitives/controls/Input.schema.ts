@@ -27,9 +27,17 @@ export const schema = {
       type: Sdn.ValueType.OPTION,
       value: Sdn.InputType.TEXT,
     },
+    checked: {
+      type: Sdn.ValueType.EMPTY,
+      value: null,
+    },
     placeholder: {
       type: Sdn.ValueType.EXACT,
       value: "Placeholder text",
+    },
+    buttonSize: {
+      type: Sdn.ValueType.EMPTY,
+      value: null,
     },
     width: {
       type: Sdn.ValueType.OPTION,
@@ -78,6 +86,10 @@ export const schema = {
     color: {
       type: Sdn.ValueType.THEME_CATEGORICAL,
       value: "@swatch.black",
+    },
+    accentColor: {
+      type: Sdn.ValueType.EMPTY,
+      value: null,
     },
     brightness: {
       type: Sdn.ValueType.EMPTY,
@@ -378,6 +390,142 @@ export const schema = {
       },
     ],
   },
+  variants: [
+    {
+      id: "checkbox",
+      label: "Checkbox",
+      intent: "Basic form control for toggling a binary value.",
+      overrides: {
+        inputType: {
+          type: Sdn.ValueType.OPTION,
+          value: Sdn.InputType.CHECKBOX,
+        },
+        checked: { type: Sdn.ValueType.EXACT, value: false },
+        placeholder: { type: Sdn.ValueType.EMPTY, value: null },
+        buttonSize: {
+          type: Sdn.ValueType.THEME_ORDINAL,
+          value: "@fontSize.medium",
+        },
+        accentColor: {
+          type: Sdn.ValueType.THEME_CATEGORICAL,
+          value: "@swatch.primary",
+        },
+        width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+        padding: {
+          top: { type: Sdn.ValueType.EMPTY, value: null },
+          right: { type: Sdn.ValueType.EMPTY, value: null },
+          bottom: { type: Sdn.ValueType.EMPTY, value: null },
+          left: { type: Sdn.ValueType.EMPTY, value: null },
+        },
+        background: [
+          {
+            preset: { type: Sdn.ValueType.EMPTY, value: null },
+            image: { type: Sdn.ValueType.EMPTY, value: null },
+            position: { type: Sdn.ValueType.EMPTY, value: null },
+            size: { type: Sdn.ValueType.EMPTY, value: null },
+            repeat: { type: Sdn.ValueType.EMPTY, value: null },
+            color: { type: Sdn.ValueType.EMPTY, value: null },
+            blendMode: { type: Sdn.ValueType.EMPTY, value: null },
+            filter: { type: Sdn.ValueType.EMPTY, value: null },
+            brightness: { type: Sdn.ValueType.EMPTY, value: null },
+            opacity: { type: Sdn.ValueType.EMPTY, value: null },
+          },
+        ],
+        border: {
+          preset: { type: Sdn.ValueType.EMPTY, value: null },
+          style: { type: Sdn.ValueType.EMPTY, value: null },
+          color: { type: Sdn.ValueType.EMPTY, value: null },
+          width: { type: Sdn.ValueType.EMPTY, value: null },
+          brightness: { type: Sdn.ValueType.EMPTY, value: null },
+          opacity: { type: Sdn.ValueType.EMPTY, value: null },
+          collapse: { type: Sdn.ValueType.EMPTY, value: null },
+        },
+        corners: {
+          topLeft: { type: Sdn.ValueType.EMPTY, value: null },
+          topRight: { type: Sdn.ValueType.EMPTY, value: null },
+          bottomLeft: { type: Sdn.ValueType.EMPTY, value: null },
+          bottomRight: { type: Sdn.ValueType.EMPTY, value: null },
+        },
+        font: {
+          preset: { type: Sdn.ValueType.EMPTY, value: null },
+          family: { type: Sdn.ValueType.EMPTY, value: null },
+          style: { type: Sdn.ValueType.EMPTY, value: null },
+          weight: { type: Sdn.ValueType.EMPTY, value: null },
+          size: { type: Sdn.ValueType.EMPTY, value: null },
+          lineHeight: { type: Sdn.ValueType.EMPTY, value: null },
+          textCase: { type: Sdn.ValueType.EMPTY, value: null },
+          letterSpacing: { type: Sdn.ValueType.EMPTY, value: null },
+        },
+      },
+    },
+    {
+      id: "radio",
+      label: "RadioButton",
+      intent: "Basic form control for single-option selection in a group.",
+      overrides: {
+        inputType: {
+          type: Sdn.ValueType.OPTION,
+          value: Sdn.InputType.RADIO,
+        },
+        checked: { type: Sdn.ValueType.EXACT, value: false },
+        placeholder: { type: Sdn.ValueType.EMPTY, value: null },
+        buttonSize: {
+          type: Sdn.ValueType.THEME_ORDINAL,
+          value: "@fontSize.medium",
+        },
+        accentColor: {
+          type: Sdn.ValueType.THEME_CATEGORICAL,
+          value: "@swatch.primary",
+        },
+        width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+        padding: {
+          top: { type: Sdn.ValueType.EMPTY, value: null },
+          right: { type: Sdn.ValueType.EMPTY, value: null },
+          bottom: { type: Sdn.ValueType.EMPTY, value: null },
+          left: { type: Sdn.ValueType.EMPTY, value: null },
+        },
+        background: [
+          {
+            preset: { type: Sdn.ValueType.EMPTY, value: null },
+            image: { type: Sdn.ValueType.EMPTY, value: null },
+            position: { type: Sdn.ValueType.EMPTY, value: null },
+            size: { type: Sdn.ValueType.EMPTY, value: null },
+            repeat: { type: Sdn.ValueType.EMPTY, value: null },
+            color: { type: Sdn.ValueType.EMPTY, value: null },
+            blendMode: { type: Sdn.ValueType.EMPTY, value: null },
+            filter: { type: Sdn.ValueType.EMPTY, value: null },
+            brightness: { type: Sdn.ValueType.EMPTY, value: null },
+            opacity: { type: Sdn.ValueType.EMPTY, value: null },
+          },
+        ],
+        border: {
+          preset: { type: Sdn.ValueType.EMPTY, value: null },
+          style: { type: Sdn.ValueType.EMPTY, value: null },
+          color: { type: Sdn.ValueType.EMPTY, value: null },
+          width: { type: Sdn.ValueType.EMPTY, value: null },
+          brightness: { type: Sdn.ValueType.EMPTY, value: null },
+          opacity: { type: Sdn.ValueType.EMPTY, value: null },
+          collapse: { type: Sdn.ValueType.EMPTY, value: null },
+        },
+        corners: {
+          topLeft: { type: Sdn.ValueType.EMPTY, value: null },
+          topRight: { type: Sdn.ValueType.EMPTY, value: null },
+          bottomLeft: { type: Sdn.ValueType.EMPTY, value: null },
+          bottomRight: { type: Sdn.ValueType.EMPTY, value: null },
+        },
+        font: {
+          preset: { type: Sdn.ValueType.EMPTY, value: null },
+          family: { type: Sdn.ValueType.EMPTY, value: null },
+          style: { type: Sdn.ValueType.EMPTY, value: null },
+          weight: { type: Sdn.ValueType.EMPTY, value: null },
+          size: { type: Sdn.ValueType.EMPTY, value: null },
+          lineHeight: { type: Sdn.ValueType.EMPTY, value: null },
+          textCase: { type: Sdn.ValueType.EMPTY, value: null },
+          letterSpacing: { type: Sdn.ValueType.EMPTY, value: null },
+        },
+      },
+    },
+  ],
 } as const satisfies ComponentSchema
 
 export const exportConfig: ComponentExport = {

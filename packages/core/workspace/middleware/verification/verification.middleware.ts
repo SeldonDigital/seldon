@@ -1,9 +1,10 @@
 import { isComponentId } from "../../../components/constants"
 import { ValueType } from "../../../properties"
-import { debugLog, isDebugEnabled } from "../../../utils/debug-logger"
+import { isWorkspaceLoggingEnabled } from "../../../utils/debug-logger"
 import { ErrorMessages } from "../../constants"
-import { getComponentId } from "../../helpers/components/get-component-ids"
-import { walkComponentTreeRefs } from "../../helpers/components/walk-component-tree-refs"
+import { getBoardKey } from "../../helpers/components/get-board-keys"
+import { findBoardTreeCycleId } from "../../helpers/components/find-tree-cycle"
+import { walkBoardTreeRefs } from "../../helpers/components/walk-board-tree-refs"
 import { getWorkspaceNodes } from "../../helpers/general/get-workspace-nodes"
 import { isResourceType } from "../../helpers/components/is-resource-type"
 import { isVariantNode } from "../../helpers/nodes/is-variant-node"
@@ -19,26 +20,55 @@ import { Middleware, Workspace } from "../../types"
 import { check } from "../validation/check"
 import { WorkspaceValidationError } from "../validation/workspace-validation-error"
 
-function collectComponentTreeNodeIds(workspace: Workspace): Set<string> {
+function collectBoardTreeNodeIds(workspace: Workspace): Set<string> {
   const ids = new Set<string>()
-  for (const board of Object.values(workspace.components)) {
-    walkComponentTreeRefs(board.variants, (ref) => {
+  for (const board of Object.values(workspace.boards)) {
+    walkBoardTreeRefs(board.variants, (ref) => {
       ids.add(ref.id)
     })
   }
   return ids
 }
 
+/** Reports whether a variant override computes from a `#parent` reference. */
+function overrideReferencesParentNode(property: unknown): boolean {
+  return (
+    !!property &&
+    typeof property === "object" &&
+    "type" in property &&
+    property.type === ValueType.COMPUTED &&
+    "value" in property &&
+    !!property.value &&
+    typeof property.value === "object" &&
+    "input" in property.value &&
+    !!property.value.input &&
+    typeof (property.value.input as { basedOn?: string }).basedOn ===
+      "string" &&
+    (property.value.input as { basedOn: string }).basedOn.startsWith("#parent")
+  )
+}
+
 const validators = {
+  /**
+   * Validates that no board variant tree contains a cycle. Runs before the
+   * recursive tree walkers so a cyclic tree fails with a clear message instead
+   * of overflowing the call stack.
+   */
+  noCyclicTrees: (workspace: Workspace) => {
+    const cycleId = findBoardTreeCycleId(workspace)
+    if (cycleId) {
+      throw new Error(ErrorMessages.cyclicComponentTree(cycleId))
+    }
+  },
   /** Validates that every child ref in board trees points at a node row. */
   allChildrenExist: (workspace: Workspace) => {
     const nodes = getWorkspaceNodes(workspace)
-    for (const board of Object.values(workspace.components)) {
+    for (const board of Object.values(workspace.boards)) {
       // Resource boards (theme, icon-set, media) reference their own maps, not nodes.
       if (isResourceType(board)) {
         continue
       }
-      walkComponentTreeRefs(board.variants, (ref) => {
+      walkBoardTreeRefs(board.variants, (ref) => {
         for (const child of ref.children ?? []) {
           check(nodes[child.id], ErrorMessages.nodeNotFound(child.id))
         }
@@ -48,12 +78,12 @@ const validators = {
   /** Validates that every tree ref id maps to a node row. */
   allVariantsExist: (workspace: Workspace) => {
     const nodes = getWorkspaceNodes(workspace)
-    for (const board of Object.values(workspace.components)) {
+    for (const board of Object.values(workspace.boards)) {
       // Resource boards (theme, icon-set, media) reference their own maps, not nodes.
       if (isResourceType(board)) {
         continue
       }
-      walkComponentTreeRefs(board.variants, (ref) => {
+      walkBoardTreeRefs(board.variants, (ref) => {
         check(nodes[ref.id], ErrorMessages.missingVariant(ref.id))
       })
     }
@@ -83,7 +113,7 @@ const validators = {
   },
   /** Validates that each variant node appears in some board tree. */
   noDanglingVariants: (workspace: Workspace) => {
-    const treeIds = collectComponentTreeNodeIds(workspace)
+    const treeIds = collectBoardTreeNodeIds(workspace)
     Object.values(getWorkspaceNodes(workspace))
       .filter(isVariantNode)
       .forEach((variant) => {
@@ -92,7 +122,7 @@ const validators = {
   },
   /** Validates that each instance node appears in some board tree. */
   noDanglingChildNodes: (workspace: Workspace) => {
-    const treeIds = collectComponentTreeNodeIds(workspace)
+    const treeIds = collectBoardTreeNodeIds(workspace)
     Object.values(getWorkspaceNodes(workspace))
       .filter(typeCheckingService.isInstance)
       .forEach((child) => {
@@ -117,34 +147,17 @@ const validators = {
       .filter(isVariantNode)
       .forEach((variant) => {
         Object.entries(variant.overrides).forEach(([key, property]) => {
-          if (
-            property &&
-            typeof property === "object" &&
-            "type" in property &&
-            property.type === ValueType.COMPUTED &&
-            "value" in property &&
-            property.value &&
-            typeof property.value === "object" &&
-            "input" in property.value &&
-            property.value.input &&
-            typeof (property.value.input as { basedOn?: string }).basedOn ===
-              "string" &&
-            (property.value.input as { basedOn: string }).basedOn.startsWith(
-              "#parent",
-            )
-          ) {
-            throw new Error(
-              ErrorMessages.variantRefersToParent(variant.id, key),
-            )
+          if (overrideReferencesParentNode(property)) {
+            throw new Error(ErrorMessages.variantRefersToParent(variant.id, key))
           }
         })
       })
   },
 
   /** Validates that each component board has exactly one default variant root. */
-  oneDefaultVariantPerComponent: (workspace: Workspace) => {
+  oneDefaultVariantPerBoard: (workspace: Workspace) => {
     const nodes = getWorkspaceNodes(workspace)
-    Object.values(workspace.components).forEach((board) => {
+    Object.values(workspace.boards).forEach((board) => {
       if (
         isIconSetBoard(board) ||
         isThemeBoard(board) ||
@@ -162,23 +175,23 @@ const validators = {
         return variant && typeCheckingService.isDefaultVariant(variant)
       })
 
-      const componentKey =
-        getComponentId(workspace, board) ??
+      const boardKey =
+        getBoardKey(workspace, board) ??
         ("catalogId" in board ? board.catalogId : "")
 
       if (defaultVariants.length > 1) {
         throw new Error(
-          isComponentId(componentKey)
-            ? ErrorMessages.tooManyDefaultVariants(componentKey)
-            : `ComponentEntry ${componentKey} has more than one default variant.`,
+          isComponentId(boardKey)
+            ? ErrorMessages.tooManyDefaultVariants(boardKey)
+            : `Board ${boardKey} has more than one default variant.`,
         )
       }
 
       if (defaultVariants.length === 0) {
         throw new Error(
-          isComponentId(componentKey)
-            ? ErrorMessages.defaultVariantNotFound(componentKey)
-            : `Default variant not found for board ${componentKey}.`,
+          isComponentId(boardKey)
+            ? ErrorMessages.defaultVariantNotFound(boardKey)
+            : `Default variant not found for board ${boardKey}.`,
         )
       }
     })
@@ -194,8 +207,11 @@ export const workspaceVerificationMiddleware: Middleware =
 
     try {
       const shouldLogVerification =
-        process.env.NODE_ENV === "development" && isDebugEnabled()
+        process.env.NODE_ENV === "development" && isWorkspaceLoggingEnabled()
       shouldLogVerification && console.groupCollapsed("🔍 Verifying workspace")
+
+      validators.noCyclicTrees(nextWorkspace)
+      log("✅ No cyclic component trees")
 
       validators.allChildrenExist(nextWorkspace)
       log("✅ All children exist")
@@ -206,7 +222,7 @@ export const workspaceVerificationMiddleware: Middleware =
       validators.allNodeTemplateTargetsExist(nextWorkspace)
       log("✅ All node template targets exist")
 
-      validators.oneDefaultVariantPerComponent(nextWorkspace)
+      validators.oneDefaultVariantPerBoard(nextWorkspace)
       log("✅ One default variant per board")
 
       validators.uniqueIds(nextWorkspace)
@@ -240,12 +256,14 @@ export const workspaceVerificationMiddleware: Middleware =
     return nextWorkspace
   }
 
-const log = (message: any) => {
-  debugLog("Workspace", "verificationMiddleware", String(message))
+const log = (message: string) => {
+  if (!isWorkspaceLoggingEnabled()) return
+  console.log(`🐶 verificationMiddleware · ${message}`)
 }
 
-const logError = (message: any, error: Error) => {
-  debugLog("Workspace", "verificationMiddleware", String(message), {
+const logError = (message: string, error: Error) => {
+  if (!isWorkspaceLoggingEnabled()) return
+  console.log(`🐶 verificationMiddleware · ${message}`, {
     error: error.message,
   })
 }

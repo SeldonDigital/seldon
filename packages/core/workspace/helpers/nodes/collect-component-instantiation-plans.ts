@@ -1,6 +1,6 @@
 import { getComponentSchema } from "../../../components/catalog"
 import { ComponentId } from "../../../components/constants"
-import { isComplexSchema } from "../../../components/types"
+import { hasVariants } from "../../../components/types"
 import {
   applyVariantFallbackToSlot,
   walkSchemaComposition,
@@ -51,7 +51,7 @@ export function collectComponentInstantiationPlans(
       }
 
       const childSchema = getComponentSchema(slot.component)
-      if (!isComplexSchema(childSchema)) {
+      if (!hasVariants(childSchema)) {
         return
       }
 

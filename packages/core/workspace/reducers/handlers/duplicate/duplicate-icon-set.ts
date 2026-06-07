@@ -27,15 +27,15 @@ export function duplicateIconSet(
       isDraft(draftEntry) ? current(draftEntry) : draftEntry
     ) as EntryIconSet
 
-    const componentKey = iconSetBoardKeyFromEntryId(payload.iconSetId)
-    if (!componentKey) return
+    const boardKey = iconSetBoardKeyFromEntryId(payload.iconSetId)
+    if (!boardKey) return
 
     const newId =
-      payload.newIconSetId ?? `icon-set-${componentKey}-${randomSuffix()}`
+      payload.newIconSetId ?? `icon-set-${boardKey}-${randomSuffix()}`
 
     if (draft["icon-sets"][newId]) return
 
-    const board = draft.components[componentKey]
+    const board = draft.boards[boardKey]
     const isIconSetBoard = board?.type === "icon-set"
 
     const base = isIconSetBoard ? board.label : entry.label

@@ -12,7 +12,7 @@ export function getThemeEntryDisplayName(
   entryId: string,
   workspace: Workspace,
 ): string | undefined {
-  const themeBoards = Object.values(workspace.components ?? {}).filter(
+  const themeBoards = Object.values(workspace.boards ?? {}).filter(
     isThemeBoard,
   )
 

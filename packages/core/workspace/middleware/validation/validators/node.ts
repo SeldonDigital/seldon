@@ -2,7 +2,11 @@ import { getComponentSchema } from "../../../../components/catalog"
 import { ComponentId, isComponentId } from "../../../../components/constants"
 import { rules } from "../../../../rules/config/rules.config"
 import { getChildrenIds } from "../../../helpers/components/get-children-ids"
-import { getComponentByNodeId } from "../../../helpers/components/get-component-by-node-id"
+import { getBoardByNodeId } from "../../../helpers/components/get-board-by-node-id"
+import {
+  collectDescendantTreeIds,
+  findTreeRef,
+} from "../../../services/shared/component-tree-helpers"
 import { isDefaultVariant } from "../../../helpers/general/is-default-variant"
 import { canNodeHaveChildren } from "../../../helpers/nodes/can-node-have-children"
 import { isVariantInUse } from "../../../helpers/general/is-variant-in-use"
@@ -12,7 +16,6 @@ import {
   nodeRetrievalService,
   nodeTraversalService,
   nodeRelationshipService,
-  workspacePropagationService,
   typeCheckingService,
 } from "../../../services"
 import { check } from "../check"
@@ -71,12 +74,29 @@ export const nodeValidators = {
     }
 
     check(
-      !workspacePropagationService.hasAncestorWithComponentId(
+      !nodeRelationshipService.hasAncestorWithComponentId(
         sourceNodeComponent,
         targetNode,
         workspace,
       ),
       ErrorMessages.cannotAddSelfAsInstance(),
+    )
+  },
+  notIntoOwnSubtree: (
+    workspace: Workspace,
+    nodeId: InstanceId | VariantId,
+    parentId: InstanceId | VariantId,
+  ) => {
+    const board = getBoardByNodeId(workspace, nodeId)
+    if (!board) return
+    const treeRef = findTreeRef(board, nodeId)
+    if (!treeRef) return
+    // `collectDescendantTreeIds` includes the node itself, so this also rejects
+    // moving a node directly under itself.
+    const subtreeIds = new Set(collectDescendantTreeIds(treeRef))
+    check(
+      !subtreeIds.has(parentId),
+      ErrorMessages.cannotMoveIntoOwnSubtree(nodeId),
     )
   },
   isWithinSameVariant: (
@@ -117,7 +137,7 @@ export const nodeValidators = {
         throw new Error(ErrorMessages.parentNotFound(id))
       }
     } else {
-      const board = nodeRelationshipService.findComponentForVariant(
+      const board = nodeRelationshipService.findBoardForVariant(
         node as Variant,
         workspace,
       )
@@ -176,37 +196,54 @@ export const nodeValidators = {
     )
 
     if (childComponent === ComponentId.FRAME) {
-      const board = getComponentByNodeId(workspace, childId)
-      if (!board) return
-
-      const frameChildIds = getChildrenIds(board, childId)
-      for (const grandChildId of frameChildIds) {
-        const grandChildNode = workspace.nodes[grandChildId]
-        if (grandChildNode) {
-          const grandChildComponent = getNodeComponentId(
-            grandChildNode,
-            workspace,
-          )
-          const canContainGrandChild =
-            typeCheckingService.canComponentBeParentOf(
-              parentComponentId,
-              grandChildComponent,
-            )
-
-          if (!canContainGrandChild) {
-            const grandChildSchema = getComponentSchema(grandChildComponent)
-            check(
-              false,
-              ErrorMessages.invalidParentChildRelationship(
-                parentSchema.name,
-                `${childSchema.name} containing ${grandChildSchema.name}`,
-              ),
-            )
-          }
-        }
-      }
+      assertFrameGrandchildrenAllowed(
+        workspace,
+        parentComponentId,
+        childId,
+        parentSchema,
+        childSchema,
+      )
     }
   },
+}
+
+/**
+ * Frames inherit their parent's containment rules, so every frame grandchild
+ * must also be allowed directly under the frame's parent component.
+ */
+function assertFrameGrandchildrenAllowed(
+  workspace: Workspace,
+  parentComponentId: ComponentId,
+  frameId: InstanceId | VariantId,
+  parentSchema: ReturnType<typeof getComponentSchema>,
+  frameSchema: ReturnType<typeof getComponentSchema>,
+): void {
+  const board = getBoardByNodeId(workspace, frameId)
+  if (!board) return
+
+  for (const grandChildId of getChildrenIds(board, frameId)) {
+    const grandChildNode = workspace.nodes[grandChildId]
+    if (!grandChildNode) continue
+
+    const grandChildComponent = getNodeComponentId(grandChildNode, workspace)
+    if (
+      typeCheckingService.canComponentBeParentOf(
+        parentComponentId,
+        grandChildComponent,
+      )
+    ) {
+      continue
+    }
+
+    const grandChildSchema = getComponentSchema(grandChildComponent)
+    check(
+      false,
+      ErrorMessages.invalidParentChildRelationship(
+        parentSchema.name,
+        `${frameSchema.name} containing ${grandChildSchema.name}`,
+      ),
+    )
+  }
 }
 
 export function validateComponentCanBeInserted(
@@ -250,7 +287,7 @@ export function validateComponentCanBeInserted(
 
     if (
       componentId !== ComponentId.FRAME &&
-      workspacePropagationService.hasAncestorWithComponentId(
+      nodeRelationshipService.hasAncestorWithComponentId(
         componentId,
         targetParent,
         workspace,

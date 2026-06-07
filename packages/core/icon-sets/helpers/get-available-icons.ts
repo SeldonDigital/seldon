@@ -31,7 +31,7 @@ function iconIdsForSet(setId: IconSetId): readonly IconId[] {
 
 function collectIconSetIdsFromBoards(workspace: Workspace): IconSetId[] {
   const setIds = new Set<IconSetId>()
-  for (const entry of Object.values(workspace.components)) {
+  for (const entry of Object.values(workspace.boards)) {
     if (!entry || !isIconSetBoard(entry)) continue
     const setId = ICON_SET_CATALOG_TO_SET_ID[entry.catalogId]
     if (setId) setIds.add(setId)

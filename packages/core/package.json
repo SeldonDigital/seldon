@@ -3,10 +3,11 @@
   "type": "module",
   "scripts": {
     "build": "tsc --build tsconfig.json",
+    "test": "bun test",
     "lint": "echo \"TODO: Add this with the shared eslint config\"",
     "quality": "bun lint && bun tsc",
     "format": "prettier --write \"./**/*.{ts,tsx,json}\"",
-    "generate:action-schema": "typescript-json-schema ./tsconfig.schema.json WorkspaceAction --out ./workspace/reducers/generated-workspace-action-schema.json --noExtraProps --required"
+    "generate:action-schema": "typescript-json-schema ./tsconfig.schema.json WorkspaceAction --out ./workspace/reducers/workspace-action-schema.json --noExtraProps --required"
   },
   "exports": {
     ".": {
@@ -156,21 +157,14 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
-    "@carbon/icons-react": "^11.71.0",
-    "@material-design-icons/svg": "^0.14.15",
     "@types/chroma-js": "^2.4.5",
     "@types/lodash": "^4.17.20",
-    "@types/lodash.isequal": "^4.5.8",
     "@types/pluralize": "^0.0.33",
-    "change-case": "^5.4.4",
     "chroma-js": "^3.1.2",
     "immer": "^10.1.1",
     "lodash": "^4.17.21",
-    "lodash.isequal": "^4.5.0",
-    "lucide-react": "^0.555.0",
     "nanoid": "^5.1.4",
     "pluralize": "^8.0.0",
-    "tldraw": "^3.12.0",
     "typescript-json-schema": "^0.65.1"
   }
 }

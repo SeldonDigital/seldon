@@ -28,11 +28,6 @@ function getSelectedSchemaVariant(
     return null
   }
 
-  invariant(
-    isComplexSchema(schema),
-    `Schema child ${slot.component} cannot use variant "${slot.variant}" because it is primitive`,
-  )
-
   const variant =
     schema.variants?.find((candidate) => candidate.id === slot.variant) ?? null
 
@@ -54,7 +49,9 @@ export function resolveSchemaChild(slot: SchemaChild): ResolvedSchemaChild {
       schema,
       label: schema.name,
       templateNodeId: componentBoardDefaultNodeId(slot.component),
-      fallbackChildren: isComplexSchema(schema) ? (schema.default.children ?? []) : [],
+      fallbackChildren: isComplexSchema(schema)
+        ? (schema.default.children ?? [])
+        : [],
     }
   }
 
@@ -68,6 +65,8 @@ export function resolveSchemaChild(slot: SchemaChild): ResolvedSchemaChild {
     ),
     fallbackChildren: selectedVariant.children?.length
       ? selectedVariant.children
-      : schema.default.children ?? [],
+      : isComplexSchema(schema)
+        ? (schema.default.children ?? [])
+        : [],
   }
 }

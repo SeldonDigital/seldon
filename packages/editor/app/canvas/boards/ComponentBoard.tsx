@@ -4,10 +4,10 @@ import { getCssFromProperties } from "@seldon/factory/styles/css-properties/get-
 import { Board, Properties, Scroll, Unit, ValueType } from "@seldon/core"
 import { ThemeId } from "@seldon/core/themes/types"
 import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
-import { getComponentLevelThemeRef } from "@seldon/core/workspace/helpers/components/get-component-level-theme-ref"
-import { getComponentVariantRootIds } from "@seldon/core/workspace/helpers/components/get-component-variant-root-ids"
+import { getBoardThemeRef } from "@seldon/core/workspace/helpers/components/get-board-theme-ref"
+import { getBoardVariantRootIds } from "@seldon/core/workspace/helpers/components/get-board-variant-root-ids"
 import { resolveComponentKey } from "@lib/workspace/workspace-accessors"
-import { themeService } from "@seldon/core/workspace/services/theme/theme.service"
+import { workspaceThemeService } from "@seldon/core/workspace/services/theme/theme.service"
 import { usePreview } from "@lib/hooks/use-preview"
 import { useSelection } from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
@@ -22,8 +22,8 @@ export function ComponentBoard({ board }: ComponentBoardProps) {
   const { selectedBoardId } = useSelection()
   const boardKey =
     selectedBoardId ?? resolveComponentKey(board, workspace)
-  const boardEntry = workspace.components[boardKey] ?? board
-  const theme = themeService.getObjectTheme(boardEntry, workspace)
+  const boardEntry = workspace.boards[boardKey] ?? board
+  const theme = workspaceThemeService.getObjectTheme(boardEntry, workspace)
   const className = `board-${boardKey}`
   const properties = getNodeProperties(boardEntry, workspace)
   const { device, isInPreviewMode } = usePreview()
@@ -69,13 +69,13 @@ export function ComponentBoard({ board }: ComponentBoardProps) {
         className={className}
         style={{ position: "static" }}
       >
-        {getComponentVariantRootIds(boardEntry).map((variantId) => {
+        {getBoardVariantRootIds(boardEntry).map((variantId) => {
           return (
             <CanvasNode
               key={variantId}
               nodeId={variantId}
               initialThemeId={
-                (getComponentLevelThemeRef(boardEntry) ?? "default") as ThemeId
+                (getBoardThemeRef(boardEntry) ?? "default") as ThemeId
               }
               parentNode={boardEntry}
               isRoot

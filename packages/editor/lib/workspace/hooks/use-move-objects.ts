@@ -7,14 +7,14 @@ import {
   VariantId,
   invariant,
 } from "@seldon/core"
-import { getComponentOrder } from "@seldon/core/workspace/helpers/components/component-sort-order"
-import { getComponentVariantRootIds } from "@seldon/core/workspace/helpers/components/get-component-variant-root-ids"
+import { getBoardOrder } from "@seldon/core/workspace/helpers/components/board-sort-order"
+import { getBoardVariantRootIds } from "@seldon/core/workspace/helpers/components/get-board-variant-root-ids"
 import { findParentNode } from "@seldon/core/workspace/helpers/nodes/find-parent-node"
 import { getVariantById } from "@seldon/core/workspace/helpers/general/get-variant-by-id"
 import { getVariantIndex } from "@seldon/core/workspace/helpers/general/get-variant-index"
 import { isDefaultVariant } from "@seldon/core/workspace/helpers/general/is-default-variant"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
-import type { ComponentEntry } from "@seldon/core/workspace/types"
+import type { Board } from "@seldon/core/workspace/types"
 import { getNodeChildIds } from "@lib/workspace/node-tree"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { useAddToast } from "@components/toaster/hooks/use-add-toast"
@@ -92,18 +92,18 @@ export function useMoveObjects() {
       position,
       isPreview = false,
     }: {
-      targetBoard: ComponentEntry
-      subjectBoard: ComponentEntry
+      targetBoard: Board
+      subjectBoard: Board
       position: Placement
       isPreview?: boolean
     }) => {
-      const targetOrder = getComponentOrder(targetBoard)
+      const targetOrder = getBoardOrder(targetBoard)
 
       dispatch(
         {
           type: "reorder_board",
           payload: {
-            componentKey: getComponentKey(subjectBoard),
+            boardKey: getComponentKey(subjectBoard),
             newIndex:
               position === "before" ? targetOrder : targetOrder + 1,
           },
@@ -128,7 +128,7 @@ export function useMoveObjects() {
         {
           type: "reorder_variant_in_board",
           payload: {
-            componentKey: getComponentKey(board),
+            boardKey: getComponentKey(board),
             variantRootId: variantId,
             newIndex: index,
           },

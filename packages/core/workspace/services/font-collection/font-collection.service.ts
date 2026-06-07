@@ -108,7 +108,7 @@ export class WorkspaceFontCollectionService {
     workspace: Workspace,
   ): Record<string, string[]> {
     const byFamily: Record<string, Set<string>> = {}
-    for (const board of Object.values(workspace.components)) {
+    for (const board of Object.values(workspace.boards)) {
       if (!board || !isFontCollectionBoard(board)) continue
       for (const variant of board.variants ?? []) {
         const collection = this.getFontCollection(variant.id, workspace)
@@ -143,7 +143,7 @@ export class WorkspaceFontCollectionService {
   public getEnabledRemoteFamilies(workspace: Workspace): EnabledRemoteFamily[] {
     const byName = new Map<string, { slot: string; variants: Set<string> }>()
     const order: string[] = []
-    for (const board of Object.values(workspace.components)) {
+    for (const board of Object.values(workspace.boards)) {
       if (!board || !isFontCollectionBoard(board)) continue
       for (const variant of board.variants ?? []) {
         const collection = this.getFontCollection(variant.id, workspace)
@@ -187,7 +187,7 @@ export class WorkspaceFontCollectionService {
     const seen = new Set<string>()
     const groups: WorkspaceFontFamily[][] = []
 
-    for (const board of Object.values(workspace.components)) {
+    for (const board of Object.values(workspace.boards)) {
       if (!board || !isFontCollectionBoard(board)) continue
       const group: WorkspaceFontFamily[] = []
       const groupSeen = new Set<string>()
@@ -228,7 +228,7 @@ export class WorkspaceFontCollectionService {
   /** Catalog ids of font collections present in the workspace. */
   public collectUsedFontCollections(workspace: Workspace): Set<string> {
     const used = new Set<string>()
-    for (const board of Object.values(workspace.components)) {
+    for (const board of Object.values(workspace.boards)) {
       if (board && isFontCollectionBoard(board)) {
         used.add(board.catalogId)
       }

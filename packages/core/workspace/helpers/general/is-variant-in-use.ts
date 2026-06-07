@@ -1,5 +1,5 @@
 import { EntryNodeId, Workspace } from "../../types"
-import { walkComponentTreeRefs } from "../components/walk-component-tree-refs"
+import { walkBoardTreeRefs } from "../components/walk-board-tree-refs"
 
 /**
  * Returns true when the variant id appears as a child reference under some node in any board variant tree.
@@ -8,9 +8,9 @@ import { walkComponentTreeRefs } from "../components/walk-component-tree-refs"
  * @param workspace Workspace that holds the boards.
  */
 export function isVariantInUse(variantId: EntryNodeId, workspace: Workspace) {
-  for (const board of Object.values(workspace.components)) {
+  for (const board of Object.values(workspace.boards)) {
     let isUsed = false
-    walkComponentTreeRefs(board.variants, (ref) => {
+    walkBoardTreeRefs(board.variants, (ref) => {
       if (!ref.children?.some((child) => child.id === variantId)) return
       isUsed = true
       return true

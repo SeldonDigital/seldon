@@ -6,11 +6,7 @@ import {
 } from "../../../../utils/debug-logger"
 import {
   nodeRetrievalService,
-  nodeTraversalService,
-  nodeRelationshipService,
   nodeOperationsService,
-  workspaceMutationService,
-  workspaceThemeService,
   workspacePropagationService,
   typeCheckingService,
 } from "../../../services"
@@ -33,20 +29,18 @@ export function removeVariant(
     isDefaultVariant,
   })
 
-  if (!isVariant || isDefaultVariant) {
-    debugLog(
-      "Workspace",
-      "removeVariant",
-      "Removal not allowed for non-user variant",
-    )
+  if (!isVariant) {
+    debugLog("Workspace", "removeVariant", "Removal not allowed for non-variant")
     debugGroupEnd(
       "Workspace",
       "removeVariant",
-      "Removal not allowed for non-user variant",
+      "Removal not allowed for non-variant",
     )
     return workspace
   }
 
+  // The default variant is denied by `delete.defaultVariant.allowed === false`,
+  // so the rule gate below is the single owner of that policy.
   const { allowed, propagation } = rules.mutations.delete[entityType]
   if (!allowed) {
     debugLog("Workspace", "removeVariant", "Removal not allowed for variant")
@@ -62,8 +56,9 @@ export function removeVariant(
     nodeId: payload.variantRootId,
     propagation,
     apply: (node, workspace) => {
+      // Downstream propagation visits linked instances, never variants, so the
+      // variant check keeps `deleteVariant` from running on a propagated node.
       if (!typeCheckingService.isVariant(node)) return workspace
-      if (typeCheckingService.isDefaultVariant(node)) return workspace
       return nodeOperationsService.deleteVariant(node.id, workspace)
     },
     workspace,

@@ -39,15 +39,19 @@ export type RemovalBehavior =
       manuallyAdded: "delete" | "hide"
     }
 
-export type DeleteEntityConfig = EntityConfig & {
+/**
+ * Only the instance row carries `removalBehavior`. Board and variant rows always
+ * delete outright, so they use the base `EntityConfig` shape.
+ */
+export type DeleteInstanceConfig = EntityConfig & {
   removalBehavior: RemovalBehavior
 }
 
 export interface DeleteConfig {
-  board: DeleteEntityConfig
-  userVariant: DeleteEntityConfig
-  defaultVariant: DeleteEntityConfig
-  instance: DeleteEntityConfig
+  board: EntityConfig
+  userVariant: EntityConfig
+  defaultVariant: EntityConfig
+  instance: DeleteInstanceConfig
 }
 
 export interface MutationRules {
@@ -57,6 +61,7 @@ export interface MutationRules {
   duplicate: Config
   delete: DeleteConfig
   setProperties: Config
+  reset: Config
   setTheme: Config
   rename: Config
   reorder: Config

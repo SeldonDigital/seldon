@@ -442,7 +442,8 @@ export const schema = {
           },
         },
         {
-          component: Seldon.ComponentId.TITLE,
+          component: Seldon.ComponentId.TEXT,
+          variant: "title",
           overrides: {
             content: {
               type: Sdn.ValueType.EXACT,
@@ -554,7 +555,8 @@ export const schema = {
               },
             },
             {
-              component: Seldon.ComponentId.LABEL,
+              component: Seldon.ComponentId.TEXT,
+              variant: "label",
               overrides: {
                 content: {
                   type: Sdn.ValueType.EXACT,
@@ -591,7 +593,8 @@ export const schema = {
               },
             },
             {
-              component: Seldon.ComponentId.LABEL,
+              component: Seldon.ComponentId.TEXT,
+              variant: "label",
               overrides: {
                 content: {
                   type: Sdn.ValueType.EXACT,
@@ -628,7 +631,8 @@ export const schema = {
               },
             },
             {
-              component: Seldon.ComponentId.LABEL,
+              component: Seldon.ComponentId.TEXT,
+              variant: "label",
               overrides: {
                 content: {
                   type: Sdn.ValueType.EXACT,
@@ -647,7 +651,8 @@ export const schema = {
         "Newsletter signup section with email input and subscribe button. Can be used in footers, headers, sidebars, or any other layout context. Follows Material Design form patterns.",
       children: [
         {
-          component: Seldon.ComponentId.TITLE,
+          component: Seldon.ComponentId.TEXT,
+          variant: "title",
           overrides: {
             content: {
               type: Sdn.ValueType.EXACT,
@@ -786,7 +791,8 @@ export const schema = {
               },
             },
             {
-              component: Seldon.ComponentId.LABEL,
+              component: Seldon.ComponentId.TEXT,
+              variant: "label",
               overrides: {
                 content: {
                   type: Sdn.ValueType.EXACT,

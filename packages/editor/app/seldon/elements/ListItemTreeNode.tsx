@@ -11,7 +11,7 @@
  * or artificial intelligence system.
  *
  *****/
-import { LiHTMLAttributes } from "react"
+import { LiHTMLAttributes, ReactNode } from "react"
 import { ButtonIconic, ButtonIconicProps } from "../elements/ButtonIconic"
 import { HTMLLi } from "../native-react/HTML.Li"
 import { IconProps } from "../primitives/Icon"
@@ -29,6 +29,8 @@ export interface ListItemTreeNodeProps extends LiHTMLAttributes<HTMLLIElement> {
   icon3?: IconProps
   buttonIconic4?: ButtonIconicProps
   icon4?: IconProps
+  /** When provided, replaces the trailing `buttonIconic4` slot. */
+  actionsSlot?: ReactNode
 }
 
 /*****
@@ -61,6 +63,7 @@ export function ListItemTreeNode({
   icon3 = sdn.icon3,
   buttonIconic4,
   icon4 = sdn.icon4,
+  actionsSlot,
   ...props
 }: ListItemTreeNodeProps) {
   const listItemTreeNodeClassName = combineClassNames(
@@ -135,9 +138,11 @@ export function ListItemTreeNode({
       {buttonIconic3 && (
         <ButtonIconic {...buttonIconic3Props} icon={icon3Props} />
       )}
-      {buttonIconic4 && (
-        <ButtonIconic {...buttonIconic4Props} icon={icon4Props} />
-      )}
+      {actionsSlot
+        ? actionsSlot
+        : buttonIconic4 && (
+            <ButtonIconic {...buttonIconic4Props} icon={icon4Props} />
+          )}
     </HTMLLi>
   )
 }

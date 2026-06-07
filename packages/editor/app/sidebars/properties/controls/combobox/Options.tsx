@@ -1,5 +1,5 @@
-import * as Portal from "@radix-ui/react-portal"
 import React from "react"
+import { createPortal } from "react-dom"
 import { Frame } from "../../../../seldon/frames/Frame"
 import { comboboxBackdropStyle, getOptionsPanelStyle } from "./combobox-styles"
 
@@ -16,28 +16,27 @@ export function ComboboxOptions({
   position,
   handleClose,
 }: ComboboxOptionsProps) {
-  return (
-    <Portal.Root>
-      <Frame role="listbox" onClick={(e) => e.stopPropagation()}>
-        {open && (
-          <>
-            <div onClick={handleClose} style={comboboxBackdropStyle} />
-            <div
-              style={{
-                ...getOptionsPanelStyle(true),
-                top: position.y,
-                left: position.x,
-                width: position.w,
-                ...(position.positionAbove && {
-                  transform: "translateY(-100%)",
-                }),
-              }}
-            >
-              {children}
-            </div>
-          </>
-        )}
-      </Frame>
-    </Portal.Root>
+  return createPortal(
+    <Frame role="listbox" onClick={(e) => e.stopPropagation()}>
+      {open && (
+        <>
+          <div onClick={handleClose} style={comboboxBackdropStyle} />
+          <div
+            style={{
+              ...getOptionsPanelStyle(true),
+              top: position.y,
+              left: position.x,
+              width: position.w,
+              ...(position.positionAbove && {
+                transform: "translateY(-100%)",
+              }),
+            }}
+          >
+            {children}
+          </div>
+        </>
+      )}
+    </Frame>,
+    document.body,
   )
 }

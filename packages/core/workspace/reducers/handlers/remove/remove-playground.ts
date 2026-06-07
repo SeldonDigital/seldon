@@ -1,9 +1,9 @@
 import { ExtractPayload, Workspace } from "../../../../index"
-import { applyComponentKeyDeletion } from "./remove-component-catalog"
+import { removeBoardByKey } from "./remove-board-by-key"
 
 export function removePlayground(
   payload: ExtractPayload<"remove_playground">,
   workspace: Workspace,
 ): Workspace {
-  return applyComponentKeyDeletion(payload.componentKey, workspace)
+  return removeBoardByKey(payload.boardKey, workspace)
 }

@@ -1,10 +1,12 @@
 const COLON = ":"
 
-function splitTemplateRef(value: string): { prefix: string; suffix: string } | null {
+/** Splits a `{prefix}:{suffix}` template ref. Returns null for any other shape. */
+function splitTemplateRef(
+  value: string,
+): { prefix: string; suffix: string } | null {
   const first = value.indexOf(COLON)
   const last = value.lastIndexOf(COLON)
 
-  // Strict `{prefix}:{suffix}` grammar.
   if (first <= 0 || first === value.length - 1 || first !== last) {
     return null
   }
@@ -12,37 +14,25 @@ function splitTemplateRef(value: string): { prefix: string; suffix: string } | n
   return { prefix: value.slice(0, first), suffix: value.slice(first + 1) }
 }
 
-export type ParsedNodeTemplateRef =
+export type ParsedNodeTemplate =
   | { kind: "catalog"; componentId: string }
   | { kind: "node"; nodeId: string }
 
-export type ParsedNodeTemplate = ParsedNodeTemplateRef
-
-export type ParsedThemeTemplateRef =
+export type ParsedThemeTemplate =
   | { kind: "catalog"; themeCatalogId: string }
   | { kind: "theme"; themeId: string }
 
-export type ParsedThemeTemplate = ParsedThemeTemplateRef
-
-export type ParsedFontCollectionTemplateRef =
+export type ParsedFontCollectionTemplate =
   | { kind: "catalog"; fontCollectionCatalogId: string }
   | { kind: "font-collection"; fontCollectionId: string }
 
-export type ParsedFontCollectionTemplate = ParsedFontCollectionTemplateRef
-
-export type ParsedIconSetTemplateRef =
+export type ParsedIconSetTemplate =
   | { kind: "catalog"; iconSetCatalogId: string }
   | { kind: "icon-set"; iconSetId: string }
 
-export type ParsedIconSetTemplate = ParsedIconSetTemplateRef
-
-export function parseNodeTemplateRef(
-  value: string,
-): ParsedNodeTemplateRef | null {
+export function parseNodeTemplate(value: string): ParsedNodeTemplate | null {
   const parts = splitTemplateRef(value)
-  if (!parts) {
-    return null
-  }
+  if (!parts) return null
   if (parts.prefix === "catalog") {
     return { kind: "catalog", componentId: parts.suffix }
   }
@@ -52,17 +42,31 @@ export function parseNodeTemplateRef(
   return null
 }
 
-export function parseNodeTemplate(value: string): ParsedNodeTemplateRef | null {
-  return parseNodeTemplateRef(value)
+export function parseNodeCatalog(
+  value: string,
+): Extract<ParsedNodeTemplate, { kind: "catalog" }> | null {
+  const parsed = parseNodeTemplate(value)
+  return parsed?.kind === "catalog" ? parsed : null
 }
 
-export function parseThemeTemplateRef(
+export function parseNodeLink(
   value: string,
-): ParsedThemeTemplateRef | null {
+): Extract<ParsedNodeTemplate, { kind: "node" }> | null {
+  const parsed = parseNodeTemplate(value)
+  return parsed?.kind === "node" ? parsed : null
+}
+
+export function formatNodeCatalog(componentId: string): string {
+  return `catalog:${componentId}`
+}
+
+export function formatNodeLink(nodeId: string): string {
+  return `node:${nodeId}`
+}
+
+export function parseThemeTemplate(value: string): ParsedThemeTemplate | null {
   const parts = splitTemplateRef(value)
-  if (!parts) {
-    return null
-  }
+  if (!parts) return null
   if (parts.prefix === "catalog") {
     return { kind: "catalog", themeCatalogId: parts.suffix }
   }
@@ -72,49 +76,32 @@ export function parseThemeTemplateRef(
   return null
 }
 
-export function parseThemeTemplate(value: string): ParsedThemeTemplateRef | null {
-  return parseThemeTemplateRef(value)
-}
-
-export function formatNodeCatalogTemplateRef(componentId: string): string {
-  return `catalog:${componentId}`
-}
-
-export function formatNodeCatalog(componentId: string): string {
-  return formatNodeCatalogTemplateRef(componentId)
-}
-
-export function formatNodeLinkTemplateRef(nodeId: string): string {
-  return `node:${nodeId}`
-}
-
-export function formatNodeLink(nodeId: string): string {
-  return formatNodeLinkTemplateRef(nodeId)
-}
-
-export function formatThemeCatalogTemplateRef(themeCatalogId: string): string {
+export function formatThemeCatalog(themeCatalogId: string): string {
   return `catalog:${themeCatalogId}`
 }
 
-export function formatThemeCatalog(themeCatalogId: string): string {
-  return formatThemeCatalogTemplateRef(themeCatalogId)
-}
-
-export function formatThemeLinkTemplateRef(themeId: string): string {
+export function formatThemeLink(themeId: string): string {
   return `theme:${themeId}`
 }
 
-export function formatThemeLink(themeId: string): string {
-  return formatThemeLinkTemplateRef(themeId)
+export function getThemeTemplateThemeId(value: string): string | null {
+  const parsed = parseThemeTemplate(value)
+  return parsed?.kind === "theme" ? parsed.themeId : null
 }
 
-export function parseFontCollectionTemplateRef(
+/** Reduces a theme template ref to its bare catalog id or theme id, or returns the input unchanged. */
+export function normalizeThemeTemplateRef(value: string): string {
+  const parsed = parseThemeTemplate(value)
+  if (parsed?.kind === "catalog") return parsed.themeCatalogId
+  if (parsed?.kind === "theme") return parsed.themeId
+  return value
+}
+
+function parseFontCollectionTemplate(
   value: string,
-): ParsedFontCollectionTemplateRef | null {
+): ParsedFontCollectionTemplate | null {
   const parts = splitTemplateRef(value)
-  if (!parts) {
-    return null
-  }
+  if (!parts) return null
   if (parts.prefix === "catalog") {
     return { kind: "catalog", fontCollectionCatalogId: parts.suffix }
   }
@@ -124,137 +111,33 @@ export function parseFontCollectionTemplateRef(
   return null
 }
 
-export function parseFontCollectionTemplate(
-  value: string,
-): ParsedFontCollectionTemplateRef | null {
-  return parseFontCollectionTemplateRef(value)
-}
-
-export function formatFontCollectionCatalogTemplateRef(
+export function formatFontCollectionCatalog(
   fontCollectionCatalogId: string,
 ): string {
   return `catalog:${fontCollectionCatalogId}`
 }
 
-export function formatFontCollectionCatalog(
-  fontCollectionCatalogId: string,
-): string {
-  return formatFontCollectionCatalogTemplateRef(fontCollectionCatalogId)
-}
-
-export function formatFontCollectionLinkTemplateRef(
-  fontCollectionId: string,
-): string {
-  return `font-collection:${fontCollectionId}`
-}
-
 export function formatFontCollectionLink(fontCollectionId: string): string {
-  return formatFontCollectionLinkTemplateRef(fontCollectionId)
-}
-
-export function parseNodeCatalogTemplateRef(
-  value: string,
-): Extract<ParsedNodeTemplateRef, { kind: "catalog" }> | null {
-  const p = parseNodeTemplateRef(value)
-  return p?.kind === "catalog" ? p : null
-}
-
-export function parseNodeCatalog(
-  value: string,
-): Extract<ParsedNodeTemplateRef, { kind: "catalog" }> | null {
-  return parseNodeCatalogTemplateRef(value)
-}
-
-export function parseNodeLinkTemplateRef(
-  value: string,
-): Extract<ParsedNodeTemplateRef, { kind: "node" }> | null {
-  const p = parseNodeTemplateRef(value)
-  return p?.kind === "node" ? p : null
-}
-
-export function parseNodeLink(
-  value: string,
-): Extract<ParsedNodeTemplateRef, { kind: "node" }> | null {
-  return parseNodeLinkTemplateRef(value)
-}
-
-export function parseThemeCatalogTemplateRef(
-  value: string,
-): Extract<ParsedThemeTemplateRef, { kind: "catalog" }> | null {
-  const p = parseThemeTemplateRef(value)
-  return p?.kind === "catalog" ? p : null
-}
-
-export function parseThemeCatalog(
-  value: string,
-): Extract<ParsedThemeTemplateRef, { kind: "catalog" }> | null {
-  return parseThemeCatalogTemplateRef(value)
-}
-
-export function parseThemeLinkTemplateRef(
-  value: string,
-): Extract<ParsedThemeTemplateRef, { kind: "theme" }> | null {
-  const p = parseThemeTemplateRef(value)
-  return p?.kind === "theme" ? p : null
-}
-
-export function parseThemeLink(
-  value: string,
-): Extract<ParsedThemeTemplateRef, { kind: "theme" }> | null {
-  return parseThemeLinkTemplateRef(value)
-}
-
-export function getNodeTemplateComponentId(value: string): string | null {
-  return parseNodeCatalogTemplateRef(value)?.componentId ?? null
-}
-
-export function getNodeTemplateNodeId(value: string): string | null {
-  return parseNodeLinkTemplateRef(value)?.nodeId ?? null
-}
-
-export function getThemeTemplateCatalogId(value: string): string | null {
-  return parseThemeCatalogTemplateRef(value)?.themeCatalogId ?? null
-}
-
-export function getThemeTemplateThemeId(value: string): string | null {
-  return parseThemeLinkTemplateRef(value)?.themeId ?? null
-}
-
-export function parseFontCollectionCatalogTemplateRef(
-  value: string,
-): Extract<ParsedFontCollectionTemplateRef, { kind: "catalog" }> | null {
-  const p = parseFontCollectionTemplateRef(value)
-  return p?.kind === "catalog" ? p : null
-}
-
-export function parseFontCollectionLinkTemplateRef(
-  value: string,
-): Extract<ParsedFontCollectionTemplateRef, { kind: "font-collection" }> | null {
-  const p = parseFontCollectionTemplateRef(value)
-  return p?.kind === "font-collection" ? p : null
+  return `font-collection:${fontCollectionId}`
 }
 
 export function getFontCollectionTemplateCatalogId(
   value: string,
 ): string | null {
-  return (
-    parseFontCollectionCatalogTemplateRef(value)?.fontCollectionCatalogId ?? null
-  )
+  const parsed = parseFontCollectionTemplate(value)
+  return parsed?.kind === "catalog" ? parsed.fontCollectionCatalogId : null
 }
 
 export function getFontCollectionTemplateFontCollectionId(
   value: string,
 ): string | null {
-  return parseFontCollectionLinkTemplateRef(value)?.fontCollectionId ?? null
+  const parsed = parseFontCollectionTemplate(value)
+  return parsed?.kind === "font-collection" ? parsed.fontCollectionId : null
 }
 
-export function parseIconSetTemplateRef(
-  value: string,
-): ParsedIconSetTemplateRef | null {
+function parseIconSetTemplate(value: string): ParsedIconSetTemplate | null {
   const parts = splitTemplateRef(value)
-  if (!parts) {
-    return null
-  }
+  if (!parts) return null
   if (parts.prefix === "catalog") {
     return { kind: "catalog", iconSetCatalogId: parts.suffix }
   }
@@ -264,46 +147,20 @@ export function parseIconSetTemplateRef(
   return null
 }
 
-export function parseIconSetTemplate(
-  value: string,
-): ParsedIconSetTemplateRef | null {
-  return parseIconSetTemplateRef(value)
-}
-
-export function formatIconSetCatalogTemplateRef(iconSetCatalogId: string): string {
+export function formatIconSetCatalog(iconSetCatalogId: string): string {
   return `catalog:${iconSetCatalogId}`
 }
 
-export function formatIconSetCatalog(iconSetCatalogId: string): string {
-  return formatIconSetCatalogTemplateRef(iconSetCatalogId)
-}
-
-export function formatIconSetLinkTemplateRef(iconSetId: string): string {
+export function formatIconSetLink(iconSetId: string): string {
   return `icon-set:${iconSetId}`
 }
 
-export function formatIconSetLink(iconSetId: string): string {
-  return formatIconSetLinkTemplateRef(iconSetId)
-}
-
-export function parseIconSetCatalogTemplateRef(
-  value: string,
-): Extract<ParsedIconSetTemplateRef, { kind: "catalog" }> | null {
-  const p = parseIconSetTemplateRef(value)
-  return p?.kind === "catalog" ? p : null
-}
-
-export function parseIconSetLinkTemplateRef(
-  value: string,
-): Extract<ParsedIconSetTemplateRef, { kind: "icon-set" }> | null {
-  const p = parseIconSetTemplateRef(value)
-  return p?.kind === "icon-set" ? p : null
-}
-
 export function getIconSetTemplateCatalogId(value: string): string | null {
-  return parseIconSetCatalogTemplateRef(value)?.iconSetCatalogId ?? null
+  const parsed = parseIconSetTemplate(value)
+  return parsed?.kind === "catalog" ? parsed.iconSetCatalogId : null
 }
 
 export function getIconSetTemplateIconSetId(value: string): string | null {
-  return parseIconSetLinkTemplateRef(value)?.iconSetId ?? null
+  const parsed = parseIconSetTemplate(value)
+  return parsed?.kind === "icon-set" ? parsed.iconSetId : null
 }

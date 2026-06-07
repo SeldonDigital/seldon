@@ -31,8 +31,8 @@ Seven levels are defined in the catalog. Six are used in composition trees. **Fr
 | `module` | `modules/*.schema.ts` | Modules, parts, elements, primitives, frames |
 | `part` | `parts/*.schema.ts` | Parts, elements, primitives, frames |
 | `element` | `elements/*.schema.ts` | Elements, primitives, frames |
-| `primitive` | `primitives/*.schema.ts` | Primitives, frames |
-| `frame` | `frames/*.schema.ts` | Anything, at any level |
+| `primitive` | `primitives/*.schema.ts` | Nothing. Primitives are leaves |
+| `frame` | `frames/*.schema.ts` | Modules, parts, elements, primitives, frames |
 
 Frames sit outside the hierarchy on purpose. They are not really a "kind" of component the way a button, a list, or a screen is -- they are a container, a grouping mechanism. A frame's job is to wrap and arrange other components, and because grouping is useful at every level, frames are allowed to live at any level and to hold any kind of child.
 
@@ -54,6 +54,7 @@ interface BaseComponentSchema {
 
 interface PrimitiveComponentSchema extends BaseComponentSchema {
   level: ComponentLevel.PRIMITIVE
+  variants?: SchemaVariant[]
 }
 
 interface ComplexComponentSchema extends BaseComponentSchema {
@@ -70,6 +71,7 @@ interface SchemaVariant extends SchemaTree {
   id: string
   label: string
   intent: string
+  overrides?: Properties
 }
 
 interface SchemaChild {
@@ -82,7 +84,7 @@ interface SchemaChild {
 type ComponentSchema = PrimitiveComponentSchema | ComplexComponentSchema
 ```
 
-The split exists because primitives are leaves. A `Text`, an `Icon`, or an `Image` component cannot hold anything inside it, so its schema has no `default` or `variants` field. Every other component declares a `default` composition tree (the canonical shape of the component) and may declare alternate `variants` of itself.
+The split exists because primitives are leaves. A `Text`, an `Icon`, or an `Image` component cannot hold anything inside it, so its schema has no `default` field. A primitive may still declare leaf `variants` that carry only root property overrides, never child trees. Every complex component declares a `default` composition tree (the canonical shape of the component) and may declare alternate `variants` of itself.
 
 A complex schema's first level mirrors how the workspace stores nodes: a board has one default variant plus zero or more user variants ([`workspace/model/entry-node.ts`](../workspace/model/entry-node.ts) — `EntryNodeType = "default" | "variant" | "instance"`). The schema bakes the same split in at authoring time: `default` is the canonical tree, each `variants[]` entry is an alternate complete tree of the same component (e.g. `Button` ships a default tree plus a `social` variant tree).
 
@@ -98,7 +100,7 @@ Composition trees are **fully flattened**: a parent declares the entire descenda
 | `icon` | `ComponentIcon` | Icon shown in editor catalog panels. |
 | `properties` | `Properties` | Default values for every catalog property this component exposes. A property absent from this block cannot be set on instances of this component. |
 | `default` | `SchemaTree` | Only on complex schemas. The canonical composition tree for the component. |
-| `variants` | `SchemaVariant[]?` | Only on complex schemas. Optional alternate composition trees of the same component, each with its own `id`, `label`, and `intent`. |
+| `variants` | `SchemaVariant[]?` | Optional. On complex schemas, alternate composition trees of the same component, each with its own `id`, `label`, and `intent`. On primitive schemas, leaf variants that carry only root property overrides and no child trees. |
 
 ```typescript
 export const schema = {
@@ -277,7 +279,7 @@ A schema can additionally declare alternate `variants` of itself. Each variant c
   ],
 ```
 
-Variant root and instance node ids in `workspace.json` follow `component-{boardKey}-{suffix}` (see [`WORKSPACE.md`](../workspace/WORKSPACE.md) · Nodes); the workspace reducer is the single supported way to mint those ids when instantiating from a catalog schema.
+Variant root and instance node ids in `workspace.json` follow `component-{boardKey}-{suffix}` (see [`WORKSPACE.md`](../workspace/README.md) · Nodes); the workspace reducer is the single supported way to mint those ids when instantiating from a catalog schema.
 
 ---
 
@@ -293,16 +295,18 @@ export type Catalog = {
   parts: ComponentSchema[]
   modules: ComponentSchema[]
   screens: ComponentSchema[]
+  boards: ComponentSchema[]
 }
 
 export const catalog: Catalog = {
-  frames, primitives, elements, parts, modules, screens,
+  frames, primitives, elements, parts, modules, screens, boards,
 }
 
 export function getComponentSchema(id: ComponentId): ComponentSchema
+export function getComponentExportConfig(id: ComponentId): ComponentExport
 ```
 
-`getComponentSchema(id)` looks up a schema by its `ComponentId`, throwing via `invariant` if no schema matches. Use it any time you need a schema by id -- never reach into the per-level arrays directly.
+`getComponentSchema(id)` looks up a schema by its `ComponentId`, throwing via `invariant` if no schema matches. Use it any time you need a schema by id -- never reach into the per-level arrays directly. `getComponentExportConfig(id)` resolves the matching `exportConfig` the same way.
 
 Usage:
 
@@ -324,7 +328,7 @@ Schemas are validated at compile time. `as const satisfies ComponentSchema` reje
 - Missing required fields (`id`, `name`, `intent`, `tags`, `level`, `icon`, `properties`).
 - A complex schema missing the required `default` tree.
 - Properties whose tagged shape does not match a `Properties` slot.
-- `default` or `variants` declared on a primitive schema.
+- `default` or composition `children` declared on a primitive schema. Leaf `variants` with root overrides are allowed.
 - Option values outside their declared enum (e.g. an unknown `Cursor` literal).
 
 Runtime checks happen in the workspace and properties layers (override merging, theme resolution, computed-value evaluation). Nothing in this directory performs runtime validation — schemas are pure data.
@@ -359,8 +363,8 @@ Runtime checks happen in the workspace and properties layers (override merging, 
 
 ### Graceful Degradation
 - **Unknown override keys** — silently dropped at merge time so missing properties stay missing.
-- **Missing theme tokens** — fall back to schema defaults via the theme resolver (see [THEMES.md](../themes/THEMES.md)).
-- **Missing computed inputs** — `COMPUTED` defaults that reference an absent `basedOn` chain fall back to the property's natural inheritance (see [`compute/get-based-on-value.ts`](../compute/get-based-on-value.ts)).
+- **Missing theme tokens** — fall back to schema defaults via the theme resolver (see [THEMES.md](../themes/README.md)).
+- **Missing computed inputs** — `COMPUTED` defaults that reference an absent `basedOn` chain fall back to the property's natural inheritance (see [`get-based-on-value.ts`](../properties/compute/get-based-on-value.ts)).
 
 ---
 
@@ -408,7 +412,7 @@ export const exportConfig: ComponentExport = {
 
 **3. Order properties correctly**
 
-Place property keys inside `properties` in [`PROPERTY_DISPLAY_ORDER`](../properties/constants/property-display.ts) order: attributes → layout → appearance → typography → effects. Within compound objects, follow the facet order shown in [PROPERTIES.md → Property Categories](../properties/PROPERTIES.md#property-categories-ordering-and-types).
+Place property keys inside `properties` in [`PROPERTY_DISPLAY_ORDER`](../properties/constants/property-display.ts) order: attributes → layout → appearance → typography → effects. Within compound objects, follow the facet order shown in [properties/README.md](../properties/README.md).
 
 **4. Sync the catalog files**
 
@@ -422,7 +426,7 @@ Anything that consumes catalog ids (workspace migrations, React/CSS export overr
 
 **6. Add tests**
 
-Follow the testing standards in [`tests.mdc`](../../../.cursor/rules/tests.mdc): use v2 workspace samples such as [`workspace/workspace-sample.v0.json`](../workspace/workspace-sample.v0.json), `testTheme`, and real values; no mocks.
+Follow the testing patterns in nearby schema and catalog tests: use real workspace fixtures, `testTheme`, and real values; no mocks.
 
 ---
 
@@ -454,9 +458,9 @@ This project is licensed as follows:
 
 ## Links
 
-- [PROPERTIES.md](../properties/PROPERTIES.md) — `ValueType`, property categories, override behaviour
-- [THEMES.md](../themes/THEMES.md) — `@token` references, palette generation
-- [WORKSPACE.md](../workspace/WORKSPACE.md) — board taxonomy, instance state, reducers
+- [properties/README.md](../properties/README.md) — `ValueType`, property categories, override behaviour
+- [themes/README.md](../themes/README.md) — `@token` references, palette generation
+- [workspace/README.md](../workspace/README.md) — board taxonomy, instance state, reducers
 - [Official Website](https://seldon.digital)
 - [Documentation](https://docs.seldon.digital)
 - [Issues & Discussions](https://github.com/seldon/issues)

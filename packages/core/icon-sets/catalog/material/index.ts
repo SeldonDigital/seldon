@@ -250,6 +250,9 @@ export { IconMaterialAirlineSeatFlatAngled } from './specialized/transportation/
 export { IconMaterialAirlineSeatIndividualSuite } from './specialized/transportation/IconMaterialAirlineSeatIndividualSuite'
 export { IconMaterialAirlineSeatReclineExtra } from './specialized/transportation/IconMaterialAirlineSeatReclineExtra'
 export { IconMaterialAirlineSeatReclineNormal } from './specialized/transportation/IconMaterialAirlineSeatReclineNormal'
+export { IconMaterialLocalAirport } from './specialized/transportation/IconMaterialLocalAirport'
+// Material has no dedicated "ticket" glyph; `confirmation_number` is its ticket icon.
+export { IconMaterialConfirmationNumber as IconMaterialTicket } from './business/commerce/IconMaterialConfirmationNumber'
 
 import { IconId } from "@seldon/core/icon-sets"
 

@@ -1,8 +1,8 @@
-import { cloneComponent } from "../../../services"
+import { cloneBoard } from "../../../services"
 import type { ExtractPayload, Workspace } from "../../../types"
 
 /**
- * Applies `duplicate_component`: calls `cloneComponent` to copy the source board under `newComponentKey` with remapped
+ * Applies `duplicate_component`: calls `cloneBoard` to copy the source board under the new board key with remapped
  * ids in the right workspace maps. Validation rejects component boards and boards tied
  * to packaged theme, font-collection, icon-set, or media catalog ids.
  */
@@ -10,10 +10,10 @@ export function duplicateComponent(
   payload: ExtractPayload<"duplicate_component">,
   workspace: Workspace,
 ): Workspace {
-  return cloneComponent(
+  return cloneBoard(
     workspace,
-    payload.sourceComponentKey,
-    payload.newComponentKey,
+    payload.sourceBoardKey,
+    payload.newBoardKey,
     payload.label,
   )
 }

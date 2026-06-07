@@ -1,12 +1,11 @@
-import { invariant } from "../../../../index"
 import { rules } from "../../../../rules/config/rules.config"
 import {
   isComponentBoard,
   isPlaygroundBoard,
 } from "../../../model/components"
 import { isEntryThemeDefault } from "../../../model/entry-theme"
-import { getComponentVariantRootIds } from "../../../helpers/components/get-component-variant-root-ids"
-import { findComponentContainingTreeNodeId } from "../../../helpers/nodes/duplicate-entry-variant-subtree"
+import { getBoardVariantRootIds } from "../../../helpers/components/get-board-variant-root-ids"
+import { findBoardContainingTreeNodeId } from "../../../helpers/nodes/duplicate-entry-variant-subtree"
 import { hasEffectiveThemeReference } from "../../../helpers/removal/effective-theme-references"
 import { isUserVariant } from "../../../helpers/general/is-user-variant"
 import { ErrorMessages } from "../../../constants"
@@ -21,7 +20,7 @@ import { getNodeComponentId } from "../node-component-id"
 import {
   assertInsertTargetAllowed,
   assertMoveTargetAllowed,
-  componentValidators,
+  boardValidators,
   nodeValidators,
   propertyValidators,
   themeEntryValidators,
@@ -44,14 +43,14 @@ export function validateInsertMutation(
 ): void {
   switch (action.type) {
     case "add_component_and_insert_default_instance": {
-      const componentId = action.payload.componentId
+      const boardKey = action.payload.boardKey
       const parentId = action.payload.target.parentId as InstanceId | VariantId
-      componentValidators.doesNotExist(workspace, componentId)
+      boardValidators.doesNotExist(workspace, boardKey)
       nodeValidators.exists(workspace, parentId)
       nodeValidators.canHaveChildren(workspace, parentId)
       nodeValidators.isNotInstanceOfSelf(
         workspace,
-        componentId as ComponentId,
+        boardKey as ComponentId,
         parentId,
       )
       const parent = nodeRetrievalService.getNode(parentId, workspace)
@@ -84,12 +83,12 @@ export function validateInsertMutation(
     }
     case "insert_default_instance": {
       const parentId = action.payload.parentId as InstanceId | VariantId
-      const componentKey = action.payload.componentKey
+      const boardKey = action.payload.boardKey
       nodeValidators.exists(workspace, parentId)
       nodeValidators.canHaveChildren(workspace, parentId)
-      componentValidators.exists(workspace, componentKey)
+      boardValidators.exists(workspace, boardKey)
       const defaultVariant = nodeRetrievalService.getDefaultVariant(
-        componentKey as ComponentId,
+        boardKey as ComponentId,
         workspace,
       )
       nodeValidators.isNotInstanceOfSelf(
@@ -121,6 +120,7 @@ export function validateInsertMutation(
       )
       nodeValidators.canHaveChildren(workspace, parentId)
       nodeValidators.isNotInstanceOfSelf(workspace, instanceId, parentId)
+      nodeValidators.notIntoOwnSubtree(workspace, instanceId, parentId)
       nodeValidators.isWithinSameVariant(workspace, instanceId, parentId)
       nodeValidators.canBeParentOf(workspace, parentId, instanceId)
       break
@@ -163,40 +163,29 @@ export function validateNodeMutation(
   switch (action.type) {
     case "reorder_instance_in_parent": {
       const nodeId = action.payload.instanceId as InstanceId
-      const index = action.payload.newIndex
-      nodeValidators.exists(workspace, nodeId)
-      const node = nodeRetrievalService.getNode(nodeId, workspace)
-      if (!typeCheckingService.isInstance(node)) {
-        throw new WorkspaceValidationError(
-          ErrorMessages.nodeNotInstance(nodeId),
-          action,
-        )
-      }
-      const parent = nodeTraversalService.findParentNode(node, workspace)
-      check(parent, ErrorMessages.parentNotFound(nodeId))
-      check(
-        !typeCheckingService.isDefaultVariant(parent),
+      const node = getInstanceNodeOrThrow(workspace, action, nodeId)
+      assertParentNotDefaultVariant(
+        workspace,
+        nodeId,
+        node,
         "Cannot reorder instances in a default catalog variant",
       )
       nodeValidators.moveAllowed(workspace, nodeId)
-      variantValidators.notToDefaultPosition(workspace, nodeId, index)
+      variantValidators.notToDefaultPosition(
+        workspace,
+        nodeId,
+        action.payload.newIndex,
+      )
       break
     }
     case "remove_instance": {
       const nodeId = action.payload.instanceId as InstanceId
       nodeValidators.canBeRemoved(workspace, nodeId)
-      nodeValidators.exists(workspace, nodeId)
-      const node = nodeRetrievalService.getNode(nodeId, workspace)
-      if (!typeCheckingService.isInstance(node)) {
-        throw new WorkspaceValidationError(
-          ErrorMessages.nodeNotInstance(nodeId),
-          action,
-        )
-      }
-      const parent = nodeTraversalService.findParentNode(node, workspace)
-      check(parent, ErrorMessages.parentNotFound(nodeId))
-      check(
-        !typeCheckingService.isDefaultVariant(parent),
+      const node = getInstanceNodeOrThrow(workspace, action, nodeId)
+      assertParentNotDefaultVariant(
+        workspace,
+        nodeId,
+        node,
         "Cannot remove an instance from a default catalog variant",
       )
       break
@@ -276,20 +265,20 @@ export function validateNodeMutation(
         isUserVariant(node),
         "Only a user variant can reset to the default variant tree",
       )
-      const located = findComponentContainingTreeNodeId(
-        workspace,
-        variantRootId,
-      )
+      const index = locateResettableBoardVariantIndex(workspace, variantRootId)
+      check(index > 0, "The catalog default variant does not use this action")
+      break
+    }
+    case "reset_default_variant_to_catalog": {
+      const rootId = action.payload.defaultVariantRootId as VariantId
+      nodeValidators.exists(workspace, rootId)
+      const node = nodeRetrievalService.getNode(rootId, workspace)
       check(
-        located &&
-          (isComponentBoard(located.board) ||
-            isPlaygroundBoard(located.board)),
-        "That reset only runs on component or playground boards",
+        typeCheckingService.isDefaultVariant(node),
+        "Only a default catalog variant can reset to catalog",
       )
-      const idx = located!.board.variants.findIndex(
-        (v) => v.id === variantRootId,
-      )
-      check(idx > 0, "The catalog default variant does not use this action")
+      const index = locateResettableBoardVariantIndex(workspace, rootId)
+      check(index === 0, "Reset to catalog only runs on the default variant")
       break
     }
   }
@@ -299,8 +288,8 @@ export function validateAddVariant(
   workspace: Workspace,
   action: Extract<Action, { type: "add_variant" }>,
 ): void {
-  componentValidators.exists(workspace, action.payload.componentKey)
-  const board = workspace.components[action.payload.componentKey]
+  boardValidators.exists(workspace, action.payload.boardKey)
+  const board = workspace.boards[action.payload.boardKey]
   check(
     board && (isComponentBoard(board) || isPlaygroundBoard(board)),
     "add_variant requires a component or playground board",
@@ -318,31 +307,37 @@ export function validateDuplicateNode(
     rules.mutations.duplicate[entity].allowed,
     `Cannot duplicate node of entity type ${entity}`,
   )
+  if (typeCheckingService.isInstance(node)) {
+    const parent = nodeTraversalService.findParentNode(node, workspace)
+    check(
+      !parent || !typeCheckingService.isDefaultVariant(parent),
+      "Cannot duplicate an instance in a default catalog variant",
+    )
+  }
 }
 
 export function validateReorderBoard(
   workspace: Workspace,
   action: Extract<Action, { type: "reorder_board" }>,
 ): void {
-  componentValidators.exists(workspace, action.payload.componentKey)
+  boardValidators.exists(workspace, action.payload.boardKey)
 }
 
 export function validateReorderVariantInBoard(
   workspace: Workspace,
   action: Extract<Action, { type: "reorder_variant_in_board" }>,
 ): void {
-  componentValidators.exists(workspace, action.payload.componentKey)
-  const board = workspace.components[action.payload.componentKey]
-  check(Boolean(board), "Component board missing after exists check")
-  const roots = getComponentVariantRootIds(board!)
+  boardValidators.exists(workspace, action.payload.boardKey)
+  const board = workspace.boards[action.payload.boardKey]
+  check(Boolean(board), "Board missing after exists check")
+  const roots = getBoardVariantRootIds(board!)
   const oldIndex = roots.indexOf(action.payload.variantRootId)
   check(oldIndex >= 0, "Variant is not in the board variant list")
-  if (oldIndex === 0 || action.payload.newIndex === 0) {
-    check(
-      oldIndex === 0 && action.payload.newIndex === 0,
-      "Cannot move the default variant from index 0",
-    )
-  }
+  // Index 0 is the default variant slot: a move may only touch it as a no-op.
+  check(
+    (oldIndex === 0) === (action.payload.newIndex === 0),
+    "Cannot move the default variant from index 0",
+  )
 }
 
 export function validateThemeMutation(
@@ -357,32 +352,85 @@ export function validateThemeMutation(
     case "set_theme_label":
     case "set_theme_editor_data":
     case "set_theme_override":
-      themeEntryValidators.exists(workspace, compatibilityThemeId(action))
+      themeEntryValidators.exists(workspace, themeIdOf(action))
       break
-    case "delete_theme": {
-      const themeId = action.payload.themeId
-      themeEntryValidators.exists(workspace, themeId)
-      const entry = workspace.themes[themeId]
-      if (entry && isEntryThemeDefault(entry)) {
-        throw new WorkspaceValidationError(
-          "Cannot remove default theme entry",
-          action,
-        )
-      }
-      if (hasEffectiveThemeReference(workspace, themeId)) {
-        throw new WorkspaceValidationError(
-          `Theme ${themeId} is still in use (effective theme)`,
-          action,
-        )
-      }
+    case "delete_theme":
+      themeEntryValidators.exists(workspace, action.payload.themeId)
+      assertThemeDeletable(workspace, action.payload.themeId, action)
       break
-    }
     case "duplicate_theme":
       themeEntryValidators.exists(workspace, action.payload.themeId)
       break
   }
 }
 
-function compatibilityThemeId(action: Action): string {
+function themeIdOf(action: Action): string {
   return (action.payload as { themeId: string }).themeId
+}
+
+/** Loads an instance node, throwing when the id is missing or not an instance. */
+function getInstanceNodeOrThrow(
+  workspace: Workspace,
+  action: Action,
+  instanceId: InstanceId,
+) {
+  nodeValidators.exists(workspace, instanceId)
+  const node = nodeRetrievalService.getNode(instanceId, workspace)
+  if (!typeCheckingService.isInstance(node)) {
+    throw new WorkspaceValidationError(
+      ErrorMessages.nodeNotInstance(instanceId),
+      action,
+    )
+  }
+  return node
+}
+
+/** Rejects mutating an instance whose parent is a default catalog variant. */
+function assertParentNotDefaultVariant(
+  workspace: Workspace,
+  instanceId: InstanceId,
+  node: ReturnType<typeof nodeRetrievalService.getNode>,
+  message: string,
+): void {
+  const parent = nodeTraversalService.findParentNode(node, workspace)
+  check(parent, ErrorMessages.parentNotFound(instanceId))
+  check(!typeCheckingService.isDefaultVariant(parent), message)
+}
+
+/**
+ * Finds the position of a variant root within its board, requiring the board to
+ * be a component or playground board that supports variant resets.
+ */
+function locateResettableBoardVariantIndex(
+  workspace: Workspace,
+  variantRootId: VariantId,
+): number {
+  const located = findBoardContainingTreeNodeId(workspace, variantRootId)
+  check(
+    located &&
+      (isComponentBoard(located.board) || isPlaygroundBoard(located.board)),
+    "That reset only runs on component or playground boards",
+  )
+  return located!.board.variants.findIndex((ref) => ref.id === variantRootId)
+}
+
+/** Rejects deleting a default theme entry or one still referenced as an effective theme. */
+function assertThemeDeletable(
+  workspace: Workspace,
+  themeId: string,
+  action: Action,
+): void {
+  const entry = workspace.themes[themeId]
+  if (entry && isEntryThemeDefault(entry)) {
+    throw new WorkspaceValidationError(
+      "Cannot remove default theme entry",
+      action,
+    )
+  }
+  if (hasEffectiveThemeReference(workspace, themeId)) {
+    throw new WorkspaceValidationError(
+      `Theme ${themeId} is still in use (effective theme)`,
+      action,
+    )
+  }
 }

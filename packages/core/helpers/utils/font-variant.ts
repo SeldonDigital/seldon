@@ -19,12 +19,6 @@ export function parseFontVariant(variant: string): ParsedFontVariant {
   return { weight: Number.isFinite(weight) ? weight : 400, italic }
 }
 
-/** Returns the `ital,wght` tuple for a variant, such as `"1,700"`. */
-export function fontVariantToAxisTuple(variant: string): string {
-  const { weight, italic } = parseFontVariant(variant)
-  return `${italic ? 1 : 0},${weight}`
-}
-
 /** Returns a human label for a variant, such as `"700 Italic"`. */
 export function fontVariantDisplayLabel(variant: string): string {
   const { weight, italic } = parseFontVariant(variant)

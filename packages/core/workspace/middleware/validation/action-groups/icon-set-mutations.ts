@@ -22,14 +22,23 @@ export function validateIconSetMutation(
     case "delete_icon_set": {
       const id = iconSetIdOf(action)
       iconSetEntryValidators.exists(workspace, id)
-      const entry = workspace["icon-sets"][id]
-      if (entry && isEntryIconSetDefault(entry)) {
-        throw new WorkspaceValidationError(
-          "Cannot remove default icon set entry",
-          action,
-        )
-      }
+      assertIconSetDeletable(workspace, id, action)
       break
     }
+  }
+}
+
+/** Rejects deleting the default icon set entry. */
+function assertIconSetDeletable(
+  workspace: Workspace,
+  id: string,
+  action: Action,
+): void {
+  const entry = workspace["icon-sets"][id]
+  if (entry && isEntryIconSetDefault(entry)) {
+    throw new WorkspaceValidationError(
+      "Cannot remove default icon set entry",
+      action,
+    )
   }
 }

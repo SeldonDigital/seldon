@@ -1,7 +1,7 @@
-import { getComponentVariantRootIds as getComponentVariantRootIdsFromCore } from "@seldon/core/workspace/helpers/components/get-component-variant-root-ids"
+import { getBoardVariantRootIds as getComponentVariantRootIdsFromCore } from "@seldon/core/workspace/helpers/components/get-board-variant-root-ids"
 import type {
-  ComponentEntry,
-  ComponentKey,
+  Board,
+  BoardKey,
   ComponentTreeRef,
   EntryNode,
   EntryNodeId,
@@ -9,7 +9,7 @@ import type {
 } from "@seldon/core/workspace/types"
 
 /** Read root variant node ids from a component row. Never pass `board.variants[i]` to `getNode`. */
-export function getComponentVariantRootIds(board: ComponentEntry): string[] {
+export function getBoardVariantRootIds(board: Board): string[] {
   return getComponentVariantRootIdsFromCore(board)
 }
 
@@ -25,8 +25,8 @@ export function getWorkspaceNodeMap(
 
 export function getWorkspaceComponentMap(
   workspace: Workspace,
-): Record<ComponentKey, ComponentEntry> {
-  return workspace.components
+): Record<BoardKey, Board> {
+  return workspace.boards
 }
 
 export function getNode(
@@ -42,23 +42,23 @@ export function hasNode(workspace: Workspace, nodeId: EntryNodeId): boolean {
 
 export function getComponent(
   workspace: Workspace,
-  componentKey: ComponentKey,
-): ComponentEntry | undefined {
-  return workspace.components[componentKey]
+  boardKey: BoardKey,
+): Board | undefined {
+  return workspace.boards[boardKey]
 }
 
-/** Resolves the `workspace.components` map key for a catalog row. */
+/** Resolves the `workspace.boards` map key for a catalog row. */
 export function resolveComponentKey(
-  board: ComponentEntry,
+  board: Board,
   workspace: Workspace,
-): ComponentKey {
+): BoardKey {
   if ("catalogId" in board && board.catalogId) {
-    if (workspace.components[board.catalogId]) {
+    if (workspace.boards[board.catalogId]) {
       return board.catalogId
     }
   }
 
-  const matched = Object.entries(workspace.components).find(
+  const matched = Object.entries(workspace.boards).find(
     ([, entry]) => entry === board,
   )
   if (matched) {
@@ -66,11 +66,11 @@ export function resolveComponentKey(
   }
 
   throw new Error(
-    "Component entry has no catalogId and could not be found in workspace.components",
+    "Component entry has no catalogId and could not be found in workspace.boards",
   )
 }
 
-export function getComponentKey(board: ComponentEntry): ComponentKey {
+export function getComponentKey(board: Board): BoardKey {
   if ("catalogId" in board && board.catalogId) {
     return board.catalogId
   }

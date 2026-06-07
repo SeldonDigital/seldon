@@ -7,20 +7,20 @@ import type { EntryFontCollection } from "../../../model/entry-font-collection"
 import { setFamilyVariantPreset } from "../shared/font-collection-variant-selection"
 import { rules } from "../../../../rules/config/rules.config"
 import {
-  getComponentOrder,
-  setComponentOrder,
-} from "../../../helpers/components/component-sort-order"
-import { FONT_COLLECTION_COMPONENT_CATALOG_IDS } from "../../../helpers/components/resource-component-catalog-ids"
+  getBoardOrder,
+  setBoardOrder,
+} from "../../../helpers/components/board-sort-order"
+import { FONT_COLLECTION_BOARD_CATALOG_IDS } from "../../../helpers/components/resource-board-catalog-ids"
 import { getInitialBoardComponentProperties } from "../../../helpers/components/get-initial-board-component-properties"
-import { DEFAULT_FONT_COLLECTION_BOARD_KEY } from "../../../helpers/font-collections/seed-default-font-collection-board"
+import { DEFAULT_FONT_COLLECTION_BOARD_KEY } from "../../../helpers/seed/seed-default-font-collection-board"
 import { WORKSPACE_EDITABLE_THEME_ENTRY_ID } from "../../../helpers/themes/workspace-editable-theme"
 import { formatFontCollectionCatalog } from "../../../model/template-ref"
-import { workspacePropagationService } from "../../../services"
+import { boardOrderService } from "../../../services"
 import { formatLabelFromCatalogId } from "../shared/format-label-from-catalog-id"
 
 /**
  * Inserts a font collection board and one `font-collections` row: a default row rooted at
- * `catalog:{componentKey}`.
+ * `catalog:{boardKey}`.
  *
  * Returns the incoming workspace when creation is blocked by rules or when the board key already exists.
  */
@@ -36,38 +36,38 @@ export function addFontCollection(
     if (!draft["font-collections"]) {
       draft["font-collections"] = {}
     }
-    const componentKey = payload.catalogId
-    if (draft.components[componentKey]) {
+    const boardKey = payload.catalogId
+    if (draft.boards[boardKey]) {
       return draft
     }
     // System is the seeded, non-deletable base collection and is never added.
     // Only packaged stock collections (currently just Google) can be added.
     if (
-      componentKey === DEFAULT_FONT_COLLECTION_BOARD_KEY ||
-      !FONT_COLLECTION_COMPONENT_CATALOG_IDS.has(componentKey)
+      boardKey === DEFAULT_FONT_COLLECTION_BOARD_KEY ||
+      !FONT_COLLECTION_BOARD_CATALOG_IDS.has(boardKey)
     ) {
       return draft
     }
 
-    const existingBoards = Object.values(draft.components)
+    const existingBoards = Object.values(draft.boards)
     const maxOrder =
       existingBoards.length > 0
-        ? Math.max(...existingBoards.map((b) => getComponentOrder(b)))
+        ? Math.max(...existingBoards.map((b) => getBoardOrder(b)))
         : -1
 
-    const defaultEntryId = `font-collection-${componentKey}-default`
+    const defaultEntryId = `font-collection-${boardKey}-default`
 
     const stock =
-      STOCK_FONT_COLLECTIONS_BY_ID[componentKey as FontCollectionTemplateId]
+      STOCK_FONT_COLLECTIONS_BY_ID[boardKey as FontCollectionTemplateId]
     const label = stock
       ? stock.metadata.name
-      : formatLabelFromCatalogId(componentKey, "Font collection")
+      : formatLabelFromCatalogId(boardKey, "Font collection")
 
     const defaultEntry: EntryFontCollection = {
       id: defaultEntryId,
       type: "default",
       label: "Default",
-      template: formatFontCollectionCatalog(componentKey),
+      template: formatFontCollectionCatalog(boardKey),
       overrides: {},
     }
 
@@ -90,18 +90,18 @@ export function addFontCollection(
 
     const board = {
       type: "font-collection" as const,
-      catalogId: componentKey,
+      catalogId: boardKey,
       label,
       componentPreview: "seldonFontsPreview",
       componentTheme: WORKSPACE_EDITABLE_THEME_ENTRY_ID,
       componentProperties: getInitialBoardComponentProperties("font-collection"),
       variants: [{ id: defaultEntryId }],
     }
-    setComponentOrder(board, maxOrder + 1)
-    draft.components[componentKey] = board
+    setBoardOrder(board, maxOrder + 1)
+    draft.boards[boardKey] = board
 
     const updatedWorkspace =
-      workspacePropagationService.realignComponentOrder(draft)
-    Object.assign(draft.components, updatedWorkspace.components)
+      boardOrderService.realignBoardOrder(draft)
+    Object.assign(draft.boards, updatedWorkspace.boards)
   })
 }

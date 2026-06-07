@@ -4,7 +4,7 @@ import { getVariantById } from "@seldon/core/workspace/helpers/general/get-varia
 import { isDefaultVariant } from "@seldon/core/workspace/helpers/general/is-default-variant"
 import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-catalog-id"
 import { isVariantNode } from "@seldon/core/workspace/helpers/nodes/is-variant-node"
-import { getTemplateSourceNodeId } from "../../../helpers/workspace-nodes"
+import { resolveSourceVariantId } from "../../../helpers/workspace-nodes"
 import { pascalCase } from "../utils/case-utils"
 
 export function getComponentName(node: EntryNode, workspace: Workspace) {
@@ -16,7 +16,7 @@ export function getComponentName(node: EntryNode, workspace: Workspace) {
     return `${pascalCase(catalogId)}${pascalCase(node.label)}`
   }
 
-  const sourceId = getTemplateSourceNodeId(node)
+  const sourceId = resolveSourceVariantId(node, workspace)
   if (!sourceId) {
     const catalogId = getNodeCatalogId(node, workspace) ?? node.id
     return pascalCase(catalogId)

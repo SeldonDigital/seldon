@@ -2,14 +2,14 @@ import { invariant } from "../../../helpers/utils/invariant"
 import { Theme, ThemeCustomSwatchId, ThemeInstanceId } from "../../../themes/types"
 import { computeWorkspaceThemes, getComputedTheme } from "../../compute"
 import {
-  ComponentEntry,
+  Board,
   Instance,
   InstanceId,
   Variant,
   VariantId,
   Workspace,
 } from "../../types"
-import { getComponentLevelThemeRef } from "../../helpers/components/get-component-level-theme-ref"
+import { getBoardThemeRef } from "../../helpers/components/get-board-theme-ref"
 import { nodeRelationshipService } from "../nodes/node-relationship.service"
 import { nodeRetrievalService } from "../nodes/node-retrieval.service"
 import { nodeTraversalService } from "../nodes/node-traversal.service"
@@ -23,11 +23,11 @@ export class WorkspaceThemeService {
    * @returns The theme ID
    */
   public getObjectThemeId(
-    object: Variant | Instance | ComponentEntry,
+    object: Variant | Instance | Board,
     workspace: Workspace,
   ): ThemeInstanceId {
-    if (typeCheckingService.isComponentEntry(object)) {
-      return getComponentLevelThemeRef(object) ?? ("seldon" as ThemeInstanceId)
+    if (typeCheckingService.isBoard(object)) {
+      return getBoardThemeRef(object) ?? ("seldon" as ThemeInstanceId)
     }
 
     return this.getNodeThemeId(object.id, workspace)
@@ -40,7 +40,7 @@ export class WorkspaceThemeService {
    * @returns The theme
    */
   public getObjectTheme(
-    object: Variant | Instance | ComponentEntry,
+    object: Variant | Instance | Board,
     workspace: Workspace,
   ): Theme {
     return this.getTheme(this.getObjectThemeId(object, workspace), workspace)
@@ -72,11 +72,11 @@ export class WorkspaceThemeService {
     }
 
     const rootNode = nodeRelationshipService.getRootVariant(childNode, workspace)
-    const board = nodeRelationshipService.findComponentForVariant(rootNode, workspace)
+    const board = nodeRelationshipService.findBoardForVariant(rootNode, workspace)
 
     invariant(board, `Unable to find board for variant ${rootNode.id}`)
 
-    return getComponentLevelThemeRef(board) ?? ("seldon" as ThemeInstanceId)
+    return getBoardThemeRef(board) ?? ("seldon" as ThemeInstanceId)
   }
 
   /**
@@ -148,8 +148,8 @@ export class WorkspaceThemeService {
   public collectUsedThemes(workspace: Workspace): Set<ThemeInstanceId> {
     const usedThemeIds = new Set<ThemeInstanceId>()
 
-    Object.values(workspace.components).forEach((board) => {
-      const ref = board ? getComponentLevelThemeRef(board) : undefined
+    Object.values(workspace.boards).forEach((board) => {
+      const ref = board ? getBoardThemeRef(board) : undefined
       if (ref) {
         usedThemeIds.add(ref)
       }
@@ -170,8 +170,3 @@ export class WorkspaceThemeService {
 }
 
 export const workspaceThemeService = new WorkspaceThemeService()
-
-/**
- * @deprecated Use `workspaceThemeService`. Still exported for editor and factory imports.
- */
-export const themeService = workspaceThemeService

@@ -6,7 +6,7 @@ import {
   isIconSetBoard,
   isThemeBoard,
 } from "@seldon/core/workspace/model/components"
-import { themeService } from "@seldon/core/workspace/services/theme/theme.service"
+import { workspaceThemeService } from "@seldon/core/workspace/services/theme/theme.service"
 import { workspaceFontCollectionService } from "@seldon/core/workspace/services/font-collection/font-collection.service"
 import { workspaceIconSetService } from "@seldon/core/workspace/services/icon-set/icon-set.service"
 import { useEditorConfig } from "@lib/hooks/use-editor-config"
@@ -141,7 +141,7 @@ export function PropertiesSidebar() {
       return themeProperties
     }
     if (!selection) return []
-    const theme = themeService.getObjectTheme(selection, workspace)
+    const theme = workspaceThemeService.getObjectTheme(selection, workspace)
     const allProperties = flattenNodeProperties(selection, workspace, theme)
 
     if (!showUnusedProperties) {
@@ -162,7 +162,7 @@ export function PropertiesSidebar() {
       return editedTheme || undefined
     }
     if (!selection) return undefined
-    return themeService.getObjectTheme(selection, workspace)
+    return workspaceThemeService.getObjectTheme(selection, workspace)
   }, [selection, workspace, isThemeEditingMode, editedTheme])
 
   const themeEditingContext = useMemo((): {
@@ -181,7 +181,7 @@ export function PropertiesSidebar() {
   const metadataProperties = useMemo<FlatProperty[] | undefined>(() => {
     if (isThemeEditingMode && editedTheme && activeThemeEntryId) {
       const entry = workspace.themes[activeThemeEntryId]
-      const board = Object.values(workspace.components).find(
+      const board = Object.values(workspace.boards).find(
         (component) =>
           isThemeBoard(component) &&
           component.variants.some(
@@ -300,14 +300,14 @@ export function PropertiesSidebar() {
       return selectedBoard
     }
     if (isThemeEditingMode) {
-      for (const entry of Object.values(workspace.components)) {
+      for (const entry of Object.values(workspace.boards)) {
         if (isThemeBoard(entry)) {
           return entry
         }
       }
     }
     if (isFontCollectionEditingMode && activeFontCollectionEntryId) {
-      for (const entry of Object.values(workspace.components)) {
+      for (const entry of Object.values(workspace.boards)) {
         if (
           isFontCollectionBoard(entry) &&
           entry.variants.some(
@@ -319,7 +319,7 @@ export function PropertiesSidebar() {
       }
     }
     if (isIconSetEditingMode && activeIconSetEntryId) {
-      for (const entry of Object.values(workspace.components)) {
+      for (const entry of Object.values(workspace.boards)) {
         if (
           isIconSetBoard(entry) &&
           entry.variants.some(
@@ -339,7 +339,7 @@ export function PropertiesSidebar() {
     activeFontCollectionEntryId,
     isIconSetEditingMode,
     activeIconSetEntryId,
-    workspace.components,
+    workspace.boards,
   ])
 
   if (

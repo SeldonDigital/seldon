@@ -1,4 +1,4 @@
-import type { ComponentCatalogEntry, ComponentKey } from "./components"
+import type { Board, BoardKey } from "./components"
 import type {
   EntryFontCollection,
   EntryFontCollectionId,
@@ -11,7 +11,7 @@ import type { WorkspaceMetadata } from "./metadata"
 
 export interface Workspace {
   metadata: WorkspaceMetadata
-  components: Record<ComponentKey, ComponentCatalogEntry>
+  boards: Record<BoardKey, Board>
   nodes: Record<EntryNodeId, EntryNode>
   themes: Record<EntryThemeId, EntryTheme>
   "font-collections": Record<EntryFontCollectionId, EntryFontCollection>

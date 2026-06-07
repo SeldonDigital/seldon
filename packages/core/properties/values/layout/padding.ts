@@ -7,6 +7,17 @@ import { EmptyValue } from "../shared/empty/empty"
 import { PixelValue } from "../shared/exact/pixel"
 import { RemValue } from "../shared/exact/rem"
 
+/** Catalog spacing choice for one side when not using a length or theme step. */
+export enum Padding {
+  NONE = "none",
+}
+
+/** Picks one spacing option from the Padding enum for a single side. */
+export interface PaddingSideOptionValue {
+  type: ValueType.OPTION
+  value: Padding
+}
+
 /** Ordinal reference into the theme padding scale for one side. */
 export interface PaddingSideThemeValue {
   type: ValueType.THEME_ORDINAL
@@ -21,11 +32,12 @@ export interface PaddingValue {
   left?: PaddingSideValue
 }
 
-/** One side value: unset, px or rem lengths, optical padding, match computed, or a theme step. */
+/** One side value: unset, px or rem lengths, the catalog option, optical padding, match computed, or a theme step. */
 export type PaddingSideValue =
   | EmptyValue
   | PixelValue
   | RemValue
+  | PaddingSideOptionValue
   | ComputedOpticalPaddingValue
   | ComputedMatchValue
   | PaddingSideThemeValue
@@ -33,8 +45,15 @@ export type PaddingSideValue =
 export const paddingSchema: PropertySchema = {
   name: "padding",
   description:
-    "Sets inside spacing on each edge using lengths, optical padding, theme steps, or match.",
-  supports: ["empty", "inherit", "exact", "computed", "themeOrdinal"] as const,
+    "Sets inside spacing on each edge using lengths, the catalog option, optical padding, theme steps, or match.",
+  supports: [
+    "empty",
+    "inherit",
+    "exact",
+    "option",
+    "computed",
+    "themeOrdinal",
+  ] as const,
   units: {
     allowed: [Unit.PX, Unit.REM],
     default: Unit.PX,
@@ -53,6 +72,7 @@ export const paddingSchema: PropertySchema = {
       if (typeof value === "number" && value >= 0) return true
       return false
     },
+    option: (value: any) => Object.values(Padding).includes(value),
     computed: (value: any) =>
       typeof value === "object" && value.function !== undefined,
     themeOrdinal: (value: any, theme?: Theme) => {
@@ -60,6 +80,7 @@ export const paddingSchema: PropertySchema = {
       return value in theme.padding
     },
   },
+  presetOptions: () => Object.values(Padding),
   themeOrdinalKeys: (theme: Theme) =>
     Object.keys(theme.padding).map((id) => `@padding.${id}`),
   computedFunctions: () => [

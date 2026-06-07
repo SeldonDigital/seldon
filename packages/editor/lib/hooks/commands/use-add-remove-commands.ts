@@ -13,7 +13,7 @@ import { isVariantInUse } from "@seldon/core/workspace/helpers/general/is-varian
 import { isEntryThemeDefault } from "@seldon/core/workspace/model/entry-theme"
 import { isEntryFontCollectionDefault } from "@seldon/core/workspace/model/entry-font-collection"
 import { isEntryIconSetDefault } from "@seldon/core/workspace/model/entry-icon-set"
-import type { ComponentKey } from "@seldon/core/workspace/types"
+import type { BoardKey } from "@seldon/core/workspace/types"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
 import { confirmMissingSchemaVariants } from "@lib/workspace/confirm-missing-schema-variants"
 import {
@@ -62,7 +62,7 @@ export function useAddRemoveCommands() {
       dispatch({
         type: "add_component",
         payload: {
-          componentId,
+          boardKey: componentId,
           variantFallbacks: variantFallbacks.length
             ? variantFallbacks
             : undefined,
@@ -78,7 +78,7 @@ export function useAddRemoveCommands() {
     (themeId: string) => {
       dispatch({
         type: "add_theme",
-        payload: { componentKey: themeId as ComponentKey },
+        payload: { boardKey: themeId as BoardKey },
       })
       selectBoard(themeId)
     },
@@ -131,7 +131,7 @@ export function useAddRemoveCommands() {
 
     dispatchWithAutoSelect({
       type: "add_variant",
-      payload: { componentKey: selectedBoardId as ComponentKey },
+      payload: { boardKey: selectedBoardId as BoardKey },
     })
   }, [
     selectedBoard,
@@ -197,8 +197,8 @@ export function useAddRemoveCommands() {
   )
 
   const removeBoard = useCallback(
-    (componentKey: ComponentKey) => {
-      const board = workspace.components[componentKey]
+    (boardKey: BoardKey) => {
+      const board = workspace.boards[boardKey]
       if (!board) return
 
       // Dispatch the removal that matches the board type. The default Seldon
@@ -208,38 +208,38 @@ export function useAddRemoveCommands() {
       if (isComponentBoard(board)) {
         result = dispatch({
           type: "remove_component",
-          payload: { componentId: componentKey as ComponentId },
+          payload: { boardKey: boardKey as ComponentId },
         })
       } else if (isPlaygroundBoard(board)) {
         result = dispatch({
           type: "remove_playground",
-          payload: { componentKey },
+          payload: { boardKey },
         })
       } else if (isFontCollectionBoard(board)) {
         result = dispatch({
           type: "remove_font_collection",
-          payload: { catalogId: componentKey },
+          payload: { catalogId: boardKey },
         })
       } else if (isMediaBoard(board)) {
         result = dispatch({
           type: "remove_media",
-          payload: { catalogId: componentKey },
+          payload: { catalogId: boardKey },
         })
       } else if (isThemeBoard(board)) {
         result = dispatch({
           type: "remove_theme",
-          payload: { componentKey },
+          payload: { boardKey },
         })
       } else if (isIconSetBoard(board)) {
         result = dispatch({
           type: "remove_icon_set",
-          payload: { catalogId: componentKey },
+          payload: { catalogId: boardKey },
         })
       }
 
       // Only clear the selection when the board was actually removed. A rejected
       // removal (e.g. the Seldon theme board) leaves the selection unchanged.
-      if (result && componentKey === selectedBoardId) {
+      if (result && boardKey === selectedBoardId) {
         selectBoard(null)
       }
     },

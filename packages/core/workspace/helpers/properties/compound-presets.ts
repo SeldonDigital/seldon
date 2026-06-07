@@ -167,27 +167,6 @@ function matchThemePreset(
   return null
 }
 
-export function expandShorthand(
-  propertyKey: string,
-  value: unknown,
-  nodeId: string,
-  workspace: Workspace,
-): Properties {
-  const node = getTypedNode(nodeId, workspace)
-  const subKeys = getSubPropertyKeysFromSchema(propertyKey, node, workspace)
-  const shorthandValue =
-    value && typeof value === "object" && "type" in value
-      ? value
-      : { type: ValueType.EXACT, value }
-
-  const result: Record<string, unknown> = {}
-  for (const subKey of subKeys) {
-    result[subKey] = shorthandValue
-  }
-
-  return { [propertyKey]: result }
-}
-
 export function applyCompoundPreset(
   propertyKey: string,
   preset: string | "Default" | "None" | "unset",

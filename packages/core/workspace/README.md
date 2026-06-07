@@ -14,7 +14,7 @@ At its core, a Seldon workspace file is a collection of JSON keys containing dat
 ```json
 {
   "metadata": { },
-  "components": { },
+  "boards": { },
   "nodes": { },
   "themes": { },
   "font-collections": { },
@@ -23,18 +23,18 @@ At its core, a Seldon workspace file is a collection of JSON keys containing dat
 }
 ```
 
-ComponentEntry keys are camelCase slugs unique across the workspace, referencing their source data found throughout `core/`.
+Board keys are camelCase slugs unique across the workspace, referencing their source data found throughout `core/`.
 
 
 | Key | Description | ID Pattern |
 | --- | --- | --- |
 | `metadata` | File-level metadata: migration version, ownership, optional notices, and other fields tied to the overall workspace. |  |
-| `components` | Catalog index for all row kinds (`component`, `playground`, `theme`, `font-collection`, `icon-set`, `media`). Each row shares fields like `type` and `variants`; see **Components** below. | `{componentKey}` |
-| `nodes` | Playgrounds, components, variants, and instances all keyed by stable ids. | `playground-{componentKey}-{suffix}`, `component-{componentKey}-{suffix}` |
-| `themes` | Theme definitions displayed using sample components. These are made available in all editor theme menus, and are described in detail below. | `theme-{componentKey}-{suffix}` |
-| `font-collections` | Font collection choices: families, references, licensing, and related data. These are made available in all editor font menus, and are described in detail below. | `font-collection-{componentKey}-{suffix}` |
-| `icon-sets` | Icon set choices: definitions, SVG payloads or references, and licensing. These are made available in all editor icon menus, and are described in detail in the Icon Sets section below. | `icon-set-{componentKey}-{suffix}` |
-| `media` | Media choices: assets, licensing, and external links. These are made available in all editor content fields, and are described in detail in the Media section below. | `media-{componentKey}-{suffix}` |
+| `boards` | Catalog index for all row kinds (`component`, `playground`, `theme`, `font-collection`, `icon-set`, `media`). Each row shares fields like `type` and `variants`; see **Boards** below. | `{boardKey}` |
+| `nodes` | Playgrounds, components, variants, and instances all keyed by stable ids. | `playground-{boardKey}-{suffix}`, `component-{boardKey}-{suffix}` |
+| `themes` | Theme definitions displayed using sample components. These are made available in all editor theme menus, and are described in detail below. | `theme-{boardKey}-{suffix}` |
+| `font-collections` | Font collection choices: families, references, licensing, and related data. These are made available in all editor font menus, and are described in detail below. | `font-collection-{boardKey}-{suffix}` |
+| `icon-sets` | Icon set choices: definitions, SVG payloads or references, and licensing. These are made available in all editor icon menus, and are described in detail in the Icon Sets section below. | `icon-set-{boardKey}-{suffix}` |
+| `media` | Media choices: assets, licensing, and external links. These are made available in all editor content fields, and are described in detail in the Media section below. | `media-{boardKey}-{suffix}` |
 
 ---
 
@@ -57,7 +57,7 @@ Full customization beyond overrides is done with **`variants`** -- a **`node`** 
 ```json
 {
   "metadata": { "...": "..." },
-  "components": {
+  "boards": {
     "searchResults": { "...": "..." },
     "productListing": { "...": "..." },
     "button": { "...": "..." },
@@ -118,7 +118,7 @@ Full customization beyond overrides is done with **`variants`** -- a **`node`** 
 
 Metadata describes the **workspace file as a whole**: who it belongs to, how it is labeled, which migration version it expects, when it was last updated, and optional **intent**, **tags**, and **licensing** information for discovery, auditing, and compliance. It supports loading and collaboration without duplicating the design data that boards and the other top-level sections hold.
 
-Metadata does not define components, themes, font collections, icon sets, or media. That structure lives in `components`, as well as in `nodes`, `themes`, `font-collections`, `icon-sets`, and `media`.
+Metadata does not define boards, themes, font collections, icon sets, or media. That structure lives in `boards`, as well as in `nodes`, `themes`, `font-collections`, `icon-sets`, and `media`.
 
 Programs change each metadata field with its own action: `set_workspace_owner`, `set_workspace_label`, `set_workspace_version`, `set_workspace_last_update`, `set_workspace_intent`, `set_workspace_tags`, `set_workspace_license`.
 
@@ -149,7 +149,7 @@ Programs change each metadata field with its own action: `set_workspace_owner`, 
     "intent": "...",
     "tags": [ "...", "...", "..." ]
   },
-  "components": { },
+  "boards": { },
   "nodes": { },
   "themes": { },
   "font-collections": { },
@@ -160,20 +160,20 @@ Programs change each metadata field with its own action: `set_workspace_owner`, 
 
 ---
 
-## Components
+## Boards
 
-Components are the organizational index of the workspace used to render, export, or otherwise collect a set of data needed to create each object type and variants. Each catalog row references data that is stored in one of the other top-level workspace sections: `nodes`, `themes`, `font-collections`, `icon-sets`, or `media`.
+Boards are the organizational index of the workspace used to render, export, or otherwise collect a set of data needed to create each object type and variants. Each catalog row references data that is stored in one of the other top-level workspace sections: `nodes`, `themes`, `font-collections`, `icon-sets`, or `media`.
 
-Components do not hold data directly. They only index the information needed to define an object, including which default theme applies.
+Boards do not hold data directly. They only index the information needed to define an object, including which default theme applies.
 
-Programs change catalog row header fields with `set_component_label`, `set_component_intent`, `set_component_tags`, `set_component_license`, `set_component_author`, `set_component_credentials`, `set_component_preview`, `set_component_editor_data`, and use `set_component_properties`, `reset_component_property`, and `set_component_theme` for catalog row layout, preview frame, and default theme on the catalog row.
+Programs change catalog row header fields with `set_board_label`, `set_board_intent`, `set_board_tags`, `set_board_license`, `set_board_author`, `set_board_credentials`, `set_board_preview`, `set_board_editor_data`, and use `set_component_properties`, `reset_component_property`, and `set_component_theme` for catalog row layout, preview frame, and default theme on the catalog row.
 
-### Component types
+### Board types
 
 There are six catalog row types:
 
 
-| Component type | Description | Example rows |
+| Board type | Description | Example rows |
 | --- | --- | --- |
 | `component` | A component based on a `core/components/` component schema. Only one catalog row is used per component, with variants and instances of that component stored as references from `nodes`. | `button`, `searchField`, `productCard`, `calendar` |
 | `playground` | A playground is used for mockups and prototyping. Playgrounds are excluded from the factory export flow to allow flexibility in design exploration. | `searchResults`, `productListing` |
@@ -216,7 +216,7 @@ When placing or pasting a component from another workspace, the rules are:
 3. **New or unknown ids** — Otherwise add or fork nodes as needed: create default, variant, and instance entries in `nodes` (new ids where the source id is absent or would collide), then wire the board’s variant tree to those entries.
 
 ```json
-"components": {
+"boards": {
   "button": {
     "type": "component",
     "level": "element",
@@ -266,7 +266,7 @@ When placing or pasting a component from another workspace, the rules are:
 
 ---
 
-#### Playground ComponentEntry
+#### Playground Board
 
 Playground boards are used for prototyping and previewing designs, holding components and their variants to allow users to see components interacting. Playground boards and variants are excluded from factory export. They rely on `display: "exclude"` so generated code skips them.
 
@@ -279,13 +279,13 @@ The playground catalog row structure is currently identical to component catalog
 | `intent` | `string` | Optional short description of the playground's purpose. |
 | `tags` | `string[]` | Optional labels for search or filtering. |
 | `componentTheme` | `ThemeInstanceId` | The theme applied to this catalog row and inherited by its variants. The `componentTheme` field influences exported output by supplying a theme when no theme has been assigned to a variant. The `componentTheme` defaults to `seldonTheme`. |
-| `componentProperties` | `Properties` | ComponentEntry-level properties used only for visual display in an editor. These do not affect exported code or how components are rendered in production. |
+| `componentProperties` | `Properties` | Board-level properties used only for visual display in an editor. These do not affect exported code or how components are rendered in production. |
 | `variants` | `{ "id", "children"? }` | An ordered array of variant entries belonging to this catalog row appearing top to bottom, along with their nested children. (See the **Nodes section** below.) The first entry is always the **default variant**. See **Default catalog alignment** (Workspace Structure). |
 | `__editor` | `object` | Optional editor-only metadata for this playground. |
 
 
 ```json
-"components": {
+"boards": {
   "searchResults": {
     "type": "playground",
     "label": "Search Results",
@@ -317,7 +317,7 @@ The playground catalog row structure is currently identical to component catalog
 
 ---
 
-#### Theme ComponentEntry
+#### Theme Board
 
 Theme rows hold theme definition variants that reference data in the `themes` section. The base variant ships from `core/themes/` and represents the default theme configuration. It is always present and cannot be deleted. Users can create additional variants for custom theme definitions.
 
@@ -332,12 +332,12 @@ Theme rows hold theme definition variants that reference data in the `themes` se
 | `license` | `object` | Optional theme licensing metadata. |
 | `componentPreview` | `string` | The default preview catalog id from `core/themes/` the editor uses to show themes in context. This is not processed in factory export. Editors may override the default with a playground id saved within the workspace. The `componentPreview` defaults to `seldonThemePreview`.|
 | `componentTheme` | `ThemeInstanceId` | The theme applied to this catalog row and inherited by its variants. The `componentTheme` field influences exported output by supplying a theme when no theme has been assigned to a variant. The `componentTheme` defaults to `seldonTheme`. |
-| `componentProperties` | `Properties` | ComponentEntry-level properties used only for visual display in an editor. These do not affect exported code or how components are rendered in production. |
+| `componentProperties` | `Properties` | Board-level properties used only for visual display in an editor. These do not affect exported code or how components are rendered in production. |
 | `variants` | `{ "id" }` | An ordered array of variant entries belonging to this catalog row appearing top to bottom. (See the **Themes section** below.) The first entry is always the **default variant**. See **Default catalog alignment** (Workspace Structure). |
 | `__editor` | `object` | Optional editor-only metadata for this theme. |
 
 ```json
-"components": {
+"boards": {
   "skyBlue": {
     "type": "theme",
     "catalogId": "skyBlue",
@@ -360,7 +360,7 @@ Theme rows hold theme definition variants that reference data in the `themes` se
 
 ---
 
-#### Font Collection ComponentEntry
+#### Font Collection Board
 
 Font collection rows hold font configuration variants that reference data in the `font-collections` section. The base variant ships from `core/font-collections/` and represents the default font configuration. It is always present and cannot be deleted. Users can create additional variants for custom font selections. Font collection rows may extend the shared catalog row fields with additional metadata. That metadata can include API keys for font services.
 
@@ -376,13 +376,13 @@ Font collection rows hold font configuration variants that reference data in the
 | `tags` | `string[]` | Optional labels for search or filtering. |
 | `componentPreview` | `string` | The default preview catalog id from `core/font-collections/` the editor uses to show font in context. This is not processed in factory export. Editors may override the default with a playground id saved within the workspace. The `componentPreview` defaults to `seldonFontsPreview`.|
 | `componentTheme` | `ThemeInstanceId` | The theme applied to this catalog row and inherited by its variants. The `componentTheme` field influences exported output by supplying a theme when no theme has been assigned to a variant. The `componentTheme` defaults to `seldonTheme`. |
-| `componentProperties` | `Properties` | ComponentEntry-level properties used only for visual display in an editor. These do not affect exported code or how components are rendered in production. |
+| `componentProperties` | `Properties` | Board-level properties used only for visual display in an editor. These do not affect exported code or how components are rendered in production. |
 | `variants` | `{ "id" }` | An ordered array of variant entries belonging to this catalog row. The first entry is always the default variant and cannot be edited directly. That default matches the packaged font collection identified by `catalogId`. Variants appear in an editor from top to bottom based on list order. See **Default catalog alignment** (Workspace Structure). |
 | `__editor` | `object` | Optional editor-only metadata for this font collection. |
 
 
 ```json
-"components": {
+"boards": {
   "googleFonts": {
     "type": "font-collection",
     "catalogId": "googleFonts",
@@ -413,7 +413,7 @@ Font collection rows hold font configuration variants that reference data in the
 
 ---
 
-#### Icon Set ComponentEntry
+#### Icon Set Board
 
 Icon set boards hold icon set variants that reference data in the `icon-sets` section. The base variant ships from `core/icon-sets/` and represents the full icon set, such as the complete Google Material set. It is always present and cannot be deleted. Users can create additional variants as curated subsets for specific use cases. Examples of subset labels include `mobile` and `japanese`.
 
@@ -429,13 +429,13 @@ Icon set boards hold icon set variants that reference data in the `icon-sets` se
 | `tags` | `string[]` | Optional labels for search or filtering. |
 | `componentPreview` | `string` | The default preview catalog id from `core/icon-sets/` the editor uses to show font in context. This is not processed in factory export. Editors may override the default with a playground id saved within the workspace. The `componentPreview` defaults to `seldonIconsPreview`.|
 | `componentTheme` | `ThemeInstanceId` | The theme applied to this catalog row and inherited by its variants. The `componentTheme` field influences exported output by supplying a theme when no theme has been assigned to a variant. The `componentTheme` defaults to `seldonTheme`. |
-| `componentProperties` | `Properties` | ComponentEntry-level properties used only for visual display in an editor. These do not affect exported code or how components are rendered in production. |
+| `componentProperties` | `Properties` | Board-level properties used only for visual display in an editor. These do not affect exported code or how components are rendered in production. |
 | `variants` | `{ "id" }` | An ordered array of variant entries belonging to this catalog row. The first entry is always the default variant and cannot be edited directly. That default matches the packaged icon set identified by `catalogId`. Variants appear in an editor from top to bottom based on list order. See **Default catalog alignment** (Workspace Structure). |
 | `__editor` | `object` | Optional editor-only metadata for this icon set. |
 
 
 ```json
-"components": {
+"boards": {
   "googleMaterial": {
     "type": "icon-set",
     "catalogId": "googleMaterial",
@@ -465,7 +465,7 @@ Icon set boards hold icon set variants that reference data in the `icon-sets` se
 
 ---
 
-#### Media ComponentEntry
+#### Media Board
 
 Media rows hold media assets and variants that reference data in the `media` section. The base variant ships from `core/media/` and represents the default media configuration. It is always present and cannot be deleted. Users can create additional variants for curated media collections. Media rows may extend the shared catalog row fields with additional metadata. That metadata can include licensing keys.
 
@@ -481,13 +481,13 @@ Media rows hold media assets and variants that reference data in the `media` sec
 | `tags` | `string[]` | Optional labels for search or filtering. |
 | `componentPreview` | `string` | The default preview catalog id from `core/media/` the editor uses to show font in context. This is not processed in factory export. Editors may override the default with a playground id saved within the workspace. The `componentPreview` defaults to `seldonMediaPreview`.|
 | `componentTheme` | `ThemeInstanceId` | The theme applied to this catalog row and inherited by its variants. The `componentTheme` field influences exported output by supplying a theme when no theme has been assigned to a variant. The `componentTheme` defaults to `seldonTheme`. |
-| `componentProperties` | `Properties` | ComponentEntry-level properties used only for visual display in an editor. These do not affect exported code or how components are rendered in production. |
+| `componentProperties` | `Properties` | Board-level properties used only for visual display in an editor. These do not affect exported code or how components are rendered in production. |
 | `variants` | `{ "id" }` | An ordered array of variant entries belonging to this catalog row. The first entry is always the default variant and cannot be edited directly. That default matches the packaged media identified by `catalogId`. Variants appear in an editor from top to bottom based on list order. See **Default catalog alignment** (Workspace Structure). |
 | `__editor` | `object` | Optional editor-only metadata for this media catalog. |
 
 
 ```json
-"components": {
+"boards": {
   "adobeStockMedia": {
     "type": "media",
     "catalogId": "adobeStockMedia",
@@ -536,6 +536,7 @@ The result of this is that an editor's properties panel will display and edit al
 | `theme` | `ThemeInstanceId` or `null` | The theme used for this node, or `null` to inherit from its parent. |
 | `template` | `string` | Where the node gets its metadata, along with its list of **properties** and subsequent default values which are resolved before `overrides` are applied. This value is either `catalog:{ComponentId}` or `node:{nodeId}`. See **Default Node**, **Variant Node**, and **Instance Node** below. |
 | `overrides` | `Properties` | Property overrides for this node, which is derived from either `catalog:{ComponentId}` or `node:{nodeId}`. Can be an empty object `{}`. If a property is not declared in the `template`, the overridden value is ignored. |
+| `origin` | `string` | Optional creation origin, one of `"schema"` or `"user"`. Only meaningful on `type: "instance"` nodes. The engine sets and maintains it, and it drives removal behavior. See **Instance Node** and **Composition Rules** below. |
 | `__editor` | `object` | Editor-only metadata. |
 
 When code consults [`rules.mutations.*`](../rules/config/rules.config.ts), index by internal [`Entity`](../rules/types/rule-config-types.ts) keys (`defaultVariant`, `userVariant`, …), not raw `type` strings. Map serialized `EntryNode.type` with [`mapEntryNodeTypeToRulesEntity`](./helpers/rules/map-entry-node-type-to-rules-entity.ts); see [Rules README](../rules/README.md) (Entity vocabulary vs workspace `nodes`).
@@ -799,7 +800,76 @@ A user-created variant, with `type` set to `"variant"`. Whenever an editor modif
 
 ## Icon Sets
 
-The `icon-sets` object contains icon set definitions and configurations referenced by icon set boards. Structure TBD.
+The `icon-sets` object is a flat map of all default and variant icon set entries used within the workspace. A `seldonIcons` icon set is always present and stored within each workspace, and cannot be removed. Each icon set gets its own catalog row, allowing for variants and curated subsets added to the workspace.
+
+Icon set keys are icon set ID strings and must match each value's `id` field. All metadata and other important information is retrieved from the icon set template.
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `id` | `string` | Unique entry identifier; must equal the key used for this icon set in the `icon-sets` map. |
+| `type` | `string` | Entry type discriminator. One of: `"default"`, `"variant"`. |
+| `label` | `string` | Display name for the entry. |
+| `template` | `string` | Where the icon set gets its metadata, along with its list of **icons** and subsequent default values, which are resolved before `overrides` are applied. This value is either `catalog:{IconSetTemplateId}` or `icon-set:{iconSetId}`. See **Default Icon Set** and **Variant Icon Set** below. |
+| `overrides` | `object` | Icon selection overrides for this icon set, derived from either `catalog:{IconSetTemplateId}` or `icon-set:{iconSetId}`. Can be an empty object `{}`. The per-icon selection lives under `includedIcons`, a map keyed by icon id where each value is a boolean. An absent icon falls back to the set's default categories. |
+| `__editor` | `object` | Editor-only metadata. |
+
+---
+
+### Default Icon Set
+
+Default rows follow **Default catalog alignment** (Workspace Structure): icon shape stays catalog-true; customize through **`overrides`** (and **`label`** where editors allow).
+
+The canonical root for an icon set catalog row, with `type` set to `"default"`. Whenever an editor modifies this default icon set, changes propagate to other variant icon sets that reference this one as their template. Default icon sets are commonly created through adding catalog icon sets into the workspace.
+
+- The **`template`** field is always **`catalog:{IconSetTemplateId}`**. This entry's icons and defaults are defined by schemas under `core/icon-sets/catalog/<icon-set-template-id>/`, with the default baseline being the result of `template` icons with `overrides` applied on top.
+
+- The **`overrides`** field carries the per-icon selection under `includedIcons`; an icon absent from the map falls back to the set's default categories.
+
+```json
+"icon-sets": {
+  "icon-set-seldonIcons-default": {
+    "id": "icon-set-seldonIcons-default",
+    "type": "default",
+    "label": "Default",
+    "template": "catalog:seldonIcons",
+    "overrides": {
+      "includedIcons": {
+        "seldon-add": true,
+        "seldon-close": true
+        /* ... other icon selections */
+      }
+    }
+  }
+}
+```
+
+---
+
+### Variant Icon Set
+
+A user-created variant, with `type` set to `"variant"`. Whenever an editor modifies this variant, changes propagate to other variant icon sets that reference this one as their template.
+
+- The **`template`** field for variants is always an **`icon-set:{iconSetId}`**. This entry's icons and defaults are defined by that icon set, with the variant baseline being the result of `template` icons applied with `template` overrides, then variant `overrides` applied on top.
+
+- The **`overrides`** field carries a `includedIcons` map on top of the `template` baseline. Icons absent from the map fall back to the template selection. Curated subsets turn icons off by setting their value to `false`.
+
+```json
+"icon-sets": {
+  "icon-set-googleMaterial-5c11a0b2": {
+    "id": "icon-set-googleMaterial-5c11a0b2",
+    "type": "variant",
+    "label": "Mobile",
+    "template": "icon-set:icon-set-googleMaterial-default",
+    "overrides": {
+      "includedIcons": {
+        "material-home": true,
+        "material-settings": false
+        /* ... other icon selections */
+      }
+    }
+  }
+}
+```
 
 ---
 
@@ -854,6 +924,36 @@ A `frame` is a cross-level container and may appear at any level. When a `frame`
 A node accepts a child only when its component level `mayContain` rule allows that child level.
 
 A node cannot contain its own component or any ancestor component. This keeps trees acyclic. A `frame` inside a `frame` is the one exception, because a frame carries no component identity.
+
+---
+
+### Mutation Policy
+
+Every structural action resolves the target entity, then reads its policy from `rules.mutations[operation][entity]` in `packages/core/rules/config/rules.config.ts`. A handler that is `Blocked` returns the workspace unchanged.
+
+Each cell states whether the operation is allowed and how far it reaches:
+
+- **Blocked**: not allowed for that entity. The handler is a no-op.
+- **Local**: allowed, and changes only the target node.
+- **Syncs**: allowed, and also applies to every instance that links to the target.
+
+| Operation | Board | Default Variant | User Variant | Instance |
+| --- | --- | --- | --- | --- |
+| `create` | Local | Blocked | Local | Syncs |
+| `instantiate` | Blocked | Syncs | Syncs | Syncs |
+| `insertInto` | Blocked | Blocked | Syncs | Syncs |
+| `duplicate` | Blocked | Local | Local | Syncs |
+| `reorder` | Blocked | Blocked | Local | Syncs |
+| `move` | Blocked | Blocked | Blocked | Syncs |
+| `delete` | Syncs | Blocked | Syncs | Syncs* |
+| `setProperties` | Local | Local | Local | Local |
+| `reset` | Local | Local | Local | Local |
+| `setTheme` | Syncs | Syncs | Syncs | Syncs |
+| `rename` | Blocked | Blocked | Syncs | Blocked |
+
+Deleting an instance depends on its `origin`. A `schema` instance hides by setting `display` to `EXCLUDE`. A `user` instance is deleted. Only the `delete` instance row carries this behavior.
+
+`Local` and `Syncs` map to the `propagation` field, `none` and `downstream`. `setProperties` and `reset` stay `Local`. Instance edits still surface through their source because instance properties merge with the source at read time, not by fan-out at write time.
 
 ---
 
@@ -980,11 +1080,11 @@ See **Referential Integrity** for the static file-level constraints that a store
 
 A valid workspace file must satisfy the following constraints.
 
-### 1. ComponentEntry variant trees resolve to the correct map
+### 1. Board variant trees resolve to the correct map
 
-For each catalog row, every **`id`** that appears in **`variants`** and, for `component` and `playground` boards, in every nested **`children`** array (recursively), must exist as a **key** in exactly one top-level map, determined by **`boards[componentKey].type`**:
+For each catalog row, every **`id`** that appears in **`variants`** and, for `component` and `playground` boards, in every nested **`children`** array (recursively), must exist as a **key** in exactly one top-level map, determined by **`boards[boardKey].type`**:
 
-| ComponentEntry `type` | Map that must contain each collected `id` |
+| Board `type` | Map that must contain each collected `id` |
 | --- | --- |
 | `component`, `playground` | `nodes` |
 | `theme` | `themes` |
@@ -1017,7 +1117,7 @@ If the **`template`** grammar for a given object type only allows a subset of pr
 
 ### 4. JSON object keys are unique within each map
 
-Within each top-level object **`components`**, **`nodes`**, **`themes`**, **`font-collections`**, **`icon-sets`**, and **`media`**, **keys must be unique** for that object. This does **not** forbid the same **`id`** string from appearing multiple times as an **`id` attribute** inside catalog row variant trees: those are references to a **single** catalog entry in the corresponding map. For example, one **`nodes`** entry keyed by that **`id`**.
+Within each top-level object **`boards`**, **`nodes`**, **`themes`**, **`font-collections`**, **`icon-sets`**, and **`media`**, **keys must be unique** for that object. This does **not** forbid the same **`id`** string from appearing multiple times as an **`id` attribute** inside catalog row variant trees: those are references to a **single** catalog entry in the corresponding map. For example, one **`nodes`** entry keyed by that **`id`**.
 
 ---
 

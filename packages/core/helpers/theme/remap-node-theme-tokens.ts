@@ -1,6 +1,6 @@
 import { WritableDraft } from "immer"
 import { isEqual } from "lodash"
-import { isComponentId, type ComponentId } from "../../components/constants"
+import { isComponentId } from "../../components/constants"
 import { Workspace } from "../../index"
 import { ValueType } from "../../properties"
 import {
@@ -14,7 +14,7 @@ import { TokenType } from "../../themes/constants/token-type"
 import { Theme, ThemeInstanceId, ThemeOption } from "../../themes/types"
 import type { ThemeFontFamilyToken } from "../../themes/values"
 import { getChildrenIds } from "../../workspace/helpers/components/get-children-ids"
-import { getComponentByNodeId } from "../../workspace/helpers/components/get-component-by-node-id"
+import { getBoardByNodeId } from "../../workspace/helpers/components/get-board-by-node-id"
 import { parseNodeCatalog } from "../../workspace/model/template-ref"
 import { getEffectiveNodeProperties } from "../../workspace/compute"
 import {
@@ -43,7 +43,7 @@ const SWATCH_PRESET_SLOTS = [
   "swatch4",
 ] as const
 
-type MigrationContext = {
+type RemapContext = {
   value: ThemeValue
   currentTheme: Theme
   newTheme: Theme
@@ -148,7 +148,8 @@ function findMatchByValue(
 }
 
 /**
- * Attempts to find a matching theme option using the 4-tier strategy.
+ * Finds a matching option in the new theme: first by exact slot id, then by name
+ * or value for `custom` slots.
  */
 function findMatchingThemeOption(
   section: string,
@@ -181,18 +182,14 @@ function findMatchingThemeOption(
   return { matched: false }
 }
 
-/**
- * Handles swatch-specific migration logic.
- */
-function migrateSwatchValue(context: MigrationContext): boolean {
+/** Remaps a swatch theme value, carrying over reserved slots when present. */
+function remapSwatchValue(context: RemapContext): boolean {
   const { value, newTheme, node, propertyKey, subpropertyKey } = context
 
-  // Handle null values
   if (!value.value) {
     return false
   }
 
-  // Validate that the value is a valid theme key
   if (!isThemeValueKey(value.value)) {
     return false
   }
@@ -245,19 +242,15 @@ function migrateSwatchValue(context: MigrationContext): boolean {
   return false
 }
 
-/**
- * Handles non-swatch theme value migration.
- */
-function migrateNonSwatchValue(context: MigrationContext): boolean {
+/** Remaps a non-swatch theme value to its match in the new theme. */
+function remapNonSwatchValue(context: RemapContext): boolean {
   const { value, currentTheme, newTheme, node, propertyKey, subpropertyKey } =
     context
 
-  // Handle null values
   if (!value.value) {
     return false
   }
 
-  // Validate that the value is a valid theme key
   if (!isThemeValueKey(value.value)) {
     return false
   }
@@ -307,20 +300,7 @@ export function remapNodeThemeTokens(
     const propertyKey = key as PropertyKey
 
     if (isCompoundProperty(propertyKey)) {
-      for (const [subKey, subProperty] of Object.entries(value)) {
-        const subpropertyKey = subKey as SubPropertyKey
-        const subValue = subProperty as Value
-        if (isThemeValue(subValue)) {
-          remapThemeToken({
-            value: subValue,
-            currentTheme,
-            newTheme,
-            node,
-            propertyKey,
-            subpropertyKey,
-          })
-        }
-      }
+      remapCompoundThemeTokens(value, { currentTheme, newTheme, node, propertyKey })
     } else if (isThemeValue(value as Value)) {
       remapThemeToken({
         value: value as ThemeValue,
@@ -332,7 +312,7 @@ export function remapNodeThemeTokens(
     }
   }
 
-  const board = getComponentByNodeId(workspace as Workspace, nodeId)
+  const board = getBoardByNodeId(workspace as Workspace, nodeId)
   const childIds = board ? getChildrenIds(board, nodeId) : []
 
   const catalogParsed = parseNodeCatalog(node.template)
@@ -341,7 +321,7 @@ export function remapNodeThemeTokens(
       ? catalogParsed.componentId
       : undefined
 
-  if (componentId && isComponentId(componentId) && childIds.length > 0) {
+  if (componentId && childIds.length > 0) {
     for (const childId of childIds) {
       remapNodeThemeTokens(
         childId as InstanceId,
@@ -350,6 +330,29 @@ export function remapNodeThemeTokens(
         workspace,
       )
     }
+  }
+}
+
+/** Remaps every theme token facet inside one compound property value. */
+function remapCompoundThemeTokens(
+  compoundValue: unknown,
+  context: {
+    currentTheme: Theme
+    newTheme: Theme
+    node: WritableDraft<EntryNode>
+    propertyKey: PropertyKey
+  },
+): void {
+  for (const [subKey, subProperty] of Object.entries(
+    compoundValue as Record<string, unknown>,
+  )) {
+    const subValue = subProperty as Value
+    if (!isThemeValue(subValue)) continue
+    remapThemeToken({
+      value: subValue,
+      ...context,
+      subpropertyKey: subKey as SubPropertyKey,
+    })
   }
 }
 
@@ -369,19 +372,17 @@ function remapThemeToken({
   propertyKey: PropertyKey
   subpropertyKey?: SubPropertyKey
 }) {
-  // Handle null values
   if (!value.value) {
     return
   }
 
-  // Validate that the value is a valid theme key
   if (!isThemeValueKey(value.value)) {
     return
   }
 
   const { section } = getThemeKeyComponents(value.value)
 
-  const context: MigrationContext = {
+  const context: RemapContext = {
     value,
     currentTheme,
     newTheme,
@@ -391,9 +392,9 @@ function remapThemeToken({
   }
 
   if (section === "swatch") {
-    migrateSwatchValue(context)
+    remapSwatchValue(context)
   } else {
-    migrateNonSwatchValue(context)
+    remapNonSwatchValue(context)
   }
 }
 
@@ -446,7 +447,6 @@ function detachThemeValue({
   propertyKey: PropertyKey
   subpropertyKey?: SubPropertyKey
 }) {
-  // Handle null values
   if (!value.value) {
     return
   }

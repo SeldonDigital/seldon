@@ -22,10 +22,10 @@ export function getTypeSpecimenPreviewBase(): TypeSpecimenPreviewBase {
   }
 
   const workspace = addComponent(
-    { componentId: ComponentId.TYPE_SPECIMEN },
+    { boardKey: ComponentId.TYPE_SPECIMEN },
     createEmptyWorkspace(),
   )
-  const board = workspace.components[ComponentId.TYPE_SPECIMEN]
+  const board = workspace.boards[ComponentId.TYPE_SPECIMEN]
   const rootId = board?.variants?.[0]?.id ?? null
 
   cached = { workspace, rootId }

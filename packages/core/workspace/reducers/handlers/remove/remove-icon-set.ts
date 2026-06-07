@@ -1,5 +1,5 @@
 import { ExtractPayload, Workspace } from "../../../../index"
-import { applyComponentKeyDeletion } from "./remove-component-catalog"
+import { removeBoardByKey } from "./remove-board-by-key"
 
 /**
  * Removes an icon set catalog board and its rows. Validation blocks removal of
@@ -9,5 +9,5 @@ export function removeIconSet(
   payload: ExtractPayload<"remove_icon_set">,
   workspace: Workspace,
 ): Workspace {
-  return applyComponentKeyDeletion(payload.catalogId, workspace)
+  return removeBoardByKey(payload.catalogId, workspace)
 }

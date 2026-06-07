@@ -6,9 +6,10 @@ This file inventories architectural vocabulary used across `packages/core/`. Use
 | Term | Definition |
 | --- | --- |
 | Catalog | The packaged library Seldon ships in Seldon Core. It holds component schemas, stock themes, font collections, icon sets, and media definitions. Workspaces point into the catalog so defaults and identities stay centralized. |
-| Workspace | A workspace is an entire design file. It stores `metadata`, `components`, `nodes`, `themes`, `font-collections`, `icon-sets`, and `media`. Tools load a workspace, run each action through a reducer, and save the result as one design snapshot. |
+| Workspace | A workspace is an entire design file. It stores `metadata`, `boards`, `nodes`, `themes`, `font-collections`, `icon-sets`, and `media`. Tools load a workspace, run each action through a reducer, and save the result as one design snapshot. |
 | Metadata | Metadata holds file-level facts about the workspace file. Examples are owner, label, and migration version. It describes the file itself rather than catalog rows or entry nodes. |
-| Catalog row | A catalog row is one entry in `workspace.components`. Row types are `component`, `playground`, `theme`, `font-collection`, `icon-set`, and `media`. Each row lists variant ids and may list nested child node ids on those variants. |
+| Board | A board is one entry in `workspace.boards`. It is a catalog row that indexes data and does not store node properties. Row types are `component`, `playground`, `theme`, `font-collection`, `icon-set`, and `media`. Every board has a `type` and an ordered `variants` list whose first entry is the default. `component` and `playground` rows reference `nodes`. `theme`, `font-collection`, `icon-set`, and `media` rows reference their matching workspace section. |
+| Variant entry | A variant entry is one item in a board's `variants` list. On `component` and `playground` boards it holds a node id and an optional `children` tree of nested node ids. On `theme`, `font-collection`, `icon-set`, and `media` boards it holds an id only. |
 | Component schema | A component schema is the packaged blueprint under `core/components/`. It defines identity, level, default properties, and default child trees. Catalog rows reference a schema through `catalogId`. |
 | Component level | Component level ranks how large a building block is, from full screens down to tiny primitives. The level controls which parts may sit inside which parents so complex layouts stay orderly. |
 | Frame | A frame is a flexible container level that may hold any other level. Editors use frames when they need grouping and layout without forcing inner pieces to obey the usual strict stacking rules. |
@@ -16,7 +17,7 @@ This file inventories architectural vocabulary used across `packages/core/`. Use
 | Default node | A default node has `type: "default"`. Its `template` is always `catalog:{ComponentId}`. It is the canonical root for a component catalog row. |
 | Variant node | A variant node has `type: "variant"`. Its `template` is `catalog:{ComponentId}` or `node:{nodeId}`. Editors treat a variant as the baseline for nodes that build on it. |
 | Instance node | An instance node has `type: "instance"`. Its `template` is `catalog:{ComponentId}` or `node:{nodeId}`. Instances keep local `overrides` while sharing structure from the template. |
-| Variant tree | A variant tree is the nested layout on a catalog row. Each `variants[]` entry may list `children` with node ids. The flat `nodes` map holds the payload for each id. |
+| Variant tree | A variant tree is the nested layout on a `component` or `playground` board. Each `variants[]` entry may list `children` with node ids. The flat `nodes` map holds the payload for each id. |
 | Component properties | Component properties are `componentProperties` on a catalog row. They affect editor display only. They do not change factory export or production rendering. |
 | Key | The key name of a `key: value` pair. |
 | Value | The value of a `key: value` pair. It may be a plain JSON value or a tagged property cell with a `type` field. |

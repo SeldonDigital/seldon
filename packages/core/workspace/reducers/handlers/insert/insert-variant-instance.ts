@@ -7,20 +7,14 @@ import {
 } from "../../../../utils/debug-logger"
 import {
   nodeRetrievalService,
-  nodeTraversalService,
-  nodeRelationshipService,
   nodeOperationsService,
-  workspaceMutationService,
-  workspaceThemeService,
   workspacePropagationService,
   typeCheckingService,
 } from "../../../services"
-import type { ValidationOptions } from "../../helpers/validation"
 
 export function insertVariantInstance(
   payload: ExtractPayload<"insert_variant_instance">,
   workspace: Workspace,
-  options: ValidationOptions = {},
 ): Workspace {
   const nodeToInstantiate = nodeRetrievalService.getNode(
     payload.variantId,

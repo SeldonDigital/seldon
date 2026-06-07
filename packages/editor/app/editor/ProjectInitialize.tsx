@@ -12,7 +12,7 @@ export function ProjectInitialize({ workspace }: { workspace: Workspace }) {
   useEffect(() => {
     const base = createEmptyWorkspace()
     const hasContent =
-      Object.keys(workspace.components ?? {}).length > 0 ||
+      Object.keys(workspace.boards ?? {}).length > 0 ||
       Object.keys(workspace.nodes ?? {}).length > 0 ||
       Object.keys(workspace.nodes).length > 0
 

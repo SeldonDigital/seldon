@@ -2,7 +2,7 @@ import { isDraft } from "immer"
 import type { ComponentTreeRef } from "../../types"
 
 /**
- * Minimal catalog row shape for walking composition trees. Matches `workspace.components`
+ * Minimal catalog row shape for walking composition trees. Matches `workspace.boards`
  * rows and the loose `WorkspaceComponent` used by `compute-node-properties`.
  */
 interface CompositionComponentRow {
@@ -14,7 +14,7 @@ interface CompositionComponentRow {
  * Workspace slice needed to derive composition parents from board variant trees.
  */
 export interface WorkspaceComponentTreeSource {
-  components?: Record<string, CompositionComponentRow | undefined>
+  boards?: Record<string, CompositionComponentRow | undefined>
 }
 
 /**
@@ -52,7 +52,7 @@ export function buildNodeParentIndex(
   source: WorkspaceComponentTreeSource,
 ): Map<string, string> {
   const parentByChild = new Map<string, string>()
-  const boards = source.components
+  const boards = source.boards
   if (!boards) return parentByChild
 
   const keys = Object.keys(boards).sort()
@@ -79,7 +79,7 @@ const parentIndexCache = new WeakMap<object, Map<string, string>>()
 export function getNodeParentIndex(
   source: WorkspaceComponentTreeSource,
 ): Map<string, string> {
-  const boards = source.components
+  const boards = source.boards
 
   if (!boards || isDraft(source) || isDraft(boards)) {
     return buildNodeParentIndex(source)

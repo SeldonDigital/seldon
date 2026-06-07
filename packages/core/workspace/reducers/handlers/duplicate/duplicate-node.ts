@@ -11,19 +11,21 @@ import {
   typeCheckingService,
 } from "../../../services"
 import { ExtractPayload, Workspace } from "../../../types"
-import type { ValidationOptions } from "../../helpers/validation"
 
 /**
- * Applies `duplicate_node`: when rules allow the node entity type, duplicates the subtree
+ * Applies `duplicate_node`: an in-place copy gated by
+ * `rules.mutations.duplicate[entityType]`. When allowed, duplicates the subtree
  * with the configured propagation; otherwise returns the workspace unchanged.
  * For `EntryNode` composition boards, duplicating a variant root remaps the board tree and
  * `node:` templates in copied rows; duplicating an instance inserts a new id after the source
  * in the same parent branch.
+ *
+ * This is distinct from `insert_duplicate_instance`, which copies an instance
+ * into a chosen parent and is gated by `instantiate` plus `insertInto`.
  */
 export function duplicateNode(
   payload: ExtractPayload<"duplicate_node">,
   workspace: Workspace,
-  _options: ValidationOptions = {},
 ): Workspace {
   const node = nodeRetrievalService.getNode(payload.nodeId, workspace)
   const entityType = typeCheckingService.getEntityType(node)

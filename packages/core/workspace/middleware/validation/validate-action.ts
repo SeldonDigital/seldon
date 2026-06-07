@@ -1,4 +1,4 @@
-import { validateComponentMetadata } from "./action-groups/component-metadata"
+import { validateBoardMetadata } from "./action-groups/board-metadata"
 import {
   validateAddFontCollectionCustomFamily,
   validateFontCollectionMutation,
@@ -24,7 +24,7 @@ import {
   validateAddThemeCustomToken,
   validateRemoveThemeCustomToken,
 } from "./action-groups/theme-custom-tokens"
-import { componentValidators } from "./validators"
+import { boardValidators } from "./validators"
 import { WorkspaceValidationError } from "./workspace-validation-error"
 import type { Action, Workspace } from "../../types"
 
@@ -59,7 +59,7 @@ export function validateAction(workspace: Workspace, action: Action): void {
 
   switch (action.type) {
     case "add_component":
-      componentValidators.doesNotExist(workspace, action.payload.componentId)
+      boardValidators.doesNotExist(workspace, action.payload.boardKey)
       return
     case "add_font_collection":
     case "add_media":
@@ -68,7 +68,7 @@ export function validateAction(workspace: Workspace, action: Action): void {
       validateAddResourceCatalog(workspace, action)
       return
     case "add_playground":
-      componentValidators.doesNotExist(workspace, action.payload.componentKey)
+      boardValidators.doesNotExist(workspace, action.payload.boardKey)
       return
     case "add_variant":
       validateAddVariant(workspace, action)
@@ -112,6 +112,7 @@ export function validateAction(workspace: Workspace, action: Action): void {
     case "reset_node_label":
     case "reset_node_editor_data":
     case "reset_user_variant_to_default":
+    case "reset_default_variant_to_catalog":
       validateNodeMutation(workspace, action)
       return
     case "reset_theme_tokens":
@@ -145,26 +146,26 @@ export function validateAction(workspace: Workspace, action: Action): void {
     case "duplicate_icon_set":
       validateIconSetMutation(workspace, action)
       return
-    case "set_component_label":
-    case "set_component_intent":
-    case "set_component_tags":
-    case "set_component_editor_data":
-    case "reset_component_label":
-    case "reset_component_intent":
-    case "reset_component_tags":
-    case "reset_component_editor_data":
-    case "set_component_license":
-    case "reset_component_license":
-    case "set_component_author":
-    case "reset_component_author":
-    case "set_component_credentials":
-    case "reset_component_credentials":
-    case "set_component_preview":
-    case "reset_component_preview":
+    case "set_board_label":
+    case "set_board_intent":
+    case "set_board_tags":
+    case "set_board_editor_data":
+    case "reset_board_label":
+    case "reset_board_intent":
+    case "reset_board_tags":
+    case "reset_board_editor_data":
+    case "set_board_license":
+    case "reset_board_license":
+    case "set_board_author":
+    case "reset_board_author":
+    case "set_board_credentials":
+    case "reset_board_credentials":
+    case "set_board_preview":
+    case "reset_board_preview":
     case "set_component_properties":
     case "reset_component_property":
     case "set_component_theme":
-      validateComponentMetadata(workspace, action)
+      validateBoardMetadata(workspace, action)
       return
     default:
       if (process.env.NODE_ENV === "development") {

@@ -1,19 +1,8 @@
 import { ExtractPayload, Workspace } from "../../../../index"
 import { rules } from "../../../../rules/config/rules.config"
-import {
-  nodeRetrievalService,
-  nodeTraversalService,
-  nodeRelationshipService,
-  nodeOperationsService,
-  workspaceMutationService,
-  workspaceThemeService,
-  workspacePropagationService,
-  typeCheckingService,
-} from "../../../services"
+import { workspaceMutationService } from "../../../services"
 
-/**
- * Merges editor layout properties onto a board when rules allow.
- */
+/** Merges editor layout properties onto a board when rules allow. */
 export function setComponentProperties(
   payload: ExtractPayload<"set_component_properties">,
   workspace: Workspace,
@@ -23,7 +12,7 @@ export function setComponentProperties(
   }
 
   return workspaceMutationService.setComponentProperties(
-    payload.componentKey,
+    payload.boardKey,
     payload.properties,
     workspace,
   )

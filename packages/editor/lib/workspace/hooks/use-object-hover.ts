@@ -1,24 +1,47 @@
 import { useMemo } from "react"
 import type { CSSProperties } from "react"
 import { create } from "zustand"
+import type { SelectionKind } from "@lib/workspace/selection-target"
 
 /**
  * The single hovered object across the editor. Both the Objects sidebar and the
  * canvas write this id on pointer move and read it to highlight, so hovering one
  * surface lights up the matching row or canvas object on the other.
  *
+ * For node hovers the canvas also records the kind and the variant-root id of
+ * the hovered column, so a child id shared across variant columns outlines only
+ * the hovered copy instead of the union of every copy.
+ *
  * Kept separate from the component insertion hover (`use-canvas-hover-state`)
  * so select-mode highlighting and insertion tracking stay decoupled.
  */
 interface ObjectHoverState {
   hoveredId: string | null
-  setHoveredId: (id: string | null) => void
+  hoveredKind: SelectionKind | null
+  hoveredRootId: string | null
+  setHoveredId: (
+    id: string | null,
+    kind?: SelectionKind | null,
+    rootId?: string | null,
+  ) => void
 }
 
 const useStore = create<ObjectHoverState>((set) => ({
   hoveredId: null,
-  setHoveredId: (hoveredId) =>
-    set((state) => (state.hoveredId === hoveredId ? state : { hoveredId })),
+  hoveredKind: null,
+  hoveredRootId: null,
+  setHoveredId: (hoveredId, kind = null, rootId = null) =>
+    set((state) =>
+      state.hoveredId === hoveredId &&
+      state.hoveredKind === kind &&
+      state.hoveredRootId === rootId
+        ? state
+        : {
+            hoveredId,
+            hoveredKind: hoveredId ? kind : null,
+            hoveredRootId: hoveredId ? rootId : null,
+          },
+    ),
 }))
 
 /** The hovered id setter. Stable, so subscribers never re-render on hover. */
@@ -28,6 +51,14 @@ export const useSetHoveredId = (): ObjectHoverState["setHoveredId"] =>
 /** The currently hovered object id. */
 export const useHoveredId = (): string | null =>
   useStore((state) => state.hoveredId)
+
+/** The kind of the currently hovered object, when known. */
+export const useHoveredKind = (): SelectionKind | null =>
+  useStore((state) => state.hoveredKind)
+
+/** The variant-root column of the hovered node, when known. */
+export const useHoveredRootId = (): string | null =>
+  useStore((state) => state.hoveredRootId)
 
 /** Whether the given id is the hovered one. Only matching rows re-render. */
 export const useIsHovered = (id: string): boolean =>

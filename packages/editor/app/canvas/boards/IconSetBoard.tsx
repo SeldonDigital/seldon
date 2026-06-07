@@ -8,7 +8,7 @@ import type { IconId } from "@seldon/core/icon-sets"
 import { iconLabels } from "@seldon/core/icon-sets"
 import { isIconSetBoard } from "@seldon/core/workspace/model/components"
 import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
-import { themeService } from "@seldon/core/workspace/services/theme/theme.service"
+import { workspaceThemeService } from "@seldon/core/workspace/services/theme/theme.service"
 import { workspaceIconSetService } from "@seldon/core/workspace/services/icon-set/icon-set.service"
 import type { Workspace } from "@seldon/core/workspace/types"
 import { getIconSheetPreviewBase } from "@lib/icon-sets/build-icon-sheet-preview"
@@ -39,7 +39,7 @@ export function IconSetBoard({ board }: IconSetBoardProps) {
   const { device, isInPreviewMode } = usePreview()
 
   const boardTheme = useMemo(
-    () => themeService.getObjectTheme(board, workspace),
+    () => workspaceThemeService.getObjectTheme(board, workspace),
     [board, workspace],
   )
 
@@ -108,7 +108,7 @@ export function IconSetBoard({ board }: IconSetBoardProps) {
         {icons.map(({ entryId, iconId }) => {
           const selectionKey = formatResourceItemKey({
             resource: "icon-set",
-            componentKey: boardKey,
+            boardKey: boardKey,
             entryId,
             slot: iconId,
           })

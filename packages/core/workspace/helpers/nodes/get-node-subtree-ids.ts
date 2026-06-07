@@ -1,7 +1,7 @@
 import type { ComponentTreeRef, EntryNodeId, Workspace } from "../../types"
 import { getWorkspaceNodes } from "../general/get-workspace-nodes"
 import { getVariantTree } from "../components/get-variant-tree"
-import { findComponentContainingTreeNodeId } from "./duplicate-entry-variant-subtree"
+import { findBoardContainingTreeNodeId } from "./duplicate-entry-variant-subtree"
 
 function collectTreeRefIds(ref: ComponentTreeRef): EntryNodeId[] {
   const ids: EntryNodeId[] = [ref.id]
@@ -19,7 +19,7 @@ export function getNodeSubtreeIds(
   nodeId: EntryNodeId,
   workspace: Workspace,
 ): EntryNodeId[] {
-  const located = findComponentContainingTreeNodeId(workspace, nodeId)
+  const located = findBoardContainingTreeNodeId(workspace, nodeId)
   if (!located) return [nodeId]
   const tree = getVariantTree(located.board, nodeId)
   if (!tree) return [nodeId]

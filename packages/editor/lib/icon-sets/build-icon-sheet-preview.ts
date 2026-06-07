@@ -25,7 +25,7 @@ export function getIconSheetPreviewBase(): IconSheetPreviewBase {
   }
 
   const workspace = addComponent(
-    { componentId: ComponentId.ICON },
+    { boardKey: ComponentId.ICON },
     createEmptyWorkspace(),
   )
   const rootId = componentBoardDefaultNodeId(ComponentId.ICON)

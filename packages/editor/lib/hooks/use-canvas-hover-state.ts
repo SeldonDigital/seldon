@@ -1,7 +1,7 @@
 import { Placement } from "@lib/types"
 import { create } from "zustand"
 import { InstanceId, VariantId } from "@seldon/core"
-import type { ComponentKey } from "@seldon/core/workspace/types"
+import type { BoardKey } from "@seldon/core/workspace/types"
 
 interface BaseHoverState {
   /** Whether the user is hovering over the top (vertical) or left (horizontal) part of the object */
@@ -13,7 +13,7 @@ interface BaseHoverState {
 export type HoverState =
   | (BaseHoverState & {
       /** ID of the board being hovered over */
-      objectId: ComponentKey
+      objectId: BoardKey
       objectType: "board"
     })
   | (BaseHoverState & {
