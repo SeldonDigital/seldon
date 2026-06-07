@@ -3,8 +3,8 @@ import { invariant } from "../../../index"
 import { getWorkspaceNodes } from "../../helpers/general/get-workspace-nodes"
 import { ErrorMessages } from "../../constants"
 import {
-  ComponentEntry,
-  ComponentKey,
+  Board,
+  BoardKey,
   DefaultVariant,
   Instance,
   InstanceId,
@@ -20,13 +20,13 @@ import { typeCheckingService } from "../type-checking/type-checking.service"
 export class NodeRetrievalService {
   /**
    * Gets a board by `workspace.components` key.
-   * @param componentKey - ComponentEntry key in the workspace
+   * @param boardKey - Board key in the workspace
    * @param workspace - The workspace
    * @returns The board
    */
-  public getComponent(componentKey: ComponentKey, workspace: Workspace): ComponentEntry {
-    const board = workspace.components[componentKey]
-    invariant(board, ErrorMessages.componentNotFound(componentKey))
+  public getBoard(boardKey: BoardKey, workspace: Workspace): Board {
+    const board = workspace.components[boardKey]
+    invariant(board, ErrorMessages.componentNotFound(boardKey))
     return board
   }
 
@@ -54,9 +54,9 @@ export class NodeRetrievalService {
   public getObject(
     objectId: InstanceId | VariantId | ComponentId,
     workspace: Workspace,
-  ): Variant | Instance | ComponentEntry {
+  ): Variant | Instance | Board {
     if (isComponentId(objectId)) {
-      return this.getComponent(objectId, workspace)
+      return this.getBoard(objectId, workspace)
     }
     return this.getNode(objectId, workspace)
   }
@@ -97,7 +97,7 @@ export class NodeRetrievalService {
     componentId: ComponentId,
     workspace: Workspace,
   ): DefaultVariant {
-    const board = this.getComponent(componentId, workspace)
+    const board = this.getBoard(componentId, workspace)
     const rootRef = board.variants[0]
     invariant(
       rootRef,

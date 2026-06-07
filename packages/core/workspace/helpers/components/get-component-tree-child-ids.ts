@@ -1,4 +1,4 @@
-import type { ComponentEntry, EntryNodeId } from "../../types"
+import type { Board, EntryNodeId } from "../../types"
 import { getChildrenIds } from "./get-children-ids"
 
 /**
@@ -7,7 +7,7 @@ import { getChildrenIds } from "./get-children-ids"
  * @deprecated Prefer {@link getChildrenIds}; kept for existing import paths.
  */
 export function getComponentTreeChildIds(
-  board: ComponentEntry,
+  board: Board,
   parentId: EntryNodeId,
 ): EntryNodeId[] {
   return getChildrenIds(board, parentId)

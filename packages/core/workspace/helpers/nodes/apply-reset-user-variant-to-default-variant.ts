@@ -47,7 +47,7 @@ export function applyResetUserVariantToDefaultVariant(
       return
     }
 
-    const { board, componentKey } = located
+    const { board, boardKey } = located
     const idx = board.variants.findIndex((v) => v.id === variantRootId)
     if (idx <= 0) return
 
@@ -66,7 +66,7 @@ export function applyResetUserVariantToDefaultVariant(
     const plan = buildDuplicateEntryVariantSubtreePlan(
       draft as unknown as Workspace,
       board,
-      componentKey,
+      boardKey,
       defaultRef.id,
       userNode.label,
     )

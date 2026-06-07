@@ -40,7 +40,7 @@ const RESOURCE_CATALOGS = {
     label: "Icon set",
   },
   "add_theme": {
-    idKey: "componentKey" as const,
+    idKey: "boardKey" as const,
     allowed: THEME_COMPONENT_CATALOG_IDS,
     label: "Theme",
   },
@@ -56,7 +56,7 @@ export function validateAddResourceCatalog(
   const config = RESOURCE_CATALOGS[action.type]
   const catalogId =
     action.type === "add_theme"
-      ? action.payload.componentKey
+      ? action.payload.boardKey
       : action.payload.catalogId
   componentValidators.doesNotExist(workspace, catalogId)
   try {
@@ -78,7 +78,7 @@ export function validateDuplicateComponent(
   const sourceBoard = workspace.components[action.payload.sourceComponentKey]
   invariant(
     sourceBoard,
-    `ComponentEntry ${action.payload.sourceComponentKey} missing after exists check`,
+    `Board ${action.payload.sourceComponentKey} missing after exists check`,
   )
 
   if (isComponentBoard(sourceBoard)) {
@@ -146,17 +146,17 @@ export function validateRemoveBoard(
       break
     }
     case "remove_playground": {
-      const { componentKey } = action.payload
-      componentValidators.exists(workspace, componentKey)
-      const board = workspace.components[componentKey]
+      const { boardKey } = action.payload
+      componentValidators.exists(workspace, boardKey)
+      const board = workspace.components[boardKey]
       if (!board || !isPlaygroundBoard(board)) {
         throw new WorkspaceValidationError(
-          `Expected a playground board at ${componentKey}`,
+          `Expected a playground board at ${boardKey}`,
           action,
         )
       }
       if (
-        shouldBlockDeletableComponentRemoval(board, workspace, componentKey)
+        shouldBlockDeletableComponentRemoval(board, workspace, boardKey)
       ) {
         throw new WorkspaceValidationError(
           "Playground board is still referenced by another catalog",
@@ -234,22 +234,22 @@ export function validateRemoveBoard(
       break
     }
     case "remove_theme": {
-      const componentKey = action.payload.componentKey
-      componentValidators.exists(workspace, componentKey)
-      const board = workspace.components[componentKey]
+      const boardKey = action.payload.boardKey
+      componentValidators.exists(workspace, boardKey)
+      const board = workspace.components[boardKey]
       if (!board || !isThemeBoard(board)) {
         throw new WorkspaceValidationError(
-          `Expected a theme board at ${componentKey}`,
+          `Expected a theme board at ${boardKey}`,
           action,
         )
       }
-      if (componentKey === DEFAULT_THEME_BOARD_KEY) {
+      if (boardKey === DEFAULT_THEME_BOARD_KEY) {
         throw new WorkspaceValidationError(
           "Cannot remove the Seldon theme board. Every workspace requires the Seldon theme, so this board is always kept.",
           action,
         )
       }
-      if (shouldBlockDeletableComponentRemoval(board, workspace, componentKey)) {
+      if (shouldBlockDeletableComponentRemoval(board, workspace, boardKey)) {
         throw new WorkspaceValidationError(
           "Theme catalog rows are still referenced in another board",
           action,

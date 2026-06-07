@@ -5,7 +5,7 @@ import {
   isPlaygroundBoard,
 } from "../../../model/components"
 import { isEntryThemeDefault } from "../../../model/entry-theme"
-import { getComponentVariantRootIds } from "../../../helpers/components/get-component-variant-root-ids"
+import { getBoardVariantRootIds } from "../../../helpers/components/get-board-variant-root-ids"
 import { findComponentContainingTreeNodeId } from "../../../helpers/nodes/duplicate-entry-variant-subtree"
 import { hasEffectiveThemeReference } from "../../../helpers/removal/effective-theme-references"
 import { isUserVariant } from "../../../helpers/general/is-user-variant"
@@ -84,12 +84,12 @@ export function validateInsertMutation(
     }
     case "insert_default_instance": {
       const parentId = action.payload.parentId as InstanceId | VariantId
-      const componentKey = action.payload.componentKey
+      const boardKey = action.payload.boardKey
       nodeValidators.exists(workspace, parentId)
       nodeValidators.canHaveChildren(workspace, parentId)
-      componentValidators.exists(workspace, componentKey)
+      componentValidators.exists(workspace, boardKey)
       const defaultVariant = nodeRetrievalService.getDefaultVariant(
-        componentKey as ComponentId,
+        boardKey as ComponentId,
         workspace,
       )
       nodeValidators.isNotInstanceOfSelf(
@@ -319,8 +319,8 @@ export function validateAddVariant(
   workspace: Workspace,
   action: Extract<Action, { type: "add_variant" }>,
 ): void {
-  componentValidators.exists(workspace, action.payload.componentKey)
-  const board = workspace.components[action.payload.componentKey]
+  componentValidators.exists(workspace, action.payload.boardKey)
+  const board = workspace.components[action.payload.boardKey]
   check(
     board && (isComponentBoard(board) || isPlaygroundBoard(board)),
     "add_variant requires a component or playground board",
@@ -351,17 +351,17 @@ export function validateReorderBoard(
   workspace: Workspace,
   action: Extract<Action, { type: "reorder_board" }>,
 ): void {
-  componentValidators.exists(workspace, action.payload.componentKey)
+  componentValidators.exists(workspace, action.payload.boardKey)
 }
 
 export function validateReorderVariantInBoard(
   workspace: Workspace,
   action: Extract<Action, { type: "reorder_variant_in_board" }>,
 ): void {
-  componentValidators.exists(workspace, action.payload.componentKey)
-  const board = workspace.components[action.payload.componentKey]
+  componentValidators.exists(workspace, action.payload.boardKey)
+  const board = workspace.components[action.payload.boardKey]
   check(Boolean(board), "Component board missing after exists check")
-  const roots = getComponentVariantRootIds(board!)
+  const roots = getBoardVariantRootIds(board!)
   const oldIndex = roots.indexOf(action.payload.variantRootId)
   check(oldIndex >= 0, "Variant is not in the board variant list")
   if (oldIndex === 0 || action.payload.newIndex === 0) {

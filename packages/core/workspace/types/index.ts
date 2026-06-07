@@ -8,13 +8,12 @@ export { WORKSPACE_SPEC_VERSION } from "../model"
 export type { WorkspaceStringMap } from "../model"
 export type { WorkspaceMetadata } from "../model"
 export type { ComponentResourceRef, ComponentTreeRef } from "../model"
-export type { ComponentEntry as Board } from "../model"
 export type {
-  ComponentEntry,
+  Board,
   ComponentBoard,
   FontCollectionBoard,
   IconSetBoard,
-  ComponentKey,
+  BoardKey,
   MediaBoard,
   PlaygroundBoard,
   ThemeBoard,

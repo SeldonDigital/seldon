@@ -10,8 +10,8 @@ import {
 import { getThemePickerOptions } from "@seldon/core/helpers/properties/properties-bridge"
 import { isAtomicValue } from "@seldon/core/helpers/type-guards/value/is-atomic-value"
 import { ComponentId, ComponentLevel } from "@seldon/core/components/constants"
-import { isComponentEntry } from "@seldon/core/workspace/helpers/components/is-component-entry"
-import { themeService } from "@seldon/core/workspace/services/theme/theme.service"
+import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
+import { workspaceThemeService } from "@seldon/core/workspace/services/theme/theme.service"
 import { ThemeSwatches } from "../../ui/ThemeSwatches"
 import { useThemes } from "@lib/themes/hooks/use-themes"
 import { getNodeCatalogComponentId } from "@lib/workspace/node-tree"
@@ -119,7 +119,7 @@ export function RowProperty({
 
   const themeForSwatches = useMemo(() => {
     if (!isThemeAssignment) return null
-    const displayThemeId = themeService.getObjectThemeId(node, workspace)
+    const displayThemeId = workspaceThemeService.getObjectThemeId(node, workspace)
     return themes.find((t) => t.id === displayThemeId) ?? null
   }, [isThemeAssignment, node, workspace, themes])
 
@@ -142,15 +142,15 @@ export function RowProperty({
       return [
         getThemePickerOptions({
           workspace,
-          allowInherit: !isComponentEntry(node),
+          allowInherit: !isBoard(node),
         }),
       ]
     }
 
-    const componentId = isComponentEntry(node)
+    const componentId = isBoard(node)
       ? (getComponentKey(node) as ComponentId)
       : (getNodeCatalogComponentId(node, workspace) ?? undefined)
-    const componentLevel = isComponentEntry(node)
+    const componentLevel = isBoard(node)
       ? undefined
       : (node.level as ComponentLevel)
 
@@ -166,7 +166,7 @@ export function RowProperty({
     return result.options
   }, [property, theme, node, workspace])
 
-  const nodeId = isComponentEntry(node) ? getComponentKey(node) : node.id
+  const nodeId = isBoard(node) ? getComponentKey(node) : node.id
 
   // Use getDisplayValue for consistent capitalization
   let value = getDisplayValue(

@@ -59,17 +59,17 @@ export function backfillInstanceOrigin(workspace: Workspace): Workspace {
 
     for (const board of Object.values(draft.components)) {
       if (!isComponentBoard(board)) continue
-      const componentKey = board.catalogId
-      if (!isComponentId(componentKey)) continue
+      const boardKey = board.catalogId
+      if (!isComponentId(boardKey)) continue
 
-      const schema = getComponentSchema(componentKey)
+      const schema = getComponentSchema(boardKey)
       const schemaVariantIds =
         (schema as { variants?: { id: string }[] }).variants ?? []
-      const defaultRootId = componentBoardDefaultNodeId(componentKey)
+      const defaultRootId = componentBoardDefaultNodeId(boardKey)
       const catalogRootIds = new Set<string>([
         defaultRootId,
         ...schemaVariantIds.map((variant) =>
-          componentBoardSchemaVariantNodeId(componentKey, variant.id),
+          componentBoardSchemaVariantNodeId(boardKey, variant.id),
         ),
       ])
 

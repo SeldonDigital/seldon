@@ -1,5 +1,5 @@
 import { EntryNode, EntryNodeId, Workspace } from "../../types"
-import { findComponentByTreeNodeId } from "../components/find-component-by-tree-node-id"
+import { findBoardByTreeNodeId } from "../components/find-board-by-tree-node-id"
 import { walkComponentTreeRefs } from "../components/walk-component-tree-refs"
 
 /**
@@ -14,7 +14,7 @@ export function findParentNodeInNode(
   node: EntryNode,
   workspace: Workspace,
 ): EntryNode | null {
-  const board = findComponentByTreeNodeId(workspace, node.id)
+  const board = findBoardByTreeNodeId(workspace, node.id)
   if (!board) return null
 
   let parentId: EntryNodeId | null = null

@@ -1,11 +1,11 @@
 import { produce } from "immer"
 import { rules } from "../../../../rules/config/rules.config"
 import {
-  getComponentOrder,
-  setComponentOrder,
-} from "../../../helpers/components/component-sort-order"
+  getBoardOrder,
+  setBoardOrder,
+} from "../../../helpers/components/board-sort-order"
 import { workspacePropagationService } from "../../../services"
-import type { ComponentEntry, ComponentKey } from "../../../types"
+import type { Board, BoardKey } from "../../../types"
 import { ExtractPayload, Workspace } from "../../../types"
 
 export function reorderBoard(
@@ -17,37 +17,37 @@ export function reorderBoard(
   }
 
   return produce(workspace, (draft) => {
-    const { componentKey, newIndex } = payload
+    const { boardKey, newIndex } = payload
 
     const boardEntries = Object.entries(draft.components) as [
-      ComponentKey,
-      ComponentEntry,
+      BoardKey,
+      Board,
     ][]
 
     if (newIndex < 0 || newIndex > boardEntries.length) {
       return draft
     }
 
-    const boardToMove = draft.components[componentKey]
+    const boardToMove = draft.components[boardKey]
     if (!boardToMove) return draft
 
-    const movingUp = getComponentOrder(boardToMove) < newIndex
+    const movingUp = getBoardOrder(boardToMove) < newIndex
     const targetIndex = movingUp ? newIndex - 1 : newIndex
 
     const sortedBoards = boardEntries
-      .filter(([id]) => id !== componentKey)
-      .sort((a, b) => getComponentOrder(a[1]) - getComponentOrder(b[1]))
+      .filter(([id]) => id !== boardKey)
+      .sort((a, b) => getBoardOrder(a[1]) - getBoardOrder(b[1]))
       .map(([id]) => id)
 
-    sortedBoards.splice(targetIndex, 0, componentKey)
+    sortedBoards.splice(targetIndex, 0, boardKey)
 
     sortedBoards.forEach((id, index) => {
       const board = draft.components[id]
       if (!board) return
-      setComponentOrder(board, index)
+      setBoardOrder(board, index)
     })
 
-    const updatedWorkspace = workspacePropagationService.realignComponentOrder(draft)
+    const updatedWorkspace = workspacePropagationService.realignBoardOrder(draft)
     Object.assign(draft.components, updatedWorkspace.components)
 
     return draft

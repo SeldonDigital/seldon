@@ -1,5 +1,5 @@
-import { areComponentVariantsInUse } from "../components/are-component-variants-in-use"
-import { getComponentVariantRootIds } from "../components/get-component-variant-root-ids"
+import { areBoardVariantsInUse } from "../components/are-board-variants-in-use"
+import { getBoardVariantRootIds } from "../components/get-board-variant-root-ids"
 import { walkComponentTreeRefs } from "../components/walk-component-tree-refs"
 import type { ComponentTreeRef } from "../../model/component-tree"
 import {
@@ -9,7 +9,7 @@ import {
   isPlaygroundBoard,
   isThemeBoard,
 } from "../../model/components"
-import type { ComponentEntry, ComponentKey, EntryNodeId, Workspace } from "../../types"
+import type { Board, BoardKey, EntryNodeId, Workspace } from "../../types"
 import { hasEffectiveThemeReference } from "./effective-theme-references"
 
 /**
@@ -18,7 +18,7 @@ import { hasEffectiveThemeReference } from "./effective-theme-references"
  * component-wide node filters.
  */
 export function collectSubtreeNodeIdsFromComponentRoots(
-  board: ComponentEntry,
+  board: Board,
   _workspace: Workspace,
 ): Set<EntryNodeId> {
   const out = new Set<EntryNodeId>()
@@ -35,11 +35,11 @@ export function collectSubtreeNodeIdsFromComponentRoots(
  * True when any theme-catalog row on this board is still referenced by effective theme.
  */
 export function areThemeComponentRootsReferencedByEffectiveTheme(
-  board: ComponentEntry,
+  board: Board,
   workspace: Workspace,
 ): boolean {
   if (!isThemeBoard(board)) return false
-  for (const rootId of getComponentVariantRootIds(board)) {
+  for (const rootId of getBoardVariantRootIds(board)) {
     if (workspace.themes[rootId] && hasEffectiveThemeReference(workspace, rootId)) {
       return true
     }
@@ -53,7 +53,7 @@ export function areThemeComponentRootsReferencedByEffectiveTheme(
  */
 export function areCatalogIdsUsedInOtherComponentTrees(
   workspace: Workspace,
-  excludeComponentKey: ComponentKey,
+  excludeComponentKey: BoardKey,
   candidateIds: ReadonlySet<string>,
 ): boolean {
   if (candidateIds.size === 0) return false
@@ -77,29 +77,29 @@ export function areCatalogIdsUsedInOtherComponentTrees(
  */
 export function areResourceComponentRowsUsedInTrees(
   workspace: Workspace,
-  componentKey: ComponentKey,
-  board: ComponentEntry,
+  boardKey: BoardKey,
+  board: Board,
 ): boolean {
   if (!isFontCollectionBoard(board) && !isMediaBoard(board)) return false
-  const ids = new Set(getComponentVariantRootIds(board))
-  return areCatalogIdsUsedInOtherComponentTrees(workspace, componentKey, ids)
+  const ids = new Set(getBoardVariantRootIds(board))
+  return areCatalogIdsUsedInOtherComponentTrees(workspace, boardKey, ids)
 }
 
 /**
  * Composition + (for theme boards) effective-theme blocking for boards that are actually deletable.
  */
 export function shouldBlockDeletableComponentRemoval(
-  board: ComponentEntry,
+  board: Board,
   workspace: Workspace,
-  componentKey: ComponentKey,
+  boardKey: BoardKey,
 ): boolean {
   if (isComponentBoard(board) || isPlaygroundBoard(board)) {
-    if (areComponentVariantsInUse(board, workspace)) return true
+    if (areBoardVariantsInUse(board, workspace)) return true
     return false
   }
 
   if (isFontCollectionBoard(board) || isMediaBoard(board)) {
-    return areResourceComponentRowsUsedInTrees(workspace, componentKey, board)
+    return areResourceComponentRowsUsedInTrees(workspace, boardKey, board)
   }
 
   if (isThemeBoard(board)) {

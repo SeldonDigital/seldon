@@ -3,9 +3,9 @@ import { getInitialBoardComponentProperties } from "../../../helpers/components/
 import { ExtractPayload, Workspace } from "../../../../index"
 import { rules } from "../../../../rules/config/rules.config"
 import {
-  getComponentOrder,
-  setComponentOrder,
-} from "../../../helpers/components/component-sort-order"
+  getBoardOrder,
+  setBoardOrder,
+} from "../../../helpers/components/board-sort-order"
 import { WORKSPACE_EDITABLE_THEME_ENTRY_ID } from "../../../helpers/themes/workspace-editable-theme"
 import {
   nodeRetrievalService,
@@ -36,36 +36,36 @@ export function addMedia(
     if (!draft.media) {
       draft.media = {}
     }
-    const componentKey = payload.catalogId
-    if (draft.components[componentKey]) {
+    const boardKey = payload.catalogId
+    if (draft.components[boardKey]) {
       return draft
     }
 
     const existingBoards = Object.values(draft.components)
     const maxOrder =
       existingBoards.length > 0
-        ? Math.max(...existingBoards.map((b) => getComponentOrder(b)))
+        ? Math.max(...existingBoards.map((b) => getBoardOrder(b)))
         : -1
 
-    const defaultEntryId = `media-${componentKey}-default`
-    const variantEntryId = `media-${componentKey}-custom-${Date.now()}`
+    const defaultEntryId = `media-${boardKey}-default`
+    const variantEntryId = `media-${boardKey}-custom-${Date.now()}`
 
     draft.media[defaultEntryId] = { id: defaultEntryId }
     draft.media[variantEntryId] = { id: variantEntryId }
 
     const board = {
       type: "media" as const,
-      catalogId: componentKey,
-      label: formatLabelFromCatalogId(componentKey, "Media"),
+      catalogId: boardKey,
+      label: formatLabelFromCatalogId(boardKey, "Media"),
       componentPreview: "seldonMediaPreview",
       componentTheme: WORKSPACE_EDITABLE_THEME_ENTRY_ID,
       componentProperties: getInitialBoardComponentProperties("media"),
       variants: [{ id: defaultEntryId }, { id: variantEntryId }],
     }
-    setComponentOrder(board, maxOrder + 1)
-    draft.components[componentKey] = board
+    setBoardOrder(board, maxOrder + 1)
+    draft.components[boardKey] = board
 
-    const updatedWorkspace = workspacePropagationService.realignComponentOrder(draft)
+    const updatedWorkspace = workspacePropagationService.realignBoardOrder(draft)
     Object.assign(draft.components, updatedWorkspace.components)
   })
 }

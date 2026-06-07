@@ -2,7 +2,7 @@ import { getComponentSchema } from "../../../../components/catalog"
 import { ComponentId, isComponentId } from "../../../../components/constants"
 import { rules } from "../../../../rules/config/rules.config"
 import { getChildrenIds } from "../../../helpers/components/get-children-ids"
-import { getComponentByNodeId } from "../../../helpers/components/get-component-by-node-id"
+import { getBoardByNodeId } from "../../../helpers/components/get-board-by-node-id"
 import {
   collectDescendantTreeIds,
   findTreeRef,
@@ -88,7 +88,7 @@ export const nodeValidators = {
     nodeId: InstanceId | VariantId,
     parentId: InstanceId | VariantId,
   ) => {
-    const board = getComponentByNodeId(workspace, nodeId)
+    const board = getBoardByNodeId(workspace, nodeId)
     if (!board) return
     const treeRef = findTreeRef(board, nodeId)
     if (!treeRef) return
@@ -138,7 +138,7 @@ export const nodeValidators = {
         throw new Error(ErrorMessages.parentNotFound(id))
       }
     } else {
-      const board = nodeRelationshipService.findComponentForVariant(
+      const board = nodeRelationshipService.findBoardForVariant(
         node as Variant,
         workspace,
       )
@@ -197,7 +197,7 @@ export const nodeValidators = {
     )
 
     if (childComponent === ComponentId.FRAME) {
-      const board = getComponentByNodeId(workspace, childId)
+      const board = getBoardByNodeId(workspace, childId)
       if (!board) return
 
       const frameChildIds = getChildrenIds(board, childId)

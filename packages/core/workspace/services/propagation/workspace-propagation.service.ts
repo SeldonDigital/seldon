@@ -7,13 +7,13 @@ import {
 } from "../../../components/constants"
 import { invariant } from "../../../index"
 import {
-  getComponentOrder,
-  setComponentOrder,
-} from "../../helpers/components/component-sort-order"
+  getBoardOrder,
+  setBoardOrder,
+} from "../../helpers/components/board-sort-order"
 import { componentBoardDefaultNodeId } from "../../helpers/components/entry-node-ids"
 import { isComponentBoard } from "../../model/components"
 import {
-  ComponentEntry,
+  Board,
   Instance,
   InstanceId,
   Variant,
@@ -31,9 +31,7 @@ import { typeCheckingService } from "../type-checking/type-checking.service"
 function propagationNodeComponentId(
   node: Variant | Instance,
 ): ComponentId | undefined {
-  if (!isEntryNodeForRules(node)) {
-    return (node as { component?: ComponentId }).component
-  }
+  if (!isEntryNodeForRules(node)) return undefined
   const parsed = parseNodeCatalog(node.template)
   if (parsed?.kind === "catalog" && isComponentId(parsed.componentId)) {
     return parsed.componentId
@@ -45,28 +43,55 @@ function instancePropagationVariantRootId(node: Variant | Instance): VariantId {
   if (typeCheckingService.isVariant(node)) {
     return node.id as VariantId
   }
-  if (isEntryNodeForRules(node)) {
-    const link = parseNodeLink(node.template)
-    if (link?.kind === "node") {
-      return link.nodeId as VariantId
-    }
-    const cat = parseNodeCatalog(node.template)
-    invariant(
-      cat?.kind === "catalog",
-      "Expected catalog or node template on instance",
-    )
-    return componentBoardDefaultNodeId(cat.componentId) as VariantId
+  invariant(isEntryNodeForRules(node), "Expected variant root id on instance")
+
+  const link = parseNodeLink(node.template)
+  if (link?.kind === "node") {
+    return link.nodeId as VariantId
   }
-  const legacyVariant = (node as { variant?: string }).variant
-  if (typeof legacyVariant === "string") {
-    return legacyVariant as VariantId
-  }
-  throw new Error("Expected variant root id on instance")
+
+  const cat = parseNodeCatalog(node.template)
+  invariant(
+    cat?.kind === "catalog",
+    "Expected catalog or node template on instance",
+  )
+  return componentBoardDefaultNodeId(cat.componentId) as VariantId
 }
 
 export type OperationResult<T = void> =
   | Workspace
   | (Record<string, any> & { workspace: Workspace; data?: T })
+
+/** Position of a component level in the ordered hierarchy; unknown levels sort last. */
+function componentLevelIndex(level: ComponentLevel): number {
+  const index = ORDERED_COMPONENT_LEVELS.indexOf(level)
+  return index === -1 ? ORDERED_COMPONENT_LEVELS.length : index
+}
+
+/**
+ * Orders boards by component level, then component boards alphabetically by label.
+ * Boards without a registered component schema keep their stored order.
+ */
+function compareBoardOrder(
+  aId: ComponentId,
+  aBoard: Board,
+  bId: ComponentId,
+  bBoard: Board,
+): number {
+  try {
+    const aLevelIndex = componentLevelIndex(getComponentSchema(aId).level)
+    const bLevelIndex = componentLevelIndex(getComponentSchema(bId).level)
+    if (aLevelIndex !== bLevelIndex) {
+      return aLevelIndex - bLevelIndex
+    }
+    if (isComponentBoard(aBoard) && isComponentBoard(bBoard)) {
+      return aBoard.label.localeCompare(bBoard.label)
+    }
+  } catch {
+    // Fall through to stored order below.
+  }
+  return getBoardOrder(aBoard) - getBoardOrder(bBoard)
+}
 
 export class WorkspacePropagationService {
   /**
@@ -115,10 +140,10 @@ export class WorkspacePropagationService {
    */
   public hasAncestorWithComponentId(
     componentId: ComponentId,
-    node: Variant | Instance | ComponentEntry,
+    node: Variant | Instance | Board,
     workspace: Workspace,
   ): boolean {
-    if (typeCheckingService.isComponentEntry(node)) {
+    if (typeCheckingService.isBoard(node)) {
       return node.type === "component" && node.catalogId === componentId
     }
 
@@ -132,53 +157,19 @@ export class WorkspacePropagationService {
     return false
   }
 
-  /**
-   * Sorts boards by component level hierarchy and updates their order.
-   * @param workspace - The workspace
-   * @returns The updated workspace
-   */
-  public realignComponentOrder(workspace: Workspace): Workspace {
+  /** Sorts boards by component level then label and rewrites their stored order. */
+  public realignBoardOrder(workspace: Workspace): Workspace {
     return mutateWorkspace(workspace, (draft) => {
       const boardEntries = Object.entries(draft.components) as [
         ComponentId,
-        ComponentEntry,
+        Board,
       ][]
 
-      boardEntries.sort(([aId, aBoard], [bId, bBoard]) => {
-        try {
-          const aSchema = getComponentSchema(aId)
-          const bSchema = getComponentSchema(bId)
+      boardEntries.sort(([aId, aBoard], [bId, bBoard]) =>
+        compareBoardOrder(aId, aBoard, bId, bBoard),
+      )
 
-          // Handle BOARD level as a special case - boards live outside the component hierarchy
-          // and should be sorted after all regular component levels
-          const getLevelIndex = (level: ComponentLevel): number => {
-            const index = ORDERED_COMPONENT_LEVELS.indexOf(level)
-            return index === -1 ? ORDERED_COMPONENT_LEVELS.length : index
-          }
-
-          const aLevelIndex = getLevelIndex(aSchema.level)
-          const bLevelIndex = getLevelIndex(bSchema.level)
-
-          if (aLevelIndex !== bLevelIndex) {
-            return aLevelIndex - bLevelIndex
-          }
-
-          // Component boards within a level sort alphabetically by their
-          // displayed label so sections stay A->Z. Resource boards keep their
-          // stored order.
-          if (isComponentBoard(aBoard) && isComponentBoard(bBoard)) {
-            return aBoard.label.localeCompare(bBoard.label)
-          }
-
-          return getComponentOrder(aBoard) - getComponentOrder(bBoard)
-        } catch (error) {
-          return getComponentOrder(aBoard) - getComponentOrder(bBoard)
-        }
-      })
-
-      boardEntries.forEach(([id, board], index) => {
-        setComponentOrder(board, index)
-      })
+      boardEntries.forEach(([, board], index) => setBoardOrder(board, index))
     })
   }
 
@@ -187,9 +178,9 @@ export class WorkspacePropagationService {
    * @param workspace - The workspace
    * @returns Array of boards sorted by order
    */
-  public getComponents(workspace: Workspace): ComponentEntry[] {
+  public getBoards(workspace: Workspace): Board[] {
     return Object.values(workspace.components).sort(
-      (a, b) => getComponentOrder(a) - getComponentOrder(b),
+      (a, b) => getBoardOrder(a) - getBoardOrder(b),
     )
   }
 

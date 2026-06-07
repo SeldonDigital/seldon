@@ -17,11 +17,11 @@ export function deleteFontCollection(
 
     delete draft["font-collections"][payload.fontCollectionId]
 
-    const componentKey = fontCollectionBoardKeyFromEntryId(
+    const boardKey = fontCollectionBoardKeyFromEntryId(
       payload.fontCollectionId,
     )
-    if (!componentKey) return
-    const board = draft.components[componentKey]
+    if (!boardKey) return
+    const board = draft.components[boardKey]
     if (board?.type !== "font-collection" || !board.variants) return
     board.variants = board.variants.filter(
       (r) => r.id !== payload.fontCollectionId,

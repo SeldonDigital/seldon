@@ -11,8 +11,8 @@ export type {
 } from "./component-tree"
 export type {
   ComponentBoard,
-  ComponentEntry,
-  ComponentKey,
+  Board,
+  BoardKey,
   FontCollectionBoard,
   IconSetBoard,
   ComponentThemeRef,

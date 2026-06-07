@@ -4,7 +4,7 @@ import {
   getComponentSchema,
 } from "@seldon/core/components/catalog"
 import { ComponentId, isComponentId } from "@seldon/core/components/constants"
-import { getComponentByNodeId } from "@seldon/core/workspace/helpers/components/get-component-by-node-id"
+import { getBoardByNodeId } from "@seldon/core/workspace/helpers/components/get-board-by-node-id"
 import { getAllVariants } from "@seldon/core/workspace/helpers/general/get-all-variants"
 import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-catalog-id"
 import { isComponentBoard } from "@seldon/core/workspace/model/components"
@@ -24,7 +24,7 @@ export function getComponentsToExport(
   nodeIdToClass: NodeIdToClass,
 ) {
   const variants = getAllVariants(workspace).filter((variant) => {
-    const board = getComponentByNodeId(workspace, variant.id)
+    const board = getBoardByNodeId(workspace, variant.id)
     if (!board || !isComponentBoard(board)) {
       return false
     }
@@ -38,7 +38,7 @@ export function getComponentsToExport(
   }) as (EntryNode & { type: "default" | "variant" })[]
 
   const items: ComponentToExport[] = variants.map((variant) => {
-    const board = getComponentByNodeId(workspace, variant.id)
+    const board = getBoardByNodeId(workspace, variant.id)
     invariant(board && isComponentBoard(board), `Missing component board for ${variant.id}`)
 
     const componentId = getNodeCatalogId(variant, workspace) as ComponentId

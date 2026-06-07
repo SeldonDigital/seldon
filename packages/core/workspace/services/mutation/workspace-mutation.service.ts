@@ -21,7 +21,7 @@ import {
   ThemeSwatchKey,
   ThemeValueKey,
 } from "../../../themes/types"
-import { getComponentLevelThemeRef } from "../../helpers/components/get-component-level-theme-ref"
+import { getBoardThemeRef } from "../../helpers/components/get-board-theme-ref"
 import { walkComponentTreeRefs } from "../../helpers/components/walk-component-tree-refs"
 import { getNextVariantLabel } from "../../helpers/general/get-next-variant-label"
 import { getSpecialComponentVariantLabel } from "../../helpers/general/get-special-component-variant-label"
@@ -32,8 +32,8 @@ import { getNodeSubtreeIds } from "../../helpers/nodes/get-node-subtree-ids"
 import { resolveNodePropertyResetPatch } from "../../helpers/nodes/resolve-node-property-reset"
 import { isEntryNodeForRules } from "../../helpers/rules/rules-node-subject"
 import {
-  ComponentEntry,
-  ComponentKey,
+  Board,
+  BoardKey,
   Instance,
   InstanceId,
   Variant,
@@ -43,10 +43,9 @@ import {
 import { nodeRelationshipService } from "../nodes/node-relationship.service"
 import { nodeRetrievalService } from "../nodes/node-retrieval.service"
 import { nodeTraversalService } from "../nodes/node-traversal.service"
-import { handleSchemaError } from "../shared/error-handling.helper"
 import { mutateWorkspace } from "../shared/workspace-mutation.helper"
 import {
-  withComponentMutation,
+  withBoardMutation,
   withNodeMutation,
 } from "../shared/workspace-operation-helpers"
 import { typeCheckingService } from "../type-checking/type-checking.service"
@@ -121,17 +120,12 @@ export class WorkspaceMutationService {
     return getNextVariantLabel(base, existingLabels)
   }
 
-  /**
-   * Gets the initial label for a board based on component schema.
-   * IconSet and Theme use the same pluralization logic as other boards.
-   * @param componentId - The component ID
-   * @returns The initial board label
-   */
+  /** Pluralizes the component schema name for a new board label, such as "Buttons". */
   public getInitialComponentLabel(componentId: ComponentId): string {
     try {
       return plural(getComponentSchema(componentId).name)
-    } catch (error) {
-      return handleSchemaError(componentId, "getInitialComponentLabel", error)
+    } catch {
+      return `Unknown Component (${componentId})`
     }
   }
 
@@ -208,17 +202,17 @@ export class WorkspaceMutationService {
 
   /**
    * Sets properties on a board.
-   * @param componentKey - Key of the board in `workspace.components`
+   * @param boardKey - Key of the board in `workspace.components`
    * @param properties - The properties to set
    * @param workspace - The workspace
    * @returns The updated workspace
    */
   public setComponentProperties(
-    componentKey: ComponentKey,
+    boardKey: BoardKey,
     properties: Properties,
     workspace: Workspace,
   ): Workspace {
-    return withComponentMutation(componentKey, workspace, (board, draft) => {
+    return withBoardMutation(boardKey, workspace, (board) => {
       board.componentProperties = mergeProperties(
         board.componentProperties,
         properties,
@@ -231,14 +225,14 @@ export class WorkspaceMutationService {
 
   /**
    * Resets a property on a board to its default value.
-   * @param componentKey - Key of the board in `workspace.components`
+   * @param boardKey - Key of the board in `workspace.components`
    * @param propertyKey - The property key to reset
    * @param subpropertyKey - Optional sub-property key
    * @param workspace - The workspace
    * @returns The updated workspace
    */
   public resetComponentProperty(
-    componentKey: ComponentKey,
+    boardKey: BoardKey,
     {
       propertyKey,
       subpropertyKey,
@@ -249,7 +243,7 @@ export class WorkspaceMutationService {
     workspace: Workspace,
   ): Workspace {
     return this._resetObjectProperty(
-      componentKey,
+      boardKey,
       { propertyKey, subpropertyKey },
       workspace,
     )
@@ -276,7 +270,7 @@ export class WorkspaceMutationService {
   }
 
   private _resetObjectProperty(
-    objectId: VariantId | InstanceId | ComponentKey,
+    objectId: VariantId | InstanceId | BoardKey,
     {
       propertyKey,
       subpropertyKey,
@@ -287,20 +281,11 @@ export class WorkspaceMutationService {
     workspace: Workspace,
   ): Workspace {
     return mutateWorkspace(workspace, (draft) => {
-      const board = draft.components[objectId as ComponentKey]
+      const board = draft.components[objectId as BoardKey]
 
       if (board) {
         if (subpropertyKey) {
-          const overrideBag = board.componentProperties[propertyKey]
-          if (Array.isArray(overrideBag) && overrideBag[0]) {
-            delete (overrideBag[0] as Record<string, unknown>)[subpropertyKey]
-          } else if (
-            overrideBag &&
-            typeof overrideBag === "object" &&
-            !Array.isArray(overrideBag)
-          ) {
-            delete (overrideBag as Record<string, unknown>)[subpropertyKey]
-          }
+          deleteSubProperty(board.componentProperties, propertyKey, subpropertyKey)
         } else {
           delete board.componentProperties[propertyKey]
         }
@@ -327,16 +312,7 @@ export class WorkspaceMutationService {
       }
 
       if (patch.action === "delete-sub" && subpropertyKey) {
-        const overrideBag = node.overrides[propertyKey]
-        if (Array.isArray(overrideBag) && overrideBag[0]) {
-          delete (overrideBag[0] as Record<string, unknown>)[subpropertyKey]
-        } else if (
-          overrideBag &&
-          typeof overrideBag === "object" &&
-          !Array.isArray(overrideBag)
-        ) {
-          delete (overrideBag as Record<string, unknown>)[subpropertyKey]
-        }
+        deleteSubProperty(node.overrides, propertyKey, subpropertyKey)
         return
       }
 
@@ -352,13 +328,13 @@ export class WorkspaceMutationService {
    * Sets the theme of a board and migrates properties for variants that inherit from the board.
    */
   public setComponentTheme(
-    componentKey: ComponentKey,
+    boardKey: BoardKey,
     theme: ThemeInstanceId,
     workspace: Workspace,
   ): Workspace {
-    return withComponentMutation(componentKey, workspace, (board, draft) => {
+    return withBoardMutation(boardKey, workspace, (board, draft) => {
       const currentTheme =
-        getComponentLevelThemeRef(board) ?? ("seldon" as ThemeInstanceId)
+        getBoardThemeRef(board) ?? ("seldon" as ThemeInstanceId)
       board.componentTheme = theme
 
       for (const ref of board.variants) {
@@ -425,7 +401,7 @@ export class WorkspaceMutationService {
     node: Variant | Instance,
     workspace: Workspace,
   ): ThemeInstanceId {
-    const board = nodeRelationshipService.findComponentForNode(node, workspace)
+    const board = nodeRelationshipService.findBoardForNode(node, workspace)
     const parent = nodeTraversalService.findParentNode(node, workspace)
 
     if (parent) {
@@ -439,7 +415,7 @@ export class WorkspaceMutationService {
       return "seldon" as ThemeInstanceId
     }
 
-    return getComponentLevelThemeRef(board) ?? ("seldon" as ThemeInstanceId)
+    return getBoardThemeRef(board) ?? ("seldon" as ThemeInstanceId)
   }
 
   /**
@@ -454,37 +430,20 @@ export class WorkspaceMutationService {
     key: ThemeSwatchKey,
     workspace: Workspace,
   ): Workspace {
-    const exactValue = themeSwatchToColorValue(getThemeOption(key, theme))
+    const exactValue = themeSwatchToColorValue(
+      getThemeOption(key, theme),
+    ) as AtomicValue
 
     return mutateWorkspace(workspace, (draft) => {
       const nodes = this._findNodesWithThemeValue(key, draft).filter(
         (node) => this.getNodeTheme(node, draft) === theme.id,
       )
 
-      nodes.forEach((node) => {
-        if (!isEntryNodeForRules(node)) return
-        const bag: Properties = node.overrides
-        Object.entries(bag).forEach(([propertyKey, rawValue]) => {
-          const value = rawValue as Value
-          if (isCompoundValue(value)) {
-            Object.entries(value).forEach(([subPropertyKey, subValue]) => {
-              if (this._isThemeValue(subValue) && subValue.value === key) {
-                Object.assign(bag[propertyKey as PropertyKey]!, {
-                  [subPropertyKey]: exactValue,
-                })
-              }
-            })
-          } else if (
-            isAtomicValue(value) &&
-            this._isThemeValue(value) &&
-            value.value === key
-          ) {
-            Object.assign(bag, {
-              [propertyKey]: exactValue as AtomicValue,
-            })
-          }
-        })
-      })
+      for (const node of nodes) {
+        if (isEntryNodeForRules(node)) {
+          replaceThemeKeyInProperties(node.overrides, key, exactValue)
+        }
+      }
     })
   }
 
@@ -492,44 +451,75 @@ export class WorkspaceMutationService {
     key: ThemeValueKey,
     workspace: Workspace,
   ): (Variant | Instance)[] {
-    return Object.values(getWorkspaceNodes(workspace)).filter((node) => {
-      const props: Properties =
-        "properties" in node && (node as { properties?: Properties }).properties
-          ? (node as { properties: Properties }).properties
-          : "overrides" in node
-            ? (node as { overrides: Properties }).overrides
-            : {}
-      return Object.values(props).some((rawValue) => {
-        const value = rawValue as Value
-        if (isCompoundValue(value)) {
-          return Object.values(value).some((subValue: AtomicValue) => {
-            return this._isThemeValue(subValue) && subValue.value === key
-          })
-        }
-
-        return (
-          isAtomicValue(value) &&
-          this._isThemeValue(value) &&
-          value.value === key
-        )
-      })
-    }) as (Variant | Instance)[]
-  }
-
-  private _isThemeValue(value: AtomicValue): value is ThemeValue {
-    return (
-      value.type === ValueType.THEME_CATEGORICAL ||
-      value.type === ValueType.THEME_ORDINAL
-    )
+    return Object.values(getWorkspaceNodes(workspace)).filter((node) =>
+      Object.values(node.overrides).some((rawValue) =>
+        valueReferencesThemeKey(rawValue as Value, key),
+      ),
+    ) as (Variant | Instance)[]
   }
 }
 
 export const workspaceMutationService = new WorkspaceMutationService()
 
-function collectVariantNodeIdsOnBoard(board: ComponentEntry): Set<string> {
+function collectVariantNodeIdsOnBoard(board: Board): Set<string> {
   const ids = new Set<string>()
   walkComponentTreeRefs(board.variants, (ref) => {
     ids.add(ref.id)
   })
   return ids
+}
+
+/** Deletes one sub-property facet from a compound or layered-paint property bag. */
+function deleteSubProperty(
+  bag: Properties,
+  propertyKey: PropertyKey,
+  subpropertyKey: SubPropertyKey,
+): void {
+  const overrideBag = bag[propertyKey]
+  if (Array.isArray(overrideBag) && overrideBag[0]) {
+    delete (overrideBag[0] as Record<string, unknown>)[subpropertyKey]
+  } else if (
+    overrideBag &&
+    typeof overrideBag === "object" &&
+    !Array.isArray(overrideBag)
+  ) {
+    delete (overrideBag as Record<string, unknown>)[subpropertyKey]
+  }
+}
+
+function isThemeRefValue(value: AtomicValue): value is ThemeValue {
+  return (
+    value.type === ValueType.THEME_CATEGORICAL ||
+    value.type === ValueType.THEME_ORDINAL
+  )
+}
+
+/** True when an atomic or compound value references the given theme token key. */
+function valueReferencesThemeKey(value: Value, key: ThemeValueKey): boolean {
+  if (isCompoundValue(value)) {
+    return Object.values(value).some(
+      (sub: AtomicValue) => isThemeRefValue(sub) && sub.value === key,
+    )
+  }
+  return isAtomicValue(value) && isThemeRefValue(value) && value.value === key
+}
+
+/** Rewrites every atomic or compound facet that references `key` to `exactValue`. */
+function replaceThemeKeyInProperties(
+  bag: Properties,
+  key: ThemeSwatchKey,
+  exactValue: AtomicValue,
+): void {
+  for (const [propertyKey, rawValue] of Object.entries(bag)) {
+    const value = rawValue as Value
+    if (isCompoundValue(value)) {
+      for (const [subKey, subValue] of Object.entries(value)) {
+        if (isThemeRefValue(subValue) && subValue.value === key) {
+          Object.assign(bag[propertyKey as PropertyKey]!, { [subKey]: exactValue })
+        }
+      }
+    } else if (isAtomicValue(value) && isThemeRefValue(value) && value.value === key) {
+      Object.assign(bag, { [propertyKey]: exactValue })
+    }
+  }
 }

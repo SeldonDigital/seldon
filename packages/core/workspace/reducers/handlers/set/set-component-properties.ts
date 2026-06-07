@@ -23,7 +23,7 @@ export function setComponentProperties(
   }
 
   return workspaceMutationService.setComponentProperties(
-    payload.componentKey,
+    payload.boardKey,
     payload.properties,
     workspace,
   )

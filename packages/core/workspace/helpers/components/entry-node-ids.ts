@@ -1,19 +1,19 @@
 import { createNodeId } from "../../../helpers/utils/create-node-id"
 
-/** Default root node id for a component catalog row (`component-{componentKey}-default`). */
-export function componentBoardDefaultNodeId(componentKey: string): string {
-  return `component-${componentKey}-default`
+/** Default root node id for a component catalog row (`component-{boardKey}-default`). */
+export function componentBoardDefaultNodeId(boardKey: string): string {
+  return `component-${boardKey}-default`
 }
 
-/** Root node id for a catalog schema variant (`component-{componentKey}-{variantId}`). */
+/** Root node id for a catalog schema variant (`component-{boardKey}-{variantId}`). */
 export function componentBoardSchemaVariantNodeId(
-  componentKey: string,
+  boardKey: string,
   variantId: string,
 ): string {
-  return `component-${componentKey}-${variantId}`
+  return `component-${boardKey}-${variantId}`
 }
 
-/** New node id with unique suffix (`component-{componentKey}-{suffix}`). */
-export function componentBoardUniqueNodeId(componentKey: string): string {
-  return `component-${componentKey}-${createNodeId()}`
+/** New node id with unique suffix (`component-{boardKey}-{suffix}`). */
+export function componentBoardUniqueNodeId(boardKey: string): string {
+  return `component-${boardKey}-${createNodeId()}`
 }

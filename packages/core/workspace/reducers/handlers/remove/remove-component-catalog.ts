@@ -1,5 +1,5 @@
 import { rules } from "../../../../rules/config/rules.config"
-import type { ComponentKey, Workspace } from "../../../types"
+import type { BoardKey, Workspace } from "../../../types"
 import {
   nodeRetrievalService,
   nodeTraversalService,
@@ -15,12 +15,12 @@ import {
  * Shared board deletion: rules gate then {@link nodeOperationsService.deleteComponentByKey}.
  */
 export function applyComponentKeyDeletion(
-  componentKey: ComponentKey,
+  boardKey: BoardKey,
   workspace: Workspace,
 ): Workspace {
   if (rules.mutations.delete.board.allowed === false) {
     return workspace
   }
 
-  return nodeOperationsService.deleteComponentByKey(componentKey, workspace)
+  return nodeOperationsService.deleteBoardByKey(boardKey, workspace)
 }

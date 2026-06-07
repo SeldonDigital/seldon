@@ -68,7 +68,7 @@ export function validateAction(workspace: Workspace, action: Action): void {
       validateAddResourceCatalog(workspace, action)
       return
     case "add_playground":
-      componentValidators.doesNotExist(workspace, action.payload.componentKey)
+      componentValidators.doesNotExist(workspace, action.payload.boardKey)
       return
     case "add_variant":
       validateAddVariant(workspace, action)
@@ -146,22 +146,22 @@ export function validateAction(workspace: Workspace, action: Action): void {
     case "duplicate_icon_set":
       validateIconSetMutation(workspace, action)
       return
-    case "set_component_label":
-    case "set_component_intent":
-    case "set_component_tags":
-    case "set_component_editor_data":
-    case "reset_component_label":
-    case "reset_component_intent":
-    case "reset_component_tags":
-    case "reset_component_editor_data":
-    case "set_component_license":
-    case "reset_component_license":
-    case "set_component_author":
-    case "reset_component_author":
-    case "set_component_credentials":
-    case "reset_component_credentials":
-    case "set_component_preview":
-    case "reset_component_preview":
+    case "set_board_label":
+    case "set_board_intent":
+    case "set_board_tags":
+    case "set_board_editor_data":
+    case "reset_board_label":
+    case "reset_board_intent":
+    case "reset_board_tags":
+    case "reset_board_editor_data":
+    case "set_board_license":
+    case "reset_board_license":
+    case "set_board_author":
+    case "reset_board_author":
+    case "set_board_credentials":
+    case "reset_board_credentials":
+    case "set_board_preview":
+    case "reset_board_preview":
     case "set_component_properties":
     case "reset_component_property":
     case "set_component_theme":

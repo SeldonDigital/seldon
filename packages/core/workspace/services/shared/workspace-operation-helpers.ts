@@ -1,8 +1,8 @@
 import { invariant } from "../../../index"
 import { ErrorMessages } from "../../constants"
 import {
-  ComponentEntry,
-  ComponentKey,
+  Board,
+  BoardKey,
   Instance,
   InstanceId,
   Variant,
@@ -39,18 +39,18 @@ export function withNodeMutation(
 
 /**
  * Executes a mutation operation on a board with automatic retrieval and validation.
- * @param componentKey - Key of the board in `workspace.components`
+ * @param boardKey - Key of the board in `workspace.components`
  * @param workspace - The workspace
  * @param operation - The operation to perform on the board
  * @returns The updated workspace
  */
-export function withComponentMutation(
-  componentKey: ComponentKey,
+export function withBoardMutation(
+  boardKey: BoardKey,
   workspace: Workspace,
-  operation: (board: ComponentEntry, draft: Workspace) => void,
+  operation: (board: Board, draft: Workspace) => void,
 ): Workspace {
   return mutateWorkspace(workspace, (draft) => {
-    const board = nodeRetrievalService.getComponent(componentKey, draft)
+    const board = nodeRetrievalService.getBoard(boardKey, draft)
     operation(board, draft)
   })
 }
@@ -90,14 +90,14 @@ export function withParentNode<T = void>(
  * @param operation - The operation to perform on both variant and board
  * @returns The updated workspace
  */
-export function withVariantAndComponentMutation(
+export function withVariantAndBoardMutation(
   variantId: VariantId,
   workspace: Workspace,
-  operation: (variant: Variant, board: ComponentEntry, draft: Workspace) => void,
+  operation: (variant: Variant, board: Board, draft: Workspace) => void,
 ): Workspace {
   return mutateWorkspace(workspace, (draft) => {
     const variant = nodeRetrievalService.getVariant(variantId, draft)
-    const board = nodeRelationshipService.findComponentForVariant(variant, draft)
+    const board = nodeRelationshipService.findBoardForVariant(variant, draft)
     invariant(board, ErrorMessages.componentNotFoundForVariant(variantId))
     operation(variant, board, draft)
   })

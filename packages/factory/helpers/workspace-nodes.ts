@@ -1,6 +1,6 @@
 import type { EntryNode, Workspace } from "@seldon/core/workspace/types"
 import { parseNodeTemplate } from "@seldon/core/workspace/model/template-ref"
-import { getComponentByNodeId } from "@seldon/core/workspace/helpers/components/get-component-by-node-id"
+import { getBoardByNodeId } from "@seldon/core/workspace/helpers/components/get-board-by-node-id"
 
 export function getWorkspaceNodeList(workspace: Workspace): EntryNode[] {
   return Object.values(workspace.nodes)
@@ -15,7 +15,7 @@ export function getTemplateSourceNodeId(node: EntryNode): string | null {
 }
 
 export function getBoardForNode(workspace: Workspace, nodeId: string) {
-  return getComponentByNodeId(workspace, nodeId)
+  return getBoardByNodeId(workspace, nodeId)
 }
 
 export function getInstanceClassHash(nodeId: string): string {

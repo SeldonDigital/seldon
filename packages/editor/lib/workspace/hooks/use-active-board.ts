@@ -1,5 +1,5 @@
 import { useMemo } from "react"
-import { isComponentEntry } from "@seldon/core/workspace/helpers/components/is-component-entry"
+import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
 import { useSelection } from "./use-selection"
 import { useWorkspace } from "./use-workspace"
@@ -12,7 +12,7 @@ export function useActiveBoard() {
   return {
     activeBoard: useMemo(() => {
       if (selection) {
-        if (isComponentEntry(selection)) return selection
+        if (isBoard(selection)) return selection
         return workspaceService.findBoardForNode(selection, workspace)
       }
 
@@ -30,11 +30,11 @@ export function useActiveBoard() {
       }
 
       // Selecting a resource item (a font family or icon row) keeps its board
-      // active. The key is `${resource}:${componentKey}:${entryId}:${slot}`.
+      // active. The key is `${resource}:${boardKey}:${entryId}:${slot}`.
       if (selectedResourceItemKey) {
-        const componentKey = selectedResourceItemKey.split(":")[1]
-        return componentKey
-          ? (workspace.components[componentKey] ?? null)
+        const boardKey = selectedResourceItemKey.split(":")[1]
+        return boardKey
+          ? (workspace.components[boardKey] ?? null)
           : null
       }
 

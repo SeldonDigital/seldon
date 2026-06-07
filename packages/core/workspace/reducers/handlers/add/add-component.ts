@@ -16,7 +16,7 @@ import {
 } from "../../../../index"
 import { mergeProperties } from "../../../../properties/helpers/merge-properties"
 import { rules } from "../../../../rules/config/rules.config"
-import { setComponentOrder } from "../../../helpers/components/component-sort-order"
+import { setBoardOrder } from "../../../helpers/components/board-sort-order"
 import {
   componentBoardDefaultNodeId,
   componentBoardSchemaVariantNodeId,
@@ -524,7 +524,7 @@ export function addComponent(
           componentProperties: getInitialBoardComponentProperties("component"),
           variants: variantTreeRefs,
         }
-        setComponentOrder(board, order)
+        setBoardOrder(board, order)
         draft.components[componentId] = board
 
         order--
@@ -532,7 +532,7 @@ export function addComponent(
     }
 
     const updatedWorkspace =
-      workspacePropagationService.realignComponentOrder(draft)
+      workspacePropagationService.realignBoardOrder(draft)
     Object.assign(draft.components, updatedWorkspace.components)
   })
 }

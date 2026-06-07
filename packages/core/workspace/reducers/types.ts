@@ -8,8 +8,8 @@
  * | reset_workspace_owner, reset_workspace_label, normalize_metadata_version, reset_workspace_last_update, reset_workspace_intent, reset_workspace_tags, reset_workspace_license | metadata |
  * | add_component, remove_component, reorder_board, duplicate_component | components (+ nodes/themes/resources per type) |
  * | add_font_collection, remove_font_collection, add_media, remove_media, add_icon_set, remove_icon_set, add_theme, remove_theme, add_playground, remove_playground | components + section rows |
- * | set_component_label, set_component_intent, set_component_tags, set_component_license, set_component_author, set_component_credentials, set_component_preview, set_component_editor_data, set_component_properties, reset_component_property, set_component_theme | components |
- * | reset_component_label, reset_component_intent, reset_component_tags, reset_component_license, reset_component_author, reset_component_credentials, reset_component_preview, reset_component_editor_data | components |
+ * | set_board_label, set_board_intent, set_board_tags, set_board_license, set_board_author, set_board_credentials, set_board_preview, set_board_editor_data, set_component_properties, reset_component_property, set_component_theme | components |
+ * | reset_board_label, reset_board_intent, reset_board_tags, reset_board_license, reset_board_author, reset_board_credentials, reset_board_preview, reset_board_editor_data | components |
  * | reorder_variant_in_board | components.variants order |
  * | add_variant | components.variants + nodes |
  * | insert_variant_instance, insert_duplicate_instance, insert_default_instance, add_component_and_insert_default_instance | components tree + nodes |
@@ -48,7 +48,7 @@ import {
   ThemeSwatchParameters,
 } from "../../themes/types"
 import type { InstanceId, VariantId } from "../helpers/rules/workspace-node-ids"
-import type { ComponentKey } from "../model/components"
+import type { BoardKey } from "../model/components"
 import type { EntryNodeId } from "../model/entry-node"
 import type { WorkspaceStringMap } from "../model/string-maps"
 import type { Workspace } from "../model/workspace"
@@ -57,7 +57,7 @@ import type { Workspace } from "../model/workspace"
 export type InsertDefaultInstance = {
   parentId: VariantId | InstanceId
   /** Component catalog row key; must match `components` in the workspace file. */
-  componentKey: ComponentKey
+  boardKey: BoardKey
   index?: number
 }
 
@@ -228,7 +228,7 @@ export type WorkspaceAction =
   | {
       type: "add_component"
       payload: {
-        componentId: ComponentKey
+        componentId: BoardKey
         variantFallbacks?: string[]
       }
     }
@@ -247,19 +247,19 @@ export type WorkspaceAction =
   | {
       type: "add_theme"
       payload: {
-        componentKey: ComponentKey
+        boardKey: BoardKey
       }
     }
   | {
       type: "add_playground"
       payload: {
-        componentKey: ComponentKey
+        boardKey: BoardKey
       }
     }
   | {
       type: "remove_component"
       payload: {
-        componentId: ComponentKey
+        componentId: BoardKey
       }
     }
   | {
@@ -283,27 +283,27 @@ export type WorkspaceAction =
   | {
       type: "remove_theme"
       payload: {
-        componentKey: ComponentKey
+        boardKey: BoardKey
       }
     }
   | {
       type: "remove_playground"
       payload: {
-        componentKey: ComponentKey
+        boardKey: BoardKey
       }
     }
   | {
       type: "duplicate_component"
       payload: {
-        sourceComponentKey: ComponentKey
-        newComponentKey: ComponentKey
+        sourceComponentKey: BoardKey
+        newComponentKey: BoardKey
         label?: string
       }
     }
   | {
       type: "add_variant"
       payload: {
-        componentKey: ComponentKey
+        boardKey: BoardKey
         properties?: Properties
         ensureDescendantComponents?: boolean
       }
@@ -311,14 +311,14 @@ export type WorkspaceAction =
   | {
       type: "reorder_board"
       payload: {
-        componentKey: ComponentKey
+        boardKey: BoardKey
         newIndex: number
       }
     }
   | {
       type: "reorder_variant_in_board"
       payload: {
-        componentKey: ComponentKey
+        boardKey: BoardKey
         variantRootId: EntryNodeId
         newIndex: number
       }
@@ -350,7 +350,7 @@ export type WorkspaceAction =
   | {
       type: "add_component_and_insert_default_instance"
       payload: {
-        componentId: ComponentKey
+        componentId: BoardKey
         variantFallbacks?: string[]
         target: {
           parentId: VariantId | InstanceId
@@ -403,72 +403,72 @@ export type WorkspaceAction =
   | {
       type: "set_component_properties"
       payload: {
-        componentKey: ComponentKey
+        boardKey: BoardKey
         properties: Properties
       }
     }
   | {
       type: "reset_component_property"
       payload: {
-        componentKey: ComponentKey
+        boardKey: BoardKey
         propertyKey: PropertyKey
         subpropertyKey?: SubPropertyKey
       }
     }
   | {
-      type: "set_component_label"
-      payload: { componentKey: ComponentKey; label: string }
+      type: "set_board_label"
+      payload: { boardKey: BoardKey; label: string }
     }
   | {
-      type: "set_component_intent"
-      payload: { componentKey: ComponentKey; intent: string | undefined }
+      type: "set_board_intent"
+      payload: { boardKey: BoardKey; intent: string | undefined }
     }
   | {
-      type: "set_component_tags"
-      payload: { componentKey: ComponentKey; tags: string[] | undefined }
+      type: "set_board_tags"
+      payload: { boardKey: BoardKey; tags: string[] | undefined }
     }
   | {
-      type: "set_component_license"
+      type: "set_board_license"
       payload: {
-        componentKey: ComponentKey
+        boardKey: BoardKey
         license: WorkspaceStringMap | undefined
       }
     }
   | {
-      type: "set_component_author"
-      payload: { componentKey: ComponentKey; author: string }
+      type: "set_board_author"
+      payload: { boardKey: BoardKey; author: string }
     }
   | {
-      type: "set_component_credentials"
+      type: "set_board_credentials"
       payload: {
-        componentKey: ComponentKey
+        boardKey: BoardKey
         credentials: WorkspaceStringMap | undefined
       }
     }
   | {
-      type: "set_component_preview"
-      payload: { componentKey: ComponentKey; componentPreview: string }
+      type: "set_board_preview"
+      payload: { boardKey: BoardKey; componentPreview: string }
     }
   | {
-      type: "set_component_editor_data"
+      type: "set_board_editor_data"
       payload: {
-        componentKey: ComponentKey
+        boardKey: BoardKey
         editorData: Record<string, unknown> | undefined
       }
     }
-  | { type: "reset_component_label"; payload: { componentKey: ComponentKey } }
-  | { type: "reset_component_intent"; payload: { componentKey: ComponentKey } }
-  | { type: "reset_component_tags"; payload: { componentKey: ComponentKey } }
-  | { type: "reset_component_license"; payload: { componentKey: ComponentKey } }
-  | { type: "reset_component_author"; payload: { componentKey: ComponentKey } }
+  | { type: "reset_board_label"; payload: { boardKey: BoardKey } }
+  | { type: "reset_board_intent"; payload: { boardKey: BoardKey } }
+  | { type: "reset_board_tags"; payload: { boardKey: BoardKey } }
+  | { type: "reset_board_license"; payload: { boardKey: BoardKey } }
+  | { type: "reset_board_author"; payload: { boardKey: BoardKey } }
   | {
-      type: "reset_component_credentials"
-      payload: { componentKey: ComponentKey }
+      type: "reset_board_credentials"
+      payload: { boardKey: BoardKey }
     }
-  | { type: "reset_component_preview"; payload: { componentKey: ComponentKey } }
+  | { type: "reset_board_preview"; payload: { boardKey: BoardKey } }
   | {
-      type: "reset_component_editor_data"
-      payload: { componentKey: ComponentKey }
+      type: "reset_board_editor_data"
+      payload: { boardKey: BoardKey }
     }
   | {
       type: "set_node_label"
@@ -502,7 +502,7 @@ export type WorkspaceAction =
   | {
       type: "set_component_theme"
       payload: {
-        componentKey: ComponentKey
+        boardKey: BoardKey
         theme: ThemeInstanceId
       }
     }

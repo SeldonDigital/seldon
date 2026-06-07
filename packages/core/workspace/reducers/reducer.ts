@@ -76,15 +76,15 @@ import { removeVariant } from "./handlers/remove/remove-variant"
 import { reorderBoard } from "./handlers/reorder/reorder-board"
 import { reorderInstanceInParent } from "./handlers/reorder/reorder-instance-in-parent"
 import { reorderVariantInBoard } from "./handlers/reorder/reorder-variant-in-board"
-import { resetComponentAuthor } from "./handlers/reset/reset-component-author"
-import { resetComponentCredentials } from "./handlers/reset/reset-component-credentials"
-import { resetComponentEditorData } from "./handlers/reset/reset-component-editor-data"
-import { resetComponentIntent } from "./handlers/reset/reset-component-intent"
-import { resetComponentLabel } from "./handlers/reset/reset-component-label"
-import { resetComponentLicense } from "./handlers/reset/reset-component-license"
-import { resetComponentPreview } from "./handlers/reset/reset-component-preview"
+import { resetBoardAuthor } from "./handlers/reset/reset-board-author"
+import { resetBoardCredentials } from "./handlers/reset/reset-board-credentials"
+import { resetBoardEditorData } from "./handlers/reset/reset-board-editor-data"
+import { resetBoardIntent } from "./handlers/reset/reset-board-intent"
+import { resetBoardLabel } from "./handlers/reset/reset-board-label"
+import { resetBoardLicense } from "./handlers/reset/reset-board-license"
+import { resetBoardPreview } from "./handlers/reset/reset-board-preview"
 import { resetComponentProperty } from "./handlers/reset/reset-component-property"
-import { resetComponentTags } from "./handlers/reset/reset-component-tags"
+import { resetBoardTags } from "./handlers/reset/reset-board-tags"
 import { resetDefaultVariantToCatalog } from "./handlers/reset/reset-default-variant-to-catalog"
 import { resetFontCollectionEditorData } from "./handlers/reset/reset-font-collection-editor-data"
 import { resetFontCollectionLabel } from "./handlers/reset/reset-font-collection-label"
@@ -105,15 +105,15 @@ import { resetWorkspaceLastUpdate } from "./handlers/reset/reset-workspace-last-
 import { resetWorkspaceLicense } from "./handlers/reset/reset-workspace-license"
 import { resetWorkspaceOwner } from "./handlers/reset/reset-workspace-owner"
 import { resetWorkspaceTags } from "./handlers/reset/reset-workspace-tags"
-import { setComponentAuthor } from "./handlers/set/set-component-author"
-import { setComponentCredentials } from "./handlers/set/set-component-credentials"
-import { setComponentEditorData } from "./handlers/set/set-component-editor-data"
-import { setComponentIntent } from "./handlers/set/set-component-intent"
-import { setComponentLabel } from "./handlers/set/set-component-label"
-import { setComponentLicense } from "./handlers/set/set-component-license"
-import { setComponentPreview } from "./handlers/set/set-component-preview"
+import { setBoardAuthor } from "./handlers/set/set-board-author"
+import { setBoardCredentials } from "./handlers/set/set-board-credentials"
+import { setBoardEditorData } from "./handlers/set/set-board-editor-data"
+import { setBoardIntent } from "./handlers/set/set-board-intent"
+import { setBoardLabel } from "./handlers/set/set-board-label"
+import { setBoardLicense } from "./handlers/set/set-board-license"
+import { setBoardPreview } from "./handlers/set/set-board-preview"
 import { setComponentProperties } from "./handlers/set/set-component-properties"
-import { setComponentTags } from "./handlers/set/set-component-tags"
+import { setBoardTags } from "./handlers/set/set-board-tags"
 import { setComponentTheme } from "./handlers/set/set-component-theme"
 import { setFontCollectionEditorData } from "./handlers/set/set-font-collection-editor-data"
 import { setFontCollectionFamilyPreset } from "./handlers/set/set-font-collection-family-preset"
@@ -232,39 +232,39 @@ function reducer(workspace: Workspace, action: WorkspaceAction): Workspace {
       return setComponentProperties(action.payload, workspace)
     case "reset_component_property":
       return resetComponentProperty(action.payload, workspace)
-    case "set_component_label":
-      return setComponentLabel(action.payload, workspace)
-    case "set_component_intent":
-      return setComponentIntent(action.payload, workspace)
-    case "set_component_tags":
-      return setComponentTags(action.payload, workspace)
-    case "set_component_license":
-      return setComponentLicense(action.payload, workspace)
-    case "set_component_author":
-      return setComponentAuthor(action.payload, workspace)
-    case "set_component_credentials":
-      return setComponentCredentials(action.payload, workspace)
-    case "set_component_preview":
-      return setComponentPreview(action.payload, workspace)
-    case "set_component_editor_data":
-      return setComponentEditorData(action.payload, workspace)
+    case "set_board_label":
+      return setBoardLabel(action.payload, workspace)
+    case "set_board_intent":
+      return setBoardIntent(action.payload, workspace)
+    case "set_board_tags":
+      return setBoardTags(action.payload, workspace)
+    case "set_board_license":
+      return setBoardLicense(action.payload, workspace)
+    case "set_board_author":
+      return setBoardAuthor(action.payload, workspace)
+    case "set_board_credentials":
+      return setBoardCredentials(action.payload, workspace)
+    case "set_board_preview":
+      return setBoardPreview(action.payload, workspace)
+    case "set_board_editor_data":
+      return setBoardEditorData(action.payload, workspace)
 
-    case "reset_component_label":
-      return resetComponentLabel(action.payload, workspace)
-    case "reset_component_intent":
-      return resetComponentIntent(action.payload, workspace)
-    case "reset_component_tags":
-      return resetComponentTags(action.payload, workspace)
-    case "reset_component_license":
-      return resetComponentLicense(action.payload, workspace)
-    case "reset_component_author":
-      return resetComponentAuthor(action.payload, workspace)
-    case "reset_component_credentials":
-      return resetComponentCredentials(action.payload, workspace)
-    case "reset_component_preview":
-      return resetComponentPreview(action.payload, workspace)
-    case "reset_component_editor_data":
-      return resetComponentEditorData(action.payload, workspace)
+    case "reset_board_label":
+      return resetBoardLabel(action.payload, workspace)
+    case "reset_board_intent":
+      return resetBoardIntent(action.payload, workspace)
+    case "reset_board_tags":
+      return resetBoardTags(action.payload, workspace)
+    case "reset_board_license":
+      return resetBoardLicense(action.payload, workspace)
+    case "reset_board_author":
+      return resetBoardAuthor(action.payload, workspace)
+    case "reset_board_credentials":
+      return resetBoardCredentials(action.payload, workspace)
+    case "reset_board_preview":
+      return resetBoardPreview(action.payload, workspace)
+    case "reset_board_editor_data":
+      return resetBoardEditorData(action.payload, workspace)
 
     case "add_variant":
       return addVariant(action.payload, workspace)

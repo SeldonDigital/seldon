@@ -34,14 +34,14 @@ export function duplicateTheme(
       isDraft(draftEntry) ? current(draftEntry) : draftEntry
     ) as EntryTheme
 
-    const componentKey = themeComponentKeyFromThemeId(payload.themeId)
-    if (!componentKey) return
+    const boardKey = themeComponentKeyFromThemeId(payload.themeId)
+    if (!boardKey) return
 
-    const newId = payload.newThemeId ?? `theme-${componentKey}-${randomSuffix()}`
+    const newId = payload.newThemeId ?? `theme-${boardKey}-${randomSuffix()}`
 
     if (draft.themes[newId]) return
 
-    const board = draft.components[componentKey]
+    const board = draft.components[boardKey]
     const isThemeBoard = board?.type === "theme"
 
     const base = isThemeBoard ? board.label : entry.label

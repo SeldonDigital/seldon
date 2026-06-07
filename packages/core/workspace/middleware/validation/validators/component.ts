@@ -1,6 +1,6 @@
 import { getComponentSchema } from "../../../../components/catalog"
 import { ComponentId, isComponentId } from "../../../../components/constants"
-import { areComponentVariantsInUse } from "../../../helpers/components/are-component-variants-in-use"
+import { areBoardVariantsInUse } from "../../../helpers/components/are-board-variants-in-use"
 import { getComponentPropertyDefaults } from "../../../helpers/components/get-component-property-defaults"
 import { isIconSetBoard, isThemeBoard } from "../../../model/components"
 import { ErrorMessages } from "../../../constants"
@@ -16,7 +16,7 @@ export const componentValidators = {
   },
   notInUse: (workspace: Workspace, id: ComponentId) => {
     const board = workspace.components[id]
-    if (board && areComponentVariantsInUse(board, workspace)) {
+    if (board && areBoardVariantsInUse(board, workspace)) {
       throw new Error(ErrorMessages.componentVariantsInUse(id))
     }
   },

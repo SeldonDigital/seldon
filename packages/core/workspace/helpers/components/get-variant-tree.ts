@@ -1,4 +1,4 @@
-import type { ComponentEntry, ComponentTreeRef, EntryNodeId } from "../../types"
+import type { Board, ComponentTreeRef, EntryNodeId } from "../../types"
 import { walkComponentTreeRefs } from "./walk-component-tree-refs"
 
 /**
@@ -7,11 +7,11 @@ import { walkComponentTreeRefs } from "./walk-component-tree-refs"
  *
  * Returns null when this id does not appear in any variant tree on this board.
  *
- * @param board ComponentEntry whose variants hold the tree.
+ * @param board Board whose variants hold the tree.
  * @param variantId Node id that anchors the branch you need.
  */
 export function getVariantTree(
-  board: ComponentEntry,
+  board: Board,
   variantId: EntryNodeId,
 ): ComponentTreeRef | null {
   let tree: ComponentTreeRef | null = null

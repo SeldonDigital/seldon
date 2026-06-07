@@ -14,7 +14,7 @@ import { TokenType } from "../../themes/constants/token-type"
 import { Theme, ThemeInstanceId, ThemeOption } from "../../themes/types"
 import type { ThemeFontFamilyToken } from "../../themes/values"
 import { getChildrenIds } from "../../workspace/helpers/components/get-children-ids"
-import { getComponentByNodeId } from "../../workspace/helpers/components/get-component-by-node-id"
+import { getBoardByNodeId } from "../../workspace/helpers/components/get-board-by-node-id"
 import { parseNodeCatalog } from "../../workspace/model/template-ref"
 import { getEffectiveNodeProperties } from "../../workspace/compute"
 import {
@@ -332,7 +332,7 @@ export function remapNodeThemeTokens(
     }
   }
 
-  const board = getComponentByNodeId(workspace as Workspace, nodeId)
+  const board = getBoardByNodeId(workspace as Workspace, nodeId)
   const childIds = board ? getChildrenIds(board, nodeId) : []
 
   const catalogParsed = parseNodeCatalog(node.template)

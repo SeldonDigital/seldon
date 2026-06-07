@@ -117,7 +117,7 @@ describe("structural handlers no-op when their bucket denies the entity", () => 
     const ws = makeWorkspace()
     const result = withDenied("reorder", "userVariant", () =>
       reorderVariantInBoard(
-        { componentKey: "button", variantRootId: "variant-1", newIndex: 2 },
+        { boardKey: "button", variantRootId: "variant-1", newIndex: 2 },
         ws,
       ),
     )
@@ -194,7 +194,7 @@ describe("structural handlers no-op when their bucket denies the entity", () => 
   it("addVariant respects create.userVariant", () => {
     const ws = makeWorkspace()
     const result = withDenied("create", "userVariant", () =>
-      addVariant({ componentKey: "button" }, ws),
+      addVariant({ boardKey: "button" }, ws),
     )
     expect(result).toBe(ws)
   })

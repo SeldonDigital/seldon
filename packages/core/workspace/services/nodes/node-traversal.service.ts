@@ -1,7 +1,7 @@
 import { ComponentId } from "../../../components/constants"
 import { findParentNode as findParentNodeHelper } from "../../helpers/nodes/find-parent-node"
 import { getChildIndex } from "../../helpers/nodes/get-child-index"
-import { getComponentByNodeId } from "../../helpers/components/get-component-by-node-id"
+import { getBoardByNodeId } from "../../helpers/components/get-board-by-node-id"
 import { getChildrenIds } from "../../helpers/components/get-children-ids"
 import {
   Instance,
@@ -71,7 +71,7 @@ export class NodeTraversalService {
     let currentNode = nodeToSearchIn
 
     for (const segment of path) {
-      const board = getComponentByNodeId(workspace, currentNode.id)
+      const board = getBoardByNodeId(workspace, currentNode.id)
       if (!board) return null
 
       const childIds = getChildrenIds(board, currentNode.id)

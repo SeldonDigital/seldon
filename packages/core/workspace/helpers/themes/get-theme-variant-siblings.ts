@@ -1,5 +1,5 @@
 import { EntryThemeId, Workspace } from "../../types"
-import { getComponentVariantRootIds } from "../components/get-component-variant-root-ids"
+import { getBoardVariantRootIds } from "../components/get-board-variant-root-ids"
 
 export function getThemeVariantSiblingIds(
   themeId: EntryThemeId,
@@ -8,8 +8,8 @@ export function getThemeVariantSiblingIds(
   const board = Object.values(workspace.components).find(
     (candidate) =>
       candidate.type === "theme" &&
-      getComponentVariantRootIds(candidate).includes(themeId),
+      getBoardVariantRootIds(candidate).includes(themeId),
   )
   if (!board) return []
-  return getComponentVariantRootIds(board).filter((id) => id !== themeId)
+  return getBoardVariantRootIds(board).filter((id) => id !== themeId)
 }

@@ -1,9 +1,9 @@
 import type { ThemeInstanceId } from "../../../themes/types"
-import type { ComponentEntry } from "../../types"
+import type { Board } from "../../types"
 
 /** Reads the theme ref stored on a catalog row (`componentTheme`). */
-export function getComponentLevelThemeRef(
-  board: ComponentEntry,
+export function getBoardThemeRef(
+  board: Board,
 ): ThemeInstanceId | undefined {
   if (typeof board.componentTheme === "string" && board.componentTheme.length > 0) {
     return board.componentTheme as ThemeInstanceId

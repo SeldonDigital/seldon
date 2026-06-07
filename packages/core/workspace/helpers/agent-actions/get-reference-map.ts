@@ -1,7 +1,7 @@
 import { getComponentSchema } from "../../../components/catalog"
 import type { ComponentId } from "../../../components/constants"
 import { getChildrenIds } from "../components/get-children-ids"
-import { getComponentByNodeId } from "../components/get-component-by-node-id"
+import { getBoardByNodeId } from "../components/get-board-by-node-id"
 import { getNodeCatalogId } from "../nodes/get-node-catalog-id"
 import { getNodeById } from "../nodes/get-node-by-id"
 import type {
@@ -22,7 +22,7 @@ export function getReferenceMap(
   workspace: Workspace,
 ): ReferenceMap {
   const map: ReferenceMap = { [ref]: addedNodeId }
-  const board = getComponentByNodeId(workspace, addedNodeId)
+  const board = getBoardByNodeId(workspace, addedNodeId)
   if (!board) return map
 
   const children = getChildrenIds(board, addedNodeId)
@@ -54,7 +54,7 @@ export function getSchemaAwareReferenceMap(
     return map
   }
 
-  const board = getComponentByNodeId(workspace, addedNodeId)
+  const board = getBoardByNodeId(workspace, addedNodeId)
   if (!board) return map
 
   appendSubtreeRefs(map, board, addedNodeId, ref, workspace)
@@ -63,7 +63,7 @@ export function getSchemaAwareReferenceMap(
 
 function appendSubtreeRefs(
   map: ReferenceMap,
-  board: NonNullable<ReturnType<typeof getComponentByNodeId>>,
+  board: NonNullable<ReturnType<typeof getBoardByNodeId>>,
   nodeId: EntryNodeId,
   refPrefix: ReferenceId,
   workspace: Workspace,

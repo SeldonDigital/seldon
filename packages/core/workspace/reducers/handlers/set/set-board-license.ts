@@ -1,14 +1,14 @@
 import type { ExtractPayload, Workspace } from "../../../../index"
-import { withComponentMutation } from "../../../services/shared/workspace-operation-helpers"
+import { withBoardMutation } from "../../../services/shared/workspace-operation-helpers"
 
 /**
- * Sets or clears `workspace.components[componentKey].license` where that field exists on the board kind.
+ * Sets or clears `workspace.components[boardKey].license` where that field exists on the board kind.
  */
-export function setComponentLicense(
-  payload: ExtractPayload<"set_component_license">,
+export function setBoardLicense(
+  payload: ExtractPayload<"set_board_license">,
   workspace: Workspace,
 ): Workspace {
-  return withComponentMutation(payload.componentKey, workspace, (board) => {
+  return withBoardMutation(payload.boardKey, workspace, (board) => {
     switch (board.type) {
       case "component":
       case "theme":

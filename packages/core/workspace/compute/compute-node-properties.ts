@@ -15,7 +15,7 @@ import { getComponentPropertyDefaults } from "../helpers/components/get-componen
 import { getNodeParentIndex } from "../helpers/graph/build-node-parent-index"
 import { getNodeCatalogId } from "../helpers/nodes/get-node-catalog-id"
 import { parseNodeTemplate, parseThemeTemplate } from "../model/template-ref"
-import type { ComponentEntry } from "../types"
+import type { Board } from "../types"
 import type { EntryNode, Workspace } from "../types"
 import { getComputedTheme } from "./compute-workspace-themes"
 
@@ -36,7 +36,7 @@ interface WorkspaceNode {
 
 interface WorkspaceComponent {
   id?: string
-  type?: ComponentEntry["type"]
+  type?: Board["type"]
   catalogId?: string
   properties?: Properties
   componentProperties?: Properties

@@ -1,6 +1,6 @@
 import { STOCK_ICON_SETS_BY_ID } from "../../../icon-sets/catalog"
 import type { IconSetTemplateId } from "../../../icon-sets/types/icon-set-id"
-import type { ComponentEntry, IconSetBoard } from "../../model/components"
+import type { Board, IconSetBoard } from "../../model/components"
 import { isIconSetBoard } from "../../model/components"
 import type {
   EntryIconSet,
@@ -9,9 +9,9 @@ import type {
 import { formatIconSetCatalog } from "../../model/template-ref"
 import type { Workspace } from "../../model/workspace"
 import {
-  getComponentOrder,
-  setComponentOrder,
-} from "../components/component-sort-order"
+  getBoardOrder,
+  setBoardOrder,
+} from "../components/board-sort-order"
 import { getInitialBoardComponentProperties } from "../components/get-initial-board-component-properties"
 import { WORKSPACE_EDITABLE_THEME_ENTRY_ID } from "../themes/workspace-editable-theme"
 
@@ -96,7 +96,7 @@ function seedIconSetBoard(
   boardKey: IconSetTemplateId,
   entry: EntryIconSet,
 ): void {
-  const existing = workspace.components[boardKey] as ComponentEntry | undefined
+  const existing = workspace.components[boardKey] as Board | undefined
   if (existing && isIconSetBoard(existing)) {
     return
   }
@@ -106,7 +106,7 @@ function seedIconSetBoard(
   const existingBoards = Object.values(workspace.components)
   const maxOrder =
     existingBoards.length > 0
-      ? Math.max(...existingBoards.map((b) => getComponentOrder(b)))
+      ? Math.max(...existingBoards.map((b) => getBoardOrder(b)))
       : -1
 
   const board: IconSetBoard = {
@@ -118,6 +118,6 @@ function seedIconSetBoard(
     componentProperties: getInitialBoardComponentProperties("icon-set"),
     variants: [{ id: entry.id }],
   }
-  setComponentOrder(board, maxOrder + 1)
+  setBoardOrder(board, maxOrder + 1)
   workspace.components[boardKey] = board
 }

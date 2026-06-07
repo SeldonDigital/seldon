@@ -5,7 +5,7 @@ import { useMemo } from "react"
 import { Board, Properties, Scroll, Unit, ValueType } from "@seldon/core"
 import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
 import { isThemeBoard } from "@seldon/core/workspace/model/components"
-import { themeService } from "@seldon/core/workspace/services/theme/theme.service"
+import { workspaceThemeService } from "@seldon/core/workspace/services/theme/theme.service"
 import type { Workspace } from "@seldon/core/workspace/types"
 import { getDialogPreviewBase } from "@lib/themes/build-dialog-preview"
 import { usePreview } from "@lib/hooks/use-preview"
@@ -33,7 +33,7 @@ export function ThemeBoard({ board }: ThemeBoardProps) {
   // border resolve, independent of which variant (if any) is selected. The
   // per-variant dialogs below are themed individually.
   const boardTheme = useMemo(
-    () => themeService.getObjectTheme(board, workspace),
+    () => workspaceThemeService.getObjectTheme(board, workspace),
     [board, workspace],
   )
 

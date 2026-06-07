@@ -35,7 +35,7 @@ export function addVariant(
   let nextWorkspace = workspace
 
   if (payload.ensureDescendantComponents) {
-    const components = getComponentDescendantIds(payload.componentKey as ComponentId)
+    const components = getComponentDescendantIds(payload.boardKey as ComponentId)
     for (const componentId of components) {
       if (!nextWorkspace.components[componentId as ComponentId]) {
         nextWorkspace = addComponent(
@@ -48,7 +48,7 @@ export function addVariant(
   }
 
   const defaultVariant = nodeRetrievalService.getDefaultVariant(
-    payload.componentKey as ComponentId,
+    payload.boardKey as ComponentId,
     nextWorkspace,
   )
 

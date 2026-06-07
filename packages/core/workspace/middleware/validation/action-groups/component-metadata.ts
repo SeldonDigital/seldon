@@ -8,17 +8,17 @@ import {
   themeValidators,
 } from "../validators"
 import { WorkspaceValidationError } from "../workspace-validation-error"
-import type { Action, ComponentEntry, Workspace } from "../../../types"
+import type { Action, Board, Workspace } from "../../../types"
 
 export function assertComponentHasAllowedKind(
   workspace: Workspace,
-  componentKey: string,
+  boardKey: string,
   action: Action,
-  allowed: ReadonlyArray<ComponentEntry["type"]>,
+  allowed: ReadonlyArray<Board["type"]>,
 ): void {
-  componentValidators.exists(workspace, componentKey)
-  const board = workspace.components[componentKey]
-  invariant(board, `ComponentEntry ${componentKey} missing after exists check`)
+  componentValidators.exists(workspace, boardKey)
+  const board = workspace.components[boardKey]
+  invariant(board, `Board ${boardKey} missing after exists check`)
   if (!allowed.includes(board.type)) {
     throw new WorkspaceValidationError(
       "That update does not apply to this board type.",
@@ -33,119 +33,119 @@ const LICENSE_BOARDS = [
   "font-collection",
   "icon-set",
   "media",
-] as const satisfies ReadonlyArray<ComponentEntry["type"]>
+] as const satisfies ReadonlyArray<Board["type"]>
 
 const AUTHOR_BOARDS = ["component", "theme"] as const satisfies ReadonlyArray<
-  ComponentEntry["type"]
+  Board["type"]
 >
 
 const CREDENTIALS_BOARDS = [
   "font-collection",
   "icon-set",
   "media",
-] as const satisfies ReadonlyArray<ComponentEntry["type"]>
+] as const satisfies ReadonlyArray<Board["type"]>
 
 const PREVIEW_BOARDS = [
   "theme",
   "font-collection",
   "icon-set",
   "media",
-] as const satisfies ReadonlyArray<ComponentEntry["type"]>
+] as const satisfies ReadonlyArray<Board["type"]>
 
 export function validateComponentMetadata(
   workspace: Workspace,
   action: Action,
 ): void {
   switch (action.type) {
-    case "set_component_label":
-    case "set_component_intent":
-    case "set_component_tags":
-    case "set_component_editor_data":
-    case "reset_component_label":
-    case "reset_component_intent":
-    case "reset_component_tags":
-    case "reset_component_editor_data":
-      componentValidators.exists(workspace, action.payload.componentKey)
+    case "set_board_label":
+    case "set_board_intent":
+    case "set_board_tags":
+    case "set_board_editor_data":
+    case "reset_board_label":
+    case "reset_board_intent":
+    case "reset_board_tags":
+    case "reset_board_editor_data":
+      componentValidators.exists(workspace, action.payload.boardKey)
       break
-    case "set_component_license":
+    case "set_board_license":
       assertComponentHasAllowedKind(
         workspace,
-        action.payload.componentKey,
+        action.payload.boardKey,
         action,
         LICENSE_BOARDS,
       )
       break
-    case "reset_component_license":
+    case "reset_board_license":
       assertComponentHasAllowedKind(
         workspace,
-        action.payload.componentKey,
+        action.payload.boardKey,
         action,
         LICENSE_BOARDS,
       )
-      componentValidators.exists(workspace, action.payload.componentKey)
+      componentValidators.exists(workspace, action.payload.boardKey)
       break
-    case "set_component_author":
+    case "set_board_author":
       assertComponentHasAllowedKind(
         workspace,
-        action.payload.componentKey,
+        action.payload.boardKey,
         action,
         AUTHOR_BOARDS,
       )
       break
-    case "reset_component_author":
+    case "reset_board_author":
       assertComponentHasAllowedKind(
         workspace,
-        action.payload.componentKey,
+        action.payload.boardKey,
         action,
         AUTHOR_BOARDS,
       )
-      componentValidators.exists(workspace, action.payload.componentKey)
+      componentValidators.exists(workspace, action.payload.boardKey)
       break
-    case "set_component_credentials":
+    case "set_board_credentials":
       assertComponentHasAllowedKind(
         workspace,
-        action.payload.componentKey,
+        action.payload.boardKey,
         action,
         CREDENTIALS_BOARDS,
       )
       break
-    case "reset_component_credentials":
+    case "reset_board_credentials":
       assertComponentHasAllowedKind(
         workspace,
-        action.payload.componentKey,
+        action.payload.boardKey,
         action,
         CREDENTIALS_BOARDS,
       )
-      componentValidators.exists(workspace, action.payload.componentKey)
+      componentValidators.exists(workspace, action.payload.boardKey)
       break
-    case "set_component_preview":
+    case "set_board_preview":
       assertComponentHasAllowedKind(
         workspace,
-        action.payload.componentKey,
+        action.payload.boardKey,
         action,
         PREVIEW_BOARDS,
       )
       break
-    case "reset_component_preview":
+    case "reset_board_preview":
       assertComponentHasAllowedKind(
         workspace,
-        action.payload.componentKey,
+        action.payload.boardKey,
         action,
         PREVIEW_BOARDS,
       )
-      componentValidators.exists(workspace, action.payload.componentKey)
+      componentValidators.exists(workspace, action.payload.boardKey)
       break
     case "set_component_properties": {
-      const componentKey = action.payload.componentKey
-      componentValidators.exists(workspace, componentKey)
-      const board = workspace.components[componentKey]
+      const boardKey = action.payload.boardKey
+      componentValidators.exists(workspace, boardKey)
+      const board = workspace.components[boardKey]
       // Resource boards (theme, font collection, icon set, media) key by their
       // resource id, not a ComponentId. They only carry board-level properties,
       // so validate those against the BOARD schema.
       const componentId =
         board && isResourceType(board)
           ? ComponentId.BOARD
-          : (componentKey as ComponentId)
+          : (boardKey as ComponentId)
       propertyValidators.keys(action.payload.properties, componentId, board)
       propertyValidators.values(
         action.payload.properties,
@@ -155,13 +155,13 @@ export function validateComponentMetadata(
       break
     }
     case "reset_component_property": {
-      const componentKey = action.payload.componentKey
-      componentValidators.exists(workspace, componentKey)
-      const board = workspace.components[componentKey]
+      const boardKey = action.payload.boardKey
+      componentValidators.exists(workspace, boardKey)
+      const board = workspace.components[boardKey]
       const componentId =
         board && isResourceType(board)
           ? ComponentId.BOARD
-          : (componentKey as ComponentId)
+          : (boardKey as ComponentId)
       propertyValidators.keys(
         {
           [action.payload.propertyKey]: {
@@ -175,8 +175,8 @@ export function validateComponentMetadata(
       break
     }
     case "set_component_theme": {
-      const componentKey = action.payload.componentKey
-      componentValidators.exists(workspace, componentKey)
+      const boardKey = action.payload.boardKey
+      componentValidators.exists(workspace, boardKey)
       themeValidators.exists(workspace, action.payload.theme)
       break
     }

@@ -20,9 +20,9 @@ import { isThemeValueKey } from "@seldon/core/helpers/validation/theme"
 import { IconId, iconLabels } from "@seldon/core/icon-sets"
 import { IconSeldonMissing } from "@seldon/core/icon-sets/catalog/seldon/user-interface/actions/IconSeldonMissing"
 import { isWorkspaceIconUnavailable } from "@lib/icon-sets/icon-availability"
-import { isComponentEntry } from "@seldon/core/workspace/helpers/components/is-component-entry"
+import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { getBoardThemeRef } from "./helpers/theme-assignment-display"
-import { themeService } from "@seldon/core/workspace/services/theme/theme.service"
+import { workspaceThemeService } from "@seldon/core/workspace/services/theme/theme.service"
 import { useComboboxState } from "./controls/combobox/hooks/use-combobox-state"
 import { useComboboxPosition } from "./hooks/use-combobox-position"
 import { usePropertyControlData } from "./hooks/use-property-control-data"
@@ -217,11 +217,11 @@ export function PropertyControl({
     if (property.key === "theme" && subject) {
       const newThemeId =
         newValue === "none" ? null : (newValue as ThemeInstanceId)
-      if (isComponentEntry(subject)) {
+      if (isBoard(subject)) {
         dispatch({
           type: "set_component_theme",
           payload: {
-            componentKey:
+            boardKey:
               selectedBoardId ?? resolveComponentKey(subject, workspace),
             theme: newThemeId || "seldon",
           },
@@ -400,19 +400,19 @@ export function PropertyControl({
       return [
         getThemePickerOptions({
           workspace,
-          allowInherit: !(subject && isComponentEntry(subject)),
+          allowInherit: !(subject && isBoard(subject)),
         }),
       ]
     }
 
     const componentId: ComponentId | undefined =
-      subject && isComponentEntry(subject)
+      subject && isBoard(subject)
         ? (getComponentKey(subject) as ComponentId)
         : subject
           ? (getNodeCatalogComponentId(subject, workspace) ?? undefined)
           : undefined
     const componentLevel =
-      subject && isComponentEntry(subject)
+      subject && isBoard(subject)
         ? undefined
         : (subject?.level as ComponentLevel | undefined)
 
@@ -456,10 +456,10 @@ export function PropertyControl({
 
   const comboboxStoredValue = useMemo(() => {
     if (property.key === "theme") {
-      if (subject && isComponentEntry(subject)) {
+      if (subject && isBoard(subject)) {
         return getBoardThemeRef(subject)
       }
-      if (subject && !isComponentEntry(subject)) {
+      if (subject && !isBoard(subject)) {
         return subject.theme ?? "none"
       }
       return "none"
@@ -470,9 +470,9 @@ export function PropertyControl({
   const displayValue = getDisplayValue(
     propertyValue,
     property.key,
-    subject && !isComponentEntry(subject)
+    subject && !isBoard(subject)
       ? subject.id
-      : subject && isComponentEntry(subject)
+      : subject && isBoard(subject)
         ? getComponentKey(subject)
         : "",
     workspace,

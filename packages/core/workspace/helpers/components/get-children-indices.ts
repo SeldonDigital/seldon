@@ -1,4 +1,4 @@
-import type { ComponentEntry, EntryNodeId } from "../../types"
+import type { Board, EntryNodeId } from "../../types"
 import { walkComponentTreeRefs } from "./walk-component-tree-refs"
 
 /**
@@ -9,11 +9,11 @@ import { walkComponentTreeRefs } from "./walk-component-tree-refs"
  *
  * Returns an empty array when this parent has no children or does not appear in the tree.
  *
- * @param board ComponentEntry whose variants hold the tree.
+ * @param board Board whose variants hold the tree.
  * @param parentId Node id for the parent whose child indices you need.
  */
 export function getChildrenIndices(
-  board: ComponentEntry,
+  board: Board,
   parentId: EntryNodeId,
 ): number[] {
   let indices: number[] = []

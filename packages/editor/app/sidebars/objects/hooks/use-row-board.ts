@@ -56,11 +56,11 @@ export function useRowBoard(
   const disableReordering = options?.disableReordering ?? false
 
   // Selection state: determine if board is selected or contains selected node
-  const componentKey = getComponentKey(board)
+  const boardKey = getComponentKey(board)
   const variantRootIds = getVariantRootIds(board)
 
   const isBoardSelected =
-    selectedBoardId === componentKey &&
+    selectedBoardId === boardKey &&
     selectedNodeId === null &&
     selectedResourceEntry === null
 
@@ -71,7 +71,7 @@ export function useRowBoard(
     variantRootIds.includes(selectedResourceEntry.id)
 
   const boardContainsSelectedNode =
-    selectedNodeBoardKey !== null && selectedNodeBoardKey === componentKey
+    selectedNodeBoardKey !== null && selectedNodeBoardKey === boardKey
   const boardIsActive =
     isBoardSelected ||
     boardContainsSelectedNode ||
@@ -79,7 +79,7 @@ export function useRowBoard(
   const hasVariantChildren = variantRootIds.length > 0
 
   // Expansion state
-  const expandedId = componentKey
+  const expandedId = boardKey
   const isExpandedState = useIsExpanded(expandedId)
 
   // Drag and drop: enable dragging when visible
@@ -110,7 +110,7 @@ export function useRowBoard(
 
   const onClick = useRowClick({
     activeTool,
-    onSelect: () => selectBoard(componentKey),
+    onSelect: () => selectBoard(boardKey),
   })
 
   function onAddVariant(event?: MouseEvent<HTMLButtonElement>) {
@@ -143,7 +143,7 @@ export function useRowBoard(
     }
     dispatchWithAutoSelect({
       type: "add_variant",
-      payload: { componentKey },
+      payload: { boardKey },
     })
   }
 

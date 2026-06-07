@@ -5,5 +5,5 @@ export function removePlayground(
   payload: ExtractPayload<"remove_playground">,
   workspace: Workspace,
 ): Workspace {
-  return applyComponentKeyDeletion(payload.componentKey, workspace)
+  return applyComponentKeyDeletion(payload.boardKey, workspace)
 }

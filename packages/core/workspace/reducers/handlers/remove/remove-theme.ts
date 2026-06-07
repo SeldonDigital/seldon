@@ -9,5 +9,5 @@ export function removeTheme(
   payload: ExtractPayload<"remove_theme">,
   workspace: Workspace,
 ): Workspace {
-  return applyComponentKeyDeletion(payload.componentKey, workspace)
+  return applyComponentKeyDeletion(payload.boardKey, workspace)
 }

@@ -21,7 +21,7 @@ export function resetComponentProperty(
   }
 
   return workspaceMutationService.resetComponentProperty(
-    payload.componentKey,
+    payload.boardKey,
     {
       propertyKey: payload.propertyKey,
       subpropertyKey: payload.subpropertyKey,

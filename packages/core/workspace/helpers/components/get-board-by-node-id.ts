@@ -1,5 +1,5 @@
 import { isDraft } from "immer"
-import type { ComponentEntry, EntryNodeId, Workspace } from "../../types"
+import type { Board, EntryNodeId, Workspace } from "../../types"
 import { walkComponentTreeRefs } from "./walk-component-tree-refs"
 
 /**
@@ -8,12 +8,12 @@ import { walkComponentTreeRefs } from "./walk-component-tree-refs"
  * reference through Immer when a board tree changes, so reads on an unchanged
  * workspace reuse the cached index. Drafts bypass the cache (see below).
  */
-const nodeToBoardCache = new WeakMap<object, Map<string, ComponentEntry>>()
+const nodeToBoardCache = new WeakMap<object, Map<string, Board>>()
 
 function buildNodeToBoardIndex(
   workspace: Workspace,
-): Map<string, ComponentEntry> {
-  const index = new Map<string, ComponentEntry>()
+): Map<string, Board> {
+  const index = new Map<string, Board>()
   for (const board of Object.values(workspace.components)) {
     walkComponentTreeRefs(board.variants, (ref) => {
       // Keep the first board that lists the id to match scan order.
@@ -28,7 +28,7 @@ function buildNodeToBoardIndex(
 function scanComponentByNodeId(
   workspace: Workspace,
   nodeId: EntryNodeId,
-): ComponentEntry | null {
+): Board | null {
   for (const board of Object.values(workspace.components)) {
     let found = false
     walkComponentTreeRefs(board.variants, (ref) => {
@@ -49,10 +49,10 @@ function scanComponentByNodeId(
  * @param workspace Workspace to search.
  * @param nodeId Node id to find.
  */
-export function getComponentByNodeId(
+export function getBoardByNodeId(
   workspace: Workspace,
   nodeId: EntryNodeId,
-): ComponentEntry | null {
+): Board | null {
   const components = workspace.components
 
   // Immer drafts mutate in place while keeping a stable proxy identity, so a

@@ -15,7 +15,7 @@ import {
 import { getComponentSchema } from "@seldon/core/components/catalog"
 import { ThemeId } from "@seldon/core/themes/types"
 import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
-import { themeService } from "@seldon/core/workspace/services/theme/theme.service"
+import { workspaceThemeService } from "@seldon/core/workspace/services/theme/theme.service"
 import { ComponentId } from "@seldon/core/components/constants"
 import { collectDescendantNodeIds } from "@lib/workspace/component-tree"
 import {
@@ -65,7 +65,7 @@ export const CanvasNode = memo(function CanvasNode({
    * Note: This only works because we're a standard algorithm that traverses the tree from top to bottom
    */
   const themeId = node.theme || initialThemeId
-  const theme = themeService.getTheme(themeId, workspace)
+  const theme = workspaceThemeService.getTheme(themeId, workspace)
   invariant(theme, `Theme ${themeId} not found`)
 
   const catalogComponentId = getNodeCatalogComponentId(node, workspace)

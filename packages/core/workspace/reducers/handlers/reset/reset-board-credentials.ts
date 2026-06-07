@@ -1,11 +1,11 @@
 import type { ExtractPayload, Workspace } from "../../../../index"
-import { withComponentMutation } from "../../../services/shared/workspace-operation-helpers"
+import { withBoardMutation } from "../../../services/shared/workspace-operation-helpers"
 
-export function resetComponentCredentials(
-  payload: ExtractPayload<"reset_component_credentials">,
+export function resetBoardCredentials(
+  payload: ExtractPayload<"reset_board_credentials">,
   workspace: Workspace,
 ): Workspace {
-  return withComponentMutation(payload.componentKey, workspace, (board) => {
+  return withBoardMutation(payload.boardKey, workspace, (board) => {
     if (
       board.type === "font-collection" ||
       board.type === "icon-set" ||

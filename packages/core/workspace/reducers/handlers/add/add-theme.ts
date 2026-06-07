@@ -4,9 +4,9 @@ import { isComponentId } from "../../../../components/constants"
 import { ExtractPayload, Workspace } from "../../../../index"
 import { rules } from "../../../../rules/config/rules.config"
 import {
-  getComponentOrder,
-  setComponentOrder,
-} from "../../../helpers/components/component-sort-order"
+  getBoardOrder,
+  setBoardOrder,
+} from "../../../helpers/components/board-sort-order"
 import { WORKSPACE_EDITABLE_THEME_ENTRY_ID } from "../../../helpers/themes/workspace-editable-theme"
 import { formatThemeCatalog } from "../../../model/template-ref"
 import { STOCK_THEMES_BY_ID } from "../../../../themes/catalog"
@@ -18,9 +18,9 @@ import {
 import type { ValidationOptions } from "../../helpers/validation"
 
 /**
- * Inserts a theme board and one `themes` row: a default row rooted at `catalog:{componentKey}`.
+ * Inserts a theme board and one `themes` row: a default row rooted at `catalog:{boardKey}`.
  *
- * Returns the incoming workspace when creation is blocked by rules, when validation fails, or when `workspace.components[componentKey]` already exists.
+ * Returns the incoming workspace when creation is blocked by rules, when validation fails, or when `workspace.components[boardKey]` already exists.
  */
 export function addTheme(
   payload: ExtractPayload<"add_theme">,
@@ -32,38 +32,38 @@ export function addTheme(
   }
 
   return produce(workspace, (draft) => {
-    const componentKey = payload.componentKey
+    const boardKey = payload.boardKey
 
-    if (draft.components[componentKey]) {
+    if (draft.components[boardKey]) {
       return draft
     }
 
     const existingBoards = Object.values(draft.components)
     const maxOrder =
       existingBoards.length > 0
-        ? Math.max(...existingBoards.map((b) => getComponentOrder(b)))
+        ? Math.max(...existingBoards.map((b) => getBoardOrder(b)))
         : -1
 
-    const defaultThemeEntryId = `theme-${componentKey}-default`
+    const defaultThemeEntryId = `theme-${boardKey}-default`
 
-    const stockTheme = STOCK_THEMES_BY_ID[componentKey as ThemeTemplateId]
+    const stockTheme = STOCK_THEMES_BY_ID[boardKey as ThemeTemplateId]
     const label = stockTheme
       ? stockTheme.metadata.name
-      : isComponentId(componentKey)
-        ? workspaceMutationService.getInitialComponentLabel(componentKey)
-        : componentKey
+      : isComponentId(boardKey)
+        ? workspaceMutationService.getInitialComponentLabel(boardKey)
+        : boardKey
 
     draft.themes[defaultThemeEntryId] = {
       id: defaultThemeEntryId,
       type: "default",
       label: "Default",
-      template: formatThemeCatalog(componentKey),
+      template: formatThemeCatalog(boardKey),
       overrides: {},
     }
 
     const board = {
       type: "theme" as const,
-      catalogId: componentKey,
+      catalogId: boardKey,
       label,
       author: "Seldon Digital",
       componentPreview: "seldonThemePreview",
@@ -71,10 +71,10 @@ export function addTheme(
       componentProperties: getInitialBoardComponentProperties("theme"),
       variants: [{ id: defaultThemeEntryId }],
     }
-    setComponentOrder(board, maxOrder + 1)
-    draft.components[componentKey] = board
+    setBoardOrder(board, maxOrder + 1)
+    draft.components[boardKey] = board
 
-    const updatedWorkspace = workspacePropagationService.realignComponentOrder(draft)
+    const updatedWorkspace = workspacePropagationService.realignBoardOrder(draft)
     Object.assign(draft.components, updatedWorkspace.components)
   })
 }

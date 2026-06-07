@@ -27,18 +27,18 @@ export function duplicateFontCollection(
       isDraft(draftEntry) ? current(draftEntry) : draftEntry
     ) as EntryFontCollection
 
-    const componentKey = fontCollectionBoardKeyFromEntryId(
+    const boardKey = fontCollectionBoardKeyFromEntryId(
       payload.fontCollectionId,
     )
-    if (!componentKey) return
+    if (!boardKey) return
 
     const newId =
       payload.newFontCollectionId ??
-      `font-collection-${componentKey}-${randomSuffix()}`
+      `font-collection-${boardKey}-${randomSuffix()}`
 
     if (draft["font-collections"][newId]) return
 
-    const board = draft.components[componentKey]
+    const board = draft.components[boardKey]
     const isFontCollectionBoard = board?.type === "font-collection"
 
     const base = isFontCollectionBoard ? board.label : entry.label

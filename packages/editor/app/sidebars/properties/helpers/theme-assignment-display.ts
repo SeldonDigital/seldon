@@ -6,10 +6,10 @@ import {
   Variant,
   Workspace,
 } from "@seldon/core"
-import { getComponentLevelThemeRef } from "@seldon/core/workspace/helpers/components/get-component-level-theme-ref"
-import { isComponentEntry } from "@seldon/core/workspace/helpers/components/is-component-entry"
+import { getBoardThemeRef as readBoardThemeRef } from "@seldon/core/workspace/helpers/components/get-board-theme-ref"
+import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { getThemeEntryDisplayName } from "@seldon/core/workspace/helpers/themes/get-theme-entry-display-name"
-import { themeService } from "@seldon/core/workspace/services/theme/theme.service"
+import { workspaceThemeService } from "@seldon/core/workspace/services/theme/theme.service"
 import { FlatProperty } from "./properties-data"
 
 const DEFAULT_BOARD_THEME_ID = "seldon" as ThemeInstanceId
@@ -18,7 +18,7 @@ const DEFAULT_BOARD_THEME_ID = "seldon" as ThemeInstanceId
  * Theme ref for a catalog board. Boards always resolve a theme; missing refs use Default.
  */
 export function getBoardThemeRef(board: Board): ThemeInstanceId {
-  return getComponentLevelThemeRef(board) ?? DEFAULT_BOARD_THEME_ID
+  return readBoardThemeRef(board) ?? DEFAULT_BOARD_THEME_ID
 }
 
 function getThemeDisplayName(themeId: string, workspace: Workspace): string {
@@ -28,7 +28,7 @@ function getThemeDisplayName(themeId: string, workspace: Workspace): string {
   }
 
   try {
-    return themeService.getTheme(themeId as ThemeInstanceId, workspace).metadata
+    return workspaceThemeService.getTheme(themeId as ThemeInstanceId, workspace).metadata
       .name
   } catch {
     return themeId
@@ -42,7 +42,7 @@ export function getThemeAssignmentDisplayValue(
   node: Variant | Instance | Board,
   workspace: Workspace,
 ): string {
-  if (isComponentEntry(node)) {
+  if (isBoard(node)) {
     return getThemeDisplayName(getBoardThemeRef(node), workspace)
   }
 
@@ -60,8 +60,8 @@ export function buildThemeAssignmentProperty(
   node: Variant | Instance | Board,
   workspace: Workspace,
 ): FlatProperty {
-  const isBoard = isComponentEntry(node)
-  const themeRef = isBoard ? getBoardThemeRef(node) : node.theme
+  const nodeIsBoard = isBoard(node)
+  const themeRef = nodeIsBoard ? getBoardThemeRef(node) : node.theme
 
   return {
     key: "theme",
@@ -78,6 +78,6 @@ export function buildThemeAssignmentProperty(
     isCompound: false,
     isShorthand: false,
     isSubProperty: false,
-    status: isBoard || themeRef ? "set" : "unset",
+    status: nodeIsBoard || themeRef ? "set" : "unset",
   }
 }

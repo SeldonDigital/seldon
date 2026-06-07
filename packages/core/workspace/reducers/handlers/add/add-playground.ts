@@ -4,9 +4,9 @@ import { ComponentId } from "../../../../components/constants"
 import { ExtractPayload, Workspace } from "../../../../index"
 import { rules } from "../../../../rules/config/rules.config"
 import {
-  getComponentOrder,
-  setComponentOrder,
-} from "../../../helpers/components/component-sort-order"
+  getBoardOrder,
+  setBoardOrder,
+} from "../../../helpers/components/board-sort-order"
 import { WORKSPACE_EDITABLE_THEME_ENTRY_ID } from "../../../helpers/themes/workspace-editable-theme"
 import { formatNodeCatalog } from "../../../model/template-ref"
 import {
@@ -24,9 +24,9 @@ import type { ValidationOptions } from "../../helpers/validation"
 /**
  * Creates a playground board and its default frame root node when the board key is free.
  *
- * Returns the current workspace when board creation is disallowed by rules or when a board already exists at `componentKey`.
+ * Returns the current workspace when board creation is disallowed by rules or when a board already exists at `boardKey`.
  *
- * @param payload ComponentEntry key for `workspace.components` and generated default node id.
+ * @param payload Board key for `workspace.components` and generated default node id.
  * @param workspace Current workspace.
  * @param options Optional validation logging for strict or AI-driven flows.
  * @returns Workspace with the new board and node, or the unchanged workspace.
@@ -41,19 +41,19 @@ export function addPlayground(
   }
 
   return produce(workspace, (draft) => {
-    const componentKey = payload.componentKey
+    const boardKey = payload.boardKey
 
-    if (draft.components[componentKey]) {
+    if (draft.components[boardKey]) {
       return draft
     }
 
     const existingBoards = Object.values(draft.components)
     const maxOrder =
       existingBoards.length > 0
-        ? Math.max(...existingBoards.map((b) => getComponentOrder(b)))
+        ? Math.max(...existingBoards.map((b) => getBoardOrder(b)))
         : -1
 
-    const defaultNodeId = `playground-${componentKey}-default`
+    const defaultNodeId = `playground-${boardKey}-default`
 
     draft.nodes[defaultNodeId] = {
       id: defaultNodeId,
@@ -73,10 +73,10 @@ export function addPlayground(
       componentProperties: getInitialBoardComponentProperties("playground"),
       variants: [{ id: defaultNodeId }],
     }
-    setComponentOrder(board, maxOrder + 1)
-    draft.components[componentKey] = board
+    setBoardOrder(board, maxOrder + 1)
+    draft.components[boardKey] = board
 
-    const updatedWorkspace = workspacePropagationService.realignComponentOrder(draft)
+    const updatedWorkspace = workspacePropagationService.realignBoardOrder(draft)
     Object.assign(draft.components, updatedWorkspace.components)
   })
 }

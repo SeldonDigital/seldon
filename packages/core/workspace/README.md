@@ -23,18 +23,18 @@ At its core, a Seldon workspace file is a collection of JSON keys containing dat
 }
 ```
 
-ComponentEntry keys are camelCase slugs unique across the workspace, referencing their source data found throughout `core/`.
+Board keys are camelCase slugs unique across the workspace, referencing their source data found throughout `core/`.
 
 
 | Key | Description | ID Pattern |
 | --- | --- | --- |
 | `metadata` | File-level metadata: migration version, ownership, optional notices, and other fields tied to the overall workspace. |  |
-| `components` | Catalog index for all row kinds (`component`, `playground`, `theme`, `font-collection`, `icon-set`, `media`). Each row shares fields like `type` and `variants`; see **Components** below. | `{componentKey}` |
-| `nodes` | Playgrounds, components, variants, and instances all keyed by stable ids. | `playground-{componentKey}-{suffix}`, `component-{componentKey}-{suffix}` |
-| `themes` | Theme definitions displayed using sample components. These are made available in all editor theme menus, and are described in detail below. | `theme-{componentKey}-{suffix}` |
-| `font-collections` | Font collection choices: families, references, licensing, and related data. These are made available in all editor font menus, and are described in detail below. | `font-collection-{componentKey}-{suffix}` |
-| `icon-sets` | Icon set choices: definitions, SVG payloads or references, and licensing. These are made available in all editor icon menus, and are described in detail in the Icon Sets section below. | `icon-set-{componentKey}-{suffix}` |
-| `media` | Media choices: assets, licensing, and external links. These are made available in all editor content fields, and are described in detail in the Media section below. | `media-{componentKey}-{suffix}` |
+| `components` | Catalog index for all row kinds (`component`, `playground`, `theme`, `font-collection`, `icon-set`, `media`). Each row shares fields like `type` and `variants`; see **Components** below. | `{boardKey}` |
+| `nodes` | Playgrounds, components, variants, and instances all keyed by stable ids. | `playground-{boardKey}-{suffix}`, `component-{boardKey}-{suffix}` |
+| `themes` | Theme definitions displayed using sample components. These are made available in all editor theme menus, and are described in detail below. | `theme-{boardKey}-{suffix}` |
+| `font-collections` | Font collection choices: families, references, licensing, and related data. These are made available in all editor font menus, and are described in detail below. | `font-collection-{boardKey}-{suffix}` |
+| `icon-sets` | Icon set choices: definitions, SVG payloads or references, and licensing. These are made available in all editor icon menus, and are described in detail in the Icon Sets section below. | `icon-set-{boardKey}-{suffix}` |
+| `media` | Media choices: assets, licensing, and external links. These are made available in all editor content fields, and are described in detail in the Media section below. | `media-{boardKey}-{suffix}` |
 
 ---
 
@@ -166,7 +166,7 @@ Components are the organizational index of the workspace used to render, export,
 
 Components do not hold data directly. They only index the information needed to define an object, including which default theme applies.
 
-Programs change catalog row header fields with `set_component_label`, `set_component_intent`, `set_component_tags`, `set_component_license`, `set_component_author`, `set_component_credentials`, `set_component_preview`, `set_component_editor_data`, and use `set_component_properties`, `reset_component_property`, and `set_component_theme` for catalog row layout, preview frame, and default theme on the catalog row.
+Programs change catalog row header fields with `set_board_label`, `set_board_intent`, `set_board_tags`, `set_board_license`, `set_board_author`, `set_board_credentials`, `set_board_preview`, `set_board_editor_data`, and use `set_component_properties`, `reset_component_property`, and `set_component_theme` for catalog row layout, preview frame, and default theme on the catalog row.
 
 ### Component types
 
@@ -266,7 +266,7 @@ When placing or pasting a component from another workspace, the rules are:
 
 ---
 
-#### Playground ComponentEntry
+#### Playground Board
 
 Playground boards are used for prototyping and previewing designs, holding components and their variants to allow users to see components interacting. Playground boards and variants are excluded from factory export. They rely on `display: "exclude"` so generated code skips them.
 
@@ -279,7 +279,7 @@ The playground catalog row structure is currently identical to component catalog
 | `intent` | `string` | Optional short description of the playground's purpose. |
 | `tags` | `string[]` | Optional labels for search or filtering. |
 | `componentTheme` | `ThemeInstanceId` | The theme applied to this catalog row and inherited by its variants. The `componentTheme` field influences exported output by supplying a theme when no theme has been assigned to a variant. The `componentTheme` defaults to `seldonTheme`. |
-| `componentProperties` | `Properties` | ComponentEntry-level properties used only for visual display in an editor. These do not affect exported code or how components are rendered in production. |
+| `componentProperties` | `Properties` | Board-level properties used only for visual display in an editor. These do not affect exported code or how components are rendered in production. |
 | `variants` | `{ "id", "children"? }` | An ordered array of variant entries belonging to this catalog row appearing top to bottom, along with their nested children. (See the **Nodes section** below.) The first entry is always the **default variant**. See **Default catalog alignment** (Workspace Structure). |
 | `__editor` | `object` | Optional editor-only metadata for this playground. |
 
@@ -317,7 +317,7 @@ The playground catalog row structure is currently identical to component catalog
 
 ---
 
-#### Theme ComponentEntry
+#### Theme Board
 
 Theme rows hold theme definition variants that reference data in the `themes` section. The base variant ships from `core/themes/` and represents the default theme configuration. It is always present and cannot be deleted. Users can create additional variants for custom theme definitions.
 
@@ -332,7 +332,7 @@ Theme rows hold theme definition variants that reference data in the `themes` se
 | `license` | `object` | Optional theme licensing metadata. |
 | `componentPreview` | `string` | The default preview catalog id from `core/themes/` the editor uses to show themes in context. This is not processed in factory export. Editors may override the default with a playground id saved within the workspace. The `componentPreview` defaults to `seldonThemePreview`.|
 | `componentTheme` | `ThemeInstanceId` | The theme applied to this catalog row and inherited by its variants. The `componentTheme` field influences exported output by supplying a theme when no theme has been assigned to a variant. The `componentTheme` defaults to `seldonTheme`. |
-| `componentProperties` | `Properties` | ComponentEntry-level properties used only for visual display in an editor. These do not affect exported code or how components are rendered in production. |
+| `componentProperties` | `Properties` | Board-level properties used only for visual display in an editor. These do not affect exported code or how components are rendered in production. |
 | `variants` | `{ "id" }` | An ordered array of variant entries belonging to this catalog row appearing top to bottom. (See the **Themes section** below.) The first entry is always the **default variant**. See **Default catalog alignment** (Workspace Structure). |
 | `__editor` | `object` | Optional editor-only metadata for this theme. |
 
@@ -360,7 +360,7 @@ Theme rows hold theme definition variants that reference data in the `themes` se
 
 ---
 
-#### Font Collection ComponentEntry
+#### Font Collection Board
 
 Font collection rows hold font configuration variants that reference data in the `font-collections` section. The base variant ships from `core/font-collections/` and represents the default font configuration. It is always present and cannot be deleted. Users can create additional variants for custom font selections. Font collection rows may extend the shared catalog row fields with additional metadata. That metadata can include API keys for font services.
 
@@ -376,7 +376,7 @@ Font collection rows hold font configuration variants that reference data in the
 | `tags` | `string[]` | Optional labels for search or filtering. |
 | `componentPreview` | `string` | The default preview catalog id from `core/font-collections/` the editor uses to show font in context. This is not processed in factory export. Editors may override the default with a playground id saved within the workspace. The `componentPreview` defaults to `seldonFontsPreview`.|
 | `componentTheme` | `ThemeInstanceId` | The theme applied to this catalog row and inherited by its variants. The `componentTheme` field influences exported output by supplying a theme when no theme has been assigned to a variant. The `componentTheme` defaults to `seldonTheme`. |
-| `componentProperties` | `Properties` | ComponentEntry-level properties used only for visual display in an editor. These do not affect exported code or how components are rendered in production. |
+| `componentProperties` | `Properties` | Board-level properties used only for visual display in an editor. These do not affect exported code or how components are rendered in production. |
 | `variants` | `{ "id" }` | An ordered array of variant entries belonging to this catalog row. The first entry is always the default variant and cannot be edited directly. That default matches the packaged font collection identified by `catalogId`. Variants appear in an editor from top to bottom based on list order. See **Default catalog alignment** (Workspace Structure). |
 | `__editor` | `object` | Optional editor-only metadata for this font collection. |
 
@@ -413,7 +413,7 @@ Font collection rows hold font configuration variants that reference data in the
 
 ---
 
-#### Icon Set ComponentEntry
+#### Icon Set Board
 
 Icon set boards hold icon set variants that reference data in the `icon-sets` section. The base variant ships from `core/icon-sets/` and represents the full icon set, such as the complete Google Material set. It is always present and cannot be deleted. Users can create additional variants as curated subsets for specific use cases. Examples of subset labels include `mobile` and `japanese`.
 
@@ -429,7 +429,7 @@ Icon set boards hold icon set variants that reference data in the `icon-sets` se
 | `tags` | `string[]` | Optional labels for search or filtering. |
 | `componentPreview` | `string` | The default preview catalog id from `core/icon-sets/` the editor uses to show font in context. This is not processed in factory export. Editors may override the default with a playground id saved within the workspace. The `componentPreview` defaults to `seldonIconsPreview`.|
 | `componentTheme` | `ThemeInstanceId` | The theme applied to this catalog row and inherited by its variants. The `componentTheme` field influences exported output by supplying a theme when no theme has been assigned to a variant. The `componentTheme` defaults to `seldonTheme`. |
-| `componentProperties` | `Properties` | ComponentEntry-level properties used only for visual display in an editor. These do not affect exported code or how components are rendered in production. |
+| `componentProperties` | `Properties` | Board-level properties used only for visual display in an editor. These do not affect exported code or how components are rendered in production. |
 | `variants` | `{ "id" }` | An ordered array of variant entries belonging to this catalog row. The first entry is always the default variant and cannot be edited directly. That default matches the packaged icon set identified by `catalogId`. Variants appear in an editor from top to bottom based on list order. See **Default catalog alignment** (Workspace Structure). |
 | `__editor` | `object` | Optional editor-only metadata for this icon set. |
 
@@ -465,7 +465,7 @@ Icon set boards hold icon set variants that reference data in the `icon-sets` se
 
 ---
 
-#### Media ComponentEntry
+#### Media Board
 
 Media rows hold media assets and variants that reference data in the `media` section. The base variant ships from `core/media/` and represents the default media configuration. It is always present and cannot be deleted. Users can create additional variants for curated media collections. Media rows may extend the shared catalog row fields with additional metadata. That metadata can include licensing keys.
 
@@ -481,7 +481,7 @@ Media rows hold media assets and variants that reference data in the `media` sec
 | `tags` | `string[]` | Optional labels for search or filtering. |
 | `componentPreview` | `string` | The default preview catalog id from `core/media/` the editor uses to show font in context. This is not processed in factory export. Editors may override the default with a playground id saved within the workspace. The `componentPreview` defaults to `seldonMediaPreview`.|
 | `componentTheme` | `ThemeInstanceId` | The theme applied to this catalog row and inherited by its variants. The `componentTheme` field influences exported output by supplying a theme when no theme has been assigned to a variant. The `componentTheme` defaults to `seldonTheme`. |
-| `componentProperties` | `Properties` | ComponentEntry-level properties used only for visual display in an editor. These do not affect exported code or how components are rendered in production. |
+| `componentProperties` | `Properties` | Board-level properties used only for visual display in an editor. These do not affect exported code or how components are rendered in production. |
 | `variants` | `{ "id" }` | An ordered array of variant entries belonging to this catalog row. The first entry is always the default variant and cannot be edited directly. That default matches the packaged media identified by `catalogId`. Variants appear in an editor from top to bottom based on list order. See **Default catalog alignment** (Workspace Structure). |
 | `__editor` | `object` | Optional editor-only metadata for this media catalog. |
 
@@ -1010,11 +1010,11 @@ See **Referential Integrity** for the static file-level constraints that a store
 
 A valid workspace file must satisfy the following constraints.
 
-### 1. ComponentEntry variant trees resolve to the correct map
+### 1. Board variant trees resolve to the correct map
 
-For each catalog row, every **`id`** that appears in **`variants`** and, for `component` and `playground` boards, in every nested **`children`** array (recursively), must exist as a **key** in exactly one top-level map, determined by **`boards[componentKey].type`**:
+For each catalog row, every **`id`** that appears in **`variants`** and, for `component` and `playground` boards, in every nested **`children`** array (recursively), must exist as a **key** in exactly one top-level map, determined by **`boards[boardKey].type`**:
 
-| ComponentEntry `type` | Map that must contain each collected `id` |
+| Board `type` | Map that must contain each collected `id` |
 | --- | --- |
 | `component`, `playground` | `nodes` |
 | `theme` | `themes` |

@@ -1,10 +1,10 @@
 import { Display, Orientation, ValueType } from "../../../properties"
 import type { Properties } from "../../../properties/types/properties"
-import type { ComponentEntry } from "../../model/components"
+import type { Board } from "../../model/components"
 
 /** Initial `componentProperties` overrides when creating a catalog row by board type. */
 export function getInitialBoardComponentProperties(
-  type: ComponentEntry["type"],
+  type: Board["type"],
 ): Properties {
   if (type === "playground") {
     return {

@@ -1,14 +1,14 @@
 import { STOCK_THEMES_BY_ID } from "../../../themes/catalog"
 import type { ThemeTemplateId } from "../../../themes/types/theme-id"
-import type { ComponentEntry, ThemeBoard } from "../../model/components"
+import type { Board, ThemeBoard } from "../../model/components"
 import { isThemeBoard } from "../../model/components"
 import type { EntryTheme } from "../../model/entry-theme"
 import { formatThemeCatalog } from "../../model/template-ref"
 import type { Workspace } from "../../model/workspace"
 import {
-  getComponentOrder,
-  setComponentOrder,
-} from "../components/component-sort-order"
+  getBoardOrder,
+  setBoardOrder,
+} from "../components/board-sort-order"
 import { getInitialBoardComponentProperties } from "../components/get-initial-board-component-properties"
 
 /** Catalog row key for the default theme board (matches the `default` stock template id). */
@@ -74,7 +74,7 @@ function seedThemeBoard(
   boardKey: ThemeTemplateId,
   entry: EntryTheme,
 ): void {
-  const existing = workspace.components[boardKey] as ComponentEntry | undefined
+  const existing = workspace.components[boardKey] as Board | undefined
   if (existing && isThemeBoard(existing)) {
     return
   }
@@ -84,7 +84,7 @@ function seedThemeBoard(
   const existingBoards = Object.values(workspace.components)
   const maxOrder =
     existingBoards.length > 0
-      ? Math.max(...existingBoards.map((b) => getComponentOrder(b)))
+      ? Math.max(...existingBoards.map((b) => getBoardOrder(b)))
       : -1
 
   const board: ThemeBoard = {
@@ -97,6 +97,6 @@ function seedThemeBoard(
     componentProperties: getInitialBoardComponentProperties("theme"),
     variants: [{ id: entry.id }],
   }
-  setComponentOrder(board, maxOrder + 1)
+  setBoardOrder(board, maxOrder + 1)
   workspace.components[boardKey] = board
 }

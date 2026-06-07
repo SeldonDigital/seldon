@@ -1,5 +1,5 @@
 import { InstanceId, VariantId } from "@seldon/core"
-import type { ComponentKey } from "@seldon/core/workspace/types"
+import type { BoardKey } from "@seldon/core/workspace/types"
 import {
   type ResourceEntryKind,
   useStore as useSelectionStore,
@@ -113,7 +113,7 @@ export function selectFromTarget(
       id: VariantId | InstanceId | null,
       rootId?: string | null,
     ) => void
-    selectBoard: (id: ComponentKey | null) => void
+    selectBoard: (id: BoardKey | null) => void
     selectResourceEntry: (kind: ResourceEntryKind, id: string | null) => void
     selectResourceItem: (key: string | null) => void
   },
@@ -123,7 +123,7 @@ export function selectFromTarget(
       setters.selectNode(target.id as VariantId | InstanceId, target.rootId)
       return
     case "board":
-      setters.selectBoard(target.id as ComponentKey)
+      setters.selectBoard(target.id as BoardKey)
       return
     case "theme":
     case "fontCollection":

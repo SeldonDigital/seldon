@@ -12,7 +12,7 @@ import {
   isEntryNodeForRules,
 } from "../../helpers/rules/rules-node-subject"
 import { parseNodeTemplate } from "../../model/template-ref"
-import type { ComponentEntry } from "../../types"
+import type { Board } from "../../types"
 
 export class TypeCheckingService {
   /**
@@ -21,7 +21,7 @@ export class TypeCheckingService {
    * @returns The entity type
    */
   public getEntityType(nodeOrBoard: RulesNodeOrComponent): Entity {
-    if (this.isComponentEntry(nodeOrBoard)) {
+    if (this.isBoard(nodeOrBoard)) {
       return "board"
     }
 
@@ -50,7 +50,7 @@ export class TypeCheckingService {
    */
   public isVariant(node: RulesNodeOrComponent | undefined): node is Variant {
     if (node === undefined) return false
-    if (this.isComponentEntry(node)) return false
+    if (this.isBoard(node)) return false
     if (isEntryNodeForRules(node)) {
       return node.type === "default" || node.type === "variant"
     }
@@ -63,7 +63,7 @@ export class TypeCheckingService {
    * @returns True if the node is a default variant
    */
   public isDefaultVariant(node: RulesNodeOrComponent): node is DefaultVariant {
-    if (this.isComponentEntry(node)) return false
+    if (this.isBoard(node)) return false
     if (isEntryNodeForRules(node)) return node.type === "default"
     return false
   }
@@ -74,7 +74,7 @@ export class TypeCheckingService {
    * @returns True if the node is a user variant
    */
   public isUserVariant(node: RulesNodeOrComponent): node is UserVariant {
-    if (this.isComponentEntry(node)) return false
+    if (this.isBoard(node)) return false
     if (isEntryNodeForRules(node)) return node.type === "variant"
     return false
   }
@@ -84,7 +84,7 @@ export class TypeCheckingService {
    * @param node - The node to check
    * @returns True if the node is a board
    */
-  public isComponentEntry(node: RulesNodeOrComponent): node is ComponentEntry {
+  public isBoard(node: RulesNodeOrComponent): node is Board {
     return "variants" in node
   }
 
@@ -113,7 +113,7 @@ export class TypeCheckingService {
    * @returns True if the node maps to a component catalog id
    */
   public canNodeHaveChildren(node: RulesNodeOrComponent): boolean {
-    if (this.isComponentEntry(node)) return false
+    if (this.isBoard(node)) return false
     if (!isEntryNodeForRules(node)) return false
 
     try {

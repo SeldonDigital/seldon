@@ -1,4 +1,4 @@
-import { ComponentEntry, EntryNode } from "../../types"
+import { Board, EntryNode } from "../../types"
 
 /**
  * Tells whether this value is a catalog row or a node entry.
@@ -8,8 +8,8 @@ import { ComponentEntry, EntryNode } from "../../types"
  *
  * @param nodeOrBoard Value that might be a catalog row or a node entry.
  */
-export function isComponentEntry(
-  nodeOrBoard: EntryNode | ComponentEntry,
-): nodeOrBoard is ComponentEntry {
+export function isBoard(
+  nodeOrBoard: EntryNode | Board,
+): nodeOrBoard is Board {
   return "variants" in nodeOrBoard
 }

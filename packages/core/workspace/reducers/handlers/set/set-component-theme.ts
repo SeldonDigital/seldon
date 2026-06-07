@@ -23,7 +23,7 @@ export function setComponentTheme(
   }
 
   return workspaceMutationService.setComponentTheme(
-    payload.componentKey,
+    payload.boardKey,
     payload.theme,
     workspace,
   )

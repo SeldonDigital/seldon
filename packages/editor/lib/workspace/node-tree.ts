@@ -2,7 +2,7 @@ import { ComponentId, isComponentId } from "@seldon/core/components/constants"
 import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-catalog-id"
 import { nodeRelationshipService } from "@seldon/core/workspace/services/nodes/node-relationship.service"
 import type {
-  ComponentEntry,
+  Board,
   EntryNode,
   EntryNodeId,
   Workspace,
@@ -24,7 +24,7 @@ export function getNodeChildIds(
   node: EntryNode,
   workspace: Workspace,
 ): EntryNodeId[] {
-  const board = nodeRelationshipService.findComponentForNode(node, workspace)
+  const board = nodeRelationshipService.findBoardForNode(node, workspace)
   if (!board) return []
   return getChildNodeIds(board, node.id)
 }
@@ -32,6 +32,6 @@ export function getNodeChildIds(
 export function findComponentForNode(
   node: EntryNode,
   workspace: Workspace,
-): ComponentEntry | null {
-  return nodeRelationshipService.findComponentForNode(node, workspace)
+): Board | null {
+  return nodeRelationshipService.findBoardForNode(node, workspace)
 }

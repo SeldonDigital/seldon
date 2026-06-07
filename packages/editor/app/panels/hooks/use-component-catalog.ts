@@ -4,7 +4,7 @@ import { catalog } from "@seldon/core/components/catalog"
 import { ComponentId } from "@seldon/core/components/constants"
 import { ComponentSchema } from "@seldon/core/components/types"
 import { VariantId } from "@seldon/core/index"
-import { getComponentVariantRootIds } from "@seldon/core/workspace/helpers/components/get-component-variant-root-ids"
+import { getBoardVariantRootIds } from "@seldon/core/workspace/helpers/components/get-board-variant-root-ids"
 import { getVariantById } from "@seldon/core/workspace/helpers/general/get-variant-by-id"
 import { isSpecialComponentVariant } from "@seldon/core/workspace/helpers/general/is-special-component-variant"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
@@ -67,7 +67,7 @@ export function useComponentCatalog({
 
           if (board) {
             // If board exists, get all variants
-            return getComponentVariantRootIds(board).map((variantId) => {
+            return getBoardVariantRootIds(board).map((variantId) => {
               const variant = getVariantById(variantId, workspace)
               // For special board variants, use the actual label even for default variants
               // For regular boards, show "Default" for default variants

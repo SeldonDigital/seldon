@@ -26,21 +26,21 @@ flowchart LR
 
 | Type Or Function | File | Purpose \| Use |
 | --- | --- | --- |
-| `areComponentVariantsInUse` | `components/are-component-variants-in-use.ts` | Checks whether any root variant on a catalog row is referenced elsewhere. \| Used before removing component or playground rows. |
+| `areBoardVariantsInUse` | `components/are-board-variants-in-use.ts` | Checks whether any root variant on a catalog row is referenced elsewhere. \| Used before removing component or playground rows. |
 | `componentBoardDefaultNodeId` | `components/entry-node-ids.ts` | Builds `component-{key}-default`. \| Used when creating default node rows. |
 | `componentBoardUniqueNodeId` | `components/entry-node-ids.ts` | Builds `component-{key}-{suffix}`. \| Used when creating new node rows. |
-| `getComponentById` | `get-component-by-id.ts` | Loads a catalog row by `workspace.components` key. \| Used when the row must exist. |
-| `getComponentByNodeId` | `get-component-by-node-id.ts` | Finds the catalog row whose variant tree lists a node id. \| Used when only a node id is known. |
-| `findComponentByTreeNodeId` | `find-component-by-tree-node-id.ts` | Finds a catalog row by walking variant trees. \| Used when lookup by node id must scan all rows. |
-| `getComponentIds` | `get-component-ids.ts` | Lists all keys in `workspace.components`. \| Used when code iterates catalog rows. |
-| `getComponentId` | `get-component-ids.ts` | Finds the key for a given catalog row object. \| Used when code holds the row and needs its map key. |
+| `getBoardById` | `get-board-by-id.ts` | Loads a catalog row by `workspace.components` key. \| Used when the row must exist. |
+| `getBoardByNodeId` | `get-board-by-node-id.ts` | Finds the catalog row whose variant tree lists a node id. \| Used when only a node id is known. |
+| `findBoardByTreeNodeId` | `find-board-by-tree-node-id.ts` | Finds a catalog row by walking variant trees. \| Used when lookup by node id must scan all rows. |
+| `getBoardKeys` | `get-board-keys.ts` | Lists all keys in `workspace.components`. \| Used when code iterates catalog rows. |
+| `getBoardKey` | `get-board-keys.ts` | Finds the key for a given catalog row object. \| Used when code holds the row and needs its map key. |
 | `isResourceType` | `components/is-resource-type.ts` | True for theme, font-collection, icon-set, or media catalog rows. \| Used when reducers branch on resource row types. |
-| `getComponentByCatalogId` | `get-component-by-catalog-id.ts` | Resolves `catalogId` to schema data for a row. \| Used when add flows need packaged schema metadata. |
-| `ComponentCatalogAndSchema` | `get-component-by-catalog-id.ts` | Pairs catalog id with `ComponentSchema`. \| Returned by `getComponentByCatalogId`. |
-| `getComponentType` | `get-component-type.ts` | Reads the row `type` field. \| Used by validation and rules. |
-| `getComponentMetadata` | `get-component-metadata.ts` | Copies a row without its `variants` array. \| Used when comparing or hashing row metadata only. |
-| `ComponentMetadata` | `get-component-metadata.ts` | Type for a catalog row without variants. \| Used as the return type of `getComponentMetadata`. |
-| `getComponentVariantRootIds` | `get-component-variant-root-ids.ts` | Lists root ids from `variants`. \| Used by removal, reorder, and tree helpers. |
+| `getBoardCatalogAndSchema` | `get-board-catalog-and-schema.ts` | Resolves `catalogId` to schema data for a row. \| Used when add flows need packaged schema metadata. |
+| `ComponentCatalogAndSchema` | `get-board-catalog-and-schema.ts` | Pairs catalog id with `ComponentSchema`. \| Returned by `getBoardCatalogAndSchema`. |
+| `getBoardType` | `get-board-type.ts` | Reads the row `type` field. \| Used by validation and rules. |
+| `getBoardMetadata` | `get-board-metadata.ts` | Copies a row without its `variants` array. \| Used when comparing or hashing row metadata only. |
+| `BoardMetadata` | `get-board-metadata.ts` | Type for a catalog row without variants. \| Used as the return type of `getBoardMetadata`. |
+| `getBoardVariantRootIds` | `get-board-variant-root-ids.ts` | Lists root ids from `variants`. \| Used by removal, reorder, and tree helpers. |
 | `getVariantTree` | `get-variant-tree.ts` | Finds the `ComponentTreeRef` for a root variant id. \| Used when a handler needs one variant subtree. |
 | `walkComponentTreeRefs` | `walk-component-tree-refs.ts` | Depth-first walk over variant trees. \| Used by validation, removal, and parent lookup. |
 | `getChildrenIds` | `get-children-ids.ts` | Lists child node ids under a parent ref in a variant tree. \| Used by insert and move handlers. |
@@ -49,14 +49,14 @@ flowchart LR
 | `getParentIds` | `get-parent-ids.ts` | Collects ancestor ref ids for a node in a tree. \| Used when code needs the full ancestor chain. |
 | `ComponentParentIds` | `get-parent-ids.ts` | Shape for immediate and root parent ids. \| Returned by `getParentIds`. |
 | `getImmediateParentId` | `get-parent-ids.ts` | Finds the direct parent ref id in a variant tree. \| Used by placement and duplicate helpers. |
-| `isComponentEntry` | `is-component-entry.ts` | Narrows a value to a catalog row via `variants`. \| Used before reading row-only fields. |
+| `isBoard` | `is-board.ts` | Narrows a value to a catalog row via `variants`. \| Used before reading row-only fields. |
 | `isVariantUsed` | `is-variant-used.ts` | True when any root variant on any row is referenced in another tree. \| Used by workspace-wide reference checks. |
-| `getDefaultComponentLabel` | `default-component-metadata.ts` | Default display label for a new catalog row. \| Used when adding or resetting labels. |
-| `DEFAULT_THEME_COMPONENT_AUTHOR` | `default-component-metadata.ts` | Default author string for theme rows. \| Used when resetting theme row author metadata. |
+| `getDefaultBoardLabel` | `default-board-metadata.ts` | Default display label for a new catalog row. \| Used when adding or resetting labels. |
+| `DEFAULT_THEME_BOARD_AUTHOR` | `default-board-metadata.ts` | Default author string for theme rows. \| Used when resetting theme row author metadata. |
 | `getComponentPropertyDefaults` | `get-component-property-defaults.ts` | Baseline `componentProperties` for a row type. \| Used before merging row-level editor properties. |
-| `getComponentOrder` | `component-sort-order.ts` | Reads sort order from `__editor`. \| Used when listing catalog rows in UI order. |
-| `setComponentOrder` | `component-sort-order.ts` | Writes sort order on `__editor`. \| Used after reordering catalog rows. |
-| `getComponentLevelThemeRef` | `get-component-level-theme-ref.ts` | Reads `componentTheme` on a catalog row. \| Used for theme inheritance and effective-theme checks. |
+| `getBoardOrder` | `board-sort-order.ts` | Reads sort order from `__editor`. \| Used when listing catalog rows in UI order. |
+| `setBoardOrder` | `board-sort-order.ts` | Writes sort order on `__editor`. \| Used after reordering catalog rows. |
+| `getBoardThemeRef` | `get-board-theme-ref.ts` | Reads `componentTheme` on a catalog row. \| Used for theme inheritance and effective-theme checks. |
 | `THEME_COMPONENT_CATALOG_IDS` | `resource-component-catalog-ids.ts` | Allowlist built from `core/themes` `packagedThemeCatalogIds`. \| Used when validating theme row `catalogId`. |
 | `FONT_COLLECTION_COMPONENT_CATALOG_IDS` | `resource-component-catalog-ids.ts` | Allowlist built from `core/font-collections` `packagedFontCollectionCatalogIds`. \| Used when validating font-collection rows. |
 | `ICON_SET_COMPONENT_CATALOG_IDS` | `resource-component-catalog-ids.ts` | Allowlist of icon-set catalog ids. \| Used when validating icon-set rows. |

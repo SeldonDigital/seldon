@@ -1,5 +1,5 @@
 import { current, isDraft } from "immer"
-import type { ComponentEntry, ComponentTreeRef, EntryNode, Workspace } from "../../types"
+import type { Board, ComponentTreeRef, EntryNode, Workspace } from "../../types"
 import { isComponentBoard, isPlaygroundBoard } from "../../model/components"
 import { isEntryNodeDefault, isEntryNodeVariant } from "../../model/entry-node"
 import { formatNodeLink, parseNodeLink } from "../../model/template-ref"
@@ -33,8 +33,8 @@ function cloneEntryNodeWithIdRemap(
 export function findComponentContainingTreeNodeId(
   workspace: Workspace,
   nodeId: string,
-): { board: ComponentEntry; componentKey: string } | null {
-  for (const [componentKey, board] of Object.entries(workspace.components)) {
+): { board: Board; boardKey: string } | null {
+  for (const [boardKey, board] of Object.entries(workspace.components)) {
     if (!board.variants?.length) continue
     let found = false
     walkComponentTreeRefs(board.variants, (ref) => {
@@ -43,7 +43,7 @@ export function findComponentContainingTreeNodeId(
         return true
       }
     })
-    if (found) return { board, componentKey }
+    if (found) return { board, boardKey }
   }
   return null
 }
@@ -54,7 +54,7 @@ export function findComponentContainingTreeNodeId(
  * so duplicated instance subtrees keep their children.
  */
 export function insertComponentTreeInstanceAfterSibling(
-  board: ComponentEntry,
+  board: Board,
   afterInstanceId: string,
   newInstance: string | ComponentTreeRef,
 ): boolean {
@@ -86,8 +86,8 @@ export type DuplicateEntryVariantPlan = {
  */
 export function buildDuplicateEntryVariantSubtreePlan(
   workspace: Workspace,
-  board: ComponentEntry,
-  componentKey: string,
+  board: Board,
+  boardKey: string,
   sourceRootId: string,
   newVariantLabel: string,
 ): DuplicateEntryVariantPlan | null {
@@ -103,18 +103,18 @@ export function buildDuplicateEntryVariantSubtreePlan(
 
   const subtreeIds = collectTreeRefIds(tree)
   const idMap = new Map<string, string>()
-  const newRootId = componentBoardUniqueNodeId(componentKey)
+  const newRootId = componentBoardUniqueNodeId(boardKey)
 
   if (isEntryNodeDefault(sourceNode)) {
     for (const id of subtreeIds) {
       if (id === sourceRootId) continue
-      idMap.set(id, componentBoardUniqueNodeId(componentKey))
+      idMap.set(id, componentBoardUniqueNodeId(boardKey))
     }
   } else if (isEntryNodeVariant(sourceNode)) {
     for (const id of subtreeIds) {
       idMap.set(
         id,
-        id === sourceRootId ? newRootId : componentBoardUniqueNodeId(componentKey),
+        id === sourceRootId ? newRootId : componentBoardUniqueNodeId(boardKey),
       )
     }
   } else {

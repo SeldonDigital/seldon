@@ -48,13 +48,13 @@ export function normalizeWireActionToWorkspaceAction(
     case "ai_add_theme_board":
       return {
         type: mappedType,
-        payload: { componentKey: String(payload.componentKey ?? payload.componentId ?? "") },
+        payload: { boardKey: String(payload.boardKey ?? payload.componentId ?? "") },
       } as WorkspaceAction
 
     case "ai_add_assembly_board":
       return {
         type: mappedType,
-        payload: { componentKey: String(payload.componentKey ?? payload.componentId ?? "") },
+        payload: { boardKey: String(payload.boardKey ?? payload.componentId ?? "") },
       } as WorkspaceAction
 
     case "ai_insert_node":
@@ -100,7 +100,7 @@ export function normalizeWireActionToWorkspaceAction(
       return {
         type: mappedType,
         payload: {
-          componentKey: payload.componentId,
+          boardKey: payload.componentId,
           properties: payload.properties,
           ensureDescendantComponents: true,
         },
@@ -110,7 +110,7 @@ export function normalizeWireActionToWorkspaceAction(
       return {
         type: mappedType,
         payload: {
-          componentKey: payload.componentKey ?? payload.componentId,
+          boardKey: payload.boardKey ?? payload.componentId,
           properties: payload.properties,
         },
       } as WorkspaceAction
@@ -119,7 +119,7 @@ export function normalizeWireActionToWorkspaceAction(
       return {
         type: mappedType,
         payload: {
-          componentKey: payload.componentKey ?? payload.componentId,
+          boardKey: payload.boardKey ?? payload.componentId,
           theme: payload.theme,
         },
       } as WorkspaceAction

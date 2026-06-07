@@ -6,7 +6,7 @@ import {
   isIconSetBoard,
   isThemeBoard,
 } from "@seldon/core/workspace/model/components"
-import { themeService } from "@seldon/core/workspace/services/theme/theme.service"
+import { workspaceThemeService } from "@seldon/core/workspace/services/theme/theme.service"
 import { workspaceFontCollectionService } from "@seldon/core/workspace/services/font-collection/font-collection.service"
 import { workspaceIconSetService } from "@seldon/core/workspace/services/icon-set/icon-set.service"
 import { useEditorConfig } from "@lib/hooks/use-editor-config"
@@ -141,7 +141,7 @@ export function PropertiesSidebar() {
       return themeProperties
     }
     if (!selection) return []
-    const theme = themeService.getObjectTheme(selection, workspace)
+    const theme = workspaceThemeService.getObjectTheme(selection, workspace)
     const allProperties = flattenNodeProperties(selection, workspace, theme)
 
     if (!showUnusedProperties) {
@@ -162,7 +162,7 @@ export function PropertiesSidebar() {
       return editedTheme || undefined
     }
     if (!selection) return undefined
-    return themeService.getObjectTheme(selection, workspace)
+    return workspaceThemeService.getObjectTheme(selection, workspace)
   }, [selection, workspace, isThemeEditingMode, editedTheme])
 
   const themeEditingContext = useMemo((): {

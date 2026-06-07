@@ -10,7 +10,7 @@ import { fontVariantDisplayLabel } from "@seldon/core/helpers/utils/font-variant
 import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
 import { isFontCollectionBoard } from "@seldon/core/workspace/model/components"
 import { workspaceFontCollectionService } from "@seldon/core/workspace/services/font-collection/font-collection.service"
-import { themeService } from "@seldon/core/workspace/services/theme/theme.service"
+import { workspaceThemeService } from "@seldon/core/workspace/services/theme/theme.service"
 import type { Workspace } from "@seldon/core/workspace/types"
 import { formatResourceItemKey } from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
@@ -38,7 +38,7 @@ export function FontCollectionBoard({ board }: FontCollectionBoardProps) {
   const { device, isInPreviewMode } = usePreview()
 
   const boardTheme = useMemo(
-    () => themeService.getObjectTheme(board, workspace),
+    () => workspaceThemeService.getObjectTheme(board, workspace),
     [board, workspace],
   )
 
@@ -125,7 +125,7 @@ export function FontCollectionBoard({ board }: FontCollectionBoardProps) {
         {specimens.map(({ entryId, slot, family, weightsLabel }) => {
           const selectionKey = formatResourceItemKey({
             resource: "font-collection",
-            componentKey: boardKey,
+            boardKey: boardKey,
             entryId,
             slot,
           })

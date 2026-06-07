@@ -1,5 +1,5 @@
 import { invariant } from "@seldon/core"
-import { themeService } from "@seldon/core/workspace/services/theme/theme.service"
+import { workspaceThemeService } from "@seldon/core/workspace/services/theme/theme.service"
 import { useSelection } from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 
@@ -9,5 +9,5 @@ export function useSelectionTheme() {
 
   invariant(selection, "Nothing selected")
 
-  return themeService.getObjectTheme(selection, workspace)
+  return workspaceThemeService.getObjectTheme(selection, workspace)
 }

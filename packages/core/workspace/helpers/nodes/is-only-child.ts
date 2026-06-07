@@ -1,6 +1,6 @@
 import { invariant } from "../../../index"
 import { EntryNodeId, Workspace } from "../../types"
-import { findComponentByTreeNodeId } from "../components/find-component-by-tree-node-id"
+import { findBoardByTreeNodeId } from "../components/find-board-by-tree-node-id"
 import { getComponentTreeChildIds } from "../components/get-component-tree-child-ids"
 import { findParentNode } from "./find-parent-node"
 
@@ -13,7 +13,7 @@ import { findParentNode } from "./find-parent-node"
 export function isOnlyChild(childId: EntryNodeId, workspace: Workspace) {
   const parent = findParentNode(childId, workspace)
   invariant(parent, "Unable to find parent for child " + childId)
-  const board = findComponentByTreeNodeId(workspace, parent.id)
+  const board = findBoardByTreeNodeId(workspace, parent.id)
   const childIds = board ? getComponentTreeChildIds(board, parent.id) : []
   return childIds.length === 1
 }

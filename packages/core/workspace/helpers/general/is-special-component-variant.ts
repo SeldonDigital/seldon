@@ -1,5 +1,5 @@
 import { EntryNode, Workspace } from "../../types"
-import { findComponentByTreeNodeId } from "../components/find-component-by-tree-node-id"
+import { findBoardByTreeNodeId } from "../components/find-board-by-tree-node-id"
 import { isResourceType } from "../components/is-resource-type"
 
 /**
@@ -13,7 +13,7 @@ export function isSpecialComponentVariant(
   variant: EntryNode,
   workspace: Workspace,
 ): boolean {
-  const board = findComponentByTreeNodeId(workspace, variant.id)
+  const board = findBoardByTreeNodeId(workspace, variant.id)
   if (!board) {
     return false
   }

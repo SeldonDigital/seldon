@@ -3,8 +3,8 @@ import { ComponentId } from "../../../components/constants"
 import { invariant } from "../../../index"
 import { debugLog } from "../../../utils/debug-logger"
 import { ErrorMessages } from "../../constants"
-import { getComponentVariantRootIds } from "../../helpers/components/get-component-variant-root-ids"
-import { getComponentByNodeId } from "../../helpers/components/get-component-by-node-id"
+import { getBoardVariantRootIds } from "../../helpers/components/get-board-variant-root-ids"
+import { getBoardByNodeId } from "../../helpers/components/get-board-by-node-id"
 import { getVariantTree } from "../../helpers/components/get-variant-tree"
 import { componentBoardUniqueNodeId } from "../../helpers/components/entry-node-ids"
 import { moveItemInArray } from "../../helpers/nodes/move-utils"
@@ -24,7 +24,7 @@ import {
   isPlaygroundBoard,
   isThemeBoard,
 } from "../../model/components"
-import type { ComponentKey } from "../../model/components"
+import type { BoardKey } from "../../model/components"
 import type { ComponentTreeRef } from "../../model/component-tree"
 import {
   formatNodeLink,
@@ -44,7 +44,7 @@ import { mutateWorkspace } from "../shared/workspace-mutation.helper"
 import {
   withInstanceAndParentMutation,
   withNodeMutation,
-  withVariantAndComponentMutation,
+  withVariantAndBoardMutation,
 } from "../shared/workspace-operation-helpers"
 import { nodeRelationshipService } from "./node-relationship.service"
 import { nodeRetrievalService } from "./node-retrieval.service"
@@ -125,13 +125,12 @@ export class NodeOperationsService {
       ? (current(workspace) as Workspace)
       : workspace
     const updatedWorkspace = produce(workspace, (draft) => {
-      const parentBoard = getComponentByNodeId(draft, parentId)
+      const parentBoard = getBoardByNodeId(draft, parentId)
       invariant(parentBoard, `Board not found for parent ${parentId}`)
 
       const { newId: newNodeId, newTreeRef, newNodes } = this._instantiateNode(
         nodeId,
         sourceWorkspace,
-        parentBoard,
       )
 
       Object.assign(draft.nodes, newNodes)
@@ -156,7 +155,7 @@ export class NodeOperationsService {
     }
   }
 
-  public deleteComponent(
+  public deleteBoard(
     componentId: ComponentId,
     workspace: Workspace,
   ): Workspace {
@@ -164,95 +163,78 @@ export class NodeOperationsService {
       const board = draft.components[componentId]
       if (!board) return
 
-      for (const rootId of getComponentVariantRootIds(board)) {
+      for (const rootId of getBoardVariantRootIds(board)) {
         this._deleteVariantFromDraft(rootId as VariantId, draft)
       }
 
       delete draft.components[componentId]
     })
 
-    return workspacePropagationService.realignComponentOrder(
+    return workspacePropagationService.realignBoardOrder(
       workspaceAfterDeletion,
     )
   }
 
-  public deleteComponentByKey(
-    componentKey: ComponentKey,
+  public deleteBoardByKey(
+    boardKey: BoardKey,
     workspace: Workspace,
   ): Workspace {
-    const board = workspace.components[componentKey]
+    const board = workspace.components[boardKey]
     if (!board) return workspace
 
     if (isComponentBoard(board)) {
-      return this.deleteComponent(componentKey as ComponentId, workspace)
+      return this.deleteBoard(boardKey as ComponentId, workspace)
     }
 
     if (isPlaygroundBoard(board)) {
       const workspaceAfterDeletion = mutateWorkspace(workspace, (draft) => {
-        const b = draft.components[componentKey]
+        const b = draft.components[boardKey]
         if (!b || !isPlaygroundBoard(b)) return
 
-        for (const rootId of getComponentVariantRootIds(b)) {
+        for (const rootId of getBoardVariantRootIds(b)) {
           this._deleteVariantFromDraft(rootId as VariantId, draft)
         }
 
-        delete draft.components[componentKey]
+        delete draft.components[boardKey]
       })
 
-      return workspacePropagationService.realignComponentOrder(
+      return workspacePropagationService.realignBoardOrder(
         workspaceAfterDeletion,
       )
     }
 
     if (isThemeBoard(board)) {
-      const next = mutateWorkspace(workspace, (draft) => {
-        const b = draft.components[componentKey]
-        if (!b || !isThemeBoard(b)) return
-        for (const ref of b.variants) {
-          delete draft.themes[ref.id]
-        }
-        delete draft.components[componentKey]
-      })
-      return workspacePropagationService.realignComponentOrder(next)
+      return this._deleteResourceBoard(boardKey, workspace, "themes")
     }
-
     if (isFontCollectionBoard(board)) {
-      const next = mutateWorkspace(workspace, (draft) => {
-        const b = draft.components[componentKey]
-        if (!b || !isFontCollectionBoard(b)) return
-        for (const ref of b.variants) {
-          delete draft["font-collections"][ref.id]
-        }
-        delete draft.components[componentKey]
-      })
-      return workspacePropagationService.realignComponentOrder(next)
+      return this._deleteResourceBoard(boardKey, workspace, "font-collections")
     }
-
     if (isMediaBoard(board)) {
-      const next = mutateWorkspace(workspace, (draft) => {
-        const b = draft.components[componentKey]
-        if (!b || !isMediaBoard(b)) return
-        for (const ref of b.variants) {
-          delete draft.media[ref.id]
-        }
-        delete draft.components[componentKey]
-      })
-      return workspacePropagationService.realignComponentOrder(next)
+      return this._deleteResourceBoard(boardKey, workspace, "media")
     }
-
     if (isIconSetBoard(board)) {
-      const next = mutateWorkspace(workspace, (draft) => {
-        const b = draft.components[componentKey]
-        if (!b || !isIconSetBoard(b)) return
-        for (const ref of b.variants) {
-          delete draft["icon-sets"][ref.id]
-        }
-        delete draft.components[componentKey]
-      })
-      return workspacePropagationService.realignComponentOrder(next)
+      return this._deleteResourceBoard(boardKey, workspace, "icon-sets")
     }
 
     return workspace
+  }
+
+  /** Deletes a resource board and its entries from the matching resource map. */
+  private _deleteResourceBoard(
+    boardKey: BoardKey,
+    workspace: Workspace,
+    resourceMap: "themes" | "font-collections" | "icon-sets" | "media",
+  ): Workspace {
+    const next = mutateWorkspace(workspace, (draft) => {
+      const board = draft.components[boardKey]
+      if (!board) return
+      const entries = draft[resourceMap] as Record<string, unknown>
+      for (const ref of board.variants) {
+        delete entries[ref.id]
+      }
+      delete draft.components[boardKey]
+    })
+    return workspacePropagationService.realignBoardOrder(next)
   }
 
   public deleteInstance(
@@ -285,7 +267,7 @@ export class NodeOperationsService {
       )
       invariant(currentParent, `Parent not found for node ${instanceId}`)
 
-      const oldBoard = getComponentByNodeId(draft, currentParent.id)
+      const oldBoard = getBoardByNodeId(draft, currentParent.id)
       invariant(oldBoard, `Board not found for parent ${currentParent.id}`)
 
       // Capture the full tree ref before removing it so the instance keeps its
@@ -302,7 +284,7 @@ export class NodeOperationsService {
 
       removeComponentTreeChild(oldBoard, instanceId)
 
-      const newBoard = getComponentByNodeId(draft, newPosition.parentId)
+      const newBoard = getBoardByNodeId(draft, newPosition.parentId)
       invariant(
         newBoard,
         `Board not found for parent ${newPosition.parentId}`,
@@ -365,7 +347,7 @@ export class NodeOperationsService {
       throw new Error("Workspace is not an immer draft")
     }
 
-    const board = getComponentByNodeId(
+    const board = getBoardByNodeId(
       draftWorkspace as unknown as Workspace,
       nodeId,
     )
@@ -430,13 +412,13 @@ export class NodeOperationsService {
         const plan = buildDuplicateEntryVariantSubtreePlan(
           draft as unknown as Workspace,
           located.board,
-          located.componentKey,
+          located.boardKey,
           node.id,
           label,
         )
         invariant(plan, `duplicateNode: could not plan variant duplicate ${node.id}`)
 
-        const board = draft.components[located.componentKey as ComponentKey]
+        const board = draft.components[located.boardKey as BoardKey]
         Object.assign(draft.nodes, plan.newNodes)
 
         if (plan.sourceWasDefault) {
@@ -463,10 +445,10 @@ export class NodeOperationsService {
       const sourceRow = nodes[node.id]
       invariant(sourceRow, ErrorMessages.nodeNotFound(node.id))
 
-      const board = draft.components[located.componentKey as ComponentKey]
+      const board = draft.components[located.boardKey as BoardKey]
       const tree = getVariantTree(board, node.id)
 
-      const newRootId = componentBoardUniqueNodeId(located.componentKey)
+      const newRootId = componentBoardUniqueNodeId(located.boardKey)
       const idMap = new Map<string, string>()
       idMap.set(node.id, newRootId)
 
@@ -474,7 +456,7 @@ export class NodeOperationsService {
       if (tree) {
         for (const id of collectDescendantTreeIds(tree)) {
           if (id === node.id) continue
-          idMap.set(id, componentBoardUniqueNodeId(located.componentKey))
+          idMap.set(id, componentBoardUniqueNodeId(located.boardKey))
         }
         newTreeRef = remapTreeRef(tree, node.id, newRootId, idMap)
       }
@@ -514,7 +496,7 @@ export class NodeOperationsService {
       node.id,
       workspace,
       (instance, parent, draft) => {
-        const board = getComponentByNodeId(draft, parent.id)
+        const board = getBoardByNodeId(draft, parent.id)
         invariant(board, `Board not found for parent ${parent.id}`)
 
         const currentIndex = nodeRelationshipService.getInstanceIndex(
@@ -539,7 +521,7 @@ export class NodeOperationsService {
   ): Workspace {
     if (!typeCheckingService.isVariant(node)) return workspace
 
-    return withVariantAndComponentMutation(
+    return withVariantAndBoardMutation(
       node.id,
       workspace,
       (variant, board, draft) => {
@@ -567,7 +549,6 @@ export class NodeOperationsService {
   private _instantiateNode(
     nodeId: InstanceId | VariantId,
     workspace: Workspace,
-    _parentBoard: import("../../types").ComponentEntry,
   ): {
     newId: InstanceId
     newTreeRef: ComponentTreeRef
@@ -595,14 +576,14 @@ export class NodeOperationsService {
     const tree = getVariantTree(located.board, nodeId)
     invariant(tree, `instantiate: tree not found for variant ${nodeId}`)
 
-    const componentKey = located.componentKey
+    const boardKey = located.boardKey
     const nodes = getWorkspaceNodes(workspace)
     const idMap = new Map<string, string>()
-    const newRootId = componentBoardUniqueNodeId(componentKey)
+    const newRootId = componentBoardUniqueNodeId(boardKey)
 
     for (const id of collectDescendantTreeIds(tree)) {
       if (id === nodeId) continue
-      idMap.set(id, componentBoardUniqueNodeId(componentKey))
+      idMap.set(id, componentBoardUniqueNodeId(boardKey))
     }
 
     const newNodes: Record<string, EntryNode> = {}
@@ -613,9 +594,7 @@ export class NodeOperationsService {
       label: source.label,
       theme: source.theme,
       template: formatNodeLink(nodeId),
-      overrides: structuredClone(
-        (source as import("../../model/entry-node").EntryNode).overrides,
-      ),
+      overrides: structuredClone((source as EntryNode).overrides),
       origin: "user",
     }
 
@@ -648,8 +627,8 @@ export class NodeOperationsService {
     invariant(located, `instantiate: board not found for instance ${nodeId}`)
 
     const tree = getVariantTree(located.board, nodeId)
-    const componentKey = located.componentKey
-    const newRootId = componentBoardUniqueNodeId(componentKey)
+    const boardKey = located.boardKey
+    const newRootId = componentBoardUniqueNodeId(boardKey)
     const newNodes: Record<string, EntryNode> = {}
 
     newNodes[newRootId] = {
@@ -667,7 +646,7 @@ export class NodeOperationsService {
       const idMap = new Map<string, string>()
       for (const id of collectDescendantTreeIds(tree)) {
         if (id === nodeId) continue
-        idMap.set(id, componentBoardUniqueNodeId(componentKey))
+        idMap.set(id, componentBoardUniqueNodeId(boardKey))
       }
       for (const [oldId, mappedId] of idMap) {
         const row = nodes[oldId]

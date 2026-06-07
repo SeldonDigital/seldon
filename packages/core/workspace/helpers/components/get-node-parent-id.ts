@@ -1,7 +1,7 @@
 import { isDraft } from "immer"
 import type { EntryNodeId, Workspace } from "../../types"
 import { getImmediateParentId } from "./get-parent-ids"
-import { getComponentByNodeId } from "./get-component-by-node-id"
+import { getBoardByNodeId } from "./get-board-by-node-id"
 import { walkComponentTreeRefs } from "./walk-component-tree-refs"
 
 /**
@@ -44,7 +44,7 @@ export function getImmediateParentIdInWorkspace(
   const components = workspace.components
 
   if (isDraft(workspace) || isDraft(components)) {
-    const board = getComponentByNodeId(workspace, nodeId)
+    const board = getBoardByNodeId(workspace, nodeId)
     return board ? getImmediateParentId(board, nodeId) : null
   }
 

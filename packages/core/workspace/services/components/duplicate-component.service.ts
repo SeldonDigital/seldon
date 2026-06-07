@@ -2,12 +2,12 @@ import type { WritableDraft } from "immer"
 
 import { walkComponentTreeRefs } from "../../helpers/components/walk-component-tree-refs"
 import {
-  getComponentOrder,
-  setComponentOrder,
-} from "../../helpers/components/component-sort-order"
+  getBoardOrder,
+  setBoardOrder,
+} from "../../helpers/components/board-sort-order"
 import type { ComponentTreeRef } from "../../model/component-tree"
 import type {
-  ComponentEntry,
+  Board,
   FontCollectionBoard,
   IconSetBoard,
   MediaBoard,
@@ -101,6 +101,31 @@ function clonePlainRow<T extends { id: string }>(row: T, newId: string): T {
 }
 
 /**
+ * Clones the rows for a plain resource board (font collections, icon sets, media)
+ * into the draft map under remapped ids and returns the new variant references.
+ */
+function cloneResourceVariants(
+  sourceComponentKey: string,
+  newComponentKey: string,
+  variants: { id: string }[],
+  prefix: string,
+  sourceMap: Record<string, { id: string }>,
+  draftMap: Record<string, { id: string }>,
+): { id: string }[] {
+  const idMap = buildPrefixIdMap(
+    sourceComponentKey,
+    newComponentKey,
+    variants.map((v) => v.id),
+    prefix,
+  )
+  for (const [oldId, newId] of idMap) {
+    const row = sourceMap[oldId]
+    if (row) draftMap[newId] = clonePlainRow(row, newId)
+  }
+  return variants.map((v) => ({ id: idMap.get(v.id) ?? v.id }))
+}
+
+/**
  * Clones a board to `newComponentKey`, remaps dependent ids in `nodes`, `themes`,
  * `font-collections`, `icon-sets`, or `media`, and appends the new board to sort order.
  * Call only after validation; missing source or colliding target throws.
@@ -128,12 +153,12 @@ export function cloneComponent(
       `cloneComponent: source board disappeared ${sourceComponentKey}`,
     )
 
-    const newBoard = structuredClone(src) as ComponentEntry
+    const newBoard = structuredClone(src) as Board
     const maxOrder = Math.max(
       0,
-      ...Object.values(draft.components).map((b) => getComponentOrder(b)),
+      ...Object.values(draft.components).map((b) => getBoardOrder(b)),
     )
-    setComponentOrder(newBoard, maxOrder + 1)
+    setBoardOrder(newBoard, maxOrder + 1)
 
     if (label !== undefined && "label" in newBoard) {
       ;(newBoard as { label: string }).label = label
@@ -163,57 +188,39 @@ export function cloneComponent(
         id: idMap.get(v.id) ?? v.id,
       }))
     } else if (isFontCollectionBoard(src)) {
-      const ids = src.variants.map((v) => v.id)
-      const idMap = buildPrefixIdMap(
-        sourceComponentKey,
-        newComponentKey,
-        ids,
-        "font-collection-",
-      )
       if (!draft["font-collections"]) draft["font-collections"] = {}
-      const fc = draft["font-collections"] as Record<string, { id: string }>
-      for (const [oldId, newId] of idMap) {
-        const row = workspace["font-collections"][oldId]
-        if (!row) continue
-        fc[newId] = clonePlainRow(row, newId)
-      }
-      ;(newBoard as FontCollectionBoard).variants = src.variants.map((v) => ({
-        id: idMap.get(v.id) ?? v.id,
-      }))
-    } else if (isIconSetBoard(src)) {
-      const ids = src.variants.map((v) => v.id)
-      const idMap = buildPrefixIdMap(
+      ;(newBoard as FontCollectionBoard).variants = cloneResourceVariants(
         sourceComponentKey,
         newComponentKey,
-        ids,
-        "icon-set-",
+        src.variants,
+        "font-collection-",
+        workspace["font-collections"],
+        draft["font-collections"] as Record<string, { id: string }>,
       )
+    } else if (isIconSetBoard(src)) {
       if (!draft["icon-sets"]) draft["icon-sets"] = {}
-      const is = draft["icon-sets"] as Record<string, { id: string }>
-      for (const [oldId, newId] of idMap) {
-        const row = workspace["icon-sets"][oldId]
-        if (!row) continue
-        is[newId] = clonePlainRow(row, newId)
-      }
-      ;(newBoard as IconSetBoard).variants = src.variants.map((v) => ({
-        id: idMap.get(v.id) ?? v.id,
-      }))
+      ;(newBoard as IconSetBoard).variants = cloneResourceVariants(
+        sourceComponentKey,
+        newComponentKey,
+        src.variants,
+        "icon-set-",
+        workspace["icon-sets"],
+        draft["icon-sets"] as Record<string, { id: string }>,
+      )
     } else if (isMediaBoard(src)) {
-      const ids = src.variants.map((v) => v.id)
-      const idMap = buildPrefixIdMap(sourceComponentKey, newComponentKey, ids, "media-")
-      for (const [oldId, newId] of idMap) {
-        const row = workspace.media[oldId]
-        if (!row) continue
-        draft.media[newId] = clonePlainRow(row, newId)
-      }
-      ;(newBoard as MediaBoard).variants = src.variants.map((v) => ({
-        id: idMap.get(v.id) ?? v.id,
-      }))
+      ;(newBoard as MediaBoard).variants = cloneResourceVariants(
+        sourceComponentKey,
+        newComponentKey,
+        src.variants,
+        "media-",
+        workspace.media,
+        draft.media as Record<string, { id: string }>,
+      )
     }
 
-    draft.components[newComponentKey] = newBoard as WritableDraft<ComponentEntry>
+    draft.components[newComponentKey] = newBoard as WritableDraft<Board>
 
-    const realigned = workspacePropagationService.realignComponentOrder(
+    const realigned = workspacePropagationService.realignBoardOrder(
       draft as Workspace,
     )
     Object.assign(draft.components, realigned.components)

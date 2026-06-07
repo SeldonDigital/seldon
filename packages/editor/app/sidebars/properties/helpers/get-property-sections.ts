@@ -1,7 +1,7 @@
 import { Board, Instance, Variant, Workspace } from "@seldon/core"
 import { getComponentSchema } from "@seldon/core/components/catalog"
 import { isComponentId } from "@seldon/core/components/constants"
-import { isComponentEntry } from "@seldon/core/workspace/helpers/components/is-component-entry"
+import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import {
   PROPERTY_DISPLAY_META,
   PropertyDisplayCategory,
@@ -39,7 +39,7 @@ function getComponentNameForAttributes(
   node: Variant | Instance | Board,
   _workspace: Workspace,
 ): string {
-  if (isComponentEntry(node)) {
+  if (isBoard(node)) {
     // For boards, use the board label + " Board"
     return `${node.label} Board`
   }

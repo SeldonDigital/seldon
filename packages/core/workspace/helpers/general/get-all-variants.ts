@@ -1,6 +1,6 @@
 import { isComponentBoard, isPlaygroundBoard } from "../../model/components"
 import { EntryNode, Workspace } from "../../types"
-import { getComponentVariantRootIds } from "../components/get-component-variant-root-ids"
+import { getBoardVariantRootIds } from "../components/get-board-variant-root-ids"
 import { getVariantById } from "./get-variant-by-id"
 
 /**
@@ -19,7 +19,7 @@ export function getAllVariants(
   return Object.values(workspace.components)
     .filter((board) => isComponentBoard(board) || isPlaygroundBoard(board))
     .flatMap((board) =>
-      getComponentVariantRootIds(board).map((variantId) =>
+      getBoardVariantRootIds(board).map((variantId) =>
         getVariantById(variantId, workspace),
       ),
     )

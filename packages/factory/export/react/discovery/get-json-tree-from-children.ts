@@ -6,7 +6,7 @@ import { WrapperElement } from "@seldon/core/properties"
 import { IconId } from "@seldon/core/icon-sets"
 import { getChildrenIds } from "@seldon/core/workspace/helpers/components/get-children-ids"
 import { componentBoardSchemaVariantNodeId } from "@seldon/core/workspace/helpers/components/entry-node-ids"
-import { getComponentByNodeId } from "@seldon/core/workspace/helpers/components/get-component-by-node-id"
+import { getBoardByNodeId } from "@seldon/core/workspace/helpers/components/get-board-by-node-id"
 import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
 import { getNodeById } from "@seldon/core/workspace/helpers/nodes/get-node-by-id"
 import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-catalog-id"
@@ -26,7 +26,7 @@ export function getJsonTreeFromChildren(
   workspace: Workspace,
   nodeIdToClass: Record<string, string>,
 ): JSONTreeNode {
-  const board = getComponentByNodeId(workspace, variant.id)
+  const board = getBoardByNodeId(workspace, variant.id)
   if (!board || !isComponentBoard(board)) {
     throw new Error(`Component board not found for variant ${variant.id}`)
   }
@@ -125,7 +125,7 @@ export function getJsonTreeFromChildren(
 
     const path = currentPath ? `${currentPath}.${reference}` : reference
 
-    const nodeBoard = getComponentByNodeId(workspace, node.id)
+    const nodeBoard = getBoardByNodeId(workspace, node.id)
     let children: JSONTreeNode[] | null = null
     if (nodeBoard && isComponentBoard(nodeBoard)) {
       const childReferenceMap: Record<string, string[]> = {}

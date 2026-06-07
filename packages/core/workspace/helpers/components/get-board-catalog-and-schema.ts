@@ -2,7 +2,7 @@ import { getComponentSchema } from "../../../components/catalog"
 import { isComponentId } from "../../../components/constants"
 import type { ComponentSchema } from "../../../components/types"
 import { invariant } from "../../../index"
-import type { ComponentEntry } from "../../types"
+import type { Board } from "../../types"
 
 export interface ComponentCatalogAndSchema {
   catalogId: string
@@ -17,9 +17,9 @@ export interface ComponentCatalogAndSchema {
  * Throws for playground boards. Playgrounds omit catalog id in the file format.
  * Throws when the catalog id is not a registered component id.
  *
- * @param board ComponentEntry to read.
+ * @param board Board to read.
  */
-export function getComponentByCatalogId(board: ComponentEntry): ComponentCatalogAndSchema {
+export function getBoardCatalogAndSchema(board: Board): ComponentCatalogAndSchema {
   if (board.type === "playground") {
     invariant(false, "Playground boards do not declare a catalog id.")
   }

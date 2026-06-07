@@ -1,5 +1,5 @@
 import { EntryNode, EntryNodeId, Workspace } from "../../types"
-import { findComponentByTreeNodeId } from "../components/find-component-by-tree-node-id"
+import { findBoardByTreeNodeId } from "../components/find-board-by-tree-node-id"
 import { getComponentTreeChildIds } from "../components/get-component-tree-child-ids"
 
 /**
@@ -14,7 +14,7 @@ export function findIndexInParentNode(
   workspace: Workspace,
 ) {
   if (!parent) return -1
-  const board = findComponentByTreeNodeId(workspace, parent.id)
+  const board = findBoardByTreeNodeId(workspace, parent.id)
   if (!board) return -1
   return getComponentTreeChildIds(board, parent.id).indexOf(
     childIdToCompare as EntryNodeId,

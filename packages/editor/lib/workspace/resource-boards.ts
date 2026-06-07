@@ -3,10 +3,10 @@ import {
   isIconSetBoard,
   isThemeBoard,
 } from "@seldon/core/workspace/model/components"
-import type { ComponentEntry, Workspace } from "@seldon/core/workspace/types"
+import type { Board, Workspace } from "@seldon/core/workspace/types"
 import { getWorkspaceComponentMap } from "./workspace-accessors"
 
-export function findThemeBoard(workspace: Workspace): ComponentEntry | null {
+export function findThemeBoard(workspace: Workspace): Board | null {
   for (const board of Object.values(getWorkspaceComponentMap(workspace))) {
     if (isThemeBoard(board)) {
       return board
@@ -17,7 +17,7 @@ export function findThemeBoard(workspace: Workspace): ComponentEntry | null {
 
 export function findFontCollectionBoard(
   workspace: Workspace,
-): ComponentEntry | null {
+): Board | null {
   for (const board of Object.values(getWorkspaceComponentMap(workspace))) {
     if (isFontCollectionBoard(board)) {
       return board
@@ -26,7 +26,7 @@ export function findFontCollectionBoard(
   return null
 }
 
-export function findIconSetBoard(workspace: Workspace): ComponentEntry | null {
+export function findIconSetBoard(workspace: Workspace): Board | null {
   for (const board of Object.values(getWorkspaceComponentMap(workspace))) {
     if (isIconSetBoard(board)) {
       return board

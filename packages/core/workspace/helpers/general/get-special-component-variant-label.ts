@@ -1,4 +1,4 @@
-import { ComponentEntry } from "../../types"
+import { Board } from "../../types"
 
 /**
  * Gets the appropriate variant label for a special board type.
@@ -18,7 +18,7 @@ import { ComponentEntry } from "../../types"
  * @returns The variant label for special boards, or null for regular boards
  */
 export function getSpecialComponentVariantLabel(
-  board: ComponentEntry,
+  board: Board,
   isDefaultVariant: boolean,
 ): string | null {
   if (board.type === "icon-set") {

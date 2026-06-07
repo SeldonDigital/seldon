@@ -1,6 +1,6 @@
 import { EntryNodeId, Workspace } from "../../types"
-import { findComponentByTreeNodeId } from "../components/find-component-by-tree-node-id"
-import { getComponentVariantRootIds } from "../components/get-component-variant-root-ids"
+import { findBoardByTreeNodeId } from "../components/find-board-by-tree-node-id"
+import { getBoardVariantRootIds } from "../components/get-board-variant-root-ids"
 
 /**
  * Get the siblings of a variant
@@ -12,8 +12,8 @@ export function getVariantSiblingIds(
   variantId: EntryNodeId,
   workspace: Workspace,
 ): EntryNodeId[] {
-  const board = findComponentByTreeNodeId(workspace, variantId)
+  const board = findBoardByTreeNodeId(workspace, variantId)
   if (!board) return []
 
-  return getComponentVariantRootIds(board).filter((id) => id !== variantId)
+  return getBoardVariantRootIds(board).filter((id) => id !== variantId)
 }

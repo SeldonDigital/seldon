@@ -5,7 +5,7 @@ import {
   type PropertyPickerOption,
   type PropertyPickerResult,
 } from "@seldon/core/helpers/properties/properties-bridge"
-import { isComponentEntry } from "@seldon/core/workspace/helpers/components/is-component-entry"
+import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { Board, Instance, Variant } from "@seldon/core/workspace/types"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { FlatProperty } from "./properties-data"
@@ -17,7 +17,7 @@ function resolveSubjectId(
   componentId: ComponentId | undefined,
 ): string {
   if (node) {
-    if (isComponentEntry(node)) {
+    if (isBoard(node)) {
       return getComponentKey(node)
     }
     return node.id

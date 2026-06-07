@@ -6,7 +6,7 @@ import {
   isComponentId,
 } from "@seldon/core/components/constants"
 import { isComponentBoard } from "@seldon/core/workspace/model"
-import type { ComponentKey } from "@seldon/core/workspace/types"
+import type { BoardKey } from "@seldon/core/workspace/types"
 import { InstanceId, VariantId } from "@seldon/core/index"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
 import { getNodeCatalogComponentId } from "@lib/workspace/node-tree"
@@ -29,18 +29,18 @@ export type ResourceEntryKind = "theme" | "fontCollection" | "iconSet" | "media"
 /** A selected resource board variant entry, identified by its kind and entry id. */
 export type SelectedResourceEntry = { kind: ResourceEntryKind; id: string }
 
-/** Serializes a resource item selection as `${resource}:${componentKey}:${entryId}:${slot}`. */
+/** Serializes a resource item selection as `${resource}:${boardKey}:${entryId}:${slot}`. */
 export function formatResourceItemKey(args: {
   resource: ResourceItemKind
-  componentKey: string
+  boardKey: string
   entryId: string
   slot: string
 }): string {
-  return `${args.resource}:${args.componentKey}:${args.entryId}:${args.slot}`
+  return `${args.resource}:${args.boardKey}:${args.entryId}:${args.slot}`
 }
 
 type SelectionState = {
-  selectedBoardId: ComponentKey | null
+  selectedBoardId: BoardKey | null
   selectedNodeId: VariantId | InstanceId | null
   /**
    * The variant-root id of the column the selected node was clicked in. A child
@@ -56,13 +56,13 @@ type SelectionState = {
   selectedResourceEntry: SelectedResourceEntry | null
   /**
    * Selected resource item (a row inside a resource board), serialized via
-   * `formatResourceItemKey` as `${resource}:${componentKey}:${entryId}:${slot}`.
+   * `formatResourceItemKey` as `${resource}:${boardKey}:${entryId}:${slot}`.
    * The entry id keeps families unique across variant entries of the same board.
    * Font collection families use this now; icon sets and media reuse the same
    * field as they adopt the same board model.
    */
   selectedResourceItemKey: string | null
-  selectBoard: (id: ComponentKey | null) => void
+  selectBoard: (id: BoardKey | null) => void
   selectNode: (id: VariantId | InstanceId | null, rootId?: string | null) => void
   selectResourceEntry: (kind: ResourceEntryKind, id: string | null) => void
   selectResourceItem: (key: string | null) => void
@@ -74,7 +74,7 @@ export const useStore = create<SelectionState>()((set) => ({
   selectedNodeRootId: null,
   selectedResourceEntry: null,
   selectedResourceItemKey: null,
-  selectBoard: (id: ComponentKey | null) => {
+  selectBoard: (id: BoardKey | null) => {
     set({
       selectedBoardId: id,
       selectedNodeId: null,
@@ -189,7 +189,7 @@ export function useSelection() {
   const selection = selectedNode ?? selectedBoard
 
   const _selectBoard = useCallback(
-    (id: ComponentKey | null) => {
+    (id: BoardKey | null) => {
       if (id === selectedBoardId) return
 
       selectBoard(id)
@@ -254,7 +254,7 @@ export function useSelection() {
           const schema = getComponentSchema(rootCatalogId)
           toggleSection(schema.level, true)
         } else {
-          const board = workspaceService.findComponentForNode(node, workspace)
+          const board = workspaceService.findBoardForNode(node, workspace)
           if (board) {
             toggleSection(ComponentLevel.MODULE, true)
             toggleObject(getComponentKey(board), true, { includeAncestors: true })

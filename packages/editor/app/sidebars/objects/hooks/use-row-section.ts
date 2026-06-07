@@ -6,7 +6,7 @@ import { ButtonIconicProps } from "../../../seldon/elements/ButtonIconic"
 import { IconProps } from "../../../seldon/primitives/Icon"
 import { BoardSection } from "../../helpers/get-board-sections"
 import { useSectionExpansion } from "../../hooks/use-section-expansion"
-import { getComponentVariantRootIds } from "@seldon/core/workspace/helpers/components/get-component-variant-root-ids"
+import { getBoardVariantRootIds } from "@seldon/core/workspace/helpers/components/get-board-variant-root-ids"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { useExpansion } from "./use-expansion"
 import { useRowToggle } from "./use-row-toggle"
@@ -45,7 +45,7 @@ export function useRowSection(section: BoardSection) {
       const allIds: string[] = []
       section.boards.forEach((board) => {
         allIds.push(getComponentKey(board))
-        const variantRootIds = getComponentVariantRootIds(board)
+        const variantRootIds = getBoardVariantRootIds(board)
         variantRootIds.forEach((variantId) => {
           allIds.push(variantId)
           const descendantIds = getAllDescendantNodeIds(variantId)

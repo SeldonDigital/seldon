@@ -1,5 +1,5 @@
 import type {
-  ComponentEntry,
+  Board,
   ComponentTreeRef,
   EntryNodeId,
 } from "../../types"
@@ -14,7 +14,7 @@ export function collectDescendantTreeIds(ref: ComponentTreeRef): EntryNodeId[] {
 }
 
 export function insertComponentTreeChild(
-  board: ComponentEntry,
+  board: Board,
   parentId: EntryNodeId,
   childRef: ComponentTreeRef,
   index?: number,
@@ -37,7 +37,7 @@ export function insertComponentTreeChild(
 }
 
 export function removeComponentTreeChild(
-  board: ComponentEntry,
+  board: Board,
   childId: EntryNodeId,
 ): boolean {
   let removed = false
@@ -55,7 +55,7 @@ export function removeComponentTreeChild(
 }
 
 export function findTreeRef(
-  board: ComponentEntry,
+  board: Board,
   nodeId: EntryNodeId,
 ): ComponentTreeRef | null {
   let found: ComponentTreeRef | null = null

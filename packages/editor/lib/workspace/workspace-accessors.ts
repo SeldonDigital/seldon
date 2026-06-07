@@ -1,7 +1,7 @@
-import { getComponentVariantRootIds as getComponentVariantRootIdsFromCore } from "@seldon/core/workspace/helpers/components/get-component-variant-root-ids"
+import { getBoardVariantRootIds as getComponentVariantRootIdsFromCore } from "@seldon/core/workspace/helpers/components/get-board-variant-root-ids"
 import type {
-  ComponentEntry,
-  ComponentKey,
+  Board,
+  BoardKey,
   ComponentTreeRef,
   EntryNode,
   EntryNodeId,
@@ -9,7 +9,7 @@ import type {
 } from "@seldon/core/workspace/types"
 
 /** Read root variant node ids from a component row. Never pass `board.variants[i]` to `getNode`. */
-export function getComponentVariantRootIds(board: ComponentEntry): string[] {
+export function getBoardVariantRootIds(board: Board): string[] {
   return getComponentVariantRootIdsFromCore(board)
 }
 
@@ -25,7 +25,7 @@ export function getWorkspaceNodeMap(
 
 export function getWorkspaceComponentMap(
   workspace: Workspace,
-): Record<ComponentKey, ComponentEntry> {
+): Record<BoardKey, Board> {
   return workspace.components
 }
 
@@ -42,16 +42,16 @@ export function hasNode(workspace: Workspace, nodeId: EntryNodeId): boolean {
 
 export function getComponent(
   workspace: Workspace,
-  componentKey: ComponentKey,
-): ComponentEntry | undefined {
-  return workspace.components[componentKey]
+  boardKey: BoardKey,
+): Board | undefined {
+  return workspace.components[boardKey]
 }
 
 /** Resolves the `workspace.components` map key for a catalog row. */
 export function resolveComponentKey(
-  board: ComponentEntry,
+  board: Board,
   workspace: Workspace,
-): ComponentKey {
+): BoardKey {
   if ("catalogId" in board && board.catalogId) {
     if (workspace.components[board.catalogId]) {
       return board.catalogId
@@ -70,7 +70,7 @@ export function resolveComponentKey(
   )
 }
 
-export function getComponentKey(board: ComponentEntry): ComponentKey {
+export function getComponentKey(board: Board): BoardKey {
   if ("catalogId" in board && board.catalogId) {
     return board.catalogId
   }

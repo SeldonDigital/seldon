@@ -1,6 +1,6 @@
 import { ComponentId } from "../../../components/constants"
 import {
-  ComponentEntry,
+  Board,
   Workspace,
   EntryNode,
   EntryNodeId,
@@ -18,7 +18,7 @@ import { ErrorMessages } from "../../constants"
 export function getNodeOrComponentById(
   targetId: EntryNodeId | ComponentId,
   workspace: Workspace,
-): EntryNode | ComponentEntry {
+): EntryNode | Board {
   const board = workspace.components[targetId as ComponentId]
   if (board) {
     return board

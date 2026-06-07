@@ -74,10 +74,10 @@ export class WorkspaceIconSetService {
 
   /** Resolves the icon set for a board through its default (first) variant entry. */
   public getBoardIconSet(
-    componentKey: string,
+    boardKey: string,
     workspace: Workspace,
   ): ComputedIconSet | null {
-    const board = workspace.components[componentKey]
+    const board = workspace.components[boardKey]
     if (!board || !isIconSetBoard(board)) return null
     const defaultEntryId = board.variants[0]?.id
     if (!defaultEntryId) return null

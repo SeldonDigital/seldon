@@ -2,7 +2,7 @@ import { isComponentId } from "../../../components/constants"
 import { ValueType } from "../../../properties"
 import { isWorkspaceLoggingEnabled } from "../../../utils/debug-logger"
 import { ErrorMessages } from "../../constants"
-import { getComponentId } from "../../helpers/components/get-component-ids"
+import { getBoardKey } from "../../helpers/components/get-board-keys"
 import { findComponentTreeCycleId } from "../../helpers/components/find-tree-cycle"
 import { walkComponentTreeRefs } from "../../helpers/components/walk-component-tree-refs"
 import { getWorkspaceNodes } from "../../helpers/general/get-workspace-nodes"
@@ -174,23 +174,23 @@ const validators = {
         return variant && typeCheckingService.isDefaultVariant(variant)
       })
 
-      const componentKey =
-        getComponentId(workspace, board) ??
+      const boardKey =
+        getBoardKey(workspace, board) ??
         ("catalogId" in board ? board.catalogId : "")
 
       if (defaultVariants.length > 1) {
         throw new Error(
-          isComponentId(componentKey)
-            ? ErrorMessages.tooManyDefaultVariants(componentKey)
-            : `ComponentEntry ${componentKey} has more than one default variant.`,
+          isComponentId(boardKey)
+            ? ErrorMessages.tooManyDefaultVariants(boardKey)
+            : `Board ${boardKey} has more than one default variant.`,
         )
       }
 
       if (defaultVariants.length === 0) {
         throw new Error(
-          isComponentId(componentKey)
-            ? ErrorMessages.defaultVariantNotFound(componentKey)
-            : `Default variant not found for board ${componentKey}.`,
+          isComponentId(boardKey)
+            ? ErrorMessages.defaultVariantNotFound(boardKey)
+            : `Default variant not found for board ${boardKey}.`,
         )
       }
     })

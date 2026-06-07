@@ -2,7 +2,7 @@ import { STOCK_FONT_COLLECTIONS_BY_ID } from "../../../font-collections/catalog"
 import { GOOGLE_DEFAULT_ENABLED_FAMILIES } from "../../../font-collections/catalog/google/default-enabled-families"
 import type { FontCollectionTemplateId } from "../../../font-collections/types"
 import type {
-  ComponentEntry,
+  Board,
   FontCollectionBoard,
 } from "../../model/components"
 import { isFontCollectionBoard } from "../../model/components"
@@ -11,9 +11,9 @@ import { formatFontCollectionCatalog } from "../../model/template-ref"
 import type { Workspace } from "../../model/workspace"
 import { setFamilyVariantPreset } from "../../reducers/handlers/shared/font-collection-variant-selection"
 import {
-  getComponentOrder,
-  setComponentOrder,
-} from "../components/component-sort-order"
+  getBoardOrder,
+  setBoardOrder,
+} from "../components/board-sort-order"
 import { getInitialBoardComponentProperties } from "../components/get-initial-board-component-properties"
 import { WORKSPACE_EDITABLE_THEME_ENTRY_ID } from "../themes/workspace-editable-theme"
 
@@ -102,7 +102,7 @@ function seedFontCollectionBoard(
   boardKey: FontCollectionTemplateId,
   entry: EntryFontCollection,
 ): void {
-  const existing = workspace.components[boardKey] as ComponentEntry | undefined
+  const existing = workspace.components[boardKey] as Board | undefined
   if (existing && isFontCollectionBoard(existing)) {
     return
   }
@@ -112,7 +112,7 @@ function seedFontCollectionBoard(
   const existingBoards = Object.values(workspace.components)
   const maxOrder =
     existingBoards.length > 0
-      ? Math.max(...existingBoards.map((b) => getComponentOrder(b)))
+      ? Math.max(...existingBoards.map((b) => getBoardOrder(b)))
       : -1
 
   const board: FontCollectionBoard = {
@@ -124,6 +124,6 @@ function seedFontCollectionBoard(
     componentProperties: getInitialBoardComponentProperties("font-collection"),
     variants: [{ id: entry.id }],
   }
-  setComponentOrder(board, maxOrder + 1)
+  setBoardOrder(board, maxOrder + 1)
   workspace.components[boardKey] = board
 }

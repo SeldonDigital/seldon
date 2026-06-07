@@ -1,5 +1,5 @@
 import type { ComponentId } from "../../../components/constants"
-import type { ComponentEntry } from "../../model/components"
+import type { Board } from "../../model/components"
 import { isComponentBoard } from "../../model/components"
 import {
   nodeRetrievalService,
@@ -12,14 +12,14 @@ import {
   typeCheckingService,
 } from "../../services"
 
-export function getDefaultComponentLabel(componentKey: string, board: ComponentEntry): string {
+export function getDefaultBoardLabel(boardKey: string, board: Board): string {
   if (isComponentBoard(board)) {
     return workspaceMutationService.getInitialComponentLabel(board.catalogId as ComponentId)
   }
   if ("catalogId" in board && typeof board.catalogId === "string") {
     return board.catalogId
   }
-  return componentKey
+  return boardKey
 }
 
-export const DEFAULT_THEME_COMPONENT_AUTHOR = "Seldon Digital"
+export const DEFAULT_THEME_BOARD_AUTHOR = "Seldon Digital"

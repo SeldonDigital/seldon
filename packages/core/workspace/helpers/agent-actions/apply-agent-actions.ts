@@ -1,5 +1,5 @@
-import type { ComponentKey } from "../../types"
-import { getComponentVariantRootIds } from "../components/get-component-variant-root-ids"
+import type { BoardKey } from "../../types"
+import { getBoardVariantRootIds } from "../components/get-board-variant-root-ids"
 import { getNodeIdAddedByAction } from "../nodes/get-node-id-added-by-action"
 import { workspaceReducer } from "../../reducers/reducer"
 import type { WorkspaceAction } from "../../reducers/types"
@@ -72,7 +72,7 @@ function shouldSkipBoardCreation(action: AgentWireAction, workspace: Workspace):
   if (!BOARD_CREATION_WIRE_TYPES.has(action.type)) return false
   const componentId = action.payload?.componentId
   if (typeof componentId !== "string") return false
-  return Boolean(workspace.components[componentId as ComponentKey])
+  return Boolean(workspace.components[componentId as BoardKey])
 }
 
 function mergeReferenceMapForExistingBoard(
@@ -84,10 +84,10 @@ function mergeReferenceMapForExistingBoard(
   const componentId = action.payload?.componentId
   if (!ref || typeof componentId !== "string") return referenceMap
 
-  const board = workspace.components[componentId as ComponentKey]
+  const board = workspace.components[componentId as BoardKey]
   if (!board) return referenceMap
 
-  const rootId = getComponentVariantRootIds(board)[0]
+  const rootId = getBoardVariantRootIds(board)[0]
   if (!rootId) return referenceMap
 
   return { ...referenceMap, ...getSchemaAwareReferenceMap(ref, rootId, workspace) }

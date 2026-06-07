@@ -1,8 +1,8 @@
-import type { ComponentEntry } from "../../model/components"
+import type { Board } from "../../model/components"
 import type { EntryNode } from "../../model/entry-node"
 
 /** Values that can be classified for `rules.mutations.*` policy lookup. */
-export type RulesNodeOrComponent = ComponentEntry | EntryNode
+export type RulesNodeOrComponent = Board | EntryNode
 
 export function isEntryNodeForRules(
   node: RulesNodeOrComponent,

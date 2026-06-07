@@ -2,10 +2,10 @@ import { getComponentSchema } from "../../../components/catalog"
 import { isComponentId } from "../../../components/constants"
 import { Properties } from "../../../properties"
 import { mergeProperties } from "../../../properties/helpers/merge-properties"
-import { ComponentEntry, EntryNode, Workspace, parseNodeTemplate } from "../../types"
+import { Board, EntryNode, Workspace, parseNodeTemplate } from "../../types"
 import { getComponentPropertyDefaults } from "../components/get-component-property-defaults"
 import { getNodeCatalogId } from "./get-node-catalog-id"
-import { isComponentEntry } from "../components/is-component-entry"
+import { isBoard } from "../components/is-board"
 
 /**
  * Gets the properties for a node by merging schema properties with instance inheritance chain.
@@ -15,10 +15,10 @@ import { isComponentEntry } from "../components/is-component-entry"
  * @returns Merged properties from schema and inheritance chain
  */
 export function getNodeProperties(
-  node: EntryNode | ComponentEntry,
+  node: EntryNode | Board,
   workspace: Workspace,
 ): Properties {
-  if (isComponentEntry(node)) {
+  if (isBoard(node)) {
     const defaults = getComponentPropertyDefaults()
     return mergeProperties(defaults, node.componentProperties)
   }

@@ -2,7 +2,7 @@ import { ComponentId } from "@seldon/core/components/constants"
 import { InstanceId, VariantId, Workspace } from "@seldon/core/index"
 import { findParentNode } from "@seldon/core/workspace/helpers/nodes/find-parent-node"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
-import type { ComponentKey, EntryNode } from "@seldon/core/workspace/types"
+import type { BoardKey, EntryNode } from "@seldon/core/workspace/types"
 import {
   getNodeCatalogComponentId,
   getNodeChildIds,
@@ -56,7 +56,7 @@ export function resolvePasteTarget({
 }: {
   subjectId: VariantId | InstanceId
   selectedNode: EntryNode | null
-  selectedBoardId: ComponentKey | null
+  selectedBoardId: BoardKey | null
   workspace: Workspace
 }): PasteTargetResult {
   const subject = getNode(workspace, subjectId)
@@ -108,7 +108,7 @@ export function resolvePasteTarget({
       }
     }
 
-    const board = workspaceService.findComponentForVariant(subject, workspace)
+    const board = workspaceService.findBoardForVariant(subject, workspace)
     if (!board || getComponentKey(board) !== selectedBoardId) {
       return {
         action: "error",

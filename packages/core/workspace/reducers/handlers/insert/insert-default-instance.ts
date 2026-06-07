@@ -24,7 +24,7 @@ export function insertDefaultInstance(
   options: ValidationOptions = {},
 ): Workspace {
   const defaultVariant = nodeRetrievalService.getDefaultVariant(
-    payload.componentKey as ComponentId,
+    payload.boardKey as ComponentId,
     workspace,
   )
   const targetNode = nodeRetrievalService.getNode(payload.parentId, workspace)

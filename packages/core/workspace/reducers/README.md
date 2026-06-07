@@ -116,14 +116,14 @@ Validation failures throw `WorkspaceValidationError` before a handler runs. Hand
 | `setWorkspaceIntent` | `handlers/set/set-workspace-intent.ts` | Sets workspace intent metadata. \| Used by workspace metadata actions. |
 | `setWorkspaceTags` | `handlers/set/set-workspace-tags.ts` | Sets workspace tag metadata. \| Used by workspace metadata actions. |
 | `setWorkspaceLicense` | `handlers/set/set-workspace-license.ts` | Sets workspace license metadata. \| Used by workspace metadata actions. |
-| `setComponentLabel` | `handlers/set/set-component-label.ts` | Sets a board label. \| Used by board metadata actions. |
-| `setComponentIntent` | `handlers/set/set-component-intent.ts` | Sets a board intent. \| Used by board metadata actions. |
-| `setComponentTags` | `handlers/set/set-component-tags.ts` | Sets board tags. \| Used by board metadata actions. |
-| `setComponentLicense` | `handlers/set/set-component-license.ts` | Sets board license data. \| Used by board metadata actions. |
-| `setComponentAuthor` | `handlers/set/set-component-author.ts` | Sets board author data. \| Used by board metadata actions. |
-| `setComponentCredentials` | `handlers/set/set-component-credentials.ts` | Sets board credentials. \| Used by resource board actions. |
-| `setComponentPreview` | `handlers/set/set-component-preview.ts` | Sets board preview data. \| Used by theme and resource board actions. |
-| `setComponentEditorData` | `handlers/set/set-component-editor-data.ts` | Sets board editor data. \| Used by editor metadata actions. |
+| `setComponentLabel` | `handlers/set/set-board-label.ts` | Sets a board label. \| Used by board metadata actions. |
+| `setComponentIntent` | `handlers/set/set-board-intent.ts` | Sets a board intent. \| Used by board metadata actions. |
+| `setComponentTags` | `handlers/set/set-board-tags.ts` | Sets board tags. \| Used by board metadata actions. |
+| `setComponentLicense` | `handlers/set/set-board-license.ts` | Sets board license data. \| Used by board metadata actions. |
+| `setComponentAuthor` | `handlers/set/set-board-author.ts` | Sets board author data. \| Used by board metadata actions. |
+| `setComponentCredentials` | `handlers/set/set-board-credentials.ts` | Sets board credentials. \| Used by resource board actions. |
+| `setComponentPreview` | `handlers/set/set-board-preview.ts` | Sets board preview data. \| Used by theme and resource board actions. |
+| `setComponentEditorData` | `handlers/set/set-board-editor-data.ts` | Sets board editor data. \| Used by editor metadata actions. |
 | `setComponentTheme` | `handlers/set/set-component-theme.ts` | Sets a board theme ref. \| Used by theme assignment actions. |
 | `setComponentProperties` | `handlers/set/set-component-properties.ts` | Sets board-level component properties. \| Used by property editing actions. |
 | `setNodeLabel` | `handlers/set/set-node-label.ts` | Sets a node label. \| Used by node metadata actions. |
@@ -162,14 +162,14 @@ Validation failures throw `WorkspaceValidationError` before a handler runs. Hand
 | `resetWorkspaceIntent` | `handlers/reset/reset-workspace-intent.ts` | Clears workspace intent metadata. \| Used by workspace reset actions. |
 | `resetWorkspaceTags` | `handlers/reset/reset-workspace-tags.ts` | Clears workspace tag metadata. \| Used by workspace reset actions. |
 | `resetWorkspaceLicense` | `handlers/reset/reset-workspace-license.ts` | Clears workspace license metadata. \| Used by workspace reset actions. |
-| `resetComponentLabel` | `handlers/reset/reset-component-label.ts` | Clears a board label override. \| Used by board reset actions. |
-| `resetComponentIntent` | `handlers/reset/reset-component-intent.ts` | Clears board intent data. \| Used by board reset actions. |
-| `resetComponentTags` | `handlers/reset/reset-component-tags.ts` | Clears board tags. \| Used by board reset actions. |
-| `resetComponentLicense` | `handlers/reset/reset-component-license.ts` | Clears board license data. \| Used by board reset actions. |
-| `resetComponentAuthor` | `handlers/reset/reset-component-author.ts` | Clears board author data. \| Used by board reset actions. |
-| `resetComponentCredentials` | `handlers/reset/reset-component-credentials.ts` | Clears board credentials. \| Used by resource board reset actions. |
-| `resetComponentPreview` | `handlers/reset/reset-component-preview.ts` | Clears board preview data. \| Used by resource board reset actions. |
-| `resetComponentEditorData` | `handlers/reset/reset-component-editor-data.ts` | Clears board editor data. \| Used by board reset actions. |
+| `resetComponentLabel` | `handlers/reset/reset-board-label.ts` | Clears a board label override. \| Used by board reset actions. |
+| `resetComponentIntent` | `handlers/reset/reset-board-intent.ts` | Clears board intent data. \| Used by board reset actions. |
+| `resetComponentTags` | `handlers/reset/reset-board-tags.ts` | Clears board tags. \| Used by board reset actions. |
+| `resetComponentLicense` | `handlers/reset/reset-board-license.ts` | Clears board license data. \| Used by board reset actions. |
+| `resetComponentAuthor` | `handlers/reset/reset-board-author.ts` | Clears board author data. \| Used by board reset actions. |
+| `resetComponentCredentials` | `handlers/reset/reset-board-credentials.ts` | Clears board credentials. \| Used by resource board reset actions. |
+| `resetComponentPreview` | `handlers/reset/reset-board-preview.ts` | Clears board preview data. \| Used by resource board reset actions. |
+| `resetComponentEditorData` | `handlers/reset/reset-board-editor-data.ts` | Clears board editor data. \| Used by board reset actions. |
 | `resetComponentProperty` | `handlers/reset/reset-component-property.ts` | Clears a board property override. \| Used by property reset actions. |
 | `resetNodeLabel` | `handlers/reset/reset-node-label.ts` | Resets a node label. \| Used by node reset actions. |
 | `resetNodeEditorData` | `handlers/reset/reset-node-editor-data.ts` | Clears node editor data. \| Used by node reset actions. |

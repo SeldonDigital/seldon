@@ -2,7 +2,7 @@ import { ComponentId } from "../../../components/constants"
 import { invariant } from "../../../index"
 import { ErrorMessages } from "../../constants"
 import { EntryNode, Workspace } from "../../types"
-import { getComponentById } from "../components/get-component-by-id"
+import { getBoardById } from "../components/get-board-by-id"
 import { getVariantById } from "./get-variant-by-id"
 
 /**
@@ -17,7 +17,7 @@ export function getDefaultVariant(
   componentId: ComponentId,
   workspace: Workspace,
 ): EntryNode & { type: "default" | "variant" } {
-  const board = getComponentById(componentId, workspace)
+  const board = getBoardById(componentId, workspace)
   const defaultVariantId = board.variants[0]?.id
   invariant(defaultVariantId, ErrorMessages.defaultVariantNotFound(componentId))
 
