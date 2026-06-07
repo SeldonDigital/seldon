@@ -14,9 +14,9 @@ import {
   isThemeBoard,
 } from "../../../model/components"
 import { shouldBlockDeletableBoardRemoval } from "../../../helpers/removal/board-removal-guards"
-import { DEFAULT_FONT_COLLECTION_BOARD_KEY } from "../../../helpers/font-collections/seed-default-font-collection-board"
-import { DEFAULT_ICON_SET_BOARD_KEY } from "../../../helpers/icon-sets/seed-default-icon-set-board"
-import { DEFAULT_THEME_BOARD_KEY } from "../../../helpers/themes/seed-default-theme-board"
+import { DEFAULT_FONT_COLLECTION_BOARD_KEY } from "../../../helpers/seed/seed-default-font-collection-board"
+import { DEFAULT_ICON_SET_BOARD_KEY } from "../../../helpers/seed/seed-default-icon-set-board"
+import { DEFAULT_THEME_BOARD_KEY } from "../../../helpers/seed/seed-default-theme-board"
 import { ErrorMessages } from "../../../constants"
 import { componentValidators, isPackagedCatalogBoard } from "../validators"
 import { WorkspaceValidationError } from "../workspace-validation-error"

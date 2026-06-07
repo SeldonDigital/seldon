@@ -7,13 +7,13 @@ import type {
   EntryIconSetOverrides,
 } from "../../model/entry-icon-set"
 import { formatIconSetCatalog } from "../../model/template-ref"
-import type { Workspace } from "../../model/workspace"
-import {
-  getBoardOrder,
-  setBoardOrder,
-} from "../components/board-sort-order"
+import { setBoardOrder } from "../components/board-sort-order"
 import { getInitialBoardComponentProperties } from "../components/get-initial-board-component-properties"
 import { WORKSPACE_EDITABLE_THEME_ENTRY_ID } from "../themes/workspace-editable-theme"
+import {
+  type SeedableWorkspace,
+  nextBoardOrder,
+} from "./seedable-workspace"
 
 /** Catalog row key for the default icon set board (matches the Seldon icon set id). */
 export const DEFAULT_ICON_SET_BOARD_KEY = "seldonIcons" as const
@@ -25,8 +25,6 @@ export const DEFAULT_ICON_SET_ENTRY_ID = "icon-set-seldonIcons-default" as const
 export const ADDITIONAL_ICON_SET_BOARD_KEYS = [
   "googleMaterial",
 ] as const satisfies IconSetTemplateId[]
-
-type SeedableWorkspace = Pick<Workspace, "components" | "icon-sets">
 
 /**
  * Builds inclusion overrides that turn on every icon in a set, so each
@@ -103,12 +101,6 @@ function seedIconSetBoard(
 
   workspace["icon-sets"][entry.id] = entry
 
-  const existingBoards = Object.values(workspace.components)
-  const maxOrder =
-    existingBoards.length > 0
-      ? Math.max(...existingBoards.map((b) => getBoardOrder(b)))
-      : -1
-
   const board: IconSetBoard = {
     type: "icon-set",
     catalogId: boardKey,
@@ -118,6 +110,6 @@ function seedIconSetBoard(
     componentProperties: getInitialBoardComponentProperties("icon-set"),
     variants: [{ id: entry.id }],
   }
-  setBoardOrder(board, maxOrder + 1)
+  setBoardOrder(board, nextBoardOrder(workspace.components))
   workspace.components[boardKey] = board
 }

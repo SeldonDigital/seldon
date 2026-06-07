@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react"
 import { STOCK_ICON_SETS } from "@seldon/core/icon-sets/catalog"
-import { DEFAULT_ICON_SET_BOARD_KEY } from "@seldon/core/workspace/helpers/icon-sets/seed-default-icon-set-board"
+import { DEFAULT_ICON_SET_BOARD_KEY } from "@seldon/core/workspace/helpers/seed/seed-default-icon-set-board"
 import { useAddRemoveCommands } from "@lib/hooks/commands/use-add-remove-commands"
 import { useDialog } from "@lib/hooks/use-dialog"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"

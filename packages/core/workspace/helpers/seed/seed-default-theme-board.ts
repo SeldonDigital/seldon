@@ -4,12 +4,12 @@ import type { Board, ThemeBoard } from "../../model/components"
 import { isThemeBoard } from "../../model/components"
 import type { EntryTheme } from "../../model/entry-theme"
 import { formatThemeCatalog } from "../../model/template-ref"
-import type { Workspace } from "../../model/workspace"
-import {
-  getBoardOrder,
-  setBoardOrder,
-} from "../components/board-sort-order"
+import { setBoardOrder } from "../components/board-sort-order"
 import { getInitialBoardComponentProperties } from "../components/get-initial-board-component-properties"
+import {
+  type SeedableWorkspace,
+  nextBoardOrder,
+} from "./seedable-workspace"
 
 /** Catalog row key for the default theme board (matches the `default` stock template id). */
 export const DEFAULT_THEME_BOARD_KEY = "seldon" as const
@@ -22,8 +22,6 @@ export const ADDITIONAL_THEME_BOARD_KEYS = [
   "highContrast",
   "material",
 ] as const satisfies ThemeTemplateId[]
-
-type SeedableWorkspace = Pick<Workspace, "components" | "themes">
 
 /** Builds the default theme entry (the editable workspace theme row). */
 export function createDefaultThemeEntry(): EntryTheme {
@@ -81,12 +79,6 @@ function seedThemeBoard(
 
   workspace.themes[entry.id] = entry
 
-  const existingBoards = Object.values(workspace.components)
-  const maxOrder =
-    existingBoards.length > 0
-      ? Math.max(...existingBoards.map((b) => getBoardOrder(b)))
-      : -1
-
   const board: ThemeBoard = {
     type: "theme",
     catalogId: boardKey,
@@ -97,6 +89,6 @@ function seedThemeBoard(
     componentProperties: getInitialBoardComponentProperties("theme"),
     variants: [{ id: entry.id }],
   }
-  setBoardOrder(board, maxOrder + 1)
+  setBoardOrder(board, nextBoardOrder(workspace.components))
   workspace.components[boardKey] = board
 }

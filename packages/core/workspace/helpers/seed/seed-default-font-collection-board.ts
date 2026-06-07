@@ -8,14 +8,14 @@ import type {
 import { isFontCollectionBoard } from "../../model/components"
 import type { EntryFontCollection } from "../../model/entry-font-collection"
 import { formatFontCollectionCatalog } from "../../model/template-ref"
-import type { Workspace } from "../../model/workspace"
 import { setFamilyVariantPreset } from "../../reducers/handlers/shared/font-collection-variant-selection"
-import {
-  getBoardOrder,
-  setBoardOrder,
-} from "../components/board-sort-order"
+import { setBoardOrder } from "../components/board-sort-order"
 import { getInitialBoardComponentProperties } from "../components/get-initial-board-component-properties"
 import { WORKSPACE_EDITABLE_THEME_ENTRY_ID } from "../themes/workspace-editable-theme"
+import {
+  type SeedableWorkspace,
+  nextBoardOrder,
+} from "./seedable-workspace"
 
 /** Catalog row key for the default font collection board (matches the `system` collection id). */
 export const DEFAULT_FONT_COLLECTION_BOARD_KEY = "system" as const
@@ -23,8 +23,6 @@ export const DEFAULT_FONT_COLLECTION_BOARD_KEY = "system" as const
 /** Font collection entry id for the default board's default variant. */
 export const DEFAULT_FONT_COLLECTION_ENTRY_ID =
   "font-collection-system-default" as const
-
-type SeedableWorkspace = Pick<Workspace, "components" | "font-collections">
 
 /** Builds the default font collection entry (the default System variant row). */
 export function createDefaultFontCollectionEntry(): EntryFontCollection {
@@ -109,12 +107,6 @@ function seedFontCollectionBoard(
 
   workspace["font-collections"][entry.id] = entry
 
-  const existingBoards = Object.values(workspace.components)
-  const maxOrder =
-    existingBoards.length > 0
-      ? Math.max(...existingBoards.map((b) => getBoardOrder(b)))
-      : -1
-
   const board: FontCollectionBoard = {
     type: "font-collection",
     catalogId: boardKey,
@@ -124,6 +116,6 @@ function seedFontCollectionBoard(
     componentProperties: getInitialBoardComponentProperties("font-collection"),
     variants: [{ id: entry.id }],
   }
-  setBoardOrder(board, maxOrder + 1)
+  setBoardOrder(board, nextBoardOrder(workspace.components))
   workspace.components[boardKey] = board
 }

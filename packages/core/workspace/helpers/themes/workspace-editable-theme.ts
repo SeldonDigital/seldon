@@ -2,7 +2,7 @@ import type { EntryTheme } from "../../model/entry-theme"
 import {
   DEFAULT_THEME_ENTRY_ID,
   createDefaultThemeEntry,
-} from "./seed-default-theme-board"
+} from "../seed/seed-default-theme-board"
 
 /** Workspace theme row id for the editor-editable theme. This is the stock default theme entry. */
 export const WORKSPACE_EDITABLE_THEME_ENTRY_ID = DEFAULT_THEME_ENTRY_ID

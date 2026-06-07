@@ -1,6 +1,6 @@
 import { produce } from "immer"
-import { seedDefaultIconSetBoard } from "../../../helpers/icon-sets/seed-default-icon-set-board"
-import { seedDefaultThemeBoard } from "../../../helpers/themes/seed-default-theme-board"
+import { seedDefaultIconSetBoard } from "../../../helpers/seed/seed-default-icon-set-board"
+import { seedDefaultThemeBoard } from "../../../helpers/seed/seed-default-theme-board"
 import type { Workspace } from "../../../types"
 import { backfillInstanceOrigin } from "./backfill-instance-origin"
 

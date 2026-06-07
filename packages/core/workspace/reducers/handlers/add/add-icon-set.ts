@@ -8,7 +8,7 @@ import {
 } from "../../../helpers/components/board-sort-order"
 import { ICON_SET_BOARD_CATALOG_IDS } from "../../../helpers/components/resource-board-catalog-ids"
 import { getInitialBoardComponentProperties } from "../../../helpers/components/get-initial-board-component-properties"
-import { DEFAULT_ICON_SET_BOARD_KEY } from "../../../helpers/icon-sets/seed-default-icon-set-board"
+import { DEFAULT_ICON_SET_BOARD_KEY } from "../../../helpers/seed/seed-default-icon-set-board"
 import { WORKSPACE_EDITABLE_THEME_ENTRY_ID } from "../../../helpers/themes/workspace-editable-theme"
 import type { EntryIconSet } from "../../../model/entry-icon-set"
 import { formatIconSetCatalog } from "../../../model/template-ref"
