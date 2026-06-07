@@ -857,6 +857,36 @@ A node cannot contain its own component or any ancestor component. This keeps tr
 
 ---
 
+### Mutation Policy
+
+Every structural action resolves the target entity, then reads its policy from `rules.mutations[operation][entity]` in `packages/core/rules/config/rules.config.ts`. A handler that is `Blocked` returns the workspace unchanged.
+
+Each cell states whether the operation is allowed and how far it reaches:
+
+- **Blocked**: not allowed for that entity. The handler is a no-op.
+- **Local**: allowed, and changes only the target node.
+- **Syncs**: allowed, and also applies to every instance that links to the target.
+
+| Operation | Board | Default Variant | User Variant | Instance |
+| --- | --- | --- | --- | --- |
+| `create` | Local | Blocked | Local | Syncs |
+| `instantiate` | Blocked | Syncs | Syncs | Syncs |
+| `insertInto` | Blocked | Blocked | Syncs | Syncs |
+| `duplicate` | Blocked | Local | Local | Syncs |
+| `reorder` | Blocked | Blocked | Local | Syncs |
+| `move` | Blocked | Blocked | Blocked | Syncs |
+| `delete` | Syncs | Blocked | Syncs | Syncs* |
+| `setProperties` | Local | Local | Local | Local |
+| `reset` | Local | Local | Local | Local |
+| `setTheme` | Syncs | Syncs | Syncs | Syncs |
+| `rename` | Blocked | Blocked | Syncs | Blocked |
+
+Deleting an instance depends on its `origin`. A `schema` instance hides by setting `display` to `EXCLUDE`. A `user` instance is deleted. Only the `delete` instance row carries this behavior.
+
+`Local` and `Syncs` map to the `propagation` field, `none` and `downstream`. `setProperties` and `reset` stay `Local`. Instance edits still surface through their source because instance properties merge with the source at read time, not by fan-out at write time.
+
+---
+
 ### Default Variant Behavior
 
 The first entry on a board is the default variant. It always references the catalog schema as described in **Catalog alignment**. Its child tree matches the schema and cannot be rewired onto another component board.
