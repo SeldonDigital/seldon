@@ -14,7 +14,10 @@ import { isVariantNode } from "@seldon/core/workspace/helpers/nodes/is-variant-n
 import { isComponentBoard } from "@seldon/core/workspace/model/components"
 import { typeCheckingService } from "@seldon/core/workspace/services"
 import type { EntryNode, Workspace } from "@seldon/core/workspace/types"
-import { getTemplateSourceNodeId } from "../../../helpers/workspace-nodes"
+import {
+  getTemplateSourceNodeId,
+  resolveSourceVariantId,
+} from "../../../helpers/workspace-nodes"
 import { DataBinding, JSONTreeNode } from "../../types"
 import { camelCase, pascalCase } from "../utils/case-utils"
 import { getComponentName } from "./get-component-name"
@@ -148,7 +151,7 @@ export function getJsonTreeFromChildren(
         classNamesArray.push(variantClass)
       }
     } else if (typeCheckingService.isInstance(node)) {
-      const sourceId = getTemplateSourceNodeId(node)
+      const sourceId = resolveSourceVariantId(node, workspace)
       if (sourceId) {
         const variantClass = nodeIdToClass[sourceId]
         const instanceClass = nodeIdToClass[node.id]

@@ -9,7 +9,7 @@ import {
 } from "@seldon/core/workspace/services"
 import {
   getInstanceClassHash,
-  getTemplateSourceNodeId,
+  resolveSourceVariantId,
 } from "../../../helpers/workspace-nodes"
 import { kebabCase } from "../../react/utils/case-utils"
 
@@ -37,7 +37,7 @@ export const getClassNameForNode = (
   }
 
   if (isEntryNodeInstance(node)) {
-    const sourceId = getTemplateSourceNodeId(node)
+    const sourceId = resolveSourceVariantId(node, workspace)
     if (sourceId) {
       const sourceVariant = getVariantById(sourceId, workspace)
       const variantClassName = getClassNameForNode(sourceVariant, workspace)

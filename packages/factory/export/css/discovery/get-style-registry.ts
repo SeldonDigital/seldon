@@ -13,6 +13,7 @@ import { getStyleContext } from "../../../helpers/build-export-context"
 import {
   getTemplateSourceNodeId,
   getWorkspaceNodeList,
+  resolveSourceVariantId,
 } from "../../../helpers/workspace-nodes"
 import { getCssObjectFromProperties } from "../../../styles/css-properties/get-css-object-from-properties"
 import { CSSObject } from "../../../styles/css-properties/types"
@@ -100,14 +101,15 @@ export const buildStyleRegistry = (
     const className = getClassNameForNode(node, workspace)
     nodeTreeDepths[node.id] = getNodeTreeDepth(node.id, workspace)
 
-    const templateSourceId = getTemplateSourceNodeId(node)
-    const hasTemplateSource =
-      typeCheckingService.isInstance(node) && templateSourceId !== null
+    const sourceVariantId = typeCheckingService.isInstance(node)
+      ? resolveSourceVariantId(node, workspace)
+      : null
+    const hasTemplateSource = sourceVariantId !== null
 
     let css: CSSObject
 
-    if (hasTemplateSource && templateSourceId) {
-      const variant = getVariantById(templateSourceId, workspace)
+    if (hasTemplateSource && sourceVariantId) {
+      const variant = getVariantById(sourceVariantId, workspace)
       const variantContext = getStyleContext(variant.id, workspace, parentIndex)
       const instanceContext = getStyleContext(node.id, workspace, parentIndex)
 
