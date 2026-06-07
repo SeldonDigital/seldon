@@ -49,7 +49,7 @@ export function removeInstance(
     return workspace
   }
 
-  const config = rules.mutations.delete[entityType]
+  const config = rules.mutations.delete.instance
   const removalBehavior =
     typeof config.removalBehavior === "string"
       ? config.removalBehavior

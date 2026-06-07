@@ -18,7 +18,7 @@ export function resetNode(
 ): Workspace {
   const node = nodeRetrievalService.getNode(payload.nodeId, workspace)
   const entityType = typeCheckingService.getEntityType(node)
-  const { allowed, propagation } = rules.mutations.setProperties[entityType]
+  const { allowed, propagation } = rules.mutations.reset[entityType]
 
   if (!allowed) {
     return workspace

@@ -1,4 +1,5 @@
 import { ComponentId } from "../../../../components/constants"
+import { rules } from "../../../../rules/config/rules.config"
 import { getComponentDescendantIds } from "../../../helpers/nodes/get-descendant-ids"
 import {
   nodeRetrievalService,
@@ -16,7 +17,10 @@ import { addComponent } from "./add-component"
 import { duplicateNode } from "../duplicate/duplicate-node"
 
 /**
- * Adds a variant by instantiating the default variant of the given component.
+ * Adds a variant by duplicating the default variant of the given component.
+ * Adding a variant creates a user variant, so it is gated by
+ * `rules.mutations.create.userVariant`. The actual copy then runs through
+ * `duplicateNode`, governed by `rules.mutations.duplicate.defaultVariant`.
  * Initial overrides to the default variant properties can be provided.
  */
 export function addVariant(
@@ -24,6 +28,10 @@ export function addVariant(
   workspace: Workspace,
   options: ValidationOptions = {},
 ) {
+  if (!rules.mutations.create.userVariant.allowed) {
+    return workspace
+  }
+
   let nextWorkspace = workspace
 
   if (payload.ensureDescendantComponents) {

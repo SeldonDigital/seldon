@@ -18,7 +18,7 @@ export function resetUserVariantToDefault(
   payload: ExtractPayload<"reset_user_variant_to_default">,
   workspace: Workspace,
 ): Workspace {
-  if (rules.mutations.duplicate.userVariant.allowed === false) {
+  if (rules.mutations.reset.userVariant.allowed === false) {
     return workspace
   }
 

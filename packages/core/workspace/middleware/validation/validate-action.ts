@@ -112,6 +112,7 @@ export function validateAction(workspace: Workspace, action: Action): void {
     case "reset_node_label":
     case "reset_node_editor_data":
     case "reset_user_variant_to_default":
+    case "reset_default_variant_to_catalog":
       validateNodeMutation(workspace, action)
       return
     case "reset_theme_tokens":

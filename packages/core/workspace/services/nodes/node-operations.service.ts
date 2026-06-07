@@ -547,11 +547,19 @@ export class NodeOperationsService {
           variant,
           draft,
         )
-        if (currentIndex === -1 || currentIndex === index) return
+        if (currentIndex === -1) return
+
+        // Clamp the target into the valid range so an out-of-bounds index
+        // settles at the last slot instead of overshooting the array.
+        const clampedIndex = Math.max(
+          0,
+          Math.min(index, board.variants.length - 1),
+        )
+        if (currentIndex === clampedIndex) return
 
         const ref = board.variants[currentIndex]
         if (!ref) return
-        moveItemInArray(board.variants, ref, index)
+        moveItemInArray(board.variants, ref, clampedIndex)
       },
     )
   }

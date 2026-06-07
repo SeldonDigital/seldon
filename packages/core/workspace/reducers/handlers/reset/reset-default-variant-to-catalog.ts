@@ -16,7 +16,7 @@ export function resetDefaultVariantToCatalog(
   payload: ExtractPayload<"reset_default_variant_to_catalog">,
   workspace: Workspace,
 ): Workspace {
-  if (rules.mutations.setProperties.defaultVariant.allowed === false) {
+  if (rules.mutations.reset.defaultVariant.allowed === false) {
     return workspace
   }
 

@@ -293,6 +293,25 @@ export function validateNodeMutation(
       check(idx > 0, "The catalog default variant does not use this action")
       break
     }
+    case "reset_default_variant_to_catalog": {
+      const rootId = action.payload.defaultVariantRootId as VariantId
+      nodeValidators.exists(workspace, rootId)
+      const node = nodeRetrievalService.getNode(rootId, workspace)
+      check(
+        typeCheckingService.isDefaultVariant(node),
+        "Only a default catalog variant can reset to catalog",
+      )
+      const located = findComponentContainingTreeNodeId(workspace, rootId)
+      check(
+        located &&
+          (isComponentBoard(located.board) ||
+            isPlaygroundBoard(located.board)),
+        "That reset only runs on component or playground boards",
+      )
+      const idx = located!.board.variants.findIndex((v) => v.id === rootId)
+      check(idx === 0, "Reset to catalog only runs on the default variant")
+      break
+    }
   }
 }
 
@@ -319,6 +338,13 @@ export function validateDuplicateNode(
     rules.mutations.duplicate[entity].allowed,
     `Cannot duplicate node of entity type ${entity}`,
   )
+  if (typeCheckingService.isInstance(node)) {
+    const parent = nodeTraversalService.findParentNode(node, workspace)
+    check(
+      !parent || !typeCheckingService.isDefaultVariant(parent),
+      "Cannot duplicate an instance in a default catalog variant",
+    )
+  }
 }
 
 export function validateReorderBoard(

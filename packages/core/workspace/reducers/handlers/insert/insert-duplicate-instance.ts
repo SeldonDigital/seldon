@@ -17,6 +17,14 @@ import {
 } from "../../../services"
 import type { ValidationOptions } from "../../helpers/validation"
 
+/**
+ * Applies `insert_duplicate_instance`: copies an instance into a chosen parent
+ * and index. Gated by `rules.mutations.insertInto[targetEntityType]` for the
+ * destination and `rules.mutations.instantiate[entityType]` for the source copy.
+ *
+ * This is distinct from `duplicate_node`, which makes an in-place copy beside
+ * the source and is gated by `rules.mutations.duplicate[entityType]`.
+ */
 export function insertDuplicateInstance(
   payload: ExtractPayload<"insert_duplicate_instance">,
   workspace: Workspace,

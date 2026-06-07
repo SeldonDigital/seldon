@@ -4,16 +4,7 @@ import {
   getComponentOrder,
   setComponentOrder,
 } from "../../../helpers/components/component-sort-order"
-import {
-  nodeRetrievalService,
-  nodeTraversalService,
-  nodeRelationshipService,
-  nodeOperationsService,
-  workspaceMutationService,
-  workspaceThemeService,
-  workspacePropagationService,
-  typeCheckingService,
-} from "../../../services"
+import { workspacePropagationService } from "../../../services"
 import type { ComponentEntry, ComponentKey } from "../../../types"
 import { ExtractPayload, Workspace } from "../../../types"
 
