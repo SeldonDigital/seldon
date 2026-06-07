@@ -2,7 +2,7 @@ import type { ExtractPayload, Workspace } from "../../../../index"
 import { withBoardMutation } from "../../../services/shared/workspace-operation-helpers"
 
 /**
- * Sets `workspace.components[boardKey].author` on component and theme boards.
+ * Sets `workspace.boards[boardKey].author` on component and theme boards.
  */
 export function setBoardAuthor(
   payload: ExtractPayload<"set_board_author">,

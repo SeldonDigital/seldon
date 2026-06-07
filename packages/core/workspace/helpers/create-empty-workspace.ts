@@ -15,7 +15,7 @@ export function createEmptyWorkspace(): Workspace {
       version: EMPTY_WORKSPACE_FILE_VERSION,
       label: "",
     },
-    components: {},
+    boards: {},
     nodes: {},
     themes: {},
     "font-collections": {},

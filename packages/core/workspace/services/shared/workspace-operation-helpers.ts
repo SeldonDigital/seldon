@@ -39,7 +39,7 @@ export function withNodeMutation(
 
 /**
  * Executes a mutation operation on a board with automatic retrieval and validation.
- * @param boardKey - Key of the board in `workspace.components`
+ * @param boardKey - Key of the board in `workspace.boards`
  * @param workspace - The workspace
  * @param operation - The operation to perform on the board
  * @returns The updated workspace

@@ -148,7 +148,7 @@ export class WorkspaceThemeService {
   public collectUsedThemes(workspace: Workspace): Set<ThemeInstanceId> {
     const usedThemeIds = new Set<ThemeInstanceId>()
 
-    Object.values(workspace.components).forEach((board) => {
+    Object.values(workspace.boards).forEach((board) => {
       const ref = board ? getBoardThemeRef(board) : undefined
       if (ref) {
         usedThemeIds.add(ref)

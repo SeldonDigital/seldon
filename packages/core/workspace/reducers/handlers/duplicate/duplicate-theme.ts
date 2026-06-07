@@ -40,7 +40,7 @@ export function duplicateTheme(
 
     if (draft.themes[newId]) return
 
-    const board = draft.components[boardKey]
+    const board = draft.boards[boardKey]
     const isThemeBoard = board?.type === "theme"
 
     const base = isThemeBoard ? board.label : entry.label

@@ -2,7 +2,7 @@ import type { ExtractPayload, Workspace } from "../../../../index"
 import { withBoardMutation } from "../../../services/shared/workspace-operation-helpers"
 
 /**
- * Sets or clears `workspace.components[boardKey].intent`.
+ * Sets or clears `workspace.boards[boardKey].intent`.
  */
 export function setBoardIntent(
   payload: ExtractPayload<"set_board_intent">,

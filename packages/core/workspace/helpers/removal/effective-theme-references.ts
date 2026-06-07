@@ -11,7 +11,7 @@ export function hasEffectiveThemeReference(
   workspace: Workspace,
   themeId: string,
 ): boolean {
-  for (const board of Object.values(workspace.components)) {
+  for (const board of Object.values(workspace.boards)) {
     if (!board) continue
     const ref = getBoardThemeRef(board)
     if (ref === themeId) return true

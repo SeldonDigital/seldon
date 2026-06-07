@@ -2,7 +2,7 @@ import type { ExtractPayload, Workspace } from "../../../../index"
 import { withBoardMutation } from "../../../services/shared/workspace-operation-helpers"
 
 /**
- * Sets `workspace.components[boardKey].componentPreview` on theme and resource catalog boards.
+ * Sets `workspace.boards[boardKey].componentPreview` on theme and resource catalog boards.
  */
 export function setBoardPreview(
   payload: ExtractPayload<"set_board_preview">,

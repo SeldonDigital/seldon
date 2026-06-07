@@ -18,7 +18,7 @@ import {
 
 /**
  * Inserts a theme board and one default `themes` row rooted at `catalog:{boardKey}`.
- * Returns the incoming workspace when rules block creation or `workspace.components[boardKey]` already exists.
+ * Returns the incoming workspace when rules block creation or `workspace.boards[boardKey]` already exists.
  */
 export function addTheme(
   payload: ExtractPayload<"add_theme">,
@@ -31,11 +31,11 @@ export function addTheme(
   return produce(workspace, (draft) => {
     const boardKey = payload.boardKey
 
-    if (draft.components[boardKey]) {
+    if (draft.boards[boardKey]) {
       return draft
     }
 
-    const existingBoards = Object.values(draft.components)
+    const existingBoards = Object.values(draft.boards)
     const maxOrder =
       existingBoards.length > 0
         ? Math.max(...existingBoards.map((b) => getBoardOrder(b)))
@@ -69,9 +69,9 @@ export function addTheme(
       variants: [{ id: defaultThemeEntryId }],
     }
     setBoardOrder(board, maxOrder + 1)
-    draft.components[boardKey] = board
+    draft.boards[boardKey] = board
 
     const updatedWorkspace = boardOrderService.realignBoardOrder(draft)
-    Object.assign(draft.components, updatedWorkspace.components)
+    Object.assign(draft.boards, updatedWorkspace.boards)
   })
 }

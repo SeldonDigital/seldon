@@ -17,7 +17,7 @@ function assertBoardHasAllowedKind(
   allowed: ReadonlyArray<Board["type"]>,
 ): void {
   boardValidators.exists(workspace, boardKey)
-  const board = workspace.components[boardKey]
+  const board = workspace.boards[boardKey]
   invariant(board, `Board ${boardKey} missing after exists check`)
   if (!allowed.includes(board.type)) {
     throw new WorkspaceValidationError(
@@ -119,7 +119,7 @@ export function validateBoardMetadata(
     case "set_component_properties": {
       const boardKey = action.payload.boardKey
       boardValidators.exists(workspace, boardKey)
-      const board = workspace.components[boardKey]
+      const board = workspace.boards[boardKey]
       const schemaId = resolvePropertySchemaId(board, boardKey)
       propertyValidators.keys(action.payload.properties, schemaId, board)
       propertyValidators.values(
@@ -132,7 +132,7 @@ export function validateBoardMetadata(
     case "reset_component_property": {
       const boardKey = action.payload.boardKey
       boardValidators.exists(workspace, boardKey)
-      const board = workspace.components[boardKey]
+      const board = workspace.boards[boardKey]
       propertyValidators.keys(
         {
           [action.payload.propertyKey]: { type: ValueType.EMPTY, value: null },

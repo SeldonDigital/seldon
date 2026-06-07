@@ -19,13 +19,13 @@ import { typeCheckingService } from "../type-checking/type-checking.service"
  */
 export class NodeRetrievalService {
   /**
-   * Gets a board by `workspace.components` key.
+   * Gets a board by `workspace.boards` key.
    * @param boardKey - Board key in the workspace
    * @param workspace - The workspace
    * @returns The board
    */
   public getBoard(boardKey: BoardKey, workspace: Workspace): Board {
-    const board = workspace.components[boardKey]
+    const board = workspace.boards[boardKey]
     invariant(board, ErrorMessages.componentNotFound(boardKey))
     return board
   }

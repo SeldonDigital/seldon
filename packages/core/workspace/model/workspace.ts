@@ -11,7 +11,7 @@ import type { WorkspaceMetadata } from "./metadata"
 
 export interface Workspace {
   metadata: WorkspaceMetadata
-  components: Record<BoardKey, Board>
+  boards: Record<BoardKey, Board>
   nodes: Record<EntryNodeId, EntryNode>
   themes: Record<EntryThemeId, EntryTheme>
   "font-collections": Record<EntryFontCollectionId, EntryFontCollection>

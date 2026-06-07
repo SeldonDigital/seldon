@@ -14,7 +14,7 @@ At its core, a Seldon workspace file is a collection of JSON keys containing dat
 ```json
 {
   "metadata": { },
-  "components": { },
+  "boards": { },
   "nodes": { },
   "themes": { },
   "font-collections": { },
@@ -29,7 +29,7 @@ Board keys are camelCase slugs unique across the workspace, referencing their so
 | Key | Description | ID Pattern |
 | --- | --- | --- |
 | `metadata` | File-level metadata: migration version, ownership, optional notices, and other fields tied to the overall workspace. |  |
-| `components` | Catalog index for all row kinds (`component`, `playground`, `theme`, `font-collection`, `icon-set`, `media`). Each row shares fields like `type` and `variants`; see **Components** below. | `{boardKey}` |
+| `boards` | Catalog index for all row kinds (`component`, `playground`, `theme`, `font-collection`, `icon-set`, `media`). Each row shares fields like `type` and `variants`; see **Boards** below. | `{boardKey}` |
 | `nodes` | Playgrounds, components, variants, and instances all keyed by stable ids. | `playground-{boardKey}-{suffix}`, `component-{boardKey}-{suffix}` |
 | `themes` | Theme definitions displayed using sample components. These are made available in all editor theme menus, and are described in detail below. | `theme-{boardKey}-{suffix}` |
 | `font-collections` | Font collection choices: families, references, licensing, and related data. These are made available in all editor font menus, and are described in detail below. | `font-collection-{boardKey}-{suffix}` |
@@ -57,7 +57,7 @@ Full customization beyond overrides is done with **`variants`** -- a **`node`** 
 ```json
 {
   "metadata": { "...": "..." },
-  "components": {
+  "boards": {
     "searchResults": { "...": "..." },
     "productListing": { "...": "..." },
     "button": { "...": "..." },
@@ -118,7 +118,7 @@ Full customization beyond overrides is done with **`variants`** -- a **`node`** 
 
 Metadata describes the **workspace file as a whole**: who it belongs to, how it is labeled, which migration version it expects, when it was last updated, and optional **intent**, **tags**, and **licensing** information for discovery, auditing, and compliance. It supports loading and collaboration without duplicating the design data that boards and the other top-level sections hold.
 
-Metadata does not define components, themes, font collections, icon sets, or media. That structure lives in `components`, as well as in `nodes`, `themes`, `font-collections`, `icon-sets`, and `media`.
+Metadata does not define boards, themes, font collections, icon sets, or media. That structure lives in `boards`, as well as in `nodes`, `themes`, `font-collections`, `icon-sets`, and `media`.
 
 Programs change each metadata field with its own action: `set_workspace_owner`, `set_workspace_label`, `set_workspace_version`, `set_workspace_last_update`, `set_workspace_intent`, `set_workspace_tags`, `set_workspace_license`.
 
@@ -149,7 +149,7 @@ Programs change each metadata field with its own action: `set_workspace_owner`, 
     "intent": "...",
     "tags": [ "...", "...", "..." ]
   },
-  "components": { },
+  "boards": { },
   "nodes": { },
   "themes": { },
   "font-collections": { },
@@ -160,20 +160,20 @@ Programs change each metadata field with its own action: `set_workspace_owner`, 
 
 ---
 
-## Components
+## Boards
 
-Components are the organizational index of the workspace used to render, export, or otherwise collect a set of data needed to create each object type and variants. Each catalog row references data that is stored in one of the other top-level workspace sections: `nodes`, `themes`, `font-collections`, `icon-sets`, or `media`.
+Boards are the organizational index of the workspace used to render, export, or otherwise collect a set of data needed to create each object type and variants. Each catalog row references data that is stored in one of the other top-level workspace sections: `nodes`, `themes`, `font-collections`, `icon-sets`, or `media`.
 
-Components do not hold data directly. They only index the information needed to define an object, including which default theme applies.
+Boards do not hold data directly. They only index the information needed to define an object, including which default theme applies.
 
 Programs change catalog row header fields with `set_board_label`, `set_board_intent`, `set_board_tags`, `set_board_license`, `set_board_author`, `set_board_credentials`, `set_board_preview`, `set_board_editor_data`, and use `set_component_properties`, `reset_component_property`, and `set_component_theme` for catalog row layout, preview frame, and default theme on the catalog row.
 
-### Component types
+### Board types
 
 There are six catalog row types:
 
 
-| Component type | Description | Example rows |
+| Board type | Description | Example rows |
 | --- | --- | --- |
 | `component` | A component based on a `core/components/` component schema. Only one catalog row is used per component, with variants and instances of that component stored as references from `nodes`. | `button`, `searchField`, `productCard`, `calendar` |
 | `playground` | A playground is used for mockups and prototyping. Playgrounds are excluded from the factory export flow to allow flexibility in design exploration. | `searchResults`, `productListing` |
@@ -216,7 +216,7 @@ When placing or pasting a component from another workspace, the rules are:
 3. **New or unknown ids** — Otherwise add or fork nodes as needed: create default, variant, and instance entries in `nodes` (new ids where the source id is absent or would collide), then wire the board’s variant tree to those entries.
 
 ```json
-"components": {
+"boards": {
   "button": {
     "type": "component",
     "level": "element",
@@ -285,7 +285,7 @@ The playground catalog row structure is currently identical to component catalog
 
 
 ```json
-"components": {
+"boards": {
   "searchResults": {
     "type": "playground",
     "label": "Search Results",
@@ -337,7 +337,7 @@ Theme rows hold theme definition variants that reference data in the `themes` se
 | `__editor` | `object` | Optional editor-only metadata for this theme. |
 
 ```json
-"components": {
+"boards": {
   "skyBlue": {
     "type": "theme",
     "catalogId": "skyBlue",
@@ -382,7 +382,7 @@ Font collection rows hold font configuration variants that reference data in the
 
 
 ```json
-"components": {
+"boards": {
   "googleFonts": {
     "type": "font-collection",
     "catalogId": "googleFonts",
@@ -435,7 +435,7 @@ Icon set boards hold icon set variants that reference data in the `icon-sets` se
 
 
 ```json
-"components": {
+"boards": {
   "googleMaterial": {
     "type": "icon-set",
     "catalogId": "googleMaterial",
@@ -487,7 +487,7 @@ Media rows hold media assets and variants that reference data in the `media` sec
 
 
 ```json
-"components": {
+"boards": {
   "adobeStockMedia": {
     "type": "media",
     "catalogId": "adobeStockMedia",
@@ -1047,7 +1047,7 @@ If the **`template`** grammar for a given object type only allows a subset of pr
 
 ### 4. JSON object keys are unique within each map
 
-Within each top-level object **`components`**, **`nodes`**, **`themes`**, **`font-collections`**, **`icon-sets`**, and **`media`**, **keys must be unique** for that object. This does **not** forbid the same **`id`** string from appearing multiple times as an **`id` attribute** inside catalog row variant trees: those are references to a **single** catalog entry in the corresponding map. For example, one **`nodes`** entry keyed by that **`id`**.
+Within each top-level object **`boards`**, **`nodes`**, **`themes`**, **`font-collections`**, **`icon-sets`**, and **`media`**, **keys must be unique** for that object. This does **not** forbid the same **`id`** string from appearing multiple times as an **`id` attribute** inside catalog row variant trees: those are references to a **single** catalog entry in the corresponding map. For example, one **`nodes`** entry keyed by that **`id`**.
 
 ---
 

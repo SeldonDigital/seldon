@@ -198,7 +198,7 @@ export function useAddRemoveCommands() {
 
   const removeBoard = useCallback(
     (boardKey: BoardKey) => {
-      const board = workspace.components[boardKey]
+      const board = workspace.boards[boardKey]
       if (!board) return
 
       // Dispatch the removal that matches the board type. The default Seldon

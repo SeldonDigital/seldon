@@ -194,7 +194,7 @@ export function useSelection() {
 
       selectBoard(id)
       if (id) {
-        const board = workspace.components[id]
+        const board = workspace.boards[id]
         let sectionLevel = ComponentLevel.MODULE
         if (board && isComponentBoard(board) && isComponentId(board.catalogId)) {
           sectionLevel = getComponentSchema(board.catalogId).level

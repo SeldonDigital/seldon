@@ -40,7 +40,7 @@ export function generatePropertyOptions(
     path: property.key,
     value: property.value,
     subjectId: resolveSubjectId(node, componentId),
-    workspace: workspace ?? ({ components: {}, nodes: {} } as Workspace),
+    workspace: workspace ?? ({ boards: {}, nodes: {} } as Workspace),
     theme,
     componentLevel,
   }

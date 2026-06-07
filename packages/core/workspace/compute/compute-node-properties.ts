@@ -48,7 +48,7 @@ interface WorkspaceComponent {
 interface WorkspacePropertySource {
   byId?: NodeRecord
   nodes?: NodeRecord
-  components?: BoardRecord
+  boards?: BoardRecord
   themes?: any
 }
 
@@ -121,7 +121,7 @@ function findComponentForNode(
   const rootNode = getRootNode(node, workspace, compositionParentByChild)
 
   return (
-    Object.values(workspace.components ?? {}).find((board) =>
+    Object.values(workspace.boards ?? {}).find((board) =>
       (board.variants ?? []).some((variant) => {
         const variantId = getVariantId(variant)
         if (variantId === rootNode.id) return true
@@ -308,7 +308,7 @@ export function getEffectiveNodeProperties(
   const node = getNodes(workspace)[targetId]
 
   if (!node) {
-    const board = workspace.components?.[targetId]
+    const board = workspace.boards?.[targetId]
     if (!board) throw new Error(`Workspace object ${targetId} not found`)
 
     return mergeEffectiveProperties([
@@ -379,7 +379,7 @@ export function getNodeComputeContext(
   const node = getNodes(workspace)[targetId]
 
   if (!node) {
-    const board = workspace.components?.[targetId]
+    const board = workspace.boards?.[targetId]
     const effectiveProperties = getEffectiveNodeProperties(targetId, workspace)
     const themeId = normalizeThemeRef(
       board ? getComponentThemeRef(board) : null,
@@ -416,7 +416,7 @@ export function computeNodeProperties(
   const effectiveProperties = getEffectiveNodeProperties(targetId, workspace)
 
   if (!node) {
-    const board = workspace.components?.[targetId]
+    const board = workspace.boards?.[targetId]
     const themeId = normalizeThemeRef(
       board ? getComponentThemeRef(board) : null,
     )

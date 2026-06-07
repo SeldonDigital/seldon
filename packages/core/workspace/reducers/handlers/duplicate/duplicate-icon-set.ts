@@ -35,7 +35,7 @@ export function duplicateIconSet(
 
     if (draft["icon-sets"][newId]) return
 
-    const board = draft.components[boardKey]
+    const board = draft.boards[boardKey]
     const isIconSetBoard = board?.type === "icon-set"
 
     const base = isIconSetBoard ? board.label : entry.label

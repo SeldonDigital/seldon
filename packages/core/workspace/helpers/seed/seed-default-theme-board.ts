@@ -43,8 +43,8 @@ export function createDefaultThemeEntry(): EntryTheme {
  * are deletable like any added stock theme.
  */
 export function seedDefaultThemeBoard(workspace: SeedableWorkspace): void {
-  if (!workspace.components) {
-    workspace.components = {}
+  if (!workspace.boards) {
+    workspace.boards = {}
   }
   if (!workspace.themes) {
     workspace.themes = {}
@@ -72,7 +72,7 @@ function seedThemeBoard(
   boardKey: ThemeTemplateId,
   entry: EntryTheme,
 ): void {
-  const existing = workspace.components[boardKey] as Board | undefined
+  const existing = workspace.boards[boardKey] as Board | undefined
   if (existing && isThemeBoard(existing)) {
     return
   }
@@ -89,6 +89,6 @@ function seedThemeBoard(
     componentProperties: getInitialBoardComponentProperties("theme"),
     variants: [{ id: entry.id }],
   }
-  setBoardOrder(board, nextBoardOrder(workspace.components))
-  workspace.components[boardKey] = board
+  setBoardOrder(board, nextBoardOrder(workspace.boards))
+  workspace.boards[boardKey] = board
 }

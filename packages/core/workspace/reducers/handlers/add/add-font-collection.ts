@@ -37,7 +37,7 @@ export function addFontCollection(
       draft["font-collections"] = {}
     }
     const boardKey = payload.catalogId
-    if (draft.components[boardKey]) {
+    if (draft.boards[boardKey]) {
       return draft
     }
     // System is the seeded, non-deletable base collection and is never added.
@@ -49,7 +49,7 @@ export function addFontCollection(
       return draft
     }
 
-    const existingBoards = Object.values(draft.components)
+    const existingBoards = Object.values(draft.boards)
     const maxOrder =
       existingBoards.length > 0
         ? Math.max(...existingBoards.map((b) => getBoardOrder(b)))
@@ -98,10 +98,10 @@ export function addFontCollection(
       variants: [{ id: defaultEntryId }],
     }
     setBoardOrder(board, maxOrder + 1)
-    draft.components[boardKey] = board
+    draft.boards[boardKey] = board
 
     const updatedWorkspace =
       boardOrderService.realignBoardOrder(draft)
-    Object.assign(draft.components, updatedWorkspace.components)
+    Object.assign(draft.boards, updatedWorkspace.boards)
   })
 }

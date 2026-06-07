@@ -22,7 +22,7 @@ import { WorkspaceValidationError } from "../validation/workspace-validation-err
 
 function collectBoardTreeNodeIds(workspace: Workspace): Set<string> {
   const ids = new Set<string>()
-  for (const board of Object.values(workspace.components)) {
+  for (const board of Object.values(workspace.boards)) {
     walkBoardTreeRefs(board.variants, (ref) => {
       ids.add(ref.id)
     })
@@ -63,7 +63,7 @@ const validators = {
   /** Validates that every child ref in board trees points at a node row. */
   allChildrenExist: (workspace: Workspace) => {
     const nodes = getWorkspaceNodes(workspace)
-    for (const board of Object.values(workspace.components)) {
+    for (const board of Object.values(workspace.boards)) {
       // Resource boards (theme, icon-set, media) reference their own maps, not nodes.
       if (isResourceType(board)) {
         continue
@@ -78,7 +78,7 @@ const validators = {
   /** Validates that every tree ref id maps to a node row. */
   allVariantsExist: (workspace: Workspace) => {
     const nodes = getWorkspaceNodes(workspace)
-    for (const board of Object.values(workspace.components)) {
+    for (const board of Object.values(workspace.boards)) {
       // Resource boards (theme, icon-set, media) reference their own maps, not nodes.
       if (isResourceType(board)) {
         continue
@@ -157,7 +157,7 @@ const validators = {
   /** Validates that each component board has exactly one default variant root. */
   oneDefaultVariantPerBoard: (workspace: Workspace) => {
     const nodes = getWorkspaceNodes(workspace)
-    Object.values(workspace.components).forEach((board) => {
+    Object.values(workspace.boards).forEach((board) => {
       if (
         isIconSetBoard(board) ||
         isThemeBoard(board) ||

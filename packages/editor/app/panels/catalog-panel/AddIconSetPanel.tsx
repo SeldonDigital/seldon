@@ -19,7 +19,7 @@ export function AddIconSetPanel({ onClose }: { onClose: () => void }) {
   const { addIconSet } = useAddRemoveCommands()
   const [query, setQuery] = useState("")
 
-  const currentBoards = Object.keys(workspace.components)
+  const currentBoards = Object.keys(workspace.boards)
 
   const categories = useMemo(() => {
     const queryLower = query.toLowerCase()

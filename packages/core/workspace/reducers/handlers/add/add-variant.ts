@@ -24,7 +24,7 @@ export function addVariant(
   if (payload.ensureDescendantComponents) {
     const components = getComponentDescendantIds(payload.boardKey as ComponentId)
     for (const componentId of components) {
-      if (!nextWorkspace.components[componentId as ComponentId]) {
+      if (!nextWorkspace.boards[componentId as ComponentId]) {
         nextWorkspace = addComponent(
           { boardKey: componentId as ComponentId },
           nextWorkspace,

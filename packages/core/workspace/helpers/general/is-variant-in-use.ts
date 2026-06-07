@@ -8,7 +8,7 @@ import { walkBoardTreeRefs } from "../components/walk-board-tree-refs"
  * @param workspace Workspace that holds the boards.
  */
 export function isVariantInUse(variantId: EntryNodeId, workspace: Workspace) {
-  for (const board of Object.values(workspace.components)) {
+  for (const board of Object.values(workspace.boards)) {
     let isUsed = false
     walkBoardTreeRefs(board.variants, (ref) => {
       if (!ref.children?.some((child) => child.id === variantId)) return

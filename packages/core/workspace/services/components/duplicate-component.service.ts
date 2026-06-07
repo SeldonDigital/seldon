@@ -136,18 +136,18 @@ export function cloneBoard(
   newBoardKey: string,
   label?: string,
 ): Workspace {
-  const sourceBoard = workspace.components[sourceBoardKey]
+  const sourceBoard = workspace.boards[sourceBoardKey]
   invariant(
     sourceBoard,
     `cloneBoard: missing source board ${sourceBoardKey}`,
   )
   invariant(
-    !workspace.components[newBoardKey],
+    !workspace.boards[newBoardKey],
     `cloneBoard: board key already exists ${newBoardKey}`,
   )
 
   return mutateWorkspace(workspace, (draft) => {
-    const src = draft.components[sourceBoardKey]
+    const src = draft.boards[sourceBoardKey]
     invariant(
       src,
       `cloneBoard: source board disappeared ${sourceBoardKey}`,
@@ -156,7 +156,7 @@ export function cloneBoard(
     const newBoard = structuredClone(src) as Board
     const maxOrder = Math.max(
       0,
-      ...Object.values(draft.components).map((b) => getBoardOrder(b)),
+      ...Object.values(draft.boards).map((b) => getBoardOrder(b)),
     )
     setBoardOrder(newBoard, maxOrder + 1)
 
@@ -218,11 +218,11 @@ export function cloneBoard(
       )
     }
 
-    draft.components[newBoardKey] = newBoard as WritableDraft<Board>
+    draft.boards[newBoardKey] = newBoard as WritableDraft<Board>
 
     const realigned = boardOrderService.realignBoardOrder(
       draft as Workspace,
     )
-    Object.assign(draft.components, realigned.components)
+    Object.assign(draft.boards, realigned.boards)
   })
 }

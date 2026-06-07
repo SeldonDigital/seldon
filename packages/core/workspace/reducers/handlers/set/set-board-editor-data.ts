@@ -2,7 +2,7 @@ import type { ExtractPayload, Workspace } from "../../../../index"
 import { withBoardMutation } from "../../../services/shared/workspace-operation-helpers"
 
 /**
- * Sets or clears `workspace.components[boardKey].__editor`.
+ * Sets or clears `workspace.boards[boardKey].__editor`.
  */
 export function setBoardEditorData(
   payload: ExtractPayload<"set_board_editor_data">,

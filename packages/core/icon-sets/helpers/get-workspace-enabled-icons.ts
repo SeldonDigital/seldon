@@ -72,7 +72,7 @@ function resolveEntryIconSet(
  */
 export function getAddedIconSetPrefixes(workspace: Workspace): Set<string> {
   const prefixes = new Set<string>()
-  for (const entry of Object.values(workspace.components)) {
+  for (const entry of Object.values(workspace.boards)) {
     if (!entry || !isIconSetBoard(entry)) continue
     const prefix = CATALOG_TO_ICON_PREFIX[entry.catalogId]
     if (prefix) prefixes.add(prefix)
@@ -89,7 +89,7 @@ export function getWorkspaceEnabledIcons(workspace: Workspace): IconId[] {
   const ordered: IconId[] = []
   const seen = new Set<IconId>()
 
-  for (const board of Object.values(workspace.components)) {
+  for (const board of Object.values(workspace.boards)) {
     if (!board || !isIconSetBoard(board)) continue
     for (const variant of board.variants ?? []) {
       const set = resolveEntryIconSet(variant.id, workspace)

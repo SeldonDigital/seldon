@@ -2,7 +2,7 @@ import type { ExtractPayload, Workspace } from "../../../../index"
 import { withBoardMutation } from "../../../services/shared/workspace-operation-helpers"
 
 /**
- * Sets or clears `workspace.components[boardKey].tags`.
+ * Sets or clears `workspace.boards[boardKey].tags`.
  */
 export function setBoardTags(
   payload: ExtractPayload<"set_board_tags">,

@@ -16,7 +16,7 @@ import { getVariantById } from "./get-variant-by-id"
 export function getAllVariants(
   workspace: Workspace,
 ): (EntryNode & { type: "default" | "variant" })[] {
-  return Object.values(workspace.components)
+  return Object.values(workspace.boards)
     .filter((board) => isComponentBoard(board) || isPlaygroundBoard(board))
     .flatMap((board) =>
       getBoardVariantRootIds(board).map((variantId) =>

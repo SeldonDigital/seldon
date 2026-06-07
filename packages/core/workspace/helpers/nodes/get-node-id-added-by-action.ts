@@ -47,7 +47,7 @@ export function getNodeIdAddedByAction(
     }
 
     case "add_component": {
-      const board = workspace.components[payload.boardKey]
+      const board = workspace.boards[payload.boardKey]
       if (!board) return null
       const lastVariant = getBoardVariantRootIds(board).at(-1)
       if (!lastVariant) {
@@ -59,7 +59,7 @@ export function getNodeIdAddedByAction(
     case "add_variant":
     case "add_theme":
     case "add_playground": {
-      const board = workspace.components[payload.boardKey]
+      const board = workspace.boards[payload.boardKey]
       if (!board) return null
       const lastVariant = getBoardVariantRootIds(board).at(-1)
       if (!lastVariant) {
@@ -102,7 +102,7 @@ export function getNodeIdAddedByAction(
       return siblingIds[sourceIndex + 1] ?? null
     }
     case "duplicate_component": {
-      const board = workspace.components[payload.newBoardKey]
+      const board = workspace.boards[payload.newBoardKey]
       if (!board) return null
       return getBoardVariantRootIds(board).at(-1) ?? null
     }
@@ -110,7 +110,7 @@ export function getNodeIdAddedByAction(
     case "add_font_collection":
     case "add_media":
     case "add_icon_set": {
-      const board = workspace.components[payload.catalogId]
+      const board = workspace.boards[payload.catalogId]
       if (!board) return null
       const lastVariant = getBoardVariantRootIds(board).at(-1)
       if (!lastVariant) return null
@@ -126,7 +126,7 @@ export function getNodeIdAddedByAction(
         ? afterTheme.slice(0, afterTheme.lastIndexOf("-"))
         : null
       if (!boardKey) return null
-      const board = workspace.components[boardKey]
+      const board = workspace.boards[boardKey]
       if (!board || board.type !== "theme") return null
       return board.variants.at(-1)?.id ?? null
     }
@@ -136,7 +136,7 @@ export function getNodeIdAddedByAction(
         payload.fontCollectionId,
       )
       if (!boardKey) return null
-      const board = workspace.components[boardKey]
+      const board = workspace.boards[boardKey]
       if (!board || board.type !== "font-collection") return null
       return board.variants.at(-1)?.id ?? null
     }

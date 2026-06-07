@@ -17,7 +17,7 @@ export function AddThemePanel({ onClose }: { onClose: () => void }) {
   const { addTheme } = useAddRemoveCommands()
   const [query, setQuery] = useState("")
 
-  const currentBoards = Object.keys(workspace.components)
+  const currentBoards = Object.keys(workspace.boards)
 
   const categories = useMemo(() => {
     const queryLower = query.toLowerCase()

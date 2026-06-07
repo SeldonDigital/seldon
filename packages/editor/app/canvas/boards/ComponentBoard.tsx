@@ -22,7 +22,7 @@ export function ComponentBoard({ board }: ComponentBoardProps) {
   const { selectedBoardId } = useSelection()
   const boardKey =
     selectedBoardId ?? resolveComponentKey(board, workspace)
-  const boardEntry = workspace.components[boardKey] ?? board
+  const boardEntry = workspace.boards[boardKey] ?? board
   const theme = workspaceThemeService.getObjectTheme(boardEntry, workspace)
   const className = `board-${boardKey}`
   const properties = getNodeProperties(boardEntry, workspace)

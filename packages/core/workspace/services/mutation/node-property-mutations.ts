@@ -98,7 +98,7 @@ function resetObjectProperty(
   workspace: Workspace,
 ): Workspace {
   return mutateWorkspace(workspace, (draft) => {
-    const board = draft.components[objectId as BoardKey]
+    const board = draft.boards[objectId as BoardKey]
     if (board) {
       if (subpropertyKey) {
         deleteSubProperty(board.componentProperties, propertyKey, subpropertyKey)

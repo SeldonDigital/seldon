@@ -38,7 +38,7 @@ export function getInitialVariantLabel(
   workspace: Workspace,
 ): string {
   const nodesMap = getWorkspaceNodes(workspace)
-  const board = workspace.components[componentId]
+  const board = workspace.boards[componentId]
   const variantIdsOnBoard = board
     ? collectVariantNodeIdsOnBoard(board)
     : new Set<string>()

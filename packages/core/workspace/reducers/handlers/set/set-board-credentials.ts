@@ -2,7 +2,7 @@ import type { ExtractPayload, Workspace } from "../../../../index"
 import { withBoardMutation } from "../../../services/shared/workspace-operation-helpers"
 
 /**
- * Sets or clears `workspace.components[boardKey].credentials` on resource catalog boards.
+ * Sets or clears `workspace.boards[boardKey].credentials` on resource catalog boards.
  */
 export function setBoardCredentials(
   payload: ExtractPayload<"set_board_credentials">,

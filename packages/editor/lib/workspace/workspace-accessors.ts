@@ -26,7 +26,7 @@ export function getWorkspaceNodeMap(
 export function getWorkspaceComponentMap(
   workspace: Workspace,
 ): Record<BoardKey, Board> {
-  return workspace.components
+  return workspace.boards
 }
 
 export function getNode(
@@ -44,21 +44,21 @@ export function getComponent(
   workspace: Workspace,
   boardKey: BoardKey,
 ): Board | undefined {
-  return workspace.components[boardKey]
+  return workspace.boards[boardKey]
 }
 
-/** Resolves the `workspace.components` map key for a catalog row. */
+/** Resolves the `workspace.boards` map key for a catalog row. */
 export function resolveComponentKey(
   board: Board,
   workspace: Workspace,
 ): BoardKey {
   if ("catalogId" in board && board.catalogId) {
-    if (workspace.components[board.catalogId]) {
+    if (workspace.boards[board.catalogId]) {
       return board.catalogId
     }
   }
 
-  const matched = Object.entries(workspace.components).find(
+  const matched = Object.entries(workspace.boards).find(
     ([, entry]) => entry === board,
   )
   if (matched) {
@@ -66,7 +66,7 @@ export function resolveComponentKey(
   }
 
   throw new Error(
-    "Component entry has no catalogId and could not be found in workspace.components",
+    "Component entry has no catalogId and could not be found in workspace.boards",
   )
 }
 

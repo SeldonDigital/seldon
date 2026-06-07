@@ -2,7 +2,7 @@ import type { ExtractPayload, Workspace } from "../../../../index"
 import { withBoardMutation } from "../../../services/shared/workspace-operation-helpers"
 
 /**
- * Sets or clears `workspace.components[boardKey].license` where that field exists on the board kind.
+ * Sets or clears `workspace.boards[boardKey].license` where that field exists on the board kind.
  */
 export function setBoardLicense(
   payload: ExtractPayload<"set_board_license">,

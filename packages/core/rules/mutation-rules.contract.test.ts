@@ -32,7 +32,7 @@ function makeNode(id: string, type: EntryNodeType): EntryNode {
 function makeWorkspace(): Workspace {
   return {
     metadata: { version: 0, label: "" },
-    components: {},
+    boards: {},
     nodes: {
       "default-1": makeNode("default-1", "default"),
       "variant-1": makeNode("variant-1", "variant"),

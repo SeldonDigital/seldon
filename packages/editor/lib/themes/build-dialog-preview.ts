@@ -25,7 +25,7 @@ export function getDialogPreviewBase(): DialogPreviewBase {
     { boardKey: ComponentId.DIALOG },
     createEmptyWorkspace(),
   )
-  const board = workspace.components[ComponentId.DIALOG]
+  const board = workspace.boards[ComponentId.DIALOG]
   const rootId = board?.variants?.[0]?.id ?? null
 
   cached = { workspace, rootId }

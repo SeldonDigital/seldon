@@ -12,12 +12,12 @@ import { isComponentBoard } from "../../model/components"
 import { Board, Workspace } from "../../types"
 import { mutateWorkspace } from "../shared/workspace-mutation.helper"
 
-/** Orders the boards in `workspace.components` by component level then label. */
+/** Orders the boards in `workspace.boards` by component level then label. */
 export class BoardOrderService {
   /** Sorts boards by component level then label and rewrites their stored order. */
   public realignBoardOrder(workspace: Workspace): Workspace {
     return mutateWorkspace(workspace, (draft) => {
-      const boardEntries = Object.entries(draft.components) as [
+      const boardEntries = Object.entries(draft.boards) as [
         ComponentId,
         Board,
       ][]
@@ -32,7 +32,7 @@ export class BoardOrderService {
 
   /** All boards sorted by their stored order. */
   public getBoards(workspace: Workspace): Board[] {
-    return Object.values(workspace.components).sort(
+    return Object.values(workspace.boards).sort(
       (a, b) => getBoardOrder(a) - getBoardOrder(b),
     )
   }

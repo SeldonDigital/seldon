@@ -16,7 +16,7 @@ export const variantValidators = {
       throw new Error(ErrorMessages.nodeNotFound(nodeId))
     }
     const component = getNodeComponentId(variant, workspace)
-    const board = workspace.components[component]
+    const board = workspace.boards[component]
     if (!board) {
       throw new Error(ErrorMessages.componentNotFound(component))
     }

@@ -14,7 +14,7 @@ function buildNodeToBoardIndex(
   workspace: Workspace,
 ): Map<string, Board> {
   const index = new Map<string, Board>()
-  for (const board of Object.values(workspace.components)) {
+  for (const board of Object.values(workspace.boards)) {
     walkBoardTreeRefs(board.variants, (ref) => {
       // Keep the first board that lists the id to match scan order.
       if (!index.has(ref.id)) {
@@ -29,7 +29,7 @@ function scanBoardByNodeId(
   workspace: Workspace,
   nodeId: EntryNodeId,
 ): Board | null {
-  for (const board of Object.values(workspace.components)) {
+  for (const board of Object.values(workspace.boards)) {
     let found = false
     walkBoardTreeRefs(board.variants, (ref) => {
       if (ref.id !== nodeId) return
@@ -53,7 +53,7 @@ export function getBoardByNodeId(
   workspace: Workspace,
   nodeId: EntryNodeId,
 ): Board | null {
-  const components = workspace.components
+  const components = workspace.boards
 
   // Immer drafts mutate in place while keeping a stable proxy identity, so a
   // cached index would go stale during a reducer pass. Scan directly instead.

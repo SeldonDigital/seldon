@@ -74,8 +74,8 @@ function createGoogleFontCollectionEntry(): EntryFontCollection {
 export function seedDefaultFontCollectionBoard(
   workspace: SeedableWorkspace,
 ): void {
-  if (!workspace.components) {
-    workspace.components = {}
+  if (!workspace.boards) {
+    workspace.boards = {}
   }
   if (!workspace["font-collections"]) {
     workspace["font-collections"] = {}
@@ -100,7 +100,7 @@ function seedFontCollectionBoard(
   boardKey: FontCollectionTemplateId,
   entry: EntryFontCollection,
 ): void {
-  const existing = workspace.components[boardKey] as Board | undefined
+  const existing = workspace.boards[boardKey] as Board | undefined
   if (existing && isFontCollectionBoard(existing)) {
     return
   }
@@ -116,6 +116,6 @@ function seedFontCollectionBoard(
     componentProperties: getInitialBoardComponentProperties("font-collection"),
     variants: [{ id: entry.id }],
   }
-  setBoardOrder(board, nextBoardOrder(workspace.components))
-  workspace.components[boardKey] = board
+  setBoardOrder(board, nextBoardOrder(workspace.boards))
+  workspace.boards[boardKey] = board
 }

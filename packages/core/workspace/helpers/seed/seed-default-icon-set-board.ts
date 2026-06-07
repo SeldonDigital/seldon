@@ -64,8 +64,8 @@ export function createDefaultIconSetEntry(): EntryIconSet {
  * icon, so all subcategories start on `all`.
  */
 export function seedDefaultIconSetBoard(workspace: SeedableWorkspace): void {
-  if (!workspace.components) {
-    workspace.components = {}
+  if (!workspace.boards) {
+    workspace.boards = {}
   }
   if (!workspace["icon-sets"]) {
     workspace["icon-sets"] = {}
@@ -94,7 +94,7 @@ function seedIconSetBoard(
   boardKey: IconSetTemplateId,
   entry: EntryIconSet,
 ): void {
-  const existing = workspace.components[boardKey] as Board | undefined
+  const existing = workspace.boards[boardKey] as Board | undefined
   if (existing && isIconSetBoard(existing)) {
     return
   }
@@ -110,6 +110,6 @@ function seedIconSetBoard(
     componentProperties: getInitialBoardComponentProperties("icon-set"),
     variants: [{ id: entry.id }],
   }
-  setBoardOrder(board, nextBoardOrder(workspace.components))
-  workspace.components[boardKey] = board
+  setBoardOrder(board, nextBoardOrder(workspace.boards))
+  workspace.boards[boardKey] = board
 }

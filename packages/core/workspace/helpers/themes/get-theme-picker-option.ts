@@ -29,7 +29,7 @@ export function getThemePickerOptions({
     options.push({ value: "none", name: "Inherit" })
   }
 
-  const themeBoards = Object.values(workspace.components ?? {})
+  const themeBoards = Object.values(workspace.boards ?? {})
     .filter(isThemeBoard)
     .sort((a, b) => getBoardOrder(a) - getBoardOrder(b))
 

@@ -118,7 +118,7 @@ function nodeRegisterFromComponentBoard(
   componentId: ComponentId,
   workspace: Workspace,
 ): NodeRegister {
-  const board = workspace.components[componentId]
+  const board = workspace.boards[componentId]
   invariant(
     board && board.type === "component",
     `Missing component board for ${componentId}`,
@@ -506,7 +506,7 @@ export function addComponent(
   }
 
   return produce(workspace, (draft) => {
-    if (draft.components[payload.boardKey]) {
+    if (draft.boards[payload.boardKey]) {
       return
     }
 
@@ -522,7 +522,7 @@ export function addComponent(
     let order = -1
 
     for (const componentId of components.reverse()) {
-      if (draft.components[componentId]) {
+      if (draft.boards[componentId]) {
         registry[componentId] = nodeRegisterFromComponentBoard(
           componentId,
           draft,
@@ -555,7 +555,7 @@ export function addComponent(
           variants: variantTreeRefs,
         }
         setBoardOrder(board, order)
-        draft.components[componentId] = board
+        draft.boards[componentId] = board
 
         order--
       }
@@ -563,6 +563,6 @@ export function addComponent(
 
     const updatedWorkspace =
       boardOrderService.realignBoardOrder(draft)
-    Object.assign(draft.components, updatedWorkspace.components)
+    Object.assign(draft.boards, updatedWorkspace.boards)
   })
 }

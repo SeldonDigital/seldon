@@ -77,7 +77,7 @@ export class WorkspaceIconSetService {
     boardKey: string,
     workspace: Workspace,
   ): ComputedIconSet | null {
-    const board = workspace.components[boardKey]
+    const board = workspace.boards[boardKey]
     if (!board || !isIconSetBoard(board)) return null
     const defaultEntryId = board.variants[0]?.id
     if (!defaultEntryId) return null

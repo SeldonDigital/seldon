@@ -38,7 +38,7 @@ export function areCatalogIdsUsedInOtherBoardTrees(
 ): boolean {
   if (candidateIds.size === 0) return false
 
-  for (const [key, other] of Object.entries(workspace.components)) {
+  for (const [key, other] of Object.entries(workspace.boards)) {
     if (key === excludeBoardKey || !other) continue
     let hit = false
     walkBoardTreeRefs(other.variants, (ref) => {

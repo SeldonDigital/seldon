@@ -7,10 +7,10 @@ import type { Workspace } from "../../../types"
 
 export const boardValidators = {
   exists: (workspace: Workspace, id: string) => {
-    check(workspace.components[id], ErrorMessages.componentNotFound(id))
+    check(workspace.boards[id], ErrorMessages.componentNotFound(id))
   },
   doesNotExist: (workspace: Workspace, id: string) => {
-    check(!workspace.components[id], ErrorMessages.componentAlreadyExists(id))
+    check(!workspace.boards[id], ErrorMessages.componentAlreadyExists(id))
   },
   allowedPropertyKeys: (
     componentId: ComponentId,

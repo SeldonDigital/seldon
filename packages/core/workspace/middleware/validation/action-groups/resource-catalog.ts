@@ -75,7 +75,7 @@ export function validateDuplicateComponent(
 ): void {
   boardValidators.exists(workspace, action.payload.sourceBoardKey)
   boardValidators.doesNotExist(workspace, action.payload.newBoardKey)
-  const sourceBoard = workspace.components[action.payload.sourceBoardKey]
+  const sourceBoard = workspace.boards[action.payload.sourceBoardKey]
   invariant(
     sourceBoard,
     `Board ${action.payload.sourceBoardKey} missing after exists check`,
@@ -212,7 +212,7 @@ export function validateRemoveBoard(
   const key = (action.payload as Record<string, string>)[rule.keyField]
   boardValidators.exists(workspace, key)
 
-  const board = workspace.components[key]
+  const board = workspace.boards[key]
   if (!board || !rule.typeGuard(board)) {
     throw new WorkspaceValidationError(
       `Expected ${rule.expectedLabel} at ${key}`,

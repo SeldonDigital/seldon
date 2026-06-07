@@ -289,7 +289,7 @@ export function validateAddVariant(
   action: Extract<Action, { type: "add_variant" }>,
 ): void {
   boardValidators.exists(workspace, action.payload.boardKey)
-  const board = workspace.components[action.payload.boardKey]
+  const board = workspace.boards[action.payload.boardKey]
   check(
     board && (isComponentBoard(board) || isPlaygroundBoard(board)),
     "add_variant requires a component or playground board",
@@ -328,7 +328,7 @@ export function validateReorderVariantInBoard(
   action: Extract<Action, { type: "reorder_variant_in_board" }>,
 ): void {
   boardValidators.exists(workspace, action.payload.boardKey)
-  const board = workspace.components[action.payload.boardKey]
+  const board = workspace.boards[action.payload.boardKey]
   check(Boolean(board), "Board missing after exists check")
   const roots = getBoardVariantRootIds(board!)
   const oldIndex = roots.indexOf(action.payload.variantRootId)

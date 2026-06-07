@@ -10,7 +10,7 @@ import type { ComponentTreeRef, Workspace } from "../../types"
  * with a clear message instead.
  */
 export function findBoardTreeCycleId(workspace: Workspace): string | null {
-  for (const board of Object.values(workspace.components)) {
+  for (const board of Object.values(workspace.boards)) {
     const cycleId = findCycleInRefs(board.variants)
     if (cycleId) return cycleId
   }

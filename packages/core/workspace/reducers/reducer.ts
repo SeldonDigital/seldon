@@ -193,7 +193,7 @@ function reducer(workspace: Workspace, action: WorkspaceAction): Workspace {
         { boardKey, variantFallbacks },
         workspace,
       )
-      const board = workspaceWithBoard.components[boardKey]
+      const board = workspaceWithBoard.boards[boardKey]
       const rootId = board?.variants[0]?.id
       if (!rootId) return workspaceWithBoard
       return insertVariantInstance(

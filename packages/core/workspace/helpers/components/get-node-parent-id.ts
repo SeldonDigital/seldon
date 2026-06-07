@@ -19,7 +19,7 @@ function buildNodeToParentIndex(
   workspace: Workspace,
 ): Map<string, EntryNodeId | null> {
   const index = new Map<string, EntryNodeId | null>()
-  for (const board of Object.values(workspace.components)) {
+  for (const board of Object.values(workspace.boards)) {
     walkBoardTreeRefs(board.variants, (ref, parent) => {
       // Keep the first occurrence to match single-board parent resolution.
       if (!index.has(ref.id)) {
@@ -41,7 +41,7 @@ export function getImmediateParentIdInWorkspace(
   workspace: Workspace,
   nodeId: EntryNodeId,
 ): EntryNodeId | null {
-  const components = workspace.components
+  const components = workspace.boards
 
   if (isDraft(workspace) || isDraft(components)) {
     const board = getBoardByNodeId(workspace, nodeId)

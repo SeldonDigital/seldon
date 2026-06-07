@@ -38,7 +38,7 @@ export function duplicateFontCollection(
 
     if (draft["font-collections"][newId]) return
 
-    const board = draft.components[boardKey]
+    const board = draft.boards[boardKey]
     const isFontCollectionBoard = board?.type === "font-collection"
 
     const base = isFontCollectionBoard ? board.label : entry.label

@@ -19,7 +19,7 @@ export function reorderBoard(
   return produce(workspace, (draft) => {
     const { boardKey, newIndex } = payload
 
-    const boardEntries = Object.entries(draft.components) as [
+    const boardEntries = Object.entries(draft.boards) as [
       BoardKey,
       Board,
     ][]
@@ -28,7 +28,7 @@ export function reorderBoard(
       return draft
     }
 
-    const boardToMove = draft.components[boardKey]
+    const boardToMove = draft.boards[boardKey]
     if (!boardToMove) return draft
 
     const movingUp = getBoardOrder(boardToMove) < newIndex
@@ -42,13 +42,13 @@ export function reorderBoard(
     sortedBoards.splice(targetIndex, 0, boardKey)
 
     sortedBoards.forEach((id, index) => {
-      const board = draft.components[id]
+      const board = draft.boards[id]
       if (!board) return
       setBoardOrder(board, index)
     })
 
     const updatedWorkspace = boardOrderService.realignBoardOrder(draft)
-    Object.assign(draft.components, updatedWorkspace.components)
+    Object.assign(draft.boards, updatedWorkspace.boards)
 
     return draft
   })

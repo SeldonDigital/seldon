@@ -160,14 +160,14 @@ export class NodeOperationsService {
     workspace: Workspace,
   ): Workspace {
     const workspaceAfterDeletion = mutateWorkspace(workspace, (draft) => {
-      const board = draft.components[componentId]
+      const board = draft.boards[componentId]
       if (!board) return
 
       for (const rootId of getBoardVariantRootIds(board)) {
         this._deleteVariantFromDraft(rootId as VariantId, draft)
       }
 
-      delete draft.components[componentId]
+      delete draft.boards[componentId]
     })
 
     return boardOrderService.realignBoardOrder(
@@ -179,7 +179,7 @@ export class NodeOperationsService {
     boardKey: BoardKey,
     workspace: Workspace,
   ): Workspace {
-    const board = workspace.components[boardKey]
+    const board = workspace.boards[boardKey]
     if (!board) return workspace
 
     if (isComponentBoard(board)) {
@@ -188,14 +188,14 @@ export class NodeOperationsService {
 
     if (isPlaygroundBoard(board)) {
       const workspaceAfterDeletion = mutateWorkspace(workspace, (draft) => {
-        const b = draft.components[boardKey]
+        const b = draft.boards[boardKey]
         if (!b || !isPlaygroundBoard(b)) return
 
         for (const rootId of getBoardVariantRootIds(b)) {
           this._deleteVariantFromDraft(rootId as VariantId, draft)
         }
 
-        delete draft.components[boardKey]
+        delete draft.boards[boardKey]
       })
 
       return boardOrderService.realignBoardOrder(
@@ -226,13 +226,13 @@ export class NodeOperationsService {
     resourceMap: "themes" | "font-collections" | "icon-sets" | "media",
   ): Workspace {
     const next = mutateWorkspace(workspace, (draft) => {
-      const board = draft.components[boardKey]
+      const board = draft.boards[boardKey]
       if (!board) return
       const entries = draft[resourceMap] as Record<string, unknown>
       for (const ref of board.variants) {
         delete entries[ref.id]
       }
-      delete draft.components[boardKey]
+      delete draft.boards[boardKey]
     })
     return boardOrderService.realignBoardOrder(next)
   }
@@ -332,7 +332,7 @@ export class NodeOperationsService {
     // descendant nodes orphaned.
     this._deleteSubtreeFromDraft(variantId, draft)
 
-    for (const board of Object.values(draft.components)) {
+    for (const board of Object.values(draft.boards)) {
       if (!board) continue
       board.variants = board.variants.filter((ref) => ref.id !== variantId)
       walkRemoveVariantRefs(board.variants, variantId)
@@ -418,7 +418,7 @@ export class NodeOperationsService {
         )
         invariant(plan, `duplicateNode: could not plan variant duplicate ${node.id}`)
 
-        const board = draft.components[located.boardKey as BoardKey]
+        const board = draft.boards[located.boardKey as BoardKey]
         Object.assign(draft.nodes, plan.newNodes)
 
         if (plan.sourceWasDefault) {
@@ -445,7 +445,7 @@ export class NodeOperationsService {
       const sourceRow = nodes[node.id]
       invariant(sourceRow, ErrorMessages.nodeNotFound(node.id))
 
-      const board = draft.components[located.boardKey as BoardKey]
+      const board = draft.boards[located.boardKey as BoardKey]
       const tree = getVariantTree(board, node.id)
 
       const newRootId = componentBoardUniqueNodeId(located.boardKey)

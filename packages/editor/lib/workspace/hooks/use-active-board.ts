@@ -21,7 +21,7 @@ export function useActiveBoard() {
       // and the auto-select-first-board effect does not fire.
       if (selectedResourceEntry) {
         return (
-          Object.values(workspace.components).find((entry) =>
+          Object.values(workspace.boards).find((entry) =>
             (
               entry as { variants?: { id: string }[] }
             ).variants?.some((variant) => variant.id === selectedResourceEntry.id),
@@ -34,7 +34,7 @@ export function useActiveBoard() {
       if (selectedResourceItemKey) {
         const boardKey = selectedResourceItemKey.split(":")[1]
         return boardKey
-          ? (workspace.components[boardKey] ?? null)
+          ? (workspace.boards[boardKey] ?? null)
           : null
       }
 

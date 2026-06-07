@@ -63,7 +63,7 @@ export function useComponentCatalog({
       const items: CatalogComponentItem[] = schemas
         .filter((schema) => shouldShowComponent(schema))
         .flatMap((schema) => {
-          const board = workspace.components[schema.id]
+          const board = workspace.boards[schema.id]
 
           if (board) {
             // If board exists, get all variants

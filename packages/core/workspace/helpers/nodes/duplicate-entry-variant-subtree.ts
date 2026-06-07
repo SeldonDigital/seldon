@@ -34,7 +34,7 @@ export function findBoardContainingTreeNodeId(
   workspace: Workspace,
   nodeId: string,
 ): { board: Board; boardKey: string } | null {
-  for (const [boardKey, board] of Object.entries(workspace.components)) {
+  for (const [boardKey, board] of Object.entries(workspace.boards)) {
     if (!board.variants?.length) continue
     let found = false
     walkBoardTreeRefs(board.variants, (ref) => {

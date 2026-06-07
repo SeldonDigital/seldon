@@ -35,7 +35,7 @@ export function addIconSet(
       draft["icon-sets"] = {}
     }
     const boardKey = payload.catalogId
-    if (draft.components[boardKey]) {
+    if (draft.boards[boardKey]) {
       return draft
     }
     if (
@@ -45,7 +45,7 @@ export function addIconSet(
       return draft
     }
 
-    const existingBoards = Object.values(draft.components)
+    const existingBoards = Object.values(draft.boards)
     const maxOrder =
       existingBoards.length > 0
         ? Math.max(...existingBoards.map((b) => getBoardOrder(b)))
@@ -78,10 +78,10 @@ export function addIconSet(
       variants: [{ id: defaultEntryId }],
     }
     setBoardOrder(board, maxOrder + 1)
-    draft.components[boardKey] = board
+    draft.boards[boardKey] = board
 
     const updatedWorkspace =
       boardOrderService.realignBoardOrder(draft)
-    Object.assign(draft.components, updatedWorkspace.components)
+    Object.assign(draft.boards, updatedWorkspace.boards)
   })
 }

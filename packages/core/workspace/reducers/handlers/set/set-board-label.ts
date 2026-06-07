@@ -2,7 +2,7 @@ import type { ExtractPayload, Workspace } from "../../../../index"
 import { withBoardMutation } from "../../../services/shared/workspace-operation-helpers"
 
 /**
- * Sets `workspace.components[boardKey].label`.
+ * Sets `workspace.boards[boardKey].label`.
  */
 export function setBoardLabel(
   payload: ExtractPayload<"set_board_label">,

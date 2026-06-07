@@ -24,7 +24,7 @@ function collectTreeRefIds(ref: ComponentTreeRef): string[] {
 
 function collectAllComponentTreeNodeIds(workspace: Workspace): Set<string> {
   const out = new Set<string>()
-  for (const board of Object.values(workspace.components)) {
+  for (const board of Object.values(workspace.boards)) {
     walkBoardTreeRefs(board.variants ?? [], (ref) => {
       out.add(ref.id)
     })
