@@ -1,9 +1,14 @@
-import { EntryTheme, EntryThemeTokenOverrides, Workspace, parseThemeTemplate } from "../../types"
+import {
+  EntryTheme,
+  EntryThemeOverrides,
+  Workspace,
+  parseThemeTemplate,
+} from "../../types"
 
 export function getThemeOverrides(
   theme: EntryTheme,
   workspace: Workspace,
-): EntryThemeTokenOverrides {
+): EntryThemeOverrides {
   const chain: EntryTheme[] = []
   const visited = new Set<string>()
   let cursor: EntryTheme | null = theme
@@ -16,8 +21,10 @@ export function getThemeOverrides(
     cursor = workspace.themes[parsed.themeId] ?? null
   }
 
-  return chain.reverse().reduce<EntryThemeTokenOverrides>(
-    (acc, item) => ({ ...acc, ...item.overrides }),
-    {},
-  )
+  return chain
+    .reverse()
+    .reduce<EntryThemeOverrides>(
+      (acc, item) => ({ ...acc, ...item.overrides }),
+      {},
+    )
 }

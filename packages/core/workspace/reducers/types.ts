@@ -50,7 +50,7 @@ import {
 import type { InstanceId, VariantId } from "../helpers/rules/workspace-node-ids"
 import type { ComponentKey } from "../model/components"
 import type { EntryNodeId } from "../model/entry-node"
-import type { WorkspaceFileStringMap } from "../model/string-maps"
+import type { WorkspaceStringMap } from "../model/string-maps"
 import type { Workspace } from "../model/workspace"
 
 /** Parent, component board key, and optional child index for {@link WorkspaceAction} `insert_default_instance`. */
@@ -213,7 +213,7 @@ export type WorkspaceAction =
     }
   | {
       type: "set_workspace_license"
-      payload: { value: WorkspaceFileStringMap | undefined }
+      payload: { value: WorkspaceStringMap | undefined }
     }
   | { type: "reset_workspace_owner"; payload: Record<string, never> }
   | { type: "reset_workspace_label"; payload: Record<string, never> }
@@ -431,7 +431,7 @@ export type WorkspaceAction =
       type: "set_component_license"
       payload: {
         componentKey: ComponentKey
-        license: WorkspaceFileStringMap | undefined
+        license: WorkspaceStringMap | undefined
       }
     }
   | {
@@ -442,7 +442,7 @@ export type WorkspaceAction =
       type: "set_component_credentials"
       payload: {
         componentKey: ComponentKey
-        credentials: WorkspaceFileStringMap | undefined
+        credentials: WorkspaceStringMap | undefined
       }
     }
   | {

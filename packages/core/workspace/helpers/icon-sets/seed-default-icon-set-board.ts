@@ -1,9 +1,6 @@
 import { STOCK_ICON_SETS_BY_ID } from "../../../icon-sets/catalog"
 import type { IconSetTemplateId } from "../../../icon-sets/types/icon-set-id"
-import type {
-  ComponentCatalogEntry,
-  IconSetBoard,
-} from "../../model/components"
+import type { ComponentEntry, IconSetBoard } from "../../model/components"
 import { isIconSetBoard } from "../../model/components"
 import type {
   EntryIconSet,
@@ -99,9 +96,7 @@ function seedIconSetBoard(
   boardKey: IconSetTemplateId,
   entry: EntryIconSet,
 ): void {
-  const existing = workspace.components[boardKey] as
-    | ComponentCatalogEntry
-    | undefined
+  const existing = workspace.components[boardKey] as ComponentEntry | undefined
   if (existing && isIconSetBoard(existing)) {
     return
   }

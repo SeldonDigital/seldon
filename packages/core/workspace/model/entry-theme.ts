@@ -4,8 +4,6 @@ export type EntryThemeType = "default" | "variant"
 
 export type EntryThemeOverrides = Record<string, unknown>
 
-export type EntryThemeTokenOverrides = EntryThemeOverrides
-
 export interface EntryTheme {
   id: EntryThemeId
   type: EntryThemeType

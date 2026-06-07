@@ -9,5 +9,3 @@ export interface WorkspaceMetadata {
   tags?: string[]
   license?: WorkspaceStringMap
 }
-
-export type WorkspaceFileMetadata = WorkspaceMetadata

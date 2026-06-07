@@ -1,6 +1,6 @@
 import { STOCK_THEMES_BY_ID } from "../../../themes/catalog"
 import type { ThemeTemplateId } from "../../../themes/types/theme-id"
-import type { ComponentCatalogEntry, ThemeBoard } from "../../model/components"
+import type { ComponentEntry, ThemeBoard } from "../../model/components"
 import { isThemeBoard } from "../../model/components"
 import type { EntryTheme } from "../../model/entry-theme"
 import { formatThemeCatalog } from "../../model/template-ref"
@@ -74,9 +74,7 @@ function seedThemeBoard(
   boardKey: ThemeTemplateId,
   entry: EntryTheme,
 ): void {
-  const existing = workspace.components[boardKey] as
-    | ComponentCatalogEntry
-    | undefined
+  const existing = workspace.components[boardKey] as ComponentEntry | undefined
   if (existing && isThemeBoard(existing)) {
     return
   }

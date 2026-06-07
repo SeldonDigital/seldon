@@ -2,7 +2,7 @@ import { STOCK_FONT_COLLECTIONS_BY_ID } from "../../../font-collections/catalog"
 import { GOOGLE_DEFAULT_ENABLED_FAMILIES } from "../../../font-collections/catalog/google/default-enabled-families"
 import type { FontCollectionTemplateId } from "../../../font-collections/types"
 import type {
-  ComponentCatalogEntry,
+  ComponentEntry,
   FontCollectionBoard,
 } from "../../model/components"
 import { isFontCollectionBoard } from "../../model/components"
@@ -102,9 +102,7 @@ function seedFontCollectionBoard(
   boardKey: FontCollectionTemplateId,
   entry: EntryFontCollection,
 ): void {
-  const existing = workspace.components[boardKey] as
-    | ComponentCatalogEntry
-    | undefined
+  const existing = workspace.components[boardKey] as ComponentEntry | undefined
   if (existing && isFontCollectionBoard(existing)) {
     return
   }
