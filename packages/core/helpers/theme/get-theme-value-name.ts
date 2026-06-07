@@ -1,5 +1,5 @@
-import { TokenType } from "../../themes/constants/token-type"
 import { Theme } from "../../themes/types"
+import { isFontFamilyToken } from "../../themes/values"
 import { formatPresetValue } from "../properties/format-preset-value"
 import { isThemeValueKey } from "../validation/theme"
 import { getThemeOption } from "./get-theme-option"
@@ -24,15 +24,8 @@ export function getThemeValueName(key: string, theme: Theme): string {
       return option
     }
 
-    if (
-      typeof option === "object" &&
-      option !== null &&
-      "type" in option &&
-      option.type === TokenType.FAMILY &&
-      "value" in option &&
-      typeof (option as { value: unknown }).value === "string"
-    ) {
-      return (option as { value: string }).value
+    if (isFontFamilyToken(option)) {
+      return option.parameters
     }
 
     // All other theme options have name property
