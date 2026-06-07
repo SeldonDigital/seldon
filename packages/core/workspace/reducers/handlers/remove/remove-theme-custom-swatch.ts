@@ -2,16 +2,7 @@ import { produce } from "immer"
 import { ExtractPayload, Workspace } from "../../../../index"
 import { getComputedTheme } from "../../../compute"
 import { isEntryThemeDefault } from "../../../model/entry-theme"
-import {
-  nodeRetrievalService,
-  nodeTraversalService,
-  nodeRelationshipService,
-  nodeOperationsService,
-  workspaceMutationService,
-  workspaceThemeService,
-  workspacePropagationService,
-  typeCheckingService,
-} from "../../../services"
+import { workspaceMutationService } from "../../../services"
 import { removeCustomToken } from "../shared/theme-custom-token"
 
 /**

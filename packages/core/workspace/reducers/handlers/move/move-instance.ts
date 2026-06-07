@@ -4,13 +4,10 @@ import {
   nodeTraversalService,
   nodeRelationshipService,
   nodeOperationsService,
-  workspaceMutationService,
-  workspaceThemeService,
   workspacePropagationService,
   typeCheckingService,
 } from "../../../services"
 import { ExtractPayload, Workspace } from "../../../types"
-import type { ValidationOptions } from "../../helpers/validation"
 
 /**
  * Moves an instance to a new parent and index, then applies the same placement
@@ -19,7 +16,6 @@ import type { ValidationOptions } from "../../helpers/validation"
 export function moveInstance(
   payload: ExtractPayload<"move_instance">,
   workspace: Workspace,
-  options: ValidationOptions = {},
 ): Workspace {
   const instanceNodeId = payload.instanceId
   const targetNodeId = payload.target.parentId

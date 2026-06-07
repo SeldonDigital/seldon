@@ -6,7 +6,7 @@ Reducer handlers return a workspace. They do not resolve computed values or writ
 
 ## Where Actions Come From
 
-Editors, agents, and services send **`WorkspaceAction`** payloads. The union in `types.ts` is the action contract. The editor builds most actions through workspace hooks. Load and import flows use `set_workspace` to validate saved JSON before it enters editor state. Use `applyActions` to fold a batch through `workspaceReducer`. `generated-workspace-action-schema.json` is a permissive placeholder until the schema generator can run on a clean typecheck.
+Editors, agents, and services send **`WorkspaceAction`** payloads. The union in `types.ts` is the action contract. The editor builds most actions through workspace hooks. Load and import flows use `set_workspace` to validate saved JSON before it enters editor state. Use `applyActions` to fold a batch through `workspaceReducer`. `workspace-action-schema.json` is a permissive placeholder until the schema generator can run on a clean typecheck.
 
 ---
 
@@ -276,7 +276,7 @@ Validation failures throw `WorkspaceValidationError` before a handler runs. Hand
 
 | Function | File | Purpose \| Use |
 | --- | --- | --- |
-| `applyComponentKeyDeletion` | `handlers/remove/remove-component-catalog.ts` | Deletes a board by component key. \| Shared by component and resource removal handlers. |
+| `removeBoardByKey` | `handlers/remove/remove-board-by-key.ts` | Deletes a board by its key. Shared by component and resource removal handlers. |
 | `themeComponentKeyFromThemeId` | `handlers/remove/delete-theme.ts` | Derives a theme board key from a theme id. \| Used before removing a theme ref from its board. |
 
 ---

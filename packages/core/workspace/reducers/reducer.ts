@@ -83,8 +83,8 @@ import { resetBoardIntent } from "./handlers/reset/reset-board-intent"
 import { resetBoardLabel } from "./handlers/reset/reset-board-label"
 import { resetBoardLicense } from "./handlers/reset/reset-board-license"
 import { resetBoardPreview } from "./handlers/reset/reset-board-preview"
-import { resetComponentProperty } from "./handlers/reset/reset-component-property"
 import { resetBoardTags } from "./handlers/reset/reset-board-tags"
+import { resetComponentProperty } from "./handlers/reset/reset-component-property"
 import { resetDefaultVariantToCatalog } from "./handlers/reset/reset-default-variant-to-catalog"
 import { resetFontCollectionEditorData } from "./handlers/reset/reset-font-collection-editor-data"
 import { resetFontCollectionLabel } from "./handlers/reset/reset-font-collection-label"
@@ -112,8 +112,8 @@ import { setBoardIntent } from "./handlers/set/set-board-intent"
 import { setBoardLabel } from "./handlers/set/set-board-label"
 import { setBoardLicense } from "./handlers/set/set-board-license"
 import { setBoardPreview } from "./handlers/set/set-board-preview"
-import { setComponentProperties } from "./handlers/set/set-component-properties"
 import { setBoardTags } from "./handlers/set/set-board-tags"
+import { setComponentProperties } from "./handlers/set/set-component-properties"
 import { setComponentTheme } from "./handlers/set/set-component-theme"
 import { setFontCollectionEditorData } from "./handlers/set/set-font-collection-editor-data"
 import { setFontCollectionFamilyPreset } from "./handlers/set/set-font-collection-family-preset"
@@ -188,12 +188,12 @@ function reducer(workspace: Workspace, action: WorkspaceAction): Workspace {
     case "add_playground":
       return addPlayground(action.payload, workspace)
     case "add_component_and_insert_default_instance": {
-      const { componentId, target, variantFallbacks } = action.payload
+      const { boardKey, target, variantFallbacks } = action.payload
       const workspaceWithBoard = addComponent(
-        { componentId, variantFallbacks },
+        { boardKey, variantFallbacks },
         workspace,
       )
-      const board = workspaceWithBoard.components[componentId]
+      const board = workspaceWithBoard.components[boardKey]
       const rootId = board?.variants[0]?.id
       if (!rootId) return workspaceWithBoard
       return insertVariantInstance(
@@ -454,7 +454,7 @@ function reducer(workspace: Workspace, action: WorkspaceAction): Workspace {
   }
 }
 
-let preReducerMiddlewares = [validationMiddleware]
+const preReducerMiddlewares = [validationMiddleware]
 
 const postReducerMiddlewares = [
   migrationMiddleware,

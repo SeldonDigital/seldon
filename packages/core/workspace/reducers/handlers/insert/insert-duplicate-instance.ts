@@ -7,15 +7,10 @@ import {
 } from "../../../../utils/debug-logger"
 import {
   nodeRetrievalService,
-  nodeTraversalService,
-  nodeRelationshipService,
   nodeOperationsService,
-  workspaceMutationService,
-  workspaceThemeService,
   workspacePropagationService,
   typeCheckingService,
 } from "../../../services"
-import type { ValidationOptions } from "../../helpers/validation"
 
 /**
  * Applies `insert_duplicate_instance`: copies an instance into a chosen parent
@@ -28,7 +23,6 @@ import type { ValidationOptions } from "../../helpers/validation"
 export function insertDuplicateInstance(
   payload: ExtractPayload<"insert_duplicate_instance">,
   workspace: Workspace,
-  options: ValidationOptions = {},
 ): Workspace {
   const nodeToDuplicate = nodeRetrievalService.getNode(
     payload.instanceId,

@@ -15,7 +15,7 @@ export function setBoardPreview(
       board.type === "icon-set" ||
       board.type === "media"
     ) {
-      board.componentPreview = payload.componentPreview
+      board.componentPreview = payload.preview
     }
   })
 }

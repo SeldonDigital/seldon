@@ -22,7 +22,7 @@ export function getTypeSpecimenPreviewBase(): TypeSpecimenPreviewBase {
   }
 
   const workspace = addComponent(
-    { componentId: ComponentId.TYPE_SPECIMEN },
+    { boardKey: ComponentId.TYPE_SPECIMEN },
     createEmptyWorkspace(),
   )
   const board = workspace.components[ComponentId.TYPE_SPECIMEN]

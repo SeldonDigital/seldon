@@ -6,7 +6,7 @@
     "lint": "echo \"TODO: Add this with the shared eslint config\"",
     "quality": "bun lint && bun tsc",
     "format": "prettier --write \"./**/*.{ts,tsx,json}\"",
-    "generate:action-schema": "typescript-json-schema ./tsconfig.schema.json WorkspaceAction --out ./workspace/reducers/generated-workspace-action-schema.json --noExtraProps --required"
+    "generate:action-schema": "typescript-json-schema ./tsconfig.schema.json WorkspaceAction --out ./workspace/reducers/workspace-action-schema.json --noExtraProps --required"
   },
   "exports": {
     ".": {

@@ -73,12 +73,12 @@ export function validateDuplicateComponent(
   workspace: Workspace,
   action: Extract<Action, { type: "duplicate_component" }>,
 ): void {
-  componentValidators.exists(workspace, action.payload.sourceComponentKey)
-  componentValidators.doesNotExist(workspace, action.payload.newComponentKey)
-  const sourceBoard = workspace.components[action.payload.sourceComponentKey]
+  componentValidators.exists(workspace, action.payload.sourceBoardKey)
+  componentValidators.doesNotExist(workspace, action.payload.newBoardKey)
+  const sourceBoard = workspace.components[action.payload.sourceBoardKey]
   invariant(
     sourceBoard,
-    `Board ${action.payload.sourceComponentKey} missing after exists check`,
+    `Board ${action.payload.sourceBoardKey} missing after exists check`,
   )
 
   if (isComponentBoard(sourceBoard)) {
@@ -127,7 +127,7 @@ export function validateRemoveBoard(
 ): void {
   switch (action.type) {
     case "remove_component": {
-      const componentId = action.payload.componentId
+      const componentId = action.payload.boardKey
       componentValidators.exists(workspace, componentId)
       const board = workspace.components[componentId]
       if (!board || !isComponentBoard(board)) {

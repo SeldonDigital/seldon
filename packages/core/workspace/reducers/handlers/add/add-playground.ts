@@ -9,32 +9,15 @@ import {
 } from "../../../helpers/components/board-sort-order"
 import { WORKSPACE_EDITABLE_THEME_ENTRY_ID } from "../../../helpers/themes/workspace-editable-theme"
 import { formatNodeCatalog } from "../../../model/template-ref"
-import {
-  nodeRetrievalService,
-  nodeTraversalService,
-  nodeRelationshipService,
-  nodeOperationsService,
-  workspaceMutationService,
-  workspaceThemeService,
-  workspacePropagationService,
-  typeCheckingService,
-} from "../../../services"
-import type { ValidationOptions } from "../../helpers/validation"
+import { workspacePropagationService } from "../../../services"
 
 /**
  * Creates a playground board and its default frame root node when the board key is free.
- *
- * Returns the current workspace when board creation is disallowed by rules or when a board already exists at `boardKey`.
- *
- * @param payload Board key for `workspace.components` and generated default node id.
- * @param workspace Current workspace.
- * @param options Optional validation logging for strict or AI-driven flows.
- * @returns Workspace with the new board and node, or the unchanged workspace.
+ * Returns the current workspace when rules disallow board creation or a board already exists at `boardKey`.
  */
 export function addPlayground(
   payload: ExtractPayload<"add_playground">,
   workspace: Workspace,
-  options: ValidationOptions = {},
 ): Workspace {
   if (!rules.mutations.create.board.allowed) {
     return workspace

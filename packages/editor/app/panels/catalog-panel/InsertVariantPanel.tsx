@@ -44,7 +44,7 @@ export function InsertVariantPanel({
       dispatchWithAutoSelect({
         type: "add_component_and_insert_default_instance",
         payload: {
-          componentId: item.componentId,
+          boardKey: item.componentId,
           variantFallbacks: variantFallbacks.length
             ? variantFallbacks
             : undefined,

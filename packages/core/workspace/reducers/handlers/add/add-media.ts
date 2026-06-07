@@ -7,26 +7,13 @@ import {
   setBoardOrder,
 } from "../../../helpers/components/board-sort-order"
 import { WORKSPACE_EDITABLE_THEME_ENTRY_ID } from "../../../helpers/themes/workspace-editable-theme"
-import {
-  nodeRetrievalService,
-  nodeTraversalService,
-  nodeRelationshipService,
-  nodeOperationsService,
-  workspaceMutationService,
-  workspaceThemeService,
-  workspacePropagationService,
-  typeCheckingService,
-} from "../../../services"
-import type { ValidationOptions } from "../../helpers/validation"
+import { workspacePropagationService } from "../../../services"
 import { formatLabelFromCatalogId } from "../shared/format-label-from-catalog-id"
 
-/**
- * Creates a media board and adds default and custom rows to `media`.
- */
+/** Creates a media board with default and custom rows in `media`. */
 export function addMedia(
   payload: ExtractPayload<"add_media">,
   workspace: Workspace,
-  options: ValidationOptions = {},
 ): Workspace {
   if (!rules.mutations.create.board.allowed) {
     return workspace

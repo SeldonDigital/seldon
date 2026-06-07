@@ -228,7 +228,7 @@ export type WorkspaceAction =
   | {
       type: "add_component"
       payload: {
-        componentId: BoardKey
+        boardKey: BoardKey
         variantFallbacks?: string[]
       }
     }
@@ -259,7 +259,7 @@ export type WorkspaceAction =
   | {
       type: "remove_component"
       payload: {
-        componentId: BoardKey
+        boardKey: BoardKey
       }
     }
   | {
@@ -295,8 +295,8 @@ export type WorkspaceAction =
   | {
       type: "duplicate_component"
       payload: {
-        sourceComponentKey: BoardKey
-        newComponentKey: BoardKey
+        sourceBoardKey: BoardKey
+        newBoardKey: BoardKey
         label?: string
       }
     }
@@ -350,7 +350,7 @@ export type WorkspaceAction =
   | {
       type: "add_component_and_insert_default_instance"
       payload: {
-        componentId: BoardKey
+        boardKey: BoardKey
         variantFallbacks?: string[]
         target: {
           parentId: VariantId | InstanceId
@@ -447,7 +447,7 @@ export type WorkspaceAction =
     }
   | {
       type: "set_board_preview"
-      payload: { boardKey: BoardKey; componentPreview: string }
+      payload: { boardKey: BoardKey; preview: string }
     }
   | {
       type: "set_board_editor_data"

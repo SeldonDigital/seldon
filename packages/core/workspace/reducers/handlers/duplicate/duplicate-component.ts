@@ -12,8 +12,8 @@ export function duplicateComponent(
 ): Workspace {
   return cloneBoard(
     workspace,
-    payload.sourceComponentKey,
-    payload.newComponentKey,
+    payload.sourceBoardKey,
+    payload.newBoardKey,
     payload.label,
   )
 }

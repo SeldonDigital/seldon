@@ -59,7 +59,7 @@ export function validateAction(workspace: Workspace, action: Action): void {
 
   switch (action.type) {
     case "add_component":
-      componentValidators.doesNotExist(workspace, action.payload.componentId)
+      componentValidators.doesNotExist(workspace, action.payload.boardKey)
       return
     case "add_font_collection":
     case "add_media":

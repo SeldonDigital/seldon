@@ -22,7 +22,7 @@ export function getDialogPreviewBase(): DialogPreviewBase {
   }
 
   const workspace = addComponent(
-    { componentId: ComponentId.DIALOG },
+    { boardKey: ComponentId.DIALOG },
     createEmptyWorkspace(),
   )
   const board = workspace.components[ComponentId.DIALOG]

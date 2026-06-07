@@ -47,7 +47,7 @@ export function getNodeIdAddedByAction(
     }
 
     case "add_component": {
-      const board = workspace.components[payload.componentId]
+      const board = workspace.components[payload.boardKey]
       if (!board) return null
       const lastVariant = getBoardVariantRootIds(board).at(-1)
       if (!lastVariant) {
@@ -102,7 +102,7 @@ export function getNodeIdAddedByAction(
       return siblingIds[sourceIndex + 1] ?? null
     }
     case "duplicate_component": {
-      const board = workspace.components[payload.newComponentKey]
+      const board = workspace.components[payload.newBoardKey]
       if (!board) return null
       return getBoardVariantRootIds(board).at(-1) ?? null
     }

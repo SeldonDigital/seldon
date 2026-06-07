@@ -11,7 +11,6 @@ import {
   typeCheckingService,
 } from "../../../services"
 import { ExtractPayload, Workspace } from "../../../types"
-import type { ValidationOptions } from "../../helpers/validation"
 
 /**
  * Applies `duplicate_node`: an in-place copy gated by
@@ -27,7 +26,6 @@ import type { ValidationOptions } from "../../helpers/validation"
 export function duplicateNode(
   payload: ExtractPayload<"duplicate_node">,
   workspace: Workspace,
-  _options: ValidationOptions = {},
 ): Workspace {
   const node = nodeRetrievalService.getNode(payload.nodeId, workspace)
   const entityType = typeCheckingService.getEntityType(node)

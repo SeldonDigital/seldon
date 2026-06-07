@@ -9,11 +9,7 @@ import { isEntryNodeVariant } from "../../../model/entry-node"
 import { parseNodeLink } from "../../../model/template-ref"
 import {
   nodeRetrievalService,
-  nodeTraversalService,
-  nodeRelationshipService,
-  nodeOperationsService,
   workspaceMutationService,
-  workspaceThemeService,
   workspacePropagationService,
   typeCheckingService,
 } from "../../../services"

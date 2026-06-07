@@ -15,17 +15,14 @@ import {
   workspaceMutationService,
   workspacePropagationService,
 } from "../../../services"
-import type { ValidationOptions } from "../../helpers/validation"
 
 /**
- * Inserts a theme board and one `themes` row: a default row rooted at `catalog:{boardKey}`.
- *
- * Returns the incoming workspace when creation is blocked by rules, when validation fails, or when `workspace.components[boardKey]` already exists.
+ * Inserts a theme board and one default `themes` row rooted at `catalog:{boardKey}`.
+ * Returns the incoming workspace when rules block creation or `workspace.components[boardKey]` already exists.
  */
 export function addTheme(
   payload: ExtractPayload<"add_theme">,
   workspace: Workspace,
-  options: ValidationOptions = {},
 ): Workspace {
   if (!rules.mutations.create.board.allowed) {
     return workspace

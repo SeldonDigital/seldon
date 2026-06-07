@@ -44,7 +44,7 @@ export function validateInsertMutation(
 ): void {
   switch (action.type) {
     case "add_component_and_insert_default_instance": {
-      const componentId = action.payload.componentId
+      const componentId = action.payload.boardKey
       const parentId = action.payload.target.parentId as InstanceId | VariantId
       componentValidators.doesNotExist(workspace, componentId)
       nodeValidators.exists(workspace, parentId)

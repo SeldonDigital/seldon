@@ -136,7 +136,7 @@ cd packages/core
 npm run generate:action-schema
 ```
 
-This writes `workspace/reducers/generated-workspace-action-schema.json` from the `WorkspaceAction` type. Use that JSON Schema as the tool input schema.
+This writes `workspace/reducers/workspace-action-schema.json` from the `WorkspaceAction` type. Use that JSON Schema as the tool input schema.
 
 Important: the generated file is a permissive placeholder until the schema generator runs on a clean typecheck. Until then, hand-author input schemas for the common actions you expose.
 

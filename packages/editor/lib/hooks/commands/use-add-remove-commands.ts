@@ -62,7 +62,7 @@ export function useAddRemoveCommands() {
       dispatch({
         type: "add_component",
         payload: {
-          componentId,
+          boardKey: componentId,
           variantFallbacks: variantFallbacks.length
             ? variantFallbacks
             : undefined,
@@ -208,7 +208,7 @@ export function useAddRemoveCommands() {
       if (isComponentBoard(board)) {
         result = dispatch({
           type: "remove_component",
-          payload: { componentId: boardKey as ComponentId },
+          payload: { boardKey: boardKey as ComponentId },
         })
       } else if (isPlaygroundBoard(board)) {
         result = dispatch({

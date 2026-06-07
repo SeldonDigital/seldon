@@ -39,6 +39,21 @@ export function normalizeWireActionToWorkspaceAction(
   const mappedType = EXPLICIT_TYPE_MAP[type] ?? (type.slice(3) as WorkspaceAction["type"])
 
   switch (type) {
+    case "ai_add_component":
+      return {
+        type: mappedType,
+        payload: {
+          boardKey: payload.boardKey ?? payload.componentId,
+          variantFallbacks: payload.variantFallbacks,
+        },
+      } as WorkspaceAction
+
+    case "ai_remove_component":
+      return {
+        type: mappedType,
+        payload: { boardKey: payload.boardKey ?? payload.componentId },
+      } as WorkspaceAction
+
     case "ai_add_icon_set_board":
       return {
         type: mappedType,
