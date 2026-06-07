@@ -29,7 +29,7 @@ type TypedPropertyValue = {
 
 export type PropertyPanelSubject = Board | EntryNode
 
-export const LAYERED_PAINT_LAYER_INDEX = 0
+const LAYERED_PAINT_LAYER_INDEX = 0
 
 function isTypedPropertyValue(value: unknown): value is TypedPropertyValue {
   return !!(
@@ -114,7 +114,7 @@ export function getPropertyOverridesBag(
   return subject.overrides
 }
 
-export function resolveComponentId(
+function resolveComponentId(
   subject: PropertyPanelSubject,
   workspace: Workspace,
 ): ComponentId | undefined {

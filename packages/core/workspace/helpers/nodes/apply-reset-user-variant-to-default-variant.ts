@@ -4,9 +4,9 @@ import { isComponentBoard, isPlaygroundBoard } from "../../model/components"
 import { isEntryNodeVariant } from "../../model/entry-node"
 import {
   buildDuplicateEntryVariantSubtreePlan,
-  findComponentContainingTreeNodeId,
+  findBoardContainingTreeNodeId,
 } from "./duplicate-entry-variant-subtree"
-import { walkComponentTreeRefs } from "../components/walk-component-tree-refs"
+import { walkBoardTreeRefs } from "../components/walk-board-tree-refs"
 
 function collectTreeRefIds(ref: ComponentTreeRef): string[] {
   const ids = [ref.id]
@@ -19,7 +19,7 @@ function collectTreeRefIds(ref: ComponentTreeRef): string[] {
 function collectAllComponentTreeNodeIds(workspace: Workspace): Set<string> {
   const out = new Set<string>()
   for (const board of Object.values(workspace.components)) {
-    walkComponentTreeRefs(board.variants ?? [], (ref) => {
+    walkBoardTreeRefs(board.variants ?? [], (ref) => {
       out.add(ref.id)
     })
   }
@@ -39,7 +39,7 @@ export function applyResetUserVariantToDefaultVariant(
   variantRootId: string,
 ): Workspace {
   return produce(workspace, (draft) => {
-    const located = findComponentContainingTreeNodeId(draft, variantRootId)
+    const located = findBoardContainingTreeNodeId(draft, variantRootId)
     if (
       !located ||
       !(isComponentBoard(located.board) || isPlaygroundBoard(located.board))

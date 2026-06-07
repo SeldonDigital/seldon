@@ -3,7 +3,7 @@ import type {
   ComponentTreeRef,
   EntryNodeId,
 } from "../../types"
-import { walkComponentTreeRefs } from "../../helpers/components/walk-component-tree-refs"
+import { walkBoardTreeRefs } from "../../helpers/components/walk-board-tree-refs"
 
 export function collectDescendantTreeIds(ref: ComponentTreeRef): EntryNodeId[] {
   const ids: EntryNodeId[] = [ref.id]
@@ -20,7 +20,7 @@ export function insertComponentTreeChild(
   index?: number,
 ): boolean {
   let inserted = false
-  walkComponentTreeRefs(board.variants, (ref) => {
+  walkBoardTreeRefs(board.variants, (ref) => {
     if (ref.id !== parentId) return
     const children = ref.children ?? (ref.children = [])
     if (index === undefined || index <= 0) {
@@ -41,7 +41,7 @@ export function removeComponentTreeChild(
   childId: EntryNodeId,
 ): boolean {
   let removed = false
-  walkComponentTreeRefs(board.variants, (ref) => {
+  walkBoardTreeRefs(board.variants, (ref) => {
     const children = ref.children
     if (!children?.length) return
     const idx = children.findIndex((c) => c.id === childId)
@@ -59,7 +59,7 @@ export function findTreeRef(
   nodeId: EntryNodeId,
 ): ComponentTreeRef | null {
   let found: ComponentTreeRef | null = null
-  walkComponentTreeRefs(board.variants, (ref) => {
+  walkBoardTreeRefs(board.variants, (ref) => {
     if (ref.id === nodeId) {
       found = ref
       return true

@@ -8,16 +8,13 @@ import { Board } from "../../types"
  * - Theme: "Clean" (default) / "custom theme" (custom)
  * - Playground: "default playground" / "custom playground"
  *
- * Note: Default variant labels are hardcoded for now. In the future, these will
- * be read from the variant's label property once that functionality is added.
- *
- * For regular boards, returns null to use standard labeling.
+ * Returns null for regular boards so callers fall back to standard labeling.
  *
  * @param board - The board to get the variant label for
  * @param isDefaultVariant - Whether this is a default variant (true) or custom variant (false)
  * @returns The variant label for special boards, or null for regular boards
  */
-export function getSpecialComponentVariantLabel(
+export function getSpecialBoardVariantLabel(
   board: Board,
   isDefaultVariant: boolean,
 ): string | null {
@@ -37,6 +34,5 @@ export function getSpecialComponentVariantLabel(
     return isDefaultVariant ? "default playground" : "custom playground"
   }
 
-  // Regular boards use standard labeling
   return null
 }

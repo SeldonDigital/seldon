@@ -4,7 +4,7 @@ import { isComponentBoard, isPlaygroundBoard } from "../../model/components"
 import { isEntryNodeDefault, isEntryNodeVariant } from "../../model/entry-node"
 import { formatNodeLink, parseNodeLink } from "../../model/template-ref"
 import { getVariantTree } from "../components/get-variant-tree"
-import { walkComponentTreeRefs } from "../components/walk-component-tree-refs"
+import { walkBoardTreeRefs } from "../components/walk-board-tree-refs"
 import { componentBoardUniqueNodeId } from "../components/entry-node-ids"
 import { getWorkspaceNodes } from "../general/get-workspace-nodes"
 
@@ -30,14 +30,14 @@ function cloneEntryNodeWithIdRemap(
   return clone
 }
 
-export function findComponentContainingTreeNodeId(
+export function findBoardContainingTreeNodeId(
   workspace: Workspace,
   nodeId: string,
 ): { board: Board; boardKey: string } | null {
   for (const [boardKey, board] of Object.entries(workspace.components)) {
     if (!board.variants?.length) continue
     let found = false
-    walkComponentTreeRefs(board.variants, (ref) => {
+    walkBoardTreeRefs(board.variants, (ref) => {
       if (ref.id === nodeId) {
         found = true
         return true
@@ -61,7 +61,7 @@ export function insertComponentTreeInstanceAfterSibling(
   const newRef: ComponentTreeRef =
     typeof newInstance === "string" ? { id: newInstance } : newInstance
   let inserted = false
-  walkComponentTreeRefs(board.variants, (ref) => {
+  walkBoardTreeRefs(board.variants, (ref) => {
     const children = ref.children
     if (!children?.length) return
     const idx = children.findIndex((c) => c.id === afterInstanceId)

@@ -1,5 +1,5 @@
 import { EntryNodeId, Workspace } from "../../types"
-import { findBoardByTreeNodeId } from "../components/find-board-by-tree-node-id"
+import { getBoardByNodeId } from "../components/get-board-by-node-id"
 import { getBoardVariantRootIds } from "../components/get-board-variant-root-ids"
 
 /**
@@ -9,7 +9,7 @@ import { getBoardVariantRootIds } from "../components/get-board-variant-root-ids
  * @returns The index of the variant in its board, or -1 if not found
  */
 export function getVariantIndex(variantId: EntryNodeId, workspace: Workspace) {
-  const board = findBoardByTreeNodeId(workspace, variantId)
+  const board = getBoardByNodeId(workspace, variantId)
   if (!board) return -1
   return getBoardVariantRootIds(board).indexOf(variantId)
 }

@@ -48,17 +48,3 @@ export function getNodeProperties(
 
   return mergeProperties(schemaProperties, inheritedOverrides)
 }
-
-/**
- * Merges optional parent override map with the child's flat `overrides`.
- * Only flat `Properties` maps are supported (no keyed-by-child-id nested override maps).
- */
-export function getChildProperties(
-  child: { overrides?: Properties },
-  parentOverride?: Record<string, unknown>,
-  _componentId?: string,
-): Properties {
-  const own = child.overrides ?? {}
-  const parent = (parentOverride ?? {}) as Properties
-  return mergeProperties(parent, own)
-}

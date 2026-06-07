@@ -9,7 +9,7 @@ import type { ComponentTreeRef, Workspace } from "../../types"
  * here crashes a reducer with a call stack overflow. Detect it first and fail
  * with a clear message instead.
  */
-export function findComponentTreeCycleId(workspace: Workspace): string | null {
+export function findBoardTreeCycleId(workspace: Workspace): string | null {
   for (const board of Object.values(workspace.components)) {
     const cycleId = findCycleInRefs(board.variants)
     if (cycleId) return cycleId
@@ -24,35 +24,45 @@ export function findComponentTreeCycleId(workspace: Workspace): string | null {
  * acyclic graph pass.
  */
 function findCycleInRefs(roots: ComponentTreeRef[]): string | null {
-  type Frame = { ref: ComponentTreeRef; childIndex: number }
-
   for (const root of roots) {
-    const stack: Frame[] = [{ ref: root, childIndex: 0 }]
-    const pathIds = new Set<string>([root.id])
-    const pathRefs = new Set<ComponentTreeRef>([root])
+    const cycleId = findCycleFromRoot(root)
+    if (cycleId) return cycleId
+  }
+  return null
+}
 
-    while (stack.length > 0) {
-      const frame = stack[stack.length - 1]
-      const children = frame.ref.children
+type CycleWalkFrame = { ref: ComponentTreeRef; childIndex: number }
 
-      if (!children || frame.childIndex >= children.length) {
-        pathIds.delete(frame.ref.id)
-        pathRefs.delete(frame.ref)
-        stack.pop()
-        continue
-      }
+/**
+ * Iterative depth-first walk from one root. Returns the first child id that is a
+ * back edge to an id or ref already on the current path, or null when acyclic.
+ */
+function findCycleFromRoot(root: ComponentTreeRef): string | null {
+  const stack: CycleWalkFrame[] = [{ ref: root, childIndex: 0 }]
+  const pathIds = new Set<string>([root.id])
+  const pathRefs = new Set<ComponentTreeRef>([root])
 
-      const child = children[frame.childIndex]
-      frame.childIndex += 1
+  while (stack.length > 0) {
+    const frame = stack[stack.length - 1]
+    const children = frame.ref.children
 
-      if (pathRefs.has(child) || pathIds.has(child.id)) {
-        return child.id
-      }
-
-      pathIds.add(child.id)
-      pathRefs.add(child)
-      stack.push({ ref: child, childIndex: 0 })
+    if (!children || frame.childIndex >= children.length) {
+      pathIds.delete(frame.ref.id)
+      pathRefs.delete(frame.ref)
+      stack.pop()
+      continue
     }
+
+    const child = children[frame.childIndex]
+    frame.childIndex += 1
+
+    if (pathRefs.has(child) || pathIds.has(child.id)) {
+      return child.id
+    }
+
+    pathIds.add(child.id)
+    pathRefs.add(child)
+    stack.push({ ref: child, childIndex: 0 })
   }
 
   return null

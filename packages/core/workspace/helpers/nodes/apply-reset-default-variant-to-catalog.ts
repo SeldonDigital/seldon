@@ -8,8 +8,8 @@ import { isComponentBoard, isPlaygroundBoard } from "../../model/components"
 import { formatNodeLink } from "../../model/template-ref"
 import type { ComponentTreeRef, EntryNode, Workspace } from "../../types"
 import { componentBoardUniqueNodeId } from "../components/entry-node-ids"
-import { walkComponentTreeRefs } from "../components/walk-component-tree-refs"
-import { findComponentContainingTreeNodeId } from "./duplicate-entry-variant-subtree"
+import { walkBoardTreeRefs } from "../components/walk-board-tree-refs"
+import { findBoardContainingTreeNodeId } from "./duplicate-entry-variant-subtree"
 import { getNodeCatalogId } from "./get-node-catalog-id"
 import { resolveSchemaChild } from "./resolve-schema-child"
 import { applyVariantFallbackToSlot } from "./schema-composition-children"
@@ -25,11 +25,37 @@ function collectTreeRefIds(ref: ComponentTreeRef): string[] {
 function collectAllComponentTreeNodeIds(workspace: Workspace): Set<string> {
   const out = new Set<string>()
   for (const board of Object.values(workspace.components)) {
-    walkComponentTreeRefs(board.variants ?? [], (ref) => {
+    walkBoardTreeRefs(board.variants ?? [], (ref) => {
       out.add(ref.id)
     })
   }
   return out
+}
+
+/**
+ * Finds an unused existing child of the same component and marks it used, so its
+ * canonical node id can be reused. Returns null when no match remains.
+ */
+function takeReusableChild(
+  existingRefs: ComponentTreeRef[] | undefined,
+  usedExisting: Set<number>,
+  workspace: Workspace,
+  componentId: string,
+): { id: string; children: ComponentTreeRef[] | undefined } | null {
+  if (!existingRefs) return null
+
+  const matchIdx = existingRefs.findIndex((ref, index) => {
+    if (usedExisting.has(index)) return false
+    const node = workspace.nodes[ref.id]
+    return !!node && getNodeCatalogId(node, workspace) === componentId
+  })
+  if (matchIdx < 0) return null
+
+  usedExisting.add(matchIdx)
+  return {
+    id: existingRefs[matchIdx].id,
+    children: existingRefs[matchIdx].children,
+  }
 }
 
 /**
@@ -52,24 +78,15 @@ function rebuildDefaultChildren(
     const slot = applyVariantFallbackToSlot(rawSlot, undefined)
     const resolved = resolveSchemaChild(slot)
 
-    let reuseId: string | undefined
-    let existingGrandchildren: ComponentTreeRef[] | undefined
-    if (existingRefs) {
-      const matchIdx = existingRefs.findIndex((ref, index) => {
-        if (usedExisting.has(index)) return false
-        const node = workspace.nodes[ref.id]
-        return (
-          !!node && getNodeCatalogId(node, workspace) === resolved.componentId
-        )
-      })
-      if (matchIdx >= 0) {
-        usedExisting.add(matchIdx)
-        reuseId = existingRefs[matchIdx].id
-        existingGrandchildren = existingRefs[matchIdx].children
-      }
-    }
+    const reused = takeReusableChild(
+      existingRefs,
+      usedExisting,
+      workspace,
+      resolved.componentId,
+    )
+    const existingGrandchildren = reused?.children
 
-    const id = reuseId ?? componentBoardUniqueNodeId(resolved.schema.id)
+    const id = reused?.id ?? componentBoardUniqueNodeId(resolved.schema.id)
     const overrides = mergeProperties({}, slot.overrides ?? {})
 
     newNodes[id] = {
@@ -100,75 +117,6 @@ function rebuildDefaultChildren(
   return result
 }
 
-type ComponentShape = { component: string | null; children: ComponentShape[] }
-
-function expectedCatalogShape(slots: SchemaChild[]): ComponentShape[] {
-  return slots.map((rawSlot) => {
-    const slot = applyVariantFallbackToSlot(rawSlot, undefined)
-    const resolved = resolveSchemaChild(slot)
-    const childSlots: SchemaChild[] = slot.children?.length
-      ? slot.children
-      : resolved.fallbackChildren
-    return {
-      component: resolved.componentId,
-      children: expectedCatalogShape(childSlots),
-    }
-  })
-}
-
-function actualTreeShape(
-  refs: ComponentTreeRef[] | undefined,
-  workspace: Workspace,
-): ComponentShape[] {
-  return (refs ?? []).map((ref) => {
-    const node = workspace.nodes[ref.id]
-    return {
-      component: node ? getNodeCatalogId(node, workspace) : null,
-      children: actualTreeShape(ref.children, workspace),
-    }
-  })
-}
-
-/**
- * Returns true when the default variant's child tree already matches its
- * catalog schema default composition by component and nesting. Use this to
- * decide whether a "Reset to Catalog" action is meaningful after structural
- * edits, independent of whether any overrides exist.
- */
-export function defaultVariantMatchesCatalogStructure(
-  workspace: Workspace,
-  defaultVariantRootId: string,
-): boolean {
-  const located = findComponentContainingTreeNodeId(
-    workspace,
-    defaultVariantRootId,
-  )
-  if (
-    !located ||
-    !(isComponentBoard(located.board) || isPlaygroundBoard(located.board))
-  ) {
-    return true
-  }
-
-  const { board } = located
-  const defaultRef = board.variants?.[0]
-  if (!defaultRef || defaultRef.id !== defaultVariantRootId) return true
-
-  const rootNode = workspace.nodes[defaultVariantRootId]
-  if (!rootNode) return true
-
-  const catalogId = getNodeCatalogId(rootNode, workspace)
-  if (!catalogId || !isComponentId(catalogId)) return true
-  const schema = getComponentSchema(catalogId as ComponentId)
-
-  const expected = isComplexSchema(schema)
-    ? expectedCatalogShape(schema.default.children ?? [])
-    : []
-  const actual = actualTreeShape(defaultRef.children, workspace)
-
-  return JSON.stringify(expected) === JSON.stringify(actual)
-}
-
 /**
  * Resets a default variant to its catalog schema default composition. Rebuilds
  * `board.variants[0]` to match `getComponentSchema(id).default`: re-adds removed
@@ -182,7 +130,7 @@ export function applyResetDefaultVariantToCatalog(
   defaultVariantRootId: string,
 ): Workspace {
   return produce(workspace, (draft) => {
-    const located = findComponentContainingTreeNodeId(
+    const located = findBoardContainingTreeNodeId(
       draft,
       defaultVariantRootId,
     )

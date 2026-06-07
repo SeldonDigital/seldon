@@ -29,27 +29,45 @@ export function getComponentDescendantIds(
 
   addIdsForComponent(schema)
 
+  function expandFullCatalog(id: ComponentId) {
+    expandingCatalog.add(id)
+    const catalogSchema = getComponentSchema(id)
+    if (isComplexSchema(catalogSchema)) {
+      for (const catalogSlot of getSchemaCompositionChildren(catalogSchema)) {
+        const slot = applyVariantFallbackToSlot(catalogSlot, variantFallbacks)
+        addIdsForComponent(slot)
+        registerComponentId(slot.component as ComponentId)
+      }
+    }
+    expandingCatalog.delete(id)
+  }
+
   function registerComponentId(id: ComponentId) {
     if (seenIds.has(id) || expandingCatalog.has(id)) {
       return
     }
 
-    const plan = instantiationPlans.get(id)
-    if (plan?.fullCatalog) {
-      expandingCatalog.add(id)
-      const catalogSchema = getComponentSchema(id)
-      if (isComplexSchema(catalogSchema)) {
-        for (const catalogSlot of getSchemaCompositionChildren(catalogSchema)) {
-          const slot = applyVariantFallbackToSlot(catalogSlot, variantFallbacks)
-          addIdsForComponent(slot)
-          registerComponentId(slot.component as ComponentId)
-        }
-      }
-      expandingCatalog.delete(id)
+    if (instantiationPlans.get(id)?.fullCatalog) {
+      expandFullCatalog(id)
     }
 
     componentIds.push(id)
     seenIds.add(id)
+  }
+
+  function addImplicitCatalogChildren(component: SchemaChild) {
+    if (component.variant) return
+    const schema = getComponentSchema(component.component)
+    if (!isComplexSchema(schema)) return
+
+    const explicitChildComponents = new Set(
+      (component.children ?? []).map((child) => child.component),
+    )
+    for (const catalogSlot of schema.default.children ?? []) {
+      if (!explicitChildComponents.has(catalogSlot.component)) {
+        addIdsForComponent(catalogSlot)
+      }
+    }
   }
 
   function addIdsForComponent(component: ComponentSchema | SchemaChild) {
@@ -61,18 +79,8 @@ export function getComponentDescendantIds(
       addIdsForComponent(slot)
     })
 
-    if (!("id" in component) && !component.variant) {
-      const schema = getComponentSchema(component.component)
-      if (isComplexSchema(schema)) {
-        const explicitChildComponents = new Set(
-          (component.children ?? []).map((child) => child.component),
-        )
-        for (const catalogSlot of schema.default.children ?? []) {
-          if (!explicitChildComponents.has(catalogSlot.component)) {
-            addIdsForComponent(catalogSlot)
-          }
-        }
-      }
+    if (!("id" in component)) {
+      addImplicitCatalogChildren(component)
     }
 
     for (const slot of compositionChildren) {

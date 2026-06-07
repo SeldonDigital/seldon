@@ -2,7 +2,7 @@ import { isDraft } from "immer"
 import type { EntryNodeId, Workspace } from "../../types"
 import { getImmediateParentId } from "./get-parent-ids"
 import { getBoardByNodeId } from "./get-board-by-node-id"
-import { walkComponentTreeRefs } from "./walk-component-tree-refs"
+import { walkBoardTreeRefs } from "./walk-board-tree-refs"
 
 /**
  * Maps every node id in a workspace to its immediate parent id inside the board
@@ -20,7 +20,7 @@ function buildNodeToParentIndex(
 ): Map<string, EntryNodeId | null> {
   const index = new Map<string, EntryNodeId | null>()
   for (const board of Object.values(workspace.components)) {
-    walkComponentTreeRefs(board.variants, (ref, parent) => {
+    walkBoardTreeRefs(board.variants, (ref, parent) => {
       // Keep the first occurrence to match single-board parent resolution.
       if (!index.has(ref.id)) {
         index.set(ref.id, (parent?.id as EntryNodeId | undefined) ?? null)

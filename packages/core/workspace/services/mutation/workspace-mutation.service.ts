@@ -22,9 +22,9 @@ import {
   ThemeValueKey,
 } from "../../../themes/types"
 import { getBoardThemeRef } from "../../helpers/components/get-board-theme-ref"
-import { walkComponentTreeRefs } from "../../helpers/components/walk-component-tree-refs"
+import { walkBoardTreeRefs } from "../../helpers/components/walk-board-tree-refs"
 import { getNextVariantLabel } from "../../helpers/general/get-next-variant-label"
-import { getSpecialComponentVariantLabel } from "../../helpers/general/get-special-component-variant-label"
+import { getSpecialBoardVariantLabel } from "../../helpers/general/get-special-board-variant-label"
 import { getWorkspaceNodes } from "../../helpers/general/get-workspace-nodes"
 import { applyResetDefaultVariantToCatalog } from "../../helpers/nodes/apply-reset-default-variant-to-catalog"
 import { applyResetUserVariantToDefaultVariant } from "../../helpers/nodes/apply-reset-user-variant-to-default-variant"
@@ -82,7 +82,7 @@ export class WorkspaceMutationService {
     const nodesMap = getWorkspaceNodes(workspace)
     const board = workspace.components[componentId]
     if (board) {
-      const specialLabel = getSpecialComponentVariantLabel(board, false)
+      const specialLabel = getSpecialBoardVariantLabel(board, false)
       if (specialLabel) {
         const variantIdsOnBoard = collectVariantNodeIdsOnBoard(board)
         const existingCustomVariants = Object.values(nodesMap).filter(
@@ -463,7 +463,7 @@ export const workspaceMutationService = new WorkspaceMutationService()
 
 function collectVariantNodeIdsOnBoard(board: Board): Set<string> {
   const ids = new Set<string>()
-  walkComponentTreeRefs(board.variants, (ref) => {
+  walkBoardTreeRefs(board.variants, (ref) => {
     ids.add(ref.id)
   })
   return ids

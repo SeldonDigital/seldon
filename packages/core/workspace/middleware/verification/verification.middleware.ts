@@ -3,8 +3,8 @@ import { ValueType } from "../../../properties"
 import { isWorkspaceLoggingEnabled } from "../../../utils/debug-logger"
 import { ErrorMessages } from "../../constants"
 import { getBoardKey } from "../../helpers/components/get-board-keys"
-import { findComponentTreeCycleId } from "../../helpers/components/find-tree-cycle"
-import { walkComponentTreeRefs } from "../../helpers/components/walk-component-tree-refs"
+import { findBoardTreeCycleId } from "../../helpers/components/find-tree-cycle"
+import { walkBoardTreeRefs } from "../../helpers/components/walk-board-tree-refs"
 import { getWorkspaceNodes } from "../../helpers/general/get-workspace-nodes"
 import { isResourceType } from "../../helpers/components/is-resource-type"
 import { isVariantNode } from "../../helpers/nodes/is-variant-node"
@@ -23,7 +23,7 @@ import { WorkspaceValidationError } from "../validation/workspace-validation-err
 function collectComponentTreeNodeIds(workspace: Workspace): Set<string> {
   const ids = new Set<string>()
   for (const board of Object.values(workspace.components)) {
-    walkComponentTreeRefs(board.variants, (ref) => {
+    walkBoardTreeRefs(board.variants, (ref) => {
       ids.add(ref.id)
     })
   }
@@ -37,7 +37,7 @@ const validators = {
    * of overflowing the call stack.
    */
   noCyclicTrees: (workspace: Workspace) => {
-    const cycleId = findComponentTreeCycleId(workspace)
+    const cycleId = findBoardTreeCycleId(workspace)
     if (cycleId) {
       throw new Error(ErrorMessages.cyclicComponentTree(cycleId))
     }
@@ -50,7 +50,7 @@ const validators = {
       if (isResourceType(board)) {
         continue
       }
-      walkComponentTreeRefs(board.variants, (ref) => {
+      walkBoardTreeRefs(board.variants, (ref) => {
         for (const child of ref.children ?? []) {
           check(nodes[child.id], ErrorMessages.nodeNotFound(child.id))
         }
@@ -65,7 +65,7 @@ const validators = {
       if (isResourceType(board)) {
         continue
       }
-      walkComponentTreeRefs(board.variants, (ref) => {
+      walkBoardTreeRefs(board.variants, (ref) => {
         check(nodes[ref.id], ErrorMessages.missingVariant(ref.id))
       })
     }

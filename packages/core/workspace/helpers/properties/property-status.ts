@@ -1,4 +1,4 @@
-import { type PropertyKey, type Workspace } from "@seldon/core"
+import { type PropertyKey, type Theme, type Workspace } from "@seldon/core"
 import { isCompoundProperty } from "@seldon/core/helpers/type-guards/compound/is-compound-property"
 import type { Properties } from "@seldon/core/properties/types/properties"
 import { getNodeComputeContext } from "../../compute/compute-node-properties"
@@ -176,6 +176,84 @@ function aggregateSubPropertyStatuses(
   return "unset"
 }
 
+type SubStatusContext = {
+  key: string
+  nodeId: string
+  workspace: Workspace
+  node: PropertyPanelSubject
+  schemaProperties: Properties
+  effective: Properties
+  theme: Theme | undefined
+  status: Record<string, PropertyStatus>
+}
+
+/** Writes per-facet status for a compound property and its aggregate status. */
+function assignCompoundStatuses(ctx: SubStatusContext): void {
+  const { key, nodeId, workspace, node, schemaProperties, effective, theme, status } = ctx
+  const compoundValue = (effective as Record<string, unknown>)[key]
+  const compoundLayer = getCompoundLayerValue(compoundValue)
+  if (!compoundLayer) return
+
+  const subKeys = getCompoundPropertyStructure(key, compoundValue, node, workspace)
+  const schemaLayer = getCompoundLayerValue(
+    (schemaProperties as Record<string, unknown> | null)?.[key],
+  )
+  const matchedCompoundPresetName = matchCompoundPreset(key, nodeId, workspace, theme)
+  const subStatuses: PropertyStatus[] = []
+
+  for (const subKey of subKeys) {
+    const hasSubDefault = hasSchemaSubProperty(schemaProperties, key, subKey)
+    const schemaSubValue = hasSubDefault ? schemaLayer?.[subKey] : null
+    const subStatus = calculateSubPropertyStatus(
+      key,
+      subKey,
+      hasSubPropertyOverride(node, key, subKey),
+      hasSubDefault,
+      compoundLayer,
+      schemaSubValue,
+      matchedCompoundPresetName,
+    )
+    status[compoundSubPropertyPath(key, subKey)] = subStatus
+    if (subKey !== "preset") {
+      subStatuses.push(subStatus)
+    }
+  }
+
+  status[key] = aggregateSubPropertyStatuses(subStatuses)
+}
+
+/** Writes per-side status for a shorthand property and its aggregate status. */
+function assignShorthandStatuses(ctx: SubStatusContext): void {
+  const { key, workspace, node, schemaProperties, effective, status } = ctx
+  const subKeys = getSubPropertyKeysFromSchema(key, node, workspace)
+  const subStatuses: PropertyStatus[] = []
+
+  for (const subKey of subKeys) {
+    const hasSubDefault = hasSchemaSubProperty(schemaProperties, key, subKey)
+    const shorthandSchemaValue = (
+      schemaProperties as Record<string, Record<string, unknown> | undefined>
+    )[key]
+    const schemaSubValue = hasSubDefault
+      ? shorthandSchemaValue?.[subKey] ?? null
+      : null
+
+    const subStatus = calculateSubPropertyStatus(
+      key,
+      subKey,
+      hasSubPropertyOverride(node, key, subKey),
+      hasSubDefault,
+      (effective as Record<string, Record<string, unknown> | null>)[key] ?? null,
+      schemaSubValue,
+      null,
+    )
+
+    status[`${key}.${subKey}`] = subStatus
+    subStatuses.push(subStatus)
+  }
+
+  status[key] = aggregateSubPropertyStatuses(subStatuses)
+}
+
 export function getPropertyStatus(
   nodeId: string,
   workspace: Workspace,
@@ -206,84 +284,23 @@ export function getPropertyStatus(
       node,
     )
 
-    if (isCompoundProperty(key as PropertyKey)) {
-      const compoundValue = (effective as Record<string, unknown>)[key]
-      const compoundLayer = getCompoundLayerValue(compoundValue)
-      if (compoundLayer) {
-        const subKeys = getCompoundPropertyStructure(
-          key,
-          compoundValue,
-          node,
-          workspace,
-        )
-        const schemaLayer = getCompoundLayerValue(
-          (schemaProperties as Record<string, unknown> | null)?.[key],
-        )
-        const matchedCompoundPresetName = matchCompoundPreset(
-          key,
-          nodeId,
-          workspace,
-          theme,
-        )
-        const subStatuses: PropertyStatus[] = []
-        for (const subKey of subKeys) {
-          const hasSubDefault = hasSchemaSubProperty(
-            schemaProperties,
-            key,
-            subKey,
-          )
-          const schemaSubValue = hasSubDefault ? schemaLayer?.[subKey] : null
+    const subStatusContext: SubStatusContext = {
+      key,
+      nodeId,
+      workspace,
+      node,
+      schemaProperties,
+      effective,
+      theme,
+      status,
+    }
 
-          const subStatus = calculateSubPropertyStatus(
-            key,
-            subKey,
-            hasSubPropertyOverride(node, key, subKey),
-            hasSubDefault,
-            compoundLayer,
-            schemaSubValue,
-            matchedCompoundPresetName,
-          )
-          status[compoundSubPropertyPath(key, subKey)] = subStatus
-          if (subKey !== "preset") {
-            subStatuses.push(subStatus)
-          }
-        }
-        status[key] = aggregateSubPropertyStatuses(subStatuses)
-      }
+    if (isCompoundProperty(key as PropertyKey)) {
+      assignCompoundStatuses(subStatusContext)
     }
 
     if (isShorthandProperty(key)) {
-      const subKeys = getSubPropertyKeysFromSchema(key, node, workspace)
-      const subStatuses: PropertyStatus[] = []
-
-      for (const subKey of subKeys) {
-        const hasSubDefault = hasSchemaSubProperty(
-          schemaProperties,
-          key,
-          subKey,
-        )
-        const shorthandSchemaValue = (
-          schemaProperties as Record<string, Record<string, unknown> | undefined>
-        )[key]
-        const schemaSubValue = hasSubDefault
-          ? shorthandSchemaValue?.[subKey] ?? null
-          : null
-
-        const subStatus = calculateSubPropertyStatus(
-          key,
-          subKey,
-          hasSubPropertyOverride(node, key, subKey),
-          hasSubDefault,
-          (effective as Record<string, Record<string, unknown> | null>)[key] ?? null,
-          schemaSubValue,
-          null,
-        )
-
-        status[`${key}.${subKey}`] = subStatus
-        subStatuses.push(subStatus)
-      }
-
-      status[key] = aggregateSubPropertyStatuses(subStatuses)
+      assignShorthandStatuses(subStatusContext)
     }
   }
 

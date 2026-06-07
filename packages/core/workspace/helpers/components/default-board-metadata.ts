@@ -1,16 +1,7 @@
 import type { ComponentId } from "../../../components/constants"
 import type { Board } from "../../model/components"
 import { isComponentBoard } from "../../model/components"
-import {
-  nodeRetrievalService,
-  nodeTraversalService,
-  nodeRelationshipService,
-  nodeOperationsService,
-  workspaceMutationService,
-  workspaceThemeService,
-  workspacePropagationService,
-  typeCheckingService,
-} from "../../services"
+import { workspaceMutationService } from "../../services"
 
 export function getDefaultBoardLabel(boardKey: string, board: Board): string {
   if (isComponentBoard(board)) {

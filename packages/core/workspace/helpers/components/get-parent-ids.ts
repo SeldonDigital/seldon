@@ -1,7 +1,7 @@
 import type { Board, ComponentTreeRef, EntryNodeId } from "../../types"
 
 /** Result of {@link getParentIds}. */
-export interface ComponentParentIds {
+interface BoardParentIds {
   ancestors: EntryNodeId[]
   immediateParent: EntryNodeId | null
   inTree: boolean
@@ -40,7 +40,7 @@ function findAncestorIds(
  * @param board Board whose variants hold the tree.
  * @param nodeId Node id whose parents you need.
  */
-export function getParentIds(board: Board, nodeId: EntryNodeId): ComponentParentIds {
+function getParentIds(board: Board, nodeId: EntryNodeId): BoardParentIds {
   for (const root of board.variants) {
     const ancestors = findAncestorIds(root, [], nodeId)
     if (ancestors !== null) {

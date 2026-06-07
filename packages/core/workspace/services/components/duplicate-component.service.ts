@@ -1,6 +1,6 @@
 import type { WritableDraft } from "immer"
 
-import { walkComponentTreeRefs } from "../../helpers/components/walk-component-tree-refs"
+import { walkBoardTreeRefs } from "../../helpers/components/walk-board-tree-refs"
 import {
   getBoardOrder,
   setBoardOrder,
@@ -36,7 +36,7 @@ import { workspacePropagationService } from "../propagation/workspace-propagatio
 
 function collectTreeIds(roots: ComponentTreeRef[]): string[] {
   const ids: string[] = []
-  walkComponentTreeRefs(roots, (ref) => {
+  walkBoardTreeRefs(roots, (ref) => {
     ids.push(ref.id)
   })
   return [...new Set(ids)]

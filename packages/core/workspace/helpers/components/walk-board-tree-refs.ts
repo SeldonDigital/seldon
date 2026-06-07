@@ -6,7 +6,7 @@ import type { ComponentTreeRef } from "../../types"
  * @param roots Root nodes to walk.
  * @param visit Function to run for each node and its parent. Return true to stop.
  */
-export function walkComponentTreeRefs(
+export function walkBoardTreeRefs(
   roots: ComponentTreeRef[],
   visit: (ref: ComponentTreeRef, parent: ComponentTreeRef | null) => boolean | void,
 ): void {

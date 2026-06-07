@@ -1,6 +1,5 @@
 export {
   applyCompoundPreset,
-  expandShorthand,
   formatCompoundDisplay,
   formatShorthandDisplay,
   formatValue,

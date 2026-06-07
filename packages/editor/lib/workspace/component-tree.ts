@@ -1,5 +1,5 @@
 import { getChildrenIds } from "@seldon/core/workspace/helpers/components/get-children-ids"
-import { walkComponentTreeRefs } from "@seldon/core/workspace/helpers/components/walk-component-tree-refs"
+import { walkBoardTreeRefs } from "@seldon/core/workspace/helpers/components/walk-board-tree-refs"
 import type {
   Board,
   ComponentTreeRef,
@@ -34,7 +34,7 @@ export function getChildRefs(
 ): ComponentTreeRef[] {
   let refs: ComponentTreeRef[] = []
 
-  walkComponentTreeRefs(board.variants, (ref) => {
+  walkBoardTreeRefs(board.variants, (ref) => {
     if (ref.id !== parentId) return
     refs = ref.children ?? []
     return true
@@ -50,7 +50,7 @@ export function walkComponentTree(
     parent: ComponentTreeRef | null,
   ) => boolean | void,
 ): void {
-  walkComponentTreeRefs(board.variants, visit)
+  walkBoardTreeRefs(board.variants, visit)
 }
 
 export function getEntryNode(

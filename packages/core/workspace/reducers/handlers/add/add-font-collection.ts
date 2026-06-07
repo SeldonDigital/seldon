@@ -10,7 +10,7 @@ import {
   getBoardOrder,
   setBoardOrder,
 } from "../../../helpers/components/board-sort-order"
-import { FONT_COLLECTION_COMPONENT_CATALOG_IDS } from "../../../helpers/components/resource-component-catalog-ids"
+import { FONT_COLLECTION_BOARD_CATALOG_IDS } from "../../../helpers/components/resource-board-catalog-ids"
 import { getInitialBoardComponentProperties } from "../../../helpers/components/get-initial-board-component-properties"
 import { DEFAULT_FONT_COLLECTION_BOARD_KEY } from "../../../helpers/font-collections/seed-default-font-collection-board"
 import { WORKSPACE_EDITABLE_THEME_ENTRY_ID } from "../../../helpers/themes/workspace-editable-theme"
@@ -44,7 +44,7 @@ export function addFontCollection(
     // Only packaged stock collections (currently just Google) can be added.
     if (
       boardKey === DEFAULT_FONT_COLLECTION_BOARD_KEY ||
-      !FONT_COLLECTION_COMPONENT_CATALOG_IDS.has(boardKey)
+      !FONT_COLLECTION_BOARD_CATALOG_IDS.has(boardKey)
     ) {
       return draft
     }

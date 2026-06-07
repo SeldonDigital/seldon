@@ -1,5 +1,5 @@
 import { EntryNode, Workspace } from "../../types"
-import { findBoardByTreeNodeId } from "../components/find-board-by-tree-node-id"
+import { getBoardByNodeId } from "../components/get-board-by-node-id"
 import { isResourceType } from "../components/is-resource-type"
 
 /**
@@ -9,11 +9,11 @@ import { isResourceType } from "../components/is-resource-type"
  * @param workspace - The workspace containing the board
  * @returns True if the variant belongs to a special board
  */
-export function isSpecialComponentVariant(
+export function isSpecialBoardVariant(
   variant: EntryNode,
   workspace: Workspace,
 ): boolean {
-  const board = findBoardByTreeNodeId(workspace, variant.id)
+  const board = getBoardByNodeId(workspace, variant.id)
   if (!board) {
     return false
   }

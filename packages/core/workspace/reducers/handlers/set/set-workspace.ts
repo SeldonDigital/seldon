@@ -1,6 +1,6 @@
 import { produce } from "immer"
 import { ensureWorkspaceEditableThemeEntry } from "../../../helpers/themes/workspace-editable-theme"
-import { findComponentTreeCycleId } from "../../../helpers/components/find-tree-cycle"
+import { findBoardTreeCycleId } from "../../../helpers/components/find-tree-cycle"
 import { ErrorMessages } from "../../../constants"
 import { WorkspaceValidationError } from "../../../middleware/validation/workspace-validation-error"
 import { ExtractPayload, Workspace } from "../../../../index"
@@ -16,7 +16,7 @@ export function setWorkspace(
   // Reject a cyclic board tree before `produce` freezes it. Immer freezes by
   // recursing through the nested tree, so a cycle here would overflow the call
   // stack instead of surfacing a usable error.
-  const cycleId = findComponentTreeCycleId(workspace)
+  const cycleId = findBoardTreeCycleId(workspace)
   if (cycleId) {
     throw new WorkspaceValidationError(
       ErrorMessages.cyclicComponentTree(cycleId),

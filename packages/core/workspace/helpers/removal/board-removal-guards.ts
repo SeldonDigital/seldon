@@ -1,7 +1,6 @@
 import { areBoardVariantsInUse } from "../components/are-board-variants-in-use"
 import { getBoardVariantRootIds } from "../components/get-board-variant-root-ids"
-import { walkComponentTreeRefs } from "../components/walk-component-tree-refs"
-import type { ComponentTreeRef } from "../../model/component-tree"
+import { walkBoardTreeRefs } from "../components/walk-board-tree-refs"
 import {
   isComponentBoard,
   isFontCollectionBoard,
@@ -9,32 +8,13 @@ import {
   isPlaygroundBoard,
   isThemeBoard,
 } from "../../model/components"
-import type { Board, BoardKey, EntryNodeId, Workspace } from "../../types"
+import type { Board, BoardKey, Workspace } from "../../types"
 import { hasEffectiveThemeReference } from "./effective-theme-references"
-
-/**
- * Collects every node id listed in this board's variant tree refs.
- * Used when deleting non-component boards (e.g. playground) where deletion must not use
- * component-wide node filters.
- */
-export function collectSubtreeNodeIdsFromComponentRoots(
-  board: Board,
-  _workspace: Workspace,
-): Set<EntryNodeId> {
-  const out = new Set<EntryNodeId>()
-  const roots = board.variants as ComponentTreeRef[]
-
-  walkComponentTreeRefs(roots, (ref) => {
-    out.add(ref.id)
-  })
-
-  return out
-}
 
 /**
  * True when any theme-catalog row on this board is still referenced by effective theme.
  */
-export function areThemeComponentRootsReferencedByEffectiveTheme(
+export function areThemeBoardRootsReferencedByEffectiveTheme(
   board: Board,
   workspace: Workspace,
 ): boolean {
@@ -49,19 +29,19 @@ export function areThemeComponentRootsReferencedByEffectiveTheme(
 
 /**
  * True when any id in `candidateIds` appears as a ref id under another board's variant tree
- * (excluding trees owned by `excludeComponentKey`).
+ * (excluding trees owned by `excludeBoardKey`).
  */
-export function areCatalogIdsUsedInOtherComponentTrees(
+export function areCatalogIdsUsedInOtherBoardTrees(
   workspace: Workspace,
-  excludeComponentKey: BoardKey,
+  excludeBoardKey: BoardKey,
   candidateIds: ReadonlySet<string>,
 ): boolean {
   if (candidateIds.size === 0) return false
 
   for (const [key, other] of Object.entries(workspace.components)) {
-    if (key === excludeComponentKey || !other) continue
+    if (key === excludeBoardKey || !other) continue
     let hit = false
-    walkComponentTreeRefs(other.variants, (ref) => {
+    walkBoardTreeRefs(other.variants, (ref) => {
       if (candidateIds.has(ref.id)) {
         hit = true
         return true
@@ -75,20 +55,20 @@ export function areCatalogIdsUsedInOtherComponentTrees(
 /**
  * Font / media catalog rows: true when another board's composition tree references a row id.
  */
-export function areResourceComponentRowsUsedInTrees(
+export function areResourceBoardRowsUsedInTrees(
   workspace: Workspace,
   boardKey: BoardKey,
   board: Board,
 ): boolean {
   if (!isFontCollectionBoard(board) && !isMediaBoard(board)) return false
   const ids = new Set(getBoardVariantRootIds(board))
-  return areCatalogIdsUsedInOtherComponentTrees(workspace, boardKey, ids)
+  return areCatalogIdsUsedInOtherBoardTrees(workspace, boardKey, ids)
 }
 
 /**
  * Composition + (for theme boards) effective-theme blocking for boards that are actually deletable.
  */
-export function shouldBlockDeletableComponentRemoval(
+export function shouldBlockDeletableBoardRemoval(
   board: Board,
   workspace: Workspace,
   boardKey: BoardKey,
@@ -99,11 +79,11 @@ export function shouldBlockDeletableComponentRemoval(
   }
 
   if (isFontCollectionBoard(board) || isMediaBoard(board)) {
-    return areResourceComponentRowsUsedInTrees(workspace, boardKey, board)
+    return areResourceBoardRowsUsedInTrees(workspace, boardKey, board)
   }
 
   if (isThemeBoard(board)) {
-    return areThemeComponentRootsReferencedByEffectiveTheme(board, workspace)
+    return areThemeBoardRootsReferencedByEffectiveTheme(board, workspace)
   }
 
   return false

@@ -6,7 +6,7 @@ import {
   getBoardOrder,
   setBoardOrder,
 } from "../../../helpers/components/board-sort-order"
-import { ICON_SET_COMPONENT_CATALOG_IDS } from "../../../helpers/components/resource-component-catalog-ids"
+import { ICON_SET_BOARD_CATALOG_IDS } from "../../../helpers/components/resource-board-catalog-ids"
 import { getInitialBoardComponentProperties } from "../../../helpers/components/get-initial-board-component-properties"
 import { DEFAULT_ICON_SET_BOARD_KEY } from "../../../helpers/icon-sets/seed-default-icon-set-board"
 import { WORKSPACE_EDITABLE_THEME_ENTRY_ID } from "../../../helpers/themes/workspace-editable-theme"
@@ -40,7 +40,7 @@ export function addIconSet(
     }
     if (
       boardKey === DEFAULT_ICON_SET_BOARD_KEY ||
-      !ICON_SET_COMPONENT_CATALOG_IDS.has(boardKey)
+      !ICON_SET_BOARD_CATALOG_IDS.has(boardKey)
     ) {
       return draft
     }

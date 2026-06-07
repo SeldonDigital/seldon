@@ -10,7 +10,7 @@ import { componentBoardUniqueNodeId } from "../../helpers/components/entry-node-
 import { moveItemInArray } from "../../helpers/nodes/move-utils"
 import {
   buildDuplicateEntryVariantSubtreePlan,
-  findComponentContainingTreeNodeId,
+  findBoardContainingTreeNodeId,
   insertComponentTreeInstanceAfterSibling,
 } from "../../helpers/nodes/duplicate-entry-variant-subtree"
 import { getWorkspaceNodes } from "../../helpers/general/get-workspace-nodes"
@@ -383,7 +383,7 @@ export class NodeOperationsService {
       )
 
       if (typeCheckingService.isVariant(node)) {
-        const located = findComponentContainingTreeNodeId(
+        const located = findBoardContainingTreeNodeId(
           draft as unknown as Workspace,
           node.id,
         )
@@ -434,7 +434,7 @@ export class NodeOperationsService {
         return
       }
 
-      const located = findComponentContainingTreeNodeId(
+      const located = findBoardContainingTreeNodeId(
         draft as unknown as Workspace,
         node.id,
       )
@@ -570,7 +570,7 @@ export class NodeOperationsService {
     newNodes: Record<string, EntryNode>
   } {
     const source = nodeRetrievalService.getVariant(nodeId, workspace)
-    const located = findComponentContainingTreeNodeId(workspace, nodeId)
+    const located = findBoardContainingTreeNodeId(workspace, nodeId)
     invariant(located, `instantiate: board not found for variant ${nodeId}`)
 
     const tree = getVariantTree(located.board, nodeId)
@@ -623,7 +623,7 @@ export class NodeOperationsService {
     newNodes: Record<string, EntryNode>
   } {
     const source = nodeRetrievalService.getInstance(nodeId, workspace)
-    const located = findComponentContainingTreeNodeId(workspace, nodeId)
+    const located = findBoardContainingTreeNodeId(workspace, nodeId)
     invariant(located, `instantiate: board not found for instance ${nodeId}`)
 
     const tree = getVariantTree(located.board, nodeId)

@@ -6,7 +6,7 @@ import {
 } from "../../../model/components"
 import { isEntryThemeDefault } from "../../../model/entry-theme"
 import { getBoardVariantRootIds } from "../../../helpers/components/get-board-variant-root-ids"
-import { findComponentContainingTreeNodeId } from "../../../helpers/nodes/duplicate-entry-variant-subtree"
+import { findBoardContainingTreeNodeId } from "../../../helpers/nodes/duplicate-entry-variant-subtree"
 import { hasEffectiveThemeReference } from "../../../helpers/removal/effective-theme-references"
 import { isUserVariant } from "../../../helpers/general/is-user-variant"
 import { ErrorMessages } from "../../../constants"
@@ -277,7 +277,7 @@ export function validateNodeMutation(
         isUserVariant(node),
         "Only a user variant can reset to the default variant tree",
       )
-      const located = findComponentContainingTreeNodeId(
+      const located = findBoardContainingTreeNodeId(
         workspace,
         variantRootId,
       )
@@ -301,7 +301,7 @@ export function validateNodeMutation(
         typeCheckingService.isDefaultVariant(node),
         "Only a default catalog variant can reset to catalog",
       )
-      const located = findComponentContainingTreeNodeId(workspace, rootId)
+      const located = findBoardContainingTreeNodeId(workspace, rootId)
       check(
         located &&
           (isComponentBoard(located.board) ||

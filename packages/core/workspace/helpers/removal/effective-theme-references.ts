@@ -3,8 +3,6 @@ import { getWorkspaceNodes } from "../general/get-workspace-nodes"
 import { workspaceThemeService } from "../../services"
 import type { VariantId, Workspace } from "../../types"
 
-export { getBoardThemeRef }
-
 /**
  * True when any board uses `themeId` as its catalog theme ref, or any node
  * resolves to that id as its effective theme (inheritance-aware).

@@ -1,6 +1,6 @@
 import { isDraft } from "immer"
 import type { Board, EntryNodeId, Workspace } from "../../types"
-import { walkComponentTreeRefs } from "./walk-component-tree-refs"
+import { walkBoardTreeRefs } from "./walk-board-tree-refs"
 
 /**
  * Maps every node id in a workspace to the board whose variant tree lists it.
@@ -15,7 +15,7 @@ function buildNodeToBoardIndex(
 ): Map<string, Board> {
   const index = new Map<string, Board>()
   for (const board of Object.values(workspace.components)) {
-    walkComponentTreeRefs(board.variants, (ref) => {
+    walkBoardTreeRefs(board.variants, (ref) => {
       // Keep the first board that lists the id to match scan order.
       if (!index.has(ref.id)) {
         index.set(ref.id, board)
@@ -25,13 +25,13 @@ function buildNodeToBoardIndex(
   return index
 }
 
-function scanComponentByNodeId(
+function scanBoardByNodeId(
   workspace: Workspace,
   nodeId: EntryNodeId,
 ): Board | null {
   for (const board of Object.values(workspace.components)) {
     let found = false
-    walkComponentTreeRefs(board.variants, (ref) => {
+    walkBoardTreeRefs(board.variants, (ref) => {
       if (ref.id !== nodeId) return
       found = true
       return true
@@ -58,7 +58,7 @@ export function getBoardByNodeId(
   // Immer drafts mutate in place while keeping a stable proxy identity, so a
   // cached index would go stale during a reducer pass. Scan directly instead.
   if (isDraft(workspace) || isDraft(components)) {
-    return scanComponentByNodeId(workspace, nodeId)
+    return scanBoardByNodeId(workspace, nodeId)
   }
 
   let index = nodeToBoardCache.get(components)

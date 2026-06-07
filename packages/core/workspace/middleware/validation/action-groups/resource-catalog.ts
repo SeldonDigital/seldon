@@ -1,10 +1,10 @@
 import { invariant } from "../../../../index"
 import {
-  FONT_COLLECTION_COMPONENT_CATALOG_IDS,
-  ICON_SET_COMPONENT_CATALOG_IDS,
-  MEDIA_COMPONENT_CATALOG_IDS,
-  THEME_COMPONENT_CATALOG_IDS,
-} from "../../../helpers/components/resource-component-catalog-ids"
+  FONT_COLLECTION_BOARD_CATALOG_IDS,
+  ICON_SET_BOARD_CATALOG_IDS,
+  MEDIA_BOARD_CATALOG_IDS,
+  THEME_BOARD_CATALOG_IDS,
+} from "../../../helpers/components/resource-board-catalog-ids"
 import {
   isComponentBoard,
   isFontCollectionBoard,
@@ -13,7 +13,7 @@ import {
   isPlaygroundBoard,
   isThemeBoard,
 } from "../../../model/components"
-import { shouldBlockDeletableComponentRemoval } from "../../../helpers/removal/component-removal-guards"
+import { shouldBlockDeletableBoardRemoval } from "../../../helpers/removal/board-removal-guards"
 import { DEFAULT_FONT_COLLECTION_BOARD_KEY } from "../../../helpers/font-collections/seed-default-font-collection-board"
 import { DEFAULT_ICON_SET_BOARD_KEY } from "../../../helpers/icon-sets/seed-default-icon-set-board"
 import { DEFAULT_THEME_BOARD_KEY } from "../../../helpers/themes/seed-default-theme-board"
@@ -26,22 +26,22 @@ import type { Action, Workspace } from "../../../types"
 const RESOURCE_CATALOGS = {
   "add_font_collection": {
     idKey: "catalogId" as const,
-    allowed: FONT_COLLECTION_COMPONENT_CATALOG_IDS,
+    allowed: FONT_COLLECTION_BOARD_CATALOG_IDS,
     label: "Font collection",
   },
   "add_media": {
     idKey: "catalogId" as const,
-    allowed: MEDIA_COMPONENT_CATALOG_IDS,
+    allowed: MEDIA_BOARD_CATALOG_IDS,
     label: "Media",
   },
   "add_icon_set": {
     idKey: "catalogId" as const,
-    allowed: ICON_SET_COMPONENT_CATALOG_IDS,
+    allowed: ICON_SET_BOARD_CATALOG_IDS,
     label: "Icon set",
   },
   "add_theme": {
     idKey: "boardKey" as const,
-    allowed: THEME_COMPONENT_CATALOG_IDS,
+    allowed: THEME_BOARD_CATALOG_IDS,
     label: "Theme",
   },
 } as const
@@ -91,25 +91,25 @@ export function validateDuplicateComponent(
   const packagedChecks: Array<[boolean, string]> = [
     [
       isThemeBoard(sourceBoard) &&
-        isPackagedCatalogBoard(sourceBoard, THEME_COMPONENT_CATALOG_IDS),
+        isPackagedCatalogBoard(sourceBoard, THEME_BOARD_CATALOG_IDS),
       "Cannot duplicate a theme board tied to a packaged theme catalog",
     ],
     [
       isFontCollectionBoard(sourceBoard) &&
         isPackagedCatalogBoard(
           sourceBoard,
-          FONT_COLLECTION_COMPONENT_CATALOG_IDS,
+          FONT_COLLECTION_BOARD_CATALOG_IDS,
         ),
       "Cannot duplicate a font collection board tied to a packaged catalog",
     ],
     [
       isIconSetBoard(sourceBoard) &&
-        isPackagedCatalogBoard(sourceBoard, ICON_SET_COMPONENT_CATALOG_IDS),
+        isPackagedCatalogBoard(sourceBoard, ICON_SET_BOARD_CATALOG_IDS),
       "Cannot duplicate an icon set board tied to a packaged catalog",
     ],
     [
       isMediaBoard(sourceBoard) &&
-        isPackagedCatalogBoard(sourceBoard, MEDIA_COMPONENT_CATALOG_IDS),
+        isPackagedCatalogBoard(sourceBoard, MEDIA_BOARD_CATALOG_IDS),
       "Cannot duplicate a media board tied to a packaged catalog",
     ],
   ]
@@ -137,7 +137,7 @@ export function validateRemoveBoard(
         )
       }
       if (
-        shouldBlockDeletableComponentRemoval(board, workspace, componentId)
+        shouldBlockDeletableBoardRemoval(board, workspace, componentId)
       ) {
         throw new Error(
           ErrorMessages.componentVariantsInUse(componentId as ComponentId),
@@ -156,7 +156,7 @@ export function validateRemoveBoard(
         )
       }
       if (
-        shouldBlockDeletableComponentRemoval(board, workspace, boardKey)
+        shouldBlockDeletableBoardRemoval(board, workspace, boardKey)
       ) {
         throw new WorkspaceValidationError(
           "Playground board is still referenced by another catalog",
@@ -182,7 +182,7 @@ export function validateRemoveBoard(
         )
       }
       if (
-        shouldBlockDeletableComponentRemoval(board, workspace, catalogId)
+        shouldBlockDeletableBoardRemoval(board, workspace, catalogId)
       ) {
         throw new WorkspaceValidationError(
           "Font collection catalog rows are still referenced in another board",
@@ -201,7 +201,7 @@ export function validateRemoveBoard(
           action,
         )
       }
-      if (shouldBlockDeletableComponentRemoval(board, workspace, catalogId)) {
+      if (shouldBlockDeletableBoardRemoval(board, workspace, catalogId)) {
         throw new WorkspaceValidationError(
           "Media catalog rows are still referenced in another board",
           action,
@@ -225,7 +225,7 @@ export function validateRemoveBoard(
           action,
         )
       }
-      if (shouldBlockDeletableComponentRemoval(board, workspace, catalogId)) {
+      if (shouldBlockDeletableBoardRemoval(board, workspace, catalogId)) {
         throw new WorkspaceValidationError(
           "Icon set catalog rows are still referenced in another board",
           action,
@@ -249,7 +249,7 @@ export function validateRemoveBoard(
           action,
         )
       }
-      if (shouldBlockDeletableComponentRemoval(board, workspace, boardKey)) {
+      if (shouldBlockDeletableBoardRemoval(board, workspace, boardKey)) {
         throw new WorkspaceValidationError(
           "Theme catalog rows are still referenced in another board",
           action,
