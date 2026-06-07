@@ -1,6 +1,5 @@
 import { Theme } from "../../themes/types"
 import { isFontFamilyToken } from "../../themes/values"
-import { formatPresetValue } from "../properties/format-preset-value"
 import { isThemeValueKey } from "../validation/theme"
 import { getThemeOption } from "./get-theme-option"
 

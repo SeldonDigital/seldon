@@ -3,6 +3,7 @@
   "type": "module",
   "scripts": {
     "build": "tsc --build tsconfig.json",
+    "test": "bun test",
     "lint": "echo \"TODO: Add this with the shared eslint config\"",
     "quality": "bun lint && bun tsc",
     "format": "prettier --write \"./**/*.{ts,tsx,json}\"",

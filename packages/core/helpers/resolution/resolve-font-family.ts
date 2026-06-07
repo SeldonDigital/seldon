@@ -15,7 +15,6 @@ import { getThemeOption } from "../theme/get-theme-option"
  *
  * @param fontFamily - The font family value to resolve
  * @param theme - The theme object containing font family tokens
- * @param parentContext - The parent context for computed value resolution
  * @returns The resolved font family value or undefined
  */
 export function resolveFontFamily({

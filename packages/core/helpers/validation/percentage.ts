@@ -15,11 +15,11 @@ export function isPercentage(
 
   const number = Number(value.replace("%", ""))
 
-  if (options?.min && number < options.min) {
+  if (options?.min !== undefined && number < options.min) {
     return false
   }
 
-  if (options?.max && number > options.max) {
+  if (options?.max !== undefined && number > options.max) {
     return false
   }
   return true

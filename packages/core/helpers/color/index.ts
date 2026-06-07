@@ -9,7 +9,6 @@ export {
   hexToHSLString,
   hexToHSLObject,
   rgbToHSL,
-  hexToRGBString,
   hexToRGBObject,
 } from "./convert-color"
 export { HSLObjectToString } from "./hsl-object-to-string"

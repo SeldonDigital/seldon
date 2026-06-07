@@ -1,5 +1,4 @@
 // Property processing utilities
-export * from "./compound-properties"
 export { formatPresetValue } from "./format-preset-value"
 export { stringifyValue } from "./stringify-value"
 

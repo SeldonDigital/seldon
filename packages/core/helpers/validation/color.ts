@@ -18,21 +18,6 @@ export function isValidColor(value: string) {
 }
 
 /**
- * Validates if a string is a valid exact color value (HSL, RGB, HEX, or LCH).
- *
- * @param value - The color string to validate
- * @returns True if the value is a valid exact color format
- */
-export function isValidExactColor(value: string) {
-  return (
-    isHex(value) ||
-    isHSLString(value) ||
-    isRGBString(value) ||
-    isLCHString(value)
-  )
-}
-
-/**
  * Validates HSL color strings with range validation (e.g., "hsl(120, 50%, 50%)").
  *
  * @param value - The string to validate

@@ -176,49 +176,50 @@ export function hexToHSLObject(value: string): HSL {
  * @returns An HSL object with hue (0-360), saturation (0-100), and lightness (0-100)
  */
 export function rgbToHSL(rgb: RGB): HSL {
-  const { red, green, blue } = rgb
-  const r = red / 255
-  const g = green / 255
-  const b = blue / 255
+  const r = rgb.red / 255
+  const g = rgb.green / 255
+  const b = rgb.blue / 255
 
   const max = Math.max(r, g, b)
   const min = Math.min(r, g, b)
-  let h = 0,
-    s = 0,
-    l = (max + min) / 2
+  const lightness = (max + min) / 2
 
+  let hue = 0
+  let saturation = 0
   if (max !== min) {
     const d = max - min
-    s = l > 0.5 ? d / (2 - max - min) : d / (max + min)
-    switch (max) {
-      case r:
-        h = (g - b) / d + (g < b ? 6 : 0)
-        break
-      case g:
-        h = (b - r) / d + 2
-        break
-      case b:
-        h = (r - g) / d + 4
-        break
-    }
-    h /= 6
+    saturation = lightness > 0.5 ? d / (2 - max - min) : d / (max + min)
+    hue = computeHue(max, r, g, b, d)
   }
+
   return {
-    hue: Math.round(h * 360),
-    saturation: Math.round(s * 100),
-    lightness: Math.round(l * 100),
+    hue: Math.round(hue * 360),
+    saturation: Math.round(saturation * 100),
+    lightness: Math.round(lightness * 100),
   }
 }
 
-/**
- * Convert a hex color value to an RGB string.
- *
- * @param value - The hex color value to convert
- * @returns An RGB string (e.g., "rgb(255, 0, 0)")
- */
-export function hexToRGBString(value: string): string {
-  const { red, green, blue } = hexToRGBObject(value)
-  return `rgb(${red}, ${green}, ${blue})`
+/** Computes the normalized HSL hue (0-1) from RGB channels and their range. */
+function computeHue(
+  max: number,
+  r: number,
+  g: number,
+  b: number,
+  d: number,
+): number {
+  let h = 0
+  switch (max) {
+    case r:
+      h = (g - b) / d + (g < b ? 6 : 0)
+      break
+    case g:
+      h = (b - r) / d + 2
+      break
+    case b:
+      h = (r - g) / d + 4
+      break
+  }
+  return h / 6
 }
 
 /**

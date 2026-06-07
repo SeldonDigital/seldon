@@ -12,6 +12,7 @@ import { Theme } from "../../themes/types"
 import { isModulatedToken, isThemeExactToken } from "../../themes/types"
 import { modulate } from "../math/modulate"
 import { getThemeOption } from "../theme/get-theme-option"
+import { exactTokenToLength } from "./resolve-length-token"
 
 /**
  * Resolves font size values to concrete PixelValue, RemValue, or EmptyValue.
@@ -19,7 +20,6 @@ import { getThemeOption } from "../theme/get-theme-option"
  *
  * @param fontSize - The font size value to resolve
  * @param theme - The theme object containing font size tokens
- * @param parentContext - The parent context for computed value resolution
  * @returns The resolved font size value
  */
 export function resolveFontSize({
@@ -58,12 +58,7 @@ export function resolveFontSize({
         }
       }
       if (isThemeExactToken(themeValue)) {
-        const { unit, value: n } = themeValue.parameters
-        return (
-          unit === Unit.PX
-            ? { type: ValueType.EXACT, value: { unit: Unit.PX, value: n } }
-            : { type: ValueType.EXACT, value: { unit: Unit.REM, value: n } }
-        ) as PixelValue | RemValue
+        return exactTokenToLength(themeValue.parameters)
       }
       throw new Error(
         `Theme value ${fontSize.value as string} must resolve to MODULATED or EXACT length`,

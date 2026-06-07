@@ -40,37 +40,13 @@ export function stringifyValue(
     return "Custom"
   }
 
-  // Check if value has a type property (atomic values)
   if (!("type" in value)) {
     return "Custom"
   }
 
   switch (value.type) {
     case ValueType.COMPUTED:
-      // Extract function name from computed value
-      if (
-        value &&
-        typeof value === "object" &&
-        "value" in value &&
-        value.value &&
-        typeof value.value === "object" &&
-        "function" in value.value
-      ) {
-        const functionName = value.value.function
-        switch (functionName) {
-          case ComputedFunction.AUTO_FIT:
-            return "Auto Fit"
-          case ComputedFunction.HIGH_CONTRAST_COLOR:
-            return "High Contrast Color"
-          case ComputedFunction.OPTICAL_PADDING:
-            return "Optical Padding"
-          case ComputedFunction.MATCH:
-            return "Match"
-          default:
-            return "Computed"
-        }
-      }
-      return "Computed"
+      return stringifyComputedValue(value)
 
     case ValueType.EXACT: {
       switch (typeof value.value) {
@@ -98,22 +74,7 @@ export function stringifyValue(
           }
 
           if ("unit" in value.value) {
-            switch (value.value.unit) {
-              case Unit.PX:
-                return `${value.value.value}px`
-              case Unit.PERCENT:
-                return `${value.value.value}%`
-              case Unit.REM:
-                return `${value.value.value}rem`
-              case Unit.DEGREES:
-                return `${value.value.value}°`
-              case Unit.NUMBER:
-                return `${value.value.value}`
-              default:
-                throw new Error(
-                  `Unknown unit: ${(value.value as { unit: string }).unit}`,
-                )
-            }
+            return stringifyUnitValue(value.value)
           }
 
           // An EXACT value can wrap another tagged value; unwrap and stringify it.
@@ -136,5 +97,48 @@ export function stringifyValue(
 
     default:
       throw new Error(`Unknown value type: ${(value as { type: string }).type}`)
+  }
+}
+
+/** Returns a display label for a COMPUTED value based on its function. */
+function stringifyComputedValue(value: Value): string {
+  if (
+    typeof value === "object" &&
+    "value" in value &&
+    value.value &&
+    typeof value.value === "object" &&
+    "function" in value.value
+  ) {
+    switch (value.value.function) {
+      case ComputedFunction.AUTO_FIT:
+        return "Auto Fit"
+      case ComputedFunction.HIGH_CONTRAST_COLOR:
+        return "High Contrast Color"
+      case ComputedFunction.OPTICAL_PADDING:
+        return "Optical Padding"
+      case ComputedFunction.MATCH:
+        return "Match"
+      default:
+        return "Computed"
+    }
+  }
+  return "Computed"
+}
+
+/** Formats a unit-bearing exact value, such as `16px` or `1.5rem`. */
+function stringifyUnitValue(unitValue: { unit: Unit; value: number }): string {
+  switch (unitValue.unit) {
+    case Unit.PX:
+      return `${unitValue.value}px`
+    case Unit.PERCENT:
+      return `${unitValue.value}%`
+    case Unit.REM:
+      return `${unitValue.value}rem`
+    case Unit.DEGREES:
+      return `${unitValue.value}°`
+    case Unit.NUMBER:
+      return `${unitValue.value}`
+    default:
+      throw new Error(`Unknown unit: ${(unitValue as { unit: string }).unit}`)
   }
 }
