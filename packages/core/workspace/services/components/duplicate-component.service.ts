@@ -32,7 +32,7 @@ import {
 import { invariant } from "../../../index"
 import type { Workspace } from "../../types"
 import { mutateWorkspace } from "../shared/workspace-mutation.helper"
-import { workspacePropagationService } from "../propagation/workspace-propagation.service"
+import { boardOrderService } from "./board-order.service"
 
 function collectTreeIds(roots: ComponentTreeRef[]): string[] {
   const ids: string[] = []
@@ -220,7 +220,7 @@ export function cloneBoard(
 
     draft.components[newBoardKey] = newBoard as WritableDraft<Board>
 
-    const realigned = workspacePropagationService.realignBoardOrder(
+    const realigned = boardOrderService.realignBoardOrder(
       draft as Workspace,
     )
     Object.assign(draft.components, realigned.components)

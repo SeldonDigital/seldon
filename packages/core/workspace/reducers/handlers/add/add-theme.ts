@@ -13,7 +13,7 @@ import { STOCK_THEMES_BY_ID } from "../../../../themes/catalog"
 import type { ThemeTemplateId } from "../../../../themes/types/theme-id"
 import {
   workspaceMutationService,
-  workspacePropagationService,
+  boardOrderService,
 } from "../../../services"
 
 /**
@@ -71,7 +71,7 @@ export function addTheme(
     setBoardOrder(board, maxOrder + 1)
     draft.components[boardKey] = board
 
-    const updatedWorkspace = workspacePropagationService.realignBoardOrder(draft)
+    const updatedWorkspace = boardOrderService.realignBoardOrder(draft)
     Object.assign(draft.components, updatedWorkspace.components)
   })
 }

@@ -4,7 +4,7 @@ import {
   getBoardOrder,
   setBoardOrder,
 } from "../../../helpers/components/board-sort-order"
-import { workspacePropagationService } from "../../../services"
+import { boardOrderService } from "../../../services"
 import type { Board, BoardKey } from "../../../types"
 import { ExtractPayload, Workspace } from "../../../types"
 
@@ -47,7 +47,7 @@ export function reorderBoard(
       setBoardOrder(board, index)
     })
 
-    const updatedWorkspace = workspacePropagationService.realignBoardOrder(draft)
+    const updatedWorkspace = boardOrderService.realignBoardOrder(draft)
     Object.assign(draft.components, updatedWorkspace.components)
 
     return draft

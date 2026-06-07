@@ -15,7 +15,7 @@ import { getInitialBoardComponentProperties } from "../../../helpers/components/
 import { DEFAULT_FONT_COLLECTION_BOARD_KEY } from "../../../helpers/seed/seed-default-font-collection-board"
 import { WORKSPACE_EDITABLE_THEME_ENTRY_ID } from "../../../helpers/themes/workspace-editable-theme"
 import { formatFontCollectionCatalog } from "../../../model/template-ref"
-import { workspacePropagationService } from "../../../services"
+import { boardOrderService } from "../../../services"
 import { formatLabelFromCatalogId } from "../shared/format-label-from-catalog-id"
 
 /**
@@ -101,7 +101,7 @@ export function addFontCollection(
     draft.components[boardKey] = board
 
     const updatedWorkspace =
-      workspacePropagationService.realignBoardOrder(draft)
+      boardOrderService.realignBoardOrder(draft)
     Object.assign(draft.components, updatedWorkspace.components)
   })
 }

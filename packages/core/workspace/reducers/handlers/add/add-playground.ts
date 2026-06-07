@@ -9,7 +9,7 @@ import {
 } from "../../../helpers/components/board-sort-order"
 import { WORKSPACE_EDITABLE_THEME_ENTRY_ID } from "../../../helpers/themes/workspace-editable-theme"
 import { formatNodeCatalog } from "../../../model/template-ref"
-import { workspacePropagationService } from "../../../services"
+import { boardOrderService } from "../../../services"
 
 /**
  * Creates a playground board and its default frame root node when the board key is free.
@@ -59,7 +59,7 @@ export function addPlayground(
     setBoardOrder(board, maxOrder + 1)
     draft.components[boardKey] = board
 
-    const updatedWorkspace = workspacePropagationService.realignBoardOrder(draft)
+    const updatedWorkspace = boardOrderService.realignBoardOrder(draft)
     Object.assign(draft.components, updatedWorkspace.components)
   })
 }

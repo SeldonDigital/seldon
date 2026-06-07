@@ -1,4 +1,3 @@
-import { ComponentId, isComponentId } from "../../../components/constants"
 import { invariant } from "../../../index"
 import { componentBoardDefaultNodeId } from "../../helpers/components/entry-node-ids"
 import { isEntryNodeForRules } from "../../helpers/rules/rules-node-subject"
@@ -121,16 +120,4 @@ function instancePropagationVariantRootId(node: Variant | Instance): VariantId {
     "Expected catalog or node template on instance",
   )
   return componentBoardDefaultNodeId(cat.componentId) as VariantId
-}
-
-/** Component id a node maps to, when it is a rule subject pointing at a catalog component. */
-export function propagationNodeComponentId(
-  node: Variant | Instance,
-): ComponentId | undefined {
-  if (!isEntryNodeForRules(node)) return undefined
-  const parsed = parseNodeCatalog(node.template)
-  if (parsed?.kind === "catalog" && isComponentId(parsed.componentId)) {
-    return parsed.componentId
-  }
-  return undefined
 }

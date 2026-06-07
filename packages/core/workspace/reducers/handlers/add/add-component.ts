@@ -37,7 +37,7 @@ import { WORKSPACE_EDITABLE_THEME_ENTRY_ID } from "../../../helpers/themes/works
 import { formatNodeCatalog, formatNodeLink } from "../../../model/template-ref"
 import {
   workspaceMutationService,
-  workspacePropagationService,
+  boardOrderService,
 } from "../../../services"
 import type {
   ComponentBoard,
@@ -562,7 +562,7 @@ export function addComponent(
     }
 
     const updatedWorkspace =
-      workspacePropagationService.realignBoardOrder(draft)
+      boardOrderService.realignBoardOrder(draft)
     Object.assign(draft.components, updatedWorkspace.components)
   })
 }

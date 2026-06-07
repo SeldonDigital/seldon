@@ -277,6 +277,30 @@ export class NodeRelationshipService {
       return "Unknown Component"
     }
   }
+
+  /** True when the node, or any of its ancestors, maps to the given component id. */
+  public hasAncestorWithComponentId(
+    componentId: ComponentId,
+    node: Variant | Instance | Board,
+    workspace: Workspace,
+  ): boolean {
+    if (typeCheckingService.isBoard(node)) {
+      return node.type === "component" && node.catalogId === componentId
+    }
+
+    let parentNode: Variant | Instance | null = node
+    while (parentNode) {
+      if (
+        isEntryNodeForRules(parentNode) &&
+        nodeCatalogComponentId(parentNode) === componentId
+      ) {
+        return true
+      }
+      parentNode = nodeTraversalService.findParentNode(parentNode.id, workspace)
+    }
+
+    return false
+  }
 }
 
 export const nodeRelationshipService = new NodeRelationshipService()

@@ -7,7 +7,7 @@ import {
   setBoardOrder,
 } from "../../../helpers/components/board-sort-order"
 import { WORKSPACE_EDITABLE_THEME_ENTRY_ID } from "../../../helpers/themes/workspace-editable-theme"
-import { workspacePropagationService } from "../../../services"
+import { boardOrderService } from "../../../services"
 import { formatLabelFromCatalogId } from "../shared/format-label-from-catalog-id"
 
 /** Creates a media board with default and custom rows in `media`. */
@@ -52,7 +52,7 @@ export function addMedia(
     setBoardOrder(board, maxOrder + 1)
     draft.components[boardKey] = board
 
-    const updatedWorkspace = workspacePropagationService.realignBoardOrder(draft)
+    const updatedWorkspace = boardOrderService.realignBoardOrder(draft)
     Object.assign(draft.components, updatedWorkspace.components)
   })
 }

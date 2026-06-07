@@ -35,6 +35,10 @@ export {
   workspacePropagationService,
   WorkspacePropagationService,
 } from "./propagation/workspace-propagation.service"
+export {
+  boardOrderService,
+  BoardOrderService,
+} from "./components/board-order.service"
 export { workspaceService } from "./workspace.service"
 export { cloneBoard } from "./components/duplicate-component.service"
 export {

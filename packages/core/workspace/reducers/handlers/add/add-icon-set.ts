@@ -12,7 +12,7 @@ import { DEFAULT_ICON_SET_BOARD_KEY } from "../../../helpers/seed/seed-default-i
 import { WORKSPACE_EDITABLE_THEME_ENTRY_ID } from "../../../helpers/themes/workspace-editable-theme"
 import type { EntryIconSet } from "../../../model/entry-icon-set"
 import { formatIconSetCatalog } from "../../../model/template-ref"
-import { workspacePropagationService } from "../../../services"
+import { boardOrderService } from "../../../services"
 import { formatLabelFromCatalogId } from "../shared/format-label-from-catalog-id"
 
 /**
@@ -81,7 +81,7 @@ export function addIconSet(
     draft.components[boardKey] = board
 
     const updatedWorkspace =
-      workspacePropagationService.realignBoardOrder(draft)
+      boardOrderService.realignBoardOrder(draft)
     Object.assign(draft.components, updatedWorkspace.components)
   })
 }

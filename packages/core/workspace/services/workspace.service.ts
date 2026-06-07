@@ -15,6 +15,7 @@ import {
   VariantId,
   Workspace,
 } from "../types"
+import { boardOrderService } from "./components/board-order.service"
 import { nodeOperationsService } from "./nodes/node-operations.service"
 import { nodeRelationshipService } from "./nodes/node-relationship.service"
 import { nodeRetrievalService } from "./nodes/node-retrieval.service"
@@ -522,7 +523,7 @@ class WorkspaceService {
     node: Variant | Instance | Board,
     workspace: Workspace,
   ): boolean {
-    return workspacePropagationService.hasAncestorWithComponentId(
+    return nodeRelationshipService.hasAncestorWithComponentId(
       componentId,
       node,
       workspace,
@@ -530,11 +531,11 @@ class WorkspaceService {
   }
 
   public realignBoardOrder(workspace: Workspace): Workspace {
-    return workspacePropagationService.realignBoardOrder(workspace)
+    return boardOrderService.realignBoardOrder(workspace)
   }
 
   public getBoards(workspace: Workspace): Board[] {
-    return workspacePropagationService.getBoards(workspace)
+    return boardOrderService.getBoards(workspace)
   }
 
   public parseWorkspace(json: string): Workspace {

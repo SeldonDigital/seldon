@@ -16,7 +16,6 @@ import {
   nodeRetrievalService,
   nodeTraversalService,
   nodeRelationshipService,
-  workspacePropagationService,
   typeCheckingService,
 } from "../../../services"
 import { check } from "../check"
@@ -75,7 +74,7 @@ export const nodeValidators = {
     }
 
     check(
-      !workspacePropagationService.hasAncestorWithComponentId(
+      !nodeRelationshipService.hasAncestorWithComponentId(
         sourceNodeComponent,
         targetNode,
         workspace,
@@ -271,7 +270,7 @@ export function validateComponentCanBeInserted(
 
     if (
       componentId !== ComponentId.FRAME &&
-      workspacePropagationService.hasAncestorWithComponentId(
+      nodeRelationshipService.hasAncestorWithComponentId(
         componentId,
         targetParent,
         workspace,

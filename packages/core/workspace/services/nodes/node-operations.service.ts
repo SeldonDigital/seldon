@@ -32,7 +32,7 @@ import {
   parseNodeLink,
 } from "../../model/template-ref"
 import { Instance, InstanceId, Variant, VariantId, Workspace } from "../../types"
-import { workspacePropagationService } from "../propagation/workspace-propagation.service"
+import { boardOrderService } from "../components/board-order.service"
 import { workspaceMutationService } from "../mutation/workspace-mutation.service"
 import {
   collectDescendantTreeIds,
@@ -170,7 +170,7 @@ export class NodeOperationsService {
       delete draft.components[componentId]
     })
 
-    return workspacePropagationService.realignBoardOrder(
+    return boardOrderService.realignBoardOrder(
       workspaceAfterDeletion,
     )
   }
@@ -198,7 +198,7 @@ export class NodeOperationsService {
         delete draft.components[boardKey]
       })
 
-      return workspacePropagationService.realignBoardOrder(
+      return boardOrderService.realignBoardOrder(
         workspaceAfterDeletion,
       )
     }
@@ -234,7 +234,7 @@ export class NodeOperationsService {
       }
       delete draft.components[boardKey]
     })
-    return workspacePropagationService.realignBoardOrder(next)
+    return boardOrderService.realignBoardOrder(next)
   }
 
   public deleteInstance(
