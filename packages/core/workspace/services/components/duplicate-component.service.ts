@@ -51,16 +51,16 @@ function remapComponentTree(roots: ComponentTreeRef[], idMap: Map<string, string
 }
 
 function buildPrefixIdMap(
-  sourceComponentKey: string,
-  newComponentKey: string,
+  sourceBoardKey: string,
+  newBoardKey: string,
   ids: string[],
   prefix: string,
 ): Map<string, string> {
-  const fullPrefix = `${prefix}${sourceComponentKey}-`
+  const fullPrefix = `${prefix}${sourceBoardKey}-`
   const map = new Map<string, string>()
   for (const id of ids) {
     if (id.startsWith(fullPrefix)) {
-      map.set(id, `${prefix}${newComponentKey}-` + id.slice(fullPrefix.length))
+      map.set(id, `${prefix}${newBoardKey}-` + id.slice(fullPrefix.length))
     }
   }
   return map
@@ -105,16 +105,16 @@ function clonePlainRow<T extends { id: string }>(row: T, newId: string): T {
  * into the draft map under remapped ids and returns the new variant references.
  */
 function cloneResourceVariants(
-  sourceComponentKey: string,
-  newComponentKey: string,
+  sourceBoardKey: string,
+  newBoardKey: string,
   variants: { id: string }[],
   prefix: string,
   sourceMap: Record<string, { id: string }>,
   draftMap: Record<string, { id: string }>,
 ): { id: string }[] {
   const idMap = buildPrefixIdMap(
-    sourceComponentKey,
-    newComponentKey,
+    sourceBoardKey,
+    newBoardKey,
     variants.map((v) => v.id),
     prefix,
   )
@@ -126,31 +126,31 @@ function cloneResourceVariants(
 }
 
 /**
- * Clones a board to `newComponentKey`, remaps dependent ids in `nodes`, `themes`,
+ * Clones a board to `newBoardKey`, remaps dependent ids in `nodes`, `themes`,
  * `font-collections`, `icon-sets`, or `media`, and appends the new board to sort order.
  * Call only after validation; missing source or colliding target throws.
  */
-export function cloneComponent(
+export function cloneBoard(
   workspace: Workspace,
-  sourceComponentKey: string,
-  newComponentKey: string,
+  sourceBoardKey: string,
+  newBoardKey: string,
   label?: string,
 ): Workspace {
-  const sourceBoard = workspace.components[sourceComponentKey]
+  const sourceBoard = workspace.components[sourceBoardKey]
   invariant(
     sourceBoard,
-    `cloneComponent: missing source board ${sourceComponentKey}`,
+    `cloneBoard: missing source board ${sourceBoardKey}`,
   )
   invariant(
-    !workspace.components[newComponentKey],
-    `cloneComponent: board key already exists ${newComponentKey}`,
+    !workspace.components[newBoardKey],
+    `cloneBoard: board key already exists ${newBoardKey}`,
   )
 
   return mutateWorkspace(workspace, (draft) => {
-    const src = draft.components[sourceComponentKey]
+    const src = draft.components[sourceBoardKey]
     invariant(
       src,
-      `cloneComponent: source board disappeared ${sourceComponentKey}`,
+      `cloneBoard: source board disappeared ${sourceBoardKey}`,
     )
 
     const newBoard = structuredClone(src) as Board
@@ -167,8 +167,8 @@ export function cloneComponent(
     if (isComponentBoard(src) || isPlaygroundBoard(src)) {
       const treeIds = collectTreeIds(src.variants)
       const idMap = new Map([
-        ...buildPrefixIdMap(sourceComponentKey, newComponentKey, treeIds, "component-"),
-        ...buildPrefixIdMap(sourceComponentKey, newComponentKey, treeIds, "playground-"),
+        ...buildPrefixIdMap(sourceBoardKey, newBoardKey, treeIds, "component-"),
+        ...buildPrefixIdMap(sourceBoardKey, newBoardKey, treeIds, "playground-"),
       ])
       for (const [oldId, newId] of idMap) {
         const node = workspace.nodes[oldId] as EntryNode | undefined
@@ -178,7 +178,7 @@ export function cloneComponent(
       newBoard.variants = remapComponentTree(src.variants, idMap)
     } else if (isThemeBoard(src)) {
       const ids = src.variants.map((v) => v.id)
-      const idMap = buildPrefixIdMap(sourceComponentKey, newComponentKey, ids, "theme-")
+      const idMap = buildPrefixIdMap(sourceBoardKey, newBoardKey, ids, "theme-")
       for (const [oldId, newId] of idMap) {
         const row = workspace.themes[oldId] as EntryTheme | undefined
         if (!row) continue
@@ -190,8 +190,8 @@ export function cloneComponent(
     } else if (isFontCollectionBoard(src)) {
       if (!draft["font-collections"]) draft["font-collections"] = {}
       ;(newBoard as FontCollectionBoard).variants = cloneResourceVariants(
-        sourceComponentKey,
-        newComponentKey,
+        sourceBoardKey,
+        newBoardKey,
         src.variants,
         "font-collection-",
         workspace["font-collections"],
@@ -200,8 +200,8 @@ export function cloneComponent(
     } else if (isIconSetBoard(src)) {
       if (!draft["icon-sets"]) draft["icon-sets"] = {}
       ;(newBoard as IconSetBoard).variants = cloneResourceVariants(
-        sourceComponentKey,
-        newComponentKey,
+        sourceBoardKey,
+        newBoardKey,
         src.variants,
         "icon-set-",
         workspace["icon-sets"],
@@ -209,8 +209,8 @@ export function cloneComponent(
       )
     } else if (isMediaBoard(src)) {
       ;(newBoard as MediaBoard).variants = cloneResourceVariants(
-        sourceComponentKey,
-        newComponentKey,
+        sourceBoardKey,
+        newBoardKey,
         src.variants,
         "media-",
         workspace.media,
@@ -218,7 +218,7 @@ export function cloneComponent(
       )
     }
 
-    draft.components[newComponentKey] = newBoard as WritableDraft<Board>
+    draft.components[newBoardKey] = newBoard as WritableDraft<Board>
 
     const realigned = workspacePropagationService.realignBoardOrder(
       draft as Workspace,

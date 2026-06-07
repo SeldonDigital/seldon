@@ -36,7 +36,7 @@ export {
   WorkspacePropagationService,
 } from "./propagation/workspace-propagation.service"
 export { workspaceService } from "./workspace.service"
-export { cloneComponent } from "./components/duplicate-component.service"
+export { cloneBoard } from "./components/duplicate-component.service"
 export {
   typeCheckingService,
   TypeCheckingService,
