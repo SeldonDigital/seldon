@@ -19,6 +19,7 @@ import {
   getUnionRect,
 } from "./helpers/canvas-selection-target"
 import { useCanvasOverlayStore } from "./hooks/use-canvas-overlay-store"
+import { useCanvasRemeasureStore } from "./hooks/use-canvas-remeasure-store"
 
 /** Frames to wait for a target to mount after a board switch before giving up. */
 const MAX_TARGET_FRAMES = 30
@@ -78,6 +79,7 @@ export function CanvasOverlayTracker() {
   const selectedId = useSelectedId()
   const selectedNodeId = useSelectedNodeId()
   const selectedNodeRootId = useSelectedNodeRootId()
+  const remeasureVersion = useCanvasRemeasureStore((state) => state.version)
 
   const transformContextRef = useRef(transformContext)
   transformContextRef.current = transformContext
@@ -126,6 +128,7 @@ export function CanvasOverlayTracker() {
     selectedId,
     selectedNodeId,
     selectedNodeRootId,
+    remeasureVersion,
   ])
 
   return null

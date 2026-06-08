@@ -2,11 +2,14 @@
 
 import { RefObject, useLayoutEffect, useRef } from "react"
 import { Workspace } from "@seldon/core"
+import { useCanvasRemeasureStore } from "./use-canvas-remeasure-store"
 
 const FLIP_DURATION_MS = 200
 const FLIP_EASING = "cubic-bezier(0.2, 0, 0, 1)"
 /** Below this many pixels of movement an element is treated as not moved. */
 const MOVE_THRESHOLD_PX = 0.5
+/** Extra time past the glide before re-measuring, so transforms are cleared. */
+const SETTLE_BUFFER_MS = 30
 
 type Point = { left: number; top: number }
 
@@ -41,10 +44,20 @@ export function useCanvasReorderFlip(
 ): void {
   const previousPositions = useRef<Map<string, Point>>(new Map())
   const runningAnimations = useRef<Map<string, Animation>>(new Map())
+  const settleTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useLayoutEffect(() => {
     const root = rootRef.current
     if (!root) return
+
+    // The glide leaves the trackers measuring the pre-animation position. Once
+    // it settles, nudge them to re-measure so selection, hover, and wireframe
+    // outlines snap to the node's final spot. Reset per pass so only the last
+    // settle fires when previews arrive in quick succession.
+    if (settleTimer.current) clearTimeout(settleTimer.current)
+    settleTimer.current = setTimeout(() => {
+      useCanvasRemeasureStore.getState().bump()
+    }, FLIP_DURATION_MS + SETTLE_BUFFER_MS)
 
     const prefersReducedMotion =
       typeof window !== "undefined" &&
@@ -122,6 +135,10 @@ export function useCanvasReorderFlip(
     })
 
     previousPositions.current = nextPositions
+
+    return () => {
+      if (settleTimer.current) clearTimeout(settleTimer.current)
+    }
   }, [rootRef, workspace])
 }
 
