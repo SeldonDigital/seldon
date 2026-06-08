@@ -388,7 +388,7 @@ export const schema = {
           },
           symbol: {
             type: Sdn.ValueType.OPTION,
-            value: "material-radioOff",
+            value: "seldon-radioOff",
           },
           size: {
             type: Sdn.ValueType.COMPUTED,

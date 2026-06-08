@@ -550,7 +550,7 @@ export const schema = {
               overrides: {
                 symbol: {
                   type: Sdn.ValueType.OPTION,
-                  value: "social-twitter",
+                  value: "seldon-iconSocialTwitter",
                 },
               },
             },
@@ -588,7 +588,7 @@ export const schema = {
               overrides: {
                 symbol: {
                   type: Sdn.ValueType.OPTION,
-                  value: "social-linkedin",
+                  value: "seldon-iconSocialLinkedin",
                 },
               },
             },
@@ -626,7 +626,7 @@ export const schema = {
               overrides: {
                 symbol: {
                   type: Sdn.ValueType.OPTION,
-                  value: "social-instagram",
+                  value: "seldon-iconSocialInstagram",
                 },
               },
             },
@@ -786,7 +786,7 @@ export const schema = {
               overrides: {
                 symbol: {
                   type: Sdn.ValueType.OPTION,
-                  value: "material-send",
+                  value: "material-notifications",
                 },
               },
             },
