@@ -10,6 +10,7 @@ import { hasEffectiveThemeReference } from "../../../helpers/removal/effective-t
 import { isUserVariant } from "../../../helpers/general/is-user-variant"
 import { ErrorMessages } from "../../../constants"
 import {
+  nodeRelationshipService,
   nodeRetrievalService,
   nodeTraversalService,
   workspaceMutationService,
@@ -118,6 +119,11 @@ export function validateInsertMutation(
         parent,
         "Cannot move an instance into a default catalog variant",
       )
+      assertNodeNotInDefaultVariant(
+        workspace,
+        instance,
+        "Cannot move instances in a default variant. Only property overrides allowed. To restructure components, make a custom variant and make changes on it.",
+      )
       nodeValidators.canHaveChildren(workspace, parentId)
       nodeValidators.isNotInstanceOfSelf(workspace, instanceId, parentId)
       nodeValidators.notIntoOwnSubtree(workspace, instanceId, parentId)
@@ -164,11 +170,10 @@ export function validateNodeMutation(
     case "reorder_instance_in_parent": {
       const nodeId = action.payload.instanceId as InstanceId
       const node = getInstanceNodeOrThrow(workspace, action, nodeId)
-      assertParentNotDefaultVariant(
+      assertNodeNotInDefaultVariant(
         workspace,
-        nodeId,
         node,
-        "Cannot reorder instances in a default catalog variant",
+        "Cannot reorder instances in a default variant. Only property overrides allowed. To reorder components, make a custom variant and make changes on it.",
       )
       nodeValidators.moveAllowed(workspace, nodeId)
       variantValidators.notToDefaultPosition(
@@ -395,6 +400,16 @@ function assertParentNotDefaultVariant(
   const parent = nodeTraversalService.findParentNode(node, workspace)
   check(parent, ErrorMessages.parentNotFound(instanceId))
   check(!typeCheckingService.isDefaultVariant(parent), message)
+}
+
+/** Rejects mutating an instance anywhere inside a default catalog variant tree. */
+function assertNodeNotInDefaultVariant(
+  workspace: Workspace,
+  node: ReturnType<typeof nodeRetrievalService.getNode>,
+  message: string,
+): void {
+  const root = nodeRelationshipService.getRootVariant(node, workspace)
+  check(!typeCheckingService.isDefaultVariant(root), message)
 }
 
 /**

@@ -1025,12 +1025,12 @@ Reorder and move both act on instances only. They differ in whether the parent c
 | --- | --- | --- |
 | Parent | Same parent, new index | New parent and index |
 | Applies to | Instances | Instances |
-| Default variant | Cannot reorder inside a default variant | Cannot move into a default variant |
+| Default variant | Cannot reorder any instance inside a default variant | Cannot move any instance inside a default variant, or into one |
 | Cross-variant | Not applicable | Rejected, must stay in the same root variant |
 
-A reorder keeps the instance under its current parent and changes its index.
+A reorder keeps the instance under its current parent and changes its index. Reorder is rejected when the instance belongs to a default variant tree, at any depth. Use property overrides on the default, or make a user variant to restructure.
 
-A move places the instance under a new parent. The target must be able to accept the child level, must not be a default variant, and must belong to the same root variant as the source. Moves across variants are rejected.
+A move places the instance under a new parent. The target must be able to accept the child level, must not be a default variant, and must belong to the same root variant as the source. Move is also rejected when the source instance belongs to a default variant tree, at any depth. Moves across variants are rejected.
 
 Variant order inside a board uses the `reorder_variant_in_board` action. It blocks any move into or out of index `0`, which keeps the default variant at index `0`.
 
