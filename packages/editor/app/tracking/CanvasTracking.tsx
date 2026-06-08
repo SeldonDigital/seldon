@@ -2,6 +2,7 @@
 
 import { useHasHoverState } from "@lib/hooks/use-canvas-hover-state"
 import { useDragStateStore } from "@lib/hooks/use-drag-state"
+import { useCanvasRemeasureStore } from "../canvas/hooks/use-canvas-remeasure-store"
 import { useEditorConfig } from "@lib/hooks/use-editor-config"
 import { usePreview } from "@lib/hooks/use-preview"
 import { useTool } from "@lib/hooks/use-tool"
@@ -26,6 +27,7 @@ export function CanvasTracking() {
   const { showSelection, wireframeMode } = useEditorConfig()
   const nodeBelongsToActiveBoard = useNodeBelongsToActiveBoard()
   const isDragging = useDragStateStore((state) => state.isDragging)
+  const isTransforming = useCanvasRemeasureStore((state) => state.isTransforming)
 
   const showWireframes =
     wireframeMode === "on" ||
@@ -39,6 +41,7 @@ export function CanvasTracking() {
     <>
       {activeTool === "select" &&
         showWireframes &&
+        !isTransforming &&
         visibleNodes.map((node) => {
           if (!nodeBelongsToActiveBoard(node.id)) return null
 

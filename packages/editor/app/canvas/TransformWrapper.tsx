@@ -9,6 +9,7 @@ import { useTextFieldFocus } from "@lib/hooks/use-text-field-focus"
 import { useZoomControlsStore } from "@lib/hooks/use-zoom-controls"
 import { CanvasOverlayTracker } from "./CanvasOverlayTracker"
 import { CanvasScrollToSelection } from "./CanvasScrollToSelection"
+import { CanvasTransformRemeasure } from "./CanvasTransformRemeasure"
 
 export const TRANSFORM_WRAPPER_INITIAL_POSITION_X = 0
 export const TRANSFORM_WRAPPER_INITIAL_POSITION_Y = 30
@@ -55,6 +56,7 @@ export const TransformWrapper: FC<Props> = ({ children }) => {
         {activateShortCuts && <ZoomControls />}
         {!isInPreviewMode && <CanvasScrollToSelection />}
         {!isInPreviewMode && <CanvasOverlayTracker />}
+        {!isInPreviewMode && <CanvasTransformRemeasure />}
       </>
     </ReactTransformWrapper>
   )
