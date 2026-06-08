@@ -8,14 +8,25 @@ import { useEffect } from "react"
 import { Board, Instance, Variant, invariant } from "@seldon/core"
 import { useMoveObjects } from "@lib/workspace/hooks/use-move-objects"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
+import { useDragStateStore } from "@lib/hooks/use-drag-state"
+
+/**
+ * How long the hovered target must stay settled before the canvas preview is
+ * written. Sweeping the cursor across several rows keeps resetting this timer,
+ * so the intermediate targets never reach the canvas and the dragged node
+ * animates to the slot the cursor pauses on in a single move.
+ */
+const PREVIEW_SETTLE_MS = 150
 
 /**
  * Global monitor for drag-and-drop operations in the objects sidebar.
  * Listens for board reordering and node movement events.
  *
- * While dragging, each change of the hovered drop target writes a preview of
- * the move so the canvas reflects the new order live. On drop the preview is
- * discarded and the move is committed once as a semantic action; dropping
+ * The sidebar's own drop indicator follows the cursor immediately. The canvas
+ * preview is debounced: it is written only after the hovered target stays
+ * settled for `PREVIEW_SETTLE_MS`, so a fast multi-row drag animates the canvas
+ * straight to the settled slot instead of stepping through every slot crossed.
+ * On drop the move is committed once and the preview is discarded; dropping
  * outside a target discards the preview.
  */
 export function useDraggableMonitor() {
@@ -27,8 +38,18 @@ export function useDraggableMonitor() {
     duplicateNodeNextTo,
   } = useMoveObjects()
   const { startPreviewSession, rollbackPreview } = useWorkspace()
+  const setIsDragging = useDragStateStore((state) => state.setIsDragging)
 
   useEffect(() => {
+    let settleTimer: ReturnType<typeof setTimeout> | null = null
+
+    const clearSettleTimer = () => {
+      if (settleTimer !== null) {
+        clearTimeout(settleTimer)
+        settleTimer = null
+      }
+    }
+
     const applyMove = (
       destination: DropTargetRecord,
       source: ElementDragPayload,
@@ -95,36 +116,57 @@ export function useDraggableMonitor() {
       }
     }
 
-    return monitorForElements({
+    const cleanupMonitor = monitorForElements({
       canMonitor: ({ source }) =>
         source.data.action === "object-panel-move-node" ||
         source.data.action === "object-panel-reorder-board",
 
       onDragStart() {
+        setIsDragging(true)
         startPreviewSession()
       },
 
       onDropTargetChange({ source, location }) {
         const destination = location.current.dropTargets[0]
+        clearSettleTimer()
+
+        // No target under the cursor: drop the preview right away so the canvas
+        // returns to the committed order without waiting on the settle timer.
         if (!destination) {
           rollbackPreview()
           return
         }
-        applyMove(destination, source, true)
+
+        // Write the preview only once the cursor settles on this target. A new
+        // target change before the timer fires cancels it above, so rows merely
+        // passed over never reach the canvas.
+        settleTimer = setTimeout(() => {
+          settleTimer = null
+          applyMove(destination, source, true)
+        }, PREVIEW_SETTLE_MS)
       },
 
       onDrop({ source, location }) {
+        clearSettleTimer()
         const destination = location.current.dropTargets[0]
 
-        // Discard the preview before committing so the canvas falls back to
-        // committed state, then apply the move once as a semantic action.
+        // Commit the move while the preview is still active, then discard the
+        // preview. The preview already holds the reordered state, so both the
+        // commit and the rollback render the same order. Rolling back first
+        // would briefly show the original order, flashing the node back to its
+        // start before animating forward again.
+        if (destination) {
+          applyMove(destination, source, false)
+        }
         rollbackPreview()
-
-        if (!destination) return
-
-        applyMove(destination, source, false)
+        setIsDragging(false)
       },
     })
+
+    return () => {
+      clearSettleTimer()
+      cleanupMonitor()
+    }
   }, [
     moveNodeNextTo,
     moveBoardNextTo,
@@ -133,5 +175,6 @@ export function useDraggableMonitor() {
     duplicateNodeNextTo,
     startPreviewSession,
     rollbackPreview,
+    setIsDragging,
   ])
 }

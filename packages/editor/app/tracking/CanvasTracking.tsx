@@ -1,6 +1,7 @@
 "use client"
 
 import { useHasHoverState } from "@lib/hooks/use-canvas-hover-state"
+import { useDragStateStore } from "@lib/hooks/use-drag-state"
 import { useEditorConfig } from "@lib/hooks/use-editor-config"
 import { usePreview } from "@lib/hooks/use-preview"
 import { useTool } from "@lib/hooks/use-tool"
@@ -24,6 +25,7 @@ export function CanvasTracking() {
   const nodeIds = visibleNodes.map((node) => node.id)
   const { showSelection, wireframeMode } = useEditorConfig()
   const nodeBelongsToActiveBoard = useNodeBelongsToActiveBoard()
+  const isDragging = useDragStateStore((state) => state.isDragging)
 
   const showWireframes =
     wireframeMode === "on" ||
@@ -49,7 +51,9 @@ export function CanvasTracking() {
             />
           )
         })}
-      {showSelection && activeTool === "select" && <CanvasSelectionOutline />}
+      {showSelection && activeTool === "select" && !isDragging && (
+        <CanvasSelectionOutline />
+      )}
       {showSelection && activeTool === "select" && <CanvasHoverOutline />}
       {activeTool === "component" && hasHoverState && <InsertTracking />}
     </>

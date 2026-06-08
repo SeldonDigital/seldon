@@ -11,8 +11,10 @@ import { workspaceThemeService } from "@seldon/core/workspace/services/theme/the
 import { usePreview } from "@lib/hooks/use-preview"
 import { useSelection } from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
+import { useRef } from "react"
 import { CssPortal } from "../CssPortal"
 import { CanvasNode } from "../Node"
+import { useCanvasReorderFlip } from "../hooks/use-canvas-reorder-flip"
 
 export type ComponentBoardProps = {
   board: Board
@@ -27,6 +29,8 @@ export function ComponentBoard({ board }: ComponentBoardProps) {
   const className = `board-${boardKey}`
   const properties = getNodeProperties(boardEntry, workspace)
   const { device, isInPreviewMode } = usePreview()
+  const boardRootRef = useRef<HTMLDivElement>(null)
+  useCanvasReorderFlip(boardRootRef, workspace)
 
   const patchedProperties: Properties = isInPreviewMode
     ? {
@@ -65,6 +69,7 @@ export function ComponentBoard({ board }: ComponentBoardProps) {
         </style>
       </CssPortal>
       <div
+        ref={boardRootRef}
         data-board-id={boardKey}
         className={className}
         style={{ position: "static" }}
