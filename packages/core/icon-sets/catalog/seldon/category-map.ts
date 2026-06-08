@@ -120,6 +120,7 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "seldon-chevronDoubleP": "user-interface/navigation" as IconCategoryPath,
   "seldon-chevronDoubleRight": "user-interface/navigation" as IconCategoryPath,
   "seldon-chevronDown": "user-interface/navigation" as IconCategoryPath,
+  "seldon-more": "user-interface/navigation" as IconCategoryPath,
   "seldon-chevronP": "user-interface/navigation" as IconCategoryPath,
   "seldon-battery0Bar": "user-interface/status" as IconCategoryPath,
   "seldon-batteryFullAlt": "user-interface/status" as IconCategoryPath,

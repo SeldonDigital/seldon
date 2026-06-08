@@ -408,6 +408,7 @@ export { IconMaterialNextPlan } from "./user-interface/navigation/IconMaterialNe
 export { IconMaterialBackup } from "./user-interface/navigation/IconMaterialBackup"
 export { IconMaterialArrowUpward } from "./user-interface/navigation/IconMaterialArrowUpward"
 export { IconMaterialChevronLeft } from "./user-interface/navigation/IconMaterialChevronLeft"
+export { IconMaterialChevronDown } from "./user-interface/navigation/IconMaterialChevronDown"
 export { IconMaterialSystemUpdate } from "./user-interface/navigation/IconMaterialSystemUpdate"
 export { IconMaterialTextRotationAngleup } from "./user-interface/navigation/IconMaterialTextRotationAngleup"
 export { IconMaterialBroadcastOnHome } from "./user-interface/navigation/IconMaterialBroadcastOnHome"
@@ -484,6 +485,7 @@ export { IconMaterialForwardToInbox } from "./user-interface/navigation/IconMate
 export { IconMaterialArrowForwardIos } from "./user-interface/navigation/IconMaterialArrowForwardIos"
 export { IconMaterialBrightness_7 } from "./user-interface/navigation/IconMaterialBrightness_7"
 export { IconMaterialThumbDown } from "./user-interface/navigation/IconMaterialThumbDown"
+export { IconMaterialThumbP } from "./user-interface/navigation/IconMaterialThumbP"
 export { IconMaterialBackpack } from "./user-interface/navigation/IconMaterialBackpack"
 export { IconMaterialFormatAlignRight } from "./user-interface/navigation/IconMaterialFormatAlignRight"
 export { IconMaterialForward } from "./user-interface/navigation/IconMaterialForward"
@@ -1460,6 +1462,7 @@ export { IconMaterialHighQuality } from "./user-interface/status/IconMaterialHig
 export { IconMaterialRtt } from "./user-interface/actions/IconMaterialRtt"
 export { IconMaterialFace_2 } from "./user-interface/actions/IconMaterialFace_2"
 export { IconMaterialVisibility } from "./user-interface/status/IconMaterialVisibility"
+export { IconMaterialRobot } from "./user-interface/status/IconMaterialRobot"
 export { IconMaterialLocalBar } from "./content/data/IconMaterialLocalBar"
 export { IconMaterialMediaBluetoothOff } from "./user-interface/media/IconMaterialMediaBluetoothOff"
 export { IconMaterialPrint } from "./user-interface/status/IconMaterialPrint"
@@ -2555,6 +2558,7 @@ export const materialAllIconIds: readonly IconId[] = [
   "material-backup",
   "material-arrowUpward",
   "material-chevronLeft",
+  "material-chevronDown",
   "material-systemUpdate",
   "material-textRotationAngleup",
   "material-broadcastOnHome",
@@ -2631,6 +2635,7 @@ export const materialAllIconIds: readonly IconId[] = [
   "material-arrowForwardIos",
   "material-brightness_7",
   "material-thumbDown",
+  "material-thumbP",
   "material-backpack",
   "material-formatAlignRight",
   "material-forward",
@@ -3603,6 +3608,7 @@ export const materialAllIconIds: readonly IconId[] = [
   "material-rtt",
   "material-face_2",
   "material-visibility",
+  "material-robot",
   "material-localBar",
   "material-mediaBluetoothOff",
   "material-print",

@@ -26,6 +26,7 @@ export { IconSeldonChevronDoubleLeft } from "./user-interface/navigation/IconSel
 export { IconSeldonChevronDoubleP } from "./user-interface/navigation/IconSeldonChevronDoubleP"
 export { IconSeldonChevronDoubleRight } from "./user-interface/navigation/IconSeldonChevronDoubleRight"
 export { IconSeldonChevronDown } from "./user-interface/navigation/IconSeldonChevronDown"
+export { IconSeldonMore } from "./user-interface/navigation/IconSeldonMore"
 export { IconSeldonChevronP } from "./user-interface/navigation/IconSeldonChevronP"
 
 // system/devices
@@ -278,6 +279,7 @@ export const seldonAllIconIds: readonly IconId[] = [
   "seldon-chevronDoubleP",
   "seldon-chevronDoubleRight",
   "seldon-chevronDown",
+  "seldon-more",
   "seldon-chevronP",
   "seldon-radioOff",
   "seldon-radioOn",
