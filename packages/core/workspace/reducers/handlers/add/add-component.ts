@@ -23,6 +23,7 @@ import {
   componentBoardUniqueNodeId,
 } from "../../../helpers/components/entry-node-ids"
 import { getInitialBoardComponentProperties } from "../../../helpers/components/get-initial-board-component-properties"
+import { isComponentBoard } from "../../../model/components"
 import { getInstantiationOptionsForComponent } from "../../../helpers/nodes/collect-component-instantiation-plans"
 import { buildComponentAddPlan } from "../../../helpers/nodes/component-add-plan"
 import { resolveSchemaChild } from "../../../helpers/nodes/resolve-schema-child"
@@ -94,6 +95,28 @@ function makeEntryNode(params: {
     node.__editor = { initialOverrides: structuredClone(params.overrides) }
   }
   return node
+}
+
+/** Builds a primitive board's catalog variant node, a leaf carrying only overrides. */
+function makePrimitiveVariantNode(
+  componentId: ComponentId,
+  schema: ReturnType<typeof getComponentSchema>,
+  catalogVariant: CatalogSchemaVariant,
+): { id: string; node: EntryNode } {
+  const id = componentBoardSchemaVariantNodeId(componentId, catalogVariant.id)
+  const overrides = mergeProperties({}, catalogVariant.overrides ?? {})
+  return {
+    id,
+    node: makeEntryNode({
+      id,
+      type: "variant",
+      level: schema.level as EntryNode["level"],
+      label: catalogVariant.label,
+      template: formatNodeLink(componentBoardDefaultNodeId(componentId)),
+      overrides,
+      withInitialOverrides: true,
+    }),
+  }
 }
 
 /** Looks up a catalog variant by id and asserts it exists on the schema. */
@@ -342,25 +365,13 @@ function instantiateComponent(
         componentId,
         variantId,
       )
-
-      const variantRootId = componentBoardSchemaVariantNodeId(
+      const { id, node } = makePrimitiveVariantNode(
         componentId,
-        catalogVariant.id,
+        schema,
+        catalogVariant,
       )
-      const variantOverrides = mergeProperties(
-        {},
-        catalogVariant.overrides ?? {},
-      )
-      newInstancesById[variantRootId] = makeEntryNode({
-        id: variantRootId,
-        type: "variant",
-        level: schema.level as EntryNode["level"],
-        label: catalogVariant.label,
-        template: formatNodeLink(defaultVariantRootId),
-        overrides: variantOverrides,
-        withInitialOverrides: true,
-      })
-      variantTreeRefs.push({ id: variantRootId })
+      newInstancesById[id] = node
+      variantTreeRefs.push({ id })
     }
 
     return {
@@ -423,6 +434,84 @@ function instantiateComponent(
 }
 
 /**
+ * Tops up an already-existing board with the catalog variants this add requires
+ * but that the board never materialized, because it was first created under a
+ * restricted plan. Without this, instances created by the add would reference
+ * variant nodes that do not exist.
+ */
+function reconcileComponentBoard(
+  componentId: ComponentId,
+  draft: Workspace,
+  registry: NodeRegistry,
+  options: InstantiateComponentOptions,
+): void {
+  const board = draft.boards[componentId]
+  if (!board || !isComponentBoard(board)) {
+    return
+  }
+
+  const schema = getComponentSchema(componentId)
+  const requiredVariantIds =
+    options.restrictedVariantIds ??
+    (schema.variants ?? []).map((variant) => variant.id)
+
+  const existingNodeIds = new Set(board.variants.map((ref) => ref.id))
+  const missingVariantIds = requiredVariantIds.filter(
+    (variantId) =>
+      !existingNodeIds.has(
+        componentBoardSchemaVariantNodeId(componentId, variantId),
+      ),
+  )
+  if (!missingVariantIds.length) {
+    return
+  }
+
+  const newNodes: Record<string, EntryNode> = {}
+  const newRefs: ComponentTreeRef[] = []
+
+  if (!isComplexSchema(schema)) {
+    for (const variantId of missingVariantIds) {
+      const catalogVariant = requireCatalogVariant(
+        schema,
+        componentId,
+        variantId,
+      )
+      const { id, node } = makePrimitiveVariantNode(
+        componentId,
+        schema,
+        catalogVariant,
+      )
+      newNodes[id] = node
+      newRefs.push({ id })
+    }
+  } else {
+    const defaultVariantRootId = componentBoardDefaultNodeId(componentId)
+    // Restricted boards have empty default trees, so there are no canonical
+    // instances to share. A fresh empty map mirrors the original restricted build.
+    const fallbackChildSlots = options.restrictedVariantIds?.length
+      ? []
+      : schema.default.children
+    const canonicalInstanceByFingerprint = new Map<string, string>()
+    for (const variantId of missingVariantIds) {
+      appendComplexSchemaVariant(
+        componentId,
+        defaultVariantRootId,
+        requireCatalogVariant(schema, componentId, variantId),
+        fallbackChildSlots,
+        registry,
+        newNodes,
+        options,
+        canonicalInstanceByFingerprint,
+        newRefs,
+      )
+    }
+  }
+
+  draft.nodes = { ...draft.nodes, ...newNodes }
+  board.variants = [...board.variants, ...newRefs]
+}
+
+/**
  * Adds the component board for `componentId` when missing, including any
  * descendant component boards required by the catalog, then realigns board
  * order across the workspace.
@@ -451,6 +540,13 @@ export function addComponent(
     for (const componentId of components.reverse()) {
       if (draft.boards[componentId]) {
         registry.add(componentId)
+        reconcileComponentBoard(componentId, draft, registry, {
+          variantFallbacks,
+          ...getInstantiationOptionsForComponent(
+            componentId,
+            instantiationPlans,
+          ),
+        })
       } else {
         const { nodesById, variantTreeRefs } = instantiateComponent(
           componentId,
