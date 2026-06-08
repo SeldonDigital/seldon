@@ -37,8 +37,7 @@ export function CanvasTracking() {
 
   return (
     <>
-      {showSelection &&
-        activeTool === "select" &&
+      {activeTool === "select" &&
         showWireframes &&
         visibleNodes.map((node) => {
           if (!nodeBelongsToActiveBoard(node.id)) return null
@@ -52,9 +51,11 @@ export function CanvasTracking() {
           )
         })}
       {showSelection && activeTool === "select" && !isDragging && (
-        <CanvasSelectionOutline />
+        <CanvasSelectionOutline wireframe={showWireframes} />
       )}
-      {showSelection && activeTool === "select" && <CanvasHoverOutline />}
+      {showSelection && activeTool === "select" && (
+        <CanvasHoverOutline wireframe={showWireframes} />
+      )}
       {activeTool === "component" && hasHoverState && <InsertTracking />}
     </>
   )
