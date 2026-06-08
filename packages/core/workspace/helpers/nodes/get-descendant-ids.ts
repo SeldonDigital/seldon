@@ -1,16 +1,10 @@
-import { getComponentSchema } from "../../../components/catalog"
 import { ComponentId } from "../../../components/constants"
-import { ComponentSchema, SchemaChild, isComplexSchema } from "../../../components/types"
-import { collectComponentInstantiationPlans } from "./collect-component-instantiation-plans"
-import {
-  applyVariantFallbackToSlot,
-  getCompositionChildren,
-  getSchemaCompositionChildren,
-} from "./schema-composition-children"
+import { buildComponentAddPlan } from "./component-add-plan"
 
 /**
- * Recursively collects all descendant component IDs from a component's schema.
- * Ensures parent components appear before their children in the returned array.
+ * Collects all descendant component IDs a board add materializes, with parents
+ * before their children. Thin wrapper over the unified planner so the board set
+ * always matches the instantiation plans.
  * @param componentId - The root component ID to traverse
  * @returns Array of component IDs with parents before children
  */
@@ -18,79 +12,6 @@ export function getComponentDescendantIds(
   componentId: ComponentId,
   variantFallbacks?: ReadonlySet<string>,
 ): ComponentId[] {
-  const componentIds: ComponentId[] = []
-  const seenIds = new Set<ComponentId>()
-  const schema = getComponentSchema(componentId)
-  const instantiationPlans = collectComponentInstantiationPlans(
-    componentId,
-    variantFallbacks,
-  )
-  const expandingCatalog = new Set<ComponentId>()
-
-  addIdsForComponent(schema)
-
-  function expandFullCatalog(id: ComponentId) {
-    expandingCatalog.add(id)
-    const catalogSchema = getComponentSchema(id)
-    if (isComplexSchema(catalogSchema)) {
-      for (const catalogSlot of getSchemaCompositionChildren(catalogSchema)) {
-        const slot = applyVariantFallbackToSlot(catalogSlot, variantFallbacks)
-        addIdsForComponent(slot)
-        registerComponentId(slot.component as ComponentId)
-      }
-    }
-    expandingCatalog.delete(id)
-  }
-
-  function registerComponentId(id: ComponentId) {
-    if (seenIds.has(id) || expandingCatalog.has(id)) {
-      return
-    }
-
-    if (instantiationPlans.get(id)?.fullCatalog) {
-      expandFullCatalog(id)
-    }
-
-    componentIds.push(id)
-    seenIds.add(id)
-  }
-
-  function addImplicitCatalogChildren(component: SchemaChild) {
-    if (component.variant) return
-    const schema = getComponentSchema(component.component)
-    if (!isComplexSchema(schema)) return
-
-    const explicitChildComponents = new Set(
-      (component.children ?? []).map((child) => child.component),
-    )
-    for (const catalogSlot of schema.default.children ?? []) {
-      if (!explicitChildComponents.has(catalogSlot.component)) {
-        addIdsForComponent(catalogSlot)
-      }
-    }
-  }
-
-  function addIdsForComponent(component: ComponentSchema | SchemaChild) {
-    const compositionChildren = getCompositionChildren(component).map(
-      (childSlot) => applyVariantFallbackToSlot(childSlot, variantFallbacks),
-    )
-
-    compositionChildren.forEach((slot) => {
-      addIdsForComponent(slot)
-    })
-
-    if (!("id" in component)) {
-      addImplicitCatalogChildren(component)
-    }
-
-    for (const slot of compositionChildren) {
-      registerComponentId(slot.component as ComponentId)
-    }
-
-    if ("id" in component) {
-      registerComponentId(component.id as ComponentId)
-    }
-  }
-
-  return componentIds.reverse()
+  return buildComponentAddPlan(componentId, variantFallbacks)
+    .orderedComponentIds
 }

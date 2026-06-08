@@ -24,11 +24,8 @@ import {
 } from "../../../helpers/components/entry-node-ids"
 import { getInitialBoardComponentProperties } from "../../../helpers/components/get-initial-board-component-properties"
 import { getWorkspaceNodes } from "../../../helpers/general/get-workspace-nodes"
-import {
-  collectComponentInstantiationPlans,
-  getInstantiationOptionsForComponent,
-} from "../../../helpers/nodes/collect-component-instantiation-plans"
-import { getComponentDescendantIds } from "../../../helpers/nodes/get-descendant-ids"
+import { getInstantiationOptionsForComponent } from "../../../helpers/nodes/collect-component-instantiation-plans"
+import { buildComponentAddPlan } from "../../../helpers/nodes/component-add-plan"
 import { getNodeCatalogId } from "../../../helpers/nodes/get-node-catalog-id"
 import { resolveSchemaChild } from "../../../helpers/nodes/resolve-schema-child"
 import { applyVariantFallbackToSlot } from "../../../helpers/nodes/schema-composition-children"
@@ -512,11 +509,8 @@ export function addComponent(
 
     const rootId = payload.boardKey as ComponentId
     const variantFallbacks = toVariantFallbackSet(payload.variantFallbacks)
-    const instantiationPlans = collectComponentInstantiationPlans(
-      rootId,
-      variantFallbacks,
-    )
-    const components = getComponentDescendantIds(rootId, variantFallbacks)
+    const { orderedComponentIds: components, plans: instantiationPlans } =
+      buildComponentAddPlan(rootId, variantFallbacks)
     const registry: NodeRegistry = {}
 
     let order = -1
