@@ -47,5 +47,12 @@ export async function pickExportDirectory(): Promise<FileSystemDirectoryHandle |
   if (typeof window === "undefined" || !("showDirectoryPicker" in window)) {
     return null
   }
-  return window.showDirectoryPicker({ mode: "readwrite" })
+  const showDirectoryPicker = (
+    window as Window & {
+      showDirectoryPicker: (options?: {
+        mode?: "read" | "readwrite"
+      }) => Promise<FileSystemDirectoryHandle>
+    }
+  ).showDirectoryPicker
+  return showDirectoryPicker({ mode: "readwrite" })
 }

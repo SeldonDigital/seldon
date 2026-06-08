@@ -21,6 +21,7 @@ export function useVisibleNodes() {
 
   const visibleNodes = useMemo(() => {
     if (!activeBoard) return []
+    const board = activeBoard
     const nodes: VisibleNode[] = []
     const visited = new Set<string>()
 
@@ -28,12 +29,12 @@ export function useVisibleNodes() {
       if (visited.has(nodeId)) return
       visited.add(nodeId)
       nodes.push({ id: nodeId, depth })
-      for (const childId of getChildNodeIds(activeBoard, nodeId)) {
+      for (const childId of getChildNodeIds(board, nodeId)) {
         walk(childId as VariantId | InstanceId, depth + 1)
       }
     }
 
-    for (const variantId of getVariantRootIds(activeBoard)) {
+    for (const variantId of getVariantRootIds(board)) {
       walk(variantId as VariantId, 0)
     }
 

@@ -63,12 +63,14 @@ export function useImageUploadPanel() {
         })
       } else if (property === "background-image") {
         setProperties({
-          background: {
-            image: {
-              type: ValueType.EXACT,
-              value: data.url,
+          background: [
+            {
+              image: {
+                type: ValueType.EXACT,
+                value: data.url,
+              },
             },
-          },
+          ],
         })
       } else {
         throw new Error("Invalid property " + property)

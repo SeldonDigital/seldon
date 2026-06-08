@@ -1,5 +1,4 @@
-import { Target } from "@lib/types"
-import { useCallback, useMemo, useState } from "react"
+import { useMemo, useState } from "react"
 import { catalog } from "@seldon/core/components/catalog"
 import { ComponentId } from "@seldon/core/components/constants"
 import { ComponentSchema } from "@seldon/core/components/types"
@@ -8,7 +7,6 @@ import { getBoardVariantRootIds } from "@seldon/core/workspace/helpers/component
 import { getVariantById } from "@seldon/core/workspace/helpers/general/get-variant-by-id"
 import { isSpecialBoardVariant } from "@seldon/core/workspace/helpers/general/is-special-board-variant"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
-import { useSearchComponents } from "@lib/api/hooks/use-search-components"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { CatalogPanelCategory, CatalogPanelItem } from "../catalog-panel/CatalogPanel"
 
@@ -29,40 +27,22 @@ const categoryConfigs = [
 ]
 
 /**
- * Builds catalog categories for the component picker, plus the search query and
- * AI search trigger that `CatalogPanel` renders.
+ * Builds catalog categories for the component picker, plus the search query
+ * that `CatalogPanel` renders.
  */
 export function useComponentCatalog({
   shouldShowComponent,
-  task,
-  target,
 }: {
   shouldShowComponent: FilterComponentPredicate
-  task: "search_all" | "search_catalog"
-  target?: Target | null
 }) {
   const { workspace } = useWorkspace()
   const [query, setQuery] = useState("")
-  // We filter the results based on the query until the user submits the query
-  // after which we will filter the results based on response from the AI.
-  const [filterType, setFilterType] = useState<"query" | "ai">("query")
-  const { data, refetch, isFetching } = useSearchComponents({
-    query,
-    task,
-    targetNode: target?.nodeId,
-    targetIndex: target?.index,
-  })
-
-  const submit = useCallback(() => {
-    setFilterType("ai")
-    refetch()
-  }, [refetch])
 
   const categories: CatalogPanelCategory<CatalogComponentItem>[] = useMemo(() => {
     return categoryConfigs.map(({ category, schemas }) => {
       const items: CatalogComponentItem[] = schemas
         .filter((schema) => shouldShowComponent(schema))
-        .flatMap((schema) => {
+        .flatMap((schema): CatalogComponentItem[] => {
           const board = workspace.boards[schema.id]
 
           if (board) {
@@ -100,21 +80,6 @@ export function useComponentCatalog({
         })
         // Filter out components based on the query
         .filter((item) => {
-          if (filterType === "ai" && data) {
-            if (item.variantId) {
-              return data.some(
-                (result) =>
-                  result.component === item.componentId &&
-                  result.variant === item.variantId,
-              )
-            }
-
-            return data.some(
-              (result) =>
-                result.component === item.componentId && !item.variantId,
-            )
-          }
-
           if (query.length === 0) return true
 
           const queryLower = query.toLowerCase()
@@ -128,7 +93,7 @@ export function useComponentCatalog({
 
       return { category, items }
     })
-  }, [shouldShowComponent, filterType, data, query, workspace])
+  }, [shouldShowComponent, query, workspace])
 
-  return { categories, query, setQuery, submit, isFetching }
+  return { categories, query, setQuery }
 }

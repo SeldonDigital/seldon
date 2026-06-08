@@ -248,10 +248,6 @@ export function usePropertyControlData({
     if (property.controlType === "menu" || property.controlType === "combo") {
       return false
     }
-    // Don't show chevron for color controls (they have their own color picker)
-    if (property.controlType === "color") {
-      return false
-    }
     if (property.isCompound && !property.controlType) {
       return false
     }

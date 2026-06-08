@@ -13,7 +13,7 @@ import {
   invariant,
 } from "@seldon/core"
 import { getComponentSchema } from "@seldon/core/components/catalog"
-import { ThemeId } from "@seldon/core/themes/types"
+import { ThemeInstanceId } from "@seldon/core/themes/types"
 import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
 import { workspaceThemeService } from "@seldon/core/workspace/services/theme/theme.service"
 import { ComponentId } from "@seldon/core/components/constants"
@@ -32,7 +32,7 @@ import { ComponentRenderer } from "./ComponentRenderer"
 export type CanvasNodeProps = {
   nodeId: VariantId | InstanceId
   parentNode?: Variant | Instance | Board
-  initialThemeId: ThemeId
+  initialThemeId: ThemeInstanceId
   isRoot?: boolean
 }
 export const CanvasNode = memo(function CanvasNode({
@@ -128,7 +128,7 @@ export const CanvasNode = memo(function CanvasNode({
           key={childNodeId}
           parentNode={node}
           nodeId={childNodeId as InstanceId | VariantId}
-          initialThemeId={themeId}
+          initialThemeId={themeId as ThemeInstanceId}
         />
       ))}
     </ComponentRenderer>
@@ -147,7 +147,7 @@ export const CanvasNode = memo(function CanvasNode({
       "data-canvas-selection-id": node.id,
       "data-selection-id": node.id,
       "data-selection-kind": "node",
-      "data-component-id": componentId,
+      "data-component-id": componentId ?? "",
     }
 
     // Some properties must be set as HTML attributes instead of tokens

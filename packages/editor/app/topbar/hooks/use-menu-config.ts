@@ -582,6 +582,5 @@ export function useMenuConfig(): HeaderConfig {
   return {
     menuConfig,
     toolbarConfig,
-    dialogs: {},
   }
 }

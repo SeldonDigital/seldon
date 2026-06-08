@@ -15,7 +15,7 @@ import { checkInsertionPoint } from "../helpers/check-insertion-point"
  * Hook that handles canvas hover tracking for sidebar rows (nodes).
  * Sets hover state when hovering over the entire row for all tools:
  * - Select tool: Shows wireframe outlines on canvas
- * - Component/Sketch tools: Shows insertion indicators on canvas
+ * - Component tool: Shows insertion indicators on canvas
  *
  * Note: This handles row-level hover, while SidebarTracking handles granular
  * placement zones (before/after/inside).
@@ -49,8 +49,8 @@ export function useSidebarCanvasTracking(node: Variant | Instance) {
     }
 
     // Select-mode highlighting flows through the shared hover bridge now; this
-    // hook only feeds component/sketch insertion previews.
-    if (activeTool === "component" || activeTool === "sketch") {
+    // hook only feeds component insertion previews.
+    if (activeTool === "component") {
       const insertionAllowed = checkInsertionPoint(
         node.id,
         "node",

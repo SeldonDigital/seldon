@@ -97,7 +97,6 @@ export function SidebarPlacementZones({
 
   const renderZones = () => {
     if (activeTool === "component") return renderComponentToolZones()
-    // Sketch tool zones removed - only show component tool zones
     return null // Select tool is handled separately with dropzones
   }
 
@@ -118,7 +117,7 @@ interface PlacementZoneProps {
   onMouseLeave: () => void
   isHovered: boolean
   isAllowed: boolean
-  tool: "sketch" | "component"
+  tool: "component"
 }
 
 function PlacementZone({
@@ -131,7 +130,6 @@ function PlacementZone({
   isAllowed,
   tool,
 }: PlacementZoneProps) {
-  // Only show component tool indicators, sketch tool removed
   const Indicator = tool === "component" ? IndicatorInsert : null
 
   return (

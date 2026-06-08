@@ -79,10 +79,6 @@ export function InsertVariantPanel({
         schema.id,
         target.nodeId as VariantId | InstanceId,
         workspace,
-        {
-          checkCircularDependencies: true,
-          validateLevels: true,
-        },
       )
 
       return validation.isValid
@@ -90,12 +86,9 @@ export function InsertVariantPanel({
     [target, workspace],
   )
 
-  const { categories, query, setQuery, submit, isFetching } =
-    useComponentCatalog({
-      shouldShowComponent,
-      task: "search_all",
-      target,
-    })
+  const { categories, query, setQuery } = useComponentCatalog({
+    shouldShowComponent,
+  })
 
   return (
     <CatalogPanel
@@ -104,8 +97,6 @@ export function InsertVariantPanel({
       categories={categories}
       query={query}
       onQueryChange={setQuery}
-      onSubmitSearch={submit}
-      isSearching={isFetching}
       confirmButtonText="Insert component"
       title="Insert component"
     />

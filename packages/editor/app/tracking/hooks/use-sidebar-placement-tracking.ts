@@ -19,7 +19,7 @@ import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 /**
  * Hook that handles granular placement zone tracking for sidebar rows (nodes).
  * Manages hover states, placement validation, and canvas tracking integration for
- * before/after/inside placement zones in component and sketch tools.
+ * before/after/inside placement zones in the component tool.
  *
  * @param node - The variant or instance node to track placement zones for
  * @returns Object containing placement handlers, hover state checks, and node metadata

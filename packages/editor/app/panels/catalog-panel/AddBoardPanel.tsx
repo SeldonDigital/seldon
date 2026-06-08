@@ -63,11 +63,9 @@ export function AddBoardPanel({
     selectBoard(item.componentId)
   }
 
-  const { categories, query, setQuery, submit, isFetching } =
-    useComponentCatalog({
-      shouldShowComponent,
-      task: "search_catalog",
-    })
+  const { categories, query, setQuery } = useComponentCatalog({
+    shouldShowComponent,
+  })
 
   const title = level
     ? `Add ${LEVEL_LABELS[level] ?? "component"}`
@@ -80,8 +78,6 @@ export function AddBoardPanel({
       categories={categories}
       query={query}
       onQueryChange={setQuery}
-      onSubmitSearch={submit}
-      isSearching={isFetching}
       confirmButtonText={title}
       title={title}
     />

@@ -16,7 +16,6 @@ import { checkInsertionPoint } from "../helpers/check-insertion-point"
  * Returns style objects and color values for:
  * - Selection styling (blue border and text)
  * - Component tool tracking styling (accent/magenta color when tracked)
- * - Sketch tool tracking styling (orange/punch color when tracked)
  *
  * @param node - The variant or instance node to style
  * @returns Object containing row styles, icon color, label color, and tracking state flags
@@ -85,48 +84,7 @@ export function useSidebarRowStyling(
     nodeExistsInWorkspace,
   ])
 
-  const isSketchTracked = useMemo(() => {
-    if (!nodeExistsInWorkspace) return false
-    if (activeTool !== "sketch") return false
-    if (!hoverState) return false
-    if (hoverState.objectId !== currentNode.id) return false
-    if (hoverState.objectType !== "node") return false
-
-    if (!activeBoard) return false
-    try {
-      const nodeBoard = workspaceService.findBoardForNode(
-        currentNode,
-        workspace,
-      )
-      if (
-        !nodeBoard ||
-        getComponentKey(nodeBoard) !== getComponentKey(activeBoard)
-      ) {
-        return false
-      }
-
-      return checkInsertionPoint(
-        currentNode.id,
-        "node",
-        hoverState.placement || "inside",
-        workspace,
-        "component",
-      )
-    } catch (error) {
-      // Node doesn't exist in workspace (virtual node), skip tracking
-      return false
-    }
-  }, [
-    activeTool,
-    hoverState,
-    currentNode,
-    activeBoard,
-    workspace,
-    nodeExistsInWorkspace,
-  ])
-
   const componentColor = COLORS.accent[500]
-  const sketchColor = COLORS.punch[500]
 
   const rowStyle: CSSProperties = useMemo(() => {
     const style: CSSProperties = {}
@@ -136,44 +94,22 @@ export function useSidebarRowStyling(
       style.outline = "none"
     } else if (isComponentTracked) {
       style.borderColor = componentColor
-    } else if (isSketchTracked) {
-      style.borderColor = sketchColor
     }
 
     return Object.keys(style).length > 0 ? style : {}
-  }, [
-    isSelected,
-    isComponentTracked,
-    isSketchTracked,
-    componentColor,
-    sketchColor,
-  ])
+  }, [isSelected, isComponentTracked, componentColor])
 
   const iconColor = useMemo(() => {
     if (isSelected) return COLORS.primary[500]
     if (isComponentTracked) return componentColor
-    if (isSketchTracked) return sketchColor
     return undefined
-  }, [
-    isSelected,
-    isComponentTracked,
-    isSketchTracked,
-    componentColor,
-    sketchColor,
-  ])
+  }, [isSelected, isComponentTracked, componentColor])
 
   const labelColor = useMemo(() => {
     if (isSelected) return COLORS.primary[500]
     if (isComponentTracked) return componentColor
-    if (isSketchTracked) return sketchColor
     return undefined
-  }, [
-    isSelected,
-    isComponentTracked,
-    isSketchTracked,
-    componentColor,
-    sketchColor,
-  ])
+  }, [isSelected, isComponentTracked, componentColor])
 
   return {
     rowStyle,
@@ -181,6 +117,5 @@ export function useSidebarRowStyling(
     labelColor,
     isSelected,
     isComponentTracked,
-    isSketchTracked,
   }
 }

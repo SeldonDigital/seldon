@@ -53,6 +53,7 @@ import {
   ValueType,
 } from "@seldon/core"
 import { getComponentSchema } from "@seldon/core/components/catalog"
+import { ComponentId } from "@seldon/core/components/constants"
 import { isDoubleAxisValue } from "@seldon/core/helpers/type-guards/value/is-double-axis-value"
 import {
   isNumber,
@@ -305,7 +306,7 @@ function getUnitForNumericValue(
     if (!catalogId) {
       return getDefaultUnitForProperty(propertyKey || "")
     }
-    const schema = getComponentSchema(catalogId)
+    const schema = getComponentSchema(catalogId as ComponentId)
     if (schema?.properties) {
       const schemaProperty = (schema.properties as Record<string, Value>)[
         propertyKey

@@ -2,7 +2,7 @@
 
 import { getCssFromProperties } from "@seldon/factory/styles/css-properties/get-css-from-properties"
 import { Board, Properties, Scroll, Unit, ValueType } from "@seldon/core"
-import { ThemeId } from "@seldon/core/themes/types"
+import { ThemeInstanceId } from "@seldon/core/themes/types"
 import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
 import { getBoardThemeRef } from "@seldon/core/workspace/helpers/components/get-board-theme-ref"
 import { getBoardVariantRootIds } from "@seldon/core/workspace/helpers/components/get-board-variant-root-ids"
@@ -75,7 +75,7 @@ export function ComponentBoard({ board }: ComponentBoardProps) {
               key={variantId}
               nodeId={variantId}
               initialThemeId={
-                (getBoardThemeRef(boardEntry) ?? "default") as ThemeId
+                (getBoardThemeRef(boardEntry) ?? "default") as ThemeInstanceId
               }
               parentNode={boardEntry}
               isRoot

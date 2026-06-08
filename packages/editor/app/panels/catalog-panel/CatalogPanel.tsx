@@ -22,7 +22,7 @@ export type CatalogPanelCategory<T extends CatalogPanelItem> = {
 
 /**
  * Presentational picker panel. Parents own the data: they pass already-filtered
- * categories, the search query state, and an optional AI search trigger.
+ * categories and the search query state.
  */
 export function CatalogPanel<T extends CatalogPanelItem>({
   title,
@@ -32,8 +32,6 @@ export function CatalogPanel<T extends CatalogPanelItem>({
   categories,
   query,
   onQueryChange,
-  onSubmitSearch,
-  isSearching = false,
 }: {
   title?: string
   confirmButtonText: string
@@ -42,8 +40,6 @@ export function CatalogPanel<T extends CatalogPanelItem>({
   categories: CatalogPanelCategory<T>[]
   query: string
   onQueryChange: (query: string) => void
-  onSubmitSearch?: () => void
-  isSearching?: boolean
 }) {
   const [selectedItem, setSelectedItem] = useState<T | null>(null)
 
@@ -73,7 +69,6 @@ export function CatalogPanel<T extends CatalogPanelItem>({
           value: query,
           onChange: (e) => onQueryChange(e.target.value),
           placeholder: "Search...",
-          disabled: isSearching,
           autoFocus: true,
           className: "child-input-E4MGjq",
           style: styles.input,
@@ -84,10 +79,8 @@ export function CatalogPanel<T extends CatalogPanelItem>({
           className: "seldon-instance child-icon-GEGhH3",
         }}
         frameButtonIconicProps={{
-          disabled: isSearching || !onSubmitSearch,
-          onClick: onSubmitSearch,
           className: "seldon-instance child-button-lE4yjU",
-          style: onSubmitSearch ? undefined : { display: "none" },
+          style: { display: "none" },
         }}
       />
 

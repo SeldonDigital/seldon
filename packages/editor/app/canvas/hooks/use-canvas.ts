@@ -58,7 +58,7 @@ export function useCanvas() {
 
       // Select tool: one path resolves the hovered selectable (node, theme
       // variant, font specimen) and feeds the shared hover bridge. Insertion
-      // placement below is component/sketch only.
+      // placement below is component tool only.
       if (activeTool === "select") {
         const target = getSelectionTarget(event.target as Element)
         setHoveredId(target?.id ?? null, target?.kind, target?.rootId)
@@ -67,7 +67,7 @@ export function useCanvas() {
 
       const element = event.target as HTMLDivElement
       const boardId =
-        activeTool === "sketch" || activeTool === "component"
+        activeTool === "component"
           ? (getBoardIdForEventTarget(element) as ComponentId)
           : null
 
@@ -87,10 +87,9 @@ export function useCanvas() {
       const { clientX, clientY } = event
 
       // The child-before-cursor lookup is only used to place insertion
-      // indicators for the component/sketch tools. The select tool never reads
-      // it, so skip the per-child measurement loop to keep hover cheap.
-      const needsChildLookup =
-        activeTool === "component" || activeTool === "sketch"
+      // indicators for the component tool. The select tool never reads it, so
+      // skip the per-child measurement loop to keep hover cheap.
+      const needsChildLookup = activeTool === "component"
 
       // Find all children that have a data-node-id attribute
       const nodesWithNodeId = needsChildLookup
@@ -139,12 +138,9 @@ export function useCanvas() {
 
       const objectType = boardId ? "board" : "node"
 
-      // For component/sketch tools, check if insertion is allowed before setting hover state
+      // For the component tool, check if insertion is allowed before setting hover state
       // This prevents showing indicators for default variants and their nested children
-      if (
-        (activeTool === "component" || activeTool === "sketch") &&
-        objectType === "node"
-      ) {
+      if (activeTool === "component" && objectType === "node") {
         const insertionAllowed = checkInsertionPoint(
           objectId as InstanceId | VariantId,
           objectType,
@@ -292,7 +288,6 @@ export function useCanvas() {
 
     switch (activeTool) {
       case "component":
-      case "sketch":
         if (hoverState.objectType === "node") {
           if (hoverState.lastChildNodeBeforeCursor) {
             insertNextToChild(hoverState)

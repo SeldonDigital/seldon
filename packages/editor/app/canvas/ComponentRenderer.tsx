@@ -90,7 +90,6 @@ type TemplateProps = {
  * Renders a component with the given properties and theme
  *
  * ** WARNING: Do not use nodes inside this component or any of its helpers, hooks or child components.
- * This component is also used to display sketch suggestions which are not part of the workspace.
  *
  */
 export const ComponentRenderer = ({
