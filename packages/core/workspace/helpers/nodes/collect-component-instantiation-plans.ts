@@ -22,21 +22,12 @@ export function getInstantiationOptionsForComponent(
   componentId: ComponentId,
   plans: Map<ComponentId, ComponentInstantiationPlan>,
 ): {
-  embeddedVariantId?: string
-  restrictedCatalogVariantIds?: string[]
+  restrictedVariantIds?: string[]
 } {
   const plan = plans.get(componentId)
-  if (!plan || plan.fullCatalog) {
+  if (!plan || plan.fullCatalog || plan.variantIds.size === 0) {
     return {}
   }
 
-  if (plan.variantIds.size === 1) {
-    return { embeddedVariantId: [...plan.variantIds][0] }
-  }
-
-  if (plan.variantIds.size > 1) {
-    return { restrictedCatalogVariantIds: [...plan.variantIds] }
-  }
-
-  return {}
+  return { restrictedVariantIds: [...plan.variantIds] }
 }

@@ -6,7 +6,7 @@
 import { produce } from "immer"
 
 import { getComponentSchema } from "../../../../components/catalog"
-import { ComponentId, isComponentId } from "../../../../components/constants"
+import { ComponentId } from "../../../../components/constants"
 import { SchemaChild, isComplexSchema } from "../../../../components/types"
 import {
   ExtractPayload,
@@ -23,10 +23,8 @@ import {
   componentBoardUniqueNodeId,
 } from "../../../helpers/components/entry-node-ids"
 import { getInitialBoardComponentProperties } from "../../../helpers/components/get-initial-board-component-properties"
-import { getWorkspaceNodes } from "../../../helpers/general/get-workspace-nodes"
 import { getInstantiationOptionsForComponent } from "../../../helpers/nodes/collect-component-instantiation-plans"
 import { buildComponentAddPlan } from "../../../helpers/nodes/component-add-plan"
-import { getNodeCatalogId } from "../../../helpers/nodes/get-node-catalog-id"
 import { resolveSchemaChild } from "../../../helpers/nodes/resolve-schema-child"
 import { applyVariantFallbackToSlot } from "../../../helpers/nodes/schema-composition-children"
 import { getSchemaSlotFingerprint } from "../../../helpers/nodes/schema-slot-fingerprint"
@@ -42,7 +40,8 @@ import type {
   EntryNode,
 } from "../../../types"
 
-type NodeRegistry = Partial<Record<ComponentId, NodeRegister>>
+/** Tracks which component boards already exist so instances can reference them. */
+type NodeRegistry = Set<ComponentId>
 
 type NodeRegister = {
   id: string
@@ -51,8 +50,7 @@ type NodeRegister = {
 }
 
 type InstantiateComponentOptions = {
-  embeddedVariantId?: string
-  restrictedCatalogVariantIds?: string[]
+  restrictedVariantIds?: string[]
   variantFallbacks?: ReadonlySet<string>
 }
 
@@ -69,17 +67,33 @@ function toVariantFallbackSet(
   return new Set(variantFallbacks)
 }
 
-/**
- * Resolves the explicit list of catalog variant ids to instantiate, falling
- * back to a single embedded variant when one is requested.
- */
-function resolveRestrictedVariantIds(
-  options: InstantiateComponentOptions,
-): string[] | undefined {
-  return (
-    options.restrictedCatalogVariantIds ??
-    (options.embeddedVariantId ? [options.embeddedVariantId] : undefined)
-  )
+/** Builds a workspace entry node, attaching editor metadata when requested. */
+function makeEntryNode(params: {
+  id: string
+  type: EntryNode["type"]
+  level: EntryNode["level"]
+  label: string
+  template: string
+  overrides: Properties
+  origin?: EntryNode["origin"]
+  withInitialOverrides?: boolean
+}): EntryNode {
+  const node: EntryNode = {
+    id: params.id,
+    type: params.type,
+    level: params.level,
+    label: params.label,
+    theme: null,
+    template: params.template,
+    overrides: params.overrides as EntryNode["overrides"],
+  }
+  if (params.origin) {
+    node.origin = params.origin
+  }
+  if (params.withInitialOverrides) {
+    node.__editor = { initialOverrides: structuredClone(params.overrides) }
+  }
+  return node
 }
 
 /** Looks up a catalog variant by id and asserts it exists on the schema. */
@@ -105,44 +119,6 @@ function variantTreeRefFromRegister(reg: NodeRegister): ComponentTreeRef {
     id: reg.id,
     children: reg.children.map(variantTreeRefFromRegister),
   }
-}
-
-/**
- * Rebuilds the in-memory register tree from an existing component board so new
- * sibling boards can attach instances to the same variant ids.
- */
-function nodeRegisterFromComponentBoard(
-  componentId: ComponentId,
-  workspace: Workspace,
-): NodeRegister {
-  const board = workspace.boards[componentId]
-  invariant(
-    board && board.type === "component",
-    `Missing component board for ${componentId}`,
-  )
-  const nodes = getWorkspaceNodes(workspace)
-  const rootRef = board.variants[0]
-  invariant(rootRef, `Missing root variant on board ${componentId}`)
-
-  function walkRef(ref: ComponentTreeRef): NodeRegister {
-    const node = nodes[ref.id]
-    invariant(node, `Missing node ${ref.id}`)
-    const catalogId = getNodeCatalogId(node, workspace)
-    invariant(
-      catalogId && isComponentId(catalogId),
-      `Expected catalog template on ${ref.id}`,
-    )
-    const reg: NodeRegister = {
-      id: ref.id,
-      component: catalogId,
-    }
-    if (ref.children?.length) {
-      reg.children = ref.children.map(walkRef)
-    }
-    return reg
-  }
-
-  return walkRef(rootRef)
 }
 
 /**
@@ -172,7 +148,7 @@ function instantiateSchemaChildrenFromSlots(
     const resolvedChild = resolveSchemaChild(resolvedSlot)
 
     invariant(
-      registry[resolvedChild.componentId],
+      registry.has(resolvedChild.componentId),
       `Register for ${resolvedChild.componentId} not found`,
     )
     const childSchema = resolvedChild.schema
@@ -195,17 +171,16 @@ function instantiateSchemaChildrenFromSlots(
         canonicalInstanceByFingerprint.set(fingerprint, id)
       }
 
-      newInstancesById[id] = {
+      newInstancesById[id] = makeEntryNode({
         id,
         type: "instance",
         level: childSchema.level as EntryNode["level"],
         label: resolvedChild.label,
-        theme: null,
         template: formatNodeLink(resolvedChild.templateNodeId),
-        overrides: processedOverrides as EntryNode["overrides"],
+        overrides: processedOverrides,
         origin: "schema",
-        __editor: { initialOverrides: structuredClone(processedOverrides) },
-      }
+        withInitialOverrides: true,
+      })
     } else {
       invariant(
         newInstancesById[id],
@@ -228,12 +203,7 @@ function instantiateSchemaChildrenFromSlots(
     childSlots.forEach((childSlot) => instantiateFromSlot(newChild, childSlot))
   }
 
-  slots.forEach((slot) =>
-    instantiateFromSlot(
-      register,
-      applyVariantFallbackToSlot(slot, options.variantFallbacks),
-    ),
-  )
+  slots.forEach((slot) => instantiateFromSlot(register, slot))
 }
 
 function instantiateVariantTree(
@@ -263,12 +233,7 @@ function instantiateVariantTree(
         slot,
         options.variantFallbacks,
       )
-      if (!registry[resolvedSlot.component]) {
-        registry[resolvedSlot.component] = {
-          id: componentBoardDefaultNodeId(resolvedSlot.component),
-          component: resolvedSlot.component,
-        }
-      }
+      registry.add(resolvedSlot.component)
     }
     instantiateSchemaChildrenFromSlots(
       componentId,
@@ -282,16 +247,15 @@ function instantiateVariantTree(
     )
   }
 
-  newInstancesById[variantRootId] = {
+  newInstancesById[variantRootId] = makeEntryNode({
     id: variantRootId,
     type: treeOptions.nodeType,
     level: getComponentSchema(componentId).level as EntryNode["level"],
     label: treeOptions.label,
-    theme: null,
     template: treeOptions.template,
-    overrides: treeOptions.overrides as EntryNode["overrides"],
-    __editor: { initialOverrides: structuredClone(treeOptions.overrides) },
-  }
+    overrides: treeOptions.overrides,
+    withInitialOverrides: true,
+  })
 
   return register
 }
@@ -353,27 +317,23 @@ function instantiateComponent(
   const defaultVariantRootId = componentBoardDefaultNodeId(componentId)
   const newInstancesById: Record<string, EntryNode> = {}
 
-  registry[componentId] = {
-    id: defaultVariantRootId,
-    component: componentId,
-  }
+  registry.add(componentId)
 
   if (!isComplexSchema(schema)) {
     const variantTreeRefs: ComponentTreeRef[] = []
 
-    newInstancesById[defaultVariantRootId] = {
+    newInstancesById[defaultVariantRootId] = makeEntryNode({
       id: defaultVariantRootId,
       type: "default",
       level: schema.level as EntryNode["level"],
       label: schema.name,
-      theme: null,
       template: formatNodeCatalog(componentId),
       overrides: {},
-    }
+    })
     variantTreeRefs.push({ id: defaultVariantRootId })
 
     const primitiveVariantIds =
-      resolveRestrictedVariantIds(options) ??
+      options.restrictedVariantIds ??
       (schema.variants ?? []).map((variant) => variant.id)
 
     for (const variantId of primitiveVariantIds) {
@@ -391,16 +351,15 @@ function instantiateComponent(
         {},
         catalogVariant.overrides ?? {},
       )
-      newInstancesById[variantRootId] = {
+      newInstancesById[variantRootId] = makeEntryNode({
         id: variantRootId,
         type: "variant",
         level: schema.level as EntryNode["level"],
         label: catalogVariant.label,
-        theme: null,
         template: formatNodeLink(defaultVariantRootId),
-        overrides: variantOverrides as EntryNode["overrides"],
-        __editor: { initialOverrides: structuredClone(variantOverrides) },
-      }
+        overrides: variantOverrides,
+        withInitialOverrides: true,
+      })
       variantTreeRefs.push({ id: variantRootId })
     }
 
@@ -412,44 +371,20 @@ function instantiateComponent(
 
   const canonicalInstanceByFingerprint = new Map<string, string>()
 
-  const restrictedVariantIds = resolveRestrictedVariantIds(options)
-
-  if (restrictedVariantIds?.length) {
-    const variantTreeRefs: ComponentTreeRef[] = []
-    const defaultRegister = instantiateVariantTree(
-      componentId,
-      defaultVariantRootId,
-      {
-        nodeType: "default",
-        label: schema.name,
-        template: formatNodeCatalog(componentId),
-        overrides: {},
-        children: [],
-      },
-      registry,
-      newInstancesById,
-      options,
-      canonicalInstanceByFingerprint,
-      true,
-    )
-    variantTreeRefs.push(variantTreeRefFromRegister(defaultRegister))
-
-    for (const variantId of restrictedVariantIds) {
-      appendComplexSchemaVariant(
-        componentId,
-        defaultVariantRootId,
+  // Which child slots each tree materializes must stay in sync with
+  // `materializedChildSlots` in component-add-plan.ts, which plans the boards
+  // these instances reference. A restricted build keeps only the named catalog
+  // variants and gives the default tree no children. A full build keeps the
+  // default tree plus every catalog variant, with an empty variant falling back
+  // to the default children.
+  const restrictedVariantIds = options.restrictedVariantIds
+  const isRestricted = !!restrictedVariantIds?.length
+  const defaultChildSlots = isRestricted ? [] : schema.default.children
+  const catalogVariants = isRestricted
+    ? restrictedVariantIds!.map((variantId) =>
         requireCatalogVariant(schema, componentId, variantId),
-        [],
-        registry,
-        newInstancesById,
-        options,
-        canonicalInstanceByFingerprint,
-        variantTreeRefs,
       )
-    }
-
-    return { nodesById: newInstancesById, variantTreeRefs }
-  }
+    : (schema.variants ?? [])
 
   const variantTreeRefs: ComponentTreeRef[] = []
   const defaultRegister = instantiateVariantTree(
@@ -460,7 +395,7 @@ function instantiateComponent(
       label: schema.name,
       template: formatNodeCatalog(componentId),
       overrides: {},
-      children: schema.default.children,
+      children: defaultChildSlots,
     },
     registry,
     newInstancesById,
@@ -470,9 +405,7 @@ function instantiateComponent(
   )
   variantTreeRefs.push(variantTreeRefFromRegister(defaultRegister))
 
-  const defaultChildSlots = schema.default.children
-
-  for (const catalogVariant of schema.variants ?? []) {
+  for (const catalogVariant of catalogVariants) {
     appendComplexSchemaVariant(
       componentId,
       defaultVariantRootId,
@@ -511,16 +444,13 @@ export function addComponent(
     const variantFallbacks = toVariantFallbackSet(payload.variantFallbacks)
     const { orderedComponentIds: components, plans: instantiationPlans } =
       buildComponentAddPlan(rootId, variantFallbacks)
-    const registry: NodeRegistry = {}
+    const registry: NodeRegistry = new Set()
 
     let order = -1
 
     for (const componentId of components.reverse()) {
       if (draft.boards[componentId]) {
-        registry[componentId] = nodeRegisterFromComponentBoard(
-          componentId,
-          draft,
-        )
+        registry.add(componentId)
       } else {
         const { nodesById, variantTreeRefs } = instantiateComponent(
           componentId,
