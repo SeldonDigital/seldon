@@ -4,8 +4,10 @@ import * as CarbonIcons from "@seldon/core/icon-sets/catalog/carbon"
 import * as LucideIcons from "@seldon/core/icon-sets/catalog/lucide"
 import * as MaterialIcons from "@seldon/core/icon-sets/catalog/material"
 import * as SeldonIcons from "@seldon/core/icon-sets/catalog/seldon"
-import { IconDefault } from "@seldon/components/icons/IconDefault"
-import { IconSeldonMissing as IconMissing } from "@seldon/components/icons/IconSeldonMissing"
+import {
+  IconDefault,
+  IconSeldonMissing as IconMissing,
+} from "@seldon/components/icons"
 
 export type LoadEditorIconsProps = SVGAttributes<SVGSVGElement> & {
   iconId?: IconId

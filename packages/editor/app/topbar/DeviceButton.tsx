@@ -1,13 +1,15 @@
 "use client"
 
 import { DeviceId } from "@lib/devices/types"
-import { IconSeldonDeviceDesktop } from "@seldon/components/icons/IconSeldonDeviceDesktop"
-import { IconSeldonDeviceLaptop } from "@seldon/components/icons/IconSeldonDeviceLaptop"
-import { IconSeldonDeviceMobile } from "@seldon/components/icons/IconSeldonDeviceMobile"
-import { IconSeldonDeviceTV } from "@seldon/components/icons/IconSeldonDeviceTV"
-import { IconSeldonDeviceTablet } from "@seldon/components/icons/IconSeldonDeviceTablet"
-import { IconSeldonDeviceWatch } from "@seldon/components/icons/IconSeldonDeviceWatch"
-import { IconSeldonFullScreen } from "@seldon/components/icons/IconSeldonFullScreen"
+import {
+  IconSeldonDeviceDesktop,
+  IconSeldonDeviceLaptop,
+  IconSeldonDeviceMobile,
+  IconSeldonDeviceTV,
+  IconSeldonDeviceTablet,
+  IconSeldonDeviceWatch,
+  IconSeldonFullScreen,
+} from "@seldon/components/icons"
 import { Selectable } from "@app/ui/Selectable"
 
 export type Icon =

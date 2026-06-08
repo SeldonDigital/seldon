@@ -1,6 +1,6 @@
 import { COLORS } from "@lib/helpers/colors"
 import { CSSProperties } from "react"
-import { IconSeldonCatalog } from "@seldon/components/icons/IconSeldonCatalog"
+import { IconSeldonCatalog } from "@seldon/components/icons"
 
 type LabelProps = {
   label: string

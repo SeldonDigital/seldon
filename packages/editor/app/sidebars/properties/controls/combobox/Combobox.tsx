@@ -1,7 +1,7 @@
 import { RefObject, useEffect, useRef, useState } from "react"
 import { useKeyboardNavigation } from "./hooks/use-keyboard-navigation"
 import { Frame } from "@seldon/components/frames/Frame"
-import { IconSeldonChevronDown } from "@seldon/components/icons/IconSeldonChevronDown"
+import { IconSeldonChevronDown } from "@seldon/components/icons"
 import { InputEditor } from "@seldon/components/primitives/InputEditor"
 import {
   comboboxFrameStyle,

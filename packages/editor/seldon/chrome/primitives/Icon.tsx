@@ -12,40 +12,42 @@
 import { SVGAttributes } from "react"
 import { IconMaterialBlock } from "@seldon/core/icon-sets/catalog/material/system/security/IconMaterialBlock"
 import { IconMaterialVisibilityOff } from "@seldon/core/icon-sets/catalog/material/user-interface/status/IconMaterialVisibilityOff"
-import { IconDefault } from "../../icons/IconDefault"
-import { IconMaterialAdd } from "../../icons/IconMaterialAdd"
-import { IconMaterialBolt } from "../../icons/IconMaterialBolt"
-import { IconMaterialChevronDoubleLeft } from "../../icons/IconMaterialChevronDoubleLeft"
-import { IconMaterialChevronRight } from "../../icons/IconMaterialChevronRight"
-import { IconMaterialClose } from "../../icons/IconMaterialClose"
-import { IconMaterialDelete } from "../../icons/IconMaterialDelete"
-import { IconMaterialRobot } from "../../icons/IconMaterialRobot"
-import { IconMaterialSearch } from "../../icons/IconMaterialSearch"
-import { IconMaterialThumbDown } from "../../icons/IconMaterialThumbDown"
-import { IconMaterialThumbP } from "../../icons/IconMaterialThumbP"
-import { IconMaterialUnfoldLess } from "../../icons/IconMaterialUnfoldLess"
-import { IconMaterialUnfoldMore } from "../../icons/IconMaterialUnfoldMore"
-import { IconMaterialUpload } from "../../icons/IconMaterialUpload"
-import { IconSeldonBackground } from "../../icons/IconSeldonBackground"
-import { IconSeldonComponent } from "../../icons/IconSeldonComponent"
-import { IconSeldonComponentDefault } from "../../icons/IconSeldonComponentDefault"
-import { IconSeldonComponentVariant } from "../../icons/IconSeldonComponentVariant"
-import { IconSeldonFrame } from "../../icons/IconSeldonFrame"
-import { IconSeldonFrameColumns } from "../../icons/IconSeldonFrameColumns"
-import { IconSeldonFrameRows } from "../../icons/IconSeldonFrameRows"
-import { IconSeldonIcon } from "../../icons/IconSeldonIcon"
-import { IconSeldonImage } from "../../icons/IconSeldonImage"
-import { IconSeldonImageFit } from "../../icons/IconSeldonImageFit"
-import { IconSeldonInput } from "../../icons/IconSeldonInput"
-import { IconSeldonReset } from "../../icons/IconSeldonReset"
-import { IconSeldonScreen } from "../../icons/IconSeldonScreen"
-import { IconSeldonStub } from "../../icons/IconSeldonStub"
-import { IconSeldonSwatch } from "../../icons/IconSeldonSwatch"
-import { IconSeldonText } from "../../icons/IconSeldonText"
-import { IconSeldonTheme } from "../../icons/IconSeldonTheme"
-import { IconSeldonToolArrow } from "../../icons/IconSeldonToolArrow"
-import { IconSeldonToolComponent } from "../../icons/IconSeldonToolComponent"
-import { IconSeldonToolSketch } from "../../icons/IconSeldonToolSketch"
+import {
+  IconDefault,
+  IconMaterialAdd,
+  IconMaterialBolt,
+  IconMaterialChevronDoubleLeft,
+  IconMaterialChevronRight,
+  IconMaterialClose,
+  IconMaterialDelete,
+  IconMaterialRobot,
+  IconMaterialSearch,
+  IconMaterialThumbDown,
+  IconMaterialThumbP,
+  IconMaterialUnfoldLess,
+  IconMaterialUnfoldMore,
+  IconMaterialUpload,
+  IconSeldonBackground,
+  IconSeldonComponent,
+  IconSeldonComponentDefault,
+  IconSeldonComponentVariant,
+  IconSeldonFrame,
+  IconSeldonFrameColumns,
+  IconSeldonFrameRows,
+  IconSeldonIcon,
+  IconSeldonImage,
+  IconSeldonImageFit,
+  IconSeldonInput,
+  IconSeldonReset,
+  IconSeldonScreen,
+  IconSeldonStub,
+  IconSeldonSwatch,
+  IconSeldonText,
+  IconSeldonTheme,
+  IconSeldonToolArrow,
+  IconSeldonToolComponent,
+  IconSeldonToolSketch,
+} from "../../icons"
 
 export interface IconProps extends SVGAttributes<SVGElement> {
   className?: string

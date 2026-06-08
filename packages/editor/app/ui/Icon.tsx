@@ -1,15 +1,17 @@
 import { SVGProps } from "react"
 import { ComponentIcon } from "@seldon/core/components/constants"
-import { IconSeldonComponent } from "@seldon/components/icons/IconSeldonComponent"
-import { IconSeldonFrame } from "@seldon/components/icons/IconSeldonFrame"
-import { IconSeldonFrameBackground } from "@seldon/components/icons/IconSeldonFrameBackground"
-import { IconSeldonFrameColumns } from "@seldon/components/icons/IconSeldonFrameColumns"
-import { IconSeldonFrameRows } from "@seldon/components/icons/IconSeldonFrameRows"
-import { IconSeldonIcon } from "@seldon/components/icons/IconSeldonIcon"
-import { IconSeldonImage } from "@seldon/components/icons/IconSeldonImage"
-import { IconSeldonInput } from "@seldon/components/icons/IconSeldonInput"
-import { IconSeldonStub } from "@seldon/components/icons/IconSeldonStub"
-import { IconSeldonText } from "@seldon/components/icons/IconSeldonText"
+import {
+  IconSeldonComponent,
+  IconSeldonFrame,
+  IconSeldonFrameBackground,
+  IconSeldonFrameColumns,
+  IconSeldonFrameRows,
+  IconSeldonIcon,
+  IconSeldonImage,
+  IconSeldonInput,
+  IconSeldonStub,
+  IconSeldonText,
+} from "@seldon/components/icons"
 
 type IconProps = {
   icon: ComponentIcon

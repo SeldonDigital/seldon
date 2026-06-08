@@ -34,7 +34,7 @@ import {
   resolveComponentKey,
 } from "@lib/workspace/workspace-accessors"
 import { IconCustomColorValue } from "@seldon/components/custom-icons"
-import { IconSeldonToken } from "@seldon/components/icons/IconSeldonToken"
+import { IconSeldonToken } from "@seldon/components/icons"
 import { LoadEditorIcons } from "@app/LoadEditorIcons"
 import { useImageUploadPanel } from "@app/panels/hooks/use-upload-image-panel"
 import { ThemeSwatches } from "@app/ui/ThemeSwatches"

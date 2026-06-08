@@ -1,21 +1,23 @@
-import { IconSeldonCatalog } from "@seldon/components/icons/IconSeldonCatalog"
-import { IconSeldonCursor } from "@seldon/components/icons/IconSeldonCursor"
-import { IconSeldonElements } from "@seldon/components/icons/IconSeldonElements"
-import { IconSeldonFrame } from "@seldon/components/icons/IconSeldonFrame"
-import { IconSeldonImage } from "@seldon/components/icons/IconSeldonImage"
-import { IconSeldonModules } from "@seldon/components/icons/IconSeldonModules"
-import { IconSeldonPanels } from "@seldon/components/icons/IconSeldonPanels"
-import { IconSeldonParts } from "@seldon/components/icons/IconSeldonParts"
-import { IconSeldonPhotograph } from "@seldon/components/icons/IconSeldonPhotograph"
-import { IconSeldonPreview } from "@seldon/components/icons/IconSeldonPreview"
-import { IconSeldonPrimitives } from "@seldon/components/icons/IconSeldonPrimitives"
-import { IconSeldonScreen } from "@seldon/components/icons/IconSeldonScreen"
-import { IconSeldonSketchCircle } from "@seldon/components/icons/IconSeldonSketchCircle"
-import { IconSeldonSketchPencil } from "@seldon/components/icons/IconSeldonSketchPencil"
-import { IconSeldonSketchRectangle } from "@seldon/components/icons/IconSeldonSketchRectangle"
-import { IconSeldonSketchText } from "@seldon/components/icons/IconSeldonSketchText"
-import { IconSeldonSpark } from "@seldon/components/icons/IconSeldonSpark"
-import { IconSeldonToolSketch } from "@seldon/components/icons/IconSeldonToolSketch"
+import {
+  IconSeldonCatalog,
+  IconSeldonCursor,
+  IconSeldonElements,
+  IconSeldonFrame,
+  IconSeldonImage,
+  IconSeldonModules,
+  IconSeldonPanels,
+  IconSeldonParts,
+  IconSeldonPhotograph,
+  IconSeldonPreview,
+  IconSeldonPrimitives,
+  IconSeldonScreen,
+  IconSeldonSketchCircle,
+  IconSeldonSketchPencil,
+  IconSeldonSketchRectangle,
+  IconSeldonSketchText,
+  IconSeldonSpark,
+  IconSeldonToolSketch,
+} from "@seldon/components/icons"
 import { Selectable } from "@app/ui/Selectable"
 
 export type Icon =
