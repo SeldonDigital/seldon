@@ -1,25 +1,34 @@
-import * as Sdn from "../../../properties"
-import * as Seldon from "../../constants"
-import { ComponentExport, ComponentSchema } from "../../types"
+import * as Sdn from "../../../properties";
+import * as Seldon from "../../constants";
+import { ComponentExport, ComponentSchema } from "../../types";
+
+
+
+
 
 export const schema = {
-  name: "Horizontal Rule",
-  id: Seldon.ComponentId.HR,
-  intent: "Renders a horizontal rule for visual separation of content.",
-  tags: ["divider", "hr", "horizontal rule", "primitive", "separator", "UI"],
-  level: Seldon.ComponentLevel.PRIMITIVE,
-  icon: Seldon.ComponentIcon.STUB,
+  name: "Navigation",
+  id: Seldon.ComponentId.NAV,
+  intent: "Defines a navigational container for grouping menu links.",
+  tags: ["navigation", "nav", "menu", "links", "UI", "container"],
+  level: Seldon.ComponentLevel.ELEMENT,
+  icon: Seldon.ComponentIcon.COMPONENT,
   properties: {
     display: { type: Sdn.ValueType.EMPTY, value: null },
     ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
     ariaHidden: { type: Sdn.ValueType.EXACT, value: false },
-    align: { type: Sdn.ValueType.OPTION, value: Sdn.Align.AUTO },
+    direction: { type: Sdn.ValueType.EMPTY, value: null },
+    orientation: {
+      type: Sdn.ValueType.OPTION,
+      value: Sdn.Orientation.HORIZONTAL,
+    },
+    align: { type: Sdn.ValueType.OPTION, value: Sdn.Align.CENTER },
     width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
     height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
     margin: {
-      top: { type: Sdn.ValueType.THEME_ORDINAL, value: "@margin.cozy" },
+      top: { type: Sdn.ValueType.EMPTY, value: null },
       right: { type: Sdn.ValueType.EMPTY, value: null },
-      bottom: { type: Sdn.ValueType.THEME_ORDINAL, value: "@margin.cozy" },
+      bottom: { type: Sdn.ValueType.EMPTY, value: null },
       left: { type: Sdn.ValueType.EMPTY, value: null },
     },
     padding: {
@@ -28,7 +37,9 @@ export const schema = {
       bottom: { type: Sdn.ValueType.EMPTY, value: null },
       left: { type: Sdn.ValueType.EMPTY, value: null },
     },
+    gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.compact" },
     rotation: { type: Sdn.ValueType.EMPTY, value: null },
+    wrapChildren: { type: Sdn.ValueType.EXACT, value: false },
     clip: { type: Sdn.ValueType.EMPTY, value: null },
     color: { type: Sdn.ValueType.EMPTY, value: null },
     brightness: { type: Sdn.ValueType.EMPTY, value: null },
@@ -63,20 +74,11 @@ export const schema = {
       collapse: { type: Sdn.ValueType.EMPTY, value: null },
     },
     borderTop: {
-      preset: {
-        type: Sdn.ValueType.THEME_CATEGORICAL,
-        value: "@border.hairline",
-      },
+      preset: { type: Sdn.ValueType.EMPTY, value: null },
       style: { type: Sdn.ValueType.EMPTY, value: null },
-      color: {
-        type: Sdn.ValueType.THEME_CATEGORICAL,
-        value: "@swatch.black",
-      },
+      color: { type: Sdn.ValueType.EMPTY, value: null },
       width: { type: Sdn.ValueType.EMPTY, value: null },
-      brightness: {
-        type: Sdn.ValueType.EXACT,
-        value: { unit: Sdn.Unit.PERCENT, value: 25 },
-      },
+      brightness: { type: Sdn.ValueType.EMPTY, value: null },
       opacity: { type: Sdn.ValueType.EMPTY, value: null },
       collapse: { type: Sdn.ValueType.EMPTY, value: null },
     },
@@ -146,9 +148,44 @@ export const schema = {
         spread: { type: Sdn.ValueType.EMPTY, value: null },
       },
     ],
+    scroll: { type: Sdn.ValueType.EMPTY, value: null },
+  },
+  default: {
+    children: [
+      {
+        component: Seldon.ComponentId.LINK,
+        overrides: {
+          content: { type: Sdn.ValueType.EXACT, value: "Home" },
+          color: {
+            type: Sdn.ValueType.THEME_CATEGORICAL,
+            value: "@swatch.primary",
+          },
+        },
+      },
+      {
+        component: Seldon.ComponentId.LINK,
+        overrides: {
+          content: { type: Sdn.ValueType.EXACT, value: "About" },
+          color: {
+            type: Sdn.ValueType.THEME_CATEGORICAL,
+            value: "@swatch.primary",
+          },
+        },
+      },
+      {
+        component: Seldon.ComponentId.LINK,
+        overrides: {
+          content: { type: Sdn.ValueType.EXACT, value: "Contact" },
+          color: {
+            type: Sdn.ValueType.THEME_CATEGORICAL,
+            value: "@swatch.primary",
+          },
+        },
+      },
+    ],
   },
 } as const satisfies ComponentSchema
 
 export const exportConfig: ComponentExport = {
-  react: { returns: "HTMLHr" },
+  react: { returns: "HTMLNav" },
 }

@@ -149,7 +149,7 @@ import {
 import {
   exportConfig as navExportConfig,
   schema as navSchema,
-} from "./primitives/Nav.schema"
+} from "./elements/Nav.schema"
 import {
   exportConfig as inputExportConfig,
   schema as inputSchema,
@@ -250,6 +250,7 @@ const elements: ComponentSchema[] = [
   headerActionSchema,
   headerCardSchema,
   itemSchema,
+  navSchema,
   sectionSchema,
   selectSchema,
   tableRowDataSchema,
@@ -259,7 +260,6 @@ const primitives: ComponentSchema[] = [
   hrSchema,
   iconSchema,
   imageSchema,
-  navSchema,
   inputSchema,
   legendSchema,
   optionSchema,
@@ -360,6 +360,7 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   [ComponentId.HEADER_ACTION]: headerActionExportConfig,
   [ComponentId.HEADER_CARD]: headerCardExportConfig,
   [ComponentId.ITEM]: itemExportConfig,
+  [ComponentId.NAV]: navExportConfig,
   [ComponentId.SECTION]: sectionExportConfig,
   [ComponentId.TABLE_ROW_DATA]: tableRowDataExportConfig,
 
@@ -391,7 +392,6 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   [ComponentId.HR]: hrExportConfig,
   [ComponentId.ICON]: iconExportConfig,
   [ComponentId.IMAGE]: imageExportConfig,
-  [ComponentId.NAV]: navExportConfig,
   [ComponentId.INPUT]: inputExportConfig,
   [ComponentId.LEGEND]: legendExportConfig,
   [ComponentId.OPTION]: optionExportConfig,
