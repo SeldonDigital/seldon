@@ -1,15 +1,15 @@
 import { SVGProps } from "react"
 import { ComponentIcon } from "@seldon/core/components/constants"
-import { IconInput } from "@seldon/components/custom-icons/Input"
-import { IconStub } from "@seldon/components/custom-icons/Stub"
-import { IconComponent } from "@seldon/components/custom-icons/Component"
-import { IconFrame } from "@seldon/components/custom-icons/Frame"
-import { IconFrameBackground } from "@seldon/components/custom-icons/FrameBackground"
-import { IconFrameColumns } from "@seldon/components/custom-icons/FrameColumns"
-import { IconFrameRows } from "@seldon/components/custom-icons/FrameRows"
-import { IconIcon } from "@seldon/components/custom-icons/Icon"
-import { IconImage } from "@seldon/components/custom-icons/ImageGlyph"
-import { IconText } from "@seldon/components/custom-icons/TextGlyph"
+import { IconSeldonComponent } from "@seldon/components/icons/IconSeldonComponent"
+import { IconSeldonFrame } from "@seldon/components/icons/IconSeldonFrame"
+import { IconSeldonFrameBackground } from "@seldon/components/icons/IconSeldonFrameBackground"
+import { IconSeldonFrameColumns } from "@seldon/components/icons/IconSeldonFrameColumns"
+import { IconSeldonFrameRows } from "@seldon/components/icons/IconSeldonFrameRows"
+import { IconSeldonIcon } from "@seldon/components/icons/IconSeldonIcon"
+import { IconSeldonImage } from "@seldon/components/icons/IconSeldonImage"
+import { IconSeldonInput } from "@seldon/components/icons/IconSeldonInput"
+import { IconSeldonStub } from "@seldon/components/icons/IconSeldonStub"
+import { IconSeldonText } from "@seldon/components/icons/IconSeldonText"
 
 type IconProps = {
   icon: ComponentIcon
@@ -18,25 +18,25 @@ type IconProps = {
 export function Icon({ icon, ...svgProps }: IconProps) {
   switch (icon) {
     case "seldon-stub":
-      return <IconStub {...svgProps} />
+      return <IconSeldonStub {...svgProps} />
     case "seldon-component":
-      return <IconComponent {...svgProps} />
+      return <IconSeldonComponent {...svgProps} />
     case "seldon-icon":
-      return <IconIcon {...svgProps} />
+      return <IconSeldonIcon {...svgProps} />
     case "seldon-image":
-      return <IconImage {...svgProps} />
+      return <IconSeldonImage {...svgProps} />
     case "seldon-input":
-      return <IconInput {...svgProps} />
+      return <IconSeldonInput {...svgProps} />
     case "seldon-text":
-      return <IconText {...svgProps} />
+      return <IconSeldonText {...svgProps} />
     case "seldon-frame":
-      return <IconFrame {...svgProps} />
+      return <IconSeldonFrame {...svgProps} />
     case "seldon-frameBackground":
-      return <IconFrameBackground {...svgProps} />
+      return <IconSeldonFrameBackground {...svgProps} />
     case "seldon-frameColumns":
-      return <IconFrameColumns {...svgProps} />
+      return <IconSeldonFrameColumns {...svgProps} />
     case "seldon-frameRows":
-      return <IconFrameRows {...svgProps} />
+      return <IconSeldonFrameRows {...svgProps} />
     default:
       return null
   }

@@ -172,5 +172,8 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "seldon-preview": "user-interface/actions" as IconCategoryPath,
   "seldon-fullScreen": "user-interface/actions" as IconCategoryPath,
   "seldon-spark": "user-interface/actions" as IconCategoryPath,
-  "seldon-rtl": "user-interface/text" as IconCategoryPath
+  "seldon-rtl": "user-interface/text" as IconCategoryPath,
+  "seldon-align": "system/settings" as IconCategoryPath,
+  "seldon-rotation": "system/settings" as IconCategoryPath,
+  "seldon-textAlign": "user-interface/text" as IconCategoryPath
 } as const

@@ -18,6 +18,7 @@ export { IconSeldonFontTextWrap } from "./user-interface/text/IconSeldonFontText
 export { IconSeldonFontWeight } from "./user-interface/text/IconSeldonFontWeight"
 export { IconSeldonIconText } from "./user-interface/text/IconSeldonIconText"
 export { IconSeldonRtl } from "./user-interface/text/IconSeldonRtl"
+export { IconSeldonTextAlign } from "./user-interface/text/IconSeldonTextAlign"
 
 // user-interface/navigation
 export { IconSeldonChevronDoubleDown } from "./user-interface/navigation/IconSeldonChevronDoubleDown"
@@ -93,6 +94,8 @@ export { IconSeldonStyle } from "./system/settings/IconSeldonStyle"
 export { IconSeldonBorderStyle } from "./system/settings/IconSeldonBorderStyle"
 export { IconSeldonBorderColor } from "./system/settings/IconSeldonBorderColor"
 export { IconSeldonBackgroundColor } from "./system/settings/IconSeldonBackgroundColor"
+export { IconSeldonAlign } from "./system/settings/IconSeldonAlign"
+export { IconSeldonRotation } from "./system/settings/IconSeldonRotation"
 
 // user-interface/actions (includes former misc icons)
 export { IconSeldonAddChart } from "./user-interface/actions/IconSeldonAddChart"
@@ -345,4 +348,7 @@ export const seldonIconIds: readonly IconId[] = [
   "seldon-fullScreen",
   "seldon-spark",
   "seldon-rtl",
+  "seldon-align",
+  "seldon-rotation",
+  "seldon-textAlign",
 ] as const

@@ -1,70 +1,64 @@
-import { RefObject, useEffect, useMemo, useRef, useState } from "react"
-import {
-  Board,
-  Instance,
-  Theme,
-  Value,
-  ValueType,
-  Variant,
-} from "@seldon/core"
-import { ComponentId, ComponentLevel } from "@seldon/core/components/constants"
-import type {
-  PropertyKey,
-  SubPropertyKey,
-} from "@seldon/core/properties/types/property-keys"
-import type { ThemeInstanceId } from "@seldon/core/themes/types/theme-id"
-import {
-  getThemePickerOptions,
-} from "@seldon/core/helpers/properties/properties-bridge"
-import { isThemeValueKey } from "@seldon/core/helpers/validation/theme"
-import { IconId, iconLabels } from "@seldon/core/icon-sets"
-import { IconSeldonMissing } from "@seldon/core/icon-sets/catalog/seldon/user-interface/actions/IconSeldonMissing"
 import { isWorkspaceIconUnavailable } from "@lib/icon-sets/icon-availability"
-import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
-import { getBoardThemeRef } from "./helpers/theme-assignment-display"
-import { workspaceThemeService } from "@seldon/core/workspace/services/theme/theme.service"
-import { useComboboxState } from "./controls/combobox/hooks/use-combobox-state"
-import { useComboboxPosition } from "./hooks/use-combobox-position"
-import { usePropertyControlData } from "./hooks/use-property-control-data"
-import { usePropertyValidation } from "./hooks/use-property-validation"
-import { useObjectProperties } from "@lib/workspace/hooks/use-object-properties"
-import { useSelection } from "@lib/workspace/hooks/use-selection"
-import { getNodeCatalogComponentId } from "@lib/workspace/node-tree"
-import { getComponentKey, resolveComponentKey } from "@lib/workspace/workspace-accessors"
-import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
-import { LoadEditorIcons } from "@app/LoadEditorIcons"
-import { useImageUploadPanel } from "@app/panels/hooks/use-upload-image-panel"
-import { IconTokenValue } from "@seldon/components/custom-icons/TokenValue"
-import { IconCustomColorValue } from "@seldon/components/custom-icons"
-import { serializeValue } from "@lib/properties/serialize-value"
-import { ThemeSwatches } from "@app/ui/ThemeSwatches"
-import { useThemes } from "@lib/themes/hooks/use-themes"
-import { Combobox } from "./controls/combobox/Combobox"
-import { ComboboxOption } from "./controls/combobox/Option"
-import { ComboboxOptionGroup } from "./controls/combobox/OptionGroup"
-import { ComboboxOptions } from "./controls/combobox/Options"
-import { createPresetPropertyUpdate } from "./helpers/compound-properties"
-import { handleComputedValueChange } from "./helpers/computed-property-handler"
-import { isComputedFunctionOption } from "./helpers/computed-utils"
-import { getComboboxStoredValue } from "./helpers/combobox-stored-value"
-import { getDisplayValue } from "./helpers/display-value-utils"
-import { getThemeTokenIconColor } from "./helpers/theme-token-icon-color"
-import { generatePropertyOptions } from "./helpers/options-utils"
-import { FlatProperty } from "./helpers/properties-data"
-import { RESET_VALUES } from "./helpers/property-control-constants"
-import { shouldUsePresetPropertyBehavior } from "./helpers/property-types"
 import {
   isLayeredPaintRoot,
   layeredFacetPath,
   parsePropertyPath,
 } from "@lib/properties/property-paths"
+import { serializeValue } from "@lib/properties/serialize-value"
+import { RefObject, useEffect, useMemo, useRef, useState } from "react"
+import { Board, Instance, Theme, Value, ValueType, Variant } from "@seldon/core"
+import { ComponentId, ComponentLevel } from "@seldon/core/components/constants"
+import { getThemePickerOptions } from "@seldon/core/helpers/properties/properties-bridge"
+import { isThemeValueKey } from "@seldon/core/helpers/validation/theme"
+import { IconId, iconLabels } from "@seldon/core/icon-sets"
+import { IconSeldonMissing } from "@seldon/core/icon-sets/catalog/seldon/user-interface/actions/IconSeldonMissing"
+import type {
+  PropertyKey,
+  SubPropertyKey,
+} from "@seldon/core/properties/types/property-keys"
 import type { LayeredPaintKey } from "@seldon/core/properties/types/property-keys"
-import { updateProperty } from "./helpers/property-update-handler"
+import type { ThemeInstanceId } from "@seldon/core/themes/types/theme-id"
+import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
+import { workspaceThemeService } from "@seldon/core/workspace/services/theme/theme.service"
+import { useThemes } from "@lib/themes/hooks/use-themes"
+import { useObjectProperties } from "@lib/workspace/hooks/use-object-properties"
+import { useSelection } from "@lib/workspace/hooks/use-selection"
+import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
+import { useComboboxState } from "./controls/combobox/hooks/use-combobox-state"
+import { useComboboxPosition } from "./hooks/use-combobox-position"
+import { usePropertyControlData } from "./hooks/use-property-control-data"
+import { usePropertyValidation } from "./hooks/use-property-validation"
+import { getNodeCatalogComponentId } from "@lib/workspace/node-tree"
+import {
+  getComponentKey,
+  resolveComponentKey,
+} from "@lib/workspace/workspace-accessors"
+import { IconCustomColorValue } from "@seldon/components/custom-icons"
+import { IconSeldonToken } from "@seldon/components/icons/IconSeldonToken"
+import { LoadEditorIcons } from "@app/LoadEditorIcons"
+import { useImageUploadPanel } from "@app/panels/hooks/use-upload-image-panel"
+import { ThemeSwatches } from "@app/ui/ThemeSwatches"
 import {
   propertyControlInnerStyle,
   propertyControlTextStyle,
   propertyControlWrapperStyle,
 } from "../helpers/sidebar-styles"
+import { Combobox } from "./controls/combobox/Combobox"
+import { ComboboxOption } from "./controls/combobox/Option"
+import { ComboboxOptionGroup } from "./controls/combobox/OptionGroup"
+import { ComboboxOptions } from "./controls/combobox/Options"
+import { getComboboxStoredValue } from "./helpers/combobox-stored-value"
+import { createPresetPropertyUpdate } from "./helpers/compound-properties"
+import { handleComputedValueChange } from "./helpers/computed-property-handler"
+import { isComputedFunctionOption } from "./helpers/computed-utils"
+import { getDisplayValue } from "./helpers/display-value-utils"
+import { generatePropertyOptions } from "./helpers/options-utils"
+import { FlatProperty } from "./helpers/properties-data"
+import { RESET_VALUES } from "./helpers/property-control-constants"
+import { shouldUsePresetPropertyBehavior } from "./helpers/property-types"
+import { updateProperty } from "./helpers/property-update-handler"
+import { getBoardThemeRef } from "./helpers/theme-assignment-display"
+import { getThemeTokenIconColor } from "./helpers/theme-token-icon-color"
 
 function compoundPresetPropertyKey(propertyKey: string): string {
   if (isLayeredPaintRoot(propertyKey)) {
@@ -430,7 +424,9 @@ export function PropertyControl({
     if (property.key === "symbol" && result.options) {
       const currentId = getComboboxStoredValue(property.value)
       if (typeof currentId === "string" && currentId.length > 0) {
-        const groups = result.options as Array<Array<{ value: string; name: string }>>
+        const groups = result.options as Array<
+          Array<{ value: string; name: string }>
+        >
         const present = groups.some((group) =>
           group.some((option) => option.value === currentId),
         )
@@ -440,7 +436,10 @@ export function PropertyControl({
             name: iconLabels[currentId as IconId] ?? currentId,
           }
           if (groups.length > 0) {
-            groups[groups.length - 1] = [...groups[groups.length - 1], synthetic]
+            groups[groups.length - 1] = [
+              ...groups[groups.length - 1],
+              synthetic,
+            ]
           } else {
             groups.push([synthetic])
           }
@@ -552,7 +551,13 @@ export function PropertyControl({
       const option = flatOptions.find((o) => o.value === comboboxControlValue)
       setInputValue(option ? option.name : displayValue || "")
     }
-  }, [comboboxControlValue, displayValue, flatOptions, setInputValue, comboboxOpen])
+  }, [
+    comboboxControlValue,
+    displayValue,
+    flatOptions,
+    setInputValue,
+    comboboxOpen,
+  ])
 
   // Sync editing state with combobox open state
   useEffect(() => {
@@ -631,7 +636,7 @@ export function PropertyControl({
         return <IconCustomColorValue color={swatchColor} />
       }
       if (isThemeValueKey(option.value)) {
-        return <IconTokenValue />
+        return <IconSeldonToken />
       }
     }
 

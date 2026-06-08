@@ -1,13 +1,13 @@
 import { RefObject, useEffect, useRef, useState } from "react"
 import { useKeyboardNavigation } from "./hooks/use-keyboard-navigation"
+import { Frame } from "@seldon/components/frames/Frame"
+import { IconSeldonChevronDown } from "@seldon/components/icons/IconSeldonChevronDown"
+import { InputEditor } from "@seldon/components/primitives/InputEditor"
 import {
   comboboxFrameStyle,
   comboboxInputStyle,
   comboboxWrapperStyle,
 } from "./combobox-styles"
-import { Frame } from "@seldon/components/frames/Frame"
-import { InputEditor } from "@seldon/components/primitives/InputEditor"
-import { IconChevronDown } from "@seldon/components/custom-icons/ChevronDown"
 
 export interface InputProps {
   mode?: "combobox" | "standalone"
@@ -402,7 +402,7 @@ export function Combobox({
               setOpen(!open)
             }}
           >
-            <IconChevronDown />
+            <IconSeldonChevronDown />
           </button>
         )}
       </Frame>

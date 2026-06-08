@@ -55,6 +55,8 @@ export { IconSeldonStyle } from "./IconSeldonStyle"
 export { IconSeldonBorderStyle } from "./IconSeldonBorderStyle"
 export { IconSeldonBorderColor } from "./IconSeldonBorderColor"
 export { IconSeldonBackgroundColor } from "./IconSeldonBackgroundColor"
+export { IconSeldonAlign } from "./IconSeldonAlign"
+export { IconSeldonRotation } from "./IconSeldonRotation"
 
 export const seldonsystemsettingsIconIds: readonly IconId[] = [
   "seldon-alignBottom",
@@ -112,4 +114,6 @@ export const seldonsystemsettingsIconIds: readonly IconId[] = [
   "seldon-borderStyle",
   "seldon-borderColor",
   "seldon-backgroundColor",
+  "seldon-align",
+  "seldon-rotation",
 ] as const
