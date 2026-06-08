@@ -1,21 +1,21 @@
-import * as Sdn from "../../../properties"
-import * as Seldon from "../../constants"
-import { ComponentExport, ComponentSchema } from "../../types"
+import * as Sdn from "../../properties"
+import * as Seldon from "../constants"
+import { ComponentExport, ComponentSchema } from "../types"
 
 export const schema = {
-  name: "Checkbox Fieldset",
-  id: Seldon.ComponentId.FIELDSET_CHECKBOXES,
+  name: "Fieldset",
+  id: Seldon.ComponentId.FIELDSET,
   intent:
-    "Component schema for a group of related checkbox inputs, supporting label, selection, and state logic.",
+    "Generic form field grouping component schema used to logically separate sections within forms.",
   tags: [
     "form",
-    "checkbox",
     "fieldset",
-    "input",
-    "group",
     "ui",
-    "selection",
-    "boolean",
+    "group",
+    "input",
+    "layout",
+    "section",
+    "fields",
   ],
   level: Seldon.ComponentLevel.PART,
   icon: Seldon.ComponentIcon.COMPONENT,
@@ -375,18 +375,64 @@ export const schema = {
       },
       {
         component: Seldon.ComponentId.FORM_CONTROL,
-        variant: "checkbox",
       },
       {
         component: Seldon.ComponentId.FORM_CONTROL,
-        variant: "checkbox",
       },
       {
         component: Seldon.ComponentId.FORM_CONTROL,
-        variant: "checkbox",
+        variant: "dropdown",
       },
     ],
   },
+  variants: [
+    {
+      id: "checkboxes",
+      label: "Checkbox Fieldset",
+      intent:
+        "Component schema for a group of related checkbox inputs, supporting label, selection, and state logic.",
+      children: [
+        {
+          component: Seldon.ComponentId.LEGEND,
+        },
+        {
+          component: Seldon.ComponentId.FORM_CONTROL,
+          variant: "checkbox",
+        },
+        {
+          component: Seldon.ComponentId.FORM_CONTROL,
+          variant: "checkbox",
+        },
+        {
+          component: Seldon.ComponentId.FORM_CONTROL,
+          variant: "checkbox",
+        },
+      ],
+    },
+    {
+      id: "radios",
+      label: "Radio Button Fieldset",
+      intent:
+        "Schema for rendering grouped radio button fields in a form, managing selection and accessibility attributes.",
+      children: [
+        {
+          component: Seldon.ComponentId.LEGEND,
+        },
+        {
+          component: Seldon.ComponentId.FORM_CONTROL,
+          variant: "radio",
+        },
+        {
+          component: Seldon.ComponentId.FORM_CONTROL,
+          variant: "radio",
+        },
+        {
+          component: Seldon.ComponentId.FORM_CONTROL,
+          variant: "radio",
+        },
+      ],
+    },
+  ],
 } as const satisfies ComponentSchema
 
 export const exportConfig: ComponentExport = {

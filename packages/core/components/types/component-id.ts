@@ -7,7 +7,6 @@
  * `ComponentId` stays an enum because it is part of the serialized workspace API.
  */
 export enum ComponentId {
-  AD_IAB = "adIab",
   AVATAR = "avatar",
   BAR = "bar",
   BLOCKQUOTE = "blockquote",
@@ -26,8 +25,6 @@ export enum ComponentId {
   DESCRIPTION_TERM = "descriptionTerm",
   DIALOG = "dialog",
   FIELDSET = "fieldset",
-  FIELDSET_CHECKBOXES = "fieldsetCheckboxes",
-  FIELDSET_RADIOS = "fieldsetRadios",
   FOOTER = "footer",
   FORM_CONTROL = "formControl",
   FRAME = "frame",

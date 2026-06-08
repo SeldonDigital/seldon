@@ -94,10 +94,6 @@ import {
 } from "../modules/WidgetTodo.schema"
 // Parts
 import {
-  exportConfig as iabExportConfig,
-  schema as iabSchema,
-} from "../parts/IAB.schema"
-import {
   exportConfig as barExportConfig,
   schema as barSchema,
 } from "../parts/Bar.schema"
@@ -116,15 +112,7 @@ import {
 import {
   exportConfig as fieldsetExportConfig,
   schema as fieldsetSchema,
-} from "../parts/forms/Fieldset.schema"
-import {
-  exportConfig as fieldsetCheckboxesExportConfig,
-  schema as fieldsetCheckboxesSchema,
-} from "../parts/forms/FieldsetCheckboxes.schema"
-import {
-  exportConfig as fieldsetRadiosExportConfig,
-  schema as fieldsetRadiosSchema,
-} from "../parts/forms/FieldsetRadios.schema"
+} from "../parts/Fieldset.schema"
 import {
   exportConfig as listContactsExportConfig,
   schema as listContactsSchema,
@@ -296,14 +284,11 @@ const primitives: ComponentSchema[] = [
 ]
 
 const parts: ComponentSchema[] = [
-  iabSchema,
   barSchema,
   cardHorizontalSchema,
   cardProductSchema,
   cardStackedSchema,
   fieldsetSchema,
-  fieldsetCheckboxesSchema,
-  fieldsetRadiosSchema,
   listContactsSchema,
   listGridSchema,
   listProductsSchema,
@@ -391,14 +376,11 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   [ComponentId.WIDGET_TODO]: widgetTodoExportConfig,
 
   // Parts
-  [ComponentId.AD_IAB]: iabExportConfig,
   [ComponentId.BAR]: barExportConfig,
   [ComponentId.CARD_HORIZONTAL]: cardHorizontalExportConfig,
   [ComponentId.CARD_PRODUCT]: cardProductExportConfig,
   [ComponentId.CARD_STACKED]: cardStackedExportConfig,
   [ComponentId.FIELDSET]: fieldsetExportConfig,
-  [ComponentId.FIELDSET_CHECKBOXES]: fieldsetCheckboxesExportConfig,
-  [ComponentId.FIELDSET_RADIOS]: fieldsetRadiosExportConfig,
   [ComponentId.LIST_CONTACTS]: listContactsExportConfig,
   [ComponentId.LIST_GRID]: listGridExportConfig,
   [ComponentId.LIST_PRODUCTS]: listProductsExportConfig,
