@@ -22,10 +22,9 @@ export default defineConfig(({ mode }) => ({
   },
   resolve: {
     alias: [
-      { find: /^@types$/, replacement: path.join(editorRoot, "app/types.ts") },
-      { find: "@components", replacement: path.join(editorRoot, "app") },
+      { find: "@app", replacement: path.join(editorRoot, "app") },
       { find: "@lib", replacement: path.join(editorRoot, "lib") },
-      { find: "@catalog", replacement: path.join(corePackageRoot, "components/catalog") },
+      { find: "@seldon/components", replacement: path.join(editorRoot, "seldon") },
       { find: "@seldon/core", replacement: corePackageRoot },
       { find: "@seldon/factory", replacement: factoryPackageRoot },
     ],

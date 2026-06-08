@@ -10,7 +10,7 @@ import {
 } from "@seldon/core"
 import { isResourceType } from "@seldon/core/workspace/helpers/components/is-resource-type"
 import { buildThemeAssignmentProperty } from "./helpers/theme-assignment-display"
-import { Frame } from "../../seldon/frames/Frame"
+import { Frame } from "@seldon/components/frames/Frame"
 import { FramerExpandable } from "../shared/FramerExpandable"
 import { CssBlock } from "./CssBlock"
 import { RowCategory } from "./RowCategory"

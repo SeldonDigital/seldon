@@ -7,7 +7,7 @@
  */
 import { useMemo } from "react"
 import { Board, Instance, ValueType, Variant, Workspace } from "@seldon/core"
-import { getHtmlElementByNodeId } from "@components/canvas/helpers/get-html-element-by-node-id"
+import { getHtmlElementByNodeId } from "@app/canvas/helpers/get-html-element-by-node-id"
 import { FlatProperty } from "./properties-data"
 
 /**

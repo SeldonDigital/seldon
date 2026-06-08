@@ -1,6 +1,6 @@
 import React from "react"
 import { createPortal } from "react-dom"
-import { Frame } from "../../../../seldon/frames/Frame"
+import { Frame } from "@seldon/components/frames/Frame"
 import { comboboxBackdropStyle, getOptionsPanelStyle } from "./combobox-styles"
 
 interface ComboboxOptionsProps {

@@ -28,7 +28,7 @@ import {
   sidebarNoSelectionStyle,
   sidebarShellStyle,
 } from "../helpers/sidebar-styles"
-import { SidebarContainer } from "../../seldon/elements/SidebarContainer"
+import { SidebarContainer } from "@seldon/components/elements/SidebarContainer"
 import { PropertyTree } from "./PropertyTree"
 import { flattenFontCollectionFamilies } from "./helpers/font-collection-properties-data"
 import { flattenIconSetCategories } from "./helpers/icon-set-properties-data"

@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { HSL } from "@seldon/core"
-import { Frame } from "../../../../seldon/frames/Frame"
+import { Frame } from "@seldon/components/frames/Frame"
 import {
   comboboxOptionIconStyle,
   comboboxOptionLabelStyle,

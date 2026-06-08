@@ -19,9 +19,9 @@ import { SelectionKind } from "@lib/workspace/selection-target"
 import { useSidebarRowStyling } from "../../tracking/hooks/use-sidebar-row-styling"
 import { useEditState } from "./hooks/use-edit-state"
 import { useRowClick } from "./hooks/use-row-click"
-import { ListItemTreeNode as SeldonNode } from "../../seldon/elements/ListItemTreeNode"
-import { IconProps } from "../../seldon/primitives/Icon"
-import { LabelProps } from "../../seldon/primitives/Label"
+import { ListItemTreeNode as SeldonNode } from "@seldon/components/elements/ListItemTreeNode"
+import { IconProps } from "@seldon/components/primitives/Icon"
+import { LabelProps } from "@seldon/components/primitives/Label"
 import { Combobox } from "../properties/controls/combobox/Combobox"
 
 const rowWrapperStyle: CSSProperties = {

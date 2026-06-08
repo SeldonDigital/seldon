@@ -1,6 +1,6 @@
 "use client"
 
-import { Layout as LayoutComponent } from "@components/Layout"
+import { Layout as LayoutComponent } from "@app/Layout"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useWorkspaceAutosave } from "@lib/persistence/hooks/use-workspace-autosave"
 import { useWorkspaceSyncStatus } from "@lib/project/hooks/use-workspace-sync-status"

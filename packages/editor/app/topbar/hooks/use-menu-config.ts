@@ -32,7 +32,7 @@ import { useZoomControls } from "@lib/hooks/use-zoom-controls"
 import { useHistory } from "@lib/workspace/hooks/use-history"
 import { useSelection } from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
-import { useAddToast } from "@components/toaster/hooks/use-add-toast"
+import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import { HeaderConfig, MenuConfig, MenuItem, ToolbarConfig } from "../menus/types"
 
 /**

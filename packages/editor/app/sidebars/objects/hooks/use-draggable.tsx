@@ -5,8 +5,8 @@ import { useEffect, useRef, useState } from "react"
 import { createRoot } from "react-dom/client"
 import { Board, Instance, Variant } from "@seldon/core"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
-import { ListItemTree } from "../../../seldon/elements/ListItemTree"
-import { IconProps } from "../../../seldon/primitives/Icon"
+import { ListItemTree } from "@seldon/components/elements/ListItemTree"
+import { IconProps } from "@seldon/components/primitives/Icon"
 import { useNodeIcon } from "./use-node-icon"
 
 /**

@@ -26,8 +26,8 @@ import {
   getNode,
   hasNode,
 } from "@lib/workspace/workspace-accessors"
-import { IconProps } from "../../../seldon/primitives/Icon"
-import { LabelProps } from "../../../seldon/primitives/Label"
+import { IconProps } from "@seldon/components/primitives/Icon"
+import { LabelProps } from "@seldon/components/primitives/Label"
 import { useDraggable } from "./use-draggable"
 import { useEditState } from "./use-edit-state"
 import { useExpansion, useIsExpanded } from "./use-expansion"

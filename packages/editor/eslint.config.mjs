@@ -1,7 +1,7 @@
 import { defineConfig, globalIgnores } from "eslint/config"
 
 export default defineConfig([
-  globalIgnores(["app/seldon/chrome/**", "dist/**", "node_modules/**"]),
+  globalIgnores(["seldon/chrome/**", "dist/**", "node_modules/**"]),
   {
     rules: {
       "no-console": [

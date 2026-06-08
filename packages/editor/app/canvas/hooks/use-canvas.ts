@@ -22,7 +22,7 @@ import {
 } from "@lib/workspace/selection-target"
 import { useSetHoveredId } from "@lib/workspace/hooks/use-object-hover"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
-import { useAddToast } from "@components/toaster/hooks/use-add-toast"
+import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import { checkInsertionPoint } from "../../tracking/helpers/check-insertion-point"
 import { getBoardIdForEventTarget } from "../helpers/get-board-id-for-event-target"
 import { getChildNodesWithNodeId } from "../helpers/get-child-nodes-with-node-id"

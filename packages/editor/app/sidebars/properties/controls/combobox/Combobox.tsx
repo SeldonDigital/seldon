@@ -5,9 +5,9 @@ import {
   comboboxInputStyle,
   comboboxWrapperStyle,
 } from "./combobox-styles"
-import { Frame } from "../../../../seldon/frames/Frame"
-import { InputEditor } from "../../../../seldon/primitives/InputEditor"
-import { IconChevronDown } from "@components/seldon/custom-icons/ChevronDown"
+import { Frame } from "@seldon/components/frames/Frame"
+import { InputEditor } from "@seldon/components/primitives/InputEditor"
+import { IconChevronDown } from "@seldon/components/custom-icons/ChevronDown"
 
 export interface InputProps {
   mode?: "combobox" | "standalone"

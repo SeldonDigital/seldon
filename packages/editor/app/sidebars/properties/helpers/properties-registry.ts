@@ -42,7 +42,7 @@ import {
   IconCustomTokenValue,
   IconCustomWidthValue,
   IconCustomWrapValue,
-} from "../../../seldon/custom-icons"
+} from "@seldon/components/custom-icons"
 // Import icons from seldon/icons
 import {
   IconSeldonBackground,
@@ -56,7 +56,7 @@ import {
   IconSeldonInput,
   IconSeldonSwatch,
   IconSeldonText,
-} from "../../../seldon/icons"
+} from "@seldon/components/icons"
 
 // Map of icons from seldon/icons
 const SELDON_ICON_MAP: Record<string, React.ComponentType> = {

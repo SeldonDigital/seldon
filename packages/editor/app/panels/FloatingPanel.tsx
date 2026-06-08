@@ -2,7 +2,7 @@ import { motion } from "framer-motion"
 import { CSSProperties } from "react"
 import { createPortal } from "react-dom"
 import { useHotkeys } from "react-hotkeys-hook"
-import { HeaderPanelsClose } from "../seldon/chrome/elements/HeaderPanelsClose"
+import { HeaderPanelsClose } from "@seldon/components/chrome/elements/HeaderPanelsClose"
 import { PANEL_INITIAL_HEIGHT, PANEL_INITIAL_WIDTH } from "../constants"
 import { useFloatingPanel } from "./hooks/use-floating-panel"
 

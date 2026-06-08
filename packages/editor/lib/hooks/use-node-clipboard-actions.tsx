@@ -9,7 +9,7 @@ import { useObjectClipboard } from "@lib/workspace/hooks/use-object-clipboard"
 import { useSelection } from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { getNode } from "@lib/workspace/workspace-accessors"
-import { useAddToast } from "@components/toaster/hooks/use-add-toast"
+import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 
 export function useNodeClipboardActions() {
   const addToast = useAddToast()

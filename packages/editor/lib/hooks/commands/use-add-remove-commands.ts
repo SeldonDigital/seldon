@@ -26,7 +26,7 @@ import { useSelection } from "@lib/workspace/hooks/use-selection"
 import { resolveComponentKey } from "@lib/workspace/workspace-accessors"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useTool } from "@lib/hooks/use-tool"
-import { useAddToast } from "@components/toaster/hooks/use-add-toast"
+import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import {
   getHoverStateSnapshot,
   useSetHoverState,

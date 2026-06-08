@@ -18,17 +18,14 @@
     "jsx": "react-jsx",
     "incremental": true,
     "paths": {
-      "@components/*": [
+      "@app/*": [
         "./app/*"
       ],
       "@lib/*": [
         "./lib/*"
       ],
-      "@types": [
-        "./app/types.ts"
-      ],
-      "@catalog/*": [
-        "../../packages/core/components/catalog/*"
+      "@seldon/components/*": [
+        "./seldon/*"
       ],
       "@seldon/core/*": [
         "../../packages/core/*"

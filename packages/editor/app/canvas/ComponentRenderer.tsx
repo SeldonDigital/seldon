@@ -69,7 +69,7 @@ import { HTMLVideo } from "@seldon/core/components/native-react/HTML.Video"
 import { NativeReactPrimitive } from "@seldon/core/components/types"
 import type { ComputeContext } from "@seldon/core/properties/compute"
 import { IconId } from "@seldon/core/icon-sets"
-import { LoadEditorIcons } from "@components/LoadEditorIcons"
+import { LoadEditorIcons } from "@app/LoadEditorIcons"
 import { CssPortal } from "./CssPortal"
 
 type TemplateProps = {

@@ -36,7 +36,6 @@ async function loadRunExport(): Promise<RunExport> {
     alias: {
       "@seldon/core": coreRoot,
       "@seldon/factory": factoryRoot,
-      "@catalog": path.join(coreRoot, "components/catalog"),
     },
   })
 

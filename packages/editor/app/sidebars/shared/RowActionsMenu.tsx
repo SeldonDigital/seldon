@@ -1,5 +1,5 @@
 import { DropdownMenu, MenuAlign, MenuEntry } from "@lib/menus"
-import { Icon } from "../../seldon/primitives/Icon"
+import { Icon } from "@seldon/components/primitives/Icon"
 
 const TRIGGER_CLASS = "sdn-button-iconic sdn-button-iconic--0urv"
 

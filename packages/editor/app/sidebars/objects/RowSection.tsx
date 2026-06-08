@@ -1,7 +1,7 @@
 import { MouseEvent } from "react"
 import { useRowHover } from "./hooks/use-row-hover"
 import { useRowSection } from "./hooks/use-row-section"
-import { ListItemTreeSection as SeldonSection } from "../../seldon/elements/ListItemTreeSection"
+import { ListItemTreeSection as SeldonSection } from "@seldon/components/elements/ListItemTreeSection"
 import { BoardSection } from "../helpers/get-board-sections"
 
 interface RowSectionProps {

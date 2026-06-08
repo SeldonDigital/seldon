@@ -1,7 +1,7 @@
 "use client"
 
-import { ButtonBarPrimary } from "../../seldon/chrome/elements/ButtonBarPrimary"
-import { FloatingPanel } from "@components/panels/FloatingPanel"
+import { ButtonBarPrimary } from "@seldon/components/chrome/elements/ButtonBarPrimary"
+import { FloatingPanel } from "@app/panels/FloatingPanel"
 import { ImageDropzone } from "./ImageDropzone"
 import { useImageUploadPanel } from "../hooks/use-upload-image-panel"
 
