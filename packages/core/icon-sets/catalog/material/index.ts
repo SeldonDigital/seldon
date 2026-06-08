@@ -5,6 +5,8 @@ export { IconMaterialArrowDownward } from './user-interface/navigation/IconMater
 export { IconMaterialArrowLeft } from './user-interface/navigation/IconMaterialArrowLeft'
 export { IconMaterialArrowRight } from './user-interface/navigation/IconMaterialArrowRight'
 export { IconMaterialChevronLeft } from './user-interface/navigation/IconMaterialChevronLeft'
+export { IconMaterialChevronDown } from './user-interface/navigation/IconMaterialChevronDown'
+export { IconMaterialThumbP } from './user-interface/navigation/IconMaterialThumbP'
 export { IconMaterialChevronRight } from './user-interface/navigation/IconMaterialChevronRight'
 export { IconMaterialChevronDoubleUp } from './user-interface/navigation/IconMaterialChevronDoubleUp'
 export { IconMaterialChevronDoubleDown } from './user-interface/navigation/IconMaterialChevronDoubleDown'
@@ -53,6 +55,7 @@ export { IconMaterialInfo } from './user-interface/status/IconMaterialInfo'
 export { IconMaterialHelp } from './user-interface/actions/IconMaterialHelp'
 export { IconMaterialHelpOutline } from './user-interface/communication/IconMaterialHelpOutline'
 export { IconMaterialVisibility } from './user-interface/status/IconMaterialVisibility'
+export { IconMaterialRobot } from './user-interface/status/IconMaterialRobot'
 export { IconMaterialVisibilityOff } from './user-interface/status/IconMaterialVisibilityOff'
 export { IconMaterialLock } from './system/security/IconMaterialLock'
 export { IconMaterialLockOpen } from './system/security/IconMaterialLockOpen'
@@ -264,6 +267,8 @@ export const materialIconIds: readonly IconId[] = [
   "material-arrowLeft",
   "material-arrowRight",
   "material-chevronLeft",
+  "material-chevronDown",
+  "material-thumbP",
   "material-chevronRight",
   "material-chevronDoubleUp",
   "material-chevronDoubleDown",
@@ -312,6 +317,7 @@ export const materialIconIds: readonly IconId[] = [
   "material-help",
   "material-helpOutline",
   "material-visibility",
+  "material-robot",
   "material-visibilityOff",
   "material-lock",
   "material-lockOpen",
