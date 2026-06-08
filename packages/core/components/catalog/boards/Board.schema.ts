@@ -13,12 +13,12 @@ export const schema = {
   properties: {
     board: {
       preset: {
-        type: Sdn.ValueType.OPTION,
-        value: Sdn.Resize.FIT,
+        type: Sdn.ValueType.EMPTY,
+        value: null,
       },
       width: {
-        type: Sdn.ValueType.OPTION,
-        value: Sdn.Resize.FIT,
+        type: Sdn.ValueType.EXACT,
+        value: { value: 800, unit: Sdn.Unit.PX },
       },
       height: {
         type: Sdn.ValueType.OPTION,

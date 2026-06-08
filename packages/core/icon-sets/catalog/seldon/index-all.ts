@@ -17,6 +17,7 @@ export { IconSeldonFontTextDecoration } from "./user-interface/text/IconSeldonFo
 export { IconSeldonFontTextWrap } from "./user-interface/text/IconSeldonFontTextWrap"
 export { IconSeldonFontWeight } from "./user-interface/text/IconSeldonFontWeight"
 export { IconSeldonIconText } from "./user-interface/text/IconSeldonIconText"
+export { IconSeldonRtl } from "./user-interface/text/IconSeldonRtl"
 
 // user-interface/navigation
 export { IconSeldonChevronDoubleDown } from "./user-interface/navigation/IconSeldonChevronDoubleDown"
@@ -80,6 +81,17 @@ export { IconSeldonFitHorizontal } from "./system/settings/IconSeldonFitHorizont
 export { IconSeldonFitVertical } from "./system/settings/IconSeldonFitVertical"
 export { IconSeldonOrientationHorizontal } from "./system/settings/IconSeldonOrientationHorizontal"
 export { IconSeldonOrientationVertical } from "./system/settings/IconSeldonOrientationVertical"
+export { IconSeldonPadding } from "./system/settings/IconSeldonPadding"
+export { IconSeldonMargin } from "./system/settings/IconSeldonMargin"
+export { IconSeldonWidth } from "./system/settings/IconSeldonWidth"
+export { IconSeldonHeight } from "./system/settings/IconSeldonHeight"
+export { IconSeldonOpacity } from "./system/settings/IconSeldonOpacity"
+export { IconSeldonBrightness } from "./system/settings/IconSeldonBrightness"
+export { IconSeldonCase } from "./system/settings/IconSeldonCase"
+export { IconSeldonStyle } from "./system/settings/IconSeldonStyle"
+export { IconSeldonBorderStyle } from "./system/settings/IconSeldonBorderStyle"
+export { IconSeldonBorderColor } from "./system/settings/IconSeldonBorderColor"
+export { IconSeldonBackgroundColor } from "./system/settings/IconSeldonBackgroundColor"
 
 // user-interface/actions (includes former misc icons)
 export { IconSeldonAddChart } from "./user-interface/actions/IconSeldonAddChart"
@@ -109,6 +121,12 @@ export { IconSeldonToolArrow } from "./user-interface/actions/IconSeldonToolArro
 export { IconSeldonToolImageAi } from "./user-interface/actions/IconSeldonToolImageAi"
 export { IconSeldonToolComponent } from "./user-interface/actions/IconSeldonToolComponent"
 export { IconSeldonToolSketch } from "./user-interface/actions/IconSeldonToolSketch"
+export { IconSeldonToken } from "./user-interface/actions/IconSeldonToken"
+export { IconSeldonUpload } from "./user-interface/actions/IconSeldonUpload"
+export { IconSeldonDuplicate } from "./user-interface/actions/IconSeldonDuplicate"
+export { IconSeldonPreview } from "./user-interface/actions/IconSeldonPreview"
+export { IconSeldonFullScreen } from "./user-interface/actions/IconSeldonFullScreen"
+export { IconSeldonSpark } from "./user-interface/actions/IconSeldonSpark"
 
 // user-interface/status
 export { IconSeldonBattery0Bar } from "./user-interface/status/IconSeldonBattery0Bar"
@@ -136,6 +154,13 @@ export { IconSeldonContent } from "./user-interface/media/IconSeldonContent"
 export { IconSeldonIconFrame } from "./user-interface/media/IconSeldonIconFrame"
 export { IconSeldonIconImage } from "./user-interface/media/IconSeldonIconImage"
 export { IconSeldonVector } from "./user-interface/media/IconSeldonVector"
+export { IconSeldonParts } from "./user-interface/media/IconSeldonParts"
+export { IconSeldonPrimitives } from "./user-interface/media/IconSeldonPrimitives"
+export { IconSeldonModules } from "./user-interface/media/IconSeldonModules"
+export { IconSeldonElements } from "./user-interface/media/IconSeldonElements"
+export { IconSeldonPanels } from "./user-interface/media/IconSeldonPanels"
+export { IconSeldonCatalog } from "./user-interface/media/IconSeldonCatalog"
+export { IconSeldonPhotograph } from "./user-interface/media/IconSeldonPhotograph"
 
 // social-media/social
 export { IconSocialFacebook } from "./social-media/social/IconSocialFacebook"
@@ -294,4 +319,29 @@ export const seldonAllIconIds: readonly IconId[] = [
   "seldon-iconSocialInstagram",
   "seldon-iconSocialGithub",
   "seldon-swatch",
+  "seldon-padding",
+  "seldon-margin",
+  "seldon-width",
+  "seldon-height",
+  "seldon-opacity",
+  "seldon-brightness",
+  "seldon-case",
+  "seldon-style",
+  "seldon-borderStyle",
+  "seldon-borderColor",
+  "seldon-backgroundColor",
+  "seldon-parts",
+  "seldon-primitives",
+  "seldon-modules",
+  "seldon-elements",
+  "seldon-panels",
+  "seldon-catalog",
+  "seldon-photograph",
+  "seldon-token",
+  "seldon-upload",
+  "seldon-duplicate",
+  "seldon-preview",
+  "seldon-fullScreen",
+  "seldon-spark",
+  "seldon-rtl",
 ] as const
