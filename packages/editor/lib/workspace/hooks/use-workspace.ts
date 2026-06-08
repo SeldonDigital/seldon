@@ -49,6 +49,9 @@ export function useWorkspace({
         return newState
       } catch (error) {
         if (error instanceof WorkspaceValidationError) {
+          // Previews are best-effort: skip the update and stay silent. The
+          // committed dispatch on drop surfaces the real validation toast.
+          if (isPreview) return
           addToast(error.message)
         } else if (error instanceof Error) {
           addToast(error.message)

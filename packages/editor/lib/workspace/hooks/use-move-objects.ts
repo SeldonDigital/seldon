@@ -21,7 +21,10 @@ import { useAddToast } from "@components/toaster/hooks/use-add-toast"
 import { useWorkspace } from "./use-workspace"
 
 export function useMoveObjects() {
-  const { workspace, dispatch } = useWorkspace()
+  // Index math must read committed state. During a live drag preview the
+  // preview-aware workspace already reflects the prior hover's move, which would
+  // drift the computed index. `dispatch` rebuilds from committed state regardless.
+  const { workspace, dispatch } = useWorkspace({ usePreview: false })
   const addToast = useAddToast()
 
   const moveChildTo = useCallback(
