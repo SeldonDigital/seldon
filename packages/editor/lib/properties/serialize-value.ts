@@ -326,6 +326,15 @@ function getUnitForNumericValue(
   return getDefaultUnitForProperty(propertyKey || "")
 }
 
+/** Attributes whose value is free text; numeric input stays a literal string. */
+const FREE_TEXT_PROPERTY_KEYS = new Set([
+  "content",
+  "altText",
+  "ariaLabel",
+  "placeholder",
+  "source",
+])
+
 /**
  * Serializes a string to a PropertyValue object.
  *
@@ -354,6 +363,16 @@ export function serializeValue(
   // it as a real OPTION (CSS 0), so keep it distinct for those.
   if (value === "none" && !supportsNoneOption(propertyKey)) {
     return { type: ValueType.EMPTY, value: null }
+  }
+
+  // Free-text attributes store the raw string. Skip the numeric and theme
+  // coercion below so input like "001" stays the literal text rather than being
+  // turned into a dimension the property would reject.
+  if (
+    propertyKey &&
+    FREE_TEXT_PROPERTY_KEYS.has(propertyKey.split(".").pop() as string)
+  ) {
+    return { type: ValueType.EXACT, value }
   }
 
   // Try to handle as a preset value using the dynamic mapping system
