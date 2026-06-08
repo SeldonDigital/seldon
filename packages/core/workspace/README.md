@@ -203,7 +203,7 @@ The result of this is that an editor's object panel will display and edit all co
 | `tags` | `string[]` | Optional labels for search or filtering. |
 | `license` | `object` | Optional component licensing metadata. |
 | `componentTheme` | `ThemeInstanceId` | The theme applied to this catalog row and inherited by its variants. The `componentTheme` field influences exported output by supplying a theme when no theme has been assigned to a variant. The `componentTheme` defaults to `seldonTheme`. |
-| `componentProperties` | `Properties` | Overrides on the editor board shell from `core/components/boards/Board.schema.ts`. Includes the `board` compound for device preset and viewport width and height. These do not affect exported code or how components are rendered in production. |
+| `componentProperties` | `Properties` | Overrides on the editor board shell from `core/components/catalog/boards/Board.schema.ts`. Includes the `board` compound for device preset and viewport width and height. These do not affect exported code or how components are rendered in production. |
 | `variants` | `{ "id", "children"? }` | An ordered array of variant entries belonging to this catalog row appearing top to bottom, along with their nested children. (See the **Nodes section** below.) The first entry is always the **default variant**. See **Default catalog alignment** (Workspace Structure). |
 | `__editor` | `object` | Optional editor-only metadata for this component. |
 
@@ -229,7 +229,7 @@ When placing or pasting a component from another workspace, the rules are:
     "componentTheme": "seldonTheme",
     "componentProperties": { /* ... properties */ },
     "variants": [
-      { /* Default button variant. Based on: core/components/elements/Button.schema.ts */
+      { /* Default button variant. Based on: core/components/catalog/elements/Button.schema.ts */
         "id": "component-button-default",
         "children": [
           { "id": "component-icon-default" },

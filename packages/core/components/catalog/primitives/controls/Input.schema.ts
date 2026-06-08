@@ -1,7 +1,7 @@
-import { InputType } from "../../../index"
-import * as Sdn from "../../../properties"
-import * as Seldon from "../../constants"
-import { ComponentExport, ComponentSchema } from "../../types"
+import { InputType } from "../../../../index"
+import * as Sdn from "../../../../properties"
+import * as Seldon from "../../../constants"
+import { ComponentExport, ComponentSchema } from "../../../types"
 
 export const schema = {
   name: "Input",

@@ -27,12 +27,12 @@ Seven levels are defined in the catalog. Six are used in composition trees. **Fr
 
 | Level | Source | May contain |
 | --- | --- | --- |
-| `screen` | `screens/*.schema.ts` | Any level, including frames |
-| `module` | `modules/*.schema.ts` | Modules, parts, elements, primitives, frames |
-| `part` | `parts/*.schema.ts` | Parts, elements, primitives, frames |
-| `element` | `elements/*.schema.ts` | Elements, primitives, frames |
-| `primitive` | `primitives/*.schema.ts` | Nothing. Primitives are leaves |
-| `frame` | `frames/*.schema.ts` | Modules, parts, elements, primitives, frames |
+| `screen` | `catalog/screens/*.schema.ts` | Any level, including frames |
+| `module` | `catalog/modules/*.schema.ts` | Modules, parts, elements, primitives, frames |
+| `part` | `catalog/parts/*.schema.ts` | Parts, elements, primitives, frames |
+| `element` | `catalog/elements/*.schema.ts` | Elements, primitives, frames |
+| `primitive` | `catalog/primitives/*.schema.ts` | Nothing. Primitives are leaves |
+| `frame` | `catalog/frames/*.schema.ts` | Modules, parts, elements, primitives, frames |
 
 Frames sit outside the hierarchy on purpose. They are not really a "kind" of component the way a button, a list, or a screen is -- they are a container, a grouping mechanism. A frame's job is to wrap and arrange other components, and because grouping is useful at every level, frames are allowed to live at any level and to hold any kind of child.
 
@@ -374,7 +374,7 @@ The high-level recipe; details vary by level.
 
 **1. Pick the bucket**
 
-Decide on the level (`screen`, `module`, `part`, `element`, `primitive`, `frame`) and create the file under the matching directory, grouped by family (e.g. `elements/buttons/MyButton.schema.ts`).
+Decide on the level (`screen`, `module`, `part`, `element`, `primitive`, `frame`) and create the file under the matching directory, grouped by family (e.g. `catalog/elements/buttons/MyButton.schema.ts`).
 
 **2. Author the schema**
 
