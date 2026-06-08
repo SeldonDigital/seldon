@@ -1,6 +1,6 @@
 import { COLORS } from "@lib/helpers/colors"
 import { CSSProperties } from "react"
-import { IconCatalog } from "@seldon/components/custom-icons/Catalog"
+import { IconSeldonCatalog } from "@seldon/components/icons/IconSeldonCatalog"
 
 type LabelProps = {
   label: string
@@ -26,7 +26,7 @@ export function Label({ label, style }: LabelProps) {
 
   return (
     <div style={Object.assign({}, buttonStyle, style)}>
-      <IconCatalog />
+      <IconSeldonCatalog />
       {label}
     </div>
   )

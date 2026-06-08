@@ -3,7 +3,7 @@
 import { DeviceId } from "@lib/devices/types"
 import { Selectable } from "@app/ui/Selectable"
 import { IconDesktop } from "@seldon/components/custom-icons/Desktop"
-import { IconFullScreen } from "@seldon/components/custom-icons/FullScreen"
+import { IconSeldonFullScreen } from "@seldon/components/icons/IconSeldonFullScreen"
 import { IconLaptop } from "@seldon/components/custom-icons/Laptop"
 import { IconPhone } from "@seldon/components/custom-icons/Phone"
 import { IconTablet } from "@seldon/components/custom-icons/Tablet"
@@ -48,7 +48,7 @@ export function DeviceButton({
         color: isSelected ? undefined : "rgba(255, 255, 255, 0.4)",
       }}
     >
-      {device === "custom" && <IconFullScreen />}
+      {device === "custom" && <IconSeldonFullScreen />}
       {device === "desktop" && <IconDesktop />}
       {device === "laptop" && <IconLaptop />}
       {device === "phone" && <IconPhone />}

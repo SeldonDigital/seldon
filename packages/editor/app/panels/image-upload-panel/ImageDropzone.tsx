@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { useObjectURL } from "@lib/hooks/use-object-url"
-import { IconUpload } from "@seldon/components/custom-icons/Upload"
+import { IconSeldonUpload } from "@seldon/components/icons/IconSeldonUpload"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 
 export interface ImageDropzoneProps {
@@ -96,7 +96,7 @@ export function ImageDropzone({
           </div>
         ) : (
           <>
-            <IconUpload style={{ fontSize: "1.125rem" }} />
+            <IconSeldonUpload style={{ fontSize: "1.125rem" }} />
             <p style={{ fontSize: "var(--sdn-font-size-small)" }}>
               {isDragging ? "Drop image here..." : "Select or drop image…"}
             </p>
