@@ -43,6 +43,10 @@ import {
   schema as sectionSchema,
 } from "../elements/Section.schema"
 import {
+  exportConfig as selectExportConfig,
+  schema as selectSchema,
+} from "../elements/Select.schema"
+import {
   exportConfig as headerActionExportConfig,
   schema as headerActionSchema,
 } from "../elements/headers/HeaderAction.schema"
@@ -171,10 +175,6 @@ import {
   schema as optionSchema,
 } from "../primitives/controls/Option.schema"
 import {
-  exportConfig as selectExportConfig,
-  schema as selectSchema,
-} from "../primitives/controls/Select.schema"
-import {
   exportConfig as descriptionDetailsExportConfig,
   schema as descriptionDetailsSchema,
 } from "../primitives/lists/DescriptionDetails.schema"
@@ -263,6 +263,7 @@ const elements: ComponentSchema[] = [
   headerCardSchema,
   itemSchema,
   sectionSchema,
+  selectSchema,
   tableRowDataSchema,
 ]
 
@@ -274,7 +275,6 @@ const primitives: ComponentSchema[] = [
   inputSchema,
   legendSchema,
   optionSchema,
-  selectSchema,
   descriptionDetailsSchema,
   descriptionListSchema,
   descriptionTermSchema,
