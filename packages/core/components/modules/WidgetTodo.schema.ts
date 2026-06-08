@@ -361,7 +361,7 @@ export const schema = {
   default: {
     children: [
       {
-        component: Seldon.ComponentId.BAR_HEADER,
+        component: Seldon.ComponentId.BAR,
         overrides: {
           height: {
             type: Sdn.ValueType.OPTION,

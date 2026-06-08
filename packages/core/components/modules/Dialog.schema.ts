@@ -373,7 +373,7 @@ export const schema = {
   default: {
     children: [
       {
-        component: Seldon.ComponentId.BAR_HEADER,
+        component: Seldon.ComponentId.BAR,
         overrides: {
           height: {
             type: Sdn.ValueType.OPTION,
@@ -693,7 +693,7 @@ export const schema = {
         },
       },
       {
-        component: Seldon.ComponentId.BAR_FOOTER,
+        component: Seldon.ComponentId.BAR,
         overrides: {
           height: {
             type: Sdn.ValueType.OPTION,

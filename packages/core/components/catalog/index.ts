@@ -92,35 +92,11 @@ import {
 import {
   exportConfig as iabExportConfig,
   schema as iabSchema,
-} from "../parts/ads/IAB.schema"
+} from "../parts/IAB.schema"
 import {
-  exportConfig as socialMediaExportConfig,
-  schema as socialMediaSchema,
-} from "../parts/ads/SocialMedia.schema"
-import {
-  exportConfig as barButtonsExportConfig,
-  schema as barButtonsSchema,
-} from "../parts/bars/BarButtons.schema"
-import {
-  exportConfig as barFooterExportConfig,
-  schema as barFooterSchema,
-} from "../parts/bars/BarFooter.schema"
-import {
-  exportConfig as barHeaderExportConfig,
-  schema as barHeaderSchema,
-} from "../parts/bars/BarHeader.schema"
-import {
-  exportConfig as barNavigationExportConfig,
-  schema as barNavigationSchema,
-} from "../parts/bars/BarNavigation.schema"
-import {
-  exportConfig as barStatusExportConfig,
-  schema as barStatusSchema,
-} from "../parts/bars/BarStatus.schema"
-import {
-  exportConfig as barTabsExportConfig,
-  schema as barTabsSchema,
-} from "../parts/bars/BarTabs.schema"
+  exportConfig as barExportConfig,
+  schema as barSchema,
+} from "../parts/Bar.schema"
 import {
   exportConfig as cardHorizontalExportConfig,
   schema as cardHorizontalSchema,
@@ -321,13 +297,7 @@ const primitives: ComponentSchema[] = [
 
 const parts: ComponentSchema[] = [
   iabSchema,
-  socialMediaSchema,
-  barButtonsSchema,
-  barFooterSchema,
-  barHeaderSchema,
-  barNavigationSchema,
-  barStatusSchema,
-  barTabsSchema,
+  barSchema,
   cardHorizontalSchema,
   cardProductSchema,
   cardStackedSchema,
@@ -422,13 +392,7 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
 
   // Parts
   [ComponentId.AD_IAB]: iabExportConfig,
-  [ComponentId.AD_SOCIAL_MEDIA]: socialMediaExportConfig,
-  [ComponentId.BAR_BUTTONS]: barButtonsExportConfig,
-  [ComponentId.BAR_FOOTER]: barFooterExportConfig,
-  [ComponentId.BAR_HEADER]: barHeaderExportConfig,
-  [ComponentId.BAR_NAVIGATION]: barNavigationExportConfig,
-  [ComponentId.BAR_STATUS]: barStatusExportConfig,
-  [ComponentId.BAR_TABS]: barTabsExportConfig,
+  [ComponentId.BAR]: barExportConfig,
   [ComponentId.CARD_HORIZONTAL]: cardHorizontalExportConfig,
   [ComponentId.CARD_PRODUCT]: cardProductExportConfig,
   [ComponentId.CARD_STACKED]: cardStackedExportConfig,

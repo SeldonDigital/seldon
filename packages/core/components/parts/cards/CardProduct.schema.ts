@@ -515,7 +515,7 @@ export const schema = {
         ],
       },
       {
-        component: Seldon.ComponentId.BAR_BUTTONS,
+        component: Seldon.ComponentId.BAR,
         overrides: {
           width: {
             type: Sdn.ValueType.OPTION,

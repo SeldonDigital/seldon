@@ -8,14 +8,8 @@
  */
 export enum ComponentId {
   AD_IAB = "adIab",
-  AD_SOCIAL_MEDIA = "adSocialMedia",
   AVATAR = "avatar",
-  BAR_BUTTONS = "barButtons",
-  BAR_FOOTER = "barFooter",
-  BAR_HEADER = "barHeader",
-  BAR_NAVIGATION = "barNavigation",
-  BAR_STATUS = "barStatus",
-  BAR_TABS = "barTabs",
+  BAR = "bar",
   BLOCKQUOTE = "blockquote",
   BOARD = "board",
   BUTTON = "button",

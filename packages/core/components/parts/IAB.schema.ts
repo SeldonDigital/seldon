@@ -1,19 +1,28 @@
-import * as Sdn from "../../../properties"
-import * as Seldon from "../../constants"
-import { ComponentExport, ComponentSchema } from "../../types"
+import * as Sdn from "../../properties"
+import * as Seldon from "../constants"
+import { ComponentExport, ComponentSchema } from "../types"
 
 export const schema = {
-  name: "Status Bar",
-  id: Seldon.ComponentId.BAR_STATUS,
+  name: "IAB Display Ad",
+  id: Seldon.ComponentId.AD_IAB,
   intent:
-    "Provides a status bar for displaying application or system information.",
-  tags: ["status", "bar", "UI", "footer", "section", "information"],
+    "Defines schema for IAB-compliant ad formats used in display and programmatic advertising, supporting standard sizes, creatives, and metrics.",
+  tags: [
+    "ads",
+    "iab",
+    "display",
+    "programmatic",
+    "standard",
+    "media",
+    "metrics",
+    "creative",
+  ],
   level: Seldon.ComponentLevel.PART,
   icon: Seldon.ComponentIcon.COMPONENT,
   properties: {
     display: {
-      type: Sdn.ValueType.EMPTY,
-      value: null,
+      type: Sdn.ValueType.OPTION,
+      value: Sdn.Display.SHOW,
     },
     ariaLabel: {
       type: Sdn.ValueType.EMPTY,
@@ -29,19 +38,25 @@ export const schema = {
     },
     orientation: {
       type: Sdn.ValueType.OPTION,
-      value: Sdn.Orientation.HORIZONTAL,
+      value: Sdn.Orientation.VERTICAL,
     },
     align: {
       type: Sdn.ValueType.OPTION,
-      value: Sdn.Align.CENTER_LEFT,
+      value: Sdn.Align.TOP_LEFT,
     },
     width: {
-      type: Sdn.ValueType.OPTION,
-      value: Sdn.Resize.FILL,
+      type: Sdn.ValueType.EXACT,
+      value: {
+        unit: Sdn.Unit.PX,
+        value: 300,
+      },
     },
     height: {
-      type: Sdn.ValueType.OPTION,
-      value: Sdn.Resize.FIT,
+      type: Sdn.ValueType.EXACT,
+      value: {
+        unit: Sdn.Unit.PX,
+        value: 250,
+      },
     },
     margin: {
       top: {
@@ -63,25 +78,25 @@ export const schema = {
     },
     padding: {
       top: {
-        type: Sdn.ValueType.THEME_ORDINAL,
-        value: "@padding.compact",
+        type: Sdn.ValueType.EMPTY,
+        value: null,
       },
       right: {
-        type: Sdn.ValueType.THEME_ORDINAL,
-        value: "@padding.compact",
+        type: Sdn.ValueType.EMPTY,
+        value: null,
       },
       bottom: {
-        type: Sdn.ValueType.THEME_ORDINAL,
-        value: "@padding.compact",
+        type: Sdn.ValueType.EMPTY,
+        value: null,
       },
       left: {
-        type: Sdn.ValueType.THEME_ORDINAL,
-        value: "@padding.cozy",
+        type: Sdn.ValueType.EMPTY,
+        value: null,
       },
     },
     gap: {
-      type: Sdn.ValueType.OPTION,
-      value: Sdn.Gap.EVENLY_SPACED,
+      type: Sdn.ValueType.THEME_ORDINAL,
+      value: "@gap.compact",
     },
     rotation: {
       type: Sdn.ValueType.EMPTY,
@@ -111,11 +126,11 @@ export const schema = {
       {
         preset: {
           type: Sdn.ValueType.THEME_CATEGORICAL,
-          value: "@background.none",
+          value: "@background.background1",
         },
         image: {
-          type: Sdn.ValueType.EMPTY,
-          value: null,
+          type: Sdn.ValueType.EXACT,
+          value: "https://static.seldon.app/background-default-dark.jpg",
         },
         position: {
           type: Sdn.ValueType.EMPTY,
@@ -131,7 +146,7 @@ export const schema = {
         },
         color: {
           type: Sdn.ValueType.THEME_CATEGORICAL,
-          value: "@swatch.black",
+          value: "@swatch.white",
         },
         blendMode: {
           type: Sdn.ValueType.EMPTY,
@@ -154,7 +169,7 @@ export const schema = {
     border: {
       preset: {
         type: Sdn.ValueType.THEME_CATEGORICAL,
-        value: "@border.none",
+        value: "@border.hairline",
       },
       style: {
         type: Sdn.ValueType.EMPTY,
@@ -319,6 +334,54 @@ export const schema = {
         value: null,
       },
     },
+    gradient: [
+      {
+        preset: {
+          type: Sdn.ValueType.THEME_CATEGORICAL,
+          value: "@gradient.none",
+        },
+        gradientType: {
+          type: Sdn.ValueType.EMPTY,
+          value: null,
+        },
+        angle: {
+          type: Sdn.ValueType.EMPTY,
+          value: null,
+        },
+        startColor: {
+          type: Sdn.ValueType.EMPTY,
+          value: null,
+        },
+        startOpacity: {
+          type: Sdn.ValueType.EMPTY,
+          value: null,
+        },
+        startBrightness: {
+          type: Sdn.ValueType.EMPTY,
+          value: null,
+        },
+        startPosition: {
+          type: Sdn.ValueType.EMPTY,
+          value: null,
+        },
+        endColor: {
+          type: Sdn.ValueType.EMPTY,
+          value: null,
+        },
+        endOpacity: {
+          type: Sdn.ValueType.EMPTY,
+          value: null,
+        },
+        endBrightness: {
+          type: Sdn.ValueType.EMPTY,
+          value: null,
+        },
+        endPosition: {
+          type: Sdn.ValueType.EMPTY,
+          value: null,
+        },
+      },
+    ],
     shadow: [
       {
         preset: {
@@ -360,14 +423,29 @@ export const schema = {
     children: [
       {
         component: Seldon.ComponentId.TEXT,
+        variant: "title",
         overrides: {
           content: {
             type: Sdn.ValueType.EXACT,
-            value: "Left status",
+            value: "Medium Rectangle",
           },
-          align: {
-            type: Sdn.ValueType.OPTION,
-            value: Sdn.Align.CENTER_LEFT,
+          margin: {
+            top: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@margin.tight",
+            },
+            right: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@margin.tight",
+            },
+            bottom: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@margin.tight",
+            },
+            left: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@margin.tight",
+            },
           },
           color: {
             type: Sdn.ValueType.COMPUTED,
@@ -381,7 +459,7 @@ export const schema = {
           font: {
             preset: {
               type: Sdn.ValueType.THEME_CATEGORICAL,
-              value: "@font.code",
+              value: "@font.title",
             },
             family: {
               type: Sdn.ValueType.EMPTY,
@@ -396,8 +474,8 @@ export const schema = {
               value: null,
             },
             size: {
-              type: Sdn.ValueType.THEME_ORDINAL,
-              value: "@fontSize.xsmall",
+              type: Sdn.ValueType.EMPTY,
+              value: null,
             },
             lineHeight: {
               type: Sdn.ValueType.EMPTY,
@@ -412,28 +490,38 @@ export const schema = {
       },
       {
         component: Seldon.ComponentId.TEXT,
+        variant: "tagline",
         overrides: {
           content: {
             type: Sdn.ValueType.EXACT,
-            value: "Middle status",
+            value: "Ads by Seldon",
           },
-          align: {
-            type: Sdn.ValueType.OPTION,
-            value: Sdn.Align.CENTER,
+          margin: {
+            top: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@margin.tight",
+            },
+            right: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@margin.tight",
+            },
+            bottom: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@margin.tight",
+            },
+            left: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@margin.tight",
+            },
           },
           color: {
-            type: Sdn.ValueType.COMPUTED,
-            value: {
-              function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-              input: {
-                basedOn: "#parent.background.color",
-              },
-            },
+            type: Sdn.ValueType.THEME_CATEGORICAL,
+            value: "@swatch.white",
           },
           font: {
             preset: {
               type: Sdn.ValueType.THEME_CATEGORICAL,
-              value: "@font.code",
+              value: "@font.tagline",
             },
             family: {
               type: Sdn.ValueType.EMPTY,
@@ -448,8 +536,8 @@ export const schema = {
               value: null,
             },
             size: {
-              type: Sdn.ValueType.THEME_ORDINAL,
-              value: "@fontSize.xsmall",
+              type: Sdn.ValueType.EMPTY,
+              value: null,
             },
             lineHeight: {
               type: Sdn.ValueType.EMPTY,
@@ -463,29 +551,39 @@ export const schema = {
         },
       },
       {
-        component: Seldon.ComponentId.TEXT,
+        component: Seldon.ComponentId.DESCRIPTION,
         overrides: {
           content: {
             type: Sdn.ValueType.EXACT,
-            value: "Right status",
+            value:
+              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus. Donec euismod in fringilla.",
           },
-          align: {
-            type: Sdn.ValueType.OPTION,
-            value: Sdn.Align.CENTER_RIGHT,
+          margin: {
+            top: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@margin.tight",
+            },
+            right: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@margin.tight",
+            },
+            bottom: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@margin.tight",
+            },
+            left: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@margin.tight",
+            },
           },
           color: {
-            type: Sdn.ValueType.COMPUTED,
-            value: {
-              function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-              input: {
-                basedOn: "#parent.background.color",
-              },
-            },
+            type: Sdn.ValueType.THEME_CATEGORICAL,
+            value: "@swatch.white",
           },
           font: {
             preset: {
               type: Sdn.ValueType.THEME_CATEGORICAL,
-              value: "@font.code",
+              value: "@font.body",
             },
             family: {
               type: Sdn.ValueType.EMPTY,
@@ -500,8 +598,8 @@ export const schema = {
               value: null,
             },
             size: {
-              type: Sdn.ValueType.THEME_ORDINAL,
-              value: "@fontSize.xsmall",
+              type: Sdn.ValueType.EMPTY,
+              value: null,
             },
             lineHeight: {
               type: Sdn.ValueType.EMPTY,
@@ -516,6 +614,175 @@ export const schema = {
       },
     ],
   },
+  variants: [
+    {
+      id: "billboard",
+      label: "Billboard",
+      intent: "IAB Billboard display ad unit (970×250 px).",
+      overrides: {
+        width: {
+          type: Sdn.ValueType.EXACT,
+          value: { unit: Sdn.Unit.PX, value: 970 },
+        },
+        height: {
+          type: Sdn.ValueType.EXACT,
+          value: { unit: Sdn.Unit.PX, value: 250 },
+        },
+      },
+    },
+    {
+      id: "smartphoneBanner",
+      label: "Smartphone Banner",
+      intent:
+        "IAB Smartphone Banner display ad unit (300×50 px). Alternate size: 320×50.",
+      overrides: {
+        width: {
+          type: Sdn.ValueType.EXACT,
+          value: { unit: Sdn.Unit.PX, value: 300 },
+        },
+        height: {
+          type: Sdn.ValueType.EXACT,
+          value: { unit: Sdn.Unit.PX, value: 50 },
+        },
+      },
+    },
+    {
+      id: "leaderboard",
+      label: "Leaderboard",
+      intent: "IAB Leaderboard display ad unit (728×90 px).",
+      overrides: {
+        width: {
+          type: Sdn.ValueType.EXACT,
+          value: { unit: Sdn.Unit.PX, value: 728 },
+        },
+        height: {
+          type: Sdn.ValueType.EXACT,
+          value: { unit: Sdn.Unit.PX, value: 90 },
+        },
+      },
+    },
+    {
+      id: "superLeaderboard",
+      label: "Super Leaderboard / Pushdown",
+      intent: "IAB Super Leaderboard or Pushdown display ad unit (970×90 px).",
+      overrides: {
+        width: {
+          type: Sdn.ValueType.EXACT,
+          value: { unit: Sdn.Unit.PX, value: 970 },
+        },
+        height: {
+          type: Sdn.ValueType.EXACT,
+          value: { unit: Sdn.Unit.PX, value: 90 },
+        },
+      },
+    },
+    {
+      id: "portrait",
+      label: "Portrait",
+      intent: "IAB Portrait display ad unit (300×1050 px).",
+      overrides: {
+        width: {
+          type: Sdn.ValueType.EXACT,
+          value: { unit: Sdn.Unit.PX, value: 300 },
+        },
+        height: {
+          type: Sdn.ValueType.EXACT,
+          value: { unit: Sdn.Unit.PX, value: 1050 },
+        },
+      },
+    },
+    {
+      id: "skyscraper",
+      label: "Skyscraper",
+      intent: "IAB Skyscraper display ad unit (160×600 px).",
+      overrides: {
+        width: {
+          type: Sdn.ValueType.EXACT,
+          value: { unit: Sdn.Unit.PX, value: 160 },
+        },
+        height: {
+          type: Sdn.ValueType.EXACT,
+          value: { unit: Sdn.Unit.PX, value: 600 },
+        },
+      },
+    },
+    {
+      id: "banner120x60",
+      label: "120×60",
+      intent: "IAB 120×60 display ad unit.",
+      overrides: {
+        width: {
+          type: Sdn.ValueType.EXACT,
+          value: { unit: Sdn.Unit.PX, value: 120 },
+        },
+        height: {
+          type: Sdn.ValueType.EXACT,
+          value: { unit: Sdn.Unit.PX, value: 60 },
+        },
+      },
+    },
+    {
+      id: "mobilePhoneInterstitial",
+      label: "Mobile Phone Interstitial",
+      intent:
+        "IAB Mobile Phone Interstitial display ad unit (1080×1920 px). Alternate sizes: 640×1136, 750×1334.",
+      overrides: {
+        width: {
+          type: Sdn.ValueType.EXACT,
+          value: { unit: Sdn.Unit.PX, value: 1080 },
+        },
+        height: {
+          type: Sdn.ValueType.EXACT,
+          value: { unit: Sdn.Unit.PX, value: 1920 },
+        },
+      },
+    },
+    {
+      id: "featurePhoneSmallBanner",
+      label: "Feature Phone Small Banner",
+      intent: "IAB Feature Phone Small Banner display ad unit (120×20 px).",
+      overrides: {
+        width: {
+          type: Sdn.ValueType.EXACT,
+          value: { unit: Sdn.Unit.PX, value: 120 },
+        },
+        height: {
+          type: Sdn.ValueType.EXACT,
+          value: { unit: Sdn.Unit.PX, value: 20 },
+        },
+      },
+    },
+    {
+      id: "featurePhoneMediumBanner",
+      label: "Feature Phone Medium Banner",
+      intent: "IAB Feature Phone Medium Banner display ad unit (168×28 px).",
+      overrides: {
+        width: {
+          type: Sdn.ValueType.EXACT,
+          value: { unit: Sdn.Unit.PX, value: 168 },
+        },
+        height: {
+          type: Sdn.ValueType.EXACT,
+          value: { unit: Sdn.Unit.PX, value: 28 },
+        },
+      },
+    },
+    {
+      id: "featurePhoneLargeBanner",
+      label: "Feature Phone Large Banner",
+      intent: "IAB Feature Phone Large Banner display ad unit (216×36 px).",
+      overrides: {
+        width: {
+          type: Sdn.ValueType.EXACT,
+          value: { unit: Sdn.Unit.PX, value: 216 },
+        },
+        height: {
+          type: Sdn.ValueType.EXACT,
+          value: { unit: Sdn.Unit.PX, value: 36 },
+        },
+      },
+    },
+  ],
 } as const satisfies ComponentSchema
 
 export const exportConfig: ComponentExport = {

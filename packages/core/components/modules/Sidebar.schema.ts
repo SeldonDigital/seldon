@@ -1,6 +1,10 @@
-import * as Sdn from "../../properties"
-import * as Seldon from "../constants"
-import { ComponentExport, ComponentSchema } from "../types"
+import * as Sdn from "../../properties";
+import * as Seldon from "../constants";
+import { ComponentExport, ComponentSchema } from "../types";
+
+
+
+
 
 export const schema = {
   name: "Sidebar",
@@ -153,8 +157,11 @@ export const schema = {
           value: null,
         },
         brightness: {
-          type: Sdn.ValueType.EMPTY,
-          value: null,
+          type: Sdn.ValueType.EXACT,
+          value: {
+            unit: Sdn.Unit.PERCENT,
+            value: 35,
+          },
         },
         opacity: {
           type: Sdn.ValueType.EMPTY,
@@ -373,56 +380,13 @@ export const schema = {
   default: {
     children: [
       {
-        component: Seldon.ComponentId.BAR_TABS,
+        component: Seldon.ComponentId.BAR,
+        variant: "tabs",
         overrides: {
           height: {
             type: Sdn.ValueType.OPTION,
             value: Sdn.Resize.FIT,
           },
-          background: [
-            {
-              preset: {
-                type: Sdn.ValueType.THEME_CATEGORICAL,
-                value: "@background.none",
-              },
-              image: {
-                type: Sdn.ValueType.EMPTY,
-                value: null,
-              },
-              position: {
-                type: Sdn.ValueType.EMPTY,
-                value: null,
-              },
-              size: {
-                type: Sdn.ValueType.EMPTY,
-                value: null,
-              },
-              repeat: {
-                type: Sdn.ValueType.EMPTY,
-                value: null,
-              },
-              color: {
-                type: Sdn.ValueType.THEME_CATEGORICAL,
-                value: "@swatch.primary",
-              },
-              blendMode: {
-                type: Sdn.ValueType.EMPTY,
-                value: null,
-              },
-              filter: {
-                type: Sdn.ValueType.EMPTY,
-                value: null,
-              },
-              brightness: {
-                type: Sdn.ValueType.EMPTY,
-                value: null,
-              },
-              opacity: {
-                type: Sdn.ValueType.EMPTY,
-                value: null,
-              },
-            },
-          ],
           corners: {
             bottomRight: {
               type: Sdn.ValueType.EMPTY,
@@ -501,7 +465,7 @@ export const schema = {
         },
       },
       {
-        component: Seldon.ComponentId.BAR_STATUS,
+        component: Seldon.ComponentId.BAR,
         overrides: {
           height: {
             type: Sdn.ValueType.OPTION,
