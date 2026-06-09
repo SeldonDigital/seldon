@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect } from "react"
+import { CSSProperties, useEffect } from "react"
 import { isHotkeyPressed } from "react-hotkeys-hook"
 import {
   TransformComponent,
@@ -21,6 +21,23 @@ import {
 } from "./TransformWrapper"
 import { CanvasWorkspace } from "./Workspace"
 
+const canvasStyle: CSSProperties = {
+  position: "absolute",
+  inset: 0,
+  height: "100%",
+  width: "100%",
+  WebkitFontSmoothing: "auto",
+}
+
+function getPanCursor(
+  isPanning: boolean,
+  isSpacebarPressed: boolean,
+): CSSProperties["cursor"] {
+  if (isPanning) return "grabbing"
+  if (isSpacebarPressed) return "grab"
+  return undefined
+}
+
 export const Canvas = () => {
   const { selectBoard, selectNode } = useSelection()
   const { activeBoard } = useActiveBoard()
@@ -40,20 +57,19 @@ export const Canvas = () => {
     }
   }, 1000 / 60)
 
+  const handleCanvasClick = () => {
+    if (activeBoard) {
+      selectBoard(getComponentKey(activeBoard))
+    } else {
+      selectNode(null)
+    }
+  }
+
   return (
     <div
       id="canvas"
-      onClick={() => {
-        if (activeBoard) selectBoard(getComponentKey(activeBoard))
-        else selectNode(null)
-      }}
-      style={{
-        position: "absolute",
-        inset: 0,
-        height: "100%",
-        width: "100%",
-        WebkitFontSmoothing: "auto",
-      }}
+      onClick={handleCanvasClick}
+      style={canvasStyle}
       onMouseMove={activeDialog ? undefined : onMouseMove}
     >
       <CanvasTracking />
@@ -84,22 +100,18 @@ const CanvasContainer = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeBoard])
 
+  const wrapperStyle: CSSProperties = {
+    width: "100%",
+    height: "100%",
+    backgroundColor: "#141414",
+    display: "flex",
+    alignItems: "flex-start",
+    justifyContent: "center",
+    cursor: getPanCursor(isPanning, isSpacebarPressed),
+  }
+
   return (
-    <TransformComponent
-      wrapperStyle={{
-        width: "100%",
-        height: "100%",
-        backgroundColor: "#141414",
-        display: "flex",
-        alignItems: "flex-start",
-        justifyContent: "center",
-        cursor: isPanning
-          ? "grabbing"
-          : isSpacebarPressed
-            ? "grab"
-            : undefined,
-      }}
-    >
+    <TransformComponent wrapperStyle={wrapperStyle}>
       <CanvasWorkspace />
     </TransformComponent>
   )

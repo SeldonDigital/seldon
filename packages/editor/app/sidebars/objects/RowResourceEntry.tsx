@@ -1,8 +1,14 @@
 "use client"
 
 import { CSSProperties, useCallback } from "react"
-import { Variant } from "@seldon/core"
+import { Board as BoardType, Variant } from "@seldon/core"
 import { Action } from "@seldon/core/index"
+import {
+  isFontCollectionBoard,
+  isIconSetBoard,
+  isMediaBoard,
+  isThemeBoard,
+} from "@seldon/core/workspace/model/components"
 import { isEntryFontCollectionDefault } from "@seldon/core/workspace/model/entry-font-collection"
 import { isEntryIconSetDefault } from "@seldon/core/workspace/model/entry-icon-set"
 import { isEntryThemeDefault } from "@seldon/core/workspace/model/entry-theme"
@@ -101,20 +107,25 @@ export function RowResourceEntry({
     ...(iconColor ? { style: { color: iconColor } } : {}),
   }
 
+  const handleLabelSubmit = (newLabel: string) => {
+    if (!config.buildLabelAction) return
+    dispatch(config.buildLabelAction(entryId, newLabel.trim()))
+    setEditingName(false)
+  }
+
+  const labelChildren =
+    isEditingName && config.buildLabelAction ? (
+      <Combobox
+        mode="standalone"
+        initialValue={entry.label}
+        onSubmit={handleLabelSubmit}
+      />
+    ) : (
+      entry.label
+    )
+
   const label = {
-    children:
-      isEditingName && config.buildLabelAction ? (
-        <Combobox
-          mode="standalone"
-          initialValue={entry.label}
-          onSubmit={(newLabel) => {
-            dispatch(config.buildLabelAction!(entryId, newLabel.trim()))
-            setEditingName(false)
-          }}
-        />
-      ) : (
-        entry.label
-      ),
+    children: labelChildren,
     ...(labelColor ? { style: { color: labelColor } } : {}),
   } as unknown as LabelProps
 
@@ -207,3 +218,17 @@ export const RESOURCE_ROW_CONFIG: Record<ResourceEntryKind, ResourceRowConfig> =
       },
     },
   }
+
+/**
+ * Resolves the resource-entry row config for a board, or null when the board's
+ * children are component variants rather than resource entries.
+ */
+export function getBoardResourceRowConfig(
+  board: BoardType,
+): ResourceRowConfig | null {
+  if (isThemeBoard(board)) return RESOURCE_ROW_CONFIG.theme
+  if (isFontCollectionBoard(board)) return RESOURCE_ROW_CONFIG.fontCollection
+  if (isIconSetBoard(board)) return RESOURCE_ROW_CONFIG.iconSet
+  if (isMediaBoard(board)) return RESOURCE_ROW_CONFIG.media
+  return null
+}

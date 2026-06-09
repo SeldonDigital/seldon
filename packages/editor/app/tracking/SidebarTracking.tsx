@@ -121,6 +121,18 @@ export function SidebarTracking({
     [onRowDoubleClick],
   )
 
+  const handlePlacementHoverChange = useCallback(
+    (isHovered: boolean) => {
+      onHoverChange?.(isHovered)
+      if (isHovered) {
+        onCanvasTrackingEnter?.()
+      } else {
+        onCanvasTrackingLeave?.()
+      }
+    },
+    [onHoverChange, onCanvasTrackingEnter, onCanvasTrackingLeave],
+  )
+
   const renderSelectDropzones = () => {
     if (activeTool !== "select") return null
 
@@ -181,14 +193,7 @@ export function SidebarTracking({
           onPlacementClick={handlePlacementClick}
           onRowClick={handleRowClickWrapper}
           onRowDoubleClick={handleRowDoubleClickWrapper}
-          onHoverChange={(isHovered: boolean) => {
-            onHoverChange?.(isHovered)
-            if (isHovered) {
-              onCanvasTrackingEnter?.()
-            } else {
-              onCanvasTrackingLeave?.()
-            }
-          }}
+          onHoverChange={handlePlacementHoverChange}
         />
       )}
     </div>

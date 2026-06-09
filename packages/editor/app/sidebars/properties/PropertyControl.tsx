@@ -5,12 +5,17 @@ import {
   parsePropertyPath,
 } from "@lib/properties/property-paths"
 import { serializeValue } from "@lib/properties/serialize-value"
-import { RefObject, useEffect, useMemo, useRef, useState } from "react"
+import {
+  RefObject,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react"
 import { Board, Instance, Theme, Value, ValueType, Variant } from "@seldon/core"
-import { ComponentId, ComponentLevel } from "@seldon/core/components/constants"
-import { getThemePickerOptions } from "@seldon/core/helpers/properties/properties-bridge"
 import { isThemeValueKey } from "@seldon/core/helpers/validation/theme"
-import { IconId, iconLabels } from "@seldon/core/icon-sets"
+import { IconId } from "@seldon/core/icon-sets"
 import { IconSeldonMissing } from "@seldon/core/icon-sets/catalog/seldon/user-interface/actions/IconSeldonMissing"
 import type {
   PropertyKey,
@@ -28,7 +33,6 @@ import { useComboboxState } from "./controls/combobox/hooks/use-combobox-state"
 import { useComboboxPosition } from "./hooks/use-combobox-position"
 import { usePropertyControlData } from "./hooks/use-property-control-data"
 import { usePropertyValidation } from "./hooks/use-property-validation"
-import { getNodeCatalogComponentId } from "@lib/workspace/node-tree"
 import {
   getComponentKey,
   resolveComponentKey,
@@ -39,20 +43,26 @@ import { LoadEditorIcons } from "@app/LoadEditorIcons"
 import { useImageUploadPanel } from "@app/panels/hooks/use-upload-image-panel"
 import { ThemeSwatches } from "@app/ui/ThemeSwatches"
 import {
+  propertyControlContainerStyle,
   propertyControlInnerStyle,
   propertyControlTextStyle,
+  propertyControlTextWrapperStyle,
   propertyControlWrapperStyle,
 } from "../helpers/sidebar-styles"
 import { Combobox } from "./controls/combobox/Combobox"
-import { ComboboxOption } from "./controls/combobox/Option"
-import { ComboboxOptionGroup } from "./controls/combobox/OptionGroup"
+import { ComboboxOptionList } from "./controls/combobox/OptionList"
 import { ComboboxOptions } from "./controls/combobox/Options"
 import { getComboboxStoredValue } from "./helpers/combobox-stored-value"
 import { createPresetPropertyUpdate } from "./helpers/compound-properties"
 import { handleComputedValueChange } from "./helpers/computed-property-handler"
 import { isComputedFunctionOption } from "./helpers/computed-utils"
 import { getDisplayValue } from "./helpers/display-value-utils"
-import { generatePropertyOptions } from "./helpers/options-utils"
+import {
+  FontCollectionEditingContext,
+  IconSetEditingContext,
+  ThemeEditingContext,
+} from "./helpers/editing-contexts"
+import { buildPropertyOptions } from "./helpers/build-property-options"
 import { FlatProperty } from "./helpers/properties-data"
 import { RESET_VALUES } from "./helpers/property-control-constants"
 import { shouldUsePresetPropertyBehavior } from "./helpers/property-types"
@@ -65,25 +75,6 @@ function compoundPresetPropertyKey(propertyKey: string): string {
     return layeredFacetPath(propertyKey as LayeredPaintKey, "preset")
   }
   return `${propertyKey}.preset`
-}
-
-interface ThemeEditingContext {
-  isThemeEditing: true
-  updateThemeProperty: (property: FlatProperty, newValue: string) => void
-  themeProperties: FlatProperty[]
-}
-
-interface FontCollectionEditingContext {
-  isFontCollectionEditing: true
-  updateFontCollectionProperty: (
-    property: FlatProperty,
-    newValue: string,
-  ) => void
-}
-
-interface IconSetEditingContext {
-  isIconSetEditing: true
-  updateIconSetProperty: (property: FlatProperty, newValue: string) => void
 }
 
 interface PropertyControlProps {
@@ -376,79 +367,17 @@ export function PropertyControl({
 
   const subject = propertySubject ?? selection
 
-  const options = useMemo(() => {
-    if (
-      !property.controlType ||
-      (property.controlType !== "combo" && property.controlType !== "menu")
-    ) {
-      return undefined
-    }
-
-    // Rows that carry their own options (font collection family rows) are not
-    // backed by the property schema, so use the supplied options directly.
-    if (property.options) {
-      return [property.options]
-    }
-
-    if (property.key === "theme") {
-      return [
-        getThemePickerOptions({
-          workspace,
-          allowInherit: !(subject && isBoard(subject)),
-        }),
-      ]
-    }
-
-    const componentId: ComponentId | undefined =
-      subject && isBoard(subject)
-        ? (getComponentKey(subject) as ComponentId)
-        : subject
-          ? (getNodeCatalogComponentId(subject, workspace) ?? undefined)
-          : undefined
-    const componentLevel =
-      subject && isBoard(subject)
-        ? undefined
-        : (subject?.level as ComponentLevel | undefined)
-
-    const result = generatePropertyOptions(
-      property,
-      theme,
-      componentId,
-      componentLevel,
-      workspace,
-      subject ?? undefined,
-    )
-
-    // The symbol picker lists only enabled icons. Keep the current value
-    // selectable even when it is turned off so the row still shows it.
-    if (property.key === "symbol" && result.options) {
-      const currentId = getComboboxStoredValue(property.value)
-      if (typeof currentId === "string" && currentId.length > 0) {
-        const groups = result.options as Array<
-          Array<{ value: string; name: string }>
-        >
-        const present = groups.some((group) =>
-          group.some((option) => option.value === currentId),
-        )
-        if (!present) {
-          const synthetic = {
-            value: currentId,
-            name: iconLabels[currentId as IconId] ?? currentId,
-          }
-          if (groups.length > 0) {
-            groups[groups.length - 1] = [
-              ...groups[groups.length - 1],
-              synthetic,
-            ]
-          } else {
-            groups.push([synthetic])
-          }
-        }
-      }
-    }
-
-    return result.options
-  }, [property, theme, subject, workspace])
+  const options = useMemo(
+    () =>
+      buildPropertyOptions({
+        property,
+        theme,
+        workspace,
+        subject: subject ?? undefined,
+        includeCurrentSymbol: true,
+      }),
+    [property, theme, subject, workspace],
+  )
 
   const propertyValue = getPropertyValueForDisplay()
   const effectiveControlType = property.controlType
@@ -566,24 +495,28 @@ export function PropertyControl({
     setIsEditing(comboboxOpen)
   }, [comboboxOpen, setIsEditing, onEditChange])
 
-  useEffect(() => {
-    if (
-      isEditing &&
-      (effectiveControlType === "menu" || effectiveControlType === "combo")
-    ) {
-      // Use double requestAnimationFrame to ensure selection happens after all rendering
-      // This matches the pattern used in Combobox.handleFocus for programmatic focus
+  const isMenuOrComboType =
+    effectiveControlType === "menu" || effectiveControlType === "combo"
+
+  // Focus and select the input, then open the menu. Double requestAnimationFrame
+  // ensures selection happens after all rendering, matching Combobox.handleFocus.
+  const openComboboxWithFocus = useCallback(() => {
+    requestAnimationFrame(() => {
       requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          if (inputRef.current) {
-            inputRef.current.focus()
-            inputRef.current.select()
-          }
-          setComboboxOpen(true)
-        })
+        if (inputRef.current) {
+          inputRef.current.focus()
+          inputRef.current.select()
+        }
+        setComboboxOpen(true)
       })
+    })
+  }, [setComboboxOpen])
+
+  useEffect(() => {
+    if (isEditing && isMenuOrComboType) {
+      openComboboxWithFocus()
     }
-  }, [isEditing, effectiveControlType, property.key, setComboboxOpen])
+  }, [isEditing, isMenuOrComboType, property.key, openComboboxWithFocus])
 
   const optionsPosition = useComboboxPosition({
     open: comboboxOpen,
@@ -662,18 +595,46 @@ export function PropertyControl({
 
   const placeholder = formatPlaceholder()
 
+  const standaloneComboboxStyle: React.CSSProperties = {
+    width: "100%",
+    minWidth: 0,
+    ...propertyControlTextStyle,
+    background: "transparent",
+    border: "none",
+    padding: 0,
+    ...(color ? { color } : {}),
+    ...(property.isDimmed ? { opacity: 0.5 } : {}),
+  }
+
+  const containerStyle: React.CSSProperties = {
+    ...propertyControlContainerStyle,
+    ...(property.isDimmed ? { opacity: 0.5 } : {}),
+  }
+
+  const handleControlClick = (event: React.MouseEvent) => {
+    if (isMenuOrComboType && !comboboxOpen && !property.isDimmed) {
+      event.stopPropagation()
+      openComboboxWithFocus()
+    }
+  }
+
+  const handleComboboxClose = () => {
+    // If no selection was made, restore the original value (cancel).
+    if (!hasSelectionRef.current && originalValueRef.current !== undefined) {
+      const option = flatOptions.find(
+        (o) => o.value === originalValueRef.current,
+      )
+      setInputValue(option ? option.name : originalValueRef.current || "")
+    }
+    setComboboxOpen(false)
+    if (effectiveControlType === "menu") {
+      onBlur?.()
+    }
+  }
+
   if (effectiveControlType === "text" || effectiveControlType === "number") {
     return (
-      <div
-        onBlur={onBlur}
-        style={{
-          width: "100%",
-          minWidth: 0,
-          height: "100%",
-          display: "flex",
-          alignItems: "center",
-        }}
-      >
+      <div onBlur={onBlur} style={propertyControlTextWrapperStyle}>
         <Combobox
           mode="standalone"
           value={displayValue}
@@ -682,16 +643,7 @@ export function PropertyControl({
           validate={validationFunction}
           disabled={property.isDimmed}
           autoFocus={isEditing}
-          style={{
-            width: "100%",
-            minWidth: 0,
-            ...propertyControlTextStyle,
-            background: "transparent",
-            border: "none",
-            padding: 0,
-            ...(color ? { color } : {}),
-            ...(property.isDimmed ? { opacity: 0.5 } : {}),
-          }}
+          style={standaloneComboboxStyle}
         />
       </div>
     )
@@ -740,111 +692,40 @@ export function PropertyControl({
   )
 
   return (
-    <div
-      ref={comboboxRef}
-      onClick={(e) => {
-        if (
-          (effectiveControlType === "menu" ||
-            effectiveControlType === "combo") &&
-          !comboboxOpen &&
-          !property.isDimmed
-        ) {
-          e.stopPropagation()
-          // Use double requestAnimationFrame for reliable text selection
-          // This ensures selection happens after all rendering completes
-          requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-              if (inputRef.current) {
-                inputRef.current.focus()
-                inputRef.current.select()
-              }
-              setComboboxOpen(true)
-            })
-          })
-        }
-      }}
-      style={{
-        width: "100%",
-        minWidth: 0,
-        height: "100%",
-        display: "flex",
-        alignItems: "center",
-        ...propertyControlTextStyle,
-        cursor: "pointer",
-        ...(property.isDimmed ? { opacity: 0.5 } : {}),
-      }}
-    >
+    <div ref={comboboxRef} onClick={handleControlClick} style={containerStyle}>
       <div style={propertyControlWrapperStyle}>
         <div style={propertyControlInnerStyle}>
           {comboboxField}
           <ComboboxOptions
             open={comboboxOpen && hasFilteredOptions}
             position={optionsPosition}
-            handleClose={() => {
-              // If no selection was made, restore original value
-              if (
-                !hasSelectionRef.current &&
-                originalValueRef.current !== undefined
-              ) {
-                const option = flatOptions.find(
-                  (o) => o.value === originalValueRef.current,
-                )
-                setInputValue(
-                  option ? option.name : originalValueRef.current || "",
-                )
-                // Don't call handleChange - we're canceling
-              }
-              setComboboxOpen(false)
-              if (effectiveControlType === "menu") {
-                onBlur?.()
-              }
-            }}
+            handleClose={handleComboboxClose}
           >
-            {hasSections
-              ? (
-                  filteredOptions as Array<
-                    Array<{ value: string; name: string }>
-                  >
-                ).map((group, index) => (
-                  <ComboboxOptionGroup
-                    key={index}
-                    isLast={index === filteredOptions.length - 1}
-                  >
-                    {group.map((option, optionIndex) => (
-                      <ComboboxOption
-                        key={`${option.name}-${optionIndex}`}
-                        option={option}
-                        value={comboboxControlValue}
-                        renderIcon={renderIconFunction}
-                        handleSelect={handleSelect}
-                        hidden={(option as { hidden?: boolean }).hidden}
-                        disabled={(option as { disabled?: boolean }).disabled}
-                        highlighted={option.value === highlightedValue}
-                        onHighlight={setHighlightedValue}
-                      />
-                    ))}
-                  </ComboboxOptionGroup>
-                ))
-              : (
-                  filteredOptions as Array<{
-                    value: string
-                    name: string
-                    hidden?: boolean
-                    disabled?: boolean
-                  }>
-                ).map((option, index) => (
-                  <ComboboxOption
-                    key={`${option.name}-${index}`}
-                    option={option}
-                    hidden={option.hidden}
-                    value={comboboxControlValue}
-                    renderIcon={renderIconFunction}
-                    handleSelect={handleSelect}
-                    disabled={option.disabled}
-                    highlighted={option.value === highlightedValue}
-                    onHighlight={setHighlightedValue}
-                  />
-                ))}
+            <ComboboxOptionList
+              filteredOptions={
+                filteredOptions as
+                  | Array<{
+                      name: string
+                      value: string
+                      hidden?: boolean
+                      disabled?: boolean
+                    }>
+                  | Array<
+                      Array<{
+                        name: string
+                        value: string
+                        hidden?: boolean
+                        disabled?: boolean
+                      }>
+                    >
+              }
+              hasSections={hasSections}
+              value={comboboxControlValue}
+              highlightedValue={highlightedValue}
+              renderIcon={renderIconFunction}
+              onSelect={handleSelect}
+              onHighlight={setHighlightedValue}
+            />
           </ComboboxOptions>
         </div>
       </div>

@@ -1,7 +1,10 @@
 import React from "react"
 import { createPortal } from "react-dom"
 import { Frame } from "@seldon/components/frames/Frame"
-import { comboboxBackdropStyle, getOptionsPanelStyle } from "./combobox-styles"
+import {
+  comboboxBackdropStyle,
+  getOptionsPanelPositionStyle,
+} from "./combobox-styles"
 
 interface ComboboxOptionsProps {
   open: boolean
@@ -10,32 +13,26 @@ interface ComboboxOptionsProps {
   handleClose: () => void
 }
 
+function stopPropagation(event: React.MouseEvent): void {
+  event.stopPropagation()
+}
+
 export function ComboboxOptions({
   open,
   children,
   position,
   handleClose,
 }: ComboboxOptionsProps) {
+  const panel = open ? (
+    <>
+      <div onClick={handleClose} style={comboboxBackdropStyle} />
+      <div style={getOptionsPanelPositionStyle(position)}>{children}</div>
+    </>
+  ) : null
+
   return createPortal(
-    <Frame role="listbox" onClick={(e) => e.stopPropagation()}>
-      {open && (
-        <>
-          <div onClick={handleClose} style={comboboxBackdropStyle} />
-          <div
-            style={{
-              ...getOptionsPanelStyle(true),
-              top: position.y,
-              left: position.x,
-              width: position.w,
-              ...(position.positionAbove && {
-                transform: "translateY(-100%)",
-              }),
-            }}
-          >
-            {children}
-          </div>
-        </>
-      )}
+    <Frame role="listbox" onClick={stopPropagation}>
+      {panel}
     </Frame>,
     document.body,
   )

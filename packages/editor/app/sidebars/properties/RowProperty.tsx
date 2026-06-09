@@ -1,72 +1,46 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
-import {
-  Board,
-  Instance,
-  Theme,
-  ValueType,
-  Variant,
-  Workspace,
-} from "@seldon/core"
-import { getThemePickerOptions } from "@seldon/core/helpers/properties/properties-bridge"
-import { isAtomicValue } from "@seldon/core/helpers/type-guards/value/is-atomic-value"
-import { ComponentId, ComponentLevel } from "@seldon/core/components/constants"
+import { Board, Instance, Theme, Variant, Workspace } from "@seldon/core"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { workspaceThemeService } from "@seldon/core/workspace/services/theme/theme.service"
-import { ThemeSwatches } from "../../ui/ThemeSwatches"
 import { useThemes } from "@lib/themes/hooks/use-themes"
-import { getNodeCatalogComponentId } from "@lib/workspace/node-tree"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { useDebugMode } from "@lib/hooks/use-debug-mode"
-import {
-  resolveUnitFromValue,
-  usePropertyControlData,
-} from "./hooks/use-property-control-data"
+import { usePropertyControlData } from "./hooks/use-property-control-data"
 import { usePropertyFrameHover } from "./hooks/use-property-frame-hover"
 import { useRowProperty } from "./hooks/use-row-property"
 import { ListItemTreeInput } from "@seldon/components/elements/ListItemTreeInput"
-import { IconProps } from "@seldon/components/primitives/Icon"
-import { LabelProps } from "@seldon/components/primitives/Label"
 import { useImageUploadPanel } from "../../panels/hooks/use-upload-image-panel"
 import { MenuEntry } from "@lib/menus"
 import { FramerExpandable } from "../shared/FramerExpandable"
 import { RowActionsMenu } from "../shared/RowActionsMenu"
-import { PropertyControl } from "./PropertyControl"
+import { PropertyValueCell } from "./PropertyValueCell"
 import { getDisplayValue } from "./helpers/display-value-utils"
 import {
   getThemeTokenIconColorFromPropertyValue,
   isSwatchIconPropertyKey,
 } from "./helpers/theme-token-icon-color"
-import { generatePropertyOptions } from "./helpers/options-utils"
+import { FlatProperty } from "./helpers/properties-data"
 import {
-  FlatProperty,
-} from "./helpers/properties-data"
+  FontCollectionEditingContext,
+  IconSetEditingContext,
+  ThemeEditingContext,
+} from "./helpers/editing-contexts"
+import { buildPropertyOptions } from "./helpers/build-property-options"
+import {
+  buildPropertyRowProps,
+  FRAME_REF_ATTR,
+  FRAME_REF_SELECTOR,
+  FRAME_REF_VALUE,
+} from "./helpers/build-property-row-props"
+import {
+  isNumericPropertyValue,
+  stripDisplayUnitSuffix,
+} from "./helpers/property-value-display"
 import { getPropertyRegistryEntry } from "./helpers/properties-registry"
 import {
   getPropertyLabelStyle,
   getPropertyRowStyle,
 } from "./helpers/property-styling-tokens"
-
-const TOGGLE_BUTTON_CLASS = "sdn-button-iconic sdn-button-iconic--0urv"
-const CHEVRON_ICON = "material-chevronRight" as const
-
-interface ThemeEditingContext {
-  isThemeEditing: true
-  updateThemeProperty: (property: FlatProperty, newValue: string) => void
-  themeProperties: FlatProperty[]
-}
-
-interface FontCollectionEditingContext {
-  isFontCollectionEditing: true
-  updateFontCollectionProperty: (
-    property: FlatProperty,
-    newValue: string,
-  ) => void
-}
-
-interface IconSetEditingContext {
-  isIconSetEditing: true
-  updateIconSetProperty: (property: FlatProperty, newValue: string) => void
-}
 
 interface RowPropertyProps {
   property: FlatProperty
@@ -124,47 +98,10 @@ export function RowProperty({
   }, [isThemeAssignment, node, workspace, themes])
 
   // Get options for theme value matching (UI optimization)
-  const options = useMemo(() => {
-    if (
-      !property.controlType ||
-      (property.controlType !== "combo" && property.controlType !== "menu")
-    ) {
-      return undefined
-    }
-
-    // Rows that carry their own options (font collection family rows) are not
-    // backed by the property schema, so use the supplied options directly.
-    if (property.options) {
-      return [property.options]
-    }
-
-    if (property.key === "theme") {
-      return [
-        getThemePickerOptions({
-          workspace,
-          allowInherit: !isBoard(node),
-        }),
-      ]
-    }
-
-    const componentId = isBoard(node)
-      ? (getComponentKey(node) as ComponentId)
-      : (getNodeCatalogComponentId(node, workspace) ?? undefined)
-    const componentLevel = isBoard(node)
-      ? undefined
-      : (node.level as ComponentLevel)
-
-    const result = generatePropertyOptions(
-      property,
-      theme,
-      componentId,
-      componentLevel,
-      workspace,
-      node,
-    )
-
-    return result.options
-  }, [property, theme, node, workspace])
+  const options = useMemo(
+    () => buildPropertyOptions({ property, theme, workspace, subject: node }),
+    [property, theme, node, workspace],
+  )
 
   const nodeId = isBoard(node) ? getComponentKey(node) : node.id
 
@@ -179,43 +116,14 @@ export function RowProperty({
   )
 
   const unit = getUnit()
+  const isNumericValue = useMemo(
+    () => isNumericPropertyValue(property),
+    [property],
+  )
 
-  const isNumericValue = useMemo(() => {
-    if (
-      !property.value ||
-      typeof property.value !== "object" ||
-      property.value === null
-    ) {
-      return false
-    }
-    if (isAtomicValue(property.value) && property.value.type === ValueType.EXACT) {
-      if (typeof property.value.value === "number") {
-        return true
-      }
-      if (
-        typeof property.value.value === "object" &&
-        property.value.value !== null &&
-        "unit" in property.value.value &&
-        typeof property.value.value.value === "number"
-      ) {
-        return true
-      }
-    }
-    // Shorthand dimensions (margin, padding, ...) resolve to a single unit.
-    return property.isShorthand && resolveUnitFromValue(property.value) !== undefined
-  }, [property.value, property.isShorthand])
-
-  // Strip unit suffix from display value when unit label is shown
-  // This prevents redundant display like "10px PX" when the label already shows the unit
-  if (unit && isNumericValue && value) {
-    const unitsToStrip = ["px", "rem", "%", "deg"]
-    for (const unitSuffix of unitsToStrip) {
-      if (value.toLowerCase().endsWith(unitSuffix)) {
-        value = value.slice(0, -unitSuffix.length).trim()
-        break
-      }
-    }
-  }
+  // Strip the unit suffix from the display value when a separate unit label is
+  // shown, avoiding redundant output like "10px PX".
+  value = stripDisplayUnitSuffix(value, unit, isNumericValue)
 
   const rowStyle = useMemo(
     () => getPropertyRowStyle(property, showPropertyTypes),
@@ -310,7 +218,7 @@ export function RowProperty({
     }
 
     // Don't toggle if clicking on the frame control (PropertyControl)
-    if (target.closest('[data-frame-ref="true"]')) {
+    if (target.closest(FRAME_REF_SELECTOR)) {
       return
     }
 
@@ -369,245 +277,26 @@ export function RowProperty({
     [property.isDimmed, property.controlType, isEditingProperty],
   )
 
-  // Build ListItemTreeInput props
-  const listItemProps = useMemo(() => {
-    const iconStyle = (opacity?: number) => ({
-      ...(labelColor ? { color: labelColor } : {}),
-      ...(opacity !== undefined ? { opacity } : {}),
-    })
+  const valueCell = (
+    <PropertyValueCell
+      property={property}
+      value={value}
+      node={node}
+      theme={theme}
+      labelColor={labelColor}
+      isEditingProperty={isEditingProperty}
+      isThemeAssignment={isThemeAssignment}
+      themeForSwatches={themeForSwatches}
+      frameRef={frameRef}
+      onEditChange={setIsEditingProperty}
+      themeEditingContext={themeEditingContext}
+      fontCollectionEditingContext={fontCollectionEditingContext}
+      iconSetEditingContext={iconSetEditingContext}
+    />
+  )
 
-    return {
-      buttonIconic: {
-        onClick: handleToggle,
-        "aria-expanded": isExpanded,
-        "aria-label": isExpanded ? "Collapse" : "Expand",
-        className: TOGGLE_BUTTON_CLASS,
-        style: {
-          position: "relative" as const,
-          zIndex: 10,
-        },
-      },
-      icon: {
-        icon: CHEVRON_ICON,
-        style: {
-          transition: "transform 0.2s ease",
-          transform: isExpanded ? "rotate(90deg)" : "rotate(0deg)",
-          ...iconStyle(hasChildren ? 1 : 0),
-        },
-      },
-
-      label: {
-        children: labelText,
-        htmlElement: "label" as const,
-        style: {
-          ...labelStyle,
-          cursor: hasChildren ? "pointer" : "default",
-          userSelect: "none" as const,
-          WebkitUserSelect: "none" as const,
-        },
-      },
-
-      buttonIconic2: isThemeAssignment
-        ? {
-            style: {
-              display: "none" as const,
-              pointerEvents: "none" as const,
-            },
-          }
-        : {
-            style: { pointerEvents: "none" as const },
-          },
-      icon2: isThemeAssignment || property.isLookParent
-        ? {
-            icon: iconId as IconProps["icon"],
-            style: { display: "none" as const },
-          }
-        : {
-            icon: (swatchChipColor
-              ? "icon-custom-color-value"
-              : iconId) as IconProps["icon"],
-            color: (() => {
-              if (swatchChipColor) {
-                return swatchChipColor
-              }
-              if (property.key.startsWith("swatch.") && property.actualValue) {
-                return property.actualValue as string
-              }
-              if (
-                (property.key === "color.baseColor" ||
-                  property.key === "color.whitePoint" ||
-                  property.key === "color.grayPoint" ||
-                  property.key === "color.blackPoint") &&
-                property.iconColorValue
-              ) {
-                return property.iconColorValue
-              }
-              return labelColor || undefined
-            })(),
-            style: iconStyle(),
-          },
-
-      label2: {
-        children: (() => {
-          // Look parent rows are a pure disclosure grouping: label plus arrow,
-          // with an empty value cell and no control.
-          if (property.isLookParent) {
-            return ""
-          }
-          // License rows render their value as an external link.
-          if (property.linkHref) {
-            return (
-              <a
-                href={property.linkHref}
-                target="_blank"
-                rel="noreferrer"
-                onClick={(event) => event.stopPropagation()}
-                style={{ color: "inherit", textDecoration: "underline" }}
-              >
-                {value || "View"}
-              </a>
-            )
-          }
-          const shouldShowControl = Boolean(property.controlType)
-          const valueContent =
-            isEditingProperty && shouldShowControl ? (
-              <PropertyControl
-                property={property}
-                propertySubject={node}
-                theme={theme}
-                frameRef={frameRef}
-                isEditing={isEditingProperty}
-                onEditChange={setIsEditingProperty}
-                onBlur={() => setIsEditingProperty(false)}
-                color={labelColor}
-                themeEditingContext={themeEditingContext}
-                fontCollectionEditingContext={fontCollectionEditingContext}
-                iconSetEditingContext={iconSetEditingContext}
-              />
-            ) : (
-              (value ?? "")
-            )
-
-          if (isThemeAssignment && themeForSwatches) {
-            return (
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "0.375rem",
-                  width: "100%",
-                  minWidth: 0,
-                }}
-              >
-                <div style={{ flexShrink: 0 }}>
-                  <ThemeSwatches theme={themeForSwatches} />
-                </div>
-                <div
-                  style={{
-                    flex: 1,
-                    minWidth: 0,
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  {valueContent}
-                </div>
-              </div>
-            )
-          }
-
-          return valueContent
-        })(),
-        htmlElement: "label" as const,
-        onClick: handleLabel2Click,
-        style: {
-          flex: 1,
-          flexShrink: 1,
-          width: 0,
-          ...(labelColor && !isEditingProperty ? { color: labelColor } : {}),
-          cursor: hasChildren
-            ? "pointer"
-            : property.controlType
-              ? "pointer"
-              : "default",
-          pointerEvents: "auto",
-          display: "block",
-          minWidth: 0,
-          whiteSpace: "nowrap",
-          overflow: "hidden",
-          textOverflow: "ellipsis",
-          userSelect: "none",
-          WebkitUserSelect: "none",
-        },
-      } as LabelProps,
-
-      label3:
-        // Show the unit whenever the active value is an exact numeric value,
-        // including picker controls that hold a literal dimension (for example
-        // a margin set to 24px renders as "24" with a "PX" label).
-        unit && isNumericValue
-          ? {
-              children: unit,
-              htmlElement: "label" as const,
-              style: {
-                alignSelf: "center" as const,
-                ...(labelColor ? { color: labelColor } : {}),
-              },
-            }
-          : {
-              children: "",
-              htmlElement: "label" as const,
-              style: {
-                alignSelf: "center" as const,
-              },
-            },
-
-      buttonIconic3: {
-        onClick: supportsUpload
-          ? handleUploadClick
-          : property.controlType === "menu" || property.controlType === "combo"
-            ? handleMenuClick
-            : undefined,
-        style: supportsUpload
-          ? { pointerEvents: "auto" as const }
-          : property.key.startsWith("calculated.")
-            ? { display: "none" as const }
-            : property.controlType === "menu" || property.controlType === "combo"
-              ? { pointerEvents: "auto" as const }
-              : { pointerEvents: "none" as const },
-        "aria-label": supportsUpload
-          ? "Upload image"
-          : property.controlType === "menu" || property.controlType === "combo"
-            ? "Open menu"
-            : undefined,
-        className:
-          supportsUpload ||
-          property.controlType === "menu" ||
-          property.controlType === "combo"
-            ? TOGGLE_BUTTON_CLASS
-            : undefined,
-      },
-      icon3: {
-        icon: supportsUpload
-          ? ("material-upload" as IconProps["icon"])
-          : ("material-chevronDown" as IconProps["icon"]),
-        color: labelColor || undefined,
-        style: iconStyle(
-          property.key.startsWith("calculated.")
-            ? 0 // Hide chevron for calculated properties
-            : supportsUpload
-              ? 1 // Always show upload icon for image properties
-              : !property.controlType
-                ? 0 // Hide chevron for read-only rows with no control
-                : shouldShowMenuIcon()
-                  ? 0
-                  : 1,
-        ),
-      },
-    }
-  }, [
-    handleToggle,
+  const listItemProps = buildPropertyRowProps({
+    property,
     isExpanded,
     hasChildren,
     labelText,
@@ -615,95 +304,100 @@ export function RowProperty({
     labelColor,
     iconId,
     isThemeAssignment,
-    themeForSwatches,
     swatchChipColor,
-    value,
     unit,
     isNumericValue,
     isEditingProperty,
-    property,
-    theme,
-    frameRef,
-    shouldShowMenuIcon,
+    supportsUpload,
+    showMenuIcon: shouldShowMenuIcon(),
+    label2Children: valueCell,
+    handleToggle,
     handleLabel2Click,
     handleUploadClick,
     handleMenuClick,
-    supportsUpload,
-    themeEditingContext,
-    fontCollectionEditingContext,
-    iconSetEditingContext,
-  ])
+  })
+
+  const setFrameRef = useCallback((el: HTMLDivElement | null) => {
+    if (el) {
+      frameRef.current = el
+    }
+  }, [])
+
+  const handleFrameRefClick = useCallback(
+    (event: React.MouseEvent<HTMLDivElement>) => {
+      const frameElement = event.currentTarget as HTMLDivElement
+      if (frameElement && frameElement !== frameRef.current) {
+        frameRef.current = frameElement
+      }
+      handleFrameClick(event)
+    },
+    [handleFrameClick],
+  )
+
+  const rowCursor = hasChildren || property.controlType ? "pointer" : "default"
+
+  const frameProps = {
+    [FRAME_REF_ATTR]: FRAME_REF_VALUE,
+    ref: setFrameRef,
+    onClick: handleFrameRefClick,
+    onMouseEnter: handleFrameMouseEnter,
+    onMouseLeave: handleFrameMouseLeave,
+    style: {
+      width: "100%",
+      position: "relative",
+      cursor: rowCursor,
+      userSelect: "none",
+      WebkitUserSelect: "none",
+      ...hoverStyle,
+    },
+  } as React.HTMLAttributes<HTMLDivElement> & {
+    ref?: (el: HTMLDivElement | null) => void
+  }
+
+  const rowStyleProp: React.CSSProperties = {
+    ...rowStyle,
+    width: "100%",
+    justifyContent: "flex-start",
+    cursor: hasChildren ? "pointer" : "default",
+    userSelect: "none",
+    WebkitUserSelect: "none",
+  }
+
+  const actionsSlot = (
+    <RowActionsMenu
+      items={resetActions}
+      color={labelColor as string | undefined}
+    />
+  )
+
+  const childRows = children.map((subProperty) => (
+    <RowProperty
+      key={subProperty.key}
+      property={subProperty}
+      workspace={workspace}
+      node={node}
+      theme={theme}
+      allProperties={allProperties}
+      themeEditingContext={themeEditingContext}
+      fontCollectionEditingContext={fontCollectionEditingContext}
+      iconSetEditingContext={iconSetEditingContext}
+    />
+  ))
+
+  const childrenSection = hasChildren ? (
+    <FramerExpandable isExpanded={isExpanded}>{childRows}</FramerExpandable>
+  ) : null
 
   return (
     <>
       <ListItemTreeInput
         {...listItemProps}
         onClick={handleRowClick}
-        actionsSlot={
-          <RowActionsMenu
-            items={resetActions}
-            color={labelColor as string | undefined}
-          />
-        }
-        frame={
-          {
-            "data-frame-ref": "true",
-            ref: (el: HTMLDivElement | null) => {
-              if (el) {
-                frameRef.current = el
-              }
-            },
-            onClick: (e) => {
-              const frameElement = e.currentTarget as HTMLDivElement
-              if (frameElement && frameElement !== frameRef.current) {
-                frameRef.current = frameElement
-              }
-              handleFrameClick(e)
-            },
-            onMouseEnter: handleFrameMouseEnter,
-            onMouseLeave: handleFrameMouseLeave,
-            style: {
-              width: "100%",
-              position: "relative",
-              cursor: hasChildren
-                ? "pointer"
-                : property.controlType
-                  ? "pointer"
-                  : "default",
-              userSelect: "none",
-              WebkitUserSelect: "none",
-              ...hoverStyle,
-            },
-          } as React.HTMLAttributes<HTMLDivElement> & {
-            ref?: (el: HTMLDivElement | null) => void
-          }
-        }
-        style={{
-          ...rowStyle,
-          width: "100%",
-          justifyContent: "flex-start",
-          cursor: hasChildren ? "pointer" : "default",
-          userSelect: "none",
-          WebkitUserSelect: "none",
-        }}
+        actionsSlot={actionsSlot}
+        frame={frameProps}
+        style={rowStyleProp}
       />
-      {hasChildren && (
-        <FramerExpandable isExpanded={isExpanded}>
-          {children.map((subProperty) => (
-            <RowProperty
-              key={subProperty.key}
-              property={subProperty}
-              workspace={workspace}
-              node={node}
-              theme={theme}
-              allProperties={allProperties}
-              themeEditingContext={themeEditingContext}
-              fontCollectionEditingContext={fontCollectionEditingContext}
-              iconSetEditingContext={iconSetEditingContext}
-            />
-          ))}
-        </FramerExpandable>
-      )}
+      {childrenSection}
     </>
   )
 }

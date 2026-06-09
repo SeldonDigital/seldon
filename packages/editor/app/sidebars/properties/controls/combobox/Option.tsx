@@ -47,23 +47,29 @@ export function ComboboxOption<
     ...(showHighlight && !hidden ? { backgroundColor: optionHoverBackground } : {}),
   }
 
+  const handleMouseDown = (event: React.MouseEvent) => {
+    if (disabled) return
+    event.preventDefault()
+    handleSelect(option.value)
+  }
+
+  const handleMouseEnter = () => {
+    if (!disabled && !hidden) {
+      setIsHovered(true)
+      onHighlight?.(option.value)
+    }
+  }
+
+  const handleMouseLeave = () => setIsHovered(false)
+
   return (
     <Frame
       role="option"
       aria-selected={isSelected}
       aria-disabled={disabled}
-      onMouseDown={(event) => {
-        if (disabled) return
-        event.preventDefault()
-        handleSelect(option.value)
-      }}
-      onMouseEnter={() => {
-        if (!disabled && !hidden) {
-          setIsHovered(true)
-          onHighlight?.(option.value)
-        }
-      }}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseDown={handleMouseDown}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
       data-active={isSelected}
       data-disabled={disabled}
       style={frameStyle}

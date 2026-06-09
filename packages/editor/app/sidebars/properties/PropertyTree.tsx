@@ -1,5 +1,5 @@
 import { LayoutGroup } from "framer-motion"
-import { Fragment, RefObject, useMemo } from "react"
+import { RefObject, useMemo } from "react"
 import {
   Action,
   Board,
@@ -11,10 +11,7 @@ import {
 import { isResourceType } from "@seldon/core/workspace/helpers/components/is-resource-type"
 import { buildThemeAssignmentProperty } from "./helpers/theme-assignment-display"
 import { Frame } from "@seldon/components/frames/Frame"
-import { FramerExpandable } from "../shared/FramerExpandable"
-import { CssBlock } from "./CssBlock"
-import { RowCategory } from "./RowCategory"
-import { RowProperty } from "./RowProperty"
+import { PropertyTreeSection } from "./PropertyTreeSection"
 import { useCssStrings } from "./helpers/get-calculated-properties"
 import {
   PropertySection,
@@ -28,27 +25,13 @@ import {
   getIconRowCategory,
   iconCategoryLabel,
 } from "./helpers/icon-set-properties-data"
+import {
+  FontCollectionEditingContext,
+  IconSetEditingContext,
+  ThemeEditingContext,
+} from "./helpers/editing-contexts"
 import { FlatProperty } from "./helpers/properties-data"
 import { usePropertyExpansion } from "./hooks/use-property-expansion"
-
-interface ThemeEditingContext {
-  isThemeEditing: true
-  updateThemeProperty: (property: FlatProperty, newValue: string) => void
-  themeProperties: FlatProperty[]
-}
-
-interface FontCollectionEditingContext {
-  isFontCollectionEditing: true
-  updateFontCollectionProperty: (
-    property: FlatProperty,
-    newValue: string,
-  ) => void
-}
-
-interface IconSetEditingContext {
-  isIconSetEditing: true
-  updateIconSetProperty: (property: FlatProperty, newValue: string) => void
-}
 
 interface PropertyTreeProps {
   properties: FlatProperty[]
@@ -215,47 +198,21 @@ export function PropertyTree({
       <Frame style={styles.tree}>
         <LayoutGroup>
           {sections.map((section) => (
-            <Fragment key={section.category}>
-              <RowCategory section={section} />
-              <FramerExpandable
-                isExpanded={isCategoryExpanded(section.category)}
-              >
-                {section.category === "css" ? (
-                  <CssBlock cssProperties={cssStrings} />
-                ) : (
-                  section.properties.map((property) => {
-                    const isIconCategory =
-                      !!iconProperties &&
-                      getIconRowCategory(`icon.${section.category}`) !== null
-                    return (
-                      <RowProperty
-                        key={property.key}
-                        property={property}
-                        workspace={workspace}
-                        node={node}
-                        theme={theme}
-                        allProperties={
-                          section.category === "families" && familyProperties
-                            ? familyProperties
-                            : isIconCategory && iconProperties
-                              ? iconProperties
-                              : allProperties
-                        }
-                        themeEditingContext={themeEditingContext}
-                        fontCollectionEditingContext={
-                          section.category === "families"
-                            ? fontCollectionEditingContext
-                            : null
-                        }
-                        iconSetEditingContext={
-                          isIconCategory ? iconSetEditingContext : null
-                        }
-                      />
-                    )
-                  })
-                )}
-              </FramerExpandable>
-            </Fragment>
+            <PropertyTreeSection
+              key={section.category}
+              section={section}
+              isExpanded={isCategoryExpanded(section.category)}
+              workspace={workspace}
+              node={node}
+              theme={theme}
+              cssStrings={cssStrings}
+              allProperties={allProperties}
+              familyProperties={familyProperties}
+              iconProperties={iconProperties}
+              themeEditingContext={themeEditingContext}
+              fontCollectionEditingContext={fontCollectionEditingContext}
+              iconSetEditingContext={iconSetEditingContext}
+            />
           ))}
         </LayoutGroup>
       </Frame>

@@ -8,6 +8,15 @@ interface ThemeSwatchesProps {
   isSelected?: boolean
 }
 
+/** Overlap each swatch except the last; selected rows overlap a little less. */
+function getSwatchMarginRight(
+  index: number,
+  isSelected: boolean,
+): string | undefined {
+  if (index >= 4) return undefined
+  return isSelected ? "-7px" : "-10px"
+}
+
 export const ThemeSwatches = ({
   theme,
   isSelected = false,
@@ -43,7 +52,7 @@ export const ThemeSwatches = ({
           width: "0.75rem",
           borderRadius: "9999px",
           backgroundColor: backgroundColor ?? "var(--color-blue)",
-          marginRight: i < 4 ? (isSelected ? "-7px" : "-10px") : undefined,
+          marginRight: getSwatchMarginRight(i, isSelected),
         }}
       />
     )

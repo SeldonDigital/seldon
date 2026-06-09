@@ -339,72 +339,84 @@ export function Combobox({
     spellCheck: "false" as const,
   }
 
+  // Mark the next focus as programmatic so handleFocus selects after rendering.
+  function focusInputProgrammatically() {
+    isProgrammaticFocusRef.current = true
+    if (inputRef.current) {
+      inputRef.current.focus()
+    }
+  }
+
+  function handleFrameClick(event: React.MouseEvent) {
+    if (setOpen && !open && !disabled) {
+      event.stopPropagation()
+      setOpen(true)
+      focusInputProgrammatically()
+    }
+  }
+
+  function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const newValue = event.target.value
+    setInternalValue(newValue)
+    onValueChange?.(newValue)
+  }
+
+  function handleInputClick(event: React.MouseEvent) {
+    event.stopPropagation()
+    if (setOpen && !open) {
+      setOpen(true)
+    }
+  }
+
+  function handleChevronClick(event: React.MouseEvent) {
+    event.stopPropagation()
+    if (!open) {
+      focusInputProgrammatically()
+    }
+    setOpen?.(!open)
+  }
+
+  const comboboxFrameMergedStyle: React.CSSProperties = {
+    ...comboboxFrameStyle,
+    ...style,
+  }
+
+  const comboboxInputMergedStyle: React.CSSProperties = {
+    ...baseInputStyle,
+    ...(inputPropsStyle as React.CSSProperties | undefined),
+  }
+
+  const chevron =
+    !disabled && setOpen && !hideChevron ? (
+      <button tabIndex={-1} onClick={handleChevronClick}>
+        <IconSeldonChevronDown />
+      </button>
+    ) : null
+
   if (mode === "combobox") {
     return (
       <Frame
         className="sdn-frame"
-        style={{
-          ...comboboxFrameStyle,
-          ...style,
-        }}
-        onClick={(e) => {
-          if (setOpen && !open && !disabled) {
-            e.stopPropagation()
-            setOpen(true)
-            // Mark as programmatic focus so handleFocus can handle selection properly
-            isProgrammaticFocusRef.current = true
-            if (inputRef.current) {
-              inputRef.current.focus()
-            }
-          }
-        }}
+        style={comboboxFrameMergedStyle}
+        onClick={handleFrameClick}
       >
         <div ref={wrapperRef} style={comboboxWrapperStyle}>
           <InputEditor
             value={internalValue}
-            onChange={(event) => {
-              const newValue = event.target.value
-              setInternalValue(newValue)
-              onValueChange?.(newValue)
-            }}
+            onChange={handleInputChange}
             onFocus={handleFocus}
             onBlur={handleBlur}
-            onClick={(e) => {
-              e.stopPropagation()
-              if (setOpen && !open) {
-                setOpen(true)
-              }
-            }}
+            onClick={handleInputClick}
             onKeyDown={handleKeyDown}
             className={className}
-            style={{
-              ...baseInputStyle,
-              ...(inputPropsStyle as React.CSSProperties | undefined),
-            }}
+            style={comboboxInputMergedStyle}
             placeholder={placeholder}
             disabled={disabled}
             {...inputPropsCommon}
             {...restInputProps}
           />
         </div>
-        {!disabled && setOpen && !hideChevron && (
-          <button
-            tabIndex={-1}
-            onClick={(e) => {
-              e.stopPropagation()
-              if (!open) {
-                // Mark as programmatic focus so handleFocus can handle selection properly
-                isProgrammaticFocusRef.current = true
-                if (inputRef.current) {
-                  inputRef.current.focus()
-                }
-              }
-              setOpen(!open)
-            }}
-          >
-            <IconSeldonChevronDown />
-          </button>
-        )}
+        {chevron}
       </Frame>
     )
   }

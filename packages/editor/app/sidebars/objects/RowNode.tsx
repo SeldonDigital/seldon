@@ -21,6 +21,8 @@ const rowWrapperStyle: CSSProperties = {
   minWidth: 0,
 }
 
+const NODE_SELECTION_KIND = "node"
+
 interface RowNodeProps {
   nodeId: string
   node?: EntryNode
@@ -91,26 +93,30 @@ const RowNodeInner = memo(function RowNodeInner({
   const coloredIcon = hasChildren ? applyTrackingColor(icon, "color") : icon
   const coloredIcon2 = applyTrackingColor(icon2, "color")
 
+  const handleLabelSubmit = (newLabel: string) => {
+    dispatch({
+      type: "set_node_label",
+      payload: {
+        nodeId: node.id as VariantId,
+        label: newLabel.trim(),
+      },
+    })
+    setEditingName(false)
+  }
+
+  const labelChildren = isEditingName ? (
+    <Combobox
+      mode="standalone"
+      initialValue={node.label}
+      onSubmit={handleLabelSubmit}
+    />
+  ) : (
+    baseLabel.children
+  )
+
   const label: LabelProps = {
     ...baseLabel,
-    children: isEditingName ? (
-      <Combobox
-        mode="standalone"
-        initialValue={node.label}
-        onSubmit={(newLabel) => {
-          dispatch({
-            type: "set_node_label",
-            payload: {
-              nodeId: node.id as VariantId,
-              label: newLabel.trim(),
-            },
-          })
-          setEditingName(false)
-        }}
-      />
-    ) : (
-      baseLabel.children
-    ),
+    children: labelChildren,
     style: {
       ...baseLabel.style,
       ...(labelColor ? { color: labelColor } : {}),
@@ -125,13 +131,34 @@ const RowNodeInner = memo(function RowNodeInner({
       ? properties.display?.value
       : undefined
 
+  const actionsSlot =
+    resetActions.length > 0 ? (
+      <RowActionsMenu items={resetActions} color={iconColor} />
+    ) : undefined
+
+  const childrenSection = hasChildren ? (
+    <FramerExpandable isExpanded={isExpanded}>
+      <IndentationLevel>
+        {children.map((childNodeId) => (
+          <RowNode
+            key={childNodeId}
+            nodeId={childNodeId}
+            show={show}
+            parentIsSelected={isSelected}
+            onSelect={onSelect}
+          />
+        ))}
+      </IndentationLevel>
+    </FramerExpandable>
+  ) : null
+
   return (
     <>
       <div
         ref={ref}
         style={rowWrapperStyle}
         data-selection-id={node.id}
-        data-selection-kind="node"
+        data-selection-kind={NODE_SELECTION_KIND}
       >
         <SidebarTracking
           node={node}
@@ -147,11 +174,7 @@ const RowNodeInner = memo(function RowNodeInner({
             buttonIconic2={buttonIconic2}
             icon2={coloredIcon2}
             label={label}
-            actionsSlot={
-              resetActions.length > 0 ? (
-                <RowActionsMenu items={resetActions} color={iconColor} />
-              ) : undefined
-            }
+            actionsSlot={actionsSlot}
             onClick={onClick}
             onDoubleClick={onDoubleClick}
             onMouseEnter={handleCanvasTrackingEnter}
@@ -167,21 +190,7 @@ const RowNodeInner = memo(function RowNodeInner({
         </SidebarTracking>
       </div>
 
-      {hasChildren && (
-        <FramerExpandable isExpanded={isExpanded}>
-          <IndentationLevel>
-            {children.map((childNodeId) => (
-              <RowNode
-                key={childNodeId}
-                nodeId={childNodeId}
-                show={show}
-                parentIsSelected={isSelected}
-                onSelect={onSelect}
-              />
-            ))}
-          </IndentationLevel>
-        </FramerExpandable>
-      )}
+      {childrenSection}
     </>
   )
 })

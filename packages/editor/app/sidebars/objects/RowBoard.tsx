@@ -1,11 +1,5 @@
 import { CSSProperties, memo, useCallback } from "react"
 import { Board as BoardType, Variant } from "@seldon/core"
-import {
-  isFontCollectionBoard,
-  isIconSetBoard,
-  isMediaBoard,
-  isThemeBoard,
-} from "@seldon/core/workspace/model/components"
 import { useSidebarCanvasTrackingBoard } from "../../tracking/hooks/use-sidebar-canvas-tracking"
 import { useSidebarRowStyling } from "../../tracking/hooks/use-sidebar-row-styling"
 import { useRowHighlightStyle } from "@lib/workspace/hooks/use-object-hover"
@@ -17,12 +11,17 @@ import { relativeFullWidthStyle } from "../helpers/sidebar-styles"
 import { IndentationLevel } from "../hooks/use-indentation"
 import { FramerExpandable } from "../shared/FramerExpandable"
 import { RowNode } from "./RowNode"
-import { RESOURCE_ROW_CONFIG, RowResourceEntry } from "./RowResourceEntry"
+import {
+  getBoardResourceRowConfig,
+  RowResourceEntry,
+} from "./RowResourceEntry"
 
 const rowWrapperStyle: CSSProperties = {
   width: "100%",
   minWidth: 0,
 }
+
+const BOARD_SELECTION_KIND = "board"
 
 interface RowBoardProps {
   board: BoardType
@@ -119,6 +118,27 @@ export const RowBoard = memo(function RowBoard({
   const dataTestId = "objects-sidebar-board"
   const dataComponentId = boardKey
 
+  const resourceRowConfig = getBoardResourceRowConfig(board)
+  const childRows = resourceRowConfig
+    ? variants.map((entryId) => (
+        <RowResourceEntry
+          key={entryId}
+          config={resourceRowConfig}
+          entryId={entryId}
+          show={show}
+          parentIsSelected={boardIsActive}
+        />
+      ))
+    : variants.map((variantId, index) => (
+        <RowNode
+          key={variantId}
+          nodeId={variantId}
+          show={show}
+          parentIsSelected={boardIsActive}
+          disableReordering={index === 0}
+        />
+      ))
+
   if (!show) return null
 
   return (
@@ -127,7 +147,7 @@ export const RowBoard = memo(function RowBoard({
         ref={ref}
         style={rowWrapperStyle}
         data-selection-id={boardKey}
-        data-selection-kind="board"
+        data-selection-kind={BOARD_SELECTION_KIND}
       >
         <div style={relativeFullWidthStyle}>
           <SeldonNode
@@ -151,57 +171,7 @@ export const RowBoard = memo(function RowBoard({
       </div>
 
       <FramerExpandable isExpanded={isExpanded}>
-        <IndentationLevel>
-          {isThemeBoard(board)
-            ? variants.map((entryId) => (
-                <RowResourceEntry
-                  key={entryId}
-                  config={RESOURCE_ROW_CONFIG.theme}
-                  entryId={entryId}
-                  show={show}
-                  parentIsSelected={boardIsActive}
-                />
-              ))
-            : isFontCollectionBoard(board)
-              ? variants.map((entryId) => (
-                  <RowResourceEntry
-                    key={entryId}
-                    config={RESOURCE_ROW_CONFIG.fontCollection}
-                    entryId={entryId}
-                    show={show}
-                    parentIsSelected={boardIsActive}
-                  />
-                ))
-              : isIconSetBoard(board)
-                ? variants.map((entryId) => (
-                    <RowResourceEntry
-                      key={entryId}
-                      config={RESOURCE_ROW_CONFIG.iconSet}
-                      entryId={entryId}
-                      show={show}
-                      parentIsSelected={boardIsActive}
-                    />
-                  ))
-                : isMediaBoard(board)
-                  ? variants.map((entryId) => (
-                      <RowResourceEntry
-                        key={entryId}
-                        config={RESOURCE_ROW_CONFIG.media}
-                        entryId={entryId}
-                        show={show}
-                        parentIsSelected={boardIsActive}
-                      />
-                    ))
-                  : variants.map((variantId, index) => (
-                      <RowNode
-                        key={variantId}
-                        nodeId={variantId}
-                        show={show}
-                        parentIsSelected={boardIsActive}
-                        disableReordering={index === 0}
-                      />
-                    ))}
-        </IndentationLevel>
+        <IndentationLevel>{childRows}</IndentationLevel>
       </FramerExpandable>
     </>
   )
