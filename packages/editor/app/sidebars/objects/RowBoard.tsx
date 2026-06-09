@@ -1,21 +1,18 @@
 import { CSSProperties, memo, useCallback } from "react"
 import { Board as BoardType, Variant } from "@seldon/core"
+import { useRowHighlightStyle } from "@lib/workspace/hooks/use-object-hover"
 import { useSidebarCanvasTrackingBoard } from "../../tracking/hooks/use-sidebar-canvas-tracking"
 import { useSidebarRowStyling } from "../../tracking/hooks/use-sidebar-row-styling"
-import { useRowHighlightStyle } from "@lib/workspace/hooks/use-object-hover"
-import { getComponentKey } from "@lib/workspace/workspace-accessors"
+import { IndentationLevel } from "../hooks/use-indentation"
 import { useRowBoard } from "./hooks/use-row-board"
+import { getComponentKey } from "@lib/workspace/workspace-accessors"
+import { SidebarRow } from "@seldon/components/custom-components"
 import { ListItemTreeNode as SeldonNode } from "@seldon/components/elements/ListItemTreeNode"
 import { LabelProps } from "@seldon/components/primitives/Label"
-import { SidebarRow } from "@seldon/components/custom-components"
 import { relativeFullWidthStyle } from "../helpers/sidebar-styles"
-import { IndentationLevel } from "../hooks/use-indentation"
 import { FramerExpandable } from "../shared/FramerExpandable"
 import { RowNode } from "./RowNode"
-import {
-  getBoardResourceRowConfig,
-  RowResourceEntry,
-} from "./RowResourceEntry"
+import { RowResourceEntry, getBoardResourceRowConfig } from "./RowResourceEntry"
 
 const rowWrapperStyle: CSSProperties = {
   width: "100%",

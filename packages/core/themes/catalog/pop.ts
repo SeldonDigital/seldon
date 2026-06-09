@@ -395,24 +395,88 @@ const theme: StockTheme = {
     },
   },
   fontWeight: {
-    thin: { type: TokenType.EXACT, name: "Thin", parameters: { unit: Unit.NUMBER, value: 100 } },
-    xlight: { type: TokenType.EXACT, name: "Extra light", parameters: { unit: Unit.NUMBER, value: 200 } },
-    light: { type: TokenType.EXACT, name: "Light", parameters: { unit: Unit.NUMBER, value: 300 } },
-    normal: { type: TokenType.EXACT, name: "Normal", parameters: { unit: Unit.NUMBER, value: 400 } },
-    medium: { type: TokenType.EXACT, name: "Medium", parameters: { unit: Unit.NUMBER, value: 500 } },
-    semibold: { type: TokenType.EXACT, name: "Semibold", parameters: { unit: Unit.NUMBER, value: 600 } },
-    bold: { type: TokenType.EXACT, name: "Bold", parameters: { unit: Unit.NUMBER, value: 700 } },
-    xbold: { type: TokenType.EXACT, name: "Extra bold", parameters: { unit: Unit.NUMBER, value: 800 } },
-    black: { type: TokenType.EXACT, name: "Black", parameters: { unit: Unit.NUMBER, value: 900 } },
+    thin: {
+      type: TokenType.EXACT,
+      name: "Thin",
+      parameters: { unit: Unit.NUMBER, value: 100 },
+    },
+    xlight: {
+      type: TokenType.EXACT,
+      name: "Extra light",
+      parameters: { unit: Unit.NUMBER, value: 200 },
+    },
+    light: {
+      type: TokenType.EXACT,
+      name: "Light",
+      parameters: { unit: Unit.NUMBER, value: 300 },
+    },
+    normal: {
+      type: TokenType.EXACT,
+      name: "Normal",
+      parameters: { unit: Unit.NUMBER, value: 400 },
+    },
+    medium: {
+      type: TokenType.EXACT,
+      name: "Medium",
+      parameters: { unit: Unit.NUMBER, value: 500 },
+    },
+    semibold: {
+      type: TokenType.EXACT,
+      name: "Semibold",
+      parameters: { unit: Unit.NUMBER, value: 600 },
+    },
+    bold: {
+      type: TokenType.EXACT,
+      name: "Bold",
+      parameters: { unit: Unit.NUMBER, value: 700 },
+    },
+    xbold: {
+      type: TokenType.EXACT,
+      name: "Extra bold",
+      parameters: { unit: Unit.NUMBER, value: 800 },
+    },
+    black: {
+      type: TokenType.EXACT,
+      name: "Black",
+      parameters: { unit: Unit.NUMBER, value: 900 },
+    },
   },
   lineHeight: {
-    none: { type: TokenType.EXACT, name: "None", parameters: { unit: Unit.NUMBER, value: 1.0 } },
-    solid: { type: TokenType.EXACT, name: "Solid", parameters: { unit: Unit.NUMBER, value: 1.15 } },
-    tight: { type: TokenType.EXACT, name: "Tight", parameters: { unit: Unit.NUMBER, value: 1.25 } },
-    compact: { type: TokenType.EXACT, name: "Compact", parameters: { unit: Unit.NUMBER, value: 1.33 } },
-    cozy: { type: TokenType.EXACT, name: "Cozy", parameters: { unit: Unit.NUMBER, value: 1.5 } },
-    comfortable: { type: TokenType.EXACT, name: "Comfortable", parameters: { unit: Unit.NUMBER, value: 2.0 } },
-    open: { type: TokenType.EXACT, name: "Open", parameters: { unit: Unit.NUMBER, value: 2.5 } },
+    none: {
+      type: TokenType.EXACT,
+      name: "None",
+      parameters: { unit: Unit.NUMBER, value: 1.0 },
+    },
+    solid: {
+      type: TokenType.EXACT,
+      name: "Solid",
+      parameters: { unit: Unit.NUMBER, value: 1.15 },
+    },
+    tight: {
+      type: TokenType.EXACT,
+      name: "Tight",
+      parameters: { unit: Unit.NUMBER, value: 1.25 },
+    },
+    compact: {
+      type: TokenType.EXACT,
+      name: "Compact",
+      parameters: { unit: Unit.NUMBER, value: 1.33 },
+    },
+    cozy: {
+      type: TokenType.EXACT,
+      name: "Cozy",
+      parameters: { unit: Unit.NUMBER, value: 1.5 },
+    },
+    comfortable: {
+      type: TokenType.EXACT,
+      name: "Comfortable",
+      parameters: { unit: Unit.NUMBER, value: 2.0 },
+    },
+    open: {
+      type: TokenType.EXACT,
+      name: "Open",
+      parameters: { unit: Unit.NUMBER, value: 2.5 },
+    },
   },
   iconSet: {
     intent: "General purpose icon set",
@@ -466,13 +530,19 @@ const theme: StockTheme = {
       intent:
         "The default color used to fill backgrounds, often white or black.",
       type: TokenType.SWATCH,
-      parameters: { colorspace: Colorspace.HSL, value: { hue: 352, saturation: 12, lightness: 8 } },
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 352, saturation: 12, lightness: 8 },
+      },
     },
     custom4: {
       name: "Charcoal",
       intent: "A low contrast black color.",
       type: TokenType.SWATCH,
-      parameters: { colorspace: Colorspace.HSL, value: { hue: 197, saturation: 8, lightness: 18 } },
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 197, saturation: 8, lightness: 18 },
+      },
     },
   },
   font: {
@@ -764,8 +834,7 @@ const theme: StockTheme = {
       parameters: {
         image: {
           type: ValueType.EXACT,
-          value:
-            "https://static.seldon.app/background-default-light.jpg",
+          value: "https://static.seldon.app/background-default-light.jpg",
         },
         repeat: { type: ValueType.OPTION, value: BackgroundRepeat.NO_REPEAT },
         size: { type: ValueType.OPTION, value: ImageFit.COVER },
@@ -777,8 +846,7 @@ const theme: StockTheme = {
       parameters: {
         image: {
           type: ValueType.EXACT,
-          value:
-            "https://static.seldon.app/background-default-light.jpg",
+          value: "https://static.seldon.app/background-default-light.jpg",
         },
         repeat: { type: ValueType.OPTION, value: BackgroundRepeat.REPEAT },
         size: { type: ValueType.OPTION, value: ImageFit.ORIGINAL },

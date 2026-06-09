@@ -1,4 +1,5 @@
 import { produce } from "immer"
+
 import { ExtractPayload, Workspace } from "../../../../index"
 import { isEntryThemeDefault } from "../../../model/entry-theme"
 import { workspaceThemeService } from "../../../services"

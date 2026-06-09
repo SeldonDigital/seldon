@@ -1,6 +1,10 @@
 import { getComponentSchema } from "../../../components/catalog"
 import { ComponentId } from "../../../components/constants"
-import { SchemaChild, hasVariants, isComplexSchema } from "../../../components/types"
+import {
+  SchemaChild,
+  hasVariants,
+  isComplexSchema,
+} from "../../../components/types"
 import { resolveSchemaChild } from "./resolve-schema-child"
 import { applyVariantFallbackToSlot } from "./schema-composition-children"
 

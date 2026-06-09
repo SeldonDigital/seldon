@@ -50,8 +50,7 @@ export function PropertyTreeSection({
 }: PropertyTreeSectionProps) {
   const isFamilies = section.category === "families"
   const isIconCategory =
-    !!iconProperties &&
-    getIconRowCategory(`icon.${section.category}`) !== null
+    !!iconProperties && getIconRowCategory(`icon.${section.category}`) !== null
 
   const rowAllProperties =
     isFamilies && familyProperties

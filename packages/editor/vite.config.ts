@@ -1,6 +1,6 @@
+import react from "@vitejs/plugin-react"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
-import react from "@vitejs/plugin-react"
 import { defineConfig } from "vite"
 import { exportApiPlugin } from "./vite/export-api-plugin"
 
@@ -24,7 +24,10 @@ export default defineConfig(({ mode }) => ({
     alias: [
       { find: "@app", replacement: path.join(editorRoot, "app") },
       { find: "@lib", replacement: path.join(editorRoot, "lib") },
-      { find: "@seldon/components", replacement: path.join(editorRoot, "seldon") },
+      {
+        find: "@seldon/components",
+        replacement: path.join(editorRoot, "seldon"),
+      },
       { find: "@seldon/core", replacement: corePackageRoot },
       { find: "@seldon/factory", replacement: factoryPackageRoot },
     ],

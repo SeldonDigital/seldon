@@ -2,9 +2,9 @@ import { CSSProperties, useCallback } from "react"
 import { Light as SyntaxHighlighter } from "react-syntax-highlighter"
 import css from "react-syntax-highlighter/dist/esm/languages/hljs/css"
 import { atomOneDarkReasonable } from "react-syntax-highlighter/dist/esm/styles/hljs"
+import { Box } from "@seldon/components/custom-components"
 import { HTMLButton } from "@seldon/components/native-react/HTML.Button"
 import { Icon } from "@seldon/components/primitives/Icon"
-import { Box } from "@seldon/components/custom-components"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 
 SyntaxHighlighter.registerLanguage("css", css)

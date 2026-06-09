@@ -6,18 +6,18 @@ Seldon is licensed under the PolyForm Noncommercial License 1.0.0, with a separa
 
 These licenses govern use of the code.
 
-| Document | Description |
-|----------|-------------|
-| [LICENSE.md](noncommercial/LICENSE.md) | PolyForm Noncommercial License 1.0.0 summary |
-| [COMMERCIAL-LICENSE.md](commercial/COMMERCIAL-LICENSE.md) | When a commercial license is required |
+| Document                                                  | Description                                  |
+| --------------------------------------------------------- | -------------------------------------------- |
+| [LICENSE.md](noncommercial/LICENSE.md)                    | PolyForm Noncommercial License 1.0.0 summary |
+| [COMMERCIAL-LICENSE.md](commercial/COMMERCIAL-LICENSE.md) | When a commercial license is required        |
 
 ## Contributors and notices
 
-| Document | Description |
-|----------|-------------|
-| [CONTRIBUTING.md](contributors/CONTRIBUTING.md) | How to contribute |
-| [CLA.md](contributors/CLA.md) | Contributor License Agreement |
-| [NOTICE.md](NOTICE.md) | Official repository and trademark notice |
+| Document                                        | Description                              |
+| ----------------------------------------------- | ---------------------------------------- |
+| [CONTRIBUTING.md](contributors/CONTRIBUTING.md) | How to contribute                        |
+| [CLA.md](contributors/CLA.md)                   | Contributor License Agreement            |
+| [NOTICE.md](NOTICE.md)                          | Official repository and trademark notice |
 
 ## Quick summary
 

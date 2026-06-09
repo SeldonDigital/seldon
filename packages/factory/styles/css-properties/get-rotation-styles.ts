@@ -1,4 +1,5 @@
 import { Properties, ValueType } from "@seldon/core"
+
 import { getCssValue } from "./get-css-value"
 import { CSSObject } from "./types"
 

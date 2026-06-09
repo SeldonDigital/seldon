@@ -1,4 +1,5 @@
 import { produce } from "immer"
+
 import type { ExtractPayload, Workspace } from "../../../../index"
 import { iconSetBoardKeyFromEntryId } from "../../../helpers/icon-sets/icon-set-id"
 import type { EntryIconSet } from "../../../model/entry-icon-set"

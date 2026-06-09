@@ -1,9 +1,10 @@
 import { Workspace } from "@seldon/core"
-import type { EntryNode } from "@seldon/core/workspace/types"
 import { getVariantById } from "@seldon/core/workspace/helpers/general/get-variant-by-id"
 import { isDefaultVariant } from "@seldon/core/workspace/helpers/general/is-default-variant"
 import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-catalog-id"
 import { isVariantNode } from "@seldon/core/workspace/helpers/nodes/is-variant-node"
+import type { EntryNode } from "@seldon/core/workspace/types"
+
 import { resolveSourceVariantId } from "../../../helpers/workspace-nodes"
 import { pascalCase } from "../utils/case-utils"
 

@@ -10,12 +10,12 @@ Core owns design state and rules. The editor owns gestures, undo history, select
 
 The editor groups two layers that work together:
 
-| Area | Role | Deep reference |
-| --- | --- | --- |
-| **App** | Next.js App Router routes and all UI: canvas, sidebars, panels, menu | [app/](./app) |
-| **Workspace state** | In-memory workspace, history, selection, preview | [lib/workspace/](./lib/workspace) |
-| **Storage** | IndexedDB read and write for stored workspaces | [lib/storage/workspace-store.ts](./lib/storage/workspace-store.ts) |
-| **Local workspace** | Record loading and debounced autosave | [lib/local-workspace/](./lib/local-workspace) |
+| Area                | Role                                                                 | Deep reference                                                     |
+| ------------------- | -------------------------------------------------------------------- | ------------------------------------------------------------------ |
+| **App**             | Next.js App Router routes and all UI: canvas, sidebars, panels, menu | [app/](./app)                                                      |
+| **Workspace state** | In-memory workspace, history, selection, preview                     | [lib/workspace/](./lib/workspace)                                  |
+| **Storage**         | IndexedDB read and write for stored workspaces                       | [lib/storage/workspace-store.ts](./lib/storage/workspace-store.ts) |
+| **Local workspace** | Record loading and debounced autosave                                | [lib/local-workspace/](./lib/local-workspace)                      |
 
 The editor imports and exports code directly from `@seldon/core` and `@seldon/factory`. It does not fork their logic. See the existing [README.md](./README.md) for run steps and the package name `@seldon/editor-local`.
 
@@ -130,14 +130,14 @@ Pipeline detail lives in [../factory/FACTORY.md](../factory/FACTORY.md).
 
 ## Further Reading
 
-| Topic | Document |
-| --- | --- |
-| Core kernel | [../core/CORE.md](../core/CORE.md) |
-| Factory export | [../factory/FACTORY.md](../factory/FACTORY.md) |
-| Run steps | [README.md](./README.md) |
-| Vocabulary | [GLOSSARY.md](../../GLOSSARY.md) |
-| Workspace file spec | [../core/workspace/WORKSPACE.md](../core/workspace/WORKSPACE.md) |
-| Reducer actions | [../core/workspace/reducers/README.md](../core/workspace/reducers/README.md) |
+| Topic               | Document                                                                     |
+| ------------------- | ---------------------------------------------------------------------------- |
+| Core kernel         | [../core/CORE.md](../core/CORE.md)                                           |
+| Factory export      | [../factory/FACTORY.md](../factory/FACTORY.md)                               |
+| Run steps           | [README.md](./README.md)                                                     |
+| Vocabulary          | [GLOSSARY.md](../../GLOSSARY.md)                                             |
+| Workspace file spec | [../core/workspace/WORKSPACE.md](../core/workspace/WORKSPACE.md)             |
+| Reducer actions     | [../core/workspace/reducers/README.md](../core/workspace/reducers/README.md) |
 
 ---
 
@@ -175,10 +175,10 @@ Contact:
 
 ### 4. Summary
 
-| Use | Requirement |
-|------|-------------|
+| Use               | Requirement                          |
+| ----------------- | ------------------------------------ |
 | Noncommercial use | PolyForm Noncommercial License 1.0.0 |
-| Commercial use | Paid commercial license |
+| Commercial use    | Paid commercial license              |
 
 ---
 
@@ -191,7 +191,7 @@ Contact:
 - [Documentation](https://docs.seldon.digital)
 - [Issues & Discussions](https://github.com/seldon/issues)
 
---- 
+---
 
 ## Notice for AI and LLM Training
 

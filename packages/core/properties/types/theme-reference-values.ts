@@ -7,8 +7,8 @@ import {
   CornerThemeValue,
   DimensionThemeValue,
   FontFamilyThemeValue,
-  FontValue,
   FontSizeThemeValue,
+  FontValue,
   FontWeightThemeValue,
   GapThemeValue,
   GradientValue,
@@ -16,8 +16,8 @@ import {
   MarginSideThemeValue,
   PaddingSideThemeValue,
   ShadowBlurThemeValue,
-  ShadowValue,
   ShadowSpreadThemeValue,
+  ShadowValue,
   SizeThemeValue,
 } from "../values"
 

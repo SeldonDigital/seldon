@@ -7,12 +7,12 @@ import { Restricted } from "../../../types/helpers"
 import { BorderCollapse, BorderStyle } from "../../../values"
 import { EmptyValue } from "../../shared/empty/empty"
 import { BorderCollapseValue } from "../border-collapse"
+import type { BorderValue } from "./border"
 import { BorderBrightnessValue } from "./border-brightness"
 import { BorderColorValue } from "./border-color"
 import { BorderOpacityValue } from "./border-opacity"
 import { BorderStyleValue } from "./border-style"
 import { BorderWidthValue } from "./border-width"
-import type { BorderValue } from "./border"
 
 /** One border compound with optional theme recipe and per-field picks. */
 export interface BorderCompound {

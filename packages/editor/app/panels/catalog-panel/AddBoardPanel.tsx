@@ -2,16 +2,16 @@
 
 import { useCallback } from "react"
 import { ComponentLevel } from "@seldon/core/components/constants"
-import { useAddRemoveCommands } from "@lib/hooks/commands/use-add-remove-commands"
-import { useDialog } from "@lib/hooks/use-dialog"
 import { useSelection } from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
-import { CatalogPanel } from "./CatalogPanel"
+import { useAddRemoveCommands } from "@lib/hooks/commands/use-add-remove-commands"
+import { useDialog } from "@lib/hooks/use-dialog"
 import {
   CatalogComponentItem,
   FilterComponentPredicate,
   useComponentCatalog,
 } from "../hooks/use-component-catalog"
+import { CatalogPanel } from "./CatalogPanel"
 
 const LEVEL_LABELS: Partial<Record<ComponentLevel, string>> = {
   [ComponentLevel.SCREEN]: "screen",

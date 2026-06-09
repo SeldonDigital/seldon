@@ -5,20 +5,20 @@ import {
   isIconSetBoard,
   isThemeBoard,
 } from "@seldon/core/workspace/model/components"
-import { getVariantRootIds } from "@lib/workspace/component-tree"
-import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
-import { useTool } from "@lib/hooks/use-tool"
 import { useAutoSelectNode } from "@lib/workspace/hooks/use-auto-select-node"
 import { useSelection } from "@lib/workspace/hooks/use-selection"
-import { useSelectionRelations } from "./use-selection-relations"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
+import { useTool } from "@lib/hooks/use-tool"
+import { getVariantRootIds } from "@lib/workspace/component-tree"
+import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { IconProps } from "@seldon/components/primitives/Icon"
 import { useDraggable } from "./use-draggable"
 import { useExpansion, useIsExpanded } from "./use-expansion"
 import { useRowButton } from "./use-row-button"
 import { useRowClick } from "./use-row-click"
 import { useRowToggle } from "./use-row-toggle"
+import { useSelectionRelations } from "./use-selection-relations"
 
 /**
  * Hook that provides all state and handlers for rendering a board row in the objects sidebar.

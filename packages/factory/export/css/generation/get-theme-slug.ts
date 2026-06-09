@@ -3,6 +3,7 @@ import {
   parseThemeTemplate,
 } from "@seldon/core/workspace/model/template-ref"
 import type { Workspace } from "@seldon/core/workspace/types"
+
 import { kebabCase } from "../../react/utils/case-utils"
 
 type ThemeEntry = {

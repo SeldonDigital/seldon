@@ -1,6 +1,6 @@
+import reactHooks from "eslint-plugin-react-hooks"
 import { defineConfig, globalIgnores } from "eslint/config"
 import tseslint from "typescript-eslint"
-import reactHooks from "eslint-plugin-react-hooks"
 
 // Message shared by the app-layer boundary rules.
 const APP_VIEW_BOUNDARY_MESSAGE =

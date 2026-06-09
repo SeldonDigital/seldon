@@ -1,7 +1,8 @@
 import { resolveValue } from "@seldon/core/helpers/resolution/resolve-value"
 import { getThemeOption } from "@seldon/core/helpers/theme/get-theme-option"
-import { Theme } from "@seldon/core/themes/types"
 import type { ShadowCompound } from "@seldon/core/properties/values/effects/shadow"
+import { Theme } from "@seldon/core/themes/types"
+
 import { StyleGenerationContext } from "../types"
 import { getCssValue } from "./get-css-value"
 import { getLayeredPaintColor } from "./get-layered-paint-color"
@@ -93,6 +94,9 @@ function resolveShadowLayer(
     return `${offsetXString} ${offsetYString} ${blurString} ${colorString}`
   }
 
-  const spreadString = getShadowSpreadCSSValue({ spread: resolvedSpread, theme })
+  const spreadString = getShadowSpreadCSSValue({
+    spread: resolvedSpread,
+    theme,
+  })
   return `${offsetXString} ${offsetYString} ${blurString} ${spreadString} ${colorString}`
 }

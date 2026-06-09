@@ -1,11 +1,11 @@
-import { Placement } from "@lib/types"
 import { COLORS } from "@lib/helpers/colors"
+import { Placement } from "@lib/types"
 import { CSSProperties } from "react"
 import { ComponentId, isComponentId } from "@seldon/core/components/constants"
 import { InstanceId, VariantId } from "@seldon/core/index"
-import { getNodeOrientation } from "@lib/workspace/get-node-orientation"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
+import { getNodeOrientation } from "@lib/workspace/get-node-orientation"
 import {
   InsertIndicatorLine,
   PositionedPanel,

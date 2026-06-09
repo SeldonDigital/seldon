@@ -1,10 +1,4 @@
-import {
-  ChangeEvent,
-  CSSProperties,
-  DragEvent,
-  ReactNode,
-  Ref,
-} from "react"
+import { CSSProperties, ChangeEvent, DragEvent, ReactNode, Ref } from "react"
 
 interface DropzoneSurfaceProps {
   fileInputRef: Ref<HTMLInputElement>

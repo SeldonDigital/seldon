@@ -12,9 +12,7 @@ export function getThemeEntryDisplayName(
   entryId: string,
   workspace: Workspace,
 ): string | undefined {
-  const themeBoards = Object.values(workspace.boards ?? {}).filter(
-    isThemeBoard,
-  )
+  const themeBoards = Object.values(workspace.boards ?? {}).filter(isThemeBoard)
 
   for (const board of themeBoards) {
     const index = board.variants.findIndex(

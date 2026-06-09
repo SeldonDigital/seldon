@@ -1,4 +1,5 @@
 import { Display, Properties } from "@seldon/core"
+
 import { CSSObject } from "./types"
 
 export function getDisplayStyles({

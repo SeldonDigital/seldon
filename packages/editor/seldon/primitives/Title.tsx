@@ -20,15 +20,14 @@ import { HTMLHeading5 } from "../native-react/HTML.Heading5"
 import { HTMLHeading6 } from "../native-react/HTML.Heading6"
 import { combineClassNames } from "../utils/class-name"
 
-export interface TitleProps
-  extends HTMLAttributes<
-    | HTMLHeadingElement
-    | HTMLHeadingElement
-    | HTMLHeadingElement
-    | HTMLHeadingElement
-    | HTMLHeadingElement
-    | HTMLHeadingElement
-  > {
+export interface TitleProps extends HTMLAttributes<
+  | HTMLHeadingElement
+  | HTMLHeadingElement
+  | HTMLHeadingElement
+  | HTMLHeadingElement
+  | HTMLHeadingElement
+  | HTMLHeadingElement
+> {
   className?: string
   children?: string
   htmlElement?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6"

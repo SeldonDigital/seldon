@@ -13,22 +13,22 @@ import { isEntryFontCollectionDefault } from "@seldon/core/workspace/model/entry
 import { isEntryIconSetDefault } from "@seldon/core/workspace/model/entry-icon-set"
 import { isEntryThemeDefault } from "@seldon/core/workspace/model/entry-theme"
 import type { Workspace } from "@seldon/core/workspace/types"
-import { useTool } from "@lib/hooks/use-tool"
+import { useRowHighlightStyle } from "@lib/workspace/hooks/use-object-hover"
 import {
   ResourceEntryKind,
   useIsResourceEntrySelected,
   useSelection,
 } from "@lib/workspace/hooks/use-selection"
-import { useRowHighlightStyle } from "@lib/workspace/hooks/use-object-hover"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
-import { SelectionKind } from "@lib/workspace/selection-target"
+import { useTool } from "@lib/hooks/use-tool"
 import { useSidebarRowStyling } from "../../tracking/hooks/use-sidebar-row-styling"
 import { useResourceEntryRow } from "./hooks/use-resource-entry-row"
 import { useRowClick } from "./hooks/use-row-click"
+import { SelectionKind } from "@lib/workspace/selection-target"
+import { SidebarRow } from "@seldon/components/custom-components"
 import { ListItemTreeNode as SeldonNode } from "@seldon/components/elements/ListItemTreeNode"
 import { IconProps } from "@seldon/components/primitives/Icon"
 import { LabelProps } from "@seldon/components/primitives/Label"
-import { SidebarRow } from "@seldon/components/custom-components"
 import { Combobox } from "../properties/controls/combobox/Combobox"
 
 const rowWrapperStyle: CSSProperties = {

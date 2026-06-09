@@ -5,10 +5,10 @@ import {
   debugLog,
 } from "../../../../utils/debug-logger"
 import {
-  nodeRetrievalService,
   nodeOperationsService,
-  workspacePropagationService,
+  nodeRetrievalService,
   typeCheckingService,
+  workspacePropagationService,
 } from "../../../services"
 import { ExtractPayload, Workspace } from "../../../types"
 
@@ -30,7 +30,11 @@ export function removeVariant(
   })
 
   if (!isVariant) {
-    debugLog("Workspace", "removeVariant", "Removal not allowed for non-variant")
+    debugLog(
+      "Workspace",
+      "removeVariant",
+      "Removal not allowed for non-variant",
+    )
     debugGroupEnd(
       "Workspace",
       "removeVariant",

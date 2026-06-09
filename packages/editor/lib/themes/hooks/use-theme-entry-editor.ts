@@ -1,7 +1,4 @@
 import { useCallback, useMemo } from "react"
-import { getComputedTheme } from "@seldon/core/workspace/compute"
-import { getThemeOverrides } from "@seldon/core/workspace/helpers/themes/get-theme-overrides"
-import type { EntryThemeId } from "@seldon/core/workspace/types"
 import {
   Colorspace,
   type HSL,
@@ -18,6 +15,9 @@ import {
   type ThemeSizeId,
   type ThemeSpacingId,
 } from "@seldon/core"
+import { getComputedTheme } from "@seldon/core/workspace/compute"
+import { getThemeOverrides } from "@seldon/core/workspace/helpers/themes/get-theme-overrides"
+import type { EntryThemeId } from "@seldon/core/workspace/types"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 
 function getOverrideAtPath(

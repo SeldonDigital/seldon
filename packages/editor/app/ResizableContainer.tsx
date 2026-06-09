@@ -53,7 +53,9 @@ export function ResizableContainer({
   }, [id])
 
   return (
-    <div style={{ position: "relative", display: "flex", flexDirection: "column" }}>
+    <div
+      style={{ position: "relative", display: "flex", flexDirection: "column" }}
+    >
       <div
         ref={containerRef}
         className={className}

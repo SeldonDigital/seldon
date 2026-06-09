@@ -13,11 +13,7 @@ export {
   isReservedThemeLookId,
 } from "./built-in-looks"
 export type { BuiltInLookSection } from "./built-in-looks"
-export {
-  LOOK_FACETS,
-  isBridgedLookFacet,
-  isLookSection,
-} from "./look-facets"
+export { LOOK_FACETS, isBridgedLookFacet, isLookSection } from "./look-facets"
 export type {
   BridgedLookFacet,
   InlineLookFacet,

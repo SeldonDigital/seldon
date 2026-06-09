@@ -8,7 +8,10 @@ import { getVariantById } from "@seldon/core/workspace/helpers/general/get-varia
 import { isSpecialBoardVariant } from "@seldon/core/workspace/helpers/general/is-special-board-variant"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
-import { CatalogPanelCategory, CatalogPanelItem } from "../catalog-panel/CatalogPanel"
+import {
+  CatalogPanelCategory,
+  CatalogPanelItem,
+} from "../catalog-panel/CatalogPanel"
 
 export type CatalogComponentItem = CatalogPanelItem & {
   componentId: ComponentId
@@ -38,62 +41,63 @@ export function useComponentCatalog({
   const { workspace } = useWorkspace()
   const [query, setQuery] = useState("")
 
-  const categories: CatalogPanelCategory<CatalogComponentItem>[] = useMemo(() => {
-    return categoryConfigs.map(({ category, schemas }) => {
-      const items: CatalogComponentItem[] = schemas
-        .filter((schema) => shouldShowComponent(schema))
-        .flatMap((schema): CatalogComponentItem[] => {
-          const board = workspace.boards[schema.id]
+  const categories: CatalogPanelCategory<CatalogComponentItem>[] =
+    useMemo(() => {
+      return categoryConfigs.map(({ category, schemas }) => {
+        const items: CatalogComponentItem[] = schemas
+          .filter((schema) => shouldShowComponent(schema))
+          .flatMap((schema): CatalogComponentItem[] => {
+            const board = workspace.boards[schema.id]
 
-          if (board) {
-            // If board exists, get all variants
-            return getBoardVariantRootIds(board).map((variantId) => {
-              const variant = getVariantById(variantId, workspace)
-              // For special board variants, use the actual label even for default variants
-              // For regular boards, show "Default" for default variants
-              const isSpecial = isSpecialBoardVariant(variant, workspace)
-              const description =
-                workspaceService.isDefaultVariant(variant) && !isSpecial
-                  ? "Default"
-                  : variant.label
-              return {
-                id: variantId,
+            if (board) {
+              // If board exists, get all variants
+              return getBoardVariantRootIds(board).map((variantId) => {
+                const variant = getVariantById(variantId, workspace)
+                // For special board variants, use the actual label even for default variants
+                // For regular boards, show "Default" for default variants
+                const isSpecial = isSpecialBoardVariant(variant, workspace)
+                const description =
+                  workspaceService.isDefaultVariant(variant) && !isSpecial
+                    ? "Default"
+                    : variant.label
+                return {
+                  id: variantId,
+                  componentId: schema.id,
+                  variantId,
+                  name: schema.name,
+                  icon: schema.icon,
+                  description,
+                }
+              })
+            }
+
+            // If no board exists, use default variant
+            return [
+              {
+                id: schema.id,
                 componentId: schema.id,
-                variantId,
                 name: schema.name,
                 icon: schema.icon,
-                description,
-              }
-            })
-          }
+                description: "Default",
+              },
+            ]
+          })
+          // Filter out components based on the query
+          .filter((item) => {
+            if (query.length === 0) return true
 
-          // If no board exists, use default variant
-          return [
-            {
-              id: schema.id,
-              componentId: schema.id,
-              name: schema.name,
-              icon: schema.icon,
-              description: "Default",
-            },
-          ]
-        })
-        // Filter out components based on the query
-        .filter((item) => {
-          if (query.length === 0) return true
+            const queryLower = query.toLowerCase()
+            return (
+              item.name.toLowerCase().includes(queryLower) ||
+              item.description.toLowerCase().includes(queryLower) ||
+              item.variantId?.toLowerCase().includes(queryLower) ||
+              item.componentId.toLowerCase().includes(queryLower)
+            )
+          })
 
-          const queryLower = query.toLowerCase()
-          return (
-            item.name.toLowerCase().includes(queryLower) ||
-            item.description.toLowerCase().includes(queryLower) ||
-            item.variantId?.toLowerCase().includes(queryLower) ||
-            item.componentId.toLowerCase().includes(queryLower)
-          )
-        })
-
-      return { category, items }
-    })
-  }, [shouldShowComponent, query, workspace])
+        return { category, items }
+      })
+    }, [shouldShowComponent, query, workspace])
 
   return { categories, query, setQuery }
 }

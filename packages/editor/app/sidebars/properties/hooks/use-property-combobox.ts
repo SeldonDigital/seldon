@@ -6,13 +6,13 @@ import {
   useRef,
   useState,
 } from "react"
-import { FlatProperty } from "../helpers/properties-data"
-import type { PropertyPickerResult } from "../helpers/options-utils"
 import { useComboboxState } from "../controls/combobox/hooks/use-combobox-state"
 import type {
   ComboboxOptionItem,
   ComboboxOptionItems,
 } from "../controls/combobox/types"
+import type { PropertyPickerResult } from "../helpers/options-utils"
+import { FlatProperty } from "../helpers/properties-data"
 import { useComboboxPosition } from "./use-combobox-position"
 
 type ControlType = FlatProperty["controlType"]

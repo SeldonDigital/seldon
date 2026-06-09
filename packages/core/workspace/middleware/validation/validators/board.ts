@@ -1,9 +1,9 @@
 import { getComponentSchema } from "../../../../components/catalog"
 import { ComponentId } from "../../../../components/constants"
-import { getComponentPropertyDefaults } from "../../../helpers/components/get-component-property-defaults"
 import { ErrorMessages } from "../../../constants"
-import { check } from "../check"
+import { getComponentPropertyDefaults } from "../../../helpers/components/get-component-property-defaults"
 import type { Workspace } from "../../../types"
+import { check } from "../check"
 
 export const boardValidators = {
   exists: (workspace: Workspace, id: string) => {
@@ -19,9 +19,7 @@ export const boardValidators = {
     const schema = getComponentSchema(componentId)
     const allowedKeys = new Set(Object.keys(schema.properties))
     if (board) {
-      for (const key of Object.keys(
-        getComponentPropertyDefaults(),
-      )) {
+      for (const key of Object.keys(getComponentPropertyDefaults())) {
         allowedKeys.add(key)
       }
     }
@@ -33,10 +31,7 @@ export const boardValidators = {
     label: string,
   ) => {
     check(Boolean(catalogId?.trim()), `${label} catalogId is required`)
-    check(
-      allowedIds.has(catalogId!),
-      `Unknown ${label} catalog: ${catalogId}`,
-    )
+    check(allowedIds.has(catalogId!), `Unknown ${label} catalog: ${catalogId}`)
   },
 }
 

@@ -1,12 +1,12 @@
-import { Placement } from "@lib/types"
 import { COLORS } from "@lib/helpers/colors"
+import { Placement } from "@lib/types"
 import { FC } from "react"
 import { CSSProperties } from "react"
+import { useIndentation } from "../../../sidebars/hooks/use-indentation"
 import {
   InsertIndicatorLine,
   Pointer,
 } from "@seldon/components/custom-components"
-import { useIndentation } from "../../../sidebars/hooks/use-indentation"
 import { calculateIndicatorPosition } from "../helpers/calculate-indicator-position"
 
 type IndicatorInsertProps = {

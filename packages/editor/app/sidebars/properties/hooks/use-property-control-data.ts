@@ -24,7 +24,7 @@ function getUnitFromExactValue(value: unknown): string | undefined {
     (value as { value: unknown }).value !== null &&
     "unit" in (value as { value: object }).value
   ) {
-    return String(((value as { value: { unit: string } }).value).unit)
+    return String((value as { value: { unit: string } }).value.unit)
   }
   return undefined
 }
@@ -137,10 +137,7 @@ export function usePropertyControlData({
       }
     }
 
-    if (
-      property.actualValue &&
-      (property.key === "theme")
-    ) {
+    if (property.actualValue && property.key === "theme") {
       return { type: ValueType.EXACT, value: property.actualValue }
     }
 

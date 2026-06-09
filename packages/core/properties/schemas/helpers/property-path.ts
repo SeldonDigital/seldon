@@ -4,7 +4,11 @@ import { isShorthandCatalogProperty } from "../../constants/shared/shorthand-pro
 import type { PropertyValueType } from "../../types/schema"
 import { PROPERTY_SCHEMAS } from "../data/property-schemas"
 
-const LAYERED_PAINT_ROOTS = new Set<string>(["background", "gradient", "shadow"])
+const LAYERED_PAINT_ROOTS = new Set<string>([
+  "background",
+  "gradient",
+  "shadow",
+])
 
 function joinCompoundFacetKey(parent: string, facet: string): string {
   return `${parent}${facet.charAt(0).toUpperCase()}${facet.slice(1)}`

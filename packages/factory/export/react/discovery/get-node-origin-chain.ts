@@ -1,6 +1,7 @@
 import { Workspace } from "@seldon/core"
-import type { EntryNode } from "@seldon/core/workspace/types"
 import { getNodeById } from "@seldon/core/workspace/helpers/nodes/get-node-by-id"
+import type { EntryNode } from "@seldon/core/workspace/types"
+
 import { getTemplateSourceNodeId } from "../../../helpers/workspace-nodes"
 
 export const getNodeOriginChain = (

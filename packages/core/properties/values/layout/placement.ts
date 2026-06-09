@@ -29,7 +29,8 @@ export const placementSchema: PropertySchema = {
   validation: {
     empty: () => true,
     inherit: () => true,
-    option: (value: unknown) => Object.values(Placement).includes(value as Placement),
+    option: (value: unknown) =>
+      Object.values(Placement).includes(value as Placement),
   },
   presetOptions: () => Object.values(Placement),
 }

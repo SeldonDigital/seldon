@@ -5,7 +5,9 @@ import { workspaceMutationService } from "../../services"
 
 export function getDefaultBoardLabel(boardKey: string, board: Board): string {
   if (isComponentBoard(board)) {
-    return workspaceMutationService.getInitialComponentLabel(board.catalogId as ComponentId)
+    return workspaceMutationService.getInitialComponentLabel(
+      board.catalogId as ComponentId,
+    )
   }
   if ("catalogId" in board && typeof board.catalogId === "string") {
     return board.catalogId

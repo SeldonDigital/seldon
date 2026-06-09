@@ -1,4 +1,5 @@
 import { produce } from "immer"
+
 import { rules } from "../../../../rules/config/rules.config"
 import {
   getBoardOrder,
@@ -19,10 +20,7 @@ export function reorderBoard(
   return produce(workspace, (draft) => {
     const { boardKey, newIndex } = payload
 
-    const boardEntries = Object.entries(draft.boards) as [
-      BoardKey,
-      Board,
-    ][]
+    const boardEntries = Object.entries(draft.boards) as [BoardKey, Board][]
 
     if (newIndex < 0 || newIndex > boardEntries.length) {
       return draft

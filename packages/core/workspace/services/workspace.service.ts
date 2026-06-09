@@ -16,16 +16,16 @@ import {
   Workspace,
 } from "../types"
 import { boardOrderService } from "./components/board-order.service"
+import { workspaceMutationService } from "./mutation/workspace-mutation.service"
 import { nodeOperationsService } from "./nodes/node-operations.service"
 import { nodeRelationshipService } from "./nodes/node-relationship.service"
 import { nodeRetrievalService } from "./nodes/node-retrieval.service"
 import { nodeTraversalService } from "./nodes/node-traversal.service"
 import {
-  workspacePropagationService,
   type OperationResult,
+  workspacePropagationService,
 } from "./propagation/workspace-propagation.service"
 import { typeCheckingService } from "./type-checking/type-checking.service"
-import { workspaceMutationService } from "./mutation/workspace-mutation.service"
 
 /**
  * Legacy WorkspaceService class for backward compatibility.
@@ -33,10 +33,7 @@ import { workspaceMutationService } from "./mutation/workspace-mutation.service"
  * @deprecated Use individual services directly for new code
  */
 class WorkspaceService {
-  public getBoard(
-    boardKey: BoardKey,
-    workspace: Workspace,
-  ): Board {
+  public getBoard(boardKey: BoardKey, workspace: Workspace): Board {
     return nodeRetrievalService.getBoard(boardKey, workspace)
   }
 
@@ -105,9 +102,7 @@ class WorkspaceService {
     return typeCheckingService.isUserVariant(node)
   }
 
-  public isBoard(
-    node: RulesNodeOrComponent | undefined,
-  ): node is Board {
+  public isBoard(node: RulesNodeOrComponent | undefined): node is Board {
     return node !== undefined && typeCheckingService.isBoard(node)
   }
 
@@ -280,10 +275,7 @@ class WorkspaceService {
     return nodeOperationsService.deleteBoard(componentId, workspace)
   }
 
-  public deleteBoardByKey(
-    boardKey: BoardKey,
-    workspace: Workspace,
-  ): Workspace {
+  public deleteBoardByKey(boardKey: BoardKey, workspace: Workspace): Workspace {
     return nodeOperationsService.deleteBoardByKey(boardKey, workspace)
   }
 

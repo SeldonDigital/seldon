@@ -20,7 +20,9 @@ export function getSchemaVariantSlotKey(
   return `${componentId}:${variantId}`
 }
 
-export function getSchemaCompositionChildren(schema: ComponentSchema): SchemaChild[] {
+export function getSchemaCompositionChildren(
+  schema: ComponentSchema,
+): SchemaChild[] {
   const slots: SchemaChild[] = []
 
   if (!isComplexSchema(schema)) {

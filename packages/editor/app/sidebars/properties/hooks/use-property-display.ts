@@ -2,6 +2,7 @@ import { CSSProperties, useMemo } from "react"
 import { Board, Instance, Theme, Value, Variant, Workspace } from "@seldon/core"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
+import { buildPropertyOptions } from "../helpers/build-property-options"
 import {
   propertyControlContainerStyle,
   propertyControlInnerStyle,
@@ -9,7 +10,6 @@ import {
   propertyControlTextWrapperStyle,
   propertyControlWrapperStyle,
 } from "../../helpers/sidebar-styles"
-import { buildPropertyOptions } from "../helpers/build-property-options"
 import { getComboboxStoredValue } from "../helpers/combobox-stored-value"
 import { getDisplayValue } from "../helpers/display-value-utils"
 import type { PropertyPickerResult } from "../helpers/options-utils"

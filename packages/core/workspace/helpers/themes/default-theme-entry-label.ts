@@ -1,7 +1,10 @@
 import { getComponentSchema } from "../../../components/catalog"
 import { isComponentId } from "../../../components/constants"
 import type { EntryTheme } from "../../model/entry-theme"
-import { isEntryThemeDefault, isEntryThemeVariant } from "../../model/entry-theme"
+import {
+  isEntryThemeDefault,
+  isEntryThemeVariant,
+} from "../../model/entry-theme"
 import type { Workspace } from "../../model/workspace"
 import { getThemeCatalogId } from "./get-theme-catalog-id"
 

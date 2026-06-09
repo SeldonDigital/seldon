@@ -1,20 +1,18 @@
 import { produce } from "immer"
-import { getInitialBoardComponentProperties } from "../../../helpers/components/get-initial-board-component-properties"
+
 import { isComponentId } from "../../../../components/constants"
 import { ExtractPayload, Workspace } from "../../../../index"
 import { rules } from "../../../../rules/config/rules.config"
+import { STOCK_THEMES_BY_ID } from "../../../../themes/catalog"
+import type { ThemeTemplateId } from "../../../../themes/types/theme-id"
 import {
   getBoardOrder,
   setBoardOrder,
 } from "../../../helpers/components/board-sort-order"
+import { getInitialBoardComponentProperties } from "../../../helpers/components/get-initial-board-component-properties"
 import { WORKSPACE_EDITABLE_THEME_ENTRY_ID } from "../../../helpers/themes/workspace-editable-theme"
 import { formatThemeCatalog } from "../../../model/template-ref"
-import { STOCK_THEMES_BY_ID } from "../../../../themes/catalog"
-import type { ThemeTemplateId } from "../../../../themes/types/theme-id"
-import {
-  workspaceMutationService,
-  boardOrderService,
-} from "../../../services"
+import { boardOrderService, workspaceMutationService } from "../../../services"
 
 /**
  * Inserts a theme board and one default `themes` row rooted at `catalog:{boardKey}`.

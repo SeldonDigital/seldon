@@ -50,9 +50,7 @@ export function getPresetOptions(
 ): unknown[] {
   const schema = getPropertySchema(propertyName)
   const raw = schema?.presetOptions?.(workspace) || []
-  return raw.map((entry) =>
-    isLabeledOption(entry) ? entry.value : entry,
-  )
+  return raw.map((entry) => (isLabeledOption(entry) ? entry.value : entry))
 }
 
 /**

@@ -1,6 +1,6 @@
-import { computeIconSet } from "../../helpers/compute-icon-set"
-import type { IconCategory } from "../../constants/categories"
 import { carbonIconIds } from "."
+import type { IconCategory } from "../../constants/categories"
+import { computeIconSet } from "../../helpers/compute-icon-set"
 import type { StockIconSet } from "../../types/icon-set"
 
 /**

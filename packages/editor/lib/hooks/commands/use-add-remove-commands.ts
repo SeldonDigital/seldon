@@ -1,6 +1,7 @@
 import { useCallback } from "react"
 import { ComponentId } from "@seldon/core/components/constants"
 import { InstanceId, VariantId } from "@seldon/core/index"
+import { isVariantInUse } from "@seldon/core/workspace/helpers/general/is-variant-in-use"
 import {
   isComponentBoard,
   isFontCollectionBoard,
@@ -9,23 +10,22 @@ import {
   isPlaygroundBoard,
   isThemeBoard,
 } from "@seldon/core/workspace/model/components"
-import { isVariantInUse } from "@seldon/core/workspace/helpers/general/is-variant-in-use"
-import { isEntryThemeDefault } from "@seldon/core/workspace/model/entry-theme"
 import { isEntryFontCollectionDefault } from "@seldon/core/workspace/model/entry-font-collection"
 import { isEntryIconSetDefault } from "@seldon/core/workspace/model/entry-icon-set"
-import type { BoardKey } from "@seldon/core/workspace/types"
+import { isEntryThemeDefault } from "@seldon/core/workspace/model/entry-theme"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
+import type { BoardKey } from "@seldon/core/workspace/types"
+import { useAutoSelectNode } from "@lib/workspace/hooks/use-auto-select-node"
+import { useSelection } from "@lib/workspace/hooks/use-selection"
+import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
+import { useTool } from "@lib/hooks/use-tool"
 import { confirmMissingSchemaVariants } from "@lib/workspace/confirm-missing-schema-variants"
 import {
   findFontCollectionBoard,
   findIconSetBoard,
   findThemeBoard,
 } from "@lib/workspace/resource-boards"
-import { useAutoSelectNode } from "@lib/workspace/hooks/use-auto-select-node"
-import { useSelection } from "@lib/workspace/hooks/use-selection"
 import { resolveComponentKey } from "@lib/workspace/workspace-accessors"
-import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
-import { useTool } from "@lib/hooks/use-tool"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import {
   getHoverStateSnapshot,

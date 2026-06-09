@@ -23,18 +23,15 @@ import {
   componentBoardUniqueNodeId,
 } from "../../../helpers/components/entry-node-ids"
 import { getInitialBoardComponentProperties } from "../../../helpers/components/get-initial-board-component-properties"
-import { isComponentBoard } from "../../../model/components"
 import { getInstantiationOptionsForComponent } from "../../../helpers/nodes/collect-component-instantiation-plans"
 import { buildComponentAddPlan } from "../../../helpers/nodes/component-add-plan"
 import { resolveSchemaChild } from "../../../helpers/nodes/resolve-schema-child"
 import { applyVariantFallbackToSlot } from "../../../helpers/nodes/schema-composition-children"
 import { getSchemaSlotFingerprint } from "../../../helpers/nodes/schema-slot-fingerprint"
 import { WORKSPACE_EDITABLE_THEME_ENTRY_ID } from "../../../helpers/themes/workspace-editable-theme"
+import { isComponentBoard } from "../../../model/components"
 import { formatNodeCatalog, formatNodeLink } from "../../../model/template-ref"
-import {
-  workspaceMutationService,
-  boardOrderService,
-} from "../../../services"
+import { boardOrderService, workspaceMutationService } from "../../../services"
 import type {
   ComponentBoard,
   ComponentTreeRef,
@@ -581,8 +578,7 @@ export function addComponent(
       }
     }
 
-    const updatedWorkspace =
-      boardOrderService.realignBoardOrder(draft)
+    const updatedWorkspace = boardOrderService.realignBoardOrder(draft)
     Object.assign(draft.boards, updatedWorkspace.boards)
   })
 }

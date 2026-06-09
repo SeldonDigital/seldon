@@ -1,6 +1,6 @@
 import { isEntryThemeVariant } from "../../../model/entry-theme"
-import { check } from "../check"
 import type { Workspace } from "../../../types"
+import { check } from "../check"
 
 export const themeEntryValidators = {
   exists: (workspace: Workspace, id: string | undefined) => {

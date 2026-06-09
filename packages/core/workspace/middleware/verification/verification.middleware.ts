@@ -2,11 +2,11 @@ import { isComponentId } from "../../../components/constants"
 import { ValueType } from "../../../properties"
 import { isWorkspaceLoggingEnabled } from "../../../utils/debug-logger"
 import { ErrorMessages } from "../../constants"
-import { getBoardKey } from "../../helpers/components/get-board-keys"
 import { findBoardTreeCycleId } from "../../helpers/components/find-tree-cycle"
+import { getBoardKey } from "../../helpers/components/get-board-keys"
+import { isResourceType } from "../../helpers/components/is-resource-type"
 import { walkBoardTreeRefs } from "../../helpers/components/walk-board-tree-refs"
 import { getWorkspaceNodes } from "../../helpers/general/get-workspace-nodes"
-import { isResourceType } from "../../helpers/components/is-resource-type"
 import { isVariantNode } from "../../helpers/nodes/is-variant-node"
 import { isEntryNodeForRules } from "../../helpers/rules/rules-node-subject"
 import {
@@ -103,7 +103,9 @@ const validators = {
   },
   /** Validates that all node IDs are unique. */
   uniqueIds: (workspace: Workspace) => {
-    const ids = Object.values(getWorkspaceNodes(workspace)).map((node) => node.id)
+    const ids = Object.values(getWorkspaceNodes(workspace)).map(
+      (node) => node.id,
+    )
     const uniqueIds = new Set(ids)
 
     if (ids.length !== uniqueIds.size) {
@@ -117,7 +119,10 @@ const validators = {
     Object.values(getWorkspaceNodes(workspace))
       .filter(isVariantNode)
       .forEach((variant) => {
-        check(treeIds.has(variant.id), ErrorMessages.danglingVariant(variant.id))
+        check(
+          treeIds.has(variant.id),
+          ErrorMessages.danglingVariant(variant.id),
+        )
       })
   },
   /** Validates that each instance node appears in some board tree. */
@@ -148,7 +153,9 @@ const validators = {
       .forEach((variant) => {
         Object.entries(variant.overrides).forEach(([key, property]) => {
           if (overrideReferencesParentNode(property)) {
-            throw new Error(ErrorMessages.variantRefersToParent(variant.id, key))
+            throw new Error(
+              ErrorMessages.variantRefersToParent(variant.id, key),
+            )
           }
         })
       })
@@ -208,7 +215,8 @@ export const workspaceVerificationMiddleware: Middleware =
     try {
       const shouldLogVerification =
         process.env.NODE_ENV === "development" && isWorkspaceLoggingEnabled()
-      if (shouldLogVerification) console.groupCollapsed("🔍 Verifying workspace")
+      if (shouldLogVerification)
+        console.groupCollapsed("🔍 Verifying workspace")
 
       validators.noCyclicTrees(nextWorkspace)
       log("✅ No cyclic component trees")

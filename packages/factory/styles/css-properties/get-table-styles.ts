@@ -1,5 +1,6 @@
 import { Align, Properties, Theme, ValueType } from "@seldon/core"
 import { resolveValue } from "@seldon/core/helpers/resolution/resolve-value"
+
 import { CSSObject } from "./types"
 
 const alignmentStyles: Partial<Record<Align, CSSObject>> = {

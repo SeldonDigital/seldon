@@ -10,10 +10,7 @@ import { formatIconSetCatalog } from "../../model/template-ref"
 import { setBoardOrder } from "../components/board-sort-order"
 import { getInitialBoardComponentProperties } from "../components/get-initial-board-component-properties"
 import { WORKSPACE_EDITABLE_THEME_ENTRY_ID } from "../themes/workspace-editable-theme"
-import {
-  type SeedableWorkspace,
-  nextBoardOrder,
-} from "./seedable-workspace"
+import { type SeedableWorkspace, nextBoardOrder } from "./seedable-workspace"
 
 /** Catalog row key for the default icon set board (matches the Seldon icon set id). */
 export const DEFAULT_ICON_SET_BOARD_KEY = "seldonIcons" as const

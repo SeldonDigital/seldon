@@ -1,5 +1,6 @@
 "use client"
 
+import { getDialogPreviewBase } from "@lib/themes/build-dialog-preview"
 import { getCssFromProperties } from "@seldon/factory/styles/css-properties/get-css-from-properties"
 import { useMemo } from "react"
 import { Board, Properties, Scroll, Unit, ValueType } from "@seldon/core"
@@ -7,10 +8,9 @@ import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node
 import { isThemeBoard } from "@seldon/core/workspace/model/components"
 import { workspaceThemeService } from "@seldon/core/workspace/services/theme/theme.service"
 import type { Workspace } from "@seldon/core/workspace/types"
-import { getDialogPreviewBase } from "@lib/themes/build-dialog-preview"
+import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { usePreview } from "@lib/hooks/use-preview"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
-import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { Frame } from "@seldon/components/chrome/frames/Frame"
 import {
   PreviewItemWrapper,
@@ -115,7 +115,10 @@ type ThemeVariantDialogProps = {
 /**
  * Renders a single Dialog preview themed by one workspace theme entry.
  */
-function ThemeVariantDialog({ variantEntryId, themes }: ThemeVariantDialogProps) {
+function ThemeVariantDialog({
+  variantEntryId,
+  themes,
+}: ThemeVariantDialogProps) {
   const { workspace: dialogBase, rootId } = getDialogPreviewBase()
 
   const previewWorkspace = useMemo(() => {

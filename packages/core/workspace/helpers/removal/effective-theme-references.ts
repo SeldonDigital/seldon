@@ -1,7 +1,7 @@
-import { getBoardThemeRef } from "../components/get-board-theme-ref"
-import { getWorkspaceNodes } from "../general/get-workspace-nodes"
 import { workspaceThemeService } from "../../services"
 import type { VariantId, Workspace } from "../../types"
+import { getBoardThemeRef } from "../components/get-board-theme-ref"
+import { getWorkspaceNodes } from "../general/get-workspace-nodes"
 
 /**
  * True when any board uses `themeId` as its catalog theme ref, or any node
@@ -21,7 +21,10 @@ export function hasEffectiveThemeReference(
   for (const node of Object.values(nodes)) {
     if (!node || typeof node.id !== "string") continue
     try {
-      const resolved = workspaceThemeService.getNodeThemeId(node.id as VariantId, workspace)
+      const resolved = workspaceThemeService.getNodeThemeId(
+        node.id as VariantId,
+        workspace,
+      )
       if (resolved === themeId) return true
     } catch {
       // Missing parent/board chain — skip; strict validation happens elsewhere

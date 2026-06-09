@@ -16,8 +16,9 @@ import { HTMLLabel } from "../native-react/HTML.Label"
 import { HTMLSpan } from "../native-react/HTML.Span"
 import { combineClassNames } from "../utils/class-name"
 
-export interface LabelProps
-  extends HTMLAttributes<HTMLLabelElement | HTMLElement> {
+export interface LabelProps extends HTMLAttributes<
+  HTMLLabelElement | HTMLElement
+> {
   className?: string
   children?: string
   htmlElement?: "span" | "label"

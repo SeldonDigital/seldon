@@ -198,7 +198,9 @@ function buildPropertyDisplayMeta(): Record<string, PropertyDisplayMeta> {
 export const PROPERTY_DISPLAY_META: Record<string, PropertyDisplayMeta> =
   buildPropertyDisplayMeta()
 
-export function attachPropertyDisplayMetadata<const T extends Record<string, object>>(
+export function attachPropertyDisplayMetadata<
+  const T extends Record<string, object>,
+>(
   schemas: T,
 ): {
   [K in keyof T]: T[K] & PropertyDisplayMeta

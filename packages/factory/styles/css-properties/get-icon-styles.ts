@@ -1,5 +1,6 @@
 import { ValueType } from "@seldon/core"
 import { resolveValue } from "@seldon/core/helpers/resolution/resolve-value"
+
 import { StyleGenerationContext } from "../types"
 import { getColorCSSValue } from "./get-color-css-value"
 import { getSizeCSSValue } from "./get-size-css-value"

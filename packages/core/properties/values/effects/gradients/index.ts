@@ -1,16 +1,13 @@
-import {
-  ThemeGradientKey,
-  ThemeSwatchKey,
-} from "../../../../themes/types"
+import { ThemeGradientKey, ThemeSwatchKey } from "../../../../themes/types"
 import { Restricted } from "../../../types/helpers"
 import { EmptyValue } from "../../shared/empty/empty"
+import type { GradientValue } from "./gradient"
 import { GradientAngleValue } from "./gradient-angle"
 import { GradientStopBrightnessValue } from "./gradient-stop-brightness"
 import { GradientStopColorValue } from "./gradient-stop-color"
 import { GradientStopOpacityValue } from "./gradient-stop-opacity"
 import { GradientStopPositionValue } from "./gradient-stop-position"
 import { GradientType, GradientTypeValue } from "./gradient-type"
-import type { GradientValue } from "./gradient"
 
 /** One gradient paint layer with optional theme recipe and stop fields. */
 export interface GradientCompound {

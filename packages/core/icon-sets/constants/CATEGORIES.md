@@ -5,6 +5,7 @@ This document provides a complete reference of all icon categories and subcatego
 ## Category Structure
 
 Icons are organized using a two-level hierarchy: `{category}/{subcategory}`. For example:
+
 - `user-interface/actions` - User interface icons for actions
 - `content/files` - Content-related icons for files
 - `business/commerce` - Business icons for commerce
@@ -12,29 +13,34 @@ Icons are organized using a two-level hierarchy: `{category}/{subcategory}`. For
 ## All Categories and Subcategories
 
 ### Business
+
 Icons related to business operations, commerce, and transactions.
 
 - **commerce** - E-commerce and shopping icons (cart, shopping, bag, credit, card, payment, tag, price, discount, gift, receipt, store, dollar, euro, pound, currency)
 - **operations** - General business operations icons (briefcase, calculator, invoice, contract, business, office)
 
 ### Content
+
 Icons related to content creation, management, and display.
 
 - **data** - Data visualization and management (chart, graph, table, list, grid, database, analytics, etc.)
 - **files** - File and folder icons (file, folder, document, archive, cloud, attachment, etc.)
 
 ### Miscellaneous
+
 Icons that don't fit into other categories. This is a top-level category with no subcategories, used as the default fallback for uncategorized icons.
 
 - **miscellaneous** - Icons that don't fit other categories (default fallback)
 
 ### Social-Media
+
 Icons related to users, profiles, and social interactions.
 
 - **social** - Social interaction icons (share, like, heart, star, bookmark, flag, follow, social)
 - **user** - User and profile icons (user, users, profile, account, avatar, person, people, group, team)
 
 ### Specialized
+
 Icons for specialized domains and use cases.
 
 - **education** - Education and learning icons (book, graduation, school, learn, certificate, diploma, education, study)
@@ -49,6 +55,7 @@ Icons for specialized domains and use cases.
 - **weather** - Weather icons (sun, cloud, rain, snow, wind, storm, temperature, weather)
 
 ### System
+
 Icons related to system settings, security, and devices.
 
 - **devices** - Device and hardware icons (computer, laptop, phone, tablet, printer, camera, monitor, server, device, hardware)
@@ -56,6 +63,7 @@ Icons related to system settings, security, and devices.
 - **settings** - Settings and configuration icons (settings, gear, cog, preferences, configuration, options, admin, tool, wrench)
 
 ### User-Interface
+
 Icons for common, frequently-used actions and UI elements.
 
 - **actions** - Action icons (add, remove, edit, save, delete, etc.)
@@ -66,6 +74,7 @@ Icons for common, frequently-used actions and UI elements.
 - **text** - Text editing and formatting (text, bold, italic, underline, align, quote, code, etc.)
 
 ### Utility
+
 Utility icons for time and location.
 
 - **location** - Location and mapping icons (map, location, pin, marker, route, navigation, compass, gps)
@@ -107,16 +116,19 @@ All valid category paths follow the pattern `{category}/{subcategory}`:
 ## Default Category
 
 When an icon cannot be categorized or its category cannot be determined, it defaults to:
+
 - **`miscellaneous/miscellaneous`**
 
 ## File Organization
 
 Icons are physically organized in the file system following this category structure:
+
 ```
 packages/core/icon-sets/catalog/{iconSet}/{category}/{subcategory}/{IconFile}.tsx
 ```
 
 For example:
+
 - `packages/core/icon-sets/catalog/material/user-interface/actions/IconMaterialAdd.tsx`
 - `packages/core/icon-sets/catalog/material/business/commerce/IconMaterialShoppingCart.tsx`
 - `packages/core/icon-sets/catalog/material/miscellaneous/miscellaneous/IconMaterialSync.tsx`
@@ -128,8 +140,8 @@ The file location is the **source of truth** for an icon's category. Category in
 ### Getting an Icon's Category
 
 ```typescript
-import { getIconCategoryFromId } from "@seldon/core/icon-sets/helpers/get-icon-category-from-id"
 import { IconId } from "@seldon/core/icon-sets"
+import { getIconCategoryFromId } from "@seldon/core/icon-sets/helpers/get-icon-category-from-id"
 
 const iconId: IconId = "material-add"
 const categoryPath = getIconCategoryFromId(iconId)
@@ -139,8 +151,8 @@ const categoryPath = getIconCategoryFromId(iconId)
 ### Parsing Category Paths
 
 ```typescript
-import { parseCategoryPath } from "@seldon/core/icon-sets/helpers/get-icon-category-from-path"
 import { IconCategoryPath } from "@seldon/core/icon-sets/constants"
+import { parseCategoryPath } from "@seldon/core/icon-sets/helpers/get-icon-category-from-path"
 
 const categoryPath: IconCategoryPath = "user-interface/actions"
 const { category, subcategory } = parseCategoryPath(categoryPath)
@@ -150,7 +162,10 @@ const { category, subcategory } = parseCategoryPath(categoryPath)
 ### Validating Category Paths
 
 ```typescript
-import { categoryPaths, DEFAULT_CATEGORY_PATH } from "@seldon/core/icon-sets/constants"
+import {
+  DEFAULT_CATEGORY_PATH,
+  categoryPaths,
+} from "@seldon/core/icon-sets/constants"
 
 // Check if a path is valid
 const isValid = categoryPaths.includes("user-interface/actions") // true

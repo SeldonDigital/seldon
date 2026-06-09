@@ -1,11 +1,11 @@
 import { CSSProperties, useState } from "react"
 import { useObjectURL } from "@lib/hooks/use-object-url"
-import { IconSeldonUpload } from "@seldon/components/icons"
 import {
   DropzoneSurface,
   ImagePreview,
   Text,
 } from "@seldon/components/custom-components"
+import { IconSeldonUpload } from "@seldon/components/icons"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 
 export interface ImageDropzoneProps {
@@ -28,7 +28,10 @@ const dropzoneBaseStyle: CSSProperties = {
   justifyContent: "center",
 }
 
-function getDropzoneStyle(isDragging: boolean, hasFile: boolean): CSSProperties {
+function getDropzoneStyle(
+  isDragging: boolean,
+  hasFile: boolean,
+): CSSProperties {
   return {
     ...dropzoneBaseStyle,
     ...(isDragging
@@ -86,9 +89,7 @@ export function ImageDropzone({
     addToast("Invalid image file. Please select a valid image.")
   }
 
-  const dropText = isDragging
-    ? "Drop image here..."
-    : "Select or drop image…"
+  const dropText = isDragging ? "Drop image here..." : "Select or drop image…"
 
   const content = previewUrl ? (
     <ImagePreview src={previewUrl} onError={handleImageError} />

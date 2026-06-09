@@ -1,3 +1,5 @@
+import { parsePropertyPath } from "@lib/properties/property-paths"
+import { serializeValue } from "@lib/properties/serialize-value"
 import { useCallback } from "react"
 import { Board, Instance, Theme, Value, Variant } from "@seldon/core"
 import type {
@@ -5,8 +7,6 @@ import type {
   SubPropertyKey,
 } from "@seldon/core/properties/types/property-keys"
 import type { ThemeInstanceId } from "@seldon/core/themes/types/theme-id"
-import { parsePropertyPath } from "@lib/properties/property-paths"
-import { serializeValue } from "@lib/properties/serialize-value"
 import { useObjectProperties } from "@lib/workspace/hooks/use-object-properties"
 import { useSelection } from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
@@ -23,8 +23,8 @@ import {
   IconSetEditingContext,
   ThemeEditingContext,
 } from "../helpers/editing-contexts"
-import { FlatProperty } from "../helpers/properties-data"
 import type { PropertyPickerResult } from "../helpers/options-utils"
+import { FlatProperty } from "../helpers/properties-data"
 import { RESET_VALUES } from "../helpers/property-control-constants"
 import { shouldUsePresetPropertyBehavior } from "../helpers/property-types"
 import { updateProperty } from "../helpers/property-update-handler"
@@ -74,9 +74,15 @@ export function useCommitPropertyValue({
     if (property.isSubProperty) {
       const parsed = parsePropertyPath(property.key)
       if (parsed.kind === "layered-facet") {
-        resetProperty(parsed.root as PropertyKey, parsed.facet as SubPropertyKey)
+        resetProperty(
+          parsed.root as PropertyKey,
+          parsed.facet as SubPropertyKey,
+        )
       } else if (parsed.kind === "facet") {
-        resetProperty(parsed.root as PropertyKey, parsed.facet as SubPropertyKey)
+        resetProperty(
+          parsed.root as PropertyKey,
+          parsed.facet as SubPropertyKey,
+        )
       } else {
         resetProperty(property.key as PropertyKey)
       }

@@ -6,7 +6,7 @@ import { Board, Instance, Variant } from "@seldon/core/workspace/types"
 import { getNodeCatalogComponentId } from "@lib/workspace/node-tree"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { getComboboxStoredValue } from "./combobox-stored-value"
-import { generatePropertyOptions, PropertyPickerResult } from "./options-utils"
+import { PropertyPickerResult, generatePropertyOptions } from "./options-utils"
 import { FlatProperty } from "./properties-data"
 
 type PropertyOptions = PropertyPickerResult["options"]

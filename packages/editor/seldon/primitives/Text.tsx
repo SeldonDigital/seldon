@@ -16,8 +16,9 @@ import { HTMLParagraph } from "../native-react/HTML.Paragraph"
 import { HTMLSpan } from "../native-react/HTML.Span"
 import { combineClassNames } from "../utils/class-name"
 
-export interface TextProps
-  extends HTMLAttributes<HTMLParagraphElement | HTMLElement> {
+export interface TextProps extends HTMLAttributes<
+  HTMLParagraphElement | HTMLElement
+> {
   className?: string
   children?: string
   htmlElement?: "p" | "span"

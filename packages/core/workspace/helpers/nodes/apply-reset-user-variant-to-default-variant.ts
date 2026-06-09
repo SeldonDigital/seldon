@@ -1,12 +1,13 @@
 import { produce } from "immer"
-import type { ComponentTreeRef, Workspace } from "../../types"
+
 import { isComponentBoard, isPlaygroundBoard } from "../../model/components"
 import { isEntryNodeVariant } from "../../model/entry-node"
+import type { ComponentTreeRef, Workspace } from "../../types"
+import { walkBoardTreeRefs } from "../components/walk-board-tree-refs"
 import {
   buildDuplicateEntryVariantSubtreePlan,
   findBoardContainingTreeNodeId,
 } from "./duplicate-entry-variant-subtree"
-import { walkBoardTreeRefs } from "../components/walk-board-tree-refs"
 
 function collectTreeRefIds(ref: ComponentTreeRef): string[] {
   const ids = [ref.id]

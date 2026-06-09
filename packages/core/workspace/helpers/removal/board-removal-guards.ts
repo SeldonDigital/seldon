@@ -1,6 +1,3 @@
-import { areBoardVariantsInUse } from "../components/are-board-variants-in-use"
-import { getBoardVariantRootIds } from "../components/get-board-variant-root-ids"
-import { walkBoardTreeRefs } from "../components/walk-board-tree-refs"
 import {
   isComponentBoard,
   isFontCollectionBoard,
@@ -9,6 +6,9 @@ import {
   isThemeBoard,
 } from "../../model/components"
 import type { Board, BoardKey, Workspace } from "../../types"
+import { areBoardVariantsInUse } from "../components/are-board-variants-in-use"
+import { getBoardVariantRootIds } from "../components/get-board-variant-root-ids"
+import { walkBoardTreeRefs } from "../components/walk-board-tree-refs"
 import { hasEffectiveThemeReference } from "./effective-theme-references"
 
 /**
@@ -20,7 +20,10 @@ export function areThemeBoardRootsReferencedByEffectiveTheme(
 ): boolean {
   if (!isThemeBoard(board)) return false
   for (const rootId of getBoardVariantRootIds(board)) {
-    if (workspace.themes[rootId] && hasEffectiveThemeReference(workspace, rootId)) {
+    if (
+      workspace.themes[rootId] &&
+      hasEffectiveThemeReference(workspace, rootId)
+    ) {
       return true
     }
   }

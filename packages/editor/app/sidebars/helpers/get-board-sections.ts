@@ -2,8 +2,8 @@ import { Board as BoardType } from "@seldon/core"
 import { getComponentSchema } from "@seldon/core/components/catalog"
 import {
   ComponentLevel,
-  isComponentId,
   ORDERED_COMPONENT_LEVELS,
+  isComponentId,
 } from "@seldon/core/components/constants"
 import { isResourceType } from "@seldon/core/workspace/helpers/components/is-resource-type"
 import {
@@ -102,9 +102,7 @@ export function getBoardSections(boards: BoardType[]): BoardSection[] {
     level: "FONT_COLLECTION",
     boards: fontCollectionBoards,
   }
-  const themesIndex = sections.findIndex(
-    (section) => section.level === "THEME",
-  )
+  const themesIndex = sections.findIndex((section) => section.level === "THEME")
   sections.splice(themesIndex + 1, 0, fontCollectionsSection)
 
   // Insert the Icon Sets section directly below the Font Collections section.

@@ -1,9 +1,9 @@
 import type { CSSProperties } from "react"
+import { useWorkspaceRecord } from "@lib/persistence/hooks/use-workspace-record"
+import { useWorkspaceId } from "@lib/project/hooks/use-workspace-id"
 import Editor from "@app/editor/Editor"
 import { LocalWorkspaceShell } from "@app/editor/LocalWorkspaceShell"
 import { ProjectInitialize } from "@app/editor/ProjectInitialize"
-import { useWorkspaceRecord } from "@lib/persistence/hooks/use-workspace-record"
-import { useWorkspaceId } from "@lib/project/hooks/use-workspace-id"
 
 const message: CSSProperties = { padding: "2rem", color: "#fff" }
 

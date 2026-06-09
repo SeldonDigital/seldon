@@ -5,8 +5,10 @@ import { InstanceId, VariantId, invariant } from "@seldon/core"
 import { getComponentSchema } from "@seldon/core/components/catalog"
 import { ComponentId } from "@seldon/core/components/constants"
 import { ErrorMessages } from "@seldon/core/workspace/constants"
-import { getNodeOrientation } from "@lib/workspace/get-node-orientation"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
+import { useSetHoveredId } from "@lib/workspace/hooks/use-object-hover"
+import { useSelection } from "@lib/workspace/hooks/use-selection"
+import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useDialog } from "@lib/hooks/use-dialog"
 import { usePreview } from "@lib/hooks/use-preview"
 import { useTool } from "@lib/hooks/use-tool"
@@ -14,14 +16,15 @@ import {
   HoverState,
   useCanvasHoverState,
 } from "../../../lib/hooks/use-canvas-hover-state"
-import { getNodeCatalogComponentId, getNodeChildIds } from "@lib/workspace/node-tree"
-import { useSelection } from "@lib/workspace/hooks/use-selection"
+import { getNodeOrientation } from "@lib/workspace/get-node-orientation"
+import {
+  getNodeCatalogComponentId,
+  getNodeChildIds,
+} from "@lib/workspace/node-tree"
 import {
   getSelectionTarget,
   selectFromTarget,
 } from "@lib/workspace/selection-target"
-import { useSetHoveredId } from "@lib/workspace/hooks/use-object-hover"
-import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import { checkInsertionPoint } from "../../tracking/helpers/check-insertion-point"
 import { getBoardIdForEventTarget } from "../helpers/get-board-id-for-event-target"
@@ -29,12 +32,8 @@ import { getChildNodesWithNodeId } from "../helpers/get-child-nodes-with-node-id
 import { getNodeIdForEventTarget } from "../helpers/get-node-id-for-event-target"
 
 export function useCanvas() {
-  const {
-    selectNode,
-    selectBoard,
-    selectResourceEntry,
-    selectResourceItem,
-  } = useSelection()
+  const { selectNode, selectBoard, selectResourceEntry, selectResourceItem } =
+    useSelection()
   const { workspace } = useWorkspace()
   const { activeTool } = useTool()
   const { openDialog } = useDialog()
@@ -348,10 +347,11 @@ export function useCanvas() {
     ],
   )
 
-  const handleMouseLeave: MouseEventHandler<HTMLDivElement> = useCallback(() => {
-    setHoverState(null)
-    setHoveredId(null)
-  }, [setHoverState, setHoveredId])
+  const handleMouseLeave: MouseEventHandler<HTMLDivElement> =
+    useCallback(() => {
+      setHoverState(null)
+      setHoveredId(null)
+    }, [setHoverState, setHoveredId])
 
   // Update the indicator position no more than 60 times per second (60 FPS)
   const throttledMouseMove = useThrottledCallback(handleMouseMove, 1000 / 60)

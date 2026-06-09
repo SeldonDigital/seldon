@@ -1,6 +1,6 @@
 import type { IconId } from "../../icon-sets"
 import type { IconCategory } from "../constants/categories"
-import type { IconSetTemplateId, IconSetInstanceId } from "./icon-set-id"
+import type { IconSetInstanceId, IconSetTemplateId } from "./icon-set-id"
 import type { IconSetId } from "./icon-source"
 
 /** Identity and description of a packaged icon set. */

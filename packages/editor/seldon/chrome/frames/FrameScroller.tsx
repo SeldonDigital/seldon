@@ -12,8 +12,10 @@
 import { DetailedHTMLProps, HTMLAttributes } from "react"
 import { HTMLDiv } from "../native-react/HTML.Div"
 
-export interface FrameScrollerProps
-  extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
+export interface FrameScrollerProps extends DetailedHTMLProps<
+  HTMLAttributes<HTMLDivElement>,
+  HTMLDivElement
+> {
   className?: string
 }
 

@@ -1,3 +1,4 @@
+import { Selectable } from "@seldon/components/custom-components"
 import {
   IconSeldonCatalog,
   IconSeldonCursor,
@@ -18,7 +19,6 @@ import {
   IconSeldonSpark,
   IconSeldonToolSketch,
 } from "@seldon/components/icons"
-import { Selectable } from "@seldon/components/custom-components"
 
 export type Icon =
   | "catalog"

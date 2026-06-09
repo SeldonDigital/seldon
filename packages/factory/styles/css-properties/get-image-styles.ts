@@ -1,5 +1,6 @@
 import { Properties } from "@seldon/core"
 import { resolveValue } from "@seldon/core/helpers/resolution/resolve-value"
+
 import { objectFitMap } from "./image-fit-map"
 import { CSSObject } from "./types"
 

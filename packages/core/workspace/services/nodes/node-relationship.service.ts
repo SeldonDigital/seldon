@@ -15,10 +15,10 @@ import {
   VariantId,
   Workspace,
 } from "../../types"
-import { nodeRetrievalService } from "./node-retrieval.service"
-import { nodeTraversalService } from "./node-traversal.service"
 import { withParentNode } from "../shared/workspace-operation-helpers"
 import { typeCheckingService } from "../type-checking/type-checking.service"
+import { nodeRetrievalService } from "./node-retrieval.service"
+import { nodeTraversalService } from "./node-traversal.service"
 
 function templateSourceNodeId(node: Variant | Instance): string | null {
   if (!isEntryNodeForRules(node)) return null

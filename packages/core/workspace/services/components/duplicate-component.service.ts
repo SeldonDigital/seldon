@@ -1,10 +1,11 @@
 import type { WritableDraft } from "immer"
 
-import { walkBoardTreeRefs } from "../../helpers/components/walk-board-tree-refs"
+import { invariant } from "../../../index"
 import {
   getBoardOrder,
   setBoardOrder,
 } from "../../helpers/components/board-sort-order"
+import { walkBoardTreeRefs } from "../../helpers/components/walk-board-tree-refs"
 import type { ComponentTreeRef } from "../../model/component-tree"
 import type {
   Board,
@@ -29,7 +30,6 @@ import {
   parseNodeLink,
   parseThemeTemplate,
 } from "../../model/template-ref"
-import { invariant } from "../../../index"
 import type { Workspace } from "../../types"
 import { mutateWorkspace } from "../shared/workspace-mutation.helper"
 import { boardOrderService } from "./board-order.service"
@@ -42,7 +42,10 @@ function collectTreeIds(roots: ComponentTreeRef[]): string[] {
   return [...new Set(ids)]
 }
 
-function remapComponentTree(roots: ComponentTreeRef[], idMap: Map<string, string>): ComponentTreeRef[] {
+function remapComponentTree(
+  roots: ComponentTreeRef[],
+  idMap: Map<string, string>,
+): ComponentTreeRef[] {
   const mapRef = (ref: ComponentTreeRef): ComponentTreeRef => ({
     id: idMap.get(ref.id) ?? ref.id,
     children: ref.children?.map(mapRef),
@@ -137,10 +140,7 @@ export function cloneBoard(
   label?: string,
 ): Workspace {
   const sourceBoard = workspace.boards[sourceBoardKey]
-  invariant(
-    sourceBoard,
-    `cloneBoard: missing source board ${sourceBoardKey}`,
-  )
+  invariant(sourceBoard, `cloneBoard: missing source board ${sourceBoardKey}`)
   invariant(
     !workspace.boards[newBoardKey],
     `cloneBoard: board key already exists ${newBoardKey}`,
@@ -148,10 +148,7 @@ export function cloneBoard(
 
   return mutateWorkspace(workspace, (draft) => {
     const src = draft.boards[sourceBoardKey]
-    invariant(
-      src,
-      `cloneBoard: source board disappeared ${sourceBoardKey}`,
-    )
+    invariant(src, `cloneBoard: source board disappeared ${sourceBoardKey}`)
 
     const newBoard = structuredClone(src) as Board
     const maxOrder = Math.max(
@@ -168,12 +165,21 @@ export function cloneBoard(
       const treeIds = collectTreeIds(src.variants)
       const idMap = new Map([
         ...buildPrefixIdMap(sourceBoardKey, newBoardKey, treeIds, "component-"),
-        ...buildPrefixIdMap(sourceBoardKey, newBoardKey, treeIds, "playground-"),
+        ...buildPrefixIdMap(
+          sourceBoardKey,
+          newBoardKey,
+          treeIds,
+          "playground-",
+        ),
       ])
       for (const [oldId, newId] of idMap) {
         const node = workspace.nodes[oldId] as EntryNode | undefined
         if (!node) continue
-        draft.nodes[newId] = cloneNodeEntry(node, newId, idMap) as WritableDraft<EntryNode>
+        draft.nodes[newId] = cloneNodeEntry(
+          node,
+          newId,
+          idMap,
+        ) as WritableDraft<EntryNode>
       }
       newBoard.variants = remapComponentTree(src.variants, idMap)
     } else if (isThemeBoard(src)) {
@@ -182,7 +188,11 @@ export function cloneBoard(
       for (const [oldId, newId] of idMap) {
         const row = workspace.themes[oldId] as EntryTheme | undefined
         if (!row) continue
-        draft.themes[newId] = cloneThemeEntry(row, newId, idMap) as WritableDraft<EntryTheme>
+        draft.themes[newId] = cloneThemeEntry(
+          row,
+          newId,
+          idMap,
+        ) as WritableDraft<EntryTheme>
       }
       ;(newBoard as ThemeBoard).variants = src.variants.map((v) => ({
         id: idMap.get(v.id) ?? v.id,
@@ -220,9 +230,7 @@ export function cloneBoard(
 
     draft.boards[newBoardKey] = newBoard as WritableDraft<Board>
 
-    const realigned = boardOrderService.realignBoardOrder(
-      draft as Workspace,
-    )
+    const realigned = boardOrderService.realignBoardOrder(draft as Workspace)
     Object.assign(draft.boards, realigned.boards)
   })
 }

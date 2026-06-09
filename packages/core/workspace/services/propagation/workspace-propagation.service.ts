@@ -1,4 +1,10 @@
-import { Instance, InstanceId, Variant, VariantId, Workspace } from "../../types"
+import {
+  Instance,
+  InstanceId,
+  Variant,
+  VariantId,
+  Workspace,
+} from "../../types"
 import {
   OperationResult,
   propagateNodeOperation,

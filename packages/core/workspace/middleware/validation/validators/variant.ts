@@ -1,10 +1,10 @@
+import { ErrorMessages } from "../../../constants"
 import { getVariantById } from "../../../helpers/general/get-variant-by-id"
 import { isUserVariant } from "../../../helpers/general/is-user-variant"
 import { isVariantNode } from "../../../helpers/nodes/is-variant-node"
-import { ErrorMessages } from "../../../constants"
-import { getNodeComponentId } from "../node-component-id"
-import { check } from "../check"
 import type { InstanceId, VariantId, Workspace } from "../../../types"
+import { check } from "../check"
+import { getNodeComponentId } from "../node-component-id"
 
 export const variantValidators = {
   labelIsUnique: (

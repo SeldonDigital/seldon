@@ -10,12 +10,12 @@ import {
   RGBObjectToString,
 } from "@seldon/core/helpers/color"
 import { formatPresetValue } from "@seldon/core/helpers/properties/format-preset-value"
+import { getThemeValueName } from "@seldon/core/helpers/theme/get-theme-value-name"
 import {
   isHSLObject,
   isLCHObject,
   isRGBObject,
 } from "@seldon/core/helpers/type-guards"
-import { getThemeValueName } from "@seldon/core/helpers/theme/get-theme-value-name"
 import { COMPUTED_FUNCTION_DISPLAY_NAMES } from "@seldon/core/properties/compute"
 import {
   getCatalogKeyForPropertyPath,
@@ -24,6 +24,7 @@ import {
 } from "@seldon/core/properties/schemas/helpers"
 import type { PropertyValueType } from "@seldon/core/properties/types/schema"
 import { getBuiltInLookSectionForPropertyKey } from "@seldon/core/themes/looks"
+
 import { matchCompoundPreset } from "./compound-presets"
 import {
   getCompoundLayerValue,
@@ -229,7 +230,12 @@ export function formatCompoundDisplay(
   )
   if (!parentLayer) return "Default"
 
-  const matchedPreset = matchCompoundPreset(propertyKey, nodeId, workspace, theme)
+  const matchedPreset = matchCompoundPreset(
+    propertyKey,
+    nodeId,
+    workspace,
+    theme,
+  )
   if (matchedPreset) return matchedPreset
 
   const hasCustomValue = Object.keys(parentLayer)
@@ -253,9 +259,9 @@ export function formatShorthandDisplay(
 ): string {
   const effectiveProperties = getEffectiveProperties(nodeId, workspace)
   const node = getTypedNode(nodeId, workspace)
-  const propertyValue = (effectiveProperties as Record<string, Record<string, unknown>>)[
-    propertyKey
-  ]
+  const propertyValue = (
+    effectiveProperties as Record<string, Record<string, unknown>>
+  )[propertyKey]
   const subKeys = getSubPropertyKeysFromSchema(propertyKey, node, workspace)
   if (!subKeys.length) return "unset"
 

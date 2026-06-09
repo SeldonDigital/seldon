@@ -10,10 +10,7 @@ export { ImagePreview } from "./primitives/ImagePreview"
 export { StyleTag } from "./primitives/StyleTag"
 export { Selectable } from "./controls/Selectable"
 export { IconButton } from "./controls/IconButton"
-export type {
-  SelectableButton,
-  SelectableDiv,
-} from "./controls/Selectable"
+export type { SelectableButton, SelectableDiv } from "./controls/Selectable"
 export { Box } from "./containers/Box"
 export { SidebarRow } from "./containers/SidebarRow"
 export { Backdrop } from "./containers/Backdrop"

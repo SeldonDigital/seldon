@@ -1,9 +1,11 @@
 import path from "node:path"
+
 import { Workspace } from "@seldon/core"
+
 import { createNodeExportAssetReader } from "../../../asset-reader"
 import { ExportOptions, FileToExport } from "../../../types"
-import { getNativeFileStemsForUsedElements } from "../../discovery/native-html-file-stem"
 import { getUsedNativeComponents } from "../../discovery/get-used-native-components"
+import { getNativeFileStemsForUsedElements } from "../../discovery/native-html-file-stem"
 
 /**
  * Get the native primitives that are actually used in the workspace

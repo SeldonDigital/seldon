@@ -1,4 +1,5 @@
 import { Workspace } from "@seldon/core/workspace/types"
+
 import { NodeIdToClass } from "../../../css/types"
 import { ComponentToExport, JSONTreeNode } from "../../../types"
 import {
@@ -9,13 +10,13 @@ import { jsxStructureToString } from "../preprocess/jsx-structure-to-string"
 import { JSXNode } from "../preprocess/types"
 import { generateJSDocComment } from "../shared/generate-jsdoc-comment"
 import { generatePropsSpread } from "../shared/generate-props-spread"
-import { generateVariableDeclarations } from "../shared/generate-variable-declarations"
 import {
   generateHtmlElementReturn,
   generateIconMapReturn,
   generateSimpleReturn,
   generateWrapperElementReturn,
 } from "../shared/generate-react-component-return-statements"
+import { generateVariableDeclarations } from "../shared/generate-variable-declarations"
 
 /**
  * Inserts the React component function into the source code.

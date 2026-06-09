@@ -1,7 +1,4 @@
-export {
-  getCompoundPropertyStructure,
-  getEffectiveProperties,
-} from "./shared"
+export { getCompoundPropertyStructure, getEffectiveProperties } from "./shared"
 export { getPropertyStatus } from "./property-status"
 export {
   formatCompoundDisplay,

@@ -1,4 +1,5 @@
 import { ValueType } from "../../properties/constants"
+import type { ComputedTheme, StockTheme } from "../types/theme"
 import type {
   ThemeBackgroundKey,
   ThemeBorderKey,
@@ -13,7 +14,6 @@ import type {
   ThemeGradientId,
   ThemeShadowId,
 } from "../types/theme-token-ids"
-import type { ComputedTheme, StockTheme } from "../types/theme"
 import { TokenType } from "../values"
 import type { ThemeBackground } from "../values/appearance/background"
 import type { ThemeBorder } from "../values/appearance/border"
@@ -24,7 +24,8 @@ import type { ThemeFont } from "../values/typography/font"
 import { LOOK_FACETS } from "./look-facets"
 
 export const SHADOW_LOOK_NONE = "@shadow.none" as const satisfies ThemeShadowKey
-export const GRADIENT_LOOK_NONE = "@gradient.none" as const satisfies ThemeGradientKey
+export const GRADIENT_LOOK_NONE =
+  "@gradient.none" as const satisfies ThemeGradientKey
 export const BACKGROUND_LOOK_NONE =
   "@background.none" as const satisfies ThemeBackgroundKey
 export const BORDER_LOOK_NONE = "@border.none" as const satisfies ThemeBorderKey
@@ -220,6 +221,11 @@ export function injectBuiltInLooks<T extends StockTheme | ComputedTheme>(
 export function isReservedThemeLookId(
   section: BuiltInLookSection,
   id: string,
-): id is ThemeShadowId | ThemeGradientId | ThemeBackgroundId | ThemeBorderId | ThemeFontId {
+): id is
+  | ThemeShadowId
+  | ThemeGradientId
+  | ThemeBackgroundId
+  | ThemeBorderId
+  | ThemeFontId {
   return id === BUILT_IN_LOOK_DEFINITIONS[section].id
 }

@@ -17,7 +17,10 @@
 export { TokenType } from "../constants"
 
 export type { ColorSpaceLiteral } from "./shared/exact/color-spaces"
-export type { ThemeExact, ThemeExactDimension } from "./shared/exact/theme-exact"
+export type {
+  ThemeExact,
+  ThemeExactDimension,
+} from "./shared/exact/theme-exact"
 
 export type {
   ModulationParameters,

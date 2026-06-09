@@ -1,4 +1,5 @@
 import { isDraft } from "immer"
+
 import type { Board, EntryNodeId, Workspace } from "../../types"
 import { walkBoardTreeRefs } from "./walk-board-tree-refs"
 
@@ -10,9 +11,7 @@ import { walkBoardTreeRefs } from "./walk-board-tree-refs"
  */
 const nodeToBoardCache = new WeakMap<object, Map<string, Board>>()
 
-function buildNodeToBoardIndex(
-  workspace: Workspace,
-): Map<string, Board> {
+function buildNodeToBoardIndex(workspace: Workspace): Map<string, Board> {
   const index = new Map<string, Board>()
   for (const board of Object.values(workspace.boards)) {
     walkBoardTreeRefs(board.variants, (ref) => {

@@ -1,14 +1,14 @@
 import {
+  type PropertyControlProps,
+  usePropertyControl,
+} from "./hooks/use-property-control"
+import {
   ControlFieldWrapper,
   PropertyControlSurface,
 } from "@seldon/components/custom-components"
 import { Combobox } from "./controls/combobox/Combobox"
 import { ComboboxOptionList } from "./controls/combobox/OptionList"
 import { ComboboxOptions } from "./controls/combobox/Options"
-import {
-  usePropertyControl,
-  type PropertyControlProps,
-} from "./hooks/use-property-control"
 
 export type { PropertyControlProps }
 

@@ -3,10 +3,10 @@ import { create } from "zustand"
 import { InstanceId, VariantId, Workspace } from "@seldon/core"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
 import type { EntryNode } from "@seldon/core/workspace/types"
+import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { collectDescendantNodeIds } from "@lib/workspace/component-tree"
 import { findComponentForNode } from "@lib/workspace/node-tree"
 import { getComponentKey, getNode } from "@lib/workspace/workspace-accessors"
-import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 
 const useStore = create<{
   expandedObjects: Set<string>

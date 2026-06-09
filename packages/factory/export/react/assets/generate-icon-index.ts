@@ -1,4 +1,5 @@
 import { IconId } from "@seldon/core/icon-sets"
+
 import { ExportOptions, FileToExport } from "../../types"
 import { getIconComponentName } from "../discovery/get-icon-component-name"
 import { getIconPath } from "../utils/find-icon-path"
@@ -31,10 +32,8 @@ export function generateIconIndex(
   }
 
   const content = exports.join("\n") + "\n"
-  const indexPath = `${options.output.componentsFolder}/icons/index.ts`.replaceAll(
-    "//",
-    "/",
-  )
+  const indexPath =
+    `${options.output.componentsFolder}/icons/index.ts`.replaceAll("//", "/")
 
   return {
     path: indexPath,

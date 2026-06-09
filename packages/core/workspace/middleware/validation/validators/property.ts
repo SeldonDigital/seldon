@@ -3,9 +3,9 @@ import type { ComponentId } from "../../../../components/constants"
 import { Properties, ValueType } from "../../../../properties"
 import { validatePropertyValue } from "../../../../properties/schemas/helpers"
 import { getComputedTheme } from "../../../compute"
+import type { Workspace } from "../../../types"
 import { check } from "../check"
 import { boardValidators } from "./board"
-import type { Workspace } from "../../../types"
 
 function getActualPropertyName(propertyKey: string): string {
   if (propertyKey.includes(".")) {
@@ -75,11 +75,7 @@ function assertExactValueValid(
 }
 
 export const propertyValidators = {
-  values: (
-    properties: Properties,
-    workspace?: Workspace,
-    themeId?: string,
-  ) => {
+  values: (properties: Properties, workspace?: Workspace, themeId?: string) => {
     for (const [key, value] of Object.entries(properties)) {
       validateThemeReferences(value, workspace, themeId)
       if (!value || typeof value !== "object" || !("type" in value)) continue

@@ -22,7 +22,11 @@ export function SidebarRow({
   ref,
   children,
 }: SidebarRowProps) {
-  const content = innerStyle ? <div style={innerStyle}>{children}</div> : children
+  const content = innerStyle ? (
+    <div style={innerStyle}>{children}</div>
+  ) : (
+    children
+  )
   return (
     <div
       ref={ref}

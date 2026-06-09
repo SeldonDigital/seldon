@@ -1,4 +1,3 @@
-import { isCompoundProperty, isShorthandProperty } from "./property-types"
 import {
   COLOR_DEBUG_COMPOUND,
   COLOR_DEBUG_SHORTHAND,
@@ -8,6 +7,7 @@ import {
   COLOR_SET,
   COLOR_UNSET,
 } from "../../helpers/sidebar-styles"
+import { isCompoundProperty, isShorthandProperty } from "./property-types"
 
 export {
   COLOR_SET,

@@ -2,8 +2,8 @@ import { useRef, useState } from "react"
 import { create } from "zustand"
 import { ValueType } from "@seldon/core/properties"
 import { useImageUpload } from "@lib/api/hooks/use-image-upload"
-import { useDialog } from "@lib/hooks/use-dialog"
 import { useObjectProperties } from "@lib/workspace/hooks/use-object-properties"
+import { useDialog } from "@lib/hooks/use-dialog"
 
 interface ImageUploadPanelState {
   property: "source" | "background-image" | null

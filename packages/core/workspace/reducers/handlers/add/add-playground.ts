@@ -1,5 +1,5 @@
 import { produce } from "immer"
-import { getInitialBoardComponentProperties } from "../../../helpers/components/get-initial-board-component-properties"
+
 import { ComponentId } from "../../../../components/constants"
 import { ExtractPayload, Workspace } from "../../../../index"
 import { rules } from "../../../../rules/config/rules.config"
@@ -7,6 +7,7 @@ import {
   getBoardOrder,
   setBoardOrder,
 } from "../../../helpers/components/board-sort-order"
+import { getInitialBoardComponentProperties } from "../../../helpers/components/get-initial-board-component-properties"
 import { WORKSPACE_EDITABLE_THEME_ENTRY_ID } from "../../../helpers/themes/workspace-editable-theme"
 import { formatNodeCatalog } from "../../../model/template-ref"
 import { boardOrderService } from "../../../services"

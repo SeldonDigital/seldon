@@ -1,10 +1,12 @@
 import { type PropertyKey, type Theme, type Workspace } from "@seldon/core"
 import { isCompoundProperty } from "@seldon/core/helpers/type-guards/compound/is-compound-property"
 import type { Properties } from "@seldon/core/properties/types/properties"
-import { getNodeComputeContext } from "../../compute/compute-node-properties"
 import { isBuiltInClearedLookToken } from "@seldon/core/themes/looks"
+
+import { getNodeComputeContext } from "../../compute/compute-node-properties"
 import { matchCompoundPreset } from "./compound-presets"
 import {
+  type PropertyPanelSubject,
   compoundSubPropertyPath,
   getCompoundLayerValue,
   getCompoundPropertyStructure,
@@ -18,7 +20,6 @@ import {
   isValueEmpty,
   isValueSet,
   propertyValuesMatch,
-  type PropertyPanelSubject,
 } from "./shared"
 
 export type PropertyStatus = "set" | "unset" | "override" | "not used"
@@ -90,7 +91,11 @@ function calculatePropertyStatus(
           : "unset"
     }
 
-    if (hasSchemaDefault && schemaValue && propertyValuesMatch(nodePropertyValue, schemaValue)) {
+    if (
+      hasSchemaDefault &&
+      schemaValue &&
+      propertyValuesMatch(nodePropertyValue, schemaValue)
+    ) {
       return "set"
     }
 
@@ -117,7 +122,11 @@ function calculateSubPropertyStatus(
     if (isCompoundProperty(key as PropertyKey)) {
       if (subKey === "preset") {
         const subValue = parentProperty?.[subKey]
-        if (hasSubDefault && schemaSubValue && propertyValuesMatch(subValue, schemaSubValue)) {
+        if (
+          hasSubDefault &&
+          schemaSubValue &&
+          propertyValuesMatch(subValue, schemaSubValue)
+        ) {
           return "set"
         }
         return "override"
@@ -189,16 +198,35 @@ type SubStatusContext = {
 
 /** Writes per-facet status for a compound property and its aggregate status. */
 function assignCompoundStatuses(ctx: SubStatusContext): void {
-  const { key, nodeId, workspace, node, schemaProperties, effective, theme, status } = ctx
+  const {
+    key,
+    nodeId,
+    workspace,
+    node,
+    schemaProperties,
+    effective,
+    theme,
+    status,
+  } = ctx
   const compoundValue = (effective as Record<string, unknown>)[key]
   const compoundLayer = getCompoundLayerValue(compoundValue)
   if (!compoundLayer) return
 
-  const subKeys = getCompoundPropertyStructure(key, compoundValue, node, workspace)
+  const subKeys = getCompoundPropertyStructure(
+    key,
+    compoundValue,
+    node,
+    workspace,
+  )
   const schemaLayer = getCompoundLayerValue(
     (schemaProperties as Record<string, unknown> | null)?.[key],
   )
-  const matchedCompoundPresetName = matchCompoundPreset(key, nodeId, workspace, theme)
+  const matchedCompoundPresetName = matchCompoundPreset(
+    key,
+    nodeId,
+    workspace,
+    theme,
+  )
   const subStatuses: PropertyStatus[] = []
 
   for (const subKey of subKeys) {
@@ -234,7 +262,7 @@ function assignShorthandStatuses(ctx: SubStatusContext): void {
       schemaProperties as Record<string, Record<string, unknown> | undefined>
     )[key]
     const schemaSubValue = hasSubDefault
-      ? shorthandSchemaValue?.[subKey] ?? null
+      ? (shorthandSchemaValue?.[subKey] ?? null)
       : null
 
     const subStatus = calculateSubPropertyStatus(
@@ -242,7 +270,8 @@ function assignShorthandStatuses(ctx: SubStatusContext): void {
       subKey,
       hasSubPropertyOverride(node, key, subKey),
       hasSubDefault,
-      (effective as Record<string, Record<string, unknown> | null>)[key] ?? null,
+      (effective as Record<string, Record<string, unknown> | null>)[key] ??
+        null,
       schemaSubValue,
       null,
     )

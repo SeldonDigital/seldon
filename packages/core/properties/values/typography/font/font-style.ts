@@ -21,13 +21,13 @@ export type FontStyleValue = EmptyValue | FontStyleOptionValue
 /** Validates stored font style values. */
 export const fontStyleSchema: PropertySchema = {
   name: "fontStyle",
-  description: "Sets slant from normal, italic, or oblique, or a custom CSS string.",
+  description:
+    "Sets slant from normal, italic, or oblique, or a custom CSS string.",
   supports: ["empty", "inherit", "exact", "option"] as const,
   validation: {
     empty: () => true,
     inherit: () => true,
-    exact: (value: unknown) =>
-      typeof value === "string" && value.length > 0,
+    exact: (value: unknown) => typeof value === "string" && value.length > 0,
     option: (value: unknown) =>
       typeof value === "string" &&
       (Object.values(FontStyle) as string[]).includes(value),

@@ -3,8 +3,8 @@ import type { Theme } from "../types"
 import {
   BUILT_IN_LOOK_SECTIONS,
   type BuiltInLookSection,
-  getBuiltInLookSectionForPropertyKey,
   getBuiltInLookId,
+  getBuiltInLookSectionForPropertyKey,
   getBuiltInLookToken,
   isBuiltInLookSection,
 } from "./built-in-looks"
@@ -180,7 +180,9 @@ export function resolveBuiltInLookApplyName(
   return null
 }
 
-export function readPresetThemeLookRef(layer: Record<string, unknown>): string | null {
+export function readPresetThemeLookRef(
+  layer: Record<string, unknown>,
+): string | null {
   const preset = layer.preset
   if (
     preset &&

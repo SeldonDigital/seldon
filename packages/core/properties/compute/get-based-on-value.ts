@@ -2,8 +2,8 @@ import { isCompoundValue } from "../../helpers/type-guards/compound/is-compound-
 import { findInObject } from "../../helpers/utils/find-in-object"
 import { invariant } from "../../helpers/utils/invariant"
 import { ComputedFunction } from "../constants"
-import type { AtomicValue } from "../types/value-atomic"
 import type { Value } from "../types/value"
+import type { AtomicValue } from "../types/value-atomic"
 import type { ComputedValue } from "../values/shared/computed/computed-value"
 import { ComputeContext } from "./types"
 

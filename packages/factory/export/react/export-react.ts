@@ -1,10 +1,11 @@
 import { Workspace } from "@seldon/core"
 import { getComponentSchema } from "@seldon/core/components/catalog"
-import { getWorkspaceEnabledIcons } from "@seldon/core/icon-sets/helpers"
 import {
   ComponentLevel,
   ORDERED_COMPONENT_LEVELS,
 } from "@seldon/core/components/constants"
+import { getWorkspaceEnabledIcons } from "@seldon/core/icon-sets/helpers"
+
 import { buildExportContext } from "../../helpers/build-export-context"
 import { buildStyleRegistry } from "../css/discovery/get-style-registry"
 import { generateComponentStylesheet } from "../css/generation/generate-css-stylesheet"

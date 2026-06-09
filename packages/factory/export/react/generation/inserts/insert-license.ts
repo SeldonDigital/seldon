@@ -1,4 +1,7 @@
-import { TransformStrategy, transformSource } from "../../utils/transform-source";
+import {
+  TransformStrategy,
+  transformSource,
+} from "../../utils/transform-source"
 
 export function insertLicense(source: string) {
   const license = `/*****

@@ -7,8 +7,9 @@ import {
 } from "@seldon/core"
 import { resolveValue } from "@seldon/core/helpers/resolution/resolve-value"
 import { getThemeOption } from "@seldon/core/helpers/theme/get-theme-option"
-import { Theme } from "@seldon/core/themes/types"
 import type { GradientCompound } from "@seldon/core/properties/values/effects/gradients"
+import { Theme } from "@seldon/core/themes/types"
+
 import { StyleGenerationContext } from "../types"
 import { getLayeredPaintColor } from "./get-layered-paint-color"
 import { getLayeredPaintLayers } from "./get-layered-paint-layer"

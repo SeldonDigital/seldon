@@ -1,28 +1,29 @@
 import { type Theme, ValueType, type Workspace } from "@seldon/core"
+import type { Properties } from "@seldon/core/properties/types/properties"
 import {
+  type ThemeLookPreset,
   getBuiltInLookSectionForPropertyKey,
   getThemeLookSection,
   isThemeLookPreset,
   readPresetThemeLookRef,
   resolveBuiltInLookApplyName,
   resolveThemeLook,
-  type ThemeLookPreset,
 } from "@seldon/core/themes/looks"
-import type { Properties } from "@seldon/core/properties/types/properties"
+
 import {
+  type BoardCompound,
   applyBoardPreset,
   buildBoardCompoundReset,
   matchBoardCompoundPreset,
   resolveBoardPresetIdFromPickerValue,
-  type BoardCompound,
 } from "../../../properties/values/layout/board"
 import {
+  compoundFacetMatches,
   getCompoundLayerValue,
   getEffectiveProperties,
   getSchemaProperties,
   getSubPropertyKeysFromSchema,
   getTypedNode,
-  compoundFacetMatches,
   wrapCompoundPropertyValue,
 } from "./shared"
 
@@ -95,7 +96,9 @@ function buildPresetProperties(
     facets[subKey] = convertPresetValue(subValue)
   }
 
-  const presentKeys = new Set(Object.keys(facets).filter((key) => key !== "preset"))
+  const presentKeys = new Set(
+    Object.keys(facets).filter((key) => key !== "preset"),
+  )
   for (const subKey of subKeys) {
     if (!presentKeys.has(subKey)) {
       facets[subKey] = { type: ValueType.EMPTY, value: null }
@@ -176,9 +179,8 @@ export function applyCompoundPreset(
 ): Properties {
   const node = getTypedNode(nodeId, workspace)
   const schemaProperties = getSchemaProperties(node, workspace)
-  const schemaProperty = schemaProperties?.[
-    propertyKey as keyof typeof schemaProperties
-  ]
+  const schemaProperty =
+    schemaProperties?.[propertyKey as keyof typeof schemaProperties]
   const subKeys = getSubPropertyKeysFromSchema(propertyKey, node, workspace)
 
   if (isResetPreset(preset)) {

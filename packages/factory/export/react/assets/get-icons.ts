@@ -1,6 +1,8 @@
 import fs from "node:fs"
 import path from "node:path"
+
 import { IconId } from "@seldon/core/icon-sets"
+
 import { ExportOptions, FileToExport } from "../../types"
 import { getIconComponentName } from "../discovery/get-icon-component-name"
 import { getIconPath } from "../utils/find-icon-path"

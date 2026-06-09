@@ -1,5 +1,6 @@
 import { FontSizeValue, Theme } from "@seldon/core"
 import { resolveFontSize } from "@seldon/core/helpers/resolution/resolve-font-size"
+
 import { getCssValue } from "./get-css-value"
 
 /**

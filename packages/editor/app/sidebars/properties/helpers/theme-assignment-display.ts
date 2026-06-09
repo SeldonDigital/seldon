@@ -28,8 +28,8 @@ function getThemeDisplayName(themeId: string, workspace: Workspace): string {
   }
 
   try {
-    return workspaceThemeService.getTheme(themeId as ThemeInstanceId, workspace).metadata
-      .name
+    return workspaceThemeService.getTheme(themeId as ThemeInstanceId, workspace)
+      .metadata.name
   } catch {
     return themeId
   }

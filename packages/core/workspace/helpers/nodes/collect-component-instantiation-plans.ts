@@ -1,7 +1,7 @@
 import { ComponentId } from "../../../components/constants"
 import {
-  buildComponentAddPlan,
   type ComponentInstantiationPlan,
+  buildComponentAddPlan,
 } from "./component-add-plan"
 
 export type { ComponentInstantiationPlan } from "./component-add-plan"

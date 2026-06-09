@@ -1,10 +1,10 @@
 "use client"
 
-import { Layout as LayoutComponent } from "@app/Layout"
-import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
+import type { StoredWorkspace } from "@lib/storage/workspace-store"
 import { useWorkspaceAutosave } from "@lib/persistence/hooks/use-workspace-autosave"
 import { useWorkspaceSyncStatus } from "@lib/project/hooks/use-workspace-sync-status"
-import type { StoredWorkspace } from "@lib/storage/workspace-store"
+import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
+import { Layout as LayoutComponent } from "@app/Layout"
 
 export function LocalWorkspaceShell({
   record,
@@ -18,9 +18,5 @@ export function LocalWorkspaceShell({
 
   useWorkspaceAutosave(record, workspace, isDirty)
 
-  return (
-    <LayoutComponent testId="canvas">
-      {children}
-    </LayoutComponent>
-  )
+  return <LayoutComponent testId="canvas">{children}</LayoutComponent>
 }

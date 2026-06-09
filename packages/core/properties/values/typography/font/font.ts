@@ -1,8 +1,8 @@
-import { Theme, ThemeFontKey } from "../../../../themes/types"
 import {
   listThemeLookIds,
   validateThemeLookPresetRef,
 } from "../../../../themes/looks"
+import { Theme, ThemeFontKey } from "../../../../themes/types"
 import { ValueType } from "../../../constants"
 import { PropertySchema } from "../../../types/schema"
 

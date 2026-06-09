@@ -5,19 +5,19 @@ import {
   ComponentLevel,
   isComponentId,
 } from "@seldon/core/components/constants"
-import { isComponentBoard } from "@seldon/core/workspace/model"
-import type { BoardKey } from "@seldon/core/workspace/types"
 import { InstanceId, VariantId } from "@seldon/core/index"
+import { isComponentBoard } from "@seldon/core/workspace/model"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
+import type { BoardKey } from "@seldon/core/workspace/types"
+import { useEditorConfig } from "@lib/hooks/use-editor-config"
 import { getNodeCatalogComponentId } from "@lib/workspace/node-tree"
 import {
   getComponent,
   getComponentKey,
   getNode,
 } from "@lib/workspace/workspace-accessors"
-import { useEditorConfig } from "@lib/hooks/use-editor-config"
-import { useExpansion } from "@app/sidebars/objects/hooks/use-expansion"
 import { useSectionExpansion } from "@app/sidebars/hooks/use-section-expansion"
+import { useExpansion } from "@app/sidebars/objects/hooks/use-expansion"
 import { useWorkspace } from "./use-workspace"
 
 /** Resource board kinds whose rows are selectable items (families, icons, media). */
@@ -63,7 +63,10 @@ type SelectionState = {
    */
   selectedResourceItemKey: string | null
   selectBoard: (id: BoardKey | null) => void
-  selectNode: (id: VariantId | InstanceId | null, rootId?: string | null) => void
+  selectNode: (
+    id: VariantId | InstanceId | null,
+    rootId?: string | null,
+  ) => void
   selectResourceEntry: (kind: ResourceEntryKind, id: string | null) => void
   selectResourceItem: (key: string | null) => void
 }
@@ -156,9 +159,7 @@ export function useSelection() {
   const selectedBoardId = useStore((state) => state.selectedBoardId)
   const selectedNodeId = useStore((state) => state.selectedNodeId)
   const selectedNodeRootId = useStore((state) => state.selectedNodeRootId)
-  const selectedResourceEntry = useStore(
-    (state) => state.selectedResourceEntry,
-  )
+  const selectedResourceEntry = useStore((state) => state.selectedResourceEntry)
   const selectedResourceItemKey = useStore(
     (state) => state.selectedResourceItemKey,
   )
@@ -196,7 +197,11 @@ export function useSelection() {
       if (id) {
         const board = workspace.boards[id]
         let sectionLevel = ComponentLevel.MODULE
-        if (board && isComponentBoard(board) && isComponentId(board.catalogId)) {
+        if (
+          board &&
+          isComponentBoard(board) &&
+          isComponentId(board.catalogId)
+        ) {
           sectionLevel = getComponentSchema(board.catalogId).level
         } else if (board?.type === "playground") {
           sectionLevel = ComponentLevel.SCREEN
@@ -257,7 +262,9 @@ export function useSelection() {
           const board = workspaceService.findBoardForNode(node, workspace)
           if (board) {
             toggleSection(ComponentLevel.MODULE, true)
-            toggleObject(getComponentKey(board), true, { includeAncestors: true })
+            toggleObject(getComponentKey(board), true, {
+              includeAncestors: true,
+            })
           }
         }
 
@@ -325,10 +332,7 @@ export function useSelection() {
     selectedNode,
     selectedBoard,
     selectedId:
-      selectedNodeId ??
-      selectedBoardId ??
-      selectedResourceEntry?.id ??
-      null,
+      selectedNodeId ?? selectedBoardId ?? selectedResourceEntry?.id ?? null,
     selection,
   }
 }

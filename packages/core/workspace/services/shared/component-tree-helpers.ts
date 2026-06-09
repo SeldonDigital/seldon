@@ -1,9 +1,5 @@
-import type {
-  Board,
-  ComponentTreeRef,
-  EntryNodeId,
-} from "../../types"
 import { walkBoardTreeRefs } from "../../helpers/components/walk-board-tree-refs"
+import type { Board, ComponentTreeRef, EntryNodeId } from "../../types"
 
 export function collectDescendantTreeIds(ref: ComponentTreeRef): EntryNodeId[] {
   const ids: EntryNodeId[] = [ref.id]

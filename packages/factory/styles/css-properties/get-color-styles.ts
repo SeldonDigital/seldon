@@ -1,4 +1,5 @@
 import { resolveValue } from "@seldon/core/helpers/resolution/resolve-value"
+
 import { StyleGenerationContext } from "../types"
 import { getColorCSSValue } from "./get-color-css-value"
 import { CSSObject } from "./types"

@@ -1,17 +1,17 @@
-/*****
- *
- * This code was generated using Seldon (https://seldon.app)
- *
- * Licensed under the Terms of Use: https://seldon.digital/terms-of-service
- * Do not redistribute or sublicense without permission.
- *
- * You may not use this software, or any derivative works of it,
- * in whole or in part, for the purposes of training, fine-tuning,
- * or otherwise improving (directly or indirectly) any machine learning
- * or artificial intelligence system.
- * 
- *****/
- 
+/**\***
+
+-
+- This code was generated using Seldon (https://seldon.app)
+-
+- Licensed under the Terms of Use: https://seldon.digital/terms-of-service
+- Do not redistribute or sublicense without permission.
+-
+- You may not use this software, or any derivative works of it,
+- in whole or in part, for the purposes of training, fine-tuning,
+- or otherwise improving (directly or indirectly) any machine learning
+- or artificial intelligence system.
+- **\***/
+
 # Seldon Components
 
 version: Public Alpha
@@ -38,7 +38,7 @@ Every Seldon component can be used in these ways:
 <CardProduct />
 
 // 2. Partial customization (add specific content elements)
-<CardProduct 
+<CardProduct
   tagline={{ children: "New Product" }}
   titleProps={{ children: "Custom Title" }}
 />
@@ -59,29 +59,31 @@ Every Seldon component can be used in these ways:
 Components have two types of elements:
 
 #### Always-Rendered Elements
+
 These elements have default values and always appear in the component:
 
 ```tsx
 // These elements always render because they have defaults in the function signature
 <CardProduct />  // textblockDetails and buttonBar will render with default content
 
-<CardProductInline 
+<CardProductInline
   // Only textblockDetails and buttonBar have defaults and always render
   tagline={{ children: "Custom tagline" }}  // Will render with custom content
 />
 ```
 
 #### Conditionally-Rendered Elements
+
 These elements only appear when you explicitly provide them with meaningful content:
 
 ```tsx
 // These elements only render when provided with content
 <CardProductInline
-  button2={{ onClick: () => alert("Button 2!") }}  // Will render
-  button3={{}}                                      // Will NOT render (empty object)
-  button7={{ onClick: () => alert("Button 7!") }}  // Will render
-  tagline={{ children: "My Tagline" }}             // Will render
-  titleProps={{ children: "My Title" }}            // Will render
+  button2={{ onClick: () => alert("Button 2!") }} // Will render
+  button3={{}} // Will NOT render (empty object)
+  button7={{ onClick: () => alert("Button 7!") }} // Will render
+  tagline={{ children: "My Tagline" }} // Will render
+  titleProps={{ children: "My Title" }} // Will render
 />
 ```
 
@@ -93,20 +95,20 @@ The function signature tells you which props are conditional:
 
 ```tsx
 export function CardProductInline({
-  textblockDetails = sdn.textblockDetails,  // ✅ Always rendered (has default)
-  tagline,                                  // ⚠️  Conditional (no default)
-  button2,                                  // ⚠️  Conditional (no default)
-  buttonBar = sdn.buttonBar,                // ✅ Always rendered (has default)
-  button4,                                  // ⚠️  Conditional (no default)
+  textblockDetails = sdn.textblockDetails, // ✅ Always rendered (has default)
+  tagline, // ⚠️  Conditional (no default)
+  button2, // ⚠️  Conditional (no default)
+  buttonBar = sdn.buttonBar, // ✅ Always rendered (has default)
+  button4, // ⚠️  Conditional (no default)
   // ...
 }: CardProductInlineProps)
 
 export function CardProduct({
-  textblockDetails = sdn.textblockDetails,  // ✅ Always rendered (has default) 
-  tagline,                                  // ⚠️  Conditional (no default)
-  titleProps,                               // ⚠️  Conditional (no default)
-  description,                              // ⚠️  Conditional (no default)
-  buttonBar = sdn.buttonBar,                // ✅ Always rendered (has default)
+  textblockDetails = sdn.textblockDetails, // ✅ Always rendered (has default)
+  tagline, // ⚠️  Conditional (no default)
+  titleProps, // ⚠️  Conditional (no default)
+  description, // ⚠️  Conditional (no default)
+  buttonBar = sdn.buttonBar, // ✅ Always rendered (has default)
   // ...
 }: CardProductProps)
 ```
@@ -118,7 +120,7 @@ export function CardProduct({
 ### 1. Customizing Text Content
 
 ```tsx
-<CardProduct 
+<CardProduct
   tagline={{ children: "Limited Time Offer" }}
   titleProps={{ children: "Premium Headphones", htmlElement: "h2" }}
   description={{ children: "High-quality audio experience." }}
@@ -145,13 +147,13 @@ export function CardProduct({
 ```tsx
 <CardProductMixed
   className="my-custom-card"
-  tagline={{ 
+  tagline={{
     children: "New Release",
-    className: "highlight-text"
+    className: "highlight-text",
   }}
-  style={{ 
+  style={{
     maxWidth: 400,
-    margin: "20px auto"
+    margin: "20px auto",
   }}
 />
 ```
@@ -164,14 +166,14 @@ function ProductCard({ showActions, isLoggedIn }) {
     <CardProductInline
       tagline={{ children: "Product Name" }}
       titleProps={{ children: "Product Description" }}
-      
+
       {/* Only show actions if enabled */}
       {...(showActions && {
         button2: { onClick: () => addToCart() },
         icon2: { icon: "material-shopping-cart" },
         label2: { children: "Add to Cart" }
       })}
-      
+
       {/* Only show favorites if logged in */}
       {...(isLoggedIn && {
         button7: { onClick: () => toggleFavorite() },
@@ -195,7 +197,7 @@ Seldon components use Material Icons by default. Common icons include:
 - `material-check` - Checkmark
 
 ```tsx
-<CardProduct 
+<CardProduct
   icon={{ icon: "material-star" }}
   icon2={{ icon: "material-favorite" }}
   icon3={{ icon: "material-shopping-cart" }}
@@ -210,13 +212,23 @@ Every component includes CSS classes for styling:
 
 ```css
 /* Global component styles */
-.sdn-cardProduct { /* Base card styles */ }
-.sdn-button { /* Base button styles */ }
-.sdn-tagline { /* Base tagline styles */ }
+.sdn-cardProduct {
+  /* Base card styles */
+}
+.sdn-button {
+  /* Base button styles */
+}
+.sdn-tagline {
+  /* Base tagline styles */
+}
 
 /* Specific variant styles */
-.sdn-button-3D4pvOBS { /* Specific button variant */ }
-.sdn-textblockDetails-Njjvy0sD { /* Specific text block variant */ }
+.sdn-button-3D4pvOBS {
+  /* Specific button variant */
+}
+.sdn-textblockDetails-Njjvy0sD {
+  /* Specific text block variant */
+}
 ```
 
 ### Custom Styling
@@ -227,16 +239,16 @@ You can override styles in several ways:
 // 1. Component-level className
 <CardProduct className="my-custom-card" />
 
-// 2. Element-level className  
-<CardProduct 
-  tagline={{ 
+// 2. Element-level className
+<CardProduct
+  tagline={{
     children: "Featured",
     className: "featured-tag"
   }}
 />
 
 // 3. Inline styles
-<CardProduct 
+<CardProduct
   style={{ backgroundColor: "#f0f0f0" }}
   tagline={{
     children: "Special",
@@ -245,14 +257,14 @@ You can override styles in several ways:
 />
 
 // 4. Using theme variables for consistent styling
-<CardProduct 
-  style={{ 
+<CardProduct
+  style={{
     backgroundColor: "hsl(var(--sdn-swatch-background))",
     border: "1px solid hsl(var(--sdn-swatch-seldon-blue))"
   }}
   tagline={{
     children: "Themed Content",
-    style: { 
+    style: {
       color: "hsl(var(--sdn-swatch-seldon-red))",
       fontSize: "var(--sdn-font-size-medium)"
     }
@@ -268,22 +280,18 @@ The exported stylesheet includes CSS design tokens (theme variables) that you ca
 /* Available theme variables include: */
 :root {
   /* Colors */
-  --sdn-swatch-background: /* Dynamic background color */
-  --sdn-swatch-primary: /* Primary brand color */
-  --sdn-swatch-seldon-red: /* Custom brand colors */
-  --sdn-swatch-seldon-blue: /* Custom brand colors */
-  --sdn-swatch-tint-1: /* Harmony-based palette colors */
-  --sdn-swatch-complement1: /* Harmony-based palette colors */
-  
-  /* Typography */
-  --sdn-font-size-small: /* Consistent font sizes */
-  --sdn-font-size-medium: /* Consistent font sizes */
-  --sdn-font-family-primary: /* Brand typography */
-  
-  /* Spacing */
-  --sdn-margin-tight: /* Consistent spacing */
-  --sdn-padding-cozy: /* Consistent spacing */
-  --sdn-gap-comfortable: /* Consistent spacing */
+  --sdn-swatch-background: /* Dynamic background color */ --sdn-swatch-primary:
+    /* Primary brand color */
+    --sdn-swatch-seldon-red: /* Custom brand colors */
+    --sdn-swatch-seldon-blue: /* Custom brand colors */
+    --sdn-swatch-tint-1: /* Harmony-based palette colors */
+    --sdn-swatch-complement1: /* Harmony-based palette colors */
+    /* Typography */ --sdn-font-size-small: /* Consistent font sizes */
+    --sdn-font-size-medium: /* Consistent font sizes */
+    --sdn-font-family-primary: /* Brand typography */ /* Spacing */
+    --sdn-margin-tight: /* Consistent spacing */
+    --sdn-padding-cozy: /* Consistent spacing */
+    --sdn-gap-comfortable: /* Consistent spacing */;
 }
 ```
 
@@ -291,13 +299,13 @@ The exported stylesheet includes CSS design tokens (theme variables) that you ca
 // Use theme variables in your existing components for consistency
 function MyExistingButton({ children, ...props }) {
   return (
-    <button 
+    <button
       style={{
         backgroundColor: "hsl(var(--sdn-swatch-primary))",
         color: "hsl(var(--sdn-swatch-background))",
         fontSize: "var(--sdn-font-size-medium)",
         padding: "var(--sdn-padding-cozy)",
-        fontFamily: "var(--sdn-font-family-primary)"
+        fontFamily: "var(--sdn-font-family-primary)",
       }}
       {...props}
     >
@@ -307,13 +315,14 @@ function MyExistingButton({ children, ...props }) {
 }
 
 // Your existing components will now match Seldon component styling
-<div>
+;<div>
   <CardProduct tagline={{ children: "Seldon Card" }} />
   <MyExistingButton>Matching Button</MyExistingButton>
 </div>
 ```
 
 **Benefits of using theme variables:**
+
 - Consistent visual design across all components
 - Automatic updates when themes change
 - Easy integration with existing component libraries
@@ -324,14 +333,14 @@ function MyExistingButton({ children, ...props }) {
 All components are fully typed. Use the exported interfaces for custom implementations:
 
 ```tsx
-import { CardProductProps, ButtonProps, TaglineProps } from './components'
+import { ButtonProps, CardProductProps, TaglineProps } from "./components"
 
 function CustomProduct(props: CardProductProps) {
   const buttonConfig: ButtonProps = {
     onClick: () => alert("Custom action!"),
-    className: "custom-button"
+    className: "custom-button",
   }
-  
+
   return <CardProduct {...props} button={buttonConfig} />
 }
 ```
@@ -339,6 +348,7 @@ function CustomProduct(props: CardProductProps) {
 ## Best Practices
 
 ### 1. Start Simple
+
 Begin with minimal props and gradually add customizations:
 
 ```tsx
@@ -346,13 +356,13 @@ Begin with minimal props and gradually add customizations:
 <CardProduct />
 
 // Then add content
-<CardProduct 
+<CardProduct
   tagline={{ children: "My Product" }}
   titleProps={{ children: "Custom Title" }}
 />
 
 // Finally, full customization
-<CardProduct 
+<CardProduct
   tagline={{ children: "My Product" }}
   titleProps={{ children: "Custom Title" }}
   button={{ onClick: handleClick }}
@@ -362,6 +372,7 @@ Begin with minimal props and gradually add customizations:
 ```
 
 ### 2. Use Conditional Rendering Wisely
+
 Only provide props for conditional elements when you want them to appear:
 
 ```tsx
@@ -369,7 +380,7 @@ Only provide props for conditional elements when you want them to appear:
 <CardProductInline button2={{}} button3={{}} />
 
 // ✅ Do this (provide meaningful content)
-<CardProductInline 
+<CardProductInline
   button2={{ onClick: handleAction }}
   icon2={{ icon: "material-star" }}
   label2={{ children: "Action" }}
@@ -377,25 +388,27 @@ Only provide props for conditional elements when you want them to appear:
 ```
 
 ### 3. Leverage Container Defaults
+
 Take advantage of the always-rendered containers (textblockDetails, buttonBar):
 
 ```tsx
 // This gets you the full layout structure with custom content
-<CardProduct 
+<CardProduct
   tagline={{ children: "My Custom Title" }}
   description={{ children: "My description" }}
 />
 ```
 
 ### 4. Maintain Accessibility
+
 Always provide meaningful labels and ARIA attributes:
 
 ```tsx
-<CardProduct 
-  button={{ 
+<CardProduct
+  button={{
     onClick: handlePurchase,
     "aria-label": "Purchase this product",
-    title: "Click to buy now"
+    title: "Click to buy now",
   }}
   label={{ children: "Buy Now" }}
 />
@@ -404,6 +417,7 @@ Always provide meaningful labels and ARIA attributes:
 ## Troubleshooting
 
 ### Elements Not Rendering
+
 - Check if the element has a default value in the function signature (look for `= sdn.something`)
 - Elements without defaults need meaningful props to render (not empty objects `{}`)
 - **Note**: You may see examples with empty objects like `tagline={{}}` - these are valid but won't display any content
@@ -411,11 +425,13 @@ Always provide meaningful labels and ARIA attributes:
 - Verify that required nested props are included (e.g., `children` for labels, `icon` for icons)
 
 ### Styling Issues
+
 - Import the `styles.css` file in your app
 - Check CSS class conflicts with your existing styles
 - Use browser dev tools to inspect generated class names (they include unique IDs like `sdn-button-3D4pvOBS`)
 
 ### TypeScript Errors
+
 - Ensure you're importing the correct prop interfaces
 - Check that all required properties are provided
 - Use optional chaining for nested props: `button?.onClick`
@@ -424,7 +440,8 @@ Always provide meaningful labels and ARIA attributes:
 ## Getting Help
 
 Your exported components include:
-- `Fonts.tsx` - Font loading component  
+
+- `Fonts.tsx` - Font loading component
 - `styles.css` - Complete stylesheet
 - Individual component files with full TypeScript definitions
 

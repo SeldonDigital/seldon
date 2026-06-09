@@ -20,7 +20,8 @@ export type GradientTypeValue = EmptyValue | GradientTypeOptionValue
 /** Validates stored gradient type values. */
 export const gradientTypeSchema: PropertySchema = {
   name: "gradientType",
-  description: "Sets whether the fill runs along a line or spreads out from a center.",
+  description:
+    "Sets whether the fill runs along a line or spreads out from a center.",
   supports: ["empty", "inherit", "option"] as const,
   validation: {
     empty: () => true,

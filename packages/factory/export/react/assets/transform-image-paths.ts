@@ -1,6 +1,8 @@
 import { produce } from "immer"
+
 import { ValueType, Workspace } from "@seldon/core"
 import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
+
 import { getWorkspaceNodeList } from "../../../helpers/workspace-nodes"
 import { ImageToExportMap } from "../../types"
 

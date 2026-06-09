@@ -6,6 +6,9 @@ interface InsertIndicatorLineProps {
 }
 
 /** Insertion line. May host an endpoint marker as its child. */
-export function InsertIndicatorLine({ style, children }: InsertIndicatorLineProps) {
+export function InsertIndicatorLine({
+  style,
+  children,
+}: InsertIndicatorLineProps) {
   return <div style={style}>{children}</div>
 }

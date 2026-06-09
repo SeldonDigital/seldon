@@ -696,43 +696,64 @@ const theme: StockTheme = {
       intent:
         "The default color used to fill backgrounds, often white or black.",
       type: TokenType.SWATCH,
-      parameters: { colorspace: Colorspace.HSL, value: { hue: 0, saturation: 4, lightness: 98 } },
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 0, saturation: 4, lightness: 98 },
+      },
     },
     custom1: {
       name: "Grey 1",
       intent: "Seldon Red",
       type: TokenType.SWATCH,
-      parameters: { colorspace: Colorspace.HSL, value: { hue: 0, saturation: 0, lightness: 25 } },
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 0, saturation: 0, lightness: 25 },
+      },
     },
     custom2: {
       name: "Seldon Green",
       intent: "Seldon Green",
       type: TokenType.SWATCH,
-      parameters: { colorspace: Colorspace.HSL, value: { hue: 135, saturation: 100, lightness: 35 } },
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 135, saturation: 100, lightness: 35 },
+      },
     },
     custom3: {
       name: "Seldon Blue",
       intent: "Seldon Blue",
       type: TokenType.SWATCH,
-      parameters: { colorspace: Colorspace.HSL, value: { hue: 203, saturation: 100, lightness: 62 } },
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 203, saturation: 100, lightness: 62 },
+      },
     },
     custom4: {
       name: "Seldon Yellow",
       intent: "Seldon Yellow",
       type: TokenType.SWATCH,
-      parameters: { colorspace: Colorspace.HSL, value: { hue: 60, saturation: 100, lightness: 46 } },
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 60, saturation: 100, lightness: 46 },
+      },
     },
     custom5: {
       name: "Seldon Purple",
       intent: "Seldon Purple",
       type: TokenType.SWATCH,
-      parameters: { colorspace: Colorspace.HSL, value: { hue: 300, saturation: 76, lightness: 48 } },
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 300, saturation: 76, lightness: 48 },
+      },
     },
     custom6: {
       name: "Gray93",
       intent: "Custom Swatch",
       type: TokenType.SWATCH,
-      parameters: { colorspace: Colorspace.HSL, value: { hue: 0, saturation: 0, lightness: 93 } },
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 0, saturation: 0, lightness: 93 },
+      },
     },
   },
   font: {
@@ -1237,8 +1258,7 @@ const theme: StockTheme = {
       parameters: {
         image: {
           type: ValueType.EXACT,
-          value:
-            "https://static.seldon.app/background-default-light.jpg",
+          value: "https://static.seldon.app/background-default-light.jpg",
         },
         repeat: {
           type: ValueType.OPTION,
@@ -1256,8 +1276,7 @@ const theme: StockTheme = {
       parameters: {
         image: {
           type: ValueType.EXACT,
-          value:
-            "https://static.seldon.app/background-default-light.jpg",
+          value: "https://static.seldon.app/background-default-light.jpg",
         },
         repeat: {
           type: ValueType.OPTION,

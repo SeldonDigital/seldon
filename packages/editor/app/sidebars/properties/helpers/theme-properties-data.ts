@@ -1,13 +1,13 @@
-import { Theme } from "@seldon/core/themes/types"
-import { ValueType } from "@seldon/core/properties"
 import { getFamilyNameByValue } from "@seldon/core"
-import { getAllThemeTokenSchemas } from "@seldon/core/themes/schemas"
-import type { ThemeTokenSchema } from "@seldon/core/themes/schemas"
-import { FlatProperty } from "./properties-data"
 import { HSLObjectToString } from "@seldon/core/helpers/color/hsl-object-to-string"
 import { themeSwatchToCssBackground } from "@seldon/core/helpers/color/theme-swatch-to-css-background"
 import { stringifyValue } from "@seldon/core/helpers/properties/stringify-value"
+import { ValueType } from "@seldon/core/properties"
 import type { Value } from "@seldon/core/properties/types/value"
+import { getAllThemeTokenSchemas } from "@seldon/core/themes/schemas"
+import type { ThemeTokenSchema } from "@seldon/core/themes/schemas"
+import { Theme } from "@seldon/core/themes/types"
+import { FlatProperty } from "./properties-data"
 import type { ControlType } from "./properties-registry"
 
 const VALUE_TYPES = new Set<unknown>(Object.values(ValueType))
@@ -192,7 +192,11 @@ function getThemeValueByKey(theme: Theme, key: string): unknown {
 
   if (MODULATION_STEP_SECTIONS.has(section) && id && facet === "step") {
     const item = getNestedValue(themeObj, [section, id])
-    if (isRecord(item) && isRecord(item.parameters) && "step" in item.parameters) {
+    if (
+      isRecord(item) &&
+      isRecord(item.parameters) &&
+      "step" in item.parameters
+    ) {
       return item.parameters.step
     }
     return undefined
@@ -288,11 +292,7 @@ function createFlatPropertyFromSchema(
   // Calculated swatches (white, gray, black, primary, swatch1-4) are read-only.
   const isCalculatedSwatch = CALCULATED_SWATCHES.has(schema.key)
 
-  if (
-    schema.controlType === "text" &&
-    isRecord(value) &&
-    !("hue" in value)
-  ) {
+  if (schema.controlType === "text" && isRecord(value) && !("hue" in value)) {
     formattedValue = stringifyValue(value)
     actualValue = formattedValue as string
   }
@@ -317,8 +317,10 @@ function createFlatPropertyFromSchema(
     schema.key === "color.baseColor" ||
     schema.key in COLOR_POINT_SWATCHES
       ? "IconColorValue"
-      : schema.icon ??
-        (schema.key.endsWith(".step") ? "IconStepValue" : "IconSeldonComponent")
+      : (schema.icon ??
+        (schema.key.endsWith(".step")
+          ? "IconStepValue"
+          : "IconSeldonComponent"))
 
   const controlType = schema.controlType
     ? CONTROL_TYPE_MAP[schema.controlType]

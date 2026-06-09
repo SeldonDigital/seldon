@@ -4,11 +4,7 @@ import { isCompoundValue } from "../../../helpers/type-guards/compound/is-compou
 import { isAtomicValue } from "../../../helpers/type-guards/value/is-atomic-value"
 import { Properties, PropertyKey, ValueType } from "../../../properties"
 import { AtomicValue, ThemeValue, Value } from "../../../properties/types"
-import {
-  Theme,
-  ThemeSwatchKey,
-  ThemeValueKey,
-} from "../../../themes/types"
+import { Theme, ThemeSwatchKey, ThemeValueKey } from "../../../themes/types"
 import { getWorkspaceNodes } from "../../helpers/general/get-workspace-nodes"
 import { isEntryNodeForRules } from "../../helpers/rules/rules-node-subject"
 import { Instance, Variant, Workspace } from "../../types"

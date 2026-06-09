@@ -4,7 +4,7 @@
 //
 // Targets only the exact shape `{ type: <ns?>ValueType.EMPTY, value: null }`,
 // so it cannot swallow neighboring objects, and re-running is a no-op.
-import { readdir, readFile, writeFile } from "node:fs/promises"
+import { readFile, readdir, writeFile } from "node:fs/promises"
 import { dirname, join } from "node:path"
 import { fileURLToPath } from "node:url"
 

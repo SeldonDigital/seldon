@@ -1,19 +1,19 @@
 "use client"
 
-import { triggerDownload } from "@lib/helpers/trigger-download"
-import { kebabCase } from "change-case"
-import { useCallback } from "react"
-import type { Workspace } from "@seldon/core/workspace/types"
-import { workspacePropagationService } from "@seldon/core/workspace/services/propagation/workspace-propagation.service"
-import { useSelection } from "@lib/workspace/hooks/use-selection"
-import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
-import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import {
   pickExportDirectory,
   writeExportToDirectory,
 } from "@lib/export/write-export-to-directory"
-import { useWorkspaceId } from "@lib/project/hooks/use-workspace-id"
+import { triggerDownload } from "@lib/helpers/trigger-download"
+import { kebabCase } from "change-case"
+import { useCallback } from "react"
+import { workspacePropagationService } from "@seldon/core/workspace/services/propagation/workspace-propagation.service"
+import type { Workspace } from "@seldon/core/workspace/types"
 import { useWorkspaceRecord } from "@lib/persistence/hooks/use-workspace-record"
+import { useWorkspaceId } from "@lib/project/hooks/use-workspace-id"
+import { useSelection } from "@lib/workspace/hooks/use-selection"
+import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
+import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 
 export function useImportExport() {
   const workspaceId = useWorkspaceId()
@@ -29,7 +29,8 @@ export function useImportExport() {
       type: "application/json",
     })
     const name =
-      prompt("Enter name for your exported file", workspaceName) ?? workspaceName
+      prompt("Enter name for your exported file", workspaceName) ??
+      workspaceName
     if (!name) return
     triggerDownload(blob, `${kebabCase(name)}.json`)
   }, [workspace, workspaceName])
@@ -63,7 +64,9 @@ export function useImportExport() {
   const importWorkspaceFromFile = useCallback(
     async (file: File) => {
       const text = await file.text()
-      const parsed = workspacePropagationService.parseWorkspace(text) as Workspace
+      const parsed = workspacePropagationService.parseWorkspace(
+        text,
+      ) as Workspace
       await importWorkspace(parsed)
     },
     [importWorkspace],
@@ -81,9 +84,7 @@ export function useImportExport() {
       const count = await writeExportToDirectory(directory, files)
       addToast(`Exported ${count} files`)
     } catch (error) {
-      addToast(
-        error instanceof Error ? error.message : "Export failed",
-      )
+      addToast(error instanceof Error ? error.message : "Export failed")
     }
   }, [addToast, workspace])
 

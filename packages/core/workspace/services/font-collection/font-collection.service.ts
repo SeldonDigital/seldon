@@ -1,4 +1,5 @@
 import merge from "lodash/merge"
+
 import { STOCK_FONT_COLLECTIONS_BY_ID } from "../../../font-collections/catalog"
 import { instantiateFontCollection } from "../../../font-collections/compute"
 import {
@@ -6,12 +7,12 @@ import {
   getEnabledVariants,
 } from "../../../font-collections/helpers"
 import type { VariantSelection } from "../../../font-collections/helpers"
-import { sortFontVariants } from "../../../helpers/utils/font-variant"
 import type {
   ComputedFontCollection,
   FontCollectionTemplateId,
   FontFamilyEntry,
 } from "../../../font-collections/types"
+import { sortFontVariants } from "../../../helpers/utils/font-variant"
 import { isFontCollectionBoard } from "../../model/components"
 import type { EntryFontCollection } from "../../model/entry-font-collection"
 import {
@@ -65,11 +66,7 @@ export class WorkspaceFontCollectionService {
     if (parentId) {
       const parent = this.getFontCollection(parentId, workspace)
       if (!parent) return null
-      return merge(
-        {},
-        parent,
-        entry.overrides,
-      ) as ComputedFontCollection
+      return merge({}, parent, entry.overrides) as ComputedFontCollection
     }
 
     return null
@@ -115,7 +112,8 @@ export class WorkspaceFontCollectionService {
         if (!collection) continue
         const selection = this.getVariantSelection(variant.id, workspace)
         for (const [slot, family] of Object.entries(collection.families)) {
-          if (!family || family.origin !== "remote" || !family.variants) continue
+          if (!family || family.origin !== "remote" || !family.variants)
+            continue
           const enabled = (byFamily[family.name] ??= new Set<string>())
           for (const weight of getEnabledVariants(
             selection[slot],
@@ -150,7 +148,8 @@ export class WorkspaceFontCollectionService {
         if (!collection) continue
         const selection = this.getVariantSelection(variant.id, workspace)
         for (const [slot, family] of Object.entries(collection.families)) {
-          if (!family || family.origin !== "remote" || !family.variants) continue
+          if (!family || family.origin !== "remote" || !family.variants)
+            continue
           const enabled = getEnabledVariants(selection[slot], family.variants)
           if (enabled.length === 0) continue
           let record = byName.get(family.name)
@@ -256,4 +255,5 @@ export class WorkspaceFontCollectionService {
   }
 }
 
-export const workspaceFontCollectionService = new WorkspaceFontCollectionService()
+export const workspaceFontCollectionService =
+  new WorkspaceFontCollectionService()

@@ -1,4 +1,5 @@
 import { BackgroundPositionValue, ValueType } from "@seldon/core"
+
 import { backgroundPositionMap } from "./background-position-map"
 
 export function getBackgroundPositionStyle(

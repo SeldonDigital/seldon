@@ -4,9 +4,14 @@ import {
   isIconSetBoard,
   isThemeBoard,
 } from "@seldon/core/workspace/model/components"
-import { getNodeCatalogComponentId } from "@lib/workspace/node-tree"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
-import { Board, Instance, Variant, Workspace } from "@seldon/core/workspace/types"
+import {
+  Board,
+  Instance,
+  Variant,
+  Workspace,
+} from "@seldon/core/workspace/types"
+import { getNodeCatalogComponentId } from "@lib/workspace/node-tree"
 
 /**
  * Determines the appropriate icon for a node based on its type.

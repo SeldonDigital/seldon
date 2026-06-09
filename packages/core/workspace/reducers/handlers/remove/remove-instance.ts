@@ -6,11 +6,11 @@ import {
   debugLog,
 } from "../../../../utils/debug-logger"
 import {
-  nodeRetrievalService,
   nodeOperationsService,
+  nodeRetrievalService,
+  typeCheckingService,
   workspaceMutationService,
   workspacePropagationService,
-  typeCheckingService,
 } from "../../../services"
 import { ExtractPayload, Workspace } from "../../../types"
 

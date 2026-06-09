@@ -1,13 +1,13 @@
 import { MouseEvent, useMemo } from "react"
 import { ComponentLevel } from "@seldon/core/components/constants"
+import { getBoardVariantRootIds } from "@seldon/core/workspace/helpers/components/get-board-variant-root-ids"
 import { useDialog } from "@lib/hooks/use-dialog"
 import { useTool } from "@lib/hooks/use-tool"
+import { useSectionExpansion } from "../../hooks/use-section-expansion"
+import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { ButtonIconicProps } from "@seldon/components/elements/ButtonIconic"
 import { IconProps } from "@seldon/components/primitives/Icon"
 import { BoardSection } from "../../helpers/get-board-sections"
-import { useSectionExpansion } from "../../hooks/use-section-expansion"
-import { getBoardVariantRootIds } from "@seldon/core/workspace/helpers/components/get-board-variant-root-ids"
-import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { useExpansion } from "./use-expansion"
 import { useRowToggle } from "./use-row-toggle"
 
@@ -27,10 +27,7 @@ export function useRowSection(section: BoardSection) {
   const { setActiveTool } = useTool()
 
   // Section expansion state
-  const isExpanded = isSectionExpanded(
-    section.level,
-    section.boards.length > 0,
-  )
+  const isExpanded = isSectionExpanded(section.level, section.boards.length > 0)
 
   // Event handlers: toggle section with Alt+click support for all descendants
   const onToggle = useRowToggle({

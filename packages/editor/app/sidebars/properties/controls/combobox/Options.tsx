@@ -1,7 +1,7 @@
 import React from "react"
 import { createPortal } from "react-dom"
-import { Frame } from "@seldon/components/frames/Frame"
 import { Backdrop, PositionedPanel } from "@seldon/components/custom-components"
+import { Frame } from "@seldon/components/frames/Frame"
 import {
   comboboxBackdropStyle,
   getOptionsPanelPositionStyle,

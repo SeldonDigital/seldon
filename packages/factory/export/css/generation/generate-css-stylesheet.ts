@@ -1,4 +1,5 @@
 import { Workspace } from "@seldon/core"
+
 import { Classes } from "../types"
 import { format } from "../utils/format"
 import { insertBaseStyles } from "./insert-base-styles"

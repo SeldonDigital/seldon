@@ -6,10 +6,7 @@ import type { EntryTheme } from "../../model/entry-theme"
 import { formatThemeCatalog } from "../../model/template-ref"
 import { setBoardOrder } from "../components/board-sort-order"
 import { getInitialBoardComponentProperties } from "../components/get-initial-board-component-properties"
-import {
-  type SeedableWorkspace,
-  nextBoardOrder,
-} from "./seedable-workspace"
+import { type SeedableWorkspace, nextBoardOrder } from "./seedable-workspace"
 
 /** Catalog row key for the default theme board (matches the `default` stock template id). */
 export const DEFAULT_THEME_BOARD_KEY = "seldon" as const

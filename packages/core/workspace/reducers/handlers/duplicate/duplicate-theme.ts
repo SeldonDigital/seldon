@@ -1,7 +1,8 @@
 import { current, isDraft, produce } from "immer"
-import type { EntryTheme } from "../../../model/entry-theme"
+
 import type { ExtractPayload, Workspace } from "../../../../index"
 import { getNextVariantLabel } from "../../../helpers/general/get-next-variant-label"
+import type { EntryTheme } from "../../../model/entry-theme"
 import { formatThemeLink } from "../../../model/template-ref"
 
 function themeComponentKeyFromThemeId(themeId: string): string | null {

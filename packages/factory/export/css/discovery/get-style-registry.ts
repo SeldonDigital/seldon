@@ -1,6 +1,6 @@
 import { isEqual } from "lodash"
+
 import { Workspace } from "@seldon/core"
-import type { EntryNode } from "@seldon/core/workspace/types"
 import type { NodeParentIndex } from "@seldon/core/workspace/compute"
 import { getVariantById } from "@seldon/core/workspace/helpers/general/get-variant-by-id"
 import { isDefaultVariant } from "@seldon/core/workspace/helpers/general/is-default-variant"
@@ -9,6 +9,8 @@ import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-
 import { isVariantNode } from "@seldon/core/workspace/helpers/nodes/is-variant-node"
 import { isEntryNodeInstance } from "@seldon/core/workspace/model/entry-node"
 import { typeCheckingService } from "@seldon/core/workspace/services"
+import type { EntryNode } from "@seldon/core/workspace/types"
+
 import { getStyleContext } from "../../../helpers/build-export-context"
 import {
   getTemplateSourceNodeId,

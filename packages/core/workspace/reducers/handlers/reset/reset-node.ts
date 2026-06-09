@@ -2,9 +2,9 @@ import { ExtractPayload, Workspace } from "../../../../index"
 import { rules } from "../../../../rules/config/rules.config"
 import {
   nodeRetrievalService,
+  typeCheckingService,
   workspaceMutationService,
   workspacePropagationService,
-  typeCheckingService,
 } from "../../../services"
 
 /**

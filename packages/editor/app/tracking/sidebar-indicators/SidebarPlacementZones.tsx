@@ -4,13 +4,13 @@ import { Placement } from "@lib/types"
 import { CSSProperties } from "react"
 import { Instance, Variant } from "@seldon/core"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
+import { useTool } from "@lib/hooks/use-tool"
+import { useSidebarPlacementTracking } from "../hooks/use-sidebar-placement-tracking"
 import {
   OverlayLayer,
   PlacementZoneSurface,
   PositionedPanel,
 } from "@seldon/components/custom-components"
-import { useTool } from "@lib/hooks/use-tool"
-import { useSidebarPlacementTracking } from "../hooks/use-sidebar-placement-tracking"
 import { IndicatorInsert } from "./insert/IndicatorInsert"
 
 interface SidebarPlacementZonesProps {
@@ -108,7 +108,9 @@ export function SidebarPlacementZones({
 
   return (
     <OverlayLayer style={overlayStyle}>
-      <PositionedPanel style={relativeFillStyle}>{renderZones()}</PositionedPanel>
+      <PositionedPanel style={relativeFillStyle}>
+        {renderZones()}
+      </PositionedPanel>
     </OverlayLayer>
   )
 }

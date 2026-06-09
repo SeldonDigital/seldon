@@ -7,19 +7,19 @@ import {
   useHoveredKind,
   useHoveredRootId,
 } from "@lib/workspace/hooks/use-object-hover"
-import { useSelectedId } from "@lib/workspace/selection-target"
 import {
   useSelectedNodeId,
   useSelectedNodeRootId,
 } from "@lib/workspace/hooks/use-selection"
 import type { NodeRect } from "../tracking/hooks/use-node-rects-store"
+import { useCanvasOverlayStore } from "./hooks/use-canvas-overlay-store"
+import { useCanvasRemeasureStore } from "./hooks/use-canvas-remeasure-store"
+import { useSelectedId } from "@lib/workspace/selection-target"
 import {
   getCanvasSelectionElements,
   getScopedSelectionElement,
   getUnionRect,
 } from "./helpers/canvas-selection-target"
-import { useCanvasOverlayStore } from "./hooks/use-canvas-overlay-store"
-import { useCanvasRemeasureStore } from "./hooks/use-canvas-remeasure-store"
 
 /** Frames to wait for a target to mount after a board switch before giving up. */
 const MAX_TARGET_FRAMES = 30
@@ -47,7 +47,10 @@ function measure(id: string | null): NodeRect | null {
  * Canvas-relative rect of a single node, scoped to its variant-root column so a
  * child id shared across columns outlines only the clicked copy.
  */
-function measureNode(id: string | null, rootId: string | null): NodeRect | null {
+function measureNode(
+  id: string | null,
+  rootId: string | null,
+): NodeRect | null {
   if (!id) return null
   const element = getScopedSelectionElement(id, rootId)
   return toCanvasRect(element ? element.getBoundingClientRect() : null)

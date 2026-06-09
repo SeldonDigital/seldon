@@ -20,6 +20,9 @@ function resolveCatalogId(
   return resolveCatalogId(parentNode, workspace, visited)
 }
 
-export function getNodeCatalogId(node: EntryNode, workspace: Workspace): string | null {
+export function getNodeCatalogId(
+  node: EntryNode,
+  workspace: Workspace,
+): string | null {
   return resolveCatalogId(node, workspace, new Set<string>())
 }

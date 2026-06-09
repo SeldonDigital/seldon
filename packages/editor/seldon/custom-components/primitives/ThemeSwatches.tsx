@@ -8,7 +8,10 @@ interface ThemeSwatchesProps {
 
 const containerStyle: CSSProperties = { position: "relative", display: "flex" }
 
-export function ThemeSwatches({ colors, isSelected = false }: ThemeSwatchesProps) {
+export function ThemeSwatches({
+  colors,
+  isSelected = false,
+}: ThemeSwatchesProps) {
   return (
     <div style={containerStyle}>
       {colors.map((color, index) => (

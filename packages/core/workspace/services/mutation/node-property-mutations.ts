@@ -1,8 +1,4 @@
-import {
-  Properties,
-  PropertyKey,
-  SubPropertyKey,
-} from "../../../properties"
+import { Properties, PropertyKey, SubPropertyKey } from "../../../properties"
 import { mergeProperties } from "../../../properties/helpers/merge-properties"
 import { getWorkspaceNodes } from "../../helpers/general/get-workspace-nodes"
 import { getNodeSubtreeIds } from "../../helpers/nodes/get-node-subtree-ids"
@@ -101,7 +97,11 @@ function resetObjectProperty(
     const board = draft.boards[objectId as BoardKey]
     if (board) {
       if (subpropertyKey) {
-        deleteSubProperty(board.componentProperties, propertyKey, subpropertyKey)
+        deleteSubProperty(
+          board.componentProperties,
+          propertyKey,
+          subpropertyKey,
+        )
       } else {
         delete board.componentProperties[propertyKey]
       }

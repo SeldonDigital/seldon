@@ -13,7 +13,11 @@ function getSwatchMarginRight(
   return isSelected ? "-7px" : "-10px"
 }
 
-export function SwatchDot({ color, index, isSelected = false }: SwatchDotProps) {
+export function SwatchDot({
+  color,
+  index,
+  isSelected = false,
+}: SwatchDotProps) {
   return (
     <span
       className="shadow-dieter-rams-button"

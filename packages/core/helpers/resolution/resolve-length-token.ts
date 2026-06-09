@@ -1,10 +1,10 @@
 import { PixelValue, RemValue, Unit, ValueType } from "../../index"
 import { modulateWithTheme } from "../../themes/helpers/modulate"
 import {
-  isModulatedToken,
-  isThemeExactToken,
   Theme,
   ThemeOption,
+  isModulatedToken,
+  isThemeExactToken,
 } from "../../themes/types"
 
 /** Converts an EXACT theme length token to a concrete PixelValue or RemValue. */
@@ -14,8 +14,14 @@ export function exactTokenToLength(parameters: {
 }): PixelValue | RemValue {
   return (
     parameters.unit === Unit.PX
-      ? { type: ValueType.EXACT, value: { unit: Unit.PX, value: parameters.value } }
-      : { type: ValueType.EXACT, value: { unit: Unit.REM, value: parameters.value } }
+      ? {
+          type: ValueType.EXACT,
+          value: { unit: Unit.PX, value: parameters.value },
+        }
+      : {
+          type: ValueType.EXACT,
+          value: { unit: Unit.REM, value: parameters.value },
+        }
   ) as PixelValue | RemValue
 }
 
@@ -28,7 +34,10 @@ export function resolveModulatedOrExactLength(
   theme: Theme,
 ): PixelValue | RemValue | undefined {
   if (isModulatedToken(themeValue)) {
-    const value = modulateWithTheme({ theme, parameters: themeValue.parameters })
+    const value = modulateWithTheme({
+      theme,
+      parameters: themeValue.parameters,
+    })
     return { type: ValueType.EXACT, value: { unit: Unit.REM, value } }
   }
   if (isThemeExactToken(themeValue)) {

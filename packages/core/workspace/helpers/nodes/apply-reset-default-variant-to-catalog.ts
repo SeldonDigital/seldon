@@ -130,10 +130,7 @@ export function applyResetDefaultVariantToCatalog(
   defaultVariantRootId: string,
 ): Workspace {
   return produce(workspace, (draft) => {
-    const located = findBoardContainingTreeNodeId(
-      draft,
-      defaultVariantRootId,
-    )
+    const located = findBoardContainingTreeNodeId(draft, defaultVariantRootId)
     if (
       !located ||
       !(isComponentBoard(located.board) || isPlaygroundBoard(located.board))

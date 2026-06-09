@@ -7,14 +7,13 @@ type AllCategoryType = PropertyCategoryType | ThemePropertyCategoryType
 interface PropertyExpansionState {
   categories: Record<string, boolean>
   properties: Record<string, boolean>
-  toggleCategory: (
-    category: AllCategoryType,
-    shouldExpand?: boolean,
-  ) => void
+  toggleCategory: (category: AllCategoryType, shouldExpand?: boolean) => void
   toggleProperty: (propertyKey: string, shouldExpand?: boolean) => void
 }
 
-const DEFAULT_REGULAR_CATEGORIES: Partial<Record<PropertyCategoryType, boolean>> = {
+const DEFAULT_REGULAR_CATEGORIES: Partial<
+  Record<PropertyCategoryType, boolean>
+> = {
   attributes: true,
   layout: true,
   appearance: true,

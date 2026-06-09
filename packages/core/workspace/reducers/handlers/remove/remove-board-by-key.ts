@@ -1,6 +1,6 @@
 import { rules } from "../../../../rules/config/rules.config"
-import type { BoardKey, Workspace } from "../../../types"
 import { nodeOperationsService } from "../../../services"
+import type { BoardKey, Workspace } from "../../../types"
 
 /**
  * Deletes a board by its key after the delete rule gate, via

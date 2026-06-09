@@ -24,7 +24,8 @@ function exactNumberPayload(value: unknown): number | null {
 /** Validates stored line count values. */
 export const linesSchema: PropertySchema = {
   name: "lines",
-  description: "Sets how many text lines may appear using zero or a positive whole number.",
+  description:
+    "Sets how many text lines may appear using zero or a positive whole number.",
   supports: ["empty", "inherit", "exact"] as const,
   units: {
     allowed: [],

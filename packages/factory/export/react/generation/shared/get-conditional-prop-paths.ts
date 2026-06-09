@@ -1,4 +1,5 @@
 import { ComponentLevel } from "@seldon/core/components/constants"
+
 import { ComponentToExport, JSONTreeNode } from "../../../types"
 import {
   ComponentPropsValidation,
@@ -33,7 +34,10 @@ export function getConditionalPropPaths(
     )
   }
 
-  function walk(node: JSONTreeNode, parentValidation: ComponentPropsValidation) {
+  function walk(
+    node: JSONTreeNode,
+    parentValidation: ComponentPropsValidation,
+  ) {
     if (node.level === ComponentLevel.FRAME) {
       // Frame is structural: never conditional, and transparent to its children.
       if (Array.isArray(node.children)) {

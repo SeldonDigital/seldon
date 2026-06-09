@@ -2,17 +2,17 @@
 
 import React, { Profiler } from "react"
 import { Board } from "@seldon/core"
+import { isResourceType } from "@seldon/core/workspace/helpers/components/is-resource-type"
 import {
   isFontCollectionBoard,
   isIconSetBoard,
   isPlaygroundBoard,
   isThemeBoard,
 } from "@seldon/core/workspace/model/components"
-import { isResourceType } from "@seldon/core/workspace/helpers/components/is-resource-type"
+import { useActiveBoard } from "@lib/workspace/hooks/use-active-board"
 import { useDebugMode } from "@lib/hooks/use-debug-mode"
 import { usePreview } from "@lib/hooks/use-preview"
 import { useCanvas } from "./hooks/use-canvas"
-import { useActiveBoard } from "@lib/workspace/hooks/use-active-board"
 import { ComponentBoard } from "./boards/ComponentBoard"
 import { FontCollectionBoard } from "./boards/FontCollectionBoard"
 import { IconSetBoard } from "./boards/IconSetBoard"

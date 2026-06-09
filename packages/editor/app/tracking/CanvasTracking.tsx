@@ -1,12 +1,12 @@
 "use client"
 
+import { useSelectedNodeId } from "@lib/workspace/hooks/use-selection"
 import { useHasHoverState } from "@lib/hooks/use-canvas-hover-state"
 import { useDragStateStore } from "@lib/hooks/use-drag-state"
-import { useCanvasRemeasureStore } from "../canvas/hooks/use-canvas-remeasure-store"
 import { useEditorConfig } from "@lib/hooks/use-editor-config"
 import { usePreview } from "@lib/hooks/use-preview"
 import { useTool } from "@lib/hooks/use-tool"
-import { useSelectedNodeId } from "@lib/workspace/hooks/use-selection"
+import { useCanvasRemeasureStore } from "../canvas/hooks/use-canvas-remeasure-store"
 import { useNodeBelongsToActiveBoard } from "./hooks/use-belongs-to-active-board"
 import { useTrackNodeRects } from "./hooks/use-track-node-rects"
 import { useVisibleNodes } from "./hooks/use-visible-nodes"
@@ -27,7 +27,9 @@ export function CanvasTracking() {
   const { showSelection, wireframeMode } = useEditorConfig()
   const nodeBelongsToActiveBoard = useNodeBelongsToActiveBoard()
   const isDragging = useDragStateStore((state) => state.isDragging)
-  const isTransforming = useCanvasRemeasureStore((state) => state.isTransforming)
+  const isTransforming = useCanvasRemeasureStore(
+    (state) => state.isTransforming,
+  )
 
   const showWireframes =
     wireframeMode === "on" ||

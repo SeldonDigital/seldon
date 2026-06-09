@@ -1,9 +1,9 @@
 import {
   CSSProperties,
   MouseEvent,
-  RefObject,
   ReactNode,
   Ref,
+  RefObject,
   useCallback,
   useState,
 } from "react"
@@ -11,6 +11,7 @@ import { Board, Instance, Theme, Variant } from "@seldon/core"
 import { useThemes } from "@lib/themes/hooks/use-themes"
 import { useSelection } from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
+import type { ComboboxOptionItems } from "../controls/combobox/types"
 import {
   FontCollectionEditingContext,
   IconSetEditingContext,
@@ -19,7 +20,6 @@ import {
 import { formatControlPlaceholder } from "../helpers/format-control-placeholder"
 import { FlatProperty } from "../helpers/properties-data"
 import { createPropertyOptionIconRenderer } from "../helpers/render-property-option-icon"
-import type { ComboboxOptionItems } from "../controls/combobox/types"
 import { useCommitPropertyValue } from "./use-commit-property-value"
 import { usePropertyCombobox } from "./use-property-combobox"
 import { usePropertyControlData } from "./use-property-control-data"

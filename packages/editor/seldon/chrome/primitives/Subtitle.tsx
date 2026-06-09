@@ -17,15 +17,14 @@ import { HTMLHeading4 } from "../native-react/HTML.Heading4"
 import { HTMLHeading5 } from "../native-react/HTML.Heading5"
 import { HTMLHeading6 } from "../native-react/HTML.Heading6"
 
-export interface SubtitleProps
-  extends HTMLAttributes<
-    | HTMLHeadingElement
-    | HTMLHeadingElement
-    | HTMLHeadingElement
-    | HTMLHeadingElement
-    | HTMLHeadingElement
-    | HTMLHeadingElement
-  > {
+export interface SubtitleProps extends HTMLAttributes<
+  | HTMLHeadingElement
+  | HTMLHeadingElement
+  | HTMLHeadingElement
+  | HTMLHeadingElement
+  | HTMLHeadingElement
+  | HTMLHeadingElement
+> {
   className?: string
   children?: string
   htmlElement?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6"

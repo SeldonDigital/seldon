@@ -2,8 +2,8 @@
 
 import {
   CSSProperties,
-  forwardRef,
   RefObject,
+  forwardRef,
   useEffect,
   useMemo,
   useRef,

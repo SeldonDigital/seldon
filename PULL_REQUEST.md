@@ -1,14 +1,8 @@
 ## 📝 Description
 
-
-
 ## 🔗 Related Issues
 
-
-
 ## 🧪 Type of Change
-
-
 
 - 🐛 Bug fix
 - ✨ New feature
@@ -18,15 +12,11 @@
 
 ## 📦 Affected Packages
 
-
-
 - `@seldon/core`
 - `@seldon/factory`
 - `@seldon/editor`
 
 ## 📸 Screenshots/Videos
-
-
 
 ## 🔍 Code Quality Checklist
 
@@ -39,19 +29,11 @@
 
 ## 📋 Breaking Changes
 
-
-
 ## 🚀 Deployment Notes
-
-
 
 ## 📚 Documentation Updates
 
-
-
 ## ⚠️ Additional Notes
-
-
 
 ---
 

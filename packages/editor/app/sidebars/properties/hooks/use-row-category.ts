@@ -11,7 +11,9 @@ import { usePropertyExpansion } from "./use-property-expansion"
  * @param section - The property section to render (e.g., "Attributes", "Layout")
  * @returns Object containing label, icon, button props, and toggle handler
  */
-export function useRowCategory(section: PropertySection | ThemePropertySection) {
+export function useRowCategory(
+  section: PropertySection | ThemePropertySection,
+) {
   // Expansion state: category-level and property-level expansion
   const { isCategoryExpanded, toggleCategory, toggleProperty } =
     usePropertyExpansion()

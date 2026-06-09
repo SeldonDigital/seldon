@@ -2,10 +2,15 @@ import { LayoutGroup } from "framer-motion"
 import { RefObject, useMemo } from "react"
 import { Board, Instance, Theme, Variant, Workspace } from "@seldon/core"
 import { isResourceType } from "@seldon/core/workspace/helpers/components/is-resource-type"
-import { buildThemeAssignmentProperty } from "./helpers/theme-assignment-display"
-import { Frame } from "@seldon/components/frames/Frame"
+import { usePropertyExpansion } from "./hooks/use-property-expansion"
 import { ScrollerShell } from "@seldon/components/custom-components"
+import { Frame } from "@seldon/components/frames/Frame"
 import { PropertyTreeSection } from "./PropertyTreeSection"
+import {
+  FontCollectionEditingContext,
+  IconSetEditingContext,
+  ThemeEditingContext,
+} from "./helpers/editing-contexts"
 import { useCssStrings } from "./helpers/get-calculated-properties"
 import {
   PropertySection,
@@ -19,13 +24,8 @@ import {
   getIconRowCategory,
   iconCategoryLabel,
 } from "./helpers/icon-set-properties-data"
-import {
-  FontCollectionEditingContext,
-  IconSetEditingContext,
-  ThemeEditingContext,
-} from "./helpers/editing-contexts"
 import { FlatProperty } from "./helpers/properties-data"
-import { usePropertyExpansion } from "./hooks/use-property-expansion"
+import { buildThemeAssignmentProperty } from "./helpers/theme-assignment-display"
 
 export interface PropertyTreeProps {
   properties: FlatProperty[]

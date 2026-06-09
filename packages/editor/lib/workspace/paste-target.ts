@@ -45,7 +45,9 @@ function canPasteInto(
 }
 
 function isDefaultVariantTarget(node: EntryNode): boolean {
-  return workspaceService.isVariant(node) && workspaceService.isDefaultVariant(node)
+  return (
+    workspaceService.isVariant(node) && workspaceService.isDefaultVariant(node)
+  )
 }
 
 export function resolvePasteTarget({
@@ -75,7 +77,12 @@ export function resolvePasteTarget({
     if (
       targetComponentId &&
       !isDefaultVariantTarget(selectedNode) &&
-      canPasteInto(targetComponentId, subjectComponentId, selectedNode, workspace)
+      canPasteInto(
+        targetComponentId,
+        subjectComponentId,
+        selectedNode,
+        workspace,
+      )
     ) {
       const index = getNodeChildIds(selectedNode, workspace).length
       return { action: "duplicate-into", parentId: selectedNode.id, index }

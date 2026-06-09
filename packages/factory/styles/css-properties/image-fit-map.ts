@@ -1,4 +1,5 @@
 import { ImageFit } from "@seldon/core"
+
 import { CSSObject } from "./types"
 
 export const objectFitMap: Record<ImageFit, CSSObject["objectFit"]> = {

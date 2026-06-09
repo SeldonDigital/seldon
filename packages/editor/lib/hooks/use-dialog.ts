@@ -49,7 +49,11 @@ const useStore = create<DialogState>((set) => ({
       case "add-font-collection":
       case "add-icon-set":
       case "image-upload":
-        set({ activeDialog: args[0], target: undefined, dialogLevel: undefined })
+        set({
+          activeDialog: args[0],
+          target: undefined,
+          dialogLevel: undefined,
+        })
         break
 
       default:
@@ -77,6 +81,7 @@ export function useDialog() {
       store.closeDialog()
     },
     target: store.activeDialog === "component" ? store.target : undefined,
-    dialogLevel: store.activeDialog === "add-board" ? store.dialogLevel : undefined,
+    dialogLevel:
+      store.activeDialog === "add-board" ? store.dialogLevel : undefined,
   }
 }

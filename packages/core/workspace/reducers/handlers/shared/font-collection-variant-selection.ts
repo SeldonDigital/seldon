@@ -12,7 +12,11 @@ function readSelection(entry: EntryFontCollection): VariantSelection {
   const current = (entry.overrides as Record<string, unknown>)[
     FONT_COLLECTION_VARIANT_SELECTION_SECTION
   ]
-  if (typeof current !== "object" || current === null || Array.isArray(current)) {
+  if (
+    typeof current !== "object" ||
+    current === null ||
+    Array.isArray(current)
+  ) {
     return {}
   }
   return { ...(current as VariantSelection) }

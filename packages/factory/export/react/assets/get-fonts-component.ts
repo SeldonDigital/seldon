@@ -3,6 +3,7 @@ import {
   workspaceFontCollectionService,
   workspaceThemeService,
 } from "@seldon/core/workspace/services"
+
 import { ExportOptions, FileToExport } from "../../types"
 import { format } from "../format"
 
@@ -56,7 +57,10 @@ export async function getFontsComponent(
     for (const themeId of Object.keys(workspace.themes ?? {})) {
       const theme = workspaceThemeService.getTheme(themeId, workspace)
       if (!theme?.fontFamily) continue
-      for (const slot of [theme.fontFamily.primary, theme.fontFamily.secondary]) {
+      for (const slot of [
+        theme.fontFamily.primary,
+        theme.fontFamily.secondary,
+      ]) {
         const familyName =
           typeof slot?.parameters === "string" ? slot.parameters : undefined
         if (!familyName || !isRemoteFontFamily(familyName)) continue

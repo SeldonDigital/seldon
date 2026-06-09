@@ -1,21 +1,21 @@
+import type { ComponentId } from "../../../../components/constants"
+import { ValueType } from "../../../../properties"
 import { rules } from "../../../../rules/config/rules.config"
-import {
-  isComponentBoard,
-  isPlaygroundBoard,
-} from "../../../model/components"
-import { isEntryThemeDefault } from "../../../model/entry-theme"
+import { ErrorMessages } from "../../../constants"
 import { getBoardVariantRootIds } from "../../../helpers/components/get-board-variant-root-ids"
+import { isUserVariant } from "../../../helpers/general/is-user-variant"
 import { findBoardContainingTreeNodeId } from "../../../helpers/nodes/duplicate-entry-variant-subtree"
 import { hasEffectiveThemeReference } from "../../../helpers/removal/effective-theme-references"
-import { isUserVariant } from "../../../helpers/general/is-user-variant"
-import { ErrorMessages } from "../../../constants"
+import { isComponentBoard, isPlaygroundBoard } from "../../../model/components"
+import { isEntryThemeDefault } from "../../../model/entry-theme"
 import {
   nodeRelationshipService,
   nodeRetrievalService,
   nodeTraversalService,
-  workspaceMutationService,
   typeCheckingService,
+  workspaceMutationService,
 } from "../../../services"
+import type { Action, InstanceId, VariantId, Workspace } from "../../../types"
 import { check } from "../check"
 import { getNodeComponentId } from "../node-component-id"
 import {
@@ -29,14 +29,6 @@ import {
   variantValidators,
 } from "../validators"
 import { WorkspaceValidationError } from "../workspace-validation-error"
-import type {
-  Action,
-  InstanceId,
-  VariantId,
-  Workspace,
-} from "../../../types"
-import { ValueType } from "../../../../properties"
-import type { ComponentId } from "../../../../components/constants"
 
 export function validateInsertMutation(
   workspace: Workspace,
@@ -61,25 +53,13 @@ export function validateInsertMutation(
     case "insert_variant_instance": {
       const nodeId = action.payload.variantId as VariantId
       const parentId = action.payload.target.parentId as InstanceId | VariantId
-      validateInsertSource(
-        workspace,
-        action,
-        nodeId,
-        parentId,
-        "variant",
-      )
+      validateInsertSource(workspace, action, nodeId, parentId, "variant")
       break
     }
     case "insert_duplicate_instance": {
       const nodeId = action.payload.instanceId as InstanceId
       const parentId = action.payload.target.parentId as InstanceId | VariantId
-      validateInsertSource(
-        workspace,
-        action,
-        nodeId,
-        parentId,
-        "instance",
-      )
+      validateInsertSource(workspace, action, nodeId, parentId, "instance")
       break
     }
     case "insert_default_instance": {
@@ -92,11 +72,7 @@ export function validateInsertMutation(
         boardKey as ComponentId,
         workspace,
       )
-      nodeValidators.isNotInstanceOfSelf(
-        workspace,
-        defaultVariant.id,
-        parentId,
-      )
+      nodeValidators.isNotInstanceOfSelf(workspace, defaultVariant.id, parentId)
       nodeValidators.canBeParentOf(workspace, parentId, defaultVariant.id)
       const parent = nodeRetrievalService.getNode(parentId, workspace)
       assertInsertTargetAllowed(parent, action)
@@ -214,16 +190,15 @@ export function validateNodeMutation(
       const nodeId = action.payload.nodeId as InstanceId | VariantId
       nodeValidators.exists(workspace, nodeId)
       const node = nodeRetrievalService.getNode(nodeId, workspace)
-      const themeId = workspaceMutationService.getInheritedTheme(node, workspace)
+      const themeId = workspaceMutationService.getInheritedTheme(
+        node,
+        workspace,
+      )
       propertyValidators.keys(
         action.payload.properties,
         getNodeComponentId(node, workspace),
       )
-      propertyValidators.values(
-        action.payload.properties,
-        workspace,
-        themeId,
-      )
+      propertyValidators.values(action.payload.properties, workspace, themeId)
       break
     }
     case "reset_node_property": {

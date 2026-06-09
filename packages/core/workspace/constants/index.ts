@@ -4,9 +4,7 @@ import { InstanceId, VariantId } from "../types"
 export const ErrorMessages = {
   nodeNotFound: (id: InstanceId | VariantId) => `Node ${id} not found.`,
   componentNotFound: (id: string) =>
-    id
-      ? `Board ${id} not found.`
-      : `Board id is missing (received ${id}).`,
+    id ? `Board ${id} not found.` : `Board id is missing (received ${id}).`,
   componentAlreadyExists: (id: string) => `Board ${id} already exists.`,
   componentNotFoundForVariant: (id: VariantId) =>
     `Board not found for variant ${id}.`,

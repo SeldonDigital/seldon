@@ -1,9 +1,9 @@
 import { validatePropertyValue } from "../../../properties/schemas/helpers/validate-property-value"
-import type { ComputedTheme, StockTheme } from "../../types/theme"
 import type {
   ThemeTokenSchema,
   ThemeTokenSchemaSupport,
 } from "../../types/schema"
+import type { ComputedTheme, StockTheme } from "../../types/theme"
 import { resolveThemeTokenEntry } from "./resolve-theme-token-entry"
 
 function validateUnbridgedThemeToken(

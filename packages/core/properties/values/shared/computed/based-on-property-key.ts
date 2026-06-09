@@ -13,6 +13,4 @@
  * - #border
  * - #parent.border
  */
-export type BasedOnPropertyKey =
-  | `#${string}`
-  | `#parent.${string}`
+export type BasedOnPropertyKey = `#${string}` | `#parent.${string}`

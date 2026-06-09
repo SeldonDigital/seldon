@@ -1,11 +1,11 @@
 "use client"
 
-import { useCallback, useEffect, useState } from "react"
 import {
+  type StoredWorkspace,
   getStoredWorkspace,
   saveStoredWorkspace,
-  type StoredWorkspace,
 } from "@lib/storage/workspace-store"
+import { useCallback, useEffect, useState } from "react"
 
 export function useWorkspaceRecord(workspaceId: string | null) {
   const [record, setRecord] = useState<StoredWorkspace | null>(null)
@@ -36,7 +36,9 @@ export function useWorkspaceRecord(workspaceId: string | null) {
       })
       .catch((err) => {
         if (cancelled) return
-        setError(err instanceof Error ? err.message : "Failed to load workspace")
+        setError(
+          err instanceof Error ? err.message : "Failed to load workspace",
+        )
         setLoading(false)
       })
 

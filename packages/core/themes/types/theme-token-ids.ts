@@ -178,10 +178,22 @@ export type ThemeBorderId =
   | `custom${number}`
 
 export type StockThemeFontId = Exclude<ThemeFontId, BuiltInThemeFontLookId>
-export type StockThemeShadowId = Exclude<ThemeShadowId, BuiltInThemeClearedLookId>
-export type StockThemeGradientId = Exclude<ThemeGradientId, BuiltInThemeClearedLookId>
-export type StockThemeBackgroundId = Exclude<ThemeBackgroundId, BuiltInThemeClearedLookId>
-export type StockThemeBorderId = Exclude<ThemeBorderId, BuiltInThemeClearedLookId>
+export type StockThemeShadowId = Exclude<
+  ThemeShadowId,
+  BuiltInThemeClearedLookId
+>
+export type StockThemeGradientId = Exclude<
+  ThemeGradientId,
+  BuiltInThemeClearedLookId
+>
+export type StockThemeBackgroundId = Exclude<
+  ThemeBackgroundId,
+  BuiltInThemeClearedLookId
+>
+export type StockThemeBorderId = Exclude<
+  ThemeBorderId,
+  BuiltInThemeClearedLookId
+>
 
 export type ThemeOptionId =
   | ThemeBackgroundId

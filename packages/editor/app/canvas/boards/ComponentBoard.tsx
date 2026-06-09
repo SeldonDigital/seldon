@@ -1,24 +1,24 @@
 "use client"
 
 import { getCssFromProperties } from "@seldon/factory/styles/css-properties/get-css-from-properties"
+import { CSSProperties, useRef } from "react"
 import { Board, Properties, Scroll, Unit, ValueType } from "@seldon/core"
 import { ThemeInstanceId } from "@seldon/core/themes/types"
-import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
 import { getBoardThemeRef } from "@seldon/core/workspace/helpers/components/get-board-theme-ref"
 import { getBoardVariantRootIds } from "@seldon/core/workspace/helpers/components/get-board-variant-root-ids"
-import { resolveComponentKey } from "@lib/workspace/workspace-accessors"
+import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
 import { workspaceThemeService } from "@seldon/core/workspace/services/theme/theme.service"
-import { usePreview } from "@lib/hooks/use-preview"
 import { useSelection } from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
-import { CSSProperties, useRef } from "react"
+import { usePreview } from "@lib/hooks/use-preview"
+import { useCanvasReorderFlip } from "../hooks/use-canvas-reorder-flip"
+import { resolveComponentKey } from "@lib/workspace/workspace-accessors"
 import {
   BoardCanvasFrame,
   StyleTag,
 } from "@seldon/components/custom-components"
 import { CssPortal } from "../CssPortal"
 import { CanvasNode } from "../Node"
-import { useCanvasReorderFlip } from "../hooks/use-canvas-reorder-flip"
 
 export type ComponentBoardProps = {
   board: Board
@@ -28,8 +28,7 @@ const boardRootStyle: CSSProperties = { position: "static" }
 export function ComponentBoard({ board }: ComponentBoardProps) {
   const { workspace } = useWorkspace()
   const { selectedBoardId } = useSelection()
-  const boardKey =
-    selectedBoardId ?? resolveComponentKey(board, workspace)
+  const boardKey = selectedBoardId ?? resolveComponentKey(board, workspace)
   const boardEntry = workspace.boards[boardKey] ?? board
   const theme = workspaceThemeService.getObjectTheme(boardEntry, workspace)
   const className = `board-${boardKey}`

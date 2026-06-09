@@ -1,10 +1,9 @@
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react"
+import { MenuEntry } from "@lib/menus"
+import {
+  childPathsUnderCompoundParent,
+  parsePropertyPath,
+} from "@lib/properties/property-paths"
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import {
   Board,
   Instance,
@@ -16,22 +15,17 @@ import {
 } from "@seldon/core"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { workspaceThemeService } from "@seldon/core/workspace/services/theme/theme.service"
-import {
-  childPathsUnderCompoundParent,
-  parsePropertyPath,
-} from "@lib/properties/property-paths"
-import { useDebugMode } from "@lib/hooks/use-debug-mode"
-import { MenuEntry } from "@lib/menus"
 import { useThemes } from "@lib/themes/hooks/use-themes"
 import { useObjectProperties } from "@lib/workspace/hooks/use-object-properties"
+import { useDebugMode } from "@lib/hooks/use-debug-mode"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { useImageUploadPanel } from "@app/panels/hooks/use-upload-image-panel"
 import { buildPropertyOptions } from "../helpers/build-property-options"
 import {
-  buildPropertyRowProps,
   FRAME_REF_ATTR,
   FRAME_REF_SELECTOR,
   FRAME_REF_VALUE,
+  buildPropertyRowProps,
 } from "../helpers/build-property-row-props"
 import { getDisplayValue } from "../helpers/display-value-utils"
 import {
@@ -160,7 +154,14 @@ export function useRowProperty({
   // Strip the unit suffix from the display value when a separate unit label is
   // shown, avoiding redundant output like "10px PX".
   const value = stripDisplayUnitSuffix(
-    getDisplayValue(propertyValue, property.key, nodeId, workspace, theme, options),
+    getDisplayValue(
+      propertyValue,
+      property.key,
+      nodeId,
+      workspace,
+      theme,
+      options,
+    ),
     unit,
     isNumericValue,
   )
@@ -201,9 +202,15 @@ export function useRowProperty({
     if (property.isSubProperty) {
       const parsed = parsePropertyPath(property.key)
       if (parsed.kind === "layered-facet") {
-        resetProperty(parsed.root as PropertyKey, parsed.facet as SubPropertyKey)
+        resetProperty(
+          parsed.root as PropertyKey,
+          parsed.facet as SubPropertyKey,
+        )
       } else if (parsed.kind === "facet") {
-        resetProperty(parsed.root as PropertyKey, parsed.facet as SubPropertyKey)
+        resetProperty(
+          parsed.root as PropertyKey,
+          parsed.facet as SubPropertyKey,
+        )
       } else {
         resetProperty(property.key as PropertyKey)
       }

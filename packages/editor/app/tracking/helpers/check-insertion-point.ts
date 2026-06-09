@@ -1,7 +1,7 @@
-import { Tool } from "@lib/hooks/use-tool"
 import { Placement } from "@lib/types"
 import { Workspace } from "@seldon/core"
 import { InstanceId, VariantId } from "@seldon/core/index"
+import { Tool } from "@lib/hooks/use-tool"
 import { isInsertionAllowed } from "@lib/workspace/is-insertion-allowed"
 
 /**

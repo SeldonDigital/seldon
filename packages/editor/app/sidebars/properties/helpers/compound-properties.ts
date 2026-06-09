@@ -1,10 +1,10 @@
-import { Theme, ValueType, Workspace } from "@seldon/core"
-import { applyCompoundPreset as coreApplyCompoundPreset } from "@seldon/core/helpers/properties/properties-bridge"
-import { Board, Instance, Variant } from "@seldon/core/workspace/types"
 import {
   getCompoundLayerValue,
   isLayeredPaintRoot,
 } from "@lib/properties/property-paths"
+import { Theme, ValueType, Workspace } from "@seldon/core"
+import { applyCompoundPreset as coreApplyCompoundPreset } from "@seldon/core/helpers/properties/properties-bridge"
+import { Board, Instance, Variant } from "@seldon/core/workspace/types"
 import { getPropertiesSubjectId } from "./properties-data"
 import { getParentPropertyKey } from "./property-types"
 

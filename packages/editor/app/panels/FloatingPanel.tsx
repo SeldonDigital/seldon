@@ -1,12 +1,12 @@
 import { CSSProperties } from "react"
 import { createPortal } from "react-dom"
 import { useHotkeys } from "react-hotkeys-hook"
+import { useFloatingPanel } from "./hooks/use-floating-panel"
 import {
   Backdrop,
   FloatingPanelSurface,
 } from "@seldon/components/custom-components"
 import { PANEL_INITIAL_HEIGHT, PANEL_INITIAL_WIDTH } from "../constants"
-import { useFloatingPanel } from "./hooks/use-floating-panel"
 
 export type FloatingPanelProps = {
   handleClose: () => void

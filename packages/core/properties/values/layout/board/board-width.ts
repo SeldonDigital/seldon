@@ -20,8 +20,7 @@ export type BoardWidthValue =
 
 export const boardWidthSchema: PropertySchema = {
   name: "boardWidth",
-  description:
-    "Sets board width using pixels, root lengths, or fit.",
+  description: "Sets board width using pixels, root lengths, or fit.",
   supports: ["empty", "exact", "option"] as const,
   units: {
     allowed: [Unit.PX, Unit.REM],

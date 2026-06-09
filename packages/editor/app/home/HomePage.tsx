@@ -1,13 +1,13 @@
-import { useCallback, useEffect, useState } from "react"
-import { Link, useNavigate } from "react-router"
-import { createEmptyWorkspace } from "@seldon/core"
+import { selectFile } from "@lib/helpers/select-file"
 import {
+  type StoredWorkspace,
   createStoredWorkspace,
   deleteStoredWorkspace,
   listStoredWorkspaces,
-  type StoredWorkspace,
 } from "@lib/storage/workspace-store"
-import { selectFile } from "@lib/helpers/select-file"
+import { useCallback, useEffect, useState } from "react"
+import { Link, useNavigate } from "react-router"
+import { createEmptyWorkspace } from "@seldon/core"
 import { workspacePropagationService } from "@seldon/core/workspace/services/propagation/workspace-propagation.service"
 import type { Workspace } from "@seldon/core/workspace/types"
 import "./home.css"
@@ -37,7 +37,9 @@ export default function HomePage() {
     if (!result.success) return
     const { file } = result
     const text = await file.text()
-    const workspace = workspacePropagationService.parseWorkspace(text) as Workspace
+    const workspace = workspacePropagationService.parseWorkspace(
+      text,
+    ) as Workspace
     const name = file.name.replace(/\.json$/i, "") || "Imported workspace"
     const record = await createStoredWorkspace(name, workspace)
     navigate(`/${record.id}`)

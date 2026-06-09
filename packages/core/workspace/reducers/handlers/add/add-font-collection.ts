@@ -1,21 +1,22 @@
 import { produce } from "immer"
+
 import { STOCK_FONT_COLLECTIONS_BY_ID } from "../../../../font-collections/catalog"
 import { GOOGLE_DEFAULT_ENABLED_FAMILIES } from "../../../../font-collections/catalog/google/default-enabled-families"
 import type { FontCollectionTemplateId } from "../../../../font-collections/types"
 import { ExtractPayload, Workspace } from "../../../../index"
-import type { EntryFontCollection } from "../../../model/entry-font-collection"
-import { setFamilyVariantPreset } from "../shared/font-collection-variant-selection"
 import { rules } from "../../../../rules/config/rules.config"
 import {
   getBoardOrder,
   setBoardOrder,
 } from "../../../helpers/components/board-sort-order"
-import { FONT_COLLECTION_BOARD_CATALOG_IDS } from "../../../helpers/components/resource-board-catalog-ids"
 import { getInitialBoardComponentProperties } from "../../../helpers/components/get-initial-board-component-properties"
+import { FONT_COLLECTION_BOARD_CATALOG_IDS } from "../../../helpers/components/resource-board-catalog-ids"
 import { DEFAULT_FONT_COLLECTION_BOARD_KEY } from "../../../helpers/seed/seed-default-font-collection-board"
 import { WORKSPACE_EDITABLE_THEME_ENTRY_ID } from "../../../helpers/themes/workspace-editable-theme"
+import type { EntryFontCollection } from "../../../model/entry-font-collection"
 import { formatFontCollectionCatalog } from "../../../model/template-ref"
 import { boardOrderService } from "../../../services"
+import { setFamilyVariantPreset } from "../shared/font-collection-variant-selection"
 import { formatLabelFromCatalogId } from "../shared/format-label-from-catalog-id"
 
 /**
@@ -94,14 +95,14 @@ export function addFontCollection(
       label,
       componentPreview: "seldonFontsPreview",
       componentTheme: WORKSPACE_EDITABLE_THEME_ENTRY_ID,
-      componentProperties: getInitialBoardComponentProperties("font-collection"),
+      componentProperties:
+        getInitialBoardComponentProperties("font-collection"),
       variants: [{ id: defaultEntryId }],
     }
     setBoardOrder(board, maxOrder + 1)
     draft.boards[boardKey] = board
 
-    const updatedWorkspace =
-      boardOrderService.realignBoardOrder(draft)
+    const updatedWorkspace = boardOrderService.realignBoardOrder(draft)
     Object.assign(draft.boards, updatedWorkspace.boards)
   })
 }

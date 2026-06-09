@@ -9,10 +9,10 @@ import {
 } from "@seldon/core"
 import { getBoardOrder } from "@seldon/core/workspace/helpers/components/board-sort-order"
 import { getBoardVariantRootIds } from "@seldon/core/workspace/helpers/components/get-board-variant-root-ids"
-import { findParentNode } from "@seldon/core/workspace/helpers/nodes/find-parent-node"
 import { getVariantById } from "@seldon/core/workspace/helpers/general/get-variant-by-id"
 import { getVariantIndex } from "@seldon/core/workspace/helpers/general/get-variant-index"
 import { isDefaultVariant } from "@seldon/core/workspace/helpers/general/is-default-variant"
+import { findParentNode } from "@seldon/core/workspace/helpers/nodes/find-parent-node"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
 import type { Board } from "@seldon/core/workspace/types"
 import { getNodeChildIds } from "@lib/workspace/node-tree"
@@ -107,8 +107,7 @@ export function useMoveObjects() {
           type: "reorder_board",
           payload: {
             boardKey: getComponentKey(subjectBoard),
-            newIndex:
-              position === "before" ? targetOrder : targetOrder + 1,
+            newIndex: position === "before" ? targetOrder : targetOrder + 1,
           },
         },
         isPreview,

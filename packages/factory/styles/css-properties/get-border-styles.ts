@@ -2,6 +2,7 @@ import { BorderCompound } from "@seldon/core"
 import { resolveValue } from "@seldon/core/helpers/resolution/resolve-value"
 import { getThemeOption } from "@seldon/core/helpers/theme/get-theme-option"
 import { Theme, ThemeBorder } from "@seldon/core/themes/types"
+
 import { StyleGenerationContext } from "../types"
 import { getBorderWidthCSSValue } from "./get-border-width-css-value"
 import { getColorCSSValue } from "./get-color-css-value"

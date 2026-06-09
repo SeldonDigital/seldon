@@ -2,10 +2,9 @@
  * Inspector panel sections for the flattened property catalog.
  * Same API shape as `themes/schemas/sections.ts` (ordered sections, get by id, list all).
  */
-
 import {
-  PropertyDisplayCategory,
   PROPERTY_DISPLAY_ORDER,
+  PropertyDisplayCategory,
 } from "../constants/property-display"
 
 export interface PropertySectionSchema {

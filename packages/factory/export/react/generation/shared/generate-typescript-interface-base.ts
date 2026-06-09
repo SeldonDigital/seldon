@@ -1,4 +1,5 @@
 import { NATIVE_REACT_PRIMITIVES } from "@seldon/core/components/constants"
+
 import { ComponentToExport } from "../../../types"
 
 /**

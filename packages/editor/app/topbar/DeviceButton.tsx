@@ -1,6 +1,7 @@
 "use client"
 
 import { DeviceId } from "@lib/devices/types"
+import { Selectable } from "@seldon/components/custom-components"
 import {
   IconSeldonDeviceDesktop,
   IconSeldonDeviceLaptop,
@@ -10,7 +11,6 @@ import {
   IconSeldonDeviceWatch,
   IconSeldonFullScreen,
 } from "@seldon/components/icons"
-import { Selectable } from "@seldon/components/custom-components"
 
 export type Icon =
   | "custom"

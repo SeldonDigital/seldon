@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { HSL } from "@seldon/core"
-import { Frame } from "@seldon/components/frames/Frame"
 import { Text } from "@seldon/components/custom-components"
+import { Frame } from "@seldon/components/frames/Frame"
 import {
   comboboxOptionIconStyle,
   comboboxOptionLabelStyle,
@@ -45,7 +45,9 @@ export function ComboboxOption<
       disabled,
       hidden,
     }),
-    ...(showHighlight && !hidden ? { backgroundColor: optionHoverBackground } : {}),
+    ...(showHighlight && !hidden
+      ? { backgroundColor: optionHoverBackground }
+      : {}),
   }
 
   const handleMouseDown = (event: React.MouseEvent) => {

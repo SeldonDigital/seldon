@@ -1,5 +1,5 @@
-import type { ComputedTheme, StockTheme } from "../../types/theme"
 import type { ThemeTokenSchema } from "../../types/schema"
+import type { ComputedTheme, StockTheme } from "../../types/theme"
 import { getAllThemeTokenSchemas } from "./get-all-theme-token-schemas"
 import { getThemeTokenSchema } from "./get-theme-token-schema"
 

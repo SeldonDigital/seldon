@@ -9,8 +9,10 @@ const collection: StockFontCollection = {
   metadata: {
     id: "system",
     name: "System",
-    description: "System and local fonts that render without a network request.",
-    intent: "Default font collection. Uses fonts already available on the device.",
+    description:
+      "System and local fonts that render without a network request.",
+    intent:
+      "Default font collection. Uses fonts already available on the device.",
   },
   families: {
     system: {

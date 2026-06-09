@@ -1,7 +1,7 @@
-import type { EntryNode, Workspace } from "@seldon/core/workspace/types"
-import { parseNodeTemplate } from "@seldon/core/workspace/model/template-ref"
 import { getBoardByNodeId } from "@seldon/core/workspace/helpers/components/get-board-by-node-id"
 import { isVariantNode } from "@seldon/core/workspace/helpers/nodes/is-variant-node"
+import { parseNodeTemplate } from "@seldon/core/workspace/model/template-ref"
+import type { EntryNode, Workspace } from "@seldon/core/workspace/types"
 
 export function getWorkspaceNodeList(workspace: Workspace): EntryNode[] {
   return Object.values(workspace.nodes)

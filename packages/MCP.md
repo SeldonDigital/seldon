@@ -29,17 +29,17 @@ flowchart TD
 
 The MCP server wraps these Core entry points directly. None of them require a browser.
 
-| Capability | Core entry point | Module |
-| --- | --- | --- |
-| Create a workspace | `createEmptyWorkspace` | `@seldon/core` |
-| Apply one action | `workspaceReducer` | `@seldon/core` workspace reducers |
-| Apply a batch of actions | `applyActions` | `@seldon/core` workspace reducers |
-| Action contract | `WorkspaceAction` | `workspace/reducers/types.ts` |
-| Read computed node values | `computeNodeProperties` | `@seldon/core/workspace/compute` |
-| Read computed themes | `getComputedTheme`, `computeWorkspaceThemes` | `@seldon/core/workspace/compute` |
-| Validate an operation | `validateCoreOperation`, `validateComponentInsertionForUI` | `helpers/validation` |
-| Read a schema | `getComponentSchema` | `@seldon/core/components/catalog` |
-| Export code and assets | `exportWorkspace` | `@seldon/factory` |
+| Capability                | Core entry point                                           | Module                            |
+| ------------------------- | ---------------------------------------------------------- | --------------------------------- |
+| Create a workspace        | `createEmptyWorkspace`                                     | `@seldon/core`                    |
+| Apply one action          | `workspaceReducer`                                         | `@seldon/core` workspace reducers |
+| Apply a batch of actions  | `applyActions`                                             | `@seldon/core` workspace reducers |
+| Action contract           | `WorkspaceAction`                                          | `workspace/reducers/types.ts`     |
+| Read computed node values | `computeNodeProperties`                                    | `@seldon/core/workspace/compute`  |
+| Read computed themes      | `getComputedTheme`, `computeWorkspaceThemes`               | `@seldon/core/workspace/compute`  |
+| Validate an operation     | `validateCoreOperation`, `validateComponentInsertionForUI` | `helpers/validation`              |
+| Read a schema             | `getComponentSchema`                                       | `@seldon/core/components/catalog` |
+| Export code and assets    | `exportWorkspace`                                          | `@seldon/factory`                 |
 
 ---
 
@@ -47,12 +47,12 @@ The MCP server wraps these Core entry points directly. None of them require a br
 
 The editor keeps a few runtime concerns that Core does not. The MCP server must provide its own version of each one.
 
-| Concern | Editor source | Server replacement |
-| --- | --- | --- |
-| Persistence | IndexedDB through `idb-keyval` | File, database, or in-memory store |
-| Undo and redo | History snapshot stack | Snapshot array per session |
-| Selection | Active board, node, and theme | Explicit ids on each tool call |
-| Preview | Transient workspace | Optional, usually skip |
+| Concern       | Editor source                  | Server replacement                 |
+| ------------- | ------------------------------ | ---------------------------------- |
+| Persistence   | IndexedDB through `idb-keyval` | File, database, or in-memory store |
+| Undo and redo | History snapshot stack         | Snapshot array per session         |
+| Selection     | Active board, node, and theme  | Explicit ids on each tool call     |
+| Preview       | Transient workspace            | Optional, usually skip             |
 
 Reducers return a new workspace object on each call. A history stack is a plain array of those snapshots.
 
@@ -100,13 +100,13 @@ For ergonomics, add thin typed wrappers such as `add_component`, `set_node_prope
 
 ### Lifecycle tools
 
-| Tool | Maps to |
-| --- | --- |
-| `workspace_create` | `createEmptyWorkspace` |
-| `workspace_open` | storage adapter, then `set_workspace` action |
-| `workspace_save` | storage adapter |
-| `workspace_export` | `exportWorkspace` |
-| `undo` and `redo` | history stack |
+| Tool               | Maps to                                      |
+| ------------------ | -------------------------------------------- |
+| `workspace_create` | `createEmptyWorkspace`                       |
+| `workspace_open`   | storage adapter, then `set_workspace` action |
+| `workspace_save`   | storage adapter                              |
+| `workspace_export` | `exportWorkspace`                            |
+| `undo` and `redo`  | history stack                                |
 
 Load and import flows run the loaded JSON through `set_workspace` so migration can upgrade `metadata.version` and verification can check integrity.
 
@@ -114,14 +114,14 @@ Load and import flows run the loaded JSON through `set_workspace` so migration c
 
 These tools let the client see what the editor panels show.
 
-| Tool | Maps to |
-| --- | --- |
-| `get_workspace` | raw workspace JSON |
-| `get_computed_node` | `computeNodeProperties` |
-| `get_computed_theme` | `getComputedTheme` |
-| `list_catalog` | catalog exports |
-| `get_schema` | `getComponentSchema` |
-| `can_insert` | `validateComponentInsertionForUI` |
+| Tool                 | Maps to                           |
+| -------------------- | --------------------------------- |
+| `get_workspace`      | raw workspace JSON                |
+| `get_computed_node`  | `computeNodeProperties`           |
+| `get_computed_theme` | `getComputedTheme`                |
+| `list_catalog`       | catalog exports                   |
+| `get_schema`         | `getComponentSchema`              |
+| `can_insert`         | `validateComponentInsertionForUI` |
 
 The workspace file stores overrides and templates only. Use the compute tools when the client needs the values that should render on screen.
 
@@ -187,12 +187,12 @@ const files = await exportWorkspace(session.workspace, {
 
 ## Further Reading
 
-| Topic | Document |
-| --- | --- |
-| Core kernel | [core/CORE.md](./core/CORE.md) |
-| Editor shell | [editor/EDITOR.md](./editor/EDITOR.md) |
-| Reducer actions | [core/workspace/reducers/README.md](./core/workspace/reducers/README.md) |
-| Workspace compute | [core/workspace/compute/README.md](./core/workspace/compute/README.md) |
-| Workspace file spec | [core/workspace/WORKSPACE.md](./core/workspace/WORKSPACE.md) |
-| Factory export | [factory/FACTORY.md](./factory/FACTORY.md) |
-| Vocabulary | [GLOSSARY.md](../GLOSSARY.md) |
+| Topic               | Document                                                                 |
+| ------------------- | ------------------------------------------------------------------------ |
+| Core kernel         | [core/CORE.md](./core/CORE.md)                                           |
+| Editor shell        | [editor/EDITOR.md](./editor/EDITOR.md)                                   |
+| Reducer actions     | [core/workspace/reducers/README.md](./core/workspace/reducers/README.md) |
+| Workspace compute   | [core/workspace/compute/README.md](./core/workspace/compute/README.md)   |
+| Workspace file spec | [core/workspace/WORKSPACE.md](./core/workspace/WORKSPACE.md)             |
+| Factory export      | [factory/FACTORY.md](./factory/FACTORY.md)                               |
+| Vocabulary          | [GLOSSARY.md](../GLOSSARY.md)                                            |

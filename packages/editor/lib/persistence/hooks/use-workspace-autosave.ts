@@ -1,9 +1,12 @@
 "use client"
 
+import {
+  type StoredWorkspace,
+  saveStoredWorkspace,
+} from "@lib/storage/workspace-store"
 import { useEffect, useRef } from "react"
-import type { Workspace } from "@seldon/core/workspace/types"
 import { useDebounce } from "use-debounce"
-import { saveStoredWorkspace, type StoredWorkspace } from "@lib/storage/workspace-store"
+import type { Workspace } from "@seldon/core/workspace/types"
 
 export function useWorkspaceAutosave(
   record: StoredWorkspace | null,

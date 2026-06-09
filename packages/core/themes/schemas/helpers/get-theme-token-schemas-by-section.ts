@@ -1,10 +1,10 @@
-import type { ComputedTheme, StockTheme } from "../../types/theme"
+import { isLookSection } from "../../looks/look-facets"
 import type {
   ThemeTokenSchema,
   ThemeTokenSchemaUnresolved,
   ThemeTokenSectionId,
 } from "../../types/schema"
-import { isLookSection } from "../../looks/look-facets"
+import type { ComputedTheme, StockTheme } from "../../types/theme"
 import {
   generateLookSchemas,
   generateSwatchSchemas,

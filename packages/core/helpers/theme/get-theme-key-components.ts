@@ -1,4 +1,8 @@
-import { ThemeOptionId, ThemeTokenNamespace, ThemeValueKey } from "../../themes/types"
+import {
+  ThemeOptionId,
+  ThemeTokenNamespace,
+  ThemeValueKey,
+} from "../../themes/types"
 import { isThemeValueKey } from "../validation/theme"
 
 /**

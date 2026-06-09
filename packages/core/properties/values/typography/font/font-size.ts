@@ -27,13 +27,7 @@ export const fontSizeSchema: PropertySchema = {
   name: "fontSize",
   description:
     "Sets text size from the theme scale, rem or px lengths, or a computed rule.",
-  supports: [
-    "empty",
-    "inherit",
-    "exact",
-    "computed",
-    "themeOrdinal",
-  ] as const,
+  supports: ["empty", "inherit", "exact", "computed", "themeOrdinal"] as const,
   validation: {
     empty: () => true,
     inherit: () => true,

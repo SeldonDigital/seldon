@@ -1,5 +1,5 @@
-import { validateComponentCanBeInserted } from "../../middleware/validation/validators"
 import type { ComponentId } from "../../../components/constants"
+import { validateComponentCanBeInserted } from "../../middleware/validation/validators"
 import type { InstanceId, VariantId, Workspace } from "../../types"
 
 export interface ValidationResult {

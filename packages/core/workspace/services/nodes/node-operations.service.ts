@@ -1,21 +1,22 @@
 import { WritableDraft, current, isDraft, produce } from "immer"
+
 import { ComponentId } from "../../../components/constants"
 import { invariant } from "../../../index"
 import { debugLog } from "../../../utils/debug-logger"
 import { ErrorMessages } from "../../constants"
-import { getBoardVariantRootIds } from "../../helpers/components/get-board-variant-root-ids"
-import { getBoardByNodeId } from "../../helpers/components/get-board-by-node-id"
-import { getVariantTree } from "../../helpers/components/get-variant-tree"
 import { componentBoardUniqueNodeId } from "../../helpers/components/entry-node-ids"
-import { moveItemInArray } from "../../helpers/nodes/move-utils"
+import { getBoardByNodeId } from "../../helpers/components/get-board-by-node-id"
+import { getBoardVariantRootIds } from "../../helpers/components/get-board-variant-root-ids"
+import { getVariantTree } from "../../helpers/components/get-variant-tree"
+import { getWorkspaceNodes } from "../../helpers/general/get-workspace-nodes"
 import {
   buildDuplicateEntryVariantSubtreePlan,
   findBoardContainingTreeNodeId,
   insertComponentTreeInstanceAfterSibling,
 } from "../../helpers/nodes/duplicate-entry-variant-subtree"
-import { getWorkspaceNodes } from "../../helpers/general/get-workspace-nodes"
+import { moveItemInArray } from "../../helpers/nodes/move-utils"
 import { isEntryNodeForRules } from "../../helpers/rules/rules-node-subject"
-import type { EntryNode } from "../../model/entry-node"
+import type { ComponentTreeRef } from "../../model/component-tree"
 import {
   isComponentBoard,
   isFontCollectionBoard,
@@ -25,21 +26,27 @@ import {
   isThemeBoard,
 } from "../../model/components"
 import type { BoardKey } from "../../model/components"
-import type { ComponentTreeRef } from "../../model/component-tree"
+import type { EntryNode } from "../../model/entry-node"
 import {
   formatNodeLink,
   parseNodeCatalog,
   parseNodeLink,
 } from "../../model/template-ref"
-import { Instance, InstanceId, Variant, VariantId, Workspace } from "../../types"
+import {
+  Instance,
+  InstanceId,
+  Variant,
+  VariantId,
+  Workspace,
+} from "../../types"
 import { boardOrderService } from "../components/board-order.service"
 import { workspaceMutationService } from "../mutation/workspace-mutation.service"
 import {
   collectDescendantTreeIds,
   collectReferencedTreeIdsExcludingSubtree,
+  findTreeRef,
   insertComponentTreeChild,
   removeComponentTreeChild,
-  findTreeRef,
 } from "../shared/component-tree-helpers"
 import { mutateWorkspace } from "../shared/workspace-mutation.helper"
 import {
@@ -47,10 +54,10 @@ import {
   withNodeMutation,
   withVariantAndBoardMutation,
 } from "../shared/workspace-operation-helpers"
+import { typeCheckingService } from "../type-checking/type-checking.service"
 import { nodeRelationshipService } from "./node-relationship.service"
 import { nodeRetrievalService } from "./node-retrieval.service"
 import { nodeTraversalService } from "./node-traversal.service"
-import { typeCheckingService } from "../type-checking/type-checking.service"
 
 function nodeCatalogComponentId(node: unknown): ComponentId | undefined {
   if (node && typeof node === "object" && "template" in node) {
@@ -129,10 +136,11 @@ export class NodeOperationsService {
       const parentBoard = getBoardByNodeId(draft, parentId)
       invariant(parentBoard, `Board not found for parent ${parentId}`)
 
-      const { newId: newNodeId, newTreeRef, newNodes } = this._instantiateNode(
-        nodeId,
-        sourceWorkspace,
-      )
+      const {
+        newId: newNodeId,
+        newTreeRef,
+        newNodes,
+      } = this._instantiateNode(nodeId, sourceWorkspace)
 
       Object.assign(draft.nodes, newNodes)
 
@@ -171,15 +179,10 @@ export class NodeOperationsService {
       delete draft.boards[componentId]
     })
 
-    return boardOrderService.realignBoardOrder(
-      workspaceAfterDeletion,
-    )
+    return boardOrderService.realignBoardOrder(workspaceAfterDeletion)
   }
 
-  public deleteBoardByKey(
-    boardKey: BoardKey,
-    workspace: Workspace,
-  ): Workspace {
+  public deleteBoardByKey(boardKey: BoardKey, workspace: Workspace): Workspace {
     const board = workspace.boards[boardKey]
     if (!board) return workspace
 
@@ -199,9 +202,7 @@ export class NodeOperationsService {
         delete draft.boards[boardKey]
       })
 
-      return boardOrderService.realignBoardOrder(
-        workspaceAfterDeletion,
-      )
+      return boardOrderService.realignBoardOrder(workspaceAfterDeletion)
     }
 
     if (isThemeBoard(board)) {
@@ -286,10 +287,7 @@ export class NodeOperationsService {
       removeComponentTreeChild(oldBoard, instanceId)
 
       const newBoard = getBoardByNodeId(draft, newPosition.parentId)
-      invariant(
-        newBoard,
-        `Board not found for parent ${newPosition.parentId}`,
-      )
+      invariant(newBoard, `Board not found for parent ${newPosition.parentId}`)
 
       const inserted = insertComponentTreeChild(
         newBoard,
@@ -353,9 +351,7 @@ export class NodeOperationsService {
       nodeId,
     )
     const treeRef = board ? findTreeRef(board, nodeId) : null
-    const idsToDelete = treeRef
-      ? collectDescendantTreeIds(treeRef)
-      : [nodeId]
+    const idsToDelete = treeRef ? collectDescendantTreeIds(treeRef) : [nodeId]
 
     if (board && treeRef) {
       const isTopLevelRoot = board.variants.some((ref) => ref.id === nodeId)
@@ -399,8 +395,7 @@ export class NodeOperationsService {
         )
         invariant(located, ErrorMessages.componentNotFoundForVariant(node.id))
         invariant(
-          isComponentBoard(located.board) ||
-            isPlaygroundBoard(located.board),
+          isComponentBoard(located.board) || isPlaygroundBoard(located.board),
           `duplicateNode: unsupported board type for ${node.id}`,
         )
 
@@ -426,7 +421,10 @@ export class NodeOperationsService {
           node.id,
           label,
         )
-        invariant(plan, `duplicateNode: could not plan variant duplicate ${node.id}`)
+        invariant(
+          plan,
+          `duplicateNode: could not plan variant duplicate ${node.id}`,
+        )
 
         const board = draft.boards[located.boardKey as BoardKey]
         Object.assign(draft.nodes, plan.newNodes)
@@ -611,12 +609,7 @@ export class NodeOperationsService {
     for (const [oldId, mappedId] of idMap) {
       const row = nodes[oldId]
       if (!row) continue
-      newNodes[mappedId] = cloneEntryNodeAsInstance(
-        row,
-        mappedId,
-        oldId,
-        idMap,
-      )
+      newNodes[mappedId] = cloneEntryNodeAsInstance(row, mappedId, oldId, idMap)
     }
 
     const newTreeRef = remapTreeRef(tree, nodeId, newRootId, idMap)

@@ -1,9 +1,9 @@
 import {
   BoundingBox,
   DragControls,
-  motion,
   MotionValue,
   PanInfo,
+  motion,
 } from "framer-motion"
 import { CSSProperties, ReactNode } from "react"
 import { HeaderPanelsClose } from "@seldon/components/chrome/elements/HeaderPanelsClose"

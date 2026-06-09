@@ -1,10 +1,11 @@
 import { Workspace } from "@seldon/core"
+
 import { buildExportContext } from "../../helpers/build-export-context"
 import { buildStyleRegistry } from "./discovery/get-style-registry"
 import { generateComponentStylesheet } from "./generation/generate-css-stylesheet"
 import {
-  generateThemeStylesheetFiles,
   type ThemeStylesheetFile,
+  generateThemeStylesheetFiles,
 } from "./generation/insert-theme-variables"
 
 export type CssExportResult = {

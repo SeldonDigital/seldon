@@ -13,7 +13,11 @@ const collection: StockFontCollection = {
     intent: "Default font collection.",
   },
   families: {
-    sans: { name: "System Sans", origin: "local", stack: "system-ui, sans-serif" },
+    sans: {
+      name: "System Sans",
+      origin: "local",
+      stack: "system-ui, sans-serif",
+    },
   },
 }
 ```

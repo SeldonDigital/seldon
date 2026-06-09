@@ -1,8 +1,8 @@
+import { RowPropertyProps, useRowProperty } from "./hooks/use-row-property"
 import { ListItemTreeInput } from "@seldon/components/elements/ListItemTreeInput"
 import { FramerExpandable } from "../shared/FramerExpandable"
 import { RowActionsMenu } from "../shared/RowActionsMenu"
 import { PropertyValueCell } from "./PropertyValueCell"
-import { RowPropertyProps, useRowProperty } from "./hooks/use-row-property"
 
 export function RowProperty(props: RowPropertyProps) {
   const view = useRowProperty(props)

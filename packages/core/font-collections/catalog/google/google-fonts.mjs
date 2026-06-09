@@ -10,7 +10,6 @@
 //
 // Optional: pass family names to download only a subset, e.g.
 //   node .../google-fonts.mjs "Roboto" "Inter"
-
 import { mkdir, writeFile } from "node:fs/promises"
 import { dirname, join } from "node:path"
 import { fileURLToPath } from "node:url"
@@ -106,12 +105,20 @@ async function downloadFamily(entry) {
 
   const license = await resolveLicense(family)
   if (!license) {
-    return { family, status: "skipped", reason: "no redistributable license found" }
+    return {
+      family,
+      status: "skipped",
+      reason: "no redistributable license found",
+    }
   }
 
   const metadata = await fetchFontMetadata(apiId, subset)
   if (!metadata || !Array.isArray(metadata.variants)) {
-    return { family, status: "skipped", reason: `font not found on google-webfonts-helper (id: ${apiId})` }
+    return {
+      family,
+      status: "skipped",
+      reason: `font not found on google-webfonts-helper (id: ${apiId})`,
+    }
   }
 
   const available = new Map(metadata.variants.map((v) => [v.id, v]))
@@ -124,7 +131,11 @@ async function downloadFamily(entry) {
   }
 
   if (wanted.length === 0) {
-    return { family, status: "skipped", reason: "none of the requested variants are available" }
+    return {
+      family,
+      status: "skipped",
+      reason: "none of the requested variants are available",
+    }
   }
 
   await mkdir(familyDir, { recursive: true })
@@ -174,12 +185,18 @@ async function main() {
         const note = result.missing.length
           ? ` (missing: ${result.missing.join(", ")})`
           : ""
-        console.log(`${result.license}, ${result.written} woff2 [${result.subset}]${note}`)
+        console.log(
+          `${result.license}, ${result.written} woff2 [${result.subset}]${note}`,
+        )
       } else {
         console.log(`SKIPPED: ${result.reason}`)
       }
     } catch (error) {
-      results.push({ family: entry.family, status: "error", reason: String(error) })
+      results.push({
+        family: entry.family,
+        status: "error",
+        reason: String(error),
+      })
       console.log(`ERROR: ${error}`)
     }
   }
@@ -187,7 +204,9 @@ async function main() {
   const downloaded = results.filter((r) => r.status === "downloaded")
   const skipped = results.filter((r) => r.status !== "downloaded")
 
-  console.log(`\nDone. Downloaded ${downloaded.length}, skipped ${skipped.length}.`)
+  console.log(
+    `\nDone. Downloaded ${downloaded.length}, skipped ${skipped.length}.`,
+  )
   if (skipped.length) {
     console.log("\nSkipped / errored families:")
     for (const r of skipped) console.log(`  - ${r.family}: ${r.reason}`)

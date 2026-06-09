@@ -1,9 +1,9 @@
 "use client"
 
 import { useEffect } from "react"
-import type { Workspace } from "@seldon/core/workspace/types"
-import { workspaceReducer } from "@seldon/core/workspace/reducers/reducer"
 import { createEmptyWorkspace } from "@seldon/core"
+import { workspaceReducer } from "@seldon/core/workspace/reducers/reducer"
+import type { Workspace } from "@seldon/core/workspace/types"
 import { INITIAL_WORKSPACE, useHistory } from "@lib/workspace/hooks/use-history"
 
 export function ProjectInitialize({ workspace }: { workspace: Workspace }) {

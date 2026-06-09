@@ -1,6 +1,7 @@
-import { ComponentId } from "@seldon/core/components/constants"
 import { getComponentSchema } from "@seldon/core/components/catalog"
-import { isComplexSchema, SchemaChild } from "@seldon/core/components/types"
+import { ComponentId } from "@seldon/core/components/constants"
+import { SchemaChild, isComplexSchema } from "@seldon/core/components/types"
+
 import { ComponentToExport, JSONTreeNode } from "../../types"
 
 /**
@@ -27,7 +28,10 @@ export function validateComponentProps(
   proposedChildren: JSONTreeNode[],
 ): ComponentPropsValidation {
   try {
-    const expectedChildren = getActiveSchemaChildren(componentId, schemaVariantId)
+    const expectedChildren = getActiveSchemaChildren(
+      componentId,
+      schemaVariantId,
+    )
 
     // Special handling for Frame: Frame has no schema restrictions (children: []),
     // which means any children are allowed. Treat all children as valid.
@@ -45,7 +49,10 @@ export function validateComponentProps(
     // Create a map of expected child signatures and their counts.
     const expectedChildCounts = new Map<string, number>()
     expectedChildren.forEach((slot) => {
-      const childKey = getChildValidationKey(slot.component, slot.variant ?? null)
+      const childKey = getChildValidationKey(
+        slot.component,
+        slot.variant ?? null,
+      )
       expectedChildCounts.set(
         childKey,
         (expectedChildCounts.get(childKey) || 0) + 1,
@@ -90,7 +97,9 @@ export function validateComponentProps(
  * Validates a single exported tree node against the active schema branch encoded
  * on the node itself.
  */
-export function validateTreeNodeProps(node: JSONTreeNode): ComponentPropsValidation {
+export function validateTreeNodeProps(
+  node: JSONTreeNode,
+): ComponentPropsValidation {
   return validateComponentProps(
     node.componentId,
     node.schemaVariantId,

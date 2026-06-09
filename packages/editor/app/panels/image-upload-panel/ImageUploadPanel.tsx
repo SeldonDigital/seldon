@@ -1,10 +1,10 @@
 "use client"
 
 import { CSSProperties } from "react"
+import { useImageUploadPanel } from "../hooks/use-upload-image-panel"
 import { ButtonBarPrimary } from "@seldon/components/chrome/elements/ButtonBarPrimary"
 import { FloatingPanel } from "@app/panels/FloatingPanel"
 import { ImageDropzone } from "./ImageDropzone"
-import { useImageUploadPanel } from "../hooks/use-upload-image-panel"
 
 const styles: Record<string, CSSProperties> = {
   body: { display: "flex", height: "100%", flexDirection: "column" },

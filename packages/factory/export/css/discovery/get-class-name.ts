@@ -1,12 +1,11 @@
 import { Workspace } from "@seldon/core"
-import type { EntryNode } from "@seldon/core/workspace/types"
 import { getVariantById } from "@seldon/core/workspace/helpers/general/get-variant-by-id"
 import { isDefaultVariant } from "@seldon/core/workspace/helpers/general/is-default-variant"
 import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-catalog-id"
 import { isEntryNodeInstance } from "@seldon/core/workspace/model/entry-node"
-import {
-  typeCheckingService,
-} from "@seldon/core/workspace/services"
+import { typeCheckingService } from "@seldon/core/workspace/services"
+import type { EntryNode } from "@seldon/core/workspace/types"
+
 import {
   getInstanceClassHash,
   resolveSourceVariantId,

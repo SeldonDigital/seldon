@@ -14,8 +14,7 @@ import { HTMLButton } from "../native-react/HTML.Button"
 import { Icon, IconProps } from "../primitives/Icon"
 import { Label, LabelProps } from "../primitives/Label"
 
-export interface ButtonPrimaryProps
-  extends ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ButtonPrimaryProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string
 
   iconProps?: IconProps

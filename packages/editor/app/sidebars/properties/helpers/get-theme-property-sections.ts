@@ -1,10 +1,10 @@
-import { FlatProperty } from "./properties-data"
 import {
+  getAllThemeTokenSchemas,
   getAllThemeTokenSectionSchemas,
   getThemeTokenSchema,
-  getAllThemeTokenSchemas,
 } from "@seldon/core/themes/schemas"
 import { Theme } from "@seldon/core/themes/types"
+import { FlatProperty } from "./properties-data"
 
 export type ThemePropertyCategoryType =
   | "core"
@@ -37,10 +37,12 @@ export interface ThemePropertySection {
  * Extracts section ID from a theme property key
  * Examples: "swatch.primary" -> "swatch", "shadow.xlight.offsetX" -> "shadow"
  */
-function getSectionFromPropertyKey(key: string): ThemePropertyCategoryType | null {
+function getSectionFromPropertyKey(
+  key: string,
+): ThemePropertyCategoryType | null {
   const parts = key.split(".")
   const firstPart = parts[0]
-  
+
   // Map first part to section ID
   const sectionMap: Record<string, ThemePropertyCategoryType> = {
     core: "core",
@@ -65,7 +67,7 @@ function getSectionFromPropertyKey(key: string): ThemePropertyCategoryType | nul
     blur: "blur",
     scrollbar: "scrollbar",
   }
-  
+
   return sectionMap[firstPart] || null
 }
 
@@ -81,7 +83,10 @@ export function getThemePropertySections(
   const sectionSchemas = getAllThemeTokenSectionSchemas()
 
   // Build a map of all schemas (static + dynamic) if theme is provided
-  const allSchemasMap = new Map<string, { section: ThemePropertyCategoryType; order: number }>()
+  const allSchemasMap = new Map<
+    string,
+    { section: ThemePropertyCategoryType; order: number }
+  >()
   if (theme) {
     const allSchemas = getAllThemeTokenSchemas(theme)
     for (const schema of allSchemas) {
@@ -135,7 +140,9 @@ export function getThemePropertySections(
       }
       // Store order with property for sorting
       const propertyWithOrder = { ...property, _order: order }
-      propertiesBySection.get(sectionId)!.push(propertyWithOrder as FlatProperty & { _order: number })
+      propertiesBySection
+        .get(sectionId)!
+        .push(propertyWithOrder as FlatProperty & { _order: number })
     }
   }
 
@@ -157,8 +164,14 @@ export function getThemePropertySections(
         .sort((a, b) => {
           const aSchema = getThemeTokenSchema(a.key) || allSchemasMap.get(a.key)
           const bSchema = getThemeTokenSchema(b.key) || allSchemasMap.get(b.key)
-          const aOrder = aSchema?.order ?? (aSchema as { order?: number } | undefined)?.order ?? 0
-          const bOrder = bSchema?.order ?? (bSchema as { order?: number } | undefined)?.order ?? 0
+          const aOrder =
+            aSchema?.order ??
+            (aSchema as { order?: number } | undefined)?.order ??
+            0
+          const bOrder =
+            bSchema?.order ??
+            (bSchema as { order?: number } | undefined)?.order ??
+            0
           return aOrder - bOrder
         })
 

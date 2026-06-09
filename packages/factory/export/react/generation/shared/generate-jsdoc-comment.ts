@@ -1,6 +1,7 @@
 import { getComponentSchema } from "@seldon/core/components/catalog"
 import { ComponentLevel } from "@seldon/core/components/constants"
 import { Workspace } from "@seldon/core/workspace/types"
+
 import { ComponentToExport } from "../../../types"
 import { isCustomComponent } from "../custom-components/is-custom-component"
 import { isDefaultComponent } from "../default-components/is-default-component"

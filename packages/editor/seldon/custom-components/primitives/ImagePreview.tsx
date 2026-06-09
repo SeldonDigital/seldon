@@ -14,7 +14,11 @@ const imageStyle: CSSProperties = {
 }
 
 /** Contained image preview that reports load failures through `onError`. */
-export function ImagePreview({ src, alt = "Preview", onError }: ImagePreviewProps) {
+export function ImagePreview({
+  src,
+  alt = "Preview",
+  onError,
+}: ImagePreviewProps) {
   return (
     <div style={wrapperStyle}>
       <img src={src} alt={alt} style={imageStyle} onError={onError} />

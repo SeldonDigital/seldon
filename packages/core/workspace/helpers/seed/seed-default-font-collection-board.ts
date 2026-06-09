@@ -1,10 +1,7 @@
 import { STOCK_FONT_COLLECTIONS_BY_ID } from "../../../font-collections/catalog"
 import { GOOGLE_DEFAULT_ENABLED_FAMILIES } from "../../../font-collections/catalog/google/default-enabled-families"
 import type { FontCollectionTemplateId } from "../../../font-collections/types"
-import type {
-  Board,
-  FontCollectionBoard,
-} from "../../model/components"
+import type { Board, FontCollectionBoard } from "../../model/components"
 import { isFontCollectionBoard } from "../../model/components"
 import type { EntryFontCollection } from "../../model/entry-font-collection"
 import { formatFontCollectionCatalog } from "../../model/template-ref"
@@ -12,10 +9,7 @@ import { setFamilyVariantPreset } from "../../reducers/handlers/shared/font-coll
 import { setBoardOrder } from "../components/board-sort-order"
 import { getInitialBoardComponentProperties } from "../components/get-initial-board-component-properties"
 import { WORKSPACE_EDITABLE_THEME_ENTRY_ID } from "../themes/workspace-editable-theme"
-import {
-  type SeedableWorkspace,
-  nextBoardOrder,
-} from "./seedable-workspace"
+import { type SeedableWorkspace, nextBoardOrder } from "./seedable-workspace"
 
 /** Catalog row key for the default font collection board (matches the `system` collection id). */
 export const DEFAULT_FONT_COLLECTION_BOARD_KEY = "system" as const

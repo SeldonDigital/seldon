@@ -30,10 +30,7 @@ export function getSchemaSlotFingerprint(
   slot: SchemaChild,
   options?: { variantFallbacks?: ReadonlySet<string> },
 ): string {
-  const normalized = applyVariantFallbackToSlot(
-    slot,
-    options?.variantFallbacks,
-  )
+  const normalized = applyVariantFallbackToSlot(slot, options?.variantFallbacks)
 
   const childFingerprints =
     normalized.children?.map((child) =>

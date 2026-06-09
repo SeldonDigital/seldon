@@ -2,8 +2,9 @@ import { ValueType, Workspace } from "@seldon/core"
 import { getComponentSchema } from "@seldon/core/components/catalog"
 import { isComponentId } from "@seldon/core/components/constants"
 import { IconId } from "@seldon/core/icon-sets"
-import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
 import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-catalog-id"
+import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
+
 import { getWorkspaceNodeList } from "../../../helpers/workspace-nodes"
 
 export function getUsedIconIds(workspace: Workspace): Set<IconId> {
@@ -24,9 +25,7 @@ export function getUsedIconIds(workspace: Workspace): Set<IconId> {
     const schema = getComponentSchema(catalogId)
     if (!("default" in schema)) continue
 
-    const walkSchemaChildren = (
-      children: typeof schema.default.children,
-    ) => {
+    const walkSchemaChildren = (children: typeof schema.default.children) => {
       if (!children) return
       for (const child of children) {
         const symbolOverride = child.overrides?.symbol

@@ -2,16 +2,16 @@ import { Placement } from "@lib/types"
 import { CSSProperties, MouseEvent, ReactNode, useCallback } from "react"
 import { Instance, Variant } from "@seldon/core"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
+import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
+import { useDialog } from "@lib/hooks/use-dialog"
+import { useTool } from "@lib/hooks/use-tool"
+import { useDropzone } from "../sidebars/objects/hooks/use-dropzone"
+import { useSidebarPlacementTracking } from "./hooks/use-sidebar-placement-tracking"
 import {
   OverlayLayer,
   PlacementZoneSurface,
   PositionedPanel,
 } from "@seldon/components/custom-components"
-import { useDialog } from "@lib/hooks/use-dialog"
-import { useTool } from "@lib/hooks/use-tool"
-import { useDropzone } from "../sidebars/objects/hooks/use-dropzone"
-import { useSidebarPlacementTracking } from "./hooks/use-sidebar-placement-tracking"
-import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { SidebarPlacementZones } from "./sidebar-indicators/SidebarPlacementZones"
 import { IndicatorSelect } from "./sidebar-indicators/select/IndicatorSelect"
 

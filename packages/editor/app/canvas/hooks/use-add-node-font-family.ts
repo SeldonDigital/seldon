@@ -6,8 +6,8 @@ import { InstanceId, VariantId } from "@seldon/core/index"
 import { getNodeById } from "@seldon/core/workspace/helpers/nodes/get-node-by-id"
 import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
 import { useNodeTheme } from "@lib/themes/hooks/use-node-theme"
-import { useEditorFonts } from "@lib/hooks/use-editor-fonts"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
+import { useEditorFonts } from "@lib/hooks/use-editor-fonts"
 
 /**
  * Adds the nodes used font family to the editor fonts

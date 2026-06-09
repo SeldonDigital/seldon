@@ -1,5 +1,5 @@
-import type { WorkspaceAction } from "../../reducers/types"
 import type { Workspace } from "../../model/workspace"
+import type { WorkspaceAction } from "../../reducers/types"
 
 export type Action = WorkspaceAction
 

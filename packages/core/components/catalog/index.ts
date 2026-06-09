@@ -7,12 +7,13 @@
  * together.
  */
 import { invariant } from "../../helpers/utils/invariant"
+import { ComponentId } from "../constants"
+import { ComponentExport, ComponentSchema } from "../types"
 // Boards
 import {
   exportConfig as boardExportConfig,
   schema as boardSchema,
 } from "./boards/Board.schema"
-import { ComponentId } from "../constants"
 // Elements
 import {
   exportConfig as avatarExportConfig,
@@ -34,6 +35,10 @@ import {
   exportConfig as itemExportConfig,
   schema as itemSchema,
 } from "./elements/Item.schema"
+import {
+  exportConfig as navExportConfig,
+  schema as navSchema,
+} from "./elements/Nav.schema"
 import {
   exportConfig as optionGroupExportConfig,
   schema as optionGroupSchema,
@@ -98,6 +103,10 @@ import {
   schema as barSchema,
 } from "./parts/Bar.schema"
 import {
+  exportConfig as fieldsetExportConfig,
+  schema as fieldsetSchema,
+} from "./parts/Fieldset.schema"
+import {
   exportConfig as cardHorizontalExportConfig,
   schema as cardHorizontalSchema,
 } from "./parts/cards/CardHorizontal.schema"
@@ -109,10 +118,6 @@ import {
   exportConfig as cardStackedExportConfig,
   schema as cardStackedSchema,
 } from "./parts/cards/CardStacked.schema"
-import {
-  exportConfig as fieldsetExportConfig,
-  schema as fieldsetSchema,
-} from "./parts/Fieldset.schema"
 import {
   exportConfig as listContactsExportConfig,
   schema as listContactsSchema,
@@ -146,10 +151,6 @@ import {
   exportConfig as imageExportConfig,
   schema as imageSchema,
 } from "./primitives/Image.schema"
-import {
-  exportConfig as navExportConfig,
-  schema as navSchema,
-} from "./elements/Nav.schema"
 import {
   exportConfig as inputExportConfig,
   schema as inputSchema,
@@ -239,7 +240,6 @@ import {
   exportConfig as screenExportConfig,
   schema as screenSchema,
 } from "./screens/Screen.schema"
-import { ComponentExport, ComponentSchema } from "../types"
 
 const elements: ComponentSchema[] = [
   avatarSchema,

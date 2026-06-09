@@ -5,14 +5,14 @@ import {
   BackgroundImageValue,
   BackgroundOpacityValue,
   BackgroundPositionValue,
-  BackgroundValue,
   BackgroundRepeatValue,
   BackgroundSizeValue,
+  BackgroundValue,
   BooleanValue,
   BorderColorValue,
   BorderOpacityValue,
-  BorderValue,
   BorderStyleValue,
+  BorderValue,
   BorderWidthValue,
   BrightnessValue,
   ButtonSizeValue,
@@ -25,18 +25,17 @@ import {
   DisplayValue,
   EmptyValue,
   FontFamilyValue,
-  FontValue,
   FontSizeValue,
+  FontValue,
   FontWeightValue,
   GapValue,
   GradientAngleValue,
-  GradientValue,
   GradientStopColorValue,
   GradientStopOpacityValue,
   GradientStopPositionValue,
   GradientTypeValue,
+  GradientValue,
   HtmlElementValue,
-  WrapperElementValue,
   ImageFitValue,
   ImageSourceValue,
   InputTypeValue,
@@ -54,18 +53,19 @@ import {
   ScrollValue,
   ScrollbarStyleValue,
   ShadowBlurValue,
-  ShadowValue,
   ShadowSpreadValue,
+  ShadowValue,
   SizeValue,
   SymbolValue,
   TextAlignValue,
   TextCaseValue,
   TextDecorationValue,
+  WrapperElementValue,
 } from "../values"
 import { CursorValue } from "../values/attributes/cursor"
 import { PlacementValue } from "../values/layout/placement"
-import { TransparentValue } from "../values/shared/option/transparent"
 import { InheritValue } from "../values/shared/inherit/inherit"
+import { TransparentValue } from "../values/shared/option/transparent"
 
 /** Every atomic payload assignable to a property value on a node. */
 export type AtomicValue =
@@ -82,7 +82,6 @@ export type AtomicValue =
   | ScreenWidthValue
   | ScreenHeightValue
   | CursorValue
-
   | DirectionValue
   | PlacementValue
   | OrientationValue
@@ -94,7 +93,6 @@ export type AtomicValue =
   | RowCountValue
   | MarginSideValue
   | PaddingSideValue
-
   | ColorValue
   | BrightnessValue
   | OpacityValue
@@ -111,7 +109,6 @@ export type AtomicValue =
   | BorderColorValue
   | BorderOpacityValue
   | CornerValue
-
   | FontFamilyValue
   | FontValue
   | FontSizeValue
@@ -122,7 +119,6 @@ export type AtomicValue =
   | TextCaseValue
   | TextDecorationValue
   | LinesValue
-
   | GradientAngleValue
   | GradientValue
   | GradientStopColorValue
@@ -134,7 +130,6 @@ export type AtomicValue =
   | ShadowSpreadValue
   | ScrollValue
   | ScrollbarStyleValue
-
   | EmptyValue
   | InheritValue
   | TransparentValue

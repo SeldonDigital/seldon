@@ -1,31 +1,10 @@
-import { ComponentLevel, ComputedFunction, Theme, ValueType, Workspace } from "@seldon/core"
-import { Harmony } from "../../../themes/constants/enums"
-import { HSLObjectToString } from "../../../helpers/color/hsl-object-to-string"
-import { LCHObjectToString } from "../../../helpers/color/lch-object-to-string"
-import { RGBObjectToString } from "../../../helpers/color/rgb-object-to-string"
-import { stringifyValue } from "../../../helpers/properties/stringify-value"
-import { getThemeValueName } from "../../../helpers/theme/get-theme-value-name"
-import { findInObject } from "../../../helpers/utils/find-in-object"
-import { isHSLObject } from "../../../helpers/type-guards/color/is-hsl-object"
-import { isLCHObject } from "../../../helpers/type-guards/color/is-lch-object"
-import { isRGBObject } from "../../../helpers/type-guards/color/is-rgb-object"
-import { COMPUTED_FUNCTION_DISPLAY_NAMES } from "../../../properties/compute"
-import { isCompoundCatalogProperty } from "../../../properties/constants/shared/compound-properties"
 import {
-  getCatalogKeyForPropertyPath,
-  getPresetOptionsAsLabelValue,
-  getPropertySchema,
-} from "../../../properties/schemas/helpers"
-import type { PropertySchema } from "../../../properties/types/schema"
-import {
-  isLayeredPaintProperty,
-  type PropertyKey,
-} from "../../../properties/types/property-keys"
-import type { Properties } from "../../../properties/types/properties"
-import { Resize } from "../../../properties/values/layout/resize"
-import { getEffectiveNodeProperties } from "../../compute/compute-node-properties"
-import type { WorkspacePropertySource } from "../../compute/compute-node-properties"
-import { workspaceFontCollectionService } from "../../services/font-collection/font-collection.service"
+  ComponentLevel,
+  ComputedFunction,
+  Theme,
+  ValueType,
+  Workspace,
+} from "@seldon/core"
 import {
   getBuiltInLookSectionForPropertyKey,
   getThemeLookPickerToken,
@@ -34,6 +13,34 @@ import {
   listThemeLookIds,
 } from "@seldon/core/themes/looks"
 import { resolveThemeTokenEntry } from "@seldon/core/themes/schemas"
+
+import { HSLObjectToString } from "../../../helpers/color/hsl-object-to-string"
+import { LCHObjectToString } from "../../../helpers/color/lch-object-to-string"
+import { RGBObjectToString } from "../../../helpers/color/rgb-object-to-string"
+import { stringifyValue } from "../../../helpers/properties/stringify-value"
+import { getThemeValueName } from "../../../helpers/theme/get-theme-value-name"
+import { isHSLObject } from "../../../helpers/type-guards/color/is-hsl-object"
+import { isLCHObject } from "../../../helpers/type-guards/color/is-lch-object"
+import { isRGBObject } from "../../../helpers/type-guards/color/is-rgb-object"
+import { findInObject } from "../../../helpers/utils/find-in-object"
+import { COMPUTED_FUNCTION_DISPLAY_NAMES } from "../../../properties/compute"
+import { isCompoundCatalogProperty } from "../../../properties/constants/shared/compound-properties"
+import {
+  getCatalogKeyForPropertyPath,
+  getPresetOptionsAsLabelValue,
+  getPropertySchema,
+} from "../../../properties/schemas/helpers"
+import type { Properties } from "../../../properties/types/properties"
+import {
+  type PropertyKey,
+  isLayeredPaintProperty,
+} from "../../../properties/types/property-keys"
+import type { PropertySchema } from "../../../properties/types/schema"
+import { Resize } from "../../../properties/values/layout/resize"
+import { Harmony } from "../../../themes/constants/enums"
+import { getEffectiveNodeProperties } from "../../compute/compute-node-properties"
+import type { WorkspacePropertySource } from "../../compute/compute-node-properties"
+import { workspaceFontCollectionService } from "../../services/font-collection/font-collection.service"
 import { getCompoundLayerValue } from "./shared"
 
 export type PropertyPickerOption = { value: string; name: string }
@@ -96,14 +103,18 @@ function resolveValueAtPropertyPath(
     if (segments.length === 3 && segments[1] === LAYERED_PAINT_LAYER_INDEX) {
       const facet = segments[2]
       if (facet) {
-        const layer = getCompoundLayerValue(properties[root as keyof Properties])
+        const layer = getCompoundLayerValue(
+          properties[root as keyof Properties],
+        )
         return layer?.[facet]
       }
     }
     if (segments.length === 2) {
       const facet = segments[1]
       if (facet) {
-        const layer = getCompoundLayerValue(properties[root as keyof Properties])
+        const layer = getCompoundLayerValue(
+          properties[root as keyof Properties],
+        )
         return layer?.[facet]
       }
     }
@@ -122,7 +133,10 @@ function getRestrictionsAllowedValues(
   }
   const restrictions = (value as { restrictions?: { allowedValues?: unknown } })
     .restrictions
-  if (!restrictions?.allowedValues || !Array.isArray(restrictions.allowedValues)) {
+  if (
+    !restrictions?.allowedValues ||
+    !Array.isArray(restrictions.allowedValues)
+  ) {
     return undefined
   }
   return restrictions.allowedValues.map(String)
@@ -172,10 +186,7 @@ function normalizeOptions(
         value,
       }
     })
-    .filter(
-      (option) =>
-        option.name.trim() !== "" && option.value.trim() !== "",
-    )
+    .filter((option) => option.name.trim() !== "" && option.value.trim() !== "")
 }
 
 function buildDefaultOptions(schema: PropertySchema): PropertyPickerOption[] {
@@ -257,7 +268,9 @@ function groupPresetOptions(
     return [presetOptions]
   }
 
-  const fitOptions = presetOptions.filter((option) => option.value === Resize.FIT)
+  const fitOptions = presetOptions.filter(
+    (option) => option.value === Resize.FIT,
+  )
   const deviceOptions = presetOptions.filter(
     (option) => option.value !== Resize.FIT,
   )
@@ -484,14 +497,21 @@ function createThemeOptions(
   })
 }
 
-function buildThemeOptions(schema: PropertySchema, theme: Theme): PropertyPickerOption[] {
+function buildThemeOptions(
+  schema: PropertySchema,
+  theme: Theme,
+): PropertyPickerOption[] {
   const options: PropertyPickerOption[] = []
 
   if (schema.themeCategoricalKeys) {
     const themeSection = getThemeSectionFromSchema(schema, theme, "categorical")
     if (themeSection) {
       options.push(
-        ...createThemeOptions(schema.themeCategoricalKeys(theme), themeSection, theme),
+        ...createThemeOptions(
+          schema.themeCategoricalKeys(theme),
+          themeSection,
+          theme,
+        ),
       )
     }
   }
@@ -500,7 +520,11 @@ function buildThemeOptions(schema: PropertySchema, theme: Theme): PropertyPicker
     const themeSection = getThemeSectionFromSchema(schema, theme, "ordinal")
     if (themeSection) {
       options.push(
-        ...createThemeOptions(schema.themeOrdinalKeys(theme), themeSection, theme),
+        ...createThemeOptions(
+          schema.themeOrdinalKeys(theme),
+          themeSection,
+          theme,
+        ),
       )
     }
   }
@@ -630,7 +654,11 @@ function buildCompoundPresetPickerOptions(
   groups.push(buildDefaultOptions(schema))
 
   if (!isThemeLookPresetSchemaName(schema.name)) {
-    const presetOptions = buildPresetOptions(schema, input.theme, input.workspace)
+    const presetOptions = buildPresetOptions(
+      schema,
+      input.theme,
+      input.workspace,
+    )
     if (presetOptions.length > 0) {
       groups.push(...groupPresetOptions(schema, presetOptions))
     }
@@ -645,7 +673,10 @@ function buildCompoundPresetPickerOptions(
       input.subjectId,
       input.workspace as WorkspacePropertySource,
     )
-    const restrictionAllowed = getRestrictionsAllowedValues(effective, input.path)
+    const restrictionAllowed = getRestrictionsAllowedValues(
+      effective,
+      input.path,
+    )
     return {
       options: applyRestrictionsFilter(groups, restrictionAllowed),
       hasCurrentValue: currentValueOption !== undefined,
@@ -659,7 +690,11 @@ function buildCompoundPresetPickerOptions(
       ? []
       : listThemeLookIds(theme, lookSection)
           .map((id) =>
-            themeLookPickerOption(parentKey, section as Record<string, unknown>, id),
+            themeLookPickerOption(
+              parentKey,
+              section as Record<string, unknown>,
+              id,
+            ),
           )
           .filter((option): option is PropertyPickerOption => option !== null)
 
@@ -688,7 +723,9 @@ function stripDefaultInherit(
 ): PropertyPickerOption[][] {
   return groups
     .map((group) =>
-      group.filter((option) => option.value !== "" && option.value !== "inherit"),
+      group.filter(
+        (option) => option.value !== "" && option.value !== "inherit",
+      ),
     )
     .filter((group) => group.length > 0)
 }

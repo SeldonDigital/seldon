@@ -1,8 +1,8 @@
 import type { IconId } from "../../icon-sets"
 import {
+  type IconCategory,
   categorySubcategories,
   iconCategories,
-  type IconCategory,
 } from "../constants/categories"
 import type { ComputedIconSet } from "../types/icon-set"
 import { getIconCategoryFromId } from "./get-icon-category-from-id"

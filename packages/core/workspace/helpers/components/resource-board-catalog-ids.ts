@@ -20,8 +20,9 @@ export const FONT_COLLECTION_BOARD_CATALOG_IDS: ReadonlySet<string> =
  * Packaged icon set catalog ids from `core/icon-sets`. Use for icon set board
  * `catalogId` validation.
  */
-export const ICON_SET_BOARD_CATALOG_IDS: ReadonlySet<string> =
-  new Set<string>(packagedIconSetCatalogIds)
+export const ICON_SET_BOARD_CATALOG_IDS: ReadonlySet<string> = new Set<string>(
+  packagedIconSetCatalogIds,
+)
 
 /**
  * Allowlist of media board catalog ids for `catalogId` validation. `core/media/` has no

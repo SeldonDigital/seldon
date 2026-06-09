@@ -2,9 +2,9 @@ import { ExtractPayload, Workspace } from "../../../../index"
 import { rules } from "../../../../rules/config/rules.config"
 import {
   nodeRetrievalService,
+  typeCheckingService,
   workspaceMutationService,
   workspacePropagationService,
-  typeCheckingService,
 } from "../../../services"
 
 /**
@@ -26,7 +26,11 @@ export function setNodeTheme(
     nodeId: payload.nodeId,
     propagation,
     apply: (node, workspace) => {
-      return workspaceMutationService.setNodeTheme(node.id, payload.theme, workspace)
+      return workspaceMutationService.setNodeTheme(
+        node.id,
+        payload.theme,
+        workspace,
+      )
     },
     workspace,
   })

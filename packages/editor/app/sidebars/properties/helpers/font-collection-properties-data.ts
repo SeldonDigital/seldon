@@ -1,15 +1,15 @@
-import type { ComputedFontCollection } from "@seldon/core/font-collections/types"
+import { getFontLicenseHref } from "@lib/font-collections/font-license"
 import {
+  type VariantSelection,
   deriveVariantPreset,
   isVariantEnabled,
-  type VariantSelection,
 } from "@seldon/core/font-collections"
+import type { ComputedFontCollection } from "@seldon/core/font-collections/types"
 import {
   fontVariantDisplayLabel,
   sortFontVariants,
 } from "@seldon/core/helpers/utils/font-variant"
 import { ValueType } from "@seldon/core/properties"
-import { getFontLicenseHref } from "@lib/font-collections/font-license"
 import { FlatProperty } from "./properties-data"
 
 const PRESET_OPTIONS = [
@@ -71,7 +71,11 @@ function createLicenseRow(slot: string): FlatProperty {
 }
 
 /** Builds a read-only atomic row for a family with no selectable variants. */
-function createPlainFamilyRow(slot: string, name: string, origin: string): FlatProperty {
+function createPlainFamilyRow(
+  slot: string,
+  name: string,
+  origin: string,
+): FlatProperty {
   return {
     key: `family.${slot}`,
     propertyType: "atomic",

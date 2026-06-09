@@ -34,9 +34,7 @@ export function sortFontVariants(variants: string[]): string[] {
   return [...variants].sort((a, b) => {
     const pa = parseFontVariant(a)
     const pb = parseFontVariant(b)
-    return (
-      Number(pa.italic) - Number(pb.italic) || pa.weight - pb.weight
-    )
+    return Number(pa.italic) - Number(pb.italic) || pa.weight - pb.weight
   })
 }
 

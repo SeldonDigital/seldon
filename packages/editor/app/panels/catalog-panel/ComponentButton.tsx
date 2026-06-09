@@ -39,7 +39,9 @@ export const ComponentButton: FC<ComponentButtonProps> = ({
     paddingLeft: "var(--sdn-padding-tight)",
     paddingRight: "var(--sdn-padding-compact)",
     height: "2.5rem",
-    color: isSelected ? "var(--sdn-swatch-seldon-blue)" : "var(--sdn-swatch-white)",
+    color: isSelected
+      ? "var(--sdn-swatch-seldon-blue)"
+      : "var(--sdn-swatch-white)",
     opacity: disabled ? 0.5 : undefined,
     backgroundColor,
   }
@@ -95,7 +97,9 @@ export const ComponentButton: FC<ComponentButtonProps> = ({
               overflow: "hidden",
               textOverflow: "ellipsis",
               whiteSpace: "nowrap",
-              color: isSelected ? "var(--color-blue)" : "rgba(245, 245, 245, 0.6)",
+              color: isSelected
+                ? "var(--color-blue)"
+                : "rgba(245, 245, 245, 0.6)",
             }}
           >
             {description}

@@ -1,11 +1,11 @@
 import { COLORS } from "@lib/helpers/colors"
 import { InstanceId, VariantId } from "@seldon/core/index"
+import { useNodeRect } from "../../hooks/use-node-rect"
 import {
   InsertIndicatorLine,
-  PositionedPanel,
   Pointer as PointerMarker,
+  PositionedPanel,
 } from "@seldon/components/custom-components"
-import { useNodeRect } from "../../hooks/use-node-rect"
 import { Label } from "./Label"
 
 const LINE_LENGTH = 40

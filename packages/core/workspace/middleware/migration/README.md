@@ -16,10 +16,10 @@ flowchart TB
 
 ## Major Types And Functions
 
-| Type Or Function | File | Purpose \| Use |
-| --- | --- | --- |
-| `CURRENT_WORKSPACE_VERSION` | `middleware.ts` | Current `metadata.version` value for v0 files. \| Used when normalizing loaded workspaces. |
-| `migrationMiddleware` | `middleware.ts` | Sets `metadata.version` on `set_workspace`. \| Registered in `workspaceReducer` post-reducer chain. |
+| Type Or Function            | File            | Purpose \| Use                                                                                      |
+| --------------------------- | --------------- | --------------------------------------------------------------------------------------------------- |
+| `CURRENT_WORKSPACE_VERSION` | `middleware.ts` | Current `metadata.version` value for v0 files. \| Used when normalizing loaded workspaces.          |
+| `migrationMiddleware`       | `middleware.ts` | Sets `metadata.version` on `set_workspace`. \| Registered in `workspaceReducer` post-reducer chain. |
 
 ## Notes
 

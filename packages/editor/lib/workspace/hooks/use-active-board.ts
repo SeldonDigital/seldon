@@ -22,9 +22,9 @@ export function useActiveBoard() {
       if (selectedResourceEntry) {
         return (
           Object.values(workspace.boards).find((entry) =>
-            (
-              entry as { variants?: { id: string }[] }
-            ).variants?.some((variant) => variant.id === selectedResourceEntry.id),
+            (entry as { variants?: { id: string }[] }).variants?.some(
+              (variant) => variant.id === selectedResourceEntry.id,
+            ),
           ) ?? null
         )
       }
@@ -33,9 +33,7 @@ export function useActiveBoard() {
       // active. The key is `${resource}:${boardKey}:${entryId}:${slot}`.
       if (selectedResourceItemKey) {
         const boardKey = selectedResourceItemKey.split(":")[1]
-        return boardKey
-          ? (workspace.boards[boardKey] ?? null)
-          : null
+        return boardKey ? (workspace.boards[boardKey] ?? null) : null
       }
 
       return null

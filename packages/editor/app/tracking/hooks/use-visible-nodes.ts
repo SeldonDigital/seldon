@@ -1,11 +1,11 @@
 import { useMemo } from "react"
 import { InstanceId, VariantId } from "@seldon/core/index"
+import { useActiveBoard } from "@lib/workspace/hooks/use-active-board"
+import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import {
   getChildNodeIds,
   getVariantRootIds,
 } from "@lib/workspace/component-tree"
-import { useActiveBoard } from "@lib/workspace/hooks/use-active-board"
-import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 
 export interface VisibleNode {
   id: VariantId | InstanceId

@@ -1,7 +1,8 @@
 "use client"
 
-import { memo, useMemo } from "react"
+import { isWorkspaceIconUnavailable } from "@lib/icon-sets/icon-availability"
 import { buildContext } from "@seldon/factory/helpers/compute-workspace"
+import { memo, useMemo } from "react"
 import {
   Board,
   Display,
@@ -13,20 +14,19 @@ import {
   invariant,
 } from "@seldon/core"
 import { getComponentSchema } from "@seldon/core/components/catalog"
+import { ComponentId } from "@seldon/core/components/constants"
+import type { IconId } from "@seldon/core/icon-sets"
 import { ThemeInstanceId } from "@seldon/core/themes/types"
 import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
 import { workspaceThemeService } from "@seldon/core/workspace/services/theme/theme.service"
-import { ComponentId } from "@seldon/core/components/constants"
+import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
+import { useAddNodeFontFamily } from "./hooks/use-add-node-font-family"
 import { collectDescendantNodeIds } from "@lib/workspace/component-tree"
 import {
   findComponentForNode,
   getNodeCatalogComponentId,
   getNodeChildIds,
 } from "@lib/workspace/node-tree"
-import { useAddNodeFontFamily } from "./hooks/use-add-node-font-family"
-import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
-import { isWorkspaceIconUnavailable } from "@lib/icon-sets/icon-availability"
-import type { IconId } from "@seldon/core/icon-sets"
 import { ComponentRenderer } from "./ComponentRenderer"
 
 export type CanvasNodeProps = {
