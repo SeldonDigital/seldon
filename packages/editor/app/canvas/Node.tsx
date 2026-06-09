@@ -20,6 +20,7 @@ import { ThemeInstanceId } from "@seldon/core/themes/types"
 import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
 import { workspaceThemeService } from "@seldon/core/workspace/services/theme/theme.service"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
+import { buildRenderParentIndex } from "@lib/workspace/render-parent-index"
 import { useAddNodeFontFamily } from "./hooks/use-add-node-font-family"
 import { collectDescendantNodeIds } from "@lib/workspace/component-tree"
 import {
@@ -57,11 +58,20 @@ export const CanvasNode = memo(function CanvasNode({
   // Add the font family to the editor fonts - must be called before any early returns
   useAddNodeFontFamily(nodeId)
 
+  // Node-id path from the variant root down to this node. A shared child id can
+  // appear under several variant trees, so this render-position path tells the
+  // compute pipeline which parent to resolve `#parent.*` against.
+  const selfPath = rootPath ?? nodeId
+  const renderParentIndex = useMemo(
+    () => buildRenderParentIndex(selfPath),
+    [selfPath],
+  )
+
   // Memoize the compute context so it stays referentially stable while the node
   // and workspace are unchanged, letting ComponentRenderer's CSS memo hit.
   const computeContext = useMemo(
-    () => buildContext(node, workspace),
-    [node, workspace],
+    () => buildContext(node, workspace, renderParentIndex),
+    [node, workspace, renderParentIndex],
   )
 
   /**
@@ -99,7 +109,6 @@ export const CanvasNode = memo(function CanvasNode({
   }
 
   const childNodeIds = getNodeChildIds(node, workspace)
-  const selfPath = rootPath ?? nodeId
   const board = findComponentForNode(node, workspace)
   const renderAsDiv =
     catalogComponentId === ComponentId.BUTTON &&
@@ -121,13 +130,20 @@ export const CanvasNode = memo(function CanvasNode({
       workspace,
     )
 
+  // A shared child id renders once per variant column. Scope the style class by
+  // render position so each copy's computed CSS (e.g. an icon sized from its own
+  // parent's buttonSize) does not collide on a single `node-<id>` selector.
+  const styleScopeId = selfPath.replace(/[^a-zA-Z0-9_-]/g, "-") as
+    | InstanceId
+    | VariantId
+
   return (
     <ComponentRenderer
       computeContext={computeContext}
       styleOverrides={isRoot ? { position: "relative" } : undefined}
       componentId={component.id}
       htmlAttributes={getHTMLAttributes(node, nodeProperties)}
-      nodeId={nodeId}
+      nodeId={styleScopeId}
       renderAsDiv={renderAsDiv}
       iconUnavailable={iconUnavailable}
     >
