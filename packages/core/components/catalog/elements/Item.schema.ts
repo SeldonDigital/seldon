@@ -1,6 +1,10 @@
-import * as Sdn from "../../../properties"
-import * as Seldon from "../../constants"
-import { ComponentExport, ComponentSchema } from "../../types"
+import * as Sdn from "../../../properties";
+import * as Seldon from "../../constants";
+import { ComponentExport, ComponentSchema } from "../../types";
+
+
+
+
 
 export const schema = {
   name: "Item",
@@ -361,15 +365,10 @@ export const schema = {
                         type: Sdn.ValueType.THEME_CATEGORICAL,
                         value: "@font.normal",
                       },
-                      family: { type: Sdn.ValueType.EMPTY, value: null },
-                      style: { type: Sdn.ValueType.EMPTY, value: null },
-                      weight: { type: Sdn.ValueType.EMPTY, value: null },
                       size: {
                         type: Sdn.ValueType.THEME_ORDINAL,
                         value: "@fontSize.medium",
                       },
-                      lineHeight: { type: Sdn.ValueType.EMPTY, value: null },
-                      textCase: { type: Sdn.ValueType.EMPTY, value: null },
                     },
                   },
                 },
@@ -390,15 +389,10 @@ export const schema = {
                         type: Sdn.ValueType.THEME_CATEGORICAL,
                         value: "@font.normal",
                       },
-                      family: { type: Sdn.ValueType.EMPTY, value: null },
-                      style: { type: Sdn.ValueType.EMPTY, value: null },
-                      weight: { type: Sdn.ValueType.EMPTY, value: null },
                       size: {
                         type: Sdn.ValueType.THEME_ORDINAL,
                         value: "@fontSize.small",
                       },
-                      lineHeight: { type: Sdn.ValueType.EMPTY, value: null },
-                      textCase: { type: Sdn.ValueType.EMPTY, value: null },
                     },
                   },
                 },
@@ -452,14 +446,11 @@ export const schema = {
       children: [
         {
           component: Seldon.ComponentId.BUTTON,
+          variant: "iconic",
           overrides: {
             buttonSize: {
               type: Sdn.ValueType.THEME_ORDINAL,
               value: "@fontSize.xsmall",
-            },
-            width: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FIT,
             },
             padding: {
               top: {
@@ -485,51 +476,12 @@ export const schema = {
                   type: Sdn.ValueType.THEME_CATEGORICAL,
                   value: "@background.none",
                 },
-                image: { type: Sdn.ValueType.EMPTY, value: null },
-                position: { type: Sdn.ValueType.EMPTY, value: null },
-                size: { type: Sdn.ValueType.EMPTY, value: null },
-                repeat: { type: Sdn.ValueType.EMPTY, value: null },
-                color: {
-                  type: Sdn.ValueType.OPTION,
-                  value: Sdn.Color.TRANSPARENT,
-                },
-                blendMode: { type: Sdn.ValueType.EMPTY, value: null },
-                filter: { type: Sdn.ValueType.EMPTY, value: null },
-                brightness: { type: Sdn.ValueType.EMPTY, value: null },
-                opacity: { type: Sdn.ValueType.EMPTY, value: null },
               },
             ],
             border: {
               preset: {
                 type: Sdn.ValueType.THEME_CATEGORICAL,
                 value: "@border.none",
-              },
-              style: { type: Sdn.ValueType.EMPTY, value: null },
-              color: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.Color.TRANSPARENT,
-              },
-              width: { type: Sdn.ValueType.EMPTY, value: null },
-              brightness: { type: Sdn.ValueType.EMPTY, value: null },
-              opacity: { type: Sdn.ValueType.EMPTY, value: null },
-              collapse: { type: Sdn.ValueType.EMPTY, value: null },
-            },
-            corners: {
-              topLeft: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.Corner.ROUNDED,
-              },
-              topRight: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.Corner.ROUNDED,
-              },
-              bottomLeft: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.Corner.ROUNDED,
-              },
-              bottomRight: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.Corner.ROUNDED,
               },
             },
           },
@@ -539,17 +491,16 @@ export const schema = {
               overrides: {
                 symbol: {
                   type: Sdn.ValueType.OPTION,
-                  value: "material-chevronRight",
+                  value: "material-chevronDown",
                 },
-              },
-            },
-            {
-              component: Seldon.ComponentId.TEXT,
-              variant: "label",
-              overrides: {
-                display: {
-                  type: Sdn.ValueType.OPTION,
-                  value: Sdn.Display.EXCLUDE,
+                color: {
+                  type: Sdn.ValueType.COMPUTED,
+                  value: {
+                    function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+                    input: {
+                      basedOn: "#parent.background.color",
+                    },
+                  },
                 },
               },
             },
@@ -572,15 +523,10 @@ export const schema = {
                 type: Sdn.ValueType.THEME_CATEGORICAL,
                 value: "@font.normal",
               },
-              family: { type: Sdn.ValueType.EMPTY, value: null },
-              style: { type: Sdn.ValueType.EMPTY, value: null },
-              weight: { type: Sdn.ValueType.EMPTY, value: null },
               size: {
                 type: Sdn.ValueType.THEME_ORDINAL,
                 value: "@fontSize.xsmall",
               },
-              lineHeight: { type: Sdn.ValueType.EMPTY, value: null },
-              textCase: { type: Sdn.ValueType.EMPTY, value: null },
             },
           },
         },
@@ -651,14 +597,11 @@ export const schema = {
         },
         {
           component: Seldon.ComponentId.BUTTON,
+          variant: "iconic",
           overrides: {
             buttonSize: {
               type: Sdn.ValueType.THEME_ORDINAL,
               value: "@fontSize.xsmall",
-            },
-            width: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FIT,
             },
             padding: {
               top: {
@@ -678,54 +621,10 @@ export const schema = {
                 value: "@padding.tight",
               },
             },
-            background: [
-              {
-                preset: {
-                  type: Sdn.ValueType.THEME_CATEGORICAL,
-                  value: "@background.none",
-                },
-                image: { type: Sdn.ValueType.EMPTY, value: null },
-                position: { type: Sdn.ValueType.EMPTY, value: null },
-                size: { type: Sdn.ValueType.EMPTY, value: null },
-                repeat: { type: Sdn.ValueType.EMPTY, value: null },
-                color: {
-                  type: Sdn.ValueType.OPTION,
-                  value: Sdn.Color.TRANSPARENT,
-                },
-                blendMode: { type: Sdn.ValueType.EMPTY, value: null },
-                filter: { type: Sdn.ValueType.EMPTY, value: null },
-                brightness: { type: Sdn.ValueType.EMPTY, value: null },
-                opacity: { type: Sdn.ValueType.EMPTY, value: null },
-              },
-            ],
             border: {
               preset: {
                 type: Sdn.ValueType.THEME_CATEGORICAL,
                 value: "@border.thin",
-              },
-              style: { type: Sdn.ValueType.EMPTY, value: null },
-              color: { type: Sdn.ValueType.EMPTY, value: null },
-              width: { type: Sdn.ValueType.EMPTY, value: null },
-              brightness: { type: Sdn.ValueType.EMPTY, value: null },
-              opacity: { type: Sdn.ValueType.EMPTY, value: null },
-              collapse: { type: Sdn.ValueType.EMPTY, value: null },
-            },
-            corners: {
-              topLeft: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.Corner.ROUNDED,
-              },
-              topRight: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.Corner.ROUNDED,
-              },
-              bottomLeft: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.Corner.ROUNDED,
-              },
-              bottomRight: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.Corner.ROUNDED,
               },
             },
           },
@@ -735,17 +634,16 @@ export const schema = {
               overrides: {
                 symbol: {
                   type: Sdn.ValueType.OPTION,
-                  value: "material-add",
+                  value: "seldon-plus",
                 },
-              },
-            },
-            {
-              component: Seldon.ComponentId.TEXT,
-              variant: "label",
-              overrides: {
-                display: {
-                  type: Sdn.ValueType.OPTION,
-                  value: Sdn.Display.EXCLUDE,
+                color: {
+                  type: Sdn.ValueType.COMPUTED,
+                  value: {
+                    function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+                    input: {
+                      basedOn: "#parent.background.color",
+                    },
+                  },
                 },
               },
             },
@@ -753,14 +651,11 @@ export const schema = {
         },
         {
           component: Seldon.ComponentId.BUTTON,
+          variant: "iconic",
           overrides: {
             buttonSize: {
               type: Sdn.ValueType.THEME_ORDINAL,
               value: "@fontSize.xsmall",
-            },
-            width: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FIT,
             },
             padding: {
               top: {
@@ -780,54 +675,10 @@ export const schema = {
                 value: "@padding.tight",
               },
             },
-            background: [
-              {
-                preset: {
-                  type: Sdn.ValueType.THEME_CATEGORICAL,
-                  value: "@background.none",
-                },
-                image: { type: Sdn.ValueType.EMPTY, value: null },
-                position: { type: Sdn.ValueType.EMPTY, value: null },
-                size: { type: Sdn.ValueType.EMPTY, value: null },
-                repeat: { type: Sdn.ValueType.EMPTY, value: null },
-                color: {
-                  type: Sdn.ValueType.OPTION,
-                  value: Sdn.Color.TRANSPARENT,
-                },
-                blendMode: { type: Sdn.ValueType.EMPTY, value: null },
-                filter: { type: Sdn.ValueType.EMPTY, value: null },
-                brightness: { type: Sdn.ValueType.EMPTY, value: null },
-                opacity: { type: Sdn.ValueType.EMPTY, value: null },
-              },
-            ],
             border: {
               preset: {
                 type: Sdn.ValueType.THEME_CATEGORICAL,
                 value: "@border.thin",
-              },
-              style: { type: Sdn.ValueType.EMPTY, value: null },
-              color: { type: Sdn.ValueType.EMPTY, value: null },
-              width: { type: Sdn.ValueType.EMPTY, value: null },
-              brightness: { type: Sdn.ValueType.EMPTY, value: null },
-              opacity: { type: Sdn.ValueType.EMPTY, value: null },
-              collapse: { type: Sdn.ValueType.EMPTY, value: null },
-            },
-            corners: {
-              topLeft: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.Corner.ROUNDED,
-              },
-              topRight: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.Corner.ROUNDED,
-              },
-              bottomLeft: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.Corner.ROUNDED,
-              },
-              bottomRight: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.Corner.ROUNDED,
               },
             },
           },
@@ -837,17 +688,16 @@ export const schema = {
               overrides: {
                 symbol: {
                   type: Sdn.ValueType.OPTION,
-                  value: "material-close",
+                  value: "seldon-more",
                 },
-              },
-            },
-            {
-              component: Seldon.ComponentId.TEXT,
-              variant: "label",
-              overrides: {
-                display: {
-                  type: Sdn.ValueType.OPTION,
-                  value: Sdn.Display.EXCLUDE,
+                color: {
+                  type: Sdn.ValueType.COMPUTED,
+                  value: {
+                    function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+                    input: {
+                      basedOn: "#parent.background.color",
+                    },
+                  },
                 },
               },
             },
@@ -950,18 +800,10 @@ export const schema = {
                   type: Sdn.ValueType.THEME_CATEGORICAL,
                   value: "@background.none",
                 },
-                image: { type: Sdn.ValueType.EMPTY, value: null },
-                position: { type: Sdn.ValueType.EMPTY, value: null },
-                size: { type: Sdn.ValueType.EMPTY, value: null },
-                repeat: { type: Sdn.ValueType.EMPTY, value: null },
                 color: {
                   type: Sdn.ValueType.THEME_CATEGORICAL,
                   value: "@swatch.primary",
                 },
-                blendMode: { type: Sdn.ValueType.EMPTY, value: null },
-                filter: { type: Sdn.ValueType.EMPTY, value: null },
-                brightness: { type: Sdn.ValueType.EMPTY, value: null },
-                opacity: { type: Sdn.ValueType.EMPTY, value: null },
               },
             ],
           },
@@ -1004,18 +846,10 @@ export const schema = {
                   type: Sdn.ValueType.THEME_CATEGORICAL,
                   value: "@background.none",
                 },
-                image: { type: Sdn.ValueType.EMPTY, value: null },
-                position: { type: Sdn.ValueType.EMPTY, value: null },
-                size: { type: Sdn.ValueType.EMPTY, value: null },
-                repeat: { type: Sdn.ValueType.EMPTY, value: null },
                 color: {
                   type: Sdn.ValueType.THEME_CATEGORICAL,
                   value: "@swatch.primary",
                 },
-                blendMode: { type: Sdn.ValueType.EMPTY, value: null },
-                filter: { type: Sdn.ValueType.EMPTY, value: null },
-                brightness: { type: Sdn.ValueType.EMPTY, value: null },
-                opacity: { type: Sdn.ValueType.EMPTY, value: null },
               },
             ],
           },
@@ -1059,18 +893,10 @@ export const schema = {
                   type: Sdn.ValueType.THEME_CATEGORICAL,
                   value: "@background.none",
                 },
-                image: { type: Sdn.ValueType.EMPTY, value: null },
-                position: { type: Sdn.ValueType.EMPTY, value: null },
-                size: { type: Sdn.ValueType.EMPTY, value: null },
-                repeat: { type: Sdn.ValueType.EMPTY, value: null },
                 color: {
                   type: Sdn.ValueType.THEME_CATEGORICAL,
                   value: "@swatch.primary",
                 },
-                blendMode: { type: Sdn.ValueType.EMPTY, value: null },
-                filter: { type: Sdn.ValueType.EMPTY, value: null },
-                brightness: { type: Sdn.ValueType.EMPTY, value: null },
-                opacity: { type: Sdn.ValueType.EMPTY, value: null },
               },
             ],
           },
@@ -1168,7 +994,7 @@ export const schema = {
               overrides: {
                 symbol: {
                   type: Sdn.ValueType.OPTION,
-                  value: "seldon-chevronDown",
+                  value: "material-chevronDown",
                 },
                 color: {
                   type: Sdn.ValueType.COMPUTED,
@@ -1240,15 +1066,10 @@ export const schema = {
                 type: Sdn.ValueType.THEME_CATEGORICAL,
                 value: "@font.normal",
               },
-              family: { type: Sdn.ValueType.EMPTY, value: null },
-              style: { type: Sdn.ValueType.EMPTY, value: null },
-              weight: { type: Sdn.ValueType.EMPTY, value: null },
               size: {
                 type: Sdn.ValueType.THEME_ORDINAL,
                 value: "@fontSize.xsmall",
               },
-              lineHeight: { type: Sdn.ValueType.EMPTY, value: null },
-              textCase: { type: Sdn.ValueType.EMPTY, value: null },
             },
           },
         },

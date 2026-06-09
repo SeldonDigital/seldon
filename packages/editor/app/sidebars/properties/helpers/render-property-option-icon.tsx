@@ -62,7 +62,14 @@ export function createPropertyOptionIconRenderer({
       }
     }
 
-    if (property.key === "symbol" && option) {
+    // The "Default" ("") and "Inherit" rows are not icon ids; let them fall
+    // through to the property's default icon.
+    if (
+      property.key === "symbol" &&
+      option &&
+      option.value &&
+      option.value !== "inherit"
+    ) {
       // Icon turned off in its workspace set renders as a red Missing icon.
       if (isWorkspaceIconUnavailable(option.value as IconId, workspace)) {
         return <LoadEditorIcons iconId={option.value as IconId} unavailable />
