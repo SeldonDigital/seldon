@@ -1,4 +1,4 @@
-import { CSSProperties, MouseEvent, ReactNode } from "react"
+import { CSSProperties, MouseEvent } from "react"
 import { IconProps } from "@seldon/components/primitives/Icon"
 import { LabelProps } from "@seldon/components/primitives/Label"
 import { FlatProperty } from "./properties-data"
@@ -40,7 +40,6 @@ interface BuildPropertyRowPropsInput {
   isEditingProperty: boolean
   supportsUpload: boolean
   showMenuIcon: boolean
-  label2Children: ReactNode
   handleToggle: () => void
   handleLabel2Click: (event: MouseEvent) => void
   handleUploadClick: (event: MouseEvent) => void
@@ -49,8 +48,8 @@ interface BuildPropertyRowPropsInput {
 
 /**
  * Builds the prop objects passed to `ListItemTreeInput` for a property row.
- * Returns plain values only; the value-cell node is supplied as `label2Children`
- * so this stays free of JSX.
+ * Returns plain data only. The shell injects the value-cell node into
+ * `label2.children`, so this stays free of JSX.
  */
 export function buildPropertyRowProps({
   property,
@@ -67,7 +66,6 @@ export function buildPropertyRowProps({
   isEditingProperty,
   supportsUpload,
   showMenuIcon,
-  label2Children,
   handleToggle,
   handleLabel2Click,
   handleUploadClick,
@@ -127,7 +125,6 @@ export function buildPropertyRowProps({
         }
 
   const label2 = {
-    children: label2Children,
     htmlElement: "label" as const,
     onClick: handleLabel2Click,
     style: {

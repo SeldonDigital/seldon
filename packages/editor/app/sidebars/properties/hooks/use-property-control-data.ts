@@ -81,7 +81,7 @@ export function resolveUnitFromValue(value: unknown): string | undefined {
 
 /**
  * Hook that provides data and helper functions for property controls.
- * Used by both EditableProperty (for rendering) and RowProperty (for inactive state).
+ * Used by the property-row ViewModel to derive display values and unit labels.
  */
 export function usePropertyControlData({
   property,
