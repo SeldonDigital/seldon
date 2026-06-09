@@ -104,4 +104,32 @@ export default defineConfig([
       ],
     },
   },
+  // PropertyControl is a fully migrated binding shell: no raw markup, no Model
+  // service imports. Lock both boundaries as errors so it cannot regress. The
+  // surrounding properties files stay at warning until their markup and service
+  // calls move into Views and ViewModels.
+  {
+    files: ["app/sidebars/properties/PropertyControl.tsx"],
+    rules: {
+      "no-restricted-syntax": [
+        "error",
+        {
+          selector: "JSXOpeningElement[name.name=/^[a-z]/]",
+          message: APP_VIEW_BOUNDARY_MESSAGE,
+        },
+      ],
+      "no-restricted-imports": [
+        "error",
+        {
+          patterns: [
+            {
+              group: ["@seldon/core/**/services/**"],
+              message:
+                "Call Model services from a ViewModel hook (use-*.ts), not from a component.",
+            },
+          ],
+        },
+      ],
+    },
+  },
 ])
