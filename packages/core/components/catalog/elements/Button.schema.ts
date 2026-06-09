@@ -270,7 +270,7 @@ export const schema = {
           font: {
             preset: {
               type: Sdn.ValueType.THEME_CATEGORICAL,
-              value: "@font.normal",
+              value: "@font.label",
             },
             family: { type: Sdn.ValueType.EMPTY, value: null },
             style: { type: Sdn.ValueType.EMPTY, value: null },
@@ -342,7 +342,7 @@ export const schema = {
             font: {
               preset: {
                 type: Sdn.ValueType.THEME_CATEGORICAL,
-                value: "@font.normal",
+                value: "@font.label",
               },
               family: { type: Sdn.ValueType.EMPTY, value: null },
               style: { type: Sdn.ValueType.EMPTY, value: null },

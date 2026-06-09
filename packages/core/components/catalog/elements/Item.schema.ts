@@ -971,7 +971,7 @@ export const schema = {
               overrides: {
                 symbol: {
                   type: Sdn.ValueType.OPTION,
-                  value: "material-localAirport",
+                  value: "seldon-plus",
                 },
               },
             },
@@ -981,7 +981,7 @@ export const schema = {
               overrides: {
                 content: {
                   type: Sdn.ValueType.EXACT,
-                  value: "Travel",
+                  value: "Add",
                 },
               },
             },
@@ -1025,7 +1025,7 @@ export const schema = {
               overrides: {
                 symbol: {
                   type: Sdn.ValueType.OPTION,
-                  value: "material-ticket",
+                  value: "seldon-minus",
                 },
               },
             },
@@ -1035,7 +1035,7 @@ export const schema = {
               overrides: {
                 content: {
                   type: Sdn.ValueType.EXACT,
-                  value: "Attractions",
+                  value: "Remove",
                 },
               },
             },
