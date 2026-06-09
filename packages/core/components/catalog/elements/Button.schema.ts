@@ -217,10 +217,6 @@ export const schema = {
       {
         component: Seldon.ComponentId.ICON,
         overrides: {
-          display: {
-            type: Sdn.ValueType.OPTION,
-            value: Sdn.Display.SHOW,
-          },
           symbol: {
             type: Sdn.ValueType.OPTION,
             value: "__default__",
@@ -250,10 +246,6 @@ export const schema = {
         component: Seldon.ComponentId.TEXT,
         variant: "label",
         overrides: {
-          display: {
-            type: Sdn.ValueType.OPTION,
-            value: Sdn.Display.SHOW,
-          },
           content: {
             type: Sdn.ValueType.EXACT,
             value: "Button",
@@ -272,9 +264,6 @@ export const schema = {
               type: Sdn.ValueType.THEME_CATEGORICAL,
               value: "@font.label",
             },
-            family: { type: Sdn.ValueType.EMPTY, value: null },
-            style: { type: Sdn.ValueType.EMPTY, value: null },
-            weight: { type: Sdn.ValueType.EMPTY, value: null },
             size: {
               type: Sdn.ValueType.COMPUTED,
               value: {
@@ -285,8 +274,6 @@ export const schema = {
                 },
               },
             },
-            lineHeight: { type: Sdn.ValueType.EMPTY, value: null },
-            textCase: { type: Sdn.ValueType.EMPTY, value: null },
           },
         },
       },
@@ -322,10 +309,6 @@ export const schema = {
           component: Seldon.ComponentId.TEXT,
           variant: "label",
           overrides: {
-            display: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Display.SHOW,
-            },
             content: {
               type: Sdn.ValueType.EXACT,
               value: "Button",
@@ -344,9 +327,6 @@ export const schema = {
                 type: Sdn.ValueType.THEME_CATEGORICAL,
                 value: "@font.label",
               },
-              family: { type: Sdn.ValueType.EMPTY, value: null },
-              style: { type: Sdn.ValueType.EMPTY, value: null },
-              weight: { type: Sdn.ValueType.EMPTY, value: null },
               size: {
                 type: Sdn.ValueType.COMPUTED,
                 value: {
@@ -357,8 +337,6 @@ export const schema = {
                   },
                 },
               },
-              lineHeight: { type: Sdn.ValueType.EMPTY, value: null },
-              textCase: { type: Sdn.ValueType.EMPTY, value: null },
             },
           },
         },
@@ -392,10 +370,6 @@ export const schema = {
         {
           component: Seldon.ComponentId.ICON,
           overrides: {
-            display: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Display.SHOW,
-            },
             symbol: {
               type: Sdn.ValueType.OPTION,
               value: "__default__",
@@ -482,12 +456,6 @@ export const schema = {
               type: Sdn.ValueType.THEME_CATEGORICAL,
               value: "@swatch.swatch4",
             },
-            blendMode: { type: Sdn.ValueType.EMPTY, value: null },
-            image: { type: Sdn.ValueType.EMPTY, value: null },
-            position: { type: Sdn.ValueType.EMPTY, value: null },
-            size: { type: Sdn.ValueType.EMPTY, value: null },
-            repeat: { type: Sdn.ValueType.EMPTY, value: null },
-            filter: { type: Sdn.ValueType.EMPTY, value: null },
             brightness: {
               type: Sdn.ValueType.EXACT,
               value: {
@@ -677,11 +645,6 @@ export const schema = {
             type: Sdn.ValueType.THEME_CATEGORICAL,
             value: "@border.none",
           },
-          color: { type: Sdn.ValueType.EMPTY, value: null },
-          width: { type: Sdn.ValueType.EMPTY, value: null },
-          brightness: { type: Sdn.ValueType.EMPTY, value: null },
-          opacity: { type: Sdn.ValueType.EMPTY, value: null },
-          collapse: { type: Sdn.ValueType.EMPTY, value: null },
         },
       },
       children: [
@@ -764,12 +727,6 @@ export const schema = {
                   input: { basedOn: "#buttonSize", factor: 0.75 },
                 },
               },
-            },
-            corners: {
-              topLeft: { type: Sdn.ValueType.EMPTY, value: null },
-              topRight: { type: Sdn.ValueType.EMPTY, value: null },
-              bottomLeft: { type: Sdn.ValueType.EMPTY, value: null },
-              bottomRight: { type: Sdn.ValueType.EMPTY, value: null },
             },
           },
         },
