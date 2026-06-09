@@ -131,6 +131,7 @@ export const RowBoard = memo(function RowBoard({
         <RowNode
           key={variantId}
           nodeId={variantId}
+          rootId={variantId}
           show={show}
           parentIsSelected={boardIsActive}
           disableReordering={index === 0}

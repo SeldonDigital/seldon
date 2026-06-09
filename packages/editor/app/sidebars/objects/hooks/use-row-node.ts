@@ -11,7 +11,14 @@ import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node
 import { nodeSubtreeHasOverrides } from "@seldon/core/workspace/helpers/nodes/get-node-subtree-ids"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
 import type { EntryNode } from "@seldon/core/workspace/types"
-import { useSelection } from "@lib/workspace/hooks/use-selection"
+import {
+  useSelection,
+  useSelectedNodeRootId,
+} from "@lib/workspace/hooks/use-selection"
+import {
+  getSelectionTarget,
+  selectFromTarget,
+} from "@lib/workspace/selection-target"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useDebugMode } from "@lib/hooks/use-debug-mode"
 import { useEditorConfig } from "@lib/hooks/use-editor-config"
@@ -43,6 +50,7 @@ import { useSelectionRelations } from "./use-selection-relations"
 export function useRowNode(
   node: EntryNode,
   options?: {
+    rootId?: string
     show?: boolean
     parentIsSelected?: boolean
     disableReordering?: boolean
@@ -51,7 +59,13 @@ export function useRowNode(
 ) {
   const { workspace, dispatch } = useWorkspace({ usePreview: false })
   const { activeTool } = useTool()
-  const { selectNode } = useSelection()
+  const {
+    selectNode,
+    selectBoard,
+    selectResourceEntry,
+    selectResourceItem,
+  } = useSelection()
+  const selectedNodeRootId = useSelectedNodeRootId()
   const { selectedNodeId, parentOfSelectedNodeId, ancestorIdsOfSelected } =
     useSelectionRelations()
   const { showNodeIds } = useDebugMode()
@@ -63,6 +77,7 @@ export function useRowNode(
 
   const { isEditingName, setEditingName } = useEditState(node)
 
+  const rootId = options?.rootId
   const show = options?.show ?? true
   const parentIsSelected = options?.parentIsSelected ?? false
   const disableReordering = options?.disableReordering ?? false
@@ -78,7 +93,12 @@ export function useRowNode(
   const children = nodeExistsInWorkspace ? getNodeChildIds(node, workspace) : []
   const hasChildren = children.length > 0
 
-  const isSelected = selectedNodeId === node.id
+  // A child id is shared across variant columns, so match the selected copy by
+  // its path. Selections made without a path (e.g. a variant chosen
+  // programmatically) fall back to id-only matching.
+  const isSelected =
+    selectedNodeId === node.id &&
+    (selectedNodeRootId == null || selectedNodeRootId === rootId)
   const selectedNodeIsWithin = ancestorIdsOfSelected.has(node.id)
   const isParentOfSelectedNode = parentOfSelectedNodeId === node.id
   const isNodeActive =
@@ -103,9 +123,21 @@ export function useRowNode(
     hasChildren,
   })
 
+  // Resolve and dispatch the selection through the same shared path the canvas
+  // uses, so a sidebar click and a canvas click run identical logic.
   const onClick = useRowClick({
     activeTool,
-    onSelect: () => selectNode(node.id),
+    onSelect: (event) => {
+      const target = getSelectionTarget(event.target as Element)
+      if (target) {
+        selectFromTarget(target, {
+          selectNode,
+          selectBoard,
+          selectResourceEntry,
+          selectResourceItem,
+        })
+      }
+    },
     onSelectCallback: onSelect,
   })
 

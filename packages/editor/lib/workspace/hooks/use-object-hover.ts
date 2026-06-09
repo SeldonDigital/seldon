@@ -60,19 +60,31 @@ export const useHoveredKind = (): SelectionKind | null =>
 export const useHoveredRootId = (): string | null =>
   useStore((state) => state.hoveredRootId)
 
-/** Whether the given id is the hovered one. Only matching rows re-render. */
-export const useIsHovered = (id: string): boolean =>
-  useStore((state) => state.hoveredId === id)
+/**
+ * Whether the given copy is the hovered one. A child id is shared across
+ * variant columns, so the optional `rootId` path identifies the copy. Hovers
+ * recorded without a path (boards, resources) match by id alone. Only matching
+ * rows re-render.
+ */
+export const useIsHovered = (id: string, rootId?: string): boolean =>
+  useStore(
+    (state) =>
+      state.hoveredId === id &&
+      (state.hoveredRootId == null || state.hoveredRootId === rootId),
+  )
 
 /**
  * Shared row highlight style: selected border or hover background. Replaces the
- * per-row `useRowHover` so every row type highlights identically.
+ * per-row `useRowHover` so every row type highlights identically. Pass the
+ * copy's `rootId` path so a child id shared across columns highlights only the
+ * hovered copy.
  */
 export function useRowHighlightStyle(
   id: string,
   isSelected: boolean,
+  rootId?: string,
 ): CSSProperties {
-  const isHovered = useIsHovered(id)
+  const isHovered = useIsHovered(id, rootId)
   return useMemo(
     () => ({
       ...(isSelected

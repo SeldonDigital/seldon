@@ -88,6 +88,7 @@ export function ComponentBoard({ board }: ComponentBoardProps) {
                 (getBoardThemeRef(boardEntry) ?? "default") as ThemeInstanceId
               }
               parentNode={boardEntry}
+              rootPath={variantId}
               isRoot
             />
           )

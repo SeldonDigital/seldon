@@ -3,6 +3,12 @@ import { CSSProperties, ReactNode, Ref } from "react"
 interface SidebarRowProps {
   selectionId: string
   selectionKind: string
+  /**
+   * Node-id path of this copy, from the variant-root down to this row, joined
+   * by "/". Stamped as `data-selection-root-id` so the shared selection
+   * resolver can tell apart copies of a child id reused across variants.
+   */
+  selectionRootId?: string
   style?: CSSProperties
   /** When set, wraps children in a second positioned div. */
   innerStyle?: CSSProperties
@@ -17,6 +23,7 @@ interface SidebarRowProps {
 export function SidebarRow({
   selectionId,
   selectionKind,
+  selectionRootId,
   style,
   innerStyle,
   ref,
@@ -33,6 +40,7 @@ export function SidebarRow({
       style={style}
       data-selection-id={selectionId}
       data-selection-kind={selectionKind}
+      data-selection-root-id={selectionRootId}
     >
       {content}
     </div>

@@ -31,15 +31,15 @@ const RESOURCE_ENTRY_KIND_BY_SELECTION_KIND: Partial<
 
 export const SELECTION_ID_ATTR = "data-selection-id"
 export const SELECTION_KIND_ATTR = "data-selection-kind"
-const CANVAS_NODE_ID_ATTR = "data-canvas-node-id"
-const BOARD_ID_ATTR = "data-board-id"
+export const SELECTION_ROOT_ID_ATTR = "data-selection-root-id"
 
 /**
  * A resolved selection. For nodes, `rootId` is the ordered node-id path of the
- * element's column on the canvas, from the variant-root down to the element,
- * joined by "/". A child node id is shared both across variant columns and
- * across sibling copies inside one column, so the full path is what uniquely
- * identifies the clicked or hovered copy.
+ * copy, from the variant-root down to the node itself, joined by "/". A child
+ * node id is shared both across variant columns and across sibling copies
+ * inside one column, so the full path is what uniquely identifies the clicked
+ * or hovered copy. Both the canvas and the objects sidebar stamp this path on
+ * their selectable elements, so one code path resolves selection for both.
  */
 export type SelectionTarget = {
   id: string
@@ -48,30 +48,11 @@ export type SelectionTarget = {
 }
 
 /**
- * The ordered node-id path of the element's column, from the variant-root down
- * to the element itself, joined by "/". A child node id is shared across
- * variant columns and across sibling copies inside one column, so the full
- * ancestor path is what uniquely identifies the clicked or hovered copy on the
- * canvas. Returns null outside a board (for example sidebar rows), where the
- * canvas path does not apply.
- */
-export function getElementNodePath(element: HTMLElement): string | null {
-  const board = element.closest(`[${BOARD_ID_ATTR}]`)
-  if (!board) return null
-  const ids: string[] = []
-  let current: HTMLElement | null = element
-  while (current && current !== board) {
-    const id = current.getAttribute(CANVAS_NODE_ID_ATTR)
-    if (id) ids.push(id)
-    current = current.parentElement
-  }
-  if (ids.length === 0) return null
-  return ids.reverse().join("/")
-}
-
-/**
  * Resolves the selection target from an event target by walking up to the
- * nearest element tagged with `data-selection-id` / `data-selection-kind`.
+ * nearest element tagged with `data-selection-id` / `data-selection-kind`. For
+ * nodes, the copy's path is read from the `data-selection-root-id` attribute
+ * that the canvas and sidebar both stamp, so neither surface needs its own
+ * selection logic.
  */
 export function getSelectionTarget(
   element: Element | null,
@@ -82,7 +63,11 @@ export function getSelectionTarget(
   const kind = match.getAttribute(SELECTION_KIND_ATTR) as SelectionKind | null
   if (!id || !kind) return null
   if (kind === "node") {
-    return { id, kind, rootId: getElementNodePath(match) ?? undefined }
+    return {
+      id,
+      kind,
+      rootId: match.getAttribute(SELECTION_ROOT_ID_ATTR) ?? undefined,
+    }
   }
   return { id, kind }
 }

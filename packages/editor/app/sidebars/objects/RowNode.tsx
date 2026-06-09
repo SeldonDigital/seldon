@@ -25,6 +25,12 @@ const NODE_SELECTION_KIND = "node"
 
 interface RowNodeProps {
   nodeId: string
+  /**
+   * Node-id path of this copy, from the variant-root down to this row, joined
+   * by "/". Threaded so selection resolves the clicked copy of a child id that
+   * is shared across variant columns.
+   */
+  rootId: string
   node?: EntryNode
   show?: boolean
   parentIsSelected?: boolean
@@ -34,12 +40,14 @@ interface RowNodeProps {
 
 const RowNodeInner = memo(function RowNodeInner({
   node,
+  rootId,
   show,
   parentIsSelected,
   disableReordering,
   onSelect,
 }: {
   node: EntryNode
+  rootId: string
   show: boolean
   parentIsSelected: boolean
   disableReordering: boolean
@@ -65,14 +73,17 @@ const RowNodeInner = memo(function RowNodeInner({
     ref,
     properties,
   } = useRowNode(node, {
+    rootId,
     show,
     parentIsSelected,
     disableReordering,
     onSelect,
   })
 
-  const { rowStyle, iconColor, labelColor } = useSidebarRowStyling(node)
-  const hoverStyle = useRowHighlightStyle(node.id, isSelected)
+  const { rowStyle, iconColor, labelColor } = useSidebarRowStyling(node, {
+    isSelected,
+  })
+  const hoverStyle = useRowHighlightStyle(node.id, isSelected, rootId)
   const combinedRowStyle = { ...hoverStyle, ...rowStyle }
 
   const { handleCanvasTrackingEnter, handleCanvasTrackingLeave } =
@@ -131,6 +142,7 @@ const RowNodeInner = memo(function RowNodeInner({
           <RowNode
             key={childNodeId}
             nodeId={childNodeId}
+            rootId={`${rootId}/${childNodeId}`}
             show={show}
             parentIsSelected={isSelected}
             onSelect={onSelect}
@@ -147,6 +159,7 @@ const RowNodeInner = memo(function RowNodeInner({
         style={rowWrapperStyle}
         selectionId={node.id}
         selectionKind={NODE_SELECTION_KIND}
+        selectionRootId={rootId}
       >
         <SidebarTracking
           node={node}
@@ -185,6 +198,7 @@ const RowNodeInner = memo(function RowNodeInner({
 
 export const RowNode = memo(function RowNode({
   nodeId,
+  rootId,
   node: nodeProp,
   show = true,
   parentIsSelected = false,
@@ -199,6 +213,7 @@ export const RowNode = memo(function RowNode({
   return (
     <RowNodeInner
       node={node}
+      rootId={rootId}
       show={show}
       parentIsSelected={parentIsSelected}
       disableReordering={disableReordering}

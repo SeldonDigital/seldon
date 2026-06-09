@@ -34,11 +34,18 @@ export type CanvasNodeProps = {
   parentNode?: Variant | Instance | Board
   initialThemeId: ThemeInstanceId
   isRoot?: boolean
+  /**
+   * Node-id path of this copy, from the variant-root down to this node, joined
+   * by "/". Stamped as `data-selection-root-id` so a child id shared across
+   * columns resolves to the clicked copy. Defaults to the node id at a root.
+   */
+  rootPath?: string
 }
 export const CanvasNode = memo(function CanvasNode({
   nodeId,
   initialThemeId,
   isRoot = false,
+  rootPath,
 }: CanvasNodeProps) {
   const { workspace } = useWorkspace()
   const node = workspace.nodes[nodeId]
@@ -92,6 +99,7 @@ export const CanvasNode = memo(function CanvasNode({
   }
 
   const childNodeIds = getNodeChildIds(node, workspace)
+  const selfPath = rootPath ?? nodeId
   const board = findComponentForNode(node, workspace)
   const renderAsDiv =
     catalogComponentId === ComponentId.BUTTON &&
@@ -129,6 +137,7 @@ export const CanvasNode = memo(function CanvasNode({
           parentNode={node}
           nodeId={childNodeId as InstanceId | VariantId}
           initialThemeId={themeId as ThemeInstanceId}
+          rootPath={`${selfPath}/${childNodeId}`}
         />
       ))}
     </ComponentRenderer>
@@ -147,6 +156,7 @@ export const CanvasNode = memo(function CanvasNode({
       "data-canvas-selection-id": node.id,
       "data-selection-id": node.id,
       "data-selection-kind": "node",
+      "data-selection-root-id": selfPath,
       "data-component-id": componentId ?? "",
     }
 
