@@ -84,6 +84,7 @@ export function useMenuConfig(): HeaderConfig {
   const {
     exportWorkspaceToFile,
     exportSelectionToClipboard,
+    copySchemaJsonToClipboard,
     importWorkspaceFromFile,
     exportToFolder,
   } = useImportExport()
@@ -227,6 +228,12 @@ export function useMenuConfig(): HeaderConfig {
         action: exportSelectionToClipboard,
         visibleIn: ["edit", "preview"], // Not visible in project view
       },
+      {
+        id: "copy-schema-json",
+        label: "Copy Schema JSON",
+        action: copySchemaJsonToClipboard,
+        visibleIn: ["edit", "preview"],
+      },
       "separator",
       {
         id: "canvas-profiling",
@@ -289,6 +296,7 @@ export function useMenuConfig(): HeaderConfig {
   }, [
     addToast,
     exportSelectionToClipboard,
+    copySchemaJsonToClipboard,
     canvasProfiling,
     toggleCanvasProfiling,
     showNodeIds,

@@ -9,6 +9,11 @@ import { kebabCase } from "change-case"
 import { useCallback } from "react"
 import { workspacePropagationService } from "@seldon/core/workspace/services/propagation/workspace-propagation.service"
 import type { Workspace } from "@seldon/core/workspace/types"
+import {
+  buildDefaultSnippet,
+  buildVariantSnippet,
+} from "@lib/copy-schema/build-schema-snippet"
+import { serializeSchemaSnippet } from "@lib/copy-schema/serialize-schema-ts"
 import { useWorkspaceRecord } from "@lib/persistence/hooks/use-workspace-record"
 import { useWorkspaceId } from "@lib/project/hooks/use-workspace-id"
 import { useSelection } from "@lib/workspace/hooks/use-selection"
@@ -20,7 +25,7 @@ export function useImportExport() {
   const { record } = useWorkspaceRecord(workspaceId)
   const workspaceName = record?.name ?? "workspace"
   const { dispatch } = useWorkspace()
-  const { selection } = useSelection()
+  const { selection, selectedNode } = useSelection()
   const { workspace } = useWorkspace()
   const addToast = useAddToast()
 
@@ -43,6 +48,30 @@ export function useImportExport() {
     await navigator.clipboard.writeText(JSON.stringify(selection, null, 2))
     addToast("Selection copied to clipboard")
   }, [addToast, selection])
+
+  const copySchemaJsonToClipboard = useCallback(async () => {
+    if (!selectedNode) {
+      addToast("Select a default or variant to copy schema JSON")
+      return
+    }
+    if (selectedNode.type === "instance") {
+      addToast("Nested children cannot be copied as schema JSON")
+      return
+    }
+
+    const snippet =
+      selectedNode.type === "default"
+        ? buildDefaultSnippet(selectedNode, workspace)
+        : buildVariantSnippet(selectedNode, workspace)
+
+    if (!snippet) {
+      addToast("Could not resolve a catalog component for the selection")
+      return
+    }
+
+    await navigator.clipboard.writeText(serializeSchemaSnippet(snippet))
+    addToast("Schema JSON copied to clipboard")
+  }, [addToast, selectedNode, workspace])
 
   const importWorkspace = useCallback(
     async (tree: Workspace) => {
@@ -93,6 +122,7 @@ export function useImportExport() {
     importWorkspace,
     exportWorkspaceToFile,
     exportSelectionToClipboard,
+    copySchemaJsonToClipboard,
     exportToFolder,
   }
 }
