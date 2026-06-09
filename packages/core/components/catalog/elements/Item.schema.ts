@@ -1,10 +1,6 @@
-import * as Sdn from "../../../properties";
-import * as Seldon from "../../constants";
-import { ComponentExport, ComponentSchema } from "../../types";
-
-
-
-
+import * as Sdn from "../../../properties"
+import * as Seldon from "../../constants"
+import { ComponentExport, ComponentSchema } from "../../types"
 
 export const schema = {
   name: "Item",
@@ -582,14 +578,10 @@ export const schema = {
                     type: Sdn.ValueType.THEME_CATEGORICAL,
                     value: "@fontFamily.primary",
                   },
-                  style: { type: Sdn.ValueType.EMPTY, value: null },
-                  weight: { type: Sdn.ValueType.EMPTY, value: null },
                   size: {
                     type: Sdn.ValueType.THEME_ORDINAL,
                     value: "@fontSize.xsmall",
                   },
-                  lineHeight: { type: Sdn.ValueType.EMPTY, value: null },
-                  textCase: { type: Sdn.ValueType.EMPTY, value: null },
                 },
               },
             },

@@ -463,7 +463,6 @@ export const schema = {
                 value: 50,
               },
             },
-            opacity: { type: Sdn.ValueType.EMPTY, value: null },
           },
         ],
         border: {
@@ -471,7 +470,6 @@ export const schema = {
             type: Sdn.ValueType.THEME_CATEGORICAL,
             value: "@border.none",
           },
-          color: { type: Sdn.ValueType.EMPTY, value: null },
         },
       },
       children: [

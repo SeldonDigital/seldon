@@ -209,7 +209,6 @@ export const schema = {
           value: Sdn.InputType.CHECKBOX,
         },
         checked: { type: Sdn.ValueType.EXACT, value: false },
-        placeholder: { type: Sdn.ValueType.EMPTY, value: null },
         buttonSize: {
           type: Sdn.ValueType.THEME_ORDINAL,
           value: "@fontSize.medium",
@@ -276,7 +275,6 @@ export const schema = {
           value: Sdn.InputType.RADIO,
         },
         checked: { type: Sdn.ValueType.EXACT, value: false },
-        placeholder: { type: Sdn.ValueType.EMPTY, value: null },
         buttonSize: {
           type: Sdn.ValueType.THEME_ORDINAL,
           value: "@fontSize.medium",

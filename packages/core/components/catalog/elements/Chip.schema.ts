@@ -305,7 +305,6 @@ export const schema = {
           bottom: { type: Sdn.ValueType.EMPTY, value: null },
           left: { type: Sdn.ValueType.EMPTY, value: null },
         },
-        gap: { type: Sdn.ValueType.EMPTY, value: null },
       },
       children: [
         {
@@ -330,9 +329,6 @@ export const schema = {
                 type: Sdn.ValueType.THEME_CATEGORICAL,
                 value: "@font.normal",
               },
-              family: { type: Sdn.ValueType.EMPTY, value: null },
-              style: { type: Sdn.ValueType.EMPTY, value: null },
-              weight: { type: Sdn.ValueType.EMPTY, value: null },
               size: {
                 type: Sdn.ValueType.COMPUTED,
                 value: {
@@ -343,8 +339,6 @@ export const schema = {
                   },
                 },
               },
-              lineHeight: { type: Sdn.ValueType.EMPTY, value: null },
-              textCase: { type: Sdn.ValueType.EMPTY, value: null },
             },
           },
         },

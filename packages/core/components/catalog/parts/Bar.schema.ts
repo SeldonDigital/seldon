@@ -266,8 +266,6 @@ export const schema = {
           value: Sdn.Align.CENTER_LEFT,
         },
         position: {
-          top: { type: Sdn.ValueType.EMPTY, value: null },
-          right: { type: Sdn.ValueType.EMPTY, value: null },
           bottom: {
             type: Sdn.ValueType.EXACT,
             value: {
@@ -275,7 +273,6 @@ export const schema = {
               unit: Sdn.Unit.PX,
             },
           },
-          left: { type: Sdn.ValueType.EMPTY, value: null },
         },
         gap: {
           type: Sdn.ValueType.THEME_ORDINAL,
@@ -348,18 +345,10 @@ export const schema = {
                   type: Sdn.ValueType.THEME_CATEGORICAL,
                   value: "@background.none",
                 },
-                image: { type: Sdn.ValueType.EMPTY, value: null },
-                position: { type: Sdn.ValueType.EMPTY, value: null },
-                size: { type: Sdn.ValueType.EMPTY, value: null },
-                repeat: { type: Sdn.ValueType.EMPTY, value: null },
                 color: {
                   type: Sdn.ValueType.THEME_CATEGORICAL,
                   value: "@swatch.primary",
                 },
-                blendMode: { type: Sdn.ValueType.EMPTY, value: null },
-                filter: { type: Sdn.ValueType.EMPTY, value: null },
-                brightness: { type: Sdn.ValueType.EMPTY, value: null },
-                opacity: { type: Sdn.ValueType.EMPTY, value: null },
               },
             ],
             border: {
@@ -367,7 +356,6 @@ export const schema = {
                 type: Sdn.ValueType.THEME_CATEGORICAL,
                 value: "@border.normal",
               },
-              style: { type: Sdn.ValueType.EMPTY, value: null },
               color: {
                 type: Sdn.ValueType.COMPUTED,
                 value: {
@@ -377,10 +365,6 @@ export const schema = {
                   },
                 },
               },
-              width: { type: Sdn.ValueType.EMPTY, value: null },
-              brightness: { type: Sdn.ValueType.EMPTY, value: null },
-              opacity: { type: Sdn.ValueType.EMPTY, value: null },
-              collapse: { type: Sdn.ValueType.EMPTY, value: null },
             },
             corners: {
               topLeft: {
@@ -428,15 +412,10 @@ export const schema = {
                     type: Sdn.ValueType.THEME_CATEGORICAL,
                     value: "@font.normal",
                   },
-                  family: { type: Sdn.ValueType.EMPTY, value: null },
-                  style: { type: Sdn.ValueType.EMPTY, value: null },
-                  weight: { type: Sdn.ValueType.EMPTY, value: null },
                   size: {
                     type: Sdn.ValueType.THEME_ORDINAL,
                     value: "@fontSize.xsmall",
                   },
-                  lineHeight: { type: Sdn.ValueType.EMPTY, value: null },
-                  textCase: { type: Sdn.ValueType.EMPTY, value: null },
                 },
               },
             },
@@ -477,18 +456,10 @@ export const schema = {
                   type: Sdn.ValueType.THEME_CATEGORICAL,
                   value: "@background.none",
                 },
-                image: { type: Sdn.ValueType.EMPTY, value: null },
-                position: { type: Sdn.ValueType.EMPTY, value: null },
-                size: { type: Sdn.ValueType.EMPTY, value: null },
-                repeat: { type: Sdn.ValueType.EMPTY, value: null },
                 color: {
                   type: Sdn.ValueType.OPTION,
                   value: Sdn.Color.TRANSPARENT,
                 },
-                blendMode: { type: Sdn.ValueType.EMPTY, value: null },
-                filter: { type: Sdn.ValueType.EMPTY, value: null },
-                brightness: { type: Sdn.ValueType.EMPTY, value: null },
-                opacity: { type: Sdn.ValueType.EMPTY, value: null },
               },
             ],
             border: {
@@ -496,7 +467,6 @@ export const schema = {
                 type: Sdn.ValueType.THEME_CATEGORICAL,
                 value: "@border.normal",
               },
-              style: { type: Sdn.ValueType.EMPTY, value: null },
               color: {
                 type: Sdn.ValueType.COMPUTED,
                 value: {
@@ -506,10 +476,6 @@ export const schema = {
                   },
                 },
               },
-              width: { type: Sdn.ValueType.EMPTY, value: null },
-              brightness: { type: Sdn.ValueType.EMPTY, value: null },
-              opacity: { type: Sdn.ValueType.EMPTY, value: null },
-              collapse: { type: Sdn.ValueType.EMPTY, value: null },
             },
             corners: {
               topLeft: {
@@ -557,15 +523,10 @@ export const schema = {
                     type: Sdn.ValueType.THEME_CATEGORICAL,
                     value: "@font.normal",
                   },
-                  family: { type: Sdn.ValueType.EMPTY, value: null },
-                  style: { type: Sdn.ValueType.EMPTY, value: null },
-                  weight: { type: Sdn.ValueType.EMPTY, value: null },
                   size: {
                     type: Sdn.ValueType.THEME_ORDINAL,
                     value: "@fontSize.xsmall",
                   },
-                  lineHeight: { type: Sdn.ValueType.EMPTY, value: null },
-                  textCase: { type: Sdn.ValueType.EMPTY, value: null },
                 },
               },
             },
@@ -606,18 +567,10 @@ export const schema = {
                   type: Sdn.ValueType.THEME_CATEGORICAL,
                   value: "@background.none",
                 },
-                image: { type: Sdn.ValueType.EMPTY, value: null },
-                position: { type: Sdn.ValueType.EMPTY, value: null },
-                size: { type: Sdn.ValueType.EMPTY, value: null },
-                repeat: { type: Sdn.ValueType.EMPTY, value: null },
                 color: {
                   type: Sdn.ValueType.OPTION,
                   value: Sdn.Color.TRANSPARENT,
                 },
-                blendMode: { type: Sdn.ValueType.EMPTY, value: null },
-                filter: { type: Sdn.ValueType.EMPTY, value: null },
-                brightness: { type: Sdn.ValueType.EMPTY, value: null },
-                opacity: { type: Sdn.ValueType.EMPTY, value: null },
               },
             ],
             border: {
@@ -625,7 +578,6 @@ export const schema = {
                 type: Sdn.ValueType.THEME_CATEGORICAL,
                 value: "@border.normal",
               },
-              style: { type: Sdn.ValueType.EMPTY, value: null },
               color: {
                 type: Sdn.ValueType.COMPUTED,
                 value: {
@@ -635,10 +587,6 @@ export const schema = {
                   },
                 },
               },
-              width: { type: Sdn.ValueType.EMPTY, value: null },
-              brightness: { type: Sdn.ValueType.EMPTY, value: null },
-              opacity: { type: Sdn.ValueType.EMPTY, value: null },
-              collapse: { type: Sdn.ValueType.EMPTY, value: null },
             },
             corners: {
               topLeft: {
@@ -686,15 +634,10 @@ export const schema = {
                     type: Sdn.ValueType.THEME_CATEGORICAL,
                     value: "@font.normal",
                   },
-                  family: { type: Sdn.ValueType.EMPTY, value: null },
-                  style: { type: Sdn.ValueType.EMPTY, value: null },
-                  weight: { type: Sdn.ValueType.EMPTY, value: null },
                   size: {
                     type: Sdn.ValueType.THEME_ORDINAL,
                     value: "@fontSize.xsmall",
                   },
-                  lineHeight: { type: Sdn.ValueType.EMPTY, value: null },
-                  textCase: { type: Sdn.ValueType.EMPTY, value: null },
                 },
               },
             },
@@ -735,18 +678,10 @@ export const schema = {
                   type: Sdn.ValueType.THEME_CATEGORICAL,
                   value: "@background.none",
                 },
-                image: { type: Sdn.ValueType.EMPTY, value: null },
-                position: { type: Sdn.ValueType.EMPTY, value: null },
-                size: { type: Sdn.ValueType.EMPTY, value: null },
-                repeat: { type: Sdn.ValueType.EMPTY, value: null },
                 color: {
                   type: Sdn.ValueType.OPTION,
                   value: Sdn.Color.TRANSPARENT,
                 },
-                blendMode: { type: Sdn.ValueType.EMPTY, value: null },
-                filter: { type: Sdn.ValueType.EMPTY, value: null },
-                brightness: { type: Sdn.ValueType.EMPTY, value: null },
-                opacity: { type: Sdn.ValueType.EMPTY, value: null },
               },
             ],
             border: {
@@ -754,7 +689,6 @@ export const schema = {
                 type: Sdn.ValueType.THEME_CATEGORICAL,
                 value: "@border.normal",
               },
-              style: { type: Sdn.ValueType.EMPTY, value: null },
               color: {
                 type: Sdn.ValueType.COMPUTED,
                 value: {
@@ -764,10 +698,6 @@ export const schema = {
                   },
                 },
               },
-              width: { type: Sdn.ValueType.EMPTY, value: null },
-              brightness: { type: Sdn.ValueType.EMPTY, value: null },
-              opacity: { type: Sdn.ValueType.EMPTY, value: null },
-              collapse: { type: Sdn.ValueType.EMPTY, value: null },
             },
             corners: {
               topLeft: {
@@ -815,15 +745,10 @@ export const schema = {
                     type: Sdn.ValueType.THEME_CATEGORICAL,
                     value: "@font.normal",
                   },
-                  family: { type: Sdn.ValueType.EMPTY, value: null },
-                  style: { type: Sdn.ValueType.EMPTY, value: null },
-                  weight: { type: Sdn.ValueType.EMPTY, value: null },
                   size: {
                     type: Sdn.ValueType.THEME_ORDINAL,
                     value: "@fontSize.xsmall",
                   },
-                  lineHeight: { type: Sdn.ValueType.EMPTY, value: null },
-                  textCase: { type: Sdn.ValueType.EMPTY, value: null },
                 },
               },
             },
@@ -864,18 +789,10 @@ export const schema = {
                   type: Sdn.ValueType.THEME_CATEGORICAL,
                   value: "@background.none",
                 },
-                image: { type: Sdn.ValueType.EMPTY, value: null },
-                position: { type: Sdn.ValueType.EMPTY, value: null },
-                size: { type: Sdn.ValueType.EMPTY, value: null },
-                repeat: { type: Sdn.ValueType.EMPTY, value: null },
                 color: {
                   type: Sdn.ValueType.OPTION,
                   value: Sdn.Color.TRANSPARENT,
                 },
-                blendMode: { type: Sdn.ValueType.EMPTY, value: null },
-                filter: { type: Sdn.ValueType.EMPTY, value: null },
-                brightness: { type: Sdn.ValueType.EMPTY, value: null },
-                opacity: { type: Sdn.ValueType.EMPTY, value: null },
               },
             ],
             border: {
@@ -883,7 +800,6 @@ export const schema = {
                 type: Sdn.ValueType.THEME_CATEGORICAL,
                 value: "@border.normal",
               },
-              style: { type: Sdn.ValueType.EMPTY, value: null },
               color: {
                 type: Sdn.ValueType.COMPUTED,
                 value: {
@@ -893,10 +809,6 @@ export const schema = {
                   },
                 },
               },
-              width: { type: Sdn.ValueType.EMPTY, value: null },
-              brightness: { type: Sdn.ValueType.EMPTY, value: null },
-              opacity: { type: Sdn.ValueType.EMPTY, value: null },
-              collapse: { type: Sdn.ValueType.EMPTY, value: null },
             },
             corners: {
               topLeft: {
@@ -944,15 +856,10 @@ export const schema = {
                     type: Sdn.ValueType.THEME_CATEGORICAL,
                     value: "@font.normal",
                   },
-                  family: { type: Sdn.ValueType.EMPTY, value: null },
-                  style: { type: Sdn.ValueType.EMPTY, value: null },
-                  weight: { type: Sdn.ValueType.EMPTY, value: null },
                   size: {
                     type: Sdn.ValueType.THEME_ORDINAL,
                     value: "@fontSize.xsmall",
                   },
-                  lineHeight: { type: Sdn.ValueType.EMPTY, value: null },
-                  textCase: { type: Sdn.ValueType.EMPTY, value: null },
                 },
               },
             },
@@ -998,16 +905,10 @@ export const schema = {
               type: Sdn.ValueType.THEME_CATEGORICAL,
               value: "@background.none",
             },
-            image: { type: Sdn.ValueType.EMPTY, value: null },
-            position: { type: Sdn.ValueType.EMPTY, value: null },
-            size: { type: Sdn.ValueType.EMPTY, value: null },
-            repeat: { type: Sdn.ValueType.EMPTY, value: null },
             color: {
               type: Sdn.ValueType.THEME_CATEGORICAL,
               value: "@swatch.primary",
             },
-            blendMode: { type: Sdn.ValueType.EMPTY, value: null },
-            filter: { type: Sdn.ValueType.EMPTY, value: null },
             brightness: {
               type: Sdn.ValueType.EXACT,
               value: {
@@ -1015,7 +916,6 @@ export const schema = {
                 value: 35,
               },
             },
-            opacity: { type: Sdn.ValueType.EMPTY, value: null },
           },
         ],
       },
