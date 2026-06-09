@@ -36,6 +36,7 @@ import { boardOrderService } from "../components/board-order.service"
 import { workspaceMutationService } from "../mutation/workspace-mutation.service"
 import {
   collectDescendantTreeIds,
+  collectReferencedTreeIdsExcludingSubtree,
   insertComponentTreeChild,
   removeComponentTreeChild,
   findTreeRef,
@@ -363,7 +364,16 @@ export class NodeOperationsService {
       }
     }
 
+    // Schema instantiation shares one node across sibling trees when their slot
+    // fingerprints match, so a descendant may still be referenced by a tree
+    // outside the subtree being deleted. Keep those rows to avoid dangling refs.
+    const referencedElsewhere = collectReferencedTreeIdsExcludingSubtree(
+      Object.values(draftWorkspace.boards),
+      nodeId,
+    )
+
     for (const id of idsToDelete) {
+      if (referencedElsewhere.has(id)) continue
       if (draftWorkspace.nodes[id]) {
         delete draftWorkspace.nodes[id]
       }

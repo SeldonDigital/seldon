@@ -13,6 +13,33 @@ export function collectDescendantTreeIds(ref: ComponentTreeRef): EntryNodeId[] {
   return ids
 }
 
+/**
+ * Collects every node id referenced by board trees, skipping the subtree rooted
+ * at `excludedRootId`. Schema instantiation can share one workspace node across
+ * sibling trees through fingerprint-based instance reuse, so deleting a subtree
+ * must keep node rows that other trees still reference.
+ */
+export function collectReferencedTreeIdsExcludingSubtree(
+  boards: Iterable<Board | undefined>,
+  excludedRootId: EntryNodeId,
+): Set<EntryNodeId> {
+  const ids = new Set<EntryNodeId>()
+  const visit = (ref: ComponentTreeRef): void => {
+    if (ref.id === excludedRootId) return
+    ids.add(ref.id)
+    for (const child of ref.children ?? []) {
+      visit(child)
+    }
+  }
+  for (const board of boards) {
+    if (!board) continue
+    for (const ref of board.variants) {
+      visit(ref)
+    }
+  }
+  return ids
+}
+
 export function insertComponentTreeChild(
   board: Board,
   parentId: EntryNodeId,
