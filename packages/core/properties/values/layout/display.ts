@@ -26,13 +26,16 @@ export type DisplayValue = EmptyValue | DisplayExactValue | DisplayOptionValue
 
 export const displaySchema: PropertySchema = {
   name: "display",
-  description: "Controls whether the element shows, stays hidden, or is excluded from the tree.",
+  description:
+    "Controls whether the element shows, stays hidden, or is excluded from the tree.",
   supports: ["empty", "inherit", "exact", "option"] as const,
   validation: {
     empty: () => true,
     inherit: () => true,
-    exact: (value: any) => typeof value === "string" && value.length > 0,
-    option: (value: any) => Object.values(Display).includes(value),
+    exact: (value: unknown) => typeof value === "string" && value.length > 0,
+    option: (value: unknown) =>
+      typeof value === "string" &&
+      (Object.values(Display) as string[]).includes(value),
   },
   presetOptions: () => Object.values(Display),
 }

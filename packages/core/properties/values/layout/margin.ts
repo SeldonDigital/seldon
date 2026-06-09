@@ -51,9 +51,12 @@ export const marginSchema: PropertySchema = {
   validation: {
     empty: () => true,
     inherit: () => true,
-    exact: (value: any) => {
+    exact: (value: unknown) => {
       if (
         typeof value === "object" &&
+        value !== null &&
+        "value" in value &&
+        "unit" in value &&
         value.value !== undefined &&
         value.unit !== undefined
       )
@@ -61,10 +64,12 @@ export const marginSchema: PropertySchema = {
       if (typeof value === "number" && value >= 0) return true
       return false
     },
-    option: (value: any) => Object.values(Margin).includes(value),
-    themeOrdinal: (value: any, theme?: Theme) => {
+    option: (value: unknown) =>
+      typeof value === "string" &&
+      (Object.values(Margin) as string[]).includes(value),
+    themeOrdinal: (value: unknown, theme?: Theme) => {
       if (!theme) return false
-      return value in theme.margin
+      return typeof value === "string" && value in theme.margin
     },
   },
   presetOptions: () => Object.values(Margin),

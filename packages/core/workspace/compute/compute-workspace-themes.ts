@@ -17,7 +17,7 @@ interface WorkspaceThemeEntry {
   overrides?: Record<string, unknown>
 }
 
-type WorkspaceThemeEntries = Record<string, WorkspaceThemeEntry>
+export type WorkspaceThemeEntries = Record<string, WorkspaceThemeEntry>
 
 interface WorkspaceThemeSource {
   themes?: WorkspaceThemeEntries

@@ -17,7 +17,8 @@ export type PositionSideValue = EmptyValue | PixelValue | RemValue
 
 export const positionSchema: PropertySchema = {
   name: "position",
-  description: "Sets inset offsets on top, right, bottom, and left for positioned layout.",
+  description:
+    "Sets inset offsets on top, right, bottom, and left for positioned layout.",
   supports: ["empty", "inherit", "exact"] as const,
   units: {
     allowed: [Unit.PX, Unit.REM],
@@ -27,9 +28,12 @@ export const positionSchema: PropertySchema = {
   validation: {
     empty: () => true,
     inherit: () => true,
-    exact: (value: any) => {
+    exact: (value: unknown) => {
       if (
         typeof value === "object" &&
+        value !== null &&
+        "value" in value &&
+        "unit" in value &&
         value.value !== undefined &&
         value.unit !== undefined
       )

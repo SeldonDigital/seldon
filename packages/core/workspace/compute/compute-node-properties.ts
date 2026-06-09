@@ -18,6 +18,7 @@ import { parseNodeTemplate, parseThemeTemplate } from "../model/template-ref"
 import type { Board } from "../types"
 import type { EntryNode, Workspace } from "../types"
 import { getComputedTheme } from "./compute-workspace-themes"
+import type { WorkspaceThemeEntries } from "./compute-workspace-themes"
 
 type NodeRecord = Record<string, WorkspaceNode>
 type BoardRecord = Record<string, WorkspaceComponent>
@@ -49,7 +50,7 @@ interface WorkspacePropertySource {
   byId?: NodeRecord
   nodes?: NodeRecord
   boards?: BoardRecord
-  themes?: any
+  themes?: WorkspaceThemeEntries
 }
 
 export interface ComputeNodePropertiesOptions {

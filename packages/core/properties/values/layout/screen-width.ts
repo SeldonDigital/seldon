@@ -33,9 +33,12 @@ export const screenWidthSchema: PropertySchema = {
   },
   validation: {
     empty: () => true,
-    exact: (value: any) => {
+    exact: (value: unknown) => {
       if (
         typeof value === "object" &&
+        value !== null &&
+        "value" in value &&
+        "unit" in value &&
         value.value !== undefined &&
         value.unit !== undefined
       )
@@ -47,8 +50,11 @@ export const screenWidthSchema: PropertySchema = {
       typeof value === "string" &&
       ((Object.values(Resize) as string[]).includes(value) ||
         (Object.values(ScreenSize) as string[]).includes(value)),
-    computed: (value: any) =>
-      typeof value === "object" && value.function !== undefined,
+    computed: (value: unknown) =>
+      typeof value === "object" &&
+      value !== null &&
+      "function" in value &&
+      value.function !== undefined,
   },
   presetOptions: () => [...Object.values(Resize), ...Object.values(ScreenSize)],
   computedFunctions: () => [ComputedFunction.AUTO_FIT],

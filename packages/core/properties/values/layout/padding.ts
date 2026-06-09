@@ -62,9 +62,12 @@ export const paddingSchema: PropertySchema = {
   validation: {
     empty: () => true,
     inherit: () => true,
-    exact: (value: any) => {
+    exact: (value: unknown) => {
       if (
         typeof value === "object" &&
+        value !== null &&
+        "value" in value &&
+        "unit" in value &&
         value.value !== undefined &&
         value.unit !== undefined
       )
@@ -72,12 +75,17 @@ export const paddingSchema: PropertySchema = {
       if (typeof value === "number" && value >= 0) return true
       return false
     },
-    option: (value: any) => Object.values(Padding).includes(value),
-    computed: (value: any) =>
-      typeof value === "object" && value.function !== undefined,
-    themeOrdinal: (value: any, theme?: Theme) => {
+    option: (value: unknown) =>
+      typeof value === "string" &&
+      (Object.values(Padding) as string[]).includes(value),
+    computed: (value: unknown) =>
+      typeof value === "object" &&
+      value !== null &&
+      "function" in value &&
+      value.function !== undefined,
+    themeOrdinal: (value: unknown, theme?: Theme) => {
       if (!theme) return false
-      return value in theme.padding
+      return typeof value === "string" && value in theme.padding
     },
   },
   presetOptions: () => Object.values(Padding),

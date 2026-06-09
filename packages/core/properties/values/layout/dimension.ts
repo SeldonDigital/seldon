@@ -56,9 +56,12 @@ export const dimensionSchema: PropertySchema = {
   validation: {
     empty: () => true,
     inherit: () => true,
-    exact: (value: any) => {
+    exact: (value: unknown) => {
       if (
         typeof value === "object" &&
+        value !== null &&
+        "value" in value &&
+        "unit" in value &&
         value.value !== undefined &&
         value.unit !== undefined
       )
@@ -66,12 +69,17 @@ export const dimensionSchema: PropertySchema = {
       if (typeof value === "number" && value > 0) return true
       return false
     },
-    option: (value: any) => Object.values(Resize).includes(value),
-    computed: (value: any) =>
-      typeof value === "object" && value.function !== undefined,
-    themeOrdinal: (value: any, theme?: Theme) => {
+    option: (value: unknown) =>
+      typeof value === "string" &&
+      (Object.values(Resize) as string[]).includes(value),
+    computed: (value: unknown) =>
+      typeof value === "object" &&
+      value !== null &&
+      "function" in value &&
+      value.function !== undefined,
+    themeOrdinal: (value: unknown, theme?: Theme) => {
       if (!theme) return false
-      return value in theme.dimension
+      return typeof value === "string" && value in theme.dimension
     },
   },
   presetOptions: () => Object.values(Resize),

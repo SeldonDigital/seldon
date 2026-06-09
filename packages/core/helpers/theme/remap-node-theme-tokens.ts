@@ -1,5 +1,6 @@
 import { WritableDraft } from "immer"
 import { isEqual } from "lodash"
+
 import { isComponentId } from "../../components/constants"
 import { Workspace } from "../../index"
 import { ValueType } from "../../properties"
@@ -13,15 +14,15 @@ import { HSL } from "../../properties/values/shared/exact/hsl"
 import { TokenType } from "../../themes/constants/token-type"
 import { Theme, ThemeInstanceId, ThemeOption } from "../../themes/types"
 import type { ThemeFontFamilyToken } from "../../themes/values"
-import { getChildrenIds } from "../../workspace/helpers/components/get-children-ids"
-import { getBoardByNodeId } from "../../workspace/helpers/components/get-board-by-node-id"
-import { parseNodeCatalog } from "../../workspace/model/template-ref"
 import { getEffectiveNodeProperties } from "../../workspace/compute"
+import { getBoardByNodeId } from "../../workspace/helpers/components/get-board-by-node-id"
+import { getChildrenIds } from "../../workspace/helpers/components/get-children-ids"
+import type { EntryNode } from "../../workspace/model/entry-node"
+import { parseNodeCatalog } from "../../workspace/model/template-ref"
 import {
   nodeRetrievalService,
   workspaceThemeService,
 } from "../../workspace/services"
-import type { EntryNode } from "../../workspace/model/entry-node"
 import { InstanceId, VariantId } from "../../workspace/types"
 import { isCompoundProperty } from "../type-guards/compound/is-compound-property"
 import { isThemeValue } from "../type-guards/value/is-theme-value"
@@ -203,7 +204,7 @@ function remapSwatchValue(context: RemapContext): boolean {
     return false
   }
 
-  if (SWATCH_PRESET_SLOTS.includes(optionId as any)) {
+  if ((SWATCH_PRESET_SLOTS as readonly string[]).includes(optionId)) {
     const newThemeEntries = Object.entries(
       newTheme[section as keyof Theme],
     ) as [string, ThemeOption][]
@@ -300,7 +301,12 @@ export function remapNodeThemeTokens(
     const propertyKey = key as PropertyKey
 
     if (isCompoundProperty(propertyKey)) {
-      remapCompoundThemeTokens(value, { currentTheme, newTheme, node, propertyKey })
+      remapCompoundThemeTokens(value, {
+        currentTheme,
+        newTheme,
+        node,
+        propertyKey,
+      })
     } else if (isThemeValue(value as Value)) {
       remapThemeToken({
         value: value as ThemeValue,
@@ -317,7 +323,8 @@ export function remapNodeThemeTokens(
 
   const catalogParsed = parseNodeCatalog(node.template)
   const componentId =
-    catalogParsed?.kind === "catalog" && isComponentId(catalogParsed.componentId)
+    catalogParsed?.kind === "catalog" &&
+    isComponentId(catalogParsed.componentId)
       ? catalogParsed.componentId
       : undefined
 

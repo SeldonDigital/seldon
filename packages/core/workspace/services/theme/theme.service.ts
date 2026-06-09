@@ -1,6 +1,11 @@
 import { invariant } from "../../../helpers/utils/invariant"
-import { Theme, ThemeCustomSwatchId, ThemeInstanceId } from "../../../themes/types"
+import {
+  Theme,
+  ThemeCustomSwatchId,
+  ThemeInstanceId,
+} from "../../../themes/types"
 import { computeWorkspaceThemes, getComputedTheme } from "../../compute"
+import { getBoardThemeRef } from "../../helpers/components/get-board-theme-ref"
 import {
   Board,
   Instance,
@@ -9,7 +14,6 @@ import {
   VariantId,
   Workspace,
 } from "../../types"
-import { getBoardThemeRef } from "../../helpers/components/get-board-theme-ref"
 import { nodeRelationshipService } from "../nodes/node-relationship.service"
 import { nodeRetrievalService } from "../nodes/node-retrieval.service"
 import { nodeTraversalService } from "../nodes/node-traversal.service"
@@ -68,11 +72,20 @@ export class WorkspaceThemeService {
         return currentNode.theme as ThemeInstanceId
       }
 
-      currentNode = nodeTraversalService.findParentNode(currentNode.id, workspace)
+      currentNode = nodeTraversalService.findParentNode(
+        currentNode.id,
+        workspace,
+      )
     }
 
-    const rootNode = nodeRelationshipService.getRootVariant(childNode, workspace)
-    const board = nodeRelationshipService.findBoardForVariant(rootNode, workspace)
+    const rootNode = nodeRelationshipService.getRootVariant(
+      childNode,
+      workspace,
+    )
+    const board = nodeRelationshipService.findBoardForVariant(
+      rootNode,
+      workspace,
+    )
 
     invariant(board, `Unable to find board for variant ${rootNode.id}`)
 
@@ -104,7 +117,7 @@ export class WorkspaceThemeService {
     themeId: ThemeInstanceId | string,
     workspace: Workspace,
   ): Theme {
-    return getComputedTheme(themeId, workspace as any)
+    return getComputedTheme(themeId, workspace as never)
   }
 
   /**
@@ -113,7 +126,7 @@ export class WorkspaceThemeService {
    * @returns Array of all themes
    */
   public getThemes(workspace: Workspace): Theme[] {
-    return computeWorkspaceThemes(workspace as any)
+    return computeWorkspaceThemes(workspace as never)
   }
 
   /**
@@ -132,7 +145,9 @@ export class WorkspaceThemeService {
     if (customIds.length === 0) return "custom1"
 
     const sortedIds = customIds.sort((a, b) => {
-      return parseInt(a.replace("custom", "")) - parseInt(b.replace("custom", ""))
+      return (
+        parseInt(a.replace("custom", "")) - parseInt(b.replace("custom", ""))
+      )
     })
 
     const highest = parseInt(sortedIds.at(-1)!.replace("custom", ""))

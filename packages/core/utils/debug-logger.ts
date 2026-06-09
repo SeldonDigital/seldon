@@ -102,7 +102,7 @@ function formatMessage(
  * Format data object for display
  * Removes outer braces and adds proper spacing
  */
-function formatData(data?: any): string {
+function formatData(data?: DebugPayload): string {
   if (data === undefined) return ""
 
   if (typeof data === "object" && data !== null) {
@@ -260,7 +260,9 @@ export function testDebugLogger(): void {
     console.log("Debug logger is working.")
   } else {
     if (isBrowser) {
-      console.log("Debug logger is disabled. Enable it via Help > Enable Debug Mode.")
+      console.log(
+        "Debug logger is disabled. Enable it via Help > Enable Debug Mode.",
+      )
     } else {
       console.log("Debug logger is disabled. Enable it with DEBUG_MODE=true.")
       console.log("Example: DEBUG_MODE=true npm run dev")

@@ -4,8 +4,8 @@ declare global {
   interface Window {
     __REDUX_DEVTOOLS_EXTENSION__?: {
       connect: (options?: { name?: string }) => {
-        init: (state: any) => void
-        send: (action: any, state: any) => void
+        init: (state: Workspace) => void
+        send: (action: Action, state: Workspace) => void
       }
     }
   }
@@ -14,8 +14,8 @@ declare global {
 /** Redux DevTools connection instance for debugging workspace state changes */
 let devTools:
   | {
-      init: (state: any) => void
-      send: (action: any, state: any) => void
+      init: (state: Workspace) => void
+      send: (action: Action, state: Workspace) => void
     }
   | undefined
 

@@ -15,11 +15,13 @@ export default defineConfig([
   {
     rules: {
       "@typescript-eslint/no-non-null-assertion": "off",
-      "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
-      // Sanctioned by the engineering rules: `any` is allowed at boundaries, and
-      // ordinal token enums intentionally share values. Kept as warnings so the
-      // baseline stays non-blocking while remaining visible.
-      "@typescript-eslint/no-explicit-any": "warn",
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        { argsIgnorePattern: "^_" },
+      ],
+      "@typescript-eslint/no-explicit-any": "error",
+      // Ordinal token enums intentionally share values across scales, so this
+      // stays a warning while the rest of the baseline is error-clean.
       "@typescript-eslint/no-duplicate-enum-values": "warn",
     },
   },

@@ -15,7 +15,7 @@ import { typeCheckingService } from "../type-checking/type-checking.service"
 
 export type OperationResult<T = void> =
   | Workspace
-  | (Record<string, any> & { workspace: Workspace; data?: T })
+  | (Record<string, unknown> & { workspace: Workspace; data?: T })
 
 type ApplyOperation<OpResult extends OperationResult> = (
   node: Variant | Instance,
