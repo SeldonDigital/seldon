@@ -26,7 +26,10 @@ import { getInitialBoardComponentProperties } from "../../../helpers/components/
 import { getInstantiationOptionsForComponent } from "../../../helpers/nodes/collect-component-instantiation-plans"
 import { buildComponentAddPlan } from "../../../helpers/nodes/component-add-plan"
 import { resolveSchemaChild } from "../../../helpers/nodes/resolve-schema-child"
-import { applyVariantFallbackToSlot } from "../../../helpers/nodes/schema-composition-children"
+import {
+  applyVariantFallbackToSlot,
+  mergeInlineSlotOverrides,
+} from "../../../helpers/nodes/schema-composition-children"
 import { getSchemaSlotFingerprint } from "../../../helpers/nodes/schema-slot-fingerprint"
 import { WORKSPACE_EDITABLE_THEME_ENTRY_ID } from "../../../helpers/themes/workspace-editable-theme"
 import { isComponentBoard } from "../../../model/components"
@@ -216,14 +219,23 @@ function instantiateSchemaChildrenFromSlots(
     if (!registerToWriteTo.children) registerToWriteTo.children = []
     registerToWriteTo.children.push(newChild)
 
+    // Effective slots arrive pre-merged; only the raw schema fallback slots
+    // taken for a childless slot still need their own merge pass.
     const childSlots: SchemaChild[] = resolvedSlot.children?.length
       ? resolvedSlot.children
-      : resolvedChild.fallbackChildren
+      : resolvedChild.fallbackChildren.map((fallbackSlot) =>
+          mergeInlineSlotOverrides(fallbackSlot, options.variantFallbacks),
+        )
 
     childSlots.forEach((childSlot) => instantiateFromSlot(newChild, childSlot))
   }
 
-  slots.forEach((slot) => instantiateFromSlot(register, slot))
+  slots.forEach((slot) =>
+    instantiateFromSlot(
+      register,
+      mergeInlineSlotOverrides(slot, options.variantFallbacks),
+    ),
+  )
 }
 
 function instantiateVariantTree(

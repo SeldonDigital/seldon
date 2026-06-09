@@ -20,7 +20,6 @@ import { ThemeInstanceId } from "@seldon/core/themes/types"
 import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
 import { workspaceThemeService } from "@seldon/core/workspace/services/theme/theme.service"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
-import { buildRenderParentIndex } from "@lib/workspace/render-parent-index"
 import { useAddNodeFontFamily } from "./hooks/use-add-node-font-family"
 import { collectDescendantNodeIds } from "@lib/workspace/component-tree"
 import {
@@ -28,6 +27,7 @@ import {
   getNodeCatalogComponentId,
   getNodeChildIds,
 } from "@lib/workspace/node-tree"
+import { buildRenderParentIndex } from "@lib/workspace/render-parent-index"
 import { ComponentRenderer } from "./ComponentRenderer"
 
 export type CanvasNodeProps = {

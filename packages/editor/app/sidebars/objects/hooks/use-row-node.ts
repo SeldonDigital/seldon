@@ -12,13 +12,9 @@ import { nodeSubtreeHasOverrides } from "@seldon/core/workspace/helpers/nodes/ge
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
 import type { EntryNode } from "@seldon/core/workspace/types"
 import {
-  useSelection,
   useSelectedNodeRootId,
+  useSelection,
 } from "@lib/workspace/hooks/use-selection"
-import {
-  getSelectionTarget,
-  selectFromTarget,
-} from "@lib/workspace/selection-target"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useDebugMode } from "@lib/hooks/use-debug-mode"
 import { useEditorConfig } from "@lib/hooks/use-editor-config"
@@ -28,6 +24,10 @@ import {
   getNodeCatalogComponentId,
   getNodeChildIds,
 } from "@lib/workspace/node-tree"
+import {
+  getSelectionTarget,
+  selectFromTarget,
+} from "@lib/workspace/selection-target"
 import {
   getComponentKey,
   getNode,
@@ -59,12 +59,8 @@ export function useRowNode(
 ) {
   const { workspace, dispatch } = useWorkspace({ usePreview: false })
   const { activeTool } = useTool()
-  const {
-    selectNode,
-    selectBoard,
-    selectResourceEntry,
-    selectResourceItem,
-  } = useSelection()
+  const { selectNode, selectBoard, selectResourceEntry, selectResourceItem } =
+    useSelection()
   const selectedNodeRootId = useSelectedNodeRootId()
   const { selectedNodeId, parentOfSelectedNodeId, ancestorIdsOfSelected } =
     useSelectionRelations()

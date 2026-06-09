@@ -17,7 +17,7 @@ A **component schema** is a static, typed record. It does not hold instance stat
 
 When a designer places a button on a screen, that placed button is a _variant_ of the `Button` schema. A schema is the recipe — the list of properties, the defaults, the children it brings along — and a variant is the actual thing sitting in a design, carrying whatever values that particular placement needs. Two buttons on the same screen share one schema and live, but live as two independent instances with their own values.
 
-Every placed variant and every customisation a user has made are managed by the workspace. This directory only describes the catalog the workspace draws from.
+Every placed variant and every customization a user has made are managed by the workspace. This directory only describes the catalog the workspace draws from.
 
 ---
 
@@ -211,9 +211,11 @@ Complex components are created by listing other components inside `default.child
 
 When the parent wants the child to start with values different from its schema defaults, it adds an `overrides` block on the child entry. Anything listed in `overrides` is matched against the target schema's properties and supplied as the starting value. Anything left out uses the child schema's default. Properties that are not declared in the child's schema cannot be overridden — they are simply not part of that component's vocabulary.
 
-A child entry may also set `variant: "..."` to use a named variant from the referenced child schema as its baseline. If `variant` is omitted, the child uses the referenced schema's `default` tree. If `variant` is present, it must match a `SchemaVariant.id` on the referenced child schema or instantiation throws an error. If a child entry also defines `children`, those nested entries override the selected baseline tree for that child.
+A child entry may also set `variant: "..."` to use a named variant from the referenced child schema as its baseline. If `variant` is omitted, the child uses the referenced schema's `default` tree. If `variant` is present, it must match a `SchemaVariant.id` on the referenced child schema or instantiation throws an error.
 
-Children can themselves have children. There is no special syntax for reaching further down: nest another `children` entry on a `SchemaChild`.
+If a child entry also defines `children`, those nested entries decide which children exist for that child. Membership replaces the baseline tree. Overrides do not. Each nested entry is matched in order against the first unused baseline child with the same component, and inherits that baseline child's `overrides` with its own `overrides` layered on top. A nested entry only needs to state what it changes. For example, an icon entry inside a button slot that only sets `symbol` keeps the button schema's computed icon size. A nested entry whose component has no match in the baseline tree starts from its own schema defaults.
+
+Children can themselves have children. There is no special syntax for reaching further down: nest another `children` entry on a `SchemaChild`. The same matching applies at every level: nested entries merge against the children of the baseline child they matched.
 
 A complex schema always declares its canonical tree under `default`:
 
