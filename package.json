@@ -9,7 +9,8 @@
     "build": "npm run build --workspace @seldon/editor-local",
     "start": "npm run start --workspace @seldon/editor-local",
     "lint": "npm run lint --workspace @seldon/editor-local",
-    "quality": "npm run quality --workspace @seldon/editor-local",
+    "format:check": "prettier --check \"**/*.{ts,tsx,json,css,js,mjs,md}\"",
+    "quality": "npm run format:check && npm run quality --workspace @seldon/editor-local",
     "format": "node scripts/collapse-empty-values.mjs && prettier --write \"**/*.{ts,tsx,json,css,js,mjs,md}\""
   },
   "repository": {
