@@ -33,10 +33,8 @@ import { useComboboxState } from "./controls/combobox/hooks/use-combobox-state"
 import { useComboboxPosition } from "./hooks/use-combobox-position"
 import { usePropertyControlData } from "./hooks/use-property-control-data"
 import { usePropertyValidation } from "./hooks/use-property-validation"
-import {
-  getComponentKey,
-  resolveComponentKey,
-} from "@lib/workspace/workspace-accessors"
+import { useSetObjectTheme } from "./hooks/use-set-object-theme"
+import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { IconCustomColorValue } from "@seldon/components/custom-icons"
 import { IconSeldonToken } from "@seldon/components/icons"
 import { LoadEditorIcons } from "@app/LoadEditorIcons"
@@ -106,8 +104,9 @@ export function PropertyControl({
   iconSetEditingContext,
 }: PropertyControlProps) {
   const { setProperties, resetProperty } = useObjectProperties()
-  const { workspace, dispatch } = useWorkspace({ usePreview: false })
-  const { selection, selectedBoardId } = useSelection()
+  const { workspace } = useWorkspace({ usePreview: false })
+  const { selection } = useSelection()
+  const setObjectTheme = useSetObjectTheme()
   const { show: showUploadPanel } = useImageUploadPanel()
   const [internalIsEditing, setInternalIsEditing] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
@@ -203,24 +202,7 @@ export function PropertyControl({
     if (property.key === "theme" && subject) {
       const newThemeId =
         newValue === "none" ? null : (newValue as ThemeInstanceId)
-      if (isBoard(subject)) {
-        dispatch({
-          type: "set_component_theme",
-          payload: {
-            boardKey:
-              selectedBoardId ?? resolveComponentKey(subject, workspace),
-            theme: newThemeId || "seldon",
-          },
-        })
-      } else {
-        dispatch({
-          type: "set_node_theme",
-          payload: {
-            nodeId: subject.id,
-            theme: newThemeId,
-          },
-        })
-      }
+      setObjectTheme(subject, newThemeId)
       setIsEditing(false)
       onBlur?.()
       return
