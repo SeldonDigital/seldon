@@ -1,4 +1,5 @@
 import React from "react"
+import { Box } from "@seldon/components/custom-components"
 import { getOptionGroupStyle } from "./combobox-styles"
 
 type ComboboxOptionGroupProps = {
@@ -10,5 +11,5 @@ export function ComboboxOptionGroup({
   isLast,
   children,
 }: ComboboxOptionGroupProps) {
-  return <div style={getOptionGroupStyle(isLast)}>{children}</div>
+  return <Box style={getOptionGroupStyle(isLast)}>{children}</Box>
 }

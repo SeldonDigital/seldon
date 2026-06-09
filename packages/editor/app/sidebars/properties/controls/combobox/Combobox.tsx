@@ -3,6 +3,7 @@ import { useKeyboardNavigation } from "./hooks/use-keyboard-navigation"
 import { Frame } from "@seldon/components/frames/Frame"
 import { IconSeldonChevronDown } from "@seldon/components/icons"
 import { InputEditor } from "@seldon/components/primitives/InputEditor"
+import { Box, IconButton } from "@seldon/components/custom-components"
 import {
   comboboxFrameStyle,
   comboboxInputStyle,
@@ -388,9 +389,9 @@ export function Combobox({
 
   const chevron =
     !disabled && setOpen && !hideChevron ? (
-      <button tabIndex={-1} onClick={handleChevronClick}>
+      <IconButton tabIndex={-1} onClick={handleChevronClick}>
         <IconSeldonChevronDown />
-      </button>
+      </IconButton>
     ) : null
 
   if (mode === "combobox") {
@@ -400,7 +401,7 @@ export function Combobox({
         style={comboboxFrameMergedStyle}
         onClick={handleFrameClick}
       >
-        <div ref={wrapperRef} style={comboboxWrapperStyle}>
+        <Box ref={wrapperRef} style={comboboxWrapperStyle}>
           <InputEditor
             value={internalValue}
             onChange={handleInputChange}
@@ -415,7 +416,7 @@ export function Combobox({
             {...inputPropsCommon}
             {...restInputProps}
           />
-        </div>
+        </Box>
         {chevron}
       </Frame>
     )

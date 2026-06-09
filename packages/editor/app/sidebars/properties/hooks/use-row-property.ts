@@ -9,10 +9,12 @@ import {
   Workspace,
 } from "@seldon/core"
 import { getUnitsForProperty } from "@seldon/core/properties"
+import { workspaceThemeService } from "@seldon/core/workspace/services/theme/theme.service"
 import {
   childPathsUnderCompoundParent,
   parsePropertyPath,
 } from "@lib/properties/property-paths"
+import { useThemes } from "@lib/themes/hooks/use-themes"
 import { useObjectProperties } from "@lib/workspace/hooks/use-object-properties"
 import { FlatProperty } from "../helpers/properties-data"
 import { ICON_MAP } from "../helpers/properties-registry"
@@ -33,13 +35,25 @@ interface UseRowPropertyOptions {
  */
 export function useRowProperty({
   property,
-  workspace: _workspace,
-  node: _node,
+  workspace,
+  node,
   theme: _theme,
   allProperties,
 }: UseRowPropertyOptions) {
   const { resetProperty } = useObjectProperties()
   const { isPropertyExpanded, toggleProperty } = usePropertyExpansion()
+  const themes = useThemes()
+
+  // Resolve the swatch cluster theme for the synthetic Theme-assignment row.
+  const isThemeAssignment = property.pickerVariant === "themeAssignment"
+  const themeForSwatches = useMemo<Theme | null>(() => {
+    if (!isThemeAssignment) return null
+    const displayThemeId = workspaceThemeService.getObjectThemeId(
+      node,
+      workspace,
+    )
+    return themes.find((t) => t.id === displayThemeId) ?? null
+  }, [isThemeAssignment, node, workspace, themes])
 
   // a. Get sub-properties for this property
   const children = useMemo(() => {
@@ -185,5 +199,8 @@ export function useRowProperty({
 
     // Children for expansion
     children,
+
+    // Theme-assignment swatch cluster
+    themeForSwatches,
   }
 }

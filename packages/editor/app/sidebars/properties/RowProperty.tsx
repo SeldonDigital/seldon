@@ -1,8 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Board, Instance, Theme, Variant, Workspace } from "@seldon/core"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
-import { workspaceThemeService } from "@seldon/core/workspace/services/theme/theme.service"
-import { useThemes } from "@lib/themes/hooks/use-themes"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { useDebugMode } from "@lib/hooks/use-debug-mode"
 import { usePropertyControlData } from "./hooks/use-property-control-data"
@@ -76,6 +74,7 @@ export function RowProperty({
     handleToggle,
     handleReset,
     children,
+    themeForSwatches,
   } = useRowProperty({
     property,
     workspace,
@@ -89,13 +88,6 @@ export function RowProperty({
 
   const propertyValue = getPropertyValueForDisplay()
   const isThemeAssignment = property.pickerVariant === "themeAssignment"
-  const themes = useThemes()
-
-  const themeForSwatches = useMemo(() => {
-    if (!isThemeAssignment) return null
-    const displayThemeId = workspaceThemeService.getObjectThemeId(node, workspace)
-    return themes.find((t) => t.id === displayThemeId) ?? null
-  }, [isThemeAssignment, node, workspace, themes])
 
   // Get options for theme value matching (UI optimization)
   const options = useMemo(

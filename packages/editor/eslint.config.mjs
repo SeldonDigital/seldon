@@ -104,12 +104,10 @@ export default defineConfig([
       ],
     },
   },
-  // PropertyControl is a fully migrated binding shell: no raw markup, no Model
-  // service imports. Lock both boundaries as errors so it cannot regress. The
-  // surrounding properties files stay at warning until their markup and service
-  // calls move into Views and ViewModels.
+  // The properties sidebar is fully migrated: no raw markup, no Model service
+  // imports. Lock both boundaries as errors so the area cannot regress.
   {
-    files: ["app/sidebars/properties/PropertyControl.tsx"],
+    files: ["app/sidebars/properties/**/*.tsx"],
     rules: {
       "no-restricted-syntax": [
         "error",

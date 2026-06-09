@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import { HSL } from "@seldon/core"
 import { Frame } from "@seldon/components/frames/Frame"
+import { Text } from "@seldon/components/custom-components"
 import {
   comboboxOptionIconStyle,
   comboboxOptionLabelStyle,
@@ -74,11 +75,13 @@ export function ComboboxOption<
       data-disabled={disabled}
       style={frameStyle}
     >
-      <span style={comboboxOptionIconStyle}>
+      <Text as="span" style={comboboxOptionIconStyle}>
         {renderIcon &&
           (typeof renderIcon === "function" ? renderIcon(option) : renderIcon)}
-      </span>
-      <span style={comboboxOptionLabelStyle}>{option.name}</span>
+      </Text>
+      <Text as="span" style={comboboxOptionLabelStyle}>
+        {option.name}
+      </Text>
     </Frame>
   )
 }
