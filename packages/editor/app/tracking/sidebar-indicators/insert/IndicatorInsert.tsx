@@ -2,6 +2,10 @@ import { Placement } from "@lib/types"
 import { COLORS } from "@lib/helpers/colors"
 import { FC } from "react"
 import { CSSProperties } from "react"
+import {
+  InsertIndicatorLine,
+  Pointer,
+} from "@seldon/components/custom-components"
 import { useIndentation } from "../../../sidebars/hooks/use-indentation"
 import { calculateIndicatorPosition } from "../helpers/calculate-indicator-position"
 
@@ -39,16 +43,16 @@ export const IndicatorInsert: FC<IndicatorInsertProps> = ({ placement }) => {
     backgroundColor: COLORS.charcoal[500],
   }
 
+  const dotStyle: CSSProperties = {
+    left: "-8px",
+    top: "0.5px",
+    transform: "translateY(-50%)",
+    ...circleStyle,
+  }
+
   return (
-    <div style={lineStyle}>
-      <div
-        style={{
-          ...(placement === "inside"
-            ? { left: "-8px", top: "0.5px", transform: "translateY(-50%)" }
-            : { left: "-8px", top: "0.5px", transform: "translateY(-50%)" }),
-          ...circleStyle,
-        }}
-      />
-    </div>
+    <InsertIndicatorLine style={lineStyle}>
+      <Pointer style={dotStyle} />
+    </InsertIndicatorLine>
   )
 }

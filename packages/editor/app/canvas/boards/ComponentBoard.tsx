@@ -11,7 +11,11 @@ import { workspaceThemeService } from "@seldon/core/workspace/services/theme/the
 import { usePreview } from "@lib/hooks/use-preview"
 import { useSelection } from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
-import { useRef } from "react"
+import { CSSProperties, useRef } from "react"
+import {
+  BoardCanvasFrame,
+  StyleTag,
+} from "@seldon/components/custom-components"
 import { CssPortal } from "../CssPortal"
 import { CanvasNode } from "../Node"
 import { useCanvasReorderFlip } from "../hooks/use-canvas-reorder-flip"
@@ -19,6 +23,8 @@ import { useCanvasReorderFlip } from "../hooks/use-canvas-reorder-flip"
 export type ComponentBoardProps = {
   board: Board
 }
+
+const boardRootStyle: CSSProperties = { position: "static" }
 export function ComponentBoard({ board }: ComponentBoardProps) {
   const { workspace } = useWorkspace()
   const { selectedBoardId } = useSelection()
@@ -56,8 +62,8 @@ export function ComponentBoard({ board }: ComponentBoardProps) {
   return (
     <>
       <CssPortal>
-        <style>
-          {getCssFromProperties(
+        <StyleTag
+          css={getCssFromProperties(
             patchedProperties,
             {
               theme,
@@ -66,13 +72,13 @@ export function ComponentBoard({ board }: ComponentBoardProps) {
             },
             className,
           )}
-        </style>
+        />
       </CssPortal>
-      <div
+      <BoardCanvasFrame
         ref={boardRootRef}
-        data-board-id={boardKey}
+        boardId={boardKey}
         className={className}
-        style={{ position: "static" }}
+        style={boardRootStyle}
       >
         {getBoardVariantRootIds(boardEntry).map((variantId) => {
           return (
@@ -87,7 +93,7 @@ export function ComponentBoard({ board }: ComponentBoardProps) {
             />
           )
         })}
-      </div>
+      </BoardCanvasFrame>
     </>
   )
 }

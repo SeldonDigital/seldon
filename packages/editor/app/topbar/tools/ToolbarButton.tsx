@@ -18,7 +18,7 @@ import {
   IconSeldonSpark,
   IconSeldonToolSketch,
 } from "@seldon/components/icons"
-import { Selectable } from "@app/ui/Selectable"
+import { Selectable } from "@seldon/components/custom-components"
 
 export type Icon =
   | "catalog"

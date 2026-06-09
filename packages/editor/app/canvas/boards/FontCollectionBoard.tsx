@@ -17,6 +17,10 @@ import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { usePreview } from "@lib/hooks/use-preview"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { Frame } from "@seldon/components/chrome/frames/Frame"
+import {
+  PreviewItemWrapper,
+  StyleTag,
+} from "@seldon/components/custom-components"
 import { CssPortal } from "../CssPortal"
 import { canvasSelectionId } from "../helpers/canvas-selection-target"
 import { BoardPreviewNode } from "./BoardPreviewNode"
@@ -106,7 +110,7 @@ export function FontCollectionBoard({ board }: FontCollectionBoardProps) {
   return (
     <>
       <CssPortal>
-        <style>{boardCss}</style>
+        <StyleTag css={boardCss} />
       </CssPortal>
       <Frame
         data-board-id={boardKey}
@@ -241,16 +245,10 @@ function FontCollectionTypeSpecimen({
   }
 
   return (
-    <div
-      data-canvas-selection-id={canvasSelectionId(resourceItemKey, entryId)}
-      data-selection-id={resourceItemKey}
-      data-selection-kind="resourceItem"
-      style={{
-        position: "relative",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-      }}
+    <PreviewItemWrapper
+      canvasSelectionId={canvasSelectionId(resourceItemKey, entryId)}
+      selectionId={resourceItemKey}
+      selectionKind="resourceItem"
     >
       <BoardPreviewNode
         nodeId={rootId}
@@ -258,6 +256,6 @@ function FontCollectionTypeSpecimen({
         scope={scope}
         isRoot
       />
-    </div>
+    </PreviewItemWrapper>
   )
 }

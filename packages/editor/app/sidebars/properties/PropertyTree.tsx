@@ -1,16 +1,10 @@
 import { LayoutGroup } from "framer-motion"
 import { RefObject, useMemo } from "react"
-import {
-  Action,
-  Board,
-  Instance,
-  Theme,
-  Variant,
-  Workspace,
-} from "@seldon/core"
+import { Board, Instance, Theme, Variant, Workspace } from "@seldon/core"
 import { isResourceType } from "@seldon/core/workspace/helpers/components/is-resource-type"
 import { buildThemeAssignmentProperty } from "./helpers/theme-assignment-display"
 import { Frame } from "@seldon/components/frames/Frame"
+import { ScrollerShell } from "@seldon/components/custom-components"
 import { PropertyTreeSection } from "./PropertyTreeSection"
 import { useCssStrings } from "./helpers/get-calculated-properties"
 import {
@@ -33,13 +27,12 @@ import {
 import { FlatProperty } from "./helpers/properties-data"
 import { usePropertyExpansion } from "./hooks/use-property-expansion"
 
-interface PropertyTreeProps {
+export interface PropertyTreeProps {
   properties: FlatProperty[]
   workspace: Workspace
   node: Variant | Instance | Board
   theme?: Theme
   scrollerRef?: RefObject<HTMLDivElement | null>
-  dispatch: (action: Action) => void
   themeEditingContext?: ThemeEditingContext | null
   fontCollectionEditingContext?: FontCollectionEditingContext | null
   iconSetEditingContext?: IconSetEditingContext | null
@@ -67,7 +60,6 @@ export function PropertyTree({
   node,
   theme,
   scrollerRef,
-  dispatch,
   themeEditingContext,
   fontCollectionEditingContext,
   iconSetEditingContext,
@@ -194,7 +186,7 @@ export function PropertyTree({
   }, [properties, node, workspace, themeEditingContext])
 
   return (
-    <div ref={scrollerRef} style={styles.scroller}>
+    <ScrollerShell ref={scrollerRef} style={styles.scroller}>
       <Frame style={styles.tree}>
         <LayoutGroup>
           {sections.map((section) => (
@@ -216,7 +208,7 @@ export function PropertyTree({
           ))}
         </LayoutGroup>
       </Frame>
-    </div>
+    </ScrollerShell>
   )
 }
 

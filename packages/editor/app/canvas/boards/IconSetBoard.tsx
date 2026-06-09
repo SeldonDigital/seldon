@@ -18,6 +18,10 @@ import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { formatResourceItemKey } from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { Frame } from "@seldon/components/chrome/frames/Frame"
+import {
+  PreviewItemWrapper,
+  StyleTag,
+} from "@seldon/components/custom-components"
 import { CssPortal } from "../CssPortal"
 import { canvasSelectionId } from "../helpers/canvas-selection-target"
 import { BoardPreviewNode } from "./BoardPreviewNode"
@@ -88,7 +92,7 @@ export function IconSetBoard({ board }: IconSetBoardProps) {
   return (
     <>
       <CssPortal>
-        <style>{boardCss}</style>
+        <StyleTag css={boardCss} />
       </CssPortal>
       <Frame
         data-board-id={boardKey}
@@ -195,17 +199,11 @@ function IconPreview({
   }
 
   return (
-    <div
+    <PreviewItemWrapper
       title={label}
-      data-canvas-selection-id={canvasSelectionId(resourceItemKey, entryId)}
-      data-selection-id={resourceItemKey}
-      data-selection-kind="resourceItem"
-      style={{
-        position: "relative",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-      }}
+      canvasSelectionId={canvasSelectionId(resourceItemKey, entryId)}
+      selectionId={resourceItemKey}
+      selectionKind="resourceItem"
     >
       <BoardPreviewNode
         nodeId={rootId}
@@ -213,6 +211,6 @@ function IconPreview({
         scope={scope}
         isRoot
       />
-    </div>
+    </PreviewItemWrapper>
   )
 }

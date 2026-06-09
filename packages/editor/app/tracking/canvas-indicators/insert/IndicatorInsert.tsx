@@ -6,6 +6,10 @@ import { InstanceId, VariantId } from "@seldon/core/index"
 import { getNodeOrientation } from "@lib/workspace/get-node-orientation"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
+import {
+  InsertIndicatorLine,
+  PositionedPanel,
+} from "@seldon/components/custom-components"
 import { getHtmlElementByBoardId } from "../../../canvas/helpers/get-html-element-by-board-id"
 import { getHtmlElementByNodeId } from "../../../canvas/helpers/get-html-element-by-node-id"
 import { calculateIndicatorPosition } from "../helpers/calculate-indicator-position"
@@ -97,9 +101,9 @@ export function IndicatorInsert({
   }
 
   return (
-    <div style={containerStyle}>
-      <div style={lineStyle} />
+    <PositionedPanel style={containerStyle}>
+      <InsertIndicatorLine style={lineStyle} />
       <Label style={buttonStyle} label={label} />
-    </div>
+    </PositionedPanel>
   )
 }

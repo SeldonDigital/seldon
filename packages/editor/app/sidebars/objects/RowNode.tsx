@@ -1,5 +1,4 @@
 import { CSSProperties, memo } from "react"
-import { VariantId } from "@seldon/core"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
 import type { EntryNode } from "@seldon/core/workspace/types"
 import { getNode } from "@lib/workspace/workspace-accessors"
@@ -10,6 +9,7 @@ import { useSidebarRowStyling } from "../../tracking/hooks/use-sidebar-row-styli
 import { useRowNode } from "./hooks/use-row-node"
 import { ListItemTreeNode as SeldonNode } from "@seldon/components/elements/ListItemTreeNode"
 import { LabelProps } from "@seldon/components/primitives/Label"
+import { SidebarRow } from "@seldon/components/custom-components"
 import { SidebarTracking } from "../../tracking/SidebarTracking"
 import { IndentationLevel } from "../hooks/use-indentation"
 import { Combobox } from "../properties/controls/combobox/Combobox"
@@ -45,7 +45,6 @@ const RowNodeInner = memo(function RowNodeInner({
   disableReordering: boolean
   onSelect?: () => void
 }) {
-  const { dispatch } = useWorkspace({ usePreview: false })
   const {
     label: baseLabel,
     buttonIconic,
@@ -59,7 +58,7 @@ const RowNodeInner = memo(function RowNodeInner({
     isSelected,
     isNodeActive,
     isEditingName,
-    setEditingName,
+    setNodeLabel,
     hasChildren,
     children,
     dragging,
@@ -93,22 +92,11 @@ const RowNodeInner = memo(function RowNodeInner({
   const coloredIcon = hasChildren ? applyTrackingColor(icon, "color") : icon
   const coloredIcon2 = applyTrackingColor(icon2, "color")
 
-  const handleLabelSubmit = (newLabel: string) => {
-    dispatch({
-      type: "set_node_label",
-      payload: {
-        nodeId: node.id as VariantId,
-        label: newLabel.trim(),
-      },
-    })
-    setEditingName(false)
-  }
-
   const labelChildren = isEditingName ? (
     <Combobox
       mode="standalone"
       initialValue={node.label}
-      onSubmit={handleLabelSubmit}
+      onSubmit={setNodeLabel}
     />
   ) : (
     baseLabel.children
@@ -154,11 +142,11 @@ const RowNodeInner = memo(function RowNodeInner({
 
   return (
     <>
-      <div
+      <SidebarRow
         ref={ref}
         style={rowWrapperStyle}
-        data-selection-id={node.id}
-        data-selection-kind={NODE_SELECTION_KIND}
+        selectionId={node.id}
+        selectionKind={NODE_SELECTION_KIND}
       >
         <SidebarTracking
           node={node}
@@ -188,7 +176,7 @@ const RowNodeInner = memo(function RowNodeInner({
             style={combinedRowStyle}
           />
         </SidebarTracking>
-      </div>
+      </SidebarRow>
 
       {childrenSection}
     </>

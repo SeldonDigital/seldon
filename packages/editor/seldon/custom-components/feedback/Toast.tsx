@@ -1,21 +1,21 @@
 import { motion } from "framer-motion"
 
 interface ToastProps {
-  id: string
   message: string
 }
 
-export function Toast({ message }: ToastProps) {
-  const variants = {
-    initial: { opacity: 0, y: 10 },
-    animate: { opacity: 1, y: 0 },
-    exit: { opacity: 0, y: 10 },
-  }
+const toastVariants = {
+  initial: { opacity: 0, y: 10 },
+  animate: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: 10 },
+}
 
+/** Animated toast card. */
+export function Toast({ message }: ToastProps) {
   return (
     <motion.div
       layout
-      variants={variants}
+      variants={toastVariants}
       initial="initial"
       animate="animate"
       exit="exit"

@@ -1,6 +1,6 @@
 import { COLORS } from "@lib/helpers/colors"
 import { CSSProperties } from "react"
-import { IconSeldonCatalog } from "@seldon/components/icons"
+import { PillLabel } from "@seldon/components/custom-components"
 
 type LabelProps = {
   label: string
@@ -8,26 +8,13 @@ type LabelProps = {
 }
 
 export function Label({ label, style }: LabelProps) {
-  const buttonStyle: CSSProperties = {
-    lineHeight: "28px",
-    padding: "0 12px",
-    alignItems: "center",
-    flexShrink: 0,
-    borderRadius: "1.25rem",
-    fontSize: "0.75rem",
-    whiteSpace: "nowrap",
-    display: "flex",
-    gap: 4,
-    border: "1px solid",
-    color: COLORS.white,
-    background: COLORS.accent[500],
-    borderColor: COLORS.accent[600],
-  }
-
   return (
-    <div style={Object.assign({}, buttonStyle, style)}>
-      <IconSeldonCatalog />
-      {label}
-    </div>
+    <PillLabel
+      label={label}
+      style={style}
+      textColor={COLORS.white}
+      background={COLORS.accent[500]}
+      borderColor={COLORS.accent[600]}
+    />
   )
 }

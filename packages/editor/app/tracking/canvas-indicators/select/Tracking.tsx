@@ -3,6 +3,7 @@
 import { COLORS } from "@lib/helpers/colors"
 import { useEffect, useState } from "react"
 import { CSSProperties } from "react"
+import { CanvasOutline } from "@seldon/components/custom-components"
 import { useNodeRect } from "../../hooks/use-node-rect"
 import { getHtmlElementByNodeId } from "../../../canvas/helpers/get-html-element-by-node-id"
 import { calculateSelectionOutline } from "../../helpers/calculate-selection-outline"
@@ -99,5 +100,5 @@ export function SelectTracking({
     zIndex: 1,
   }
 
-  return <div style={style} />
+  return <CanvasOutline style={style} />
 }

@@ -1,5 +1,5 @@
 import { SVGProps } from "react"
-import { ComponentIcon } from "@seldon/core/components/constants"
+import type { ComponentIcon } from "@seldon/core/components/constants"
 import {
   IconSeldonComponent,
   IconSeldonFrame,

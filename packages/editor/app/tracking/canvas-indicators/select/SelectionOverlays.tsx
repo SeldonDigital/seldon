@@ -1,6 +1,7 @@
 "use client"
 
 import type { CSSProperties } from "react"
+import { CanvasOutline } from "@seldon/components/custom-components"
 import {
   useHoveredId,
   useHoveredRootId,
@@ -44,7 +45,7 @@ export function CanvasSelectionOutline({
 }) {
   const rect = useCanvasOverlayStore((state) => state.selectionRect)
   if (!rect) return null
-  return <div style={outlineStyle(rect, "selection", wireframe)} />
+  return <CanvasOutline style={outlineStyle(rect, "selection", wireframe)} />
 }
 
 /** Dashed border around the hovered object (any kind). */
@@ -66,5 +67,5 @@ export function CanvasHoverOutline({
     hoveredId === selectedId &&
     hoveredRootId === selectedRootId
   if (!rect || coincidesWithSelection) return null
-  return <div style={outlineStyle(rect, "hover", wireframe)} />
+  return <CanvasOutline style={outlineStyle(rect, "hover", wireframe)} />
 }

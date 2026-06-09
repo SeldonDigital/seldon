@@ -1,6 +1,11 @@
 import { CSSProperties, useState } from "react"
 import { useObjectURL } from "@lib/hooks/use-object-url"
 import { IconSeldonUpload } from "@seldon/components/icons"
+import {
+  DropzoneSurface,
+  ImagePreview,
+  Text,
+} from "@seldon/components/custom-components"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 
 export interface ImageDropzoneProps {
@@ -10,9 +15,6 @@ export interface ImageDropzoneProps {
 }
 
 const styles: Record<string, CSSProperties> = {
-  hiddenInput: { display: "none" },
-  previewWrapper: { position: "absolute", inset: "1rem" },
-  previewImage: { width: "100%", height: "100%", objectFit: "contain" },
   uploadIcon: { fontSize: "1.125rem" },
   uploadText: { fontSize: "var(--sdn-font-size-small)" },
 }
@@ -89,39 +91,25 @@ export function ImageDropzone({
     : "Select or drop image…"
 
   const content = previewUrl ? (
-    <div style={styles.previewWrapper}>
-      <img
-        src={previewUrl}
-        alt="Preview"
-        style={styles.previewImage}
-        onError={handleImageError}
-      />
-    </div>
+    <ImagePreview src={previewUrl} onError={handleImageError} />
   ) : (
     <>
       <IconSeldonUpload style={styles.uploadIcon} />
-      <p style={styles.uploadText}>{dropText}</p>
+      <Text style={styles.uploadText}>{dropText}</Text>
     </>
   )
 
   return (
-    <>
-      <input
-        type="file"
-        ref={fileInputRef}
-        style={styles.hiddenInput}
-        accept="image/*"
-        onChange={handleFileSelect}
-      />
-      <div
-        style={getDropzoneStyle(isDragging, Boolean(currentFile))}
-        onDragOver={handleDragOver}
-        onDragLeave={handleDragLeave}
-        onDrop={handleDrop}
-        onClick={handleDropZoneClick}
-      >
-        {content}
-      </div>
-    </>
+    <DropzoneSurface
+      fileInputRef={fileInputRef}
+      onFileChange={handleFileSelect}
+      style={getDropzoneStyle(isDragging, Boolean(currentFile))}
+      onDragOver={handleDragOver}
+      onDragLeave={handleDragLeave}
+      onDrop={handleDrop}
+      onClick={handleDropZoneClick}
+    >
+      {content}
+    </DropzoneSurface>
   )
 }

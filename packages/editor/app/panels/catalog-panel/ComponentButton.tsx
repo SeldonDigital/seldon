@@ -1,7 +1,6 @@
 import { CSSProperties, FC, useState } from "react"
 import { ComponentIcon } from "@seldon/core/components/constants"
-import { Icon } from "@app/ui/Icon"
-import { Text } from "@app/ui/Text"
+import { Icon, Text } from "@seldon/components/custom-components"
 
 export type ComponentButtonProps = {
   name: string

@@ -1,6 +1,7 @@
 import React from "react"
 import { createPortal } from "react-dom"
 import { Frame } from "@seldon/components/frames/Frame"
+import { Backdrop, PositionedPanel } from "@seldon/components/custom-components"
 import {
   comboboxBackdropStyle,
   getOptionsPanelPositionStyle,
@@ -25,8 +26,10 @@ export function ComboboxOptions({
 }: ComboboxOptionsProps) {
   const panel = open ? (
     <>
-      <div onClick={handleClose} style={comboboxBackdropStyle} />
-      <div style={getOptionsPanelPositionStyle(position)}>{children}</div>
+      <Backdrop onClick={handleClose} style={comboboxBackdropStyle} />
+      <PositionedPanel style={getOptionsPanelPositionStyle(position)}>
+        {children}
+      </PositionedPanel>
     </>
   ) : null
 

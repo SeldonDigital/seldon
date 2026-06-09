@@ -40,7 +40,5 @@ export const Selectable = ({
     )
   }
 
-  return (
-    <div {...(rest as HTMLAttributes<HTMLDivElement>)} {...sharedProps} />
-  )
+  return <div {...(rest as HTMLAttributes<HTMLDivElement>)} {...sharedProps} />
 }

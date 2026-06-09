@@ -7,6 +7,7 @@ import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { useRowBoard } from "./hooks/use-row-board"
 import { ListItemTreeNode as SeldonNode } from "@seldon/components/elements/ListItemTreeNode"
 import { LabelProps } from "@seldon/components/primitives/Label"
+import { SidebarRow } from "@seldon/components/custom-components"
 import { relativeFullWidthStyle } from "../helpers/sidebar-styles"
 import { IndentationLevel } from "../hooks/use-indentation"
 import { FramerExpandable } from "../shared/FramerExpandable"
@@ -143,32 +144,31 @@ export const RowBoard = memo(function RowBoard({
 
   return (
     <>
-      <div
+      <SidebarRow
         ref={ref}
         style={rowWrapperStyle}
-        data-selection-id={boardKey}
-        data-selection-kind={BOARD_SELECTION_KIND}
+        innerStyle={relativeFullWidthStyle}
+        selectionId={boardKey}
+        selectionKind={BOARD_SELECTION_KIND}
       >
-        <div style={relativeFullWidthStyle}>
-          <SeldonNode
-            buttonIconic={buttonIconic}
-            icon={coloredIcon}
-            buttonIconic2={buttonIconic2}
-            icon2={coloredIcon2}
-            label={label}
-            buttonIconic3={coloredButtonIconic3}
-            icon3={coloredIcon3}
-            onClick={onClick}
-            onMouseEnter={handleRowMouseEnter}
-            onMouseLeave={handleRowMouseLeave}
-            data-testid={dataTestId}
-            data-componentid={dataComponentId}
-            data-dragging={dragging}
-            data-active={boardIsActive}
-            style={combinedRowStyle}
-          />
-        </div>
-      </div>
+        <SeldonNode
+          buttonIconic={buttonIconic}
+          icon={coloredIcon}
+          buttonIconic2={buttonIconic2}
+          icon2={coloredIcon2}
+          label={label}
+          buttonIconic3={coloredButtonIconic3}
+          icon3={coloredIcon3}
+          onClick={onClick}
+          onMouseEnter={handleRowMouseEnter}
+          onMouseLeave={handleRowMouseLeave}
+          data-testid={dataTestId}
+          data-componentid={dataComponentId}
+          data-dragging={dragging}
+          data-active={boardIsActive}
+          style={combinedRowStyle}
+        />
+      </SidebarRow>
 
       <FramerExpandable isExpanded={isExpanded}>
         <IndentationLevel>{childRows}</IndentationLevel>

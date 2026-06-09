@@ -1,6 +1,10 @@
-import { CSSProperties, MouseEvent, RefObject } from "react"
+import { MouseEvent, RefObject } from "react"
 import { Board, Instance, Theme, Variant } from "@seldon/core"
-import { ThemeSwatches } from "../../ui/ThemeSwatches"
+import {
+  LinkValue,
+  SwatchValueRow,
+  ThemeSwatches,
+} from "@seldon/components/custom-components"
 import { PropertyControl } from "./PropertyControl"
 import {
   FontCollectionEditingContext,
@@ -8,29 +12,7 @@ import {
   ThemeEditingContext,
 } from "./helpers/editing-contexts"
 import { FlatProperty } from "./helpers/properties-data"
-
-const linkStyle: CSSProperties = {
-  color: "inherit",
-  textDecoration: "underline",
-}
-
-const swatchRowStyle: CSSProperties = {
-  display: "flex",
-  alignItems: "center",
-  gap: "0.375rem",
-  width: "100%",
-  minWidth: 0,
-}
-
-const swatchSlotStyle: CSSProperties = { flexShrink: 0 }
-
-const swatchValueStyle: CSSProperties = {
-  flex: 1,
-  minWidth: 0,
-  overflow: "hidden",
-  textOverflow: "ellipsis",
-  whiteSpace: "nowrap",
-}
+import { resolveThemeSwatchColors } from "./helpers/resolve-theme-swatch-colors"
 
 interface PropertyValueCellProps {
   property: FlatProperty
@@ -78,15 +60,9 @@ export function PropertyValueCell({
   // License rows render their value as an external link.
   if (property.linkHref) {
     return (
-      <a
-        href={property.linkHref}
-        target="_blank"
-        rel="noreferrer"
-        onClick={stopLinkPropagation}
-        style={linkStyle}
-      >
+      <LinkValue href={property.linkHref} onClick={stopLinkPropagation}>
         {value || "View"}
-      </a>
+      </LinkValue>
     )
   }
 
@@ -112,12 +88,13 @@ export function PropertyValueCell({
 
   if (isThemeAssignment && themeForSwatches) {
     return (
-      <div style={swatchRowStyle}>
-        <div style={swatchSlotStyle}>
-          <ThemeSwatches theme={themeForSwatches} />
-        </div>
-        <div style={swatchValueStyle}>{valueContent}</div>
-      </div>
+      <SwatchValueRow
+        swatch={
+          <ThemeSwatches colors={resolveThemeSwatchColors(themeForSwatches)} />
+        }
+      >
+        {valueContent}
+      </SwatchValueRow>
     )
   }
 

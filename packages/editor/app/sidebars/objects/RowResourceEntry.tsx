@@ -23,11 +23,12 @@ import { useRowHighlightStyle } from "@lib/workspace/hooks/use-object-hover"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { SelectionKind } from "@lib/workspace/selection-target"
 import { useSidebarRowStyling } from "../../tracking/hooks/use-sidebar-row-styling"
-import { useEditState } from "./hooks/use-edit-state"
+import { useResourceEntryRow } from "./hooks/use-resource-entry-row"
 import { useRowClick } from "./hooks/use-row-click"
 import { ListItemTreeNode as SeldonNode } from "@seldon/components/elements/ListItemTreeNode"
 import { IconProps } from "@seldon/components/primitives/Icon"
 import { LabelProps } from "@seldon/components/primitives/Label"
+import { SidebarRow } from "@seldon/components/custom-components"
 import { Combobox } from "../properties/controls/combobox/Combobox"
 
 const rowWrapperStyle: CSSProperties = {
@@ -69,12 +70,13 @@ export function RowResourceEntry({
   show = true,
   parentIsSelected = false,
 }: RowResourceEntryProps) {
-  const { workspace, dispatch } = useWorkspace({ usePreview: false })
+  const { workspace } = useWorkspace({ usePreview: false })
   const { activeTool } = useTool()
   const { selectResourceEntry } = useSelection()
-  const { isEditingName, setEditingName } = useEditState({
-    id: entryId,
-  } as unknown as Variant)
+  const { isEditingName, setEditingName, submitLabel } = useResourceEntryRow(
+    config,
+    entryId,
+  )
 
   const isSelected = useIsResourceEntrySelected(config.kind, entryId)
   const isActive = parentIsSelected || isSelected
@@ -107,18 +109,12 @@ export function RowResourceEntry({
     ...(iconColor ? { style: { color: iconColor } } : {}),
   }
 
-  const handleLabelSubmit = (newLabel: string) => {
-    if (!config.buildLabelAction) return
-    dispatch(config.buildLabelAction(entryId, newLabel.trim()))
-    setEditingName(false)
-  }
-
   const labelChildren =
     isEditingName && config.buildLabelAction ? (
       <Combobox
         mode="standalone"
         initialValue={entry.label}
-        onSubmit={handleLabelSubmit}
+        onSubmit={submitLabel}
       />
     ) : (
       entry.label
@@ -130,10 +126,10 @@ export function RowResourceEntry({
   } as unknown as LabelProps
 
   return (
-    <div
+    <SidebarRow
       style={rowWrapperStyle}
-      data-selection-id={entryId}
-      data-selection-kind={config.selectionKind}
+      selectionId={entryId}
+      selectionKind={config.selectionKind}
     >
       <SeldonNode
         buttonIconic={{}}
@@ -149,7 +145,7 @@ export function RowResourceEntry({
         data-active={isActive}
         style={combinedRowStyle}
       />
-    </div>
+    </SidebarRow>
   )
 }
 

@@ -303,6 +303,17 @@ export function useRowNode(
     style: labelStyle,
   }
 
+  function setNodeLabel(newLabel: string) {
+    dispatch({
+      type: "set_node_label",
+      payload: {
+        nodeId: node.id as VariantId,
+        label: newLabel.trim(),
+      },
+    })
+    setEditingName(false)
+  }
+
   return {
     label: label as LabelProps,
     buttonIconic,
@@ -317,6 +328,7 @@ export function useRowNode(
     isNodeActive,
     isEditingName,
     setEditingName,
+    setNodeLabel,
     hasChildren,
     children,
     dragging,

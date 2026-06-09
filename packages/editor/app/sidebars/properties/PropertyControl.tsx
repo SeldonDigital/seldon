@@ -41,7 +41,8 @@ import { IconCustomColorValue } from "@seldon/components/custom-icons"
 import { IconSeldonToken } from "@seldon/components/icons"
 import { LoadEditorIcons } from "@app/LoadEditorIcons"
 import { useImageUploadPanel } from "@app/panels/hooks/use-upload-image-panel"
-import { ThemeSwatches } from "@app/ui/ThemeSwatches"
+import { ThemeSwatches } from "@seldon/components/custom-components"
+import { resolveThemeSwatchColors } from "./helpers/resolve-theme-swatch-colors"
 import {
   propertyControlContainerStyle,
   propertyControlInnerStyle,
@@ -558,7 +559,7 @@ export function PropertyControl({
       }
       const optionTheme = themes.find((t) => t.id === option.value)
       if (optionTheme) {
-        return <ThemeSwatches theme={optionTheme} />
+        return <ThemeSwatches colors={resolveThemeSwatchColors(optionTheme)} />
       }
       return null
     }

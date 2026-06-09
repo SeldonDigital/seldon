@@ -12,6 +12,10 @@ import { usePreview } from "@lib/hooks/use-preview"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { Frame } from "@seldon/components/chrome/frames/Frame"
+import {
+  PreviewItemWrapper,
+  StyleTag,
+} from "@seldon/components/custom-components"
 import { CssPortal } from "../CssPortal"
 import { BoardPreviewNode } from "./BoardPreviewNode"
 
@@ -75,7 +79,7 @@ export function ThemeBoard({ board }: ThemeBoardProps) {
   return (
     <>
       <CssPortal>
-        <style>{boardCss}</style>
+        <StyleTag css={boardCss} />
       </CssPortal>
       <Frame
         data-board-id={boardKey}
@@ -134,16 +138,10 @@ function ThemeVariantDialog({ variantEntryId, themes }: ThemeVariantDialogProps)
   }
 
   return (
-    <div
-      data-canvas-selection-id={variantEntryId}
-      data-selection-id={variantEntryId}
-      data-selection-kind="theme"
-      style={{
-        position: "relative",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-      }}
+    <PreviewItemWrapper
+      canvasSelectionId={variantEntryId}
+      selectionId={variantEntryId}
+      selectionKind="theme"
     >
       <BoardPreviewNode
         nodeId={rootId}
@@ -151,6 +149,6 @@ function ThemeVariantDialog({ variantEntryId, themes }: ThemeVariantDialogProps)
         scope={variantEntryId}
         isRoot
       />
-    </div>
+    </PreviewItemWrapper>
   )
 }

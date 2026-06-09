@@ -1,0 +1,33 @@
+// Hand-authored View components. See README.md.
+// Populated as markup is extracted out of app/ during the MVVM migration.
+export { Icon } from "./primitives/Icon"
+export { Text } from "./primitives/Text"
+export type { TextProps } from "./primitives/Text"
+export { SwatchDot } from "./primitives/SwatchDot"
+export { ThemeSwatches } from "./primitives/ThemeSwatches"
+export { LinkValue } from "./primitives/LinkValue"
+export { ImagePreview } from "./primitives/ImagePreview"
+export { StyleTag } from "./primitives/StyleTag"
+export { Selectable } from "./controls/Selectable"
+export type {
+  SelectableButton,
+  SelectableDiv,
+} from "./controls/Selectable"
+export { SidebarRow } from "./containers/SidebarRow"
+export { Backdrop } from "./containers/Backdrop"
+export { PositionedPanel } from "./containers/PositionedPanel"
+export { ScrollerShell } from "./containers/ScrollerShell"
+export { SwatchValueRow } from "./containers/SwatchValueRow"
+export { FloatingPanelSurface } from "./containers/FloatingPanelSurface"
+export { DropzoneSurface } from "./containers/DropzoneSurface"
+export { BoardCanvasFrame } from "./containers/BoardCanvasFrame"
+export { PreviewItemWrapper } from "./containers/PreviewItemWrapper"
+export { PlaceholderBox } from "./containers/PlaceholderBox"
+export { CanvasOutline } from "./indicators/CanvasOutline"
+export { InsertIndicatorLine } from "./indicators/InsertIndicatorLine"
+export { Pointer } from "./indicators/Pointer"
+export { PillLabel } from "./indicators/PillLabel"
+export { OverlayLayer } from "./indicators/OverlayLayer"
+export { PlacementZoneSurface } from "./indicators/PlacementZoneSurface"
+export { ToastStack } from "./containers/ToastStack"
+export { Toast } from "./feedback/Toast"

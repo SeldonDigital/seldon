@@ -10,7 +10,7 @@ import {
   IconSeldonDeviceWatch,
   IconSeldonFullScreen,
 } from "@seldon/components/icons"
-import { Selectable } from "@app/ui/Selectable"
+import { Selectable } from "@seldon/components/custom-components"
 
 export type Icon =
   | "custom"
