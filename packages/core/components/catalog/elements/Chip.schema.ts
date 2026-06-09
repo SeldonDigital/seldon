@@ -1,6 +1,10 @@
-import * as Sdn from "../../../properties"
-import * as Seldon from "../../constants"
-import { ComponentExport, ComponentSchema } from "../../types"
+import * as Sdn from "../../../properties";
+import * as Seldon from "../../constants";
+import { ComponentExport, ComponentSchema } from "../../types";
+
+
+
+
 
 export const schema = {
   name: "Chip",
@@ -31,7 +35,7 @@ export const schema = {
     },
     width: {
       type: Sdn.ValueType.OPTION,
-      value: Sdn.Resize.FILL,
+      value: Sdn.Resize.FIT,
     },
     height: {
       type: Sdn.ValueType.OPTION,
@@ -97,7 +101,7 @@ export const schema = {
       {
         preset: {
           type: Sdn.ValueType.THEME_CATEGORICAL,
-          value: "@background.none",
+          value: "@background.primary",
         },
         image: { type: Sdn.ValueType.EMPTY, value: null },
         position: { type: Sdn.ValueType.EMPTY, value: null },
@@ -105,7 +109,7 @@ export const schema = {
         repeat: { type: Sdn.ValueType.EMPTY, value: null },
         color: {
           type: Sdn.ValueType.THEME_CATEGORICAL,
-          value: "@swatch.black",
+          value: "@swatch.primary",
         },
         blendMode: { type: Sdn.ValueType.EMPTY, value: null },
         filter: { type: Sdn.ValueType.EMPTY, value: null },
@@ -286,24 +290,21 @@ export const schema = {
   variants: [
     {
       id: "count",
-      label: "Chip Count",
+      label: "Counter",
       intent:
         "Displays a numeric count, often used for notifications, filters, or grouped item indicators.",
       overrides: {
         padding: {
-          top: { type: Sdn.ValueType.EMPTY, value: null },
+          top: { type: Sdn.ValueType.OPTION, value: Sdn.Padding.NONE },
           right: {
-            type: Sdn.ValueType.COMPUTED,
-            value: {
-              function: Sdn.ComputedFunction.OPTICAL_PADDING,
-              input: {
-                basedOn: "#buttonSize",
-                factor: 0.75,
-              },
-            },
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@padding.tight",
           },
-          bottom: { type: Sdn.ValueType.EMPTY, value: null },
-          left: { type: Sdn.ValueType.EMPTY, value: null },
+          bottom: { type: Sdn.ValueType.OPTION, value: Sdn.Padding.NONE },
+          left: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@padding.tight",
+          },
         },
       },
       children: [
@@ -313,7 +314,7 @@ export const schema = {
           overrides: {
             content: {
               type: Sdn.ValueType.EXACT,
-              value: "1",
+              value: "001",
             },
             color: {
               type: Sdn.ValueType.COMPUTED,
