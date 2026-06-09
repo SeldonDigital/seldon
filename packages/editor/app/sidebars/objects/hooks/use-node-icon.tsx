@@ -1,6 +1,7 @@
 import { getComponentSchema } from "@seldon/core/components/catalog"
 import { IconId } from "@seldon/core/icon-sets"
 import {
+  isFontCollectionBoard,
   isIconSetBoard,
   isThemeBoard,
 } from "@seldon/core/workspace/model/components"
@@ -30,6 +31,9 @@ export const useNodeIcon = (
     }
     if (isThemeBoard(node)) {
       return "seldon-theme"
+    }
+    if (isFontCollectionBoard(node)) {
+      return "seldon-text"
     }
     return "seldon-component"
   }

@@ -170,7 +170,7 @@ export const RESOURCE_ROW_CONFIG: Record<ResourceEntryKind, ResourceRowConfig> =
     fontCollection: {
       kind: "fontCollection",
       selectionKind: "fontCollection",
-      icon: "seldon-component",
+      icon: "seldon-text",
       testId: "objects-sidebar-font-collection-entry",
       getEntry: (workspace, entryId) => {
         const entry = workspace["font-collections"][entryId]

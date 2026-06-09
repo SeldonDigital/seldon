@@ -172,6 +172,9 @@ export function useRowBoard(
     if (isThemeBoard(board)) {
       return "seldon-theme"
     }
+    if (isFontCollectionBoard(board)) {
+      return "seldon-text"
+    }
     return "seldon-component"
   }
   const icon2 = createIcon2(getBoardIcon() as IconProps["icon"])
