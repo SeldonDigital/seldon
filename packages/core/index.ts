@@ -2,15 +2,14 @@ import * as componentConstants from "./components/constants"
 import * as propertiesConstants from "./properties"
 import * as propertiesValues from "./properties/values"
 
-export namespace Seldon {
-  export const Constants = {
+export const Seldon = {
+  Constants: {
     ...propertiesConstants,
     ...componentConstants,
-  }
-
-  export const Values = {
+  },
+  Values: {
     ...propertiesValues,
-  }
+  },
 }
 
 export * from "./components/constants"

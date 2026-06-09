@@ -208,7 +208,7 @@ export const workspaceVerificationMiddleware: Middleware =
     try {
       const shouldLogVerification =
         process.env.NODE_ENV === "development" && isWorkspaceLoggingEnabled()
-      shouldLogVerification && console.groupCollapsed("🔍 Verifying workspace")
+      if (shouldLogVerification) console.groupCollapsed("🔍 Verifying workspace")
 
       validators.noCyclicTrees(nextWorkspace)
       log("✅ No cyclic component trees")
@@ -240,7 +240,7 @@ export const workspaceVerificationMiddleware: Middleware =
       validators.checkNoVariantsWithComputedProperties(nextWorkspace)
       log("✅ No variants with computed properties referencing parent nodes")
 
-      shouldLogVerification && console.groupEnd()
+      if (shouldLogVerification) console.groupEnd()
     } catch (error) {
       if (error instanceof Error) {
         const actionString = JSON.stringify(action, null, 2)

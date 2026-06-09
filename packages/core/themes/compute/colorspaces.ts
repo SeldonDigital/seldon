@@ -33,8 +33,8 @@ function colorspaceLiteralToChroma(value: ColorSpaceLiteral) {
  */
 export function colorspaceLiteralToHsl(value: ColorSpaceLiteral): HSL {
   const c = colorspaceLiteralToChroma(value)
-  let [hu, sa, li] = c.hsl()
-  if (!Number.isFinite(hu)) hu = 0
+  const [rawHue, sa, li] = c.hsl()
+  const hu = Number.isFinite(rawHue) ? rawHue : 0
   const hue = Math.round(((hu % 360) + 360) % 360)
   const saturation = Math.round(
     Math.max(0, Math.min(100, (sa ?? 0) * 100)),
