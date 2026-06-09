@@ -2,6 +2,7 @@ import { type Theme, ValueType, type Workspace } from "@seldon/core"
 import type { Properties } from "@seldon/core/properties/types/properties"
 import {
   type ThemeLookPreset,
+  convertLookParameterValue,
   getBuiltInLookSectionForPropertyKey,
   getThemeLookSection,
   isThemeLookPreset,
@@ -61,30 +62,6 @@ function buildResetProperties(
   return wrapCompoundPropertyValue(propertyKey, facets)
 }
 
-function convertPresetValue(subValue: unknown): unknown {
-  if (typeof subValue === "string" && subValue.startsWith("@")) {
-    return {
-      type: ValueType.THEME_CATEGORICAL,
-      value: subValue,
-    }
-  }
-  if (
-    subValue &&
-    typeof subValue === "object" &&
-    "type" in subValue &&
-    "value" in subValue
-  ) {
-    return subValue
-  }
-  if (subValue && typeof subValue === "object") {
-    return {
-      type: ValueType.EXACT,
-      value: subValue,
-    }
-  }
-  return { type: ValueType.EXACT, value: subValue }
-}
-
 function buildPresetProperties(
   propertyKey: string,
   preset: ThemeLookPreset,
@@ -93,7 +70,7 @@ function buildPresetProperties(
   const facets: Record<string, unknown> = {}
 
   for (const [subKey, subValue] of Object.entries(preset.parameters ?? {})) {
-    facets[subKey] = convertPresetValue(subValue)
+    facets[subKey] = convertLookParameterValue(subValue)
   }
 
   const presentKeys = new Set(

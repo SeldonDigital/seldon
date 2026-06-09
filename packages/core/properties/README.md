@@ -78,6 +78,7 @@ Compound behavior:
 
 - The theme can list **looks** for a compound (for example `border.hairline` with width, style, color). The editor lets you pick one and copies those parameters onto the compound. **Built-in cleared looks** (`@shadow.none`, `@gradient.none`, `@background.none`, `@border.none`, `@font.normal`) are injected at theme compute time, set every facet to **EMPTY**, and appear in the picker like stock looks. Stored values stay on the usual sub-properties (e.g., `border.width`, `border.color`).
 - Applying a preset overwrites every parameter that preset defines. Any parameter the preset does not mention is set to **EMPTY**, which clears older values.
+- Preset facets also expand at compute time. Each property snapshot in the effective merge expands its own `preset` facet before merging: the look's parameters fill the facets, facets the look does not define become **EMPTY**, and the snapshot's own non-EMPTY facets win over the look. A schema that writes only `background: [{ preset: "@background.none" }]` therefore clears inherited fills the same way the picker does.
 - If the user changes any sub-field by hand, treat the compound as **Custom** until it matches one of the theme’s named presets again.
 
 ---
