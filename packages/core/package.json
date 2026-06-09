@@ -4,9 +4,9 @@
   "scripts": {
     "build": "tsc --build tsconfig.json",
     "test": "bun test",
-    "lint": "echo \"TODO: Add this with the shared eslint config\"",
+    "lint": "eslint .",
     "quality": "bun lint && bun tsc",
-    "format": "prettier --write \"./**/*.{ts,tsx,json}\"",
+    "format": "node ../../scripts/collapse-empty-values.mjs && prettier --write \"./**/*.{ts,tsx,json}\"",
     "generate:action-schema": "typescript-json-schema ./tsconfig.schema.json WorkspaceAction --out ./workspace/reducers/workspace-action-schema.json --noExtraProps --required"
   },
   "exports": {
@@ -149,7 +149,9 @@
     "@happy-dom/global-registrator": "^20.9.0",
     "@testing-library/react": "^16.3.0",
     "@trivago/prettier-plugin-sort-imports": "^5.2.2",
-    "@types/bun": "1.2.10"
+    "@types/bun": "1.2.10",
+    "eslint": "^9.39.4",
+    "typescript-eslint": "^8.61.0"
   },
   "peerDependencies": {
     "@types/react": "^19.0.0",

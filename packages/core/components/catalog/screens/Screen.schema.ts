@@ -24,18 +24,12 @@ export const schema = {
         unit: Sdn.Unit.PX,
       },
     },
-    direction: {
-      type: Sdn.ValueType.EMPTY,
-      value: null,
-    },
+    direction: { type: Sdn.ValueType.EMPTY, value: null },
     orientation: {
       type: Sdn.ValueType.OPTION,
       value: Sdn.Orientation.VERTICAL,
     },
-    align: {
-      type: Sdn.ValueType.EMPTY,
-      value: null,
-    },
+    align: { type: Sdn.ValueType.EMPTY, value: null },
     padding: {
       top: {
         type: Sdn.ValueType.THEME_ORDINAL,

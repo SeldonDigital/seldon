@@ -12,10 +12,7 @@ export const schema = {
   icon: Seldon.ComponentIcon.COMPONENT,
   properties: {
     board: {
-      preset: {
-        type: Sdn.ValueType.EMPTY,
-        value: null,
-      },
+      preset: { type: Sdn.ValueType.EMPTY, value: null },
       width: {
         type: Sdn.ValueType.EXACT,
         value: { value: 800, unit: Sdn.Unit.PX },
@@ -25,35 +22,17 @@ export const schema = {
         value: Sdn.Resize.FIT,
       },
     },
-    direction: {
-      type: Sdn.ValueType.EMPTY,
-      value: null,
-    },
+    direction: { type: Sdn.ValueType.EMPTY, value: null },
     orientation: {
       type: Sdn.ValueType.OPTION,
       value: Sdn.Orientation.VERTICAL,
     },
-    align: {
-      type: Sdn.ValueType.EMPTY,
-      value: null,
-    },
+    align: { type: Sdn.ValueType.EMPTY, value: null },
     margin: {
-      top: {
-        type: Sdn.ValueType.EMPTY,
-        value: null,
-      },
-      right: {
-        type: Sdn.ValueType.EMPTY,
-        value: null,
-      },
-      bottom: {
-        type: Sdn.ValueType.EMPTY,
-        value: null,
-      },
-      left: {
-        type: Sdn.ValueType.EMPTY,
-        value: null,
-      },
+      top: { type: Sdn.ValueType.EMPTY, value: null },
+      right: { type: Sdn.ValueType.EMPTY, value: null },
+      bottom: { type: Sdn.ValueType.EMPTY, value: null },
+      left: { type: Sdn.ValueType.EMPTY, value: null },
     },
     padding: {
       top: {
@@ -91,42 +70,18 @@ export const schema = {
           type: Sdn.ValueType.THEME_CATEGORICAL,
           value: "@background.none",
         },
-        image: {
-          type: Sdn.ValueType.EMPTY,
-          value: null,
-        },
-        position: {
-          type: Sdn.ValueType.EMPTY,
-          value: null,
-        },
-        size: {
-          type: Sdn.ValueType.EMPTY,
-          value: null,
-        },
-        repeat: {
-          type: Sdn.ValueType.EMPTY,
-          value: null,
-        },
+        image: { type: Sdn.ValueType.EMPTY, value: null },
+        position: { type: Sdn.ValueType.EMPTY, value: null },
+        size: { type: Sdn.ValueType.EMPTY, value: null },
+        repeat: { type: Sdn.ValueType.EMPTY, value: null },
         color: {
           type: Sdn.ValueType.THEME_CATEGORICAL,
           value: "@swatch.white",
         },
-        blendMode: {
-          type: Sdn.ValueType.EMPTY,
-          value: null,
-        },
-        filter: {
-          type: Sdn.ValueType.EMPTY,
-          value: null,
-        },
-        brightness: {
-          type: Sdn.ValueType.EMPTY,
-          value: null,
-        },
-        opacity: {
-          type: Sdn.ValueType.EMPTY,
-          value: null,
-        },
+        blendMode: { type: Sdn.ValueType.EMPTY, value: null },
+        filter: { type: Sdn.ValueType.EMPTY, value: null },
+        brightness: { type: Sdn.ValueType.EMPTY, value: null },
+        opacity: { type: Sdn.ValueType.EMPTY, value: null },
       },
     ],
     gradient: [
@@ -135,46 +90,16 @@ export const schema = {
           type: Sdn.ValueType.THEME_CATEGORICAL,
           value: "@gradient.none",
         },
-        gradientType: {
-          type: Sdn.ValueType.EMPTY,
-          value: null,
-        },
-        angle: {
-          type: Sdn.ValueType.EMPTY,
-          value: null,
-        },
-        startColor: {
-          type: Sdn.ValueType.EMPTY,
-          value: null,
-        },
-        startOpacity: {
-          type: Sdn.ValueType.EMPTY,
-          value: null,
-        },
-        startBrightness: {
-          type: Sdn.ValueType.EMPTY,
-          value: null,
-        },
-        startPosition: {
-          type: Sdn.ValueType.EMPTY,
-          value: null,
-        },
-        endColor: {
-          type: Sdn.ValueType.EMPTY,
-          value: null,
-        },
-        endOpacity: {
-          type: Sdn.ValueType.EMPTY,
-          value: null,
-        },
-        endBrightness: {
-          type: Sdn.ValueType.EMPTY,
-          value: null,
-        },
-        endPosition: {
-          type: Sdn.ValueType.EMPTY,
-          value: null,
-        },
+        gradientType: { type: Sdn.ValueType.EMPTY, value: null },
+        angle: { type: Sdn.ValueType.EMPTY, value: null },
+        startColor: { type: Sdn.ValueType.EMPTY, value: null },
+        startOpacity: { type: Sdn.ValueType.EMPTY, value: null },
+        startBrightness: { type: Sdn.ValueType.EMPTY, value: null },
+        startPosition: { type: Sdn.ValueType.EMPTY, value: null },
+        endColor: { type: Sdn.ValueType.EMPTY, value: null },
+        endOpacity: { type: Sdn.ValueType.EMPTY, value: null },
+        endBrightness: { type: Sdn.ValueType.EMPTY, value: null },
+        endPosition: { type: Sdn.ValueType.EMPTY, value: null },
       },
     ],
     scroll: {

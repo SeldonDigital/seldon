@@ -11,10 +11,7 @@ export const schema = {
   level: Seldon.ComponentLevel.PRIMITIVE,
   icon: Seldon.ComponentIcon.ICON,
   properties: {
-    display: {
-      type: Sdn.ValueType.EMPTY,
-      value: null,
-    },
+    display: { type: Sdn.ValueType.EMPTY, value: null },
     symbol: {
       type: Sdn.ValueType.OPTION,
       value: "__default__",
@@ -40,39 +37,18 @@ export const schema = {
       value: Sdn.Resize.FIT,
     },
     margin: {
-      top: {
-        type: Sdn.ValueType.EMPTY,
-        value: null,
-      },
-      right: {
-        type: Sdn.ValueType.EMPTY,
-        value: null,
-      },
-      bottom: {
-        type: Sdn.ValueType.EMPTY,
-        value: null,
-      },
-      left: {
-        type: Sdn.ValueType.EMPTY,
-        value: null,
-      },
+      top: { type: Sdn.ValueType.EMPTY, value: null },
+      right: { type: Sdn.ValueType.EMPTY, value: null },
+      bottom: { type: Sdn.ValueType.EMPTY, value: null },
+      left: { type: Sdn.ValueType.EMPTY, value: null },
     },
-    rotation: {
-      type: Sdn.ValueType.EMPTY,
-      value: null,
-    },
+    rotation: { type: Sdn.ValueType.EMPTY, value: null },
     color: {
       type: Sdn.ValueType.THEME_CATEGORICAL,
       value: "@swatch.black",
     },
-    brightness: {
-      type: Sdn.ValueType.EMPTY,
-      value: null,
-    },
-    opacity: {
-      type: Sdn.ValueType.EMPTY,
-      value: null,
-    },
+    brightness: { type: Sdn.ValueType.EMPTY, value: null },
+    opacity: { type: Sdn.ValueType.EMPTY, value: null },
   },
 } as const satisfies ComponentSchema
 
