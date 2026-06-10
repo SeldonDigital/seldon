@@ -163,15 +163,12 @@ export function validateNodeMutation(
       break
     }
     case "remove_instance": {
+      // Removal inside the default variant is allowed; the reducer resolves
+      // it to a hide (display EXCLUDE) for schema-defined instances instead
+      // of a structural delete.
       const nodeId = action.payload.instanceId as InstanceId
       nodeValidators.canBeRemoved(workspace, nodeId)
-      const node = getInstanceNodeOrThrow(workspace, action, nodeId)
-      assertParentNotDefaultVariant(
-        workspace,
-        nodeId,
-        node,
-        "Cannot remove an instance from a default catalog variant",
-      )
+      getInstanceNodeOrThrow(workspace, action, nodeId)
       break
     }
     case "remove_variant": {
@@ -366,18 +363,6 @@ function getInstanceNodeOrThrow(
     )
   }
   return node
-}
-
-/** Rejects mutating an instance whose parent is a default catalog variant. */
-function assertParentNotDefaultVariant(
-  workspace: Workspace,
-  instanceId: InstanceId,
-  node: ReturnType<typeof nodeRetrievalService.getNode>,
-  message: string,
-): void {
-  const parent = nodeTraversalService.findParentNode(node, workspace)
-  check(parent, ErrorMessages.parentNotFound(instanceId))
-  check(!typeCheckingService.isDefaultVariant(parent), message)
 }
 
 /** Rejects mutating an instance anywhere inside a default catalog variant tree. */

@@ -939,7 +939,7 @@ Each cell states whether the operation is allowed and how far it reaches:
 | `setTheme`      | Syncs   | Syncs           | Syncs        | Syncs    |
 | `rename`        | Blocked | Blocked         | Syncs        | Blocked  |
 
-Deleting an instance depends on its `origin`. A `schema` instance hides by setting `display` to `EXCLUDE`. A `user` instance is deleted. Only the `delete` instance row carries this behavior.
+Deleting an instance depends on its `origin` and its root variant. A `schema` instance inside the default variant hides by setting `display` to `EXCLUDE`. Every other instance is deleted, including `schema` instances in user variants. Only the `delete` instance row carries this behavior.
 
 `Local` and `Syncs` map to the `propagation` field, `none` and `downstream`. `setProperties` and `reset` stay `Local`. Instance edits still surface through their source because instance properties merge with the source at read time, not by fan-out at write time.
 
@@ -1001,7 +1001,7 @@ Each instance carries an engine-maintained `origin` of `"schema"` or `"user"`. T
 - User-variant children that mirror the default tree are `"schema"`, and reset to default keeps them `"schema"`.
 - Instances created by insert, paste, or duplicate are `"user"`.
 
-Removal of an instance depends on its `origin`. A `"schema"` instance hides on removal by setting `display` to `EXCLUDE`. A `"user"` instance deletes on removal. Validation already blocks removing a direct child of the default variant, so the hide path applies to nested instances and instances in user variants.
+Removal of an instance depends on its `origin` and its root variant. A `"schema"` instance inside the default variant hides on removal by setting `display` to `EXCLUDE`. Every other instance deletes on removal, including `"schema"` instances in user variants.
 
 ---
 

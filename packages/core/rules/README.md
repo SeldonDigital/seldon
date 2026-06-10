@@ -18,7 +18,7 @@ Values live in [`config/rules.config.ts`](./config/rules.config.ts).
 
 Eleven mutation keys form `RuleId`: `create`, `insertInto`, `instantiate`, `duplicate`, `delete`, `setProperties`, `reset`, `setTheme`, `rename`, `reorder`, and `move`. Each key indexes four [`Entity`](./types/rule-config-types.ts) rows: `board`, `userVariant`, `defaultVariant`, and `instance`.
 
-Every row has `allowed` and `propagation`. The `delete` instance row also sets `removalBehavior` for hide versus delete, with conditional behavior per instance origin. The other delete rows always delete outright.
+Every row has `allowed` and `propagation`. The `delete` instance row also sets `removalBehavior` for hide versus delete. The hide branch applies to schema-origin instances inside the default variant. All other instances delete outright, including schema-origin instances in user variants. The other delete rows always delete outright.
 
 Reducers resolve the target entity with [`TypeCheckingService.getEntityType`](../workspace/services/type-checking/type-checking.service.ts), read `rules.mutations[operation][entityType]`, and return the workspace unchanged when `allowed` is false. When allowed, they call [`workspacePropagationService.propagateNodeOperation`](../workspace/services/propagation/workspace-propagation.service.ts) with the configured `propagation`.
 

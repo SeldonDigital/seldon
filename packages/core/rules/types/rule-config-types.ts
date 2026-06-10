@@ -30,6 +30,10 @@ export interface EntityConfig {
 
 /**
  * Delete Rule Logic
+ *
+ * The `schemaDefined` branch only applies to schema-origin instances whose
+ * root variant is the default variant. Instances in user variants always
+ * resolve to the `manuallyAdded` branch.
  */
 export type RemovalBehavior =
   | "delete"

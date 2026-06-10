@@ -177,7 +177,7 @@ export const rules: RulesConfig = {
         allowed: true,
         propagation: "downstream",
         removalBehavior: {
-          schemaDefined: "hide", // origin "schema": required by the component schema
+          schemaDefined: "hide", // origin "schema" inside the default variant; user variants delete outright
           manuallyAdded: "delete", // origin "user": inserted, pasted, or duplicated
         },
       },
