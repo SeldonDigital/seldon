@@ -31,12 +31,13 @@ Packaged set ids (`IconSetTemplateId`) are:
 
 ## Set fields
 
-A `StockIconSet` has four fields:
+A `StockIconSet` has these fields:
 
 - `metadata` holds `id`, `name`, `description`, and `intent`.
 - `source` names the shipped component set the icons come from. Values are `seldon`, `google-material`, `carbon`, and `lucide`. Each maps to an icon id prefix, such as `seldon-` and `carbon-`.
 - `icons` lists every icon id the set ships.
 - `defaultEnabledCategories` lists the categories turned on when the set is first added. Icons in other categories start off until the user turns them on.
+- `defaultEnabledIcons` is optional. When present it lists the icon ids turned on by default and supersedes `defaultEnabledCategories`. The `googleMaterial` set uses it to ship every Material icon while starting with a curated subset on.
 
 ## Categories and inclusion
 

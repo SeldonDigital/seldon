@@ -23,6 +23,11 @@ export interface StockIconSet {
   icons: IconId[]
   /** Categories enabled by default. Icons in other categories start off. */
   defaultEnabledCategories: IconCategory[]
+  /**
+   * Icon ids enabled by default. When present this list defines the default
+   * inclusion and supersedes `defaultEnabledCategories`.
+   */
+  defaultEnabledIcons?: IconId[]
 }
 
 /** A computed icon set. Adds the resolved catalog `id`. */

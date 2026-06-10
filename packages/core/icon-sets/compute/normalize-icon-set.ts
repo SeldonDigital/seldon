@@ -21,5 +21,8 @@ export function normalizeIconSetInput(
     source: input.source,
     icons,
     defaultEnabledCategories: [...(input.defaultEnabledCategories ?? [])],
+    ...(input.defaultEnabledIcons
+      ? { defaultEnabledIcons: [...input.defaultEnabledIcons] }
+      : {}),
   }
 }
