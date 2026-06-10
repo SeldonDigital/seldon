@@ -1,5 +1,7 @@
 import {
   Align,
+  BackgroundPosition,
+  BackgroundRepeat,
   BorderCollapse,
   BorderStyle,
   BorderWidth,
@@ -22,12 +24,14 @@ import {
   Padding,
   PercentageValue,
   PixelValue,
+  Placement,
   RemValue,
   Resize,
   ScreenSize,
   Scroll,
   ScrollbarStyle,
   TextAlign,
+  TextCasing,
   TextDecoration,
   ThemeBackgroundKey,
   ThemeBlurKey,
@@ -51,6 +55,7 @@ import {
   Unit,
   Value,
   ValueType,
+  WrapperElement,
 } from "@seldon/core"
 import { getComponentSchema } from "@seldon/core/components/catalog"
 import { ComponentId } from "@seldon/core/components/constants"
@@ -199,10 +204,40 @@ function initializePresetMappings() {
   Object.entries(TextAlign).forEach(([key, value]) => {
     PRESET_MAPPINGS.set(value, TextAlign[key as keyof typeof TextAlign])
   })
+  Object.entries(TextCasing).forEach(([key, value]) => {
+    PRESET_MAPPINGS.set(value, TextCasing[key as keyof typeof TextCasing])
+  })
   Object.entries(TextDecoration).forEach(([key, value]) => {
     PRESET_MAPPINGS.set(
       value,
       TextDecoration[key as keyof typeof TextDecoration],
+    )
+  })
+
+  // Background layer presets
+  Object.entries(BackgroundPosition).forEach(([key, value]) => {
+    PRESET_MAPPINGS.set(
+      value,
+      BackgroundPosition[key as keyof typeof BackgroundPosition],
+    )
+  })
+  Object.entries(BackgroundRepeat).forEach(([key, value]) => {
+    PRESET_MAPPINGS.set(
+      value,
+      BackgroundRepeat[key as keyof typeof BackgroundRepeat],
+    )
+  })
+
+  // Placement presets
+  Object.entries(Placement).forEach(([key, value]) => {
+    PRESET_MAPPINGS.set(value, Placement[key as keyof typeof Placement])
+  })
+
+  // Wrapper element presets
+  Object.entries(WrapperElement).forEach(([key, value]) => {
+    PRESET_MAPPINGS.set(
+      value,
+      WrapperElement[key as keyof typeof WrapperElement],
     )
   })
 
