@@ -38,7 +38,12 @@ const rowWrapperStyle: CSSProperties = {
   minWidth: 0,
 }
 
-type ResolvedEntry = { label: string; isDefault: boolean }
+type ResolvedEntry = {
+  label: string
+  isDefault: boolean
+  /** Whether the entry carries its own overrides; gates variant reset. */
+  hasOverrides?: boolean
+}
 
 /**
  * Per-resource variation points for an entry row. The row body is identical
@@ -53,10 +58,11 @@ export interface ResourceRowConfig {
   getEntry: (workspace: Workspace, entryId: string) => ResolvedEntry | undefined
   buildLabelAction?: (entryId: string, label: string) => Action
   /**
-   * Gives the default entry a "Reset to Catalog" row action when selected,
-   * mirroring catalog-backed default variant nodes. Omitting it disables reset.
+   * Gives the selected entry a reset row action, mirroring resettable variant
+   * nodes: "Reset to Catalog" on the default entry, "Reset to Default" on a
+   * variant entry with overrides. Omitting it disables reset.
    */
-  buildResetToCatalogAction?: (entryId: string) => Action
+  buildResetAction?: (entryId: string) => Action
 }
 
 type RowResourceEntryProps = {
@@ -111,15 +117,20 @@ export function RowResourceEntry({
 
   if (!show || !entry) return null
 
-  // Like default variant nodes, a selected default entry offers "Reset to
-  // Catalog". The action is idempotent when there are no overrides.
-  const buildResetAction = config.buildResetToCatalogAction
+  // Mirrors resettable variant nodes: the selected default entry always offers
+  // "Reset to Catalog" (idempotent without overrides), a selected variant entry
+  // offers "Reset to Default" only when it carries overrides.
+  const buildResetAction = config.buildResetAction
+  const canReset =
+    Boolean(buildResetAction) &&
+    isSelected &&
+    (entry.isDefault || entry.hasOverrides === true)
   const resetActions: MenuEntry[] =
-    buildResetAction && entry.isDefault && isSelected
+    buildResetAction && canReset
       ? [
           {
             id: "reset",
-            label: "Reset to Catalog",
+            label: entry.isDefault ? "Reset to Catalog" : "Reset to Default",
             onSelect: () => dispatch(buildResetAction(entryId)),
             testId: `${config.testId}-${entryId}-reset`,
           },
@@ -188,13 +199,17 @@ export const RESOURCE_ROW_CONFIG: Record<ResourceEntryKind, ResourceRowConfig> =
       getEntry: (workspace, entryId) => {
         const entry = workspace.themes[entryId]
         if (!entry) return undefined
-        return { label: entry.label, isDefault: isEntryThemeDefault(entry) }
+        return {
+          label: entry.label,
+          isDefault: isEntryThemeDefault(entry),
+          hasOverrides: Object.keys(entry.overrides).length > 0,
+        }
       },
       buildLabelAction: (entryId, label) => ({
         type: "set_theme_label",
         payload: { themeId: entryId, label },
       }),
-      buildResetToCatalogAction: (entryId) => ({
+      buildResetAction: (entryId) => ({
         type: "reset_theme_tokens",
         payload: { themeId: entryId },
       }),
