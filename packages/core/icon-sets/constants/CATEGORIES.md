@@ -10,7 +10,7 @@ Icons are organized using a two-level hierarchy: `{category}/{subcategory}`. For
 - `content/files` - Content-related icons for files
 - `business/commerce` - Business icons for commerce
 
-## All Categories and Subcategories
+---
 
 ### Business
 
@@ -19,6 +19,8 @@ Icons related to business operations, commerce, and transactions.
 - **commerce** - E-commerce and shopping icons (cart, shopping, bag, credit, card, payment, tag, price, discount, gift, receipt, store, dollar, euro, pound, currency)
 - **operations** - General business operations icons (briefcase, calculator, invoice, contract, business, office)
 
+---
+
 ### Content
 
 Icons related to content creation, management, and display.
@@ -26,11 +28,15 @@ Icons related to content creation, management, and display.
 - **data** - Data visualization and management (chart, graph, table, list, grid, database, analytics, etc.)
 - **files** - File and folder icons (file, folder, document, archive, cloud, attachment, etc.)
 
+---
+
 ### Miscellaneous
 
 Icons that don't fit into other categories. This is a top-level category with no subcategories, used as the default fallback for uncategorized icons.
 
 - **miscellaneous** - Icons that don't fit other categories (default fallback)
+
+---
 
 ### Social-Media
 
@@ -38,6 +44,8 @@ Icons related to users, profiles, and social interactions.
 
 - **social** - Social interaction icons (share, like, heart, star, bookmark, flag, follow, social)
 - **user** - User and profile icons (user, users, profile, account, avatar, person, people, group, team)
+
+---
 
 ### Specialized
 
@@ -50,17 +58,24 @@ Icons for specialized domains and use cases.
 - **household** - Household and home icons (house, furniture, appliances, rooms, building structures)
 - **nature** - Nature and environment icons (tree, flower, leaf, animal, paw, mountain, nature)
 - **science** - Science and technology icons (atom, flask, microscope, rocket, code, terminal, database, science, lab)
+- **smart-home** - Smart home and IoT icons (thermostat, sensor, hub, camera, doorbell, automation, climate zone)
 - **sports** - Sports and athletic icons (sports equipment, activities, games, athletics)
 - **transportation** - Transportation and location icons (car, bus, train, airplane, bicycle, ship, map, location, pin, transport)
 - **weather** - Weather icons (sun, cloud, rain, snow, wind, storm, temperature, weather)
 
+---
+
 ### System
 
-Icons related to system settings, security, and devices.
+Icons related to system settings, security, devices, and connectivity.
 
+- **ai** - AI and machine intelligence icons (assistant, model, agent, spark, automation, intelligence)
+- **connectivity** - Network and signal icons (wifi, cellular, mobile data, signal bars, battery, bluetooth, network)
 - **devices** - Device and hardware icons (computer, laptop, phone, tablet, printer, camera, monitor, server, device, hardware)
 - **security** - Security and privacy icons (lock, unlock, shield, key, fingerprint, eye, privacy, secure, password)
 - **settings** - Settings and configuration icons (settings, gear, cog, preferences, configuration, options, admin, tool, wrench)
+
+---
 
 ### User-Interface
 
@@ -73,12 +88,16 @@ Icons for common, frequently-used actions and UI elements.
 - **status** - Status indicators (check, close, error, warning, info, success, loading, etc.)
 - **text** - Text editing and formatting (text, bold, italic, underline, align, quote, code, etc.)
 
+---
+
 ### Utility
 
 Utility icons for time and location.
 
 - **location** - Location and mapping icons (map, location, pin, marker, route, navigation, compass, gps)
 - **time** - Time and calendar icons (clock, calendar, date, time, schedule, alarm, timer, watch)
+
+---
 
 ## Category Paths
 
@@ -98,9 +117,12 @@ All valid category paths follow the pattern `{category}/{subcategory}`:
 - `specialized/household`
 - `specialized/nature`
 - `specialized/science`
+- `specialized/smart-home`
 - `specialized/sports`
 - `specialized/transportation`
 - `specialized/weather`
+- `system/ai`
+- `system/connectivity`
 - `system/devices`
 - `system/security`
 - `system/settings`
@@ -113,11 +135,15 @@ All valid category paths follow the pattern `{category}/{subcategory}`:
 - `utility/location`
 - `utility/time`
 
+---
+
 ## Default Category
 
 When an icon cannot be categorized or its category cannot be determined, it defaults to:
 
 - **`miscellaneous/miscellaneous`**
+
+---
 
 ## File Organization
 
@@ -134,6 +160,8 @@ For example:
 - `packages/core/icon-sets/catalog/material/miscellaneous/miscellaneous/IconMaterialSync.tsx`
 
 The file location is the **source of truth** for an icon's category. Category information is extracted from the file path structure.
+
+---
 
 ## Usage in Code
 
@@ -173,6 +201,8 @@ const isValid = categoryPaths.includes("user-interface/actions") // true
 // Use default for uncategorized icons
 const category = getIconCategoryFromId(unknownIconId) || DEFAULT_CATEGORY_PATH
 ```
+
+---
 
 ## Notes for LLMs
 
