@@ -3,6 +3,7 @@ import { ComputedFunction, Unit, ValueType } from "../../constants"
 import { PropertySchema } from "../../types/schema"
 import { ComputedMatchValue } from "../shared/computed/match"
 import { EmptyValue } from "../shared/empty/empty"
+import { PercentageValue } from "../shared/exact/percentage"
 import { PixelValue } from "../shared/exact/pixel"
 import { RemValue } from "../shared/exact/rem"
 
@@ -29,6 +30,7 @@ export type GapValue =
   | EmptyValue
   | PixelValue
   | RemValue
+  | PercentageValue
   | ComputedMatchValue
   | GapOptionValue
   | GapThemeValue
@@ -46,7 +48,7 @@ export const gapSchema: PropertySchema = {
     "themeOrdinal",
   ] as const,
   units: {
-    allowed: [Unit.PX, Unit.REM],
+    allowed: [Unit.PX, Unit.REM, Unit.PERCENT],
     default: Unit.PX,
     validation: "both",
   },

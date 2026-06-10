@@ -21,7 +21,7 @@ export const heightSchema: PropertySchema = {
     "themeOrdinal",
   ] as const,
   units: {
-    allowed: [Unit.PX, Unit.REM],
+    allowed: [Unit.PX, Unit.REM, Unit.PERCENT],
     default: Unit.PX,
     validation: "both",
   },

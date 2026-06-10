@@ -4,6 +4,7 @@ import { PropertySchema } from "../../types/schema"
 import { ComputedMatchValue } from "../shared/computed/match"
 import { ComputedOpticalPaddingValue } from "../shared/computed/optical-padding"
 import { EmptyValue } from "../shared/empty/empty"
+import { PercentageValue } from "../shared/exact/percentage"
 import { PixelValue } from "../shared/exact/pixel"
 import { RemValue } from "../shared/exact/rem"
 
@@ -32,11 +33,12 @@ export interface PaddingValue {
   left?: PaddingSideValue
 }
 
-/** One side value: unset, px or rem lengths, the catalog option, optical padding, match computed, or a theme step. */
+/** One side value: unset, measured lengths, the catalog option, optical padding, match computed, or a theme step. */
 export type PaddingSideValue =
   | EmptyValue
   | PixelValue
   | RemValue
+  | PercentageValue
   | PaddingSideOptionValue
   | ComputedOpticalPaddingValue
   | ComputedMatchValue
@@ -55,7 +57,7 @@ export const paddingSchema: PropertySchema = {
     "themeOrdinal",
   ] as const,
   units: {
-    allowed: [Unit.PX, Unit.REM],
+    allowed: [Unit.PX, Unit.REM, Unit.PERCENT],
     default: Unit.PX,
     validation: "both",
   },
