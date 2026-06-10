@@ -70,6 +70,13 @@ export interface ComputeNodePropertiesOptions {
    * can pass one from `buildNodeParentIndex` to avoid repeated walks).
    */
   parentIndex?: ReadonlyMap<string, string>
+  /**
+   * `"board"` makes a node without a composition parent resolve `#parent.*` paths against
+   * its owning board, so the board background acts as the surface behind variant roots.
+   * The editor canvas opts in; export leaves this off so board styling never leaks into
+   * exported CSS.
+   */
+  rootParentFallback?: "board"
 }
 
 function getNodes(workspace: WorkspacePropertySource): NodeRecord {
@@ -394,11 +401,39 @@ export function getEffectiveNodeProperties(
   )
 }
 
+/**
+ * Builds a parent-like {@link ComputeContext} from the board that owns `node`, so `#parent.*`
+ * paths on a variant root resolve against the board surface, such as its background color.
+ */
+function buildBoardComputeContext(
+  node: WorkspaceNode,
+  workspace: WorkspacePropertySource,
+  compositionParentByChild: ReadonlyMap<string, string> | undefined,
+): ComputeContext | null {
+  const board = findComponentForNode(node, workspace, compositionParentByChild)
+  if (!board) return null
+
+  const theme = resolveBoardTheme(board, workspace)
+  const properties = mergeEffectiveProperties(
+    expandPresetSources(
+      [getComponentPropertyDefaults(), getOwnProperties(board)],
+      () => theme,
+    ),
+  )
+
+  return {
+    properties,
+    parentContext: null,
+    theme,
+  }
+}
+
 function buildComputeContext(
   node: WorkspaceNode,
   workspace: WorkspacePropertySource,
   visited: Set<string>,
   compositionParentByChild: ReadonlyMap<string, string> | undefined,
+  rootParentFallback?: "board",
 ): ComputeContext {
   const theme = getComputedTheme(
     getEffectiveThemeId(node, workspace, compositionParentByChild),
@@ -412,7 +447,14 @@ function buildComputeContext(
   if (!parentNode || visited.has(parentNode.id)) {
     return {
       properties: effectiveProperties,
-      parentContext: null,
+      parentContext:
+        !parentNode && rootParentFallback === "board"
+          ? buildBoardComputeContext(
+              node,
+              workspace,
+              compositionParentByChild,
+            )
+          : null,
       theme,
     }
   }
@@ -426,6 +468,7 @@ function buildComputeContext(
       workspace,
       visited,
       compositionParentByChild,
+      rootParentFallback,
     ),
     theme,
   }
@@ -443,7 +486,10 @@ function buildComputeContext(
 export function getNodeComputeContext(
   targetId: string,
   workspace: WorkspacePropertySource,
-  options: Pick<ComputeNodePropertiesOptions, "parentIndex"> = {},
+  options: Pick<
+    ComputeNodePropertiesOptions,
+    "parentIndex" | "rootParentFallback"
+  > = {},
 ): ComputeContext {
   const node = getNodes(workspace)[targetId]
 
@@ -470,6 +516,7 @@ export function getNodeComputeContext(
     workspace,
     new Set([node.id]),
     compositionParentByChild,
+    options.rootParentFallback,
   )
 }
 
@@ -509,6 +556,7 @@ export function computeNodeProperties(
     workspace,
     new Set([node.id]),
     compositionParentByChild,
+    options.rootParentFallback,
   )
   const inputProperties = context.properties
 

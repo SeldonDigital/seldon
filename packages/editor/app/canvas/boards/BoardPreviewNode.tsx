@@ -74,6 +74,7 @@ export function BoardPreviewNode({
     <ComponentRenderer
       computeContext={getNodeComputeContext(nodeId, workspace, {
         parentIndex: buildRenderParentIndex(selfPath),
+        rootParentFallback: "board",
       })}
       styleOverrides={isRoot ? { position: "relative" } : undefined}
       componentId={component.id}

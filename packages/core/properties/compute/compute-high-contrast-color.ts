@@ -6,10 +6,12 @@ import { resolveValue } from "../../helpers/resolution/resolve-value"
 import { getThemeOption } from "../../helpers/theme/get-theme-option"
 import type { ThemeSwatch } from "../../themes/types"
 import { ComputedFunction, ValueType } from "../constants"
+import type { AtomicValue } from "../types/value-atomic"
 import type { ColorValue } from "../values/appearance/color"
 import type { BasedOnPropertyKey } from "../values/shared/computed/based-on-property-key"
 import type { ComputedHighContrastValue } from "../values/shared/computed/high-contrast-color"
 import type { EmptyValue } from "../values/shared/empty/empty"
+import type { HexValue } from "../values/shared/exact/hex"
 import type { PercentageValue } from "../values/shared/exact/percentage"
 import { getBasedOnValue } from "./get-based-on-value"
 import { ComputeContext } from "./types"
@@ -18,10 +20,20 @@ import { ComputeContext } from "./types"
 export const HIGH_CONTRAST_COLOR_DISPLAY_NAME = "High Contrast"
 
 /**
+ * Reference surface used when `basedOn` cannot be resolved, matching the browser default
+ * rendering for an HTML page.
+ */
+const FALLBACK_SURFACE_COLOR: HexValue = {
+  type: ValueType.EXACT,
+  value: "#FFFFFF",
+}
+
+/**
  * Reads the color at `basedOn`, optionally reads a sibling `.brightness` when `basedOn` ends with
  * `.color`, resolves through the theme, then returns the theme’s white or black swatch so text reads
  * on that background. `basedOn` is required on the stored value (typically `#parent.background.color`
- * for foreground-on-surface).
+ * for foreground-on-surface). When the path misses (for example a root node with no parent context)
+ * or resolves to an empty or transparent color, the reference surface falls back to pure white.
  *
  * @param value - Stored computed high-contrast value
  * @param context - Theme and contexts for resolution
@@ -31,30 +43,34 @@ export function computeHighContrastColor(
   value: ComputedHighContrastValue,
   context: ComputeContext,
 ) {
-  const basedOnValue = getBasedOnValue(value, context)
+  const basedOnValue = maybeGetBasedOnValue(value, context)
 
   const brightness = maybeGetBrightness(value, context)
 
-  let color = resolveValue(
+  const resolved = resolveValue(
     resolveColor({
       color: basedOnValue as ColorValue,
       theme: context.theme,
     }),
   )
 
-  if (brightness && color?.type === ValueType.EXACT) {
-    const withBrightnessApplied = convertAndApplyBrightness(
-      color.value,
-      brightness.value.value,
-    )
+  const surface =
+    !resolved || resolved.value === "transparent"
+      ? FALLBACK_SURFACE_COLOR
+      : resolved
 
-    color = {
-      type: ValueType.EXACT,
-      value: withBrightnessApplied,
-    }
-  }
+  const color =
+    brightness && surface.type === ValueType.EXACT
+      ? {
+          type: ValueType.EXACT as const,
+          value: convertAndApplyBrightness(
+            surface.value,
+            brightness.value.value,
+          ),
+        }
+      : surface
 
-  const isDark = color ? isDarkBackgroundColor(color) : false
+  const isDark = isDarkBackgroundColor(color)
 
   const themeOption = getThemeOption(
     isDark ? "@swatch.white" : "@swatch.black",
@@ -62,6 +78,21 @@ export function computeHighContrastColor(
   ) as ThemeSwatch
 
   return themeSwatchToColorValue(themeOption)
+}
+
+/**
+ * Resolves `basedOn`, returning the white fallback surface when the path cannot be resolved, such
+ * as a root node with no parent context.
+ */
+function maybeGetBasedOnValue(
+  value: ComputedHighContrastValue,
+  context: ComputeContext,
+): AtomicValue {
+  try {
+    return getBasedOnValue(value, context)
+  } catch {
+    return FALLBACK_SURFACE_COLOR
+  }
 }
 
 /**
