@@ -1,0 +1,16 @@
+import { SVGAttributes } from "react"
+
+export function IconMaterialGameButtonZl(props: SVGAttributes<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 -960 960 960"
+      fill="currentColor"
+      height="1em"
+      width="1em"
+      {...props}
+    >
+      <path d="M257-340h206v-50H327l133-188v-42H263v50h127L257-380v40Zm623-460v480q0 67-47 113.5T720-160H240q-67 0-113.5-46.5T80-320v-480h800Zm-80 80H160v400q0 34 23 57t57 23h480q33 0 56.5-23t23.5-57v-400Zm0 0H160h640ZM522-340h178v-50H576v-230h-54v280Z" />
+    </svg>
+  )
+}

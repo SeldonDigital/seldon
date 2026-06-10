@@ -1,0 +1,16 @@
+import { SVGAttributes } from "react"
+
+export function IconMaterialPersonText(props: SVGAttributes<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 -960 960 960"
+      fill="currentColor"
+      height="1em"
+      width="1em"
+      {...props}
+    >
+      <path d="M680-240v-80h200v80H680Zm-80-200v-80h280v80H600Zm-80-200v-80h360v80H520ZM320-480q-50 0-85-35t-35-85q0-50 35-85t85-35q50 0 85 35t35 85q0 50-35 85t-85 35ZM80-240v-76q0-21 10-40t28-30q45-27 95.5-40.5T320-440q56 0 106.5 13.5T522-386q18 11 28 30t10 40v76H80Zm240-120q-41 0-80 10t-74 30h308q-35-20-74-30t-80-10Zm0-200q17 0 28.5-11.5T360-600q0-17-11.5-28.5T320-640q-17 0-28.5 11.5T280-600q0 17 11.5 28.5T320-560Zm0-40Zm0 280Z" />
+    </svg>
+  )
+}

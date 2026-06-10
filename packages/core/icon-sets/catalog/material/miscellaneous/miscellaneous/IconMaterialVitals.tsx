@@ -1,0 +1,16 @@
+import { SVGAttributes } from "react"
+
+export function IconMaterialVitals(props: SVGAttributes<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      height="1em"
+      width="1em"
+      {...props}
+    >
+      <path d="M9 20q-.475 0-.85-.275t-.55-.7L5.3 13H1v-2h5.7L9 17.1l4.6-12.125q.175-.425.55-.7Q14.525 4 15 4t.85.275q.375.275.55.7L18.7 11H23v2h-5.7L15 6.9l-4.6 12.125q-.175.425-.55.7Q9.475 20 9 20Z" />
+    </svg>
+  )
+}

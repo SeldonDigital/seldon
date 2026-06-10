@@ -1,0 +1,16 @@
+import { SVGAttributes } from "react"
+
+export function IconMaterialAutoLabel(props: SVGAttributes<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 96 960 960"
+      fill="currentColor"
+      height="1em"
+      width="1em"
+      {...props}
+    >
+      <path d="M840 576 666 822q-11 16-28.5 25t-37.5 9H200q-33 0-56.5-23.5T120 776V376q0-33 23.5-56.5T200 296h400q20 0 37.5 9t28.5 25l174 246Zm-98 0L600 376H200v400h400l142-200Zm-542 0v200-400 200Zm221 160 50-110 110-50-110-50-50-110-50 110-110 50 110 50 50 110Z" />
+    </svg>
+  )
+}

@@ -1,0 +1,16 @@
+import { SVGAttributes } from "react"
+
+export function IconMaterialShieldCard(props: SVGAttributes<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 -960 960 960"
+      fill="currentColor"
+      height="1em"
+      width="1em"
+      {...props}
+    >
+      <path d="M520-80q-33 0-56.5-23.5T440-160v-200q0-33 23.5-56.5T520-440h320q33 0 56.5 23.5T920-360v200q0 33-23.5 56.5T840-80H520Zm0-80h320v-80H520v80Zm0-160h320v-40H520v40Zm-40-195Zm0-365 320 120v240h-80v-185l-240-90-240 90v189q0 81 32.5 154.5T360-236v90q0 7 2 14-91-60-146.5-163T160-516v-244l320-120Z" />
+    </svg>
+  )
+}

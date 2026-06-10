@@ -1,0 +1,16 @@
+import { SVGAttributes } from "react"
+
+export function IconMaterialCheckAlert(props: SVGAttributes<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 -960 960 960"
+      fill="currentColor"
+      height="1em"
+      width="1em"
+      {...props}
+    >
+      <path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424ZM578.5-98Q520-156 520-240q0-83 58.5-141.5T720-440q83 0 141.5 58.5T920-240q0 84-58.5 142T720-40q-83 0-141.5-58ZM720-120q8 0 14-6t6-14q0-8-6-14t-14-6q-8 0-14 6t-6 14q0 8 6 14t14 6Zm-20-80h40v-160h-40v160Z" />
+    </svg>
+  )
+}

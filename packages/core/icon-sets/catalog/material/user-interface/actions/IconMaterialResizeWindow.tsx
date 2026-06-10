@@ -1,0 +1,16 @@
+import { SVGAttributes } from "react"
+
+export function IconMaterialResizeWindow(props: SVGAttributes<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 -960 960 960"
+      fill="currentColor"
+      height="1em"
+      width="1em"
+      {...props}
+    >
+      <path d="M784-120 120-783l57-57 663 663-56 57Zm-401 0L120-383l57-57 263 263-57 57Z" />
+    </svg>
+  )
+}
