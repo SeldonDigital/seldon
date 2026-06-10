@@ -1,6 +1,10 @@
-import * as Sdn from "../../../properties"
-import * as Seldon from "../../constants"
-import { ComponentExport, ComponentSchema } from "../../types"
+import * as Sdn from "../../../properties";
+import * as Seldon from "../../constants";
+import { ComponentExport, ComponentSchema } from "../../types";
+
+
+
+
 
 export const schema = {
   name: "Item",
@@ -537,6 +541,34 @@ export const schema = {
                 value: 60,
               },
             },
+            padding: {
+              right: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@padding.tight",
+              },
+              left: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@padding.compact",
+              },
+            },
+            corners: {
+              topLeft: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@corners.tight",
+              },
+              topRight: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@corners.tight",
+              },
+              bottomLeft: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@corners.tight",
+              },
+              bottomRight: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@corners.tight",
+              },
+            },
           },
           children: [
             {
@@ -545,6 +577,15 @@ export const schema = {
                 size: {
                   type: Sdn.ValueType.THEME_ORDINAL,
                   value: "@size.small",
+                },
+                color: {
+                  type: Sdn.ValueType.COMPUTED,
+                  value: {
+                    function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+                    input: {
+                      basedOn: "#parent.background.color",
+                    },
+                  },
                 },
               },
             },
@@ -584,6 +625,78 @@ export const schema = {
                   },
                 },
               },
+            },
+            {
+              component: Seldon.ComponentId.BUTTON,
+              variant: "iconic",
+              overrides: {
+                buttonSize: {
+                  type: Sdn.ValueType.THEME_ORDINAL,
+                  value: "@fontSize.xsmall",
+                },
+                padding: {
+                  top: {
+                    type: Sdn.ValueType.THEME_ORDINAL,
+                    value: "@padding.tight",
+                  },
+                  right: {
+                    type: Sdn.ValueType.THEME_ORDINAL,
+                    value: "@padding.tight",
+                  },
+                  bottom: {
+                    type: Sdn.ValueType.THEME_ORDINAL,
+                    value: "@padding.tight",
+                  },
+                  left: {
+                    type: Sdn.ValueType.THEME_ORDINAL,
+                    value: "@padding.tight",
+                  },
+                },
+                background: [
+                  {
+                    preset: {
+                      type: Sdn.ValueType.THEME_CATEGORICAL,
+                      value: "@background.none",
+                    },
+                  },
+                ],
+                border: {
+                  preset: {
+                    type: Sdn.ValueType.THEME_CATEGORICAL,
+                    value: "@border.none",
+                  },
+                },
+              },
+              children: [
+                {
+                  component: Seldon.ComponentId.ICON,
+                  overrides: {
+                    symbol: {
+                      type: Sdn.ValueType.OPTION,
+                      value: "material-chevronDown",
+                    },
+                    size: {
+                      type: Sdn.ValueType.COMPUTED,
+                      value: {
+                        function: Sdn.ComputedFunction.AUTO_FIT,
+                        input: {
+                          basedOn: "#parent.buttonSize",
+                          factor: 0.8,
+                        },
+                      },
+                    },
+                    color: {
+                      type: Sdn.ValueType.COMPUTED,
+                      value: {
+                        function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+                        input: {
+                          basedOn: "#parent.background.color",
+                        },
+                      },
+                    },
+                  },
+                },
+              ],
             },
           ],
         },
@@ -698,220 +811,20 @@ export const schema = {
       ],
     },
     {
-      id: "todo",
-      label: "To-Do Item",
-      intent:
-        "Schema for an individual to-do entry containing title, description, status, due date, and optional priority or labels.",
-      overrides: {
-        align: {
-          type: Sdn.ValueType.OPTION,
-          value: Sdn.Align.CENTER_RIGHT,
-        },
-        padding: {
-          top: {
-            type: Sdn.ValueType.THEME_ORDINAL,
-            value: "@padding.tight",
-          },
-          right: {
-            type: Sdn.ValueType.THEME_ORDINAL,
-            value: "@padding.compact",
-          },
-          bottom: {
-            type: Sdn.ValueType.THEME_ORDINAL,
-            value: "@padding.tight",
-          },
-          left: {
-            type: Sdn.ValueType.THEME_ORDINAL,
-            value: "@padding.compact",
-          },
-        },
-        gap: {
-          type: Sdn.ValueType.THEME_ORDINAL,
-          value: "@gap.compact",
-        },
-      },
-      children: [
-        {
-          component: Seldon.ComponentId.INPUT,
-          variant: "checkbox",
-          overrides: {
-            checked: {
-              type: Sdn.ValueType.EXACT,
-              value: false,
-            },
-            align: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Align.CENTER,
-            },
-            width: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FIT,
-            },
-            color: {
-              type: Sdn.ValueType.THEME_CATEGORICAL,
-              value: "@swatch.black",
-            },
-            accentColor: {
-              type: Sdn.ValueType.THEME_CATEGORICAL,
-              value: "@swatch.black",
-            },
-          },
-        },
-        {
-          component: Seldon.ComponentId.TEXT,
-          variant: "label",
-          overrides: {
-            content: {
-              type: Sdn.ValueType.EXACT,
-              value: "To Do Category",
-            },
-            width: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FILL,
-            },
-            color: {
-              type: Sdn.ValueType.THEME_CATEGORICAL,
-              value: "@swatch.black",
-            },
-          },
-        },
-        {
-          component: Seldon.ComponentId.CHIP,
-          overrides: {
-            display: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Display.SHOW,
-            },
-            width: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FIT,
-            },
-            background: [
-              {
-                preset: {
-                  type: Sdn.ValueType.THEME_CATEGORICAL,
-                  value: "@background.none",
-                },
-                color: {
-                  type: Sdn.ValueType.THEME_CATEGORICAL,
-                  value: "@swatch.primary",
-                },
-              },
-            ],
-          },
-          children: [
-            {
-              component: Seldon.ComponentId.ICON,
-              overrides: {
-                symbol: {
-                  type: Sdn.ValueType.OPTION,
-                  value: "seldon-plus",
-                },
-              },
-            },
-            {
-              component: Seldon.ComponentId.TEXT,
-              variant: "label",
-              overrides: {
-                content: {
-                  type: Sdn.ValueType.EXACT,
-                  value: "Add",
-                },
-              },
-            },
-          ],
-        },
-        {
-          component: Seldon.ComponentId.CHIP,
-          overrides: {
-            display: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Display.SHOW,
-            },
-            width: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FIT,
-            },
-            background: [
-              {
-                preset: {
-                  type: Sdn.ValueType.THEME_CATEGORICAL,
-                  value: "@background.none",
-                },
-                color: {
-                  type: Sdn.ValueType.THEME_CATEGORICAL,
-                  value: "@swatch.primary",
-                },
-              },
-            ],
-          },
-          children: [
-            {
-              component: Seldon.ComponentId.ICON,
-              overrides: {
-                symbol: {
-                  type: Sdn.ValueType.OPTION,
-                  value: "seldon-minus",
-                },
-              },
-            },
-            {
-              component: Seldon.ComponentId.TEXT,
-              variant: "label",
-              overrides: {
-                content: {
-                  type: Sdn.ValueType.EXACT,
-                  value: "Remove",
-                },
-              },
-            },
-          ],
-        },
-        {
-          component: Seldon.ComponentId.CHIP,
-          variant: "count",
-          overrides: {
-            display: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Display.SHOW,
-            },
-            width: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FIT,
-            },
-            background: [
-              {
-                preset: {
-                  type: Sdn.ValueType.THEME_CATEGORICAL,
-                  value: "@background.none",
-                },
-                color: {
-                  type: Sdn.ValueType.THEME_CATEGORICAL,
-                  value: "@swatch.primary",
-                },
-              },
-            ],
-          },
-          children: [
-            {
-              component: Seldon.ComponentId.TEXT,
-              variant: "label",
-              overrides: {
-                content: {
-                  type: Sdn.ValueType.EXACT,
-                  value: "999",
-                },
-              },
-            },
-          ],
-        },
-      ],
-    },
-    {
       id: "tree",
       label: "Tree Item",
       intent: "List item used for tree-like structures with nested children.",
       overrides: {
+        margin: {
+          top: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@margin.tight",
+          },
+          bottom: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@margin.tight",
+          },
+        },
         padding: {
           top: {
             type: Sdn.ValueType.THEME_ORDINAL,
@@ -1052,6 +965,16 @@ export const schema = {
             width: {
               type: Sdn.ValueType.OPTION,
               value: Sdn.Resize.FILL,
+            },
+            padding: {
+              top: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@padding.tight",
+              },
+              bottom: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@padding.tight",
+              },
             },
             font: {
               preset: {
