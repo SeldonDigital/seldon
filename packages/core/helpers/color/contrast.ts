@@ -1,4 +1,5 @@
 import chroma from "chroma-js"
+
 import { ColorValue, EmptyValue, ValueType } from "../../index"
 import { isHSLObject } from "../type-guards/color/is-hsl-object"
 import { isLCHObject } from "../type-guards/color/is-lch-object"

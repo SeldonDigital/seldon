@@ -1,15 +1,13 @@
 import { Theme } from "@seldon/core"
 import { HSLObjectToString } from "@seldon/core/helpers/color/hsl-object-to-string"
 import { modulate } from "@seldon/core/helpers/math/modulate"
-import { Colorspace } from "@seldon/core/themes/constants/colorspace"
 import { colorspaceLiteralToHsl } from "@seldon/core/themes/compute"
-import {
-  isModulatedToken,
-  isThemeExactToken,
-} from "@seldon/core/themes/values"
+import { Colorspace } from "@seldon/core/themes/constants/colorspace"
+import { isModulatedToken, isThemeExactToken } from "@seldon/core/themes/values"
 import type { ThemeScaleToken, ThemeSwatch } from "@seldon/core/themes/values"
 import { workspaceThemeService } from "@seldon/core/workspace/services"
 import { Workspace } from "@seldon/core/workspace/types"
+
 import { getThemeSwatchVarNames } from "../../../styles/css-properties/get-theme-swatch-names"
 import { format } from "../utils/format"
 import { getThemeSlug } from "./get-theme-slug"

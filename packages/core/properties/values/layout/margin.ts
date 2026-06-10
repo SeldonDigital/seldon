@@ -2,6 +2,7 @@ import { Theme, ThemeMarginKey } from "../../../themes/types"
 import { Unit, ValueType } from "../../constants"
 import { PropertySchema } from "../../types/schema"
 import { EmptyValue } from "../shared/empty/empty"
+import { PercentageValue } from "../shared/exact/percentage"
 import { PixelValue } from "../shared/exact/pixel"
 import { RemValue } from "../shared/exact/rem"
 
@@ -30,11 +31,12 @@ export interface MarginValue {
   left?: MarginSideValue
 }
 
-/** One side value: unset, px or rem lengths, the catalog option, or a theme margin step. */
+/** One side value: unset, measured lengths, the catalog option, or a theme margin step. */
 export type MarginSideValue =
   | EmptyValue
   | PixelValue
   | RemValue
+  | PercentageValue
   | MarginSideOptionValue
   | MarginSideThemeValue
 
@@ -44,16 +46,19 @@ export const marginSchema: PropertySchema = {
     "Sets outside spacing on each edge using lengths, the catalog option, or theme margin steps.",
   supports: ["empty", "inherit", "exact", "option", "themeOrdinal"] as const,
   units: {
-    allowed: [Unit.PX, Unit.REM],
+    allowed: [Unit.PX, Unit.REM, Unit.PERCENT],
     default: Unit.PX,
     validation: "both",
   },
   validation: {
     empty: () => true,
     inherit: () => true,
-    exact: (value: any) => {
+    exact: (value: unknown) => {
       if (
         typeof value === "object" &&
+        value !== null &&
+        "value" in value &&
+        "unit" in value &&
         value.value !== undefined &&
         value.unit !== undefined
       )
@@ -61,10 +66,12 @@ export const marginSchema: PropertySchema = {
       if (typeof value === "number" && value >= 0) return true
       return false
     },
-    option: (value: any) => Object.values(Margin).includes(value),
-    themeOrdinal: (value: any, theme?: Theme) => {
+    option: (value: unknown) =>
+      typeof value === "string" &&
+      (Object.values(Margin) as string[]).includes(value),
+    themeOrdinal: (value: unknown, theme?: Theme) => {
       if (!theme) return false
-      return value in theme.margin
+      return typeof value === "string" && value in theme.margin
     },
   },
   presetOptions: () => Object.values(Margin),

@@ -64,3 +64,17 @@ export const propertyControlInnerStyle: CSSProperties = {
   alignItems: "center",
   cursor: "pointer",
 }
+
+export const propertyControlTextWrapperStyle: CSSProperties = {
+  width: "100%",
+  minWidth: 0,
+  height: "100%",
+  display: "flex",
+  alignItems: "center",
+}
+
+export const propertyControlContainerStyle: CSSProperties = {
+  ...propertyControlTextWrapperStyle,
+  ...propertyControlTextStyle,
+  cursor: "pointer",
+}

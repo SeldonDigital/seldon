@@ -67,7 +67,10 @@ export function useHistory() {
   )
 
   useEffect(() => {
-    if (typeof window !== "undefined" && (window as { Cypress?: unknown }).Cypress) {
+    if (
+      typeof window !== "undefined" &&
+      (window as { Cypress?: unknown }).Cypress
+    ) {
       ;(window as { workspace?: Workspace }).workspace = current
     }
   }, [current])

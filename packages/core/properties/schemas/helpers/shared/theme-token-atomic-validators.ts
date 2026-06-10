@@ -1,5 +1,4 @@
 /** Shared shape checks for theme token values (unbridged catalog entries). */
-
 import { Unit } from "../../../constants/shared/units"
 
 export function isThemeTokenFiniteNumber(value: unknown): boolean {

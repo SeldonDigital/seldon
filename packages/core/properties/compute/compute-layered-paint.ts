@@ -1,5 +1,9 @@
 import { ValueType } from "../constants"
-import type { LayeredPaintKey, PropertyKey, SubPropertyKey } from "../types/property-keys"
+import type {
+  LayeredPaintKey,
+  PropertyKey,
+  SubPropertyKey,
+} from "../types/property-keys"
 import type { Value } from "../types/value"
 import type { ComputedValue } from "../values/shared/computed/computed-value"
 import type { ComputeContext, ComputeKeys } from "./types"
@@ -37,14 +41,10 @@ export function computeLayeredPaintStack(
         "type" in facetValue &&
         (facetValue as { type: unknown }).type === ValueType.COMPUTED
       ) {
-        out[facetKey] = dispatchComputed(
-          facetValue as ComputedValue,
-          context,
-          {
-            propertyKey: propertyKey as PropertyKey,
-            subPropertyKey: facetKey as SubPropertyKey,
-          },
-        )
+        out[facetKey] = dispatchComputed(facetValue as ComputedValue, context, {
+          propertyKey: propertyKey as PropertyKey,
+          subPropertyKey: facetKey as SubPropertyKey,
+        })
       } else {
         out[facetKey] = facetValue as Value
       }

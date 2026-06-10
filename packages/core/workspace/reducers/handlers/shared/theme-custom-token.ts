@@ -30,7 +30,11 @@ function readSectionBag(
   section: CustomTokenSection,
 ): Record<string, unknown> {
   const current = (entry.overrides as Record<string, unknown>)[section]
-  if (typeof current !== "object" || current === null || Array.isArray(current)) {
+  if (
+    typeof current !== "object" ||
+    current === null ||
+    Array.isArray(current)
+  ) {
     return {}
   }
   return { ...(current as Record<string, unknown>) }

@@ -36,12 +36,11 @@ export const boardPresetSchema: PropertySchema = {
     empty: () => true,
     option: (value: unknown) => isBoardPresetId(value),
   },
-  presetOptions: () =>
-    [
-      BOARD_FIT_PRESET_OPTION,
-      ...BOARD_DEVICE_PRESETS.map((preset) => ({
-        value: preset.id,
-        name: preset.name,
-      })),
-    ],
+  presetOptions: () => [
+    BOARD_FIT_PRESET_OPTION,
+    ...BOARD_DEVICE_PRESETS.map((preset) => ({
+      value: preset.id,
+      name: preset.name,
+    })),
+  ],
 }

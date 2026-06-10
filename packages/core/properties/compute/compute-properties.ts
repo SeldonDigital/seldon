@@ -1,22 +1,22 @@
 import { ComputedFunction, ValueType } from "../constants"
 import type { Properties } from "../types/properties"
 import {
-  LAYERED_PAINT_KEYS,
-  isObjectFacetMapProperty,
   type CompoundPropertyKey,
+  LAYERED_PAINT_KEYS,
   type LayeredPaintKey,
   type PropertyKey,
   type SubPropertyKey,
+  isObjectFacetMapProperty,
 } from "../types/property-keys"
 import type { Value } from "../types/value"
 import type { ComputedAutoFitValue } from "../values/shared/computed/auto-fit"
+import type { ComputedValue } from "../values/shared/computed/computed-value"
 import type { ComputedHighContrastValue } from "../values/shared/computed/high-contrast-color"
 import type { ComputedMatchValue } from "../values/shared/computed/match"
 import type { ComputedOpticalPaddingValue } from "../values/shared/computed/optical-padding"
-import type { ComputedValue } from "../values/shared/computed/computed-value"
 import { computeAutoFit } from "./compute-auto-fit"
-import { computeLayeredPaintStack } from "./compute-layered-paint"
 import { computeHighContrastColor } from "./compute-high-contrast-color"
+import { computeLayeredPaintStack } from "./compute-layered-paint"
 import { computeMatch } from "./compute-match"
 import { computeOpticalPadding } from "./compute-optical-padding"
 import { ComputeContext, ComputeKeys } from "./types"
@@ -115,11 +115,7 @@ export function computeProperties(
               subPropertyKey: subPropertyKey,
             },
           )
-          setSubPropertyValue(
-            currentCompoundValue,
-            subPropertyKey,
-            resolved,
-          )
+          setSubPropertyValue(currentCompoundValue, subPropertyKey, resolved)
         } else {
           setSubPropertyValue(
             currentCompoundValue,

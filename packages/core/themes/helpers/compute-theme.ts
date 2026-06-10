@@ -1,12 +1,12 @@
-import { Colorspace } from "../constants/colorspace"
 import { getDynamicSwatchColors } from "../compute/get-dynamic-swatch-color"
 import { getDynamicSwatchName } from "../compute/get-dynamic-swatch-names"
 import { normalizeThemeInput } from "../compute/normalize-theme"
+import { Colorspace } from "../constants/colorspace"
+import { injectBuiltInLooks } from "../looks/built-in-looks"
 import type { ComputedTheme, StockTheme } from "../types/theme"
 import type { ThemePaletteSlot, ThemeSwatch } from "../values"
 import { TokenType } from "../values"
 import { isDynamicSwatchToken, isSwatchToken } from "../values"
-import { injectBuiltInLooks } from "../looks/built-in-looks"
 import { toRecomputableStockInput } from "./to-recomputable-stock"
 
 function defaultIntentForPaletteSlot(role: ThemePaletteSlot): string {

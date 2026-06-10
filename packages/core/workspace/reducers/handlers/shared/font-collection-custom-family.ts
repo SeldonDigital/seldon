@@ -10,7 +10,11 @@ function readFamilies(
   const current = (entry.overrides as Record<string, unknown>)[
     FONT_COLLECTION_FAMILY_SECTION
   ]
-  if (typeof current !== "object" || current === null || Array.isArray(current)) {
+  if (
+    typeof current !== "object" ||
+    current === null ||
+    Array.isArray(current)
+  ) {
     return {}
   }
   return { ...(current as Record<string, FontFamilyEntry>) }
@@ -19,7 +23,9 @@ function readFamilies(
 /** Returns the next free `familyNN` slot id, starting at `family01`. */
 export function getNextCustomFamilyId(entry: EntryFontCollection): string {
   const families = readFamilies(entry)
-  const familyIds = Object.keys(families).filter((id) => id.startsWith("family"))
+  const familyIds = Object.keys(families).filter((id) =>
+    id.startsWith("family"),
+  )
   const highest = familyIds
     .map((id) => parseInt(id.replace("family", ""), 10))
     .filter((n) => !Number.isNaN(n))

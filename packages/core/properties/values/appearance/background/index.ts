@@ -3,6 +3,7 @@ import { Restricted } from "../../../types/helpers"
 import { BackgroundPosition, BackgroundRepeat, ImageFit } from "../../../values"
 import { EmptyValue } from "../../shared/empty/empty"
 import { StringValue } from "../../shared/exact/string"
+import type { BackgroundValue } from "./background"
 import { BackgroundBrightnessValue } from "./background-brightness"
 import { BackgroundColorValue } from "./background-color"
 import { BackgroundImageValue } from "./background-image"
@@ -10,7 +11,6 @@ import { BackgroundOpacityValue } from "./background-opacity"
 import { BackgroundPositionValue } from "./background-position"
 import { BackgroundRepeatValue } from "./background-repeat"
 import { BackgroundSizeValue } from "./background-size"
-import type { BackgroundValue } from "./background"
 
 /** One layer in the background stack with optional theme recipe and paint fields. */
 export interface BackgroundLayer {

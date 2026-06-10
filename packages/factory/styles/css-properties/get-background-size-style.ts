@@ -1,4 +1,5 @@
 import { ImageFit, SingleBackgroundSizeValue, ValueType } from "@seldon/core"
+
 import { backgroundSizeMap } from "./image-fit-map"
 
 export function getBackgroundSizeStyle(

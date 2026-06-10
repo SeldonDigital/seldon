@@ -25,13 +25,16 @@ export type ResizeValue =
 
 export const resizeSchema: PropertySchema = {
   name: "resize",
-  description: "Controls whether content fits inside its frame or expands to fill it.",
+  description:
+    "Controls whether content fits inside its frame or expands to fill it.",
   supports: ["empty", "inherit", "exact", "option"] as const,
   validation: {
     empty: () => true,
     inherit: () => true,
-    exact: (value: any) => typeof value === "string" && value.length > 0,
-    option: (value: any) => Object.values(Resize).includes(value),
+    exact: (value: unknown) => typeof value === "string" && value.length > 0,
+    option: (value: unknown) =>
+      typeof value === "string" &&
+      (Object.values(Resize) as string[]).includes(value),
   },
   presetOptions: () => Object.values(Resize),
 }

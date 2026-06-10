@@ -1,4 +1,4 @@
-import { get, set, del, createStore } from "idb-keyval"
+import { createStore, del, get, set } from "idb-keyval"
 import type { Workspace } from "@seldon/core/workspace/types"
 
 const store = createStore("seldon-editor-local", "workspaces")

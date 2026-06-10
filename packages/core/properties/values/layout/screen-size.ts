@@ -34,8 +34,10 @@ export const screenSizeSchema: PropertySchema = {
   validation: {
     empty: () => true,
     inherit: () => true,
-    exact: (value: any) => typeof value === "string" && value.length > 0,
-    option: (value: any) => Object.values(ScreenSize).includes(value),
+    exact: (value: unknown) => typeof value === "string" && value.length > 0,
+    option: (value: unknown) =>
+      typeof value === "string" &&
+      (Object.values(ScreenSize) as string[]).includes(value),
   },
   presetOptions: () => Object.values(ScreenSize),
 }

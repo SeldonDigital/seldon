@@ -1,7 +1,8 @@
 import { produce } from "immer"
+
+import type { ExtractPayload, Workspace } from "../../../../index"
 import type { EntryTheme } from "../../../model/entry-theme"
 import { isEntryThemeDefault } from "../../../model/entry-theme"
-import type { ExtractPayload, Workspace } from "../../../../index"
 
 function themeComponentKeyFromThemeId(themeId: string): string | null {
   const without = themeId.startsWith("theme-")

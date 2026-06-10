@@ -107,15 +107,11 @@ export type Board =
   | IconSetBoard
   | MediaBoard
 
-export function isComponentBoard(
-  entry: Board,
-): entry is ComponentBoard {
+export function isComponentBoard(entry: Board): entry is ComponentBoard {
   return entry.type === "component"
 }
 
-export function isPlaygroundBoard(
-  entry: Board,
-): entry is PlaygroundBoard {
+export function isPlaygroundBoard(entry: Board): entry is PlaygroundBoard {
   return entry.type === "playground"
 }
 

@@ -1,5 +1,5 @@
-import { getHtmlElementByNodeId } from "../../canvas/helpers/get-html-element-by-node-id"
 import type { NodeRect } from "../hooks/use-node-rects-store"
+import { getHtmlElementByNodeId } from "../../canvas/helpers/get-html-element-by-node-id"
 import { calculateSelectionOutline } from "./calculate-selection-outline"
 
 /**

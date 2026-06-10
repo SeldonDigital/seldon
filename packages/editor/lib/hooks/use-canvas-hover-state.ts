@@ -59,9 +59,7 @@ export const getHoverStateSnapshot = (): HoverState | null =>
  * returning null otherwise. Non-matching consumers keep a stable null and never
  * re-render on hover, so only the entering and leaving rows update.
  */
-export const useHoverStateForObject = (
-  objectId: string,
-): HoverState | null =>
+export const useHoverStateForObject = (objectId: string): HoverState | null =>
   useStore((state) =>
     state.hoverState?.objectId === objectId ? state.hoverState : null,
   )

@@ -30,7 +30,8 @@ const collection: StockFontCollection = {
     id: "googleFonts",
     name: "Google Fonts",
     description: "Font families served by Google Fonts.",
-    intent: "Remote font families loaded from Google Fonts when added to a workspace.",
+    intent:
+      "Remote font families loaded from Google Fonts when added to a workspace.",
   },
   families,
 }

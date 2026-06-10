@@ -1,5 +1,6 @@
 import { Properties } from "@seldon/core"
 import { computeProperties } from "@seldon/core/properties/compute"
+
 import { StyleGenerationContext } from "../types"
 import { getCssObjectFromProperties } from "./get-css-object-from-properties"
 import { getCssStringFromCssObject } from "./get-css-string-from-css-object"

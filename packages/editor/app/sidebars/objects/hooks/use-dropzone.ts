@@ -8,9 +8,9 @@ import { rules } from "@seldon/core/rules/config/rules.config"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
 import type { EntryNode } from "@seldon/core/workspace/types"
+import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { getNodeCatalogComponentId } from "@lib/workspace/node-tree"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
-import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 
 export type DropzoneParams = {
   target: Board | Variant | Instance | EntryNode
@@ -123,10 +123,7 @@ function getBoardCatalogId(board: Board): string | null {
   return legacyId ?? null
 }
 
-function isValidTargetForSubjectBoard(
-  target: Board,
-  subject: Board,
-): boolean {
+function isValidTargetForSubjectBoard(target: Board, subject: Board): boolean {
   if (getComponentKey(target) === getComponentKey(subject)) return false
 
   const targetCatalogId = getBoardCatalogId(target)

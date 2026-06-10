@@ -1,10 +1,11 @@
 import { Workspace } from "@seldon/core"
 import {
+  type NodeParentIndex,
   buildNodeParentIndex,
   computeNodeProperties,
-  type NodeParentIndex,
 } from "@seldon/core/workspace/compute"
 import { workspaceThemeService } from "@seldon/core/workspace/services"
+
 import { StyleGenerationContext } from "../styles/types"
 
 export type ExportContext = {

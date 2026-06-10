@@ -35,7 +35,11 @@ export const shadowBlurSchema: PropertySchema = {
     exact: (value: unknown) => {
       if (typeof value !== "object" || value === null) return false
       const m = value as { value?: unknown; unit?: unknown }
-      if (typeof m.value !== "number" || !Number.isFinite(m.value) || m.value < 0)
+      if (
+        typeof m.value !== "number" ||
+        !Number.isFinite(m.value) ||
+        m.value < 0
+      )
         return false
       return m.unit === Unit.PX || m.unit === Unit.REM
     },

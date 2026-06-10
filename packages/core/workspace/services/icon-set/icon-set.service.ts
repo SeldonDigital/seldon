@@ -1,4 +1,6 @@
 import merge from "lodash/merge"
+
+import type { IconId } from "../../../icon-sets"
 import { STOCK_ICON_SETS_BY_ID } from "../../../icon-sets/catalog"
 import { instantiateIconSet } from "../../../icon-sets/compute"
 import { getIncludedIcons } from "../../../icon-sets/helpers"
@@ -7,7 +9,6 @@ import type {
   ComputedIconSet,
   IconSetTemplateId,
 } from "../../../icon-sets/types"
-import type { IconId } from "../../../icon-sets"
 import { isIconSetBoard } from "../../model/components"
 import type { EntryIconSet } from "../../model/entry-icon-set"
 import {
@@ -49,10 +50,7 @@ export class WorkspaceIconSetService {
   }
 
   /** Reads the per-icon inclusion stored on an `icon-sets` entry. */
-  public getInclusion(
-    iconSetId: string,
-    workspace: Workspace,
-  ): IconInclusion {
+  public getInclusion(iconSetId: string, workspace: Workspace): IconInclusion {
     const entry = workspace["icon-sets"][iconSetId] as EntryIconSet | undefined
     const inclusion = entry?.overrides?.["includedIcons"]
     if (

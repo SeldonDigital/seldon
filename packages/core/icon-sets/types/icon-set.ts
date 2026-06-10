@@ -1,6 +1,6 @@
 import type { IconId } from "../../icon-sets"
 import type { IconCategory } from "../constants/categories"
-import type { IconSetTemplateId, IconSetInstanceId } from "./icon-set-id"
+import type { IconSetInstanceId, IconSetTemplateId } from "./icon-set-id"
 import type { IconSetId } from "./icon-source"
 
 /** Identity and description of a packaged icon set. */
@@ -23,6 +23,11 @@ export interface StockIconSet {
   icons: IconId[]
   /** Categories enabled by default. Icons in other categories start off. */
   defaultEnabledCategories: IconCategory[]
+  /**
+   * Icon ids enabled by default. When present this list defines the default
+   * inclusion and supersedes `defaultEnabledCategories`.
+   */
+  defaultEnabledIcons?: IconId[]
 }
 
 /** A computed icon set. Adds the resolved catalog `id`. */

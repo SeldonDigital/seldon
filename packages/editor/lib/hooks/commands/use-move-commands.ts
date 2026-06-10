@@ -5,11 +5,11 @@ import { getBoardOrder } from "@seldon/core/workspace/helpers/components/board-s
 import { getBoardVariantRootIds } from "@seldon/core/workspace/helpers/components/get-board-variant-root-ids"
 import { findParentNode } from "@seldon/core/workspace/helpers/nodes/find-parent-node"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
-import { getNodeChildIds } from "@lib/workspace/node-tree"
-import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { useSelection } from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
-import { useAddToast } from "@components/toaster/hooks/use-add-toast"
+import { getNodeChildIds } from "@lib/workspace/node-tree"
+import { getComponentKey } from "@lib/workspace/workspace-accessors"
+import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 
 /**
  * Commands for moving nodes and boards

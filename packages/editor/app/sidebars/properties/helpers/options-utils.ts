@@ -1,9 +1,9 @@
 import { ComponentId, ComponentLevel, Theme, Workspace } from "@seldon/core"
 import {
-  getPropertyPickerOptions,
   type PropertyPickerInput,
   type PropertyPickerOption,
   type PropertyPickerResult,
+  getPropertyPickerOptions,
 } from "@seldon/core/helpers/properties/properties-bridge"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { Board, Instance, Variant } from "@seldon/core/workspace/types"

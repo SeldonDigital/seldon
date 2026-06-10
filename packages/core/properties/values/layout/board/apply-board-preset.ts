@@ -1,14 +1,14 @@
 import { Unit, ValueType } from "../../../constants"
 import type { Properties } from "../../../types/properties"
 import { Resize } from "../resize"
-import { isBoardPresetId, type BoardPresetId } from "./board-preset"
-import type { BoardCompound } from "./index"
+import { type BoardPresetId, isBoardPresetId } from "./board-preset"
 import {
   BOARD_DEVICE_PRESETS,
   type BoardDevicePresetId,
   getBoardDevicePreset,
   isBoardDevicePresetId,
 } from "./device-presets"
+import type { BoardCompound } from "./index"
 
 /** Applies the board fit preset to a board compound facet map. */
 export function applyBoardFitPreset(): BoardCompound {
@@ -58,7 +58,9 @@ export function getBoardPresetDisplayName(
     preset.type === ValueType.OPTION &&
     isBoardPresetId(preset.value)
   ) {
-    return preset.value === Resize.FIT ? "Fit" : getBoardDevicePreset(preset.value).name
+    return preset.value === Resize.FIT
+      ? "Fit"
+      : getBoardDevicePreset(preset.value).name
   }
   return null
 }
@@ -108,7 +110,9 @@ export function isBoardCompoundPresetReset(preset: string): boolean {
   )
 }
 
-export function buildBoardCompoundReset(schemaBoard?: BoardCompound): Properties {
+export function buildBoardCompoundReset(
+  schemaBoard?: BoardCompound,
+): Properties {
   const EMPTY = { type: ValueType.EMPTY, value: null } as const
   const schema = schemaBoard ?? {}
   return {

@@ -1,11 +1,12 @@
 import { current, isDraft } from "immer"
-import type { Board, ComponentTreeRef, EntryNode, Workspace } from "../../types"
+
 import { isComponentBoard, isPlaygroundBoard } from "../../model/components"
 import { isEntryNodeDefault, isEntryNodeVariant } from "../../model/entry-node"
 import { formatNodeLink, parseNodeLink } from "../../model/template-ref"
+import type { Board, ComponentTreeRef, EntryNode, Workspace } from "../../types"
+import { componentBoardUniqueNodeId } from "../components/entry-node-ids"
 import { getVariantTree } from "../components/get-variant-tree"
 import { walkBoardTreeRefs } from "../components/walk-board-tree-refs"
-import { componentBoardUniqueNodeId } from "../components/entry-node-ids"
 import { getWorkspaceNodes } from "../general/get-workspace-nodes"
 
 function collectTreeRefIds(ref: ComponentTreeRef): string[] {
@@ -122,10 +123,11 @@ export function buildDuplicateEntryVariantSubtreePlan(
   }
 
   function remapTreeRef(ref: ComponentTreeRef): ComponentTreeRef {
-    const mapped =
-      ref.id === sourceRootId ? newRootId : idMap.get(ref.id)
+    const mapped = ref.id === sourceRootId ? newRootId : idMap.get(ref.id)
     if (!mapped) {
-      throw new Error(`duplicate variant: missing id remap for tree ref ${ref.id}`)
+      throw new Error(
+        `duplicate variant: missing id remap for tree ref ${ref.id}`,
+      )
     }
     return {
       id: mapped,

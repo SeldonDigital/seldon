@@ -1,4 +1,5 @@
 import type { ComputeContext } from "../../properties/compute/types"
+import { ValueType } from "../../properties/constants/shared/value-types"
 import type { ColorValue } from "../../properties/values/appearance/color"
 import type { EmptyValue } from "../../properties/values/shared/empty/empty"
 import type { HexValue } from "../../properties/values/shared/exact/hex"
@@ -6,13 +7,12 @@ import type { HSLValue } from "../../properties/values/shared/exact/hsl"
 import type { LCHValue } from "../../properties/values/shared/exact/lch"
 import type { RGBValue } from "../../properties/values/shared/exact/rgb"
 import type { TransparentValue } from "../../properties/values/shared/option/transparent"
-import { ValueType } from "../../properties/constants/shared/value-types"
-import { invariant } from "../utils/invariant"
 import { Theme } from "../../themes/types"
+import { isSwatchToken } from "../../themes/values"
 import { debugLog } from "../../utils/debug-logger"
 import { themeSwatchToColorValue } from "../color/theme-swatch-to-color-value"
 import { getThemeOption } from "../theme/get-theme-option"
-import { isSwatchToken } from "../../themes/values"
+import { invariant } from "../utils/invariant"
 
 /**
  * Resolves color values to concrete HSLValue, RGBValue, HexValue, LCHValue, TransparentValue, or EmptyValue.
@@ -73,7 +73,7 @@ export function resolveColor({
         "resolveColor",
         "Invalid color type, falling back to empty value",
         {
-          colorType: (color as any).type,
+          colorType: (color as { type: string }).type,
         },
       )
       return { type: ValueType.EMPTY, value: null }

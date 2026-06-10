@@ -3,6 +3,7 @@ import { ComputedFunction, Unit, ValueType } from "../../constants"
 import { PropertySchema } from "../../types/schema"
 import { ComputedMatchValue } from "../shared/computed/match"
 import { EmptyValue } from "../shared/empty/empty"
+import { PercentageValue } from "../shared/exact/percentage"
 import { PixelValue } from "../shared/exact/pixel"
 import { RemValue } from "../shared/exact/rem"
 
@@ -29,6 +30,7 @@ export type GapValue =
   | EmptyValue
   | PixelValue
   | RemValue
+  | PercentageValue
   | ComputedMatchValue
   | GapOptionValue
   | GapThemeValue
@@ -46,16 +48,19 @@ export const gapSchema: PropertySchema = {
     "themeOrdinal",
   ] as const,
   units: {
-    allowed: [Unit.PX, Unit.REM],
+    allowed: [Unit.PX, Unit.REM, Unit.PERCENT],
     default: Unit.PX,
     validation: "both",
   },
   validation: {
     empty: () => true,
     inherit: () => true,
-    exact: (value: any) => {
+    exact: (value: unknown) => {
       if (
         typeof value === "object" &&
+        value !== null &&
+        "value" in value &&
+        "unit" in value &&
         value.value !== undefined &&
         value.unit !== undefined
       )
@@ -63,12 +68,17 @@ export const gapSchema: PropertySchema = {
       if (typeof value === "number" && value >= 0) return true
       return false
     },
-    option: (value: any) => Object.values(Gap).includes(value),
-    computed: (value: any) =>
-      typeof value === "object" && value.function !== undefined,
-    themeOrdinal: (value: any, theme?: Theme) => {
+    option: (value: unknown) =>
+      typeof value === "string" &&
+      (Object.values(Gap) as string[]).includes(value),
+    computed: (value: unknown) =>
+      typeof value === "object" &&
+      value !== null &&
+      "function" in value &&
+      value.function !== undefined,
+    themeOrdinal: (value: unknown, theme?: Theme) => {
       if (!theme) return false
-      return value in theme.gap
+      return typeof value === "string" && value in theme.gap
     },
   },
   presetOptions: () => Object.values(Gap),

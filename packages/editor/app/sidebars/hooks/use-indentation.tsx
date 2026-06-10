@@ -55,7 +55,9 @@ export const IndentationLevel = ({
 
   return (
     <IndentationContextProvider>
-      <div style={{ paddingLeft: indentationPadding, width: "100%", minWidth: 0 }}>
+      <div
+        style={{ paddingLeft: indentationPadding, width: "100%", minWidth: 0 }}
+      >
         {children}
       </div>
     </IndentationContextProvider>

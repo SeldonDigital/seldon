@@ -1,12 +1,18 @@
 import { LayoutGroup } from "framer-motion"
-import { CSSProperties, Fragment, PointerEvent, RefObject, useCallback } from "react"
-import { getSelectionTarget } from "@lib/workspace/selection-target"
+import {
+  CSSProperties,
+  Fragment,
+  PointerEvent,
+  RefObject,
+  useCallback,
+} from "react"
 import { useSetHoveredId } from "@lib/workspace/hooks/use-object-hover"
-import { Frame } from "../../seldon/frames/Frame"
-import { BoardSection } from "../helpers/get-board-sections"
 import { useSectionExpansion } from "../hooks/use-section-expansion"
-import { FramerExpandable } from "../shared/FramerExpandable"
+import { getSelectionTarget } from "@lib/workspace/selection-target"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
+import { Frame } from "@seldon/components/frames/Frame"
+import { BoardSection } from "../helpers/get-board-sections"
+import { FramerExpandable } from "../shared/FramerExpandable"
 import { RowBoard } from "./RowBoard"
 import { RowSection } from "./RowSection"
 import { RowSectionEmpty } from "./RowSectionEmpty"

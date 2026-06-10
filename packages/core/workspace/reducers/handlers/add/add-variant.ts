@@ -3,8 +3,8 @@ import { rules } from "../../../../rules/config/rules.config"
 import { getComponentDescendantIds } from "../../../helpers/nodes/get-descendant-ids"
 import { nodeRetrievalService } from "../../../services"
 import { ExtractPayload, Workspace } from "../../../types"
-import { addComponent } from "./add-component"
 import { duplicateNode } from "../duplicate/duplicate-node"
+import { addComponent } from "./add-component"
 
 /**
  * Adds a user variant by duplicating the default variant of the given component.
@@ -22,7 +22,9 @@ export function addVariant(
   let nextWorkspace = workspace
 
   if (payload.ensureDescendantComponents) {
-    const components = getComponentDescendantIds(payload.boardKey as ComponentId)
+    const components = getComponentDescendantIds(
+      payload.boardKey as ComponentId,
+    )
     for (const componentId of components) {
       if (!nextWorkspace.boards[componentId as ComponentId]) {
         nextWorkspace = addComponent(

@@ -6,7 +6,7 @@ import {
   useMotionValue,
 } from "framer-motion"
 import { useCallback, useEffect, useState } from "react"
-import { PANEL_MIN_HEIGHT, PANEL_MIN_WIDTH } from "@components/constants"
+import { PANEL_MIN_HEIGHT, PANEL_MIN_WIDTH } from "@app/constants"
 
 export type Side =
   | "top"

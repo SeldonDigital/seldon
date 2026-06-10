@@ -2,8 +2,8 @@
 
 import { useEffect, useRef } from "react"
 import { useControls, useTransformContext } from "react-zoom-pan-pinch"
-import { useEditorConfig } from "@lib/hooks/use-editor-config"
 import { useSelection } from "@lib/workspace/hooks/use-selection"
+import { useEditorConfig } from "@lib/hooks/use-editor-config"
 import {
   getCanvasSelectionElements,
   getUnionRect,
@@ -109,7 +109,9 @@ export function CanvasScrollToSelection() {
       const { scale, positionX, positionY } =
         transformContextRef.current.transformState
       const deltaX =
-        canvasRect.left + canvasRect.width / 2 - (target.left + target.width / 2)
+        canvasRect.left +
+        canvasRect.width / 2 -
+        (target.left + target.width / 2)
       const deltaY =
         canvasRect.top +
         canvasRect.height * VERTICAL_BIAS -

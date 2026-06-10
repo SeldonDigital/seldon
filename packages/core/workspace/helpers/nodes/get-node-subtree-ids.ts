@@ -1,6 +1,6 @@
 import type { ComponentTreeRef, EntryNodeId, Workspace } from "../../types"
-import { getWorkspaceNodes } from "../general/get-workspace-nodes"
 import { getVariantTree } from "../components/get-variant-tree"
+import { getWorkspaceNodes } from "../general/get-workspace-nodes"
 import { findBoardContainingTreeNodeId } from "./duplicate-entry-variant-subtree"
 
 function collectTreeRefIds(ref: ComponentTreeRef): EntryNodeId[] {

@@ -1,9 +1,9 @@
 import { rules } from "../../../../rules/config/rules.config"
 import {
-  nodeRetrievalService,
   nodeOperationsService,
-  workspacePropagationService,
+  nodeRetrievalService,
   typeCheckingService,
+  workspacePropagationService,
 } from "../../../services"
 import type { ExtractPayload, Workspace } from "../../../types"
 

@@ -44,6 +44,19 @@ export { IconSeldonFitHorizontal } from "./IconSeldonFitHorizontal"
 export { IconSeldonFitVertical } from "./IconSeldonFitVertical"
 export { IconSeldonOrientationHorizontal } from "./IconSeldonOrientationHorizontal"
 export { IconSeldonOrientationVertical } from "./IconSeldonOrientationVertical"
+export { IconSeldonPadding } from "./IconSeldonPadding"
+export { IconSeldonMargin } from "./IconSeldonMargin"
+export { IconSeldonWidth } from "./IconSeldonWidth"
+export { IconSeldonHeight } from "./IconSeldonHeight"
+export { IconSeldonOpacity } from "./IconSeldonOpacity"
+export { IconSeldonBrightness } from "./IconSeldonBrightness"
+export { IconSeldonCase } from "./IconSeldonCase"
+export { IconSeldonStyle } from "./IconSeldonStyle"
+export { IconSeldonBorderStyle } from "./IconSeldonBorderStyle"
+export { IconSeldonBorderColor } from "./IconSeldonBorderColor"
+export { IconSeldonBackgroundColor } from "./IconSeldonBackgroundColor"
+export { IconSeldonAlign } from "./IconSeldonAlign"
+export { IconSeldonRotation } from "./IconSeldonRotation"
 
 export const seldonsystemsettingsIconIds: readonly IconId[] = [
   "seldon-alignBottom",
@@ -90,4 +103,17 @@ export const seldonsystemsettingsIconIds: readonly IconId[] = [
   "seldon-fitVertical",
   "seldon-orientationHorizontal",
   "seldon-orientationVertical",
+  "seldon-padding",
+  "seldon-margin",
+  "seldon-width",
+  "seldon-height",
+  "seldon-opacity",
+  "seldon-brightness",
+  "seldon-case",
+  "seldon-style",
+  "seldon-borderStyle",
+  "seldon-borderColor",
+  "seldon-backgroundColor",
+  "seldon-align",
+  "seldon-rotation",
 ] as const

@@ -2,20 +2,20 @@
 
 import { useEffect, useMemo } from "react"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
-import { useWorkspaceId } from "@lib/project/hooks/use-workspace-id"
 import { useEditableWorkspaceName } from "@lib/persistence/hooks/use-editable-workspace-name"
 import { useWorkspaceRecord } from "@lib/persistence/hooks/use-workspace-record"
-import { useDraggableMonitor } from "./hooks/use-draggable-monitor"
-import { useScrollSelection } from "./hooks/use-scroll-selection"
+import { useWorkspaceId } from "@lib/project/hooks/use-workspace-id"
 import { useActiveBoard } from "@lib/workspace/hooks/use-active-board"
 import { useSelection } from "@lib/workspace/hooks/use-selection"
-import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
-import { SidebarContainer } from "../../seldon/elements/SidebarContainer"
-import { BarTabsProject } from "../../seldon/parts/BarTabsProject"
+import { useDraggableMonitor } from "./hooks/use-draggable-monitor"
+import { useScrollSelection } from "./hooks/use-scroll-selection"
+import { SelectionRelationsProvider } from "./hooks/use-selection-relations"
+import { getComponentKey } from "@lib/workspace/workspace-accessors"
+import { SidebarContainer } from "@seldon/components/elements/SidebarContainer"
+import { BarTabsProject } from "@seldon/components/parts/BarTabsProject"
 import { getBoardSections } from "../helpers/get-board-sections"
 import { sidebarShellStyle } from "../helpers/sidebar-styles"
-import { SelectionRelationsProvider } from "./hooks/use-selection-relations"
 import { ProjectTree } from "./ProjectTree"
 
 export function ObjectsSidebar() {
@@ -89,4 +89,3 @@ export function ObjectsSidebar() {
     </SidebarContainer>
   )
 }
-

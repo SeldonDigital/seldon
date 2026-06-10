@@ -1,6 +1,12 @@
-import { ColorValue, EmptyValue, PercentageValue, ValueType } from "@seldon/core"
+import {
+  ColorValue,
+  EmptyValue,
+  PercentageValue,
+  ValueType,
+} from "@seldon/core"
 import { resolveValue } from "@seldon/core/helpers/resolution/resolve-value"
 import { Theme } from "@seldon/core/themes/types"
+
 import { getColorCSSValue } from "./get-color-css-value"
 import { getThemeSwatchVarReference } from "./get-theme-swatch-names"
 

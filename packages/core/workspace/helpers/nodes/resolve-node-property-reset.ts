@@ -1,17 +1,17 @@
 import { ComponentId } from "../../../components/constants"
+import { isComponentId } from "../../../components/constants"
 import { findInObject } from "../../../helpers/utils/find-in-object"
+import { mergeProperties } from "../../../properties/helpers/merge-properties"
+import type { Properties } from "../../../properties/types/properties"
 import { isLayeredPaintProperty } from "../../../properties/types/property-keys"
 import type {
   PropertyKey,
   SubPropertyKey,
 } from "../../../properties/types/property-keys"
-import type { Properties } from "../../../properties/types/properties"
-import { mergeProperties } from "../../../properties/helpers/merge-properties"
 import { getInheritedNodeProperties } from "../../compute/compute-node-properties"
 import type { EntryNode, Workspace } from "../../types"
 import { getCompoundLayerValue } from "../properties/shared"
 import { getCatalogSchemaVariantOverridesForNode } from "./get-catalog-schema-variant-overrides"
-import { isComponentId } from "../../../components/constants"
 import { getNodeCatalogId } from "./get-node-catalog-id"
 
 export type NodePropertyResetPatch =
@@ -50,7 +50,12 @@ function readPropertySlice(
     return getCompoundLayerValue(bag)?.[subpropertyKey]
   }
 
-  if (bag && typeof bag === "object" && !Array.isArray(bag) && !("type" in bag)) {
+  if (
+    bag &&
+    typeof bag === "object" &&
+    !Array.isArray(bag) &&
+    !("type" in bag)
+  ) {
     return (bag as Record<string, unknown>)[subpropertyKey]
   }
 
@@ -97,7 +102,11 @@ export function resolveNodePropertyResetPatch(
   const inherited = getInheritedNodeProperties(node.id, workspace)
   const baseline = getBaselineProperties(node, workspace, catalogId)
   const baselineSlice = readPropertySlice(baseline, propertyKey, subpropertyKey)
-  const inheritedSlice = readPropertySlice(inherited, propertyKey, subpropertyKey)
+  const inheritedSlice = readPropertySlice(
+    inherited,
+    propertyKey,
+    subpropertyKey,
+  )
 
   if (propertySlicesMatch(baselineSlice, inheritedSlice)) {
     return subpropertyKey ? { action: "delete-sub" } : { action: "delete" }

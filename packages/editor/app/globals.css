@@ -1,5 +1,5 @@
-@import "./seldon/chrome/styles.css";
-@import "./seldon/styles.css";
+@import "../seldon/chrome/styles.css";
+@import "../seldon/styles.css";
 
 /*
  * Self-hosted IBM Plex Sans registered under its literal family name so the editor
@@ -11,35 +11,45 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: local("IBM Plex Sans"), url("./plex/IBMPlexSans-Regular.woff2") format("woff2");
+  src:
+    local("IBM Plex Sans"),
+    url("./plex/IBMPlexSans-Regular.woff2") format("woff2");
 }
 @font-face {
   font-family: "IBM Plex Sans";
   font-style: italic;
   font-weight: 400;
   font-display: swap;
-  src: local("IBM Plex Sans Italic"), url("./plex/IBMPlexSans-Italic.woff2") format("woff2");
+  src:
+    local("IBM Plex Sans Italic"),
+    url("./plex/IBMPlexSans-Italic.woff2") format("woff2");
 }
 @font-face {
   font-family: "IBM Plex Sans";
   font-style: normal;
   font-weight: 500;
   font-display: swap;
-  src: local("IBM Plex Sans Medium"), url("./plex/IBMPlexSans-Medium.woff2") format("woff2");
+  src:
+    local("IBM Plex Sans Medium"),
+    url("./plex/IBMPlexSans-Medium.woff2") format("woff2");
 }
 @font-face {
   font-family: "IBM Plex Sans";
   font-style: normal;
   font-weight: 600;
   font-display: swap;
-  src: local("IBM Plex Sans SemiBold"), url("./plex/IBMPlexSans-SemiBold.woff2") format("woff2");
+  src:
+    local("IBM Plex Sans SemiBold"),
+    url("./plex/IBMPlexSans-SemiBold.woff2") format("woff2");
 }
 @font-face {
   font-family: "IBM Plex Sans";
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: local("IBM Plex Sans"), url("./plex/IBMPlexSans-Bold.woff2") format("woff2");
+  src:
+    local("IBM Plex Sans"),
+    url("./plex/IBMPlexSans-Bold.woff2") format("woff2");
 }
 
 .no-spinner {

@@ -3,8 +3,8 @@ import { Theme, ThemeFontFamilyKey } from "../../../../themes/types"
 import { Workspace } from "../../../../workspace/types"
 import { ValueType } from "../../../constants"
 import { PropertySchema } from "../../../types/schema"
-import { StringValue } from "../../shared/exact/string"
 import { EmptyValue } from "../../shared/empty/empty"
+import { StringValue } from "../../shared/exact/string"
 import { InheritValue } from "../../shared/inherit/inherit"
 
 /**
@@ -14,7 +14,9 @@ import { InheritValue } from "../../shared/inherit/inherit"
  */
 const PACKAGED_FAMILY_VALUES: ReadonlySet<string> = new Set(
   FONT_COLLECTIONS.flatMap((collection) =>
-    Object.values(collection.families).map((family) => family.stack ?? family.name),
+    Object.values(collection.families).map(
+      (family) => family.stack ?? family.name,
+    ),
   ),
 )
 
@@ -62,8 +64,7 @@ export const fontFamilySchema: PropertySchema = {
   validation: {
     empty: () => true,
     inherit: () => true,
-    exact: (value: unknown) =>
-      typeof value === "string" && value.length > 0,
+    exact: (value: unknown) => typeof value === "string" && value.length > 0,
     option: (value: unknown) => {
       if (typeof value !== "string" || value.length === 0) return false
       if (value.startsWith("@fontFamily.")) return true

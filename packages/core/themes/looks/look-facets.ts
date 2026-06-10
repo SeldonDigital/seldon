@@ -9,10 +9,7 @@
  * `keyof <Parameters>`, so omitting a facet fails the build.
  */
 import type { PropertyName } from "../../properties/schemas/data/property-schemas"
-import type {
-  ThemeTokenSchema,
-  ThemeTokenSchemaSupport,
-} from "../types/schema"
+import type { ThemeTokenSchema, ThemeTokenSchemaSupport } from "../types/schema"
 import type { BackgroundParameters } from "../values/appearance/background"
 import type { BorderParameters } from "../values/appearance/border"
 import type { GradientParameters } from "../values/effects/gradient"
@@ -41,7 +38,11 @@ export type LookFacetEntry = BridgedLookFacet | InlineLookFacet
 
 /** Constrains authored entries so `facet` must be a real key of the parameters type. */
 type LookFacetEntryFor<P> =
-  | { facet: Extract<keyof P, string>; label: string; propertyKey: PropertyName }
+  | {
+      facet: Extract<keyof P, string>
+      label: string
+      propertyKey: PropertyName
+    }
   | {
       facet: Extract<keyof P, string>
       label: string
@@ -55,23 +56,59 @@ const BACKGROUND_LOOK_FACETS = [
   { facet: "size", label: "Size", propertyKey: "backgroundSize" },
   { facet: "repeat", label: "Repeat", propertyKey: "backgroundRepeat" },
   { facet: "color", label: "Color", propertyKey: "backgroundColor" },
-  { facet: "blendMode", label: "Blend Mode", propertyKey: "backgroundBlendMode" },
+  {
+    facet: "blendMode",
+    label: "Blend Mode",
+    propertyKey: "backgroundBlendMode",
+  },
   { facet: "filter", label: "Filter", propertyKey: "backgroundFilter" },
-  { facet: "brightness", label: "Brightness", propertyKey: "backgroundBrightness" },
+  {
+    facet: "brightness",
+    label: "Brightness",
+    propertyKey: "backgroundBrightness",
+  },
   { facet: "opacity", label: "Opacity", propertyKey: "backgroundOpacity" },
 ] as const satisfies readonly LookFacetEntryFor<BackgroundParameters>[]
 
 const GRADIENT_LOOK_FACETS = [
   { facet: "gradientType", label: "Type", propertyKey: "gradientType" },
   { facet: "angle", label: "Angle", propertyKey: "gradientAngle" },
-  { facet: "startColor", label: "Start Color", propertyKey: "gradientStartColor" },
-  { facet: "startOpacity", label: "Start Opacity", propertyKey: "gradientStartOpacity" },
-  { facet: "startBrightness", label: "Start Brightness", propertyKey: "gradientStartBrightness" },
-  { facet: "startPosition", label: "Start Position", propertyKey: "gradientStartPosition" },
+  {
+    facet: "startColor",
+    label: "Start Color",
+    propertyKey: "gradientStartColor",
+  },
+  {
+    facet: "startOpacity",
+    label: "Start Opacity",
+    propertyKey: "gradientStartOpacity",
+  },
+  {
+    facet: "startBrightness",
+    label: "Start Brightness",
+    propertyKey: "gradientStartBrightness",
+  },
+  {
+    facet: "startPosition",
+    label: "Start Position",
+    propertyKey: "gradientStartPosition",
+  },
   { facet: "endColor", label: "End Color", propertyKey: "gradientEndColor" },
-  { facet: "endOpacity", label: "End Opacity", propertyKey: "gradientEndOpacity" },
-  { facet: "endBrightness", label: "End Brightness", propertyKey: "gradientEndBrightness" },
-  { facet: "endPosition", label: "End Position", propertyKey: "gradientEndPosition" },
+  {
+    facet: "endOpacity",
+    label: "End Opacity",
+    propertyKey: "gradientEndOpacity",
+  },
+  {
+    facet: "endBrightness",
+    label: "End Brightness",
+    propertyKey: "gradientEndBrightness",
+  },
+  {
+    facet: "endPosition",
+    label: "End Position",
+    propertyKey: "gradientEndPosition",
+  },
 ] as const satisfies readonly LookFacetEntryFor<GradientParameters>[]
 
 const SHADOW_LOOK_FACETS = [
@@ -99,15 +136,44 @@ const FONT_LOOK_FACETS = [
   { facet: "lineHeight", label: "Line Height", propertyKey: "fontLineHeight" },
   { facet: "style", label: "Style", propertyKey: "fontStyle" },
   { facet: "textCase", label: "Text Case", propertyKey: "fontTextCase" },
-  { facet: "letterSpacing", label: "Letter Spacing", propertyKey: "fontLetterSpacing" },
+  {
+    facet: "letterSpacing",
+    label: "Letter Spacing",
+    propertyKey: "fontLetterSpacing",
+  },
 ] as const satisfies readonly LookFacetEntryFor<FontParameters>[]
 
 const SCROLLBAR_LOOK_FACETS = [
-  { facet: "trackSize", label: "Track Size", valueType: "text", controlType: "text" },
-  { facet: "trackColor", label: "Track Color", valueType: "color", controlType: "color" },
-  { facet: "thumbColor", label: "Thumb Color", valueType: "color", controlType: "color" },
-  { facet: "thumbHoverColor", label: "Thumb Hover Color", valueType: "color", controlType: "color" },
-  { facet: "rounded", label: "Rounded", valueType: "boolean", controlType: "boolean" },
+  {
+    facet: "trackSize",
+    label: "Track Size",
+    valueType: "text",
+    controlType: "text",
+  },
+  {
+    facet: "trackColor",
+    label: "Track Color",
+    valueType: "color",
+    controlType: "color",
+  },
+  {
+    facet: "thumbColor",
+    label: "Thumb Color",
+    valueType: "color",
+    controlType: "color",
+  },
+  {
+    facet: "thumbHoverColor",
+    label: "Thumb Hover Color",
+    valueType: "color",
+    controlType: "color",
+  },
+  {
+    facet: "rounded",
+    label: "Rounded",
+    valueType: "boolean",
+    controlType: "boolean",
+  },
 ] as const satisfies readonly LookFacetEntryFor<ScrollbarParameters>[]
 
 /** Facet lists keyed by look section. */

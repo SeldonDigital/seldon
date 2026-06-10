@@ -1,8 +1,13 @@
-import { Placement } from "@lib/types"
 import { COLORS } from "@lib/helpers/colors"
+import { Placement } from "@lib/types"
 import { FC } from "react"
 import { CSSProperties } from "react"
 import { useIndentation } from "../../../sidebars/hooks/use-indentation"
+import {
+  CanvasOutline,
+  InsertIndicatorLine,
+  Pointer,
+} from "@seldon/components/custom-components"
 import { calculateIndicatorPosition } from "../helpers/calculate-indicator-position"
 
 type IndicatorSelectProps = {
@@ -19,7 +24,7 @@ export const IndicatorSelect: FC<IndicatorSelectProps> = ({ placement }) => {
   // selection instead of drawing an edge line.
   if (placement === "inside") {
     return (
-      <div
+      <CanvasOutline
         style={{
           position: "absolute",
           inset: 0,
@@ -54,16 +59,16 @@ export const IndicatorSelect: FC<IndicatorSelectProps> = ({ placement }) => {
     backgroundColor: COLORS.charcoal[500],
   }
 
+  const dotStyle: CSSProperties = {
+    left: "-8px",
+    top: "0.5px",
+    transform: "translateY(-50%)",
+    ...circleStyle,
+  }
+
   return (
-    <div style={lineStyle}>
-      <div
-        style={{
-          left: "-8px",
-          top: "0.5px",
-          transform: "translateY(-50%)",
-          ...circleStyle,
-        }}
-      />
-    </div>
+    <InsertIndicatorLine style={lineStyle}>
+      <Pointer style={dotStyle} />
+    </InsertIndicatorLine>
   )
 }

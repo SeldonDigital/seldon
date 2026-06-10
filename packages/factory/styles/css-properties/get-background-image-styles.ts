@@ -6,8 +6,9 @@ import {
 } from "@seldon/core"
 import { resolveValue } from "@seldon/core/helpers/resolution/resolve-value"
 import { getThemeOption } from "@seldon/core/helpers/theme/get-theme-option"
-import { Theme } from "@seldon/core/themes/types"
 import type { BackgroundLayer } from "@seldon/core/properties/values/appearance/background"
+import { Theme } from "@seldon/core/themes/types"
+
 import { getBackgroundPositionStyle } from "./get-background-position-style"
 import { getBackgroundSizeStyle } from "./get-background-size-style"
 import { getLayeredPaintLayers } from "./get-layered-paint-layer"
@@ -97,5 +98,7 @@ function formatSize(size: BackgroundSizeValue): string {
     const { x, y } = size.value
     return `${x.value}${x.unit} ${y.value}${y.unit}`
   }
-  return getBackgroundSizeStyle(size as SingleBackgroundSizeValue) || DEFAULT_SIZE
+  return (
+    getBackgroundSizeStyle(size as SingleBackgroundSizeValue) || DEFAULT_SIZE
+  )
 }

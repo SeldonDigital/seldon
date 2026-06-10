@@ -1,6 +1,6 @@
 import { CSSProperties } from "react"
-import { FlatProperty } from "./properties-data"
 import { subPropertyRowBackground } from "../../helpers/sidebar-styles"
+import { FlatProperty } from "./properties-data"
 import { getPropertyDisplayColor } from "./property-styling"
 
 /**

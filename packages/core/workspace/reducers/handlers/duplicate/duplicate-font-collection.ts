@@ -1,4 +1,5 @@
 import { current, isDraft, produce } from "immer"
+
 import type { ExtractPayload, Workspace } from "../../../../index"
 import { fontCollectionBoardKeyFromEntryId } from "../../../helpers/font-collections/font-collection-id"
 import { getNextVariantLabel } from "../../../helpers/general/get-next-variant-label"
@@ -27,9 +28,7 @@ export function duplicateFontCollection(
       isDraft(draftEntry) ? current(draftEntry) : draftEntry
     ) as EntryFontCollection
 
-    const boardKey = fontCollectionBoardKeyFromEntryId(
-      payload.fontCollectionId,
-    )
+    const boardKey = fontCollectionBoardKeyFromEntryId(payload.fontCollectionId)
     if (!boardKey) return
 
     const newId =

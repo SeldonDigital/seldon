@@ -1,3 +1,5 @@
+import { serializeColor } from "@lib/properties/serialize-color"
+import { serializeValue } from "@lib/properties/serialize-value"
 import { useCallback } from "react"
 import {
   HSL,
@@ -20,10 +22,8 @@ import {
   parseHSLString,
   toHSLString,
 } from "@seldon/core/helpers/color/convert-color"
-import { serializeColor } from "@lib/properties/serialize-color"
-import { serializeValue } from "@lib/properties/serialize-value"
-import { useThemeEntryEditor } from "@lib/themes/hooks/use-theme-entry-editor"
 import type { EntryThemeId } from "@seldon/core/workspace/types"
+import { useThemeEntryEditor } from "@lib/themes/hooks/use-theme-entry-editor"
 import { FlatProperty } from "../helpers/properties-data"
 
 /**
@@ -101,13 +101,17 @@ export function useThemeProperties(themeEntryId: EntryThemeId | null) {
           | "blackPoint"
           | "bleed"
           | "contrastRatio"
-        
+
         // Extract numeric value - handle both plain strings and serialized unit objects
         let numericValue: number
         try {
           // Try parsing as JSON first (in case it's a serialized unit object)
           const parsed = JSON.parse(newValue)
-          if (typeof parsed === "object" && parsed !== null && "value" in parsed) {
+          if (
+            typeof parsed === "object" &&
+            parsed !== null &&
+            "value" in parsed
+          ) {
             numericValue = Number(parsed.value)
           } else {
             numericValue = Number(newValue)
@@ -115,16 +119,18 @@ export function useThemeProperties(themeEntryId: EntryThemeId | null) {
         } catch {
           // Not JSON, parse as plain number string
           // Remove any unit suffixes like " %", "px", etc.
-          const cleanedValue = newValue.replace(/\s*(%|px|rem|deg|em|vw|vh)\s*$/i, "").trim()
+          const cleanedValue = newValue
+            .replace(/\s*(%|px|rem|deg|em|vw|vh)\s*$/i, "")
+            .trim()
           numericValue = Number(cleanedValue)
         }
-        
+
         // Validate that we got a valid number
         if (isNaN(numericValue)) {
           console.warn(`Invalid numeric value for ${key}: ${newValue}`)
           return
         }
-        
+
         setColorValue(colorKey, numericValue)
         return
       }

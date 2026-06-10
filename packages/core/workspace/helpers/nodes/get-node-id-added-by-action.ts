@@ -1,8 +1,8 @@
 import { WorkspaceAction } from "../../reducers/types"
 import { EntryNodeId, Workspace } from "../../types"
-import { getChildrenIds } from "../components/get-children-ids"
 import { getBoardByNodeId } from "../components/get-board-by-node-id"
 import { getBoardVariantRootIds } from "../components/get-board-variant-root-ids"
+import { getChildrenIds } from "../components/get-children-ids"
 import { getImmediateParentId } from "../components/get-parent-ids"
 import { fontCollectionBoardKeyFromEntryId } from "../font-collections/font-collection-id"
 
@@ -35,10 +35,7 @@ export function getNodeIdAddedByAction(
     }
 
     case "insert_default_instance": {
-      const board = getBoardByNodeId(
-        workspace,
-        payload.parentId as EntryNodeId,
-      )
+      const board = getBoardByNodeId(workspace, payload.parentId as EntryNodeId)
       if (!board) return null
       const childIds = getChildrenIds(board, payload.parentId as EntryNodeId)
       if (typeof payload.index === "number")

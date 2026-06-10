@@ -2,9 +2,15 @@ import { type LayeredPaintKey } from "@seldon/core/properties/types/property-key
 
 export const LAYERED_PAINT_LAYER_INDEX = "0"
 
-const LAYERED_PAINT_ROOTS = new Set<string>(["background", "gradient", "shadow"])
+const LAYERED_PAINT_ROOTS = new Set<string>([
+  "background",
+  "gradient",
+  "shadow",
+])
 
-export function isLayeredPaintRoot(propertyKey: string): propertyKey is LayeredPaintKey {
+export function isLayeredPaintRoot(
+  propertyKey: string,
+): propertyKey is LayeredPaintKey {
   return LAYERED_PAINT_ROOTS.has(propertyKey)
 }
 

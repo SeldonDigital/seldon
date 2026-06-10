@@ -11,6 +11,11 @@ import {
   type ObjectFacetPropertyKey,
   type PropertyKey,
 } from "../../properties/types/property-keys"
+import {
+  expandLookPresetFacets,
+  hasExpandableLookPreset,
+} from "../../themes/looks"
+import type { ComputedTheme } from "../../themes/types/theme"
 import { getComponentPropertyDefaults } from "../helpers/components/get-component-property-defaults"
 import { getNodeParentIndex } from "../helpers/graph/build-node-parent-index"
 import { getNodeCatalogId } from "../helpers/nodes/get-node-catalog-id"
@@ -18,6 +23,7 @@ import { parseNodeTemplate, parseThemeTemplate } from "../model/template-ref"
 import type { Board } from "../types"
 import type { EntryNode, Workspace } from "../types"
 import { getComputedTheme } from "./compute-workspace-themes"
+import type { WorkspaceThemeEntries } from "./compute-workspace-themes"
 
 type NodeRecord = Record<string, WorkspaceNode>
 type BoardRecord = Record<string, WorkspaceComponent>
@@ -49,7 +55,7 @@ interface WorkspacePropertySource {
   byId?: NodeRecord
   nodes?: NodeRecord
   boards?: BoardRecord
-  themes?: any
+  themes?: WorkspaceThemeEntries
 }
 
 export interface ComputeNodePropertiesOptions {
@@ -267,6 +273,51 @@ export function mergeEffectiveProperties(sources: Properties[]): Properties {
   )
 }
 
+/** Options for effective-merge readers that already resolved theme context. */
+export interface EffectivePropertiesOptions {
+  /** Theme used to expand look preset facets. Resolved lazily when omitted. */
+  theme?: ComputedTheme
+  /** Parent index used for theme inheritance when `theme` is omitted. */
+  parentIndex?: ReadonlyMap<string, string>
+}
+
+/**
+ * Expands look preset facets in every snapshot before the effective merge, so
+ * a snapshot carrying a compound `preset` acts as a full look application.
+ * Snapshots without preset refs skip theme resolution entirely.
+ */
+function expandPresetSources(
+  sources: Properties[],
+  resolveTheme: () => ComputedTheme,
+): Properties[] {
+  if (!sources.some(hasExpandableLookPreset)) return sources
+  const theme = resolveTheme()
+  return sources.map((source) => expandLookPresetFacets(source, theme))
+}
+
+function resolveNodeTheme(
+  node: WorkspaceNode,
+  workspace: WorkspacePropertySource,
+  parentIndex?: ReadonlyMap<string, string>,
+): ComputedTheme {
+  return getComputedTheme(
+    getEffectiveThemeId(
+      node,
+      workspace,
+      parentIndex ?? getNodeParentIndex(workspace),
+    ),
+    workspace,
+  )
+}
+
+function resolveBoardTheme(
+  board: WorkspaceComponent | undefined,
+  workspace: WorkspacePropertySource,
+): ComputedTheme {
+  const themeId = normalizeThemeRef(board ? getComponentThemeRef(board) : null)
+  return getComputedTheme(themeId ?? "seldon", workspace)
+}
+
 function getTemplatePropertySources(
   node: WorkspaceNode,
   workspace: WorkspacePropertySource,
@@ -286,6 +337,7 @@ function getTemplatePropertySources(
 export function getInheritedNodeProperties(
   targetId: string,
   workspace: WorkspacePropertySource,
+  options: EffectivePropertiesOptions = {},
 ): Properties {
   const node = getNodes(workspace)[targetId]
   if (!node) {
@@ -295,15 +347,22 @@ export function getInheritedNodeProperties(
   const componentId = getNodeComponentId(node, workspace)
   const schemaProperties = componentId ? getSchemaProperties(componentId) : {}
 
-  return mergeEffectiveProperties([
-    schemaProperties,
-    ...getTemplatePropertySources(node, workspace, new Set([node.id])),
-  ])
+  return mergeEffectiveProperties(
+    expandPresetSources(
+      [
+        schemaProperties,
+        ...getTemplatePropertySources(node, workspace, new Set([node.id])),
+      ],
+      () =>
+        options.theme ?? resolveNodeTheme(node, workspace, options.parentIndex),
+    ),
+  )
 }
 
 export function getEffectiveNodeProperties(
   targetId: string,
   workspace: WorkspacePropertySource,
+  options: EffectivePropertiesOptions = {},
 ): Properties {
   const node = getNodes(workspace)[targetId]
 
@@ -311,20 +370,28 @@ export function getEffectiveNodeProperties(
     const board = workspace.boards?.[targetId]
     if (!board) throw new Error(`Workspace object ${targetId} not found`)
 
-    return mergeEffectiveProperties([
-      getComponentPropertyDefaults(),
-      getOwnProperties(board),
-    ])
+    return mergeEffectiveProperties(
+      expandPresetSources(
+        [getComponentPropertyDefaults(), getOwnProperties(board)],
+        () => options.theme ?? resolveBoardTheme(board, workspace),
+      ),
+    )
   }
 
   const componentId = getNodeComponentId(node, workspace)
   const schemaProperties = componentId ? getSchemaProperties(componentId) : {}
 
-  return mergeEffectiveProperties([
-    schemaProperties,
-    ...getTemplatePropertySources(node, workspace, new Set([node.id])),
-    getOwnProperties(node),
-  ])
+  return mergeEffectiveProperties(
+    expandPresetSources(
+      [
+        schemaProperties,
+        ...getTemplatePropertySources(node, workspace, new Set([node.id])),
+        getOwnProperties(node),
+      ],
+      () =>
+        options.theme ?? resolveNodeTheme(node, workspace, options.parentIndex),
+    ),
+  )
 }
 
 function buildComputeContext(
@@ -333,11 +400,13 @@ function buildComputeContext(
   visited: Set<string>,
   compositionParentByChild: ReadonlyMap<string, string> | undefined,
 ): ComputeContext {
-  const effectiveProperties = getEffectiveNodeProperties(node.id, workspace)
   const theme = getComputedTheme(
     getEffectiveThemeId(node, workspace, compositionParentByChild),
     workspace,
   )
+  const effectiveProperties = getEffectiveNodeProperties(node.id, workspace, {
+    theme,
+  })
   const parentNode = findParentNode(node, workspace, compositionParentByChild)
 
   if (!parentNode || visited.has(parentNode.id)) {
@@ -380,11 +449,12 @@ export function getNodeComputeContext(
 
   if (!node) {
     const board = workspace.boards?.[targetId]
-    const effectiveProperties = getEffectiveNodeProperties(targetId, workspace)
-    const themeId = normalizeThemeRef(
-      board ? getComponentThemeRef(board) : null,
+    const theme = resolveBoardTheme(board, workspace)
+    const effectiveProperties = getEffectiveNodeProperties(
+      targetId,
+      workspace,
+      { theme },
     )
-    const theme = getComputedTheme(themeId ?? "seldon", workspace)
     return {
       properties: effectiveProperties,
       parentContext: null,
@@ -409,18 +479,21 @@ export function computeNodeProperties(
   options: ComputeNodePropertiesOptions = {},
 ): Properties {
   if (options.stage === "effective") {
-    return getEffectiveNodeProperties(targetId, workspace)
+    return getEffectiveNodeProperties(targetId, workspace, {
+      parentIndex: options.parentIndex,
+    })
   }
 
   const node = getNodes(workspace)[targetId]
-  const effectiveProperties = getEffectiveNodeProperties(targetId, workspace)
 
   if (!node) {
     const board = workspace.boards?.[targetId]
-    const themeId = normalizeThemeRef(
-      board ? getComponentThemeRef(board) : null,
+    const theme = resolveBoardTheme(board, workspace)
+    const effectiveProperties = getEffectiveNodeProperties(
+      targetId,
+      workspace,
+      { theme },
     )
-    const theme = getComputedTheme(themeId ?? "seldon", workspace)
     return computeProperties(effectiveProperties, {
       properties: effectiveProperties,
       parentContext: null,

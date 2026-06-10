@@ -13,9 +13,9 @@ const FOLDED_BORDER_SIDES = [
 ]
 
 /** Compound parents shown as one inspector row each. */
-const COMPOUND_ROOTS = PROPERTY_COMPOUND_CATALOG.map((entry) => entry.key).filter(
-  (key) => !FOLDED_BORDER_SIDES.includes(key),
-)
+const COMPOUND_ROOTS = PROPERTY_COMPOUND_CATALOG.map(
+  (entry) => entry.key,
+).filter((key) => !FOLDED_BORDER_SIDES.includes(key))
 
 /**
  * `borderCollapse` is a standalone top-level property. The `${parent}${Facet}` join

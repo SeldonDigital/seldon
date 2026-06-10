@@ -1,20 +1,16 @@
 import { LayoutGroup } from "framer-motion"
-import { Fragment, RefObject, useMemo } from "react"
-import {
-  Action,
-  Board,
-  Instance,
-  Theme,
-  Variant,
-  Workspace,
-} from "@seldon/core"
+import { RefObject, useMemo } from "react"
+import { Board, Instance, Theme, Variant, Workspace } from "@seldon/core"
 import { isResourceType } from "@seldon/core/workspace/helpers/components/is-resource-type"
-import { buildThemeAssignmentProperty } from "./helpers/theme-assignment-display"
-import { Frame } from "../../seldon/frames/Frame"
-import { FramerExpandable } from "../shared/FramerExpandable"
-import { CssBlock } from "./CssBlock"
-import { RowCategory } from "./RowCategory"
-import { RowProperty } from "./RowProperty"
+import { usePropertyExpansion } from "./hooks/use-property-expansion"
+import { ScrollerShell } from "@seldon/components/custom-components"
+import { Frame } from "@seldon/components/frames/Frame"
+import { PropertyTreeSection } from "./PropertyTreeSection"
+import {
+  FontCollectionEditingContext,
+  IconSetEditingContext,
+  ThemeEditingContext,
+} from "./helpers/editing-contexts"
 import { useCssStrings } from "./helpers/get-calculated-properties"
 import {
   PropertySection,
@@ -29,34 +25,14 @@ import {
   iconCategoryLabel,
 } from "./helpers/icon-set-properties-data"
 import { FlatProperty } from "./helpers/properties-data"
-import { usePropertyExpansion } from "./hooks/use-property-expansion"
+import { buildThemeAssignmentProperty } from "./helpers/theme-assignment-display"
 
-interface ThemeEditingContext {
-  isThemeEditing: true
-  updateThemeProperty: (property: FlatProperty, newValue: string) => void
-  themeProperties: FlatProperty[]
-}
-
-interface FontCollectionEditingContext {
-  isFontCollectionEditing: true
-  updateFontCollectionProperty: (
-    property: FlatProperty,
-    newValue: string,
-  ) => void
-}
-
-interface IconSetEditingContext {
-  isIconSetEditing: true
-  updateIconSetProperty: (property: FlatProperty, newValue: string) => void
-}
-
-interface PropertyTreeProps {
+export interface PropertyTreeProps {
   properties: FlatProperty[]
   workspace: Workspace
   node: Variant | Instance | Board
   theme?: Theme
   scrollerRef?: RefObject<HTMLDivElement | null>
-  dispatch: (action: Action) => void
   themeEditingContext?: ThemeEditingContext | null
   fontCollectionEditingContext?: FontCollectionEditingContext | null
   iconSetEditingContext?: IconSetEditingContext | null
@@ -84,7 +60,6 @@ export function PropertyTree({
   node,
   theme,
   scrollerRef,
-  dispatch,
   themeEditingContext,
   fontCollectionEditingContext,
   iconSetEditingContext,
@@ -211,55 +186,29 @@ export function PropertyTree({
   }, [properties, node, workspace, themeEditingContext])
 
   return (
-    <div ref={scrollerRef} style={styles.scroller}>
+    <ScrollerShell ref={scrollerRef} style={styles.scroller}>
       <Frame style={styles.tree}>
         <LayoutGroup>
           {sections.map((section) => (
-            <Fragment key={section.category}>
-              <RowCategory section={section} />
-              <FramerExpandable
-                isExpanded={isCategoryExpanded(section.category)}
-              >
-                {section.category === "css" ? (
-                  <CssBlock cssProperties={cssStrings} />
-                ) : (
-                  section.properties.map((property) => {
-                    const isIconCategory =
-                      !!iconProperties &&
-                      getIconRowCategory(`icon.${section.category}`) !== null
-                    return (
-                      <RowProperty
-                        key={property.key}
-                        property={property}
-                        workspace={workspace}
-                        node={node}
-                        theme={theme}
-                        allProperties={
-                          section.category === "families" && familyProperties
-                            ? familyProperties
-                            : isIconCategory && iconProperties
-                              ? iconProperties
-                              : allProperties
-                        }
-                        themeEditingContext={themeEditingContext}
-                        fontCollectionEditingContext={
-                          section.category === "families"
-                            ? fontCollectionEditingContext
-                            : null
-                        }
-                        iconSetEditingContext={
-                          isIconCategory ? iconSetEditingContext : null
-                        }
-                      />
-                    )
-                  })
-                )}
-              </FramerExpandable>
-            </Fragment>
+            <PropertyTreeSection
+              key={section.category}
+              section={section}
+              isExpanded={isCategoryExpanded(section.category)}
+              workspace={workspace}
+              node={node}
+              theme={theme}
+              cssStrings={cssStrings}
+              allProperties={allProperties}
+              familyProperties={familyProperties}
+              iconProperties={iconProperties}
+              themeEditingContext={themeEditingContext}
+              fontCollectionEditingContext={fontCollectionEditingContext}
+              iconSetEditingContext={iconSetEditingContext}
+            />
           ))}
         </LayoutGroup>
       </Frame>
-    </div>
+    </ScrollerShell>
   )
 }
 

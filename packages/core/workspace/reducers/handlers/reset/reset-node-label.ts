@@ -9,9 +9,9 @@ import { isEntryNodeVariant } from "../../../model/entry-node"
 import { parseNodeLink } from "../../../model/template-ref"
 import {
   nodeRetrievalService,
+  typeCheckingService,
   workspaceMutationService,
   workspacePropagationService,
-  typeCheckingService,
 } from "../../../services"
 
 function defaultLabelForNode(node: EntryNode, workspace: Workspace): string {

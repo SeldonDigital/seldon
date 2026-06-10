@@ -1,10 +1,6 @@
 {
   "compilerOptions": {
-    "lib": [
-      "DOM",
-      "DOM.Iterable",
-      "ES2021"
-    ],
+    "lib": ["DOM", "DOM.Iterable", "ES2021"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -18,32 +14,16 @@
     "jsx": "react-jsx",
     "incremental": true,
     "paths": {
-      "@components/*": [
-        "./app/*"
-      ],
-      "@lib/*": [
-        "./lib/*"
-      ],
-      "@types": [
-        "./app/types.ts"
-      ],
-      "@catalog/*": [
-        "../../packages/core/components/catalog/*"
-      ],
-      "@seldon/core/*": [
-        "../../packages/core/*"
-      ],
-      "@seldon/factory/*": [
-        "../../packages/factory/*"
-      ]
+      "@app/*": ["./app/*"],
+      "@lib/*": ["./lib/*"],
+      "@seldon/components/*": ["./seldon/*"],
+      "@seldon/core/*": ["../../packages/core/*"],
+      "@seldon/factory/*": ["../../packages/factory/*"]
     },
     "downlevelIteration": true, // allow looping over HTMLCollection for example
     "target": "ES2017"
   },
-  "include": [
-    "**/*.ts",
-    "**/*.tsx"
-  ],
+  "include": ["**/*.ts", "**/*.tsx"],
   "exclude": [
     "node_modules",
     "**/generated-ai-action-schema.json",

@@ -1,14 +1,11 @@
 import { isEntryFontCollectionVariant } from "../../../model/entry-font-collection"
-import { check } from "../check"
 import type { Workspace } from "../../../types"
+import { check } from "../check"
 
 export const fontCollectionEntryValidators = {
   exists: (workspace: Workspace, id: string | undefined) => {
     if (!id) return
-    check(
-      workspace["font-collections"][id],
-      `Font collection ${id} not found`,
-    )
+    check(workspace["font-collections"][id], `Font collection ${id} not found`)
   },
   /** Asserts the entry exists and has `type: "variant"`. Default entries stay catalog-aligned. */
   isVariant: (workspace: Workspace, id: string) => {

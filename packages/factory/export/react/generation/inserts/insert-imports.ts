@@ -3,6 +3,7 @@ import {
   NATIVE_REACT_PRIMITIVES,
 } from "@seldon/core/components/constants"
 import { IconId } from "@seldon/core/icon-sets"
+
 import { ComponentToExport, ExportOptions, JSONTreeNode } from "../../../types"
 import { getIconComponentName } from "../../discovery/get-icon-component-name"
 import { pascalCase } from "../../utils/case-utils"
@@ -12,9 +13,7 @@ import {
   TransformStrategy,
   transformSource,
 } from "../../utils/transform-source"
-import {
-  validateTreeNodeProps,
-} from "../../validation/validate-component-props"
+import { validateTreeNodeProps } from "../../validation/validate-component-props"
 import { JSXNode } from "../preprocess/types"
 
 /**

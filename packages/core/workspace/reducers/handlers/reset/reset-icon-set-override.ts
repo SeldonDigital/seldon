@@ -1,4 +1,5 @@
 import { produce } from "immer"
+
 import { ExtractPayload, Workspace } from "../../../../index"
 import { deleteIconSetOverrideAtPath } from "../../../helpers/icon-sets/icon-set-id"
 import type { EntryIconSet } from "../../../model/entry-icon-set"

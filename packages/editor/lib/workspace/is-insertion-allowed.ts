@@ -1,4 +1,3 @@
-import { Tool } from "@lib/hooks/use-tool"
 import { Placement } from "@lib/types"
 import {
   Instance,
@@ -9,6 +8,7 @@ import {
 } from "@seldon/core"
 import { rules } from "@seldon/core/rules/config/rules.config"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
+import { Tool } from "@lib/hooks/use-tool"
 
 /**
  * Checks if insertion is allowed for a given tool, object, and placement.

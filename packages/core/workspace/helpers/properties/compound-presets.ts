@@ -1,28 +1,30 @@
 import { type Theme, ValueType, type Workspace } from "@seldon/core"
+import type { Properties } from "@seldon/core/properties/types/properties"
 import {
+  type ThemeLookPreset,
+  convertLookParameterValue,
   getBuiltInLookSectionForPropertyKey,
   getThemeLookSection,
   isThemeLookPreset,
   readPresetThemeLookRef,
   resolveBuiltInLookApplyName,
   resolveThemeLook,
-  type ThemeLookPreset,
 } from "@seldon/core/themes/looks"
-import type { Properties } from "@seldon/core/properties/types/properties"
+
 import {
+  type BoardCompound,
   applyBoardPreset,
   buildBoardCompoundReset,
   matchBoardCompoundPreset,
   resolveBoardPresetIdFromPickerValue,
-  type BoardCompound,
 } from "../../../properties/values/layout/board"
 import {
+  compoundFacetMatches,
   getCompoundLayerValue,
   getEffectiveProperties,
   getSchemaProperties,
   getSubPropertyKeysFromSchema,
   getTypedNode,
-  compoundFacetMatches,
   wrapCompoundPropertyValue,
 } from "./shared"
 
@@ -60,30 +62,6 @@ function buildResetProperties(
   return wrapCompoundPropertyValue(propertyKey, facets)
 }
 
-function convertPresetValue(subValue: unknown): unknown {
-  if (typeof subValue === "string" && subValue.startsWith("@")) {
-    return {
-      type: ValueType.THEME_CATEGORICAL,
-      value: subValue,
-    }
-  }
-  if (
-    subValue &&
-    typeof subValue === "object" &&
-    "type" in subValue &&
-    "value" in subValue
-  ) {
-    return subValue
-  }
-  if (subValue && typeof subValue === "object") {
-    return {
-      type: ValueType.EXACT,
-      value: subValue,
-    }
-  }
-  return { type: ValueType.EXACT, value: subValue }
-}
-
 function buildPresetProperties(
   propertyKey: string,
   preset: ThemeLookPreset,
@@ -92,10 +70,12 @@ function buildPresetProperties(
   const facets: Record<string, unknown> = {}
 
   for (const [subKey, subValue] of Object.entries(preset.parameters ?? {})) {
-    facets[subKey] = convertPresetValue(subValue)
+    facets[subKey] = convertLookParameterValue(subValue)
   }
 
-  const presentKeys = new Set(Object.keys(facets).filter((key) => key !== "preset"))
+  const presentKeys = new Set(
+    Object.keys(facets).filter((key) => key !== "preset"),
+  )
   for (const subKey of subKeys) {
     if (!presentKeys.has(subKey)) {
       facets[subKey] = { type: ValueType.EMPTY, value: null }
@@ -176,9 +156,8 @@ export function applyCompoundPreset(
 ): Properties {
   const node = getTypedNode(nodeId, workspace)
   const schemaProperties = getSchemaProperties(node, workspace)
-  const schemaProperty = schemaProperties?.[
-    propertyKey as keyof typeof schemaProperties
-  ]
+  const schemaProperty =
+    schemaProperties?.[propertyKey as keyof typeof schemaProperties]
   const subKeys = getSubPropertyKeysFromSchema(propertyKey, node, workspace)
 
   if (isResetPreset(preset)) {

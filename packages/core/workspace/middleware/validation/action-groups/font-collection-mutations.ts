@@ -1,7 +1,7 @@
 import { isEntryFontCollectionDefault } from "../../../model/entry-font-collection"
+import type { Action, Workspace } from "../../../types"
 import { fontCollectionEntryValidators } from "../validators/font-collection-entry"
 import { WorkspaceValidationError } from "../workspace-validation-error"
-import type { Action, Workspace } from "../../../types"
 
 function fontCollectionIdOf(action: Action): string {
   return (action.payload as { fontCollectionId: string }).fontCollectionId
@@ -21,7 +21,10 @@ export function validateFontCollectionMutation(
     case "set_font_collection_family_variant":
     case "set_font_collection_family_preset":
     case "duplicate_font_collection":
-      fontCollectionEntryValidators.exists(workspace, fontCollectionIdOf(action))
+      fontCollectionEntryValidators.exists(
+        workspace,
+        fontCollectionIdOf(action),
+      )
       break
     case "delete_font_collection": {
       const id = action.payload.fontCollectionId

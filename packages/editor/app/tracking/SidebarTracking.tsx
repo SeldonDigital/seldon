@@ -2,11 +2,16 @@ import { Placement } from "@lib/types"
 import { CSSProperties, MouseEvent, ReactNode, useCallback } from "react"
 import { Instance, Variant } from "@seldon/core"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
+import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useDialog } from "@lib/hooks/use-dialog"
 import { useTool } from "@lib/hooks/use-tool"
 import { useDropzone } from "../sidebars/objects/hooks/use-dropzone"
 import { useSidebarPlacementTracking } from "./hooks/use-sidebar-placement-tracking"
-import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
+import {
+  OverlayLayer,
+  PlacementZoneSurface,
+  PositionedPanel,
+} from "@seldon/components/custom-components"
 import { SidebarPlacementZones } from "./sidebar-indicators/SidebarPlacementZones"
 import { IndicatorSelect } from "./sidebar-indicators/select/IndicatorSelect"
 
@@ -121,6 +126,18 @@ export function SidebarTracking({
     [onRowDoubleClick],
   )
 
+  const handlePlacementHoverChange = useCallback(
+    (isHovered: boolean) => {
+      onHoverChange?.(isHovered)
+      if (isHovered) {
+        onCanvasTrackingEnter?.()
+      } else {
+        onCanvasTrackingLeave?.()
+      }
+    },
+    [onHoverChange, onCanvasTrackingEnter, onCanvasTrackingLeave],
+  )
+
   const renderSelectDropzones = () => {
     if (activeTool !== "select") return null
 
@@ -166,11 +183,11 @@ export function SidebarTracking({
 
   // Component rows and other targets without a node id skip placement tracking
   if (!node.id) {
-    return <div style={{ position: "relative", width: "100%" }}>{children}</div>
+    return <PositionedPanel style={rowWrapperStyle}>{children}</PositionedPanel>
   }
 
   return (
-    <div style={{ position: "relative", width: "100%" }}>
+    <PositionedPanel style={rowWrapperStyle}>
       {children}
       {activeTool === "select" ? (
         renderSelectDropzones()
@@ -181,19 +198,14 @@ export function SidebarTracking({
           onPlacementClick={handlePlacementClick}
           onRowClick={handleRowClickWrapper}
           onRowDoubleClick={handleRowDoubleClickWrapper}
-          onHoverChange={(isHovered: boolean) => {
-            onHoverChange?.(isHovered)
-            if (isHovered) {
-              onCanvasTrackingEnter?.()
-            } else {
-              onCanvasTrackingLeave?.()
-            }
-          }}
+          onHoverChange={handlePlacementHoverChange}
         />
       )}
-    </div>
+    </PositionedPanel>
   )
 }
+
+const rowWrapperStyle: CSSProperties = { position: "relative", width: "100%" }
 
 /**
  * Computes the vertical band a select drop zone occupies within a row so that
@@ -272,30 +284,36 @@ function DragDropZone({
     onCanvasTrackingLeave?.()
   }
 
+  const handleClick = (event: MouseEvent<HTMLDivElement>) => {
+    if (isButtonTarget(event)) return
+    onClick?.(event)
+  }
+
+  const handleDoubleClick = (event: MouseEvent<HTMLDivElement>) => {
+    if (isButtonTarget(event)) return
+    onDoubleClick?.(event)
+  }
+
   return (
     <>
-      <div
+      <PlacementZoneSurface
         ref={ref}
         style={bandStyle}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        onClick={(event) => {
-          if (isButtonTarget(event)) return
-          onClick?.(event)
-        }}
-        onDoubleClick={(event) => {
-          if (isButtonTarget(event)) return
-          onDoubleClick?.(event)
-        }}
-        data-testid={`node-${target.id}-dropzone-${placement}`}
+        onClick={handleClick}
+        onDoubleClick={handleDoubleClick}
+        dataTestId={`node-${target.id}-dropzone-${placement}`}
       />
       {/* The hit area is only a band of the row, but the indicator line must sit
           on the row edge, so render it in a full-row, non-interactive overlay. */}
       {isValidDropTarget && (
-        <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
+        <OverlayLayer style={nonInteractiveOverlayStyle}>
           <IndicatorSelect placement={placement} />
-        </div>
+        </OverlayLayer>
       )}
     </>
   )
 }
+
+const nonInteractiveOverlayStyle: CSSProperties = { pointerEvents: "none" }

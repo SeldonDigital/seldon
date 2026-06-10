@@ -8,6 +8,7 @@ import {
   getNodeCatalogComponentId,
   getNodeChildIds,
 } from "@lib/workspace/node-tree"
+import { buildRenderParentIndex } from "@lib/workspace/render-parent-index"
 import { ComponentRenderer } from "../ComponentRenderer"
 
 type BoardPreviewNodeProps = {
@@ -16,6 +17,12 @@ type BoardPreviewNodeProps = {
   /** Per-preview className scope so identical node ids do not share CSS across previews. */
   scope: string
   isRoot?: boolean
+  /**
+   * Node-id path from the preview root down to this node. Lets a shared child id
+   * resolve `#parent.*` against the parent it is drawn under. Defaults to the
+   * node id at the root.
+   */
+  rootPath?: string
 }
 
 /**
@@ -30,11 +37,14 @@ export function BoardPreviewNode({
   workspace,
   scope,
   isRoot = false,
+  rootPath,
 }: BoardPreviewNodeProps) {
   const node = workspace.nodes[nodeId]
   if (!node) {
     return null
   }
+
+  const selfPath = rootPath ?? nodeId
 
   const catalogComponentId = getNodeCatalogComponentId(node, workspace)
   if (!catalogComponentId) {
@@ -62,7 +72,9 @@ export function BoardPreviewNode({
 
   return (
     <ComponentRenderer
-      computeContext={getNodeComputeContext(nodeId, workspace)}
+      computeContext={getNodeComputeContext(nodeId, workspace, {
+        parentIndex: buildRenderParentIndex(selfPath),
+      })}
       styleOverrides={isRoot ? { position: "relative" } : undefined}
       componentId={component.id}
       htmlAttributes={{ "data-preview-node-id": node.id }}
@@ -74,6 +86,7 @@ export function BoardPreviewNode({
           nodeId={childNodeId}
           workspace={workspace}
           scope={scope}
+          rootPath={`${selfPath}/${childNodeId}`}
         />
       ))}
     </ComponentRenderer>

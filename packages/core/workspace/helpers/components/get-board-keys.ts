@@ -9,7 +9,10 @@ import type { Board, BoardKey, Workspace } from "../../types"
  * @param workspace Workspace that holds the boards map.
  * @param board Board instance to resolve.
  */
-export function getBoardKey(workspace: Workspace, board: Board): BoardKey | null {
+export function getBoardKey(
+  workspace: Workspace,
+  board: Board,
+): BoardKey | null {
   for (const [boardKey, entry] of Object.entries(workspace.boards)) {
     if (entry === board) {
       return boardKey as BoardKey

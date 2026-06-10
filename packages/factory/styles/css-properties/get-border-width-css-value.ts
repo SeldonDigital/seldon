@@ -1,6 +1,7 @@
 import { BorderWidth, BorderWidthValue } from "@seldon/core"
 import { resolveBorderWidth } from "@seldon/core/helpers/resolution/resolve-border-width"
 import { Theme } from "@seldon/core/themes/types"
+
 import { getCssValue } from "./get-css-value"
 import { CSSObject } from "./types"
 

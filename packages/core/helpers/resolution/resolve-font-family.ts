@@ -1,5 +1,5 @@
-import type { ComputeContext } from "../../properties/compute/types"
 import { ValueType } from "../../properties"
+import type { ComputeContext } from "../../properties/compute/types"
 import { EmptyValue } from "../../properties/values/shared/empty/empty"
 import {
   FontFamilyPresetValue,

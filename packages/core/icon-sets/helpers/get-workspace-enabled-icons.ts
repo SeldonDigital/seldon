@@ -1,4 +1,6 @@
 import merge from "lodash/merge"
+
+import type { IconId } from "../../icon-sets"
 import { isIconSetBoard } from "../../workspace/model/components"
 import type { EntryIconSet } from "../../workspace/model/entry-icon-set"
 import {
@@ -8,10 +10,9 @@ import {
 import type { Workspace } from "../../workspace/types"
 import { STOCK_ICON_SETS_BY_ID } from "../catalog"
 import { instantiateIconSet } from "../compute"
-import type { IconId } from "../../icon-sets"
 import type { ComputedIconSet } from "../types/icon-set"
 import type { IconSetTemplateId } from "../types/icon-set-id"
-import { getIncludedIcons, type IconInclusion } from "./icon-selection"
+import { type IconInclusion, getIncludedIcons } from "./icon-selection"
 
 /** Maps an icon-set board catalog id to the icon-id prefix it contributes. */
 const CATALOG_TO_ICON_PREFIX: Record<string, string> = {

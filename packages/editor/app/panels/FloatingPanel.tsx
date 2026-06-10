@@ -1,10 +1,12 @@
-import { motion } from "framer-motion"
 import { CSSProperties } from "react"
 import { createPortal } from "react-dom"
 import { useHotkeys } from "react-hotkeys-hook"
-import { HeaderPanelsClose } from "../seldon/chrome/elements/HeaderPanelsClose"
-import { PANEL_INITIAL_HEIGHT, PANEL_INITIAL_WIDTH } from "../constants"
 import { useFloatingPanel } from "./hooks/use-floating-panel"
+import {
+  Backdrop,
+  FloatingPanelSurface,
+} from "@seldon/components/custom-components"
+import { PANEL_INITIAL_HEIGHT, PANEL_INITIAL_WIDTH } from "../constants"
 
 export type FloatingPanelProps = {
   handleClose: () => void
@@ -59,132 +61,31 @@ export function FloatingPanel({
   return (
     <>
       {(closeOnClickOutside || preventInteractionOutside) && (
-        <div
+        <Backdrop
           onClick={closeOnClickOutside ? handleClose : undefined}
-          style={{ position: "fixed", inset: 0, zIndex: 30 }}
+          style={overlayStyle}
         />
       )}
       {createPortal(
-        <motion.div
-          drag
-          style={{
-            x,
-            y,
-            width,
-            height,
-            position: "fixed",
-            left: 0,
-            top: 0,
-            zIndex: 40,
-          }}
-          dragControls={moveControls}
-          dragMomentum={false}
-          dragElastic={false}
+        <FloatingPanelSurface
+          x={x}
+          y={y}
+          width={width}
+          height={height}
+          moveControls={moveControls}
           dragConstraints={dragConstraints}
-          dragListener={false}
-          data-testid={testId}
-          className="variant-dialog-default"
+          onResizeStart={handleResizeStart}
+          onResize={handleResize}
+          onClose={handleClose}
+          title={title}
+          testId={testId}
         >
-          <HeaderPanelsClose
-            onPointerDown={(event) => moveControls.start(event)}
-            titleProps={{
-              children: title,
-              style: styles.title,
-            }}
-            buttonIconicProps={{
-              onClick: handleClose,
-            }}
-          />
           {children}
-          {(
-            [
-              "top",
-              "right",
-              "bottom",
-              "left",
-              "top-left",
-              "top-right",
-              "bottom-left",
-              "bottom-right",
-            ] as const
-          ).map((side) => (
-            <motion.div
-              key={side}
-              onPan={(_event, info) => handleResize(side, info)}
-              onPointerDown={handleResizeStart}
-              style={getResizeHandleStyle(side)}
-            />
-          ))}
-        </motion.div>,
+        </FloatingPanelSurface>,
         document.body,
       )}
     </>
   )
 }
 
-const styles: Record<string, CSSProperties> = {
-  title: {
-    alignSelf: "center",
-    color: "white",
-    flex: "1 0 0",
-    fontSize: "14px",
-  },
-}
-
-type ResizeSide =
-  | "top"
-  | "right"
-  | "bottom"
-  | "left"
-  | "top-left"
-  | "top-right"
-  | "bottom-left"
-  | "bottom-right"
-
-const EDGE = "0.5rem"
-
-function getResizeHandleStyle(side: ResizeSide): CSSProperties {
-  const style: CSSProperties = { position: "absolute", touchAction: "none" }
-
-  if (side.includes("bottom")) {
-    style.bottom = 0
-    style.height = EDGE
-  }
-  if (side.includes("left")) {
-    style.left = 0
-    style.width = EDGE
-  }
-  if (side.includes("right")) {
-    style.right = 0
-    style.width = EDGE
-  }
-  if (side.includes("top")) {
-    style.top = 0
-    style.height = EDGE
-  }
-
-  switch (side) {
-    case "top":
-    case "bottom":
-      style.left = EDGE
-      style.right = EDGE
-      style.cursor = "ns-resize"
-      break
-    case "left":
-    case "right":
-      style.top = EDGE
-      style.bottom = EDGE
-      style.cursor = "ew-resize"
-      break
-    case "top-left":
-    case "bottom-right":
-      style.cursor = "nwse-resize"
-      break
-    case "top-right":
-    case "bottom-left":
-      style.cursor = "nesw-resize"
-      break
-  }
-
-  return style
-}
+const overlayStyle: CSSProperties = { position: "fixed", inset: 0, zIndex: 30 }

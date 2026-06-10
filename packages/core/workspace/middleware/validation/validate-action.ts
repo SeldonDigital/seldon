@@ -1,3 +1,4 @@
+import type { Action, Workspace } from "../../types"
 import { validateBoardMetadata } from "./action-groups/board-metadata"
 import {
   validateAddFontCollectionCustomFamily,
@@ -26,7 +27,6 @@ import {
 } from "./action-groups/theme-custom-tokens"
 import { boardValidators } from "./validators"
 import { WorkspaceValidationError } from "./workspace-validation-error"
-import type { Action, Workspace } from "../../types"
 
 /**
  * Validates a workspace action before the reducer runs.

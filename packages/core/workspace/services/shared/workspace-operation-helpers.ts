@@ -62,13 +62,15 @@ export function withBoardMutation(
  * @param operation - Optional operation to perform on the parent
  * @returns The parent node (and optionally the result of the operation)
  */
+type ParentNodeResult<T> = T extends void
+  ? Variant | Instance
+  : { parent: Variant | Instance; result: T }
+
 export function withParentNode<T = void>(
   child: Variant | Instance | VariantId | InstanceId,
   workspace: Workspace,
   operation?: (parent: Variant | Instance) => T,
-): T extends void
-  ? Variant | Instance
-  : { parent: Variant | Instance; result: T } {
+): ParentNodeResult<T> {
   const parent = nodeTraversalService.findParentNode(child, workspace)
   invariant(
     parent,
@@ -77,10 +79,10 @@ export function withParentNode<T = void>(
 
   if (operation) {
     const result = operation(parent)
-    return { parent, result } as any
+    return { parent, result } as ParentNodeResult<T>
   }
 
-  return parent as any
+  return parent as ParentNodeResult<T>
 }
 
 /**

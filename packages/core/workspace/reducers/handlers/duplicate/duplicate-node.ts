@@ -5,10 +5,10 @@ import {
   debugLog,
 } from "../../../../utils/debug-logger"
 import {
-  nodeRetrievalService,
   nodeOperationsService,
-  workspacePropagationService,
+  nodeRetrievalService,
   typeCheckingService,
+  workspacePropagationService,
 } from "../../../services"
 import { ExtractPayload, Workspace } from "../../../types"
 

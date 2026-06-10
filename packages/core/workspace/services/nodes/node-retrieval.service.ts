@@ -1,7 +1,7 @@
 import { ComponentId, isComponentId } from "../../../components/constants"
 import { invariant } from "../../../index"
-import { getWorkspaceNodes } from "../../helpers/general/get-workspace-nodes"
 import { ErrorMessages } from "../../constants"
+import { getWorkspaceNodes } from "../../helpers/general/get-workspace-nodes"
 import {
   Board,
   BoardKey,

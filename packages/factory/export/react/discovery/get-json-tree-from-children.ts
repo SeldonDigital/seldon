@@ -1,19 +1,30 @@
-import { Display, InstanceId, Properties, VariantId, ValueType } from "@seldon/core"
-import { ComponentId, ComponentLevel, isComponentId } from "@seldon/core/components/constants"
+import {
+  Display,
+  InstanceId,
+  Properties,
+  ValueType,
+  VariantId,
+} from "@seldon/core"
 import { getComponentSchema } from "@seldon/core/components/catalog"
+import {
+  ComponentId,
+  ComponentLevel,
+  isComponentId,
+} from "@seldon/core/components/constants"
 import { isComplexSchema } from "@seldon/core/components/types"
-import { WrapperElement } from "@seldon/core/properties"
 import { IconId } from "@seldon/core/icon-sets"
-import { getChildrenIds } from "@seldon/core/workspace/helpers/components/get-children-ids"
+import { WrapperElement } from "@seldon/core/properties"
 import { componentBoardSchemaVariantNodeId } from "@seldon/core/workspace/helpers/components/entry-node-ids"
 import { getBoardByNodeId } from "@seldon/core/workspace/helpers/components/get-board-by-node-id"
-import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
+import { getChildrenIds } from "@seldon/core/workspace/helpers/components/get-children-ids"
 import { getNodeById } from "@seldon/core/workspace/helpers/nodes/get-node-by-id"
 import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-catalog-id"
+import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
 import { isVariantNode } from "@seldon/core/workspace/helpers/nodes/is-variant-node"
 import { isComponentBoard } from "@seldon/core/workspace/model/components"
 import { typeCheckingService } from "@seldon/core/workspace/services"
 import type { EntryNode, Workspace } from "@seldon/core/workspace/types"
+
 import {
   getTemplateSourceNodeId,
   resolveSourceVariantId,

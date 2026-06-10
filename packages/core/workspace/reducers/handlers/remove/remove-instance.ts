@@ -6,11 +6,12 @@ import {
   debugLog,
 } from "../../../../utils/debug-logger"
 import {
-  nodeRetrievalService,
   nodeOperationsService,
+  nodeRelationshipService,
+  nodeRetrievalService,
+  typeCheckingService,
   workspaceMutationService,
   workspacePropagationService,
-  typeCheckingService,
 } from "../../../services"
 import { ExtractPayload, Workspace } from "../../../types"
 
@@ -47,10 +48,21 @@ export function removeInstance(
   }
 
   const config = rules.mutations.delete.instance
+
+  // Schema-defined removal behavior (hide) only applies inside the default
+  // variant, where the schema tree must stay intact. User variants delete the
+  // instance outright even when it chains back to a schema-defined default
+  // child. Behavior is resolved once from the targeted node so downstream
+  // propagation applies the same operation to every linked instance.
+  const isSchemaDefinedInDefaultVariant = () =>
+    typeCheckingService.isSchemaDefinedInstance(node) &&
+    typeCheckingService.isDefaultVariant(
+      nodeRelationshipService.getRootVariant(node, workspace),
+    )
   const removalBehavior =
     typeof config.removalBehavior === "string"
       ? config.removalBehavior
-      : typeCheckingService.isSchemaDefinedInstance(node)
+      : isSchemaDefinedInDefaultVariant()
         ? config.removalBehavior.schemaDefined
         : config.removalBehavior.manuallyAdded
 

@@ -1,4 +1,6 @@
 import { describe, expect, it } from "bun:test"
+
+import type { EntryNode, EntryNodeType } from "../workspace/model/entry-node"
 import { addVariant } from "../workspace/reducers/handlers/add/add-variant"
 import { duplicateNode } from "../workspace/reducers/handlers/duplicate/duplicate-node"
 import { moveInstance } from "../workspace/reducers/handlers/move/move-instance"
@@ -9,7 +11,6 @@ import { reorderVariantInBoard } from "../workspace/reducers/handlers/reorder/re
 import { resetDefaultVariantToCatalog } from "../workspace/reducers/handlers/reset/reset-default-variant-to-catalog"
 import { resetNode } from "../workspace/reducers/handlers/reset/reset-node"
 import { resetUserVariantToDefault } from "../workspace/reducers/handlers/reset/reset-user-variant-to-default"
-import type { EntryNode, EntryNodeType } from "../workspace/model/entry-node"
 import type { Workspace } from "../workspace/types"
 import { rules } from "./config/rules.config"
 import type { Config } from "./types/rule-config-types"
@@ -136,7 +137,10 @@ describe("structural handlers no-op when their bucket denies the entity", () => 
     const ws = makeWorkspace()
     const result = withDenied("move", "instance", () =>
       moveInstance(
-        { instanceId: "instance-1", target: { parentId: "parent-1", index: 0 } },
+        {
+          instanceId: "instance-1",
+          target: { parentId: "parent-1", index: 0 },
+        },
         ws,
       ),
     )

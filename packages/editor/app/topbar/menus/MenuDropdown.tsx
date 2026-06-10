@@ -1,7 +1,7 @@
 "use client"
 
-import { useState } from "react"
 import { DropdownMenu, MenuEntry } from "@lib/menus"
+import { useState } from "react"
 import { useAppState } from "@lib/hooks/use-app-state"
 import { MenuDropdown as MenuDropdownType } from "./types"
 

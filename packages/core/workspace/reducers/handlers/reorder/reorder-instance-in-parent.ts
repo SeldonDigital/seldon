@@ -5,10 +5,10 @@ import {
   debugLog,
 } from "../../../../utils/debug-logger"
 import {
-  nodeRetrievalService,
   nodeOperationsService,
-  workspacePropagationService,
+  nodeRetrievalService,
   typeCheckingService,
+  workspacePropagationService,
 } from "../../../services"
 import { ExtractPayload, Workspace } from "../../../types"
 
@@ -69,7 +69,11 @@ export function reorderInstanceInParent(
               newIndex,
             },
           )
-          return nodeOperationsService.moveInstanceToIndex(node, newIndex, workspace)
+          return nodeOperationsService.moveInstanceToIndex(
+            node,
+            newIndex,
+            workspace,
+          )
         }
 
         throw new Error(

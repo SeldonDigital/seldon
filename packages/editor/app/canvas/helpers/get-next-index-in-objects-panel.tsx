@@ -1,6 +1,12 @@
 import { DragLocationHistory } from "@atlaskit/pragmatic-drag-and-drop/dist/types/internal-types"
 import { Placement } from "@lib/types"
-import { Instance, InstanceId, Variant, VariantId, Workspace } from "@seldon/core"
+import {
+  Instance,
+  InstanceId,
+  Variant,
+  VariantId,
+  Workspace,
+} from "@seldon/core"
 import { canNodeHaveChildren } from "@seldon/core/workspace/helpers/nodes/can-node-have-children"
 import { getNodeChildIds } from "@lib/workspace/node-tree"
 

@@ -1,4 +1,5 @@
 import { produce } from "immer"
+
 import { ExtractPayload, Workspace } from "../../../../index"
 import type { EntryIconSet } from "../../../model/entry-icon-set"
 

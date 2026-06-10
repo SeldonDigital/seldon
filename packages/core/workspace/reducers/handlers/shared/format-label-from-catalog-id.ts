@@ -4,7 +4,6 @@ export function formatLabelFromCatalogId(
 ): string {
   if (!catalogId) return fallback
   return (
-    catalogId.charAt(0).toUpperCase() +
-    catalogId.slice(1).replace(/[-_]/g, " ")
+    catalogId.charAt(0).toUpperCase() + catalogId.slice(1).replace(/[-_]/g, " ")
   )
 }

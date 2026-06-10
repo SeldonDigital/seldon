@@ -2,8 +2,8 @@ import { ExtractPayload, Workspace } from "../../../../index"
 import { rules } from "../../../../rules/config/rules.config"
 import {
   nodeRetrievalService,
-  workspaceMutationService,
   typeCheckingService,
+  workspaceMutationService,
 } from "../../../services"
 
 /**

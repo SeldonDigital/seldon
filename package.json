@@ -9,8 +9,9 @@
     "build": "npm run build --workspace @seldon/editor-local",
     "start": "npm run start --workspace @seldon/editor-local",
     "lint": "npm run lint --workspace @seldon/editor-local",
-    "quality": "npm run quality --workspace @seldon/editor-local",
-    "format": "prettier --write \"**/*.{ts,tsx,json,css,js,mjs,md}\""
+    "format:check": "prettier --check \"**/*.{ts,tsx,json,css,js,mjs,md}\"",
+    "quality": "npm run format:check && npm run quality --workspace @seldon/editor-local",
+    "format": "node scripts/collapse-empty-values.mjs && prettier --write \"**/*.{ts,tsx,json,css,js,mjs,md}\""
   },
   "repository": {
     "type": "git",
@@ -30,7 +31,9 @@
   ],
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^5.2.2",
-    "prettier": "^3.3.3"
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "prettier": "^3.3.3",
+    "typescript-eslint": "^8.61.0"
   },
   "volta": {
     "node": "22.18.0"

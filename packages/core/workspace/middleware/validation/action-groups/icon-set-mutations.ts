@@ -1,7 +1,7 @@
 import { isEntryIconSetDefault } from "../../../model/entry-icon-set"
+import type { Action, Workspace } from "../../../types"
 import { iconSetEntryValidators } from "../validators/icon-set-entry"
 import { WorkspaceValidationError } from "../workspace-validation-error"
-import type { Action, Workspace } from "../../../types"
 
 function iconSetIdOf(action: Action): string {
   return (action.payload as { iconSetId: string }).iconSetId

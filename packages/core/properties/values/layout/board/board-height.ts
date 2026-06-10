@@ -20,8 +20,7 @@ export type BoardHeightValue =
 
 export const boardHeightSchema: PropertySchema = {
   name: "boardHeight",
-  description:
-    "Sets board height using pixels, root lengths, or fit.",
+  description: "Sets board height using pixels, root lengths, or fit.",
   supports: ["empty", "exact", "option"] as const,
   units: {
     allowed: [Unit.PX, Unit.REM],

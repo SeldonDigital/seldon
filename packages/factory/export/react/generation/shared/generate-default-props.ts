@@ -1,4 +1,5 @@
 import { CSSProperties } from "react"
+
 import { ComponentToExport, DataBinding, JSONTreeNode } from "../../../types"
 import { getConditionalPropPaths } from "./get-conditional-prop-paths"
 

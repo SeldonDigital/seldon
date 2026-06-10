@@ -1,6 +1,6 @@
+import { IconId } from "../../icon-sets"
 import { isIconSetBoard } from "../../workspace/model/components"
 import { Workspace } from "../../workspace/types"
-import { IconId } from "../../icon-sets"
 import { carbonIconIds } from "../catalog/carbon"
 import { lucideIconIds } from "../catalog/lucide"
 import { materialIconIds } from "../catalog/material"

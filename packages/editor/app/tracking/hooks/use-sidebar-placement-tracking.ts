@@ -4,6 +4,8 @@ import { Instance, Variant } from "@seldon/core"
 import { getComponentSchema } from "@seldon/core/components/catalog"
 import { rules } from "@seldon/core/rules/config/rules.config"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
+import { useActiveBoard } from "@lib/workspace/hooks/use-active-board"
+import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import {
   getHoverStateSnapshot,
   useHoverStateForObjects,
@@ -13,13 +15,11 @@ import { useTool } from "@lib/hooks/use-tool"
 import { isInsertionAllowed } from "@lib/workspace/is-insertion-allowed"
 import { getNodeCatalogComponentId } from "@lib/workspace/node-tree"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
-import { useActiveBoard } from "@lib/workspace/hooks/use-active-board"
-import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 
 /**
  * Hook that handles granular placement zone tracking for sidebar rows (nodes).
  * Manages hover states, placement validation, and canvas tracking integration for
- * before/after/inside placement zones in component and sketch tools.
+ * before/after/inside placement zones in the component tool.
  *
  * @param node - The variant or instance node to track placement zones for
  * @returns Object containing placement handlers, hover state checks, and node metadata

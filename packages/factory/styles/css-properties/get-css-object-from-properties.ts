@@ -1,6 +1,7 @@
 import { Properties } from "@seldon/core"
 import { computeProperties } from "@seldon/core/properties/compute"
 import { debugLog } from "@seldon/core/utils/debug-logger"
+
 import { StyleGenerationContext } from "../types"
 import { getBackgroundStyles } from "./get-background-styles"
 import { getBorderStyles } from "./get-border-styles"

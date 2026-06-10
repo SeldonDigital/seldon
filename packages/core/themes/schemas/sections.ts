@@ -35,7 +35,10 @@ const THEME_TOKEN_SECTION_ORDER: Array<Omit<ThemeTokenSectionSchema, "order">> =
   ]
 
 export const THEME_TOKEN_SECTIONS: ThemeTokenSectionSchema[] =
-  THEME_TOKEN_SECTION_ORDER.map((section, index) => ({ ...section, order: index }))
+  THEME_TOKEN_SECTION_ORDER.map((section, index) => ({
+    ...section,
+    order: index,
+  }))
 
 export function getThemeTokenSectionSchema(
   sectionId: ThemeTokenSectionId,

@@ -1,22 +1,24 @@
-import { IconCatalog } from "@components/seldon/custom-icons/Catalog"
-import { IconCircle } from "@components/seldon/custom-icons/Circle"
-import { IconCursor } from "@components/seldon/custom-icons/Cursor"
-import { IconDraw } from "@components/seldon/custom-icons/Draw"
-import { IconElements } from "@components/seldon/custom-icons/Elements"
-import { IconFrame } from "@components/seldon/custom-icons/Frame"
-import { IconImage } from "@components/seldon/custom-icons/ImageGlyph"
-import { IconModules } from "@components/seldon/custom-icons/Modules"
-import { IconPanels } from "@components/seldon/custom-icons/Panels"
-import { IconParts } from "@components/seldon/custom-icons/Parts"
-import { IconPencil } from "@components/seldon/custom-icons/Pencil"
-import { IconPhotograph } from "@components/seldon/custom-icons/Photograph"
-import { IconPreview } from "@components/seldon/custom-icons/Preview"
-import { IconPrimitives } from "@components/seldon/custom-icons/Primitives"
-import { IconRectangle } from "@components/seldon/custom-icons/Rectangle"
-import { IconScreens } from "@components/seldon/custom-icons/Screens"
-import { IconSpark } from "@components/seldon/custom-icons/Spark"
-import { IconTextAlt } from "@components/seldon/custom-icons/TextAlt"
-import { Selectable } from "@components/ui/Selectable"
+import { Selectable } from "@seldon/components/custom-components"
+import {
+  IconSeldonCatalog,
+  IconSeldonCursor,
+  IconSeldonElements,
+  IconSeldonFrame,
+  IconSeldonImage,
+  IconSeldonModules,
+  IconSeldonPanels,
+  IconSeldonParts,
+  IconSeldonPhotograph,
+  IconSeldonPreview,
+  IconSeldonPrimitives,
+  IconSeldonScreen,
+  IconSeldonSketchCircle,
+  IconSeldonSketchPencil,
+  IconSeldonSketchRectangle,
+  IconSeldonSketchText,
+  IconSeldonSpark,
+  IconSeldonToolSketch,
+} from "@seldon/components/icons"
 
 export type Icon =
   | "catalog"
@@ -85,24 +87,24 @@ export function ToolbarButton({
       data-testid={testId}
       data-is-selected={isSelected}
     >
-      {icon === "catalog" && <IconCatalog />}
-      {icon === "circle" && <IconCircle />}
-      {icon === "cursor" && <IconCursor />}
-      {icon === "draw" && <IconDraw />}
-      {icon === "elements" && <IconElements />}
-      {icon === "frame" && <IconFrame />}
-      {icon === "image" && <IconImage />}
-      {icon === "modules" && <IconModules />}
-      {icon === "panels" && <IconPanels />}
-      {icon === "parts" && <IconParts />}
-      {icon === "pencil" && <IconPencil />}
-      {icon === "preview" && <IconPreview />}
-      {icon === "photograph" && <IconPhotograph />}
-      {icon === "primitives" && <IconPrimitives />}
-      {icon === "rectangle" && <IconRectangle />}
-      {icon === "spark" && <IconSpark />}
-      {icon === "screens" && <IconScreens />}
-      {icon === "text" && <IconTextAlt />}
+      {icon === "catalog" && <IconSeldonCatalog />}
+      {icon === "circle" && <IconSeldonSketchCircle />}
+      {icon === "cursor" && <IconSeldonCursor />}
+      {icon === "draw" && <IconSeldonToolSketch />}
+      {icon === "elements" && <IconSeldonElements />}
+      {icon === "frame" && <IconSeldonFrame />}
+      {icon === "image" && <IconSeldonImage />}
+      {icon === "modules" && <IconSeldonModules />}
+      {icon === "panels" && <IconSeldonPanels />}
+      {icon === "parts" && <IconSeldonParts />}
+      {icon === "pencil" && <IconSeldonSketchPencil />}
+      {icon === "preview" && <IconSeldonPreview />}
+      {icon === "photograph" && <IconSeldonPhotograph />}
+      {icon === "primitives" && <IconSeldonPrimitives />}
+      {icon === "rectangle" && <IconSeldonSketchRectangle />}
+      {icon === "spark" && <IconSeldonSpark />}
+      {icon === "screens" && <IconSeldonScreen />}
+      {icon === "text" && <IconSeldonSketchText />}
       {label && (
         <span
           style={{

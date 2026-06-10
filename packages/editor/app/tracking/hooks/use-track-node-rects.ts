@@ -1,4 +1,5 @@
 import { useEffect } from "react"
+import { useCanvasRemeasureStore } from "../../canvas/hooks/use-canvas-remeasure-store"
 import { getHtmlElementByNodeId } from "../../canvas/helpers/get-html-element-by-node-id"
 import { calculateSelectionOutline } from "../helpers/calculate-selection-outline"
 import { useNodeRectsStore } from "./use-node-rects-store"
@@ -13,6 +14,11 @@ import { useNodeRectsStore } from "./use-node-rects-store"
  * @param nodeIds - The IDs of the nodes to track
  */
 export function useTrackNodeRects(nodeIds: string[]) {
+  // Re-measure once a reorder glide settles. The initial pass after a commit
+  // measures the pre-animation position, so without this the wireframe boxes
+  // would stay at the old spot until the next render.
+  const remeasureVersion = useCanvasRemeasureStore((state) => state.version)
+
   useEffect(() => {
     const store = useNodeRectsStore.getState()
     const observers = new Map<string, ResizeObserver>()
@@ -73,5 +79,5 @@ export function useTrackNodeRects(nodeIds: string[]) {
       observers.clear()
       cleanupFunctions.forEach((cleanup) => cleanup())
     }
-  }, [nodeIds])
+  }, [nodeIds, remeasureVersion])
 }

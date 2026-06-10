@@ -1,6 +1,6 @@
 import type { Board, Workspace } from "../../types"
-import { getBoardVariantRootIds } from "./get-board-variant-root-ids"
 import { isVariantInUse } from "../general/is-variant-in-use"
+import { getBoardVariantRootIds } from "./get-board-variant-root-ids"
 
 /**
  * True when any root variant listed on this catalog row appears under another row's tree.

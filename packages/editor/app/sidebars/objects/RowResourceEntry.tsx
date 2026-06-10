@@ -1,27 +1,34 @@
 "use client"
 
 import { CSSProperties, useCallback } from "react"
-import { Variant } from "@seldon/core"
+import { Board as BoardType, Variant } from "@seldon/core"
 import { Action } from "@seldon/core/index"
+import {
+  isFontCollectionBoard,
+  isIconSetBoard,
+  isMediaBoard,
+  isThemeBoard,
+} from "@seldon/core/workspace/model/components"
 import { isEntryFontCollectionDefault } from "@seldon/core/workspace/model/entry-font-collection"
 import { isEntryIconSetDefault } from "@seldon/core/workspace/model/entry-icon-set"
 import { isEntryThemeDefault } from "@seldon/core/workspace/model/entry-theme"
 import type { Workspace } from "@seldon/core/workspace/types"
-import { useTool } from "@lib/hooks/use-tool"
+import { useRowHighlightStyle } from "@lib/workspace/hooks/use-object-hover"
 import {
   ResourceEntryKind,
   useIsResourceEntrySelected,
   useSelection,
 } from "@lib/workspace/hooks/use-selection"
-import { useRowHighlightStyle } from "@lib/workspace/hooks/use-object-hover"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
-import { SelectionKind } from "@lib/workspace/selection-target"
+import { useTool } from "@lib/hooks/use-tool"
 import { useSidebarRowStyling } from "../../tracking/hooks/use-sidebar-row-styling"
-import { useEditState } from "./hooks/use-edit-state"
+import { useResourceEntryRow } from "./hooks/use-resource-entry-row"
 import { useRowClick } from "./hooks/use-row-click"
-import { ListItemTreeNode as SeldonNode } from "../../seldon/elements/ListItemTreeNode"
-import { IconProps } from "../../seldon/primitives/Icon"
-import { LabelProps } from "../../seldon/primitives/Label"
+import { SelectionKind } from "@lib/workspace/selection-target"
+import { SidebarRow } from "@seldon/components/custom-components"
+import { ListItemTreeNode as SeldonNode } from "@seldon/components/elements/ListItemTreeNode"
+import { IconProps } from "@seldon/components/primitives/Icon"
+import { LabelProps } from "@seldon/components/primitives/Label"
 import { Combobox } from "../properties/controls/combobox/Combobox"
 
 const rowWrapperStyle: CSSProperties = {
@@ -63,12 +70,13 @@ export function RowResourceEntry({
   show = true,
   parentIsSelected = false,
 }: RowResourceEntryProps) {
-  const { workspace, dispatch } = useWorkspace({ usePreview: false })
+  const { workspace } = useWorkspace({ usePreview: false })
   const { activeTool } = useTool()
   const { selectResourceEntry } = useSelection()
-  const { isEditingName, setEditingName } = useEditState({
-    id: entryId,
-  } as unknown as Variant)
+  const { isEditingName, setEditingName, submitLabel } = useResourceEntryRow(
+    config,
+    entryId,
+  )
 
   const isSelected = useIsResourceEntrySelected(config.kind, entryId)
   const isActive = parentIsSelected || isSelected
@@ -101,28 +109,27 @@ export function RowResourceEntry({
     ...(iconColor ? { style: { color: iconColor } } : {}),
   }
 
+  const labelChildren =
+    isEditingName && config.buildLabelAction ? (
+      <Combobox
+        mode="standalone"
+        initialValue={entry.label}
+        onSubmit={submitLabel}
+      />
+    ) : (
+      entry.label
+    )
+
   const label = {
-    children:
-      isEditingName && config.buildLabelAction ? (
-        <Combobox
-          mode="standalone"
-          initialValue={entry.label}
-          onSubmit={(newLabel) => {
-            dispatch(config.buildLabelAction!(entryId, newLabel.trim()))
-            setEditingName(false)
-          }}
-        />
-      ) : (
-        entry.label
-      ),
+    children: labelChildren,
     ...(labelColor ? { style: { color: labelColor } } : {}),
   } as unknown as LabelProps
 
   return (
-    <div
+    <SidebarRow
       style={rowWrapperStyle}
-      data-selection-id={entryId}
-      data-selection-kind={config.selectionKind}
+      selectionId={entryId}
+      selectionKind={config.selectionKind}
     >
       <SeldonNode
         buttonIconic={{}}
@@ -138,7 +145,7 @@ export function RowResourceEntry({
         data-active={isActive}
         style={combinedRowStyle}
       />
-    </div>
+    </SidebarRow>
   )
 }
 
@@ -163,7 +170,7 @@ export const RESOURCE_ROW_CONFIG: Record<ResourceEntryKind, ResourceRowConfig> =
     fontCollection: {
       kind: "fontCollection",
       selectionKind: "fontCollection",
-      icon: "seldon-component",
+      icon: "seldon-text",
       testId: "objects-sidebar-font-collection-entry",
       getEntry: (workspace, entryId) => {
         const entry = workspace["font-collections"][entryId]
@@ -207,3 +214,17 @@ export const RESOURCE_ROW_CONFIG: Record<ResourceEntryKind, ResourceRowConfig> =
       },
     },
   }
+
+/**
+ * Resolves the resource-entry row config for a board, or null when the board's
+ * children are component variants rather than resource entries.
+ */
+export function getBoardResourceRowConfig(
+  board: BoardType,
+): ResourceRowConfig | null {
+  if (isThemeBoard(board)) return RESOURCE_ROW_CONFIG.theme
+  if (isFontCollectionBoard(board)) return RESOURCE_ROW_CONFIG.fontCollection
+  if (isIconSetBoard(board)) return RESOURCE_ROW_CONFIG.iconSet
+  if (isMediaBoard(board)) return RESOURCE_ROW_CONFIG.media
+  return null
+}

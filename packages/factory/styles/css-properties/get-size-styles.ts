@@ -7,10 +7,11 @@ import {
   ScreenSize,
   ValueType,
 } from "@seldon/core"
-import { modulateWithTheme } from "@seldon/core/themes/helpers/modulate"
 import { resolveValue } from "@seldon/core/helpers/resolution/resolve-value"
 import { getThemeOption } from "@seldon/core/helpers/theme/get-theme-option"
+import { modulateWithTheme } from "@seldon/core/themes/helpers/modulate"
 import { ThemeModulation } from "@seldon/core/themes/types"
+
 import { StyleGenerationContext } from "../types"
 import { getCssValue } from "./get-css-value"
 import { CSSObject } from "./types"
@@ -38,7 +39,9 @@ function getScreenSizePixelValue(screenSize: ScreenSize): number {
 }
 
 function applyBoardDimensionStyle(
-  dimension: Exclude<BoardWidthValue | BoardHeightValue, EmptyValue> | undefined,
+  dimension:
+    | Exclude<BoardWidthValue | BoardHeightValue, EmptyValue>
+    | undefined,
   axis: "width" | "height",
   styles: CSSObject,
 ): void {

@@ -11,7 +11,10 @@ async function exportCss(
   workspace: Workspace,
   componentsFolder: string,
   forceRegeneration?: boolean,
-): Promise<{ componentStylesheet: string; themeStylesheets: ThemeStylesheetFile[] }>
+): Promise<{
+  componentStylesheet: string
+  themeStylesheets: ThemeStylesheetFile[]
+}>
 ```
 
 `exportCss` runs three steps:

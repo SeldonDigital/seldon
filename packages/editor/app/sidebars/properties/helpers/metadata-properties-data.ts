@@ -38,7 +38,9 @@ function createMetadataRow(
  * Author is emitted only when provided, so themes show it and font collections
  * do not.
  */
-export function buildMetadataProperties(metadata: MetadataInput): FlatProperty[] {
+export function buildMetadataProperties(
+  metadata: MetadataInput,
+): FlatProperty[] {
   const rows: FlatProperty[] = [
     createMetadataRow("name", "Name", metadata.name),
     createMetadataRow("description", "Description", metadata.description),

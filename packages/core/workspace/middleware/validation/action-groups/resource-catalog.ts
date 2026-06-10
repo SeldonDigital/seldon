@@ -1,10 +1,16 @@
+import type { ComponentId } from "../../../../components/constants"
 import { invariant } from "../../../../index"
+import { ErrorMessages } from "../../../constants"
 import {
   FONT_COLLECTION_BOARD_CATALOG_IDS,
   ICON_SET_BOARD_CATALOG_IDS,
   MEDIA_BOARD_CATALOG_IDS,
   THEME_BOARD_CATALOG_IDS,
 } from "../../../helpers/components/resource-board-catalog-ids"
+import { shouldBlockDeletableBoardRemoval } from "../../../helpers/removal/board-removal-guards"
+import { DEFAULT_FONT_COLLECTION_BOARD_KEY } from "../../../helpers/seed/seed-default-font-collection-board"
+import { DEFAULT_ICON_SET_BOARD_KEY } from "../../../helpers/seed/seed-default-icon-set-board"
+import { DEFAULT_THEME_BOARD_KEY } from "../../../helpers/seed/seed-default-theme-board"
 import {
   isComponentBoard,
   isFontCollectionBoard,
@@ -13,33 +19,27 @@ import {
   isPlaygroundBoard,
   isThemeBoard,
 } from "../../../model/components"
-import { shouldBlockDeletableBoardRemoval } from "../../../helpers/removal/board-removal-guards"
-import { DEFAULT_FONT_COLLECTION_BOARD_KEY } from "../../../helpers/seed/seed-default-font-collection-board"
-import { DEFAULT_ICON_SET_BOARD_KEY } from "../../../helpers/seed/seed-default-icon-set-board"
-import { DEFAULT_THEME_BOARD_KEY } from "../../../helpers/seed/seed-default-theme-board"
-import { ErrorMessages } from "../../../constants"
+import type { Action, Board, Workspace } from "../../../types"
 import { boardValidators, isPackagedCatalogBoard } from "../validators"
 import { WorkspaceValidationError } from "../workspace-validation-error"
-import type { ComponentId } from "../../../../components/constants"
-import type { Action, Board, Workspace } from "../../../types"
 
 const RESOURCE_CATALOGS = {
-  "add_font_collection": {
+  add_font_collection: {
     idKey: "catalogId" as const,
     allowed: FONT_COLLECTION_BOARD_CATALOG_IDS,
     label: "Font collection",
   },
-  "add_media": {
+  add_media: {
     idKey: "catalogId" as const,
     allowed: MEDIA_BOARD_CATALOG_IDS,
     label: "Media",
   },
-  "add_icon_set": {
+  add_icon_set: {
     idKey: "catalogId" as const,
     allowed: ICON_SET_BOARD_CATALOG_IDS,
     label: "Icon set",
   },
-  "add_theme": {
+  add_theme: {
     idKey: "boardKey" as const,
     allowed: THEME_BOARD_CATALOG_IDS,
     label: "Theme",
@@ -50,7 +50,7 @@ export function validateAddResourceCatalog(
   workspace: Workspace,
   action: Extract<
     Action,
-  { type: "add_font_collection" | "add_media" | "add_icon_set" | "add_theme" }
+    { type: "add_font_collection" | "add_media" | "add_icon_set" | "add_theme" }
   >,
 ): void {
   const config = RESOURCE_CATALOGS[action.type]
@@ -96,10 +96,7 @@ export function validateDuplicateComponent(
     ],
     [
       isFontCollectionBoard(sourceBoard) &&
-        isPackagedCatalogBoard(
-          sourceBoard,
-          FONT_COLLECTION_BOARD_CATALOG_IDS,
-        ),
+        isPackagedCatalogBoard(sourceBoard, FONT_COLLECTION_BOARD_CATALOG_IDS),
       "Cannot duplicate a font collection board tied to a packaged catalog",
     ],
     [

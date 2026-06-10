@@ -1,10 +1,16 @@
 "use client"
 
 import { Placement } from "@lib/types"
+import { CSSProperties } from "react"
 import { Instance, Variant } from "@seldon/core"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
 import { useTool } from "@lib/hooks/use-tool"
 import { useSidebarPlacementTracking } from "../hooks/use-sidebar-placement-tracking"
+import {
+  OverlayLayer,
+  PlacementZoneSurface,
+  PositionedPanel,
+} from "@seldon/components/custom-components"
 import { IndicatorInsert } from "./insert/IndicatorInsert"
 
 interface SidebarPlacementZonesProps {
@@ -97,17 +103,23 @@ export function SidebarPlacementZones({
 
   const renderZones = () => {
     if (activeTool === "component") return renderComponentToolZones()
-    // Sketch tool zones removed - only show component tool zones
     return null // Select tool is handled separately with dropzones
   }
 
   return (
-    <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
-      <div style={{ position: "relative", width: "100%", height: "100%" }}>
+    <OverlayLayer style={overlayStyle}>
+      <PositionedPanel style={relativeFillStyle}>
         {renderZones()}
-      </div>
-    </div>
+      </PositionedPanel>
+    </OverlayLayer>
   )
+}
+
+const overlayStyle: CSSProperties = { pointerEvents: "none" }
+const relativeFillStyle: CSSProperties = {
+  position: "relative",
+  width: "100%",
+  height: "100%",
 }
 
 interface PlacementZoneProps {
@@ -118,7 +130,7 @@ interface PlacementZoneProps {
   onMouseLeave: () => void
   isHovered: boolean
   isAllowed: boolean
-  tool: "sketch" | "component"
+  tool: "component"
 }
 
 function PlacementZone({
@@ -131,31 +143,36 @@ function PlacementZone({
   isAllowed,
   tool,
 }: PlacementZoneProps) {
-  // Only show component tool indicators, sketch tool removed
   const Indicator = tool === "component" ? IndicatorInsert : null
 
+  const zoneStyle: CSSProperties = {
+    position: "absolute",
+    inset: 0,
+    pointerEvents: "auto",
+    cursor: !isAllowed ? "not-allowed" : "copy",
+  }
+
+  const handleClick = (event: { stopPropagation: () => void }) => {
+    event.stopPropagation()
+    onClick?.()
+  }
+
+  const handleDoubleClick = (event: { stopPropagation: () => void }) => {
+    event.stopPropagation()
+    onDoubleClick?.()
+  }
+
   return (
-    <div
-      style={{
-        position: "absolute",
-        inset: 0,
-        pointerEvents: "auto",
-        cursor: !isAllowed ? "not-allowed" : "copy",
-      }}
+    <PlacementZoneSurface
+      style={zoneStyle}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
-      onClick={(event) => {
-        event.stopPropagation()
-        onClick?.()
-      }}
-      onDoubleClick={(event) => {
-        event.stopPropagation()
-        onDoubleClick?.()
-      }}
+      onClick={handleClick}
+      onDoubleClick={handleDoubleClick}
     >
       {isHovered && isAllowed && Indicator && (
         <Indicator placement={placement} />
       )}
-    </div>
+    </PlacementZoneSurface>
   )
 }

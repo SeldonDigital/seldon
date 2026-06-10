@@ -12,7 +12,10 @@ import { walkBoardTreeRefs } from "../components/walk-board-tree-refs"
 import { findBoardContainingTreeNodeId } from "./duplicate-entry-variant-subtree"
 import { getNodeCatalogId } from "./get-node-catalog-id"
 import { resolveSchemaChild } from "./resolve-schema-child"
-import { applyVariantFallbackToSlot } from "./schema-composition-children"
+import {
+  applyVariantFallbackToSlot,
+  mergeInlineSlotOverrides,
+} from "./schema-composition-children"
 
 function collectTreeRefIds(ref: ComponentTreeRef): string[] {
   const ids = [ref.id]
@@ -101,9 +104,13 @@ function rebuildDefaultChildren(
       __editor: { initialOverrides: structuredClone(overrides) },
     }
 
+    // Effective slots arrive pre-merged; only the raw schema fallback slots
+    // taken for a childless slot still need their own merge pass.
     const childSlots: SchemaChild[] = slot.children?.length
       ? slot.children
-      : resolved.fallbackChildren
+      : resolved.fallbackChildren.map((fallbackSlot) =>
+          mergeInlineSlotOverrides(fallbackSlot),
+        )
     const childRefs = rebuildDefaultChildren(
       childSlots,
       existingGrandchildren,
@@ -130,10 +137,7 @@ export function applyResetDefaultVariantToCatalog(
   defaultVariantRootId: string,
 ): Workspace {
   return produce(workspace, (draft) => {
-    const located = findBoardContainingTreeNodeId(
-      draft,
-      defaultVariantRootId,
-    )
+    const located = findBoardContainingTreeNodeId(draft, defaultVariantRootId)
     if (
       !located ||
       !(isComponentBoard(located.board) || isPlaygroundBoard(located.board))
@@ -163,7 +167,9 @@ export function applyResetDefaultVariantToCatalog(
     } else {
       const newNodes: Record<string, EntryNode> = {}
       const childRefs = rebuildDefaultChildren(
-        schema.default.children ?? [],
+        (schema.default.children ?? []).map((slot) =>
+          mergeInlineSlotOverrides(slot),
+        ),
         defaultRef.children,
         draft as unknown as Workspace,
         newNodes,

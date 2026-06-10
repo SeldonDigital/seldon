@@ -65,6 +65,8 @@ export function resolveFontSize({
       )
     }
     default:
-      throw new Error(`Invalid font size type ${(fontSize as any).type}`)
+      throw new Error(
+        `Invalid font size type ${(fontSize as { type: string }).type}`,
+      )
   }
 }

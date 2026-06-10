@@ -1,14 +1,16 @@
 "use client"
 
 import { DeviceId } from "@lib/devices/types"
-import { Selectable } from "@components/ui/Selectable"
-import { IconDesktop } from "@components/seldon/custom-icons/Desktop"
-import { IconFullScreen } from "@components/seldon/custom-icons/FullScreen"
-import { IconLaptop } from "@components/seldon/custom-icons/Laptop"
-import { IconPhone } from "@components/seldon/custom-icons/Phone"
-import { IconTablet } from "@components/seldon/custom-icons/Tablet"
-import { IconTV } from "@components/seldon/custom-icons/Tv"
-import { IconWatch } from "@components/seldon/custom-icons/Watch"
+import { Selectable } from "@seldon/components/custom-components"
+import {
+  IconSeldonDeviceDesktop,
+  IconSeldonDeviceLaptop,
+  IconSeldonDeviceMobile,
+  IconSeldonDeviceTV,
+  IconSeldonDeviceTablet,
+  IconSeldonDeviceWatch,
+  IconSeldonFullScreen,
+} from "@seldon/components/icons"
 
 export type Icon =
   | "custom"
@@ -48,13 +50,13 @@ export function DeviceButton({
         color: isSelected ? undefined : "rgba(255, 255, 255, 0.4)",
       }}
     >
-      {device === "custom" && <IconFullScreen />}
-      {device === "desktop" && <IconDesktop />}
-      {device === "laptop" && <IconLaptop />}
-      {device === "phone" && <IconPhone />}
-      {device === "tablet" && <IconTablet />}
-      {device === "tv" && <IconTV />}
-      {device === "watch" && <IconWatch />}
+      {device === "custom" && <IconSeldonFullScreen />}
+      {device === "desktop" && <IconSeldonDeviceDesktop />}
+      {device === "laptop" && <IconSeldonDeviceLaptop />}
+      {device === "phone" && <IconSeldonDeviceMobile />}
+      {device === "tablet" && <IconSeldonDeviceTablet />}
+      {device === "tv" && <IconSeldonDeviceTV />}
+      {device === "watch" && <IconSeldonDeviceWatch />}
     </Selectable>
   )
 }

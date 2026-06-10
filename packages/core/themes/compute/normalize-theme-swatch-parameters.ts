@@ -1,4 +1,5 @@
 import chroma from "chroma-js"
+
 import { isHSLObject } from "../../helpers/type-guards/color/is-hsl-object"
 import { isLCHObject } from "../../helpers/type-guards/color/is-lch-object"
 import { isRGBObject } from "../../helpers/type-guards/color/is-rgb-object"
@@ -45,9 +46,7 @@ export function normalizeThemeSwatchParameters(
     }
     case Colorspace.RGB: {
       if (!isRGBObject(inner)) {
-        throw new Error(
-          `Swatch colorspace "rgb" requires { red, green, blue }`,
-        )
+        throw new Error(`Swatch colorspace "rgb" requires { red, green, blue }`)
       }
       return {
         colorspace: Colorspace.RGB,

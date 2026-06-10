@@ -1,8 +1,9 @@
 import { ComponentId } from "../../../components/constants"
-import { findParentNode as findParentNodeHelper } from "../../helpers/nodes/find-parent-node"
-import { getChildIndex } from "../../helpers/nodes/get-child-index"
 import { getBoardByNodeId } from "../../helpers/components/get-board-by-node-id"
 import { getChildrenIds } from "../../helpers/components/get-children-ids"
+import { findParentNode as findParentNodeHelper } from "../../helpers/nodes/find-parent-node"
+import { getChildIndex } from "../../helpers/nodes/get-child-index"
+import { parseNodeCatalog } from "../../model/template-ref"
 import {
   Instance,
   InstanceId,
@@ -11,9 +12,8 @@ import {
   VariantId,
   Workspace,
 } from "../../types"
-import { parseNodeCatalog } from "../../model/template-ref"
-import { nodeRetrievalService } from "./node-retrieval.service"
 import { typeCheckingService } from "../type-checking/type-checking.service"
+import { nodeRetrievalService } from "./node-retrieval.service"
 
 function nodeCatalogComponentId(node: Variant | Instance): ComponentId | null {
   const parsed = parseNodeCatalog(node.template)
@@ -79,7 +79,9 @@ export class NodeTraversalService {
       if (!childId) return null
 
       const child = nodeRetrievalService.getNode(childId, workspace)
-      const childComponentId = nodeCatalogComponentId(child as Variant | Instance)
+      const childComponentId = nodeCatalogComponentId(
+        child as Variant | Instance,
+      )
       if (childComponentId !== segment.componentId) return null
 
       currentNode = child as Variant | Instance

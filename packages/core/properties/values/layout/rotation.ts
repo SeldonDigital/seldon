@@ -18,19 +18,18 @@ export const rotationSchema: PropertySchema = {
   validation: {
     empty: () => true,
     inherit: () => true,
-    exact: (value: any) => {
+    exact: (value: unknown) => {
       if (
         typeof value === "object" &&
         value !== null &&
+        "value" in value &&
+        "unit" in value &&
         value.value !== undefined &&
         value.unit === Unit.DEGREES
       ) {
         const n = value.value
         return (
-          typeof n === "number" &&
-          Number.isFinite(n) &&
-          n >= -360 &&
-          n <= 360
+          typeof n === "number" && Number.isFinite(n) && n >= -360 && n <= 360
         )
       }
       if (typeof value === "number" && Number.isFinite(value)) {

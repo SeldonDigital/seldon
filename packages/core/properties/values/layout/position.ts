@@ -1,6 +1,7 @@
 import { Unit } from "../../constants"
 import { PropertySchema } from "../../types/schema"
 import { EmptyValue } from "../shared/empty/empty"
+import { PercentageValue } from "../shared/exact/percentage"
 import { PixelValue } from "../shared/exact/pixel"
 import { RemValue } from "../shared/exact/rem"
 
@@ -12,24 +13,32 @@ export interface PositionValue {
   left?: PositionSideValue
 }
 
-/** One edge offset as unset, pixels, or root-relative length. */
-export type PositionSideValue = EmptyValue | PixelValue | RemValue
+/** One edge offset as unset or a measured length. */
+export type PositionSideValue =
+  | EmptyValue
+  | PixelValue
+  | RemValue
+  | PercentageValue
 
 export const positionSchema: PropertySchema = {
   name: "position",
-  description: "Sets inset offsets on top, right, bottom, and left for positioned layout.",
+  description:
+    "Sets inset offsets on top, right, bottom, and left for positioned layout.",
   supports: ["empty", "inherit", "exact"] as const,
   units: {
-    allowed: [Unit.PX, Unit.REM],
+    allowed: [Unit.PX, Unit.REM, Unit.PERCENT],
     default: Unit.PX,
     validation: "both",
   },
   validation: {
     empty: () => true,
     inherit: () => true,
-    exact: (value: any) => {
+    exact: (value: unknown) => {
       if (
         typeof value === "object" &&
+        value !== null &&
+        "value" in value &&
+        "unit" in value &&
         value.value !== undefined &&
         value.unit !== undefined
       )

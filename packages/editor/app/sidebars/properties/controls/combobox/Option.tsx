@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import { HSL } from "@seldon/core"
-import { Frame } from "../../../../seldon/frames/Frame"
+import { Text } from "@seldon/components/custom-components"
+import { Frame } from "@seldon/components/frames/Frame"
 import {
   comboboxOptionIconStyle,
   comboboxOptionLabelStyle,
@@ -44,35 +45,45 @@ export function ComboboxOption<
       disabled,
       hidden,
     }),
-    ...(showHighlight && !hidden ? { backgroundColor: optionHoverBackground } : {}),
+    ...(showHighlight && !hidden
+      ? { backgroundColor: optionHoverBackground }
+      : {}),
   }
+
+  const handleMouseDown = (event: React.MouseEvent) => {
+    if (disabled) return
+    event.preventDefault()
+    handleSelect(option.value)
+  }
+
+  const handleMouseEnter = () => {
+    if (!disabled && !hidden) {
+      setIsHovered(true)
+      onHighlight?.(option.value)
+    }
+  }
+
+  const handleMouseLeave = () => setIsHovered(false)
 
   return (
     <Frame
       role="option"
       aria-selected={isSelected}
       aria-disabled={disabled}
-      onMouseDown={(event) => {
-        if (disabled) return
-        event.preventDefault()
-        handleSelect(option.value)
-      }}
-      onMouseEnter={() => {
-        if (!disabled && !hidden) {
-          setIsHovered(true)
-          onHighlight?.(option.value)
-        }
-      }}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseDown={handleMouseDown}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
       data-active={isSelected}
       data-disabled={disabled}
       style={frameStyle}
     >
-      <span style={comboboxOptionIconStyle}>
+      <Text as="span" style={comboboxOptionIconStyle}>
         {renderIcon &&
           (typeof renderIcon === "function" ? renderIcon(option) : renderIcon)}
-      </span>
-      <span style={comboboxOptionLabelStyle}>{option.name}</span>
+      </Text>
+      <Text as="span" style={comboboxOptionLabelStyle}>
+        {option.name}
+      </Text>
     </Frame>
   )
 }

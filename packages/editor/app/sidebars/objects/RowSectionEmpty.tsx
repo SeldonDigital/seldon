@@ -1,5 +1,5 @@
 import { CSSProperties } from "react"
-import { ListItemTreeNode as SeldonNode } from "../../seldon/elements/ListItemTreeNode"
+import { ListItemTreeNode as SeldonNode } from "@seldon/components/elements/ListItemTreeNode"
 import {
   relativeFullWidthStyle,
   sidebarNoSelectionTextStyle,

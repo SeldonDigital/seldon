@@ -15,6 +15,8 @@ export { IconSeldonFontTextDecoration } from "./IconSeldonFontTextDecoration"
 export { IconSeldonFontTextWrap } from "./IconSeldonFontTextWrap"
 export { IconSeldonFontWeight } from "./IconSeldonFontWeight"
 export { IconSeldonIconText } from "./IconSeldonIconText"
+export { IconSeldonRtl } from "./IconSeldonRtl"
+export { IconSeldonTextAlign } from "./IconSeldonTextAlign"
 
 export const seldoncontenttextIconIds: readonly IconId[] = [
   "seldon-lines",
@@ -32,4 +34,6 @@ export const seldoncontenttextIconIds: readonly IconId[] = [
   "seldon-fontTextWrap",
   "seldon-fontWeight",
   "seldon-iconText",
+  "seldon-rtl",
+  "seldon-textAlign",
 ] as const

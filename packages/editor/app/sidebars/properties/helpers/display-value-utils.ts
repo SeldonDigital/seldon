@@ -1,7 +1,13 @@
 /**
  * Utility functions for formatting display values in property controls
  */
-import { ComputedFunction, Theme, Value, ValueType, Workspace } from "@seldon/core"
+import {
+  ComputedFunction,
+  Theme,
+  Value,
+  ValueType,
+  Workspace,
+} from "@seldon/core"
 import { formatValue } from "@seldon/core/helpers/properties/properties-bridge"
 import { stringifyValue } from "@seldon/core/helpers/properties/stringify-value"
 import { COMPUTED_FUNCTION_DISPLAY_NAMES } from "@seldon/core/properties/compute"
@@ -112,7 +118,9 @@ export function formatExactEnumDisplayValue(
 
   // Handle both flat arrays and nested arrays (option groups)
   const flatOptions =
-    Array.isArray(options[0]) && options[0].length > 0 && "value" in options[0][0]
+    Array.isArray(options[0]) &&
+    options[0].length > 0 &&
+    "value" in options[0][0]
       ? (options as OptionGroup[]).flat()
       : (options as Option[])
 

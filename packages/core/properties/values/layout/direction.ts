@@ -33,8 +33,10 @@ export const directionSchema: PropertySchema = {
   validation: {
     empty: () => true,
     inherit: () => true,
-    exact: (value: any) => typeof value === "string" && value.length > 0,
-    option: (value: any) => Object.values(Direction).includes(value),
+    exact: (value: unknown) => typeof value === "string" && value.length > 0,
+    option: (value: unknown) =>
+      typeof value === "string" &&
+      (Object.values(Direction) as string[]).includes(value),
   },
   presetOptions: () => [
     { value: Direction.LTR, name: "Left to Right" },

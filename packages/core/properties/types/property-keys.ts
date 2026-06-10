@@ -44,9 +44,9 @@ export type ObjectFacetPropertyKey =
   | ShorthandPropertyKey
 
 const OBJECT_FACET_PROPERTY_KEYS_LIST = [
-  ...PROPERTY_COMPOUND_CATALOG.filter((entry) => entry.nodeStorage === "facets").map(
-    (entry) => entry.key,
-  ),
+  ...PROPERTY_COMPOUND_CATALOG.filter(
+    (entry) => entry.nodeStorage === "facets",
+  ).map((entry) => entry.key),
   ...PROPERTY_SHORTHAND_KEYS,
 ] as readonly ObjectFacetPropertyKey[]
 
@@ -89,7 +89,9 @@ const LAYERED_PAINT_KEYS_LIST = PROPERTY_COMPOUND_CATALOG.filter(
   (entry) => entry.nodeStorage === "layered",
 ).map((entry) => entry.key) as readonly LayeredPaintKey[]
 
-export const LAYERED_PAINT_KEYS = new Set<LayeredPaintKey>(LAYERED_PAINT_KEYS_LIST)
+export const LAYERED_PAINT_KEYS = new Set<LayeredPaintKey>(
+  LAYERED_PAINT_KEYS_LIST,
+)
 
 /** True for `background` / `gradient` / `shadow` paint stacks (array storage on the node). */
 export function isLayeredPaintProperty(

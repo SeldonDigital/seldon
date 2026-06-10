@@ -1,8 +1,8 @@
-import { Theme, ThemeGradientKey } from "../../../../themes/types"
 import {
   listThemeLookIds,
   validateThemeLookPresetRef,
 } from "../../../../themes/looks"
+import { Theme, ThemeGradientKey } from "../../../../themes/types"
 import { ValueType } from "../../../constants"
 import { PropertySchema } from "../../../types/schema"
 

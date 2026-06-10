@@ -1,4 +1,5 @@
 import { BackgroundPosition } from "@seldon/core"
+
 import { CSSObject } from "./types"
 
 export const backgroundPositionMap: Record<

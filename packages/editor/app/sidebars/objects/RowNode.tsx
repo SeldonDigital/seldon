@@ -1,17 +1,17 @@
 import { CSSProperties, memo } from "react"
-import { VariantId } from "@seldon/core"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
 import type { EntryNode } from "@seldon/core/workspace/types"
-import { getNode } from "@lib/workspace/workspace-accessors"
 import { useRowHighlightStyle } from "@lib/workspace/hooks/use-object-hover"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useSidebarCanvasTracking } from "../../tracking/hooks/use-sidebar-canvas-tracking"
 import { useSidebarRowStyling } from "../../tracking/hooks/use-sidebar-row-styling"
-import { useRowNode } from "./hooks/use-row-node"
-import { ListItemTreeNode as SeldonNode } from "../../seldon/elements/ListItemTreeNode"
-import { LabelProps } from "../../seldon/primitives/Label"
-import { SidebarTracking } from "../../tracking/SidebarTracking"
 import { IndentationLevel } from "../hooks/use-indentation"
+import { useRowNode } from "./hooks/use-row-node"
+import { getNode } from "@lib/workspace/workspace-accessors"
+import { SidebarRow } from "@seldon/components/custom-components"
+import { ListItemTreeNode as SeldonNode } from "@seldon/components/elements/ListItemTreeNode"
+import { LabelProps } from "@seldon/components/primitives/Label"
+import { SidebarTracking } from "../../tracking/SidebarTracking"
 import { Combobox } from "../properties/controls/combobox/Combobox"
 import { FramerExpandable } from "../shared/FramerExpandable"
 import { RowActionsMenu } from "../shared/RowActionsMenu"
@@ -21,8 +21,16 @@ const rowWrapperStyle: CSSProperties = {
   minWidth: 0,
 }
 
+const NODE_SELECTION_KIND = "node"
+
 interface RowNodeProps {
   nodeId: string
+  /**
+   * Node-id path of this copy, from the variant-root down to this row, joined
+   * by "/". Threaded so selection resolves the clicked copy of a child id that
+   * is shared across variant columns.
+   */
+  rootId: string
   node?: EntryNode
   show?: boolean
   parentIsSelected?: boolean
@@ -32,18 +40,19 @@ interface RowNodeProps {
 
 const RowNodeInner = memo(function RowNodeInner({
   node,
+  rootId,
   show,
   parentIsSelected,
   disableReordering,
   onSelect,
 }: {
   node: EntryNode
+  rootId: string
   show: boolean
   parentIsSelected: boolean
   disableReordering: boolean
   onSelect?: () => void
 }) {
-  const { dispatch } = useWorkspace({ usePreview: false })
   const {
     label: baseLabel,
     buttonIconic,
@@ -57,21 +66,24 @@ const RowNodeInner = memo(function RowNodeInner({
     isSelected,
     isNodeActive,
     isEditingName,
-    setEditingName,
+    setNodeLabel,
     hasChildren,
     children,
     dragging,
     ref,
     properties,
   } = useRowNode(node, {
+    rootId,
     show,
     parentIsSelected,
     disableReordering,
     onSelect,
   })
 
-  const { rowStyle, iconColor, labelColor } = useSidebarRowStyling(node)
-  const hoverStyle = useRowHighlightStyle(node.id, isSelected)
+  const { rowStyle, iconColor, labelColor } = useSidebarRowStyling(node, {
+    isSelected,
+  })
+  const hoverStyle = useRowHighlightStyle(node.id, isSelected, rootId)
   const combinedRowStyle = { ...hoverStyle, ...rowStyle }
 
   const { handleCanvasTrackingEnter, handleCanvasTrackingLeave } =
@@ -91,26 +103,19 @@ const RowNodeInner = memo(function RowNodeInner({
   const coloredIcon = hasChildren ? applyTrackingColor(icon, "color") : icon
   const coloredIcon2 = applyTrackingColor(icon2, "color")
 
+  const labelChildren = isEditingName ? (
+    <Combobox
+      mode="standalone"
+      initialValue={node.label}
+      onSubmit={setNodeLabel}
+    />
+  ) : (
+    baseLabel.children
+  )
+
   const label: LabelProps = {
     ...baseLabel,
-    children: isEditingName ? (
-      <Combobox
-        mode="standalone"
-        initialValue={node.label}
-        onSubmit={(newLabel) => {
-          dispatch({
-            type: "set_node_label",
-            payload: {
-              nodeId: node.id as VariantId,
-              label: newLabel.trim(),
-            },
-          })
-          setEditingName(false)
-        }}
-      />
-    ) : (
-      baseLabel.children
-    ),
+    children: labelChildren,
     style: {
       ...baseLabel.style,
       ...(labelColor ? { color: labelColor } : {}),
@@ -125,13 +130,36 @@ const RowNodeInner = memo(function RowNodeInner({
       ? properties.display?.value
       : undefined
 
+  const actionsSlot =
+    resetActions.length > 0 ? (
+      <RowActionsMenu items={resetActions} color={iconColor} />
+    ) : undefined
+
+  const childrenSection = hasChildren ? (
+    <FramerExpandable isExpanded={isExpanded}>
+      <IndentationLevel>
+        {children.map((childNodeId) => (
+          <RowNode
+            key={childNodeId}
+            nodeId={childNodeId}
+            rootId={`${rootId}/${childNodeId}`}
+            show={show}
+            parentIsSelected={isSelected}
+            onSelect={onSelect}
+          />
+        ))}
+      </IndentationLevel>
+    </FramerExpandable>
+  ) : null
+
   return (
     <>
-      <div
+      <SidebarRow
         ref={ref}
         style={rowWrapperStyle}
-        data-selection-id={node.id}
-        data-selection-kind="node"
+        selectionId={node.id}
+        selectionKind={NODE_SELECTION_KIND}
+        selectionRootId={rootId}
       >
         <SidebarTracking
           node={node}
@@ -147,11 +175,7 @@ const RowNodeInner = memo(function RowNodeInner({
             buttonIconic2={buttonIconic2}
             icon2={coloredIcon2}
             label={label}
-            actionsSlot={
-              resetActions.length > 0 ? (
-                <RowActionsMenu items={resetActions} color={iconColor} />
-              ) : undefined
-            }
+            actionsSlot={actionsSlot}
             onClick={onClick}
             onDoubleClick={onDoubleClick}
             onMouseEnter={handleCanvasTrackingEnter}
@@ -165,29 +189,16 @@ const RowNodeInner = memo(function RowNodeInner({
             style={combinedRowStyle}
           />
         </SidebarTracking>
-      </div>
+      </SidebarRow>
 
-      {hasChildren && (
-        <FramerExpandable isExpanded={isExpanded}>
-          <IndentationLevel>
-            {children.map((childNodeId) => (
-              <RowNode
-                key={childNodeId}
-                nodeId={childNodeId}
-                show={show}
-                parentIsSelected={isSelected}
-                onSelect={onSelect}
-              />
-            ))}
-          </IndentationLevel>
-        </FramerExpandable>
-      )}
+      {childrenSection}
     </>
   )
 })
 
 export const RowNode = memo(function RowNode({
   nodeId,
+  rootId,
   node: nodeProp,
   show = true,
   parentIsSelected = false,
@@ -202,6 +213,7 @@ export const RowNode = memo(function RowNode({
   return (
     <RowNodeInner
       node={node}
+      rootId={rootId}
       show={show}
       parentIsSelected={parentIsSelected}
       disableReordering={disableReordering}

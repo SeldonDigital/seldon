@@ -2,7 +2,8 @@
 
 import { Board } from "@seldon/core"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
-import { Label } from "../../seldon/chrome/primitives/Label"
+import { Label } from "@seldon/components/chrome/primitives/Label"
+import { PlaceholderBox } from "@seldon/components/custom-components"
 
 export type PlaygroundBoardPlaceholderProps = {
   board: Board
@@ -15,19 +16,10 @@ export type PlaygroundBoardPlaceholderProps = {
 export function PlaygroundBoardPlaceholder({
   board,
 }: PlaygroundBoardPlaceholderProps) {
+  const boardKey = getComponentKey(board)
   return (
-    <div
-      data-board-id={getComponentKey(board)}
-      className={`board-${getComponentKey(board)}`}
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        minHeight: "200px",
-        width: "100%",
-      }}
-    >
+    <PlaceholderBox boardId={boardKey} className={`board-${boardKey}`}>
       <Label className="seldon-instance child-label-9J3xaw">No Content</Label>
-    </div>
+    </PlaceholderBox>
   )
 }

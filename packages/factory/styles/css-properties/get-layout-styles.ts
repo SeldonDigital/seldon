@@ -9,6 +9,7 @@ import { modulate } from "@seldon/core/helpers/math/modulate"
 import { resolveValue } from "@seldon/core/helpers/resolution/resolve-value"
 import { getThemeOption } from "@seldon/core/helpers/theme/get-theme-option"
 import { Theme, ThemeModulation } from "@seldon/core/themes/types"
+
 import { getCssValue } from "./get-css-value"
 import { CSSObject } from "./types"
 

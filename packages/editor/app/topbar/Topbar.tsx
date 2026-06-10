@@ -1,11 +1,11 @@
 "use client"
 
-import { CSSProperties, useState } from "react"
 import { DEVICE_VIEWS } from "@lib/devices/constants"
 import { DeviceId } from "@lib/devices/types"
+import { CSSProperties, useState } from "react"
 import { useAppState } from "@lib/hooks/use-app-state"
 import { usePreview } from "@lib/hooks/use-preview"
-import { Menu, useMenuConfig } from "@components/topbar/menus"
+import { Menu, useMenuConfig } from "@app/topbar/menus"
 import { HEADER_HEIGHT } from "../constants"
 import { DeviceButton } from "./DeviceButton"
 import { Toolbar } from "./tools/Toolbar"
@@ -105,9 +105,7 @@ export function Topbar() {
           <img src="/logo.svg" alt="Seldon" style={logoIconStyle} />
           <img src="/word-mark.svg" alt="Seldon" style={wordMarkStyle} />
         </div>
-        {appState === "edit" && !isInPreviewMode && (
-          <Menu menus={menuConfig} />
-        )}
+        {appState === "edit" && !isInPreviewMode && <Menu menus={menuConfig} />}
       </div>
 
       <div style={centerGroupStyle}>
@@ -118,15 +116,17 @@ export function Topbar() {
         )}
         {isInPreviewMode && (
           <div style={deviceBarStyle}>
-            {Object.entries(DEVICE_VIEWS).map(([device, { name, width, height }]) => (
-              <DeviceButton
-                key={device}
-                isSelected={device === currentDevice}
-                title={`${name} (${width}x${height})`}
-                device={device as DeviceId}
-                onClick={() => setDevice(device as DeviceId)}
-              />
-            ))}
+            {Object.entries(DEVICE_VIEWS).map(
+              ([device, { name, width, height }]) => (
+                <DeviceButton
+                  key={device}
+                  isSelected={device === currentDevice}
+                  title={`${name} (${width}x${height})`}
+                  device={device as DeviceId}
+                  onClick={() => setDevice(device as DeviceId)}
+                />
+              ),
+            )}
           </div>
         )}
       </div>

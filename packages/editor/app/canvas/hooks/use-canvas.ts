@@ -5,8 +5,10 @@ import { InstanceId, VariantId, invariant } from "@seldon/core"
 import { getComponentSchema } from "@seldon/core/components/catalog"
 import { ComponentId } from "@seldon/core/components/constants"
 import { ErrorMessages } from "@seldon/core/workspace/constants"
-import { getNodeOrientation } from "@lib/workspace/get-node-orientation"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
+import { useSetHoveredId } from "@lib/workspace/hooks/use-object-hover"
+import { useSelection } from "@lib/workspace/hooks/use-selection"
+import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useDialog } from "@lib/hooks/use-dialog"
 import { usePreview } from "@lib/hooks/use-preview"
 import { useTool } from "@lib/hooks/use-tool"
@@ -14,27 +16,24 @@ import {
   HoverState,
   useCanvasHoverState,
 } from "../../../lib/hooks/use-canvas-hover-state"
-import { getNodeCatalogComponentId, getNodeChildIds } from "@lib/workspace/node-tree"
-import { useSelection } from "@lib/workspace/hooks/use-selection"
+import { getNodeOrientation } from "@lib/workspace/get-node-orientation"
+import {
+  getNodeCatalogComponentId,
+  getNodeChildIds,
+} from "@lib/workspace/node-tree"
 import {
   getSelectionTarget,
   selectFromTarget,
 } from "@lib/workspace/selection-target"
-import { useSetHoveredId } from "@lib/workspace/hooks/use-object-hover"
-import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
-import { useAddToast } from "@components/toaster/hooks/use-add-toast"
+import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import { checkInsertionPoint } from "../../tracking/helpers/check-insertion-point"
 import { getBoardIdForEventTarget } from "../helpers/get-board-id-for-event-target"
 import { getChildNodesWithNodeId } from "../helpers/get-child-nodes-with-node-id"
 import { getNodeIdForEventTarget } from "../helpers/get-node-id-for-event-target"
 
 export function useCanvas() {
-  const {
-    selectNode,
-    selectBoard,
-    selectResourceEntry,
-    selectResourceItem,
-  } = useSelection()
+  const { selectNode, selectBoard, selectResourceEntry, selectResourceItem } =
+    useSelection()
   const { workspace } = useWorkspace()
   const { activeTool } = useTool()
   const { openDialog } = useDialog()
@@ -58,7 +57,7 @@ export function useCanvas() {
 
       // Select tool: one path resolves the hovered selectable (node, theme
       // variant, font specimen) and feeds the shared hover bridge. Insertion
-      // placement below is component/sketch only.
+      // placement below is component tool only.
       if (activeTool === "select") {
         const target = getSelectionTarget(event.target as Element)
         setHoveredId(target?.id ?? null, target?.kind, target?.rootId)
@@ -67,7 +66,7 @@ export function useCanvas() {
 
       const element = event.target as HTMLDivElement
       const boardId =
-        activeTool === "sketch" || activeTool === "component"
+        activeTool === "component"
           ? (getBoardIdForEventTarget(element) as ComponentId)
           : null
 
@@ -87,10 +86,9 @@ export function useCanvas() {
       const { clientX, clientY } = event
 
       // The child-before-cursor lookup is only used to place insertion
-      // indicators for the component/sketch tools. The select tool never reads
-      // it, so skip the per-child measurement loop to keep hover cheap.
-      const needsChildLookup =
-        activeTool === "component" || activeTool === "sketch"
+      // indicators for the component tool. The select tool never reads it, so
+      // skip the per-child measurement loop to keep hover cheap.
+      const needsChildLookup = activeTool === "component"
 
       // Find all children that have a data-node-id attribute
       const nodesWithNodeId = needsChildLookup
@@ -139,12 +137,9 @@ export function useCanvas() {
 
       const objectType = boardId ? "board" : "node"
 
-      // For component/sketch tools, check if insertion is allowed before setting hover state
+      // For the component tool, check if insertion is allowed before setting hover state
       // This prevents showing indicators for default variants and their nested children
-      if (
-        (activeTool === "component" || activeTool === "sketch") &&
-        objectType === "node"
-      ) {
+      if (activeTool === "component" && objectType === "node") {
         const insertionAllowed = checkInsertionPoint(
           objectId as InstanceId | VariantId,
           objectType,
@@ -292,7 +287,6 @@ export function useCanvas() {
 
     switch (activeTool) {
       case "component":
-      case "sketch":
         if (hoverState.objectType === "node") {
           if (hoverState.lastChildNodeBeforeCursor) {
             insertNextToChild(hoverState)
@@ -353,10 +347,11 @@ export function useCanvas() {
     ],
   )
 
-  const handleMouseLeave: MouseEventHandler<HTMLDivElement> = useCallback(() => {
-    setHoverState(null)
-    setHoveredId(null)
-  }, [setHoverState, setHoveredId])
+  const handleMouseLeave: MouseEventHandler<HTMLDivElement> =
+    useCallback(() => {
+      setHoverState(null)
+      setHoveredId(null)
+    }, [setHoverState, setHoveredId])
 
   // Update the indicator position no more than 60 times per second (60 FPS)
   const throttledMouseMove = useThrottledCallback(handleMouseMove, 1000 / 60)

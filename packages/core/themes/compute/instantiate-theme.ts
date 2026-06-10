@@ -1,4 +1,5 @@
 import merge from "lodash/merge"
+
 import { computeTheme } from "../helpers/compute-theme"
 import type { ComputedTheme, StockTheme } from "../types/theme"
 import type { ThemeTemplateId } from "../types/theme-id"

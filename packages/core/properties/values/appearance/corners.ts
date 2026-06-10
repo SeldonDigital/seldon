@@ -2,6 +2,7 @@ import { Theme, ThemeCornersKey } from "../../../themes/types"
 import { Unit, ValueType } from "../../constants"
 import { PropertySchema } from "../../types/schema"
 import { EmptyValue } from "../shared/empty/empty"
+import { PercentageValue } from "../shared/exact/percentage"
 import { PixelValue } from "../shared/exact/pixel"
 import { RemValue } from "../shared/exact/rem"
 
@@ -19,11 +20,12 @@ export interface CornersValue {
   bottomRight?: CornerValue
 }
 
-/** Unset, px or rem lengths, rounded or squared picks, or a theme radius step. */
+/** Unset, measured lengths, rounded or squared picks, or a theme radius step. */
 export type CornerValue =
   | EmptyValue
   | PixelValue
   | RemValue
+  | PercentageValue
   | CornerRoundedValue
   | CornerSquaredValue
   | CornerThemeValue
@@ -52,7 +54,7 @@ export const cornersSchema: PropertySchema = {
     "Sets border radius per corner using lengths, rounded or squared picks, or theme steps.",
   supports: ["empty", "inherit", "exact", "option", "themeOrdinal"] as const,
   units: {
-    allowed: [Unit.PX, Unit.REM],
+    allowed: [Unit.PX, Unit.REM, Unit.PERCENT],
     default: Unit.PX,
     validation: "both",
   },
@@ -65,7 +67,7 @@ export const cornersSchema: PropertySchema = {
         if (
           typeof o.value === "number" &&
           o.value >= 0 &&
-          (o.unit === Unit.PX || o.unit === Unit.REM)
+          (o.unit === Unit.PX || o.unit === Unit.REM || o.unit === Unit.PERCENT)
         ) {
           return true
         }

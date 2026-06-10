@@ -1,4 +1,5 @@
 import { current, isDraft, produce } from "immer"
+
 import type { ExtractPayload, Workspace } from "../../../../index"
 import { getNextVariantLabel } from "../../../helpers/general/get-next-variant-label"
 import { iconSetBoardKeyFromEntryId } from "../../../helpers/icon-sets/icon-set-id"

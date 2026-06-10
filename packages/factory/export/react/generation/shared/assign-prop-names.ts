@@ -31,7 +31,10 @@ export function assignPropNames(
     const baseName = camelCase(node.name).replace(/\d+$/, "")
     const count = (baseNameCounts.get(baseName) ?? 0) + 1
     baseNameCounts.set(baseName, count)
-    nodeIdToPropName.set(node.nodeId, count === 1 ? baseName : `${baseName}${count}`)
+    nodeIdToPropName.set(
+      node.nodeId,
+      count === 1 ? baseName : `${baseName}${count}`,
+    )
   })
 
   return nodeIdToPropName

@@ -10,12 +10,11 @@ import {
   VariantId,
   invariant,
 } from "@seldon/core"
-import { WrapperElement } from "@seldon/core/properties"
+import { getComponentExportConfig } from "@seldon/core/components/catalog"
 import {
   ComponentId,
   NATIVE_REACT_PRIMITIVES,
 } from "@seldon/core/components/constants"
-import { getComponentExportConfig } from "@seldon/core/components/catalog"
 import { HTMLAnchor } from "@seldon/core/components/native-react/HTML.Anchor"
 import { HTMLArticle } from "@seldon/core/components/native-react/HTML.Article"
 import { HTMLAside } from "@seldon/core/components/native-react/HTML.Aside"
@@ -67,9 +66,10 @@ import { HTMLTrack } from "@seldon/core/components/native-react/HTML.Track"
 import { HTMLUl } from "@seldon/core/components/native-react/HTML.Ul"
 import { HTMLVideo } from "@seldon/core/components/native-react/HTML.Video"
 import { NativeReactPrimitive } from "@seldon/core/components/types"
-import type { ComputeContext } from "@seldon/core/properties/compute"
 import { IconId } from "@seldon/core/icon-sets"
-import { LoadEditorIcons } from "@components/LoadEditorIcons"
+import { WrapperElement } from "@seldon/core/properties"
+import type { ComputeContext } from "@seldon/core/properties/compute"
+import { LoadEditorIcons } from "@app/LoadEditorIcons"
 import { CssPortal } from "./CssPortal"
 
 type TemplateProps = {
@@ -90,7 +90,6 @@ type TemplateProps = {
  * Renders a component with the given properties and theme
  *
  * ** WARNING: Do not use nodes inside this component or any of its helpers, hooks or child components.
- * This component is also used to display sketch suggestions which are not part of the workspace.
  *
  */
 export const ComponentRenderer = ({
@@ -210,13 +209,10 @@ function getComponent(
   if (config.react.returns === "wrapperElement") {
     const raw = properties.wrapperElement?.value
     const tag =
-      typeof raw === "string" && raw.length > 0
-        ? raw
-        : WrapperElement.DIV
+      typeof raw === "string" && raw.length > 0 ? raw : WrapperElement.DIV
     const item = Object.entries(NATIVE_REACT_PRIMITIVES).find(
       ([_, entry]) =>
-        entry.wrapperElementOption === tag ||
-        entry.htmlElementOption === tag,
+        entry.wrapperElementOption === tag || entry.htmlElementOption === tag,
     )
     invariant(
       item,

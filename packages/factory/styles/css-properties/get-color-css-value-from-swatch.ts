@@ -1,6 +1,7 @@
 import { themeSwatchToColorValue } from "@seldon/core/helpers/color/theme-swatch-to-color-value"
 import { getThemeOption } from "@seldon/core/helpers/theme/get-theme-option"
 import { Theme, ThemeSwatchKey } from "@seldon/core/themes/types"
+
 import { getColorCSSValue } from "./get-color-css-value"
 import { CSSObject } from "./types"
 

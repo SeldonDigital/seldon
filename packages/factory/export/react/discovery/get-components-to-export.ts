@@ -9,7 +9,12 @@ import { getAllVariants } from "@seldon/core/workspace/helpers/general/get-all-v
 import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-catalog-id"
 import { isComponentBoard } from "@seldon/core/workspace/model/components"
 import { nodeRetrievalService } from "@seldon/core/workspace/services"
-import type { EntryNode, VariantId, Workspace } from "@seldon/core/workspace/types"
+import type {
+  EntryNode,
+  VariantId,
+  Workspace,
+} from "@seldon/core/workspace/types"
+
 import { NodeIdToClass } from "../../css/types"
 import { ComponentToExport, ExportOptions } from "../../types"
 import { pluralizeLevel } from "../utils/pluralize-level"
@@ -39,7 +44,10 @@ export function getComponentsToExport(
 
   const items: ComponentToExport[] = variants.map((variant) => {
     const board = getBoardByNodeId(workspace, variant.id)
-    invariant(board && isComponentBoard(board), `Missing component board for ${variant.id}`)
+    invariant(
+      board && isComponentBoard(board),
+      `Missing component board for ${variant.id}`,
+    )
 
     const componentId = getNodeCatalogId(variant, workspace) as ComponentId
     const variantId = variant.id

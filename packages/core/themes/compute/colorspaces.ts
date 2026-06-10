@@ -1,4 +1,5 @@
 import chroma from "chroma-js"
+
 import { isHSLObject } from "../../helpers/type-guards/color/is-hsl-object"
 import { isLCHObject } from "../../helpers/type-guards/color/is-lch-object"
 import { isRGBObject } from "../../helpers/type-guards/color/is-rgb-object"
@@ -13,11 +14,7 @@ function colorspaceLiteralToChroma(value: ColorSpaceLiteral) {
     return chroma(value)
   }
   if (isHSLObject(value)) {
-    return chroma.hsl(
-      value.hue,
-      value.saturation / 100,
-      value.lightness / 100,
-    )
+    return chroma.hsl(value.hue, value.saturation / 100, value.lightness / 100)
   }
   if (isRGBObject(value)) {
     return chroma.rgb(value.red, value.green, value.blue)
@@ -33,15 +30,11 @@ function colorspaceLiteralToChroma(value: ColorSpaceLiteral) {
  */
 export function colorspaceLiteralToHsl(value: ColorSpaceLiteral): HSL {
   const c = colorspaceLiteralToChroma(value)
-  let [hu, sa, li] = c.hsl()
-  if (!Number.isFinite(hu)) hu = 0
+  const [rawHue, sa, li] = c.hsl()
+  const hu = Number.isFinite(rawHue) ? rawHue : 0
   const hue = Math.round(((hu % 360) + 360) % 360)
-  const saturation = Math.round(
-    Math.max(0, Math.min(100, (sa ?? 0) * 100)),
-  )
-  const lightness = Math.round(
-    Math.max(0, Math.min(100, (li ?? 0) * 100)),
-  )
+  const saturation = Math.round(Math.max(0, Math.min(100, (sa ?? 0) * 100)))
+  const lightness = Math.round(Math.max(0, Math.min(100, (li ?? 0) * 100)))
   return { hue, saturation, lightness }
 }
 

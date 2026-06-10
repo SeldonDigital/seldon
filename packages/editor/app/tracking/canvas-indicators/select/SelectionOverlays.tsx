@@ -6,19 +6,24 @@ import {
   useHoveredRootId,
 } from "@lib/workspace/hooks/use-object-hover"
 import { useSelectedNodeRootId } from "@lib/workspace/hooks/use-selection"
-import { useSelectedId } from "@lib/workspace/selection-target"
 import { useCanvasOverlayStore } from "../../../canvas/hooks/use-canvas-overlay-store"
 import type { NodeRect } from "../../hooks/use-node-rects-store"
+import { useSelectedId } from "@lib/workspace/selection-target"
+import { CanvasOutline } from "@seldon/components/custom-components"
 import {
   getSelectionMode,
   getSelectionOutlineStyle,
+  getWireframeMode,
 } from "../../helpers/canvas-outline-modes"
 
 function outlineStyle(
   rect: NodeRect,
   variant: "selection" | "hover",
+  wireframe: boolean,
 ): CSSProperties {
-  const box = getSelectionMode(rect)
+  // In wireframe mode the outline hugs the node border to align with the
+  // surrounding wireframe boxes; otherwise it sits padded off the node.
+  const box = wireframe ? getWireframeMode(rect) : getSelectionMode(rect)
   return {
     position: "absolute",
     pointerEvents: "none",
@@ -33,14 +38,22 @@ function outlineStyle(
 }
 
 /** Dashed border around the selected object (any kind). */
-export function CanvasSelectionOutline() {
+export function CanvasSelectionOutline({
+  wireframe = false,
+}: {
+  wireframe?: boolean
+}) {
   const rect = useCanvasOverlayStore((state) => state.selectionRect)
   if (!rect) return null
-  return <div style={outlineStyle(rect, "selection")} />
+  return <CanvasOutline style={outlineStyle(rect, "selection", wireframe)} />
 }
 
 /** Dashed border around the hovered object (any kind). */
-export function CanvasHoverOutline() {
+export function CanvasHoverOutline({
+  wireframe = false,
+}: {
+  wireframe?: boolean
+}) {
   const rect = useCanvasOverlayStore((state) => state.hoverRect)
   const hoveredId = useHoveredId()
   const hoveredRootId = useHoveredRootId()
@@ -54,5 +67,5 @@ export function CanvasHoverOutline() {
     hoveredId === selectedId &&
     hoveredRootId === selectedRootId
   if (!rect || coincidesWithSelection) return null
-  return <div style={outlineStyle(rect, "hover")} />
+  return <CanvasOutline style={outlineStyle(rect, "hover", wireframe)} />
 }

@@ -6,7 +6,7 @@ import { WorkspaceValidationError } from "@seldon/core/workspace/middleware/vali
 import { workspaceReducer } from "@seldon/core/workspace/reducers/reducer"
 import { setIsLocalWorkspaceDirty } from "@lib/project/hooks/use-workspace-sync-status"
 import { useDebugMode } from "@lib/hooks/use-debug-mode"
-import { useAddToast } from "@components/toaster/hooks/use-add-toast"
+import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import { useHistory } from "./use-history"
 import { usePreviewStore } from "./use-preview-store"
 
@@ -49,6 +49,9 @@ export function useWorkspace({
         return newState
       } catch (error) {
         if (error instanceof WorkspaceValidationError) {
+          // Previews are best-effort: skip the update and stay silent. The
+          // committed dispatch on drop surfaces the real validation toast.
+          if (isPreview) return
           addToast(error.message)
         } else if (error instanceof Error) {
           addToast(error.message)

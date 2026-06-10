@@ -1,14 +1,14 @@
-import { invariant } from "../../../../index"
 import { ComponentId } from "../../../../components/constants"
+import { invariant } from "../../../../index"
 import { ValueType } from "../../../../properties"
 import { isResourceType } from "../../../helpers/components/is-resource-type"
+import type { Action, Board, Workspace } from "../../../types"
 import {
   boardValidators,
   propertyValidators,
   themeValidators,
 } from "../validators"
 import { WorkspaceValidationError } from "../workspace-validation-error"
-import type { Action, Board, Workspace } from "../../../types"
 
 function assertBoardHasAllowedKind(
   workspace: Workspace,

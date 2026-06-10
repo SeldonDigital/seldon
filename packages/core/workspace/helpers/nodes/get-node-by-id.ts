@@ -1,6 +1,6 @@
 import { invariant } from "../../../index"
-import { EntryNode, EntryNodeId, Workspace } from "../../types"
 import { ErrorMessages } from "../../constants"
+import { EntryNode, EntryNodeId, Workspace } from "../../types"
 
 /**
  * Retrieves a node (variant or instance) by its ID from the workspace.

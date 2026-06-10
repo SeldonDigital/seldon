@@ -1,0 +1,18 @@
+import { SVGAttributes } from "react"
+
+export function IconMaterialTextSelectMoveUp(
+  props: SVGAttributes<SVGSVGElement>,
+) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 -960 960 960"
+      fill="currentColor"
+      height="1em"
+      width="1em"
+      {...props}
+    >
+      <path d="M120-120v-80h720v80H120Zm320-160v-247l-64 63-56-56 160-160 160 160-56 56-64-63v247h-80ZM120-760v-80h720v80H120Z" />
+    </svg>
+  )
+}

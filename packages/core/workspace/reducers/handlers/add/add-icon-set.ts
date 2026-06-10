@@ -1,4 +1,5 @@
 import { produce } from "immer"
+
 import { STOCK_ICON_SETS_BY_ID } from "../../../../icon-sets/catalog"
 import { ExtractPayload, Workspace } from "../../../../index"
 import { rules } from "../../../../rules/config/rules.config"
@@ -6,8 +7,8 @@ import {
   getBoardOrder,
   setBoardOrder,
 } from "../../../helpers/components/board-sort-order"
-import { ICON_SET_BOARD_CATALOG_IDS } from "../../../helpers/components/resource-board-catalog-ids"
 import { getInitialBoardComponentProperties } from "../../../helpers/components/get-initial-board-component-properties"
+import { ICON_SET_BOARD_CATALOG_IDS } from "../../../helpers/components/resource-board-catalog-ids"
 import { DEFAULT_ICON_SET_BOARD_KEY } from "../../../helpers/seed/seed-default-icon-set-board"
 import { WORKSPACE_EDITABLE_THEME_ENTRY_ID } from "../../../helpers/themes/workspace-editable-theme"
 import type { EntryIconSet } from "../../../model/entry-icon-set"
@@ -53,7 +54,8 @@ export function addIconSet(
 
     const defaultEntryId = `icon-set-${boardKey}-default`
 
-    const stock = STOCK_ICON_SETS_BY_ID[boardKey as keyof typeof STOCK_ICON_SETS_BY_ID]
+    const stock =
+      STOCK_ICON_SETS_BY_ID[boardKey as keyof typeof STOCK_ICON_SETS_BY_ID]
     const label = stock
       ? stock.metadata.name
       : formatLabelFromCatalogId(boardKey, "Icon set")
@@ -80,8 +82,7 @@ export function addIconSet(
     setBoardOrder(board, maxOrder + 1)
     draft.boards[boardKey] = board
 
-    const updatedWorkspace =
-      boardOrderService.realignBoardOrder(draft)
+    const updatedWorkspace = boardOrderService.realignBoardOrder(draft)
     Object.assign(draft.boards, updatedWorkspace.boards)
   })
 }

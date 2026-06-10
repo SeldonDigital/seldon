@@ -1,4 +1,5 @@
 import { produce } from "immer"
+
 import { ExtractPayload, Workspace } from "../../../../index"
 import {
   WORKSPACE_EDITABLE_FONT_COLLECTION_ENTRY_ID,

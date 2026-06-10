@@ -10,12 +10,12 @@ Core owns design-time state and rules. Factory owns export and production code g
 
 Core groups four ideas that work together:
 
-| Area | Role | Deep reference |
-| --- | --- | --- |
+| Area           | Role                                                                     | Deep reference                              |
+| -------------- | ------------------------------------------------------------------------ | ------------------------------------------- |
 | **Components** | Packaged schemas: identity, level, default properties, composition trees | [COMPONENTS.md](./components/COMPONENTS.md) |
-| **Properties** | Typed style and behavior values, merge rules, compute | [PROPERTIES.md](./properties/PROPERTIES.md) |
-| **Themes** | Design tokens components reference with `@` paths | [THEMES.md](./themes/THEMES.md) |
-| **Workspace** | Serialized design file: boards, nodes, themes, resources | [WORKSPACE.md](./workspace/WORKSPACE.md) |
+| **Properties** | Typed style and behavior values, merge rules, compute                    | [PROPERTIES.md](./properties/PROPERTIES.md) |
+| **Themes**     | Design tokens components reference with `@` paths                        | [THEMES.md](./themes/THEMES.md)             |
+| **Workspace**  | Serialized design file: boards, nodes, themes, resources                 | [WORKSPACE.md](./workspace/WORKSPACE.md)    |
 
 The **catalog** lives under `packages/core/` (component schemas, stock themes, font collections, icon sets, media). A workspace **points into** the catalog. It does not replace it. Default nodes and default themes always align with catalog structure. Customization happens through **variants**, **instances**, and **overrides**. See [WORKSPACE.md](./workspace/WORKSPACE.md) for the file shape and integrity rules.
 
@@ -147,14 +147,14 @@ const files = await exportWorkspace(workspace, {
 
 ## Further Reading
 
-| Topic | Document |
-| --- | --- |
-| Vocabulary | [GLOSSARY.md](../../GLOSSARY.md) |
-| Workspace file spec | [WORKSPACE.md](./workspace/WORKSPACE.md) |
-| Reducer actions | [workspace/reducers/README.md](./workspace/reducers/README.md) |
-| Rules and propagation | [rules/README.md](./rules/README.md) |
-| Code-oriented examples | [TECHNICAL.md](./TECHNICAL.md) |
-| Factory export | [../factory/README.md](../factory/README.md) |
+| Topic                  | Document                                                       |
+| ---------------------- | -------------------------------------------------------------- |
+| Vocabulary             | [GLOSSARY.md](../../GLOSSARY.md)                               |
+| Workspace file spec    | [WORKSPACE.md](./workspace/WORKSPACE.md)                       |
+| Reducer actions        | [workspace/reducers/README.md](./workspace/reducers/README.md) |
+| Rules and propagation  | [rules/README.md](./rules/README.md)                           |
+| Code-oriented examples | [TECHNICAL.md](./TECHNICAL.md)                                 |
+| Factory export         | [../factory/README.md](../factory/README.md)                   |
 
 ---
 
@@ -192,10 +192,10 @@ Contact:
 
 ### 4. Summary
 
-| Use | Requirement |
-|------|-------------|
+| Use               | Requirement                          |
+| ----------------- | ------------------------------------ |
 | Noncommercial use | PolyForm Noncommercial License 1.0.0 |
-| Commercial use | Paid commercial license |
+| Commercial use    | Paid commercial license              |
 
 ---
 
@@ -209,8 +209,7 @@ Contact:
 - [Documentation](https://docs.seldon.digital)
 - [Issues & Discussions](https://github.com/seldon/issues)
 
-
---- 
+---
 
 ## Notice for AI and LLM Training
 

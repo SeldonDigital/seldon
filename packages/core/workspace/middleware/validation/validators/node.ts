@@ -1,26 +1,27 @@
 import { getComponentSchema } from "../../../../components/catalog"
 import { ComponentId, isComponentId } from "../../../../components/constants"
 import { rules } from "../../../../rules/config/rules.config"
-import { getChildrenIds } from "../../../helpers/components/get-children-ids"
+import { ErrorMessages } from "../../../constants"
 import { getBoardByNodeId } from "../../../helpers/components/get-board-by-node-id"
+import { getChildrenIds } from "../../../helpers/components/get-children-ids"
+import { getVariantById } from "../../../helpers/general/get-variant-by-id"
+import { isDefaultVariant } from "../../../helpers/general/is-default-variant"
+import { isVariantInUse } from "../../../helpers/general/is-variant-in-use"
+import { canNodeHaveChildren } from "../../../helpers/nodes/can-node-have-children"
+import type {
+  Instance,
+  Variant,
+} from "../../../helpers/rules/rules-node-subject"
+import {
+  nodeRelationshipService,
+  nodeRetrievalService,
+  nodeTraversalService,
+  typeCheckingService,
+} from "../../../services"
 import {
   collectDescendantTreeIds,
   findTreeRef,
 } from "../../../services/shared/component-tree-helpers"
-import { isDefaultVariant } from "../../../helpers/general/is-default-variant"
-import { canNodeHaveChildren } from "../../../helpers/nodes/can-node-have-children"
-import { isVariantInUse } from "../../../helpers/general/is-variant-in-use"
-import { getVariantById } from "../../../helpers/general/get-variant-by-id"
-import { ErrorMessages } from "../../../constants"
-import {
-  nodeRetrievalService,
-  nodeTraversalService,
-  nodeRelationshipService,
-  typeCheckingService,
-} from "../../../services"
-import { check } from "../check"
-import { getNodeComponentId } from "../node-component-id"
-import { WorkspaceValidationError } from "../workspace-validation-error"
 import type {
   Action,
   EntryNode,
@@ -28,7 +29,9 @@ import type {
   VariantId,
   Workspace,
 } from "../../../types"
-import type { Instance, Variant } from "../../../helpers/rules/rules-node-subject"
+import { check } from "../check"
+import { getNodeComponentId } from "../node-component-id"
+import { WorkspaceValidationError } from "../workspace-validation-error"
 
 export function assertInsertTargetAllowed(
   parent: EntryNode,

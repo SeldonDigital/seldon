@@ -15,9 +15,7 @@ export function findThemeBoard(workspace: Workspace): Board | null {
   return null
 }
 
-export function findFontCollectionBoard(
-  workspace: Workspace,
-): Board | null {
+export function findFontCollectionBoard(workspace: Workspace): Board | null {
   for (const board of Object.values(getWorkspaceComponentMap(workspace))) {
     if (isFontCollectionBoard(board)) {
       return board

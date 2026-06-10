@@ -1,6 +1,6 @@
+import type { Action, Workspace } from "../../../types"
 import { themeEntryValidators } from "../validators"
 import { WorkspaceValidationError } from "../workspace-validation-error"
-import type { Action, Workspace } from "../../../types"
 
 export function validateAddThemeCustomToken(
   workspace: Workspace,

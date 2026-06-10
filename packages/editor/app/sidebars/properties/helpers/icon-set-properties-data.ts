@@ -1,15 +1,15 @@
 import type { IconId } from "@seldon/core/icon-sets"
 import { iconLabels } from "@seldon/core/icon-sets"
 import {
+  type IconCategory,
   categorySubcategories,
   iconCategories,
-  type IconCategory,
 } from "@seldon/core/icon-sets/constants"
 import {
+  type IconInclusion,
   deriveSubcategoryPreset,
   getIconsInSubcategory,
   isIconIncluded,
-  type IconInclusion,
 } from "@seldon/core/icon-sets/helpers"
 import type { ComputedIconSet } from "@seldon/core/icon-sets/types"
 import { ValueType } from "@seldon/core/properties"

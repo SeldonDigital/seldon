@@ -3,6 +3,7 @@ import {
   typeCheckingService,
 } from "@seldon/core/workspace/services"
 import { Instance, Variant, Workspace } from "@seldon/core/workspace/types"
+
 import { ComponentToExport } from "../../../types"
 import { isInlineComponent } from "../inline-components/is-inline-component"
 

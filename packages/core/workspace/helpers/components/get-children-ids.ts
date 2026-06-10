@@ -10,7 +10,10 @@ import { walkBoardTreeRefs } from "./walk-board-tree-refs"
  * @param board Board whose variants hold the tree.
  * @param parentId Node id for the parent whose children you need.
  */
-export function getChildrenIds(board: Board, parentId: EntryNodeId): EntryNodeId[] {
+export function getChildrenIds(
+  board: Board,
+  parentId: EntryNodeId,
+): EntryNodeId[] {
   let childIds: EntryNodeId[] = []
 
   walkBoardTreeRefs(board.variants, (ref) => {

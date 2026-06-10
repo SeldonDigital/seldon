@@ -1,5 +1,7 @@
 import {
   Align,
+  BackgroundPosition,
+  BackgroundRepeat,
   BorderCollapse,
   BorderStyle,
   BorderWidth,
@@ -22,12 +24,14 @@ import {
   Padding,
   PercentageValue,
   PixelValue,
+  Placement,
   RemValue,
   Resize,
   ScreenSize,
   Scroll,
   ScrollbarStyle,
   TextAlign,
+  TextCasing,
   TextDecoration,
   ThemeBackgroundKey,
   ThemeBlurKey,
@@ -51,8 +55,10 @@ import {
   Unit,
   Value,
   ValueType,
+  WrapperElement,
 } from "@seldon/core"
 import { getComponentSchema } from "@seldon/core/components/catalog"
+import { ComponentId } from "@seldon/core/components/constants"
 import { isDoubleAxisValue } from "@seldon/core/helpers/type-guards/value/is-double-axis-value"
 import {
   isNumber,
@@ -198,10 +204,40 @@ function initializePresetMappings() {
   Object.entries(TextAlign).forEach(([key, value]) => {
     PRESET_MAPPINGS.set(value, TextAlign[key as keyof typeof TextAlign])
   })
+  Object.entries(TextCasing).forEach(([key, value]) => {
+    PRESET_MAPPINGS.set(value, TextCasing[key as keyof typeof TextCasing])
+  })
   Object.entries(TextDecoration).forEach(([key, value]) => {
     PRESET_MAPPINGS.set(
       value,
       TextDecoration[key as keyof typeof TextDecoration],
+    )
+  })
+
+  // Background layer presets
+  Object.entries(BackgroundPosition).forEach(([key, value]) => {
+    PRESET_MAPPINGS.set(
+      value,
+      BackgroundPosition[key as keyof typeof BackgroundPosition],
+    )
+  })
+  Object.entries(BackgroundRepeat).forEach(([key, value]) => {
+    PRESET_MAPPINGS.set(
+      value,
+      BackgroundRepeat[key as keyof typeof BackgroundRepeat],
+    )
+  })
+
+  // Placement presets
+  Object.entries(Placement).forEach(([key, value]) => {
+    PRESET_MAPPINGS.set(value, Placement[key as keyof typeof Placement])
+  })
+
+  // Wrapper element presets
+  Object.entries(WrapperElement).forEach(([key, value]) => {
+    PRESET_MAPPINGS.set(
+      value,
+      WrapperElement[key as keyof typeof WrapperElement],
     )
   })
 
@@ -305,7 +341,7 @@ function getUnitForNumericValue(
     if (!catalogId) {
       return getDefaultUnitForProperty(propertyKey || "")
     }
-    const schema = getComponentSchema(catalogId)
+    const schema = getComponentSchema(catalogId as ComponentId)
     if (schema?.properties) {
       const schemaProperty = (schema.properties as Record<string, Value>)[
         propertyKey
@@ -324,6 +360,15 @@ function getUnitForNumericValue(
 
   return getDefaultUnitForProperty(propertyKey || "")
 }
+
+/** Attributes whose value is free text; numeric input stays a literal string. */
+const FREE_TEXT_PROPERTY_KEYS = new Set([
+  "content",
+  "altText",
+  "ariaLabel",
+  "placeholder",
+  "source",
+])
 
 /**
  * Serializes a string to a PropertyValue object.
@@ -353,6 +398,16 @@ export function serializeValue(
   // it as a real OPTION (CSS 0), so keep it distinct for those.
   if (value === "none" && !supportsNoneOption(propertyKey)) {
     return { type: ValueType.EMPTY, value: null }
+  }
+
+  // Free-text attributes store the raw string. Skip the numeric and theme
+  // coercion below so input like "001" stays the literal text rather than being
+  // turned into a dimension the property would reject.
+  if (
+    propertyKey &&
+    FREE_TEXT_PROPERTY_KEYS.has(propertyKey.split(".").pop() as string)
+  ) {
+    return { type: ValueType.EXACT, value }
   }
 
   // Try to handle as a preset value using the dynamic mapping system

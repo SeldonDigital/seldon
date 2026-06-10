@@ -27,6 +27,12 @@ export { IconSeldonToolArrow } from "./IconSeldonToolArrow"
 export { IconSeldonToolImageAi } from "./IconSeldonToolImageAi"
 export { IconSeldonToolComponent } from "./IconSeldonToolComponent"
 export { IconSeldonToolSketch } from "./IconSeldonToolSketch"
+export { IconSeldonToken } from "./IconSeldonToken"
+export { IconSeldonUpload } from "./IconSeldonUpload"
+export { IconSeldonDuplicate } from "./IconSeldonDuplicate"
+export { IconSeldonPreview } from "./IconSeldonPreview"
+export { IconSeldonFullScreen } from "./IconSeldonFullScreen"
+export { IconSeldonSpark } from "./IconSeldonSpark"
 
 export const seldoncommonactionsIconIds: readonly IconId[] = [
   "seldon-addChart",
@@ -56,4 +62,10 @@ export const seldoncommonactionsIconIds: readonly IconId[] = [
   "seldon-toolImageAi",
   "seldon-toolComponent",
   "seldon-toolSketch",
+  "seldon-token",
+  "seldon-upload",
+  "seldon-duplicate",
+  "seldon-preview",
+  "seldon-fullScreen",
+  "seldon-spark",
 ] as const

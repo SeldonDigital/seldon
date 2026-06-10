@@ -4,6 +4,7 @@ import { PropertySchema } from "../../types/schema"
 import { ComputedMatchValue } from "../shared/computed/match"
 import { ComputedOpticalPaddingValue } from "../shared/computed/optical-padding"
 import { EmptyValue } from "../shared/empty/empty"
+import { PercentageValue } from "../shared/exact/percentage"
 import { PixelValue } from "../shared/exact/pixel"
 import { RemValue } from "../shared/exact/rem"
 
@@ -32,11 +33,12 @@ export interface PaddingValue {
   left?: PaddingSideValue
 }
 
-/** One side value: unset, px or rem lengths, the catalog option, optical padding, match computed, or a theme step. */
+/** One side value: unset, measured lengths, the catalog option, optical padding, match computed, or a theme step. */
 export type PaddingSideValue =
   | EmptyValue
   | PixelValue
   | RemValue
+  | PercentageValue
   | PaddingSideOptionValue
   | ComputedOpticalPaddingValue
   | ComputedMatchValue
@@ -55,16 +57,19 @@ export const paddingSchema: PropertySchema = {
     "themeOrdinal",
   ] as const,
   units: {
-    allowed: [Unit.PX, Unit.REM],
+    allowed: [Unit.PX, Unit.REM, Unit.PERCENT],
     default: Unit.PX,
     validation: "both",
   },
   validation: {
     empty: () => true,
     inherit: () => true,
-    exact: (value: any) => {
+    exact: (value: unknown) => {
       if (
         typeof value === "object" &&
+        value !== null &&
+        "value" in value &&
+        "unit" in value &&
         value.value !== undefined &&
         value.unit !== undefined
       )
@@ -72,12 +77,17 @@ export const paddingSchema: PropertySchema = {
       if (typeof value === "number" && value >= 0) return true
       return false
     },
-    option: (value: any) => Object.values(Padding).includes(value),
-    computed: (value: any) =>
-      typeof value === "object" && value.function !== undefined,
-    themeOrdinal: (value: any, theme?: Theme) => {
+    option: (value: unknown) =>
+      typeof value === "string" &&
+      (Object.values(Padding) as string[]).includes(value),
+    computed: (value: unknown) =>
+      typeof value === "object" &&
+      value !== null &&
+      "function" in value &&
+      value.function !== undefined,
+    themeOrdinal: (value: unknown, theme?: Theme) => {
       if (!theme) return false
-      return value in theme.padding
+      return typeof value === "string" && value in theme.padding
     },
   },
   presetOptions: () => Object.values(Padding),

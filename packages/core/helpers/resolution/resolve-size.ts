@@ -47,12 +47,12 @@ export function resolveSize({
 
       const parentSize = findInObject(
         parentContext.properties,
-        (size.value as any).input.basedOn as string,
+        size.value.input.basedOn as string,
       ) as SizeValue
 
       invariant(
         parentSize,
-        `Property ${(size.value as any).input.basedOn as string} not found in parent properties`,
+        `Property ${size.value.input.basedOn as string} not found in parent properties`,
       )
 
       const resolvedParentSize = resolveSize({
@@ -62,12 +62,10 @@ export function resolveSize({
       })
 
       if (resolvedParentSize.type === ValueType.EMPTY) {
-        throw new Error(
-          `${(size.value as any).input.basedOn as string} is empty`,
-        )
+        throw new Error(`${size.value.input.basedOn as string} is empty`)
       }
 
-      switch ((size.value as any).function) {
+      switch (size.value.function) {
         case ComputedFunction.MATCH:
           return resolvedParentSize
 
@@ -76,9 +74,7 @@ export function resolveSize({
             type: ValueType.EXACT,
             value: {
               unit: Unit.REM,
-              value:
-                resolvedParentSize.value.value *
-                (size.value as any).input.factor,
+              value: resolvedParentSize.value.value * size.value.input.factor,
             },
           }
 

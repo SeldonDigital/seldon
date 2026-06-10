@@ -35,10 +35,13 @@ export type IconSubcategory =
   | "household"
   | "nature"
   | "science"
+  | "smart-home"
   | "sports"
   | "transportation"
   | "weather"
   // system
+  | "ai"
+  | "connectivity"
   | "devices"
   | "security"
   | "settings"
@@ -72,12 +75,15 @@ export const categorySubcategories: Record<IconCategory, IconSubcategory[]> = {
     "entertainment",
     "food",
     "health",
+    "household",
     "nature",
     "science",
+    "smart-home",
+    "sports",
     "transportation",
     "weather",
   ],
-  system: ["devices", "security", "settings"],
+  system: ["ai", "connectivity", "devices", "security", "settings"],
   "user-interface": [
     "actions",
     "communication",
@@ -107,9 +113,12 @@ export const categoryPaths: IconCategoryPath[] = [
   "specialized/household",
   "specialized/nature",
   "specialized/science",
+  "specialized/smart-home",
   "specialized/sports",
   "specialized/transportation",
   "specialized/weather",
+  "system/ai",
+  "system/connectivity",
   "system/devices",
   "system/security",
   "system/settings",

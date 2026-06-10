@@ -8,9 +8,15 @@ import type { ComponentTreeRef } from "../../types"
  */
 export function walkBoardTreeRefs(
   roots: ComponentTreeRef[],
-  visit: (ref: ComponentTreeRef, parent: ComponentTreeRef | null) => boolean | void,
+  visit: (
+    ref: ComponentTreeRef,
+    parent: ComponentTreeRef | null,
+  ) => boolean | void,
 ): void {
-  const visitRef = (ref: ComponentTreeRef, parent: ComponentTreeRef | null): boolean => {
+  const visitRef = (
+    ref: ComponentTreeRef,
+    parent: ComponentTreeRef | null,
+  ): boolean => {
     const shouldStop = visit(ref, parent)
     if (shouldStop === true) return true
 

@@ -1,6 +1,11 @@
 "use client"
 
 import { selectFile } from "@lib/helpers/select-file"
+import { useCallback, useMemo } from "react"
+import { useNavigate } from "react-router"
+import { DEFAULT_FONT_COLLECTION_BOARD_KEY } from "@seldon/core/workspace/helpers/seed/seed-default-font-collection-board"
+import { DEFAULT_ICON_SET_BOARD_KEY } from "@seldon/core/workspace/helpers/seed/seed-default-icon-set-board"
+import { DEFAULT_THEME_BOARD_KEY } from "@seldon/core/workspace/helpers/seed/seed-default-theme-board"
 import {
   isComponentBoard,
   isFontCollectionBoard,
@@ -9,15 +14,12 @@ import {
   isPlaygroundBoard,
   isThemeBoard,
 } from "@seldon/core/workspace/model/components"
-import { isEntryThemeDefault } from "@seldon/core/workspace/model/entry-theme"
 import { isEntryFontCollectionDefault } from "@seldon/core/workspace/model/entry-font-collection"
 import { isEntryIconSetDefault } from "@seldon/core/workspace/model/entry-icon-set"
-import { DEFAULT_FONT_COLLECTION_BOARD_KEY } from "@seldon/core/workspace/helpers/seed/seed-default-font-collection-board"
-import { DEFAULT_ICON_SET_BOARD_KEY } from "@seldon/core/workspace/helpers/seed/seed-default-icon-set-board"
-import { DEFAULT_THEME_BOARD_KEY } from "@seldon/core/workspace/helpers/seed/seed-default-theme-board"
-import { resolveComponentKey } from "@lib/workspace/workspace-accessors"
-import { useNavigate } from "react-router"
-import { useCallback, useMemo } from "react"
+import { isEntryThemeDefault } from "@seldon/core/workspace/model/entry-theme"
+import { useHistory } from "@lib/workspace/hooks/use-history"
+import { useSelection } from "@lib/workspace/hooks/use-selection"
+import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useAddRemoveCommands } from "@lib/hooks/commands/use-add-remove-commands"
 import { useMoveCommands } from "@lib/hooks/commands/use-move-commands"
 import { useSelectCommands } from "@lib/hooks/commands/use-select-commands"
@@ -29,11 +31,14 @@ import { useNodeClipboardActions } from "@lib/hooks/use-node-clipboard-actions"
 import { usePreview } from "@lib/hooks/use-preview"
 import { useTool } from "@lib/hooks/use-tool"
 import { useZoomControls } from "@lib/hooks/use-zoom-controls"
-import { useHistory } from "@lib/workspace/hooks/use-history"
-import { useSelection } from "@lib/workspace/hooks/use-selection"
-import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
-import { useAddToast } from "@components/toaster/hooks/use-add-toast"
-import { HeaderConfig, MenuConfig, MenuItem, ToolbarConfig } from "../menus/types"
+import { resolveComponentKey } from "@lib/workspace/workspace-accessors"
+import { useAddToast } from "@app/toaster/hooks/use-add-toast"
+import {
+  HeaderConfig,
+  MenuConfig,
+  MenuItem,
+  ToolbarConfig,
+} from "../menus/types"
 
 /**
  * Builds header configuration with all required menus and actions
@@ -79,6 +84,7 @@ export function useMenuConfig(): HeaderConfig {
   const {
     exportWorkspaceToFile,
     exportSelectionToClipboard,
+    copySchemaJsonToClipboard,
     importWorkspaceFromFile,
     exportToFolder,
   } = useImportExport()
@@ -222,6 +228,12 @@ export function useMenuConfig(): HeaderConfig {
         action: exportSelectionToClipboard,
         visibleIn: ["edit", "preview"], // Not visible in project view
       },
+      {
+        id: "copy-schema-json",
+        label: "Copy Schema JSON",
+        action: copySchemaJsonToClipboard,
+        visibleIn: ["edit", "preview"],
+      },
       "separator",
       {
         id: "canvas-profiling",
@@ -284,6 +296,7 @@ export function useMenuConfig(): HeaderConfig {
   }, [
     addToast,
     exportSelectionToClipboard,
+    copySchemaJsonToClipboard,
     canvasProfiling,
     toggleCanvasProfiling,
     showNodeIds,
@@ -582,6 +595,5 @@ export function useMenuConfig(): HeaderConfig {
   return {
     menuConfig,
     toolbarConfig,
-    dialogs: {},
   }
 }

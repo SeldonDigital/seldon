@@ -1,5 +1,6 @@
 import { invariant } from "@seldon/core"
 import { NATIVE_REACT_PRIMITIVES } from "@seldon/core/components/constants"
+
 import { NodeIdToClass } from "../../../css/types"
 import { ComponentToExport } from "../../../types"
 
@@ -111,10 +112,7 @@ export function generateWrapperElementReturn(
   const { tree } = component
   const { options, defaultValue } = tree.dataBinding.props.wrapperElement
 
-  invariant(
-    options,
-    "wrapperElement.options is required to create a switch",
-  )
+  invariant(options, "wrapperElement.options is required to create a switch")
   invariant(
     defaultValue,
     "wrapperElement.defaultValue is required to create a switch",

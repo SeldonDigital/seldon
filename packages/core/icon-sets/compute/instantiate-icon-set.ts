@@ -1,4 +1,5 @@
 import merge from "lodash/merge"
+
 import { computeIconSet } from "../helpers/compute-icon-set"
 import type { ComputedIconSet, StockIconSet } from "../types/icon-set"
 import type { IconSetTemplateId } from "../types/icon-set-id"

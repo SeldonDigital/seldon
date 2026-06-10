@@ -4,10 +4,11 @@ import { COLORS } from "@lib/helpers/colors"
 import { useEffect, useState } from "react"
 import { CSSProperties } from "react"
 import { useNodeRect } from "../../hooks/use-node-rect"
+import { CanvasOutline } from "@seldon/components/custom-components"
 import { getHtmlElementByNodeId } from "../../../canvas/helpers/get-html-element-by-node-id"
+import { calculateClippingBox } from "../../helpers/calculate-clipping-box"
 import { calculateSelectionOutline } from "../../helpers/calculate-selection-outline"
 import { getWireframeMode } from "../../helpers/canvas-outline-modes"
-import { calculateClippingBox } from "../../helpers/calculate-clipping-box"
 
 export type SelectTrackingProps = {
   nodeId: string
@@ -99,5 +100,5 @@ export function SelectTracking({
     zIndex: 1,
   }
 
-  return <div style={style} />
+  return <CanvasOutline style={style} />
 }

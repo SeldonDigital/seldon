@@ -1,7 +1,8 @@
 import { isDraft } from "immer"
+
 import type { EntryNodeId, Workspace } from "../../types"
-import { getImmediateParentId } from "./get-parent-ids"
 import { getBoardByNodeId } from "./get-board-by-node-id"
+import { getImmediateParentId } from "./get-parent-ids"
 import { walkBoardTreeRefs } from "./walk-board-tree-refs"
 
 /**
@@ -10,10 +11,7 @@ import { walkBoardTreeRefs } from "./walk-board-tree-refs"
  * reference so reads on an unchanged workspace reuse the cached index. Drafts
  * bypass the cache because they mutate in place during a reducer pass.
  */
-const nodeToParentCache = new WeakMap<
-  object,
-  Map<string, EntryNodeId | null>
->()
+const nodeToParentCache = new WeakMap<object, Map<string, EntryNodeId | null>>()
 
 function buildNodeToParentIndex(
   workspace: Workspace,

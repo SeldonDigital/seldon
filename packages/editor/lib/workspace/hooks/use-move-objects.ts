@@ -9,19 +9,22 @@ import {
 } from "@seldon/core"
 import { getBoardOrder } from "@seldon/core/workspace/helpers/components/board-sort-order"
 import { getBoardVariantRootIds } from "@seldon/core/workspace/helpers/components/get-board-variant-root-ids"
-import { findParentNode } from "@seldon/core/workspace/helpers/nodes/find-parent-node"
 import { getVariantById } from "@seldon/core/workspace/helpers/general/get-variant-by-id"
 import { getVariantIndex } from "@seldon/core/workspace/helpers/general/get-variant-index"
 import { isDefaultVariant } from "@seldon/core/workspace/helpers/general/is-default-variant"
+import { findParentNode } from "@seldon/core/workspace/helpers/nodes/find-parent-node"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
 import type { Board } from "@seldon/core/workspace/types"
 import { getNodeChildIds } from "@lib/workspace/node-tree"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
-import { useAddToast } from "@components/toaster/hooks/use-add-toast"
+import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import { useWorkspace } from "./use-workspace"
 
 export function useMoveObjects() {
-  const { workspace, dispatch } = useWorkspace()
+  // Index math must read committed state. During a live drag preview the
+  // preview-aware workspace already reflects the prior hover's move, which would
+  // drift the computed index. `dispatch` rebuilds from committed state regardless.
+  const { workspace, dispatch } = useWorkspace({ usePreview: false })
   const addToast = useAddToast()
 
   const moveChildTo = useCallback(
@@ -104,8 +107,7 @@ export function useMoveObjects() {
           type: "reorder_board",
           payload: {
             boardKey: getComponentKey(subjectBoard),
-            newIndex:
-              position === "before" ? targetOrder : targetOrder + 1,
+            newIndex: position === "before" ? targetOrder : targetOrder + 1,
           },
         },
         isPreview,

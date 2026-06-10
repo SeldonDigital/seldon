@@ -1,14 +1,14 @@
 import { Board, Instance, Variant, Workspace } from "@seldon/core"
 import { getComponentSchema } from "@seldon/core/components/catalog"
 import { isComponentId } from "@seldon/core/components/constants"
-import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
+import type { IconCategory } from "@seldon/core/icon-sets/constants"
 import {
   PROPERTY_DISPLAY_META,
   PropertyDisplayCategory,
   getAllPropertySectionSchemas,
   getCatalogKeyForPropertyPath,
 } from "@seldon/core/properties/schemas"
-import type { IconCategory } from "@seldon/core/icon-sets/constants"
+import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { getNodeCatalogComponentId } from "@lib/workspace/node-tree"
 import { FlatProperty } from "./properties-data"
 
@@ -84,7 +84,10 @@ export function getPropertySections(
     (property) => !property.isSubProperty,
   )
 
-  const propertiesByCategory = new Map<PropertyDisplayCategory, FlatProperty[]>()
+  const propertiesByCategory = new Map<
+    PropertyDisplayCategory,
+    FlatProperty[]
+  >()
   for (const property of mainProperties) {
     const category = getSectionForProperty(property.key)
     if (!propertiesByCategory.has(category)) {

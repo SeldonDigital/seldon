@@ -2,9 +2,10 @@ import { CSSProperties, useCallback } from "react"
 import { Light as SyntaxHighlighter } from "react-syntax-highlighter"
 import css from "react-syntax-highlighter/dist/esm/languages/hljs/css"
 import { atomOneDarkReasonable } from "react-syntax-highlighter/dist/esm/styles/hljs"
-import { HTMLButton } from "../../seldon/native-react/HTML.Button"
-import { Icon } from "../../seldon/primitives/Icon"
-import { useAddToast } from "@components/toaster/hooks/use-add-toast"
+import { Box } from "@seldon/components/custom-components"
+import { HTMLButton } from "@seldon/components/native-react/HTML.Button"
+import { Icon } from "@seldon/components/primitives/Icon"
+import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 
 SyntaxHighlighter.registerLanguage("css", css)
 
@@ -36,7 +37,7 @@ export function CssBlock({ cssProperties }: CssBlockProps) {
   }
 
   return (
-    <div style={styles.container}>
+    <Box style={styles.container}>
       <HTMLButton
         className={`variant-button-C11YhJ ${TOGGLE_BUTTON_CLASS}`}
         onClick={handleCopyClick}
@@ -56,7 +57,7 @@ export function CssBlock({ cssProperties }: CssBlockProps) {
       >
         {cssProperties.join("\n")}
       </SyntaxHighlighter>
-    </div>
+    </Box>
   )
 }
 

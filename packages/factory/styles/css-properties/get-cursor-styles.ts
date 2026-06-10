@@ -1,4 +1,5 @@
 import { Properties, ValueType } from "@seldon/core"
+
 import { CSSObject } from "./types"
 
 export function getCursorStyles({

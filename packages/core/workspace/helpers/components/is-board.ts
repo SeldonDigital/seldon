@@ -8,8 +8,6 @@ import { Board, EntryNode } from "../../types"
  *
  * @param nodeOrBoard Value that might be a catalog row or a node entry.
  */
-export function isBoard(
-  nodeOrBoard: EntryNode | Board,
-): nodeOrBoard is Board {
+export function isBoard(nodeOrBoard: EntryNode | Board): nodeOrBoard is Board {
   return "variants" in nodeOrBoard
 }

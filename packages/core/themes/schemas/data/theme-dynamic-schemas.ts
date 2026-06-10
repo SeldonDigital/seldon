@@ -6,10 +6,8 @@
 import { getDynamicSwatchName } from "../../compute/get-dynamic-swatch-names"
 import { LOOK_FACETS, isBridgedLookFacet } from "../../looks/look-facets"
 import type { LookSection } from "../../looks/look-facets"
+import type { ThemeTokenSchemaUnresolved } from "../../types/schema"
 import type { ComputedTheme, StockTheme } from "../../types/theme"
-import type {
-  ThemeTokenSchemaUnresolved,
-} from "../../types/schema"
 import type { StockThemeSwatch, ThemeSwatch } from "../../values"
 import { isDynamicSwatchToken } from "../../values"
 import { finalizeThemeTokenSchema } from "../helpers/finalize-theme-token-schema"
@@ -90,10 +88,7 @@ export function generateSwatchSchemas(
     schemas.push({
       key: `swatch.${key}`,
       propertyKey: "color",
-      label: swatchSchemaLabel(
-        swatch as StockThemeSwatch | ThemeSwatch,
-        theme,
-      ),
+      label: swatchSchemaLabel(swatch as StockThemeSwatch | ThemeSwatch, theme),
       section: "swatch",
       order: order++,
     })
@@ -117,9 +112,9 @@ export function generateLookSchemas(
   const schemas: ThemeTokenSchemaUnresolved[] = []
   const facets = LOOK_FACETS[section]
   const stride = facets.length + 1
-  const lookTable = (theme as unknown as Record<string, Record<string, { name?: string }>>)[
-    section
-  ]
+  const lookTable = (
+    theme as unknown as Record<string, Record<string, { name?: string }>>
+  )[section]
   if (!lookTable) return schemas
 
   let index = 0

@@ -4,6 +4,7 @@ import { resolveFontSize } from "@seldon/core/helpers/resolution/resolve-font-si
 import { resolveValue } from "@seldon/core/helpers/resolution/resolve-value"
 import { getThemeOption } from "@seldon/core/helpers/theme/get-theme-option"
 import { ThemeFont } from "@seldon/core/themes/types"
+
 import { StyleGenerationContext } from "../types"
 import { getCssValue } from "./get-css-value"
 import { CSSObject } from "./types"

@@ -1,9 +1,22 @@
 "use client"
 
-import { ButtonBarPrimary } from "../../seldon/chrome/elements/ButtonBarPrimary"
-import { FloatingPanel } from "@components/panels/FloatingPanel"
-import { ImageDropzone } from "./ImageDropzone"
+import { CSSProperties } from "react"
 import { useImageUploadPanel } from "../hooks/use-upload-image-panel"
+import { ButtonBarPrimary } from "@seldon/components/chrome/elements/ButtonBarPrimary"
+import { FloatingPanel } from "@app/panels/FloatingPanel"
+import { ImageDropzone } from "./ImageDropzone"
+
+const styles: Record<string, CSSProperties> = {
+  body: { display: "flex", height: "100%", flexDirection: "column" },
+  main: {
+    flex: 1,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#101011",
+  },
+  hiddenButtonIcon: { display: "none" },
+}
 
 /**
  * Panel for uploading images.
@@ -12,32 +25,27 @@ export function ImageUploadPanel({ onClose }: { onClose: () => void }) {
   const { currentFile, onFileChange, fileInputRef, status, clear, save } =
     useImageUploadPanel()
 
+  const mainContent =
+    status === "success" ? (
+      <div></div>
+    ) : (
+      <ImageDropzone
+        onFileChange={onFileChange}
+        currentFile={currentFile}
+        fileInputRef={fileInputRef}
+      />
+    )
+
+  const confirmLabel = status === "pending" ? "Uploading..." : "Use image"
+
   return (
     <FloatingPanel
       closeOnClickOutside
       handleClose={onClose}
       title="Choose image"
     >
-      <div style={{ display: "flex", height: "100%", flexDirection: "column" }}>
-        <main
-          style={{
-            flex: 1,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            backgroundColor: "#101011",
-          }}
-        >
-          {status === "success" ? (
-            <div></div>
-          ) : (
-            <ImageDropzone
-              onFileChange={onFileChange}
-              currentFile={currentFile}
-              fileInputRef={fileInputRef}
-            />
-          )}
-        </main>
+      <div style={styles.body}>
+        <main style={styles.main}>{mainContent}</main>
 
         <ButtonBarPrimary
           buttonProps={{
@@ -45,11 +53,7 @@ export function ImageUploadPanel({ onClose }: { onClose: () => void }) {
             type: "button",
             disabled: !currentFile,
           }}
-          buttonIconProps={{
-            style: {
-              display: "none",
-            },
-          }}
+          buttonIconProps={{ style: styles.hiddenButtonIcon }}
           buttonLabelProps={{
             children: "Clear",
           }}
@@ -58,13 +62,9 @@ export function ImageUploadPanel({ onClose }: { onClose: () => void }) {
             type: "button",
             disabled: !currentFile,
           }}
-          buttonPrimary1IconProps={{
-            style: {
-              display: "none",
-            },
-          }}
+          buttonPrimary1IconProps={{ style: styles.hiddenButtonIcon }}
           buttonPrimary1LabelProps={{
-            children: status === "pending" ? "Uploading..." : "Use image",
+            children: confirmLabel,
           }}
         />
       </div>

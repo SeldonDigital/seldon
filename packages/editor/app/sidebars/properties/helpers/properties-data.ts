@@ -17,6 +17,11 @@
  * Use core functions directly for business logic, use these helpers for UI transformation only.
  */
 import {
+  getCompoundLayerValue,
+  isLayeredPaintRoot,
+  layeredFacetPath,
+} from "@lib/properties/property-paths"
+import {
   Board,
   Instance,
   Properties,
@@ -29,39 +34,34 @@ import {
 import { getComponentSchema } from "@seldon/core/components/catalog"
 import { isComponentId } from "@seldon/core/components/constants"
 import { findInObject } from "@seldon/core/helpers"
-import { isLayeredPaintProperty } from "@seldon/core/properties/types/property-keys"
-import type {
-  LayeredPaintKey,
-  PropertyKey as CorePropertyKey,
-} from "@seldon/core/properties/types/property-keys"
-import {
-  getCompoundLayerValue,
-  isLayeredPaintRoot,
-  layeredFacetPath,
-} from "@lib/properties/property-paths"
-import { getComponentPropertyDefaults } from "@seldon/core/workspace/helpers/components/get-component-property-defaults"
-import { getNodeCatalogComponentId } from "@lib/workspace/node-tree"
-import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import {
   formatCompoundDisplay as coreFormatCompoundDisplay,
   formatShorthandDisplay as coreFormatShorthandDisplay,
   formatValue as coreFormatValue,
-  getCompoundPropertyStructure,
   getEffectiveProperties as coreGetEffectiveProperties,
   getPropertyStatus as coreGetPropertyStatus,
+  getCompoundPropertyStructure,
 } from "@seldon/core/helpers/properties/properties-bridge"
 import {
   getCompoundSubPropertySchema,
   getPropertyCategory,
 } from "@seldon/core/properties/schemas"
-import { getPresetOptions } from "@seldon/core/properties/schemas/helpers/property-options"
 import {
   getCatalogKeyForPropertyPath,
   getInspectorRootPropertyKeys,
   getPropertySchema,
   validatePropertyValue,
 } from "@seldon/core/properties/schemas/helpers"
+import { getPresetOptions } from "@seldon/core/properties/schemas/helpers/property-options"
+import { isLayeredPaintProperty } from "@seldon/core/properties/types/property-keys"
+import type {
+  PropertyKey as CorePropertyKey,
+  LayeredPaintKey,
+} from "@seldon/core/properties/types/property-keys"
+import { getComponentPropertyDefaults } from "@seldon/core/workspace/helpers/components/get-component-property-defaults"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
+import { getNodeCatalogComponentId } from "@lib/workspace/node-tree"
+import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { ControlType, getPropertyRegistryEntry } from "./properties-registry"
 import { isCompoundProperty, isShorthandProperty } from "./property-types"
 import {
@@ -181,7 +181,9 @@ function subPropertyPathFor(parentKey: string, subKey: string): string {
   return `${parentKey}.${subKey}`
 }
 
-export function getPropertiesSubjectId(node: Variant | Instance | Board): string {
+export function getPropertiesSubjectId(
+  node: Variant | Instance | Board,
+): string {
   if (isBoard(node)) return getComponentKey(node)
   return node.id
 }
@@ -522,7 +524,8 @@ export function createFlatSubProperty(
         const isImageProperty =
           basePropertyName === "source" || basePropertyName === "image"
         const isBackgroundImageProperty =
-          basePropertyName === "image" && subPropertyPath.startsWith("background")
+          basePropertyName === "image" &&
+          subPropertyPath.startsWith("background")
 
         if (
           !isComboControl &&
@@ -562,12 +565,7 @@ function getSubProperties(
       : propertyValue
 
   const subPropertyKeys = filterCompoundPropertyKeys(
-    getCompoundPropertyStructure(
-      propertyKey,
-      compoundValue,
-      node,
-      workspace,
-    ),
+    getCompoundPropertyStructure(propertyKey, compoundValue, node, workspace),
     propertyKey,
   )
 

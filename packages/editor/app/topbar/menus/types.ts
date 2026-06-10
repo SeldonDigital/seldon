@@ -53,9 +53,4 @@ export interface HeaderConfig {
   menuConfig: MenuConfig
   /** Toolbar configuration */
   toolbarConfig: ToolbarConfig
-  /** Dialog states */
-  dialogs: {
-    showExportDialog: boolean
-    setShowExportDialog: (show: boolean) => void
-  }
 }

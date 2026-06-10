@@ -31,8 +31,8 @@ function findAncestorIds(
  *
  * - `ancestors` lists ids from the variant root through each ancestor down to the direct parent. Empty for a root ref.
  * - `immediateParent` is the direct parent id, or null for a root ref or when the node is not in this board tree.
- * - `inTree` is true when this node id appears under some variant root on this board. 
- * 
+ * - `inTree` is true when this node id appears under some variant root on this board.
+ *
  * Use `inTree` to tell a missing node from a root ref, since both give an empty `ancestors` list and a null `immediateParent`.
  *
  * The node id may belong to a default, variant, or instance node that appears as a ref in that tree.
@@ -64,7 +64,7 @@ function getParentIds(board: Board, nodeId: EntryNodeId): BoardParentIds {
 /**
  * Gets the direct parent id for this node inside the board variant trees.
  *
- * Returns null when the node is a root ref, when it is not in this board tree, 
+ * Returns null when the node is a root ref, when it is not in this board tree,
  * or when it has no parent in that tree.
  *
  * @param board Board whose variants hold the tree.

@@ -8,7 +8,7 @@
  * current selection through this single attribute, so nodes, theme variants,
  * font families, and font-collection variants all use the exact same path.
  */
-import { getElementNodePath } from "@lib/workspace/selection-target"
+import { SELECTION_ROOT_ID_ATTR } from "@lib/workspace/selection-target"
 
 export const CANVAS_SELECTION_ID_ATTR = "data-canvas-selection-id"
 
@@ -43,9 +43,10 @@ export function getCanvasSelectionElements(selectionId: string): HTMLElement[] {
  * A child node id is shared both across variant columns and across sibling
  * copies inside one column, so it can appear on several canvas elements at
  * once. Selection carries the full ancestor node-id path of the copy the user
- * clicked or hovered, so the matching copy is the one whose own path is equal.
- * Without a path, or when no copy matches, the first element in document order
- * is used, which is the default variant column.
+ * clicked or hovered, so the matching copy is the one whose stamped
+ * `data-selection-root-id` is equal. Without a path, or when no copy matches,
+ * the first element in document order is used, which is the default variant
+ * column.
  */
 export function getScopedSelectionElement(
   selectionId: string,
@@ -55,7 +56,7 @@ export function getScopedSelectionElement(
   if (elements.length === 0) return null
   if (pathKey) {
     const scoped = elements.find(
-      (element) => getElementNodePath(element) === pathKey,
+      (element) => element.getAttribute(SELECTION_ROOT_ID_ATTR) === pathKey,
     )
     if (scoped) return scoped
   }

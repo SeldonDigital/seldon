@@ -1,11 +1,11 @@
+import type { ExtractPayload, Workspace } from "../../../../index"
 import { rules } from "../../../../rules/config/rules.config"
 import {
   nodeRetrievalService,
+  typeCheckingService,
   workspaceMutationService,
   workspacePropagationService,
-  typeCheckingService,
 } from "../../../services"
-import type { ExtractPayload, Workspace } from "../../../../index"
 
 /**
  * Applies a node label when rename rules allow, using configured propagation.

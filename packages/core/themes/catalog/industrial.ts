@@ -395,24 +395,88 @@ const theme: StockTheme = {
     },
   },
   fontWeight: {
-    thin: { type: TokenType.EXACT, name: "Thin", parameters: { unit: Unit.NUMBER, value: 100 } },
-    xlight: { type: TokenType.EXACT, name: "Extra light", parameters: { unit: Unit.NUMBER, value: 200 } },
-    light: { type: TokenType.EXACT, name: "Light", parameters: { unit: Unit.NUMBER, value: 300 } },
-    normal: { type: TokenType.EXACT, name: "Normal", parameters: { unit: Unit.NUMBER, value: 400 } },
-    medium: { type: TokenType.EXACT, name: "Medium", parameters: { unit: Unit.NUMBER, value: 500 } },
-    semibold: { type: TokenType.EXACT, name: "Semibold", parameters: { unit: Unit.NUMBER, value: 600 } },
-    bold: { type: TokenType.EXACT, name: "Bold", parameters: { unit: Unit.NUMBER, value: 700 } },
-    xbold: { type: TokenType.EXACT, name: "Extra bold", parameters: { unit: Unit.NUMBER, value: 800 } },
-    black: { type: TokenType.EXACT, name: "Black", parameters: { unit: Unit.NUMBER, value: 900 } },
+    thin: {
+      type: TokenType.EXACT,
+      name: "Thin",
+      parameters: { unit: Unit.NUMBER, value: 100 },
+    },
+    xlight: {
+      type: TokenType.EXACT,
+      name: "Extra light",
+      parameters: { unit: Unit.NUMBER, value: 200 },
+    },
+    light: {
+      type: TokenType.EXACT,
+      name: "Light",
+      parameters: { unit: Unit.NUMBER, value: 300 },
+    },
+    normal: {
+      type: TokenType.EXACT,
+      name: "Normal",
+      parameters: { unit: Unit.NUMBER, value: 400 },
+    },
+    medium: {
+      type: TokenType.EXACT,
+      name: "Medium",
+      parameters: { unit: Unit.NUMBER, value: 500 },
+    },
+    semibold: {
+      type: TokenType.EXACT,
+      name: "Semibold",
+      parameters: { unit: Unit.NUMBER, value: 600 },
+    },
+    bold: {
+      type: TokenType.EXACT,
+      name: "Bold",
+      parameters: { unit: Unit.NUMBER, value: 700 },
+    },
+    xbold: {
+      type: TokenType.EXACT,
+      name: "Extra bold",
+      parameters: { unit: Unit.NUMBER, value: 800 },
+    },
+    black: {
+      type: TokenType.EXACT,
+      name: "Black",
+      parameters: { unit: Unit.NUMBER, value: 900 },
+    },
   },
   lineHeight: {
-    none: { type: TokenType.EXACT, name: "None", parameters: { unit: Unit.NUMBER, value: 1.0 } },
-    solid: { type: TokenType.EXACT, name: "Solid", parameters: { unit: Unit.NUMBER, value: 1.15 } },
-    tight: { type: TokenType.EXACT, name: "Tight", parameters: { unit: Unit.NUMBER, value: 1.25 } },
-    compact: { type: TokenType.EXACT, name: "Compact", parameters: { unit: Unit.NUMBER, value: 1.33 } },
-    cozy: { type: TokenType.EXACT, name: "Cozy", parameters: { unit: Unit.NUMBER, value: 1.5 } },
-    comfortable: { type: TokenType.EXACT, name: "Comfortable", parameters: { unit: Unit.NUMBER, value: 2.0 } },
-    open: { type: TokenType.EXACT, name: "Open", parameters: { unit: Unit.NUMBER, value: 2.5 } },
+    none: {
+      type: TokenType.EXACT,
+      name: "None",
+      parameters: { unit: Unit.NUMBER, value: 1.0 },
+    },
+    solid: {
+      type: TokenType.EXACT,
+      name: "Solid",
+      parameters: { unit: Unit.NUMBER, value: 1.15 },
+    },
+    tight: {
+      type: TokenType.EXACT,
+      name: "Tight",
+      parameters: { unit: Unit.NUMBER, value: 1.25 },
+    },
+    compact: {
+      type: TokenType.EXACT,
+      name: "Compact",
+      parameters: { unit: Unit.NUMBER, value: 1.33 },
+    },
+    cozy: {
+      type: TokenType.EXACT,
+      name: "Cozy",
+      parameters: { unit: Unit.NUMBER, value: 1.5 },
+    },
+    comfortable: {
+      type: TokenType.EXACT,
+      name: "Comfortable",
+      parameters: { unit: Unit.NUMBER, value: 2.0 },
+    },
+    open: {
+      type: TokenType.EXACT,
+      name: "Open",
+      parameters: { unit: Unit.NUMBER, value: 2.5 },
+    },
   },
   iconSet: {
     intent: "General purpose icon set",
@@ -466,37 +530,55 @@ const theme: StockTheme = {
       intent:
         "The default color used to fill backgrounds, often white or black.",
       type: TokenType.SWATCH,
-      parameters: { colorspace: Colorspace.HSL, value: { hue: 210, saturation: 80, lightness: 20 } },
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 210, saturation: 80, lightness: 20 },
+      },
     },
     custom1: {
       name: "Red",
       intent: "Used mostly for error conditions",
       type: TokenType.SWATCH,
-      parameters: { colorspace: Colorspace.HSL, value: { hue: 0, saturation: 100, lightness: 65 } },
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 0, saturation: 100, lightness: 65 },
+      },
     },
     custom2: {
       name: "Green",
       intent: "Used mostly for positive conditions",
       type: TokenType.SWATCH,
-      parameters: { colorspace: Colorspace.HSL, value: { hue: 135, saturation: 76, lightness: 59 } },
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 135, saturation: 76, lightness: 59 },
+      },
     },
     custom3: {
       name: "Blue",
       intent: "A calming color for backgrounds",
       type: TokenType.SWATCH,
-      parameters: { colorspace: Colorspace.HSL, value: { hue: 203, saturation: 100, lightness: 62 } },
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 203, saturation: 100, lightness: 62 },
+      },
     },
     custom4: {
       name: "Yellow",
       intent: "A call to action color",
       type: TokenType.SWATCH,
-      parameters: { colorspace: Colorspace.HSL, value: { hue: 60, saturation: 100, lightness: 46 } },
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 60, saturation: 100, lightness: 46 },
+      },
     },
     custom5: {
       name: "Charcoal",
       intent: "Off black to temper the overall color of the palette.",
       type: TokenType.SWATCH,
-      parameters: { colorspace: Colorspace.HSL, value: { hue: 0, saturation: 0, lightness: 15 } },
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 0, saturation: 0, lightness: 15 },
+      },
     },
   },
   font: {
@@ -788,8 +870,7 @@ const theme: StockTheme = {
       parameters: {
         image: {
           type: ValueType.EXACT,
-          value:
-            "https://static.seldon.app/background-default-light.jpg",
+          value: "https://static.seldon.app/background-default-light.jpg",
         },
         repeat: { type: ValueType.OPTION, value: BackgroundRepeat.NO_REPEAT },
         size: { type: ValueType.OPTION, value: ImageFit.COVER },
@@ -801,8 +882,7 @@ const theme: StockTheme = {
       parameters: {
         image: {
           type: ValueType.EXACT,
-          value:
-            "https://static.seldon.app/background-default-light.jpg",
+          value: "https://static.seldon.app/background-default-light.jpg",
         },
         repeat: { type: ValueType.OPTION, value: BackgroundRepeat.REPEAT },
         size: { type: ValueType.OPTION, value: ImageFit.ORIGINAL },

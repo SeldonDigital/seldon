@@ -1,8 +1,8 @@
 import type { IconId } from "../../icon-sets"
 import {
+  type IconCategory,
   categorySubcategories,
   iconCategories,
-  type IconCategory,
 } from "../constants/categories"
 import type { ComputedIconSet } from "../types/icon-set"
 import { getIconCategoryFromId } from "./get-icon-category-from-id"
@@ -20,11 +20,18 @@ function getIconTopCategory(iconId: IconId): IconCategory {
   return getIconCategoryFromId(iconId).split("/")[0] as IconCategory
 }
 
-/** True when an icon belongs to a category that is enabled by default. */
+/**
+ * True when an icon is on by default. A set with `defaultEnabledIcons` defines
+ * the default inclusion per icon id. Other sets fall back to the default
+ * categories.
+ */
 export function isIconEnabledByDefault(
   set: ComputedIconSet,
   iconId: IconId,
 ): boolean {
+  if (set.defaultEnabledIcons) {
+    return set.defaultEnabledIcons.includes(iconId)
+  }
   return set.defaultEnabledCategories.includes(getIconTopCategory(iconId))
 }
 

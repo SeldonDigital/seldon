@@ -116,6 +116,21 @@ export function getOptionsPanelStyle(open: boolean): CSSProperties {
   }
 }
 
+export function getOptionsPanelPositionStyle(position: {
+  x: number
+  y: number
+  w: number
+  positionAbove?: boolean
+}): CSSProperties {
+  return {
+    ...getOptionsPanelStyle(true),
+    top: position.y,
+    left: position.x,
+    width: position.w,
+    ...(position.positionAbove ? { transform: "translateY(-100%)" } : {}),
+  }
+}
+
 export function getOptionGroupStyle(isLast: boolean): CSSProperties {
   return isLast ? {} : { borderBottom: `1px solid ${groupSeparatorColor}` }
 }

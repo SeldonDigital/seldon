@@ -1,11 +1,11 @@
 import { rules } from "../../../../rules/config/rules.config"
 import {
+  nodeOperationsService,
+  nodeRelationshipService,
   nodeRetrievalService,
   nodeTraversalService,
-  nodeRelationshipService,
-  nodeOperationsService,
-  workspacePropagationService,
   typeCheckingService,
+  workspacePropagationService,
 } from "../../../services"
 import { ExtractPayload, Workspace } from "../../../types"
 
@@ -28,8 +28,14 @@ export function moveInstance(
 
   if (!allowed) return workspace
 
-  const rootVariant = nodeRelationshipService.getRootVariant(instanceNode, workspace)
-  const instanceNodePath = nodeTraversalService.getNodePath(instanceNode, workspace)
+  const rootVariant = nodeRelationshipService.getRootVariant(
+    instanceNode,
+    workspace,
+  )
+  const instanceNodePath = nodeTraversalService.getNodePath(
+    instanceNode,
+    workspace,
+  )
   const targetNodePath = nodeTraversalService.getNodePath(targetNode, workspace)
 
   return workspacePropagationService.propagateNodeOperation<

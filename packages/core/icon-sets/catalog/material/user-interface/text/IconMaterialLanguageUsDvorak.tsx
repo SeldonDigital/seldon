@@ -1,0 +1,18 @@
+import { SVGAttributes } from "react"
+
+export function IconMaterialLanguageUsDvorak(
+  props: SVGAttributes<SVGSVGElement>,
+) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 -960 960 960"
+      fill="currentColor"
+      height="1em"
+      width="1em"
+      {...props}
+    >
+      <path d="M240-360h130v-240H240v240Zm-80 80v-400h210q33 0 56.5 23.5T450-600v240q0 33-23.5 56.5T370-280H160Zm465 0L490-680h80l95 278 95-278h80L705-280h-80Z" />
+    </svg>
+  )
+}

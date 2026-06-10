@@ -9,6 +9,7 @@
  */
 import { IconId } from "@seldon/core/icon-sets"
 import { HtmlElement, WrapperElement } from "@seldon/core/properties"
+
 import { NativeReactPrimitive } from "../types"
 import { ComponentId, isComponentId } from "../types/component-id"
 

@@ -1,28 +1,25 @@
 import { CSSProperties, memo, useCallback } from "react"
 import { Board as BoardType, Variant } from "@seldon/core"
-import {
-  isFontCollectionBoard,
-  isIconSetBoard,
-  isMediaBoard,
-  isThemeBoard,
-} from "@seldon/core/workspace/model/components"
+import { useRowHighlightStyle } from "@lib/workspace/hooks/use-object-hover"
 import { useSidebarCanvasTrackingBoard } from "../../tracking/hooks/use-sidebar-canvas-tracking"
 import { useSidebarRowStyling } from "../../tracking/hooks/use-sidebar-row-styling"
-import { useRowHighlightStyle } from "@lib/workspace/hooks/use-object-hover"
-import { getComponentKey } from "@lib/workspace/workspace-accessors"
-import { useRowBoard } from "./hooks/use-row-board"
-import { ListItemTreeNode as SeldonNode } from "../../seldon/elements/ListItemTreeNode"
-import { LabelProps } from "../../seldon/primitives/Label"
-import { relativeFullWidthStyle } from "../helpers/sidebar-styles"
 import { IndentationLevel } from "../hooks/use-indentation"
+import { useRowBoard } from "./hooks/use-row-board"
+import { getComponentKey } from "@lib/workspace/workspace-accessors"
+import { SidebarRow } from "@seldon/components/custom-components"
+import { ListItemTreeNode as SeldonNode } from "@seldon/components/elements/ListItemTreeNode"
+import { LabelProps } from "@seldon/components/primitives/Label"
+import { relativeFullWidthStyle } from "../helpers/sidebar-styles"
 import { FramerExpandable } from "../shared/FramerExpandable"
 import { RowNode } from "./RowNode"
-import { RESOURCE_ROW_CONFIG, RowResourceEntry } from "./RowResourceEntry"
+import { RowResourceEntry, getBoardResourceRowConfig } from "./RowResourceEntry"
 
 const rowWrapperStyle: CSSProperties = {
   width: "100%",
   minWidth: 0,
 }
+
+const BOARD_SELECTION_KIND = "board"
 
 interface RowBoardProps {
   board: BoardType
@@ -119,89 +116,60 @@ export const RowBoard = memo(function RowBoard({
   const dataTestId = "objects-sidebar-board"
   const dataComponentId = boardKey
 
+  const resourceRowConfig = getBoardResourceRowConfig(board)
+  const childRows = resourceRowConfig
+    ? variants.map((entryId) => (
+        <RowResourceEntry
+          key={entryId}
+          config={resourceRowConfig}
+          entryId={entryId}
+          show={show}
+          parentIsSelected={boardIsActive}
+        />
+      ))
+    : variants.map((variantId, index) => (
+        <RowNode
+          key={variantId}
+          nodeId={variantId}
+          rootId={variantId}
+          show={show}
+          parentIsSelected={boardIsActive}
+          disableReordering={index === 0}
+        />
+      ))
+
   if (!show) return null
 
   return (
     <>
-      <div
+      <SidebarRow
         ref={ref}
         style={rowWrapperStyle}
-        data-selection-id={boardKey}
-        data-selection-kind="board"
+        innerStyle={relativeFullWidthStyle}
+        selectionId={boardKey}
+        selectionKind={BOARD_SELECTION_KIND}
       >
-        <div style={relativeFullWidthStyle}>
-          <SeldonNode
-            buttonIconic={buttonIconic}
-            icon={coloredIcon}
-            buttonIconic2={buttonIconic2}
-            icon2={coloredIcon2}
-            label={label}
-            buttonIconic3={coloredButtonIconic3}
-            icon3={coloredIcon3}
-            onClick={onClick}
-            onMouseEnter={handleRowMouseEnter}
-            onMouseLeave={handleRowMouseLeave}
-            data-testid={dataTestId}
-            data-componentid={dataComponentId}
-            data-dragging={dragging}
-            data-active={boardIsActive}
-            style={combinedRowStyle}
-          />
-        </div>
-      </div>
+        <SeldonNode
+          buttonIconic={buttonIconic}
+          icon={coloredIcon}
+          buttonIconic2={buttonIconic2}
+          icon2={coloredIcon2}
+          label={label}
+          buttonIconic3={coloredButtonIconic3}
+          icon3={coloredIcon3}
+          onClick={onClick}
+          onMouseEnter={handleRowMouseEnter}
+          onMouseLeave={handleRowMouseLeave}
+          data-testid={dataTestId}
+          data-componentid={dataComponentId}
+          data-dragging={dragging}
+          data-active={boardIsActive}
+          style={combinedRowStyle}
+        />
+      </SidebarRow>
 
       <FramerExpandable isExpanded={isExpanded}>
-        <IndentationLevel>
-          {isThemeBoard(board)
-            ? variants.map((entryId) => (
-                <RowResourceEntry
-                  key={entryId}
-                  config={RESOURCE_ROW_CONFIG.theme}
-                  entryId={entryId}
-                  show={show}
-                  parentIsSelected={boardIsActive}
-                />
-              ))
-            : isFontCollectionBoard(board)
-              ? variants.map((entryId) => (
-                  <RowResourceEntry
-                    key={entryId}
-                    config={RESOURCE_ROW_CONFIG.fontCollection}
-                    entryId={entryId}
-                    show={show}
-                    parentIsSelected={boardIsActive}
-                  />
-                ))
-              : isIconSetBoard(board)
-                ? variants.map((entryId) => (
-                    <RowResourceEntry
-                      key={entryId}
-                      config={RESOURCE_ROW_CONFIG.iconSet}
-                      entryId={entryId}
-                      show={show}
-                      parentIsSelected={boardIsActive}
-                    />
-                  ))
-                : isMediaBoard(board)
-                  ? variants.map((entryId) => (
-                      <RowResourceEntry
-                        key={entryId}
-                        config={RESOURCE_ROW_CONFIG.media}
-                        entryId={entryId}
-                        show={show}
-                        parentIsSelected={boardIsActive}
-                      />
-                    ))
-                  : variants.map((variantId, index) => (
-                      <RowNode
-                        key={variantId}
-                        nodeId={variantId}
-                        show={show}
-                        parentIsSelected={boardIsActive}
-                        disableReordering={index === 0}
-                      />
-                    ))}
-        </IndentationLevel>
+        <IndentationLevel>{childRows}</IndentationLevel>
       </FramerExpandable>
     </>
   )

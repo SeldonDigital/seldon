@@ -5,22 +5,18 @@ import { isCompoundProperty } from "@seldon/core/helpers/type-guards/compound/is
 import { COMPOUND_FACET_DISPLAY_ORDER } from "@seldon/core/properties/constants"
 import { getPropertyCategory } from "@seldon/core/properties/schemas"
 import {
-  isLayeredPaintProperty,
   type PropertyKey as CorePropertyKey,
+  isLayeredPaintProperty,
 } from "@seldon/core/properties/types/property-keys"
 import {
-  getEffectiveNodeProperties,
   type WorkspacePropertySource,
+  getEffectiveNodeProperties,
 } from "@seldon/core/workspace/compute"
 import { getComponentPropertyDefaults } from "@seldon/core/workspace/helpers/components/get-component-property-defaults"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { getNodeById } from "@seldon/core/workspace/helpers/nodes/get-node-by-id"
 import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-catalog-id"
-import type {
-  Board,
-  EntryNode,
-  Workspace,
-} from "@seldon/core/workspace/types"
+import type { Board, EntryNode, Workspace } from "@seldon/core/workspace/types"
 
 type TypedPropertyValue = {
   type: unknown
@@ -40,7 +36,10 @@ function isTypedPropertyValue(value: unknown): value is TypedPropertyValue {
   )
 }
 
-function storedValueMatches(currentValue: unknown, expectedValue: unknown): boolean {
+function storedValueMatches(
+  currentValue: unknown,
+  expectedValue: unknown,
+): boolean {
   if (isTypedPropertyValue(expectedValue)) {
     return storedValueMatches(currentValue, expectedValue.value)
   }
@@ -177,7 +176,10 @@ export function getEffectiveProperties(
   nodeId: string,
   workspace: Workspace,
 ): Properties {
-  return getEffectiveNodeProperties(nodeId, workspace as WorkspacePropertySource)
+  return getEffectiveNodeProperties(
+    nodeId,
+    workspace as WorkspacePropertySource,
+  )
 }
 
 export function getSchemaProperties(
@@ -213,7 +215,9 @@ export function getSubPropertyKeysFromSchema(
   workspace: Workspace,
 ): string[] {
   const schemaProps = getSchemaProperties(node, workspace)
-  const schemaProp = (schemaProps as Record<string, unknown> | null)?.[propertyKey]
+  const schemaProp = (schemaProps as Record<string, unknown> | null)?.[
+    propertyKey
+  ]
   const layer = getCompoundLayerValue(schemaProp)
   return layer ? Object.keys(layer) : []
 }
@@ -223,10 +227,7 @@ export function getSubPropertyKeysFromSchema(
  * Listed facets come first in their declared order. Facets without an entry keep
  * their incoming relative order after the listed ones.
  */
-function orderCompoundFacetKeys(
-  propertyKey: string,
-  keys: string[],
-): string[] {
+function orderCompoundFacetKeys(propertyKey: string, keys: string[]): string[] {
   const order = COMPOUND_FACET_DISPLAY_ORDER[propertyKey]
   if (!order) return keys
   const rank = new Map(order.map((facet, index) => [facet, index]))

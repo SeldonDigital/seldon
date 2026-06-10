@@ -1,7 +1,7 @@
 import { ValueType } from "../../constants"
 import { PropertySchema } from "../../types/schema"
-import { StringValue } from "../shared/exact/string"
 import { EmptyValue } from "../shared/empty/empty"
+import { StringValue } from "../shared/exact/string"
 import { InheritValue } from "../shared/inherit/inherit"
 
 /** HTML tag names the catalog exposes as fixed choices. */
@@ -57,8 +57,7 @@ export const htmlElementSchema: PropertySchema = {
   validation: {
     empty: () => true,
     inherit: () => true,
-    exact: (value: unknown) =>
-      typeof value === "string" && value.length > 0,
+    exact: (value: unknown) => typeof value === "string" && value.length > 0,
     option: (value: unknown) =>
       typeof value === "string" &&
       (Object.values(HtmlElement) as string[]).includes(value),

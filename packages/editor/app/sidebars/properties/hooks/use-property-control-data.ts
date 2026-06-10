@@ -24,7 +24,7 @@ function getUnitFromExactValue(value: unknown): string | undefined {
     (value as { value: unknown }).value !== null &&
     "unit" in (value as { value: object }).value
   ) {
-    return String(((value as { value: { unit: string } }).value).unit)
+    return String((value as { value: { unit: string } }).value.unit)
   }
   return undefined
 }
@@ -81,7 +81,7 @@ export function resolveUnitFromValue(value: unknown): string | undefined {
 
 /**
  * Hook that provides data and helper functions for property controls.
- * Used by both EditableProperty (for rendering) and RowProperty (for inactive state).
+ * Used by the property-row ViewModel to derive display values and unit labels.
  */
 export function usePropertyControlData({
   property,
@@ -137,10 +137,7 @@ export function usePropertyControlData({
       }
     }
 
-    if (
-      property.actualValue &&
-      (property.key === "theme")
-    ) {
+    if (property.actualValue && property.key === "theme") {
       return { type: ValueType.EXACT, value: property.actualValue }
     }
 
@@ -246,10 +243,6 @@ export function usePropertyControlData({
   const shouldShowMenuIcon = (): boolean => {
     // Don't show chevron for properties with options (menu/combo)
     if (property.controlType === "menu" || property.controlType === "combo") {
-      return false
-    }
-    // Don't show chevron for color controls (they have their own color picker)
-    if (property.controlType === "color") {
       return false
     }
     if (property.isCompound && !property.controlType) {

@@ -1,12 +1,12 @@
 import { ValueType } from "../constants"
 import type { Properties } from "../types/properties"
-import { mergeTaggedValues } from "./merge-tagged-value"
 import {
   LAYERED_PAINT_KEYS,
-  OBJECT_FACET_PROPERTY_KEYS,
   type LayeredPaintKey,
+  OBJECT_FACET_PROPERTY_KEYS,
   type ObjectFacetPropertyKey,
 } from "../types/property-keys"
+import { mergeTaggedValues } from "./merge-tagged-value"
 
 /** Aligns two paint stacks by index and merges plain layer objects when asked. */
 function mergeLayerArrays<T extends Record<string, unknown>>(

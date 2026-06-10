@@ -1,0 +1,16 @@
+import { SVGAttributes } from "react"
+
+export function IconMaterialSpeed_4(props: SVGAttributes<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 -960 960 960"
+      fill="currentColor"
+      height="1em"
+      width="1em"
+      {...props}
+    >
+      <path d="M204-160q-22 0-40.5-9.5T134-198q-26-47-40-97.5T80-400q0-83 31.5-156T197-683q54-54 127-85.5T480-800q23 0 46 3t46 8l-53 72q-10-2-19.5-2.5T480-720q-134 0-227 93t-93 227q0 42 11.5 82.5T204-240h551q22-36 33-77t11-83q0-66-25.5-126T700-631l21-87q75 57 116.5 140.5T879-400q1 54-13 105t-41 97q-11 19-29.5 28.5T755-160H204Zm243-168q32 14 64.5 1.5T554-372q29-97 52.5-194T649-762q-63 79-122.5 159T409-440q-20 29-8 63t46 49Zm32-73Z" />
+    </svg>
+  )
+}

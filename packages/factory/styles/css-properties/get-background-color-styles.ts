@@ -1,5 +1,6 @@
 import { resolveValue } from "@seldon/core/helpers/resolution/resolve-value"
 import { getThemeOption } from "@seldon/core/helpers/theme/get-theme-option"
+
 import { StyleGenerationContext } from "../types"
 import { getLayeredPaintColor } from "./get-layered-paint-color"
 import { getLayeredPaintLayers } from "./get-layered-paint-layer"
@@ -32,7 +33,8 @@ export function getBackgroundColorStyles({
     resolveValue(themeBackground?.parameters?.brightness)
 
   const color =
-    resolveValue(layer.color) ?? resolveValue(themeBackground?.parameters?.color)
+    resolveValue(layer.color) ??
+    resolveValue(themeBackground?.parameters?.color)
 
   if (color && layer.color) {
     styles.backgroundColor = getLayeredPaintColor({

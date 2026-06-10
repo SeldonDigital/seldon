@@ -1,12 +1,12 @@
 import React, { CSSProperties, useState } from "react"
-import { Grid } from "../../seldon/chrome/custom/Grid"
-import { AvatarIcon } from "../../seldon/chrome/elements/AvatarIcon"
-import { ButtonBarPrimary } from "../../seldon/chrome/elements/ButtonBarPrimary"
-import { TextEditSearch } from "../../seldon/chrome/elements/TextEditSearch"
-import { FrameScroller } from "../../seldon/chrome/frames/FrameScroller"
-import { IconProps } from "../../seldon/chrome/primitives/Icon"
-import { Label } from "../../seldon/chrome/primitives/Label"
-import { FloatingPanel } from "@components/panels/FloatingPanel"
+import { Grid } from "@seldon/components/chrome/custom/Grid"
+import { AvatarIcon } from "@seldon/components/chrome/elements/AvatarIcon"
+import { ButtonBarPrimary } from "@seldon/components/chrome/elements/ButtonBarPrimary"
+import { TextEditSearch } from "@seldon/components/chrome/elements/TextEditSearch"
+import { FrameScroller } from "@seldon/components/chrome/frames/FrameScroller"
+import { IconProps } from "@seldon/components/chrome/primitives/Icon"
+import { Label } from "@seldon/components/chrome/primitives/Label"
+import { FloatingPanel } from "@app/panels/FloatingPanel"
 
 export type CatalogPanelItem = {
   id: string
@@ -22,7 +22,7 @@ export type CatalogPanelCategory<T extends CatalogPanelItem> = {
 
 /**
  * Presentational picker panel. Parents own the data: they pass already-filtered
- * categories, the search query state, and an optional AI search trigger.
+ * categories and the search query state.
  */
 export function CatalogPanel<T extends CatalogPanelItem>({
   title,
@@ -32,8 +32,6 @@ export function CatalogPanel<T extends CatalogPanelItem>({
   categories,
   query,
   onQueryChange,
-  onSubmitSearch,
-  isSearching = false,
 }: {
   title?: string
   confirmButtonText: string
@@ -42,12 +40,11 @@ export function CatalogPanel<T extends CatalogPanelItem>({
   categories: CatalogPanelCategory<T>[]
   query: string
   onQueryChange: (query: string) => void
-  onSubmitSearch?: () => void
-  isSearching?: boolean
 }) {
   const [selectedItem, setSelectedItem] = useState<T | null>(null)
 
   const hasResults = categories.some(({ items }) => items.length > 0)
+  const visibleCategories = categories.filter(({ items }) => items.length > 0)
 
   function pickItem(item: T) {
     onPick(item)
@@ -55,6 +52,18 @@ export function CatalogPanel<T extends CatalogPanelItem>({
     // We need to requestAnimationFrame because onPick needs to trigger useEffects before closing the panel
     requestAnimationFrame(onClose)
   }
+
+  const handleConfirm = () => {
+    if (selectedItem) {
+      pickItem(selectedItem)
+    }
+  }
+
+  const noResultsLabel = hasResults ? null : (
+    <Label className="seldon-instance child-label-9J3xaw">
+      No results found
+    </Label>
+  )
 
   return (
     <FloatingPanel
@@ -73,7 +82,6 @@ export function CatalogPanel<T extends CatalogPanelItem>({
           value: query,
           onChange: (e) => onQueryChange(e.target.value),
           placeholder: "Search...",
-          disabled: isSearching,
           autoFocus: true,
           className: "child-input-E4MGjq",
           style: styles.input,
@@ -84,10 +92,8 @@ export function CatalogPanel<T extends CatalogPanelItem>({
           className: "seldon-instance child-icon-GEGhH3",
         }}
         frameButtonIconicProps={{
-          disabled: isSearching || !onSubmitSearch,
-          onClick: onSubmitSearch,
           className: "seldon-instance child-button-lE4yjU",
-          style: onSubmitSearch ? undefined : { display: "none" },
+          style: { display: "none" },
         }}
       />
 
@@ -95,66 +101,23 @@ export function CatalogPanel<T extends CatalogPanelItem>({
         className="child-frameScroller-45OuwL"
         style={styles.scroller}
       >
-        {!hasResults && (
-          <Label className="seldon-instance child-label-9J3xaw">
-            No results found
-          </Label>
-        )}
-        {categories
-          .filter(({ items }) => items.length > 0)
-          .map(({ category, items }) => (
-            <React.Fragment key={category}>
-              <Label
-                key={category}
-                className="seldon-instance child-label-9J3xaw"
-              >
-                {category}
-              </Label>
-              <Grid columns={3} gap={8}>
-                {items.map((item) => {
-                  const isSelected = selectedItem === item
-                  return (
-                    <AvatarIcon
-                      key={item.id}
-                      onDoubleClick={() => pickItem(item)}
-                      onClick={() => setSelectedItem(item)}
-                      style={styles.listItem}
-                      className={
-                        isSelected
-                          ? "variant-avatarIcon-RAKw9p"
-                          : "variant-avatarIcon-default"
-                      }
-                      iconProps={{
-                        className: isSelected
-                          ? "child-icon-RCda9T"
-                          : "child-icon-2cx8P5",
-                        icon: item.icon as IconProps["icon"],
-                      }}
-                      textblockTitleTitleProps={{
-                        children: item.name,
-                        className: isSelected
-                          ? "child-title-Z0nv06"
-                          : "child-title-uS4kXt",
-                      }}
-                      textblockTitleSubtitleProps={{
-                        children: item.description,
-                        className: isSelected
-                          ? "child-subtitle-2eTIiz"
-                          : "child-subtitle--5JG0D",
-                      }}
-                      data-testid={`catalog-item-${item.id}`}
-                    />
-                  )
-                })}
-              </Grid>
-            </React.Fragment>
-          ))}
+        {noResultsLabel}
+        {visibleCategories.map(({ category, items }) => (
+          <CatalogCategorySection
+            key={category}
+            category={category}
+            items={items}
+            selectedItem={selectedItem}
+            onSelect={setSelectedItem}
+            onPick={pickItem}
+          />
+        ))}
       </FrameScroller>
       {/* Footer with Add to Canvas button */}
       <ButtonBarPrimary
         buttonProps={{ style: { display: "none" } }}
         buttonPrimary1Props={{
-          onClick: () => pickItem(selectedItem!),
+          onClick: handleConfirm,
           type: "button",
           disabled: !selectedItem,
           // @ts-expect-error - data-testid is not a valid prop for ButtonProps
@@ -165,6 +128,82 @@ export function CatalogPanel<T extends CatalogPanelItem>({
         }}
       />
     </FloatingPanel>
+  )
+}
+
+interface CatalogCategorySectionProps<T extends CatalogPanelItem> {
+  category: string
+  items: T[]
+  selectedItem: T | null
+  onSelect: (item: T) => void
+  onPick: (item: T) => void
+}
+
+function CatalogCategorySection<T extends CatalogPanelItem>({
+  category,
+  items,
+  selectedItem,
+  onSelect,
+  onPick,
+}: CatalogCategorySectionProps<T>) {
+  return (
+    <React.Fragment>
+      <Label className="seldon-instance child-label-9J3xaw">{category}</Label>
+      <Grid columns={3} gap={8}>
+        {items.map((item) => (
+          <CatalogItemTile
+            key={item.id}
+            item={item}
+            isSelected={selectedItem === item}
+            onSelect={onSelect}
+            onPick={onPick}
+          />
+        ))}
+      </Grid>
+    </React.Fragment>
+  )
+}
+
+interface CatalogItemTileProps<T extends CatalogPanelItem> {
+  item: T
+  isSelected: boolean
+  onSelect: (item: T) => void
+  onPick: (item: T) => void
+}
+
+function CatalogItemTile<T extends CatalogPanelItem>({
+  item,
+  isSelected,
+  onSelect,
+  onPick,
+}: CatalogItemTileProps<T>) {
+  const handleClick = () => onSelect(item)
+  const handleDoubleClick = () => onPick(item)
+
+  return (
+    <AvatarIcon
+      onDoubleClick={handleDoubleClick}
+      onClick={handleClick}
+      style={styles.listItem}
+      className={
+        isSelected ? "variant-avatarIcon-RAKw9p" : "variant-avatarIcon-default"
+      }
+      iconProps={{
+        className: isSelected ? "child-icon-RCda9T" : "child-icon-2cx8P5",
+        icon: item.icon as IconProps["icon"],
+      }}
+      textblockTitleTitleProps={{
+        children: item.name,
+        className: isSelected ? "child-title-Z0nv06" : "child-title-uS4kXt",
+      }}
+      textblockTitleSubtitleProps={{
+        children: item.description,
+        className: isSelected
+          ? "child-subtitle-2eTIiz"
+          : "child-subtitle--5JG0D",
+      }}
+      data-testid={`catalog-item-${item.id}`}
+    />
   )
 }
 

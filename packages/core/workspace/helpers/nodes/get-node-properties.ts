@@ -4,8 +4,8 @@ import { Properties } from "../../../properties"
 import { mergeProperties } from "../../../properties/helpers/merge-properties"
 import { Board, EntryNode, Workspace, parseNodeTemplate } from "../../types"
 import { getComponentPropertyDefaults } from "../components/get-component-property-defaults"
-import { getNodeCatalogId } from "./get-node-catalog-id"
 import { isBoard } from "../components/is-board"
+import { getNodeCatalogId } from "./get-node-catalog-id"
 
 /**
  * Gets the properties for a node by merging schema properties with instance inheritance chain.

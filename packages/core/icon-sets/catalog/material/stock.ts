@@ -1,15 +1,7 @@
-import { computeIconSet } from "../../helpers/compute-icon-set"
-import type { IconCategory } from "../../constants/categories"
 import { materialIconIds } from "."
+import { computeIconSet } from "../../helpers/compute-icon-set"
 import type { StockIconSet } from "../../types/icon-set"
-
-/**
- * Categories enabled when the Material icon set is added to a workspace. Icons
- * in every other category start off until the user turns them on.
- */
-export const MATERIAL_DEFAULT_ENABLED_CATEGORIES: IconCategory[] = [
-  "user-interface",
-]
+import { materialAllIconIds } from "./index-all"
 
 const iconSet: StockIconSet = {
   metadata: {
@@ -19,8 +11,11 @@ const iconSet: StockIconSet = {
     intent: "Provides Google Material Symbols for interface and content icons.",
   },
   source: "google-material",
-  icons: [...materialIconIds],
-  defaultEnabledCategories: MATERIAL_DEFAULT_ENABLED_CATEGORIES,
+  icons: [...materialAllIconIds],
+  // The curated subset starts on. Every other shipped icon starts off until
+  // the user turns it on, so default workspaces are not overloaded.
+  defaultEnabledCategories: [],
+  defaultEnabledIcons: [...materialIconIds],
 }
 
 export const defaultIconSet = computeIconSet(iconSet)

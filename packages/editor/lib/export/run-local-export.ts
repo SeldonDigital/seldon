@@ -1,5 +1,5 @@
-import type { Workspace } from "@seldon/core/workspace/types"
 import type { FileToExport } from "@seldon/factory/export/types"
+import type { Workspace } from "@seldon/core/workspace/types"
 
 type WireFile = {
   path: string

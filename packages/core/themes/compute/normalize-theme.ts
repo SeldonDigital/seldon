@@ -1,10 +1,10 @@
+import { Unit } from "../../properties/constants/shared/units"
+import { TokenType } from "../constants"
 import type {
   StockTheme,
   ThemeMetadata,
   ThemePipelineInput,
 } from "../types/theme"
-import { Unit } from "../../properties/constants/shared/units"
-import { TokenType } from "../constants"
 import {
   BORDER_WIDTH_OPTIONS,
   type BorderWidthOption,
@@ -311,9 +311,7 @@ function normalizeLookRecord<T extends Record<string, unknown>>(record: T): T {
   return normalized
 }
 
-function normalizeScaleRecord<T extends Record<string, unknown>>(
-  record: T,
-): T {
+function normalizeScaleRecord<T extends Record<string, unknown>>(record: T): T {
   const normalized = {} as T
   for (const key in record) {
     const item = record[key] as
@@ -404,4 +402,3 @@ function normalizeNumberRecord<T extends Record<string, unknown>>(
   }
   return normalized
 }
-
