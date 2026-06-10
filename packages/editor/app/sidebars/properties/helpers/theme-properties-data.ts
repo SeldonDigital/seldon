@@ -7,6 +7,11 @@ import type { Value } from "@seldon/core/properties/types/value"
 import { getAllThemeTokenSchemas } from "@seldon/core/themes/schemas"
 import type { ThemeTokenSchema } from "@seldon/core/themes/schemas"
 import { Theme } from "@seldon/core/themes/types"
+import {
+  getOverrideAtPath,
+  getThemeOverridePath,
+} from "@seldon/core/workspace/helpers/themes/theme-override-paths"
+import type { EntryThemeOverrides } from "@seldon/core/workspace/types"
 import { FlatProperty } from "./properties-data"
 import type { ControlType } from "./properties-registry"
 
@@ -218,12 +223,34 @@ function getThemeValueByKey(theme: Theme, key: string): unknown {
 }
 
 /**
+ * Tells whether the theme entry's own overrides contain a value for this row.
+ * A swatch row only counts as overridden when its template theme also has the
+ * swatch: a swatch added on the entry itself is that entry's base definition,
+ * not an override, and resetting it would delete the swatch.
+ */
+function isThemeKeyOverridden(
+  key: string,
+  overrides: EntryThemeOverrides,
+  baseSwatchIds: ReadonlySet<string> | undefined,
+): boolean {
+  const path = getThemeOverridePath(key)
+  if (!path) return false
+  if (getOverrideAtPath(overrides, path) === undefined) return false
+  if (key.startsWith("swatch.")) {
+    const swatchId = key.split(".")[1]
+    return baseSwatchIds?.has(swatchId) ?? false
+  }
+  return true
+}
+
+/**
  * Creates a FlatProperty from a schema and theme value.
  */
 function createFlatPropertyFromSchema(
   schema: ThemeTokenSchema,
   value: unknown,
   theme: Theme,
+  isOverridden: boolean,
 ): FlatProperty {
   // Look parent rows only group their facets under a disclosure arrow. They have
   // no editable value and no control, so the value cell renders blank and no menu
@@ -340,7 +367,7 @@ function createFlatPropertyFromSchema(
     isCompound: false,
     isShorthand: false,
     isSubProperty: schema.isSubProperty ?? false,
-    status: "set",
+    status: isOverridden ? "override" : "set",
     isDimmed: isCalculatedSwatch,
   }
 
@@ -387,9 +414,15 @@ function updateSchemaLabelsWithThemeNames(
  * Uses schema system to determine labels, control types, and ordering.
  *
  * @param theme - The theme to transform
+ * @param overrides - The theme entry's own overrides, used to mark rows as overridden
+ * @param baseSwatchIds - Swatch ids defined by the entry's template theme
  * @returns Array of FlatProperty objects representing theme values
  */
-export function flattenThemeProperties(theme: Theme): FlatProperty[] {
+export function flattenThemeProperties(
+  theme: Theme,
+  overrides?: EntryThemeOverrides,
+  baseSwatchIds?: ReadonlySet<string>,
+): FlatProperty[] {
   const properties: FlatProperty[] = []
 
   const schemasWithLabels = updateSchemaLabelsWithThemeNames(
@@ -404,7 +437,12 @@ export function flattenThemeProperties(theme: Theme): FlatProperty[] {
     if (value === undefined && !schema.isLookParent) {
       continue
     }
-    properties.push(createFlatPropertyFromSchema(schema, value, theme))
+    const isOverridden = overrides
+      ? isThemeKeyOverridden(schema.key, overrides, baseSwatchIds)
+      : false
+    properties.push(
+      createFlatPropertyFromSchema(schema, value, theme, isOverridden),
+    )
   }
 
   return properties

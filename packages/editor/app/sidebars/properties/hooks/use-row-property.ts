@@ -199,6 +199,11 @@ export function useRowProperty({
   }
 
   const handleReset = () => {
+    // Theme rows reset their entry override; node dispatches do not apply.
+    if (themeEditingContext?.isThemeEditing) {
+      themeEditingContext.resetThemeProperty(property)
+      return
+    }
     if (property.isSubProperty) {
       const parsed = parsePropertyPath(property.key)
       if (parsed.kind === "layered-facet") {

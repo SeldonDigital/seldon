@@ -1,5 +1,6 @@
 "use client"
 
+import { MenuEntry } from "@lib/menus"
 import { CSSProperties, useCallback } from "react"
 import { Board as BoardType, Variant } from "@seldon/core"
 import { Action } from "@seldon/core/index"
@@ -22,6 +23,7 @@ import {
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useTool } from "@lib/hooks/use-tool"
 import { useSidebarRowStyling } from "../../tracking/hooks/use-sidebar-row-styling"
+import { RowActionsMenu } from "../shared/RowActionsMenu"
 import { useResourceEntryRow } from "./hooks/use-resource-entry-row"
 import { useRowClick } from "./hooks/use-row-click"
 import { SelectionKind } from "@lib/workspace/selection-target"
@@ -50,6 +52,11 @@ export interface ResourceRowConfig {
   testId: string
   getEntry: (workspace: Workspace, entryId: string) => ResolvedEntry | undefined
   buildLabelAction?: (entryId: string, label: string) => Action
+  /**
+   * Gives the default entry a "Reset to Catalog" row action when selected,
+   * mirroring catalog-backed default variant nodes. Omitting it disables reset.
+   */
+  buildResetToCatalogAction?: (entryId: string) => Action
 }
 
 type RowResourceEntryProps = {
@@ -70,7 +77,7 @@ export function RowResourceEntry({
   show = true,
   parentIsSelected = false,
 }: RowResourceEntryProps) {
-  const { workspace } = useWorkspace({ usePreview: false })
+  const { workspace, dispatch } = useWorkspace({ usePreview: false })
   const { activeTool } = useTool()
   const { selectResourceEntry } = useSelection()
   const { isEditingName, setEditingName, submitLabel } = useResourceEntryRow(
@@ -103,6 +110,26 @@ export function RowResourceEntry({
   const combinedRowStyle = { ...hoverStyle, ...rowStyle }
 
   if (!show || !entry) return null
+
+  // Like default variant nodes, a selected default entry offers "Reset to
+  // Catalog". The action is idempotent when there are no overrides.
+  const buildResetAction = config.buildResetToCatalogAction
+  const resetActions: MenuEntry[] =
+    buildResetAction && entry.isDefault && isSelected
+      ? [
+          {
+            id: "reset",
+            label: "Reset to Catalog",
+            onSelect: () => dispatch(buildResetAction(entryId)),
+            testId: `${config.testId}-${entryId}-reset`,
+          },
+        ]
+      : []
+
+  const actionsSlot =
+    resetActions.length > 0 ? (
+      <RowActionsMenu items={resetActions} color={iconColor} />
+    ) : undefined
 
   const icon2: IconProps = {
     icon: config.icon,
@@ -137,6 +164,7 @@ export function RowResourceEntry({
         buttonIconic2={{}}
         icon2={icon2}
         label={label}
+        actionsSlot={actionsSlot}
         onClick={onClick}
         onDoubleClick={onDoubleClick}
         data-testid={config.testId}
@@ -165,6 +193,10 @@ export const RESOURCE_ROW_CONFIG: Record<ResourceEntryKind, ResourceRowConfig> =
       buildLabelAction: (entryId, label) => ({
         type: "set_theme_label",
         payload: { themeId: entryId, label },
+      }),
+      buildResetToCatalogAction: (entryId) => ({
+        type: "reset_theme_tokens",
+        payload: { themeId: entryId },
       }),
     },
     fontCollection: {

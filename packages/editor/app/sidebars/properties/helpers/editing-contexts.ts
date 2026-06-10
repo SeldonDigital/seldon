@@ -7,6 +7,7 @@ import { FlatProperty } from "./properties-data"
 export interface ThemeEditingContext {
   isThemeEditing: true
   updateThemeProperty: (property: FlatProperty, newValue: string) => void
+  resetThemeProperty: (property: FlatProperty) => void
   themeProperties: FlatProperty[]
 }
 

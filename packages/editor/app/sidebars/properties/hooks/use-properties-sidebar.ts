@@ -121,7 +121,8 @@ export function usePropertiesSidebar(): PropertiesSidebarViewModel {
     return workspaceIconSetService.getInclusion(activeIconSetEntryId, workspace)
   }, [isIconSetEditingMode, activeIconSetEntryId, workspace])
 
-  const { updateThemeProperty } = useThemeProperties(activeThemeEntryId)
+  const { updateThemeProperty, resetThemeProperty } =
+    useThemeProperties(activeThemeEntryId)
 
   const editedTheme = useMemo(() => {
     if (!isThemeEditingMode || !activeThemeEntryId) return null
@@ -130,12 +131,26 @@ export function usePropertiesSidebar(): PropertiesSidebarViewModel {
 
   const themeProperties = useMemo(() => {
     if (!isThemeEditingMode || !editedTheme) return []
-    const flatProps = flattenThemeProperties(editedTheme)
+    const entry = activeThemeEntryId
+      ? workspace.themes[activeThemeEntryId]
+      : undefined
+    // Swatches the template theme defines. A swatch missing here was added on
+    // the entry itself, so its row is base state rather than an override.
+    const baseSwatchIds = entry
+      ? new Set(
+          Object.keys(getComputedTheme(entry.template, workspace).swatch),
+        )
+      : undefined
+    const flatProps = flattenThemeProperties(
+      editedTheme,
+      entry?.overrides,
+      baseSwatchIds,
+    )
     return flatProps.map((prop) => ({
       ...prop,
       controlType: prop.controlType || getThemePropertyControlType(prop),
     }))
-  }, [isThemeEditingMode, editedTheme])
+  }, [isThemeEditingMode, editedTheme, activeThemeEntryId, workspace])
 
   const flatProperties = useMemo(() => {
     if (!selection && !isThemeEditingMode) return []
@@ -170,15 +185,22 @@ export function usePropertiesSidebar(): PropertiesSidebarViewModel {
   const themeEditingContext = useMemo((): {
     isThemeEditing: true
     updateThemeProperty: (property: FlatProperty, newValue: string) => void
+    resetThemeProperty: (property: FlatProperty) => void
     themeProperties: FlatProperty[]
   } | null => {
     if (!isThemeEditingMode) return null
     return {
       isThemeEditing: true,
       updateThemeProperty,
+      resetThemeProperty,
       themeProperties,
     }
-  }, [isThemeEditingMode, updateThemeProperty, themeProperties])
+  }, [
+    isThemeEditingMode,
+    updateThemeProperty,
+    resetThemeProperty,
+    themeProperties,
+  ])
 
   const metadataProperties = useMemo<FlatProperty[] | undefined>(() => {
     if (isThemeEditingMode && editedTheme && activeThemeEntryId) {

@@ -17,23 +17,9 @@ import {
 } from "@seldon/core"
 import { getComputedTheme } from "@seldon/core/workspace/compute"
 import { getThemeOverrides } from "@seldon/core/workspace/helpers/themes/get-theme-overrides"
+import { getOverrideAtPath } from "@seldon/core/workspace/helpers/themes/theme-override-paths"
 import type { EntryThemeId } from "@seldon/core/workspace/types"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
-
-function getOverrideAtPath(
-  overrides: Record<string, unknown>,
-  path: string,
-): unknown {
-  const keys = path.split(".").filter(Boolean)
-  let cur: unknown = overrides
-  for (const key of keys) {
-    if (cur == null || typeof cur !== "object" || Array.isArray(cur)) {
-      return undefined
-    }
-    cur = (cur as Record<string, unknown>)[key]
-  }
-  return cur
-}
 
 function mergeRecord(
   base: Record<string, unknown>,
@@ -308,7 +294,11 @@ export function useThemeEntryEditor(themeEntryId: EntryThemeId | null) {
 
   const setSwatchValue = useCallback(
     (key: ThemeCustomSwatchId, value: HSL) => {
-      mergeOverride("swatch", { [key]: { value } })
+      // Swatch cells keep their color at `parameters.value`; `normalizeSwatches`
+      // drops any other keys when the theme is computed.
+      mergeOverride("swatch", {
+        [key]: { parameters: { colorspace: Colorspace.HSL, value } },
+      })
     },
     [mergeOverride],
   )
