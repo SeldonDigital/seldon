@@ -507,6 +507,7 @@ export const schema = {
         },
         {
           component: Seldon.ComponentId.BUTTON,
+          variant: "iconic",
           overrides: {
             buttonSize: {
               type: Sdn.ValueType.THEME_ORDINAL,
@@ -578,16 +579,6 @@ export const schema = {
                 symbol: {
                   type: Sdn.ValueType.OPTION,
                   value: "material-chevronDown",
-                },
-              },
-            },
-            {
-              component: Seldon.ComponentId.TEXT,
-              variant: "label",
-              overrides: {
-                display: {
-                  type: Sdn.ValueType.OPTION,
-                  value: Sdn.Display.EXCLUDE,
                 },
               },
             },

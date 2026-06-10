@@ -293,108 +293,13 @@ export const schema = {
         },
         {
           component: Seldon.ComponentId.AVATAR,
+          variant: "product",
           overrides: {
             width: {
               type: Sdn.ValueType.OPTION,
               value: Sdn.Resize.FILL,
             },
           },
-          children: [
-            {
-              component: Seldon.ComponentId.IMAGE,
-              overrides: {
-                width: {
-                  type: Sdn.ValueType.THEME_ORDINAL,
-                  value: "@dimension.large",
-                },
-                height: {
-                  type: Sdn.ValueType.THEME_ORDINAL,
-                  value: "@dimension.large",
-                },
-                corners: {
-                  topLeft: {
-                    type: Sdn.ValueType.THEME_ORDINAL,
-                    value: "@corners.tight",
-                  },
-                  topRight: {
-                    type: Sdn.ValueType.THEME_ORDINAL,
-                    value: "@corners.tight",
-                  },
-                  bottomLeft: {
-                    type: Sdn.ValueType.THEME_ORDINAL,
-                    value: "@corners.tight",
-                  },
-                  bottomRight: {
-                    type: Sdn.ValueType.THEME_ORDINAL,
-                    value: "@corners.tight",
-                  },
-                },
-              },
-            },
-            {
-              component: Seldon.ComponentId.FRAME,
-              overrides: {
-                height: {
-                  type: Sdn.ValueType.OPTION,
-                  value: Sdn.Resize.FIT,
-                },
-                gap: {
-                  type: Sdn.ValueType.THEME_ORDINAL,
-                  value: "@gap.tight",
-                },
-              },
-              children: [
-                {
-                  component: Seldon.ComponentId.TEXT,
-                  variant: "title",
-                  overrides: {
-                    content: {
-                      type: Sdn.ValueType.EXACT,
-                      value: "Default Title",
-                    },
-                    color: {
-                      type: Sdn.ValueType.THEME_CATEGORICAL,
-                      value: "@swatch.black",
-                    },
-                    font: {
-                      preset: {
-                        type: Sdn.ValueType.THEME_CATEGORICAL,
-                        value: "@font.normal",
-                      },
-                      size: {
-                        type: Sdn.ValueType.THEME_ORDINAL,
-                        value: "@fontSize.medium",
-                      },
-                    },
-                  },
-                },
-                {
-                  component: Seldon.ComponentId.TEXT,
-                  variant: "subtitle",
-                  overrides: {
-                    content: {
-                      type: Sdn.ValueType.EXACT,
-                      value: "Details",
-                    },
-                    color: {
-                      type: Sdn.ValueType.THEME_CATEGORICAL,
-                      value: "@swatch.black",
-                    },
-                    font: {
-                      preset: {
-                        type: Sdn.ValueType.THEME_CATEGORICAL,
-                        value: "@font.normal",
-                      },
-                      size: {
-                        type: Sdn.ValueType.THEME_ORDINAL,
-                        value: "@fontSize.small",
-                      },
-                    },
-                  },
-                },
-              ],
-            },
-          ],
         },
         {
           component: Seldon.ComponentId.BUTTON,
@@ -1087,6 +992,124 @@ export const schema = {
                       basedOn: "#parent.background.color",
                     },
                   },
+                },
+              },
+            },
+          ],
+        },
+      ],
+    },
+    {
+      id: "todo",
+      label: "To-Do Item",
+      intent:
+        "List item for a to-do task with a checkbox, label, and action chips.",
+      children: [
+        {
+          component: Seldon.ComponentId.INPUT,
+          variant: "checkbox",
+          overrides: {
+            align: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.Align.CENTER,
+            },
+            width: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.Resize.FIT,
+            },
+          },
+        },
+        {
+          component: Seldon.ComponentId.TEXT,
+          variant: "label",
+          overrides: {
+            content: {
+              type: Sdn.ValueType.EXACT,
+              value: "Label",
+            },
+            width: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.Resize.FILL,
+            },
+          },
+        },
+        {
+          component: Seldon.ComponentId.CHIP,
+          overrides: {
+            width: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.Resize.FIT,
+            },
+          },
+          children: [
+            {
+              component: Seldon.ComponentId.ICON,
+              overrides: {
+                symbol: {
+                  type: Sdn.ValueType.OPTION,
+                  value: "seldon-plus",
+                },
+              },
+            },
+            {
+              component: Seldon.ComponentId.TEXT,
+              variant: "label",
+              overrides: {
+                content: {
+                  type: Sdn.ValueType.EXACT,
+                  value: "Add",
+                },
+              },
+            },
+          ],
+        },
+        {
+          component: Seldon.ComponentId.CHIP,
+          overrides: {
+            width: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.Resize.FIT,
+            },
+          },
+          children: [
+            {
+              component: Seldon.ComponentId.ICON,
+              overrides: {
+                symbol: {
+                  type: Sdn.ValueType.OPTION,
+                  value: "seldon-minus",
+                },
+              },
+            },
+            {
+              component: Seldon.ComponentId.TEXT,
+              variant: "label",
+              overrides: {
+                content: {
+                  type: Sdn.ValueType.EXACT,
+                  value: "Remove",
+                },
+              },
+            },
+          ],
+        },
+        {
+          component: Seldon.ComponentId.CHIP,
+          variant: "count",
+          overrides: {
+            width: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.Resize.FIT,
+            },
+          },
+          children: [
+            {
+              component: Seldon.ComponentId.TEXT,
+              variant: "label",
+              overrides: {
+                content: {
+                  type: Sdn.ValueType.EXACT,
+                  value: "999",
                 },
               },
             },

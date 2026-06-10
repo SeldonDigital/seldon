@@ -86,12 +86,12 @@ The code is grouped by pipeline stage:
 - `generate-react-component-return-statements.ts` builds the return statement, including icon maps and dynamic HTML elements.
 - `generate-variable-declarations.ts`, `generate-props-spread.ts`, `generate-default-props.ts`, `generate-jsdoc-comment.ts`, and `get-conditional-prop-paths.ts` support these steps.
 
-**Rendering strategy** (`generation/inline-components/`, `custom-components/`, `default-components/`)
-Three predicates classify a component:
+**Rendering strategy** (`generation/inline-components/`, `custom-components/`)
+Two predicates classify a component:
 
 - `isInlineComponent` is true when the component has a `Frame` as a direct child.
 - `isCustomComponent` is true when the variant is a user variant and the component is not inline.
-- `isDefaultComponent` is true when the variant is the default variant, the component is not inline, and all direct children are valid against the schema.
+- Components that are neither inline nor custom are default components.
 
 **Helpers** (`generation/helpers/`)
 

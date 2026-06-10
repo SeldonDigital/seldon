@@ -176,6 +176,7 @@ export const schema = {
     children: [
       {
         component: Seldon.ComponentId.BAR,
+        variant: "title",
         overrides: {
           height: {
             type: Sdn.ValueType.OPTION,

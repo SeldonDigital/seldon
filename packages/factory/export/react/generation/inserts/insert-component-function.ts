@@ -1,7 +1,7 @@
 import { Workspace } from "@seldon/core/workspace/types"
 
 import { NodeIdToClass } from "../../../css/types"
-import { ComponentToExport, JSONTreeNode } from "../../../types"
+import { ComponentToExport } from "../../../types"
 import {
   TransformStrategy,
   transformSource,
@@ -29,7 +29,6 @@ import { generateVariableDeclarations } from "../shared/generate-variable-declar
  * - Return statement with JSX tree
  *
  * The function signature and variable declarations are component-type-specific (default, custom, inline).
- * Validates that function signature props match interface props and warns on mismatches.
  *
  * @param source - Existing source code to append to
  * @param component - Component metadata including tree and config
@@ -81,68 +80,6 @@ export function insertComponentFunction(
   }
 
   const propsSpread = generatePropsSpread(component, propNames)
-
-  // Validate that function signature props match interface props
-  // Function signature uses propValuesMap (prop value names like "barTabsIcon")
-  // Interface uses propKeysMap (prop keys like "icon")
-  // We need to compare prop VALUES from function signature with prop VALUES from interface
-  const functionSignatureProps = new Set<string>()
-  const propsSpreadMatch = propsSpread.match(/\{([^}]+)\}/)
-  if (propsSpreadMatch) {
-    const propsString = propsSpreadMatch[1]
-    const propMatches = propsString.matchAll(/(\w+)(?:\s*=\s*[^,}]+)?/g)
-    for (const match of propMatches) {
-      const propName = match[1]
-      if (propName !== "props" && propName !== "className") {
-        functionSignatureProps.add(propName)
-      }
-    }
-  }
-
-  // Extract interface prop VALUES from component tree for comparison
-  // Direct children use propKeysMap (matches interface), grandchildren use propValuesMap
-  const interfaceProps = new Set<string>()
-
-  // Add root-level props
-  Object.keys(component.tree.dataBinding.props).forEach((propKey) => {
-    interfaceProps.add(propKey)
-  })
-
-  // Recursively process all descendants to match interface generation
-  function processDescendants(node: JSONTreeNode) {
-    const childPropKey = propNames.get(node.dataBinding.path)
-    if (childPropKey) {
-      interfaceProps.add(childPropKey)
-    }
-
-    if (Array.isArray(node.children)) {
-      ;(node.children as JSONTreeNode[]).forEach((descendant: JSONTreeNode) => {
-        const descendantPropValue = propNames.get(descendant.dataBinding.path)
-        if (descendantPropValue) {
-          interfaceProps.add(descendantPropValue)
-        }
-
-        // Recursively process deeper descendants (depth 3+)
-        processDescendants(descendant)
-      })
-    }
-  }
-
-  if (Array.isArray(component.tree.children)) {
-    ;(component.tree.children as JSONTreeNode[]).forEach(
-      (child: JSONTreeNode) => processDescendants(child),
-    )
-  }
-
-  // Check for mismatches
-  const missingInSignature = Array.from(interfaceProps).filter(
-    (prop) => !functionSignatureProps.has(prop),
-  )
-  const extraInSignature = Array.from(functionSignatureProps).filter(
-    (prop) => !interfaceProps.has(prop),
-  )
-
-  // Prop validation: missingInSignature and extraInSignature are available for debugging if needed
 
   return transformSource({
     strategy: TransformStrategy.APPEND,
