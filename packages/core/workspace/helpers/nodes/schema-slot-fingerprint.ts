@@ -23,8 +23,10 @@ function stableSerialize(value: unknown): string {
 }
 
 /**
- * Deterministic fingerprint for a schema composition slot. Matching fingerprints
- * share the same workspace child instance when a component board is added.
+ * Deterministic fingerprint for a schema composition slot. When a component
+ * board is added, a catalog-variant slot whose fingerprint matches a
+ * default-tree slot is forked into its own instance that templates from that
+ * canonical default-tree instance.
  */
 export function getSchemaSlotFingerprint(
   slot: SchemaChild,

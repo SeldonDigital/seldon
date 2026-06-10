@@ -178,13 +178,30 @@ function instantiateSchemaChildrenFromSlots(
     const fingerprint = getSchemaSlotFingerprint(resolvedSlot, {
       variantFallbacks: options.variantFallbacks,
     })
-    const reused =
-      !writeCanonical && canonicalInstanceByFingerprint.has(fingerprint)
-    const id = reused
-      ? canonicalInstanceByFingerprint.get(fingerprint)!
-      : componentBoardUniqueNodeId(childSchema.id)
+    const canonicalId = !writeCanonical
+      ? canonicalInstanceByFingerprint.get(fingerprint)
+      : undefined
+    const id = componentBoardUniqueNodeId(childSchema.id)
 
-    if (!reused) {
+    if (canonicalId) {
+      invariant(
+        newInstancesById[canonicalId],
+        `Missing canonical instance ${canonicalId} for fingerprint on ${componentId}`,
+      )
+      // Fork the matching default-tree slot into a linked copy: properties set
+      // on the canonical instance flow down through the template chain, while
+      // this copy's own overrides win for its variant tree only.
+      newInstancesById[id] = makeEntryNode({
+        id,
+        type: "instance",
+        level: childSchema.level as EntryNode["level"],
+        label: resolvedChild.label,
+        template: formatNodeLink(canonicalId),
+        overrides: {},
+        origin: "schema",
+        withInitialOverrides: true,
+      })
+    } else {
       const processedOverrides = mergeProperties(
         {},
         resolvedSlot.overrides ?? {},
@@ -204,11 +221,6 @@ function instantiateSchemaChildrenFromSlots(
         origin: "schema",
         withInitialOverrides: true,
       })
-    } else {
-      invariant(
-        newInstancesById[id],
-        `Missing canonical instance ${id} for fingerprint on ${componentId}`,
-      )
     }
 
     const newChild: NodeRegister = {
@@ -496,7 +508,7 @@ function reconcileComponentBoard(
   } else {
     const defaultVariantRootId = componentBoardDefaultNodeId(componentId)
     // Restricted boards have empty default trees, so there are no canonical
-    // instances to share. A fresh empty map mirrors the original restricted build.
+    // instances to link to. A fresh empty map mirrors the original restricted build.
     const fallbackChildSlots = options.restrictedVariantIds?.length
       ? []
       : schema.default.children
