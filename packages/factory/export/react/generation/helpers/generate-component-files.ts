@@ -67,8 +67,11 @@ export async function generateComponentFiles(
         path: component.output.path,
         content: source,
       })
-    } catch {
-      // Failed to export component
+    } catch (error) {
+      console.warn(
+        `Failed to export component "${component.name}" (${component.output.path}):`,
+        error,
+      )
     }
   }
 

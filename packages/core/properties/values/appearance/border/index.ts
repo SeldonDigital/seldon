@@ -1,10 +1,3 @@
-import {
-  ThemeBorderKey,
-  ThemeBorderWidthKey,
-  ThemeSwatchKey,
-} from "../../../../themes/types"
-import { Restricted } from "../../../types/helpers"
-import { BorderCollapse, BorderStyle } from "../../../values"
 import { EmptyValue } from "../../shared/empty/empty"
 import { BorderCollapseValue } from "../border-collapse"
 import type { BorderValue } from "./border"
@@ -16,13 +9,13 @@ import { BorderWidthValue } from "./border-width"
 
 /** One border compound with optional theme recipe and per-field picks. */
 export interface BorderCompound {
-  preset?: Restricted<BorderValue | EmptyValue, ThemeBorderKey>
-  style?: Restricted<BorderStyleValue | EmptyValue, BorderStyle>
-  color?: Restricted<BorderColorValue | EmptyValue, ThemeSwatchKey>
-  width?: Restricted<BorderWidthValue | EmptyValue, ThemeBorderWidthKey>
+  preset?: BorderValue | EmptyValue
+  style?: BorderStyleValue | EmptyValue
+  color?: BorderColorValue | EmptyValue
+  width?: BorderWidthValue | EmptyValue
   brightness?: BorderBrightnessValue | EmptyValue
   opacity?: BorderOpacityValue | EmptyValue
-  collapse?: Restricted<BorderCollapseValue | EmptyValue, BorderCollapse>
+  collapse?: BorderCollapseValue | EmptyValue
 }
 
 export * from "./border"

@@ -1,5 +1,3 @@
-import { ThemeShadowKey, ThemeSwatchKey } from "../../../../themes/types"
-import { Restricted } from "../../../types/helpers"
 import { EmptyValue } from "../../shared/empty/empty"
 import type { ShadowValue } from "./shadow"
 import { ShadowBlurValue } from "./shadow-blur"
@@ -10,14 +8,14 @@ import { ShadowOpacityValue } from "./shadow-opacity"
 import { ShadowSpreadValue } from "./shadow-spread"
 
 export interface ShadowCompound {
-  preset?: Restricted<ShadowValue | EmptyValue, ThemeShadowKey>
+  preset?: ShadowValue | EmptyValue
   offsetX?: ShadowOffsetValue | EmptyValue
   offsetY?: ShadowOffsetValue | EmptyValue
-  blur?: Restricted<ShadowBlurValue | EmptyValue, string>
-  color?: Restricted<ShadowColorValue | EmptyValue, ThemeSwatchKey>
+  blur?: ShadowBlurValue | EmptyValue
+  color?: ShadowColorValue | EmptyValue
   brightness?: ShadowBrightnessValue | EmptyValue
   opacity?: ShadowOpacityValue | EmptyValue
-  spread?: Restricted<ShadowSpreadValue | EmptyValue, string>
+  spread?: ShadowSpreadValue | EmptyValue
 }
 
 export * from "./shadow"

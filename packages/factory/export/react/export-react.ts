@@ -99,8 +99,8 @@ export async function exportReact(
       options,
     )
     filesToExport.push(...componentFiles)
-  } catch {
-    // Failed to generate component files
+  } catch (error) {
+    console.warn("Failed to generate component files:", error)
   }
 
   try {

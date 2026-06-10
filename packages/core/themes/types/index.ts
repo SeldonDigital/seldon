@@ -5,7 +5,7 @@
  * - `theme-token-ids.ts` — ThemeTokenNamespace + per-table id literals + ThemeOptionId (parallels `property-keys.ts`)
  * - `theme-reference-keys.ts` — branded `@namespace.slot` keys (pairs with `properties/types/theme-reference-values.ts`)
  * - `schema.ts` — ThemeTokenSchema + token section ids (parallels `properties/types/schema.ts`)
- * - `helpers.ts` — `Restricted`, `ThemeCustomKey`, `ThemeTokenTable` (parallels `properties/types/helpers.ts`)
+ * - `helpers.ts` — `ThemeCustomKey`, `ThemeTokenTable`
  * - `../values/` — token cell shapes + type guards (`themes/values/shared/type-guards/theme-token-type-guards.ts` and siblings under `shared/`)
  * - `../constants/` — `TokenType`, `Harmony`, `Ratio` (parallels `properties/constants` for `ValueType` / enums)
  */

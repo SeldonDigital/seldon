@@ -22,7 +22,6 @@ import { getThemeValueName } from "../../../helpers/theme/get-theme-value-name"
 import { isHSLObject } from "../../../helpers/type-guards/color/is-hsl-object"
 import { isLCHObject } from "../../../helpers/type-guards/color/is-lch-object"
 import { isRGBObject } from "../../../helpers/type-guards/color/is-rgb-object"
-import { findInObject } from "../../../helpers/utils/find-in-object"
 import { COMPUTED_FUNCTION_DISPLAY_NAMES } from "../../../properties/compute"
 import { isCompoundCatalogProperty } from "../../../properties/constants/shared/compound-properties"
 import {
@@ -30,7 +29,6 @@ import {
   getPresetOptionsAsLabelValue,
   getPropertySchema,
 } from "../../../properties/schemas/helpers"
-import type { Properties } from "../../../properties/types/properties"
 import {
   type PropertyKey,
   isLayeredPaintProperty,
@@ -38,10 +36,7 @@ import {
 import type { PropertySchema } from "../../../properties/types/schema"
 import { Resize } from "../../../properties/values/layout/resize"
 import { Harmony } from "../../../themes/constants/enums"
-import { getEffectiveNodeProperties } from "../../compute/compute-node-properties"
-import type { WorkspacePropertySource } from "../../compute/compute-node-properties"
 import { workspaceFontCollectionService } from "../../services/font-collection/font-collection.service"
-import { getCompoundLayerValue } from "./shared"
 
 export type PropertyPickerOption = { value: string; name: string }
 
@@ -86,73 +81,6 @@ function getParentPathForPreset(presetPath: string): string {
     return segments[0]!
   }
   return presetPath.replace(/\.preset$/, "")
-}
-
-function resolveValueAtPropertyPath(
-  properties: Properties,
-  path: string,
-): unknown {
-  const direct = findInObject<unknown>(properties, path)
-  if (direct !== undefined && direct !== null) {
-    return direct
-  }
-
-  const segments = path.split(".").filter(Boolean)
-  const root = segments[0]
-  if (root && isLayeredPaintProperty(root as PropertyKey)) {
-    if (segments.length === 3 && segments[1] === LAYERED_PAINT_LAYER_INDEX) {
-      const facet = segments[2]
-      if (facet) {
-        const layer = getCompoundLayerValue(
-          properties[root as keyof Properties],
-        )
-        return layer?.[facet]
-      }
-    }
-    if (segments.length === 2) {
-      const facet = segments[1]
-      if (facet) {
-        const layer = getCompoundLayerValue(
-          properties[root as keyof Properties],
-        )
-        return layer?.[facet]
-      }
-    }
-  }
-
-  return undefined
-}
-
-function getRestrictionsAllowedValues(
-  properties: Properties,
-  path: string,
-): string[] | undefined {
-  const value = resolveValueAtPropertyPath(properties, path)
-  if (!value || typeof value !== "object" || value === null) {
-    return undefined
-  }
-  const restrictions = (value as { restrictions?: { allowedValues?: unknown } })
-    .restrictions
-  if (
-    !restrictions?.allowedValues ||
-    !Array.isArray(restrictions.allowedValues)
-  ) {
-    return undefined
-  }
-  return restrictions.allowedValues.map(String)
-}
-
-function applyRestrictionsFilter(
-  groups: PropertyPickerOption[][],
-  allowedValues: string[] | undefined,
-): PropertyPickerOption[][] {
-  if (!allowedValues || allowedValues.length === 0) {
-    return groups
-  }
-  const allowed = new Set(allowedValues)
-  return groups
-    .map((group) => group.filter((opt) => allowed.has(opt.value)))
-    .filter((group) => group.length > 0)
 }
 
 function normalizeOptions(
@@ -600,14 +528,8 @@ function buildPropertyOptionsFromSchema(
   // Default/Inherit so it reads as the current selection.
   const currentValueOption = insertCurrentValueGroup(groups, input)
 
-  const effective = getEffectiveNodeProperties(
-    input.subjectId,
-    input.workspace as WorkspacePropertySource,
-  )
-  const restrictionAllowed = getRestrictionsAllowedValues(effective, input.path)
-
   return {
-    options: applyRestrictionsFilter(groups, restrictionAllowed),
+    options: groups,
     hasCurrentValue: currentValueOption !== undefined,
     currentValueOption,
   }
@@ -669,16 +591,8 @@ function buildCompoundPresetPickerOptions(
 
   if (!theme || !section || typeof section !== "object") {
     const currentValueOption = insertCurrentValueGroup(groups, input)
-    const effective = getEffectiveNodeProperties(
-      input.subjectId,
-      input.workspace as WorkspacePropertySource,
-    )
-    const restrictionAllowed = getRestrictionsAllowedValues(
-      effective,
-      input.path,
-    )
     return {
-      options: applyRestrictionsFilter(groups, restrictionAllowed),
+      options: groups,
       hasCurrentValue: currentValueOption !== undefined,
       currentValueOption,
     }
@@ -704,14 +618,8 @@ function buildCompoundPresetPickerOptions(
 
   const currentValueOption = insertCurrentValueGroup(groups, input)
 
-  const effective = getEffectiveNodeProperties(
-    input.subjectId,
-    input.workspace as WorkspacePropertySource,
-  )
-  const restrictionAllowed = getRestrictionsAllowedValues(effective, input.path)
-
   return {
-    options: applyRestrictionsFilter(groups, restrictionAllowed),
+    options: groups,
     hasCurrentValue: currentValueOption !== undefined,
     currentValueOption,
   }
@@ -815,7 +723,7 @@ function buildHarmonyPickerOptions(): PropertyPickerResult {
 
 /**
  * Builds grouped picker options for a property path using catalog schemas,
- * the active theme, workspace context, and effective value restrictions.
+ * the active theme, and workspace context.
  */
 export function getPropertyPickerOptions(
   input: PropertyPickerInput,
@@ -832,19 +740,7 @@ export function getPropertyPickerOptions(
   }
 
   if (input.path === "color.harmony") {
-    const effective = getEffectiveNodeProperties(
-      input.subjectId,
-      input.workspace as WorkspacePropertySource,
-    )
-    const restrictionAllowed = getRestrictionsAllowedValues(
-      effective,
-      input.path,
-    )
-    const harmony = buildHarmonyPickerOptions()
-    return {
-      ...harmony,
-      options: applyRestrictionsFilter(harmony.options, restrictionAllowed),
-    }
+    return buildHarmonyPickerOptions()
   }
 
   // Theme look facets (for example `font.callout.size`) share their last path

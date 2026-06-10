@@ -5,11 +5,6 @@ import { EmptyValue } from "../empty/empty"
 export type StringValue = {
   type: ValueType.EXACT
   value: string
-  restrictions?: {
-    allowedExtensions?: string[]
-    allowedPatterns?: RegExp[]
-    maxLength?: number
-  }
 }
 
 /** Not set, or plain text stored as an exact string. */

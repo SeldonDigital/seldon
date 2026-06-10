@@ -578,17 +578,6 @@ const invalidProps: Properties = {
 
 ## Type Safety
 
-### Value Type Constraints
-
-```typescript
-// Restricted types with validation
-type Restricted<T, R> = T & { restrictions?: R }
-
-// Example: Column count with range validation
-columns: Restricted<ColumnCountValue | EmptyValue, number>
-// Restrictions: min: 1, max: 100
-```
-
 ### Property Path Validation
 
 **Authoritative path unions** live in [`types/property-keys.ts`](types/property-keys.ts) as `CompoundPropertyPath`, `ShorthandPropertyPath`, and `PropertyPath` (their union). They include every top-level key, compound facets (`border.*`, `font.*`, per-side borders, `position.*`), shorthand sides (`margin.*`, `padding.*`, `corners.*`), and layered paint facets with **bracket indices** in the type literal:
@@ -621,10 +610,10 @@ export type PropertyPath = CompoundPropertyPath | ShorthandPropertyPath
 ### Theme Reference Validation
 
 ```typescript
-// Many swatch and token paths use `Restricted<..., ThemeSwatchKey>` (etc.) so invalid
-// `@…` strings are compile-time errors on those properties.
-{ type: ValueType.THEME_CATEGORICAL, value: "@swatch.primary" } // ✅ Valid where restricted
-{ type: ValueType.THEME_CATEGORICAL, value: "@invalid.token" }  // ❌ Type error when the key is in a restricted union
+// Theme reference value shapes carry branded `@…` key unions, so invalid
+// token strings are compile-time errors where those shapes apply.
+{ type: ValueType.THEME_CATEGORICAL, value: "@swatch.primary" } // ✅ Valid token key
+{ type: ValueType.THEME_CATEGORICAL, value: "@invalid.token" }  // ❌ Type error
 ```
 
 ---
@@ -686,7 +675,7 @@ Update `/packages/core/properties/types/properties.ts`:
 ```typescript
 export type Properties = Partial<{
   // ... existing properties
-  newProperty: Restricted<NewPropertyValue | EmptyValue, string>
+  newProperty: NewPropertyValue | EmptyValue
 }>
 ```
 
@@ -705,10 +694,6 @@ import { ValueType } from "../../constants"
 export interface NewPropertyValue {
   type: ValueType.EXACT
   value: string
-  restrictions?: {
-    allowedValues?: string[]
-    maxLength?: number
-  }
 }
 ```
 

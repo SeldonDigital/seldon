@@ -1,6 +1,3 @@
-import { ThemeBackgroundKey, ThemeSwatchKey } from "../../../../themes/types"
-import { Restricted } from "../../../types/helpers"
-import { BackgroundPosition, BackgroundRepeat, ImageFit } from "../../../values"
 import { EmptyValue } from "../../shared/empty/empty"
 import { StringValue } from "../../shared/exact/string"
 import type { BackgroundValue } from "./background"
@@ -14,15 +11,12 @@ import { BackgroundSizeValue } from "./background-size"
 
 /** One layer in the background stack with optional theme recipe and paint fields. */
 export interface BackgroundLayer {
-  preset?: Restricted<BackgroundValue | EmptyValue, ThemeBackgroundKey>
+  preset?: BackgroundValue | EmptyValue
   image?: BackgroundImageValue | EmptyValue
-  position?: Restricted<
-    BackgroundPositionValue | EmptyValue,
-    BackgroundPosition
-  >
-  size?: Restricted<BackgroundSizeValue | EmptyValue, ImageFit>
-  repeat?: Restricted<BackgroundRepeatValue | EmptyValue, BackgroundRepeat>
-  color?: Restricted<BackgroundColorValue | EmptyValue, ThemeSwatchKey>
+  position?: BackgroundPositionValue | EmptyValue
+  size?: BackgroundSizeValue | EmptyValue
+  repeat?: BackgroundRepeatValue | EmptyValue
+  color?: BackgroundColorValue | EmptyValue
   blendMode?: StringValue | EmptyValue
   filter?: StringValue | EmptyValue
   brightness?: BackgroundBrightnessValue | EmptyValue

@@ -1,6 +1,3 @@
-/** Type-level helpers for theme document types (parallels `properties/types/helpers.ts`). */
-export type { Restricted } from "../../properties/types/helpers"
-
 /** Custom theme token key convention. Used in any namespace that accepts user-added entries. */
 export type ThemeCustomKey = `custom${number}`
 

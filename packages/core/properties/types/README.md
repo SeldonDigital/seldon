@@ -56,7 +56,6 @@ flowchart LR
 | ------------------- | ------------ | ----------------------------------------------------------------------------------------------------------------------------------------- |
 | `PropertyValueType` | `schema.ts`  | CamelCase labels for storage shapes a schema supports. `PropertySchema.supports` and validation helpers.                                  |
 | `PropertySchema`    | `schema.ts`  | Validation, picker lists, units, and display metadata for one catalog key. Built in `values/` modules and merged into `PROPERTY_SCHEMAS`. |
-| `Restricted`        | `helpers.ts` | Adds optional `allowedValues` restrictions to a value type. Schema or API surfaces that limit picker choices.                             |
 
 ---
 

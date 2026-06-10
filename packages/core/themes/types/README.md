@@ -104,7 +104,6 @@ flowchart LR
 
 | Type or Function  | File         | Purpose and use                                              |
 | ----------------- | ------------ | ------------------------------------------------------------ |
-| `Restricted`      | `helpers.ts` | Re-export from property helpers. Used in token table typing. |
 | `ThemeCustomKey`  | `helpers.ts` | `customN` key pattern for optional token slots.              |
 | `ThemeTokenTable` | `helpers.ts` | Maps slot id union to cell type for one theme section.       |
 
