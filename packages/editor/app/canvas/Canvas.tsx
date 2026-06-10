@@ -86,8 +86,13 @@ const CanvasContainer = () => {
   const { isPanning } = useTransformContext()
   const { activeBoard } = useActiveBoard()
 
-  // Reset the transform when the tree is reset to another project (which has a different id)
-  // This a bit hacky. Ideally we would solve this with some sort of event bus.
+  // Key the reset on the board's stable key, not the object reference. The
+  // board entry is recreated on structural edits (delete, paste), and resetting
+  // on reference changes would snap the zoom back to actual size mid-edit.
+  const activeBoardKey = activeBoard ? getComponentKey(activeBoard) : null
+
+  // Reset the transform when the active board changes (e.g. switching boards
+  // or loading another project).
   useEffect(() => {
     setTransform(
       TRANSFORM_WRAPPER_INITIAL_POSITION_X,
@@ -98,7 +103,7 @@ const CanvasContainer = () => {
     // This is intentional beacuse setTransform is not stable
     // so adding it to the deps would the canvas to reset the transform on every render
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeBoard])
+  }, [activeBoardKey])
 
   const wrapperStyle: CSSProperties = {
     width: "100%",
