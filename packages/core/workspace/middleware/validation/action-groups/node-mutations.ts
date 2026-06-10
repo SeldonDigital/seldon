@@ -121,6 +121,9 @@ function validateInsertSource(
   nodeValidators.exists(workspace, parentId)
   nodeValidators.canHaveChildren(workspace, parentId)
   nodeValidators.isNotInstanceOfSelf(workspace, sourceId, parentId)
+  // Inserting a node into its own subtree would make propagation re-apply the
+  // insert into every copy it just created, recursing until the stack overflows.
+  nodeValidators.notIntoOwnSubtree(workspace, sourceId, parentId)
   nodeValidators.canBeParentOf(workspace, parentId, sourceId)
   const sourceNode = nodeRetrievalService.getNode(sourceId, workspace)
   if (expected === "variant") {
