@@ -5,7 +5,7 @@ import { type ComponentId, isComponentId } from "../../../components/constants"
 import { type SchemaChild, isComplexSchema } from "../../../components/types"
 import { mergeProperties } from "../../../properties/helpers/merge-properties"
 import { isComponentBoard, isPlaygroundBoard } from "../../model/components"
-import { formatNodeLink } from "../../model/template-ref"
+import { formatNodeLink, parseNodeLink } from "../../model/template-ref"
 import type { ComponentTreeRef, EntryNode, Workspace } from "../../types"
 import { componentBoardUniqueNodeId } from "../components/entry-node-ids"
 import { walkBoardTreeRefs } from "../components/walk-board-tree-refs"
@@ -187,9 +187,23 @@ export function applyResetDefaultVariantToCatalog(
       draft as unknown as Workspace,
     )
 
-    for (const id of oldIds) {
-      if (newIds.has(id)) continue
-      if (referenced.has(id)) continue
+    // Schema-variant trees hold forked copies whose `node:` templates point at
+    // the default tree's canonical instances. Protect those targets so a reset
+    // never leaves a surviving fork with a dangling template.
+    const removalCandidates = new Set(
+      [...oldIds].filter((id) => !newIds.has(id) && !referenced.has(id)),
+    )
+    const templateTargetsOfSurvivors = new Set<string>()
+    for (const [nodeId, node] of Object.entries(draft.nodes)) {
+      if (removalCandidates.has(nodeId)) continue
+      const link = parseNodeLink(node.template)
+      if (link?.kind === "node") {
+        templateTargetsOfSurvivors.add(link.nodeId)
+      }
+    }
+
+    for (const id of removalCandidates) {
+      if (templateTargetsOfSurvivors.has(id)) continue
       delete draft.nodes[id]
     }
   })

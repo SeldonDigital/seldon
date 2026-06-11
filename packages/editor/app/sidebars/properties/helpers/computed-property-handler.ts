@@ -4,11 +4,7 @@
 import { ComputedFunction, Value, Workspace } from "@seldon/core"
 import { Board, Instance, Variant } from "@seldon/core"
 import { getPropertyCategory } from "@seldon/core/properties/schemas"
-import {
-  canApplyComputedSafely,
-  createComputedValue,
-  getSuggestedBasedOnPath,
-} from "./computed-utils"
+import { canApplyComputedSafely, createComputedValue } from "./computed-utils"
 import { FlatProperty } from "./properties-data"
 import { getSubPropertyKeys } from "./property-types"
 
@@ -37,54 +33,11 @@ export function handleComputedValueChange({
   cleanCompoundValue,
 }: HandleComputedValueOptions): boolean {
   try {
-    let computedValue = createComputedValue(newValue as ComputedFunction)
+    const computedFunction = newValue as ComputedFunction
 
-    // Handle optical padding special case
-    if (newValue === ComputedFunction.OPTICAL_PADDING && selection) {
-      const suggested = getSuggestedBasedOnPath(workspace, selection)
-      if (!suggested) {
-        console.error(
-          `[PropertiesPane] Cannot apply computed function ${newValue} to ${property.key}: no suitable basedOn source found.`,
-        )
-        return false
-      }
-      computedValue = {
-        ...computedValue,
-        value: {
-          ...(typeof computedValue.value === "object" && computedValue.value
-            ? (computedValue.value as Record<string, unknown>)
-            : {}),
-          input: {
-            ...(typeof computedValue.value === "object" &&
-            computedValue.value &&
-            "input" in computedValue.value
-              ? ((computedValue.value as Record<string, unknown>)
-                  .input as Record<string, unknown>)
-              : {}),
-            basedOn: suggested,
-            factor: 1.5,
-          },
-        },
-      }
-    } else if (newValue === ComputedFunction.HIGH_CONTRAST_COLOR) {
-      computedValue = {
-        ...computedValue,
-        value: {
-          ...(typeof computedValue.value === "object" && computedValue.value
-            ? (computedValue.value as Record<string, unknown>)
-            : {}),
-          input: {
-            basedOn: "#parent.background.color",
-          },
-        },
-      }
-    } else if (
+    if (
       selection &&
-      !canApplyComputedSafely(
-        newValue as ComputedFunction,
-        workspace,
-        selection,
-      )
+      !canApplyComputedSafely(computedFunction, workspace, selection)
     ) {
       console.error(
         `[PropertiesPane] Cannot apply computed function ${newValue} to ${property.key}: required inputs missing.`,
@@ -95,6 +48,15 @@ export function handleComputedValueChange({
     // Apply computed value based on property type
     if (property.isSubProperty) {
       const [compoundKey, subKey] = property.key.split(".")
+      const compoundValue =
+        property.value && typeof property.value === "object"
+          ? (property.value as Record<string, unknown>)
+          : undefined
+      const computedValue = createComputedValue(computedFunction, {
+        currentValue: compoundValue?.[subKey],
+        workspace,
+        node: selection,
+      })
       setProperties({
         [compoundKey]: {
           ...cleanCompoundValue(property.value),
@@ -102,6 +64,11 @@ export function handleComputedValueChange({
         },
       })
     } else {
+      const computedValue = createComputedValue(computedFunction, {
+        currentValue: property.value,
+        workspace,
+        node: selection,
+      })
       applyComputedValueToProperty(property.key, computedValue, setProperties)
     }
 

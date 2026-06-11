@@ -17,12 +17,12 @@ flowchart LR
 
 ## Major Types And Functions
 
-| Type or Function | File            | Purpose and use                                                                                                                                  |
-| ---------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `TokenType`      | `token-type.ts` | Tags each theme token cell shape (`MODULATED`, `SWATCH`, `LOOK`, etc.). Used by `values/` guards and `computeTheme` when materializing swatches. |
-| `Harmony`        | `enums.ts`      | Names palette geometry modes for `color.harmony`. Used by `getPalette` and dynamic swatch generation in `compute/`.                              |
-| `Ratio`          | `enums.ts`      | Names modulation ratio steps for `core.ratio`. Used by stock themes and `modulateWithTheme`.                                                     |
-| `Colorspace`     | `colorspace.ts` | Tags resolved swatch storage as HSL, RGB, or LCH. Used when `computeTheme` writes dynamic swatch parameters.                                     |
+| Type or Function | File | Purpose and use |
+| --- | --- | --- |
+| `TokenType` | `token-type.ts` | Tags each theme token cell shape (`MODULATED`, `SWATCH`, `LOOK`, etc.). Used by `values/` guards and `computeTheme` when materializing swatches. |
+| `Harmony` | `enums.ts` | Names palette geometry modes for `color.harmony`. Used by `getPalette` and dynamic swatch generation in `compute/`. |
+| `Ratio` | `enums.ts` | Names modulation ratio steps for `core.ratio`. Used by stock themes and `modulateWithTheme`. |
+| `Colorspace` | `colorspace.ts` | Tags swatch parameters as HSL, RGB, LCH, hex, or named color. Used when `computeTheme` writes dynamic swatch parameters. |
 
 ---
 

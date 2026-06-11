@@ -159,6 +159,7 @@ export const schema = {
     children: [
       {
         component: Seldon.ComponentId.ITEM,
+        variant: "todo",
         overrides: {
           align: {
             type: Sdn.ValueType.OPTION,
@@ -394,6 +395,7 @@ export const schema = {
       },
       {
         component: Seldon.ComponentId.ITEM,
+        variant: "todo",
         overrides: {
           align: {
             type: Sdn.ValueType.OPTION,
@@ -628,6 +630,7 @@ export const schema = {
       },
       {
         component: Seldon.ComponentId.ITEM,
+        variant: "todo",
         overrides: {
           align: {
             type: Sdn.ValueType.OPTION,
@@ -863,6 +866,7 @@ export const schema = {
       },
       {
         component: Seldon.ComponentId.ITEM,
+        variant: "todo",
         overrides: {
           align: {
             type: Sdn.ValueType.OPTION,

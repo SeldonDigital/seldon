@@ -6,9 +6,11 @@ import {
   ControlFieldWrapper,
   PropertyControlSurface,
 } from "@seldon/components/custom-components"
-import { Combobox } from "./controls/combobox/Combobox"
-import { ComboboxOptionList } from "./controls/combobox/OptionList"
-import { ComboboxOptions } from "./controls/combobox/Options"
+import {
+  Combobox,
+  ComboboxOptionList,
+  ComboboxOptions,
+} from "@seldon/components/custom-components"
 
 export type { PropertyControlProps }
 

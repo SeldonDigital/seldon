@@ -1,5 +1,9 @@
 @import "../seldon/chrome/styles.css";
+@import "../seldon/styles-old.css";
+@import "../seldon/styles-seldon.css";
+@import "../seldon/styles-seldon-dark.css";
 @import "../seldon/styles.css";
+@import "../seldon/styles-compat.css";
 
 /*
  * Self-hosted IBM Plex Sans registered under its literal family name so the editor

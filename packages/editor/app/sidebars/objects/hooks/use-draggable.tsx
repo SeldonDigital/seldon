@@ -3,20 +3,14 @@ import { pointerOutsideOfPreview } from "@atlaskit/pragmatic-drag-and-drop/eleme
 import { setCustomNativeDragPreview } from "@atlaskit/pragmatic-drag-and-drop/element/set-custom-native-drag-preview"
 import { useEffect, useRef, useState } from "react"
 import { createRoot } from "react-dom/client"
-import { Board, Instance, Variant } from "@seldon/core"
-import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
-import { ListItemTree } from "@seldon/components/elements/ListItemTree"
+import { Instance, Variant } from "@seldon/core"
+import { DragNodePreview } from "@seldon/components/custom-components"
 import { IconProps } from "@seldon/components/primitives/Icon"
 import { useNodeIcon } from "./use-node-icon"
 
 /**
  * Makes an element draggable for drag-and-drop operations in the objects sidebar.
- * Handles both board reordering and node movement with custom drag preview.
- *
- * @param enable - Whether drag-and-drop is enabled (default: true)
- * @param target - The board, variant, or instance to make draggable
- * @param onDragStart - Optional callback when drag starts (e.g., collapse node)
- * @returns Object with ref to attach to element and dragging state
+ * Handles node movement with a custom drag preview.
  */
 export function useDraggable({
   enable = true,
@@ -24,33 +18,24 @@ export function useDraggable({
   onDragStart,
 }: {
   enable?: boolean
-  target: Variant | Instance | Board
+  target: Variant | Instance
   onDragStart?: () => void
 }) {
   const [dragging, setDragging] = useState<boolean>(false)
   const ref = useRef<HTMLDivElement>(null)
+  const icon = useNodeIcon(target)
 
   useEffect(() => {
     const el = ref.current
 
     if (!el || !enable) return
-    const isBoardTarget = isBoard(target)
 
     return draggable({
       element: el,
-      getInitialData: () => {
-        if (isBoardTarget) {
-          return {
-            subjectBoard: target,
-            action: "object-panel-reorder-board",
-          }
-        }
-
-        return {
-          subjectNode: target,
-          action: "object-panel-move-node",
-        }
-      },
+      getInitialData: () => ({
+        subjectNode: target,
+        action: "object-panel-move-node",
+      }),
       onDragStart: () => {
         onDragStart?.()
         setDragging(true)
@@ -62,43 +47,22 @@ export function useDraggable({
           render: ({ container }) => {
             const root = createRoot(container)
 
-            root.render(<Preview node={target} />)
+            root.render(
+              <DragNodePreview
+                label={target.label}
+                icon={icon as IconProps["icon"]}
+              />,
+            )
             return () => root.unmount()
           },
           nativeSetDragImage,
         })
       },
     })
-  }, [target, enable, onDragStart])
+  }, [target, enable, onDragStart, icon])
 
   return {
     ref,
     dragging,
-    setDragging,
   }
-}
-
-/**
- * Preview component shown during drag operations.
- * Displays a simplified version of the node being dragged.
- */
-function Preview({ node }: { node: Variant | Instance | Board }) {
-  const icon = useNodeIcon(node)
-
-  return (
-    <ListItemTree
-      icon={{ icon: icon as IconProps["icon"] }}
-      label={{ children: node.label }}
-      button={{ style: { display: "none" } }}
-      button2={{ style: { display: "none" } }}
-      button3={{ style: { display: "none" } }}
-      style={{
-        backgroundColor: "rgba(0, 0, 0, 0.8)",
-        color: "white",
-        padding: "0.5rem",
-        borderRadius: "4px",
-        minWidth: "200px",
-      }}
-    />
-  )
 }

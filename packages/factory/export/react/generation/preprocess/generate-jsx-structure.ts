@@ -81,8 +81,16 @@ export function generateJSXStructure(
         condition = propName
       }
     } else if (!isValidProp) {
+      // Inline extras render only when the caller passes the prop. The merged
+      // props variable is checked as well so TypeScript narrows it to non-null.
       nodeType = "conditional"
-      condition = propName
+      condition = `${propName} && ${propVarName}`
+    } else {
+      // Canonical children render their sdn default when the prop is omitted
+      // and are suppressed when the caller passes null. Guarding the merged
+      // props variable narrows it for the spread below.
+      nodeType = "conditional"
+      condition = `${propVarName} !== null`
     }
 
     // Handle children

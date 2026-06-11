@@ -1,5 +1,5 @@
 import { MouseEvent } from "react"
-import { IconProps } from "@seldon/components/primitives/Icon"
+import { IconProps } from "@seldon/components/custom-components"
 
 interface UseRowButtonOptions {
   isExpanded: boolean
@@ -9,7 +9,7 @@ interface UseRowButtonOptions {
 }
 
 /**
- * Shared hook for creating consistent button and icon props across RowBoard and RowNode.
+ * Shared hook for creating consistent button and icon props across VMBoard and VMNode.
  * Extracts common button/icon creation patterns to reduce duplication.
  */
 export function useRowButton({
@@ -48,13 +48,6 @@ export function useRowButton({
     }
   }
 
-  const createStaticButton2 = () => ({
-    style: {
-      position: "relative" as const,
-      zIndex: 10,
-    },
-  })
-
   const createIcon2 = (iconId: IconProps["icon"]) => ({
     icon: iconId,
     ...(isSelected
@@ -65,7 +58,6 @@ export function useRowButton({
   return {
     createToggleButton,
     createToggleIcon,
-    createStaticButton2,
     createIcon2,
   }
 }

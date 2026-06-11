@@ -26,6 +26,8 @@ const HTML_ELEMENT_TO_FILE_STEM: Partial<Record<HtmlElement, string>> = {
   [HtmlElement.H6]: "HTML.Heading6",
   [HtmlElement.FIGURE]: "HTML.Figure",
   [HtmlElement.FIGCAPTION]: "HTML.Figcaption",
+  [HtmlElement.OPTION]: "HTML.Option",
+  [HtmlElement.OPTGROUP]: "HTML.Optgroup",
 }
 
 export function getNativeFileStemsForUsedElements(

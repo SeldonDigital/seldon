@@ -67,7 +67,7 @@ export function buildThemeAssignmentProperty(
     key: "theme",
     propertyType: "atomic",
     label: "Theme",
-    icon: "IconSeldonComponent",
+    icon: "seldon-component",
     value: themeRef
       ? { type: ValueType.EXACT, value: themeRef }
       : { type: ValueType.EMPTY, value: null },

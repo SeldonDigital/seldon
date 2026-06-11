@@ -1,7 +1,6 @@
 import { Theme, Value, ValueType } from "@seldon/core"
 import { getUnitsForProperty } from "@seldon/core/properties"
 import { FlatProperty } from "../helpers/properties-data"
-import { ICON_MAP } from "../helpers/properties-registry"
 import { shouldUsePresetPropertyBehavior } from "../helpers/property-types"
 import { getPropertyPlaceholder } from "../helpers/shared-utils"
 
@@ -86,13 +85,6 @@ export function resolveUnitFromValue(value: unknown): string | undefined {
 export function usePropertyControlData({
   property,
 }: UsePropertyControlDataOptions) {
-  // Get the icon component for this property
-  const getIconComponent = () => {
-    const iconName = property.icon
-    const IconComponent = ICON_MAP[iconName]
-    return IconComponent || ICON_MAP.IconTokenValue
-  }
-
   // Get property value for display
   const getPropertyValueForDisplay = (): Value => {
     // If the property is dimmed (controlled by a computed main property),
@@ -274,7 +266,6 @@ export function usePropertyControlData({
   }
 
   return {
-    getIconComponent,
     getPropertyValueForDisplay,
     getUnit,
     shouldShowMenuIcon,

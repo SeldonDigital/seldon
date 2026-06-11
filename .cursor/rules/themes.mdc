@@ -7,15 +7,16 @@ alwaysApply: true
 
 Themes package reusable visual decisions as tokens. Components reference theme tokens with `@` paths, such as `@fontSize.medium`, `@swatch.primary`, and `@font.body`.
 
-Use `packages/core/themes/THEMES.md` as the canonical reference for theme shape, token cells, type safety, imports, and adding theme content.
+Use `packages/core/themes/README.md` as the canonical reference for theme shape, token cells, type safety, imports, and adding theme content.
 
-Use `packages/core/properties/PROPERTIES.md` for the property-style tagged values used inside look token `parameters`.
+Use `packages/core/properties/README.md` for the property-style tagged values used inside look token `parameters`.
 
 ### Stock Themes
 
 Stock theme template ids are:
 
 - `earth`
+- `highContrast`
 - `industrial`
 - `material`
 - `pop`
@@ -88,8 +89,8 @@ Workspace files store raw theme authoring state only. Computed theme rows come f
 When adding a stock theme:
 
 1. Add the id to `ThemeTemplateId` in `types/theme-id.ts`.
-2. Create the stock file under `catalog/` with every section from `THEMES.md`.
+2. Create the stock file under `catalog/` with every section from `packages/core/themes/README.md`.
 3. Register it in `catalog/index.ts` by adding the import and including it in `STOCK_THEMES`.
 4. Do not edit token id unions unless adding reserved keys or sections.
 
-When adding a new token kind or section, update the matching types, values, constants, schemas, exports, and section ordering described in `THEMES.md`.
+When adding a new token kind or section, update the matching types, values, constants, schemas, exports, and section ordering described in `packages/core/themes/README.md`.

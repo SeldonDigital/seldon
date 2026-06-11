@@ -4,7 +4,6 @@ import { Workspace } from "@seldon/core/workspace/types"
 
 import { ComponentToExport } from "../../../types"
 import { isCustomComponent } from "../custom-components/is-custom-component"
-import { isDefaultComponent } from "../default-components/is-default-component"
 import { isInlineComponent } from "../inline-components/is-inline-component"
 
 /**
@@ -41,7 +40,6 @@ export function generateJSDocComment(
   // Determine component type
   const isInline = isInlineComponent(component)
   const isCustom = isCustomComponent(component, workspace)
-  const isDefault = isDefaultComponent(component, workspace)
   const componentType = isInline ? "Inline" : isCustom ? "Custom" : "Default"
 
   // Generate props list for the example

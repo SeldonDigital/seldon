@@ -5,6 +5,11 @@ import { isIconSetEditingSelection } from "@lib/icon-sets/resolve-active-icon-se
 import { resolveActiveThemeEntryId } from "@lib/themes/resolve-active-theme-entry-id"
 import { isThemeEditingSelection } from "@lib/themes/resolve-active-theme-entry-id"
 import { useMemo, useRef } from "react"
+import {
+  buildPropertyTreeAllProperties,
+  buildPropertyTreeSections,
+} from "../helpers/build-property-tree-layout"
+import { useCssStrings } from "../helpers/get-calculated-properties"
 import { Board, Instance, Variant } from "@seldon/core"
 import { getComputedTheme } from "@seldon/core/workspace/compute"
 import {
@@ -15,10 +20,13 @@ import {
 import { workspaceFontCollectionService } from "@seldon/core/workspace/services/font-collection/font-collection.service"
 import { workspaceIconSetService } from "@seldon/core/workspace/services/icon-set/icon-set.service"
 import { workspaceThemeService } from "@seldon/core/workspace/services/theme/theme.service"
-import { useSelection } from "@lib/workspace/hooks/use-selection"
+import {
+  useSelectedNodeRootId,
+  useSelection,
+} from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useEditorConfig } from "@lib/hooks/use-editor-config"
-import type { PropertyTreeProps } from "../PropertyTree"
+import type { PropertyTreeProps } from "../VMPropertiesSidebar"
 import { flattenFontCollectionFamilies } from "../helpers/font-collection-properties-data"
 import { getThemePropertyControlType } from "../helpers/get-theme-property-controls"
 import { flattenIconSetCategories } from "../helpers/icon-set-properties-data"
@@ -31,18 +39,18 @@ import { useThemeProperties } from "./use-theme-properties"
 
 /**
  * View state for the properties sidebar. `empty` renders the no-selection
- * shell; `tree` carries the fully assembled `PropertyTree` props.
+ * shell; `tree` carries the fully assembled property tree props.
  */
-export type PropertiesSidebarViewModel =
+export type PropertiesSidebarState =
   | { kind: "empty" }
   | { kind: "tree"; treeProps: PropertyTreeProps }
 
 /**
  * Derives everything the properties sidebar needs from the current selection
  * and workspace. Owns all Model service access, editing-mode guards, and tree
- * prop assembly so the sidebar component stays a binding shell.
+ * prop assembly so the sidebar view-model stays a binding shell.
  */
-export function usePropertiesSidebar(): PropertiesSidebarViewModel {
+export function usePropertiesSidebar(): PropertiesSidebarState {
   const {
     selection,
     selectedBoard,
@@ -50,6 +58,7 @@ export function usePropertiesSidebar(): PropertiesSidebarViewModel {
     selectedFontCollectionEntryId,
     selectedIconSetEntryId,
   } = useSelection()
+  const selectedNodeRootId = useSelectedNodeRootId()
   const { workspace } = useWorkspace({ usePreview: false })
   const { showUnusedProperties, showUnusedFonts, showUnusedIcons } =
     useEditorConfig()
@@ -121,7 +130,8 @@ export function usePropertiesSidebar(): PropertiesSidebarViewModel {
     return workspaceIconSetService.getInclusion(activeIconSetEntryId, workspace)
   }, [isIconSetEditingMode, activeIconSetEntryId, workspace])
 
-  const { updateThemeProperty } = useThemeProperties(activeThemeEntryId)
+  const { updateThemeProperty, resetThemeProperty } =
+    useThemeProperties(activeThemeEntryId)
 
   const editedTheme = useMemo(() => {
     if (!isThemeEditingMode || !activeThemeEntryId) return null
@@ -130,12 +140,26 @@ export function usePropertiesSidebar(): PropertiesSidebarViewModel {
 
   const themeProperties = useMemo(() => {
     if (!isThemeEditingMode || !editedTheme) return []
-    const flatProps = flattenThemeProperties(editedTheme)
+    const entry = activeThemeEntryId
+      ? workspace.themes[activeThemeEntryId]
+      : undefined
+    // Swatches the template theme defines. A swatch missing here was added on
+    // the entry itself, so its row is base state rather than an override.
+    const baseSwatchIds = entry
+      ? new Set(
+          Object.keys(getComputedTheme(entry.template, workspace).swatch),
+        )
+      : undefined
+    const flatProps = flattenThemeProperties(
+      editedTheme,
+      entry?.overrides,
+      baseSwatchIds,
+    )
     return flatProps.map((prop) => ({
       ...prop,
       controlType: prop.controlType || getThemePropertyControlType(prop),
     }))
-  }, [isThemeEditingMode, editedTheme])
+  }, [isThemeEditingMode, editedTheme, activeThemeEntryId, workspace])
 
   const flatProperties = useMemo(() => {
     if (!selection && !isThemeEditingMode) return []
@@ -170,15 +194,22 @@ export function usePropertiesSidebar(): PropertiesSidebarViewModel {
   const themeEditingContext = useMemo((): {
     isThemeEditing: true
     updateThemeProperty: (property: FlatProperty, newValue: string) => void
+    resetThemeProperty: (property: FlatProperty) => void
     themeProperties: FlatProperty[]
   } | null => {
     if (!isThemeEditingMode) return null
     return {
       isThemeEditing: true,
       updateThemeProperty,
+      resetThemeProperty,
       themeProperties,
     }
-  }, [isThemeEditingMode, updateThemeProperty, themeProperties])
+  }, [
+    isThemeEditingMode,
+    updateThemeProperty,
+    resetThemeProperty,
+    themeProperties,
+  ])
 
   const metadataProperties = useMemo<FlatProperty[] | undefined>(() => {
     if (isThemeEditingMode && editedTheme && activeThemeEntryId) {
@@ -342,6 +373,43 @@ export function usePropertiesSidebar(): PropertiesSidebarViewModel {
     workspace.boards,
   ])
 
+  const cssStrings = useCssStrings(propertyTreeNode, selectedNodeRootId)
+
+  const sections = useMemo(() => {
+    if (!propertyTreeNode) return []
+    return buildPropertyTreeSections({
+      properties: flatProperties,
+      workspace,
+      node: propertyTreeNode,
+      theme,
+      themeEditingContext,
+      metadataProperties,
+      familyProperties,
+      iconProperties,
+      cssStringCount: cssStrings.length,
+    })
+  }, [
+    flatProperties,
+    workspace,
+    propertyTreeNode,
+    theme,
+    themeEditingContext,
+    metadataProperties,
+    familyProperties,
+    iconProperties,
+    cssStrings.length,
+  ])
+
+  const allProperties = useMemo(() => {
+    if (!propertyTreeNode) return []
+    return buildPropertyTreeAllProperties({
+      properties: flatProperties,
+      workspace,
+      node: propertyTreeNode,
+      themeEditingContext,
+    })
+  }, [flatProperties, workspace, propertyTreeNode, themeEditingContext])
+
   if (
     !selection &&
     !isThemeEditingMode &&
@@ -369,6 +437,9 @@ export function usePropertiesSidebar(): PropertiesSidebarViewModel {
       metadataProperties,
       familyProperties,
       iconProperties,
+      sections,
+      allProperties,
+      cssStrings,
     },
   }
 }

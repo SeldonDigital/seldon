@@ -1,143 +1,53 @@
 /**
- * Helper function to get calculated CSS properties from the DOM element (like ComputedPane)
- *
- * Gets the calculated CSS styles applied to the element via class names
- * and converts them to FlatProperty objects for display in the property tree.
- * These are display-only values, distinct from computed property types.
+ * Reads authored CSS for the selected canvas copy in the CSS section of the
+ * properties sidebar.
  */
 import { useMemo } from "react"
-import { Board, Instance, ValueType, Variant, Workspace } from "@seldon/core"
-import { getHtmlElementByNodeId } from "@app/canvas/helpers/get-html-element-by-node-id"
-import { FlatProperty } from "./properties-data"
+import { Board, Instance, Variant } from "@seldon/core"
+import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
+import { getScopedSelectionElement } from "@app/canvas/helpers/canvas-selection-target"
+
+/** Parses declaration lines from a Seldon-authored `.class { ... }` rule. */
+function parseAuthoredCssRule(cssText: string): string[] {
+  const match = cssText.match(/\{([\s\S]*)\}/)
+  if (!match) return []
+
+  return match[1]
+    .split("\n")
+    .map((line) => line.trim())
+    .filter((line) => line.length > 0)
+}
 
 /**
- * Gets CSS styles from the DOM element (same logic as ComputedPane)
+ * Reads the authored CSS rule for one scoped canvas class from its injected
+ * `<style data-seldon-style-for>` tag.
  */
-function getClassStyles(element: HTMLElement | null): string[] {
+function getAuthoredCssForClass(className: string): string[] {
+  const styleEl = document.querySelector(
+    `style[data-seldon-style-for="${className}"]`,
+  )
+  if (!styleEl?.textContent) return []
+
+  return parseAuthoredCssRule(styleEl.textContent)
+}
+
+/**
+ * Reads authored CSS for the selected node copy. Resolves the canvas element by
+ * node id and variant-root path, then reads only that copy's scoped style tag.
+ */
+function getScopedNodeCss(
+  nodeId: string,
+  rootId: string | null | undefined,
+): string[] {
+  const element = getScopedSelectionElement(nodeId, rootId)
   if (!element) return []
 
-  const classList = Array.from(element.classList)
-  const styleProperties: string[] = []
+  const className = Array.from(element.classList).find((cls) =>
+    cls.startsWith("node-"),
+  )
+  if (!className) return []
 
-  // Iterate through all stylesheets in the document
-  Array.from(document.styleSheets).forEach((sheet) => {
-    try {
-      const rules = sheet.cssRules
-      if (!rules) return
-
-      // Check each rule to see if it matches any of our element's classes
-      Array.from(rules).forEach((rule) => {
-        // Only process CSSStyleRule (regular CSS rules, not @media, @keyframes, etc.)
-        if (rule.type === CSSRule.STYLE_RULE) {
-          const styleRule = rule as CSSStyleRule
-          const selector = styleRule.selectorText
-
-          // Check if this rule applies to any of our element's classes
-          const hasMatchingClass = classList.some((className) => {
-            // Match class selectors (.className) and compound selectors
-            return (
-              selector.includes(`.${className}`) ||
-              selector.includes(` ${className}`) ||
-              selector === className
-            )
-          })
-
-          if (hasMatchingClass) {
-            // Extract all properties from this rule
-            Array.from(styleRule.style).forEach((property) => {
-              const value = styleRule.style.getPropertyValue(property)
-              if (value) {
-                styleProperties.push(`${property}: ${value};`)
-              }
-            })
-          }
-        }
-      })
-    } catch (error) {
-      // Skip stylesheets that can't be accessed (e.g., cross-origin)
-    }
-  })
-
-  // Sort properties alphabetically for better readability
-  return styleProperties.sort()
-}
-
-/**
- * Formats a CSS property name for display (e.g., "background-color" -> "Background Color")
- */
-function formatCssPropertyLabel(property: string): string {
-  return property
-    .split("-")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ")
-}
-
-/**
- * Converts CSS property strings to FlatProperty objects
- * Calculated properties are read-only display values, so we create them directly
- */
-function cssPropertiesToFlatProperties(
-  cssProperties: string[],
-  _node: Variant | Instance | Board,
-  _workspace: Workspace,
-): FlatProperty[] {
-  if (cssProperties.length === 0) {
-    return []
-  }
-
-  return cssProperties
-    .map((cssProperty) => {
-      // Parse CSS property string (e.g., "color: #000000;" or "background-image: url("https://example.com/image.jpg");")
-      // Split only on the FIRST colon to handle URLs and other values that contain colons
-      const colonIndex = cssProperty.indexOf(":")
-      if (colonIndex === -1) {
-        // Skip malformed CSS properties
-        return null
-      }
-      const property = cssProperty.substring(0, colonIndex).trim()
-      const value = cssProperty.substring(colonIndex + 1).trim()
-      const cleanValue = value.replace(/;$/, "") // Remove trailing semicolon
-
-      // Create a FlatProperty directly (calculated properties aren't in the registry)
-      return {
-        key: `calculated.${property}`,
-        label: formatCssPropertyLabel(property),
-        value: {
-          type: ValueType.EXACT,
-          value: cleanValue,
-        },
-        actualValue: cleanValue,
-        valueType: ValueType.EXACT,
-        propertyType: "atomic" as const,
-        isCompound: false,
-        isShorthand: false,
-        isSubProperty: false,
-        status: "set" as const,
-        icon: "IconTokenValue",
-        controlType: undefined,
-      } as FlatProperty
-    })
-    .filter((prop): prop is FlatProperty => prop !== null)
-}
-
-/**
- * Gets calculated CSS properties from the DOM element for display
- * These are display-only values showing the actual computed CSS styles.
- */
-export function useCalculatedProperties(
-  node: Variant | Instance | Board | null,
-  workspace: Workspace,
-): FlatProperty[] {
-  return useMemo(() => {
-    if (!node || isBoard(node)) {
-      return []
-    }
-
-    const element = getHtmlElementByNodeId(node.id)
-    const cssProperties = getClassStyles(element)
-
-    return cssPropertiesToFlatProperties(cssProperties, node, workspace)
-  }, [node, workspace])
+  return getAuthoredCssForClass(className).sort()
 }
 
 /**
@@ -146,17 +56,13 @@ export function useCalculatedProperties(
  */
 export function useCssStrings(
   node: Variant | Instance | Board | null,
+  rootId?: string | null,
 ): string[] {
   return useMemo(() => {
     if (!node || isBoard(node)) {
       return []
     }
 
-    const element = getHtmlElementByNodeId(node.id)
-    return getClassStyles(element)
-  }, [node])
-}
-
-function isBoard(node: Variant | Instance | Board): node is Board {
-  return "id" in node && !("component" in node)
+    return getScopedNodeCss(node.id, rootId)
+  }, [node, rootId])
 }

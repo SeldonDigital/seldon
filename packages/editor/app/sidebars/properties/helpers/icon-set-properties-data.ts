@@ -63,7 +63,7 @@ function createMenuRow(
     key,
     propertyType: isCompound ? "compound" : "atomic",
     label,
-    icon: "IconTextValue",
+    icon: "seldon-text",
     value: { type: ValueType.EXACT, value },
     actualValue: value,
     valueType: ValueType.EXACT,

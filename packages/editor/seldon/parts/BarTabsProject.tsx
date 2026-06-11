@@ -15,7 +15,7 @@ import { HTMLAttributes } from "react"
 import { Button, ButtonProps } from "../elements/Button"
 import { Frame } from "../frames/Frame"
 import { IconProps } from "../primitives/Icon"
-import { LabelProps } from "../primitives/Label"
+import { LabelProps } from "../custom-components/primitives/Label"
 import { Text, TextProps } from "../primitives/Text"
 import { combineClassNames } from "../utils/class-name"
 
@@ -136,11 +136,11 @@ export function BarTabsProject({
 
   return (
     <Frame className={barTabsProjectClassName} {...props}>
-      <Button {...buttonProps} icon={iconProps} label={labelProps} />
+      <Button {...buttonProps} icon={iconProps} textLabel={labelProps} />
       {text && <Text {...textProps} />}
-      <Button {...button2Props} icon={icon2Props} label={label2Props} />
+      <Button {...button2Props} icon={icon2Props} textLabel={label2Props} />
       {button3 && button3Props && (
-        <Button {...button3Props} icon={icon3Props} label={label3Props} />
+        <Button {...button3Props} icon={icon3Props} textLabel={label3Props} />
       )}
     </Frame>
   )

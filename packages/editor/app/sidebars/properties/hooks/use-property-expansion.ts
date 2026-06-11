@@ -73,18 +73,27 @@ const useStore = create<PropertyExpansionState>((set) => ({
 }))
 
 /**
- * This hook is used to expand and collapse property categories and compound/shorthand properties.
- * Categories default to expanded, properties default to collapsed.
+ * Reactive read for one category's expansion state.
+ */
+export const useIsCategoryExpanded = (category: AllCategoryType): boolean =>
+  useStore((state) => state.categories[category] ?? true)
+
+/**
+ * Reactive read for one compound property's expansion state.
+ */
+export const useIsPropertyExpanded = (propertyKey: string): boolean =>
+  useStore((state) => state.properties[propertyKey] ?? false)
+
+/**
+ * Property expansion actions. Use `useIsCategoryExpanded` and
+ * `useIsPropertyExpanded` for reads.
  */
 export const usePropertyExpansion = () => {
-  const { categories, properties, toggleCategory, toggleProperty } = useStore()
+  const toggleCategory = useStore((state) => state.toggleCategory)
+  const toggleProperty = useStore((state) => state.toggleProperty)
 
   return {
     toggleCategory,
-    isCategoryExpanded: (category: AllCategoryType) =>
-      categories[category] ?? true,
     toggleProperty,
-    isPropertyExpanded: (propertyKey: string) =>
-      properties[propertyKey] ?? false,
   }
 }

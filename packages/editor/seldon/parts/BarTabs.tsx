@@ -15,7 +15,7 @@ import { HTMLAttributes } from "react"
 import { Button, ButtonProps } from "../elements/Button"
 import { Frame } from "../frames/Frame"
 import { IconProps } from "../primitives/Icon"
-import { LabelProps } from "../primitives/Label"
+import { LabelProps } from "../custom-components/primitives/Label"
 import { combineClassNames } from "../utils/class-name"
 
 export interface BarTabsProps extends HTMLAttributes<HTMLElement> {
@@ -111,9 +111,9 @@ export function BarTabs({
 
   return (
     <Frame className={barTabsClassName} {...props}>
-      <Button {...buttonProps} icon={iconProps} label={labelProps} />
-      <Button {...button2Props} icon={icon2Props} label={label2Props} />
-      <Button {...button3Props} icon={icon3Props} label={label3Props} />
+      <Button {...buttonProps} icon={iconProps} textLabel={labelProps} />
+      <Button {...button2Props} icon={icon2Props} textLabel={label2Props} />
+      <Button {...button3Props} icon={icon3Props} textLabel={label3Props} />
     </Frame>
   )
 }

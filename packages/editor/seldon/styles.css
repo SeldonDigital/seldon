@@ -1,17 +1,16 @@
 /*****
  *
- * This code was generated using Seldon (https://seldon.app)
+ * This code was generated using Seldon (https://github.com/SeldonDigital/seldon)
  *
- * Licensed under the Terms of Use: https://seldon.digital/terms-of-service
+ * License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md
  * Do not redistribute or sublicense without permission.
- *
- * You may not use this software, or any derivative works of it,
- * in whole or in part, for the purposes of training, fine-tuning,
- * or otherwise improving (directly or indirectly) any machine learning
- * or artificial intelligence system.
+ * 
+ * You may not use this software, or any derivative works of it, in whole or in part, 
+ * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly) 
+ * any machine learning or artificial intelligence system without written permission.
  * 
  *****/
-
+ 
 /********************************************
  *                                          *
  *              Reset styles                *
@@ -242,6 +241,19 @@ html {
   font-size: 16px;
 }
 
+html,
+body {
+  font-family: system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    Ubuntu,
+    Cantarell,
+    "Open Sans",
+    "Helvetica Neue",
+    sans-serif, "IBM Plex Sans";
+}
+
 :root {
   --hairline: 1px;
 }
@@ -276,96 +288,115 @@ html {
  *                                          *
  ********************************************/
 
-.sdn-bar-status {
-  background-color: hsl(0 0% 17.55%);
-  flex-wrap: nowrap;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  gap: auto;
-  padding-top: 0.5rem;
-  padding-right: 0.5rem;
-  padding-bottom: 0.5rem;
-  padding-left: 1rem;
-  align-self: stretch;
-  height: fit-content;
-  flex-shrink: 0;
-}
-
-.sdn-bar-tabs {
-  background-color: hsl(0 0% 17.55%);
-  flex-wrap: nowrap;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: start;
-  gap: 1rem;
-  align-self: stretch;
-  height: fit-content;
-  flex-shrink: 0;
-  padding: 0.5rem;
-}
-
-.sdn-sidebar-container {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 100%;
-  min-height: 0;
-  min-width: 0;
-  overflow: hidden;
-}
-
-.sdn-bar-tabs-project {
-  background-color: hsl(0 0% 17.55%);
-  flex-wrap: nowrap;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 0.25rem;
-  align-self: stretch;
-  width: 100%;
-  height: fit-content;
-  flex-shrink: 0;
-  padding: 0.25rem;
-}
-
 .sdn-button {
-  background-color: hsl(0 0% 15%);
+  background-color: var(--sdn-swatch-primary);
   cursor: pointer;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding-top: 0.437rem;
-  padding-right: 0.765rem;
-  padding-bottom: 0.437rem;
-  padding-left: 0.656rem;
+  padding-top: 0.5rem;
+  padding-right: 0.875rem;
+  padding-bottom: 0.5rem;
+  padding-left: 0.75rem;
   width: fit-content;
   height: fit-content;
   flex-shrink: 0;
   border-radius: 99999px;
-  border: var(--hairline) solid hsl(0 0% 32%);
+  border: 0.125rem solid hsl(203 100% 62%);
 }
 
 .sdn-button-iconic {
-  background-color: hsl(0 0% 15%);
+  background-color: var(--sdn-swatch-primary);
   cursor: pointer;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: 0px;
-  transform: rotate(0deg);
+  gap: 0.5rem;
+  width: fit-content;
+  height: fit-content;
+  flex-shrink: 0;
+  padding: 0.25rem;
+  border-radius: 99999px;
+  border: var(--hairline) solid hsl(203 100% 74%);
+}
+
+.sdn-button-segmented {
+  background-color: var(--sdn-swatch-primary);
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: auto;
+  width: fit-content;
+  height: fit-content;
+  flex-shrink: 0;
+  padding: 0;
+  border-radius: 99999px;
+}
+
+.sdn-button-simple {
+  background-color: var(--sdn-swatch-primary);
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding-top: 0.5rem;
+  padding-right: 1rem;
+  padding-bottom: 0.5rem;
+  padding-left: 1rem;
+  width: fit-content;
+  height: fit-content;
+  flex-shrink: 0;
+  border-radius: 99999px;
+  border: 0.125rem solid hsl(203 100% 62%);
+}
+
+.sdn-button-tool {
+  background-color: hsl(203 100% 93%);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
   width: fit-content;
   height: fit-content;
   flex-shrink: 0;
   padding: 0.5rem;
-  border-radius: 99999px;
-  border: var(--hairline) solid hsl(0 0% 32%);
+  border-radius: 0.25rem;
+}
+
+.sdn-form-control {
+  border-bottom-style: solid;
+  flex-wrap: nowrap;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: start;
+  gap: 0.5rem;
+  align-self: stretch;
+  height: fit-content;
+  flex-shrink: 0;
+  border-color: hsl(203 0% 31%);
+}
+
+.sdn-form-control-iconic {
+  flex-wrap: nowrap;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: start;
+  gap: 0.5rem;
+  align-self: stretch;
+  height: fit-content;
+  flex-shrink: 0;
+  border: var(--hairline) solid hsl(203 100% 62%);
 }
 
 .sdn-frame {
@@ -381,16 +412,24 @@ html {
   height: fit-content;
   flex-shrink: 0;
   font-size: 1rem;
-  color: hsl(0 0% 0%);
+  color: hsl(203 0% 8%);
+}
+
+.sdn-image {
+  object-fit: cover;
+  align-self: stretch;
+  flex: 1 0 0;
 }
 
 .sdn-input {
-  background-color: hsl(203 0% 98%);
+  background-color: var(--sdn-swatch-white);
   color: hsl(203 0% 8%);
   align-self: stretch;
   height: fit-content;
   flex-shrink: 0;
   font-family: IBM Plex Sans;
+  font-style: normal;
+  font-synthesis-style: none;
   font-weight: 400;
   font-size: 1rem;
   line-height: 1.25;
@@ -399,27 +438,103 @@ html {
   border: var(--hairline) solid hsl(203 0% 31%);
 }
 
-.sdn-input-editor {
-  background-color: transparent;
-  color: hsl(0 0% 96%);
+.sdn-input-checkbox {
+  color: hsl(203 0% 8%);
+  accent-color: hsl(203 100% 62%);
+  width: fit-content;
+  height: fit-content;
+  flex-shrink: 0;
+}
+
+.sdn-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  align-self: stretch;
+  height: fit-content;
+  flex-shrink: 0;
+  padding: 0.5rem;
+}
+
+.sdn-item-input-row {
+  background-color: var(--sdn-seldon-dark-swatch-primary);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  padding-top: 0.25rem;
+  padding-right: 0.5rem;
+  padding-bottom: 0.25rem;
+  padding-left: 0.5rem;
+  align-self: stretch;
+  height: fit-content;
+  flex-shrink: 0;
+  margin: 0;
+  border-radius: 0.25rem;
+}
+
+.sdn-item-node-row {
+  background-color: var(--sdn-seldon-dark-swatch-primary);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  padding-top: 0.25rem;
+  padding-right: 0.5rem;
+  padding-bottom: 0.25rem;
+  padding-left: 0.5rem;
+  align-self: stretch;
+  height: fit-content;
+  flex-shrink: 0;
+  margin: 0;
+  border-radius: 0.25rem;
+  border: var(--hairline) solid hsl(0 0% 15%);
+}
+
+.sdn-item-section-row {
+  background-color: var(--sdn-seldon-dark-swatch-tint-1);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  padding-top: 0.25rem;
+  padding-right: 0.5rem;
+  padding-bottom: 0.25rem;
+  padding-left: 0.5rem;
+  align-self: stretch;
+  height: fit-content;
+  flex-shrink: 0;
+  margin: 0;
+  border-radius: 0.25rem;
+}
+
+.sdn-text {
+  color: hsl(203 0% 8%);
+  display: flex;
+  flex-direction: row;
   align-self: stretch;
   height: fit-content;
   flex-shrink: 0;
   font-family: IBM Plex Sans;
+  font-style: normal;
+  font-synthesis-style: none;
   font-weight: 400;
-  font-size: 0.75rem;
+  font-size: 1rem;
   line-height: 1.25;
-  padding: 0.25rem;
-  border-radius: 0.25rem;
-  border: var(--hairline) solid hsl(0 0% 23.5%);
+  white-space: normal;
 }
 
-.sdn-label {
-  color: hsl(0 0% 0%);
+.sdn-text-label {
+  color: hsl(203 0% 8%);
   width: fit-content;
   height: fit-content;
   flex-shrink: 0;
-  font-family: Inter, "IBM Plex Sans";
+  font-family: IBM Plex Sans;
   font-style: normal;
   font-synthesis-style: none;
   font-weight: 500;
@@ -431,637 +546,211 @@ html {
   overflow: hidden;
 }
 
-.sdn-list-item-tree {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  gap: 0.25rem;
-  align-self: stretch;
-  height: fit-content;
-  flex-shrink: 0;
-  padding: 0.25rem;
-}
-
-.sdn-list-item-tree-input {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  padding-top: 2px;
-  padding-right: 4px;
-  padding-bottom: 2px;
-  padding-left: 4px;
-  align-self: stretch;
-  height: fit-content;
-  flex-shrink: 0;
-  border-radius: 0.25rem;
-  border: var(--hairline) solid hsl(0 0% 15%);
-}
-
-.sdn-list-item-tree-node {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 2px;
-  align-self: stretch;
-  width: 100%;
-  min-width: 0;
-  list-style: none;
-  height: fit-content;
-  flex-shrink: 0;
-  padding: 4px;
-  border-radius: 0.25rem;
-  border: var(--hairline) solid hsl(60 100% 58% / 0%);
-}
-
-.sdn-list-item-tree-section {
-  background-color: hsl(0 0% 23.5%);
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 2px;
-  align-self: stretch;
-  width: 100%;
-  min-width: 0;
-  list-style: none;
-  height: fit-content;
-  flex-shrink: 0;
-  padding: 4px;
-  border-radius: 0.25rem;
-  border: var(--hairline) solid hsl(0 0% 15%);
-}
-
-.sdn-panel-sidebar {
-  background-color: hsl(203 0% 98%);
-  overflow: hidden;
-  flex-wrap: nowrap;
-  display: flex;
-  flex-direction: column;
-  gap: auto;
-  justify-content: space-between;
-  align-self: stretch;
-  height: 350px;
-  flex-shrink: 0;
-  border: var(--hairline) solid hsl(203 0% 77%);
-}
-
-.sdn-panel-sidebar-objects {
-  background-color: hsl(203 0% 98%);
-  overflow: hidden;
-  flex-wrap: nowrap;
-  display: flex;
-  flex-direction: column;
-  gap: auto;
-  justify-content: space-between;
-  align-self: stretch;
-  height: 350px;
-  flex-shrink: 0;
-  border: var(--hairline) solid hsl(203 0% 8%);
-}
-
-.sdn-text {
-  color: hsl(0 0% 0%);
-  display: flex;
+.sdn-text-subtitle {
+  color: hsl(203 0% 8%);
+  display: -webkit-box;
   flex-direction: row;
   align-self: stretch;
   height: fit-content;
   flex-shrink: 0;
-  font-family: Inter, "IBM Plex Sans";
+  font-family: IBM Plex Sans;
   font-style: normal;
   font-synthesis-style: none;
   font-weight: 400;
-  font-size: 1rem;
-  line-height: 1.25;
-  white-space: normal;
-}
-
-.sdn-title {
-  color: hsl(0 0% 0%);
-  align-self: stretch;
-  height: fit-content;
-  flex-shrink: 0;
-  font-family: Inter, "IBM Plex Sans";
-  font-style: normal;
-  font-synthesis-style: none;
-  font-weight: 500;
-  font-size: 1rem;
+  font-size: 0.875rem;
   line-height: 1.25;
   white-space: normal;
   overflow: hidden;
-  display: -webkit-box;
   webkit-line-clamp: 2;
   line-clamp: 2;
   webkit-box-orient: vertical;
   box-orient: vertical;
 }
 
-.sdn-bar-status--ylup {
-  background-color: hsl(203 100% 63.14%);
+.sdn-text-title {
+  color: hsl(203 0% 8%);
+  display: -webkit-box;
+  flex-direction: row;
+  align-self: stretch;
+  height: fit-content;
+  flex-shrink: 0;
+  font-family: IBM Plex Sans;
+  font-style: normal;
+  font-synthesis-style: none;
+  font-weight: 500;
+  font-size: 1rem;
+  line-height: 1.25;
+  white-space: normal;
+  overflow: hidden;
+  webkit-line-clamp: 2;
+  line-clamp: 2;
+  webkit-box-orient: vertical;
+  box-orient: vertical;
 }
 
-.sdn-bar-tabs--ql1g {
-  background-color: hsl(203 100% 63.14%);
-  padding-top: 0.5rem;
-  padding-right: 0.5rem;
-  padding-bottom: 0.5rem;
-  padding-left: 1rem;
-}
-
-.sdn-button--9f85 {
-  padding-top: 0.375rem;
-  padding-right: 0.656rem;
-  padding-bottom: 0.375rem;
-  padding-left: 0.562rem;
-}
-
-.sdn-button--dld2 {
-  background-color: hsl(203 100% 62%);
-  padding-top: 0.5rem;
-  padding-right: 0.875rem;
-  padding-bottom: 0.5rem;
-  padding-left: 0.75rem;
-}
-
-.sdn-button--iqez {
-  background-color: transparent;
-  padding: 0.25rem;
-  border: 0.069rem solid hsl(203 100% 69.6%);
-}
-
-.sdn-button-iconic--0urv {
-  background-color: transparent;
-  padding: 0.25rem;
-  border: var(--hairline) solid transparent;
-}
-
-.sdn-button-iconic--1iqs {
+.sdn-button--gdap {
   background-color: transparent;
   padding: 0.25rem;
 }
 
-.sdn-button-iconic--lube {
-  padding: 0.25rem;
+.sdn-button--llun {
+  padding-right: 0.75rem;
+}
+
+.sdn-button--suj9 {
+  border-bottom-left-radius: 99999px;
+  border-top-left-radius: 99999px;
+}
+
+.sdn-button--u50r {
+  border-top-right-radius: 99999px;
+  border-bottom-right-radius: 99999px;
+}
+
+.sdn-button--yvc2 {
+  flex-direction: column;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+}
+
+.sdn-button--zsvr {
+  background-color: var(--sdn-seldon-dark-swatch-primary);
+  border: 0.125rem solid hsl(0 0% 15%);
+}
+
+.sdn-button-iconic--0q0q {
+  background-color: var(--sdn-seldon-dark-swatch-primary);
   border: var(--hairline) solid hsl(0 0% 15%);
 }
 
-.sdn-button-iconic--x8g1 {
-  padding: 0.25rem;
+.sdn-button-iconic--eyvy {
+  background-color: transparent;
+  border: var(--hairline) solid transparent;
 }
 
-.sdn-frame--b7dc {
-  background-color: hsl(0 0% 15%);
-  border-top-color: hsl(203 0% 8%);
-  border-right-color: hsl(0 0% 17.55%);
-  border-bottom-color: hsl(203 0% 8%);
-  border-left-color: hsl(0 0% 17.55%);
-  padding: 0.25rem;
-  border-width: var(--hairline);
-  border-style: solid;
+.sdn-button-iconic--o4dt {
+  background-color: transparent;
+  border: var(--hairline) solid hsl(0 0% 15%);
 }
 
-.sdn-frame--tjae {
-  padding: 0.25rem;
+.sdn-button-iconic--sxib {
+  background-color: var(--sdn-seldon-dark-swatch-tint-1);
+  border: var(--hairline) solid hsl(0 0% 47%);
 }
 
-.sdn-frame--vbao {
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  margin: 0px;
+.sdn-form-control-iconic--bpko {
+  background-color: var(--sdn-seldon-dark-swatch-primary);
+  gap: 0.25rem;
+  padding-right: 0.25rem;
+  padding-left: 0.5rem;
+  width: 60%;
   border-radius: 0.25rem;
-  border: var(--hairline) solid hsl(0 0% 23.5%);
+  border: var(--hairline) solid hsl(0 0% 15%);
 }
 
-.sdn-icon--1aaz {
-  font-size: 0.75rem;
-  color: hsl(0 0% 96%);
+.sdn-frame--12v9 {
+  overflow: hidden;
+  gap: 0.25rem;
+  height: fit-content;
 }
 
-.sdn-icon--2okc {
-  font-size: 0.8rem;
-  color: hsl(203 0% 8%);
-}
-
-.sdn-icon--3pd3 {
+.sdn-icon--afcv {
   margin-top: 0px;
   margin-right: 0.25rem;
   margin-bottom: 0px;
   margin-left: 0px;
   font-size: 0.75rem;
-  color: hsl(0 0% 96%);
+  color: hsl(0 0% 98%);
 }
 
-.sdn-icon--cjc4 {
-  font-size: 0.75rem;
-  color: hsl(203 0% 98%);
-}
-
-.sdn-icon--fvvj {
-  font-size: 0.6rem;
-  color: hsl(203 0% 98%);
-}
-
-.sdn-icon--k7a9 {
-  font-size: 0.6rem;
-  color: hsl(0 0% 96%);
-}
-
-.sdn-icon--n5nb {
-  font-size: 0.7rem;
-  color: hsl(203 0% 98%);
-}
-
-.sdn-label--3dyv {
-  color: hsl(203 0% 98%);
-  font-family: IBM Plex Sans;
+.sdn-icon--kuax {
   font-size: 0.6rem;
 }
 
-.sdn-label--6qca {
-  color: hsl(0 0% 96%);
-  margin-right: 2px;
-  margin-left: 2px;
-  font-family: IBM Plex Sans;
-  font-weight: 300;
-  font-size: 0.624rem;
-  text-align: right;
-  text-transform: uppercase;
-}
-
-.sdn-label--a3km {
-  display: none;
-  color: hsl(203 0% 8%);
-  font-family: IBM Plex Sans;
-  font-weight: 400;
-  font-size: 0.6rem;
-}
-
-.sdn-label--bji1 {
-  color: hsl(0 0% 96%);
-  margin-top: 4px;
-  margin-right: 2px;
-  margin-bottom: 4px;
-  margin-left: 2px;
-  flex: 1 0 0;
-  font-family: IBM Plex Sans;
-  font-weight: 300;
-  font-size: 0.75rem;
-  text-align: left;
-}
-
-.sdn-label--img8 {
-  color: hsl(0 0% 96%);
-  margin-right: 2px;
-  margin-left: 2px;
-  flex: 1 1 auto;
-  min-width: 0;
-  font-family: IBM Plex Sans;
-  font-weight: 400;
-  font-size: 0.75rem;
-}
-
-.sdn-label--j5nz {
-  color: hsl(0 0% 96%);
-  margin-right: 0.25rem;
-  margin-left: 0.25rem;
-  flex: 1 0 0;
-  font-family: IBM Plex Sans;
-  font-size: 0.75rem;
-  text-transform: uppercase;
-}
-
-.sdn-label--m0gc {
-  color: hsl(203 0% 8%);
-  font-family: IBM Plex Sans;
+.sdn-icon--v1uc {
   font-size: 0.8rem;
 }
 
-.sdn-label--tw9w {
-  color: hsl(0 0% 96%);
+.sdn-icon--v2wj {
+  font-size: 0.75rem;
+  color: hsl(0 0% 98%);
+}
+
+.sdn-icon--xjpp {
+  font-size: 0.8rem;
+  color: hsl(0 0% 98%);
+}
+
+.sdn-input--edpy {
+  background-color: transparent;
+  color: hsl(0 0% 8%);
   flex: 1 0 0;
-  font-family: IBM Plex Sans;
-  font-weight: 400;
   font-size: 0.75rem;
+  padding: 0.25rem;
 }
 
-.sdn-label--u587 {
-  color: hsl(203 0% 98%);
-  font-family: IBM Plex Sans;
-  font-size: 0.7rem;
+.sdn-input--f7yx {
+  background-color: transparent;
+  flex: 1 0 0;
+  font-size: 0.875rem;
 }
 
-.sdn-label--vrkm {
-  color: hsl(0 0% 96%);
-  margin-right: 2px;
-  margin-left: 2px;
-  width: 30%;
-  font-family: IBM Plex Sans;
-  font-weight: 400;
-  font-size: 0.75rem;
-}
-
-.sdn-text--anr7 {
-  color: hsl(203 0% 98%);
+.sdn-input-checkbox--vxvl {
+  display: flex;
+  color: hsl(0 0% 8%);
+  accent-color: hsl(0 0% 15%);
   align-items: center;
   justify-content: center;
+}
+
+.sdn-text-label--2umo {
+  color: hsl(0 0% 98%);
+  font-size: 0.8rem;
+}
+
+.sdn-text-label--duwf {
+  color: hsl(0 0% 98%);
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
   flex: 1 0 0;
-  font-family: Inconsolata, "IBM Plex Sans";
   font-size: 0.75rem;
 }
 
-.sdn-text--bx7i {
-  color: hsl(203 0% 98%);
-  align-items: center;
-  justify-content: start;
+.sdn-text-label--gnq2 {
+  display: none;
+  font-size: 0.6rem;
+}
+
+.sdn-text-label--hljl {
+  color: hsl(0 0% 98%);
+  font-size: 0.5rem;
+}
+
+.sdn-text-label--njzv {
+  font-size: 0.8rem;
+}
+
+.sdn-text-label--t8l6 {
+  color: hsl(0 0% 98%);
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
   flex: 1 0 0;
-  font-family: Inconsolata, "IBM Plex Sans";
+  font-size: 0.75rem;
+  text-transform: uppercase;
+}
+
+.sdn-text-label--tnwc {
+  color: hsl(0 0% 98%);
+  flex: 1 0 0;
   font-size: 0.75rem;
 }
 
-.sdn-text--e2dx {
-  color: hsl(203 0% 98%);
-  align-items: center;
-  justify-content: end;
-  flex: 1 0 0;
-  font-family: Inconsolata, "IBM Plex Sans";
-  font-size: 0.75rem;
+.sdn-text-subtitle--mw2u {
+  color: hsl(0 0% 8%);
+  webkit-line-clamp: 3;
+  line-clamp: 3;
 }
 
-.sdn-text--flvt {
-  color: hsl(0 0% 96%);
-  margin-right: 0.5rem;
-  margin-left: 0.25rem;
-  flex: 1 0 0;
-  font-family: IBM Plex Sans;
-  font-weight: 500;
-  font-size: 0.75rem;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-}
-
-.sdn-text--gfwp {
-  color: hsl(203 0% 8%);
-  align-items: center;
-  justify-content: start;
-  flex: 1 0 0;
-  font-family: Inconsolata, "IBM Plex Sans";
-  font-size: 0.75rem;
-}
-
-.sdn-text--ml0i {
-  color: hsl(0 0% 96%);
-  align-items: center;
-  justify-content: start;
-  margin-right: 0.5rem;
-  margin-left: 0.25rem;
-  flex: 1 0 0;
-  font-family: IBM Plex Sans;
-  font-weight: 500;
-  font-size: 0.75rem;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-}
-
-.sdn-text--omnx {
-  color: hsl(203 0% 8%);
-  align-items: center;
-  justify-content: end;
-  flex: 1 0 0;
-  font-family: Inconsolata, "IBM Plex Sans";
-  font-size: 0.75rem;
-}
-
-.sdn-text--v9vj {
-  color: hsl(203 0% 8%);
-  align-items: center;
-  justify-content: center;
-  flex: 1 0 0;
-  font-family: Inconsolata, "IBM Plex Sans";
-  font-size: 0.75rem;
-}
-
-/* Tokens · Theme Variables */
-:root {
-  /********************************************
- *                                          *
- *           Tokens · Theme Variables       *
- *                                          *
- ********************************************/
-
-  /* Core */
-  --sdn-ratio: 1.25;
-  --sdn-font-size: 16px;
-  --sdn-size: 1;
-  /* Font Families */
-  --sdn-font-family-primary: "Inter";
-  --sdn-font-family-secondary: "Inter";
-  /* Colors */
-  --sdn-color-base-hue: 0;
-  --sdn-color-base-saturation: 0%;
-  --sdn-color-base-lightness: 0%;
-  --sdn-color-harmony: 5;
-  --sdn-color-angle: 20deg;
-  --sdn-color-step: 20;
-  --sdn-color-white-point: 100%;
-  --sdn-color-gray-point: 50%;
-  --sdn-color-black-point: 0%;
-  --sdn-color-bleed: 0;
-  --sdn-color-contrast-ratio: 2.5;
-  /* Swatches */
-  --sdn-swatch-background: hsl(0 4% 8%);
-  --sdn-swatch-seldon-red: hsl(0 100% 65%);
-  --sdn-swatch-seldon-green: hsl(135 76% 59%);
-  --sdn-swatch-seldon-blue: hsl(203 100% 62%);
-  --sdn-swatch-seldon-yellow: hsl(60 100% 46%);
-  --sdn-swatch-seldon-purple: hsl(300 76% 48%);
-  --sdn-swatch-white: hsl(0 0% 100%);
-  --sdn-swatch-gray: hsl(0 0% 50%);
-  --sdn-swatch-black: hsl(0 0% 0%);
-  --sdn-swatch-primary: hsl(0 0% 0%);
-  --sdn-swatch-tint-1: hsl(0 0% 20%);
-  --sdn-swatch-tint-2: hsl(0 0% 40%);
-  --sdn-swatch-tint-3: hsl(0 0% 60%);
-  --sdn-swatch-tint-4: hsl(0 0% 80%);
-  /* Sizes */
-  --sdn-size-tiny: 0.125rem;
-  --sdn-size-xxsmall: 0.25rem;
-  --sdn-size-xsmall: 0.5rem;
-  --sdn-size-small: 0.75rem;
-  --sdn-size-medium: 1rem;
-  --sdn-size-large: 1.501rem;
-  --sdn-size-xlarge: 2.002rem;
-  --sdn-size-xxlarge: 2.998rem;
-  --sdn-size-huge: 3.998rem;
-  /* Margins */
-  --sdn-margin-tight: 0.25rem;
-  --sdn-margin-compact: 0.5rem;
-  --sdn-margin-cozy: 1rem;
-  --sdn-margin-comfortable: 2.002rem;
-  --sdn-margin-open: 3.998rem;
-  /* Paddings */
-  --sdn-padding-tight: 0.25rem;
-  --sdn-padding-compact: 0.5rem;
-  --sdn-padding-cozy: 1rem;
-  --sdn-padding-comfortable: 2.002rem;
-  --sdn-padding-open: 3.998rem;
-  /* Gaps */
-  --sdn-gap-tight: 0.25rem;
-  --sdn-gap-compact: 0.5rem;
-  --sdn-gap-cozy: 1rem;
-  --sdn-gap-comfortable: 2.002rem;
-  --sdn-gap-open: 3.998rem;
-  /* Corners */
-  --sdn-corners-tight: 0.25rem;
-  --sdn-corners-compact: 0.5rem;
-  --sdn-corners-cozy: 1rem;
-  --sdn-corners-comfortable: 1.501rem;
-  --sdn-corners-open: 2.002rem;
-  /* Font Sizes */
-  --sdn-font-size-tiny: 0.5rem;
-  --sdn-font-size-xxsmall: 0.624rem;
-  --sdn-font-size-xsmall: 0.75rem;
-  --sdn-font-size-small: 0.875rem;
-  --sdn-font-size-medium: 1rem;
-  --sdn-font-size-large: 1.501rem;
-  --sdn-font-size-xlarge: 2.002rem;
-  --sdn-font-size-xxlarge: 2.998rem;
-  --sdn-font-size-huge: 3.998rem;
-  /* Font Weights */
-  --sdn-font-weight-thin: 100;
-  --sdn-font-weight-xlight: 200;
-  --sdn-font-weight-light: 300;
-  --sdn-font-weight-normal: 400;
-  --sdn-font-weight-medium: 500;
-  --sdn-font-weight-semibold: 600;
-  --sdn-font-weight-bold: 700;
-  --sdn-font-weight-xbold: 800;
-  --sdn-font-weight-black: 900;
-  /* Line Heights */
-  --sdn-line-height-none: 1;
-  --sdn-line-height-solid: 1.15;
-  --sdn-line-height-tight: 1.25;
-  --sdn-line-height-compact: 1.33;
-  --sdn-line-height-cozy: 1.5;
-  --sdn-line-height-comfortable: 2;
-  --sdn-line-height-open: 2.5;
-  /* Border Widths */
-  --sdn-border-width-xsmall: 0.031rem;
-  --sdn-border-width-small: 0.069rem;
-  --sdn-border-width-medium: 0.125rem;
-  --sdn-border-width-large: 0.25rem;
-  --sdn-border-width-xlarge: 0.5rem;
-
-  /* Theme: Seldon */
-  /* Core */
-  --sdn-seldon-ratio: 1.25;
-  --sdn-seldon-font-size: 16px;
-  --sdn-seldon-size: 1;
-  /* Font Families */
-  --sdn-seldon-font-family-primary: "IBM Plex Sans";
-  --sdn-seldon-font-family-secondary: "IBM Plex Serif";
-  /* Colors */
-  --sdn-seldon-color-base-hue: 203;
-  --sdn-seldon-color-base-saturation: 100%;
-  --sdn-seldon-color-base-lightness: 62%;
-  --sdn-seldon-color-harmony: 5;
-  --sdn-seldon-color-angle: 24deg;
-  --sdn-seldon-color-step: 6;
-  --sdn-seldon-color-white-point: 98%;
-  --sdn-seldon-color-gray-point: 50%;
-  --sdn-seldon-color-black-point: 8%;
-  --sdn-seldon-color-bleed: 0;
-  --sdn-seldon-color-contrast-ratio: 2.5;
-  /* Swatches */
-  --sdn-seldon-swatch-background: hsl(0 4% 8%);
-  --sdn-seldon-swatch-punch: hsl(20 95% 60%);
-  --sdn-seldon-swatch-positive: hsl(135 76% 59%);
-  --sdn-seldon-swatch-negative: hsl(0 100% 65%);
-  --sdn-seldon-swatch-warning: hsl(60 100% 58%);
-  --sdn-seldon-swatch-accent: hsl(300 76% 48%);
-  --sdn-seldon-swatch-charcoal: hsl(0 0% 15%);
-  --sdn-seldon-swatch-pearl: hsl(0 0% 96%);
-  --sdn-seldon-swatch-white: hsl(203 0% 98%);
-  --sdn-seldon-swatch-gray: hsl(203 0% 50%);
-  --sdn-seldon-swatch-black: hsl(203 0% 8%);
-  --sdn-seldon-swatch-primary: hsl(203 100% 62%);
-  --sdn-seldon-swatch-tint-1: hsl(203 100% 68%);
-  --sdn-seldon-swatch-tint-2: hsl(203 100% 74%);
-  --sdn-seldon-swatch-tint-3: hsl(203 100% 80%);
-  --sdn-seldon-swatch-tint-4: hsl(203 100% 86%);
-  /* Sizes */
-  --sdn-seldon-size-tiny: 0.125rem;
-  --sdn-seldon-size-xxsmall: 0.25rem;
-  --sdn-seldon-size-xsmall: 0.5rem;
-  --sdn-seldon-size-small: 0.75rem;
-  --sdn-seldon-size-medium: 1rem;
-  --sdn-seldon-size-large: 1.501rem;
-  --sdn-seldon-size-xlarge: 2.002rem;
-  --sdn-seldon-size-xxlarge: 2.998rem;
-  --sdn-seldon-size-huge: 3.998rem;
-  /* Margins */
-  --sdn-seldon-margin-tight: 0.25rem;
-  --sdn-seldon-margin-compact: 0.5rem;
-  --sdn-seldon-margin-cozy: 1rem;
-  --sdn-seldon-margin-comfortable: 2.002rem;
-  --sdn-seldon-margin-open: 3.998rem;
-  /* Paddings */
-  --sdn-seldon-padding-tight: 0.25rem;
-  --sdn-seldon-padding-compact: 0.5rem;
-  --sdn-seldon-padding-cozy: 1rem;
-  --sdn-seldon-padding-comfortable: 2.002rem;
-  --sdn-seldon-padding-open: 3.998rem;
-  /* Gaps */
-  --sdn-seldon-gap-tight: 0.25rem;
-  --sdn-seldon-gap-compact: 0.5rem;
-  --sdn-seldon-gap-cozy: 1rem;
-  --sdn-seldon-gap-comfortable: 2.002rem;
-  --sdn-seldon-gap-open: 3.998rem;
-  /* Corners */
-  --sdn-seldon-corners-tight: 0.25rem;
-  --sdn-seldon-corners-compact: 0.5rem;
-  --sdn-seldon-corners-cozy: 1rem;
-  --sdn-seldon-corners-comfortable: 1.501rem;
-  --sdn-seldon-corners-open: 2.002rem;
-  /* Font Sizes */
-  --sdn-seldon-font-size-tiny: 0.5rem;
-  --sdn-seldon-font-size-xxsmall: 0.624rem;
-  --sdn-seldon-font-size-xsmall: 0.75rem;
-  --sdn-seldon-font-size-small: 0.875rem;
-  --sdn-seldon-font-size-medium: 1rem;
-  --sdn-seldon-font-size-large: 1.501rem;
-  --sdn-seldon-font-size-xlarge: 2.002rem;
-  --sdn-seldon-font-size-xxlarge: 2.998rem;
-  --sdn-seldon-font-size-huge: 3.998rem;
-  /* Font Weights */
-  --sdn-seldon-font-weight-thin: 100;
-  --sdn-seldon-font-weight-xlight: 200;
-  --sdn-seldon-font-weight-light: 300;
-  --sdn-seldon-font-weight-normal: 400;
-  --sdn-seldon-font-weight-medium: 500;
-  --sdn-seldon-font-weight-semibold: 600;
-  --sdn-seldon-font-weight-bold: 700;
-  --sdn-seldon-font-weight-xbold: 800;
-  --sdn-seldon-font-weight-black: 900;
-  /* Line Heights */
-  --sdn-seldon-line-height-none: 1;
-  --sdn-seldon-line-height-solid: 1.15;
-  --sdn-seldon-line-height-tight: 1.25;
-  --sdn-seldon-line-height-compact: 1.33;
-  --sdn-seldon-line-height-cozy: 1.5;
-  --sdn-seldon-line-height-comfortable: 2;
-  --sdn-seldon-line-height-open: 2.5;
-  /* Border Widths */
-  --sdn-seldon-border-width-xsmall: 0.031rem;
-  --sdn-seldon-border-width-small: 0.069rem;
-  --sdn-seldon-border-width-medium: 0.125rem;
-  --sdn-seldon-border-width-large: 0.25rem;
-  --sdn-seldon-border-width-xlarge: 0.5rem;
+.sdn-text-title--09nl {
+  color: hsl(0 0% 8%);
 }

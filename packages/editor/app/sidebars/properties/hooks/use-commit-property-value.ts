@@ -196,6 +196,12 @@ export function useCommitPropertyValue({
 
       // Handle reset values (Default, None, empty string)
       if (RESET_VALUES.includes(newValue as (typeof RESET_VALUES)[number])) {
+        // Theme rows reset their entry override; node reset paths do not apply.
+        if (themeEditingContext?.isThemeEditing) {
+          themeEditingContext.resetThemeProperty(property)
+          onDone()
+          return
+        }
         // Check if this is a compound property with a preset sub-property
         if (property.isCompound) {
           const presetPropertyKey = compoundPresetPropertyKey(property.key)

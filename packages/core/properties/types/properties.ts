@@ -1,26 +1,3 @@
-import { IconId } from "../../icon-sets"
-import {
-  ThemeDimensionKey,
-  ThemeFontSizeKey,
-  ThemeGapKey,
-  ThemeSizeKey,
-  ThemeSwatchKey,
-} from "../../themes/types"
-import {
-  Align,
-  BorderCollapse,
-  Cursor,
-  HtmlElement,
-  ImageFit,
-  InputType,
-  Resize,
-  ScreenSize,
-  Scroll,
-  ScrollbarStyle,
-  TextAlign,
-  TextDecoration,
-  WrapperElement,
-} from "../values"
 import {
   AlignValue,
   BackgroundLayer,
@@ -70,7 +47,6 @@ import {
 } from "../values"
 import { CursorValue } from "../values/attributes/cursor"
 import { InheritValue } from "../values/shared/inherit/inherit"
-import { Restricted } from "./helpers"
 
 /**
  * Every catalog property key and the stored value shape for that key on a node.
@@ -79,49 +55,49 @@ import { Restricted } from "./helpers"
  */
 export type Properties = Partial<{
   display: DisplayValue | EmptyValue
-  htmlElement: Restricted<HtmlElementValue | EmptyValue, HtmlElement>
-  wrapperElement: Restricted<WrapperElementValue | EmptyValue, WrapperElement>
+  htmlElement: HtmlElementValue | EmptyValue
+  wrapperElement: WrapperElementValue | EmptyValue
   content: ContentValue | EmptyValue
-  symbol: Restricted<SymbolValue | EmptyValue, IconId>
-  source: Restricted<ImageSourceValue | EmptyValue, string>
-  imageFit: Restricted<ImageFitValue | EmptyValue, ImageFit>
+  symbol: SymbolValue | EmptyValue
+  source: ImageSourceValue | EmptyValue
+  imageFit: ImageFitValue | EmptyValue
   altText: ContentValue | EmptyValue
-  inputType: Restricted<InputTypeValue | EmptyValue, InputType>
+  inputType: InputTypeValue | EmptyValue
   placeholder: ContentValue | EmptyValue
   checked: CheckedValue
   ariaLabel: ContentValue | EmptyValue
   ariaHidden: BooleanValue | EmptyValue
-  size: Restricted<SizeValue | EmptyValue, ThemeSizeKey>
-  buttonSize: Restricted<ButtonSizeValue | EmptyValue, ThemeFontSizeKey>
+  size: SizeValue | EmptyValue
+  buttonSize: ButtonSizeValue | EmptyValue
   board: BoardCompound
   screenWidth: ScreenWidthValue
   screenHeight: ScreenHeightValue
-  cursor: Restricted<CursorValue | EmptyValue, Cursor>
+  cursor: CursorValue | EmptyValue
 
   direction: DirectionValue | EmptyValue
   placement: PlacementValue
   position: PositionValue
   orientation: OrientationValue | EmptyValue
-  align: Restricted<AlignValue | EmptyValue, Align>
-  width: Restricted<DimensionValue | EmptyValue, ThemeDimensionKey>
-  height: Restricted<DimensionValue | EmptyValue, ThemeDimensionKey>
+  align: AlignValue | EmptyValue
+  width: DimensionValue | EmptyValue
+  height: DimensionValue | EmptyValue
   margin: MarginValue
   padding: PaddingValue
-  gap: Restricted<GapValue | EmptyValue, ThemeGapKey>
-  rotation: Restricted<RotationValue | EmptyValue, number>
+  gap: GapValue | EmptyValue
+  rotation: RotationValue | EmptyValue
   wrapChildren: BooleanValue | EmptyValue
   clip: BooleanValue | EmptyValue
-  columns: Restricted<ColumnCountValue | EmptyValue, number>
-  rows: Restricted<RowCountValue | EmptyValue, number>
-  cellAlign: Restricted<AlignValue | InheritValue | EmptyValue, Align>
-  dimension: Restricted<DimensionValue | EmptyValue, ThemeDimensionKey>
-  resize: Restricted<ResizeValue | EmptyValue, Resize>
-  screenSize: Restricted<ScreenSizeValue | EmptyValue, ScreenSize>
+  columns: ColumnCountValue | EmptyValue
+  rows: RowCountValue | EmptyValue
+  cellAlign: AlignValue | InheritValue | EmptyValue
+  dimension: DimensionValue | EmptyValue
+  resize: ResizeValue | EmptyValue
+  screenSize: ScreenSizeValue | EmptyValue
 
-  color: Restricted<ColorValue | EmptyValue, ThemeSwatchKey>
-  accentColor: Restricted<ColorValue | EmptyValue, ThemeSwatchKey>
-  brightness: Restricted<BrightnessValue | EmptyValue, number>
-  opacity: Restricted<OpacityValue | EmptyValue, number>
+  color: ColorValue | EmptyValue
+  accentColor: ColorValue | EmptyValue
+  brightness: BrightnessValue | EmptyValue
+  opacity: OpacityValue | EmptyValue
   background: BackgroundLayer[]
   border: BorderCompound
   borderTop: BorderCompound
@@ -129,16 +105,16 @@ export type Properties = Partial<{
   borderBottom: BorderCompound
   borderLeft: BorderCompound
   corners: CornersValue
-  borderCollapse: Restricted<BorderCollapseValue | EmptyValue, BorderCollapse>
+  borderCollapse: BorderCollapseValue | EmptyValue
 
   font: FontCompound
-  textAlign: Restricted<TextAlignValue | EmptyValue, TextAlign>
-  textDecoration: Restricted<TextDecorationValue | EmptyValue, TextDecoration>
+  textAlign: TextAlignValue | EmptyValue
+  textDecoration: TextDecorationValue | EmptyValue
   wrapText: BooleanValue | EmptyValue
-  lines: Restricted<LinesValue | EmptyValue, number>
+  lines: LinesValue | EmptyValue
 
   gradient: GradientCompound[]
   shadow: ShadowCompound[]
-  scroll: Restricted<ScrollValue | EmptyValue, Scroll>
-  scrollbarStyle: Restricted<ScrollbarStyleValue | EmptyValue, ScrollbarStyle>
+  scroll: ScrollValue | EmptyValue
+  scrollbarStyle: ScrollbarStyleValue | EmptyValue
 }>

@@ -4,51 +4,12 @@ import path from "node:path"
 import { IconId } from "@seldon/core/icon-sets"
 
 import { ExportOptions, FileToExport } from "../../types"
-import { getIconComponentName } from "../discovery/get-icon-component-name"
-import { getIconPath } from "../utils/find-icon-path"
+import { getIconSourcePath, resolveIconExport } from "../utils/find-icon-path"
 
 /**
- * Recursively find an icon component file in the icon-sets/catalog directory structure
- *
- * @param componentName - The component name (e.g., "IconMaterialAdd")
- * @param rootDir - Root directory to search from (icon-sets/catalog)
- * @returns Relative path from rootDir to the component file, or null if not found
- */
-function findIconComponentFile(
-  componentName: string,
-  rootDir: string,
-): string | null {
-  const fileName = `${componentName}.tsx`
-
-  function searchDir(dir: string): string | null {
-    if (!fs.existsSync(dir)) {
-      return null
-    }
-
-    const entries = fs.readdirSync(dir, { withFileTypes: true })
-
-    for (const entry of entries) {
-      const fullPath = path.join(dir, entry.name)
-
-      if (entry.isDirectory() && !entry.name.startsWith(".")) {
-        const found = searchDir(fullPath)
-        if (found) {
-          return found
-        }
-      } else if (entry.isFile() && entry.name === fileName) {
-        // Return relative path from rootDir
-        return path.relative(rootDir, fullPath).replace(/\\/g, "/")
-      }
-    }
-
-    return null
-  }
-
-  return searchDir(rootDir)
-}
-
-/**
- * Get icon files to export from icon-sets/catalog directory structure
+ * Get icon files to export from the icon-sets/catalog directory structure.
+ * Icons whose catalog file cannot be resolved are skipped with a warning so
+ * the emitted files always match the generated icon index.
  *
  * @param usedIconIds - Set of icon IDs that are used in the workspace (for tree shaking)
  * @param options - Export options
@@ -59,18 +20,6 @@ export function getIcons(
   options: ExportOptions,
 ): FileToExport[] {
   const icons: FileToExport[] = []
-  const iconsSetsPath = path.join(
-    options.rootDirectory,
-    "packages",
-    "core",
-    "icon-sets",
-    "catalog",
-  )
-
-  // Check if the icon-sets/catalog directory exists
-  if (!fs.existsSync(iconsSetsPath)) {
-    return icons
-  }
 
   for (const iconId of usedIconIds) {
     const fromReader = options.assetReader?.getIconExportSource?.(iconId)
@@ -86,7 +35,7 @@ export function getIcons(
       continue
     }
 
-    // Special handling for __default__ icon - it lives outside icon sets and should be generated directly
+    // The __default__ icon lives outside icon sets and is generated directly
     if (iconId === "__default__") {
       const outputPath = path.join(
         options.output.componentsFolder,
@@ -94,7 +43,6 @@ export function getIcons(
         "IconDefault.tsx",
       )
 
-      // Generate IconDefault component directly (it's a special fallback icon)
       const iconDefaultContent = `import { SVGAttributes } from "react"
 
 export function IconDefault(props: SVGAttributes<SVGSVGElement>) {
@@ -128,18 +76,17 @@ export function IconDefault(props: SVGAttributes<SVGSVGElement>) {
       continue
     }
 
-    const componentName = getIconComponentName(iconId)
-    const fileName = `${componentName}.tsx`
+    const resolved = resolveIconExport(iconId, options.rootDirectory)
+    if (!resolved) {
+      console.warn(`Skipping icon "${iconId}": no catalog file found`)
+      continue
+    }
 
-    // Get the relative path for this icon
-    const iconRelativePath = getIconPath(iconId, options.rootDirectory)
-
-    // Use the path from icon-sets/catalog/
-    const sourcePath = path.join(iconsSetsPath, `${iconRelativePath}.tsx`)
+    const sourcePath = getIconSourcePath(resolved, options.rootDirectory)
     const outputPath = path.join(
       options.output.componentsFolder,
       "icons",
-      `${iconRelativePath}.tsx`,
+      `${resolved.relativePath}.tsx`,
     )
 
     const iconFileFromReader = options.assetReader?.readIconFile(sourcePath)
@@ -156,6 +103,8 @@ export function IconDefault(props: SVGAttributes<SVGSVGElement>) {
         path: outputPath,
         content: fs.readFileSync(sourcePath, "utf8"),
       })
+    } else {
+      console.warn(`Skipping icon "${iconId}": source file not readable`)
     }
   }
   return icons

@@ -5,7 +5,11 @@ import { isThemeValueKey } from "@seldon/core/helpers/validation/theme"
 import { IconId } from "@seldon/core/icon-sets"
 import { IconSeldonMissing } from "@seldon/core/icon-sets/catalog/seldon/user-interface/actions/IconSeldonMissing"
 import { useThemes } from "@lib/themes/hooks/use-themes"
-import { ThemeSwatches } from "@seldon/components/custom-components"
+import {
+  Icon,
+  IconProps,
+  ThemeSwatches,
+} from "@seldon/components/custom-components"
 import { IconCustomColorValue } from "@seldon/components/custom-icons"
 import { IconSeldonToken } from "@seldon/components/icons"
 import { LoadEditorIcons } from "@app/LoadEditorIcons"
@@ -20,7 +24,6 @@ interface RenderPropertyOptionIconDeps {
   theme?: Theme
   workspace: Workspace
   themes: ReturnType<typeof useThemes>
-  getIconComponent: () => React.ComponentType | undefined
 }
 
 /**
@@ -33,7 +36,6 @@ export function createPropertyOptionIconRenderer({
   theme,
   workspace,
   themes,
-  getIconComponent,
 }: RenderPropertyOptionIconDeps): (option?: {
   value: string
   name: string
@@ -81,11 +83,13 @@ export function createPropertyOptionIconRenderer({
       return <LoadEditorIcons iconId={option.value as IconId} />
     }
 
-    const IconComponent = getIconComponent()
-    if (IconComponent) {
-      return <IconComponent />
-    }
-
-    return null
+    // The generated icon class pins a dark color, so the icon inherits the
+    // menu text color instead.
+    return (
+      <Icon
+        icon={property.icon as IconProps["icon"]}
+        style={{ color: "inherit" }}
+      />
+    )
   }
 }

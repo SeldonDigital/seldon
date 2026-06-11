@@ -1,6 +1,7 @@
 import { IconId } from "@seldon/core/icon-sets"
 
-import { getIconComponentName } from "../../discovery/get-icon-component-name"
+import { ExportOptions } from "../../../types"
+import { resolveIconExport } from "../../utils/find-icon-path"
 import {
   TransformStrategy,
   transformSource,
@@ -9,6 +10,7 @@ import {
 export function insertIconMap(
   source: string,
   usedIconIds: Set<IconId> | IconId[] | undefined,
+  options: ExportOptions,
 ) {
   let content = "const iconMap = {"
 
@@ -18,9 +20,12 @@ export function insertIconMap(
       usedIconIds instanceof Set ? usedIconIds : new Set(usedIconIds)
 
     for (const icon of uniqueIconIds) {
-      const componentName = getIconComponentName(icon)
-      const mapEntry = `"${icon}": Icons.${componentName}`
-      content += `${mapEntry},\n`
+      const resolved = resolveIconExport(icon, options.rootDirectory)
+      // The map must stay total over the IconProps["icon"] union, so ids
+      // without a catalog file fall back to the default icon instead of
+      // referencing an export that was never emitted.
+      const componentName = resolved?.componentName ?? "IconDefault"
+      content += `"${icon}": Icons.${componentName},\n`
     }
   }
 

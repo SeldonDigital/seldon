@@ -20,7 +20,10 @@ import { useObjectProperties } from "@lib/workspace/hooks/use-object-properties"
 import { useDebugMode } from "@lib/hooks/use-debug-mode"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { useImageUploadPanel } from "@app/panels/hooks/use-upload-image-panel"
+import { FormControlIconicProps } from "@seldon/components/elements/FormControlIconic"
 import { buildPropertyOptions } from "../helpers/build-property-options"
+import { buildResetMenuEntry } from "../../shared/build-reset-menu-entry"
+import { ICONIC_BUTTON_SELECTOR } from "../../helpers/iconic-button"
 import {
   FRAME_REF_ATTR,
   FRAME_REF_SELECTOR,
@@ -36,6 +39,10 @@ import {
 import { FlatProperty } from "../helpers/properties-data"
 import { getPropertyRegistryEntry } from "../helpers/properties-registry"
 import {
+  getFormControlStyle,
+  getRowStyle,
+} from "../helpers/property-row-state-styles"
+import {
   getPropertyLabelStyle,
   getPropertyRowStyle,
 } from "../helpers/property-styling-tokens"
@@ -48,7 +55,10 @@ import {
   isSwatchIconPropertyKey,
 } from "../helpers/theme-token-icon-color"
 import { usePropertyControlData } from "./use-property-control-data"
-import { usePropertyExpansion } from "./use-property-expansion"
+import {
+  useIsPropertyExpanded,
+  usePropertyExpansion,
+} from "./use-property-expansion"
 import { usePropertyFrameHover } from "./use-property-frame-hover"
 
 export interface RowPropertyProps {
@@ -63,10 +73,11 @@ export interface RowPropertyProps {
 }
 
 /**
- * ViewModel for a property row. Owns the edit/hover state, display derivation,
- * interaction commands, and the assembled props for `ListItemTreeInput`,
- * `PropertyValueCell`, and the reset menu, so `RowProperty` stays a binding
- * shell. Child rows are returned as plain props for the shell to recurse on.
+ * ViewModel hook for a property row. Owns the edit/hover state, display
+ * derivation, interaction commands, and the assembled props for the generated
+ * `ItemInputRow`, `PropertyValueCell`, and the reset menu, so
+ * `VMProperty` stays a binding shell. Child rows are returned as plain
+ * props for the shell to recurse on.
  */
 export function useRowProperty({
   property,
@@ -80,7 +91,7 @@ export function useRowProperty({
 }: RowPropertyProps) {
   const { showPropertyTypes } = useDebugMode()
   const { resetProperty } = useObjectProperties()
-  const { isPropertyExpanded, toggleProperty } = usePropertyExpansion()
+  const { toggleProperty } = usePropertyExpansion()
   const themes = useThemes()
   const { getPropertyValueForDisplay, getUnit, shouldShowMenuIcon } =
     usePropertyControlData({ property, theme })
@@ -99,24 +110,12 @@ export function useRowProperty({
   }, [allProperties, property.key, property.isCompound, property.isShorthand])
 
   const hasChildren = children.length > 0
-  const isExpanded = isPropertyExpanded(property.key)
+  const isExpanded = useIsPropertyExpanded(property.key)
   const labelText = property.label
   const isThemeAssignment = property.pickerVariant === "themeAssignment"
 
-  const iconName = property.icon
-  // Convert property.icon string to icon ID format, e.g. "IconTextValue" ->
-  // "icon-custom-text-value".
-  const iconId = useMemo(() => {
-    if (iconName.startsWith("Icon")) {
-      const name = iconName.replace("Icon", "")
-      const kebab = name
-        .replace(/([A-Z])/g, "-$1")
-        .toLowerCase()
-        .replace(/^-/, "")
-      return `icon-custom-${kebab}`
-    }
-    return "seldon-component"
-  }, [iconName])
+  // Property icons are real icon ids resolved by the custom Icon wrapper.
+  const iconId = property.icon
 
   // Can reset only when overridden. Font collection family rows (`family.*`) and
   // icon set rows (`icon.*`) carry an override status for color only; they have
@@ -186,11 +185,10 @@ export function useRowProperty({
   const rowColor = rowStyle.color as string | undefined
   const { setIsHovered, style: hoverStyle } = usePropertyFrameHover(rowColor)
 
-  // Check if property supports upload (combo control + IconImageValue icon).
+  // Check if property supports upload (combo control + image icon).
   const registryEntry = getPropertyRegistryEntry(property.key)
   const supportsUpload =
-    registryEntry?.control === "combo" &&
-    registryEntry?.icon === "IconImageValue"
+    registryEntry?.control === "combo" && registryEntry?.icon === "seldon-image"
 
   const handleToggle = () => {
     if (hasChildren) {
@@ -199,6 +197,11 @@ export function useRowProperty({
   }
 
   const handleReset = () => {
+    // Theme rows reset their entry override; node dispatches do not apply.
+    if (themeEditingContext?.isThemeEditing) {
+      themeEditingContext.resetThemeProperty(property)
+      return
+    }
     if (property.isSubProperty) {
       const parsed = parsePropertyPath(property.key)
       if (parsed.kind === "layered-facet") {
@@ -250,7 +253,7 @@ export function useRowProperty({
     }
 
     const target = event.target as HTMLElement
-    if (target.closest("button") || target.closest(".sdn-button-iconic")) {
+    if (target.closest("button") || target.closest(ICONIC_BUTTON_SELECTOR)) {
       return
     }
 
@@ -279,7 +282,7 @@ export function useRowProperty({
     const target = event.target as HTMLElement
     if (
       target.closest("button") ||
-      target.closest(".sdn-button-iconic") ||
+      target.closest(ICONIC_BUTTON_SELECTOR) ||
       isEditingProperty ||
       property.isDimmed ||
       !hasChildren
@@ -344,12 +347,11 @@ export function useRowProperty({
 
   const resetActions: MenuEntry[] = canReset
     ? [
-        {
-          id: "reset",
+        buildResetMenuEntry({
           label: `Reset ${labelText}`,
           onSelect: handleReset,
           testId: `property-row-${property.key}-reset`,
-        },
+        }),
       ]
     : []
 
@@ -376,32 +378,23 @@ export function useRowProperty({
 
   const rowCursor = hasChildren || property.controlType ? "pointer" : "default"
 
+  // Suppress the form control's internal icon/input/button slots: the row's
+  // child slots (value icon, value cell, menu button) supply the content.
   const frameProps = {
+    icon: null,
+    input: null,
+    button: null,
     [FRAME_REF_ATTR]: FRAME_REF_VALUE,
     ref: setFrameRef,
     onClick: handleFrameRefClick,
     onMouseEnter: handleFrameMouseEnter,
     onMouseLeave: handleFrameMouseLeave,
-    style: {
-      width: "100%",
-      position: "relative",
-      cursor: rowCursor,
-      userSelect: "none",
-      WebkitUserSelect: "none",
-      ...hoverStyle,
-    },
-  } as React.HTMLAttributes<HTMLDivElement> & {
+    style: getFormControlStyle({ cursor: rowCursor, hoverStyle }),
+  } as FormControlIconicProps & {
     ref?: (el: HTMLDivElement | null) => void
   }
 
-  const rowStyleProp: React.CSSProperties = {
-    ...rowStyle,
-    width: "100%",
-    justifyContent: "flex-start",
-    cursor: hasChildren ? "pointer" : "default",
-    userSelect: "none",
-    WebkitUserSelect: "none",
-  }
+  const rowStyleProp = getRowStyle({ rowStyle, hasChildren })
 
   const valueCellProps = {
     property,
@@ -409,6 +402,8 @@ export function useRowProperty({
     node,
     theme,
     labelColor,
+    valueChip: listItemProps.valueChip,
+    unitLabel: listItemProps.unitLabel,
     isEditingProperty,
     isThemeAssignment,
     themeForSwatches,

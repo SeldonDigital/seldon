@@ -1,6 +1,10 @@
-import * as Sdn from "../../../properties"
-import * as Seldon from "../../constants"
-import { ComponentExport, ComponentSchema } from "../../types"
+import * as Sdn from "../../../properties";
+import * as Seldon from "../../constants";
+import { ComponentExport, ComponentSchema } from "../../types";
+
+
+
+
 
 export const schema = {
   name: "Icon",
@@ -44,8 +48,13 @@ export const schema = {
     },
     rotation: { type: Sdn.ValueType.EMPTY, value: null },
     color: {
-      type: Sdn.ValueType.THEME_CATEGORICAL,
-      value: "@swatch.black",
+      type: Sdn.ValueType.COMPUTED,
+      value: {
+        function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+        input: {
+          basedOn: "#parent.background.color",
+        },
+      },
     },
     brightness: { type: Sdn.ValueType.EMPTY, value: null },
     opacity: { type: Sdn.ValueType.EMPTY, value: null },

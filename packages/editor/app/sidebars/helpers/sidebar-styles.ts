@@ -31,9 +31,6 @@ export const propertyControlTextStyle: CSSProperties = {
   fontSize: "var(--sdn-font-size-xsmall)",
 }
 
-export const rowHoverHighlightBackground =
-  "color-mix(in srgb, var(--sdn-seldon-swatch-white) 10%, transparent)"
-
 export const COLOR_SET = "var(--sdn-seldon-swatch-pearl)"
 export const COLOR_UNSET =
   "color-mix(in srgb, var(--sdn-seldon-swatch-pearl) 60%, var(--sdn-seldon-swatch-charcoal))"

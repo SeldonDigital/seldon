@@ -5,9 +5,9 @@ alwaysApply: true
 
 ## Seldon Workspace
 
-Workspaces are serialized design files. They store catalog rows, node entries, theme entries, and resource entries as flat maps. Runtime reducers and services may use helper shapes, but `packages/core/workspace/WORKSPACE.md` is the canonical reference for the saved JSON format.
+Workspaces are serialized design files. They store catalog rows, node entries, theme entries, and resource entries as flat maps. Runtime reducers and services may use helper shapes, but `packages/core/workspace/README.md` is the canonical reference for the saved JSON format.
 
-Use `packages/core/workspace/WORKSPACE.md` as the source for field names, id patterns, referential integrity, and migration behavior.
+Use `packages/core/workspace/README.md` as the source for field names, id patterns, referential integrity, and migration behavior.
 
 ### Top-Level Shape
 
@@ -47,7 +47,7 @@ Node entries use:
 - `type`: `"default"`, `"variant"`, or `"instance"`
 - `template`: `catalog:{ComponentId}` or `node:{nodeId}`
 - `overrides`: property values layered over the template
-- `theme`: a `ThemeInstanceId` or `null`
+- `theme`: a theme entry id string or `null`
 
 Default nodes use `template: catalog:{ComponentId}`. Variant and instance nodes may use `template: node:{nodeId}`. Instance nodes may also use `template: catalog:{ComponentId}` when they point straight to a catalog schema.
 
@@ -80,6 +80,6 @@ When editing workspace code or docs:
 
 ### Naming And Migration
 
-Use camelCase catalog ids and component keys. Use id patterns from `WORKSPACE.md`, such as `component-{componentKey}-{suffix}`, `playground-{componentKey}-{suffix}`, and `theme-{componentKey}-{suffix}`.
+Use camelCase catalog ids and component keys. Use id patterns from `packages/core/workspace/README.md`, such as `component-{componentKey}-{suffix}`, `playground-{componentKey}-{suffix}`, and `theme-{componentKey}-{suffix}`.
 
-`metadata.version` is the migration counter. It is separate from the file format specification version. Migrations live in `packages/core/workspace/middleware/migration/migrations/`.
+`metadata.version` is the migration counter. It is separate from the file format specification version. The migration middleware lives in `packages/core/workspace/middleware/migration/middleware.ts`. The v0 baseline ships no migration steps.

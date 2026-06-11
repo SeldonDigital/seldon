@@ -1,11 +1,21 @@
-import { MouseEvent, RefObject } from "react"
+/**
+ * Hand-written view code for the value cell of a property row.
+ *
+ * The cell renders inside the generated row's `textLabel2` slot. The slot is
+ * styled as a flex row, so the chip, the value, and the unit lay out as flex
+ * items. The value item carries the ellipsis truncation.
+ */
+import { MouseEvent, ReactNode, RefObject } from "react"
 import { Board, Instance, Theme, Variant } from "@seldon/core"
 import {
+  Icon,
   LinkValue,
   SwatchValueRow,
+  Text,
   ThemeSwatches,
 } from "@seldon/components/custom-components"
 import { PropertyControl } from "./PropertyControl"
+import { ValueChip } from "./helpers/build-property-row-props"
 import {
   FontCollectionEditingContext,
   IconSetEditingContext,
@@ -20,6 +30,10 @@ interface PropertyValueCellProps {
   node: Variant | Instance | Board
   theme?: Theme
   labelColor?: string
+  /** Dynamic color chip rendered before the value when set. */
+  valueChip?: ValueChip | null
+  /** Unit label (e.g. PX) rendered after the value when set. */
+  unitLabel?: string
   isEditingProperty: boolean
   isThemeAssignment: boolean
   themeForSwatches: Theme | null
@@ -42,6 +56,8 @@ export function PropertyValueCell({
   node,
   theme,
   labelColor,
+  valueChip,
+  unitLabel,
   isEditingProperty,
   isThemeAssignment,
   themeForSwatches,
@@ -98,7 +114,60 @@ export function PropertyValueCell({
     )
   }
 
-  return valueContent
+  return decorateValueContent(valueContent, valueChip, unitLabel, labelColor)
+}
+
+/**
+ * Lays out the value as flex items: the optional dynamic color chip, the
+ * truncating value content, and the optional unit label. Dynamic
+ * `icon-custom-*` icons cannot render through the generated row's icon slot,
+ * so the chip lives here.
+ */
+function decorateValueContent(
+  valueContent: ReactNode,
+  valueChip: ValueChip | null | undefined,
+  unitLabel: string | undefined,
+  labelColor: string | undefined,
+): ReactNode {
+  return (
+    <>
+      {valueChip && (
+        <Icon
+          icon="icon-custom-color-value"
+          color={valueChip.color}
+          style={{
+            flexShrink: 0,
+            marginRight: "0.25rem",
+            ...valueChip.style,
+          }}
+        />
+      )}
+      <Text
+        as="span"
+        style={{
+          flex: 1,
+          minWidth: 0,
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          whiteSpace: "nowrap",
+        }}
+      >
+        {valueContent}
+      </Text>
+      {unitLabel && (
+        <Text
+          as="span"
+          style={{
+            flexShrink: 0,
+            marginLeft: "0.25rem",
+            ...(labelColor ? { color: labelColor } : {}),
+          }}
+        >
+          {unitLabel}
+        </Text>
+      )}
+    </>
+  )
 }
 
 function stopLinkPropagation(event: MouseEvent): void {

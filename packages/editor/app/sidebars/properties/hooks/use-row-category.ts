@@ -1,8 +1,11 @@
 import { MouseEvent } from "react"
-import { IconProps } from "@seldon/components/primitives/Icon"
+import { IconProps } from "@seldon/components/custom-components"
 import { PropertySection } from "../helpers/get-property-sections"
 import { ThemePropertySection } from "../helpers/get-theme-property-sections"
-import { usePropertyExpansion } from "./use-property-expansion"
+import {
+  useIsCategoryExpanded,
+  usePropertyExpansion,
+} from "./use-property-expansion"
 
 /**
  * Hook that provides state and handlers for rendering a category header in the properties sidebar.
@@ -15,11 +18,9 @@ export function useRowCategory(
   section: PropertySection | ThemePropertySection,
 ) {
   // Expansion state: category-level and property-level expansion
-  const { isCategoryExpanded, toggleCategory, toggleProperty } =
-    usePropertyExpansion()
+  const { toggleCategory, toggleProperty } = usePropertyExpansion()
 
-  // Category expansion state
-  const isExpanded = isCategoryExpanded(section.category)
+  const isExpanded = useIsCategoryExpanded(section.category)
 
   // Toggle handler, matching the objects sidebar. A plain click toggles the
   // section only. An Alt/Option click also cascades to every nested disclosure
@@ -46,8 +47,8 @@ export function useRowCategory(
     ? "material-unfoldLess"
     : "material-unfoldMore"
 
-  // Button: toggle button with accessibility attributes
-  const buttonIconic2 = {
+  // Disclosure button: leading toggle with accessibility attributes
+  const buttonIconic = {
     onClick: onToggle,
     "aria-expanded": isExpanded,
     "aria-label": isExpanded ? "Collapse" : "Expand",
@@ -56,7 +57,7 @@ export function useRowCategory(
   return {
     label: section.label,
     icon: iconId,
-    buttonIconic2,
+    buttonIconic,
     onToggle,
   }
 }

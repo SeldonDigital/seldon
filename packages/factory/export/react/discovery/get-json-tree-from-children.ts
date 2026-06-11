@@ -13,6 +13,7 @@ import {
 } from "@seldon/core/components/constants"
 import { isComplexSchema } from "@seldon/core/components/types"
 import { IconId } from "@seldon/core/icon-sets"
+import { getWorkspaceEnabledIcons } from "@seldon/core/icon-sets/helpers"
 import { WrapperElement } from "@seldon/core/properties"
 import { componentBoardSchemaVariantNodeId } from "@seldon/core/workspace/helpers/components/entry-node-ids"
 import { getBoardByNodeId } from "@seldon/core/workspace/helpers/components/get-board-by-node-id"
@@ -34,6 +35,7 @@ import { camelCase, pascalCase } from "../utils/case-utils"
 import { getComponentName } from "./get-component-name"
 import { getNodeOriginChain } from "./get-node-origin-chain"
 import { getUsedIconIds } from "./get-used-icon-ids"
+import { HTML_ELEMENT_OPTIONS } from "./html-element-options"
 
 export function getJsonTreeFromChildren(
   variant: EntryNode & { type: "default" | "variant" },
@@ -70,6 +72,7 @@ export function getJsonTreeFromChildren(
       props: getVariantProps(
         variantProperties,
         schema?.properties ?? {},
+        componentId,
         workspace,
       ),
     },
@@ -283,17 +286,20 @@ function getChildNodeProps(properties: Properties) {
 function getVariantProps(
   properties: Properties,
   schemaProperties: Properties,
+  componentId: ComponentId,
   workspace: Workspace,
 ) {
   const props: DataBinding["props"] = getChildNodeProps(properties)
-  const { symbol, htmlElement, wrapperElement, inputType } = schemaProperties
+  const { symbol, htmlElement, wrapperElement } = schemaProperties
 
-  if (htmlElement && htmlElement.restrictions?.allowedValues) {
+  const htmlElementOptions = HTML_ELEMENT_OPTIONS[componentId]
+  if (htmlElementOptions?.length) {
     props.htmlElement = {
       defaultValue:
         properties.htmlElement?.value ||
-        htmlElement.restrictions.allowedValues[0],
-      options: htmlElement.restrictions.allowedValues,
+        htmlElement?.value ||
+        htmlElementOptions[0],
+      options: [...htmlElementOptions],
     }
   }
 
@@ -301,21 +307,18 @@ function getVariantProps(
     props.wrapperElement = {
       defaultValue:
         (properties.wrapperElement?.value as string) ?? wrapperElement.value,
-      options: wrapperElement.restrictions?.allowedValues?.length
-        ? wrapperElement.restrictions.allowedValues
-        : Object.values(WrapperElement),
+      options: Object.values(WrapperElement),
     }
   }
 
-  if (inputType && inputType.restrictions?.allowedValues) {
-    props.type = {
-      defaultValue:
-        properties.inputType?.value || inputType.restrictions.allowedValues[0],
-      options: inputType.restrictions.allowedValues,
-    }
-  }
   if (symbol) {
-    const options: IconId[] = Array.from(getUsedIconIds(workspace))
+    // Match the widened set used for the iconMap and icon file emission so
+    // the generated IconProps["icon"] union covers every exported icon.
+    const iconIds = getUsedIconIds(workspace)
+    for (const iconId of getWorkspaceEnabledIcons(workspace)) {
+      iconIds.add(iconId)
+    }
+    const options: IconId[] = Array.from(iconIds)
     props.icon = {
       defaultValue: properties.symbol?.value || options[0],
       options,

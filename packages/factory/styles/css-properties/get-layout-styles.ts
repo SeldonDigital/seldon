@@ -28,6 +28,12 @@ export function getLayoutStyles({
   const wrapChildren = resolveValue(nodeProperties.wrapChildren)
   const orientation = resolveValue(nodeProperties.orientation)
   const align = resolveValue(nodeProperties.align)
+  const wrapText = resolveValue(computedProperties.wrapText)
+
+  // Wrap text off relies on text-overflow: ellipsis, which only applies to
+  // block containers. Flex layout would disable the ellipsis, so it is
+  // skipped for nodes that truncate their own text.
+  const truncatesText = wrapText?.value === false
 
   // "computedProperties" contains computed properties, "nodeProperties" might contain properties that have not been computed yet
   // gap value might be computed, so we need to use the computed "computedProperties" object otherwise generating gap will fail
@@ -40,12 +46,12 @@ export function getLayoutStyles({
     styles.flexWrap = wrapChildren?.value ? "wrap" : "nowrap"
   }
 
-  if (orientation) {
+  if (orientation && !truncatesText) {
     styles.display = "flex"
     styles.flexDirection =
       orientation?.value === Orientation.HORIZONTAL ? "row" : "column"
   }
-  if (align) {
+  if (align && !truncatesText) {
     const horizontalLTRLayout = {
       auto: { align: "normal", justify: "normal" },
       "top-left": { align: "start", justify: "start" },

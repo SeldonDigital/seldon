@@ -19,21 +19,6 @@ export function jsxStructureToString(
 ): string {
   const { config } = component
 
-  // Handle simple case: single child without grandchildren, conditionals, or grandchild props
-  if (
-    jsxRoot.children &&
-    jsxRoot.children.length === 1 &&
-    !jsxRoot.children[0].children &&
-    jsxRoot.children[0].type !== "conditional" &&
-    !jsxRoot.children[0].grandchildProps
-  ) {
-    const child = jsxRoot.children[0]
-    return `
-  return <${config.react.returns} className={${classNameVarName}} {...props}>
-        <${child.name} {...${child.propVarName}} />
-    </${config.react.returns}>`
-  }
-
   // Build JSX string recursively
   function nodeToString(node: JSXNode, indent: number = 0): string {
     const indentStr = " ".repeat(indent)
@@ -105,14 +90,20 @@ export function jsxStructureToString(
     }
   }
 
-  // Build return statement
+  // Build return statement. Callers can replace the default slot tree by
+  // nesting their own children, mirroring how instance trees override the
+  // catalog default tree. Without this, nested children passed by a parent
+  // generated component (e.g. ItemInputRow nesting into FormControlIconic)
+  // would be silently discarded by React's explicit-children precedence.
   let content = `
   return (\n    <${config.react.returns} className={${classNameVarName}} {...props}>`
 
   if (jsxRoot.children && jsxRoot.children.length > 0) {
+    content += `\n      {children !== undefined ? (\n        children\n      ) : (\n        <>`
     jsxRoot.children.forEach((child) => {
-      content += nodeToString(child, 6) // 6 spaces for children of root
+      content += nodeToString(child, 10) // 10 spaces for slot children inside the fragment
     })
+    content += `\n        </>\n      )}`
   }
 
   content += `\n    </${config.react.returns}>\n  )`

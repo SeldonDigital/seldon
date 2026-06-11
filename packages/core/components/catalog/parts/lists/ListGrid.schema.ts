@@ -165,6 +165,7 @@ export const schema = {
     children: [
       {
         component: Seldon.ComponentId.AVATAR,
+        variant: "icon",
         overrides: {
           width: {
             type: Sdn.ValueType.OPTION,
@@ -256,6 +257,7 @@ export const schema = {
       },
       {
         component: Seldon.ComponentId.AVATAR,
+        variant: "icon",
         overrides: {
           width: {
             type: Sdn.ValueType.OPTION,
@@ -347,6 +349,7 @@ export const schema = {
       },
       {
         component: Seldon.ComponentId.AVATAR,
+        variant: "icon",
         overrides: {
           width: {
             type: Sdn.ValueType.OPTION,
@@ -438,6 +441,7 @@ export const schema = {
       },
       {
         component: Seldon.ComponentId.AVATAR,
+        variant: "icon",
         overrides: {
           width: {
             type: Sdn.ValueType.OPTION,
@@ -529,6 +533,7 @@ export const schema = {
       },
       {
         component: Seldon.ComponentId.AVATAR,
+        variant: "icon",
         overrides: {
           width: {
             type: Sdn.ValueType.OPTION,
@@ -620,6 +625,7 @@ export const schema = {
       },
       {
         component: Seldon.ComponentId.AVATAR,
+        variant: "icon",
         overrides: {
           width: {
             type: Sdn.ValueType.OPTION,

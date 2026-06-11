@@ -10,11 +10,11 @@ Core owns design-time state and rules. Factory owns export and production code g
 
 Factory groups three stages that work together:
 
-| Area        | Role                                                                          | Deep reference                                    |
-| ----------- | ----------------------------------------------------------------------------- | ------------------------------------------------- |
-| **Helpers** | Build the export context and node index, compute node properties through Core | [helpers/](./helpers)                             |
-| **Styles**  | Convert resolved properties into CSS for one class                            | [styles/css-properties/](./styles/css-properties) |
-| **Export**  | Orchestrate React, CSS, and asset generation into files                       | [export/](./export)                               |
+| Area | Role | Deep reference |
+| --- | --- | --- |
+| **Helpers** | Build the export context and node index, compute node properties through Core | [helpers/](./helpers) |
+| **Styles** | Convert resolved properties into CSS for one class | [styles/css-properties/](./styles/css-properties) |
+| **Export** | Orchestrate React, CSS, and asset generation into files | [export/](./export) |
 
 The export stage splits into two subsystems with their own guides:
 
@@ -65,8 +65,11 @@ type ExportOptions = {
   debugMode?: boolean
   assetReader?: ExportAssetReader
   skipFormat?: boolean
+  enableRemoteFonts?: boolean
 }
 ```
+
+`enableRemoteFonts` is off by default. The default keeps exports request-free. Set it to `true` to emit remote font host links in the generated `Fonts.tsx`.
 
 ---
 
@@ -79,7 +82,7 @@ flowchart TD
   workspace[Workspace] --> context[buildExportContext — parent index]
   context --> registry[buildStyleRegistry — classes and node map]
   registry --> discover[getComponentsToExport — sorted by level]
-  discover --> icons[getUsedIconIds]
+  discover --> icons[getUsedIconIds plus all workspace-enabled icons]
   icons --> css[Component stylesheet plus per-theme stylesheets]
   css --> images[getImagesToExport then rewrite to relative paths]
   images --> files[Component, native, frame, icon, fonts, readme, utility files]
@@ -89,20 +92,22 @@ flowchart TD
 
 - **Context** indexes parents so property compute can resolve inheritance.
 - **Style registry** maps each node to a class and records tree depths for cascade order.
-- **Discovery** finds exportable components and orders them by component level.
-- **Generation** writes one file per component plus shared files, then inserts a license header into every text file.
+- **Discovery** finds exportable components and orders them by component level. Icon discovery collects icons referenced by components, then adds every icon turned on in the workspace's icon sets, so exports ship complete icon sets.
+- **Generation** writes one file per component plus shared files, then inserts a license header into every text file. Native wrappers come from the `exportConfig.react.returns` of every exported component, plus `HTML.Div` for Frame.
 
 `exportReact` inlines its CSS generation through `generateComponentStylesheet` and `generateThemeStylesheetFiles`. The standalone `exportCss` in [export/css/export-css.ts](./export/css/export-css.ts) is a separate entry. It takes the workspace and a components folder and returns an object:
 
 ```typescript
+type CssExportResult = {
+  componentStylesheet: string
+  themeStylesheets: ThemeStylesheetFile[]
+}
+
 async function exportCss(
   workspace: Workspace,
   componentsFolder: string,
   forceRegeneration?: boolean,
-): Promise<{
-  componentStylesheet: string
-  themeStylesheets: ThemeStylesheetFile[]
-}>
+): Promise<CssExportResult>
 ```
 
 ---
@@ -146,18 +151,37 @@ Factory writes one theme stylesheet for every entry in `workspace.themes`, both 
 
 Each component file includes a TypeScript interface, a React component, resolved CSS classes, and tree-shaken imports.
 
+### Child Prop Contract
+
+Every child of a generated component is an optional, nullable prop. The render behavior depends on whether the child is part of the component's schema:
+
+- **Schema children** have a default in the function signature, such as `buttonIconic = sdn.buttonIconic`. Omit the prop and the child renders with its defaults. Pass `null` and the child does not render.
+- **Inline extras** are children that the workspace adds outside the schema. They have no default and render only when the caller passes the prop.
+
+```tsx
+<ItemNodeRow />                       // renders every schema child with defaults
+<ItemNodeRow buttonIconic={null} />   // removes the disclosure button
+<ItemNodeRow textLabel={{ children: "Label" }} /> // renders the inline extra
+```
+
+A `null` value also flows into children passed as props. Passing `null` for a button's icon prop suppresses the icon inside that button.
+
+### Icon Output
+
+The generated `IconProps["icon"]` union covers every icon turned on in the workspace's icon sets. Icon component files emit only for icons that resolve to a catalog source file, found by [export/react/utils/find-icon-path.ts](./export/react/utils/find-icon-path.ts). `icons/index.ts` lists only emitted files. Icons that do not resolve render through `IconDefault`.
+
 ---
 
 ## Further Reading
 
-| Topic         | Document                                           |
-| ------------- | -------------------------------------------------- |
-| Core kernel   | [../core/CORE.md](../core/CORE.md)                 |
-| Editor client | [../editor/EDITOR.md](../editor/EDITOR.md)         |
-| React export  | [export/react/README.md](./export/react/README.md) |
-| CSS export    | [export/css/README.md](./export/css/README.md)     |
-| Code examples | [TECHNICAL.md](./TECHNICAL.md)                     |
-| Vocabulary    | [GLOSSARY.md](../../GLOSSARY.md)                   |
+| Topic | Document |
+| --- | --- |
+| Core kernel | [../core/CORE.md](../core/CORE.md) |
+| Editor client | [../editor/EDITOR.md](../editor/EDITOR.md) |
+| React export | [export/react/README.md](./export/react/README.md) |
+| CSS export | [export/css/README.md](./export/css/README.md) |
+| Code examples | [TECHNICAL.md](./TECHNICAL.md) |
+| Vocabulary | [GLOSSARY.md](../../GLOSSARY.md) |
 
 Note: parts of [TECHNICAL.md](./TECHNICAL.md) predate the current API. Treat this document and the source files as the current reference for entry points and options.
 
@@ -197,10 +221,10 @@ Contact:
 
 ### 4. Summary
 
-| Use               | Requirement                          |
-| ----------------- | ------------------------------------ |
+| Use | Requirement |
+| --- | --- |
 | Noncommercial use | PolyForm Noncommercial License 1.0.0 |
-| Commercial use    | Paid commercial license              |
+| Commercial use | Paid commercial license |
 
 ---
 

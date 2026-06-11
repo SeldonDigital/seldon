@@ -970,6 +970,23 @@ export const schema = {
         },
       ],
     },
+    {
+      id: "title",
+      label: "Title Bar",
+      intent: "Displays a heading for a panel or dialog.",
+      children: [
+        {
+          component: Seldon.ComponentId.TEXT,
+          variant: "title",
+          overrides: {
+            content: {
+              type: Sdn.ValueType.EXACT,
+              value: "Title",
+            },
+          },
+        },
+      ],
+    },
   ],
 } as const satisfies ComponentSchema
 

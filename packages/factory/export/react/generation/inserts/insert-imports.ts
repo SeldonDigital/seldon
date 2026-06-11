@@ -7,7 +7,7 @@ import { IconId } from "@seldon/core/icon-sets"
 import { ComponentToExport, ExportOptions, JSONTreeNode } from "../../../types"
 import { getIconComponentName } from "../../discovery/get-icon-component-name"
 import { pascalCase } from "../../utils/case-utils"
-import { getIconPath } from "../../utils/find-icon-path"
+import { resolveIconExport } from "../../utils/find-icon-path"
 import { pluralizeLevel } from "../../utils/pluralize-level"
 import {
   TransformStrategy,
@@ -93,17 +93,17 @@ export function insertImports(
     for (const option of tree.dataBinding.props.icon.options) {
       if (typeof option === "string") {
         const iconId = option as IconId
-        const componentName = getIconComponentName(iconId)
 
-        // Get the relative path for this icon (handles nested structure)
         if (options?.rootDirectory) {
-          const iconRelativePath = getIconPath(iconId, options.rootDirectory)
-          const importPath = `../icons/${iconRelativePath}`
-          imports[importPath] = [componentName]
+          const resolved = resolveIconExport(iconId, options.rootDirectory)
+          if (!resolved) continue
+          imports[`../icons/${resolved.relativePath}`] = [
+            resolved.componentName,
+          ]
         } else {
           // Fallback to flat structure if options not provided (backward compatibility)
-          const importPath = `../icons/${componentName}`
-          imports[importPath] = [componentName]
+          const componentName = getIconComponentName(iconId)
+          imports[`../icons/${componentName}`] = [componentName]
         }
       }
     }
@@ -238,10 +238,18 @@ export function insertImports(
       // Check if this component will be rendered inline
       const validation = validateTreeNodeProps(node)
 
-      // If component has invalid props, it will be rendered inline
-      // So we need to import only the components that are actually rendered
+      // If component has invalid props, it is rendered inline as a JSX
+      // wrapper, so import the component itself and the components that are
+      // actually rendered inside it
       if (validation.invalidProps.length > 0) {
-        // Don't import the parent component, but import the components that are actually rendered
+        if (imports[key]) {
+          if (!imports[key].includes(node.name)) {
+            imports[key].push(node.name)
+          }
+        } else {
+          imports[key] = [node.name]
+        }
+
         node.children.forEach((child: JSONTreeNode) => {
           const childIsValid = validation.validProps.some(
             (validChild: JSONTreeNode) =>

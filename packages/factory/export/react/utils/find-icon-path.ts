@@ -5,86 +5,117 @@ import { IconId } from "@seldon/core/icon-sets"
 
 import { getIconComponentName } from "../discovery/get-icon-component-name"
 
-/**
- * Recursively find an icon component file in the icon-sets/catalog directory structure
- *
- * @param componentName - The component name (e.g., "IconMaterialAdd")
- * @param rootDir - Root directory to search from (icon-sets/catalog)
- * @returns Relative path from rootDir to the component file (without .tsx extension), or null if not found
- */
-function findIconComponentFile(
-  componentName: string,
-  rootDir: string,
-): string | null {
-  const fileName = `${componentName}.tsx`
-
-  function searchDir(dir: string): string | null {
-    if (!fs.existsSync(dir)) {
-      return null
-    }
-
-    const entries = fs.readdirSync(dir, { withFileTypes: true })
-
-    for (const entry of entries) {
-      const fullPath = path.join(dir, entry.name)
-
-      if (entry.isDirectory() && !entry.name.startsWith(".")) {
-        const found = searchDir(fullPath)
-        if (found) {
-          return found
-        }
-      } else if (entry.isFile() && entry.name === fileName) {
-        // Return relative path from rootDir without .tsx extension
-        return path
-          .relative(rootDir, fullPath)
-          .replace(/\\/g, "/")
-          .replace(/\.tsx$/, "")
-      }
-    }
-
-    return null
-  }
-
-  return searchDir(rootDir)
+export type ResolvedIconExport = {
+  /** Exported component name, taken from the matched catalog file basename */
+  componentName: string
+  /** Path relative to the icons output directory, without extension */
+  relativePath: string
 }
 
 /**
- * Get the relative import/export path for an icon component
- * Returns the path relative to the icons directory
- *
- * @param iconId - The icon ID (e.g., "material-add" or "__default__")
- * @param rootDirectory - Project root directory
- * @returns Relative path (e.g., "material/user-interface/actions/IconMaterialAdd" or "IconDefault")
+ * Normalize a component or file name for tolerant matching: lowercase with
+ * all non-alphanumeric characters removed. This absorbs the differences
+ * between catalog file names and `pascalCase` output, such as
+ * `IconSeldonDeviceTV` vs `IconSeldonDeviceTv` and
+ * `IconSeldonBattery0Bar` vs `IconSeldonBattery_0bar`.
  */
-export function getIconPath(iconId: IconId, rootDirectory: string): string {
-  const componentName = getIconComponentName(iconId)
+function normalizeName(name: string): string {
+  return name.toLowerCase().replace(/[^a-z0-9]/g, "")
+}
 
-  // Special handling for __default__ icon - it lives outside icon sets
+const catalogIndexCache = new Map<string, Map<string, ResolvedIconExport>>()
+
+/**
+ * Build an index of every icon component file under the icon-sets catalog,
+ * keyed by normalized file basename. Cached per catalog directory.
+ */
+function getCatalogIndex(catalogDir: string): Map<string, ResolvedIconExport> {
+  const cached = catalogIndexCache.get(catalogDir)
+  if (cached) {
+    return cached
+  }
+
+  const index = new Map<string, ResolvedIconExport>()
+
+  function scanDir(dir: string) {
+    if (!fs.existsSync(dir)) {
+      return
+    }
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const fullPath = path.join(dir, entry.name)
+      if (entry.isDirectory() && !entry.name.startsWith(".")) {
+        scanDir(fullPath)
+      } else if (entry.isFile() && entry.name.endsWith(".tsx")) {
+        const componentName = entry.name.replace(/\.tsx$/, "")
+        const relativePath = path
+          .relative(catalogDir, fullPath)
+          .replace(/\\/g, "/")
+          .replace(/\.tsx$/, "")
+        index.set(normalizeName(componentName), { componentName, relativePath })
+      }
+    }
+  }
+
+  scanDir(catalogDir)
+  catalogIndexCache.set(catalogDir, index)
+  return index
+}
+
+function getCatalogDir(rootDirectory: string): string {
+  return path.join(rootDirectory, "packages", "core", "icon-sets", "catalog")
+}
+
+/**
+ * Resolve an icon id to its catalog file. Matching is case-insensitive and
+ * prefix-aware: it tries the full `Icon{PascalCase(id)}` name first, then the
+ * id without its set prefix, which covers files like `IconSocialGithub.tsx`
+ * for the id `seldon-iconSocialGithub`.
+ *
+ * Returns null when no catalog file matches, so callers can skip the icon
+ * instead of emitting dangling references.
+ */
+export function resolveIconExport(
+  iconId: IconId,
+  rootDirectory: string,
+): ResolvedIconExport | null {
   if (iconId === "__default__") {
-    return "IconDefault"
+    return { componentName: "IconDefault", relativePath: "IconDefault" }
   }
 
-  // IconMissing is now IconSeldonMissing in seldon set
-  // This shouldn't be called with "missing" as an iconId, but handle it just in case
-  if (componentName === "IconMissing") {
-    return "seldon/user-interface/actions/IconSeldonMissing"
+  const index = getCatalogIndex(getCatalogDir(rootDirectory))
+
+  const candidates = [getIconComponentName(iconId)]
+  const dashIndex = iconId.indexOf("-")
+  if (dashIndex > 0) {
+    const suffix = iconId.slice(dashIndex + 1)
+    candidates.push(getIconComponentName(suffix))
   }
 
-  // Search in icon-sets/catalog/ for regular icons
-  const iconsSetsPath = path.join(
-    rootDirectory,
-    "packages",
-    "core",
-    "icon-sets",
-    "catalog",
-  )
-
-  const foundPath = findIconComponentFile(componentName, iconsSetsPath)
-
-  if (foundPath) {
-    return foundPath
+  for (const candidate of candidates) {
+    const hit = index.get(normalizeName(candidate))
+    if (hit) {
+      return hit
+    }
+    // getIconComponentName prefixes "Icon"; ids like "seldon-iconSocialGithub"
+    // already carry it, producing "IconIconSocialGithub". Try without the
+    // doubled prefix.
+    if (candidate.startsWith("IconIcon")) {
+      const dedupedHit = index.get(normalizeName(candidate.slice(4)))
+      if (dedupedHit) {
+        return dedupedHit
+      }
+    }
   }
 
-  // Fallback to component name if not found (shouldn't happen, but safe fallback)
-  return componentName
+  return null
+}
+
+/**
+ * Absolute path to the catalog source file for a resolved icon.
+ */
+export function getIconSourcePath(
+  resolved: ResolvedIconExport,
+  rootDirectory: string,
+): string {
+  return path.join(getCatalogDir(rootDirectory), `${resolved.relativePath}.tsx`)
 }

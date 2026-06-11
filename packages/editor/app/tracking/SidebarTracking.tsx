@@ -21,7 +21,6 @@ interface SidebarTrackingProps {
   children: ReactNode
   onRowClick?: (event: MouseEvent<HTMLElement>) => void
   onRowDoubleClick?: (event: MouseEvent<HTMLElement>) => void
-  onHoverChange?: (isHovered: boolean) => void
   onCanvasTrackingEnter?: () => void
   onCanvasTrackingLeave?: () => void
 }
@@ -50,7 +49,6 @@ function isButtonTarget(event: MouseEvent<HTMLElement>): boolean {
  * @param children - The row content to render
  * @param onRowClick - Optional callback for row click events
  * @param onRowDoubleClick - Optional callback for row double-click events
- * @param onHoverChange - Optional callback when hover state changes
  * @param onCanvasTrackingEnter - Optional callback when entering canvas tracking area
  * @param onCanvasTrackingLeave - Optional callback when leaving canvas tracking area
  */
@@ -60,7 +58,6 @@ export function SidebarTracking({
   children,
   onRowClick,
   onRowDoubleClick,
-  onHoverChange,
   onCanvasTrackingEnter,
   onCanvasTrackingLeave,
 }: SidebarTrackingProps) {
@@ -126,18 +123,6 @@ export function SidebarTracking({
     [onRowDoubleClick],
   )
 
-  const handlePlacementHoverChange = useCallback(
-    (isHovered: boolean) => {
-      onHoverChange?.(isHovered)
-      if (isHovered) {
-        onCanvasTrackingEnter?.()
-      } else {
-        onCanvasTrackingLeave?.()
-      }
-    },
-    [onHoverChange, onCanvasTrackingEnter, onCanvasTrackingLeave],
-  )
-
   const renderSelectDropzones = () => {
     if (activeTool !== "select") return null
 
@@ -151,7 +136,6 @@ export function SidebarTracking({
           onDoubleClick={handleRowDoubleClickWrapper}
           onCanvasTrackingEnter={onCanvasTrackingEnter}
           onCanvasTrackingLeave={onCanvasTrackingLeave}
-          onHoverChange={onHoverChange}
         />
         {canHaveChildren && (
           <DragDropZone
@@ -162,7 +146,6 @@ export function SidebarTracking({
             onDoubleClick={handleRowDoubleClickWrapper}
             onCanvasTrackingEnter={onCanvasTrackingEnter}
             onCanvasTrackingLeave={onCanvasTrackingLeave}
-            onHoverChange={onHoverChange}
           />
         )}
         {!isExpanded && (
@@ -174,7 +157,6 @@ export function SidebarTracking({
             onDoubleClick={handleRowDoubleClickWrapper}
             onCanvasTrackingEnter={onCanvasTrackingEnter}
             onCanvasTrackingLeave={onCanvasTrackingLeave}
-            onHoverChange={onHoverChange}
           />
         )}
       </>
@@ -198,7 +180,8 @@ export function SidebarTracking({
           onPlacementClick={handlePlacementClick}
           onRowClick={handleRowClickWrapper}
           onRowDoubleClick={handleRowDoubleClickWrapper}
-          onHoverChange={handlePlacementHoverChange}
+          onCanvasTrackingEnter={onCanvasTrackingEnter}
+          onCanvasTrackingLeave={onCanvasTrackingLeave}
         />
       )}
     </PositionedPanel>
@@ -252,7 +235,6 @@ interface DragDropZoneProps {
   onDoubleClick?: (event?: MouseEvent<HTMLElement>) => void
   onCanvasTrackingEnter?: () => void
   onCanvasTrackingLeave?: () => void
-  onHoverChange?: (isHovered: boolean) => void
 }
 
 /**
@@ -267,7 +249,6 @@ function DragDropZone({
   onDoubleClick,
   onCanvasTrackingEnter,
   onCanvasTrackingLeave,
-  onHoverChange,
 }: DragDropZoneProps) {
   const { isValidDropTarget, ref } = useDropzone({
     target,
@@ -275,12 +256,10 @@ function DragDropZone({
   })
 
   const handleMouseEnter = () => {
-    onHoverChange?.(true)
     onCanvasTrackingEnter?.()
   }
 
   const handleMouseLeave = () => {
-    onHoverChange?.(false)
     onCanvasTrackingLeave?.()
   }
 

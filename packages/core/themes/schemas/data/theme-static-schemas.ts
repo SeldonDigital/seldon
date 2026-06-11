@@ -195,7 +195,7 @@ function makeScaleSlotSchemas<
         unit: { type: "none", min: -20, max: 20, step: 0.01 },
         section,
         order: baseOrder,
-        icon: "IconStepValue",
+        icon: "seldon-step",
       }),
       finalizeThemeTokenSchema({
         key: `${section}.${key}.parameters`,
@@ -205,7 +205,7 @@ function makeScaleSlotSchemas<
         unit: { type: "rem", min: -9999, max: 9999, step: 0.01 },
         section,
         order: baseOrder + 1,
-        icon: "IconStepValue",
+        icon: "seldon-step",
       }),
     ]
   })
@@ -246,7 +246,7 @@ export const borderWidthSchemas: ThemeTokenSchema[] = BORDER_WIDTH_ORDER.map(
       unit: { type: "none", min: -20, max: 20, step: 0.01 },
       section: "borderWidth",
       order: index,
-      icon: "IconStepValue",
+      icon: "seldon-step",
     }),
 )
 
@@ -270,7 +270,7 @@ export const lineHeightSchemas: ThemeTokenSchema[] = LINE_HEIGHT_ORDER.map(
       unit: { type: "none", min: -20, max: 20, step: 0.01 },
       section: "lineHeight",
       order: index,
-      icon: "IconStepValue",
+      icon: "seldon-step",
     }),
 )
 

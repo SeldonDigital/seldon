@@ -3,10 +3,13 @@ import { ComponentLevel } from "@seldon/core/components/constants"
 import { getBoardVariantRootIds } from "@seldon/core/workspace/helpers/components/get-board-variant-root-ids"
 import { useDialog } from "@lib/hooks/use-dialog"
 import { useTool } from "@lib/hooks/use-tool"
-import { useSectionExpansion } from "../../hooks/use-section-expansion"
+import {
+  useIsSectionExpanded,
+  useSectionExpansion,
+} from "../../hooks/use-section-expansion"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { ButtonIconicProps } from "@seldon/components/elements/ButtonIconic"
-import { IconProps } from "@seldon/components/primitives/Icon"
+import { IconProps } from "@seldon/components/custom-components"
 import { BoardSection } from "../../helpers/get-board-sections"
 import { useExpansion } from "./use-expansion"
 import { useRowToggle } from "./use-row-toggle"
@@ -20,14 +23,17 @@ import { useRowToggle } from "./use-row-toggle"
  */
 export function useRowSection(section: BoardSection) {
   // Expansion state: section-level and node-level expansion
-  const { isSectionExpanded, toggleSection } = useSectionExpansion()
+  const { toggleSection } = useSectionExpansion()
   const { expandObjects, collapseObjects, getAllDescendantNodeIds } =
     useExpansion()
   const { openDialog } = useDialog()
   const { setActiveTool } = useTool()
 
   // Section expansion state
-  const isExpanded = isSectionExpanded(section.level, section.boards.length > 0)
+  const isExpanded = useIsSectionExpanded(
+    section.level,
+    section.boards.length > 0,
+  )
 
   // Event handlers: toggle section with Alt+click support for all descendants
   const onToggle = useRowToggle({
@@ -76,8 +82,8 @@ export function useRowSection(section: BoardSection) {
     ? "material-unfoldLess"
     : "material-unfoldMore"
 
-  // Button: toggle button with accessibility attributes
-  const buttonIconic2 = {
+  // Disclosure button: leading toggle with accessibility attributes
+  const buttonIconic = {
     onClick: onToggleWithSection,
     "aria-expanded": isExpanded,
     "aria-label": isExpanded ? "Collapse" : "Expand",
@@ -85,7 +91,7 @@ export function useRowSection(section: BoardSection) {
 
   // Add button: opens the add dialog scoped to this section. The Media resource
   // section has no add flow, so it gets no button.
-  const buttonIconic1 = useMemo<ButtonIconicProps | undefined>(() => {
+  const buttonIconic2 = useMemo<ButtonIconicProps | undefined>(() => {
     const level = section.level
     if (level === "MEDIA") return undefined
 
@@ -110,7 +116,7 @@ export function useRowSection(section: BoardSection) {
   return {
     label: section.label,
     icon: iconId,
-    buttonIconic1,
+    buttonIconic,
     buttonIconic2,
     onToggle: onToggleSection,
   }

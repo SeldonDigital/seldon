@@ -284,6 +284,50 @@ function getShorthandSubProperties(
   return subProperties
 }
 
+function isInvalidExactStringValue(
+  propertyPath: string,
+  value: unknown,
+  controlType: ControlType | undefined,
+  theme?: Theme,
+): boolean {
+  if (
+    !value ||
+    typeof value !== "object" ||
+    !("type" in value) ||
+    (value as { type: ValueType }).type !== ValueType.EXACT ||
+    !("value" in value) ||
+    typeof (value as { value: unknown }).value !== "string"
+  ) {
+    return false
+  }
+
+  const basePropertyName = propertyPath.includes(".")
+    ? propertyPath.split(".").pop()
+    : propertyPath
+
+  const isComboControl = controlType === "combo"
+  const isImageProperty =
+    basePropertyName === "source" || basePropertyName === "image"
+  const isBackgroundImageProperty =
+    basePropertyName === "image" && propertyPath.startsWith("background")
+
+  if (
+    isComboControl ||
+    isImageProperty ||
+    isBackgroundImageProperty ||
+    !basePropertyName
+  ) {
+    return false
+  }
+
+  return !validatePropertyValue(
+    basePropertyName,
+    "exact",
+    (value as Record<string, unknown>).value as string,
+    theme,
+  )
+}
+
 /**
  * Create a flat property from property data
  */
@@ -341,47 +385,17 @@ export function createFlatProperty(
     }
   }
 
-  // Check for invalid property values using schema validation (after formatting)
-  // Skip validation for combo controls with custom values (they allow any string)
   if (
     !hasError &&
-    propertyValue &&
-    typeof propertyValue === "object" &&
-    propertyValue !== null &&
-    "type" in propertyValue &&
-    propertyValue.type === ValueType.EXACT &&
-    "value" in propertyValue &&
-    typeof propertyValue.value === "string"
+    isInvalidExactStringValue(
+      propertyKey,
+      propertyValue,
+      registryEntry?.control,
+      theme,
+    )
   ) {
-    // Extract the base property name (e.g., "background.color" -> "color")
-    const basePropertyName = propertyKey.includes(".")
-      ? propertyKey.split(".").pop()
-      : propertyKey
-
-    // Skip validation for combo controls - they allow custom values
-    // Also skip validation for image properties (source and background.image - no schema exists, and they should accept any URL)
-    const isComboControl = registryEntry?.control === "combo"
-    const isImageProperty =
-      basePropertyName === "source" || basePropertyName === "image"
-    const isBackgroundImageProperty =
-      basePropertyName === "image" && propertyKey.startsWith("background")
-
-    // Validate the property value against its schema
-    if (
-      !isComboControl &&
-      !isImageProperty &&
-      !isBackgroundImageProperty &&
-      basePropertyName &&
-      !validatePropertyValue(
-        basePropertyName,
-        "exact",
-        (propertyValue as Record<string, unknown>).value as string,
-        theme,
-      )
-    ) {
-      hasError = true
-      actualValue = (propertyValue as Record<string, unknown>).value as string // Show the invalid value
-    }
+    hasError = true
+    actualValue = (propertyValue as Record<string, unknown>).value as string
   }
 
   // Determine final status
@@ -405,7 +419,7 @@ export function createFlatProperty(
     isSubProperty: propertyKey.includes(".") && !isCompound && !isShorthand,
     propertyType: getPropertyCategory(propertyKey) || "atomic",
     status: finalStatus,
-    icon: registryEntry?.icon || "IconTokenValue",
+    icon: registryEntry?.icon || "seldon-token",
   }
 }
 
@@ -436,7 +450,7 @@ export function createFlatSubProperty(
     key: subPropertyPath,
     propertyType: "atomic", // Sub-properties are always atomic
     label: createSubPropertyLabel(propertyKey, subKey, subRegistryEntry?.label),
-    icon: subRegistryEntry?.icon || "IconTokenValue",
+    icon: subRegistryEntry?.icon || "seldon-token",
     value: subValue || EMPTY_VALUE,
     actualValue: (() => {
       let hasError = false
@@ -455,43 +469,17 @@ export function createFlatSubProperty(
         hasError = true
       }
 
-      // Check for invalid property values using schema validation (after formatting)
-      // Skip validation for combo controls with custom values (they allow any string)
       if (
         !hasError &&
-        subValue &&
-        typeof subValue === "object" &&
-        subValue !== null &&
-        "type" in subValue &&
-        subValue.type === ValueType.EXACT &&
-        "value" in subValue &&
-        typeof subValue.value === "string"
+        isInvalidExactStringValue(
+          subPropertyPath,
+          subValue,
+          subRegistryEntry?.control,
+          theme,
+        )
       ) {
-        // Extract the base property name (e.g., "background.color" -> "color")
-        const basePropertyName = subPropertyPath.includes(".")
-          ? subPropertyPath.split(".").pop()
-          : subPropertyPath
-
-        // Skip validation for combo controls - they allow custom values
-        // Also skip validation for source property (no schema exists, and it should accept any URL)
-        const isComboControl = subRegistryEntry?.control === "combo"
-        const isSourceProperty = basePropertyName === "source"
-
-        // Validate the property value against its schema
-        if (
-          !isComboControl &&
-          !isSourceProperty &&
-          basePropertyName &&
-          !validatePropertyValue(
-            basePropertyName,
-            "exact",
-            (subValue as Record<string, unknown>).value as string,
-            theme,
-          )
-        ) {
-          hasError = true
-          actualValue = (subValue as Record<string, unknown>).value as string // Show the invalid value
-        }
+        hasError = true
+        actualValue = (subValue as Record<string, unknown>).value as string
       }
 
       return actualValue
@@ -502,48 +490,14 @@ export function createFlatSubProperty(
     isShorthand: false,
     isSubProperty: true,
     isDimmed: !!isDimmed,
-    status: (() => {
-      // Check if validation failed and set status to error
-      // Skip validation for combo controls with custom values (they allow any string)
-      if (
-        subValue &&
-        typeof subValue === "object" &&
-        subValue !== null &&
-        "type" in subValue &&
-        subValue.type === ValueType.EXACT &&
-        "value" in subValue &&
-        typeof subValue.value === "string"
-      ) {
-        const basePropertyName = subPropertyPath.includes(".")
-          ? subPropertyPath.split(".").pop()
-          : subPropertyPath
-
-        // Skip validation for combo controls - they allow custom values
-        // Also skip validation for image properties (source and background.image - no schema exists, and they should accept any URL)
-        const isComboControl = subRegistryEntry?.control === "combo"
-        const isImageProperty =
-          basePropertyName === "source" || basePropertyName === "image"
-        const isBackgroundImageProperty =
-          basePropertyName === "image" &&
-          subPropertyPath.startsWith("background")
-
-        if (
-          !isComboControl &&
-          !isImageProperty &&
-          !isBackgroundImageProperty &&
-          basePropertyName &&
-          !validatePropertyValue(
-            basePropertyName,
-            "exact",
-            (subValue as Record<string, unknown>).value as string,
-            theme,
-          )
-        ) {
-          return "error"
-        }
-      }
-      return status
-    })(),
+    status: isInvalidExactStringValue(
+      subPropertyPath,
+      subValue,
+      subRegistryEntry?.control,
+      theme,
+    )
+      ? "error"
+      : status,
   }
 }
 

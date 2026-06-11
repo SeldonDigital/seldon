@@ -1,121 +1,5 @@
 import { parsePropertyPath } from "@lib/properties/property-paths"
 import { getPropertyCategory } from "@seldon/core/properties/schemas"
-// Dynamic, prop-driven icons stay in seldon/custom-icons
-import {
-  IconCustomColorValue,
-  IconCustomThemeColorValue,
-} from "@seldon/components/custom-icons"
-// Static icons sourced from seldon/icons
-import {
-  IconSeldonAlign,
-  IconSeldonBackground,
-  IconSeldonBackgroundColor,
-  IconSeldonBorderColor,
-  IconSeldonBorderStyle,
-  IconSeldonBrightness,
-  IconSeldonCase,
-  IconSeldonCheckboxOff,
-  IconSeldonCheckboxOn,
-  IconSeldonClip,
-  IconSeldonComponent,
-  IconSeldonCorner,
-  IconSeldonDisplay,
-  IconSeldonFont,
-  IconSeldonFontFamily,
-  IconSeldonFontLetterSpacing,
-  IconSeldonFontLineHeight,
-  IconSeldonFontSize,
-  IconSeldonFontTextDecoration,
-  IconSeldonFontTextWrap,
-  IconSeldonFontWeight,
-  IconSeldonFrame,
-  IconSeldonFrameColumns,
-  IconSeldonFrameRows,
-  IconSeldonGap,
-  IconSeldonGradient,
-  IconSeldonHeight,
-  IconSeldonIcon,
-  IconSeldonImage,
-  IconSeldonImageFit,
-  IconSeldonInput,
-  IconSeldonInputType,
-  IconSeldonLines,
-  IconSeldonMargin,
-  IconSeldonOpacity,
-  IconSeldonPadding,
-  IconSeldonRadioOff,
-  IconSeldonRotation,
-  IconSeldonShadow,
-  IconSeldonSize,
-  IconSeldonStep,
-  IconSeldonSwatch,
-  IconSeldonText,
-  IconSeldonTextAlign,
-  IconSeldonToken,
-  IconSeldonWidth,
-} from "@seldon/components/icons"
-
-// Map of icons from seldon/icons
-const SELDON_ICON_MAP: Record<string, React.ComponentType> = {
-  IconSeldonComponent,
-  IconSeldonBackground,
-  IconSeldonImage,
-  IconSeldonImageFit,
-  IconSeldonInput,
-  IconSeldonText,
-  IconSeldonFrame,
-  IconSeldonFrameColumns,
-  IconSeldonFrameRows,
-  IconSeldonIcon,
-  IconSeldonSwatch,
-}
-
-// Icon mapping from string names to React components
-// Maps registry icon names to seldon/icons components; dynamic ones stay on custom-icons
-export const ICON_MAP: Record<string, React.ComponentType> = {
-  IconAlignValue: IconSeldonAlign,
-  IconBackgroundColorValue: IconSeldonBackgroundColor,
-  IconBorderColorValue: IconSeldonBorderColor,
-  IconBorderStyleValue: IconSeldonBorderStyle,
-  IconBrightnessValue: IconSeldonBrightness,
-  IconCheckboxCheckedValue: IconSeldonCheckboxOn,
-  IconCheckboxUncheckedValue: IconSeldonCheckboxOff,
-  IconClipValue: IconSeldonClip,
-  IconColorValue: IconCustomColorValue,
-  IconCornerValue: IconSeldonCorner,
-  IconDisplayShowValue: IconSeldonDisplay,
-  IconFontValue: IconSeldonFont,
-  IconFontFamily: IconSeldonFontFamily,
-  IconFontSizeValue: IconSeldonFontSize,
-  IconFontWeightValue: IconSeldonFontWeight,
-  IconGapValue: IconSeldonGap,
-  IconGradientValue: IconSeldonGradient,
-  IconHeightValue: IconSeldonHeight,
-  IconImageFit: IconSeldonImageFit,
-  IconImageValue: IconSeldonImage,
-  IconInputTypeValue: IconSeldonInputType,
-  IconLetterSpacingValue: IconSeldonFontLetterSpacing,
-  IconLineHeightValue: IconSeldonFontLineHeight,
-  IconLinesValue: IconSeldonLines,
-  IconMarginSideValue: IconSeldonMargin,
-  IconOpacityValue: IconSeldonOpacity,
-  IconPaddingSideValue: IconSeldonPadding,
-  IconRadioUncheckedValue: IconSeldonRadioOff,
-  IconRotationValue: IconSeldonRotation,
-  IconShadowValue: IconSeldonShadow,
-  IconSizeValue: IconSeldonSize,
-  IconStepValue: IconSeldonStep,
-  IconTextCaseValue: IconSeldonCase,
-  IconTextAlignValue: IconSeldonTextAlign,
-  IconTextDecoration: IconSeldonFontTextDecoration,
-  IconTextValue: IconSeldonText,
-  IconThemeColorValue: IconCustomThemeColorValue,
-  IconTokenValue: IconSeldonToken,
-  IconWidthValue: IconSeldonWidth,
-  IconWrapValue: IconSeldonFontTextWrap,
-  // Icons from seldon/icons (merged in, will override if same name exists)
-  ...SELDON_ICON_MAP,
-}
 
 export type ControlType = "combo" | "menu" | "number" | "text" | "error"
 
@@ -126,6 +10,7 @@ export interface PropertyOption {
 
 export interface PropertyRegistryEntry {
   label?: string
+  /** Icon id rendered by the custom-components Icon wrapper. */
   icon: string
   control?: ControlType
   subProperties?: {
@@ -146,81 +31,81 @@ const UI_OVERRIDES: PropertyRegistry = {
   // 1. ATTRIBUTES PROPERTIES
   // ========================================
   content: {
-    icon: "IconTextValue",
+    icon: "seldon-text",
     control: "text",
   },
   altText: {
-    icon: "IconTextValue",
+    icon: "seldon-text",
     control: "text",
   },
   ariaLabel: {
-    icon: "IconTextValue",
+    icon: "seldon-text",
     control: "text",
   },
   ariaHidden: {
-    icon: "IconRadioUncheckedValue",
+    icon: "seldon-radioOff",
     control: "menu",
   },
   placeholder: {
-    icon: "IconTextValue",
+    icon: "seldon-text",
     control: "text",
   },
   checked: {
-    icon: "IconRadioUncheckedValue",
+    icon: "seldon-radioOff",
     control: "menu",
   },
   inputType: {
-    icon: "IconInputTypeValue",
+    icon: "seldon-inputType",
     control: "menu",
   },
   htmlElement: {
     label: "HTML Element",
-    icon: "IconTokenValue",
+    icon: "seldon-token",
     control: "menu",
   },
   wrapperElement: {
     label: "Wrapper",
-    icon: "IconTokenValue",
+    icon: "seldon-token",
     control: "menu",
   },
   symbol: {
-    icon: "IconTokenValue",
+    icon: "seldon-token",
     control: "combo",
   },
   source: {
-    icon: "IconImageValue",
+    icon: "seldon-image",
     control: "combo",
   },
   imageFit: {
-    icon: "IconImageFit",
+    icon: "seldon-imageFit",
     control: "menu",
   },
   display: {
-    icon: "IconDisplayShowValue",
+    icon: "seldon-display",
     control: "menu",
   },
   size: {
-    icon: "IconSizeValue",
+    icon: "seldon-size",
     control: "combo",
   },
   buttonSize: {
-    icon: "IconFontSizeValue",
+    icon: "seldon-fontSize",
     control: "combo",
   },
   board: {
-    icon: "IconSeldonComponent",
+    icon: "seldon-component",
     control: "menu",
     subProperties: {
       preset: {
-        icon: "IconSeldonComponent",
+        icon: "seldon-component",
         control: "menu",
       },
       width: {
-        icon: "IconWidthValue",
+        icon: "seldon-width",
         control: "combo",
       },
       height: {
-        icon: "IconHeightValue",
+        icon: "seldon-height",
         control: "combo",
       },
     },
@@ -230,133 +115,133 @@ const UI_OVERRIDES: PropertyRegistry = {
   // 2. LAYOUT
   // ========================================
   direction: {
-    icon: "IconAlignValue",
+    icon: "seldon-align",
     control: "menu",
   },
   position: {
-    icon: "IconTextValue",
+    icon: "seldon-text",
     control: "text",
     subProperties: {
       top: {
         label: "Top",
-        icon: "IconTextValue",
+        icon: "seldon-text",
         control: "number",
       },
       right: {
         label: "Right",
-        icon: "IconTextValue",
+        icon: "seldon-text",
         control: "number",
       },
       bottom: {
         label: "Bottom",
-        icon: "IconTextValue",
+        icon: "seldon-text",
         control: "number",
       },
       left: {
         label: "Left",
-        icon: "IconTextValue",
+        icon: "seldon-text",
         control: "number",
       },
     },
   },
   orientation: {
-    icon: "IconTokenValue",
+    icon: "seldon-token",
     control: "menu",
   },
   align: {
-    icon: "IconAlignValue",
+    icon: "seldon-align",
     control: "menu",
   },
   cellAlign: {
-    icon: "IconAlignValue",
+    icon: "seldon-align",
     control: "menu",
   },
   width: {
-    icon: "IconWidthValue",
+    icon: "seldon-width",
     control: "combo",
   },
   height: {
-    icon: "IconHeightValue",
+    icon: "seldon-height",
     control: "combo",
   },
   screenWidth: {
-    icon: "IconWidthValue",
+    icon: "seldon-width",
     control: "combo",
   },
   screenHeight: {
-    icon: "IconHeightValue",
+    icon: "seldon-height",
     control: "combo",
   },
   margin: {
-    icon: "IconMarginSideValue",
+    icon: "seldon-margin",
     control: "combo",
     subProperties: {
       top: {
-        icon: "IconMarginSideValue",
+        icon: "seldon-margin",
         control: "combo",
       },
       right: {
-        icon: "IconMarginSideValue",
+        icon: "seldon-margin",
         control: "combo",
       },
       bottom: {
-        icon: "IconMarginSideValue",
+        icon: "seldon-margin",
         control: "combo",
       },
       left: {
-        icon: "IconMarginSideValue",
+        icon: "seldon-margin",
         control: "combo",
       },
     },
   },
   padding: {
-    icon: "IconPaddingSideValue",
+    icon: "seldon-padding",
     control: "combo",
     subProperties: {
       top: {
-        icon: "IconPaddingSideValue",
+        icon: "seldon-padding",
         control: "combo",
       },
       right: {
-        icon: "IconPaddingSideValue",
+        icon: "seldon-padding",
         control: "combo",
       },
       bottom: {
-        icon: "IconPaddingSideValue",
+        icon: "seldon-padding",
         control: "combo",
       },
       left: {
-        icon: "IconPaddingSideValue",
+        icon: "seldon-padding",
         control: "combo",
       },
     },
   },
   gap: {
-    icon: "IconGapValue",
+    icon: "seldon-gap",
     control: "combo",
   },
   rotation: {
-    icon: "IconRotationValue",
+    icon: "seldon-rotation",
     control: "number",
   },
   wrapChildren: {
-    icon: "IconWrapValue",
+    icon: "seldon-fontTextWrap",
     control: "menu",
   },
   clip: {
-    icon: "IconClipValue",
+    icon: "seldon-clip",
     control: "menu",
   },
   cursor: {
-    icon: "IconTokenValue",
+    icon: "seldon-token",
     control: "menu",
   },
   columns: {
-    icon: "IconTokenValue",
+    icon: "seldon-token",
     control: "number",
   },
   rows: {
-    icon: "IconTokenValue",
+    icon: "seldon-token",
     control: "number",
   },
 
@@ -364,190 +249,190 @@ const UI_OVERRIDES: PropertyRegistry = {
   // 3. APPEARANCE
   // ========================================
   color: {
-    icon: "IconColorValue",
+    icon: "icon-custom-color-value",
     control: "combo",
   },
   accentColor: {
-    icon: "IconColorValue",
+    icon: "icon-custom-color-value",
     control: "combo",
   },
   brightness: {
-    icon: "IconBrightnessValue",
+    icon: "seldon-brightness",
     control: "number",
   },
   opacity: {
-    icon: "IconOpacityValue",
+    icon: "seldon-opacity",
     control: "number",
   },
   background: {
-    icon: "IconColorValue",
+    icon: "icon-custom-color-value",
     subProperties: {
       preset: {
-        icon: "IconColorValue",
+        icon: "icon-custom-color-value",
         control: "combo",
       },
       color: {
-        icon: "IconBackgroundColorValue",
+        icon: "seldon-backgroundColor",
         control: "combo",
       },
       brightness: {
-        icon: "IconBrightnessValue",
+        icon: "seldon-brightness",
         control: "number",
       },
       opacity: {
-        icon: "IconOpacityValue",
+        icon: "seldon-opacity",
         control: "number",
       },
       image: {
-        icon: "IconImageValue",
+        icon: "seldon-image",
         control: "combo",
       },
       position: {
-        icon: "IconTokenValue",
+        icon: "seldon-token",
         control: "menu",
       },
       size: {
-        icon: "IconTokenValue",
+        icon: "seldon-token",
         control: "menu",
       },
       repeat: {
-        icon: "IconTokenValue",
+        icon: "seldon-token",
         control: "menu",
       },
     },
   },
   border: {
-    icon: "IconBorderStyleValue",
+    icon: "seldon-borderStyle",
     subProperties: {
       preset: {
-        icon: "IconBorderStyleValue",
+        icon: "seldon-borderStyle",
         control: "combo",
       },
       style: {
-        icon: "IconBorderStyleValue",
+        icon: "seldon-borderStyle",
         control: "menu",
       },
       color: {
-        icon: "IconBorderColorValue",
+        icon: "seldon-borderColor",
         control: "combo",
       },
       width: {
-        icon: "IconBorderStyleValue",
+        icon: "seldon-borderStyle",
         control: "combo",
       },
       brightness: {
-        icon: "IconBrightnessValue",
+        icon: "seldon-brightness",
         control: "number",
       },
       opacity: {
-        icon: "IconOpacityValue",
+        icon: "seldon-opacity",
         control: "number",
       },
       // Individual border sides
       topStyle: {
-        icon: "IconBorderStyleValue",
+        icon: "seldon-borderStyle",
         control: "menu",
       },
       topColor: {
-        icon: "IconBorderColorValue",
+        icon: "seldon-borderColor",
         control: "combo",
       },
       topWidth: {
-        icon: "IconBorderStyleValue",
+        icon: "seldon-borderStyle",
         control: "combo",
       },
       topBrightness: {
-        icon: "IconBrightnessValue",
+        icon: "seldon-brightness",
         control: "number",
       },
       topOpacity: {
-        icon: "IconOpacityValue",
+        icon: "seldon-opacity",
         control: "number",
       },
       rightStyle: {
-        icon: "IconBorderStyleValue",
+        icon: "seldon-borderStyle",
         control: "menu",
       },
       rightColor: {
-        icon: "IconBorderColorValue",
+        icon: "seldon-borderColor",
         control: "combo",
       },
       rightWidth: {
-        icon: "IconBorderStyleValue",
+        icon: "seldon-borderStyle",
         control: "combo",
       },
       rightBrightness: {
-        icon: "IconBrightnessValue",
+        icon: "seldon-brightness",
         control: "number",
       },
       rightOpacity: {
-        icon: "IconOpacityValue",
+        icon: "seldon-opacity",
         control: "number",
       },
       bottomStyle: {
-        icon: "IconBorderStyleValue",
+        icon: "seldon-borderStyle",
         control: "menu",
       },
       bottomColor: {
-        icon: "IconBorderColorValue",
+        icon: "seldon-borderColor",
         control: "combo",
       },
       bottomWidth: {
-        icon: "IconBorderStyleValue",
+        icon: "seldon-borderStyle",
         control: "combo",
       },
       bottomBrightness: {
-        icon: "IconBrightnessValue",
+        icon: "seldon-brightness",
         control: "number",
       },
       bottomOpacity: {
-        icon: "IconOpacityValue",
+        icon: "seldon-opacity",
         control: "number",
       },
       leftStyle: {
-        icon: "IconBorderStyleValue",
+        icon: "seldon-borderStyle",
         control: "menu",
       },
       leftColor: {
-        icon: "IconBorderColorValue",
+        icon: "seldon-borderColor",
         control: "combo",
       },
       leftWidth: {
-        icon: "IconBorderStyleValue",
+        icon: "seldon-borderStyle",
         control: "combo",
       },
       leftBrightness: {
-        icon: "IconBrightnessValue",
+        icon: "seldon-brightness",
         control: "number",
       },
       leftOpacity: {
-        icon: "IconOpacityValue",
+        icon: "seldon-opacity",
         control: "number",
       },
     },
   },
   borderCollapse: {
-    icon: "IconTokenValue",
+    icon: "seldon-token",
     control: "menu",
   },
   corners: {
-    icon: "IconCornerValue",
+    icon: "seldon-corner",
     control: "combo",
     subProperties: {
       topLeft: {
-        icon: "IconCornerValue",
+        icon: "seldon-corner",
         control: "combo",
       },
       topRight: {
-        icon: "IconCornerValue",
+        icon: "seldon-corner",
         control: "combo",
       },
       bottomRight: {
-        icon: "IconCornerValue",
+        icon: "seldon-corner",
         control: "combo",
       },
       bottomLeft: {
-        icon: "IconCornerValue",
+        icon: "seldon-corner",
         control: "combo",
       },
     },
@@ -557,56 +442,56 @@ const UI_OVERRIDES: PropertyRegistry = {
   // 4. TYPOGRAPHY
   // ========================================
   font: {
-    icon: "IconFontValue",
+    icon: "seldon-font",
     subProperties: {
       preset: {
-        icon: "IconFontValue",
+        icon: "seldon-font",
         control: "combo",
       },
       family: {
-        icon: "IconFontFamily",
+        icon: "seldon-fontFamily",
         control: "combo",
       },
       style: {
-        icon: "IconTokenValue",
+        icon: "seldon-token",
         control: "menu",
       },
       weight: {
-        icon: "IconFontWeightValue",
+        icon: "seldon-fontWeight",
         control: "combo",
       },
       size: {
-        icon: "IconFontSizeValue",
+        icon: "seldon-fontSize",
         control: "combo",
       },
       lineHeight: {
-        icon: "IconLineHeightValue",
+        icon: "seldon-fontLineHeight",
         control: "combo",
       },
       textCase: {
-        icon: "IconTokenValue",
+        icon: "seldon-token",
         control: "menu",
       },
       letterSpacing: {
-        icon: "IconLetterSpacingValue",
+        icon: "seldon-fontLetterSpacing",
         control: "number",
       },
     },
   },
   textAlign: {
-    icon: "IconTextAlignValue",
+    icon: "seldon-textAlign",
     control: "menu",
   },
   textDecoration: {
-    icon: "IconTextDecoration",
+    icon: "seldon-fontTextDecoration",
     control: "menu",
   },
   wrapText: {
-    icon: "IconWrapValue",
+    icon: "seldon-fontTextWrap",
     control: "menu",
   },
   lines: {
-    icon: "IconLinesValue",
+    icon: "seldon-lines",
     control: "number",
   },
 
@@ -614,50 +499,50 @@ const UI_OVERRIDES: PropertyRegistry = {
   // 5. GRADIENTS
   // ========================================
   gradient: {
-    icon: "IconGradientValue",
+    icon: "seldon-gradient",
     subProperties: {
       preset: {
-        icon: "IconGradientValue",
+        icon: "seldon-gradient",
         control: "combo",
       },
       gradientType: {
-        icon: "IconGradientValue",
+        icon: "seldon-gradient",
         control: "menu",
       },
       angle: {
-        icon: "IconTextValue",
+        icon: "seldon-text",
         control: "number",
       },
       startColor: {
-        icon: "IconColorValue",
+        icon: "icon-custom-color-value",
         control: "combo",
       },
       startBrightness: {
-        icon: "IconBrightnessValue",
+        icon: "seldon-brightness",
         control: "number",
       },
       startOpacity: {
-        icon: "IconOpacityValue",
+        icon: "seldon-opacity",
         control: "number",
       },
       startPosition: {
-        icon: "IconTextValue",
+        icon: "seldon-text",
         control: "number",
       },
       endColor: {
-        icon: "IconColorValue",
+        icon: "icon-custom-color-value",
         control: "combo",
       },
       endBrightness: {
-        icon: "IconBrightnessValue",
+        icon: "seldon-brightness",
         control: "number",
       },
       endOpacity: {
-        icon: "IconOpacityValue",
+        icon: "seldon-opacity",
         control: "number",
       },
       endPosition: {
-        icon: "IconTextValue",
+        icon: "seldon-text",
         control: "number",
       },
     },
@@ -667,48 +552,48 @@ const UI_OVERRIDES: PropertyRegistry = {
   // 6. EFFECTS
   // ========================================
   shadow: {
-    icon: "IconShadowValue",
+    icon: "seldon-shadow",
     subProperties: {
       preset: {
-        icon: "IconShadowValue",
+        icon: "seldon-shadow",
         control: "combo",
       },
       offsetX: {
-        icon: "IconTokenValue",
+        icon: "seldon-token",
         control: "number",
       },
       offsetY: {
-        icon: "IconTokenValue",
+        icon: "seldon-token",
         control: "number",
       },
       blur: {
-        icon: "IconTokenValue",
+        icon: "seldon-token",
         control: "combo",
       },
       spread: {
-        icon: "IconTokenValue",
+        icon: "seldon-token",
         control: "combo",
       },
       color: {
-        icon: "IconColorValue",
+        icon: "icon-custom-color-value",
         control: "combo",
       },
       brightness: {
-        icon: "IconBrightnessValue",
+        icon: "seldon-brightness",
         control: "number",
       },
       opacity: {
-        icon: "IconOpacityValue",
+        icon: "seldon-opacity",
         control: "number",
       },
     },
   },
   scroll: {
-    icon: "IconTokenValue",
+    icon: "seldon-token",
     control: "menu",
   },
   scrollbarStyle: {
-    icon: "IconTokenValue",
+    icon: "seldon-token",
     control: "menu",
   },
 }
@@ -762,7 +647,7 @@ function buildBaseEntry(propertyKey: string): PropertyRegistryEntry {
   const hasSubPropertiesWithoutControl =
     override?.subProperties && !override?.hasOwnProperty("control")
   const base: PropertyRegistryEntry = {
-    icon: "IconTokenValue",
+    icon: "seldon-token",
     control: hasSubPropertiesWithoutControl
       ? undefined
       : type === "atomic"
@@ -778,7 +663,7 @@ function buildBaseEntry(propertyKey: string): PropertyRegistryEntry {
         const subOverride = overrideSub[subKey]
         subMap[subKey] = {
           label: subOverride?.label,
-          icon: subOverride?.icon ?? "IconTokenValue",
+          icon: subOverride?.icon ?? "seldon-token",
           control: subOverride?.control ?? "combo",
         }
       })

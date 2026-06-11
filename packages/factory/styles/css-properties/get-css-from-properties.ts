@@ -1,5 +1,4 @@
 import { Properties } from "@seldon/core"
-import { computeProperties } from "@seldon/core/properties/compute"
 
 import { StyleGenerationContext } from "../types"
 import { getCssObjectFromProperties } from "./get-css-object-from-properties"
@@ -20,30 +19,9 @@ export function getCssFromProperties(
   context: StyleGenerationContext,
   className: string,
 ): string {
-  /**
-   * We need to to compute the raw properties first, so that we can use the resolved values in the styles functions. E.g.
-   *
-   * @example
-   * {
-   *   color: {
-   *     type: ValueType.Computed,
-   *     function: ComputedFunction.HIGH_CONTRAST_COLOR
-   *   }
-   * }
-   *
-   * Computes/resolves to:
-   *
-   * {
-   *   color: {
-   *     type: ValueType.EXACT,
-   *     value: "#eee"
-   *   }
-   * }
-   *
-   */
-  const computedProperties = computeProperties(propertiesSubset, context)
-
-  let styles = getCssObjectFromProperties(computedProperties, context)
+  // getCssObjectFromProperties computes the raw properties itself, so the
+  // subset passes through unresolved.
+  let styles = getCssObjectFromProperties(propertiesSubset, context)
 
   styles = removeUndefinedValues(styles)
   styles = getShorthandValues(styles)

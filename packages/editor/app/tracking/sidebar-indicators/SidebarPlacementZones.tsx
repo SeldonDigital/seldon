@@ -19,7 +19,8 @@ interface SidebarPlacementZonesProps {
   onPlacementClick: (placement: Placement) => void
   onRowClick?: () => void
   onRowDoubleClick?: () => void
-  onHoverChange?: (isHovered: boolean) => void
+  onCanvasTrackingEnter?: () => void
+  onCanvasTrackingLeave?: () => void
 }
 
 export function SidebarPlacementZones({
@@ -28,7 +29,8 @@ export function SidebarPlacementZones({
   onPlacementClick,
   onRowClick: _onRowClick,
   onRowDoubleClick: _onRowDoubleClick,
-  onHoverChange,
+  onCanvasTrackingEnter,
+  onCanvasTrackingLeave,
 }: SidebarPlacementZonesProps) {
   const { activeTool } = useTool()
   const {
@@ -40,12 +42,12 @@ export function SidebarPlacementZones({
   } = useSidebarPlacementTracking(node)
 
   const handlePlacementMouseEnter = (placement: Placement) => {
-    onHoverChange?.(true)
+    onCanvasTrackingEnter?.()
     handlePlacementEnter(placement)
   }
 
   const handlePlacementMouseLeave = () => {
-    onHoverChange?.(false)
+    onCanvasTrackingLeave?.()
     handlePlacementLeave()
   }
 

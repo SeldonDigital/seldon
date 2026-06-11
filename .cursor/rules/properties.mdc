@@ -7,7 +7,7 @@ alwaysApply: true
 
 Properties define component appearance and behavior. They flow from catalog defaults through workspace overrides and theme tokens into computed values for rendering and export.
 
-Use `packages/core/properties/PROPERTIES.md` as the canonical reference for property shapes, value types, categories, merge behavior, path rules, and adding property content.
+Use `packages/core/properties/README.md` as the canonical reference for property shapes, value types, categories, merge behavior, path rules, and adding property content.
 
 ### Property Shapes
 
@@ -75,7 +75,7 @@ Theme references are validated by restricted theme key unions where properties o
 
 ### Computed Values
 
-Computed property behavior and path rules live in `packages/core/properties/compute/PROPERTIES-COMPUTE.md`.
+Computed property behavior and path rules live in `packages/core/properties/compute/README.md`.
 
 The main `@seldon/core/properties` barrel does not re-export the compute pipeline. Use `@seldon/core/properties/compute` or `@seldon/core` for `computeProperties`, `getBasedOnValue`, compute engines, and compute types.
 

@@ -19,7 +19,7 @@ function createMetadataRow(
     key: `metadata.${key}`,
     propertyType: "atomic",
     label,
-    icon: "IconTextValue",
+    icon: "seldon-text",
     value: { type: ValueType.EXACT, value },
     actualValue: value,
     valueType: ValueType.EXACT,

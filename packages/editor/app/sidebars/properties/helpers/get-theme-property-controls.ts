@@ -21,16 +21,3 @@ export function getThemePropertyControlType(
   // Fallback for properties not yet in schema (shouldn't happen in production)
   return "text"
 }
-
-/**
- * Formats theme property value for display
- */
-export function formatThemePropertyValue(property: FlatProperty): string {
-  const value = property.value
-
-  if (typeof value === "object" && value !== null && "value" in value) {
-    return String(value.value)
-  }
-
-  return String(value)
-}

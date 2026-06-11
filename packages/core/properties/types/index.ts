@@ -8,7 +8,6 @@
  * - `theme-reference-values.ts` — atomic value shapes that carry `@`-keys (pairs with `themes/types/theme-reference-keys.ts`)
  * - `schema.ts` — `PropertySchema` (parallels `themes/types/schema.ts`)
  * - `value*.ts` — atomic / compound / shorthand value-shape unions
- * - `helpers.ts` — `Restricted`
  */
 export * from "./properties"
 export * from "./property-keys"
@@ -18,4 +17,3 @@ export * from "./value-shorthand"
 export * from "./theme-reference-values"
 export * from "./value"
 export * from "./schema"
-export * from "./helpers"

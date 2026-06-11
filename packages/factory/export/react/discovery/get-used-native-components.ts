@@ -1,11 +1,11 @@
 import { Workspace } from "@seldon/core"
-import { getComponentSchema } from "@seldon/core/components/catalog"
 import { isComponentId } from "@seldon/core/components/constants"
 import { HtmlElement } from "@seldon/core/properties"
 import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-catalog-id"
 import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
 
 import { getWorkspaceNodeList } from "../../../helpers/workspace-nodes"
+import { HTML_ELEMENT_OPTIONS } from "./html-element-options"
 
 export function getUsedNativeComponents(
   workspace: Workspace,
@@ -21,11 +21,10 @@ export function getUsedNativeComponents(
     const catalogId = getNodeCatalogId(node, workspace)
     if (!catalogId || !isComponentId(catalogId)) continue
 
-    const schema = getComponentSchema(catalogId)
-    const allowed = schema.properties.htmlElement?.restrictions?.allowedValues
-    if (allowed) {
-      for (const value of allowed) {
-        usedElements.add(value as HtmlElement)
+    const options = HTML_ELEMENT_OPTIONS[catalogId]
+    if (options) {
+      for (const value of options) {
+        usedElements.add(value)
       }
     }
   }

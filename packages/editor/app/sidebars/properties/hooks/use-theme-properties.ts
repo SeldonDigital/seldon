@@ -22,6 +22,7 @@ import {
   parseHSLString,
   toHSLString,
 } from "@seldon/core/helpers/color/convert-color"
+import { getThemeOverridePath } from "@seldon/core/workspace/helpers/themes/theme-override-paths"
 import type { EntryThemeId } from "@seldon/core/workspace/types"
 import { useThemeEntryEditor } from "@lib/themes/hooks/use-theme-entry-editor"
 import { FlatProperty } from "../helpers/properties-data"
@@ -55,6 +56,7 @@ export function useThemeProperties(themeEntryId: EntryThemeId | null) {
     removeCustomSwatch,
     setSwatchValue,
     setSwatchName,
+    resetOverride,
   } = useThemeEntryEditor(themeEntryId)
 
   const updateThemeProperty = useCallback(
@@ -145,12 +147,10 @@ export function useThemeProperties(themeEntryId: EntryThemeId | null) {
         return
       }
 
-      // Swatch properties (custom swatches need special handling)
+      // Swatch values are stored as HSL objects on the swatch cell
       if (key.startsWith("swatch.")) {
         const swatchId = key.split(".")[1] as ThemeCustomSwatchId
-        // For now, we'll need to handle swatch updates differently
-        // This would require getting the current swatch and updating it
-        console.warn("Swatch updates not yet implemented in Properties Sidebar")
+        setSwatchValue(swatchId, parseHSLString(toHSLString(newValue)))
         return
       }
 
@@ -268,8 +268,18 @@ export function useThemeProperties(themeEntryId: EntryThemeId | null) {
       setBlurValue,
       setSpreadValue,
       setLookParameter,
+      setSwatchValue,
     ],
   )
 
-  return { updateThemeProperty }
+  const resetThemeProperty = useCallback(
+    (property: FlatProperty) => {
+      const path = getThemeOverridePath(property.key)
+      if (!path) return
+      resetOverride(path)
+    },
+    [resetOverride],
+  )
+
+  return { updateThemeProperty, resetThemeProperty }
 }
