@@ -1,10 +1,9 @@
 /**
  * Hand-written view code for the value cell of a property row.
  *
- * The cell renders inside the generated row's `textLabel2` slot. That slot is
- * a block container that truncates overflow with an ellipsis, so everything
- * rendered here must stay inline and vertically centered through
- * `vertical-align`, not flex layout.
+ * The cell renders inside the generated row's `textLabel2` slot. The slot is
+ * styled as a flex row, so the chip, the value, and the unit lay out as flex
+ * items. The value item carries the ellipsis truncation.
  */
 import { MouseEvent, ReactNode, RefObject } from "react"
 import { Board, Instance, Theme, Variant } from "@seldon/core"
@@ -119,9 +118,10 @@ export function PropertyValueCell({
 }
 
 /**
- * Wraps the value content with the optional dynamic color chip before it and
- * the optional unit label after it. Dynamic `icon-custom-*` icons cannot
- * render through the generated row's icon slot, so the chip lives here.
+ * Lays out the value as flex items: the optional dynamic color chip, the
+ * truncating value content, and the optional unit label. Dynamic
+ * `icon-custom-*` icons cannot render through the generated row's icon slot,
+ * so the chip lives here.
  */
 function decorateValueContent(
   valueContent: ReactNode,
@@ -129,10 +129,6 @@ function decorateValueContent(
   unitLabel: string | undefined,
   labelColor: string | undefined,
 ): ReactNode {
-  if (!valueChip && !unitLabel) {
-    return valueContent
-  }
-
   return (
     <>
       {valueChip && (
@@ -140,21 +136,29 @@ function decorateValueContent(
           icon="icon-custom-color-value"
           color={valueChip.color}
           style={{
-            display: "inline-block",
-            verticalAlign: "middle",
+            flexShrink: 0,
             marginRight: "0.25rem",
             ...valueChip.style,
           }}
         />
       )}
-      <Text as="span" style={{ verticalAlign: "middle" }}>
+      <Text
+        as="span"
+        style={{
+          flex: 1,
+          minWidth: 0,
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          whiteSpace: "nowrap",
+        }}
+      >
         {valueContent}
       </Text>
       {unitLabel && (
         <Text
           as="span"
           style={{
-            verticalAlign: "middle",
+            flexShrink: 0,
             marginLeft: "0.25rem",
             ...(labelColor ? { color: labelColor } : {}),
           }}

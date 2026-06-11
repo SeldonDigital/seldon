@@ -83,6 +83,13 @@ export function createPropertyOptionIconRenderer({
       return <LoadEditorIcons iconId={option.value as IconId} />
     }
 
-    return <Icon icon={property.icon as IconProps["icon"]} />
+    // The generated icon class pins a dark color, so the icon inherits the
+    // menu text color instead.
+    return (
+      <Icon
+        icon={property.icon as IconProps["icon"]}
+        style={{ color: "inherit" }}
+      />
+    )
   }
 }

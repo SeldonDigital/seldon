@@ -75,7 +75,11 @@ export function getValueIconStyle({
   return iconStateStyle(labelColor)
 }
 
-/** Value cell label wrapping the injected `PropertyValueCell` node. */
+/**
+ * Value cell label wrapping the injected `PropertyValueCell` node. The cell is
+ * a flex row so the chip, value, and unit align vertically. The value item
+ * inside the cell carries the ellipsis truncation.
+ */
 export function getValueCellStyle({
   labelColor,
   isEditingProperty,
@@ -89,16 +93,15 @@ export function getValueCellStyle({
     flex: 1,
     flexShrink: 1,
     width: 0,
+    minWidth: 0,
+    display: "flex",
+    alignItems: "center",
+    overflow: "hidden",
     color: labelColor && !isEditingProperty ? labelColor : "hsl(0 0% 96%)",
     fontSize: "0.75rem",
     fontWeight: 300,
     cursor: isInteractive ? "pointer" : "default",
     pointerEvents: "auto",
-    display: "block",
-    minWidth: 0,
-    whiteSpace: "nowrap",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
     userSelect: "none",
     WebkitUserSelect: "none",
   }
