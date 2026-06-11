@@ -1135,9 +1135,9 @@ Suffix examples: `component-button-default`, `component-button-{hash}`, or `them
 
 ## Migration
 
-`metadata.version` is managed by the workspace migration system. The migration middleware lives in `packages/core/workspace/middleware/migration/middleware.ts`. On `set_workspace` it stamps `metadata.version` with `CURRENT_WORKSPACE_VERSION` (currently 0).
+`metadata.version` is managed by the workspace migration system. The migration middleware lives in `packages/core/workspace/middleware/migration/middleware.ts`. On `set_workspace` it runs pending migration steps and stamps `metadata.version` with `CURRENT_WORKSPACE_VERSION` (currently 1).
 
-The v0 baseline ships no migration steps. Future migrations will run when the stored version is below the target version.
+Version 1 normalizes legacy EXACT `blendMode` and `filter` values on node overrides, theme overrides, and board component properties. See `packages/core/workspace/middleware/migration/README.md`.
 
 The file format specification version is independent of the internal workspace `metadata.version` number. Field `metadata.version` tracks schema evolution for the migration system. This specification documents the overall structure of the serialized format.
 

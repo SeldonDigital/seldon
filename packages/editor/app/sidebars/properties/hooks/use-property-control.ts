@@ -85,8 +85,6 @@ interface ComboboxControlView {
     placeholder: string
     disabled?: boolean
     autoFocus: boolean
-    options: ComboboxOptionItems
-    onOptionSelect: (value: string) => void
     style: CSSProperties
   }
   options: {
@@ -249,8 +247,6 @@ export function usePropertyControl({
       placeholder,
       disabled: property.isDimmed,
       autoFocus: isEditing,
-      options: combo.filteredOptions,
-      onOptionSelect: combo.handleSelect,
       style: display.fieldStyle,
     },
     options: {

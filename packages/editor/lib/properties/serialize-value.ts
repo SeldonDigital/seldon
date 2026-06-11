@@ -1,5 +1,7 @@
 import {
   Align,
+  BACKGROUND_FILTER_PRESET_VALUES,
+  BackgroundBlendMode,
   BackgroundPosition,
   BackgroundRepeat,
   BorderCollapse,
@@ -215,6 +217,12 @@ function initializePresetMappings() {
   })
 
   // Background layer presets
+  Object.entries(BackgroundBlendMode).forEach(([key, value]) => {
+    PRESET_MAPPINGS.set(
+      value,
+      BackgroundBlendMode[key as keyof typeof BackgroundBlendMode],
+    )
+  })
   Object.entries(BackgroundPosition).forEach(([key, value]) => {
     PRESET_MAPPINGS.set(
       value,
@@ -226,6 +234,9 @@ function initializePresetMappings() {
       value,
       BackgroundRepeat[key as keyof typeof BackgroundRepeat],
     )
+  })
+  BACKGROUND_FILTER_PRESET_VALUES.forEach((value) => {
+    PRESET_MAPPINGS.set(value, value)
   })
 
   // Placement presets
