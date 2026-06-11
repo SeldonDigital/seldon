@@ -1,3 +1,11 @@
+/**
+ * Hand-written view code for the value cell of a property row.
+ *
+ * The cell renders inside the generated row's `textLabel2` slot. That slot is
+ * a block container that truncates overflow with an ellipsis, so everything
+ * rendered here must stay inline and vertically centered through
+ * `vertical-align`, not flex layout.
+ */
 import { MouseEvent, ReactNode, RefObject } from "react"
 import { Board, Instance, Theme, Variant } from "@seldon/core"
 import {
@@ -132,17 +140,21 @@ function decorateValueContent(
           icon="icon-custom-color-value"
           color={valueChip.color}
           style={{
+            display: "inline-block",
             verticalAlign: "middle",
             marginRight: "0.25rem",
             ...valueChip.style,
           }}
         />
       )}
-      {valueContent}
+      <Text as="span" style={{ verticalAlign: "middle" }}>
+        {valueContent}
+      </Text>
       {unitLabel && (
         <Text
           as="span"
           style={{
+            verticalAlign: "middle",
             marginLeft: "0.25rem",
             ...(labelColor ? { color: labelColor } : {}),
           }}
