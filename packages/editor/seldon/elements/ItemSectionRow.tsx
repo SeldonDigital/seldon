@@ -159,7 +159,7 @@ export function ItemSectionRow({
 //
 const sdn: ItemSectionRowProps = {
   buttonIconic: {
-    className: "sdn-button-iconic sdn-button-iconic--uhqw",
+    className: "sdn-button-iconic sdn-button-iconic--eyvy",
   },
   icon: {
     icon: "material-unfoldMore",
@@ -169,14 +169,14 @@ const sdn: ItemSectionRowProps = {
     className: "sdn-text-label sdn-text-label--t8l6",
   },
   buttonIconic2: {
-    className: "sdn-button-iconic sdn-button-iconic--uhqw",
+    className: "sdn-button-iconic sdn-button-iconic--sxib",
   },
   icon2: {
     icon: "material-add",
     className: "sdn-icon sdn-icon--v2wj",
   },
   buttonIconic3: {
-    className: "sdn-button-iconic sdn-button-iconic--uhqw",
+    className: "sdn-button-iconic sdn-button-iconic--sxib",
   },
   icon3: {
     icon: "material-moreHoriz",

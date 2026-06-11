@@ -5432,14 +5432,20 @@
         "background": [
           {
             "color": {
-              "type": "theme.categorical",
-              "value": "@swatch.swatch1"
+              "type": "option",
+              "value": "transparent"
             }
           }
         ],
         "buttonSize": {
           "type": "theme.ordinal",
           "value": "@fontSize.small"
+        },
+        "border": {
+          "color": {
+            "type": "option",
+            "value": "transparent"
+          }
         }
       },
       "origin": "schema",
