@@ -2,15 +2,8 @@ import { getComponentSchema } from "../../components/catalog"
 import { ComponentId, isComponentId } from "../../components/constants"
 import { computeProperties } from "../../properties/compute"
 import type { ComputeContext } from "../../properties/compute"
-import { mergeTaggedValues } from "../../properties/helpers/merge-tagged-value"
+import { mergeProperties } from "../../properties/helpers/merge-properties"
 import type { Properties } from "../../properties/types/properties"
-import {
-  LAYERED_PAINT_KEYS,
-  type LayeredPaintKey,
-  OBJECT_FACET_PROPERTY_KEYS,
-  type ObjectFacetPropertyKey,
-  type PropertyKey,
-} from "../../properties/types/property-keys"
 import {
   expandLookPresetFacets,
   hasExpandableLookPreset,
@@ -224,58 +217,9 @@ function getEffectiveThemeId(
   )
 }
 
-function mergeLayerArrays<T extends Record<string, unknown>>(
-  base: T[],
-  next: T[],
-): T[] {
-  const length = Math.max(base.length, next.length)
-  return Array.from({ length }, (_, index) => {
-    const baseLayer = base[index]
-    const nextLayer = next[index]
-    if (nextLayer === undefined) return baseLayer as T
-    if (baseLayer === undefined) return nextLayer as T
-    return { ...baseLayer, ...nextLayer } as T
-  })
-}
-
-function mergePropertySource(base: Properties, next: Properties): Properties {
-  return (Object.keys(next) as PropertyKey[]).reduce((merged, key) => {
-    const baseValue = base[key]
-    const nextValue = next[key]
-    let value: unknown = nextValue
-
-    if (
-      LAYERED_PAINT_KEYS.has(key as LayeredPaintKey) &&
-      Array.isArray(baseValue) &&
-      Array.isArray(nextValue)
-    ) {
-      value = mergeLayerArrays(
-        baseValue as Record<string, unknown>[],
-        nextValue as Record<string, unknown>[],
-      )
-    } else if (
-      OBJECT_FACET_PROPERTY_KEYS.has(key as ObjectFacetPropertyKey) &&
-      baseValue &&
-      typeof baseValue === "object" &&
-      !Array.isArray(baseValue) &&
-      !("type" in baseValue) &&
-      nextValue &&
-      typeof nextValue === "object" &&
-      !Array.isArray(nextValue) &&
-      !("type" in nextValue)
-    ) {
-      value = { ...baseValue, ...nextValue }
-    } else {
-      value = mergeTaggedValues(baseValue, nextValue)
-    }
-
-    return { ...merged, [key]: value }
-  }, base)
-}
-
 export function mergeEffectiveProperties(sources: Properties[]): Properties {
   return sources.reduce(
-    (merged, source) => mergePropertySource(merged, source),
+    (merged, source) => mergeProperties(merged, source),
     {} as Properties,
   )
 }

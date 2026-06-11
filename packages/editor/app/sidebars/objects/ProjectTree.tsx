@@ -101,6 +101,5 @@ const styles: Record<string, CSSProperties> = {
     width: "100%",
     minWidth: 0,
     padding: "0.25rem 0.25rem 0.75rem 0.25rem",
-    gap: "0.25rem",
   },
 }
