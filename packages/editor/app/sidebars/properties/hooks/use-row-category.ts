@@ -1,5 +1,5 @@
 import { MouseEvent } from "react"
-import { IconProps } from "@seldon/components/primitives/Icon"
+import { IconProps } from "@seldon/components/custom-components"
 import { PropertySection } from "../helpers/get-property-sections"
 import { ThemePropertySection } from "../helpers/get-theme-property-sections"
 import { usePropertyExpansion } from "./use-property-expansion"

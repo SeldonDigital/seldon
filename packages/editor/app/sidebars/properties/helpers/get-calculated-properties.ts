@@ -113,7 +113,7 @@ function cssPropertiesToFlatProperties(
         isShorthand: false,
         isSubProperty: false,
         status: "set" as const,
-        icon: "IconTokenValue",
+        icon: "seldon-token",
         controlType: undefined,
       } as FlatProperty
     })

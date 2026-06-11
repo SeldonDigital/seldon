@@ -1,5 +1,5 @@
 import { MouseEvent } from "react"
-import { IconProps } from "@seldon/components/primitives/Icon"
+import { IconProps } from "@seldon/components/custom-components"
 
 interface UseRowButtonOptions {
   isExpanded: boolean

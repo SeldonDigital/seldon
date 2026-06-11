@@ -12,8 +12,8 @@
  *
  *****/
 import { HTMLAttributes } from "react"
-import { HTMLDiv } from "../native-react/HTML.Div"
-import { combineClassNames } from "../utils/class-name"
+import { HTMLDiv } from "../../native-react/HTML.Div"
+import { combineClassNames } from "../../utils/class-name"
 
 export interface SidebarContainerProps extends HTMLAttributes<HTMLDivElement> {
   className?: string

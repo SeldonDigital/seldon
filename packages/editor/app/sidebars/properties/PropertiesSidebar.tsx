@@ -1,5 +1,5 @@
 import { usePropertiesSidebar } from "./hooks/use-properties-sidebar"
-import { SidebarContainer } from "@seldon/components/elements/SidebarContainer"
+import { SidebarContainer } from "@seldon/components/custom-components"
 import {
   sidebarNoSelectionStyle,
   sidebarShellStyle,

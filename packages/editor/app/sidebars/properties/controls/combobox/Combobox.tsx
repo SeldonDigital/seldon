@@ -3,7 +3,7 @@ import { useKeyboardNavigation } from "./hooks/use-keyboard-navigation"
 import { Box, IconButton } from "@seldon/components/custom-components"
 import { Frame } from "@seldon/components/frames/Frame"
 import { IconSeldonChevronDown } from "@seldon/components/icons"
-import { InputEditor } from "@seldon/components/primitives/InputEditor"
+import { InputEditor } from "@seldon/components/custom-components"
 import {
   comboboxFrameStyle,
   comboboxInputStyle,

@@ -28,7 +28,7 @@ import { useResourceEntryRow } from "./hooks/use-resource-entry-row"
 import { useRowClick } from "./hooks/use-row-click"
 import { SelectionKind } from "@lib/workspace/selection-target"
 import { NodeRow, SidebarRow } from "@seldon/components/custom-components"
-import { IconProps } from "@seldon/components/primitives/Icon"
+import { IconProps } from "@seldon/components/custom-components"
 import { TextLabelProps } from "@seldon/components/primitives/TextLabel"
 import { Combobox } from "../properties/controls/combobox/Combobox"
 

@@ -12,13 +12,13 @@
  *
  *****/
 import { HTMLAttributes } from "react"
-import { HTMLHeading1 } from "../native-react/HTML.Heading1"
-import { HTMLHeading2 } from "../native-react/HTML.Heading2"
-import { HTMLHeading3 } from "../native-react/HTML.Heading3"
-import { HTMLHeading4 } from "../native-react/HTML.Heading4"
-import { HTMLHeading5 } from "../native-react/HTML.Heading5"
-import { HTMLHeading6 } from "../native-react/HTML.Heading6"
-import { combineClassNames } from "../utils/class-name"
+import { HTMLHeading1 } from "../../native-react/HTML.Heading1"
+import { HTMLHeading2 } from "../../native-react/HTML.Heading2"
+import { HTMLHeading3 } from "../../native-react/HTML.Heading3"
+import { HTMLHeading4 } from "../../native-react/HTML.Heading4"
+import { HTMLHeading5 } from "../../native-react/HTML.Heading5"
+import { HTMLHeading6 } from "../../native-react/HTML.Heading6"
+import { combineClassNames } from "../../utils/class-name"
 
 export interface TitleProps extends HTMLAttributes<
   | HTMLHeadingElement

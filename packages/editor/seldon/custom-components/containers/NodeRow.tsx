@@ -1,9 +1,10 @@
 import { LiHTMLAttributes, ReactNode } from "react"
 import { ButtonIconic, ButtonIconicProps } from "../../elements/ButtonIconic"
 import { HTMLLi } from "../../native-react/HTML.Li"
-import { Icon, IconProps } from "../../primitives/Icon"
+import { IconProps as GeneratedIconProps } from "../../primitives/Icon"
 import { TextLabel, TextLabelProps } from "../../primitives/TextLabel"
 import { combineClassNames } from "../../utils/class-name"
+import { Icon, IconProps } from "../primitives/Icon"
 
 export interface NodeRowProps extends LiHTMLAttributes<HTMLLIElement> {
   className?: string
@@ -126,18 +127,31 @@ export function NodeRow({
     className: combineClassNames(sdn.icon4?.className, icon4?.className),
   }
 
+  // Button icon slots never receive dynamic icon-custom-* ids, so the cast
+  // to the generated IconProps at the ButtonIconic boundary is safe.
   return (
     <HTMLLi className={nodeRowClassName} {...props}>
-      {buttonIconic && <ButtonIconic {...buttonIconicProps} icon={iconProps} />}
+      {buttonIconic && (
+        <ButtonIconic
+          {...buttonIconicProps}
+          icon={iconProps as GeneratedIconProps}
+        />
+      )}
       {icon2 && <Icon {...icon2Props} />}
       {textLabel && <TextLabel {...textLabelProps} />}
       {buttonIconic2 && (
-        <ButtonIconic {...buttonIconic2Props} icon={icon3Props} />
+        <ButtonIconic
+          {...buttonIconic2Props}
+          icon={icon3Props as GeneratedIconProps}
+        />
       )}
       {actionsSlot
         ? actionsSlot
         : buttonIconic3 && (
-            <ButtonIconic {...buttonIconic3Props} icon={icon4Props} />
+            <ButtonIconic
+              {...buttonIconic3Props}
+              icon={icon4Props as GeneratedIconProps}
+            />
           )}
     </HTMLLi>
   )

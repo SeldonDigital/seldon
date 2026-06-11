@@ -11,6 +11,7 @@
  */
 import { SVGAttributes } from "react"
 import { IconMaterialBlock } from "@seldon/core/icon-sets/catalog/material/system/security/IconMaterialBlock"
+import { IconMaterialThumbDown } from "@seldon/core/icon-sets/catalog/material/user-interface/navigation/IconMaterialThumbDown"
 import { IconMaterialVisibilityOff } from "@seldon/core/icon-sets/catalog/material/user-interface/status/IconMaterialVisibilityOff"
 import {
   IconDefault,
@@ -22,7 +23,6 @@ import {
   IconMaterialDelete,
   IconMaterialRobot,
   IconMaterialSearch,
-  IconMaterialThumbDown,
   IconMaterialThumbP,
   IconMaterialUnfoldLess,
   IconMaterialUnfoldMore,

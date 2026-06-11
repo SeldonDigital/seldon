@@ -260,7 +260,7 @@ function createFlatPropertyFromSchema(
       key: schema.key,
       propertyType: "compound",
       label: schema.label ?? schema.key,
-      icon: schema.icon ?? "IconSeldonComponent",
+      icon: schema.icon ?? "seldon-component",
       value: { type: ValueType.EMPTY, value: null },
       actualValue: "",
       valueType: ValueType.EMPTY,
@@ -343,11 +343,11 @@ function createFlatPropertyFromSchema(
     schema.key.startsWith("swatch.") ||
     schema.key === "color.baseColor" ||
     schema.key in COLOR_POINT_SWATCHES
-      ? "IconColorValue"
+      ? "icon-custom-color-value"
       : (schema.icon ??
         (schema.key.endsWith(".step")
-          ? "IconStepValue"
-          : "IconSeldonComponent"))
+          ? "seldon-step"
+          : "seldon-component"))
 
   const controlType = schema.controlType
     ? CONTROL_TYPE_MAP[schema.controlType]

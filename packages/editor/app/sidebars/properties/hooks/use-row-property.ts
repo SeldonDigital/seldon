@@ -27,10 +27,6 @@ import {
   FRAME_REF_VALUE,
   buildPropertyRowProps,
 } from "../helpers/build-property-row-props"
-import {
-  getFormControlStyle,
-  getRowStyle,
-} from "../helpers/property-row-state-styles"
 import { getDisplayValue } from "../helpers/display-value-utils"
 import {
   FontCollectionEditingContext,
@@ -39,6 +35,10 @@ import {
 } from "../helpers/editing-contexts"
 import { FlatProperty } from "../helpers/properties-data"
 import { getPropertyRegistryEntry } from "../helpers/properties-registry"
+import {
+  getFormControlStyle,
+  getRowStyle,
+} from "../helpers/property-row-state-styles"
 import {
   getPropertyLabelStyle,
   getPropertyRowStyle,
@@ -107,20 +107,8 @@ export function useRowProperty({
   const labelText = property.label
   const isThemeAssignment = property.pickerVariant === "themeAssignment"
 
-  const iconName = property.icon
-  // Convert property.icon string to icon ID format, e.g. "IconTextValue" ->
-  // "icon-custom-text-value".
-  const iconId = useMemo(() => {
-    if (iconName.startsWith("Icon")) {
-      const name = iconName.replace("Icon", "")
-      const kebab = name
-        .replace(/([A-Z])/g, "-$1")
-        .toLowerCase()
-        .replace(/^-/, "")
-      return `icon-custom-${kebab}`
-    }
-    return "seldon-component"
-  }, [iconName])
+  // Property icons are real icon ids resolved by the custom Icon wrapper.
+  const iconId = property.icon
 
   // Can reset only when overridden. Font collection family rows (`family.*`) and
   // icon set rows (`icon.*`) carry an override status for color only; they have
@@ -190,11 +178,10 @@ export function useRowProperty({
   const rowColor = rowStyle.color as string | undefined
   const { setIsHovered, style: hoverStyle } = usePropertyFrameHover(rowColor)
 
-  // Check if property supports upload (combo control + IconImageValue icon).
+  // Check if property supports upload (combo control + image icon).
   const registryEntry = getPropertyRegistryEntry(property.key)
   const supportsUpload =
-    registryEntry?.control === "combo" &&
-    registryEntry?.icon === "IconImageValue"
+    registryEntry?.control === "combo" && registryEntry?.icon === "seldon-image"
 
   const handleToggle = () => {
     if (hasChildren) {

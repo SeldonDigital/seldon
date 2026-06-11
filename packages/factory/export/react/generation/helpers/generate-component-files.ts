@@ -58,7 +58,7 @@ export async function generateComponentFiles(
       source = insertImports(source, component, jsxRoot, options)
 
       if (component.config.react.returns === "iconMap") {
-        source = insertIconMap(source, usedIconIds)
+        source = insertIconMap(source, usedIconIds, options)
       }
 
       source = await format(source, options)

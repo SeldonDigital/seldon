@@ -33,7 +33,7 @@ import {
   getNode,
   hasNode,
 } from "@lib/workspace/workspace-accessors"
-import { IconProps } from "@seldon/components/primitives/Icon"
+import { IconProps } from "@seldon/components/custom-components"
 import { TextLabelProps } from "@seldon/components/primitives/TextLabel"
 import { useDraggable } from "./use-draggable"
 import { useEditState } from "./use-edit-state"

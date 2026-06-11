@@ -4,7 +4,7 @@ import css from "react-syntax-highlighter/dist/esm/languages/hljs/css"
 import { atomOneDarkReasonable } from "react-syntax-highlighter/dist/esm/styles/hljs"
 import { Box } from "@seldon/components/custom-components"
 import { HTMLButton } from "@seldon/components/native-react/HTML.Button"
-import { Icon } from "@seldon/components/primitives/Icon"
+import { Icon } from "@seldon/components/custom-components"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 
 SyntaxHighlighter.registerLanguage("css", css)
@@ -45,7 +45,7 @@ export function CssBlock({ cssProperties }: CssBlockProps) {
         style={styles.copyButton}
       >
         <Icon
-          icon="icon-custom-duplicate"
+          icon="seldon-duplicate"
           className="seldon-instance child-icon-mN_VHh"
           style={styles.icon}
         />

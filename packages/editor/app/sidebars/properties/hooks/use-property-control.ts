@@ -134,7 +134,7 @@ export function usePropertyControl({
   const isEditing = externalIsEditing ?? internalIsEditing
   const setIsEditing = onEditChange ?? setInternalIsEditing
 
-  const { getIconComponent, getPropertyValueForDisplay, getPlaceholder } =
+  const { getPropertyValueForDisplay, getPlaceholder } =
     usePropertyControlData({ property, theme })
   const { validationFunction, units } = usePropertyValidation(property)
 
@@ -217,7 +217,6 @@ export function usePropertyControl({
     theme,
     workspace,
     themes,
-    getIconComponent,
   })
 
   return {

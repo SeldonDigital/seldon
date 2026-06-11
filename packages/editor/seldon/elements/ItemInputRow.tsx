@@ -186,7 +186,7 @@ const sdn: ItemInputRowProps = {
   },
   icon2: {
     icon: "__default__",
-    className: "sdn-icon sdn-icon--cfyh",
+    className: "sdn-icon sdn-icon--v2wj",
   },
   input: {
     type: "text",

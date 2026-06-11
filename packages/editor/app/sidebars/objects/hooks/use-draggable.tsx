@@ -6,7 +6,7 @@ import { createRoot } from "react-dom/client"
 import { Board, Instance, Variant } from "@seldon/core"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { NodeRow } from "@seldon/components/custom-components"
-import { IconProps } from "@seldon/components/primitives/Icon"
+import { IconProps } from "@seldon/components/custom-components"
 import { useNodeIcon } from "./use-node-icon"
 
 /**

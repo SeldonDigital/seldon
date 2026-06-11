@@ -13,6 +13,7 @@ import {
 } from "@seldon/core/components/constants"
 import { isComplexSchema } from "@seldon/core/components/types"
 import { IconId } from "@seldon/core/icon-sets"
+import { getWorkspaceEnabledIcons } from "@seldon/core/icon-sets/helpers"
 import { WrapperElement } from "@seldon/core/properties"
 import { componentBoardSchemaVariantNodeId } from "@seldon/core/workspace/helpers/components/entry-node-ids"
 import { getBoardByNodeId } from "@seldon/core/workspace/helpers/components/get-board-by-node-id"
@@ -311,7 +312,13 @@ function getVariantProps(
   }
 
   if (symbol) {
-    const options: IconId[] = Array.from(getUsedIconIds(workspace))
+    // Match the widened set used for the iconMap and icon file emission so
+    // the generated IconProps["icon"] union covers every exported icon.
+    const iconIds = getUsedIconIds(workspace)
+    for (const iconId of getWorkspaceEnabledIcons(workspace)) {
+      iconIds.add(iconId)
+    }
+    const options: IconId[] = Array.from(iconIds)
     props.icon = {
       defaultValue: properties.symbol?.value || options[0],
       options,

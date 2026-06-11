@@ -7,7 +7,7 @@ import { IconId } from "@seldon/core/icon-sets"
 import { ComponentToExport, ExportOptions, JSONTreeNode } from "../../../types"
 import { getIconComponentName } from "../../discovery/get-icon-component-name"
 import { pascalCase } from "../../utils/case-utils"
-import { getIconPath } from "../../utils/find-icon-path"
+import { resolveIconExport } from "../../utils/find-icon-path"
 import { pluralizeLevel } from "../../utils/pluralize-level"
 import {
   TransformStrategy,
@@ -93,17 +93,17 @@ export function insertImports(
     for (const option of tree.dataBinding.props.icon.options) {
       if (typeof option === "string") {
         const iconId = option as IconId
-        const componentName = getIconComponentName(iconId)
 
-        // Get the relative path for this icon (handles nested structure)
         if (options?.rootDirectory) {
-          const iconRelativePath = getIconPath(iconId, options.rootDirectory)
-          const importPath = `../icons/${iconRelativePath}`
-          imports[importPath] = [componentName]
+          const resolved = resolveIconExport(iconId, options.rootDirectory)
+          if (!resolved) continue
+          imports[`../icons/${resolved.relativePath}`] = [
+            resolved.componentName,
+          ]
         } else {
           // Fallback to flat structure if options not provided (backward compatibility)
-          const importPath = `../icons/${componentName}`
-          imports[importPath] = [componentName]
+          const componentName = getIconComponentName(iconId)
+          imports[`../icons/${componentName}`] = [componentName]
         }
       }
     }

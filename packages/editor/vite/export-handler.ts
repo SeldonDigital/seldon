@@ -73,7 +73,7 @@ export async function runExport(
     assetReader: createNodeExportAssetReader(rootDirectory),
     // Default off so exports stay request-free. Flip to true (or override via
     // body.options once the export options UI exists) to emit Google font links.
-    enableRemoteFonts: false,
+    enableRemoteFonts: true,
     ...body.options,
   }
 

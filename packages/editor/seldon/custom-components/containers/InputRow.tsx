@@ -2,9 +2,10 @@ import { HTMLAttributes, LiHTMLAttributes, ReactNode } from "react"
 import { ButtonIconic, ButtonIconicProps } from "../../elements/ButtonIconic"
 import { Frame } from "../../frames/Frame"
 import { HTMLLi } from "../../native-react/HTML.Li"
-import { Icon, IconProps } from "../../primitives/Icon"
+import { IconProps as GeneratedIconProps } from "../../primitives/Icon"
 import { TextLabel, TextLabelProps } from "../../primitives/TextLabel"
 import { combineClassNames } from "../../utils/class-name"
+import { Icon, IconProps } from "../primitives/Icon"
 
 export interface InputRowProps extends LiHTMLAttributes<HTMLLIElement> {
   className?: string
@@ -46,8 +47,7 @@ const sdn: InputRowProps = {
     className: "sdn-text-label sdn-text-label--tnwc",
   },
   formControlIconic: {
-    className:
-      "sdn-form-control-iconic sdn-form-control-iconic--bpko",
+    className: "sdn-form-control-iconic sdn-form-control-iconic--bpko",
   },
   icon2: {
     icon: "__default__",
@@ -175,22 +175,35 @@ export function InputRow({
     className: combineClassNames(sdn.icon4?.className, icon4?.className),
   }
 
+  // Button icon slots never receive dynamic icon-custom-* ids, so the cast
+  // to the generated IconProps at the ButtonIconic boundary is safe.
   return (
     <HTMLLi className={inputRowClassName} {...props}>
-      {buttonIconic && <ButtonIconic {...buttonIconicProps} icon={iconProps} />}
+      {buttonIconic && (
+        <ButtonIconic
+          {...buttonIconicProps}
+          icon={iconProps as GeneratedIconProps}
+        />
+      )}
       {textLabel && <TextLabel {...textLabelProps} />}
       <Frame {...formControlIconicProps}>
         {icon2 && <Icon {...icon2Props} />}
         {textLabel2 && <TextLabel {...textLabel2Props} />}
         {textLabel3 && <TextLabel {...textLabel3Props} />}
         {buttonIconic2 && (
-          <ButtonIconic {...buttonIconic2Props} icon={icon3Props} />
+          <ButtonIconic
+            {...buttonIconic2Props}
+            icon={icon3Props as GeneratedIconProps}
+          />
         )}
       </Frame>
       {actionsSlot
         ? actionsSlot
         : buttonIconic3 && (
-            <ButtonIconic {...buttonIconic3Props} icon={icon4Props} />
+            <ButtonIconic
+              {...buttonIconic3Props}
+              icon={icon4Props as GeneratedIconProps}
+            />
           )}
     </HTMLLi>
   )

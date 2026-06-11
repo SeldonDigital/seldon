@@ -104,7 +104,11 @@ export async function exportReact(
   }
 
   try {
-    const primitives = getNativeComponentFiles(workspace, options)
+    const primitives = getNativeComponentFiles(
+      workspace,
+      componentsToExport,
+      options,
+    )
     filesToExport.push(...primitives)
   } catch {
     // Failed to generate native component files

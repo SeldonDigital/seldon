@@ -405,7 +405,7 @@ export function createFlatProperty(
     isSubProperty: propertyKey.includes(".") && !isCompound && !isShorthand,
     propertyType: getPropertyCategory(propertyKey) || "atomic",
     status: finalStatus,
-    icon: registryEntry?.icon || "IconTokenValue",
+    icon: registryEntry?.icon || "seldon-token",
   }
 }
 
@@ -436,7 +436,7 @@ export function createFlatSubProperty(
     key: subPropertyPath,
     propertyType: "atomic", // Sub-properties are always atomic
     label: createSubPropertyLabel(propertyKey, subKey, subRegistryEntry?.label),
-    icon: subRegistryEntry?.icon || "IconTokenValue",
+    icon: subRegistryEntry?.icon || "seldon-token",
     value: subValue || EMPTY_VALUE,
     actualValue: (() => {
       let hasError = false

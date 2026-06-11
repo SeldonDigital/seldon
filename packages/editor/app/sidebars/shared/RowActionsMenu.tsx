@@ -1,5 +1,5 @@
 import { DropdownMenu, MenuAlign, MenuEntry } from "@lib/menus"
-import { Icon } from "@seldon/components/primitives/Icon"
+import { Icon } from "@seldon/components/custom-components"
 
 const TRIGGER_CLASS = "sdn-button-iconic sdn-button-iconic--eyvy"
 

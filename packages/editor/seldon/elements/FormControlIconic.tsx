@@ -101,6 +101,6 @@ const sdn: FormControlIconicProps = {
   },
   icon2: {
     icon: "material-chevronDown",
-    className: "sdn-icon sdn-icon--gaqs",
+    className: "sdn-icon sdn-icon--kuax",
   },
 }

@@ -12,9 +12,9 @@
  *
  *****/
 import { HTMLAttributes } from "react"
-import { HTMLLabel } from "../native-react/HTML.Label"
-import { HTMLSpan } from "../native-react/HTML.Span"
-import { combineClassNames } from "../utils/class-name"
+import { HTMLLabel } from "../../native-react/HTML.Label"
+import { HTMLSpan } from "../../native-react/HTML.Span"
+import { combineClassNames } from "../../utils/class-name"
 
 export interface LabelProps extends HTMLAttributes<
   HTMLLabelElement | HTMLElement
