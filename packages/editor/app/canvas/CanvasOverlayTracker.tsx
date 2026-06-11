@@ -11,10 +11,18 @@ import {
   useSelectedNodeId,
   useSelectedNodeRootId,
 } from "@lib/workspace/hooks/use-selection"
+import { useActiveBoard } from "@lib/workspace/hooks/use-active-board"
+import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import type { NodeRect } from "../tracking/hooks/use-node-rects-store"
 import { useCanvasOverlayStore } from "./hooks/use-canvas-overlay-store"
 import { useCanvasRemeasureStore } from "./hooks/use-canvas-remeasure-store"
 import { useSelectedId } from "@lib/workspace/selection-target"
+import { getComponentKey } from "@lib/workspace/workspace-accessors"
+import {
+  pickOutlineColorsFromSurface,
+  resolveOutlineSurfaceForBoard,
+  resolveOutlineSurfaceForNode,
+} from "../tracking/helpers/resolve-outline-surface"
 import {
   getCanvasSelectionElements,
   getScopedSelectionElement,
@@ -83,9 +91,54 @@ export function CanvasOverlayTracker() {
   const selectedNodeId = useSelectedNodeId()
   const selectedNodeRootId = useSelectedNodeRootId()
   const remeasureVersion = useCanvasRemeasureStore((state) => state.version)
+  const { workspace } = useWorkspace({ usePreview: false })
+  const { activeBoard } = useActiveBoard()
+  const activeBoardKey = activeBoard ? getComponentKey(activeBoard) : null
 
   const transformContextRef = useRef(transformContext)
   transformContextRef.current = transformContext
+
+  useEffect(() => {
+    const store = useCanvasOverlayStore.getState()
+
+    if (!hoveredId) {
+      if (store.hoverOutlineColors !== null) {
+        store.setHoverOutlineColors(null)
+      }
+    } else {
+      const surface =
+        hoveredKind === "node"
+          ? resolveOutlineSurfaceForNode(hoveredId, workspace)
+          : activeBoard
+            ? resolveOutlineSurfaceForBoard(activeBoard, workspace)
+            : null
+      const colors = surface ? pickOutlineColorsFromSurface(surface) : null
+      store.setHoverOutlineColors(colors)
+    }
+
+    if (!selectedId) {
+      if (store.selectionOutlineColors !== null) {
+        store.setSelectionOutlineColors(null)
+      }
+    } else {
+      const surface = selectedNodeId
+        ? resolveOutlineSurfaceForNode(selectedNodeId, workspace)
+        : activeBoard
+          ? resolveOutlineSurfaceForBoard(activeBoard, workspace)
+          : null
+      const colors = surface ? pickOutlineColorsFromSurface(surface) : null
+      store.setSelectionOutlineColors(colors)
+    }
+  }, [
+    hoveredId,
+    hoveredKind,
+    selectedId,
+    selectedNodeId,
+    remeasureVersion,
+    workspace,
+    activeBoard,
+    activeBoardKey,
+  ])
 
   useEffect(() => {
     let rafId = 0

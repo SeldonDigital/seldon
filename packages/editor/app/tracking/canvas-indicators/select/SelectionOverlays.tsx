@@ -20,6 +20,7 @@ function outlineStyle(
   rect: NodeRect,
   variant: "selection" | "hover",
   wireframe: boolean,
+  borderColor?: string,
 ): CSSProperties {
   // In wireframe mode the outline hugs the node border to align with the
   // surrounding wireframe boxes; otherwise it sits padded off the node.
@@ -31,7 +32,7 @@ function outlineStyle(
     left: `${box.left}px`,
     width: `${box.width}px`,
     height: `${box.height}px`,
-    ...getSelectionOutlineStyle(variant),
+    ...getSelectionOutlineStyle(variant, borderColor),
     borderWidth: box.borderWidth,
     zIndex: 1,
   }
@@ -44,8 +45,20 @@ export function CanvasSelectionOutline({
   wireframe?: boolean
 }) {
   const rect = useCanvasOverlayStore((state) => state.selectionRect)
+  const outlineColors = useCanvasOverlayStore(
+    (state) => state.selectionOutlineColors,
+  )
   if (!rect) return null
-  return <CanvasOutline style={outlineStyle(rect, "selection", wireframe)} />
+  return (
+    <CanvasOutline
+      style={outlineStyle(
+        rect,
+        "selection",
+        wireframe,
+        outlineColors?.selection,
+      )}
+    />
+  )
 }
 
 /** Dashed border around the hovered object (any kind). */
@@ -55,6 +68,7 @@ export function CanvasHoverOutline({
   wireframe?: boolean
 }) {
   const rect = useCanvasOverlayStore((state) => state.hoverRect)
+  const outlineColors = useCanvasOverlayStore((state) => state.hoverOutlineColors)
   const hoveredId = useHoveredId()
   const hoveredRootId = useHoveredRootId()
   const selectedId = useSelectedId()
@@ -67,5 +81,9 @@ export function CanvasHoverOutline({
     hoveredId === selectedId &&
     hoveredRootId === selectedRootId
   if (!rect || coincidesWithSelection) return null
-  return <CanvasOutline style={outlineStyle(rect, "hover", wireframe)} />
+  return (
+    <CanvasOutline
+      style={outlineStyle(rect, "hover", wireframe, outlineColors?.hover)}
+    />
+  )
 }
