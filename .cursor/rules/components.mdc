@@ -7,9 +7,9 @@ alwaysApply: true
 
 Components are catalog schemas, not workspace state. A schema declares identity, hierarchy level, default `Properties`, and optional composition trees. Workspaces own variants, instances, user edits, ids, and runtime state.
 
-Use `packages/core/components/COMPONENTS.md` for schema shapes, hierarchy, composition, and child-tree rules.
+Use `packages/core/components/README.md` for schema shapes, hierarchy, composition, and child-tree rules.
 
-Use `packages/core/properties/PROPERTIES.md` for property shapes, value types, theme references, and property ordering.
+Use `packages/core/properties/README.md` for property shapes, value types, theme references, and property ordering.
 
 ### Hierarchy
 
@@ -51,7 +51,7 @@ Use these value types in schemas:
 - `THEME_ORDINAL` for ordered token scales like sizes and spacing.
 - `COMPUTED` for values resolved from another property at compute time.
 
-Follow property ordering from `PROPERTY_DISPLAY_ORDER`: attributes, layout, appearance, typography, effects. Within compounds, follow the facet order in `PROPERTIES.md`.
+Follow property ordering from `PROPERTY_DISPLAY_ORDER`: attributes, layout, appearance, typography, effects. Within compounds, follow the facet order in `packages/core/properties/README.md`.
 
 ### Children And Overrides
 
@@ -70,7 +70,8 @@ default: {
       },
       children: [
         {
-          component: Seldon.ComponentId.LABEL,
+          component: Seldon.ComponentId.TEXT,
+          variant: "label",
           overrides: {
             content: { type: Sdn.ValueType.EXACT, value: "Add" },
           },
@@ -89,7 +90,8 @@ variants: [
         component: Seldon.ComponentId.BUTTON,
         children: [
           {
-            component: Seldon.ComponentId.LABEL,
+            component: Seldon.ComponentId.TEXT,
+            variant: "label",
             overrides: {
               content: { type: Sdn.ValueType.EXACT, value: "Cancel" },
             },
@@ -119,6 +121,6 @@ When adding a component:
 2. Start from a sibling schema at the same level and follow its authoring pattern.
 3. Author the schema with `as const satisfies ComponentSchema`.
 4. Add `exportConfig`.
-5. Keep property keys and compound facets in documented order from `PROPERTIES.md`.
+5. Keep property keys and compound facets in documented order from `packages/core/properties/README.md`.
 6. Update `packages/core/components/catalog/index.ts` afterwards to include new components.
 7. Invoke `@components-catalog` to sync `packages/core/components/catalog/index.ts`, `packages/core/components/constants/index.ts`, and `packages/core/components/types/component-id.ts` from the schema files.

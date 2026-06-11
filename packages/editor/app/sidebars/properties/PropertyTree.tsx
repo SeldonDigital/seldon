@@ -222,5 +222,6 @@ const styles = {
     padding: "0.5rem",
     display: "flex",
     flexDirection: "column" as const,
+    gap: "var(--sdn-gaps-tight)"
   },
 }

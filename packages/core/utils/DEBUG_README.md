@@ -14,7 +14,7 @@ The Seldon debug logger provides structured local logging for the baseline app.
 
 ### Server-Side Operations
 
-- **Location**: Terminal where the Next.js server is running
+- **Location**: Terminal where the Vite dev server is running
 - **Examples**:
   - Server-rendered code paths
   - Local Node-side compute utilities
@@ -23,12 +23,12 @@ The Seldon debug logger provides structured local logging for the baseline app.
 
 ### Browser
 
-1. Use **Help -> Enable Debug Mode**
+1. Use **Dev -> Verbose Logging**
 2. Or set the persisted flag manually:
    ```javascript
    localStorage.setItem(
      "debug-mode",
-     JSON.stringify({ state: { enabled: true }, version: 0 }),
+     JSON.stringify({ state: { verboseLogging: true }, version: 0 }),
    )
    ```
 
@@ -60,7 +60,7 @@ testDebugLogger()
 
 ### No logs in browser console
 
-1. Check that debug mode is enabled in the Help menu
+1. Check that **Verbose Logging** is enabled in the Dev menu
 2. Run `window.testDebugLogger()`
 3. Check `localStorage.getItem("debug-mode")`
 

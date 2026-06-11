@@ -1,21 +1,16 @@
-import { LayoutGroup } from "framer-motion"
-import {
-  CSSProperties,
-  Fragment,
-  PointerEvent,
-  RefObject,
-  useCallback,
-} from "react"
-import { useSetHoveredId } from "@lib/workspace/hooks/use-object-hover"
-import { useSectionExpansion } from "../hooks/use-section-expansion"
-import { getSelectionTarget } from "@lib/workspace/selection-target"
-import { getComponentKey } from "@lib/workspace/workspace-accessors"
-import { Frame } from "@seldon/components/frames/Frame"
-import { BoardSection } from "../helpers/get-board-sections"
-import { FramerExpandable } from "../shared/FramerExpandable"
-import { RowBoard } from "./RowBoard"
-import { RowSection } from "./RowSection"
-import { RowSectionEmpty } from "./RowSectionEmpty"
+import { LayoutGroup } from "framer-motion";
+import { CSSProperties, Fragment, PointerEvent, RefObject, useCallback } from "react";
+import { useSetHoveredId } from "@lib/workspace/hooks/use-object-hover";
+import { useSectionExpansion } from "../hooks/use-section-expansion";
+import { getSelectionTarget } from "@lib/workspace/selection-target";
+import { getComponentKey } from "@lib/workspace/workspace-accessors";
+import { Frame } from "@seldon/components/frames/Frame";
+import { BoardSection } from "../helpers/get-board-sections";
+import { FramerExpandable } from "../shared/FramerExpandable";
+import { RowBoard } from "./RowBoard";
+import { RowSection } from "./RowSection";
+import { RowSectionEmpty } from "./RowSectionEmpty";
+
 
 interface ProjectTreeProps {
   sections: BoardSection[]
@@ -101,5 +96,6 @@ const styles: Record<string, CSSProperties> = {
     width: "100%",
     minWidth: 0,
     padding: "0.25rem 0.25rem 0.75rem 0.25rem",
+    gap: "var(--sdn-gaps-tight)",
   },
 }

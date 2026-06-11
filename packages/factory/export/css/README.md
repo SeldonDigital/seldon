@@ -1,21 +1,27 @@
-# Factory CSS Export System
+# Seldon · Factory CSS Export
 
-The Factory CSS Export System turns a Seldon workspace into CSS. It produces one component stylesheet and one theme stylesheet file per theme. The component stylesheet holds reset styles, base styles, and component classes. Each theme file holds the CSS custom properties for one theme.
+Seldon's Factory CSS Export turns a Seldon workspace into CSS. It produces one component stylesheet and one theme stylesheet file per theme. The component stylesheet holds reset styles, base styles, and component classes. Each theme file holds the CSS custom properties for one theme.
+
+---
 
 ## Entry Point
 
 `exportCss` in `export-css.ts` is the entry point.
 
 ```typescript
+type CssExportResult = {
+  componentStylesheet: string
+  themeStylesheets: ThemeStylesheetFile[]
+}
+
 async function exportCss(
   workspace: Workspace,
   componentsFolder: string,
   forceRegeneration?: boolean,
-): Promise<{
-  componentStylesheet: string
-  themeStylesheets: ThemeStylesheetFile[]
-}>
+): Promise<CssExportResult>
 ```
+
+`forceRegeneration` passes through to `buildStyleRegistry`. When set, every node gets a class even when its CSS is empty.
 
 `exportCss` runs three steps:
 
@@ -24,6 +30,8 @@ async function exportCss(
 3. Generate the component stylesheet with `generateComponentStylesheet` and the theme files with `generateThemeStylesheetFiles`.
 
 The React export reuses `generateComponentStylesheet` and `generateThemeStylesheetFiles` directly.
+
+---
 
 ## Directory Layout
 
@@ -35,20 +43,26 @@ The code is grouped by pipeline stage:
 
 `types.ts` defines `Classes` and `NodeIdToClass`. `constants.ts` defines the section markers.
 
+---
+
 ## Discovery
 
 **Style registry** (`discovery/get-style-registry.ts`)
-`buildStyleRegistry` walks every workspace node and builds a CSS class for each one. It sorts nodes so defaults come first, then variants, then instances. For an instance that points to a template variant, it stores only the CSS that differs from the variant. It deduplicates classes that share the same CSS and the same catalog id. It records the tree depth of each node for cascade ordering. It returns `classes`, `nodeIdToClass`, `classNameToNodeId`, and `nodeTreeDepths`.
+`buildStyleRegistry` walks every workspace node and builds a CSS class for each one. It sorts nodes so defaults come first, then variants, then instances. For an instance that points to a template variant, it stores only the CSS that differs from the variant. It deduplicates classes that share the same CSS and the same catalog id. It skips nodes with empty CSS unless the node is a default variant, has a template source, or `forceRegeneration` is set. It records the tree depth of each node for cascade ordering. It returns `classes`, `nodeIdToClass`, `classNameToNodeId`, and `nodeTreeDepths`.
 
 **Class names** (`discovery/get-class-name.ts`)
 `getClassNameForNode` builds a class name from the node catalog id and type:
 
-- Default variant: `sdn-button`
-- Custom variant: `sdn-button-iconic`
-- Instance: `sdn-button-iconic--abc12`, the variant class plus a four-character hash
+| Node type | Class name |
+| --- | --- |
+| Default variant | `sdn-button` |
+| Custom variant | `sdn-button-iconic` |
+| Instance | `sdn-button-iconic--abc12`, the variant class plus a four-character hash |
 
 **Component id from class name** (`discovery/get-component-id-from-class-name.ts`)
 `getComponentIdFromClassName` drops the last dash segment of a class name.
+
+---
 
 ## Generation
 
@@ -68,28 +82,46 @@ The code is grouped by pipeline stage:
 `generateThemeStylesheetFiles` writes one CSS file per entry in `workspace.themes`. When the workspace has no themes, it writes a single `seldon` file. Each file is a `:root` block of CSS custom properties for one theme, named `styles-{slug}.css`. The prefix is `--sdn-` for the `seldon` theme and `--sdn-{slug}-` for other themes. Tokens include core values, font families, the color system, swatches, sizes, margins, paddings, gaps, corners, font sizes, font weights, line heights, and border widths. `generateThemeStylesheet` builds the block for one theme.
 
 **Theme slug** (`generation/get-theme-slug.ts`)
-`getThemeSlug` maps a workspace theme id to a slug. The slug names both the theme file and its CSS variable prefix. A default theme slugs from its stock catalog id. A variant prepends its root default slug and appends its own label, such as `seldon-red`.
+`getThemeSlug` maps a workspace theme id to a slug. The slug names both the theme file and its CSS variable prefix. A default theme slugs from its stock catalog id. A variant walks its template chain to the root default, prepends that slug, and appends its own label, such as `seldon-red`. A theme id without a workspace entry slugs from the id.
+
+---
 
 ## Utilities
 
 **Formatting** (`utils/format.ts`)
 `format` runs Prettier with the CSS parser.
 
+---
+
 ## Generated Output
 
 `exportCss` returns:
 
-- `componentStylesheet`: a formatted stylesheet with reset styles, base styles, and component classes.
-- `themeStylesheets`: an array of `ThemeStylesheetFile`. Each item has a `themeId`, a `path` under the components folder, and the CSS `content` for one theme.
+| Field | Contents |
+| --- | --- |
+| `componentStylesheet` | A formatted stylesheet with reset styles, base styles, and component classes |
+| `themeStylesheets` | An array of `ThemeStylesheetFile`. Each item has a `themeId`, a `path` under the components folder, and the CSS `content` for one theme |
+
+---
 
 ## Theme Variable References
 
 Component classes reference theme tokens through CSS custom properties. `buildStyleRegistry` resolves properties with `useThemeVariableReferences` enabled and passes the theme slug, so a class points at `--sdn-{slug}-` variables. The matching values live in the theme files. This keeps one set of component classes that can switch themes by swapping the theme file.
 
+---
+
 ## Class Deduplication
 
-`buildStyleRegistry` reuses a class when another node has the same CSS and the same catalog id. Deduplication stays within one component type. This keeps the component stylesheet smaller.
+`buildStyleRegistry` reuses a class when another node has the same CSS and the same catalog id. Deduplication stays within one component type, but it does cross variants of that component. When two variants of the same component resolve to identical CSS, the later variant reuses the earlier variant's class and emits no class of its own. This keeps the component stylesheet smaller. Consumers that reference class names by hand must resync after an export, because a style edit can merge or split classes.
+
+---
 
 ## Cascade Ordering
 
 `insertNodeStyles` orders classes so the cascade resolves correctly. Variant classes come before instance classes. Shallower nodes come before deeper nodes. Classes at the same depth fall back to alphabetical order.
+
+---
+
+## Notice for AI and LLM Training
+
+You may not use this software, or any derivative works of it, in whole or in part, for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly) any machine learning or artificial intelligence system without written permission.

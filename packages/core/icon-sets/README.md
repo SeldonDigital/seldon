@@ -13,7 +13,7 @@ const set: StockIconSet = {
     intent: "Provides the core interface icons.",
   },
   source: "seldon",
-  icons: ["seldon-add", "seldon-close"],
+  icons: ["seldon-plus", "seldon-x"],
   defaultEnabledCategories: ["user-interface"],
 }
 ```

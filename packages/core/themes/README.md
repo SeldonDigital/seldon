@@ -14,18 +14,18 @@ A theme is a saved set of design tokens organized into fixed sections (core, col
 
 Stock themes ship with Seldon as starting points and reference implementations. Each has a fixed id used in catalog templates (`catalog:<id>`) and can be cloned to bootstrap a custom theme.
 
-| Stock Theme ID | Description                                                                               |
-| -------------- | ----------------------------------------------------------------------------------------- |
-| `seldon`       | Seldon brand theme used as the default stock preset.                                      |
-| `earth`        | Warm natural swatches with analogous harmony, humanist type tone, and comfortable scales. |
-| `highContrast` | Neutral high-contrast theme with simple typography and strong readability.                |
-| `industrial`   | Cool steel tones with monochromatic harmony, dense rhythm, and stronger weight choices.   |
-| `material`     | Vivid app-oriented theme inspired by Material-style type and spacing.                     |
-| `pop`          | Expressive split-complementary theme with high contrast and punchy scales.                |
-| `royalAzure`   | Deep blue complementary theme with refined typography and stable scales.                  |
-| `sky`          | Light complementary theme with airy contrast and open spacing.                            |
-| `sunsetBlue`   | Warm-cool split-complementary theme with relaxed typography.                              |
-| `wildberry`    | Rich square-harmony theme with saturated berry colors and bold styling.                   |
+| Stock Theme ID | Description |
+| --- | --- |
+| `seldon` | Seldon brand theme used as the default stock preset. |
+| `earth` | Warm natural swatches with analogous harmony, humanist type tone, and comfortable scales. |
+| `highContrast` | Neutral high-contrast theme with simple typography and strong readability. |
+| `industrial` | Cool steel tones with monochromatic harmony, dense rhythm, and stronger weight choices. |
+| `material` | Vivid app-oriented theme inspired by Material-style type and spacing. |
+| `pop` | Expressive split-complementary theme with high contrast and punchy scales. |
+| `royalAzure` | Deep blue complementary theme with refined typography and stable scales. |
+| `sky` | Light complementary theme with airy contrast and open spacing. |
+| `sunsetBlue` | Warm-cool split-complementary theme with relaxed typography. |
+| `wildberry` | Rich square-harmony theme with saturated berry colors and bold styling. |
 
 `metadata.id` and catalog template ids use the same string as **Stock Theme ID**. For example: `catalog:sky`, `catalog:royalAzure`.
 
@@ -81,12 +81,12 @@ Themes use fixed top-level entries to organize a saved theme file. The entry ord
 
 Metadata identifies the theme. The `id` is how the theme is referenced in code, while the other fields describe what the theme is and when to use it.
 
-| Token                  | Type   | Values            |
-| ---------------------- | ------ | ----------------- |
-| `metadata.id`          | string | Theme template id |
-| `metadata.name`        | string | Display name      |
-| `metadata.description` | string | Description       |
-| `metadata.intent`      | string | Intent text       |
+| Token | Type | Values |
+| --- | --- | --- |
+| `metadata.id` | string | Theme template id |
+| `metadata.name` | string | Display name |
+| `metadata.description` | string | Description |
+| `metadata.intent` | string | Intent text |
 
 ---
 
@@ -94,11 +94,11 @@ Metadata identifies the theme. The `id` is how the theme is referenced in code, 
 
 Core defines the inputs that anchor modulated tokens in the theme: the base font size, the base unit for everything else, and the ratio that scales them up and down. A modulated token's `step` is multiplied against these to produce its final size. Changing one of these values moves every modulated token in the theme together, keeping sizes, spacing, and type in proportion.
 
-| Token           | Type    | Values                                                                                                                                                                                                                                                                                                                                                               |
-| --------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `core.ratio`    | `Ratio` | `option: 15:16, MinorSecond, 8:9, MajorSecond, 5:6, MinorThird, 4:5, MajorThird, 3:4, PerfectFourth, 1:√2, AugmentedFourth, 2:3, PerfectFifth, 5:8, MinorSixth, 1:1.618, GoldenRatio, 3:5, MajorSixth, 9:16, MinorSeventh, 8:15, MajorSeventh, 1:2, Octave, 2:5, MajorTenth, 3:8, MajorEleventh, 1:3, MajorTwelfth, 1:4, DoubleOctave` (`themes/constants/enums.ts`) |
-| `core.fontSize` | number  | Base font size in pixels                                                                                                                                                                                                                                                                                                                                             |
-| `core.size`     | number  | Base scale unit for modulation                                                                                                                                                                                                                                                                                                                                       |
+| Token | Type | Values |
+| --- | --- | --- |
+| `core.ratio` | `Ratio` | `option: 15:16, MinorSecond, 8:9, MajorSecond, 5:6, MinorThird, 4:5, MajorThird, 3:4, PerfectFourth, 1:√2, AugmentedFourth, 2:3, PerfectFifth, 5:8, MinorSixth, 1:1.618, GoldenRatio, 3:5, MajorSixth, 9:16, MinorSeventh, 8:15, MajorSeventh, 1:2, Octave, 2:5, MajorTenth, 3:8, MajorEleventh, 1:3, MajorTwelfth, 1:4, DoubleOctave` (`themes/constants/enums.ts`) |
+| `core.fontSize` | number | Base font size in pixels |
+| `core.size` | number | Base scale unit for modulation |
 
 **Note:** Many stock themes use `16` and `1` for `core.fontSize` and `core.size`; adjust per target density or tune individual `modulated` steps instead.
 
@@ -108,17 +108,17 @@ Core defines the inputs that anchor modulated tokens in the theme: the base font
 
 Color defines the inputs that drive the theme's dynamic swatches: the primary color, four accent colors, and the white, gray, and black neutrals. Pick a base color and a harmony to set the overall direction. The remaining fields adjust how far apart the colors sit, how light or dark the neutrals are, and how much of the base color tints them.
 
-| Token                 | Type                | Values                                                                                           |
-| --------------------- | ------------------- | ------------------------------------------------------------------------------------------------ |
-| `color.baseColor`     | `ColorSpaceLiteral` | HSL \| RGB \| LCH object \| hex \| CSS string (`properties/values/shared/exact/color-spaces.ts`) |
-| `color.harmony`       | `Harmony`           | `option: Complementary, SplitComplementary, Triadic, Analogous, Square, Monochromatic`           |
-| `color.angle`         | number              | Hue spacing (degrees)                                                                            |
-| `color.step`          | number              | Lightness spacing for palette math                                                               |
-| `color.whitePoint`    | number              | Lightness anchor, white                                                                          |
-| `color.grayPoint`     | number              | Lightness anchor, gray                                                                           |
-| `color.blackPoint`    | number              | Lightness anchor, black                                                                          |
-| `color.bleed`         | number              | Hue bleed into neutrals                                                                          |
-| `color.contrastRatio` | number              | Target contrast (e.g. 1–21)                                                                      |
+| Token | Type | Values |
+| --- | --- | --- |
+| `color.baseColor` | `ColorSpaceLiteral` | HSL \| RGB \| LCH object \| hex \| CSS string (`properties/values/shared/exact/color-spaces.ts`) |
+| `color.harmony` | `Harmony` | `option: Complementary, SplitComplementary, Triadic, Analogous, Square, Monochromatic` |
+| `color.angle` | number | Hue spacing (degrees) |
+| `color.step` | number | Lightness spacing for palette math |
+| `color.whitePoint` | number | Lightness anchor, white |
+| `color.grayPoint` | number | Lightness anchor, gray |
+| `color.blackPoint` | number | Lightness anchor, black |
+| `color.bleed` | number | Hue bleed into neutrals |
+| `color.contrastRatio` | number | Target contrast (e.g. 1–21) |
 
 ---
 
@@ -177,30 +177,32 @@ Every token except `@fontFamily.*` accepts custom keys. Stock themes ship withou
 
 ### Complete list of theme tokens
 
-| Token            | Type                | Reserved keys                                                                                                            | Custom keys                   |
-| ---------------- | ------------------- | ------------------------------------------------------------------------------------------------------------------------ | ----------------------------- |
-| `@fontFamily.*`  | `theme.categorical` | `primary` \| `secondary`                                                                                                 | --                            |
-| `@size.*`        | `theme.ordinal`     | `tiny` \| `xxsmall` \| `xsmall` \| `small` \| `medium` \| `large` \| `xlarge` \| `xxlarge` \| `huge`                     | `custom1` \| `custom2` \| ... |
-| `@dimension.*`   | `theme.ordinal`     | `tiny` \| `xxsmall` \| `xsmall` \| `small` \| `medium` \| `large` \| `xlarge` \| `xxlarge` \| `huge`                     | `custom1` \| `custom2` \| ... |
-| `@margin.*`      | `theme.ordinal`     | `tight` \| `compact` \| `cozy` \| `comfortable` \| `open`                                                                | `custom1` \| `custom2` \| ... |
-| `@padding.*`     | `theme.ordinal`     | `tight` \| `compact` \| `cozy` \| `comfortable` \| `open`                                                                | `custom1` \| `custom2` \| ... |
-| `@gap.*`         | `theme.ordinal`     | `tight` \| `compact` \| `cozy` \| `comfortable` \| `open`                                                                | `custom1` \| `custom2` \| ... |
-| `@corners.*`     | `theme.ordinal`     | `tight` \| `compact` \| `cozy` \| `comfortable` \| `open`                                                                | `custom1` \| `custom2` \| ... |
-| `@borderWidth.*` | `theme.ordinal`     | `xsmall` \| `small` \| `medium` \| `large` \| `xlarge`                                                                   | `custom1` \| `custom2` \| ... |
-| `@blur.*`        | `theme.ordinal`     | `tiny` \| `xxsmall` \| `xsmall` \| `small` \| `medium` \| `large` \| `xlarge` \| `xxlarge` \| `huge`                     | `custom1` \| `custom2` \| ... |
-| `@spread.*`      | `theme.ordinal`     | `tiny` \| `xxsmall` \| `xsmall` \| `small` \| `medium` \| `large` \| `xlarge` \| `xxlarge` \| `huge`                     | `custom1` \| `custom2` \| ... |
-| `@fontSize.*`    | `theme.ordinal`     | `tiny` \| `xxsmall` \| `xsmall` \| `small` \| `medium` \| `large` \| `xlarge` \| `xxlarge` \| `huge`                     | `custom1` \| `custom2` \| ... |
-| `@fontWeight.*`  | `theme.ordinal`     | `thin` \| `xlight` \| `light` \| `normal` \| `medium` \| `semibold` \| `bold` \| `xbold` \| `black`                      | `custom1` \| `custom2` \| ... |
-| `@lineHeight.*`  | `theme.ordinal`     | `solid` \| `tight` \| `compact` \| `cozy` \| `comfortable` \| `open` \| `none`                                           | `custom1` \| `custom2` \| ... |
-| `@swatch.*`      | `theme.categorical` | `white` \| `gray` \| `black` \| `primary` \| `swatch1` \| `swatch2` \| `swatch3` \| `swatch4` \| `background`            | `custom1` \| `custom2` \| ... |
-| `@font.*`        | `theme.categorical` | `display` \| `heading` \| `subheading` \| `title` \| `subtitle` \| `callout` \| `body` \| `label` \| `tagline` \| `code` | `custom1` \| `custom2` \| ... |
-| `@border.*`      | `theme.categorical` | `hairline` \| `thin` \| `normal` \| `thick` \| `bevel`                                                                   | `custom1` \| `custom2` \| ... |
-| `@background.*`  | `theme.categorical` | `primary` \| `background1` \| `background2`                                                                              | `custom1` \| `custom2` \| ... |
-| `@gradient.*`    | `theme.categorical` | `primary` \| `gradient1` \| `gradient2`                                                                                  | `custom1` \| `custom2` \| ... |
-| `@shadow.*`      | `theme.categorical` | `xlight` \| `light` \| `moderate` \| `strong` \| `xstrong`                                                               | `custom1` \| `custom2` \| ... |
-| `@scrollbar.*`   | `theme.categorical` | `primary`                                                                                                                | `custom1` \| `custom2` \| ... |
+| Token | Type | Reserved keys | Custom keys |
+| --- | --- | --- | --- |
+| `@fontFamily.*` | `theme.categorical` | `primary` \| `secondary` | -- |
+| `@size.*` | `theme.ordinal` | `tiny` \| `xxsmall` \| `xsmall` \| `small` \| `medium` \| `large` \| `xlarge` \| `xxlarge` \| `huge` | `custom1` \| `custom2` \| ... |
+| `@dimension.*` | `theme.ordinal` | `tiny` \| `xxsmall` \| `xsmall` \| `small` \| `medium` \| `large` \| `xlarge` \| `xxlarge` \| `huge` | `custom1` \| `custom2` \| ... |
+| `@margin.*` | `theme.ordinal` | `tight` \| `compact` \| `cozy` \| `comfortable` \| `open` | `custom1` \| `custom2` \| ... |
+| `@padding.*` | `theme.ordinal` | `tight` \| `compact` \| `cozy` \| `comfortable` \| `open` | `custom1` \| `custom2` \| ... |
+| `@gap.*` | `theme.ordinal` | `tight` \| `compact` \| `cozy` \| `comfortable` \| `open` | `custom1` \| `custom2` \| ... |
+| `@corners.*` | `theme.ordinal` | `tight` \| `compact` \| `cozy` \| `comfortable` \| `open` | `custom1` \| `custom2` \| ... |
+| `@borderWidth.*` | `theme.ordinal` | `xsmall` \| `small` \| `medium` \| `large` \| `xlarge` | `custom1` \| `custom2` \| ... |
+| `@blur.*` | `theme.ordinal` | `tiny` \| `xxsmall` \| `xsmall` \| `small` \| `medium` \| `large` \| `xlarge` \| `xxlarge` \| `huge` | `custom1` \| `custom2` \| ... |
+| `@spread.*` | `theme.ordinal` | `tiny` \| `xxsmall` \| `xsmall` \| `small` \| `medium` \| `large` \| `xlarge` \| `xxlarge` \| `huge` | `custom1` \| `custom2` \| ... |
+| `@fontSize.*` | `theme.ordinal` | `tiny` \| `xxsmall` \| `xsmall` \| `small` \| `medium` \| `large` \| `xlarge` \| `xxlarge` \| `huge` | `custom1` \| `custom2` \| ... |
+| `@fontWeight.*` | `theme.ordinal` | `thin` \| `xlight` \| `light` \| `normal` \| `medium` \| `semibold` \| `bold` \| `xbold` \| `black` | `custom1` \| `custom2` \| ... |
+| `@lineHeight.*` | `theme.ordinal` | `solid` \| `tight` \| `compact` \| `cozy` \| `comfortable` \| `open` \| `none` | `custom1` \| `custom2` \| ... |
+| `@swatch.*` | `theme.categorical` | `white` \| `gray` \| `black` \| `primary` \| `swatch1` \| `swatch2` \| `swatch3` \| `swatch4` \| `background` | `custom1` \| `custom2` \| ... |
+| `@font.*` | `theme.categorical` | `display` \| `heading` \| `subheading` \| `title` \| `subtitle` \| `callout` \| `body` \| `label` \| `tagline` \| `code` | `custom1` \| `custom2` \| ... |
+| `@border.*` | `theme.categorical` | `hairline` \| `thin` \| `normal` \| `thick` \| `bevel` | `custom1` \| `custom2` \| ... |
+| `@background.*` | `theme.categorical` | `primary` \| `background1` \| `background2` | `custom1` \| `custom2` \| ... |
+| `@gradient.*` | `theme.categorical` | `primary` \| `gradient1` \| `gradient2` | `custom1` \| `custom2` \| ... |
+| `@shadow.*` | `theme.categorical` | `xlight` \| `light` \| `moderate` \| `strong` \| `xstrong` | `custom1` \| `custom2` \| ... |
+| `@scrollbar.*` | `theme.categorical` | `primary` | `custom1` \| `custom2` \| ... |
 
 `@swatch.swatch1` through `@swatch.swatch4` are reserved palette slots filled in by `computeTheme`; they are not custom slots even though their keys are numbered.
+
+The look tables also reserve cleared ids that `computeTheme` injects at compute time: `@font.normal` plus `none` on `@border.*`, `@background.*`, `@gradient.*`, and `@shadow.*`. They are part of every computed theme even though stock themes do not author them.
 
 ```typescript
 import { ValueType } from "@seldon/core"
@@ -217,25 +219,25 @@ Every token is saved using one **token type**. That type defines what fields to 
 
 Every token cell uses a single input field named `parameters`. The shape of `parameters` depends on the token type.
 
-| Type             | `parameters` shape                                                                                            |
-| ---------------- | ------------------------------------------------------------------------------------------------------------- |
-| `modulated`      | `{ step: number }`                                                                                            |
-| `exact`          | `{ unit: "px" \| "rem" \| "%" \| "deg" \| "number", value: number }`                                          |
+| Type | `parameters` shape |
+| --- | --- |
+| `modulated` | `{ step: number }` |
+| `exact` | `{ unit: "px" \| "rem" \| "%" \| "deg" \| "number", value: number }` |
 | `dynamic.swatch` | (no `parameters`; uses `role: white \| gray \| black \| primary \| swatch1 \| swatch2 \| swatch3 \| swatch4`) |
-| `swatch`         | `{ colorspace: "hsl" \| "rgb" \| "lch" \| "hex" \| "name", value: <payload for that colorspace> }`            |
-| `font.family`    | string (font family name)                                                                                     |
-| `option`         | string option key (e.g. `"hairline"`); the set of allowed keys is per-table                                   |
-| `look`           | object of nested parameters specific to the look (font, shadow, border, gradient, background, scrollbar)      |
+| `swatch` | `{ colorspace: "hsl" \| "rgb" \| "lch" \| "hex" \| "name", value: <payload for that colorspace> }` |
+| `font.family` | string (font family name) |
+| `option` | string option key (e.g. `"hairline"`); the set of allowed keys is per-table |
+| `look` | object of nested parameters specific to the look (font, shadow, border, gradient, background, scrollbar) |
 
 ```typescript
 enum TokenType {
   MODULATED = "modulated",
   EXACT = "exact",
-  DYNAMIC_SWATCH = "dynamic.swatch",
   SWATCH = "swatch",
   FONT_FAMILY = "font.family",
   OPTION = "option",
   LOOK = "look",
+  DYNAMIC_SWATCH = "dynamic.swatch",
 }
 ```
 
@@ -249,12 +251,12 @@ A step of `0` is the base, positive steps grow larger, negative steps grow small
 
 The result of a modulated token is `core.size * core.ratio ** parameters.step`.
 
-| Field             | Required | Type                  | Notes                                                                                                         |
-| ----------------- | -------- | --------------------- | ------------------------------------------------------------------------------------------------------------- |
-| `type`            | yes      | `TokenType.MODULATED` | Discriminator.                                                                                                |
-| `name`            | no       | string                | Display label for the token.                                                                                  |
-| `intent`          | no       | string                | Free-text description of about this modulated value.                                                          |
-| `parameters.step` | yes      | number                | Position on the modular scale. The allowed range is -20 to 20 in increments of 0.01. `0` returns `core.size`. |
+| Field | Required | Type | Notes |
+| --- | --- | --- | --- |
+| `type` | yes | `TokenType.MODULATED` | Discriminator. |
+| `name` | no | string | Display label for the token. |
+| `intent` | no | string | Free-text description of about this modulated value. |
+| `parameters.step` | yes | number | Position on the modular scale. The allowed range is -20 to 20 in increments of 0.01. `0` returns `core.size`. |
 
 ```typescript
 import { TokenType } from "@seldon/core/themes"
@@ -287,13 +289,13 @@ margin: {
 
 Exact tokens hold a fixed length or unitless number. Use them when a value should not or does not need to move with the modular scale. For example, adding specific font weight, a precise line-height multiplier, or a one-off pixel size.
 
-| Field              | Required | Type                              | Notes                                                                                                 |
-| ------------------ | -------- | --------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| `type`             | yes      | `TokenType.EXACT`                 | Discriminator.                                                                                        |
-| `name`             | no       | string                            | Display label for the token.                                                                          |
-| `intent`           | no       | string                            | Free-text description.                                                                                |
-| `parameters.unit`  | yes      | `option: px, rem, %, deg, number` | Unit of the value. Which units are accepted in a given section is set by that section's token schema. |
-| `parameters.value` | yes      | number                            | Numeric value paired with the unit.                                                                   |
+| Field | Required | Type | Notes |
+| --- | --- | --- | --- |
+| `type` | yes | `TokenType.EXACT` | Discriminator. |
+| `name` | no | string | Display label for the token. |
+| `intent` | no | string | Free-text description. |
+| `parameters.unit` | yes | `option: px, rem, %, deg, number` | Unit of the value. Which units are accepted in a given section is set by that section's token schema. |
+| `parameters.value` | yes | number | Numeric value paired with the unit. |
 
 ```typescript
 import { TokenType } from "@seldon/core/themes"
@@ -336,11 +338,11 @@ The eight roles are the classic palette every theme exposes:
 
 A role has the same meaning across themes -- so when you switch the base color or harmony, the whole palette retunes together. This can keep a theme feeling consistent without hand-picking every color.
 
-| Field    | Required | Type                                                                      | Notes                    |
-| -------- | -------- | ------------------------------------------------------------------------- | ------------------------ |
-| `type`   | yes      | `TokenType.DYNAMIC_SWATCH`                                                | Discriminator.           |
-| `role`   | yes      | `option: white, gray, black, primary, swatch1, swatch2, swatch3, swatch4` | Palette slot to resolve. |
-| `intent` | no       | string                                                                    | Free-text description.   |
+| Field | Required | Type | Notes |
+| --- | --- | --- | --- |
+| `type` | yes | `TokenType.DYNAMIC_SWATCH` | Discriminator. |
+| `role` | yes | `option: white, gray, black, primary, swatch1, swatch2, swatch3, swatch4` | Palette slot to resolve. |
+| `intent` | no | string | Free-text description. |
 
 ```typescript
 import { TokenType } from "@seldon/core/themes"
@@ -367,13 +369,13 @@ Swatch tokens hold a specified color, defined in one of the supported colorspace
 
 `background` is the only reserved swatch key. All other swatch keys are completely custom, with the `name` field being the main identifier for users, so use a meaningful value.
 
-| Field                   | Required | Type                               | Notes                                                                                                                               |
-| ----------------------- | -------- | ---------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| `type`                  | yes      | `TokenType.SWATCH`                 | Discriminator.                                                                                                                      |
-| `name`                  | no       | string                             | Display label.                                                                                                                      |
-| `intent`                | no       | string                             | Free-text description.                                                                                                              |
-| `parameters.colorspace` | yes      | `option: hsl, rgb, lch, hex, name` | Color space discriminator.                                                                                                          |
-| `parameters.value`      | yes      | object or string                   | HSL/RGB/LCH object for those colorspaces; hex string like `"#aabbcc"` for `hex`; CSS named color string like `"purple"` for `name`. |
+| Field | Required | Type | Notes |
+| --- | --- | --- | --- |
+| `type` | yes | `TokenType.SWATCH` | Discriminator. |
+| `name` | no | string | Display label. |
+| `intent` | no | string | Free-text description. |
+| `parameters.colorspace` | yes | `option: hsl, rgb, lch, hex, name` | Color space discriminator. |
+| `parameters.value` | yes | object or string | HSL/RGB/LCH object for those colorspaces; hex string like `"#aabbcc"` for `hex`; CSS named color string like `"purple"` for `name`. |
 
 ```typescript
 import { Colorspace, TokenType } from "@seldon/core/themes"
@@ -410,11 +412,11 @@ Two slots is intentional: classic typographic systems work as pairs. A primary f
 
 There is no `name` field. The display label in the product is derived from the family string itself (the value you write in `parameters`). Intents are optional.
 
-| Field        | Required | Type                    | Notes                                           |
-| ------------ | -------- | ----------------------- | ----------------------------------------------- |
-| `type`       | yes      | `TokenType.FONT_FAMILY` | Discriminator.                                  |
-| `intent`     | no       | string                  | Free-text description.                          |
-| `parameters` | yes      | string                  | Font family name (e.g. `"Inter"`, `"Raleway"`). |
+| Field | Required | Type | Notes |
+| --- | --- | --- | --- |
+| `type` | yes | `TokenType.FONT_FAMILY` | Discriminator. |
+| `intent` | no | string | Free-text description. |
+| `parameters` | yes | string | Font family name (e.g. `"Inter"`, `"Raleway"`). |
 
 ```typescript
 import { TokenType } from "@seldon/core/themes"
@@ -443,12 +445,12 @@ The set of allowed option keys is defined per-table by the section that consumes
 
 Names and intents are optional.
 
-| Field        | Required | Type                   | Notes                  |
-| ------------ | -------- | ---------------------- | ---------------------- |
-| `type`       | yes      | `TokenType.OPTION`     | Discriminator.         |
-| `name`       | no       | string                 | Display label.         |
-| `intent`     | no       | string                 | Free-text description. |
-| `parameters` | yes      | Option key as a string | The option to apply.   |
+| Field | Required | Type | Notes |
+| --- | --- | --- | --- |
+| `type` | yes | `TokenType.OPTION` | Discriminator. |
+| `name` | no | string | Display label. |
+| `intent` | no | string | Free-text description. |
+| `parameters` | yes | Option key as a string | The option to apply. |
 
 ```typescript
 import { TokenType } from "@seldon/core/themes"
@@ -471,12 +473,12 @@ Look tokens describe a compound visual recipe -- a font, a border, a background,
 
 In other systems looks are sometimes called recipes or styles. Seldon uses one word -- "look" -- because the term covers all uniformly: `font` and `border` feel like a style, while `gradient` and `background` feel more like a recipe.
 
-| Field        | Required | Type             | Notes                                                                                                 |
-| ------------ | -------- | ---------------- | ----------------------------------------------------------------------------------------------------- |
-| `type`       | yes      | `TokenType.LOOK` | Discriminator.                                                                                        |
-| `name`       | no       | string           | Display label.                                                                                        |
-| `intent`     | no       | string           | Free-text description.                                                                                |
-| `parameters` | yes      | object           | Section-specific recipe. See `font`, `border`, `background`, `gradient`, `shadow`, `scrollbar` below. |
+| Field | Required | Type | Notes |
+| --- | --- | --- | --- |
+| `type` | yes | `TokenType.LOOK` | Discriminator. |
+| `name` | no | string | Display label. |
+| `intent` | no | string | Free-text description. |
+| `parameters` | yes | object | Section-specific recipe. See `font`, `border`, `background`, `gradient`, `shadow`, `scrollbar` below. |
 
 ---
 
@@ -484,15 +486,15 @@ In other systems looks are sometimes called recipes or styles. Seldon uses one w
 
 Font looks bundle a typographic recipe -- family, weight, size, line height, and optional case and spacing -- so the same recipe can be applied across components via `@font.<id>`. All parameters are optional; omit any field to leave it unset. Family typically resolves to `@fontFamily.primary` or `@fontFamily.secondary`.
 
-| Parameter       | Type     | Values                                                                                           |
-| --------------- | -------- | ------------------------------------------------------------------------------------------------ |
-| `family`        | `atomic` | `empty` \| `theme.categorical: @fontFamily.*` \| `exact: string`                                 |
-| `weight`        | `atomic` | `empty` \| `exact: number, 100–900` \| `theme.ordinal: @fontWeight.*`                            |
-| `size`          | `atomic` | `empty` \| `exact: px, rem` \| `theme.ordinal: @fontSize.*`                                      |
-| `lineHeight`    | `atomic` | `empty` \| `exact: px, rem, %` \| `exact: unitless number, >0` \| `theme.ordinal: @lineHeight.*` |
-| `style`         | `atomic` | `empty` \| `option: normal, italic, oblique`                                                     |
-| `textCase`      | `atomic` | `empty` \| `option: normal, lowercase, uppercase, capitalize`                                    |
-| `letterSpacing` | `atomic` | `empty` \| `exact: px, rem` \| `theme.ordinal: @size.*`                                          |
+| Parameter | Type | Values |
+| --- | --- | --- |
+| `family` | `atomic` | `empty` \| `theme.categorical: @fontFamily.*` \| `exact: string` |
+| `weight` | `atomic` | `empty` \| `exact: number, 100–900` \| `theme.ordinal: @fontWeight.*` |
+| `size` | `atomic` | `empty` \| `exact: px, rem` \| `theme.ordinal: @fontSize.*` |
+| `lineHeight` | `atomic` | `empty` \| `exact: px, rem, %` \| `exact: unitless number, >0` \| `theme.ordinal: @lineHeight.*` |
+| `style` | `atomic` | `empty` \| `option: normal, italic, oblique` |
+| `textCase` | `atomic` | `empty` \| `option: normal, lowercase, uppercase, capitalize` |
+| `letterSpacing` | `atomic` | `empty` \| `exact: px, rem` \| `theme.ordinal: @size.*` |
 
 > Note: `LetterSpacingValue` currently accepts `empty | px | rem` only. The `theme.ordinal: @size.*` shape is the eventual target -- no stock theme uses it today.
 
@@ -519,13 +521,13 @@ font: {
 
 Border looks describe a border treatment -- style, width, color, opacity, brightness -- so the same border can be applied across components via `@border.<id>`. Border collapse lives at the component level, not on the look. All parameters are optional.
 
-| Parameter    | Type     | Values                                                                                            |
-| ------------ | -------- | ------------------------------------------------------------------------------------------------- |
-| `style`      | `atomic` | `empty` \| `option: none, solid, dashed, dotted, double, groove, ridge, inset, outset, hidden`    |
-| `width`      | `atomic` | `empty` \| `exact: px, rem` \| `option: hairline` \| `theme.ordinal: @borderWidth.*`              |
-| `color`      | `atomic` | `empty` \| `exact: hex, hsl, rgb, lch` \| `option: transparent` \| `theme.categorical: @swatch.*` |
-| `opacity`    | `atomic` | `empty` \| `exact: %, 0–100`                                                                      |
-| `brightness` | `atomic` | `empty` \| `exact: %, 0–100`                                                                      |
+| Parameter | Type | Values |
+| --- | --- | --- |
+| `style` | `atomic` | `empty` \| `option: none, solid, dashed, dotted, double, groove, ridge, inset, outset, hidden` |
+| `width` | `atomic` | `empty` \| `exact: px, rem` \| `option: hairline` \| `theme.ordinal: @borderWidth.*` |
+| `color` | `atomic` | `empty` \| `exact: hex, hsl, rgb, lch` \| `option: transparent` \| `theme.categorical: @swatch.*` |
+| `opacity` | `atomic` | `empty` \| `exact: %, 0–100` |
+| `brightness` | `atomic` | `empty` \| `exact: %, 0–100` |
 
 ```typescript
 import { TokenType, ValueType } from "@seldon/core/themes"
@@ -550,17 +552,17 @@ border: {
 
 Background looks describe a single background layer -- color, image, image positioning, blend, brightness, and opacity -- so the same background can be applied across components via `@background.<id>`. All parameters are optional. Use `color` for solid fills, or `image` plus `position` / `size` / `repeat` for image fills.
 
-| Parameter    | Type     | Values                                                                                                                                                            |
-| ------------ | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `color`      | `atomic` | `empty` \| `exact: hex, hsl, rgb, lch` \| `option: transparent` \| `theme.categorical: @swatch.*`                                                                 |
-| `image`      | `atomic` | `empty` \| `exact: string`                                                                                                                                        |
-| `position`   | `atomic` | `empty` \| `option: default, top-left, top-center, top-right, center-left, center, center-right, bottom-left, bottom-center, bottom-right` \| `exact: px, rem, %` |
-| `size`       | `atomic` | `empty` \| `option: original, contain, cover, stretch` \| `exact: px, rem, %`                                                                                     |
-| `repeat`     | `atomic` | `empty` \| `option: no-repeat, repeat, repeat-x, repeat-y`                                                                                                        |
-| `blendMode`  | `atomic` | `empty` \| `exact: string`                                                                                                                                        |
-| `filter`     | `atomic` | `empty` \| `exact: string`                                                                                                                                        |
-| `brightness` | `atomic` | `empty` \| `exact: %, 0–100`                                                                                                                                      |
-| `opacity`    | `atomic` | `empty` \| `exact: %, 0–100`                                                                                                                                      |
+| Parameter | Type | Values |
+| --- | --- | --- |
+| `color` | `atomic` | `empty` \| `exact: hex, hsl, rgb, lch` \| `option: transparent` \| `theme.categorical: @swatch.*` |
+| `image` | `atomic` | `empty` \| `exact: string` |
+| `position` | `atomic` | `empty` \| `option: default, top-left, top-center, top-right, center-left, center, center-right, bottom-left, bottom-center, bottom-right` \| `exact: px, rem, %` |
+| `size` | `atomic` | `empty` \| `option: original, contain, cover, stretch` \| `exact: px, rem, %` |
+| `repeat` | `atomic` | `empty` \| `option: no-repeat, repeat, repeat-x, repeat-y` |
+| `blendMode` | `atomic` | `empty` \| `exact: string` |
+| `filter` | `atomic` | `empty` \| `exact: string` |
+| `brightness` | `atomic` | `empty` \| `exact: %, 0–100` |
+| `opacity` | `atomic` | `empty` \| `exact: %, 0–100` |
 
 ```typescript
 import { TokenType, ValueType } from "@seldon/core/themes"
@@ -582,18 +584,18 @@ background: {
 
 Gradient looks describe a two-stop linear or radial gradient -- type, angle, plus a start and an end stop with color, opacity, brightness, and position -- so the same gradient can be applied across components via `@gradient.<id>`. All parameters are optional; omit a stop's fields to fall back to defaults. `angle` applies only to linear gradients.
 
-| Parameter         | Type     | Values                                                                                            |
-| ----------------- | -------- | ------------------------------------------------------------------------------------------------- |
-| `gradientType`    | `atomic` | `empty` \| `option: linear, radial`                                                               |
-| `angle`           | `atomic` | `empty` \| `exact: degrees`                                                                       |
-| `startColor`      | `atomic` | `empty` \| `exact: hex, hsl, rgb, lch` \| `option: transparent` \| `theme.categorical: @swatch.*` |
-| `startOpacity`    | `atomic` | `empty` \| `exact: %, 0–100`                                                                      |
-| `startBrightness` | `atomic` | `empty` \| `exact: %, 0–100`                                                                      |
-| `startPosition`   | `atomic` | `empty` \| `exact: %, 0–100`                                                                      |
-| `endColor`        | `atomic` | `empty` \| `exact: hex, hsl, rgb, lch` \| `option: transparent` \| `theme.categorical: @swatch.*` |
-| `endOpacity`      | `atomic` | `empty` \| `exact: %, 0–100`                                                                      |
-| `endBrightness`   | `atomic` | `empty` \| `exact: %, 0–100`                                                                      |
-| `endPosition`     | `atomic` | `empty` \| `exact: %, 0–100`                                                                      |
+| Parameter | Type | Values |
+| --- | --- | --- |
+| `gradientType` | `atomic` | `empty` \| `option: linear, radial` |
+| `angle` | `atomic` | `empty` \| `exact: degrees` |
+| `startColor` | `atomic` | `empty` \| `exact: hex, hsl, rgb, lch` \| `option: transparent` \| `theme.categorical: @swatch.*` |
+| `startOpacity` | `atomic` | `empty` \| `exact: %, 0–100` |
+| `startBrightness` | `atomic` | `empty` \| `exact: %, 0–100` |
+| `startPosition` | `atomic` | `empty` \| `exact: %, 0–100` |
+| `endColor` | `atomic` | `empty` \| `exact: hex, hsl, rgb, lch` \| `option: transparent` \| `theme.categorical: @swatch.*` |
+| `endOpacity` | `atomic` | `empty` \| `exact: %, 0–100` |
+| `endBrightness` | `atomic` | `empty` \| `exact: %, 0–100` |
+| `endPosition` | `atomic` | `empty` \| `exact: %, 0–100` |
 
 ```typescript
 import { TokenType, ValueType } from "@seldon/core/themes"
@@ -618,15 +620,15 @@ gradient: {
 
 Shadow looks describe a drop-shadow -- offsets, blur, spread, color, brightness, and opacity -- so the same shadow can be applied across components via `@shadow.<id>`. All parameters are optional. `offsetX` is the horizontal offset; `offsetY` is the vertical offset.
 
-| Parameter    | Type     | Values                                                                                            |
-| ------------ | -------- | ------------------------------------------------------------------------------------------------- |
-| `offsetX`    | `atomic` | `empty` \| `exact: px, rem`                                                                       |
-| `offsetY`    | `atomic` | `empty` \| `exact: px, rem`                                                                       |
-| `blur`       | `atomic` | `empty` \| `exact: px, rem` \| `theme.ordinal: @blur.*`                                           |
-| `spread`     | `atomic` | `empty` \| `exact: px, rem` \| `theme.ordinal: @spread.*`                                         |
-| `color`      | `atomic` | `empty` \| `exact: hex, hsl, rgb, lch` \| `option: transparent` \| `theme.categorical: @swatch.*` |
-| `brightness` | `atomic` | `empty` \| `exact: %, 0–100`                                                                      |
-| `opacity`    | `atomic` | `empty` \| `exact: %, 0–100`                                                                      |
+| Parameter | Type | Values |
+| --- | --- | --- |
+| `offsetX` | `atomic` | `empty` \| `exact: px, rem` |
+| `offsetY` | `atomic` | `empty` \| `exact: px, rem` |
+| `blur` | `atomic` | `empty` \| `exact: px, rem` \| `theme.ordinal: @blur.*` |
+| `spread` | `atomic` | `empty` \| `exact: px, rem` \| `theme.ordinal: @spread.*` |
+| `color` | `atomic` | `empty` \| `exact: hex, hsl, rgb, lch` \| `option: transparent` \| `theme.categorical: @swatch.*` |
+| `brightness` | `atomic` | `empty` \| `exact: %, 0–100` |
+| `opacity` | `atomic` | `empty` \| `exact: %, 0–100` |
 
 ```typescript
 import { TokenType, ValueType } from "@seldon/core/themes"
@@ -653,13 +655,13 @@ shadow: {
 
 Scrollbar looks describe how a scrollbar is painted -- track color, thumb color, hover color, track thickness, and whether the thumb is rounded -- so the same scrollbar can be applied across components via `@scrollbar.<id>`. Unlike the other looks, every scrollbar parameter is required (no `empty` clause).
 
-| Parameter         | Type     | Values                                                                                 |
-| ----------------- | -------- | -------------------------------------------------------------------------------------- |
-| `trackColor`      | `atomic` | `exact: hex, hsl, rgb, lch` \| `option: transparent` \| `theme.categorical: @swatch.*` |
-| `thumbColor`      | `atomic` | `exact: hex, hsl, rgb, lch` \| `option: transparent` \| `theme.categorical: @swatch.*` |
+| Parameter | Type | Values |
+| --- | --- | --- |
+| `trackColor` | `atomic` | `exact: hex, hsl, rgb, lch` \| `option: transparent` \| `theme.categorical: @swatch.*` |
+| `thumbColor` | `atomic` | `exact: hex, hsl, rgb, lch` \| `option: transparent` \| `theme.categorical: @swatch.*` |
 | `thumbHoverColor` | `atomic` | `exact: hex, hsl, rgb, lch` \| `option: transparent` \| `theme.categorical: @swatch.*` |
-| `trackSize`       | `atomic` | `exact: px, rem`                                                                       |
-| `rounded`         | `atomic` | `exact: boolean` \| `option: true, false`                                              |
+| `trackSize` | `atomic` | `exact: px, rem` |
+| `rounded` | `atomic` | `exact: boolean` |
 
 ```typescript
 import { TokenType, ValueType } from "@seldon/core/themes"
@@ -673,7 +675,7 @@ scrollbar: {
       thumbColor: { type: ValueType.THEME_CATEGORICAL, value: "@swatch.swatch2" },
       thumbHoverColor: { type: ValueType.THEME_CATEGORICAL, value: "@swatch.swatch3" },
       trackSize: { type: ValueType.EXACT, value: { unit: Unit.REM, value: 0.5 } },
-      rounded: true,
+      rounded: { type: ValueType.EXACT, value: true },
     },
   },
 }
@@ -709,7 +711,7 @@ Workspace pipelines pick a stock template by id and apply user-supplied override
 
 ### Workspace serialization
 
-[`workspace.json`](../workspace/README.md) holds **raw authoring state** only: each board / node references a theme by **`ThemeInstanceId`** (for example `theme-skyBlue-default`) and the editable theme source rows live under the top-level `themes` map. Computed theme rows are produced by read-side selectors (`computeWorkspaceThemes`, `getComputedTheme`); they are **not** persisted back into the file.
+[`workspace.json`](../workspace/README.md) holds **raw authoring state** only: each board / node references a theme by an opaque string ref (for example `theme-sky-default`) and the editable theme source rows live under the top-level `themes` map. Computed theme rows are produced by read-side selectors (`computeWorkspaceThemes`, `getComputedTheme`); they are **not** persisted back into the file.
 
 [`catalog-ids.ts`](./catalog-ids.ts) exports `packagedThemeCatalogIds` and `resolvePackagedThemeByCatalogId`. Workspace validation uses the ids to check theme board `catalogId` values.
 
@@ -770,7 +772,7 @@ export type ThemeTemplateId =
 export type ThemeInstanceId = ThemeTemplateId
 ```
 
-In a workspace file, **board theme refs, node `theme` fields, and keys in the `themes` map** are opaque **strings** (for example `theme-skyBlue-default`); resolution happens through `getComputedTheme` / `computeWorkspaceThemes`. Treat those refs as `string` at workspace boundaries until workspace types are aligned.
+In a workspace file, **board theme refs, node `theme` fields, and keys in the `themes` map** are opaque **strings** (for example `theme-sky-default`); resolution happens through `getComputedTheme` / `computeWorkspaceThemes`. Treat those refs as `string` at workspace boundaries until workspace types are aligned.
 
 ### Token Table Shape
 
@@ -979,18 +981,15 @@ License and contributor documents live at the repository root under [`license/`]
 This project is licensed as follows:
 
 - **Noncommercial Use** → Licensed under the [PolyForm Noncommercial License](../../../license/noncommercial/LICENSE.md)
-- **Commercial Use** → Requires a separate paid license. See [Commercial License Options](../../../license/commercial/COMMERCIAL-LICENSE-README.md)
+- **Commercial Use** → Requires a separate paid license. See [Commercial License](../../../license/commercial/COMMERCIAL-LICENSE.md)
 - **Contributors** → Must follow [Contributing Guidelines](../../../license/contributors/CONTRIBUTING.md) and sign the [Contributor License Agreement](../../../license/contributors/CLA.md)
 
 ### Quick Links
 
 - [License index](../../../license/README.md)
 - [Noncommercial License (default)](../../../license/noncommercial/LICENSE.md)
-- [Licensing overview](../../../README.md#licensing-overview)
-- [Commercial License – Overview](../../../license/commercial/COMMERCIAL-LICENSE-README.md)
+- [Licensing overview](../../../README.md#licensing)
 - [Commercial license terms (full text)](../../../license/commercial/COMMERCIAL-LICENSE.md)
-- [Commercial license short-form template](../../../license/commercial/COMMERCIAL-LICENSE-SHORT-FORM.md)
-- [Commercial license long-form template](../../../license/commercial/COMMERCIAL-LICENSE-LONG-FORM.md)
 - [CLA – Contributor License Agreement](../../../license/contributors/CLA.md)
 - [Official repository notice](../../../license/NOTICE.md)
 

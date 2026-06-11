@@ -157,7 +157,7 @@ For example:
 
 - `packages/core/icon-sets/catalog/material/user-interface/actions/IconMaterialAdd.tsx`
 - `packages/core/icon-sets/catalog/material/business/commerce/IconMaterialShoppingCart.tsx`
-- `packages/core/icon-sets/catalog/material/miscellaneous/miscellaneous/IconMaterialSync.tsx`
+- `packages/core/icon-sets/catalog/material/user-interface/actions/IconMaterialSync.tsx`
 
 The file location is the **source of truth** for an icon's category. Category information is extracted from the file path structure.
 
@@ -198,8 +198,8 @@ import {
 // Check if a path is valid
 const isValid = categoryPaths.includes("user-interface/actions") // true
 
-// Use default for uncategorized icons
-const category = getIconCategoryFromId(unknownIconId) || DEFAULT_CATEGORY_PATH
+// Uncategorized icons fall back to DEFAULT_CATEGORY_PATH internally
+const category = getIconCategoryFromId(unknownIconId)
 ```
 
 ---

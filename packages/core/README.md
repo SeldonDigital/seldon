@@ -10,14 +10,14 @@ Core owns design-time state and rules. Factory owns export and production code g
 
 Core groups four ideas that work together:
 
-| Area           | Role                                                                     | Deep reference                              |
-| -------------- | ------------------------------------------------------------------------ | ------------------------------------------- |
-| **Components** | Packaged schemas: identity, level, default properties, composition trees | [COMPONENTS.md](./components/COMPONENTS.md) |
-| **Properties** | Typed style and behavior values, merge rules, compute                    | [PROPERTIES.md](./properties/PROPERTIES.md) |
-| **Themes**     | Design tokens components reference with `@` paths                        | [THEMES.md](./themes/THEMES.md)             |
-| **Workspace**  | Serialized design file: boards, nodes, themes, resources                 | [WORKSPACE.md](./workspace/WORKSPACE.md)    |
+| Area | Role | Deep reference |
+| --- | --- | --- |
+| **Components** | Packaged schemas: identity, level, default properties, composition trees | [components/README.md](./components/README.md) |
+| **Properties** | Typed style and behavior values, merge rules, compute | [properties/README.md](./properties/README.md) |
+| **Themes** | Design tokens components reference with `@` paths | [themes/README.md](./themes/README.md) |
+| **Workspace** | Serialized design file: boards, nodes, themes, resources | [workspace/README.md](./workspace/README.md) |
 
-The **catalog** lives under `packages/core/` (component schemas, stock themes, font collections, icon sets, media). A workspace **points into** the catalog. It does not replace it. Default nodes and default themes always align with catalog structure. Customization happens through **variants**, **instances**, and **overrides**. See [WORKSPACE.md](./workspace/WORKSPACE.md) for the file shape and integrity rules.
+The **catalog** lives under `packages/core/` (component schemas, stock themes, font collections, icon sets). A workspace **points into** the catalog. It does not replace it. Default nodes and default themes always align with catalog structure. Customization happens through **variants**, **instances**, and **overrides**. See [workspace/README.md](./workspace/README.md) for the file shape and integrity rules.
 
 ---
 
@@ -84,11 +84,11 @@ Call Core compute and resolve helpers after you load or change workspace state. 
 
 Do not merge properties or resolve tokens on your own. You will drift from Core and break when schemas or themes change.
 
-Start with [workspace/compute/README.md](./workspace/compute/README.md) for node and board property snapshots. Use [helpers/README.md](./helpers/README.md) when you need plain strings and numbers for CSS or UI controls.
+Start with the compute selectors under [workspace/compute/](./workspace/compute/) for node and board property snapshots. Use the modules under [helpers/](./helpers/) when you need plain strings and numbers for CSS or UI controls.
 
 ### Save
 
-Serialize the workspace object to JSON using the key order in [WORKSPACE.md](./workspace/WORKSPACE.md). That file is the handoff artifact for collaboration, version control, and Factory.
+Serialize the workspace object to JSON using the key order in [workspace/README.md](./workspace/README.md). That file is the handoff artifact for collaboration, version control, and Factory.
 
 ---
 
@@ -98,25 +98,25 @@ Serialize the workspace object to JSON using the key order in [WORKSPACE.md](./w
 
 A **component schema** is a static recipe: what properties exist, default values, and optional child trees. When a designer places a button, the workspace holds a **variant** or **instance** node that references that schema through `template: catalog:{ComponentId}` or `template: node:{nodeId}`.
 
-Schemas define what is possible. The workspace records what was chosen. Hierarchy levels, frames, and composition rules are in [COMPONENTS.md](./components/COMPONENTS.md).
+Schemas define what is possible. The workspace records what was chosen. Hierarchy levels, frames, and composition rules are in [components/README.md](./components/README.md).
 
 ### Properties
 
 Properties control appearance and behavior. Values use tagged **value types** such as `EMPTY`, `INHERIT`, `EXACT`, `OPTION`, `COMPUTED`, `THEME_CATEGORICAL`, and `THEME_ORDINAL`. Properties can be atomic, compound, shorthand, or layered paint stacks.
 
-Only keys declared on a schema may be set for that component. **Overrides** on nodes store diffs from the template. Merge and path rules are in [PROPERTIES.md](./properties/PROPERTIES.md).
+Only keys declared on a schema may be set for that component. **Overrides** on nodes store diffs from the template. Merge and path rules are in [properties/README.md](./properties/README.md).
 
 ### Themes
 
 A **theme** bundles tokens: color, type, spacing, looks, and more. Component properties reference tokens with paths like `@swatch.primary` or `@fontSize.medium`. Workspace theme entries use `template: catalog:{ThemeTemplateId}` or `template: theme:{themeId}` plus optional **overrides**.
 
-Stock themes ship with Core. Workspace theme rows customize them. Full token tables and stock ids are in [THEMES.md](./themes/THEMES.md).
+Stock themes ship with Core. Workspace theme rows customize them. Full token tables and stock ids are in [themes/README.md](./themes/README.md).
 
 ### Workspace
 
 A **workspace** is one design file: `metadata`, `boards` (catalog rows), `nodes`, `themes`, `font-collections`, `icon-sets`, and `media`. **Catalog rows** index boards. **Entry nodes** in `nodes` hold `type`, `template`, `theme`, and `overrides`. Variant trees on rows list child node ids; the flat `nodes` map holds each node's payload.
 
-Precedence for styling: prefer **variant**-level edits when a change should flow to all instances. Use **instance** overrides only for one-off differences. Instance overrides win over variant values. Theme switching follows the same idea. Details and examples are in [WORKSPACE.md](./workspace/WORKSPACE.md).
+Precedence for styling: prefer **variant**-level edits when a change should flow to all instances. Use **instance** overrides only for one-off differences. Instance overrides win over variant values. Theme switching follows the same idea. Details and examples are in [workspace/README.md](./workspace/README.md).
 
 ---
 
@@ -131,9 +131,10 @@ Factory consumes a **workspace** object and produces exportable files. The usual
 Factory builds style registries, discovers exportable variants, processes assets, and generates components. It does not mutate the workspace file. Pipeline detail lives in [../factory/README.md](../factory/README.md).
 
 ```typescript
-import { exportWorkspace } from "@seldon/factory"
+import { exportWorkspace } from "@seldon/factory/export/export-workspace"
 
 const files = await exportWorkspace(workspace, {
+  rootDirectory: "/path/to/repo",
   target: { framework: "react", styles: "css-properties" },
   output: {
     componentsFolder: "/src/components",
@@ -147,14 +148,13 @@ const files = await exportWorkspace(workspace, {
 
 ## Further Reading
 
-| Topic                  | Document                                                       |
-| ---------------------- | -------------------------------------------------------------- |
-| Vocabulary             | [GLOSSARY.md](../../GLOSSARY.md)                               |
-| Workspace file spec    | [WORKSPACE.md](./workspace/WORKSPACE.md)                       |
-| Reducer actions        | [workspace/reducers/README.md](./workspace/reducers/README.md) |
-| Rules and propagation  | [rules/README.md](./rules/README.md)                           |
-| Code-oriented examples | [TECHNICAL.md](./TECHNICAL.md)                                 |
-| Factory export         | [../factory/README.md](../factory/README.md)                   |
+| Topic | Document |
+| --- | --- |
+| Vocabulary | [GLOSSARY.md](../../GLOSSARY.md) |
+| Workspace file spec | [workspace/README.md](./workspace/README.md) |
+| Reducer actions | [workspace/reducers/README.md](./workspace/reducers/README.md) |
+| Rules and propagation | [rules/README.md](./rules/README.md) |
+| Factory export | [../factory/README.md](../factory/README.md) |
 
 ---
 
@@ -192,19 +192,19 @@ Contact:
 
 ### 4. Summary
 
-| Use               | Requirement                          |
-| ----------------- | ------------------------------------ |
+| Use | Requirement |
+| --- | --- |
 | Noncommercial use | PolyForm Noncommercial License 1.0.0 |
-| Commercial use    | Paid commercial license              |
+| Commercial use | Paid commercial license |
 
 ---
 
 ## Links
 
-- [COMPONENTS.md](./components/COMPONENTS.md)
-- [PROPERTIES.md](./properties/PROPERTIES.md)
-- [THEMES.md](./themes/THEMES.md)
-- [WORKSPACE.md](./workspace/WORKSPACE.md)
+- [components/README.md](./components/README.md)
+- [properties/README.md](./properties/README.md)
+- [themes/README.md](./themes/README.md)
+- [workspace/README.md](./workspace/README.md)
 - [Official Website](https://seldon.digital)
 - [Documentation](https://docs.seldon.digital)
 - [Issues & Discussions](https://github.com/seldon/issues)
