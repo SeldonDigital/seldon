@@ -27,7 +27,7 @@ import { useRowActionsMenu } from "../shared/use-row-actions-menu"
 import { useResourceEntryRow } from "./hooks/use-resource-entry-row"
 import { useRowClick } from "./hooks/use-row-click"
 import { SelectionKind } from "@lib/workspace/selection-target"
-import { SidebarRow } from "@seldon/components/custom-components"
+import { RowSelectionTarget } from "./RowSelectionTarget"
 import { ItemNodeRow } from "@seldon/components/elements/ItemNodeRow"
 import { IconProps } from "@seldon/components/primitives/Icon"
 import { TextLabelProps } from "@seldon/components/primitives/TextLabel"
@@ -65,7 +65,7 @@ export interface ResourceRowConfig {
   buildResetAction?: (entryId: string) => Action
 }
 
-type ResourceEntryViewModelProps = {
+type VMResourceEntryProps = {
   config: ResourceRowConfig
   entryId: string
   show?: boolean
@@ -78,12 +78,12 @@ type ResourceEntryViewModelProps = {
  * entry and custom variants. Selecting the row highlights and scrolls to its
  * canvas preview.
  */
-export function ResourceEntryViewModel({
+export function VMResourceEntry({
   config,
   entryId,
   show = true,
   parentIsSelected = false,
-}: ResourceEntryViewModelProps) {
+}: VMResourceEntryProps) {
   const { workspace, dispatch } = useWorkspace({ usePreview: false })
   const { activeTool } = useTool()
   const { selectResourceEntry } = useSelection()
@@ -165,7 +165,7 @@ export function ResourceEntryViewModel({
 
   return (
     <>
-      <SidebarRow
+      <RowSelectionTarget
         style={rowWrapperStyle}
         selectionId={entryId}
         selectionKind={config.selectionKind}
@@ -190,7 +190,7 @@ export function ResourceEntryViewModel({
           data-active={isActive}
           style={combinedRowStyle}
         />
-      </SidebarRow>
+      </RowSelectionTarget>
       {actionsMenu.menu}
     </>
   )

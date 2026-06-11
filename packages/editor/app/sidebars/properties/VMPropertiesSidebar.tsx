@@ -14,9 +14,9 @@ import {
   sidebarShellStyle,
 } from "../helpers/sidebar-styles"
 import { FramerExpandable } from "../shared/FramerExpandable"
-import { CategoryViewModel } from "./CategoryViewModel"
+import { VMCategory } from "./VMCategory"
 import { CssBlock } from "./CssBlock"
-import { PropertyViewModel } from "./PropertyViewModel"
+import { VMProperty } from "./VMProperty"
 import {
   FontCollectionEditingContext,
   IconSetEditingContext,
@@ -65,7 +65,7 @@ export interface PropertyTreeProps {
  * View-model for the properties sidebar. Renders the no-selection shell or
  * the property tree for the current selection.
  */
-export function PropertiesSidebarViewModel() {
+export function VMPropertiesSidebar() {
   const state = usePropertiesSidebar()
 
   if (state.kind === "empty") {
@@ -298,7 +298,7 @@ function TreeSection({
       <CssBlock cssProperties={cssStrings} />
     ) : (
       section.properties.map((property) => (
-        <PropertyViewModel
+        <VMProperty
           key={property.key}
           property={property}
           workspace={workspace}
@@ -314,7 +314,7 @@ function TreeSection({
 
   return (
     <Fragment>
-      <CategoryViewModel section={section} />
+      <VMCategory section={section} />
       <FramerExpandable isExpanded={isExpanded}>{content}</FramerExpandable>
     </Fragment>
   )

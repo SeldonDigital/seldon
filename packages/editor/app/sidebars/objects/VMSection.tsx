@@ -4,7 +4,7 @@ import { useRowSection } from "./hooks/use-row-section"
 import { ItemSectionRow } from "@seldon/components/elements/ItemSectionRow"
 import { BoardSection } from "../helpers/get-board-sections"
 
-interface SectionViewModelProps {
+interface VMSectionProps {
   section: BoardSection
 }
 
@@ -13,7 +13,7 @@ interface SectionViewModelProps {
  * "Elements"). Sections use useRowHover for hover styling, not the tracking
  * system.
  */
-export function SectionViewModel({ section }: SectionViewModelProps) {
+export function VMSection({ section }: VMSectionProps) {
   const { label, icon, buttonIconic, buttonIconic2, onToggle } =
     useRowSection(section)
   const { setIsHovered, style: hoverStyle } = useRowHover(false, 25)

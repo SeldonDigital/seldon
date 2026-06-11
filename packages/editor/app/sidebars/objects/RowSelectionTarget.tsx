@@ -1,6 +1,6 @@
 import { CSSProperties, ReactNode, Ref } from "react"
 
-interface SidebarRowProps {
+interface RowSelectionTargetProps {
   selectionId: string
   selectionKind: string
   /**
@@ -17,10 +17,11 @@ interface SidebarRowProps {
 }
 
 /**
- * Selectable wrapper for an objects-sidebar row. Carries the selection data
- * attributes the canvas tracking and selection bridges read.
+ * Marks an objects-sidebar row as a selection target. Stamps the selection
+ * data attributes that the selection resolver and canvas tracking bridges
+ * read; renders no styling of its own.
  */
-export function SidebarRow({
+export function RowSelectionTarget({
   selectionId,
   selectionKind,
   selectionRootId,
@@ -28,7 +29,7 @@ export function SidebarRow({
   innerStyle,
   ref,
   children,
-}: SidebarRowProps) {
+}: RowSelectionTargetProps) {
   const content = innerStyle ? (
     <div style={innerStyle}>{children}</div>
   ) : (

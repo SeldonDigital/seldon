@@ -18,7 +18,7 @@ import { workspaceThemeService } from "@seldon/core/workspace/services/theme/the
 import { useSelection } from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useEditorConfig } from "@lib/hooks/use-editor-config"
-import type { PropertyTreeProps } from "../PropertiesSidebarViewModel"
+import type { PropertyTreeProps } from "../VMPropertiesSidebar"
 import { flattenFontCollectionFamilies } from "../helpers/font-collection-properties-data"
 import { getThemePropertyControlType } from "../helpers/get-theme-property-controls"
 import { flattenIconSetCategories } from "../helpers/icon-set-properties-data"

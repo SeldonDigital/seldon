@@ -6,17 +6,17 @@ import { useSidebarRowStyling } from "../../tracking/hooks/use-sidebar-row-styli
 import { IndentationLevel } from "../hooks/use-indentation"
 import { useRowBoard } from "./hooks/use-row-board"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
-import { SidebarRow } from "@seldon/components/custom-components"
+import { RowSelectionTarget } from "./RowSelectionTarget"
 import { ItemNodeRow } from "@seldon/components/elements/ItemNodeRow"
 import { IconProps } from "@seldon/components/primitives/Icon"
 import { TextLabelProps } from "@seldon/components/primitives/TextLabel"
 import { relativeFullWidthStyle } from "../helpers/sidebar-styles"
 import { FramerExpandable } from "../shared/FramerExpandable"
-import { NodeViewModel } from "./NodeViewModel"
+import { VMNode } from "./VMNode"
 import {
-  ResourceEntryViewModel,
+  VMResourceEntry,
   getBoardResourceRowConfig,
-} from "./ResourceEntryViewModel"
+} from "./VMResourceEntry"
 
 const rowWrapperStyle: CSSProperties = {
   width: "100%",
@@ -25,7 +25,7 @@ const rowWrapperStyle: CSSProperties = {
 
 const BOARD_SELECTION_KIND = "board"
 
-interface BoardViewModelProps {
+interface VMBoardProps {
   board: BoardType
   show?: boolean
   disableReordering?: boolean
@@ -36,11 +36,11 @@ interface BoardViewModelProps {
  * Handles board selection, expansion, and canvas tracking. Hover highlight comes
  * from the shared hover bridge via the tree-root controller.
  */
-export const BoardViewModel = memo(function BoardViewModel({
+export const VMBoard = memo(function VMBoard({
   board,
   show = true,
   disableReordering = false,
-}: BoardViewModelProps) {
+}: VMBoardProps) {
   // Core board data: buttons, icons, handlers, state
   const {
     label: baseLabel,
@@ -121,7 +121,7 @@ export const BoardViewModel = memo(function BoardViewModel({
   const resourceRowConfig = getBoardResourceRowConfig(board)
   const childRows = resourceRowConfig
     ? variants.map((entryId) => (
-        <ResourceEntryViewModel
+        <VMResourceEntry
           key={entryId}
           config={resourceRowConfig}
           entryId={entryId}
@@ -130,7 +130,7 @@ export const BoardViewModel = memo(function BoardViewModel({
         />
       ))
     : variants.map((variantId, index) => (
-        <NodeViewModel
+        <VMNode
           key={variantId}
           nodeId={variantId}
           rootId={variantId}
@@ -146,7 +146,7 @@ export const BoardViewModel = memo(function BoardViewModel({
   // generated IconProps at the row boundary are safe.
   return (
     <>
-      <SidebarRow
+      <RowSelectionTarget
         ref={ref}
         style={rowWrapperStyle}
         innerStyle={relativeFullWidthStyle}
@@ -171,7 +171,7 @@ export const BoardViewModel = memo(function BoardViewModel({
           data-active={boardIsActive}
           style={combinedRowStyle}
         />
-      </SidebarRow>
+      </RowSelectionTarget>
 
       <FramerExpandable isExpanded={isExpanded}>
         <IndentationLevel>{childRows}</IndentationLevel>

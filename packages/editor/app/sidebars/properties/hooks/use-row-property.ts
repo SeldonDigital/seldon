@@ -71,7 +71,7 @@ export interface RowPropertyProps {
  * ViewModel hook for a property row. Owns the edit/hover state, display
  * derivation, interaction commands, and the assembled props for the generated
  * `ItemInputRow`, `PropertyValueCell`, and the reset menu, so
- * `PropertyViewModel` stays a binding shell. Child rows are returned as plain
+ * `VMProperty` stays a binding shell. Child rows are returned as plain
  * props for the shell to recurse on.
  */
 export function useRowProperty({

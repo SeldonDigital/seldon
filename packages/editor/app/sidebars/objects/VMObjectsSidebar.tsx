@@ -34,15 +34,15 @@ import {
   sidebarShellStyle,
 } from "../helpers/sidebar-styles"
 import { FramerExpandable } from "../shared/FramerExpandable"
-import { BoardViewModel } from "./BoardViewModel"
-import { SectionViewModel } from "./SectionViewModel"
+import { VMBoard } from "./VMBoard"
+import { VMSection } from "./VMSection"
 
 /**
  * View-model for the objects sidebar. Owns the workspace name bar, default
  * board selection, the section list, the scroller, and the tree-level hover
  * controller that publishes the hovered row to the shared bridge.
  */
-export function ObjectsSidebarViewModel() {
+export function VMObjectsSidebar() {
   const workspaceId = useWorkspaceId()
   const { record, updateRecord } = useWorkspaceRecord(workspaceId)
   const { workspace } = useWorkspace({ usePreview: false })
@@ -136,7 +136,7 @@ export function ObjectsSidebarViewModel() {
             <LayoutGroup>
               {sections.map((section) => (
                 <Fragment key={section.label}>
-                  <SectionViewModel section={section} />
+                  <VMSection section={section} />
                   <FramerExpandable
                     isExpanded={isSectionExpanded(
                       section.level,
@@ -149,7 +149,7 @@ export function ObjectsSidebarViewModel() {
                       />
                     ) : (
                       section.boards.map((board) => (
-                        <BoardViewModel
+                        <VMBoard
                           key={getComponentKey(board)}
                           board={board}
                           disableReordering

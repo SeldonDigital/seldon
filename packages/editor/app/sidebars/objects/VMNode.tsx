@@ -8,7 +8,7 @@ import { useSidebarRowStyling } from "../../tracking/hooks/use-sidebar-row-styli
 import { IndentationLevel } from "../hooks/use-indentation"
 import { useRowNode } from "./hooks/use-row-node"
 import { getNode } from "@lib/workspace/workspace-accessors"
-import { SidebarRow } from "@seldon/components/custom-components"
+import { RowSelectionTarget } from "./RowSelectionTarget"
 import { ItemNodeRow } from "@seldon/components/elements/ItemNodeRow"
 import { IconProps } from "@seldon/components/primitives/Icon"
 import { TextLabelProps } from "@seldon/components/primitives/TextLabel"
@@ -24,7 +24,7 @@ const rowWrapperStyle: CSSProperties = {
 
 const NODE_SELECTION_KIND = "node"
 
-interface NodeViewModelProps {
+interface VMNodeProps {
   nodeId: string
   /**
    * Node-id path of this copy, from the variant-root down to this row, joined
@@ -39,7 +39,7 @@ interface NodeViewModelProps {
   onSelect?: () => void
 }
 
-const NodeViewModelInner = memo(function NodeViewModelInner({
+const VMNodeInner = memo(function VMNodeInner({
   node,
   rootId,
   show,
@@ -137,7 +137,7 @@ const NodeViewModelInner = memo(function NodeViewModelInner({
     <FramerExpandable isExpanded={isExpanded}>
       <IndentationLevel>
         {children.map((childNodeId) => (
-          <NodeViewModel
+          <VMNode
             key={childNodeId}
             nodeId={childNodeId}
             rootId={`${rootId}/${childNodeId}`}
@@ -154,7 +154,7 @@ const NodeViewModelInner = memo(function NodeViewModelInner({
   // generated IconProps at the row boundary are safe.
   return (
     <>
-      <SidebarRow
+      <RowSelectionTarget
         ref={ref}
         style={rowWrapperStyle}
         selectionId={node.id}
@@ -191,7 +191,7 @@ const NodeViewModelInner = memo(function NodeViewModelInner({
             style={combinedRowStyle}
           />
         </SidebarTracking>
-      </SidebarRow>
+      </RowSelectionTarget>
       {actionsMenu.menu}
 
       {childrenSection}
@@ -199,7 +199,7 @@ const NodeViewModelInner = memo(function NodeViewModelInner({
   )
 })
 
-export const NodeViewModel = memo(function NodeViewModel({
+export const VMNode = memo(function VMNode({
   nodeId,
   rootId,
   node: nodeProp,
@@ -207,14 +207,14 @@ export const NodeViewModel = memo(function NodeViewModel({
   parentIsSelected = false,
   disableReordering = false,
   onSelect,
-}: NodeViewModelProps) {
+}: VMNodeProps) {
   const { workspace } = useWorkspace({ usePreview: false })
   const node = nodeProp ?? getNode(workspace, nodeId)
 
   if (!node) return null
 
   return (
-    <NodeViewModelInner
+    <VMNodeInner
       node={node}
       rootId={rootId}
       show={show}

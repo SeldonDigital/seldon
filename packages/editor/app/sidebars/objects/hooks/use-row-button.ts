@@ -9,7 +9,7 @@ interface UseRowButtonOptions {
 }
 
 /**
- * Shared hook for creating consistent button and icon props across BoardViewModel and NodeViewModel.
+ * Shared hook for creating consistent button and icon props across VMBoard and VMNode.
  * Extracts common button/icon creation patterns to reduce duplication.
  */
 export function useRowButton({

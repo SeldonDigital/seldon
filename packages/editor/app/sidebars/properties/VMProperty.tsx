@@ -10,7 +10,7 @@ import { PropertyValueCell } from "./PropertyValueCell"
  * trailing slot always renders so every row keeps the same footprint; the
  * actions-menu hook hides the icon when there is nothing to reset.
  */
-export function PropertyViewModel(props: RowPropertyProps) {
+export function VMProperty(props: RowPropertyProps) {
   const view = useRowProperty(props)
   const actionsMenu = useRowActionsMenu(view.resetActions, {
     color: view.labelColor as string | undefined,
@@ -45,7 +45,7 @@ export function PropertyViewModel(props: RowPropertyProps) {
       {view.hasChildren ? (
         <FramerExpandable isExpanded={view.isExpanded}>
           {view.childItems.map((childProps) => (
-            <PropertyViewModel key={childProps.property.key} {...childProps} />
+            <VMProperty key={childProps.property.key} {...childProps} />
           ))}
         </FramerExpandable>
       ) : null}

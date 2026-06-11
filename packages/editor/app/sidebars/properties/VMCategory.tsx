@@ -5,7 +5,7 @@ import { ItemSectionRow } from "@seldon/components/elements/ItemSectionRow"
 import { PropertySection } from "./helpers/get-property-sections"
 import { ThemePropertySection } from "./helpers/get-theme-property-sections"
 
-interface CategoryViewModelProps {
+interface VMCategoryProps {
   section: PropertySection | ThemePropertySection
 }
 
@@ -14,7 +14,7 @@ interface CategoryViewModelProps {
  * "Attributes", "Layout"). Categories don't use the tracking system, so
  * useRowHover is used for hover styling.
  */
-export function CategoryViewModel({ section }: CategoryViewModelProps) {
+export function VMCategory({ section }: VMCategoryProps) {
   // Core category data: label, icon, button, toggle handler
   const { label, icon, buttonIconic, onToggle } = useRowCategory(section)
 

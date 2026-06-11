@@ -14,8 +14,8 @@ import { AddIconSetPanel } from "../panels/catalog-panel/AddIconSetPanel"
 import { AddThemePanel } from "../panels/catalog-panel/AddThemePanel"
 import { InsertVariantPanel } from "../panels/catalog-panel/InsertVariantPanel"
 import { ImageUploadPanel } from "../panels/image-upload-panel/ImageUploadPanel"
-import { ObjectsSidebarViewModel } from "../sidebars/objects/ObjectsSidebarViewModel"
-import { PropertiesSidebarViewModel } from "../sidebars/properties/PropertiesSidebarViewModel"
+import { VMObjectsSidebar } from "../sidebars/objects/VMObjectsSidebar"
+import { VMPropertiesSidebar } from "../sidebars/properties/VMPropertiesSidebar"
 
 export default function Editor() {
   const { showPanels } = useEditorConfig()
@@ -42,7 +42,7 @@ export default function Editor() {
               priority={LayoutPriority.Low}
             >
               <div style={styles.objectsPane}>
-                <ObjectsSidebarViewModel />
+                <VMObjectsSidebar />
               </div>
             </Allotment.Pane>
             <Allotment.Pane priority={LayoutPriority.High}>
@@ -55,7 +55,7 @@ export default function Editor() {
               visible={showSidePanels}
               priority={LayoutPriority.Low}
             >
-              <PropertiesSidebarViewModel />
+              <VMPropertiesSidebar />
             </Allotment.Pane>
           </Allotment>
         </motion.div>
