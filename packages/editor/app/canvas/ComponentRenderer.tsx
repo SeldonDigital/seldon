@@ -72,12 +72,14 @@ import type { ComputeContext } from "@seldon/core/properties/compute"
 import { LoadEditorIcons } from "@app/LoadEditorIcons"
 import { CssPortal } from "./CssPortal"
 
+export type CanvasHtmlAttributes = Record<string, string | boolean>
+
 type TemplateProps = {
   componentId: ComponentId
   nodeId: VariantId | InstanceId | ComponentId
   children?: React.ReactNode
   ref?: RefObject<HTMLElement | null>
-  htmlAttributes?: Record<string, string>
+  htmlAttributes?: CanvasHtmlAttributes
   computeContext: ComputeContext
   styleOverrides?: CSSProperties
   /** Avoid invalid `<button>` inside `<button>` when a button groups other buttons. */
