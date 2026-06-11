@@ -6,12 +6,17 @@ import { useSidebarRowStyling } from "../../tracking/hooks/use-sidebar-row-styli
 import { IndentationLevel } from "../hooks/use-indentation"
 import { useRowBoard } from "./hooks/use-row-board"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
-import { NodeRow, SidebarRow } from "@seldon/components/custom-components"
+import { SidebarRow } from "@seldon/components/custom-components"
+import { ItemNodeRow } from "@seldon/components/elements/ItemNodeRow"
+import { IconProps } from "@seldon/components/primitives/Icon"
 import { TextLabelProps } from "@seldon/components/primitives/TextLabel"
 import { relativeFullWidthStyle } from "../helpers/sidebar-styles"
 import { FramerExpandable } from "../shared/FramerExpandable"
-import { RowNode } from "./RowNode"
-import { RowResourceEntry, getBoardResourceRowConfig } from "./RowResourceEntry"
+import { NodeViewModel } from "./NodeViewModel"
+import {
+  ResourceEntryViewModel,
+  getBoardResourceRowConfig,
+} from "./ResourceEntryViewModel"
 
 const rowWrapperStyle: CSSProperties = {
   width: "100%",
@@ -20,22 +25,22 @@ const rowWrapperStyle: CSSProperties = {
 
 const BOARD_SELECTION_KIND = "board"
 
-interface RowBoardProps {
+interface BoardViewModelProps {
   board: BoardType
   show?: boolean
   disableReordering?: boolean
 }
 
 /**
- * Renders a board row in the objects sidebar.
+ * View-model for a board row in the objects sidebar.
  * Handles board selection, expansion, and canvas tracking. Hover highlight comes
  * from the shared hover bridge via the tree-root controller.
  */
-export const RowBoard = memo(function RowBoard({
+export const BoardViewModel = memo(function BoardViewModel({
   board,
   show = true,
   disableReordering = false,
-}: RowBoardProps) {
+}: BoardViewModelProps) {
   // Core board data: buttons, icons, handlers, state
   const {
     label: baseLabel,
@@ -116,7 +121,7 @@ export const RowBoard = memo(function RowBoard({
   const resourceRowConfig = getBoardResourceRowConfig(board)
   const childRows = resourceRowConfig
     ? variants.map((entryId) => (
-        <RowResourceEntry
+        <ResourceEntryViewModel
           key={entryId}
           config={resourceRowConfig}
           entryId={entryId}
@@ -125,7 +130,7 @@ export const RowBoard = memo(function RowBoard({
         />
       ))
     : variants.map((variantId, index) => (
-        <RowNode
+        <NodeViewModel
           key={variantId}
           nodeId={variantId}
           rootId={variantId}
@@ -137,6 +142,8 @@ export const RowBoard = memo(function RowBoard({
 
   if (!show) return null
 
+  // Board rows never use dynamic icon-custom-* ids, so the casts to the
+  // generated IconProps at the row boundary are safe.
   return (
     <>
       <SidebarRow
@@ -146,13 +153,15 @@ export const RowBoard = memo(function RowBoard({
         selectionId={boardKey}
         selectionKind={BOARD_SELECTION_KIND}
       >
-        <NodeRow
+        <ItemNodeRow
           buttonIconic={buttonIconic}
-          icon={coloredIcon}
-          icon2={coloredIcon2}
+          icon={coloredIcon as IconProps}
+          icon2={coloredIcon2 as IconProps}
           textLabel={textLabel}
-          buttonIconic2={buttonIconic2}
-          icon3={coloredIcon3}
+          buttonIconic2={buttonIconic2 ?? null}
+          icon3={buttonIconic2 ? (coloredIcon3 as IconProps) : null}
+          buttonIconic3={null}
+          icon4={null}
           onClick={onClick}
           onMouseEnter={handleRowMouseEnter}
           onMouseLeave={handleRowMouseLeave}

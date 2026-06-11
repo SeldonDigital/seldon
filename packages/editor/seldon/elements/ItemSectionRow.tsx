@@ -56,6 +56,7 @@ export function ItemSectionRow({
   icon2 = sdn.icon2,
   buttonIconic3,
   icon3 = sdn.icon3,
+  children,
   ...props
 }: ItemSectionRowProps) {
   const itemSectionRowClassName = combineClassNames(
@@ -133,15 +134,21 @@ export function ItemSectionRow({
 
   return (
     <HTMLLi className={itemSectionRowClassName} {...props}>
-      {buttonIconic && buttonIconicProps && (
-        <ButtonIconic {...buttonIconicProps} icon={iconProps} />
-      )}
-      {textLabel && textLabelProps && <TextLabel {...textLabelProps} />}
-      {buttonIconic2 && buttonIconic2Props && (
-        <ButtonIconic {...buttonIconic2Props} icon={icon2Props} />
-      )}
-      {buttonIconic3 && buttonIconic3Props && (
-        <ButtonIconic {...buttonIconic3Props} icon={icon3Props} />
+      {children !== undefined ? (
+        children
+      ) : (
+        <>
+          {buttonIconic && buttonIconicProps && (
+            <ButtonIconic {...buttonIconicProps} icon={iconProps} />
+          )}
+          {textLabel && textLabelProps && <TextLabel {...textLabelProps} />}
+          {buttonIconic2 && buttonIconic2Props && (
+            <ButtonIconic {...buttonIconic2Props} icon={icon2Props} />
+          )}
+          {buttonIconic3 && buttonIconic3Props && (
+            <ButtonIconic {...buttonIconic3Props} icon={icon3Props} />
+          )}
+        </>
       )}
     </HTMLLi>
   )

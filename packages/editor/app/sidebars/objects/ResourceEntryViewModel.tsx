@@ -23,12 +23,13 @@ import {
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useTool } from "@lib/hooks/use-tool"
 import { useSidebarRowStyling } from "../../tracking/hooks/use-sidebar-row-styling"
-import { RowActionsMenu } from "../shared/RowActionsMenu"
+import { useRowActionsMenu } from "../shared/use-row-actions-menu"
 import { useResourceEntryRow } from "./hooks/use-resource-entry-row"
 import { useRowClick } from "./hooks/use-row-click"
 import { SelectionKind } from "@lib/workspace/selection-target"
-import { NodeRow, SidebarRow } from "@seldon/components/custom-components"
-import { IconProps } from "@seldon/components/custom-components"
+import { SidebarRow } from "@seldon/components/custom-components"
+import { ItemNodeRow } from "@seldon/components/elements/ItemNodeRow"
+import { IconProps } from "@seldon/components/primitives/Icon"
 import { TextLabelProps } from "@seldon/components/primitives/TextLabel"
 import { Combobox } from "../properties/controls/combobox/Combobox"
 
@@ -64,7 +65,7 @@ export interface ResourceRowConfig {
   buildResetAction?: (entryId: string) => Action
 }
 
-type RowResourceEntryProps = {
+type ResourceEntryViewModelProps = {
   config: ResourceRowConfig
   entryId: string
   show?: boolean
@@ -72,16 +73,17 @@ type RowResourceEntryProps = {
 }
 
 /**
- * One resource board variant entry (theme, font collection, icon set, or
- * media). Renders as a leaf row: the board shows its default entry and custom
- * variants. Selecting the row highlights and scrolls to its canvas preview.
+ * View-model for one resource board variant entry (theme, font collection,
+ * icon set, or media). Renders as a leaf row: the board shows its default
+ * entry and custom variants. Selecting the row highlights and scrolls to its
+ * canvas preview.
  */
-export function RowResourceEntry({
+export function ResourceEntryViewModel({
   config,
   entryId,
   show = true,
   parentIsSelected = false,
-}: RowResourceEntryProps) {
+}: ResourceEntryViewModelProps) {
   const { workspace, dispatch } = useWorkspace({ usePreview: false })
   const { activeTool } = useTool()
   const { selectResourceEntry } = useSelection()
@@ -114,8 +116,6 @@ export function RowResourceEntry({
   const hoverStyle = useRowHighlightStyle(entryId, isSelected)
   const combinedRowStyle = { ...hoverStyle, ...rowStyle }
 
-  if (!show || !entry) return null
-
   // Mirrors resettable variant nodes: the selected default entry always offers
   // "Reset to Catalog" (idempotent without overrides), a selected variant entry
   // offers "Reset to Default" only when it carries overrides.
@@ -123,9 +123,10 @@ export function RowResourceEntry({
   const canReset =
     Boolean(buildResetAction) &&
     isSelected &&
+    !!entry &&
     (entry.isDefault || entry.hasOverrides === true)
   const resetActions: MenuEntry[] =
-    buildResetAction && canReset
+    buildResetAction && canReset && entry
       ? [
           {
             id: "reset",
@@ -136,10 +137,10 @@ export function RowResourceEntry({
         ]
       : []
 
-  const actionsSlot =
-    resetActions.length > 0 ? (
-      <RowActionsMenu items={resetActions} color={iconColor} />
-    ) : undefined
+  const actionsMenu = useRowActionsMenu(resetActions, { color: iconColor })
+  const hasActions = resetActions.length > 0
+
+  if (!show || !entry) return null
 
   const icon2: IconProps = {
     icon: config.icon,
@@ -163,26 +164,35 @@ export function RowResourceEntry({
   } as unknown as TextLabelProps
 
   return (
-    <SidebarRow
-      style={rowWrapperStyle}
-      selectionId={entryId}
-      selectionKind={config.selectionKind}
-    >
-      <NodeRow
-        buttonIconic={{}}
-        icon={{ style: { color: "transparent" } }}
-        icon2={icon2}
-        textLabel={textLabel}
-        actionsSlot={actionsSlot}
-        onClick={onClick}
-        onDoubleClick={onDoubleClick}
-        data-testid={config.testId}
-        data-resource-entry-id={entryId}
-        data-resource-kind={config.kind}
-        data-active={isActive}
-        style={combinedRowStyle}
-      />
-    </SidebarRow>
+    <>
+      <SidebarRow
+        style={rowWrapperStyle}
+        selectionId={entryId}
+        selectionKind={config.selectionKind}
+      >
+        <ItemNodeRow
+          buttonIconic={{}}
+          icon={{
+            icon: "material-chevronRight",
+            style: { color: "transparent" },
+          }}
+          icon2={icon2}
+          textLabel={textLabel}
+          buttonIconic2={null}
+          icon3={null}
+          buttonIconic3={hasActions ? actionsMenu.buttonIconic : null}
+          icon4={hasActions ? actionsMenu.icon : null}
+          onClick={onClick}
+          onDoubleClick={onDoubleClick}
+          data-testid={config.testId}
+          data-resource-entry-id={entryId}
+          data-resource-kind={config.kind}
+          data-active={isActive}
+          style={combinedRowStyle}
+        />
+      </SidebarRow>
+      {actionsMenu.menu}
+    </>
   )
 }
 

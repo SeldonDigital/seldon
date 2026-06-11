@@ -42,6 +42,7 @@ export function Button({
   className = "",
   icon = sdn.icon,
   textLabel,
+  children,
   ...props
 }: ButtonProps) {
   const buttonClassName = combineClassNames("sdn-button", className)
@@ -67,8 +68,14 @@ export function Button({
 
   return (
     <HTMLButton className={buttonClassName} {...props}>
-      {iconProps !== null && <Icon {...iconProps} />}
-      {textLabel && textLabelProps && <TextLabel {...textLabelProps} />}
+      {children !== undefined ? (
+        children
+      ) : (
+        <>
+          {iconProps !== null && <Icon {...iconProps} />}
+          {textLabel && textLabelProps && <TextLabel {...textLabelProps} />}
+        </>
+      )}
     </HTMLButton>
   )
 }

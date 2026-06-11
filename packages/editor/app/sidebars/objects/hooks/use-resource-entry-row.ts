@@ -1,6 +1,6 @@
 import { Variant } from "@seldon/core"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
-import type { ResourceRowConfig } from "../RowResourceEntry"
+import type { ResourceRowConfig } from "../ResourceEntryViewModel"
 import { useEditState } from "./use-edit-state"
 
 /**

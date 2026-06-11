@@ -18,7 +18,7 @@ import { workspaceThemeService } from "@seldon/core/workspace/services/theme/the
 import { useSelection } from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useEditorConfig } from "@lib/hooks/use-editor-config"
-import type { PropertyTreeProps } from "../PropertyTree"
+import type { PropertyTreeProps } from "../PropertiesSidebarViewModel"
 import { flattenFontCollectionFamilies } from "../helpers/font-collection-properties-data"
 import { getThemePropertyControlType } from "../helpers/get-theme-property-controls"
 import { flattenIconSetCategories } from "../helpers/icon-set-properties-data"
@@ -31,18 +31,18 @@ import { useThemeProperties } from "./use-theme-properties"
 
 /**
  * View state for the properties sidebar. `empty` renders the no-selection
- * shell; `tree` carries the fully assembled `PropertyTree` props.
+ * shell; `tree` carries the fully assembled property tree props.
  */
-export type PropertiesSidebarViewModel =
+export type PropertiesSidebarState =
   | { kind: "empty" }
   | { kind: "tree"; treeProps: PropertyTreeProps }
 
 /**
  * Derives everything the properties sidebar needs from the current selection
  * and workspace. Owns all Model service access, editing-mode guards, and tree
- * prop assembly so the sidebar component stays a binding shell.
+ * prop assembly so the sidebar view-model stays a binding shell.
  */
-export function usePropertiesSidebar(): PropertiesSidebarViewModel {
+export function usePropertiesSidebar(): PropertiesSidebarState {
   const {
     selection,
     selectedBoard,

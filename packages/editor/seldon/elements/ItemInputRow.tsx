@@ -70,6 +70,7 @@ export function ItemInputRow({
   icon3 = sdn.icon3,
   buttonIconic3 = sdn.buttonIconic3,
   icon4 = sdn.icon4,
+  children,
   ...props
 }: ItemInputRowProps) {
   const itemInputRowClassName = combineClassNames(
@@ -185,22 +186,30 @@ export function ItemInputRow({
 
   return (
     <HTMLLi className={itemInputRowClassName} {...props}>
-      {buttonIconicProps !== null && (
-        <ButtonIconic {...buttonIconicProps} icon={iconProps} />
-      )}
-      {textLabel && textLabelProps && <TextLabel {...textLabelProps} />}
-      {formControlIconicProps !== null && (
-        <FormControlIconic {...formControlIconicProps}>
-          {icon2 && icon2Props && <Icon {...icon2Props} />}
-          {input && inputProps && <Input {...inputProps} />}
-          {textLabel2 && textLabel2Props && <TextLabel {...textLabel2Props} />}
-          {buttonIconic2 && buttonIconic2Props && (
-            <ButtonIconic {...buttonIconic2Props} icon={icon3Props} />
+      {children !== undefined ? (
+        children
+      ) : (
+        <>
+          {buttonIconicProps !== null && (
+            <ButtonIconic {...buttonIconicProps} icon={iconProps} />
           )}
-        </FormControlIconic>
-      )}
-      {buttonIconic3Props !== null && (
-        <ButtonIconic {...buttonIconic3Props} icon={icon4Props} />
+          {textLabel && textLabelProps && <TextLabel {...textLabelProps} />}
+          {formControlIconicProps !== null && (
+            <FormControlIconic {...formControlIconicProps}>
+              {icon2 && icon2Props && <Icon {...icon2Props} />}
+              {input && inputProps && <Input {...inputProps} />}
+              {textLabel2 && textLabel2Props && (
+                <TextLabel {...textLabel2Props} />
+              )}
+              {buttonIconic2 && buttonIconic2Props && (
+                <ButtonIconic {...buttonIconic2Props} icon={icon3Props} />
+              )}
+            </FormControlIconic>
+          )}
+          {buttonIconic3Props !== null && (
+            <ButtonIconic {...buttonIconic3Props} icon={icon4Props} />
+          )}
+        </>
       )}
     </HTMLLi>
   )
@@ -235,14 +244,14 @@ const sdn: ItemInputRowProps = {
     className: "sdn-text-label sdn-text-label--hljl",
   },
   buttonIconic2: {
-    className: "sdn-button-iconic sdn-button-iconic--o4dt",
+    className: "sdn-button-iconic sdn-button-iconic--0q0q",
   },
   icon3: {
     icon: "material-keyboardArrowDown",
     className: "sdn-icon sdn-icon--v2wj",
   },
   buttonIconic3: {
-    className: "sdn-button-iconic sdn-button-iconic--o4dt",
+    className: "sdn-button-iconic sdn-button-iconic--eyvy",
   },
   icon4: {
     icon: "seldon-more",

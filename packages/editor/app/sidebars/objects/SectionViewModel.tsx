@@ -1,18 +1,19 @@
 import { MouseEvent } from "react"
 import { useRowHover } from "./hooks/use-row-hover"
 import { useRowSection } from "./hooks/use-row-section"
-import { ItemSectionRow as SeldonSection } from "@seldon/components/elements/ItemSectionRow"
+import { ItemSectionRow } from "@seldon/components/elements/ItemSectionRow"
 import { BoardSection } from "../helpers/get-board-sections"
 
-interface RowSectionProps {
+interface SectionViewModelProps {
   section: BoardSection
 }
 
 /**
- * Renders a section header in the objects sidebar (e.g., "Primitives", "Elements").
- * Sections use useRowHover for hover styling (not the tracking system).
+ * View-model for a section header in the objects sidebar (e.g., "Primitives",
+ * "Elements"). Sections use useRowHover for hover styling, not the tracking
+ * system.
  */
-export function RowSection({ section }: RowSectionProps) {
+export function SectionViewModel({ section }: SectionViewModelProps) {
   const { label, icon, buttonIconic, buttonIconic2, onToggle } =
     useRowSection(section)
   const { setIsHovered, style: hoverStyle } = useRowHover(false, 25)
@@ -28,7 +29,7 @@ export function RowSection({ section }: RowSectionProps) {
   const handleMouseLeave = () => setIsHovered(false)
 
   return (
-    <SeldonSection
+    <ItemSectionRow
       buttonIconic={buttonIconic}
       icon={{ icon }}
       textLabel={{ children: label }}

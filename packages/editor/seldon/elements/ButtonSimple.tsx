@@ -38,6 +38,7 @@ export interface ButtonSimpleProps extends ButtonHTMLAttributes<HTMLButtonElemen
 export function ButtonSimple({
   className = "",
   textLabel,
+  children,
   ...props
 }: ButtonSimpleProps) {
   const buttonSimpleClassName = combineClassNames(
@@ -58,7 +59,11 @@ export function ButtonSimple({
 
   return (
     <HTMLButton className={buttonSimpleClassName} {...props}>
-      {textLabel && textLabelProps && <TextLabel {...textLabelProps} />}
+      {children !== undefined ? (
+        children
+      ) : (
+        <>{textLabel && textLabelProps && <TextLabel {...textLabelProps} />}</>
+      )}
     </HTMLButton>
   )
 }

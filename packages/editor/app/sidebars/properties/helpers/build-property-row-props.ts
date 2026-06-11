@@ -1,5 +1,5 @@
 import { CSSProperties, MouseEvent } from "react"
-import { IconProps } from "@seldon/components/custom-components"
+import { IconProps } from "@seldon/components/primitives/Icon"
 import { TextLabelProps } from "@seldon/components/primitives/TextLabel"
 import { FlatProperty } from "./properties-data"
 import {
@@ -8,7 +8,6 @@ import {
   getMenuButtonStyle,
   getMenuIconStyle,
   getNameLabelStyle,
-  getUnitLabelStyle,
   getValueCellStyle,
   getValueIconStyle,
 } from "./property-row-state-styles"
@@ -23,6 +22,16 @@ const CHEVRON_ICON = "material-chevronRight" as const
 export const FRAME_REF_ATTR = "data-frame-ref"
 export const FRAME_REF_VALUE = "true"
 export const FRAME_REF_SELECTOR = `[${FRAME_REF_ATTR}="${FRAME_REF_VALUE}"]`
+
+/**
+ * Dynamic value-chip data rendered inside the value cell. Dynamic
+ * `icon-custom-*` icons cannot render through the generated row's icon slot,
+ * so the cell draws the chip itself.
+ */
+export interface ValueChip {
+  color: string | undefined
+  style: CSSProperties
+}
 
 interface BuildPropertyRowPropsInput {
   property: FlatProperty
@@ -46,10 +55,10 @@ interface BuildPropertyRowPropsInput {
 }
 
 /**
- * Builds the prop objects passed to `InputRow` for a property row.
- * Returns plain data only. Slot styles come from the state-style functions in
- * `property-row-state-styles.ts`. The shell injects the value-cell node into
- * `textLabel2.children`, so this stays free of JSX.
+ * Builds the prop objects passed to the generated `ItemInputRow` for a
+ * property row. Returns plain data only. Slot styles come from the
+ * state-style functions in `property-row-state-styles.ts`. The shell injects
+ * the value-cell node into `textLabel2.children`, so this stays free of JSX.
  */
 export function buildPropertyRowProps({
   property,
@@ -93,17 +102,28 @@ export function buildPropertyRowProps({
   }
 
   const valueIconHidden = isThemeAssignment || Boolean(property.isLookParent)
-  const icon2 = {
-    icon: (valueIconHidden || !swatchChipColor
-      ? iconId
-      : "icon-custom-color-value") as IconProps["icon"],
-    ...(valueIconHidden
-      ? {}
+  const valueIconId =
+    valueIconHidden || !swatchChipColor ? iconId : "icon-custom-color-value"
+  const isDynamicValueIcon = valueIconId.startsWith("icon-custom-")
+
+  // Static value icons render through the generated icon slot. Dynamic chips
+  // render inside the value cell, so the slot is suppressed for them.
+  const icon2 =
+    valueIconHidden || isDynamicValueIcon
+      ? null
       : {
+          icon: valueIconId as IconProps["icon"],
           color: getPropertyIcon2Color(property, swatchChipColor, labelColor),
-        }),
-    style: getValueIconStyle({ hidden: valueIconHidden, labelColor }),
-  }
+          style: getValueIconStyle({ hidden: false, labelColor }),
+        }
+
+  const valueChip: ValueChip | null =
+    !valueIconHidden && isDynamicValueIcon
+      ? {
+          color: getPropertyIcon2Color(property, swatchChipColor, labelColor),
+          style: getValueIconStyle({ hidden: false, labelColor }),
+        }
+      : null
 
   const textLabel2 = {
     htmlElement: "label" as const,
@@ -119,11 +139,7 @@ export function buildPropertyRowProps({
   // picker controls that hold a literal dimension (a margin set to 24px renders
   // as "24" with a "PX" label).
   const showUnit = Boolean(unit && isNumericValue)
-  const textLabel3 = {
-    children: showUnit ? unit : "",
-    htmlElement: "label" as const,
-    style: getUnitLabelStyle({ showUnit, labelColor }),
-  }
+  const unitLabel = showUnit ? unit : undefined
 
   const buttonIconic2 = {
     onClick: supportsUpload
@@ -158,8 +174,9 @@ export function buildPropertyRowProps({
     icon,
     textLabel,
     icon2,
+    valueChip,
     textLabel2,
-    textLabel3,
+    unitLabel,
     buttonIconic2,
     icon3,
   }

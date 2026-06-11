@@ -1,11 +1,22 @@
 import { LayoutGroup } from "framer-motion"
-import { RefObject, useMemo } from "react"
+import { Fragment, RefObject, useMemo } from "react"
 import { Board, Instance, Theme, Variant, Workspace } from "@seldon/core"
 import { isResourceType } from "@seldon/core/workspace/helpers/components/is-resource-type"
+import { usePropertiesSidebar } from "./hooks/use-properties-sidebar"
 import { usePropertyExpansion } from "./hooks/use-property-expansion"
-import { ScrollerShell } from "@seldon/components/custom-components"
+import {
+  ScrollerShell,
+  SidebarContainer,
+} from "@seldon/components/custom-components"
 import { Frame } from "@seldon/components/frames/Frame"
-import { PropertyTreeSection } from "./PropertyTreeSection"
+import {
+  sidebarNoSelectionStyle,
+  sidebarShellStyle,
+} from "../helpers/sidebar-styles"
+import { FramerExpandable } from "../shared/FramerExpandable"
+import { CategoryViewModel } from "./CategoryViewModel"
+import { CssBlock } from "./CssBlock"
+import { PropertyViewModel } from "./PropertyViewModel"
 import {
   FontCollectionEditingContext,
   IconSetEditingContext,
@@ -51,10 +62,31 @@ export interface PropertyTreeProps {
 }
 
 /**
- * Orchestrates rendering of property sections and properties in a tree structure.
- * Groups properties into sections and handles expansion state.
+ * View-model for the properties sidebar. Renders the no-selection shell or
+ * the property tree for the current selection.
  */
-export function PropertyTree({
+export function PropertiesSidebarViewModel() {
+  const state = usePropertiesSidebar()
+
+  if (state.kind === "empty") {
+    return <SidebarContainer style={sidebarNoSelectionStyle} />
+  }
+
+  return (
+    <SidebarContainer
+      style={sidebarShellStyle}
+      data-testid="properties-sidebar"
+    >
+      <PropertiesTree {...state.treeProps} />
+    </SidebarContainer>
+  )
+}
+
+/**
+ * Orchestrates rendering of property sections and properties in a tree
+ * structure. Groups properties into sections and handles expansion state.
+ */
+function PropertiesTree({
   properties,
   workspace,
   node,
@@ -170,7 +202,7 @@ export function PropertyTree({
     iconProperties,
   ])
 
-  // Combine all properties for RowProperty's allProperties prop
+  // Combine all properties for the row-level allProperties prop
   const allProperties = useMemo(() => {
     if (themeEditingContext?.isThemeEditing) {
       return properties
@@ -190,7 +222,7 @@ export function PropertyTree({
       <Frame style={styles.tree}>
         <LayoutGroup>
           {sections.map((section) => (
-            <PropertyTreeSection
+            <TreeSection
               key={section.category}
               section={section}
               isExpanded={isCategoryExpanded(section.category)}
@@ -212,6 +244,82 @@ export function PropertyTree({
   )
 }
 
+interface TreeSectionProps {
+  section: PropertySection | ThemePropertySection
+  isExpanded: boolean
+  workspace: Workspace
+  node: Variant | Instance | Board
+  theme?: Theme
+  cssStrings: string[]
+  allProperties: FlatProperty[]
+  familyProperties?: FlatProperty[]
+  iconProperties?: FlatProperty[]
+  themeEditingContext?: ThemeEditingContext | null
+  fontCollectionEditingContext?: FontCollectionEditingContext | null
+  iconSetEditingContext?: IconSetEditingContext | null
+}
+
+/**
+ * Renders one property section: its category header and the expandable body.
+ * Resolves the row-level `allProperties` and editing contexts once for the
+ * section so the row map stays a plain iteration.
+ */
+function TreeSection({
+  section,
+  isExpanded,
+  workspace,
+  node,
+  theme,
+  cssStrings,
+  allProperties,
+  familyProperties,
+  iconProperties,
+  themeEditingContext,
+  fontCollectionEditingContext,
+  iconSetEditingContext,
+}: TreeSectionProps) {
+  const isFamilies = section.category === "families"
+  const isIconCategory =
+    !!iconProperties && getIconRowCategory(`icon.${section.category}`) !== null
+
+  const rowAllProperties =
+    isFamilies && familyProperties
+      ? familyProperties
+      : isIconCategory && iconProperties
+        ? iconProperties
+        : allProperties
+  const rowFontCollectionContext = isFamilies
+    ? fontCollectionEditingContext
+    : null
+  const rowIconSetContext = isIconCategory ? iconSetEditingContext : null
+
+  const content =
+    section.category === "css" ? (
+      <CssBlock cssProperties={cssStrings} />
+    ) : (
+      section.properties.map((property) => (
+        <PropertyViewModel
+          key={property.key}
+          property={property}
+          workspace={workspace}
+          node={node}
+          theme={theme}
+          allProperties={rowAllProperties}
+          themeEditingContext={themeEditingContext}
+          fontCollectionEditingContext={rowFontCollectionContext}
+          iconSetEditingContext={rowIconSetContext}
+        />
+      ))
+    )
+
+  return (
+    <Fragment>
+      <CategoryViewModel section={section} />
+      <FramerExpandable isExpanded={isExpanded}>{content}</FramerExpandable>
+    </Fragment>
+  )
+}
+
 const styles = {
   scroller: {
     height: "100%",
@@ -222,6 +330,6 @@ const styles = {
     padding: "0.5rem",
     display: "flex",
     flexDirection: "column" as const,
-    gap: "var(--sdn-gaps-tight)"
+    gap: "var(--sdn-gaps-tight)",
   },
 }

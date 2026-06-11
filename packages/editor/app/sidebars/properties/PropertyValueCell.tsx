@@ -1,11 +1,14 @@
-import { MouseEvent, RefObject } from "react"
+import { MouseEvent, ReactNode, RefObject } from "react"
 import { Board, Instance, Theme, Variant } from "@seldon/core"
 import {
+  Icon,
   LinkValue,
   SwatchValueRow,
+  Text,
   ThemeSwatches,
 } from "@seldon/components/custom-components"
 import { PropertyControl } from "./PropertyControl"
+import { ValueChip } from "./helpers/build-property-row-props"
 import {
   FontCollectionEditingContext,
   IconSetEditingContext,
@@ -20,6 +23,10 @@ interface PropertyValueCellProps {
   node: Variant | Instance | Board
   theme?: Theme
   labelColor?: string
+  /** Dynamic color chip rendered before the value when set. */
+  valueChip?: ValueChip | null
+  /** Unit label (e.g. PX) rendered after the value when set. */
+  unitLabel?: string
   isEditingProperty: boolean
   isThemeAssignment: boolean
   themeForSwatches: Theme | null
@@ -42,6 +49,8 @@ export function PropertyValueCell({
   node,
   theme,
   labelColor,
+  valueChip,
+  unitLabel,
   isEditingProperty,
   isThemeAssignment,
   themeForSwatches,
@@ -98,7 +107,51 @@ export function PropertyValueCell({
     )
   }
 
-  return valueContent
+  return decorateValueContent(valueContent, valueChip, unitLabel, labelColor)
+}
+
+/**
+ * Wraps the value content with the optional dynamic color chip before it and
+ * the optional unit label after it. Dynamic `icon-custom-*` icons cannot
+ * render through the generated row's icon slot, so the chip lives here.
+ */
+function decorateValueContent(
+  valueContent: ReactNode,
+  valueChip: ValueChip | null | undefined,
+  unitLabel: string | undefined,
+  labelColor: string | undefined,
+): ReactNode {
+  if (!valueChip && !unitLabel) {
+    return valueContent
+  }
+
+  return (
+    <>
+      {valueChip && (
+        <Icon
+          icon="icon-custom-color-value"
+          color={valueChip.color}
+          style={{
+            verticalAlign: "middle",
+            marginRight: "0.25rem",
+            ...valueChip.style,
+          }}
+        />
+      )}
+      {valueContent}
+      {unitLabel && (
+        <Text
+          as="span"
+          style={{
+            marginLeft: "0.25rem",
+            ...(labelColor ? { color: labelColor } : {}),
+          }}
+        >
+          {unitLabel}
+        </Text>
+      )}
+    </>
+  )
 }
 
 function stopLinkPropagation(event: MouseEvent): void {

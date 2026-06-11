@@ -56,6 +56,7 @@ export function insertComponentFunction(
   )
 
   let returns = ""
+  let usesSlotTree = false
   if (config.react.returns === "htmlElement") {
     // If the component export config is set to htmlElement, return a switch statement
     returns = generateHtmlElementReturn(
@@ -77,9 +78,14 @@ export function insertComponentFunction(
   } else {
     // If the component has children, convert JSX structure to string
     returns = jsxStructureToString(jsxRoot, component, classNameVarName)
+    usesSlotTree = Boolean(jsxRoot.children && jsxRoot.children.length > 0)
   }
 
-  const propsSpread = generatePropsSpread(component, propNames)
+  // Slot-tree components destructure `children` so callers can replace the
+  // default slot tree by nesting their own children.
+  const propsSpread = generatePropsSpread(component, propNames, {
+    includeChildren: usesSlotTree,
+  })
 
   return transformSource({
     strategy: TransformStrategy.APPEND,

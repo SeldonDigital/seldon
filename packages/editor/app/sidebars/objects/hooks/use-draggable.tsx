@@ -5,8 +5,8 @@ import { useEffect, useRef, useState } from "react"
 import { createRoot } from "react-dom/client"
 import { Board, Instance, Variant } from "@seldon/core"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
-import { NodeRow } from "@seldon/components/custom-components"
-import { IconProps } from "@seldon/components/custom-components"
+import { ItemNodeRow } from "@seldon/components/elements/ItemNodeRow"
+import { IconProps } from "@seldon/components/primitives/Icon"
 import { useNodeIcon } from "./use-node-icon"
 
 /**
@@ -86,9 +86,15 @@ function Preview({ node }: { node: Variant | Instance | Board }) {
   const icon = useNodeIcon(node)
 
   return (
-    <NodeRow
+    <ItemNodeRow
+      buttonIconic={null}
+      icon={null}
       icon2={{ icon: icon as IconProps["icon"] }}
       textLabel={{ children: node.label }}
+      buttonIconic2={null}
+      icon3={null}
+      buttonIconic3={null}
+      icon4={null}
       style={{
         backgroundColor: "rgba(0, 0, 0, 0.8)",
         color: "white",

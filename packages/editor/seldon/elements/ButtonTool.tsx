@@ -60,6 +60,7 @@ export function ButtonTool({
   button3 = sdn.button3,
   icon3 = sdn.icon3,
   textLabel3,
+  children,
   ...props
 }: ButtonToolProps) {
   const buttonToolClassName = combineClassNames("sdn-button-tool", className)
@@ -156,23 +157,33 @@ export function ButtonTool({
 
   return (
     <HTMLButton className={buttonToolClassName} {...props}>
-      {buttonProps !== null && (
-        <Button {...buttonProps}>
-          {icon && iconProps && <Icon {...iconProps} />}
-          {textLabel && textLabelProps && <TextLabel {...textLabelProps} />}
-        </Button>
-      )}
-      {button2Props !== null && (
-        <Button {...button2Props}>
-          {icon2 && icon2Props && <Icon {...icon2Props} />}
-          {textLabel2 && textLabel2Props && <TextLabel {...textLabel2Props} />}
-        </Button>
-      )}
-      {button3Props !== null && (
-        <Button {...button3Props}>
-          {icon3 && icon3Props && <Icon {...icon3Props} />}
-          {textLabel3 && textLabel3Props && <TextLabel {...textLabel3Props} />}
-        </Button>
+      {children !== undefined ? (
+        children
+      ) : (
+        <>
+          {buttonProps !== null && (
+            <Button {...buttonProps}>
+              {icon && iconProps && <Icon {...iconProps} />}
+              {textLabel && textLabelProps && <TextLabel {...textLabelProps} />}
+            </Button>
+          )}
+          {button2Props !== null && (
+            <Button {...button2Props}>
+              {icon2 && icon2Props && <Icon {...icon2Props} />}
+              {textLabel2 && textLabel2Props && (
+                <TextLabel {...textLabel2Props} />
+              )}
+            </Button>
+          )}
+          {button3Props !== null && (
+            <Button {...button3Props}>
+              {icon3 && icon3Props && <Icon {...icon3Props} />}
+              {textLabel3 && textLabel3Props && (
+                <TextLabel {...textLabel3Props} />
+              )}
+            </Button>
+          )}
+        </>
       )}
     </HTMLButton>
   )

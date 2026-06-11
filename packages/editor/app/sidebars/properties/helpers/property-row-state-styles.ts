@@ -4,7 +4,7 @@ import { CSSProperties } from "react"
  * Per-slot state styles for a property row.
  *
  * Each function maps row state (expansion, hover, edit mode, control type,
- * status color) to the inline style of one `InputRow` slot. Generated
+ * status color) to the inline style of one `ItemInputRow` slot. Generated
  * components do not support states yet, so these styles live app-side. When
  * state support lands in the generator, each function is a candidate to move
  * into the generated component as state data.
@@ -104,20 +104,6 @@ export function getValueCellStyle({
   }
 }
 
-/** Unit label (e.g. PX) after the value cell. */
-export function getUnitLabelStyle({
-  showUnit,
-  labelColor,
-}: {
-  showUnit: boolean
-  labelColor: string | undefined
-}): CSSProperties {
-  return {
-    alignSelf: "center",
-    ...(showUnit && labelColor ? { color: labelColor } : {}),
-  }
-}
-
 /** Menu/upload button inside the form control: interactive, hidden, or inert. */
 export function getMenuButtonStyle({
   supportsUpload,
@@ -182,8 +168,8 @@ function resolveMenuIconOpacity({
 
 /**
  * Form control shell around the value cell. Width comes from the generated
- * `.sdn-form-control-iconic--bpko` class, so no width is set here. Position
- * anchors the value-cell edit overlay.
+ * form-control classes, so no width is set here. Position anchors the
+ * value-cell edit overlay.
  */
 export function getFormControlStyle({
   cursor,

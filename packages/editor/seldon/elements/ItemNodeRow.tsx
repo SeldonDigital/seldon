@@ -58,12 +58,10 @@ export function ItemNodeRow({
   icon3 = sdn.icon3,
   buttonIconic3 = sdn.buttonIconic3,
   icon4 = sdn.icon4,
+  children,
   ...props
 }: ItemNodeRowProps) {
-  const itemNodeRowClassName = combineClassNames(
-    "sdn-item-input-row",
-    className,
-  )
+  const itemNodeRowClassName = combineClassNames("sdn-item-node-row", className)
   const buttonIconicProps =
     buttonIconic === null
       ? null
@@ -143,16 +141,22 @@ export function ItemNodeRow({
 
   return (
     <HTMLLi className={itemNodeRowClassName} {...props}>
-      {buttonIconicProps !== null && (
-        <ButtonIconic {...buttonIconicProps} icon={iconProps} />
-      )}
-      {icon2Props !== null && <Icon {...icon2Props} />}
-      {textLabel && textLabelProps && <TextLabel {...textLabelProps} />}
-      {buttonIconic2Props !== null && (
-        <ButtonIconic {...buttonIconic2Props} icon={icon3Props} />
-      )}
-      {buttonIconic3Props !== null && (
-        <ButtonIconic {...buttonIconic3Props} icon={icon4Props} />
+      {children !== undefined ? (
+        children
+      ) : (
+        <>
+          {buttonIconicProps !== null && (
+            <ButtonIconic {...buttonIconicProps} icon={iconProps} />
+          )}
+          {icon2Props !== null && <Icon {...icon2Props} />}
+          {textLabel && textLabelProps && <TextLabel {...textLabelProps} />}
+          {buttonIconic2Props !== null && (
+            <ButtonIconic {...buttonIconic2Props} icon={icon3Props} />
+          )}
+          {buttonIconic3Props !== null && (
+            <ButtonIconic {...buttonIconic3Props} icon={icon4Props} />
+          )}
+        </>
       )}
     </HTMLLi>
   )
@@ -163,7 +167,7 @@ export function ItemNodeRow({
 //
 const sdn: ItemNodeRowProps = {
   buttonIconic: {
-    className: "sdn-button-iconic sdn-button-iconic--o4dt",
+    className: "sdn-button-iconic sdn-button-iconic--eyvy",
   },
   icon: {
     icon: "material-keyboardArrowDown",
@@ -177,14 +181,14 @@ const sdn: ItemNodeRowProps = {
     className: "sdn-text-label sdn-text-label--duwf",
   },
   buttonIconic2: {
-    className: "sdn-button-iconic sdn-button-iconic--o4dt",
+    className: "sdn-button-iconic sdn-button-iconic--eyvy",
   },
   icon3: {
     icon: "material-add",
     className: "sdn-icon sdn-icon--v2wj",
   },
   buttonIconic3: {
-    className: "sdn-button-iconic sdn-button-iconic--o4dt",
+    className: "sdn-button-iconic sdn-button-iconic--eyvy",
   },
   icon4: {
     icon: "material-moreHoriz",

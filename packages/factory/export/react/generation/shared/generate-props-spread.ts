@@ -7,10 +7,15 @@ import { getConditionalPropPaths } from "./get-conditional-prop-paths"
  * Root-level props and non-conditional children get a default value sourced
  * from `sdn`. Conditional children (inline extras) are destructured without a
  * default, so they only render when the caller passes them.
+ *
+ * When `options.includeChildren` is set, `children` is destructured without a
+ * default so the component body can render caller-provided children in place
+ * of its default slot tree.
  */
 export function generatePropsSpread(
   component: ComponentToExport,
   propNames: Map<string, string>,
+  options?: { includeChildren?: boolean },
 ): string {
   const props = [`className = ""`]
   const used = new Set<string>(["className"])
@@ -43,6 +48,11 @@ export function generatePropsSpread(
 
   if (Array.isArray(component.tree.children)) {
     component.tree.children.forEach(traverse)
+  }
+
+  if (options?.includeChildren && !used.has("children")) {
+    used.add("children")
+    props.push("children")
   }
 
   props.push("...props")

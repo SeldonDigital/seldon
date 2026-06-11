@@ -38,6 +38,7 @@ export interface ButtonIconicProps extends ButtonHTMLAttributes<HTMLButtonElemen
 export function ButtonIconic({
   className = "",
   icon = sdn.icon,
+  children,
   ...props
 }: ButtonIconicProps) {
   const buttonIconicClassName = combineClassNames(
@@ -55,7 +56,11 @@ export function ButtonIconic({
 
   return (
     <HTMLButton className={buttonIconicClassName} {...props}>
-      {iconProps !== null && <Icon {...iconProps} />}
+      {children !== undefined ? (
+        children
+      ) : (
+        <>{iconProps !== null && <Icon {...iconProps} />}</>
+      )}
     </HTMLButton>
   )
 }

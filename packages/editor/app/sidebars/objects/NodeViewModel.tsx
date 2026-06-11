@@ -8,12 +8,14 @@ import { useSidebarRowStyling } from "../../tracking/hooks/use-sidebar-row-styli
 import { IndentationLevel } from "../hooks/use-indentation"
 import { useRowNode } from "./hooks/use-row-node"
 import { getNode } from "@lib/workspace/workspace-accessors"
-import { NodeRow as SeldonNodeRow, SidebarRow } from "@seldon/components/custom-components"
+import { SidebarRow } from "@seldon/components/custom-components"
+import { ItemNodeRow } from "@seldon/components/elements/ItemNodeRow"
+import { IconProps } from "@seldon/components/primitives/Icon"
 import { TextLabelProps } from "@seldon/components/primitives/TextLabel"
 import { SidebarTracking } from "../../tracking/SidebarTracking"
 import { Combobox } from "../properties/controls/combobox/Combobox"
 import { FramerExpandable } from "../shared/FramerExpandable"
-import { RowActionsMenu } from "../shared/RowActionsMenu"
+import { useRowActionsMenu } from "../shared/use-row-actions-menu"
 
 const rowWrapperStyle: CSSProperties = {
   width: "100%",
@@ -22,7 +24,7 @@ const rowWrapperStyle: CSSProperties = {
 
 const NODE_SELECTION_KIND = "node"
 
-interface RowNodeProps {
+interface NodeViewModelProps {
   nodeId: string
   /**
    * Node-id path of this copy, from the variant-root down to this row, joined
@@ -37,7 +39,7 @@ interface RowNodeProps {
   onSelect?: () => void
 }
 
-const RowNodeInner = memo(function RowNodeInner({
+const NodeViewModelInner = memo(function NodeViewModelInner({
   node,
   rootId,
   show,
@@ -84,6 +86,9 @@ const RowNodeInner = memo(function RowNodeInner({
   const hoverStyle = useRowHighlightStyle(node.id, isSelected, rootId)
   const combinedRowStyle = { ...hoverStyle, ...rowStyle }
 
+  const actionsMenu = useRowActionsMenu(resetActions, { color: iconColor })
+  const hasActions = resetActions.length > 0
+
   const { handleCanvasTrackingEnter, handleCanvasTrackingLeave } =
     useSidebarCanvasTracking(node)
 
@@ -128,16 +133,11 @@ const RowNodeInner = memo(function RowNodeInner({
       ? properties.display?.value
       : undefined
 
-  const actionsSlot =
-    resetActions.length > 0 ? (
-      <RowActionsMenu items={resetActions} color={iconColor} />
-    ) : undefined
-
   const childrenSection = hasChildren ? (
     <FramerExpandable isExpanded={isExpanded}>
       <IndentationLevel>
         {children.map((childNodeId) => (
-          <RowNode
+          <NodeViewModel
             key={childNodeId}
             nodeId={childNodeId}
             rootId={`${rootId}/${childNodeId}`}
@@ -150,6 +150,8 @@ const RowNodeInner = memo(function RowNodeInner({
     </FramerExpandable>
   ) : null
 
+  // Node rows never use dynamic icon-custom-* ids, so the casts to the
+  // generated IconProps at the row boundary are safe.
   return (
     <>
       <SidebarRow
@@ -167,12 +169,15 @@ const RowNodeInner = memo(function RowNodeInner({
           onCanvasTrackingEnter={handleCanvasTrackingEnter}
           onCanvasTrackingLeave={handleCanvasTrackingLeave}
         >
-          <SeldonNodeRow
+          <ItemNodeRow
             buttonIconic={buttonIconic}
-            icon={coloredIcon}
-            icon2={coloredIcon2}
+            icon={coloredIcon as IconProps}
+            icon2={coloredIcon2 as IconProps}
             textLabel={textLabel}
-            actionsSlot={actionsSlot}
+            buttonIconic2={null}
+            icon3={null}
+            buttonIconic3={hasActions ? actionsMenu.buttonIconic : null}
+            icon4={hasActions ? actionsMenu.icon : null}
             onClick={onClick}
             onDoubleClick={onDoubleClick}
             onMouseEnter={handleCanvasTrackingEnter}
@@ -187,13 +192,14 @@ const RowNodeInner = memo(function RowNodeInner({
           />
         </SidebarTracking>
       </SidebarRow>
+      {actionsMenu.menu}
 
       {childrenSection}
     </>
   )
 })
 
-export const RowNode = memo(function RowNode({
+export const NodeViewModel = memo(function NodeViewModel({
   nodeId,
   rootId,
   node: nodeProp,
@@ -201,14 +207,14 @@ export const RowNode = memo(function RowNode({
   parentIsSelected = false,
   disableReordering = false,
   onSelect,
-}: RowNodeProps) {
+}: NodeViewModelProps) {
   const { workspace } = useWorkspace({ usePreview: false })
   const node = nodeProp ?? getNode(workspace, nodeId)
 
   if (!node) return null
 
   return (
-    <RowNodeInner
+    <NodeViewModelInner
       node={node}
       rootId={rootId}
       show={show}

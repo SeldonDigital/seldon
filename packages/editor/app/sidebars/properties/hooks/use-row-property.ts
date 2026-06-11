@@ -20,6 +20,7 @@ import { useObjectProperties } from "@lib/workspace/hooks/use-object-properties"
 import { useDebugMode } from "@lib/hooks/use-debug-mode"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { useImageUploadPanel } from "@app/panels/hooks/use-upload-image-panel"
+import { FormControlIconicProps } from "@seldon/components/elements/FormControlIconic"
 import { buildPropertyOptions } from "../helpers/build-property-options"
 import {
   FRAME_REF_ATTR,
@@ -67,10 +68,11 @@ export interface RowPropertyProps {
 }
 
 /**
- * ViewModel for a property row. Owns the edit/hover state, display derivation,
- * interaction commands, and the assembled props for `InputRow`,
- * `PropertyValueCell`, and the reset menu, so `RowProperty` stays a binding
- * shell. Child rows are returned as plain props for the shell to recurse on.
+ * ViewModel hook for a property row. Owns the edit/hover state, display
+ * derivation, interaction commands, and the assembled props for the generated
+ * `ItemInputRow`, `PropertyValueCell`, and the reset menu, so
+ * `PropertyViewModel` stays a binding shell. Child rows are returned as plain
+ * props for the shell to recurse on.
  */
 export function useRowProperty({
   property,
@@ -372,14 +374,19 @@ export function useRowProperty({
 
   const rowCursor = hasChildren || property.controlType ? "pointer" : "default"
 
+  // Suppress the form control's internal icon/input/button slots: the row's
+  // child slots (value icon, value cell, menu button) supply the content.
   const frameProps = {
+    icon: null,
+    input: null,
+    button: null,
     [FRAME_REF_ATTR]: FRAME_REF_VALUE,
     ref: setFrameRef,
     onClick: handleFrameRefClick,
     onMouseEnter: handleFrameMouseEnter,
     onMouseLeave: handleFrameMouseLeave,
     style: getFormControlStyle({ cursor: rowCursor, hoverStyle }),
-  } as React.HTMLAttributes<HTMLDivElement> & {
+  } as FormControlIconicProps & {
     ref?: (el: HTMLDivElement | null) => void
   }
 
@@ -391,6 +398,8 @@ export function useRowProperty({
     node,
     theme,
     labelColor,
+    valueChip: listItemProps.valueChip,
+    unitLabel: listItemProps.unitLabel,
     isEditingProperty,
     isThemeAssignment,
     themeForSwatches,

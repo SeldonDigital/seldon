@@ -1,19 +1,20 @@
 import { MouseEvent } from "react"
 import { useRowHover } from "../objects/hooks/use-row-hover"
 import { useRowCategory } from "./hooks/use-row-category"
-import { ItemSectionRow as SeldonSection } from "@seldon/components/elements/ItemSectionRow"
+import { ItemSectionRow } from "@seldon/components/elements/ItemSectionRow"
 import { PropertySection } from "./helpers/get-property-sections"
 import { ThemePropertySection } from "./helpers/get-theme-property-sections"
 
-interface RowCategoryProps {
+interface CategoryViewModelProps {
   section: PropertySection | ThemePropertySection
 }
 
 /**
- * Renders a category header in the properties sidebar (e.g., "Attributes", "Layout").
- * Categories don't use the tracking system, so useRowHover is used for hover styling.
+ * View-model for a category header in the properties sidebar (e.g.,
+ * "Attributes", "Layout"). Categories don't use the tracking system, so
+ * useRowHover is used for hover styling.
  */
-export function RowCategory({ section }: RowCategoryProps) {
+export function CategoryViewModel({ section }: CategoryViewModelProps) {
   // Core category data: label, icon, button, toggle handler
   const { label, icon, buttonIconic, onToggle } = useRowCategory(section)
 
@@ -32,7 +33,7 @@ export function RowCategory({ section }: RowCategoryProps) {
   const handleMouseLeave = () => setIsHovered(false)
 
   return (
-    <SeldonSection
+    <ItemSectionRow
       buttonIconic={buttonIconic}
       icon={{ icon }}
       textLabel={{ children: label }}

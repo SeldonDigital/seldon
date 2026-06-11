@@ -48,6 +48,7 @@ export function FormControlIconic({
   input = sdn.input,
   button,
   icon2 = sdn.icon2,
+  children,
   ...props
 }: FormControlIconicProps) {
   const formControlIconicClassName = combineClassNames(
@@ -92,9 +93,17 @@ export function FormControlIconic({
 
   return (
     <Frame className={formControlIconicClassName} {...props}>
-      {iconProps !== null && <Icon {...iconProps} />}
-      {inputProps !== null && <Input {...inputProps} />}
-      {button && buttonProps && <Button {...buttonProps} icon={icon2Props} />}
+      {children !== undefined ? (
+        children
+      ) : (
+        <>
+          {iconProps !== null && <Icon {...iconProps} />}
+          {inputProps !== null && <Input {...inputProps} />}
+          {button && buttonProps && (
+            <Button {...buttonProps} icon={icon2Props} />
+          )}
+        </>
+      )}
     </Frame>
   )
 }
