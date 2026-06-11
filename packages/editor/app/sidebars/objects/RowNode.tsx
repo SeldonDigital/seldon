@@ -8,9 +8,8 @@ import { useSidebarRowStyling } from "../../tracking/hooks/use-sidebar-row-styli
 import { IndentationLevel } from "../hooks/use-indentation"
 import { useRowNode } from "./hooks/use-row-node"
 import { getNode } from "@lib/workspace/workspace-accessors"
-import { SidebarRow } from "@seldon/components/custom-components"
-import { ListItemTreeNode as SeldonNode } from "@seldon/components/elements/ListItemTreeNode"
-import { LabelProps } from "@seldon/components/primitives/Label"
+import { NodeRow as SeldonNodeRow, SidebarRow } from "@seldon/components/custom-components"
+import { TextLabelProps } from "@seldon/components/primitives/TextLabel"
 import { SidebarTracking } from "../../tracking/SidebarTracking"
 import { Combobox } from "../properties/controls/combobox/Combobox"
 import { FramerExpandable } from "../shared/FramerExpandable"
@@ -57,7 +56,6 @@ const RowNodeInner = memo(function RowNodeInner({
     label: baseLabel,
     buttonIconic,
     icon,
-    buttonIconic2,
     icon2,
     resetActions,
     onClick,
@@ -113,14 +111,14 @@ const RowNodeInner = memo(function RowNodeInner({
     baseLabel.children
   )
 
-  const label: LabelProps = {
+  const textLabel: TextLabelProps = {
     ...baseLabel,
     children: labelChildren,
     style: {
       ...baseLabel.style,
       ...(labelColor ? { color: labelColor } : {}),
     },
-  } as LabelProps
+  } as TextLabelProps
 
   const dataTestId = `object-panel-node-${node.id}`
   const dataNodeId = node.id
@@ -169,12 +167,11 @@ const RowNodeInner = memo(function RowNodeInner({
           onCanvasTrackingEnter={handleCanvasTrackingEnter}
           onCanvasTrackingLeave={handleCanvasTrackingLeave}
         >
-          <SeldonNode
+          <SeldonNodeRow
             buttonIconic={buttonIconic}
             icon={coloredIcon}
-            buttonIconic2={buttonIconic2}
             icon2={coloredIcon2}
-            label={label}
+            textLabel={textLabel}
             actionsSlot={actionsSlot}
             onClick={onClick}
             onDoubleClick={onDoubleClick}

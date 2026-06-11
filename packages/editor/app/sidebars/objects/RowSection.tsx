@@ -1,7 +1,7 @@
 import { MouseEvent } from "react"
 import { useRowHover } from "./hooks/use-row-hover"
 import { useRowSection } from "./hooks/use-row-section"
-import { ListItemTreeSection as SeldonSection } from "@seldon/components/elements/ListItemTreeSection"
+import { ItemSectionRow as SeldonSection } from "@seldon/components/elements/ItemSectionRow"
 import { BoardSection } from "../helpers/get-board-sections"
 
 interface RowSectionProps {
@@ -13,7 +13,7 @@ interface RowSectionProps {
  * Sections use useRowHover for hover styling (not the tracking system).
  */
 export function RowSection({ section }: RowSectionProps) {
-  const { label, icon, buttonIconic1, buttonIconic2, onToggle } =
+  const { label, icon, buttonIconic, buttonIconic2, onToggle } =
     useRowSection(section)
   const { setIsHovered, style: hoverStyle } = useRowHover(false, 25)
 
@@ -29,9 +29,9 @@ export function RowSection({ section }: RowSectionProps) {
 
   return (
     <SeldonSection
-      label={{ children: label }}
+      buttonIconic={buttonIconic}
       icon={{ icon }}
-      buttonIconic1={buttonIconic1}
+      textLabel={{ children: label }}
       buttonIconic2={buttonIconic2}
       style={hoverStyle}
       onMouseEnter={handleMouseEnter}

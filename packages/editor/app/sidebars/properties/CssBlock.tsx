@@ -13,7 +13,7 @@ interface CssBlockProps {
   cssProperties: string[]
 }
 
-const TOGGLE_BUTTON_CLASS = "sdn-button-iconic sdn-button-iconic--0urv"
+const TOGGLE_BUTTON_CLASS = "sdn-button-iconic"
 
 /**
  * Displays CSS properties as syntax-highlighted code.

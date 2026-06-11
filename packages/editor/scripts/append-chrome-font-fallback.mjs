@@ -20,7 +20,11 @@ const FALLBACK = '"IBM Plex Sans"'
 
 const editorRoot = join(dirname(fileURLToPath(import.meta.url)), "..")
 
-const targets = ["seldon/styles.css", "seldon/chrome/styles.css"]
+const targets = [
+  "seldon/styles.css",
+  "seldon/styles-old.css",
+  "seldon/chrome/styles.css",
+]
 
 let changedFiles = 0
 

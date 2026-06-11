@@ -1,16 +1,16 @@
 /*****
  *
- * This code was generated using Seldon (https://seldon.app)
+ * This code was generated using Seldon (https://github.com/SeldonDigital/seldon)
  *
- * Licensed under the Terms of Use: https://seldon.digital/terms-of-service
+ * License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md
  * Do not redistribute or sublicense without permission.
- *
- * You may not use this software, or any derivative works of it,
- * in whole or in part, for the purposes of training, fine-tuning,
- * or otherwise improving (directly or indirectly) any machine learning
- * or artificial intelligence system.
- *
+ * 
+ * You may not use this software, or any derivative works of it, in whole or in part, 
+ * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly) 
+ * any machine learning or artificial intelligence system without written permission.
+ * 
  *****/
+ 
 import { ButtonHTMLAttributes } from "react"
 import { HTMLButton } from "../native-react/HTML.Button"
 import { Icon, IconProps } from "../primitives/Icon"
@@ -63,6 +63,6 @@ export function ButtonIconic({
 const sdn: ButtonIconicProps = {
   icon: {
     icon: "__default__",
-    className: "sdn-icon sdn-icon--n5nb",
+    className: "sdn-icon sdn-icon--kuax",
   },
 }

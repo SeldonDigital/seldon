@@ -148,12 +148,7 @@ export function useRowBoard(
   }
 
   // Button and icon creation: toggle button, component icon, add variant button
-  const {
-    createToggleButton,
-    createToggleIcon,
-    createStaticButton2,
-    createIcon2,
-  } = useRowButton({
+  const { createToggleButton, createToggleIcon, createIcon2 } = useRowButton({
     isExpanded: isExpandedState,
     isSelected: boardIsActive,
     hasChildren: hasVariantChildren,
@@ -178,9 +173,8 @@ export function useRowBoard(
     return "seldon-component"
   }
   const icon2 = createIcon2(getBoardIcon() as IconProps["icon"])
-  const buttonIconic2 = createStaticButton2()
 
-  // Add variant button (third icon)
+  // Add variant button (mid action after the label)
   // Shown when board is active (selected or contains selected node)
   const createAddVariantButton = () => {
     if (!boardIsActive) {
@@ -191,7 +185,6 @@ export function useRowBoard(
       icon: { icon: "material-add" as const } as IconProps,
       button: {
         onClick: onAddVariant,
-        className: "sdn-button-iconic sdn-button-iconic--0urv",
         style: {
           position: "relative" as const,
           zIndex: 10,
@@ -200,7 +193,7 @@ export function useRowBoard(
     }
   }
 
-  const { icon: icon3, button: buttonIconic3 } = createAddVariantButton()
+  const { icon: icon3, button: buttonIconic2 } = createAddVariantButton()
 
   // Label: colors applied in component via tracking system
   const label = {
@@ -211,9 +204,8 @@ export function useRowBoard(
     label,
     buttonIconic,
     icon,
-    buttonIconic2,
     icon2,
-    buttonIconic3,
+    buttonIconic2,
     icon3,
     onClick,
     isExpanded: isExpandedState,

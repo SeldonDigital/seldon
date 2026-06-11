@@ -36,6 +36,9 @@ export interface IconProps extends Omit<
     | "material-add"
     | "material-more"
     | "material-chevronDown"
+    | "material-keyboardArrowDown"
+    | "material-keyboardArrowRight"
+    | "material-moreHoriz"
     | "material-code"
     | "material-delete"
     | "material-robot"
@@ -179,6 +182,9 @@ const iconMap = {
   "material-add": Icons.IconMaterialAdd,
   "material-more": Icons.IconMaterialMore,
   "material-chevronDown": Icons.IconMaterialChevronDown,
+  "material-keyboardArrowDown": Icons.IconMaterialKeyboardArrowDown,
+  "material-keyboardArrowRight": Icons.IconMaterialKeyboardArrowRight,
+  "material-moreHoriz": Icons.IconMaterialMoreHoriz,
   "material-code": Icons.IconMaterialCode,
   "material-delete": Icons.IconMaterialDelete,
   "material-robot": Icons.IconMaterialRobot,

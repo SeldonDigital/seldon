@@ -34,7 +34,7 @@ import {
   hasNode,
 } from "@lib/workspace/workspace-accessors"
 import { IconProps } from "@seldon/components/primitives/Icon"
-import { LabelProps } from "@seldon/components/primitives/Label"
+import { TextLabelProps } from "@seldon/components/primitives/TextLabel"
 import { useDraggable } from "./use-draggable"
 import { useEditState } from "./use-edit-state"
 import { useExpansion, useIsExpanded } from "./use-expansion"
@@ -137,13 +137,12 @@ export function useRowNode(
     onSelectCallback: onSelect,
   })
 
-  const { createToggleButton, createToggleIcon, createStaticButton2 } =
-    useRowButton({
-      isExpanded: isExpandedState,
-      isSelected,
-      hasChildren,
-      onToggle,
-    })
+  const { createToggleButton, createToggleIcon } = useRowButton({
+    isExpanded: isExpandedState,
+    isSelected,
+    hasChildren,
+    onToggle,
+  })
 
   function findOwningVariantId(): string | null {
     let current: EntryNode | null = node
@@ -227,7 +226,6 @@ export function useRowNode(
   const icon2: IconProps = {
     icon: getComponentTypeIcon(),
   }
-  const buttonIconic2 = createStaticButton2()
 
   const isResettableType =
     workspaceService.isDefaultVariant(node) ||
@@ -343,10 +341,9 @@ export function useRowNode(
   }
 
   return {
-    label: label as LabelProps,
+    label: label as TextLabelProps,
     buttonIconic,
     icon,
-    buttonIconic2,
     icon2,
     resetActions,
     onClick,

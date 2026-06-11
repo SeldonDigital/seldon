@@ -1,29 +1,28 @@
 import { CSSProperties, MouseEvent } from "react"
 import { IconProps } from "@seldon/components/primitives/Icon"
-import { LabelProps } from "@seldon/components/primitives/Label"
+import { TextLabelProps } from "@seldon/components/primitives/TextLabel"
 import { FlatProperty } from "./properties-data"
+import {
+  getDisclosureButtonStyle,
+  getDisclosureIconStyle,
+  getMenuButtonStyle,
+  getMenuIconStyle,
+  getNameLabelStyle,
+  getUnitLabelStyle,
+  getValueCellStyle,
+  getValueIconStyle,
+} from "./property-row-state-styles"
 import {
   getPropertyIcon2Color,
   isMenuOrComboControl,
 } from "./property-value-display"
 
-const TOGGLE_BUTTON_CLASS = "sdn-button-iconic sdn-button-iconic--0urv"
 const CHEVRON_ICON = "material-chevronRight" as const
 
 /** Data attribute used to detect clicks on the value-cell frame control. */
 export const FRAME_REF_ATTR = "data-frame-ref"
 export const FRAME_REF_VALUE = "true"
 export const FRAME_REF_SELECTOR = `[${FRAME_REF_ATTR}="${FRAME_REF_VALUE}"]`
-
-function buildIconStyle(
-  labelColor: string | undefined,
-  opacity?: number,
-): CSSProperties {
-  return {
-    ...(labelColor ? { color: labelColor } : {}),
-    ...(opacity !== undefined ? { opacity } : {}),
-  }
-}
 
 interface BuildPropertyRowPropsInput {
   property: FlatProperty
@@ -47,9 +46,10 @@ interface BuildPropertyRowPropsInput {
 }
 
 /**
- * Builds the prop objects passed to `ListItemTreeInput` for a property row.
- * Returns plain data only. The shell injects the value-cell node into
- * `label2.children`, so this stays free of JSX.
+ * Builds the prop objects passed to `InputRow` for a property row.
+ * Returns plain data only. Slot styles come from the state-style functions in
+ * `property-row-state-styles.ts`. The shell injects the value-cell node into
+ * `textLabel2.children`, so this stays free of JSX.
  */
 export function buildPropertyRowProps({
   property,
@@ -73,109 +73,70 @@ export function buildPropertyRowProps({
 }: BuildPropertyRowPropsInput) {
   const isMenuOrCombo = isMenuOrComboControl(property)
   const isCalculated = property.key.startsWith("calculated.")
-  const showUploadOrMenu = supportsUpload || isMenuOrCombo
 
   const buttonIconic = {
     onClick: handleToggle,
     "aria-expanded": isExpanded,
     "aria-label": isExpanded ? "Collapse" : "Expand",
-    className: TOGGLE_BUTTON_CLASS,
-    style: {
-      position: "relative" as const,
-      zIndex: 10,
-    },
+    style: getDisclosureButtonStyle(),
   }
 
   const icon = {
     icon: CHEVRON_ICON,
-    style: {
-      transition: "transform 0.2s ease",
-      transform: isExpanded ? "rotate(90deg)" : "rotate(0deg)",
-      ...buildIconStyle(labelColor, hasChildren ? 1 : 0),
-    },
+    style: getDisclosureIconStyle({ isExpanded, hasChildren, labelColor }),
   }
 
-  const label = {
+  const textLabel = {
     children: labelText,
     htmlElement: "label" as const,
-    style: {
-      ...labelStyle,
-      cursor: hasChildren ? "pointer" : "default",
-      userSelect: "none" as const,
-      WebkitUserSelect: "none" as const,
-    },
+    style: getNameLabelStyle({ labelStyle, hasChildren }),
   }
 
-  const buttonIconic2 = isThemeAssignment
-    ? { style: { display: "none" as const, pointerEvents: "none" as const } }
-    : { style: { pointerEvents: "none" as const } }
-
-  const icon2 =
-    isThemeAssignment || property.isLookParent
-      ? {
-          icon: iconId as IconProps["icon"],
-          style: { display: "none" as const },
-        }
+  const valueIconHidden = isThemeAssignment || Boolean(property.isLookParent)
+  const icon2 = {
+    icon: (valueIconHidden || !swatchChipColor
+      ? iconId
+      : "icon-custom-color-value") as IconProps["icon"],
+    ...(valueIconHidden
+      ? {}
       : {
-          icon: (swatchChipColor
-            ? "icon-custom-color-value"
-            : iconId) as IconProps["icon"],
           color: getPropertyIcon2Color(property, swatchChipColor, labelColor),
-          style: buildIconStyle(labelColor),
-        }
+        }),
+    style: getValueIconStyle({ hidden: valueIconHidden, labelColor }),
+  }
 
-  const label2 = {
+  const textLabel2 = {
     htmlElement: "label" as const,
     onClick: handleLabel2Click,
-    style: {
-      flex: 1,
-      flexShrink: 1,
-      width: 0,
-      ...(labelColor && !isEditingProperty ? { color: labelColor } : {}),
-      cursor: hasChildren || property.controlType ? "pointer" : "default",
-      pointerEvents: "auto",
-      display: "block",
-      minWidth: 0,
-      whiteSpace: "nowrap",
-      overflow: "hidden",
-      textOverflow: "ellipsis",
-      userSelect: "none",
-      WebkitUserSelect: "none",
-    },
-  } as LabelProps
+    style: getValueCellStyle({
+      labelColor,
+      isEditingProperty,
+      isInteractive: hasChildren || Boolean(property.controlType),
+    }),
+  } as TextLabelProps
 
   // Show the unit whenever the active value is an exact numeric value, including
   // picker controls that hold a literal dimension (a margin set to 24px renders
   // as "24" with a "PX" label).
   const showUnit = Boolean(unit && isNumericValue)
-  const label3 = {
+  const textLabel3 = {
     children: showUnit ? unit : "",
     htmlElement: "label" as const,
-    style: {
-      alignSelf: "center" as const,
-      ...(showUnit && labelColor ? { color: labelColor } : {}),
-    },
+    style: getUnitLabelStyle({ showUnit, labelColor }),
   }
 
-  const buttonIconic3 = {
+  const buttonIconic2 = {
     onClick: supportsUpload
       ? handleUploadClick
       : isMenuOrCombo
         ? handleMenuClick
         : undefined,
-    style: supportsUpload
-      ? { pointerEvents: "auto" as const }
-      : isCalculated
-        ? { display: "none" as const }
-        : isMenuOrCombo
-          ? { pointerEvents: "auto" as const }
-          : { pointerEvents: "none" as const },
+    style: getMenuButtonStyle({ supportsUpload, isCalculated, isMenuOrCombo }),
     "aria-label": supportsUpload
       ? "Upload image"
       : isMenuOrCombo
         ? "Open menu"
         : undefined,
-    className: showUploadOrMenu ? TOGGLE_BUTTON_CLASS : undefined,
   }
 
   const icon3 = {
@@ -183,25 +144,23 @@ export function buildPropertyRowProps({
       ? "material-upload"
       : "material-chevronDown") as IconProps["icon"],
     color: labelColor || undefined,
-    style: buildIconStyle(labelColor, resolveIcon3Opacity()),
-  }
-
-  function resolveIcon3Opacity(): number {
-    if (isCalculated) return 0 // Hide chevron for calculated properties
-    if (supportsUpload) return 1 // Always show upload icon for image properties
-    if (!property.controlType) return 0 // Read-only rows with no control
-    return showMenuIcon ? 0 : 1
+    style: getMenuIconStyle({
+      isCalculated,
+      supportsUpload,
+      hasControl: Boolean(property.controlType),
+      showMenuIcon,
+      labelColor,
+    }),
   }
 
   return {
     buttonIconic,
     icon,
-    label,
-    buttonIconic2,
+    textLabel,
     icon2,
-    label2,
-    label3,
-    buttonIconic3,
+    textLabel2,
+    textLabel3,
+    buttonIconic2,
     icon3,
   }
 }

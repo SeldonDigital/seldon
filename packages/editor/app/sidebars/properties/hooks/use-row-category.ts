@@ -46,8 +46,8 @@ export function useRowCategory(
     ? "material-unfoldLess"
     : "material-unfoldMore"
 
-  // Button: toggle button with accessibility attributes
-  const buttonIconic2 = {
+  // Disclosure button: leading toggle with accessibility attributes
+  const buttonIconic = {
     onClick: onToggle,
     "aria-expanded": isExpanded,
     "aria-label": isExpanded ? "Collapse" : "Expand",
@@ -56,7 +56,7 @@ export function useRowCategory(
   return {
     label: section.label,
     icon: iconId,
-    buttonIconic2,
+    buttonIconic,
     onToggle,
   }
 }

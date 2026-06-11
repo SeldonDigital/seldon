@@ -48,13 +48,6 @@ export function useRowButton({
     }
   }
 
-  const createStaticButton2 = () => ({
-    style: {
-      position: "relative" as const,
-      zIndex: 10,
-    },
-  })
-
   const createIcon2 = (iconId: IconProps["icon"]) => ({
     icon: iconId,
     ...(isSelected
@@ -65,7 +58,6 @@ export function useRowButton({
   return {
     createToggleButton,
     createToggleIcon,
-    createStaticButton2,
     createIcon2,
   }
 }

@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react"
 import { createRoot } from "react-dom/client"
 import { Board, Instance, Variant } from "@seldon/core"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
-import { ListItemTree } from "@seldon/components/elements/ListItemTree"
+import { NodeRow } from "@seldon/components/custom-components"
 import { IconProps } from "@seldon/components/primitives/Icon"
 import { useNodeIcon } from "./use-node-icon"
 
@@ -86,12 +86,9 @@ function Preview({ node }: { node: Variant | Instance | Board }) {
   const icon = useNodeIcon(node)
 
   return (
-    <ListItemTree
-      icon={{ icon: icon as IconProps["icon"] }}
-      label={{ children: node.label }}
-      button={{ style: { display: "none" } }}
-      button2={{ style: { display: "none" } }}
-      button3={{ style: { display: "none" } }}
+    <NodeRow
+      icon2={{ icon: icon as IconProps["icon"] }}
+      textLabel={{ children: node.label }}
       style={{
         backgroundColor: "rgba(0, 0, 0, 0.8)",
         color: "white",

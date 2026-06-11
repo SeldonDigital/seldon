@@ -1,0 +1,67 @@
+/*
+ * Compatibility overrides while styles-old.css and the new generated
+ * styles.css coexist. The new sheet redefines base classes (.sdn-button,
+ * .sdn-icon, .sdn-text, .sdn-input) and loads last, so legacy components
+ * that still depend on the old base look are re-asserted here with
+ * higher-specificity selectors.
+ *
+ * Delete this file together with styles-old.css once the remaining legacy
+ * components (BarTabs, BarTabsProject, InputEditor) are regenerated.
+ */
+
+/* BarTabs / BarTabsProject keep the legacy neutral button look */
+.sdn-bar-tabs .sdn-button,
+.sdn-bar-tabs-project .sdn-button {
+  background-color: hsl(0 0% 15%);
+  gap: 0.5rem;
+  padding: 0.437rem 0.765rem 0.437rem 0.656rem;
+  border: var(--hairline) solid hsl(0 0% 32%);
+}
+
+.sdn-bar-tabs-project .sdn-button.sdn-button--9f85 {
+  padding: 0.375rem 0.656rem 0.375rem 0.562rem;
+}
+
+.sdn-bar-tabs .sdn-icon.sdn-icon--n5nb {
+  font-size: 0.7rem;
+  color: hsl(203 0% 98%);
+}
+
+.sdn-bar-tabs-project .sdn-icon.sdn-icon--fvvj {
+  font-size: 0.6rem;
+  color: hsl(203 0% 98%);
+}
+
+/* Tab labels render through the new TextLabel; keep the legacy tab look */
+.sdn-bar-tabs .sdn-text-label.sdn-label--u587 {
+  color: hsl(203 0% 98%);
+  font-family: IBM Plex Sans;
+  font-size: 0.7rem;
+}
+
+.sdn-bar-tabs-project .sdn-text-label.sdn-label--3dyv {
+  color: hsl(203 0% 98%);
+  font-family: IBM Plex Sans;
+  font-size: 0.6rem;
+}
+
+.sdn-bar-tabs-project .sdn-text.sdn-text--flvt {
+  color: hsl(0 0% 96%);
+  font-family: IBM Plex Sans;
+  font-weight: 500;
+  font-size: 0.75rem;
+  white-space: nowrap;
+}
+
+/* InputEditor keeps its transparent compact input look */
+.sdn-input-editor.sdn-input {
+  background-color: transparent;
+  color: hsl(0 0% 96%);
+  font-family: IBM Plex Sans;
+  font-weight: 400;
+  font-size: 0.75rem;
+  line-height: 1.25;
+  padding: 0.25rem;
+  border-radius: 0.25rem;
+  border: var(--hairline) solid hsl(0 0% 23.5%);
+}

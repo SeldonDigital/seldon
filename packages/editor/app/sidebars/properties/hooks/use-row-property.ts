@@ -27,6 +27,10 @@ import {
   FRAME_REF_VALUE,
   buildPropertyRowProps,
 } from "../helpers/build-property-row-props"
+import {
+  getFormControlStyle,
+  getRowStyle,
+} from "../helpers/property-row-state-styles"
 import { getDisplayValue } from "../helpers/display-value-utils"
 import {
   FontCollectionEditingContext,
@@ -64,7 +68,7 @@ export interface RowPropertyProps {
 
 /**
  * ViewModel for a property row. Owns the edit/hover state, display derivation,
- * interaction commands, and the assembled props for `ListItemTreeInput`,
+ * interaction commands, and the assembled props for `InputRow`,
  * `PropertyValueCell`, and the reset menu, so `RowProperty` stays a binding
  * shell. Child rows are returned as plain props for the shell to recurse on.
  */
@@ -387,26 +391,12 @@ export function useRowProperty({
     onClick: handleFrameRefClick,
     onMouseEnter: handleFrameMouseEnter,
     onMouseLeave: handleFrameMouseLeave,
-    style: {
-      width: "100%",
-      position: "relative",
-      cursor: rowCursor,
-      userSelect: "none",
-      WebkitUserSelect: "none",
-      ...hoverStyle,
-    },
+    style: getFormControlStyle({ cursor: rowCursor, hoverStyle }),
   } as React.HTMLAttributes<HTMLDivElement> & {
     ref?: (el: HTMLDivElement | null) => void
   }
 
-  const rowStyleProp: React.CSSProperties = {
-    ...rowStyle,
-    width: "100%",
-    justifyContent: "flex-start",
-    cursor: hasChildren ? "pointer" : "default",
-    userSelect: "none",
-    WebkitUserSelect: "none",
-  }
+  const rowStyleProp = getRowStyle({ rowStyle, hasChildren })
 
   const valueCellProps = {
     property,

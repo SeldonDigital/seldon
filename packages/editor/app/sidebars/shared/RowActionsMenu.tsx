@@ -1,7 +1,7 @@
 import { DropdownMenu, MenuAlign, MenuEntry } from "@lib/menus"
 import { Icon } from "@seldon/components/primitives/Icon"
 
-const TRIGGER_CLASS = "sdn-button-iconic sdn-button-iconic--0urv"
+const TRIGGER_CLASS = "sdn-button-iconic sdn-button-iconic--eyvy"
 
 interface RowActionsMenuProps {
   items: MenuEntry[]
@@ -48,7 +48,7 @@ export function RowActionsMenu({
         >
           <Icon
             icon="seldon-more"
-            className="sdn-icon sdn-icon--1aaz"
+            className="sdn-icon sdn-icon--v2wj"
             style={{
               opacity: hasActions ? 1 : 0,
               ...(color ? { color } : {}),

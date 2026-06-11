@@ -27,10 +27,9 @@ import { RowActionsMenu } from "../shared/RowActionsMenu"
 import { useResourceEntryRow } from "./hooks/use-resource-entry-row"
 import { useRowClick } from "./hooks/use-row-click"
 import { SelectionKind } from "@lib/workspace/selection-target"
-import { SidebarRow } from "@seldon/components/custom-components"
-import { ListItemTreeNode as SeldonNode } from "@seldon/components/elements/ListItemTreeNode"
+import { NodeRow, SidebarRow } from "@seldon/components/custom-components"
 import { IconProps } from "@seldon/components/primitives/Icon"
-import { LabelProps } from "@seldon/components/primitives/Label"
+import { TextLabelProps } from "@seldon/components/primitives/TextLabel"
 import { Combobox } from "../properties/controls/combobox/Combobox"
 
 const rowWrapperStyle: CSSProperties = {
@@ -158,10 +157,10 @@ export function RowResourceEntry({
       entry.label
     )
 
-  const label = {
+  const textLabel = {
     children: labelChildren,
     ...(labelColor ? { style: { color: labelColor } } : {}),
-  } as unknown as LabelProps
+  } as unknown as TextLabelProps
 
   return (
     <SidebarRow
@@ -169,12 +168,11 @@ export function RowResourceEntry({
       selectionId={entryId}
       selectionKind={config.selectionKind}
     >
-      <SeldonNode
+      <NodeRow
         buttonIconic={{}}
         icon={{ style: { color: "transparent" } }}
-        buttonIconic2={{}}
         icon2={icon2}
-        label={label}
+        textLabel={textLabel}
         actionsSlot={actionsSlot}
         onClick={onClick}
         onDoubleClick={onDoubleClick}

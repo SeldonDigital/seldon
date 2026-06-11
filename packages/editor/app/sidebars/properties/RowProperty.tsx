@@ -1,5 +1,5 @@
 import { RowPropertyProps, useRowProperty } from "./hooks/use-row-property"
-import { ListItemTreeInput } from "@seldon/components/elements/ListItemTreeInput"
+import { InputRow } from "@seldon/components/custom-components"
 import { FramerExpandable } from "../shared/FramerExpandable"
 import { RowActionsMenu } from "../shared/RowActionsMenu"
 import { PropertyValueCell } from "./PropertyValueCell"
@@ -7,22 +7,22 @@ import { PropertyValueCell } from "./PropertyValueCell"
 export function RowProperty(props: RowPropertyProps) {
   const view = useRowProperty(props)
 
-  // `LabelProps.children` is typed as `string`, but the row renders the value
-  // cell node here; the cast matches the existing row props convention.
+  // `TextLabelProps.children` is typed as `string`, but the row renders the
+  // value cell node here; the cast matches the existing row props convention.
   const valueCell = (
     <PropertyValueCell {...view.valueCellProps} />
   ) as unknown as string
   const listItemProps = {
     ...view.listItemProps,
-    label2: {
-      ...view.listItemProps.label2,
+    textLabel2: {
+      ...view.listItemProps.textLabel2,
       children: valueCell,
     },
   }
 
   return (
     <>
-      <ListItemTreeInput
+      <InputRow
         {...listItemProps}
         onClick={view.onRowClick}
         actionsSlot={
@@ -31,7 +31,7 @@ export function RowProperty(props: RowPropertyProps) {
             color={view.labelColor as string | undefined}
           />
         }
-        frame={view.frameProps}
+        formControlIconic={view.frameProps}
         style={view.rowStyleProp}
       />
       {view.hasChildren ? (

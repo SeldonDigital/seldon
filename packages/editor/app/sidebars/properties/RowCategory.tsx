@@ -1,7 +1,7 @@
 import { MouseEvent } from "react"
 import { useRowHover } from "../objects/hooks/use-row-hover"
 import { useRowCategory } from "./hooks/use-row-category"
-import { ListItemTreeSection as SeldonSection } from "@seldon/components/elements/ListItemTreeSection"
+import { ItemSectionRow as SeldonSection } from "@seldon/components/elements/ItemSectionRow"
 import { PropertySection } from "./helpers/get-property-sections"
 import { ThemePropertySection } from "./helpers/get-theme-property-sections"
 
@@ -15,7 +15,7 @@ interface RowCategoryProps {
  */
 export function RowCategory({ section }: RowCategoryProps) {
   // Core category data: label, icon, button, toggle handler
-  const { label, icon, buttonIconic2, onToggle } = useRowCategory(section)
+  const { label, icon, buttonIconic, onToggle } = useRowCategory(section)
 
   // Styling: hover effects (categories use higher opacity for visibility)
   const { setIsHovered, style: hoverStyle } = useRowHover(false, 25)
@@ -33,9 +33,9 @@ export function RowCategory({ section }: RowCategoryProps) {
 
   return (
     <SeldonSection
-      label={{ children: label }}
+      buttonIconic={buttonIconic}
       icon={{ icon }}
-      buttonIconic2={buttonIconic2}
+      textLabel={{ children: label }}
       style={hoverStyle}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}

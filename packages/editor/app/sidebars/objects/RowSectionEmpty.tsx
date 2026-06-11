@@ -1,5 +1,5 @@
 import { CSSProperties } from "react"
-import { ListItemTreeNode as SeldonNode } from "@seldon/components/elements/ListItemTreeNode"
+import { NodeRow } from "@seldon/components/custom-components"
 import {
   relativeFullWidthStyle,
   sidebarNoSelectionTextStyle,
@@ -22,8 +22,8 @@ export function RowSectionEmpty({ label }: { label: string }) {
   return (
     <div style={rowWrapperStyle}>
       <div style={relativeFullWidthStyle}>
-        <SeldonNode
-          label={{ children: label, style: emptyLabelStyle }}
+        <NodeRow
+          textLabel={{ children: label, style: emptyLabelStyle }}
           aria-disabled
           data-testid="objects-sidebar-empty-section"
         />

@@ -6,9 +6,8 @@ import { useSidebarRowStyling } from "../../tracking/hooks/use-sidebar-row-styli
 import { IndentationLevel } from "../hooks/use-indentation"
 import { useRowBoard } from "./hooks/use-row-board"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
-import { SidebarRow } from "@seldon/components/custom-components"
-import { ListItemTreeNode as SeldonNode } from "@seldon/components/elements/ListItemTreeNode"
-import { LabelProps } from "@seldon/components/primitives/Label"
+import { NodeRow, SidebarRow } from "@seldon/components/custom-components"
+import { TextLabelProps } from "@seldon/components/primitives/TextLabel"
 import { relativeFullWidthStyle } from "../helpers/sidebar-styles"
 import { FramerExpandable } from "../shared/FramerExpandable"
 import { RowNode } from "./RowNode"
@@ -42,9 +41,8 @@ export const RowBoard = memo(function RowBoard({
     label: baseLabel,
     buttonIconic,
     icon,
-    buttonIconic2,
     icon2,
-    buttonIconic3,
+    buttonIconic2,
     icon3,
     onClick,
     isExpanded,
@@ -101,10 +99,9 @@ export const RowBoard = memo(function RowBoard({
   const coloredIcon = applyTrackingColor(icon, "color")
   const coloredIcon2 = applyTrackingColor(icon2, "color")
   const coloredIcon3 = applyTrackingColor(icon3, "color")
-  const coloredButtonIconic3 = buttonIconic3
 
   // Label: apply tracking color if provided
-  const label: LabelProps = {
+  const textLabel: TextLabelProps = {
     ...baseLabel,
     style: {
       ...("style" in baseLabel && baseLabel.style ? baseLabel.style : {}),
@@ -149,13 +146,12 @@ export const RowBoard = memo(function RowBoard({
         selectionId={boardKey}
         selectionKind={BOARD_SELECTION_KIND}
       >
-        <SeldonNode
+        <NodeRow
           buttonIconic={buttonIconic}
           icon={coloredIcon}
-          buttonIconic2={buttonIconic2}
           icon2={coloredIcon2}
-          label={label}
-          buttonIconic3={coloredButtonIconic3}
+          textLabel={textLabel}
+          buttonIconic2={buttonIconic2}
           icon3={coloredIcon3}
           onClick={onClick}
           onMouseEnter={handleRowMouseEnter}
