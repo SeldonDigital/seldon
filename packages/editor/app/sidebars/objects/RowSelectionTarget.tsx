@@ -38,6 +38,7 @@ export function RowSelectionTarget({
   return (
     <div
       ref={ref}
+      tabIndex={-1}
       style={style}
       data-selection-id={selectionId}
       data-selection-kind={selectionKind}

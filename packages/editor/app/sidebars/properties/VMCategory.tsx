@@ -24,7 +24,6 @@ export function VMCategory({ section, actions }: VMCategoryProps) {
   const actionsMenu = useRowActionsMenu(actions ?? [], {
     "aria-label": "Section actions",
   })
-  const hasActions = (actions?.length ?? 0) > 0
 
   return (
     <Fragment>
@@ -32,14 +31,14 @@ export function VMCategory({ section, actions }: VMCategoryProps) {
         buttonIconic={buttonIconic}
         icon={{ icon }}
         textLabel={{ children: label }}
-        buttonIconic3={hasActions ? actionsMenu.buttonIconic : null}
-        icon3={hasActions ? actionsMenu.icon : null}
+        buttonIconic3={actionsMenu.buttonIconic}
+        icon3={actionsMenu.icon}
         style={hoverStyle}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         onClick={handleClick}
       />
-      {hasActions ? actionsMenu.menu : null}
+      {actionsMenu.menu}
     </Fragment>
   )
 }

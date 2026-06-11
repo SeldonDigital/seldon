@@ -79,8 +79,10 @@ const VMNodeInner = memo(function VMNodeInner({
   const hoverStyle = useRowHighlightStyle(node.id, isSelected, rootId)
   const combinedRowStyle = { ...hoverStyle, ...rowStyle }
 
-  const actionsMenu = useRowActionsMenu(resetActions, { color: iconColor })
-  const hasActions = resetActions.length > 0
+  const actionsMenu = useRowActionsMenu(resetActions, {
+    color: iconColor,
+    focusTargetRef: ref,
+  })
 
   const { handleCanvasTrackingEnter, handleCanvasTrackingLeave } =
     useSidebarCanvasTracking(node)
@@ -153,10 +155,10 @@ const VMNodeInner = memo(function VMNodeInner({
             icon={coloredIcon as IconProps}
             icon2={coloredIcon2 as IconProps}
             textLabel={textLabel}
-            buttonIconic2={hasActions ? actionsMenu.buttonIconic : null}
-            icon3={hasActions ? actionsMenu.icon : null}
-            buttonIconic3={hasActions ? actionsMenu.buttonIconic : null}
-            icon4={hasActions ? actionsMenu.icon : null}
+            buttonIconic2={actionsMenu.buttonIconic}
+            icon3={actionsMenu.icon}
+            buttonIconic3={actionsMenu.buttonIconic}
+            icon4={actionsMenu.icon}
             onClick={onClick}
             onDoubleClick={onDoubleClick}
             onMouseEnter={handleCanvasTrackingEnter}

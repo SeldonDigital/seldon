@@ -15,6 +15,14 @@ import { useMenuPosition } from "./use-menu-position"
 
 const HIGHLIGHT_BACKGROUND = "hsl(0 0% 100% / 0.1)"
 
+function focusReturnTarget(element: HTMLElement | null | undefined): void {
+  if (!element?.isConnected) return
+  if (element.tabIndex < 0 && !element.hasAttribute("tabindex")) {
+    element.tabIndex = -1
+  }
+  element.focus({ preventScroll: true })
+}
+
 interface MenuProps {
   open: boolean
   anchorRef: RefObject<HTMLElement | null>
@@ -22,6 +30,8 @@ interface MenuProps {
   items: MenuEntry[]
   align?: MenuAlign
   minWidth?: string
+  /** When set, menu actions restore focus here instead of the trigger. */
+  focusTargetRef?: RefObject<HTMLElement | null>
 }
 
 /**
@@ -36,11 +46,13 @@ export function Menu({
   items,
   align = "start",
   minWidth = "180px",
+  focusTargetRef,
 }: MenuProps) {
   const position = useMenuPosition({ open, anchorRef, align })
   const menuRef = useRef<HTMLDivElement>(null)
   const itemRefs = useRef<(HTMLButtonElement | null)[]>([])
   const [activeIndex, setActiveIndex] = useState(-1)
+  const closedBySelectRef = useRef(false)
 
   const enabledIndexes = useMemo(
     () =>
@@ -70,11 +82,11 @@ export function Menu({
     }
   }, [open, activeIndex])
 
-  // Restore focus to the trigger when the menu closes.
+  // Restore focus to the trigger when the menu closes without a selection.
   const wasOpen = useRef(false)
   useEffect(() => {
-    if (wasOpen.current && !open) {
-      anchorRef.current?.focus?.()
+    if (wasOpen.current && !open && !closedBySelectRef.current) {
+      focusReturnTarget(anchorRef.current)
     }
     wasOpen.current = open
   }, [open, anchorRef])
@@ -133,11 +145,22 @@ export function Menu({
     }
   }
 
-  // Close before running the action to avoid focus thrashing during unmount.
+  // Close before running the action, then move focus off the trigger when the
+  // caller supplies a row target (for example after reset removes menu actions).
   const handleSelect = (item: MenuItem) => {
     if (item.disabled) return
+    closedBySelectRef.current = true
     onClose()
     item.onSelect?.()
+    requestAnimationFrame(() => {
+      const focusTarget = focusTargetRef?.current
+      if (focusTarget?.isConnected) {
+        focusReturnTarget(focusTarget)
+      } else if (anchorRef.current?.isConnected) {
+        focusReturnTarget(anchorRef.current)
+      }
+      closedBySelectRef.current = false
+    })
   }
 
   const containerStyle: CSSProperties = {

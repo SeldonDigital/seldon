@@ -7,13 +7,13 @@ import { PropertyValueCell } from "./PropertyValueCell"
 
 /**
  * View-model for a property row, bound to the generated `ItemInputRow`. The
- * trailing slot always renders so every row keeps the same footprint; the
- * actions-menu hook hides the icon when there is nothing to reset.
+ * trailing actions slot always binds hook props so row footprint stays stable.
  */
 export function VMProperty(props: RowPropertyProps) {
   const view = useRowProperty(props)
   const actionsMenu = useRowActionsMenu(view.resetActions, {
     color: view.labelColor as string | undefined,
+    focusTargetRef: view.focusTargetRef,
   })
 
   // `TextLabelProps.children` is typed as `string`, but the row renders the
