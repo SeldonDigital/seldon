@@ -40,14 +40,14 @@ const sdn: NodeRowProps = {
     className: "sdn-text-label sdn-text-label--duwf",
   },
   buttonIconic2: {
-    className: "sdn-button-iconic sdn-button-iconic--eyvy",
+    className: "sdn-button-iconic sdn-button-iconic--o4dt",
   },
   icon3: {
     icon: "material-add",
     className: "sdn-icon sdn-icon--v2wj",
   },
   buttonIconic3: {
-    className: "sdn-button-iconic sdn-button-iconic--eyvy",
+    className: "sdn-button-iconic sdn-button-iconic--o4dt",
   },
   icon4: {
     icon: "material-moreHoriz",
@@ -73,7 +73,7 @@ export function NodeRow({
   actionsSlot,
   ...props
 }: NodeRowProps) {
-  const nodeRowClassName = combineClassNames("sdn-item-node-row", className)
+  const nodeRowClassName = combineClassNames("sdn-item-input-row", className)
   const buttonIconicProps = {
     ...sdn.buttonIconic,
     ...buttonIconic,

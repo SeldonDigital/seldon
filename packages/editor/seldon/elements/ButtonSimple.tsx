@@ -18,7 +18,7 @@ import { combineClassNames } from "../utils/class-name"
 
 export interface ButtonSimpleProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string
-  textLabel?: TextLabelProps
+  textLabel?: TextLabelProps | null
 }
 
 /*****
@@ -44,18 +44,21 @@ export function ButtonSimple({
     "sdn-button-simple",
     className,
   )
-  const textLabelProps = {
-    ...sdn.textLabel,
-    ...textLabel,
-    className: combineClassNames(
-      sdn.textLabel?.className,
-      textLabel?.className,
-    ),
-  }
+  const textLabelProps =
+    textLabel === null
+      ? null
+      : {
+          ...sdn.textLabel,
+          ...textLabel,
+          className: combineClassNames(
+            sdn.textLabel?.className,
+            textLabel?.className,
+          ),
+        }
 
   return (
     <HTMLButton className={buttonSimpleClassName} {...props}>
-      {textLabel && <TextLabel {...textLabelProps} />}
+      {textLabel && textLabelProps && <TextLabel {...textLabelProps} />}
     </HTMLButton>
   )
 }

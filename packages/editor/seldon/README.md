@@ -24,6 +24,7 @@ Seldon components follow a consistent pattern that makes them easy to use and cu
 - **Props interface**: Defines all available props with TypeScript types
 - **Function signature**: Shows which props have defaults and which are conditional
 - **Conditional rendering**: Some elements only render when explicitly provided
+- **Slot suppression**: Pass `null` for any element prop to remove that element
 - **Style integration**: Built-in CSS classes with customization options
 
 ## Component Structure
@@ -57,16 +58,17 @@ Every Seldon component can be used in these ways:
 
 Components have two types of elements:
 
-#### Always-Rendered Elements
-These elements have default values and always appear in the component:
+#### Default Elements
+These elements have default values and render by default. Pass `null` to remove one:
 
 ```tsx
-// These elements always render because they have defaults in the function signature
+// These elements render because they have defaults in the function signature
 <CardProduct />  // textblockDetails and buttonBar will render with default content
 
 <CardProductInline 
-  // Only textblockDetails and buttonBar have defaults and always render
+  // Only textblockDetails and buttonBar have defaults and render by default
   tagline={{ children: "Custom tagline" }}  // Will render with custom content
+  buttonBar={null}                          // Suppressed: will not render
 />
 ```
 
@@ -84,7 +86,7 @@ These elements only appear when you explicitly provide them with meaningful cont
 />
 ```
 
-**Key Rule**: Elements without defaults in the function signature render only when you pass their prop. The render guard is a truthy check (`{prop && ...}`), so even an empty object (`button3={{}}`) renders the element with its default content. To skip an element, omit its prop entirely.
+**Key Rule**: Elements without defaults in the function signature render only when you pass their prop. The render guard is a truthy check, so even an empty object (`button3={{}}`) renders the element with its default content. To skip an element, omit its prop entirely. Elements with defaults render unless you pass `null` for their prop.
 
 ## Function Signatures Guide
 
@@ -92,25 +94,25 @@ The function signature tells you which props are conditional:
 
 ```tsx
 export function CardProductInline({
-  textblockDetails = sdn.textblockDetails,  // ✅ Always rendered (has default)
+  textblockDetails = sdn.textblockDetails,  // ✅ Rendered by default (pass null to remove)
   tagline,                                  // ⚠️  Conditional (no default)
   button2,                                  // ⚠️  Conditional (no default)
-  buttonBar = sdn.buttonBar,                // ✅ Always rendered (has default)
+  buttonBar = sdn.buttonBar,                // ✅ Rendered by default (pass null to remove)
   button4,                                  // ⚠️  Conditional (no default)
   // ...
 }: CardProductInlineProps)
 
 export function CardProduct({
-  textblockDetails = sdn.textblockDetails,  // ✅ Always rendered (has default) 
+  textblockDetails = sdn.textblockDetails,  // ✅ Rendered by default (pass null to remove) 
   tagline,                                  // ⚠️  Conditional (no default)
   titleProps,                               // ⚠️  Conditional (no default)
   description,                              // ⚠️  Conditional (no default)
-  buttonBar = sdn.buttonBar,                // ✅ Always rendered (has default)
+  buttonBar = sdn.buttonBar,                // ✅ Rendered by default (pass null to remove)
   // ...
 }: CardProductProps)
 ```
 
-**Key Pattern**: Elements with `= sdn.something` have defaults and always render. Elements without defaults are conditional.
+**Key Pattern**: Elements with `= sdn.something` have defaults and render unless you pass `null`. Elements without defaults are conditional and render only when you pass their prop.
 
 ## Common Patterns
 
@@ -411,6 +413,7 @@ Always provide meaningful labels and ARIA attributes:
 ### Elements Not Rendering
 - Check if the element has a default value in the function signature (look for `= sdn.something`)
 - Elements without defaults render only when you pass their prop; omit the prop to skip the element
+- Elements with defaults render unless you pass `null` for their prop
 - **Note**: the render guard is a truthy check, so even `tagline={{}}` renders the element with its default content
 - For buttons, make sure to provide the button prop itself, plus icon and label if needed
 - Verify that required nested props are included (e.g., `children` for labels, `icon` for icons)

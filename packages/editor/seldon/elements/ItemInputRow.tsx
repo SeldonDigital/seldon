@@ -25,17 +25,17 @@ import { combineClassNames } from "../utils/class-name"
 
 export interface ItemInputRowProps extends LiHTMLAttributes<HTMLLIElement> {
   className?: string
-  buttonIconic?: ButtonIconicProps
-  icon?: IconProps
-  textLabel?: TextLabelProps
-  formControlIconic?: FormControlIconicProps
-  icon2?: IconProps
-  input?: InputProps
-  textLabel2?: TextLabelProps
-  buttonIconic2?: ButtonIconicProps
-  icon3?: IconProps
-  buttonIconic3?: ButtonIconicProps
-  icon4?: IconProps
+  buttonIconic?: ButtonIconicProps | null
+  icon?: IconProps | null
+  textLabel?: TextLabelProps | null
+  formControlIconic?: FormControlIconicProps | null
+  icon2?: IconProps | null
+  input?: InputProps | null
+  textLabel2?: TextLabelProps | null
+  buttonIconic2?: ButtonIconicProps | null
+  icon3?: IconProps | null
+  buttonIconic3?: ButtonIconicProps | null
+  icon4?: IconProps | null
 }
 
 /*****
@@ -76,93 +76,132 @@ export function ItemInputRow({
     "sdn-item-input-row",
     className,
   )
-  const buttonIconicProps = {
-    ...sdn.buttonIconic,
-    ...buttonIconic,
-    className: combineClassNames(
-      sdn.buttonIconic?.className,
-      buttonIconic?.className,
-    ),
-  }
-  const iconProps = {
-    ...sdn.icon,
-    ...icon,
-    className: combineClassNames(sdn.icon?.className, icon?.className),
-  }
-  const textLabelProps = {
-    ...sdn.textLabel,
-    ...textLabel,
-    className: combineClassNames(
-      sdn.textLabel?.className,
-      textLabel?.className,
-    ),
-  }
-  const formControlIconicProps = {
-    ...sdn.formControlIconic,
-    ...formControlIconic,
-    className: combineClassNames(
-      sdn.formControlIconic?.className,
-      formControlIconic?.className,
-    ),
-  }
-  const icon2Props = {
-    ...sdn.icon2,
-    ...icon2,
-    className: combineClassNames(sdn.icon2?.className, icon2?.className),
-  }
-  const inputProps = {
-    ...sdn.input,
-    ...input,
-    className: combineClassNames(sdn.input?.className, input?.className),
-  }
-  const textLabel2Props = {
-    ...sdn.textLabel2,
-    ...textLabel2,
-    className: combineClassNames(
-      sdn.textLabel2?.className,
-      textLabel2?.className,
-    ),
-  }
-  const buttonIconic2Props = {
-    ...sdn.buttonIconic2,
-    ...buttonIconic2,
-    className: combineClassNames(
-      sdn.buttonIconic2?.className,
-      buttonIconic2?.className,
-    ),
-  }
-  const icon3Props = {
-    ...sdn.icon3,
-    ...icon3,
-    className: combineClassNames(sdn.icon3?.className, icon3?.className),
-  }
-  const buttonIconic3Props = {
-    ...sdn.buttonIconic3,
-    ...buttonIconic3,
-    className: combineClassNames(
-      sdn.buttonIconic3?.className,
-      buttonIconic3?.className,
-    ),
-  }
-  const icon4Props = {
-    ...sdn.icon4,
-    ...icon4,
-    className: combineClassNames(sdn.icon4?.className, icon4?.className),
-  }
+  const buttonIconicProps =
+    buttonIconic === null
+      ? null
+      : {
+          ...sdn.buttonIconic,
+          ...buttonIconic,
+          className: combineClassNames(
+            sdn.buttonIconic?.className,
+            buttonIconic?.className,
+          ),
+        }
+  const iconProps =
+    icon === null
+      ? null
+      : {
+          ...sdn.icon,
+          ...icon,
+          className: combineClassNames(sdn.icon?.className, icon?.className),
+        }
+  const textLabelProps =
+    textLabel === null
+      ? null
+      : {
+          ...sdn.textLabel,
+          ...textLabel,
+          className: combineClassNames(
+            sdn.textLabel?.className,
+            textLabel?.className,
+          ),
+        }
+  const formControlIconicProps =
+    formControlIconic === null
+      ? null
+      : {
+          ...sdn.formControlIconic,
+          ...formControlIconic,
+          className: combineClassNames(
+            sdn.formControlIconic?.className,
+            formControlIconic?.className,
+          ),
+        }
+  const icon2Props =
+    icon2 === null
+      ? null
+      : {
+          ...sdn.icon2,
+          ...icon2,
+          className: combineClassNames(sdn.icon2?.className, icon2?.className),
+        }
+  const inputProps =
+    input === null
+      ? null
+      : {
+          ...sdn.input,
+          ...input,
+          className: combineClassNames(sdn.input?.className, input?.className),
+        }
+  const textLabel2Props =
+    textLabel2 === null
+      ? null
+      : {
+          ...sdn.textLabel2,
+          ...textLabel2,
+          className: combineClassNames(
+            sdn.textLabel2?.className,
+            textLabel2?.className,
+          ),
+        }
+  const buttonIconic2Props =
+    buttonIconic2 === null
+      ? null
+      : {
+          ...sdn.buttonIconic2,
+          ...buttonIconic2,
+          className: combineClassNames(
+            sdn.buttonIconic2?.className,
+            buttonIconic2?.className,
+          ),
+        }
+  const icon3Props =
+    icon3 === null
+      ? null
+      : {
+          ...sdn.icon3,
+          ...icon3,
+          className: combineClassNames(sdn.icon3?.className, icon3?.className),
+        }
+  const buttonIconic3Props =
+    buttonIconic3 === null
+      ? null
+      : {
+          ...sdn.buttonIconic3,
+          ...buttonIconic3,
+          className: combineClassNames(
+            sdn.buttonIconic3?.className,
+            buttonIconic3?.className,
+          ),
+        }
+  const icon4Props =
+    icon4 === null
+      ? null
+      : {
+          ...sdn.icon4,
+          ...icon4,
+          className: combineClassNames(sdn.icon4?.className, icon4?.className),
+        }
 
   return (
     <HTMLLi className={itemInputRowClassName} {...props}>
-      <ButtonIconic {...buttonIconicProps} icon={iconProps} />
-      {textLabel && <TextLabel {...textLabelProps} />}
-      <FormControlIconic {...formControlIconicProps}>
-        {icon2 && <Icon {...icon2Props} />}
-        {input && <Input {...inputProps} />}
-        {textLabel2 && <TextLabel {...textLabel2Props} />}
-        {buttonIconic2 && (
-          <ButtonIconic {...buttonIconic2Props} icon={icon3Props} />
-        )}
-      </FormControlIconic>
-      <ButtonIconic {...buttonIconic3Props} icon={icon4Props} />
+      {buttonIconicProps !== null && (
+        <ButtonIconic {...buttonIconicProps} icon={iconProps} />
+      )}
+      {textLabel && textLabelProps && <TextLabel {...textLabelProps} />}
+      {formControlIconicProps !== null && (
+        <FormControlIconic {...formControlIconicProps}>
+          {icon2 && icon2Props && <Icon {...icon2Props} />}
+          {input && inputProps && <Input {...inputProps} />}
+          {textLabel2 && textLabel2Props && <TextLabel {...textLabel2Props} />}
+          {buttonIconic2 && buttonIconic2Props && (
+            <ButtonIconic {...buttonIconic2Props} icon={icon3Props} />
+          )}
+        </FormControlIconic>
+      )}
+      {buttonIconic3Props !== null && (
+        <ButtonIconic {...buttonIconic3Props} icon={icon4Props} />
+      )}
     </HTMLLi>
   )
 }
@@ -203,7 +242,7 @@ const sdn: ItemInputRowProps = {
     className: "sdn-icon sdn-icon--v2wj",
   },
   buttonIconic3: {
-    className: "sdn-button-iconic sdn-button-iconic--eyvy",
+    className: "sdn-button-iconic sdn-button-iconic--o4dt",
   },
   icon4: {
     icon: "seldon-more",

@@ -243,8 +243,7 @@ html {
 
 html,
 body {
-  font-family:
-    system-ui,
+  font-family: system-ui,
     -apple-system,
     "Segoe UI",
     Roboto,
@@ -252,7 +251,7 @@ body {
     Cantarell,
     "Open Sans",
     "Helvetica Neue",
-    sans-serif;
+    sans-serif, "IBM Plex Sans";
 }
 
 :root {
@@ -473,25 +472,7 @@ body {
   align-self: stretch;
   height: fit-content;
   flex-shrink: 0;
-  border-radius: 0.25rem;
-}
-
-.sdn-item-node-row {
-  background-color: var(--sdn-seldon-dark-swatch-primary);
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  gap: 0.25rem;
-  margin-top: 0.25rem;
-  margin-bottom: 0.25rem;
-  padding-top: 0.25rem;
-  padding-right: 0.5rem;
-  padding-bottom: 0.25rem;
-  padding-left: 0.5rem;
-  align-self: stretch;
-  height: fit-content;
-  flex-shrink: 0;
+  margin: 0;
   border-radius: 0.25rem;
 }
 
@@ -502,8 +483,6 @@ body {
   align-items: center;
   justify-content: center;
   gap: 0.25rem;
-  margin-top: 0.25rem;
-  margin-bottom: 0.25rem;
   padding-top: 0.25rem;
   padding-right: 0.5rem;
   padding-bottom: 0.25rem;
@@ -511,6 +490,7 @@ body {
   align-self: stretch;
   height: fit-content;
   flex-shrink: 0;
+  margin: 0;
   border-radius: 0.25rem;
 }
 
@@ -621,14 +601,14 @@ body {
   border: 0.125rem solid hsl(0 0% 15%);
 }
 
-.sdn-button-iconic--eyvy {
-  background-color: var(--sdn-seldon-dark-swatch-primary);
-  border: var(--hairline) solid hsl(0 0% 47%);
-}
-
 .sdn-button-iconic--o4dt {
   background-color: var(--sdn-seldon-dark-swatch-primary);
   border: var(--hairline) solid hsl(0 0% 15%);
+}
+
+.sdn-button-iconic--uhqw {
+  background-color: var(--sdn-seldon-dark-swatch-tint-1);
+  border: var(--hairline) solid hsl(0 0% 47%);
 }
 
 .sdn-form-control-iconic--bpko {
@@ -638,7 +618,7 @@ body {
   padding-left: 0.5rem;
   width: 60%;
   border-radius: 0.25rem;
-  border: var(--hairline) solid hsl(0 0% 31%);
+  border: var(--hairline) solid hsl(0 0% 15%);
 }
 
 .sdn-frame--12v9 {

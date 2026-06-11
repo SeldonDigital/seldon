@@ -67,7 +67,7 @@ const sdn: InputRowProps = {
     className: "sdn-icon sdn-icon--v2wj",
   },
   buttonIconic3: {
-    className: "sdn-button-iconic sdn-button-iconic--eyvy",
+    className: "sdn-button-iconic sdn-button-iconic--o4dt",
   },
   icon4: {
     icon: "seldon-more",

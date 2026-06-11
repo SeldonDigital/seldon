@@ -5,7 +5,8 @@ import { ComponentToExport, JSONTreeNode } from "../../../types"
  *
  * Every node in the tree becomes an optional prop on the component interface,
  * named by the component's prop name map and typed by the node's interface
- * name. Names are deduplicated, so a node only appears once.
+ * name. Slots accept null to suppress rendering. Names are deduplicated, so a
+ * node only appears once.
  */
 export function generateChildrenProps(
   component: ComponentToExport,
@@ -17,7 +18,7 @@ export function generateChildrenProps(
   function traverse(node: JSONTreeNode) {
     const propName = propNames.get(node.dataBinding.path)
     if (propName && !added.has(propName)) {
-      content += `${propName}?: ${node.dataBinding.interfaceName}\n`
+      content += `${propName}?: ${node.dataBinding.interfaceName} | null\n`
       added.add(propName)
     }
 

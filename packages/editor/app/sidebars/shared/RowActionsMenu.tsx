@@ -1,7 +1,7 @@
 import { DropdownMenu, MenuAlign, MenuEntry } from "@lib/menus"
 import { Icon } from "@seldon/components/custom-components"
 
-const TRIGGER_CLASS = "sdn-button-iconic sdn-button-iconic--eyvy"
+const TRIGGER_CLASS = "sdn-button-iconic sdn-button-iconic--o4dt"
 
 interface RowActionsMenuProps {
   items: MenuEntry[]

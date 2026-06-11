@@ -20,15 +20,15 @@ import { combineClassNames } from "../utils/class-name"
 
 export interface ButtonToolProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string
-  button?: ButtonProps
-  icon?: IconProps
-  textLabel?: TextLabelProps
-  button2?: ButtonProps
-  icon2?: IconProps
-  textLabel2?: TextLabelProps
-  button3?: ButtonProps
-  icon3?: IconProps
-  textLabel3?: TextLabelProps
+  button?: ButtonProps | null
+  icon?: IconProps | null
+  textLabel?: TextLabelProps | null
+  button2?: ButtonProps | null
+  icon2?: IconProps | null
+  textLabel2?: TextLabelProps | null
+  button3?: ButtonProps | null
+  icon3?: IconProps | null
+  textLabel3?: TextLabelProps | null
 }
 
 /*****
@@ -63,75 +63,117 @@ export function ButtonTool({
   ...props
 }: ButtonToolProps) {
   const buttonToolClassName = combineClassNames("sdn-button-tool", className)
-  const buttonProps = {
-    ...sdn.button,
-    ...button,
-    className: combineClassNames(sdn.button?.className, button?.className),
-  }
-  const iconProps = {
-    ...sdn.icon,
-    ...icon,
-    className: combineClassNames(sdn.icon?.className, icon?.className),
-  }
-  const textLabelProps = {
-    ...sdn.textLabel,
-    ...textLabel,
-    className: combineClassNames(
-      sdn.textLabel?.className,
-      textLabel?.className,
-    ),
-  }
-  const button2Props = {
-    ...sdn.button2,
-    ...button2,
-    className: combineClassNames(sdn.button2?.className, button2?.className),
-  }
-  const icon2Props = {
-    ...sdn.icon2,
-    ...icon2,
-    className: combineClassNames(sdn.icon2?.className, icon2?.className),
-  }
-  const textLabel2Props = {
-    ...sdn.textLabel2,
-    ...textLabel2,
-    className: combineClassNames(
-      sdn.textLabel2?.className,
-      textLabel2?.className,
-    ),
-  }
-  const button3Props = {
-    ...sdn.button3,
-    ...button3,
-    className: combineClassNames(sdn.button3?.className, button3?.className),
-  }
-  const icon3Props = {
-    ...sdn.icon3,
-    ...icon3,
-    className: combineClassNames(sdn.icon3?.className, icon3?.className),
-  }
-  const textLabel3Props = {
-    ...sdn.textLabel3,
-    ...textLabel3,
-    className: combineClassNames(
-      sdn.textLabel3?.className,
-      textLabel3?.className,
-    ),
-  }
+  const buttonProps =
+    button === null
+      ? null
+      : {
+          ...sdn.button,
+          ...button,
+          className: combineClassNames(
+            sdn.button?.className,
+            button?.className,
+          ),
+        }
+  const iconProps =
+    icon === null
+      ? null
+      : {
+          ...sdn.icon,
+          ...icon,
+          className: combineClassNames(sdn.icon?.className, icon?.className),
+        }
+  const textLabelProps =
+    textLabel === null
+      ? null
+      : {
+          ...sdn.textLabel,
+          ...textLabel,
+          className: combineClassNames(
+            sdn.textLabel?.className,
+            textLabel?.className,
+          ),
+        }
+  const button2Props =
+    button2 === null
+      ? null
+      : {
+          ...sdn.button2,
+          ...button2,
+          className: combineClassNames(
+            sdn.button2?.className,
+            button2?.className,
+          ),
+        }
+  const icon2Props =
+    icon2 === null
+      ? null
+      : {
+          ...sdn.icon2,
+          ...icon2,
+          className: combineClassNames(sdn.icon2?.className, icon2?.className),
+        }
+  const textLabel2Props =
+    textLabel2 === null
+      ? null
+      : {
+          ...sdn.textLabel2,
+          ...textLabel2,
+          className: combineClassNames(
+            sdn.textLabel2?.className,
+            textLabel2?.className,
+          ),
+        }
+  const button3Props =
+    button3 === null
+      ? null
+      : {
+          ...sdn.button3,
+          ...button3,
+          className: combineClassNames(
+            sdn.button3?.className,
+            button3?.className,
+          ),
+        }
+  const icon3Props =
+    icon3 === null
+      ? null
+      : {
+          ...sdn.icon3,
+          ...icon3,
+          className: combineClassNames(sdn.icon3?.className, icon3?.className),
+        }
+  const textLabel3Props =
+    textLabel3 === null
+      ? null
+      : {
+          ...sdn.textLabel3,
+          ...textLabel3,
+          className: combineClassNames(
+            sdn.textLabel3?.className,
+            textLabel3?.className,
+          ),
+        }
 
   return (
     <HTMLButton className={buttonToolClassName} {...props}>
-      <Button {...buttonProps}>
-        {icon && <Icon {...iconProps} />}
-        {textLabel && <TextLabel {...textLabelProps} />}
-      </Button>
-      <Button {...button2Props}>
-        {icon2 && <Icon {...icon2Props} />}
-        {textLabel2 && <TextLabel {...textLabel2Props} />}
-      </Button>
-      <Button {...button3Props}>
-        {icon3 && <Icon {...icon3Props} />}
-        {textLabel3 && <TextLabel {...textLabel3Props} />}
-      </Button>
+      {buttonProps !== null && (
+        <Button {...buttonProps}>
+          {icon && iconProps && <Icon {...iconProps} />}
+          {textLabel && textLabelProps && <TextLabel {...textLabelProps} />}
+        </Button>
+      )}
+      {button2Props !== null && (
+        <Button {...button2Props}>
+          {icon2 && icon2Props && <Icon {...icon2Props} />}
+          {textLabel2 && textLabel2Props && <TextLabel {...textLabel2Props} />}
+        </Button>
+      )}
+      {button3Props !== null && (
+        <Button {...button3Props}>
+          {icon3 && icon3Props && <Icon {...icon3Props} />}
+          {textLabel3 && textLabel3Props && <TextLabel {...textLabel3Props} />}
+        </Button>
+      )}
     </HTMLButton>
   )
 }

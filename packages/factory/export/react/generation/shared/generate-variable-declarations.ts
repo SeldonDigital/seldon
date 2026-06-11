@@ -8,8 +8,9 @@ import { getVariantClassNames } from "../../utils/class-name"
  *
  * Always declares the component className. Then, for every node in the tree,
  * declares a merged props variable that layers the passed-in prop over the
- * default (`sdn`) entry and combines class names. Declarations are deduplicated
- * by variable name.
+ * default (`sdn`) entry and combines class names. A null prop resolves to a
+ * null props variable so suppression flows into grandchild-as-prop slots.
+ * Declarations are deduplicated by variable name.
  */
 export function generateVariableDeclarations(
   component: ComponentToExport,
@@ -47,7 +48,7 @@ export function generateVariableDeclarations(
     if (!declared.has(propsVarName)) {
       declared.add(propsVarName)
       declarations.push(
-        `const ${propsVarName} = { ...sdn.${propsName}, ...${propsName}, className: combineClassNames(sdn.${propsName}?.className, ${propsName}?.className) }`,
+        `const ${propsVarName} = ${propsName} === null ? null : { ...sdn.${propsName}, ...${propsName}, className: combineClassNames(sdn.${propsName}?.className, ${propsName}?.className) }`,
       )
     }
 

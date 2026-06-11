@@ -19,21 +19,6 @@ export function jsxStructureToString(
 ): string {
   const { config } = component
 
-  // Handle simple case: single child without grandchildren, conditionals, or grandchild props
-  if (
-    jsxRoot.children &&
-    jsxRoot.children.length === 1 &&
-    !jsxRoot.children[0].children &&
-    jsxRoot.children[0].type !== "conditional" &&
-    !jsxRoot.children[0].grandchildProps
-  ) {
-    const child = jsxRoot.children[0]
-    return `
-  return <${config.react.returns} className={${classNameVarName}} {...props}>
-        <${child.name} {...${child.propVarName}} />
-    </${config.react.returns}>`
-  }
-
   // Build JSX string recursively
   function nodeToString(node: JSXNode, indent: number = 0): string {
     const indentStr = " ".repeat(indent)

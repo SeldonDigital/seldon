@@ -20,10 +20,10 @@ import { combineClassNames } from "../utils/class-name"
 
 export interface FormControlIconicProps extends HTMLAttributes<HTMLElement> {
   className?: string
-  icon?: IconProps
-  input?: InputProps
-  button?: ButtonProps
-  icon2?: IconProps
+  icon?: IconProps | null
+  input?: InputProps | null
+  button?: ButtonProps | null
+  icon2?: IconProps | null
 }
 
 /*****
@@ -54,32 +54,47 @@ export function FormControlIconic({
     "sdn-form-control-iconic",
     className,
   )
-  const iconProps = {
-    ...sdn.icon,
-    ...icon,
-    className: combineClassNames(sdn.icon?.className, icon?.className),
-  }
-  const inputProps = {
-    ...sdn.input,
-    ...input,
-    className: combineClassNames(sdn.input?.className, input?.className),
-  }
-  const buttonProps = {
-    ...sdn.button,
-    ...button,
-    className: combineClassNames(sdn.button?.className, button?.className),
-  }
-  const icon2Props = {
-    ...sdn.icon2,
-    ...icon2,
-    className: combineClassNames(sdn.icon2?.className, icon2?.className),
-  }
+  const iconProps =
+    icon === null
+      ? null
+      : {
+          ...sdn.icon,
+          ...icon,
+          className: combineClassNames(sdn.icon?.className, icon?.className),
+        }
+  const inputProps =
+    input === null
+      ? null
+      : {
+          ...sdn.input,
+          ...input,
+          className: combineClassNames(sdn.input?.className, input?.className),
+        }
+  const buttonProps =
+    button === null
+      ? null
+      : {
+          ...sdn.button,
+          ...button,
+          className: combineClassNames(
+            sdn.button?.className,
+            button?.className,
+          ),
+        }
+  const icon2Props =
+    icon2 === null
+      ? null
+      : {
+          ...sdn.icon2,
+          ...icon2,
+          className: combineClassNames(sdn.icon2?.className, icon2?.className),
+        }
 
   return (
     <Frame className={formControlIconicClassName} {...props}>
-      <Icon {...iconProps} />
-      <Input {...inputProps} />
-      {button && <Button {...buttonProps} icon={icon2Props} />}
+      {iconProps !== null && <Icon {...iconProps} />}
+      {inputProps !== null && <Input {...inputProps} />}
+      {button && buttonProps && <Button {...buttonProps} icon={icon2Props} />}
     </Frame>
   )
 }

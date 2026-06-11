@@ -20,13 +20,13 @@ import { combineClassNames } from "../utils/class-name"
 
 export interface ItemSectionRowProps extends LiHTMLAttributes<HTMLLIElement> {
   className?: string
-  buttonIconic?: ButtonIconicProps
-  icon?: IconProps
-  textLabel?: TextLabelProps
-  buttonIconic2?: ButtonIconicProps
-  icon2?: IconProps
-  buttonIconic3?: ButtonIconicProps
-  icon3?: IconProps
+  buttonIconic?: ButtonIconicProps | null
+  icon?: IconProps | null
+  textLabel?: TextLabelProps | null
+  buttonIconic2?: ButtonIconicProps | null
+  icon2?: IconProps | null
+  buttonIconic3?: ButtonIconicProps | null
+  icon3?: IconProps | null
 }
 
 /*****
@@ -62,62 +62,85 @@ export function ItemSectionRow({
     "sdn-item-section-row",
     className,
   )
-  const buttonIconicProps = {
-    ...sdn.buttonIconic,
-    ...buttonIconic,
-    className: combineClassNames(
-      sdn.buttonIconic?.className,
-      buttonIconic?.className,
-    ),
-  }
-  const iconProps = {
-    ...sdn.icon,
-    ...icon,
-    className: combineClassNames(sdn.icon?.className, icon?.className),
-  }
-  const textLabelProps = {
-    ...sdn.textLabel,
-    ...textLabel,
-    className: combineClassNames(
-      sdn.textLabel?.className,
-      textLabel?.className,
-    ),
-  }
-  const buttonIconic2Props = {
-    ...sdn.buttonIconic2,
-    ...buttonIconic2,
-    className: combineClassNames(
-      sdn.buttonIconic2?.className,
-      buttonIconic2?.className,
-    ),
-  }
-  const icon2Props = {
-    ...sdn.icon2,
-    ...icon2,
-    className: combineClassNames(sdn.icon2?.className, icon2?.className),
-  }
-  const buttonIconic3Props = {
-    ...sdn.buttonIconic3,
-    ...buttonIconic3,
-    className: combineClassNames(
-      sdn.buttonIconic3?.className,
-      buttonIconic3?.className,
-    ),
-  }
-  const icon3Props = {
-    ...sdn.icon3,
-    ...icon3,
-    className: combineClassNames(sdn.icon3?.className, icon3?.className),
-  }
+  const buttonIconicProps =
+    buttonIconic === null
+      ? null
+      : {
+          ...sdn.buttonIconic,
+          ...buttonIconic,
+          className: combineClassNames(
+            sdn.buttonIconic?.className,
+            buttonIconic?.className,
+          ),
+        }
+  const iconProps =
+    icon === null
+      ? null
+      : {
+          ...sdn.icon,
+          ...icon,
+          className: combineClassNames(sdn.icon?.className, icon?.className),
+        }
+  const textLabelProps =
+    textLabel === null
+      ? null
+      : {
+          ...sdn.textLabel,
+          ...textLabel,
+          className: combineClassNames(
+            sdn.textLabel?.className,
+            textLabel?.className,
+          ),
+        }
+  const buttonIconic2Props =
+    buttonIconic2 === null
+      ? null
+      : {
+          ...sdn.buttonIconic2,
+          ...buttonIconic2,
+          className: combineClassNames(
+            sdn.buttonIconic2?.className,
+            buttonIconic2?.className,
+          ),
+        }
+  const icon2Props =
+    icon2 === null
+      ? null
+      : {
+          ...sdn.icon2,
+          ...icon2,
+          className: combineClassNames(sdn.icon2?.className, icon2?.className),
+        }
+  const buttonIconic3Props =
+    buttonIconic3 === null
+      ? null
+      : {
+          ...sdn.buttonIconic3,
+          ...buttonIconic3,
+          className: combineClassNames(
+            sdn.buttonIconic3?.className,
+            buttonIconic3?.className,
+          ),
+        }
+  const icon3Props =
+    icon3 === null
+      ? null
+      : {
+          ...sdn.icon3,
+          ...icon3,
+          className: combineClassNames(sdn.icon3?.className, icon3?.className),
+        }
 
   return (
     <HTMLLi className={itemSectionRowClassName} {...props}>
-      {buttonIconic && <ButtonIconic {...buttonIconicProps} icon={iconProps} />}
-      {textLabel && <TextLabel {...textLabelProps} />}
-      {buttonIconic2 && (
+      {buttonIconic && buttonIconicProps && (
+        <ButtonIconic {...buttonIconicProps} icon={iconProps} />
+      )}
+      {textLabel && textLabelProps && <TextLabel {...textLabelProps} />}
+      {buttonIconic2 && buttonIconic2Props && (
         <ButtonIconic {...buttonIconic2Props} icon={icon2Props} />
       )}
-      {buttonIconic3 && (
+      {buttonIconic3 && buttonIconic3Props && (
         <ButtonIconic {...buttonIconic3Props} icon={icon3Props} />
       )}
     </HTMLLi>
@@ -129,7 +152,7 @@ export function ItemSectionRow({
 //
 const sdn: ItemSectionRowProps = {
   buttonIconic: {
-    className: "sdn-button-iconic sdn-button-iconic--eyvy",
+    className: "sdn-button-iconic sdn-button-iconic--uhqw",
   },
   icon: {
     icon: "material-unfoldMore",
@@ -139,14 +162,14 @@ const sdn: ItemSectionRowProps = {
     className: "sdn-text-label sdn-text-label--t8l6",
   },
   buttonIconic2: {
-    className: "sdn-button-iconic sdn-button-iconic--eyvy",
+    className: "sdn-button-iconic sdn-button-iconic--uhqw",
   },
   icon2: {
     icon: "material-add",
     className: "sdn-icon sdn-icon--v2wj",
   },
   buttonIconic3: {
-    className: "sdn-button-iconic sdn-button-iconic--eyvy",
+    className: "sdn-button-iconic sdn-button-iconic--uhqw",
   },
   icon3: {
     icon: "material-moreHoriz",

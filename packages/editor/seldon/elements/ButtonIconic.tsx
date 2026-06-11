@@ -18,7 +18,7 @@ import { combineClassNames } from "../utils/class-name"
 
 export interface ButtonIconicProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string
-  icon?: IconProps
+  icon?: IconProps | null
 }
 
 /*****
@@ -44,15 +44,18 @@ export function ButtonIconic({
     "sdn-button-iconic",
     className,
   )
-  const iconProps = {
-    ...sdn.icon,
-    ...icon,
-    className: combineClassNames(sdn.icon?.className, icon?.className),
-  }
+  const iconProps =
+    icon === null
+      ? null
+      : {
+          ...sdn.icon,
+          ...icon,
+          className: combineClassNames(sdn.icon?.className, icon?.className),
+        }
 
   return (
     <HTMLButton className={buttonIconicClassName} {...props}>
-      <Icon {...iconProps} />
+      {iconProps !== null && <Icon {...iconProps} />}
     </HTMLButton>
   )
 }
