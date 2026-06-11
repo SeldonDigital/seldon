@@ -5,6 +5,11 @@ import { isIconSetEditingSelection } from "@lib/icon-sets/resolve-active-icon-se
 import { resolveActiveThemeEntryId } from "@lib/themes/resolve-active-theme-entry-id"
 import { isThemeEditingSelection } from "@lib/themes/resolve-active-theme-entry-id"
 import { useMemo, useRef } from "react"
+import {
+  buildPropertyTreeAllProperties,
+  buildPropertyTreeSections,
+} from "../helpers/build-property-tree-layout"
+import { useCssStrings } from "../helpers/get-calculated-properties"
 import { Board, Instance, Variant } from "@seldon/core"
 import { getComputedTheme } from "@seldon/core/workspace/compute"
 import {
@@ -15,7 +20,10 @@ import {
 import { workspaceFontCollectionService } from "@seldon/core/workspace/services/font-collection/font-collection.service"
 import { workspaceIconSetService } from "@seldon/core/workspace/services/icon-set/icon-set.service"
 import { workspaceThemeService } from "@seldon/core/workspace/services/theme/theme.service"
-import { useSelection } from "@lib/workspace/hooks/use-selection"
+import {
+  useSelectedNodeRootId,
+  useSelection,
+} from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useEditorConfig } from "@lib/hooks/use-editor-config"
 import type { PropertyTreeProps } from "../VMPropertiesSidebar"
@@ -50,6 +58,7 @@ export function usePropertiesSidebar(): PropertiesSidebarState {
     selectedFontCollectionEntryId,
     selectedIconSetEntryId,
   } = useSelection()
+  const selectedNodeRootId = useSelectedNodeRootId()
   const { workspace } = useWorkspace({ usePreview: false })
   const { showUnusedProperties, showUnusedFonts, showUnusedIcons } =
     useEditorConfig()
@@ -364,6 +373,43 @@ export function usePropertiesSidebar(): PropertiesSidebarState {
     workspace.boards,
   ])
 
+  const cssStrings = useCssStrings(propertyTreeNode, selectedNodeRootId)
+
+  const sections = useMemo(() => {
+    if (!propertyTreeNode) return []
+    return buildPropertyTreeSections({
+      properties: flatProperties,
+      workspace,
+      node: propertyTreeNode,
+      theme,
+      themeEditingContext,
+      metadataProperties,
+      familyProperties,
+      iconProperties,
+      cssStringCount: cssStrings.length,
+    })
+  }, [
+    flatProperties,
+    workspace,
+    propertyTreeNode,
+    theme,
+    themeEditingContext,
+    metadataProperties,
+    familyProperties,
+    iconProperties,
+    cssStrings.length,
+  ])
+
+  const allProperties = useMemo(() => {
+    if (!propertyTreeNode) return []
+    return buildPropertyTreeAllProperties({
+      properties: flatProperties,
+      workspace,
+      node: propertyTreeNode,
+      themeEditingContext,
+    })
+  }, [flatProperties, workspace, propertyTreeNode, themeEditingContext])
+
   if (
     !selection &&
     !isThemeEditingMode &&
@@ -391,6 +437,9 @@ export function usePropertiesSidebar(): PropertiesSidebarState {
       metadataProperties,
       familyProperties,
       iconProperties,
+      sections,
+      allProperties,
+      cssStrings,
     },
   }
 }

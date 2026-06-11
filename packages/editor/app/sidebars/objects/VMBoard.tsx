@@ -1,4 +1,4 @@
-import { CSSProperties, memo, useCallback } from "react"
+import { memo, useCallback } from "react"
 import { Board as BoardType, Variant } from "@seldon/core"
 import { useRowHighlightStyle } from "@lib/workspace/hooks/use-object-hover"
 import { useSidebarCanvasTrackingBoard } from "../../tracking/hooks/use-sidebar-canvas-tracking"
@@ -10,25 +10,21 @@ import { RowSelectionTarget } from "./RowSelectionTarget"
 import { ItemNodeRow } from "@seldon/components/elements/ItemNodeRow"
 import { IconProps } from "@seldon/components/primitives/Icon"
 import { TextLabelProps } from "@seldon/components/primitives/TextLabel"
+import { applyTrackingColor } from "../helpers/apply-tracking-color"
+import { rowWrapperStyle } from "../helpers/sidebar-row-styles"
 import { relativeFullWidthStyle } from "../helpers/sidebar-styles"
-import { FramerExpandable } from "../shared/FramerExpandable"
+import { FramerExpandable } from "@seldon/components/custom-components"
 import { VMNode } from "./VMNode"
 import {
   VMResourceEntry,
   getBoardResourceRowConfig,
 } from "./VMResourceEntry"
 
-const rowWrapperStyle: CSSProperties = {
-  width: "100%",
-  minWidth: 0,
-}
-
 const BOARD_SELECTION_KIND = "board"
 
 interface VMBoardProps {
   board: BoardType
   show?: boolean
-  disableReordering?: boolean
 }
 
 /**
@@ -39,7 +35,6 @@ interface VMBoardProps {
 export const VMBoard = memo(function VMBoard({
   board,
   show = true,
-  disableReordering = false,
 }: VMBoardProps) {
   // Core board data: buttons, icons, handlers, state
   const {
@@ -55,10 +50,8 @@ export const VMBoard = memo(function VMBoard({
     boardIsActive,
     boardContainsSelectedNode,
     boardContainsSelectedResourceEntry,
-    dragging,
-    ref,
     variants,
-  } = useRowBoard(board, { show, disableReordering })
+  } = useRowBoard(board, { show })
 
   // Styling: row colors, icon colors, hover effects
   const boardKey = getComponentKey(board)
@@ -90,20 +83,9 @@ export const VMBoard = memo(function VMBoard({
   }, [handleCanvasTrackingLeave])
 
   // Apply tracking colors: icons get color
-  const applyTrackingColor = <T extends { style?: React.CSSProperties }>(
-    item: T | undefined,
-    property: "color" | "borderColor",
-  ): T | undefined =>
-    iconColor && item
-      ? {
-          ...item,
-          style: { ...item.style, [property]: iconColor },
-        }
-      : item
-
-  const coloredIcon = applyTrackingColor(icon, "color")
-  const coloredIcon2 = applyTrackingColor(icon2, "color")
-  const coloredIcon3 = applyTrackingColor(icon3, "color")
+  const coloredIcon = applyTrackingColor(icon, "color", iconColor)
+  const coloredIcon2 = applyTrackingColor(icon2, "color", iconColor)
+  const coloredIcon3 = applyTrackingColor(icon3, "color", iconColor)
 
   // Label: apply tracking color if provided
   const textLabel: TextLabelProps = {
@@ -147,7 +129,6 @@ export const VMBoard = memo(function VMBoard({
   return (
     <>
       <RowSelectionTarget
-        ref={ref}
         style={rowWrapperStyle}
         innerStyle={relativeFullWidthStyle}
         selectionId={boardKey}
@@ -167,7 +148,6 @@ export const VMBoard = memo(function VMBoard({
           onMouseLeave={handleRowMouseLeave}
           data-testid={dataTestId}
           data-componentid={dataComponentId}
-          data-dragging={dragging}
           data-active={boardIsActive}
           style={combinedRowStyle}
         />

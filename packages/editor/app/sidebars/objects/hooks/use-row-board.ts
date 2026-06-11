@@ -13,7 +13,6 @@ import { useTool } from "@lib/hooks/use-tool"
 import { getVariantRootIds } from "@lib/workspace/component-tree"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { IconProps } from "@seldon/components/custom-components"
-import { useDraggable } from "./use-draggable"
 import { useExpansion, useIsExpanded } from "./use-expansion"
 import { useRowButton } from "./use-row-button"
 import { useRowClick } from "./use-row-click"
@@ -32,7 +31,6 @@ export function useRowBoard(
   board: BoardType,
   options?: {
     show?: boolean
-    disableReordering?: boolean
   },
 ) {
   // Core workspace and tool state
@@ -53,7 +51,6 @@ export function useRowBoard(
 
   // Options and configuration
   const show = options?.show ?? true
-  const disableReordering = options?.disableReordering ?? false
 
   // Selection state: determine if board is selected or contains selected node
   const boardKey = getComponentKey(board)
@@ -81,13 +78,6 @@ export function useRowBoard(
   // Expansion state
   const expandedId = boardKey
   const isExpandedState = useIsExpanded(expandedId)
-
-  // Drag and drop: enable dragging when visible
-  const { dragging, ref } = useDraggable({
-    enable: show && !disableReordering,
-    target: board,
-    onDragStart: () => toggle(expandedId, false),
-  })
 
   // Event handlers: toggle expansion, select board, add variant
   const onToggle = useRowToggle({
@@ -213,8 +203,6 @@ export function useRowBoard(
     boardIsActive,
     boardContainsSelectedNode,
     boardContainsSelectedResourceEntry,
-    dragging,
-    ref,
     variants: variantRootIds,
   }
 }

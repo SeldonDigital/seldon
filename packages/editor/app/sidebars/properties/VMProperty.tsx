@@ -1,7 +1,7 @@
 import { RowPropertyProps, useRowProperty } from "./hooks/use-row-property"
 import { ItemInputRow } from "@seldon/components/elements/ItemInputRow"
 import { IconProps } from "@seldon/components/primitives/Icon"
-import { FramerExpandable } from "../shared/FramerExpandable"
+import { FramerExpandable } from "@seldon/components/custom-components"
 import { useRowActionsMenu } from "../shared/use-row-actions-menu"
 import { PropertyValueCell } from "./PropertyValueCell"
 

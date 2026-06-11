@@ -1,5 +1,4 @@
-import { CSSProperties, memo } from "react"
-import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
+import { memo } from "react"
 import type { EntryNode } from "@seldon/core/workspace/types"
 import { useRowHighlightStyle } from "@lib/workspace/hooks/use-object-hover"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
@@ -13,14 +12,11 @@ import { ItemNodeRow } from "@seldon/components/elements/ItemNodeRow"
 import { IconProps } from "@seldon/components/primitives/Icon"
 import { TextLabelProps } from "@seldon/components/primitives/TextLabel"
 import { SidebarTracking } from "../../tracking/SidebarTracking"
-import { Combobox } from "../properties/controls/combobox/Combobox"
-import { FramerExpandable } from "../shared/FramerExpandable"
+import { applyTrackingColor } from "../helpers/apply-tracking-color"
+import { rowWrapperStyle } from "../helpers/sidebar-row-styles"
+import { useInlineRename } from "../hooks/use-inline-rename"
+import { FramerExpandable } from "@seldon/components/custom-components"
 import { useRowActionsMenu } from "../shared/use-row-actions-menu"
-
-const rowWrapperStyle: CSSProperties = {
-  width: "100%",
-  minWidth: 0,
-}
 
 const NODE_SELECTION_KIND = "node"
 
@@ -32,11 +28,9 @@ interface VMNodeProps {
    * is shared across variant columns.
    */
   rootId: string
-  node?: EntryNode
   show?: boolean
   parentIsSelected?: boolean
   disableReordering?: boolean
-  onSelect?: () => void
 }
 
 const VMNodeInner = memo(function VMNodeInner({
@@ -45,14 +39,12 @@ const VMNodeInner = memo(function VMNodeInner({
   show,
   parentIsSelected,
   disableReordering,
-  onSelect,
 }: {
   node: EntryNode
   rootId: string
   show: boolean
   parentIsSelected: boolean
   disableReordering: boolean
-  onSelect?: () => void
 }) {
   const {
     label: baseLabel,
@@ -66,18 +58,19 @@ const VMNodeInner = memo(function VMNodeInner({
     isSelected,
     isNodeActive,
     isEditingName,
+    setEditingName,
     setNodeLabel,
     hasChildren,
     children,
     dragging,
     ref,
     properties,
+    dataNodeType,
   } = useRowNode(node, {
     rootId,
     show,
     parentIsSelected,
     disableReordering,
-    onSelect,
   })
 
   const { rowStyle, iconColor, labelColor } = useSidebarRowStyling(node, {
@@ -92,29 +85,19 @@ const VMNodeInner = memo(function VMNodeInner({
   const { handleCanvasTrackingEnter, handleCanvasTrackingLeave } =
     useSidebarCanvasTracking(node)
 
-  const applyTrackingColor = <T extends { style?: React.CSSProperties }>(
-    item: T | undefined,
-    property: "color" | "borderColor",
-  ): T | undefined =>
-    iconColor && item
-      ? {
-          ...item,
-          style: { ...item.style, [property]: iconColor },
-        }
-      : item
+  const coloredIcon = hasChildren
+    ? applyTrackingColor(icon, "color", iconColor)
+    : icon
+  const coloredIcon2 = applyTrackingColor(icon2, "color", iconColor)
 
-  const coloredIcon = hasChildren ? applyTrackingColor(icon, "color") : icon
-  const coloredIcon2 = applyTrackingColor(icon2, "color")
+  const { labelChildren: renameLabel } = useInlineRename({
+    label: String(baseLabel.children),
+    isEditing: isEditingName,
+    setEditing: setEditingName,
+    onSubmit: setNodeLabel,
+  })
 
-  const labelChildren = isEditingName ? (
-    <Combobox
-      mode="standalone"
-      initialValue={node.label}
-      onSubmit={setNodeLabel}
-    />
-  ) : (
-    baseLabel.children
-  )
+  const labelChildren = isEditingName ? renameLabel : baseLabel.children
 
   const textLabel: TextLabelProps = {
     ...baseLabel,
@@ -127,7 +110,6 @@ const VMNodeInner = memo(function VMNodeInner({
 
   const dataTestId = `object-panel-node-${node.id}`
   const dataNodeId = node.id
-  const dataNodeType = workspaceService.getEntityType(node)
   const dataDisplay =
     properties && "display" in properties
       ? properties.display?.value
@@ -143,15 +125,12 @@ const VMNodeInner = memo(function VMNodeInner({
             rootId={`${rootId}/${childNodeId}`}
             show={show}
             parentIsSelected={isSelected}
-            onSelect={onSelect}
           />
         ))}
       </IndentationLevel>
     </FramerExpandable>
   ) : null
 
-  // Node rows never use dynamic icon-custom-* ids, so the casts to the
-  // generated IconProps at the row boundary are safe.
   return (
     <>
       <RowSelectionTarget
@@ -174,8 +153,8 @@ const VMNodeInner = memo(function VMNodeInner({
             icon={coloredIcon as IconProps}
             icon2={coloredIcon2 as IconProps}
             textLabel={textLabel}
-            buttonIconic2={null}
-            icon3={null}
+            buttonIconic2={hasActions ? actionsMenu.buttonIconic : null}
+            icon3={hasActions ? actionsMenu.icon : null}
             buttonIconic3={hasActions ? actionsMenu.buttonIconic : null}
             icon4={hasActions ? actionsMenu.icon : null}
             onClick={onClick}
@@ -202,14 +181,12 @@ const VMNodeInner = memo(function VMNodeInner({
 export const VMNode = memo(function VMNode({
   nodeId,
   rootId,
-  node: nodeProp,
   show = true,
   parentIsSelected = false,
   disableReordering = false,
-  onSelect,
 }: VMNodeProps) {
   const { workspace } = useWorkspace({ usePreview: false })
-  const node = nodeProp ?? getNode(workspace, nodeId)
+  const node = getNode(workspace, nodeId)
 
   if (!node) return null
 
@@ -220,7 +197,6 @@ export const VMNode = memo(function VMNode({
       show={show}
       parentIsSelected={parentIsSelected}
       disableReordering={disableReordering}
-      onSelect={onSelect}
     />
   )
 })

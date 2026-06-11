@@ -6,9 +6,11 @@ import { getComponentSchema } from "@seldon/core/components/catalog"
 import { ComponentId } from "@seldon/core/components/constants"
 import { ErrorMessages } from "@seldon/core/workspace/constants"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
+import { useActiveBoard } from "@lib/workspace/hooks/use-active-board"
 import { useSetHoveredId } from "@lib/workspace/hooks/use-object-hover"
 import { useSelection } from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
+import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { useDialog } from "@lib/hooks/use-dialog"
 import { usePreview } from "@lib/hooks/use-preview"
 import { useTool } from "@lib/hooks/use-tool"
@@ -35,6 +37,7 @@ export function useCanvas() {
   const { selectNode, selectBoard, selectResourceEntry, selectResourceItem } =
     useSelection()
   const { workspace } = useWorkspace()
+  const { activeBoard } = useActiveBoard()
   const { activeTool } = useTool()
   const { openDialog } = useDialog()
   const { hoverState, setHoverState } = useCanvasHoverState()
@@ -331,6 +334,10 @@ export function useCanvas() {
             selectResourceEntry,
             selectResourceItem,
           })
+        } else if (activeBoard) {
+          selectBoard(getComponentKey(activeBoard))
+        } else {
+          selectNode(null)
         }
         return
       }
@@ -339,6 +346,7 @@ export function useCanvas() {
     },
     [
       activeTool,
+      activeBoard,
       executeToolAction,
       selectNode,
       selectBoard,

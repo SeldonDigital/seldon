@@ -10,9 +10,8 @@ import { MouseEvent } from "react"
 export function useRowClick(options: {
   activeTool: string
   onSelect: (event: MouseEvent<HTMLElement>) => void
-  onSelectCallback?: () => void
 }) {
-  const { activeTool, onSelect, onSelectCallback } = options
+  const { activeTool, onSelect } = options
 
   return function onClick(event: MouseEvent<HTMLElement>) {
     if ((event.target as HTMLElement).closest("button")) {
@@ -22,7 +21,6 @@ export function useRowClick(options: {
     if (activeTool === "select") {
       event.stopPropagation()
       onSelect(event)
-      onSelectCallback?.()
     }
   }
 }

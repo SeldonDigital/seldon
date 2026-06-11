@@ -1,9 +1,10 @@
 import { LayoutGroup } from "framer-motion"
-import { Fragment, RefObject, useMemo } from "react"
+import { Fragment, RefObject, useCallback, useMemo } from "react"
+import { MenuEntry } from "@lib/menus"
+import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import { Board, Instance, Theme, Variant, Workspace } from "@seldon/core"
-import { isResourceType } from "@seldon/core/workspace/helpers/components/is-resource-type"
 import { usePropertiesSidebar } from "./hooks/use-properties-sidebar"
-import { usePropertyExpansion } from "./hooks/use-property-expansion"
+import { useIsCategoryExpanded } from "./hooks/use-property-expansion"
 import {
   ScrollerShell,
   SidebarContainer,
@@ -13,7 +14,7 @@ import {
   sidebarNoSelectionStyle,
   sidebarShellStyle,
 } from "../helpers/sidebar-styles"
-import { FramerExpandable } from "../shared/FramerExpandable"
+import { FramerExpandable } from "@seldon/components/custom-components"
 import { VMCategory } from "./VMCategory"
 import { CssBlock } from "./CssBlock"
 import { VMProperty } from "./VMProperty"
@@ -22,21 +23,14 @@ import {
   IconSetEditingContext,
   ThemeEditingContext,
 } from "./helpers/editing-contexts"
-import { useCssStrings } from "./helpers/get-calculated-properties"
 import {
   PropertySection,
-  getPropertySections,
 } from "./helpers/get-property-sections"
 import {
   ThemePropertySection,
-  getThemePropertySections,
 } from "./helpers/get-theme-property-sections"
-import {
-  getIconRowCategory,
-  iconCategoryLabel,
-} from "./helpers/icon-set-properties-data"
+import { getIconRowCategory } from "./helpers/icon-set-properties-data"
 import { FlatProperty } from "./helpers/properties-data"
-import { buildThemeAssignmentProperty } from "./helpers/theme-assignment-display"
 
 export interface PropertyTreeProps {
   properties: FlatProperty[]
@@ -59,6 +53,9 @@ export interface PropertyTreeProps {
    * parent subcategory rows and their child icon rows in one flat list.
    */
   iconProperties?: FlatProperty[]
+  sections: Array<PropertySection | ThemePropertySection>
+  allProperties: FlatProperty[]
+  cssStrings: string[]
 }
 
 /**
@@ -98,125 +95,10 @@ function PropertiesTree({
   metadataProperties,
   familyProperties,
   iconProperties,
+  sections,
+  allProperties,
+  cssStrings,
 }: PropertyTreeProps) {
-  const { isCategoryExpanded } = usePropertyExpansion()
-  const cssStrings = useCssStrings(node)
-
-  // Use theme sections when in theme editing mode
-  const sections = useMemo(() => {
-    const metadataSection: PropertySection | null =
-      metadataProperties && metadataProperties.length > 0
-        ? {
-            label: "Metadata",
-            category: "metadata",
-            properties: metadataProperties,
-          }
-        : null
-
-    const familiesSection: PropertySection | null =
-      familyProperties && familyProperties.length > 0
-        ? {
-            label: "Families",
-            category: "families",
-            // Only parent family rows render at the section level; child variant
-            // and license rows nest under their parent via allProperties.
-            properties: familyProperties.filter((p) => !p.isSubProperty),
-          }
-        : null
-
-    if (themeEditingContext?.isThemeEditing) {
-      // Use theme property sections, pass theme for dynamic schema lookup
-      const themeSections = getThemePropertySections(properties, theme)
-      return [
-        ...(metadataSection ? [metadataSection] : []),
-        ...themeSections,
-      ] as Array<PropertySection | ThemePropertySection>
-    }
-
-    const leadingProperties: FlatProperty[] = []
-
-    // Resource boards (theme, font collection, icon set, media) render with their
-    // own preview theme and have no component theme, so they do not expose a
-    // theme-assignment picker.
-    const propertiesWithTheme = isResourceType(node as Board)
-      ? [...leadingProperties, ...properties]
-      : [
-          ...leadingProperties,
-          buildThemeAssignmentProperty(node, workspace),
-          ...properties,
-        ]
-
-    const regularSections = getPropertySections(
-      propertiesWithTheme,
-      node,
-      workspace,
-    )
-
-    const allSections: Array<PropertySection | ThemePropertySection> = [
-      ...(metadataSection ? [metadataSection] : []),
-      ...regularSections,
-    ]
-
-    if (familiesSection) {
-      allSections.push(familiesSection)
-    }
-
-    // One section per icon category. Parent subcategory rows render at the
-    // section level; their child icon rows nest under them via allProperties.
-    if (iconProperties && iconProperties.length > 0) {
-      const parentRows = iconProperties.filter((p) => !p.isSubProperty)
-      const seen = new Set<string>()
-      for (const row of parentRows) {
-        const category = getIconRowCategory(row.key)
-        if (!category || seen.has(category)) continue
-        seen.add(category)
-        allSections.push({
-          label: iconCategoryLabel(category),
-          category,
-          properties: parentRows.filter(
-            (p) => getIconRowCategory(p.key) === category,
-          ),
-        })
-      }
-    }
-
-    // Add CSS section at the end if there are any CSS strings
-    if (cssStrings.length > 0) {
-      allSections.push({
-        label: "CSS",
-        category: "css",
-        properties: [], // Empty since we're rendering CssBlock instead
-      })
-    }
-
-    return allSections
-  }, [
-    properties,
-    node,
-    workspace,
-    cssStrings.length,
-    themeEditingContext,
-    theme,
-    metadataProperties,
-    familyProperties,
-    iconProperties,
-  ])
-
-  // Combine all properties for the row-level allProperties prop
-  const allProperties = useMemo(() => {
-    if (themeEditingContext?.isThemeEditing) {
-      return properties
-    }
-    const leadingProperties: FlatProperty[] = []
-
-    if (isResourceType(node as Board)) {
-      return [...leadingProperties, ...properties]
-    }
-
-    const themeProperty = buildThemeAssignmentProperty(node, workspace)
-    return [...leadingProperties, themeProperty, ...properties]
-  }, [properties, node, workspace, themeEditingContext])
-
   return (
     <ScrollerShell ref={scrollerRef} style={styles.scroller}>
       <Frame style={styles.tree}>
@@ -225,7 +107,6 @@ function PropertiesTree({
             <TreeSection
               key={section.category}
               section={section}
-              isExpanded={isCategoryExpanded(section.category)}
               workspace={workspace}
               node={node}
               theme={theme}
@@ -246,7 +127,6 @@ function PropertiesTree({
 
 interface TreeSectionProps {
   section: PropertySection | ThemePropertySection
-  isExpanded: boolean
   workspace: Workspace
   node: Variant | Instance | Board
   theme?: Theme
@@ -266,7 +146,6 @@ interface TreeSectionProps {
  */
 function TreeSection({
   section,
-  isExpanded,
   workspace,
   node,
   theme,
@@ -278,6 +157,7 @@ function TreeSection({
   fontCollectionEditingContext,
   iconSetEditingContext,
 }: TreeSectionProps) {
+  const isExpanded = useIsCategoryExpanded(section.category)
   const isFamilies = section.category === "families"
   const isIconCategory =
     !!iconProperties && getIconRowCategory(`icon.${section.category}`) !== null
@@ -292,6 +172,33 @@ function TreeSection({
     ? fontCollectionEditingContext
     : null
   const rowIconSetContext = isIconCategory ? iconSetEditingContext : null
+
+  const addToast = useAddToast()
+  const handleCopyCss = useCallback(async () => {
+    const cssText = cssStrings.join("\n")
+    try {
+      await navigator.clipboard.writeText(cssText)
+      addToast("CSS copied to clipboard")
+    } catch (error) {
+      console.error("Failed to copy to clipboard:", error)
+    }
+  }, [cssStrings, addToast])
+
+  const sectionActions = useMemo((): MenuEntry[] | undefined => {
+    if (section.category !== "css" || cssStrings.length === 0) {
+      return undefined
+    }
+    return [
+      {
+        id: "copy-css",
+        label: "Copy CSS",
+        onSelect: () => {
+          void handleCopyCss()
+        },
+        testId: "copy-css",
+      },
+    ]
+  }, [section.category, cssStrings.length, handleCopyCss])
 
   const content =
     section.category === "css" ? (
@@ -314,7 +221,7 @@ function TreeSection({
 
   return (
     <Fragment>
-      <VMCategory section={section} />
+      <VMCategory section={section} actions={sectionActions} />
       <FramerExpandable isExpanded={isExpanded}>{content}</FramerExpandable>
     </Fragment>
   )

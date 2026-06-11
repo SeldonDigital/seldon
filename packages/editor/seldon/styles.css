@@ -243,8 +243,7 @@ html {
 
 html,
 body {
-  font-family:
-    system-ui,
+  font-family: system-ui,
     -apple-system,
     "Segoe UI",
     Roboto,
@@ -252,7 +251,7 @@ body {
     Cantarell,
     "Open Sans",
     "Helvetica Neue",
-    sans-serif;
+    sans-serif, "IBM Plex Sans";
 }
 
 :root {

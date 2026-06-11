@@ -40,3 +40,17 @@ export { OverlayLayer } from "./indicators/OverlayLayer"
 export { PlacementZoneSurface } from "./indicators/PlacementZoneSurface"
 export { ToastStack } from "./containers/ToastStack"
 export { Toast } from "./feedback/Toast"
+export { Combobox } from "./controls/combobox/Combobox"
+export type { InputProps as ComboboxInputProps } from "./controls/combobox/Combobox"
+export { ComboboxOptions } from "./controls/combobox/Options"
+export { ComboboxOptionList } from "./controls/combobox/OptionList"
+export { ComboboxOption } from "./controls/combobox/Option"
+export { ComboboxOptionGroup } from "./controls/combobox/OptionGroup"
+export { useComboboxState } from "./controls/combobox/hooks/use-combobox-state"
+export type {
+  ComboboxOptionItem,
+  ComboboxOptionItems,
+} from "./controls/combobox/types"
+export { FramerExpandable } from "./containers/FramerExpandable"
+export { EmptySectionRow } from "./containers/EmptySectionRow"
+export { DragNodePreview } from "./containers/DragNodePreview"

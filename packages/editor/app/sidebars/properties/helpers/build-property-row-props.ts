@@ -23,6 +23,13 @@ export const FRAME_REF_ATTR = "data-frame-ref"
 export const FRAME_REF_VALUE = "true"
 export const FRAME_REF_SELECTOR = `[${FRAME_REF_ATTR}="${FRAME_REF_VALUE}"]`
 
+import {
+  ICONIC_BUTTON_ATTR,
+  ICONIC_BUTTON_SELECTOR,
+} from "../../helpers/iconic-button"
+
+export { ICONIC_BUTTON_ATTR, ICONIC_BUTTON_SELECTOR }
+
 /**
  * Dynamic value-chip data rendered inside the value cell. Dynamic
  * `icon-custom-*` icons cannot render through the generated row's icon slot,
@@ -87,6 +94,7 @@ export function buildPropertyRowProps({
     onClick: handleToggle,
     "aria-expanded": isExpanded,
     "aria-label": isExpanded ? "Collapse" : "Expand",
+    [ICONIC_BUTTON_ATTR]: true,
     style: getDisclosureButtonStyle(),
   }
 
@@ -147,6 +155,7 @@ export function buildPropertyRowProps({
       : isMenuOrCombo
         ? handleMenuClick
         : undefined,
+    [ICONIC_BUTTON_ATTR]: true,
     style: getMenuButtonStyle({ supportsUpload, isCalculated, isMenuOrCombo }),
     "aria-label": supportsUpload
       ? "Upload image"

@@ -1,5 +1,5 @@
 import { removeNewLines } from "@lib/helpers/new-lines"
-import { MenuItem } from "@lib/menus"
+import { MenuEntry } from "@lib/menus"
 import { CSSProperties } from "react"
 import { Display, Properties, VariantId } from "@seldon/core"
 import { getComponentSchema } from "@seldon/core/components/catalog"
@@ -40,6 +40,7 @@ import { useEditState } from "./use-edit-state"
 import { useExpansion, useIsExpanded } from "./use-expansion"
 import { useRowButton } from "./use-row-button"
 import { useRowClick } from "./use-row-click"
+import { buildResetMenuEntry } from "../../shared/build-reset-menu-entry"
 import { useRowToggle } from "./use-row-toggle"
 import { useSelectionRelations } from "./use-selection-relations"
 
@@ -54,7 +55,6 @@ export function useRowNode(
     show?: boolean
     parentIsSelected?: boolean
     disableReordering?: boolean
-    onSelect?: () => void
   },
 ) {
   const { workspace, dispatch } = useWorkspace({ usePreview: false })
@@ -77,7 +77,6 @@ export function useRowNode(
   const show = options?.show ?? true
   const parentIsSelected = options?.parentIsSelected ?? false
   const disableReordering = options?.disableReordering ?? false
-  const onSelect = options?.onSelect
 
   const nodeExistsInWorkspace = hasNode(workspace, node.id)
   const properties: Properties = nodeExistsInWorkspace
@@ -134,7 +133,6 @@ export function useRowNode(
         })
       }
     },
-    onSelectCallback: onSelect,
   })
 
   const { createToggleButton, createToggleIcon } = useRowButton({
@@ -275,14 +273,13 @@ export function useRowNode(
     return "Reset"
   }
 
-  const resetActions: MenuItem[] = canReset
+  const resetActions: MenuEntry[] = canReset
     ? [
-        {
-          id: "reset",
+        buildResetMenuEntry({
           label: getResetLabel(),
           onSelect: handleReset,
           testId: `object-panel-node-${node.id}-reset`,
-        },
+        }),
       ]
     : []
 
@@ -359,5 +356,6 @@ export function useRowNode(
     dragging,
     ref,
     properties,
+    dataNodeType: workspaceService.getEntityType(node),
   }
 }

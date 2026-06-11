@@ -1,6 +1,6 @@
 "use client"
 
-import { CSSProperties, useEffect } from "react"
+import React, { CSSProperties, useEffect } from "react"
 import { isHotkeyPressed } from "react-hotkeys-hook"
 import {
   TransformComponent,
@@ -57,7 +57,12 @@ export const Canvas = () => {
     }
   }, 1000 / 60)
 
-  const handleCanvasClick = () => {
+  const handleCanvasClick = (event: React.MouseEvent) => {
+    const rootTree = document.getElementById("root-tree")
+    if (rootTree?.contains(event.target as Node)) {
+      return
+    }
+
     if (activeBoard) {
       selectBoard(getComponentKey(activeBoard))
     } else {

@@ -4,13 +4,12 @@ import {
   useEffect,
   useMemo,
   useRef,
-  useState,
 } from "react"
-import { useComboboxState } from "../controls/combobox/hooks/use-combobox-state"
-import type {
-  ComboboxOptionItem,
-  ComboboxOptionItems,
-} from "../controls/combobox/types"
+import {
+  useComboboxState,
+  type ComboboxOptionItem,
+  type ComboboxOptionItems,
+} from "@seldon/components/custom-components"
 import type { PropertyPickerResult } from "../helpers/options-utils"
 import { FlatProperty } from "../helpers/properties-data"
 import { useComboboxPosition } from "./use-combobox-position"
@@ -46,11 +45,11 @@ interface UsePropertyComboboxResult {
   open: boolean
   setOpen: (open: boolean) => void
   inputValue: string
-  isValid: boolean
   filteredOptions: ComboboxOptionItems
   handleSelect: (value: string) => void
   handleInputChange: (value: string) => void
   handleSubmitInput: () => void
+  handleCancelInput: () => void
   highlightedValue: string | undefined
   setHighlightedValue: (value: string | undefined) => void
   hasSections: boolean
@@ -84,9 +83,6 @@ export function usePropertyCombobox({
 }: UsePropertyComboboxInput): UsePropertyComboboxResult {
   const inputRef = useRef<HTMLInputElement>(null)
   const comboboxRef = useRef<HTMLDivElement>(null)
-  const [highlightedValue, setHighlightedValue] = useState<string | undefined>(
-    undefined,
-  )
   const originalValueRef = useRef<string | undefined>(undefined)
   const hasSelectionRef = useRef(false)
 
@@ -106,8 +102,9 @@ export function usePropertyCombobox({
     handleSelect,
     handleInputChange,
     handleSubmitInput,
+    highlightedValue,
+    setHighlightedValue,
     flatOptions,
-    isValid,
   } = useComboboxState<ComboboxOptionItem>({
     value: comboboxControlValue,
     options: comboOptions,
@@ -123,7 +120,6 @@ export function usePropertyCombobox({
       effectiveControlType === "combo" ? validationFunction : undefined,
   })
 
-  // Track original value when combobox opens
   useEffect(() => {
     if (comboboxOpen && originalValueRef.current === undefined) {
       originalValueRef.current = comboboxStoredValue
@@ -133,6 +129,19 @@ export function usePropertyCombobox({
       hasSelectionRef.current = false
     }
   }, [comboboxOpen, comboboxStoredValue])
+
+  useEffect(() => {
+    if (!comboboxOpen) {
+      const option = flatOptions.find((o) => o.value === comboboxControlValue)
+      setInputValue(option ? option.name : displayValue || "")
+    }
+  }, [
+    comboboxControlValue,
+    displayValue,
+    flatOptions,
+    setInputValue,
+    comboboxOpen,
+  ])
 
   const hasSections =
     filteredOptions.length > 0 && Array.isArray(filteredOptions[0])
@@ -147,30 +156,12 @@ export function usePropertyCombobox({
     return (filteredOptions as ComboboxOptionItem[]).length > 0
   }, [filteredOptions, hasSections])
 
-  // Sync input value with display value. Don't sync while the menu is open:
-  // the user is typing and we don't want to overwrite their input.
-  useEffect(() => {
-    if (!comboboxOpen) {
-      const option = flatOptions.find((o) => o.value === comboboxControlValue)
-      setInputValue(option ? option.name : displayValue || "")
-    }
-  }, [
-    comboboxControlValue,
-    displayValue,
-    flatOptions,
-    setInputValue,
-    comboboxOpen,
-  ])
-
-  // Sync editing state with combobox open state
   useEffect(() => {
     if (onEditChange) return
 
     setIsEditing(comboboxOpen)
   }, [comboboxOpen, setIsEditing, onEditChange])
 
-  // Focus and select the input, then open the menu. Double requestAnimationFrame
-  // ensures selection happens after all rendering, matching Combobox.handleFocus.
   const openComboboxWithFocus = useCallback(() => {
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
@@ -202,18 +193,26 @@ export function usePropertyCombobox({
     }
   }
 
-  const handleComboboxClose = () => {
-    // If no selection was made, restore the original value (cancel).
+  const restoreInputIfNeeded = () => {
     if (!hasSelectionRef.current && originalValueRef.current !== undefined) {
       const option = flatOptions.find(
         (o) => o.value === originalValueRef.current,
       )
       setInputValue(option ? option.name : originalValueRef.current || "")
     }
+  }
+
+  const handleComboboxClose = () => {
+    restoreInputIfNeeded()
     setComboboxOpen(false)
     if (effectiveControlType === "menu") {
       onBlur?.()
     }
+  }
+
+  const handleCancelInput = () => {
+    restoreInputIfNeeded()
+    setComboboxOpen(false)
   }
 
   return {
@@ -222,11 +221,11 @@ export function usePropertyCombobox({
     open: comboboxOpen,
     setOpen: setComboboxOpen,
     inputValue,
-    isValid,
     filteredOptions,
     handleSelect,
     handleInputChange,
     handleSubmitInput,
+    handleCancelInput,
     highlightedValue,
     setHighlightedValue,
     hasSections,

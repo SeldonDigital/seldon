@@ -5,13 +5,14 @@ import {
   Ref,
   RefObject,
   useCallback,
+  useEffect,
   useState,
 } from "react"
 import { Board, Instance, Theme, Variant } from "@seldon/core"
 import { useThemes } from "@lib/themes/hooks/use-themes"
 import { useSelection } from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
-import type { ComboboxOptionItems } from "../controls/combobox/types"
+import type { ComboboxOptionItems } from "@seldon/components/custom-components"
 import {
   FontCollectionEditingContext,
   IconSetEditingContext,
@@ -54,6 +55,8 @@ interface FieldControlView {
   combobox: {
     value: string
     onValueChange: (value: string) => void
+    onSubmit: (value: string) => void
+    onCancel: () => void
     placeholder: string
     validate?: (value: string) => boolean
     disabled?: boolean
@@ -78,14 +81,12 @@ interface ComboboxControlView {
     open: boolean
     setOpen: (open: boolean) => void
     handleSubmit: () => void
-    isValid: boolean
+    onCancel: () => void
     placeholder: string
     disabled?: boolean
     autoFocus: boolean
-    hideChevron: boolean
     options: ComboboxOptionItems
     onOptionSelect: (value: string) => void
-    onHighlightedValueChange: (value: string | undefined) => void
     style: CSSProperties
   }
   options: {
@@ -184,6 +185,13 @@ export function usePropertyControl({
   })
 
   const themes = useThemes()
+  const [fieldDraft, setFieldDraft] = useState(display.displayValue)
+
+  useEffect(() => {
+    if (!isEditing) {
+      setFieldDraft(display.displayValue)
+    }
+  }, [isEditing, display.displayValue])
 
   const placeholder = formatControlPlaceholder({
     placeholder: getPlaceholder(),
@@ -201,8 +209,10 @@ export function usePropertyControl({
       onBlur,
       wrapperStyle: display.textWrapperStyle,
       combobox: {
-        value: display.displayValue,
-        onValueChange: commit,
+        value: fieldDraft,
+        onValueChange: setFieldDraft,
+        onSubmit: commit,
+        onCancel: () => setFieldDraft(display.displayValue),
         placeholder,
         validate: validationFunction,
         disabled: property.isDimmed,
@@ -235,14 +245,12 @@ export function usePropertyControl({
       open: combo.open,
       setOpen: combo.setOpen,
       handleSubmit: combo.handleSubmitInput,
-      isValid: combo.isValid,
+      onCancel: combo.handleCancelInput,
       placeholder,
       disabled: property.isDimmed,
       autoFocus: isEditing,
-      hideChevron: true,
       options: combo.filteredOptions,
       onOptionSelect: combo.handleSelect,
-      onHighlightedValueChange: combo.setHighlightedValue,
       style: display.fieldStyle,
     },
     options: {

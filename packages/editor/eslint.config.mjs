@@ -43,6 +43,14 @@ export default defineConfig([
       ],
     },
   },
+  // ViewModel hooks authored as .tsx (e.g. context providers) may call Model
+  // services; the service-import rule targets view components only.
+  {
+    files: ["app/**/hooks/**/*.tsx"],
+    rules: {
+      "no-restricted-imports": "off",
+    },
+  },
   // View boundary: app/ components are binding shells. They should not author
   // raw DOM markup or reach into Model services directly. Warnings for now;
   // these become errors once the migration completes.

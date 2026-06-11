@@ -1,19 +1,15 @@
 import { dropTargetForElements } from "@atlaskit/pragmatic-drag-and-drop/element/adapter"
 import { Placement } from "@lib/types"
 import { useEffect, useRef, useState } from "react"
-import { Board, Instance, Variant, Workspace, invariant } from "@seldon/core"
-import { getComponentSchema } from "@seldon/core/components/catalog"
-import { isComponentId } from "@seldon/core/components/constants"
+import { Instance, Variant, Workspace, invariant } from "@seldon/core"
 import { rules } from "@seldon/core/rules/config/rules.config"
-import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
 import type { EntryNode } from "@seldon/core/workspace/types"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { getNodeCatalogComponentId } from "@lib/workspace/node-tree"
-import { getComponentKey } from "@lib/workspace/workspace-accessors"
 
 export type DropzoneParams = {
-  target: Board | Variant | Instance | EntryNode
+  target: Variant | Instance | EntryNode
   placement: Placement
   onDragEnter?: () => void
   onDragLeave?: () => void
@@ -31,7 +27,6 @@ export function useDropzone({
   const ref = useRef(null)
   const [isValidDropTarget, setValidDropTarget] = useState(false)
   const { workspace } = useWorkspace({ usePreview: false })
-  const isBoardTarget = isBoard(target)
 
   useEffect(() => {
     const el = ref.current
@@ -39,104 +34,53 @@ export function useDropzone({
 
     return dropTargetForElements({
       element: el,
-      getData: ({ input }) => {
-        if (isBoardTarget) {
-          return {
-            targetBoard: target,
-            placement,
-            duplicate: false,
-          }
-        }
-
-        return {
-          targetNode: target,
-          placement,
-          duplicate: input.altKey,
-        }
-      },
-      getDropEffect: ({ input }) => {
-        if (isBoardTarget) {
-          return "move"
-        }
-
-        return input.altKey ? "copy" : "move"
-      },
+      getData: ({ input }) => ({
+        targetNode: target,
+        placement,
+        duplicate: input.altKey,
+      }),
+      getDropEffect: ({ input }) => (input.altKey ? "copy" : "move"),
       onDragEnter: ({ source }) => {
         onDragEnter?.()
 
-        if (isBoardTarget) {
-          const subjectBoard = source.data.subjectBoard as Board
-          const isValid = isValidTargetForSubjectBoard(target, subjectBoard)
-          setValidDropTarget(isValid)
-        } else {
-          const subjectNode = source.data.subjectNode as
-            | Variant
-            | Instance
-            | EntryNode
-          const isValid = isValidTargetForSubjectNode(
-            target as Variant | Instance | EntryNode,
-            subjectNode,
-            placement,
-            workspace,
-          )
-          setValidDropTarget(isValid)
-        }
+        const subjectNode = source.data.subjectNode as
+          | Variant
+          | Instance
+          | EntryNode
+        const isValid = isValidTargetForSubjectNode(
+          target,
+          subjectNode,
+          placement,
+          workspace,
+        )
+        setValidDropTarget(isValid)
       },
       onDragLeave: () => {
         onDragLeave?.()
         setValidDropTarget(false)
       },
       canDrop: ({ source }) => {
-        if (isBoardTarget) {
-          const subjectBoard = source.data.subjectBoard as Board
-          return isValidTargetForSubjectBoard(target, subjectBoard)
-        } else {
-          const subjectNode = source.data.subjectNode as
-            | Variant
-            | Instance
-            | EntryNode
-          return isValidTargetForSubjectNode(
-            target as Variant | Instance | EntryNode,
-            subjectNode,
-            placement,
-            workspace,
-          )
-        }
+        const subjectNode = source.data.subjectNode as
+          | Variant
+          | Instance
+          | EntryNode
+        return isValidTargetForSubjectNode(
+          target,
+          subjectNode,
+          placement,
+          workspace,
+        )
       },
       onDrop: () => {
         setValidDropTarget(false)
       },
     })
-  }, [placement, onDragEnter, onDragLeave, target, isBoardTarget, workspace])
+  }, [placement, onDragEnter, onDragLeave, target, workspace])
 
   return {
     ref,
     isValidDropTarget,
   }
-}
-
-function getBoardCatalogId(board: Board): string | null {
-  if ("catalogId" in board && board.catalogId) {
-    return board.catalogId
-  }
-  const legacyId = (board as { id?: string }).id
-  return legacyId ?? null
-}
-
-function isValidTargetForSubjectBoard(target: Board, subject: Board): boolean {
-  if (getComponentKey(target) === getComponentKey(subject)) return false
-
-  const targetCatalogId = getBoardCatalogId(target)
-  const subjectCatalogId = getBoardCatalogId(subject)
-  if (!targetCatalogId || !subjectCatalogId) return false
-  if (!isComponentId(targetCatalogId) || !isComponentId(subjectCatalogId)) {
-    return false
-  }
-
-  return (
-    getComponentSchema(targetCatalogId).level ===
-    getComponentSchema(subjectCatalogId).level
-  )
 }
 
 function isValidTargetForSubjectNode(

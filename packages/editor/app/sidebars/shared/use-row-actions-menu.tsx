@@ -1,6 +1,7 @@
 "use client"
 
 import { Menu, MenuAlign, MenuEntry } from "@lib/menus"
+import { ICONIC_BUTTON_ATTR } from "../helpers/iconic-button"
 import { ReactNode, Ref, useRef, useState } from "react"
 import { ButtonIconicProps } from "@seldon/components/elements/ButtonIconic"
 import { IconProps } from "@seldon/components/primitives/Icon"
@@ -41,9 +42,10 @@ export function useRowActionsMenu(
   const hasActions = items.length > 0
   const ariaLabel = options?.["aria-label"] ?? "Row actions"
 
-  const buttonIconic: RowActionsMenuSlots["buttonIconic"] = {
+  const buttonIconic = {
     ref: triggerRef,
-    type: "button",
+    type: "button" as const,
+    [ICONIC_BUTTON_ATTR]: true,
     "aria-label": ariaLabel,
     "aria-haspopup": "menu",
     "aria-expanded": open,
@@ -64,7 +66,7 @@ export function useRowActionsMenu(
       zIndex: 10,
       ...(hasActions ? null : { pointerEvents: "none" }),
     },
-  }
+  } as RowActionsMenuSlots["buttonIconic"]
 
   const icon: IconProps = {
     icon: "seldon-more",

@@ -22,6 +22,8 @@ import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { useImageUploadPanel } from "@app/panels/hooks/use-upload-image-panel"
 import { FormControlIconicProps } from "@seldon/components/elements/FormControlIconic"
 import { buildPropertyOptions } from "../helpers/build-property-options"
+import { buildResetMenuEntry } from "../../shared/build-reset-menu-entry"
+import { ICONIC_BUTTON_SELECTOR } from "../../helpers/iconic-button"
 import {
   FRAME_REF_ATTR,
   FRAME_REF_SELECTOR,
@@ -53,7 +55,10 @@ import {
   isSwatchIconPropertyKey,
 } from "../helpers/theme-token-icon-color"
 import { usePropertyControlData } from "./use-property-control-data"
-import { usePropertyExpansion } from "./use-property-expansion"
+import {
+  useIsPropertyExpanded,
+  usePropertyExpansion,
+} from "./use-property-expansion"
 import { usePropertyFrameHover } from "./use-property-frame-hover"
 
 export interface RowPropertyProps {
@@ -86,7 +91,7 @@ export function useRowProperty({
 }: RowPropertyProps) {
   const { showPropertyTypes } = useDebugMode()
   const { resetProperty } = useObjectProperties()
-  const { isPropertyExpanded, toggleProperty } = usePropertyExpansion()
+  const { toggleProperty } = usePropertyExpansion()
   const themes = useThemes()
   const { getPropertyValueForDisplay, getUnit, shouldShowMenuIcon } =
     usePropertyControlData({ property, theme })
@@ -105,7 +110,7 @@ export function useRowProperty({
   }, [allProperties, property.key, property.isCompound, property.isShorthand])
 
   const hasChildren = children.length > 0
-  const isExpanded = isPropertyExpanded(property.key)
+  const isExpanded = useIsPropertyExpanded(property.key)
   const labelText = property.label
   const isThemeAssignment = property.pickerVariant === "themeAssignment"
 
@@ -248,7 +253,7 @@ export function useRowProperty({
     }
 
     const target = event.target as HTMLElement
-    if (target.closest("button") || target.closest(".sdn-button-iconic")) {
+    if (target.closest("button") || target.closest(ICONIC_BUTTON_SELECTOR)) {
       return
     }
 
@@ -277,7 +282,7 @@ export function useRowProperty({
     const target = event.target as HTMLElement
     if (
       target.closest("button") ||
-      target.closest(".sdn-button-iconic") ||
+      target.closest(ICONIC_BUTTON_SELECTOR) ||
       isEditingProperty ||
       property.isDimmed ||
       !hasChildren
@@ -342,12 +347,11 @@ export function useRowProperty({
 
   const resetActions: MenuEntry[] = canReset
     ? [
-        {
-          id: "reset",
+        buildResetMenuEntry({
           label: `Reset ${labelText}`,
           onSelect: handleReset,
           testId: `property-row-${property.key}-reset`,
-        },
+        }),
       ]
     : []
 

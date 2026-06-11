@@ -28,17 +28,19 @@ const useStore = create<SectionExpansionState>((set) => ({
 }))
 
 /**
- * This hook is used to expand and collapse sections in the objects panel.
+ * Reactive read for one section's expansion state. Subscribe through this
+ * selector so only rows for that section re-render on toggle.
+ */
+export const useIsSectionExpanded = (
+  section: ToggleableSection,
+  hasContent = false,
+): boolean => useStore((state) => state.overrides[section] ?? hasContent)
+
+/**
+ * Section expansion actions. Use `useIsSectionExpanded` for reads so toggles
+ * stay reactive without re-rendering every section consumer.
  */
 export const useSectionExpansion = () => {
-  const { overrides, toggleSection } = useStore()
-
-  return {
-    toggleSection,
-    isSectionExpanded: (section: ToggleableSection, hasContent = false) => {
-      // Until the user toggles a section, empty sections start collapsed and
-      // sections with content start expanded.
-      return overrides[section] ?? hasContent
-    },
-  }
+  const toggleSection = useStore((state) => state.toggleSection)
+  return { toggleSection }
 }

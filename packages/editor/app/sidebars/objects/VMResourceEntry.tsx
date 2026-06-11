@@ -1,7 +1,7 @@
 "use client"
 
 import { MenuEntry } from "@lib/menus"
-import { CSSProperties, useCallback } from "react"
+import { useCallback } from "react"
 import { Board as BoardType, Variant } from "@seldon/core"
 import { Action } from "@seldon/core/index"
 import {
@@ -31,12 +31,8 @@ import { RowSelectionTarget } from "./RowSelectionTarget"
 import { ItemNodeRow } from "@seldon/components/elements/ItemNodeRow"
 import { IconProps } from "@seldon/components/primitives/Icon"
 import { TextLabelProps } from "@seldon/components/primitives/TextLabel"
-import { Combobox } from "../properties/controls/combobox/Combobox"
-
-const rowWrapperStyle: CSSProperties = {
-  width: "100%",
-  minWidth: 0,
-}
+import { rowWrapperStyle } from "../helpers/sidebar-row-styles"
+import { useInlineRename } from "../hooks/use-inline-rename"
 
 type ResolvedEntry = {
   label: string
@@ -84,15 +80,19 @@ export function VMResourceEntry({
   show = true,
   parentIsSelected = false,
 }: VMResourceEntryProps) {
-  const { workspace, dispatch } = useWorkspace({ usePreview: false })
+  const { workspace } = useWorkspace({ usePreview: false })
   const { activeTool } = useTool()
   const { selectResourceEntry } = useSelection()
-  const { isEditingName, setEditingName, submitLabel } = useResourceEntryRow(
-    config,
-    entryId,
-  )
-
   const isSelected = useIsResourceEntrySelected(config.kind, entryId)
+  const entry = config.getEntry(workspace, entryId)
+
+  const { isEditingName, setEditingName, submitLabel, resetActions } =
+    useResourceEntryRow({
+      config,
+      entryId,
+      entry,
+      isSelected,
+    })
   const isActive = parentIsSelected || isSelected
 
   const onClick = useRowClick({
@@ -100,7 +100,6 @@ export function VMResourceEntry({
     onSelect: () => selectResourceEntry(config.kind, entryId),
   })
 
-  const entry = config.getEntry(workspace, entryId)
   const canRename = Boolean(config.buildLabelAction) && !entry?.isDefault
 
   const onDoubleClick = useCallback(() => {
@@ -116,27 +115,6 @@ export function VMResourceEntry({
   const hoverStyle = useRowHighlightStyle(entryId, isSelected)
   const combinedRowStyle = { ...hoverStyle, ...rowStyle }
 
-  // Mirrors resettable variant nodes: the selected default entry always offers
-  // "Reset to Catalog" (idempotent without overrides), a selected variant entry
-  // offers "Reset to Default" only when it carries overrides.
-  const buildResetAction = config.buildResetAction
-  const canReset =
-    Boolean(buildResetAction) &&
-    isSelected &&
-    !!entry &&
-    (entry.isDefault || entry.hasOverrides === true)
-  const resetActions: MenuEntry[] =
-    buildResetAction && canReset && entry
-      ? [
-          {
-            id: "reset",
-            label: entry.isDefault ? "Reset to Catalog" : "Reset to Default",
-            onSelect: () => dispatch(buildResetAction(entryId)),
-            testId: `${config.testId}-${entryId}-reset`,
-          },
-        ]
-      : []
-
   const actionsMenu = useRowActionsMenu(resetActions, { color: iconColor })
   const hasActions = resetActions.length > 0
 
@@ -147,16 +125,15 @@ export function VMResourceEntry({
     ...(iconColor ? { style: { color: iconColor } } : {}),
   }
 
+  const { labelChildren: renameLabel } = useInlineRename({
+    label: entry?.label ?? "",
+    isEditing: isEditingName && Boolean(config.buildLabelAction),
+    setEditing: setEditingName,
+    onSubmit: submitLabel,
+  })
+
   const labelChildren =
-    isEditingName && config.buildLabelAction ? (
-      <Combobox
-        mode="standalone"
-        initialValue={entry.label}
-        onSubmit={submitLabel}
-      />
-    ) : (
-      entry.label
-    )
+    isEditingName && config.buildLabelAction ? renameLabel : entry.label
 
   const textLabel = {
     children: labelChildren,

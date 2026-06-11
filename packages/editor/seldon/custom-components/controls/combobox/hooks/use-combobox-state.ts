@@ -21,9 +21,11 @@ export function useComboboxState<
   inputRef,
 }: ComboboxStateProps<ItemT>) {
   const [open, setOpen] = useState(false)
-  const [isValid, setIsValid] = useState(true)
   const [shouldFilter, setShouldFilter] = useState(false)
   const [inputValue, setInputValue] = useState("")
+  const [highlightedValue, setHighlightedValue] = useState<string | undefined>(
+    undefined,
+  )
   const hasSections = Array.isArray(options[0])
   const isManualSubmit = useRef(false)
   const flatOptions = useMemo(() => {
@@ -31,6 +33,16 @@ export function useComboboxState<
       ? (options as Array<ItemT[]>).flat()
       : (options as ItemT[])
   }, [hasSections, options])
+
+  const navigableOptions = useMemo(
+    () =>
+      flatOptions.filter(
+        (option) =>
+          !("hidden" in option && option.hidden) &&
+          !("disabled" in option && option.disabled),
+      ),
+    [flatOptions],
+  )
 
   const currentValueOption = flatOptions.find((o) => o.value === value)
 
@@ -50,10 +62,21 @@ export function useComboboxState<
     }
   }, [options, inputValue, shouldFilter, hasSections])
 
+  useEffect(() => {
+    if (!open) {
+      setHighlightedValue(undefined)
+      return
+    }
+
+    const currentIndex = navigableOptions.findIndex(
+      (option) => option.value === value,
+    )
+    setHighlightedValue(
+      navigableOptions[currentIndex >= 0 ? currentIndex : 0]?.value,
+    )
+  }, [open, value, navigableOptions])
+
   function handleSelect(selectedValue: string) {
-    // Due to the nature of the CMDK library, a ComboboxOption will emit a select event
-    // even if we've manually submitted the input value, so we need to ignore the event if that's the case
-    // to prevent double submission. Not ideal, but constraints of the CMDK library for now.
     if (isManualSubmit.current) {
       isManualSubmit.current = false
       return
@@ -69,19 +92,9 @@ export function useComboboxState<
   }
 
   function handleInputChange(newValue: string) {
-    // Only start filtering after user input
     setShouldFilter(true)
     const option = flatOptions.find((o) =>
       o.name.toLowerCase().includes(newValue.toLowerCase()),
-    )
-    // Input is valid if the input value is close to a standard option,
-    // or if the input value is a valid value according to the validate function.
-    setIsValid(
-      option
-        ? true
-        : validateCustomValue
-          ? validateCustomValue(newValue)
-          : false,
     )
     setInputValue(newValue)
   }
@@ -97,9 +110,6 @@ export function useComboboxState<
       (o) => o.value.toLowerCase() === value?.toLowerCase(),
     )
 
-    // 1. If the input value is a valid standard option, use it
-    // 2. If the input value is valid according to the validate function, use it
-    // 3. Else, the value is invalid, so set the input value to the original value
     if (nextSelectedOption) {
       handleValueChange(nextSelectedOption.value)
     } else if (validateCustomValue && validateCustomValue(inputValue)) {
@@ -116,8 +126,8 @@ export function useComboboxState<
     }, 0)
   }
 
-  function handleValueChange(value: string) {
-    onValueChange(value)
+  function handleValueChange(nextValue: string) {
+    onValueChange(nextValue)
   }
 
   const handleKeyDown = useCallback((event: KeyboardEvent) => {
@@ -141,13 +151,14 @@ export function useComboboxState<
   return {
     open,
     setOpen,
-    isValid,
     inputValue,
     setInputValue,
     filteredOptions,
     handleSelect,
     handleInputChange,
     handleSubmitInput,
+    highlightedValue,
+    setHighlightedValue,
     currentValueOption,
     flatOptions,
   }
