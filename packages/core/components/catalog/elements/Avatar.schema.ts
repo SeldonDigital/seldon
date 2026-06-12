@@ -1,6 +1,10 @@
-import * as Sdn from "../../../properties"
-import * as Seldon from "../../constants"
-import { ComponentExport, ComponentSchema } from "../../types"
+import * as Sdn from "../../../properties";
+import * as Seldon from "../../constants";
+import { ComponentExport, ComponentSchema } from "../../types";
+
+
+
+
 
 export const schema = {
   name: "Avatar",
@@ -121,7 +125,15 @@ export const schema = {
         type: Sdn.ValueType.OPTION,
         value: Sdn.BorderStyle.SOLID,
       },
-      color: { type: Sdn.ValueType.EMPTY, value: null },
+      color: {
+        type: Sdn.ValueType.COMPUTED,
+        value: {
+          function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+          input: {
+            basedOn: "#parent.background.color",
+          },
+        },
+      },
       width: { type: Sdn.ValueType.EMPTY, value: null },
       brightness: { type: Sdn.ValueType.EMPTY, value: null },
       opacity: { type: Sdn.ValueType.EMPTY, value: null },
@@ -225,8 +237,13 @@ export const schema = {
                 value: "Default Title",
               },
               color: {
-                type: Sdn.ValueType.THEME_CATEGORICAL,
-                value: "@swatch.black",
+                type: Sdn.ValueType.COMPUTED,
+                value: {
+                  function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+                  input: {
+                    basedOn: "#parent.background.color",
+                  },
+                },
               },
               font: {
                 preset: {
@@ -254,8 +271,13 @@ export const schema = {
                 value: "Details",
               },
               color: {
-                type: Sdn.ValueType.THEME_CATEGORICAL,
-                value: "@swatch.black",
+                type: Sdn.ValueType.COMPUTED,
+                value: {
+                  function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+                  input: {
+                    basedOn: "#parent.background.color",
+                  },
+                },
               },
               font: {
                 preset: {
@@ -324,8 +346,13 @@ export const schema = {
                   value: "Default Title",
                 },
                 color: {
-                  type: Sdn.ValueType.THEME_CATEGORICAL,
-                  value: "@swatch.black",
+                  type: Sdn.ValueType.COMPUTED,
+                  value: {
+                    function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+                    input: {
+                      basedOn: "#parent.background.color",
+                    },
+                  },
                 },
                 font: {
                   preset: {
@@ -348,8 +375,13 @@ export const schema = {
                   value: "Details",
                 },
                 color: {
-                  type: Sdn.ValueType.THEME_CATEGORICAL,
-                  value: "@swatch.black",
+                  type: Sdn.ValueType.COMPUTED,
+                  value: {
+                    function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+                    input: {
+                      basedOn: "#parent.background.color",
+                    },
+                  },
                 },
                 font: {
                   preset: {
@@ -433,8 +465,13 @@ export const schema = {
                   value: "Default Title",
                 },
                 color: {
-                  type: Sdn.ValueType.THEME_CATEGORICAL,
-                  value: "@swatch.black",
+                  type: Sdn.ValueType.COMPUTED,
+                  value: {
+                    function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+                    input: {
+                      basedOn: "#parent.background.color",
+                    },
+                  },
                 },
                 font: {
                   preset: {
@@ -457,8 +494,13 @@ export const schema = {
                   value: "Details",
                 },
                 color: {
-                  type: Sdn.ValueType.THEME_CATEGORICAL,
-                  value: "@swatch.black",
+                  type: Sdn.ValueType.COMPUTED,
+                  value: {
+                    function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+                    input: {
+                      basedOn: "#parent.background.color",
+                    },
+                  },
                 },
                 font: {
                   preset: {

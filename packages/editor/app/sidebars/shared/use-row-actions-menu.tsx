@@ -2,7 +2,7 @@
 
 import { Menu, MenuAlign, MenuEntry } from "@lib/menus"
 import { ICONIC_BUTTON_ATTR } from "../helpers/iconic-button"
-import { ReactNode, Ref, useRef, useState } from "react"
+import { CSSProperties, ReactNode, RefObject, Ref, useRef, useState } from "react"
 import { ButtonIconicProps } from "@seldon/components/elements/ButtonIconic"
 import { IconProps } from "@seldon/components/primitives/Icon"
 
@@ -11,15 +11,29 @@ interface UseRowActionsMenuOptions {
   /** Tints the trigger icon to match the row contents (e.g. blue when selected). */
   color?: string
   "aria-label"?: string
+  /** Receives focus after a menu action when the trigger may be removed. */
+  focusTargetRef?: RefObject<HTMLElement | null>
+}
+
+const PLACEHOLDER_BUTTON_STYLE: CSSProperties = {
+  visibility: "hidden",
+  pointerEvents: "none",
+  flexShrink: 0,
+}
+
+const PLACEHOLDER_ICON_STYLE: CSSProperties = {
+  visibility: "hidden",
 }
 
 export interface RowActionsMenuSlots {
+  hasActions: boolean
   /**
-   * Trailing iconic-button slot props for a generated row. The `ref` rides
-   * along as a regular prop and reaches the underlying button element.
+   * Trailing iconic-button slot props for a generated row. Always defined so
+   * generated rows keep a stable footprint. Inactive rows receive a disabled,
+   * inert placeholder; active rows receive the real menu trigger.
    */
-  buttonIconic: ButtonIconicProps & { ref: Ref<HTMLButtonElement> }
-  /** Trigger icon slot props paired with the button slot. */
+  buttonIconic: ButtonIconicProps & { ref?: Ref<HTMLButtonElement> }
+  /** Trigger icon slot props paired with the button slot. Always defined. */
   icon: IconProps
   /** Floating menu node. Render it as a sibling of the row. */
   menu: ReactNode
@@ -29,8 +43,7 @@ export interface RowActionsMenuSlots {
  * Headless "..." actions menu for sidebar rows. Returns slot props that drive
  * a generated row's trailing iconic-button slot plus the floating menu node,
  * so no hand-written markup mimics generated styling. When there are no
- * actions the trigger keeps its footprint but hides the icon and ignores
- * interaction, mirroring how the reset button was previously hidden.
+ * actions the slot stays reserved with a non-interactive placeholder.
  */
 export function useRowActionsMenu(
   items: MenuEntry[],
@@ -42,49 +55,55 @@ export function useRowActionsMenu(
   const hasActions = items.length > 0
   const ariaLabel = options?.["aria-label"] ?? "Row actions"
 
-  const buttonIconic = {
-    ref: triggerRef,
-    type: "button" as const,
-    [ICONIC_BUTTON_ATTR]: true,
-    "aria-label": ariaLabel,
-    "aria-haspopup": "menu",
-    "aria-expanded": open,
-    "aria-hidden": hasActions ? undefined : true,
-    tabIndex: hasActions ? undefined : -1,
-    onClick: (event) => {
-      event.stopPropagation()
-      setOpen((current) => !current)
-    },
-    onKeyDown: (event) => {
-      if (event.key === "ArrowDown" || event.key === "ArrowUp") {
-        event.preventDefault()
-        setOpen(true)
-      }
-    },
-    style: {
-      position: "relative",
-      zIndex: 10,
-      ...(hasActions ? null : { pointerEvents: "none" }),
-    },
-  } as RowActionsMenuSlots["buttonIconic"]
-
   const icon: IconProps = {
     icon: "seldon-more",
     style: {
-      opacity: hasActions ? 1 : 0,
+      ...(hasActions ? {} : PLACEHOLDER_ICON_STYLE),
       ...(options?.color ? { color: options.color } : {}),
     },
   }
 
-  const menu = (
+  const buttonIconic = (hasActions
+    ? {
+        ref: triggerRef,
+        type: "button" as const,
+        [ICONIC_BUTTON_ATTR]: true,
+        "aria-label": ariaLabel,
+        "aria-haspopup": "menu" as const,
+        "aria-expanded": open,
+        onClick: (event: React.MouseEvent<HTMLButtonElement>) => {
+          event.stopPropagation()
+          setOpen((current) => !current)
+        },
+        onKeyDown: (event: React.KeyboardEvent<HTMLButtonElement>) => {
+          if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+            event.preventDefault()
+            setOpen(true)
+          }
+        },
+        style: {
+          position: "relative",
+          zIndex: 10,
+        },
+      }
+    : {
+        type: "button" as const,
+        disabled: true,
+        tabIndex: -1,
+        inert: true,
+        style: PLACEHOLDER_BUTTON_STYLE,
+      }) as RowActionsMenuSlots["buttonIconic"]
+
+  const menu = hasActions ? (
     <Menu
       open={open}
       anchorRef={triggerRef}
+      focusTargetRef={options?.focusTargetRef}
       onClose={() => setOpen(false)}
       items={items}
       align={options?.align ?? "end"}
     />
-  )
+  ) : null
 
-  return { buttonIconic, icon, menu }
+  return { hasActions, buttonIconic, icon, menu }
 }

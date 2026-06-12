@@ -1,12 +1,12 @@
 import type { Middleware } from "../../types"
+import {
+  CURRENT_WORKSPACE_VERSION,
+  migrateWorkspace,
+} from "./migrate-workspace"
 
-/**
- * Current workspace file version. The flattened v0 baseline ships no historical
- * migrations, so files saved before v0 are not guaranteed to load.
- */
-export const CURRENT_WORKSPACE_VERSION = 0
+export { CURRENT_WORKSPACE_VERSION }
 
-/** On `set_workspace`, normalizes `metadata.version` to the current baseline. */
+/** On `set_workspace`, runs pending migrations and stamps `metadata.version`. */
 export const migrationMiddleware: Middleware =
   (next) => (workspace, action) => {
     const nextWorkspace = next(workspace, action)
@@ -15,10 +15,12 @@ export const migrationMiddleware: Middleware =
       return nextWorkspace
     }
 
+    const migrated = migrateWorkspace(nextWorkspace)
+
     return {
-      ...nextWorkspace,
+      ...migrated,
       metadata: {
-        ...nextWorkspace.metadata,
+        ...migrated.metadata,
         version: CURRENT_WORKSPACE_VERSION,
       },
     }

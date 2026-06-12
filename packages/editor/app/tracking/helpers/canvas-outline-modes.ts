@@ -5,6 +5,12 @@ import type { NodeRect } from "../hooks/use-node-rects-store"
 /** Canvas overlay stroke width (px). */
 export const CANVAS_OVERLAY_BORDER_PX = 1
 
+/** Default hover border color for canvas selection outlines. */
+export const DEFAULT_HOVER_OUTLINE_COLOR = COLORS.charcoal[400]
+
+/** Default selection border color for canvas selection outlines. */
+export const DEFAULT_SELECTION_OUTLINE_COLOR = COLORS.charcoal[700]
+
 /**
  * Shared dashed-border styling for canvas selection and hover outlines.
  *
@@ -13,14 +19,18 @@ export const CANVAS_OVERLAY_BORDER_PX = 1
  */
 export function getSelectionOutlineStyle(
   variant: "selection" | "hover" = "selection",
+  borderColor?: string,
 ): Pick<
   CSSProperties,
   "borderStyle" | "borderColor" | "borderWidth" | "boxSizing"
 > {
+  const defaultColor =
+    variant === "hover"
+      ? DEFAULT_HOVER_OUTLINE_COLOR
+      : DEFAULT_SELECTION_OUTLINE_COLOR
   return {
     borderStyle: "dashed",
-    borderColor:
-      variant === "hover" ? COLORS.charcoal[400] : COLORS.charcoal[700],
+    borderColor: borderColor ?? defaultColor,
     borderWidth: CANVAS_OVERLAY_BORDER_PX,
     boxSizing: "border-box",
   }

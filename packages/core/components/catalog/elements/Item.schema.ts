@@ -2,6 +2,10 @@ import * as Sdn from "../../../properties";
 import * as Seldon from "../../constants";
 import { ComponentExport, ComponentSchema } from "../../types";
 
+
+
+
+
 export const schema = {
   name: "Item",
   id: Seldon.ComponentId.ITEM,
@@ -207,6 +211,15 @@ export const schema = {
                 type: Sdn.ValueType.EXACT,
                 value: "Title",
               },
+              color: {
+                type: Sdn.ValueType.COMPUTED,
+                value: {
+                  function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+                  input: {
+                    basedOn: "#parent.background.color",
+                  },
+                },
+              },
             },
           },
           {
@@ -216,6 +229,15 @@ export const schema = {
               content: {
                 type: Sdn.ValueType.EXACT,
                 value: "Subtitle",
+              },
+              color: {
+                type: Sdn.ValueType.COMPUTED,
+                value: {
+                  function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+                  input: {
+                    basedOn: "#parent.background.color",
+                  },
+                },
               },
               lines: {
                 type: Sdn.ValueType.EXACT,
@@ -418,6 +440,15 @@ export const schema = {
             width: {
               type: Sdn.ValueType.OPTION,
               value: Sdn.Resize.FILL,
+            },
+            color: {
+              type: Sdn.ValueType.COMPUTED,
+              value: {
+                function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+                input: {
+                  basedOn: "#parent.background.color",
+                },
+              },
             },
             font: {
               preset: {
@@ -877,6 +908,15 @@ export const schema = {
                 value: "@padding.tight",
               },
             },
+            color: {
+              type: Sdn.ValueType.COMPUTED,
+              value: {
+                function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+                input: {
+                  basedOn: "#parent.background.color",
+                },
+              },
+            },
             font: {
               preset: {
                 type: Sdn.ValueType.THEME_CATEGORICAL,
@@ -1030,6 +1070,15 @@ export const schema = {
             width: {
               type: Sdn.ValueType.OPTION,
               value: Sdn.Resize.FILL,
+            },
+            color: {
+              type: Sdn.ValueType.COMPUTED,
+              value: {
+                function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+                input: {
+                  basedOn: "#parent.background.color",
+                },
+              },
             },
           },
         },

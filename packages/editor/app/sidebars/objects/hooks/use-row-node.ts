@@ -12,8 +12,8 @@ import { nodeSubtreeHasOverrides } from "@seldon/core/workspace/helpers/nodes/ge
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
 import type { EntryNode } from "@seldon/core/workspace/types"
 import {
-  useSelectedNodeRootId,
   useSelection,
+  useStore as useSelectionStore,
 } from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useDebugMode } from "@lib/hooks/use-debug-mode"
@@ -61,7 +61,6 @@ export function useRowNode(
   const { activeTool } = useTool()
   const { selectNode, selectBoard, selectResourceEntry, selectResourceItem } =
     useSelection()
-  const selectedNodeRootId = useSelectedNodeRootId()
   const { selectedNodeId, parentOfSelectedNodeId, ancestorIdsOfSelected } =
     useSelectionRelations()
   const { showNodeIds } = useDebugMode()
@@ -74,6 +73,7 @@ export function useRowNode(
   const { isEditingName, setEditingName } = useEditState(node)
 
   const rootId = options?.rootId
+  const selectionPath = rootId ?? node.id
   const show = options?.show ?? true
   const parentIsSelected = options?.parentIsSelected ?? false
   const disableReordering = options?.disableReordering ?? false
@@ -90,10 +90,14 @@ export function useRowNode(
 
   // A child id is shared across variant columns, so match the selected copy by
   // its path. Selections made without a path (e.g. a variant chosen
-  // programmatically) fall back to id-only matching.
-  const isSelected =
-    selectedNodeId === node.id &&
-    (selectedNodeRootId == null || selectedNodeRootId === rootId)
+  // programmatically) fall back to id-only matching. `selectionPath` falls back
+  // to the node id when the row path is not threaded into the hook.
+  const isSelected = useSelectionStore(
+    (state) =>
+      state.selectedNodeId === node.id &&
+      (state.selectedNodeRootId == null ||
+        state.selectedNodeRootId === selectionPath),
+  )
   const selectedNodeIsWithin = ancestorIdsOfSelected.has(node.id)
   const isParentOfSelectedNode = parentOfSelectedNodeId === node.id
   const isNodeActive =

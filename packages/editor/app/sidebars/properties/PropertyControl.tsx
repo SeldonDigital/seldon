@@ -29,7 +29,18 @@ export function PropertyControl(props: PropertyControlProps) {
   if (view.kind === "field") {
     return (
       <ControlFieldWrapper onBlur={view.onBlur} style={view.wrapperStyle}>
-        <Combobox mode="standalone" {...view.combobox} />
+        <Combobox
+          mode="standalone"
+          value={view.combobox.value}
+          onValueChange={view.combobox.onValueChange}
+          onSubmit={view.combobox.onSubmit}
+          onCancel={view.combobox.onCancel}
+          placeholder={view.combobox.placeholder}
+          validate={view.combobox.validate}
+          disabled={view.combobox.disabled}
+          autoFocus={view.combobox.autoFocus}
+          style={view.combobox.style}
+        />
       </ControlFieldWrapper>
     )
   }
@@ -42,7 +53,20 @@ export function PropertyControl(props: PropertyControlProps) {
       wrapperStyle={view.surface.wrapperStyle}
       innerStyle={view.surface.innerStyle}
     >
-      <Combobox mode="combobox" {...view.field} />
+      <Combobox
+        mode="combobox"
+        inputRef={view.field.inputRef}
+        value={view.field.value}
+        onValueChange={view.field.onValueChange}
+        open={view.field.open}
+        setOpen={view.field.setOpen}
+        handleSubmit={view.field.handleSubmit}
+        onCancel={view.field.onCancel}
+        placeholder={view.field.placeholder}
+        disabled={view.field.disabled}
+        autoFocus={view.field.autoFocus}
+        style={view.field.style}
+      />
       <ComboboxOptions
         open={view.options.open}
         position={view.options.position}

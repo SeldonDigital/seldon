@@ -28,7 +28,10 @@ import {
   getNodeChildIds,
 } from "@lib/workspace/node-tree"
 import { buildRenderParentIndex } from "@lib/workspace/render-parent-index"
-import { ComponentRenderer } from "./ComponentRenderer"
+import {
+  CanvasHtmlAttributes,
+  ComponentRenderer,
+} from "./ComponentRenderer"
 
 export type CanvasNodeProps = {
   nodeId: VariantId | InstanceId
@@ -167,7 +170,7 @@ export const CanvasNode = memo(function CanvasNode({
   function getHTMLAttributes(node: Variant | Instance, properties: Properties) {
     const componentId =
       getNodeCatalogComponentId(node, workspace) ?? catalogComponentId
-    const htmlAttributes: Record<string, string> = {
+    const htmlAttributes: CanvasHtmlAttributes = {
       "data-canvas-node-id": node.id,
       "data-canvas-selection-id": node.id,
       "data-selection-id": node.id,
@@ -198,7 +201,7 @@ export const CanvasNode = memo(function CanvasNode({
     }
 
     if (properties.checked?.value) {
-      htmlAttributes.checked = "checked"
+      htmlAttributes.defaultChecked = true
     }
 
     if (properties.columns?.value) {

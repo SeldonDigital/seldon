@@ -1,13 +1,20 @@
 import { isCompoundValue } from "../../helpers/type-guards/compound/is-compound-value"
 import { findInObject } from "../../helpers/utils/find-in-object"
 import { invariant } from "../../helpers/utils/invariant"
-import { ComputedFunction } from "../constants"
+import { ComputedFunction, ValueType } from "../constants"
 import type { Value } from "../types/value"
 import type { AtomicValue } from "../types/value-atomic"
+import { Color } from "../values/appearance/color"
 import type { ComputedValue } from "../values/shared/computed/computed-value"
 import { ComputeContext } from "./types"
 
 const LAYERED_PAINT_ROOTS = ["background", "gradient", "shadow"] as const
+
+export type ResolvedBasedOnWithAnchor = {
+  value: Value | undefined
+  /** Properties context that supplied `value`; used for sibling layer facets. */
+  facetSource: Omit<ComputeContext, "theme"> | null
+}
 
 /**
  * Maps schema-style paths such as `background.color` to runtime paths `background.0.color`.
@@ -26,12 +33,60 @@ function normalizeBasedOnLookupPath(path: string): string {
   return path
 }
 
+function isNonContributingBackgroundColor(value: Value | undefined): boolean {
+  if (!value || typeof value !== "object" || !("type" in value)) {
+    return true
+  }
+
+  if (value.type === ValueType.EMPTY || value.type === ValueType.INHERIT) {
+    return true
+  }
+
+  return (
+    value.type === ValueType.OPTION && value.value === Color.TRANSPARENT
+  )
+}
+
+/**
+ * Resolves a `basedOn` path and, for `#parent.*` lookups, walks `parentContext` while the hit is
+ * missing, `EMPTY`, `INHERIT`, or explicit `transparent`. Returns the context whose properties
+ * supplied the final value as `facetSource`.
+ */
+export function resolveBasedOnWithAnchor(
+  basedOn: string,
+  context: Omit<ComputeContext, "theme">,
+): ResolvedBasedOnWithAnchor {
+  const lookupPath = normalizeBasedOnLookupPath(basedOn.replace(/^#/, ""))
+  const parentLookupPath = normalizeBasedOnLookupPath(
+    basedOn.replace("#parent.", ""),
+  )
+
+  if (basedOn.includes("#parent.") && context.parentContext) {
+    let parent = context.parentContext
+
+    let value = findInObject<Value>(parent.properties, parentLookupPath)
+
+    while (isNonContributingBackgroundColor(value) && parent.parentContext) {
+      parent = parent.parentContext
+
+      value = findInObject<Value>(parent.properties, parentLookupPath)
+    }
+
+    return { value, facetSource: parent }
+  }
+
+  return {
+    value: findInObject<Value>(context.properties, lookupPath),
+    facetSource: context,
+  }
+}
+
 /**
  * Reads `computedValue.value.input.basedOn`, walks the path on the current node's `properties`, or
  * on the parent's `properties` when the path starts with `#parent.`. Dot segments follow the same
- * rules as `findInObject`. When the path starts with `#parent.` and the hit is the exact string
- * `transparent`, walks up `parentContext` and reads the same path again until the value is not
- * transparent or there is no further parent.
+ * rules as `findInObject`. When the path starts with `#parent.` and the hit is missing,
+ * `EMPTY`, `INHERIT`, or explicit `transparent`, walks up `parentContext` and reads the same path
+ * again until a contributing value appears or there is no further parent.
  *
  * @param computedValue - Any computed value type that carries `basedOn` on `value.input`
  * @param context - Properties and parent chain only; theme is omitted because paths do not read it
@@ -42,7 +97,6 @@ export function getBasedOnValue(
   computedValue: ComputedValue,
   context: Omit<ComputeContext, "theme">,
 ): AtomicValue {
-  let value: Value | undefined
   const basedOn =
     computedValue.value.input?.basedOn ??
     (computedValue.value.function === ComputedFunction.HIGH_CONTRAST_COLOR
@@ -55,29 +109,7 @@ export function getBasedOnValue(
     )
   }
 
-  const lookupPath = normalizeBasedOnLookupPath(basedOn.replace(/^#/, ""))
-  const parentLookupPath = normalizeBasedOnLookupPath(
-    basedOn.replace("#parent.", ""),
-  )
-
-  if (basedOn.includes("#parent.") && context.parentContext) {
-    let parent = context.parentContext
-
-    value = findInObject<Value>(parent.properties, parentLookupPath)
-
-    while (
-      value &&
-      "type" in value &&
-      value.value === "transparent" &&
-      parent.parentContext
-    ) {
-      parent = parent.parentContext
-
-      value = findInObject<Value>(parent.properties, parentLookupPath)
-    }
-  } else {
-    value = findInObject<Value>(context.properties, lookupPath)
-  }
+  const { value } = resolveBasedOnWithAnchor(basedOn, context)
 
   if (!value) {
     throw new Error(`Based on value not found for ${basedOn}.`)

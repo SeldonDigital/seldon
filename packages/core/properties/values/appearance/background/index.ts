@@ -1,8 +1,9 @@
 import { EmptyValue } from "../../shared/empty/empty"
-import { StringValue } from "../../shared/exact/string"
 import type { BackgroundValue } from "./background"
+import { BackgroundBlendModeValue } from "./background-blend-mode"
 import { BackgroundBrightnessValue } from "./background-brightness"
 import { BackgroundColorValue } from "./background-color"
+import { BackgroundFilterValue } from "./background-filter"
 import { BackgroundImageValue } from "./background-image"
 import { BackgroundOpacityValue } from "./background-opacity"
 import { BackgroundPositionValue } from "./background-position"
@@ -17,8 +18,8 @@ export interface BackgroundLayer {
   size?: BackgroundSizeValue | EmptyValue
   repeat?: BackgroundRepeatValue | EmptyValue
   color?: BackgroundColorValue | EmptyValue
-  blendMode?: StringValue | EmptyValue
-  filter?: StringValue | EmptyValue
+  blendMode?: BackgroundBlendModeValue | EmptyValue
+  filter?: BackgroundFilterValue | EmptyValue
   brightness?: BackgroundBrightnessValue | EmptyValue
   opacity?: BackgroundOpacityValue | EmptyValue
 }

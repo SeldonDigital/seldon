@@ -559,8 +559,8 @@ Background looks describe a single background layer -- color, image, image posit
 | `position` | `atomic` | `empty` \| `option: default, top-left, top-center, top-right, center-left, center, center-right, bottom-left, bottom-center, bottom-right` \| `exact: px, rem, %` |
 | `size` | `atomic` | `empty` \| `option: original, contain, cover, stretch` \| `exact: px, rem, %` |
 | `repeat` | `atomic` | `empty` \| `option: no-repeat, repeat, repeat-x, repeat-y` |
-| `blendMode` | `atomic` | `empty` \| `exact: string` |
-| `filter` | `atomic` | `empty` \| `exact: string` |
+| `blendMode` | `atomic` | `empty` \| `inherit` \| `option: normal, multiply, screen, overlay, darken, lighten, color-dodge, color-burn, hard-light, soft-light, difference, exclusion, hue, saturation, color, luminosity` |
+| `filter` | `atomic` | `empty` \| `inherit` \| `option: blur(4px), brightness(1.2), contrast(1.1), grayscale(1), saturate(1.2), sepia(0.5), invert(1)` \| `exact: string` |
 | `brightness` | `atomic` | `empty` \| `exact: %, 0–100` |
 | `opacity` | `atomic` | `empty` \| `exact: %, 0–100` |
 

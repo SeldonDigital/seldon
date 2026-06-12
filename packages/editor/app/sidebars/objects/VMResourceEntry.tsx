@@ -1,7 +1,7 @@
 "use client"
 
 import { MenuEntry } from "@lib/menus"
-import { useCallback } from "react"
+import { useCallback, useRef } from "react"
 import { Board as BoardType, Variant } from "@seldon/core"
 import { Action } from "@seldon/core/index"
 import {
@@ -115,8 +115,12 @@ export function VMResourceEntry({
   const hoverStyle = useRowHighlightStyle(entryId, isSelected)
   const combinedRowStyle = { ...hoverStyle, ...rowStyle }
 
-  const actionsMenu = useRowActionsMenu(resetActions, { color: iconColor })
-  const hasActions = resetActions.length > 0
+  const rowRef = useRef<HTMLDivElement>(null)
+
+  const actionsMenu = useRowActionsMenu(resetActions, {
+    color: iconColor,
+    focusTargetRef: rowRef,
+  })
 
   if (!show || !entry) return null
 
@@ -143,6 +147,7 @@ export function VMResourceEntry({
   return (
     <>
       <RowSelectionTarget
+        ref={rowRef}
         style={rowWrapperStyle}
         selectionId={entryId}
         selectionKind={config.selectionKind}
@@ -157,8 +162,8 @@ export function VMResourceEntry({
           textLabel={textLabel}
           buttonIconic2={null}
           icon3={null}
-          buttonIconic3={hasActions ? actionsMenu.buttonIconic : null}
-          icon4={hasActions ? actionsMenu.icon : null}
+          buttonIconic3={actionsMenu.buttonIconic}
+          icon4={actionsMenu.icon}
           onClick={onClick}
           onDoubleClick={onDoubleClick}
           data-testid={config.testId}

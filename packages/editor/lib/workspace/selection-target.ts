@@ -63,10 +63,11 @@ export function getSelectionTarget(
   const kind = match.getAttribute(SELECTION_KIND_ATTR) as SelectionKind | null
   if (!id || !kind) return null
   if (kind === "node") {
+    const rootId = match.getAttribute(SELECTION_ROOT_ID_ATTR) ?? undefined
     return {
       id,
       kind,
-      rootId: match.getAttribute(SELECTION_ROOT_ID_ATTR) ?? undefined,
+      rootId: rootId ?? id,
     }
   }
   return { id, kind }

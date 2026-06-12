@@ -299,6 +299,14 @@ const UI_OVERRIDES: PropertyRegistry = {
         icon: "seldon-token",
         control: "menu",
       },
+      blendMode: {
+        icon: "seldon-token",
+        control: "menu",
+      },
+      filter: {
+        icon: "seldon-token",
+        control: "combo",
+      },
     },
   },
   border: {
