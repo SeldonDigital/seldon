@@ -124,6 +124,7 @@ The `reducer` switch has no default branch. Validation rejects unknown action ty
 | `reset_node_editor_data` | `resetNodeEditorData` | `reset-node-editor-data.ts` |
 | `reset_user_variant_to_default` | `resetUserVariantToDefault` | `reset-user-variant-to-default.ts` |
 | `reset_default_variant_to_catalog` | `resetDefaultVariantToCatalog` | `reset-default-variant-to-catalog.ts` |
+| `reset_component_to_catalog` | `resetComponentToCatalog` | `reset-component-to-catalog.ts` |
 | `reset_theme_tokens` | `resetThemeTokens` | `reset-theme-tokens.ts` |
 | `reset_theme_label` | `resetThemeLabel` | `reset-theme-label.ts` |
 | `reset_theme_editor_data` | `resetThemeEditorData` | `reset-theme-editor-data.ts` |
@@ -131,7 +132,9 @@ The `reducer` switch has no default branch. Validation rejects unknown action ty
 | `reset_font_collection_label` | `resetFontCollectionLabel` | `reset-font-collection-label.ts` |
 | `reset_font_collection_editor_data` | `resetFontCollectionEditorData` | `reset-font-collection-editor-data.ts` |
 | `reset_font_collection_override` | `resetFontCollectionOverride` | `reset-font-collection-override.ts` |
+| `reset_font_collection` | `resetFontCollection` | `reset-font-collection.ts` |
 | `reset_icon_set_override` | `resetIconSetOverride` | `reset-icon-set-override.ts` |
+| `reset_icon_set` | `resetIconSet` | `reset-icon-set.ts` |
 
 ---
 

@@ -59,6 +59,10 @@ export interface ResourceRowConfig {
    * variant entry with overrides. Omitting it disables reset.
    */
   buildResetAction?: (entryId: string) => Action
+  /** Duplicates the entry into a new variant. Available on default and custom entries. */
+  buildDuplicateAction?: (entryId: string) => Action
+  /** Deletes a custom variant entry. Never offered on the default entry. */
+  buildDeleteAction?: (entryId: string) => Action
 }
 
 type VMResourceEntryProps = {
@@ -86,7 +90,7 @@ export function VMResourceEntry({
   const isSelected = useIsResourceEntrySelected(config.kind, entryId)
   const entry = config.getEntry(workspace, entryId)
 
-  const { isEditingName, setEditingName, submitLabel, resetActions } =
+  const { isEditingName, setEditingName, submitLabel, actions } =
     useResourceEntryRow({
       config,
       entryId,
@@ -117,7 +121,7 @@ export function VMResourceEntry({
 
   const rowRef = useRef<HTMLDivElement>(null)
 
-  const actionsMenu = useRowActionsMenu(resetActions, {
+  const actionsMenu = useRowActionsMenu(actions, {
     color: iconColor,
     focusTargetRef: rowRef,
   })
@@ -203,6 +207,14 @@ export const RESOURCE_ROW_CONFIG: Record<ResourceEntryKind, ResourceRowConfig> =
         type: "reset_theme_tokens",
         payload: { themeId: entryId },
       }),
+      buildDuplicateAction: (entryId) => ({
+        type: "duplicate_theme",
+        payload: { themeId: entryId },
+      }),
+      buildDeleteAction: (entryId) => ({
+        type: "delete_theme",
+        payload: { themeId: entryId },
+      }),
     },
     fontCollection: {
       kind: "fontCollection",
@@ -221,6 +233,18 @@ export const RESOURCE_ROW_CONFIG: Record<ResourceEntryKind, ResourceRowConfig> =
         type: "set_font_collection_label",
         payload: { fontCollectionId: entryId, label },
       }),
+      buildResetAction: (entryId) => ({
+        type: "reset_font_collection",
+        payload: { fontCollectionId: entryId },
+      }),
+      buildDuplicateAction: (entryId) => ({
+        type: "duplicate_font_collection",
+        payload: { fontCollectionId: entryId },
+      }),
+      buildDeleteAction: (entryId) => ({
+        type: "delete_font_collection",
+        payload: { fontCollectionId: entryId },
+      }),
     },
     iconSet: {
       kind: "iconSet",
@@ -235,6 +259,18 @@ export const RESOURCE_ROW_CONFIG: Record<ResourceEntryKind, ResourceRowConfig> =
       buildLabelAction: (entryId, label) => ({
         type: "set_icon_set_label",
         payload: { iconSetId: entryId, label },
+      }),
+      buildResetAction: (entryId) => ({
+        type: "reset_icon_set",
+        payload: { iconSetId: entryId },
+      }),
+      buildDuplicateAction: (entryId) => ({
+        type: "duplicate_icon_set",
+        payload: { iconSetId: entryId },
+      }),
+      buildDeleteAction: (entryId) => ({
+        type: "delete_icon_set",
+        payload: { iconSetId: entryId },
       }),
     },
     // Media stub: the media entry model has no label/type yet and no media board

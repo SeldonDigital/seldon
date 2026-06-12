@@ -1,4 +1,4 @@
-import { CSSProperties, memo, useCallback } from "react"
+import { CSSProperties, memo, useCallback, useRef } from "react"
 import { Board as BoardType, Variant } from "@seldon/core"
 import { useRowHighlightStyle } from "@lib/workspace/hooks/use-object-hover"
 import { useSidebarCanvasTrackingBoard } from "../../tracking/hooks/use-sidebar-canvas-tracking"
@@ -14,6 +14,7 @@ import { applyTrackingColor } from "../helpers/apply-tracking-color"
 import { rowWrapperStyle } from "../helpers/sidebar-row-styles"
 import { relativeFullWidthStyle } from "../helpers/sidebar-styles"
 import { FramerExpandable } from "@seldon/components/custom-components"
+import { useRowActionsMenu } from "../shared/use-row-actions-menu"
 import { VMNode } from "./VMNode"
 import {
   VMResourceEntry,
@@ -86,8 +87,7 @@ function VMBoardRow({ board, show = true }: { board: BoardType; show?: boolean }
     buttonIconic,
     icon,
     icon2,
-    buttonIconic2,
-    icon3,
+    actions,
     onClick,
     isExpanded,
     isBoardSelected,
@@ -110,6 +110,13 @@ function VMBoardRow({ board, show = true }: { board: BoardType; show?: boolean }
       ? { ...hoverStyle, ...rowStyle, borderColor: undefined }
       : { ...hoverStyle, ...rowStyle }
 
+  // Trailing "..." actions menu for the board row.
+  const rowRef = useRef<HTMLDivElement>(null)
+  const actionsMenu = useRowActionsMenu(actions, {
+    color: iconColor,
+    focusTargetRef: rowRef,
+  })
+
   // Canvas tracking: highlights board on canvas when hovering sidebar row
   const { handleCanvasTrackingEnter, handleCanvasTrackingLeave } =
     useSidebarCanvasTrackingBoard(board)
@@ -129,7 +136,6 @@ function VMBoardRow({ board, show = true }: { board: BoardType; show?: boolean }
   // Apply tracking colors: icons get color
   const coloredIcon = applyTrackingColor(icon, "color", iconColor)
   const coloredIcon2 = applyTrackingColor(icon2, "color", iconColor)
-  const coloredIcon3 = applyTrackingColor(icon3, "color", iconColor)
 
   // Label: apply tracking color if provided
   const textLabel: TextLabelProps = {
@@ -173,6 +179,7 @@ function VMBoardRow({ board, show = true }: { board: BoardType; show?: boolean }
   return (
     <>
       <RowSelectionTarget
+        ref={rowRef}
         style={rowWrapperStyle}
         innerStyle={relativeFullWidthStyle}
         selectionId={boardKey}
@@ -183,10 +190,10 @@ function VMBoardRow({ board, show = true }: { board: BoardType; show?: boolean }
           icon={coloredIcon as IconProps}
           icon2={coloredIcon2 as IconProps}
           textLabel={textLabel}
-          buttonIconic2={buttonIconic2 ?? null}
-          icon3={buttonIconic2 ? (coloredIcon3 as IconProps) : null}
-          buttonIconic3={null}
-          icon4={null}
+          buttonIconic2={null}
+          icon3={null}
+          buttonIconic3={actionsMenu.buttonIconic}
+          icon4={actionsMenu.icon}
           onClick={onClick}
           onMouseEnter={handleRowMouseEnter}
           onMouseLeave={handleRowMouseLeave}
@@ -196,6 +203,7 @@ function VMBoardRow({ board, show = true }: { board: BoardType; show?: boolean }
           style={combinedRowStyle}
         />
       </RowSelectionTarget>
+      {actionsMenu.menu}
 
       <FramerExpandable isExpanded={isExpanded}>
         <IndentationLevel>{childRows}</IndentationLevel>

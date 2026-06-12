@@ -15,6 +15,7 @@ export function validateFontCollectionMutation(
     case "reset_font_collection_label":
     case "reset_font_collection_editor_data":
     case "reset_font_collection_override":
+    case "reset_font_collection":
     case "set_font_collection_label":
     case "set_font_collection_editor_data":
     case "set_font_collection_override":

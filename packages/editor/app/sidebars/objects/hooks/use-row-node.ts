@@ -1,16 +1,24 @@
 import { removeNewLines } from "@lib/helpers/new-lines"
 import { MenuEntry } from "@lib/menus"
 import { CSSProperties } from "react"
-import { Display, Properties, VariantId } from "@seldon/core"
+import { Display, InstanceId, Properties, VariantId } from "@seldon/core"
 import { getComponentSchema } from "@seldon/core/components/catalog"
 import { ComponentId, isComponentId } from "@seldon/core/components/constants"
 import { isEmptyValue } from "@seldon/core/helpers/type-guards/value/is-empty-value"
 import { IconId, iconLabels } from "@seldon/core/icon-sets"
 import { rules } from "@seldon/core/rules/config/rules.config"
+import { isVariantInUse } from "@seldon/core/workspace/helpers/general/is-variant-in-use"
 import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
 import { nodeSubtreeHasOverrides } from "@seldon/core/workspace/helpers/nodes/get-node-subtree-ids"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
 import type { EntryNode } from "@seldon/core/workspace/types"
+import {
+  buildDefaultSnippet,
+  buildVariantSnippet,
+} from "@lib/copy-schema/build-schema-snippet"
+import { serializeSchemaSnippet } from "@lib/copy-schema/serialize-schema-ts"
+import { usePropertiesClipboard } from "@lib/workspace/hooks/use-properties-clipboard"
+import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import {
   useSelection,
   useStore as useSelectionStore,
@@ -65,6 +73,10 @@ export function useRowNode(
     useSelectionRelations()
   const { showNodeIds } = useDebugMode()
   const { autoScrollToSelection } = useEditorConfig()
+  const addToast = useAddToast()
+  const hasClipboardProperties = usePropertiesClipboard(
+    (state) => state.properties !== null,
+  )
 
   const { toggle, expandObjects, collapseObjects, getAllDescendantNodeIds } =
     useExpansion()
@@ -273,19 +285,183 @@ export function useRowNode(
 
   function getResetLabel(): string {
     if (workspaceService.isDefaultVariant(node)) return "Reset to Catalog"
-    if (workspaceService.isUserVariant(node)) return "Reset to Default"
-    return "Reset"
+    return "Reset to Default"
   }
 
-  const resetActions: MenuEntry[] = canReset
-    ? [
-        buildResetMenuEntry({
-          label: getResetLabel(),
-          onSelect: handleReset,
-          testId: `object-panel-node-${node.id}-reset`,
-        }),
+  function buildResetAction(): MenuEntry {
+    return buildResetMenuEntry({
+      label: getResetLabel(),
+      onSelect: handleReset,
+      testId: `object-panel-node-${node.id}-reset`,
+    })
+  }
+
+  function handleDuplicate() {
+    dispatch({
+      type: "duplicate_node",
+      payload: { nodeId: node.id as VariantId },
+    })
+  }
+
+  async function handleCopyJson() {
+    if (workspaceService.isInstance(node)) {
+      addToast("Nested children cannot be copied as schema JSON")
+      return
+    }
+    const snippet = workspaceService.isDefaultVariant(node)
+      ? buildDefaultSnippet(node, workspace)
+      : buildVariantSnippet(node, workspace)
+    if (!snippet) {
+      addToast("Could not resolve a catalog component for the selection")
+      return
+    }
+    await navigator.clipboard.writeText(serializeSchemaSnippet(snippet))
+    addToast("Schema JSON copied to clipboard")
+  }
+
+  function handleCopyProperties() {
+    usePropertiesClipboard
+      .getState()
+      .setProperties(structuredClone(node.overrides))
+    addToast("Properties copied")
+  }
+
+  function handlePasteProperties() {
+    const clipboard = usePropertiesClipboard.getState().properties
+    if (!clipboard) {
+      addToast("No properties to paste")
+      return
+    }
+    dispatch({
+      type: "set_node_properties",
+      payload: {
+        nodeId: node.id as VariantId,
+        properties: clipboard,
+        options: { mergeSubProperties: true },
+      },
+    })
+  }
+
+  function handleDelete() {
+    const isVariant = workspaceService.isVariant(node)
+    if (isVariant && isVariantInUse(node.id, workspace)) {
+      const confirmed = window.confirm(
+        "This variant is used in other components. Deleting it will also remove it from those components. Delete anyway?",
+      )
+      if (!confirmed) return
+    }
+    const subject = workspaceService.getNode(node.id, workspace)
+    const adjacentId =
+      workspaceService.findAdjacent(subject, "before", workspace)?.id ??
+      workspaceService.findAdjacent(subject, "after", workspace)?.id ??
+      null
+    if (isVariant) {
+      dispatch({
+        type: "remove_variant",
+        payload: { variantRootId: node.id as VariantId },
+      })
+    } else {
+      dispatch({
+        type: "remove_instance",
+        payload: { instanceId: node.id as InstanceId },
+      })
+    }
+    selectNode(adjacentId as VariantId | InstanceId | null)
+  }
+
+  function buildNodeActions(): MenuEntry[] {
+    const isDefault = workspaceService.isDefaultVariant(node)
+    const isUser = workspaceService.isUserVariant(node)
+    const isInstance = workspaceService.isInstance(node)
+
+    // Selected instance (child) rows get the variant menu minus "Copy JSON",
+    // which only applies to default and user variant rows.
+    if (isSelected && isInstance) {
+      return [
+        {
+          id: "duplicate",
+          label: `Duplicate ${node.label}`,
+          onSelect: handleDuplicate,
+          testId: `object-panel-node-${node.id}-duplicate`,
+        },
+        "separator",
+        {
+          id: "copy-properties",
+          label: "Copy Properties",
+          onSelect: handleCopyProperties,
+          testId: `object-panel-node-${node.id}-copy-properties`,
+        },
+        {
+          id: "paste-properties",
+          label: "Paste Properties",
+          onSelect: handlePasteProperties,
+          disabled: !hasClipboardProperties,
+          testId: `object-panel-node-${node.id}-paste-properties`,
+        },
+        "separator",
+        {
+          id: "delete",
+          label: `Delete ${node.label}`,
+          onSelect: handleDelete,
+          testId: `object-panel-node-${node.id}-delete`,
+        },
+        buildResetAction(),
       ]
-    : []
+    }
+
+    // Only the selected default or user variant row gets the full action menu.
+    // Unselected rows keep the reset-only menu below.
+    if (isSelected && (isDefault || isUser)) {
+      const entries: MenuEntry[] = [
+        {
+          id: "duplicate",
+          label: isDefault
+            ? `Duplicate ${node.label} Default`
+            : `Duplicate ${node.label}`,
+          onSelect: handleDuplicate,
+          testId: `object-panel-node-${node.id}-duplicate`,
+        },
+        "separator",
+        {
+          id: "copy-json",
+          label: "Copy JSON",
+          onSelect: handleCopyJson,
+          testId: `object-panel-node-${node.id}-copy-json`,
+        },
+        "separator",
+        {
+          id: "copy-properties",
+          label: "Copy Properties",
+          onSelect: handleCopyProperties,
+          testId: `object-panel-node-${node.id}-copy-properties`,
+        },
+        {
+          id: "paste-properties",
+          label: "Paste Properties",
+          onSelect: handlePasteProperties,
+          disabled: !hasClipboardProperties,
+          testId: `object-panel-node-${node.id}-paste-properties`,
+        },
+        "separator",
+      ]
+
+      if (isUser) {
+        entries.push({
+          id: "delete",
+          label: `Delete ${node.label}`,
+          onSelect: handleDelete,
+          testId: `object-panel-node-${node.id}-delete`,
+        })
+      }
+
+      entries.push(buildResetAction())
+      return entries
+    }
+
+    return canReset ? [buildResetAction()] : []
+  }
+
+  const actions: MenuEntry[] = buildNodeActions()
 
   function checkIfExcluded(): boolean {
     if (!nodeExistsInWorkspace) {
@@ -346,7 +522,7 @@ export function useRowNode(
     buttonIconic,
     icon,
     icon2,
-    resetActions,
+    actions,
     onClick,
     onDoubleClick: handleDoubleClick,
     isExpanded: isExpandedState,

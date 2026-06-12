@@ -368,6 +368,7 @@ export function useAddRemoveCommands() {
     addFontCollection,
     addIconSet,
     addVariant,
+    removeBoard,
     deleteSelection,
     duplicateSelection,
   }

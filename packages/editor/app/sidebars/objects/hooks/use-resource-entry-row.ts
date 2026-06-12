@@ -39,30 +39,54 @@ export function useResourceEntryRow({
     setEditingName(false)
   }
 
-  const buildResetAction = config.buildResetAction
-  const canReset =
-    Boolean(buildResetAction) &&
-    isSelected &&
-    !!entry &&
-    (entry.isDefault || entry.hasOverrides === true)
+  // The selected entry gets a "..." menu: "Duplicate" plus a tail group of
+  // "Delete" (custom entries only) and "Reset". The default entry resets to
+  // catalog, a custom entry resets to default. Resource kinds that omit a
+  // builder simply skip that action.
+  const actions: MenuEntry[] = useMemo(() => {
+    if (!isSelected || !entry) return []
 
-  const resetActions: MenuEntry[] = useMemo(() => {
-    if (!buildResetAction || !canReset || !entry) return []
-    return [
-      buildResetMenuEntry({
-        label: entry.isDefault ? "Reset to Catalog" : "Reset to Default",
-        onSelect: () => dispatch(buildResetAction(entryId)),
-        testId: `${config.testId}-${entryId}-reset`,
-      }),
-    ]
-  }, [
-    buildResetAction,
-    canReset,
-    entry,
-    dispatch,
-    config.testId,
-    entryId,
-  ])
+    const { buildDuplicateAction, buildDeleteAction, buildResetAction } = config
 
-  return { isEditingName, setEditingName, submitLabel, resetActions }
+    const entries: MenuEntry[] = []
+
+    if (buildDuplicateAction) {
+      entries.push({
+        id: "duplicate",
+        label: entry.isDefault
+          ? `Duplicate ${entry.label} Default`
+          : `Duplicate ${entry.label}`,
+        onSelect: () => dispatch(buildDuplicateAction(entryId)),
+        testId: `${config.testId}-${entryId}-duplicate`,
+      })
+    }
+
+    const tail: MenuEntry[] = []
+
+    if (!entry.isDefault && buildDeleteAction) {
+      tail.push({
+        id: "delete",
+        label: `Delete ${entry.label}`,
+        onSelect: () => dispatch(buildDeleteAction(entryId)),
+        testId: `${config.testId}-${entryId}-delete`,
+      })
+    }
+
+    if (buildResetAction) {
+      tail.push(
+        buildResetMenuEntry({
+          label: entry.isDefault ? "Reset to Catalog" : "Reset to Default",
+          onSelect: () => dispatch(buildResetAction(entryId)),
+          testId: `${config.testId}-${entryId}-reset`,
+        }),
+      )
+    }
+
+    if (entries.length > 0 && tail.length > 0) entries.push("separator")
+    entries.push(...tail)
+
+    return entries
+  }, [config, entry, entryId, isSelected, dispatch])
+
+  return { isEditingName, setEditingName, submitLabel, actions }
 }

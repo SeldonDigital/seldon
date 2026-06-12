@@ -115,6 +115,9 @@ export function validateAction(workspace: Workspace, action: Action): void {
     case "reset_default_variant_to_catalog":
       validateNodeMutation(workspace, action)
       return
+    case "reset_component_to_catalog":
+      boardValidators.exists(workspace, action.payload.boardKey)
+      return
     case "reset_theme_tokens":
     case "reset_theme_label":
     case "reset_theme_editor_data":
@@ -129,6 +132,7 @@ export function validateAction(workspace: Workspace, action: Action): void {
     case "reset_font_collection_label":
     case "reset_font_collection_editor_data":
     case "reset_font_collection_override":
+    case "reset_font_collection":
     case "set_font_collection_label":
     case "set_font_collection_editor_data":
     case "set_font_collection_override":
@@ -141,6 +145,7 @@ export function validateAction(workspace: Workspace, action: Action): void {
     case "set_icon_set_label":
     case "set_icon_set_override":
     case "reset_icon_set_override":
+    case "reset_icon_set":
     case "set_icon_set_subcategory_preset":
     case "delete_icon_set":
     case "duplicate_icon_set":

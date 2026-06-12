@@ -85,10 +85,13 @@ import { resetBoardLicense } from "./handlers/reset/reset-board-license"
 import { resetBoardPreview } from "./handlers/reset/reset-board-preview"
 import { resetBoardTags } from "./handlers/reset/reset-board-tags"
 import { resetComponentProperty } from "./handlers/reset/reset-component-property"
+import { resetComponentToCatalog } from "./handlers/reset/reset-component-to-catalog"
 import { resetDefaultVariantToCatalog } from "./handlers/reset/reset-default-variant-to-catalog"
+import { resetFontCollection } from "./handlers/reset/reset-font-collection"
 import { resetFontCollectionEditorData } from "./handlers/reset/reset-font-collection-editor-data"
 import { resetFontCollectionLabel } from "./handlers/reset/reset-font-collection-label"
 import { resetFontCollectionOverride } from "./handlers/reset/reset-font-collection-override"
+import { resetIconSet } from "./handlers/reset/reset-icon-set"
 import { resetIconSetOverride } from "./handlers/reset/reset-icon-set-override"
 import { resetNode } from "./handlers/reset/reset-node"
 import { resetNodeEditorData } from "./handlers/reset/reset-node-editor-data"
@@ -301,6 +304,8 @@ function reducer(workspace: Workspace, action: WorkspaceAction): Workspace {
       return resetUserVariantToDefault(action.payload, workspace)
     case "reset_default_variant_to_catalog":
       return resetDefaultVariantToCatalog(action.payload, workspace)
+    case "reset_component_to_catalog":
+      return resetComponentToCatalog(action.payload, workspace)
     case "move_instance":
       return moveInstance(action.payload, workspace)
     case "reorder_instance_in_parent":
@@ -417,6 +422,8 @@ function reducer(workspace: Workspace, action: WorkspaceAction): Workspace {
       return resetFontCollectionEditorData(action.payload, workspace)
     case "reset_font_collection_override":
       return resetFontCollectionOverride(action.payload, workspace)
+    case "reset_font_collection":
+      return resetFontCollection(action.payload, workspace)
     case "delete_font_collection":
       return deleteFontCollection(action.payload, workspace)
     case "duplicate_font_collection":
@@ -432,6 +439,8 @@ function reducer(workspace: Workspace, action: WorkspaceAction): Workspace {
       return setIconSetOverride(action.payload, workspace)
     case "reset_icon_set_override":
       return resetIconSetOverride(action.payload, workspace)
+    case "reset_icon_set":
+      return resetIconSet(action.payload, workspace)
     case "set_icon_set_subcategory_preset":
       return setIconSetSubcategoryPreset(action.payload, workspace)
     case "delete_icon_set":

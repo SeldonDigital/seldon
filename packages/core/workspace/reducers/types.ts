@@ -16,16 +16,16 @@
  * | remove_instance, remove_variant, duplicate_node, move_instance, reorder_instance_in_parent | components tree + nodes |
  * | set_node_properties, reset_node_property, reset_node, set_node_label, set_node_theme, set_node_editor_data | nodes |
  * | reset_node_label, reset_node_editor_data | nodes |
- * | reset_user_variant_to_default, reset_default_variant_to_catalog | components.variants tree + nodes |
+ * | reset_user_variant_to_default, reset_default_variant_to_catalog, reset_component_to_catalog | components.variants tree + nodes |
  * | set_theme_label, set_theme_editor_data, set_theme_override, reset_theme_tokens, reset_theme_label, reset_theme_editor_data, reset_theme_override | themes |
  * | add_theme_custom_{swatch,font,border,background,gradient,shadow,scrollbar,size,dimension,margin,padding,gap,corners,borderWidth,blur,spread,fontSize,fontWeight,lineHeight} | themes (variant rows only) |
  * | remove_theme_custom_{...same 19 tables...} | themes (variant rows only) |
  * | delete_theme, duplicate_theme | themes (+ components.variants for theme row) |
- * | set_font_collection_{label,editor_data,override}, reset_font_collection_{label,editor_data,override}, add_font_collection_custom_family, remove_font_collection_custom_family | font-collections (variant rows only for families) |
+ * | set_font_collection_{label,editor_data,override}, reset_font_collection_{label,editor_data,override}, reset_font_collection, add_font_collection_custom_family, remove_font_collection_custom_family | font-collections (variant rows only for families) |
  * | set_font_collection_family_variant, set_font_collection_family_preset | font-collections (any entry; per-family variant selection) |
  * | delete_font_collection, duplicate_font_collection | font-collections (+ components.variants for font-collection row) |
  * | set_icon_set_label | icon-sets |
- * | set_icon_set_override, reset_icon_set_override | icon-sets (per-icon inclusion under includedIcons) |
+ * | set_icon_set_override, reset_icon_set_override, reset_icon_set | icon-sets (per-icon inclusion under includedIcons) |
  * | set_icon_set_subcategory_preset | icon-sets (per-subcategory inclusion under includedIcons) |
  * | delete_icon_set | icon-sets (variant rows only; drops board ref) |
  * | duplicate_icon_set | icon-sets (+ components.variants for icon-set row) |
@@ -575,6 +575,12 @@ export type WorkspaceAction =
       }
     }
   | {
+      type: "reset_component_to_catalog"
+      payload: {
+        boardKey: BoardKey
+      }
+    }
+  | {
       type: "delete_theme"
       payload: {
         themeId: string
@@ -617,6 +623,10 @@ export type WorkspaceAction =
   | {
       type: "reset_font_collection_override"
       payload: { fontCollectionId: string; path: string }
+    }
+  | {
+      type: "reset_font_collection"
+      payload: { fontCollectionId: string }
     }
   | {
       type: "delete_font_collection"
@@ -683,6 +693,10 @@ export type WorkspaceAction =
   | {
       type: "reset_icon_set_override"
       payload: { iconSetId: string; path: string }
+    }
+  | {
+      type: "reset_icon_set"
+      payload: { iconSetId: string }
     }
   | {
       type: "set_icon_set_subcategory_preset"
