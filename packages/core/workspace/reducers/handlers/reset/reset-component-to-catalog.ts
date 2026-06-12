@@ -1,9 +1,14 @@
+import { produce } from "immer"
+
+import type { ComponentId } from "../../../../components/constants"
 import { ExtractPayload, Workspace } from "../../../../index"
+import { rules } from "../../../../rules/config/rules.config"
 import { componentBoardDefaultNodeId } from "../../../helpers/components/entry-node-ids"
 import { collectExternalVariantUsage } from "../../../helpers/general/collect-external-variant-usage"
 import { applyResetSchemaVariantsToCatalog } from "../../../helpers/nodes/apply-reset-schema-variants-to-catalog"
 import { isComponentBoard } from "../../../model/components"
 import type { VariantId } from "../../../types"
+import { ensureComponentBoards } from "../add/add-component"
 import { resetBoardEditorData } from "./reset-board-editor-data"
 import { resetBoardIntent } from "./reset-board-intent"
 import { resetBoardLabel } from "./reset-board-label"
@@ -35,6 +40,16 @@ export function resetComponentToCatalog(
   const defaultVariantId = componentBoardDefaultNodeId(payload.boardKey)
 
   let next = workspace
+
+  // A prior restricted build may have skipped descendant boards this catalog
+  // needs (for example a variant's `SELECT` or `OPTION`). Backfill them before
+  // rebuilding so the schema-variant pass finds every board it registers.
+  if (rules.mutations.create.board.allowed) {
+    next = produce(next, (draft) => {
+      ensureComponentBoards(draft, board.catalogId as ComponentId)
+    })
+  }
+
   next = resetDefaultVariantToCatalog(
     { defaultVariantRootId: defaultVariantId as VariantId },
     next,

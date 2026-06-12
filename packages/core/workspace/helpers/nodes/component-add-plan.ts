@@ -31,9 +31,11 @@ export type ComponentAddPlan = {
  * mode, flattened across the instance tree. This mirrors `instantiateComponent`
  * exactly so board collection and plan collection can never diverge:
  *
- * - full catalog builds the default tree plus every variant tree (a variant
- *   with no children of its own falls back to the default children);
- * - a restricted plan builds only the named variant trees (an empty variant
+ * - the default tree is always materialized, so the board's default variant is
+ *   never left empty regardless of build mode;
+ * - full catalog adds every variant tree on top (a variant with no children of
+ *   its own falls back to the default children);
+ * - a restricted plan adds only the named variant trees (an empty variant
  *   contributes no children, matching the restricted instantiation branch);
  * - within any tree, a slot's own `children` win, otherwise the slot resolves
  *   to its schema fallback children.
@@ -49,10 +51,9 @@ export function materializedChildSlots(
   }
 
   const defaultChildren = schema.default.children ?? []
-  const trees: SchemaChild[][] = []
+  const trees: SchemaChild[][] = [defaultChildren]
 
   if (plan.fullCatalog) {
-    trees.push(defaultChildren)
     for (const variant of schema.variants ?? []) {
       trees.push(variant.children?.length ? variant.children : defaultChildren)
     }

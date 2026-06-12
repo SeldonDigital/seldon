@@ -107,13 +107,13 @@ function instantiateComponent(
 
   // Which child slots each tree materializes must stay in sync with
   // `materializedChildSlots` in component-add-plan.ts, which plans the boards
-  // these instances reference. A restricted build keeps only the named catalog
-  // variants and gives the default tree no children. A full build keeps the
-  // default tree plus every catalog variant, with an empty variant falling back
-  // to the default children.
+  // these instances reference. The default tree is always built in full so the
+  // board's default variant is never empty. A restricted build keeps only the
+  // named catalog variants on top; a full build keeps every catalog variant,
+  // with an empty variant falling back to the default children.
   const restrictedVariantIds = options.restrictedVariantIds
   const isRestricted = !!restrictedVariantIds?.length
-  const defaultChildSlots = isRestricted ? [] : schema.default.children
+  const defaultChildSlots = schema.default.children
   const catalogVariants = isRestricted
     ? restrictedVariantIds!.map((variantId) =>
         requireCatalogVariant(schema, componentId, variantId),
@@ -235,6 +235,69 @@ function reconcileComponentBoard(
 }
 
 /**
+ * Ensures the board for `rootId` and every descendant board its catalog
+ * requires exists on the draft, creating missing boards and topping up existing
+ * ones, then realigns board order. Unlike `addComponent`, it does not bail when
+ * the root board already exists, so reset flows can backfill descendant boards a
+ * prior restricted build skipped.
+ */
+export function ensureComponentBoards(
+  draft: Workspace,
+  rootId: ComponentId,
+  variantFallbacks?: ReadonlySet<string>,
+): void {
+  const { orderedComponentIds: components, plans: instantiationPlans } =
+    buildComponentAddPlan(rootId, variantFallbacks)
+  const registry: NodeRegistry = new Set()
+
+  let order = -1
+
+  for (const componentId of components.reverse()) {
+    if (draft.boards[componentId]) {
+      registry.add(componentId)
+      reconcileComponentBoard(componentId, draft, registry, {
+        variantFallbacks,
+        ...getInstantiationOptionsForComponent(componentId, instantiationPlans),
+      })
+    } else {
+      const { nodesById, variantTreeRefs } = instantiateComponent(
+        componentId,
+        registry,
+        {
+          variantFallbacks,
+          ...getInstantiationOptionsForComponent(
+            componentId,
+            instantiationPlans,
+          ),
+        },
+      )
+
+      draft.nodes = { ...draft.nodes, ...nodesById }
+
+      const schema = getComponentSchema(componentId)
+
+      const board: ComponentBoard = {
+        type: "component",
+        level: schema.level as ComponentBoard["level"],
+        catalogId: componentId,
+        label: workspaceMutationService.getInitialComponentLabel(componentId),
+        author: "Seldon Digital",
+        componentTheme: WORKSPACE_EDITABLE_THEME_ENTRY_ID,
+        componentProperties: getInitialBoardComponentProperties("component"),
+        variants: variantTreeRefs,
+      }
+      setBoardOrder(board, order)
+      draft.boards[componentId] = board
+
+      order--
+    }
+  }
+
+  const updatedWorkspace = boardOrderService.realignBoardOrder(draft)
+  Object.assign(draft.boards, updatedWorkspace.boards)
+}
+
+/**
  * Adds the component board for `componentId` when missing, including any
  * descendant component boards required by the catalog, then realigns board
  * order across the workspace.
@@ -252,59 +315,10 @@ export function addComponent(
       return
     }
 
-    const rootId = payload.boardKey as ComponentId
-    const variantFallbacks = toVariantFallbackSet(payload.variantFallbacks)
-    const { orderedComponentIds: components, plans: instantiationPlans } =
-      buildComponentAddPlan(rootId, variantFallbacks)
-    const registry: NodeRegistry = new Set()
-
-    let order = -1
-
-    for (const componentId of components.reverse()) {
-      if (draft.boards[componentId]) {
-        registry.add(componentId)
-        reconcileComponentBoard(componentId, draft, registry, {
-          variantFallbacks,
-          ...getInstantiationOptionsForComponent(
-            componentId,
-            instantiationPlans,
-          ),
-        })
-      } else {
-        const { nodesById, variantTreeRefs } = instantiateComponent(
-          componentId,
-          registry,
-          {
-            variantFallbacks,
-            ...getInstantiationOptionsForComponent(
-              componentId,
-              instantiationPlans,
-            ),
-          },
-        )
-
-        draft.nodes = { ...draft.nodes, ...nodesById }
-
-        const schema = getComponentSchema(componentId)
-
-        const board: ComponentBoard = {
-          type: "component",
-          level: schema.level as ComponentBoard["level"],
-          catalogId: componentId,
-          label: workspaceMutationService.getInitialComponentLabel(componentId),
-          author: "Seldon Digital",
-          componentTheme: WORKSPACE_EDITABLE_THEME_ENTRY_ID,
-          componentProperties: getInitialBoardComponentProperties("component"),
-          variants: variantTreeRefs,
-        }
-        setBoardOrder(board, order)
-        draft.boards[componentId] = board
-
-        order--
-      }
-    }
-
-    const updatedWorkspace = boardOrderService.realignBoardOrder(draft)
-    Object.assign(draft.boards, updatedWorkspace.boards)
+    ensureComponentBoards(
+      draft,
+      payload.boardKey as ComponentId,
+      toVariantFallbackSet(payload.variantFallbacks),
+    )
   })
 }
