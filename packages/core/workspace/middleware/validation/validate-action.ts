@@ -13,6 +13,7 @@ import {
   validateNodeMutation,
   validateReorderBoard,
   validateReorderVariantInBoard,
+  validateResetComponentToCatalog,
   validateThemeMutation,
 } from "./action-groups/node-mutations"
 import { isPassthroughAction } from "./action-groups/passthrough"
@@ -116,7 +117,7 @@ export function validateAction(workspace: Workspace, action: Action): void {
       validateNodeMutation(workspace, action)
       return
     case "reset_component_to_catalog":
-      boardValidators.exists(workspace, action.payload.boardKey)
+      validateResetComponentToCatalog(workspace, action)
       return
     case "reset_theme_tokens":
     case "reset_theme_label":

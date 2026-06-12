@@ -1,3 +1,4 @@
+import { MenuEntry } from "@lib/menus"
 import { MouseEvent } from "react"
 import { Board as BoardType } from "@seldon/core"
 import {
@@ -6,7 +7,6 @@ import {
   isThemeBoard,
 } from "@seldon/core/workspace/model/components"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
-import { MenuEntry } from "@lib/menus"
 import { useAutoSelectNode } from "@lib/workspace/hooks/use-auto-select-node"
 import { useSelection } from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
@@ -180,7 +180,7 @@ export function useRowBoard(
       return
     }
     const confirmed = window.confirm(
-      `Reset ${board.label} to catalog? This removes every variant and override for this component.`,
+      `Reset ${board.label} to catalog? This restores the catalog default and variants and removes your custom variants and overrides.`,
     )
     if (!confirmed) return
     dispatch({
