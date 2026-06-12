@@ -33,7 +33,7 @@ interface VMNodeProps {
   disableReordering?: boolean
 }
 
-const VMNodeInner = memo(function VMNodeInner({
+const VMNodeInner = function VMNodeInner({
   node,
   rootId,
   show,
@@ -178,7 +178,7 @@ const VMNodeInner = memo(function VMNodeInner({
       {childrenSection}
     </>
   )
-})
+}
 
 export const VMNode = memo(function VMNode({
   nodeId,

@@ -19,5 +19,6 @@ export { computeOpticalPadding } from "./compute-optical-padding"
 export { computeMatch } from "./compute-match"
 
 export { computeProperties } from "./compute-properties"
-export { getBasedOnValue } from "./get-based-on-value"
+export { getBasedOnValue, resolveBasedOnWithAnchor } from "./get-based-on-value"
+export type { ResolvedBasedOnWithAnchor } from "./get-based-on-value"
 export type { ComputeContext, ComputeKeys } from "./types"
