@@ -1098,6 +1098,25 @@ export const schema = {
                   type: Sdn.ValueType.OPTION,
                   value: "seldon-plus",
                 },
+                size: {
+                  type: Sdn.ValueType.COMPUTED,
+                  value: {
+                    function: Sdn.ComputedFunction.AUTO_FIT,
+                    input: {
+                      basedOn: "#parent.buttonSize",
+                      factor: 0.8,
+                    },
+                  },
+                },
+                color: {
+                  type: Sdn.ValueType.COMPUTED,
+                  value: {
+                    function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+                    input: {
+                      basedOn: "#parent.background.color",
+                    },
+                  },
+                },
               },
             },
             {
@@ -1107,6 +1126,31 @@ export const schema = {
                 content: {
                   type: Sdn.ValueType.EXACT,
                   value: "Add",
+                },
+                color: {
+                  type: Sdn.ValueType.COMPUTED,
+                  value: {
+                    function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+                    input: {
+                      basedOn: "#parent.background.color",
+                    },
+                  },
+                },
+                font: {
+                  preset: {
+                    type: Sdn.ValueType.THEME_CATEGORICAL,
+                    value: "@font.normal",
+                  },
+                  size: {
+                    type: Sdn.ValueType.COMPUTED,
+                    value: {
+                      function: Sdn.ComputedFunction.AUTO_FIT,
+                      input: {
+                        basedOn: "#parent.buttonSize",
+                        factor: 0.8,
+                      },
+                    },
+                  },
                 },
               },
             },
@@ -1128,6 +1172,25 @@ export const schema = {
                   type: Sdn.ValueType.OPTION,
                   value: "seldon-minus",
                 },
+                size: {
+                  type: Sdn.ValueType.COMPUTED,
+                  value: {
+                    function: Sdn.ComputedFunction.AUTO_FIT,
+                    input: {
+                      basedOn: "#parent.buttonSize",
+                      factor: 0.8,
+                    },
+                  },
+                },
+                color: {
+                  type: Sdn.ValueType.COMPUTED,
+                  value: {
+                    function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+                    input: {
+                      basedOn: "#parent.background.color",
+                    },
+                  },
+                },
               },
             },
             {
@@ -1137,6 +1200,31 @@ export const schema = {
                 content: {
                   type: Sdn.ValueType.EXACT,
                   value: "Remove",
+                },
+                color: {
+                  type: Sdn.ValueType.COMPUTED,
+                  value: {
+                    function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+                    input: {
+                      basedOn: "#parent.background.color",
+                    },
+                  },
+                },
+                font: {
+                  preset: {
+                    type: Sdn.ValueType.THEME_CATEGORICAL,
+                    value: "@font.normal",
+                  },
+                  size: {
+                    type: Sdn.ValueType.COMPUTED,
+                    value: {
+                      function: Sdn.ComputedFunction.AUTO_FIT,
+                      input: {
+                        basedOn: "#parent.buttonSize",
+                        factor: 0.8,
+                      },
+                    },
+                  },
                 },
               },
             },
@@ -1159,6 +1247,31 @@ export const schema = {
                 content: {
                   type: Sdn.ValueType.EXACT,
                   value: "999",
+                },
+                color: {
+                  type: Sdn.ValueType.COMPUTED,
+                  value: {
+                    function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+                    input: {
+                      basedOn: "#parent.background.color",
+                    },
+                  },
+                },
+                font: {
+                  preset: {
+                    type: Sdn.ValueType.THEME_CATEGORICAL,
+                    value: "@font.normal",
+                  },
+                  size: {
+                    type: Sdn.ValueType.COMPUTED,
+                    value: {
+                      function: Sdn.ComputedFunction.AUTO_FIT,
+                      input: {
+                        basedOn: "#parent.buttonSize",
+                        factor: 0.8,
+                      },
+                    },
+                  },
                 },
               },
             },
