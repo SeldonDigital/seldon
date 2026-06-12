@@ -45,6 +45,12 @@ export type {
   LookFacetEntry,
   LookSection,
 } from "./themes/looks/look-facets"
+export { buildEmptyCustomTokenPayload } from "./themes/helpers/build-empty-custom-token-payload"
+export type { EmptyCustomTokenPayload } from "./themes/helpers/build-empty-custom-token-payload"
+export {
+  getReservedTokenKeys,
+  isReservedTokenName,
+} from "./themes/helpers/reserved-token-names"
 export * from "./workspace/compute"
 export * from "./workspace/types"
 export * from "./workspace/services/index"

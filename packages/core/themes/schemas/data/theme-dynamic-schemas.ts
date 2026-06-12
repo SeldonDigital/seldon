@@ -4,6 +4,7 @@
  * see `helpers/resolve-theme-token-schema.ts`. Static entries live in `theme-static-schemas.ts`.
  */
 import { getDynamicSwatchName } from "../../compute/get-dynamic-swatch-names"
+import { getReservedTokenKeys } from "../../helpers/reserved-token-names"
 import { LOOK_FACETS, isBridgedLookFacet } from "../../looks/look-facets"
 import type { LookSection } from "../../looks/look-facets"
 import type { ThemeTokenSchemaUnresolved } from "../../types/schema"
@@ -11,8 +12,85 @@ import type { ComputedTheme, StockTheme } from "../../types/theme"
 import type { StockThemeSwatch, ThemeSwatch } from "../../values"
 import { isDynamicSwatchToken } from "../../values"
 import { finalizeThemeTokenSchema } from "../helpers/finalize-theme-token-schema"
+import { SCALE_STEP_ROW_CONTROL } from "./theme-static-schemas"
 
 export type ThemeOrStock = StockTheme | ComputedTheme
+
+/** Scale sections whose custom rows render as a `.step` input. */
+const SCALE_STEP_SECTIONS = [
+  "size",
+  "dimension",
+  "margin",
+  "padding",
+  "gap",
+  "corners",
+  "fontSize",
+  "blur",
+  "spread",
+  "borderWidth",
+  "lineHeight",
+] as const
+
+/** Sections whose custom rows render as a bare unitless number (no `.step` suffix). */
+const SCALE_BARE_SECTIONS = ["fontWeight"] as const
+
+type ScaleSchemaSection =
+  | (typeof SCALE_STEP_SECTIONS)[number]
+  | (typeof SCALE_BARE_SECTIONS)[number]
+
+/** Custom rows sort after the reserved static rows. */
+const CUSTOM_SCALE_ORDER_BASE = 1000
+
+/**
+ * Tells whether a section gets dynamic scale rows for its custom tokens.
+ */
+export function isScaleSchemaSection(
+  section: string,
+): section is ScaleSchemaSection {
+  return (
+    (SCALE_STEP_SECTIONS as readonly string[]).includes(section) ||
+    (SCALE_BARE_SECTIONS as readonly string[]).includes(section)
+  )
+}
+
+/**
+ * Generate rows for the custom (`customN`) tokens in a scale section. Reserved
+ * step slots are covered by the static schemas, so only non-reserved keys are
+ * emitted here. The row label comes from the cell `name`, falling back to the
+ * key, so a renamed token updates its row after recompute.
+ */
+export function generateScaleSchemas(
+  theme: ThemeOrStock,
+  section: ScaleSchemaSection,
+): ThemeTokenSchemaUnresolved[] {
+  const table = (theme as unknown as Record<string, unknown>)[section]
+  if (!table || typeof table !== "object") return []
+
+  const reserved = new Set(getReservedTokenKeys(section))
+  const isBare = (SCALE_BARE_SECTIONS as readonly string[]).includes(section)
+
+  const schemas: ThemeTokenSchemaUnresolved[] = []
+  let order = CUSTOM_SCALE_ORDER_BASE
+  for (const [key, cell] of Object.entries(
+    table as Record<string, { name?: string }>,
+  )) {
+    if (reserved.has(key)) continue
+    const label = cell?.name?.trim() || key
+    schemas.push(
+      finalizeThemeTokenSchema({
+        key: isBare ? `${section}.${key}` : `${section}.${key}.step`,
+        label,
+        valueType: "number",
+        controlType: "number",
+        unit: SCALE_STEP_ROW_CONTROL.unit,
+        section,
+        order: order++,
+        icon: "seldon-step",
+      }),
+    )
+  }
+  return schemas
+}
 
 function swatchSchemaLabel(
   swatch: StockThemeSwatch | ThemeSwatch,

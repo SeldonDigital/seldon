@@ -25,6 +25,8 @@ import {
 import {
   validateAddThemeCustomToken,
   validateRemoveThemeCustomToken,
+  validateSetThemeCustomTokenName,
+  validateSetThemeScaleSlot,
 } from "./action-groups/theme-custom-tokens"
 import { boardValidators } from "./validators"
 import { WorkspaceValidationError } from "./workspace-validation-error"
@@ -45,6 +47,16 @@ export function validateAction(workspace: Workspace, action: Action): void {
 
   if (action.type.startsWith("remove_theme_custom_")) {
     validateRemoveThemeCustomToken(workspace, action)
+    return
+  }
+
+  if (action.type === "set_theme_scale_slot") {
+    validateSetThemeScaleSlot(workspace, action)
+    return
+  }
+
+  if (action.type === "set_theme_custom_token_name") {
+    validateSetThemeCustomTokenName(workspace, action)
     return
   }
 

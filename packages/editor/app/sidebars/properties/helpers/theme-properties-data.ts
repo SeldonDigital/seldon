@@ -197,12 +197,15 @@ function getThemeValueByKey(theme: Theme, key: string): unknown {
 
   if (MODULATION_STEP_SECTIONS.has(section) && id && facet === "step") {
     const item = getNestedValue(themeObj, [section, id])
-    if (
-      isRecord(item) &&
-      isRecord(item.parameters) &&
-      "step" in item.parameters
-    ) {
-      return item.parameters.step
+    if (isRecord(item) && isRecord(item.parameters)) {
+      if ("step" in item.parameters) {
+        return item.parameters.step
+      }
+      // An exact px/rem scale cell shows its length, e.g. "2px". Returning a
+      // tagged EXACT value lets the value cell stringify it with its unit.
+      if ("unit" in item.parameters && "value" in item.parameters) {
+        return { type: ValueType.EXACT, value: item.parameters }
+      }
     }
     return undefined
   }

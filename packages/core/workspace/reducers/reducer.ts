@@ -130,9 +130,11 @@ import { setNodeEditorData } from "./handlers/set/set-node-editor-data"
 import { setNodeLabel } from "./handlers/set/set-node-label"
 import { setNodeProperties } from "./handlers/set/set-node-properties"
 import { setNodeTheme } from "./handlers/set/set-node-theme"
+import { setThemeCustomTokenName } from "./handlers/set/set-theme-custom-token-name"
 import { setThemeEditorData } from "./handlers/set/set-theme-editor-data"
 import { setThemeLabel } from "./handlers/set/set-theme-label"
 import { setThemeOverride } from "./handlers/set/set-theme-override"
+import { setThemeScaleSlot } from "./handlers/set/set-theme-scale-slot"
 import { setWorkspace } from "./handlers/set/set-workspace"
 import { setWorkspaceIntent } from "./handlers/set/set-workspace-intent"
 import { setWorkspaceLabel } from "./handlers/set/set-workspace-label"
@@ -294,6 +296,10 @@ function reducer(workspace: Workspace, action: WorkspaceAction): Workspace {
       return setThemeEditorData(action.payload, workspace)
     case "set_theme_override":
       return setThemeOverride(action.payload, workspace)
+    case "set_theme_scale_slot":
+      return setThemeScaleSlot(action.payload, workspace)
+    case "set_theme_custom_token_name":
+      return setThemeCustomTokenName(action.payload, workspace)
     case "remove_instance":
       return removeInstance(action.payload, workspace)
     case "remove_variant":

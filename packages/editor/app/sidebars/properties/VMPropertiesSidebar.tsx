@@ -2,7 +2,14 @@ import { LayoutGroup } from "framer-motion"
 import { Fragment, RefObject, useCallback, useMemo } from "react"
 import { MenuEntry } from "@lib/menus"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
-import { Board, Instance, Theme, Variant, Workspace } from "@seldon/core"
+import {
+  Board,
+  Instance,
+  Theme,
+  Variant,
+  Workspace,
+  isThemeCustomTokenSection,
+} from "@seldon/core"
 import { usePropertiesSidebar } from "./hooks/use-properties-sidebar"
 import { useIsCategoryExpanded } from "./hooks/use-property-expansion"
 import {
@@ -184,6 +191,16 @@ function TreeSection({
     }
   }, [cssStrings, addToast])
 
+  // Theme variants can add a custom token to any custom-capable section. The
+  // "+" button shows only in theme editing on a variant, never on `core`.
+  const onAddCustom = useMemo<(() => void) | undefined>(() => {
+    if (!themeEditingContext?.isThemeEditing) return undefined
+    if (!themeEditingContext.canAddCustom) return undefined
+    if (!isThemeCustomTokenSection(section.category)) return undefined
+    const themeSection = section.category
+    return () => themeEditingContext.addCustomToken(themeSection)
+  }, [themeEditingContext, section.category])
+
   const sectionActions = useMemo((): MenuEntry[] | undefined => {
     if (section.category !== "css" || cssStrings.length === 0) {
       return undefined
@@ -221,7 +238,11 @@ function TreeSection({
 
   return (
     <Fragment>
-      <VMCategory section={section} actions={sectionActions} />
+      <VMCategory
+        section={section}
+        actions={sectionActions}
+        onAddCustom={onAddCustom}
+      />
       <FramerExpandable isExpanded={isExpanded}>{content}</FramerExpandable>
     </Fragment>
   )

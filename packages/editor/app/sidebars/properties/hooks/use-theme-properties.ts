@@ -6,15 +6,12 @@ import {
   Harmony,
   LOOK_FACETS,
   Ratio,
-  ThemeBorderWidthId,
+  type ScaleTokenInput,
+  type ScaleTokenSection,
   ThemeCustomSwatchId,
-  ThemeDimensionId,
-  ThemeFontFamilyId,
   ThemeFontId,
-  ThemeFontSizeId,
   ThemeLineHeightId,
-  ThemeSizeId,
-  ThemeSpacingId,
+  Unit,
   isBridgedLookFacet,
   isLookSection,
 } from "@seldon/core"
@@ -26,6 +23,43 @@ import { getThemeOverridePath } from "@seldon/core/workspace/helpers/themes/them
 import type { EntryThemeId } from "@seldon/core/workspace/types"
 import { useThemeEntryEditor } from "@lib/themes/hooks/use-theme-entry-editor"
 import { FlatProperty } from "../helpers/properties-data"
+
+/** Scale sections whose `.step` row edits route through `set_theme_scale_slot`. */
+const SCALE_SLOT_SECTIONS = new Set<ScaleTokenSection>([
+  "size",
+  "dimension",
+  "margin",
+  "padding",
+  "gap",
+  "corners",
+  "fontSize",
+  "blur",
+  "spread",
+  "borderWidth",
+])
+
+function isScaleSlotSection(section: string): section is ScaleTokenSection {
+  return SCALE_SLOT_SECTIONS.has(section as ScaleTokenSection)
+}
+
+/**
+ * Parses a scale `.step` row input. A bare number is a modulated step; a `px`
+ * or `rem` suffix makes it an exact length. Returns null for unparseable input.
+ */
+function parseScaleInput(raw: string): ScaleTokenInput | null {
+  const match = /^(-?\d*\.?\d+)\s*(px|rem)?$/i.exec(raw.trim())
+  if (!match) return null
+  const numeric = parseFloat(match[1]!)
+  if (!Number.isFinite(numeric)) return null
+  const unit = match[2]?.toLowerCase()
+  if (unit === "px") {
+    return { kind: "exact", parameters: { unit: Unit.PX, value: numeric } }
+  }
+  if (unit === "rem") {
+    return { kind: "exact", parameters: { unit: Unit.REM, value: numeric } }
+  }
+  return { kind: "modulated", parameters: { step: numeric } }
+}
 
 /**
  * Maps theme property panel edits to `set_theme_override` on the active theme entry.
@@ -39,23 +73,14 @@ export function useThemeProperties(themeEntryId: EntryThemeId | null) {
     setHarmony,
     setColorValue,
     setFontFamilyValue,
-    setSizeValue,
-    setDimensionValue,
-    setMarginValue,
-    setPaddingValue,
-    setGapValue,
-    setFontSizeValue,
     setLineHeightValue,
     setFontWeightValue,
-    setBorderWidthValue,
-    setCornersValue,
-    setBlurValue,
-    setSpreadValue,
+    setScaleSlot,
     setLookParameter,
-    addCustomSwatch,
-    removeCustomSwatch,
     setSwatchValue,
-    setSwatchName,
+    addCustomToken,
+    removeCustomToken,
+    renameCustomToken,
     resetOverride,
   } = useThemeEntryEditor(themeEntryId)
 
@@ -154,54 +179,23 @@ export function useThemeProperties(themeEntryId: EntryThemeId | null) {
         return
       }
 
-      // Modulation value sections (size, dimension, margin, padding, gap, fontSize, etc.)
+      // Scale `.step` rows. A bare number is a modulated step; `px`/`rem` makes
+      // the token an exact length. `lineHeight` stays an exact unitless number.
       if (key.includes(".step")) {
         const parts = key.split(".")
-        const section = parts[0]
+        const section = parts[0]!
         const subKey = parts[1] as string
 
-        if (section === "size") {
-          setSizeValue(subKey as ThemeSizeId, Number(newValue))
-          return
-        }
-        if (section === "dimension") {
-          setDimensionValue(subKey as ThemeDimensionId, Number(newValue))
-          return
-        }
-        if (section === "margin") {
-          setMarginValue(subKey as ThemeSpacingId, Number(newValue))
-          return
-        }
-        if (section === "padding") {
-          setPaddingValue(subKey as ThemeSpacingId, Number(newValue))
-          return
-        }
-        if (section === "gap") {
-          setGapValue(subKey as ThemeSpacingId, Number(newValue))
-          return
-        }
-        if (section === "fontSize") {
-          setFontSizeValue(subKey as ThemeFontSizeId, Number(newValue))
-          return
-        }
         if (section === "lineHeight") {
           setLineHeightValue(subKey as ThemeLineHeightId, Number(newValue))
           return
         }
-        if (section === "borderWidth") {
-          setBorderWidthValue(subKey as ThemeBorderWidthId, Number(newValue))
-          return
-        }
-        if (section === "corners") {
-          setCornersValue(subKey as ThemeSpacingId, Number(newValue))
-          return
-        }
-        if (section === "blur") {
-          setBlurValue(subKey as ThemeSizeId, Number(newValue))
-          return
-        }
-        if (section === "spread") {
-          setSpreadValue(subKey as ThemeSizeId, Number(newValue))
+
+        if (isScaleSlotSection(section)) {
+          const parsed = parseScaleInput(newValue)
+          if (parsed) {
+            setScaleSlot(section, subKey, parsed)
+          }
           return
         }
       }
@@ -255,18 +249,9 @@ export function useThemeProperties(themeEntryId: EntryThemeId | null) {
       setHarmony,
       setColorValue,
       setFontFamilyValue,
-      setSizeValue,
-      setDimensionValue,
-      setMarginValue,
-      setPaddingValue,
-      setGapValue,
-      setFontSizeValue,
       setLineHeightValue,
       setFontWeightValue,
-      setBorderWidthValue,
-      setCornersValue,
-      setBlurValue,
-      setSpreadValue,
+      setScaleSlot,
       setLookParameter,
       setSwatchValue,
     ],
@@ -281,5 +266,11 @@ export function useThemeProperties(themeEntryId: EntryThemeId | null) {
     [resetOverride],
   )
 
-  return { updateThemeProperty, resetThemeProperty }
+  return {
+    updateThemeProperty,
+    resetThemeProperty,
+    addCustomToken,
+    removeCustomToken,
+    renameCustomToken,
+  }
 }

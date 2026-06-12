@@ -5,8 +5,11 @@ import {
   type Harmony,
   type LookSection,
   type Ratio,
+  type ScaleTokenInput,
+  type ScaleTokenSection,
   type ThemeBorderWidthId,
   type ThemeCustomSwatchId,
+  type ThemeCustomTokenSection,
   type ThemeDimensionId,
   type ThemeFontFamilyId,
   type ThemeFontId,
@@ -14,6 +17,8 @@ import {
   type ThemeLineHeightId,
   type ThemeSizeId,
   type ThemeSpacingId,
+  type WorkspaceAction,
+  buildEmptyCustomTokenPayload,
 } from "@seldon/core"
 import { getComputedTheme } from "@seldon/core/workspace/compute"
 import { getThemeOverrides } from "@seldon/core/workspace/helpers/themes/get-theme-overrides"
@@ -265,6 +270,62 @@ export function useThemeEntryEditor(themeEntryId: EntryThemeId | null) {
     [setModulationStep],
   )
 
+  /**
+   * Adds a custom token to any custom-capable section with default values from
+   * `buildEmptyCustomTokenPayload`. The reducer mints the next `customN` id.
+   */
+  const addCustomToken = useCallback(
+    (section: ThemeCustomTokenSection) => {
+      if (!themeEntryId) return
+      dispatch({
+        type: `add_theme_custom_${section}`,
+        payload: {
+          themeId: themeEntryId,
+          ...buildEmptyCustomTokenPayload(section),
+        },
+      } as WorkspaceAction)
+    },
+    [dispatch, themeEntryId],
+  )
+
+  const removeCustomToken = useCallback(
+    (section: ThemeCustomTokenSection, key: string) => {
+      if (!themeEntryId) return
+      dispatch({
+        type: `remove_theme_custom_${section}`,
+        payload: { themeId: themeEntryId, key },
+      } as WorkspaceAction)
+    },
+    [dispatch, themeEntryId],
+  )
+
+  /**
+   * Replaces a scale-table cell with a modulated step or an exact px/rem length.
+   * The reducer builds and swaps the whole cell, so direction switches never
+   * leave a stale `step` or `unit/value`.
+   */
+  const setScaleSlot = useCallback(
+    (section: ScaleTokenSection, key: string, value: ScaleTokenInput) => {
+      if (!themeEntryId) return
+      dispatch({
+        type: "set_theme_scale_slot",
+        payload: { themeId: themeEntryId, section, key, value },
+      })
+    },
+    [dispatch, themeEntryId],
+  )
+
+  const renameCustomToken = useCallback(
+    (section: ThemeCustomTokenSection, key: string, name: string) => {
+      if (!themeEntryId) return
+      dispatch({
+        type: "set_theme_custom_token_name",
+        payload: { themeId: themeEntryId, section, key, name },
+      })
+    },
+    [dispatch, themeEntryId],
+  )
+
   const addCustomSwatch = useCallback(() => {
     if (!themeEntryId) return
     dispatch({
@@ -335,6 +396,10 @@ export function useThemeEntryEditor(themeEntryId: EntryThemeId | null) {
     setBlurValue,
     setSpreadValue,
     setLookParameter,
+    addCustomToken,
+    removeCustomToken,
+    setScaleSlot,
+    renameCustomToken,
     addCustomSwatch,
     removeCustomSwatch,
     setSwatchValue,

@@ -55,9 +55,19 @@ export function usePropertyValidation(
           ? ["%"]
           : getUnitsForProperty(property.key)
 
+  // Scale `.step` rows accept a bare number (modulated step) or a px/rem length
+  // (exact). `lineHeight` stays a unitless number, so it is excluded.
+  const isScaleStep =
+    property.key.endsWith(".step") && !property.key.startsWith("lineHeight.")
+
   const getValidationFunction = ():
     | ((value: string) => boolean)
     | undefined => {
+    if (isScaleStep) {
+      return (value: string) =>
+        isNumber(value) || isPx(value) || isRem(value)
+    }
+
     if (property.controlType === "combo" || property.controlType === "menu") {
       if (units.length > 0) {
         return (value: string) => {

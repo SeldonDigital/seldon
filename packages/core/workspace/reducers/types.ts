@@ -18,6 +18,7 @@
  * | reset_node_label, reset_node_editor_data | nodes |
  * | reset_user_variant_to_default, reset_default_variant_to_catalog, reset_component_to_catalog | components.variants tree + nodes |
  * | set_theme_label, set_theme_editor_data, set_theme_override, reset_theme_tokens, reset_theme_label, reset_theme_editor_data, reset_theme_override | themes |
+ * | set_theme_scale_slot, set_theme_custom_token_name | themes (variant rows only) |
  * | add_theme_custom_{swatch,font,border,background,gradient,shadow,scrollbar,size,dimension,margin,padding,gap,corners,borderWidth,blur,spread,fontSize,fontWeight,lineHeight} | themes (variant rows only) |
  * | remove_theme_custom_{...same 19 tables...} | themes (variant rows only) |
  * | delete_theme, duplicate_theme | themes (+ components.variants for theme row) |
@@ -78,6 +79,71 @@ type RemoveThemeCustomBase = {
 export type ScaleTokenInput =
   | { kind: "modulated"; parameters: ModulationParameters }
   | { kind: "exact"; parameters: ThemeExact["parameters"] }
+
+/** Scale sections whose cells are modulated steps and may be set to an exact px/rem length. */
+export type ScaleTokenSection =
+  | "size"
+  | "dimension"
+  | "margin"
+  | "padding"
+  | "gap"
+  | "corners"
+  | "fontSize"
+  | "blur"
+  | "spread"
+  | "borderWidth"
+
+/** Every section that accepts user-added `customN` tokens (matches the `add_theme_custom_*` tables). */
+export type ThemeCustomTokenSection =
+  | "swatch"
+  | "font"
+  | "border"
+  | "background"
+  | "gradient"
+  | "shadow"
+  | "scrollbar"
+  | "size"
+  | "dimension"
+  | "margin"
+  | "padding"
+  | "gap"
+  | "corners"
+  | "borderWidth"
+  | "blur"
+  | "spread"
+  | "fontSize"
+  | "fontWeight"
+  | "lineHeight"
+
+/** Runtime list of every section that accepts user-added `customN` tokens. */
+export const THEME_CUSTOM_TOKEN_SECTIONS = [
+  "swatch",
+  "font",
+  "border",
+  "background",
+  "gradient",
+  "shadow",
+  "scrollbar",
+  "size",
+  "dimension",
+  "margin",
+  "padding",
+  "gap",
+  "corners",
+  "borderWidth",
+  "blur",
+  "spread",
+  "fontSize",
+  "fontWeight",
+  "lineHeight",
+] as const satisfies readonly ThemeCustomTokenSection[]
+
+/** Tells whether a section accepts user-added `customN` tokens. */
+export function isThemeCustomTokenSection(
+  section: string,
+): section is ThemeCustomTokenSection {
+  return (THEME_CUSTOM_TOKEN_SECTIONS as readonly string[]).includes(section)
+}
 
 /** Strictly-typed union of every `add_theme_custom_*` action covering THEMES.md custom-token tables. */
 export type AddCustomToken =
@@ -544,6 +610,24 @@ export type WorkspaceAction =
     }
   | AddCustomToken
   | RemoveCustomToken
+  | {
+      type: "set_theme_scale_slot"
+      payload: {
+        themeId: string
+        section: ScaleTokenSection
+        key: string
+        value: ScaleTokenInput
+      }
+    }
+  | {
+      type: "set_theme_custom_token_name"
+      payload: {
+        themeId: string
+        section: ThemeCustomTokenSection
+        key: string
+        name: string
+      }
+    }
   | {
       type: "reset_theme_tokens"
       payload: {

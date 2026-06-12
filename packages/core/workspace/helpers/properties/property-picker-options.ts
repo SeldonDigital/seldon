@@ -360,15 +360,24 @@ function buildComputedOptions(
   )
 }
 
-function sortSwatchKeys(themeKeys: string[]): string[] {
-  const standardSwatches = themeKeys.filter((key) => !key.startsWith("custom"))
-  const customSwatches = themeKeys.filter((key) => key.startsWith("custom"))
-  const sortedCustom = customSwatches.sort(
-    (a, b) =>
-      parseInt(a.replace("custom", ""), 10) -
-      parseInt(b.replace("custom", ""), 10),
-  )
-  return [...standardSwatches, ...sortedCustom]
+/** Custom token ordinal (`custom3` -> 3), or -1 when the key is a reserved token. */
+function customTokenIndex(key: string): number {
+  const id = key.startsWith("@") ? (key.split(".").pop() ?? key) : key
+  const match = /^custom(\d+)$/.exec(id)
+  return match ? parseInt(match[1]!, 10) : -1
+}
+
+/**
+ * Keeps reserved tokens in their existing order and appends custom tokens last,
+ * sorted by their `customN` index. Mirrors how custom swatches list after the
+ * standard palette, so a named custom token like "Humongous" lands at the end.
+ */
+function sortThemeKeysCustomLast(themeKeys: string[]): string[] {
+  const reserved = themeKeys.filter((key) => customTokenIndex(key) < 0)
+  const custom = themeKeys
+    .filter((key) => customTokenIndex(key) >= 0)
+    .sort((a, b) => customTokenIndex(a) - customTokenIndex(b))
+  return [...reserved, ...custom]
 }
 
 function getThemeSectionFromSchema(
@@ -413,8 +422,7 @@ function createThemeOptions(
   themeSection: string,
   theme: Theme,
 ): PropertyPickerOption[] {
-  const sortedKeys =
-    themeSection === "swatch" ? sortSwatchKeys(themeKeys) : themeKeys
+  const sortedKeys = sortThemeKeysCustomLast(themeKeys)
 
   return sortedKeys.map((key) => {
     const themeKey = key.startsWith("@") ? key : `@${themeSection}.${key}`

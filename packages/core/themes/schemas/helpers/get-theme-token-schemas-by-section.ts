@@ -7,7 +7,9 @@ import type {
 import type { ComputedTheme, StockTheme } from "../../types/theme"
 import {
   generateLookSchemas,
+  generateScaleSchemas,
   generateSwatchSchemas,
+  isScaleSchemaSection,
 } from "../data/theme-dynamic-schemas"
 import { THEME_TOKEN_SCHEMAS } from "../data/theme-token-schemas"
 import { resolveThemeTokenSchema } from "./resolve-theme-token-schema"
@@ -33,6 +35,8 @@ export function getThemeTokenSchemasBySection(
       dynamicSchemas = generateSwatchSchemas(theme)
     } else if (isLookSection(sectionId)) {
       dynamicSchemas = generateLookSchemas(theme, sectionId)
+    } else if (isScaleSchemaSection(sectionId)) {
+      dynamicSchemas = generateScaleSchemas(theme, sectionId)
     }
 
     schemas.push(...dynamicSchemas.map((s) => resolveThemeTokenSchema(s)))

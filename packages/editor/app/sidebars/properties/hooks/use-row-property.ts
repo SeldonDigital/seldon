@@ -10,10 +10,14 @@ import {
   PropertyKey,
   SubPropertyKey,
   Theme,
+  type ThemeCustomTokenSection,
   Variant,
   Workspace,
+  isReservedTokenName,
 } from "@seldon/core"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
+import { useAddToast } from "@app/toaster/hooks/use-add-toast"
+import { useInlineRename } from "../../hooks/use-inline-rename"
 import { workspaceThemeService } from "@seldon/core/workspace/services/theme/theme.service"
 import { useThemes } from "@lib/themes/hooks/use-themes"
 import { useObjectProperties } from "@lib/workspace/hooks/use-object-properties"
@@ -99,6 +103,29 @@ export function useRowProperty({
 
   const frameRef = useRef<HTMLDivElement>(null)
   const [isEditingProperty, setIsEditingProperty] = useState(false)
+  const [isRenaming, setIsRenaming] = useState(false)
+  const addToast = useAddToast()
+
+  // A custom token row can be renamed in place. Reserved scale/look/swatch keys
+  // are not `customN`, so they never match. Only meaningful on a theme variant.
+  const customTokenTarget = useMemo<{
+    section: ThemeCustomTokenSection
+    key: string
+  } | null>(() => {
+    if (!themeEditingContext?.isThemeEditing || !themeEditingContext.canAddCustom) {
+      return null
+    }
+    const parts = property.key.split(".")
+    const section = parts[0]
+    let id: string | undefined
+    if (parts.length === 2) {
+      id = parts[1]
+    } else if (parts.length === 3 && parts[2] === "step") {
+      id = parts[1]
+    }
+    if (!section || !id || !/^custom\d+$/.test(id)) return null
+    return { section: section as ThemeCustomTokenSection, key: id }
+  }, [property.key, themeEditingContext])
 
   // Sub-properties for this compound/shorthand property.
   const children = useMemo(() => {
@@ -345,15 +372,70 @@ export function useRowProperty({
     [handleFrameClick],
   )
 
-  const resetActions: MenuEntry[] = canReset
+  const handleRenameSubmit = useCallback(
+    (value: string) => {
+      if (!customTokenTarget || !themeEditingContext?.isThemeEditing) {
+        setIsRenaming(false)
+        return
+      }
+      const trimmed = value.trim()
+      if (!trimmed) {
+        setIsRenaming(false)
+        return
+      }
+      // The reducer enforces this too; the toast gives instant feedback and
+      // keeps the row in edit mode so the user can correct the name.
+      if (isReservedTokenName(customTokenTarget.section, trimmed)) {
+        addToast(`"${trimmed}" is a reserved ${customTokenTarget.section} name`)
+        return
+      }
+      themeEditingContext.renameCustomToken(
+        customTokenTarget.section,
+        customTokenTarget.key,
+        trimmed,
+      )
+      setIsRenaming(false)
+    },
+    [customTokenTarget, themeEditingContext, addToast],
+  )
+
+  const handleRowDoubleClick = useCallback(() => {
+    if (customTokenTarget) {
+      setIsRenaming(true)
+    }
+  }, [customTokenTarget])
+
+  const { labelChildren } = useInlineRename({
+    label: labelText,
+    isEditing: isRenaming,
+    setEditing: setIsRenaming,
+    onSubmit: handleRenameSubmit,
+  })
+
+  // Custom-token rows expose a single "Delete" action instead of reset: a
+  // custom token has no base value to reset to, so deletion removes the cell.
+  const rowActions: MenuEntry[] = customTokenTarget
     ? [
-        buildResetMenuEntry({
-          label: `Reset ${labelText}`,
-          onSelect: handleReset,
-          testId: `property-row-${property.key}-reset`,
-        }),
+        {
+          id: "delete-custom-token",
+          label: `Delete ${labelText}`,
+          onSelect: () =>
+            themeEditingContext?.removeCustomToken(
+              customTokenTarget.section,
+              customTokenTarget.key,
+            ),
+          testId: `property-row-${property.key}-delete`,
+        },
       ]
-    : []
+    : canReset
+      ? [
+          buildResetMenuEntry({
+            label: `Reset ${labelText}`,
+            onSelect: handleReset,
+            testId: `property-row-${property.key}-reset`,
+          }),
+        ]
+      : []
 
   const listItemProps = buildPropertyRowProps({
     property,
@@ -375,6 +457,13 @@ export function useRowProperty({
     handleUploadClick,
     handleMenuClick,
   })
+
+  if (customTokenTarget && isRenaming) {
+    listItemProps.textLabel = {
+      ...listItemProps.textLabel,
+      children: labelChildren as unknown as string,
+    }
+  }
 
   const rowCursor = hasChildren || property.controlType ? "pointer" : "default"
 
@@ -429,10 +518,11 @@ export function useRowProperty({
   return {
     listItemProps,
     onRowClick: handleRowClick,
+    onRowDoubleClick: handleRowDoubleClick,
     frameProps,
     rowStyleProp,
     valueCellProps,
-    resetActions,
+    resetActions: rowActions,
     focusTargetRef: frameRef,
     labelColor,
     isExpanded,

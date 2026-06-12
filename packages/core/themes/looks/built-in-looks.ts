@@ -65,7 +65,7 @@ const PARAMETER_KEYS_BY_SECTION = {
  * theme or variant fails to author one. Mirrors the reserved keys in
  * `types/theme-token-ids.ts`.
  */
-const RESERVED_LOOK_IDS: Record<ReservedLookSection, readonly string[]> = {
+export const RESERVED_LOOK_IDS: Record<ReservedLookSection, readonly string[]> = {
   shadow: ["none", "xlight", "light", "moderate", "strong", "xstrong"],
   gradient: ["none", "primary", "gradient1", "gradient2"],
   background: ["none", "primary", "background1", "background2"],

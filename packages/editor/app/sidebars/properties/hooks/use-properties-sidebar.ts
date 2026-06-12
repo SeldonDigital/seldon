@@ -9,6 +9,7 @@ import {
   buildPropertyTreeAllProperties,
   buildPropertyTreeSections,
 } from "../helpers/build-property-tree-layout"
+import type { ThemeEditingContext } from "../helpers/editing-contexts"
 import { useCssStrings } from "../helpers/get-calculated-properties"
 import { Board, Instance, Variant } from "@seldon/core"
 import { getComputedTheme } from "@seldon/core/workspace/compute"
@@ -130,8 +131,13 @@ export function usePropertiesSidebar(): PropertiesSidebarState {
     return workspaceIconSetService.getInclusion(activeIconSetEntryId, workspace)
   }, [isIconSetEditingMode, activeIconSetEntryId, workspace])
 
-  const { updateThemeProperty, resetThemeProperty } =
-    useThemeProperties(activeThemeEntryId)
+  const {
+    updateThemeProperty,
+    resetThemeProperty,
+    addCustomToken,
+    removeCustomToken,
+    renameCustomToken,
+  } = useThemeProperties(activeThemeEntryId)
 
   const editedTheme = useMemo(() => {
     if (!isThemeEditingMode || !activeThemeEntryId) return null
@@ -191,24 +197,32 @@ export function usePropertiesSidebar(): PropertiesSidebarState {
     return workspaceThemeService.getObjectTheme(selection, workspace)
   }, [selection, workspace, isThemeEditingMode, editedTheme])
 
-  const themeEditingContext = useMemo((): {
-    isThemeEditing: true
-    updateThemeProperty: (property: FlatProperty, newValue: string) => void
-    resetThemeProperty: (property: FlatProperty) => void
-    themeProperties: FlatProperty[]
-  } | null => {
+  const canAddCustom = useMemo(() => {
+    if (!isThemeEditingMode || !activeThemeEntryId) return false
+    return workspace.themes[activeThemeEntryId]?.type === "variant"
+  }, [isThemeEditingMode, activeThemeEntryId, workspace])
+
+  const themeEditingContext = useMemo((): ThemeEditingContext | null => {
     if (!isThemeEditingMode) return null
     return {
       isThemeEditing: true,
       updateThemeProperty,
       resetThemeProperty,
       themeProperties,
+      addCustomToken,
+      removeCustomToken,
+      renameCustomToken,
+      canAddCustom,
     }
   }, [
     isThemeEditingMode,
     updateThemeProperty,
     resetThemeProperty,
     themeProperties,
+    addCustomToken,
+    removeCustomToken,
+    renameCustomToken,
+    canAddCustom,
   ])
 
   const metadataProperties = useMemo<FlatProperty[] | undefined>(() => {
