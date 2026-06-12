@@ -52,5 +52,4 @@ export type {
   ComboboxOptionItems,
 } from "./controls/combobox/types"
 export { FramerExpandable } from "./containers/FramerExpandable"
-export { EmptySectionRow } from "./containers/EmptySectionRow"
 export { DragNodePreview } from "./containers/DragNodePreview"

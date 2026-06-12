@@ -1,4 +1,4 @@
-import { memo, useCallback } from "react"
+import { CSSProperties, memo, useCallback } from "react"
 import { Board as BoardType, Variant } from "@seldon/core"
 import { useRowHighlightStyle } from "@lib/workspace/hooks/use-object-hover"
 import { useSidebarCanvasTrackingBoard } from "../../tracking/hooks/use-sidebar-canvas-tracking"
@@ -22,9 +22,56 @@ import {
 
 const BOARD_SELECTION_KIND = "board"
 
-interface VMBoardProps {
-  board: BoardType
-  show?: boolean
+const emptyRowWrapperStyle: CSSProperties = {
+  ...rowWrapperStyle,
+  position: "relative",
+}
+
+const emptyLabelStyle: CSSProperties = {
+  fontFamily: "var(--sdn-seldon-font-family-primary)",
+  fontSize: "var(--sdn-font-size-xsmall)",
+  color: "var(--sdn-seldon-swatch-white)",
+  paddingInlineStart: "var(--sdn-padding-compact)",
+}
+
+type VMBoardProps =
+  | { board: BoardType; show?: boolean }
+  | { emptyLabel: string }
+
+/**
+ * View-model for a board row in the objects sidebar.
+ * Renders a real board row, or an inert placeholder row when `emptyLabel` is
+ * passed for a section with no boards. Branches before any board hooks run so
+ * the empty case never needs board data.
+ */
+export const VMBoard = memo(function VMBoard(props: VMBoardProps) {
+  if ("emptyLabel" in props) {
+    return <VMBoardEmpty label={props.emptyLabel} />
+  }
+  return <VMBoardRow board={props.board} show={props.show} />
+})
+
+/**
+ * Inert placeholder row shown when a section has no boards. Mirrors a board row
+ * shell with all slots empty, so it reads as a disabled "No <section>" line.
+ */
+function VMBoardEmpty({ label }: { label: string }) {
+  return (
+    <div style={emptyRowWrapperStyle}>
+      <ItemNodeRow
+        buttonIconic={null}
+        icon={null}
+        icon2={null}
+        textLabel={{ children: label, style: emptyLabelStyle }}
+        buttonIconic2={null}
+        icon3={null}
+        buttonIconic3={null}
+        icon4={null}
+        aria-disabled
+        data-testid="objects-sidebar-empty-section"
+      />
+    </div>
+  )
 }
 
 /**
@@ -32,10 +79,7 @@ interface VMBoardProps {
  * Handles board selection, expansion, and canvas tracking. Hover highlight comes
  * from the shared hover bridge via the tree-root controller.
  */
-export const VMBoard = memo(function VMBoard({
-  board,
-  show = true,
-}: VMBoardProps) {
+function VMBoardRow({ board, show = true }: { board: BoardType; show?: boolean }) {
   // Core board data: buttons, icons, handlers, state
   const {
     label: baseLabel,
@@ -158,4 +202,4 @@ export const VMBoard = memo(function VMBoard({
       </FramerExpandable>
     </>
   )
-})
+}

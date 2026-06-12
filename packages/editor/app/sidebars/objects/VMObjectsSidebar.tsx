@@ -15,7 +15,6 @@ import { BoardSection } from "../helpers/get-board-sections"
 import { getSelectionTarget } from "@lib/workspace/selection-target"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import {
-  EmptySectionRow,
   FramerExpandable,
   SidebarContainer,
 } from "@seldon/components/custom-components"
@@ -109,9 +108,7 @@ function ObjectsSectionGroup({ section }: { section: BoardSection }) {
       <VMSection section={section} />
       <FramerExpandable isExpanded={isExpanded}>
         {section.boards.length === 0 ? (
-          <EmptySectionRow
-            label={`No ${section.label.toLowerCase()}`}
-          />
+          <VMBoard emptyLabel={`No ${section.label.toLowerCase()}`} />
         ) : (
           section.boards.map((board) => (
             <VMBoard key={getComponentKey(board)} board={board} />
