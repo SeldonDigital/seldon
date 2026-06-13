@@ -138,7 +138,7 @@ The editor produces a valid workspace. Factory consumes that workspace and produ
 2. Feed that workspace into Factory.
 3. Call `exportWorkspace` with target options, for example React plus CSS.
 
-Pipeline detail lives in [../factory/FACTORY.md](../factory/FACTORY.md).
+Pipeline detail lives in [../factory/README.md](../factory/README.md).
 
 ---
 
@@ -146,8 +146,8 @@ Pipeline detail lives in [../factory/FACTORY.md](../factory/FACTORY.md).
 
 | Topic | Document |
 | --- | --- |
-| Core kernel | [../core/CORE.md](../core/CORE.md) |
-| Factory export | [../factory/FACTORY.md](../factory/FACTORY.md) |
+| Core | [../core/README.md](../core/README.md) |
+| Factory | [../factory/README.md](../factory/README.md) |
 | Run steps | [Run Steps](#run-steps) |
 | Vocabulary | [GLOSSARY.md](../../GLOSSARY.md) |
 | Workspace file spec | [../core/workspace/WORKSPACE.md](../core/workspace/WORKSPACE.md) |
@@ -198,11 +198,10 @@ Contact:
 
 ## Links
 
-- [Core kernel](../core/CORE.md)
-- [Factory export](../factory/FACTORY.md)
-- [Editor run steps](#run-steps)
+- [Core](../core/README.md)
+- [Factory](../factory/README.md)
+- [Editor](./README.md)
 - [Official Website](https://seldon.digital)
-- [Documentation](https://docs.seldon.digital)
 - [Issues & Discussions](https://github.com/seldon/issues)
 
 ---

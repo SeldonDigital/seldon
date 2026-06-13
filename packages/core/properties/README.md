@@ -773,8 +773,10 @@ This project is licensed as follows:
 
 ## Links
 
+- [Core](../README.md)
+- [Factory](../../factory/README.md)
+- [Editor](../../editor/README.md)
 - [Official Website](https://seldon.digital)
-- [Documentation](https://docs.seldon.digital)
 - [Issues & Discussions](https://github.com/seldon/issues)
 
 ---

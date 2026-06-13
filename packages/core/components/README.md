@@ -469,11 +469,10 @@ This project is licensed as follows:
 
 ## Links
 
-- [properties/README.md](../properties/README.md) — `ValueType`, property categories, override behaviour
-- [themes/README.md](../themes/README.md) — `@token` references, palette generation
-- [workspace/README.md](../workspace/README.md) — board taxonomy, instance state, reducers
+- [Core](../README.md)
+- [Factory](../../factory/README.md)
+- [Editor](../../editor/README.md)
 - [Official Website](https://seldon.digital)
-- [Documentation](https://docs.seldon.digital)
 - [Issues & Discussions](https://github.com/seldon/issues)
 
 ---

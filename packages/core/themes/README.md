@@ -999,10 +999,11 @@ This project is licensed as follows:
 
 ## Links
 
-- [properties/README.md](../properties/README.md) — `ValueType`, wire notation, property categories
-- [compute/README.md](./compute/README.md) — palette math, `instantiateTheme`, normalization details
-- [schemas/README.md](./schemas/README.md)
-- [workspace/README.md](../workspace/README.md) — where themes attach to boards and nodes
+- [Core](../README.md)
+- [Factory](../../factory/README.md)
+- [Editor](../../editor/README.md)
+- [Official Website](https://seldon.digital)
+- [Issues & Discussions](https://github.com/seldon/issues)
 
 ---
 
