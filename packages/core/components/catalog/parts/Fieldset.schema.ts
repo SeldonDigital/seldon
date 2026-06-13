@@ -175,6 +175,24 @@ export const schema = {
         value: "@corners.tight",
       },
     },
+    gradient: [
+      {
+        preset: {
+          type: Sdn.ValueType.THEME_CATEGORICAL,
+          value: "@gradient.none",
+        },
+        gradientType: { type: Sdn.ValueType.EMPTY, value: null },
+        angle: { type: Sdn.ValueType.EMPTY, value: null },
+        startColor: { type: Sdn.ValueType.EMPTY, value: null },
+        startOpacity: { type: Sdn.ValueType.EMPTY, value: null },
+        startBrightness: { type: Sdn.ValueType.EMPTY, value: null },
+        startPosition: { type: Sdn.ValueType.EMPTY, value: null },
+        endColor: { type: Sdn.ValueType.EMPTY, value: null },
+        endOpacity: { type: Sdn.ValueType.EMPTY, value: null },
+        endBrightness: { type: Sdn.ValueType.EMPTY, value: null },
+        endPosition: { type: Sdn.ValueType.EMPTY, value: null },
+      },
+    ],
     shadow: [
       {
         preset: {
