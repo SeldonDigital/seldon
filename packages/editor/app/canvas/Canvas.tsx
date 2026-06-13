@@ -12,6 +12,7 @@ import { useActiveBoard } from "@lib/workspace/hooks/use-active-board"
 import { useSelection } from "@lib/workspace/hooks/use-selection"
 import { useSetHoverState } from "@lib/hooks/use-canvas-hover-state"
 import { useDialog } from "@lib/hooks/use-dialog"
+import { useTool } from "@lib/hooks/use-tool"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { CanvasTracking } from "../tracking/CanvasTracking"
 import {
@@ -41,6 +42,7 @@ function getPanCursor(
 export const Canvas = () => {
   const { selectBoard, selectNode } = useSelection()
   const { activeBoard } = useActiveBoard()
+  const { activeTool, setActiveTool } = useTool()
   const setHoverState = useSetHoverState()
   const { activeDialog } = useDialog()
 
@@ -60,6 +62,13 @@ export const Canvas = () => {
   const handleCanvasClick = (event: React.MouseEvent) => {
     const rootTree = document.getElementById("root-tree")
     if (rootTree?.contains(event.target as Node)) {
+      return
+    }
+
+    // Insert component tool: clicking the empty canvas outside the board cancels
+    // the tool and returns to select.
+    if (activeTool === "component") {
+      setActiveTool("select")
       return
     }
 

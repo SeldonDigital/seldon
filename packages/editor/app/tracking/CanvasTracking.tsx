@@ -31,9 +31,10 @@ export function CanvasTracking() {
     (state) => state.isTransforming,
   )
 
-  const showWireframes =
-    wireframeMode === "on" ||
-    (wireframeMode === "auto" && activeTool === "component")
+  // The insert component tool suppresses auto wireframes so the accent hover
+  // box reads cleanly. Explicit wireframe mode still wins, and leaving the tool
+  // restores normal auto behavior without touching persisted state.
+  const showWireframes = wireframeMode === "on"
 
   useTrackNodeRects(nodeIds)
 
@@ -61,6 +62,7 @@ export function CanvasTracking() {
       {showSelection && activeTool === "select" && (
         <CanvasHoverOutline wireframe={showWireframes} />
       )}
+      {activeTool === "component" && <CanvasHoverOutline />}
       {activeTool === "component" && hasHoverState && <InsertTracking />}
     </>
   )

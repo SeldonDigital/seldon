@@ -346,6 +346,13 @@ export function useMenuConfig(): HeaderConfig {
       },
       "separator",
       {
+        id: "insert-component",
+        label: "Insert Component",
+        action: () => setActiveTool("component"),
+        shortcut: "I",
+      },
+      "separator",
+      {
         id: "add-component",
         label: "Add Component",
         action: () => {

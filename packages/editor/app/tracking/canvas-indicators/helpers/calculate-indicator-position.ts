@@ -42,16 +42,20 @@ export function calculateIndicatorPosition({
   const inBetween = Boolean(childElement?.nextElementSibling)
   const gap = parseFloat(containerStyle.gap) || 0
 
+  // When inserting between two siblings that have a real gap, fill the whole gap
+  // at the boundary instead of drawing a thin line, so the accent overlay covers
+  // the space between the touching borders. Touching siblings (gap of 0) and
+  // container edges fall back to the thin line on the shared border.
+  const fillsGap = inBetween && gap > 0
+
   if (orientation === "horizontal") {
-    // Render vertical line
-    const width = LINE_WIDTH
+    // Render vertical line or gap fill
+    const width = fillsGap ? gap : LINE_WIDTH
     const height = containerRect.height - paddingTop - paddingBottom
     const top = containerRect.top + paddingTop
 
-    const left = childRect
-      ? inBetween
-        ? childRect.right + gap / 2
-        : childRect.right
+    const boundary = childRect
+      ? childRect.right
       : placement === "before"
         ? inBetween
           ? containerRect.left - gap / 2
@@ -62,22 +66,24 @@ export function calculateIndicatorPosition({
             ? containerRect.right + gap / 2
             : containerRect.right
 
+    // A gap fill starts at the boundary and spans the gap; a line is centered
+    // on the boundary.
+    const left = fillsGap && childRect ? boundary : boundary - LINE_WIDTH / 2
+
     return {
       top: top - canvasRect.top,
-      left: left - canvasRect.left - LINE_WIDTH / 2,
+      left: left - canvasRect.left,
       width: width,
       height: height,
     }
   } else {
-    // Render horizontal line
-    const height = LINE_WIDTH
+    // Render horizontal line or gap fill
+    const height = fillsGap ? gap : LINE_WIDTH
     const width = containerRect.width - paddingLeft - paddingRight
     const left = containerRect.left + paddingLeft
 
-    const top = childRect
-      ? inBetween
-        ? childRect.bottom + gap / 2
-        : childRect.bottom
+    const boundary = childRect
+      ? childRect.bottom
       : placement === "before"
         ? inBetween
           ? containerRect.top - gap / 2
@@ -88,8 +94,10 @@ export function calculateIndicatorPosition({
             ? containerRect.bottom + gap / 2
             : containerRect.bottom
 
+    const top = fillsGap && childRect ? boundary : boundary - LINE_WIDTH / 2
+
     return {
-      top: top - canvasRect.top - LINE_WIDTH / 2,
+      top: top - canvasRect.top,
       left: left - canvasRect.left,
       width: width,
       height: height,

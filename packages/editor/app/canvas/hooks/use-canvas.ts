@@ -11,6 +11,7 @@ import { useSetHoveredId } from "@lib/workspace/hooks/use-object-hover"
 import { useSelection } from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
+import { canNodeAcceptChildren } from "@lib/workspace/can-node-accept-children"
 import { useDialog } from "@lib/hooks/use-dialog"
 import { usePreview } from "@lib/hooks/use-preview"
 import { useTool } from "@lib/hooks/use-tool"
@@ -38,7 +39,7 @@ export function useCanvas() {
     useSelection()
   const { workspace } = useWorkspace()
   const { activeBoard } = useActiveBoard()
-  const { activeTool } = useTool()
+  const { activeTool, setActiveTool } = useTool()
   const { openDialog } = useDialog()
   const { hoverState, setHoverState } = useCanvasHoverState()
   const setHoveredId = useSetHoveredId()
@@ -58,12 +59,17 @@ export function useCanvas() {
         return
       }
 
-      // Select tool: one path resolves the hovered selectable (node, theme
-      // variant, font specimen) and feeds the shared hover bridge. Insertion
-      // placement below is component tool only.
+      // Resolve the hovered selectable (node, theme variant, font specimen) and
+      // feed the shared hover bridge for both tools. The select tool stops here;
+      // the component tool also drives the accent hover box from this id, then
+      // computes insertion placement below.
+      const selectionTarget = getSelectionTarget(event.target as Element)
+      setHoveredId(
+        selectionTarget?.id ?? null,
+        selectionTarget?.kind,
+        selectionTarget?.rootId,
+      )
       if (activeTool === "select") {
-        const target = getSelectionTarget(event.target as Element)
-        setHoveredId(target?.id ?? null, target?.kind, target?.rootId)
         return
       }
 
@@ -199,7 +205,7 @@ export function useCanvas() {
       const parentNode = workspaceService.findParentNode(childNodeId, workspace)
 
       invariant(parentNode, "Container node not found")
-      if (!workspaceService.canNodeHaveChildren(parentNode)) {
+      if (!canNodeAcceptChildren(parentNode, workspace)) {
         const catalogId = getNodeCatalogComponentId(parentNode, workspace)
         invariant(catalogId, "Parent node has no catalog component")
         const schema = getComponentSchema(catalogId)
@@ -232,7 +238,7 @@ export function useCanvas() {
   const insertIntoNode = useCallback(
     (nodeId: InstanceId | VariantId) => {
       const node = workspaceService.getNode(nodeId, workspace)
-      if (workspaceService.canNodeHaveChildren(node)) {
+      if (canNodeAcceptChildren(node, workspace)) {
         // Prevent insertion into default variants
         if (
           workspaceService.isVariant(node) &&
@@ -294,12 +300,11 @@ export function useCanvas() {
           if (hoverState.lastChildNodeBeforeCursor) {
             insertNextToChild(hoverState)
           } else {
-            insertIntoNode(
-              workspaceService.findContainerNode(
-                hoverState.objectId as InstanceId | VariantId,
-                workspace,
-              ).id,
-            )
+            // Insert into the hovered node when it accepts children, otherwise
+            // insertIntoNode resolves to its parent container. Avoids the throw
+            // from findContainerNode when the hovered node is a `node:` linked
+            // root (user variant or instance) with no container above it.
+            insertIntoNode(hoverState.objectId as InstanceId | VariantId)
           }
         } else {
           insertOnBoard(hoverState)
@@ -309,7 +314,6 @@ export function useCanvas() {
   }, [
     hoverState,
     activeTool,
-    workspace,
     insertNextToChild,
     insertIntoNode,
     insertOnBoard,
@@ -342,12 +346,23 @@ export function useCanvas() {
         return
       }
 
+      // Component tool: clicking empty canvas (no board or node under the
+      // cursor) cancels the tool and returns to select.
+      const element = event.target as HTMLDivElement
+      const clickedBoardId = getBoardIdForEventTarget(element)
+      const clickedNodeId = getNodeIdForEventTarget(element)
+      if (!clickedBoardId && !clickedNodeId) {
+        setActiveTool("select")
+        return
+      }
+
       executeToolAction()
     },
     [
       activeTool,
       activeBoard,
       executeToolAction,
+      setActiveTool,
       selectNode,
       selectBoard,
       selectResourceEntry,
@@ -364,9 +379,9 @@ export function useCanvas() {
   // Update the indicator position no more than 60 times per second (60 FPS)
   const throttledMouseMove = useThrottledCallback(handleMouseMove, 1000 / 60)
 
-  useHotkeys("i", executeToolAction, {
+  useHotkeys("enter", executeToolAction, {
     preventDefault: true,
-    enabled: !!hoverState,
+    enabled: activeTool === "component" && !!hoverState,
   })
 
   return {

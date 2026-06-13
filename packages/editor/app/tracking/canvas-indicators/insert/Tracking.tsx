@@ -44,7 +44,6 @@ export function InsertTracking() {
         objectId={objectId}
         objectType={objectType}
         placement={placement}
-        label="Add variant"
       />
     )
   }
@@ -57,7 +56,6 @@ export function InsertTracking() {
       objectId={objectId}
       objectType={objectType}
       placement={placement}
-      label="Insert component"
     />
   )
 }
