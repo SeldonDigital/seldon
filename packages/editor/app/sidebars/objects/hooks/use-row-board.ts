@@ -1,3 +1,4 @@
+import { MenuEntry } from "@lib/menus"
 import { MouseEvent } from "react"
 import { Board as BoardType } from "@seldon/core"
 import {
@@ -9,10 +10,12 @@ import { workspaceService } from "@seldon/core/workspace/services/workspace.serv
 import { useAutoSelectNode } from "@lib/workspace/hooks/use-auto-select-node"
 import { useSelection } from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
+import { useAddRemoveCommands } from "@lib/hooks/commands/use-add-remove-commands"
 import { useTool } from "@lib/hooks/use-tool"
 import { getVariantRootIds } from "@lib/workspace/component-tree"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { IconProps } from "@seldon/components/custom-components"
+import { buildResetMenuEntry } from "../../shared/build-reset-menu-entry"
 import { useExpansion, useIsExpanded } from "./use-expansion"
 import { useRowButton } from "./use-row-button"
 import { useRowClick } from "./use-row-click"
@@ -44,6 +47,7 @@ export function useRowBoard(
   const { selectedNodeBoardKey } = useSelectionRelations()
   const { dispatch } = useWorkspace({ usePreview: false })
   const { dispatchWithAutoSelect } = useAutoSelectNode()
+  const { removeBoard } = useAddRemoveCommands()
 
   // Expansion state: toggle, expand/collapse, get descendants
   const { toggle, expandObjects, collapseObjects, getAllDescendantNodeIds } =
@@ -129,12 +133,84 @@ export function useRowBoard(
       return
     }
     if (isIconSetBoard(board)) {
+      const defaultIconSetId = board.variants[0]?.id
+      if (!defaultIconSetId) return
+      dispatch({
+        type: "duplicate_icon_set",
+        payload: { iconSetId: defaultIconSetId },
+      })
+      setActiveTool("select")
       return
     }
     dispatchWithAutoSelect({
       type: "add_variant",
       payload: { boardKey },
     })
+  }
+
+  function handleResetBoard() {
+    if (isThemeBoard(board)) {
+      const defaultThemeId = board.variants[0]?.id
+      if (defaultThemeId) {
+        dispatch({
+          type: "reset_theme_tokens",
+          payload: { themeId: defaultThemeId },
+        })
+      }
+      return
+    }
+    if (isFontCollectionBoard(board)) {
+      const defaultFontCollectionId = board.variants[0]?.id
+      if (defaultFontCollectionId) {
+        dispatch({
+          type: "reset_font_collection",
+          payload: { fontCollectionId: defaultFontCollectionId },
+        })
+      }
+      return
+    }
+    if (isIconSetBoard(board)) {
+      const defaultIconSetId = board.variants[0]?.id
+      if (defaultIconSetId) {
+        dispatch({
+          type: "reset_icon_set",
+          payload: { iconSetId: defaultIconSetId },
+        })
+      }
+      return
+    }
+    const confirmed = window.confirm(
+      `Reset ${board.label} to catalog? This restores the catalog default and variants and removes your custom variants and overrides.`,
+    )
+    if (!confirmed) return
+    dispatch({
+      type: "reset_component_to_catalog",
+      payload: { boardKey },
+    })
+  }
+
+  function buildBoardActions(): MenuEntry[] {
+    if (!boardIsActive) return []
+    return [
+      {
+        id: "add-variant",
+        label: `Add ${board.label} Variant`,
+        onSelect: () => onAddVariant(),
+        testId: `objects-sidebar-board-${boardKey}-add-variant`,
+      },
+      "separator",
+      {
+        id: "delete",
+        label: `Delete ${board.label}`,
+        onSelect: () => removeBoard(boardKey),
+        testId: `objects-sidebar-board-${boardKey}-delete`,
+      },
+      buildResetMenuEntry({
+        label: "Reset to Catalog",
+        onSelect: handleResetBoard,
+        testId: `objects-sidebar-board-${boardKey}-reset`,
+      }),
+    ]
   }
 
   // Button and icon creation: toggle button, component icon, add variant button
@@ -164,26 +240,9 @@ export function useRowBoard(
   }
   const icon2 = createIcon2(getBoardIcon() as IconProps["icon"])
 
-  // Add variant button (mid action after the label)
-  // Shown when board is active (selected or contains selected node)
-  const createAddVariantButton = () => {
-    if (!boardIsActive) {
-      return { icon: undefined, button: undefined }
-    }
-
-    return {
-      icon: { icon: "material-add" as const } as IconProps,
-      button: {
-        onClick: onAddVariant,
-        style: {
-          position: "relative" as const,
-          zIndex: 10,
-        },
-      },
-    }
-  }
-
-  const { icon: icon3, button: buttonIconic2 } = createAddVariantButton()
+  // Trailing "..." actions menu. Shown when the board is active (selected or
+  // contains the selected node or resource entry).
+  const actions = buildBoardActions()
 
   // Label: colors applied in component via tracking system
   const label = {
@@ -195,8 +254,7 @@ export function useRowBoard(
     buttonIconic,
     icon,
     icon2,
-    buttonIconic2,
-    icon3,
+    actions,
     onClick,
     isExpanded: isExpandedState,
     isBoardSelected,

@@ -13,8 +13,13 @@ import {
   validateNodeMutation,
   validateReorderBoard,
   validateReorderVariantInBoard,
+  validateResetComponentToCatalog,
   validateThemeMutation,
 } from "./action-groups/node-mutations"
+import {
+  validateAddNodeLayer,
+  validateRemoveNodeLayer,
+} from "./action-groups/node-layers"
 import { isPassthroughAction } from "./action-groups/passthrough"
 import {
   validateAddResourceCatalog,
@@ -24,6 +29,8 @@ import {
 import {
   validateAddThemeCustomToken,
   validateRemoveThemeCustomToken,
+  validateSetThemeCustomTokenName,
+  validateSetThemeScaleSlot,
 } from "./action-groups/theme-custom-tokens"
 import { boardValidators } from "./validators"
 import { WorkspaceValidationError } from "./workspace-validation-error"
@@ -44,6 +51,16 @@ export function validateAction(workspace: Workspace, action: Action): void {
 
   if (action.type.startsWith("remove_theme_custom_")) {
     validateRemoveThemeCustomToken(workspace, action)
+    return
+  }
+
+  if (action.type === "set_theme_scale_slot") {
+    validateSetThemeScaleSlot(workspace, action)
+    return
+  }
+
+  if (action.type === "set_theme_custom_token_name") {
+    validateSetThemeCustomTokenName(workspace, action)
     return
   }
 
@@ -106,6 +123,14 @@ export function validateAction(workspace: Workspace, action: Action): void {
     case "set_node_properties":
     case "reset_node_property":
     case "reset_node":
+      validateNodeMutation(workspace, action)
+      return
+    case "add_node_layer":
+      validateAddNodeLayer(workspace, action)
+      return
+    case "remove_node_layer":
+      validateRemoveNodeLayer(workspace, action)
+      return
     case "set_node_theme":
     case "set_node_label":
     case "set_node_editor_data":
@@ -114,6 +139,9 @@ export function validateAction(workspace: Workspace, action: Action): void {
     case "reset_user_variant_to_default":
     case "reset_default_variant_to_catalog":
       validateNodeMutation(workspace, action)
+      return
+    case "reset_component_to_catalog":
+      validateResetComponentToCatalog(workspace, action)
       return
     case "reset_theme_tokens":
     case "reset_theme_label":
@@ -129,6 +157,7 @@ export function validateAction(workspace: Workspace, action: Action): void {
     case "reset_font_collection_label":
     case "reset_font_collection_editor_data":
     case "reset_font_collection_override":
+    case "reset_font_collection":
     case "set_font_collection_label":
     case "set_font_collection_editor_data":
     case "set_font_collection_override":
@@ -141,6 +170,7 @@ export function validateAction(workspace: Workspace, action: Action): void {
     case "set_icon_set_label":
     case "set_icon_set_override":
     case "reset_icon_set_override":
+    case "reset_icon_set":
     case "set_icon_set_subcategory_preset":
     case "delete_icon_set":
     case "duplicate_icon_set":

@@ -81,7 +81,7 @@ export type ShorthandSubPropertyKey =
 /** Union of every facet name that may sit under a compound or shorthand. */
 export type SubPropertyKey = CompoundSubPropertyKey | ShorthandSubPropertyKey
 
-/** Properties stored as ordered paint stacks. First entry paints on top. */
+/** Properties stored as ordered paint stacks. Index 0 is the bottom layer. */
 export type LayeredPaintKey = "background" | "gradient" | "shadow"
 
 /** Top-level keys whose node values are ordered paint-layer arrays. */

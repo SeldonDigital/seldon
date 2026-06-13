@@ -3,6 +3,7 @@ import { ValueType } from "../../../../properties"
 import { rules } from "../../../../rules/config/rules.config"
 import { ErrorMessages } from "../../../constants"
 import { getBoardVariantRootIds } from "../../../helpers/components/get-board-variant-root-ids"
+import { collectExternalVariantUsage } from "../../../helpers/general/collect-external-variant-usage"
 import { isUserVariant } from "../../../helpers/general/is-user-variant"
 import { findBoardContainingTreeNodeId } from "../../../helpers/nodes/duplicate-entry-variant-subtree"
 import { hasEffectiveThemeReference } from "../../../helpers/removal/effective-theme-references"
@@ -190,10 +191,9 @@ export function validateNodeMutation(
       const nodeId = action.payload.nodeId as InstanceId | VariantId
       nodeValidators.exists(workspace, nodeId)
       const node = nodeRetrievalService.getNode(nodeId, workspace)
-      const themeId = workspaceMutationService.getInheritedTheme(
-        node,
-        workspace,
-      )
+      // Use the node's effective theme (its own assignment first, then inherited)
+      // so token refs validate against the theme that actually renders the node.
+      const themeId = workspaceMutationService.getNodeTheme(node, workspace)
       propertyValidators.keys(
         action.payload.properties,
         getNodeComponentId(node, workspace),
@@ -261,6 +261,20 @@ export function validateNodeMutation(
       check(index === 0, "Reset to catalog only runs on the default variant")
       break
     }
+  }
+}
+
+export function validateResetComponentToCatalog(
+  workspace: Workspace,
+  action: Extract<Action, { type: "reset_component_to_catalog" }>,
+): void {
+  boardValidators.exists(workspace, action.payload.boardKey)
+  const usages = collectExternalVariantUsage(action.payload.boardKey, workspace)
+  if (usages.length > 0) {
+    throw new WorkspaceValidationError(
+      ErrorMessages.variantsInUseForReset(usages),
+      action,
+    )
   }
 }
 

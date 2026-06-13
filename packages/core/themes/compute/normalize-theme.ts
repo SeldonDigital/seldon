@@ -322,7 +322,12 @@ function normalizeScaleRecord<T extends Record<string, unknown>>(record: T): T {
         }
       | undefined
     if (item && typeof item === "object") {
+      // An explicit `type: EXACT` wins over a stale `step`. Entry overrides
+      // deep-merge onto the stock template, so a reserved token that switches to
+      // an exact length still carries the template's `step`; honoring the
+      // explicit type lets it fall through to the exact branch below.
       if (
+        item.type !== TokenType.EXACT &&
         "parameters" in item &&
         item.parameters &&
         typeof item.parameters === "object" &&

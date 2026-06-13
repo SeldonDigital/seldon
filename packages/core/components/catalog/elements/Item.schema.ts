@@ -150,6 +150,24 @@ export const schema = {
       bottomLeft: { type: Sdn.ValueType.EMPTY, value: null },
       bottomRight: { type: Sdn.ValueType.EMPTY, value: null },
     },
+    gradient: [
+      {
+        preset: {
+          type: Sdn.ValueType.THEME_CATEGORICAL,
+          value: "@gradient.none",
+        },
+        gradientType: { type: Sdn.ValueType.EMPTY, value: null },
+        angle: { type: Sdn.ValueType.EMPTY, value: null },
+        startColor: { type: Sdn.ValueType.EMPTY, value: null },
+        startOpacity: { type: Sdn.ValueType.EMPTY, value: null },
+        startBrightness: { type: Sdn.ValueType.EMPTY, value: null },
+        startPosition: { type: Sdn.ValueType.EMPTY, value: null },
+        endColor: { type: Sdn.ValueType.EMPTY, value: null },
+        endOpacity: { type: Sdn.ValueType.EMPTY, value: null },
+        endBrightness: { type: Sdn.ValueType.EMPTY, value: null },
+        endPosition: { type: Sdn.ValueType.EMPTY, value: null },
+      },
+    ],
     shadow: [
       {
         preset: {
@@ -1098,6 +1116,25 @@ export const schema = {
                   type: Sdn.ValueType.OPTION,
                   value: "seldon-plus",
                 },
+                size: {
+                  type: Sdn.ValueType.COMPUTED,
+                  value: {
+                    function: Sdn.ComputedFunction.AUTO_FIT,
+                    input: {
+                      basedOn: "#parent.buttonSize",
+                      factor: 0.8,
+                    },
+                  },
+                },
+                color: {
+                  type: Sdn.ValueType.COMPUTED,
+                  value: {
+                    function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+                    input: {
+                      basedOn: "#parent.background.color",
+                    },
+                  },
+                },
               },
             },
             {
@@ -1107,6 +1144,31 @@ export const schema = {
                 content: {
                   type: Sdn.ValueType.EXACT,
                   value: "Add",
+                },
+                color: {
+                  type: Sdn.ValueType.COMPUTED,
+                  value: {
+                    function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+                    input: {
+                      basedOn: "#parent.background.color",
+                    },
+                  },
+                },
+                font: {
+                  preset: {
+                    type: Sdn.ValueType.THEME_CATEGORICAL,
+                    value: "@font.normal",
+                  },
+                  size: {
+                    type: Sdn.ValueType.COMPUTED,
+                    value: {
+                      function: Sdn.ComputedFunction.AUTO_FIT,
+                      input: {
+                        basedOn: "#parent.buttonSize",
+                        factor: 0.8,
+                      },
+                    },
+                  },
                 },
               },
             },
@@ -1128,6 +1190,25 @@ export const schema = {
                   type: Sdn.ValueType.OPTION,
                   value: "seldon-minus",
                 },
+                size: {
+                  type: Sdn.ValueType.COMPUTED,
+                  value: {
+                    function: Sdn.ComputedFunction.AUTO_FIT,
+                    input: {
+                      basedOn: "#parent.buttonSize",
+                      factor: 0.8,
+                    },
+                  },
+                },
+                color: {
+                  type: Sdn.ValueType.COMPUTED,
+                  value: {
+                    function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+                    input: {
+                      basedOn: "#parent.background.color",
+                    },
+                  },
+                },
               },
             },
             {
@@ -1137,6 +1218,31 @@ export const schema = {
                 content: {
                   type: Sdn.ValueType.EXACT,
                   value: "Remove",
+                },
+                color: {
+                  type: Sdn.ValueType.COMPUTED,
+                  value: {
+                    function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+                    input: {
+                      basedOn: "#parent.background.color",
+                    },
+                  },
+                },
+                font: {
+                  preset: {
+                    type: Sdn.ValueType.THEME_CATEGORICAL,
+                    value: "@font.normal",
+                  },
+                  size: {
+                    type: Sdn.ValueType.COMPUTED,
+                    value: {
+                      function: Sdn.ComputedFunction.AUTO_FIT,
+                      input: {
+                        basedOn: "#parent.buttonSize",
+                        factor: 0.8,
+                      },
+                    },
+                  },
                 },
               },
             },
@@ -1159,6 +1265,31 @@ export const schema = {
                 content: {
                   type: Sdn.ValueType.EXACT,
                   value: "999",
+                },
+                color: {
+                  type: Sdn.ValueType.COMPUTED,
+                  value: {
+                    function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+                    input: {
+                      basedOn: "#parent.background.color",
+                    },
+                  },
+                },
+                font: {
+                  preset: {
+                    type: Sdn.ValueType.THEME_CATEGORICAL,
+                    value: "@font.normal",
+                  },
+                  size: {
+                    type: Sdn.ValueType.COMPUTED,
+                    value: {
+                      function: Sdn.ComputedFunction.AUTO_FIT,
+                      input: {
+                        basedOn: "#parent.buttonSize",
+                        factor: 0.8,
+                      },
+                    },
+                  },
                 },
               },
             },

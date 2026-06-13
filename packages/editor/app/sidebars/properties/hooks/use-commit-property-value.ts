@@ -1,7 +1,8 @@
 import { parsePropertyPath } from "@lib/properties/property-paths"
 import { serializeValue } from "@lib/properties/serialize-value"
 import { useCallback } from "react"
-import { Board, Instance, Theme, Value, Variant } from "@seldon/core"
+import { Board, Instance, Properties, Theme, Value, Variant } from "@seldon/core"
+import { getEffectiveProperties as coreGetEffectiveProperties } from "@seldon/core/helpers/properties/properties-bridge"
 import type {
   PropertyKey,
   SubPropertyKey,
@@ -16,6 +17,7 @@ import {
   compoundPresetPropertyKey,
 } from "../helpers/commit-helpers"
 import { createPresetPropertyUpdate } from "../helpers/compound-properties"
+import { getPropertiesSubjectId } from "../helpers/properties-data"
 import { handleComputedValueChange } from "../helpers/computed-property-handler"
 import { isComputedFunctionOption } from "../helpers/computed-utils"
 import {
@@ -95,6 +97,52 @@ export function useCommitPropertyValue({
   const commit = useCallback(
     (newValue: string) => {
       const subject = propertySubject ?? selection ?? null
+
+      // A layered paint parent row (Background/Gradient/Shadow N) applies a
+      // preset to its own layer slot and writes the full stack back, so the
+      // other layers stay intact. The generic compound preset path replaces the
+      // whole stack and would drop sibling layers.
+      if (
+        property.layerIndex != null &&
+        subject &&
+        !themeEditingContext?.isThemeEditing &&
+        !fontCollectionEditingContext?.isFontCollectionEditing &&
+        !iconSetEditingContext?.isIconSetEditing
+      ) {
+        const parsed = parsePropertyPath(property.key)
+        const baseKey =
+          parsed.kind === "layered-parent" ? parsed.root : property.key
+        const layerIndex = property.layerIndex
+
+        const presetSource = createPresetPropertyUpdate(
+          compoundPresetPropertyKey(baseKey),
+          newValue,
+          workspace,
+          subject,
+          theme,
+        )
+        const presetLayer =
+          (presetSource[baseKey] as Array<Record<string, unknown>> | undefined)?.[0] ??
+          {}
+
+        const current = coreGetEffectiveProperties(
+          getPropertiesSubjectId(subject),
+          workspace,
+        )[baseKey as keyof Properties]
+        const layers = Array.isArray(current)
+          ? [...(current as Array<Record<string, unknown>>)]
+          : current
+            ? [current as Record<string, unknown>]
+            : []
+        while (layers.length <= layerIndex) layers.push({})
+        layers[layerIndex] = presetLayer
+
+        setProperties({ [baseKey]: layers } as Properties, {
+          mergeSubProperties: false,
+        })
+        onDone()
+        return
+      }
 
       const localSerializeValue = (
         nextValue: string,

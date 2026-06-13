@@ -132,9 +132,10 @@ export function Combobox({
           return
         }
 
-        if (trimmedValue !== commitValueRef.current || !trimmedValue) {
-          notifyCommit(trimmedValue, onValueChange, onSubmit)
-        }
+        // Validation above already rejected invalid input, so commit the value.
+        // The draft is fed back as `value`, so comparing against it would always
+        // skip the commit and Enter would never apply the change.
+        notifyCommit(trimmedValue, onValueChange, onSubmit)
         setTimeout(() => {
           handledEnterRef.current = false
         }, 0)

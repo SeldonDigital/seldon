@@ -51,7 +51,7 @@ const VMNodeInner = function VMNodeInner({
     buttonIconic,
     icon,
     icon2,
-    resetActions,
+    actions,
     onClick,
     onDoubleClick,
     isExpanded,
@@ -79,7 +79,7 @@ const VMNodeInner = function VMNodeInner({
   const hoverStyle = useRowHighlightStyle(node.id, isSelected, rootId)
   const combinedRowStyle = { ...hoverStyle, ...rowStyle }
 
-  const actionsMenu = useRowActionsMenu(resetActions, {
+  const actionsMenu = useRowActionsMenu(actions, {
     color: iconColor,
     focusTargetRef: ref,
   })

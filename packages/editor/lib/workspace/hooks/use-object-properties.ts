@@ -1,6 +1,7 @@
 import { useCallback } from "react"
 import {
   ExtractPayload,
+  LayeredPaintKey,
   Properties,
   PropertyKey,
   SubPropertyKey,
@@ -74,6 +75,30 @@ export function useObjectProperties() {
     [selection, setBoardProperties, setNodeProperties],
   )
 
+  const addNodeLayer = useCallback(
+    (property: LayeredPaintKey) => {
+      invariant(selection, "Nothing selected")
+      if (isBoard(selection)) return
+      dispatch({
+        type: "add_node_layer",
+        payload: { nodeId: selection.id, property },
+      })
+    },
+    [selection, dispatch],
+  )
+
+  const removeNodeLayer = useCallback(
+    (property: LayeredPaintKey, index: number) => {
+      invariant(selection, "Nothing selected")
+      if (isBoard(selection)) return
+      dispatch({
+        type: "remove_node_layer",
+        payload: { nodeId: selection.id, property, index },
+      })
+    },
+    [selection, dispatch],
+  )
+
   const resetProperty = useCallback(
     (propertyKey: PropertyKey, subpropertyKey?: SubPropertyKey) => {
       invariant(selection, "Nothing selected")
@@ -99,6 +124,8 @@ export function useObjectProperties() {
     setNodeProperties,
     setBoardProperties,
     setProperties,
+    addNodeLayer,
+    removeNodeLayer,
     resetProperty,
   }
 }

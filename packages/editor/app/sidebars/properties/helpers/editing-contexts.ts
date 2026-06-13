@@ -1,3 +1,4 @@
+import type { ThemeCustomTokenSection } from "@seldon/core"
 import { FlatProperty } from "./properties-data"
 
 /**
@@ -9,6 +10,18 @@ export interface ThemeEditingContext {
   updateThemeProperty: (property: FlatProperty, newValue: string) => void
   resetThemeProperty: (property: FlatProperty) => void
   themeProperties: FlatProperty[]
+  /** Adds a custom token to a section. Only meaningful when `canAddCustom`. */
+  addCustomToken: (section: ThemeCustomTokenSection) => void
+  /** Renames a custom token's cell. The `customN` key stays stable. */
+  renameCustomToken: (
+    section: ThemeCustomTokenSection,
+    key: string,
+    name: string,
+  ) => void
+  /** Deletes a custom token cell from its section. */
+  removeCustomToken: (section: ThemeCustomTokenSection, key: string) => void
+  /** True when the edited entry is a variant, so custom tokens may be added. */
+  canAddCustom: boolean
 }
 
 /**

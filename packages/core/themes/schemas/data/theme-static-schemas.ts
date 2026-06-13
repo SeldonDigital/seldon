@@ -18,6 +18,17 @@ import {
   SPACING_ORDER,
 } from "./theme-step-orders"
 
+/**
+ * Shared control config for scale `.step` rows (modulation step input).
+ * Static reserved rows and dynamic custom rows both use this so the input stays
+ * consistent across the editor.
+ */
+export const SCALE_STEP_ROW_CONTROL = {
+  valueType: "number",
+  controlType: "number",
+  unit: { type: "none", min: -20, max: 20, step: 0.01 },
+} as const
+
 const coreSchemasRaw: ThemeTokenCatalogDraft[] = [
   {
     key: "core.ratio",
@@ -190,9 +201,9 @@ function makeScaleSlotSchemas<
       finalizeThemeTokenSchema({
         key: `${section}.${key}.step`,
         label,
-        valueType: "number",
-        controlType: "number",
-        unit: { type: "none", min: -20, max: 20, step: 0.01 },
+        valueType: SCALE_STEP_ROW_CONTROL.valueType,
+        controlType: SCALE_STEP_ROW_CONTROL.controlType,
+        unit: SCALE_STEP_ROW_CONTROL.unit,
         section,
         order: baseOrder,
         icon: "seldon-step",
@@ -241,9 +252,9 @@ export const borderWidthSchemas: ThemeTokenSchema[] = BORDER_WIDTH_ORDER.map(
     finalizeThemeTokenSchema({
       key: `borderWidth.${key}.step`,
       label: key.charAt(0).toUpperCase() + key.slice(1),
-      valueType: "number",
-      controlType: "number",
-      unit: { type: "none", min: -20, max: 20, step: 0.01 },
+      valueType: SCALE_STEP_ROW_CONTROL.valueType,
+      controlType: SCALE_STEP_ROW_CONTROL.controlType,
+      unit: SCALE_STEP_ROW_CONTROL.unit,
       section: "borderWidth",
       order: index,
       icon: "seldon-step",
@@ -265,9 +276,9 @@ export const lineHeightSchemas: ThemeTokenSchema[] = LINE_HEIGHT_ORDER.map(
     finalizeThemeTokenSchema({
       key: `lineHeight.${key}.step`,
       label: key.charAt(0).toUpperCase() + key.slice(1),
-      valueType: "number",
-      controlType: "number",
-      unit: { type: "none", min: -20, max: 20, step: 0.01 },
+      valueType: SCALE_STEP_ROW_CONTROL.valueType,
+      controlType: SCALE_STEP_ROW_CONTROL.controlType,
+      unit: SCALE_STEP_ROW_CONTROL.unit,
       section: "lineHeight",
       order: index,
       icon: "seldon-step",

@@ -9,6 +9,7 @@ import {
   getCatalogKeyForPropertyPath,
 } from "@seldon/core/properties/schemas"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
+import { parsePropertyPath } from "@lib/properties/property-paths"
 import { getNodeCatalogComponentId } from "@lib/workspace/node-tree"
 import { FlatProperty } from "./properties-data"
 
@@ -62,9 +63,13 @@ function getComponentNameForAttributes(
  * to the attributes section.
  */
 function getSectionForProperty(propertyKey: string): PropertyDisplayCategory {
+  // An upper paint layer parent (`background.1`) resolves through its base key.
+  const parsed = parsePropertyPath(propertyKey)
+  const baseKey =
+    parsed.kind === "layered-parent" ? parsed.root : propertyKey
   const catalogKey =
-    getCatalogKeyForPropertyPath(propertyKey) ??
-    getCatalogKeyForPropertyPath(`${propertyKey}.preset`)
+    getCatalogKeyForPropertyPath(baseKey) ??
+    getCatalogKeyForPropertyPath(`${baseKey}.preset`)
   const category = catalogKey
     ? PROPERTY_DISPLAY_META[catalogKey]?.displayCategory
     : undefined

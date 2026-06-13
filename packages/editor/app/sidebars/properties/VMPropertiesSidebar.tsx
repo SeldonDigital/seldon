@@ -2,7 +2,17 @@ import { LayoutGroup } from "framer-motion"
 import { Fragment, RefObject, useCallback, useMemo } from "react"
 import { MenuEntry } from "@lib/menus"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
-import { Board, Instance, Theme, Variant, Workspace } from "@seldon/core"
+import {
+  Board,
+  Instance,
+  type LayeredPaintKey,
+  Theme,
+  Variant,
+  Workspace,
+  isThemeCustomTokenSection,
+} from "@seldon/core"
+import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
+import { useObjectProperties } from "@lib/workspace/hooks/use-object-properties"
 import { usePropertiesSidebar } from "./hooks/use-properties-sidebar"
 import { useIsCategoryExpanded } from "./hooks/use-property-expansion"
 import {
@@ -184,21 +194,69 @@ function TreeSection({
     }
   }, [cssStrings, addToast])
 
-  const sectionActions = useMemo((): MenuEntry[] | undefined => {
-    if (section.category !== "css" || cssStrings.length === 0) {
-      return undefined
+  // Theme variants can add a custom token to any custom-capable section. The
+  // "+" button shows only in theme editing on a variant, never on `core`.
+  const onAddCustom = useMemo<(() => void) | undefined>(() => {
+    if (!themeEditingContext?.isThemeEditing) return undefined
+    if (!themeEditingContext.canAddCustom) return undefined
+    if (!isThemeCustomTokenSection(section.category)) return undefined
+    const themeSection = section.category
+    return () => themeEditingContext.addCustomToken(themeSection)
+  }, [themeEditingContext, section.category])
+
+  const { addNodeLayer } = useObjectProperties()
+
+  // A component node can stack extra paint layers. Offer "Add Background/Gradient/
+  // Shadow" on the category that owns each exposed layered property.
+  const layerAddActions = useMemo<MenuEntry[]>(() => {
+    const inEditingMode =
+      !!themeEditingContext?.isThemeEditing ||
+      !!fontCollectionEditingContext?.isFontCollectionEditing ||
+      !!iconSetEditingContext?.isIconSetEditing
+    if (inEditingMode || isBoard(node)) return []
+
+    const layeredKeys: LayeredPaintKey[] = ["background", "gradient", "shadow"]
+    const labels: Record<LayeredPaintKey, string> = {
+      background: "Background",
+      gradient: "Gradient",
+      shadow: "Shadow",
     }
-    return [
-      {
-        id: "copy-css",
-        label: "Copy CSS",
-        onSelect: () => {
-          void handleCopyCss()
+    return layeredKeys
+      .filter((key) =>
+        section.properties.some(
+          (property) => property.key === key && property.status !== "not used",
+        ),
+      )
+      .map((key) => ({
+        id: `add-layer-${key}`,
+        label: `Add ${labels[key]}`,
+        onSelect: () => addNodeLayer(key),
+        testId: `add-layer-${key}`,
+      }))
+  }, [
+    node,
+    section.properties,
+    themeEditingContext,
+    fontCollectionEditingContext,
+    iconSetEditingContext,
+    addNodeLayer,
+  ])
+
+  const sectionActions = useMemo((): MenuEntry[] | undefined => {
+    if (section.category === "css" && cssStrings.length > 0) {
+      return [
+        {
+          id: "copy-css",
+          label: "Copy CSS",
+          onSelect: () => {
+            void handleCopyCss()
+          },
+          testId: "copy-css",
         },
-        testId: "copy-css",
-      },
-    ]
-  }, [section.category, cssStrings.length, handleCopyCss])
+      ]
+    }
+    return layerAddActions.length > 0 ? layerAddActions : undefined
+  }, [section.category, cssStrings.length, handleCopyCss, layerAddActions])
 
   const content =
     section.category === "css" ? (
@@ -221,7 +279,11 @@ function TreeSection({
 
   return (
     <Fragment>
-      <VMCategory section={section} actions={sectionActions} />
+      <VMCategory
+        section={section}
+        actions={sectionActions}
+        onAddCustom={onAddCustom}
+      />
       <FramerExpandable isExpanded={isExpanded}>{content}</FramerExpandable>
     </Fragment>
   )

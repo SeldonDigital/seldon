@@ -41,6 +41,10 @@ export function getBackgroundImageStyles({
 
   if (resolved.length === 0) return styles
 
+  // Index 0 is the bottom layer. CSS paints the first image in the list on top,
+  // so emit the highest index first and index 0 last to keep index 0 at the back.
+  resolved.reverse()
+
   styles.backgroundImage = resolved.map((layer) => layer.image).join(", ")
   styles.backgroundPosition = resolved.map((layer) => layer.position).join(", ")
   styles.backgroundSize = resolved.map((layer) => layer.size).join(", ")

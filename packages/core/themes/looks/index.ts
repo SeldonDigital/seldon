@@ -11,6 +11,7 @@ export {
   injectBuiltInLooks,
   isBuiltInLookSection,
   isReservedThemeLookId,
+  RESERVED_LOOK_IDS,
 } from "./built-in-looks"
 export type { BuiltInLookSection } from "./built-in-looks"
 export {

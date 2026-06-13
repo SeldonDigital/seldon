@@ -29,9 +29,13 @@ export function updateProperty({
   if (property.isSubProperty) {
     const parsed = parsePropertyPath(property.key)
     if (parsed.kind === "layered-facet") {
+      // Pad lower slots with empty bags so the slot-merge writes only this layer.
+      const layers = Array.from({ length: parsed.index + 1 }, (_, i) =>
+        i === parsed.index ? { [parsed.facet]: value } : {},
+      )
       setProperties(
         {
-          [parsed.root]: [{ [parsed.facet]: value }],
+          [parsed.root]: layers,
         } as Properties,
         { mergeSubProperties: true },
       )

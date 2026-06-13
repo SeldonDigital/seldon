@@ -16,6 +16,14 @@ export const ErrorMessages = {
     `No node or board found with id ${id}.`,
   componentVariantsInUse: (id: ComponentId) =>
     `One or more variants of this board are in use in other components. Remove them first before deleting the board.`,
+  variantsInUseForReset: (
+    usages: { usingBoardLabel: string; variantLabel: string }[],
+  ) => {
+    const detail = usages
+      .map((usage) => `${usage.usingBoardLabel} uses ${usage.variantLabel}`)
+      .join(", ")
+    return `Cannot reset to catalog: variants are still in use by other components (${detail}). Remove those references first.`
+  },
   variantNotFound: (id: VariantId) => `Variant ${id} not found.`,
   variantLabelNotUnique: (label: string) =>
     `A variant that is called ${label} already exists. Please choose another name.`,

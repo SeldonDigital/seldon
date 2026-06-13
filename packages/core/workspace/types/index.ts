@@ -78,6 +78,13 @@ export type {
 export type {
   ExtractPayload,
   InsertDefaultInstance,
+  ScaleTokenInput,
+  ScaleTokenSection,
+  ThemeCustomTokenSection,
   WorkspaceAction,
+} from "../reducers/types"
+export {
+  THEME_CUSTOM_TOKEN_SECTIONS,
+  isThemeCustomTokenSection,
 } from "../reducers/types"
 export type { Action, Middleware } from "../middleware/compose/action-types"

@@ -39,6 +39,7 @@ export function VMProperty(props: RowPropertyProps) {
         buttonIconic3={actionsMenu.buttonIconic}
         icon4={actionsMenu.icon}
         onClick={view.onRowClick}
+        onDoubleClick={view.onRowDoubleClick}
         style={view.rowStyleProp}
       />
       {actionsMenu.menu}

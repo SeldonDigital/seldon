@@ -15,17 +15,19 @@
  * | insert_variant_instance, insert_duplicate_instance, insert_default_instance, add_component_and_insert_default_instance | components tree + nodes |
  * | remove_instance, remove_variant, duplicate_node, move_instance, reorder_instance_in_parent | components tree + nodes |
  * | set_node_properties, reset_node_property, reset_node, set_node_label, set_node_theme, set_node_editor_data | nodes |
+ * | add_node_layer, remove_node_layer | nodes (background/gradient/shadow paint stacks) |
  * | reset_node_label, reset_node_editor_data | nodes |
- * | reset_user_variant_to_default, reset_default_variant_to_catalog | components.variants tree + nodes |
+ * | reset_user_variant_to_default, reset_default_variant_to_catalog, reset_component_to_catalog | components.variants tree + nodes |
  * | set_theme_label, set_theme_editor_data, set_theme_override, reset_theme_tokens, reset_theme_label, reset_theme_editor_data, reset_theme_override | themes |
+ * | set_theme_scale_slot, set_theme_custom_token_name | themes (variant rows only) |
  * | add_theme_custom_{swatch,font,border,background,gradient,shadow,scrollbar,size,dimension,margin,padding,gap,corners,borderWidth,blur,spread,fontSize,fontWeight,lineHeight} | themes (variant rows only) |
  * | remove_theme_custom_{...same 19 tables...} | themes (variant rows only) |
  * | delete_theme, duplicate_theme | themes (+ components.variants for theme row) |
- * | set_font_collection_{label,editor_data,override}, reset_font_collection_{label,editor_data,override}, add_font_collection_custom_family, remove_font_collection_custom_family | font-collections (variant rows only for families) |
+ * | set_font_collection_{label,editor_data,override}, reset_font_collection_{label,editor_data,override}, reset_font_collection, add_font_collection_custom_family, remove_font_collection_custom_family | font-collections (variant rows only for families) |
  * | set_font_collection_family_variant, set_font_collection_family_preset | font-collections (any entry; per-family variant selection) |
  * | delete_font_collection, duplicate_font_collection | font-collections (+ components.variants for font-collection row) |
  * | set_icon_set_label | icon-sets |
- * | set_icon_set_override, reset_icon_set_override | icon-sets (per-icon inclusion under includedIcons) |
+ * | set_icon_set_override, reset_icon_set_override, reset_icon_set | icon-sets (per-icon inclusion under includedIcons) |
  * | set_icon_set_subcategory_preset | icon-sets (per-subcategory inclusion under includedIcons) |
  * | delete_icon_set | icon-sets (variant rows only; drops board ref) |
  * | duplicate_icon_set | icon-sets (+ components.variants for icon-set row) |
@@ -33,7 +35,12 @@
  * | transcript_add_message | none (no-op) |
  */
 import type { FontOrigin } from "../../font-collections/types"
-import { Properties, PropertyKey, SubPropertyKey } from "../../properties"
+import {
+  LayeredPaintKey,
+  Properties,
+  PropertyKey,
+  SubPropertyKey,
+} from "../../properties"
 import {
   BackgroundParameters,
   BorderParameters,
@@ -78,6 +85,71 @@ type RemoveThemeCustomBase = {
 export type ScaleTokenInput =
   | { kind: "modulated"; parameters: ModulationParameters }
   | { kind: "exact"; parameters: ThemeExact["parameters"] }
+
+/** Scale sections whose cells are modulated steps and may be set to an exact px/rem length. */
+export type ScaleTokenSection =
+  | "size"
+  | "dimension"
+  | "margin"
+  | "padding"
+  | "gap"
+  | "corners"
+  | "fontSize"
+  | "blur"
+  | "spread"
+  | "borderWidth"
+
+/** Every section that accepts user-added `customN` tokens (matches the `add_theme_custom_*` tables). */
+export type ThemeCustomTokenSection =
+  | "swatch"
+  | "font"
+  | "border"
+  | "background"
+  | "gradient"
+  | "shadow"
+  | "scrollbar"
+  | "size"
+  | "dimension"
+  | "margin"
+  | "padding"
+  | "gap"
+  | "corners"
+  | "borderWidth"
+  | "blur"
+  | "spread"
+  | "fontSize"
+  | "fontWeight"
+  | "lineHeight"
+
+/** Runtime list of every section that accepts user-added `customN` tokens. */
+export const THEME_CUSTOM_TOKEN_SECTIONS = [
+  "swatch",
+  "font",
+  "border",
+  "background",
+  "gradient",
+  "shadow",
+  "scrollbar",
+  "size",
+  "dimension",
+  "margin",
+  "padding",
+  "gap",
+  "corners",
+  "borderWidth",
+  "blur",
+  "spread",
+  "fontSize",
+  "fontWeight",
+  "lineHeight",
+] as const satisfies readonly ThemeCustomTokenSection[]
+
+/** Tells whether a section accepts user-added `customN` tokens. */
+export function isThemeCustomTokenSection(
+  section: string,
+): section is ThemeCustomTokenSection {
+  return (THEME_CUSTOM_TOKEN_SECTIONS as readonly string[]).includes(section)
+}
 
 /** Strictly-typed union of every `add_theme_custom_*` action covering THEMES.md custom-token tables. */
 export type AddCustomToken =
@@ -401,6 +473,21 @@ export type WorkspaceAction =
       }
     }
   | {
+      type: "add_node_layer"
+      payload: {
+        nodeId: InstanceId | VariantId
+        property: LayeredPaintKey
+      }
+    }
+  | {
+      type: "remove_node_layer"
+      payload: {
+        nodeId: InstanceId | VariantId
+        property: LayeredPaintKey
+        index: number
+      }
+    }
+  | {
       type: "set_component_properties"
       payload: {
         boardKey: BoardKey
@@ -545,6 +632,24 @@ export type WorkspaceAction =
   | AddCustomToken
   | RemoveCustomToken
   | {
+      type: "set_theme_scale_slot"
+      payload: {
+        themeId: string
+        section: ScaleTokenSection
+        key: string
+        value: ScaleTokenInput
+      }
+    }
+  | {
+      type: "set_theme_custom_token_name"
+      payload: {
+        themeId: string
+        section: ThemeCustomTokenSection
+        key: string
+        name: string
+      }
+    }
+  | {
       type: "reset_theme_tokens"
       payload: {
         themeId: string
@@ -572,6 +677,12 @@ export type WorkspaceAction =
       type: "reset_default_variant_to_catalog"
       payload: {
         defaultVariantRootId: VariantId
+      }
+    }
+  | {
+      type: "reset_component_to_catalog"
+      payload: {
+        boardKey: BoardKey
       }
     }
   | {
@@ -617,6 +728,10 @@ export type WorkspaceAction =
   | {
       type: "reset_font_collection_override"
       payload: { fontCollectionId: string; path: string }
+    }
+  | {
+      type: "reset_font_collection"
+      payload: { fontCollectionId: string }
     }
   | {
       type: "delete_font_collection"
@@ -683,6 +798,10 @@ export type WorkspaceAction =
   | {
       type: "reset_icon_set_override"
       payload: { iconSetId: string; path: string }
+    }
+  | {
+      type: "reset_icon_set"
+      payload: { iconSetId: string }
     }
   | {
       type: "set_icon_set_subcategory_preset"

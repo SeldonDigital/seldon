@@ -135,6 +135,24 @@ export const schema = {
       bottomLeft: { type: Sdn.ValueType.EMPTY, value: null },
       bottomRight: { type: Sdn.ValueType.EMPTY, value: null },
     },
+    gradient: [
+      {
+        preset: {
+          type: Sdn.ValueType.THEME_CATEGORICAL,
+          value: "@gradient.none",
+        },
+        gradientType: { type: Sdn.ValueType.EMPTY, value: null },
+        angle: { type: Sdn.ValueType.EMPTY, value: null },
+        startColor: { type: Sdn.ValueType.EMPTY, value: null },
+        startOpacity: { type: Sdn.ValueType.EMPTY, value: null },
+        startBrightness: { type: Sdn.ValueType.EMPTY, value: null },
+        startPosition: { type: Sdn.ValueType.EMPTY, value: null },
+        endColor: { type: Sdn.ValueType.EMPTY, value: null },
+        endOpacity: { type: Sdn.ValueType.EMPTY, value: null },
+        endBrightness: { type: Sdn.ValueType.EMPTY, value: null },
+        endPosition: { type: Sdn.ValueType.EMPTY, value: null },
+      },
+    ],
     shadow: [
       {
         preset: {
@@ -268,10 +286,6 @@ export const schema = {
                 type: Sdn.ValueType.OPTION,
                 value: Sdn.Display.EXCLUDE,
               },
-              width: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.Resize.FIT,
-              },
               background: [
                 {
                   preset: {
@@ -286,25 +300,8 @@ export const schema = {
               ],
             },
             children: [
-              {
-                component: Seldon.ComponentId.ICON,
-                overrides: {
-                  symbol: {
-                    type: Sdn.ValueType.OPTION,
-                    value: "seldon-plus",
-                  },
-                },
-              },
-              {
-                component: Seldon.ComponentId.TEXT,
-                variant: "label",
-                overrides: {
-                  content: {
-                    type: Sdn.ValueType.EXACT,
-                    value: "Add",
-                  },
-                },
-              },
+              { component: Seldon.ComponentId.ICON },
+              { component: Seldon.ComponentId.TEXT, variant: "label" },
             ],
           },
           {
@@ -313,10 +310,6 @@ export const schema = {
               display: {
                 type: Sdn.ValueType.OPTION,
                 value: Sdn.Display.SHOW,
-              },
-              width: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.Resize.FIT,
               },
               background: [
                 {
@@ -332,25 +325,8 @@ export const schema = {
               ],
             },
             children: [
-              {
-                component: Seldon.ComponentId.ICON,
-                overrides: {
-                  symbol: {
-                    type: Sdn.ValueType.OPTION,
-                    value: "seldon-minus",
-                  },
-                },
-              },
-              {
-                component: Seldon.ComponentId.TEXT,
-                variant: "label",
-                overrides: {
-                  content: {
-                    type: Sdn.ValueType.EXACT,
-                    value: "Remove",
-                  },
-                },
-              },
+              { component: Seldon.ComponentId.ICON },
+              { component: Seldon.ComponentId.TEXT, variant: "label" },
             ],
           },
           {
@@ -360,10 +336,6 @@ export const schema = {
               display: {
                 type: Sdn.ValueType.OPTION,
                 value: Sdn.Display.EXCLUDE,
-              },
-              width: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.Resize.FIT,
               },
               background: [
                 {
@@ -379,16 +351,7 @@ export const schema = {
               ],
             },
             children: [
-              {
-                component: Seldon.ComponentId.TEXT,
-                variant: "label",
-                overrides: {
-                  content: {
-                    type: Sdn.ValueType.EXACT,
-                    value: "999",
-                  },
-                },
-              },
+              { component: Seldon.ComponentId.TEXT, variant: "label" },
             ],
           },
         ],
@@ -503,10 +466,6 @@ export const schema = {
                 type: Sdn.ValueType.OPTION,
                 value: Sdn.Display.SHOW,
               },
-              width: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.Resize.FIT,
-              },
               background: [
                 {
                   preset: {
@@ -521,25 +480,8 @@ export const schema = {
               ],
             },
             children: [
-              {
-                component: Seldon.ComponentId.ICON,
-                overrides: {
-                  symbol: {
-                    type: Sdn.ValueType.OPTION,
-                    value: "seldon-plus",
-                  },
-                },
-              },
-              {
-                component: Seldon.ComponentId.TEXT,
-                variant: "label",
-                overrides: {
-                  content: {
-                    type: Sdn.ValueType.EXACT,
-                    value: "Add",
-                  },
-                },
-              },
+              { component: Seldon.ComponentId.ICON },
+              { component: Seldon.ComponentId.TEXT, variant: "label" },
             ],
           },
           {
@@ -548,10 +490,6 @@ export const schema = {
               display: {
                 type: Sdn.ValueType.OPTION,
                 value: Sdn.Display.EXCLUDE,
-              },
-              width: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.Resize.FIT,
               },
               background: [
                 {
@@ -567,25 +505,8 @@ export const schema = {
               ],
             },
             children: [
-              {
-                component: Seldon.ComponentId.ICON,
-                overrides: {
-                  symbol: {
-                    type: Sdn.ValueType.OPTION,
-                    value: "seldon-minus",
-                  },
-                },
-              },
-              {
-                component: Seldon.ComponentId.TEXT,
-                variant: "label",
-                overrides: {
-                  content: {
-                    type: Sdn.ValueType.EXACT,
-                    value: "Remove",
-                  },
-                },
-              },
+              { component: Seldon.ComponentId.ICON },
+              { component: Seldon.ComponentId.TEXT, variant: "label" },
             ],
           },
           {
@@ -596,10 +517,6 @@ export const schema = {
                 type: Sdn.ValueType.OPTION,
                 value: Sdn.Display.EXCLUDE,
               },
-              width: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.Resize.FIT,
-              },
               background: [
                 {
                   preset: {
@@ -614,16 +531,7 @@ export const schema = {
               ],
             },
             children: [
-              {
-                component: Seldon.ComponentId.TEXT,
-                variant: "label",
-                overrides: {
-                  content: {
-                    type: Sdn.ValueType.EXACT,
-                    value: "999",
-                  },
-                },
-              },
+              { component: Seldon.ComponentId.TEXT, variant: "label" },
             ],
           },
         ],
@@ -739,10 +647,6 @@ export const schema = {
                 type: Sdn.ValueType.OPTION,
                 value: Sdn.Display.SHOW,
               },
-              width: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.Resize.FIT,
-              },
               background: [
                 {
                   preset: {
@@ -757,25 +661,8 @@ export const schema = {
               ],
             },
             children: [
-              {
-                component: Seldon.ComponentId.ICON,
-                overrides: {
-                  symbol: {
-                    type: Sdn.ValueType.OPTION,
-                    value: "seldon-plus",
-                  },
-                },
-              },
-              {
-                component: Seldon.ComponentId.TEXT,
-                variant: "label",
-                overrides: {
-                  content: {
-                    type: Sdn.ValueType.EXACT,
-                    value: "Add",
-                  },
-                },
-              },
+              { component: Seldon.ComponentId.ICON },
+              { component: Seldon.ComponentId.TEXT, variant: "label" },
             ],
           },
           {
@@ -784,10 +671,6 @@ export const schema = {
               display: {
                 type: Sdn.ValueType.OPTION,
                 value: Sdn.Display.SHOW,
-              },
-              width: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.Resize.FIT,
               },
               background: [
                 {
@@ -803,25 +686,8 @@ export const schema = {
               ],
             },
             children: [
-              {
-                component: Seldon.ComponentId.ICON,
-                overrides: {
-                  symbol: {
-                    type: Sdn.ValueType.OPTION,
-                    value: "seldon-minus",
-                  },
-                },
-              },
-              {
-                component: Seldon.ComponentId.TEXT,
-                variant: "label",
-                overrides: {
-                  content: {
-                    type: Sdn.ValueType.EXACT,
-                    value: "Remove",
-                  },
-                },
-              },
+              { component: Seldon.ComponentId.ICON },
+              { component: Seldon.ComponentId.TEXT, variant: "label" },
             ],
           },
           {
@@ -831,10 +697,6 @@ export const schema = {
               display: {
                 type: Sdn.ValueType.OPTION,
                 value: Sdn.Display.EXCLUDE,
-              },
-              width: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.Resize.FIT,
               },
               background: [
                 {
@@ -850,16 +712,7 @@ export const schema = {
               ],
             },
             children: [
-              {
-                component: Seldon.ComponentId.TEXT,
-                variant: "label",
-                overrides: {
-                  content: {
-                    type: Sdn.ValueType.EXACT,
-                    value: "999",
-                  },
-                },
-              },
+              { component: Seldon.ComponentId.TEXT, variant: "label" },
             ],
           },
         ],
@@ -974,10 +827,6 @@ export const schema = {
                 type: Sdn.ValueType.OPTION,
                 value: Sdn.Display.EXCLUDE,
               },
-              width: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.Resize.FIT,
-              },
               background: [
                 {
                   preset: {
@@ -992,25 +841,8 @@ export const schema = {
               ],
             },
             children: [
-              {
-                component: Seldon.ComponentId.ICON,
-                overrides: {
-                  symbol: {
-                    type: Sdn.ValueType.OPTION,
-                    value: "seldon-plus",
-                  },
-                },
-              },
-              {
-                component: Seldon.ComponentId.TEXT,
-                variant: "label",
-                overrides: {
-                  content: {
-                    type: Sdn.ValueType.EXACT,
-                    value: "Add",
-                  },
-                },
-              },
+              { component: Seldon.ComponentId.ICON },
+              { component: Seldon.ComponentId.TEXT, variant: "label" },
             ],
           },
           {
@@ -1020,10 +852,6 @@ export const schema = {
                 type: Sdn.ValueType.OPTION,
                 value: Sdn.Display.EXCLUDE,
               },
-              width: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.Resize.FIT,
-              },
               background: [
                 {
                   preset: {
@@ -1038,25 +866,8 @@ export const schema = {
               ],
             },
             children: [
-              {
-                component: Seldon.ComponentId.ICON,
-                overrides: {
-                  symbol: {
-                    type: Sdn.ValueType.OPTION,
-                    value: "seldon-minus",
-                  },
-                },
-              },
-              {
-                component: Seldon.ComponentId.TEXT,
-                variant: "label",
-                overrides: {
-                  content: {
-                    type: Sdn.ValueType.EXACT,
-                    value: "Remove",
-                  },
-                },
-              },
+              { component: Seldon.ComponentId.ICON },
+              { component: Seldon.ComponentId.TEXT, variant: "label" },
             ],
           },
           {
@@ -1066,10 +877,6 @@ export const schema = {
               display: {
                 type: Sdn.ValueType.OPTION,
                 value: Sdn.Display.SHOW,
-              },
-              width: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.Resize.FIT,
               },
               background: [
                 {
@@ -1085,16 +892,7 @@ export const schema = {
               ],
             },
             children: [
-              {
-                component: Seldon.ComponentId.TEXT,
-                variant: "label",
-                overrides: {
-                  content: {
-                    type: Sdn.ValueType.EXACT,
-                    value: "999",
-                  },
-                },
-              },
+              { component: Seldon.ComponentId.TEXT, variant: "label" },
             ],
           },
         ],

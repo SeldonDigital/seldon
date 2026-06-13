@@ -10,6 +10,7 @@ import { addFontCollection } from "./handlers/add/add-font-collection"
 import { addFontCollectionCustomFamily } from "./handlers/add/add-font-collection-custom-family"
 import { addIconSet } from "./handlers/add/add-icon-set"
 import { addMedia } from "./handlers/add/add-media"
+import { addNodeLayer } from "./handlers/add/add-node-layer"
 import { addPlayground } from "./handlers/add/add-playground"
 import { addTheme } from "./handlers/add/add-theme"
 import { addThemeCustomBackground } from "./handlers/add/add-theme-custom-background"
@@ -51,6 +52,7 @@ import { removeFontCollectionCustomFamily } from "./handlers/remove/remove-font-
 import { removeIconSet } from "./handlers/remove/remove-icon-set"
 import { removeInstance } from "./handlers/remove/remove-instance"
 import { removeMedia } from "./handlers/remove/remove-media"
+import { removeNodeLayer } from "./handlers/remove/remove-node-layer"
 import { removePlayground } from "./handlers/remove/remove-playground"
 import { removeTheme } from "./handlers/remove/remove-theme"
 import { removeThemeCustomBackground } from "./handlers/remove/remove-theme-custom-background"
@@ -85,10 +87,13 @@ import { resetBoardLicense } from "./handlers/reset/reset-board-license"
 import { resetBoardPreview } from "./handlers/reset/reset-board-preview"
 import { resetBoardTags } from "./handlers/reset/reset-board-tags"
 import { resetComponentProperty } from "./handlers/reset/reset-component-property"
+import { resetComponentToCatalog } from "./handlers/reset/reset-component-to-catalog"
 import { resetDefaultVariantToCatalog } from "./handlers/reset/reset-default-variant-to-catalog"
+import { resetFontCollection } from "./handlers/reset/reset-font-collection"
 import { resetFontCollectionEditorData } from "./handlers/reset/reset-font-collection-editor-data"
 import { resetFontCollectionLabel } from "./handlers/reset/reset-font-collection-label"
 import { resetFontCollectionOverride } from "./handlers/reset/reset-font-collection-override"
+import { resetIconSet } from "./handlers/reset/reset-icon-set"
 import { resetIconSetOverride } from "./handlers/reset/reset-icon-set-override"
 import { resetNode } from "./handlers/reset/reset-node"
 import { resetNodeEditorData } from "./handlers/reset/reset-node-editor-data"
@@ -127,9 +132,11 @@ import { setNodeEditorData } from "./handlers/set/set-node-editor-data"
 import { setNodeLabel } from "./handlers/set/set-node-label"
 import { setNodeProperties } from "./handlers/set/set-node-properties"
 import { setNodeTheme } from "./handlers/set/set-node-theme"
+import { setThemeCustomTokenName } from "./handlers/set/set-theme-custom-token-name"
 import { setThemeEditorData } from "./handlers/set/set-theme-editor-data"
 import { setThemeLabel } from "./handlers/set/set-theme-label"
 import { setThemeOverride } from "./handlers/set/set-theme-override"
+import { setThemeScaleSlot } from "./handlers/set/set-theme-scale-slot"
 import { setWorkspace } from "./handlers/set/set-workspace"
 import { setWorkspaceIntent } from "./handlers/set/set-workspace-intent"
 import { setWorkspaceLabel } from "./handlers/set/set-workspace-label"
@@ -275,6 +282,10 @@ function reducer(workspace: Workspace, action: WorkspaceAction): Workspace {
       return resetNodeProperty(action.payload, workspace)
     case "reset_node":
       return resetNode(action.payload, workspace)
+    case "add_node_layer":
+      return addNodeLayer(action.payload, workspace)
+    case "remove_node_layer":
+      return removeNodeLayer(action.payload, workspace)
     case "set_node_label":
       return setNodeLabel(action.payload, workspace)
     case "set_node_theme":
@@ -291,6 +302,10 @@ function reducer(workspace: Workspace, action: WorkspaceAction): Workspace {
       return setThemeEditorData(action.payload, workspace)
     case "set_theme_override":
       return setThemeOverride(action.payload, workspace)
+    case "set_theme_scale_slot":
+      return setThemeScaleSlot(action.payload, workspace)
+    case "set_theme_custom_token_name":
+      return setThemeCustomTokenName(action.payload, workspace)
     case "remove_instance":
       return removeInstance(action.payload, workspace)
     case "remove_variant":
@@ -301,6 +316,8 @@ function reducer(workspace: Workspace, action: WorkspaceAction): Workspace {
       return resetUserVariantToDefault(action.payload, workspace)
     case "reset_default_variant_to_catalog":
       return resetDefaultVariantToCatalog(action.payload, workspace)
+    case "reset_component_to_catalog":
+      return resetComponentToCatalog(action.payload, workspace)
     case "move_instance":
       return moveInstance(action.payload, workspace)
     case "reorder_instance_in_parent":
@@ -417,6 +434,8 @@ function reducer(workspace: Workspace, action: WorkspaceAction): Workspace {
       return resetFontCollectionEditorData(action.payload, workspace)
     case "reset_font_collection_override":
       return resetFontCollectionOverride(action.payload, workspace)
+    case "reset_font_collection":
+      return resetFontCollection(action.payload, workspace)
     case "delete_font_collection":
       return deleteFontCollection(action.payload, workspace)
     case "duplicate_font_collection":
@@ -432,6 +451,8 @@ function reducer(workspace: Workspace, action: WorkspaceAction): Workspace {
       return setIconSetOverride(action.payload, workspace)
     case "reset_icon_set_override":
       return resetIconSetOverride(action.payload, workspace)
+    case "reset_icon_set":
+      return resetIconSet(action.payload, workspace)
     case "set_icon_set_subcategory_preset":
       return setIconSetSubcategoryPreset(action.payload, workspace)
     case "delete_icon_set":

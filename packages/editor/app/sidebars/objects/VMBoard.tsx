@@ -1,4 +1,4 @@
-import { memo, useCallback } from "react"
+import { CSSProperties, memo, useCallback, useRef } from "react"
 import { Board as BoardType, Variant } from "@seldon/core"
 import { useRowHighlightStyle } from "@lib/workspace/hooks/use-object-hover"
 import { useSidebarCanvasTrackingBoard } from "../../tracking/hooks/use-sidebar-canvas-tracking"
@@ -14,6 +14,7 @@ import { applyTrackingColor } from "../helpers/apply-tracking-color"
 import { rowWrapperStyle } from "../helpers/sidebar-row-styles"
 import { relativeFullWidthStyle } from "../helpers/sidebar-styles"
 import { FramerExpandable } from "@seldon/components/custom-components"
+import { useRowActionsMenu } from "../shared/use-row-actions-menu"
 import { VMNode } from "./VMNode"
 import {
   VMResourceEntry,
@@ -22,9 +23,56 @@ import {
 
 const BOARD_SELECTION_KIND = "board"
 
-interface VMBoardProps {
-  board: BoardType
-  show?: boolean
+const emptyRowWrapperStyle: CSSProperties = {
+  ...rowWrapperStyle,
+  position: "relative",
+}
+
+const emptyLabelStyle: CSSProperties = {
+  fontFamily: "var(--sdn-seldon-font-family-primary)",
+  fontSize: "var(--sdn-font-size-xsmall)",
+  color: "var(--sdn-seldon-swatch-white)",
+  paddingInlineStart: "var(--sdn-padding-compact)",
+}
+
+type VMBoardProps =
+  | { board: BoardType; show?: boolean }
+  | { emptyLabel: string }
+
+/**
+ * View-model for a board row in the objects sidebar.
+ * Renders a real board row, or an inert placeholder row when `emptyLabel` is
+ * passed for a section with no boards. Branches before any board hooks run so
+ * the empty case never needs board data.
+ */
+export const VMBoard = memo(function VMBoard(props: VMBoardProps) {
+  if ("emptyLabel" in props) {
+    return <VMBoardEmpty label={props.emptyLabel} />
+  }
+  return <VMBoardRow board={props.board} show={props.show} />
+})
+
+/**
+ * Inert placeholder row shown when a section has no boards. Mirrors a board row
+ * shell with all slots empty, so it reads as a disabled "No <section>" line.
+ */
+function VMBoardEmpty({ label }: { label: string }) {
+  return (
+    <div style={emptyRowWrapperStyle}>
+      <ItemNodeRow
+        buttonIconic={null}
+        icon={null}
+        icon2={null}
+        textLabel={{ children: label, style: emptyLabelStyle }}
+        buttonIconic2={null}
+        icon3={null}
+        buttonIconic3={null}
+        icon4={null}
+        aria-disabled
+        data-testid="objects-sidebar-empty-section"
+      />
+    </div>
+  )
 }
 
 /**
@@ -32,18 +80,14 @@ interface VMBoardProps {
  * Handles board selection, expansion, and canvas tracking. Hover highlight comes
  * from the shared hover bridge via the tree-root controller.
  */
-export const VMBoard = memo(function VMBoard({
-  board,
-  show = true,
-}: VMBoardProps) {
+function VMBoardRow({ board, show = true }: { board: BoardType; show?: boolean }) {
   // Core board data: buttons, icons, handlers, state
   const {
     label: baseLabel,
     buttonIconic,
     icon,
     icon2,
-    buttonIconic2,
-    icon3,
+    actions,
     onClick,
     isExpanded,
     isBoardSelected,
@@ -66,6 +110,13 @@ export const VMBoard = memo(function VMBoard({
       ? { ...hoverStyle, ...rowStyle, borderColor: undefined }
       : { ...hoverStyle, ...rowStyle }
 
+  // Trailing "..." actions menu for the board row.
+  const rowRef = useRef<HTMLDivElement>(null)
+  const actionsMenu = useRowActionsMenu(actions, {
+    color: iconColor,
+    focusTargetRef: rowRef,
+  })
+
   // Canvas tracking: highlights board on canvas when hovering sidebar row
   const { handleCanvasTrackingEnter, handleCanvasTrackingLeave } =
     useSidebarCanvasTrackingBoard(board)
@@ -85,7 +136,6 @@ export const VMBoard = memo(function VMBoard({
   // Apply tracking colors: icons get color
   const coloredIcon = applyTrackingColor(icon, "color", iconColor)
   const coloredIcon2 = applyTrackingColor(icon2, "color", iconColor)
-  const coloredIcon3 = applyTrackingColor(icon3, "color", iconColor)
 
   // Label: apply tracking color if provided
   const textLabel: TextLabelProps = {
@@ -129,6 +179,7 @@ export const VMBoard = memo(function VMBoard({
   return (
     <>
       <RowSelectionTarget
+        ref={rowRef}
         style={rowWrapperStyle}
         innerStyle={relativeFullWidthStyle}
         selectionId={boardKey}
@@ -139,10 +190,10 @@ export const VMBoard = memo(function VMBoard({
           icon={coloredIcon as IconProps}
           icon2={coloredIcon2 as IconProps}
           textLabel={textLabel}
-          buttonIconic2={buttonIconic2 ?? null}
-          icon3={buttonIconic2 ? (coloredIcon3 as IconProps) : null}
-          buttonIconic3={null}
-          icon4={null}
+          buttonIconic2={null}
+          icon3={null}
+          buttonIconic3={actionsMenu.buttonIconic}
+          icon4={actionsMenu.icon}
           onClick={onClick}
           onMouseEnter={handleRowMouseEnter}
           onMouseLeave={handleRowMouseLeave}
@@ -152,10 +203,11 @@ export const VMBoard = memo(function VMBoard({
           style={combinedRowStyle}
         />
       </RowSelectionTarget>
+      {actionsMenu.menu}
 
       <FramerExpandable isExpanded={isExpanded}>
         <IndentationLevel>{childRows}</IndentationLevel>
       </FramerExpandable>
     </>
   )
-})
+}
