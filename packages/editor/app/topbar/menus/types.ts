@@ -14,6 +14,11 @@ export interface MenuItem {
   action?: () => void
   shortcut?: string
   disabled?: boolean
+  /**
+   * When `false`, the item renders dimmed and is not selectable. Convenience
+   * inverse of `disabled`; `disabled` takes precedence when both are set.
+   */
+  enabled?: boolean
   /** Used to determine if item should be highlighted */
   active?: boolean
   /** Marker shown when `active`. Defaults to a check; `"bullet"` for radio sets. */

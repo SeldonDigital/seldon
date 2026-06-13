@@ -14,7 +14,7 @@ export function useEditorShortcuts() {
   const { addVariant, deleteSelection, duplicateSelection } =
     useAddRemoveCommands()
   const { moveSelectionDown, moveSelectionUp } = useMoveCommands()
-  const { selectOriginalNode, selectVariant } = useSelectCommands()
+  const { selectOriginal, selectSource } = useSelectCommands()
 
   const { undo, redo } = useHistory()
   const { activeTool, setActiveTool } = useTool()
@@ -67,12 +67,12 @@ export function useEditorShortcuts() {
   })
 
   // Selection
-  // Selects the original variant of the currently selected node
-  useHotkeys("alt+`", selectVariant, {
+  // Selects the source node one hop up the template chain
+  useHotkeys("alt+`", selectSource, {
     preventDefault: true,
   })
-  // Selects the node that the currently selected node instantiates
-  useHotkeys("shift+`", selectOriginalNode, {
+  // Selects the original node at the top of the template chain
+  useHotkeys("shift+`", selectOriginal, {
     preventDefault: true,
   })
 

@@ -96,10 +96,18 @@ export function useMenuConfig(): HeaderConfig {
     useAddRemoveCommands()
   const { moveSelectionDown, moveSelectionUp } = useMoveCommands()
   const {
-    selectOriginalNode,
-    selectVariant,
+    selectOriginal,
+    selectSource,
+    selectParent,
+    selectFirstChild,
+    selectNextSibling,
+    selectPreviousSibling,
     canSelectOriginal,
-    canSelectVariant,
+    canSelectSource,
+    canSelectParent,
+    canSelectFirstChild,
+    canSelectNextSibling,
+    canSelectPreviousSibling,
   } = useSelectCommands()
   const { undo, redo } = useHistory()
   const {
@@ -350,6 +358,37 @@ export function useMenuConfig(): HeaderConfig {
       },
       "separator",
       {
+        id: "delete",
+        label: "Delete",
+        action: deleteSelection,
+        shortcut: "Delete",
+        enabled: canDeleteSelection,
+      },
+      {
+        id: "duplicate",
+        label: "Duplicate",
+        action: duplicateSelection,
+        shortcut: "⌘ D",
+        enabled: Boolean(selectedNode),
+      },
+    ]
+
+    return items
+  }, [
+    undo,
+    redo,
+    cutNode,
+    copyNode,
+    pasteNode,
+    deleteSelection,
+    canDeleteSelection,
+    duplicateSelection,
+    selectedNode,
+  ])
+
+  const selectionMenuItems = useMemo(() => {
+    const items = [
+      {
         id: "insert-component",
         label: "Insert Component",
         action: () => setActiveTool("component"),
@@ -374,41 +413,6 @@ export function useMenuConfig(): HeaderConfig {
       },
       "separator",
       {
-        id: "delete",
-        label: "Delete",
-        action: deleteSelection,
-        shortcut: "Delete",
-        enabled: canDeleteSelection,
-      },
-      {
-        id: "duplicate",
-        label: "Duplicate",
-        action: duplicateSelection,
-        shortcut: "⌘ D",
-        enabled: Boolean(selectedNode),
-      },
-    ]
-
-    return items
-  }, [
-    undo,
-    redo,
-    cutNode,
-    copyNode,
-    pasteNode,
-    openDialog,
-    setActiveTool,
-    addVariant,
-    selectedBoard,
-    deleteSelection,
-    canDeleteSelection,
-    duplicateSelection,
-    selectedNode,
-  ])
-
-  const selectionMenuItems = useMemo(() => {
-    const items = [
-      {
         id: "move-up",
         label: "Move Up",
         action: moveSelectionUp,
@@ -424,30 +428,67 @@ export function useMenuConfig(): HeaderConfig {
       },
       "separator",
       {
-        id: "select-original",
-        label: "Select Original",
-        action: selectOriginalNode,
-        shortcut: "⇧ `",
-        enabled: canSelectOriginal,
+        id: "select-parent",
+        label: "Select Parent",
+        action: selectParent,
+        enabled: canSelectParent,
       },
       {
-        id: "select-variant",
-        label: "Select Variant",
-        action: selectVariant,
+        id: "select-first-child",
+        label: "Select First Child",
+        action: selectFirstChild,
+        enabled: canSelectFirstChild,
+      },
+      {
+        id: "select-previous-sibling",
+        label: "Select Previous Sibling",
+        action: selectPreviousSibling,
+        enabled: canSelectPreviousSibling,
+      },
+      {
+        id: "select-next-sibling",
+        label: "Select Next Sibling",
+        action: selectNextSibling,
+        enabled: canSelectNextSibling,
+      },
+      "separator",
+      {
+        id: "select-source",
+        label: "Select Source",
+        action: selectSource,
         shortcut: "⌥ `",
-        enabled: canSelectVariant,
+        enabled: canSelectSource,
+      },
+      {
+        id: "select-original",
+        label: "Select Original",
+        action: selectOriginal,
+        shortcut: "⇧ `",
+        enabled: canSelectOriginal,
       },
     ]
 
     return items
   }, [
+    setActiveTool,
+    openDialog,
+    addVariant,
+    selectedBoard,
     moveSelectionUp,
     selection,
     moveSelectionDown,
-    selectOriginalNode,
+    selectParent,
+    canSelectParent,
+    selectFirstChild,
+    canSelectFirstChild,
+    selectPreviousSibling,
+    canSelectPreviousSibling,
+    selectNextSibling,
+    canSelectNextSibling,
+    selectOriginal,
     canSelectOriginal,
-    canSelectVariant,
-    selectVariant,
+    selectSource,
+    canSelectSource,
   ])
 
   // Build menu configuration
@@ -465,8 +506,8 @@ export function useMenuConfig(): HeaderConfig {
         items: editMenuItems as MenuItem[],
       },
       {
-        id: "selection",
-        label: "Selection",
+        id: "component",
+        label: "Component",
         visibleIn: ["edit", "preview"], // Not visible in project view
         items: selectionMenuItems as MenuItem[],
       },

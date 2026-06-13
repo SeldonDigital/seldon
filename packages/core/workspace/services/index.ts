@@ -11,6 +11,14 @@ export {
   NodeRelationshipService,
 } from "./nodes/node-relationship.service"
 export {
+  resolveOriginalNodeId,
+  resolveSourceNodeId,
+  resolveParentNodeId,
+  resolveFirstChildNodeId,
+  resolveNextSiblingNodeId,
+  resolvePreviousSiblingNodeId,
+} from "./nodes/node-navigation.service"
+export {
   nodeOperationsService,
   NodeOperationsService,
 } from "./nodes/node-operations.service"

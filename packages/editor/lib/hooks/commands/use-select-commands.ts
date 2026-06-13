@@ -1,46 +1,97 @@
-import { useCallback } from "react"
-import { parseNodeLink } from "@seldon/core/workspace/model/template-ref"
-import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
+import { useCallback, useMemo } from "react"
+import {
+  resolveFirstChildNodeId,
+  resolveNextSiblingNodeId,
+  resolveOriginalNodeId,
+  resolveParentNodeId,
+  resolvePreviousSiblingNodeId,
+  resolveSourceNodeId,
+} from "@seldon/core/workspace/services/nodes/node-navigation.service"
 import { useSelection } from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 
 /**
- * Commands for selecting nodes and boards
+ * Tree-navigation commands for the Select menu. Traversal lives in core resolvers
+ * so the editor and a headless agent compute the same target. Each command is a
+ * thin `resolve -> selectNode`, and each `can*` flag is true when the resolver
+ * returns a different node than the current selection.
  */
 export function useSelectCommands() {
   const { selectedNode, selectNode } = useSelection()
   const { workspace } = useWorkspace()
 
-  const selectOriginalNode = useCallback(() => {
-    if (!selectedNode || !workspaceService.isInstance(selectedNode)) {
-      return
-    }
-    const link = parseNodeLink(selectedNode.template)
-    if (link?.kind === "node") {
-      selectNode(link.nodeId)
-    }
-  }, [selectedNode, selectNode])
+  const currentId = selectedNode?.id ?? null
 
-  const selectVariant = useCallback(() => {
-    if (!selectedNode || !workspaceService.isInstance(selectedNode)) {
-      return
+  const targets = useMemo(() => {
+    if (!currentId) {
+      return {
+        original: null,
+        source: null,
+        parent: null,
+        firstChild: null,
+        nextSibling: null,
+        previousSibling: null,
+      }
     }
-    const root = workspaceService.getRootVariant(selectedNode, workspace)
-    selectNode(root.id)
-  }, [selectedNode, selectNode, workspace])
+    return {
+      original: resolveOriginalNodeId(workspace, currentId),
+      source: resolveSourceNodeId(workspace, currentId),
+      parent: resolveParentNodeId(workspace, currentId),
+      firstChild: resolveFirstChildNodeId(workspace, currentId),
+      nextSibling: resolveNextSiblingNodeId(workspace, currentId),
+      previousSibling: resolvePreviousSiblingNodeId(workspace, currentId),
+    }
+  }, [currentId, workspace])
 
-  const canSelectOriginal =
-    selectedNode !== null &&
-    workspaceService.isInstance(selectedNode) &&
-    parseNodeLink(selectedNode.template)?.kind === "node"
+  const goTo = useCallback(
+    (targetId: string | null) => {
+      if (targetId && targetId !== currentId) {
+        selectNode(targetId)
+      }
+    },
+    [currentId, selectNode],
+  )
 
-  const canSelectVariant =
-    selectedNode !== null && workspaceService.isInstance(selectedNode)
+  const selectOriginal = useCallback(
+    () => goTo(targets.original),
+    [goTo, targets.original],
+  )
+  const selectSource = useCallback(
+    () => goTo(targets.source),
+    [goTo, targets.source],
+  )
+  const selectParent = useCallback(
+    () => goTo(targets.parent),
+    [goTo, targets.parent],
+  )
+  const selectFirstChild = useCallback(
+    () => goTo(targets.firstChild),
+    [goTo, targets.firstChild],
+  )
+  const selectNextSibling = useCallback(
+    () => goTo(targets.nextSibling),
+    [goTo, targets.nextSibling],
+  )
+  const selectPreviousSibling = useCallback(
+    () => goTo(targets.previousSibling),
+    [goTo, targets.previousSibling],
+  )
+
+  const canMove = (targetId: string | null) =>
+    targetId !== null && targetId !== currentId
 
   return {
-    selectOriginalNode,
-    selectVariant,
-    canSelectOriginal,
-    canSelectVariant,
+    selectOriginal,
+    selectSource,
+    selectParent,
+    selectFirstChild,
+    selectNextSibling,
+    selectPreviousSibling,
+    canSelectOriginal: canMove(targets.original),
+    canSelectSource: canMove(targets.source),
+    canSelectParent: canMove(targets.parent),
+    canSelectFirstChild: canMove(targets.firstChild),
+    canSelectNextSibling: canMove(targets.nextSibling),
+    canSelectPreviousSibling: canMove(targets.previousSibling),
   }
 }

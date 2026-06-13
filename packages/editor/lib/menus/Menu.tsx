@@ -252,7 +252,7 @@ const MenuItemButton = forwardRef<HTMLButtonElement, MenuItemButtonProps>(
       fontSize: "var(--sdn-font-size-xsmall)",
       textAlign: "left",
       color: item.active ? "var(--sdn-swatch-seldon-blue)" : "#F5F5F5",
-      cursor: item.disabled ? "not-allowed" : "pointer",
+      cursor: "default",
       opacity: item.disabled ? 0.5 : undefined,
       userSelect: "none",
       outline: "none",
