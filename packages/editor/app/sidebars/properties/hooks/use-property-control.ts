@@ -244,6 +244,8 @@ export function usePropertyControl({
       setOpen: combo.setOpen,
       handleSubmit: combo.handleSubmitInput,
       onCancel: combo.handleCancelInput,
+      onHighlightNext: combo.highlightNext,
+      onHighlightPrev: combo.highlightPrev,
       placeholder,
       disabled: property.isDimmed,
       autoFocus: isEditing,
@@ -253,6 +255,10 @@ export function usePropertyControl({
       open: combo.open && combo.hasFilteredOptions,
       position: combo.position,
       handleClose: combo.handleComboboxClose,
+      // Drop the hover highlight when the pointer leaves the list so only the
+      // selected option still reads as active.
+      onPointerLeave: () =>
+        combo.setHighlightedValue(display.comboboxStoredValue),
     },
     optionList: {
       filteredOptions: combo.filteredOptions,

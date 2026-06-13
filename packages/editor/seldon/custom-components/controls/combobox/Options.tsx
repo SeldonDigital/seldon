@@ -12,6 +12,8 @@ interface ComboboxOptionsProps {
   children: React.ReactNode
   position: { x: number; y: number; w: number; positionAbove?: boolean }
   handleClose: () => void
+  /** Resets the hover highlight when the pointer leaves the options panel. */
+  onPointerLeave?: () => void
 }
 
 function stopPropagation(event: React.MouseEvent): void {
@@ -23,11 +25,15 @@ export function ComboboxOptions({
   children,
   position,
   handleClose,
+  onPointerLeave,
 }: ComboboxOptionsProps) {
   const panel = open ? (
     <>
       <Backdrop onClick={handleClose} style={comboboxBackdropStyle} />
-      <PositionedPanel style={getOptionsPanelPositionStyle(position)}>
+      <PositionedPanel
+        style={getOptionsPanelPositionStyle(position)}
+        onMouseLeave={onPointerLeave}
+      >
         {children}
       </PositionedPanel>
     </>

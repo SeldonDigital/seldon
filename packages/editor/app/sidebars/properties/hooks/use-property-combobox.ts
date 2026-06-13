@@ -52,6 +52,8 @@ interface UsePropertyComboboxResult {
   handleCancelInput: () => void
   highlightedValue: string | undefined
   setHighlightedValue: (value: string | undefined) => void
+  highlightNext: () => void
+  highlightPrev: () => void
   hasSections: boolean
   hasFilteredOptions: boolean
   position: Position
@@ -104,6 +106,8 @@ export function usePropertyCombobox({
     handleSubmitInput,
     highlightedValue,
     setHighlightedValue,
+    highlightNext,
+    highlightPrev,
     flatOptions,
   } = useComboboxState<ComboboxOptionItem>({
     value: comboboxControlValue,
@@ -228,6 +232,8 @@ export function usePropertyCombobox({
     handleCancelInput,
     highlightedValue,
     setHighlightedValue,
+    highlightNext,
+    highlightPrev,
     hasSections,
     hasFilteredOptions,
     position,
