@@ -163,6 +163,19 @@ export function validateNodeMutation(
       )
       break
     }
+    case "move_instance_directional": {
+      // The resolver only returns a placement allowed by the level rules, so the
+      // remaining guards are that the subject is a real instance outside any
+      // default variant. A null resolution is a no-op handled by the reducer.
+      const nodeId = action.payload.instanceId as InstanceId
+      const node = getInstanceNodeOrThrow(workspace, action, nodeId)
+      assertNodeNotInDefaultVariant(
+        workspace,
+        node,
+        "Cannot move instances in a default variant. Only property overrides allowed. To restructure components, make a custom variant and make changes on it.",
+      )
+      break
+    }
     case "remove_instance": {
       // Removal inside the default variant is allowed; the reducer resolves
       // it to a hide (display EXCLUDE) for schema-defined instances instead

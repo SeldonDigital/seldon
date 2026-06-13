@@ -19,6 +19,14 @@ export {
   resolvePreviousSiblingNodeId,
 } from "./nodes/node-navigation.service"
 export {
+  resolveInstanceMoveTarget,
+  canMoveInstance,
+} from "./nodes/node-move-navigation.service"
+export type {
+  MoveDirection,
+  MoveTarget,
+} from "./nodes/node-move-navigation.service"
+export {
   nodeOperationsService,
   NodeOperationsService,
 } from "./nodes/node-operations.service"

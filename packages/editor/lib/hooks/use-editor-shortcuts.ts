@@ -13,8 +13,20 @@ import { useTool } from "./use-tool"
 export function useEditorShortcuts() {
   const { addVariant, deleteSelection, duplicateSelection } =
     useAddRemoveCommands()
-  const { moveSelectionDown, moveSelectionUp } = useMoveCommands()
-  const { selectOriginal, selectSource } = useSelectCommands()
+  const {
+    moveSelectionForward,
+    moveSelectionBackward,
+    moveSelectionToFront,
+    moveSelectionToBack,
+  } = useMoveCommands()
+  const {
+    selectOriginal,
+    selectSource,
+    selectParent,
+    selectFirstChild,
+    selectPreviousSibling,
+    selectNextSibling,
+  } = useSelectCommands()
 
   const { undo, redo } = useHistory()
   const { activeTool, setActiveTool } = useTool()
@@ -59,10 +71,16 @@ export function useEditorShortcuts() {
     { preventDefault: true },
   )
   useHotkeys("shift+a", addVariant, { preventDefault: true })
-  useHotkeys("mod+[", moveSelectionUp, {
+  useHotkeys("[", moveSelectionForward, {
     preventDefault: true,
   })
-  useHotkeys("mod+]", moveSelectionDown, {
+  useHotkeys("]", moveSelectionBackward, {
+    preventDefault: true,
+  })
+  useHotkeys("shift+[", moveSelectionToFront, {
+    preventDefault: true,
+  })
+  useHotkeys("shift+]", moveSelectionToBack, {
     preventDefault: true,
   })
 
@@ -73,6 +91,19 @@ export function useEditorShortcuts() {
   })
   // Selects the original node at the top of the template chain
   useHotkeys("shift+`", selectOriginal, {
+    preventDefault: true,
+  })
+  // Structural navigation across the tree
+  useHotkeys("comma", selectPreviousSibling, {
+    preventDefault: true,
+  })
+  useHotkeys("period", selectNextSibling, {
+    preventDefault: true,
+  })
+  useHotkeys("shift+comma", selectParent, {
+    preventDefault: true,
+  })
+  useHotkeys("shift+period", selectFirstChild, {
     preventDefault: true,
   })
 
