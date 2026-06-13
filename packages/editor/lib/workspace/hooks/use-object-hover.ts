@@ -1,6 +1,7 @@
 import { useMemo } from "react"
 import type { CSSProperties } from "react"
 import { create } from "zustand"
+import { useTool } from "@lib/hooks/use-tool"
 import type { SelectionKind } from "@lib/workspace/selection-target"
 
 /**
@@ -85,15 +86,18 @@ export function useRowHighlightStyle(
   rootId?: string,
 ): CSSProperties {
   const isHovered = useIsHovered(id, rootId)
+  const { activeTool } = useTool()
   return useMemo(
     () => ({
       ...(isSelected
         ? { borderColor: "var(--sdn-seldon-swatch-primary)" }
         : {}),
-      ...(isHovered && !isSelected
+      // Suppress the default gray hover in insert component mode so only the
+      // insertion tracking (accent fill and the line with dot) reads.
+      ...(isHovered && !isSelected && activeTool !== "component"
         ? { backgroundColor: "hsl(0 0% 100% / 0.1)" }
         : {}),
     }),
-    [isHovered, isSelected],
+    [isHovered, isSelected, activeTool],
   )
 }

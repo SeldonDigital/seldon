@@ -1,6 +1,6 @@
 "use client"
 
-import React, { CSSProperties, useEffect } from "react"
+import React, { CSSProperties, useEffect, useRef } from "react"
 import { isHotkeyPressed } from "react-hotkeys-hook"
 import {
   TransformComponent,
@@ -9,7 +9,10 @@ import {
 } from "react-zoom-pan-pinch"
 import { useThrottledCallback } from "use-debounce"
 import { useActiveBoard } from "@lib/workspace/hooks/use-active-board"
-import { useSelection } from "@lib/workspace/hooks/use-selection"
+import {
+  useSelection,
+  useStore as useSelectionStore,
+} from "@lib/workspace/hooks/use-selection"
 import { useSetHoverState } from "@lib/hooks/use-canvas-hover-state"
 import { useDialog } from "@lib/hooks/use-dialog"
 import { useTool } from "@lib/hooks/use-tool"
@@ -45,6 +48,51 @@ export const Canvas = () => {
   const { activeTool, setActiveTool } = useTool()
   const setHoverState = useSetHoverState()
   const { activeDialog } = useDialog()
+
+  const prevToolRef = useRef(activeTool)
+  const savedNodeSelectionRef = useRef<{
+    id: NonNullable<ReturnType<typeof useSelectionStore.getState>["selectedNodeId"]>
+    rootId: string | null
+  } | null>(null)
+
+  // Entering insert component mode selects the active board so it reads as the
+  // accent insertion context, after saving the current node selection. Leaving
+  // the mode restores that node so escaping or canceling returns to where the
+  // user was, instead of leaving the board selected.
+  useEffect(() => {
+    const prevTool = prevToolRef.current
+    prevToolRef.current = activeTool
+
+    const enteringComponent =
+      activeTool === "component" && prevTool !== "component"
+    const leavingComponent =
+      activeTool !== "component" && prevTool === "component"
+
+    if (enteringComponent) {
+      const { selectedNodeId, selectedNodeRootId } =
+        useSelectionStore.getState()
+      savedNodeSelectionRef.current = selectedNodeId
+        ? { id: selectedNodeId, rootId: selectedNodeRootId }
+        : null
+      if (activeBoard) {
+        selectBoard(getComponentKey(activeBoard))
+      }
+      return
+    }
+
+    if (activeTool === "component" && activeBoard) {
+      selectBoard(getComponentKey(activeBoard))
+      return
+    }
+
+    if (leavingComponent) {
+      const saved = savedNodeSelectionRef.current
+      savedNodeSelectionRef.current = null
+      if (saved) {
+        selectNode(saved.id, saved.rootId)
+      }
+    }
+  }, [activeTool, activeBoard, selectBoard, selectNode])
 
   // We want to check if the mouse is outside the root tree and if so,
   // set the hover state to null

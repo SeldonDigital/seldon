@@ -8,6 +8,7 @@ import { useTool } from "@lib/hooks/use-tool"
 import { useBelongsToActiveBoard } from "../../hooks/use-belongs-to-active-board"
 import { checkInsertionPoint } from "../../helpers/check-insertion-point"
 import { IndicatorInsert } from "./IndicatorInsert"
+import { InsertGapSiblings } from "./InsertGapSiblings"
 
 /**
  * Canvas tracking component for component insertion mode.
@@ -51,11 +52,14 @@ export function InsertTracking() {
   if (!insertionAllowed) return null
 
   return (
-    <IndicatorInsert
-      lastChildNodeBeforeCursor={lastChildNodeBeforeCursor}
-      objectId={objectId}
-      objectType={objectType}
-      placement={placement}
-    />
+    <>
+      <InsertGapSiblings />
+      <IndicatorInsert
+        lastChildNodeBeforeCursor={lastChildNodeBeforeCursor}
+        objectId={objectId}
+        objectType={objectType}
+        placement={placement}
+      />
+    </>
   )
 }

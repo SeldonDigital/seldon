@@ -94,6 +94,9 @@ export function useSidebarRowStyling(
       style.outline = "none"
     } else if (isComponentTracked) {
       style.borderColor = componentColor
+      // Fill the tracked row with the accent color at 6% opacity so the insert
+      // target highlight reads as accent instead of the default gray hover.
+      style.backgroundColor = `color-mix(in srgb, ${componentColor} 6%, transparent)`
     }
 
     return Object.keys(style).length > 0 ? style : {}
