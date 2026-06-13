@@ -24,6 +24,13 @@ const EMPTY_HIGHLIGHT: SharedNodeHighlight = {
 
 type Mode = "downstream" | "chain" | "family"
 
+/** Maps the View menu metaphor labels to the graph traversal they perform. */
+const MODE_BY_HIGHLIGHT: Record<"leaves" | "branch" | "tree", Mode> = {
+  leaves: "downstream",
+  branch: "chain",
+  tree: "family",
+}
+
 /** Maps each node to its immediate template-source node id, and the reverse. */
 interface TemplateGraph {
   sourceOf: Map<string, string>
@@ -129,7 +136,7 @@ let highlightCache: {
 } | null = null
 
 /**
- * Resolves the active Show Downstream / Chain / Family highlight for the current
+ * Resolves the active Show Leaves / Branch / Tree highlight for the current
  * selection, driven by the View menu `componentHighlightMode` radio. The
  * `"selection"` mode shows no relationship overlay. The result is cached across
  * sidebar rows so the template graph is only walked once per selection.
@@ -140,7 +147,9 @@ export function useSharedNodeHighlight(): SharedNodeHighlight {
   const selectedNodeId = useSelectionStore((state) => state.selectedNodeId)
 
   const mode: Mode | null =
-    componentHighlightMode === "selection" ? null : componentHighlightMode
+    componentHighlightMode === "selection"
+      ? null
+      : MODE_BY_HIGHLIGHT[componentHighlightMode]
 
   return useMemo(() => {
     if (!mode || !selectedNodeId) return EMPTY_HIGHLIGHT

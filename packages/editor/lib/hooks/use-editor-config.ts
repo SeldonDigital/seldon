@@ -5,14 +5,11 @@ import { useShallow } from "zustand/react/shallow"
 
 /**
  * Component-relationship highlight shown in the objects sidebar. `"selection"`
- * is the normal state with no relationship overlay; the others highlight the
- * template lineage of the selected node. Behaves as a radio in the View menu.
+ * is the normal state with no relationship overlay. `"leaves"` highlights what
+ * inherits from the selection, `"branch"` adds its source lineage, and `"tree"`
+ * highlights the whole related group. Behaves as a radio in the View menu.
  */
-export type ComponentHighlightMode =
-  | "selection"
-  | "downstream"
-  | "chain"
-  | "family"
+export type ComponentHighlightMode = "selection" | "leaves" | "branch" | "tree"
 
 interface EditorConfigState {
   // Canvas selection and hover overlay boxes in select mode
