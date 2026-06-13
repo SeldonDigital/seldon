@@ -1,6 +1,7 @@
 "use client"
 
 import { CSSProperties, useEffect, useRef, useState } from "react"
+import { createPortal } from "react-dom"
 import { useEditorConfig } from "@lib/hooks/use-editor-config"
 
 interface RingRect {
@@ -177,5 +178,11 @@ export function FocusRingOverlay() {
     borderRadius: rect.radius,
   }
 
-  return <div className="editor-focus-ring" style={style} aria-hidden="true" />
+  // Portal to the body so the ring escapes the editor `<main>` stacking context
+  // (position: relative, z-index: 0). Otherwise portaled menus mounted on the
+  // body paint above it regardless of its z-index, clipping the ring.
+  return createPortal(
+    <div className="editor-focus-ring" style={style} aria-hidden="true" />,
+    document.body,
+  )
 }
