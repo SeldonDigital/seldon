@@ -8,6 +8,10 @@ interface EditorConfigState {
   showSelection: boolean
   setShowSelection: (enabled: boolean) => void
 
+  // Focus ring visibility (the overlay still tracks focus when off)
+  showFocus: boolean
+  setShowFocus: (enabled: boolean) => void
+
   // Wireframe settings
   wireframeMode: "auto" | "on" | "off"
   toggleWireframeMode: (mode?: "on" | "off") => void
@@ -47,6 +51,11 @@ const useStore = create<EditorConfigState>()(
       showSelection: true,
       setShowSelection: (enabled) =>
         set((state) => ({ ...state, showSelection: enabled })),
+
+      // Focus ring visibility
+      showFocus: true,
+      setShowFocus: (enabled) =>
+        set((state) => ({ ...state, showFocus: enabled })),
 
       // Wireframe settings
       wireframeMode: "auto",
@@ -99,6 +108,7 @@ const useStore = create<EditorConfigState>()(
       name: "editor-config",
       partialize: (state) => ({
         showSelection: state.showSelection,
+        showFocus: state.showFocus,
         wireframeMode: state.wireframeMode,
         showPanels: state.showPanels,
         autoScrollToSelection: state.autoScrollToSelection,
@@ -116,6 +126,8 @@ export function useEditorConfig() {
   const {
     showSelection,
     setShowSelection,
+    showFocus,
+    setShowFocus,
     wireframeMode,
     toggleWireframeMode,
     showPanels,
@@ -136,6 +148,8 @@ export function useEditorConfig() {
     useShallow((state) => ({
       showSelection: state.showSelection,
       setShowSelection: state.setShowSelection,
+      showFocus: state.showFocus,
+      setShowFocus: state.setShowFocus,
       wireframeMode: state.wireframeMode,
       toggleWireframeMode: state.toggleWireframeMode,
       showPanels: state.showPanels,
@@ -162,6 +176,10 @@ export function useEditorConfig() {
   const toggleShowSelection = useCallback(() => {
     setShowSelection(!showSelection)
   }, [setShowSelection, showSelection])
+
+  const toggleShowFocus = useCallback(() => {
+    setShowFocus(!showFocus)
+  }, [setShowFocus, showFocus])
 
   const toggleAutoScrollToSelection = useCallback(() => {
     setAutoScrollToSelection(!autoScrollToSelection)
@@ -191,6 +209,11 @@ export function useEditorConfig() {
     showSelection,
     setShowSelection,
     toggleShowSelection,
+
+    // Focus ring methods
+    showFocus,
+    setShowFocus,
+    toggleShowFocus,
 
     // Wireframe methods
     wireframeMode,

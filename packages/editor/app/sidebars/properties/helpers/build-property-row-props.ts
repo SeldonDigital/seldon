@@ -90,12 +90,19 @@ export function buildPropertyRowProps({
   const isMenuOrCombo = isMenuOrComboControl(property)
   const isCalculated = property.key.startsWith("calculated.")
 
+  // Leaf rows keep the disclosure slot for layout but render nothing in it (the
+  // chevron sits at opacity 0). Mark it inert so the browser skips it for focus
+  // and tab order; parent rows stay interactive.
   const buttonIconic = {
     onClick: handleToggle,
-    "aria-expanded": isExpanded,
-    "aria-label": isExpanded ? "Collapse" : "Expand",
     [ICONIC_BUTTON_ATTR]: true,
     style: getDisclosureButtonStyle(),
+    ...(hasChildren
+      ? {
+          "aria-expanded": isExpanded,
+          "aria-label": isExpanded ? "Collapse" : "Expand",
+        }
+      : { tabIndex: -1, inert: true }),
   }
 
   const icon = {
@@ -149,6 +156,10 @@ export function buildPropertyRowProps({
   const showUnit = Boolean(unit && isNumericValue)
   const unitLabel = showUnit ? unit : undefined
 
+  // The trailing button is interactive only for uploads and menu/combo controls.
+  // Otherwise it has no visible icon, so render it inert to keep it out of focus
+  // and tab order.
+  const isMenuButtonInteractive = supportsUpload || isMenuOrCombo
   const buttonIconic2 = {
     onClick: supportsUpload
       ? handleUploadClick
@@ -157,11 +168,9 @@ export function buildPropertyRowProps({
         : undefined,
     [ICONIC_BUTTON_ATTR]: true,
     style: getMenuButtonStyle({ supportsUpload, isCalculated, isMenuOrCombo }),
-    "aria-label": supportsUpload
-      ? "Upload image"
-      : isMenuOrCombo
-        ? "Open menu"
-        : undefined,
+    ...(isMenuButtonInteractive
+      ? { "aria-label": supportsUpload ? "Upload image" : "Open menu" }
+      : { tabIndex: -1, inert: true }),
   }
 
   const icon3 = {
