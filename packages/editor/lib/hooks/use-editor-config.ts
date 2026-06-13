@@ -3,10 +3,25 @@ import { create } from "zustand"
 import { persist } from "zustand/middleware"
 import { useShallow } from "zustand/react/shallow"
 
+/**
+ * Component-relationship highlight shown in the objects sidebar. `"selection"`
+ * is the normal state with no relationship overlay; the others highlight the
+ * template lineage of the selected node. Behaves as a radio in the View menu.
+ */
+export type ComponentHighlightMode =
+  | "selection"
+  | "downstream"
+  | "chain"
+  | "family"
+
 interface EditorConfigState {
   // Canvas selection and hover overlay boxes in select mode
   showSelection: boolean
   setShowSelection: (enabled: boolean) => void
+
+  // Component-relationship highlight mode (radio with normal selection)
+  componentHighlightMode: ComponentHighlightMode
+  setComponentHighlightMode: (mode: ComponentHighlightMode) => void
 
   // Focus ring visibility (the overlay still tracks focus when off)
   showFocus: boolean
@@ -51,6 +66,10 @@ const useStore = create<EditorConfigState>()(
       showSelection: true,
       setShowSelection: (enabled) =>
         set((state) => ({ ...state, showSelection: enabled })),
+
+      componentHighlightMode: "selection",
+      setComponentHighlightMode: (mode) =>
+        set((state) => ({ ...state, componentHighlightMode: mode })),
 
       // Focus ring visibility
       showFocus: true,
@@ -108,6 +127,7 @@ const useStore = create<EditorConfigState>()(
       name: "editor-config",
       partialize: (state) => ({
         showSelection: state.showSelection,
+        componentHighlightMode: state.componentHighlightMode,
         showFocus: state.showFocus,
         wireframeMode: state.wireframeMode,
         showPanels: state.showPanels,
@@ -126,6 +146,8 @@ export function useEditorConfig() {
   const {
     showSelection,
     setShowSelection,
+    componentHighlightMode,
+    setComponentHighlightMode,
     showFocus,
     setShowFocus,
     wireframeMode,
@@ -148,6 +170,8 @@ export function useEditorConfig() {
     useShallow((state) => ({
       showSelection: state.showSelection,
       setShowSelection: state.setShowSelection,
+      componentHighlightMode: state.componentHighlightMode,
+      setComponentHighlightMode: state.setComponentHighlightMode,
       showFocus: state.showFocus,
       setShowFocus: state.setShowFocus,
       wireframeMode: state.wireframeMode,
@@ -209,6 +233,10 @@ export function useEditorConfig() {
     showSelection,
     setShowSelection,
     toggleShowSelection,
+
+    // Component-relationship highlight (radio)
+    componentHighlightMode,
+    setComponentHighlightMode,
 
     // Focus ring methods
     showFocus,

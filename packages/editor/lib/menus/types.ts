@@ -11,8 +11,10 @@ export interface MenuItem {
   label: string
   onSelect?: () => void
   disabled?: boolean
-  /** Renders a check mark and accent color for toggled items. */
+  /** Renders the active marker and accent color for toggled items. */
   active?: boolean
+  /** Marker shown when `active`. Defaults to a check; `"bullet"` for radio sets. */
+  activeMarker?: "check" | "bullet"
   shortcut?: string
   icon?: ReactNode
   /** Optional value for the rendered item's `data-testid`. */

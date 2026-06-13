@@ -289,7 +289,7 @@ const MenuItemButton = forwardRef<HTMLButtonElement, MenuItemButtonProps>(
                   textAlign: "right",
                 }}
               >
-                ✓
+                {item.activeMarker === "bullet" ? "•" : "✓"}
               </span>
             ) : (
               <span style={{ width: "0.75rem" }} />

@@ -16,6 +16,8 @@ export interface MenuItem {
   disabled?: boolean
   /** Used to determine if item should be highlighted */
   active?: boolean
+  /** Marker shown when `active`. Defaults to a check; `"bullet"` for radio sets. */
+  activeMarker?: "check" | "bullet"
   icon?: React.ReactNode
   /** Optional visibility control by app state */
   visibleIn?: AppState[]

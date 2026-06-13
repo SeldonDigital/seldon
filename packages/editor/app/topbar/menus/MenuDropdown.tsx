@@ -30,6 +30,7 @@ export function MenuDropdown({ menu }: MenuDropdownProps) {
         onSelect: item.action,
         disabled: item.disabled,
         active: item.active,
+        activeMarker: item.activeMarker,
         shortcut: item.shortcut,
         icon: item.icon,
         testId: `menu-item-${item.id}`,
