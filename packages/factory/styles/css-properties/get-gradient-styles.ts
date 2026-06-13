@@ -40,8 +40,10 @@ export function getGradientStyles({
 
   if (gradients.length === 0) return {}
 
+  // Index 0 is the bottom layer. CSS paints the first image in the list on top,
+  // so emit the highest index first and index 0 last to keep index 0 at the back.
   const styles: CSSObject = {
-    backgroundImage: gradients.join(", "),
+    backgroundImage: gradients.reverse().join(", "),
   }
 
   if (properties.content) {

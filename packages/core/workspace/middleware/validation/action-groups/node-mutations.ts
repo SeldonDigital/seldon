@@ -191,10 +191,9 @@ export function validateNodeMutation(
       const nodeId = action.payload.nodeId as InstanceId | VariantId
       nodeValidators.exists(workspace, nodeId)
       const node = nodeRetrievalService.getNode(nodeId, workspace)
-      const themeId = workspaceMutationService.getInheritedTheme(
-        node,
-        workspace,
-      )
+      // Use the node's effective theme (its own assignment first, then inherited)
+      // so token refs validate against the theme that actually renders the node.
+      const themeId = workspaceMutationService.getNodeTheme(node, workspace)
       propertyValidators.keys(
         action.payload.properties,
         getNodeComponentId(node, workspace),

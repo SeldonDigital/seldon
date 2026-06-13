@@ -16,8 +16,8 @@ export function getBackgroundColorStyles({
   const layers = getLayeredPaintLayers(properties, "background")
   if (layers.length === 0) return styles
 
-  // The bottom-most layer paints the element's solid background color.
-  const layer = layers[layers.length - 1]
+  // Index 0 is the bottom layer, so it paints the element's solid background color.
+  const layer = layers[0]
 
   const preset = resolveValue(layer.preset)
   const themeBackground = preset

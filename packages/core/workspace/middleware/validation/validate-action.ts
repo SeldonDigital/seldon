@@ -16,6 +16,10 @@ import {
   validateResetComponentToCatalog,
   validateThemeMutation,
 } from "./action-groups/node-mutations"
+import {
+  validateAddNodeLayer,
+  validateRemoveNodeLayer,
+} from "./action-groups/node-layers"
 import { isPassthroughAction } from "./action-groups/passthrough"
 import {
   validateAddResourceCatalog,
@@ -119,6 +123,14 @@ export function validateAction(workspace: Workspace, action: Action): void {
     case "set_node_properties":
     case "reset_node_property":
     case "reset_node":
+      validateNodeMutation(workspace, action)
+      return
+    case "add_node_layer":
+      validateAddNodeLayer(workspace, action)
+      return
+    case "remove_node_layer":
+      validateRemoveNodeLayer(workspace, action)
+      return
     case "set_node_theme":
     case "set_node_label":
     case "set_node_editor_data":

@@ -5,11 +5,14 @@ import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import {
   Board,
   Instance,
+  type LayeredPaintKey,
   Theme,
   Variant,
   Workspace,
   isThemeCustomTokenSection,
 } from "@seldon/core"
+import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
+import { useObjectProperties } from "@lib/workspace/hooks/use-object-properties"
 import { usePropertiesSidebar } from "./hooks/use-properties-sidebar"
 import { useIsCategoryExpanded } from "./hooks/use-property-expansion"
 import {
@@ -201,21 +204,59 @@ function TreeSection({
     return () => themeEditingContext.addCustomToken(themeSection)
   }, [themeEditingContext, section.category])
 
-  const sectionActions = useMemo((): MenuEntry[] | undefined => {
-    if (section.category !== "css" || cssStrings.length === 0) {
-      return undefined
+  const { addNodeLayer } = useObjectProperties()
+
+  // A component node can stack extra paint layers. Offer "Add Background/Gradient/
+  // Shadow" on the category that owns each exposed layered property.
+  const layerAddActions = useMemo<MenuEntry[]>(() => {
+    const inEditingMode =
+      !!themeEditingContext?.isThemeEditing ||
+      !!fontCollectionEditingContext?.isFontCollectionEditing ||
+      !!iconSetEditingContext?.isIconSetEditing
+    if (inEditingMode || isBoard(node)) return []
+
+    const layeredKeys: LayeredPaintKey[] = ["background", "gradient", "shadow"]
+    const labels: Record<LayeredPaintKey, string> = {
+      background: "Background",
+      gradient: "Gradient",
+      shadow: "Shadow",
     }
-    return [
-      {
-        id: "copy-css",
-        label: "Copy CSS",
-        onSelect: () => {
-          void handleCopyCss()
+    return layeredKeys
+      .filter((key) =>
+        section.properties.some(
+          (property) => property.key === key && property.status !== "not used",
+        ),
+      )
+      .map((key) => ({
+        id: `add-layer-${key}`,
+        label: `Add ${labels[key]}`,
+        onSelect: () => addNodeLayer(key),
+        testId: `add-layer-${key}`,
+      }))
+  }, [
+    node,
+    section.properties,
+    themeEditingContext,
+    fontCollectionEditingContext,
+    iconSetEditingContext,
+    addNodeLayer,
+  ])
+
+  const sectionActions = useMemo((): MenuEntry[] | undefined => {
+    if (section.category === "css" && cssStrings.length > 0) {
+      return [
+        {
+          id: "copy-css",
+          label: "Copy CSS",
+          onSelect: () => {
+            void handleCopyCss()
+          },
+          testId: "copy-css",
         },
-        testId: "copy-css",
-      },
-    ]
-  }, [section.category, cssStrings.length, handleCopyCss])
+      ]
+    }
+    return layerAddActions.length > 0 ? layerAddActions : undefined
+  }, [section.category, cssStrings.length, handleCopyCss, layerAddActions])
 
   const content =
     section.category === "css" ? (

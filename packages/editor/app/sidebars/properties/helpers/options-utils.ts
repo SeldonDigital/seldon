@@ -7,6 +7,7 @@ import {
 } from "@seldon/core/helpers/properties/properties-bridge"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { Board, Instance, Variant } from "@seldon/core/workspace/types"
+import { parsePropertyPath } from "@lib/properties/property-paths"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { FlatProperty } from "./properties-data"
 
@@ -36,8 +37,14 @@ export function generatePropertyOptions(
   workspace: Workspace | undefined,
   node: Variant | Instance | Board | undefined,
 ): PropertyPickerResult {
+  // An upper paint layer parent (`gradient.1`) resolves its preset options
+  // through the base key, so every layer offers the same theme presets.
+  const parsedPath = parsePropertyPath(property.key)
+  const optionPath =
+    parsedPath.kind === "layered-parent" ? parsedPath.root : property.key
+
   const input: PropertyPickerInput = {
-    path: property.key,
+    path: optionPath,
     value: property.value,
     subjectId: resolveSubjectId(node, componentId),
     workspace: workspace ?? ({ boards: {}, nodes: {} } as Workspace),

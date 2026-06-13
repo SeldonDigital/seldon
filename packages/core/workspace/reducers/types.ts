@@ -15,6 +15,7 @@
  * | insert_variant_instance, insert_duplicate_instance, insert_default_instance, add_component_and_insert_default_instance | components tree + nodes |
  * | remove_instance, remove_variant, duplicate_node, move_instance, reorder_instance_in_parent | components tree + nodes |
  * | set_node_properties, reset_node_property, reset_node, set_node_label, set_node_theme, set_node_editor_data | nodes |
+ * | add_node_layer, remove_node_layer | nodes (background/gradient/shadow paint stacks) |
  * | reset_node_label, reset_node_editor_data | nodes |
  * | reset_user_variant_to_default, reset_default_variant_to_catalog, reset_component_to_catalog | components.variants tree + nodes |
  * | set_theme_label, set_theme_editor_data, set_theme_override, reset_theme_tokens, reset_theme_label, reset_theme_editor_data, reset_theme_override | themes |
@@ -34,7 +35,12 @@
  * | transcript_add_message | none (no-op) |
  */
 import type { FontOrigin } from "../../font-collections/types"
-import { Properties, PropertyKey, SubPropertyKey } from "../../properties"
+import {
+  LayeredPaintKey,
+  Properties,
+  PropertyKey,
+  SubPropertyKey,
+} from "../../properties"
 import {
   BackgroundParameters,
   BorderParameters,
@@ -464,6 +470,21 @@ export type WorkspaceAction =
       type: "reset_node"
       payload: {
         nodeId: InstanceId | VariantId
+      }
+    }
+  | {
+      type: "add_node_layer"
+      payload: {
+        nodeId: InstanceId | VariantId
+        property: LayeredPaintKey
+      }
+    }
+  | {
+      type: "remove_node_layer"
+      payload: {
+        nodeId: InstanceId | VariantId
+        property: LayeredPaintKey
+        index: number
       }
     }
   | {

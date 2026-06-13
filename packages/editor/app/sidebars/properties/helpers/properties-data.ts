@@ -20,6 +20,7 @@ import {
   getCompoundLayerValue,
   isLayeredPaintRoot,
   layeredFacetPath,
+  layeredParentPath,
 } from "@lib/properties/property-paths"
 import {
   Board,
@@ -107,6 +108,12 @@ export interface FlatProperty {
   options?: Array<{ name: string; value: string }>
   /** When set, the value cell renders as a link to this URL (read-only rows). */
   linkHref?: string
+  /**
+   * Paint-layer slot for a layered paint parent row (`background`/`gradient`/
+   * `shadow`). Lets the picker and commit target the right layer while leaving
+   * the others intact. Absent on non-layered and facet rows.
+   */
+  layerIndex?: number
 }
 
 /**
@@ -174,11 +181,25 @@ function filterCompoundPropertyKeys(
   return filteredKeys
 }
 
-function subPropertyPathFor(parentKey: string, subKey: string): string {
+function subPropertyPathFor(
+  parentKey: string,
+  subKey: string,
+  layerIndex: number = 0,
+): string {
   if (isLayeredPaintRoot(parentKey)) {
-    return layeredFacetPath(parentKey as LayeredPaintKey, subKey)
+    return layeredFacetPath(parentKey as LayeredPaintKey, subKey, layerIndex)
   }
   return `${parentKey}.${subKey}`
+}
+
+/** True for a tagged value that carries a concrete (non-empty) decision. */
+function isMeaningfulValue(value: unknown): boolean {
+  return (
+    !!value &&
+    typeof value === "object" &&
+    "type" in value &&
+    (value as { type: ValueType }).type !== ValueType.EMPTY
+  )
 }
 
 export function getPropertiesSubjectId(
@@ -434,8 +455,9 @@ export function createFlatSubProperty(
   node: Variant | Instance | Board,
   workspace: Workspace,
   theme?: Theme,
+  layerIndex: number = 0,
 ): FlatProperty {
-  const subPropertyPath = subPropertyPathFor(propertyKey, subKey)
+  const subPropertyPath = subPropertyPathFor(propertyKey, subKey, layerIndex)
   const subRegistryEntry = getPropertyRegistryEntry(subPropertyPath)
 
   const isDimmed =
@@ -509,17 +531,30 @@ function getSubProperties(
   propertyStatus: Record<string, PropertyStatus>,
   theme?: Theme,
   mergedProperties?: Properties,
+  layerIndex: number = 0,
+  rawLayerArray?: unknown,
 ): FlatProperty[] {
   const subProperties: FlatProperty[] = []
 
+  // For an explicit upper paint layer, read facets from the raw stack at its
+  // index. Otherwise keep the index-0 / non-layered resolution unchanged.
   const compoundValue =
-    mergedProperties !== undefined
-      ? (resolvePropertyValueForDisplay(mergedProperties, propertyKey) ??
-        propertyValue)
-      : propertyValue
+    rawLayerArray !== undefined
+      ? rawLayerArray
+      : mergedProperties !== undefined
+        ? (resolvePropertyValueForDisplay(mergedProperties, propertyKey) ??
+          propertyValue)
+        : propertyValue
+
+  const layer = getCompoundLayerValue(compoundValue, layerIndex)
 
   const subPropertyKeys = filterCompoundPropertyKeys(
-    getCompoundPropertyStructure(propertyKey, compoundValue, node, workspace),
+    getCompoundPropertyStructure(
+      propertyKey,
+      layer ?? compoundValue,
+      node,
+      workspace,
+    ),
     propertyKey,
   )
 
@@ -538,10 +573,17 @@ function getSubProperties(
       continue
     }
 
-    const layer = getCompoundLayerValue(compoundValue)
     const subValue = layer?.[subKey]
-    const subPropertyPath = subPropertyPathFor(propertyKey, subKey)
-    const status = propertyStatus[subPropertyPath] || "not used"
+    const subPropertyPath = subPropertyPathFor(propertyKey, subKey, layerIndex)
+    // Upper layers have no entry in the core status map, so derive a visible
+    // status from the value; otherwise "not used" would hide the row.
+    const status =
+      propertyStatus[subPropertyPath] ??
+      (layerIndex > 0
+        ? isMeaningfulValue(subValue)
+          ? "set"
+          : "unset"
+        : "not used")
 
     const flatSubProperty = createFlatSubProperty(
       propertyKey,
@@ -551,12 +593,151 @@ function getSubProperties(
       node,
       workspace,
       theme,
+      layerIndex,
     )
 
     subProperties.push(flatSubProperty)
   }
 
   return subProperties
+}
+
+/**
+ * Builds the parent row for an upper paint layer (index >= 1). It mirrors the
+ * index-0 compound row: a preset combo (when the property has theme presets)
+ * plus expandable facet children. `layerIndex` lets the commit target this slot
+ * and leave the other layers intact.
+ */
+function buildLayerParentFlatProperty(
+  propertyKey: LayeredPaintKey,
+  index: number,
+  label: string,
+  layerValue: unknown,
+  node: Variant | Instance | Board,
+  workspace: Workspace,
+  theme?: Theme,
+): FlatProperty {
+  const registryEntry = getPropertyRegistryEntry(propertyKey)
+  const usesPresetPicker = hasCompoundPresetOptions(
+    propertyKey,
+    theme,
+    workspace,
+  )
+
+  let actualValue = ""
+  try {
+    actualValue = coreFormatValue(
+      propertyKey,
+      layerValue,
+      getPropertiesSubjectId(node),
+      workspace,
+      theme,
+    )
+  } catch {
+    actualValue = ""
+  }
+
+  return {
+    key: layeredParentPath(propertyKey, index),
+    label,
+    value: layerValue || EMPTY_VALUE,
+    actualValue,
+    valueType: getValueType(layerValue),
+    controlType: usesPresetPicker ? "combo" : registryEntry?.control,
+    isCompound: true,
+    isShorthand: false,
+    isSubProperty: false,
+    propertyType: "compound",
+    status: "set",
+    icon: registryEntry?.icon || "seldon-token",
+    layerIndex: index,
+  }
+}
+
+/**
+ * Emits one parent row plus facet children for every paint layer of a layered
+ * property. Rows come out in reverse index order, so the highest index renders
+ * at the top and index 0 (the bottom layer) renders last. Labels are positional
+ * when more than one layer exists.
+ */
+function flattenLayeredPaintProperty(
+  propertyKey: LayeredPaintKey,
+  mergedProperties: Properties,
+  propertyStatus: Record<string, PropertyStatus>,
+  node: Variant | Instance | Board,
+  workspace: Workspace,
+  theme?: Theme,
+): FlatProperty[] {
+  const out: FlatProperty[] = []
+  const rawArray = mergedProperties[propertyKey as keyof Properties]
+  const layerCount = Array.isArray(rawArray)
+    ? rawArray.length
+    : rawArray
+      ? 1
+      : 0
+  const count = Math.max(layerCount, 1)
+  const baseLabel =
+    getPropertyRegistryEntry(propertyKey)?.label ||
+    formatPropertyLabel(propertyKey)
+
+  for (let i = count - 1; i >= 0; i--) {
+    if (i === 0) {
+      const layer0 = getCompoundLayerValue(rawArray, 0) || EMPTY_VALUE
+      const status = propertyStatus[propertyKey] || "unset"
+      const parent = createFlatProperty(
+        propertyKey,
+        layer0,
+        status,
+        node,
+        workspace,
+        theme,
+      )
+      parent.layerIndex = 0
+      if (count > 1) {
+        parent.label = `${baseLabel} 1`
+      }
+      out.push(parent)
+      out.push(
+        ...getSubProperties(
+          propertyKey,
+          layer0,
+          workspace,
+          node,
+          propertyStatus,
+          theme,
+          mergedProperties,
+        ),
+      )
+    } else {
+      const layerValue = getCompoundLayerValue(rawArray, i) || EMPTY_VALUE
+      out.push(
+        buildLayerParentFlatProperty(
+          propertyKey,
+          i,
+          `${baseLabel} ${i + 1}`,
+          layerValue,
+          node,
+          workspace,
+          theme,
+        ),
+      )
+      out.push(
+        ...getSubProperties(
+          propertyKey,
+          EMPTY_VALUE,
+          workspace,
+          node,
+          propertyStatus,
+          theme,
+          undefined,
+          i,
+          rawArray,
+        ),
+      )
+    }
+  }
+
+  return out
 }
 
 function getSchemaPropertyKeysForSubject(
@@ -613,6 +794,25 @@ export function flattenNodeProperties(
   const allPropertyKeys = getInspectorRootPropertyKeys()
 
   for (const propertyKey of allPropertyKeys) {
+    // Layered paint keys in the subject schema render one row per layer. Index 0
+    // is the bottom layer; rows are emitted highest index first.
+    if (
+      isLayeredPaintProperty(propertyKey as CorePropertyKey) &&
+      schemaPropertyKeys.includes(propertyKey)
+    ) {
+      properties.push(
+        ...flattenLayeredPaintProperty(
+          propertyKey as LayeredPaintKey,
+          mergedProperties,
+          propertyStatus,
+          node,
+          workspace,
+          theme,
+        ),
+      )
+      continue
+    }
+
     const propertyValue = resolvePropertyValueForDisplay(
       mergedProperties,
       propertyKey,

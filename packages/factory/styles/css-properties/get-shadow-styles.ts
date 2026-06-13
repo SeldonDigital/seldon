@@ -34,7 +34,9 @@ export function getShadowStyles({
 
   if (shadows.length === 0) return {}
 
-  const joined = shadows.join(", ")
+  // Index 0 is the bottom layer. CSS paints the first shadow in the list on top,
+  // so emit the highest index first and index 0 last to keep index 0 at the back.
+  const joined = shadows.reverse().join(", ")
   return isText ? { textShadow: joined } : { boxShadow: joined }
 }
 

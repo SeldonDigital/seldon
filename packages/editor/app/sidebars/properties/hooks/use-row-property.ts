@@ -7,6 +7,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import {
   Board,
   Instance,
+  type LayeredPaintKey,
   PropertyKey,
   SubPropertyKey,
   Theme,
@@ -94,7 +95,7 @@ export function useRowProperty({
   iconSetEditingContext,
 }: RowPropertyProps) {
   const { showPropertyTypes } = useDebugMode()
-  const { resetProperty } = useObjectProperties()
+  const { resetProperty, removeNodeLayer } = useObjectProperties()
   const { toggleProperty } = usePropertyExpansion()
   const themes = useThemes()
   const { getPropertyValueForDisplay, getUnit, shouldShowMenuIcon } =
@@ -125,6 +126,20 @@ export function useRowProperty({
     }
     if (!section || !id || !/^custom\d+$/.test(id)) return null
     return { section: section as ThemeCustomTokenSection, key: id }
+  }, [property.key, themeEditingContext])
+
+  // An upper paint layer parent row (`background.1`, index >= 1) can be deleted.
+  // The base layer (index 0, bare key) is not deletable.
+  const layerTarget = useMemo<{
+    property: LayeredPaintKey
+    index: number
+  } | null>(() => {
+    if (themeEditingContext?.isThemeEditing) return null
+    const parsed = parsePropertyPath(property.key)
+    if (parsed.kind === "layered-parent" && parsed.index >= 1) {
+      return { property: parsed.root, index: parsed.index }
+    }
+    return null
   }, [property.key, themeEditingContext])
 
   // Sub-properties for this compound/shorthand property.
@@ -427,15 +442,29 @@ export function useRowProperty({
           testId: `property-row-${property.key}-delete`,
         },
       ]
-    : canReset
-      ? [
-          buildResetMenuEntry({
-            label: `Reset ${labelText}`,
-            onSelect: handleReset,
-            testId: `property-row-${property.key}-reset`,
-          }),
-        ]
-      : []
+    : [
+        // Delete sits before Reset on a deletable upper paint layer row.
+        ...(layerTarget
+          ? [
+              {
+                id: "delete-layer",
+                label: `Delete ${labelText}`,
+                onSelect: () =>
+                  removeNodeLayer(layerTarget.property, layerTarget.index),
+                testId: `property-row-${property.key}-delete`,
+              },
+            ]
+          : []),
+        ...(canReset
+          ? [
+              buildResetMenuEntry({
+                label: `Reset ${labelText}`,
+                onSelect: handleReset,
+                testId: `property-row-${property.key}-reset`,
+              }),
+            ]
+          : []),
+      ]
 
   const listItemProps = buildPropertyRowProps({
     property,

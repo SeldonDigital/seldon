@@ -10,6 +10,7 @@ import { addFontCollection } from "./handlers/add/add-font-collection"
 import { addFontCollectionCustomFamily } from "./handlers/add/add-font-collection-custom-family"
 import { addIconSet } from "./handlers/add/add-icon-set"
 import { addMedia } from "./handlers/add/add-media"
+import { addNodeLayer } from "./handlers/add/add-node-layer"
 import { addPlayground } from "./handlers/add/add-playground"
 import { addTheme } from "./handlers/add/add-theme"
 import { addThemeCustomBackground } from "./handlers/add/add-theme-custom-background"
@@ -51,6 +52,7 @@ import { removeFontCollectionCustomFamily } from "./handlers/remove/remove-font-
 import { removeIconSet } from "./handlers/remove/remove-icon-set"
 import { removeInstance } from "./handlers/remove/remove-instance"
 import { removeMedia } from "./handlers/remove/remove-media"
+import { removeNodeLayer } from "./handlers/remove/remove-node-layer"
 import { removePlayground } from "./handlers/remove/remove-playground"
 import { removeTheme } from "./handlers/remove/remove-theme"
 import { removeThemeCustomBackground } from "./handlers/remove/remove-theme-custom-background"
@@ -280,6 +282,10 @@ function reducer(workspace: Workspace, action: WorkspaceAction): Workspace {
       return resetNodeProperty(action.payload, workspace)
     case "reset_node":
       return resetNode(action.payload, workspace)
+    case "add_node_layer":
+      return addNodeLayer(action.payload, workspace)
+    case "remove_node_layer":
+      return removeNodeLayer(action.payload, workspace)
     case "set_node_label":
       return setNodeLabel(action.payload, workspace)
     case "set_node_theme":

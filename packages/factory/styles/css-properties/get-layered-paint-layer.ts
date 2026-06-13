@@ -13,7 +13,7 @@ const LAYER_INDEX = 0
 
 /**
  * Reads every layer of a layered paint stack as a typed array. Index 0 is the
- * topmost layer. A legacy single-object shape is normalized to a one-item list.
+ * bottom layer. A legacy single-object shape is normalized to a one-item list.
  */
 export function getLayeredPaintLayers<K extends keyof LayeredPaintLayerMap>(
   properties: Properties,
@@ -37,7 +37,7 @@ export function getLayeredPaintLayers<K extends keyof LayeredPaintLayerMap>(
 }
 
 /**
- * Reads the top layer (index 0) of a layered paint stack as a typed layer.
+ * Reads the bottom layer (index 0) of a layered paint stack as a typed layer.
  */
 export function getLayeredPaintLayer<K extends keyof LayeredPaintLayerMap>(
   properties: Properties,

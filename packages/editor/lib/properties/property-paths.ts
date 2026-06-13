@@ -17,22 +17,39 @@ export function isLayeredPaintRoot(
 export type ParsedPropertyPath =
   | { kind: "top-level"; key: string }
   | { kind: "facet"; root: string; facet: string }
-  | { kind: "layered-facet"; root: LayeredPaintKey; facet: string }
+  | { kind: "layered-facet"; root: LayeredPaintKey; facet: string; index: number }
+  | { kind: "layered-parent"; root: LayeredPaintKey; index: number }
+
+/** Matches a non-negative integer used as a paint-layer index segment. */
+function parseLayerIndex(segment: string): number | null {
+  if (!/^\d+$/.test(segment)) return null
+  return Number(segment)
+}
 
 export function parsePropertyPath(path: string): ParsedPropertyPath {
   const segments = path.split(".").filter(Boolean)
   if (segments.length === 1) {
     return { kind: "top-level", key: segments[0]! }
   }
-  if (
-    segments.length === 3 &&
-    LAYERED_PAINT_ROOTS.has(segments[0]!) &&
-    segments[1] === LAYERED_PAINT_LAYER_INDEX
-  ) {
-    return {
-      kind: "layered-facet",
-      root: segments[0] as LayeredPaintKey,
-      facet: segments[2]!,
+  if (segments.length === 3 && LAYERED_PAINT_ROOTS.has(segments[0]!)) {
+    const index = parseLayerIndex(segments[1]!)
+    if (index !== null) {
+      return {
+        kind: "layered-facet",
+        root: segments[0] as LayeredPaintKey,
+        facet: segments[2]!,
+        index,
+      }
+    }
+  }
+  if (segments.length === 2 && LAYERED_PAINT_ROOTS.has(segments[0]!)) {
+    const index = parseLayerIndex(segments[1]!)
+    if (index !== null) {
+      return {
+        kind: "layered-parent",
+        root: segments[0] as LayeredPaintKey,
+        index,
+      }
     }
   }
   if (segments.length === 2) {
@@ -41,16 +58,26 @@ export function parsePropertyPath(path: string): ParsedPropertyPath {
   return { kind: "top-level", key: path }
 }
 
-export function layeredFacetPath(root: LayeredPaintKey, facet: string): string {
-  return `${root}.${LAYERED_PAINT_LAYER_INDEX}.${facet}`
+export function layeredFacetPath(
+  root: LayeredPaintKey,
+  facet: string,
+  index: number = Number(LAYERED_PAINT_LAYER_INDEX),
+): string {
+  return `${root}.${index}.${facet}`
+}
+
+/** Parent row key for a paint layer: bare root for index 0, `root.index` above it. */
+export function layeredParentPath(root: LayeredPaintKey, index: number): string {
+  return index === 0 ? root : `${root}.${index}`
 }
 
 export function getCompoundLayerValue(
   value: unknown,
+  index: number = Number(LAYERED_PAINT_LAYER_INDEX),
 ): Record<string, unknown> | null {
   if (!value || typeof value !== "object") return null
   if (Array.isArray(value)) {
-    const layer = value[Number(LAYERED_PAINT_LAYER_INDEX)]
+    const layer = value[index]
     if (!layer || typeof layer !== "object" || Array.isArray(layer)) {
       return null
     }
