@@ -18,16 +18,23 @@ export function useRowButton({
   hasChildren = true,
   onToggle,
 }: UseRowButtonOptions) {
+  // Leaf rows render the toggle slot with a transparent chevron for layout, so
+  // mark it inert to keep it out of focus and tab order. Rows with children stay
+  // interactive.
   const createToggleButton = () => ({
     onClick: (event: MouseEvent<HTMLButtonElement>) => {
       onToggle(event)
     },
-    "aria-expanded": isExpanded,
-    "aria-label": isExpanded ? "Collapse" : "Expand",
     style: {
       position: "relative" as const,
       zIndex: 10,
     },
+    ...(hasChildren
+      ? {
+          "aria-expanded": isExpanded,
+          "aria-label": isExpanded ? "Collapse" : "Expand",
+        }
+      : { tabIndex: -1, inert: true }),
   })
 
   const createToggleIcon = () => {

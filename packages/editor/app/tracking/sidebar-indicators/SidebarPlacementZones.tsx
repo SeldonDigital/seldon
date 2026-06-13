@@ -151,7 +151,9 @@ function PlacementZone({
     position: "absolute",
     inset: 0,
     pointerEvents: "auto",
-    cursor: !isAllowed ? "not-allowed" : "copy",
+    // Only valid insertion targets get the insert cursor; everything else keeps
+    // the default cursor so the affordance is not shown across the whole sidebar.
+    cursor: isAllowed ? "copy" : "default",
   }
 
   const handleClick = (event: { stopPropagation: () => void }) => {

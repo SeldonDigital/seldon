@@ -3,10 +3,26 @@ import { create } from "zustand"
 import { persist } from "zustand/middleware"
 import { useShallow } from "zustand/react/shallow"
 
+/**
+ * Component-relationship highlight shown in the objects sidebar. `"selection"`
+ * is the normal state with no relationship overlay. `"leaves"` highlights what
+ * inherits from the selection, `"branch"` adds its source lineage, and `"tree"`
+ * highlights the whole related group. Behaves as a radio in the View menu.
+ */
+export type ComponentHighlightMode = "selection" | "leaves" | "branch" | "tree"
+
 interface EditorConfigState {
   // Canvas selection and hover overlay boxes in select mode
   showSelection: boolean
   setShowSelection: (enabled: boolean) => void
+
+  // Component-relationship highlight mode (radio with normal selection)
+  componentHighlightMode: ComponentHighlightMode
+  setComponentHighlightMode: (mode: ComponentHighlightMode) => void
+
+  // Focus ring visibility (the overlay still tracks focus when off)
+  showFocus: boolean
+  setShowFocus: (enabled: boolean) => void
 
   // Wireframe settings
   wireframeMode: "auto" | "on" | "off"
@@ -47,6 +63,15 @@ const useStore = create<EditorConfigState>()(
       showSelection: true,
       setShowSelection: (enabled) =>
         set((state) => ({ ...state, showSelection: enabled })),
+
+      componentHighlightMode: "selection",
+      setComponentHighlightMode: (mode) =>
+        set((state) => ({ ...state, componentHighlightMode: mode })),
+
+      // Focus ring visibility
+      showFocus: true,
+      setShowFocus: (enabled) =>
+        set((state) => ({ ...state, showFocus: enabled })),
 
       // Wireframe settings
       wireframeMode: "auto",
@@ -99,6 +124,8 @@ const useStore = create<EditorConfigState>()(
       name: "editor-config",
       partialize: (state) => ({
         showSelection: state.showSelection,
+        componentHighlightMode: state.componentHighlightMode,
+        showFocus: state.showFocus,
         wireframeMode: state.wireframeMode,
         showPanels: state.showPanels,
         autoScrollToSelection: state.autoScrollToSelection,
@@ -116,6 +143,10 @@ export function useEditorConfig() {
   const {
     showSelection,
     setShowSelection,
+    componentHighlightMode,
+    setComponentHighlightMode,
+    showFocus,
+    setShowFocus,
     wireframeMode,
     toggleWireframeMode,
     showPanels,
@@ -136,6 +167,10 @@ export function useEditorConfig() {
     useShallow((state) => ({
       showSelection: state.showSelection,
       setShowSelection: state.setShowSelection,
+      componentHighlightMode: state.componentHighlightMode,
+      setComponentHighlightMode: state.setComponentHighlightMode,
+      showFocus: state.showFocus,
+      setShowFocus: state.setShowFocus,
       wireframeMode: state.wireframeMode,
       toggleWireframeMode: state.toggleWireframeMode,
       showPanels: state.showPanels,
@@ -162,6 +197,10 @@ export function useEditorConfig() {
   const toggleShowSelection = useCallback(() => {
     setShowSelection(!showSelection)
   }, [setShowSelection, showSelection])
+
+  const toggleShowFocus = useCallback(() => {
+    setShowFocus(!showFocus)
+  }, [setShowFocus, showFocus])
 
   const toggleAutoScrollToSelection = useCallback(() => {
     setAutoScrollToSelection(!autoScrollToSelection)
@@ -191,6 +230,15 @@ export function useEditorConfig() {
     showSelection,
     setShowSelection,
     toggleShowSelection,
+
+    // Component-relationship highlight (radio)
+    componentHighlightMode,
+    setComponentHighlightMode,
+
+    // Focus ring methods
+    showFocus,
+    setShowFocus,
+    toggleShowFocus,
 
     // Wireframe methods
     wireframeMode,

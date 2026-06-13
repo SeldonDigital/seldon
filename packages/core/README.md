@@ -154,7 +154,7 @@ const files = await exportWorkspace(workspace, {
 | Workspace file spec | [workspace/README.md](./workspace/README.md) |
 | Reducer actions | [workspace/reducers/README.md](./workspace/reducers/README.md) |
 | Rules and propagation | [rules/README.md](./rules/README.md) |
-| Factory export | [../factory/README.md](../factory/README.md) |
+| Factory | [../factory/README.md](../factory/README.md) |
 
 ---
 
@@ -201,12 +201,10 @@ Contact:
 
 ## Links
 
-- [components/README.md](./components/README.md)
-- [properties/README.md](./properties/README.md)
-- [themes/README.md](./themes/README.md)
-- [workspace/README.md](./workspace/README.md)
+- [Core](./README.md)
+- [Factory](../factory/README.md)
+- [Editor](../editor/README.md)
 - [Official Website](https://seldon.digital)
-- [Documentation](https://docs.seldon.digital)
 - [Issues & Discussions](https://github.com/seldon/issues)
 
 ---

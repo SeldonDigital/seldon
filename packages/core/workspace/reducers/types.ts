@@ -611,6 +611,13 @@ export type WorkspaceAction =
       }
     }
   | {
+      type: "move_instance_directional"
+      payload: {
+        instanceId: InstanceId
+        direction: "forward" | "backward" | "front" | "back"
+      }
+    }
+  | {
       type: "set_theme_label"
       payload: { themeId: string; label: string }
     }

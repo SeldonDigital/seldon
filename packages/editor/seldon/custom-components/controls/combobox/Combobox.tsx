@@ -18,6 +18,8 @@ export interface InputProps {
   setOpen?: (open: boolean) => void
   handleSubmit?: () => void
   onCancel?: () => void
+  onHighlightNext?: () => void
+  onHighlightPrev?: () => void
   placeholder?: string
   disabled?: boolean
   autoFocus?: boolean
@@ -46,6 +48,8 @@ export function Combobox({
   setOpen,
   handleSubmit,
   onCancel,
+  onHighlightNext,
+  onHighlightPrev,
   placeholder,
   disabled = false,
   autoFocus = true,
@@ -111,6 +115,21 @@ export function Combobox({
   }
 
   function handleKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
+    if (mode === "combobox") {
+      // Arrow keys move the active option (with focus staying in the input) so
+      // the menu is keyboard navigable; preventDefault stops caret movement.
+      if (event.key === "ArrowDown") {
+        event.preventDefault()
+        onHighlightNext?.()
+        return
+      }
+      if (event.key === "ArrowUp") {
+        event.preventDefault()
+        onHighlightPrev?.()
+        return
+      }
+    }
+
     if (event.key === "Enter") {
       if (mode === "combobox" && handleSubmit) {
         event.preventDefault()

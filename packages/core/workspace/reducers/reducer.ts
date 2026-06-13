@@ -42,6 +42,7 @@ import { insertDefaultInstance } from "./handlers/insert/insert-default-instance
 import { insertDuplicateInstance } from "./handlers/insert/insert-duplicate-instance"
 import { insertVariantInstance } from "./handlers/insert/insert-variant-instance"
 import { moveInstance } from "./handlers/move/move-instance"
+import { moveInstanceDirectional } from "./handlers/move/move-instance-directional"
 import { normalizeMetadataVersion } from "./handlers/normalize/normalize-metadata-version"
 import { deleteFontCollection } from "./handlers/remove/delete-font-collection"
 import { deleteIconSet } from "./handlers/remove/delete-icon-set"
@@ -320,6 +321,8 @@ function reducer(workspace: Workspace, action: WorkspaceAction): Workspace {
       return resetComponentToCatalog(action.payload, workspace)
     case "move_instance":
       return moveInstance(action.payload, workspace)
+    case "move_instance_directional":
+      return moveInstanceDirectional(action.payload, workspace)
     case "reorder_instance_in_parent":
       return reorderInstanceInParent(action.payload, workspace)
     case "insert_variant_instance":

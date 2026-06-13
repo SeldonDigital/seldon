@@ -10,6 +10,7 @@ import { useHoverStateForObject } from "@lib/hooks/use-canvas-hover-state"
 import { useTool } from "@lib/hooks/use-tool"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { checkInsertionPoint } from "../helpers/check-insertion-point"
+import { useSharedNodeHighlight } from "./use-shared-node-highlight"
 
 /**
  * Hook that provides styling for sidebar rows based on selection and tracking state.
@@ -86,6 +87,14 @@ export function useSidebarRowStyling(
 
   const componentColor = COLORS.accent[500]
 
+  // Show Downstream / Chain / Family debug highlight. Primary rows are nodes
+  // that change when the selection is edited; secondary rows are related
+  // lineage that does not change. The selected node keeps its blue border.
+  const sharedHighlight = useSharedNodeHighlight()
+  const isPrimaryShared = !isSelected && sharedHighlight.primary.has(node.id)
+  const isSecondaryShared =
+    !isSelected && !isPrimaryShared && sharedHighlight.secondary.has(node.id)
+
   const rowStyle: CSSProperties = useMemo(() => {
     const style: CSSProperties = {}
 
@@ -94,10 +103,25 @@ export function useSidebarRowStyling(
       style.outline = "none"
     } else if (isComponentTracked) {
       style.borderColor = componentColor
+      // Fill the tracked row with the accent color at 6% opacity so the insert
+      // target highlight reads as accent instead of the default gray hover.
+      style.backgroundColor = `color-mix(in srgb, ${componentColor} 6%, transparent)`
+    } else if (isPrimaryShared) {
+      // Strong blue fill: editing the selection changes this node.
+      style.backgroundColor = `color-mix(in srgb, ${COLORS.primary[500]} 35%, transparent)`
+    } else if (isSecondaryShared) {
+      // Faint blue fill: related lineage that does not change from this edit.
+      style.backgroundColor = `color-mix(in srgb, ${COLORS.primary[500]} 12%, transparent)`
     }
 
     return Object.keys(style).length > 0 ? style : {}
-  }, [isSelected, isComponentTracked, componentColor])
+  }, [
+    isSelected,
+    isComponentTracked,
+    isPrimaryShared,
+    isSecondaryShared,
+    componentColor,
+  ])
 
   const iconColor = useMemo(() => {
     if (isSelected) return COLORS.primary[500]

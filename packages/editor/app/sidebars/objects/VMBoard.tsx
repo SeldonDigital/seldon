@@ -1,6 +1,7 @@
 import { CSSProperties, memo, useCallback, useRef } from "react"
 import { Board as BoardType, Variant } from "@seldon/core"
 import { useRowHighlightStyle } from "@lib/workspace/hooks/use-object-hover"
+import { useTool } from "@lib/hooks/use-tool"
 import { useSidebarCanvasTrackingBoard } from "../../tracking/hooks/use-sidebar-canvas-tracking"
 import { useSidebarRowStyling } from "../../tracking/hooks/use-sidebar-row-styling"
 import { IndentationLevel } from "../hooks/use-indentation"
@@ -99,21 +100,32 @@ function VMBoardRow({ board, show = true }: { board: BoardType; show?: boolean }
 
   // Styling: row colors, icon colors, hover effects
   const boardKey = getComponentKey(board)
+  const { activeTool } = useTool()
   const hoverStyle = useRowHighlightStyle(boardKey, isBoardSelected)
   const { rowStyle, iconColor, labelColor } = useSidebarRowStyling(
     board as unknown as Variant,
     { isSelected: boardIsActive },
   )
+  // The insert component tool highlights the selected board in the accent color
+  // to signal it as the active insertion context, recoloring the whole row
+  // (border, icons, and label) instead of the default primary selection color.
+  const accentActive = isBoardSelected && activeTool === "component"
+  const accentColor = "var(--sdn-seldon-swatch-accent)"
+  const effectiveIconColor = accentActive ? accentColor : iconColor
+  const effectiveLabelColor = accentActive ? accentColor : labelColor
+  const selectedBorderStyle: CSSProperties = accentActive
+    ? { borderColor: accentColor }
+    : {}
   const combinedRowStyle =
     (boardContainsSelectedNode || boardContainsSelectedResourceEntry) &&
     !isBoardSelected
       ? { ...hoverStyle, ...rowStyle, borderColor: undefined }
-      : { ...hoverStyle, ...rowStyle }
+      : { ...hoverStyle, ...rowStyle, ...selectedBorderStyle }
 
   // Trailing "..." actions menu for the board row.
   const rowRef = useRef<HTMLDivElement>(null)
   const actionsMenu = useRowActionsMenu(actions, {
-    color: iconColor,
+    color: effectiveIconColor,
     focusTargetRef: rowRef,
   })
 
@@ -134,15 +146,15 @@ function VMBoardRow({ board, show = true }: { board: BoardType; show?: boolean }
   }, [handleCanvasTrackingLeave])
 
   // Apply tracking colors: icons get color
-  const coloredIcon = applyTrackingColor(icon, "color", iconColor)
-  const coloredIcon2 = applyTrackingColor(icon2, "color", iconColor)
+  const coloredIcon = applyTrackingColor(icon, "color", effectiveIconColor)
+  const coloredIcon2 = applyTrackingColor(icon2, "color", effectiveIconColor)
 
   // Label: apply tracking color if provided
   const textLabel: TextLabelProps = {
     ...baseLabel,
     style: {
       ...("style" in baseLabel && baseLabel.style ? baseLabel.style : {}),
-      ...(labelColor ? { color: labelColor } : {}),
+      ...(effectiveLabelColor ? { color: effectiveLabelColor } : {}),
     },
   }
 

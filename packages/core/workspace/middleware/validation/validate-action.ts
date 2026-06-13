@@ -118,6 +118,7 @@ export function validateAction(workspace: Workspace, action: Action): void {
       validateInsertMutation(workspace, action)
       return
     case "reorder_instance_in_parent":
+    case "move_instance_directional":
     case "remove_instance":
     case "remove_variant":
     case "set_node_properties":

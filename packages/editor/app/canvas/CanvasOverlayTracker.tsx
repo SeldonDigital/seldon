@@ -13,7 +13,13 @@ import {
 } from "@lib/workspace/hooks/use-selection"
 import { useActiveBoard } from "@lib/workspace/hooks/use-active-board"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
+import { useTool } from "@lib/hooks/use-tool"
+import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
+import type { InstanceId, VariantId, Workspace } from "@seldon/core/workspace/types"
+import { canNodeAcceptChildren } from "@lib/workspace/can-node-accept-children"
 import type { NodeRect } from "../tracking/hooks/use-node-rects-store"
+import { DEFAULT_OUTLINE_COLORS } from "../tracking/helpers/resolve-outline-surface"
+import type { OutlineColors } from "../tracking/helpers/resolve-outline-surface"
 import { useCanvasOverlayStore } from "./hooks/use-canvas-overlay-store"
 import { useCanvasRemeasureStore } from "./hooks/use-canvas-remeasure-store"
 import { useSelectedId } from "@lib/workspace/selection-target"
@@ -31,6 +37,38 @@ import {
 
 /** Frames to wait for a target to mount after a board switch before giving up. */
 const MAX_TARGET_FRAMES = 30
+
+/** Seldon accent token used for the insert component tool hover box. */
+const ACCENT_HOVER_COLOR = "var(--sdn-seldon-swatch-accent)"
+
+/**
+ * Hover outline colors for the insert component tool. A node that can accept
+ * children gets the accent color to signal a valid insertion target; anything
+ * else keeps the contrast based colors so it reads like a normal hover.
+ */
+function resolveComponentHoverColors(
+  hoveredId: string,
+  workspace: Workspace,
+  baseColors: OutlineColors | null,
+): OutlineColors | null {
+  let acceptsChildren = false
+  try {
+    const node = workspaceService.getNode(
+      hoveredId as InstanceId | VariantId,
+      workspace,
+    )
+    acceptsChildren = canNodeAcceptChildren(node, workspace)
+  } catch {
+    acceptsChildren = false
+  }
+
+  if (!acceptsChildren) return baseColors
+
+  return {
+    hover: ACCENT_HOVER_COLOR,
+    selection: baseColors?.selection ?? DEFAULT_OUTLINE_COLORS.selection,
+  }
+}
 
 /** Converts a viewport rect to one relative to the canvas origin. */
 function toCanvasRect(rect: DOMRect | null): NodeRect | null {
@@ -93,6 +131,7 @@ export function CanvasOverlayTracker() {
   const remeasureVersion = useCanvasRemeasureStore((state) => state.version)
   const { workspace } = useWorkspace({ usePreview: false })
   const { activeBoard } = useActiveBoard()
+  const { activeTool } = useTool()
   const activeBoardKey = activeBoard ? getComponentKey(activeBoard) : null
 
   const transformContextRef = useRef(transformContext)
@@ -113,7 +152,13 @@ export function CanvasOverlayTracker() {
             ? resolveOutlineSurfaceForBoard(activeBoard, workspace)
             : null
       const colors = surface ? pickOutlineColorsFromSurface(surface) : null
-      store.setHoverOutlineColors(colors)
+      // In the insert component tool, accent the hover box for nodes that can
+      // accept children; non-accepting nodes keep the contrast colors.
+      const hoverColors =
+        activeTool === "component" && hoveredKind === "node"
+          ? resolveComponentHoverColors(hoveredId, workspace, colors)
+          : colors
+      store.setHoverOutlineColors(hoverColors)
     }
 
     if (!selectedId) {
@@ -138,6 +183,7 @@ export function CanvasOverlayTracker() {
     workspace,
     activeBoard,
     activeBoardKey,
+    activeTool,
   ])
 
   useEffect(() => {

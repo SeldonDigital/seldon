@@ -176,8 +176,8 @@ The generated `IconProps["icon"]` union covers every icon turned on in the works
 
 | Topic | Document |
 | --- | --- |
-| Core kernel | [../core/CORE.md](../core/CORE.md) |
-| Editor client | [../editor/EDITOR.md](../editor/EDITOR.md) |
+| Core | [../core/README.md](../core/README.md) |
+| Editor | [../editor/README.md](../editor/README.md) |
 | React export | [export/react/README.md](./export/react/README.md) |
 | CSS export | [export/css/README.md](./export/css/README.md) |
 | Code examples | [TECHNICAL.md](./TECHNICAL.md) |
@@ -230,12 +230,10 @@ Contact:
 
 ## Links
 
-- [Core kernel](../core/CORE.md)
-- [Editor client](../editor/EDITOR.md)
-- [React export](./export/react/README.md)
-- [CSS export](./export/css/README.md)
+- [Core](../core/README.md)
+- [Factory](./README.md)
+- [Editor](../editor/README.md)
 - [Official Website](https://seldon.digital)
-- [Documentation](https://docs.seldon.digital)
 - [Issues & Discussions](https://github.com/seldon/issues)
 
 ---

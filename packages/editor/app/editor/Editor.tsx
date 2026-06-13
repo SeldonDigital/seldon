@@ -8,6 +8,7 @@ import { useEditorShortcuts } from "@lib/hooks/use-editor-shortcuts"
 import { usePreview } from "@lib/hooks/use-preview"
 import { Canvas } from "../canvas/Canvas"
 import { SIDEBAR_INITIAL_WIDTH } from "../constants"
+import { FocusRingOverlay } from "../focus/FocusRingOverlay"
 import { AddBoardPanel } from "../panels/catalog-panel/AddBoardPanel"
 import { AddFontCollectionPanel } from "../panels/catalog-panel/AddFontCollectionPanel"
 import { AddIconSetPanel } from "../panels/catalog-panel/AddIconSetPanel"
@@ -67,6 +68,7 @@ export default function Editor() {
       <AddThemePanel.Controller />
       <AddFontCollectionPanel.Controller />
       <AddIconSetPanel.Controller />
+      <FocusRingOverlay />
       <EditorShortcuts />
     </main>
   )

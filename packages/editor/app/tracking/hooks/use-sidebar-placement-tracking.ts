@@ -202,6 +202,12 @@ export function useSidebarPlacementTracking(node: Variant | Instance) {
         return true
       }
 
+      // Only nodes in the active board are valid insertion targets, so rows from
+      // other boards do not show the insert affordance.
+      if (!shouldTrackCanvas) {
+        return false
+      }
+
       // Check if node exists in workspace (virtual nodes like categories don't exist)
       const nodeExistsInWorkspace = workspace.nodes[node.id] !== undefined
       if (!nodeExistsInWorkspace) {
@@ -221,7 +227,7 @@ export function useSidebarPlacementTracking(node: Variant | Instance) {
         return false
       }
     },
-    [activeTool, node, workspace],
+    [activeTool, node, workspace, shouldTrackCanvas],
   )
 
   return {

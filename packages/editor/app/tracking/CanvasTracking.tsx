@@ -1,7 +1,10 @@
 "use client"
 
 import { useSelectedNodeId } from "@lib/workspace/hooks/use-selection"
-import { useHasHoverState } from "@lib/hooks/use-canvas-hover-state"
+import {
+  useCanvasHoverState,
+  useHasHoverState,
+} from "@lib/hooks/use-canvas-hover-state"
 import { useDragStateStore } from "@lib/hooks/use-drag-state"
 import { useEditorConfig } from "@lib/hooks/use-editor-config"
 import { usePreview } from "@lib/hooks/use-preview"
@@ -23,6 +26,7 @@ export function CanvasTracking() {
   const { isInPreviewMode } = usePreview()
   const { visibleNodes } = useVisibleNodes()
   const hasHoverState = useHasHoverState()
+  const { hoverState } = useCanvasHoverState()
   const nodeIds = visibleNodes.map((node) => node.id)
   const { showSelection, wireframeMode } = useEditorConfig()
   const nodeBelongsToActiveBoard = useNodeBelongsToActiveBoard()
@@ -31,9 +35,19 @@ export function CanvasTracking() {
     (state) => state.isTransforming,
   )
 
-  const showWireframes =
-    wireframeMode === "on" ||
-    (wireframeMode === "auto" && activeTool === "component")
+  // The insert component tool suppresses auto wireframes so the accent hover
+  // box reads cleanly. Explicit wireframe mode still wins, and leaving the tool
+  // restores normal auto behavior without touching persisted state.
+  const showWireframes = wireframeMode === "on"
+
+  // A between-siblings gap is highlighted by the paired sibling outlines
+  // (InsertGapSiblings), so the single full-node hover box is suppressed to
+  // avoid a redundant box over one of the siblings. Insert-into-node hovers
+  // (no boundary child) keep the full-node accent box.
+  const isSiblingGap =
+    activeTool === "component" &&
+    hoverState?.objectType === "node" &&
+    hoverState?.lastChildNodeBeforeCursor != null
 
   useTrackNodeRects(nodeIds)
 
@@ -61,6 +75,7 @@ export function CanvasTracking() {
       {showSelection && activeTool === "select" && (
         <CanvasHoverOutline wireframe={showWireframes} />
       )}
+      {activeTool === "component" && !isSiblingGap && <CanvasHoverOutline />}
       {activeTool === "component" && hasHoverState && <InsertTracking />}
     </>
   )

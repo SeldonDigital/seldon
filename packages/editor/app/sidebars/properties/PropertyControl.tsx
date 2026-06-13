@@ -62,6 +62,8 @@ export function PropertyControl(props: PropertyControlProps) {
         setOpen={view.field.setOpen}
         handleSubmit={view.field.handleSubmit}
         onCancel={view.field.onCancel}
+        onHighlightNext={view.field.onHighlightNext}
+        onHighlightPrev={view.field.onHighlightPrev}
         placeholder={view.field.placeholder}
         disabled={view.field.disabled}
         autoFocus={view.field.autoFocus}
@@ -71,6 +73,7 @@ export function PropertyControl(props: PropertyControlProps) {
         open={view.options.open}
         position={view.options.position}
         handleClose={view.options.handleClose}
+        onPointerLeave={view.options.onPointerLeave}
       >
         <ComboboxOptionList {...view.optionList} />
       </ComboboxOptions>

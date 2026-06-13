@@ -28,8 +28,9 @@ export function MenuDropdown({ menu }: MenuDropdownProps) {
         id: item.id,
         label: item.label,
         onSelect: item.action,
-        disabled: item.disabled,
+        disabled: item.disabled ?? item.enabled === false,
         active: item.active,
+        activeMarker: item.activeMarker,
         shortcut: item.shortcut,
         icon: item.icon,
         testId: `menu-item-${item.id}`,
@@ -53,7 +54,7 @@ export function MenuDropdown({ menu }: MenuDropdownProps) {
             color: "#F5F5F5",
             border: "none",
             outline: "none",
-            cursor: "pointer",
+            cursor: "default",
             backgroundColor:
               open || isTriggerHovered ? HIGHLIGHT_BACKGROUND : "transparent",
           }}

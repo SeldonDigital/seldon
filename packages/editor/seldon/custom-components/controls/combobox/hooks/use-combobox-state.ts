@@ -28,19 +28,21 @@ export function useComboboxState<
   )
   const hasSections = Array.isArray(options[0])
   const isManualSubmit = useRef(false)
+  // True while the highlight is being driven by Arrow-key navigation, so Enter
+  // selects the highlighted option instead of matching the typed text.
+  const keyboardNavRef = useRef(false)
   const flatOptions = useMemo(() => {
     return hasSections
       ? (options as Array<ItemT[]>).flat()
       : (options as ItemT[])
   }, [hasSections, options])
 
+  const isNavigable = (option: ItemT) =>
+    !("hidden" in option && option.hidden) &&
+    !("disabled" in option && option.disabled)
+
   const navigableOptions = useMemo(
-    () =>
-      flatOptions.filter(
-        (option) =>
-          !("hidden" in option && option.hidden) &&
-          !("disabled" in option && option.disabled),
-      ),
+    () => flatOptions.filter(isNavigable),
     [flatOptions],
   )
 
@@ -62,12 +64,22 @@ export function useComboboxState<
     }
   }, [options, inputValue, shouldFilter, hasSections])
 
+  // The currently visible, selectable options. Arrow navigation walks these so a
+  // filtered combo only steps through results that are actually on screen.
+  const navigableFilteredOptions = useMemo(() => {
+    const flat = hasSections
+      ? (filteredOptions as ItemT[][]).flat()
+      : (filteredOptions as ItemT[])
+    return flat.filter(isNavigable)
+  }, [filteredOptions, hasSections])
+
   useEffect(() => {
     if (!open) {
       setHighlightedValue(undefined)
       return
     }
 
+    keyboardNavRef.current = false
     const currentIndex = navigableOptions.findIndex(
       (option) => option.value === value,
     )
@@ -75,6 +87,27 @@ export function useComboboxState<
       navigableOptions[currentIndex >= 0 ? currentIndex : 0]?.value,
     )
   }, [open, value, navigableOptions])
+
+  const moveHighlight = useCallback(
+    (direction: 1 | -1) => {
+      const items = navigableFilteredOptions
+      if (items.length === 0) return
+      keyboardNavRef.current = true
+      if (!open) setOpen(true)
+      setHighlightedValue((current) => {
+        const currentIndex = items.findIndex((o) => o.value === current)
+        if (currentIndex === -1) {
+          return items[direction === 1 ? 0 : items.length - 1]?.value
+        }
+        const nextIndex = (currentIndex + direction + items.length) % items.length
+        return items[nextIndex]?.value
+      })
+    },
+    [navigableFilteredOptions, open],
+  )
+
+  const highlightNext = useCallback(() => moveHighlight(1), [moveHighlight])
+  const highlightPrev = useCallback(() => moveHighlight(-1), [moveHighlight])
 
   function handleSelect(selectedValue: string) {
     if (isManualSubmit.current) {
@@ -93,14 +126,32 @@ export function useComboboxState<
 
   function handleInputChange(newValue: string) {
     setShouldFilter(true)
-    const option = flatOptions.find((o) =>
-      o.name.toLowerCase().includes(newValue.toLowerCase()),
-    )
+    // Typing expresses custom intent, so Enter should match the text, not the
+    // option last reached by Arrow keys.
+    keyboardNavRef.current = false
     setInputValue(newValue)
   }
 
   function handleSubmitInput() {
     isManualSubmit.current = true
+
+    // After Arrow navigation, Enter commits the highlighted option even when the
+    // input still shows the previously selected name.
+    if (keyboardNavRef.current && highlightedValue) {
+      const highlightedOption = navigableFilteredOptions.find(
+        (o) => o.value === highlightedValue,
+      )
+      if (highlightedOption) {
+        setInputValue(highlightedOption.name)
+        handleValueChange(highlightedOption.value)
+        setOpen(false)
+        inputRef.current?.blur()
+        setTimeout(() => {
+          isManualSubmit.current = false
+        }, 0)
+        return
+      }
+    }
 
     const nextSelectedOption = flatOptions.find(
       (o) => o.name.toLowerCase() === inputValue.toLowerCase(),
@@ -159,6 +210,8 @@ export function useComboboxState<
     handleSubmitInput,
     highlightedValue,
     setHighlightedValue,
+    highlightNext,
+    highlightPrev,
     currentValueOption,
     flatOptions,
   }
