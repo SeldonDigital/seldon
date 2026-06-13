@@ -26,6 +26,10 @@ import { useDebugMode } from "@lib/hooks/use-debug-mode"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { useImageUploadPanel } from "@app/panels/hooks/use-upload-image-panel"
 import { FormControlIconicProps } from "@seldon/components/elements/FormControlIconic"
+import {
+  getBoardPresetIconId,
+  getBoardPresetValue,
+} from "../helpers/board-preset-icon"
 import { buildPropertyOptions } from "../helpers/build-property-options"
 import { buildResetMenuEntry } from "../../shared/build-reset-menu-entry"
 import { ICONIC_BUTTON_SELECTOR } from "../../helpers/iconic-button"
@@ -156,8 +160,13 @@ export function useRowProperty({
   const labelText = property.label
   const isThemeAssignment = property.pickerVariant === "themeAssignment"
 
-  // Property icons are real icon ids resolved by the custom Icon wrapper.
-  const iconId = property.icon
+  // Property icons are real icon ids resolved by the custom Icon wrapper. The
+  // board preset row reflects the selected device, fit, or default instead of a
+  // static icon.
+  const iconId =
+    property.key === "board"
+      ? getBoardPresetIconId(getBoardPresetValue(property.value))
+      : property.icon
 
   // Can reset only when overridden. Font collection family rows (`family.*`) and
   // icon set rows (`icon.*`) carry an override status for color only; they have

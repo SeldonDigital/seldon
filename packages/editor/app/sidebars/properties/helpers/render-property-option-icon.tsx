@@ -13,6 +13,7 @@ import {
 import { IconCustomColorValue } from "@seldon/components/custom-icons"
 import { IconSeldonToken } from "@seldon/components/icons"
 import { LoadEditorIcons } from "@app/LoadEditorIcons"
+import { getBoardPresetIconId } from "./board-preset-icon"
 import { FlatProperty } from "./properties-data"
 import { resolveThemeSwatchColors } from "./resolve-theme-swatch-colors"
 import { getThemeTokenIconColor } from "./theme-token-icon-color"
@@ -81,6 +82,18 @@ export function createPropertyOptionIconRenderer({
         return <IconSeldonMissing />
       }
       return <LoadEditorIcons iconId={option.value as IconId} />
+    }
+
+    if (
+      (property.key === "board" || property.key === "board.preset") &&
+      option
+    ) {
+      return (
+        <LoadEditorIcons
+          iconId={getBoardPresetIconId(option.value)}
+          style={{ color: "inherit" }}
+        />
+      )
     }
 
     // The generated icon class pins a dark color, so the icon inherits the
