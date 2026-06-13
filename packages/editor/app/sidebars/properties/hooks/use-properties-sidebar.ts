@@ -387,7 +387,10 @@ export function usePropertiesSidebar(): PropertiesSidebarState {
     workspace.boards,
   ])
 
-  const cssStrings = useCssStrings(propertyTreeNode, selectedNodeRootId)
+  const { declarations: cssStrings, selector: cssSelector } = useCssStrings(
+    propertyTreeNode,
+    selectedNodeRootId,
+  )
 
   const sections = useMemo(() => {
     if (!propertyTreeNode) return []
@@ -454,6 +457,7 @@ export function usePropertiesSidebar(): PropertiesSidebarState {
       sections,
       allProperties,
       cssStrings,
+      cssSelector,
     },
   }
 }

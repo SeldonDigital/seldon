@@ -66,6 +66,7 @@ export interface PropertyTreeProps {
   sections: Array<PropertySection | ThemePropertySection>
   allProperties: FlatProperty[]
   cssStrings: string[]
+  cssSelector: string | null
 }
 
 /**
@@ -108,6 +109,7 @@ function PropertiesTree({
   sections,
   allProperties,
   cssStrings,
+  cssSelector,
 }: PropertyTreeProps) {
   return (
     <ScrollerShell ref={scrollerRef} style={styles.scroller}>
@@ -121,6 +123,7 @@ function PropertiesTree({
               node={node}
               theme={theme}
               cssStrings={cssStrings}
+              cssSelector={cssSelector}
               allProperties={allProperties}
               familyProperties={familyProperties}
               iconProperties={iconProperties}
@@ -141,6 +144,7 @@ interface TreeSectionProps {
   node: Variant | Instance | Board
   theme?: Theme
   cssStrings: string[]
+  cssSelector: string | null
   allProperties: FlatProperty[]
   familyProperties?: FlatProperty[]
   iconProperties?: FlatProperty[]
@@ -160,6 +164,7 @@ function TreeSection({
   node,
   theme,
   cssStrings,
+  cssSelector,
   allProperties,
   familyProperties,
   iconProperties,
@@ -193,6 +198,20 @@ function TreeSection({
       console.error("Failed to copy to clipboard:", error)
     }
   }, [cssStrings, addToast])
+
+  const handleCopySelector = useCallback(async () => {
+    if (!cssSelector) return
+    const indentedDeclarations = cssStrings
+      .map((declaration) => `  ${declaration}`)
+      .join("\n")
+    const ruleText = `${cssSelector} {\n${indentedDeclarations}\n}`
+    try {
+      await navigator.clipboard.writeText(ruleText)
+      addToast("Selector copied to clipboard")
+    } catch (error) {
+      console.error("Failed to copy to clipboard:", error)
+    }
+  }, [cssSelector, cssStrings, addToast])
 
   // Theme variants can add a custom token to any custom-capable section. The
   // "+" button shows only in theme editing on a variant, never on `core`.
@@ -244,7 +263,7 @@ function TreeSection({
 
   const sectionActions = useMemo((): MenuEntry[] | undefined => {
     if (section.category === "css" && cssStrings.length > 0) {
-      return [
+      const actions: MenuEntry[] = [
         {
           id: "copy-css",
           label: "Copy CSS",
@@ -254,9 +273,27 @@ function TreeSection({
           testId: "copy-css",
         },
       ]
+      if (cssSelector) {
+        actions.push({
+          id: "copy-selector",
+          label: "Copy Selector",
+          onSelect: () => {
+            void handleCopySelector()
+          },
+          testId: "copy-selector",
+        })
+      }
+      return actions
     }
     return layerAddActions.length > 0 ? layerAddActions : undefined
-  }, [section.category, cssStrings.length, handleCopyCss, layerAddActions])
+  }, [
+    section.category,
+    cssStrings.length,
+    cssSelector,
+    handleCopyCss,
+    handleCopySelector,
+    layerAddActions,
+  ])
 
   const content =
     section.category === "css" ? (

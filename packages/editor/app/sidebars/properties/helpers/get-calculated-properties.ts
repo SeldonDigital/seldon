@@ -7,6 +7,29 @@ import { Board, Instance, Variant } from "@seldon/core"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { getScopedSelectionElement } from "@app/canvas/helpers/canvas-selection-target"
 
+/**
+ * Drops declarations the browser cannot apply. `CSS.supports` returns false for
+ * `var()` values, so those are kept since they cannot be validated this way.
+ * Falls back to keeping declarations when `CSS.supports` is unavailable.
+ */
+function isValidDeclaration(declaration: string): boolean {
+  const separatorIndex = declaration.indexOf(":")
+  if (separatorIndex === -1) return false
+
+  const property = declaration.slice(0, separatorIndex).trim()
+  const value = declaration
+    .slice(separatorIndex + 1)
+    .replace(/;$/, "")
+    .trim()
+  if (!property || !value) return false
+
+  if (value.includes("var(")) return true
+  if (typeof CSS === "undefined" || typeof CSS.supports !== "function")
+    return true
+
+  return CSS.supports(property, value)
+}
+
 /** Parses declaration lines from a Seldon-authored `.class { ... }` rule. */
 function parseAuthoredCssRule(cssText: string): string[] {
   const match = cssText.match(/\{([\s\S]*)\}/)
@@ -16,6 +39,7 @@ function parseAuthoredCssRule(cssText: string): string[] {
     .split("\n")
     .map((line) => line.trim())
     .filter((line) => line.length > 0)
+    .filter(isValidDeclaration)
 }
 
 /**
@@ -31,36 +55,47 @@ function getAuthoredCssForClass(className: string): string[] {
   return parseAuthoredCssRule(styleEl.textContent)
 }
 
+/** Authored CSS for one scoped node copy: its declarations and class selector. */
+export interface ScopedNodeCss {
+  declarations: string[]
+  selector: string | null
+}
+
 /**
  * Reads authored CSS for the selected node copy. Resolves the canvas element by
  * node id and variant-root path, then reads only that copy's scoped style tag.
+ * Keeps declarations in source order to match the browser inspector.
  */
 function getScopedNodeCss(
   nodeId: string,
   rootId: string | null | undefined,
-): string[] {
+): ScopedNodeCss {
   const element = getScopedSelectionElement(nodeId, rootId)
-  if (!element) return []
+  if (!element) return { declarations: [], selector: null }
 
   const className = Array.from(element.classList).find((cls) =>
     cls.startsWith("node-"),
   )
-  if (!className) return []
+  if (!className) return { declarations: [], selector: null }
 
-  return getAuthoredCssForClass(className).sort()
+  return {
+    declarations: getAuthoredCssForClass(className),
+    selector: `.${className}`,
+  }
 }
 
 /**
- * Gets CSS properties as raw CSS strings for syntax highlighting.
- * Returns an array of CSS property strings (e.g., ["color: #000000;", "padding: 12px;"]).
+ * Gets authored CSS for the selected node as raw declaration strings plus the
+ * node class selector. Declarations are filtered to valid CSS and kept in source
+ * order (e.g. ["color: #000000;", "padding: 12px;"]).
  */
 export function useCssStrings(
   node: Variant | Instance | Board | null,
   rootId?: string | null,
-): string[] {
+): ScopedNodeCss {
   return useMemo(() => {
     if (!node || isBoard(node)) {
-      return []
+      return { declarations: [], selector: null }
     }
 
     return getScopedNodeCss(node.id, rootId)
