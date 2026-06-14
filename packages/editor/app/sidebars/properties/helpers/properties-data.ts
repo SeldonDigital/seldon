@@ -61,6 +61,7 @@ import type {
 } from "@seldon/core/properties/types/property-keys"
 import { getComponentPropertyDefaults } from "@seldon/core/workspace/helpers/components/get-component-property-defaults"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
+import { isPlaygroundBoard } from "@seldon/core/workspace/model/components"
 import { getNodeCatalogComponentId } from "@lib/workspace/node-tree"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { ControlType, getPropertyRegistryEntry } from "./properties-registry"
@@ -783,6 +784,13 @@ export function flattenNodeProperties(
   workspace: Workspace,
   theme?: Theme,
 ): FlatProperty[] {
+  // A playground container is a sidebar-only grouping with no editable component
+  // properties. Only the theme selector applies, and that row is added
+  // separately, so emit no property rows here.
+  if (isBoard(node) && isPlaygroundBoard(node)) {
+    return []
+  }
+
   const properties: FlatProperty[] = []
   const { properties: mergedProperties, propertyStatus } =
     getNodePropertiesWithStatus(node, workspace)

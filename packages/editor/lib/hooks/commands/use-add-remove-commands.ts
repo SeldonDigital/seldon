@@ -117,6 +117,18 @@ export function useAddRemoveCommands() {
     selectBoard(playgroundKey)
   }, [dispatch, selectBoard])
 
+  const duplicatePlayground = useCallback(
+    (sourcePlaygroundKey: BoardKey) => {
+      const newPlaygroundKey = `playground-${nanoid(8)}` as BoardKey
+      dispatch({
+        type: "duplicate_playground",
+        payload: { sourcePlaygroundKey, newPlaygroundKey },
+      })
+      selectBoard(newPlaygroundKey)
+    },
+    [dispatch, selectBoard],
+  )
+
   const addVariant = useCallback(() => {
     const board = selectedBoard
     if (!board || !selectedBoardId) {
@@ -386,6 +398,7 @@ export function useAddRemoveCommands() {
     addFontCollection,
     addIconSet,
     addPlayground,
+    duplicatePlayground,
     addVariant,
     removeBoard,
     deleteSelection,

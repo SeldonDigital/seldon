@@ -19,6 +19,11 @@ import {
   insertComponentTreeInstanceAfterSibling,
 } from "../../helpers/nodes/duplicate-entry-variant-subtree"
 import { moveItemInArray } from "../../helpers/nodes/move-utils"
+import {
+  getNextSandboxTop,
+  isSandboxNode,
+  setSandboxTop,
+} from "../../helpers/nodes/sandbox"
 import { isEntryNodeForRules } from "../../helpers/rules/rules-node-subject"
 import type { ComponentTreeRef } from "../../model/component-tree"
 import {
@@ -461,6 +466,18 @@ export class NodeOperationsService {
           located.boardKey as BoardKey,
         )!
         Object.assign(draft.nodes, plan.newNodes)
+
+        // A duplicated Sandbox keeps the source overrides, including position, so
+        // offset the copy below every existing sandbox to avoid overlap.
+        if (isSandboxNode(node)) {
+          const newRoot = draft.nodes[plan.newRootTreeRef.id]
+          if (newRoot) {
+            setSandboxTop(
+              newRoot as EntryNode,
+              getNextSandboxTop(board.variants, draft.nodes),
+            )
+          }
+        }
 
         if (plan.sourceWasDefault) {
           board.variants = [...board.variants, plan.newRootTreeRef]

@@ -234,3 +234,78 @@ export function cloneBoard(
     Object.assign(draft.boards, realigned.boards)
   })
 }
+
+/**
+ * Clones a playground container to `newPlaygroundKey` in `workspace.playgrounds`
+ * and remaps its Sandbox roots and their child trees in `nodes`. Sandbox roots
+ * use `playground-{key}-{suffix}` ids and their nested instances use
+ * `component-{key}-{suffix}`, so both prefixes are remapped. Call only after
+ * validation; a missing source or colliding key throws.
+ */
+export function clonePlayground(
+  workspace: Workspace,
+  sourcePlaygroundKey: string,
+  newPlaygroundKey: string,
+  label?: string,
+): Workspace {
+  const source = workspace.playgrounds?.[sourcePlaygroundKey]
+  invariant(
+    source,
+    `clonePlayground: missing source playground ${sourcePlaygroundKey}`,
+  )
+  invariant(
+    !workspace.boards[newPlaygroundKey] &&
+      !workspace.playgrounds?.[newPlaygroundKey],
+    `clonePlayground: key already exists ${newPlaygroundKey}`,
+  )
+
+  return mutateWorkspace(workspace, (draft) => {
+    const src = draft.playgrounds[sourcePlaygroundKey]
+    invariant(
+      src,
+      `clonePlayground: source playground disappeared ${sourcePlaygroundKey}`,
+    )
+
+    const newPlayground = structuredClone(src) as Board
+    const maxOrder = Math.max(
+      -1,
+      ...Object.values(draft.playgrounds).map((p) => getBoardOrder(p)),
+    )
+    setBoardOrder(newPlayground, maxOrder + 1)
+
+    if ("id" in newPlayground) {
+      ;(newPlayground as { id: string }).id = newPlaygroundKey
+    }
+    if (label !== undefined && "label" in newPlayground) {
+      ;(newPlayground as { label: string }).label = label
+    }
+
+    const treeIds = collectTreeIds(src.variants)
+    const idMap = new Map([
+      ...buildPrefixIdMap(
+        sourcePlaygroundKey,
+        newPlaygroundKey,
+        treeIds,
+        "component-",
+      ),
+      ...buildPrefixIdMap(
+        sourcePlaygroundKey,
+        newPlaygroundKey,
+        treeIds,
+        "playground-",
+      ),
+    ])
+    for (const [oldId, newId] of idMap) {
+      const node = workspace.nodes[oldId] as EntryNode | undefined
+      if (!node) continue
+      draft.nodes[newId] = cloneNodeEntry(
+        node,
+        newId,
+        idMap,
+      ) as WritableDraft<EntryNode>
+    }
+    newPlayground.variants = remapComponentTree(src.variants, idMap)
+
+    draft.playgrounds[newPlaygroundKey] = newPlayground as WritableDraft<Board>
+  })
+}

@@ -100,34 +100,44 @@ export function resolveSandboxRect(node: EntryNode): SandboxRect | null {
 }
 
 /**
- * Computes the left offset for the next Sandbox so it sits to the right of every
- * existing sandbox in the container, with {@link SANDBOX_PLACEMENT_GAP} between
- * them. Returns 0 when the container has no resolvable sandboxes yet.
+ * Computes the top offset for the next Sandbox so it sits below every existing
+ * sandbox in the container, with {@link SANDBOX_PLACEMENT_GAP} between them.
+ * Returns 0 when the container has no resolvable sandboxes yet.
  */
-export function getNextSandboxLeft(
+export function getNextSandboxTop(
   variants: ComponentTreeRef[],
   nodes: Record<string, EntryNode | undefined>,
 ): number {
-  let nextLeft = 0
+  let nextTop = 0
   for (const ref of variants) {
     const node = nodes[ref.id]
     if (!node) continue
     const rect = resolveSandboxRect(node)
     if (!rect) continue
-    nextLeft = Math.max(nextLeft, rect.left + rect.width + SANDBOX_PLACEMENT_GAP)
+    nextTop = Math.max(nextTop, rect.top + rect.height + SANDBOX_PLACEMENT_GAP)
   }
-  return nextLeft
+  return nextTop
+}
+
+/** Sets a Sandbox node's `position.top` override to an absolute px value. */
+export function setSandboxTop(node: EntryNode, top: number): void {
+  const overrides = node.overrides as Record<string, unknown>
+  const position =
+    (overrides.position as Record<string, unknown> | undefined) ?? {}
+  position.top = { type: ValueType.EXACT, value: { value: top, unit: Unit.PX } }
+  overrides.position = position
 }
 
 /**
  * Builds a Sandbox root node for a playground. The node is a `type: "variant"`
- * templating from `catalog:sandbox`, seeded at `left` with `top` 0. Width and
- * height come from the Sandbox schema defaults (800x600).
+ * templating from `catalog:sandbox`, seeded at `top`/`left`. Width and height
+ * come from the Sandbox schema defaults (800x600).
  */
 export function buildSandboxNode(
   playgroundKey: string,
-  left = 0,
+  position: { top?: number; left?: number } = {},
 ): { id: string; node: EntryNode } {
+  const { top = 0, left = 0 } = position
   const id = playgroundSandboxNodeId(playgroundKey)
   const node: EntryNode = {
     id,
@@ -138,7 +148,7 @@ export function buildSandboxNode(
     template: formatNodeCatalog(ComponentId.SANDBOX),
     overrides: {
       position: {
-        top: { type: ValueType.EXACT, value: { value: 0, unit: Unit.PX } },
+        top: { type: ValueType.EXACT, value: { value: top, unit: Unit.PX } },
         left: { type: ValueType.EXACT, value: { value: left, unit: Unit.PX } },
       },
     },

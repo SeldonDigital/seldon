@@ -90,6 +90,19 @@ export function validateAction(workspace: Workspace, action: Action): void {
     case "add_sandbox":
       boardValidators.playgroundExists(workspace, action.payload.playgroundKey)
       return
+    case "set_playground_label":
+      boardValidators.playgroundExists(workspace, action.payload.playgroundKey)
+      return
+    case "duplicate_playground":
+      boardValidators.playgroundExists(
+        workspace,
+        action.payload.sourcePlaygroundKey,
+      )
+      boardValidators.playgroundKeyIsFree(
+        workspace,
+        action.payload.newPlaygroundKey,
+      )
+      return
     case "add_variant":
       validateAddVariant(workspace, action)
       return

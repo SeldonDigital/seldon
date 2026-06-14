@@ -35,6 +35,7 @@ import { addThemeCustomSpread } from "./handlers/add/add-theme-custom-spread"
 import { addThemeCustomSwatch } from "./handlers/add/add-theme-custom-swatch"
 import { addVariant } from "./handlers/add/add-variant"
 import { duplicateComponent } from "./handlers/duplicate/duplicate-component"
+import { duplicatePlayground } from "./handlers/duplicate/duplicate-playground"
 import { duplicateFontCollection } from "./handlers/duplicate/duplicate-font-collection"
 import { duplicateIconSet } from "./handlers/duplicate/duplicate-icon-set"
 import { duplicateNode } from "./handlers/duplicate/duplicate-node"
@@ -117,6 +118,7 @@ import { setBoardCredentials } from "./handlers/set/set-board-credentials"
 import { setBoardEditorData } from "./handlers/set/set-board-editor-data"
 import { setBoardIntent } from "./handlers/set/set-board-intent"
 import { setBoardLabel } from "./handlers/set/set-board-label"
+import { setPlaygroundLabel } from "./handlers/set/set-playground-label"
 import { setBoardLicense } from "./handlers/set/set-board-license"
 import { setBoardPreview } from "./handlers/set/set-board-preview"
 import { setBoardTags } from "./handlers/set/set-board-tags"
@@ -233,6 +235,8 @@ function reducer(workspace: Workspace, action: WorkspaceAction): Workspace {
       return removePlayground(action.payload, workspace)
     case "duplicate_component":
       return duplicateComponent(action.payload, workspace)
+    case "duplicate_playground":
+      return duplicatePlayground(action.payload, workspace)
     case "reorder_board":
       return reorderBoard(action.payload, workspace)
     case "reorder_variant_in_board":
@@ -245,6 +249,8 @@ function reducer(workspace: Workspace, action: WorkspaceAction): Workspace {
       return resetComponentProperty(action.payload, workspace)
     case "set_board_label":
       return setBoardLabel(action.payload, workspace)
+    case "set_playground_label":
+      return setPlaygroundLabel(action.payload, workspace)
     case "set_board_intent":
       return setBoardIntent(action.payload, workspace)
     case "set_board_tags":

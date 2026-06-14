@@ -7,7 +7,8 @@
  * | set_workspace_owner, set_workspace_label, set_workspace_version, set_workspace_last_update, set_workspace_intent, set_workspace_tags, set_workspace_license | metadata |
  * | reset_workspace_owner, reset_workspace_label, normalize_metadata_version, reset_workspace_last_update, reset_workspace_intent, reset_workspace_tags, reset_workspace_license | metadata |
  * | add_component, remove_component, reorder_board, duplicate_component | components (+ nodes/themes/resources per type) |
- * | add_font_collection, remove_font_collection, add_media, remove_media, add_icon_set, remove_icon_set, add_theme, remove_theme, add_playground, remove_playground | components + section rows |
+ * | duplicate_playground | playgrounds (+ nodes) |
+ * | add_font_collection, remove_font_collection, add_media, remove_media, add_icon_set, remove_icon_set, add_theme, remove_theme, add_playground, remove_playground, set_playground_label | components + section rows / playgrounds |
  * | set_board_label, set_board_intent, set_board_tags, set_board_license, set_board_author, set_board_credentials, set_board_preview, set_board_editor_data, set_component_properties, reset_component_property, set_component_theme | components |
  * | reset_board_label, reset_board_intent, reset_board_tags, reset_board_license, reset_board_author, reset_board_credentials, reset_board_preview, reset_board_editor_data | components |
  * | reorder_variant_in_board | components.variants order |
@@ -379,6 +380,14 @@ export type WorkspaceAction =
       }
     }
   | {
+      type: "duplicate_playground"
+      payload: {
+        sourcePlaygroundKey: BoardKey
+        newPlaygroundKey: BoardKey
+        label?: string
+      }
+    }
+  | {
       type: "add_variant"
       payload: {
         boardKey: BoardKey
@@ -511,6 +520,10 @@ export type WorkspaceAction =
   | {
       type: "set_board_label"
       payload: { boardKey: BoardKey; label: string }
+    }
+  | {
+      type: "set_playground_label"
+      payload: { playgroundKey: BoardKey; label: string }
     }
   | {
       type: "set_board_intent"

@@ -38,7 +38,7 @@ export function addPlayground(
         : -1
 
     // Seed one Sandbox at 0,0 sized 800x600 so a new playground is never empty.
-    const { id: sandboxId, node: sandboxNode } = buildSandboxNode(boardKey, 0)
+    const { id: sandboxId, node: sandboxNode } = buildSandboxNode(boardKey)
 
     const container = {
       type: "playground" as const,
