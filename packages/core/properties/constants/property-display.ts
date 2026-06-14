@@ -53,10 +53,10 @@ export const PROPERTY_DISPLAY_ORDER: ReadonlyArray<{
     category: PropertyDisplayCategory.LAYOUT,
     keys: [
       "direction",
-      "placement",
-      "position",
       "orientation",
       "align",
+      "placement",
+      "position",
       "width",
       "height",
       "margin",

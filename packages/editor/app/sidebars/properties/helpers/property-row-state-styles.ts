@@ -149,7 +149,7 @@ export function getMenuIconStyle({
     hasControl,
     showMenuIcon,
   })
-  return iconStateStyle(labelColor, opacity)
+  return { fontSize: "0.6rem", ...iconStateStyle(labelColor, opacity) }
 }
 
 function resolveMenuIconOpacity({

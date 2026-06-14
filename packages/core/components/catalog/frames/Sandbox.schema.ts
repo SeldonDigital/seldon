@@ -23,8 +23,6 @@ export const schema = {
     direction: { type: Sdn.ValueType.EMPTY, value: null },
     position: {
       top: { type: Sdn.ValueType.EXACT, value: { value: 0, unit: Sdn.Unit.PX } },
-      right: { type: Sdn.ValueType.EMPTY, value: null },
-      bottom: { type: Sdn.ValueType.EMPTY, value: null },
       left: {
         type: Sdn.ValueType.EXACT,
         value: { value: 0, unit: Sdn.Unit.PX },

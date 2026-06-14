@@ -160,6 +160,7 @@ function decorateValueContent(
           style={{
             flexShrink: 0,
             marginLeft: "0.25rem",
+            fontSize: "0.5rem",
             ...(labelColor ? { color: labelColor } : {}),
           }}
         >
