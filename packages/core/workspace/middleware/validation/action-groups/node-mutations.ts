@@ -1,5 +1,6 @@
 import type { ComponentId } from "../../../../components/constants"
 import { ValueType } from "../../../../properties"
+import { mergeProperties } from "../../../../properties/helpers/merge-properties"
 import { rules } from "../../../../rules/config/rules.config"
 import { ErrorMessages } from "../../../constants"
 import { getBoardVariantRootIds } from "../../../helpers/components/get-board-variant-root-ids"
@@ -432,9 +433,17 @@ function assertSandboxConstraints(
     }
   }
 
+  // Mirror the reducer's merge so a partial facet patch (e.g. only
+  // `position.left`) layers over the stored overrides instead of replacing the
+  // whole compound. A shallow spread would drop the stored `position.top` and
+  // resolve the rect against the schema default, causing a false overlap.
   const merged: EntryNode = {
     ...node,
-    overrides: { ...node.overrides, ...props },
+    overrides: mergeProperties(
+      node.overrides,
+      action.payload.properties,
+      action.payload.options,
+    ),
   }
   const rect = resolveSandboxRect(merged)
   if (!rect) return
