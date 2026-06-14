@@ -1,6 +1,6 @@
 import type { Workspace } from "../../model/workspace"
-import { migrateV1BackgroundBlendFilter } from "./steps/migrate-v1-background-blend-filter"
-import { migrateV2SeedPlaygrounds } from "./steps/migrate-v2-seed-playgrounds"
+import { migrateV1BackgroundBlendFilter } from "./steps/migrate-00001-background-blend-filter"
+import { migrateV2SeedPlaygrounds } from "./steps/migrate-00002-seed-playgrounds"
 
 /** Current workspace file version after migration steps on load. */
 export const CURRENT_WORKSPACE_VERSION = 2

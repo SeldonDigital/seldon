@@ -20,7 +20,7 @@ flowchart TB
 | `CURRENT_WORKSPACE_VERSION` | `migrate-workspace.ts` | Current `metadata.version` value. Re-exported from `middleware.ts`. |
 | `migrateWorkspace` | `migrate-workspace.ts` | Runs sequential migration steps from stored version + 1 through current. |
 | `migrationMiddleware` | `middleware.ts` | Migrates on `set_workspace` and stamps version. Registered in `workspaceReducer` post-reducer chain. |
-| `migrateV1BackgroundBlendFilter` | `steps/migrate-v1-background-blend-filter.ts` | v1 step. Normalizes legacy EXACT `blendMode` and `filter` values. |
+| `migrateV1BackgroundBlendFilter` | `steps/migrate-00001-background-blend-filter.ts` | v1 step. Normalizes legacy EXACT `blendMode` and `filter` values. |
 
 ## Version 1
 
@@ -38,3 +38,5 @@ The step walks `nodes[*].overrides`, `themes[*].overrides`, and board `component
 `metadata.version` is the version counter on the file. The file format spec version is `WORKSPACE_SPEC_VERSION` in `workspace/model/constants.ts`, documented in `workspace/README.md`.
 
 When a breaking saved shape lands, add a versioned migration step in `migrate-workspace.ts` and bump `CURRENT_WORKSPACE_VERSION`.
+
+Name step files `migrate-NNNNN-short-description.ts`, where `NNNNN` is the target version zero-padded to five digits. Zero-padding keeps step files in version order when sorted by name. Version 1 is `migrate-00001-...` and version 2 is `migrate-00002-...`.
