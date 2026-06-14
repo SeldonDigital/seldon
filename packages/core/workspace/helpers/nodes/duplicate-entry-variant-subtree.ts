@@ -7,6 +7,7 @@ import type { Board, ComponentTreeRef, EntryNode, Workspace } from "../../types"
 import { componentBoardUniqueNodeId } from "../components/entry-node-ids"
 import { getVariantTree } from "../components/get-variant-tree"
 import { walkBoardTreeRefs } from "../components/walk-board-tree-refs"
+import { getCompositionContainerEntries } from "../general/get-composition-containers"
 import { getWorkspaceNodes } from "../general/get-workspace-nodes"
 
 function collectTreeRefIds(ref: ComponentTreeRef): string[] {
@@ -35,7 +36,7 @@ export function findBoardContainingTreeNodeId(
   workspace: Workspace,
   nodeId: string,
 ): { board: Board; boardKey: string } | null {
-  for (const [boardKey, board] of Object.entries(workspace.boards)) {
+  for (const [boardKey, board] of getCompositionContainerEntries(workspace)) {
     if (!board.variants?.length) continue
     let found = false
     walkBoardTreeRefs(board.variants, (ref) => {
@@ -170,6 +171,12 @@ export function buildDuplicateEntryVariantSubtreePlan(
     }
   } else {
     const defaultVariantId = board.variants[0]?.id
+    // A playground has no default variant; its Sandbox roots are independent
+    // entities. Keep the duplicated Sandbox templating from its own source
+    // (`catalog:sandbox`) instead of chaining it to another sandbox.
+    const rootTemplate = isPlaygroundBoard(board)
+      ? nodes[sourceRootId]?.template ?? formatNodeLink(sourceRootId)
+      : formatNodeLink(defaultVariantId ?? sourceRootId)
     for (const [oldId, newId] of idMap) {
       const row = nodes[oldId]
       if (!row) continue
@@ -179,7 +186,7 @@ export function buildDuplicateEntryVariantSubtreePlan(
           id: newId,
           type: "variant",
           label: newVariantLabel,
-          template: formatNodeLink(defaultVariantId ?? sourceRootId),
+          template: rootTemplate,
           overrides: structuredClone(row.overrides),
         }
       } else {

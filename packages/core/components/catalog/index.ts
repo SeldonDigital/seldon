@@ -68,6 +68,10 @@ import {
   exportConfig as frameExportConfig,
   schema as frameSchema,
 } from "./frames/Frame.schema"
+import {
+  exportConfig as sandboxExportConfig,
+  schema as sandboxSchema,
+} from "./frames/Sandbox.schema"
 // Modules
 import {
   exportConfig as calendarExportConfig,
@@ -310,7 +314,7 @@ const boards: ComponentSchema[] = [boardSchema]
 
 const screens: ComponentSchema[] = [screenSchema]
 
-const frames: ComponentSchema[] = [frameSchema]
+const frames: ComponentSchema[] = [frameSchema, sandboxSchema]
 
 export type Catalog = {
   frames: ComponentSchema[]
@@ -366,6 +370,7 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
 
   // Frames
   [ComponentId.FRAME]: frameExportConfig,
+  [ComponentId.SANDBOX]: sandboxExportConfig,
 
   // Modules
   [ComponentId.CALENDAR]: calendarExportConfig,

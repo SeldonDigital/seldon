@@ -1345,9 +1345,9 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 --------------------------------------------------------------------------------
 
 format@0.2.2
-License: UNKNOWN
+License: MIT
 
-SPDX identifier: UNKNOWN
+SPDX identifier: MIT
 
 --------------------------------------------------------------------------------
 

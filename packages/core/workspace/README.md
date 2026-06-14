@@ -15,6 +15,7 @@ At its core, a Seldon workspace file is a collection of JSON keys containing dat
 {
   "metadata": {},
   "boards": {},
+  "playgrounds": {},
   "nodes": {},
   "themes": {},
   "font-collections": {},
@@ -28,8 +29,9 @@ Board keys are camelCase slugs unique across the workspace, referencing their so
 | Key | Description | ID Pattern |
 | --- | --- | --- |
 | `metadata` | File-level metadata: migration version, ownership, optional notices, and other fields tied to the overall workspace. |  |
-| `boards` | Catalog index for all row kinds (`component`, `playground`, `theme`, `font-collection`, `icon-set`, `media`). Each row shares fields like `type` and `variants`; see **Boards** below. | `{boardKey}` |
-| `nodes` | Playgrounds, components, variants, and instances all keyed by stable ids. | `playground-{boardKey}-{suffix}`, `component-{boardKey}-{suffix}` |
+| `boards` | Catalog index for all row kinds (`component`, `theme`, `font-collection`, `icon-set`, `media`). Each row shares fields like `type` and `variants`; see **Boards** below. | `{boardKey}` |
+| `playgrounds` | Grouping containers. Each container holds independent Sandbox roots placed on the shared canvas. The Factory ignores this whole section. See **Playgrounds** below. | `{playgroundKey}` |
+| `nodes` | Sandboxes, components, variants, and instances all keyed by stable ids. | `playground-{playgroundKey}-{suffix}`, `component-{boardKey}-{suffix}` |
 | `themes` | Theme definitions displayed using sample components. These are made available in all editor theme menus, and are described in detail below. | `theme-{boardKey}-{suffix}` |
 | `font-collections` | Font collection choices: families, references, licensing, and related data. These are made available in all editor font menus, and are described in detail below. | `font-collection-{boardKey}-{suffix}` |
 | `icon-sets` | Icon set choices: definitions, SVG payloads or references, and licensing. These are made available in all editor icon menus, and are described in detail in the Icon Sets section below. | `icon-set-{boardKey}-{suffix}` |
@@ -57,8 +59,6 @@ Full customization beyond overrides is done with **`variants`** -- a **`node`** 
 {
   "metadata": { "...": "..." },
   "boards": {
-    "searchResults": { "...": "..." },
-    "productListing": { "...": "..." },
     "button": { "...": "..." },
     "calendar": { "...": "..." },
     "searchField": { "...": "..." },
@@ -72,10 +72,14 @@ Full customization beyond overrides is done with **`variants`** -- a **`node`** 
     "ibmCarbon": { "...": "..." },
     "adobeStockMedia": { "...": "..." }
   },
+  "playgrounds": {
+    "exploration": { "...": "..." },
+    "cardIdeas": { "...": "..." }
+  },
   "nodes": {
-    "playground-searchResults-default": { "...": "..." },
-    "playground-searchResults-7kXmPq2R": { "...": "..." },
-    "playground-productListing-default": { "...": "..." },
+    "playground-exploration-7kXmPq2R": { "...": "..." },
+    "playground-exploration-9aLm3VtP": { "...": "..." },
+    "playground-cardIdeas-2bQn8RxW": { "...": "..." },
     "component-button-default": { "...": "..." },
     "component-button-7f3a9c12": { "...": "..." },
     "component-button-2d8e1b44": { "...": "..." },
@@ -145,6 +149,7 @@ Programs change each metadata field with its own action: `set_workspace_owner`, 
     "tags": ["...", "...", "..."]
   },
   "boards": {},
+  "playgrounds": {},
   "nodes": {},
   "themes": {},
   "font-collections": {},
@@ -165,12 +170,11 @@ Programs change catalog row header fields with `set_board_label`, `set_board_int
 
 ### Board types
 
-There are six catalog row types:
+There are five catalog row types:
 
 | Board type | Description | Example rows |
 | --- | --- | --- |
 | `component` | A component based on a `core/components/` component schema. Only one catalog row is used per component, with variants and instances of that component stored as references from `nodes`. | `button`, `searchField`, `productCard`, `calendar` |
-| `playground` | A playground is used for mockups and prototyping. Playgrounds are excluded from the factory export flow to allow flexibility in design exploration. | `searchResults`, `productListing` |
 | `theme` | A theme definition including its design tokens. A base `seldon` theme defined in the workspace is initially created from `core/themes/` and is non-deletable. | `seldon`, `sky` |
 | `font-collection` | A set of fonts, including font families, weights, and emphasis. A base `system` font collection in the workspace is initially created from `core/font-collections/` and is non-deletable. | `system`, `googleFonts` |
 | `icon-set` | A set of icons, with all icons in that set created using SVG. A base `seldonIcons` set defined in the workspace is initially created from `core/icon-sets/` and is non-deletable. | `seldonIcons`, `googleMaterial`, `ibmCarbon` |
@@ -253,56 +257,6 @@ When placing or pasting a component from another workspace, the rules are:
         ]
       },
       /* ...other button variants */
-    ]
-  }
-}
-```
-
----
-
-#### Playground Board
-
-Playground boards are used for prototyping and previewing designs, holding components and their variants to allow users to see components interacting. Playground boards and variants are excluded from factory export. They rely on `display: "exclude"` so generated code skips them.
-
-The playground catalog row structure is currently identical to component catalog rows, except they omit `level`, `catalogId`, `author`, and `license` entries. They are a separate catalog row type so they can evolve independently without affecting component catalog row behavior.
-
-| Field | Type | Description |
-| --- | --- | --- |
-| `type` | `string` | `playground` |
-| `label` | `string` | Display name for the playground. |
-| `intent` | `string` | Optional short description of the playground's purpose. |
-| `tags` | `string[]` | Optional labels for search or filtering. |
-| `componentTheme` | `string` | The theme applied to this catalog row and inherited by its variants. The `componentTheme` field influences exported output by supplying a theme when no theme has been assigned to a variant. The `componentTheme` defaults to `theme-seldon-default`. |
-| `componentProperties` | `Properties` | Board-level properties used only for visual display in an editor. These do not affect exported code or how components are rendered in production. |
-| `variants` | `{ "id", "children"? }` | An ordered array of variant entries belonging to this catalog row appearing top to bottom, along with their nested children. (See the **Nodes section** below.) The first entry is always the **default variant**. See **Default catalog alignment** (Workspace Structure). |
-| `__editor` | `object` | Optional editor-only metadata for this playground. |
-
-```json
-"boards": {
-  "searchResults": {
-    "type": "playground",
-    "label": "Search Results",
-    "intent": "...",
-    "tags": [ "...", "...", "..." ],
-    "componentTheme": "theme-seldon-default",
-    "componentProperties": {
-      "display": { "type": "option", "value": "exclude" },
-      /* ... other properties */
-    },
-    "variants": [
-      {
-        "id": "playground-searchResults-default",
-        "children": [
-          { "id": "component-productCard-default" },
-          {
-            "id": "component-button-aGKJQ7Wr",
-            "children": [
-              { "id": "component-icon-Rsf23yHq" },
-              { "id": "component-label-28fRTw1k"}
-            ]
-          }
-        ]
-      }
     ]
   }
 }
@@ -504,9 +458,98 @@ Media rows hold media assets and variants that reference data in the `media` sec
 
 ---
 
+## Playgrounds
+
+The `playgrounds` object is a flat map of grouping containers used for mockups and prototyping. A playground is a sidebar-only container. It does not render its own board. Instead it holds independent Sandbox roots that sit directly on the shared canvas.
+
+The Factory never reads the `playgrounds` section. Playground content, and any styles produced inside it, stays out of every export pass. Playgrounds do not use `display: "exclude"`.
+
+A playground holds Sandbox roots, not variants of one component. There is no default. Each Sandbox is its own entity that behaves like an unconstrained user variant. Each Sandbox root and every node inside it live in the shared `nodes` map.
+
+### Playground Container
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `type` | `string` | `playground` |
+| `id` | `string` | The container key, equal to its key in the `playgrounds` map. |
+| `label` | `string` | Display name for the playground. |
+| `componentTheme` | `string` | The theme inherited by Sandbox roots that have no theme of their own. Defaults to the workspace editable theme. |
+| `componentProperties` | `Properties` | Editor-only display properties. These do not affect export. |
+| `variants` | `{ "id", "children"? }` | An ordered list of Sandbox root entries with their nested children. Each entry id is a key in `nodes`. There is no default entry. |
+| `__editor` | `object` | Optional editor-only metadata for this playground. |
+
+```json
+"playgrounds": {
+  "exploration": {
+    "type": "playground",
+    "id": "exploration",
+    "label": "Exploration",
+    "componentTheme": "theme-seldon-default",
+    "componentProperties": { /* ... display properties */ },
+    "variants": [
+      {
+        "id": "playground-exploration-7kXmPq2R",
+        "children": [
+          { "id": "component-productCard-default" },
+          {
+            "id": "component-button-aGKJQ7Wr",
+            "children": [
+              { "id": "component-icon-Rsf23yHq" },
+              { "id": "component-label-28fRTw1k" }
+            ]
+          }
+        ]
+      },
+      { "id": "playground-exploration-9aLm3VtP" }
+    ]
+  }
+}
+```
+
+### Sandbox Roots
+
+A Sandbox root is a node with `type: "variant"`. It reuses the variant machinery for create, insert, reorder, duplicate, and delete. It differs from a board variant in one way: it templates directly from `catalog:sandbox` rather than from a default node, because a playground has no default.
+
+A Sandbox node carries `placement: absolute`, a `position`, and explicit `width` and `height`. Ordinary component instances sit inside a Sandbox the same way they sit inside any variant tree.
+
+```json
+"nodes": {
+  "playground-exploration-7kXmPq2R": {
+    "id": "playground-exploration-7kXmPq2R",
+    "type": "variant",
+    "level": "frame",
+    "label": "Quick Ideas",
+    "theme": null,
+    "template": "catalog:sandbox",
+    "overrides": {
+      "placement": { "type": "option", "value": "absolute" },
+      "position": {
+        "top": { "type": "exact", "value": { "value": 0, "unit": "px" } },
+        "left": { "type": "exact", "value": { "value": 0, "unit": "px" } }
+      },
+      "width": { "type": "exact", "value": { "value": 800, "unit": "px" } },
+      "height": { "type": "exact", "value": { "value": 600, "unit": "px" } }
+    }
+  }
+}
+```
+
+### Sandbox Constraints
+
+Core validation and verification enforce these rules so the editor and an AI agent both produce valid files:
+
+- A new Sandbox seeds at `width: 800px` and `height: 600px`.
+- Sandbox `width` and `height` must be explicit lengths. Fit, Fill, and theme sizes are rejected.
+- Sibling Sandboxes within one playground must not overlap.
+- The canvas is the infinite shared editor surface. There is no outer boundary, but position offsets and sizes are capped at `100000px` to guard against runaway values.
+
+Validation middleware rejects an offending action and returns the workspace unchanged with a toast-ready message. Verification middleware checks the same invariants after every action, so externally produced files are checked on load.
+
+---
+
 ## Nodes
 
-The `nodes` object is a flat map of every default, variant, and instance of a component used in component and playground rows. It does not contain data for theme, icon set, font collection, or media. Those resources live in their own top-level workspace sections.
+The `nodes` object is a flat map of every default, variant, and instance of a component used in component boards and in playgrounds. It does not contain data for theme, icon set, font collection, or media. Those resources live in their own top-level workspace sections.
 
 Node keys are node ID strings and must match each value's `id` field. All metadata and other important information is retrieved from the node template.
 
@@ -869,7 +912,7 @@ The `media` object contains media definitions and configurations referenced by m
 
 ## Composition Rules
 
-This section describes how `component` and `playground` boards compose object trees using `nodes` and how mutations keep them valid. Static structures are defined by component level hierarchy. Mutation rules come from rules configuration found in `packages/core/rules/`, validation middleware, and verification middleware.
+This section describes how `component` boards and `playgrounds` compose object trees using `nodes` and how mutations keep them valid. Static structures are defined by component level hierarchy. Mutation rules come from rules configuration found in `packages/core/rules/`, validation middleware, and verification middleware.
 
 ---
 
@@ -1051,14 +1094,15 @@ Pasting a variant creates an instance. Pasting an instance duplicates that insta
 
 After every action, the workspace is checked against these invariants:
 
-- Every child ref in a board tree resolves to a node row.
-- Every variant ref in a board tree resolves to a node row.
+- Every child ref in a board or playground tree resolves to a node row.
+- Every variant ref in a board or playground tree resolves to a node row.
 - Every `node:{nodeId}` template target exists.
-- Each component board has exactly one default variant root.
+- Each component board has exactly one default variant root. Playgrounds are exempt, since they have no default.
 - Node ids are unique across the `nodes` map.
-- No variant node is missing from all board trees.
-- No instance node is missing from all board trees.
+- No variant node is missing from all board and playground trees.
+- No instance node is missing from all board and playground trees.
 - No variant override is a computed value that reads from `#parent`.
+- Each Sandbox uses explicit `width` and `height` lengths, stays within the `100000px` cap, and does not overlap a sibling Sandbox in the same playground.
 
 See **Referential Integrity** for the static file-level constraints that a stored workspace must satisfy.
 
@@ -1070,17 +1114,19 @@ A valid workspace file must satisfy the following constraints.
 
 ### 1. Board variant trees resolve to the correct map
 
-For each catalog row, every **`id`** that appears in **`variants`** and, for `component` and `playground` boards, in every nested **`children`** array (recursively), must exist as a **key** in exactly one top-level map, determined by **`boards[boardKey].type`**:
+For each catalog row, every **`id`** that appears in **`variants`** and, for `component` boards, in every nested **`children`** array (recursively), must exist as a **key** in exactly one top-level map, determined by **`boards[boardKey].type`**:
 
 | Board `type` | Map that must contain each collected `id` |
 | --- | --- |
-| `component`, `playground` | `nodes` |
+| `component` | `nodes` |
 | `theme` | `themes` |
 | `font-collection` | `font-collections` |
 | `icon-set` | `icon-sets` |
 | `media` | `media` |
 
-For `theme`, `font-collection`, `icon-set`, and `media` boards, each entry in **`variants`** is an object **`{ "id" }`** only: it must not use **`children`**. For `component` and `playground` boards, each entry may use **`{ "id", "children"? }`** as documented in the catalog row sections.
+For `theme`, `font-collection`, `icon-set`, and `media` boards, each entry in **`variants`** is an object **`{ "id" }`** only: it must not use **`children`**. For `component` boards, each entry may use **`{ "id", "children"? }`** as documented in the catalog row sections.
+
+Each **`playgrounds`** container follows the same rule as a `component` board: every **`id`** in its **`variants`** and nested **`children`** must be a key in **`nodes`**. Playground containers may use **`{ "id", "children"? }`**.
 
 Collect ids by walking **`variants`** in order, and for each object that has **`children`**, walk **`children`** in order and continue depth-first until all reachable **`id`** values are visited. Every visited **`id`** must be a key in the map for that board’s `type`.
 
@@ -1100,12 +1146,12 @@ If the **`template`** grammar for a given object type only allows a subset of pr
 
 ### 3. No illegal cycles
 
-- **`component` / `playground`**: The graph formed by catalog row **`variants`** and nested **`children`**, with edges **parent → child `id`**, must be **acyclic**. The same **`id`** may appear under multiple parents like a shared instance, but there must be no directed cycle when following child links from any root variant entry.
+- **`component` boards and `playgrounds`**: The graph formed by **`variants`** and nested **`children`**, with edges **parent → child `id`**, must be **acyclic**. The same **`id`** may appear under multiple parents like a shared instance, but there must be no directed cycle when following child links from any root entry.
 - **`themes`**: The graph formed by **`template: theme:{themeId}`** edges must be **acyclic**. Variant themes inherit from default or other theme entries without cycles.
 
 ### 4. JSON object keys are unique within each map
 
-Within each top-level object **`boards`**, **`nodes`**, **`themes`**, **`font-collections`**, **`icon-sets`**, and **`media`**, **keys must be unique** for that object. This does **not** forbid the same **`id`** string from appearing multiple times as an **`id` attribute** inside catalog row variant trees: those are references to a **single** catalog entry in the corresponding map. For example, one **`nodes`** entry keyed by that **`id`**.
+Within each top-level object **`boards`**, **`playgrounds`**, **`nodes`**, **`themes`**, **`font-collections`**, **`icon-sets`**, and **`media`**, **keys must be unique** for that object. This does **not** forbid the same **`id`** string from appearing multiple times as an **`id` attribute** inside catalog row variant trees: those are references to a **single** catalog entry in the corresponding map. For example, one **`nodes`** entry keyed by that **`id`**.
 
 ---
 
@@ -1135,9 +1181,9 @@ Suffix examples: `component-button-default`, `component-button-{hash}`, or `them
 
 ## Migration
 
-`metadata.version` is managed by the workspace migration system. The migration middleware lives in `packages/core/workspace/middleware/migration/middleware.ts`. On `set_workspace` it runs pending migration steps and stamps `metadata.version` with `CURRENT_WORKSPACE_VERSION` (currently 1).
+`metadata.version` is managed by the workspace migration system. The migration middleware lives in `packages/core/workspace/middleware/migration/middleware.ts`. On `set_workspace` it runs pending migration steps and stamps `metadata.version` with `CURRENT_WORKSPACE_VERSION` (currently 2).
 
-Version 1 normalizes legacy EXACT `blendMode` and `filter` values on node overrides, theme overrides, and board component properties. See `packages/core/workspace/middleware/migration/README.md`.
+Version 1 normalizes legacy EXACT `blendMode` and `filter` values on node overrides, theme overrides, and board component properties. Version 2 seeds an empty `playgrounds: {}` section on files that predate it. See `packages/core/workspace/middleware/migration/README.md`.
 
 The file format specification version is independent of the internal workspace `metadata.version` number. Field `metadata.version` tracks schema evolution for the migration system. This specification documents the overall structure of the serialized format.
 

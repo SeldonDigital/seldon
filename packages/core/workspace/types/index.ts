@@ -27,6 +27,8 @@ export {
   isPlaygroundBoard,
   isThemeBoard,
 } from "../model"
+export type { PlaygroundContainer, PlaygroundKey } from "../model"
+export { isPlaygroundContainer } from "../model"
 export type {
   EntryNode,
   EntryNodeId,

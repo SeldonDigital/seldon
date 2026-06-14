@@ -134,7 +134,7 @@ export function getTypedNode(
   nodeId: string,
   workspace: Workspace,
 ): PropertyPanelSubject {
-  const catalogRow = workspace.boards[nodeId]
+  const catalogRow = workspace.boards[nodeId] ?? workspace.playgrounds?.[nodeId]
   if (catalogRow) {
     return catalogRow
   }

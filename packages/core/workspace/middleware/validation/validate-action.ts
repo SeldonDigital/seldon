@@ -85,7 +85,10 @@ export function validateAction(workspace: Workspace, action: Action): void {
       validateAddResourceCatalog(workspace, action)
       return
     case "add_playground":
-      boardValidators.doesNotExist(workspace, action.payload.boardKey)
+      boardValidators.playgroundKeyIsFree(workspace, action.payload.boardKey)
+      return
+    case "add_sandbox":
+      boardValidators.playgroundExists(workspace, action.payload.playgroundKey)
       return
     case "add_variant":
       validateAddVariant(workspace, action)
@@ -102,8 +105,10 @@ export function validateAction(workspace: Workspace, action: Action): void {
     case "duplicate_component":
       validateDuplicateComponent(workspace, action)
       return
-    case "remove_component":
     case "remove_playground":
+      boardValidators.playgroundExists(workspace, action.payload.boardKey)
+      return
+    case "remove_component":
     case "remove_font_collection":
     case "remove_media":
     case "remove_icon_set":

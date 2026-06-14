@@ -6,6 +6,15 @@ import { getBoardVariantRootIds } from "../../../helpers/components/get-board-va
 import { collectExternalVariantUsage } from "../../../helpers/general/collect-external-variant-usage"
 import { isUserVariant } from "../../../helpers/general/is-user-variant"
 import { findBoardContainingTreeNodeId } from "../../../helpers/nodes/duplicate-entry-variant-subtree"
+import {
+  SANDBOX_MAX_MAGNITUDE,
+  findPlaygroundKeyForSandbox,
+  getPlaygroundSandboxIds,
+  isExplicitSizeValue,
+  isSandboxNode,
+  resolveSandboxRect,
+  sandboxesOverlap,
+} from "../../../helpers/nodes/sandbox"
 import { hasEffectiveThemeReference } from "../../../helpers/removal/effective-theme-references"
 import { isComponentBoard, isPlaygroundBoard } from "../../../model/components"
 import { isEntryThemeDefault } from "../../../model/entry-theme"
@@ -16,7 +25,13 @@ import {
   typeCheckingService,
   workspaceMutationService,
 } from "../../../services"
-import type { Action, InstanceId, VariantId, Workspace } from "../../../types"
+import type {
+  Action,
+  EntryNode,
+  InstanceId,
+  VariantId,
+  Workspace,
+} from "../../../types"
 import { check } from "../check"
 import { getNodeComponentId } from "../node-component-id"
 import {
@@ -212,6 +227,9 @@ export function validateNodeMutation(
         getNodeComponentId(node, workspace),
       )
       propertyValidators.values(action.payload.properties, workspace, themeId)
+      if (isSandboxNode(node)) {
+        assertSandboxConstraints(workspace, action, node as EntryNode, nodeId)
+      }
       break
     }
     case "reset_node_property": {
@@ -390,6 +408,62 @@ function getInstanceNodeOrThrow(
     )
   }
   return node
+}
+
+/**
+ * Enforces the sandbox geometry rules on a `set_node_properties` payload:
+ * explicit-only width/height, the position/size safety cap, and no overlap with
+ * a sibling sandbox in the same playground.
+ */
+function assertSandboxConstraints(
+  workspace: Workspace,
+  action: Extract<Action, { type: "set_node_properties" }>,
+  node: EntryNode,
+  nodeId: InstanceId | VariantId,
+): void {
+  const props = action.payload.properties as Record<string, unknown>
+
+  for (const key of ["width", "height"] as const) {
+    if (key in props && !isExplicitSizeValue(props[key])) {
+      throw new WorkspaceValidationError(
+        "Sandbox width and height must be an explicit size. Fit, Fill, and theme sizes are not allowed on a sandbox.",
+        action,
+      )
+    }
+  }
+
+  const merged: EntryNode = {
+    ...node,
+    overrides: { ...node.overrides, ...props },
+  }
+  const rect = resolveSandboxRect(merged)
+  if (!rect) return
+
+  if (
+    Math.abs(rect.top) > SANDBOX_MAX_MAGNITUDE ||
+    Math.abs(rect.left) > SANDBOX_MAX_MAGNITUDE ||
+    rect.width > SANDBOX_MAX_MAGNITUDE ||
+    rect.height > SANDBOX_MAX_MAGNITUDE
+  ) {
+    throw new WorkspaceValidationError(
+      `Sandbox position and size must stay within ${SANDBOX_MAX_MAGNITUDE}px.`,
+      action,
+    )
+  }
+
+  const playgroundKey = findPlaygroundKeyForSandbox(workspace, nodeId)
+  if (!playgroundKey) return
+  for (const siblingId of getPlaygroundSandboxIds(workspace, playgroundKey)) {
+    if (siblingId === nodeId) continue
+    const sibling = workspace.nodes[siblingId]
+    if (!sibling) continue
+    if (sandboxesOverlap(rect, resolveSandboxRect(sibling))) {
+      throw new WorkspaceValidationError(
+        "Sandboxes cannot overlap. Adjust the position or size so this sandbox does not cover another.",
+        action,
+      )
+    }
+  }
 }
 
 /** Rejects mutating an instance anywhere inside a default catalog variant tree. */

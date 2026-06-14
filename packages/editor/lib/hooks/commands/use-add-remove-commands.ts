@@ -1,4 +1,5 @@
 import { useCallback } from "react"
+import { nanoid } from "nanoid"
 import { ComponentId } from "@seldon/core/components/constants"
 import { InstanceId, VariantId } from "@seldon/core/index"
 import { isVariantInUse } from "@seldon/core/workspace/helpers/general/is-variant-in-use"
@@ -107,6 +108,15 @@ export function useAddRemoveCommands() {
     [dispatch, selectBoard],
   )
 
+  const addPlayground = useCallback(() => {
+    const playgroundKey = `playground-${nanoid(8)}` as BoardKey
+    dispatch({
+      type: "add_playground",
+      payload: { boardKey: playgroundKey },
+    })
+    selectBoard(playgroundKey)
+  }, [dispatch, selectBoard])
+
   const addVariant = useCallback(() => {
     const board = selectedBoard
     if (!board || !selectedBoardId) {
@@ -126,6 +136,14 @@ export function useAddRemoveCommands() {
     }
 
     if (isIconSetBoard(board)) {
+      return
+    }
+
+    if (isPlaygroundBoard(board)) {
+      dispatchWithAutoSelect({
+        type: "add_sandbox",
+        payload: { playgroundKey: selectedBoardId as BoardKey },
+      })
       return
     }
 
@@ -198,7 +216,7 @@ export function useAddRemoveCommands() {
 
   const removeBoard = useCallback(
     (boardKey: BoardKey) => {
-      const board = workspace.boards[boardKey]
+      const board = workspace.boards[boardKey] ?? workspace.playgrounds?.[boardKey]
       if (!board) return
 
       // Dispatch the removal that matches the board type. The default Seldon
@@ -367,6 +385,7 @@ export function useAddRemoveCommands() {
     addTheme,
     addFontCollection,
     addIconSet,
+    addPlayground,
     addVariant,
     removeBoard,
     deleteSelection,

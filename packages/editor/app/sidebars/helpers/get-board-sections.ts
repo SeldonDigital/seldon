@@ -11,7 +11,6 @@ import {
   isFontCollectionBoard,
   isIconSetBoard,
   isMediaBoard,
-  isPlaygroundBoard,
   isThemeBoard,
 } from "@seldon/core/workspace/model"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
@@ -28,7 +27,13 @@ export const SECTION_LABELS: Record<ComponentLevel, string> = {
 
 export interface BoardSection {
   label: string
-  level: ComponentLevel | "THEME" | "FONT_COLLECTION" | "ICON_SET" | "MEDIA"
+  level:
+    | ComponentLevel
+    | "THEME"
+    | "FONT_COLLECTION"
+    | "ICON_SET"
+    | "MEDIA"
+    | "PLAYGROUND"
   boards: BoardType[]
 }
 
@@ -43,13 +48,13 @@ function getBoardComponentLevel(board: BoardType): ComponentLevel | null {
   if (isComponentBoard(board) && isComponentId(board.catalogId)) {
     return getComponentSchema(board.catalogId).level
   }
-  if (isPlaygroundBoard(board)) {
-    return ComponentLevel.SCREEN
-  }
   return null
 }
 
-export function getBoardSections(boards: BoardType[]): BoardSection[] {
+export function getBoardSections(
+  boards: BoardType[],
+  playgrounds: BoardType[] = [],
+): BoardSection[] {
   const themeBoards = boards.filter((board) => isThemeBoard(board))
 
   const fontCollectionBoards = boards.filter((board) =>
@@ -127,6 +132,22 @@ export function getBoardSections(boards: BoardType[]): BoardSection[] {
     }
     sections.push(mediaSection)
   }
+
+  // Insert the Playgrounds section directly above Screens. Always shown so the
+  // user can create a playground even when none exist yet.
+  const playgroundsSection: BoardSection = {
+    label: "Playgrounds",
+    level: "PLAYGROUND",
+    boards: playgrounds,
+  }
+  const screensIndex = sections.findIndex(
+    (section) => section.level === ComponentLevel.SCREEN,
+  )
+  sections.splice(
+    screensIndex === -1 ? sections.length : screensIndex,
+    0,
+    playgroundsSection,
+  )
 
   return sections
 }

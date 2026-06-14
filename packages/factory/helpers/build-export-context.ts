@@ -14,7 +14,9 @@ export type ExportContext = {
 
 export function buildExportContext(workspace: Workspace): ExportContext {
   return {
-    parentIndex: buildNodeParentIndex(workspace),
+    // The factory only composes board trees. Passing boards alone keeps the
+    // `playgrounds` section (and its Sandbox content) out of every export pass.
+    parentIndex: buildNodeParentIndex({ boards: workspace.boards }),
   }
 }
 

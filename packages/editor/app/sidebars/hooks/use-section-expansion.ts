@@ -7,6 +7,7 @@ type ExpandableSection =
   | "FONT_COLLECTION"
   | "ICON_SET"
   | "MEDIA"
+  | "PLAYGROUND"
 type ToggleableSection = ExpandableSection
 
 interface SectionExpansionState {

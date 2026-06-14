@@ -120,27 +120,27 @@ const UI_OVERRIDES: PropertyRegistry = {
   },
   position: {
     icon: "seldon-text",
-    control: "text",
+    control: "combo",
     subProperties: {
       top: {
         label: "Top",
         icon: "seldon-text",
-        control: "number",
+        control: "combo",
       },
       right: {
         label: "Right",
         icon: "seldon-text",
-        control: "number",
+        control: "combo",
       },
       bottom: {
         label: "Bottom",
         icon: "seldon-text",
-        control: "number",
+        control: "combo",
       },
       left: {
         label: "Left",
         icon: "seldon-text",
-        control: "number",
+        control: "combo",
       },
     },
   },

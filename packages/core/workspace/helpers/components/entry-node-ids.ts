@@ -17,3 +17,8 @@ export function componentBoardSchemaVariantNodeId(
 export function componentBoardUniqueNodeId(boardKey: string): string {
   return `component-${boardKey}-${createNodeId()}`
 }
+
+/** New Sandbox root node id for a playground (`playground-{playgroundKey}-{suffix}`). */
+export function playgroundSandboxNodeId(playgroundKey: string): string {
+  return `playground-${playgroundKey}-${createNodeId()}`
+}

@@ -1,9 +1,16 @@
-import { Unit } from "../../constants"
+import { Theme, ThemeDimensionKey } from "../../../themes/types"
+import { Unit, ValueType } from "../../constants"
 import { PropertySchema } from "../../types/schema"
 import { EmptyValue } from "../shared/empty/empty"
 import { PercentageValue } from "../shared/exact/percentage"
 import { PixelValue } from "../shared/exact/pixel"
 import { RemValue } from "../shared/exact/rem"
+
+/** Ordinal reference into the theme dimension scale for one edge offset. */
+export interface PositionSideThemeValue {
+  type: ValueType.THEME_ORDINAL
+  value: ThemeDimensionKey
+}
 
 /** Optional offsets from each edge when using positioned layout. */
 export interface PositionValue {
@@ -13,18 +20,19 @@ export interface PositionValue {
   left?: PositionSideValue
 }
 
-/** One edge offset as unset or a measured length. */
+/** One edge offset as unset, a measured length, or a theme dimension step. */
 export type PositionSideValue =
   | EmptyValue
   | PixelValue
   | RemValue
   | PercentageValue
+  | PositionSideThemeValue
 
 export const positionSchema: PropertySchema = {
   name: "position",
   description:
-    "Sets inset offsets on top, right, bottom, and left for positioned layout.",
-  supports: ["empty", "inherit", "exact"] as const,
+    "Sets inset offsets on top, right, bottom, and left using lengths or theme dimension steps.",
+  supports: ["empty", "inherit", "exact", "themeOrdinal"] as const,
   units: {
     allowed: [Unit.PX, Unit.REM, Unit.PERCENT],
     default: Unit.PX,
@@ -46,5 +54,11 @@ export const positionSchema: PropertySchema = {
       if (typeof value === "number") return true
       return false
     },
+    themeOrdinal: (value: unknown, theme?: Theme) => {
+      if (!theme) return false
+      return typeof value === "string" && value in theme.dimension
+    },
   },
+  themeOrdinalKeys: (theme: Theme) =>
+    Object.keys(theme.dimension).map((id) => `@dimension.${id}`),
 }

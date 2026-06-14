@@ -1,10 +1,32 @@
 import { getBoardByNodeId } from "@seldon/core/workspace/helpers/components/get-board-by-node-id"
+import { walkBoardTreeRefs } from "@seldon/core/workspace/helpers/components/walk-board-tree-refs"
 import { isVariantNode } from "@seldon/core/workspace/helpers/nodes/is-variant-node"
 import { parseNodeTemplate } from "@seldon/core/workspace/model/template-ref"
 import type { EntryNode, Workspace } from "@seldon/core/workspace/types"
 
+/**
+ * Collects every node id reachable from any playground's Sandbox trees. The
+ * factory uses this to drop playground content before any export pass so styles,
+ * icons, images, and component discovery never include sandbox-only nodes.
+ */
+function collectPlaygroundNodeIds(workspace: Workspace): Set<string> {
+  const ids = new Set<string>()
+  for (const playground of Object.values(workspace.playgrounds ?? {})) {
+    walkBoardTreeRefs(playground.variants, (ref) => {
+      ids.add(ref.id)
+    })
+  }
+  return ids
+}
+
 export function getWorkspaceNodeList(workspace: Workspace): EntryNode[] {
-  return Object.values(workspace.nodes)
+  const playgroundNodeIds = collectPlaygroundNodeIds(workspace)
+  if (playgroundNodeIds.size === 0) {
+    return Object.values(workspace.nodes)
+  }
+  return Object.values(workspace.nodes).filter(
+    (node) => !playgroundNodeIds.has(node.id),
+  )
 }
 
 export function getTemplateSourceNodeId(node: EntryNode): string | null {

@@ -34,6 +34,7 @@ function makeWorkspace(): Workspace {
   return {
     metadata: { version: 0, label: "" },
     boards: {},
+    playgrounds: {},
     nodes: {
       "default-1": makeNode("default-1", "default"),
       "variant-1": makeNode("variant-1", "variant"),

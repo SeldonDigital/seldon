@@ -28,6 +28,8 @@ export {
   isPlaygroundBoard,
   isThemeBoard,
 } from "./components"
+export type { PlaygroundContainer, PlaygroundKey } from "./playground"
+export { isPlaygroundContainer } from "./playground"
 export type {
   EntryNode,
   EntryNodeId,

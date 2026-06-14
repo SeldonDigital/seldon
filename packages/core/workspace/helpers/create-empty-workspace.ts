@@ -14,6 +14,7 @@ export function createEmptyWorkspace(): Workspace {
       label: "",
     },
     boards: {},
+    playgrounds: {},
     nodes: {},
     themes: {},
     "font-collections": {},

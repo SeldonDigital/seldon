@@ -30,6 +30,8 @@ export interface ComponentBoard {
 
 export interface PlaygroundBoard {
   type: "playground"
+  /** Mirrors the playground container's map key so a row resolves its own key. */
+  id?: BoardKey
   label: string
   intent?: string
   tags?: string[]

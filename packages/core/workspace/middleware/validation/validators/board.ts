@@ -12,6 +12,15 @@ export const boardValidators = {
   doesNotExist: (workspace: Workspace, id: string) => {
     check(!workspace.boards[id], ErrorMessages.componentAlreadyExists(id))
   },
+  playgroundExists: (workspace: Workspace, id: string) => {
+    check(workspace.playgrounds?.[id], ErrorMessages.componentNotFound(id))
+  },
+  playgroundKeyIsFree: (workspace: Workspace, id: string) => {
+    check(
+      !workspace.boards[id] && !workspace.playgrounds?.[id],
+      ErrorMessages.componentAlreadyExists(id),
+    )
+  },
   allowedPropertyKeys: (
     componentId: ComponentId,
     board?: { type: string },

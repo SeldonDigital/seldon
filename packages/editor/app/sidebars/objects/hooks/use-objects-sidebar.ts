@@ -25,7 +25,15 @@ export function useObjectsSidebar() {
     [workspace],
   )
 
-  const sections = useMemo(() => getBoardSections(boards), [boards])
+  const playgrounds = useMemo(
+    () => workspaceService.getPlaygrounds(workspace),
+    [workspace],
+  )
+
+  const sections = useMemo(
+    () => getBoardSections(boards, playgrounds),
+    [boards, playgrounds],
+  )
 
   useEffect(() => {
     if (

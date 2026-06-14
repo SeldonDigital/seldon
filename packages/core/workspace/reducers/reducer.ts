@@ -12,6 +12,7 @@ import { addIconSet } from "./handlers/add/add-icon-set"
 import { addMedia } from "./handlers/add/add-media"
 import { addNodeLayer } from "./handlers/add/add-node-layer"
 import { addPlayground } from "./handlers/add/add-playground"
+import { addSandbox } from "./handlers/add/add-sandbox"
 import { addTheme } from "./handlers/add/add-theme"
 import { addThemeCustomBackground } from "./handlers/add/add-theme-custom-background"
 import { addThemeCustomBlur } from "./handlers/add/add-theme-custom-blur"
@@ -195,6 +196,8 @@ function reducer(workspace: Workspace, action: WorkspaceAction): Workspace {
       return addTheme(action.payload, workspace)
     case "add_playground":
       return addPlayground(action.payload, workspace)
+    case "add_sandbox":
+      return addSandbox(action.payload, workspace)
     case "add_component_and_insert_default_instance": {
       const { boardKey, target, variantFallbacks } = action.payload
       const workspaceWithBoard = addComponent(

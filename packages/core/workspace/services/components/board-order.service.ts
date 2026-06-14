@@ -36,6 +36,13 @@ export class BoardOrderService {
       (a, b) => getBoardOrder(a) - getBoardOrder(b),
     )
   }
+
+  /** All playground containers sorted by their stored order. */
+  public getPlaygrounds(workspace: Workspace): Board[] {
+    return Object.values(workspace.playgrounds ?? {}).sort(
+      (a, b) => getBoardOrder(a) - getBoardOrder(b),
+    )
+  }
 }
 
 export const boardOrderService = new BoardOrderService()

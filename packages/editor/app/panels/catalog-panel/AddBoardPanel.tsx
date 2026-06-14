@@ -1,7 +1,7 @@
 "use client"
 
 import { useCallback } from "react"
-import { ComponentLevel } from "@seldon/core/components/constants"
+import { ComponentId, ComponentLevel } from "@seldon/core/components/constants"
 import { useSelection } from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useAddRemoveCommands } from "@lib/hooks/commands/use-add-remove-commands"
@@ -43,6 +43,9 @@ export function AddBoardPanel({
     (schema) => {
       // Board-level schemas are never offered in this panel.
       if (schema.level === ComponentLevel.BOARD) return false
+
+      // Sandbox is a playground-only frame and is never added as a board.
+      if (schema.id === ComponentId.SANDBOX) return false
 
       if (level) {
         // Scoped add: only the requested level (frames included when asked for).

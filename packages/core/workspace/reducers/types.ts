@@ -329,6 +329,12 @@ export type WorkspaceAction =
       }
     }
   | {
+      type: "add_sandbox"
+      payload: {
+        playgroundKey: BoardKey
+      }
+    }
+  | {
       type: "remove_component"
       payload: {
         boardKey: BoardKey

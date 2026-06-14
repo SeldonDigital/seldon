@@ -47,6 +47,7 @@ export enum ComponentId {
   OPTION = "option",
   OPTION_GROUP = "optionGroup",
   ORDERED_LIST = "orderedList",
+  SANDBOX = "sandbox",
   SCREEN = "screen",
   SECTION = "section",
   SELECT = "select",
