@@ -133,6 +133,7 @@ import { setIconSetOverride } from "./handlers/set/set-icon-set-override"
 import { setIconSetSubcategoryPreset } from "./handlers/set/set-icon-set-subcategory-preset"
 import { setNodeEditorData } from "./handlers/set/set-node-editor-data"
 import { setNodeLabel } from "./handlers/set/set-node-label"
+import { setNodeLayerKind } from "./handlers/set/set-node-layer-kind"
 import { setNodeProperties } from "./handlers/set/set-node-properties"
 import { setNodeTheme } from "./handlers/set/set-node-theme"
 import { setThemeCustomTokenName } from "./handlers/set/set-theme-custom-token-name"
@@ -295,6 +296,8 @@ function reducer(workspace: Workspace, action: WorkspaceAction): Workspace {
       return addNodeLayer(action.payload, workspace)
     case "remove_node_layer":
       return removeNodeLayer(action.payload, workspace)
+    case "set_node_layer_kind":
+      return setNodeLayerKind(action.payload, workspace)
     case "set_node_label":
       return setNodeLabel(action.payload, workspace)
     case "set_node_theme":

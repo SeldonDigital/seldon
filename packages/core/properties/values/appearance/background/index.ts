@@ -1,3 +1,10 @@
+import type { GradientValue } from "../../effects/gradients/gradient"
+import type { GradientAngleValue } from "../../effects/gradients/gradient-angle"
+import type { GradientStopBrightnessValue } from "../../effects/gradients/gradient-stop-brightness"
+import type { GradientStopColorValue } from "../../effects/gradients/gradient-stop-color"
+import type { GradientStopOpacityValue } from "../../effects/gradients/gradient-stop-opacity"
+import type { GradientStopPositionValue } from "../../effects/gradients/gradient-stop-position"
+import type { GradientTypeValue } from "../../effects/gradients/gradient-type"
 import { EmptyValue } from "../../shared/empty/empty"
 import { BackgroundBlendModeValue } from "./background-blend-mode"
 import { BackgroundBrightnessValue } from "./background-brightness"
@@ -10,7 +17,13 @@ import { BackgroundPositionValue } from "./background-position"
 import { BackgroundRepeatValue } from "./background-repeat"
 import { BackgroundSizeValue } from "./background-size"
 
-/** One layer in the background stack. `kind` selects which facets apply. */
+/**
+ * One layer in the background stack. `kind` selects which facets apply:
+ *
+ * - `color` uses `color`, `brightness`, `opacity`.
+ * - `image` uses `image`, `blendMode`, `position`, `size`, `repeat`, `filter`.
+ * - `gradient` uses `preset` plus the gradient stop and shape facets.
+ */
 export interface BackgroundLayer {
   kind?: BackgroundKindValue | EmptyValue
   image?: BackgroundImageValue | EmptyValue
@@ -22,6 +35,17 @@ export interface BackgroundLayer {
   filter?: BackgroundFilterValue | EmptyValue
   brightness?: BackgroundBrightnessValue | EmptyValue
   opacity?: BackgroundOpacityValue | EmptyValue
+  preset?: GradientValue | EmptyValue
+  gradientType?: GradientTypeValue | EmptyValue
+  angle?: GradientAngleValue | EmptyValue
+  startColor?: GradientStopColorValue | EmptyValue
+  startOpacity?: GradientStopOpacityValue | EmptyValue
+  startBrightness?: GradientStopBrightnessValue | EmptyValue
+  startPosition?: GradientStopPositionValue | EmptyValue
+  endColor?: GradientStopColorValue | EmptyValue
+  endOpacity?: GradientStopOpacityValue | EmptyValue
+  endBrightness?: GradientStopBrightnessValue | EmptyValue
+  endPosition?: GradientStopPositionValue | EmptyValue
 }
 
 export * from "./background-kind"
@@ -34,3 +58,4 @@ export * from "./background-blend-mode"
 export * from "./background-filter"
 export * from "./background-brightness"
 export * from "./background-opacity"
+export * from "./background-seeds"

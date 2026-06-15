@@ -18,7 +18,6 @@ import {
   EmptyValue,
   FontCompound,
   GapValue,
-  GradientCompound,
   HtmlElementValue,
   ImageFitValue,
   ImageSourceValue,
@@ -113,7 +112,6 @@ export type Properties = Partial<{
   wrapText: BooleanValue | EmptyValue
   lines: LinesValue | EmptyValue
 
-  gradient: GradientCompound[]
   shadow: ShadowCompound[]
   scroll: ScrollValue | EmptyValue
   scrollbarStyle: ScrollbarStyleValue | EmptyValue

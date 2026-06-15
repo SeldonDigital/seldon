@@ -19,6 +19,7 @@ import {
 import {
   validateAddNodeLayer,
   validateRemoveNodeLayer,
+  validateSetNodeLayerKind,
 } from "./action-groups/node-layers"
 import { isPassthroughAction } from "./action-groups/passthrough"
 import {
@@ -149,6 +150,9 @@ export function validateAction(workspace: Workspace, action: Action): void {
       return
     case "remove_node_layer":
       validateRemoveNodeLayer(workspace, action)
+      return
+    case "set_node_layer_kind":
+      validateSetNodeLayerKind(workspace, action)
       return
     case "set_node_theme":
     case "set_node_label":

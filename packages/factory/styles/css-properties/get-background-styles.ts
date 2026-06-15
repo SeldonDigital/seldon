@@ -11,9 +11,9 @@ import { Theme } from "@seldon/core/themes/types"
 import { StyleGenerationContext } from "../types"
 import { getBackgroundPositionStyle } from "./get-background-position-style"
 import { getBackgroundSizeStyle } from "./get-background-size-style"
-import { getGradientStyles } from "./get-gradient-styles"
 import { getLayeredPaintColor } from "./get-layered-paint-color"
 import { getLayeredPaintLayers } from "./get-layered-paint-layer"
+import { resolveGradientLayer } from "./resolve-gradient-layer"
 import { CSSObject } from "./types"
 
 const DEFAULT_POSITION = "center"
@@ -32,7 +32,7 @@ type PaintEntry = {
 
 /**
  * Composes a node's typed background layer stack into CSS. Each layer is one of
- * three kinds:
+ * four kinds:
  *
  * - `none` paints nothing.
  * - `color` paints a solid fill. The back-most color becomes the single
@@ -40,21 +40,25 @@ type PaintEntry = {
  *   `linear-gradient` entry, since CSS allows only one `background-color`.
  * - `image` paints a `url(...)` entry with its own position, size, repeat, and
  *   blend mode.
+ * - `gradient` paints a `linear/radial-gradient(...)` entry resolved from its
+ *   theme recipe and stop facets.
  *
- * The image `filter` facet is intentionally not emitted. CSS has no per-layer
- * background filter, so filters apply only on platforms that render layers
- * natively (iOS, Android).
+ * The image `filter` and `opacity` facets are intentionally not emitted. CSS
+ * has no per-layer background filter or image opacity, so they apply only on
+ * platforms that render layers natively (iOS, Android).
  *
- * `gradient` property layers render on top of the background stack.
+ * When the node has text content and any gradient layer, the gradient clips to
+ * the text (`background-clip: text` with transparent color).
  */
 export function getBackgroundStyles(
   context: StyleGenerationContext,
 ): CSSObject {
-  const { properties, theme } = context
+  const { properties, theme, useThemeVariableReferences, themeSlug } = context
   const layers = getLayeredPaintLayers(properties, "background")
 
   const paint: PaintEntry[] = []
   let backgroundColor: string | undefined
+  let hasGradient = false
 
   layers.forEach((layer, index) => {
     const kind = resolveBackgroundKind(layer)
@@ -81,6 +85,25 @@ export function getBackgroundStyles(
     if (kind === BackgroundKind.IMAGE) {
       const entry = resolveImageLayer(layer, theme)
       if (entry) paint.push(entry)
+      return
+    }
+
+    if (kind === BackgroundKind.GRADIENT) {
+      const gradient = resolveGradientLayer(
+        layer,
+        theme,
+        useThemeVariableReferences,
+        themeSlug,
+      )
+      if (!gradient) return
+      hasGradient = true
+      paint.push({
+        image: gradient,
+        position: "0% 0%",
+        size: "auto",
+        repeat: "no-repeat",
+        blend: DEFAULT_BLEND,
+      })
     }
   })
 
@@ -104,13 +127,10 @@ export function getBackgroundStyles(
     }
   }
 
-  const gradient = getGradientStyles(context)
-  if (gradient.backgroundImage) {
-    styles.backgroundImage = [gradient.backgroundImage, styles.backgroundImage]
-      .filter(Boolean)
-      .join(", ")
-    if (gradient.color) styles.color = gradient.color
-    if (gradient.backgroundClip) styles.backgroundClip = gradient.backgroundClip
+  // A gradient over text content clips to the glyphs instead of the box.
+  if (hasGradient && properties.content) {
+    styles.color = "transparent"
+    styles.backgroundClip = "text"
   }
 
   return styles
@@ -122,9 +142,12 @@ function resolveBackgroundKind(layer: BackgroundLayer): BackgroundKind {
   if (kind && typeof kind.value === "string") {
     if (kind.value === BackgroundKind.COLOR) return BackgroundKind.COLOR
     if (kind.value === BackgroundKind.IMAGE) return BackgroundKind.IMAGE
+    if (kind.value === BackgroundKind.GRADIENT) return BackgroundKind.GRADIENT
     if (kind.value === BackgroundKind.NONE) return BackgroundKind.NONE
   }
   if (resolveValue(layer.image)) return BackgroundKind.IMAGE
+  if (resolveValue(layer.preset) || resolveValue(layer.startColor))
+    return BackgroundKind.GRADIENT
   if (resolveValue(layer.color)) return BackgroundKind.COLOR
   return BackgroundKind.NONE
 }

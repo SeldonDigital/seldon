@@ -31,6 +31,7 @@ import {
   ValueType,
   Variant,
   Workspace,
+  getCompoundSelectorFacet,
 } from "@seldon/core"
 import { getComponentSchema } from "@seldon/core/components/catalog"
 import { isComponentId } from "@seldon/core/components/constants"
@@ -124,20 +125,9 @@ export interface FlatProperty {
  * @returns True if the theme has a section for this property with preset options
  */
 /**
- * The facet that drives a compound's parent combo. Background uses an explicit
- * `kind` (None / Color / Image); other compounds use a theme `preset`.
- */
-const COMPOUND_SELECTOR_FACET: Record<string, string> = {
-  background: "kind",
-}
-
-export function getCompoundSelectorFacet(propertyKey: string): string {
-  return COMPOUND_SELECTOR_FACET[propertyKey] ?? "preset"
-}
-
-/**
- * Whether a compound's parent row renders a selector combo. Background always
- * does (its `kind` choices), other compounds only when the theme offers presets.
+ * Whether a compound's parent row renders a selector combo. Compounds whose
+ * core selector facet is `kind` (background) always do; other compounds only
+ * when the theme offers presets.
  */
 export function hasCompoundSelectorCombo(
   propertyKey: string,
@@ -147,7 +137,7 @@ export function hasCompoundSelectorCombo(
   if (!isCompoundProperty(propertyKey)) {
     return false
   }
-  if (propertyKey === "background") {
+  if (getCompoundSelectorFacet(propertyKey) === "kind") {
     return true
   }
   return hasCompoundPresetOptions(propertyKey, theme, workspace)

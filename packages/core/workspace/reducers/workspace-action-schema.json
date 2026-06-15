@@ -2361,7 +2361,7 @@
                             "type": "boolean"
                         },
                         "properties": {
-                            "$ref": "#/definitions/Partial<{display:DisplayValue;htmlElement:HtmlElementValue;wrapperElement:WrapperElementValue;content:ContentValue;symbol:SymbolValue;source:ImageSourceValue;imageFit:ImageFitValue;altText:ContentValue;inputType:InputTypeValue;placeholder:ContentValue;checked:CheckedValue;ariaLabel:ContentValue;ariaHidden:EmptyValue|BooleanValue;size:SizeValue;buttonSize:ButtonSizeValue;board:BoardCompound;screenWidth:ScreenWidthValue;screenHeight:ScreenHeightValue;cursor:CursorValue;direction:DirectionValue;placement:PlacementValue;position:PositionValue;orientation:OrientationValue;align:AlignValue;width:DimensionValue;height:DimensionValue;margin:MarginValue;padding:PaddingValue;gap:GapValue;rotation:RotationValue;wrapChildren:EmptyValue|BooleanValue;clip:EmptyValue|BooleanValue;columns:ColumnCountValue;rows:RowCountValue;cellAlign:InheritValue|AlignValue;dimension:DimensionValue;resize:ResizeValue;screenSize:ScreenSizeValue;color:ColorValue;accentColor:ColorValue;brightness:BrightnessValue;opacity:OpacityValue;background:BackgroundLayer[];border:BorderCompound;borderTop:BorderCompound;borderRight:BorderCompound;borderBottom:BorderCompound;borderLeft:BorderCompound;corners:CornersValue;borderCollapse:BorderCollapseValue;font:FontCompound;textAlign:TextAlignValue;textDecoration:TextDecorationValue;wrapText:EmptyValue|BooleanValue;lines:LinesValue;gradient:GradientCompound[];shadow:ShadowCompound[];scroll:ScrollValue;scrollbarStyle:ScrollbarStyleValue;}>",
+                            "$ref": "#/definitions/Partial<{display:DisplayValue;htmlElement:HtmlElementValue;wrapperElement:WrapperElementValue;content:ContentValue;symbol:SymbolValue;source:ImageSourceValue;imageFit:ImageFitValue;altText:ContentValue;inputType:InputTypeValue;placeholder:ContentValue;checked:CheckedValue;ariaLabel:ContentValue;ariaHidden:EmptyValue|BooleanValue;size:SizeValue;buttonSize:ButtonSizeValue;board:BoardCompound;screenWidth:ScreenWidthValue;screenHeight:ScreenHeightValue;cursor:CursorValue;direction:DirectionValue;placement:PlacementValue;position:PositionValue;orientation:OrientationValue;align:AlignValue;width:DimensionValue;height:DimensionValue;margin:MarginValue;padding:PaddingValue;gap:GapValue;rotation:RotationValue;wrapChildren:EmptyValue|BooleanValue;clip:EmptyValue|BooleanValue;columns:ColumnCountValue;rows:RowCountValue;cellAlign:InheritValue|AlignValue;dimension:DimensionValue;resize:ResizeValue;screenSize:ScreenSizeValue;color:ColorValue;accentColor:ColorValue;brightness:BrightnessValue;opacity:OpacityValue;background:BackgroundLayer[];border:BorderCompound;borderTop:BorderCompound;borderRight:BorderCompound;borderBottom:BorderCompound;borderLeft:BorderCompound;corners:CornersValue;borderCollapse:BorderCollapseValue;font:FontCompound;textAlign:TextAlignValue;textDecoration:TextDecorationValue;wrapText:EmptyValue|BooleanValue;lines:LinesValue;shadow:ShadowCompound[];scroll:ScrollValue;scrollbarStyle:ScrollbarStyleValue;}>",
                             "description": "Every catalog property key and the stored value shape for that key on a node.\nKeys follow the same category sequence editors use when grouping fields.\nThe type is partial so each component only declares the keys it supports."
                         }
                     },
@@ -2713,7 +2713,7 @@
                             "type": "object"
                         },
                         "properties": {
-                            "$ref": "#/definitions/Partial<{display:DisplayValue;htmlElement:HtmlElementValue;wrapperElement:WrapperElementValue;content:ContentValue;symbol:SymbolValue;source:ImageSourceValue;imageFit:ImageFitValue;altText:ContentValue;inputType:InputTypeValue;placeholder:ContentValue;checked:CheckedValue;ariaLabel:ContentValue;ariaHidden:EmptyValue|BooleanValue;size:SizeValue;buttonSize:ButtonSizeValue;board:BoardCompound;screenWidth:ScreenWidthValue;screenHeight:ScreenHeightValue;cursor:CursorValue;direction:DirectionValue;placement:PlacementValue;position:PositionValue;orientation:OrientationValue;align:AlignValue;width:DimensionValue;height:DimensionValue;margin:MarginValue;padding:PaddingValue;gap:GapValue;rotation:RotationValue;wrapChildren:EmptyValue|BooleanValue;clip:EmptyValue|BooleanValue;columns:ColumnCountValue;rows:RowCountValue;cellAlign:InheritValue|AlignValue;dimension:DimensionValue;resize:ResizeValue;screenSize:ScreenSizeValue;color:ColorValue;accentColor:ColorValue;brightness:BrightnessValue;opacity:OpacityValue;background:BackgroundLayer[];border:BorderCompound;borderTop:BorderCompound;borderRight:BorderCompound;borderBottom:BorderCompound;borderLeft:BorderCompound;corners:CornersValue;borderCollapse:BorderCollapseValue;font:FontCompound;textAlign:TextAlignValue;textDecoration:TextDecorationValue;wrapText:EmptyValue|BooleanValue;lines:LinesValue;gradient:GradientCompound[];shadow:ShadowCompound[];scroll:ScrollValue;scrollbarStyle:ScrollbarStyleValue;}>"
+                            "$ref": "#/definitions/Partial<{display:DisplayValue;htmlElement:HtmlElementValue;wrapperElement:WrapperElementValue;content:ContentValue;symbol:SymbolValue;source:ImageSourceValue;imageFit:ImageFitValue;altText:ContentValue;inputType:InputTypeValue;placeholder:ContentValue;checked:CheckedValue;ariaLabel:ContentValue;ariaHidden:EmptyValue|BooleanValue;size:SizeValue;buttonSize:ButtonSizeValue;board:BoardCompound;screenWidth:ScreenWidthValue;screenHeight:ScreenHeightValue;cursor:CursorValue;direction:DirectionValue;placement:PlacementValue;position:PositionValue;orientation:OrientationValue;align:AlignValue;width:DimensionValue;height:DimensionValue;margin:MarginValue;padding:PaddingValue;gap:GapValue;rotation:RotationValue;wrapChildren:EmptyValue|BooleanValue;clip:EmptyValue|BooleanValue;columns:ColumnCountValue;rows:RowCountValue;cellAlign:InheritValue|AlignValue;dimension:DimensionValue;resize:ResizeValue;screenSize:ScreenSizeValue;color:ColorValue;accentColor:ColorValue;brightness:BrightnessValue;opacity:OpacityValue;background:BackgroundLayer[];border:BorderCompound;borderTop:BorderCompound;borderRight:BorderCompound;borderBottom:BorderCompound;borderLeft:BorderCompound;corners:CornersValue;borderCollapse:BorderCollapseValue;font:FontCompound;textAlign:TextAlignValue;textDecoration:TextDecorationValue;wrapText:EmptyValue|BooleanValue;lines:LinesValue;shadow:ShadowCompound[];scroll:ScrollValue;scrollbarStyle:ScrollbarStyleValue;}>"
                         }
                     },
                     "required": [
@@ -2915,11 +2915,50 @@
                 "payload": {
                     "additionalProperties": false,
                     "properties": {
+                        "kind": {
+                            "description": "The kind to seed the layer with, e.g. a `BackgroundKind` value.",
+                            "type": "string"
+                        },
+                        "layerIndex": {
+                            "description": "Paint-layer slot to retype; defaults to layer 0.",
+                            "type": "number"
+                        },
+                        "nodeId": {
+                            "type": "string"
+                        },
+                        "property": {
+                            "$ref": "#/definitions/LayeredPaintKey"
+                        }
+                    },
+                    "required": [
+                        "kind",
+                        "nodeId",
+                        "property"
+                    ],
+                    "type": "object"
+                },
+                "type": {
+                    "const": "set_node_layer_kind",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "payload",
+                "type"
+            ],
+            "type": "object"
+        },
+        {
+            "additionalProperties": false,
+            "properties": {
+                "payload": {
+                    "additionalProperties": false,
+                    "properties": {
                         "boardKey": {
                             "type": "string"
                         },
                         "properties": {
-                            "$ref": "#/definitions/Partial<{display:DisplayValue;htmlElement:HtmlElementValue;wrapperElement:WrapperElementValue;content:ContentValue;symbol:SymbolValue;source:ImageSourceValue;imageFit:ImageFitValue;altText:ContentValue;inputType:InputTypeValue;placeholder:ContentValue;checked:CheckedValue;ariaLabel:ContentValue;ariaHidden:EmptyValue|BooleanValue;size:SizeValue;buttonSize:ButtonSizeValue;board:BoardCompound;screenWidth:ScreenWidthValue;screenHeight:ScreenHeightValue;cursor:CursorValue;direction:DirectionValue;placement:PlacementValue;position:PositionValue;orientation:OrientationValue;align:AlignValue;width:DimensionValue;height:DimensionValue;margin:MarginValue;padding:PaddingValue;gap:GapValue;rotation:RotationValue;wrapChildren:EmptyValue|BooleanValue;clip:EmptyValue|BooleanValue;columns:ColumnCountValue;rows:RowCountValue;cellAlign:InheritValue|AlignValue;dimension:DimensionValue;resize:ResizeValue;screenSize:ScreenSizeValue;color:ColorValue;accentColor:ColorValue;brightness:BrightnessValue;opacity:OpacityValue;background:BackgroundLayer[];border:BorderCompound;borderTop:BorderCompound;borderRight:BorderCompound;borderBottom:BorderCompound;borderLeft:BorderCompound;corners:CornersValue;borderCollapse:BorderCollapseValue;font:FontCompound;textAlign:TextAlignValue;textDecoration:TextDecorationValue;wrapText:EmptyValue|BooleanValue;lines:LinesValue;gradient:GradientCompound[];shadow:ShadowCompound[];scroll:ScrollValue;scrollbarStyle:ScrollbarStyleValue;}>"
+                            "$ref": "#/definitions/Partial<{display:DisplayValue;htmlElement:HtmlElementValue;wrapperElement:WrapperElementValue;content:ContentValue;symbol:SymbolValue;source:ImageSourceValue;imageFit:ImageFitValue;altText:ContentValue;inputType:InputTypeValue;placeholder:ContentValue;checked:CheckedValue;ariaLabel:ContentValue;ariaHidden:EmptyValue|BooleanValue;size:SizeValue;buttonSize:ButtonSizeValue;board:BoardCompound;screenWidth:ScreenWidthValue;screenHeight:ScreenHeightValue;cursor:CursorValue;direction:DirectionValue;placement:PlacementValue;position:PositionValue;orientation:OrientationValue;align:AlignValue;width:DimensionValue;height:DimensionValue;margin:MarginValue;padding:PaddingValue;gap:GapValue;rotation:RotationValue;wrapChildren:EmptyValue|BooleanValue;clip:EmptyValue|BooleanValue;columns:ColumnCountValue;rows:RowCountValue;cellAlign:InheritValue|AlignValue;dimension:DimensionValue;resize:ResizeValue;screenSize:ScreenSizeValue;color:ColorValue;accentColor:ColorValue;brightness:BrightnessValue;opacity:OpacityValue;background:BackgroundLayer[];border:BorderCompound;borderTop:BorderCompound;borderRight:BorderCompound;borderBottom:BorderCompound;borderLeft:BorderCompound;corners:CornersValue;borderCollapse:BorderCollapseValue;font:FontCompound;textAlign:TextAlignValue;textDecoration:TextDecorationValue;wrapText:EmptyValue|BooleanValue;lines:LinesValue;shadow:ShadowCompound[];scroll:ScrollValue;scrollbarStyle:ScrollbarStyleValue;}>"
                         }
                     },
                     "required": [
@@ -5176,7 +5215,8 @@
             "enum": [
                 "none",
                 "color",
-                "image"
+                "image",
+                "gradient"
             ],
             "type": "string"
         },
@@ -5201,8 +5241,64 @@
         },
         "BackgroundLayer": {
             "additionalProperties": false,
-            "description": "One layer in the background stack. `kind` selects which facets apply.",
+            "description": "One layer in the background stack. `kind` selects which facets apply:\n\n- `color` uses `color`, `brightness`, `opacity`.\n- `image` uses `image`, `blendMode`, `position`, `size`, `repeat`, `filter`.\n- `gradient` uses `preset` plus the gradient stop and shape facets.",
             "properties": {
+                "angle": {
+                    "anyOf": [
+                        {
+                            "additionalProperties": false,
+                            "description": "The value CAN be set but initially it is not.",
+                            "properties": {
+                                "type": {
+                                    "const": "empty",
+                                    "description": "Leave unset so defaults and platform rules apply after merge.",
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "type": "null"
+                                }
+                            },
+                            "required": [
+                                "type",
+                                "value"
+                            ],
+                            "type": "object"
+                        },
+                        {
+                            "additionalProperties": false,
+                            "properties": {
+                                "type": {
+                                    "const": "exact",
+                                    "description": "Store a literal only, with no pointer to theme tokens or other properties.",
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "unit": {
+                                            "const": "deg",
+                                            "description": "Rotation angle.",
+                                            "type": "string"
+                                        },
+                                        "value": {
+                                            "type": "number"
+                                        }
+                                    },
+                                    "required": [
+                                        "unit",
+                                        "value"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "type",
+                                "value"
+                            ],
+                            "type": "object"
+                        }
+                    ]
+                },
                 "blendMode": {
                     "anyOf": [
                         {
@@ -5371,6 +5467,302 @@
                         }
                     ]
                 },
+                "endBrightness": {
+                    "anyOf": [
+                        {
+                            "additionalProperties": false,
+                            "description": "The value CAN be set but initially it is not.",
+                            "properties": {
+                                "type": {
+                                    "const": "empty",
+                                    "description": "Leave unset so defaults and platform rules apply after merge.",
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "type": "null"
+                                }
+                            },
+                            "required": [
+                                "type",
+                                "value"
+                            ],
+                            "type": "object"
+                        },
+                        {
+                            "additionalProperties": false,
+                            "properties": {
+                                "type": {
+                                    "const": "exact",
+                                    "description": "Store a literal only, with no pointer to theme tokens or other properties.",
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "unit": {
+                                            "const": "%",
+                                            "description": "Fraction of a reference size or an amount from zero through one hundred.",
+                                            "type": "string"
+                                        },
+                                        "value": {
+                                            "type": "number"
+                                        }
+                                    },
+                                    "required": [
+                                        "unit",
+                                        "value"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "type",
+                                "value"
+                            ],
+                            "type": "object"
+                        }
+                    ]
+                },
+                "endColor": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/HSLValue"
+                        },
+                        {
+                            "$ref": "#/definitions/LCHValue"
+                        },
+                        {
+                            "$ref": "#/definitions/RGBValue"
+                        },
+                        {
+                            "additionalProperties": false,
+                            "description": "The value CAN be set but initially it is not.",
+                            "properties": {
+                                "type": {
+                                    "const": "empty",
+                                    "description": "Leave unset so defaults and platform rules apply after merge.",
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "type": "null"
+                                }
+                            },
+                            "required": [
+                                "type",
+                                "value"
+                            ],
+                            "type": "object"
+                        },
+                        {
+                            "additionalProperties": false,
+                            "properties": {
+                                "type": {
+                                    "const": "computed",
+                                    "description": "Resolve from a declared function and inputs that reference other values.",
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "function": {
+                                            "const": "highContrastColor",
+                                            "description": "Pick a foreground or background color that stays readable on the base color.",
+                                            "type": "string"
+                                        },
+                                        "input": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "basedOn": {
+                                                    "$ref": "#/definitions/BasedOnPropertyKey"
+                                                }
+                                            },
+                                            "required": [
+                                                "basedOn"
+                                            ],
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": [
+                                        "function",
+                                        "input"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "type",
+                                "value"
+                            ],
+                            "type": "object"
+                        },
+                        {
+                            "additionalProperties": false,
+                            "properties": {
+                                "type": {
+                                    "const": "computed",
+                                    "description": "Resolve from a declared function and inputs that reference other values.",
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "function": {
+                                            "const": "match",
+                                            "description": "Reuse the resolved value from another property path.",
+                                            "type": "string"
+                                        },
+                                        "input": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "basedOn": {
+                                                    "$ref": "#/definitions/BasedOnPropertyKey"
+                                                }
+                                            },
+                                            "required": [
+                                                "basedOn"
+                                            ],
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": [
+                                        "function",
+                                        "input"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "type",
+                                "value"
+                            ],
+                            "type": "object"
+                        },
+                        {
+                            "$ref": "#/definitions/HexValue"
+                        },
+                        {
+                            "$ref": "#/definitions/TransparentValue"
+                        },
+                        {
+                            "$ref": "#/definitions/ColorOptionValue"
+                        },
+                        {
+                            "$ref": "#/definitions/ColorThemeValue"
+                        }
+                    ]
+                },
+                "endOpacity": {
+                    "anyOf": [
+                        {
+                            "additionalProperties": false,
+                            "description": "The value CAN be set but initially it is not.",
+                            "properties": {
+                                "type": {
+                                    "const": "empty",
+                                    "description": "Leave unset so defaults and platform rules apply after merge.",
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "type": "null"
+                                }
+                            },
+                            "required": [
+                                "type",
+                                "value"
+                            ],
+                            "type": "object"
+                        },
+                        {
+                            "additionalProperties": false,
+                            "properties": {
+                                "type": {
+                                    "const": "exact",
+                                    "description": "Store a literal only, with no pointer to theme tokens or other properties.",
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "unit": {
+                                            "const": "%",
+                                            "description": "Fraction of a reference size or an amount from zero through one hundred.",
+                                            "type": "string"
+                                        },
+                                        "value": {
+                                            "type": "number"
+                                        }
+                                    },
+                                    "required": [
+                                        "unit",
+                                        "value"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "type",
+                                "value"
+                            ],
+                            "type": "object"
+                        }
+                    ]
+                },
+                "endPosition": {
+                    "anyOf": [
+                        {
+                            "additionalProperties": false,
+                            "description": "The value CAN be set but initially it is not.",
+                            "properties": {
+                                "type": {
+                                    "const": "empty",
+                                    "description": "Leave unset so defaults and platform rules apply after merge.",
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "type": "null"
+                                }
+                            },
+                            "required": [
+                                "type",
+                                "value"
+                            ],
+                            "type": "object"
+                        },
+                        {
+                            "additionalProperties": false,
+                            "properties": {
+                                "type": {
+                                    "const": "exact",
+                                    "description": "Store a literal only, with no pointer to theme tokens or other properties.",
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "unit": {
+                                            "const": "%",
+                                            "description": "Fraction of a reference size or an amount from zero through one hundred.",
+                                            "type": "string"
+                                        },
+                                        "value": {
+                                            "type": "number"
+                                        }
+                                    },
+                                    "required": [
+                                        "unit",
+                                        "value"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "type",
+                                "value"
+                            ],
+                            "type": "object"
+                        }
+                    ]
+                },
                 "filter": {
                     "anyOf": [
                         {
@@ -5413,6 +5805,32 @@
                         },
                         {
                             "$ref": "#/definitions/BackgroundFilterOptionValue"
+                        }
+                    ]
+                },
+                "gradientType": {
+                    "anyOf": [
+                        {
+                            "additionalProperties": false,
+                            "description": "The value CAN be set but initially it is not.",
+                            "properties": {
+                                "type": {
+                                    "const": "empty",
+                                    "description": "Leave unset so defaults and platform rules apply after merge.",
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "type": "null"
+                                }
+                            },
+                            "required": [
+                                "type",
+                                "value"
+                            ],
+                            "type": "object"
+                        },
+                        {
+                            "$ref": "#/definitions/GradientTypeOptionValue"
                         }
                     ]
                 },
@@ -5825,6 +6243,32 @@
                         }
                     ]
                 },
+                "preset": {
+                    "anyOf": [
+                        {
+                            "additionalProperties": false,
+                            "description": "The value CAN be set but initially it is not.",
+                            "properties": {
+                                "type": {
+                                    "const": "empty",
+                                    "description": "Leave unset so defaults and platform rules apply after merge.",
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "type": "null"
+                                }
+                            },
+                            "required": [
+                                "type",
+                                "value"
+                            ],
+                            "type": "object"
+                        },
+                        {
+                            "$ref": "#/definitions/GradientValue"
+                        }
+                    ]
+                },
                 "repeat": {
                     "anyOf": [
                         {
@@ -6117,6 +6561,302 @@
                         },
                         {
                             "$ref": "#/definitions/ImageFitOptionValue"
+                        }
+                    ]
+                },
+                "startBrightness": {
+                    "anyOf": [
+                        {
+                            "additionalProperties": false,
+                            "description": "The value CAN be set but initially it is not.",
+                            "properties": {
+                                "type": {
+                                    "const": "empty",
+                                    "description": "Leave unset so defaults and platform rules apply after merge.",
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "type": "null"
+                                }
+                            },
+                            "required": [
+                                "type",
+                                "value"
+                            ],
+                            "type": "object"
+                        },
+                        {
+                            "additionalProperties": false,
+                            "properties": {
+                                "type": {
+                                    "const": "exact",
+                                    "description": "Store a literal only, with no pointer to theme tokens or other properties.",
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "unit": {
+                                            "const": "%",
+                                            "description": "Fraction of a reference size or an amount from zero through one hundred.",
+                                            "type": "string"
+                                        },
+                                        "value": {
+                                            "type": "number"
+                                        }
+                                    },
+                                    "required": [
+                                        "unit",
+                                        "value"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "type",
+                                "value"
+                            ],
+                            "type": "object"
+                        }
+                    ]
+                },
+                "startColor": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/HSLValue"
+                        },
+                        {
+                            "$ref": "#/definitions/LCHValue"
+                        },
+                        {
+                            "$ref": "#/definitions/RGBValue"
+                        },
+                        {
+                            "additionalProperties": false,
+                            "description": "The value CAN be set but initially it is not.",
+                            "properties": {
+                                "type": {
+                                    "const": "empty",
+                                    "description": "Leave unset so defaults and platform rules apply after merge.",
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "type": "null"
+                                }
+                            },
+                            "required": [
+                                "type",
+                                "value"
+                            ],
+                            "type": "object"
+                        },
+                        {
+                            "additionalProperties": false,
+                            "properties": {
+                                "type": {
+                                    "const": "computed",
+                                    "description": "Resolve from a declared function and inputs that reference other values.",
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "function": {
+                                            "const": "highContrastColor",
+                                            "description": "Pick a foreground or background color that stays readable on the base color.",
+                                            "type": "string"
+                                        },
+                                        "input": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "basedOn": {
+                                                    "$ref": "#/definitions/BasedOnPropertyKey"
+                                                }
+                                            },
+                                            "required": [
+                                                "basedOn"
+                                            ],
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": [
+                                        "function",
+                                        "input"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "type",
+                                "value"
+                            ],
+                            "type": "object"
+                        },
+                        {
+                            "additionalProperties": false,
+                            "properties": {
+                                "type": {
+                                    "const": "computed",
+                                    "description": "Resolve from a declared function and inputs that reference other values.",
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "function": {
+                                            "const": "match",
+                                            "description": "Reuse the resolved value from another property path.",
+                                            "type": "string"
+                                        },
+                                        "input": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "basedOn": {
+                                                    "$ref": "#/definitions/BasedOnPropertyKey"
+                                                }
+                                            },
+                                            "required": [
+                                                "basedOn"
+                                            ],
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": [
+                                        "function",
+                                        "input"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "type",
+                                "value"
+                            ],
+                            "type": "object"
+                        },
+                        {
+                            "$ref": "#/definitions/HexValue"
+                        },
+                        {
+                            "$ref": "#/definitions/TransparentValue"
+                        },
+                        {
+                            "$ref": "#/definitions/ColorOptionValue"
+                        },
+                        {
+                            "$ref": "#/definitions/ColorThemeValue"
+                        }
+                    ]
+                },
+                "startOpacity": {
+                    "anyOf": [
+                        {
+                            "additionalProperties": false,
+                            "description": "The value CAN be set but initially it is not.",
+                            "properties": {
+                                "type": {
+                                    "const": "empty",
+                                    "description": "Leave unset so defaults and platform rules apply after merge.",
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "type": "null"
+                                }
+                            },
+                            "required": [
+                                "type",
+                                "value"
+                            ],
+                            "type": "object"
+                        },
+                        {
+                            "additionalProperties": false,
+                            "properties": {
+                                "type": {
+                                    "const": "exact",
+                                    "description": "Store a literal only, with no pointer to theme tokens or other properties.",
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "unit": {
+                                            "const": "%",
+                                            "description": "Fraction of a reference size or an amount from zero through one hundred.",
+                                            "type": "string"
+                                        },
+                                        "value": {
+                                            "type": "number"
+                                        }
+                                    },
+                                    "required": [
+                                        "unit",
+                                        "value"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "type",
+                                "value"
+                            ],
+                            "type": "object"
+                        }
+                    ]
+                },
+                "startPosition": {
+                    "anyOf": [
+                        {
+                            "additionalProperties": false,
+                            "description": "The value CAN be set but initially it is not.",
+                            "properties": {
+                                "type": {
+                                    "const": "empty",
+                                    "description": "Leave unset so defaults and platform rules apply after merge.",
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "type": "null"
+                                }
+                            },
+                            "required": [
+                                "type",
+                                "value"
+                            ],
+                            "type": "object"
+                        },
+                        {
+                            "additionalProperties": false,
+                            "properties": {
+                                "type": {
+                                    "const": "exact",
+                                    "description": "Store a literal only, with no pointer to theme tokens or other properties.",
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "unit": {
+                                            "const": "%",
+                                            "description": "Fraction of a reference size or an amount from zero through one hundred.",
+                                            "type": "string"
+                                        },
+                                        "value": {
+                                            "type": "number"
+                                        }
+                                    },
+                                    "required": [
+                                        "unit",
+                                        "value"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "type",
+                                "value"
+                            ],
+                            "type": "object"
                         }
                     ]
                 }
@@ -9147,713 +9887,6 @@
             ],
             "type": "object"
         },
-        "GradientCompound": {
-            "additionalProperties": false,
-            "description": "One gradient paint layer with optional theme recipe and stop fields.",
-            "properties": {
-                "angle": {
-                    "anyOf": [
-                        {
-                            "additionalProperties": false,
-                            "description": "The value CAN be set but initially it is not.",
-                            "properties": {
-                                "type": {
-                                    "const": "empty",
-                                    "description": "Leave unset so defaults and platform rules apply after merge.",
-                                    "type": "string"
-                                },
-                                "value": {
-                                    "type": "null"
-                                }
-                            },
-                            "required": [
-                                "type",
-                                "value"
-                            ],
-                            "type": "object"
-                        },
-                        {
-                            "additionalProperties": false,
-                            "properties": {
-                                "type": {
-                                    "const": "exact",
-                                    "description": "Store a literal only, with no pointer to theme tokens or other properties.",
-                                    "type": "string"
-                                },
-                                "value": {
-                                    "additionalProperties": false,
-                                    "properties": {
-                                        "unit": {
-                                            "const": "deg",
-                                            "description": "Rotation angle.",
-                                            "type": "string"
-                                        },
-                                        "value": {
-                                            "type": "number"
-                                        }
-                                    },
-                                    "required": [
-                                        "unit",
-                                        "value"
-                                    ],
-                                    "type": "object"
-                                }
-                            },
-                            "required": [
-                                "type",
-                                "value"
-                            ],
-                            "type": "object"
-                        }
-                    ]
-                },
-                "endBrightness": {
-                    "anyOf": [
-                        {
-                            "additionalProperties": false,
-                            "description": "The value CAN be set but initially it is not.",
-                            "properties": {
-                                "type": {
-                                    "const": "empty",
-                                    "description": "Leave unset so defaults and platform rules apply after merge.",
-                                    "type": "string"
-                                },
-                                "value": {
-                                    "type": "null"
-                                }
-                            },
-                            "required": [
-                                "type",
-                                "value"
-                            ],
-                            "type": "object"
-                        },
-                        {
-                            "additionalProperties": false,
-                            "properties": {
-                                "type": {
-                                    "const": "exact",
-                                    "description": "Store a literal only, with no pointer to theme tokens or other properties.",
-                                    "type": "string"
-                                },
-                                "value": {
-                                    "additionalProperties": false,
-                                    "properties": {
-                                        "unit": {
-                                            "const": "%",
-                                            "description": "Fraction of a reference size or an amount from zero through one hundred.",
-                                            "type": "string"
-                                        },
-                                        "value": {
-                                            "type": "number"
-                                        }
-                                    },
-                                    "required": [
-                                        "unit",
-                                        "value"
-                                    ],
-                                    "type": "object"
-                                }
-                            },
-                            "required": [
-                                "type",
-                                "value"
-                            ],
-                            "type": "object"
-                        }
-                    ]
-                },
-                "endColor": {
-                    "anyOf": [
-                        {
-                            "$ref": "#/definitions/HSLValue"
-                        },
-                        {
-                            "$ref": "#/definitions/LCHValue"
-                        },
-                        {
-                            "$ref": "#/definitions/RGBValue"
-                        },
-                        {
-                            "additionalProperties": false,
-                            "description": "The value CAN be set but initially it is not.",
-                            "properties": {
-                                "type": {
-                                    "const": "empty",
-                                    "description": "Leave unset so defaults and platform rules apply after merge.",
-                                    "type": "string"
-                                },
-                                "value": {
-                                    "type": "null"
-                                }
-                            },
-                            "required": [
-                                "type",
-                                "value"
-                            ],
-                            "type": "object"
-                        },
-                        {
-                            "additionalProperties": false,
-                            "properties": {
-                                "type": {
-                                    "const": "computed",
-                                    "description": "Resolve from a declared function and inputs that reference other values.",
-                                    "type": "string"
-                                },
-                                "value": {
-                                    "additionalProperties": false,
-                                    "properties": {
-                                        "function": {
-                                            "const": "highContrastColor",
-                                            "description": "Pick a foreground or background color that stays readable on the base color.",
-                                            "type": "string"
-                                        },
-                                        "input": {
-                                            "additionalProperties": false,
-                                            "properties": {
-                                                "basedOn": {
-                                                    "$ref": "#/definitions/BasedOnPropertyKey"
-                                                }
-                                            },
-                                            "required": [
-                                                "basedOn"
-                                            ],
-                                            "type": "object"
-                                        }
-                                    },
-                                    "required": [
-                                        "function",
-                                        "input"
-                                    ],
-                                    "type": "object"
-                                }
-                            },
-                            "required": [
-                                "type",
-                                "value"
-                            ],
-                            "type": "object"
-                        },
-                        {
-                            "additionalProperties": false,
-                            "properties": {
-                                "type": {
-                                    "const": "computed",
-                                    "description": "Resolve from a declared function and inputs that reference other values.",
-                                    "type": "string"
-                                },
-                                "value": {
-                                    "additionalProperties": false,
-                                    "properties": {
-                                        "function": {
-                                            "const": "match",
-                                            "description": "Reuse the resolved value from another property path.",
-                                            "type": "string"
-                                        },
-                                        "input": {
-                                            "additionalProperties": false,
-                                            "properties": {
-                                                "basedOn": {
-                                                    "$ref": "#/definitions/BasedOnPropertyKey"
-                                                }
-                                            },
-                                            "required": [
-                                                "basedOn"
-                                            ],
-                                            "type": "object"
-                                        }
-                                    },
-                                    "required": [
-                                        "function",
-                                        "input"
-                                    ],
-                                    "type": "object"
-                                }
-                            },
-                            "required": [
-                                "type",
-                                "value"
-                            ],
-                            "type": "object"
-                        },
-                        {
-                            "$ref": "#/definitions/HexValue"
-                        },
-                        {
-                            "$ref": "#/definitions/TransparentValue"
-                        },
-                        {
-                            "$ref": "#/definitions/ColorOptionValue"
-                        },
-                        {
-                            "$ref": "#/definitions/ColorThemeValue"
-                        }
-                    ]
-                },
-                "endOpacity": {
-                    "anyOf": [
-                        {
-                            "additionalProperties": false,
-                            "description": "The value CAN be set but initially it is not.",
-                            "properties": {
-                                "type": {
-                                    "const": "empty",
-                                    "description": "Leave unset so defaults and platform rules apply after merge.",
-                                    "type": "string"
-                                },
-                                "value": {
-                                    "type": "null"
-                                }
-                            },
-                            "required": [
-                                "type",
-                                "value"
-                            ],
-                            "type": "object"
-                        },
-                        {
-                            "additionalProperties": false,
-                            "properties": {
-                                "type": {
-                                    "const": "exact",
-                                    "description": "Store a literal only, with no pointer to theme tokens or other properties.",
-                                    "type": "string"
-                                },
-                                "value": {
-                                    "additionalProperties": false,
-                                    "properties": {
-                                        "unit": {
-                                            "const": "%",
-                                            "description": "Fraction of a reference size or an amount from zero through one hundred.",
-                                            "type": "string"
-                                        },
-                                        "value": {
-                                            "type": "number"
-                                        }
-                                    },
-                                    "required": [
-                                        "unit",
-                                        "value"
-                                    ],
-                                    "type": "object"
-                                }
-                            },
-                            "required": [
-                                "type",
-                                "value"
-                            ],
-                            "type": "object"
-                        }
-                    ]
-                },
-                "endPosition": {
-                    "anyOf": [
-                        {
-                            "additionalProperties": false,
-                            "description": "The value CAN be set but initially it is not.",
-                            "properties": {
-                                "type": {
-                                    "const": "empty",
-                                    "description": "Leave unset so defaults and platform rules apply after merge.",
-                                    "type": "string"
-                                },
-                                "value": {
-                                    "type": "null"
-                                }
-                            },
-                            "required": [
-                                "type",
-                                "value"
-                            ],
-                            "type": "object"
-                        },
-                        {
-                            "additionalProperties": false,
-                            "properties": {
-                                "type": {
-                                    "const": "exact",
-                                    "description": "Store a literal only, with no pointer to theme tokens or other properties.",
-                                    "type": "string"
-                                },
-                                "value": {
-                                    "additionalProperties": false,
-                                    "properties": {
-                                        "unit": {
-                                            "const": "%",
-                                            "description": "Fraction of a reference size or an amount from zero through one hundred.",
-                                            "type": "string"
-                                        },
-                                        "value": {
-                                            "type": "number"
-                                        }
-                                    },
-                                    "required": [
-                                        "unit",
-                                        "value"
-                                    ],
-                                    "type": "object"
-                                }
-                            },
-                            "required": [
-                                "type",
-                                "value"
-                            ],
-                            "type": "object"
-                        }
-                    ]
-                },
-                "gradientType": {
-                    "anyOf": [
-                        {
-                            "additionalProperties": false,
-                            "description": "The value CAN be set but initially it is not.",
-                            "properties": {
-                                "type": {
-                                    "const": "empty",
-                                    "description": "Leave unset so defaults and platform rules apply after merge.",
-                                    "type": "string"
-                                },
-                                "value": {
-                                    "type": "null"
-                                }
-                            },
-                            "required": [
-                                "type",
-                                "value"
-                            ],
-                            "type": "object"
-                        },
-                        {
-                            "$ref": "#/definitions/GradientTypeOptionValue"
-                        }
-                    ]
-                },
-                "preset": {
-                    "anyOf": [
-                        {
-                            "additionalProperties": false,
-                            "description": "The value CAN be set but initially it is not.",
-                            "properties": {
-                                "type": {
-                                    "const": "empty",
-                                    "description": "Leave unset so defaults and platform rules apply after merge.",
-                                    "type": "string"
-                                },
-                                "value": {
-                                    "type": "null"
-                                }
-                            },
-                            "required": [
-                                "type",
-                                "value"
-                            ],
-                            "type": "object"
-                        },
-                        {
-                            "$ref": "#/definitions/GradientValue"
-                        }
-                    ]
-                },
-                "startBrightness": {
-                    "anyOf": [
-                        {
-                            "additionalProperties": false,
-                            "description": "The value CAN be set but initially it is not.",
-                            "properties": {
-                                "type": {
-                                    "const": "empty",
-                                    "description": "Leave unset so defaults and platform rules apply after merge.",
-                                    "type": "string"
-                                },
-                                "value": {
-                                    "type": "null"
-                                }
-                            },
-                            "required": [
-                                "type",
-                                "value"
-                            ],
-                            "type": "object"
-                        },
-                        {
-                            "additionalProperties": false,
-                            "properties": {
-                                "type": {
-                                    "const": "exact",
-                                    "description": "Store a literal only, with no pointer to theme tokens or other properties.",
-                                    "type": "string"
-                                },
-                                "value": {
-                                    "additionalProperties": false,
-                                    "properties": {
-                                        "unit": {
-                                            "const": "%",
-                                            "description": "Fraction of a reference size or an amount from zero through one hundred.",
-                                            "type": "string"
-                                        },
-                                        "value": {
-                                            "type": "number"
-                                        }
-                                    },
-                                    "required": [
-                                        "unit",
-                                        "value"
-                                    ],
-                                    "type": "object"
-                                }
-                            },
-                            "required": [
-                                "type",
-                                "value"
-                            ],
-                            "type": "object"
-                        }
-                    ]
-                },
-                "startColor": {
-                    "anyOf": [
-                        {
-                            "$ref": "#/definitions/HSLValue"
-                        },
-                        {
-                            "$ref": "#/definitions/LCHValue"
-                        },
-                        {
-                            "$ref": "#/definitions/RGBValue"
-                        },
-                        {
-                            "additionalProperties": false,
-                            "description": "The value CAN be set but initially it is not.",
-                            "properties": {
-                                "type": {
-                                    "const": "empty",
-                                    "description": "Leave unset so defaults and platform rules apply after merge.",
-                                    "type": "string"
-                                },
-                                "value": {
-                                    "type": "null"
-                                }
-                            },
-                            "required": [
-                                "type",
-                                "value"
-                            ],
-                            "type": "object"
-                        },
-                        {
-                            "additionalProperties": false,
-                            "properties": {
-                                "type": {
-                                    "const": "computed",
-                                    "description": "Resolve from a declared function and inputs that reference other values.",
-                                    "type": "string"
-                                },
-                                "value": {
-                                    "additionalProperties": false,
-                                    "properties": {
-                                        "function": {
-                                            "const": "highContrastColor",
-                                            "description": "Pick a foreground or background color that stays readable on the base color.",
-                                            "type": "string"
-                                        },
-                                        "input": {
-                                            "additionalProperties": false,
-                                            "properties": {
-                                                "basedOn": {
-                                                    "$ref": "#/definitions/BasedOnPropertyKey"
-                                                }
-                                            },
-                                            "required": [
-                                                "basedOn"
-                                            ],
-                                            "type": "object"
-                                        }
-                                    },
-                                    "required": [
-                                        "function",
-                                        "input"
-                                    ],
-                                    "type": "object"
-                                }
-                            },
-                            "required": [
-                                "type",
-                                "value"
-                            ],
-                            "type": "object"
-                        },
-                        {
-                            "additionalProperties": false,
-                            "properties": {
-                                "type": {
-                                    "const": "computed",
-                                    "description": "Resolve from a declared function and inputs that reference other values.",
-                                    "type": "string"
-                                },
-                                "value": {
-                                    "additionalProperties": false,
-                                    "properties": {
-                                        "function": {
-                                            "const": "match",
-                                            "description": "Reuse the resolved value from another property path.",
-                                            "type": "string"
-                                        },
-                                        "input": {
-                                            "additionalProperties": false,
-                                            "properties": {
-                                                "basedOn": {
-                                                    "$ref": "#/definitions/BasedOnPropertyKey"
-                                                }
-                                            },
-                                            "required": [
-                                                "basedOn"
-                                            ],
-                                            "type": "object"
-                                        }
-                                    },
-                                    "required": [
-                                        "function",
-                                        "input"
-                                    ],
-                                    "type": "object"
-                                }
-                            },
-                            "required": [
-                                "type",
-                                "value"
-                            ],
-                            "type": "object"
-                        },
-                        {
-                            "$ref": "#/definitions/HexValue"
-                        },
-                        {
-                            "$ref": "#/definitions/TransparentValue"
-                        },
-                        {
-                            "$ref": "#/definitions/ColorOptionValue"
-                        },
-                        {
-                            "$ref": "#/definitions/ColorThemeValue"
-                        }
-                    ]
-                },
-                "startOpacity": {
-                    "anyOf": [
-                        {
-                            "additionalProperties": false,
-                            "description": "The value CAN be set but initially it is not.",
-                            "properties": {
-                                "type": {
-                                    "const": "empty",
-                                    "description": "Leave unset so defaults and platform rules apply after merge.",
-                                    "type": "string"
-                                },
-                                "value": {
-                                    "type": "null"
-                                }
-                            },
-                            "required": [
-                                "type",
-                                "value"
-                            ],
-                            "type": "object"
-                        },
-                        {
-                            "additionalProperties": false,
-                            "properties": {
-                                "type": {
-                                    "const": "exact",
-                                    "description": "Store a literal only, with no pointer to theme tokens or other properties.",
-                                    "type": "string"
-                                },
-                                "value": {
-                                    "additionalProperties": false,
-                                    "properties": {
-                                        "unit": {
-                                            "const": "%",
-                                            "description": "Fraction of a reference size or an amount from zero through one hundred.",
-                                            "type": "string"
-                                        },
-                                        "value": {
-                                            "type": "number"
-                                        }
-                                    },
-                                    "required": [
-                                        "unit",
-                                        "value"
-                                    ],
-                                    "type": "object"
-                                }
-                            },
-                            "required": [
-                                "type",
-                                "value"
-                            ],
-                            "type": "object"
-                        }
-                    ]
-                },
-                "startPosition": {
-                    "anyOf": [
-                        {
-                            "additionalProperties": false,
-                            "description": "The value CAN be set but initially it is not.",
-                            "properties": {
-                                "type": {
-                                    "const": "empty",
-                                    "description": "Leave unset so defaults and platform rules apply after merge.",
-                                    "type": "string"
-                                },
-                                "value": {
-                                    "type": "null"
-                                }
-                            },
-                            "required": [
-                                "type",
-                                "value"
-                            ],
-                            "type": "object"
-                        },
-                        {
-                            "additionalProperties": false,
-                            "properties": {
-                                "type": {
-                                    "const": "exact",
-                                    "description": "Store a literal only, with no pointer to theme tokens or other properties.",
-                                    "type": "string"
-                                },
-                                "value": {
-                                    "additionalProperties": false,
-                                    "properties": {
-                                        "unit": {
-                                            "const": "%",
-                                            "description": "Fraction of a reference size or an amount from zero through one hundred.",
-                                            "type": "string"
-                                        },
-                                        "value": {
-                                            "type": "number"
-                                        }
-                                    },
-                                    "required": [
-                                        "unit",
-                                        "value"
-                                    ],
-                                    "type": "object"
-                                }
-                            },
-                            "required": [
-                                "type",
-                                "value"
-                            ],
-                            "type": "object"
-                        }
-                    ]
-                }
-            },
-            "type": "object"
-        },
         "GradientParameters": {
             "additionalProperties": false,
             "properties": {
@@ -10829,7 +10862,6 @@
             "description": "Properties stored as ordered paint stacks. Index 0 is the bottom layer.",
             "enum": [
                 "background",
-                "gradient",
                 "shadow"
             ],
             "type": "string"
@@ -12436,7 +12468,7 @@
             },
             "type": "object"
         },
-        "Partial<{display:DisplayValue;htmlElement:HtmlElementValue;wrapperElement:WrapperElementValue;content:ContentValue;symbol:SymbolValue;source:ImageSourceValue;imageFit:ImageFitValue;altText:ContentValue;inputType:InputTypeValue;placeholder:ContentValue;checked:CheckedValue;ariaLabel:ContentValue;ariaHidden:EmptyValue|BooleanValue;size:SizeValue;buttonSize:ButtonSizeValue;board:BoardCompound;screenWidth:ScreenWidthValue;screenHeight:ScreenHeightValue;cursor:CursorValue;direction:DirectionValue;placement:PlacementValue;position:PositionValue;orientation:OrientationValue;align:AlignValue;width:DimensionValue;height:DimensionValue;margin:MarginValue;padding:PaddingValue;gap:GapValue;rotation:RotationValue;wrapChildren:EmptyValue|BooleanValue;clip:EmptyValue|BooleanValue;columns:ColumnCountValue;rows:RowCountValue;cellAlign:InheritValue|AlignValue;dimension:DimensionValue;resize:ResizeValue;screenSize:ScreenSizeValue;color:ColorValue;accentColor:ColorValue;brightness:BrightnessValue;opacity:OpacityValue;background:BackgroundLayer[];border:BorderCompound;borderTop:BorderCompound;borderRight:BorderCompound;borderBottom:BorderCompound;borderLeft:BorderCompound;corners:CornersValue;borderCollapse:BorderCollapseValue;font:FontCompound;textAlign:TextAlignValue;textDecoration:TextDecorationValue;wrapText:EmptyValue|BooleanValue;lines:LinesValue;gradient:GradientCompound[];shadow:ShadowCompound[];scroll:ScrollValue;scrollbarStyle:ScrollbarStyleValue;}>": {
+        "Partial<{display:DisplayValue;htmlElement:HtmlElementValue;wrapperElement:WrapperElementValue;content:ContentValue;symbol:SymbolValue;source:ImageSourceValue;imageFit:ImageFitValue;altText:ContentValue;inputType:InputTypeValue;placeholder:ContentValue;checked:CheckedValue;ariaLabel:ContentValue;ariaHidden:EmptyValue|BooleanValue;size:SizeValue;buttonSize:ButtonSizeValue;board:BoardCompound;screenWidth:ScreenWidthValue;screenHeight:ScreenHeightValue;cursor:CursorValue;direction:DirectionValue;placement:PlacementValue;position:PositionValue;orientation:OrientationValue;align:AlignValue;width:DimensionValue;height:DimensionValue;margin:MarginValue;padding:PaddingValue;gap:GapValue;rotation:RotationValue;wrapChildren:EmptyValue|BooleanValue;clip:EmptyValue|BooleanValue;columns:ColumnCountValue;rows:RowCountValue;cellAlign:InheritValue|AlignValue;dimension:DimensionValue;resize:ResizeValue;screenSize:ScreenSizeValue;color:ColorValue;accentColor:ColorValue;brightness:BrightnessValue;opacity:OpacityValue;background:BackgroundLayer[];border:BorderCompound;borderTop:BorderCompound;borderRight:BorderCompound;borderBottom:BorderCompound;borderLeft:BorderCompound;corners:CornersValue;borderCollapse:BorderCollapseValue;font:FontCompound;textAlign:TextAlignValue;textDecoration:TextDecorationValue;wrapText:EmptyValue|BooleanValue;lines:LinesValue;shadow:ShadowCompound[];scroll:ScrollValue;scrollbarStyle:ScrollbarStyleValue;}>": {
             "additionalProperties": false,
             "properties": {
                 "accentColor": {
@@ -14691,12 +14723,6 @@
                             "$ref": "#/definitions/GapThemeValue"
                         }
                     ]
-                },
-                "gradient": {
-                    "items": {
-                        "$ref": "#/definitions/GradientCompound"
-                    },
-                    "type": "array"
                 },
                 "height": {
                     "anyOf": [
@@ -17179,7 +17205,6 @@
                 "display",
                 "font",
                 "gap",
-                "gradient",
                 "height",
                 "htmlElement",
                 "imageFit",

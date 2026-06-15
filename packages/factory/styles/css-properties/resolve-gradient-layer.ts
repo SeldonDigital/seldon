@@ -10,10 +10,7 @@ import { getThemeOption } from "@seldon/core/helpers/theme/get-theme-option"
 import type { GradientCompound } from "@seldon/core/properties/values/effects/gradients"
 import { Theme } from "@seldon/core/themes/types"
 
-import { StyleGenerationContext } from "../types"
 import { getLayeredPaintColor } from "./get-layered-paint-color"
-import { getLayeredPaintLayers } from "./get-layered-paint-layer"
-import { CSSObject } from "./types"
 
 const DEFAULTS = {
   ANGLE: 0,
@@ -24,41 +21,12 @@ const DEFAULTS = {
   END_OPACITY: 0,
 } as const
 
-export function getGradientStyles({
-  properties,
-  theme,
-  useThemeVariableReferences,
-  themeSlug,
-}: StyleGenerationContext): CSSObject {
-  const layers = getLayeredPaintLayers(properties, "gradient")
-
-  const gradients = layers
-    .map((layer) =>
-      resolveGradientLayer(layer, theme, useThemeVariableReferences, themeSlug),
-    )
-    .filter((gradient): gradient is string => gradient !== undefined)
-
-  if (gradients.length === 0) return {}
-
-  // Index 0 is the bottom layer. CSS paints the first image in the list on top,
-  // so emit the highest index first and index 0 last to keep index 0 at the back.
-  const styles: CSSObject = {
-    backgroundImage: gradients.reverse().join(", "),
-  }
-
-  if (properties.content) {
-    styles.color = "transparent"
-    styles.backgroundClip = "text"
-  }
-
-  return styles
-}
-
 /**
  * Resolves a single gradient layer to a CSS gradient function string, or
  * undefined when the layer is missing its required start and end stop colors.
+ * Facets fall back to the layer's theme preset and then to fixed defaults.
  */
-function resolveGradientLayer(
+export function resolveGradientLayer(
   gradient: GradientCompound,
   theme: Theme,
   useThemeVariableReferences?: boolean,
@@ -158,9 +126,6 @@ function resolveGradientLayer(
     : `radial-gradient(${startColorString} ${resolvedStartPosition}%, ${endColorString} ${resolvedEndPosition}%)`
 }
 
-// These resolve functions check if the gradient subvalue is defined on the
-// layer, if not check the preset in the theme. If still not defined, return the
-// default value.
 function resolveOpacity(
   propertiesValue: PercentageValue | EmptyValue | undefined,
   themeValue: PercentageValue | EmptyValue | undefined,

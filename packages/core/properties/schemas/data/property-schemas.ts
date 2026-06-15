@@ -141,7 +141,7 @@ const PROPERTY_SCHEMAS_RAW = {
   accentColor: accentColorSchema,
   brightness: brightnessSchema,
   opacity: opacitySchema,
-  // Background layer facets (kind = none | color | image discriminator)
+  // Background layer facets (kind = none | color | image | gradient discriminator)
   backgroundKind: backgroundKindSchema,
   backgroundImage: backgroundImageSchema,
   backgroundPosition: backgroundPositionSchema,
@@ -152,6 +152,18 @@ const PROPERTY_SCHEMAS_RAW = {
   backgroundFilter: backgroundFilterSchema,
   backgroundBrightness: backgroundBrightnessSchema,
   backgroundOpacity: backgroundOpacitySchema,
+  // Gradient-kind background facets reuse the shared gradient value schemas.
+  backgroundPreset: gradientPresetSchema,
+  backgroundGradientType: gradientTypeSchema,
+  backgroundAngle: gradientAngleSchema,
+  backgroundStartColor: gradientStopColorSchema,
+  backgroundStartBrightness: gradientStopBrightnessSchema,
+  backgroundStartOpacity: gradientStopOpacitySchema,
+  backgroundStartPosition: gradientStopPositionSchema,
+  backgroundEndColor: gradientStopColorSchema,
+  backgroundEndBrightness: gradientStopBrightnessSchema,
+  backgroundEndOpacity: gradientStopOpacitySchema,
+  backgroundEndPosition: gradientStopPositionSchema,
   // Border (all sides)
   borderPreset: borderPresetSchema,
   borderStyle: borderStyleSchema,

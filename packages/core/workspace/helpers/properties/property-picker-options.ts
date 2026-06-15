@@ -713,7 +713,7 @@ function buildThemeTokenPickerOptions(
 /**
  * Builds picker options for the background parent combo. Background layers are
  * typed by an explicit `kind` rather than theme presets, so the menu reads
- * Default / Inherit / --- / None / --- / Color / Image.
+ * Default / Inherit / --- / None / --- / Color / Image / Gradient.
  */
 function buildBackgroundKindPickerOptions(): PropertyPickerResult {
   const schema = getPropertySchema("backgroundKind")
@@ -730,6 +730,7 @@ function buildBackgroundKindPickerOptions(): PropertyPickerResult {
   groups.push([
     { value: "color", name: "Color" },
     { value: "image", name: "Image" },
+    { value: "gradient", name: "Gradient" },
   ])
   return { options: groups, hasCurrentValue: false }
 }

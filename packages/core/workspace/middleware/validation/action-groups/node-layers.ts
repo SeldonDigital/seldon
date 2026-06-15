@@ -28,6 +28,23 @@ export function validateAddNodeLayer(
   )
 }
 
+export function validateSetNodeLayerKind(
+  workspace: Workspace,
+  action: Extract<Action, { type: "set_node_layer_kind" }>,
+): void {
+  const nodeId = action.payload.nodeId as InstanceId | VariantId
+  nodeValidators.exists(workspace, nodeId)
+  check(
+    isLayeredPaintProperty(action.payload.property),
+    `set_node_layer_kind requires a layered paint property, got "${action.payload.property}"`,
+  )
+  const { layerIndex } = action.payload
+  check(
+    layerIndex === undefined || (Number.isInteger(layerIndex) && layerIndex >= 0),
+    `set_node_layer_kind layerIndex must be a non-negative integer, got ${layerIndex}`,
+  )
+}
+
 export function validateRemoveNodeLayer(
   workspace: Workspace,
   action: Extract<Action, { type: "remove_node_layer" }>,

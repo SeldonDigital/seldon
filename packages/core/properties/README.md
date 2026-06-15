@@ -14,7 +14,7 @@ Properties flow through a resolution pipeline that merges values from multiple s
 
 ## Property Types
 
-Workspaces use three shapes for properties: **Atomic**, **Compound**, and **Shorthand**. Under the hood, **layered paint** (`background`, `gradient`, `shadow`) is stored as **arrays of compound layers** (see `nodeStorage: "layered"` in `constants/shared/compound-properties.ts`); the tables below mark those parents as type `array`.
+Workspaces use three shapes for properties: **Atomic**, **Compound**, and **Shorthand**. Under the hood, **layered paint** (`background`, `shadow`) is stored as **arrays of compound layers** (see `nodeStorage: "layered"` in `constants/shared/compound-properties.ts`); the tables below mark those parents as type `array`.
 
 | Kind | What it is | Access |
 | --- | --- | --- |
@@ -76,7 +76,7 @@ properties.border.color
 
 Compound behavior:
 
-- The theme can list **looks** for a compound (for example `border.hairline` with width, style, color). The editor lets you pick one and copies those parameters onto the compound. **Built-in cleared looks** (`@shadow.none`, `@gradient.none`, `@border.none`, `@font.normal`) are injected at theme compute time, set every facet to **EMPTY**, and appear in the picker like stock looks. Stored values stay on the usual sub-properties (e.g., `border.width`, `border.color`). Background is the exception: it has no theme looks. Each background layer carries a `kind` facet (`none`, `color`, or `image`) that selects which facets apply.
+- The theme can list **looks** for a compound (for example `border.hairline` with width, style, color). The editor lets you pick one and copies those parameters onto the compound. **Built-in cleared looks** (`@shadow.none`, `@gradient.none`, `@border.none`, `@font.normal`) are injected at theme compute time, set every facet to **EMPTY**, and appear in the picker like stock looks. Stored values stay on the usual sub-properties (e.g., `border.width`, `border.color`). Background is the exception: it has no compound theme looks. Each background layer carries a `kind` facet (`none`, `color`, `image`, or `gradient`) that selects which facets apply. A `gradient` layer still picks a theme gradient recipe through its `preset` facet (`@gradient.*`).
 - Applying a preset overwrites every parameter that preset defines. Any parameter the preset does not mention is set to **EMPTY**, which clears older values.
 - Preset facets also expand at compute time. Each property snapshot in the effective merge expands its own `preset` facet before merging: the look's parameters fill the facets, facets the look does not define become **EMPTY**, and the snapshot's own non-EMPTY facets win over the look.
 - If the user changes any sub-field by hand, treat the compound as **Custom** until it matches one of the theme’s named presets again.
@@ -313,8 +313,8 @@ Properties that control the visual appearance and styling of components.
 | `brightness` | `atomic` | `empty` \| `inherit` \| `exact: %, 0–100` |
 | `opacity` | `atomic` | `empty` \| `inherit` \| `exact: %, 0–100` |
 | `background` | `array` | `background[]`, ordered, `background[0]` topmost |
-| └ **Each Background** | `compound` | `kind` selects facets: `none` (none) \| `color: color, brightness, opacity` \| `image: image, blendMode, position, size, repeat, filter` |
-| └ └ `background[].kind` | `atomic` | `empty` \| `inherit` \| `option: none, color, image` |
+| └ **Each Background** | `compound` | `kind` selects facets: `none` (none) \| `color: color, brightness, opacity` \| `image: image, blendMode, position, size, repeat, filter` \| `gradient: preset, gradientType, angle, startColor, startOpacity, startBrightness, startPosition, endColor, endOpacity, endBrightness, endPosition` |
+| └ └ `background[].kind` | `atomic` | `empty` \| `inherit` \| `option: none, color, image, gradient` |
 | └ └ `background[].image` | `atomic` | `empty` \| `inherit` \| `exact: string` |
 | └ └ `background[].position` | `atomic` | `empty` \| `inherit` \| `option: default, top-left, top-center, top-right, center-left, center, center-right, bottom-left, bottom-center, bottom-right` \| `exact: px, rem, %` \| `exact: DoubleAxisValue` |
 | └ └ `background[].size` | `atomic` | `empty` \| `inherit` \| `option: original, contain, cover, stretch` \| `exact: px, rem, %` \| `exact: paired` |
@@ -324,6 +324,17 @@ Properties that control the visual appearance and styling of components.
 | └ └ `background[].filter` | `atomic` | `empty` \| `inherit` \| `option: blur(4px), brightness(1.2), contrast(1.1), grayscale(1), saturate(1.2), sepia(0.5), invert(1)` \| `exact: string` |
 | └ └ `background[].brightness` | `atomic` | `empty` \| `inherit` \| `exact: %, 0–100` |
 | └ └ `background[].opacity` | `atomic` | `empty` \| `inherit` \| `exact: %, 0–100` |
+| └ └ `background[].preset` | `atomic` | `empty` \| `inherit` \| `theme.categorical: @gradient.*` (built-in `@gradient.none`) |
+| └ └ `background[].gradientType` | `atomic` | `empty` \| `inherit` \| `option: linear, radial` |
+| └ └ `background[].angle` | `atomic` | `empty` \| `inherit` \| `exact: degrees` |
+| └ └ `background[].startColor` | `atomic` | `empty` \| `inherit` \| `exact: hex, hsl, rgb, lch` \| `option: transparent` \| `theme.categorical: @swatch.*` \| `computed: highContrastColor, match` |
+| └ └ `background[].startBrightness` | `atomic` | `empty` \| `inherit` \| `exact: %, 0–100` |
+| └ └ `background[].startOpacity` | `atomic` | `empty` \| `inherit` \| `exact: %, 0–100` |
+| └ └ `background[].startPosition` | `atomic` | `empty` \| `inherit` \| `exact: %, 0–100` |
+| └ └ `background[].endColor` | `atomic` | `empty` \| `inherit` \| `exact: hex, hsl, rgb, lch` \| `option: transparent` \| `theme.categorical: @swatch.*` \| `computed: highContrastColor, match` |
+| └ └ `background[].endBrightness` | `atomic` | `empty` \| `inherit` \| `exact: %, 0–100` |
+| └ └ `background[].endOpacity` | `atomic` | `empty` \| `inherit` \| `exact: %, 0–100` |
+| └ └ `background[].endPosition` | `atomic` | `empty` \| `inherit` \| `exact: %, 0–100` |
 | `border` | `compound` | `preset: style, color, width, brightness, opacity, collapse` |
 | └ `border.preset` | `atomic` | `empty` \| `inherit` \| `theme.categorical: @border.*` (built-in `@border.none`) |
 | └ `border.style` | `atomic` | `empty` \| `inherit` \| `option: none, solid, dashed, dotted, double, groove, ridge, inset, outset, hidden` |
@@ -409,19 +420,6 @@ Properties that control visual effects and interactions.
 
 | Property | Type | Values |
 | --- | --- | --- |
-| `gradient` | `array` | `gradient[]`, ordered, `gradient[0]` topmost |
-| └ **Each Gradient** | `compound` | `preset: gradientType, angle, startColor, startOpacity, startBrightness, startPosition, endColor, endOpacity, endBrightness, endPosition` |
-| └ └ `gradient[].preset` | `atomic` | `empty` \| `inherit` \| `theme.categorical: @gradient.*` (built-in `@gradient.none`) |
-| └ └ `gradient[].gradientType` | `atomic` | `empty` \| `inherit` \| `option: linear, radial` |
-| └ └ `gradient[].angle` | `atomic` | `empty` \| `inherit` \| `exact: degrees` |
-| └ └ `gradient[].startColor` | `atomic` | `empty` \| `inherit` \| `exact: hex, hsl, rgb, lch` \| `option: transparent` \| `theme.categorical: @swatch.*` \| `computed: highContrastColor, match` |
-| └ └ `gradient[].startBrightness` | `atomic` | `empty` \| `inherit` \| `exact: %, 0–100` |
-| └ └ `gradient[].startOpacity` | `atomic` | `empty` \| `inherit` \| `exact: %, 0–100` |
-| └ └ `gradient[].startPosition` | `atomic` | `empty` \| `inherit` \| `exact: %, 0–100` |
-| └ └ `gradient[].endColor` | `atomic` | `empty` \| `inherit` \| `exact: hex, hsl, rgb, lch` \| `option: transparent` \| `theme.categorical: @swatch.*` \| `computed: highContrastColor, match` |
-| └ └ `gradient[].endBrightness` | `atomic` | `empty` \| `inherit` \| `exact: %, 0–100` |
-| └ └ `gradient[].endOpacity` | `atomic` | `empty` \| `inherit` \| `exact: %, 0–100` |
-| └ └ `gradient[].endPosition` | `atomic` | `empty` \| `inherit` \| `exact: %, 0–100` |
 | `shadow` | `array` | `shadow[]`, ordered, `shadow[0]` topmost |
 | └ **Each Shadow** | `compound` | `preset: offsetX, offsetY, blur, color, brightness, opacity, spread` |
 | └ └ `shadow[].preset` | `atomic` | `empty` \| `inherit` \| `theme.categorical: @shadow.*` (built-in `@shadow.none`) |
@@ -534,7 +532,7 @@ Properties for data binding, validation, and loading states.
 
 ## Property Merging
 
-`mergeProperties` in `properties/helpers/merge-properties.ts` merges **two** property snapshots. Pass the earlier/base object first and the newer patch second. Optional `mergeSubProperties` (default `true`) controls whether facet maps (e.g. `margin`, `font`, `position`) and layered stacks (`background`, `gradient`, `shadow`) merge field-by-field or slot-by-slot instead of replacing whole values.
+`mergeProperties` in `properties/helpers/merge-properties.ts` merges **two** property snapshots. Pass the earlier/base object first and the newer patch second. Optional `mergeSubProperties` (default `true`) controls whether facet maps (e.g. `margin`, `font`, `position`) and layered stacks (`background`, `shadow`) merge field-by-field or slot-by-slot instead of replacing whole values.
 
 ```typescript
 import { mergeProperties } from "@seldon/core/properties"
@@ -597,7 +595,6 @@ export type CompoundPropertyPath =
   | `font.${keyof FontCompound & string}`
   | `position.${keyof PositionValue & string}`
   | `background[${number}].${keyof BackgroundLayer & string}`
-  | `gradient[${number}].${keyof GradientCompound & string}`
   | `shadow[${number}].${keyof ShadowCompound & string}`
 
 export type ShorthandPropertyPath =

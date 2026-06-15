@@ -8,6 +8,7 @@ import {
   Theme,
   Variant,
   Workspace,
+  getLayerAddOptions,
   isThemeCustomTokenSection,
 } from "@seldon/core"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
@@ -28,10 +29,6 @@ import {
 import { CssBlock } from "./CssBlock"
 import { VMCategory } from "./VMCategory"
 import { VMProperty } from "./VMProperty"
-import {
-  colorBackgroundSeed,
-  imageBackgroundSeed,
-} from "./helpers/background-seeds"
 import {
   FontCollectionEditingContext,
   IconSetEditingContext,
@@ -234,44 +231,25 @@ function TreeSection({
       !!iconSetEditingContext?.isIconSetEditing
     if (inEditingMode || isBoard(node)) return []
 
-    const layeredKeys: LayeredPaintKey[] = ["background", "gradient", "shadow"]
-    const labels: Record<LayeredPaintKey, string> = {
-      background: "Background",
-      gradient: "Gradient",
-      shadow: "Shadow",
-    }
+    const layeredKeys: LayeredPaintKey[] = ["background", "shadow"]
     const exposedKeys = layeredKeys.filter((key) =>
       section.properties.some(
         (property) => property.key === key && property.status !== "not used",
       ),
     )
 
+    // Core decides each layered property's add options (Background splits into
+    // typed Color/Image/Gradient seeds; others add a single empty layer).
     const entries: MenuEntry[] = []
     for (const key of exposedKeys) {
-      // Background splits into typed color/image actions, each seeding its kind.
-      if (key === "background") {
-        entries.push(
-          {
-            id: "add-layer-background-color",
-            label: "Add Color Background",
-            onSelect: () => addNodeLayer("background", colorBackgroundSeed()),
-            testId: "add-layer-background-color",
-          },
-          {
-            id: "add-layer-background-image",
-            label: "Add Image Background",
-            onSelect: () => addNodeLayer("background", imageBackgroundSeed()),
-            testId: "add-layer-background-image",
-          },
-        )
-        continue
+      for (const option of getLayerAddOptions(key)) {
+        entries.push({
+          id: option.id,
+          label: option.label,
+          onSelect: () => addNodeLayer(key, option.seed),
+          testId: option.id,
+        })
       }
-      entries.push({
-        id: `add-layer-${key}`,
-        label: `Add ${labels[key]}`,
-        onSelect: () => addNodeLayer(key),
-        testId: `add-layer-${key}`,
-      })
     }
     return entries
   }, [

@@ -8,6 +8,7 @@ export enum BackgroundKind {
   NONE = "none",
   COLOR = "color",
   IMAGE = "image",
+  GRADIENT = "gradient",
 }
 
 export const BACKGROUND_KIND_VALUES = Object.values(
@@ -30,7 +31,7 @@ export type BackgroundKindValue =
 export const backgroundKindSchema: PropertySchema = {
   name: "backgroundKind",
   description:
-    "Selects what this background layer paints: nothing, a solid color, or an image.",
+    "Selects what this background layer paints: nothing, a solid color, an image, or a gradient.",
   supports: ["empty", "inherit", "option"] as const,
   validation: {
     empty: () => true,

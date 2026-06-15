@@ -23,6 +23,7 @@ flowchart TB
 | `migrateV1BackgroundBlendFilter` | `steps/migrate-00001-background-blend-filter.ts` | v1 step. Normalizes legacy EXACT `blendMode` and `filter` values.                                    |
 | `migrateV2SeedPlaygrounds`       | `steps/migrate-00002-seed-playgrounds.ts`        | v2 step. Seeds the playgrounds section.                                                              |
 | `migrateV3BackgroundKind`        | `steps/migrate-00003-background-kind.ts`         | v3 step. Rewrites background layers to the kind-typed model.                                         |
+| `migrateV4GradientIntoBackground` | `steps/migrate-00004-gradient-into-background.ts` | v4 step. Folds the gradient stack into background as gradient-kind layers.                          |
 
 ## Version 1
 
@@ -45,6 +46,17 @@ Rewrites each background layer to the kind-typed model:
 - A layer with neither becomes `none`.
 - Keeps only the chosen kind's facets, drops the `preset`, and adds the `kind` option.
 - Removes the deleted `background` look section from `themes[*].overrides`.
+
+The step walks `nodes[*].overrides` and board `componentProperties`.
+
+## Version 4
+
+Folds the standalone `gradient` paint stack into the `background` stack:
+
+- Each `gradient` layer becomes a `background` layer with `kind` set to `gradient`. Its preset and stop facets carry over unchanged.
+- Gradient layers are appended above existing background layers, preserving their prior "on top" paint order.
+- The `gradient` key is removed from the property bag.
+- Theme `gradient` look tokens are left untouched.
 
 The step walks `nodes[*].overrides` and board `componentProperties`.
 

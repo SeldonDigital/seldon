@@ -4,7 +4,6 @@
  */
 export const PROPERTY_COMPOUND_CATALOG = [
   { key: "background", nodeStorage: "layered" },
-  { key: "gradient", nodeStorage: "layered" },
   { key: "shadow", nodeStorage: "layered" },
   { key: "border", nodeStorage: "facets" },
   { key: "borderTop", nodeStorage: "facets" },
@@ -32,6 +31,19 @@ export function isCompoundCatalogProperty(
 }
 
 /**
+ * The facet whose value selects a compound layer's shape. Background layers are
+ * typed by an explicit `kind`; every other compound selects a theme `preset`.
+ */
+export const COMPOUND_SELECTOR_FACET: Record<string, string> = {
+  background: "kind",
+}
+
+/** Returns the selector facet for a compound parent, defaulting to `preset`. */
+export function getCompoundSelectorFacet(propertyKey: string): string {
+  return COMPOUND_SELECTOR_FACET[propertyKey] ?? "preset"
+}
+
+/**
  * Facet display order for each compound parent, used to sort sub-property rows
  * in property inspectors. `preset` stays first. Facets not listed keep their
  * existing relative order after the listed ones. The four border-side compounds
@@ -49,19 +61,17 @@ export const COMPOUND_FACET_DISPLAY_ORDER: Record<string, readonly string[]> = {
     "size",
     "repeat",
     "filter",
-  ],
-  gradient: [
     "preset",
     "gradientType",
     "angle",
     "startColor",
-    "startOpacity",
-    "startBrightness",
     "startPosition",
+    "startBrightness",
+    "startOpacity",
     "endColor",
-    "endOpacity",
-    "endBrightness",
     "endPosition",
+    "endBrightness",
+    "endOpacity",
   ],
   shadow: [
     "preset",

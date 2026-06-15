@@ -1,32 +1,36 @@
 import { produce } from "immer"
 
 import { ExtractPayload, Workspace } from "../../../../index"
+import { backgroundLayerForKind } from "../../../../properties/values/appearance/background/background-seeds"
 import { getWorkspaceNodes } from "../../../helpers/general/get-workspace-nodes"
 import { isEntryNodeForRules } from "../../../helpers/rules/rules-node-subject"
 import { readNodeLayerArray } from "../shared/node-layers"
 
 /**
- * Appends one paint layer to a node's `background` / `shadow` stack. The new
- * layer lands at the highest index, which renders on top. When a
- * `seed` is given, the layer starts with those facets, otherwise it is an empty
- * bag so inherited values still show through. The full stack is written back as
- * an override so the array carries the new length. No-ops when the node is
- * missing or cannot take overrides.
+ * Retypes one paint-layer slot to a new `kind`, replacing the slot with that
+ * kind's seed facets. The slot is fully replaced so facets from the previous
+ * kind do not linger. The whole stack is written back as an override. No-ops
+ * when the node is missing, cannot take overrides, or the kind has no seed.
  */
-export function addNodeLayer(
-  payload: ExtractPayload<"add_node_layer">,
+export function setNodeLayerKind(
+  payload: ExtractPayload<"set_node_layer_kind">,
   workspace: Workspace,
 ): Workspace {
   const node = getWorkspaceNodes(workspace)[payload.nodeId]
   if (!node || !isEntryNodeForRules(node)) return workspace
 
+  const seed = backgroundLayerForKind(payload.kind)
+  if (!seed) return workspace
+
+  const layerIndex = payload.layerIndex ?? 0
   const layers = readNodeLayerArray(
     node,
     payload.nodeId,
     payload.property,
     workspace,
   )
-  layers.push(payload.seed ? { ...payload.seed } : {})
+  while (layers.length <= layerIndex) layers.push({})
+  layers[layerIndex] = { ...seed }
 
   return produce(workspace, (draft) => {
     const draftNode = getWorkspaceNodes(draft)[payload.nodeId]
