@@ -25,10 +25,9 @@ flowchart LR
 | --- | --- | --- |
 | `SHADOW_LOOK_NONE` | `built-in-looks.ts` | Reserved `@shadow.none` path. Re-exported from `@seldon/core` for property defaults and tests. |
 | `GRADIENT_LOOK_NONE` | `built-in-looks.ts` | Reserved `@gradient.none` path. Re-exported from `@seldon/core`. |
-| `BACKGROUND_LOOK_NONE` | `built-in-looks.ts` | Reserved `@background.none` path. Re-exported from `@seldon/core`. |
 | `BORDER_LOOK_NONE` | `built-in-looks.ts` | Reserved `@border.none` path. Re-exported from `@seldon/core`. |
 | `FONT_LOOK_NORMAL` | `built-in-looks.ts` | Reserved `@font.normal` path. Re-exported from `@seldon/core`. |
-| `BuiltInLookSection` | `built-in-looks.ts` | Union of look sections: `shadow`, `gradient`, `background`, `border`, `font`. Used by injection and picker code. |
+| `BuiltInLookSection` | `built-in-looks.ts` | Union of look sections: `shadow`, `gradient`, `border`, `font`. Used by injection and picker code. |
 | `BUILT_IN_LOOK_SECTIONS` | `built-in-looks.ts` | Ordered list of built-in look sections. Used when iterating sections during injection. |
 | `getBuiltInLookId` | `built-in-looks.ts` | Returns the reserved id for a section (`none` or `normal`). Used by pickers and validation. |
 | `getBuiltInLookToken` | `built-in-looks.ts` | Returns the full `@` token for a built-in look. Used when matching preset refs. |

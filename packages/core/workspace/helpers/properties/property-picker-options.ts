@@ -710,6 +710,30 @@ function buildThemeTokenPickerOptions(
   return null
 }
 
+/**
+ * Builds picker options for the background parent combo. Background layers are
+ * typed by an explicit `kind` rather than theme presets, so the menu reads
+ * Default / Inherit / --- / None / --- / Color / Image.
+ */
+function buildBackgroundKindPickerOptions(): PropertyPickerResult {
+  const schema = getPropertySchema("backgroundKind")
+  const groups: PropertyPickerOption[][] = []
+  groups.push(
+    schema
+      ? buildDefaultOptions(schema)
+      : [
+          { value: "", name: "Default" },
+          { value: "inherit", name: "Inherit" },
+        ],
+  )
+  groups.push([{ value: "none", name: "None" }])
+  groups.push([
+    { value: "color", name: "Color" },
+    { value: "image", name: "Image" },
+  ])
+  return { options: groups, hasCurrentValue: false }
+}
+
 function buildHarmonyPickerOptions(): PropertyPickerResult {
   return {
     options: [
@@ -736,6 +760,14 @@ function buildHarmonyPickerOptions(): PropertyPickerResult {
 export function getPropertyPickerOptions(
   input: PropertyPickerInput,
 ): PropertyPickerResult {
+  if (
+    input.path === "background" ||
+    input.path === "background.preset" ||
+    /^background\.\d+\.(preset|kind)$/.test(input.path)
+  ) {
+    return buildBackgroundKindPickerOptions()
+  }
+
   if (isPresetPropertyPath(input.path)) {
     return buildCompoundPresetPickerOptions(input)
   }

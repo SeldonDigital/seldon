@@ -76,12 +76,12 @@ export function useObjectProperties() {
   )
 
   const addNodeLayer = useCallback(
-    (property: LayeredPaintKey) => {
+    (property: LayeredPaintKey, seed?: Record<string, unknown>) => {
       invariant(selection, "Nothing selected")
       if (isBoard(selection)) return
       dispatch({
         type: "add_node_layer",
-        payload: { nodeId: selection.id, property },
+        payload: { nodeId: selection.id, property, seed },
       })
     },
     [selection, dispatch],

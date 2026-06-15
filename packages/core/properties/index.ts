@@ -13,6 +13,7 @@ export * from "./helpers"
 // Re-export commonly used enums for convenience
 export { Align } from "./values/layout/align"
 export { BackgroundBlendMode } from "./values/appearance/background/background-blend-mode"
+export { BackgroundKind } from "./values/appearance/background/background-kind"
 export { BackgroundPosition } from "./values/appearance/background/background-position"
 export { BackgroundRepeat } from "./values/appearance/background/background-repeat"
 export { BorderCollapse } from "./values/appearance/border-collapse"

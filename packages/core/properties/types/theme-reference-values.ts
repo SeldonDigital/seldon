@@ -1,5 +1,4 @@
 import {
-  BackgroundValue,
   BorderValue,
   BorderWidthThemeValue,
   ButtonSizeThemeValue,
@@ -33,7 +32,6 @@ export type ThemeValue =
   | SizeThemeValue
   | ButtonSizeThemeValue
   | ColorThemeValue
-  | BackgroundValue
   | BorderValue
   | BorderWidthThemeValue
   | CornerThemeValue

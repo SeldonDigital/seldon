@@ -1,18 +1,18 @@
 import { EmptyValue } from "../../shared/empty/empty"
-import type { BackgroundValue } from "./background"
 import { BackgroundBlendModeValue } from "./background-blend-mode"
 import { BackgroundBrightnessValue } from "./background-brightness"
 import { BackgroundColorValue } from "./background-color"
 import { BackgroundFilterValue } from "./background-filter"
 import { BackgroundImageValue } from "./background-image"
+import { BackgroundKindValue } from "./background-kind"
 import { BackgroundOpacityValue } from "./background-opacity"
 import { BackgroundPositionValue } from "./background-position"
 import { BackgroundRepeatValue } from "./background-repeat"
 import { BackgroundSizeValue } from "./background-size"
 
-/** One layer in the background stack with optional theme recipe and paint fields. */
+/** One layer in the background stack. `kind` selects which facets apply. */
 export interface BackgroundLayer {
-  preset?: BackgroundValue | EmptyValue
+  kind?: BackgroundKindValue | EmptyValue
   image?: BackgroundImageValue | EmptyValue
   position?: BackgroundPositionValue | EmptyValue
   size?: BackgroundSizeValue | EmptyValue
@@ -24,7 +24,7 @@ export interface BackgroundLayer {
   opacity?: BackgroundOpacityValue | EmptyValue
 }
 
-export * from "./background"
+export * from "./background-kind"
 export * from "./background-image"
 export * from "./background-position"
 export * from "./background-size"

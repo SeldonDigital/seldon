@@ -8,7 +8,6 @@ import { Harmony, Ratio } from "../constants"
 import {
   ColorSpaceLiteral,
   StockThemeSwatch,
-  ThemeBackground,
   ThemeBorder,
   ThemeBorderWidth,
   ThemeExact,
@@ -25,12 +24,10 @@ import {
 import { ThemeTokenTable } from "./helpers"
 import { ThemeInstanceId, ThemeTemplateId } from "./theme-id"
 import {
-  StockThemeBackgroundId,
   StockThemeBorderId,
   StockThemeFontId,
   StockThemeGradientId,
   StockThemeShadowId,
-  ThemeBackgroundId,
   ThemeBorderId,
   ThemeBorderWidthId,
   ThemeCornersId,
@@ -50,7 +47,6 @@ import {
 type ThemeLookTableIdMap = {
   font: ThemeFontId
   border: ThemeBorderId
-  background: ThemeBackgroundId
   gradient: ThemeGradientId
   shadow: ThemeShadowId
 }
@@ -58,7 +54,6 @@ type ThemeLookTableIdMap = {
 type StockThemeLookTableIdMap = {
   font: StockThemeFontId
   border: StockThemeBorderId
-  background: StockThemeBackgroundId
   gradient: StockThemeGradientId
   shadow: StockThemeShadowId
 }
@@ -127,7 +122,6 @@ type BaseTheme<
     defaultColor: ColorValue
     defaultSize: SizeValue
   }
-  background: ThemeTokenTable<TLookIds["background"], ThemeBackground>
   gradient: ThemeTokenTable<TLookIds["gradient"], ThemeGradient>
   blur: ThemeTokenTable<ThemeSizeId, ThemeScaleToken>
   spread: ThemeTokenTable<ThemeSizeId, ThemeScaleToken>
@@ -165,7 +159,6 @@ export type ThemeOption =
   | ThemeShadow
   | ThemeBorder
   | ThemeGradient
-  | ThemeBackground
   | ThemeScrollbar
   | StockThemeSwatch
   | ThemeSwatch

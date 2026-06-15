@@ -1,11 +1,11 @@
 import { attachPropertyDisplayMetadata } from "../../constants/property-display"
 import { accentColorSchema } from "../../values/appearance/accent-color"
-import { backgroundPresetSchema } from "../../values/appearance/background/background"
 import { backgroundBlendModeSchema } from "../../values/appearance/background/background-blend-mode"
 import { backgroundBrightnessSchema } from "../../values/appearance/background/background-brightness"
 import { backgroundColorSchema } from "../../values/appearance/background/background-color"
 import { backgroundFilterSchema } from "../../values/appearance/background/background-filter"
 import { backgroundImageSchema } from "../../values/appearance/background/background-image"
+import { backgroundKindSchema } from "../../values/appearance/background/background-kind"
 import { backgroundOpacitySchema } from "../../values/appearance/background/background-opacity"
 import { backgroundPositionSchema } from "../../values/appearance/background/background-position"
 import { backgroundRepeatSchema } from "../../values/appearance/background/background-repeat"
@@ -141,8 +141,8 @@ const PROPERTY_SCHEMAS_RAW = {
   accentColor: accentColorSchema,
   brightness: brightnessSchema,
   opacity: opacitySchema,
-  // Background layer facets (preset = theme categorical for `theme.background`)
-  backgroundPreset: backgroundPresetSchema,
+  // Background layer facets (kind = none | color | image discriminator)
+  backgroundKind: backgroundKindSchema,
   backgroundImage: backgroundImageSchema,
   backgroundPosition: backgroundPositionSchema,
   backgroundSize: backgroundSizeSchema,

@@ -123,6 +123,36 @@ export interface FlatProperty {
  * @param theme - Optional theme to check for preset options
  * @returns True if the theme has a section for this property with preset options
  */
+/**
+ * The facet that drives a compound's parent combo. Background uses an explicit
+ * `kind` (None / Color / Image); other compounds use a theme `preset`.
+ */
+const COMPOUND_SELECTOR_FACET: Record<string, string> = {
+  background: "kind",
+}
+
+export function getCompoundSelectorFacet(propertyKey: string): string {
+  return COMPOUND_SELECTOR_FACET[propertyKey] ?? "preset"
+}
+
+/**
+ * Whether a compound's parent row renders a selector combo. Background always
+ * does (its `kind` choices), other compounds only when the theme offers presets.
+ */
+export function hasCompoundSelectorCombo(
+  propertyKey: string,
+  theme?: Theme,
+  workspace?: Workspace,
+): boolean {
+  if (!isCompoundProperty(propertyKey)) {
+    return false
+  }
+  if (propertyKey === "background") {
+    return true
+  }
+  return hasCompoundPresetOptions(propertyKey, theme, workspace)
+}
+
 export function hasCompoundPresetOptions(
   propertyKey: string,
   theme?: Theme,
@@ -144,7 +174,7 @@ export function hasCompoundPresetOptions(
     return false
   }
 
-  // Check if theme has a section for this property (e.g., theme.background, theme.border)
+  // Check if theme has a section for this property (e.g., theme.border)
   const section = (theme as Record<string, unknown>)[propertyKey]
   if (!section || typeof section !== "object") {
     return false
@@ -417,7 +447,7 @@ export function createFlatProperty(
   }
 
   const usesCompoundPresetPicker =
-    isCompound && hasCompoundPresetOptions(propertyKey, theme, workspace)
+    isCompound && hasCompoundSelectorCombo(propertyKey, theme, workspace)
 
   return {
     key: propertyKey,
@@ -549,18 +579,17 @@ function getSubProperties(
     propertyKey,
   )
 
-  // Check if this compound property has preset options in the theme
-  // If so, filter out the "preset" sub-property to avoid duplicate controls
-  const hasPresetOptions = hasCompoundPresetOptions(
+  // The compound's selector facet (`preset` or `kind`) is shown on the parent
+  // row's combo, so filter it out of the child facet list to avoid a duplicate.
+  const hasSelectorCombo = hasCompoundSelectorCombo(
     propertyKey,
     theme,
     workspace,
   )
+  const selectorFacet = getCompoundSelectorFacet(propertyKey)
 
   for (const subKey of subPropertyKeys) {
-    // Skip the preset sub-property if the parent compound property has preset options
-    // The preset menu will be shown on the parent property instead
-    if (subKey === "preset" && hasPresetOptions) {
+    if (subKey === selectorFacet && hasSelectorCombo) {
       continue
     }
 
@@ -604,7 +633,7 @@ function buildLayerParentFlatProperty(
   theme?: Theme,
 ): FlatProperty {
   const registryEntry = getPropertyRegistryEntry(propertyKey)
-  const usesPresetPicker = hasCompoundPresetOptions(
+  const usesPresetPicker = hasCompoundSelectorCombo(
     propertyKey,
     theme,
     workspace,

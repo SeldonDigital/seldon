@@ -1,7 +1,7 @@
 /**
  * Theme token sections: the ordered list used to group `ThemeTokenSchema` catalog
  * entries in the properties sidebar. The order is defined here explicitly. Look
- * sections (`background`, `border`, `gradient`, `shadow`, `font`) render after the
+ * sections (`border`, `gradient`, `shadow`, `font`) render after the
  * scale sections they relate to. Each section's `order` is its index in
  * {@link THEME_TOKEN_SECTION_ORDER}.
  */
@@ -19,7 +19,6 @@ const THEME_TOKEN_SECTION_ORDER: Array<Omit<ThemeTokenSectionSchema, "order">> =
     { id: "padding", label: "Padding" },
     { id: "gap", label: "Gap" },
     { id: "dimension", label: "Dimension" },
-    { id: "background", label: "Background" },
     { id: "border", label: "Border" },
     { id: "borderWidth", label: "Border Width" },
     { id: "corners", label: "Corners" },

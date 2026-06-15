@@ -3,6 +3,10 @@ import { getComponentSchema } from "@seldon/core/components/catalog"
 import { ComponentId, isComponentId } from "@seldon/core/components/constants"
 import { isCompoundProperty } from "@seldon/core/helpers/type-guards/compound/is-compound-property"
 import { COMPOUND_FACET_DISPLAY_ORDER } from "@seldon/core/properties/constants"
+import {
+  BACKGROUND_KIND_VALUES,
+  BackgroundKind,
+} from "@seldon/core/properties/values/appearance/background/background-kind"
 import { getPropertyCategory } from "@seldon/core/properties/schemas"
 import {
   type PropertyKey as CorePropertyKey,
@@ -256,12 +260,58 @@ function orderCompoundFacetKeys(propertyKey: string, keys: string[]): string[] {
   })
 }
 
+/** Facet keys exposed by a background layer for each kind. `kind` stays first. */
+const BACKGROUND_FACETS_BY_KIND: Record<BackgroundKind, readonly string[]> = {
+  [BackgroundKind.NONE]: ["kind"],
+  [BackgroundKind.COLOR]: ["kind", "color", "brightness", "opacity"],
+  [BackgroundKind.IMAGE]: [
+    "kind",
+    "image",
+    "blendMode",
+    "position",
+    "size",
+    "repeat",
+    "filter",
+  ],
+}
+
+/** Reads the `kind` option from a background layer value, when present. */
+function readBackgroundKind(propertyValue: unknown): BackgroundKind | undefined {
+  const layer = getCompoundLayerValue(propertyValue)
+  const kindCell = layer?.["kind"] as
+    | { type?: unknown; value?: unknown }
+    | undefined
+  if (
+    kindCell &&
+    kindCell.type === ValueType.OPTION &&
+    typeof kindCell.value === "string" &&
+    (BACKGROUND_KIND_VALUES as string[]).includes(kindCell.value)
+  ) {
+    return kindCell.value as BackgroundKind
+  }
+  return undefined
+}
+
+/**
+ * Facets a background layer exposes for its kind. An unset kind shows only the
+ * `kind` selector, so a Default background renders no facet rows.
+ */
+export function getBackgroundFacetsForKind(
+  kind: BackgroundKind | undefined,
+): string[] {
+  return [...(kind ? BACKGROUND_FACETS_BY_KIND[kind] : ["kind"])]
+}
+
 export function getCompoundPropertyStructure(
   propertyKey: string,
   propertyValue: unknown,
   node: PropertyPanelSubject,
   workspace: Workspace,
 ): string[] {
+  if (propertyKey === "background") {
+    return getBackgroundFacetsForKind(readBackgroundKind(propertyValue))
+  }
+
   const actualKeys = getSubPropertyKeysFromObject(propertyValue)
   const schemaKeys = getSubPropertyKeysFromSchema(propertyKey, node, workspace)
   if (isCompoundProperty(propertyKey as PropertyKey)) {

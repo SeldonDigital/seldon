@@ -1,10 +1,8 @@
 import {
-  BackgroundRepeat,
   BorderStyle,
   BorderWidth,
   FontStyle,
   GradientType,
-  ImageFit,
   TextCasing,
   Unit,
   ValueType,
@@ -833,39 +831,6 @@ const theme: StockTheme = {
           type: ValueType.EXACT,
           value: { value: 90, unit: Unit.PERCENT },
         },
-      },
-    },
-  },
-  background: {
-    primary: {
-      type: TokenType.LOOK,
-      name: "Color fill",
-      parameters: {
-        color: { type: ValueType.THEME_CATEGORICAL, value: "@swatch.primary" },
-      },
-    },
-    background1: {
-      type: TokenType.LOOK,
-      name: "Image",
-      parameters: {
-        image: {
-          type: ValueType.EXACT,
-          value: "https://static.seldon.app/background-default-light.jpg",
-        },
-        repeat: { type: ValueType.OPTION, value: BackgroundRepeat.NO_REPEAT },
-        size: { type: ValueType.OPTION, value: ImageFit.COVER },
-      },
-    },
-    background2: {
-      type: TokenType.LOOK,
-      name: "Image repeated",
-      parameters: {
-        image: {
-          type: ValueType.EXACT,
-          value: "https://static.seldon.app/background-default-light.jpg",
-        },
-        repeat: { type: ValueType.OPTION, value: BackgroundRepeat.REPEAT },
-        size: { type: ValueType.OPTION, value: ImageFit.ORIGINAL },
       },
     },
   },

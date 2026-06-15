@@ -48,8 +48,6 @@ flowchart LR
 
 | Type or Function | File | Purpose and use |
 | --- | --- | --- |
-| `BackgroundParameters` | `appearance/background.ts` | Facets for a background look without preset. |
-| `ThemeBackground` | `appearance/background.ts` | `TokenType.LOOK` background recipe row. |
 | `BorderParameters` | `appearance/border.ts` | Facets for a border look without preset. |
 | `ThemeBorder` | `appearance/border.ts` | `TokenType.LOOK` border recipe row. |
 | `FontParameters` | `typography/font.ts` | Typography facets for a font look. |

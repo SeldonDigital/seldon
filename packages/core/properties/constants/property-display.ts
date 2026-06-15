@@ -80,7 +80,7 @@ export const PROPERTY_DISPLAY_ORDER: ReadonlyArray<{
       "accentColor",
       "brightness",
       "opacity",
-      "backgroundPreset",
+      "backgroundKind",
       "backgroundImage",
       "backgroundPosition",
       "backgroundSize",

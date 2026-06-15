@@ -1,7 +1,6 @@
+import { MenuEntry } from "@lib/menus"
 import { LayoutGroup } from "framer-motion"
 import { Fragment, RefObject, useCallback, useMemo } from "react"
-import { MenuEntry } from "@lib/menus"
-import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import {
   Board,
   Instance,
@@ -19,26 +18,27 @@ import {
   ScrollerShell,
   SidebarContainer,
 } from "@seldon/components/custom-components"
+import { FramerExpandable } from "@seldon/components/custom-components"
 import { Frame } from "@seldon/components/frames/Frame"
+import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import {
   sidebarNoSelectionStyle,
   sidebarShellStyle,
 } from "../helpers/sidebar-styles"
-import { FramerExpandable } from "@seldon/components/custom-components"
-import { VMCategory } from "./VMCategory"
 import { CssBlock } from "./CssBlock"
+import { VMCategory } from "./VMCategory"
 import { VMProperty } from "./VMProperty"
+import {
+  colorBackgroundSeed,
+  imageBackgroundSeed,
+} from "./helpers/background-seeds"
 import {
   FontCollectionEditingContext,
   IconSetEditingContext,
   ThemeEditingContext,
 } from "./helpers/editing-contexts"
-import {
-  PropertySection,
-} from "./helpers/get-property-sections"
-import {
-  ThemePropertySection,
-} from "./helpers/get-theme-property-sections"
+import { PropertySection } from "./helpers/get-property-sections"
+import { ThemePropertySection } from "./helpers/get-theme-property-sections"
 import { getIconRowCategory } from "./helpers/icon-set-properties-data"
 import { FlatProperty } from "./helpers/properties-data"
 
@@ -240,18 +240,40 @@ function TreeSection({
       gradient: "Gradient",
       shadow: "Shadow",
     }
-    return layeredKeys
-      .filter((key) =>
-        section.properties.some(
-          (property) => property.key === key && property.status !== "not used",
-        ),
-      )
-      .map((key) => ({
+    const exposedKeys = layeredKeys.filter((key) =>
+      section.properties.some(
+        (property) => property.key === key && property.status !== "not used",
+      ),
+    )
+
+    const entries: MenuEntry[] = []
+    for (const key of exposedKeys) {
+      // Background splits into typed color/image actions, each seeding its kind.
+      if (key === "background") {
+        entries.push(
+          {
+            id: "add-layer-background-color",
+            label: "Add Color Background",
+            onSelect: () => addNodeLayer("background", colorBackgroundSeed()),
+            testId: "add-layer-background-color",
+          },
+          {
+            id: "add-layer-background-image",
+            label: "Add Image Background",
+            onSelect: () => addNodeLayer("background", imageBackgroundSeed()),
+            testId: "add-layer-background-image",
+          },
+        )
+        continue
+      }
+      entries.push({
         id: `add-layer-${key}`,
         label: `Add ${labels[key]}`,
         onSelect: () => addNodeLayer(key),
         testId: `add-layer-${key}`,
-      }))
+      })
+    }
+    return entries
   }, [
     node,
     section.properties,

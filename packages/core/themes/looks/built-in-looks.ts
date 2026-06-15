@@ -1,21 +1,18 @@
 import { ValueType } from "../../properties/constants"
 import type { ComputedTheme, StockTheme } from "../types/theme"
 import type {
-  ThemeBackgroundKey,
   ThemeBorderKey,
   ThemeFontKey,
   ThemeGradientKey,
   ThemeShadowKey,
 } from "../types/theme-reference-keys"
 import type {
-  ThemeBackgroundId,
   ThemeBorderId,
   ThemeFontId,
   ThemeGradientId,
   ThemeShadowId,
 } from "../types/theme-token-ids"
 import { TokenType } from "../values"
-import type { ThemeBackground } from "../values/appearance/background"
 import type { ThemeBorder } from "../values/appearance/border"
 import type { ThemeGradient } from "../values/effects/gradient"
 import type { ThemeScrollbar } from "../values/effects/scrollbar"
@@ -26,22 +23,14 @@ import { LOOK_FACETS } from "./look-facets"
 export const SHADOW_LOOK_NONE = "@shadow.none" as const satisfies ThemeShadowKey
 export const GRADIENT_LOOK_NONE =
   "@gradient.none" as const satisfies ThemeGradientKey
-export const BACKGROUND_LOOK_NONE =
-  "@background.none" as const satisfies ThemeBackgroundKey
 export const BORDER_LOOK_NONE = "@border.none" as const satisfies ThemeBorderKey
 export const FONT_LOOK_NORMAL = "@font.normal" as const satisfies ThemeFontKey
 
-export type BuiltInLookSection =
-  | "shadow"
-  | "gradient"
-  | "background"
-  | "border"
-  | "font"
+export type BuiltInLookSection = "shadow" | "gradient" | "border" | "font"
 
 export const BUILT_IN_LOOK_SECTIONS: readonly BuiltInLookSection[] = [
   "shadow",
   "gradient",
-  "background",
   "border",
   "font",
 ] as const
@@ -53,7 +42,6 @@ export type ReservedLookSection = BuiltInLookSection | "scrollbar"
 const PARAMETER_KEYS_BY_SECTION = {
   shadow: LOOK_FACETS.shadow.map((facet) => facet.facet),
   gradient: LOOK_FACETS.gradient.map((facet) => facet.facet),
-  background: LOOK_FACETS.background.map((facet) => facet.facet),
   border: LOOK_FACETS.border.map((facet) => facet.facet),
   font: LOOK_FACETS.font.map((facet) => facet.facet),
   scrollbar: LOOK_FACETS.scrollbar.map((facet) => facet.facet),
@@ -68,7 +56,6 @@ const PARAMETER_KEYS_BY_SECTION = {
 export const RESERVED_LOOK_IDS: Record<ReservedLookSection, readonly string[]> = {
   shadow: ["none", "xlight", "light", "moderate", "strong", "xstrong"],
   gradient: ["none", "primary", "gradient1", "gradient2"],
-  background: ["none", "primary", "background1", "background2"],
   border: ["none", "hairline", "thin", "normal", "thick", "bevel"],
   font: [
     "normal",
@@ -89,7 +76,6 @@ export const RESERVED_LOOK_IDS: Record<ReservedLookSection, readonly string[]> =
 const RESERVED_LOOK_SECTIONS: readonly ReservedLookSection[] = [
   "shadow",
   "gradient",
-  "background",
   "border",
   "font",
   "scrollbar",
@@ -120,14 +106,13 @@ const BUILT_IN_LOOK_DEFINITIONS: Record<
 > = {
   shadow: { id: "none", name: "None", token: SHADOW_LOOK_NONE },
   gradient: { id: "none", name: "None", token: GRADIENT_LOOK_NONE },
-  background: { id: "none", name: "None", token: BACKGROUND_LOOK_NONE },
   border: { id: "none", name: "None", token: BORDER_LOOK_NONE },
   font: { id: "normal", name: "Normal", token: FONT_LOOK_NORMAL },
 }
 
 function buildBuiltInLookCell(
   section: BuiltInLookSection,
-): ThemeShadow | ThemeGradient | ThemeBackground | ThemeBorder | ThemeFont {
+): ThemeShadow | ThemeGradient | ThemeBorder | ThemeFont {
   const definition = BUILT_IN_LOOK_DEFINITIONS[section]
   return {
     type: TokenType.LOOK,
@@ -174,7 +159,6 @@ function buildReservedLookCell(
 ):
   | ThemeShadow
   | ThemeGradient
-  | ThemeBackground
   | ThemeBorder
   | ThemeFont
   | ThemeScrollbar {
@@ -221,11 +205,6 @@ export function injectBuiltInLooks<T extends StockTheme | ComputedTheme>(
 export function isReservedThemeLookId(
   section: BuiltInLookSection,
   id: string,
-): id is
-  | ThemeShadowId
-  | ThemeGradientId
-  | ThemeBackgroundId
-  | ThemeBorderId
-  | ThemeFontId {
+): id is ThemeShadowId | ThemeGradientId | ThemeBorderId | ThemeFontId {
   return id === BUILT_IN_LOOK_DEFINITIONS[section].id
 }

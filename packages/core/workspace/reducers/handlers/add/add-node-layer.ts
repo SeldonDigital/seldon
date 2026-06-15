@@ -6,11 +6,12 @@ import { isEntryNodeForRules } from "../../../helpers/rules/rules-node-subject"
 import { readNodeLayerArray } from "../shared/node-layers"
 
 /**
- * Appends one empty paint layer to a node's `background` / `gradient` / `shadow`
- * stack. The new layer lands at the highest index, which renders on top. The full
- * stack is written back as an override so the array carries the new length; lower
- * layers stay empty bags so inherited values still show through. No-ops when the
- * node is missing or cannot take overrides.
+ * Appends one paint layer to a node's `background` / `gradient` / `shadow`
+ * stack. The new layer lands at the highest index, which renders on top. When a
+ * `seed` is given, the layer starts with those facets, otherwise it is an empty
+ * bag so inherited values still show through. The full stack is written back as
+ * an override so the array carries the new length. No-ops when the node is
+ * missing or cannot take overrides.
  */
 export function addNodeLayer(
   payload: ExtractPayload<"add_node_layer">,
@@ -25,7 +26,7 @@ export function addNodeLayer(
     payload.property,
     workspace,
   )
-  layers.push({})
+  layers.push(payload.seed ? { ...payload.seed } : {})
 
   return produce(workspace, (draft) => {
     const draftNode = getWorkspaceNodes(draft)[payload.nodeId]

@@ -54,10 +54,6 @@ export {
   isThemeExactToken,
 } from "./shared/type-guards/theme-token-type-guards"
 
-export type {
-  BackgroundParameters,
-  ThemeBackground,
-} from "./appearance/background"
 export type { BorderParameters, ThemeBorder } from "./appearance/border"
 
 export type { GradientParameters, ThemeGradient } from "./effects/gradient"

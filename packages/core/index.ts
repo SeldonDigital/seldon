@@ -29,7 +29,6 @@ export * from "./themes/types"
 export {
   SHADOW_LOOK_NONE,
   GRADIENT_LOOK_NONE,
-  BACKGROUND_LOOK_NONE,
   BORDER_LOOK_NONE,
   FONT_LOOK_NORMAL,
 } from "./themes/looks/built-in-looks"

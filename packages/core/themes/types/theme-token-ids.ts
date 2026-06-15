@@ -9,7 +9,6 @@ export type ThemeTokenNamespace =
   | "core"
   | "color"
   | "iconSet"
-  | "background"
   | "borderWidth"
   | "corners"
   | "fontSize"
@@ -159,13 +158,6 @@ export type ThemeGradientId =
   | "gradient2"
   | `custom${number}`
 
-export type ThemeBackgroundId =
-  | BuiltInThemeClearedLookId
-  | "primary"
-  | "background1"
-  | "background2"
-  | `custom${number}`
-
 export type ThemeScrollbarId = "primary" | `custom${number}`
 
 export type ThemeBorderId =
@@ -186,17 +178,12 @@ export type StockThemeGradientId = Exclude<
   ThemeGradientId,
   BuiltInThemeClearedLookId
 >
-export type StockThemeBackgroundId = Exclude<
-  ThemeBackgroundId,
-  BuiltInThemeClearedLookId
->
 export type StockThemeBorderId = Exclude<
   ThemeBorderId,
   BuiltInThemeClearedLookId
 >
 
 export type ThemeOptionId =
-  | ThemeBackgroundId
   | ThemeSizeId
   | ThemeBorderId
   | ThemeBorderWidthId

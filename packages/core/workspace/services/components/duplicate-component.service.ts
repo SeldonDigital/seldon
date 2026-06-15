@@ -12,6 +12,7 @@ import type {
   FontCollectionBoard,
   IconSetBoard,
   MediaBoard,
+  PlaygroundBoard,
   ThemeBoard,
 } from "../../model/components"
 import {
@@ -266,7 +267,7 @@ export function clonePlayground(
       `clonePlayground: source playground disappeared ${sourcePlaygroundKey}`,
     )
 
-    const newPlayground = structuredClone(src) as Board
+    const newPlayground = structuredClone(src) as PlaygroundBoard
     const maxOrder = Math.max(
       -1,
       ...Object.values(draft.playgrounds).map((p) => getBoardOrder(p)),
@@ -306,6 +307,7 @@ export function clonePlayground(
     }
     newPlayground.variants = remapComponentTree(src.variants, idMap)
 
-    draft.playgrounds[newPlaygroundKey] = newPlayground as WritableDraft<Board>
+    draft.playgrounds[newPlaygroundKey] =
+      newPlayground as WritableDraft<PlaygroundBoard>
   })
 }

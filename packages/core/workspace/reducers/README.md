@@ -158,7 +158,6 @@ The reset drops a variant only when the catalog no longer defines it. Validation
 | `add_theme_custom_swatch`           | `addThemeCustomSwatch`          | `add-theme-custom-swatch.ts`           |
 | `add_theme_custom_font`             | `addThemeCustomFont`            | `add-theme-custom-font.ts`             |
 | `add_theme_custom_border`           | `addThemeCustomBorder`          | `add-theme-custom-border.ts`           |
-| `add_theme_custom_background`       | `addThemeCustomBackground`      | `add-theme-custom-background.ts`       |
 | `add_theme_custom_gradient`         | `addThemeCustomGradient`        | `add-theme-custom-gradient.ts`         |
 | `add_theme_custom_shadow`           | `addThemeCustomShadow`          | `add-theme-custom-shadow.ts`           |
 | `add_theme_custom_scrollbar`        | `addThemeCustomScrollbar`       | `add-theme-custom-scrollbar.ts`        |

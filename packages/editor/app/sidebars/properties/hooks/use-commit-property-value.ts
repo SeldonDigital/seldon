@@ -1,7 +1,14 @@
 import { parsePropertyPath } from "@lib/properties/property-paths"
 import { serializeValue } from "@lib/properties/serialize-value"
 import { useCallback } from "react"
-import { Board, Instance, Properties, Theme, Value, Variant } from "@seldon/core"
+import {
+  Board,
+  Instance,
+  Properties,
+  Theme,
+  Value,
+  Variant,
+} from "@seldon/core"
 import { getEffectiveProperties as coreGetEffectiveProperties } from "@seldon/core/helpers/properties/properties-bridge"
 import type {
   PropertyKey,
@@ -12,12 +19,12 @@ import { useObjectProperties } from "@lib/workspace/hooks/use-object-properties"
 import { useSelection } from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useImageUploadPanel } from "@app/panels/hooks/use-upload-image-panel"
+import { backgroundLayerForKindValue } from "../helpers/background-seeds"
 import {
   cleanCompoundValue,
   compoundPresetPropertyKey,
 } from "../helpers/commit-helpers"
 import { createPresetPropertyUpdate } from "../helpers/compound-properties"
-import { getPropertiesSubjectId } from "../helpers/properties-data"
 import { handleComputedValueChange } from "../helpers/computed-property-handler"
 import { isComputedFunctionOption } from "../helpers/computed-utils"
 import {
@@ -26,6 +33,7 @@ import {
   ThemeEditingContext,
 } from "../helpers/editing-contexts"
 import type { PropertyPickerResult } from "../helpers/options-utils"
+import { getPropertiesSubjectId } from "../helpers/properties-data"
 import { FlatProperty } from "../helpers/properties-data"
 import { RESET_VALUES } from "../helpers/property-control-constants"
 import { shouldUsePresetPropertyBehavior } from "../helpers/property-types"
@@ -120,6 +128,34 @@ export function useCommitPropertyValue({
           parsed.kind === "layered-parent" ? parsed.root : property.key
         const layerIndex = property.layerIndex
 
+        // Background layers are typed by `kind`, not theme presets. Default
+        // resets the slot; None/Color/Image seed that kind's facets while the
+        // other layers stay intact.
+        if (baseKey === "background") {
+          const seedLayer = backgroundLayerForKindValue(newValue)
+          if (!seedLayer) {
+            reset()
+            return
+          }
+          const currentBackground = coreGetEffectiveProperties(
+            getPropertiesSubjectId(subject),
+            workspace,
+          )["background" as keyof Properties]
+          const backgroundLayers = Array.isArray(currentBackground)
+            ? [...(currentBackground as Array<Record<string, unknown>>)]
+            : currentBackground
+              ? [currentBackground as Record<string, unknown>]
+              : []
+          while (backgroundLayers.length <= layerIndex)
+            backgroundLayers.push({})
+          backgroundLayers[layerIndex] = seedLayer
+          setProperties({ background: backgroundLayers } as Properties, {
+            mergeSubProperties: false,
+          })
+          onDone()
+          return
+        }
+
         const presetSource = createPresetPropertyUpdate(
           compoundPresetPropertyKey(baseKey),
           newValue,
@@ -128,8 +164,9 @@ export function useCommitPropertyValue({
           theme,
         )
         const presetLayer =
-          (presetSource[baseKey] as Array<Record<string, unknown>> | undefined)?.[0] ??
-          {}
+          (
+            presetSource[baseKey] as Array<Record<string, unknown>> | undefined
+          )?.[0] ?? {}
 
         const current = coreGetEffectiveProperties(
           getPropertiesSubjectId(subject),

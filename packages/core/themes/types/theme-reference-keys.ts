@@ -2,7 +2,6 @@
  * Branded `@namespace.slot` strings used in property theme references.
  */
 import {
-  ThemeBackgroundId,
   ThemeBorderId,
   ThemeBorderWidthId,
   ThemeCornersId,
@@ -20,7 +19,6 @@ import {
   ThemeSwatchId,
 } from "./theme-token-ids"
 
-export type ThemeBackgroundKey = `@background.${ThemeBackgroundId}`
 export type ThemeBlurKey = `@blur.${ThemeSizeId}`
 export type ThemeBorderKey = `@border.${ThemeBorderId}`
 export type ThemeBorderWidthKey = `@borderWidth.${ThemeBorderWidthId}`
@@ -42,7 +40,6 @@ export type ThemeSpreadKey = `@spread.${ThemeSizeId}`
 export type ThemeSwatchKey = `@swatch.${ThemeSwatchId}`
 
 export type ThemeValueKey =
-  | ThemeBackgroundKey
   | ThemeBlurKey
   | ThemeBorderKey
   | ThemeBorderWidthKey

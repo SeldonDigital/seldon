@@ -187,8 +187,9 @@ flowchart LR
 | `SingleBackgroundSizeValue` | `appearance/background/background-size.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
 | `BackgroundSizeValue` | `appearance/background/background-size.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
 | `backgroundSizeSchema` | `appearance/background/background-size.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
-| `BackgroundValue` | `appearance/background/background.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
-| `backgroundPresetSchema` | `appearance/background/background.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
+| `BackgroundKind` | `appearance/background/background-kind.ts` | Enum of background layer kinds: `none`, `color`, `image`. |
+| `BackgroundKindValue` | `appearance/background/background-kind.ts` | Union of allowed tagged cells for the `kind` facet. Assigned on workspace overrides and merged before compute or export. |
+| `backgroundKindSchema` | `appearance/background/background-kind.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
 | `BorderBrightnessValue` | `appearance/border/border-brightness.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
 | `borderBrightnessSchema` | `appearance/border/border-brightness.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
 | `BorderColorValue` | `appearance/border/border-color.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |

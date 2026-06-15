@@ -21,7 +21,6 @@ export type ThemeTokenSectionId =
   | "shadow"
   | "border"
   | "gradient"
-  | "background"
   | "blur"
   | "spread"
   | "scrollbar"

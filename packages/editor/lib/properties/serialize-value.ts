@@ -35,7 +35,6 @@ import {
   TextAlign,
   TextCasing,
   TextDecoration,
-  ThemeBackgroundKey,
   ThemeBlurKey,
   ThemeBorderKey,
   ThemeBorderWidthKey,
@@ -533,12 +532,6 @@ export function serializeValue(
         return {
           type: ValueType.THEME_CATEGORICAL,
           value: value as ThemeGradientKey,
-        }
-
-      case "@background":
-        return {
-          type: ValueType.THEME_CATEGORICAL,
-          value: value as ThemeBackgroundKey,
         }
 
       case "@color":

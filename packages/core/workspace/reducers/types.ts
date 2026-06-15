@@ -21,8 +21,8 @@
  * | reset_user_variant_to_default, reset_default_variant_to_catalog, reset_component_to_catalog | components.variants tree + nodes |
  * | set_theme_label, set_theme_editor_data, set_theme_override, reset_theme_tokens, reset_theme_label, reset_theme_editor_data, reset_theme_override | themes |
  * | set_theme_scale_slot, set_theme_custom_token_name | themes (variant rows only) |
- * | add_theme_custom_{swatch,font,border,background,gradient,shadow,scrollbar,size,dimension,margin,padding,gap,corners,borderWidth,blur,spread,fontSize,fontWeight,lineHeight} | themes (variant rows only) |
- * | remove_theme_custom_{...same 19 tables...} | themes (variant rows only) |
+ * | add_theme_custom_{swatch,font,border,gradient,shadow,scrollbar,size,dimension,margin,padding,gap,corners,borderWidth,blur,spread,fontSize,fontWeight,lineHeight} | themes (variant rows only) |
+ * | remove_theme_custom_{...same 18 tables...} | themes (variant rows only) |
  * | delete_theme, duplicate_theme | themes (+ components.variants for theme row) |
  * | set_font_collection_{label,editor_data,override}, reset_font_collection_{label,editor_data,override}, reset_font_collection, add_font_collection_custom_family, remove_font_collection_custom_family | font-collections (variant rows only for families) |
  * | set_font_collection_family_variant, set_font_collection_family_preset | font-collections (any entry; per-family variant selection) |
@@ -43,7 +43,6 @@ import {
   SubPropertyKey,
 } from "../../properties"
 import {
-  BackgroundParameters,
   BorderParameters,
   FontParameters,
   GradientParameters,
@@ -165,10 +164,6 @@ export type AddCustomToken =
   | {
       type: "add_theme_custom_border"
       payload: AddThemeCustomBase & { parameters: BorderParameters }
-    }
-  | {
-      type: "add_theme_custom_background"
-      payload: AddThemeCustomBase & { parameters: BackgroundParameters }
     }
   | {
       type: "add_theme_custom_gradient"
@@ -494,6 +489,8 @@ export type WorkspaceAction =
       payload: {
         nodeId: InstanceId | VariantId
         property: LayeredPaintKey
+        /** Optional initial facets for the new layer. Defaults to an empty bag. */
+        seed?: Record<string, unknown>
       }
     }
   | {

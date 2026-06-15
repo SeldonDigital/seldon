@@ -73,25 +73,16 @@ export const schema = {
     opacity: { type: Sdn.ValueType.EMPTY, value: null },
     background: [
       {
-        preset: {
-          type: Sdn.ValueType.THEME_CATEGORICAL,
-          value: "@background.background1",
-        },
+        kind: { type: Sdn.ValueType.OPTION, value: Sdn.BackgroundKind.IMAGE },
         image: {
           type: Sdn.ValueType.EXACT,
           value: "https://static.seldon.app/background-default-light.jpg",
         },
+        blendMode: { type: Sdn.ValueType.EMPTY, value: null },
         position: { type: Sdn.ValueType.EMPTY, value: null },
         size: { type: Sdn.ValueType.EMPTY, value: null },
         repeat: { type: Sdn.ValueType.EMPTY, value: null },
-        color: {
-          type: Sdn.ValueType.THEME_CATEGORICAL,
-          value: "@swatch.white",
-        },
-        blendMode: { type: Sdn.ValueType.EMPTY, value: null },
         filter: { type: Sdn.ValueType.EMPTY, value: null },
-        brightness: { type: Sdn.ValueType.EMPTY, value: null },
-        opacity: { type: Sdn.ValueType.EMPTY, value: null },
       },
     ],
     border: {

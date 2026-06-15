@@ -3,11 +3,11 @@ import {
   AlignValue,
   BackgroundColorValue,
   BackgroundImageValue,
+  BackgroundKindValue,
   BackgroundOpacityValue,
   BackgroundPositionValue,
   BackgroundRepeatValue,
   BackgroundSizeValue,
-  BackgroundValue,
   BooleanValue,
   BorderColorValue,
   BorderOpacityValue,
@@ -96,7 +96,7 @@ export type AtomicValue =
   | ColorValue
   | BrightnessValue
   | OpacityValue
-  | BackgroundValue
+  | BackgroundKindValue
   | BackgroundColorValue
   | BackgroundSizeValue
   | BackgroundImageValue

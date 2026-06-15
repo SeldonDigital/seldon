@@ -151,7 +151,7 @@ Theme tokens are split into two types:
 
 - **Ordinal** tokens are an ordered scale -- `@fontSize.small` is one step below `@fontSize.medium`, which is one step below `@fontSize.large`. Properties walk this scale in fixed steps, so an instruction like "make the border thicker" can move one entry up the `@borderWidth.*` scale without inventing values.
 
-- **Categorical** tokens are an unordered named set -- `@swatch.primary`, `@font.body`, `@background.background1`. There is no "next" or "previous". Properties point at one of the named entries.
+- **Categorical** tokens are an unordered named set -- `@swatch.primary`, `@font.body`, `@gradient.primary`. There is no "next" or "previous". Properties point at one of the named entries.
 
 ---
 
@@ -195,14 +195,13 @@ Every token except `@fontFamily.*` accepts custom keys. Stock themes ship withou
 | `@swatch.*` | `theme.categorical` | `white` \| `gray` \| `black` \| `primary` \| `swatch1` \| `swatch2` \| `swatch3` \| `swatch4` \| `background` | `custom1` \| `custom2` \| ... |
 | `@font.*` | `theme.categorical` | `display` \| `heading` \| `subheading` \| `title` \| `subtitle` \| `callout` \| `body` \| `label` \| `tagline` \| `code` | `custom1` \| `custom2` \| ... |
 | `@border.*` | `theme.categorical` | `hairline` \| `thin` \| `normal` \| `thick` \| `bevel` | `custom1` \| `custom2` \| ... |
-| `@background.*` | `theme.categorical` | `primary` \| `background1` \| `background2` | `custom1` \| `custom2` \| ... |
 | `@gradient.*` | `theme.categorical` | `primary` \| `gradient1` \| `gradient2` | `custom1` \| `custom2` \| ... |
 | `@shadow.*` | `theme.categorical` | `xlight` \| `light` \| `moderate` \| `strong` \| `xstrong` | `custom1` \| `custom2` \| ... |
 | `@scrollbar.*` | `theme.categorical` | `primary` | `custom1` \| `custom2` \| ... |
 
 `@swatch.swatch1` through `@swatch.swatch4` are reserved palette slots filled in by `computeTheme`; they are not custom slots even though their keys are numbered.
 
-The look tables also reserve cleared ids that `computeTheme` injects at compute time: `@font.normal` plus `none` on `@border.*`, `@background.*`, `@gradient.*`, and `@shadow.*`. They are part of every computed theme even though stock themes do not author them.
+The look tables also reserve cleared ids that `computeTheme` injects at compute time: `@font.normal` plus `none` on `@border.*`, `@gradient.*`, and `@shadow.*`. They are part of every computed theme even though stock themes do not author them.
 
 ```typescript
 import { ValueType } from "@seldon/core"
@@ -541,38 +540,6 @@ border: {
       style: { type: ValueType.OPTION, value: BorderStyle.SOLID },
       color: { type: ValueType.THEME_CATEGORICAL, value: "@swatch.primary" },
       opacity: { type: ValueType.EXACT, value: { unit: Unit.PERCENT, value: 100 } },
-    },
-  },
-}
-```
-
----
-
-#### Background looks
-
-Background looks describe a single background layer -- color, image, image positioning, blend, brightness, and opacity -- so the same background can be applied across components via `@background.<id>`. All parameters are optional. Use `color` for solid fills, or `image` plus `position` / `size` / `repeat` for image fills.
-
-| Parameter | Type | Values |
-| --- | --- | --- |
-| `color` | `atomic` | `empty` \| `exact: hex, hsl, rgb, lch` \| `option: transparent` \| `theme.categorical: @swatch.*` |
-| `image` | `atomic` | `empty` \| `exact: string` |
-| `position` | `atomic` | `empty` \| `option: default, top-left, top-center, top-right, center-left, center, center-right, bottom-left, bottom-center, bottom-right` \| `exact: px, rem, %` |
-| `size` | `atomic` | `empty` \| `option: original, contain, cover, stretch` \| `exact: px, rem, %` |
-| `repeat` | `atomic` | `empty` \| `option: no-repeat, repeat, repeat-x, repeat-y` |
-| `blendMode` | `atomic` | `empty` \| `inherit` \| `option: normal, multiply, screen, overlay, darken, lighten, color-dodge, color-burn, hard-light, soft-light, difference, exclusion, hue, saturation, color, luminosity` |
-| `filter` | `atomic` | `empty` \| `inherit` \| `option: blur(4px), brightness(1.2), contrast(1.1), grayscale(1), saturate(1.2), sepia(0.5), invert(1)` \| `exact: string` |
-| `brightness` | `atomic` | `empty` \| `exact: %, 0–100` |
-| `opacity` | `atomic` | `empty` \| `exact: %, 0–100` |
-
-```typescript
-import { TokenType, ValueType } from "@seldon/core/themes"
-
-background: {
-  primary: {
-    type: TokenType.LOOK,
-    name: "Color fill",
-    parameters: {
-      color: { type: ValueType.THEME_CATEGORICAL, value: "@swatch.primary" },
     },
   },
 }

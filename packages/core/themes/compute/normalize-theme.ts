@@ -107,7 +107,6 @@ export function normalizeThemeInput(
     shadow: normalizeLookRecord(theme.shadow),
     border: normalizeLookRecord(theme.border),
     gradient: normalizeLookRecord(theme.gradient),
-    background: normalizeLookRecord(theme.background),
     scrollbar: normalizeLookRecord(theme.scrollbar),
   }
 

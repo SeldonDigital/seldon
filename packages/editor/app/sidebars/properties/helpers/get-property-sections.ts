@@ -66,8 +66,8 @@ function getComponentNameForAttributes(
 
 /**
  * Resolves the inspector section for a top-level property row from core display metadata.
- * Compound parents resolve through a representative `.preset` facet; unknown keys fall back
- * to the attributes section.
+ * Compound parents resolve through their selector facet (`.kind` for background, `.preset`
+ * for the look compounds); unknown keys fall back to the attributes section.
  */
 function getSectionForProperty(propertyKey: string): PropertyDisplayCategory {
   // An upper paint layer parent (`background.1`) resolves through its base key.
@@ -76,6 +76,7 @@ function getSectionForProperty(propertyKey: string): PropertyDisplayCategory {
     parsed.kind === "layered-parent" ? parsed.root : propertyKey
   const catalogKey =
     getCatalogKeyForPropertyPath(baseKey) ??
+    getCatalogKeyForPropertyPath(`${baseKey}.kind`) ??
     getCatalogKeyForPropertyPath(`${baseKey}.preset`)
   const category = catalogKey
     ? PROPERTY_DISPLAY_META[catalogKey]?.displayCategory

@@ -39,16 +39,16 @@ export function isCompoundCatalogProperty(
  */
 export const COMPOUND_FACET_DISPLAY_ORDER: Record<string, readonly string[]> = {
   background: [
-    "preset",
+    "kind",
     "color",
-    "blendMode",
+    "brightness",
+    "opacity",
     "image",
+    "blendMode",
     "position",
     "size",
     "repeat",
     "filter",
-    "brightness",
-    "opacity",
   ],
   gradient: [
     "preset",

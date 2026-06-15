@@ -1,6 +1,5 @@
 import { Unit } from "../../../../properties/constants/shared/units"
 import { TokenType } from "../../../constants/token-type"
-import type { ThemeBackground } from "../../appearance/background"
 import type { ThemeBorder } from "../../appearance/border"
 import type { ThemeGradient } from "../../effects/gradient"
 import type { ThemeScrollbar } from "../../effects/scrollbar"
@@ -112,7 +111,6 @@ export function isLookToken(
   | ThemeShadow
   | ThemeBorder
   | ThemeGradient
-  | ThemeBackground
   | ThemeScrollbar {
   return (
     typeof v === "object" &&

@@ -104,20 +104,11 @@ export const schema = {
     opacity: { type: Sdn.ValueType.EMPTY, value: null },
     background: [
       {
-        preset: {
-          type: Sdn.ValueType.THEME_CATEGORICAL,
-          value: "@background.primary",
-        },
+        kind: { type: Sdn.ValueType.OPTION, value: Sdn.BackgroundKind.COLOR },
         color: {
           type: Sdn.ValueType.THEME_CATEGORICAL,
           value: "@swatch.primary",
         },
-        blendMode: { type: Sdn.ValueType.EMPTY, value: null },
-        image: { type: Sdn.ValueType.EMPTY, value: null },
-        position: { type: Sdn.ValueType.EMPTY, value: null },
-        size: { type: Sdn.ValueType.EMPTY, value: null },
-        repeat: { type: Sdn.ValueType.EMPTY, value: null },
-        filter: { type: Sdn.ValueType.EMPTY, value: null },
         brightness: { type: Sdn.ValueType.EMPTY, value: null },
         opacity: { type: Sdn.ValueType.EMPTY, value: null },
       },
@@ -466,9 +457,9 @@ export const schema = {
         },
         background: [
           {
-            preset: {
-              type: Sdn.ValueType.THEME_CATEGORICAL,
-              value: "@background.primary",
+            kind: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.BackgroundKind.COLOR,
             },
             color: {
               type: Sdn.ValueType.THEME_CATEGORICAL,
@@ -481,6 +472,7 @@ export const schema = {
                 value: 50,
               },
             },
+            opacity: { type: Sdn.ValueType.EMPTY, value: null },
           },
         ],
         border: {

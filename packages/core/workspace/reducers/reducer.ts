@@ -14,7 +14,6 @@ import { addNodeLayer } from "./handlers/add/add-node-layer"
 import { addPlayground } from "./handlers/add/add-playground"
 import { addSandbox } from "./handlers/add/add-sandbox"
 import { addTheme } from "./handlers/add/add-theme"
-import { addThemeCustomBackground } from "./handlers/add/add-theme-custom-background"
 import { addThemeCustomBlur } from "./handlers/add/add-theme-custom-blur"
 import { addThemeCustomBorder } from "./handlers/add/add-theme-custom-border"
 import { addThemeCustomBorderWidth } from "./handlers/add/add-theme-custom-border-width"
@@ -355,8 +354,6 @@ function reducer(workspace: Workspace, action: WorkspaceAction): Workspace {
       return addThemeCustomFont(action.payload, workspace)
     case "add_theme_custom_border":
       return addThemeCustomBorder(action.payload, workspace)
-    case "add_theme_custom_background":
-      return addThemeCustomBackground(action.payload, workspace)
     case "add_theme_custom_gradient":
       return addThemeCustomGradient(action.payload, workspace)
     case "add_theme_custom_shadow":

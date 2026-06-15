@@ -15,12 +15,14 @@ flowchart TB
 
 ## Major Types And Functions
 
-| Type Or Function | File | Purpose |
-| --- | --- | --- |
-| `CURRENT_WORKSPACE_VERSION` | `migrate-workspace.ts` | Current `metadata.version` value. Re-exported from `middleware.ts`. |
-| `migrateWorkspace` | `migrate-workspace.ts` | Runs sequential migration steps from stored version + 1 through current. |
-| `migrationMiddleware` | `middleware.ts` | Migrates on `set_workspace` and stamps version. Registered in `workspaceReducer` post-reducer chain. |
-| `migrateV1BackgroundBlendFilter` | `steps/migrate-00001-background-blend-filter.ts` | v1 step. Normalizes legacy EXACT `blendMode` and `filter` values. |
+| Type Or Function                 | File                                             | Purpose                                                                                              |
+| -------------------------------- | ------------------------------------------------ | ---------------------------------------------------------------------------------------------------- |
+| `CURRENT_WORKSPACE_VERSION`      | `migrate-workspace.ts`                           | Current `metadata.version` value. Re-exported from `middleware.ts`.                                  |
+| `migrateWorkspace`               | `migrate-workspace.ts`                           | Runs sequential migration steps from stored version + 1 through current.                             |
+| `migrationMiddleware`            | `middleware.ts`                                  | Migrates on `set_workspace` and stamps version. Registered in `workspaceReducer` post-reducer chain. |
+| `migrateV1BackgroundBlendFilter` | `steps/migrate-00001-background-blend-filter.ts` | v1 step. Normalizes legacy EXACT `blendMode` and `filter` values.                                    |
+| `migrateV2SeedPlaygrounds`       | `steps/migrate-00002-seed-playgrounds.ts`        | v2 step. Seeds the playgrounds section.                                                              |
+| `migrateV3BackgroundKind`        | `steps/migrate-00003-background-kind.ts`         | v3 step. Rewrites background layers to the kind-typed model.                                         |
 
 ## Version 1
 
@@ -32,6 +34,19 @@ Normalizes background blend and filter stored shapes:
 - Other `filter` EXACT strings stay unchanged.
 
 The step walks `nodes[*].overrides`, `themes[*].overrides`, and board `componentProperties`.
+
+## Version 3
+
+Rewrites each background layer to the kind-typed model:
+
+- Derives a `kind` of `none`, `color`, or `image` from the layer facets and any legacy `@background.*` preset.
+- A layer with a picture, or the `@background.background1` or `@background.background2` preset, becomes `image`. The `@background.background2` preset also sets `repeat` to `repeat`.
+- A layer with a color, or another `@background.*` preset, becomes `color`.
+- A layer with neither becomes `none`.
+- Keeps only the chosen kind's facets, drops the `preset`, and adds the `kind` option.
+- Removes the deleted `background` look section from `themes[*].overrides`.
+
+The step walks `nodes[*].overrides` and board `componentProperties`.
 
 ## Notes
 

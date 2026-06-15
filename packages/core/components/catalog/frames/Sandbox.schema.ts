@@ -22,7 +22,10 @@ export const schema = {
     display: { type: Sdn.ValueType.EMPTY, value: null },
     direction: { type: Sdn.ValueType.EMPTY, value: null },
     position: {
-      top: { type: Sdn.ValueType.EXACT, value: { value: 0, unit: Sdn.Unit.PX } },
+      top: {
+        type: Sdn.ValueType.EXACT,
+        value: { value: 0, unit: Sdn.Unit.PX },
+      },
       left: {
         type: Sdn.ValueType.EXACT,
         value: { value: 0, unit: Sdn.Unit.PX },
@@ -56,20 +59,11 @@ export const schema = {
     clip: { type: Sdn.ValueType.EMPTY, value: null },
     background: [
       {
-        preset: {
-          type: Sdn.ValueType.THEME_CATEGORICAL,
-          value: "@background.primary",
-        },
-        image: { type: Sdn.ValueType.EMPTY, value: null },
-        position: { type: Sdn.ValueType.EMPTY, value: null },
-        size: { type: Sdn.ValueType.EMPTY, value: null },
-        repeat: { type: Sdn.ValueType.EMPTY, value: null },
+        kind: { type: Sdn.ValueType.OPTION, value: Sdn.BackgroundKind.COLOR },
         color: {
           type: Sdn.ValueType.THEME_CATEGORICAL,
           value: "@swatch.white",
         },
-        blendMode: { type: Sdn.ValueType.EMPTY, value: null },
-        filter: { type: Sdn.ValueType.EMPTY, value: null },
         brightness: { type: Sdn.ValueType.EMPTY, value: null },
         opacity: { type: Sdn.ValueType.EMPTY, value: null },
       },
