@@ -41,6 +41,10 @@ type PaintEntry = {
  * - `image` paints a `url(...)` entry with its own position, size, repeat, and
  *   blend mode.
  *
+ * The image `filter` facet is intentionally not emitted. CSS has no per-layer
+ * background filter, so filters apply only on platforms that render layers
+ * natively (iOS, Android).
+ *
  * `gradient` property layers render on top of the background stack.
  */
 export function getBackgroundStyles(
