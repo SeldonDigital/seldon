@@ -1,7 +1,8 @@
 import { create } from "zustand"
+import { persist } from "zustand/middleware"
 import { ComponentLevel } from "@seldon/core/components/constants"
 
-type ExpandableSection =
+export type ExpandableSection =
   | ComponentLevel
   | "THEME"
   | "FONT_COLLECTION"
@@ -11,31 +12,39 @@ type ExpandableSection =
 type ToggleableSection = ExpandableSection
 
 interface SectionExpansionState {
-  // Sparse map of explicit user toggles. Sections without an entry fall back to
-  // a content-based default: non-empty sections open, empty sections closed.
+  // Sparse map of explicit user toggles, persisted to local storage. Sections
+  // without an entry are closed, so the first launch starts fully collapsed and
+  // later launches restore the user's saved expansions.
   overrides: Partial<Record<ExpandableSection, boolean>>
   toggleSection: (section: ToggleableSection, expanded: boolean) => void
 }
 
-const useStore = create<SectionExpansionState>((set) => ({
-  overrides: {},
-  toggleSection: (section: ToggleableSection, expanded: boolean) =>
-    set((state) => ({
-      overrides: {
-        ...state.overrides,
-        [section]: expanded,
-      },
-    })),
-}))
+const useStore = create<SectionExpansionState>()(
+  persist(
+    (set) => ({
+      overrides: {},
+      toggleSection: (section: ToggleableSection, expanded: boolean) =>
+        set((state) => ({
+          overrides: {
+            ...state.overrides,
+            [section]: expanded,
+          },
+        })),
+    }),
+    {
+      name: "objects-section-expansion",
+      partialize: (state) => ({ overrides: state.overrides }),
+    },
+  ),
+)
 
 /**
  * Reactive read for one section's expansion state. Subscribe through this
- * selector so only rows for that section re-render on toggle.
+ * selector so only rows for that section re-render on toggle. Sections default
+ * to closed until the user expands them.
  */
-export const useIsSectionExpanded = (
-  section: ToggleableSection,
-  hasContent = false,
-): boolean => useStore((state) => state.overrides[section] ?? hasContent)
+export const useIsSectionExpanded = (section: ToggleableSection): boolean =>
+  useStore((state) => state.overrides[section] ?? false)
 
 /**
  * Section expansion actions. Use `useIsSectionExpanded` for reads so toggles

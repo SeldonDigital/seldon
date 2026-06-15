@@ -68,6 +68,8 @@ export function useMenuConfig(): HeaderConfig {
     toggleShowUnusedFonts,
     showUnusedIcons,
     toggleShowUnusedIcons,
+    showPlayground,
+    toggleShowPlayground,
   } = useEditorConfig()
   const { dispatch, workspace } = useWorkspace()
   const {
@@ -244,6 +246,14 @@ export function useMenuConfig(): HeaderConfig {
   const devMenuItems = useMemo(() => {
     const items: (MenuItem | "separator")[] = [
       {
+        id: "show-playground",
+        label: "Show Playgrounds",
+        action: toggleShowPlayground,
+        active: showPlayground,
+        visibleIn: ["edit", "preview"],
+      },
+      "separator",
+      {
         id: "export-selected-node",
         label: "Copy Selection to Clipboard",
         action: exportSelectionToClipboard,
@@ -318,6 +328,8 @@ export function useMenuConfig(): HeaderConfig {
     addToast,
     exportSelectionToClipboard,
     copySchemaJsonToClipboard,
+    showPlayground,
+    toggleShowPlayground,
     canvasProfiling,
     toggleCanvasProfiling,
     showNodeIds,

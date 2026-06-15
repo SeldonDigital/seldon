@@ -32,10 +32,7 @@ export function useRowSection(section: BoardSection) {
   const { addPlayground } = useAddRemoveCommands()
 
   // Section expansion state
-  const isExpanded = useIsSectionExpanded(
-    section.level,
-    section.boards.length > 0,
-  )
+  const isExpanded = useIsSectionExpanded(section.level)
 
   // Event handlers: toggle section with Alt+click support for all descendants
   const onToggle = useRowToggle({
