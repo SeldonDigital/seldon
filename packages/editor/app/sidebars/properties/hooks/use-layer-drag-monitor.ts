@@ -3,23 +3,32 @@ import { useEffect } from "react"
 import { LayeredPaintKey } from "@seldon/core"
 import { useObjectProperties } from "@lib/workspace/hooks/use-object-properties"
 import { LAYER_DRAG_ACTION } from "./use-layer-draggable"
+import { useLayerDragStateStore } from "./use-layer-drag-state"
 import {
   computeLayerToIndex,
   type LayerPlacement,
 } from "../helpers/layer-reorder"
 
 /**
- * Global monitor for layer reorder drags in the properties sidebar. On drop it
- * translates the display-order drop into an array move and commits it through
+ * Global monitor for layer reorder drags in the properties sidebar. Tracks an
+ * active-drag flag so drop bands only intercept pointer events mid-drag, and on
+ * drop translates the display-order drop into an array move committed through
  * the core `reorder_node_layer` action.
  */
 export function useLayerDragMonitor() {
   const { reorderNodeLayer } = useObjectProperties()
+  const setIsLayerDragging = useLayerDragStateStore(
+    (state) => state.setIsLayerDragging,
+  )
 
   useEffect(() => {
     return monitorForElements({
       canMonitor: ({ source }) => source.data.action === LAYER_DRAG_ACTION,
+      onDragStart() {
+        setIsLayerDragging(true)
+      },
       onDrop({ source, location }) {
+        setIsLayerDragging(false)
         const destination = location.current.dropTargets[0]
         if (!destination) return
 
@@ -43,5 +52,5 @@ export function useLayerDragMonitor() {
         reorderNodeLayer(sourceProperty, fromIndex, toIndex)
       },
     })
-  }, [reorderNodeLayer])
+  }, [reorderNodeLayer, setIsLayerDragging])
 }

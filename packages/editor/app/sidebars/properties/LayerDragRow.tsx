@@ -9,6 +9,7 @@ import {
 } from "@seldon/components/custom-components"
 import { useLayerDraggable } from "./hooks/use-layer-draggable"
 import { useLayerDropzone } from "./hooks/use-layer-dropzone"
+import { useLayerDragStateStore } from "./hooks/use-layer-drag-state"
 import type { LayerPlacement } from "./helpers/layer-reorder"
 
 interface LayerDragRowProps {
@@ -78,12 +79,15 @@ function LayerDropBand({
     layerCount,
     placement,
   })
+  const isLayerDragging = useLayerDragStateStore(
+    (state) => state.isLayerDragging,
+  )
 
   return (
     <>
       <PlacementZoneSurface
         ref={ref}
-        style={getBandStyle(placement)}
+        style={getBandStyle(placement, isLayerDragging)}
         dataTestId={`layer-${property}-${layerIndex}-dropzone-${placement}`}
       />
       {isValidDropTarget && (
@@ -95,12 +99,17 @@ function LayerDropBand({
   )
 }
 
-function getBandStyle(placement: LayerPlacement): CSSProperties {
+// The bands cover the whole row, so they only become hit-testable while a layer
+// drag is active. Otherwise the row's combo, disclosure, and menu stay clickable.
+function getBandStyle(
+  placement: LayerPlacement,
+  isLayerDragging: boolean,
+): CSSProperties {
   const base: CSSProperties = {
     position: "absolute",
     left: 0,
     right: 0,
-    pointerEvents: "auto",
+    pointerEvents: isLayerDragging ? "auto" : "none",
   }
   if (placement === "before") return { ...base, top: 0, height: "50%" }
   return { ...base, bottom: 0, height: "50%" }
