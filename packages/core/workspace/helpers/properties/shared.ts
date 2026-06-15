@@ -73,25 +73,42 @@ export function compoundFacetMatches(
 export function compoundSubPropertyPath(
   propertyKey: string,
   subKey: string,
+  layerIndex: number = LAYERED_PAINT_LAYER_INDEX,
 ): string {
   if (isLayeredPaintProperty(propertyKey as CorePropertyKey)) {
-    return `${propertyKey}.${LAYERED_PAINT_LAYER_INDEX}.${subKey}`
+    return `${propertyKey}.${layerIndex}.${subKey}`
   }
   return `${propertyKey}.${subKey}`
 }
 
+/** Parent row key for a paint layer: bare root for index 0, `root.index` above it. */
+export function layeredParentPropertyPath(
+  propertyKey: string,
+  layerIndex: number,
+): string {
+  return layerIndex === 0 ? propertyKey : `${propertyKey}.${layerIndex}`
+}
+
 export function getCompoundLayerValue(
   value: unknown,
+  layerIndex: number = LAYERED_PAINT_LAYER_INDEX,
 ): Record<string, unknown> | null {
   if (!value || typeof value !== "object") return null
   if (Array.isArray(value)) {
-    const layer = value[LAYERED_PAINT_LAYER_INDEX]
+    const layer = value[layerIndex]
     if (!layer || typeof layer !== "object" || Array.isArray(layer)) {
       return null
     }
     return layer as Record<string, unknown>
   }
   return value as Record<string, unknown>
+}
+
+/** Number of paint layers carried by a layered paint value, 0 when absent. */
+export function getLayeredPaintLayerCount(value: unknown): number {
+  if (Array.isArray(value)) return value.length
+  if (value && typeof value === "object") return 1
+  return 0
 }
 
 export function wrapCompoundPropertyValue(

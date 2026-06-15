@@ -193,16 +193,6 @@ function subPropertyPathFor(
   return `${parentKey}.${subKey}`
 }
 
-/** True for a tagged value that carries a concrete (non-empty) decision. */
-function isMeaningfulValue(value: unknown): boolean {
-  return (
-    !!value &&
-    typeof value === "object" &&
-    "type" in value &&
-    (value as { type: ValueType }).type !== ValueType.EMPTY
-  )
-}
-
 export function getPropertiesSubjectId(
   node: Variant | Instance | Board,
 ): string {
@@ -576,15 +566,9 @@ function getSubProperties(
 
     const subValue = layer?.[subKey]
     const subPropertyPath = subPropertyPathFor(propertyKey, subKey, layerIndex)
-    // Upper layers have no entry in the core status map, so derive a visible
-    // status from the value; otherwise "not used" would hide the row.
-    const status =
-      propertyStatus[subPropertyPath] ??
-      (layerIndex > 0
-        ? isMeaningfulValue(subValue)
-          ? "set"
-          : "unset"
-        : "not used")
+    // Core emits status for every paint layer keyed `root.index.facet`, so the
+    // editor reads it directly instead of fabricating a status for upper layers.
+    const status = propertyStatus[subPropertyPath] ?? "not used"
 
     const flatSubProperty = createFlatSubProperty(
       propertyKey,
@@ -616,6 +600,7 @@ function buildLayerParentFlatProperty(
   layerValue: unknown,
   node: Variant | Instance | Board,
   workspace: Workspace,
+  propertyStatus: Record<string, PropertyStatus>,
   theme?: Theme,
 ): FlatProperty {
   const registryEntry = getPropertyRegistryEntry(propertyKey)
@@ -625,18 +610,23 @@ function buildLayerParentFlatProperty(
     workspace,
   )
 
+  // Core resolves the compound display per layer (preset name / "Custom" /
+  // "None"), the same path the index-0 row uses, so upper layers stay 1:1.
   let actualValue = ""
   try {
-    actualValue = coreFormatValue(
+    actualValue = coreFormatCompoundDisplay(
       propertyKey,
-      layerValue,
       getPropertiesSubjectId(node),
       workspace,
       theme,
+      index,
     )
   } catch {
     actualValue = ""
   }
+
+  const parentStatus =
+    propertyStatus[layeredParentPath(propertyKey, index)] ?? "unset"
 
   return {
     key: layeredParentPath(propertyKey, index),
@@ -649,7 +639,7 @@ function buildLayerParentFlatProperty(
     isShorthand: false,
     isSubProperty: false,
     propertyType: "compound",
-    status: "set",
+    status: parentStatus,
     icon: registryEntry?.icon || "seldon-token",
     layerIndex: index,
   }
@@ -719,6 +709,7 @@ function flattenLayeredPaintProperty(
           layerValue,
           node,
           workspace,
+          propertyStatus,
           theme,
         ),
       )

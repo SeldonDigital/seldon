@@ -223,10 +223,12 @@ export function formatCompoundDisplay(
   nodeId: string,
   workspace: Workspace,
   theme?: Theme,
+  layerIndex: number = 0,
 ): string {
   const effectiveProperties = getEffectiveProperties(nodeId, workspace)
   const parentLayer = getCompoundLayerValue(
     (effectiveProperties as Record<string, unknown>)[propertyKey],
+    layerIndex,
   )
   if (!parentLayer) return "Default"
 
@@ -235,6 +237,7 @@ export function formatCompoundDisplay(
     nodeId,
     workspace,
     theme,
+    layerIndex,
   )
   if (matchedPreset) return matchedPreset
 
