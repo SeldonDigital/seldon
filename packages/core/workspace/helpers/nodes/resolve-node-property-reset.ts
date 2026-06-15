@@ -40,6 +40,7 @@ function readPropertySlice(
   properties: Properties,
   propertyKey: PropertyKey,
   subpropertyKey?: SubPropertyKey,
+  layerIndex: number = 0,
 ): unknown {
   if (!subpropertyKey) {
     return properties[propertyKey as keyof Properties]
@@ -47,7 +48,7 @@ function readPropertySlice(
 
   const bag = properties[propertyKey as keyof Properties]
   if (isLayeredPaintProperty(propertyKey)) {
-    return getCompoundLayerValue(bag)?.[subpropertyKey]
+    return getCompoundLayerValue(bag, layerIndex)?.[subpropertyKey]
   }
 
   if (
@@ -70,14 +71,19 @@ function buildSetPatch(
   propertyKey: PropertyKey,
   subpropertyKey: SubPropertyKey | undefined,
   value: unknown,
+  layerIndex: number = 0,
 ): Properties {
   if (!subpropertyKey) {
     return { [propertyKey]: value } as Properties
   }
 
   if (isLayeredPaintProperty(propertyKey)) {
-    const layer = { [subpropertyKey]: value }
-    return { [propertyKey]: [layer] } as Properties
+    // Target the facet on its own layer slot. Lower slots stay empty bags so
+    // mergeProperties merges by layer index without clobbering other layers.
+    const layers: Record<string, unknown>[] = []
+    for (let i = 0; i < layerIndex; i++) layers.push({})
+    layers.push({ [subpropertyKey]: value })
+    return { [propertyKey]: layers } as Properties
   }
 
   return {
@@ -93,6 +99,7 @@ export function resolveNodePropertyResetPatch(
   workspace: Workspace,
   propertyKey: PropertyKey,
   subpropertyKey?: SubPropertyKey,
+  layerIndex: number = 0,
 ): NodePropertyResetPatch {
   const catalogId = getNodeCatalogId(node, workspace)
   if (!catalogId || !isComponentId(catalogId)) {
@@ -101,11 +108,17 @@ export function resolveNodePropertyResetPatch(
 
   const inherited = getInheritedNodeProperties(node.id, workspace)
   const baseline = getBaselineProperties(node, workspace, catalogId)
-  const baselineSlice = readPropertySlice(baseline, propertyKey, subpropertyKey)
+  const baselineSlice = readPropertySlice(
+    baseline,
+    propertyKey,
+    subpropertyKey,
+    layerIndex,
+  )
   const inheritedSlice = readPropertySlice(
     inherited,
     propertyKey,
     subpropertyKey,
+    layerIndex,
   )
 
   if (propertySlicesMatch(baselineSlice, inheritedSlice)) {
@@ -118,6 +131,11 @@ export function resolveNodePropertyResetPatch(
 
   return {
     action: "set",
-    properties: buildSetPatch(propertyKey, subpropertyKey, baselineSlice),
+    properties: buildSetPatch(
+      propertyKey,
+      subpropertyKey,
+      baselineSlice,
+      layerIndex,
+    ),
   }
 }

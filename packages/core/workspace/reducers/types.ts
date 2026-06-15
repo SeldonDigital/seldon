@@ -479,6 +479,8 @@ export type WorkspaceAction =
         nodeId: InstanceId | VariantId
         propertyKey: PropertyKey
         subpropertyKey?: SubPropertyKey
+        /** Paint-layer slot for layered properties; defaults to layer 0. */
+        layerIndex?: number
       }
     }
   | {
@@ -515,6 +517,8 @@ export type WorkspaceAction =
         boardKey: BoardKey
         propertyKey: PropertyKey
         subpropertyKey?: SubPropertyKey
+        /** Paint-layer slot for layered properties; defaults to layer 0. */
+        layerIndex?: number
       }
     }
   | {

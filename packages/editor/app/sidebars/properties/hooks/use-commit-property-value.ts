@@ -79,6 +79,7 @@ export function useCommitPropertyValue({
         resetProperty(
           parsed.root as PropertyKey,
           parsed.facet as SubPropertyKey,
+          parsed.index,
         )
       } else if (parsed.kind === "facet") {
         resetProperty(
@@ -89,7 +90,12 @@ export function useCommitPropertyValue({
         resetProperty(property.key as PropertyKey)
       }
     } else {
-      resetProperty(property.key as PropertyKey)
+      const parsed = parsePropertyPath(property.key)
+      if (parsed.kind === "layered-parent") {
+        resetProperty(parsed.root as PropertyKey, undefined, parsed.index)
+      } else {
+        resetProperty(property.key as PropertyKey)
+      }
     }
     onDone()
   }, [property.isSubProperty, property.key, resetProperty, onDone])

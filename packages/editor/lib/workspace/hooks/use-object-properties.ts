@@ -100,7 +100,11 @@ export function useObjectProperties() {
   )
 
   const resetProperty = useCallback(
-    (propertyKey: PropertyKey, subpropertyKey?: SubPropertyKey) => {
+    (
+      propertyKey: PropertyKey,
+      subpropertyKey?: SubPropertyKey,
+      layerIndex?: number,
+    ) => {
       invariant(selection, "Nothing selected")
 
       if (isBoard(selection)) {
@@ -108,12 +112,14 @@ export function useObjectProperties() {
           boardKey: getComponentKey(selection),
           propertyKey,
           subpropertyKey,
+          layerIndex,
         })
       } else {
         resetNodeProperty({
           nodeId: selection.id,
           propertyKey,
           subpropertyKey,
+          layerIndex,
         })
       }
     },
