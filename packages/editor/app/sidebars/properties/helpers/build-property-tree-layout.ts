@@ -23,6 +23,7 @@ export function buildPropertyTreeSections({
   theme,
   themeEditingContext,
   metadataProperties,
+  metadataVariantLabel,
   familyProperties,
   iconProperties,
   cssStringCount,
@@ -33,14 +34,25 @@ export function buildPropertyTreeSections({
   theme?: Theme
   themeEditingContext?: ThemeEditingContext | null
   metadataProperties?: FlatProperty[]
+  /** Selected resource variant label, used to title the metadata section. */
+  metadataVariantLabel?: string
   familyProperties?: FlatProperty[]
   iconProperties?: FlatProperty[]
   cssStringCount: number
 }): Array<PropertySection | ThemePropertySection> {
+  // The metadata section heads resource trees the way the attributes section
+  // heads component trees: title it "Family · Variant" (just the family when the
+  // variant label matches), falling back to "Metadata" when no family label.
+  const metadataLabel = node.label
+    ? metadataVariantLabel && metadataVariantLabel !== node.label
+      ? `${node.label} · ${metadataVariantLabel}`
+      : node.label
+    : "Metadata"
+
   const metadataSection: PropertySection | null =
     metadataProperties && metadataProperties.length > 0
       ? {
-          label: "Metadata",
+          label: metadataLabel,
           category: "metadata",
           properties: metadataProperties,
         }
