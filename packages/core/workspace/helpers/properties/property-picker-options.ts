@@ -11,6 +11,7 @@ import {
   getThemeLookSection,
   isThemeLookPresetSchemaName,
   listThemeLookIds,
+  RESERVED_LOOK_IDS,
 } from "@seldon/core/themes/looks"
 import { resolveThemeTokenEntry } from "@seldon/core/themes/schemas"
 
@@ -607,21 +608,33 @@ function buildCompoundPresetPickerOptions(
   }
 
   const lookSection = getBuiltInLookSectionForPropertyKey(parentKey)
-  const presetGroup: PropertyPickerOption[] =
-    lookSection === null
-      ? []
-      : listThemeLookIds(theme, lookSection)
-          .map((id) =>
-            themeLookPickerOption(
-              parentKey,
-              section as Record<string, unknown>,
-              id,
-            ),
-          )
-          .filter((option): option is PropertyPickerOption => option !== null)
+  const sectionRecord = section as Record<string, unknown>
+  const toOption = (id: string) =>
+    themeLookPickerOption(parentKey, sectionRecord, id)
+  const keepOptions = (option: PropertyPickerOption | null) => option !== null
 
-  if (presetGroup.length > 0) {
-    groups.push(presetGroup)
+  if (lookSection === "gradient") {
+    // Gradient looks split into a reserved group (Ramp, Fade Out, Burst) and a
+    // separate custom group so the menu renders a divider between them.
+    const ids = listThemeLookIds(theme, lookSection)
+    const reservedIds = RESERVED_LOOK_IDS.gradient
+    const reservedGroup = reservedIds
+      .filter((id) => ids.includes(id))
+      .map(toOption)
+      .filter((option): option is PropertyPickerOption => keepOptions(option))
+    const customGroup = ids
+      .filter((id) => !reservedIds.includes(id))
+      .map(toOption)
+      .filter((option): option is PropertyPickerOption => keepOptions(option))
+    if (reservedGroup.length > 0) groups.push(reservedGroup)
+    if (customGroup.length > 0) groups.push(customGroup)
+  } else if (lookSection !== null) {
+    const presetGroup = listThemeLookIds(theme, lookSection)
+      .map(toOption)
+      .filter((option): option is PropertyPickerOption => keepOptions(option))
+    if (presetGroup.length > 0) {
+      groups.push(presetGroup)
+    }
   }
 
   const currentValueOption = insertCurrentValueGroup(groups, input)
@@ -763,8 +776,7 @@ export function getPropertyPickerOptions(
 ): PropertyPickerResult {
   if (
     input.path === "background" ||
-    input.path === "background.preset" ||
-    /^background\.\d+\.(preset|kind)$/.test(input.path)
+    /^background\.\d+\.kind$/.test(input.path)
   ) {
     return buildBackgroundKindPickerOptions()
   }

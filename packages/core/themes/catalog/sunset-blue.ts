@@ -1242,7 +1242,7 @@ const theme: StockTheme = {
   gradient: {
     primary: {
       type: TokenType.LOOK,
-      name: "Default",
+      name: "Ramp",
       parameters: {
         gradientType: {
           type: ValueType.OPTION,
@@ -1257,7 +1257,7 @@ const theme: StockTheme = {
         },
         startColor: {
           type: ValueType.THEME_CATEGORICAL,
-          value: "@swatch.primary",
+          value: "@swatch.white",
         },
         startOpacity: {
           type: ValueType.EXACT,
@@ -1275,7 +1275,7 @@ const theme: StockTheme = {
         },
         endColor: {
           type: ValueType.THEME_CATEGORICAL,
-          value: "@swatch.primary",
+          value: "@swatch.black",
         },
         endOpacity: {
           type: ValueType.EXACT,
@@ -1295,7 +1295,7 @@ const theme: StockTheme = {
     },
     gradient1: {
       type: TokenType.LOOK,
-      name: "Linear",
+      name: "Fade Out",
       parameters: {
         gradientType: {
           type: ValueType.OPTION,
@@ -1328,13 +1328,13 @@ const theme: StockTheme = {
         },
         endColor: {
           type: ValueType.THEME_CATEGORICAL,
-          value: "@swatch.swatch1",
+          value: "@swatch.primary",
         },
         endOpacity: {
           type: ValueType.EXACT,
           value: {
             unit: Unit.PERCENT,
-            value: 100,
+            value: 0,
           },
         },
         endPosition: {
@@ -1348,7 +1348,7 @@ const theme: StockTheme = {
     },
     gradient2: {
       type: TokenType.LOOK,
-      name: "Radial",
+      name: "Burst",
       parameters: {
         gradientType: {
           type: ValueType.OPTION,
@@ -1381,13 +1381,13 @@ const theme: StockTheme = {
         },
         endColor: {
           type: ValueType.THEME_CATEGORICAL,
-          value: "@swatch.swatch1",
+          value: "@swatch.primary",
         },
         endOpacity: {
           type: ValueType.EXACT,
           value: {
             unit: Unit.PERCENT,
-            value: 100,
+            value: 0,
           },
         },
         endPosition: {

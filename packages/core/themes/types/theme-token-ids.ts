@@ -152,7 +152,6 @@ export type ThemeShadowId =
   | `custom${number}`
 
 export type ThemeGradientId =
-  | BuiltInThemeClearedLookId
   | "primary"
   | "gradient1"
   | "gradient2"

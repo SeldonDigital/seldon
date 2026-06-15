@@ -76,7 +76,7 @@ properties.border.color
 
 Compound behavior:
 
-- The theme can list **looks** for a compound (for example `border.hairline` with width, style, color). The editor lets you pick one and copies those parameters onto the compound. **Built-in cleared looks** (`@shadow.none`, `@gradient.none`, `@border.none`, `@font.normal`) are injected at theme compute time, set every facet to **EMPTY**, and appear in the picker like stock looks. Stored values stay on the usual sub-properties (e.g., `border.width`, `border.color`). Background is the exception: it has no compound theme looks. Each background layer carries a `kind` facet (`none`, `color`, `image`, or `gradient`) that selects which facets apply. A `gradient` layer still picks a theme gradient recipe through its `preset` facet (`@gradient.*`).
+- The theme can list **looks** for a compound (for example `border.hairline` with width, style, color). The editor lets you pick one and copies those parameters onto the compound. **Built-in cleared looks** (`@shadow.none`, `@border.none`, `@font.normal`) are injected at theme compute time, set every facet to **EMPTY**, and appear in the picker like stock looks. Stored values stay on the usual sub-properties (e.g., `border.width`, `border.color`). Background is the exception: it has no compound theme looks. Each background layer carries a `kind` facet (`none`, `color`, `image`, or `gradient`) that selects which facets apply. A `gradient` layer still picks a theme gradient recipe through its `preset` facet (`@gradient.*`).
 - Applying a preset overwrites every parameter that preset defines. Any parameter the preset does not mention is set to **EMPTY**, which clears older values.
 - Preset facets also expand at compute time. Each property snapshot in the effective merge expands its own `preset` facet before merging: the look's parameters fill the facets, facets the look does not define become **EMPTY**, and the snapshot's own non-EMPTY facets win over the look.
 - If the user changes any sub-field by hand, treat the compound as **Custom** until it matches one of the theme’s named presets again.
@@ -217,7 +217,7 @@ For example, an Icon component might not have a `padding` property in its schema
 
 Below are all property values and their fields. They are grouped into categories and should be displayed in any editor or interface using these categories and the ordering present in the tables below.
 
-**IMPORTANT:** A type of `array` in the tables below means an **ordered list** of layer values for a property that can have multiple instances (backgrounds, gradients, shadows).
+**IMPORTANT:** A type of `array` in the tables below means an **ordered list** of layer values for a property that can have multiple instances (backgrounds, shadows).
 
 ### Attributes
 
@@ -313,7 +313,7 @@ Properties that control the visual appearance and styling of components.
 | `brightness` | `atomic` | `empty` \| `inherit` \| `exact: %, 0–100` |
 | `opacity` | `atomic` | `empty` \| `inherit` \| `exact: %, 0–100` |
 | `background` | `array` | `background[]`, ordered, `background[0]` topmost |
-| └ **Each Background** | `compound` | `kind` selects facets: `none` (none) \| `color: color, brightness, opacity` \| `image: image, blendMode, position, size, repeat, filter` \| `gradient: preset, gradientType, angle, startColor, startOpacity, startBrightness, startPosition, endColor, endOpacity, endBrightness, endPosition` |
+| └ **Each Background** | `compound` | `kind` selects facets: `none` (none) \| `color: color, brightness, opacity` \| `image: image, blendMode, opacity, position, size, repeat, filter` \| `gradient: preset, gradientType, angle, startColor, startPosition, startBrightness, startOpacity, endColor, endPosition, endBrightness, endOpacity` |
 | └ └ `background[].kind` | `atomic` | `empty` \| `inherit` \| `option: none, color, image, gradient` |
 | └ └ `background[].image` | `atomic` | `empty` \| `inherit` \| `exact: string` |
 | └ └ `background[].position` | `atomic` | `empty` \| `inherit` \| `option: default, top-left, top-center, top-right, center-left, center, center-right, bottom-left, bottom-center, bottom-right` \| `exact: px, rem, %` \| `exact: DoubleAxisValue` |
@@ -324,17 +324,17 @@ Properties that control the visual appearance and styling of components.
 | └ └ `background[].filter` | `atomic` | `empty` \| `inherit` \| `option: blur(4px), brightness(1.2), contrast(1.1), grayscale(1), saturate(1.2), sepia(0.5), invert(1)` \| `exact: string` |
 | └ └ `background[].brightness` | `atomic` | `empty` \| `inherit` \| `exact: %, 0–100` |
 | └ └ `background[].opacity` | `atomic` | `empty` \| `inherit` \| `exact: %, 0–100` |
-| └ └ `background[].preset` | `atomic` | `empty` \| `inherit` \| `theme.categorical: @gradient.*` (built-in `@gradient.none`) |
+| └ └ `background[].preset` | `atomic` | `empty` \| `inherit` \| `theme.categorical: @gradient.*` |
 | └ └ `background[].gradientType` | `atomic` | `empty` \| `inherit` \| `option: linear, radial` |
 | └ └ `background[].angle` | `atomic` | `empty` \| `inherit` \| `exact: degrees` |
 | └ └ `background[].startColor` | `atomic` | `empty` \| `inherit` \| `exact: hex, hsl, rgb, lch` \| `option: transparent` \| `theme.categorical: @swatch.*` \| `computed: highContrastColor, match` |
+| └ └ `background[].startPosition` | `atomic` | `empty` \| `inherit` \| `exact: %, 0–100` |
 | └ └ `background[].startBrightness` | `atomic` | `empty` \| `inherit` \| `exact: %, 0–100` |
 | └ └ `background[].startOpacity` | `atomic` | `empty` \| `inherit` \| `exact: %, 0–100` |
-| └ └ `background[].startPosition` | `atomic` | `empty` \| `inherit` \| `exact: %, 0–100` |
 | └ └ `background[].endColor` | `atomic` | `empty` \| `inherit` \| `exact: hex, hsl, rgb, lch` \| `option: transparent` \| `theme.categorical: @swatch.*` \| `computed: highContrastColor, match` |
+| └ └ `background[].endPosition` | `atomic` | `empty` \| `inherit` \| `exact: %, 0–100` |
 | └ └ `background[].endBrightness` | `atomic` | `empty` \| `inherit` \| `exact: %, 0–100` |
 | └ └ `background[].endOpacity` | `atomic` | `empty` \| `inherit` \| `exact: %, 0–100` |
-| └ └ `background[].endPosition` | `atomic` | `empty` \| `inherit` \| `exact: %, 0–100` |
 | `border` | `compound` | `preset: style, color, width, brightness, opacity, collapse` |
 | └ `border.preset` | `atomic` | `empty` \| `inherit` \| `theme.categorical: @border.*` (built-in `@border.none`) |
 | └ `border.style` | `atomic` | `empty` \| `inherit` \| `option: none, solid, dashed, dotted, double, groove, ridge, inset, outset, hidden` |

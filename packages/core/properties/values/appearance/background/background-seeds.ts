@@ -1,5 +1,4 @@
 import { Unit, ValueType } from "../../../constants"
-import { GradientType } from "../../effects/gradients/gradient-type"
 import { ImageFit } from "../../shared/utilities/image-fit"
 import { BackgroundBlendMode } from "./background-blend-mode"
 import { BackgroundKind } from "./background-kind"
@@ -50,7 +49,7 @@ function gradientSeed(): BackgroundLayer {
   return {
     kind: { type: ValueType.OPTION, value: BackgroundKind.GRADIENT },
     preset: { type: ValueType.THEME_CATEGORICAL, value: "@gradient.primary" },
-    gradientType: { type: ValueType.OPTION, value: GradientType.LINEAR },
+    gradientType: empty,
     angle: empty,
     startColor: empty,
     startPosition: empty,

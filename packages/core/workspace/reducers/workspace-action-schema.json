@@ -10613,7 +10613,6 @@
                             "enum": [
                                 "@gradient.gradient1",
                                 "@gradient.gradient2",
-                                "@gradient.none",
                                 "@gradient.primary"
                             ],
                             "type": "string"

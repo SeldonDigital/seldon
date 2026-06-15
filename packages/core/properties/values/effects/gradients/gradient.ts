@@ -15,8 +15,7 @@ export interface GradientValue {
 /** Validates stored gradient theme recipe picks. */
 export const gradientPresetSchema: PropertySchema = {
   name: "gradientPreset",
-  description:
-    "Selects a named gradient recipe from the theme, including the built-in None look.",
+  description: "Selects a named gradient recipe from the theme.",
   supports: ["empty", "inherit", "themeCategorical"] as const,
   validation: {
     empty: () => true,

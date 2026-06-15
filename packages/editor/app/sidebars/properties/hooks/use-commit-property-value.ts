@@ -194,6 +194,13 @@ export function useCommitPropertyValue({
         if (!shouldUsePresetPropertyBehavior(property.key)) {
           return false
         }
+        // A layered-paint facet preset (e.g. `background.<n>.preset`) is a plain
+        // per-layer facet, not the compound's selector. The compound-preset apply
+        // collapses the whole stack to a single layer at index 0 and drops the
+        // layer's `kind`, so route it through the layered-facet merge instead.
+        if (parsePropertyPath(property.key).kind === "layered-facet") {
+          return false
+        }
         const update = createPresetPropertyUpdate(
           property.key,
           nextValue,

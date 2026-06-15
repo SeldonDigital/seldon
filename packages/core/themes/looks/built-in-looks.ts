@@ -3,7 +3,6 @@ import type { ComputedTheme, StockTheme } from "../types/theme"
 import type {
   ThemeBorderKey,
   ThemeFontKey,
-  ThemeGradientKey,
   ThemeShadowKey,
 } from "../types/theme-reference-keys"
 import type {
@@ -21,8 +20,6 @@ import type { ThemeFont } from "../values/typography/font"
 import { LOOK_FACETS } from "./look-facets"
 
 export const SHADOW_LOOK_NONE = "@shadow.none" as const satisfies ThemeShadowKey
-export const GRADIENT_LOOK_NONE =
-  "@gradient.none" as const satisfies ThemeGradientKey
 export const BORDER_LOOK_NONE = "@border.none" as const satisfies ThemeBorderKey
 export const FONT_LOOK_NORMAL = "@font.normal" as const satisfies ThemeFontKey
 
@@ -31,6 +28,19 @@ export type BuiltInLookSection = "shadow" | "gradient" | "border" | "font"
 export const BUILT_IN_LOOK_SECTIONS: readonly BuiltInLookSection[] = [
   "shadow",
   "gradient",
+  "border",
+  "font",
+] as const
+
+/**
+ * Look sections that carry a built-in cleared look (`none` / `normal`). The
+ * `gradient` section is a look section without a cleared look: a gradient layer
+ * resets through its `Default` (EMPTY) preset, not a `@gradient.none` token.
+ */
+export type ClearedLookSection = "shadow" | "border" | "font"
+
+export const CLEARED_LOOK_SECTIONS: readonly ClearedLookSection[] = [
+  "shadow",
   "border",
   "font",
 ] as const
@@ -55,7 +65,7 @@ const PARAMETER_KEYS_BY_SECTION = {
  */
 export const RESERVED_LOOK_IDS: Record<ReservedLookSection, readonly string[]> = {
   shadow: ["none", "xlight", "light", "moderate", "strong", "xstrong"],
-  gradient: ["none", "primary", "gradient1", "gradient2"],
+  gradient: ["primary", "gradient1", "gradient2"],
   border: ["none", "hairline", "thin", "normal", "thick", "bevel"],
   font: [
     "normal",
@@ -101,17 +111,22 @@ function buildEmptyParameters(
 }
 
 const BUILT_IN_LOOK_DEFINITIONS: Record<
-  BuiltInLookSection,
+  ClearedLookSection,
   { id: string; name: string; token: string }
 > = {
   shadow: { id: "none", name: "None", token: SHADOW_LOOK_NONE },
-  gradient: { id: "none", name: "None", token: GRADIENT_LOOK_NONE },
   border: { id: "none", name: "None", token: BORDER_LOOK_NONE },
   font: { id: "normal", name: "Normal", token: FONT_LOOK_NORMAL },
 }
 
-function buildBuiltInLookCell(
+function isClearedLookSection(
   section: BuiltInLookSection,
+): section is ClearedLookSection {
+  return section in BUILT_IN_LOOK_DEFINITIONS
+}
+
+function buildBuiltInLookCell(
+  section: ClearedLookSection,
 ): ThemeShadow | ThemeGradient | ThemeBorder | ThemeFont {
   const definition = BUILT_IN_LOOK_DEFINITIONS[section]
   return {
@@ -122,12 +137,18 @@ function buildBuiltInLookCell(
   }
 }
 
-export function getBuiltInLookId(section: BuiltInLookSection): string {
-  return BUILT_IN_LOOK_DEFINITIONS[section].id
+/** Reserved cleared-look id for a section, or `null` when it has none (gradient). */
+export function getBuiltInLookId(section: BuiltInLookSection): string | null {
+  return isClearedLookSection(section)
+    ? BUILT_IN_LOOK_DEFINITIONS[section].id
+    : null
 }
 
-export function getBuiltInLookToken(section: BuiltInLookSection): string {
-  return BUILT_IN_LOOK_DEFINITIONS[section].token
+/** Reserved cleared-look token for a section, or `null` when it has none. */
+export function getBuiltInLookToken(section: BuiltInLookSection): string | null {
+  return isClearedLookSection(section)
+    ? BUILT_IN_LOOK_DEFINITIONS[section].token
+    : null
 }
 
 export function isBuiltInLookSection(
@@ -149,6 +170,9 @@ export function getBuiltInLookSectionForPropertyKey(
     propertyKey === "borderLeft"
   ) {
     return "border"
+  }
+  if (propertyKey === "background") {
+    return "gradient"
   }
   return null
 }
@@ -176,7 +200,8 @@ export function injectBuiltInLooks<T extends StockTheme | ComputedTheme>(
   const next = { ...theme } as T & Record<string, unknown>
 
   // Force the cleared built-in look (`none` / `normal`) so it always reads empty.
-  for (const section of BUILT_IN_LOOK_SECTIONS) {
+  // The gradient section has no cleared look, so it is skipped here.
+  for (const section of CLEARED_LOOK_SECTIONS) {
     const definition = BUILT_IN_LOOK_DEFINITIONS[section]
     const existing = (next[section] ?? {}) as Record<string, unknown>
     const { [definition.id]: _reserved, ...rest } = existing
@@ -206,5 +231,5 @@ export function isReservedThemeLookId(
   section: BuiltInLookSection,
   id: string,
 ): id is ThemeShadowId | ThemeGradientId | ThemeBorderId | ThemeFontId {
-  return id === BUILT_IN_LOOK_DEFINITIONS[section].id
+  return id === getBuiltInLookId(section)
 }

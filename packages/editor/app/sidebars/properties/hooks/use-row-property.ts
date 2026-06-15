@@ -473,7 +473,10 @@ export function useRowProperty({
         ...(canReset
           ? [
               buildResetMenuEntry({
-                label: `Reset ${labelText}`,
+                label:
+                  property.key === "background"
+                    ? "Reset Entire Background"
+                    : `Reset ${labelText}`,
                 onSelect: handleReset,
                 testId: `property-row-${property.key}-reset`,
               }),

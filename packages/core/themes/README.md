@@ -201,7 +201,7 @@ Every token except `@fontFamily.*` accepts custom keys. Stock themes ship withou
 
 `@swatch.swatch1` through `@swatch.swatch4` are reserved palette slots filled in by `computeTheme`; they are not custom slots even though their keys are numbered.
 
-The look tables also reserve cleared ids that `computeTheme` injects at compute time: `@font.normal` plus `none` on `@border.*`, `@gradient.*`, and `@shadow.*`. They are part of every computed theme even though stock themes do not author them.
+The look tables also reserve cleared ids that `computeTheme` injects at compute time: `@font.normal` plus `none` on `@border.*` and `@shadow.*`. They are part of every computed theme even though stock themes do not author them. The `@gradient.*` section has no cleared look.
 
 ```typescript
 import { ValueType } from "@seldon/core"
@@ -570,12 +570,12 @@ import { TokenType, ValueType } from "@seldon/core/themes"
 gradient: {
   primary: {
     type: TokenType.LOOK,
-    name: "Linear",
+    name: "Ramp",
     parameters: {
       gradientType: { type: ValueType.OPTION, value: GradientType.LINEAR },
       angle: { type: ValueType.EXACT, value: { unit: Unit.DEGREES, value: 0 } },
-      startColor: { type: ValueType.THEME_CATEGORICAL, value: "@swatch.primary" },
-      endColor: { type: ValueType.THEME_CATEGORICAL, value: "@swatch.swatch1" },
+      startColor: { type: ValueType.THEME_CATEGORICAL, value: "@swatch.white" },
+      endColor: { type: ValueType.THEME_CATEGORICAL, value: "@swatch.black" },
     },
   },
 }

@@ -79,7 +79,7 @@ export function listThemeLookIds(
   }
   const ids = Object.keys(themeSection)
   const builtInId = getBuiltInLookId(section)
-  if (!ids.includes(builtInId)) {
+  if (!builtInId || !ids.includes(builtInId)) {
     return ids
   }
   return [builtInId, ...ids.filter((id) => id !== builtInId)]
@@ -174,7 +174,12 @@ export function resolveBuiltInLookApplyName(
     }
     return null
   }
-  if (preset === "None" || preset === getBuiltInLookToken(sectionKey)) {
+  // Sections without a cleared look (gradient) reset through Default, not None.
+  const clearedToken = getBuiltInLookToken(sectionKey)
+  if (!clearedToken) {
+    return null
+  }
+  if (preset === "None" || preset === clearedToken) {
     return "None"
   }
   return null
