@@ -19,6 +19,7 @@ import {
 import {
   validateAddNodeLayer,
   validateRemoveNodeLayer,
+  validateReorderNodeLayer,
   validateSetNodeLayerKind,
 } from "./action-groups/node-layers"
 import { isPassthroughAction } from "./action-groups/passthrough"
@@ -150,6 +151,9 @@ export function validateAction(workspace: Workspace, action: Action): void {
       return
     case "remove_node_layer":
       validateRemoveNodeLayer(workspace, action)
+      return
+    case "reorder_node_layer":
+      validateReorderNodeLayer(workspace, action)
       return
     case "set_node_layer_kind":
       validateSetNodeLayerKind(workspace, action)

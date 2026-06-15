@@ -15,6 +15,7 @@ import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { useObjectProperties } from "@lib/workspace/hooks/use-object-properties"
 import { usePropertiesSidebar } from "./hooks/use-properties-sidebar"
 import { useIsCategoryExpanded } from "./hooks/use-property-expansion"
+import { useLayerDragMonitor } from "./hooks/use-layer-drag-monitor"
 import {
   ScrollerShell,
   SidebarContainer,
@@ -108,6 +109,8 @@ function PropertiesTree({
   cssStrings,
   cssSelector,
 }: PropertyTreeProps) {
+  useLayerDragMonitor()
+
   return (
     <ScrollerShell ref={scrollerRef} style={styles.scroller}>
       <Frame style={styles.tree}>

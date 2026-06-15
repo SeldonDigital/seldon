@@ -2915,6 +2915,44 @@
                 "payload": {
                     "additionalProperties": false,
                     "properties": {
+                        "fromIndex": {
+                            "type": "number"
+                        },
+                        "nodeId": {
+                            "type": "string"
+                        },
+                        "property": {
+                            "$ref": "#/definitions/LayeredPaintKey"
+                        },
+                        "toIndex": {
+                            "type": "number"
+                        }
+                    },
+                    "required": [
+                        "fromIndex",
+                        "nodeId",
+                        "property",
+                        "toIndex"
+                    ],
+                    "type": "object"
+                },
+                "type": {
+                    "const": "reorder_node_layer",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "payload",
+                "type"
+            ],
+            "type": "object"
+        },
+        {
+            "additionalProperties": false,
+            "properties": {
+                "payload": {
+                    "additionalProperties": false,
+                    "properties": {
                         "kind": {
                             "description": "The kind to seed the layer with, e.g. a `BackgroundKind` value.",
                             "type": "string"

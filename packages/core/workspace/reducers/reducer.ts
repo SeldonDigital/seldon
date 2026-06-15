@@ -79,6 +79,7 @@ import { removeThemeCustomSwatch } from "./handlers/remove/remove-theme-custom-s
 import { removeVariant } from "./handlers/remove/remove-variant"
 import { reorderBoard } from "./handlers/reorder/reorder-board"
 import { reorderInstanceInParent } from "./handlers/reorder/reorder-instance-in-parent"
+import { reorderNodeLayer } from "./handlers/reorder/reorder-node-layer"
 import { reorderVariantInBoard } from "./handlers/reorder/reorder-variant-in-board"
 import { resetBoardAuthor } from "./handlers/reset/reset-board-author"
 import { resetBoardCredentials } from "./handlers/reset/reset-board-credentials"
@@ -296,6 +297,8 @@ function reducer(workspace: Workspace, action: WorkspaceAction): Workspace {
       return addNodeLayer(action.payload, workspace)
     case "remove_node_layer":
       return removeNodeLayer(action.payload, workspace)
+    case "reorder_node_layer":
+      return reorderNodeLayer(action.payload, workspace)
     case "set_node_layer_kind":
       return setNodeLayerKind(action.payload, workspace)
     case "set_node_label":

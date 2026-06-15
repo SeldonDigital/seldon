@@ -99,6 +99,18 @@ export function useObjectProperties() {
     [selection, dispatch],
   )
 
+  const reorderNodeLayer = useCallback(
+    (property: LayeredPaintKey, fromIndex: number, toIndex: number) => {
+      invariant(selection, "Nothing selected")
+      if (isBoard(selection)) return
+      dispatch({
+        type: "reorder_node_layer",
+        payload: { nodeId: selection.id, property, fromIndex, toIndex },
+      })
+    },
+    [selection, dispatch],
+  )
+
   const resetProperty = useCallback(
     (
       propertyKey: PropertyKey,
@@ -132,6 +144,7 @@ export function useObjectProperties() {
     setProperties,
     addNodeLayer,
     removeNodeLayer,
+    reorderNodeLayer,
     resetProperty,
   }
 }
