@@ -50,10 +50,10 @@ export const schema = {
       left: { type: Sdn.ValueType.EMPTY, value: null },
     },
     padding: {
-      top: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.open" },
-      right: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.open" },
-      bottom: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.open" },
-      left: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.open" },
+      top: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.comfortable" },
+      right: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.comfortable" },
+      bottom: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.comfortable" },
+      left: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.comfortable" },
     },
     gap: {
       type: Sdn.ValueType.THEME_ORDINAL,
@@ -87,7 +87,7 @@ export const schema = {
     border: {
       preset: {
         type: Sdn.ValueType.THEME_CATEGORICAL,
-        value: "@border.none",
+        value: "@border.hairline",
       },
       style: { type: Sdn.ValueType.EMPTY, value: null },
       color: { type: Sdn.ValueType.EMPTY, value: null },
@@ -185,7 +185,7 @@ export const schema = {
             overrides: {
               symbol: {
                 type: Sdn.ValueType.OPTION,
-                value: "material-keyboardDoubleArrowLeft",
+                value: "material-chevronDoubleLeft",
               },
             },
           },
@@ -224,7 +224,7 @@ export const schema = {
             overrides: {
               symbol: {
                 type: Sdn.ValueType.OPTION,
-                value: "material-keyboardDoubleArrowRight",
+                value: "material-chevronDoubleRight",
               },
             },
           },
@@ -251,10 +251,6 @@ export const schema = {
                 type: Sdn.ValueType.OPTION,
                 value: Sdn.TextAlign.CENTER,
               },
-              color: {
-                type: Sdn.ValueType.THEME_CATEGORICAL,
-                value: "@swatch.gray",
-              },
             },
           },
           {
@@ -266,10 +262,6 @@ export const schema = {
               textAlign: {
                 type: Sdn.ValueType.OPTION,
                 value: Sdn.TextAlign.CENTER,
-              },
-              color: {
-                type: Sdn.ValueType.THEME_CATEGORICAL,
-                value: "@swatch.gray",
               },
             },
           },
@@ -283,10 +275,6 @@ export const schema = {
                 type: Sdn.ValueType.OPTION,
                 value: Sdn.TextAlign.CENTER,
               },
-              color: {
-                type: Sdn.ValueType.THEME_CATEGORICAL,
-                value: "@swatch.gray",
-              },
             },
           },
           {
@@ -298,10 +286,6 @@ export const schema = {
               textAlign: {
                 type: Sdn.ValueType.OPTION,
                 value: Sdn.TextAlign.CENTER,
-              },
-              color: {
-                type: Sdn.ValueType.THEME_CATEGORICAL,
-                value: "@swatch.gray",
               },
             },
           },
@@ -315,10 +299,6 @@ export const schema = {
                 type: Sdn.ValueType.OPTION,
                 value: Sdn.TextAlign.CENTER,
               },
-              color: {
-                type: Sdn.ValueType.THEME_CATEGORICAL,
-                value: "@swatch.gray",
-              },
             },
           },
           {
@@ -331,10 +311,6 @@ export const schema = {
                 type: Sdn.ValueType.OPTION,
                 value: Sdn.TextAlign.CENTER,
               },
-              color: {
-                type: Sdn.ValueType.THEME_CATEGORICAL,
-                value: "@swatch.gray",
-              },
             },
           },
           {
@@ -346,10 +322,6 @@ export const schema = {
               textAlign: {
                 type: Sdn.ValueType.OPTION,
                 value: Sdn.TextAlign.CENTER,
-              },
-              color: {
-                type: Sdn.ValueType.THEME_CATEGORICAL,
-                value: "@swatch.gray",
               },
             },
           },
@@ -1042,10 +1014,6 @@ export const schema = {
                   variant: "label",
                   overrides: {
                     content: { type: Sdn.ValueType.EXACT, value: "Mo" },
-                    color: {
-                      type: Sdn.ValueType.THEME_CATEGORICAL,
-                      value: "@swatch.gray",
-                    },
                   },
                 },
                 {
@@ -1053,10 +1021,6 @@ export const schema = {
                   variant: "label",
                   overrides: {
                     content: { type: Sdn.ValueType.EXACT, value: "Tu" },
-                    color: {
-                      type: Sdn.ValueType.THEME_CATEGORICAL,
-                      value: "@swatch.gray",
-                    },
                   },
                 },
                 {
@@ -1064,10 +1028,6 @@ export const schema = {
                   variant: "label",
                   overrides: {
                     content: { type: Sdn.ValueType.EXACT, value: "We" },
-                    color: {
-                      type: Sdn.ValueType.THEME_CATEGORICAL,
-                      value: "@swatch.gray",
-                    },
                   },
                 },
                 {
@@ -1075,10 +1035,6 @@ export const schema = {
                   variant: "label",
                   overrides: {
                     content: { type: Sdn.ValueType.EXACT, value: "Th" },
-                    color: {
-                      type: Sdn.ValueType.THEME_CATEGORICAL,
-                      value: "@swatch.gray",
-                    },
                   },
                 },
                 {
@@ -1086,10 +1042,6 @@ export const schema = {
                   variant: "label",
                   overrides: {
                     content: { type: Sdn.ValueType.EXACT, value: "Fr" },
-                    color: {
-                      type: Sdn.ValueType.THEME_CATEGORICAL,
-                      value: "@swatch.gray",
-                    },
                   },
                 },
                 {
@@ -1097,10 +1049,6 @@ export const schema = {
                   variant: "label",
                   overrides: {
                     content: { type: Sdn.ValueType.EXACT, value: "Sa" },
-                    color: {
-                      type: Sdn.ValueType.THEME_CATEGORICAL,
-                      value: "@swatch.gray",
-                    },
                   },
                 },
                 {
@@ -1108,10 +1056,6 @@ export const schema = {
                   variant: "label",
                   overrides: {
                     content: { type: Sdn.ValueType.EXACT, value: "Su" },
-                    color: {
-                      type: Sdn.ValueType.THEME_CATEGORICAL,
-                      value: "@swatch.gray",
-                    },
                   },
                 },
               ],
@@ -1817,10 +1761,6 @@ export const schema = {
                   variant: "label",
                   overrides: {
                     content: { type: Sdn.ValueType.EXACT, value: "Mo" },
-                    color: {
-                      type: Sdn.ValueType.THEME_CATEGORICAL,
-                      value: "@swatch.gray",
-                    },
                   },
                 },
                 {
@@ -1828,10 +1768,6 @@ export const schema = {
                   variant: "label",
                   overrides: {
                     content: { type: Sdn.ValueType.EXACT, value: "Tu" },
-                    color: {
-                      type: Sdn.ValueType.THEME_CATEGORICAL,
-                      value: "@swatch.gray",
-                    },
                   },
                 },
                 {
@@ -1839,10 +1775,6 @@ export const schema = {
                   variant: "label",
                   overrides: {
                     content: { type: Sdn.ValueType.EXACT, value: "We" },
-                    color: {
-                      type: Sdn.ValueType.THEME_CATEGORICAL,
-                      value: "@swatch.gray",
-                    },
                   },
                 },
                 {
@@ -1850,10 +1782,6 @@ export const schema = {
                   variant: "label",
                   overrides: {
                     content: { type: Sdn.ValueType.EXACT, value: "Th" },
-                    color: {
-                      type: Sdn.ValueType.THEME_CATEGORICAL,
-                      value: "@swatch.gray",
-                    },
                   },
                 },
                 {
@@ -1861,10 +1789,6 @@ export const schema = {
                   variant: "label",
                   overrides: {
                     content: { type: Sdn.ValueType.EXACT, value: "Fr" },
-                    color: {
-                      type: Sdn.ValueType.THEME_CATEGORICAL,
-                      value: "@swatch.gray",
-                    },
                   },
                 },
                 {
@@ -1872,10 +1796,6 @@ export const schema = {
                   variant: "label",
                   overrides: {
                     content: { type: Sdn.ValueType.EXACT, value: "Sa" },
-                    color: {
-                      type: Sdn.ValueType.THEME_CATEGORICAL,
-                      value: "@swatch.gray",
-                    },
                   },
                 },
                 {
@@ -1883,10 +1803,6 @@ export const schema = {
                   variant: "label",
                   overrides: {
                     content: { type: Sdn.ValueType.EXACT, value: "Su" },
-                    color: {
-                      type: Sdn.ValueType.THEME_CATEGORICAL,
-                      value: "@swatch.gray",
-                    },
                   },
                 },
               ],

@@ -1,6 +1,10 @@
-import * as Sdn from "../../../properties"
-import * as Seldon from "../../constants"
-import { ComponentExport, ComponentSchema } from "../../types"
+import * as Sdn from "../../../properties";
+import * as Seldon from "../../constants";
+import { ComponentExport, ComponentSchema } from "../../types";
+
+
+
+
 
 export const schema = {
   name: "Calendar Day",
@@ -120,20 +124,20 @@ export const schema = {
     },
     corners: {
       topLeft: {
-        type: Sdn.ValueType.EXACT,
-        value: { unit: Sdn.Unit.PERCENT, value: 50 },
+        type: Sdn.ValueType.OPTION,
+        value: Sdn.Corner.ROUNDED,
       },
       topRight: {
-        type: Sdn.ValueType.EXACT,
-        value: { unit: Sdn.Unit.PERCENT, value: 50 },
+        type: Sdn.ValueType.OPTION,
+        value: Sdn.Corner.ROUNDED,
       },
       bottomLeft: {
-        type: Sdn.ValueType.EXACT,
-        value: { unit: Sdn.Unit.PERCENT, value: 50 },
+        type: Sdn.ValueType.OPTION,
+        value: Sdn.Corner.ROUNDED,
       },
       bottomRight: {
-        type: Sdn.ValueType.EXACT,
-        value: { unit: Sdn.Unit.PERCENT, value: 50 },
+        type: Sdn.ValueType.OPTION,
+        value: Sdn.Corner.ROUNDED,
       },
     },
     shadow: [
@@ -191,8 +195,13 @@ export const schema = {
           },
           style: { type: Sdn.ValueType.EMPTY, value: null },
           color: {
-            type: Sdn.ValueType.THEME_CATEGORICAL,
-            value: "@swatch.gray",
+            type: Sdn.ValueType.COMPUTED,
+            value: {
+              function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+              input: {
+                basedOn: "#parent.background.color",
+              },
+            },
           },
           width: { type: Sdn.ValueType.EMPTY, value: null },
           brightness: {
