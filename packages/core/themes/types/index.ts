@@ -18,7 +18,6 @@ export { TokenType } from "../constants"
 
 // Exact / modulated cells + compound token entries + guards (canonical: `themes/values`)
 export type {
-  BackgroundParameters,
   BorderParameters,
   BorderWidthOption,
   FontParameters,
@@ -28,7 +27,6 @@ export type {
   ShadowParameters,
   StockSwatchDynamic,
   StockThemeSwatch,
-  ThemeBackground,
   ThemeBorder,
   ThemeBorderWidth,
   ThemeBorderWidthOption,
@@ -66,12 +64,10 @@ export type { ThemeInstanceId, ThemeTemplateId } from "./theme-id"
 export type {
   BuiltInThemeClearedLookId,
   BuiltInThemeFontLookId,
-  StockThemeBackgroundId,
   StockThemeBorderId,
   StockThemeFontId,
   StockThemeGradientId,
   StockThemeShadowId,
-  ThemeBackgroundId,
   ThemeBorderId,
   ThemeBorderWidthId,
   ThemeCornersId,
@@ -95,7 +91,6 @@ export type {
 
 // Branded @ reference keys
 export type {
-  ThemeBackgroundKey,
   ThemeBlurKey,
   ThemeBorderKey,
   ThemeBorderWidthKey,

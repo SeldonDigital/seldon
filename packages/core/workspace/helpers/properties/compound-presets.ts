@@ -110,9 +110,11 @@ function matchThemePreset(
   propertyKey: string,
   effectiveProperties: Properties,
   theme: Theme,
+  layerIndex: number = 0,
 ): string | null {
   const parentLayer = getCompoundLayerValue(
     (effectiveProperties as Record<string, unknown>)[propertyKey],
+    layerIndex,
   )
   if (!parentLayer) {
     return null
@@ -208,12 +210,14 @@ export function matchCompoundPreset(
   nodeId: string,
   workspace: Workspace,
   theme?: Theme,
+  layerIndex: number = 0,
 ): string | null {
   const effectiveProperties = getEffectiveProperties(nodeId, workspace)
 
   if (propertyKey === "board") {
     const boardLayer = getCompoundLayerValue(
       (effectiveProperties as Record<string, unknown>).board,
+      layerIndex,
     ) as BoardCompound | undefined
     return matchBoardCompoundPreset(boardLayer)
   }
@@ -222,5 +226,5 @@ export function matchCompoundPreset(
     return null
   }
 
-  return matchThemePreset(propertyKey, effectiveProperties, theme)
+  return matchThemePreset(propertyKey, effectiveProperties, theme, layerIndex)
 }

@@ -11,6 +11,7 @@ import {
   getThemeLookSection,
   isThemeLookPresetSchemaName,
   listThemeLookIds,
+  RESERVED_LOOK_IDS,
 } from "@seldon/core/themes/looks"
 import { resolveThemeTokenEntry } from "@seldon/core/themes/schemas"
 
@@ -607,21 +608,33 @@ function buildCompoundPresetPickerOptions(
   }
 
   const lookSection = getBuiltInLookSectionForPropertyKey(parentKey)
-  const presetGroup: PropertyPickerOption[] =
-    lookSection === null
-      ? []
-      : listThemeLookIds(theme, lookSection)
-          .map((id) =>
-            themeLookPickerOption(
-              parentKey,
-              section as Record<string, unknown>,
-              id,
-            ),
-          )
-          .filter((option): option is PropertyPickerOption => option !== null)
+  const sectionRecord = section as Record<string, unknown>
+  const toOption = (id: string) =>
+    themeLookPickerOption(parentKey, sectionRecord, id)
+  const keepOptions = (option: PropertyPickerOption | null) => option !== null
 
-  if (presetGroup.length > 0) {
-    groups.push(presetGroup)
+  if (lookSection === "gradient") {
+    // Gradient looks split into a reserved group (Ramp, Fade Out, Burst) and a
+    // separate custom group so the menu renders a divider between them.
+    const ids = listThemeLookIds(theme, lookSection)
+    const reservedIds = RESERVED_LOOK_IDS.gradient
+    const reservedGroup = reservedIds
+      .filter((id) => ids.includes(id))
+      .map(toOption)
+      .filter((option): option is PropertyPickerOption => keepOptions(option))
+    const customGroup = ids
+      .filter((id) => !reservedIds.includes(id))
+      .map(toOption)
+      .filter((option): option is PropertyPickerOption => keepOptions(option))
+    if (reservedGroup.length > 0) groups.push(reservedGroup)
+    if (customGroup.length > 0) groups.push(customGroup)
+  } else if (lookSection !== null) {
+    const presetGroup = listThemeLookIds(theme, lookSection)
+      .map(toOption)
+      .filter((option): option is PropertyPickerOption => keepOptions(option))
+    if (presetGroup.length > 0) {
+      groups.push(presetGroup)
+    }
   }
 
   const currentValueOption = insertCurrentValueGroup(groups, input)
@@ -710,6 +723,31 @@ function buildThemeTokenPickerOptions(
   return null
 }
 
+/**
+ * Builds picker options for the background parent combo. Background layers are
+ * typed by an explicit `kind` rather than theme presets, so the menu reads
+ * Default / Inherit / --- / None / --- / Color / Image / Gradient.
+ */
+function buildBackgroundKindPickerOptions(): PropertyPickerResult {
+  const schema = getPropertySchema("backgroundKind")
+  const groups: PropertyPickerOption[][] = []
+  groups.push(
+    schema
+      ? buildDefaultOptions(schema)
+      : [
+          { value: "", name: "Default" },
+          { value: "inherit", name: "Inherit" },
+        ],
+  )
+  groups.push([{ value: "none", name: "None" }])
+  groups.push([
+    { value: "color", name: "Color" },
+    { value: "image", name: "Image" },
+    { value: "gradient", name: "Gradient" },
+  ])
+  return { options: groups, hasCurrentValue: false }
+}
+
 function buildHarmonyPickerOptions(): PropertyPickerResult {
   return {
     options: [
@@ -736,6 +774,13 @@ function buildHarmonyPickerOptions(): PropertyPickerResult {
 export function getPropertyPickerOptions(
   input: PropertyPickerInput,
 ): PropertyPickerResult {
+  if (
+    input.path === "background" ||
+    /^background\.\d+\.kind$/.test(input.path)
+  ) {
+    return buildBackgroundKindPickerOptions()
+  }
+
   if (isPresetPropertyPath(input.path)) {
     return buildCompoundPresetPickerOptions(input)
   }

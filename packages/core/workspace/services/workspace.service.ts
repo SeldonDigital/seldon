@@ -530,6 +530,10 @@ class WorkspaceService {
     return boardOrderService.getBoards(workspace)
   }
 
+  public getPlaygrounds(workspace: Workspace): Board[] {
+    return boardOrderService.getPlaygrounds(workspace)
+  }
+
   public parseWorkspace(json: string): Workspace {
     return workspacePropagationService.parseWorkspace(json)
   }

@@ -48,6 +48,7 @@ interface WorkspacePropertySource {
   byId?: NodeRecord
   nodes?: NodeRecord
   boards?: BoardRecord
+  playgrounds?: BoardRecord
   themes?: WorkspaceThemeEntries
 }
 
@@ -74,6 +75,17 @@ export interface ComputeNodePropertiesOptions {
 
 function getNodes(workspace: WorkspacePropertySource): NodeRecord {
   return workspace.byId ?? workspace.nodes ?? {}
+}
+
+/**
+ * Resolves a catalog row by key from either `boards` or `playgrounds`. Playground
+ * containers share the board shape, so property compute treats them the same.
+ */
+function getBoardOrPlayground(
+  workspace: WorkspacePropertySource,
+  targetId: string,
+): WorkspaceComponent | undefined {
+  return workspace.boards?.[targetId] ?? workspace.playgrounds?.[targetId]
 }
 
 function getOwnProperties(
@@ -318,7 +330,7 @@ export function getEffectiveNodeProperties(
   const node = getNodes(workspace)[targetId]
 
   if (!node) {
-    const board = workspace.boards?.[targetId]
+    const board = getBoardOrPlayground(workspace, targetId)
     if (!board) throw new Error(`Workspace object ${targetId} not found`)
 
     return mergeEffectiveProperties(
@@ -438,7 +450,7 @@ export function getNodeComputeContext(
   const node = getNodes(workspace)[targetId]
 
   if (!node) {
-    const board = workspace.boards?.[targetId]
+    const board = getBoardOrPlayground(workspace, targetId)
     const theme = resolveBoardTheme(board, workspace)
     const effectiveProperties = getEffectiveNodeProperties(
       targetId,
@@ -478,7 +490,7 @@ export function computeNodeProperties(
   const node = getNodes(workspace)[targetId]
 
   if (!node) {
-    const board = workspace.boards?.[targetId]
+    const board = getBoardOrPlayground(workspace, targetId)
     const theme = resolveBoardTheme(board, workspace)
     const effectiveProperties = getEffectiveNodeProperties(
       targetId,

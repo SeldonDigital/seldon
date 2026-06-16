@@ -223,18 +223,27 @@ export function formatCompoundDisplay(
   nodeId: string,
   workspace: Workspace,
   theme?: Theme,
+  layerIndex: number = 0,
 ): string {
   const effectiveProperties = getEffectiveProperties(nodeId, workspace)
   const parentLayer = getCompoundLayerValue(
     (effectiveProperties as Record<string, unknown>)[propertyKey],
+    layerIndex,
   )
   if (!parentLayer) return "Default"
+
+  // Background layers are typed by an explicit `kind` facet rather than theme
+  // presets, so the row shows the kind label (None / Color / Image).
+  if (propertyKey === "background") {
+    return formatDisplayValue(parentLayer["kind"], theme)
+  }
 
   const matchedPreset = matchCompoundPreset(
     propertyKey,
     nodeId,
     workspace,
     theme,
+    layerIndex,
   )
   if (matchedPreset) return matchedPreset
 

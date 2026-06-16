@@ -35,7 +35,7 @@ export function CssBlock({ cssProperties }: CssBlockProps) {
 const styles: Record<string, CSSProperties> = {
   container: {
     padding:
-      "var(--sdn-padding-tight) var(--sdn-padding-compact) var(--sdn-padding-tight) var(--sdn-padding-tight)",
+      "var(--sdn-padding-tight) var(--sdn-padding-compact) var(--sdn-padding-tight) var(--sdn-padding-comfortable)",
     width: "100%",
     overflow: "hidden" as const,
   },

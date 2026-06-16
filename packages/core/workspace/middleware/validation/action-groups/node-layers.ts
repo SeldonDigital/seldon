@@ -28,6 +28,23 @@ export function validateAddNodeLayer(
   )
 }
 
+export function validateSetNodeLayerKind(
+  workspace: Workspace,
+  action: Extract<Action, { type: "set_node_layer_kind" }>,
+): void {
+  const nodeId = action.payload.nodeId as InstanceId | VariantId
+  nodeValidators.exists(workspace, nodeId)
+  check(
+    isLayeredPaintProperty(action.payload.property),
+    `set_node_layer_kind requires a layered paint property, got "${action.payload.property}"`,
+  )
+  const { layerIndex } = action.payload
+  check(
+    layerIndex === undefined || (Number.isInteger(layerIndex) && layerIndex >= 0),
+    `set_node_layer_kind layerIndex must be a non-negative integer, got ${layerIndex}`,
+  )
+}
+
 export function validateRemoveNodeLayer(
   workspace: Workspace,
   action: Extract<Action, { type: "remove_node_layer" }>,
@@ -47,5 +64,27 @@ export function validateRemoveNodeLayer(
   check(
     index < count,
     `remove_node_layer index ${index} is out of range (${count} layers)`,
+  )
+}
+
+export function validateReorderNodeLayer(
+  workspace: Workspace,
+  action: Extract<Action, { type: "reorder_node_layer" }>,
+): void {
+  const nodeId = action.payload.nodeId as InstanceId | VariantId
+  nodeValidators.exists(workspace, nodeId)
+  check(
+    isLayeredPaintProperty(action.payload.property),
+    `reorder_node_layer requires a layered paint property, got "${action.payload.property}"`,
+  )
+  const { fromIndex, toIndex } = action.payload
+  const count = effectiveLayerCount(workspace, nodeId, action.payload.property)
+  check(
+    Number.isInteger(fromIndex) && fromIndex >= 0 && fromIndex < count,
+    `reorder_node_layer fromIndex ${fromIndex} is out of range (${count} layers)`,
+  )
+  check(
+    Number.isInteger(toIndex) && toIndex >= 0 && toIndex < count,
+    `reorder_node_layer toIndex ${toIndex} is out of range (${count} layers)`,
   )
 }

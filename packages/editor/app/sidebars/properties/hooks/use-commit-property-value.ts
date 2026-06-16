@@ -1,8 +1,17 @@
 import { parsePropertyPath } from "@lib/properties/property-paths"
 import { serializeValue } from "@lib/properties/serialize-value"
 import { useCallback } from "react"
-import { Board, Instance, Properties, Theme, Value, Variant } from "@seldon/core"
+import {
+  Board,
+  Instance,
+  Properties,
+  Theme,
+  Value,
+  Variant,
+} from "@seldon/core"
 import { getEffectiveProperties as coreGetEffectiveProperties } from "@seldon/core/helpers/properties/properties-bridge"
+import { getCompoundSelectorFacet } from "@seldon/core/properties/constants/shared/compound-properties"
+import { backgroundLayerForKind } from "@seldon/core/properties/values/appearance/background/background-seeds"
 import type {
   PropertyKey,
   SubPropertyKey,
@@ -17,7 +26,6 @@ import {
   compoundPresetPropertyKey,
 } from "../helpers/commit-helpers"
 import { createPresetPropertyUpdate } from "../helpers/compound-properties"
-import { getPropertiesSubjectId } from "../helpers/properties-data"
 import { handleComputedValueChange } from "../helpers/computed-property-handler"
 import { isComputedFunctionOption } from "../helpers/computed-utils"
 import {
@@ -26,6 +34,7 @@ import {
   ThemeEditingContext,
 } from "../helpers/editing-contexts"
 import type { PropertyPickerResult } from "../helpers/options-utils"
+import { getPropertiesSubjectId } from "../helpers/properties-data"
 import { FlatProperty } from "../helpers/properties-data"
 import { RESET_VALUES } from "../helpers/property-control-constants"
 import { shouldUsePresetPropertyBehavior } from "../helpers/property-types"
@@ -79,6 +88,7 @@ export function useCommitPropertyValue({
         resetProperty(
           parsed.root as PropertyKey,
           parsed.facet as SubPropertyKey,
+          parsed.index,
         )
       } else if (parsed.kind === "facet") {
         resetProperty(
@@ -89,7 +99,12 @@ export function useCommitPropertyValue({
         resetProperty(property.key as PropertyKey)
       }
     } else {
-      resetProperty(property.key as PropertyKey)
+      const parsed = parsePropertyPath(property.key)
+      if (parsed.kind === "layered-parent") {
+        resetProperty(parsed.root as PropertyKey, undefined, parsed.index)
+      } else {
+        resetProperty(property.key as PropertyKey)
+      }
     }
     onDone()
   }, [property.isSubProperty, property.key, resetProperty, onDone])
@@ -98,10 +113,11 @@ export function useCommitPropertyValue({
     (newValue: string) => {
       const subject = propertySubject ?? selection ?? null
 
-      // A layered paint parent row (Background/Gradient/Shadow N) applies a
-      // preset to its own layer slot and writes the full stack back, so the
-      // other layers stay intact. The generic compound preset path replaces the
-      // whole stack and would drop sibling layers.
+      // A layered paint parent row (Background/Shadow N) retypes its own layer
+      // slot and writes the full stack back, so sibling layers stay intact. The
+      // generic compound preset path replaces the whole stack and would drop
+      // them. The slot's new value is sourced from core: compounds with a `kind`
+      // selector seed that kind's facets, others apply a theme preset.
       if (
         property.layerIndex != null &&
         subject &&
@@ -114,16 +130,31 @@ export function useCommitPropertyValue({
           parsed.kind === "layered-parent" ? parsed.root : property.key
         const layerIndex = property.layerIndex
 
-        const presetSource = createPresetPropertyUpdate(
-          compoundPresetPropertyKey(baseKey),
-          newValue,
-          workspace,
-          subject,
-          theme,
-        )
-        const presetLayer =
-          (presetSource[baseKey] as Array<Record<string, unknown>> | undefined)?.[0] ??
-          {}
+        let layerValue: Record<string, unknown>
+        if (getCompoundSelectorFacet(baseKey) === "kind") {
+          // Kind-typed layer (e.g. background). Default resets the slot; a kind
+          // value seeds that kind's facets from the core seed map.
+          const seedLayer = backgroundLayerForKind(newValue)
+          if (!seedLayer) {
+            reset()
+            return
+          }
+          layerValue = seedLayer as Record<string, unknown>
+        } else {
+          const presetSource = createPresetPropertyUpdate(
+            compoundPresetPropertyKey(baseKey),
+            newValue,
+            workspace,
+            subject,
+            theme,
+          )
+          layerValue =
+            (
+              presetSource[baseKey] as
+                | Array<Record<string, unknown>>
+                | undefined
+            )?.[0] ?? {}
+        }
 
         const current = coreGetEffectiveProperties(
           getPropertiesSubjectId(subject),
@@ -135,7 +166,7 @@ export function useCommitPropertyValue({
             ? [current as Record<string, unknown>]
             : []
         while (layers.length <= layerIndex) layers.push({})
-        layers[layerIndex] = presetLayer
+        layers[layerIndex] = layerValue
 
         setProperties({ [baseKey]: layers } as Properties, {
           mergeSubProperties: false,
@@ -161,6 +192,13 @@ export function useCommitPropertyValue({
 
       const applyPresetPropertyUpdate = (nextValue: string): boolean => {
         if (!shouldUsePresetPropertyBehavior(property.key)) {
+          return false
+        }
+        // A layered-paint facet preset (e.g. `background.<n>.preset`) is a plain
+        // per-layer facet, not the compound's selector. The compound-preset apply
+        // collapses the whole stack to a single layer at index 0 and drops the
+        // layer's `kind`, so route it through the layered-facet merge instead.
+        if (parsePropertyPath(property.key).kind === "layered-facet") {
           return false
         }
         const update = createPresetPropertyUpdate(
@@ -207,19 +245,17 @@ export function useCommitPropertyValue({
       if (newValue === "__upload__") {
         const supportsUpload =
           property.key === "source" ||
-          property.key === "background.0.image" ||
-          property.key === "background.image"
+          property.key === "background.image" ||
+          /^background\.\d+\.image$/.test(property.key)
 
         if (supportsUpload) {
-          // Convert property key to upload panel format:
-          // - Sub-properties (with dots): replace dots with hyphens (e.g., "background.image" -> "background-image")
-          // - Top-level properties: use as-is (e.g., "source" -> "source")
-          const uploadPanelProperty = property.key.includes(".")
-            ? property.key.replace(/\./g, "-")
-            : property.key
+          // The upload panel keys image backgrounds as "background-image"
+          // regardless of layer index, and the `source` attribute as "source".
+          const uploadPanelProperty =
+            property.key === "source" ? "source" : "background-image"
 
           showUploadPanel({
-            property: uploadPanelProperty as "source" | "background-image",
+            property: uploadPanelProperty,
           })
           onDone()
           return

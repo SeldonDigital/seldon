@@ -10,6 +10,7 @@ import { rules } from "@seldon/core/rules/config/rules.config"
 import { isVariantInUse } from "@seldon/core/workspace/helpers/general/is-variant-in-use"
 import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
 import { nodeSubtreeHasOverrides } from "@seldon/core/workspace/helpers/nodes/get-node-subtree-ids"
+import { isSandboxNode } from "@seldon/core/workspace/helpers/nodes/sandbox"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
 import type { EntryNode } from "@seldon/core/workspace/types"
 import {
@@ -373,6 +374,40 @@ export function useRowNode(
     const isDefault = workspaceService.isDefaultVariant(node)
     const isUser = workspaceService.isUserVariant(node)
     const isInstance = workspaceService.isInstance(node)
+
+    // Sandbox roots have no catalog default and are not exported, so they skip
+    // Copy JSON and Reset. Their child instances keep the standard menus below.
+    if (isSelected && isSandboxNode(node)) {
+      return [
+        {
+          id: "duplicate",
+          label: `Duplicate ${node.label}`,
+          onSelect: handleDuplicate,
+          testId: `object-panel-node-${node.id}-duplicate`,
+        },
+        "separator",
+        {
+          id: "copy-properties",
+          label: "Copy Properties",
+          onSelect: handleCopyProperties,
+          testId: `object-panel-node-${node.id}-copy-properties`,
+        },
+        {
+          id: "paste-properties",
+          label: "Paste Properties",
+          onSelect: handlePasteProperties,
+          disabled: !hasClipboardProperties,
+          testId: `object-panel-node-${node.id}-paste-properties`,
+        },
+        "separator",
+        {
+          id: "delete",
+          label: `Delete ${node.label}`,
+          onSelect: handleDelete,
+          testId: `object-panel-node-${node.id}-delete`,
+        },
+      ]
+    }
 
     // Selected instance (child) rows get the variant menu minus "Copy JSON",
     // which only applies to default and user variant rows.

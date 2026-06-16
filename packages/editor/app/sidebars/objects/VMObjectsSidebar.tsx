@@ -98,10 +98,7 @@ export function VMObjectsSidebar() {
 }
 
 function ObjectsSectionGroup({ section }: { section: BoardSection }) {
-  const isExpanded = useIsSectionExpanded(
-    section.level,
-    section.boards.length > 0,
-  )
+  const isExpanded = useIsSectionExpanded(section.level)
 
   return (
     <>

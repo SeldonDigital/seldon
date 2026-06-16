@@ -56,7 +56,10 @@ export {
   BoardOrderService,
 } from "./components/board-order.service"
 export { workspaceService } from "./workspace.service"
-export { cloneBoard } from "./components/duplicate-component.service"
+export {
+  cloneBoard,
+  clonePlayground,
+} from "./components/duplicate-component.service"
 export {
   typeCheckingService,
   TypeCheckingService,

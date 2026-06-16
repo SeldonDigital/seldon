@@ -16,7 +16,7 @@ export type DispatchComputedFn = (
 ) => Value
 
 /**
- * Walks `background` / `gradient` / `shadow` stacks like `merge-properties`: one result slot per
+ * Walks `background` / `shadow` stacks like `merge-properties`: one result slot per
  * layer, preserving array order and shape. Resolves `COMPUTED` facets on each layer object via
  * `dispatchComputed`; other facet values are copied through.
  */

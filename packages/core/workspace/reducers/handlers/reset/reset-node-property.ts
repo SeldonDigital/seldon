@@ -31,6 +31,7 @@ export function resetNodeProperty(
         {
           propertyKey: payload.propertyKey,
           subpropertyKey: payload.subpropertyKey,
+          layerIndex: payload.layerIndex,
         },
         workspace,
       ),

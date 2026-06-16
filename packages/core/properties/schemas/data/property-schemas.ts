@@ -1,11 +1,11 @@
 import { attachPropertyDisplayMetadata } from "../../constants/property-display"
 import { accentColorSchema } from "../../values/appearance/accent-color"
-import { backgroundPresetSchema } from "../../values/appearance/background/background"
 import { backgroundBlendModeSchema } from "../../values/appearance/background/background-blend-mode"
 import { backgroundBrightnessSchema } from "../../values/appearance/background/background-brightness"
 import { backgroundColorSchema } from "../../values/appearance/background/background-color"
 import { backgroundFilterSchema } from "../../values/appearance/background/background-filter"
 import { backgroundImageSchema } from "../../values/appearance/background/background-image"
+import { backgroundKindSchema } from "../../values/appearance/background/background-kind"
 import { backgroundOpacitySchema } from "../../values/appearance/background/background-opacity"
 import { backgroundPositionSchema } from "../../values/appearance/background/background-position"
 import { backgroundRepeatSchema } from "../../values/appearance/background/background-repeat"
@@ -30,6 +30,20 @@ import { contentSchema } from "../../values/attributes/content"
 import { cursorSchema } from "../../values/attributes/cursor"
 import { htmlElementSchema } from "../../values/attributes/html-element"
 import { inputTypeSchema } from "../../values/attributes/input-type"
+import {
+  autoPlaySchema,
+  controlsSchema,
+  loopSchema,
+  mediaQuerySchema,
+  mediaTypeSchema,
+  mutedSchema,
+  posterSchema,
+  preloadSchema,
+  srcLangSchema,
+  trackDefaultSchema,
+  trackKindSchema,
+  trackLabelSchema,
+} from "../../values/attributes/media"
 import { placeholderSchema } from "../../values/attributes/placeholder"
 import { sourceSchema } from "../../values/attributes/source"
 import { symbolSchema } from "../../values/attributes/symbol"
@@ -62,6 +76,8 @@ import { directionSchema } from "../../values/layout/direction"
 import { displaySchema } from "../../values/layout/display"
 import { gapSchema } from "../../values/layout/gap"
 import { heightSchema } from "../../values/layout/height"
+import { listStylePositionSchema } from "../../values/layout/list-style-position"
+import { listStyleTypeSchema } from "../../values/layout/list-style-type"
 import { marginSchema } from "../../values/layout/margin"
 import { orientationSchema } from "../../values/layout/orientation"
 import { paddingSchema } from "../../values/layout/padding"
@@ -104,6 +120,18 @@ const PROPERTY_SCHEMAS_RAW = {
   inputType: inputTypeSchema,
   placeholder: placeholderSchema,
   checked: checkedSchema,
+  controls: controlsSchema,
+  autoPlay: autoPlaySchema,
+  loop: loopSchema,
+  muted: mutedSchema,
+  poster: posterSchema,
+  preload: preloadSchema,
+  trackKind: trackKindSchema,
+  srcLang: srcLangSchema,
+  trackLabel: trackLabelSchema,
+  trackDefault: trackDefaultSchema,
+  mediaType: mediaTypeSchema,
+  mediaQuery: mediaQuerySchema,
   ariaLabel: ariaLabelSchema,
   ariaHidden: ariaHiddenSchema,
   size: sizeSchema,
@@ -129,6 +157,8 @@ const PROPERTY_SCHEMAS_RAW = {
   rotation: rotationSchema,
   wrapChildren: wrapChildrenSchema,
   clip: clipSchema,
+  listStyleType: listStyleTypeSchema,
+  listStylePosition: listStylePositionSchema,
   columns: columnsSchema,
   rows: rowsSchema,
   cellAlign: cellAlignSchema,
@@ -141,8 +171,8 @@ const PROPERTY_SCHEMAS_RAW = {
   accentColor: accentColorSchema,
   brightness: brightnessSchema,
   opacity: opacitySchema,
-  // Background layer facets (preset = theme categorical for `theme.background`)
-  backgroundPreset: backgroundPresetSchema,
+  // Background layer facets (kind = none | color | image | gradient discriminator)
+  backgroundKind: backgroundKindSchema,
   backgroundImage: backgroundImageSchema,
   backgroundPosition: backgroundPositionSchema,
   backgroundSize: backgroundSizeSchema,
@@ -152,6 +182,18 @@ const PROPERTY_SCHEMAS_RAW = {
   backgroundFilter: backgroundFilterSchema,
   backgroundBrightness: backgroundBrightnessSchema,
   backgroundOpacity: backgroundOpacitySchema,
+  // Gradient-kind background facets reuse the shared gradient value schemas.
+  backgroundPreset: gradientPresetSchema,
+  backgroundGradientType: gradientTypeSchema,
+  backgroundAngle: gradientAngleSchema,
+  backgroundStartColor: gradientStopColorSchema,
+  backgroundStartBrightness: gradientStopBrightnessSchema,
+  backgroundStartOpacity: gradientStopOpacitySchema,
+  backgroundStartPosition: gradientStopPositionSchema,
+  backgroundEndColor: gradientStopColorSchema,
+  backgroundEndBrightness: gradientStopBrightnessSchema,
+  backgroundEndOpacity: gradientStopOpacitySchema,
+  backgroundEndPosition: gradientStopPositionSchema,
   // Border (all sides)
   borderPreset: borderPresetSchema,
   borderStyle: borderStyleSchema,

@@ -259,6 +259,7 @@ export function useRowProperty({
         resetProperty(
           parsed.root as PropertyKey,
           parsed.facet as SubPropertyKey,
+          parsed.index,
         )
       } else if (parsed.kind === "facet") {
         resetProperty(
@@ -269,7 +270,12 @@ export function useRowProperty({
         resetProperty(property.key as PropertyKey)
       }
     } else {
-      resetProperty(property.key as PropertyKey)
+      const parsed = parsePropertyPath(property.key)
+      if (parsed.kind === "layered-parent") {
+        resetProperty(parsed.root as PropertyKey, undefined, parsed.index)
+      } else {
+        resetProperty(property.key as PropertyKey)
+      }
     }
   }
 
@@ -467,7 +473,10 @@ export function useRowProperty({
         ...(canReset
           ? [
               buildResetMenuEntry({
-                label: `Reset ${labelText}`,
+                label:
+                  property.key === "background"
+                    ? "Reset Entire Background"
+                    : `Reset ${labelText}`,
                 onSelect: handleReset,
                 testId: `property-row-${property.key}-reset`,
               }),

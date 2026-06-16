@@ -13,6 +13,7 @@ import { getDisplayStyles } from "./get-display-styles"
 import { getIconStyles } from "./get-icon-styles"
 import { getImageStyles } from "./get-image-styles"
 import { getLayoutStyles } from "./get-layout-styles"
+import { getListStyles } from "./get-list-styles"
 import { getMarginStyles } from "./get-margin-styles"
 import { getOpacityStyles } from "./get-opacity-styles"
 import { getPaddingStyles } from "./get-padding-styles"
@@ -119,6 +120,7 @@ export function getCssObjectFromProperties(
         theme,
       }),
     ),
+    ...safeGetStyles(() => getListStyles({ properties: computedProperties })),
     ...safeGetStyles(() =>
       getMarginStyles({ properties: computedProperties, theme }),
     ),

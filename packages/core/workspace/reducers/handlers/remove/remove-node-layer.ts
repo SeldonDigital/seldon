@@ -6,8 +6,8 @@ import { isEntryNodeForRules } from "../../../helpers/rules/rules-node-subject"
 import { readNodeLayerArray } from "../shared/node-layers"
 
 /**
- * Removes the paint layer at `index` from a node's `background` / `gradient` /
- * `shadow` stack and writes the shortened stack back as an override. Index `0` is
+ * Removes the paint layer at `index` from a node's `background` / `shadow`
+ * stack and writes the shortened stack back as an override. Index `0` is
  * the bottom base layer and cannot be removed. No-ops when the node is missing,
  * the index is `0`, or the index is out of range.
  */

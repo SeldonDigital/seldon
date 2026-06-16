@@ -1,9 +1,10 @@
 import { MenuEntry } from "@lib/menus"
-import { MouseEvent } from "react"
+import { MouseEvent, useState } from "react"
 import { Board as BoardType } from "@seldon/core"
 import {
   isFontCollectionBoard,
   isIconSetBoard,
+  isPlaygroundBoard,
   isThemeBoard,
 } from "@seldon/core/workspace/model/components"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
@@ -47,7 +48,7 @@ export function useRowBoard(
   const { selectedNodeBoardKey } = useSelectionRelations()
   const { dispatch } = useWorkspace({ usePreview: false })
   const { dispatchWithAutoSelect } = useAutoSelectNode()
-  const { removeBoard } = useAddRemoveCommands()
+  const { removeBoard, duplicatePlayground } = useAddRemoveCommands()
 
   // Expansion state: toggle, expand/collapse, get descendants
   const { toggle, expandObjects, collapseObjects, getAllDescendantNodeIds } =
@@ -107,9 +108,35 @@ export function useRowBoard(
     onSelect: () => selectBoard(boardKey),
   })
 
+  // Inline rename is only offered for playground containers. Component, screen,
+  // and resource boards reflect the catalog and stay non-renamable.
+  const isPlayground = isPlaygroundBoard(board)
+  const [isEditingName, setEditingName] = useState(false)
+
+  function onDoubleClick() {
+    if (isPlayground) setEditingName(true)
+  }
+
+  function setPlaygroundLabel(label: string) {
+    const trimmed = label.trim()
+    setEditingName(false)
+    if (!trimmed || trimmed === board.label) return
+    dispatch({
+      type: "set_playground_label",
+      payload: { playgroundKey: boardKey, label: trimmed },
+    })
+  }
+
   function onAddVariant(event?: MouseEvent<HTMLButtonElement>) {
     event?.stopPropagation()
     event?.preventDefault()
+    if (isPlaygroundBoard(board)) {
+      dispatchWithAutoSelect({
+        type: "add_sandbox",
+        payload: { playgroundKey: boardKey },
+      })
+      return
+    }
     if (isThemeBoard(board)) {
       const defaultThemeId = board.variants[0]?.id
       if (!defaultThemeId) return
@@ -191,6 +218,33 @@ export function useRowBoard(
 
   function buildBoardActions(): MenuEntry[] {
     if (!boardIsActive) return []
+
+    // Playgrounds have no catalog to reset to, so the menu only offers duplicate,
+    // add sandbox, and delete.
+    if (isPlaygroundBoard(board)) {
+      return [
+        {
+          id: "duplicate",
+          label: `Duplicate ${board.label}`,
+          onSelect: () => duplicatePlayground(boardKey),
+          testId: `objects-sidebar-board-${boardKey}-duplicate`,
+        },
+        {
+          id: "add-sandbox",
+          label: "Add Sandbox",
+          onSelect: () => onAddVariant(),
+          testId: `objects-sidebar-board-${boardKey}-add-sandbox`,
+        },
+        "separator",
+        {
+          id: "delete",
+          label: `Delete ${board.label}`,
+          onSelect: () => removeBoard(boardKey),
+          testId: `objects-sidebar-board-${boardKey}-delete`,
+        },
+      ]
+    }
+
     return [
       {
         id: "add-variant",
@@ -256,6 +310,11 @@ export function useRowBoard(
     icon2,
     actions,
     onClick,
+    onDoubleClick,
+    isPlayground,
+    isEditingName,
+    setEditingName,
+    setPlaygroundLabel,
     isExpanded: isExpandedState,
     isBoardSelected,
     boardIsActive,

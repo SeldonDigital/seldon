@@ -1,6 +1,5 @@
 import { produce } from "immer"
 
-import { ComponentId } from "../../../../components/constants"
 import { ExtractPayload, Workspace } from "../../../../index"
 import { rules } from "../../../../rules/config/rules.config"
 import {
@@ -8,13 +7,14 @@ import {
   setBoardOrder,
 } from "../../../helpers/components/board-sort-order"
 import { getInitialBoardComponentProperties } from "../../../helpers/components/get-initial-board-component-properties"
+import { buildSandboxNode } from "../../../helpers/nodes/sandbox"
 import { WORKSPACE_EDITABLE_THEME_ENTRY_ID } from "../../../helpers/themes/workspace-editable-theme"
-import { formatNodeCatalog } from "../../../model/template-ref"
-import { boardOrderService } from "../../../services"
 
 /**
- * Creates a playground board and its default frame root node when the board key is free.
- * Returns the current workspace when rules disallow board creation or a board already exists at `boardKey`.
+ * Creates an empty playground container row in `workspace.playgrounds` when the
+ * key is free. A playground is a sidebar-only grouping container with no hidden
+ * root: its Sandbox roots are added later through `add_sandbox`. Returns the
+ * current workspace when rules disallow creation or the key is taken.
  */
 export function addPlayground(
   payload: ExtractPayload<"add_playground">,
@@ -27,40 +27,29 @@ export function addPlayground(
   return produce(workspace, (draft) => {
     const boardKey = payload.boardKey
 
-    if (draft.boards[boardKey]) {
+    if (draft.boards[boardKey] || draft.playgrounds[boardKey]) {
       return draft
     }
 
-    const existingBoards = Object.values(draft.boards)
+    const existing = Object.values(draft.playgrounds)
     const maxOrder =
-      existingBoards.length > 0
-        ? Math.max(...existingBoards.map((b) => getBoardOrder(b)))
+      existing.length > 0
+        ? Math.max(...existing.map((p) => getBoardOrder(p)))
         : -1
 
-    const defaultNodeId = `playground-${boardKey}-default`
+    // Seed one Sandbox at 0,0 sized 800x600 so a new playground is never empty.
+    const { id: sandboxId, node: sandboxNode } = buildSandboxNode(boardKey)
 
-    draft.nodes[defaultNodeId] = {
-      id: defaultNodeId,
-      type: "default",
-      level: "frame",
-      label: "Playground",
-      theme: null,
-      template: formatNodeCatalog(ComponentId.FRAME),
-      overrides: {},
-      __editor: { initialOverrides: {} },
-    }
-
-    const board = {
+    const container = {
       type: "playground" as const,
+      id: boardKey,
       label: "Playground",
       componentTheme: WORKSPACE_EDITABLE_THEME_ENTRY_ID,
       componentProperties: getInitialBoardComponentProperties("playground"),
-      variants: [{ id: defaultNodeId }],
+      variants: [{ id: sandboxId }],
     }
-    setBoardOrder(board, maxOrder + 1)
-    draft.boards[boardKey] = board
-
-    const updatedWorkspace = boardOrderService.realignBoardOrder(draft)
-    Object.assign(draft.boards, updatedWorkspace.boards)
+    setBoardOrder(container, maxOrder + 1)
+    draft.playgrounds[boardKey] = container
+    draft.nodes[sandboxId] = sandboxNode
   })
 }

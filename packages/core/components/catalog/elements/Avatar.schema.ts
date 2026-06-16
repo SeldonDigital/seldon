@@ -1,10 +1,6 @@
-import * as Sdn from "../../../properties";
-import * as Seldon from "../../constants";
-import { ComponentExport, ComponentSchema } from "../../types";
-
-
-
-
+import * as Sdn from "../../../properties"
+import * as Seldon from "../../constants"
+import { ComponentExport, ComponentSchema } from "../../types"
 
 export const schema = {
   name: "Avatar",
@@ -29,6 +25,10 @@ export const schema = {
     ariaHidden: {
       type: Sdn.ValueType.EXACT,
       value: false,
+    },
+    cursor: {
+      type: Sdn.ValueType.OPTION,
+      value: Sdn.Cursor.DEFAULT,
     },
     direction: { type: Sdn.ValueType.EMPTY, value: null },
     orientation: {
@@ -73,21 +73,7 @@ export const schema = {
     brightness: { type: Sdn.ValueType.EMPTY, value: null },
     opacity: { type: Sdn.ValueType.EMPTY, value: null },
     background: [
-      {
-        preset: {
-          type: Sdn.ValueType.THEME_CATEGORICAL,
-          value: "@background.none",
-        },
-        image: { type: Sdn.ValueType.EMPTY, value: null },
-        position: { type: Sdn.ValueType.EMPTY, value: null },
-        size: { type: Sdn.ValueType.EMPTY, value: null },
-        repeat: { type: Sdn.ValueType.EMPTY, value: null },
-        color: { type: Sdn.ValueType.EMPTY, value: null },
-        blendMode: { type: Sdn.ValueType.EMPTY, value: null },
-        filter: { type: Sdn.ValueType.EMPTY, value: null },
-        brightness: { type: Sdn.ValueType.EMPTY, value: null },
-        opacity: { type: Sdn.ValueType.EMPTY, value: null },
-      },
+      { kind: { type: Sdn.ValueType.OPTION, value: Sdn.BackgroundKind.NONE } },
     ],
     border: {
       preset: {
@@ -121,19 +107,8 @@ export const schema = {
     },
     borderBottom: {
       preset: { type: Sdn.ValueType.EMPTY, value: null },
-      style: {
-        type: Sdn.ValueType.OPTION,
-        value: Sdn.BorderStyle.SOLID,
-      },
-      color: {
-        type: Sdn.ValueType.COMPUTED,
-        value: {
-          function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-          input: {
-            basedOn: "#parent.background.color",
-          },
-        },
-      },
+      style: { type: Sdn.ValueType.EMPTY, value: null },
+      color: { type: Sdn.ValueType.EMPTY, value: null },
       width: { type: Sdn.ValueType.EMPTY, value: null },
       brightness: { type: Sdn.ValueType.EMPTY, value: null },
       opacity: { type: Sdn.ValueType.EMPTY, value: null },
@@ -154,24 +129,6 @@ export const schema = {
       bottomLeft: { type: Sdn.ValueType.EMPTY, value: null },
       bottomRight: { type: Sdn.ValueType.EMPTY, value: null },
     },
-    gradient: [
-      {
-        preset: {
-          type: Sdn.ValueType.THEME_CATEGORICAL,
-          value: "@gradient.none",
-        },
-        gradientType: { type: Sdn.ValueType.EMPTY, value: null },
-        angle: { type: Sdn.ValueType.EMPTY, value: null },
-        startColor: { type: Sdn.ValueType.EMPTY, value: null },
-        startOpacity: { type: Sdn.ValueType.EMPTY, value: null },
-        startBrightness: { type: Sdn.ValueType.EMPTY, value: null },
-        startPosition: { type: Sdn.ValueType.EMPTY, value: null },
-        endColor: { type: Sdn.ValueType.EMPTY, value: null },
-        endOpacity: { type: Sdn.ValueType.EMPTY, value: null },
-        endBrightness: { type: Sdn.ValueType.EMPTY, value: null },
-        endPosition: { type: Sdn.ValueType.EMPTY, value: null },
-      },
-    ],
     shadow: [
       {
         preset: {

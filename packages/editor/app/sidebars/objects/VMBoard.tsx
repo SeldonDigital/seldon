@@ -16,6 +16,7 @@ import { rowWrapperStyle } from "../helpers/sidebar-row-styles"
 import { relativeFullWidthStyle } from "../helpers/sidebar-styles"
 import { FramerExpandable } from "@seldon/components/custom-components"
 import { useRowActionsMenu } from "../shared/use-row-actions-menu"
+import { useInlineRename } from "../hooks/use-inline-rename"
 import { VMNode } from "./VMNode"
 import {
   VMResourceEntry,
@@ -90,6 +91,10 @@ function VMBoardRow({ board, show = true }: { board: BoardType; show?: boolean }
     icon2,
     actions,
     onClick,
+    onDoubleClick,
+    isEditingName,
+    setEditingName,
+    setPlaygroundLabel,
     isExpanded,
     isBoardSelected,
     boardIsActive,
@@ -149,14 +154,22 @@ function VMBoardRow({ board, show = true }: { board: BoardType; show?: boolean }
   const coloredIcon = applyTrackingColor(icon, "color", effectiveIconColor)
   const coloredIcon2 = applyTrackingColor(icon2, "color", effectiveIconColor)
 
+  const { labelChildren: renameLabel } = useInlineRename({
+    label: String(baseLabel.children),
+    isEditing: isEditingName,
+    setEditing: setEditingName,
+    onSubmit: setPlaygroundLabel,
+  })
+
   // Label: apply tracking color if provided
   const textLabel: TextLabelProps = {
     ...baseLabel,
+    children: isEditingName ? renameLabel : baseLabel.children,
     style: {
       ...("style" in baseLabel && baseLabel.style ? baseLabel.style : {}),
       ...(effectiveLabelColor ? { color: effectiveLabelColor } : {}),
     },
-  }
+  } as TextLabelProps
 
   // Data attributes
   const dataTestId = "objects-sidebar-board"
@@ -207,6 +220,7 @@ function VMBoardRow({ board, show = true }: { board: BoardType; show?: boolean }
           buttonIconic3={actionsMenu.buttonIconic}
           icon4={actionsMenu.icon}
           onClick={onClick}
+          onDoubleClick={onDoubleClick}
           onMouseEnter={handleRowMouseEnter}
           onMouseLeave={handleRowMouseLeave}
           data-testid={dataTestId}

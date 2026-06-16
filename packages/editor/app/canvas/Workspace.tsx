@@ -16,7 +16,7 @@ import { useCanvas } from "./hooks/use-canvas"
 import { ComponentBoard } from "./boards/ComponentBoard"
 import { FontCollectionBoard } from "./boards/FontCollectionBoard"
 import { IconSetBoard } from "./boards/IconSetBoard"
-import { PlaygroundBoardPlaceholder } from "./boards/PlaygroundBoardPlaceholder"
+import { SandboxCanvas } from "./boards/SandboxCanvas"
 import { ThemeBoard } from "./boards/ThemeBoard"
 
 export function CanvasWorkspace() {
@@ -51,7 +51,7 @@ function renderBoard(board: Board) {
   }
 
   if (isPlaygroundBoard(board)) {
-    return <PlaygroundBoardPlaceholder board={board} />
+    return <SandboxCanvas board={board} />
   }
 
   // Default to regular board rendering

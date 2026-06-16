@@ -21,6 +21,10 @@ export const schema = {
       type: Sdn.ValueType.EXACT,
       value: false,
     },
+    cursor: {
+      type: Sdn.ValueType.OPTION,
+      value: Sdn.Cursor.POINTER,
+    },
     direction: { type: Sdn.ValueType.EMPTY, value: null },
     orientation: {
       type: Sdn.ValueType.OPTION,
@@ -56,26 +60,12 @@ export const schema = {
     brightness: { type: Sdn.ValueType.EMPTY, value: null },
     opacity: { type: Sdn.ValueType.EMPTY, value: null },
     background: [
-      {
-        preset: {
-          type: Sdn.ValueType.THEME_CATEGORICAL,
-          value: "@background.none",
-        },
-        image: { type: Sdn.ValueType.EMPTY, value: null },
-        position: { type: Sdn.ValueType.EMPTY, value: null },
-        size: { type: Sdn.ValueType.EMPTY, value: null },
-        repeat: { type: Sdn.ValueType.EMPTY, value: null },
-        color: { type: Sdn.ValueType.EMPTY, value: null },
-        blendMode: { type: Sdn.ValueType.EMPTY, value: null },
-        filter: { type: Sdn.ValueType.EMPTY, value: null },
-        brightness: { type: Sdn.ValueType.EMPTY, value: null },
-        opacity: { type: Sdn.ValueType.EMPTY, value: null },
-      },
+      { kind: { type: Sdn.ValueType.OPTION, value: Sdn.BackgroundKind.NONE } },
     ],
     border: {
       preset: {
         type: Sdn.ValueType.THEME_CATEGORICAL,
-        value: "@border.normal",
+        value: "@border.none",
       },
       style: { type: Sdn.ValueType.EMPTY, value: null },
       color: { type: Sdn.ValueType.EMPTY, value: null },
@@ -141,17 +131,21 @@ export const schema = {
         spread: { type: Sdn.ValueType.EMPTY, value: null },
       },
     ],
+    scroll: { type: Sdn.ValueType.EMPTY, value: null },
   },
   default: {
     children: [
       {
-        component: Seldon.ComponentId.OPTION,
+        component: Seldon.ComponentId.TEXT,
+        variant: "option",
       },
       {
-        component: Seldon.ComponentId.OPTION,
+        component: Seldon.ComponentId.TEXT,
+        variant: "option",
       },
       {
-        component: Seldon.ComponentId.OPTION,
+        component: Seldon.ComponentId.TEXT,
+        variant: "option",
       },
     ],
   },

@@ -41,7 +41,7 @@ const FALLBACK_SURFACE_COLOR: HexValue = {
   value: "#FFFFFF",
 }
 
-const LAYERED_PAINT_ROOTS = ["background", "gradient", "shadow"] as const
+const LAYERED_PAINT_ROOTS = ["background", "shadow"] as const
 
 function normalizeLayerFacetPath(path: string): string {
   for (const root of LAYERED_PAINT_ROOTS) {

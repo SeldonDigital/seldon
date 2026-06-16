@@ -69,26 +69,17 @@ export const schema = {
       value: null,
     },
     color: {
-      type: Sdn.ValueType.THEME_CATEGORICAL,
-      value: "@swatch.black",
+      type: Sdn.ValueType.COMPUTED,
+      value: {
+        function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+        input: {
+          basedOn: "#parent.background.color",
+        },
+      },
     },
     brightness: { type: Sdn.ValueType.EMPTY, value: null },
     background: [
-      {
-        preset: {
-          type: Sdn.ValueType.THEME_CATEGORICAL,
-          value: "@background.none",
-        },
-        image: { type: Sdn.ValueType.EMPTY, value: null },
-        position: { type: Sdn.ValueType.EMPTY, value: null },
-        size: { type: Sdn.ValueType.EMPTY, value: null },
-        repeat: { type: Sdn.ValueType.EMPTY, value: null },
-        color: { type: Sdn.ValueType.EMPTY, value: null },
-        blendMode: { type: Sdn.ValueType.EMPTY, value: null },
-        filter: { type: Sdn.ValueType.EMPTY, value: null },
-        brightness: { type: Sdn.ValueType.EMPTY, value: null },
-        opacity: { type: Sdn.ValueType.EMPTY, value: null },
-      },
+      { kind: { type: Sdn.ValueType.OPTION, value: Sdn.BackgroundKind.NONE } },
     ],
     border: {
       preset: {
@@ -175,24 +166,6 @@ export const schema = {
       value: true,
     },
     lines: { type: Sdn.ValueType.EMPTY, value: null },
-    gradient: [
-      {
-        preset: {
-          type: Sdn.ValueType.THEME_CATEGORICAL,
-          value: "@gradient.none",
-        },
-        gradientType: { type: Sdn.ValueType.EMPTY, value: null },
-        angle: { type: Sdn.ValueType.EMPTY, value: null },
-        startColor: { type: Sdn.ValueType.EMPTY, value: null },
-        startOpacity: { type: Sdn.ValueType.EMPTY, value: null },
-        startBrightness: { type: Sdn.ValueType.EMPTY, value: null },
-        startPosition: { type: Sdn.ValueType.EMPTY, value: null },
-        endColor: { type: Sdn.ValueType.EMPTY, value: null },
-        endOpacity: { type: Sdn.ValueType.EMPTY, value: null },
-        endBrightness: { type: Sdn.ValueType.EMPTY, value: null },
-        endPosition: { type: Sdn.ValueType.EMPTY, value: null },
-      },
-    ],
     shadow: [
       {
         preset: {

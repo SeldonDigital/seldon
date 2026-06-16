@@ -6,8 +6,17 @@ import { findBoardTreeCycleId } from "../../helpers/components/find-tree-cycle"
 import { getBoardKey } from "../../helpers/components/get-board-keys"
 import { isResourceType } from "../../helpers/components/is-resource-type"
 import { walkBoardTreeRefs } from "../../helpers/components/walk-board-tree-refs"
+import { getCompositionContainers } from "../../helpers/general/get-composition-containers"
 import { getWorkspaceNodes } from "../../helpers/general/get-workspace-nodes"
 import { isVariantNode } from "../../helpers/nodes/is-variant-node"
+import {
+  SANDBOX_MAX_MAGNITUDE,
+  type SandboxRect,
+  isExplicitSizeValue,
+  isSandboxNode,
+  resolveSandboxRect,
+  sandboxesOverlap,
+} from "../../helpers/nodes/sandbox"
 import { isEntryNodeForRules } from "../../helpers/rules/rules-node-subject"
 import {
   isFontCollectionBoard,
@@ -22,7 +31,7 @@ import { WorkspaceValidationError } from "../validation/workspace-validation-err
 
 function collectBoardTreeNodeIds(workspace: Workspace): Set<string> {
   const ids = new Set<string>()
-  for (const board of Object.values(workspace.boards)) {
+  for (const board of getCompositionContainers(workspace)) {
     walkBoardTreeRefs(board.variants, (ref) => {
       ids.add(ref.id)
     })
@@ -63,7 +72,7 @@ const validators = {
   /** Validates that every child ref in board trees points at a node row. */
   allChildrenExist: (workspace: Workspace) => {
     const nodes = getWorkspaceNodes(workspace)
-    for (const board of Object.values(workspace.boards)) {
+    for (const board of getCompositionContainers(workspace)) {
       // Resource boards (theme, icon-set, media) reference their own maps, not nodes.
       if (isResourceType(board)) {
         continue
@@ -78,7 +87,7 @@ const validators = {
   /** Validates that every tree ref id maps to a node row. */
   allVariantsExist: (workspace: Workspace) => {
     const nodes = getWorkspaceNodes(workspace)
-    for (const board of Object.values(workspace.boards)) {
+    for (const board of getCompositionContainers(workspace)) {
       // Resource boards (theme, icon-set, media) reference their own maps, not nodes.
       if (isResourceType(board)) {
         continue
@@ -203,6 +212,56 @@ const validators = {
       }
     })
   },
+
+  /**
+   * Validates each playground's Sandbox roots: width/height overrides must be
+   * explicit lengths, position and size stay within the safety cap, and no two
+   * sandboxes in the same playground overlap.
+   */
+  sandboxesAreValid: (workspace: Workspace) => {
+    const nodes = getWorkspaceNodes(workspace)
+    for (const [key, playground] of Object.entries(
+      workspace.playgrounds ?? {},
+    )) {
+      const placed: Array<{ id: string; rect: SandboxRect }> = []
+      for (const ref of playground.variants) {
+        const node = nodes[ref.id]
+        if (!node || !isSandboxNode(node)) continue
+
+        const overrides = node.overrides as Record<string, unknown>
+        for (const sizeKey of ["width", "height"] as const) {
+          if (sizeKey in overrides && !isExplicitSizeValue(overrides[sizeKey])) {
+            throw new Error(
+              `Sandbox ${ref.id} in playground ${key} must use an explicit ${sizeKey} (no Fit, Fill, or theme size).`,
+            )
+          }
+        }
+
+        const rect = resolveSandboxRect(node)
+        if (!rect) continue
+
+        if (
+          Math.abs(rect.top) > SANDBOX_MAX_MAGNITUDE ||
+          Math.abs(rect.left) > SANDBOX_MAX_MAGNITUDE ||
+          rect.width > SANDBOX_MAX_MAGNITUDE ||
+          rect.height > SANDBOX_MAX_MAGNITUDE
+        ) {
+          throw new Error(
+            `Sandbox ${ref.id} in playground ${key} exceeds the ${SANDBOX_MAX_MAGNITUDE}px position and size cap.`,
+          )
+        }
+
+        for (const other of placed) {
+          if (sandboxesOverlap(rect, other.rect)) {
+            throw new Error(
+              `Sandboxes ${other.id} and ${ref.id} overlap in playground ${key}.`,
+            )
+          }
+        }
+        placed.push({ id: ref.id, rect })
+      }
+    }
+  },
 }
 /**
  * Middleware that verifies workspace integrity after every action.
@@ -247,6 +306,9 @@ export const workspaceVerificationMiddleware: Middleware =
 
       validators.checkNoVariantsWithComputedProperties(nextWorkspace)
       log("✅ No variants with computed properties referencing parent nodes")
+
+      validators.sandboxesAreValid(nextWorkspace)
+      log("✅ Sandboxes are explicitly sized, capped, and non-overlapping")
 
       if (shouldLogVerification) console.groupEnd()
     } catch (error) {

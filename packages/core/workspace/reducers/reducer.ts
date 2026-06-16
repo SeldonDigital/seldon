@@ -12,8 +12,8 @@ import { addIconSet } from "./handlers/add/add-icon-set"
 import { addMedia } from "./handlers/add/add-media"
 import { addNodeLayer } from "./handlers/add/add-node-layer"
 import { addPlayground } from "./handlers/add/add-playground"
+import { addSandbox } from "./handlers/add/add-sandbox"
 import { addTheme } from "./handlers/add/add-theme"
-import { addThemeCustomBackground } from "./handlers/add/add-theme-custom-background"
 import { addThemeCustomBlur } from "./handlers/add/add-theme-custom-blur"
 import { addThemeCustomBorder } from "./handlers/add/add-theme-custom-border"
 import { addThemeCustomBorderWidth } from "./handlers/add/add-theme-custom-border-width"
@@ -34,6 +34,7 @@ import { addThemeCustomSpread } from "./handlers/add/add-theme-custom-spread"
 import { addThemeCustomSwatch } from "./handlers/add/add-theme-custom-swatch"
 import { addVariant } from "./handlers/add/add-variant"
 import { duplicateComponent } from "./handlers/duplicate/duplicate-component"
+import { duplicatePlayground } from "./handlers/duplicate/duplicate-playground"
 import { duplicateFontCollection } from "./handlers/duplicate/duplicate-font-collection"
 import { duplicateIconSet } from "./handlers/duplicate/duplicate-icon-set"
 import { duplicateNode } from "./handlers/duplicate/duplicate-node"
@@ -78,6 +79,7 @@ import { removeThemeCustomSwatch } from "./handlers/remove/remove-theme-custom-s
 import { removeVariant } from "./handlers/remove/remove-variant"
 import { reorderBoard } from "./handlers/reorder/reorder-board"
 import { reorderInstanceInParent } from "./handlers/reorder/reorder-instance-in-parent"
+import { reorderNodeLayer } from "./handlers/reorder/reorder-node-layer"
 import { reorderVariantInBoard } from "./handlers/reorder/reorder-variant-in-board"
 import { resetBoardAuthor } from "./handlers/reset/reset-board-author"
 import { resetBoardCredentials } from "./handlers/reset/reset-board-credentials"
@@ -116,6 +118,7 @@ import { setBoardCredentials } from "./handlers/set/set-board-credentials"
 import { setBoardEditorData } from "./handlers/set/set-board-editor-data"
 import { setBoardIntent } from "./handlers/set/set-board-intent"
 import { setBoardLabel } from "./handlers/set/set-board-label"
+import { setPlaygroundLabel } from "./handlers/set/set-playground-label"
 import { setBoardLicense } from "./handlers/set/set-board-license"
 import { setBoardPreview } from "./handlers/set/set-board-preview"
 import { setBoardTags } from "./handlers/set/set-board-tags"
@@ -131,6 +134,7 @@ import { setIconSetOverride } from "./handlers/set/set-icon-set-override"
 import { setIconSetSubcategoryPreset } from "./handlers/set/set-icon-set-subcategory-preset"
 import { setNodeEditorData } from "./handlers/set/set-node-editor-data"
 import { setNodeLabel } from "./handlers/set/set-node-label"
+import { setNodeLayerKind } from "./handlers/set/set-node-layer-kind"
 import { setNodeProperties } from "./handlers/set/set-node-properties"
 import { setNodeTheme } from "./handlers/set/set-node-theme"
 import { setThemeCustomTokenName } from "./handlers/set/set-theme-custom-token-name"
@@ -195,6 +199,8 @@ function reducer(workspace: Workspace, action: WorkspaceAction): Workspace {
       return addTheme(action.payload, workspace)
     case "add_playground":
       return addPlayground(action.payload, workspace)
+    case "add_sandbox":
+      return addSandbox(action.payload, workspace)
     case "add_component_and_insert_default_instance": {
       const { boardKey, target, variantFallbacks } = action.payload
       const workspaceWithBoard = addComponent(
@@ -230,6 +236,8 @@ function reducer(workspace: Workspace, action: WorkspaceAction): Workspace {
       return removePlayground(action.payload, workspace)
     case "duplicate_component":
       return duplicateComponent(action.payload, workspace)
+    case "duplicate_playground":
+      return duplicatePlayground(action.payload, workspace)
     case "reorder_board":
       return reorderBoard(action.payload, workspace)
     case "reorder_variant_in_board":
@@ -242,6 +250,8 @@ function reducer(workspace: Workspace, action: WorkspaceAction): Workspace {
       return resetComponentProperty(action.payload, workspace)
     case "set_board_label":
       return setBoardLabel(action.payload, workspace)
+    case "set_playground_label":
+      return setPlaygroundLabel(action.payload, workspace)
     case "set_board_intent":
       return setBoardIntent(action.payload, workspace)
     case "set_board_tags":
@@ -287,6 +297,10 @@ function reducer(workspace: Workspace, action: WorkspaceAction): Workspace {
       return addNodeLayer(action.payload, workspace)
     case "remove_node_layer":
       return removeNodeLayer(action.payload, workspace)
+    case "reorder_node_layer":
+      return reorderNodeLayer(action.payload, workspace)
+    case "set_node_layer_kind":
+      return setNodeLayerKind(action.payload, workspace)
     case "set_node_label":
       return setNodeLabel(action.payload, workspace)
     case "set_node_theme":
@@ -346,8 +360,6 @@ function reducer(workspace: Workspace, action: WorkspaceAction): Workspace {
       return addThemeCustomFont(action.payload, workspace)
     case "add_theme_custom_border":
       return addThemeCustomBorder(action.payload, workspace)
-    case "add_theme_custom_background":
-      return addThemeCustomBackground(action.payload, workspace)
     case "add_theme_custom_gradient":
       return addThemeCustomGradient(action.payload, workspace)
     case "add_theme_custom_shadow":

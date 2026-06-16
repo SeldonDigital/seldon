@@ -1,7 +1,6 @@
+import { MenuEntry } from "@lib/menus"
 import { LayoutGroup } from "framer-motion"
 import { Fragment, RefObject, useCallback, useMemo } from "react"
-import { MenuEntry } from "@lib/menus"
-import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import {
   Board,
   Instance,
@@ -9,36 +8,35 @@ import {
   Theme,
   Variant,
   Workspace,
+  getLayerAddOptions,
   isThemeCustomTokenSection,
 } from "@seldon/core"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { useObjectProperties } from "@lib/workspace/hooks/use-object-properties"
 import { usePropertiesSidebar } from "./hooks/use-properties-sidebar"
 import { useIsCategoryExpanded } from "./hooks/use-property-expansion"
+import { useLayerDragMonitor } from "./hooks/use-layer-drag-monitor"
 import {
   ScrollerShell,
   SidebarContainer,
 } from "@seldon/components/custom-components"
+import { FramerExpandable } from "@seldon/components/custom-components"
 import { Frame } from "@seldon/components/frames/Frame"
+import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import {
   sidebarNoSelectionStyle,
   sidebarShellStyle,
 } from "../helpers/sidebar-styles"
-import { FramerExpandable } from "@seldon/components/custom-components"
-import { VMCategory } from "./VMCategory"
 import { CssBlock } from "./CssBlock"
+import { VMCategory } from "./VMCategory"
 import { VMProperty } from "./VMProperty"
 import {
   FontCollectionEditingContext,
   IconSetEditingContext,
   ThemeEditingContext,
 } from "./helpers/editing-contexts"
-import {
-  PropertySection,
-} from "./helpers/get-property-sections"
-import {
-  ThemePropertySection,
-} from "./helpers/get-theme-property-sections"
+import { PropertySection } from "./helpers/get-property-sections"
+import { ThemePropertySection } from "./helpers/get-theme-property-sections"
 import { getIconRowCategory } from "./helpers/icon-set-properties-data"
 import { FlatProperty } from "./helpers/properties-data"
 
@@ -111,6 +109,8 @@ function PropertiesTree({
   cssStrings,
   cssSelector,
 }: PropertyTreeProps) {
+  useLayerDragMonitor()
+
   return (
     <ScrollerShell ref={scrollerRef} style={styles.scroller}>
       <Frame style={styles.tree}>
@@ -234,24 +234,27 @@ function TreeSection({
       !!iconSetEditingContext?.isIconSetEditing
     if (inEditingMode || isBoard(node)) return []
 
-    const layeredKeys: LayeredPaintKey[] = ["background", "gradient", "shadow"]
-    const labels: Record<LayeredPaintKey, string> = {
-      background: "Background",
-      gradient: "Gradient",
-      shadow: "Shadow",
+    const layeredKeys: LayeredPaintKey[] = ["background", "shadow"]
+    const exposedKeys = layeredKeys.filter((key) =>
+      section.properties.some(
+        (property) => property.key === key && property.status !== "not used",
+      ),
+    )
+
+    // Core decides each layered property's add options (Background splits into
+    // typed Color/Image/Gradient seeds; others add a single empty layer).
+    const entries: MenuEntry[] = []
+    for (const key of exposedKeys) {
+      for (const option of getLayerAddOptions(key)) {
+        entries.push({
+          id: option.id,
+          label: option.label,
+          onSelect: () => addNodeLayer(key, option.seed),
+          testId: option.id,
+        })
+      }
     }
-    return layeredKeys
-      .filter((key) =>
-        section.properties.some(
-          (property) => property.key === key && property.status !== "not used",
-        ),
-      )
-      .map((key) => ({
-        id: `add-layer-${key}`,
-        label: `Add ${labels[key]}`,
-        onSelect: () => addNodeLayer(key),
-        testId: `add-layer-${key}`,
-      }))
+    return entries
   }, [
     node,
     section.properties,

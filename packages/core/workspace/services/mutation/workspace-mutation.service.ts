@@ -35,6 +35,8 @@ import {
 interface PropertyResetTarget {
   propertyKey: PropertyKey
   subpropertyKey?: SubPropertyKey
+  /** Paint-layer slot for layered properties; defaults to layer 0. */
+  layerIndex?: number
 }
 
 /**

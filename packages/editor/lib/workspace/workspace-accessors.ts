@@ -44,10 +44,10 @@ export function getComponent(
   workspace: Workspace,
   boardKey: BoardKey,
 ): Board | undefined {
-  return workspace.boards[boardKey]
+  return workspace.boards[boardKey] ?? workspace.playgrounds?.[boardKey]
 }
 
-/** Resolves the `workspace.boards` map key for a catalog row. */
+/** Resolves the `workspace.boards` or `workspace.playgrounds` map key for a row. */
 export function resolveComponentKey(
   board: Board,
   workspace: Workspace,
@@ -63,6 +63,13 @@ export function resolveComponentKey(
   )
   if (matched) {
     return matched[0]
+  }
+
+  const matchedPlayground = Object.entries(workspace.playgrounds ?? {}).find(
+    ([, entry]) => entry === board,
+  )
+  if (matchedPlayground) {
+    return matchedPlayground[0]
   }
 
   throw new Error(

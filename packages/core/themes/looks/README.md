@@ -24,17 +24,17 @@ flowchart LR
 | Type or Function | File | Purpose and use |
 | --- | --- | --- |
 | `SHADOW_LOOK_NONE` | `built-in-looks.ts` | Reserved `@shadow.none` path. Re-exported from `@seldon/core` for property defaults and tests. |
-| `GRADIENT_LOOK_NONE` | `built-in-looks.ts` | Reserved `@gradient.none` path. Re-exported from `@seldon/core`. |
-| `BACKGROUND_LOOK_NONE` | `built-in-looks.ts` | Reserved `@background.none` path. Re-exported from `@seldon/core`. |
 | `BORDER_LOOK_NONE` | `built-in-looks.ts` | Reserved `@border.none` path. Re-exported from `@seldon/core`. |
 | `FONT_LOOK_NORMAL` | `built-in-looks.ts` | Reserved `@font.normal` path. Re-exported from `@seldon/core`. |
-| `BuiltInLookSection` | `built-in-looks.ts` | Union of look sections: `shadow`, `gradient`, `background`, `border`, `font`. Used by injection and picker code. |
+| `BuiltInLookSection` | `built-in-looks.ts` | Union of look sections: `shadow`, `gradient`, `border`, `font`. Used by injection and picker code. |
+| `ClearedLookSection` | `built-in-looks.ts` | Look sections with a built-in cleared look: `shadow`, `border`, `font`. The `gradient` section has no cleared look. |
 | `BUILT_IN_LOOK_SECTIONS` | `built-in-looks.ts` | Ordered list of built-in look sections. Used when iterating sections during injection. |
-| `getBuiltInLookId` | `built-in-looks.ts` | Returns the reserved id for a section (`none` or `normal`). Used by pickers and validation. |
-| `getBuiltInLookToken` | `built-in-looks.ts` | Returns the full `@` token for a built-in look. Used when matching preset refs. |
+| `CLEARED_LOOK_SECTIONS` | `built-in-looks.ts` | Sections that receive an injected cleared look (`none` / `normal`). Used by `injectBuiltInLooks`. |
+| `getBuiltInLookId` | `built-in-looks.ts` | Returns the reserved cleared id for a section (`none` or `normal`), or `null` for `gradient`. Used by pickers and validation. |
+| `getBuiltInLookToken` | `built-in-looks.ts` | Returns the full `@` token for a built-in cleared look, or `null` for `gradient`. Used when matching preset refs. |
 | `isBuiltInLookSection` | `built-in-looks.ts` | Type guard for a look section name. Used when parsing `@` paths. |
-| `getBuiltInLookSectionForPropertyKey` | `built-in-looks.ts` | Maps a compound property key to a look section. Maps border shorthands to `border`. Used by editor property UI. |
-| `injectBuiltInLooks` | `built-in-looks.ts` | Inserts reserved look cells into each LOOK section. Called from `computeTheme` in `helpers/compute-theme.ts`. |
+| `getBuiltInLookSectionForPropertyKey` | `built-in-looks.ts` | Maps a compound property key to a look section. Maps border shorthands to `border` and `background` to `gradient`. Used by editor property UI. |
+| `injectBuiltInLooks` | `built-in-looks.ts` | Inserts the cleared look cell into each cleared-look section, then fills missing reserved ids. Called from `computeTheme` in `helpers/compute-theme.ts`. |
 | `isReservedThemeLookId` | `built-in-looks.ts` | Tells whether an id is a built-in reserved slot for a section. Used to avoid user collisions on `none` / `normal`. |
 
 ### Look resolution and presets
@@ -59,6 +59,7 @@ flowchart LR
 
 ## Notes
 
-- Import from `@seldon/core/themes/looks` or the `themes` barrel. Package entry re-exports the five `*_LOOK_*` constants from `built-in-looks.ts` plus `LOOK_FACETS` and its guards and types from `look-facets.ts`.
+- Import from `@seldon/core/themes/looks` or the `themes` barrel. Package entry re-exports the three `*_LOOK_*` cleared-look constants from `built-in-looks.ts` plus `LOOK_FACETS` and its guards and types from `look-facets.ts`.
 - Built-in looks clear every facet on the target compound. Stock LOOK tokens from theme files behave like other `@font.*` and `@shadow.*` presets once injected.
+- The `gradient` section is a look section with no cleared look. A gradient background layer resets through its `Default` preset, so there is no `@gradient.none` token.
 - Deeper theme token rules live in [../README.md](../README.md). Theme materialization lives in [../helpers/README.md](../helpers/README.md).

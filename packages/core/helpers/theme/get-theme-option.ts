@@ -1,8 +1,5 @@
 import {
   Theme,
-  ThemeBackground,
-  ThemeBackgroundId,
-  ThemeBackgroundKey,
   ThemeBlurKey,
   ThemeBorder,
   ThemeBorderId,
@@ -109,10 +106,6 @@ export function getThemeOption(
   key: ThemeGradientKey,
   theme: Theme,
 ): ThemeGradient
-export function getThemeOption(
-  key: ThemeBackgroundKey,
-  theme: Theme,
-): ThemeBackground
 export function getThemeOption(key: ThemeBlurKey, theme: Theme): ThemeScaleToken
 export function getThemeOption(
   key: ThemeSpreadKey,
@@ -178,9 +171,6 @@ export function getThemeOption(key: string, theme: Theme): ThemeOption {
       break
     case "@gradient":
       result = theme.gradient[optionId as ThemeGradientId]
-      break
-    case "@background":
-      result = theme.background[optionId as ThemeBackgroundId]
       break
     case "@blur":
       result = theme.blur[optionId as ThemeSizeId]

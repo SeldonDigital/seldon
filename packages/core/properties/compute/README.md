@@ -31,7 +31,7 @@ flowchart LR
 | `COMPUTED_FUNCTION_DISPLAY_NAMES` | `index.ts` | Maps each `ComputedFunction` to its editor label. Computed property pickers in the UI. |
 | `ComputeContext` | `types.ts` | Holds node properties, theme, and optional parent context. Argument to every compute engine. |
 | `ComputeKeys` | `types.ts` | Names the property key and optional facet for dispatch. Optical padding reads `subPropertyKey` for side ratios. |
-| `computeLayeredPaintStack` | `compute-layered-paint.ts` | Resolves computed facets on each paint layer in order. Called from `computeProperties` for background, gradient, and shadow arrays. |
+| `computeLayeredPaintStack` | `compute-layered-paint.ts` | Resolves computed facets on each paint layer in order. Called from `computeProperties` for background and shadow arrays. |
 | `DispatchComputedFn` | `compute-layered-paint.ts` | Function type for delegating one computed cell to an engine. Internal typing for layered paint traversal. |
 
 ---

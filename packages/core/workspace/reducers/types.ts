@@ -7,7 +7,8 @@
  * | set_workspace_owner, set_workspace_label, set_workspace_version, set_workspace_last_update, set_workspace_intent, set_workspace_tags, set_workspace_license | metadata |
  * | reset_workspace_owner, reset_workspace_label, normalize_metadata_version, reset_workspace_last_update, reset_workspace_intent, reset_workspace_tags, reset_workspace_license | metadata |
  * | add_component, remove_component, reorder_board, duplicate_component | components (+ nodes/themes/resources per type) |
- * | add_font_collection, remove_font_collection, add_media, remove_media, add_icon_set, remove_icon_set, add_theme, remove_theme, add_playground, remove_playground | components + section rows |
+ * | duplicate_playground | playgrounds (+ nodes) |
+ * | add_font_collection, remove_font_collection, add_media, remove_media, add_icon_set, remove_icon_set, add_theme, remove_theme, add_playground, remove_playground, set_playground_label | components + section rows / playgrounds |
  * | set_board_label, set_board_intent, set_board_tags, set_board_license, set_board_author, set_board_credentials, set_board_preview, set_board_editor_data, set_component_properties, reset_component_property, set_component_theme | components |
  * | reset_board_label, reset_board_intent, reset_board_tags, reset_board_license, reset_board_author, reset_board_credentials, reset_board_preview, reset_board_editor_data | components |
  * | reorder_variant_in_board | components.variants order |
@@ -15,13 +16,13 @@
  * | insert_variant_instance, insert_duplicate_instance, insert_default_instance, add_component_and_insert_default_instance | components tree + nodes |
  * | remove_instance, remove_variant, duplicate_node, move_instance, reorder_instance_in_parent | components tree + nodes |
  * | set_node_properties, reset_node_property, reset_node, set_node_label, set_node_theme, set_node_editor_data | nodes |
- * | add_node_layer, remove_node_layer | nodes (background/gradient/shadow paint stacks) |
+ * | add_node_layer, remove_node_layer, reorder_node_layer, set_node_layer_kind | nodes (background/shadow paint stacks) |
  * | reset_node_label, reset_node_editor_data | nodes |
  * | reset_user_variant_to_default, reset_default_variant_to_catalog, reset_component_to_catalog | components.variants tree + nodes |
  * | set_theme_label, set_theme_editor_data, set_theme_override, reset_theme_tokens, reset_theme_label, reset_theme_editor_data, reset_theme_override | themes |
  * | set_theme_scale_slot, set_theme_custom_token_name | themes (variant rows only) |
- * | add_theme_custom_{swatch,font,border,background,gradient,shadow,scrollbar,size,dimension,margin,padding,gap,corners,borderWidth,blur,spread,fontSize,fontWeight,lineHeight} | themes (variant rows only) |
- * | remove_theme_custom_{...same 19 tables...} | themes (variant rows only) |
+ * | add_theme_custom_{swatch,font,border,gradient,shadow,scrollbar,size,dimension,margin,padding,gap,corners,borderWidth,blur,spread,fontSize,fontWeight,lineHeight} | themes (variant rows only) |
+ * | remove_theme_custom_{...same 18 tables...} | themes (variant rows only) |
  * | delete_theme, duplicate_theme | themes (+ components.variants for theme row) |
  * | set_font_collection_{label,editor_data,override}, reset_font_collection_{label,editor_data,override}, reset_font_collection, add_font_collection_custom_family, remove_font_collection_custom_family | font-collections (variant rows only for families) |
  * | set_font_collection_family_variant, set_font_collection_family_preset | font-collections (any entry; per-family variant selection) |
@@ -42,7 +43,6 @@ import {
   SubPropertyKey,
 } from "../../properties"
 import {
-  BackgroundParameters,
   BorderParameters,
   FontParameters,
   GradientParameters,
@@ -164,10 +164,6 @@ export type AddCustomToken =
   | {
       type: "add_theme_custom_border"
       payload: AddThemeCustomBase & { parameters: BorderParameters }
-    }
-  | {
-      type: "add_theme_custom_background"
-      payload: AddThemeCustomBase & { parameters: BackgroundParameters }
     }
   | {
       type: "add_theme_custom_gradient"
@@ -329,6 +325,12 @@ export type WorkspaceAction =
       }
     }
   | {
+      type: "add_sandbox"
+      payload: {
+        playgroundKey: BoardKey
+      }
+    }
+  | {
       type: "remove_component"
       payload: {
         boardKey: BoardKey
@@ -369,6 +371,14 @@ export type WorkspaceAction =
       payload: {
         sourceBoardKey: BoardKey
         newBoardKey: BoardKey
+        label?: string
+      }
+    }
+  | {
+      type: "duplicate_playground"
+      payload: {
+        sourcePlaygroundKey: BoardKey
+        newPlaygroundKey: BoardKey
         label?: string
       }
     }
@@ -464,6 +474,8 @@ export type WorkspaceAction =
         nodeId: InstanceId | VariantId
         propertyKey: PropertyKey
         subpropertyKey?: SubPropertyKey
+        /** Paint-layer slot for layered properties; defaults to layer 0. */
+        layerIndex?: number
       }
     }
   | {
@@ -477,6 +489,8 @@ export type WorkspaceAction =
       payload: {
         nodeId: InstanceId | VariantId
         property: LayeredPaintKey
+        /** Optional initial facets for the new layer. Defaults to an empty bag. */
+        seed?: Record<string, unknown>
       }
     }
   | {
@@ -485,6 +499,26 @@ export type WorkspaceAction =
         nodeId: InstanceId | VariantId
         property: LayeredPaintKey
         index: number
+      }
+    }
+  | {
+      type: "reorder_node_layer"
+      payload: {
+        nodeId: InstanceId | VariantId
+        property: LayeredPaintKey
+        fromIndex: number
+        toIndex: number
+      }
+    }
+  | {
+      type: "set_node_layer_kind"
+      payload: {
+        nodeId: InstanceId | VariantId
+        property: LayeredPaintKey
+        /** Paint-layer slot to retype; defaults to layer 0. */
+        layerIndex?: number
+        /** The kind to seed the layer with, e.g. a `BackgroundKind` value. */
+        kind: string
       }
     }
   | {
@@ -500,11 +534,17 @@ export type WorkspaceAction =
         boardKey: BoardKey
         propertyKey: PropertyKey
         subpropertyKey?: SubPropertyKey
+        /** Paint-layer slot for layered properties; defaults to layer 0. */
+        layerIndex?: number
       }
     }
   | {
       type: "set_board_label"
       payload: { boardKey: BoardKey; label: string }
+    }
+  | {
+      type: "set_playground_label"
+      payload: { playgroundKey: BoardKey; label: string }
     }
   | {
       type: "set_board_intent"

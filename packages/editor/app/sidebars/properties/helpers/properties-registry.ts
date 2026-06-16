@@ -119,28 +119,28 @@ const UI_OVERRIDES: PropertyRegistry = {
     control: "menu",
   },
   position: {
-    icon: "seldon-text",
-    control: "text",
+    icon: "seldon-positionTopLeft",
+    control: "combo",
     subProperties: {
       top: {
         label: "Top",
-        icon: "seldon-text",
-        control: "number",
+        icon: "seldon-positionTop",
+        control: "combo",
       },
       right: {
         label: "Right",
-        icon: "seldon-text",
-        control: "number",
+        icon: "seldon-positionRight",
+        control: "combo",
       },
       bottom: {
         label: "Bottom",
-        icon: "seldon-text",
-        control: "number",
+        icon: "seldon-positionBottom",
+        control: "combo",
       },
       left: {
         label: "Left",
-        icon: "seldon-text",
-        control: "number",
+        icon: "seldon-positionLeft",
+        control: "combo",
       },
     },
   },
@@ -232,6 +232,14 @@ const UI_OVERRIDES: PropertyRegistry = {
     icon: "seldon-clip",
     control: "menu",
   },
+  listStyleType: {
+    icon: "seldon-token",
+    control: "menu",
+  },
+  listStylePosition: {
+    icon: "seldon-token",
+    control: "menu",
+  },
   cursor: {
     icon: "seldon-token",
     control: "menu",
@@ -268,7 +276,7 @@ const UI_OVERRIDES: PropertyRegistry = {
     icon: "icon-custom-color-value",
     subProperties: {
       preset: {
-        icon: "icon-custom-color-value",
+        icon: "seldon-gradient",
         control: "combo",
       },
       color: {
@@ -306,6 +314,46 @@ const UI_OVERRIDES: PropertyRegistry = {
       filter: {
         icon: "seldon-token",
         control: "combo",
+      },
+      gradientType: {
+        icon: "seldon-gradient",
+        control: "menu",
+      },
+      angle: {
+        icon: "seldon-text",
+        control: "number",
+      },
+      startColor: {
+        icon: "icon-custom-color-value",
+        control: "combo",
+      },
+      startBrightness: {
+        icon: "seldon-brightness",
+        control: "number",
+      },
+      startOpacity: {
+        icon: "seldon-opacity",
+        control: "number",
+      },
+      startPosition: {
+        icon: "seldon-text",
+        control: "number",
+      },
+      endColor: {
+        icon: "icon-custom-color-value",
+        control: "combo",
+      },
+      endBrightness: {
+        icon: "seldon-brightness",
+        control: "number",
+      },
+      endOpacity: {
+        icon: "seldon-opacity",
+        control: "number",
+      },
+      endPosition: {
+        icon: "seldon-text",
+        control: "number",
       },
     },
   },
@@ -504,60 +552,7 @@ const UI_OVERRIDES: PropertyRegistry = {
   },
 
   // ========================================
-  // 5. GRADIENTS
-  // ========================================
-  gradient: {
-    icon: "seldon-gradient",
-    subProperties: {
-      preset: {
-        icon: "seldon-gradient",
-        control: "combo",
-      },
-      gradientType: {
-        icon: "seldon-gradient",
-        control: "menu",
-      },
-      angle: {
-        icon: "seldon-text",
-        control: "number",
-      },
-      startColor: {
-        icon: "icon-custom-color-value",
-        control: "combo",
-      },
-      startBrightness: {
-        icon: "seldon-brightness",
-        control: "number",
-      },
-      startOpacity: {
-        icon: "seldon-opacity",
-        control: "number",
-      },
-      startPosition: {
-        icon: "seldon-text",
-        control: "number",
-      },
-      endColor: {
-        icon: "icon-custom-color-value",
-        control: "combo",
-      },
-      endBrightness: {
-        icon: "seldon-brightness",
-        control: "number",
-      },
-      endOpacity: {
-        icon: "seldon-opacity",
-        control: "number",
-      },
-      endPosition: {
-        icon: "seldon-text",
-        control: "number",
-      },
-    },
-  },
-
-  // ========================================
-  // 6. EFFECTS
+  // 5. EFFECTS
   // ========================================
   shadow: {
     icon: "seldon-shadow",

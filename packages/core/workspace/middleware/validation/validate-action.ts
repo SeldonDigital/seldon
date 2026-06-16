@@ -19,6 +19,8 @@ import {
 import {
   validateAddNodeLayer,
   validateRemoveNodeLayer,
+  validateReorderNodeLayer,
+  validateSetNodeLayerKind,
 } from "./action-groups/node-layers"
 import { isPassthroughAction } from "./action-groups/passthrough"
 import {
@@ -85,7 +87,23 @@ export function validateAction(workspace: Workspace, action: Action): void {
       validateAddResourceCatalog(workspace, action)
       return
     case "add_playground":
-      boardValidators.doesNotExist(workspace, action.payload.boardKey)
+      boardValidators.playgroundKeyIsFree(workspace, action.payload.boardKey)
+      return
+    case "add_sandbox":
+      boardValidators.playgroundExists(workspace, action.payload.playgroundKey)
+      return
+    case "set_playground_label":
+      boardValidators.playgroundExists(workspace, action.payload.playgroundKey)
+      return
+    case "duplicate_playground":
+      boardValidators.playgroundExists(
+        workspace,
+        action.payload.sourcePlaygroundKey,
+      )
+      boardValidators.playgroundKeyIsFree(
+        workspace,
+        action.payload.newPlaygroundKey,
+      )
       return
     case "add_variant":
       validateAddVariant(workspace, action)
@@ -102,8 +120,10 @@ export function validateAction(workspace: Workspace, action: Action): void {
     case "duplicate_component":
       validateDuplicateComponent(workspace, action)
       return
-    case "remove_component":
     case "remove_playground":
+      boardValidators.playgroundExists(workspace, action.payload.boardKey)
+      return
+    case "remove_component":
     case "remove_font_collection":
     case "remove_media":
     case "remove_icon_set":
@@ -131,6 +151,12 @@ export function validateAction(workspace: Workspace, action: Action): void {
       return
     case "remove_node_layer":
       validateRemoveNodeLayer(workspace, action)
+      return
+    case "reorder_node_layer":
+      validateReorderNodeLayer(workspace, action)
+      return
+    case "set_node_layer_kind":
+      validateSetNodeLayerKind(workspace, action)
       return
     case "set_node_theme":
     case "set_node_label":

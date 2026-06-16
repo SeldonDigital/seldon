@@ -56,7 +56,6 @@ flowchart LR
 | `ThemeCustomSwatchId` | `theme-token-ids.ts` | `customN` swatch naming pattern. |
 | `ThemeShadowId` | `theme-token-ids.ts` | Shadow look slot ids. |
 | `ThemeGradientId` | `theme-token-ids.ts` | Gradient look slot ids. |
-| `ThemeBackgroundId` | `theme-token-ids.ts` | Background look slot ids. |
 | `ThemeScrollbarId` | `theme-token-ids.ts` | Scrollbar look slot ids. |
 | `ThemeBorderId` | `theme-token-ids.ts` | Border look slot ids. |
 | `ThemeOptionId` | `theme-token-ids.ts` | Union of ids used as theme option references. |
@@ -65,7 +64,6 @@ flowchart LR
 
 | Type or Function | File | Purpose and use |
 | --- | --- | --- |
-| `ThemeBackgroundKey` | `theme-reference-keys.ts` | Branded `@background.*` path. Validated on properties that allow background looks. |
 | `ThemeBlurKey` | `theme-reference-keys.ts` | Branded `@blur.*` path. |
 | `ThemeBorderKey` | `theme-reference-keys.ts` | Branded `@border.*` path. |
 | `ThemeBorderWidthKey` | `theme-reference-keys.ts` | Branded `@borderWidth.*` path. |

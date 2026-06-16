@@ -85,21 +85,7 @@ export const schema = {
     brightness: { type: Sdn.ValueType.EMPTY, value: null },
     opacity: { type: Sdn.ValueType.EMPTY, value: null },
     background: [
-      {
-        preset: {
-          type: Sdn.ValueType.THEME_CATEGORICAL,
-          value: "@background.none",
-        },
-        image: { type: Sdn.ValueType.EMPTY, value: null },
-        position: { type: Sdn.ValueType.EMPTY, value: null },
-        size: { type: Sdn.ValueType.EMPTY, value: null },
-        repeat: { type: Sdn.ValueType.EMPTY, value: null },
-        color: { type: Sdn.ValueType.EMPTY, value: null },
-        blendMode: { type: Sdn.ValueType.EMPTY, value: null },
-        filter: { type: Sdn.ValueType.EMPTY, value: null },
-        brightness: { type: Sdn.ValueType.EMPTY, value: null },
-        opacity: { type: Sdn.ValueType.EMPTY, value: null },
-      },
+      { kind: { type: Sdn.ValueType.OPTION, value: Sdn.BackgroundKind.NONE } },
     ],
     border: {
       preset: {
@@ -142,10 +128,7 @@ export const schema = {
     },
     borderBottom: {
       preset: { type: Sdn.ValueType.EMPTY, value: null },
-      style: {
-        type: Sdn.ValueType.OPTION,
-        value: Sdn.BorderStyle.SOLID,
-      },
+      style: { type: Sdn.ValueType.EMPTY, value: null },
       color: { type: Sdn.ValueType.EMPTY, value: null },
       width: { type: Sdn.ValueType.EMPTY, value: null },
       brightness: { type: Sdn.ValueType.EMPTY, value: null },
@@ -355,14 +338,16 @@ export const schema = {
             },
             background: [
               {
-                preset: {
-                  type: Sdn.ValueType.THEME_CATEGORICAL,
-                  value: "@background.none",
+                kind: {
+                  type: Sdn.ValueType.OPTION,
+                  value: Sdn.BackgroundKind.COLOR,
                 },
                 color: {
                   type: Sdn.ValueType.OPTION,
                   value: Sdn.Color.TRANSPARENT,
                 },
+                brightness: { type: Sdn.ValueType.EMPTY, value: null },
+                opacity: { type: Sdn.ValueType.EMPTY, value: null },
               },
             ],
             border: {
@@ -471,14 +456,16 @@ export const schema = {
             },
             background: [
               {
-                preset: {
-                  type: Sdn.ValueType.THEME_CATEGORICAL,
-                  value: "@background.none",
+                kind: {
+                  type: Sdn.ValueType.OPTION,
+                  value: Sdn.BackgroundKind.COLOR,
                 },
                 color: {
                   type: Sdn.ValueType.OPTION,
                   value: Sdn.Color.TRANSPARENT,
                 },
+                brightness: { type: Sdn.ValueType.EMPTY, value: null },
+                opacity: { type: Sdn.ValueType.EMPTY, value: null },
               },
             ],
             border: {
@@ -537,14 +524,16 @@ export const schema = {
             },
             background: [
               {
-                preset: {
-                  type: Sdn.ValueType.THEME_CATEGORICAL,
-                  value: "@background.none",
+                kind: {
+                  type: Sdn.ValueType.OPTION,
+                  value: Sdn.BackgroundKind.COLOR,
                 },
                 color: {
                   type: Sdn.ValueType.OPTION,
                   value: Sdn.Color.TRANSPARENT,
                 },
+                brightness: { type: Sdn.ValueType.EMPTY, value: null },
+                opacity: { type: Sdn.ValueType.EMPTY, value: null },
               },
             ],
             border: {

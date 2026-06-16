@@ -12,6 +12,23 @@ export const schema = {
   properties: {
     display: { type: Sdn.ValueType.EMPTY, value: null },
     source: { type: Sdn.ValueType.EMPTY, value: null },
+    controls: { type: Sdn.ValueType.EXACT, value: true },
+    autoPlay: { type: Sdn.ValueType.EXACT, value: false },
+    loop: { type: Sdn.ValueType.EXACT, value: false },
+    muted: { type: Sdn.ValueType.EXACT, value: false },
+    poster: { type: Sdn.ValueType.EMPTY, value: null },
+    preload: {
+      type: Sdn.ValueType.OPTION,
+      value: Sdn.Preload.METADATA,
+    },
+    width: {
+      type: Sdn.ValueType.OPTION,
+      value: Sdn.Resize.FILL,
+    },
+    height: {
+      type: Sdn.ValueType.OPTION,
+      value: Sdn.Resize.FILL,
+    },
   },
 } as const satisfies ComponentSchema
 

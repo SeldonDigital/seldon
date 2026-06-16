@@ -1,9 +1,7 @@
 import {
-  BackgroundRepeat,
   BorderStyle,
   BorderWidth,
   GradientType,
-  ImageFit,
   TextCasing,
   Unit,
   ValueType,
@@ -836,43 +834,10 @@ const theme: StockTheme = {
       },
     },
   },
-  background: {
-    primary: {
-      type: TokenType.LOOK,
-      name: "Color fill",
-      parameters: {
-        color: { type: ValueType.THEME_CATEGORICAL, value: "@swatch.primary" },
-      },
-    },
-    background1: {
-      type: TokenType.LOOK,
-      name: "Image",
-      parameters: {
-        image: {
-          type: ValueType.EXACT,
-          value: "https://static.seldon.app/background-default-light.jpg",
-        },
-        repeat: { type: ValueType.OPTION, value: BackgroundRepeat.NO_REPEAT },
-        size: { type: ValueType.OPTION, value: ImageFit.COVER },
-      },
-    },
-    background2: {
-      type: TokenType.LOOK,
-      name: "Image repeated",
-      parameters: {
-        image: {
-          type: ValueType.EXACT,
-          value: "https://static.seldon.app/background-default-light.jpg",
-        },
-        repeat: { type: ValueType.OPTION, value: BackgroundRepeat.REPEAT },
-        size: { type: ValueType.OPTION, value: ImageFit.ORIGINAL },
-      },
-    },
-  },
   gradient: {
     primary: {
       type: TokenType.LOOK,
-      name: "Default",
+      name: "Ramp",
       parameters: {
         gradientType: { type: ValueType.OPTION, value: GradientType.LINEAR },
         angle: {
@@ -881,7 +846,7 @@ const theme: StockTheme = {
         },
         startColor: {
           type: ValueType.THEME_CATEGORICAL,
-          value: "@swatch.primary",
+          value: "@swatch.white",
         },
         startOpacity: {
           type: ValueType.EXACT,
@@ -893,7 +858,7 @@ const theme: StockTheme = {
         },
         endColor: {
           type: ValueType.THEME_CATEGORICAL,
-          value: "@swatch.primary",
+          value: "@swatch.black",
         },
         endOpacity: {
           type: ValueType.EXACT,
@@ -907,7 +872,7 @@ const theme: StockTheme = {
     },
     gradient1: {
       type: TokenType.LOOK,
-      name: "Linear",
+      name: "Fade Out",
       parameters: {
         gradientType: { type: ValueType.OPTION, value: GradientType.LINEAR },
         angle: {
@@ -928,11 +893,11 @@ const theme: StockTheme = {
         },
         endColor: {
           type: ValueType.THEME_CATEGORICAL,
-          value: "@swatch.swatch1",
+          value: "@swatch.primary",
         },
         endOpacity: {
           type: ValueType.EXACT,
-          value: { unit: Unit.PERCENT, value: 100 },
+          value: { unit: Unit.PERCENT, value: 0 },
         },
         endPosition: {
           type: ValueType.EXACT,
@@ -942,7 +907,7 @@ const theme: StockTheme = {
     },
     gradient2: {
       type: TokenType.LOOK,
-      name: "Radial",
+      name: "Burst",
       parameters: {
         gradientType: { type: ValueType.OPTION, value: GradientType.RADIAL },
         angle: {
@@ -963,11 +928,11 @@ const theme: StockTheme = {
         },
         endColor: {
           type: ValueType.THEME_CATEGORICAL,
-          value: "@swatch.swatch1",
+          value: "@swatch.primary",
         },
         endOpacity: {
           type: ValueType.EXACT,
-          value: { unit: Unit.PERCENT, value: 100 },
+          value: { unit: Unit.PERCENT, value: 0 },
         },
         endPosition: {
           type: ValueType.EXACT,

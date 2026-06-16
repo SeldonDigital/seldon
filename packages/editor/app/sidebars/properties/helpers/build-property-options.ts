@@ -1,7 +1,14 @@
-import { ComponentId, ComponentLevel, Theme, Workspace } from "@seldon/core"
+import {
+  ComponentId,
+  ComponentLevel,
+  HtmlElement,
+  Theme,
+  Workspace,
+} from "@seldon/core"
 import { getThemePickerOptions } from "@seldon/core/helpers/properties/properties-bridge"
 import { IconId, iconLabels } from "@seldon/core/icon-sets"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
+import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
 import { Board, Instance, Variant } from "@seldon/core/workspace/types"
 import { getNodeCatalogComponentId } from "@lib/workspace/node-tree"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
@@ -11,6 +18,55 @@ import { FlatProperty } from "./properties-data"
 
 type PropertyOptions = PropertyPickerResult["options"]
 type MaybePropertyOptions = PropertyOptions | undefined
+
+// Ordered lists number their items, so they only expose counter-style markers.
+// Unordered lists expose bullet-style markers. "none" plus Default/Inherit stay
+// available to both.
+const ORDERED_LIST_STYLE_TYPES = new Set([
+  "decimal",
+  "decimal-leading-zero",
+  "lower-alpha",
+  "upper-alpha",
+  "lower-roman",
+  "upper-roman",
+])
+const UNORDERED_LIST_STYLE_TYPES = new Set(["disc", "circle", "square"])
+
+/**
+ * Restricts listStyleType marker options to those relevant for the list kind.
+ * The merged List component renders as ol or ul depending on its htmlElement
+ * value, so the marker family is chosen from that value. Default (""), Inherit,
+ * and None remain available regardless of kind.
+ */
+function filterListStyleTypeOptions(
+  options: PropertyOptions,
+  componentId: ComponentId | undefined,
+  htmlElementValue: HtmlElement | undefined,
+): PropertyOptions {
+  if (componentId !== ComponentId.LIST) {
+    return options
+  }
+  let allowed: Set<string> | null = null
+  if (htmlElementValue === HtmlElement.OL) {
+    allowed = ORDERED_LIST_STYLE_TYPES
+  } else if (htmlElementValue === HtmlElement.UL) {
+    allowed = UNORDERED_LIST_STYLE_TYPES
+  }
+  if (!allowed) {
+    return options
+  }
+  return options
+    .map((group) =>
+      group.filter(
+        (option) =>
+          option.value === "" ||
+          option.value === "inherit" ||
+          option.value === "none" ||
+          allowed.has(option.value),
+      ),
+    )
+    .filter((group) => group.length > 0)
+}
 
 interface BuildPropertyOptionsInput {
   property: FlatProperty
@@ -80,6 +136,20 @@ export function buildPropertyOptions({
 
   if (includeCurrentSymbol && property.key === "symbol" && result.options) {
     addCurrentSymbolOption(result.options, property)
+  }
+
+  if (property.key === "listStyleType" && result.options) {
+    const htmlElementValue =
+      subject && !isBoard(subject)
+        ? (getNodeProperties(subject, workspace).htmlElement?.value as
+            | HtmlElement
+            | undefined)
+        : undefined
+    result.options = filterListStyleTypeOptions(
+      result.options,
+      componentId,
+      htmlElementValue,
+    )
   }
 
   return result.options

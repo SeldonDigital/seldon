@@ -1,5 +1,6 @@
 import {
   COLOR_DEBUG_COMPOUND,
+  COLOR_DEBUG_DEFAULT,
   COLOR_DEBUG_SHORTHAND,
   COLOR_ERROR,
   COLOR_NOT_USED,
@@ -16,6 +17,7 @@ export {
   COLOR_ERROR,
   COLOR_OVERRIDE,
   COLOR_DEBUG_COMPOUND,
+  COLOR_DEBUG_DEFAULT,
   COLOR_DEBUG_SHORTHAND,
 }
 
@@ -69,8 +71,9 @@ export function getPropertyDisplayColor(
       }
     }
 
+    // Empty values keep the pearl color; default (set) values are tinted green.
     if (property.status === "unset") {
-      return COLOR_UNSET
+      return COLOR_SET
     }
     if (property.status === "error") {
       return COLOR_ERROR
@@ -79,7 +82,7 @@ export function getPropertyDisplayColor(
       return COLOR_OVERRIDE
     }
 
-    return COLOR_SET
+    return COLOR_DEBUG_DEFAULT
   }
 
   if (property.status === "not used") {
@@ -100,7 +103,8 @@ export function getPropertyDisplayColor(
       if (property.status === "not used") {
         return COLOR_NOT_USED
       }
-      return COLOR_UNSET
+      // Empty/Default values share the schema-default color.
+      return COLOR_SET
     }
 
     if (isShorthandCompoundProperty(property)) {
@@ -116,12 +120,14 @@ export function getPropertyDisplayColor(
       if (property.status === "not used") {
         return COLOR_NOT_USED
       }
-      return COLOR_UNSET
+      // Empty/Default values share the schema-default color.
+      return COLOR_SET
     }
   }
 
+  // Empty/Default values share the schema-default color.
   if (property.status === "unset") {
-    return COLOR_UNSET
+    return COLOR_SET
   }
   if (property.status === "error") {
     return COLOR_ERROR

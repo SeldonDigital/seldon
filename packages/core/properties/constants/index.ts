@@ -8,6 +8,8 @@ export { Unit } from "./shared/units"
 export { ValueType } from "./shared/value-types"
 export {
   COMPOUND_FACET_DISPLAY_ORDER,
+  COMPOUND_SELECTOR_FACET,
+  getCompoundSelectorFacet,
   isCompoundCatalogProperty,
   PROPERTY_COMPOUND_CATALOG,
   type PropertyCompoundCatalogEntry,

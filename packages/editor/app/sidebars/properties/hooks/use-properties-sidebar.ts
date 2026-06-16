@@ -277,6 +277,29 @@ export function usePropertiesSidebar(): PropertiesSidebarState {
     workspace,
   ])
 
+  // Variant label for the selected resource, used to title the metadata section
+  // as "Family · Variant" (mirroring component headers).
+  const metadataVariantLabel = useMemo<string | undefined>(() => {
+    if (isThemeEditingMode && activeThemeEntryId) {
+      return workspace.themes[activeThemeEntryId]?.label
+    }
+    if (isFontCollectionEditingMode && activeFontCollectionEntryId) {
+      return workspace["font-collections"][activeFontCollectionEntryId]?.label
+    }
+    if (isIconSetEditingMode && activeIconSetEntryId) {
+      return workspace["icon-sets"][activeIconSetEntryId]?.label
+    }
+    return undefined
+  }, [
+    isThemeEditingMode,
+    activeThemeEntryId,
+    isFontCollectionEditingMode,
+    activeFontCollectionEntryId,
+    isIconSetEditingMode,
+    activeIconSetEntryId,
+    workspace,
+  ])
+
   const fontVariantSelection = useMemo(() => {
     if (!isFontCollectionEditingMode || !activeFontCollectionEntryId) return {}
     return workspaceFontCollectionService.getVariantSelection(
@@ -346,9 +369,12 @@ export function usePropertiesSidebar(): PropertiesSidebarState {
     if (selectedBoard) {
       return selectedBoard
     }
-    if (isThemeEditingMode) {
+    if (isThemeEditingMode && activeThemeEntryId) {
       for (const entry of Object.values(workspace.boards)) {
-        if (isThemeBoard(entry)) {
+        if (
+          isThemeBoard(entry) &&
+          entry.variants.some((variant) => variant.id === activeThemeEntryId)
+        ) {
           return entry
         }
       }
@@ -380,6 +406,7 @@ export function usePropertiesSidebar(): PropertiesSidebarState {
     selection,
     selectedBoard,
     isThemeEditingMode,
+    activeThemeEntryId,
     isFontCollectionEditingMode,
     activeFontCollectionEntryId,
     isIconSetEditingMode,
@@ -401,6 +428,7 @@ export function usePropertiesSidebar(): PropertiesSidebarState {
       theme,
       themeEditingContext,
       metadataProperties,
+      metadataVariantLabel,
       familyProperties,
       iconProperties,
       cssStringCount: cssStrings.length,
@@ -412,6 +440,7 @@ export function usePropertiesSidebar(): PropertiesSidebarState {
     theme,
     themeEditingContext,
     metadataProperties,
+    metadataVariantLabel,
     familyProperties,
     iconProperties,
     cssStrings.length,

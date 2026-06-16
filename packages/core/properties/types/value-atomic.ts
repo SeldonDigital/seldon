@@ -3,11 +3,11 @@ import {
   AlignValue,
   BackgroundColorValue,
   BackgroundImageValue,
+  BackgroundKindValue,
   BackgroundOpacityValue,
   BackgroundPositionValue,
   BackgroundRepeatValue,
   BackgroundSizeValue,
-  BackgroundValue,
   BooleanValue,
   BorderColorValue,
   BorderOpacityValue,
@@ -42,10 +42,13 @@ import {
   LetterSpacingValue,
   LineHeightValue,
   LinesValue,
+  ListStylePositionValue,
+  ListStyleTypeValue,
   MarginSideValue,
   OpacityValue,
   OrientationValue,
   PaddingSideValue,
+  PreloadValue,
   RotationValue,
   RowCountValue,
   ScreenHeightValue,
@@ -60,6 +63,7 @@ import {
   TextAlignValue,
   TextCaseValue,
   TextDecorationValue,
+  TrackKindValue,
   WrapperElementValue,
 } from "../values"
 import { CursorValue } from "../values/attributes/cursor"
@@ -89,6 +93,8 @@ export type AtomicValue =
   | DimensionValue
   | GapValue
   | RotationValue
+  | ListStyleTypeValue
+  | ListStylePositionValue
   | ColumnCountValue
   | RowCountValue
   | MarginSideValue
@@ -96,7 +102,7 @@ export type AtomicValue =
   | ColorValue
   | BrightnessValue
   | OpacityValue
-  | BackgroundValue
+  | BackgroundKindValue
   | BackgroundColorValue
   | BackgroundSizeValue
   | BackgroundImageValue
@@ -130,6 +136,8 @@ export type AtomicValue =
   | ShadowSpreadValue
   | ScrollValue
   | ScrollbarStyleValue
+  | PreloadValue
+  | TrackKindValue
   | EmptyValue
   | InheritValue
   | TransparentValue

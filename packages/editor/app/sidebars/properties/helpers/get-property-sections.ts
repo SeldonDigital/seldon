@@ -34,7 +34,9 @@ export interface PropertySection {
 /**
  * Gets the component name for display in the attributes section.
  * For boards, returns the board label + " Board" (e.g., "Product Card Board").
- * For variants/instances, returns the component schema name.
+ * For variants/instances, returns the component schema name followed by the
+ * node label (e.g., "Button · Tool Buttons"). When the label matches the
+ * component name, such as the default variant, only the component name shows.
  */
 function getComponentNameForAttributes(
   node: Variant | Instance | Board,
@@ -47,11 +49,16 @@ function getComponentNameForAttributes(
 
   const catalogId = getNodeCatalogComponentId(node, _workspace)
   if (catalogId && isComponentId(catalogId)) {
+    let componentName = catalogId as string
     try {
-      return getComponentSchema(catalogId).name
+      componentName = getComponentSchema(catalogId).name
     } catch {
-      return catalogId
+      // Fall back to the catalog id when the schema is unavailable.
     }
+    if (node.label && node.label !== componentName) {
+      return `${componentName} · ${node.label}`
+    }
+    return componentName
   }
 
   return node.label
@@ -59,8 +66,8 @@ function getComponentNameForAttributes(
 
 /**
  * Resolves the inspector section for a top-level property row from core display metadata.
- * Compound parents resolve through a representative `.preset` facet; unknown keys fall back
- * to the attributes section.
+ * Compound parents resolve through their selector facet (`.kind` for background, `.preset`
+ * for the look compounds); unknown keys fall back to the attributes section.
  */
 function getSectionForProperty(propertyKey: string): PropertyDisplayCategory {
   // An upper paint layer parent (`background.1`) resolves through its base key.
@@ -69,6 +76,7 @@ function getSectionForProperty(propertyKey: string): PropertyDisplayCategory {
     parsed.kind === "layered-parent" ? parsed.root : propertyKey
   const catalogKey =
     getCatalogKeyForPropertyPath(baseKey) ??
+    getCatalogKeyForPropertyPath(`${baseKey}.kind`) ??
     getCatalogKeyForPropertyPath(`${baseKey}.preset`)
   const category = catalogKey
     ? PROPERTY_DISPLAY_META[catalogKey]?.displayCategory

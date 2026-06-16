@@ -14,7 +14,7 @@ Properties flow through a resolution pipeline that merges values from multiple s
 
 ## Property Types
 
-Workspaces use three shapes for properties: **Atomic**, **Compound**, and **Shorthand**. Under the hood, **layered paint** (`background`, `gradient`, `shadow`) is stored as **arrays of compound layers** (see `nodeStorage: "layered"` in `constants/shared/compound-properties.ts`); the tables below mark those parents as type `array`.
+Workspaces use three shapes for properties: **Atomic**, **Compound**, and **Shorthand**. Under the hood, **layered paint** (`background`, `shadow`) is stored as **arrays of compound layers** (see `nodeStorage: "layered"` in `constants/shared/compound-properties.ts`); the tables below mark those parents as type `array`.
 
 | Kind | What it is | Access |
 | --- | --- | --- |
@@ -76,9 +76,9 @@ properties.border.color
 
 Compound behavior:
 
-- The theme can list **looks** for a compound (for example `border.hairline` with width, style, color). The editor lets you pick one and copies those parameters onto the compound. **Built-in cleared looks** (`@shadow.none`, `@gradient.none`, `@background.none`, `@border.none`, `@font.normal`) are injected at theme compute time, set every facet to **EMPTY**, and appear in the picker like stock looks. Stored values stay on the usual sub-properties (e.g., `border.width`, `border.color`).
+- The theme can list **looks** for a compound (for example `border.hairline` with width, style, color). The editor lets you pick one and copies those parameters onto the compound. **Built-in cleared looks** (`@shadow.none`, `@border.none`, `@font.normal`) are injected at theme compute time, set every facet to **EMPTY**, and appear in the picker like stock looks. Stored values stay on the usual sub-properties (e.g., `border.width`, `border.color`). Background is the exception: it has no compound theme looks. Each background layer carries a `kind` facet (`none`, `color`, `image`, or `gradient`) that selects which facets apply. A `gradient` layer still picks a theme gradient recipe through its `preset` facet (`@gradient.*`).
 - Applying a preset overwrites every parameter that preset defines. Any parameter the preset does not mention is set to **EMPTY**, which clears older values.
-- Preset facets also expand at compute time. Each property snapshot in the effective merge expands its own `preset` facet before merging: the look's parameters fill the facets, facets the look does not define become **EMPTY**, and the snapshot's own non-EMPTY facets win over the look. A schema that writes only `background: [{ preset: "@background.none" }]` therefore clears inherited fills the same way the picker does.
+- Preset facets also expand at compute time. Each property snapshot in the effective merge expands its own `preset` facet before merging: the look's parameters fill the facets, facets the look does not define become **EMPTY**, and the snapshot's own non-EMPTY facets win over the look.
 - If the user changes any sub-field by hand, treat the compound as **Custom** until it matches one of the theme’s named presets again.
 
 ---
@@ -217,7 +217,23 @@ For example, an Icon component might not have a `padding` property in its schema
 
 Below are all property values and their fields. They are grouped into categories and should be displayed in any editor or interface using these categories and the ordering present in the tables below.
 
-**IMPORTANT:** A type of `array` in the tables below means an **ordered list** of layer values for a property that can have multiple instances (backgrounds, gradients, shadows).
+**IMPORTANT:** A type of `array` in the tables below means an **ordered list** of layer values for a property that can have multiple instances (backgrounds, shadows).
+
+**How to read these tables:**
+
+- Rows prefixed with `└` are facets of the `compound` or `shorthand` property above them.
+- `name[]` marks a layered array. `name[].facet` is a facet of each layer.
+- The Values column uses the shorthands below for value sets that recur across many properties.
+
+| Shorthand | Expands to |
+| --- | --- |
+| `<color>` | `exact: hex, hsl, rgb, lch` \| `option: transparent` \| `theme.categorical: @swatch.*` \| `computed: highContrastColor, match` |
+| `<percent>` | `exact: %, 0–100` |
+| `<length>` | `exact: px, rem` |
+| `<length%>` | `exact: px, rem, %` |
+| `<bool>` | `exact: boolean` \| `option: true, false` |
+
+---
 
 ### Attributes
 
@@ -235,17 +251,17 @@ Properties that are specific to the selected component type and define its core 
 | `altText` | `atomic` | `empty` \| `inherit` \| `exact: string` |
 | `inputType` | `atomic` | `empty` \| `inherit` \| `option: text, number, email, password, search, tel, url, date, datetime-local, checkbox, radio` \| `exact: string` |
 | `placeholder` | `atomic` | `empty` \| `inherit` \| `exact: string` |
-| `checked` | `atomic` | `empty` \| `inherit` \| `exact: boolean` \| `option: true, false` |
+| `checked` | `atomic` | `empty` \| `inherit` \| `<bool>` |
 | `ariaLabel` | `atomic` | `empty` \| `inherit` \| `exact: string` |
-| `ariaHidden` | `atomic` | `empty` \| `inherit` \| `exact: boolean` \| `option: true, false` |
-| `size` | `atomic` | `empty` \| `inherit` \| `exact: px, rem` \| `theme.ordinal: @size.*` \| `computed: autoFit, match` |
-| `buttonSize` | `atomic` | `empty` \| `inherit` \| `exact: px, rem` \| `theme.ordinal: @fontSize.*` |
+| `ariaHidden` | `atomic` | `empty` \| `inherit` \| `<bool>` |
+| `size` | `atomic` | `empty` \| `inherit` \| `<length>` \| `theme.ordinal: @size.*` \| `computed: autoFit, match` |
+| `buttonSize` | `atomic` | `empty` \| `inherit` \| `<length>` \| `theme.ordinal: @fontSize.*` |
 | `board` | `compound` | `board.preset, board.width, board.height` |
 | └ `board.preset` | `atomic` | `empty` \| `option: fit, device preset ids` |
-| └ `board.width` | `atomic` | `empty` \| `exact: px, rem` \| `option: fit` |
-| └ `board.height` | `atomic` | `empty` \| `exact: px, rem` \| `option: fit` |
-| `screenWidth` | `atomic` | `empty` \| `exact: px, rem` \| `option: fit, fill, desktop, laptop, tablet, mobile, watch, television` \| `computed: autoFit` |
-| `screenHeight` | `atomic` | `empty` \| `exact: px, rem` \| `option: fit, fill, desktop, laptop, tablet, mobile, watch, television` \| `computed: autoFit` |
+| └ `board.width` | `atomic` | `empty` \| `<length>` \| `option: fit` |
+| └ `board.height` | `atomic` | `empty` \| `<length>` \| `option: fit` |
+| `screenWidth` | `atomic` | `empty` \| `<length>` \| `option: fit, fill, desktop, laptop, tablet, mobile, watch, television` \| `computed: autoFit` |
+| `screenHeight` | `atomic` | `empty` \| `<length>` \| `option: fit, fill, desktop, laptop, tablet, mobile, watch, television` \| `computed: autoFit` |
 | `cursor` | `atomic` | `empty` \| `inherit` \| `option: default, none, context-menu, help, pointer, progress, wait, cell, crosshair, text, vertical-text, alias, copy, move, no-drop, not-allowed, grab, grabbing, e-resize, n-resize, ne-resize, nw-resize, s-resize, se-resize, sw-resize, w-resize, ew-resize, ns-resize, nesw-resize, nwse-resize, col-resize, row-resize, all-scroll, zoom-in, zoom-out` \| `exact: string` |
 
 ---
@@ -259,32 +275,32 @@ Properties that control the positioning, sizing, and spatial relationships of co
 | `direction` | `atomic` | `empty` \| `inherit` \| `exact: string` \| `option: ltr, rtl` |
 | `placement` | `atomic` | `empty` \| `inherit` \| `option: static, relative, absolute, fixed, sticky` |
 | `position` | `shorthand` | `position.top, position.right, position.bottom, position.left` |
-| └ `position.top` | `atomic` | `empty` \| `inherit` \| `exact: px, rem, %` |
-| └ `position.right` | `atomic` | `empty` \| `inherit` \| `exact: px, rem, %` |
-| └ `position.bottom` | `atomic` | `empty` \| `inherit` \| `exact: px, rem, %` |
-| └ `position.left` | `atomic` | `empty` \| `inherit` \| `exact: px, rem, %` |
+| └ `position.top` | `atomic` | `empty` \| `inherit` \| `<length%>` |
+| └ `position.right` | `atomic` | `empty` \| `inherit` \| `<length%>` |
+| └ `position.bottom` | `atomic` | `empty` \| `inherit` \| `<length%>` |
+| └ `position.left` | `atomic` | `empty` \| `inherit` \| `<length%>` |
 | `orientation` | `atomic` | `empty` \| `inherit` \| `exact: string` \| `option: horizontal, vertical` |
 | `align` | `atomic` | `empty` \| `inherit` \| `option: auto, top-left, top-center, top-right, left, center, right, bottom-left, bottom-center, bottom-right` \| `exact: string` |
-| `width` | `atomic` | `empty` \| `inherit` \| `exact: px, rem, %` \| `theme.ordinal: @dimension.*` \| `option: fit, fill` \| `computed: autoFit, match` |
-| `height` | `atomic` | `empty` \| `inherit` \| `exact: px, rem, %` \| `theme.ordinal: @dimension.*` \| `option: fit, fill` \| `computed: autoFit, match` |
+| `width` | `atomic` | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @dimension.*` \| `option: fit, fill` \| `computed: autoFit, match` |
+| `height` | `atomic` | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @dimension.*` \| `option: fit, fill` \| `computed: autoFit, match` |
 | `margin` | `shorthand` | `margin.top, margin.right, margin.bottom, margin.left` |
-| └ `margin.top` | `atomic` | `empty` \| `inherit` \| `exact: px, rem, %` \| `theme.ordinal: @margin.*` \| `option: none` |
-| └ `margin.right` | `atomic` | `empty` \| `inherit` \| `exact: px, rem, %` \| `theme.ordinal: @margin.*` \| `option: none` |
-| └ `margin.bottom` | `atomic` | `empty` \| `inherit` \| `exact: px, rem, %` \| `theme.ordinal: @margin.*` \| `option: none` |
-| └ `margin.left` | `atomic` | `empty` \| `inherit` \| `exact: px, rem, %` \| `theme.ordinal: @margin.*` \| `option: none` |
+| └ `margin.top` | `atomic` | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @margin.*` \| `option: none` |
+| └ `margin.right` | `atomic` | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @margin.*` \| `option: none` |
+| └ `margin.bottom` | `atomic` | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @margin.*` \| `option: none` |
+| └ `margin.left` | `atomic` | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @margin.*` \| `option: none` |
 | `padding` | `shorthand` | `padding.top, padding.right, padding.bottom, padding.left` |
-| └ `padding.top` | `atomic` | `empty` \| `inherit` \| `exact: px, rem, %` \| `theme.ordinal: @padding.*` \| `option: none` \| `computed: opticalPadding, match` |
-| └ `padding.right` | `atomic` | `empty` \| `inherit` \| `exact: px, rem, %` \| `theme.ordinal: @padding.*` \| `option: none` \| `computed: opticalPadding, match` |
-| └ `padding.bottom` | `atomic` | `empty` \| `inherit` \| `exact: px, rem, %` \| `theme.ordinal: @padding.*` \| `option: none` \| `computed: opticalPadding, match` |
-| └ `padding.left` | `atomic` | `empty` \| `inherit` \| `exact: px, rem, %` \| `theme.ordinal: @padding.*` \| `option: none` \| `computed: opticalPadding, match` |
-| `gap` | `atomic` | `empty` \| `inherit` \| `exact: px, rem, %` \| `theme.ordinal: @gap.*` \| `option: evenly-spaced, none` \| `computed: match` |
+| └ `padding.top` | `atomic` | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @padding.*` \| `option: none` \| `computed: opticalPadding, match` |
+| └ `padding.right` | `atomic` | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @padding.*` \| `option: none` \| `computed: opticalPadding, match` |
+| └ `padding.bottom` | `atomic` | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @padding.*` \| `option: none` \| `computed: opticalPadding, match` |
+| └ `padding.left` | `atomic` | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @padding.*` \| `option: none` \| `computed: opticalPadding, match` |
+| `gap` | `atomic` | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @gap.*` \| `option: evenly-spaced, none` \| `computed: match` |
 | `rotation` | `atomic` | `empty` \| `inherit` \| `exact: degrees, −360–360` |
-| `wrapChildren` | `atomic` | `empty` \| `inherit` \| `exact: boolean` \| `option: true, false` |
-| `clip` | `atomic` | `empty` \| `inherit` \| `exact: boolean` \| `option: true, false` |
+| `wrapChildren` | `atomic` | `empty` \| `inherit` \| `<bool>` |
+| `clip` | `atomic` | `empty` \| `inherit` \| `<bool>` |
 | `columns` | `atomic` | `empty` \| `inherit` \| `exact: number, 1–100` |
 | `rows` | `atomic` | `empty` \| `inherit` \| `exact: number, 1–100` |
 | `cellAlign` | `atomic` | `empty` \| `inherit` \| `option: auto, top-left, top-center, top-right, left, center, right, bottom-left, bottom-center, bottom-right` \| `exact: string` |
-| `dimension` | `atomic` | `empty` \| `inherit` \| `exact: px, rem, %` \| `theme.ordinal: @dimension.*` \| `option: fit, fill` \| `computed: autoFit, match` |
+| `dimension` | `atomic` | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @dimension.*` \| `option: fit, fill` \| `computed: autoFit, match` |
 | `resize` | `atomic` | `empty` \| `inherit` \| `exact: string` \| `option: fit, fill` |
 | `screenSize` | `atomic` | `empty` \| `inherit` \| `exact: string` \| `option: desktop, laptop, tablet, mobile, watch, television` |
 
@@ -308,68 +324,83 @@ Properties that control the visual appearance and styling of components.
 
 | Property | Type | Values |
 | --- | --- | --- |
-| `color` | `atomic` | `empty` \| `inherit` \| `exact: hex, hsl, rgb, lch` \| `option: transparent` \| `theme.categorical: @swatch.*` \| `computed: highContrastColor, match` |
-| `accentColor` | `atomic` | `empty` \| `inherit` \| `exact: hex, hsl, rgb, lch` \| `option: transparent` \| `theme.categorical: @swatch.*` \| `computed: highContrastColor, match` |
-| `brightness` | `atomic` | `empty` \| `inherit` \| `exact: %, 0–100` |
-| `opacity` | `atomic` | `empty` \| `inherit` \| `exact: %, 0–100` |
-| `background` | `array` | `background[]`, ordered, `background[0]` topmost |
-| └ **Each Background** | `compound` | `preset: image, position, size, repeat, color, blendMode, filter, brightness, opacity` |
-| └ └ `background[].preset` | `atomic` | `empty` \| `inherit` \| `theme.categorical: @background.*` (built-in `@background.none`) |
-| └ └ `background[].image` | `atomic` | `empty` \| `inherit` \| `exact: string` |
-| └ └ `background[].position` | `atomic` | `empty` \| `inherit` \| `option: default, top-left, top-center, top-right, center-left, center, center-right, bottom-left, bottom-center, bottom-right` \| `exact: px, rem, %` \| `exact: DoubleAxisValue` |
-| └ └ `background[].size` | `atomic` | `empty` \| `inherit` \| `option: original, contain, cover, stretch` \| `exact: px, rem, %` \| `exact: paired` |
-| └ └ `background[].repeat` | `atomic` | `empty` \| `inherit` \| `option: no-repeat, repeat, repeat-x, repeat-y` |
-| └ └ `background[].color` | `atomic` | `empty` \| `inherit` \| `exact: hex, hsl, rgb, lch` \| `option: transparent` \| `theme.categorical: @swatch.*` \| `computed: highContrastColor, match` |
-| └ └ `background[].blendMode` | `atomic` | `empty` \| `inherit` \| `option: normal, multiply, screen, overlay, darken, lighten, color-dodge, color-burn, hard-light, soft-light, difference, exclusion, hue, saturation, color, luminosity` |
-| └ └ `background[].filter` | `atomic` | `empty` \| `inherit` \| `option: blur(4px), brightness(1.2), contrast(1.1), grayscale(1), saturate(1.2), sepia(0.5), invert(1)` \| `exact: string` |
-| └ └ `background[].brightness` | `atomic` | `empty` \| `inherit` \| `exact: %, 0–100` |
-| └ └ `background[].opacity` | `atomic` | `empty` \| `inherit` \| `exact: %, 0–100` |
-| `border` | `compound` | `preset: style, color, width, brightness, opacity, collapse` |
+| `color` | `atomic` | `empty` \| `inherit` \| `<color>` |
+| `accentColor` | `atomic` | `empty` \| `inherit` \| `<color>` |
+| `brightness` | `atomic` | `empty` \| `inherit` \| `<percent>` |
+| `opacity` | `atomic` | `empty` \| `inherit` \| `<percent>` |
+| `background` | `array` | Ordered layers, `background[0]` topmost. Each layer's `kind` picks a facet set. See [Background layers](#background-layers). |
+| `border` | `compound` | `preset, style, color, width, brightness, opacity, collapse` |
 | └ `border.preset` | `atomic` | `empty` \| `inherit` \| `theme.categorical: @border.*` (built-in `@border.none`) |
 | └ `border.style` | `atomic` | `empty` \| `inherit` \| `option: none, solid, dashed, dotted, double, groove, ridge, inset, outset, hidden` |
-| └ `border.color` | `atomic` | `empty` \| `inherit` \| `exact: hex, hsl, rgb, lch` \| `option: transparent` \| `theme.categorical: @swatch.*` \| `computed: highContrastColor, match` |
-| └ `border.width` | `atomic` | `empty` \| `inherit` \| `exact: px, rem` \| `option: hairline` \| `theme.ordinal: @borderWidth.*` |
-| └ `border.brightness` | `atomic` | `empty` \| `inherit` \| `exact: %, 0–100` |
-| └ `border.opacity` | `atomic` | `empty` \| `inherit` \| `exact: %, 0–100` |
+| └ `border.color` | `atomic` | `empty` \| `inherit` \| `<color>` |
+| └ `border.width` | `atomic` | `empty` \| `inherit` \| `<length>` \| `option: hairline` \| `theme.ordinal: @borderWidth.*` |
+| └ `border.brightness` | `atomic` | `empty` \| `inherit` \| `<percent>` |
+| └ `border.opacity` | `atomic` | `empty` \| `inherit` \| `<percent>` |
 | └ `border.collapse` | `atomic` | `empty` \| `inherit` \| `option: separate, collapse` |
-| `borderTop` | `compound` | `preset: style, color, width, brightness, opacity, collapse` |
-| └ `borderTop.preset` | `atomic` | `empty` \| `inherit` \| `theme.categorical: @border.*` (built-in `@border.none`) |
-| └ `borderTop.style` | `atomic` | `empty` \| `inherit` \| `option: none, solid, dashed, dotted, double, groove, ridge, inset, outset, hidden` |
-| └ `borderTop.color` | `atomic` | `empty` \| `inherit` \| `exact: hex, hsl, rgb, lch` \| `option: transparent` \| `theme.categorical: @swatch.*` \| `computed: highContrastColor, match` |
-| └ `borderTop.width` | `atomic` | `empty` \| `inherit` \| `exact: px, rem` \| `option: hairline` \| `theme.ordinal: @borderWidth.*` |
-| └ `borderTop.brightness` | `atomic` | `empty` \| `inherit` \| `exact: %, 0–100` |
-| └ `borderTop.opacity` | `atomic` | `empty` \| `inherit` \| `exact: %, 0–100` |
-| └ `borderTop.collapse` | `atomic` | `empty` \| `inherit` \| `option: separate, collapse` |
-| `borderRight` | `compound` | `preset: style, color, width, brightness, opacity, collapse` |
-| └ `borderRight.preset` | `atomic` | `empty` \| `inherit` \| `theme.categorical: @border.*` (built-in `@border.none`) |
-| └ `borderRight.style` | `atomic` | `empty` \| `inherit` \| `option: none, solid, dashed, dotted, double, groove, ridge, inset, outset, hidden` |
-| └ `borderRight.color` | `atomic` | `empty` \| `inherit` \| `exact: hex, hsl, rgb, lch` \| `option: transparent` \| `theme.categorical: @swatch.*` \| `computed: highContrastColor, match` |
-| └ `borderRight.width` | `atomic` | `empty` \| `inherit` \| `exact: px, rem` \| `option: hairline` \| `theme.ordinal: @borderWidth.*` |
-| └ `borderRight.brightness` | `atomic` | `empty` \| `inherit` \| `exact: %, 0–100` |
-| └ `borderRight.opacity` | `atomic` | `empty` \| `inherit` \| `exact: %, 0–100` |
-| └ `borderRight.collapse` | `atomic` | `empty` \| `inherit` \| `option: separate, collapse` |
-| `borderBottom` | `compound` | `preset: style, color, width, brightness, opacity, collapse` |
-| └ `borderBottom.preset` | `atomic` | `empty` \| `inherit` \| `theme.categorical: @border.*` (built-in `@border.none`) |
-| └ `borderBottom.style` | `atomic` | `empty` \| `inherit` \| `option: none, solid, dashed, dotted, double, groove, ridge, inset, outset, hidden` |
-| └ `borderBottom.color` | `atomic` | `empty` \| `inherit` \| `exact: hex, hsl, rgb, lch` \| `option: transparent` \| `theme.categorical: @swatch.*` \| `computed: highContrastColor, match` |
-| └ `borderBottom.width` | `atomic` | `empty` \| `inherit` \| `exact: px, rem` \| `option: hairline` \| `theme.ordinal: @borderWidth.*` |
-| └ `borderBottom.brightness` | `atomic` | `empty` \| `inherit` \| `exact: %, 0–100` |
-| └ `borderBottom.opacity` | `atomic` | `empty` \| `inherit` \| `exact: %, 0–100` |
-| └ `borderBottom.collapse` | `atomic` | `empty` \| `inherit` \| `option: separate, collapse` |
-| `borderLeft` | `compound` | `preset: style, color, width, brightness, opacity, collapse` |
-| └ `borderLeft.preset` | `atomic` | `empty` \| `inherit` \| `theme.categorical: @border.*` (built-in `@border.none`) |
-| └ `borderLeft.style` | `atomic` | `empty` \| `inherit` \| `option: none, solid, dashed, dotted, double, groove, ridge, inset, outset, hidden` |
-| └ `borderLeft.color` | `atomic` | `empty` \| `inherit` \| `exact: hex, hsl, rgb, lch` \| `option: transparent` \| `theme.categorical: @swatch.*` \| `computed: highContrastColor, match` |
-| └ `borderLeft.width` | `atomic` | `empty` \| `inherit` \| `exact: px, rem` \| `option: hairline` \| `theme.ordinal: @borderWidth.*` |
-| └ `borderLeft.brightness` | `atomic` | `empty` \| `inherit` \| `exact: %, 0–100` |
-| └ `borderLeft.opacity` | `atomic` | `empty` \| `inherit` \| `exact: %, 0–100` |
-| └ `borderLeft.collapse` | `atomic` | `empty` \| `inherit` \| `option: separate, collapse` |
+| `borderTop` | `compound` | Same facets as `border.*` |
+| `borderRight` | `compound` | Same facets as `border.*` |
+| `borderBottom` | `compound` | Same facets as `border.*` |
+| `borderLeft` | `compound` | Same facets as `border.*` |
 | `corners` | `shorthand` | `corners.topLeft, corners.topRight, corners.bottomLeft, corners.bottomRight` |
-| └ `corners.topLeft` | `atomic` | `empty` \| `inherit` \| `exact: px, rem` \| `option: rounded, squared` \| `theme.ordinal: @corners.*` |
-| └ `corners.topRight` | `atomic` | `empty` \| `inherit` \| `exact: px, rem` \| `option: rounded, squared` \| `theme.ordinal: @corners.*` |
-| └ `corners.bottomLeft` | `atomic` | `empty` \| `inherit` \| `exact: px, rem` \| `option: rounded, squared` \| `theme.ordinal: @corners.*` |
-| └ `corners.bottomRight` | `atomic` | `empty` \| `inherit` \| `exact: px, rem` \| `option: rounded, squared` \| `theme.ordinal: @corners.*` |
+| └ `corners.topLeft` | `atomic` | `empty` \| `inherit` \| `<length>` \| `option: rounded, squared` \| `theme.ordinal: @corners.*` |
+| └ `corners.topRight` | `atomic` | `empty` \| `inherit` \| `<length>` \| `option: rounded, squared` \| `theme.ordinal: @corners.*` |
+| └ `corners.bottomLeft` | `atomic` | `empty` \| `inherit` \| `<length>` \| `option: rounded, squared` \| `theme.ordinal: @corners.*` |
+| └ `corners.bottomRight` | `atomic` | `empty` \| `inherit` \| `<length>` \| `option: rounded, squared` \| `theme.ordinal: @corners.*` |
 | `borderCollapse` | `atomic` | `empty` \| `inherit` \| `option: separate, collapse` |
+
+`borderTop`, `borderRight`, `borderBottom`, and `borderLeft` are each a `compound` with the same facets as `border.*`: `preset`, `style`, `color`, `width`, `brightness`, `opacity`, `collapse`.
+
+---
+
+#### Background layers
+
+Each `background[]` layer stores a `kind` plus the facets that kind uses. Facets outside the active kind stay `empty`. Facet paths are `background[].<facet>`.
+
+| Background | Values |
+| --- | --- |
+| `kind` | `empty` \| `inherit` \| `option: none, color, image, gradient` |
+
+`kind: none` adds no facets.
+
+`kind: color` is a solid fill.
+
+| Color Facet | Values |
+| --- | --- |
+| `color` | `empty` \| `inherit` \| `<color>` |
+| `brightness` | `empty` \| `inherit` \| `<percent>` |
+| `opacity` | `empty` \| `inherit` \| `<percent>` |
+
+`kind: image` is an image fill.
+
+| Image Facet | Values |
+| --- | --- |
+| `image` | `empty` \| `inherit` \| `exact: string` |
+| `blendMode` | `empty` \| `inherit` \| `option: normal, multiply, screen, overlay, darken, lighten, color-dodge, color-burn, hard-light, soft-light, difference, exclusion, hue, saturation, color, luminosity` |
+| `opacity` | `empty` \| `inherit` \| `<percent>` |
+| `position` | `empty` \| `inherit` \| `option: default, top-left, top-center, top-right, center-left, center, center-right, bottom-left, bottom-center, bottom-right` \| `<length%>` \| `exact: DoubleAxisValue` |
+| `size` | `empty` \| `inherit` \| `option: original, contain, cover, stretch` \| `<length%>` \| `exact: paired` |
+| `repeat` | `empty` \| `inherit` \| `option: no-repeat, repeat, repeat-x, repeat-y` |
+| `filter` | `empty` \| `inherit` \| `option: blur(4px), brightness(1.2), contrast(1.1), grayscale(1), saturate(1.2), sepia(0.5), invert(1)` \| `exact: string` |
+
+`kind: gradient` is a gradient fill. The `preset` facet picks a theme gradient recipe (`@gradient.*`).
+
+| Gradient Facet | Values |
+| --- | --- |
+| `preset` | `empty` \| `inherit` \| `theme.categorical: @gradient.*` |
+| `gradientType` | `empty` \| `inherit` \| `option: linear, radial` |
+| `angle` | `empty` \| `inherit` \| `exact: degrees` |
+| `startColor` | `empty` \| `inherit` \| `<color>` |
+| `startPosition` | `empty` \| `inherit` \| `<percent>` |
+| `startBrightness` | `empty` \| `inherit` \| `<percent>` |
+| `startOpacity` | `empty` \| `inherit` \| `<percent>` |
+| `endColor` | `empty` \| `inherit` \| `<color>` |
+| `endPosition` | `empty` \| `inherit` \| `<percent>` |
+| `endBrightness` | `empty` \| `inherit` \| `<percent>` |
+| `endOpacity` | `empty` \| `inherit` \| `<percent>` |
+
+**To be implemented:**
+
+**Gradient multi-stop:** Beyond start/end fields on each layer, the flattened catalog includes `gradientStopColor`, `gradientStopBrightness`, `gradientStopOpacity`, and `gradientStopPosition` (`schemas/data/property-schemas.ts`). This need to be update to allow index values for stops.
 
 ---
 
@@ -379,18 +410,18 @@ Properties that control text styling, fonts, and typography.
 
 | Property | Type | Values |
 | --- | --- | --- |
-| `font` | `compound` | `preset: family, style, weight, size, lineHeight, textCase, letterSpacing` |
+| `font` | `compound` | `preset, family, style, weight, size, lineHeight, textCase, letterSpacing` |
 | └ `font.preset` | `atomic` | `empty` \| `inherit` \| `theme.categorical: @font.*` (built-in `@font.normal`) |
 | └ `font.family` | `atomic` | `empty` \| `inherit` \| `theme.categorical: @fontFamily.*` \| `option: string` \| `exact: string` |
 | └ `font.style` | `atomic` | `empty` \| `inherit` \| `option: normal, italic, oblique` \| `exact: string` |
 | └ `font.weight` | `atomic` | `empty` \| `inherit` \| `exact: number, 100–900` \| `theme.ordinal: @fontWeight.*` |
-| └ `font.size` | `atomic` | `empty` \| `inherit` \| `exact: px, rem` \| `theme.ordinal: @fontSize.*` \| `computed: autoFit, match` |
-| └ `font.lineHeight` | `atomic` | `empty` \| `inherit` \| `exact: px, rem, %` \| `exact: unitless number, >0` \| `theme.ordinal: @lineHeight.*` |
+| └ `font.size` | `atomic` | `empty` \| `inherit` \| `<length>` \| `theme.ordinal: @fontSize.*` \| `computed: autoFit, match` |
+| └ `font.lineHeight` | `atomic` | `empty` \| `inherit` \| `<length%>` \| `exact: unitless number, >0` \| `theme.ordinal: @lineHeight.*` |
 | └ `font.textCase` | `atomic` | `empty` \| `inherit` \| `option: normal, lowercase, uppercase, capitalize` |
-| └ `font.letterSpacing` | `atomic` | `empty` \| `inherit` \| `exact: px, rem` |
+| └ `font.letterSpacing` | `atomic` | `empty` \| `inherit` \| `<length>` |
 | `textAlign` | `atomic` | `empty` \| `inherit` \| `option: auto, left, right, center, justify` |
 | `textDecoration` | `atomic` | `empty` \| `inherit` \| `option: none, underline, overline, line-through` |
-| `wrapText` | `atomic` | `empty` \| `inherit` \| `exact: boolean` \| `option: true, false` |
+| `wrapText` | `atomic` | `empty` \| `inherit` \| `<bool>` |
 | `lines` | `atomic` | `empty` \| `inherit` \| `exact: number, integer, ≥0` |
 
 **To be implemented:**
@@ -409,37 +440,21 @@ Properties that control visual effects and interactions.
 
 | Property | Type | Values |
 | --- | --- | --- |
-| `gradient` | `array` | `gradient[]`, ordered, `gradient[0]` topmost |
-| └ **Each Gradient** | `compound` | `preset: gradientType, angle, startColor, startOpacity, startBrightness, startPosition, endColor, endOpacity, endBrightness, endPosition` |
-| └ └ `gradient[].preset` | `atomic` | `empty` \| `inherit` \| `theme.categorical: @gradient.*` (built-in `@gradient.none`) |
-| └ └ `gradient[].gradientType` | `atomic` | `empty` \| `inherit` \| `option: linear, radial` |
-| └ └ `gradient[].angle` | `atomic` | `empty` \| `inherit` \| `exact: degrees` |
-| └ └ `gradient[].startColor` | `atomic` | `empty` \| `inherit` \| `exact: hex, hsl, rgb, lch` \| `option: transparent` \| `theme.categorical: @swatch.*` \| `computed: highContrastColor, match` |
-| └ └ `gradient[].startBrightness` | `atomic` | `empty` \| `inherit` \| `exact: %, 0–100` |
-| └ └ `gradient[].startOpacity` | `atomic` | `empty` \| `inherit` \| `exact: %, 0–100` |
-| └ └ `gradient[].startPosition` | `atomic` | `empty` \| `inherit` \| `exact: %, 0–100` |
-| └ └ `gradient[].endColor` | `atomic` | `empty` \| `inherit` \| `exact: hex, hsl, rgb, lch` \| `option: transparent` \| `theme.categorical: @swatch.*` \| `computed: highContrastColor, match` |
-| └ └ `gradient[].endBrightness` | `atomic` | `empty` \| `inherit` \| `exact: %, 0–100` |
-| └ └ `gradient[].endOpacity` | `atomic` | `empty` \| `inherit` \| `exact: %, 0–100` |
-| └ └ `gradient[].endPosition` | `atomic` | `empty` \| `inherit` \| `exact: %, 0–100` |
-| `shadow` | `array` | `shadow[]`, ordered, `shadow[0]` topmost |
-| └ **Each Shadow** | `compound` | `preset: offsetX, offsetY, blur, color, brightness, opacity, spread` |
-| └ └ `shadow[].preset` | `atomic` | `empty` \| `inherit` \| `theme.categorical: @shadow.*` (built-in `@shadow.none`) |
-| └ └ `shadow[].offsetX` | `atomic` | `empty` \| `inherit` \| `exact: px, rem` |
-| └ └ `shadow[].offsetY` | `atomic` | `empty` \| `inherit` \| `exact: px, rem` |
-| └ └ `shadow[].blur` | `atomic` | `empty` \| `inherit` \| `exact: px, rem` \| `theme.ordinal: @blur.*` |
-| └ └ `shadow[].color` | `atomic` | `empty` \| `inherit` \| `exact: hex, hsl, rgb, lch` \| `option: transparent` \| `theme.categorical: @swatch.*` \| `computed: highContrastColor, match` |
-| └ └ `shadow[].brightness` | `atomic` | `empty` \| `inherit` \| `exact: %, 0–100` |
-| └ └ `shadow[].opacity` | `atomic` | `empty` \| `inherit` \| `exact: %, 0–100` |
-| └ └ `shadow[].spread` | `atomic` | `empty` \| `inherit` \| `exact: px, rem` \| `theme.ordinal: @spread.*` |
+| `shadow` | `array` | Ordered layers, `shadow[0]` topmost. Each layer is a `compound`. Facet paths are `shadow[].<facet>`. |
+| └ `shadow[].preset` | `atomic` | `empty` \| `inherit` \| `theme.categorical: @shadow.*` (built-in `@shadow.none`) |
+| └ `shadow[].offsetX` | `atomic` | `empty` \| `inherit` \| `<length>` |
+| └ `shadow[].offsetY` | `atomic` | `empty` \| `inherit` \| `<length>` |
+| └ `shadow[].blur` | `atomic` | `empty` \| `inherit` \| `<length>` \| `theme.ordinal: @blur.*` |
+| └ `shadow[].color` | `atomic` | `empty` \| `inherit` \| `<color>` |
+| └ `shadow[].brightness` | `atomic` | `empty` \| `inherit` \| `<percent>` |
+| └ `shadow[].opacity` | `atomic` | `empty` \| `inherit` \| `<percent>` |
+| └ `shadow[].spread` | `atomic` | `empty` \| `inherit` \| `<length>` \| `theme.ordinal: @spread.*` |
 | `scroll` | `atomic` | `empty` \| `inherit` \| `option: none, both, horizontal, vertical` |
 | `scrollbarStyle` | `atomic` | `empty` \| `inherit` \| `option: default, hidden, overlay, thin` |
 
-**Gradient multi-stop:** Beyond start/end fields on each layer, the flattened catalog includes `gradientStopColor`, `gradientStopBrightness`, `gradientStopOpacity`, and `gradientStopPosition` (`schemas/data/property-schemas.ts`). End-to-end product UI for arbitrary multi-stop editing may still lag that schema surface.
 
 **To be implemented:**
 
-- `multipleStops` - Full editor/UX for arbitrary multi-stop gradients (see **Gradient multi-stop** above)
 - `scrollSnap` - Scroll snap behavior (none, x, y, block, inline, both)
 - `scrollSnapAlign` - Scroll snap alignment (none, start, end, center)
 - `scrollSnapStop` - Scroll snap stop behavior (normal, always)
@@ -534,7 +549,7 @@ Properties for data binding, validation, and loading states.
 
 ## Property Merging
 
-`mergeProperties` in `properties/helpers/merge-properties.ts` merges **two** property snapshots. Pass the earlier/base object first and the newer patch second. Optional `mergeSubProperties` (default `true`) controls whether facet maps (e.g. `margin`, `font`, `position`) and layered stacks (`background`, `gradient`, `shadow`) merge field-by-field or slot-by-slot instead of replacing whole values.
+`mergeProperties` in `properties/helpers/merge-properties.ts` merges **two** property snapshots. Pass the earlier/base object first and the newer patch second. Optional `mergeSubProperties` (default `true`) controls whether facet maps (e.g. `margin`, `font`, `position`) and layered stacks (`background`, `shadow`) merge field-by-field or slot-by-slot instead of replacing whole values.
 
 ```typescript
 import { mergeProperties } from "@seldon/core/properties"
@@ -597,7 +612,6 @@ export type CompoundPropertyPath =
   | `font.${keyof FontCompound & string}`
   | `position.${keyof PositionValue & string}`
   | `background[${number}].${keyof BackgroundLayer & string}`
-  | `gradient[${number}].${keyof GradientCompound & string}`
   | `shadow[${number}].${keyof ShadowCompound & string}`
 
 export type ShorthandPropertyPath =

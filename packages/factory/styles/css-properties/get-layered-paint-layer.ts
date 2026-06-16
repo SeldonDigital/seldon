@@ -1,11 +1,9 @@
 import type { Properties } from "@seldon/core"
 import type { BackgroundLayer } from "@seldon/core/properties/values/appearance/background"
-import type { GradientCompound } from "@seldon/core/properties/values/effects/gradients"
 import type { ShadowCompound } from "@seldon/core/properties/values/effects/shadow"
 
 type LayeredPaintLayerMap = {
   background: BackgroundLayer
-  gradient: GradientCompound
   shadow: ShadowCompound
 }
 

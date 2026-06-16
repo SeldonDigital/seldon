@@ -3,6 +3,7 @@ import { ComponentLevel } from "@seldon/core/components/constants"
 import { getBoardVariantRootIds } from "@seldon/core/workspace/helpers/components/get-board-variant-root-ids"
 import { useDialog } from "@lib/hooks/use-dialog"
 import { useTool } from "@lib/hooks/use-tool"
+import { useAddRemoveCommands } from "@lib/hooks/commands/use-add-remove-commands"
 import {
   useIsSectionExpanded,
   useSectionExpansion,
@@ -28,12 +29,10 @@ export function useRowSection(section: BoardSection) {
     useExpansion()
   const { openDialog } = useDialog()
   const { setActiveTool } = useTool()
+  const { addPlayground } = useAddRemoveCommands()
 
   // Section expansion state
-  const isExpanded = useIsSectionExpanded(
-    section.level,
-    section.boards.length > 0,
-  )
+  const isExpanded = useIsSectionExpanded(section.level)
 
   // Event handlers: toggle section with Alt+click support for all descendants
   const onToggle = useRowToggle({
@@ -94,6 +93,9 @@ export function useRowSection(section: BoardSection) {
   const buttonIconic2 = useMemo<ButtonIconicProps | undefined>(() => {
     const level = section.level
     if (level === "MEDIA") return undefined
+    // Frames are not user-creatable boards: the only frame schema is Sandbox,
+    // which belongs to playgrounds. Hide the add control on the Frames section.
+    if (level === ComponentLevel.FRAME) return undefined
 
     return {
       onClick: (event) => {
@@ -104,6 +106,8 @@ export function useRowSection(section: BoardSection) {
           openDialog("add-font-collection")
         } else if (level === "ICON_SET") {
           openDialog("add-icon-set")
+        } else if (level === "PLAYGROUND") {
+          addPlayground()
         } else {
           openDialog("add-board", { level })
         }
@@ -111,7 +115,7 @@ export function useRowSection(section: BoardSection) {
       },
       "aria-label": "Add",
     }
-  }, [section.level, openDialog, setActiveTool])
+  }, [section.level, openDialog, setActiveTool, addPlayground])
 
   return {
     label: section.label,

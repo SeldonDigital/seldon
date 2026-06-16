@@ -6,7 +6,15 @@ import {
   isComponentId,
 } from "@seldon/core/components/constants"
 import { InstanceId, VariantId } from "@seldon/core/index"
-import { isComponentBoard } from "@seldon/core/workspace/model"
+import type { Board } from "@seldon/core/workspace/model/components"
+import {
+  isComponentBoard,
+  isFontCollectionBoard,
+  isIconSetBoard,
+  isMediaBoard,
+  isPlaygroundBoard,
+  isThemeBoard,
+} from "@seldon/core/workspace/model"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
 import type { BoardKey } from "@seldon/core/workspace/types"
 import { useEditorConfig } from "@lib/hooks/use-editor-config"
@@ -16,7 +24,10 @@ import {
   getComponentKey,
   getNode,
 } from "@lib/workspace/workspace-accessors"
-import { useSectionExpansion } from "@app/sidebars/hooks/use-section-expansion"
+import {
+  ExpandableSection,
+  useSectionExpansion,
+} from "@app/sidebars/hooks/use-section-expansion"
 import { useExpansion } from "@app/sidebars/objects/hooks/use-expansion"
 import { useWorkspace } from "./use-workspace"
 
@@ -147,6 +158,27 @@ export const useIsResourceEntrySelected = (
       state.selectedResourceEntry?.id === id,
   )
 
+/**
+ * Maps a board to the objects-sidebar section it belongs to. Component boards
+ * resolve to their schema level; resource boards and playgrounds resolve to
+ * their dedicated sections. Unknown rows return null so selection leaves
+ * section expansion untouched.
+ */
+function resolveBoardSectionLevel(
+  board: Board | undefined,
+): ExpandableSection | null {
+  if (!board) return null
+  if (isComponentBoard(board) && isComponentId(board.catalogId)) {
+    return getComponentSchema(board.catalogId).level
+  }
+  if (isThemeBoard(board)) return "THEME"
+  if (isFontCollectionBoard(board)) return "FONT_COLLECTION"
+  if (isIconSetBoard(board)) return "ICON_SET"
+  if (isMediaBoard(board)) return "MEDIA"
+  if (isPlaygroundBoard(board)) return "PLAYGROUND"
+  return null
+}
+
 export function useSelection() {
   const { toggleSection } = useSectionExpansion()
   const { toggle: toggleObject, isExpanded } = useExpansion()
@@ -196,19 +228,13 @@ export function useSelection() {
       selectBoard(id)
       if (id) {
         const board = workspace.boards[id]
-        let sectionLevel = ComponentLevel.MODULE
-        if (
-          board &&
-          isComponentBoard(board) &&
-          isComponentId(board.catalogId)
-        ) {
-          sectionLevel = getComponentSchema(board.catalogId).level
-        } else if (board?.type === "playground") {
-          sectionLevel = ComponentLevel.SCREEN
-        }
+        const sectionLevel = resolveBoardSectionLevel(board)
 
-        // Always expand section for navigation
-        toggleSection(sectionLevel, true)
+        // Expand the board's own section for navigation. Boards that map to no
+        // section (unknown rows) leave section state untouched.
+        if (sectionLevel) {
+          toggleSection(sectionLevel, true)
+        }
 
         // Auto-expand feature: expand board itself if enabled and board is collapsed
         // (This shows the board's variants, similar to how nodes expand to show children)

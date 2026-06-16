@@ -1,8 +1,22 @@
 import { resolveValue } from "@seldon/core/helpers/resolution/resolve-value"
+import type { Properties } from "@seldon/core"
+import { BackgroundKind } from "@seldon/core/properties/values/appearance/background/background-kind"
 
 import { StyleGenerationContext } from "../types"
 import { getColorCSSValue } from "./get-color-css-value"
+import { getLayeredPaintLayers } from "./get-layered-paint-layer"
 import { CSSObject } from "./types"
+
+/** True when any background layer paints a gradient that clips to text. */
+function hasGradientBackground(properties: Properties): boolean {
+  return getLayeredPaintLayers(properties, "background").some((layer) => {
+    const kind = resolveValue(layer.kind)
+    if (kind && typeof kind.value === "string") {
+      return kind.value === BackgroundKind.GRADIENT
+    }
+    return !!resolveValue(layer.preset) || !!resolveValue(layer.startColor)
+  })
+}
 
 export function getColorStyles({
   properties,
@@ -12,7 +26,7 @@ export function getColorStyles({
 
   // Texts may have a gradient in which case the color should not be set
   // Icon colors are set using getIconStyles
-  if (!properties.symbol && !properties.gradient && properties.color) {
+  if (!properties.symbol && !hasGradientBackground(properties) && properties.color) {
     const colorValue = getColorCSSValue({
       color: properties.color,
       brightness: resolveValue(properties.brightness),

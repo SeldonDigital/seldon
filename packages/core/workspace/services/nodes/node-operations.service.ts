@@ -8,6 +8,10 @@ import { componentBoardUniqueNodeId } from "../../helpers/components/entry-node-
 import { getBoardByNodeId } from "../../helpers/components/get-board-by-node-id"
 import { getBoardVariantRootIds } from "../../helpers/components/get-board-variant-root-ids"
 import { getVariantTree } from "../../helpers/components/get-variant-tree"
+import {
+  getCompositionContainers,
+  getContainerByKey,
+} from "../../helpers/general/get-composition-containers"
 import { getWorkspaceNodes } from "../../helpers/general/get-workspace-nodes"
 import {
   buildDuplicateEntryVariantSubtreePlan,
@@ -15,6 +19,11 @@ import {
   insertComponentTreeInstanceAfterSibling,
 } from "../../helpers/nodes/duplicate-entry-variant-subtree"
 import { moveItemInArray } from "../../helpers/nodes/move-utils"
+import {
+  getNextSandboxTop,
+  isSandboxNode,
+  setSandboxTop,
+} from "../../helpers/nodes/sandbox"
 import { isEntryNodeForRules } from "../../helpers/rules/rules-node-subject"
 import type { ComponentTreeRef } from "../../model/component-tree"
 import {
@@ -239,6 +248,30 @@ export class NodeOperationsService {
     return boardOrderService.realignBoardOrder(next)
   }
 
+  /**
+   * Deletes a playground container and every Sandbox root subtree it owns.
+   * Playground containers live in `workspace.playgrounds`, not `workspace.boards`,
+   * so this mirrors the playground-board deletion path against that map.
+   */
+  public deletePlaygroundByKey(
+    playgroundKey: BoardKey,
+    workspace: Workspace,
+  ): Workspace {
+    const playground = workspace.playgrounds?.[playgroundKey]
+    if (!playground) return workspace
+
+    return mutateWorkspace(workspace, (draft) => {
+      const row = draft.playgrounds[playgroundKey]
+      if (!row) return
+
+      for (const rootId of getBoardVariantRootIds(row)) {
+        this._deleteVariantFromDraft(rootId as VariantId, draft)
+      }
+
+      delete draft.playgrounds[playgroundKey]
+    })
+  }
+
   public deleteInstance(
     instanceId: InstanceId,
     workspace: Workspace,
@@ -331,7 +364,9 @@ export class NodeOperationsService {
     // descendant nodes orphaned.
     this._deleteSubtreeFromDraft(variantId, draft)
 
-    for (const board of Object.values(draft.boards)) {
+    for (const board of getCompositionContainers(
+      draft as unknown as Workspace,
+    )) {
       if (!board) continue
       board.variants = board.variants.filter((ref) => ref.id !== variantId)
       walkRemoveVariantRefs(board.variants, variantId)
@@ -364,7 +399,7 @@ export class NodeOperationsService {
     // fingerprints match, so a descendant may still be referenced by a tree
     // outside the subtree being deleted. Keep those rows to avoid dangling refs.
     const referencedElsewhere = collectReferencedTreeIdsExcludingSubtree(
-      Object.values(draftWorkspace.boards),
+      getCompositionContainers(draftWorkspace as unknown as Workspace),
       nodeId,
     )
 
@@ -426,8 +461,23 @@ export class NodeOperationsService {
           `duplicateNode: could not plan variant duplicate ${node.id}`,
         )
 
-        const board = draft.boards[located.boardKey as BoardKey]
+        const board = getContainerByKey(
+          draft as unknown as Workspace,
+          located.boardKey as BoardKey,
+        )!
         Object.assign(draft.nodes, plan.newNodes)
+
+        // A duplicated Sandbox keeps the source overrides, including position, so
+        // offset the copy below every existing sandbox to avoid overlap.
+        if (isSandboxNode(node)) {
+          const newRoot = draft.nodes[plan.newRootTreeRef.id]
+          if (newRoot) {
+            setSandboxTop(
+              newRoot as EntryNode,
+              getNextSandboxTop(board.variants, draft.nodes),
+            )
+          }
+        }
 
         if (plan.sourceWasDefault) {
           board.variants = [...board.variants, plan.newRootTreeRef]
@@ -453,7 +503,10 @@ export class NodeOperationsService {
       const sourceRow = nodes[node.id]
       invariant(sourceRow, ErrorMessages.nodeNotFound(node.id))
 
-      const board = draft.boards[located.boardKey as BoardKey]
+      const board = getContainerByKey(
+        draft as unknown as Workspace,
+        located.boardKey as BoardKey,
+      )!
       const tree = getVariantTree(board, node.id)
 
       const newRootId = componentBoardUniqueNodeId(located.boardKey)

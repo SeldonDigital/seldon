@@ -14,6 +14,8 @@ const HTML_ELEMENT_TO_FILE_STEM: Partial<Record<HtmlElement, string>> = {
   [HtmlElement.LABEL]: "HTML.Label",
   [HtmlElement.SPAN]: "HTML.Span",
   [HtmlElement.P]: "HTML.Paragraph",
+  [HtmlElement.PRE]: "HTML.Pre",
+  [HtmlElement.CODE]: "HTML.Code",
   [HtmlElement.UL]: "HTML.Ul",
   [HtmlElement.OL]: "HTML.Ol",
   [HtmlElement.LI]: "HTML.Li",

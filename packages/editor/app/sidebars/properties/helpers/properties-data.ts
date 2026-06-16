@@ -31,6 +31,7 @@ import {
   ValueType,
   Variant,
   Workspace,
+  getCompoundSelectorFacet,
 } from "@seldon/core"
 import { getComponentSchema } from "@seldon/core/components/catalog"
 import { isComponentId } from "@seldon/core/components/constants"
@@ -61,6 +62,7 @@ import type {
 } from "@seldon/core/properties/types/property-keys"
 import { getComponentPropertyDefaults } from "@seldon/core/workspace/helpers/components/get-component-property-defaults"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
+import { isPlaygroundBoard } from "@seldon/core/workspace/model/components"
 import { getNodeCatalogComponentId } from "@lib/workspace/node-tree"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { ControlType, getPropertyRegistryEntry } from "./properties-registry"
@@ -122,6 +124,25 @@ export interface FlatProperty {
  * @param theme - Optional theme to check for preset options
  * @returns True if the theme has a section for this property with preset options
  */
+/**
+ * Whether a compound's parent row renders a selector combo. Compounds whose
+ * core selector facet is `kind` (background) always do; other compounds only
+ * when the theme offers presets.
+ */
+export function hasCompoundSelectorCombo(
+  propertyKey: string,
+  theme?: Theme,
+  workspace?: Workspace,
+): boolean {
+  if (!isCompoundProperty(propertyKey)) {
+    return false
+  }
+  if (getCompoundSelectorFacet(propertyKey) === "kind") {
+    return true
+  }
+  return hasCompoundPresetOptions(propertyKey, theme, workspace)
+}
+
 export function hasCompoundPresetOptions(
   propertyKey: string,
   theme?: Theme,
@@ -143,7 +164,7 @@ export function hasCompoundPresetOptions(
     return false
   }
 
-  // Check if theme has a section for this property (e.g., theme.background, theme.border)
+  // Check if theme has a section for this property (e.g., theme.border)
   const section = (theme as Record<string, unknown>)[propertyKey]
   if (!section || typeof section !== "object") {
     return false
@@ -190,16 +211,6 @@ function subPropertyPathFor(
     return layeredFacetPath(parentKey as LayeredPaintKey, subKey, layerIndex)
   }
   return `${parentKey}.${subKey}`
-}
-
-/** True for a tagged value that carries a concrete (non-empty) decision. */
-function isMeaningfulValue(value: unknown): boolean {
-  return (
-    !!value &&
-    typeof value === "object" &&
-    "type" in value &&
-    (value as { type: ValueType }).type !== ValueType.EMPTY
-  )
 }
 
 export function getPropertiesSubjectId(
@@ -426,7 +437,7 @@ export function createFlatProperty(
   }
 
   const usesCompoundPresetPicker =
-    isCompound && hasCompoundPresetOptions(propertyKey, theme, workspace)
+    isCompound && hasCompoundSelectorCombo(propertyKey, theme, workspace)
 
   return {
     key: propertyKey,
@@ -558,32 +569,25 @@ function getSubProperties(
     propertyKey,
   )
 
-  // Check if this compound property has preset options in the theme
-  // If so, filter out the "preset" sub-property to avoid duplicate controls
-  const hasPresetOptions = hasCompoundPresetOptions(
+  // The compound's selector facet (`preset` or `kind`) is shown on the parent
+  // row's combo, so filter it out of the child facet list to avoid a duplicate.
+  const hasSelectorCombo = hasCompoundSelectorCombo(
     propertyKey,
     theme,
     workspace,
   )
+  const selectorFacet = getCompoundSelectorFacet(propertyKey)
 
   for (const subKey of subPropertyKeys) {
-    // Skip the preset sub-property if the parent compound property has preset options
-    // The preset menu will be shown on the parent property instead
-    if (subKey === "preset" && hasPresetOptions) {
+    if (subKey === selectorFacet && hasSelectorCombo) {
       continue
     }
 
     const subValue = layer?.[subKey]
     const subPropertyPath = subPropertyPathFor(propertyKey, subKey, layerIndex)
-    // Upper layers have no entry in the core status map, so derive a visible
-    // status from the value; otherwise "not used" would hide the row.
-    const status =
-      propertyStatus[subPropertyPath] ??
-      (layerIndex > 0
-        ? isMeaningfulValue(subValue)
-          ? "set"
-          : "unset"
-        : "not used")
+    // Core emits status for every paint layer keyed `root.index.facet`, so the
+    // editor reads it directly instead of fabricating a status for upper layers.
+    const status = propertyStatus[subPropertyPath] ?? "not used"
 
     const flatSubProperty = createFlatSubProperty(
       propertyKey,
@@ -615,27 +619,33 @@ function buildLayerParentFlatProperty(
   layerValue: unknown,
   node: Variant | Instance | Board,
   workspace: Workspace,
+  propertyStatus: Record<string, PropertyStatus>,
   theme?: Theme,
 ): FlatProperty {
   const registryEntry = getPropertyRegistryEntry(propertyKey)
-  const usesPresetPicker = hasCompoundPresetOptions(
+  const usesPresetPicker = hasCompoundSelectorCombo(
     propertyKey,
     theme,
     workspace,
   )
 
+  // Core resolves the compound display per layer (preset name / "Custom" /
+  // "None"), the same path the index-0 row uses, so upper layers stay 1:1.
   let actualValue = ""
   try {
-    actualValue = coreFormatValue(
+    actualValue = coreFormatCompoundDisplay(
       propertyKey,
-      layerValue,
       getPropertiesSubjectId(node),
       workspace,
       theme,
+      index,
     )
   } catch {
     actualValue = ""
   }
+
+  const parentStatus =
+    propertyStatus[layeredParentPath(propertyKey, index)] ?? "unset"
 
   return {
     key: layeredParentPath(propertyKey, index),
@@ -648,7 +658,7 @@ function buildLayerParentFlatProperty(
     isShorthand: false,
     isSubProperty: false,
     propertyType: "compound",
-    status: "set",
+    status: parentStatus,
     icon: registryEntry?.icon || "seldon-token",
     layerIndex: index,
   }
@@ -718,6 +728,7 @@ function flattenLayeredPaintProperty(
           layerValue,
           node,
           workspace,
+          propertyStatus,
           theme,
         ),
       )
@@ -783,6 +794,13 @@ export function flattenNodeProperties(
   workspace: Workspace,
   theme?: Theme,
 ): FlatProperty[] {
+  // A playground container is a sidebar-only grouping with no editable component
+  // properties. Only the theme selector applies, and that row is added
+  // separately, so emit no property rows here.
+  if (isBoard(node) && isPlaygroundBoard(node)) {
+    return []
+  }
+
   const properties: FlatProperty[] = []
   const { properties: mergedProperties, propertyStatus } =
     getNodePropertiesWithStatus(node, workspace)

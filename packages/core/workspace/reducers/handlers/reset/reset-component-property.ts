@@ -16,6 +16,7 @@ export function resetComponentProperty(
     {
       propertyKey: payload.propertyKey,
       subpropertyKey: payload.subpropertyKey,
+      layerIndex: payload.layerIndex,
     },
     workspace,
   )

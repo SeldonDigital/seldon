@@ -10,7 +10,6 @@
  */
 import type { PropertyName } from "../../properties/schemas/data/property-schemas"
 import type { ThemeTokenSchema, ThemeTokenSchemaSupport } from "../types/schema"
-import type { BackgroundParameters } from "../values/appearance/background"
 import type { BorderParameters } from "../values/appearance/border"
 import type { GradientParameters } from "../values/effects/gradient"
 import type { ScrollbarParameters } from "../values/effects/scrollbar"
@@ -49,26 +48,6 @@ type LookFacetEntryFor<P> =
       valueType: ThemeTokenSchemaSupport
       controlType: LookFacetControlType
     }
-
-const BACKGROUND_LOOK_FACETS = [
-  { facet: "image", label: "Image", propertyKey: "backgroundImage" },
-  { facet: "position", label: "Position", propertyKey: "backgroundPosition" },
-  { facet: "size", label: "Size", propertyKey: "backgroundSize" },
-  { facet: "repeat", label: "Repeat", propertyKey: "backgroundRepeat" },
-  { facet: "color", label: "Color", propertyKey: "backgroundColor" },
-  {
-    facet: "blendMode",
-    label: "Blend Mode",
-    propertyKey: "backgroundBlendMode",
-  },
-  { facet: "filter", label: "Filter", propertyKey: "backgroundFilter" },
-  {
-    facet: "brightness",
-    label: "Brightness",
-    propertyKey: "backgroundBrightness",
-  },
-  { facet: "opacity", label: "Opacity", propertyKey: "backgroundOpacity" },
-] as const satisfies readonly LookFacetEntryFor<BackgroundParameters>[]
 
 const GRADIENT_LOOK_FACETS = [
   { facet: "gradientType", label: "Type", propertyKey: "gradientType" },
@@ -180,7 +159,6 @@ const SCROLLBAR_LOOK_FACETS = [
 export const LOOK_FACETS = {
   shadow: SHADOW_LOOK_FACETS,
   gradient: GRADIENT_LOOK_FACETS,
-  background: BACKGROUND_LOOK_FACETS,
   border: BORDER_LOOK_FACETS,
   font: FONT_LOOK_FACETS,
   scrollbar: SCROLLBAR_LOOK_FACETS,
@@ -209,9 +187,6 @@ type MissingFacets<P, Entries extends readonly { facet: string }[]> = Exclude<
 >
 type AssertComplete<M> = [M] extends [never] ? true : M
 
-const _assertBackground: AssertComplete<
-  MissingFacets<BackgroundParameters, typeof BACKGROUND_LOOK_FACETS>
-> = true
 const _assertGradient: AssertComplete<
   MissingFacets<GradientParameters, typeof GRADIENT_LOOK_FACETS>
 > = true
@@ -227,7 +202,6 @@ const _assertFont: AssertComplete<
 const _assertScrollbar: AssertComplete<
   MissingFacets<ScrollbarParameters, typeof SCROLLBAR_LOOK_FACETS>
 > = true
-void _assertBackground
 void _assertGradient
 void _assertShadow
 void _assertBorder

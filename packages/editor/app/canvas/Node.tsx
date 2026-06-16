@@ -143,7 +143,13 @@ export const CanvasNode = memo(function CanvasNode({
   return (
     <ComponentRenderer
       computeContext={computeContext}
-      styleOverrides={isRoot ? { position: "relative" } : undefined}
+      styleOverrides={
+        isRoot
+          ? catalogComponentId === ComponentId.SANDBOX
+            ? { position: "absolute" }
+            : { position: "relative" }
+          : undefined
+      }
       componentId={component.id}
       htmlAttributes={getHTMLAttributes(node, nodeProperties)}
       nodeId={styleScopeId}

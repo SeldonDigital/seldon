@@ -82,7 +82,7 @@ export type ShorthandSubPropertyKey =
 export type SubPropertyKey = CompoundSubPropertyKey | ShorthandSubPropertyKey
 
 /** Properties stored as ordered paint stacks. Index 0 is the bottom layer. */
-export type LayeredPaintKey = "background" | "gradient" | "shadow"
+export type LayeredPaintKey = "background" | "shadow"
 
 /** Top-level keys whose node values are ordered paint-layer arrays. */
 const LAYERED_PAINT_KEYS_LIST = PROPERTY_COMPOUND_CATALOG.filter(
@@ -93,7 +93,7 @@ export const LAYERED_PAINT_KEYS = new Set<LayeredPaintKey>(
   LAYERED_PAINT_KEYS_LIST,
 )
 
-/** True for `background` / `gradient` / `shadow` paint stacks (array storage on the node). */
+/** True for `background` / `shadow` paint stacks (array storage on the node). */
 export function isLayeredPaintProperty(
   key: PropertyKey,
 ): key is LayeredPaintKey {
@@ -104,8 +104,8 @@ export function isLayeredPaintProperty(
 export type CompoundPropertyKey = ObjectFacetPropertyKey | LayeredPaintKey
 
 /**
- * String paths for compound facets. Layered paint (`background`, `gradient`, `shadow`) is stored
- * as arrays on the node — paths use bracket indices only, not `gradient.*` / `shadow.*` without an index.
+ * String paths for compound facets. Layered paint (`background`, `shadow`) is stored
+ * as arrays on the node — paths use bracket indices only, not `shadow.*` without an index.
  */
 export type CompoundPropertyPath =
   | PropertyKey
@@ -118,7 +118,6 @@ export type CompoundPropertyPath =
   | `board.${keyof BoardCompound & string}`
   | `position.${keyof PositionValue & string}`
   | `background[${number}].${keyof BackgroundLayer & string}`
-  | `gradient[${number}].${keyof GradientCompound & string}`
   | `shadow[${number}].${keyof ShadowCompound & string}`
 
 /** String paths for each side or corner under margin, padding, or corners. */

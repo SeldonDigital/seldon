@@ -1,5 +1,6 @@
 import { useEffect, useMemo } from "react"
 import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
+import { useEditorConfig } from "@lib/hooks/use-editor-config"
 import { useActiveBoard } from "@lib/workspace/hooks/use-active-board"
 import { useSelection } from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
@@ -13,6 +14,7 @@ import { getBoardSections } from "../../helpers/get-board-sections"
 export function useObjectsSidebar() {
   const { workspace } = useWorkspace({ usePreview: false })
   const { activeBoard } = useActiveBoard()
+  const { showPlayground } = useEditorConfig()
   const {
     selectBoard,
     selectedNodeId,
@@ -25,7 +27,16 @@ export function useObjectsSidebar() {
     [workspace],
   )
 
-  const sections = useMemo(() => getBoardSections(boards), [boards])
+  const playgrounds = useMemo(
+    () => workspaceService.getPlaygrounds(workspace),
+    [workspace],
+  )
+
+  const sections = useMemo(() => {
+    const allSections = getBoardSections(boards, playgrounds)
+    if (showPlayground) return allSections
+    return allSections.filter((section) => section.level !== "PLAYGROUND")
+  }, [boards, playgrounds, showPlayground])
 
   useEffect(() => {
     if (

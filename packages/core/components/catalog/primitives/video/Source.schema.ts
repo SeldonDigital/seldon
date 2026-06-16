@@ -11,6 +11,8 @@ export const schema = {
   icon: Seldon.ComponentIcon.IMAGE,
   properties: {
     source: { type: Sdn.ValueType.EMPTY, value: null },
+    mediaType: { type: Sdn.ValueType.EMPTY, value: null },
+    mediaQuery: { type: Sdn.ValueType.EMPTY, value: null },
   },
 } as const satisfies ComponentSchema
 

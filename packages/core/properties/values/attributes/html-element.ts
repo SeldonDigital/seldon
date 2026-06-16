@@ -14,6 +14,8 @@ export enum HtmlElement {
   H5 = "h5",
   H6 = "h6",
   P = "p",
+  PRE = "pre",
+  CODE = "code",
   SPAN = "span",
   LABEL = "label",
   DIV = "div",
@@ -34,6 +36,9 @@ export enum HtmlElement {
   LI = "li",
   OL = "ol",
   UL = "ul",
+  DL = "dl",
+  DT = "dt",
+  DD = "dd",
 }
 
 /** Records which HTML tag keyword is selected. */

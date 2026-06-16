@@ -52,6 +52,10 @@ interface EditorConfigState {
   showUnusedIcons: boolean
   setShowUnusedIcons: (enabled: boolean) => void
 
+  // Playground section visibility in the objects sidebar
+  showPlayground: boolean
+  setShowPlayground: (enabled: boolean) => void
+
   // Sidebar refactor settings
   useRefactoredSidebars: boolean
   setUseRefactoredSidebars: (enabled: boolean) => void
@@ -115,6 +119,11 @@ const useStore = create<EditorConfigState>()(
       setShowUnusedIcons: (enabled) =>
         set((state) => ({ ...state, showUnusedIcons: enabled })),
 
+      // Playground section visibility (off until enabled from the Dev menu)
+      showPlayground: false,
+      setShowPlayground: (enabled) =>
+        set((state) => ({ ...state, showPlayground: enabled })),
+
       // Sidebar refactor settings
       useRefactoredSidebars: false,
       setUseRefactoredSidebars: (enabled) =>
@@ -133,6 +142,7 @@ const useStore = create<EditorConfigState>()(
         showUnusedProperties: state.showUnusedProperties,
         showUnusedFonts: state.showUnusedFonts,
         showUnusedIcons: state.showUnusedIcons,
+        showPlayground: state.showPlayground,
         useRefactoredSidebars: state.useRefactoredSidebars,
       }),
     },
@@ -161,6 +171,8 @@ export function useEditorConfig() {
     setShowUnusedFonts,
     showUnusedIcons,
     setShowUnusedIcons,
+    showPlayground,
+    setShowPlayground,
     useRefactoredSidebars,
     setUseRefactoredSidebars,
   } = useStore(
@@ -185,6 +197,8 @@ export function useEditorConfig() {
       setShowUnusedFonts: state.setShowUnusedFonts,
       showUnusedIcons: state.showUnusedIcons,
       setShowUnusedIcons: state.setShowUnusedIcons,
+      showPlayground: state.showPlayground,
+      setShowPlayground: state.setShowPlayground,
       useRefactoredSidebars: state.useRefactoredSidebars,
       setUseRefactoredSidebars: state.setUseRefactoredSidebars,
     })),
@@ -221,6 +235,10 @@ export function useEditorConfig() {
   const toggleShowUnusedIcons = useCallback(() => {
     setShowUnusedIcons(!showUnusedIcons)
   }, [setShowUnusedIcons, showUnusedIcons])
+
+  const toggleShowPlayground = useCallback(() => {
+    setShowPlayground(!showPlayground)
+  }, [setShowPlayground, showPlayground])
 
   const toggleRefactoredSidebars = useCallback(() => {
     setUseRefactoredSidebars(!useRefactoredSidebars)
@@ -273,6 +291,11 @@ export function useEditorConfig() {
     showUnusedIcons,
     setShowUnusedIcons,
     toggleShowUnusedIcons,
+
+    // Playground section methods
+    showPlayground,
+    setShowPlayground,
+    toggleShowPlayground,
 
     // Sidebar refactor methods
     useRefactoredSidebars,

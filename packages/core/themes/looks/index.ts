@@ -1,9 +1,7 @@
 export {
-  BACKGROUND_LOOK_NONE,
   BORDER_LOOK_NONE,
   BUILT_IN_LOOK_SECTIONS,
   FONT_LOOK_NORMAL,
-  GRADIENT_LOOK_NONE,
   SHADOW_LOOK_NONE,
   getBuiltInLookId,
   getBuiltInLookSectionForPropertyKey,

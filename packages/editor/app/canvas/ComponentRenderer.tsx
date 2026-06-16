@@ -21,6 +21,7 @@ import { HTMLAside } from "@seldon/core/components/native-react/HTML.Aside"
 import { HTMLBlockquote } from "@seldon/core/components/native-react/HTML.Blockquote"
 import { HTMLButton } from "@seldon/core/components/native-react/HTML.Button"
 import { HTMLCite } from "@seldon/core/components/native-react/HTML.Cite"
+import { HTMLCode } from "@seldon/core/components/native-react/HTML.Code"
 import { HTMLDd } from "@seldon/core/components/native-react/HTML.Dd"
 import { HTMLDiv } from "@seldon/core/components/native-react/HTML.Div"
 import { HTMLDl } from "@seldon/core/components/native-react/HTML.Dl"
@@ -49,6 +50,7 @@ import { HTMLOl } from "@seldon/core/components/native-react/HTML.Ol"
 import { HTMLOptgroup } from "@seldon/core/components/native-react/HTML.Optgroup"
 import { HTMLOption } from "@seldon/core/components/native-react/HTML.Option"
 import { HTMLParagraph } from "@seldon/core/components/native-react/HTML.Paragraph"
+import { HTMLPre } from "@seldon/core/components/native-react/HTML.Pre"
 import { HTMLSection } from "@seldon/core/components/native-react/HTML.Section"
 import { HTMLSelect } from "@seldon/core/components/native-react/HTML.Select"
 import { HTMLSource } from "@seldon/core/components/native-react/HTML.Source"
@@ -288,6 +290,7 @@ export const PRIMITIVES: Record<
   HTMLBlockquote: HTMLBlockquote,
   HTMLButton: HTMLButton,
   HTMLCite: HTMLCite,
+  HTMLCode: HTMLCode,
   HTMLDd: HTMLDd,
   HTMLDiv: HTMLDiv,
   HTMLDl: HTMLDl,
@@ -316,6 +319,7 @@ export const PRIMITIVES: Record<
   HTMLOptgroup: HTMLOptgroup,
   HTMLOption: HTMLOption,
   HTMLParagraph: HTMLParagraph,
+  HTMLPre: HTMLPre,
   HTMLSection: HTMLSection,
   HTMLSelect: HTMLSelect,
   HTMLSource: HTMLSource,

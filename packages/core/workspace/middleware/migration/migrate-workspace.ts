@@ -1,13 +1,25 @@
 import type { Workspace } from "../../model/workspace"
-import { migrateV1BackgroundBlendFilter } from "./steps/migrate-v1-background-blend-filter"
+import { migrateV1BackgroundBlendFilter } from "./steps/migrate-00001-background-blend-filter"
+import { migrateV2SeedPlaygrounds } from "./steps/migrate-00002-seed-playgrounds"
+import { migrateV3BackgroundKind } from "./steps/migrate-00003-background-kind"
+import { migrateV4GradientIntoBackground } from "./steps/migrate-00004-gradient-into-background"
+import { migrateV5MergeTextPrimitives } from "./steps/migrate-00005-merge-text-primitives"
+import { migrateV6MergeElements } from "./steps/migrate-00006-merge-elements"
+import { migrateV7MergeParts } from "./steps/migrate-00007-merge-parts"
 
 /** Current workspace file version after migration steps on load. */
-export const CURRENT_WORKSPACE_VERSION = 1
+export const CURRENT_WORKSPACE_VERSION = 7
 
 type MigrationStep = (workspace: Workspace) => Workspace
 
 const MIGRATION_STEPS: Partial<Record<number, MigrationStep>> = {
   1: migrateV1BackgroundBlendFilter,
+  2: migrateV2SeedPlaygrounds,
+  3: migrateV3BackgroundKind,
+  4: migrateV4GradientIntoBackground,
+  5: migrateV5MergeTextPrimitives,
+  6: migrateV6MergeElements,
+  7: migrateV7MergeParts,
 }
 
 /** Runs versioned migration steps from storedVersion + 1 through CURRENT. */

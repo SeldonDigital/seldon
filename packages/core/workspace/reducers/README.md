@@ -72,6 +72,7 @@ The `reducer` switch has no default branch. Validation rejects unknown action ty
 | `set_workspace_tags`                 | `setWorkspaceTags`               | `set-workspace-tags.ts`                 |
 | `set_workspace_license`              | `setWorkspaceLicense`            | `set-workspace-license.ts`              |
 | `set_board_label`                    | `setBoardLabel`                  | `set-board-label.ts`                    |
+| `set_playground_label`               | `setPlaygroundLabel`             | `set-playground-label.ts`               |
 | `set_board_intent`                   | `setBoardIntent`                 | `set-board-intent.ts`                   |
 | `set_board_tags`                     | `setBoardTags`                   | `set-board-tags.ts`                     |
 | `set_board_license`                  | `setBoardLicense`                | `set-board-license.ts`                  |
@@ -157,7 +158,6 @@ The reset drops a variant only when the catalog no longer defines it. Validation
 | `add_theme_custom_swatch`           | `addThemeCustomSwatch`          | `add-theme-custom-swatch.ts`           |
 | `add_theme_custom_font`             | `addThemeCustomFont`            | `add-theme-custom-font.ts`             |
 | `add_theme_custom_border`           | `addThemeCustomBorder`          | `add-theme-custom-border.ts`           |
-| `add_theme_custom_background`       | `addThemeCustomBackground`      | `add-theme-custom-background.ts`       |
 | `add_theme_custom_gradient`         | `addThemeCustomGradient`        | `add-theme-custom-gradient.ts`         |
 | `add_theme_custom_shadow`           | `addThemeCustomShadow`          | `add-theme-custom-shadow.ts`           |
 | `add_theme_custom_scrollbar`        | `addThemeCustomScrollbar`       | `add-theme-custom-scrollbar.ts`        |
@@ -242,6 +242,7 @@ The reset drops a variant only when the catalog no longer defines it. Validation
 | Action                      | Handler                   | File                           |
 | --------------------------- | ------------------------- | ------------------------------ |
 | `duplicate_component`       | `duplicateComponent`      | `duplicate-component.ts`       |
+| `duplicate_playground`      | `duplicatePlayground`     | `duplicate-playground.ts`      |
 | `duplicate_node`            | `duplicateNode`           | `duplicate-node.ts`            |
 | `duplicate_theme`           | `duplicateTheme`          | `duplicate-theme.ts`           |
 | `duplicate_font_collection` | `duplicateFontCollection` | `duplicate-font-collection.ts` |

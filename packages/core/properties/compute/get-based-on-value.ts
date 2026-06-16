@@ -8,7 +8,7 @@ import { Color } from "../values/appearance/color"
 import type { ComputedValue } from "../values/shared/computed/computed-value"
 import { ComputeContext } from "./types"
 
-const LAYERED_PAINT_ROOTS = ["background", "gradient", "shadow"] as const
+const LAYERED_PAINT_ROOTS = ["background", "shadow"] as const
 
 export type ResolvedBasedOnWithAnchor = {
   value: Value | undefined

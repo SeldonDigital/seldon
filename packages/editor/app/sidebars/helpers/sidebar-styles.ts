@@ -39,6 +39,7 @@ export const COLOR_ERROR = "var(--sdn-seldon-swatch-negative)"
 export const COLOR_OVERRIDE = "var(--sdn-seldon-swatch-primary)"
 export const COLOR_DEBUG_COMPOUND = "var(--sdn-seldon-swatch-accent)"
 export const COLOR_DEBUG_SHORTHAND = "var(--sdn-seldon-swatch-warning)"
+export const COLOR_DEBUG_DEFAULT = "var(--sdn-seldon-swatch-positive)"
 
 export const subPropertyRowBackground =
   "color-mix(in srgb, var(--sdn-seldon-swatch-charcoal) 70%, transparent)"

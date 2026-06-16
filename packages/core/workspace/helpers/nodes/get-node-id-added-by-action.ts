@@ -146,7 +146,6 @@ export function getNodeIdAddedByAction(
     case "add_theme_custom_swatch":
     case "add_theme_custom_font":
     case "add_theme_custom_border":
-    case "add_theme_custom_background":
     case "add_theme_custom_gradient":
     case "add_theme_custom_shadow":
     case "add_theme_custom_scrollbar":

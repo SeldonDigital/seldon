@@ -52,13 +52,17 @@ import {
   schema as selectSchema,
 } from "./elements/Select.schema"
 import {
-  exportConfig as headerActionExportConfig,
-  schema as headerActionSchema,
-} from "./elements/headers/HeaderAction.schema"
+  exportConfig as headerExportConfig,
+  schema as headerSchema,
+} from "./elements/Header.schema"
 import {
-  exportConfig as headerCardExportConfig,
-  schema as headerCardSchema,
-} from "./elements/headers/HeaderCard.schema"
+  exportConfig as descriptionListExportConfig,
+  schema as descriptionListSchema,
+} from "./elements/DescriptionList.schema"
+import {
+  exportConfig as listExportConfig,
+  schema as listSchema,
+} from "./elements/List.schema"
 import {
   exportConfig as tableRowDataExportConfig,
   schema as tableRowDataSchema,
@@ -68,6 +72,10 @@ import {
   exportConfig as frameExportConfig,
   schema as frameSchema,
 } from "./frames/Frame.schema"
+import {
+  exportConfig as sandboxExportConfig,
+  schema as sandboxSchema,
+} from "./frames/Sandbox.schema"
 // Modules
 import {
   exportConfig as calendarExportConfig,
@@ -107,37 +115,13 @@ import {
   schema as fieldsetSchema,
 } from "./parts/Fieldset.schema"
 import {
-  exportConfig as cardHorizontalExportConfig,
-  schema as cardHorizontalSchema,
-} from "./parts/cards/CardHorizontal.schema"
-import {
-  exportConfig as cardProductExportConfig,
-  schema as cardProductSchema,
-} from "./parts/cards/CardProduct.schema"
-import {
   exportConfig as cardStackedExportConfig,
   schema as cardStackedSchema,
-} from "./parts/cards/CardStacked.schema"
-import {
-  exportConfig as listContactsExportConfig,
-  schema as listContactsSchema,
-} from "./parts/lists/ListContacts.schema"
-import {
-  exportConfig as listGridExportConfig,
-  schema as listGridSchema,
-} from "./parts/lists/ListGrid.schema"
-import {
-  exportConfig as listProductsExportConfig,
-  schema as listProductsSchema,
-} from "./parts/lists/ListProducts.schema"
+} from "./parts/Card.schema"
 import {
   exportConfig as listStandardExportConfig,
   schema as listStandardSchema,
-} from "./parts/lists/ListStandard.schema"
-import {
-  exportConfig as listTodoExportConfig,
-  schema as listTodoSchema,
-} from "./parts/lists/ListTodo.schema"
+} from "./parts/ListStandard.schema"
 // Primitives
 import {
   exportConfig as hrExportConfig,
@@ -160,33 +144,9 @@ import {
   schema as legendSchema,
 } from "./primitives/controls/Legend.schema"
 import {
-  exportConfig as optionExportConfig,
-  schema as optionSchema,
-} from "./primitives/controls/Option.schema"
-import {
-  exportConfig as descriptionDetailsExportConfig,
-  schema as descriptionDetailsSchema,
-} from "./primitives/lists/DescriptionDetails.schema"
-import {
-  exportConfig as descriptionListExportConfig,
-  schema as descriptionListSchema,
-} from "./primitives/lists/DescriptionList.schema"
-import {
-  exportConfig as descriptionTermExportConfig,
-  schema as descriptionTermSchema,
-} from "./primitives/lists/DescriptionTerm.schema"
-import {
-  exportConfig as listItemExportConfig,
-  schema as listItemSchema,
-} from "./primitives/lists/ListItem.schema"
-import {
-  exportConfig as orderedListExportConfig,
-  schema as orderedListSchema,
-} from "./primitives/lists/OrderedList.schema"
-import {
-  exportConfig as unorderedListExportConfig,
-  schema as unorderedListSchema,
-} from "./primitives/lists/UnorderedList.schema"
+  exportConfig as listTextExportConfig,
+  schema as listTextSchema,
+} from "./primitives/lists/ListText.schema"
 import {
   exportConfig as tableDataExportConfig,
   schema as tableDataSchema,
@@ -196,10 +156,6 @@ import {
   schema as tableHeaderSchema,
 } from "./primitives/tables/TableHeader.schema"
 import {
-  exportConfig as tableInputExportConfig,
-  schema as tableInputSchema,
-} from "./primitives/tables/TableInput.schema"
-import {
   exportConfig as blockquoteExportConfig,
   schema as blockquoteSchema,
 } from "./primitives/texts/Blockquote.schema"
@@ -207,14 +163,6 @@ import {
   exportConfig as citeExportConfig,
   schema as citeSchema,
 } from "./primitives/texts/Cite.schema"
-import {
-  exportConfig as codeblockExportConfig,
-  schema as codeblockSchema,
-} from "./primitives/texts/Codeblock.schema"
-import {
-  exportConfig as descriptionExportConfig,
-  schema as descriptionSchema,
-} from "./primitives/texts/Description.schema"
 import {
   exportConfig as linkExportConfig,
   schema as linkSchema,
@@ -247,10 +195,11 @@ const elements: ComponentSchema[] = [
   chipSchema,
   formControlSchema,
   optionGroupSchema,
-  headerActionSchema,
-  headerCardSchema,
+  headerSchema,
+  descriptionListSchema,
   itemSchema,
   navSchema,
+  listSchema,
   sectionSchema,
   selectSchema,
   tableRowDataSchema,
@@ -262,20 +211,11 @@ const primitives: ComponentSchema[] = [
   imageSchema,
   inputSchema,
   legendSchema,
-  optionSchema,
-  descriptionDetailsSchema,
-  descriptionListSchema,
-  descriptionTermSchema,
-  listItemSchema,
-  orderedListSchema,
-  unorderedListSchema,
+  listTextSchema,
   tableDataSchema,
   tableHeaderSchema,
-  tableInputSchema,
   blockquoteSchema,
   citeSchema,
-  codeblockSchema,
-  descriptionSchema,
   linkSchema,
   textSchema,
   sourceSchema,
@@ -285,15 +225,9 @@ const primitives: ComponentSchema[] = [
 
 const parts: ComponentSchema[] = [
   barSchema,
-  cardHorizontalSchema,
-  cardProductSchema,
   cardStackedSchema,
   fieldsetSchema,
-  listContactsSchema,
-  listGridSchema,
-  listProductsSchema,
   listStandardSchema,
-  listTodoSchema,
 ]
 
 const modules: ComponentSchema[] = [
@@ -310,7 +244,7 @@ const boards: ComponentSchema[] = [boardSchema]
 
 const screens: ComponentSchema[] = [screenSchema]
 
-const frames: ComponentSchema[] = [frameSchema]
+const frames: ComponentSchema[] = [frameSchema, sandboxSchema]
 
 export type Catalog = {
   frames: ComponentSchema[]
@@ -357,15 +291,17 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   [ComponentId.CHIP]: chipExportConfig,
   [ComponentId.FORM_CONTROL]: formControlExportConfig,
   [ComponentId.OPTION_GROUP]: optionGroupExportConfig,
-  [ComponentId.HEADER_ACTION]: headerActionExportConfig,
-  [ComponentId.HEADER_CARD]: headerCardExportConfig,
+  [ComponentId.HEADER]: headerExportConfig,
+  [ComponentId.DESCRIPTION_LIST]: descriptionListExportConfig,
   [ComponentId.ITEM]: itemExportConfig,
   [ComponentId.NAV]: navExportConfig,
+  [ComponentId.LIST]: listExportConfig,
   [ComponentId.SECTION]: sectionExportConfig,
   [ComponentId.TABLE_ROW_DATA]: tableRowDataExportConfig,
 
   // Frames
   [ComponentId.FRAME]: frameExportConfig,
+  [ComponentId.SANDBOX]: sandboxExportConfig,
 
   // Modules
   [ComponentId.CALENDAR]: calendarExportConfig,
@@ -378,15 +314,9 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
 
   // Parts
   [ComponentId.BAR]: barExportConfig,
-  [ComponentId.CARD_HORIZONTAL]: cardHorizontalExportConfig,
-  [ComponentId.CARD_PRODUCT]: cardProductExportConfig,
   [ComponentId.CARD_STACKED]: cardStackedExportConfig,
   [ComponentId.FIELDSET]: fieldsetExportConfig,
-  [ComponentId.LIST_CONTACTS]: listContactsExportConfig,
-  [ComponentId.LIST_GRID]: listGridExportConfig,
-  [ComponentId.LIST_PRODUCTS]: listProductsExportConfig,
   [ComponentId.LIST_STANDARD]: listStandardExportConfig,
-  [ComponentId.LIST_TODO]: listTodoExportConfig,
 
   // Primitives
   [ComponentId.HR]: hrExportConfig,
@@ -394,21 +324,12 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   [ComponentId.IMAGE]: imageExportConfig,
   [ComponentId.INPUT]: inputExportConfig,
   [ComponentId.LEGEND]: legendExportConfig,
-  [ComponentId.OPTION]: optionExportConfig,
   [ComponentId.SELECT]: selectExportConfig,
-  [ComponentId.DESCRIPTION_DETAILS]: descriptionDetailsExportConfig,
-  [ComponentId.DESCRIPTION_LIST]: descriptionListExportConfig,
-  [ComponentId.DESCRIPTION_TERM]: descriptionTermExportConfig,
-  [ComponentId.LIST_ITEM]: listItemExportConfig,
-  [ComponentId.ORDERED_LIST]: orderedListExportConfig,
-  [ComponentId.UNORDERED_LIST]: unorderedListExportConfig,
+  [ComponentId.LIST_TEXT]: listTextExportConfig,
   [ComponentId.TABLE_DATA]: tableDataExportConfig,
   [ComponentId.TABLE_HEADER]: tableHeaderExportConfig,
-  [ComponentId.TABLE_INPUT]: tableInputExportConfig,
   [ComponentId.BLOCKQUOTE]: blockquoteExportConfig,
   [ComponentId.CITE]: citeExportConfig,
-  [ComponentId.CODEBLOCK]: codeblockExportConfig,
-  [ComponentId.DESCRIPTION]: descriptionExportConfig,
   [ComponentId.LINK]: linkExportConfig,
   [ComponentId.TEXT]: textExportConfig,
   [ComponentId.SOURCE]: sourceExportConfig,

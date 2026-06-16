@@ -13,9 +13,13 @@ interface CompositionComponentRow {
 
 /**
  * Workspace slice needed to derive composition parents from board variant trees.
+ * `playgrounds` holds Sandbox-rooted trees that the editor composes the same way
+ * as component boards. The factory passes only `boards` so playground content is
+ * never part of an export pass.
  */
 export interface WorkspaceComponentTreeSource {
   boards?: Record<string, CompositionComponentRow | undefined>
+  playgrounds?: Record<string, CompositionComponentRow | undefined>
 }
 
 /**
@@ -49,23 +53,28 @@ function isCompositionComponentRow(board: CompositionComponentRow): boolean {
   return board.type === "component" || board.type === "playground"
 }
 
+function walkRows(
+  rows: Record<string, CompositionComponentRow | undefined> | undefined,
+  parentByChild: Map<string, string>,
+): void {
+  if (!rows) return
+  const keys = Object.keys(rows).sort()
+  for (const key of keys) {
+    const row = rows[key]
+    if (!row || !isCompositionComponentRow(row)) continue
+
+    for (const variant of row.variants ?? []) {
+      walkContainer(toTreeRef(variant), parentByChild)
+    }
+  }
+}
+
 export function buildNodeParentIndex(
   source: WorkspaceComponentTreeSource,
 ): Map<string, string> {
   const parentByChild = new Map<string, string>()
-  const boards = source.boards
-  if (!boards) return parentByChild
-
-  const keys = Object.keys(boards).sort()
-  for (const key of keys) {
-    const board = boards[key]
-    if (!board || !isCompositionComponentRow(board)) continue
-
-    for (const variant of board.variants ?? []) {
-      walkContainer(toTreeRef(variant), parentByChild)
-    }
-  }
-
+  walkRows(source.boards, parentByChild)
+  walkRows(source.playgrounds, parentByChild)
   return parentByChild
 }
 
@@ -80,16 +89,18 @@ const parentIndexCache = new WeakMap<object, Map<string, string>>()
 export function getNodeParentIndex(
   source: WorkspaceComponentTreeSource,
 ): Map<string, string> {
-  const boards = source.boards
-
-  if (!boards || isDraft(source) || isDraft(boards)) {
+  if (
+    isDraft(source) ||
+    isDraft(source.boards) ||
+    isDraft(source.playgrounds)
+  ) {
     return buildNodeParentIndex(source)
   }
 
-  let index = parentIndexCache.get(boards)
+  let index = parentIndexCache.get(source)
   if (!index) {
     index = buildNodeParentIndex(source)
-    parentIndexCache.set(boards, index)
+    parentIndexCache.set(source, index)
   }
 
   return index
