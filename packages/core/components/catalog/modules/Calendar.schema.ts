@@ -208,6 +208,14 @@ export const schema = {
                 type: Sdn.ValueType.OPTION,
                 value: Sdn.TextAlign.CENTER,
               },
+              wrapText: {
+                type: Sdn.ValueType.EXACT,
+                value: false,
+              },
+              lines: {
+                type: Sdn.ValueType.EXACT,
+                value: 0,
+              },
             },
           },
           {

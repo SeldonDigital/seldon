@@ -26,7 +26,6 @@ export const schema = {
       value: Sdn.Cursor.POINTER,
     },
     direction: { type: Sdn.ValueType.EMPTY, value: null },
-    orientation: { type: Sdn.ValueType.EMPTY, value: null },
     align: { type: Sdn.ValueType.EMPTY, value: null },
     width: { type: Sdn.ValueType.EMPTY, value: null },
     height: { type: Sdn.ValueType.EMPTY, value: null },

@@ -52,6 +52,13 @@ export function getTextStyles({
   const wrapText = resolveValue(properties.wrapText)
   const lines = resolveValue(properties.lines)
 
+  // An explicit, non-auto text alignment cannot survive `display: -webkit-box`,
+  // so it takes precedence over multi-line clamp: the line count is bounded with
+  // `max-height` instead, keeping the element a block where `text-align` applies.
+  const alignmentIsExplicit = Boolean(
+    textAlign && textAlign.value !== TextAlign.AUTO,
+  )
+
   // Only apply if font.family is defined in the schema
   if (family && properties.font?.family) {
     styles.fontFamily = family.value
@@ -122,14 +129,20 @@ export function getTextStyles({
       styles.whiteSpace = "normal"
 
       if (lines) {
+        const linesValue =
+          typeof lines.value === "number" ? lines.value : lines.value.value
+
         styles.overflow = "hidden"
-        styles.display = "-webkit-box"
-        styles.WebkitLineClamp =
-          typeof lines.value === "number" ? lines.value : lines.value.value
-        styles.lineClamp =
-          typeof lines.value === "number" ? lines.value : lines.value.value
-        styles.WebkitBoxOrient = "vertical"
-        styles.boxOrient = "vertical"
+
+        if (alignmentIsExplicit) {
+          styles.maxHeight = `${linesValue}lh`
+        } else {
+          styles.display = "-webkit-box"
+          styles.WebkitLineClamp = linesValue
+          styles.lineClamp = linesValue
+          styles.WebkitBoxOrient = "vertical"
+          styles.boxOrient = "vertical"
+        }
       }
     }
   }
