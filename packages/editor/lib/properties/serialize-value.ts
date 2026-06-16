@@ -20,6 +20,8 @@ import {
   HtmlElement,
   ImageFit,
   InputType,
+  ListStylePosition,
+  ListStyleType,
   Margin,
   NumberValue,
   Orientation,
@@ -119,6 +121,17 @@ function initializePresetMappings() {
   // Orientation presets
   Object.entries(Orientation).forEach(([key, value]) => {
     PRESET_MAPPINGS.set(value, Orientation[key as keyof typeof Orientation])
+  })
+
+  // List style presets
+  Object.entries(ListStyleType).forEach(([key, value]) => {
+    PRESET_MAPPINGS.set(value, ListStyleType[key as keyof typeof ListStyleType])
+  })
+  Object.entries(ListStylePosition).forEach(([key, value]) => {
+    PRESET_MAPPINGS.set(
+      value,
+      ListStylePosition[key as keyof typeof ListStylePosition],
+    )
   })
 
   // HTML element presets

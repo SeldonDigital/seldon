@@ -12,6 +12,49 @@ import { FlatProperty } from "./properties-data"
 type PropertyOptions = PropertyPickerResult["options"]
 type MaybePropertyOptions = PropertyOptions | undefined
 
+// Ordered lists number their items, so they only expose counter-style markers.
+// Unordered lists expose bullet-style markers. "none" plus Default/Inherit stay
+// available to both.
+const ORDERED_LIST_STYLE_TYPES = new Set([
+  "decimal",
+  "decimal-leading-zero",
+  "lower-alpha",
+  "upper-alpha",
+  "lower-roman",
+  "upper-roman",
+])
+const UNORDERED_LIST_STYLE_TYPES = new Set(["disc", "circle", "square"])
+
+/**
+ * Restricts listStyleType marker options to those relevant for the list kind.
+ * Default (""), Inherit, and None remain available regardless of component.
+ */
+function filterListStyleTypeOptions(
+  options: PropertyOptions,
+  componentId: ComponentId | undefined,
+): PropertyOptions {
+  let allowed: Set<string> | null = null
+  if (componentId === ComponentId.ORDERED_LIST) {
+    allowed = ORDERED_LIST_STYLE_TYPES
+  } else if (componentId === ComponentId.UNORDERED_LIST) {
+    allowed = UNORDERED_LIST_STYLE_TYPES
+  }
+  if (!allowed) {
+    return options
+  }
+  return options
+    .map((group) =>
+      group.filter(
+        (option) =>
+          option.value === "" ||
+          option.value === "inherit" ||
+          option.value === "none" ||
+          allowed.has(option.value),
+      ),
+    )
+    .filter((group) => group.length > 0)
+}
+
 interface BuildPropertyOptionsInput {
   property: FlatProperty
   theme?: Theme
@@ -80,6 +123,10 @@ export function buildPropertyOptions({
 
   if (includeCurrentSymbol && property.key === "symbol" && result.options) {
     addCurrentSymbolOption(result.options, property)
+  }
+
+  if (property.key === "listStyleType" && result.options) {
+    result.options = filterListStyleTypeOptions(result.options, componentId)
   }
 
   return result.options

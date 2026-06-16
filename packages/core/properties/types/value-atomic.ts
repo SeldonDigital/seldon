@@ -42,6 +42,8 @@ import {
   LetterSpacingValue,
   LineHeightValue,
   LinesValue,
+  ListStylePositionValue,
+  ListStyleTypeValue,
   MarginSideValue,
   OpacityValue,
   OrientationValue,
@@ -91,6 +93,8 @@ export type AtomicValue =
   | DimensionValue
   | GapValue
   | RotationValue
+  | ListStyleTypeValue
+  | ListStylePositionValue
   | ColumnCountValue
   | RowCountValue
   | MarginSideValue

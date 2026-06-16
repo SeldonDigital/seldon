@@ -77,6 +77,8 @@ export const PROPERTY_DISPLAY_ORDER: ReadonlyArray<{
       "rotation",
       "wrapChildren",
       "clip",
+      "listStyleType",
+      "listStylePosition",
       "columns",
       "rows",
       "cellAlign",

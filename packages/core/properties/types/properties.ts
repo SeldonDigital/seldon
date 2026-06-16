@@ -25,6 +25,8 @@ import {
   ImageSourceValue,
   InputTypeValue,
   LinesValue,
+  ListStylePositionValue,
+  ListStyleTypeValue,
   LoopValue,
   MarginValue,
   MediaQueryValue,
@@ -110,6 +112,8 @@ export type Properties = Partial<{
   rotation: RotationValue | EmptyValue
   wrapChildren: BooleanValue | EmptyValue
   clip: BooleanValue | EmptyValue
+  listStyleType: ListStyleTypeValue | EmptyValue
+  listStylePosition: ListStylePositionValue | EmptyValue
   columns: ColumnCountValue | EmptyValue
   rows: RowCountValue | EmptyValue
   cellAlign: AlignValue | InheritValue | EmptyValue

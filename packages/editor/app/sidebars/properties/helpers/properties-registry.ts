@@ -232,6 +232,14 @@ const UI_OVERRIDES: PropertyRegistry = {
     icon: "seldon-clip",
     control: "menu",
   },
+  listStyleType: {
+    icon: "seldon-token",
+    control: "menu",
+  },
+  listStylePosition: {
+    icon: "seldon-token",
+    control: "menu",
+  },
   cursor: {
     icon: "seldon-token",
     control: "menu",

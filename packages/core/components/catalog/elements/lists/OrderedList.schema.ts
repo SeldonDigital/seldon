@@ -19,6 +19,9 @@ export const schema = {
   icon: Seldon.ComponentIcon.COMPONENT,
   properties: {
     display: { type: Sdn.ValueType.EMPTY, value: null },
+    direction: { type: Sdn.ValueType.EMPTY, value: null },
+    orientation: { type: Sdn.ValueType.EMPTY, value: null },
+    align: { type: Sdn.ValueType.EMPTY, value: null },
     margin: {
       top: { type: Sdn.ValueType.EMPTY, value: null },
       right: { type: Sdn.ValueType.EMPTY, value: null },
@@ -32,6 +35,15 @@ export const schema = {
       left: { type: Sdn.ValueType.EMPTY, value: null },
     },
     gap: { type: Sdn.ValueType.EMPTY, value: null },
+    wrapChildren: { type: Sdn.ValueType.EXACT, value: false },
+    listStyleType: {
+      type: Sdn.ValueType.OPTION,
+      value: Sdn.ListStyleType.DECIMAL,
+    },
+    listStylePosition: {
+      type: Sdn.ValueType.OPTION,
+      value: Sdn.ListStylePosition.OUTSIDE,
+    },
   },
   default: {
     children: [

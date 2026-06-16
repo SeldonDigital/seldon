@@ -76,6 +76,8 @@ import { directionSchema } from "../../values/layout/direction"
 import { displaySchema } from "../../values/layout/display"
 import { gapSchema } from "../../values/layout/gap"
 import { heightSchema } from "../../values/layout/height"
+import { listStylePositionSchema } from "../../values/layout/list-style-position"
+import { listStyleTypeSchema } from "../../values/layout/list-style-type"
 import { marginSchema } from "../../values/layout/margin"
 import { orientationSchema } from "../../values/layout/orientation"
 import { paddingSchema } from "../../values/layout/padding"
@@ -155,6 +157,8 @@ const PROPERTY_SCHEMAS_RAW = {
   rotation: rotationSchema,
   wrapChildren: wrapChildrenSchema,
   clip: clipSchema,
+  listStyleType: listStyleTypeSchema,
+  listStylePosition: listStylePositionSchema,
   columns: columnsSchema,
   rows: rowsSchema,
   cellAlign: cellAlignSchema,
