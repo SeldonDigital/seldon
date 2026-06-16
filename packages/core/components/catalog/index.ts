@@ -115,37 +115,13 @@ import {
   schema as fieldsetSchema,
 } from "./parts/Fieldset.schema"
 import {
-  exportConfig as cardHorizontalExportConfig,
-  schema as cardHorizontalSchema,
-} from "./parts/cards/CardHorizontal.schema"
-import {
-  exportConfig as cardProductExportConfig,
-  schema as cardProductSchema,
-} from "./parts/cards/CardProduct.schema"
-import {
   exportConfig as cardStackedExportConfig,
   schema as cardStackedSchema,
 } from "./parts/cards/CardStacked.schema"
 import {
-  exportConfig as listContactsExportConfig,
-  schema as listContactsSchema,
-} from "./parts/lists/ListContacts.schema"
-import {
-  exportConfig as listGridExportConfig,
-  schema as listGridSchema,
-} from "./parts/lists/ListGrid.schema"
-import {
-  exportConfig as listProductsExportConfig,
-  schema as listProductsSchema,
-} from "./parts/lists/ListProducts.schema"
-import {
   exportConfig as listStandardExportConfig,
   schema as listStandardSchema,
 } from "./parts/lists/ListStandard.schema"
-import {
-  exportConfig as listTodoExportConfig,
-  schema as listTodoSchema,
-} from "./parts/lists/ListTodo.schema"
 // Primitives
 import {
   exportConfig as hrExportConfig,
@@ -249,15 +225,9 @@ const primitives: ComponentSchema[] = [
 
 const parts: ComponentSchema[] = [
   barSchema,
-  cardHorizontalSchema,
-  cardProductSchema,
   cardStackedSchema,
   fieldsetSchema,
-  listContactsSchema,
-  listGridSchema,
-  listProductsSchema,
   listStandardSchema,
-  listTodoSchema,
 ]
 
 const modules: ComponentSchema[] = [
@@ -344,15 +314,9 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
 
   // Parts
   [ComponentId.BAR]: barExportConfig,
-  [ComponentId.CARD_HORIZONTAL]: cardHorizontalExportConfig,
-  [ComponentId.CARD_PRODUCT]: cardProductExportConfig,
   [ComponentId.CARD_STACKED]: cardStackedExportConfig,
   [ComponentId.FIELDSET]: fieldsetExportConfig,
-  [ComponentId.LIST_CONTACTS]: listContactsExportConfig,
-  [ComponentId.LIST_GRID]: listGridExportConfig,
-  [ComponentId.LIST_PRODUCTS]: listProductsExportConfig,
   [ComponentId.LIST_STANDARD]: listStandardExportConfig,
-  [ComponentId.LIST_TODO]: listTodoExportConfig,
 
   // Primitives
   [ComponentId.HR]: hrExportConfig,

@@ -320,7 +320,8 @@ export const schema = {
         },
       },
       {
-        component: Seldon.ComponentId.LIST_TODO,
+        component: Seldon.ComponentId.LIST_STANDARD,
+        variant: "todo",
         overrides: {
           width: {
             type: Sdn.ValueType.OPTION,

@@ -53,6 +53,7 @@ export const schema = {
       left: { type: Sdn.ValueType.EMPTY, value: null },
     },
     gap: { type: Sdn.ValueType.EMPTY, value: null },
+    rotation: { type: Sdn.ValueType.EMPTY, value: null },
     wrapChildren: {
       type: Sdn.ValueType.EXACT,
       value: false,
@@ -420,6 +421,1477 @@ export const schema = {
       },
     ],
   },
+  variants: [
+    {
+      id: "contacts",
+      label: "Contacts List",
+      intent:
+        "Defines a list layout for contact information such as name, email, phone, and avatar with optional actions.",
+      children: [
+        {
+          component: Seldon.ComponentId.ITEM,
+          variant: "avatar",
+          overrides: {
+            border: {
+              preset: {
+                type: Sdn.ValueType.THEME_CATEGORICAL,
+                value: "@border.none",
+              },
+              style: { type: Sdn.ValueType.EMPTY, value: null },
+              color: { type: Sdn.ValueType.EMPTY, value: null },
+              width: { type: Sdn.ValueType.EMPTY, value: null },
+              brightness: { type: Sdn.ValueType.EMPTY, value: null },
+              opacity: { type: Sdn.ValueType.EMPTY, value: null },
+              collapse: { type: Sdn.ValueType.EMPTY, value: null },
+            },
+            borderTop: {
+              preset: { type: Sdn.ValueType.EMPTY, value: null },
+              style: { type: Sdn.ValueType.EMPTY, value: null },
+              color: { type: Sdn.ValueType.EMPTY, value: null },
+              width: { type: Sdn.ValueType.EMPTY, value: null },
+              brightness: { type: Sdn.ValueType.EMPTY, value: null },
+              opacity: { type: Sdn.ValueType.EMPTY, value: null },
+              collapse: { type: Sdn.ValueType.EMPTY, value: null },
+            },
+            borderRight: {
+              preset: { type: Sdn.ValueType.EMPTY, value: null },
+              style: { type: Sdn.ValueType.EMPTY, value: null },
+              color: { type: Sdn.ValueType.EMPTY, value: null },
+              width: { type: Sdn.ValueType.EMPTY, value: null },
+              brightness: { type: Sdn.ValueType.EMPTY, value: null },
+              opacity: { type: Sdn.ValueType.EMPTY, value: null },
+              collapse: { type: Sdn.ValueType.EMPTY, value: null },
+            },
+            borderBottom: {
+              preset: { type: Sdn.ValueType.EMPTY, value: null },
+              style: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.BorderStyle.SOLID,
+              },
+              color: {
+                type: Sdn.ValueType.THEME_CATEGORICAL,
+                value: "@swatch.primary",
+              },
+              width: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.BorderWidth.HAIRLINE,
+              },
+              brightness: {
+                type: Sdn.ValueType.EXACT,
+                value: { unit: Sdn.Unit.PERCENT, value: 75 },
+              },
+              opacity: { type: Sdn.ValueType.EMPTY, value: null },
+              collapse: { type: Sdn.ValueType.EMPTY, value: null },
+            },
+            borderLeft: {
+              preset: { type: Sdn.ValueType.EMPTY, value: null },
+              style: { type: Sdn.ValueType.EMPTY, value: null },
+              color: { type: Sdn.ValueType.EMPTY, value: null },
+              width: { type: Sdn.ValueType.EMPTY, value: null },
+              brightness: { type: Sdn.ValueType.EMPTY, value: null },
+              opacity: { type: Sdn.ValueType.EMPTY, value: null },
+              collapse: { type: Sdn.ValueType.EMPTY, value: null },
+            },
+          },
+        },
+        {
+          component: Seldon.ComponentId.ITEM,
+          variant: "avatar",
+          overrides: {
+            borderBottom: {
+              style: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.BorderStyle.SOLID,
+              },
+              color: {
+                type: Sdn.ValueType.THEME_CATEGORICAL,
+                value: "@swatch.primary",
+              },
+              width: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.BorderWidth.HAIRLINE,
+              },
+              brightness: {
+                type: Sdn.ValueType.EXACT,
+                value: { unit: Sdn.Unit.PERCENT, value: 75 },
+              },
+            },
+          },
+        },
+        {
+          component: Seldon.ComponentId.ITEM,
+          variant: "avatar",
+          overrides: {
+            borderBottom: {
+              style: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.BorderStyle.SOLID,
+              },
+              color: {
+                type: Sdn.ValueType.THEME_CATEGORICAL,
+                value: "@swatch.primary",
+              },
+              width: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.BorderWidth.HAIRLINE,
+              },
+              brightness: {
+                type: Sdn.ValueType.EXACT,
+                value: { unit: Sdn.Unit.PERCENT, value: 75 },
+              },
+            },
+          },
+        },
+        {
+          component: Seldon.ComponentId.ITEM,
+          variant: "avatar",
+          overrides: {
+            borderBottom: {
+              style: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.BorderStyle.SOLID,
+              },
+              color: {
+                type: Sdn.ValueType.THEME_CATEGORICAL,
+                value: "@swatch.primary",
+              },
+              width: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.BorderWidth.HAIRLINE,
+              },
+              brightness: {
+                type: Sdn.ValueType.EXACT,
+                value: { unit: Sdn.Unit.PERCENT, value: 75 },
+              },
+            },
+          },
+        },
+        {
+          component: Seldon.ComponentId.ITEM,
+          variant: "avatar",
+        },
+      ],
+    },
+    {
+      id: "products",
+      label: "Product List",
+      intent:
+        "List view tailored for product entries in catalogs or search results, supporting pricing and CTA buttons.",
+      children: [
+        {
+          component: Seldon.ComponentId.ITEM,
+          variant: "product",
+          overrides: {
+            border: {
+              preset: {
+                type: Sdn.ValueType.THEME_CATEGORICAL,
+                value: "@border.none",
+              },
+              style: { type: Sdn.ValueType.EMPTY, value: null },
+              color: { type: Sdn.ValueType.EMPTY, value: null },
+              width: { type: Sdn.ValueType.EMPTY, value: null },
+              brightness: { type: Sdn.ValueType.EMPTY, value: null },
+              opacity: { type: Sdn.ValueType.EMPTY, value: null },
+              collapse: { type: Sdn.ValueType.EMPTY, value: null },
+            },
+            borderBottom: {
+              style: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.BorderStyle.SOLID,
+              },
+              color: {
+                type: Sdn.ValueType.THEME_CATEGORICAL,
+                value: "@swatch.primary",
+              },
+              width: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.BorderWidth.HAIRLINE,
+              },
+              brightness: {
+                type: Sdn.ValueType.EXACT,
+                value: { unit: Sdn.Unit.PERCENT, value: 75 },
+              },
+            },
+          },
+        },
+        {
+          component: Seldon.ComponentId.ITEM,
+          variant: "product",
+          overrides: {
+            borderBottom: {
+              style: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.BorderStyle.SOLID,
+              },
+              color: {
+                type: Sdn.ValueType.THEME_CATEGORICAL,
+                value: "@swatch.primary",
+              },
+              width: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.BorderWidth.HAIRLINE,
+              },
+              brightness: {
+                type: Sdn.ValueType.EXACT,
+                value: { unit: Sdn.Unit.PERCENT, value: 75 },
+              },
+            },
+          },
+        },
+        {
+          component: Seldon.ComponentId.ITEM,
+          variant: "product",
+          overrides: {
+            borderBottom: {
+              style: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.BorderStyle.SOLID,
+              },
+              color: {
+                type: Sdn.ValueType.THEME_CATEGORICAL,
+                value: "@swatch.primary",
+              },
+              width: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.BorderWidth.HAIRLINE,
+              },
+              brightness: {
+                type: Sdn.ValueType.EXACT,
+                value: { unit: Sdn.Unit.PERCENT, value: 75 },
+              },
+            },
+          },
+        },
+        {
+          component: Seldon.ComponentId.ITEM,
+          variant: "product",
+          overrides: {
+            borderBottom: {
+              style: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.BorderStyle.SOLID,
+              },
+              color: {
+                type: Sdn.ValueType.THEME_CATEGORICAL,
+                value: "@swatch.primary",
+              },
+              width: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.BorderWidth.HAIRLINE,
+              },
+              brightness: {
+                type: Sdn.ValueType.EXACT,
+                value: { unit: Sdn.Unit.PERCENT, value: 75 },
+              },
+            },
+          },
+        },
+        {
+          component: Seldon.ComponentId.ITEM,
+          variant: "product",
+        },
+      ],
+    },
+    {
+      id: "grid",
+      label: "Grid List",
+      intent:
+        "Grid-based list layout schema for content cards, media tiles, or product showcases in a responsive format.",
+      overrides: {
+        orientation: {
+          type: Sdn.ValueType.OPTION,
+          value: Sdn.Orientation.HORIZONTAL,
+        },
+        align: {
+          type: Sdn.ValueType.OPTION,
+          value: Sdn.Align.TOP_LEFT,
+        },
+        gap: {
+          type: Sdn.ValueType.THEME_ORDINAL,
+          value: "@gap.cozy",
+        },
+        wrapChildren: {
+          type: Sdn.ValueType.EXACT,
+          value: true,
+        },
+      },
+      children: [
+        {
+          component: Seldon.ComponentId.AVATAR,
+          variant: "icon",
+          overrides: {
+            width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+            gap: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@gap.compact",
+            },
+          },
+          children: [
+            { component: Seldon.ComponentId.ICON },
+            {
+              component: Seldon.ComponentId.FRAME,
+              overrides: {
+                height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+                gap: {
+                  type: Sdn.ValueType.THEME_ORDINAL,
+                  value: "@gap.tight",
+                },
+              },
+              children: [
+                {
+                  component: Seldon.ComponentId.TEXT,
+                  variant: "title",
+                  overrides: {
+                    content: {
+                      type: Sdn.ValueType.EXACT,
+                      value: "Default Title",
+                    },
+                    color: {
+                      type: Sdn.ValueType.THEME_CATEGORICAL,
+                      value: "@swatch.black",
+                    },
+                    font: {
+                      preset: {
+                        type: Sdn.ValueType.THEME_CATEGORICAL,
+                        value: "@font.normal",
+                      },
+                      family: { type: Sdn.ValueType.EMPTY, value: null },
+                      style: { type: Sdn.ValueType.EMPTY, value: null },
+                      weight: { type: Sdn.ValueType.EMPTY, value: null },
+                      size: {
+                        type: Sdn.ValueType.THEME_ORDINAL,
+                        value: "@fontSize.medium",
+                      },
+                      lineHeight: { type: Sdn.ValueType.EMPTY, value: null },
+                      textCase: { type: Sdn.ValueType.EMPTY, value: null },
+                    },
+                  },
+                },
+                {
+                  component: Seldon.ComponentId.TEXT,
+                  variant: "subtitle",
+                  overrides: {
+                    content: { type: Sdn.ValueType.EXACT, value: "Details" },
+                    color: {
+                      type: Sdn.ValueType.THEME_CATEGORICAL,
+                      value: "@swatch.black",
+                    },
+                    font: {
+                      preset: {
+                        type: Sdn.ValueType.THEME_CATEGORICAL,
+                        value: "@font.normal",
+                      },
+                      family: { type: Sdn.ValueType.EMPTY, value: null },
+                      style: { type: Sdn.ValueType.EMPTY, value: null },
+                      weight: { type: Sdn.ValueType.EMPTY, value: null },
+                      size: {
+                        type: Sdn.ValueType.THEME_ORDINAL,
+                        value: "@fontSize.small",
+                      },
+                      lineHeight: { type: Sdn.ValueType.EMPTY, value: null },
+                      textCase: { type: Sdn.ValueType.EMPTY, value: null },
+                    },
+                  },
+                },
+              ],
+            },
+          ],
+        },
+        {
+          component: Seldon.ComponentId.AVATAR,
+          variant: "icon",
+          overrides: {
+            width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+            gap: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@gap.compact",
+            },
+          },
+          children: [
+            { component: Seldon.ComponentId.ICON },
+            {
+              component: Seldon.ComponentId.FRAME,
+              overrides: {
+                height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+                gap: {
+                  type: Sdn.ValueType.THEME_ORDINAL,
+                  value: "@gap.tight",
+                },
+              },
+              children: [
+                {
+                  component: Seldon.ComponentId.TEXT,
+                  variant: "title",
+                  overrides: {
+                    content: {
+                      type: Sdn.ValueType.EXACT,
+                      value: "Default Title",
+                    },
+                    color: {
+                      type: Sdn.ValueType.THEME_CATEGORICAL,
+                      value: "@swatch.black",
+                    },
+                    font: {
+                      preset: {
+                        type: Sdn.ValueType.THEME_CATEGORICAL,
+                        value: "@font.normal",
+                      },
+                      family: { type: Sdn.ValueType.EMPTY, value: null },
+                      style: { type: Sdn.ValueType.EMPTY, value: null },
+                      weight: { type: Sdn.ValueType.EMPTY, value: null },
+                      size: {
+                        type: Sdn.ValueType.THEME_ORDINAL,
+                        value: "@fontSize.medium",
+                      },
+                      lineHeight: { type: Sdn.ValueType.EMPTY, value: null },
+                      textCase: { type: Sdn.ValueType.EMPTY, value: null },
+                    },
+                  },
+                },
+                {
+                  component: Seldon.ComponentId.TEXT,
+                  variant: "subtitle",
+                  overrides: {
+                    content: { type: Sdn.ValueType.EXACT, value: "Details" },
+                    color: {
+                      type: Sdn.ValueType.THEME_CATEGORICAL,
+                      value: "@swatch.black",
+                    },
+                    font: {
+                      preset: {
+                        type: Sdn.ValueType.THEME_CATEGORICAL,
+                        value: "@font.normal",
+                      },
+                      family: { type: Sdn.ValueType.EMPTY, value: null },
+                      style: { type: Sdn.ValueType.EMPTY, value: null },
+                      weight: { type: Sdn.ValueType.EMPTY, value: null },
+                      size: {
+                        type: Sdn.ValueType.THEME_ORDINAL,
+                        value: "@fontSize.small",
+                      },
+                      lineHeight: { type: Sdn.ValueType.EMPTY, value: null },
+                      textCase: { type: Sdn.ValueType.EMPTY, value: null },
+                    },
+                  },
+                },
+              ],
+            },
+          ],
+        },
+        {
+          component: Seldon.ComponentId.AVATAR,
+          variant: "icon",
+          overrides: {
+            width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+            gap: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@gap.compact",
+            },
+          },
+          children: [
+            { component: Seldon.ComponentId.ICON },
+            {
+              component: Seldon.ComponentId.FRAME,
+              overrides: {
+                height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+                gap: {
+                  type: Sdn.ValueType.THEME_ORDINAL,
+                  value: "@gap.tight",
+                },
+              },
+              children: [
+                {
+                  component: Seldon.ComponentId.TEXT,
+                  variant: "title",
+                  overrides: {
+                    content: {
+                      type: Sdn.ValueType.EXACT,
+                      value: "Default Title",
+                    },
+                    color: {
+                      type: Sdn.ValueType.THEME_CATEGORICAL,
+                      value: "@swatch.black",
+                    },
+                    font: {
+                      preset: {
+                        type: Sdn.ValueType.THEME_CATEGORICAL,
+                        value: "@font.normal",
+                      },
+                      family: { type: Sdn.ValueType.EMPTY, value: null },
+                      style: { type: Sdn.ValueType.EMPTY, value: null },
+                      weight: { type: Sdn.ValueType.EMPTY, value: null },
+                      size: {
+                        type: Sdn.ValueType.THEME_ORDINAL,
+                        value: "@fontSize.medium",
+                      },
+                      lineHeight: { type: Sdn.ValueType.EMPTY, value: null },
+                      textCase: { type: Sdn.ValueType.EMPTY, value: null },
+                    },
+                  },
+                },
+                {
+                  component: Seldon.ComponentId.TEXT,
+                  variant: "subtitle",
+                  overrides: {
+                    content: { type: Sdn.ValueType.EXACT, value: "Details" },
+                    color: {
+                      type: Sdn.ValueType.THEME_CATEGORICAL,
+                      value: "@swatch.black",
+                    },
+                    font: {
+                      preset: {
+                        type: Sdn.ValueType.THEME_CATEGORICAL,
+                        value: "@font.normal",
+                      },
+                      family: { type: Sdn.ValueType.EMPTY, value: null },
+                      style: { type: Sdn.ValueType.EMPTY, value: null },
+                      weight: { type: Sdn.ValueType.EMPTY, value: null },
+                      size: {
+                        type: Sdn.ValueType.THEME_ORDINAL,
+                        value: "@fontSize.small",
+                      },
+                      lineHeight: { type: Sdn.ValueType.EMPTY, value: null },
+                      textCase: { type: Sdn.ValueType.EMPTY, value: null },
+                    },
+                  },
+                },
+              ],
+            },
+          ],
+        },
+        {
+          component: Seldon.ComponentId.AVATAR,
+          variant: "icon",
+          overrides: {
+            width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+            gap: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@gap.compact",
+            },
+          },
+          children: [
+            { component: Seldon.ComponentId.ICON },
+            {
+              component: Seldon.ComponentId.FRAME,
+              overrides: {
+                height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+                gap: {
+                  type: Sdn.ValueType.THEME_ORDINAL,
+                  value: "@gap.tight",
+                },
+              },
+              children: [
+                {
+                  component: Seldon.ComponentId.TEXT,
+                  variant: "title",
+                  overrides: {
+                    content: {
+                      type: Sdn.ValueType.EXACT,
+                      value: "Default Title",
+                    },
+                    color: {
+                      type: Sdn.ValueType.THEME_CATEGORICAL,
+                      value: "@swatch.black",
+                    },
+                    font: {
+                      preset: {
+                        type: Sdn.ValueType.THEME_CATEGORICAL,
+                        value: "@font.normal",
+                      },
+                      family: { type: Sdn.ValueType.EMPTY, value: null },
+                      style: { type: Sdn.ValueType.EMPTY, value: null },
+                      weight: { type: Sdn.ValueType.EMPTY, value: null },
+                      size: {
+                        type: Sdn.ValueType.THEME_ORDINAL,
+                        value: "@fontSize.medium",
+                      },
+                      lineHeight: { type: Sdn.ValueType.EMPTY, value: null },
+                      textCase: { type: Sdn.ValueType.EMPTY, value: null },
+                    },
+                  },
+                },
+                {
+                  component: Seldon.ComponentId.TEXT,
+                  variant: "subtitle",
+                  overrides: {
+                    content: { type: Sdn.ValueType.EXACT, value: "Details" },
+                    color: {
+                      type: Sdn.ValueType.THEME_CATEGORICAL,
+                      value: "@swatch.black",
+                    },
+                    font: {
+                      preset: {
+                        type: Sdn.ValueType.THEME_CATEGORICAL,
+                        value: "@font.normal",
+                      },
+                      family: { type: Sdn.ValueType.EMPTY, value: null },
+                      style: { type: Sdn.ValueType.EMPTY, value: null },
+                      weight: { type: Sdn.ValueType.EMPTY, value: null },
+                      size: {
+                        type: Sdn.ValueType.THEME_ORDINAL,
+                        value: "@fontSize.small",
+                      },
+                      lineHeight: { type: Sdn.ValueType.EMPTY, value: null },
+                      textCase: { type: Sdn.ValueType.EMPTY, value: null },
+                    },
+                  },
+                },
+              ],
+            },
+          ],
+        },
+        {
+          component: Seldon.ComponentId.AVATAR,
+          variant: "icon",
+          overrides: {
+            width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+            gap: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@gap.compact",
+            },
+          },
+          children: [
+            { component: Seldon.ComponentId.ICON },
+            {
+              component: Seldon.ComponentId.FRAME,
+              overrides: {
+                height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+                gap: {
+                  type: Sdn.ValueType.THEME_ORDINAL,
+                  value: "@gap.tight",
+                },
+              },
+              children: [
+                {
+                  component: Seldon.ComponentId.TEXT,
+                  variant: "title",
+                  overrides: {
+                    content: {
+                      type: Sdn.ValueType.EXACT,
+                      value: "Default Title",
+                    },
+                    color: {
+                      type: Sdn.ValueType.THEME_CATEGORICAL,
+                      value: "@swatch.black",
+                    },
+                    font: {
+                      preset: {
+                        type: Sdn.ValueType.THEME_CATEGORICAL,
+                        value: "@font.normal",
+                      },
+                      family: { type: Sdn.ValueType.EMPTY, value: null },
+                      style: { type: Sdn.ValueType.EMPTY, value: null },
+                      weight: { type: Sdn.ValueType.EMPTY, value: null },
+                      size: {
+                        type: Sdn.ValueType.THEME_ORDINAL,
+                        value: "@fontSize.medium",
+                      },
+                      lineHeight: { type: Sdn.ValueType.EMPTY, value: null },
+                      textCase: { type: Sdn.ValueType.EMPTY, value: null },
+                    },
+                  },
+                },
+                {
+                  component: Seldon.ComponentId.TEXT,
+                  variant: "subtitle",
+                  overrides: {
+                    content: { type: Sdn.ValueType.EXACT, value: "Details" },
+                    color: {
+                      type: Sdn.ValueType.THEME_CATEGORICAL,
+                      value: "@swatch.black",
+                    },
+                    font: {
+                      preset: {
+                        type: Sdn.ValueType.THEME_CATEGORICAL,
+                        value: "@font.normal",
+                      },
+                      family: { type: Sdn.ValueType.EMPTY, value: null },
+                      style: { type: Sdn.ValueType.EMPTY, value: null },
+                      weight: { type: Sdn.ValueType.EMPTY, value: null },
+                      size: {
+                        type: Sdn.ValueType.THEME_ORDINAL,
+                        value: "@fontSize.small",
+                      },
+                      lineHeight: { type: Sdn.ValueType.EMPTY, value: null },
+                      textCase: { type: Sdn.ValueType.EMPTY, value: null },
+                    },
+                  },
+                },
+              ],
+            },
+          ],
+        },
+        {
+          component: Seldon.ComponentId.AVATAR,
+          variant: "icon",
+          overrides: {
+            width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+            gap: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@gap.compact",
+            },
+          },
+          children: [
+            { component: Seldon.ComponentId.ICON },
+            {
+              component: Seldon.ComponentId.FRAME,
+              overrides: {
+                height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+                gap: {
+                  type: Sdn.ValueType.THEME_ORDINAL,
+                  value: "@gap.tight",
+                },
+              },
+              children: [
+                {
+                  component: Seldon.ComponentId.TEXT,
+                  variant: "title",
+                  overrides: {
+                    content: {
+                      type: Sdn.ValueType.EXACT,
+                      value: "Default Title",
+                    },
+                    color: {
+                      type: Sdn.ValueType.THEME_CATEGORICAL,
+                      value: "@swatch.black",
+                    },
+                    font: {
+                      preset: {
+                        type: Sdn.ValueType.THEME_CATEGORICAL,
+                        value: "@font.normal",
+                      },
+                      family: { type: Sdn.ValueType.EMPTY, value: null },
+                      style: { type: Sdn.ValueType.EMPTY, value: null },
+                      weight: { type: Sdn.ValueType.EMPTY, value: null },
+                      size: {
+                        type: Sdn.ValueType.THEME_ORDINAL,
+                        value: "@fontSize.medium",
+                      },
+                      lineHeight: { type: Sdn.ValueType.EMPTY, value: null },
+                      textCase: { type: Sdn.ValueType.EMPTY, value: null },
+                    },
+                  },
+                },
+                {
+                  component: Seldon.ComponentId.TEXT,
+                  variant: "subtitle",
+                  overrides: {
+                    content: { type: Sdn.ValueType.EXACT, value: "Details" },
+                    color: {
+                      type: Sdn.ValueType.THEME_CATEGORICAL,
+                      value: "@swatch.black",
+                    },
+                    font: {
+                      preset: {
+                        type: Sdn.ValueType.THEME_CATEGORICAL,
+                        value: "@font.normal",
+                      },
+                      family: { type: Sdn.ValueType.EMPTY, value: null },
+                      style: { type: Sdn.ValueType.EMPTY, value: null },
+                      weight: { type: Sdn.ValueType.EMPTY, value: null },
+                      size: {
+                        type: Sdn.ValueType.THEME_ORDINAL,
+                        value: "@fontSize.small",
+                      },
+                      lineHeight: { type: Sdn.ValueType.EMPTY, value: null },
+                      textCase: { type: Sdn.ValueType.EMPTY, value: null },
+                    },
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      id: "todo",
+      label: "Todo List",
+      intent:
+        "Task list layout with checkboxes, labels, and status chips for tracking to-do items.",
+      children: [
+        {
+          component: Seldon.ComponentId.ITEM,
+          variant: "todo",
+          overrides: {
+            align: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.Align.CENTER_RIGHT,
+            },
+            padding: {
+              top: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@padding.tight",
+              },
+              right: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@padding.compact",
+              },
+              bottom: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@padding.tight",
+              },
+              left: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@padding.compact",
+              },
+            },
+            gap: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@gap.compact",
+            },
+            border: {
+              preset: {
+                type: Sdn.ValueType.THEME_CATEGORICAL,
+                value: "@border.none",
+              },
+            },
+            borderBottom: {
+              preset: { type: Sdn.ValueType.EMPTY, value: null },
+              style: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.BorderStyle.SOLID,
+              },
+              color: {
+                type: Sdn.ValueType.THEME_CATEGORICAL,
+                value: "@swatch.primary",
+              },
+              width: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.BorderWidth.HAIRLINE,
+              },
+              brightness: {
+                type: Sdn.ValueType.EXACT,
+                value: { unit: Sdn.Unit.PERCENT, value: 75 },
+              },
+            },
+          },
+          children: [
+            {
+              component: Seldon.ComponentId.INPUT,
+              variant: "checkbox",
+              overrides: {
+                checked: { type: Sdn.ValueType.EXACT, value: false },
+                align: { type: Sdn.ValueType.OPTION, value: Sdn.Align.CENTER },
+                width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+                color: {
+                  type: Sdn.ValueType.THEME_CATEGORICAL,
+                  value: "@swatch.black",
+                },
+                accentColor: {
+                  type: Sdn.ValueType.THEME_CATEGORICAL,
+                  value: "@swatch.primary",
+                },
+              },
+            },
+            {
+              component: Seldon.ComponentId.TEXT,
+              variant: "label",
+              overrides: {
+                content: {
+                  type: Sdn.ValueType.EXACT,
+                  value: "Get snacks for the road",
+                },
+                width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+                color: {
+                  type: Sdn.ValueType.THEME_CATEGORICAL,
+                  value: "@swatch.primary",
+                },
+              },
+            },
+            {
+              component: Seldon.ComponentId.CHIP,
+              overrides: {
+                display: {
+                  type: Sdn.ValueType.OPTION,
+                  value: Sdn.Display.EXCLUDE,
+                },
+                background: [
+                  {
+                    kind: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.BackgroundKind.COLOR,
+                    },
+                    color: {
+                      type: Sdn.ValueType.THEME_CATEGORICAL,
+                      value: "@swatch.primary",
+                    },
+                    brightness: { type: Sdn.ValueType.EMPTY, value: null },
+                    opacity: { type: Sdn.ValueType.EMPTY, value: null },
+                  },
+                ],
+              },
+              children: [
+                { component: Seldon.ComponentId.ICON },
+                { component: Seldon.ComponentId.TEXT, variant: "label" },
+              ],
+            },
+            {
+              component: Seldon.ComponentId.CHIP,
+              overrides: {
+                display: {
+                  type: Sdn.ValueType.OPTION,
+                  value: Sdn.Display.SHOW,
+                },
+                background: [
+                  {
+                    kind: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.BackgroundKind.COLOR,
+                    },
+                    color: {
+                      type: Sdn.ValueType.THEME_CATEGORICAL,
+                      value: "@swatch.swatch2",
+                    },
+                    brightness: { type: Sdn.ValueType.EMPTY, value: null },
+                    opacity: { type: Sdn.ValueType.EMPTY, value: null },
+                  },
+                ],
+              },
+              children: [
+                { component: Seldon.ComponentId.ICON },
+                { component: Seldon.ComponentId.TEXT, variant: "label" },
+              ],
+            },
+            {
+              component: Seldon.ComponentId.CHIP,
+              overrides: {
+                display: {
+                  type: Sdn.ValueType.OPTION,
+                  value: Sdn.Display.EXCLUDE,
+                },
+                background: [
+                  {
+                    kind: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.BackgroundKind.COLOR,
+                    },
+                    color: {
+                      type: Sdn.ValueType.THEME_CATEGORICAL,
+                      value: "@swatch.primary",
+                    },
+                    brightness: { type: Sdn.ValueType.EMPTY, value: null },
+                    opacity: { type: Sdn.ValueType.EMPTY, value: null },
+                  },
+                ],
+              },
+              children: [
+                { component: Seldon.ComponentId.TEXT, variant: "label" },
+              ],
+            },
+          ],
+        },
+        {
+          component: Seldon.ComponentId.ITEM,
+          variant: "todo",
+          overrides: {
+            align: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.Align.CENTER_RIGHT,
+            },
+            padding: {
+              top: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@padding.tight",
+              },
+              right: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@padding.compact",
+              },
+              bottom: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@padding.tight",
+              },
+              left: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@padding.compact",
+              },
+            },
+            gap: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@gap.compact",
+            },
+            border: {
+              preset: {
+                type: Sdn.ValueType.THEME_CATEGORICAL,
+                value: "@border.none",
+              },
+            },
+            borderBottom: {
+              style: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.BorderStyle.SOLID,
+              },
+              color: {
+                type: Sdn.ValueType.THEME_CATEGORICAL,
+                value: "@swatch.primary",
+              },
+              width: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.BorderWidth.HAIRLINE,
+              },
+              brightness: {
+                type: Sdn.ValueType.EXACT,
+                value: { unit: Sdn.Unit.PERCENT, value: 75 },
+              },
+            },
+          },
+          children: [
+            {
+              component: Seldon.ComponentId.INPUT,
+              variant: "checkbox",
+              overrides: {
+                checked: { type: Sdn.ValueType.EXACT, value: true },
+                align: { type: Sdn.ValueType.OPTION, value: Sdn.Align.CENTER },
+                width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+                color: {
+                  type: Sdn.ValueType.THEME_CATEGORICAL,
+                  value: "@swatch.black",
+                },
+                accentColor: {
+                  type: Sdn.ValueType.THEME_CATEGORICAL,
+                  value: "@swatch.primary",
+                },
+              },
+            },
+            {
+              component: Seldon.ComponentId.TEXT,
+              variant: "label",
+              overrides: {
+                content: { type: Sdn.ValueType.EXACT, value: "Book hotels" },
+                width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+                color: {
+                  type: Sdn.ValueType.THEME_CATEGORICAL,
+                  value: "@swatch.primary",
+                },
+              },
+            },
+            {
+              component: Seldon.ComponentId.CHIP,
+              overrides: {
+                display: {
+                  type: Sdn.ValueType.OPTION,
+                  value: Sdn.Display.SHOW,
+                },
+                background: [
+                  {
+                    kind: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.BackgroundKind.COLOR,
+                    },
+                    color: {
+                      type: Sdn.ValueType.THEME_CATEGORICAL,
+                      value: "@swatch.swatch1",
+                    },
+                    brightness: { type: Sdn.ValueType.EMPTY, value: null },
+                    opacity: { type: Sdn.ValueType.EMPTY, value: null },
+                  },
+                ],
+              },
+              children: [
+                { component: Seldon.ComponentId.ICON },
+                { component: Seldon.ComponentId.TEXT, variant: "label" },
+              ],
+            },
+            {
+              component: Seldon.ComponentId.CHIP,
+              overrides: {
+                display: {
+                  type: Sdn.ValueType.OPTION,
+                  value: Sdn.Display.EXCLUDE,
+                },
+                background: [
+                  {
+                    kind: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.BackgroundKind.COLOR,
+                    },
+                    color: {
+                      type: Sdn.ValueType.THEME_CATEGORICAL,
+                      value: "@swatch.primary",
+                    },
+                    brightness: { type: Sdn.ValueType.EMPTY, value: null },
+                    opacity: { type: Sdn.ValueType.EMPTY, value: null },
+                  },
+                ],
+              },
+              children: [
+                { component: Seldon.ComponentId.ICON },
+                { component: Seldon.ComponentId.TEXT, variant: "label" },
+              ],
+            },
+            {
+              component: Seldon.ComponentId.CHIP,
+              overrides: {
+                display: {
+                  type: Sdn.ValueType.OPTION,
+                  value: Sdn.Display.EXCLUDE,
+                },
+                background: [
+                  {
+                    kind: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.BackgroundKind.COLOR,
+                    },
+                    color: {
+                      type: Sdn.ValueType.THEME_CATEGORICAL,
+                      value: "@swatch.primary",
+                    },
+                    brightness: { type: Sdn.ValueType.EMPTY, value: null },
+                    opacity: { type: Sdn.ValueType.EMPTY, value: null },
+                  },
+                ],
+              },
+              children: [
+                { component: Seldon.ComponentId.TEXT, variant: "label" },
+              ],
+            },
+          ],
+        },
+        {
+          component: Seldon.ComponentId.ITEM,
+          variant: "todo",
+          overrides: {
+            align: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.Align.CENTER_RIGHT,
+            },
+            padding: {
+              top: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@padding.tight",
+              },
+              right: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@padding.compact",
+              },
+              bottom: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@padding.tight",
+              },
+              left: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@padding.compact",
+              },
+            },
+            gap: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@gap.compact",
+            },
+            border: {
+              preset: {
+                type: Sdn.ValueType.THEME_CATEGORICAL,
+                value: "@border.none",
+              },
+            },
+            borderBottom: {
+              preset: { type: Sdn.ValueType.EMPTY, value: null },
+              style: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.BorderStyle.SOLID,
+              },
+              color: {
+                type: Sdn.ValueType.THEME_CATEGORICAL,
+                value: "@swatch.primary",
+              },
+              width: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.BorderWidth.HAIRLINE,
+              },
+              brightness: {
+                type: Sdn.ValueType.EXACT,
+                value: { unit: Sdn.Unit.PERCENT, value: 75 },
+              },
+            },
+          },
+          children: [
+            {
+              component: Seldon.ComponentId.INPUT,
+              variant: "checkbox",
+              overrides: {
+                checked: { type: Sdn.ValueType.EXACT, value: false },
+                align: { type: Sdn.ValueType.OPTION, value: Sdn.Align.CENTER },
+                width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+                color: {
+                  type: Sdn.ValueType.THEME_CATEGORICAL,
+                  value: "@swatch.black",
+                },
+                accentColor: {
+                  type: Sdn.ValueType.THEME_CATEGORICAL,
+                  value: "@swatch.primary",
+                },
+              },
+            },
+            {
+              component: Seldon.ComponentId.TEXT,
+              variant: "label",
+              overrides: {
+                content: {
+                  type: Sdn.ValueType.EXACT,
+                  value: "Arrange day trips",
+                },
+                width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+                color: {
+                  type: Sdn.ValueType.THEME_CATEGORICAL,
+                  value: "@swatch.primary",
+                },
+              },
+            },
+            {
+              component: Seldon.ComponentId.CHIP,
+              overrides: {
+                display: {
+                  type: Sdn.ValueType.OPTION,
+                  value: Sdn.Display.SHOW,
+                },
+                background: [
+                  {
+                    kind: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.BackgroundKind.COLOR,
+                    },
+                    color: {
+                      type: Sdn.ValueType.THEME_CATEGORICAL,
+                      value: "@swatch.swatch1",
+                    },
+                    brightness: { type: Sdn.ValueType.EMPTY, value: null },
+                    opacity: { type: Sdn.ValueType.EMPTY, value: null },
+                  },
+                ],
+              },
+              children: [
+                { component: Seldon.ComponentId.ICON },
+                { component: Seldon.ComponentId.TEXT, variant: "label" },
+              ],
+            },
+            {
+              component: Seldon.ComponentId.CHIP,
+              overrides: {
+                display: {
+                  type: Sdn.ValueType.OPTION,
+                  value: Sdn.Display.SHOW,
+                },
+                background: [
+                  {
+                    kind: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.BackgroundKind.COLOR,
+                    },
+                    color: {
+                      type: Sdn.ValueType.THEME_CATEGORICAL,
+                      value: "@swatch.swatch2",
+                    },
+                    brightness: { type: Sdn.ValueType.EMPTY, value: null },
+                    opacity: { type: Sdn.ValueType.EMPTY, value: null },
+                  },
+                ],
+              },
+              children: [
+                { component: Seldon.ComponentId.ICON },
+                { component: Seldon.ComponentId.TEXT, variant: "label" },
+              ],
+            },
+            {
+              component: Seldon.ComponentId.CHIP,
+              overrides: {
+                display: {
+                  type: Sdn.ValueType.OPTION,
+                  value: Sdn.Display.EXCLUDE,
+                },
+                background: [
+                  {
+                    kind: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.BackgroundKind.COLOR,
+                    },
+                    color: {
+                      type: Sdn.ValueType.THEME_CATEGORICAL,
+                      value: "@swatch.primary",
+                    },
+                    brightness: { type: Sdn.ValueType.EMPTY, value: null },
+                    opacity: { type: Sdn.ValueType.EMPTY, value: null },
+                  },
+                ],
+              },
+              children: [
+                { component: Seldon.ComponentId.TEXT, variant: "label" },
+              ],
+            },
+          ],
+        },
+        {
+          component: Seldon.ComponentId.ITEM,
+          variant: "todo",
+          overrides: {
+            align: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.Align.CENTER_RIGHT,
+            },
+            padding: {
+              top: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@padding.tight",
+              },
+              right: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@padding.compact",
+              },
+              bottom: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@padding.tight",
+              },
+              left: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@padding.compact",
+              },
+            },
+            gap: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@gap.compact",
+            },
+            border: {
+              preset: {
+                type: Sdn.ValueType.THEME_CATEGORICAL,
+                value: "@border.none",
+              },
+            },
+            borderBottom: {
+              style: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.BorderStyle.SOLID,
+              },
+              color: {
+                type: Sdn.ValueType.THEME_CATEGORICAL,
+                value: "@swatch.primary",
+              },
+              width: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.BorderWidth.HAIRLINE,
+              },
+              brightness: {
+                type: Sdn.ValueType.EXACT,
+                value: { unit: Sdn.Unit.PERCENT, value: 75 },
+              },
+            },
+          },
+          children: [
+            {
+              component: Seldon.ComponentId.INPUT,
+              variant: "checkbox",
+              overrides: {
+                checked: { type: Sdn.ValueType.EXACT, value: false },
+                align: { type: Sdn.ValueType.OPTION, value: Sdn.Align.CENTER },
+                width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+                color: {
+                  type: Sdn.ValueType.THEME_CATEGORICAL,
+                  value: "@swatch.black",
+                },
+                accentColor: {
+                  type: Sdn.ValueType.THEME_CATEGORICAL,
+                  value: "@swatch.primary",
+                },
+              },
+            },
+            {
+              component: Seldon.ComponentId.TEXT,
+              variant: "label",
+              overrides: {
+                content: {
+                  type: Sdn.ValueType.EXACT,
+                  value: "Attractions booked",
+                },
+                width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+                color: {
+                  type: Sdn.ValueType.THEME_CATEGORICAL,
+                  value: "@swatch.primary",
+                },
+              },
+            },
+            {
+              component: Seldon.ComponentId.CHIP,
+              overrides: {
+                display: {
+                  type: Sdn.ValueType.OPTION,
+                  value: Sdn.Display.EXCLUDE,
+                },
+                background: [
+                  {
+                    kind: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.BackgroundKind.COLOR,
+                    },
+                    color: {
+                      type: Sdn.ValueType.THEME_CATEGORICAL,
+                      value: "@swatch.primary",
+                    },
+                    brightness: { type: Sdn.ValueType.EMPTY, value: null },
+                    opacity: { type: Sdn.ValueType.EMPTY, value: null },
+                  },
+                ],
+              },
+              children: [
+                { component: Seldon.ComponentId.ICON },
+                { component: Seldon.ComponentId.TEXT, variant: "label" },
+              ],
+            },
+            {
+              component: Seldon.ComponentId.CHIP,
+              overrides: {
+                display: {
+                  type: Sdn.ValueType.OPTION,
+                  value: Sdn.Display.EXCLUDE,
+                },
+                background: [
+                  {
+                    kind: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.BackgroundKind.COLOR,
+                    },
+                    color: {
+                      type: Sdn.ValueType.THEME_CATEGORICAL,
+                      value: "@swatch.primary",
+                    },
+                    brightness: { type: Sdn.ValueType.EMPTY, value: null },
+                    opacity: { type: Sdn.ValueType.EMPTY, value: null },
+                  },
+                ],
+              },
+              children: [
+                { component: Seldon.ComponentId.ICON },
+                { component: Seldon.ComponentId.TEXT, variant: "label" },
+              ],
+            },
+            {
+              component: Seldon.ComponentId.CHIP,
+              overrides: {
+                display: {
+                  type: Sdn.ValueType.OPTION,
+                  value: Sdn.Display.SHOW,
+                },
+                background: [
+                  {
+                    kind: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.BackgroundKind.COLOR,
+                    },
+                    color: {
+                      type: Sdn.ValueType.THEME_CATEGORICAL,
+                      value: "@swatch.swatch3",
+                    },
+                    brightness: { type: Sdn.ValueType.EMPTY, value: null },
+                    opacity: { type: Sdn.ValueType.EMPTY, value: null },
+                  },
+                ],
+              },
+              children: [
+                { component: Seldon.ComponentId.TEXT, variant: "label" },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  ],
 } as const satisfies ComponentSchema
 
 export const exportConfig: ComponentExport = {

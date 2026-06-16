@@ -68,7 +68,7 @@ export const schema = {
     rotation: { type: Sdn.ValueType.EMPTY, value: null },
     wrapChildren: {
       type: Sdn.ValueType.EXACT,
-      value: true,
+      value: false,
     },
     clip: { type: Sdn.ValueType.EMPTY, value: null },
     color: { type: Sdn.ValueType.EMPTY, value: null },
@@ -146,6 +146,7 @@ export const schema = {
         spread: { type: Sdn.ValueType.EMPTY, value: null },
       },
     ],
+    scroll: { type: Sdn.ValueType.EMPTY, value: null },
   },
   default: {
     children: [

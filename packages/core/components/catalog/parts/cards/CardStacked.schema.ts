@@ -70,7 +70,7 @@ export const schema = {
         kind: { type: Sdn.ValueType.OPTION, value: Sdn.BackgroundKind.COLOR },
         color: {
           type: Sdn.ValueType.THEME_CATEGORICAL,
-          value: "@swatch.white",
+          value: "@swatch.background",
         },
         brightness: { type: Sdn.ValueType.EMPTY, value: null },
         opacity: { type: Sdn.ValueType.EMPTY, value: null },
@@ -82,10 +82,7 @@ export const schema = {
         value: "@border.hairline",
       },
       style: { type: Sdn.ValueType.EMPTY, value: null },
-      color: {
-        type: Sdn.ValueType.THEME_CATEGORICAL,
-        value: "@swatch.primary",
-      },
+      color: { type: Sdn.ValueType.EMPTY, value: null },
       width: { type: Sdn.ValueType.EMPTY, value: null },
       brightness: { type: Sdn.ValueType.EMPTY, value: null },
       opacity: { type: Sdn.ValueType.EMPTY, value: null },
@@ -160,6 +157,7 @@ export const schema = {
         spread: { type: Sdn.ValueType.EMPTY, value: null },
       },
     ],
+    scroll: { type: Sdn.ValueType.EMPTY, value: null },
   },
   default: {
     children: [
@@ -395,6 +393,260 @@ export const schema = {
       },
     ],
   },
+  variants: [
+    {
+      id: "horizontal",
+      label: "Horizontal Card",
+      intent:
+        "UI component schema for horizontally oriented cards, often used in product previews, listings, and compact content displays.",
+      overrides: {
+        orientation: {
+          type: Sdn.ValueType.OPTION,
+          value: Sdn.Orientation.HORIZONTAL,
+        },
+        align: {
+          type: Sdn.ValueType.OPTION,
+          value: Sdn.Align.CENTER,
+        },
+        width: {
+          type: Sdn.ValueType.OPTION,
+          value: Sdn.Resize.FILL,
+        },
+        gap: {
+          type: Sdn.ValueType.OPTION,
+          value: Sdn.Gap.EVENLY_SPACED,
+        },
+      },
+      children: [
+        {
+          component: Seldon.ComponentId.AVATAR,
+          overrides: {
+            margin: {
+              top: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@margin.cozy",
+              },
+              right: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@margin.cozy",
+              },
+              bottom: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@margin.cozy",
+              },
+              left: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@margin.cozy",
+              },
+            },
+            gap: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@gap.cozy",
+            },
+            border: {
+              preset: {
+                type: Sdn.ValueType.THEME_CATEGORICAL,
+                value: "@border.none",
+              },
+              style: { type: Sdn.ValueType.EMPTY, value: null },
+              color: { type: Sdn.ValueType.EMPTY, value: null },
+              width: { type: Sdn.ValueType.EMPTY, value: null },
+              brightness: { type: Sdn.ValueType.EMPTY, value: null },
+              opacity: { type: Sdn.ValueType.EMPTY, value: null },
+              collapse: { type: Sdn.ValueType.EMPTY, value: null },
+            },
+            borderBottom: {
+              preset: { type: Sdn.ValueType.EMPTY, value: null },
+              style: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.BorderStyle.NONE,
+              },
+              color: { type: Sdn.ValueType.EMPTY, value: null },
+              width: { type: Sdn.ValueType.EMPTY, value: null },
+              brightness: { type: Sdn.ValueType.EMPTY, value: null },
+              opacity: { type: Sdn.ValueType.EMPTY, value: null },
+              collapse: { type: Sdn.ValueType.EMPTY, value: null },
+            },
+          },
+        },
+        {
+          component: Seldon.ComponentId.BUTTON,
+          overrides: {
+            margin: {
+              top: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@margin.cozy",
+              },
+              right: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@margin.cozy",
+              },
+              bottom: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@margin.cozy",
+              },
+              left: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@margin.cozy",
+              },
+            },
+            background: [
+              {
+                kind: {
+                  type: Sdn.ValueType.OPTION,
+                  value: Sdn.BackgroundKind.NONE,
+                },
+              },
+            ],
+          },
+        },
+      ],
+    },
+    {
+      id: "product",
+      label: "Product Card",
+      intent:
+        "Product card schema optimized for ecommerce use cases, supporting pricing, images, descriptions, and action triggers.",
+      overrides: {
+        width: {
+          type: Sdn.ValueType.OPTION,
+          value: Sdn.Resize.FILL,
+        },
+        gap: {
+          type: Sdn.ValueType.OPTION,
+          value: Sdn.Gap.EVENLY_SPACED,
+        },
+        background: [
+          {
+            kind: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.BackgroundKind.IMAGE,
+            },
+            image: {
+              type: Sdn.ValueType.EXACT,
+              value: "https://static.seldon.app/background-default-light.jpg",
+            },
+            blendMode: { type: Sdn.ValueType.EMPTY, value: null },
+            position: { type: Sdn.ValueType.EMPTY, value: null },
+            size: { type: Sdn.ValueType.EMPTY, value: null },
+            repeat: { type: Sdn.ValueType.EMPTY, value: null },
+            filter: { type: Sdn.ValueType.EMPTY, value: null },
+          },
+        ],
+      },
+      children: [
+        {
+          component: Seldon.ComponentId.FRAME,
+          overrides: {
+            height: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.Resize.FIT,
+            },
+            gap: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@gap.tight",
+            },
+            margin: {
+              top: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@margin.cozy",
+              },
+              right: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@margin.cozy",
+              },
+              bottom: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@margin.cozy",
+              },
+              left: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@margin.cozy",
+              },
+            },
+          },
+          children: [
+            {
+              component: Seldon.ComponentId.TEXT,
+              variant: "tagline",
+              overrides: {
+                content: {
+                  type: Sdn.ValueType.EXACT,
+                  value: "Tagline",
+                },
+              },
+            },
+            {
+              component: Seldon.ComponentId.TEXT,
+              variant: "title",
+              overrides: {
+                content: {
+                  type: Sdn.ValueType.EXACT,
+                  value: "Product Card Title",
+                },
+                margin: {
+                  bottom: {
+                    type: Sdn.ValueType.THEME_ORDINAL,
+                    value: "@margin.compact",
+                  },
+                },
+                font: {
+                  preset: {
+                    type: Sdn.ValueType.THEME_CATEGORICAL,
+                    value: "@font.heading",
+                  },
+                  family: { type: Sdn.ValueType.EMPTY, value: null },
+                  style: { type: Sdn.ValueType.EMPTY, value: null },
+                  weight: { type: Sdn.ValueType.EMPTY, value: null },
+                  size: { type: Sdn.ValueType.EMPTY, value: null },
+                  lineHeight: { type: Sdn.ValueType.EMPTY, value: null },
+                  textCase: { type: Sdn.ValueType.EMPTY, value: null },
+                },
+              },
+            },
+            {
+              component: Seldon.ComponentId.TEXT,
+              variant: "description",
+              overrides: {
+                content: {
+                  type: Sdn.ValueType.EXACT,
+                  value:
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus.",
+                },
+              },
+            },
+          ],
+        },
+        {
+          component: Seldon.ComponentId.BAR,
+          overrides: {
+            width: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.Resize.FIT,
+            },
+            margin: {
+              top: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@margin.cozy",
+              },
+              right: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@margin.cozy",
+              },
+              bottom: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@margin.cozy",
+              },
+              left: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@margin.cozy",
+              },
+            },
+          },
+        },
+      ],
+    },
+  ],
 } as const satisfies ComponentSchema
 
 export const exportConfig: ComponentExport = {
