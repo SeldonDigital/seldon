@@ -14,6 +14,7 @@ export enum ComponentId {
   BOARD = "board",
   BUTTON = "button",
   CALENDAR = "calendar",
+  CALENDAR_DAY = "calendarDay",
   CARD_STACKED = "cardStacked",
   CHIP = "chip",
   MEDIA_CARD = "mediaCard",

@@ -202,7 +202,14 @@ function applyLayerOpacity(
   const colorString = exactColorToChromaInput(color)
   return {
     type: ValueType.EXACT,
-    value: chroma(colorString).alpha(opacityPercent / 100).hex() as Hex,
+    value: chroma
+      .mix(
+        FALLBACK_SURFACE_COLOR.value,
+        colorString,
+        opacityPercent / 100,
+        "rgb",
+      )
+      .hex() as Hex,
   }
 }
 

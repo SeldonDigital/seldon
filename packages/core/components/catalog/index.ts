@@ -24,17 +24,33 @@ import {
   schema as buttonSchema,
 } from "./elements/Button.schema"
 import {
+  exportConfig as calendarDayExportConfig,
+  schema as calendarDaySchema,
+} from "./elements/CalendarDay.schema"
+import {
   exportConfig as chipExportConfig,
   schema as chipSchema,
 } from "./elements/Chip.schema"
+import {
+  exportConfig as descriptionListExportConfig,
+  schema as descriptionListSchema,
+} from "./elements/DescriptionList.schema"
 import {
   exportConfig as formControlExportConfig,
   schema as formControlSchema,
 } from "./elements/FormControl.schema"
 import {
+  exportConfig as headerExportConfig,
+  schema as headerSchema,
+} from "./elements/Header.schema"
+import {
   exportConfig as itemExportConfig,
   schema as itemSchema,
 } from "./elements/Item.schema"
+import {
+  exportConfig as listExportConfig,
+  schema as listSchema,
+} from "./elements/List.schema"
 import {
   exportConfig as navExportConfig,
   schema as navSchema,
@@ -51,18 +67,6 @@ import {
   exportConfig as selectExportConfig,
   schema as selectSchema,
 } from "./elements/Select.schema"
-import {
-  exportConfig as headerExportConfig,
-  schema as headerSchema,
-} from "./elements/Header.schema"
-import {
-  exportConfig as descriptionListExportConfig,
-  schema as descriptionListSchema,
-} from "./elements/DescriptionList.schema"
-import {
-  exportConfig as listExportConfig,
-  schema as listSchema,
-} from "./elements/List.schema"
 import {
   exportConfig as tableRowDataExportConfig,
   schema as tableRowDataSchema,
@@ -111,13 +115,13 @@ import {
   schema as barSchema,
 } from "./parts/Bar.schema"
 import {
-  exportConfig as fieldsetExportConfig,
-  schema as fieldsetSchema,
-} from "./parts/Fieldset.schema"
-import {
   exportConfig as cardStackedExportConfig,
   schema as cardStackedSchema,
 } from "./parts/Card.schema"
+import {
+  exportConfig as fieldsetExportConfig,
+  schema as fieldsetSchema,
+} from "./parts/Fieldset.schema"
 import {
   exportConfig as listStandardExportConfig,
   schema as listStandardSchema,
@@ -220,6 +224,7 @@ import {
 const elements: ComponentSchema[] = [
   avatarSchema,
   buttonSchema,
+  calendarDaySchema,
   chipSchema,
   formControlSchema,
   optionGroupSchema,
@@ -323,6 +328,7 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   // Elements
   [ComponentId.AVATAR]: avatarExportConfig,
   [ComponentId.BUTTON]: buttonExportConfig,
+  [ComponentId.CALENDAR_DAY]: calendarDayExportConfig,
   [ComponentId.CHIP]: chipExportConfig,
   [ComponentId.FORM_CONTROL]: formControlExportConfig,
   [ComponentId.OPTION_GROUP]: optionGroupExportConfig,
