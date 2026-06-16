@@ -6,7 +6,6 @@ import { IconId } from "@seldon/core/icon-sets"
 
 import { ComponentToExport, ExportOptions, JSONTreeNode } from "../../../types"
 import { getIconComponentName } from "../../discovery/get-icon-component-name"
-import { pascalCase } from "../../utils/case-utils"
 import { resolveIconExport } from "../../utils/find-icon-path"
 import { pluralizeLevel } from "../../utils/pluralize-level"
 import {
@@ -35,7 +34,7 @@ import { JSXNode } from "../preprocess/types"
 export function insertImports(
   source: string,
   component: ComponentToExport,
-  jsxRoot?: any, // JSXNode - optional for backward compatibility
+  jsxRoot?: JSXNode, // optional for backward compatibility
   options?: ExportOptions,
 ): string {
   const { config, tree } = component
@@ -251,11 +250,6 @@ export function insertImports(
         }
 
         node.children.forEach((child: JSONTreeNode) => {
-          const childIsValid = validation.validProps.some(
-            (validChild: JSONTreeNode) =>
-              validChild.dataBinding.path === child.dataBinding.path,
-          )
-
           // Import the child component itself
           const childKey = `../${pluralizeLevel(child.level)}/${child.name}`
           if (imports[childKey]) {

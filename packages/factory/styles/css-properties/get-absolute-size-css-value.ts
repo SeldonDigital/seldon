@@ -2,6 +2,7 @@ import {
   CornerValue,
   MarginSideValue,
   PaddingSideValue,
+  PositionSideValue,
   Unit,
   ValueType,
 } from "@seldon/core"
@@ -13,7 +14,7 @@ import { isModulatedToken } from "@seldon/core/themes/types"
 import { getCssValue } from "./get-css-value"
 
 export function getAbsoluteSizeCssValue(
-  value: MarginSideValue | PaddingSideValue | CornerValue,
+  value: MarginSideValue | PaddingSideValue | CornerValue | PositionSideValue,
   theme: Theme,
 ): string {
   if (value.type === ValueType.THEME_ORDINAL) {

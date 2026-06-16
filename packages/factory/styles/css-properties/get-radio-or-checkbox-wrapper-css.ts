@@ -16,7 +16,7 @@ interface GetRadioOrCheckboxWrapperCssProps {
     checkboxIconSize: number
   }
   isChecked: boolean
-  variant: "default" | "solid" | {}
+  variant: "default" | "solid" | (string & {})
   context: StyleGenerationContext
 }
 export function getRadioOrCheckboxWrapperCss({

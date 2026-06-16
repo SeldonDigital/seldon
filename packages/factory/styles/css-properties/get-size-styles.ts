@@ -84,7 +84,7 @@ export function getSizeStyles({
   if (screenWidth) {
     if (screenWidth.type === ValueType.EXACT) {
       // Check if this is actually a screen size preset that got stored as EXACT
-      const value = (screenWidth as any).value
+      const value = (screenWidth as { value: unknown }).value
       if (
         typeof value === "string" &&
         Object.values(ScreenSize).includes(value as ScreenSize)
@@ -95,7 +95,7 @@ export function getSizeStyles({
         styles.width = getCssValue(screenWidth) as string // We're sure that the value is a string since its a RemValue or a PixelValue
       }
     } else if (screenWidth.type === ValueType.OPTION) {
-      const value = (screenWidth as any).value
+      const value = (screenWidth as { value: unknown }).value
       if (value === Resize.FIT) {
         styles.width = "fit-content"
       } else if (value === Resize.FILL) {
@@ -114,7 +114,7 @@ export function getSizeStyles({
   if (screenHeight) {
     if (screenHeight.type === ValueType.EXACT) {
       // Check if this is actually a screen size preset that got stored as EXACT
-      const value = (screenHeight as any).value
+      const value = (screenHeight as { value: unknown }).value
       if (
         typeof value === "string" &&
         Object.values(ScreenSize).includes(value as ScreenSize)
@@ -125,7 +125,7 @@ export function getSizeStyles({
         styles.height = getCssValue(screenHeight) as string // We're sure that the value is a string since its a RemValue or a PixelValue
       }
     } else if (screenHeight.type === ValueType.OPTION) {
-      const value = (screenHeight as any).value
+      const value = (screenHeight as { value: unknown }).value
       if (value === Resize.FIT) {
         styles.height = "fit-content"
       } else if (value === Resize.FILL) {

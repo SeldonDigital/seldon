@@ -176,7 +176,7 @@ function resolveColorLayer(
 /** Resolves an image layer to a paint entry, or undefined when it has no image. */
 function resolveImageLayer(
   layer: BackgroundLayer,
-  theme: Theme,
+  _theme: Theme,
 ): PaintEntry | undefined {
   const image = resolveValue(layer.image)
   if (!image) return undefined

@@ -19,7 +19,7 @@ export function getCssStringFromCssObject(
    * We need to iterate over the cssObject and convert it to a string
    * Later on we can handle other cases like hover, focus, etc.
    */
-  let styles: string[] = []
+  const styles: string[] = []
 
   const entries = Object.entries(cssObject)
 

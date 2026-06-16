@@ -8,11 +8,10 @@ import { ComponentToExport } from "../../../types"
  * Generate the return statement for an iconMap component
  */
 export function generateIconMapReturn(
-  component: ComponentToExport,
-  nodeIdToClass: NodeIdToClass,
+  _component: ComponentToExport,
+  _nodeIdToClass: NodeIdToClass,
   classNameVarName: string,
 ): string {
-  const mapped = nodeIdToClass[component.variantId]
   return `
     let Icon = iconMap[icon || "__default__"]
     if (!Icon) {
