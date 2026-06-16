@@ -157,6 +157,7 @@ export const schema = {
         spread: { type: Sdn.ValueType.EMPTY, value: null },
       },
     ],
+    scroll: { type: Sdn.ValueType.EMPTY, value: null },
   },
   default: {
     children: [

@@ -12,6 +12,11 @@ export const schema = {
   icon: Seldon.ComponentIcon.COMPONENT,
   properties: {
     display: { type: Sdn.ValueType.EMPTY, value: null },
+    ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
+    ariaHidden: {
+      type: Sdn.ValueType.EXACT,
+      value: false,
+    },
     buttonSize: {
       type: Sdn.ValueType.THEME_ORDINAL,
       value: "@fontSize.xsmall",
@@ -197,38 +202,6 @@ export const schema = {
   default: {
     children: [
       {
-        component: Seldon.ComponentId.ICON,
-        overrides: {
-          display: {
-            type: Sdn.ValueType.OPTION,
-            value: Sdn.Display.SHOW,
-          },
-          symbol: {
-            type: Sdn.ValueType.OPTION,
-            value: "seldon-radioOff",
-          },
-          size: {
-            type: Sdn.ValueType.COMPUTED,
-            value: {
-              function: Sdn.ComputedFunction.AUTO_FIT,
-              input: {
-                basedOn: "#parent.buttonSize",
-                factor: 0.8,
-              },
-            },
-          },
-          color: {
-            type: Sdn.ValueType.COMPUTED,
-            value: {
-              function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-              input: {
-                basedOn: "#parent.background.color",
-              },
-            },
-          },
-        },
-      },
-      {
         component: Seldon.ComponentId.TEXT,
         variant: "label",
         overrides: {
@@ -238,7 +211,7 @@ export const schema = {
           },
           content: {
             type: Sdn.ValueType.EXACT,
-            value: "Chip",
+            value: "999",
           },
           color: {
             type: Sdn.ValueType.COMPUTED,
@@ -254,9 +227,6 @@ export const schema = {
               type: Sdn.ValueType.THEME_CATEGORICAL,
               value: "@font.normal",
             },
-            family: { type: Sdn.ValueType.EMPTY, value: null },
-            style: { type: Sdn.ValueType.EMPTY, value: null },
-            weight: { type: Sdn.ValueType.EMPTY, value: null },
             size: {
               type: Sdn.ValueType.COMPUTED,
               value: {
@@ -267,8 +237,6 @@ export const schema = {
                 },
               },
             },
-            lineHeight: { type: Sdn.ValueType.EMPTY, value: null },
-            textCase: { type: Sdn.ValueType.EMPTY, value: null },
           },
         },
       },
@@ -276,40 +244,62 @@ export const schema = {
   },
   variants: [
     {
-      id: "count",
-      label: "Counter",
+      id: "assist",
+      label: "Assist",
       intent:
-        "Displays a numeric count, often used for notifications, filters, or grouped item indicators.",
+        "Smart or automated action suggested to the user, with a leading icon and label.",
       overrides: {
-        padding: {
-          top: { type: Sdn.ValueType.OPTION, value: Sdn.Padding.NONE },
-          right: {
-            type: Sdn.ValueType.THEME_ORDINAL,
-            value: "@padding.tight",
+        background: [
+          {
+            kind: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.BackgroundKind.COLOR,
+            },
+            color: {
+              type: Sdn.ValueType.THEME_CATEGORICAL,
+              value: "@swatch.primary",
+            },
+            brightness: { type: Sdn.ValueType.EMPTY, value: null },
+            opacity: { type: Sdn.ValueType.EMPTY, value: null },
           },
-          bottom: { type: Sdn.ValueType.OPTION, value: Sdn.Padding.NONE },
-          left: {
-            type: Sdn.ValueType.THEME_ORDINAL,
-            value: "@padding.tight",
-          },
-        },
+        ],
       },
       children: [
         {
-          component: Seldon.ComponentId.TEXT,
-          variant: "label",
+          component: Seldon.ComponentId.ICON,
           overrides: {
-            content: {
-              type: Sdn.ValueType.EXACT,
-              value: "001",
+            display: { type: Sdn.ValueType.OPTION, value: Sdn.Display.SHOW },
+            symbol: {
+              type: Sdn.ValueType.OPTION,
+              value: "material-calendarToday",
+            },
+            size: {
+              type: Sdn.ValueType.COMPUTED,
+              value: {
+                function: Sdn.ComputedFunction.AUTO_FIT,
+                input: { basedOn: "#parent.buttonSize", factor: 0.8 },
+              },
             },
             color: {
               type: Sdn.ValueType.COMPUTED,
               value: {
                 function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-                input: {
-                  basedOn: "#parent.background.color",
-                },
+                input: { basedOn: "#parent.background.color" },
+              },
+            },
+          },
+        },
+        {
+          component: Seldon.ComponentId.TEXT,
+          variant: "label",
+          overrides: {
+            display: { type: Sdn.ValueType.OPTION, value: Sdn.Display.SHOW },
+            content: { type: Sdn.ValueType.EXACT, value: "Assist" },
+            color: {
+              type: Sdn.ValueType.COMPUTED,
+              value: {
+                function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+                input: { basedOn: "#parent.background.color" },
               },
             },
             font: {
@@ -321,10 +311,210 @@ export const schema = {
                 type: Sdn.ValueType.COMPUTED,
                 value: {
                   function: Sdn.ComputedFunction.AUTO_FIT,
-                  input: {
-                    basedOn: "#parent.buttonSize",
-                    factor: 0.8,
-                  },
+                  input: { basedOn: "#parent.buttonSize", factor: 0.8 },
+                },
+              },
+            },
+          },
+        },
+      ],
+    },
+    {
+      id: "filter",
+      label: "Filter",
+      intent:
+        "Selectable tag that filters content, with a leading checkmark and label.",
+      overrides: {
+        background: [
+          {
+            kind: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.BackgroundKind.COLOR,
+            },
+            color: {
+              type: Sdn.ValueType.THEME_CATEGORICAL,
+              value: "@swatch.primary",
+            },
+            brightness: { type: Sdn.ValueType.EMPTY, value: null },
+            opacity: { type: Sdn.ValueType.EMPTY, value: null },
+          },
+        ],
+        border: {
+          preset: {
+            type: Sdn.ValueType.THEME_CATEGORICAL,
+            value: "@border.none",
+          },
+        },
+      },
+      children: [
+        {
+          component: Seldon.ComponentId.ICON,
+          overrides: {
+            display: { type: Sdn.ValueType.OPTION, value: Sdn.Display.SHOW },
+            symbol: { type: Sdn.ValueType.OPTION, value: "material-check" },
+            size: {
+              type: Sdn.ValueType.COMPUTED,
+              value: {
+                function: Sdn.ComputedFunction.AUTO_FIT,
+                input: { basedOn: "#parent.buttonSize", factor: 0.8 },
+              },
+            },
+            color: {
+              type: Sdn.ValueType.COMPUTED,
+              value: {
+                function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+                input: { basedOn: "#parent.background.color" },
+              },
+            },
+          },
+        },
+        {
+          component: Seldon.ComponentId.TEXT,
+          variant: "label",
+          overrides: {
+            display: { type: Sdn.ValueType.OPTION, value: Sdn.Display.SHOW },
+            content: { type: Sdn.ValueType.EXACT, value: "Filter" },
+            color: {
+              type: Sdn.ValueType.COMPUTED,
+              value: {
+                function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+                input: { basedOn: "#parent.background.color" },
+              },
+            },
+            font: {
+              preset: {
+                type: Sdn.ValueType.THEME_CATEGORICAL,
+                value: "@font.normal",
+              },
+              size: {
+                type: Sdn.ValueType.COMPUTED,
+                value: {
+                  function: Sdn.ComputedFunction.AUTO_FIT,
+                  input: { basedOn: "#parent.buttonSize", factor: 0.8 },
+                },
+              },
+            },
+          },
+        },
+      ],
+    },
+    {
+      id: "input",
+      label: "Input",
+      intent:
+        "Represents user-entered information, with a label and a trailing remove icon.",
+      overrides: {
+        background: [
+          {
+            kind: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.BackgroundKind.COLOR,
+            },
+            color: {
+              type: Sdn.ValueType.THEME_CATEGORICAL,
+              value: "@swatch.primary",
+            },
+            brightness: { type: Sdn.ValueType.EMPTY, value: null },
+            opacity: { type: Sdn.ValueType.EMPTY, value: null },
+          },
+        ],
+      },
+      children: [
+        {
+          component: Seldon.ComponentId.TEXT,
+          variant: "label",
+          overrides: {
+            display: { type: Sdn.ValueType.OPTION, value: Sdn.Display.SHOW },
+            content: { type: Sdn.ValueType.EXACT, value: "Input" },
+            color: {
+              type: Sdn.ValueType.COMPUTED,
+              value: {
+                function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+                input: { basedOn: "#parent.background.color" },
+              },
+            },
+            font: {
+              preset: {
+                type: Sdn.ValueType.THEME_CATEGORICAL,
+                value: "@font.normal",
+              },
+              size: {
+                type: Sdn.ValueType.COMPUTED,
+                value: {
+                  function: Sdn.ComputedFunction.AUTO_FIT,
+                  input: { basedOn: "#parent.buttonSize", factor: 0.8 },
+                },
+              },
+            },
+          },
+        },
+        {
+          component: Seldon.ComponentId.ICON,
+          overrides: {
+            display: { type: Sdn.ValueType.OPTION, value: Sdn.Display.SHOW },
+            symbol: { type: Sdn.ValueType.OPTION, value: "material-close" },
+            size: {
+              type: Sdn.ValueType.COMPUTED,
+              value: {
+                function: Sdn.ComputedFunction.AUTO_FIT,
+                input: { basedOn: "#parent.buttonSize", factor: 0.8 },
+              },
+            },
+            color: {
+              type: Sdn.ValueType.COMPUTED,
+              value: {
+                function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+                input: { basedOn: "#parent.background.color" },
+              },
+            },
+          },
+        },
+      ],
+    },
+    {
+      id: "suggestion",
+      label: "Suggestion",
+      intent: "Dynamically generated suggestion shown as a label only.",
+      overrides: {
+        background: [
+          {
+            kind: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.BackgroundKind.COLOR,
+            },
+            color: {
+              type: Sdn.ValueType.THEME_CATEGORICAL,
+              value: "@swatch.primary",
+            },
+            brightness: { type: Sdn.ValueType.EMPTY, value: null },
+            opacity: { type: Sdn.ValueType.EMPTY, value: null },
+          },
+        ],
+      },
+      children: [
+        {
+          component: Seldon.ComponentId.TEXT,
+          variant: "label",
+          overrides: {
+            display: { type: Sdn.ValueType.OPTION, value: Sdn.Display.SHOW },
+            content: { type: Sdn.ValueType.EXACT, value: "Suggestion" },
+            color: {
+              type: Sdn.ValueType.COMPUTED,
+              value: {
+                function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+                input: { basedOn: "#parent.background.color" },
+              },
+            },
+            font: {
+              preset: {
+                type: Sdn.ValueType.THEME_CATEGORICAL,
+                value: "@font.normal",
+              },
+              size: {
+                type: Sdn.ValueType.COMPUTED,
+                value: {
+                  function: Sdn.ComputedFunction.AUTO_FIT,
+                  input: { basedOn: "#parent.buttonSize", factor: 0.8 },
                 },
               },
             },

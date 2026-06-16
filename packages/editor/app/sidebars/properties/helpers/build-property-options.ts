@@ -1,7 +1,14 @@
-import { ComponentId, ComponentLevel, Theme, Workspace } from "@seldon/core"
+import {
+  ComponentId,
+  ComponentLevel,
+  HtmlElement,
+  Theme,
+  Workspace,
+} from "@seldon/core"
 import { getThemePickerOptions } from "@seldon/core/helpers/properties/properties-bridge"
 import { IconId, iconLabels } from "@seldon/core/icon-sets"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
+import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
 import { Board, Instance, Variant } from "@seldon/core/workspace/types"
 import { getNodeCatalogComponentId } from "@lib/workspace/node-tree"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
@@ -27,16 +34,22 @@ const UNORDERED_LIST_STYLE_TYPES = new Set(["disc", "circle", "square"])
 
 /**
  * Restricts listStyleType marker options to those relevant for the list kind.
- * Default (""), Inherit, and None remain available regardless of component.
+ * The merged List component renders as ol or ul depending on its htmlElement
+ * value, so the marker family is chosen from that value. Default (""), Inherit,
+ * and None remain available regardless of kind.
  */
 function filterListStyleTypeOptions(
   options: PropertyOptions,
   componentId: ComponentId | undefined,
+  htmlElementValue: HtmlElement | undefined,
 ): PropertyOptions {
+  if (componentId !== ComponentId.LIST) {
+    return options
+  }
   let allowed: Set<string> | null = null
-  if (componentId === ComponentId.ORDERED_LIST) {
+  if (htmlElementValue === HtmlElement.OL) {
     allowed = ORDERED_LIST_STYLE_TYPES
-  } else if (componentId === ComponentId.UNORDERED_LIST) {
+  } else if (htmlElementValue === HtmlElement.UL) {
     allowed = UNORDERED_LIST_STYLE_TYPES
   }
   if (!allowed) {
@@ -126,7 +139,17 @@ export function buildPropertyOptions({
   }
 
   if (property.key === "listStyleType" && result.options) {
-    result.options = filterListStyleTypeOptions(result.options, componentId)
+    const htmlElementValue =
+      subject && !isBoard(subject)
+        ? (getNodeProperties(subject, workspace).htmlElement?.value as
+            | HtmlElement
+            | undefined)
+        : undefined
+    result.options = filterListStyleTypeOptions(
+      result.options,
+      componentId,
+      htmlElementValue,
+    )
   }
 
   return result.options

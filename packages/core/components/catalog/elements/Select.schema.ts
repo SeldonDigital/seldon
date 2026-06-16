@@ -17,6 +17,10 @@ export const schema = {
       type: Sdn.ValueType.EXACT,
       value: false,
     },
+    cursor: {
+      type: Sdn.ValueType.OPTION,
+      value: Sdn.Cursor.POINTER,
+    },
     direction: { type: Sdn.ValueType.EMPTY, value: null },
     width: {
       type: Sdn.ValueType.OPTION,
@@ -52,21 +56,18 @@ export const schema = {
     },
     clip: { type: Sdn.ValueType.EMPTY, value: null },
     color: {
-      type: Sdn.ValueType.THEME_CATEGORICAL,
-      value: "@swatch.black",
+      type: Sdn.ValueType.COMPUTED,
+      value: {
+        function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+        input: {
+          basedOn: "#parent.background.color",
+        },
+      },
     },
     brightness: { type: Sdn.ValueType.EMPTY, value: null },
     opacity: { type: Sdn.ValueType.EMPTY, value: null },
     background: [
-      {
-        kind: { type: Sdn.ValueType.OPTION, value: Sdn.BackgroundKind.COLOR },
-        color: {
-          type: Sdn.ValueType.THEME_CATEGORICAL,
-          value: "@swatch.white",
-        },
-        brightness: { type: Sdn.ValueType.EMPTY, value: null },
-        opacity: { type: Sdn.ValueType.EMPTY, value: null },
-      },
+      { kind: { type: Sdn.ValueType.OPTION, value: Sdn.BackgroundKind.NONE } },
     ],
     border: {
       preset: {
@@ -75,8 +76,13 @@ export const schema = {
       },
       style: { type: Sdn.ValueType.EMPTY, value: null },
       color: {
-        type: Sdn.ValueType.THEME_CATEGORICAL,
-        value: "@swatch.black",
+        type: Sdn.ValueType.COMPUTED,
+        value: {
+          function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+          input: {
+            basedOn: "#parent.background.color",
+          },
+        },
       },
       width: { type: Sdn.ValueType.EMPTY, value: null },
       brightness: {
@@ -156,7 +162,7 @@ export const schema = {
       textCase: { type: Sdn.ValueType.EMPTY, value: null },
       letterSpacing: { type: Sdn.ValueType.EMPTY, value: null },
     },
-
+    textAlign: { type: Sdn.ValueType.EMPTY, value: null },
     textDecoration: {
       type: Sdn.ValueType.OPTION,
       value: Sdn.TextDecoration.NONE,

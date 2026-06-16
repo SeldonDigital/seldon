@@ -164,7 +164,7 @@ export const schema = {
   default: {
     children: [
       {
-        component: Seldon.ComponentId.HEADER_CARD,
+        component: Seldon.ComponentId.HEADER,
         overrides: {
           margin: {
             top: {

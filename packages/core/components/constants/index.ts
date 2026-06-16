@@ -150,6 +150,7 @@ export const NATIVE_REACT_PRIMITIVES: Record<
       generic: "HTMLAttributes",
       parameter: "HTMLElement",
     },
+    htmlElementOption: HtmlElement.DD,
   },
   HTMLDiv: {
     types: {
@@ -164,12 +165,14 @@ export const NATIVE_REACT_PRIMITIVES: Record<
       generic: "HTMLAttributes",
       parameter: "HTMLDListElement",
     },
+    htmlElementOption: HtmlElement.DL,
   },
   HTMLDt: {
     types: {
       generic: "HTMLAttributes",
       parameter: "HTMLElement",
     },
+    htmlElementOption: HtmlElement.DT,
   },
   HTMLFieldset: {
     types: {

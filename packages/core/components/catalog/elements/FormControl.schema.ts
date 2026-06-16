@@ -128,10 +128,7 @@ export const schema = {
     },
     borderBottom: {
       preset: { type: Sdn.ValueType.EMPTY, value: null },
-      style: {
-        type: Sdn.ValueType.OPTION,
-        value: Sdn.BorderStyle.SOLID,
-      },
+      style: { type: Sdn.ValueType.EMPTY, value: null },
       color: { type: Sdn.ValueType.EMPTY, value: null },
       width: { type: Sdn.ValueType.EMPTY, value: null },
       brightness: { type: Sdn.ValueType.EMPTY, value: null },

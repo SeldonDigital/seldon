@@ -3,24 +3,40 @@ import * as Seldon from "../../../constants"
 import { ComponentExport, ComponentSchema } from "../../../types"
 
 export const schema = {
-  name: "Description Details",
-  id: Seldon.ComponentId.DESCRIPTION_DETAILS,
-  intent: "Provides the definition or detail content in a description list.",
-  tags: ["description", "detail", "dl", "term definition", "primitive", "text"],
-  level: Seldon.ComponentLevel.PRIMITIVE,
-  icon: Seldon.ComponentIcon.INPUT,
+  name: "List",
+  id: Seldon.ComponentId.LIST,
+  intent:
+    "Displays a list of items. Renders as an unordered bulleted list or an ordered numbered list.",
+  tags: [
+    "list",
+    "ul",
+    "ol",
+    "element",
+    "bulleted",
+    "numbered",
+    "sequence",
+    "text",
+    "UI",
+  ],
+  level: Seldon.ComponentLevel.ELEMENT,
+  icon: Seldon.ComponentIcon.COMPONENT,
   properties: {
     display: { type: Sdn.ValueType.EMPTY, value: null },
-    content: {
-      type: Sdn.ValueType.EXACT,
-      value: "Details",
+    htmlElement: {
+      type: Sdn.ValueType.OPTION,
+      value: Sdn.HtmlElement.UL,
     },
+    ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
+    ariaHidden: { type: Sdn.ValueType.EXACT, value: false },
+    direction: { type: Sdn.ValueType.EMPTY, value: null },
+    orientation: { type: Sdn.ValueType.EMPTY, value: null },
+    align: { type: Sdn.ValueType.EMPTY, value: null },
     width: { type: Sdn.ValueType.EMPTY, value: null },
     height: { type: Sdn.ValueType.EMPTY, value: null },
     margin: {
       top: { type: Sdn.ValueType.EMPTY, value: null },
       right: { type: Sdn.ValueType.EMPTY, value: null },
-      bottom: { type: Sdn.ValueType.THEME_ORDINAL, value: "@margin.cozy" },
+      bottom: { type: Sdn.ValueType.EMPTY, value: null },
       left: { type: Sdn.ValueType.EMPTY, value: null },
     },
     padding: {
@@ -29,17 +45,18 @@ export const schema = {
       bottom: { type: Sdn.ValueType.EMPTY, value: null },
       left: { type: Sdn.ValueType.EMPTY, value: null },
     },
-    color: {
-      type: Sdn.ValueType.COMPUTED,
-      value: {
-        function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-        input: {
-          basedOn: "#parent.background.color",
-        },
-      },
-    },
+    gap: { type: Sdn.ValueType.EMPTY, value: null },
+    wrapChildren: { type: Sdn.ValueType.EXACT, value: false },
     brightness: { type: Sdn.ValueType.EMPTY, value: null },
     opacity: { type: Sdn.ValueType.EMPTY, value: null },
+    listStyleType: {
+      type: Sdn.ValueType.OPTION,
+      value: Sdn.ListStyleType.DISC,
+    },
+    listStylePosition: {
+      type: Sdn.ValueType.OPTION,
+      value: Sdn.ListStylePosition.OUTSIDE,
+    },
     background: [
       { kind: { type: Sdn.ValueType.OPTION, value: Sdn.BackgroundKind.NONE } },
     ],
@@ -97,32 +114,81 @@ export const schema = {
       bottomLeft: { type: Sdn.ValueType.EMPTY, value: null },
       bottomRight: { type: Sdn.ValueType.EMPTY, value: null },
     },
-    font: {
-      preset: {
-        type: Sdn.ValueType.THEME_CATEGORICAL,
-        value: "@font.body",
+    shadow: [
+      {
+        preset: {
+          type: Sdn.ValueType.THEME_CATEGORICAL,
+          value: "@shadow.none",
+        },
+        offsetX: { type: Sdn.ValueType.EMPTY, value: null },
+        offsetY: { type: Sdn.ValueType.EMPTY, value: null },
+        blur: { type: Sdn.ValueType.EMPTY, value: null },
+        color: { type: Sdn.ValueType.EMPTY, value: null },
+        brightness: { type: Sdn.ValueType.EMPTY, value: null },
+        opacity: { type: Sdn.ValueType.EMPTY, value: null },
+        spread: { type: Sdn.ValueType.EMPTY, value: null },
       },
-      family: { type: Sdn.ValueType.EMPTY, value: null },
-      style: { type: Sdn.ValueType.EMPTY, value: null },
-      weight: { type: Sdn.ValueType.EMPTY, value: null },
-      size: { type: Sdn.ValueType.EMPTY, value: null },
-      lineHeight: { type: Sdn.ValueType.EMPTY, value: null },
-      textCase: { type: Sdn.ValueType.EMPTY, value: null },
-      letterSpacing: { type: Sdn.ValueType.EMPTY, value: null },
-    },
+    ],
     textAlign: { type: Sdn.ValueType.EMPTY, value: null },
-    textDecoration: {
-      type: Sdn.ValueType.OPTION,
-      value: Sdn.TextDecoration.NONE,
-    },
-    wrapText: {
-      type: Sdn.ValueType.EXACT,
-      value: true,
-    },
-    lines: { type: Sdn.ValueType.EMPTY, value: null },
   },
+  default: {
+    children: [
+      {
+        component: Seldon.ComponentId.LIST_TEXT,
+        overrides: {
+          content: { type: Sdn.ValueType.EXACT, value: "List item 1" },
+        },
+      },
+      {
+        component: Seldon.ComponentId.LIST_TEXT,
+        overrides: {
+          content: { type: Sdn.ValueType.EXACT, value: "List item 2" },
+        },
+      },
+      {
+        component: Seldon.ComponentId.LIST_TEXT,
+        overrides: {
+          content: { type: Sdn.ValueType.EXACT, value: "List item 3" },
+        },
+      },
+    ],
+  },
+  variants: [
+    {
+      id: "ordered",
+      label: "Ordered",
+      intent: "Displays a numbered list of items with sequential meaning.",
+      overrides: {
+        htmlElement: { type: Sdn.ValueType.OPTION, value: Sdn.HtmlElement.OL },
+        listStyleType: {
+          type: Sdn.ValueType.OPTION,
+          value: Sdn.ListStyleType.DECIMAL,
+        },
+      },
+      children: [
+        {
+          component: Seldon.ComponentId.LIST_TEXT,
+          overrides: {
+            content: { type: Sdn.ValueType.EXACT, value: "List item 1" },
+          },
+        },
+        {
+          component: Seldon.ComponentId.LIST_TEXT,
+          overrides: {
+            content: { type: Sdn.ValueType.EXACT, value: "List item 2" },
+          },
+        },
+        {
+          component: Seldon.ComponentId.LIST_TEXT,
+          overrides: {
+            content: { type: Sdn.ValueType.EXACT, value: "List item 3" },
+          },
+        },
+      ],
+    },
+  ],
 } as const satisfies ComponentSchema
 
 export const exportConfig: ComponentExport = {
-  react: { returns: "HTMLDd" },
+  react: { returns: "htmlElement" },
 }

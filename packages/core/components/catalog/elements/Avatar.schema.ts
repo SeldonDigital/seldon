@@ -26,6 +26,10 @@ export const schema = {
       type: Sdn.ValueType.EXACT,
       value: false,
     },
+    cursor: {
+      type: Sdn.ValueType.OPTION,
+      value: Sdn.Cursor.DEFAULT,
+    },
     direction: { type: Sdn.ValueType.EMPTY, value: null },
     orientation: {
       type: Sdn.ValueType.OPTION,
@@ -103,19 +107,8 @@ export const schema = {
     },
     borderBottom: {
       preset: { type: Sdn.ValueType.EMPTY, value: null },
-      style: {
-        type: Sdn.ValueType.OPTION,
-        value: Sdn.BorderStyle.SOLID,
-      },
-      color: {
-        type: Sdn.ValueType.COMPUTED,
-        value: {
-          function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-          input: {
-            basedOn: "#parent.background.color",
-          },
-        },
-      },
+      style: { type: Sdn.ValueType.EMPTY, value: null },
+      color: { type: Sdn.ValueType.EMPTY, value: null },
       width: { type: Sdn.ValueType.EMPTY, value: null },
       brightness: { type: Sdn.ValueType.EMPTY, value: null },
       opacity: { type: Sdn.ValueType.EMPTY, value: null },

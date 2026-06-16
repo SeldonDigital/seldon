@@ -21,6 +21,10 @@ export const schema = {
       type: Sdn.ValueType.EXACT,
       value: false,
     },
+    cursor: {
+      type: Sdn.ValueType.OPTION,
+      value: Sdn.Cursor.POINTER,
+    },
     direction: { type: Sdn.ValueType.EMPTY, value: null },
     orientation: {
       type: Sdn.ValueType.OPTION,
@@ -61,7 +65,7 @@ export const schema = {
     border: {
       preset: {
         type: Sdn.ValueType.THEME_CATEGORICAL,
-        value: "@border.normal",
+        value: "@border.none",
       },
       style: { type: Sdn.ValueType.EMPTY, value: null },
       color: { type: Sdn.ValueType.EMPTY, value: null },
@@ -127,6 +131,7 @@ export const schema = {
         spread: { type: Sdn.ValueType.EMPTY, value: null },
       },
     ],
+    scroll: { type: Sdn.ValueType.EMPTY, value: null },
   },
   default: {
     children: [

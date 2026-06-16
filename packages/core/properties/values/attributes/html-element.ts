@@ -36,6 +36,9 @@ export enum HtmlElement {
   LI = "li",
   OL = "ol",
   UL = "ul",
+  DL = "dl",
+  DT = "dt",
+  DD = "dd",
 }
 
 /** Records which HTML tag keyword is selected. */

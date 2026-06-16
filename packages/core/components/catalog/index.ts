@@ -52,25 +52,17 @@ import {
   schema as selectSchema,
 } from "./elements/Select.schema"
 import {
-  exportConfig as headerActionExportConfig,
-  schema as headerActionSchema,
-} from "./elements/headers/HeaderAction.schema"
-import {
-  exportConfig as headerCardExportConfig,
-  schema as headerCardSchema,
-} from "./elements/headers/HeaderCard.schema"
+  exportConfig as headerExportConfig,
+  schema as headerSchema,
+} from "./elements/headers/Header.schema"
 import {
   exportConfig as descriptionListExportConfig,
   schema as descriptionListSchema,
 } from "./elements/lists/DescriptionList.schema"
 import {
-  exportConfig as orderedListExportConfig,
-  schema as orderedListSchema,
-} from "./elements/lists/OrderedList.schema"
-import {
-  exportConfig as unorderedListExportConfig,
-  schema as unorderedListSchema,
-} from "./elements/lists/UnorderedList.schema"
+  exportConfig as listExportConfig,
+  schema as listSchema,
+} from "./elements/lists/List.schema"
 import {
   exportConfig as tableRowDataExportConfig,
   schema as tableRowDataSchema,
@@ -176,17 +168,9 @@ import {
   schema as legendSchema,
 } from "./primitives/controls/Legend.schema"
 import {
-  exportConfig as descriptionDetailsExportConfig,
-  schema as descriptionDetailsSchema,
-} from "./primitives/lists/DescriptionDetails.schema"
-import {
-  exportConfig as descriptionTermExportConfig,
-  schema as descriptionTermSchema,
-} from "./primitives/lists/DescriptionTerm.schema"
-import {
-  exportConfig as listItemExportConfig,
-  schema as listItemSchema,
-} from "./primitives/lists/ListItem.schema"
+  exportConfig as listTextExportConfig,
+  schema as listTextSchema,
+} from "./primitives/lists/ListText.schema"
 import {
   exportConfig as tableDataExportConfig,
   schema as tableDataSchema,
@@ -235,16 +219,14 @@ const elements: ComponentSchema[] = [
   chipSchema,
   formControlSchema,
   optionGroupSchema,
-  headerActionSchema,
-  headerCardSchema,
+  headerSchema,
   descriptionListSchema,
   itemSchema,
   navSchema,
-  orderedListSchema,
+  listSchema,
   sectionSchema,
   selectSchema,
   tableRowDataSchema,
-  unorderedListSchema,
 ]
 
 const primitives: ComponentSchema[] = [
@@ -253,9 +235,7 @@ const primitives: ComponentSchema[] = [
   imageSchema,
   inputSchema,
   legendSchema,
-  descriptionDetailsSchema,
-  descriptionTermSchema,
-  listItemSchema,
+  listTextSchema,
   tableDataSchema,
   tableHeaderSchema,
   blockquoteSchema,
@@ -341,15 +321,13 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   [ComponentId.CHIP]: chipExportConfig,
   [ComponentId.FORM_CONTROL]: formControlExportConfig,
   [ComponentId.OPTION_GROUP]: optionGroupExportConfig,
-  [ComponentId.HEADER_ACTION]: headerActionExportConfig,
-  [ComponentId.HEADER_CARD]: headerCardExportConfig,
+  [ComponentId.HEADER]: headerExportConfig,
   [ComponentId.DESCRIPTION_LIST]: descriptionListExportConfig,
   [ComponentId.ITEM]: itemExportConfig,
   [ComponentId.NAV]: navExportConfig,
-  [ComponentId.ORDERED_LIST]: orderedListExportConfig,
+  [ComponentId.LIST]: listExportConfig,
   [ComponentId.SECTION]: sectionExportConfig,
   [ComponentId.TABLE_ROW_DATA]: tableRowDataExportConfig,
-  [ComponentId.UNORDERED_LIST]: unorderedListExportConfig,
 
   // Frames
   [ComponentId.FRAME]: frameExportConfig,
@@ -383,9 +361,7 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   [ComponentId.INPUT]: inputExportConfig,
   [ComponentId.LEGEND]: legendExportConfig,
   [ComponentId.SELECT]: selectExportConfig,
-  [ComponentId.DESCRIPTION_DETAILS]: descriptionDetailsExportConfig,
-  [ComponentId.DESCRIPTION_TERM]: descriptionTermExportConfig,
-  [ComponentId.LIST_ITEM]: listItemExportConfig,
+  [ComponentId.LIST_TEXT]: listTextExportConfig,
   [ComponentId.TABLE_DATA]: tableDataExportConfig,
   [ComponentId.TABLE_HEADER]: tableHeaderExportConfig,
   [ComponentId.BLOCKQUOTE]: blockquoteExportConfig,

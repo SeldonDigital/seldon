@@ -70,7 +70,7 @@ export const schema = {
       type: Sdn.ValueType.THEME_ORDINAL,
       value: "@gap.cozy",
     },
-    wrapChildren: { type: Sdn.ValueType.EMPTY, value: null },
+    wrapChildren: { type: Sdn.ValueType.EXACT, value: false },
     clip: { type: Sdn.ValueType.EMPTY, value: null },
     color: { type: Sdn.ValueType.EMPTY, value: null },
     brightness: { type: Sdn.ValueType.EMPTY, value: null },
@@ -147,6 +147,7 @@ export const schema = {
         spread: { type: Sdn.ValueType.EMPTY, value: null },
       },
     ],
+    scroll: { type: Sdn.ValueType.EMPTY, value: null },
   },
   default: {
     children: [
@@ -1214,7 +1215,6 @@ export const schema = {
         },
         {
           component: Seldon.ComponentId.CHIP,
-          variant: "count",
           overrides: {
             width: {
               type: Sdn.ValueType.OPTION,

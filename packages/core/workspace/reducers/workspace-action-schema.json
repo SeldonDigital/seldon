@@ -10753,7 +10753,10 @@
                 "optgroup",
                 "li",
                 "ol",
-                "ul"
+                "ul",
+                "dl",
+                "dt",
+                "dd"
             ],
             "type": "string"
         },
