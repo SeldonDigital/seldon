@@ -3,7 +3,7 @@ import * as Seldon from "../../constants"
 import { ComponentExport, ComponentSchema } from "../../types"
 
 export const schema = {
-  name: "Stacked Card",
+  name: "Card",
   id: Seldon.ComponentId.CARD_STACKED,
   intent:
     "Defines a vertically stacked card layout with support for headers, content blocks, and action elements.",
@@ -70,7 +70,7 @@ export const schema = {
         kind: { type: Sdn.ValueType.OPTION, value: Sdn.BackgroundKind.COLOR },
         color: {
           type: Sdn.ValueType.THEME_CATEGORICAL,
-          value: "@swatch.background",
+          value: "@swatch.white",
         },
         brightness: { type: Sdn.ValueType.EMPTY, value: null },
         opacity: { type: Sdn.ValueType.EMPTY, value: null },

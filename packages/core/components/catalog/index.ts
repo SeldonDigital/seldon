@@ -117,7 +117,7 @@ import {
 import {
   exportConfig as cardStackedExportConfig,
   schema as cardStackedSchema,
-} from "./parts/CardStacked.schema"
+} from "./parts/Card.schema"
 import {
   exportConfig as listStandardExportConfig,
   schema as listStandardSchema,
