@@ -54,15 +54,15 @@ import {
 import {
   exportConfig as headerExportConfig,
   schema as headerSchema,
-} from "./elements/headers/Header.schema"
+} from "./elements/Header.schema"
 import {
   exportConfig as descriptionListExportConfig,
   schema as descriptionListSchema,
-} from "./elements/lists/DescriptionList.schema"
+} from "./elements/DescriptionList.schema"
 import {
   exportConfig as listExportConfig,
   schema as listSchema,
-} from "./elements/lists/List.schema"
+} from "./elements/List.schema"
 import {
   exportConfig as tableRowDataExportConfig,
   schema as tableRowDataSchema,
@@ -117,11 +117,11 @@ import {
 import {
   exportConfig as cardStackedExportConfig,
   schema as cardStackedSchema,
-} from "./parts/cards/CardStacked.schema"
+} from "./parts/CardStacked.schema"
 import {
   exportConfig as listStandardExportConfig,
   schema as listStandardSchema,
-} from "./parts/lists/ListStandard.schema"
+} from "./parts/ListStandard.schema"
 // Primitives
 import {
   exportConfig as hrExportConfig,

@@ -1,48 +1,38 @@
-import * as Sdn from "../../../../properties"
-import * as Seldon from "../../../constants"
-import { ComponentExport, ComponentSchema } from "../../../types"
+import * as Sdn from "../../../properties"
+import * as Seldon from "../../constants"
+import { ComponentExport, ComponentSchema } from "../../types"
 
 export const schema = {
-  name: "Header",
-  id: Seldon.ComponentId.HEADER,
+  name: "List",
+  id: Seldon.ComponentId.LIST,
   intent:
-    "Arranges header content. The card variant groups identity and a primary action; the action variant groups title text with a set of action controls.",
+    "Displays a list of items. Renders as an unordered bulleted list or an ordered numbered list.",
   tags: [
-    "header",
-    "card",
-    "actions",
-    "layout",
+    "list",
+    "ul",
+    "ol",
+    "element",
+    "bulleted",
+    "numbered",
+    "sequence",
+    "text",
     "UI",
-    "group",
-    "toolbar",
-    "summary",
   ],
   level: Seldon.ComponentLevel.ELEMENT,
   icon: Seldon.ComponentIcon.COMPONENT,
   properties: {
     display: { type: Sdn.ValueType.EMPTY, value: null },
+    htmlElement: {
+      type: Sdn.ValueType.OPTION,
+      value: Sdn.HtmlElement.UL,
+    },
     ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
-    ariaHidden: {
-      type: Sdn.ValueType.EXACT,
-      value: false,
-    },
+    ariaHidden: { type: Sdn.ValueType.EXACT, value: false },
     direction: { type: Sdn.ValueType.EMPTY, value: null },
-    orientation: {
-      type: Sdn.ValueType.OPTION,
-      value: Sdn.Orientation.HORIZONTAL,
-    },
-    align: {
-      type: Sdn.ValueType.OPTION,
-      value: Sdn.Align.CENTER_LEFT,
-    },
-    width: {
-      type: Sdn.ValueType.OPTION,
-      value: Sdn.Resize.FILL,
-    },
-    height: {
-      type: Sdn.ValueType.OPTION,
-      value: Sdn.Resize.FIT,
-    },
+    orientation: { type: Sdn.ValueType.EMPTY, value: null },
+    align: { type: Sdn.ValueType.EMPTY, value: null },
+    width: { type: Sdn.ValueType.EMPTY, value: null },
+    height: { type: Sdn.ValueType.EMPTY, value: null },
     margin: {
       top: { type: Sdn.ValueType.EMPTY, value: null },
       right: { type: Sdn.ValueType.EMPTY, value: null },
@@ -55,19 +45,18 @@ export const schema = {
       bottom: { type: Sdn.ValueType.EMPTY, value: null },
       left: { type: Sdn.ValueType.EMPTY, value: null },
     },
-    gap: {
-      type: Sdn.ValueType.OPTION,
-      value: Sdn.Gap.EVENLY_SPACED,
-    },
-    rotation: { type: Sdn.ValueType.EMPTY, value: null },
-    wrapChildren: {
-      type: Sdn.ValueType.EXACT,
-      value: false,
-    },
-    clip: { type: Sdn.ValueType.EMPTY, value: null },
-    color: { type: Sdn.ValueType.EMPTY, value: null },
+    gap: { type: Sdn.ValueType.EMPTY, value: null },
+    wrapChildren: { type: Sdn.ValueType.EXACT, value: false },
     brightness: { type: Sdn.ValueType.EMPTY, value: null },
     opacity: { type: Sdn.ValueType.EMPTY, value: null },
+    listStyleType: {
+      type: Sdn.ValueType.OPTION,
+      value: Sdn.ListStyleType.DISC,
+    },
+    listStylePosition: {
+      type: Sdn.ValueType.OPTION,
+      value: Sdn.ListStylePosition.OUTSIDE,
+    },
     background: [
       { kind: { type: Sdn.ValueType.OPTION, value: Sdn.BackgroundKind.NONE } },
     ],
@@ -140,110 +129,60 @@ export const schema = {
         spread: { type: Sdn.ValueType.EMPTY, value: null },
       },
     ],
+    textAlign: { type: Sdn.ValueType.EMPTY, value: null },
   },
   default: {
     children: [
       {
-        component: Seldon.ComponentId.AVATAR,
+        component: Seldon.ComponentId.LIST_TEXT,
         overrides: {
-          width: {
-            type: Sdn.ValueType.EXACT,
-            value: {
-              unit: Sdn.Unit.PERCENT,
-              value: 75,
-            },
-          },
-          margin: {
-            right: {
-              type: Sdn.ValueType.THEME_ORDINAL,
-              value: "@margin.cozy",
-            },
-          },
+          content: { type: Sdn.ValueType.EXACT, value: "List item 1" },
         },
       },
       {
-        component: Seldon.ComponentId.BUTTON,
+        component: Seldon.ComponentId.LIST_TEXT,
+        overrides: {
+          content: { type: Sdn.ValueType.EXACT, value: "List item 2" },
+        },
+      },
+      {
+        component: Seldon.ComponentId.LIST_TEXT,
+        overrides: {
+          content: { type: Sdn.ValueType.EXACT, value: "List item 3" },
+        },
       },
     ],
   },
   variants: [
     {
-      id: "action",
-      label: "Action",
-      intent: "Container for header-level action buttons or controls.",
+      id: "ordered",
+      label: "Ordered",
+      intent: "Displays a numbered list of items with sequential meaning.",
       overrides: {
-        align: {
+        htmlElement: { type: Sdn.ValueType.OPTION, value: Sdn.HtmlElement.OL },
+        listStyleType: {
           type: Sdn.ValueType.OPTION,
-          value: Sdn.Align.CENTER,
+          value: Sdn.ListStyleType.DECIMAL,
         },
       },
       children: [
         {
-          component: Seldon.ComponentId.FRAME,
+          component: Seldon.ComponentId.LIST_TEXT,
           overrides: {
-            width: {
-              type: Sdn.ValueType.EXACT,
-              value: {
-                unit: Sdn.Unit.PERCENT,
-                value: 40,
-              },
-            },
-            height: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FIT,
-            },
-            margin: {
-              right: {
-                type: Sdn.ValueType.THEME_ORDINAL,
-                value: "@margin.cozy",
-              },
-            },
+            content: { type: Sdn.ValueType.EXACT, value: "List item 1" },
           },
-          children: [
-            {
-              component: Seldon.ComponentId.TEXT,
-              variant: "title",
-              overrides: {
-                content: {
-                  type: Sdn.ValueType.EXACT,
-                  value: "Header Title",
-                },
-              },
-            },
-            {
-              component: Seldon.ComponentId.TEXT,
-              overrides: {
-                content: {
-                  type: Sdn.ValueType.EXACT,
-                  value: "Provide additional context or information.",
-                },
-                color: {
-                  type: Sdn.ValueType.THEME_CATEGORICAL,
-                  value: "@swatch.primary",
-                },
-                font: {
-                  preset: {
-                    type: Sdn.ValueType.THEME_CATEGORICAL,
-                    value: "@font.tagline",
-                  },
-                  family: { type: Sdn.ValueType.EMPTY, value: null },
-                  style: { type: Sdn.ValueType.EMPTY, value: null },
-                  weight: { type: Sdn.ValueType.EMPTY, value: null },
-                  size: { type: Sdn.ValueType.EMPTY, value: null },
-                  lineHeight: { type: Sdn.ValueType.EMPTY, value: null },
-                  textCase: { type: Sdn.ValueType.EMPTY, value: null },
-                },
-                lines: {
-                  type: Sdn.ValueType.EXACT,
-                  value: 2,
-                },
-              },
-            },
-          ],
         },
         {
-          component: Seldon.ComponentId.BUTTON,
-          variant: "segmented",
+          component: Seldon.ComponentId.LIST_TEXT,
+          overrides: {
+            content: { type: Sdn.ValueType.EXACT, value: "List item 2" },
+          },
+        },
+        {
+          component: Seldon.ComponentId.LIST_TEXT,
+          overrides: {
+            content: { type: Sdn.ValueType.EXACT, value: "List item 3" },
+          },
         },
       ],
     },
@@ -251,5 +190,5 @@ export const schema = {
 } as const satisfies ComponentSchema
 
 export const exportConfig: ComponentExport = {
-  react: { returns: "Frame" },
+  react: { returns: "htmlElement" },
 }
