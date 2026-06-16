@@ -64,6 +64,7 @@ export { IconMaterialChevronDoubleUp } from './material/user-interface/navigatio
 export { IconMaterialChevronDown } from './material/user-interface/navigation/IconMaterialChevronDown'
 export { IconMaterialChevronLeft } from './material/user-interface/navigation/IconMaterialChevronLeft'
 export { IconMaterialChevronRight } from './material/user-interface/navigation/IconMaterialChevronRight'
+export { IconMaterialChevronUp } from './material/user-interface/navigation/IconMaterialChevronUp'
 export { IconMaterialCleaningServices } from './material/user-interface/actions/IconMaterialCleaningServices'
 export { IconMaterialClear } from './material/user-interface/actions/IconMaterialClear'
 export { IconMaterialClose } from './material/user-interface/status/IconMaterialClose'

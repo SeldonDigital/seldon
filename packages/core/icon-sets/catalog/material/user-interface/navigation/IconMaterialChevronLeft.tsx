@@ -10,9 +10,7 @@ export function IconMaterialChevronLeft(props: SVGAttributes<SVGSVGElement>) {
       width="1em"
       {...props}
     >
-      <g transform="translate(0, -960) scale(40)">
-        <path d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59z" />
-      </g>
+      <path d="M560-240 320-480l240-240 56 56-184 184 184 184-56 56Z" />
     </svg>
   )
 }

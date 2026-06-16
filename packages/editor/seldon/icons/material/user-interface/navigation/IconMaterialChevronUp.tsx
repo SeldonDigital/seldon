@@ -13,9 +13,7 @@
  
 import { SVGAttributes } from "react"
 
-export function IconMaterialChevronDoubleUp(
-  props: SVGAttributes<SVGSVGElement>,
-) {
+export function IconMaterialChevronUp(props: SVGAttributes<SVGSVGElement>) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -25,7 +23,7 @@ export function IconMaterialChevronDoubleUp(
       width="1em"
       {...props}
     >
-      <path d="m296-224-56-56 240-240 240 240-56 56-184-183-184 183Zm0-240-56-56 240-240 240 240-56 56-184-183-184 183Z" />
+      <path d="M480-528 296-344l-56-56 240-240 240 240-56 56-184-184Z" />
     </svg>
   )
 }

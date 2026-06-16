@@ -25,10 +25,7 @@ export function IconMaterialChevronDoubleDown(
       width="1em"
       {...props}
     >
-      <g transform="translate(0, -960) scale(40)">
-        <path d="M16.59 5.41 15.17 4 12 7.17 8.83 4 7.41 5.41 12 10l4.59-4.59z" />
-        <path d="M16.59 12.41 15.17 11 12 14.17 8.83 11 7.41 12.41 12 17l4.59-4.59z" />
-      </g>
+      <path d="M480-200 240-440l56-56 184 183 184-183 56 56-240 240Zm0-240L240-680l56-56 184 183 184-183 56 56-240 240Z" />
     </svg>
   )
 }
