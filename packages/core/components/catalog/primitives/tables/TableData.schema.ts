@@ -61,8 +61,13 @@ export const schema = {
       value: null,
     },
     color: {
-      type: Sdn.ValueType.THEME_CATEGORICAL,
-      value: "@swatch.black",
+      type: Sdn.ValueType.COMPUTED,
+      value: {
+        function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+        input: {
+          basedOn: "#parent.background.color",
+        },
+      },
     },
     brightness: { type: Sdn.ValueType.EMPTY, value: null },
     background: [
@@ -169,6 +174,16 @@ export const schema = {
       },
     ],
   },
+  variants: [
+    {
+      id: "input",
+      label: "Table Input",
+      intent: "Table cell designed to hold editable input controls.",
+      overrides: {
+        content: { type: Sdn.ValueType.EXACT, value: "Input" },
+      },
+    },
+  ],
 } as const satisfies ComponentSchema
 
 export const exportConfig: ComponentExport = {

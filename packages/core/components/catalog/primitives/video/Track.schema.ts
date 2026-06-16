@@ -20,6 +20,13 @@ export const schema = {
   properties: {
     content: { type: Sdn.ValueType.EMPTY, value: null },
     source: { type: Sdn.ValueType.EMPTY, value: null },
+    trackKind: {
+      type: Sdn.ValueType.OPTION,
+      value: Sdn.TrackKind.SUBTITLES,
+    },
+    srcLang: { type: Sdn.ValueType.EMPTY, value: null },
+    trackLabel: { type: Sdn.ValueType.EMPTY, value: null },
+    trackDefault: { type: Sdn.ValueType.EXACT, value: false },
   },
 } as const satisfies ComponentSchema
 

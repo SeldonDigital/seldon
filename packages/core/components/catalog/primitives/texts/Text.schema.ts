@@ -19,6 +19,8 @@ export const schema = {
       type: Sdn.ValueType.EXACT,
       value: "Body",
     },
+    ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
+    ariaHidden: { type: Sdn.ValueType.EXACT, value: false },
     cursor: {
       type: Sdn.ValueType.INHERIT,
       value: null,
@@ -60,13 +62,7 @@ export const schema = {
       },
     },
     brightness: { type: Sdn.ValueType.EMPTY, value: null },
-    opacity: {
-      type: Sdn.ValueType.EXACT,
-      value: {
-        value: 100,
-        unit: Sdn.Unit.PERCENT,
-      },
-    },
+    opacity: { type: Sdn.ValueType.EMPTY, value: null },
     background: [
       { kind: { type: Sdn.ValueType.OPTION, value: Sdn.BackgroundKind.NONE } },
     ],
@@ -243,6 +239,56 @@ export const schema = {
           },
         },
         wrapText: { type: Sdn.ValueType.EXACT, value: false },
+      },
+    },
+    {
+      id: "description",
+      label: "Description",
+      intent:
+        "Presents descriptive text content used for clarification or support.",
+      overrides: {
+        htmlElement: { type: Sdn.ValueType.OPTION, value: Sdn.HtmlElement.P },
+        content: { type: Sdn.ValueType.EXACT, value: "Description" },
+        font: {
+          preset: {
+            type: Sdn.ValueType.THEME_CATEGORICAL,
+            value: "@font.body",
+          },
+        },
+      },
+    },
+    {
+      id: "code",
+      label: "Codeblock",
+      intent: "Displays preformatted blocks of code with preserved formatting.",
+      overrides: {
+        htmlElement: { type: Sdn.ValueType.OPTION, value: Sdn.HtmlElement.PRE },
+        content: { type: Sdn.ValueType.EXACT, value: "Codeblock" },
+        font: {
+          preset: {
+            type: Sdn.ValueType.THEME_CATEGORICAL,
+            value: "@font.code",
+          },
+        },
+      },
+    },
+    {
+      id: "option",
+      label: "Option",
+      intent: "Defines a selectable item within a dropdown or select list.",
+      overrides: {
+        htmlElement: {
+          type: Sdn.ValueType.OPTION,
+          value: Sdn.HtmlElement.OPTION,
+        },
+        content: { type: Sdn.ValueType.EXACT, value: "Option Name" },
+        font: {
+          preset: {
+            type: Sdn.ValueType.THEME_CATEGORICAL,
+            value: "@font.label",
+          },
+        },
+        lines: { type: Sdn.ValueType.EXACT, value: 2 },
       },
     },
   ],

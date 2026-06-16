@@ -1,8 +1,10 @@
 import {
   AlignValue,
+  AutoPlayValue,
   BackgroundLayer,
   BoardCompound,
   BooleanValue,
+  ControlsValue,
   BorderCollapseValue,
   BorderCompound,
   BrightnessValue,
@@ -23,12 +25,18 @@ import {
   ImageSourceValue,
   InputTypeValue,
   LinesValue,
+  LoopValue,
   MarginValue,
+  MediaQueryValue,
+  MediaTypeValue,
+  MutedValue,
   OpacityValue,
   OrientationValue,
   PaddingValue,
   PlacementValue,
   PositionValue,
+  PosterValue,
+  PreloadValue,
   ResizeValue,
   RotationValue,
   RowCountValue,
@@ -39,9 +47,13 @@ import {
   ScrollbarStyleValue,
   ShadowCompound,
   SizeValue,
+  SrcLangValue,
   SymbolValue,
   TextAlignValue,
   TextDecorationValue,
+  TrackDefaultValue,
+  TrackKindValue,
+  TrackLabelValue,
   WrapperElementValue,
 } from "../values"
 import { CursorValue } from "../values/attributes/cursor"
@@ -64,6 +76,18 @@ export type Properties = Partial<{
   inputType: InputTypeValue | EmptyValue
   placeholder: ContentValue | EmptyValue
   checked: CheckedValue
+  controls: ControlsValue
+  autoPlay: AutoPlayValue
+  loop: LoopValue
+  muted: MutedValue
+  poster: PosterValue
+  preload: PreloadValue
+  trackKind: TrackKindValue
+  srcLang: SrcLangValue
+  trackLabel: TrackLabelValue
+  trackDefault: TrackDefaultValue
+  mediaType: MediaTypeValue
+  mediaQuery: MediaQueryValue
   ariaLabel: ContentValue | EmptyValue
   ariaHidden: BooleanValue | EmptyValue
   size: SizeValue | EmptyValue

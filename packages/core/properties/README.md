@@ -356,7 +356,7 @@ Properties that control the visual appearance and styling of components.
 
 Each `background[]` layer stores a `kind` plus the facets that kind uses. Facets outside the active kind stay `empty`. Facet paths are `background[].<facet>`.
 
-| Facet | Values |
+| Background | Values |
 | --- | --- |
 | `kind` | `empty` \| `inherit` \| `option: none, color, image, gradient` |
 
@@ -364,7 +364,7 @@ Each `background[]` layer stores a `kind` plus the facets that kind uses. Facets
 
 `kind: color` is a solid fill.
 
-| Facet | Values |
+| Color Facet | Values |
 | --- | --- |
 | `color` | `empty` \| `inherit` \| `<color>` |
 | `brightness` | `empty` \| `inherit` \| `<percent>` |
@@ -372,7 +372,7 @@ Each `background[]` layer stores a `kind` plus the facets that kind uses. Facets
 
 `kind: image` is an image fill.
 
-| Facet | Values |
+| Image Facet | Values |
 | --- | --- |
 | `image` | `empty` \| `inherit` \| `exact: string` |
 | `blendMode` | `empty` \| `inherit` \| `option: normal, multiply, screen, overlay, darken, lighten, color-dodge, color-burn, hard-light, soft-light, difference, exclusion, hue, saturation, color, luminosity` |
@@ -384,7 +384,7 @@ Each `background[]` layer stores a `kind` plus the facets that kind uses. Facets
 
 `kind: gradient` is a gradient fill. The `preset` facet picks a theme gradient recipe (`@gradient.*`).
 
-| Facet | Values |
+| Gradient Facet | Values |
 | --- | --- |
 | `preset` | `empty` \| `inherit` \| `theme.categorical: @gradient.*` |
 | `gradientType` | `empty` \| `inherit` \| `option: linear, radial` |
@@ -397,6 +397,10 @@ Each `background[]` layer stores a `kind` plus the facets that kind uses. Facets
 | `endPosition` | `empty` \| `inherit` \| `<percent>` |
 | `endBrightness` | `empty` \| `inherit` \| `<percent>` |
 | `endOpacity` | `empty` \| `inherit` \| `<percent>` |
+
+**To be implemented:**
+
+**Gradient multi-stop:** Beyond start/end fields on each layer, the flattened catalog includes `gradientStopColor`, `gradientStopBrightness`, `gradientStopOpacity`, and `gradientStopPosition` (`schemas/data/property-schemas.ts`). This need to be update to allow index values for stops.
 
 ---
 
@@ -448,11 +452,9 @@ Properties that control visual effects and interactions.
 | `scroll` | `atomic` | `empty` \| `inherit` \| `option: none, both, horizontal, vertical` |
 | `scrollbarStyle` | `atomic` | `empty` \| `inherit` \| `option: default, hidden, overlay, thin` |
 
-**Gradient multi-stop:** Beyond start/end fields on each layer, the flattened catalog includes `gradientStopColor`, `gradientStopBrightness`, `gradientStopOpacity`, and `gradientStopPosition` (`schemas/data/property-schemas.ts`). End-to-end product UI for arbitrary multi-stop editing may still lag that schema surface.
 
 **To be implemented:**
 
-- `multipleStops` - Full editor/UX for arbitrary multi-stop gradients (see **Gradient multi-stop** above)
 - `scrollSnap` - Scroll snap behavior (none, x, y, block, inline, both)
 - `scrollSnapAlign` - Scroll snap alignment (none, start, end, center)
 - `scrollSnapStop` - Scroll snap stop behavior (normal, always)

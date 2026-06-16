@@ -60,6 +60,18 @@ import {
   schema as headerCardSchema,
 } from "./elements/headers/HeaderCard.schema"
 import {
+  exportConfig as descriptionListExportConfig,
+  schema as descriptionListSchema,
+} from "./elements/lists/DescriptionList.schema"
+import {
+  exportConfig as orderedListExportConfig,
+  schema as orderedListSchema,
+} from "./elements/lists/OrderedList.schema"
+import {
+  exportConfig as unorderedListExportConfig,
+  schema as unorderedListSchema,
+} from "./elements/lists/UnorderedList.schema"
+import {
   exportConfig as tableRowDataExportConfig,
   schema as tableRowDataSchema,
 } from "./elements/tables/TableRowData.schema"
@@ -164,17 +176,9 @@ import {
   schema as legendSchema,
 } from "./primitives/controls/Legend.schema"
 import {
-  exportConfig as optionExportConfig,
-  schema as optionSchema,
-} from "./primitives/controls/Option.schema"
-import {
   exportConfig as descriptionDetailsExportConfig,
   schema as descriptionDetailsSchema,
 } from "./primitives/lists/DescriptionDetails.schema"
-import {
-  exportConfig as descriptionListExportConfig,
-  schema as descriptionListSchema,
-} from "./primitives/lists/DescriptionList.schema"
 import {
   exportConfig as descriptionTermExportConfig,
   schema as descriptionTermSchema,
@@ -184,14 +188,6 @@ import {
   schema as listItemSchema,
 } from "./primitives/lists/ListItem.schema"
 import {
-  exportConfig as orderedListExportConfig,
-  schema as orderedListSchema,
-} from "./primitives/lists/OrderedList.schema"
-import {
-  exportConfig as unorderedListExportConfig,
-  schema as unorderedListSchema,
-} from "./primitives/lists/UnorderedList.schema"
-import {
   exportConfig as tableDataExportConfig,
   schema as tableDataSchema,
 } from "./primitives/tables/TableData.schema"
@@ -200,10 +196,6 @@ import {
   schema as tableHeaderSchema,
 } from "./primitives/tables/TableHeader.schema"
 import {
-  exportConfig as tableInputExportConfig,
-  schema as tableInputSchema,
-} from "./primitives/tables/TableInput.schema"
-import {
   exportConfig as blockquoteExportConfig,
   schema as blockquoteSchema,
 } from "./primitives/texts/Blockquote.schema"
@@ -211,14 +203,6 @@ import {
   exportConfig as citeExportConfig,
   schema as citeSchema,
 } from "./primitives/texts/Cite.schema"
-import {
-  exportConfig as codeblockExportConfig,
-  schema as codeblockSchema,
-} from "./primitives/texts/Codeblock.schema"
-import {
-  exportConfig as descriptionExportConfig,
-  schema as descriptionSchema,
-} from "./primitives/texts/Description.schema"
 import {
   exportConfig as linkExportConfig,
   schema as linkSchema,
@@ -253,11 +237,14 @@ const elements: ComponentSchema[] = [
   optionGroupSchema,
   headerActionSchema,
   headerCardSchema,
+  descriptionListSchema,
   itemSchema,
   navSchema,
+  orderedListSchema,
   sectionSchema,
   selectSchema,
   tableRowDataSchema,
+  unorderedListSchema,
 ]
 
 const primitives: ComponentSchema[] = [
@@ -266,20 +253,13 @@ const primitives: ComponentSchema[] = [
   imageSchema,
   inputSchema,
   legendSchema,
-  optionSchema,
   descriptionDetailsSchema,
-  descriptionListSchema,
   descriptionTermSchema,
   listItemSchema,
-  orderedListSchema,
-  unorderedListSchema,
   tableDataSchema,
   tableHeaderSchema,
-  tableInputSchema,
   blockquoteSchema,
   citeSchema,
-  codeblockSchema,
-  descriptionSchema,
   linkSchema,
   textSchema,
   sourceSchema,
@@ -363,10 +343,13 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   [ComponentId.OPTION_GROUP]: optionGroupExportConfig,
   [ComponentId.HEADER_ACTION]: headerActionExportConfig,
   [ComponentId.HEADER_CARD]: headerCardExportConfig,
+  [ComponentId.DESCRIPTION_LIST]: descriptionListExportConfig,
   [ComponentId.ITEM]: itemExportConfig,
   [ComponentId.NAV]: navExportConfig,
+  [ComponentId.ORDERED_LIST]: orderedListExportConfig,
   [ComponentId.SECTION]: sectionExportConfig,
   [ComponentId.TABLE_ROW_DATA]: tableRowDataExportConfig,
+  [ComponentId.UNORDERED_LIST]: unorderedListExportConfig,
 
   // Frames
   [ComponentId.FRAME]: frameExportConfig,
@@ -399,21 +382,14 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   [ComponentId.IMAGE]: imageExportConfig,
   [ComponentId.INPUT]: inputExportConfig,
   [ComponentId.LEGEND]: legendExportConfig,
-  [ComponentId.OPTION]: optionExportConfig,
   [ComponentId.SELECT]: selectExportConfig,
   [ComponentId.DESCRIPTION_DETAILS]: descriptionDetailsExportConfig,
-  [ComponentId.DESCRIPTION_LIST]: descriptionListExportConfig,
   [ComponentId.DESCRIPTION_TERM]: descriptionTermExportConfig,
   [ComponentId.LIST_ITEM]: listItemExportConfig,
-  [ComponentId.ORDERED_LIST]: orderedListExportConfig,
-  [ComponentId.UNORDERED_LIST]: unorderedListExportConfig,
   [ComponentId.TABLE_DATA]: tableDataExportConfig,
   [ComponentId.TABLE_HEADER]: tableHeaderExportConfig,
-  [ComponentId.TABLE_INPUT]: tableInputExportConfig,
   [ComponentId.BLOCKQUOTE]: blockquoteExportConfig,
   [ComponentId.CITE]: citeExportConfig,
-  [ComponentId.CODEBLOCK]: codeblockExportConfig,
-  [ComponentId.DESCRIPTION]: descriptionExportConfig,
   [ComponentId.LINK]: linkExportConfig,
   [ComponentId.TEXT]: textExportConfig,
   [ComponentId.SOURCE]: sourceExportConfig,

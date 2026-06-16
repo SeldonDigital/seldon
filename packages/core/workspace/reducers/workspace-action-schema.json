@@ -2361,7 +2361,7 @@
                             "type": "boolean"
                         },
                         "properties": {
-                            "$ref": "#/definitions/Partial<{display:DisplayValue;htmlElement:HtmlElementValue;wrapperElement:WrapperElementValue;content:ContentValue;symbol:SymbolValue;source:ImageSourceValue;imageFit:ImageFitValue;altText:ContentValue;inputType:InputTypeValue;placeholder:ContentValue;checked:CheckedValue;ariaLabel:ContentValue;ariaHidden:EmptyValue|BooleanValue;size:SizeValue;buttonSize:ButtonSizeValue;board:BoardCompound;screenWidth:ScreenWidthValue;screenHeight:ScreenHeightValue;cursor:CursorValue;direction:DirectionValue;placement:PlacementValue;position:PositionValue;orientation:OrientationValue;align:AlignValue;width:DimensionValue;height:DimensionValue;margin:MarginValue;padding:PaddingValue;gap:GapValue;rotation:RotationValue;wrapChildren:EmptyValue|BooleanValue;clip:EmptyValue|BooleanValue;columns:ColumnCountValue;rows:RowCountValue;cellAlign:InheritValue|AlignValue;dimension:DimensionValue;resize:ResizeValue;screenSize:ScreenSizeValue;color:ColorValue;accentColor:ColorValue;brightness:BrightnessValue;opacity:OpacityValue;background:BackgroundLayer[];border:BorderCompound;borderTop:BorderCompound;borderRight:BorderCompound;borderBottom:BorderCompound;borderLeft:BorderCompound;corners:CornersValue;borderCollapse:BorderCollapseValue;font:FontCompound;textAlign:TextAlignValue;textDecoration:TextDecorationValue;wrapText:EmptyValue|BooleanValue;lines:LinesValue;shadow:ShadowCompound[];scroll:ScrollValue;scrollbarStyle:ScrollbarStyleValue;}>",
+                            "$ref": "#/definitions/Partial<{display:DisplayValue;htmlElement:HtmlElementValue;wrapperElement:WrapperElementValue;content:ContentValue;symbol:SymbolValue;source:ImageSourceValue;imageFit:ImageFitValue;altText:ContentValue;inputType:InputTypeValue;placeholder:ContentValue;checked:CheckedValue;controls:ControlsValue;autoPlay:AutoPlayValue;loop:LoopValue;muted:MutedValue;poster:ImageSourceValue;preload:PreloadValue;trackKind:TrackKindValue;srcLang:ContentValue;trackLabel:ContentValue;trackDefault:TrackDefaultValue;mediaType:ContentValue;mediaQuery:ContentValue;ariaLabel:ContentValue;ariaHidden:EmptyValue|BooleanValue;size:SizeValue;buttonSize:ButtonSizeValue;board:BoardCompound;screenWidth:ScreenWidthValue;screenHeight:ScreenHeightValue;cursor:CursorValue;direction:DirectionValue;placement:PlacementValue;position:PositionValue;orientation:OrientationValue;align:AlignValue;width:DimensionValue;height:DimensionValue;margin:MarginValue;padding:PaddingValue;gap:GapValue;rotation:RotationValue;wrapChildren:EmptyValue|BooleanValue;clip:EmptyValue|BooleanValue;columns:ColumnCountValue;rows:RowCountValue;cellAlign:InheritValue|AlignValue;dimension:DimensionValue;resize:ResizeValue;screenSize:ScreenSizeValue;color:ColorValue;accentColor:ColorValue;brightness:BrightnessValue;opacity:OpacityValue;background:BackgroundLayer[];border:BorderCompound;borderTop:BorderCompound;borderRight:BorderCompound;borderBottom:BorderCompound;borderLeft:BorderCompound;corners:CornersValue;borderCollapse:BorderCollapseValue;font:FontCompound;textAlign:TextAlignValue;textDecoration:TextDecorationValue;wrapText:EmptyValue|BooleanValue;lines:LinesValue;shadow:ShadowCompound[];scroll:ScrollValue;scrollbarStyle:ScrollbarStyleValue;}>",
                             "description": "Every catalog property key and the stored value shape for that key on a node.\nKeys follow the same category sequence editors use when grouping fields.\nThe type is partial so each component only declares the keys it supports."
                         }
                     },
@@ -2713,7 +2713,7 @@
                             "type": "object"
                         },
                         "properties": {
-                            "$ref": "#/definitions/Partial<{display:DisplayValue;htmlElement:HtmlElementValue;wrapperElement:WrapperElementValue;content:ContentValue;symbol:SymbolValue;source:ImageSourceValue;imageFit:ImageFitValue;altText:ContentValue;inputType:InputTypeValue;placeholder:ContentValue;checked:CheckedValue;ariaLabel:ContentValue;ariaHidden:EmptyValue|BooleanValue;size:SizeValue;buttonSize:ButtonSizeValue;board:BoardCompound;screenWidth:ScreenWidthValue;screenHeight:ScreenHeightValue;cursor:CursorValue;direction:DirectionValue;placement:PlacementValue;position:PositionValue;orientation:OrientationValue;align:AlignValue;width:DimensionValue;height:DimensionValue;margin:MarginValue;padding:PaddingValue;gap:GapValue;rotation:RotationValue;wrapChildren:EmptyValue|BooleanValue;clip:EmptyValue|BooleanValue;columns:ColumnCountValue;rows:RowCountValue;cellAlign:InheritValue|AlignValue;dimension:DimensionValue;resize:ResizeValue;screenSize:ScreenSizeValue;color:ColorValue;accentColor:ColorValue;brightness:BrightnessValue;opacity:OpacityValue;background:BackgroundLayer[];border:BorderCompound;borderTop:BorderCompound;borderRight:BorderCompound;borderBottom:BorderCompound;borderLeft:BorderCompound;corners:CornersValue;borderCollapse:BorderCollapseValue;font:FontCompound;textAlign:TextAlignValue;textDecoration:TextDecorationValue;wrapText:EmptyValue|BooleanValue;lines:LinesValue;shadow:ShadowCompound[];scroll:ScrollValue;scrollbarStyle:ScrollbarStyleValue;}>"
+                            "$ref": "#/definitions/Partial<{display:DisplayValue;htmlElement:HtmlElementValue;wrapperElement:WrapperElementValue;content:ContentValue;symbol:SymbolValue;source:ImageSourceValue;imageFit:ImageFitValue;altText:ContentValue;inputType:InputTypeValue;placeholder:ContentValue;checked:CheckedValue;controls:ControlsValue;autoPlay:AutoPlayValue;loop:LoopValue;muted:MutedValue;poster:ImageSourceValue;preload:PreloadValue;trackKind:TrackKindValue;srcLang:ContentValue;trackLabel:ContentValue;trackDefault:TrackDefaultValue;mediaType:ContentValue;mediaQuery:ContentValue;ariaLabel:ContentValue;ariaHidden:EmptyValue|BooleanValue;size:SizeValue;buttonSize:ButtonSizeValue;board:BoardCompound;screenWidth:ScreenWidthValue;screenHeight:ScreenHeightValue;cursor:CursorValue;direction:DirectionValue;placement:PlacementValue;position:PositionValue;orientation:OrientationValue;align:AlignValue;width:DimensionValue;height:DimensionValue;margin:MarginValue;padding:PaddingValue;gap:GapValue;rotation:RotationValue;wrapChildren:EmptyValue|BooleanValue;clip:EmptyValue|BooleanValue;columns:ColumnCountValue;rows:RowCountValue;cellAlign:InheritValue|AlignValue;dimension:DimensionValue;resize:ResizeValue;screenSize:ScreenSizeValue;color:ColorValue;accentColor:ColorValue;brightness:BrightnessValue;opacity:OpacityValue;background:BackgroundLayer[];border:BorderCompound;borderTop:BorderCompound;borderRight:BorderCompound;borderBottom:BorderCompound;borderLeft:BorderCompound;corners:CornersValue;borderCollapse:BorderCollapseValue;font:FontCompound;textAlign:TextAlignValue;textDecoration:TextDecorationValue;wrapText:EmptyValue|BooleanValue;lines:LinesValue;shadow:ShadowCompound[];scroll:ScrollValue;scrollbarStyle:ScrollbarStyleValue;}>"
                         }
                     },
                     "required": [
@@ -2996,7 +2996,7 @@
                             "type": "string"
                         },
                         "properties": {
-                            "$ref": "#/definitions/Partial<{display:DisplayValue;htmlElement:HtmlElementValue;wrapperElement:WrapperElementValue;content:ContentValue;symbol:SymbolValue;source:ImageSourceValue;imageFit:ImageFitValue;altText:ContentValue;inputType:InputTypeValue;placeholder:ContentValue;checked:CheckedValue;ariaLabel:ContentValue;ariaHidden:EmptyValue|BooleanValue;size:SizeValue;buttonSize:ButtonSizeValue;board:BoardCompound;screenWidth:ScreenWidthValue;screenHeight:ScreenHeightValue;cursor:CursorValue;direction:DirectionValue;placement:PlacementValue;position:PositionValue;orientation:OrientationValue;align:AlignValue;width:DimensionValue;height:DimensionValue;margin:MarginValue;padding:PaddingValue;gap:GapValue;rotation:RotationValue;wrapChildren:EmptyValue|BooleanValue;clip:EmptyValue|BooleanValue;columns:ColumnCountValue;rows:RowCountValue;cellAlign:InheritValue|AlignValue;dimension:DimensionValue;resize:ResizeValue;screenSize:ScreenSizeValue;color:ColorValue;accentColor:ColorValue;brightness:BrightnessValue;opacity:OpacityValue;background:BackgroundLayer[];border:BorderCompound;borderTop:BorderCompound;borderRight:BorderCompound;borderBottom:BorderCompound;borderLeft:BorderCompound;corners:CornersValue;borderCollapse:BorderCollapseValue;font:FontCompound;textAlign:TextAlignValue;textDecoration:TextDecorationValue;wrapText:EmptyValue|BooleanValue;lines:LinesValue;shadow:ShadowCompound[];scroll:ScrollValue;scrollbarStyle:ScrollbarStyleValue;}>"
+                            "$ref": "#/definitions/Partial<{display:DisplayValue;htmlElement:HtmlElementValue;wrapperElement:WrapperElementValue;content:ContentValue;symbol:SymbolValue;source:ImageSourceValue;imageFit:ImageFitValue;altText:ContentValue;inputType:InputTypeValue;placeholder:ContentValue;checked:CheckedValue;controls:ControlsValue;autoPlay:AutoPlayValue;loop:LoopValue;muted:MutedValue;poster:ImageSourceValue;preload:PreloadValue;trackKind:TrackKindValue;srcLang:ContentValue;trackLabel:ContentValue;trackDefault:TrackDefaultValue;mediaType:ContentValue;mediaQuery:ContentValue;ariaLabel:ContentValue;ariaHidden:EmptyValue|BooleanValue;size:SizeValue;buttonSize:ButtonSizeValue;board:BoardCompound;screenWidth:ScreenWidthValue;screenHeight:ScreenHeightValue;cursor:CursorValue;direction:DirectionValue;placement:PlacementValue;position:PositionValue;orientation:OrientationValue;align:AlignValue;width:DimensionValue;height:DimensionValue;margin:MarginValue;padding:PaddingValue;gap:GapValue;rotation:RotationValue;wrapChildren:EmptyValue|BooleanValue;clip:EmptyValue|BooleanValue;columns:ColumnCountValue;rows:RowCountValue;cellAlign:InheritValue|AlignValue;dimension:DimensionValue;resize:ResizeValue;screenSize:ScreenSizeValue;color:ColorValue;accentColor:ColorValue;brightness:BrightnessValue;opacity:OpacityValue;background:BackgroundLayer[];border:BorderCompound;borderTop:BorderCompound;borderRight:BorderCompound;borderBottom:BorderCompound;borderLeft:BorderCompound;corners:CornersValue;borderCollapse:BorderCollapseValue;font:FontCompound;textAlign:TextAlignValue;textDecoration:TextDecorationValue;wrapText:EmptyValue|BooleanValue;lines:LinesValue;shadow:ShadowCompound[];scroll:ScrollValue;scrollbarStyle:ScrollbarStyleValue;}>"
                         }
                     },
                     "required": [
@@ -10732,6 +10732,8 @@
                 "h5",
                 "h6",
                 "p",
+                "pre",
+                "code",
                 "span",
                 "label",
                 "div",
@@ -12505,7 +12507,7 @@
             },
             "type": "object"
         },
-        "Partial<{display:DisplayValue;htmlElement:HtmlElementValue;wrapperElement:WrapperElementValue;content:ContentValue;symbol:SymbolValue;source:ImageSourceValue;imageFit:ImageFitValue;altText:ContentValue;inputType:InputTypeValue;placeholder:ContentValue;checked:CheckedValue;ariaLabel:ContentValue;ariaHidden:EmptyValue|BooleanValue;size:SizeValue;buttonSize:ButtonSizeValue;board:BoardCompound;screenWidth:ScreenWidthValue;screenHeight:ScreenHeightValue;cursor:CursorValue;direction:DirectionValue;placement:PlacementValue;position:PositionValue;orientation:OrientationValue;align:AlignValue;width:DimensionValue;height:DimensionValue;margin:MarginValue;padding:PaddingValue;gap:GapValue;rotation:RotationValue;wrapChildren:EmptyValue|BooleanValue;clip:EmptyValue|BooleanValue;columns:ColumnCountValue;rows:RowCountValue;cellAlign:InheritValue|AlignValue;dimension:DimensionValue;resize:ResizeValue;screenSize:ScreenSizeValue;color:ColorValue;accentColor:ColorValue;brightness:BrightnessValue;opacity:OpacityValue;background:BackgroundLayer[];border:BorderCompound;borderTop:BorderCompound;borderRight:BorderCompound;borderBottom:BorderCompound;borderLeft:BorderCompound;corners:CornersValue;borderCollapse:BorderCollapseValue;font:FontCompound;textAlign:TextAlignValue;textDecoration:TextDecorationValue;wrapText:EmptyValue|BooleanValue;lines:LinesValue;shadow:ShadowCompound[];scroll:ScrollValue;scrollbarStyle:ScrollbarStyleValue;}>": {
+        "Partial<{display:DisplayValue;htmlElement:HtmlElementValue;wrapperElement:WrapperElementValue;content:ContentValue;symbol:SymbolValue;source:ImageSourceValue;imageFit:ImageFitValue;altText:ContentValue;inputType:InputTypeValue;placeholder:ContentValue;checked:CheckedValue;controls:ControlsValue;autoPlay:AutoPlayValue;loop:LoopValue;muted:MutedValue;poster:ImageSourceValue;preload:PreloadValue;trackKind:TrackKindValue;srcLang:ContentValue;trackLabel:ContentValue;trackDefault:TrackDefaultValue;mediaType:ContentValue;mediaQuery:ContentValue;ariaLabel:ContentValue;ariaHidden:EmptyValue|BooleanValue;size:SizeValue;buttonSize:ButtonSizeValue;board:BoardCompound;screenWidth:ScreenWidthValue;screenHeight:ScreenHeightValue;cursor:CursorValue;direction:DirectionValue;placement:PlacementValue;position:PositionValue;orientation:OrientationValue;align:AlignValue;width:DimensionValue;height:DimensionValue;margin:MarginValue;padding:PaddingValue;gap:GapValue;rotation:RotationValue;wrapChildren:EmptyValue|BooleanValue;clip:EmptyValue|BooleanValue;columns:ColumnCountValue;rows:RowCountValue;cellAlign:InheritValue|AlignValue;dimension:DimensionValue;resize:ResizeValue;screenSize:ScreenSizeValue;color:ColorValue;accentColor:ColorValue;brightness:BrightnessValue;opacity:OpacityValue;background:BackgroundLayer[];border:BorderCompound;borderTop:BorderCompound;borderRight:BorderCompound;borderBottom:BorderCompound;borderLeft:BorderCompound;corners:CornersValue;borderCollapse:BorderCollapseValue;font:FontCompound;textAlign:TextAlignValue;textDecoration:TextDecorationValue;wrapText:EmptyValue|BooleanValue;lines:LinesValue;shadow:ShadowCompound[];scroll:ScrollValue;scrollbarStyle:ScrollbarStyleValue;}>": {
             "additionalProperties": false,
             "properties": {
                 "accentColor": {
@@ -12790,6 +12792,49 @@
                             "type": "object"
                         }
                     ]
+                },
+                "autoPlay": {
+                    "anyOf": [
+                        {
+                            "additionalProperties": false,
+                            "description": "The value CAN be set but initially it is not.",
+                            "properties": {
+                                "type": {
+                                    "const": "empty",
+                                    "description": "Leave unset so defaults and platform rules apply after merge.",
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "type": "null"
+                                }
+                            },
+                            "required": [
+                                "type",
+                                "value"
+                            ],
+                            "type": "object"
+                        },
+                        {
+                            "additionalProperties": false,
+                            "description": "Stores a boolean as a freeform exact value (true/false typed in directly).",
+                            "properties": {
+                                "type": {
+                                    "const": "exact",
+                                    "description": "Store a literal only, with no pointer to theme tokens or other properties.",
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "type": "boolean"
+                                }
+                            },
+                            "required": [
+                                "type",
+                                "value"
+                            ],
+                            "type": "object"
+                        }
+                    ],
+                    "description": "Empty or a boolean toggling automatic playback on load."
                 },
                 "background": {
                     "items": {
@@ -13597,6 +13642,49 @@
                             "type": "object"
                         }
                     ]
+                },
+                "controls": {
+                    "anyOf": [
+                        {
+                            "additionalProperties": false,
+                            "description": "The value CAN be set but initially it is not.",
+                            "properties": {
+                                "type": {
+                                    "const": "empty",
+                                    "description": "Leave unset so defaults and platform rules apply after merge.",
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "type": "null"
+                                }
+                            },
+                            "required": [
+                                "type",
+                                "value"
+                            ],
+                            "type": "object"
+                        },
+                        {
+                            "additionalProperties": false,
+                            "description": "Stores a boolean as a freeform exact value (true/false typed in directly).",
+                            "properties": {
+                                "type": {
+                                    "const": "exact",
+                                    "description": "Store a literal only, with no pointer to theme tokens or other properties.",
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "type": "boolean"
+                                }
+                            },
+                            "required": [
+                                "type",
+                                "value"
+                            ],
+                            "type": "object"
+                        }
+                    ],
+                    "description": "Empty or a boolean toggling native media playback controls."
                 },
                 "corners": {
                     "$ref": "#/definitions/CornersValue",
@@ -15159,9 +15247,181 @@
                         }
                     ]
                 },
+                "loop": {
+                    "anyOf": [
+                        {
+                            "additionalProperties": false,
+                            "description": "The value CAN be set but initially it is not.",
+                            "properties": {
+                                "type": {
+                                    "const": "empty",
+                                    "description": "Leave unset so defaults and platform rules apply after merge.",
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "type": "null"
+                                }
+                            },
+                            "required": [
+                                "type",
+                                "value"
+                            ],
+                            "type": "object"
+                        },
+                        {
+                            "additionalProperties": false,
+                            "description": "Stores a boolean as a freeform exact value (true/false typed in directly).",
+                            "properties": {
+                                "type": {
+                                    "const": "exact",
+                                    "description": "Store a literal only, with no pointer to theme tokens or other properties.",
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "type": "boolean"
+                                }
+                            },
+                            "required": [
+                                "type",
+                                "value"
+                            ],
+                            "type": "object"
+                        }
+                    ],
+                    "description": "Empty or a boolean toggling repeated playback."
+                },
                 "margin": {
                     "$ref": "#/definitions/MarginValue",
                     "description": "Optional spacing on each edge outside the element bounds."
+                },
+                "mediaQuery": {
+                    "anyOf": [
+                        {
+                            "additionalProperties": false,
+                            "description": "The value CAN be set but initially it is not.",
+                            "properties": {
+                                "type": {
+                                    "const": "empty",
+                                    "description": "Leave unset so defaults and platform rules apply after merge.",
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "type": "null"
+                                }
+                            },
+                            "required": [
+                                "type",
+                                "value"
+                            ],
+                            "type": "object"
+                        },
+                        {
+                            "additionalProperties": false,
+                            "description": "Exact string payload on a node.",
+                            "properties": {
+                                "type": {
+                                    "const": "exact",
+                                    "description": "Store a literal only, with no pointer to theme tokens or other properties.",
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "type",
+                                "value"
+                            ],
+                            "type": "object"
+                        }
+                    ],
+                    "description": "Empty or the media query string for a media source."
+                },
+                "mediaType": {
+                    "anyOf": [
+                        {
+                            "additionalProperties": false,
+                            "description": "The value CAN be set but initially it is not.",
+                            "properties": {
+                                "type": {
+                                    "const": "empty",
+                                    "description": "Leave unset so defaults and platform rules apply after merge.",
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "type": "null"
+                                }
+                            },
+                            "required": [
+                                "type",
+                                "value"
+                            ],
+                            "type": "object"
+                        },
+                        {
+                            "additionalProperties": false,
+                            "description": "Exact string payload on a node.",
+                            "properties": {
+                                "type": {
+                                    "const": "exact",
+                                    "description": "Store a literal only, with no pointer to theme tokens or other properties.",
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "type",
+                                "value"
+                            ],
+                            "type": "object"
+                        }
+                    ],
+                    "description": "Empty or the MIME type string for a media source."
+                },
+                "muted": {
+                    "anyOf": [
+                        {
+                            "additionalProperties": false,
+                            "description": "The value CAN be set but initially it is not.",
+                            "properties": {
+                                "type": {
+                                    "const": "empty",
+                                    "description": "Leave unset so defaults and platform rules apply after merge.",
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "type": "null"
+                                }
+                            },
+                            "required": [
+                                "type",
+                                "value"
+                            ],
+                            "type": "object"
+                        },
+                        {
+                            "additionalProperties": false,
+                            "description": "Stores a boolean as a freeform exact value (true/false typed in directly).",
+                            "properties": {
+                                "type": {
+                                    "const": "exact",
+                                    "description": "Store a literal only, with no pointer to theme tokens or other properties.",
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "type": "boolean"
+                                }
+                            },
+                            "required": [
+                                "type",
+                                "value"
+                            ],
+                            "type": "object"
+                        }
+                    ],
+                    "description": "Empty or a boolean toggling muted playback."
                 },
                 "opacity": {
                     "anyOf": [
@@ -15343,6 +15603,76 @@
                 "position": {
                     "$ref": "#/definitions/PositionValue",
                     "description": "Optional offsets from each edge when using positioned layout."
+                },
+                "poster": {
+                    "anyOf": [
+                        {
+                            "additionalProperties": false,
+                            "description": "The value CAN be set but initially it is not.",
+                            "properties": {
+                                "type": {
+                                    "const": "empty",
+                                    "description": "Leave unset so defaults and platform rules apply after merge.",
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "type": "null"
+                                }
+                            },
+                            "required": [
+                                "type",
+                                "value"
+                            ],
+                            "type": "object"
+                        },
+                        {
+                            "additionalProperties": false,
+                            "description": "Exact string payload on a node.",
+                            "properties": {
+                                "type": {
+                                    "const": "exact",
+                                    "description": "Store a literal only, with no pointer to theme tokens or other properties.",
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "type",
+                                "value"
+                            ],
+                            "type": "object"
+                        }
+                    ],
+                    "description": "Empty or a poster image source shown before playback."
+                },
+                "preload": {
+                    "anyOf": [
+                        {
+                            "additionalProperties": false,
+                            "description": "The value CAN be set but initially it is not.",
+                            "properties": {
+                                "type": {
+                                    "const": "empty",
+                                    "description": "Leave unset so defaults and platform rules apply after merge.",
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "type": "null"
+                                }
+                            },
+                            "required": [
+                                "type",
+                                "value"
+                            ],
+                            "type": "object"
+                        },
+                        {
+                            "$ref": "#/definitions/PreloadOptionValue"
+                        }
+                    ],
+                    "description": "Empty, or a preload keyword for media elements."
                 },
                 "resize": {
                     "anyOf": [
@@ -16149,6 +16479,49 @@
                         }
                     ]
                 },
+                "srcLang": {
+                    "anyOf": [
+                        {
+                            "additionalProperties": false,
+                            "description": "The value CAN be set but initially it is not.",
+                            "properties": {
+                                "type": {
+                                    "const": "empty",
+                                    "description": "Leave unset so defaults and platform rules apply after merge.",
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "type": "null"
+                                }
+                            },
+                            "required": [
+                                "type",
+                                "value"
+                            ],
+                            "type": "object"
+                        },
+                        {
+                            "additionalProperties": false,
+                            "description": "Exact string payload on a node.",
+                            "properties": {
+                                "type": {
+                                    "const": "exact",
+                                    "description": "Store a literal only, with no pointer to theme tokens or other properties.",
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "type",
+                                "value"
+                            ],
+                            "type": "object"
+                        }
+                    ],
+                    "description": "Empty or the BCP 47 language tag for a track."
+                },
                 "symbol": {
                     "anyOf": [
                         {
@@ -16264,6 +16637,119 @@
                             "$ref": "#/definitions/TextDecorationOptionValue"
                         }
                     ]
+                },
+                "trackDefault": {
+                    "anyOf": [
+                        {
+                            "additionalProperties": false,
+                            "description": "The value CAN be set but initially it is not.",
+                            "properties": {
+                                "type": {
+                                    "const": "empty",
+                                    "description": "Leave unset so defaults and platform rules apply after merge.",
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "type": "null"
+                                }
+                            },
+                            "required": [
+                                "type",
+                                "value"
+                            ],
+                            "type": "object"
+                        },
+                        {
+                            "additionalProperties": false,
+                            "description": "Stores a boolean as a freeform exact value (true/false typed in directly).",
+                            "properties": {
+                                "type": {
+                                    "const": "exact",
+                                    "description": "Store a literal only, with no pointer to theme tokens or other properties.",
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "type": "boolean"
+                                }
+                            },
+                            "required": [
+                                "type",
+                                "value"
+                            ],
+                            "type": "object"
+                        }
+                    ],
+                    "description": "Empty or a boolean marking a track as the default."
+                },
+                "trackKind": {
+                    "anyOf": [
+                        {
+                            "additionalProperties": false,
+                            "description": "The value CAN be set but initially it is not.",
+                            "properties": {
+                                "type": {
+                                    "const": "empty",
+                                    "description": "Leave unset so defaults and platform rules apply after merge.",
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "type": "null"
+                                }
+                            },
+                            "required": [
+                                "type",
+                                "value"
+                            ],
+                            "type": "object"
+                        },
+                        {
+                            "$ref": "#/definitions/TrackKindOptionValue"
+                        }
+                    ],
+                    "description": "Empty, or a track kind keyword for caption and subtitle tracks."
+                },
+                "trackLabel": {
+                    "anyOf": [
+                        {
+                            "additionalProperties": false,
+                            "description": "The value CAN be set but initially it is not.",
+                            "properties": {
+                                "type": {
+                                    "const": "empty",
+                                    "description": "Leave unset so defaults and platform rules apply after merge.",
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "type": "null"
+                                }
+                            },
+                            "required": [
+                                "type",
+                                "value"
+                            ],
+                            "type": "object"
+                        },
+                        {
+                            "additionalProperties": false,
+                            "description": "Exact string payload on a node.",
+                            "properties": {
+                                "type": {
+                                    "const": "exact",
+                                    "description": "Store a literal only, with no pointer to theme tokens or other properties.",
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "type",
+                                "value"
+                            ],
+                            "type": "object"
+                        }
+                    ],
+                    "description": "Empty or the human readable label for a track."
                 },
                 "width": {
                     "anyOf": [
@@ -17211,6 +17697,34 @@
             },
             "type": "object"
         },
+        "Preload": {
+            "description": "How much of a media resource the browser should preload before playback.",
+            "enum": [
+                "none",
+                "metadata",
+                "auto"
+            ],
+            "type": "string"
+        },
+        "PreloadOptionValue": {
+            "additionalProperties": false,
+            "description": "Records which preload keyword is selected.",
+            "properties": {
+                "type": {
+                    "const": "option",
+                    "description": "Store one allowed enum or list entry defined for the property.",
+                    "type": "string"
+                },
+                "value": {
+                    "$ref": "#/definitions/Preload"
+                }
+            },
+            "required": [
+                "type",
+                "value"
+            ],
+            "type": "object"
+        },
         "PropertyKey": {
             "description": "Any top-level key on Properties.",
             "enum": [
@@ -17219,6 +17733,7 @@
                 "altText",
                 "ariaHidden",
                 "ariaLabel",
+                "autoPlay",
                 "background",
                 "board",
                 "border",
@@ -17235,6 +17750,7 @@
                 "color",
                 "columns",
                 "content",
+                "controls",
                 "corners",
                 "cursor",
                 "dimension",
@@ -17247,13 +17763,19 @@
                 "imageFit",
                 "inputType",
                 "lines",
+                "loop",
                 "margin",
+                "mediaQuery",
+                "mediaType",
+                "muted",
                 "opacity",
                 "orientation",
                 "padding",
                 "placeholder",
                 "placement",
                 "position",
+                "poster",
+                "preload",
                 "resize",
                 "rotation",
                 "rows",
@@ -17265,9 +17787,13 @@
                 "shadow",
                 "size",
                 "source",
+                "srcLang",
                 "symbol",
                 "textAlign",
                 "textDecoration",
+                "trackDefault",
+                "trackKind",
+                "trackLabel",
                 "width",
                 "wrapChildren",
                 "wrapText",
@@ -19348,6 +19874,36 @@
                 }
             ],
             "description": "Discriminated `parameters` payload for `TokenType.SWATCH` cells. Mirrors the EXACT\n`{ unit, value }` shape, with `colorspace` as the discriminator.\n\n- `hsl` / `rgb` / `lch`: structured channel objects.\n- `hex`: `#rgb`, `#rgba`, `#rrggbb`, or `#rrggbbaa`.\n- `name`: a CSS named color (`\"rebeccapurple\"`, `\"tomato\"`, …)."
+        },
+        "TrackKind": {
+            "description": "The kind of timed text a track carries.",
+            "enum": [
+                "subtitles",
+                "captions",
+                "descriptions",
+                "chapters",
+                "metadata"
+            ],
+            "type": "string"
+        },
+        "TrackKindOptionValue": {
+            "additionalProperties": false,
+            "description": "Records which track kind keyword is selected.",
+            "properties": {
+                "type": {
+                    "const": "option",
+                    "description": "Store one allowed enum or list entry defined for the property.",
+                    "type": "string"
+                },
+                "value": {
+                    "$ref": "#/definitions/TrackKind"
+                }
+            },
+            "required": [
+                "type",
+                "value"
+            ],
+            "type": "object"
         },
         "TransparentValue": {
             "additionalProperties": false,

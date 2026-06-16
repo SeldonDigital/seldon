@@ -69,8 +69,13 @@ export const schema = {
       value: null,
     },
     color: {
-      type: Sdn.ValueType.THEME_CATEGORICAL,
-      value: "@swatch.black",
+      type: Sdn.ValueType.COMPUTED,
+      value: {
+        function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+        input: {
+          basedOn: "#parent.background.color",
+        },
+      },
     },
     brightness: { type: Sdn.ValueType.EMPTY, value: null },
     background: [

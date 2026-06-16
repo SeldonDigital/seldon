@@ -1,7 +1,7 @@
 import { ComponentId } from "@seldon/core/components/constants"
 import { HtmlElement } from "@seldon/core/properties"
 
-const INLINE_TEXT_ELEMENTS: readonly HtmlElement[] = [
+const TEXT_ELEMENTS: readonly HtmlElement[] = [
   HtmlElement.P,
   HtmlElement.SPAN,
   HtmlElement.A,
@@ -12,6 +12,9 @@ const INLINE_TEXT_ELEMENTS: readonly HtmlElement[] = [
   HtmlElement.H4,
   HtmlElement.H5,
   HtmlElement.H6,
+  HtmlElement.PRE,
+  HtmlElement.CODE,
+  HtmlElement.OPTION,
 ]
 
 /**
@@ -22,9 +25,6 @@ const INLINE_TEXT_ELEMENTS: readonly HtmlElement[] = [
 export const HTML_ELEMENT_OPTIONS: Partial<
   Record<ComponentId, readonly HtmlElement[]>
 > = {
-  [ComponentId.TEXT]: INLINE_TEXT_ELEMENTS,
-  [ComponentId.DESCRIPTION]: INLINE_TEXT_ELEMENTS,
-  [ComponentId.CODEBLOCK]: INLINE_TEXT_ELEMENTS,
-  [ComponentId.OPTION]: [HtmlElement.OPTION],
+  [ComponentId.TEXT]: TEXT_ELEMENTS,
   [ComponentId.OPTION_GROUP]: [HtmlElement.OPTGROUP],
 }

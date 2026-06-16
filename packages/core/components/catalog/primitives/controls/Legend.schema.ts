@@ -15,6 +15,10 @@ export const schema = {
       type: Sdn.ValueType.EXACT,
       value: "Legend",
     },
+    ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
+    ariaHidden: { type: Sdn.ValueType.EXACT, value: false },
+    width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+    height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
     margin: {
       top: { type: Sdn.ValueType.EMPTY, value: null },
       right: { type: Sdn.ValueType.EMPTY, value: null },
@@ -34,17 +38,16 @@ export const schema = {
       },
     },
     color: {
-      type: Sdn.ValueType.THEME_CATEGORICAL,
-      value: "@swatch.black",
-    },
-    brightness: { type: Sdn.ValueType.EMPTY, value: null },
-    opacity: {
-      type: Sdn.ValueType.EXACT,
+      type: Sdn.ValueType.COMPUTED,
       value: {
-        value: 100,
-        unit: Sdn.Unit.PERCENT,
+        function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+        input: {
+          basedOn: "#parent.background.color",
+        },
       },
     },
+    brightness: { type: Sdn.ValueType.EMPTY, value: null },
+    opacity: { type: Sdn.ValueType.EMPTY, value: null },
     font: {
       preset: {
         type: Sdn.ValueType.THEME_CATEGORICAL,

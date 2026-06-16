@@ -326,7 +326,8 @@ export const schema = {
         ],
       },
       {
-        component: Seldon.ComponentId.DESCRIPTION,
+        component: Seldon.ComponentId.TEXT,
+        variant: "description",
         overrides: {
           content: {
             type: Sdn.ValueType.EXACT,

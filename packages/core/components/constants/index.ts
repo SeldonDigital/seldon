@@ -138,6 +138,13 @@ export const NATIVE_REACT_PRIMITIVES: Record<
       parameter: "HTMLElement",
     },
   },
+  HTMLCode: {
+    types: {
+      generic: "HTMLAttributes",
+      parameter: "HTMLElement",
+    },
+    htmlElementOption: HtmlElement.CODE,
+  },
   HTMLDd: {
     types: {
       generic: "HTMLAttributes",
@@ -337,6 +344,13 @@ export const NATIVE_REACT_PRIMITIVES: Record<
       parameter: "HTMLParagraphElement",
     },
     htmlElementOption: HtmlElement.P,
+  },
+  HTMLPre: {
+    types: {
+      generic: "HTMLAttributes",
+      parameter: "HTMLPreElement",
+    },
+    htmlElementOption: HtmlElement.PRE,
   },
   HTMLSection: {
     types: {

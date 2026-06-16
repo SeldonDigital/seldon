@@ -180,7 +180,8 @@ export const schema = {
   default: {
     children: [
       {
-        component: Seldon.ComponentId.OPTION,
+        component: Seldon.ComponentId.TEXT,
+        variant: "option",
         overrides: {
           content: {
             type: Sdn.ValueType.EXACT,
@@ -189,7 +190,8 @@ export const schema = {
         },
       },
       {
-        component: Seldon.ComponentId.OPTION,
+        component: Seldon.ComponentId.TEXT,
+        variant: "option",
         overrides: {
           content: {
             type: Sdn.ValueType.EXACT,
@@ -198,7 +200,8 @@ export const schema = {
         },
       },
       {
-        component: Seldon.ComponentId.OPTION,
+        component: Seldon.ComponentId.TEXT,
+        variant: "option",
         overrides: {
           content: {
             type: Sdn.ValueType.EXACT,

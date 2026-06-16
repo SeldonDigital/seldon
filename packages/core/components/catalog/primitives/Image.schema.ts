@@ -16,6 +16,10 @@ export const schema = {
       type: Sdn.ValueType.EXACT,
       value: "https://static.seldon.app/background-default-dark.jpg",
     },
+    imageFit: {
+      type: Sdn.ValueType.OPTION,
+      value: Sdn.ImageFit.COVER,
+    },
     altText: {
       type: Sdn.ValueType.EXACT,
       value: "Default image",

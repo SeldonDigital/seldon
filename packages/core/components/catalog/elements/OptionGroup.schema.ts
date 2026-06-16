@@ -131,13 +131,16 @@ export const schema = {
   default: {
     children: [
       {
-        component: Seldon.ComponentId.OPTION,
+        component: Seldon.ComponentId.TEXT,
+        variant: "option",
       },
       {
-        component: Seldon.ComponentId.OPTION,
+        component: Seldon.ComponentId.TEXT,
+        variant: "option",
       },
       {
-        component: Seldon.ComponentId.OPTION,
+        component: Seldon.ComponentId.TEXT,
+        variant: "option",
       },
     ],
   },

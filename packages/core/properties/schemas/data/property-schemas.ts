@@ -30,6 +30,20 @@ import { contentSchema } from "../../values/attributes/content"
 import { cursorSchema } from "../../values/attributes/cursor"
 import { htmlElementSchema } from "../../values/attributes/html-element"
 import { inputTypeSchema } from "../../values/attributes/input-type"
+import {
+  autoPlaySchema,
+  controlsSchema,
+  loopSchema,
+  mediaQuerySchema,
+  mediaTypeSchema,
+  mutedSchema,
+  posterSchema,
+  preloadSchema,
+  srcLangSchema,
+  trackDefaultSchema,
+  trackKindSchema,
+  trackLabelSchema,
+} from "../../values/attributes/media"
 import { placeholderSchema } from "../../values/attributes/placeholder"
 import { sourceSchema } from "../../values/attributes/source"
 import { symbolSchema } from "../../values/attributes/symbol"
@@ -104,6 +118,18 @@ const PROPERTY_SCHEMAS_RAW = {
   inputType: inputTypeSchema,
   placeholder: placeholderSchema,
   checked: checkedSchema,
+  controls: controlsSchema,
+  autoPlay: autoPlaySchema,
+  loop: loopSchema,
+  muted: mutedSchema,
+  poster: posterSchema,
+  preload: preloadSchema,
+  trackKind: trackKindSchema,
+  srcLang: srcLangSchema,
+  trackLabel: trackLabelSchema,
+  trackDefault: trackDefaultSchema,
+  mediaType: mediaTypeSchema,
+  mediaQuery: mediaQuerySchema,
   ariaLabel: ariaLabelSchema,
   ariaHidden: ariaHiddenSchema,
   size: sizeSchema,

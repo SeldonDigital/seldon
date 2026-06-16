@@ -46,6 +46,7 @@ import {
   OpacityValue,
   OrientationValue,
   PaddingSideValue,
+  PreloadValue,
   RotationValue,
   RowCountValue,
   ScreenHeightValue,
@@ -60,6 +61,7 @@ import {
   TextAlignValue,
   TextCaseValue,
   TextDecorationValue,
+  TrackKindValue,
   WrapperElementValue,
 } from "../values"
 import { CursorValue } from "../values/attributes/cursor"
@@ -130,6 +132,8 @@ export type AtomicValue =
   | ShadowSpreadValue
   | ScrollValue
   | ScrollbarStyleValue
+  | PreloadValue
+  | TrackKindValue
   | EmptyValue
   | InheritValue
   | TransparentValue
