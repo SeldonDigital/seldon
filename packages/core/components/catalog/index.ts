@@ -122,6 +122,34 @@ import {
   exportConfig as listStandardExportConfig,
   schema as listStandardSchema,
 } from "./parts/ListStandard.schema"
+import {
+  exportConfig as articleCardExportConfig,
+  schema as articleCardSchema,
+} from "./parts/cards/ArticleCard.schema"
+import {
+  exportConfig as mediaCardExportConfig,
+  schema as mediaCardSchema,
+} from "./parts/cards/MediaCard.schema"
+import {
+  exportConfig as notificationCardExportConfig,
+  schema as notificationCardSchema,
+} from "./parts/cards/NotificationCard.schema"
+import {
+  exportConfig as pricingCardExportConfig,
+  schema as pricingCardSchema,
+} from "./parts/cards/PricingCard.schema"
+import {
+  exportConfig as productCardExportConfig,
+  schema as productCardSchema,
+} from "./parts/cards/ProductCard.schema"
+import {
+  exportConfig as profileCardExportConfig,
+  schema as profileCardSchema,
+} from "./parts/cards/ProfileCard.schema"
+import {
+  exportConfig as statCardExportConfig,
+  schema as statCardSchema,
+} from "./parts/cards/StatCard.schema"
 // Primitives
 import {
   exportConfig as hrExportConfig,
@@ -228,6 +256,13 @@ const parts: ComponentSchema[] = [
   cardStackedSchema,
   fieldsetSchema,
   listStandardSchema,
+  articleCardSchema,
+  mediaCardSchema,
+  notificationCardSchema,
+  pricingCardSchema,
+  productCardSchema,
+  profileCardSchema,
+  statCardSchema,
 ]
 
 const modules: ComponentSchema[] = [
@@ -317,6 +352,13 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   [ComponentId.CARD_STACKED]: cardStackedExportConfig,
   [ComponentId.FIELDSET]: fieldsetExportConfig,
   [ComponentId.LIST_STANDARD]: listStandardExportConfig,
+  [ComponentId.ARTICLE_CARD]: articleCardExportConfig,
+  [ComponentId.MEDIA_CARD]: mediaCardExportConfig,
+  [ComponentId.NOTIFICATION_CARD]: notificationCardExportConfig,
+  [ComponentId.PRICING_CARD]: pricingCardExportConfig,
+  [ComponentId.PRODUCT_CARD]: productCardExportConfig,
+  [ComponentId.PROFILE_CARD]: profileCardExportConfig,
+  [ComponentId.STAT_CARD]: statCardExportConfig,
 
   // Primitives
   [ComponentId.HR]: hrExportConfig,

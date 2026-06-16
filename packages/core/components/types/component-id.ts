@@ -7,6 +7,7 @@
  * `ComponentId` stays an enum because it is part of the serialized workspace API.
  */
 export enum ComponentId {
+  ARTICLE_CARD = "articleCard",
   AVATAR = "avatar",
   BAR = "bar",
   BLOCKQUOTE = "blockquote",
@@ -15,6 +16,12 @@ export enum ComponentId {
   CALENDAR = "calendar",
   CARD_STACKED = "cardStacked",
   CHIP = "chip",
+  MEDIA_CARD = "mediaCard",
+  NOTIFICATION_CARD = "notificationCard",
+  PRICING_CARD = "pricingCard",
+  PRODUCT_CARD = "productCard",
+  PROFILE_CARD = "profileCard",
+  STAT_CARD = "statCard",
   CITE = "cite",
   DESCRIPTION_LIST = "descriptionList",
   DIALOG = "dialog",

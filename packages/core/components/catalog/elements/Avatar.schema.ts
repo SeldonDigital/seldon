@@ -197,10 +197,6 @@ export const schema = {
             type: Sdn.ValueType.OPTION,
             value: Sdn.Resize.FIT,
           },
-          gap: {
-            type: Sdn.ValueType.THEME_ORDINAL,
-            value: "@gap.tight",
-          },
         },
         children: [
           {
@@ -284,7 +280,7 @@ export const schema = {
       overrides: {
         gap: {
           type: Sdn.ValueType.THEME_ORDINAL,
-          value: "@gap.compact",
+          value: "@gap.cozy",
         },
       },
       children: [
@@ -305,10 +301,6 @@ export const schema = {
             height: {
               type: Sdn.ValueType.OPTION,
               value: Sdn.Resize.FIT,
-            },
-            gap: {
-              type: Sdn.ValueType.THEME_ORDINAL,
-              value: "@gap.tight",
             },
           },
           children: [
@@ -424,10 +416,6 @@ export const schema = {
             height: {
               type: Sdn.ValueType.OPTION,
               value: Sdn.Resize.FIT,
-            },
-            gap: {
-              type: Sdn.ValueType.THEME_ORDINAL,
-              value: "@gap.tight",
             },
           },
           children: [
