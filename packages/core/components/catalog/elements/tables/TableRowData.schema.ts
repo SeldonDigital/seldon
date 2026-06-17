@@ -1,6 +1,10 @@
-import * as Sdn from "../../../../properties"
-import * as Seldon from "../../../constants"
-import { ComponentExport, ComponentSchema } from "../../../types"
+import * as Sdn from "../../../../properties";
+import * as Seldon from "../../../constants";
+import { ComponentExport, ComponentSchema } from "../../../types";
+
+
+
+
 
 export const schema = {
   name: "Data Row",
@@ -65,18 +69,9 @@ export const schema = {
     },
     borderTop: {
       preset: { type: Sdn.ValueType.EMPTY, value: null },
-      style: {
-        type: Sdn.ValueType.OPTION,
-        value: Sdn.BorderStyle.SOLID,
-      },
-      color: {
-        type: Sdn.ValueType.THEME_CATEGORICAL,
-        value: "@swatch.gray",
-      },
-      width: {
-        type: Sdn.ValueType.THEME_ORDINAL,
-        value: "@borderWidth.xsmall",
-      },
+      style: { type: Sdn.ValueType.EMPTY, value: null },
+      color: { type: Sdn.ValueType.EMPTY, value: null },
+      width: { type: Sdn.ValueType.EMPTY, value: null },
       brightness: { type: Sdn.ValueType.EMPTY, value: null },
       opacity: { type: Sdn.ValueType.EMPTY, value: null },
     },
