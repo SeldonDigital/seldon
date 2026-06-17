@@ -187,7 +187,8 @@ export function CanvasOverlayTracker() {
   ])
 
   useEffect(() => {
-    let rafId = 0
+    let retryRaf = 0
+    let scheduledRaf = 0
     let frames = 0
 
     const apply = () => {
@@ -208,20 +209,33 @@ export function CanvasOverlayTracker() {
 
       const missing = (hoveredId && !hover) || (selectedId && !selection)
       if (missing && frames++ < MAX_TARGET_FRAMES) {
-        rafId = requestAnimationFrame(apply)
+        retryRaf = requestAnimationFrame(apply)
       }
     }
 
+    // Coalesce a burst of scroll/transform ticks into a single measurement per
+    // frame. Each `apply` forces a synchronous layout read, so measuring once
+    // per animation frame instead of once per event avoids the layout
+    // thrashing that makes scrolling and panning feel laggy.
+    const schedule = () => {
+      if (scheduledRaf) return
+      scheduledRaf = requestAnimationFrame(() => {
+        scheduledRaf = 0
+        apply()
+      })
+    }
+
     apply()
-    const unsubscribe = transformContextRef.current.onChange(apply)
-    window.addEventListener("scroll", apply, true)
-    window.addEventListener("resize", apply)
+    const unsubscribe = transformContextRef.current.onChange(schedule)
+    window.addEventListener("scroll", schedule, { passive: true, capture: true })
+    window.addEventListener("resize", schedule)
 
     return () => {
-      cancelAnimationFrame(rafId)
+      cancelAnimationFrame(retryRaf)
+      cancelAnimationFrame(scheduledRaf)
       unsubscribe()
-      window.removeEventListener("scroll", apply, true)
-      window.removeEventListener("resize", apply)
+      window.removeEventListener("scroll", schedule, true)
+      window.removeEventListener("resize", schedule)
     }
   }, [
     hoveredId,
