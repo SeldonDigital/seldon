@@ -68,6 +68,14 @@ import {
   schema as selectSchema,
 } from "./elements/Select.schema"
 import {
+  exportConfig as tableDataExportConfig,
+  schema as tableDataSchema,
+} from "./elements/tables/TableData.schema"
+import {
+  exportConfig as tableHeaderExportConfig,
+  schema as tableHeaderSchema,
+} from "./elements/tables/TableHeader.schema"
+import {
   exportConfig as tableRowDataExportConfig,
   schema as tableRowDataSchema,
 } from "./elements/tables/TableRowData.schema"
@@ -184,14 +192,6 @@ import {
   schema as listTextSchema,
 } from "./primitives/lists/ListText.schema"
 import {
-  exportConfig as tableDataExportConfig,
-  schema as tableDataSchema,
-} from "./primitives/tables/TableData.schema"
-import {
-  exportConfig as tableHeaderExportConfig,
-  schema as tableHeaderSchema,
-} from "./primitives/tables/TableHeader.schema"
-import {
   exportConfig as blockquoteExportConfig,
   schema as blockquoteSchema,
 } from "./primitives/texts/Blockquote.schema"
@@ -239,6 +239,8 @@ const elements: ComponentSchema[] = [
   listSchema,
   sectionSchema,
   selectSchema,
+  tableDataSchema,
+  tableHeaderSchema,
   tableRowDataSchema,
 ]
 
@@ -249,8 +251,6 @@ const primitives: ComponentSchema[] = [
   inputSchema,
   legendSchema,
   listTextSchema,
-  tableDataSchema,
-  tableHeaderSchema,
   blockquoteSchema,
   citeSchema,
   linkSchema,
@@ -342,6 +342,8 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   [ComponentId.NAV]: navExportConfig,
   [ComponentId.LIST]: listExportConfig,
   [ComponentId.SECTION]: sectionExportConfig,
+  [ComponentId.TABLE_DATA]: tableDataExportConfig,
+  [ComponentId.TABLE_HEADER]: tableHeaderExportConfig,
   [ComponentId.TABLE_ROW_DATA]: tableRowDataExportConfig,
 
   // Frames
@@ -379,8 +381,6 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   [ComponentId.LEGEND]: legendExportConfig,
   [ComponentId.SELECT]: selectExportConfig,
   [ComponentId.LIST_TEXT]: listTextExportConfig,
-  [ComponentId.TABLE_DATA]: tableDataExportConfig,
-  [ComponentId.TABLE_HEADER]: tableHeaderExportConfig,
   [ComponentId.BLOCKQUOTE]: blockquoteExportConfig,
   [ComponentId.CITE]: citeExportConfig,
   [ComponentId.LINK]: linkExportConfig,

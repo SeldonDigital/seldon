@@ -6,7 +6,7 @@ export const schema = {
   name: "Table",
   id: Seldon.ComponentId.TABLE,
   intent:
-    "Schema for a standard data table with configurable columns, sorting, filtering, and row rendering options.",
+    "A data table card with a toolbar, a column header row, data rows, and a pagination footer.",
   tags: [
     "table",
     "standard",
@@ -27,6 +27,14 @@ export const schema = {
       value: false,
     },
     direction: { type: Sdn.ValueType.EMPTY, value: null },
+    orientation: {
+      type: Sdn.ValueType.OPTION,
+      value: Sdn.Orientation.VERTICAL,
+    },
+    align: {
+      type: Sdn.ValueType.OPTION,
+      value: Sdn.Align.TOP_LEFT,
+    },
     width: {
       type: Sdn.ValueType.OPTION,
       value: Sdn.Resize.FILL,
@@ -47,6 +55,8 @@ export const schema = {
       bottom: { type: Sdn.ValueType.EMPTY, value: null },
       left: { type: Sdn.ValueType.EMPTY, value: null },
     },
+    gap: { type: Sdn.ValueType.EMPTY, value: null },
+    rotation: { type: Sdn.ValueType.EMPTY, value: null },
     wrapChildren: {
       type: Sdn.ValueType.EXACT,
       value: false,
@@ -55,7 +65,6 @@ export const schema = {
       type: Sdn.ValueType.EXACT,
       value: true,
     },
-    cellAlign: { type: Sdn.ValueType.EMPTY, value: null },
     color: { type: Sdn.ValueType.EMPTY, value: null },
     brightness: { type: Sdn.ValueType.EMPTY, value: null },
     opacity: { type: Sdn.ValueType.EMPTY, value: null },
@@ -76,17 +85,11 @@ export const schema = {
         value: "@border.hairline",
       },
       style: { type: Sdn.ValueType.EMPTY, value: null },
-      color: {
-        type: Sdn.ValueType.THEME_CATEGORICAL,
-        value: "@swatch.black",
-      },
+      color: { type: Sdn.ValueType.EMPTY, value: null },
       width: { type: Sdn.ValueType.EMPTY, value: null },
       brightness: {
         type: Sdn.ValueType.EXACT,
-        value: {
-          unit: Sdn.Unit.PERCENT,
-          value: 75,
-        },
+        value: { unit: Sdn.Unit.PERCENT, value: 75 },
       },
       opacity: { type: Sdn.ValueType.EMPTY, value: null },
     },
@@ -140,15 +143,11 @@ export const schema = {
         value: "@corners.tight",
       },
     },
-    borderCollapse: {
-      type: Sdn.ValueType.OPTION,
-      value: Sdn.BorderCollapse.COLLAPSE,
-    },
     shadow: [
       {
         preset: {
           type: Sdn.ValueType.THEME_CATEGORICAL,
-          value: "@shadow.none",
+          value: "@shadow.xlight",
         },
         offsetX: { type: Sdn.ValueType.EMPTY, value: null },
         offsetY: { type: Sdn.ValueType.EMPTY, value: null },
@@ -159,6 +158,7 @@ export const schema = {
         spread: { type: Sdn.ValueType.EMPTY, value: null },
       },
     ],
+    scroll: { type: Sdn.ValueType.EMPTY, value: null },
   },
   default: {
     children: [
@@ -167,71 +167,51 @@ export const schema = {
         overrides: {
           wrapperElement: {
             type: Sdn.ValueType.OPTION,
-            value: Sdn.WrapperElement.THEAD,
+            value: Sdn.WrapperElement.HEADER,
+          },
+          orientation: {
+            type: Sdn.ValueType.OPTION,
+            value: Sdn.Orientation.HORIZONTAL,
+          },
+          align: { type: Sdn.ValueType.OPTION, value: Sdn.Align.CENTER_LEFT },
+          width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+          height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+          gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.cozy" },
+          padding: {
+            top: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.cozy" },
+            right: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@padding.cozy",
+            },
+            bottom: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@padding.cozy",
+            },
+            left: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.cozy" },
+          },
+          borderBottom: {
+            preset: { type: Sdn.ValueType.EMPTY, value: null },
+            style: { type: Sdn.ValueType.OPTION, value: Sdn.BorderStyle.SOLID },
+            color: {
+              type: Sdn.ValueType.THEME_CATEGORICAL,
+              value: "@swatch.gray",
+            },
+            width: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@borderWidth.xsmall",
+            },
+            brightness: { type: Sdn.ValueType.EMPTY, value: null },
+            opacity: { type: Sdn.ValueType.EMPTY, value: null },
           },
         },
         children: [
           {
-            component: Seldon.ComponentId.FRAME,
+            component: Seldon.ComponentId.TEXT,
+            variant: "subtitle",
             overrides: {
-              orientation: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.Orientation.HORIZONTAL,
-              },
-              wrapperElement: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.WrapperElement.TR,
-              },
+              content: { type: Sdn.ValueType.EXACT, value: "Table name" },
+              width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
             },
-            children: [
-              {
-                component: Seldon.ComponentId.TABLE_HEADER,
-                overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "Name" },
-                  columns: {
-                    type: Sdn.ValueType.EXACT,
-                    value: { unit: Sdn.Unit.NUMBER, value: 2 },
-                  },
-                },
-              },
-              {
-                component: Seldon.ComponentId.TABLE_HEADER,
-                overrides: {
-                  display: {
-                    type: Sdn.ValueType.OPTION,
-                    value: Sdn.Display.EXCLUDE,
-                  },
-                },
-              },
-              {
-                component: Seldon.ComponentId.TABLE_HEADER,
-                overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "Details" },
-                  columns: {
-                    type: Sdn.ValueType.EXACT,
-                    value: { unit: Sdn.Unit.NUMBER, value: 3 },
-                  },
-                },
-              },
-              {
-                component: Seldon.ComponentId.TABLE_HEADER,
-                overrides: {
-                  display: {
-                    type: Sdn.ValueType.OPTION,
-                    value: Sdn.Display.EXCLUDE,
-                  },
-                },
-              },
-              {
-                component: Seldon.ComponentId.TABLE_HEADER,
-                overrides: {
-                  display: {
-                    type: Sdn.ValueType.OPTION,
-                    value: Sdn.Display.EXCLUDE,
-                  },
-                },
-              },
-            ],
           },
           {
             component: Seldon.ComponentId.FRAME,
@@ -240,40 +220,36 @@ export const schema = {
                 type: Sdn.ValueType.OPTION,
                 value: Sdn.Orientation.HORIZONTAL,
               },
-              wrapperElement: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.WrapperElement.TR,
-              },
+              width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+              height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+              gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.cozy" },
             },
             children: [
               {
-                component: Seldon.ComponentId.TABLE_HEADER,
+                component: Seldon.ComponentId.ICON,
                 overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "First" },
+                  symbol: {
+                    type: Sdn.ValueType.OPTION,
+                    value: "material-search",
+                  },
                 },
               },
               {
-                component: Seldon.ComponentId.TABLE_HEADER,
+                component: Seldon.ComponentId.ICON,
                 overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "Last" },
+                  symbol: {
+                    type: Sdn.ValueType.OPTION,
+                    value: "material-filterList",
+                  },
                 },
               },
               {
-                component: Seldon.ComponentId.TABLE_HEADER,
+                component: Seldon.ComponentId.ICON,
                 overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "Email" },
-                },
-              },
-              {
-                component: Seldon.ComponentId.TABLE_HEADER,
-                overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "Location" },
-                },
-              },
-              {
-                component: Seldon.ComponentId.TABLE_HEADER,
-                overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "Role" },
+                  symbol: {
+                    type: Sdn.ValueType.OPTION,
+                    value: "material-tune",
+                  },
                 },
               },
             ],
@@ -285,224 +261,773 @@ export const schema = {
         overrides: {
           wrapperElement: {
             type: Sdn.ValueType.OPTION,
-            value: Sdn.WrapperElement.TBODY,
+            value: Sdn.WrapperElement.TABLE,
           },
+          orientation: { type: Sdn.ValueType.EMPTY, value: null },
+          width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+          height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
         },
         children: [
           {
-            component: Seldon.ComponentId.TABLE_ROW_DATA,
+            component: Seldon.ComponentId.FRAME,
+            overrides: {
+              wrapperElement: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.WrapperElement.THEAD,
+              },
+              orientation: { type: Sdn.ValueType.EMPTY, value: null },
+            },
             children: [
               {
-                component: Seldon.ComponentId.TABLE_DATA,
+                component: Seldon.ComponentId.FRAME,
                 overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "Hari" },
-                },
-              },
-              {
-                component: Seldon.ComponentId.TABLE_DATA,
-                overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "Seldon" },
-                },
-              },
-              {
-                component: Seldon.ComponentId.TABLE_DATA,
-                overrides: {
-                  content: {
-                    type: Sdn.ValueType.EXACT,
-                    value: "hari@fakeseldon.com",
+                  orientation: { type: Sdn.ValueType.EMPTY, value: null },
+                  wrapperElement: {
+                    type: Sdn.ValueType.OPTION,
+                    value: Sdn.WrapperElement.TR,
                   },
                 },
-              },
-              {
-                component: Seldon.ComponentId.TABLE_DATA,
-                overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "Trantor" },
-                },
-              },
-              {
-                component: Seldon.ComponentId.TABLE_DATA,
-                overrides: {
-                  content: {
-                    type: Sdn.ValueType.EXACT,
-                    value: "Psychohistorian",
+                children: [
+                  {
+                    component: Seldon.ComponentId.TABLE_HEADER,
+                    overrides: {
+                      width: {
+                        type: Sdn.ValueType.OPTION,
+                        value: Sdn.Resize.FIT,
+                      },
+                    },
+                    children: [
+                      {
+                        component: Seldon.ComponentId.TEXT,
+                        variant: "label",
+                        overrides: {
+                          content: { type: Sdn.ValueType.EXACT, value: " " },
+                        },
+                      },
+                    ],
                   },
-                },
+                  {
+                    component: Seldon.ComponentId.TABLE_HEADER,
+                    children: [
+                      {
+                        component: Seldon.ComponentId.TEXT,
+                        variant: "label",
+                        overrides: {
+                          content: {
+                            type: Sdn.ValueType.EXACT,
+                            value: "Name",
+                          },
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    component: Seldon.ComponentId.TABLE_HEADER,
+                    children: [
+                      {
+                        component: Seldon.ComponentId.TEXT,
+                        variant: "label",
+                        overrides: {
+                          content: {
+                            type: Sdn.ValueType.EXACT,
+                            value: "Version",
+                          },
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    component: Seldon.ComponentId.TABLE_HEADER,
+                    children: [
+                      {
+                        component: Seldon.ComponentId.TEXT,
+                        variant: "label",
+                        overrides: {
+                          content: {
+                            type: Sdn.ValueType.EXACT,
+                            value: "Supplier",
+                          },
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    component: Seldon.ComponentId.TABLE_HEADER,
+                    children: [
+                      {
+                        component: Seldon.ComponentId.TEXT,
+                        variant: "label",
+                        overrides: {
+                          content: {
+                            type: Sdn.ValueType.EXACT,
+                            value: "Description",
+                          },
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    component: Seldon.ComponentId.TABLE_HEADER,
+                    variant: "numeric",
+                    children: [
+                      {
+                        component: Seldon.ComponentId.TEXT,
+                        variant: "label",
+                        overrides: {
+                          content: {
+                            type: Sdn.ValueType.EXACT,
+                            value: "Date",
+                          },
+                        },
+                      },
+                    ],
+                  },
+                ],
               },
             ],
           },
           {
-            component: Seldon.ComponentId.TABLE_ROW_DATA,
+            component: Seldon.ComponentId.FRAME,
+            overrides: {
+              wrapperElement: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.WrapperElement.TBODY,
+              },
+              orientation: { type: Sdn.ValueType.EMPTY, value: null },
+            },
             children: [
               {
-                component: Seldon.ComponentId.TABLE_DATA,
-                overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "Salvor" },
-                },
-              },
-              {
-                component: Seldon.ComponentId.TABLE_DATA,
-                overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "Hardin" },
-                },
-              },
-              {
-                component: Seldon.ComponentId.TABLE_DATA,
-                overrides: {
-                  content: {
-                    type: Sdn.ValueType.EXACT,
-                    value: "salvor@terminus.gov",
+                component: Seldon.ComponentId.TABLE_ROW_DATA,
+                children: [
+                  {
+                    component: Seldon.ComponentId.TABLE_DATA,
+                    overrides: {
+                      width: {
+                        type: Sdn.ValueType.OPTION,
+                        value: Sdn.Resize.FIT,
+                      },
+                      cellAlign: {
+                        type: Sdn.ValueType.OPTION,
+                        value: Sdn.Align.CENTER,
+                      },
+                    },
+                    children: [
+                      {
+                        component: Seldon.ComponentId.ICON,
+                        overrides: {
+                          symbol: {
+                            type: Sdn.ValueType.OPTION,
+                            value: "material-chevronRight",
+                          },
+                        },
+                      },
+                    ],
                   },
-                },
+                  {
+                    component: Seldon.ComponentId.TABLE_DATA,
+                    children: [
+                      {
+                        component: Seldon.ComponentId.TEXT,
+                        variant: "label",
+                        overrides: {
+                          content: {
+                            type: Sdn.ValueType.EXACT,
+                            value: "Contract document 1",
+                          },
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    component: Seldon.ComponentId.TABLE_DATA,
+                    children: [
+                      {
+                        component: Seldon.ComponentId.TEXT,
+                        variant: "label",
+                        overrides: {
+                          content: { type: Sdn.ValueType.EXACT, value: "1.0" },
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    component: Seldon.ComponentId.TABLE_DATA,
+                    children: [
+                      {
+                        component: Seldon.ComponentId.TEXT,
+                        variant: "label",
+                        overrides: {
+                          content: {
+                            type: Sdn.ValueType.EXACT,
+                            value: "Supplier name",
+                          },
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    component: Seldon.ComponentId.TABLE_DATA,
+                    children: [
+                      {
+                        component: Seldon.ComponentId.TEXT,
+                        variant: "description",
+                        overrides: {
+                          content: {
+                            type: Sdn.ValueType.EXACT,
+                            value: "Lorem ipsum dolor sit amet",
+                          },
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    component: Seldon.ComponentId.TABLE_DATA,
+                    variant: "numeric",
+                    children: [
+                      {
+                        component: Seldon.ComponentId.TEXT,
+                        variant: "label",
+                        overrides: {
+                          content: {
+                            type: Sdn.ValueType.EXACT,
+                            value: "7/16/20",
+                          },
+                        },
+                      },
+                    ],
+                  },
+                ],
               },
               {
-                component: Seldon.ComponentId.TABLE_DATA,
-                overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "Foundation" },
-                },
+                component: Seldon.ComponentId.TABLE_ROW_DATA,
+                children: [
+                  {
+                    component: Seldon.ComponentId.TABLE_DATA,
+                    overrides: {
+                      width: {
+                        type: Sdn.ValueType.OPTION,
+                        value: Sdn.Resize.FIT,
+                      },
+                      cellAlign: {
+                        type: Sdn.ValueType.OPTION,
+                        value: Sdn.Align.CENTER,
+                      },
+                    },
+                    children: [
+                      {
+                        component: Seldon.ComponentId.ICON,
+                        overrides: {
+                          symbol: {
+                            type: Sdn.ValueType.OPTION,
+                            value: "material-chevronRight",
+                          },
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    component: Seldon.ComponentId.TABLE_DATA,
+                    children: [
+                      {
+                        component: Seldon.ComponentId.TEXT,
+                        variant: "label",
+                        overrides: {
+                          content: {
+                            type: Sdn.ValueType.EXACT,
+                            value: "Contract document 2",
+                          },
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    component: Seldon.ComponentId.TABLE_DATA,
+                    children: [
+                      {
+                        component: Seldon.ComponentId.TEXT,
+                        variant: "label",
+                        overrides: {
+                          content: { type: Sdn.ValueType.EXACT, value: "1.0" },
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    component: Seldon.ComponentId.TABLE_DATA,
+                    children: [
+                      {
+                        component: Seldon.ComponentId.TEXT,
+                        variant: "label",
+                        overrides: {
+                          content: {
+                            type: Sdn.ValueType.EXACT,
+                            value: "Supplier name",
+                          },
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    component: Seldon.ComponentId.TABLE_DATA,
+                    children: [
+                      {
+                        component: Seldon.ComponentId.TEXT,
+                        variant: "description",
+                        overrides: {
+                          content: {
+                            type: Sdn.ValueType.EXACT,
+                            value: "Lorem ipsum dolor sit amet",
+                          },
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    component: Seldon.ComponentId.TABLE_DATA,
+                    variant: "numeric",
+                    children: [
+                      {
+                        component: Seldon.ComponentId.TEXT,
+                        variant: "label",
+                        overrides: {
+                          content: {
+                            type: Sdn.ValueType.EXACT,
+                            value: "7/16/20",
+                          },
+                        },
+                      },
+                    ],
+                  },
+                ],
               },
               {
-                component: Seldon.ComponentId.TABLE_DATA,
-                overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "Mayor" },
-                },
+                component: Seldon.ComponentId.TABLE_ROW_DATA,
+                children: [
+                  {
+                    component: Seldon.ComponentId.TABLE_DATA,
+                    overrides: {
+                      width: {
+                        type: Sdn.ValueType.OPTION,
+                        value: Sdn.Resize.FIT,
+                      },
+                      cellAlign: {
+                        type: Sdn.ValueType.OPTION,
+                        value: Sdn.Align.CENTER,
+                      },
+                    },
+                    children: [
+                      {
+                        component: Seldon.ComponentId.ICON,
+                        overrides: {
+                          symbol: {
+                            type: Sdn.ValueType.OPTION,
+                            value: "material-chevronRight",
+                          },
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    component: Seldon.ComponentId.TABLE_DATA,
+                    children: [
+                      {
+                        component: Seldon.ComponentId.TEXT,
+                        variant: "label",
+                        overrides: {
+                          content: {
+                            type: Sdn.ValueType.EXACT,
+                            value: "Contract document 3",
+                          },
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    component: Seldon.ComponentId.TABLE_DATA,
+                    children: [
+                      {
+                        component: Seldon.ComponentId.TEXT,
+                        variant: "label",
+                        overrides: {
+                          content: { type: Sdn.ValueType.EXACT, value: "1.0" },
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    component: Seldon.ComponentId.TABLE_DATA,
+                    children: [
+                      {
+                        component: Seldon.ComponentId.TEXT,
+                        variant: "label",
+                        overrides: {
+                          content: {
+                            type: Sdn.ValueType.EXACT,
+                            value: "Supplier name",
+                          },
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    component: Seldon.ComponentId.TABLE_DATA,
+                    children: [
+                      {
+                        component: Seldon.ComponentId.TEXT,
+                        variant: "description",
+                        overrides: {
+                          content: {
+                            type: Sdn.ValueType.EXACT,
+                            value: "Lorem ipsum dolor sit amet",
+                          },
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    component: Seldon.ComponentId.TABLE_DATA,
+                    variant: "numeric",
+                    children: [
+                      {
+                        component: Seldon.ComponentId.TEXT,
+                        variant: "label",
+                        overrides: {
+                          content: {
+                            type: Sdn.ValueType.EXACT,
+                            value: "7/16/20",
+                          },
+                        },
+                      },
+                    ],
+                  },
+                ],
+              },
+              {
+                component: Seldon.ComponentId.TABLE_ROW_DATA,
+                children: [
+                  {
+                    component: Seldon.ComponentId.TABLE_DATA,
+                    overrides: {
+                      width: {
+                        type: Sdn.ValueType.OPTION,
+                        value: Sdn.Resize.FIT,
+                      },
+                      cellAlign: {
+                        type: Sdn.ValueType.OPTION,
+                        value: Sdn.Align.CENTER,
+                      },
+                    },
+                    children: [
+                      {
+                        component: Seldon.ComponentId.ICON,
+                        overrides: {
+                          symbol: {
+                            type: Sdn.ValueType.OPTION,
+                            value: "material-chevronRight",
+                          },
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    component: Seldon.ComponentId.TABLE_DATA,
+                    children: [
+                      {
+                        component: Seldon.ComponentId.TEXT,
+                        variant: "label",
+                        overrides: {
+                          content: {
+                            type: Sdn.ValueType.EXACT,
+                            value: "Contract document 4",
+                          },
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    component: Seldon.ComponentId.TABLE_DATA,
+                    children: [
+                      {
+                        component: Seldon.ComponentId.TEXT,
+                        variant: "label",
+                        overrides: {
+                          content: { type: Sdn.ValueType.EXACT, value: "1.0" },
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    component: Seldon.ComponentId.TABLE_DATA,
+                    children: [
+                      {
+                        component: Seldon.ComponentId.TEXT,
+                        variant: "label",
+                        overrides: {
+                          content: {
+                            type: Sdn.ValueType.EXACT,
+                            value: "Supplier name",
+                          },
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    component: Seldon.ComponentId.TABLE_DATA,
+                    children: [
+                      {
+                        component: Seldon.ComponentId.TEXT,
+                        variant: "description",
+                        overrides: {
+                          content: {
+                            type: Sdn.ValueType.EXACT,
+                            value: "Lorem ipsum dolor sit amet",
+                          },
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    component: Seldon.ComponentId.TABLE_DATA,
+                    variant: "numeric",
+                    children: [
+                      {
+                        component: Seldon.ComponentId.TEXT,
+                        variant: "label",
+                        overrides: {
+                          content: {
+                            type: Sdn.ValueType.EXACT,
+                            value: "7/16/20",
+                          },
+                        },
+                      },
+                    ],
+                  },
+                ],
+              },
+              {
+                component: Seldon.ComponentId.TABLE_ROW_DATA,
+                children: [
+                  {
+                    component: Seldon.ComponentId.TABLE_DATA,
+                    overrides: {
+                      width: {
+                        type: Sdn.ValueType.OPTION,
+                        value: Sdn.Resize.FIT,
+                      },
+                      cellAlign: {
+                        type: Sdn.ValueType.OPTION,
+                        value: Sdn.Align.CENTER,
+                      },
+                    },
+                    children: [
+                      {
+                        component: Seldon.ComponentId.ICON,
+                        overrides: {
+                          symbol: {
+                            type: Sdn.ValueType.OPTION,
+                            value: "material-chevronRight",
+                          },
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    component: Seldon.ComponentId.TABLE_DATA,
+                    children: [
+                      {
+                        component: Seldon.ComponentId.TEXT,
+                        variant: "label",
+                        overrides: {
+                          content: {
+                            type: Sdn.ValueType.EXACT,
+                            value: "Contract document 5",
+                          },
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    component: Seldon.ComponentId.TABLE_DATA,
+                    children: [
+                      {
+                        component: Seldon.ComponentId.TEXT,
+                        variant: "label",
+                        overrides: {
+                          content: { type: Sdn.ValueType.EXACT, value: "1.0" },
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    component: Seldon.ComponentId.TABLE_DATA,
+                    children: [
+                      {
+                        component: Seldon.ComponentId.TEXT,
+                        variant: "label",
+                        overrides: {
+                          content: {
+                            type: Sdn.ValueType.EXACT,
+                            value: "Supplier name",
+                          },
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    component: Seldon.ComponentId.TABLE_DATA,
+                    children: [
+                      {
+                        component: Seldon.ComponentId.TEXT,
+                        variant: "description",
+                        overrides: {
+                          content: {
+                            type: Sdn.ValueType.EXACT,
+                            value: "Lorem ipsum dolor sit amet",
+                          },
+                        },
+                      },
+                    ],
+                  },
+                  {
+                    component: Seldon.ComponentId.TABLE_DATA,
+                    variant: "numeric",
+                    children: [
+                      {
+                        component: Seldon.ComponentId.TEXT,
+                        variant: "label",
+                        overrides: {
+                          content: {
+                            type: Sdn.ValueType.EXACT,
+                            value: "7/16/20",
+                          },
+                        },
+                      },
+                    ],
+                  },
+                ],
               },
             ],
           },
           {
-            component: Seldon.ComponentId.TABLE_ROW_DATA,
+            component: Seldon.ComponentId.FRAME,
+            overrides: {
+              wrapperElement: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.WrapperElement.FOOTER,
+              },
+              orientation: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.Orientation.HORIZONTAL,
+              },
+              align: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.Align.CENTER_RIGHT,
+              },
+              width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+              height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+              gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.cozy" },
+              padding: {
+                top: {
+                  type: Sdn.ValueType.THEME_ORDINAL,
+                  value: "@padding.cozy",
+                },
+                right: {
+                  type: Sdn.ValueType.THEME_ORDINAL,
+                  value: "@padding.cozy",
+                },
+                bottom: {
+                  type: Sdn.ValueType.THEME_ORDINAL,
+                  value: "@padding.cozy",
+                },
+                left: {
+                  type: Sdn.ValueType.THEME_ORDINAL,
+                  value: "@padding.cozy",
+                },
+              },
+              borderTop: {
+                preset: { type: Sdn.ValueType.EMPTY, value: null },
+                style: {
+                  type: Sdn.ValueType.OPTION,
+                  value: Sdn.BorderStyle.SOLID,
+                },
+                color: {
+                  type: Sdn.ValueType.THEME_CATEGORICAL,
+                  value: "@swatch.gray",
+                },
+                width: {
+                  type: Sdn.ValueType.THEME_ORDINAL,
+                  value: "@borderWidth.xsmall",
+                },
+                brightness: { type: Sdn.ValueType.EMPTY, value: null },
+                opacity: { type: Sdn.ValueType.EMPTY, value: null },
+              },
+            },
             children: [
               {
-                component: Seldon.ComponentId.TABLE_DATA,
-                overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "Hober" },
-                },
-              },
-              {
-                component: Seldon.ComponentId.TABLE_DATA,
-                overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "Mallow" },
-                },
-              },
-              {
-                component: Seldon.ComponentId.TABLE_DATA,
+                component: Seldon.ComponentId.TEXT,
+                variant: "description",
                 overrides: {
                   content: {
                     type: Sdn.ValueType.EXACT,
-                    value: "hober@korell.trade",
+                    value: "1 - 10 of 500",
                   },
                 },
               },
               {
-                component: Seldon.ComponentId.TABLE_DATA,
+                component: Seldon.ComponentId.ICON,
                 overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "Korell" },
-                },
-              },
-              {
-                component: Seldon.ComponentId.TABLE_DATA,
-                overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "Merchant" },
-                },
-              },
-            ],
-          },
-          {
-            component: Seldon.ComponentId.TABLE_ROW_DATA,
-            children: [
-              {
-                component: Seldon.ComponentId.TABLE_DATA,
-                overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "Bel" },
-                },
-              },
-              {
-                component: Seldon.ComponentId.TABLE_DATA,
-                overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "Riose" },
-                },
-              },
-              {
-                component: Seldon.ComponentId.TABLE_DATA,
-                overrides: {
-                  content: {
-                    type: Sdn.ValueType.EXACT,
-                    value: "bel.riose@empire.mil",
-                  },
-                },
-              },
-              {
-                component: Seldon.ComponentId.TABLE_DATA,
-                overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "Empire" },
-                },
-              },
-              {
-                component: Seldon.ComponentId.TABLE_DATA,
-                overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "Military" },
-                },
-              },
-            ],
-          },
-        ],
-      },
-      {
-        component: Seldon.ComponentId.FRAME,
-        overrides: {
-          wrapperElement: {
-            type: Sdn.ValueType.OPTION,
-            value: Sdn.WrapperElement.TFOOT,
-          },
-        },
-        children: [
-          {
-            component: Seldon.ComponentId.TABLE_ROW_DATA,
-            children: [
-              {
-                component: Seldon.ComponentId.TABLE_DATA,
-                overrides: {
-                  display: {
+                  symbol: {
                     type: Sdn.ValueType.OPTION,
-                    value: Sdn.Display.EXCLUDE,
+                    value: "material-chevronLeft",
                   },
                 },
               },
               {
-                component: Seldon.ComponentId.TABLE_DATA,
+                component: Seldon.ComponentId.ICON,
                 overrides: {
-                  display: {
+                  symbol: {
                     type: Sdn.ValueType.OPTION,
-                    value: Sdn.Display.EXCLUDE,
+                    value: "material-chevronRight",
                   },
                 },
               },
               {
-                component: Seldon.ComponentId.TABLE_DATA,
+                component: Seldon.ComponentId.SELECT,
                 overrides: {
-                  display: {
-                    type: Sdn.ValueType.OPTION,
-                    value: Sdn.Display.EXCLUDE,
-                  },
+                  width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
                 },
-              },
-              {
-                component: Seldon.ComponentId.TABLE_DATA,
-                overrides: {
-                  display: {
-                    type: Sdn.ValueType.OPTION,
-                    value: Sdn.Display.EXCLUDE,
+                children: [
+                  {
+                    component: Seldon.ComponentId.TEXT,
+                    variant: "option",
+                    overrides: {
+                      content: {
+                        type: Sdn.ValueType.EXACT,
+                        value: "10 per view",
+                      },
+                    },
                   },
-                },
-              },
-              {
-                component: Seldon.ComponentId.TABLE_DATA,
-                overrides: {
-                  content: { type: Sdn.ValueType.EXACT, value: "Total: 4" },
-                  columns: {
-                    type: Sdn.ValueType.EXACT,
-                    value: { unit: Sdn.Unit.NUMBER, value: 5 },
+                  {
+                    component: Seldon.ComponentId.TEXT,
+                    variant: "option",
+                    overrides: {
+                      content: {
+                        type: Sdn.ValueType.EXACT,
+                        value: "20 per view",
+                      },
+                    },
                   },
-                },
+                  {
+                    component: Seldon.ComponentId.TEXT,
+                    variant: "option",
+                    overrides: {
+                      content: {
+                        type: Sdn.ValueType.EXACT,
+                        value: "50 per view",
+                      },
+                    },
+                  },
+                ],
               },
             ],
           },
@@ -510,8 +1035,1427 @@ export const schema = {
       },
     ],
   },
+  variants: [
+    {
+      id: "customer",
+      label: "Customer Table",
+      intent:
+        "Customer roster with a tinted header band, status chips, and colored balance figures.",
+      children: [
+        {
+          component: Seldon.ComponentId.FRAME,
+          overrides: {
+            wrapperElement: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.WrapperElement.TABLE,
+            },
+            orientation: { type: Sdn.ValueType.EMPTY, value: null },
+            width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+            height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+          },
+          children: [
+            {
+              component: Seldon.ComponentId.FRAME,
+              overrides: {
+                wrapperElement: {
+                  type: Sdn.ValueType.OPTION,
+                  value: Sdn.WrapperElement.THEAD,
+                },
+                orientation: { type: Sdn.ValueType.EMPTY, value: null },
+              },
+              children: [
+                {
+                  component: Seldon.ComponentId.FRAME,
+                  overrides: {
+                    orientation: { type: Sdn.ValueType.EMPTY, value: null },
+                    wrapperElement: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.WrapperElement.TR,
+                    },
+                    background: [
+                      {
+                        kind: {
+                          type: Sdn.ValueType.OPTION,
+                          value: Sdn.BackgroundKind.COLOR,
+                        },
+                        color: {
+                          type: Sdn.ValueType.THEME_CATEGORICAL,
+                          value: "@swatch.primary",
+                        },
+                        brightness: {
+                          type: Sdn.ValueType.EXACT,
+                          value: { unit: Sdn.Unit.PERCENT, value: 65 },
+                        },
+                        opacity: { type: Sdn.ValueType.EMPTY, value: null },
+                      },
+                    ],
+                  },
+                  children: [
+                    {
+                      component: Seldon.ComponentId.TABLE_HEADER,
+                      variant: "sortable",
+                      children: [
+                        {
+                          component: Seldon.ComponentId.TEXT,
+                          variant: "label",
+                          overrides: {
+                            content: {
+                              type: Sdn.ValueType.EXACT,
+                              value: "Customer",
+                            },
+                          },
+                        },
+                        {
+                          component: Seldon.ComponentId.ICON,
+                          overrides: {
+                            symbol: {
+                              type: Sdn.ValueType.OPTION,
+                              value: "material-unfoldMore",
+                            },
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      component: Seldon.ComponentId.TABLE_HEADER,
+                      variant: "sortable",
+                      children: [
+                        {
+                          component: Seldon.ComponentId.TEXT,
+                          variant: "label",
+                          overrides: {
+                            content: {
+                              type: Sdn.ValueType.EXACT,
+                              value: "Status",
+                            },
+                          },
+                        },
+                        {
+                          component: Seldon.ComponentId.ICON,
+                          overrides: {
+                            symbol: {
+                              type: Sdn.ValueType.OPTION,
+                              value: "material-unfoldMore",
+                            },
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      component: Seldon.ComponentId.TABLE_HEADER,
+                      variant: "numeric",
+                      children: [
+                        {
+                          component: Seldon.ComponentId.TEXT,
+                          variant: "label",
+                          overrides: {
+                            content: {
+                              type: Sdn.ValueType.EXACT,
+                              value: "Rate",
+                            },
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      component: Seldon.ComponentId.TABLE_HEADER,
+                      variant: "numeric",
+                      children: [
+                        {
+                          component: Seldon.ComponentId.TEXT,
+                          variant: "label",
+                          overrides: {
+                            content: {
+                              type: Sdn.ValueType.EXACT,
+                              value: "Balance",
+                            },
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      component: Seldon.ComponentId.TABLE_HEADER,
+                      variant: "numeric",
+                      children: [
+                        {
+                          component: Seldon.ComponentId.TEXT,
+                          variant: "label",
+                          overrides: {
+                            content: {
+                              type: Sdn.ValueType.EXACT,
+                              value: "Deposit",
+                            },
+                          },
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              component: Seldon.ComponentId.FRAME,
+              overrides: {
+                wrapperElement: {
+                  type: Sdn.ValueType.OPTION,
+                  value: Sdn.WrapperElement.TBODY,
+                },
+                orientation: { type: Sdn.ValueType.EMPTY, value: null },
+              },
+              children: [
+                {
+                  component: Seldon.ComponentId.TABLE_ROW_DATA,
+                  children: [
+                    {
+                      component: Seldon.ComponentId.TABLE_DATA,
+                      variant: "twoLine",
+                      children: [
+                        {
+                          component: Seldon.ComponentId.TEXT,
+                          variant: "label",
+                          overrides: {
+                            content: {
+                              type: Sdn.ValueType.EXACT,
+                              value: "Ralph Edwards",
+                            },
+                          },
+                        },
+                        {
+                          component: Seldon.ComponentId.TEXT,
+                          variant: "description",
+                          overrides: {
+                            content: {
+                              type: Sdn.ValueType.EXACT,
+                              value: "(405) 555-0128",
+                            },
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      component: Seldon.ComponentId.TABLE_DATA,
+                      variant: "status",
+                      children: [
+                        {
+                          component: Seldon.ComponentId.CHIP,
+                          children: [
+                            {
+                              component: Seldon.ComponentId.TEXT,
+                              variant: "label",
+                              overrides: {
+                                content: {
+                                  type: Sdn.ValueType.EXACT,
+                                  value: "Open",
+                                },
+                              },
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                    {
+                      component: Seldon.ComponentId.TABLE_DATA,
+                      variant: "numeric",
+                      children: [
+                        {
+                          component: Seldon.ComponentId.TEXT,
+                          variant: "label",
+                          overrides: {
+                            content: {
+                              type: Sdn.ValueType.EXACT,
+                              value: "$78.00",
+                            },
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      component: Seldon.ComponentId.TABLE_DATA,
+                      variant: "negative",
+                      children: [
+                        {
+                          component: Seldon.ComponentId.TEXT,
+                          variant: "label",
+                          overrides: {
+                            content: {
+                              type: Sdn.ValueType.EXACT,
+                              value: "-$105.55",
+                            },
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      component: Seldon.ComponentId.TABLE_DATA,
+                      variant: "numeric",
+                      children: [
+                        {
+                          component: Seldon.ComponentId.TEXT,
+                          variant: "label",
+                          overrides: {
+                            content: {
+                              type: Sdn.ValueType.EXACT,
+                              value: "$293.01",
+                            },
+                          },
+                        },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  component: Seldon.ComponentId.TABLE_ROW_DATA,
+                  children: [
+                    {
+                      component: Seldon.ComponentId.TABLE_DATA,
+                      variant: "twoLine",
+                      children: [
+                        {
+                          component: Seldon.ComponentId.TEXT,
+                          variant: "label",
+                          overrides: {
+                            content: {
+                              type: Sdn.ValueType.EXACT,
+                              value: "Floyd Miles",
+                            },
+                          },
+                        },
+                        {
+                          component: Seldon.ComponentId.TEXT,
+                          variant: "description",
+                          overrides: {
+                            content: {
+                              type: Sdn.ValueType.EXACT,
+                              value: "(480) 555-0103",
+                            },
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      component: Seldon.ComponentId.TABLE_DATA,
+                      variant: "status",
+                      children: [
+                        {
+                          component: Seldon.ComponentId.CHIP,
+                          overrides: {
+                            background: [
+                              {
+                                kind: {
+                                  type: Sdn.ValueType.OPTION,
+                                  value: Sdn.BackgroundKind.COLOR,
+                                },
+                                color: {
+                                  type: Sdn.ValueType.EXACT,
+                                  value: "#1F9D55",
+                                },
+                                brightness: {
+                                  type: Sdn.ValueType.EMPTY,
+                                  value: null,
+                                },
+                                opacity: {
+                                  type: Sdn.ValueType.EMPTY,
+                                  value: null,
+                                },
+                              },
+                            ],
+                          },
+                          children: [
+                            {
+                              component: Seldon.ComponentId.TEXT,
+                              variant: "label",
+                              overrides: {
+                                content: {
+                                  type: Sdn.ValueType.EXACT,
+                                  value: "Paid",
+                                },
+                              },
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                    {
+                      component: Seldon.ComponentId.TABLE_DATA,
+                      variant: "numeric",
+                      children: [
+                        {
+                          component: Seldon.ComponentId.TEXT,
+                          variant: "label",
+                          overrides: {
+                            content: {
+                              type: Sdn.ValueType.EXACT,
+                              value: "$40.00",
+                            },
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      component: Seldon.ComponentId.TABLE_DATA,
+                      variant: "positive",
+                      children: [
+                        {
+                          component: Seldon.ComponentId.TEXT,
+                          variant: "label",
+                          overrides: {
+                            content: {
+                              type: Sdn.ValueType.EXACT,
+                              value: "$275.43",
+                            },
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      component: Seldon.ComponentId.TABLE_DATA,
+                      variant: "numeric",
+                      children: [
+                        {
+                          component: Seldon.ComponentId.TEXT,
+                          variant: "label",
+                          overrides: {
+                            content: {
+                              type: Sdn.ValueType.EXACT,
+                              value: "$710.68",
+                            },
+                          },
+                        },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  component: Seldon.ComponentId.TABLE_ROW_DATA,
+                  children: [
+                    {
+                      component: Seldon.ComponentId.TABLE_DATA,
+                      variant: "twoLine",
+                      children: [
+                        {
+                          component: Seldon.ComponentId.TEXT,
+                          variant: "label",
+                          overrides: {
+                            content: {
+                              type: Sdn.ValueType.EXACT,
+                              value: "Darlene Robertson",
+                            },
+                          },
+                        },
+                        {
+                          component: Seldon.ComponentId.TEXT,
+                          variant: "description",
+                          overrides: {
+                            content: {
+                              type: Sdn.ValueType.EXACT,
+                              value: "(808) 555-0111",
+                            },
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      component: Seldon.ComponentId.TABLE_DATA,
+                      variant: "status",
+                      children: [
+                        {
+                          component: Seldon.ComponentId.CHIP,
+                          children: [
+                            {
+                              component: Seldon.ComponentId.TEXT,
+                              variant: "label",
+                              overrides: {
+                                content: {
+                                  type: Sdn.ValueType.EXACT,
+                                  value: "Open",
+                                },
+                              },
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                    {
+                      component: Seldon.ComponentId.TABLE_DATA,
+                      variant: "numeric",
+                      children: [
+                        {
+                          component: Seldon.ComponentId.TEXT,
+                          variant: "label",
+                          overrides: {
+                            content: {
+                              type: Sdn.ValueType.EXACT,
+                              value: "$77.00",
+                            },
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      component: Seldon.ComponentId.TABLE_DATA,
+                      variant: "negative",
+                      children: [
+                        {
+                          component: Seldon.ComponentId.TEXT,
+                          variant: "label",
+                          overrides: {
+                            content: {
+                              type: Sdn.ValueType.EXACT,
+                              value: "-$778.35",
+                            },
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      component: Seldon.ComponentId.TABLE_DATA,
+                      variant: "numeric",
+                      children: [
+                        {
+                          component: Seldon.ComponentId.TEXT,
+                          variant: "label",
+                          overrides: {
+                            content: {
+                              type: Sdn.ValueType.EXACT,
+                              value: "$169.43",
+                            },
+                          },
+                        },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  component: Seldon.ComponentId.TABLE_ROW_DATA,
+                  children: [
+                    {
+                      component: Seldon.ComponentId.TABLE_DATA,
+                      variant: "twoLine",
+                      children: [
+                        {
+                          component: Seldon.ComponentId.TEXT,
+                          variant: "label",
+                          overrides: {
+                            content: {
+                              type: Sdn.ValueType.EXACT,
+                              value: "Albert Flores",
+                            },
+                          },
+                        },
+                        {
+                          component: Seldon.ComponentId.TEXT,
+                          variant: "description",
+                          overrides: {
+                            content: {
+                              type: Sdn.ValueType.EXACT,
+                              value: "(316) 555-0116",
+                            },
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      component: Seldon.ComponentId.TABLE_DATA,
+                      variant: "status",
+                      children: [
+                        {
+                          component: Seldon.ComponentId.CHIP,
+                          overrides: {
+                            background: [
+                              {
+                                kind: {
+                                  type: Sdn.ValueType.OPTION,
+                                  value: Sdn.BackgroundKind.COLOR,
+                                },
+                                color: {
+                                  type: Sdn.ValueType.THEME_CATEGORICAL,
+                                  value: "@swatch.gray",
+                                },
+                                brightness: {
+                                  type: Sdn.ValueType.EMPTY,
+                                  value: null,
+                                },
+                                opacity: {
+                                  type: Sdn.ValueType.EMPTY,
+                                  value: null,
+                                },
+                              },
+                            ],
+                          },
+                          children: [
+                            {
+                              component: Seldon.ComponentId.TEXT,
+                              variant: "label",
+                              overrides: {
+                                content: {
+                                  type: Sdn.ValueType.EXACT,
+                                  value: "Inactive",
+                                },
+                              },
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                    {
+                      component: Seldon.ComponentId.TABLE_DATA,
+                      variant: "numeric",
+                      children: [
+                        {
+                          component: Seldon.ComponentId.TEXT,
+                          variant: "label",
+                          overrides: {
+                            content: {
+                              type: Sdn.ValueType.EXACT,
+                              value: "$85.00",
+                            },
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      component: Seldon.ComponentId.TABLE_DATA,
+                      variant: "positive",
+                      children: [
+                        {
+                          component: Seldon.ComponentId.TEXT,
+                          variant: "label",
+                          overrides: {
+                            content: {
+                              type: Sdn.ValueType.EXACT,
+                              value: "$928.41",
+                            },
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      component: Seldon.ComponentId.TABLE_DATA,
+                      variant: "numeric",
+                      children: [
+                        {
+                          component: Seldon.ComponentId.TEXT,
+                          variant: "label",
+                          overrides: {
+                            content: {
+                              type: Sdn.ValueType.EXACT,
+                              value: "$779.58",
+                            },
+                          },
+                        },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  component: Seldon.ComponentId.TABLE_ROW_DATA,
+                  children: [
+                    {
+                      component: Seldon.ComponentId.TABLE_DATA,
+                      variant: "twoLine",
+                      children: [
+                        {
+                          component: Seldon.ComponentId.TEXT,
+                          variant: "label",
+                          overrides: {
+                            content: {
+                              type: Sdn.ValueType.EXACT,
+                              value: "Devon Lane",
+                            },
+                          },
+                        },
+                        {
+                          component: Seldon.ComponentId.TEXT,
+                          variant: "description",
+                          overrides: {
+                            content: {
+                              type: Sdn.ValueType.EXACT,
+                              value: "(217) 555-0113",
+                            },
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      component: Seldon.ComponentId.TABLE_DATA,
+                      variant: "status",
+                      children: [
+                        {
+                          component: Seldon.ComponentId.CHIP,
+                          overrides: {
+                            background: [
+                              {
+                                kind: {
+                                  type: Sdn.ValueType.OPTION,
+                                  value: Sdn.BackgroundKind.COLOR,
+                                },
+                                color: {
+                                  type: Sdn.ValueType.EXACT,
+                                  value: "#1F9D55",
+                                },
+                                brightness: {
+                                  type: Sdn.ValueType.EMPTY,
+                                  value: null,
+                                },
+                                opacity: {
+                                  type: Sdn.ValueType.EMPTY,
+                                  value: null,
+                                },
+                              },
+                            ],
+                          },
+                          children: [
+                            {
+                              component: Seldon.ComponentId.TEXT,
+                              variant: "label",
+                              overrides: {
+                                content: {
+                                  type: Sdn.ValueType.EXACT,
+                                  value: "Paid",
+                                },
+                              },
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                    {
+                      component: Seldon.ComponentId.TABLE_DATA,
+                      variant: "numeric",
+                      children: [
+                        {
+                          component: Seldon.ComponentId.TEXT,
+                          variant: "label",
+                          overrides: {
+                            content: {
+                              type: Sdn.ValueType.EXACT,
+                              value: "$56.00",
+                            },
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      component: Seldon.ComponentId.TABLE_DATA,
+                      variant: "positive",
+                      children: [
+                        {
+                          component: Seldon.ComponentId.TEXT,
+                          variant: "label",
+                          overrides: {
+                            content: {
+                              type: Sdn.ValueType.EXACT,
+                              value: "$256.35",
+                            },
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      component: Seldon.ComponentId.TABLE_DATA,
+                      variant: "numeric",
+                      children: [
+                        {
+                          component: Seldon.ComponentId.TEXT,
+                          variant: "label",
+                          overrides: {
+                            content: {
+                              type: Sdn.ValueType.EXACT,
+                              value: "$896.65",
+                            },
+                          },
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              component: Seldon.ComponentId.FRAME,
+              overrides: {
+                wrapperElement: {
+                  type: Sdn.ValueType.OPTION,
+                  value: Sdn.WrapperElement.FOOTER,
+                },
+                orientation: {
+                  type: Sdn.ValueType.OPTION,
+                  value: Sdn.Orientation.HORIZONTAL,
+                },
+                align: {
+                  type: Sdn.ValueType.OPTION,
+                  value: Sdn.Align.CENTER_LEFT,
+                },
+                width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+                height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+                gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.cozy" },
+                padding: {
+                  top: {
+                    type: Sdn.ValueType.THEME_ORDINAL,
+                    value: "@padding.cozy",
+                  },
+                  right: {
+                    type: Sdn.ValueType.THEME_ORDINAL,
+                    value: "@padding.cozy",
+                  },
+                  bottom: {
+                    type: Sdn.ValueType.THEME_ORDINAL,
+                    value: "@padding.cozy",
+                  },
+                  left: {
+                    type: Sdn.ValueType.THEME_ORDINAL,
+                    value: "@padding.cozy",
+                  },
+                },
+                borderTop: {
+                  preset: { type: Sdn.ValueType.EMPTY, value: null },
+                  style: {
+                    type: Sdn.ValueType.OPTION,
+                    value: Sdn.BorderStyle.SOLID,
+                  },
+                  color: {
+                    type: Sdn.ValueType.THEME_CATEGORICAL,
+                    value: "@swatch.gray",
+                  },
+                  width: {
+                    type: Sdn.ValueType.THEME_ORDINAL,
+                    value: "@borderWidth.xsmall",
+                  },
+                  brightness: { type: Sdn.ValueType.EMPTY, value: null },
+                  opacity: { type: Sdn.ValueType.EMPTY, value: null },
+                },
+              },
+              children: [
+                {
+                  component: Seldon.ComponentId.TEXT,
+                  variant: "description",
+                  overrides: {
+                    content: { type: Sdn.ValueType.EXACT, value: "1-10 of 97" },
+                    width: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.Resize.FILL,
+                    },
+                  },
+                },
+                {
+                  component: Seldon.ComponentId.SELECT,
+                  overrides: {
+                    width: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.Resize.FIT,
+                    },
+                  },
+                  children: [
+                    {
+                      component: Seldon.ComponentId.TEXT,
+                      variant: "option",
+                      overrides: {
+                        content: {
+                          type: Sdn.ValueType.EXACT,
+                          value: "Rows: 10",
+                        },
+                      },
+                    },
+                    {
+                      component: Seldon.ComponentId.TEXT,
+                      variant: "option",
+                      overrides: {
+                        content: {
+                          type: Sdn.ValueType.EXACT,
+                          value: "Rows: 20",
+                        },
+                      },
+                    },
+                  ],
+                },
+                {
+                  component: Seldon.ComponentId.ICON,
+                  overrides: {
+                    symbol: {
+                      type: Sdn.ValueType.OPTION,
+                      value: "material-chevronLeft",
+                    },
+                  },
+                },
+                {
+                  component: Seldon.ComponentId.ICON,
+                  overrides: {
+                    symbol: {
+                      type: Sdn.ValueType.OPTION,
+                      value: "material-chevronRight",
+                    },
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      id: "comparison",
+      label: "Comparison Table",
+      intent:
+        "Plan comparison with grouped section rows and feature rows that mix text and checkmarks.",
+      children: [
+        {
+          component: Seldon.ComponentId.FRAME,
+          overrides: {
+            wrapperElement: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.WrapperElement.TABLE,
+            },
+            orientation: { type: Sdn.ValueType.EMPTY, value: null },
+            width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+            height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+          },
+          children: [
+            {
+              component: Seldon.ComponentId.FRAME,
+              overrides: {
+                wrapperElement: {
+                  type: Sdn.ValueType.OPTION,
+                  value: Sdn.WrapperElement.THEAD,
+                },
+                orientation: { type: Sdn.ValueType.EMPTY, value: null },
+              },
+              children: [
+                {
+                  component: Seldon.ComponentId.FRAME,
+                  overrides: {
+                    orientation: { type: Sdn.ValueType.EMPTY, value: null },
+                    wrapperElement: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.WrapperElement.TR,
+                    },
+                  },
+                  children: [
+                    {
+                      component: Seldon.ComponentId.TABLE_HEADER,
+                      children: [
+                        {
+                          component: Seldon.ComponentId.TEXT,
+                          variant: "label",
+                          overrides: {
+                            content: {
+                              type: Sdn.ValueType.EXACT,
+                              value: "Usage",
+                            },
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      component: Seldon.ComponentId.TABLE_HEADER,
+                      children: [
+                        {
+                          component: Seldon.ComponentId.TEXT,
+                          variant: "label",
+                          overrides: {
+                            content: {
+                              type: Sdn.ValueType.EXACT,
+                              value: "Personal",
+                            },
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      component: Seldon.ComponentId.TABLE_HEADER,
+                      children: [
+                        {
+                          component: Seldon.ComponentId.TEXT,
+                          variant: "label",
+                          overrides: {
+                            content: {
+                              type: Sdn.ValueType.EXACT,
+                              value: "Personal Pro",
+                            },
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      component: Seldon.ComponentId.TABLE_HEADER,
+                      children: [
+                        {
+                          component: Seldon.ComponentId.TEXT,
+                          variant: "label",
+                          overrides: {
+                            content: {
+                              type: Sdn.ValueType.EXACT,
+                              value: "Team",
+                            },
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      component: Seldon.ComponentId.TABLE_HEADER,
+                      children: [
+                        {
+                          component: Seldon.ComponentId.TEXT,
+                          variant: "label",
+                          overrides: {
+                            content: {
+                              type: Sdn.ValueType.EXACT,
+                              value: "Enterprise",
+                            },
+                          },
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              component: Seldon.ComponentId.FRAME,
+              overrides: {
+                wrapperElement: {
+                  type: Sdn.ValueType.OPTION,
+                  value: Sdn.WrapperElement.TBODY,
+                },
+                orientation: { type: Sdn.ValueType.EMPTY, value: null },
+              },
+              children: [
+                {
+                  component: Seldon.ComponentId.TABLE_ROW_DATA,
+                  children: [
+                    {
+                      component: Seldon.ComponentId.TABLE_DATA,
+                      children: [
+                        {
+                          component: Seldon.ComponentId.TEXT,
+                          variant: "label",
+                          overrides: {
+                            content: {
+                              type: Sdn.ValueType.EXACT,
+                              value: "Pages & blocks",
+                            },
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      component: Seldon.ComponentId.TABLE_DATA,
+                      children: [
+                        {
+                          component: Seldon.ComponentId.TEXT,
+                          variant: "label",
+                          overrides: {
+                            content: {
+                              type: Sdn.ValueType.EXACT,
+                              value: "Unlimited",
+                            },
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      component: Seldon.ComponentId.TABLE_DATA,
+                      children: [
+                        {
+                          component: Seldon.ComponentId.TEXT,
+                          variant: "label",
+                          overrides: {
+                            content: {
+                              type: Sdn.ValueType.EXACT,
+                              value: "Unlimited",
+                            },
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      component: Seldon.ComponentId.TABLE_DATA,
+                      children: [
+                        {
+                          component: Seldon.ComponentId.TEXT,
+                          variant: "label",
+                          overrides: {
+                            content: {
+                              type: Sdn.ValueType.EXACT,
+                              value: "Unlimited",
+                            },
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      component: Seldon.ComponentId.TABLE_DATA,
+                      children: [
+                        {
+                          component: Seldon.ComponentId.TEXT,
+                          variant: "label",
+                          overrides: {
+                            content: {
+                              type: Sdn.ValueType.EXACT,
+                              value: "Unlimited",
+                            },
+                          },
+                        },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  component: Seldon.ComponentId.TABLE_ROW_DATA,
+                  children: [
+                    {
+                      component: Seldon.ComponentId.TABLE_DATA,
+                      children: [
+                        {
+                          component: Seldon.ComponentId.TEXT,
+                          variant: "label",
+                          overrides: {
+                            content: {
+                              type: Sdn.ValueType.EXACT,
+                              value: "Members",
+                            },
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      component: Seldon.ComponentId.TABLE_DATA,
+                      children: [
+                        {
+                          component: Seldon.ComponentId.TEXT,
+                          variant: "label",
+                          overrides: {
+                            content: {
+                              type: Sdn.ValueType.EXACT,
+                              value: "Just you",
+                            },
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      component: Seldon.ComponentId.TABLE_DATA,
+                      children: [
+                        {
+                          component: Seldon.ComponentId.TEXT,
+                          variant: "label",
+                          overrides: {
+                            content: {
+                              type: Sdn.ValueType.EXACT,
+                              value: "Just you",
+                            },
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      component: Seldon.ComponentId.TABLE_DATA,
+                      children: [
+                        {
+                          component: Seldon.ComponentId.TEXT,
+                          variant: "label",
+                          overrides: {
+                            content: {
+                              type: Sdn.ValueType.EXACT,
+                              value: "Unlimited",
+                            },
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      component: Seldon.ComponentId.TABLE_DATA,
+                      children: [
+                        {
+                          component: Seldon.ComponentId.TEXT,
+                          variant: "label",
+                          overrides: {
+                            content: {
+                              type: Sdn.ValueType.EXACT,
+                              value: "Unlimited",
+                            },
+                          },
+                        },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  component: Seldon.ComponentId.TABLE_ROW_DATA,
+                  children: [
+                    {
+                      component: Seldon.ComponentId.TABLE_DATA,
+                      children: [
+                        {
+                          component: Seldon.ComponentId.TEXT,
+                          variant: "subtitle",
+                          overrides: {
+                            content: {
+                              type: Sdn.ValueType.EXACT,
+                              value: "Collaboration",
+                            },
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      component: Seldon.ComponentId.TABLE_DATA,
+                      children: [
+                        {
+                          component: Seldon.ComponentId.TEXT,
+                          variant: "label",
+                          overrides: {
+                            content: { type: Sdn.ValueType.EXACT, value: " " },
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      component: Seldon.ComponentId.TABLE_DATA,
+                      children: [
+                        {
+                          component: Seldon.ComponentId.TEXT,
+                          variant: "label",
+                          overrides: {
+                            content: { type: Sdn.ValueType.EXACT, value: " " },
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      component: Seldon.ComponentId.TABLE_DATA,
+                      children: [
+                        {
+                          component: Seldon.ComponentId.TEXT,
+                          variant: "label",
+                          overrides: {
+                            content: { type: Sdn.ValueType.EXACT, value: " " },
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      component: Seldon.ComponentId.TABLE_DATA,
+                      children: [
+                        {
+                          component: Seldon.ComponentId.TEXT,
+                          variant: "label",
+                          overrides: {
+                            content: { type: Sdn.ValueType.EXACT, value: " " },
+                          },
+                        },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  component: Seldon.ComponentId.TABLE_ROW_DATA,
+                  children: [
+                    {
+                      component: Seldon.ComponentId.TABLE_DATA,
+                      children: [
+                        {
+                          component: Seldon.ComponentId.TEXT,
+                          variant: "label",
+                          overrides: {
+                            content: {
+                              type: Sdn.ValueType.EXACT,
+                              value: "Real-time collaboration",
+                            },
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      component: Seldon.ComponentId.TABLE_DATA,
+                      overrides: {
+                        cellAlign: {
+                          type: Sdn.ValueType.OPTION,
+                          value: Sdn.Align.CENTER,
+                        },
+                      },
+                      children: [
+                        {
+                          component: Seldon.ComponentId.ICON,
+                          overrides: {
+                            symbol: {
+                              type: Sdn.ValueType.OPTION,
+                              value: "material-check",
+                            },
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      component: Seldon.ComponentId.TABLE_DATA,
+                      overrides: {
+                        cellAlign: {
+                          type: Sdn.ValueType.OPTION,
+                          value: Sdn.Align.CENTER,
+                        },
+                      },
+                      children: [
+                        {
+                          component: Seldon.ComponentId.ICON,
+                          overrides: {
+                            symbol: {
+                              type: Sdn.ValueType.OPTION,
+                              value: "material-check",
+                            },
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      component: Seldon.ComponentId.TABLE_DATA,
+                      overrides: {
+                        cellAlign: {
+                          type: Sdn.ValueType.OPTION,
+                          value: Sdn.Align.CENTER,
+                        },
+                      },
+                      children: [
+                        {
+                          component: Seldon.ComponentId.ICON,
+                          overrides: {
+                            symbol: {
+                              type: Sdn.ValueType.OPTION,
+                              value: "material-check",
+                            },
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      component: Seldon.ComponentId.TABLE_DATA,
+                      overrides: {
+                        cellAlign: {
+                          type: Sdn.ValueType.OPTION,
+                          value: Sdn.Align.CENTER,
+                        },
+                      },
+                      children: [
+                        {
+                          component: Seldon.ComponentId.ICON,
+                          overrides: {
+                            symbol: {
+                              type: Sdn.ValueType.OPTION,
+                              value: "material-check",
+                            },
+                          },
+                        },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  component: Seldon.ComponentId.TABLE_ROW_DATA,
+                  children: [
+                    {
+                      component: Seldon.ComponentId.TABLE_DATA,
+                      children: [
+                        {
+                          component: Seldon.ComponentId.TEXT,
+                          variant: "label",
+                          overrides: {
+                            content: {
+                              type: Sdn.ValueType.EXACT,
+                              value: "Link sharing",
+                            },
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      component: Seldon.ComponentId.TABLE_DATA,
+                      overrides: {
+                        cellAlign: {
+                          type: Sdn.ValueType.OPTION,
+                          value: Sdn.Align.CENTER,
+                        },
+                      },
+                      children: [
+                        {
+                          component: Seldon.ComponentId.ICON,
+                          overrides: {
+                            symbol: {
+                              type: Sdn.ValueType.OPTION,
+                              value: "material-check",
+                            },
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      component: Seldon.ComponentId.TABLE_DATA,
+                      overrides: {
+                        cellAlign: {
+                          type: Sdn.ValueType.OPTION,
+                          value: Sdn.Align.CENTER,
+                        },
+                      },
+                      children: [
+                        {
+                          component: Seldon.ComponentId.ICON,
+                          overrides: {
+                            symbol: {
+                              type: Sdn.ValueType.OPTION,
+                              value: "material-check",
+                            },
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      component: Seldon.ComponentId.TABLE_DATA,
+                      overrides: {
+                        cellAlign: {
+                          type: Sdn.ValueType.OPTION,
+                          value: Sdn.Align.CENTER,
+                        },
+                      },
+                      children: [
+                        {
+                          component: Seldon.ComponentId.ICON,
+                          overrides: {
+                            symbol: {
+                              type: Sdn.ValueType.OPTION,
+                              value: "material-check",
+                            },
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      component: Seldon.ComponentId.TABLE_DATA,
+                      overrides: {
+                        cellAlign: {
+                          type: Sdn.ValueType.OPTION,
+                          value: Sdn.Align.CENTER,
+                        },
+                      },
+                      children: [
+                        {
+                          component: Seldon.ComponentId.ICON,
+                          overrides: {
+                            symbol: {
+                              type: Sdn.ValueType.OPTION,
+                              value: "material-check",
+                            },
+                          },
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  ],
 } as const satisfies ComponentSchema
 
 export const exportConfig: ComponentExport = {
-  react: { returns: "HTMLTable" },
+  react: { returns: "Frame" },
 }

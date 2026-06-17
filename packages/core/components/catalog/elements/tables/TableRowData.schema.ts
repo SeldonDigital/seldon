@@ -17,6 +17,8 @@ export const schema = {
       value: false,
     },
     direction: { type: Sdn.ValueType.EMPTY, value: null },
+    orientation: { type: Sdn.ValueType.EMPTY, value: null },
+    align: { type: Sdn.ValueType.EMPTY, value: null },
     width: {
       type: Sdn.ValueType.OPTION,
       value: Sdn.Resize.FILL,

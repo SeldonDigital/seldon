@@ -403,6 +403,7 @@ export const NATIVE_REACT_PRIMITIVES: Record<
       generic: "TableHTMLAttributes",
       parameter: "HTMLTableElement",
     },
+    wrapperElementOption: WrapperElement.TABLE,
   },
   HTMLTbody: {
     types: {
