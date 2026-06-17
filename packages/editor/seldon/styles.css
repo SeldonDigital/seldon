@@ -1,0 +1,756 @@
+/*****
+ *
+ * This code was generated using Seldon (https://github.com/SeldonDigital/seldon)
+ *
+ * License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md
+ * Do not redistribute or sublicense without permission.
+ * 
+ * You may not use this software, or any derivative works of it, in whole or in part, 
+ * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly) 
+ * any machine learning or artificial intelligence system without written permission.
+ * 
+ *****/
+ 
+/********************************************
+ *                                          *
+ *              Reset styles                *
+ *                                          *
+ ********************************************/
+
+*,
+::before,
+::after {
+  box-sizing: border-box;
+  border-width: 0;
+  border-style: solid;
+}
+::after,
+::before {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border-width: 0;
+  border-style: solid;
+}
+html,
+:host {
+  line-height: 1.5;
+  -webkit-text-size-adjust: 100%;
+  -moz-tab-size: 4;
+  tab-size: 4;
+  -webkit-tap-highlight-color: transparent;
+}
+body {
+  margin: 0;
+  line-height: inherit;
+}
+hr {
+  height: 0;
+  color: inherit;
+  border-top-width: 1px;
+}
+blockquote,
+dl,
+dd,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+hr,
+figure,
+p,
+pre {
+  margin: 0;
+}
+fieldset {
+  margin: 0;
+  padding: 0;
+}
+legend {
+  padding: 0;
+}
+ol,
+ul,
+menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+dialog {
+  padding: 0;
+}
+textarea {
+  resize: vertical;
+}
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: inherit;
+  font-feature-settings: inherit;
+  font-variation-settings: inherit;
+  font-size: 100%;
+  font-weight: inherit;
+  line-height: inherit;
+  letter-spacing: inherit;
+  color: inherit;
+  margin: 0;
+  padding: 0;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: inherit;
+  font-weight: inherit;
+}
+a {
+  color: inherit;
+  text-decoration: inherit;
+  -webkit-text-decoration: inherit;
+}
+b,
+strong {
+  font-weight: bolder;
+}
+small {
+  font-size: 80%;
+}
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+sub {
+  bottom: -0.25em;
+}
+sup {
+  top: -0.5em;
+}
+table {
+  text-indent: 0;
+  border-color: inherit;
+  border-collapse: collapse;
+}
+ol,
+ul,
+menu {
+  list-style: none;
+}
+img,
+svg,
+video,
+canvas,
+audio,
+iframe,
+embed,
+object {
+  display: block;
+  vertical-align: middle;
+}
+img,
+video {
+  max-width: 100%;
+  height: auto;
+}
+button,
+input,
+select,
+optgroup,
+textarea,
+::file-selector-button {
+  font: inherit;
+  font-feature-settings: inherit;
+  font-variation-settings: inherit;
+  letter-spacing: inherit;
+  color: inherit;
+  border-radius: 0;
+  background-color: transparent;
+  opacity: 1;
+}
+:where(select:is([multiple], [size])) optgroup {
+  font-weight: bolder;
+}
+:where(select:is([multiple], [size])) optgroup option {
+  padding-inline-start: 20px;
+}
+::placeholder {
+  opacity: 1;
+}
+textarea {
+  resize: vertical;
+}
+::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+button,
+input:where([type="button"], [type="reset"], [type="submit"]) {
+  appearance: button;
+  background-color: transparent;
+  background-image: none;
+}
+::-webkit-inner-spin-button,
+::-webkit-outer-spin-button {
+  height: auto;
+}
+button,
+[role="button"] {
+  cursor: pointer;
+}
+/*
+Make sure disabled buttons don't get the pointer cursor.
+*/
+:disabled {
+  cursor: default;
+}
+img,
+svg,
+video,
+canvas,
+audio,
+iframe,
+embed,
+object {
+  display: block;
+  vertical-align: middle;
+}
+img,
+video {
+  max-width: 100%;
+  height: auto;
+}
+/* Make elements with the HTML hidden attribute stay hidden by default */
+[hidden]:where(:not([hidden="until-found"])) {
+  display: none;
+}
+
+/********************************************
+ *                                          *
+ *               Base styles                *
+ *                                          *
+ ********************************************/
+
+html {
+  font-size: 16px;
+}
+
+html,
+body {
+  font-family: system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    Ubuntu,
+    Cantarell,
+    "Open Sans",
+    "Helvetica Neue",
+    sans-serif, "IBM Plex Sans";
+}
+
+:root {
+  --hairline: 1px;
+}
+
+/* For devices with a 2x pixel ratio */
+@media only screen and (-webkit-min-device-pixel-ratio: 2),
+  only screen and (min-resolution: 192dpi) {
+  :root {
+    --hairline: 0.5px;
+  }
+}
+
+/* For devices with a 3x pixel ratio */
+@media only screen and (-webkit-min-device-pixel-ratio: 3),
+  only screen and (min-resolution: 288dpi) {
+  :root {
+    --hairline: 0.33px;
+  }
+}
+
+/* For devices with a 4x pixel ratio */
+@media only screen and (-webkit-min-device-pixel-ratio: 4),
+  only screen and (min-resolution: 384dpi) {
+  :root {
+    --hairline: 0.25px;
+  }
+}
+
+/********************************************
+ *                                          *
+ *             Component styles             *
+ *                                          *
+ ********************************************/
+
+.sdn-button {
+  background-color: var(--sdn-swatch-primary);
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding-top: 0.5rem;
+  padding-right: 0.875rem;
+  padding-bottom: 0.5rem;
+  padding-left: 0.75rem;
+  width: fit-content;
+  height: fit-content;
+  flex-shrink: 0;
+  border-radius: 99999px;
+  border: 0.125rem solid hsl(203 100% 62%);
+}
+
+.sdn-button-iconic {
+  background-color: var(--sdn-swatch-primary);
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: fit-content;
+  height: fit-content;
+  flex-shrink: 0;
+  padding: 0.25rem;
+  border-radius: 99999px;
+  border: var(--hairline) solid hsl(203 100% 74%);
+}
+
+.sdn-button-segmented {
+  background-color: var(--sdn-swatch-primary);
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: auto;
+  width: fit-content;
+  height: fit-content;
+  flex-shrink: 0;
+  padding: 0;
+  border-radius: 99999px;
+}
+
+.sdn-button-simple {
+  background-color: var(--sdn-swatch-primary);
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding-top: 0.5rem;
+  padding-right: 1rem;
+  padding-bottom: 0.5rem;
+  padding-left: 1rem;
+  width: fit-content;
+  height: fit-content;
+  flex-shrink: 0;
+  border-radius: 99999px;
+  border: 0.125rem solid hsl(203 100% 62%);
+}
+
+.sdn-button-tool {
+  background-color: hsl(203 100% 93%);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: fit-content;
+  height: fit-content;
+  flex-shrink: 0;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+}
+
+.sdn-form-control {
+  border-bottom-style: solid;
+  flex-wrap: nowrap;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: start;
+  gap: 0.5rem;
+  align-self: stretch;
+  height: fit-content;
+  flex-shrink: 0;
+  border-color: hsl(203 0% 31%);
+}
+
+.sdn-form-control-iconic {
+  flex-wrap: nowrap;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: start;
+  gap: 0.5rem;
+  align-self: stretch;
+  height: fit-content;
+  flex-shrink: 0;
+  border: var(--hairline) solid hsl(203 100% 62%);
+}
+
+.sdn-frame {
+  flex-wrap: nowrap;
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+  flex: 1 0 0;
+}
+
+.sdn-icon {
+  width: fit-content;
+  height: fit-content;
+  flex-shrink: 0;
+  font-size: 1rem;
+  color: hsl(203 0% 8%);
+}
+
+.sdn-image {
+  object-fit: cover;
+  align-self: stretch;
+  flex: 1 0 0;
+}
+
+.sdn-input {
+  background-color: var(--sdn-swatch-white);
+  color: hsl(203 0% 8%);
+  align-self: stretch;
+  height: fit-content;
+  flex-shrink: 0;
+  font-family: IBM Plex Sans;
+  font-style: normal;
+  font-synthesis-style: none;
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.25;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  border: var(--hairline) solid hsl(203 0% 31%);
+}
+
+.sdn-input-checkbox {
+  color: hsl(203 0% 8%);
+  accent-color: hsl(203 100% 62%);
+  width: fit-content;
+  height: fit-content;
+  flex-shrink: 0;
+}
+
+.sdn-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  align-self: stretch;
+  height: fit-content;
+  flex-shrink: 0;
+  padding: 0.5rem;
+}
+
+.sdn-item-input-row {
+  background-color: var(--sdn-seldon-dark-swatch-primary);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  padding-top: 0.25rem;
+  padding-right: 0.5rem;
+  padding-bottom: 0.25rem;
+  padding-left: 0.5rem;
+  align-self: stretch;
+  height: fit-content;
+  flex-shrink: 0;
+  margin: 0;
+  border-radius: 0.25rem;
+}
+
+.sdn-item-node-row {
+  background-color: var(--sdn-seldon-dark-swatch-primary);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  padding-top: 0.25rem;
+  padding-right: 0.5rem;
+  padding-bottom: 0.25rem;
+  padding-left: 0.5rem;
+  align-self: stretch;
+  height: fit-content;
+  flex-shrink: 0;
+  margin: 0;
+  border-radius: 0.25rem;
+  border: var(--hairline) solid hsl(0 0% 15%);
+}
+
+.sdn-item-section-row {
+  background-color: var(--sdn-seldon-dark-swatch-tint-1);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  padding-top: 0.25rem;
+  padding-right: 0.5rem;
+  padding-bottom: 0.25rem;
+  padding-left: 0.5rem;
+  align-self: stretch;
+  height: fit-content;
+  flex-shrink: 0;
+  margin: 0;
+  border-radius: 0.25rem;
+}
+
+.sdn-text {
+  color: hsl(203 0% 8%);
+  display: flex;
+  flex-direction: row;
+  align-self: stretch;
+  height: fit-content;
+  flex-shrink: 0;
+  font-family: IBM Plex Sans;
+  font-style: normal;
+  font-synthesis-style: none;
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.25;
+  white-space: normal;
+}
+
+.sdn-text-label {
+  color: hsl(203 0% 8%);
+  width: fit-content;
+  height: fit-content;
+  flex-shrink: 0;
+  font-family: IBM Plex Sans;
+  font-style: normal;
+  font-synthesis-style: none;
+  font-weight: 500;
+  font-size: 0.875rem;
+  line-height: 1.15;
+  letter-spacing: 0.1px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.sdn-text-subtitle {
+  color: hsl(203 0% 8%);
+  display: -webkit-box;
+  flex-direction: row;
+  align-self: stretch;
+  height: fit-content;
+  flex-shrink: 0;
+  font-family: IBM Plex Sans;
+  font-style: normal;
+  font-synthesis-style: none;
+  font-weight: 400;
+  font-size: 0.875rem;
+  line-height: 1.25;
+  white-space: normal;
+  overflow: hidden;
+  webkit-line-clamp: 2;
+  line-clamp: 2;
+  webkit-box-orient: vertical;
+  box-orient: vertical;
+}
+
+.sdn-text-title {
+  color: hsl(203 0% 8%);
+  display: -webkit-box;
+  flex-direction: row;
+  align-self: stretch;
+  height: fit-content;
+  flex-shrink: 0;
+  font-family: IBM Plex Sans;
+  font-style: normal;
+  font-synthesis-style: none;
+  font-weight: 500;
+  font-size: 1rem;
+  line-height: 1.25;
+  white-space: normal;
+  overflow: hidden;
+  webkit-line-clamp: 2;
+  line-clamp: 2;
+  webkit-box-orient: vertical;
+  box-orient: vertical;
+}
+
+.sdn-button--gdap {
+  background-color: transparent;
+  padding: 0.25rem;
+}
+
+.sdn-button--llun {
+  padding-right: 0.75rem;
+}
+
+.sdn-button--suj9 {
+  border-bottom-left-radius: 99999px;
+  border-top-left-radius: 99999px;
+}
+
+.sdn-button--u50r {
+  border-top-right-radius: 99999px;
+  border-bottom-right-radius: 99999px;
+}
+
+.sdn-button--yvc2 {
+  flex-direction: column;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+}
+
+.sdn-button--zsvr {
+  background-color: var(--sdn-seldon-dark-swatch-primary);
+  border: 0.125rem solid hsl(0 0% 15%);
+}
+
+.sdn-button-iconic--0q0q {
+  background-color: var(--sdn-seldon-dark-swatch-primary);
+  border: var(--hairline) solid hsl(0 0% 15%);
+}
+
+.sdn-button-iconic--eyvy {
+  background-color: transparent;
+  border: var(--hairline) solid transparent;
+}
+
+.sdn-button-iconic--o4dt {
+  background-color: transparent;
+  border: var(--hairline) solid hsl(0 0% 15%);
+}
+
+.sdn-button-iconic--sxib {
+  background-color: var(--sdn-seldon-dark-swatch-tint-1);
+  border: var(--hairline) solid hsl(0 0% 47%);
+}
+
+.sdn-form-control-iconic--bpko {
+  background-color: var(--sdn-seldon-dark-swatch-primary);
+  gap: 0.25rem;
+  padding-right: 0.25rem;
+  padding-left: 0.5rem;
+  width: 60%;
+  border-radius: 0.25rem;
+  border: var(--hairline) solid hsl(0 0% 15%);
+}
+
+.sdn-frame--12v9 {
+  overflow: hidden;
+  gap: 0.25rem;
+  height: fit-content;
+}
+
+.sdn-icon--afcv {
+  margin-top: 0px;
+  margin-right: 0.25rem;
+  margin-bottom: 0px;
+  margin-left: 0px;
+  font-size: 0.75rem;
+  color: hsl(0 0% 98%);
+}
+
+.sdn-icon--kuax {
+  font-size: 0.6rem;
+}
+
+.sdn-icon--v1uc {
+  font-size: 0.8rem;
+}
+
+.sdn-icon--v2wj {
+  font-size: 0.75rem;
+  color: hsl(0 0% 98%);
+}
+
+.sdn-icon--xjpp {
+  font-size: 0.8rem;
+  color: hsl(0 0% 98%);
+}
+
+.sdn-input--edpy {
+  background-color: transparent;
+  color: hsl(0 0% 8%);
+  flex: 1 0 0;
+  font-size: 0.75rem;
+  padding: 0.25rem;
+}
+
+.sdn-input--f7yx {
+  background-color: transparent;
+  flex: 1 0 0;
+  font-size: 0.875rem;
+}
+
+.sdn-input-checkbox--vxvl {
+  display: flex;
+  color: hsl(0 0% 8%);
+  accent-color: hsl(0 0% 15%);
+  align-items: center;
+  justify-content: center;
+}
+
+.sdn-text-label--2umo {
+  color: hsl(0 0% 98%);
+  font-size: 0.8rem;
+}
+
+.sdn-text-label--duwf {
+  color: hsl(0 0% 98%);
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  flex: 1 0 0;
+  font-size: 0.75rem;
+}
+
+.sdn-text-label--gnq2 {
+  display: none;
+  font-size: 0.6rem;
+}
+
+.sdn-text-label--hljl {
+  color: hsl(0 0% 98%);
+  font-size: 0.5rem;
+}
+
+.sdn-text-label--njzv {
+  font-size: 0.8rem;
+}
+
+.sdn-text-label--t8l6 {
+  color: hsl(0 0% 98%);
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  flex: 1 0 0;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+}
+
+.sdn-text-label--tnwc {
+  color: hsl(0 0% 98%);
+  flex: 1 0 0;
+  font-size: 0.75rem;
+}
+
+.sdn-text-subtitle--mw2u {
+  color: hsl(0 0% 8%);
+  webkit-line-clamp: 3;
+  line-clamp: 3;
+}
+
+.sdn-text-title--09nl {
+  color: hsl(0 0% 8%);
+}

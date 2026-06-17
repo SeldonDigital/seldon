@@ -1,0 +1,20 @@
+import { SVGAttributes } from "react"
+
+export function IconCarbonIbmCloudVpcFileStorage(
+  props: SVGAttributes<SVGSVGElement>,
+) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 -960 960 960"
+      fill="currentColor"
+      height="1em"
+      width="1em"
+      {...props}
+    >
+      <g transform="translate(0, -960) scale(30)">
+        <path d="M13,26H4V6h7.2l3.4,3.4.6.6h12.8v8h2v-8c0-1.1-.9-2-2-2h-12l-3.4-3.4c-.4-.4-.9-.6-1.4-.6h-7.2c-1.1,0-2,.9-2,2v20c0,1.1.9,2,2,2h9s0-2,0-2ZM16,20h14v2h-14v-2ZM16,24h14v2h-14v-2ZM16,28h7v2h-7v-2Z" />
+      </g>
+    </svg>
+  )
+}

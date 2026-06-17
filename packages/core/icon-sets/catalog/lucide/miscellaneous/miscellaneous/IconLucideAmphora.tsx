@@ -1,0 +1,22 @@
+import { SVGAttributes } from "react"
+
+export function IconLucideAmphora(props: SVGAttributes<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 -960 960 960"
+      fill="currentColor"
+      height="1em"
+      width="1em"
+      {...props}
+    >
+      <g transform="translate(0, -960) scale(40)">
+        <path d="M10 5H8a2 2 0 0 0 0 4h.68" />
+        <path d="M14 2v5.632c0 .424.272.795.652.982A6 6 0 0 1 18 14c0 4-3 7-5 8" />
+        <path d="M14 5h2a2 2 0 0 1 0 4h-.68" />
+        <path d="M18 22H6" />
+        <path d="M9 2h6" />
+      </g>
+    </svg>
+  )
+}

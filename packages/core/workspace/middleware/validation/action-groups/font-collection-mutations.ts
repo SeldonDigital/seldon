@@ -1,0 +1,79 @@
+import { isEntryFontCollectionDefault } from "../../../model/entry-font-collection"
+import type { Action, Workspace } from "../../../types"
+import { fontCollectionEntryValidators } from "../validators/font-collection-entry"
+import { WorkspaceValidationError } from "../workspace-validation-error"
+
+function fontCollectionIdOf(action: Action): string {
+  return (action.payload as { fontCollectionId: string }).fontCollectionId
+}
+
+export function validateFontCollectionMutation(
+  workspace: Workspace,
+  action: Action,
+): void {
+  switch (action.type) {
+    case "reset_font_collection_label":
+    case "reset_font_collection_editor_data":
+    case "reset_font_collection_override":
+    case "reset_font_collection":
+    case "set_font_collection_label":
+    case "set_font_collection_editor_data":
+    case "set_font_collection_override":
+    case "set_font_collection_family_variant":
+    case "set_font_collection_family_preset":
+    case "duplicate_font_collection":
+      fontCollectionEntryValidators.exists(
+        workspace,
+        fontCollectionIdOf(action),
+      )
+      break
+    case "delete_font_collection": {
+      const id = action.payload.fontCollectionId
+      fontCollectionEntryValidators.exists(workspace, id)
+      assertFontCollectionDeletable(workspace, id, action)
+      break
+    }
+  }
+}
+
+/** Rejects deleting the default font collection entry. */
+function assertFontCollectionDeletable(
+  workspace: Workspace,
+  id: string,
+  action: Action,
+): void {
+  const entry = workspace["font-collections"][id]
+  if (entry && isEntryFontCollectionDefault(entry)) {
+    throw new WorkspaceValidationError(
+      "Cannot remove default font collection entry",
+      action,
+    )
+  }
+}
+
+export function validateAddFontCollectionCustomFamily(
+  workspace: Workspace,
+  action: Action,
+): void {
+  const payload = action.payload as { fontCollectionId: string; name?: string }
+  fontCollectionEntryValidators.isVariant(workspace, payload.fontCollectionId)
+  if (!payload.name?.trim()) {
+    throw new WorkspaceValidationError(
+      "Custom font family name is required",
+      action,
+    )
+  }
+}
+
+export function validateRemoveFontCollectionCustomFamily(
+  workspace: Workspace,
+  action: Action,
+): void {
+  const payload = action.payload as { fontCollectionId: string; key: string }
+  fontCollectionEntryValidators.isVariant(workspace, payload.fontCollectionId)
+  fontCollectionEntryValidators.customFamilyExists(
+    workspace,
+    payload.fontCollectionId,
+    payload.key,
+  )
+}

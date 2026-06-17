@@ -1,0 +1,18 @@
+import { SVGAttributes } from "react"
+
+export function IconCarbonTextIndent(props: SVGAttributes<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 -960 960 960"
+      fill="currentColor"
+      height="1em"
+      width="1em"
+      {...props}
+    >
+      <g transform="translate(0, -960) scale(30)">
+        <path d="M14 6H28V8H14zM14 12H28V14H14zM7 18H28V20H7zM7 24H28V26H7zM4 13.59L7.29 10 4 6.41 5.42 5 10.04 10 5.42 15 4 13.59z" />
+      </g>
+    </svg>
+  )
+}

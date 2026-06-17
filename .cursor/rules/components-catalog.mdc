@@ -1,0 +1,19 @@
+---
+description: Sync the components catalog index, constants, and component id from component schema files. Use when invoking @components-catalog or when asked to sync or verify the component catalog.
+alwaysApply: false
+---
+
+# Components Catalog
+
+Use this rule only when the user explicitly invokes `@components-catalog` or asks to sync or verify the component catalog.
+
+- Treat all `.schema.ts` files under `packages/core/components/catalog/` as the source of truth.
+- Sync `packages/core/components/catalog/index.ts`, the `packages/core/components/constants/` index, and `packages/core/components/types/component-id.ts` to match the schema files under `catalog/`, namely `boards/`, `screens/`, `modules/`, `parts/`, `elements/`, `primitives/`, and `frames/`.
+- For each schema file, ensure `catalog/index.ts` includes the `schema` import, the matching `exportConfig` import, exactly one entry in the correct level array, and exactly one entry in `exportConfigById`.
+- Remove stale imports and stale array or map entries for schema files that no longer exist.
+- Keep the level buckets in `catalog/index.ts` limited to `frames`, `primitives`, `elements`, `parts`, `modules`, `screens`, and `boards`.
+- Derive component ids and names from the schema files only. Do not invent components or aliases.
+- Update `packages/core/components/types/component-id.ts` directly so `ComponentId` stays aligned with the schema ids and catalog.
+- Do not change schema contents when doing catalog sync unless the user explicitly asks for schema edits too.
+- Sync the affected files directly. Do not instruct the user to run a catalog generator.
+- If you find mismatches you cannot resolve safely, stop and report them clearly.

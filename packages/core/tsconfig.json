@@ -1,0 +1,42 @@
+{
+  "extends": "../../scripts/tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "customConditions": null,
+    "moduleResolution": "node",
+    "module": "ESNext",
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+
+    "rootDir": ".",
+    "outDir": "./dist",
+    "paths": {
+      "@seldon/core": ["./index.ts"],
+      "@seldon/core/*": ["./*"]
+    }
+  },
+  "include": [
+    "./components/**/*.*",
+    "./font-collections/**/*.*",
+    "./helpers/**/*.*",
+    "./icon-sets/**/*.*",
+    "./properties/**/*.*",
+    "./rules/**/*.*",
+    "./themes/**/*.*",
+    "./utils/**/*.*",
+    "./workspace/**/*.*",
+    "./workspace/**/*.json",
+    "./index.ts",
+    "./constants.ts"
+  ],
+  "exclude": [
+    "./dist",
+    "node_modules",
+    "**/generated-ai-action-schema.json",
+    "**/*.spec.ts",
+    "**/*.test.ts"
+  ],
+  "references": []
+}

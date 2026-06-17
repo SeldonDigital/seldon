@@ -1,0 +1,59 @@
+import { isDraft } from "immer"
+
+import type { EntryNodeId, Workspace } from "../../types"
+import { getCompositionContainers } from "../general/get-composition-containers"
+import { getBoardByNodeId } from "./get-board-by-node-id"
+import { getImmediateParentId } from "./get-parent-ids"
+import { walkBoardTreeRefs } from "./walk-board-tree-refs"
+
+/**
+ * Maps every node id in a workspace to its immediate parent id inside the board
+ * and playground variant trees. Root refs map to `null`. Keyed on the workspace
+ * reference so reads on an unchanged workspace reuse the cached index. Drafts
+ * bypass the cache because they mutate in place during a reducer pass.
+ */
+const nodeToParentCache = new WeakMap<object, Map<string, EntryNodeId | null>>()
+
+function buildNodeToParentIndex(
+  workspace: Workspace,
+): Map<string, EntryNodeId | null> {
+  const index = new Map<string, EntryNodeId | null>()
+  for (const board of getCompositionContainers(workspace)) {
+    walkBoardTreeRefs(board.variants, (ref, parent) => {
+      // Keep the first occurrence to match single-board parent resolution.
+      if (!index.has(ref.id)) {
+        index.set(ref.id, (parent?.id as EntryNodeId | undefined) ?? null)
+      }
+    })
+  }
+  return index
+}
+
+/**
+ * Gets the immediate parent id for a node id by searching the board variant
+ * trees. Returns null for a root ref or a node id that is not in any tree.
+ *
+ * Equivalent to looking up the node's board and calling `getImmediateParentId`,
+ * but backed by a memoized workspace-wide index.
+ */
+export function getImmediateParentIdInWorkspace(
+  workspace: Workspace,
+  nodeId: EntryNodeId,
+): EntryNodeId | null {
+  if (
+    isDraft(workspace) ||
+    isDraft(workspace.boards) ||
+    isDraft(workspace.playgrounds)
+  ) {
+    const board = getBoardByNodeId(workspace, nodeId)
+    return board ? getImmediateParentId(board, nodeId) : null
+  }
+
+  let index = nodeToParentCache.get(workspace)
+  if (!index) {
+    index = buildNodeToParentIndex(workspace)
+    nodeToParentCache.set(workspace, index)
+  }
+
+  return index.get(nodeId) ?? null
+}

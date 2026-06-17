@@ -1,0 +1,16 @@
+import { SVGAttributes } from "react"
+
+export function IconMaterialGameStickLeft(props: SVGAttributes<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 -960 960 960"
+      fill="currentColor"
+      height="1em"
+      width="1em"
+      {...props}
+    >
+      <path d="M480-398q134 0 227-46.5T800-557q0-66-93-112.5T480-716q-134 0-227 46.5T160-557q0 66 93 112.5T480-398Zm200 52v106q0 33-23.5 56.5T600-160H360q-33 0-56.5-23.5T280-240v-106q-91-32-145.5-87.5T80-557q0-101 116.5-172T480-800q167 0 283.5 71T880-557q0 68-54.5 123.5T680-346ZM480-557Zm-49 97h129v-36h-89v-164h-40v200Z" />
+    </svg>
+  )
+}

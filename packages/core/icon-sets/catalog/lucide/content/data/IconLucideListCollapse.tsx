@@ -1,0 +1,22 @@
+import { SVGAttributes } from "react"
+
+export function IconLucideListCollapse(props: SVGAttributes<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 -960 960 960"
+      fill="currentColor"
+      height="1em"
+      width="1em"
+      {...props}
+    >
+      <g transform="translate(0, -960) scale(40)">
+        <path d="M10 5h11" />
+        <path d="M10 12h11" />
+        <path d="M10 19h11" />
+        <path d="m3 10 3-3-3-3" />
+        <path d="m3 20 3-3-3-3" />
+      </g>
+    </svg>
+  )
+}

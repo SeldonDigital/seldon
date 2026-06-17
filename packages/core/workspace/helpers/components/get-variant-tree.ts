@@ -1,0 +1,26 @@
+import type { Board, ComponentTreeRef, EntryNodeId } from "../../types"
+import { walkBoardTreeRefs } from "./walk-board-tree-refs"
+
+/**
+ * Finds the tree ref for this node id inside the board variant list.
+ * The returned ref includes every nested child ref under that node.
+ *
+ * Returns null when this id does not appear in any variant tree on this board.
+ *
+ * @param board Board whose variants hold the tree.
+ * @param variantId Node id that anchors the branch you need.
+ */
+export function getVariantTree(
+  board: Board,
+  variantId: EntryNodeId,
+): ComponentTreeRef | null {
+  let tree: ComponentTreeRef | null = null
+
+  walkBoardTreeRefs(board.variants, (ref) => {
+    if (ref.id !== variantId) return
+    tree = ref
+    return true
+  })
+
+  return tree
+}

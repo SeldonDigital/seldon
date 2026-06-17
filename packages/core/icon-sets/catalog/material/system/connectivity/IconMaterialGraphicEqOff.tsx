@@ -1,0 +1,16 @@
+import { SVGAttributes } from "react"
+
+export function IconMaterialGraphicEqOff(props: SVGAttributes<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 -960 960 960"
+      fill="currentColor"
+      height="1em"
+      width="1em"
+      {...props}
+    >
+      <path d="M791-55 520-326v246h-80v-326l-80-80v246h-80v-326L55-791l57-57 736 736-57 57ZM120-400v-160h80v160h-80Zm400-154-80-80v-246h80v326Zm160 160-80-80v-246h80v326Zm80-6v-160h80v160h-80Z" />
+    </svg>
+  )
+}

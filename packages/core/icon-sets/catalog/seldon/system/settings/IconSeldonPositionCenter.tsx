@@ -1,0 +1,26 @@
+import { SVGAttributes } from "react"
+
+export function IconSeldonPositionCenter(props: SVGAttributes<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      height="1em"
+      width="1em"
+      {...props}
+    >
+      <path d="M6.44444 22V19.7778H8.66667V22H6.44444ZM10.8889 22V19.7778H13.1111V22H10.8889ZM15.3333 22V19.7778H17.5556V22H15.3333ZM19.7778 22V19.7778H22V22H19.7778ZM19.7778 17.5556V15.3333H22V17.5556H19.7778ZM19.7778 13.1111V10.8889H22V13.1111H19.7778ZM19.7778 8.66667V6.44444H22V8.66667H19.7778Z" />
+      <path d="M2 19.7778V22H4.22222V19.7778H2Z" />
+      <path d="M19.7778 2V4.22222H22V2H19.7778Z" />
+      <path d="M15.3333 2V4.22222H17.5556V2H15.3333Z" />
+      <path d="M10.8889 2V4.22222H13.1111V2H10.8889Z" />
+      <path d="M8.66667 8.66667V15.3333H15.3333V8.66667H8.66667Z" />
+      <path d="M6.44444 2V4.22222H8.66667V2H6.44444Z" />
+      <path d="M2 2V4.22222H4.22222V2H2Z" />
+      <path d="M2 15.3333V17.5556H4.22222V15.3333H2Z" />
+      <path d="M2 10.8889V13.1111H4.22222V10.8889H2Z" />
+      <path d="M2 6.44444V8.66667H4.22222V6.44444H2Z" />
+    </svg>
+  )
+}

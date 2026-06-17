@@ -1,0 +1,18 @@
+import { SVGAttributes } from "react"
+
+export function IconCarbonSearchLocate(props: SVGAttributes<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 -960 960 960"
+      fill="currentColor"
+      height="1em"
+      width="1em"
+      {...props}
+    >
+      <g transform="translate(0, -960) scale(30)">
+        <path d="M30 28.5859l-4.6885-4.6884a8.028 8.028 0 10-1.414 1.414L28.5859 30zM19 25a6 6 0 116-6A6.0066 6.0066 0 0119 25zM2 12H10V14H2zM2 2H18V4H2zM2 7H18V9H2z" />
+      </g>
+    </svg>
+  )
+}

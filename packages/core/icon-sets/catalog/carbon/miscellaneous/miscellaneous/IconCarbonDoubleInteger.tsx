@@ -1,0 +1,18 @@
+import { SVGAttributes } from "react"
+
+export function IconCarbonDoubleInteger(props: SVGAttributes<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 -960 960 960"
+      fill="currentColor"
+      height="1em"
+      width="1em"
+      {...props}
+    >
+      <g transform="translate(0, -960) scale(30)">
+        <path d="M17 8V6H13V2H11V6H8V2H6V6H2V8H6v3H2v2H6v4H8V13h3v4h2V13h4V11H13V8zm-6 3H8V8h3zM30 21V19H26V15H24v4H21V15H19v4H15v2h4v3H15v2h4v4h2V26h3v4h2V26h4V24H26V21zm-6 3H21V21h3z" />
+      </g>
+    </svg>
+  )
+}

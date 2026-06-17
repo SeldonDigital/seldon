@@ -1,0 +1,20 @@
+import { SVGAttributes } from "react"
+
+export function IconLucideCctv(props: SVGAttributes<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 -960 960 960"
+      fill="currentColor"
+      height="1em"
+      width="1em"
+      {...props}
+    >
+      <g transform="translate(0, -960) scale(40)">
+        <path d="M2 19h3.76a2 2 0 0 0 1.8-1.1L9 15" />
+        <path d="M2 21v-4" />
+        <path d="M7 9h.01" />
+      </g>
+    </svg>
+  )
+}

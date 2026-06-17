@@ -1,0 +1,18 @@
+import { SVGAttributes } from "react"
+
+export function IconMaterialAndroidCellDual_5Bar(
+  props: SVGAttributes<SVGSVGElement>,
+) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 -960 960 960"
+      fill="currentColor"
+      height="1em"
+      width="1em"
+      {...props}
+    >
+      <path d="M40-400v-180h120v180H40Zm190 0v-240h120v240H230Zm190 0v-280h120v280H420Zm190 0v-320h120v320H610Zm190 0v-400h120v400H800ZM40-160v-160h120v160H40Zm190 0v-160h120v160H230Zm190 0v-160h120v160H420Zm190 0v-160h120v160H610Zm190 0v-160h120v160H800Z" />
+    </svg>
+  )
+}

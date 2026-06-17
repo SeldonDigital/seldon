@@ -1,0 +1,44 @@
+import type { Workspace } from "../../model/workspace"
+import { migrateV1BackgroundBlendFilter } from "./steps/migrate-00001-background-blend-filter"
+import { migrateV2SeedPlaygrounds } from "./steps/migrate-00002-seed-playgrounds"
+import { migrateV3BackgroundKind } from "./steps/migrate-00003-background-kind"
+import { migrateV4GradientIntoBackground } from "./steps/migrate-00004-gradient-into-background"
+import { migrateV5MergeTextPrimitives } from "./steps/migrate-00005-merge-text-primitives"
+import { migrateV6MergeElements } from "./steps/migrate-00006-merge-elements"
+import { migrateV7MergeParts } from "./steps/migrate-00007-merge-parts"
+import { migrateV8RenameListItem } from "./steps/migrate-00008-rename-list-item"
+
+/** Current workspace file version after migration steps on load. */
+export const CURRENT_WORKSPACE_VERSION = 8
+
+type MigrationStep = (workspace: Workspace) => Workspace
+
+const MIGRATION_STEPS: Partial<Record<number, MigrationStep>> = {
+  1: migrateV1BackgroundBlendFilter,
+  2: migrateV2SeedPlaygrounds,
+  3: migrateV3BackgroundKind,
+  4: migrateV4GradientIntoBackground,
+  5: migrateV5MergeTextPrimitives,
+  6: migrateV6MergeElements,
+  7: migrateV7MergeParts,
+  8: migrateV8RenameListItem,
+}
+
+/** Runs versioned migration steps from storedVersion + 1 through CURRENT. */
+export function migrateWorkspace(workspace: Workspace): Workspace {
+  const storedVersion = workspace.metadata.version ?? 0
+  let current = workspace
+
+  for (
+    let targetVersion = storedVersion + 1;
+    targetVersion <= CURRENT_WORKSPACE_VERSION;
+    targetVersion++
+  ) {
+    const step = MIGRATION_STEPS[targetVersion]
+    if (step) {
+      current = step(current)
+    }
+  }
+
+  return current
+}

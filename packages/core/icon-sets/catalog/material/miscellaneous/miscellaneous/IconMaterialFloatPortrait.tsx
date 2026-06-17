@@ -1,0 +1,16 @@
+import { SVGAttributes } from "react"
+
+export function IconMaterialFloatPortrait(props: SVGAttributes<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 96 960 960"
+      fill="currentColor"
+      height="1em"
+      width="1em"
+      {...props}
+    >
+      <path d="M240 976q-33 0-56.5-23.5T160 896V256q0-33 23.5-56.5T240 176h480q33 0 56.5 23.5T800 256v360h-80V256H240v640h280v80H240Zm360 0V696h200v280H600ZM480 576Z" />
+    </svg>
+  )
+}

@@ -1,0 +1,41 @@
+{
+  "name": "seldon",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Seldon · Core, Editor, and Factory",
+  "type": "module",
+  "scripts": {
+    "dev": "npm run dev --workspace @seldon/editor",
+    "build": "npm run build --workspace @seldon/editor",
+    "start": "npm run start --workspace @seldon/editor",
+    "lint": "npm run lint --workspace @seldon/editor",
+    "format:check": "prettier --check \"**/*.{ts,tsx,json,css,js,mjs,md}\"",
+    "quality": "npm run format:check && npm run quality --workspace @seldon/editor",
+    "format": "node scripts/collapse-empty-values.mjs && prettier --write \"**/*.{ts,tsx,json,css,js,mjs,md}\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SeldonDigital/seldon.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "SEE LICENSE IN ./license/noncommercial/LICENSE.md",
+  "bugs": {
+    "url": "https://github.com/SeldonDigital/seldon/issues"
+  },
+  "homepage": "https://github.com/SeldonDigital/seldon#readme",
+  "workspaces": [
+    "packages/editor",
+    "packages/core",
+    "packages/factory"
+  ],
+  "devDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^5.2.2",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "prettier": "^3.3.3",
+    "typescript-eslint": "^8.61.0"
+  },
+  "volta": {
+    "node": "22.18.0"
+  }
+}

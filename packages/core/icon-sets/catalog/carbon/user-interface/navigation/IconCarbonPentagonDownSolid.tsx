@@ -1,0 +1,20 @@
+import { SVGAttributes } from "react"
+
+export function IconCarbonPentagonDownSolid(
+  props: SVGAttributes<SVGSVGElement>,
+) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 -960 960 960"
+      fill="currentColor"
+      height="1em"
+      width="1em"
+      {...props}
+    >
+      <g transform="translate(0, -960) scale(30)">
+        <path d="m16,30c.2078,0,.4158-.0645.5918-.1938l13-9.5444c.2599-.1907.4066-.4904.4082-.8009.0005-.1036-.0151-.2085-.0481-.3109l-4.9697-15.4561c-.1331-.4136-.5176-.6938-.9519-.6938H7.9697c-.4343,0-.8188.2803-.9519.6938l-4.9697,15.4561c-.0329.1021-.0485.2067-.0481.31.0013.3108.1481.6109.4082.8018l13,9.5444c.176.1294.384.1938.5918.1938h0Z" />
+      </g>
+    </svg>
+  )
+}

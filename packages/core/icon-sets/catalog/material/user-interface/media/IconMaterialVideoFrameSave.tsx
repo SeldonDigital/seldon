@@ -1,0 +1,18 @@
+import { SVGAttributes } from "react"
+
+export function IconMaterialVideoFrameSave(
+  props: SVGAttributes<SVGSVGElement>,
+) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 -960 960 960"
+      fill="currentColor"
+      height="1em"
+      width="1em"
+      {...props}
+    >
+      <path d="M800-560v-160H640v-80h160q33 0 56.5 23.5T880-720v160h-80Zm-720 0v-160q0-33 23.5-56.5T160-800h160v80H160v160H80Zm80 400q-33 0-56.5-23.5T80-240v-160h80v160h160v80H160Zm220-140v-360l280 180-280 180ZM600-1v-80h320v80H600Zm160-119L600-280l56-56 64 62v-166h80v166l64-62 56 56-160 160Z" />
+    </svg>
+  )
+}

@@ -1,0 +1,37 @@
+import * as Sdn from "../../../../properties"
+import * as Seldon from "../../../constants"
+import { ComponentExport, ComponentSchema } from "../../../types"
+
+export const schema = {
+  name: "Video",
+  id: Seldon.ComponentId.VIDEO,
+  intent: "Embeds video content with optional controls and playback settings.",
+  tags: ["video", "media", "embed", "primitive", "playback", "UI"],
+  level: Seldon.ComponentLevel.PRIMITIVE,
+  icon: Seldon.ComponentIcon.STUB,
+  properties: {
+    display: { type: Sdn.ValueType.EMPTY, value: null },
+    source: { type: Sdn.ValueType.EMPTY, value: null },
+    controls: { type: Sdn.ValueType.EXACT, value: true },
+    autoPlay: { type: Sdn.ValueType.EXACT, value: false },
+    loop: { type: Sdn.ValueType.EXACT, value: false },
+    muted: { type: Sdn.ValueType.EXACT, value: false },
+    poster: { type: Sdn.ValueType.EMPTY, value: null },
+    preload: {
+      type: Sdn.ValueType.OPTION,
+      value: Sdn.Preload.METADATA,
+    },
+    width: {
+      type: Sdn.ValueType.OPTION,
+      value: Sdn.Resize.FILL,
+    },
+    height: {
+      type: Sdn.ValueType.OPTION,
+      value: Sdn.Resize.FILL,
+    },
+  },
+} as const satisfies ComponentSchema
+
+export const exportConfig: ComponentExport = {
+  react: { returns: "HTMLVideo" },
+}

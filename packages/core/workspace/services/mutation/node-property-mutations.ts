@@ -1,0 +1,204 @@
+import { Properties, PropertyKey, SubPropertyKey } from "../../../properties"
+import { mergeProperties } from "../../../properties/helpers/merge-properties"
+import { isLayeredPaintProperty } from "../../../properties/types/property-keys"
+import { getWorkspaceNodes } from "../../helpers/general/get-workspace-nodes"
+import { getNodeSubtreeIds } from "../../helpers/nodes/get-node-subtree-ids"
+import { resolveNodePropertyResetPatch } from "../../helpers/nodes/resolve-node-property-reset"
+import { isEntryNodeForRules } from "../../helpers/rules/rules-node-subject"
+import { BoardKey, InstanceId, VariantId, Workspace } from "../../types"
+import { nodeRetrievalService } from "../nodes/node-retrieval.service"
+import { mutateWorkspace } from "../shared/workspace-mutation.helper"
+import {
+  withBoardMutation,
+  withNodeMutation,
+} from "../shared/workspace-operation-helpers"
+
+interface PropertyResetTarget {
+  propertyKey: PropertyKey
+  subpropertyKey?: SubPropertyKey
+  /** Paint-layer slot for layered properties; defaults to layer 0. */
+  layerIndex?: number
+}
+
+/** Merges properties into a node's overrides. */
+export function setNodeProperties(
+  nodeId: VariantId | InstanceId,
+  properties: Properties,
+  workspace: Workspace,
+  options?: { mergeSubProperties?: boolean },
+): Workspace {
+  return withNodeMutation(nodeId, workspace, (node) => {
+    if (!isEntryNodeForRules(node)) return
+    node.overrides = mergeProperties(node.overrides, properties, options)
+  })
+}
+
+/** Resets one property (or sub-property facet) on a node to its default. */
+export function resetNodeProperty(
+  nodeId: VariantId | InstanceId,
+  target: PropertyResetTarget,
+  workspace: Workspace,
+): Workspace {
+  return resetObjectProperty(nodeId, target, workspace)
+}
+
+/**
+ * Clears every override on a node and all descendants in its variant tree,
+ * reverting the subtree to its template baseline.
+ */
+export function resetNodeOverrides(
+  nodeId: VariantId | InstanceId,
+  workspace: Workspace,
+): Workspace {
+  const subtreeIds = getNodeSubtreeIds(nodeId, workspace)
+  return mutateWorkspace(workspace, (draft) => {
+    const nodes = getWorkspaceNodes(draft)
+    for (const id of subtreeIds) {
+      const node = nodes[id]
+      if (node && isEntryNodeForRules(node)) {
+        node.overrides = {}
+      }
+    }
+  })
+}
+
+/** Merges properties into a board's component properties. */
+export function setComponentProperties(
+  boardKey: BoardKey,
+  properties: Properties,
+  workspace: Workspace,
+): Workspace {
+  return withBoardMutation(boardKey, workspace, (board) => {
+    board.componentProperties = mergeProperties(
+      board.componentProperties,
+      properties,
+      { mergeSubProperties: true },
+    )
+  })
+}
+
+/** Resets one property (or sub-property facet) on a board to its default. */
+export function resetComponentProperty(
+  boardKey: BoardKey,
+  target: PropertyResetTarget,
+  workspace: Workspace,
+): Workspace {
+  return resetObjectProperty(boardKey, target, workspace)
+}
+
+/**
+ * Resets a property on either a board (by key) or a node (by id). Boards delete
+ * the override outright; nodes resolve a reset patch that may delete or restore
+ * an inherited value.
+ */
+function resetObjectProperty(
+  objectId: VariantId | InstanceId | BoardKey,
+  { propertyKey, subpropertyKey, layerIndex }: PropertyResetTarget,
+  workspace: Workspace,
+): Workspace {
+  return mutateWorkspace(workspace, (draft) => {
+    const board = draft.boards[objectId as BoardKey]
+    if (board) {
+      if (subpropertyKey) {
+        deleteSubProperty(
+          board.componentProperties,
+          propertyKey,
+          subpropertyKey,
+          layerIndex,
+        )
+      } else if (isLayerSlotReset(propertyKey, layerIndex)) {
+        resetLayerSlot(board.componentProperties, propertyKey, layerIndex!)
+      } else {
+        delete board.componentProperties[propertyKey]
+      }
+      return
+    }
+
+    const node = nodeRetrievalService.getNode(
+      objectId as VariantId | InstanceId,
+      draft,
+    )
+    if (!isEntryNodeForRules(node)) return
+
+    if (!subpropertyKey && isLayerSlotReset(propertyKey, layerIndex)) {
+      resetLayerSlot(node.overrides, propertyKey, layerIndex!)
+      return
+    }
+
+    const patch = resolveNodePropertyResetPatch(
+      node,
+      draft,
+      propertyKey,
+      subpropertyKey,
+      layerIndex,
+    )
+
+    if (patch.action === "delete") {
+      delete node.overrides[propertyKey]
+      return
+    }
+    if (patch.action === "delete-sub" && subpropertyKey) {
+      deleteSubProperty(node.overrides, propertyKey, subpropertyKey, layerIndex)
+      return
+    }
+    if (patch.action === "set") {
+      node.overrides = mergeProperties(node.overrides, patch.properties, {
+        mergeSubProperties: true,
+      })
+    }
+  })
+}
+
+/**
+ * Resetting a whole upper paint layer (index >= 1) clears that one slot rather
+ * than deleting the entire property. Layer 0 and non-layered compounds fall back
+ * to the regular whole-property reset.
+ */
+function isLayerSlotReset(
+  propertyKey: PropertyKey,
+  layerIndex: number | undefined,
+): boolean {
+  return (
+    layerIndex != null &&
+    layerIndex > 0 &&
+    isLayeredPaintProperty(propertyKey)
+  )
+}
+
+/**
+ * Clears one paint-layer slot back to an empty bag so inherited/baseline values
+ * show through again. The array length is preserved, so the layer stays present
+ * and sibling layers are untouched.
+ */
+function resetLayerSlot(
+  bag: Properties,
+  propertyKey: PropertyKey,
+  layerIndex: number,
+): void {
+  const overrideBag = bag[propertyKey]
+  if (Array.isArray(overrideBag) && layerIndex < overrideBag.length) {
+    overrideBag[layerIndex] = {}
+  }
+}
+
+/** Deletes one sub-property facet from a compound or layered-paint property bag. */
+function deleteSubProperty(
+  bag: Properties,
+  propertyKey: PropertyKey,
+  subpropertyKey: SubPropertyKey,
+  layerIndex: number = 0,
+): void {
+  const overrideBag = bag[propertyKey]
+  if (Array.isArray(overrideBag)) {
+    const layer = overrideBag[layerIndex]
+    if (layer && typeof layer === "object") {
+      delete (layer as Record<string, unknown>)[subpropertyKey]
+    }
+  } else if (
+    overrideBag &&
+    typeof overrideBag === "object" &&
+    !Array.isArray(overrideBag)
+  ) {
+    delete (overrideBag as Record<string, unknown>)[subpropertyKey]
+  }
+}

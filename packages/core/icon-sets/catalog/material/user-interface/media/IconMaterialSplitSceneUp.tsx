@@ -1,0 +1,16 @@
+import { SVGAttributes } from "react"
+
+export function IconMaterialSplitSceneUp(props: SVGAttributes<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 -960 960 960"
+      fill="currentColor"
+      height="1em"
+      width="1em"
+      {...props}
+    >
+      <path d="M240-80q-33 0-56.5-23.5T160-160v-200h80v200h480v-200h80v200q0 33-23.5 56.5T720-80H240ZM80-440v-80h80v-280q0-33 23.5-56.5T240-880h480q33 0 56.5 23.5T800-800v280h80v80H80Zm640 280H240h480Z" />
+    </svg>
+  )
+}

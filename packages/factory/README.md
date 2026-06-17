@@ -1,0 +1,230 @@
+# Seldon · Factory
+
+Seldon Factory turns a valid Seldon workspace into production code. It consumes a **workspace** object and produces React components, CSS, and processed assets as a list of files. Factory reads design-time state from Core, resolves properties and themes, and generates output. It does not change the workspace file.
+
+Core owns design-time state and rules. Factory owns export and production code generation.
+
+---
+
+## What The Factory Contains
+
+Factory groups three stages that work together:
+
+| Area | Role | Deep reference |
+| --- | --- | --- |
+| **Helpers** | Build the export context and node index, compute node properties through Core | [helpers/](./helpers) |
+| **Styles** | Convert resolved properties into CSS for one class | [styles/css-properties/](./styles/css-properties) |
+| **Export** | Orchestrate React, CSS, and asset generation into files | [export/](./export) |
+
+The export stage splits into two subsystems with their own guides:
+
+- **[React export](./export/react/README.md)** generates components with TypeScript interfaces.
+- **[CSS export](./export/css/README.md)** generates stylesheets with theme variables and cascade ordering.
+
+Factory imports compute logic from `@seldon/core`. It does not fork property or theme rules.
+
+---
+
+## How Callers Use The Factory
+
+The entry point is `exportWorkspace` in [export/export-workspace.ts](./export/export-workspace.ts). It takes a workspace and export options and returns a promise of files to write.
+
+```typescript
+import { exportWorkspace } from "./export/export-workspace"
+
+const files = await exportWorkspace(workspace, {
+  rootDirectory: "./my-app",
+  target: { framework: "react", styles: "css-properties" },
+  output: {
+    componentsFolder: "/src/components",
+    assetsFolder: "/public/assets",
+    assetPublicPath: "/assets",
+  },
+})
+```
+
+Factory has no `exports` field and no top-level barrel. Import the concrete file paths shown here, not a bare `@seldon/factory` specifier.
+
+`exportWorkspace` resolves an asset reader, normalizes the components and assets folders, and delegates to React generation when `target.framework` is `"react"`. It throws for any other framework.
+
+### Export options
+
+The real `ExportOptions` type lives in [export/types.ts](./export/types.ts):
+
+```typescript
+type ExportOptions = {
+  rootDirectory: string
+  token?: string
+  target: { framework: "react"; styles: "css-properties" }
+  output: {
+    assetsFolder: string
+    componentsFolder: string
+    assetPublicPath: string
+  }
+  publishAll?: boolean
+  debugMode?: boolean
+  assetReader?: ExportAssetReader
+  skipFormat?: boolean
+  enableRemoteFonts?: boolean
+}
+```
+
+`enableRemoteFonts` is off by default. The default keeps exports request-free. Set it to `true` to emit remote font host links in the generated `Fonts.tsx`.
+
+---
+
+## From Workspace To Files
+
+The real orchestration runs in [export/react/export-react.ts](./export/react/export-react.ts). It builds the export context, resolves styles, discovers components and assets, then generates each kind of file.
+
+```mermaid
+flowchart TD
+  workspace[Workspace] --> context[buildExportContext — parent index]
+  context --> registry[buildStyleRegistry — classes and node map]
+  registry --> discover[getComponentsToExport — sorted by level]
+  discover --> icons[getUsedIconIds plus all workspace-enabled icons]
+  icons --> css[Component stylesheet plus per-theme stylesheets]
+  css --> images[getImagesToExport then rewrite to relative paths]
+  images --> files[Component, native, frame, icon, fonts, readme, utility files]
+  files --> license[Insert license into every text file]
+  license --> output[Files to export]
+```
+
+- **Context** indexes parents so property compute can resolve inheritance.
+- **Style registry** maps each node to a class and records tree depths for cascade order.
+- **Discovery** finds exportable components and orders them by component level. Icon discovery collects icons referenced by components, then adds every icon turned on in the workspace's icon sets, so exports ship complete icon sets.
+- **Generation** writes one file per component plus shared files, then inserts a license header into every text file. Native wrappers come from the `exportConfig.react.returns` of every exported component, plus `HTML.Div` for Frame.
+
+`exportReact` inlines its CSS generation through `buildStyleRegistry`, `generateComponentStylesheet`, and `generateThemeStylesheetFiles`. It produces one component stylesheet and one stylesheet file per theme.
+
+---
+
+## Style Generation
+
+[styles/css-properties/get-css-from-properties.ts](./styles/css-properties/get-css-from-properties.ts) converts resolved properties into CSS for one class.
+
+```typescript
+function getCssFromProperties(
+  propertiesSubset: Properties,
+  context: StyleGenerationContext,
+  className: string,
+): string
+```
+
+It computes property values, applies inheritance from the parent context, resolves theme tokens, and writes optimized CSS. It drops unset values.
+
+Class names use the `sdn-` prefix. The prefix is applied in [export/css/discovery/get-class-name.ts](./export/css/discovery/get-class-name.ts). Theme variables use a per-theme prefix: bare `--sdn-` for the default `seldon` theme and `--sdn-{slug}-` for every other theme. The slug is a stable, human-readable name built from the theme label in [export/css/generation/get-theme-slug.ts](./export/css/generation/get-theme-slug.ts). A default-type theme slugs from its label, such as `seldon`. A variant theme prepends its root slug, such as `seldon-red`.
+
+---
+
+## Generated Output
+
+Factory produces a component library under `output.componentsFolder`, with images under `output.assetsFolder`. Paths below are relative to the components folder.
+
+```
+{level-plural}/{Name}.tsx   # primitives, elements, parts, modules, frames, screens
+frames/Frame.tsx            # universal container component
+native-react/{stem}.tsx     # native HTML primitive components
+icons/                      # tree-shaken icon components
+icons/index.ts              # icon index
+utils/class-name.ts         # combineClassNames helper
+Fonts.tsx                   # font loading component
+styles.css                  # component stylesheet
+styles-{slug}.css           # one stylesheet per workspace theme
+README.md                   # generated usage guide
+```
+
+Factory writes one theme stylesheet for every entry in `workspace.themes`, both default themes and their variants. Each file is named by its slug, such as `styles-seldon.css` and `styles-seldon-red.css`, with no hash. `generateThemeStylesheetFiles` in [export/css/generation/insert-theme-variables.ts](./export/css/generation/insert-theme-variables.ts) produces them.
+
+Each component file includes a TypeScript interface, a React component, resolved CSS classes, and tree-shaken imports.
+
+### Child Prop Contract
+
+Every child of a generated component is an optional, nullable prop. The render behavior depends on whether the child is part of the component's schema:
+
+- **Schema children** have a default in the function signature, such as `buttonIconic = sdn.buttonIconic`. Omit the prop and the child renders with its defaults. Pass `null` and the child does not render.
+- **Inline extras** are children that the workspace adds outside the schema. They have no default and render only when the caller passes the prop.
+
+```tsx
+<ItemNodeRow />                       // renders every schema child with defaults
+<ItemNodeRow buttonIconic={null} />   // removes the disclosure button
+<ItemNodeRow textLabel={{ children: "Label" }} /> // renders the inline extra
+```
+
+A `null` value also flows into children passed as props. Passing `null` for a button's icon prop suppresses the icon inside that button.
+
+### Icon Output
+
+The generated `IconProps["icon"]` union covers every icon turned on in the workspace's icon sets. Icon component files emit only for icons that resolve to a catalog source file, found by [export/react/utils/find-icon-path.ts](./export/react/utils/find-icon-path.ts). `icons/index.ts` lists only emitted files. Icons that do not resolve render through `IconDefault`.
+
+---
+
+## Further Reading
+
+| Topic | Document |
+| --- | --- |
+| Core | [../core/README.md](../core/README.md) |
+| Editor | [../editor/README.md](../editor/README.md) |
+| React export | [export/react/README.md](./export/react/README.md) |
+| CSS export | [export/css/README.md](./export/css/README.md) |
+| Code examples | [TECHNICAL.md](./TECHNICAL.md) |
+| Vocabulary | [GLOSSARY.md](../../GLOSSARY.md) |
+
+Note: parts of [TECHNICAL.md](./TECHNICAL.md) predate the current API. Treat this document and the source files as the current reference for entry points and options.
+
+---
+
+## Licensing
+
+Seldon is offered under the **PolyForm Noncommercial License 1.0.0** by default, with a separate commercial license for commercial use.
+
+### 1. Noncommercial license
+
+The default software license is the **PolyForm Noncommercial License 1.0.0**.
+
+- You may use, copy, and modify this software for **noncommercial purposes** (e.g. research, education, personal projects).
+- Commercial use is **not permitted** under this license.
+- See [license/noncommercial/LICENSE.md](../../license/noncommercial/LICENSE.md) for the summary and link to the full PolyForm text.
+
+### 2. Commercial license
+
+For commercial use (including proprietary software, SaaS platforms, internal business tools, or use as training data for AI or LLMs), you need a **commercial license**.
+
+The commercial license may grant:
+
+- Use in commercial or for-profit contexts.
+- Ability to create proprietary derivative works (as stated in your agreement).
+- Long-term support, security updates, and priority bug fixes if offered by the licensor.
+- Optional custom terms negotiated with the licensor.
+
+See [COMMERCIAL-LICENSE.md](../../license/commercial/COMMERCIAL-LICENSE.md).
+
+### 3. Obtaining a commercial license
+
+Contact:
+
+- **Licensor:** Seldon Digital, B.V.
+- **Email:** info@seldon.digital
+
+### 4. Summary
+
+| Use | Requirement |
+| --- | --- |
+| Noncommercial use | PolyForm Noncommercial License 1.0.0 |
+| Commercial use | Paid commercial license |
+
+---
+
+## Links
+
+- [Core](../core/README.md)
+- [Factory](./README.md)
+- [Editor](../editor/README.md)
+- [Official Website](https://seldon.digital)
+- [Issues & Discussions](https://github.com/seldon/issues)
+
+---
+
+## Notice for AI and LLM Training
+
+You may not use this software, or any derivative works of it, in whole or in part, for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly) any machine learning or artificial intelligence system without written permission.
