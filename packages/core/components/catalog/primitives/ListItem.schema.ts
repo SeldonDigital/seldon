@@ -1,10 +1,10 @@
-import * as Sdn from "../../../../properties"
-import * as Seldon from "../../../constants"
-import { ComponentExport, ComponentSchema } from "../../../types"
+import * as Sdn from "../../../properties"
+import * as Seldon from "../../constants"
+import { ComponentExport, ComponentSchema } from "../../types"
 
 export const schema = {
-  name: "List Text",
-  id: Seldon.ComponentId.LIST_TEXT,
+  name: "List Item",
+  id: Seldon.ComponentId.LIST_ITEM,
   intent:
     "Text item inside a list. Renders as li in ordered and unordered lists, or as dt and dd in description lists.",
   tags: [

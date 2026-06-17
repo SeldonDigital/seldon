@@ -28,5 +28,5 @@ export const HTML_ELEMENT_OPTIONS: Partial<
   [ComponentId.TEXT]: TEXT_ELEMENTS,
   [ComponentId.OPTION_GROUP]: [HtmlElement.OPTGROUP],
   [ComponentId.LIST]: [HtmlElement.UL, HtmlElement.OL],
-  [ComponentId.LIST_TEXT]: [HtmlElement.LI, HtmlElement.DT, HtmlElement.DD],
+  [ComponentId.LIST_ITEM]: [HtmlElement.LI, HtmlElement.DT, HtmlElement.DD],
 }

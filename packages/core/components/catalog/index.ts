@@ -200,9 +200,9 @@ import {
   schema as legendSchema,
 } from "./primitives/controls/Legend.schema"
 import {
-  exportConfig as listTextExportConfig,
-  schema as listTextSchema,
-} from "./primitives/lists/ListText.schema"
+  exportConfig as listItemExportConfig,
+  schema as listItemSchema,
+} from "./primitives/ListItem.schema"
 import {
   exportConfig as blockquoteExportConfig,
   schema as blockquoteSchema,
@@ -265,7 +265,7 @@ const primitives: ComponentSchema[] = [
   imageSchema,
   inputSchema,
   legendSchema,
-  listTextSchema,
+  listItemSchema,
   blockquoteSchema,
   citeSchema,
   linkSchema,
@@ -398,7 +398,7 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   [ComponentId.INPUT]: inputExportConfig,
   [ComponentId.LEGEND]: legendExportConfig,
   [ComponentId.SELECT]: selectExportConfig,
-  [ComponentId.LIST_TEXT]: listTextExportConfig,
+  [ComponentId.LIST_ITEM]: listItemExportConfig,
   [ComponentId.BLOCKQUOTE]: blockquoteExportConfig,
   [ComponentId.CITE]: citeExportConfig,
   [ComponentId.LINK]: linkExportConfig,

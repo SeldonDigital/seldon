@@ -110,42 +110,42 @@ export const schema = {
   default: {
     children: [
       {
-        component: Seldon.ComponentId.LIST_TEXT,
+        component: Seldon.ComponentId.LIST_ITEM,
         variant: "term",
         overrides: {
           content: { type: Sdn.ValueType.EXACT, value: "Term 1" },
         },
       },
       {
-        component: Seldon.ComponentId.LIST_TEXT,
+        component: Seldon.ComponentId.LIST_ITEM,
         variant: "details",
         overrides: {
           content: { type: Sdn.ValueType.EXACT, value: "Details 1" },
         },
       },
       {
-        component: Seldon.ComponentId.LIST_TEXT,
+        component: Seldon.ComponentId.LIST_ITEM,
         variant: "term",
         overrides: {
           content: { type: Sdn.ValueType.EXACT, value: "Term 2" },
         },
       },
       {
-        component: Seldon.ComponentId.LIST_TEXT,
+        component: Seldon.ComponentId.LIST_ITEM,
         variant: "details",
         overrides: {
           content: { type: Sdn.ValueType.EXACT, value: "Details 2" },
         },
       },
       {
-        component: Seldon.ComponentId.LIST_TEXT,
+        component: Seldon.ComponentId.LIST_ITEM,
         variant: "term",
         overrides: {
           content: { type: Sdn.ValueType.EXACT, value: "Term 3" },
         },
       },
       {
-        component: Seldon.ComponentId.LIST_TEXT,
+        component: Seldon.ComponentId.LIST_ITEM,
         variant: "details",
         overrides: {
           content: { type: Sdn.ValueType.EXACT, value: "Details 3" },

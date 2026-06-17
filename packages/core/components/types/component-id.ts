@@ -41,7 +41,7 @@ export enum ComponentId {
   LIST = "list",
   ITEM = "item",
   LIST_STANDARD = "listStandard",
-  LIST_TEXT = "listText",
+  LIST_ITEM = "listItem",
   NAV = "nav",
   OPTION_GROUP = "optionGroup",
   SANDBOX = "sandbox",
