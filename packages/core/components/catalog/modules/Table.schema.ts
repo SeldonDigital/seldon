@@ -257,44 +257,22 @@ export const schema = {
         ],
       },
       {
-        component: Seldon.ComponentId.FRAME,
+        component: Seldon.ComponentId.TABLE_GRID,
         overrides: {
-          wrapperElement: {
-            type: Sdn.ValueType.OPTION,
-            value: Sdn.WrapperElement.TABLE,
-          },
-          orientation: { type: Sdn.ValueType.EMPTY, value: null },
           width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
           height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
         },
         children: [
           {
-            component: Seldon.ComponentId.FRAME,
-            overrides: {
-              wrapperElement: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.WrapperElement.THEAD,
-              },
-              orientation: { type: Sdn.ValueType.EMPTY, value: null },
-            },
+            component: Seldon.ComponentId.TABLE_HEAD,
             children: [
               {
-                component: Seldon.ComponentId.FRAME,
-                overrides: {
-                  orientation: { type: Sdn.ValueType.EMPTY, value: null },
-                  wrapperElement: {
-                    type: Sdn.ValueType.OPTION,
-                    value: Sdn.WrapperElement.TR,
-                  },
-                },
+                component: Seldon.ComponentId.TABLE_ROW_DATA,
                 children: [
                   {
                     component: Seldon.ComponentId.TABLE_HEADER,
                     overrides: {
-                      width: {
-                        type: Sdn.ValueType.OPTION,
-                        value: Sdn.Resize.FIT,
-                      },
+                      width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
                     },
                     children: [
                       {
@@ -313,10 +291,7 @@ export const schema = {
                         component: Seldon.ComponentId.TEXT,
                         variant: "label",
                         overrides: {
-                          content: {
-                            type: Sdn.ValueType.EXACT,
-                            value: "Name",
-                          },
+                          content: { type: Sdn.ValueType.EXACT, value: "Name" },
                         },
                       },
                     ],
@@ -374,10 +349,7 @@ export const schema = {
                         component: Seldon.ComponentId.TEXT,
                         variant: "label",
                         overrides: {
-                          content: {
-                            type: Sdn.ValueType.EXACT,
-                            value: "Date",
-                          },
+                          content: { type: Sdn.ValueType.EXACT, value: "Date" },
                         },
                       },
                     ],
@@ -387,14 +359,7 @@ export const schema = {
             ],
           },
           {
-            component: Seldon.ComponentId.FRAME,
-            overrides: {
-              wrapperElement: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.WrapperElement.TBODY,
-              },
-              orientation: { type: Sdn.ValueType.EMPTY, value: null },
-            },
+            component: Seldon.ComponentId.TABLE_BODY,
             children: [
               {
                 component: Seldon.ComponentId.TABLE_ROW_DATA,
@@ -402,10 +367,7 @@ export const schema = {
                   {
                     component: Seldon.ComponentId.TABLE_DATA,
                     overrides: {
-                      width: {
-                        type: Sdn.ValueType.OPTION,
-                        value: Sdn.Resize.FIT,
-                      },
+                      width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
                       cellAlign: {
                         type: Sdn.ValueType.OPTION,
                         value: Sdn.Align.CENTER,
@@ -413,13 +375,36 @@ export const schema = {
                     },
                     children: [
                       {
-                        component: Seldon.ComponentId.ICON,
+                        component: Seldon.ComponentId.FRAME,
                         overrides: {
-                          symbol: {
+                          orientation: {
                             type: Sdn.ValueType.OPTION,
-                            value: "material-chevronRight",
+                            value: Sdn.Orientation.HORIZONTAL,
+                          },
+                          align: {
+                            type: Sdn.ValueType.OPTION,
+                            value: Sdn.Align.CENTER,
+                          },
+                          width: {
+                            type: Sdn.ValueType.OPTION,
+                            value: Sdn.Resize.FILL,
+                          },
+                          height: {
+                            type: Sdn.ValueType.OPTION,
+                            value: Sdn.Resize.FIT,
                           },
                         },
+                        children: [
+                          {
+                            component: Seldon.ComponentId.ICON,
+                            overrides: {
+                              symbol: {
+                                type: Sdn.ValueType.OPTION,
+                                value: "material-chevronRight",
+                              },
+                            },
+                          },
+                        ],
                       },
                     ],
                   },
@@ -504,10 +489,7 @@ export const schema = {
                   {
                     component: Seldon.ComponentId.TABLE_DATA,
                     overrides: {
-                      width: {
-                        type: Sdn.ValueType.OPTION,
-                        value: Sdn.Resize.FIT,
-                      },
+                      width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
                       cellAlign: {
                         type: Sdn.ValueType.OPTION,
                         value: Sdn.Align.CENTER,
@@ -515,13 +497,36 @@ export const schema = {
                     },
                     children: [
                       {
-                        component: Seldon.ComponentId.ICON,
+                        component: Seldon.ComponentId.FRAME,
                         overrides: {
-                          symbol: {
+                          orientation: {
                             type: Sdn.ValueType.OPTION,
-                            value: "material-chevronRight",
+                            value: Sdn.Orientation.HORIZONTAL,
+                          },
+                          align: {
+                            type: Sdn.ValueType.OPTION,
+                            value: Sdn.Align.CENTER,
+                          },
+                          width: {
+                            type: Sdn.ValueType.OPTION,
+                            value: Sdn.Resize.FILL,
+                          },
+                          height: {
+                            type: Sdn.ValueType.OPTION,
+                            value: Sdn.Resize.FIT,
                           },
                         },
+                        children: [
+                          {
+                            component: Seldon.ComponentId.ICON,
+                            overrides: {
+                              symbol: {
+                                type: Sdn.ValueType.OPTION,
+                                value: "material-chevronRight",
+                              },
+                            },
+                          },
+                        ],
                       },
                     ],
                   },
@@ -606,10 +611,7 @@ export const schema = {
                   {
                     component: Seldon.ComponentId.TABLE_DATA,
                     overrides: {
-                      width: {
-                        type: Sdn.ValueType.OPTION,
-                        value: Sdn.Resize.FIT,
-                      },
+                      width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
                       cellAlign: {
                         type: Sdn.ValueType.OPTION,
                         value: Sdn.Align.CENTER,
@@ -617,13 +619,36 @@ export const schema = {
                     },
                     children: [
                       {
-                        component: Seldon.ComponentId.ICON,
+                        component: Seldon.ComponentId.FRAME,
                         overrides: {
-                          symbol: {
+                          orientation: {
                             type: Sdn.ValueType.OPTION,
-                            value: "material-chevronRight",
+                            value: Sdn.Orientation.HORIZONTAL,
+                          },
+                          align: {
+                            type: Sdn.ValueType.OPTION,
+                            value: Sdn.Align.CENTER,
+                          },
+                          width: {
+                            type: Sdn.ValueType.OPTION,
+                            value: Sdn.Resize.FILL,
+                          },
+                          height: {
+                            type: Sdn.ValueType.OPTION,
+                            value: Sdn.Resize.FIT,
                           },
                         },
+                        children: [
+                          {
+                            component: Seldon.ComponentId.ICON,
+                            overrides: {
+                              symbol: {
+                                type: Sdn.ValueType.OPTION,
+                                value: "material-chevronRight",
+                              },
+                            },
+                          },
+                        ],
                       },
                     ],
                   },
@@ -708,10 +733,7 @@ export const schema = {
                   {
                     component: Seldon.ComponentId.TABLE_DATA,
                     overrides: {
-                      width: {
-                        type: Sdn.ValueType.OPTION,
-                        value: Sdn.Resize.FIT,
-                      },
+                      width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
                       cellAlign: {
                         type: Sdn.ValueType.OPTION,
                         value: Sdn.Align.CENTER,
@@ -719,13 +741,36 @@ export const schema = {
                     },
                     children: [
                       {
-                        component: Seldon.ComponentId.ICON,
+                        component: Seldon.ComponentId.FRAME,
                         overrides: {
-                          symbol: {
+                          orientation: {
                             type: Sdn.ValueType.OPTION,
-                            value: "material-chevronRight",
+                            value: Sdn.Orientation.HORIZONTAL,
+                          },
+                          align: {
+                            type: Sdn.ValueType.OPTION,
+                            value: Sdn.Align.CENTER,
+                          },
+                          width: {
+                            type: Sdn.ValueType.OPTION,
+                            value: Sdn.Resize.FILL,
+                          },
+                          height: {
+                            type: Sdn.ValueType.OPTION,
+                            value: Sdn.Resize.FIT,
                           },
                         },
+                        children: [
+                          {
+                            component: Seldon.ComponentId.ICON,
+                            overrides: {
+                              symbol: {
+                                type: Sdn.ValueType.OPTION,
+                                value: "material-chevronRight",
+                              },
+                            },
+                          },
+                        ],
                       },
                     ],
                   },
@@ -810,10 +855,7 @@ export const schema = {
                   {
                     component: Seldon.ComponentId.TABLE_DATA,
                     overrides: {
-                      width: {
-                        type: Sdn.ValueType.OPTION,
-                        value: Sdn.Resize.FIT,
-                      },
+                      width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
                       cellAlign: {
                         type: Sdn.ValueType.OPTION,
                         value: Sdn.Align.CENTER,
@@ -821,13 +863,36 @@ export const schema = {
                     },
                     children: [
                       {
-                        component: Seldon.ComponentId.ICON,
+                        component: Seldon.ComponentId.FRAME,
                         overrides: {
-                          symbol: {
+                          orientation: {
                             type: Sdn.ValueType.OPTION,
-                            value: "material-chevronRight",
+                            value: Sdn.Orientation.HORIZONTAL,
+                          },
+                          align: {
+                            type: Sdn.ValueType.OPTION,
+                            value: Sdn.Align.CENTER,
+                          },
+                          width: {
+                            type: Sdn.ValueType.OPTION,
+                            value: Sdn.Resize.FILL,
+                          },
+                          height: {
+                            type: Sdn.ValueType.OPTION,
+                            value: Sdn.Resize.FIT,
                           },
                         },
+                        children: [
+                          {
+                            component: Seldon.ComponentId.ICON,
+                            overrides: {
+                              symbol: {
+                                type: Sdn.ValueType.OPTION,
+                                value: "material-chevronRight",
+                              },
+                            },
+                          },
+                        ],
                       },
                     ],
                   },
@@ -908,126 +973,120 @@ export const schema = {
               },
             ],
           },
+        ],
+      },
+      {
+        component: Seldon.ComponentId.FRAME,
+        overrides: {
+          wrapperElement: {
+            type: Sdn.ValueType.OPTION,
+            value: Sdn.WrapperElement.FOOTER,
+          },
+          orientation: {
+            type: Sdn.ValueType.OPTION,
+            value: Sdn.Orientation.HORIZONTAL,
+          },
+          align: {
+            type: Sdn.ValueType.OPTION,
+            value: Sdn.Align.CENTER_RIGHT,
+          },
+          width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+          height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+          gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.cozy" },
+          padding: {
+            top: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.cozy" },
+            right: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@padding.cozy",
+            },
+            bottom: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@padding.cozy",
+            },
+            left: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.cozy" },
+          },
+          borderTop: {
+            preset: { type: Sdn.ValueType.EMPTY, value: null },
+            style: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.BorderStyle.SOLID,
+            },
+            color: {
+              type: Sdn.ValueType.THEME_CATEGORICAL,
+              value: "@swatch.gray",
+            },
+            width: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@borderWidth.xsmall",
+            },
+            brightness: { type: Sdn.ValueType.EMPTY, value: null },
+            opacity: { type: Sdn.ValueType.EMPTY, value: null },
+          },
+        },
+        children: [
           {
-            component: Seldon.ComponentId.FRAME,
+            component: Seldon.ComponentId.TEXT,
+            variant: "description",
             overrides: {
-              wrapperElement: {
+              content: {
+                type: Sdn.ValueType.EXACT,
+                value: "1 - 10 of 500",
+              },
+            },
+          },
+          {
+            component: Seldon.ComponentId.ICON,
+            overrides: {
+              symbol: {
                 type: Sdn.ValueType.OPTION,
-                value: Sdn.WrapperElement.FOOTER,
+                value: "material-chevronLeft",
               },
-              orientation: {
+            },
+          },
+          {
+            component: Seldon.ComponentId.ICON,
+            overrides: {
+              symbol: {
                 type: Sdn.ValueType.OPTION,
-                value: Sdn.Orientation.HORIZONTAL,
+                value: "material-chevronRight",
               },
-              align: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.Align.CENTER_RIGHT,
-              },
-              width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
-              height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
-              gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.cozy" },
-              padding: {
-                top: {
-                  type: Sdn.ValueType.THEME_ORDINAL,
-                  value: "@padding.cozy",
-                },
-                right: {
-                  type: Sdn.ValueType.THEME_ORDINAL,
-                  value: "@padding.cozy",
-                },
-                bottom: {
-                  type: Sdn.ValueType.THEME_ORDINAL,
-                  value: "@padding.cozy",
-                },
-                left: {
-                  type: Sdn.ValueType.THEME_ORDINAL,
-                  value: "@padding.cozy",
-                },
-              },
-              borderTop: {
-                preset: { type: Sdn.ValueType.EMPTY, value: null },
-                style: {
-                  type: Sdn.ValueType.OPTION,
-                  value: Sdn.BorderStyle.SOLID,
-                },
-                color: {
-                  type: Sdn.ValueType.THEME_CATEGORICAL,
-                  value: "@swatch.gray",
-                },
-                width: {
-                  type: Sdn.ValueType.THEME_ORDINAL,
-                  value: "@borderWidth.xsmall",
-                },
-                brightness: { type: Sdn.ValueType.EMPTY, value: null },
-                opacity: { type: Sdn.ValueType.EMPTY, value: null },
-              },
+            },
+          },
+          {
+            component: Seldon.ComponentId.SELECT,
+            overrides: {
+              width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
             },
             children: [
               {
                 component: Seldon.ComponentId.TEXT,
-                variant: "description",
+                variant: "option",
                 overrides: {
                   content: {
                     type: Sdn.ValueType.EXACT,
-                    value: "1 - 10 of 500",
+                    value: "10 per view",
                   },
                 },
               },
               {
-                component: Seldon.ComponentId.ICON,
+                component: Seldon.ComponentId.TEXT,
+                variant: "option",
                 overrides: {
-                  symbol: {
-                    type: Sdn.ValueType.OPTION,
-                    value: "material-chevronLeft",
+                  content: {
+                    type: Sdn.ValueType.EXACT,
+                    value: "20 per view",
                   },
                 },
               },
               {
-                component: Seldon.ComponentId.ICON,
+                component: Seldon.ComponentId.TEXT,
+                variant: "option",
                 overrides: {
-                  symbol: {
-                    type: Sdn.ValueType.OPTION,
-                    value: "material-chevronRight",
+                  content: {
+                    type: Sdn.ValueType.EXACT,
+                    value: "50 per view",
                   },
                 },
-              },
-              {
-                component: Seldon.ComponentId.SELECT,
-                overrides: {
-                  width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
-                },
-                children: [
-                  {
-                    component: Seldon.ComponentId.TEXT,
-                    variant: "option",
-                    overrides: {
-                      content: {
-                        type: Sdn.ValueType.EXACT,
-                        value: "10 per view",
-                      },
-                    },
-                  },
-                  {
-                    component: Seldon.ComponentId.TEXT,
-                    variant: "option",
-                    overrides: {
-                      content: {
-                        type: Sdn.ValueType.EXACT,
-                        value: "20 per view",
-                      },
-                    },
-                  },
-                  {
-                    component: Seldon.ComponentId.TEXT,
-                    variant: "option",
-                    overrides: {
-                      content: {
-                        type: Sdn.ValueType.EXACT,
-                        value: "50 per view",
-                      },
-                    },
-                  },
-                ],
               },
             ],
           },
@@ -1043,35 +1102,18 @@ export const schema = {
         "Customer roster with a tinted header band, status chips, and colored balance figures.",
       children: [
         {
-          component: Seldon.ComponentId.FRAME,
+          component: Seldon.ComponentId.TABLE_GRID,
           overrides: {
-            wrapperElement: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.WrapperElement.TABLE,
-            },
-            orientation: { type: Sdn.ValueType.EMPTY, value: null },
             width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
             height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
           },
           children: [
             {
-              component: Seldon.ComponentId.FRAME,
-              overrides: {
-                wrapperElement: {
-                  type: Sdn.ValueType.OPTION,
-                  value: Sdn.WrapperElement.THEAD,
-                },
-                orientation: { type: Sdn.ValueType.EMPTY, value: null },
-              },
+              component: Seldon.ComponentId.TABLE_HEAD,
               children: [
                 {
-                  component: Seldon.ComponentId.FRAME,
+                  component: Seldon.ComponentId.TABLE_ROW_DATA,
                   overrides: {
-                    orientation: { type: Sdn.ValueType.EMPTY, value: null },
-                    wrapperElement: {
-                      type: Sdn.ValueType.OPTION,
-                      value: Sdn.WrapperElement.TR,
-                    },
                     background: [
                       {
                         kind: {
@@ -1096,23 +1138,50 @@ export const schema = {
                       variant: "sortable",
                       children: [
                         {
-                          component: Seldon.ComponentId.TEXT,
-                          variant: "label",
+                          component: Seldon.ComponentId.FRAME,
                           overrides: {
-                            content: {
-                              type: Sdn.ValueType.EXACT,
-                              value: "Customer",
-                            },
-                          },
-                        },
-                        {
-                          component: Seldon.ComponentId.ICON,
-                          overrides: {
-                            symbol: {
+                            orientation: {
                               type: Sdn.ValueType.OPTION,
-                              value: "material-unfoldMore",
+                              value: Sdn.Orientation.HORIZONTAL,
+                            },
+                            align: {
+                              type: Sdn.ValueType.OPTION,
+                              value: Sdn.Align.CENTER_LEFT,
+                            },
+                            width: {
+                              type: Sdn.ValueType.OPTION,
+                              value: Sdn.Resize.FIT,
+                            },
+                            height: {
+                              type: Sdn.ValueType.OPTION,
+                              value: Sdn.Resize.FIT,
+                            },
+                            gap: {
+                              type: Sdn.ValueType.THEME_ORDINAL,
+                              value: "@gap.tight",
                             },
                           },
+                          children: [
+                            {
+                              component: Seldon.ComponentId.TEXT,
+                              variant: "label",
+                              overrides: {
+                                content: {
+                                  type: Sdn.ValueType.EXACT,
+                                  value: "Customer",
+                                },
+                              },
+                            },
+                            {
+                              component: Seldon.ComponentId.ICON,
+                              overrides: {
+                                symbol: {
+                                  type: Sdn.ValueType.OPTION,
+                                  value: "material-unfoldMore",
+                                },
+                              },
+                            },
+                          ],
                         },
                       ],
                     },
@@ -1121,23 +1190,50 @@ export const schema = {
                       variant: "sortable",
                       children: [
                         {
-                          component: Seldon.ComponentId.TEXT,
-                          variant: "label",
+                          component: Seldon.ComponentId.FRAME,
                           overrides: {
-                            content: {
-                              type: Sdn.ValueType.EXACT,
-                              value: "Status",
-                            },
-                          },
-                        },
-                        {
-                          component: Seldon.ComponentId.ICON,
-                          overrides: {
-                            symbol: {
+                            orientation: {
                               type: Sdn.ValueType.OPTION,
-                              value: "material-unfoldMore",
+                              value: Sdn.Orientation.HORIZONTAL,
+                            },
+                            align: {
+                              type: Sdn.ValueType.OPTION,
+                              value: Sdn.Align.CENTER_LEFT,
+                            },
+                            width: {
+                              type: Sdn.ValueType.OPTION,
+                              value: Sdn.Resize.FIT,
+                            },
+                            height: {
+                              type: Sdn.ValueType.OPTION,
+                              value: Sdn.Resize.FIT,
+                            },
+                            gap: {
+                              type: Sdn.ValueType.THEME_ORDINAL,
+                              value: "@gap.tight",
                             },
                           },
+                          children: [
+                            {
+                              component: Seldon.ComponentId.TEXT,
+                              variant: "label",
+                              overrides: {
+                                content: {
+                                  type: Sdn.ValueType.EXACT,
+                                  value: "Status",
+                                },
+                              },
+                            },
+                            {
+                              component: Seldon.ComponentId.ICON,
+                              overrides: {
+                                symbol: {
+                                  type: Sdn.ValueType.OPTION,
+                                  value: "material-unfoldMore",
+                                },
+                              },
+                            },
+                          ],
                         },
                       ],
                     },
@@ -1194,14 +1290,7 @@ export const schema = {
               ],
             },
             {
-              component: Seldon.ComponentId.FRAME,
-              overrides: {
-                wrapperElement: {
-                  type: Sdn.ValueType.OPTION,
-                  value: Sdn.WrapperElement.TBODY,
-                },
-                orientation: { type: Sdn.ValueType.EMPTY, value: null },
-              },
+              component: Seldon.ComponentId.TABLE_BODY,
               children: [
                 {
                   component: Seldon.ComponentId.TABLE_ROW_DATA,
@@ -1211,24 +1300,51 @@ export const schema = {
                       variant: "twoLine",
                       children: [
                         {
-                          component: Seldon.ComponentId.TEXT,
-                          variant: "label",
+                          component: Seldon.ComponentId.FRAME,
                           overrides: {
-                            content: {
-                              type: Sdn.ValueType.EXACT,
-                              value: "Ralph Edwards",
+                            orientation: {
+                              type: Sdn.ValueType.OPTION,
+                              value: Sdn.Orientation.VERTICAL,
+                            },
+                            align: {
+                              type: Sdn.ValueType.OPTION,
+                              value: Sdn.Align.CENTER_LEFT,
+                            },
+                            width: {
+                              type: Sdn.ValueType.OPTION,
+                              value: Sdn.Resize.FILL,
+                            },
+                            height: {
+                              type: Sdn.ValueType.OPTION,
+                              value: Sdn.Resize.FIT,
+                            },
+                            gap: {
+                              type: Sdn.ValueType.THEME_ORDINAL,
+                              value: "@gap.tight",
                             },
                           },
-                        },
-                        {
-                          component: Seldon.ComponentId.TEXT,
-                          variant: "description",
-                          overrides: {
-                            content: {
-                              type: Sdn.ValueType.EXACT,
-                              value: "(405) 555-0128",
+                          children: [
+                            {
+                              component: Seldon.ComponentId.TEXT,
+                              variant: "label",
+                              overrides: {
+                                content: {
+                                  type: Sdn.ValueType.EXACT,
+                                  value: "Ralph Edwards",
+                                },
+                              },
                             },
-                          },
+                            {
+                              component: Seldon.ComponentId.TEXT,
+                              variant: "description",
+                              overrides: {
+                                content: {
+                                  type: Sdn.ValueType.EXACT,
+                                  value: "(405) 555-0128",
+                                },
+                              },
+                            },
+                          ],
                         },
                       ],
                     },
@@ -1311,24 +1427,51 @@ export const schema = {
                       variant: "twoLine",
                       children: [
                         {
-                          component: Seldon.ComponentId.TEXT,
-                          variant: "label",
+                          component: Seldon.ComponentId.FRAME,
                           overrides: {
-                            content: {
-                              type: Sdn.ValueType.EXACT,
-                              value: "Floyd Miles",
+                            orientation: {
+                              type: Sdn.ValueType.OPTION,
+                              value: Sdn.Orientation.VERTICAL,
+                            },
+                            align: {
+                              type: Sdn.ValueType.OPTION,
+                              value: Sdn.Align.CENTER_LEFT,
+                            },
+                            width: {
+                              type: Sdn.ValueType.OPTION,
+                              value: Sdn.Resize.FILL,
+                            },
+                            height: {
+                              type: Sdn.ValueType.OPTION,
+                              value: Sdn.Resize.FIT,
+                            },
+                            gap: {
+                              type: Sdn.ValueType.THEME_ORDINAL,
+                              value: "@gap.tight",
                             },
                           },
-                        },
-                        {
-                          component: Seldon.ComponentId.TEXT,
-                          variant: "description",
-                          overrides: {
-                            content: {
-                              type: Sdn.ValueType.EXACT,
-                              value: "(480) 555-0103",
+                          children: [
+                            {
+                              component: Seldon.ComponentId.TEXT,
+                              variant: "label",
+                              overrides: {
+                                content: {
+                                  type: Sdn.ValueType.EXACT,
+                                  value: "Floyd Miles",
+                                },
+                              },
                             },
-                          },
+                            {
+                              component: Seldon.ComponentId.TEXT,
+                              variant: "description",
+                              overrides: {
+                                content: {
+                                  type: Sdn.ValueType.EXACT,
+                                  value: "(480) 555-0103",
+                                },
+                              },
+                            },
+                          ],
                         },
                       ],
                     },
@@ -1433,24 +1576,51 @@ export const schema = {
                       variant: "twoLine",
                       children: [
                         {
-                          component: Seldon.ComponentId.TEXT,
-                          variant: "label",
+                          component: Seldon.ComponentId.FRAME,
                           overrides: {
-                            content: {
-                              type: Sdn.ValueType.EXACT,
-                              value: "Darlene Robertson",
+                            orientation: {
+                              type: Sdn.ValueType.OPTION,
+                              value: Sdn.Orientation.VERTICAL,
+                            },
+                            align: {
+                              type: Sdn.ValueType.OPTION,
+                              value: Sdn.Align.CENTER_LEFT,
+                            },
+                            width: {
+                              type: Sdn.ValueType.OPTION,
+                              value: Sdn.Resize.FILL,
+                            },
+                            height: {
+                              type: Sdn.ValueType.OPTION,
+                              value: Sdn.Resize.FIT,
+                            },
+                            gap: {
+                              type: Sdn.ValueType.THEME_ORDINAL,
+                              value: "@gap.tight",
                             },
                           },
-                        },
-                        {
-                          component: Seldon.ComponentId.TEXT,
-                          variant: "description",
-                          overrides: {
-                            content: {
-                              type: Sdn.ValueType.EXACT,
-                              value: "(808) 555-0111",
+                          children: [
+                            {
+                              component: Seldon.ComponentId.TEXT,
+                              variant: "label",
+                              overrides: {
+                                content: {
+                                  type: Sdn.ValueType.EXACT,
+                                  value: "Darlene Robertson",
+                                },
+                              },
                             },
-                          },
+                            {
+                              component: Seldon.ComponentId.TEXT,
+                              variant: "description",
+                              overrides: {
+                                content: {
+                                  type: Sdn.ValueType.EXACT,
+                                  value: "(808) 555-0111",
+                                },
+                              },
+                            },
+                          ],
                         },
                       ],
                     },
@@ -1533,24 +1703,51 @@ export const schema = {
                       variant: "twoLine",
                       children: [
                         {
-                          component: Seldon.ComponentId.TEXT,
-                          variant: "label",
+                          component: Seldon.ComponentId.FRAME,
                           overrides: {
-                            content: {
-                              type: Sdn.ValueType.EXACT,
-                              value: "Albert Flores",
+                            orientation: {
+                              type: Sdn.ValueType.OPTION,
+                              value: Sdn.Orientation.VERTICAL,
+                            },
+                            align: {
+                              type: Sdn.ValueType.OPTION,
+                              value: Sdn.Align.CENTER_LEFT,
+                            },
+                            width: {
+                              type: Sdn.ValueType.OPTION,
+                              value: Sdn.Resize.FILL,
+                            },
+                            height: {
+                              type: Sdn.ValueType.OPTION,
+                              value: Sdn.Resize.FIT,
+                            },
+                            gap: {
+                              type: Sdn.ValueType.THEME_ORDINAL,
+                              value: "@gap.tight",
                             },
                           },
-                        },
-                        {
-                          component: Seldon.ComponentId.TEXT,
-                          variant: "description",
-                          overrides: {
-                            content: {
-                              type: Sdn.ValueType.EXACT,
-                              value: "(316) 555-0116",
+                          children: [
+                            {
+                              component: Seldon.ComponentId.TEXT,
+                              variant: "label",
+                              overrides: {
+                                content: {
+                                  type: Sdn.ValueType.EXACT,
+                                  value: "Albert Flores",
+                                },
+                              },
                             },
-                          },
+                            {
+                              component: Seldon.ComponentId.TEXT,
+                              variant: "description",
+                              overrides: {
+                                content: {
+                                  type: Sdn.ValueType.EXACT,
+                                  value: "(316) 555-0116",
+                                },
+                              },
+                            },
+                          ],
                         },
                       ],
                     },
@@ -1655,24 +1852,51 @@ export const schema = {
                       variant: "twoLine",
                       children: [
                         {
-                          component: Seldon.ComponentId.TEXT,
-                          variant: "label",
+                          component: Seldon.ComponentId.FRAME,
                           overrides: {
-                            content: {
-                              type: Sdn.ValueType.EXACT,
-                              value: "Devon Lane",
+                            orientation: {
+                              type: Sdn.ValueType.OPTION,
+                              value: Sdn.Orientation.VERTICAL,
+                            },
+                            align: {
+                              type: Sdn.ValueType.OPTION,
+                              value: Sdn.Align.CENTER_LEFT,
+                            },
+                            width: {
+                              type: Sdn.ValueType.OPTION,
+                              value: Sdn.Resize.FILL,
+                            },
+                            height: {
+                              type: Sdn.ValueType.OPTION,
+                              value: Sdn.Resize.FIT,
+                            },
+                            gap: {
+                              type: Sdn.ValueType.THEME_ORDINAL,
+                              value: "@gap.tight",
                             },
                           },
-                        },
-                        {
-                          component: Seldon.ComponentId.TEXT,
-                          variant: "description",
-                          overrides: {
-                            content: {
-                              type: Sdn.ValueType.EXACT,
-                              value: "(217) 555-0113",
+                          children: [
+                            {
+                              component: Seldon.ComponentId.TEXT,
+                              variant: "label",
+                              overrides: {
+                                content: {
+                                  type: Sdn.ValueType.EXACT,
+                                  value: "Devon Lane",
+                                },
+                              },
                             },
-                          },
+                            {
+                              component: Seldon.ComponentId.TEXT,
+                              variant: "description",
+                              overrides: {
+                                content: {
+                                  type: Sdn.ValueType.EXACT,
+                                  value: "(217) 555-0113",
+                                },
+                              },
+                            },
+                          ],
                         },
                       ],
                     },
@@ -1771,122 +1995,122 @@ export const schema = {
                 },
               ],
             },
+          ],
+        },
+        {
+          component: Seldon.ComponentId.FRAME,
+          overrides: {
+            wrapperElement: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.WrapperElement.FOOTER,
+            },
+            orientation: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.Orientation.HORIZONTAL,
+            },
+            align: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.Align.CENTER_LEFT,
+            },
+            width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+            height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+            gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.cozy" },
+            padding: {
+              top: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@padding.cozy",
+              },
+              right: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@padding.cozy",
+              },
+              bottom: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@padding.cozy",
+              },
+              left: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@padding.cozy",
+              },
+            },
+            borderTop: {
+              preset: { type: Sdn.ValueType.EMPTY, value: null },
+              style: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.BorderStyle.SOLID,
+              },
+              color: {
+                type: Sdn.ValueType.THEME_CATEGORICAL,
+                value: "@swatch.gray",
+              },
+              width: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@borderWidth.xsmall",
+              },
+              brightness: { type: Sdn.ValueType.EMPTY, value: null },
+              opacity: { type: Sdn.ValueType.EMPTY, value: null },
+            },
+          },
+          children: [
             {
-              component: Seldon.ComponentId.FRAME,
+              component: Seldon.ComponentId.TEXT,
+              variant: "description",
               overrides: {
-                wrapperElement: {
+                content: { type: Sdn.ValueType.EXACT, value: "1-10 of 97" },
+                width: {
                   type: Sdn.ValueType.OPTION,
-                  value: Sdn.WrapperElement.FOOTER,
+                  value: Sdn.Resize.FILL,
                 },
-                orientation: {
+              },
+            },
+            {
+              component: Seldon.ComponentId.SELECT,
+              overrides: {
+                width: {
                   type: Sdn.ValueType.OPTION,
-                  value: Sdn.Orientation.HORIZONTAL,
-                },
-                align: {
-                  type: Sdn.ValueType.OPTION,
-                  value: Sdn.Align.CENTER_LEFT,
-                },
-                width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
-                height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
-                gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.cozy" },
-                padding: {
-                  top: {
-                    type: Sdn.ValueType.THEME_ORDINAL,
-                    value: "@padding.cozy",
-                  },
-                  right: {
-                    type: Sdn.ValueType.THEME_ORDINAL,
-                    value: "@padding.cozy",
-                  },
-                  bottom: {
-                    type: Sdn.ValueType.THEME_ORDINAL,
-                    value: "@padding.cozy",
-                  },
-                  left: {
-                    type: Sdn.ValueType.THEME_ORDINAL,
-                    value: "@padding.cozy",
-                  },
-                },
-                borderTop: {
-                  preset: { type: Sdn.ValueType.EMPTY, value: null },
-                  style: {
-                    type: Sdn.ValueType.OPTION,
-                    value: Sdn.BorderStyle.SOLID,
-                  },
-                  color: {
-                    type: Sdn.ValueType.THEME_CATEGORICAL,
-                    value: "@swatch.gray",
-                  },
-                  width: {
-                    type: Sdn.ValueType.THEME_ORDINAL,
-                    value: "@borderWidth.xsmall",
-                  },
-                  brightness: { type: Sdn.ValueType.EMPTY, value: null },
-                  opacity: { type: Sdn.ValueType.EMPTY, value: null },
+                  value: Sdn.Resize.FIT,
                 },
               },
               children: [
                 {
                   component: Seldon.ComponentId.TEXT,
-                  variant: "description",
+                  variant: "option",
                   overrides: {
-                    content: { type: Sdn.ValueType.EXACT, value: "1-10 of 97" },
-                    width: {
-                      type: Sdn.ValueType.OPTION,
-                      value: Sdn.Resize.FILL,
+                    content: {
+                      type: Sdn.ValueType.EXACT,
+                      value: "Rows per page: 10",
                     },
                   },
                 },
                 {
-                  component: Seldon.ComponentId.SELECT,
+                  component: Seldon.ComponentId.TEXT,
+                  variant: "option",
                   overrides: {
-                    width: {
-                      type: Sdn.ValueType.OPTION,
-                      value: Sdn.Resize.FIT,
-                    },
-                  },
-                  children: [
-                    {
-                      component: Seldon.ComponentId.TEXT,
-                      variant: "option",
-                      overrides: {
-                        content: {
-                          type: Sdn.ValueType.EXACT,
-                          value: "Rows: 10",
-                        },
-                      },
-                    },
-                    {
-                      component: Seldon.ComponentId.TEXT,
-                      variant: "option",
-                      overrides: {
-                        content: {
-                          type: Sdn.ValueType.EXACT,
-                          value: "Rows: 20",
-                        },
-                      },
-                    },
-                  ],
-                },
-                {
-                  component: Seldon.ComponentId.ICON,
-                  overrides: {
-                    symbol: {
-                      type: Sdn.ValueType.OPTION,
-                      value: "material-chevronLeft",
-                    },
-                  },
-                },
-                {
-                  component: Seldon.ComponentId.ICON,
-                  overrides: {
-                    symbol: {
-                      type: Sdn.ValueType.OPTION,
-                      value: "material-chevronRight",
+                    content: {
+                      type: Sdn.ValueType.EXACT,
+                      value: "Rows per page: 20",
                     },
                   },
                 },
               ],
+            },
+            {
+              component: Seldon.ComponentId.ICON,
+              overrides: {
+                symbol: {
+                  type: Sdn.ValueType.OPTION,
+                  value: "material-chevronLeft",
+                },
+              },
+            },
+            {
+              component: Seldon.ComponentId.ICON,
+              overrides: {
+                symbol: {
+                  type: Sdn.ValueType.OPTION,
+                  value: "material-chevronRight",
+                },
+              },
             },
           ],
         },
@@ -1899,36 +2123,17 @@ export const schema = {
         "Plan comparison with grouped section rows and feature rows that mix text and checkmarks.",
       children: [
         {
-          component: Seldon.ComponentId.FRAME,
+          component: Seldon.ComponentId.TABLE_GRID,
           overrides: {
-            wrapperElement: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.WrapperElement.TABLE,
-            },
-            orientation: { type: Sdn.ValueType.EMPTY, value: null },
             width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
             height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
           },
           children: [
             {
-              component: Seldon.ComponentId.FRAME,
-              overrides: {
-                wrapperElement: {
-                  type: Sdn.ValueType.OPTION,
-                  value: Sdn.WrapperElement.THEAD,
-                },
-                orientation: { type: Sdn.ValueType.EMPTY, value: null },
-              },
+              component: Seldon.ComponentId.TABLE_HEAD,
               children: [
                 {
-                  component: Seldon.ComponentId.FRAME,
-                  overrides: {
-                    orientation: { type: Sdn.ValueType.EMPTY, value: null },
-                    wrapperElement: {
-                      type: Sdn.ValueType.OPTION,
-                      value: Sdn.WrapperElement.TR,
-                    },
-                  },
+                  component: Seldon.ComponentId.TABLE_ROW_DATA,
                   children: [
                     {
                       component: Seldon.ComponentId.TABLE_HEADER,
@@ -2010,14 +2215,7 @@ export const schema = {
               ],
             },
             {
-              component: Seldon.ComponentId.FRAME,
-              overrides: {
-                wrapperElement: {
-                  type: Sdn.ValueType.OPTION,
-                  value: Sdn.WrapperElement.TBODY,
-                },
-                orientation: { type: Sdn.ValueType.EMPTY, value: null },
-              },
+              component: Seldon.ComponentId.TABLE_BODY,
               children: [
                 {
                   component: Seldon.ComponentId.TABLE_ROW_DATA,
@@ -2275,13 +2473,36 @@ export const schema = {
                       },
                       children: [
                         {
-                          component: Seldon.ComponentId.ICON,
+                          component: Seldon.ComponentId.FRAME,
                           overrides: {
-                            symbol: {
+                            orientation: {
                               type: Sdn.ValueType.OPTION,
-                              value: "material-check",
+                              value: Sdn.Orientation.HORIZONTAL,
+                            },
+                            align: {
+                              type: Sdn.ValueType.OPTION,
+                              value: Sdn.Align.CENTER,
+                            },
+                            width: {
+                              type: Sdn.ValueType.OPTION,
+                              value: Sdn.Resize.FILL,
+                            },
+                            height: {
+                              type: Sdn.ValueType.OPTION,
+                              value: Sdn.Resize.FIT,
                             },
                           },
+                          children: [
+                            {
+                              component: Seldon.ComponentId.ICON,
+                              overrides: {
+                                symbol: {
+                                  type: Sdn.ValueType.OPTION,
+                                  value: "material-check",
+                                },
+                              },
+                            },
+                          ],
                         },
                       ],
                     },
@@ -2295,13 +2516,36 @@ export const schema = {
                       },
                       children: [
                         {
-                          component: Seldon.ComponentId.ICON,
+                          component: Seldon.ComponentId.FRAME,
                           overrides: {
-                            symbol: {
+                            orientation: {
                               type: Sdn.ValueType.OPTION,
-                              value: "material-check",
+                              value: Sdn.Orientation.HORIZONTAL,
+                            },
+                            align: {
+                              type: Sdn.ValueType.OPTION,
+                              value: Sdn.Align.CENTER,
+                            },
+                            width: {
+                              type: Sdn.ValueType.OPTION,
+                              value: Sdn.Resize.FILL,
+                            },
+                            height: {
+                              type: Sdn.ValueType.OPTION,
+                              value: Sdn.Resize.FIT,
                             },
                           },
+                          children: [
+                            {
+                              component: Seldon.ComponentId.ICON,
+                              overrides: {
+                                symbol: {
+                                  type: Sdn.ValueType.OPTION,
+                                  value: "material-check",
+                                },
+                              },
+                            },
+                          ],
                         },
                       ],
                     },
@@ -2315,13 +2559,36 @@ export const schema = {
                       },
                       children: [
                         {
-                          component: Seldon.ComponentId.ICON,
+                          component: Seldon.ComponentId.FRAME,
                           overrides: {
-                            symbol: {
+                            orientation: {
                               type: Sdn.ValueType.OPTION,
-                              value: "material-check",
+                              value: Sdn.Orientation.HORIZONTAL,
+                            },
+                            align: {
+                              type: Sdn.ValueType.OPTION,
+                              value: Sdn.Align.CENTER,
+                            },
+                            width: {
+                              type: Sdn.ValueType.OPTION,
+                              value: Sdn.Resize.FILL,
+                            },
+                            height: {
+                              type: Sdn.ValueType.OPTION,
+                              value: Sdn.Resize.FIT,
                             },
                           },
+                          children: [
+                            {
+                              component: Seldon.ComponentId.ICON,
+                              overrides: {
+                                symbol: {
+                                  type: Sdn.ValueType.OPTION,
+                                  value: "material-check",
+                                },
+                              },
+                            },
+                          ],
                         },
                       ],
                     },
@@ -2335,13 +2602,36 @@ export const schema = {
                       },
                       children: [
                         {
-                          component: Seldon.ComponentId.ICON,
+                          component: Seldon.ComponentId.FRAME,
                           overrides: {
-                            symbol: {
+                            orientation: {
                               type: Sdn.ValueType.OPTION,
-                              value: "material-check",
+                              value: Sdn.Orientation.HORIZONTAL,
+                            },
+                            align: {
+                              type: Sdn.ValueType.OPTION,
+                              value: Sdn.Align.CENTER,
+                            },
+                            width: {
+                              type: Sdn.ValueType.OPTION,
+                              value: Sdn.Resize.FILL,
+                            },
+                            height: {
+                              type: Sdn.ValueType.OPTION,
+                              value: Sdn.Resize.FIT,
                             },
                           },
+                          children: [
+                            {
+                              component: Seldon.ComponentId.ICON,
+                              overrides: {
+                                symbol: {
+                                  type: Sdn.ValueType.OPTION,
+                                  value: "material-check",
+                                },
+                              },
+                            },
+                          ],
                         },
                       ],
                     },
@@ -2375,13 +2665,36 @@ export const schema = {
                       },
                       children: [
                         {
-                          component: Seldon.ComponentId.ICON,
+                          component: Seldon.ComponentId.FRAME,
                           overrides: {
-                            symbol: {
+                            orientation: {
                               type: Sdn.ValueType.OPTION,
-                              value: "material-check",
+                              value: Sdn.Orientation.HORIZONTAL,
+                            },
+                            align: {
+                              type: Sdn.ValueType.OPTION,
+                              value: Sdn.Align.CENTER,
+                            },
+                            width: {
+                              type: Sdn.ValueType.OPTION,
+                              value: Sdn.Resize.FILL,
+                            },
+                            height: {
+                              type: Sdn.ValueType.OPTION,
+                              value: Sdn.Resize.FIT,
                             },
                           },
+                          children: [
+                            {
+                              component: Seldon.ComponentId.ICON,
+                              overrides: {
+                                symbol: {
+                                  type: Sdn.ValueType.OPTION,
+                                  value: "material-check",
+                                },
+                              },
+                            },
+                          ],
                         },
                       ],
                     },
@@ -2395,13 +2708,36 @@ export const schema = {
                       },
                       children: [
                         {
-                          component: Seldon.ComponentId.ICON,
+                          component: Seldon.ComponentId.FRAME,
                           overrides: {
-                            symbol: {
+                            orientation: {
                               type: Sdn.ValueType.OPTION,
-                              value: "material-check",
+                              value: Sdn.Orientation.HORIZONTAL,
+                            },
+                            align: {
+                              type: Sdn.ValueType.OPTION,
+                              value: Sdn.Align.CENTER,
+                            },
+                            width: {
+                              type: Sdn.ValueType.OPTION,
+                              value: Sdn.Resize.FILL,
+                            },
+                            height: {
+                              type: Sdn.ValueType.OPTION,
+                              value: Sdn.Resize.FIT,
                             },
                           },
+                          children: [
+                            {
+                              component: Seldon.ComponentId.ICON,
+                              overrides: {
+                                symbol: {
+                                  type: Sdn.ValueType.OPTION,
+                                  value: "material-check",
+                                },
+                              },
+                            },
+                          ],
                         },
                       ],
                     },
@@ -2415,13 +2751,36 @@ export const schema = {
                       },
                       children: [
                         {
-                          component: Seldon.ComponentId.ICON,
+                          component: Seldon.ComponentId.FRAME,
                           overrides: {
-                            symbol: {
+                            orientation: {
                               type: Sdn.ValueType.OPTION,
-                              value: "material-check",
+                              value: Sdn.Orientation.HORIZONTAL,
+                            },
+                            align: {
+                              type: Sdn.ValueType.OPTION,
+                              value: Sdn.Align.CENTER,
+                            },
+                            width: {
+                              type: Sdn.ValueType.OPTION,
+                              value: Sdn.Resize.FILL,
+                            },
+                            height: {
+                              type: Sdn.ValueType.OPTION,
+                              value: Sdn.Resize.FIT,
                             },
                           },
+                          children: [
+                            {
+                              component: Seldon.ComponentId.ICON,
+                              overrides: {
+                                symbol: {
+                                  type: Sdn.ValueType.OPTION,
+                                  value: "material-check",
+                                },
+                              },
+                            },
+                          ],
                         },
                       ],
                     },
@@ -2435,13 +2794,36 @@ export const schema = {
                       },
                       children: [
                         {
-                          component: Seldon.ComponentId.ICON,
+                          component: Seldon.ComponentId.FRAME,
                           overrides: {
-                            symbol: {
+                            orientation: {
                               type: Sdn.ValueType.OPTION,
-                              value: "material-check",
+                              value: Sdn.Orientation.HORIZONTAL,
+                            },
+                            align: {
+                              type: Sdn.ValueType.OPTION,
+                              value: Sdn.Align.CENTER,
+                            },
+                            width: {
+                              type: Sdn.ValueType.OPTION,
+                              value: Sdn.Resize.FILL,
+                            },
+                            height: {
+                              type: Sdn.ValueType.OPTION,
+                              value: Sdn.Resize.FIT,
                             },
                           },
+                          children: [
+                            {
+                              component: Seldon.ComponentId.ICON,
+                              overrides: {
+                                symbol: {
+                                  type: Sdn.ValueType.OPTION,
+                                  value: "material-check",
+                                },
+                              },
+                            },
+                          ],
                         },
                       ],
                     },

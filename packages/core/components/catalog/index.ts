@@ -68,9 +68,21 @@ import {
   schema as selectSchema,
 } from "./elements/Select.schema"
 import {
+  exportConfig as tableBodyExportConfig,
+  schema as tableBodySchema,
+} from "./elements/tables/TableBody.schema"
+import {
   exportConfig as tableDataExportConfig,
   schema as tableDataSchema,
 } from "./elements/tables/TableData.schema"
+import {
+  exportConfig as tableGridExportConfig,
+  schema as tableGridSchema,
+} from "./elements/tables/TableGrid.schema"
+import {
+  exportConfig as tableHeadExportConfig,
+  schema as tableHeadSchema,
+} from "./elements/tables/TableHead.schema"
 import {
   exportConfig as tableHeaderExportConfig,
   schema as tableHeaderSchema,
@@ -239,6 +251,9 @@ const elements: ComponentSchema[] = [
   listSchema,
   sectionSchema,
   selectSchema,
+  tableGridSchema,
+  tableHeadSchema,
+  tableBodySchema,
   tableDataSchema,
   tableHeaderSchema,
   tableRowDataSchema,
@@ -342,6 +357,9 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   [ComponentId.NAV]: navExportConfig,
   [ComponentId.LIST]: listExportConfig,
   [ComponentId.SECTION]: sectionExportConfig,
+  [ComponentId.TABLE_GRID]: tableGridExportConfig,
+  [ComponentId.TABLE_HEAD]: tableHeadExportConfig,
+  [ComponentId.TABLE_BODY]: tableBodyExportConfig,
   [ComponentId.TABLE_DATA]: tableDataExportConfig,
   [ComponentId.TABLE_HEADER]: tableHeaderExportConfig,
   [ComponentId.TABLE_ROW_DATA]: tableRowDataExportConfig,

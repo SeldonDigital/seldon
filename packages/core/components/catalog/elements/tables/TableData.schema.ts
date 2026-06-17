@@ -18,14 +18,6 @@ export const schema = {
       value: false,
     },
     direction: { type: Sdn.ValueType.EMPTY, value: null },
-    orientation: {
-      type: Sdn.ValueType.OPTION,
-      value: Sdn.Orientation.HORIZONTAL,
-    },
-    align: {
-      type: Sdn.ValueType.OPTION,
-      value: Sdn.Align.CENTER_LEFT,
-    },
     width: {
       type: Sdn.ValueType.OPTION,
       value: Sdn.Resize.FILL,
@@ -249,50 +241,54 @@ export const schema = {
       label: "Two Line Cell",
       intent:
         "Cell stacking a primary line over a muted secondary line, for name and detail pairs.",
-      overrides: {
-        orientation: {
-          type: Sdn.ValueType.OPTION,
-          value: Sdn.Orientation.VERTICAL,
-        },
-        align: {
-          type: Sdn.ValueType.OPTION,
-          value: Sdn.Align.CENTER_LEFT,
-        },
-        gap: {
-          type: Sdn.ValueType.THEME_ORDINAL,
-          value: "@gap.tight",
-        },
-      },
       children: [
         {
-          component: Seldon.ComponentId.TEXT,
-          variant: "label",
+          component: Seldon.ComponentId.FRAME,
           overrides: {
-            content: { type: Sdn.ValueType.EXACT, value: "Primary" },
-            font: {
-              preset: {
-                type: Sdn.ValueType.THEME_CATEGORICAL,
-                value: "@font.subtitle",
+            orientation: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.Orientation.VERTICAL,
+            },
+            align: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.Align.CENTER_LEFT,
+            },
+            width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+            height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+            gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.tight" },
+          },
+          children: [
+            {
+              component: Seldon.ComponentId.TEXT,
+              variant: "label",
+              overrides: {
+                content: { type: Sdn.ValueType.EXACT, value: "Primary" },
+                font: {
+                  preset: {
+                    type: Sdn.ValueType.THEME_CATEGORICAL,
+                    value: "@font.subtitle",
+                  },
+                },
               },
             },
-          },
-        },
-        {
-          component: Seldon.ComponentId.TEXT,
-          variant: "description",
-          overrides: {
-            content: { type: Sdn.ValueType.EXACT, value: "Secondary" },
-            opacity: {
-              type: Sdn.ValueType.EXACT,
-              value: { unit: Sdn.Unit.PERCENT, value: 60 },
-            },
-            font: {
-              size: {
-                type: Sdn.ValueType.THEME_ORDINAL,
-                value: "@fontSize.small",
+            {
+              component: Seldon.ComponentId.TEXT,
+              variant: "description",
+              overrides: {
+                content: { type: Sdn.ValueType.EXACT, value: "Secondary" },
+                opacity: {
+                  type: Sdn.ValueType.EXACT,
+                  value: { unit: Sdn.Unit.PERCENT, value: 60 },
+                },
+                font: {
+                  size: {
+                    type: Sdn.ValueType.THEME_ORDINAL,
+                    value: "@fontSize.small",
+                  },
+                },
               },
             },
-          },
+          ],
         },
       ],
     },
