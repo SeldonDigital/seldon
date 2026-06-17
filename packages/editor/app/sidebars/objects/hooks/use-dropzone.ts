@@ -3,7 +3,10 @@ import { Placement } from "@lib/types"
 import { useEffect, useRef, useState } from "react"
 import { Instance, Variant, Workspace, invariant } from "@seldon/core"
 import { rules } from "@seldon/core/rules/config/rules.config"
-import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
+import {
+  nodeRelationshipService,
+  typeCheckingService,
+} from "@seldon/core/workspace/services"
 import type { EntryNode } from "@seldon/core/workspace/types"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { getNodeCatalogComponentId } from "@lib/workspace/node-tree"
@@ -96,7 +99,7 @@ function isValidTargetForSubjectNode(
   }
 
   if (placement === "inside") {
-    const targetEntityType = workspaceService.getEntityType(target)
+    const targetEntityType = typeCheckingService.getEntityType(target)
     if (!rules.mutations.insertInto[targetEntityType].allowed) {
       return false
     }
@@ -106,19 +109,19 @@ function isValidTargetForSubjectNode(
   const targetComponentId = getNodeCatalogComponentId(target, workspace)
 
   if (
-    workspaceService.isInstance(subject) &&
-    workspaceService.isInstance(target) &&
+    typeCheckingService.isInstance(subject) &&
+    typeCheckingService.isInstance(target) &&
     subjectComponentId &&
     targetComponentId &&
-    workspaceService.areWithinSameVariant(target, subject, workspace)
+    nodeRelationshipService.areWithinSameVariant(target, subject, workspace)
   ) {
     if (placement === "inside") {
       return (
-        workspaceService.canComponentBeParentOf(
+        typeCheckingService.canComponentBeParentOf(
           targetComponentId,
           subjectComponentId,
         ) &&
-        !workspaceService.hasAncestorWithComponentId(
+        !nodeRelationshipService.hasAncestorWithComponentId(
           subjectComponentId,
           target,
           workspace,
@@ -133,22 +136,22 @@ function isValidTargetForSubjectNode(
   // The insertInto allowance for the target was already checked above; here we
   // confirm the variant can be instantiated and the container accepts its level.
   if (
-    workspaceService.isVariant(subject) &&
+    typeCheckingService.isVariant(subject) &&
     placement === "inside" &&
     subjectComponentId &&
     targetComponentId
   ) {
-    const subjectEntityType = workspaceService.getEntityType(subject)
+    const subjectEntityType = typeCheckingService.getEntityType(subject)
     if (!rules.mutations.instantiate[subjectEntityType].allowed) {
       return false
     }
 
     return (
-      workspaceService.canComponentBeParentOf(
+      typeCheckingService.canComponentBeParentOf(
         targetComponentId,
         subjectComponentId,
       ) &&
-      !workspaceService.hasAncestorWithComponentId(
+      !nodeRelationshipService.hasAncestorWithComponentId(
         subjectComponentId,
         target,
         workspace,
@@ -157,8 +160,8 @@ function isValidTargetForSubjectNode(
   }
 
   if (
-    workspaceService.isVariant(subject) &&
-    workspaceService.isVariant(target) &&
+    typeCheckingService.isVariant(subject) &&
+    typeCheckingService.isVariant(target) &&
     subjectComponentId &&
     targetComponentId &&
     subjectComponentId === targetComponentId &&

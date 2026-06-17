@@ -1,5 +1,5 @@
 import { type ReactNode, createContext, useContext, useMemo } from "react"
-import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
+import { nodeTraversalService } from "@seldon/core/workspace/services"
 import { useSelectedNodeId } from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { findComponentForNode } from "@lib/workspace/node-tree"
@@ -49,11 +49,11 @@ export function SelectionRelationsProvider({
     }
 
     const ancestorIdsOfSelected = new Set<string>()
-    let parent = workspaceService.findParentNode(selectedNodeId, workspace)
+    let parent = nodeTraversalService.findParentNode(selectedNodeId, workspace)
     const parentOfSelectedNodeId = parent?.id ?? null
     while (parent) {
       ancestorIdsOfSelected.add(parent.id)
-      parent = workspaceService.findParentNode(parent.id, workspace)
+      parent = nodeTraversalService.findParentNode(parent.id, workspace)
     }
 
     const board = findComponentForNode(selectedNode, workspace)

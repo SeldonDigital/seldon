@@ -1,6 +1,6 @@
 import { useCallback } from "react"
 import { Board, Instance, Variant } from "@seldon/core"
-import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
+import { nodeRelationshipService } from "@seldon/core/workspace/services"
 import { useActiveBoard } from "@lib/workspace/hooks/use-active-board"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import {
@@ -36,7 +36,7 @@ export function useSidebarCanvasTracking(node: Variant | Instance) {
     if (!activeBoard || !nodeExistsInWorkspace) return
 
     try {
-      const nodeBoard = workspaceService.findBoardForNode(node, workspace)
+      const nodeBoard = nodeRelationshipService.findBoardForNode(node, workspace)
       if (
         !nodeBoard ||
         getComponentKey(nodeBoard) !== getComponentKey(activeBoard)

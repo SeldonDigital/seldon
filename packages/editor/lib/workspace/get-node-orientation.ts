@@ -1,7 +1,7 @@
 import { Orientation } from "@seldon/core"
 import type { ComponentId } from "@seldon/core/components/constants"
 import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
-import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
+import { nodeRetrievalService } from "@seldon/core/workspace/services"
 import type {
   InstanceId,
   VariantId,
@@ -15,7 +15,7 @@ export function getNodeOrientation(
   objectId: ComponentId | VariantId | InstanceId,
   workspace: Workspace,
 ): "horizontal" | "vertical" {
-  const node = workspaceService.getObject(objectId, workspace)
+  const node = nodeRetrievalService.getObject(objectId, workspace)
   const properties = getNodeProperties(node, workspace)
   const value = properties.orientation?.value
 

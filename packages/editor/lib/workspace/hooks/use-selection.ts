@@ -15,7 +15,7 @@ import {
   isPlaygroundBoard,
   isThemeBoard,
 } from "@seldon/core/workspace/model"
-import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
+import { nodeRelationshipService } from "@seldon/core/workspace/services"
 import type { BoardKey } from "@seldon/core/workspace/types"
 import { useEditorConfig } from "@lib/hooks/use-editor-config"
 import { getNodeCatalogComponentId } from "@lib/workspace/node-tree"
@@ -276,7 +276,7 @@ export function useSelection() {
 
         // Always expand ancestors for navigation (this includes the node itself)
         toggleObject(id, true, { includeAncestors: true })
-        const root = workspaceService.getRootVariant(node, workspace)
+        const root = nodeRelationshipService.getRootVariant(node, workspace)
         const rootEntry = getNode(workspace, root.id)
         const rootCatalogId = rootEntry
           ? getNodeCatalogComponentId(rootEntry, workspace)
@@ -285,7 +285,7 @@ export function useSelection() {
           const schema = getComponentSchema(rootCatalogId)
           toggleSection(schema.level, true)
         } else {
-          const board = workspaceService.findBoardForNode(node, workspace)
+          const board = nodeRelationshipService.findBoardForNode(node, workspace)
           if (board) {
             toggleSection(ComponentLevel.MODULE, true)
             toggleObject(getComponentKey(board), true, {

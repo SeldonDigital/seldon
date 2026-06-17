@@ -14,7 +14,7 @@ import {
 import { useActiveBoard } from "@lib/workspace/hooks/use-active-board"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useTool } from "@lib/hooks/use-tool"
-import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
+import { nodeRetrievalService } from "@seldon/core/workspace/services"
 import type { InstanceId, VariantId, Workspace } from "@seldon/core/workspace/types"
 import { canNodeAcceptChildren } from "@lib/workspace/can-node-accept-children"
 import type { NodeRect } from "../tracking/hooks/use-node-rects-store"
@@ -53,7 +53,7 @@ function resolveComponentHoverColors(
 ): OutlineColors | null {
   let acceptsChildren = false
   try {
-    const node = workspaceService.getNode(
+    const node = nodeRetrievalService.getNode(
       hoveredId as InstanceId | VariantId,
       workspace,
     )

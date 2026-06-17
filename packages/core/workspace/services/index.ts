@@ -55,7 +55,6 @@ export {
   boardOrderService,
   BoardOrderService,
 } from "./components/board-order.service"
-export { workspaceService } from "./workspace.service"
 export {
   cloneBoard,
   clonePlayground,

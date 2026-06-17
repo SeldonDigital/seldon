@@ -14,7 +14,11 @@ import {
 import { isEntryFontCollectionDefault } from "@seldon/core/workspace/model/entry-font-collection"
 import { isEntryIconSetDefault } from "@seldon/core/workspace/model/entry-icon-set"
 import { isEntryThemeDefault } from "@seldon/core/workspace/model/entry-theme"
-import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
+import {
+  nodeRelationshipService,
+  nodeRetrievalService,
+  typeCheckingService,
+} from "@seldon/core/workspace/services"
 import type { BoardKey } from "@seldon/core/workspace/types"
 import { useAutoSelectNode } from "@lib/workspace/hooks/use-auto-select-node"
 import { useSelection } from "@lib/workspace/hooks/use-selection"
@@ -187,8 +191,8 @@ export function useAddRemoveCommands() {
 
   const removeSelectedNode = useCallback(
     (nodeId: VariantId | InstanceId) => {
-      const node = workspaceService.getNode(nodeId, workspace)
-      const isVariant = workspaceService.isVariant(node)
+      const node = nodeRetrievalService.getNode(nodeId, workspace)
+      const isVariant = typeCheckingService.isVariant(node)
 
       // Deleting a variant also removes every instance of it across all other
       // components, so confirm before discarding those usages.
@@ -201,8 +205,8 @@ export function useAddRemoveCommands() {
 
       if (selectedNode?.id === nodeId) {
         selectNode(
-          workspaceService.findAdjacent(node, "before", workspace)?.id ??
-            workspaceService.findAdjacent(node, "after", workspace)?.id ??
+          nodeRelationshipService.findAdjacent(node, "before", workspace)?.id ??
+            nodeRelationshipService.findAdjacent(node, "after", workspace)?.id ??
             null,
         )
       }

@@ -1,7 +1,7 @@
 import { useCallback } from "react"
 import { InstanceId, VariantId } from "@seldon/core/index"
 import { workspaceReducer } from "@seldon/core/workspace/reducers/reducer"
-import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
+import { typeCheckingService } from "@seldon/core/workspace/services"
 import { useMoveObjects } from "@lib/workspace/hooks/use-move-objects"
 import { useObjectClipboard } from "@lib/workspace/hooks/use-object-clipboard"
 import { useSelection } from "@lib/workspace/hooks/use-selection"
@@ -75,7 +75,7 @@ export function useNodeClipboardActions() {
     // The removal is composed onto the post-paste state and committed as a
     // single dispatch, since the dispatch closure still reads the pre-paste
     // state within this callback.
-    if (newState && mode === "cut" && workspaceService.isInstance(subject)) {
+    if (newState && mode === "cut" && typeCheckingService.isInstance(subject)) {
       const afterRemove = workspaceReducer(newState, {
         type: "remove_instance",
         payload: { instanceId: subject.id as InstanceId },

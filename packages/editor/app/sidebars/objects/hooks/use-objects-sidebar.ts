@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from "react"
-import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
+import { boardOrderService } from "@seldon/core/workspace/services"
 import { useEditorConfig } from "@lib/hooks/use-editor-config"
 import { useActiveBoard } from "@lib/workspace/hooks/use-active-board"
 import { useSelection } from "@lib/workspace/hooks/use-selection"
@@ -23,12 +23,12 @@ export function useObjectsSidebar() {
   } = useSelection()
 
   const boards = useMemo(
-    () => workspaceService.getBoards(workspace),
+    () => boardOrderService.getBoards(workspace),
     [workspace],
   )
 
   const playgrounds = useMemo(
-    () => workspaceService.getPlaygrounds(workspace),
+    () => boardOrderService.getPlaygrounds(workspace),
     [workspace],
   )
 

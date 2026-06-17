@@ -11,7 +11,12 @@ import { isVariantInUse } from "@seldon/core/workspace/helpers/general/is-varian
 import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
 import { nodeSubtreeHasOverrides } from "@seldon/core/workspace/helpers/nodes/get-node-subtree-ids"
 import { isSandboxNode } from "@seldon/core/workspace/helpers/nodes/sandbox"
-import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
+import {
+  nodeRelationshipService,
+  nodeRetrievalService,
+  nodeTraversalService,
+  typeCheckingService,
+} from "@seldon/core/workspace/services"
 import type { EntryNode } from "@seldon/core/workspace/types"
 import {
   buildDefaultSnippet,
@@ -162,27 +167,27 @@ export function useRowNode(
   function findOwningVariantId(): string | null {
     let current: EntryNode | null = node
     while (current) {
-      if (workspaceService.isVariant(current)) {
+      if (typeCheckingService.isVariant(current)) {
         return current.id
       }
-      const parent = workspaceService.findParentNode(current.id, workspace)
+      const parent = nodeTraversalService.findParentNode(current.id, workspace)
       current = parent ? (parent as EntryNode) : null
     }
     return null
   }
 
   function handleDoubleClick() {
-    const entityType = workspaceService.getEntityType(node)
+    const entityType = typeCheckingService.getEntityType(node)
     if (rules.mutations.rename[entityType].allowed) {
       setEditingName(true)
-    } else if (workspaceService.isInstance(node)) {
+    } else if (typeCheckingService.isInstance(node)) {
       const variantId = findOwningVariantId()
       if (!variantId) return
 
       if (autoScrollToSelection && nodeExistsInWorkspace) {
         const variantNode = getNode(workspace, variantId)
         if (variantNode) {
-          const root = workspaceService.getRootVariant(variantNode, workspace)
+          const root = nodeRelationshipService.getRootVariant(variantNode, workspace)
           const rootEntry = getNode(workspace, root.id)
           const rootCatalogId = rootEntry
             ? getNodeCatalogComponentId(rootEntry, workspace)
@@ -204,7 +209,7 @@ export function useRowNode(
     }
 
     if (
-      workspaceService.isInstance(node) &&
+      typeCheckingService.isInstance(node) &&
       properties?.content &&
       !isEmptyValue(properties.content)
     ) {
@@ -212,7 +217,7 @@ export function useRowNode(
     }
 
     if (
-      workspaceService.isInstance(node) &&
+      typeCheckingService.isInstance(node) &&
       properties?.symbol &&
       !isEmptyValue(properties.symbol) &&
       iconLabels[properties.symbol.value as IconId]
@@ -227,11 +232,11 @@ export function useRowNode(
   const buttonIconic = createToggleButton()
 
   const getComponentTypeIcon = (): IconProps["icon"] => {
-    if (workspaceService.isVariant(node)) {
-      if (workspaceService.isDefaultVariant(node)) {
+    if (typeCheckingService.isVariant(node)) {
+      if (typeCheckingService.isDefaultVariant(node)) {
         return "seldon-componentDefault"
       }
-      if (workspaceService.isUserVariant(node)) {
+      if (typeCheckingService.isUserVariant(node)) {
         return "seldon-componentVariant"
       }
     }
@@ -243,9 +248,9 @@ export function useRowNode(
   }
 
   const isResettableType =
-    workspaceService.isDefaultVariant(node) ||
-    workspaceService.isUserVariant(node) ||
-    workspaceService.isInstance(node)
+    typeCheckingService.isDefaultVariant(node) ||
+    typeCheckingService.isUserVariant(node) ||
+    typeCheckingService.isInstance(node)
   // A catalog-backed default variant can always reset to its catalog schema,
   // so offer "Reset to Catalog" whenever such a row is selected. The action is
   // idempotent when the tree already matches the catalog.
@@ -253,7 +258,7 @@ export function useRowNode(
     ? getNodeCatalogComponentId(node, workspace)
     : null
   const isCatalogBackedDefaultVariant =
-    workspaceService.isDefaultVariant(node) &&
+    typeCheckingService.isDefaultVariant(node) &&
     !!catalogComponentId &&
     isComponentId(catalogComponentId)
   // Detecting subtree overrides walks the variant tree, so only run it for the
@@ -266,12 +271,12 @@ export function useRowNode(
       nodeSubtreeHasOverrides(node.id, workspace))
 
   function handleReset() {
-    if (workspaceService.isDefaultVariant(node)) {
+    if (typeCheckingService.isDefaultVariant(node)) {
       dispatch({
         type: "reset_default_variant_to_catalog",
         payload: { defaultVariantRootId: node.id as VariantId },
       })
-    } else if (workspaceService.isUserVariant(node)) {
+    } else if (typeCheckingService.isUserVariant(node)) {
       dispatch({
         type: "reset_user_variant_to_default",
         payload: { variantRootId: node.id as VariantId },
@@ -285,7 +290,7 @@ export function useRowNode(
   }
 
   function getResetLabel(): string {
-    if (workspaceService.isDefaultVariant(node)) return "Reset to Catalog"
+    if (typeCheckingService.isDefaultVariant(node)) return "Reset to Catalog"
     return "Reset to Default"
   }
 
@@ -305,11 +310,11 @@ export function useRowNode(
   }
 
   async function handleCopyJson() {
-    if (workspaceService.isInstance(node)) {
+    if (typeCheckingService.isInstance(node)) {
       addToast("Nested children cannot be copied as schema JSON")
       return
     }
-    const snippet = workspaceService.isDefaultVariant(node)
+    const snippet = typeCheckingService.isDefaultVariant(node)
       ? buildDefaultSnippet(node, workspace)
       : buildVariantSnippet(node, workspace)
     if (!snippet) {
@@ -344,17 +349,17 @@ export function useRowNode(
   }
 
   function handleDelete() {
-    const isVariant = workspaceService.isVariant(node)
+    const isVariant = typeCheckingService.isVariant(node)
     if (isVariant && isVariantInUse(node.id, workspace)) {
       const confirmed = window.confirm(
         "This variant is used in other components. Deleting it will also remove it from those components. Delete anyway?",
       )
       if (!confirmed) return
     }
-    const subject = workspaceService.getNode(node.id, workspace)
+    const subject = nodeRetrievalService.getNode(node.id, workspace)
     const adjacentId =
-      workspaceService.findAdjacent(subject, "before", workspace)?.id ??
-      workspaceService.findAdjacent(subject, "after", workspace)?.id ??
+      nodeRelationshipService.findAdjacent(subject, "before", workspace)?.id ??
+      nodeRelationshipService.findAdjacent(subject, "after", workspace)?.id ??
       null
     if (isVariant) {
       dispatch({
@@ -371,9 +376,9 @@ export function useRowNode(
   }
 
   function buildNodeActions(): MenuEntry[] {
-    const isDefault = workspaceService.isDefaultVariant(node)
-    const isUser = workspaceService.isUserVariant(node)
-    const isInstance = workspaceService.isInstance(node)
+    const isDefault = typeCheckingService.isDefaultVariant(node)
+    const isUser = typeCheckingService.isUserVariant(node)
+    const isInstance = typeCheckingService.isInstance(node)
 
     // Sandbox roots have no catalog default and are not exported, so they skip
     // Copy JSON and Reset. Their child instances keep the standard menus below.
@@ -506,11 +511,11 @@ export function useRowNode(
     const isExcluded = properties?.display?.value === Display.EXCLUDE
     if (isExcluded) return true
 
-    if (!workspaceService.isInstance(node)) {
+    if (!typeCheckingService.isInstance(node)) {
       return false
     }
 
-    let currentParent = workspaceService.findParentNode(node.id, workspace)
+    let currentParent = nodeTraversalService.findParentNode(node.id, workspace)
     while (currentParent) {
       const parentProps = getNodeProperties(
         currentParent as EntryNode,
@@ -519,8 +524,8 @@ export function useRowNode(
       if (parentProps?.display?.value === Display.EXCLUDE) {
         return true
       }
-      if (workspaceService.isInstance(currentParent)) {
-        currentParent = workspaceService.findParentNode(
+      if (typeCheckingService.isInstance(currentParent)) {
+        currentParent = nodeTraversalService.findParentNode(
           currentParent.id,
           workspace,
         )
@@ -571,6 +576,6 @@ export function useRowNode(
     dragging,
     ref,
     properties,
-    dataNodeType: workspaceService.getEntityType(node),
+    dataNodeType: typeCheckingService.getEntityType(node),
   }
 }

@@ -3,7 +3,7 @@
 import { Placement } from "@lib/types"
 import { CSSProperties } from "react"
 import { Instance, Variant } from "@seldon/core"
-import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
+import { typeCheckingService } from "@seldon/core/workspace/services"
 import { useTool } from "@lib/hooks/use-tool"
 import { useSidebarPlacementTracking } from "../hooks/use-sidebar-placement-tracking"
 import {
@@ -52,7 +52,7 @@ export function SidebarPlacementZones({
   }
 
   const renderComponentToolZones = () => {
-    if (workspaceService.isInstance(node)) {
+    if (typeCheckingService.isInstance(node)) {
       return (
         <>
           <PlacementZone

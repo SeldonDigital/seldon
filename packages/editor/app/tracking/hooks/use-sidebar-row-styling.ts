@@ -2,7 +2,7 @@ import { COLORS } from "@lib/helpers/colors"
 import { useMemo } from "react"
 import { CSSProperties } from "react"
 import { Instance, Variant } from "@seldon/core"
-import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
+import { nodeRelationshipService } from "@seldon/core/workspace/services"
 import { useActiveBoard } from "@lib/workspace/hooks/use-active-board"
 import { useIsNodeSelected } from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
@@ -54,7 +54,7 @@ export function useSidebarRowStyling(
 
     if (!activeBoard) return false
     try {
-      const nodeBoard = workspaceService.findBoardForNode(
+      const nodeBoard = nodeRelationshipService.findBoardForNode(
         currentNode,
         workspace,
       )

@@ -1,7 +1,10 @@
 import { ComponentId } from "@seldon/core/components/constants"
 import { InstanceId, VariantId, Workspace } from "@seldon/core/index"
 import { findParentNode } from "@seldon/core/workspace/helpers/nodes/find-parent-node"
-import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
+import {
+  nodeRelationshipService,
+  typeCheckingService,
+} from "@seldon/core/workspace/services"
 import type { BoardKey, EntryNode } from "@seldon/core/workspace/types"
 import {
   getNodeCatalogComponentId,
@@ -32,11 +35,11 @@ function canPasteInto(
   workspace: Workspace,
 ): boolean {
   return (
-    workspaceService.canComponentBeParentOf(
+    typeCheckingService.canComponentBeParentOf(
       targetComponentId,
       subjectComponentId,
     ) &&
-    !workspaceService.hasAncestorWithComponentId(
+    !nodeRelationshipService.hasAncestorWithComponentId(
       subjectComponentId,
       targetNode,
       workspace,
@@ -46,7 +49,7 @@ function canPasteInto(
 
 function isDefaultVariantTarget(node: EntryNode): boolean {
   return (
-    workspaceService.isVariant(node) && workspaceService.isDefaultVariant(node)
+    typeCheckingService.isVariant(node) && typeCheckingService.isDefaultVariant(node)
   )
 }
 
@@ -108,14 +111,14 @@ export function resolvePasteTarget({
 
   // A board is selected with no node: only a variant of that board may paste.
   if (selectedBoardId) {
-    if (!workspaceService.isVariant(subject)) {
+    if (!typeCheckingService.isVariant(subject)) {
       return {
         action: "error",
         message: "Only variants can be pasted onto a board",
       }
     }
 
-    const board = workspaceService.findBoardForVariant(subject, workspace)
+    const board = nodeRelationshipService.findBoardForVariant(subject, workspace)
     if (!board || getComponentKey(board) !== selectedBoardId) {
       return {
         action: "error",

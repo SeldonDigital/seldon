@@ -3,7 +3,11 @@ import { useCallback, useMemo } from "react"
 import { Instance, Variant } from "@seldon/core"
 import { getComponentSchema } from "@seldon/core/components/catalog"
 import { rules } from "@seldon/core/rules/config/rules.config"
-import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
+import {
+  nodeRelationshipService,
+  nodeTraversalService,
+  typeCheckingService,
+} from "@seldon/core/workspace/services"
 import { useActiveBoard } from "@lib/workspace/hooks/use-active-board"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import {
@@ -43,10 +47,10 @@ export function useSidebarPlacementTracking(node: Variant | Instance) {
 
   const parentNode = useMemo(() => {
     try {
-      if (workspaceService.isBoard(node)) {
+      if (typeCheckingService.isBoard(node)) {
         return null
       }
-      return workspaceService.findParentNode(node.id, workspace)
+      return nodeTraversalService.findParentNode(node.id, workspace)
     } catch (error) {
       console.warn(`Could not find parent for node ${node.id}:`, error)
       return null
@@ -68,7 +72,7 @@ export function useSidebarPlacementTracking(node: Variant | Instance) {
     }
 
     try {
-      const nodeBoard = workspaceService.findBoardForNode(node, workspace)
+      const nodeBoard = nodeRelationshipService.findBoardForNode(node, workspace)
       return (
         nodeBoard !== null &&
         getComponentKey(nodeBoard) === getComponentKey(activeBoard)
@@ -81,12 +85,12 @@ export function useSidebarPlacementTracking(node: Variant | Instance) {
 
   const getLastChildNodeBeforeCursor = useCallback(
     (placement: Placement): Instance["id"] | Variant["id"] | null => {
-      if (placement !== "before" || !workspaceService.isInstance(node)) {
+      if (placement !== "before" || !typeCheckingService.isInstance(node)) {
         return placement === "after" ? node.id : null
       }
 
       try {
-        const adjacentNode = workspaceService.findAdjacentNode(
+        const adjacentNode = nodeRelationshipService.findAdjacentNode(
           node,
           "before",
           workspace,
@@ -180,7 +184,7 @@ export function useSidebarPlacementTracking(node: Variant | Instance) {
 
       if (placement === "before") {
         try {
-          const adjacentNode = workspaceService.findAdjacentNode(
+          const adjacentNode = nodeRelationshipService.findAdjacentNode(
             node as Instance,
             "before",
             workspace,
