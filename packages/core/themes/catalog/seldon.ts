@@ -10,7 +10,7 @@ import {
 import { computeTheme } from "../helpers/compute-theme"
 import { Colorspace, Harmony, Ratio, StockTheme, TokenType } from "../types"
 
-const theme: StockTheme = {
+export const theme: StockTheme = {
   metadata: {
     id: "seldon",
     name: "Seldon",
@@ -1083,5 +1083,3 @@ const theme: StockTheme = {
 }
 
 export const defaultTheme = computeTheme(theme)
-
-export default theme

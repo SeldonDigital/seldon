@@ -10,7 +10,7 @@ import {
 import { computeTheme } from "../helpers/compute-theme"
 import { Colorspace, Harmony, Ratio, StockTheme, TokenType } from "../types"
 
-const theme: StockTheme = {
+export const theme: StockTheme = {
   metadata: {
     id: "highContrast",
     name: "High Contrast",
@@ -1067,5 +1067,3 @@ const theme: StockTheme = {
 }
 
 export const highContrastTheme = computeTheme(theme)
-
-export default theme

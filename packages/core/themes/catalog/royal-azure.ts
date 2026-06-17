@@ -9,7 +9,7 @@ import {
 } from "../../properties"
 import { Colorspace, StockTheme, TokenType } from "../types"
 
-const theme: StockTheme = {
+export const theme: StockTheme = {
   metadata: {
     id: "royalAzure",
     name: "Royal Azure",
@@ -1626,5 +1626,3 @@ const theme: StockTheme = {
     },
   },
 }
-
-export default theme
