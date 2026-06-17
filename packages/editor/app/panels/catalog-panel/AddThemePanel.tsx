@@ -7,7 +7,7 @@ import { useAddRemoveCommands } from "@lib/hooks/commands/use-add-remove-command
 import { useDialog } from "@lib/hooks/use-dialog"
 import { CatalogPanel, CatalogPanelItem } from "./CatalogPanel"
 
-const THEME_ICON = "material-palette"
+const THEME_ICON = "seldon-theme"
 
 /**
  * Picker for adding a stock theme board to the workspace.
