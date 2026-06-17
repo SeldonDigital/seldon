@@ -4,6 +4,8 @@
 
 Seldon is a component-based design engine that has many moving parts.
 
+![Seldon Editor](screenshots/seldon-editor.png)
+
 - The **component catalog** in `packages/core` defines building blocks as schemas: identity, hierarchy level, default **properties**, and optional composition trees.
 - **Themes** hold reusable tokens (color, type, spacing, looks) that properties reference with `@` paths such as `@swatch.primary`.
 - A **workspace** is a JSON file that indexes components, stores **nodes** (defaults, variants, and instances with overrides), and holds theme and resource entries.
