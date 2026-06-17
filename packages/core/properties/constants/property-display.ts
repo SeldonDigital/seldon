@@ -149,8 +149,8 @@ export const PROPERTY_DISPLAY_ORDER: ReadonlyArray<{
       "borderLeftWidth",
       "borderLeftBrightness",
       "borderLeftOpacity",
-      "corners",
       "borderCollapse",
+      "corners",
     ],
   },
   {
