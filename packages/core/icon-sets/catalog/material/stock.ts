@@ -3,7 +3,7 @@ import { computeIconSet } from "../../helpers/compute-icon-set"
 import type { StockIconSet } from "../../types/icon-set"
 import { materialAllIconIds } from "./index-all"
 
-const iconSet: StockIconSet = {
+export const iconSet: StockIconSet = {
   metadata: {
     id: "googleMaterial",
     name: "Google Symbols",
@@ -19,5 +19,3 @@ const iconSet: StockIconSet = {
 }
 
 export const defaultIconSet = computeIconSet(iconSet)
-
-export default iconSet
