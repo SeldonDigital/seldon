@@ -5,7 +5,7 @@ import type { StockFontCollection } from "../types/font-collection"
  * The `System` collection. Families render from fonts already on the device and never
  * make a network request. This is the default collection seeded into every workspace.
  */
-const collection: StockFontCollection = {
+export const collection: StockFontCollection = {
   metadata: {
     id: "system",
     name: "System",
@@ -64,5 +64,3 @@ const collection: StockFontCollection = {
 }
 
 export const defaultFontCollection = computeFontCollection(collection)
-
-export default collection

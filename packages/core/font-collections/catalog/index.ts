@@ -4,8 +4,8 @@ import type {
   StockFontCollection,
 } from "../types/font-collection"
 import type { FontCollectionTemplateId } from "../types/font-collection-id"
-import googleStock from "./google"
-import systemStock, { defaultFontCollection } from "./system"
+import { collection as googleStock } from "./google"
+import { collection as systemStock, defaultFontCollection } from "./system"
 
 /** Packaged font collection definitions (`catalog/*.ts`), display order. */
 export const STOCK_FONT_COLLECTIONS: StockFontCollection[] = [
