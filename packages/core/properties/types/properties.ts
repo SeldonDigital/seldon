@@ -12,6 +12,8 @@ import {
   CheckedValue,
   ColorValue,
   ColumnCountValue,
+  ColumnSpanValue,
+  ColumnStartValue,
   ContentValue,
   CornersValue,
   DimensionValue,
@@ -42,6 +44,8 @@ import {
   ResizeValue,
   RotationValue,
   RowCountValue,
+  RowSpanValue,
+  RowStartValue,
   ScreenHeightValue,
   ScreenSizeValue,
   ScreenWidthValue,
@@ -116,6 +120,10 @@ export type Properties = Partial<{
   listStylePosition: ListStylePositionValue | EmptyValue
   columns: ColumnCountValue | EmptyValue
   rows: RowCountValue | EmptyValue
+  columnStart: ColumnStartValue | EmptyValue
+  columnSpan: ColumnSpanValue | EmptyValue
+  rowStart: RowStartValue | EmptyValue
+  rowSpan: RowSpanValue | EmptyValue
   cellAlign: AlignValue | InheritValue | EmptyValue
   dimension: DimensionValue | EmptyValue
   resize: ResizeValue | EmptyValue

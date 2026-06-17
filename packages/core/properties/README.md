@@ -299,6 +299,10 @@ Properties that control the positioning, sizing, and spatial relationships of co
 | `clip` | `atomic` | `empty` \| `inherit` \| `<bool>` |
 | `columns` | `atomic` | `empty` \| `inherit` \| `exact: number, 1–100` |
 | `rows` | `atomic` | `empty` \| `inherit` \| `exact: number, 1–100` |
+| `columnStart` | `atomic` | `empty` \| `inherit` \| `exact: number, 1–100` |
+| `columnSpan` | `atomic` | `empty` \| `inherit` \| `exact: number, 1–100` |
+| `rowStart` | `atomic` | `empty` \| `inherit` \| `exact: number, 1–100` |
+| `rowSpan` | `atomic` | `empty` \| `inherit` \| `exact: number, 1–100` |
 | `cellAlign` | `atomic` | `empty` \| `inherit` \| `option: auto, top-left, top-center, top-right, left, center, right, bottom-left, bottom-center, bottom-right` \| `exact: string` |
 | `dimension` | `atomic` | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @dimension.*` \| `option: fit, fill` \| `computed: autoFit, match` |
 | `resize` | `atomic` | `empty` \| `inherit` \| `exact: string` \| `option: fit, fill` |

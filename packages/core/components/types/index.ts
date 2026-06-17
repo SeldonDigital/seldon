@@ -1,5 +1,5 @@
 import { Properties } from "../../properties"
-import { ComponentIcon, ComponentLevel } from "../constants"
+import { ComponentIcon, ComponentLayout, ComponentLevel } from "../constants"
 import { ComponentId } from "./component-id"
 
 export { ComponentId, isComponentId } from "./component-id"
@@ -22,6 +22,9 @@ interface BaseComponentSchema {
   icon: ComponentIcon
   properties: Properties
   tags: string[]
+  // Layout model the component arranges its children with. Optional; absent means
+  // `ComponentLayout.FLEXBOX`. `ComponentLayout.GRID` selects a CSS grid container.
+  layout?: ComponentLayout
 }
 
 // A child entry inside a SchemaTree. `variant` selects a named child schema variant when present. `overrides` and

@@ -184,6 +184,10 @@ export const schema = {
             component: Seldon.ComponentId.BUTTON,
             variant: "iconic",
             overrides: {
+              buttonSize: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@fontSize.medium",
+              },
               background: [
                 {
                   kind: {
@@ -215,6 +219,10 @@ export const schema = {
             component: Seldon.ComponentId.BUTTON,
             variant: "iconic",
             overrides: {
+              buttonSize: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@fontSize.medium",
+              },
               background: [
                 {
                   kind: {
@@ -266,6 +274,10 @@ export const schema = {
             component: Seldon.ComponentId.BUTTON,
             variant: "iconic",
             overrides: {
+              buttonSize: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@fontSize.medium",
+              },
               background: [
                 {
                   kind: {
@@ -297,6 +309,10 @@ export const schema = {
             component: Seldon.ComponentId.BUTTON,
             variant: "iconic",
             overrides: {
+              buttonSize: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@fontSize.medium",
+              },
               background: [
                 {
                   kind: {
@@ -327,11 +343,11 @@ export const schema = {
         ],
       },
       {
-        component: Seldon.ComponentId.FRAME,
+        component: Seldon.ComponentId.CONTAINER,
         overrides: {
-          orientation: {
-            type: Sdn.ValueType.OPTION,
-            value: Sdn.Orientation.HORIZONTAL,
+          columns: {
+            type: Sdn.ValueType.EXACT,
+            value: { unit: Sdn.Unit.NUMBER, value: 7 },
           },
           width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
           gap: { type: Sdn.ValueType.OPTION, value: Sdn.Gap.NONE },
@@ -435,45 +451,33 @@ export const schema = {
         },
         children: [
           {
-            component: Seldon.ComponentId.FRAME,
+            component: Seldon.ComponentId.CONTAINER,
             overrides: {
-              orientation: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.Orientation.HORIZONTAL,
+              columns: {
+                type: Sdn.ValueType.EXACT,
+                value: { unit: Sdn.Unit.NUMBER, value: 7 },
               },
               width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
               gap: { type: Sdn.ValueType.OPTION, value: Sdn.Gap.NONE },
             },
             children: [
               {
-                component: Seldon.ComponentId.FRAME,
+                component: Seldon.ComponentId.CALENDAR_DAY,
                 overrides: {
-                  width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+                  columnSpan: {
+                    type: Sdn.ValueType.EXACT,
+                    value: { unit: Sdn.Unit.NUMBER, value: 5 },
+                  },
                 },
-              },
-              {
-                component: Seldon.ComponentId.FRAME,
-                overrides: {
-                  width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
-                },
-              },
-              {
-                component: Seldon.ComponentId.FRAME,
-                overrides: {
-                  width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
-                },
-              },
-              {
-                component: Seldon.ComponentId.FRAME,
-                overrides: {
-                  width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
-                },
-              },
-              {
-                component: Seldon.ComponentId.FRAME,
-                overrides: {
-                  width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
-                },
+                children: [
+                  {
+                    component: Seldon.ComponentId.TEXT,
+                    variant: "label",
+                    overrides: {
+                      content: { type: Sdn.ValueType.EXACT, value: "" },
+                    },
+                  },
+                ],
               },
               {
                 component: Seldon.ComponentId.CALENDAR_DAY,
@@ -504,11 +508,11 @@ export const schema = {
             ],
           },
           {
-            component: Seldon.ComponentId.FRAME,
+            component: Seldon.ComponentId.CONTAINER,
             overrides: {
-              orientation: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.Orientation.HORIZONTAL,
+              columns: {
+                type: Sdn.ValueType.EXACT,
+                value: { unit: Sdn.Unit.NUMBER, value: 7 },
               },
               width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
               gap: { type: Sdn.ValueType.OPTION, value: Sdn.Gap.NONE },
@@ -608,11 +612,11 @@ export const schema = {
             ],
           },
           {
-            component: Seldon.ComponentId.FRAME,
+            component: Seldon.ComponentId.CONTAINER,
             overrides: {
-              orientation: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.Orientation.HORIZONTAL,
+              columns: {
+                type: Sdn.ValueType.EXACT,
+                value: { unit: Sdn.Unit.NUMBER, value: 7 },
               },
               width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
               gap: { type: Sdn.ValueType.OPTION, value: Sdn.Gap.NONE },
@@ -712,11 +716,11 @@ export const schema = {
             ],
           },
           {
-            component: Seldon.ComponentId.FRAME,
+            component: Seldon.ComponentId.CONTAINER,
             overrides: {
-              orientation: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.Orientation.HORIZONTAL,
+              columns: {
+                type: Sdn.ValueType.EXACT,
+                value: { unit: Sdn.Unit.NUMBER, value: 7 },
               },
               width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
               gap: { type: Sdn.ValueType.OPTION, value: Sdn.Gap.NONE },
@@ -844,11 +848,11 @@ export const schema = {
             ],
           },
           {
-            component: Seldon.ComponentId.FRAME,
+            component: Seldon.ComponentId.CONTAINER,
             overrides: {
-              orientation: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.Orientation.HORIZONTAL,
+              columns: {
+                type: Sdn.ValueType.EXACT,
+                value: { unit: Sdn.Unit.NUMBER, value: 7 },
               },
               width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
               gap: { type: Sdn.ValueType.OPTION, value: Sdn.Gap.NONE },
@@ -948,11 +952,11 @@ export const schema = {
             ],
           },
           {
-            component: Seldon.ComponentId.FRAME,
+            component: Seldon.ComponentId.CONTAINER,
             overrides: {
-              orientation: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.Orientation.HORIZONTAL,
+              columns: {
+                type: Sdn.ValueType.EXACT,
+                value: { unit: Sdn.Unit.NUMBER, value: 7 },
               },
               width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
               gap: { type: Sdn.ValueType.OPTION, value: Sdn.Gap.NONE },
@@ -1063,6 +1067,10 @@ export const schema = {
                   component: Seldon.ComponentId.BUTTON,
                   variant: "iconic",
                   overrides: {
+                    buttonSize: {
+                      type: Sdn.ValueType.THEME_ORDINAL,
+                      value: "@fontSize.medium",
+                    },
                     background: [
                       {
                         kind: {
@@ -1111,11 +1119,11 @@ export const schema = {
               ],
             },
             {
-              component: Seldon.ComponentId.FRAME,
+              component: Seldon.ComponentId.CONTAINER,
               overrides: {
-                orientation: {
-                  type: Sdn.ValueType.OPTION,
-                  value: Sdn.Orientation.HORIZONTAL,
+                columns: {
+                  type: Sdn.ValueType.EXACT,
+                  value: { unit: Sdn.Unit.NUMBER, value: 7 },
                 },
                 width: {
                   type: Sdn.ValueType.OPTION,
@@ -1123,7 +1131,7 @@ export const schema = {
                 },
                 gap: {
                   type: Sdn.ValueType.OPTION,
-                  value: Sdn.Gap.EVENLY_SPACED,
+                  value: Sdn.Gap.NONE,
                 },
               },
               children: [
@@ -1196,11 +1204,11 @@ export const schema = {
               },
               children: [
                 {
-                  component: Seldon.ComponentId.FRAME,
+                  component: Seldon.ComponentId.CONTAINER,
                   overrides: {
-                    orientation: {
-                      type: Sdn.ValueType.OPTION,
-                      value: Sdn.Orientation.HORIZONTAL,
+                    columns: {
+                      type: Sdn.ValueType.EXACT,
+                      value: { unit: Sdn.Unit.NUMBER, value: 7 },
                     },
                     width: {
                       type: Sdn.ValueType.OPTION,
@@ -1208,7 +1216,7 @@ export const schema = {
                     },
                     gap: {
                       type: Sdn.ValueType.OPTION,
-                      value: Sdn.Gap.EVENLY_SPACED,
+                      value: Sdn.Gap.NONE,
                     },
                   },
                   children: [
@@ -1294,11 +1302,11 @@ export const schema = {
                   ],
                 },
                 {
-                  component: Seldon.ComponentId.FRAME,
+                  component: Seldon.ComponentId.CONTAINER,
                   overrides: {
-                    orientation: {
-                      type: Sdn.ValueType.OPTION,
-                      value: Sdn.Orientation.HORIZONTAL,
+                    columns: {
+                      type: Sdn.ValueType.EXACT,
+                      value: { unit: Sdn.Unit.NUMBER, value: 7 },
                     },
                     width: {
                       type: Sdn.ValueType.OPTION,
@@ -1306,7 +1314,7 @@ export const schema = {
                     },
                     gap: {
                       type: Sdn.ValueType.OPTION,
-                      value: Sdn.Gap.EVENLY_SPACED,
+                      value: Sdn.Gap.NONE,
                     },
                   },
                   children: [
@@ -1402,11 +1410,11 @@ export const schema = {
                   ],
                 },
                 {
-                  component: Seldon.ComponentId.FRAME,
+                  component: Seldon.ComponentId.CONTAINER,
                   overrides: {
-                    orientation: {
-                      type: Sdn.ValueType.OPTION,
-                      value: Sdn.Orientation.HORIZONTAL,
+                    columns: {
+                      type: Sdn.ValueType.EXACT,
+                      value: { unit: Sdn.Unit.NUMBER, value: 7 },
                     },
                     width: {
                       type: Sdn.ValueType.OPTION,
@@ -1414,7 +1422,7 @@ export const schema = {
                     },
                     gap: {
                       type: Sdn.ValueType.OPTION,
-                      value: Sdn.Gap.EVENLY_SPACED,
+                      value: Sdn.Gap.NONE,
                     },
                   },
                   children: [
@@ -1490,6 +1498,24 @@ export const schema = {
                             },
                           },
                         ],
+                        corners: {
+                          topLeft: {
+                            type: Sdn.ValueType.OPTION,
+                            value: Sdn.Corner.ROUNDED,
+                          },
+                          topRight: {
+                            type: Sdn.ValueType.OPTION,
+                            value: Sdn.Corner.SQUARED,
+                          },
+                          bottomLeft: {
+                            type: Sdn.ValueType.OPTION,
+                            value: Sdn.Corner.ROUNDED,
+                          },
+                          bottomRight: {
+                            type: Sdn.ValueType.OPTION,
+                            value: Sdn.Corner.SQUARED,
+                          },
+                        },
                       },
                       children: [
                         {
@@ -1534,11 +1560,11 @@ export const schema = {
                             },
                             brightness: {
                               type: Sdn.ValueType.EXACT,
-                              value: { unit: Sdn.Unit.PERCENT, value: 85 },
+                              value: { unit: Sdn.Unit.PERCENT, value: 0 },
                             },
                             opacity: {
                               type: Sdn.ValueType.EXACT,
-                              value: { unit: Sdn.Unit.PERCENT, value: 35 },
+                              value: { unit: Sdn.Unit.PERCENT, value: 50 },
                             },
                           },
                         ],
@@ -1577,6 +1603,24 @@ export const schema = {
                             },
                           },
                         ],
+                        corners: {
+                          topLeft: {
+                            type: Sdn.ValueType.OPTION,
+                            value: Sdn.Corner.SQUARED,
+                          },
+                          topRight: {
+                            type: Sdn.ValueType.OPTION,
+                            value: Sdn.Corner.ROUNDED,
+                          },
+                          bottomLeft: {
+                            type: Sdn.ValueType.OPTION,
+                            value: Sdn.Corner.SQUARED,
+                          },
+                          bottomRight: {
+                            type: Sdn.ValueType.OPTION,
+                            value: Sdn.Corner.ROUNDED,
+                          },
+                        },
                       },
                       children: [
                         {
@@ -1591,11 +1635,11 @@ export const schema = {
                   ],
                 },
                 {
-                  component: Seldon.ComponentId.FRAME,
+                  component: Seldon.ComponentId.CONTAINER,
                   overrides: {
-                    orientation: {
-                      type: Sdn.ValueType.OPTION,
-                      value: Sdn.Orientation.HORIZONTAL,
+                    columns: {
+                      type: Sdn.ValueType.EXACT,
+                      value: { unit: Sdn.Unit.NUMBER, value: 7 },
                     },
                     width: {
                       type: Sdn.ValueType.OPTION,
@@ -1603,7 +1647,7 @@ export const schema = {
                     },
                     gap: {
                       type: Sdn.ValueType.OPTION,
-                      value: Sdn.Gap.EVENLY_SPACED,
+                      value: Sdn.Gap.NONE,
                     },
                   },
                   children: [
@@ -1694,11 +1738,11 @@ export const schema = {
                   ],
                 },
                 {
-                  component: Seldon.ComponentId.FRAME,
+                  component: Seldon.ComponentId.CONTAINER,
                   overrides: {
-                    orientation: {
-                      type: Sdn.ValueType.OPTION,
-                      value: Sdn.Orientation.HORIZONTAL,
+                    columns: {
+                      type: Sdn.ValueType.EXACT,
+                      value: { unit: Sdn.Unit.NUMBER, value: 7 },
                     },
                     width: {
                       type: Sdn.ValueType.OPTION,
@@ -1706,7 +1750,7 @@ export const schema = {
                     },
                     gap: {
                       type: Sdn.ValueType.OPTION,
-                      value: Sdn.Gap.EVENLY_SPACED,
+                      value: Sdn.Gap.NONE,
                     },
                   },
                   children: [
@@ -1850,6 +1894,10 @@ export const schema = {
                   component: Seldon.ComponentId.BUTTON,
                   variant: "iconic",
                   overrides: {
+                    buttonSize: {
+                      type: Sdn.ValueType.THEME_ORDINAL,
+                      value: "@fontSize.medium",
+                    },
                     background: [
                       {
                         kind: {
@@ -1880,11 +1928,11 @@ export const schema = {
               ],
             },
             {
-              component: Seldon.ComponentId.FRAME,
+              component: Seldon.ComponentId.CONTAINER,
               overrides: {
-                orientation: {
-                  type: Sdn.ValueType.OPTION,
-                  value: Sdn.Orientation.HORIZONTAL,
+                columns: {
+                  type: Sdn.ValueType.EXACT,
+                  value: { unit: Sdn.Unit.NUMBER, value: 7 },
                 },
                 width: {
                   type: Sdn.ValueType.OPTION,
@@ -1892,7 +1940,7 @@ export const schema = {
                 },
                 gap: {
                   type: Sdn.ValueType.OPTION,
-                  value: Sdn.Gap.EVENLY_SPACED,
+                  value: Sdn.Gap.NONE,
                 },
               },
               children: [
@@ -1965,11 +2013,11 @@ export const schema = {
               },
               children: [
                 {
-                  component: Seldon.ComponentId.FRAME,
+                  component: Seldon.ComponentId.CONTAINER,
                   overrides: {
-                    orientation: {
-                      type: Sdn.ValueType.OPTION,
-                      value: Sdn.Orientation.HORIZONTAL,
+                    columns: {
+                      type: Sdn.ValueType.EXACT,
+                      value: { unit: Sdn.Unit.NUMBER, value: 7 },
                     },
                     width: {
                       type: Sdn.ValueType.OPTION,
@@ -1977,7 +2025,7 @@ export const schema = {
                     },
                     gap: {
                       type: Sdn.ValueType.OPTION,
-                      value: Sdn.Gap.EVENLY_SPACED,
+                      value: Sdn.Gap.NONE,
                     },
                   },
                   children: [
@@ -2050,11 +2098,11 @@ export const schema = {
                   ],
                 },
                 {
-                  component: Seldon.ComponentId.FRAME,
+                  component: Seldon.ComponentId.CONTAINER,
                   overrides: {
-                    orientation: {
-                      type: Sdn.ValueType.OPTION,
-                      value: Sdn.Orientation.HORIZONTAL,
+                    columns: {
+                      type: Sdn.ValueType.EXACT,
+                      value: { unit: Sdn.Unit.NUMBER, value: 7 },
                     },
                     width: {
                       type: Sdn.ValueType.OPTION,
@@ -2062,7 +2110,7 @@ export const schema = {
                     },
                     gap: {
                       type: Sdn.ValueType.OPTION,
-                      value: Sdn.Gap.EVENLY_SPACED,
+                      value: Sdn.Gap.NONE,
                     },
                   },
                   children: [
@@ -2153,11 +2201,11 @@ export const schema = {
                   ],
                 },
                 {
-                  component: Seldon.ComponentId.FRAME,
+                  component: Seldon.ComponentId.CONTAINER,
                   overrides: {
-                    orientation: {
-                      type: Sdn.ValueType.OPTION,
-                      value: Sdn.Orientation.HORIZONTAL,
+                    columns: {
+                      type: Sdn.ValueType.EXACT,
+                      value: { unit: Sdn.Unit.NUMBER, value: 7 },
                     },
                     width: {
                       type: Sdn.ValueType.OPTION,
@@ -2165,7 +2213,7 @@ export const schema = {
                     },
                     gap: {
                       type: Sdn.ValueType.OPTION,
-                      value: Sdn.Gap.EVENLY_SPACED,
+                      value: Sdn.Gap.NONE,
                     },
                   },
                   children: [
@@ -2256,11 +2304,11 @@ export const schema = {
                   ],
                 },
                 {
-                  component: Seldon.ComponentId.FRAME,
+                  component: Seldon.ComponentId.CONTAINER,
                   overrides: {
-                    orientation: {
-                      type: Sdn.ValueType.OPTION,
-                      value: Sdn.Orientation.HORIZONTAL,
+                    columns: {
+                      type: Sdn.ValueType.EXACT,
+                      value: { unit: Sdn.Unit.NUMBER, value: 7 },
                     },
                     width: {
                       type: Sdn.ValueType.OPTION,
@@ -2268,7 +2316,7 @@ export const schema = {
                     },
                     gap: {
                       type: Sdn.ValueType.OPTION,
-                      value: Sdn.Gap.EVENLY_SPACED,
+                      value: Sdn.Gap.NONE,
                     },
                   },
                   children: [
@@ -2359,11 +2407,11 @@ export const schema = {
                   ],
                 },
                 {
-                  component: Seldon.ComponentId.FRAME,
+                  component: Seldon.ComponentId.CONTAINER,
                   overrides: {
-                    orientation: {
-                      type: Sdn.ValueType.OPTION,
-                      value: Sdn.Orientation.HORIZONTAL,
+                    columns: {
+                      type: Sdn.ValueType.EXACT,
+                      value: { unit: Sdn.Unit.NUMBER, value: 7 },
                     },
                     width: {
                       type: Sdn.ValueType.OPTION,
@@ -2371,7 +2419,7 @@ export const schema = {
                     },
                     gap: {
                       type: Sdn.ValueType.OPTION,
-                      value: Sdn.Gap.EVENLY_SPACED,
+                      value: Sdn.Gap.NONE,
                     },
                   },
                   children: [
@@ -2462,11 +2510,11 @@ export const schema = {
                   ],
                 },
                 {
-                  component: Seldon.ComponentId.FRAME,
+                  component: Seldon.ComponentId.CONTAINER,
                   overrides: {
-                    orientation: {
-                      type: Sdn.ValueType.OPTION,
-                      value: Sdn.Orientation.HORIZONTAL,
+                    columns: {
+                      type: Sdn.ValueType.EXACT,
+                      value: { unit: Sdn.Unit.NUMBER, value: 7 },
                     },
                     width: {
                       type: Sdn.ValueType.OPTION,
@@ -2474,7 +2522,7 @@ export const schema = {
                     },
                     gap: {
                       type: Sdn.ValueType.OPTION,
-                      value: Sdn.Gap.EVENLY_SPACED,
+                      value: Sdn.Gap.NONE,
                     },
                   },
                   children: [
@@ -2592,6 +2640,10 @@ export const schema = {
               component: Seldon.ComponentId.BUTTON,
               variant: "iconic",
               overrides: {
+                buttonSize: {
+                  type: Sdn.ValueType.THEME_ORDINAL,
+                  value: "@fontSize.medium",
+                },
                 background: [
                   {
                     kind: {
@@ -2627,6 +2679,10 @@ export const schema = {
               component: Seldon.ComponentId.BUTTON,
               variant: "iconic",
               overrides: {
+                buttonSize: {
+                  type: Sdn.ValueType.THEME_ORDINAL,
+                  value: "@fontSize.medium",
+                },
                 background: [
                   {
                     kind: {
@@ -2661,14 +2717,14 @@ export const schema = {
           ],
         },
         {
-          component: Seldon.ComponentId.FRAME,
+          component: Seldon.ComponentId.CONTAINER,
           overrides: {
-            orientation: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Orientation.HORIZONTAL,
+            columns: {
+              type: Sdn.ValueType.EXACT,
+              value: { unit: Sdn.Unit.NUMBER, value: 7 },
             },
             width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
-            gap: { type: Sdn.ValueType.OPTION, value: Sdn.Gap.EVENLY_SPACED },
+            gap: { type: Sdn.ValueType.OPTION, value: Sdn.Gap.NONE },
           },
           children: [
             {
@@ -2734,16 +2790,16 @@ export const schema = {
           },
           children: [
             {
-              component: Seldon.ComponentId.FRAME,
+              component: Seldon.ComponentId.CONTAINER,
               overrides: {
-                orientation: {
-                  type: Sdn.ValueType.OPTION,
-                  value: Sdn.Orientation.HORIZONTAL,
+                columns: {
+                  type: Sdn.ValueType.EXACT,
+                  value: { unit: Sdn.Unit.NUMBER, value: 7 },
                 },
                 width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
                 gap: {
                   type: Sdn.ValueType.OPTION,
-                  value: Sdn.Gap.EVENLY_SPACED,
+                  value: Sdn.Gap.NONE,
                 },
               },
               children: [
@@ -2870,16 +2926,16 @@ export const schema = {
               ],
             },
             {
-              component: Seldon.ComponentId.FRAME,
+              component: Seldon.ComponentId.CONTAINER,
               overrides: {
-                orientation: {
-                  type: Sdn.ValueType.OPTION,
-                  value: Sdn.Orientation.HORIZONTAL,
+                columns: {
+                  type: Sdn.ValueType.EXACT,
+                  value: { unit: Sdn.Unit.NUMBER, value: 7 },
                 },
                 width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
                 gap: {
                   type: Sdn.ValueType.OPTION,
-                  value: Sdn.Gap.EVENLY_SPACED,
+                  value: Sdn.Gap.NONE,
                 },
               },
               children: [
@@ -2977,16 +3033,16 @@ export const schema = {
               ],
             },
             {
-              component: Seldon.ComponentId.FRAME,
+              component: Seldon.ComponentId.CONTAINER,
               overrides: {
-                orientation: {
-                  type: Sdn.ValueType.OPTION,
-                  value: Sdn.Orientation.HORIZONTAL,
+                columns: {
+                  type: Sdn.ValueType.EXACT,
+                  value: { unit: Sdn.Unit.NUMBER, value: 7 },
                 },
                 width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
                 gap: {
                   type: Sdn.ValueType.OPTION,
-                  value: Sdn.Gap.EVENLY_SPACED,
+                  value: Sdn.Gap.NONE,
                 },
               },
               children: [
@@ -3084,16 +3140,16 @@ export const schema = {
               ],
             },
             {
-              component: Seldon.ComponentId.FRAME,
+              component: Seldon.ComponentId.CONTAINER,
               overrides: {
-                orientation: {
-                  type: Sdn.ValueType.OPTION,
-                  value: Sdn.Orientation.HORIZONTAL,
+                columns: {
+                  type: Sdn.ValueType.EXACT,
+                  value: { unit: Sdn.Unit.NUMBER, value: 7 },
                 },
                 width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
                 gap: {
                   type: Sdn.ValueType.OPTION,
-                  value: Sdn.Gap.EVENLY_SPACED,
+                  value: Sdn.Gap.NONE,
                 },
               },
               children: [
@@ -3191,16 +3247,16 @@ export const schema = {
               ],
             },
             {
-              component: Seldon.ComponentId.FRAME,
+              component: Seldon.ComponentId.CONTAINER,
               overrides: {
-                orientation: {
-                  type: Sdn.ValueType.OPTION,
-                  value: Sdn.Orientation.HORIZONTAL,
+                columns: {
+                  type: Sdn.ValueType.EXACT,
+                  value: { unit: Sdn.Unit.NUMBER, value: 7 },
                 },
                 width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
                 gap: {
                   type: Sdn.ValueType.OPTION,
-                  value: Sdn.Gap.EVENLY_SPACED,
+                  value: Sdn.Gap.NONE,
                 },
               },
               children: [

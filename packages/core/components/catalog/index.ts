@@ -73,6 +73,10 @@ import {
 } from "./elements/tables/TableRowData.schema"
 // Frames
 import {
+  exportConfig as containerExportConfig,
+  schema as containerSchema,
+} from "./frames/Container.schema"
+import {
   exportConfig as frameExportConfig,
   schema as frameSchema,
 } from "./frames/Frame.schema"
@@ -284,7 +288,7 @@ const boards: ComponentSchema[] = [boardSchema]
 
 const screens: ComponentSchema[] = [screenSchema]
 
-const frames: ComponentSchema[] = [frameSchema, sandboxSchema]
+const frames: ComponentSchema[] = [containerSchema, frameSchema, sandboxSchema]
 
 export type Catalog = {
   frames: ComponentSchema[]
@@ -341,6 +345,7 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   [ComponentId.TABLE_ROW_DATA]: tableRowDataExportConfig,
 
   // Frames
+  [ComponentId.CONTAINER]: containerExportConfig,
   [ComponentId.FRAME]: frameExportConfig,
   [ComponentId.SANDBOX]: sandboxExportConfig,
 

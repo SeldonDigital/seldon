@@ -12,6 +12,7 @@ A **component schema** is a static, typed record. It does not hold instance stat
 
 - **Identity** — `id`, `name`, `intent`, `tags`, `icon`.
 - **Place in the hierarchy** — `level`, one of seven levels (Section _Component Hierarchy_).
+- **Layout model** — `layout`, optional. Absent means flexbox. `grid` makes the component a CSS grid container and scopes its LAYOUT properties to the grid vocabulary.
 - **Defaults** — `properties`, the schema-level default values for every property the component exposes. Properties not listed here cannot be set on this component.
 - **Composition** — `children`, an optional tree of nested component references with their own `overrides`.
 
@@ -50,6 +51,7 @@ interface BaseComponentSchema {
   icon: ComponentIcon
   properties: Properties
   tags: string[]
+  layout?: ComponentLayout
 }
 
 interface PrimitiveComponentSchema extends BaseComponentSchema {
@@ -98,6 +100,7 @@ Composition trees are **fully flattened**: a parent declares the entire descenda
 | `tags` | `string[]` | Search/discovery keywords. Free-form. |
 | `level` | `ComponentLevel` | Position in the hierarchy. A primitive schema is locked to `PRIMITIVE`. |
 | `icon` | `ComponentIcon` | Icon shown in editor catalog panels. |
+| `layout` | `ComponentLayout` | Optional. Layout model the component arranges children with. Absent means `FLEXBOX`. `GRID` selects a CSS grid container and grid-scoped LAYOUT properties. |
 | `properties` | `Properties` | Default values for every catalog property this component exposes. A property absent from this block cannot be set on instances of this component. |
 | `default` | `SchemaTree` | Only on complex schemas. The canonical composition tree for the component. |
 | `variants` | `SchemaVariant[]?` | Optional. On complex schemas, alternate composition trees of the same component, each with its own `id`, `label`, and `intent`. On primitive schemas, leaf variants that carry only root property overrides and no child trees. |

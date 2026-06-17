@@ -10,6 +10,7 @@ import { getColorStyles } from "./get-color-styles"
 import { getCornersStyles } from "./get-corners-styles"
 import { getCursorStyles } from "./get-cursor-styles"
 import { getDisplayStyles } from "./get-display-styles"
+import { getGridItemStyles } from "./get-grid-item-styles"
 import { getIconStyles } from "./get-icon-styles"
 import { getImageStyles } from "./get-image-styles"
 import { getLayoutStyles } from "./get-layout-styles"
@@ -59,6 +60,7 @@ export function getCssObjectFromProperties(
     properties: originalProperties,
     parentContext,
     theme,
+    layoutMode,
     useThemeVariableReferences,
     themeSlug,
   } = context
@@ -118,7 +120,11 @@ export function getCssObjectFromProperties(
         computedProperties: computedProperties,
         nodeProperties: originalProperties,
         theme,
+        layoutMode,
       }),
+    ),
+    ...safeGetStyles(() =>
+      getGridItemStyles({ properties: computedProperties }),
     ),
     ...safeGetStyles(() => getListStyles({ properties: computedProperties })),
     ...safeGetStyles(() =>

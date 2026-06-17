@@ -40,7 +40,7 @@ export const schema = {
     },
     width: {
       type: Sdn.ValueType.OPTION,
-      value: Sdn.Resize.FIT,
+      value: Sdn.Resize.FILL,
     },
     height: {
       type: Sdn.ValueType.OPTION,
@@ -68,6 +68,10 @@ export const schema = {
       value: false,
     },
     clip: { type: Sdn.ValueType.EMPTY, value: null },
+    columnStart: { type: Sdn.ValueType.EMPTY, value: null },
+    columnSpan: { type: Sdn.ValueType.EMPTY, value: null },
+    rowStart: { type: Sdn.ValueType.EMPTY, value: null },
+    rowSpan: { type: Sdn.ValueType.EMPTY, value: null },
     color: { type: Sdn.ValueType.EMPTY, value: null },
     brightness: { type: Sdn.ValueType.EMPTY, value: null },
     opacity: { type: Sdn.ValueType.EMPTY, value: null },

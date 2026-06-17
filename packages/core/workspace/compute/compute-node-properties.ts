@@ -12,6 +12,7 @@ import type { ComputedTheme } from "../../themes/types/theme"
 import { getComponentPropertyDefaults } from "../helpers/components/get-component-property-defaults"
 import { getNodeParentIndex } from "../helpers/graph/build-node-parent-index"
 import { getNodeCatalogId } from "../helpers/nodes/get-node-catalog-id"
+import { resolveLayoutMode } from "../helpers/nodes/resolve-layout-mode"
 import { parseNodeTemplate, parseThemeTemplate } from "../model/template-ref"
 import type { Board } from "../types"
 import type { EntryNode, Workspace } from "../types"
@@ -462,10 +463,16 @@ function buildComputeContext(
     theme,
   })
 
+  const layoutMode = resolveLayoutMode(
+    node as EntryNode,
+    workspace as Workspace,
+  )
+
   return {
     properties: effectiveProperties,
     parentContext,
     theme,
+    layoutMode,
   }
 }
 

@@ -119,6 +119,7 @@ export const buildStyleRegistry = (
         properties: variantContext.properties,
         parentContext: variantContext.parentContext,
         theme: variantContext.theme,
+        layoutMode: variantContext.layoutMode,
         useThemeVariableReferences: true,
         themeSlug: getThemeSlug(variantContext.theme.id as string, workspace),
       })
@@ -129,6 +130,7 @@ export const buildStyleRegistry = (
           properties: instanceContext.properties,
           parentContext: instanceContext.parentContext,
           theme: instanceContext.theme,
+          layoutMode: instanceContext.layoutMode,
           useThemeVariableReferences: true,
           themeSlug: getThemeSlug(
             instanceContext.theme.id as string,
@@ -144,6 +146,7 @@ export const buildStyleRegistry = (
         properties: context.properties,
         parentContext: context.parentContext,
         theme: context.theme,
+        layoutMode: context.layoutMode,
         useThemeVariableReferences: true,
         themeSlug: getThemeSlug(context.theme.id as string, workspace),
       })
