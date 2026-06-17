@@ -971,40 +971,22 @@ export const schema = {
                 ],
               },
               {
-                component: Seldon.ComponentId.FRAME,
+                component: Seldon.ComponentId.CALENDAR_DAY,
                 overrides: {
-                  width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+                  columnSpan: {
+                    type: Sdn.ValueType.EXACT,
+                    value: { unit: Sdn.Unit.NUMBER, value: 6 },
+                  },
                 },
-              },
-              {
-                component: Seldon.ComponentId.FRAME,
-                overrides: {
-                  width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
-                },
-              },
-              {
-                component: Seldon.ComponentId.FRAME,
-                overrides: {
-                  width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
-                },
-              },
-              {
-                component: Seldon.ComponentId.FRAME,
-                overrides: {
-                  width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
-                },
-              },
-              {
-                component: Seldon.ComponentId.FRAME,
-                overrides: {
-                  width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
-                },
-              },
-              {
-                component: Seldon.ComponentId.FRAME,
-                overrides: {
-                  width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
-                },
+                children: [
+                  {
+                    component: Seldon.ComponentId.TEXT,
+                    variant: "label",
+                    overrides: {
+                      content: { type: Sdn.ValueType.EXACT, value: "" },
+                    },
+                  },
+                ],
               },
             ],
           },
@@ -1135,6 +1117,11 @@ export const schema = {
                   variant: "label",
                   overrides: {
                     content: { type: Sdn.ValueType.EXACT, value: "Mo" },
+                    width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+                    textAlign: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.TextAlign.CENTER,
+                    },
                   },
                 },
                 {
@@ -1142,6 +1129,11 @@ export const schema = {
                   variant: "label",
                   overrides: {
                     content: { type: Sdn.ValueType.EXACT, value: "Tu" },
+                    width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+                    textAlign: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.TextAlign.CENTER,
+                    },
                   },
                 },
                 {
@@ -1149,6 +1141,11 @@ export const schema = {
                   variant: "label",
                   overrides: {
                     content: { type: Sdn.ValueType.EXACT, value: "We" },
+                    width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+                    textAlign: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.TextAlign.CENTER,
+                    },
                   },
                 },
                 {
@@ -1156,6 +1153,11 @@ export const schema = {
                   variant: "label",
                   overrides: {
                     content: { type: Sdn.ValueType.EXACT, value: "Th" },
+                    width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+                    textAlign: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.TextAlign.CENTER,
+                    },
                   },
                 },
                 {
@@ -1163,6 +1165,11 @@ export const schema = {
                   variant: "label",
                   overrides: {
                     content: { type: Sdn.ValueType.EXACT, value: "Fr" },
+                    width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+                    textAlign: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.TextAlign.CENTER,
+                    },
                   },
                 },
                 {
@@ -1170,6 +1177,11 @@ export const schema = {
                   variant: "label",
                   overrides: {
                     content: { type: Sdn.ValueType.EXACT, value: "Sa" },
+                    width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+                    textAlign: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.TextAlign.CENTER,
+                    },
                   },
                 },
                 {
@@ -1177,6 +1189,11 @@ export const schema = {
                   variant: "label",
                   overrides: {
                     content: { type: Sdn.ValueType.EXACT, value: "Su" },
+                    width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+                    textAlign: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.TextAlign.CENTER,
+                    },
                   },
                 },
               ],
@@ -1216,31 +1233,22 @@ export const schema = {
                   },
                   children: [
                     {
-                      component: Seldon.ComponentId.FRAME,
+                      component: Seldon.ComponentId.CALENDAR_DAY,
                       overrides: {
-                        width: {
-                          type: Sdn.ValueType.OPTION,
-                          value: Sdn.Resize.FILL,
+                        columnSpan: {
+                          type: Sdn.ValueType.EXACT,
+                          value: { unit: Sdn.Unit.NUMBER, value: 3 },
                         },
                       },
-                    },
-                    {
-                      component: Seldon.ComponentId.FRAME,
-                      overrides: {
-                        width: {
-                          type: Sdn.ValueType.OPTION,
-                          value: Sdn.Resize.FILL,
+                      children: [
+                        {
+                          component: Seldon.ComponentId.TEXT,
+                          variant: "label",
+                          overrides: {
+                            content: { type: Sdn.ValueType.EXACT, value: "" },
+                          },
                         },
-                      },
-                    },
-                    {
-                      component: Seldon.ComponentId.FRAME,
-                      overrides: {
-                        width: {
-                          type: Sdn.ValueType.OPTION,
-                          value: Sdn.Resize.FILL,
-                        },
-                      },
+                      ],
                     },
                     {
                       component: Seldon.ComponentId.CALENDAR_DAY,
@@ -1822,13 +1830,16 @@ export const schema = {
                       ],
                     },
                     {
-                      component: Seldon.ComponentId.FRAME,
-                      overrides: {
-                        width: {
-                          type: Sdn.ValueType.OPTION,
-                          value: Sdn.Resize.FILL,
+                      component: Seldon.ComponentId.CALENDAR_DAY,
+                      children: [
+                        {
+                          component: Seldon.ComponentId.TEXT,
+                          variant: "label",
+                          overrides: {
+                            content: { type: Sdn.ValueType.EXACT, value: "" },
+                          },
                         },
-                      },
+                      ],
                     },
                   ],
                 },
@@ -1944,6 +1955,11 @@ export const schema = {
                   variant: "label",
                   overrides: {
                     content: { type: Sdn.ValueType.EXACT, value: "Mo" },
+                    width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+                    textAlign: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.TextAlign.CENTER,
+                    },
                   },
                 },
                 {
@@ -1951,6 +1967,11 @@ export const schema = {
                   variant: "label",
                   overrides: {
                     content: { type: Sdn.ValueType.EXACT, value: "Tu" },
+                    width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+                    textAlign: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.TextAlign.CENTER,
+                    },
                   },
                 },
                 {
@@ -1958,6 +1979,11 @@ export const schema = {
                   variant: "label",
                   overrides: {
                     content: { type: Sdn.ValueType.EXACT, value: "We" },
+                    width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+                    textAlign: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.TextAlign.CENTER,
+                    },
                   },
                 },
                 {
@@ -1965,6 +1991,11 @@ export const schema = {
                   variant: "label",
                   overrides: {
                     content: { type: Sdn.ValueType.EXACT, value: "Th" },
+                    width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+                    textAlign: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.TextAlign.CENTER,
+                    },
                   },
                 },
                 {
@@ -1972,6 +2003,11 @@ export const schema = {
                   variant: "label",
                   overrides: {
                     content: { type: Sdn.ValueType.EXACT, value: "Fr" },
+                    width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+                    textAlign: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.TextAlign.CENTER,
+                    },
                   },
                 },
                 {
@@ -1979,6 +2015,11 @@ export const schema = {
                   variant: "label",
                   overrides: {
                     content: { type: Sdn.ValueType.EXACT, value: "Sa" },
+                    width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+                    textAlign: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.TextAlign.CENTER,
+                    },
                   },
                 },
                 {
@@ -1986,6 +2027,11 @@ export const schema = {
                   variant: "label",
                   overrides: {
                     content: { type: Sdn.ValueType.EXACT, value: "Su" },
+                    width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+                    textAlign: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.TextAlign.CENTER,
+                    },
                   },
                 },
               ],
@@ -2025,58 +2071,22 @@ export const schema = {
                   },
                   children: [
                     {
-                      component: Seldon.ComponentId.FRAME,
+                      component: Seldon.ComponentId.CALENDAR_DAY,
                       overrides: {
-                        width: {
-                          type: Sdn.ValueType.OPTION,
-                          value: Sdn.Resize.FILL,
+                        columnSpan: {
+                          type: Sdn.ValueType.EXACT,
+                          value: { unit: Sdn.Unit.NUMBER, value: 6 },
                         },
                       },
-                    },
-                    {
-                      component: Seldon.ComponentId.FRAME,
-                      overrides: {
-                        width: {
-                          type: Sdn.ValueType.OPTION,
-                          value: Sdn.Resize.FILL,
+                      children: [
+                        {
+                          component: Seldon.ComponentId.TEXT,
+                          variant: "label",
+                          overrides: {
+                            content: { type: Sdn.ValueType.EXACT, value: "" },
+                          },
                         },
-                      },
-                    },
-                    {
-                      component: Seldon.ComponentId.FRAME,
-                      overrides: {
-                        width: {
-                          type: Sdn.ValueType.OPTION,
-                          value: Sdn.Resize.FILL,
-                        },
-                      },
-                    },
-                    {
-                      component: Seldon.ComponentId.FRAME,
-                      overrides: {
-                        width: {
-                          type: Sdn.ValueType.OPTION,
-                          value: Sdn.Resize.FILL,
-                        },
-                      },
-                    },
-                    {
-                      component: Seldon.ComponentId.FRAME,
-                      overrides: {
-                        width: {
-                          type: Sdn.ValueType.OPTION,
-                          value: Sdn.Resize.FILL,
-                        },
-                      },
-                    },
-                    {
-                      component: Seldon.ComponentId.FRAME,
-                      overrides: {
-                        width: {
-                          type: Sdn.ValueType.OPTION,
-                          value: Sdn.Resize.FILL,
-                        },
-                      },
+                      ],
                     },
                     {
                       component: Seldon.ComponentId.CALENDAR_DAY,
@@ -2534,58 +2544,22 @@ export const schema = {
                       ],
                     },
                     {
-                      component: Seldon.ComponentId.FRAME,
+                      component: Seldon.ComponentId.CALENDAR_DAY,
                       overrides: {
-                        width: {
-                          type: Sdn.ValueType.OPTION,
-                          value: Sdn.Resize.FILL,
+                        columnSpan: {
+                          type: Sdn.ValueType.EXACT,
+                          value: { unit: Sdn.Unit.NUMBER, value: 6 },
                         },
                       },
-                    },
-                    {
-                      component: Seldon.ComponentId.FRAME,
-                      overrides: {
-                        width: {
-                          type: Sdn.ValueType.OPTION,
-                          value: Sdn.Resize.FILL,
+                      children: [
+                        {
+                          component: Seldon.ComponentId.TEXT,
+                          variant: "label",
+                          overrides: {
+                            content: { type: Sdn.ValueType.EXACT, value: "" },
+                          },
                         },
-                      },
-                    },
-                    {
-                      component: Seldon.ComponentId.FRAME,
-                      overrides: {
-                        width: {
-                          type: Sdn.ValueType.OPTION,
-                          value: Sdn.Resize.FILL,
-                        },
-                      },
-                    },
-                    {
-                      component: Seldon.ComponentId.FRAME,
-                      overrides: {
-                        width: {
-                          type: Sdn.ValueType.OPTION,
-                          value: Sdn.Resize.FILL,
-                        },
-                      },
-                    },
-                    {
-                      component: Seldon.ComponentId.FRAME,
-                      overrides: {
-                        width: {
-                          type: Sdn.ValueType.OPTION,
-                          value: Sdn.Resize.FILL,
-                        },
-                      },
-                    },
-                    {
-                      component: Seldon.ComponentId.FRAME,
-                      overrides: {
-                        width: {
-                          type: Sdn.ValueType.OPTION,
-                          value: Sdn.Resize.FILL,
-                        },
-                      },
+                      ],
                     },
                   ],
                 },
@@ -2727,6 +2701,11 @@ export const schema = {
               variant: "label",
               overrides: {
                 content: { type: Sdn.ValueType.EXACT, value: "Sun" },
+                width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+                textAlign: {
+                  type: Sdn.ValueType.OPTION,
+                  value: Sdn.TextAlign.CENTER,
+                },
               },
             },
             {
@@ -2734,6 +2713,11 @@ export const schema = {
               variant: "label",
               overrides: {
                 content: { type: Sdn.ValueType.EXACT, value: "Mon" },
+                width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+                textAlign: {
+                  type: Sdn.ValueType.OPTION,
+                  value: Sdn.TextAlign.CENTER,
+                },
               },
             },
             {
@@ -2741,6 +2725,11 @@ export const schema = {
               variant: "label",
               overrides: {
                 content: { type: Sdn.ValueType.EXACT, value: "Tue" },
+                width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+                textAlign: {
+                  type: Sdn.ValueType.OPTION,
+                  value: Sdn.TextAlign.CENTER,
+                },
               },
             },
             {
@@ -2748,6 +2737,11 @@ export const schema = {
               variant: "label",
               overrides: {
                 content: { type: Sdn.ValueType.EXACT, value: "Wed" },
+                width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+                textAlign: {
+                  type: Sdn.ValueType.OPTION,
+                  value: Sdn.TextAlign.CENTER,
+                },
               },
             },
             {
@@ -2755,6 +2749,11 @@ export const schema = {
               variant: "label",
               overrides: {
                 content: { type: Sdn.ValueType.EXACT, value: "Thu" },
+                width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+                textAlign: {
+                  type: Sdn.ValueType.OPTION,
+                  value: Sdn.TextAlign.CENTER,
+                },
               },
             },
             {
@@ -2762,6 +2761,11 @@ export const schema = {
               variant: "label",
               overrides: {
                 content: { type: Sdn.ValueType.EXACT, value: "Fri" },
+                width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+                textAlign: {
+                  type: Sdn.ValueType.OPTION,
+                  value: Sdn.TextAlign.CENTER,
+                },
               },
             },
             {
@@ -2769,6 +2773,11 @@ export const schema = {
               variant: "label",
               overrides: {
                 content: { type: Sdn.ValueType.EXACT, value: "Sat" },
+                width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+                textAlign: {
+                  type: Sdn.ValueType.OPTION,
+                  value: Sdn.TextAlign.CENTER,
+                },
               },
             },
           ],
@@ -2801,6 +2810,12 @@ export const schema = {
                 {
                   component: Seldon.ComponentId.CALENDAR_DAY,
                   variant: "muted",
+                  overrides: {
+                    align: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.Align.TOP_CENTER,
+                    },
+                  },
                   children: [
                     {
                       component: Seldon.ComponentId.TEXT,
@@ -2814,6 +2829,12 @@ export const schema = {
                 {
                   component: Seldon.ComponentId.CALENDAR_DAY,
                   variant: "selected",
+                  overrides: {
+                    align: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.Align.TOP_CENTER,
+                    },
+                  },
                   children: [
                     {
                       component: Seldon.ComponentId.TEXT,
@@ -2843,6 +2864,12 @@ export const schema = {
                 },
                 {
                   component: Seldon.ComponentId.CALENDAR_DAY,
+                  overrides: {
+                    align: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.Align.TOP_CENTER,
+                    },
+                  },
                   children: [
                     {
                       component: Seldon.ComponentId.TEXT,
@@ -2859,6 +2886,12 @@ export const schema = {
                 },
                 {
                   component: Seldon.ComponentId.CALENDAR_DAY,
+                  overrides: {
+                    align: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.Align.TOP_CENTER,
+                    },
+                  },
                   children: [
                     {
                       component: Seldon.ComponentId.TEXT,
@@ -2875,6 +2908,12 @@ export const schema = {
                 },
                 {
                   component: Seldon.ComponentId.CALENDAR_DAY,
+                  overrides: {
+                    align: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.Align.TOP_CENTER,
+                    },
+                  },
                   children: [
                     {
                       component: Seldon.ComponentId.TEXT,
@@ -2891,6 +2930,12 @@ export const schema = {
                 },
                 {
                   component: Seldon.ComponentId.CALENDAR_DAY,
+                  overrides: {
+                    align: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.Align.TOP_CENTER,
+                    },
+                  },
                   children: [
                     {
                       component: Seldon.ComponentId.TEXT,
@@ -2908,6 +2953,12 @@ export const schema = {
                 {
                   component: Seldon.ComponentId.CALENDAR_DAY,
                   variant: "muted",
+                  overrides: {
+                    align: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.Align.TOP_CENTER,
+                    },
+                  },
                   children: [
                     {
                       component: Seldon.ComponentId.TEXT,
@@ -2937,6 +2988,12 @@ export const schema = {
                 {
                   component: Seldon.ComponentId.CALENDAR_DAY,
                   variant: "muted",
+                  overrides: {
+                    align: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.Align.TOP_CENTER,
+                    },
+                  },
                   children: [
                     {
                       component: Seldon.ComponentId.TEXT,
@@ -2950,6 +3007,12 @@ export const schema = {
                 {
                   component: Seldon.ComponentId.CALENDAR_DAY,
                   variant: "muted",
+                  overrides: {
+                    align: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.Align.TOP_CENTER,
+                    },
+                  },
                   children: [
                     {
                       component: Seldon.ComponentId.TEXT,
@@ -2963,6 +3026,12 @@ export const schema = {
                 {
                   component: Seldon.ComponentId.CALENDAR_DAY,
                   variant: "muted",
+                  overrides: {
+                    align: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.Align.TOP_CENTER,
+                    },
+                  },
                   children: [
                     {
                       component: Seldon.ComponentId.TEXT,
@@ -2976,6 +3045,12 @@ export const schema = {
                 {
                   component: Seldon.ComponentId.CALENDAR_DAY,
                   variant: "muted",
+                  overrides: {
+                    align: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.Align.TOP_CENTER,
+                    },
+                  },
                   children: [
                     {
                       component: Seldon.ComponentId.TEXT,
@@ -2989,6 +3064,12 @@ export const schema = {
                 {
                   component: Seldon.ComponentId.CALENDAR_DAY,
                   variant: "muted",
+                  overrides: {
+                    align: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.Align.TOP_CENTER,
+                    },
+                  },
                   children: [
                     {
                       component: Seldon.ComponentId.TEXT,
@@ -3002,6 +3083,12 @@ export const schema = {
                 {
                   component: Seldon.ComponentId.CALENDAR_DAY,
                   variant: "muted",
+                  overrides: {
+                    align: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.Align.TOP_CENTER,
+                    },
+                  },
                   children: [
                     {
                       component: Seldon.ComponentId.TEXT,
@@ -3015,6 +3102,12 @@ export const schema = {
                 {
                   component: Seldon.ComponentId.CALENDAR_DAY,
                   variant: "muted",
+                  overrides: {
+                    align: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.Align.TOP_CENTER,
+                    },
+                  },
                   children: [
                     {
                       component: Seldon.ComponentId.TEXT,
@@ -3044,6 +3137,12 @@ export const schema = {
                 {
                   component: Seldon.ComponentId.CALENDAR_DAY,
                   variant: "muted",
+                  overrides: {
+                    align: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.Align.TOP_CENTER,
+                    },
+                  },
                   children: [
                     {
                       component: Seldon.ComponentId.TEXT,
@@ -3057,6 +3156,12 @@ export const schema = {
                 {
                   component: Seldon.ComponentId.CALENDAR_DAY,
                   variant: "muted",
+                  overrides: {
+                    align: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.Align.TOP_CENTER,
+                    },
+                  },
                   children: [
                     {
                       component: Seldon.ComponentId.TEXT,
@@ -3070,6 +3175,12 @@ export const schema = {
                 {
                   component: Seldon.ComponentId.CALENDAR_DAY,
                   variant: "muted",
+                  overrides: {
+                    align: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.Align.TOP_CENTER,
+                    },
+                  },
                   children: [
                     {
                       component: Seldon.ComponentId.TEXT,
@@ -3083,6 +3194,12 @@ export const schema = {
                 {
                   component: Seldon.ComponentId.CALENDAR_DAY,
                   variant: "muted",
+                  overrides: {
+                    align: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.Align.TOP_CENTER,
+                    },
+                  },
                   children: [
                     {
                       component: Seldon.ComponentId.TEXT,
@@ -3096,6 +3213,12 @@ export const schema = {
                 {
                   component: Seldon.ComponentId.CALENDAR_DAY,
                   variant: "muted",
+                  overrides: {
+                    align: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.Align.TOP_CENTER,
+                    },
+                  },
                   children: [
                     {
                       component: Seldon.ComponentId.TEXT,
@@ -3109,6 +3232,12 @@ export const schema = {
                 {
                   component: Seldon.ComponentId.CALENDAR_DAY,
                   variant: "muted",
+                  overrides: {
+                    align: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.Align.TOP_CENTER,
+                    },
+                  },
                   children: [
                     {
                       component: Seldon.ComponentId.TEXT,
@@ -3122,6 +3251,12 @@ export const schema = {
                 {
                   component: Seldon.ComponentId.CALENDAR_DAY,
                   variant: "muted",
+                  overrides: {
+                    align: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.Align.TOP_CENTER,
+                    },
+                  },
                   children: [
                     {
                       component: Seldon.ComponentId.TEXT,
@@ -3151,6 +3286,12 @@ export const schema = {
                 {
                   component: Seldon.ComponentId.CALENDAR_DAY,
                   variant: "muted",
+                  overrides: {
+                    align: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.Align.TOP_CENTER,
+                    },
+                  },
                   children: [
                     {
                       component: Seldon.ComponentId.TEXT,
@@ -3164,6 +3305,12 @@ export const schema = {
                 {
                   component: Seldon.ComponentId.CALENDAR_DAY,
                   variant: "muted",
+                  overrides: {
+                    align: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.Align.TOP_CENTER,
+                    },
+                  },
                   children: [
                     {
                       component: Seldon.ComponentId.TEXT,
@@ -3177,6 +3324,12 @@ export const schema = {
                 {
                   component: Seldon.ComponentId.CALENDAR_DAY,
                   variant: "muted",
+                  overrides: {
+                    align: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.Align.TOP_CENTER,
+                    },
+                  },
                   children: [
                     {
                       component: Seldon.ComponentId.TEXT,
@@ -3190,6 +3343,12 @@ export const schema = {
                 {
                   component: Seldon.ComponentId.CALENDAR_DAY,
                   variant: "muted",
+                  overrides: {
+                    align: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.Align.TOP_CENTER,
+                    },
+                  },
                   children: [
                     {
                       component: Seldon.ComponentId.TEXT,
@@ -3203,6 +3362,12 @@ export const schema = {
                 {
                   component: Seldon.ComponentId.CALENDAR_DAY,
                   variant: "muted",
+                  overrides: {
+                    align: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.Align.TOP_CENTER,
+                    },
+                  },
                   children: [
                     {
                       component: Seldon.ComponentId.TEXT,
@@ -3216,6 +3381,12 @@ export const schema = {
                 {
                   component: Seldon.ComponentId.CALENDAR_DAY,
                   variant: "muted",
+                  overrides: {
+                    align: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.Align.TOP_CENTER,
+                    },
+                  },
                   children: [
                     {
                       component: Seldon.ComponentId.TEXT,
@@ -3229,6 +3400,12 @@ export const schema = {
                 {
                   component: Seldon.ComponentId.CALENDAR_DAY,
                   variant: "muted",
+                  overrides: {
+                    align: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.Align.TOP_CENTER,
+                    },
+                  },
                   children: [
                     {
                       component: Seldon.ComponentId.TEXT,
@@ -3258,6 +3435,12 @@ export const schema = {
                 {
                   component: Seldon.ComponentId.CALENDAR_DAY,
                   variant: "muted",
+                  overrides: {
+                    align: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.Align.TOP_CENTER,
+                    },
+                  },
                   children: [
                     {
                       component: Seldon.ComponentId.TEXT,
@@ -3271,6 +3454,12 @@ export const schema = {
                 {
                   component: Seldon.ComponentId.CALENDAR_DAY,
                   variant: "muted",
+                  overrides: {
+                    align: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.Align.TOP_CENTER,
+                    },
+                  },
                   children: [
                     {
                       component: Seldon.ComponentId.TEXT,
@@ -3282,49 +3471,22 @@ export const schema = {
                   ],
                 },
                 {
-                  component: Seldon.ComponentId.FRAME,
+                  component: Seldon.ComponentId.CALENDAR_DAY,
                   overrides: {
-                    width: {
-                      type: Sdn.ValueType.OPTION,
-                      value: Sdn.Resize.FILL,
+                    columnSpan: {
+                      type: Sdn.ValueType.EXACT,
+                      value: { unit: Sdn.Unit.NUMBER, value: 5 },
                     },
                   },
-                },
-                {
-                  component: Seldon.ComponentId.FRAME,
-                  overrides: {
-                    width: {
-                      type: Sdn.ValueType.OPTION,
-                      value: Sdn.Resize.FILL,
+                  children: [
+                    {
+                      component: Seldon.ComponentId.TEXT,
+                      variant: "label",
+                      overrides: {
+                        content: { type: Sdn.ValueType.EXACT, value: "" },
+                      },
                     },
-                  },
-                },
-                {
-                  component: Seldon.ComponentId.FRAME,
-                  overrides: {
-                    width: {
-                      type: Sdn.ValueType.OPTION,
-                      value: Sdn.Resize.FILL,
-                    },
-                  },
-                },
-                {
-                  component: Seldon.ComponentId.FRAME,
-                  overrides: {
-                    width: {
-                      type: Sdn.ValueType.OPTION,
-                      value: Sdn.Resize.FILL,
-                    },
-                  },
-                },
-                {
-                  component: Seldon.ComponentId.FRAME,
-                  overrides: {
-                    width: {
-                      type: Sdn.ValueType.OPTION,
-                      value: Sdn.Resize.FILL,
-                    },
-                  },
+                  ],
                 },
               ],
             },

@@ -1,4 +1,4 @@
-import { ValueType } from "@seldon/core"
+import { Unit, ValueType } from "@seldon/core"
 import {
   HSLObjectToString,
   LCHObjectToString,
@@ -121,6 +121,9 @@ function getExactStoredValue(raw: unknown): string {
     }
     if ("value" in raw && "unit" in raw) {
       const dimension = raw as { value: number; unit: string }
+      if (dimension.unit === Unit.NUMBER) {
+        return `${dimension.value}`
+      }
       return `${dimension.value}${dimension.unit}`
     }
   }

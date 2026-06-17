@@ -44,7 +44,7 @@ export const schema = {
     },
     height: {
       type: Sdn.ValueType.OPTION,
-      value: Sdn.Resize.FIT,
+      value: Sdn.Resize.FILL,
     },
     margin: {
       top: { type: Sdn.ValueType.EMPTY, value: null },

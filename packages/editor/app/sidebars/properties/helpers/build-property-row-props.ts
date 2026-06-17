@@ -1,4 +1,5 @@
 import { CSSProperties, MouseEvent } from "react"
+import { Unit } from "@seldon/core"
 import { IconProps } from "@seldon/components/primitives/Icon"
 import { TextLabelProps } from "@seldon/components/primitives/TextLabel"
 import { FlatProperty } from "./properties-data"
@@ -152,8 +153,9 @@ export function buildPropertyRowProps({
 
   // Show the unit whenever the active value is an exact numeric value, including
   // picker controls that hold a literal dimension (a margin set to 24px renders
-  // as "24" with a "PX" label).
-  const showUnit = Boolean(unit && isNumericValue)
+  // as "24" with a "PX" label). Unitless counts (grid columns, spans) carry the
+  // NUMBER unit internally but should render without a unit chip.
+  const showUnit = Boolean(unit && isNumericValue && unit !== Unit.NUMBER)
   const unitLabel = showUnit ? unit : undefined
 
   // The trailing button is interactive only for uploads and menu/combo controls.
