@@ -20,7 +20,7 @@ Factory owns export and production code generation. It can be extended beyond ju
 
 ### The Editor
 
-[Seldon Editor](packages/editor/README.md) is a browser design client for Seldon workspaces. It runs locally on your computer, creates and store workspaces, and needs no API, database, auth, or cloud service. The Editor runs as a single Vite app on `localhost:5173`. 
+[Seldon Editor](packages/editor/README.md) is a browser design client for Seldon workspaces. It runs locally on your computer, creates and store workspaces, and needs no API, database, auth, or cloud service. The Editor runs as a single app on `localhost:5173`. 
 
 A user opens a workspace with the Editor, edits components, and each action flows through the same Core reducer engine that an AI agent would use. 
 
@@ -84,7 +84,7 @@ npm install
 npm run dev
 ```
 
-The Editor is a single-page app built with Vite and React Router. Its dependencies install when you run `npm install`. You do not install them separately.
+The Editor is a single-page app built with [Vite](https://vite.dev/) and [React Router](https://reactrouter.com/). Its dependencies install when you run `npm install`. You do not install them separately.
 
 `@seldon/core` and `@seldon/factory` are not tied to the editor. If you build your own editor, you can use any React setup -- or no React at all for headless tooling.
 
@@ -111,7 +111,7 @@ As that begins to take shape, we'll all be able to better see where the future i
 If you want the lowdown, these three documents are a great way to get into what this codebase offers, and where it is going.
 
 - `packages/core` [packages/core/README.md](packages/core/README.md): This is the workspace, theme, and reducer logic used by an editor or agent to mutate workspace.json files
-- `packages/editor` [packages/editor/README.md](packages/editor/README.md): Vite visual editor run on localhost
+- `packages/editor` [packages/editor/README.md](packages/editor/README.md): Visual editor run on localhost
 - `packages/factory` [packages/factory/README.md](packages/factory/README.md): Component Export, CSS, and code generation from a valid workspace.json file
 
 ---
