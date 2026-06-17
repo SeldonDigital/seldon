@@ -442,7 +442,27 @@ export const schema = {
             value: Sdn.Orientation.VERTICAL,
           },
           width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
-          gap: { type: Sdn.ValueType.OPTION, value: Sdn.Gap.NONE },
+          padding: {
+            top: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.tight" },
+            right: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.tight" },
+            bottom: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.tight" },
+            left: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.tight" },
+          },
+          gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.tight" },
+          background: [
+            {
+              kind: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.BackgroundKind.COLOR,
+              },
+              color: {
+                type: Sdn.ValueType.THEME_CATEGORICAL,
+                value: "@swatch.primary",
+              },
+              brightness: { type: Sdn.ValueType.EMPTY, value: null },
+              opacity: { type: Sdn.ValueType.EXACT, value: { unit: Sdn.Unit.PERCENT, value: 10 } },
+            },
+          ],
         },
         children: [
           {
@@ -453,7 +473,7 @@ export const schema = {
                 value: { unit: Sdn.Unit.NUMBER, value: 7 },
               },
               width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
-              gap: { type: Sdn.ValueType.OPTION, value: Sdn.Gap.NONE },
+              gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.tight" },
             },
             children: [
               {
@@ -510,7 +530,7 @@ export const schema = {
                 value: { unit: Sdn.Unit.NUMBER, value: 7 },
               },
               width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
-              gap: { type: Sdn.ValueType.OPTION, value: Sdn.Gap.NONE },
+              gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.tight" },
             },
             children: [
               {
@@ -614,7 +634,7 @@ export const schema = {
                 value: { unit: Sdn.Unit.NUMBER, value: 7 },
               },
               width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
-              gap: { type: Sdn.ValueType.OPTION, value: Sdn.Gap.NONE },
+              gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.tight" },
             },
             children: [
               {
@@ -718,7 +738,7 @@ export const schema = {
                 value: { unit: Sdn.Unit.NUMBER, value: 7 },
               },
               width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
-              gap: { type: Sdn.ValueType.OPTION, value: Sdn.Gap.NONE },
+              gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.tight" },
             },
             children: [
               {
@@ -850,7 +870,7 @@ export const schema = {
                 value: { unit: Sdn.Unit.NUMBER, value: 7 },
               },
               width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
-              gap: { type: Sdn.ValueType.OPTION, value: Sdn.Gap.NONE },
+              gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.tight" },
             },
             children: [
               {
@@ -954,7 +974,7 @@ export const schema = {
                 value: { unit: Sdn.Unit.NUMBER, value: 7 },
               },
               width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
-              gap: { type: Sdn.ValueType.OPTION, value: Sdn.Gap.NONE },
+              gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.tight" },
             },
             children: [
               {
@@ -1489,7 +1509,7 @@ export const schema = {
                             },
                             color: {
                               type: Sdn.ValueType.THEME_CATEGORICAL,
-                              value: "@swatch.black",
+                              value: "@swatch.primary",
                             },
                             brightness: {
                               type: Sdn.ValueType.EMPTY,
@@ -1559,7 +1579,7 @@ export const schema = {
                             },
                             color: {
                               type: Sdn.ValueType.THEME_CATEGORICAL,
-                              value: "@swatch.gray",
+                              value: "@swatch.primary",
                             },
                             brightness: {
                               type: Sdn.ValueType.EXACT,
@@ -1567,7 +1587,7 @@ export const schema = {
                             },
                             opacity: {
                               type: Sdn.ValueType.EXACT,
-                              value: { unit: Sdn.Unit.PERCENT, value: 50 },
+                              value: { unit: Sdn.Unit.PERCENT, value: 25 },
                             },
                           },
                         ],
@@ -1594,7 +1614,7 @@ export const schema = {
                             },
                             color: {
                               type: Sdn.ValueType.THEME_CATEGORICAL,
-                              value: "@swatch.black",
+                              value: "@swatch.primary",
                             },
                             brightness: {
                               type: Sdn.ValueType.EMPTY,

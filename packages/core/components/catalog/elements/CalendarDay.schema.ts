@@ -179,34 +179,46 @@ export const schema = {
       overrides: {
         width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
         corners: {
-          topLeft: { type: Sdn.ValueType.OPTION, value: Sdn.Corner.SQUARED },
-          topRight: { type: Sdn.ValueType.OPTION, value: Sdn.Corner.SQUARED },
-          bottomLeft: { type: Sdn.ValueType.OPTION, value: Sdn.Corner.SQUARED },
+          topLeft: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@corners.tight",
+          },
+          topRight: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@corners.tight",
+          },
+          bottomLeft: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@corners.tight",
+          },
           bottomRight: {
-            type: Sdn.ValueType.OPTION,
-            value: Sdn.Corner.SQUARED,
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@corners.tight",
           },
         },
+        background: [
+          {
+            kind: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.BackgroundKind.COLOR,
+            },
+            color: {
+              type: Sdn.ValueType.THEME_CATEGORICAL,
+              value: "@swatch.white",
+            },
+            brightness: { type: Sdn.ValueType.EMPTY, value: null },
+            opacity: { type: Sdn.ValueType.EMPTY, value: null },
+          },
+        ],
         border: {
           preset: {
             type: Sdn.ValueType.THEME_CATEGORICAL,
-            value: "@border.hairline",
+            value: "@border.none",
           },
           style: { type: Sdn.ValueType.EMPTY, value: null },
-          color: {
-            type: Sdn.ValueType.COMPUTED,
-            value: {
-              function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-              input: {
-                basedOn: "#parent.background.color",
-              },
-            },
-          },
+          color: { type: Sdn.ValueType.EMPTY, value: null },
           width: { type: Sdn.ValueType.EMPTY, value: null },
-          brightness: {
-            type: Sdn.ValueType.EXACT,
-            value: { unit: Sdn.Unit.PERCENT, value: 60 },
-          },
+          brightness: { type: Sdn.ValueType.EMPTY, value: null },
           opacity: { type: Sdn.ValueType.EMPTY, value: null },
         },
       },
@@ -254,6 +266,14 @@ export const schema = {
       intent:
         "The current day, outlined with a primary ring while keeping the surface clear.",
       overrides: {
+        background: [
+          {
+            kind: { type: Sdn.ValueType.OPTION, value: Sdn.BackgroundKind.COLOR },
+            color: { type: Sdn.ValueType.THEME_CATEGORICAL, value: "@swatch.white" },
+            brightness: { type: Sdn.ValueType.EMPTY, value: null },
+            opacity: { type: Sdn.ValueType.EMPTY, value: null },
+          },
+        ],
         border: {
           preset: {
             type: Sdn.ValueType.THEME_CATEGORICAL,
