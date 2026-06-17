@@ -129,6 +129,9 @@ export function CanvasOverlayTracker() {
   const selectedNodeId = useSelectedNodeId()
   const selectedNodeRootId = useSelectedNodeRootId()
   const remeasureVersion = useCanvasRemeasureStore((state) => state.version)
+  const isTransforming = useCanvasRemeasureStore(
+    (state) => state.isTransforming,
+  )
   const { workspace } = useWorkspace({ usePreview: false })
   const { activeBoard } = useActiveBoard()
   const { activeTool } = useTool()
@@ -193,6 +196,17 @@ export function CanvasOverlayTracker() {
 
     const apply = () => {
       const store = useCanvasOverlayStore.getState()
+      // While the canvas pans or zooms, re-measuring the moving target every
+      // frame forces a full reflow of the board subtree and re-renders the
+      // outline components each frame, which makes large boards (Table,
+      // Calendar) stutter. Mirror the wireframe boxes: hide the hover and
+      // selection outlines while transforming and let the settle bump
+      // re-measure them at the final position.
+      if (useCanvasRemeasureStore.getState().isTransforming) {
+        if (store.hoverRect !== null) store.setHoverRect(null)
+        if (store.selectionRect !== null) store.setSelectionRect(null)
+        return
+      }
       // Node hover/selection scopes to the hovered or clicked column; other
       // kinds (theme variant, font specimen group) keep the grouped union.
       const hover =
@@ -245,6 +259,7 @@ export function CanvasOverlayTracker() {
     selectedNodeId,
     selectedNodeRootId,
     remeasureVersion,
+    isTransforming,
   ])
 
   return null
