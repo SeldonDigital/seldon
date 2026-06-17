@@ -38,21 +38,32 @@ Why?
 
 **We don't believe you need AI to write button code.**
 
-Wasting large amounts of compute, energy, and money on creating code that is largely a solved problem seems like a massive opportunity cost across the board. Most front end and design problems lack a structured approach to the problem, the same type of structure that has been the basis for much in the world design. 
+Wasting large amounts of compute, energy, and money on creating code that is largely a solved problem seems like a massive opportunity cost across the board for everyone. We are spending far more money and time trying to reign in non-deterministic models instead of exploring the new ways AI can help us build products of the future.
 
-The purpose of releasing this project is to provide a codebase that can evolve while also allowing for multiple paths for exploration as possible. To give folks a way to learn what they can and cannot do with AI and creative tools.
+But if its solved, what's the issue? 
+
+Most front end and product problems lack a rigorous, structured approach to their design definitions, even when using design systems. Even when teams create some rigor to build products at scale, they inevitably run into the handoff problem. At the heart of this is that design and code are disconnected, and have been for decades now.
+
+Add AI to that mix and what happens is massive overspend and more unnecessary complexity with the front end code as models go off on all sorts of unnecessary tangents. AI certainly goes from v.0 design to v.1 great, but then iterating into v.2 to v.3 and beyond? Throwing more data and compute at this will likely not solve the problem. 
+
+We need a structured approach to the design of components in the same way PostScript provided a language for print and web standards provided for browsers. We need a way to define design for digital products that rooted in code, and based on design practice. As a small bonus, that structure and defintion becomes the thing AI can manipulate far more effectively than trying to constantly recreate button code. 
+
+The purpose of releasing Seldon into the wild is to provide a starting point that can evolve into that while also allowing for multiple paths for exploration as possible. 
 
 No one knows where the future will land. There are a lot of ideas out there of what LLMs and AI mean for humanity. Most of those ideas are a bit thin. Many of them are just plain wrong. Some of them have some value. One thing that should become clear over time however is that humanity doesn't need AI or LLMs to waste enormous amounts of energy and money to write the code for a Button component.
 
-The model Seldon is offering is simple: 
+---
+
+The model Seldon is offering is this: 
 
 - A workspace defines the structure needed as simple key value pairs in JSON. 
 - A core engine defines how everything can be manipulated in the workspace. It has the code to mutate data, and validation to make sure a workspace file is valid. 
-- A code factory takes that workspace file and processes it to create code for whatever platform is needed, be it React, Swift, Java, or whatever is needed. 
+- Editors, AI agents, new creative tools, new products can focus on new ways to manpulate design data rather than trying to low level solve problems.
+- A code factory takes that workspace file and processes it to create code for whatever platform is needed, be it React, Swift, Java, or whatever is needed.
 
-Code is exported, its deterministic, and it just works.
+Code is exported, it's deterministic, and it just works. 
 
-This leaves folks to use AI to work on the actual future rather than throwing massive data at scale to figure out how to get that AI to write code that goes from version 1 to 2 to 3 and so one.
+This leaves folks to use AI to work on the actual future rather than throwing massive data at scale to figure out how to get that AI to write code that goes from version 1 to 2 to 3 and so on.
 
 ---
 
