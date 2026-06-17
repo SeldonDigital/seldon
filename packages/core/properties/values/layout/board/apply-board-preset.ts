@@ -46,25 +46,6 @@ export function applyBoardDevicePreset(
   }
 }
 
-/** Resolves the display name for a board compound preset facet. */
-export function getBoardPresetDisplayName(
-  board: BoardCompound | undefined,
-): string | null {
-  const preset = board?.preset
-  if (
-    preset &&
-    typeof preset === "object" &&
-    "type" in preset &&
-    preset.type === ValueType.OPTION &&
-    isBoardPresetId(preset.value)
-  ) {
-    return preset.value === Resize.FIT
-      ? "Fit"
-      : getBoardDevicePreset(preset.value).name
-  }
-  return null
-}
-
 function isSameBoardFacetValue(
   left: BoardCompound["width"] | BoardCompound["height"],
   right: BoardCompound["width"] | BoardCompound["height"],
@@ -99,15 +80,6 @@ export function matchBoardCompoundPreset(
   }
 
   return null
-}
-
-export function isBoardCompoundPresetReset(preset: string): boolean {
-  return (
-    preset === "Default" ||
-    preset === "None" ||
-    preset === "unset" ||
-    preset === ""
-  )
 }
 
 export function buildBoardCompoundReset(

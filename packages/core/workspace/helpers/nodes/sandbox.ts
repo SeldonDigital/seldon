@@ -6,10 +6,6 @@ import { isPlaygroundContainer } from "../../model/playground"
 import { formatNodeCatalog, parseNodeCatalog } from "../../model/template-ref"
 import type { ComponentTreeRef, EntryNode, Workspace } from "../../types"
 
-/** Default size a new Sandbox seeds at, in px. */
-export const SANDBOX_SEED_WIDTH = 800
-export const SANDBOX_SEED_HEIGHT = 600
-
 /** Horizontal gap between auto-placed sandboxes, in px. */
 export const SANDBOX_PLACEMENT_GAP = 40
 

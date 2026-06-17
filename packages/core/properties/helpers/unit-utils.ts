@@ -36,11 +36,3 @@ export function getDefaultUnitForProperty(propertyKey: string): Unit {
   const schema = getPropertySchema(resolveSchemaKeyForUnits(propertyKey))
   return schema?.units?.default ?? Unit.PX
 }
-
-/** Returns how strict numeric input is for lengths versus percentages. */
-export function getNumberValidation(
-  propertyKey: string,
-): "number" | "percentage" | "both" {
-  const schema = getPropertySchema(resolveSchemaKeyForUnits(propertyKey))
-  return schema?.units?.validation ?? "both"
-}

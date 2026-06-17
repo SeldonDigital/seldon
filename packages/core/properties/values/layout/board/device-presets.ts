@@ -46,24 +46,3 @@ export function getBoardDevicePreset(
 ): BoardDevicePreset {
   return PRESET_BY_ID[id]
 }
-
-export function getBoardDevicePresetDimensions(id: BoardDevicePresetId): {
-  widthPx: number
-  heightPx: number
-} {
-  const preset = PRESET_BY_ID[id]
-  return { widthPx: preset.widthPx, heightPx: preset.heightPx }
-}
-
-export function matchBoardDevicePresetFromDimensions(
-  widthPx: number | null,
-  heightPx: number | null,
-): BoardDevicePresetId | null {
-  if (widthPx === null || heightPx === null) return null
-  for (const preset of BOARD_DEVICE_PRESETS) {
-    if (preset.widthPx === widthPx && preset.heightPx === heightPx) {
-      return preset.id
-    }
-  }
-  return null
-}

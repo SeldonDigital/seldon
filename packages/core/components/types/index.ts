@@ -80,12 +80,6 @@ export function hasVariants(
   return Array.isArray(schema.variants) && schema.variants.length > 0
 }
 
-export function isVariantTree(
-  tree: SchemaTree | SchemaVariant,
-): tree is SchemaVariant {
-  return "id" in tree && "label" in tree && "intent" in tree
-}
-
 /**
  * COMPONENT INSTANCE TYPES
  *
