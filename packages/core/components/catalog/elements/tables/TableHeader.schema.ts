@@ -178,12 +178,11 @@ export const schema = {
     {
       id: "numeric",
       label: "Numeric Header",
-      intent:
-        "Column header aligned to the right to sit above right-aligned numeric cells.",
+      intent: "Column header for a numeric column, left-aligned to match text headers.",
       overrides: {
         cellAlign: {
           type: Sdn.ValueType.OPTION,
-          value: Sdn.Align.CENTER_RIGHT,
+          value: Sdn.Align.CENTER_LEFT,
         },
       },
     },

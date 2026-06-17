@@ -170,12 +170,11 @@ export const schema = {
     {
       id: "numeric",
       label: "Numeric Cell",
-      intent:
-        "Cell for numbers and currency, aligned to the right so figures line up by place value.",
+      intent: "Cell for numbers and currency, left-aligned to match text cells.",
       overrides: {
         cellAlign: {
           type: Sdn.ValueType.OPTION,
-          value: Sdn.Align.CENTER_RIGHT,
+          value: Sdn.Align.CENTER_LEFT,
         },
       },
     },
@@ -187,7 +186,7 @@ export const schema = {
       overrides: {
         cellAlign: {
           type: Sdn.ValueType.OPTION,
-          value: Sdn.Align.CENTER_RIGHT,
+          value: Sdn.Align.CENTER_LEFT,
         },
         color: {
           type: Sdn.ValueType.EXACT,
@@ -203,7 +202,7 @@ export const schema = {
       overrides: {
         cellAlign: {
           type: Sdn.ValueType.OPTION,
-          value: Sdn.Align.CENTER_RIGHT,
+          value: Sdn.Align.CENTER_LEFT,
         },
         color: {
           type: Sdn.ValueType.EXACT,
