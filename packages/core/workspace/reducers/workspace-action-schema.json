@@ -20365,6 +20365,7 @@
                 "figure",
                 "menu",
                 "blockquote",
+                "table",
                 "thead",
                 "tbody",
                 "tfoot",

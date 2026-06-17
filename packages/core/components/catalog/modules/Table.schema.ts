@@ -232,7 +232,7 @@ export const schema = {
               },
               width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
               height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
-              gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.cozy" },
+              gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.tight" },
             },
             children: [
               {
@@ -374,6 +374,12 @@ export const schema = {
                   },
                   {
                     component: Seldon.ComponentId.TABLE_HEADER,
+                    overrides: {
+                      cellAlign: {
+                        type: Sdn.ValueType.OPTION,
+                        value: Sdn.Align.CENTER,
+                      },
+                    },
                     children: [
                       {
                         component: Seldon.ComponentId.TEXT,
@@ -530,6 +536,12 @@ export const schema = {
                   },
                   {
                     component: Seldon.ComponentId.TABLE_DATA,
+                    overrides: {
+                      cellAlign: {
+                        type: Sdn.ValueType.OPTION,
+                        value: Sdn.Align.CENTER,
+                      },
+                    },
                     children: [
                       {
                         component: Seldon.ComponentId.TEXT,
@@ -681,6 +693,12 @@ export const schema = {
                   },
                   {
                     component: Seldon.ComponentId.TABLE_DATA,
+                    overrides: {
+                      cellAlign: {
+                        type: Sdn.ValueType.OPTION,
+                        value: Sdn.Align.CENTER,
+                      },
+                    },
                     children: [
                       {
                         component: Seldon.ComponentId.TEXT,
@@ -832,6 +850,12 @@ export const schema = {
                   },
                   {
                     component: Seldon.ComponentId.TABLE_DATA,
+                    overrides: {
+                      cellAlign: {
+                        type: Sdn.ValueType.OPTION,
+                        value: Sdn.Align.CENTER,
+                      },
+                    },
                     children: [
                       {
                         component: Seldon.ComponentId.TEXT,
@@ -983,6 +1007,12 @@ export const schema = {
                   },
                   {
                     component: Seldon.ComponentId.TABLE_DATA,
+                    overrides: {
+                      cellAlign: {
+                        type: Sdn.ValueType.OPTION,
+                        value: Sdn.Align.CENTER,
+                      },
+                    },
                     children: [
                       {
                         component: Seldon.ComponentId.TEXT,
@@ -1134,6 +1164,12 @@ export const schema = {
                   },
                   {
                     component: Seldon.ComponentId.TABLE_DATA,
+                    overrides: {
+                      cellAlign: {
+                        type: Sdn.ValueType.OPTION,
+                        value: Sdn.Align.CENTER,
+                      },
+                    },
                     children: [
                       {
                         component: Seldon.ComponentId.TEXT,
@@ -1493,6 +1529,12 @@ export const schema = {
                     {
                       component: Seldon.ComponentId.TABLE_HEADER,
                       variant: "sortable",
+                      overrides: {
+                        cellAlign: {
+                          type: Sdn.ValueType.OPTION,
+                          value: Sdn.Align.CENTER,
+                        },
+                      },
                       children: [
                         {
                           component: Seldon.ComponentId.FRAME,
@@ -1682,6 +1724,12 @@ export const schema = {
                     {
                       component: Seldon.ComponentId.TABLE_DATA,
                       variant: "status",
+                      overrides: {
+                        cellAlign: {
+                          type: Sdn.ValueType.OPTION,
+                          value: Sdn.Align.CENTER,
+                        },
+                      },
                       children: [
                         {
                           component: Seldon.ComponentId.CHIP,
@@ -1809,6 +1857,12 @@ export const schema = {
                     {
                       component: Seldon.ComponentId.TABLE_DATA,
                       variant: "status",
+                      overrides: {
+                        cellAlign: {
+                          type: Sdn.ValueType.OPTION,
+                          value: Sdn.Align.CENTER,
+                        },
+                      },
                       children: [
                         {
                           component: Seldon.ComponentId.CHIP,
@@ -1958,6 +2012,12 @@ export const schema = {
                     {
                       component: Seldon.ComponentId.TABLE_DATA,
                       variant: "status",
+                      overrides: {
+                        cellAlign: {
+                          type: Sdn.ValueType.OPTION,
+                          value: Sdn.Align.CENTER,
+                        },
+                      },
                       children: [
                         {
                           component: Seldon.ComponentId.CHIP,
@@ -2085,6 +2145,12 @@ export const schema = {
                     {
                       component: Seldon.ComponentId.TABLE_DATA,
                       variant: "status",
+                      overrides: {
+                        cellAlign: {
+                          type: Sdn.ValueType.OPTION,
+                          value: Sdn.Align.CENTER,
+                        },
+                      },
                       children: [
                         {
                           component: Seldon.ComponentId.CHIP,
@@ -2234,6 +2300,12 @@ export const schema = {
                     {
                       component: Seldon.ComponentId.TABLE_DATA,
                       variant: "status",
+                      overrides: {
+                        cellAlign: {
+                          type: Sdn.ValueType.OPTION,
+                          value: Sdn.Align.CENTER,
+                        },
+                      },
                       children: [
                         {
                           component: Seldon.ComponentId.CHIP,
