@@ -7,7 +7,6 @@ import {
   isPlaygroundBoard,
   isThemeBoard,
 } from "@seldon/core/workspace/model/components"
-import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
 import { useAutoSelectNode } from "@lib/workspace/hooks/use-auto-select-node"
 import { useSelection } from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"

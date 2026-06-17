@@ -1,6 +1,6 @@
-import * as Sdn from "../../../properties"
-import * as Seldon from "../../constants"
-import { ComponentExport, ComponentSchema } from "../../types"
+import * as Sdn from "../../../../properties"
+import * as Seldon from "../../../constants"
+import { ComponentExport, ComponentSchema } from "../../../types"
 
 export const schema = {
   name: "Card",
@@ -86,7 +86,6 @@ export const schema = {
       width: { type: Sdn.ValueType.EMPTY, value: null },
       brightness: { type: Sdn.ValueType.EMPTY, value: null },
       opacity: { type: Sdn.ValueType.EMPTY, value: null },
-      collapse: { type: Sdn.ValueType.EMPTY, value: null },
     },
     borderTop: {
       preset: { type: Sdn.ValueType.EMPTY, value: null },
@@ -95,7 +94,6 @@ export const schema = {
       width: { type: Sdn.ValueType.EMPTY, value: null },
       brightness: { type: Sdn.ValueType.EMPTY, value: null },
       opacity: { type: Sdn.ValueType.EMPTY, value: null },
-      collapse: { type: Sdn.ValueType.EMPTY, value: null },
     },
     borderRight: {
       preset: { type: Sdn.ValueType.EMPTY, value: null },
@@ -104,7 +102,6 @@ export const schema = {
       width: { type: Sdn.ValueType.EMPTY, value: null },
       brightness: { type: Sdn.ValueType.EMPTY, value: null },
       opacity: { type: Sdn.ValueType.EMPTY, value: null },
-      collapse: { type: Sdn.ValueType.EMPTY, value: null },
     },
     borderBottom: {
       preset: { type: Sdn.ValueType.EMPTY, value: null },
@@ -113,7 +110,6 @@ export const schema = {
       width: { type: Sdn.ValueType.EMPTY, value: null },
       brightness: { type: Sdn.ValueType.EMPTY, value: null },
       opacity: { type: Sdn.ValueType.EMPTY, value: null },
-      collapse: { type: Sdn.ValueType.EMPTY, value: null },
     },
     borderLeft: {
       preset: { type: Sdn.ValueType.EMPTY, value: null },
@@ -122,7 +118,6 @@ export const schema = {
       width: { type: Sdn.ValueType.EMPTY, value: null },
       brightness: { type: Sdn.ValueType.EMPTY, value: null },
       opacity: { type: Sdn.ValueType.EMPTY, value: null },
-      collapse: { type: Sdn.ValueType.EMPTY, value: null },
     },
     corners: {
       topLeft: {
@@ -207,7 +202,6 @@ export const schema = {
             width: { type: Sdn.ValueType.EMPTY, value: null },
             brightness: { type: Sdn.ValueType.EMPTY, value: null },
             opacity: { type: Sdn.ValueType.EMPTY, value: null },
-            collapse: { type: Sdn.ValueType.EMPTY, value: null },
           },
         },
       },
@@ -254,7 +248,6 @@ export const schema = {
             width: { type: Sdn.ValueType.EMPTY, value: null },
             brightness: { type: Sdn.ValueType.EMPTY, value: null },
             opacity: { type: Sdn.ValueType.EMPTY, value: null },
-            collapse: { type: Sdn.ValueType.EMPTY, value: null },
           },
           borderTop: {
             preset: { type: Sdn.ValueType.EMPTY, value: null },
@@ -263,7 +256,6 @@ export const schema = {
             width: { type: Sdn.ValueType.EMPTY, value: null },
             brightness: { type: Sdn.ValueType.EMPTY, value: null },
             opacity: { type: Sdn.ValueType.EMPTY, value: null },
-            collapse: { type: Sdn.ValueType.EMPTY, value: null },
           },
           borderRight: {
             preset: { type: Sdn.ValueType.EMPTY, value: null },
@@ -272,7 +264,6 @@ export const schema = {
             width: { type: Sdn.ValueType.EMPTY, value: null },
             brightness: { type: Sdn.ValueType.EMPTY, value: null },
             opacity: { type: Sdn.ValueType.EMPTY, value: null },
-            collapse: { type: Sdn.ValueType.EMPTY, value: null },
           },
           borderBottom: {
             preset: { type: Sdn.ValueType.EMPTY, value: null },
@@ -284,7 +275,6 @@ export const schema = {
             width: { type: Sdn.ValueType.EMPTY, value: null },
             brightness: { type: Sdn.ValueType.EMPTY, value: null },
             opacity: { type: Sdn.ValueType.EMPTY, value: null },
-            collapse: { type: Sdn.ValueType.EMPTY, value: null },
           },
           borderLeft: {
             preset: { type: Sdn.ValueType.EMPTY, value: null },
@@ -293,7 +283,6 @@ export const schema = {
             width: { type: Sdn.ValueType.EMPTY, value: null },
             brightness: { type: Sdn.ValueType.EMPTY, value: null },
             opacity: { type: Sdn.ValueType.EMPTY, value: null },
-            collapse: { type: Sdn.ValueType.EMPTY, value: null },
           },
         },
         children: [
@@ -453,7 +442,6 @@ export const schema = {
               width: { type: Sdn.ValueType.EMPTY, value: null },
               brightness: { type: Sdn.ValueType.EMPTY, value: null },
               opacity: { type: Sdn.ValueType.EMPTY, value: null },
-              collapse: { type: Sdn.ValueType.EMPTY, value: null },
             },
             borderBottom: {
               preset: { type: Sdn.ValueType.EMPTY, value: null },
@@ -465,7 +453,6 @@ export const schema = {
               width: { type: Sdn.ValueType.EMPTY, value: null },
               brightness: { type: Sdn.ValueType.EMPTY, value: null },
               opacity: { type: Sdn.ValueType.EMPTY, value: null },
-              collapse: { type: Sdn.ValueType.EMPTY, value: null },
             },
           },
         },

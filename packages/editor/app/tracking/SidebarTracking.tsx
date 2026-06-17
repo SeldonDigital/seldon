@@ -1,7 +1,10 @@
 import { Placement } from "@lib/types"
 import { CSSProperties, MouseEvent, ReactNode, useCallback } from "react"
 import { Instance, Variant } from "@seldon/core"
-import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
+import {
+  nodeRelationshipService,
+  typeCheckingService,
+} from "@seldon/core/workspace/services"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useDialog } from "@lib/hooks/use-dialog"
 import { useTool } from "@lib/hooks/use-tool"
@@ -91,9 +94,9 @@ export function SidebarTracking({
       }
 
       try {
-        const currentIndex = workspaceService.isInstance(node)
-          ? workspaceService.getInstanceIndex(node, workspace)
-          : workspaceService.getVariantIndex(node, workspace)
+        const currentIndex = typeCheckingService.isInstance(node)
+          ? nodeRelationshipService.getInstanceIndex(node, workspace)
+          : nodeRelationshipService.getVariantIndex(node, workspace)
 
         openDialog(dialog, {
           nodeId: parentNode.id,

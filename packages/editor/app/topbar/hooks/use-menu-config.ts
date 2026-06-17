@@ -721,10 +721,10 @@ export function useMenuConfig(): HeaderConfig {
     ],
   )
 
-  // Toolbar configuration is no longer needed as we've integrated tools into the header
+  // Tools render in the header, so the separate toolbar stays hidden.
   const toolbarConfig: ToolbarConfig = useMemo(
     () => ({
-      visible: false, // We don't use the separate toolbar anymore
+      visible: false,
     }),
     [],
   )

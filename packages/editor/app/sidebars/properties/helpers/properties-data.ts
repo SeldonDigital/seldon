@@ -23,6 +23,8 @@ import {
   layeredParentPath,
 } from "@lib/properties/property-paths"
 import {
+  BORDER_SIDE_KEYS,
+  BorderSideKey,
   Board,
   Instance,
   Properties,
@@ -751,6 +753,55 @@ function flattenLayeredPaintProperty(
   return out
 }
 
+/**
+ * The border sides this subject's schema exposes. Only these can be shown; the
+ * menu dims the rest. Boards resolve through their component defaults.
+ */
+export function getAllowedBorderSides(
+  node: Variant | Instance | Board,
+  workspace: Workspace,
+): BorderSideKey[] {
+  const schemaKeys = new Set(getSchemaPropertyKeysForSubject(node, workspace))
+  return BORDER_SIDE_KEYS.filter((side) => schemaKeys.has(side))
+}
+
+/**
+ * Emits a compound row plus facet children for each border side the user has
+ * shown, limited to sides the schema exposes. Rows render right after `border`
+ * in the appearance section. Visibility is editor UI state, so nothing is
+ * written to the node and the rows read their inherited schema values.
+ */
+function flattenShownBorderSides(
+  node: Variant | Instance | Board,
+  workspace: Workspace,
+  mergedProperties: Properties,
+  propertyStatus: Record<string, PropertyStatus>,
+  shownSides: Set<BorderSideKey>,
+  theme?: Theme,
+): FlatProperty[] {
+  const allowed = new Set(getAllowedBorderSides(node, workspace))
+  const out: FlatProperty[] = []
+  for (const side of BORDER_SIDE_KEYS) {
+    if (!allowed.has(side) || !shownSides.has(side)) continue
+    const value =
+      resolvePropertyValueForDisplay(mergedProperties, side) || EMPTY_VALUE
+    const status = propertyStatus[side] || "unset"
+    out.push(createFlatProperty(side, value, status, node, workspace, theme))
+    out.push(
+      ...getSubProperties(
+        side,
+        value,
+        workspace,
+        node,
+        propertyStatus,
+        theme,
+        mergedProperties,
+      ),
+    )
+  }
+  return out
+}
+
 function getSchemaPropertyKeysForSubject(
   node: Variant | Instance | Board,
   workspace: Workspace,
@@ -793,6 +844,7 @@ export function flattenNodeProperties(
   node: Variant | Instance | Board,
   workspace: Workspace,
   theme?: Theme,
+  shownBorderSides: Set<BorderSideKey> = new Set(),
 ): FlatProperty[] {
   // A playground container is a sidebar-only grouping with no editable component
   // properties. Only the theme selector applies, and that row is added
@@ -865,6 +917,21 @@ export function flattenNodeProperties(
         mergedProperties,
       )
       properties.push(...subProperties)
+
+      // Shown border sides render as their own compound rows right after the
+      // `border` row. Visibility is editor UI state, gated by the schema.
+      if (propertyKey === "border") {
+        properties.push(
+          ...flattenShownBorderSides(
+            node,
+            workspace,
+            mergedProperties,
+            propertyStatus,
+            shownBorderSides,
+            theme,
+          ),
+        )
+      }
     } else if (flatProperty.isShorthand) {
       const subProperties = getShorthandSubProperties(
         propertyKey,

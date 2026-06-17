@@ -11,7 +11,7 @@ export const CARBON_DEFAULT_ENABLED_CATEGORIES: IconCategory[] = [
   "user-interface",
 ]
 
-const iconSet: StockIconSet = {
+export const iconSet: StockIconSet = {
   metadata: {
     id: "ibmCarbon",
     name: "Carbon",
@@ -24,5 +24,3 @@ const iconSet: StockIconSet = {
 }
 
 export const defaultIconSet = computeIconSet(iconSet)
-
-export default iconSet

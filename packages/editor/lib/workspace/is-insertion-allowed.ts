@@ -7,7 +7,12 @@ import {
   Workspace,
 } from "@seldon/core"
 import { rules } from "@seldon/core/rules/config/rules.config"
-import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
+import {
+  nodeRelationshipService,
+  nodeRetrievalService,
+  nodeTraversalService,
+  typeCheckingService,
+} from "@seldon/core/workspace/services"
 import { Tool } from "@lib/hooks/use-tool"
 
 /**
@@ -33,7 +38,7 @@ export function isInsertionAllowed(
   node?: Variant | Instance,
 ): boolean {
   try {
-    const targetNode = node ?? workspaceService.getNode(objectId, workspace)
+    const targetNode = node ?? nodeRetrievalService.getNode(objectId, workspace)
 
     // Helper function to check if a node or any ancestor is a default variant
     // This automatically covers all nested children - if any ancestor is a default variant,
@@ -43,14 +48,14 @@ export function isInsertionAllowed(
       while (currentNode) {
         // Check if current node is a default variant
         if (
-          workspaceService.isVariant(currentNode) &&
-          workspaceService.isDefaultVariant(currentNode)
+          typeCheckingService.isVariant(currentNode) &&
+          typeCheckingService.isDefaultVariant(currentNode)
         ) {
           return false
         }
 
         // Walk up to parent to check ancestors
-        const parent = workspaceService.findParentNode(
+        const parent = nodeTraversalService.findParentNode(
           currentNode.id,
           workspace,
         )
@@ -64,8 +69,8 @@ export function isInsertionAllowed(
     if (tool === "component") {
       // Check rules for variants (component tool has additional rule checks)
       const checkRules = (node: Variant | Instance): boolean => {
-        if (workspaceService.isVariant(node)) {
-          const entityType = workspaceService.getEntityType(node)
+        if (typeCheckingService.isVariant(node)) {
+          const entityType = typeCheckingService.getEntityType(node)
           if (!rules.mutations.insertInto[entityType].allowed) {
             return false
           }
@@ -79,7 +84,7 @@ export function isInsertionAllowed(
       if (placement === "inside") {
         // For "inside" placement, find the container node (same logic as click handler)
         try {
-          insertionTargetNode = workspaceService.findContainerNode(
+          insertionTargetNode = nodeRelationshipService.findContainerNode(
             objectId,
             workspace,
           )
@@ -89,7 +94,7 @@ export function isInsertionAllowed(
         }
       } else {
         // For "before"/"after" placement, the target is the parent
-        const parentNode = workspaceService.findParentNode(objectId, workspace)
+        const parentNode = nodeTraversalService.findParentNode(objectId, workspace)
         if (!parentNode) {
           return true // No parent means it's a root variant, allow insertion
         }

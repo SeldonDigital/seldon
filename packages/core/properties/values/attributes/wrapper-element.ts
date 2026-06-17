@@ -25,6 +25,7 @@ export enum WrapperElement {
   FIGURE = "figure",
   MENU = "menu",
   BLOCKQUOTE = "blockquote",
+  TABLE = "table",
   THEAD = "thead",
   TBODY = "tbody",
   TFOOT = "tfoot",

@@ -280,7 +280,7 @@ function isVoidComponent(
 
 export const PRIMITIVES: Record<
   NativeReactPrimitive,
-  // ignoring any for the next line is fine
+  // Primitives accept varying prop shapes, so the map is typed loosely.
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   React.ComponentType<any>
 > = {

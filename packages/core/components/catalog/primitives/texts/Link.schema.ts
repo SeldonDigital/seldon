@@ -26,7 +26,6 @@ export const schema = {
       value: Sdn.Cursor.POINTER,
     },
     direction: { type: Sdn.ValueType.EMPTY, value: null },
-    orientation: { type: Sdn.ValueType.EMPTY, value: null },
     align: { type: Sdn.ValueType.EMPTY, value: null },
     width: { type: Sdn.ValueType.EMPTY, value: null },
     height: { type: Sdn.ValueType.EMPTY, value: null },
@@ -62,7 +61,6 @@ export const schema = {
       width: { type: Sdn.ValueType.EMPTY, value: null },
       brightness: { type: Sdn.ValueType.EMPTY, value: null },
       opacity: { type: Sdn.ValueType.EMPTY, value: null },
-      collapse: { type: Sdn.ValueType.EMPTY, value: null },
     },
     borderTop: {
       preset: { type: Sdn.ValueType.EMPTY, value: null },
@@ -71,7 +69,6 @@ export const schema = {
       width: { type: Sdn.ValueType.EMPTY, value: null },
       brightness: { type: Sdn.ValueType.EMPTY, value: null },
       opacity: { type: Sdn.ValueType.EMPTY, value: null },
-      collapse: { type: Sdn.ValueType.EMPTY, value: null },
     },
     borderRight: {
       preset: { type: Sdn.ValueType.EMPTY, value: null },
@@ -80,7 +77,6 @@ export const schema = {
       width: { type: Sdn.ValueType.EMPTY, value: null },
       brightness: { type: Sdn.ValueType.EMPTY, value: null },
       opacity: { type: Sdn.ValueType.EMPTY, value: null },
-      collapse: { type: Sdn.ValueType.EMPTY, value: null },
     },
     borderBottom: {
       preset: { type: Sdn.ValueType.EMPTY, value: null },
@@ -89,7 +85,6 @@ export const schema = {
       width: { type: Sdn.ValueType.EMPTY, value: null },
       brightness: { type: Sdn.ValueType.EMPTY, value: null },
       opacity: { type: Sdn.ValueType.EMPTY, value: null },
-      collapse: { type: Sdn.ValueType.EMPTY, value: null },
     },
     borderLeft: {
       preset: { type: Sdn.ValueType.EMPTY, value: null },
@@ -98,7 +93,6 @@ export const schema = {
       width: { type: Sdn.ValueType.EMPTY, value: null },
       brightness: { type: Sdn.ValueType.EMPTY, value: null },
       opacity: { type: Sdn.ValueType.EMPTY, value: null },
-      collapse: { type: Sdn.ValueType.EMPTY, value: null },
     },
     corners: {
       topLeft: { type: Sdn.ValueType.EMPTY, value: null },

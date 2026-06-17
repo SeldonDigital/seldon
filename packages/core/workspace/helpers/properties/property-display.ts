@@ -1,6 +1,7 @@
 import {
   type ComputedFunction,
   type Theme,
+  Unit,
   ValueType,
   type Workspace,
 } from "@seldon/core"
@@ -150,6 +151,9 @@ function formatDisplayValue(value: unknown, theme?: Theme): string {
   }
 
   if (value.type === ValueType.EXACT && isDimensionValue(value.value)) {
+    if (value.value.unit === Unit.NUMBER) {
+      return `${value.value.value}`
+    }
     return `${value.value.value}${value.value.unit}`
   }
 

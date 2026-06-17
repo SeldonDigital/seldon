@@ -15,6 +15,7 @@ export {
   mergeEffectiveProperties,
 } from "./compute-node-properties"
 export type { ComputeContext } from "../../properties/compute"
+export { resolveLayoutMode } from "../helpers/nodes/resolve-layout-mode"
 export { buildNodeParentIndex } from "../helpers/graph/build-node-parent-index"
 export type { NodeParentIndex } from "../helpers/graph/build-node-parent-index"
 export type {

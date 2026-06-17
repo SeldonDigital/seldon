@@ -1,9 +1,6 @@
 import { Workspace } from "@seldon/core"
 import { getComponentSchema } from "@seldon/core/components/catalog"
-import {
-  ComponentLevel,
-  ORDERED_COMPONENT_LEVELS,
-} from "@seldon/core/components/constants"
+import { ORDERED_COMPONENT_LEVELS } from "@seldon/core/components/constants"
 import { getWorkspaceEnabledIcons } from "@seldon/core/icon-sets/helpers"
 
 import { buildExportContext } from "../../helpers/build-export-context"
@@ -19,7 +16,6 @@ import { getImagesToExport } from "./assets/get-images-to-export"
 import { replaceImagesWithRelativePaths } from "./assets/transform-image-paths"
 import { getComponentsToExport } from "./discovery/get-components-to-export"
 import { getUsedIconIds } from "./discovery/get-used-icon-ids"
-import { format } from "./format"
 import { generateComponentFiles } from "./generation/helpers/generate-component-files"
 import { generateFrameComponent } from "./generation/helpers/generate-frame-component"
 import { generateReadmeFile } from "./generation/helpers/generate-readme-file"

@@ -28,6 +28,16 @@ export enum ComponentLevel {
   BOARD = "board",
 }
 
+/**
+ * Layout model a container component arranges its children with.
+ * Absent on a schema means `FLEXBOX`. `GRID` switches the container and its
+ * LAYOUT property vocabulary to CSS grid.
+ */
+export enum ComponentLayout {
+  FLEXBOX = "flexbox",
+  GRID = "grid",
+}
+
 export enum ComponentIcon {
   STUB = "seldon-stub",
   COMPONENT = "seldon-component",
@@ -393,6 +403,7 @@ export const NATIVE_REACT_PRIMITIVES: Record<
       generic: "TableHTMLAttributes",
       parameter: "HTMLTableElement",
     },
+    wrapperElementOption: WrapperElement.TABLE,
   },
   HTMLTbody: {
     types: {

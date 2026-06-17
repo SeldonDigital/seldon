@@ -6,7 +6,7 @@ import { VariantId } from "@seldon/core/index"
 import { getBoardVariantRootIds } from "@seldon/core/workspace/helpers/components/get-board-variant-root-ids"
 import { getVariantById } from "@seldon/core/workspace/helpers/general/get-variant-by-id"
 import { isSpecialBoardVariant } from "@seldon/core/workspace/helpers/general/is-special-board-variant"
-import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
+import { typeCheckingService } from "@seldon/core/workspace/services"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import {
   CatalogPanelCategory,
@@ -57,7 +57,7 @@ export function useComponentCatalog({
                 // For regular boards, show "Default" for default variants
                 const isSpecial = isSpecialBoardVariant(variant, workspace)
                 const description =
-                  workspaceService.isDefaultVariant(variant) && !isSpecial
+                  typeCheckingService.isDefaultVariant(variant) && !isSpecial
                     ? "Default"
                     : variant.label
                 return {

@@ -26,10 +26,6 @@ export const schema = {
       value: null,
     },
     direction: { type: Sdn.ValueType.EMPTY, value: null },
-    orientation: {
-      type: Sdn.ValueType.OPTION,
-      value: Sdn.Orientation.HORIZONTAL,
-    },
     align: { type: Sdn.ValueType.EMPTY, value: null },
     width: {
       type: Sdn.ValueType.OPTION,

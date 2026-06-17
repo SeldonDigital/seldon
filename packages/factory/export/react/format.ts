@@ -10,7 +10,7 @@ export async function format(
   // We have to run this twice to make sure the imports (but first without the plugin)
   // to make sure each import has it's own line
   // https://github.com/trivago/prettier-plugin-sort-imports/issues/222
-  let source = await prettier.format(content, {
+  const source = await prettier.format(content, {
     parser: "typescript",
     semi: false,
   })

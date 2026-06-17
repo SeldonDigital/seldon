@@ -1,6 +1,10 @@
-import * as Sdn from "../../../../properties"
-import * as Seldon from "../../../constants"
-import { ComponentExport, ComponentSchema } from "../../../types"
+import * as Sdn from "../../../../properties";
+import * as Seldon from "../../../constants";
+import { ComponentExport, ComponentSchema } from "../../../types";
+
+
+
+
 
 export const schema = {
   name: "Data Row",
@@ -62,25 +66,14 @@ export const schema = {
       width: { type: Sdn.ValueType.EMPTY, value: null },
       brightness: { type: Sdn.ValueType.EMPTY, value: null },
       opacity: { type: Sdn.ValueType.EMPTY, value: null },
-      collapse: { type: Sdn.ValueType.EMPTY, value: null },
     },
     borderTop: {
       preset: { type: Sdn.ValueType.EMPTY, value: null },
-      style: {
-        type: Sdn.ValueType.OPTION,
-        value: Sdn.BorderStyle.SOLID,
-      },
-      color: {
-        type: Sdn.ValueType.THEME_CATEGORICAL,
-        value: "@swatch.gray",
-      },
-      width: {
-        type: Sdn.ValueType.THEME_ORDINAL,
-        value: "@borderWidth.xsmall",
-      },
+      style: { type: Sdn.ValueType.EMPTY, value: null },
+      color: { type: Sdn.ValueType.EMPTY, value: null },
+      width: { type: Sdn.ValueType.EMPTY, value: null },
       brightness: { type: Sdn.ValueType.EMPTY, value: null },
       opacity: { type: Sdn.ValueType.EMPTY, value: null },
-      collapse: { type: Sdn.ValueType.EMPTY, value: null },
     },
     borderRight: {
       preset: { type: Sdn.ValueType.EMPTY, value: null },
@@ -89,7 +82,6 @@ export const schema = {
       width: { type: Sdn.ValueType.EMPTY, value: null },
       brightness: { type: Sdn.ValueType.EMPTY, value: null },
       opacity: { type: Sdn.ValueType.EMPTY, value: null },
-      collapse: { type: Sdn.ValueType.EMPTY, value: null },
     },
     borderBottom: {
       preset: { type: Sdn.ValueType.EMPTY, value: null },
@@ -98,7 +90,6 @@ export const schema = {
       width: { type: Sdn.ValueType.EMPTY, value: null },
       brightness: { type: Sdn.ValueType.EMPTY, value: null },
       opacity: { type: Sdn.ValueType.EMPTY, value: null },
-      collapse: { type: Sdn.ValueType.EMPTY, value: null },
     },
     borderLeft: {
       preset: { type: Sdn.ValueType.EMPTY, value: null },
@@ -107,7 +98,6 @@ export const schema = {
       width: { type: Sdn.ValueType.EMPTY, value: null },
       brightness: { type: Sdn.ValueType.EMPTY, value: null },
       opacity: { type: Sdn.ValueType.EMPTY, value: null },
-      collapse: { type: Sdn.ValueType.EMPTY, value: null },
     },
     corners: {
       topLeft: { type: Sdn.ValueType.EMPTY, value: null },
@@ -141,10 +131,6 @@ export const schema = {
             type: Sdn.ValueType.OPTION,
             value: Sdn.Display.SHOW,
           },
-          content: {
-            type: Sdn.ValueType.EXACT,
-            value: "Andrei",
-          },
           columns: {
             type: Sdn.ValueType.EXACT,
             value: {
@@ -159,11 +145,19 @@ export const schema = {
               value: 1,
             },
           },
-          cellAlign: {
-            type: Sdn.ValueType.OPTION,
-            value: Sdn.Align.CENTER_LEFT,
-          },
         },
+        children: [
+          {
+            component: Seldon.ComponentId.TEXT,
+            variant: "label",
+            overrides: {
+              content: {
+                type: Sdn.ValueType.EXACT,
+                value: "Andrei",
+              },
+            },
+          },
+        ],
       },
       {
         component: Seldon.ComponentId.TABLE_DATA,
@@ -172,10 +166,6 @@ export const schema = {
             type: Sdn.ValueType.OPTION,
             value: Sdn.Display.SHOW,
           },
-          content: {
-            type: Sdn.ValueType.EXACT,
-            value: "Herasimchuk",
-          },
           columns: {
             type: Sdn.ValueType.EXACT,
             value: {
@@ -190,11 +180,19 @@ export const schema = {
               value: 1,
             },
           },
-          cellAlign: {
-            type: Sdn.ValueType.OPTION,
-            value: Sdn.Align.CENTER_LEFT,
-          },
         },
+        children: [
+          {
+            component: Seldon.ComponentId.TEXT,
+            variant: "label",
+            overrides: {
+              content: {
+                type: Sdn.ValueType.EXACT,
+                value: "Herasimchuk",
+              },
+            },
+          },
+        ],
       },
       {
         component: Seldon.ComponentId.TABLE_DATA,
@@ -203,10 +201,6 @@ export const schema = {
             type: Sdn.ValueType.OPTION,
             value: Sdn.Display.SHOW,
           },
-          content: {
-            type: Sdn.ValueType.EXACT,
-            value: "Seldon",
-          },
           columns: {
             type: Sdn.ValueType.EXACT,
             value: {
@@ -221,11 +215,19 @@ export const schema = {
               value: 1,
             },
           },
-          cellAlign: {
-            type: Sdn.ValueType.OPTION,
-            value: Sdn.Align.CENTER_LEFT,
-          },
         },
+        children: [
+          {
+            component: Seldon.ComponentId.TEXT,
+            variant: "label",
+            overrides: {
+              content: {
+                type: Sdn.ValueType.EXACT,
+                value: "Seldon",
+              },
+            },
+          },
+        ],
       },
       {
         component: Seldon.ComponentId.TABLE_DATA,
@@ -234,10 +236,6 @@ export const schema = {
             type: Sdn.ValueType.OPTION,
             value: Sdn.Display.SHOW,
           },
-          content: {
-            type: Sdn.ValueType.EXACT,
-            value: "andrei@fakeseldon.com",
-          },
           columns: {
             type: Sdn.ValueType.EXACT,
             value: {
@@ -252,11 +250,19 @@ export const schema = {
               value: 1,
             },
           },
-          cellAlign: {
-            type: Sdn.ValueType.OPTION,
-            value: Sdn.Align.CENTER_LEFT,
-          },
         },
+        children: [
+          {
+            component: Seldon.ComponentId.TEXT,
+            variant: "label",
+            overrides: {
+              content: {
+                type: Sdn.ValueType.EXACT,
+                value: "andrei@fakeseldon.com",
+              },
+            },
+          },
+        ],
       },
       {
         component: Seldon.ComponentId.TABLE_DATA,
@@ -265,10 +271,6 @@ export const schema = {
             type: Sdn.ValueType.OPTION,
             value: Sdn.Display.SHOW,
           },
-          content: {
-            type: Sdn.ValueType.EXACT,
-            value: "CEO",
-          },
           columns: {
             type: Sdn.ValueType.EXACT,
             value: {
@@ -283,11 +285,19 @@ export const schema = {
               value: 1,
             },
           },
-          cellAlign: {
-            type: Sdn.ValueType.OPTION,
-            value: Sdn.Align.CENTER_LEFT,
-          },
         },
+        children: [
+          {
+            component: Seldon.ComponentId.TEXT,
+            variant: "label",
+            overrides: {
+              content: {
+                type: Sdn.ValueType.EXACT,
+                value: "CEO",
+              },
+            },
+          },
+        ],
       },
     ],
   },

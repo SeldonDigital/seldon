@@ -14,7 +14,7 @@ import {
 import { useActiveBoard } from "@lib/workspace/hooks/use-active-board"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useTool } from "@lib/hooks/use-tool"
-import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
+import { nodeRetrievalService } from "@seldon/core/workspace/services"
 import type { InstanceId, VariantId, Workspace } from "@seldon/core/workspace/types"
 import { canNodeAcceptChildren } from "@lib/workspace/can-node-accept-children"
 import type { NodeRect } from "../tracking/hooks/use-node-rects-store"
@@ -53,7 +53,7 @@ function resolveComponentHoverColors(
 ): OutlineColors | null {
   let acceptsChildren = false
   try {
-    const node = workspaceService.getNode(
+    const node = nodeRetrievalService.getNode(
       hoveredId as InstanceId | VariantId,
       workspace,
     )
@@ -129,6 +129,9 @@ export function CanvasOverlayTracker() {
   const selectedNodeId = useSelectedNodeId()
   const selectedNodeRootId = useSelectedNodeRootId()
   const remeasureVersion = useCanvasRemeasureStore((state) => state.version)
+  const isTransforming = useCanvasRemeasureStore(
+    (state) => state.isTransforming,
+  )
   const { workspace } = useWorkspace({ usePreview: false })
   const { activeBoard } = useActiveBoard()
   const { activeTool } = useTool()
@@ -187,11 +190,23 @@ export function CanvasOverlayTracker() {
   ])
 
   useEffect(() => {
-    let rafId = 0
+    let retryRaf = 0
+    let scheduledRaf = 0
     let frames = 0
 
     const apply = () => {
       const store = useCanvasOverlayStore.getState()
+      // While the canvas pans or zooms, re-measuring the moving target every
+      // frame forces a full reflow of the board subtree and re-renders the
+      // outline components each frame, which makes large boards (Table,
+      // Calendar) stutter. Mirror the wireframe boxes: hide the hover and
+      // selection outlines while transforming and let the settle bump
+      // re-measure them at the final position.
+      if (useCanvasRemeasureStore.getState().isTransforming) {
+        if (store.hoverRect !== null) store.setHoverRect(null)
+        if (store.selectionRect !== null) store.setSelectionRect(null)
+        return
+      }
       // Node hover/selection scopes to the hovered or clicked column; other
       // kinds (theme variant, font specimen group) keep the grouped union.
       const hover =
@@ -208,20 +223,33 @@ export function CanvasOverlayTracker() {
 
       const missing = (hoveredId && !hover) || (selectedId && !selection)
       if (missing && frames++ < MAX_TARGET_FRAMES) {
-        rafId = requestAnimationFrame(apply)
+        retryRaf = requestAnimationFrame(apply)
       }
     }
 
+    // Coalesce a burst of scroll/transform ticks into a single measurement per
+    // frame. Each `apply` forces a synchronous layout read, so measuring once
+    // per animation frame instead of once per event avoids the layout
+    // thrashing that makes scrolling and panning feel laggy.
+    const schedule = () => {
+      if (scheduledRaf) return
+      scheduledRaf = requestAnimationFrame(() => {
+        scheduledRaf = 0
+        apply()
+      })
+    }
+
     apply()
-    const unsubscribe = transformContextRef.current.onChange(apply)
-    window.addEventListener("scroll", apply, true)
-    window.addEventListener("resize", apply)
+    const unsubscribe = transformContextRef.current.onChange(schedule)
+    window.addEventListener("scroll", schedule, { passive: true, capture: true })
+    window.addEventListener("resize", schedule)
 
     return () => {
-      cancelAnimationFrame(rafId)
+      cancelAnimationFrame(retryRaf)
+      cancelAnimationFrame(scheduledRaf)
       unsubscribe()
-      window.removeEventListener("scroll", apply, true)
-      window.removeEventListener("resize", apply)
+      window.removeEventListener("scroll", schedule, true)
+      window.removeEventListener("resize", schedule)
     }
   }, [
     hoveredId,
@@ -231,6 +259,7 @@ export function CanvasOverlayTracker() {
     selectedNodeId,
     selectedNodeRootId,
     remeasureVersion,
+    isTransforming,
   ])
 
   return null

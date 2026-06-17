@@ -1,4 +1,5 @@
 import {
+  assertNever,
   BorderWidth,
   BorderWidthHairlineValue,
   Color,
@@ -57,8 +58,7 @@ export function getCssValue(
         case Unit.NUMBER:
           return value.value.value
         default:
-          // @ts-expect-error
-          throw new Error("Invalid exact value with unit " + value.value.unit)
+          return assertNever(value.value)
       }
 
     case ValueType.OPTION: {
@@ -76,14 +76,13 @@ export function getCssValue(
         case Color.TRANSPARENT:
           return "transparent"
         default:
-          // @ts-expect-error
-          throw new Error("Invalid option value " + value.value)
+          return assertNever(value)
       }
     }
 
     case ValueType.THEME_ORDINAL: {
       throw new Error(
-        `Theme ordinal value "${(value as any).value}" must be resolved first. ` +
+        `Theme ordinal value "${(value as { value: unknown }).value}" must be resolved first. ` +
           `This function only accepts resolved values (pixels, rems, percentages, or corner presets). ` +
           `Theme values should be resolved by functions like resolveSize(), resolveFontSize(), etc.`,
       )
@@ -94,8 +93,9 @@ export function getCssValue(
     }
 
     default: {
+      const invalidValue = value as { type?: unknown; value?: unknown }
       throw new Error(
-        `Invalid value type "${(value as any).type}" ${(value as any).value ? `with value "${(value as any).value}"` : ""}. ` +
+        `Invalid value type "${invalidValue.type}" ${invalidValue.value ? `with value "${invalidValue.value}"` : ""}. ` +
           `Expected EXACT, OPTION, or EMPTY. Theme values must be resolved before calling getCssValue().`,
       )
     }

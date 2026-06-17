@@ -9,7 +9,7 @@ import {
 } from "../../properties"
 import { Colorspace, StockTheme, TokenType } from "../types"
 
-const theme: StockTheme = {
+export const theme: StockTheme = {
   metadata: {
     id: "wildberry",
     name: "Wildberry",
@@ -1623,5 +1623,3 @@ const theme: StockTheme = {
     },
   },
 }
-
-export default theme

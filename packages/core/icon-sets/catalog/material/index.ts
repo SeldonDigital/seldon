@@ -10,6 +10,7 @@ export { IconMaterialChevronLeft } from "./user-interface/navigation/IconMateria
 export { IconMaterialChevronDown } from "./user-interface/navigation/IconMaterialChevronDown"
 export { IconMaterialThumbP } from "./user-interface/navigation/IconMaterialThumbP"
 export { IconMaterialChevronRight } from "./user-interface/navigation/IconMaterialChevronRight"
+export { IconMaterialChevronUp } from "./user-interface/navigation/IconMaterialChevronUp"
 export { IconMaterialChevronDoubleUp } from "./user-interface/navigation/IconMaterialChevronDoubleUp"
 export { IconMaterialChevronDoubleDown } from "./user-interface/navigation/IconMaterialChevronDoubleDown"
 export { IconMaterialChevronDoubleLeft } from "./user-interface/navigation/IconMaterialChevronDoubleLeft"
@@ -270,6 +271,7 @@ export const materialIconIds: readonly IconId[] = [
   "material-chevronDown",
   "material-thumbP",
   "material-chevronRight",
+  "material-chevronUp",
   "material-chevronDoubleUp",
   "material-chevronDoubleDown",
   "material-chevronDoubleLeft",

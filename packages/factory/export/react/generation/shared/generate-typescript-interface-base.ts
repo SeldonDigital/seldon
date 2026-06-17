@@ -109,20 +109,3 @@ export function generateOwnPropsContent(component: ComponentToExport): string {
 
   return content
 }
-
-/**
- * Generate the full TypeScript interface for a component
- */
-export function generateTypescriptInterfaceBase(
-  component: ComponentToExport,
-): string {
-  const interfaceName =
-    component.tree.dataBinding.interfaceName || `${component.name}Props`
-  const propsContent = generateOwnPropsContent(component)
-
-  if (propsContent === "") {
-    return `export interface ${interfaceName} {}`
-  }
-
-  return `export interface ${interfaceName} {\n  ${propsContent}\n}`
-}

@@ -70,6 +70,8 @@ import { boardPresetSchema } from "../../values/layout/board/board-preset"
 import { boardWidthSchema } from "../../values/layout/board/board-width"
 import { cellAlignSchema } from "../../values/layout/cell-align"
 import { clipSchema } from "../../values/layout/clip"
+import { columnSpanSchema } from "../../values/layout/column-span"
+import { columnStartSchema } from "../../values/layout/column-start"
 import { columnsSchema } from "../../values/layout/columns"
 import { dimensionSchema } from "../../values/layout/dimension"
 import { directionSchema } from "../../values/layout/direction"
@@ -85,6 +87,8 @@ import { placementSchema } from "../../values/layout/placement"
 import { positionSchema } from "../../values/layout/position"
 import { resizeSchema } from "../../values/layout/resize"
 import { rotationSchema } from "../../values/layout/rotation"
+import { rowSpanSchema } from "../../values/layout/row-span"
+import { rowStartSchema } from "../../values/layout/row-start"
 import { rowsSchema } from "../../values/layout/rows"
 import { screenHeightSchema } from "../../values/layout/screen-height"
 import { screenSizeSchema } from "../../values/layout/screen-size"
@@ -161,6 +165,10 @@ const PROPERTY_SCHEMAS_RAW = {
   listStylePosition: listStylePositionSchema,
   columns: columnsSchema,
   rows: rowsSchema,
+  columnStart: columnStartSchema,
+  columnSpan: columnSpanSchema,
+  rowStart: rowStartSchema,
+  rowSpan: rowSpanSchema,
   cellAlign: cellAlignSchema,
   dimension: dimensionSchema,
   resize: resizeSchema,
@@ -207,28 +215,24 @@ const PROPERTY_SCHEMAS_RAW = {
   borderTopWidth: borderWidthSchema,
   borderTopBrightness: borderBrightnessSchema,
   borderTopOpacity: borderOpacitySchema,
-  borderTopCollapse: borderCollapseSchema,
   borderRightPreset: borderPresetSchema,
   borderRightStyle: borderStyleSchema,
   borderRightColor: borderColorSchema,
   borderRightWidth: borderWidthSchema,
   borderRightBrightness: borderBrightnessSchema,
   borderRightOpacity: borderOpacitySchema,
-  borderRightCollapse: borderCollapseSchema,
   borderBottomPreset: borderPresetSchema,
   borderBottomStyle: borderStyleSchema,
   borderBottomColor: borderColorSchema,
   borderBottomWidth: borderWidthSchema,
   borderBottomBrightness: borderBrightnessSchema,
   borderBottomOpacity: borderOpacitySchema,
-  borderBottomCollapse: borderCollapseSchema,
   borderLeftPreset: borderPresetSchema,
   borderLeftStyle: borderStyleSchema,
   borderLeftColor: borderColorSchema,
   borderLeftWidth: borderWidthSchema,
   borderLeftBrightness: borderBrightnessSchema,
   borderLeftOpacity: borderOpacitySchema,
-  borderLeftCollapse: borderCollapseSchema,
   corners: cornersSchema,
   borderCollapse: borderCollapseSchema,
 

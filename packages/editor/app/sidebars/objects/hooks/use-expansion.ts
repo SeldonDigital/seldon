@@ -1,7 +1,10 @@
 import { useCallback } from "react"
 import { create } from "zustand"
 import { InstanceId, VariantId, Workspace } from "@seldon/core"
-import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
+import {
+  nodeTraversalService,
+  typeCheckingService,
+} from "@seldon/core/workspace/services"
 import type { EntryNode } from "@seldon/core/workspace/types"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { collectDescendantNodeIds } from "@lib/workspace/component-tree"
@@ -86,14 +89,14 @@ export const useExpansion = () => {
         while (currentNode) {
           idsToToggle.push(currentNode.id)
 
-          if (workspaceService.isVariant(currentNode)) {
+          if (typeCheckingService.isVariant(currentNode)) {
             const board = findComponentForNode(currentNode, workspace)
             if (board) {
               idsToToggle.push(getComponentKey(board))
             }
           }
 
-          const parentNode = workspaceService.findParentNode(
+          const parentNode = nodeTraversalService.findParentNode(
             currentNode.id,
             workspace,
           )

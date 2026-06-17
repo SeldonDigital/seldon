@@ -5,16 +5,13 @@ import { ComponentExport, ComponentSchema } from "../../../types"
 export const schema = {
   name: "Table Data",
   id: Seldon.ComponentId.TABLE_DATA,
-  intent: "Represents a standard cell in a table row for displaying data.",
-  tags: ["table", "cell", "data", "td", "primitive", "grid", "content"],
-  level: Seldon.ComponentLevel.PRIMITIVE,
+  intent:
+    "A standard table cell that hosts cell content such as text, status chips, icons, or stacked lines.",
+  tags: ["table", "cell", "data", "td", "element", "grid", "content"],
+  level: Seldon.ComponentLevel.ELEMENT,
   icon: Seldon.ComponentIcon.STUB,
   properties: {
     display: { type: Sdn.ValueType.EMPTY, value: null },
-    content: {
-      type: Sdn.ValueType.EXACT,
-      value: "Cell",
-    },
     ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
     ariaHidden: {
       type: Sdn.ValueType.EXACT,
@@ -53,12 +50,20 @@ export const schema = {
         value: "@padding.compact",
       },
     },
+    gap: {
+      type: Sdn.ValueType.THEME_ORDINAL,
+      value: "@gap.tight",
+    },
+    wrapChildren: {
+      type: Sdn.ValueType.EXACT,
+      value: false,
+    },
     clip: { type: Sdn.ValueType.EMPTY, value: null },
     columns: { type: Sdn.ValueType.EMPTY, value: null },
     rows: { type: Sdn.ValueType.EMPTY, value: null },
     cellAlign: {
-      type: Sdn.ValueType.INHERIT,
-      value: null,
+      type: Sdn.ValueType.OPTION,
+      value: Sdn.Align.CENTER_LEFT,
     },
     color: {
       type: Sdn.ValueType.COMPUTED,
@@ -70,6 +75,7 @@ export const schema = {
       },
     },
     brightness: { type: Sdn.ValueType.EMPTY, value: null },
+    opacity: { type: Sdn.ValueType.EMPTY, value: null },
     background: [
       { kind: { type: Sdn.ValueType.OPTION, value: Sdn.BackgroundKind.NONE } },
     ],
@@ -83,7 +89,6 @@ export const schema = {
       width: { type: Sdn.ValueType.EMPTY, value: null },
       brightness: { type: Sdn.ValueType.EMPTY, value: null },
       opacity: { type: Sdn.ValueType.EMPTY, value: null },
-      collapse: { type: Sdn.ValueType.EMPTY, value: null },
     },
     borderTop: {
       preset: { type: Sdn.ValueType.EMPTY, value: null },
@@ -92,7 +97,6 @@ export const schema = {
       width: { type: Sdn.ValueType.EMPTY, value: null },
       brightness: { type: Sdn.ValueType.EMPTY, value: null },
       opacity: { type: Sdn.ValueType.EMPTY, value: null },
-      collapse: { type: Sdn.ValueType.EMPTY, value: null },
     },
     borderRight: {
       preset: { type: Sdn.ValueType.EMPTY, value: null },
@@ -101,7 +105,6 @@ export const schema = {
       width: { type: Sdn.ValueType.EMPTY, value: null },
       brightness: { type: Sdn.ValueType.EMPTY, value: null },
       opacity: { type: Sdn.ValueType.EMPTY, value: null },
-      collapse: { type: Sdn.ValueType.EMPTY, value: null },
     },
     borderBottom: {
       preset: { type: Sdn.ValueType.EMPTY, value: null },
@@ -110,7 +113,6 @@ export const schema = {
       width: { type: Sdn.ValueType.EMPTY, value: null },
       brightness: { type: Sdn.ValueType.EMPTY, value: null },
       opacity: { type: Sdn.ValueType.EMPTY, value: null },
-      collapse: { type: Sdn.ValueType.EMPTY, value: null },
     },
     borderLeft: {
       preset: { type: Sdn.ValueType.EMPTY, value: null },
@@ -119,7 +121,6 @@ export const schema = {
       width: { type: Sdn.ValueType.EMPTY, value: null },
       brightness: { type: Sdn.ValueType.EMPTY, value: null },
       opacity: { type: Sdn.ValueType.EMPTY, value: null },
-      collapse: { type: Sdn.ValueType.EMPTY, value: null },
     },
     corners: {
       topLeft: { type: Sdn.ValueType.EMPTY, value: null },
@@ -128,36 +129,6 @@ export const schema = {
       bottomRight: { type: Sdn.ValueType.EMPTY, value: null },
     },
     borderCollapse: { type: Sdn.ValueType.EMPTY, value: null },
-    font: {
-      preset: {
-        type: Sdn.ValueType.THEME_CATEGORICAL,
-        value: "@font.body",
-      },
-      family: { type: Sdn.ValueType.EMPTY, value: null },
-      style: { type: Sdn.ValueType.EMPTY, value: null },
-      weight: { type: Sdn.ValueType.EMPTY, value: null },
-      size: {
-        type: Sdn.ValueType.THEME_ORDINAL,
-        value: "@fontSize.medium",
-      },
-      lineHeight: { type: Sdn.ValueType.EMPTY, value: null },
-      textCase: { type: Sdn.ValueType.EMPTY, value: null },
-      letterSpacing: { type: Sdn.ValueType.EMPTY, value: null },
-    },
-    textAlign: {
-      type: Sdn.ValueType.OPTION,
-      value: Sdn.TextAlign.LEFT,
-    },
-
-    textDecoration: {
-      type: Sdn.ValueType.OPTION,
-      value: Sdn.TextDecoration.NONE,
-    },
-    wrapText: {
-      type: Sdn.ValueType.EXACT,
-      value: true,
-    },
-    lines: { type: Sdn.ValueType.EMPTY, value: null },
     shadow: [
       {
         preset: {
@@ -174,14 +145,161 @@ export const schema = {
       },
     ],
   },
+  default: {
+    children: [
+      {
+        component: Seldon.ComponentId.TEXT,
+        variant: "label",
+        overrides: {
+          content: { type: Sdn.ValueType.EXACT, value: "Cell" },
+          font: {
+            preset: {
+              type: Sdn.ValueType.THEME_CATEGORICAL,
+              value: "@font.body",
+            },
+            size: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@fontSize.medium",
+            },
+          },
+        },
+      },
+    ],
+  },
   variants: [
+    {
+      id: "numeric",
+      label: "Numeric Cell",
+      intent: "Cell for numbers and currency, right-aligned.",
+      overrides: {
+        cellAlign: {
+          type: Sdn.ValueType.OPTION,
+          value: Sdn.Align.CENTER_RIGHT,
+        },
+      },
+    },
+    {
+      id: "positive",
+      label: "Positive Cell",
+      intent:
+        "Numeric cell tinted green to mark a positive or credit value.",
+      overrides: {
+        cellAlign: {
+          type: Sdn.ValueType.OPTION,
+          value: Sdn.Align.CENTER_RIGHT,
+        },
+        color: {
+          type: Sdn.ValueType.EXACT,
+          value: "#1F9D55",
+        },
+      },
+    },
+    {
+      id: "negative",
+      label: "Negative Cell",
+      intent:
+        "Numeric cell tinted red to mark a negative or debit value.",
+      overrides: {
+        cellAlign: {
+          type: Sdn.ValueType.OPTION,
+          value: Sdn.Align.CENTER_RIGHT,
+        },
+        color: {
+          type: Sdn.ValueType.EXACT,
+          value: "#E3342F",
+        },
+      },
+    },
+    {
+      id: "status",
+      label: "Status Cell",
+      intent: "Cell that shows a status as a colored chip rather than text.",
+      children: [
+        {
+          component: Seldon.ComponentId.CHIP,
+          overrides: {
+            buttonSize: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@fontSize.xsmall",
+            },
+          },
+          children: [
+            {
+              component: Seldon.ComponentId.TEXT,
+              variant: "label",
+              overrides: {
+                content: { type: Sdn.ValueType.EXACT, value: "Status" },
+              },
+            },
+          ],
+        },
+      ],
+    },
+    {
+      id: "twoLine",
+      label: "Two Line Cell",
+      intent:
+        "Cell stacking a primary line over a muted secondary line, for name and detail pairs.",
+      children: [
+        {
+          component: Seldon.ComponentId.FRAME,
+          overrides: {
+            orientation: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.Orientation.VERTICAL,
+            },
+            align: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.Align.CENTER_LEFT,
+            },
+            width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+            height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+            gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.tight" },
+          },
+          children: [
+            {
+              component: Seldon.ComponentId.TEXT,
+              variant: "label",
+              overrides: {
+                content: { type: Sdn.ValueType.EXACT, value: "Primary" },
+                font: {
+                  preset: {
+                    type: Sdn.ValueType.THEME_CATEGORICAL,
+                    value: "@font.subtitle",
+                  },
+                },
+              },
+            },
+            {
+              component: Seldon.ComponentId.TEXT,
+              variant: "description",
+              overrides: {
+                content: { type: Sdn.ValueType.EXACT, value: "Secondary" },
+                opacity: {
+                  type: Sdn.ValueType.EXACT,
+                  value: { unit: Sdn.Unit.PERCENT, value: 60 },
+                },
+                font: {
+                  size: {
+                    type: Sdn.ValueType.THEME_ORDINAL,
+                    value: "@fontSize.small",
+                  },
+                },
+              },
+            },
+          ],
+        },
+      ],
+    },
     {
       id: "input",
       label: "Table Input",
-      intent: "Table cell designed to hold editable input controls.",
-      overrides: {
-        content: { type: Sdn.ValueType.EXACT, value: "Input" },
-      },
+      intent: "Table cell that holds an editable input control.",
+      children: [
+        {
+          component: Seldon.ComponentId.INPUT,
+        },
+      ],
     },
   ],
 } as const satisfies ComponentSchema

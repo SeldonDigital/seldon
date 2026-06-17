@@ -84,8 +84,8 @@ export class TypeCheckingService {
    * @param node - The node to check
    * @returns True if the node is a board
    */
-  public isBoard(node: RulesNodeOrComponent): node is Board {
-    return "variants" in node
+  public isBoard(node: RulesNodeOrComponent | undefined): node is Board {
+    return node !== undefined && "variants" in node
   }
 
   /**

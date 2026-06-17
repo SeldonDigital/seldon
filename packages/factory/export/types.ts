@@ -3,7 +3,6 @@ import { CSSProperties } from "react"
 import { InstanceId, VariantId } from "@seldon/core"
 import { ComponentId, ComponentLevel } from "@seldon/core/components/constants"
 import { ComponentExport } from "@seldon/core/components/types"
-import type { IconId } from "@seldon/core/icon-sets"
 
 import type { ExportAssetReader } from "./asset-reader"
 

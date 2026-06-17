@@ -25,8 +25,8 @@ import { JSXNode, JSXNodeType, JSXStructure } from "./types"
  */
 export function generateJSXStructure(
   component: ComponentToExport,
-  nodeIdToClass: NodeIdToClass,
-  workspace: Workspace,
+  _nodeIdToClass: NodeIdToClass,
+  _workspace: Workspace,
 ): JSXStructure {
   const { tree, config } = component
 

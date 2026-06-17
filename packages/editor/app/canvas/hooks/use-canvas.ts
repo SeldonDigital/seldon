@@ -5,7 +5,11 @@ import { InstanceId, VariantId, invariant } from "@seldon/core"
 import { getComponentSchema } from "@seldon/core/components/catalog"
 import { ComponentId } from "@seldon/core/components/constants"
 import { ErrorMessages } from "@seldon/core/workspace/constants"
-import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
+import {
+  nodeRetrievalService,
+  nodeTraversalService,
+  typeCheckingService,
+} from "@seldon/core/workspace/services"
 import { useActiveBoard } from "@lib/workspace/hooks/use-active-board"
 import { useSetHoveredId } from "@lib/workspace/hooks/use-object-hover"
 import { useSelection } from "@lib/workspace/hooks/use-selection"
@@ -202,7 +206,7 @@ export function useCanvas() {
   const insertNextToChild = useCallback(
     (hoverState: HoverState) => {
       const childNodeId = hoverState.lastChildNodeBeforeCursor!
-      const parentNode = workspaceService.findParentNode(childNodeId, workspace)
+      const parentNode = nodeTraversalService.findParentNode(childNodeId, workspace)
 
       invariant(parentNode, "Container node not found")
       if (!canNodeAcceptChildren(parentNode, workspace)) {
@@ -215,8 +219,8 @@ export function useCanvas() {
 
       // Prevent insertion into default variants
       if (
-        workspaceService.isVariant(parentNode) &&
-        workspaceService.isDefaultVariant(parentNode)
+        typeCheckingService.isVariant(parentNode) &&
+        typeCheckingService.isDefaultVariant(parentNode)
       ) {
         return
       }
@@ -237,12 +241,12 @@ export function useCanvas() {
 
   const insertIntoNode = useCallback(
     (nodeId: InstanceId | VariantId) => {
-      const node = workspaceService.getNode(nodeId, workspace)
+      const node = nodeRetrievalService.getNode(nodeId, workspace)
       if (canNodeAcceptChildren(node, workspace)) {
         // Prevent insertion into default variants
         if (
-          workspaceService.isVariant(node) &&
-          workspaceService.isDefaultVariant(node)
+          typeCheckingService.isVariant(node) &&
+          typeCheckingService.isDefaultVariant(node)
         ) {
           return
         }
@@ -253,13 +257,13 @@ export function useCanvas() {
         })
       } else {
         // Otherwise, the target is the parent node of the hovered object
-        const parentNode = workspaceService.findParentNode(nodeId, workspace)
+        const parentNode = nodeTraversalService.findParentNode(nodeId, workspace)
         invariant(parentNode, "Parent node not found for node " + nodeId)
 
         // Prevent insertion into default variants
         if (
-          workspaceService.isVariant(parentNode) &&
-          workspaceService.isDefaultVariant(parentNode)
+          typeCheckingService.isVariant(parentNode) &&
+          typeCheckingService.isDefaultVariant(parentNode)
         ) {
           return
         }

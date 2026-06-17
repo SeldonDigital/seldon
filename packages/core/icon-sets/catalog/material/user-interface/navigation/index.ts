@@ -42,6 +42,7 @@ export { IconMaterialSubdirectoryArrowRight } from "./IconMaterialSubdirectoryAr
 export { IconMaterialSuperscript } from "./IconMaterialSuperscript"
 export { IconMaterialSupport } from "./IconMaterialSupport"
 export { IconMaterialChevronRight } from "./IconMaterialChevronRight"
+export { IconMaterialChevronUp } from "./IconMaterialChevronUp"
 export { IconMaterialChevronDoubleDown } from "./IconMaterialChevronDoubleDown"
 export { IconMaterialChevronDoubleLeft } from "./IconMaterialChevronDoubleLeft"
 export { IconMaterialChevronDoubleRight } from "./IconMaterialChevronDoubleRight"
@@ -238,6 +239,7 @@ export const materialcommonnavigationIconIds: readonly IconId[] = [
   "material-superscript",
   "material-support",
   "material-chevronRight",
+  "material-chevronUp",
   "material-chevronDoubleDown",
   "material-chevronDoubleLeft",
   "material-chevronDoubleRight",

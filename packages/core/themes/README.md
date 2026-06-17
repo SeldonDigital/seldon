@@ -812,6 +812,47 @@ export type ThemeMarginKey   = `@margin.${ThemeSpacingId}`
 
 ---
 
+## Theme Remapping Rules
+
+Swapping the active theme on a board or node does not just retune `@` references in place. Seldon walks the affected node overrides and rewrites each theme token so it points at the right slot in the new theme. This keeps reserved tokens aligned across themes and decides what to do when a token has no home in the target theme.
+
+---
+
+### When Remapping Occurs
+
+There are two entry points:
+
+- **Board theme swap** (`setComponentTheme`) sets the board's `componentTheme`, then remaps every variant whose `theme` is `null`. A variant with its own theme keeps that theme and is skipped.
+- **Node theme swap** (`setNodeTheme`) remaps the node from its current theme to the new one, then stores the new `theme` on the node. A `null` theme means the node inherits from its parent or board.
+
+Both paths walk the node's effective properties, remap each theme token they find, and recurse into child nodes when the node's template is a catalog component.
+
+---
+
+### Matching Behavior
+
+Each `@<section>.<slot>` reference is split into a section and a slot, then matched against the new theme in order:
+
+1. **Exact slot match.** If the new theme has the same slot, the reference is rewritten to that slot. Reserved slots like `@fontSize.medium`, `@margin.compact`, and `@border.thin` always match this way because every theme ships the same reserved keys. The value retunes to the new theme.
+2. **Name match.** For `customN` slots only, Seldon compares the token `name` from the current theme against names in the new theme. The match is case insensitive. Font family tokens compare their family string.
+3. **Value match.** For `customN` slots only, Seldon compares the token's stored value against values in the new theme.
+
+Swatch tokens follow the same order with one addition. The reserved palette slots `none`, `transparent`, `background`, `black`, `gray`, `white`, `primary`, and `swatch1` through `swatch4` carry over by slot. Dynamic palette swatches always switch to the matching role in the new theme, so the palette retunes together. Custom swatches match by slot, then name, then value.
+
+---
+
+### No Match Behavior
+
+A reserved slot always exists in the new theme, so only `customN` slots can go unmatched. When no match is found, Seldon detaches the token instead of leaving a broken reference, with two exceptions:
+
+- **Exact value tokens** become an `EXACT` literal read from the current theme. This covers custom swatch colors, exact font weights, and exact line heights. The component keeps its current value but loses the token link.
+- **Modulated tokens** keep their original reference. Sizes, spacing, gaps, and modulated font sizes hold a `step`, so detaching to a fixed number would break the scale. The reference stays, and the property falls back to its schema default at compute time.
+- **String parameter tokens** keep their original reference. Font family tokens and option tokens such as `hairline` have no concrete value to freeze. They also fall back to the schema default at compute time.
+
+This is why a missing `customN` color bakes into a fixed color, while a missing `customN` size quietly returns to its default. The behavior matches the rule in [Graceful Degradation](#graceful-degradation): a property that references an absent slot falls back to its schema default.
+
+---
+
 ## Performance Considerations
 
 **Note:** The bullets below are **general engineering guidance** for systems that use themes heavily. They are not a guarantee that every optimization is implemented or measured inside this package.

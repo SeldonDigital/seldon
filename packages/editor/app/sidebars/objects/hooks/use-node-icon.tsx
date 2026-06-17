@@ -5,7 +5,7 @@ import {
   isIconSetBoard,
   isThemeBoard,
 } from "@seldon/core/workspace/model/components"
-import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
+import { typeCheckingService } from "@seldon/core/workspace/services"
 import {
   Board,
   Instance,
@@ -25,7 +25,7 @@ export const useNodeIcon = (
   node: Variant | Instance | Board,
   workspace?: Workspace,
 ): IconId => {
-  if (workspaceService.isBoard(node)) {
+  if (typeCheckingService.isBoard(node)) {
     if (isIconSetBoard(node)) {
       return "seldon-icon"
     }
@@ -38,8 +38,8 @@ export const useNodeIcon = (
     return "seldon-component"
   }
 
-  if (workspaceService.isVariant(node)) {
-    return workspaceService.isDefaultVariant(node)
+  if (typeCheckingService.isVariant(node)) {
+    return typeCheckingService.isDefaultVariant(node)
       ? "seldon-componentDefault"
       : "seldon-componentVariant"
   }

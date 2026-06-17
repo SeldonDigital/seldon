@@ -95,20 +95,7 @@ flowchart TD
 - **Discovery** finds exportable components and orders them by component level. Icon discovery collects icons referenced by components, then adds every icon turned on in the workspace's icon sets, so exports ship complete icon sets.
 - **Generation** writes one file per component plus shared files, then inserts a license header into every text file. Native wrappers come from the `exportConfig.react.returns` of every exported component, plus `HTML.Div` for Frame.
 
-`exportReact` inlines its CSS generation through `generateComponentStylesheet` and `generateThemeStylesheetFiles`. The standalone `exportCss` in [export/css/export-css.ts](./export/css/export-css.ts) is a separate entry. It takes the workspace and a components folder and returns an object:
-
-```typescript
-type CssExportResult = {
-  componentStylesheet: string
-  themeStylesheets: ThemeStylesheetFile[]
-}
-
-async function exportCss(
-  workspace: Workspace,
-  componentsFolder: string,
-  forceRegeneration?: boolean,
-): Promise<CssExportResult>
-```
+`exportReact` inlines its CSS generation through `buildStyleRegistry`, `generateComponentStylesheet`, and `generateThemeStylesheetFiles`. It produces one component stylesheet and one stylesheet file per theme.
 
 ---
 
@@ -126,7 +113,7 @@ function getCssFromProperties(
 
 It computes property values, applies inheritance from the parent context, resolves theme tokens, and writes optimized CSS. It drops unset values.
 
-Class names use the `sdn-` prefix. The prefix is applied in [export/css/discovery/get-class-name.ts](./export/css/discovery/get-class-name.ts). Theme variables use a per-theme prefix: bare `--sdn-` for the default `seldon` theme and `--sdn-{slug}-` for every other theme. The slug is a stable, human-readable name built from the theme label in [export/css/generation/get-theme-slug.ts](./export/css/generation/get-theme-slug.ts). A default-type theme slugs from its label, such as `seldon`. A variant theme prepends its root slug, such as `seldon-red`. The CSS section markers and section list live in [export/css/constants.ts](./export/css/constants.ts).
+Class names use the `sdn-` prefix. The prefix is applied in [export/css/discovery/get-class-name.ts](./export/css/discovery/get-class-name.ts). Theme variables use a per-theme prefix: bare `--sdn-` for the default `seldon` theme and `--sdn-{slug}-` for every other theme. The slug is a stable, human-readable name built from the theme label in [export/css/generation/get-theme-slug.ts](./export/css/generation/get-theme-slug.ts). A default-type theme slugs from its label, such as `seldon`. A variant theme prepends its root slug, such as `seldon-red`.
 
 ---
 

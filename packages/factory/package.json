@@ -1,13 +1,15 @@
 {
   "name": "@seldon/factory",
   "scripts": {
-    "lint": "echo \"TODO: Add this with the shared eslint config\"",
+    "lint": "eslint .",
     "quality": "bun lint && bun tsc",
     "format": "prettier --write \"./**/*.{ts,tsx,json}\""
   },
   "devDependencies": {
     "@seldon/core": "file:../core",
-    "@types/bun": "1.2.10"
+    "@types/bun": "1.2.10",
+    "eslint": "^9.39.4",
+    "typescript-eslint": "^8.61.0"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"

@@ -4,7 +4,11 @@ import { VariantId, invariant } from "@seldon/core/index"
 import { getBoardOrder } from "@seldon/core/workspace/helpers/components/board-sort-order"
 import { getBoardVariantRootIds } from "@seldon/core/workspace/helpers/components/get-board-variant-root-ids"
 import { canMoveInstance } from "@seldon/core/workspace/services/nodes/node-move-navigation.service"
-import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
+import {
+  nodeRelationshipService,
+  nodeRetrievalService,
+  typeCheckingService,
+} from "@seldon/core/workspace/services"
 import { useSelection } from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
@@ -24,7 +28,7 @@ export function useMoveCommands() {
 
   const moveBoard = useCallback(
     (boardId: ComponentId, direction: MoveDirection) => {
-      const board = workspaceService.getBoard(boardId, workspace)
+      const board = nodeRetrievalService.getBoard(boardId, workspace)
       const order = getBoardOrder(board)
       const count = Object.keys(workspace.boards).length
 
@@ -47,13 +51,13 @@ export function useMoveCommands() {
 
   const moveVariant = useCallback(
     (variantId: VariantId, direction: MoveDirection) => {
-      const variant = workspaceService.getVariant(variantId, workspace)
-      if (workspaceService.isDefaultVariant(variant)) {
+      const variant = nodeRetrievalService.getVariant(variantId, workspace)
+      if (typeCheckingService.isDefaultVariant(variant)) {
         addToast("Default variant cannot be moved")
         return
       }
 
-      const board = workspaceService.findBoardForVariant(variant, workspace)
+      const board = nodeRelationshipService.findBoardForVariant(variant, workspace)
       invariant(board, "Board not found")
 
       const variantRootIds = getBoardVariantRootIds(board)
@@ -100,11 +104,11 @@ export function useMoveCommands() {
     (direction: MoveDirection) => {
       if (!selection) return
 
-      if (workspaceService.isBoard(selection)) {
+      if (typeCheckingService.isBoard(selection)) {
         moveBoard(getComponentKey(selection) as ComponentId, direction)
-      } else if (workspaceService.isInstance(selection)) {
+      } else if (typeCheckingService.isInstance(selection)) {
         moveInstance(selection.id, direction)
-      } else if (workspaceService.isVariant(selection)) {
+      } else if (typeCheckingService.isVariant(selection)) {
         moveVariant(selection.id, direction)
       }
     },
@@ -125,7 +129,7 @@ export function useMoveCommands() {
     }
     if (!selection) return none
 
-    if (workspaceService.isBoard(selection)) {
+    if (typeCheckingService.isBoard(selection)) {
       const order = getBoardOrder(selection)
       const count = Object.keys(workspace.boards).length
       const notFirst = order > 0
@@ -138,7 +142,7 @@ export function useMoveCommands() {
       }
     }
 
-    if (workspaceService.isInstance(selection)) {
+    if (typeCheckingService.isInstance(selection)) {
       return {
         forward: canMoveInstance(workspace, selection.id, "forward"),
         backward: canMoveInstance(workspace, selection.id, "backward"),
@@ -147,9 +151,9 @@ export function useMoveCommands() {
       }
     }
 
-    if (workspaceService.isVariant(selection)) {
-      if (workspaceService.isDefaultVariant(selection)) return none
-      const board = workspaceService.findBoardForVariant(selection, workspace)
+    if (typeCheckingService.isVariant(selection)) {
+      if (typeCheckingService.isDefaultVariant(selection)) return none
+      const board = nodeRelationshipService.findBoardForVariant(selection, workspace)
       if (!board) return none
       const variantRootIds = getBoardVariantRootIds(board)
       const index = variantRootIds.indexOf(selection.id)

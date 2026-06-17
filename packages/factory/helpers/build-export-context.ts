@@ -3,6 +3,7 @@ import {
   type NodeParentIndex,
   buildNodeParentIndex,
   computeNodeProperties,
+  resolveLayoutMode,
 } from "@seldon/core/workspace/compute"
 import { workspaceThemeService } from "@seldon/core/workspace/services"
 
@@ -37,5 +38,8 @@ export function getStyleContext(
 
   const theme = workspaceThemeService.getNodeTheme(nodeId, workspace)
 
-  return { properties, parentContext, theme }
+  const node = workspace.nodes?.[nodeId]
+  const layoutMode = node ? resolveLayoutMode(node, workspace) : undefined
+
+  return { properties, parentContext, theme, layoutMode }
 }

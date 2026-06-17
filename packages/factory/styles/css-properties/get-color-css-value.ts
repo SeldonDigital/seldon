@@ -1,4 +1,5 @@
 import {
+  assertNever,
   ColorValue,
   EmptyValue,
   PercentageValue,
@@ -170,7 +171,6 @@ export function getColorCSSValue({
       )
       return "transparent"
     default:
-      // @ts-expect-error - We should never reach this point
-      throw new Error(`Invalid color type: ${resolvedColor.type}`)
+      return assertNever(resolvedColor)
   }
 }

@@ -24,17 +24,33 @@ import {
   schema as buttonSchema,
 } from "./elements/Button.schema"
 import {
+  exportConfig as calendarDayExportConfig,
+  schema as calendarDaySchema,
+} from "./elements/CalendarDay.schema"
+import {
   exportConfig as chipExportConfig,
   schema as chipSchema,
 } from "./elements/Chip.schema"
+import {
+  exportConfig as descriptionListExportConfig,
+  schema as descriptionListSchema,
+} from "./elements/DescriptionList.schema"
 import {
   exportConfig as formControlExportConfig,
   schema as formControlSchema,
 } from "./elements/FormControl.schema"
 import {
+  exportConfig as headerExportConfig,
+  schema as headerSchema,
+} from "./elements/Header.schema"
+import {
   exportConfig as itemExportConfig,
   schema as itemSchema,
 } from "./elements/Item.schema"
+import {
+  exportConfig as listExportConfig,
+  schema as listSchema,
+} from "./elements/List.schema"
 import {
   exportConfig as navExportConfig,
   schema as navSchema,
@@ -52,22 +68,34 @@ import {
   schema as selectSchema,
 } from "./elements/Select.schema"
 import {
-  exportConfig as headerExportConfig,
-  schema as headerSchema,
-} from "./elements/Header.schema"
+  exportConfig as tableBodyExportConfig,
+  schema as tableBodySchema,
+} from "./elements/tables/TableBody.schema"
 import {
-  exportConfig as descriptionListExportConfig,
-  schema as descriptionListSchema,
-} from "./elements/DescriptionList.schema"
+  exportConfig as tableDataExportConfig,
+  schema as tableDataSchema,
+} from "./elements/tables/TableData.schema"
 import {
-  exportConfig as listExportConfig,
-  schema as listSchema,
-} from "./elements/List.schema"
+  exportConfig as tableGridExportConfig,
+  schema as tableGridSchema,
+} from "./elements/tables/TableGrid.schema"
+import {
+  exportConfig as tableHeadExportConfig,
+  schema as tableHeadSchema,
+} from "./elements/tables/TableHead.schema"
+import {
+  exportConfig as tableHeaderExportConfig,
+  schema as tableHeaderSchema,
+} from "./elements/tables/TableHeader.schema"
 import {
   exportConfig as tableRowDataExportConfig,
   schema as tableRowDataSchema,
 } from "./elements/tables/TableRowData.schema"
 // Frames
+import {
+  exportConfig as containerExportConfig,
+  schema as containerSchema,
+} from "./frames/Container.schema"
 import {
   exportConfig as frameExportConfig,
   schema as frameSchema,
@@ -111,17 +139,45 @@ import {
   schema as barSchema,
 } from "./parts/Bar.schema"
 import {
+  exportConfig as cardStackedExportConfig,
+  schema as cardStackedSchema,
+} from "./parts/cards/Card.schema"
+import {
   exportConfig as fieldsetExportConfig,
   schema as fieldsetSchema,
 } from "./parts/Fieldset.schema"
 import {
-  exportConfig as cardStackedExportConfig,
-  schema as cardStackedSchema,
-} from "./parts/Card.schema"
-import {
   exportConfig as listStandardExportConfig,
   schema as listStandardSchema,
 } from "./parts/ListStandard.schema"
+import {
+  exportConfig as articleCardExportConfig,
+  schema as articleCardSchema,
+} from "./parts/cards/ArticleCard.schema"
+import {
+  exportConfig as mediaCardExportConfig,
+  schema as mediaCardSchema,
+} from "./parts/cards/MediaCard.schema"
+import {
+  exportConfig as notificationCardExportConfig,
+  schema as notificationCardSchema,
+} from "./parts/cards/NotificationCard.schema"
+import {
+  exportConfig as pricingCardExportConfig,
+  schema as pricingCardSchema,
+} from "./parts/cards/PricingCard.schema"
+import {
+  exportConfig as productCardExportConfig,
+  schema as productCardSchema,
+} from "./parts/cards/ProductCard.schema"
+import {
+  exportConfig as profileCardExportConfig,
+  schema as profileCardSchema,
+} from "./parts/cards/ProfileCard.schema"
+import {
+  exportConfig as statCardExportConfig,
+  schema as statCardSchema,
+} from "./parts/cards/StatCard.schema"
 // Primitives
 import {
   exportConfig as hrExportConfig,
@@ -144,17 +200,9 @@ import {
   schema as legendSchema,
 } from "./primitives/controls/Legend.schema"
 import {
-  exportConfig as listTextExportConfig,
-  schema as listTextSchema,
-} from "./primitives/lists/ListText.schema"
-import {
-  exportConfig as tableDataExportConfig,
-  schema as tableDataSchema,
-} from "./primitives/tables/TableData.schema"
-import {
-  exportConfig as tableHeaderExportConfig,
-  schema as tableHeaderSchema,
-} from "./primitives/tables/TableHeader.schema"
+  exportConfig as listItemExportConfig,
+  schema as listItemSchema,
+} from "./primitives/ListItem.schema"
 import {
   exportConfig as blockquoteExportConfig,
   schema as blockquoteSchema,
@@ -192,6 +240,7 @@ import {
 const elements: ComponentSchema[] = [
   avatarSchema,
   buttonSchema,
+  calendarDaySchema,
   chipSchema,
   formControlSchema,
   optionGroupSchema,
@@ -202,6 +251,11 @@ const elements: ComponentSchema[] = [
   listSchema,
   sectionSchema,
   selectSchema,
+  tableGridSchema,
+  tableHeadSchema,
+  tableBodySchema,
+  tableDataSchema,
+  tableHeaderSchema,
   tableRowDataSchema,
 ]
 
@@ -211,9 +265,7 @@ const primitives: ComponentSchema[] = [
   imageSchema,
   inputSchema,
   legendSchema,
-  listTextSchema,
-  tableDataSchema,
-  tableHeaderSchema,
+  listItemSchema,
   blockquoteSchema,
   citeSchema,
   linkSchema,
@@ -228,6 +280,13 @@ const parts: ComponentSchema[] = [
   cardStackedSchema,
   fieldsetSchema,
   listStandardSchema,
+  articleCardSchema,
+  mediaCardSchema,
+  notificationCardSchema,
+  pricingCardSchema,
+  productCardSchema,
+  profileCardSchema,
+  statCardSchema,
 ]
 
 const modules: ComponentSchema[] = [
@@ -244,7 +303,7 @@ const boards: ComponentSchema[] = [boardSchema]
 
 const screens: ComponentSchema[] = [screenSchema]
 
-const frames: ComponentSchema[] = [frameSchema, sandboxSchema]
+const frames: ComponentSchema[] = [containerSchema, frameSchema, sandboxSchema]
 
 export type Catalog = {
   frames: ComponentSchema[]
@@ -288,6 +347,7 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   // Elements
   [ComponentId.AVATAR]: avatarExportConfig,
   [ComponentId.BUTTON]: buttonExportConfig,
+  [ComponentId.CALENDAR_DAY]: calendarDayExportConfig,
   [ComponentId.CHIP]: chipExportConfig,
   [ComponentId.FORM_CONTROL]: formControlExportConfig,
   [ComponentId.OPTION_GROUP]: optionGroupExportConfig,
@@ -297,9 +357,15 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   [ComponentId.NAV]: navExportConfig,
   [ComponentId.LIST]: listExportConfig,
   [ComponentId.SECTION]: sectionExportConfig,
+  [ComponentId.TABLE_GRID]: tableGridExportConfig,
+  [ComponentId.TABLE_HEAD]: tableHeadExportConfig,
+  [ComponentId.TABLE_BODY]: tableBodyExportConfig,
+  [ComponentId.TABLE_DATA]: tableDataExportConfig,
+  [ComponentId.TABLE_HEADER]: tableHeaderExportConfig,
   [ComponentId.TABLE_ROW_DATA]: tableRowDataExportConfig,
 
   // Frames
+  [ComponentId.CONTAINER]: containerExportConfig,
   [ComponentId.FRAME]: frameExportConfig,
   [ComponentId.SANDBOX]: sandboxExportConfig,
 
@@ -317,6 +383,13 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   [ComponentId.CARD_STACKED]: cardStackedExportConfig,
   [ComponentId.FIELDSET]: fieldsetExportConfig,
   [ComponentId.LIST_STANDARD]: listStandardExportConfig,
+  [ComponentId.ARTICLE_CARD]: articleCardExportConfig,
+  [ComponentId.MEDIA_CARD]: mediaCardExportConfig,
+  [ComponentId.NOTIFICATION_CARD]: notificationCardExportConfig,
+  [ComponentId.PRICING_CARD]: pricingCardExportConfig,
+  [ComponentId.PRODUCT_CARD]: productCardExportConfig,
+  [ComponentId.PROFILE_CARD]: profileCardExportConfig,
+  [ComponentId.STAT_CARD]: statCardExportConfig,
 
   // Primitives
   [ComponentId.HR]: hrExportConfig,
@@ -325,9 +398,7 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   [ComponentId.INPUT]: inputExportConfig,
   [ComponentId.LEGEND]: legendExportConfig,
   [ComponentId.SELECT]: selectExportConfig,
-  [ComponentId.LIST_TEXT]: listTextExportConfig,
-  [ComponentId.TABLE_DATA]: tableDataExportConfig,
-  [ComponentId.TABLE_HEADER]: tableHeaderExportConfig,
+  [ComponentId.LIST_ITEM]: listItemExportConfig,
   [ComponentId.BLOCKQUOTE]: blockquoteExportConfig,
   [ComponentId.CITE]: citeExportConfig,
   [ComponentId.LINK]: linkExportConfig,

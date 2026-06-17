@@ -18,9 +18,3 @@ export function isEntryIconSetDefault(
 ): entry is EntryIconSet & { type: "default" } {
   return entry.type === "default"
 }
-
-export function isEntryIconSetVariant(
-  entry: EntryIconSet,
-): entry is EntryIconSet & { type: "variant" } {
-  return entry.type === "variant"
-}

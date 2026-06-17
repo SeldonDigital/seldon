@@ -1,6 +1,6 @@
 import { useMemo } from "react"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
-import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
+import { nodeRelationshipService } from "@seldon/core/workspace/services"
 import { useSelection } from "./use-selection"
 import { useWorkspace } from "./use-workspace"
 
@@ -13,7 +13,7 @@ export function useActiveBoard() {
     activeBoard: useMemo(() => {
       if (selection) {
         if (isBoard(selection)) return selection
-        return workspaceService.findBoardForNode(selection, workspace)
+        return nodeRelationshipService.findBoardForNode(selection, workspace)
       }
 
       // Selecting a resource board variant entry (theme, font collection, icon

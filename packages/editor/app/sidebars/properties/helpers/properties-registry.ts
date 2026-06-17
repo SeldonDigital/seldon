@@ -23,6 +23,25 @@ export interface PropertyRegistry {
 }
 
 /**
+ * Presentation entry for one revealed border side. Mirrors the `border` row's
+ * facet icons and controls so a side reads like the shorthand it splits from.
+ */
+function BORDER_SIDE_REGISTRY_ENTRY(label: string): PropertyRegistryEntry {
+  return {
+    label,
+    icon: "seldon-borderStyle",
+    subProperties: {
+      preset: { icon: "seldon-borderStyle", control: "combo" },
+      style: { icon: "seldon-borderStyle", control: "menu" },
+      color: { icon: "seldon-borderColor", control: "combo" },
+      width: { icon: "seldon-borderStyle", control: "combo" },
+      brightness: { icon: "seldon-brightness", control: "number" },
+      opacity: { icon: "seldon-opacity", control: "number" },
+    },
+  }
+}
+
+/**
  * Runtime UI params for property registry
  * These define presentation-only concerns and are deep-merged with core schemas at runtime
  */
@@ -467,6 +486,10 @@ const UI_OVERRIDES: PropertyRegistry = {
       },
     },
   },
+  borderTop: BORDER_SIDE_REGISTRY_ENTRY("Border Top"),
+  borderRight: BORDER_SIDE_REGISTRY_ENTRY("Border Right"),
+  borderBottom: BORDER_SIDE_REGISTRY_ENTRY("Border Bottom"),
+  borderLeft: BORDER_SIDE_REGISTRY_ENTRY("Border Left"),
   borderCollapse: {
     icon: "seldon-token",
     control: "menu",

@@ -8,11 +8,10 @@ import { ComponentToExport } from "../../../types"
  * Generate the return statement for an iconMap component
  */
 export function generateIconMapReturn(
-  component: ComponentToExport,
-  nodeIdToClass: NodeIdToClass,
+  _component: ComponentToExport,
+  _nodeIdToClass: NodeIdToClass,
   classNameVarName: string,
 ): string {
-  const mapped = nodeIdToClass[component.variantId]
   return `
     let Icon = iconMap[icon || "__default__"]
     if (!Icon) {
@@ -209,12 +208,4 @@ export function generateSimpleReturn(
   //
   return <${config.react.returns} className={${classNameVarName}}${rootPropsString} {...props} />`
   }
-}
-
-// Export with the expected name for tests
-export const generateReactComponentReturnStatements = {
-  generateIconMapReturn,
-  generateHtmlElementReturn,
-  generateWrapperElementReturn,
-  generateSimpleReturn,
 }

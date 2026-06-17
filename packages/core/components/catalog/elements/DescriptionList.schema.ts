@@ -51,7 +51,6 @@ export const schema = {
       width: { type: Sdn.ValueType.EMPTY, value: null },
       brightness: { type: Sdn.ValueType.EMPTY, value: null },
       opacity: { type: Sdn.ValueType.EMPTY, value: null },
-      collapse: { type: Sdn.ValueType.EMPTY, value: null },
     },
     borderTop: {
       preset: { type: Sdn.ValueType.EMPTY, value: null },
@@ -60,7 +59,6 @@ export const schema = {
       width: { type: Sdn.ValueType.EMPTY, value: null },
       brightness: { type: Sdn.ValueType.EMPTY, value: null },
       opacity: { type: Sdn.ValueType.EMPTY, value: null },
-      collapse: { type: Sdn.ValueType.EMPTY, value: null },
     },
     borderRight: {
       preset: { type: Sdn.ValueType.EMPTY, value: null },
@@ -69,7 +67,6 @@ export const schema = {
       width: { type: Sdn.ValueType.EMPTY, value: null },
       brightness: { type: Sdn.ValueType.EMPTY, value: null },
       opacity: { type: Sdn.ValueType.EMPTY, value: null },
-      collapse: { type: Sdn.ValueType.EMPTY, value: null },
     },
     borderBottom: {
       preset: { type: Sdn.ValueType.EMPTY, value: null },
@@ -78,7 +75,6 @@ export const schema = {
       width: { type: Sdn.ValueType.EMPTY, value: null },
       brightness: { type: Sdn.ValueType.EMPTY, value: null },
       opacity: { type: Sdn.ValueType.EMPTY, value: null },
-      collapse: { type: Sdn.ValueType.EMPTY, value: null },
     },
     borderLeft: {
       preset: { type: Sdn.ValueType.EMPTY, value: null },
@@ -87,7 +83,6 @@ export const schema = {
       width: { type: Sdn.ValueType.EMPTY, value: null },
       brightness: { type: Sdn.ValueType.EMPTY, value: null },
       opacity: { type: Sdn.ValueType.EMPTY, value: null },
-      collapse: { type: Sdn.ValueType.EMPTY, value: null },
     },
     corners: {
       topLeft: { type: Sdn.ValueType.EMPTY, value: null },
@@ -115,42 +110,42 @@ export const schema = {
   default: {
     children: [
       {
-        component: Seldon.ComponentId.LIST_TEXT,
+        component: Seldon.ComponentId.LIST_ITEM,
         variant: "term",
         overrides: {
           content: { type: Sdn.ValueType.EXACT, value: "Term 1" },
         },
       },
       {
-        component: Seldon.ComponentId.LIST_TEXT,
+        component: Seldon.ComponentId.LIST_ITEM,
         variant: "details",
         overrides: {
           content: { type: Sdn.ValueType.EXACT, value: "Details 1" },
         },
       },
       {
-        component: Seldon.ComponentId.LIST_TEXT,
+        component: Seldon.ComponentId.LIST_ITEM,
         variant: "term",
         overrides: {
           content: { type: Sdn.ValueType.EXACT, value: "Term 2" },
         },
       },
       {
-        component: Seldon.ComponentId.LIST_TEXT,
+        component: Seldon.ComponentId.LIST_ITEM,
         variant: "details",
         overrides: {
           content: { type: Sdn.ValueType.EXACT, value: "Details 2" },
         },
       },
       {
-        component: Seldon.ComponentId.LIST_TEXT,
+        component: Seldon.ComponentId.LIST_ITEM,
         variant: "term",
         overrides: {
           content: { type: Sdn.ValueType.EXACT, value: "Term 3" },
         },
       },
       {
-        component: Seldon.ComponentId.LIST_TEXT,
+        component: Seldon.ComponentId.LIST_ITEM,
         variant: "details",
         overrides: {
           content: { type: Sdn.ValueType.EXACT, value: "Details 3" },

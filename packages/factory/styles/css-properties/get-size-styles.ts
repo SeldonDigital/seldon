@@ -68,6 +68,9 @@ export function getSizeStyles({
     ? resolveValue(parentContext.properties.orientation)?.value
     : Orientation.VERTICAL
 
+  // Children of a grid container size to their tracks, not flex item rules.
+  const parentIsGrid = parentContext?.layoutMode === "grid"
+
   const ownOrientation = properties.orientation
     ? resolveValue(properties.orientation)?.value
     : null
@@ -84,7 +87,7 @@ export function getSizeStyles({
   if (screenWidth) {
     if (screenWidth.type === ValueType.EXACT) {
       // Check if this is actually a screen size preset that got stored as EXACT
-      const value = (screenWidth as any).value
+      const value = (screenWidth as { value: unknown }).value
       if (
         typeof value === "string" &&
         Object.values(ScreenSize).includes(value as ScreenSize)
@@ -95,7 +98,7 @@ export function getSizeStyles({
         styles.width = getCssValue(screenWidth) as string // We're sure that the value is a string since its a RemValue or a PixelValue
       }
     } else if (screenWidth.type === ValueType.OPTION) {
-      const value = (screenWidth as any).value
+      const value = (screenWidth as { value: unknown }).value
       if (value === Resize.FIT) {
         styles.width = "fit-content"
       } else if (value === Resize.FILL) {
@@ -114,7 +117,7 @@ export function getSizeStyles({
   if (screenHeight) {
     if (screenHeight.type === ValueType.EXACT) {
       // Check if this is actually a screen size preset that got stored as EXACT
-      const value = (screenHeight as any).value
+      const value = (screenHeight as { value: unknown }).value
       if (
         typeof value === "string" &&
         Object.values(ScreenSize).includes(value as ScreenSize)
@@ -125,7 +128,7 @@ export function getSizeStyles({
         styles.height = getCssValue(screenHeight) as string // We're sure that the value is a string since its a RemValue or a PixelValue
       }
     } else if (screenHeight.type === ValueType.OPTION) {
-      const value = (screenHeight as any).value
+      const value = (screenHeight as { value: unknown }).value
       if (value === Resize.FIT) {
         styles.height = "fit-content"
       } else if (value === Resize.FILL) {
@@ -155,42 +158,9 @@ export function getSizeStyles({
     if (properties.width && properties.width.type === ValueType.EMPTY) {
       // Do nothing for EMPTY values
     } else if (!width) {
-      // Width defaults to Resize.FILL
-      if (ownOrientation) {
-        if (parentOrientation === Orientation.HORIZONTAL) {
-          styles.flex = "1 0 0"
-        } else {
-          // Parent is a flex container (VERTICAL), use alignSelf: stretch
-          // instead of width: 100% to prevent overflow with padding
-          styles.alignSelf = "stretch"
-        }
-      } else {
-        if (parentOrientation === Orientation.VERTICAL) {
-          styles.alignSelf = "stretch"
-        } else {
-          styles.flex = "1 0 0"
-        }
-      }
-    } else if (width.type === ValueType.EXACT) {
-      styles.width = getCssValue(width) as string // We're sure that the value is a string since its a RemValue or a PixelValue
-
-      if (parentOrientation === Orientation.HORIZONTAL) {
-        styles.flexShrink = 0
-      }
-    } else if (width.type === ValueType.THEME_ORDINAL) {
-      const themeValue = getThemeOption(width.value, theme) as ThemeModulation
-
-      styles.width =
-        modulateWithTheme({
-          theme,
-          parameters: themeValue.parameters,
-        }) + "rem"
-
-      if (parentOrientation === Orientation.HORIZONTAL) {
-        styles.flexShrink = 0
-      }
-    } else if (width.type === ValueType.OPTION) {
-      if (width.value === Resize.FILL) {
+      // Width defaults to Resize.FILL. Grid items stretch to fill their track by
+      // default, so no flex item rule is emitted under a grid parent.
+      if (!parentIsGrid) {
         if (ownOrientation) {
           if (parentOrientation === Orientation.HORIZONTAL) {
             styles.flex = "1 0 0"
@@ -206,9 +176,47 @@ export function getSizeStyles({
             styles.flex = "1 0 0"
           }
         }
+      }
+    } else if (width.type === ValueType.EXACT) {
+      styles.width = getCssValue(width) as string // We're sure that the value is a string since its a RemValue or a PixelValue
+
+      if (!parentIsGrid && parentOrientation === Orientation.HORIZONTAL) {
+        styles.flexShrink = 0
+      }
+    } else if (width.type === ValueType.THEME_ORDINAL) {
+      const themeValue = getThemeOption(width.value, theme) as ThemeModulation
+
+      styles.width =
+        modulateWithTheme({
+          theme,
+          parameters: themeValue.parameters,
+        }) + "rem"
+
+      if (!parentIsGrid && parentOrientation === Orientation.HORIZONTAL) {
+        styles.flexShrink = 0
+      }
+    } else if (width.type === ValueType.OPTION) {
+      if (width.value === Resize.FILL) {
+        if (!parentIsGrid) {
+          if (ownOrientation) {
+            if (parentOrientation === Orientation.HORIZONTAL) {
+              styles.flex = "1 0 0"
+            } else {
+              // Parent is a flex container (VERTICAL), use alignSelf: stretch
+              // instead of width: 100% to prevent overflow with padding
+              styles.alignSelf = "stretch"
+            }
+          } else {
+            if (parentOrientation === Orientation.VERTICAL) {
+              styles.alignSelf = "stretch"
+            } else {
+              styles.flex = "1 0 0"
+            }
+          }
+        }
       } else {
         styles.width = "fit-content"
-        if (parentOrientation === Orientation.HORIZONTAL) {
+        if (!parentIsGrid && parentOrientation === Orientation.HORIZONTAL) {
           styles.flexShrink = 0
         }
       }
@@ -232,7 +240,7 @@ export function getSizeStyles({
     } else if (height.type === ValueType.EXACT) {
       styles.height = getCssValue(height) as string // We're sure that the value is a string since its a RemValue or a PixelValue
 
-      if (parentOrientation === Orientation.VERTICAL) {
+      if (!parentIsGrid && parentOrientation === Orientation.VERTICAL) {
         styles.flexShrink = 0
       }
     } else if (height.type === ValueType.THEME_ORDINAL) {
@@ -243,27 +251,31 @@ export function getSizeStyles({
           parameters: themeValue.parameters,
         }) + "rem"
 
-      if (parentOrientation === Orientation.VERTICAL) {
+      if (!parentIsGrid && parentOrientation === Orientation.VERTICAL) {
         styles.flexShrink = 0
       }
     } else if (height.type === ValueType.OPTION) {
       if (height.value === Resize.FILL) {
-        if (ownOrientation) {
-          if (parentOrientation === Orientation.VERTICAL) {
-            styles.flex = "1 0 0"
+        // Grid items stretch to fill their track by default, so no flex item
+        // rule is emitted under a grid parent.
+        if (!parentIsGrid) {
+          if (ownOrientation) {
+            if (parentOrientation === Orientation.VERTICAL) {
+              styles.flex = "1 0 0"
+            } else {
+              styles.height = "100%"
+            }
           } else {
-            styles.height = "100%"
-          }
-        } else {
-          if (parentOrientation === Orientation.VERTICAL) {
-            styles.flex = "1 0 0"
-          } else {
-            styles.alignSelf = "stretch"
+            if (parentOrientation === Orientation.VERTICAL) {
+              styles.flex = "1 0 0"
+            } else {
+              styles.alignSelf = "stretch"
+            }
           }
         }
       } else {
         styles.height = "fit-content"
-        if (parentOrientation === Orientation.VERTICAL) {
+        if (!parentIsGrid && parentOrientation === Orientation.VERTICAL) {
           styles.flexShrink = 0
         }
       }

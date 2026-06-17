@@ -20,12 +20,6 @@ export const sidebarNoSelectionStyle: CSSProperties = {
   backgroundColor: "var(--sdn-seldon-swatch-charcoal)",
 }
 
-export const sidebarNoSelectionTextStyle: CSSProperties = {
-  fontFamily: "var(--sdn-seldon-font-family-primary)",
-  fontSize: "var(--sdn-font-size-xsmall)",
-  color: "color-mix(in srgb, var(--sdn-seldon-swatch-white) 60%, transparent)",
-}
-
 export const propertyControlTextStyle: CSSProperties = {
   fontFamily: "var(--sdn-seldon-font-family-primary)",
   fontSize: "var(--sdn-font-size-xsmall)",

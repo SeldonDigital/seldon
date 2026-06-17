@@ -6,11 +6,7 @@ import {
   VariantId,
 } from "@seldon/core"
 import { getComponentSchema } from "@seldon/core/components/catalog"
-import {
-  ComponentId,
-  ComponentLevel,
-  isComponentId,
-} from "@seldon/core/components/constants"
+import { ComponentId, isComponentId } from "@seldon/core/components/constants"
 import { isComplexSchema } from "@seldon/core/components/types"
 import { IconId } from "@seldon/core/icon-sets"
 import { getWorkspaceEnabledIcons } from "@seldon/core/icon-sets/helpers"
@@ -21,7 +17,6 @@ import { getChildrenIds } from "@seldon/core/workspace/helpers/components/get-ch
 import { getNodeById } from "@seldon/core/workspace/helpers/nodes/get-node-by-id"
 import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-catalog-id"
 import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
-import { isVariantNode } from "@seldon/core/workspace/helpers/nodes/is-variant-node"
 import { isComponentBoard } from "@seldon/core/workspace/model/components"
 import { typeCheckingService } from "@seldon/core/workspace/services"
 import type { EntryNode, Workspace } from "@seldon/core/workspace/types"
@@ -48,7 +43,7 @@ export function getJsonTreeFromChildren(
   }
 
   const childIds = getChildrenIds(board, variant.id)
-  let referenceMap: Record<string, string[]> = {}
+  const referenceMap: Record<string, string[]> = {}
   const children = childIds
     .filter((childId) => shouldExportChild(childId))
     .map((childId) => convertNode(childId, referenceMap, "", []))

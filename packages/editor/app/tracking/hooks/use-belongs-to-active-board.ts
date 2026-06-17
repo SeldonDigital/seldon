@@ -1,6 +1,9 @@
 import { useCallback, useMemo } from "react"
 import { InstanceId, VariantId } from "@seldon/core/index"
-import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
+import {
+  nodeRelationshipService,
+  nodeRetrievalService,
+} from "@seldon/core/workspace/services"
 import { useActiveBoard } from "@lib/workspace/hooks/use-active-board"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useCanvasHoverState } from "@lib/hooks/use-canvas-hover-state"
@@ -32,8 +35,8 @@ export function useNodeBelongsToActiveBoard(): (
       if (!activeBoard) return false
 
       try {
-        const node = workspaceService.getNode(nodeId, workspace)
-        const nodeBoard = workspaceService.findBoardForNode(node, workspace)
+        const node = nodeRetrievalService.getNode(nodeId, workspace)
+        const nodeBoard = nodeRelationshipService.findBoardForNode(node, workspace)
         return (
           nodeBoard !== null &&
           getComponentKey(nodeBoard) === getComponentKey(activeBoard)

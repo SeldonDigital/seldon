@@ -6,7 +6,7 @@ import type { Properties } from "@seldon/core/properties/types/properties"
 import { ValueType } from "@seldon/core/properties/constants"
 import type { BackgroundLayer } from "@seldon/core/properties/values/appearance/background"
 import { findParentNode } from "@seldon/core/workspace/helpers/nodes/find-parent-node"
-import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
+import { nodeRelationshipService } from "@seldon/core/workspace/services"
 import { workspaceThemeService } from "@seldon/core/workspace/services/theme/theme.service"
 import type { Board, EntryNodeId, Workspace } from "@seldon/core/workspace/types"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
@@ -118,7 +118,7 @@ export function resolveOutlineSurfaceForNode(
     current = findParentNode(current.id, workspace)
   }
 
-  const board = workspaceService.findBoardForNode(node, workspace)
+  const board = nodeRelationshipService.findBoardForNode(node, workspace)
   if (board) {
     return resolveSurfaceForBoard(board, workspace)
   }

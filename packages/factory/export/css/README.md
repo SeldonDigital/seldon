@@ -6,30 +6,13 @@ Seldon's Factory CSS Export turns a Seldon workspace into CSS. It produces one c
 
 ## Entry Point
 
-`exportCss` in `export-css.ts` is the entry point.
-
-```typescript
-type CssExportResult = {
-  componentStylesheet: string
-  themeStylesheets: ThemeStylesheetFile[]
-}
-
-async function exportCss(
-  workspace: Workspace,
-  componentsFolder: string,
-  forceRegeneration?: boolean,
-): Promise<CssExportResult>
-```
-
-`forceRegeneration` passes through to `buildStyleRegistry`. When set, every node gets a class even when its CSS is empty.
-
-`exportCss` runs three steps:
+The React export drives the CSS pipeline. `exportReact` runs three steps:
 
 1. Build the export context with `buildExportContext` to get the parent index.
 2. Build the style registry with `buildStyleRegistry`.
 3. Generate the component stylesheet with `generateComponentStylesheet` and the theme files with `generateThemeStylesheetFiles`.
 
-The React export reuses `generateComponentStylesheet` and `generateThemeStylesheetFiles` directly.
+`buildStyleRegistry` accepts a `forceRegeneration` flag. When set, every node gets a class even when its CSS is empty.
 
 ---
 
@@ -41,7 +24,7 @@ The code is grouped by pipeline stage:
 2. **Generation** (`generation/`) builds the component stylesheet and theme files.
 3. **Utilities** (`utils/`) holds shared helpers.
 
-`types.ts` defines `Classes` and `NodeIdToClass`. `constants.ts` defines the section markers.
+`types.ts` defines `Classes` and `NodeIdToClass`.
 
 ---
 
@@ -58,9 +41,6 @@ The code is grouped by pipeline stage:
 | Default variant | `sdn-button` |
 | Custom variant | `sdn-button-iconic` |
 | Instance | `sdn-button-iconic--abc12`, the variant class plus a four-character hash |
-
-**Component id from class name** (`discovery/get-component-id-from-class-name.ts`)
-`getComponentIdFromClassName` drops the last dash segment of a class name.
 
 ---
 
@@ -95,7 +75,7 @@ The code is grouped by pipeline stage:
 
 ## Generated Output
 
-`exportCss` returns:
+The CSS pipeline produces:
 
 | Field | Contents |
 | --- | --- |

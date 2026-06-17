@@ -3420,6 +3420,7 @@ export { IconMaterialChevronDoubleUp } from "./user-interface/navigation/IconMat
 export { IconMaterialChevronDown } from "./user-interface/navigation/IconMaterialChevronDown"
 export { IconMaterialChevronLeft } from "./user-interface/navigation/IconMaterialChevronLeft"
 export { IconMaterialChevronRight } from "./user-interface/navigation/IconMaterialChevronRight"
+export { IconMaterialChevronUp } from "./user-interface/navigation/IconMaterialChevronUp"
 export { IconMaterialCompareArrows } from "./user-interface/navigation/IconMaterialCompareArrows"
 export { IconMaterialContactSupport } from "./user-interface/navigation/IconMaterialContactSupport"
 export { IconMaterialControlPointDuplicate } from "./user-interface/navigation/IconMaterialControlPointDuplicate"
@@ -7721,6 +7722,7 @@ export const materialAllIconIds: readonly IconId[] = [
   "material-chevronDown",
   "material-chevronLeft",
   "material-chevronRight",
+  "material-chevronUp",
   "material-compareArrows",
   "material-contactSupport",
   "material-controlPointDuplicate",

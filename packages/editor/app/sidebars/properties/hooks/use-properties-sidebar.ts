@@ -32,7 +32,12 @@ import { flattenFontCollectionFamilies } from "../helpers/font-collection-proper
 import { getThemePropertyControlType } from "../helpers/get-theme-property-controls"
 import { flattenIconSetCategories } from "../helpers/icon-set-properties-data"
 import { buildMetadataProperties } from "../helpers/metadata-properties-data"
-import { FlatProperty, flattenNodeProperties } from "../helpers/properties-data"
+import {
+  FlatProperty,
+  flattenNodeProperties,
+  getPropertiesSubjectId,
+} from "../helpers/properties-data"
+import { useRevealedBorderSides } from "./use-border-side-visibility"
 import { flattenThemeProperties } from "../helpers/theme-properties-data"
 import { useFontCollectionProperties } from "./use-font-collection-properties"
 import { useIconSetProperties } from "./use-icon-set-properties"
@@ -167,6 +172,10 @@ export function usePropertiesSidebar(): PropertiesSidebarState {
     }))
   }, [isThemeEditingMode, editedTheme, activeThemeEntryId, workspace])
 
+  const borderSideSubjectId =
+    selection && !isThemeEditingMode ? getPropertiesSubjectId(selection) : ""
+  const shownBorderSides = useRevealedBorderSides(borderSideSubjectId)
+
   const flatProperties = useMemo(() => {
     if (!selection && !isThemeEditingMode) return []
     if (isThemeEditingMode) {
@@ -174,7 +183,12 @@ export function usePropertiesSidebar(): PropertiesSidebarState {
     }
     if (!selection) return []
     const theme = workspaceThemeService.getObjectTheme(selection, workspace)
-    const allProperties = flattenNodeProperties(selection, workspace, theme)
+    const allProperties = flattenNodeProperties(
+      selection,
+      workspace,
+      theme,
+      shownBorderSides,
+    )
 
     if (!showUnusedProperties) {
       return allProperties.filter((property) => property.status !== "not used")
@@ -187,6 +201,7 @@ export function usePropertiesSidebar(): PropertiesSidebarState {
     showUnusedProperties,
     isThemeEditingMode,
     themeProperties,
+    shownBorderSides,
   ])
 
   const theme = useMemo(() => {

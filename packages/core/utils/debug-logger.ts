@@ -205,13 +205,6 @@ export function debugGroupEnd(
 }
 
 /**
- * Kept for API compatibility with older callers.
- */
-export function flushDebugLogs(): void {
-  // No-op in the browser-only baseline.
-}
-
-/**
  * Quick test function to verify debug logger is working
  *
  * Client-side: call from the browser console: window.testDebugLogger()

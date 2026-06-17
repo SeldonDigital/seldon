@@ -25,10 +25,7 @@ export function IconMaterialChevronDoubleRight(
       width="1em"
       {...props}
     >
-      <g transform="translate(0, -960) scale(40)">
-        <path d="M5.41 16.59 4 15.17 7.17 12 4 8.83L5.41 7.41 10 12l-4.59 4.59z" />
-        <path d="M12.41 16.59 11 15.17 14.17 12 11 8.83l1.41-1.42L17 12l-4.59 4.59z" />
-      </g>
+      <path d="M383-480 200-664l56-56 240 240-240 240-56-56 183-184Zm264 0L464-664l56-56 240 240-240 240-56-56 183-184Z" />
     </svg>
   )
 }

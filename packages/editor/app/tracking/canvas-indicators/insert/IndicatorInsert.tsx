@@ -2,7 +2,10 @@ import { Placement } from "@lib/types"
 import { CSSProperties } from "react"
 import { ComponentId, isComponentId } from "@seldon/core/components/constants"
 import { Instance, InstanceId, Variant, VariantId } from "@seldon/core/index"
-import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
+import {
+  nodeRetrievalService,
+  typeCheckingService,
+} from "@seldon/core/workspace/services"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { canNodeAcceptChildren } from "@lib/workspace/can-node-accept-children"
 import { getNodeOrientation } from "@lib/workspace/get-node-orientation"
@@ -31,13 +34,13 @@ export function IndicatorInsert({
 
   const isBoardObject = isComponentId(objectId)
   const object = isBoardObject
-    ? workspaceService.getBoard(objectId, workspace)
-    : workspaceService.getNode(objectId, workspace)
+    ? nodeRetrievalService.getBoard(objectId, workspace)
+    : nodeRetrievalService.getNode(objectId, workspace)
 
   const canHaveChildren =
     !isBoardObject && canNodeAcceptChildren(object as Variant | Instance, workspace)
 
-  if (!canHaveChildren && !workspaceService.isBoard(object)) return null
+  if (!canHaveChildren && !typeCheckingService.isBoard(object)) return null
 
   const containerElement =
     objectType === "node"

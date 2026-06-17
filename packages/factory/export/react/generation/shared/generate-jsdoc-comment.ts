@@ -6,6 +6,18 @@ import { ComponentToExport } from "../../../types"
 import { isCustomComponent } from "../custom-components/is-custom-component"
 import { isInlineComponent } from "../inline-components/is-inline-component"
 
+/** Loose prop descriptor used only to render JSDoc example values. */
+type JsdocPropValue = {
+  defaultValue?: unknown
+  options?: unknown[]
+}
+
+/** Minimal tree node shape walked when deriving example props from children. */
+type JsdocChild = {
+  dataBinding?: { path?: string }
+  children?: null | string | JsdocChild[]
+}
+
 /**
  * Generates a JSDoc comment for a React component based on its schema
  */
@@ -88,7 +100,7 @@ ${propsExample}
  * Extracts short name from component name by removing common prefixes
  * Example: "ListItemTreeSection" -> "TreeSection"
  */
-function extractShortName(componentName: string, schemaName: string): string {
+function extractShortName(componentName: string, _schemaName: string): string {
   // Common prefixes to remove (ordered by length, longest first to avoid partial matches)
   const prefixes = [
     "ListItem",
@@ -178,7 +190,7 @@ function getLevelString(level: ComponentLevel): string {
  * Generates props example for JSDoc
  */
 function generatePropsExample(
-  props: Record<string, any>,
+  props: Record<string, JsdocPropValue>,
   component?: ComponentToExport,
 ): string {
   // First try to get props from the main dataBinding.props
@@ -208,7 +220,7 @@ function generatePropsExample(
     })
     .map(([propName, propValue]) => {
       // Generate example values based on prop type and default
-      let exampleValue = generateExampleValue(propValue, propName)
+      const exampleValue = generateExampleValue(propValue, propName)
       return ` *   ${propName}=${exampleValue}`
     })
 
@@ -219,16 +231,16 @@ function generatePropsExample(
  * Extracts props from component children to generate better examples
  */
 function extractPropsFromChildren(
-  children: any[],
-  currentProps: Record<string, any>,
-): Record<string, any> {
+  children: JsdocChild[],
+  currentProps: Record<string, JsdocPropValue>,
+): Record<string, JsdocPropValue> {
   const extractedProps = { ...currentProps }
 
   if (!Array.isArray(children)) {
     return extractedProps
   }
 
-  children.forEach((child: any) => {
+  children.forEach((child) => {
     if (child && child.dataBinding && child.dataBinding.path) {
       let propName = child.dataBinding.path
 
@@ -275,7 +287,10 @@ function extractPropsFromChildren(
 /**
  * Generates example values for props based on their type and default values
  */
-function generateExampleValue(propValue: any, propName: string): string {
+function generateExampleValue(
+  propValue: JsdocPropValue,
+  propName: string,
+): string {
   // If there's a defaultValue, use it as a reference
   if (propValue.defaultValue !== undefined) {
     if (typeof propValue.defaultValue === "string") {

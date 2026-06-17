@@ -1,44 +1,27 @@
-import { MenuEntry } from "@lib/menus"
-import { LayoutGroup } from "framer-motion"
-import { Fragment, RefObject, useCallback, useMemo } from "react"
-import {
-  Board,
-  Instance,
-  type LayeredPaintKey,
-  Theme,
-  Variant,
-  Workspace,
-  getLayerAddOptions,
-  isThemeCustomTokenSection,
-} from "@seldon/core"
-import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
-import { useObjectProperties } from "@lib/workspace/hooks/use-object-properties"
-import { usePropertiesSidebar } from "./hooks/use-properties-sidebar"
-import { useIsCategoryExpanded } from "./hooks/use-property-expansion"
-import { useLayerDragMonitor } from "./hooks/use-layer-drag-monitor"
-import {
-  ScrollerShell,
-  SidebarContainer,
-} from "@seldon/components/custom-components"
-import { FramerExpandable } from "@seldon/components/custom-components"
-import { Frame } from "@seldon/components/frames/Frame"
-import { useAddToast } from "@app/toaster/hooks/use-add-toast"
-import {
-  sidebarNoSelectionStyle,
-  sidebarShellStyle,
-} from "../helpers/sidebar-styles"
-import { CssBlock } from "./CssBlock"
-import { VMCategory } from "./VMCategory"
-import { VMProperty } from "./VMProperty"
-import {
-  FontCollectionEditingContext,
-  IconSetEditingContext,
-  ThemeEditingContext,
-} from "./helpers/editing-contexts"
-import { PropertySection } from "./helpers/get-property-sections"
-import { ThemePropertySection } from "./helpers/get-theme-property-sections"
-import { getIconRowCategory } from "./helpers/icon-set-properties-data"
-import { FlatProperty } from "./helpers/properties-data"
+import { MenuEntry } from "@lib/menus";
+import { LayoutGroup } from "framer-motion";
+import { Fragment, RefObject, useCallback, useMemo } from "react";
+import { Board, Instance, type LayeredPaintKey, Theme, Variant, Workspace, getBorderSideOptions, getLayerAddOptions, isThemeCustomTokenSection } from "@seldon/core";
+import { isBoard } from "@seldon/core/workspace/helpers/components/is-board";
+import { useObjectProperties } from "@lib/workspace/hooks/use-object-properties";
+import { useLayerDragMonitor } from "./hooks/use-layer-drag-monitor";
+import { usePropertiesSidebar } from "./hooks/use-properties-sidebar";
+import { useIsCategoryExpanded } from "./hooks/use-property-expansion";
+import { ScrollerShell, SidebarContainer } from "@seldon/components/custom-components";
+import { FramerExpandable } from "@seldon/components/custom-components";
+import { Frame } from "@seldon/components/frames/Frame";
+import { useAddToast } from "@app/toaster/hooks/use-add-toast";
+import { sidebarNoSelectionStyle, sidebarShellStyle } from "../helpers/sidebar-styles";
+import { CssBlock } from "./CssBlock";
+import { VMCategory } from "./VMCategory";
+import { VMProperty } from "./VMProperty";
+import { FontCollectionEditingContext, IconSetEditingContext, ThemeEditingContext } from "./helpers/editing-contexts";
+import { PropertySection } from "./helpers/get-property-sections";
+import { ThemePropertySection } from "./helpers/get-theme-property-sections";
+import { getIconRowCategory } from "./helpers/icon-set-properties-data";
+import { FlatProperty, getAllowedBorderSides, getPropertiesSubjectId } from "./helpers/properties-data";
+import { useBorderSideVisibility, useRevealedBorderSides } from "./hooks/use-border-side-visibility";
+
 
 export interface PropertyTreeProps {
   properties: FlatProperty[]
@@ -224,6 +207,9 @@ function TreeSection({
   }, [themeEditingContext, section.category])
 
   const { addNodeLayer } = useObjectProperties()
+  const { toggleBorderSide } = useBorderSideVisibility()
+  const borderSubjectId = getPropertiesSubjectId(node)
+  const shownBorderSides = useRevealedBorderSides(borderSubjectId)
 
   // A component node can stack extra paint layers. Offer "Add Background/Gradient/
   // Shadow" on the category that owns each exposed layered property.
@@ -264,6 +250,47 @@ function TreeSection({
     addNodeLayer,
   ])
 
+  // The appearance section (the one that owns the `border` row) can show or hide
+  // each border side row. Each entry toggles visibility only; it writes nothing
+  // to the node. Sides the schema does not expose render dimmed and inert.
+  const borderSideActions = useMemo<MenuEntry[]>(() => {
+    const inEditingMode =
+      !!themeEditingContext?.isThemeEditing ||
+      !!fontCollectionEditingContext?.isFontCollectionEditing ||
+      !!iconSetEditingContext?.isIconSetEditing
+    if (inEditingMode || isBoard(node)) return []
+
+    const hasBorderRow = section.properties.some(
+      (property) => property.key === "border",
+    )
+    if (!hasBorderRow) return []
+
+    const allowed = new Set(getAllowedBorderSides(node, workspace))
+    return getBorderSideOptions().map((option) => {
+      const isAllowed = allowed.has(option.side)
+      const isShown = shownBorderSides.has(option.side)
+      return {
+        id: option.id,
+        label: `${isShown ? "Hide" : "Show"} ${option.label}`,
+        disabled: !isAllowed,
+        onSelect: isAllowed
+          ? () => toggleBorderSide(borderSubjectId, option.side)
+          : undefined,
+        testId: option.id,
+      }
+    })
+  }, [
+    node,
+    workspace,
+    section.properties,
+    shownBorderSides,
+    borderSubjectId,
+    toggleBorderSide,
+    themeEditingContext,
+    fontCollectionEditingContext,
+    iconSetEditingContext,
+  ])
+
   const sectionActions = useMemo((): MenuEntry[] | undefined => {
     if (section.category === "css" && cssStrings.length > 0) {
       const actions: MenuEntry[] = [
@@ -288,7 +315,11 @@ function TreeSection({
       }
       return actions
     }
-    return layerAddActions.length > 0 ? layerAddActions : undefined
+    const appearanceActions: MenuEntry[] =
+      layerAddActions.length > 0 && borderSideActions.length > 0
+        ? [...layerAddActions, "separator", ...borderSideActions]
+        : [...layerAddActions, ...borderSideActions]
+    return appearanceActions.length > 0 ? appearanceActions : undefined
   }, [
     section.category,
     cssStrings.length,
@@ -296,6 +327,7 @@ function TreeSection({
     handleCopyCss,
     handleCopySelector,
     layerAddActions,
+    borderSideActions,
   ])
 
   const content =
@@ -336,7 +368,7 @@ const styles = {
     overflowY: "auto" as const,
   },
   tree: {
-    padding: "0.5rem",
+    padding: "0.25rem 0.25rem 0.75rem 0.25rem",
     display: "flex",
     flexDirection: "column" as const,
     gap: "var(--sdn-gaps-tight)",

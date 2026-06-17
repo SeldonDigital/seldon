@@ -17,7 +17,6 @@ const alignmentStyles: Partial<Record<Align, CSSObject>> = {
 
 export function getTableStyles({
   properties,
-  theme,
 }: {
   properties: Properties
   theme: Theme

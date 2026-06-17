@@ -24,6 +24,8 @@ Use `packages/core/properties/README.md` for property shapes, value types, theme
 
 All schemas share `id`, `name`, `intent`, `icon`, `tags`, and `properties`.
 
+Schemas may set an optional `layout` meta of type `ComponentLayout`. When absent it means `FLEXBOX`. Set `layout: ComponentLayout.GRID` to make the component a CSS grid container, which scopes its LAYOUT properties to the grid vocabulary (columns, rows, item placement) instead of the flexbox vocabulary (orientation, wrapChildren).
+
 Primitives use `level: ComponentLevel.PRIMITIVE` and stop there.
 
 Complex schemas use `default: { children: [...] }` for the canonical tree and may use `variants: [...]` for alternate trees. A variant may also define root `overrides`. Composition trees should be fully flattened. Keep intermediate schemas only when they are reusable across multiple parents.

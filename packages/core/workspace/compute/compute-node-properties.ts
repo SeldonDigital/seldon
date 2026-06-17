@@ -12,6 +12,7 @@ import type { ComputedTheme } from "../../themes/types/theme"
 import { getComponentPropertyDefaults } from "../helpers/components/get-component-property-defaults"
 import { getNodeParentIndex } from "../helpers/graph/build-node-parent-index"
 import { getNodeCatalogId } from "../helpers/nodes/get-node-catalog-id"
+import { resolveLayoutMode } from "../helpers/nodes/resolve-layout-mode"
 import { parseNodeTemplate, parseThemeTemplate } from "../model/template-ref"
 import type { Board } from "../types"
 import type { EntryNode, Workspace } from "../types"
@@ -322,7 +323,40 @@ export function getInheritedNodeProperties(
   )
 }
 
+/**
+ * Render-scoped memo for the explicit-theme effective-property path. With an
+ * explicit `theme`, the result is a pure function of `(workspace, targetId,
+ * theme.id)`, so it is safe to reuse across the many ancestor rebuilds the
+ * canvas performs. Keyed by the `workspace` reference, which reducers replace on
+ * every edit, so cache entries fall away with the workspace they describe.
+ */
+const effectivePropertiesCache = new WeakMap<object, Map<string, Properties>>()
+
 export function getEffectiveNodeProperties(
+  targetId: string,
+  workspace: WorkspacePropertySource,
+  options: EffectivePropertiesOptions = {},
+): Properties {
+  const theme = options.theme
+  if (theme) {
+    const cacheKey = `${targetId}|${theme.id}`
+    let byKey = effectivePropertiesCache.get(workspace as object)
+    const cached = byKey?.get(cacheKey)
+    if (cached) return cached
+
+    const result = computeEffectiveNodeProperties(targetId, workspace, options)
+    if (!byKey) {
+      byKey = new Map<string, Properties>()
+      effectivePropertiesCache.set(workspace as object, byKey)
+    }
+    byKey.set(cacheKey, result)
+    return result
+  }
+
+  return computeEffectiveNodeProperties(targetId, workspace, options)
+}
+
+function computeEffectiveNodeProperties(
   targetId: string,
   workspace: WorkspacePropertySource,
   options: EffectivePropertiesOptions = {},
@@ -391,42 +425,54 @@ function buildComputeContext(
   compositionParentByChild: ReadonlyMap<string, string> | undefined,
   rootParentFallback?: "board",
 ): ComputeContext {
-  const theme = getComputedTheme(
-    getEffectiveThemeId(node, workspace, compositionParentByChild),
-    workspace,
-  )
-  const effectiveProperties = getEffectiveNodeProperties(node.id, workspace, {
-    theme,
-  })
   const parentNode = findParentNode(node, workspace, compositionParentByChild)
 
-  if (!parentNode || visited.has(parentNode.id)) {
-    return {
-      properties: effectiveProperties,
-      parentContext:
-        !parentNode && rootParentFallback === "board"
-          ? buildBoardComputeContext(
-              node,
-              workspace,
-              compositionParentByChild,
-            )
-          : null,
-      theme,
-    }
-  }
+  let theme: ComputedTheme
+  let parentContext: ComputeContext | null
 
-  visited.add(parentNode.id)
-
-  return {
-    properties: effectiveProperties,
-    parentContext: buildComputeContext(
+  if (parentNode && !visited.has(parentNode.id)) {
+    visited.add(parentNode.id)
+    parentContext = buildComputeContext(
       parentNode,
       workspace,
       visited,
       compositionParentByChild,
       rootParentFallback,
-    ),
+    )
+    // A node's effective theme is its own theme, otherwise the nearest
+    // ancestor's. The parent chain is already resolved here, so inherit the
+    // parent's computed theme instead of re-walking to the root per node.
+    const ownThemeId = normalizeThemeRef(node.theme)
+    theme = ownThemeId
+      ? getComputedTheme(ownThemeId, workspace)
+      : parentContext.theme
+  } else {
+    parentContext =
+      !parentNode && rootParentFallback === "board"
+        ? buildBoardComputeContext(node, workspace, compositionParentByChild)
+        : null
+    const themeId = getEffectiveThemeId(
+      node,
+      workspace,
+      compositionParentByChild,
+    )
+    theme = getComputedTheme(themeId, workspace)
+  }
+
+  const effectiveProperties = getEffectiveNodeProperties(node.id, workspace, {
     theme,
+  })
+
+  const layoutMode = resolveLayoutMode(
+    node as EntryNode,
+    workspace as Workspace,
+  )
+
+  return {
+    properties: effectiveProperties,
+    parentContext,
+    theme,
+    layoutMode,
   }
 }
 

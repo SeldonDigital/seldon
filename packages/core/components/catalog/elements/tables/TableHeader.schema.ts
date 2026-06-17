@@ -5,24 +5,21 @@ import { ComponentExport, ComponentSchema } from "../../../types"
 export const schema = {
   name: "Table Header",
   id: Seldon.ComponentId.TABLE_HEADER,
-  intent: "Defines a column header in a table for labeling data.",
+  intent:
+    "A column header cell that labels a table column and can host a sort indicator.",
   tags: [
     "table",
     "header",
     "th",
     "column label",
-    "primitive",
+    "element",
     "heading",
     "grid",
   ],
-  level: Seldon.ComponentLevel.PRIMITIVE,
+  level: Seldon.ComponentLevel.ELEMENT,
   icon: Seldon.ComponentIcon.STUB,
   properties: {
     display: { type: Sdn.ValueType.EMPTY, value: null },
-    content: {
-      type: Sdn.ValueType.EXACT,
-      value: "Column",
-    },
     ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
     ariaHidden: {
       type: Sdn.ValueType.EXACT,
@@ -61,12 +58,20 @@ export const schema = {
         value: "@padding.compact",
       },
     },
+    gap: {
+      type: Sdn.ValueType.THEME_ORDINAL,
+      value: "@gap.tight",
+    },
+    wrapChildren: {
+      type: Sdn.ValueType.EXACT,
+      value: false,
+    },
     clip: { type: Sdn.ValueType.EMPTY, value: null },
     columns: { type: Sdn.ValueType.EMPTY, value: null },
     rows: { type: Sdn.ValueType.EMPTY, value: null },
     cellAlign: {
-      type: Sdn.ValueType.INHERIT,
-      value: null,
+      type: Sdn.ValueType.OPTION,
+      value: Sdn.Align.CENTER_LEFT,
     },
     color: {
       type: Sdn.ValueType.COMPUTED,
@@ -78,6 +83,7 @@ export const schema = {
       },
     },
     brightness: { type: Sdn.ValueType.EMPTY, value: null },
+    opacity: { type: Sdn.ValueType.EMPTY, value: null },
     background: [
       { kind: { type: Sdn.ValueType.OPTION, value: Sdn.BackgroundKind.NONE } },
     ],
@@ -91,7 +97,6 @@ export const schema = {
       width: { type: Sdn.ValueType.EMPTY, value: null },
       brightness: { type: Sdn.ValueType.EMPTY, value: null },
       opacity: { type: Sdn.ValueType.EMPTY, value: null },
-      collapse: { type: Sdn.ValueType.EMPTY, value: null },
     },
     borderTop: {
       preset: { type: Sdn.ValueType.EMPTY, value: null },
@@ -100,7 +105,6 @@ export const schema = {
       width: { type: Sdn.ValueType.EMPTY, value: null },
       brightness: { type: Sdn.ValueType.EMPTY, value: null },
       opacity: { type: Sdn.ValueType.EMPTY, value: null },
-      collapse: { type: Sdn.ValueType.EMPTY, value: null },
     },
     borderRight: {
       preset: { type: Sdn.ValueType.EMPTY, value: null },
@@ -109,7 +113,6 @@ export const schema = {
       width: { type: Sdn.ValueType.EMPTY, value: null },
       brightness: { type: Sdn.ValueType.EMPTY, value: null },
       opacity: { type: Sdn.ValueType.EMPTY, value: null },
-      collapse: { type: Sdn.ValueType.EMPTY, value: null },
     },
     borderBottom: {
       preset: { type: Sdn.ValueType.EMPTY, value: null },
@@ -118,7 +121,6 @@ export const schema = {
       width: { type: Sdn.ValueType.EMPTY, value: null },
       brightness: { type: Sdn.ValueType.EMPTY, value: null },
       opacity: { type: Sdn.ValueType.EMPTY, value: null },
-      collapse: { type: Sdn.ValueType.EMPTY, value: null },
     },
     borderLeft: {
       preset: { type: Sdn.ValueType.EMPTY, value: null },
@@ -127,7 +129,6 @@ export const schema = {
       width: { type: Sdn.ValueType.EMPTY, value: null },
       brightness: { type: Sdn.ValueType.EMPTY, value: null },
       opacity: { type: Sdn.ValueType.EMPTY, value: null },
-      collapse: { type: Sdn.ValueType.EMPTY, value: null },
     },
     corners: {
       topLeft: { type: Sdn.ValueType.EMPTY, value: null },
@@ -136,36 +137,6 @@ export const schema = {
       bottomRight: { type: Sdn.ValueType.EMPTY, value: null },
     },
     borderCollapse: { type: Sdn.ValueType.EMPTY, value: null },
-    font: {
-      preset: {
-        type: Sdn.ValueType.THEME_CATEGORICAL,
-        value: "@font.subtitle",
-      },
-      family: { type: Sdn.ValueType.EMPTY, value: null },
-      style: { type: Sdn.ValueType.EMPTY, value: null },
-      weight: { type: Sdn.ValueType.EMPTY, value: null },
-      size: {
-        type: Sdn.ValueType.THEME_ORDINAL,
-        value: "@fontSize.medium",
-      },
-      lineHeight: { type: Sdn.ValueType.EMPTY, value: null },
-      textCase: { type: Sdn.ValueType.EMPTY, value: null },
-      letterSpacing: { type: Sdn.ValueType.EMPTY, value: null },
-    },
-    textAlign: {
-      type: Sdn.ValueType.OPTION,
-      value: Sdn.TextAlign.LEFT,
-    },
-
-    textDecoration: {
-      type: Sdn.ValueType.OPTION,
-      value: Sdn.TextDecoration.NONE,
-    },
-    wrapText: {
-      type: Sdn.ValueType.EXACT,
-      value: true,
-    },
-    lines: { type: Sdn.ValueType.EMPTY, value: null },
     shadow: [
       {
         preset: {
@@ -182,6 +153,92 @@ export const schema = {
       },
     ],
   },
+  default: {
+    children: [
+      {
+        component: Seldon.ComponentId.TEXT,
+        variant: "label",
+        overrides: {
+          content: { type: Sdn.ValueType.EXACT, value: "Column" },
+          font: {
+            preset: {
+              type: Sdn.ValueType.THEME_CATEGORICAL,
+              value: "@font.subtitle",
+            },
+            size: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@fontSize.medium",
+            },
+          },
+        },
+      },
+    ],
+  },
+  variants: [
+    {
+      id: "numeric",
+      label: "Numeric Header",
+      intent: "Column header for a numeric column, right-aligned.",
+      overrides: {
+        cellAlign: {
+          type: Sdn.ValueType.OPTION,
+          value: Sdn.Align.CENTER_RIGHT,
+        },
+      },
+    },
+    {
+      id: "sortable",
+      label: "Sortable Header",
+      intent:
+        "Column header with a trailing sort indicator for a sortable column.",
+      children: [
+        {
+          component: Seldon.ComponentId.FRAME,
+          overrides: {
+            orientation: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.Orientation.HORIZONTAL,
+            },
+            align: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.Align.CENTER_LEFT,
+            },
+            width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+            height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+            gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.tight" },
+          },
+          children: [
+            {
+              component: Seldon.ComponentId.TEXT,
+              variant: "label",
+              overrides: {
+                content: { type: Sdn.ValueType.EXACT, value: "Column" },
+                font: {
+                  preset: {
+                    type: Sdn.ValueType.THEME_CATEGORICAL,
+                    value: "@font.subtitle",
+                  },
+                },
+              },
+            },
+            {
+              component: Seldon.ComponentId.ICON,
+              overrides: {
+                symbol: {
+                  type: Sdn.ValueType.OPTION,
+                  value: "material-unfoldMore",
+                },
+                size: {
+                  type: Sdn.ValueType.THEME_ORDINAL,
+                  value: "@size.small",
+                },
+              },
+            },
+          ],
+        },
+      ],
+    },
+  ],
 } as const satisfies ComponentSchema
 
 export const exportConfig: ComponentExport = {

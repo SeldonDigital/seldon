@@ -13,7 +13,10 @@ import { getVariantById } from "@seldon/core/workspace/helpers/general/get-varia
 import { getVariantIndex } from "@seldon/core/workspace/helpers/general/get-variant-index"
 import { isDefaultVariant } from "@seldon/core/workspace/helpers/general/is-default-variant"
 import { findParentNode } from "@seldon/core/workspace/helpers/nodes/find-parent-node"
-import { workspaceService } from "@seldon/core/workspace/services/workspace.service"
+import {
+  nodeRelationshipService,
+  typeCheckingService,
+} from "@seldon/core/workspace/services"
 import type { Board } from "@seldon/core/workspace/types"
 import { getNodeChildIds } from "@lib/workspace/node-tree"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
@@ -119,7 +122,7 @@ export function useMoveObjects() {
   const reorderVariant = useCallback(
     (variantId: VariantId, index: number, isPreview = false) => {
       const variant = getVariantById(variantId, workspace)
-      const board = workspaceService.findBoardForVariant(variant, workspace)
+      const board = nodeRelationshipService.findBoardForVariant(variant, workspace)
       invariant(board, "Board not found")
       if (isDefaultVariant(variant) || index === 0) {
         addToast("Default variant cannot be moved or replaced")
@@ -153,10 +156,10 @@ export function useMoveObjects() {
       position: Placement
       isPreview?: boolean
     }) => {
-      const isChild = workspaceService.isInstance(subjectNode)
+      const isChild = typeCheckingService.isInstance(subjectNode)
 
       if (isChild) {
-        if (workspaceService.isVariant(targetNode)) {
+        if (typeCheckingService.isVariant(targetNode)) {
           addToast("Moving an instance next to a variant is not allowed")
           return
         }
@@ -220,7 +223,7 @@ export function useMoveObjects() {
       subjectNode: Instance | Variant
       isPreview?: boolean
     }) => {
-      const isChild = workspaceService.isInstance(subjectNode)
+      const isChild = typeCheckingService.isInstance(subjectNode)
 
       // Append after any existing children. An empty container yields index 0,
       // so nesting into an empty container inserts the object as the first child.
@@ -264,7 +267,7 @@ export function useMoveObjects() {
       index: number,
       isPreview = false,
     ) => {
-      if (workspaceService.isVariant(subjectNode)) {
+      if (typeCheckingService.isVariant(subjectNode)) {
         return dispatch(
           {
             type: "insert_variant_instance",
@@ -340,7 +343,7 @@ export function useMoveObjects() {
     }) => {
       // A variant target lives at the board top level; duplicating next to it
       // produces a new variant on the board, matching the board paste case.
-      if (workspaceService.isVariant(targetNode)) {
+      if (typeCheckingService.isVariant(targetNode)) {
         return duplicateVariantOnBoard(subjectNode.id as VariantId, isPreview)
       }
 
