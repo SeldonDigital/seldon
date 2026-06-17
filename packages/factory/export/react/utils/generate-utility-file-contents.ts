@@ -1,22 +1,6 @@
 import { ExportOptions, FileToExport } from "../../types"
 
 /**
- * Generate utility file contents with a simple function
- *
- * @param functionName - The name of the function to generate (defaults to "utility")
- * @param returnValue - The return value of the function (defaults to "Hello World")
- * @returns The generated utility file contents as a string
- */
-export function generateUtilityFileContents(
-  functionName: string = "utility",
-  returnValue: string = "Hello World",
-): string {
-  return `export function ${functionName}() {
-  return '${returnValue}'
-}`
-}
-
-/**
  * Generates utility files needed by the exported components
  * This includes the class name utilities that components import
  *

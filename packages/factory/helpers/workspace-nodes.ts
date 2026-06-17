@@ -1,4 +1,3 @@
-import { getBoardByNodeId } from "@seldon/core/workspace/helpers/components/get-board-by-node-id"
 import { walkBoardTreeRefs } from "@seldon/core/workspace/helpers/components/walk-board-tree-refs"
 import { isVariantNode } from "@seldon/core/workspace/helpers/nodes/is-variant-node"
 import { parseNodeTemplate } from "@seldon/core/workspace/model/template-ref"
@@ -68,10 +67,6 @@ export function resolveSourceVariantId(
   }
 
   return null
-}
-
-export function getBoardForNode(workspace: Workspace, nodeId: string) {
-  return getBoardByNodeId(workspace, nodeId)
 }
 
 export function getInstanceClassHash(nodeId: string): string {

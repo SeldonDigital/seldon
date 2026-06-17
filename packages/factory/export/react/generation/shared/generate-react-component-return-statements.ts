@@ -209,11 +209,3 @@ export function generateSimpleReturn(
   return <${config.react.returns} className={${classNameVarName}}${rootPropsString} {...props} />`
   }
 }
-
-// Export with the expected name for tests
-export const generateReactComponentReturnStatements = {
-  generateIconMapReturn,
-  generateHtmlElementReturn,
-  generateWrapperElementReturn,
-  generateSimpleReturn,
-}

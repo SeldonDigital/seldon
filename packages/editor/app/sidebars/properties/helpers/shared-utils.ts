@@ -1,19 +1,6 @@
 import { ValueType } from "@seldon/core"
 
 /**
- * Extracts the actual property name from a property key (handles sub-properties)
- * @param propertyKey - The property key to extract name from
- * @returns The actual property name
- */
-export function getActualPropertyName(propertyKey: string): string {
-  if (propertyKey.includes(".")) {
-    const parts = propertyKey.split(".")
-    return parts[parts.length - 1]
-  }
-  return propertyKey.split(".")[0]
-}
-
-/**
  * Gets placeholder text for a property control
  * @param property - Property object with value
  * @param defaultPlaceholder - Default placeholder text

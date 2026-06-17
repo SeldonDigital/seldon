@@ -3,9 +3,7 @@ import { walkBoardTreeRefs } from "@seldon/core/workspace/helpers/components/wal
 import type {
   Board,
   ComponentTreeRef,
-  EntryNode,
   EntryNodeId,
-  Workspace,
 } from "@seldon/core/workspace/types"
 import { getBoardVariantRootIds } from "./workspace-accessors"
 
@@ -27,22 +25,6 @@ export function getChildNodeIds(
   return getChildrenIds(board, parentId)
 }
 
-/** Direct child refs for a parent in the board tree. */
-export function getChildRefs(
-  board: Board,
-  parentId: EntryNodeId,
-): ComponentTreeRef[] {
-  let refs: ComponentTreeRef[] = []
-
-  walkBoardTreeRefs(board.variants, (ref) => {
-    if (ref.id !== parentId) return
-    refs = ref.children ?? []
-    return true
-  })
-
-  return refs
-}
-
 export function walkComponentTree(
   board: Board,
   visit: (
@@ -51,13 +33,6 @@ export function walkComponentTree(
   ) => boolean | void,
 ): void {
   walkBoardTreeRefs(board.variants, visit)
-}
-
-export function getEntryNode(
-  workspace: Workspace,
-  nodeId: EntryNodeId,
-): EntryNode | undefined {
-  return workspace.nodes[nodeId]
 }
 
 export function collectDescendantNodeIds(

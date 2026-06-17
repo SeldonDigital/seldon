@@ -58,5 +58,3 @@ export function replaceImagesWithRelativePaths(
     return draft
   })
 }
-
-export const transformImagePaths = replaceImagesWithRelativePaths

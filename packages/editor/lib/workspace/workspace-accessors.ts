@@ -2,7 +2,6 @@ import { getBoardVariantRootIds as getComponentVariantRootIdsFromCore } from "@s
 import type {
   Board,
   BoardKey,
-  ComponentTreeRef,
   EntryNode,
   EntryNodeId,
   Workspace,
@@ -11,16 +10,6 @@ import type {
 /** Read root variant node ids from a component row. Never pass `board.variants[i]` to `getNode`. */
 export function getBoardVariantRootIds(board: Board): string[] {
   return getComponentVariantRootIdsFromCore(board)
-}
-
-export function getComponentTreeRefId(ref: ComponentTreeRef | string): string {
-  return typeof ref === "string" ? ref : ref.id
-}
-
-export function getWorkspaceNodeMap(
-  workspace: Workspace,
-): Record<EntryNodeId, EntryNode> {
-  return workspace.nodes
 }
 
 export function getWorkspaceComponentMap(
