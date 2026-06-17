@@ -21,6 +21,7 @@ export {
   isRemoteFontFamily,
 } from "./font-collections/helpers/remote-font-url"
 export { getFamilyNameByValue } from "./font-collections/helpers/get-family-name-by-value"
+export * from "./helpers/utils/assert-never"
 export * from "./helpers/utils/invariant"
 export * from "./properties"
 export * from "./properties/compute"

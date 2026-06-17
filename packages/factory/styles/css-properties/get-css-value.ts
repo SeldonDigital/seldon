@@ -1,4 +1,5 @@
 import {
+  assertNever,
   BorderWidth,
   BorderWidthHairlineValue,
   Color,
@@ -57,8 +58,7 @@ export function getCssValue(
         case Unit.NUMBER:
           return value.value.value
         default:
-          // @ts-expect-error value.value.unit is narrowed to never after the exhaustive switch
-          throw new Error("Invalid exact value with unit " + value.value.unit)
+          return assertNever(value.value)
       }
 
     case ValueType.OPTION: {
@@ -76,8 +76,7 @@ export function getCssValue(
         case Color.TRANSPARENT:
           return "transparent"
         default:
-          // @ts-expect-error value.value is narrowed to never after the exhaustive switch
-          throw new Error("Invalid option value " + value.value)
+          return assertNever(value)
       }
     }
 

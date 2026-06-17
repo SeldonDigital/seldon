@@ -45,8 +45,6 @@ export function insertImports(
     imports["../frames/Frame"] = ["Frame"]
   }
 
-  // No longer need to import Frame for custom components since we render them directly
-
   if (config.react.returns.startsWith("HTML")) {
     const key = `../native-react/${config.react.returns.replace("HTML", "HTML.")}`
     imports[key] = [config.react.returns]

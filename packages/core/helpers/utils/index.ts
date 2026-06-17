@@ -1,4 +1,5 @@
 // General utilities
+export { assertNever } from "./assert-never"
 export { createNodeId } from "./create-node-id"
 export { findInObject } from "./find-in-object"
 export {

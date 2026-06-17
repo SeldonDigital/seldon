@@ -9,7 +9,7 @@ type LayeredPaintLayerMap = {
 
 /**
  * Reads every layer of a layered paint stack as a typed array. Index 0 is the
- * bottom layer. A legacy single-object shape is normalized to a one-item list.
+ * bottom layer. A single-object shape is normalized to a one-item list.
  */
 export function getLayeredPaintLayers<K extends keyof LayeredPaintLayerMap>(
   properties: Properties,
