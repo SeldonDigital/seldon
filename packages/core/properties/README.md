@@ -333,14 +333,13 @@ Properties that control the visual appearance and styling of components.
 | `brightness` | `atomic` | `empty` \| `inherit` \| `<percent>` |
 | `opacity` | `atomic` | `empty` \| `inherit` \| `<percent>` |
 | `background` | `array` | Ordered layers, `background[0]` topmost. Each layer's `kind` picks a facet set. See [Background layers](#background-layers). |
-| `border` | `compound` | `preset, style, color, width, brightness, opacity, collapse` |
+| `border` | `compound` | `preset, style, color, width, brightness, opacity` |
 | └ `border.preset` | `atomic` | `empty` \| `inherit` \| `theme.categorical: @border.*` (built-in `@border.none`) |
 | └ `border.style` | `atomic` | `empty` \| `inherit` \| `option: none, solid, dashed, dotted, double, groove, ridge, inset, outset, hidden` |
 | └ `border.color` | `atomic` | `empty` \| `inherit` \| `<color>` |
 | └ `border.width` | `atomic` | `empty` \| `inherit` \| `<length>` \| `option: hairline` \| `theme.ordinal: @borderWidth.*` |
 | └ `border.brightness` | `atomic` | `empty` \| `inherit` \| `<percent>` |
 | └ `border.opacity` | `atomic` | `empty` \| `inherit` \| `<percent>` |
-| └ `border.collapse` | `atomic` | `empty` \| `inherit` \| `option: separate, collapse` |
 | `borderTop` | `compound` | Same facets as `border.*` |
 | `borderRight` | `compound` | Same facets as `border.*` |
 | `borderBottom` | `compound` | Same facets as `border.*` |
@@ -352,7 +351,7 @@ Properties that control the visual appearance and styling of components.
 | └ `corners.bottomRight` | `atomic` | `empty` \| `inherit` \| `<length>` \| `option: rounded, squared` \| `theme.ordinal: @corners.*` |
 | `borderCollapse` | `atomic` | `empty` \| `inherit` \| `option: separate, collapse` |
 
-`borderTop`, `borderRight`, `borderBottom`, and `borderLeft` are each a `compound` with the same facets as `border.*`: `preset`, `style`, `color`, `width`, `brightness`, `opacity`, `collapse`.
+`borderTop`, `borderRight`, `borderBottom`, and `borderLeft` are each a `compound` with the same facets as `border.*`: `preset`, `style`, `color`, `width`, `brightness`, `opacity`.
 
 ---
 

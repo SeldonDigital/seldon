@@ -1,5 +1,4 @@
 import { EmptyValue } from "../../shared/empty/empty"
-import { BorderCollapseValue } from "../border-collapse"
 import type { BorderValue } from "./border"
 import { BorderBrightnessValue } from "./border-brightness"
 import { BorderColorValue } from "./border-color"
@@ -15,7 +14,6 @@ export interface BorderCompound {
   width?: BorderWidthValue | EmptyValue
   brightness?: BorderBrightnessValue | EmptyValue
   opacity?: BorderOpacityValue | EmptyValue
-  collapse?: BorderCollapseValue | EmptyValue
 }
 
 export * from "./border"
