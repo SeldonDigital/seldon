@@ -6,21 +6,21 @@ Seldon is a component-based design engine that consists of three main parts.
 
 ![Seldon Editor](screenshots/seldon-editor.png)
 
-### The Core
+---
 
-[Seldon Core](packages/core/README.md) is the engine that defines component-based design systems. It ships a catalog of component building blocks, property and theme models those components use, and the processing engine that creates and saves out design workspace files. 
+The [Seldon Core](packages/core/README.md) is the engine that defines component-based design systems. It ships a catalog of component building blocks, properties, and theme models those components use. It is also the processing engine for design workspace files. 
 
 Core owns design state and rules. Editors, agents, and other tools load a workspace, apply typed actions via the Core, and validated JSON is returned. Workspaces can then passed to the Factory for code and asset generation at any point in time.
 
-### The Factory
+---
 
-[Seldon Factory](packages/factory/README.md) turns a Seldon workspace into production code. It consumes a workspace file and produces components, CSS, and processed assets. Factory reads design-time state from Core, resolves properties and themes, and generates output. It does not change the workspace file.
+The [Seldon Factory](packages/factory/README.md) turns a Seldon workspace into production code. It consumes a workspace file and produces components, CSS, and processed assets. Factory reads design-time state from Core, resolves properties and themes, and generates output. It does not change the workspace file.
 
 Factory owns export and production code generation. It can be extended beyond just one platform, as multiple factory pipelines can be supported. (React is the default Factory for now.)
 
-### The Editor
+---
 
-[Seldon Editor](packages/editor/README.md) is a browser design client for Seldon workspaces. It runs locally on your computer, creates and store workspaces, and needs no API, database, auth, or cloud service. The Editor runs as a single app on `localhost:5173`. 
+The [Seldon Editor](packages/editor/README.md) is a browser design client for Seldon workspaces. It runs locally on your computer, creates and store workspaces, and needs no API, database, auth, or cloud service. The Editor runs as a single app on `localhost:5173`. 
 
 A user opens a workspace with the Editor, edits components, and each action flows through the same Core reducer engine that an AI agent would use. 
 
