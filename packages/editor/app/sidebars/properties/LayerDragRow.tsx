@@ -2,6 +2,7 @@ import { COLORS } from "@lib/helpers/colors"
 import { CSSProperties, ReactNode } from "react"
 import { LayeredPaintKey } from "@seldon/core"
 import {
+  Box,
   InsertIndicatorLine,
   OverlayLayer,
   PlacementZoneSurface,
@@ -44,7 +45,7 @@ export function LayerDragRow({
   })
 
   return (
-    <div ref={ref} style={{ ...wrapperStyle, opacity: dragging ? 0.5 : 1 }}>
+    <Box ref={ref} style={{ ...wrapperStyle, opacity: dragging ? 0.5 : 1 }}>
       {children}
       <LayerDropBand
         property={property}
@@ -58,7 +59,7 @@ export function LayerDragRow({
         layerCount={layerCount}
         placement="after"
       />
-    </div>
+    </Box>
   )
 }
 
