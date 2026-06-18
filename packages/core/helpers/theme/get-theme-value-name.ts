@@ -35,7 +35,7 @@ export function getThemeValueName(key: string, theme: Theme): string {
 
     // Fallback for unexpected option types
     return formatRawValueName(key.split(".").pop() || key)
-  } catch (error) {
+  } catch {
     // Fallback if theme option lookup fails
     return formatRawValueName(key.split(".").pop() || key)
   }

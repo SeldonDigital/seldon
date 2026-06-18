@@ -1,4 +1,4 @@
-import { Unit, ValueType } from "../../constants"
+import { Unit } from "../../constants"
 import { PropertySchema } from "../../types/schema"
 import { EmptyValue } from "../shared/empty/empty"
 import { NumberValue } from "../shared/exact/number"

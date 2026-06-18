@@ -14,7 +14,7 @@ export const ErrorMessages = {
     `Board ${id} has an invalid index of ${index} (expected ${expected}).`,
   nodeOrBoardNotFound: (id: InstanceId | VariantId | ComponentId) =>
     `No node or board found with id ${id}.`,
-  componentVariantsInUse: (id: ComponentId) =>
+  componentVariantsInUse: (_id: ComponentId) =>
     `One or more variants of this board are in use in other components. Remove them first before deleting the board.`,
   variantsInUseForReset: (
     usages: { usingBoardLabel: string; variantLabel: string }[],
@@ -32,7 +32,7 @@ export const ErrorMessages = {
   defaultVariantNotFound: (id: ComponentId) =>
     `Default variant not found for component ${id}.`,
   defaultVariantCannotBeRemoved: () => `Default variants cannot be removed.`,
-  variantInUse: (id: VariantId) =>
+  variantInUse: (_id: VariantId) =>
     `This variant is used in other components. Remove it from them first before deleting.`,
   nodeNotVariant: (id: InstanceId | VariantId) =>
     `Node ${id} is not a variant.`,

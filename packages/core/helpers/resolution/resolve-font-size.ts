@@ -25,7 +25,6 @@ import { exactTokenToLength } from "./resolve-length-token"
 export function resolveFontSize({
   fontSize,
   theme,
-  parentContext,
 }: {
   fontSize: FontSizeValue | EmptyValue
   theme: Theme

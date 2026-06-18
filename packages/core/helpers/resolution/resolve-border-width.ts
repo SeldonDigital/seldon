@@ -24,7 +24,6 @@ import { resolveModulatedOrExactLength } from "./resolve-length-token"
 export function resolveBorderWidth({
   borderWidth,
   theme,
-  parentContext,
 }: {
   borderWidth: BorderWidthValue
   theme: Theme

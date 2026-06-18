@@ -21,7 +21,6 @@ import { resolveModulatedOrExactLength } from "./resolve-length-token"
 export function resolveShadowBlur({
   blur,
   theme,
-  parentContext,
 }: {
   blur: ShadowBlurValue
   theme: Theme
