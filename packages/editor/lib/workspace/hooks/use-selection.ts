@@ -6,7 +6,6 @@ import {
   isComponentId,
 } from "@seldon/core/components/constants"
 import { InstanceId, VariantId } from "@seldon/core/index"
-import type { Board } from "@seldon/core/workspace/model/components"
 import {
   isComponentBoard,
   isFontCollectionBoard,
@@ -15,6 +14,7 @@ import {
   isPlaygroundBoard,
   isThemeBoard,
 } from "@seldon/core/workspace/model"
+import type { Board } from "@seldon/core/workspace/model/components"
 import { nodeRelationshipService } from "@seldon/core/workspace/services"
 import type { BoardKey } from "@seldon/core/workspace/types"
 import { useEditorConfig } from "@lib/hooks/use-editor-config"
@@ -285,7 +285,10 @@ export function useSelection() {
           const schema = getComponentSchema(rootCatalogId)
           toggleSection(schema.level, true)
         } else {
-          const board = nodeRelationshipService.findBoardForNode(node, workspace)
+          const board = nodeRelationshipService.findBoardForNode(
+            node,
+            workspace,
+          )
           if (board) {
             toggleSection(ComponentLevel.MODULE, true)
             toggleObject(getComponentKey(board), true, {

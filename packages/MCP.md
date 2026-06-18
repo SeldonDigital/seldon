@@ -187,12 +187,12 @@ const files = await exportWorkspace(session.workspace, {
 
 ## Further Reading
 
-| Topic | Document |
-| --- | --- |
-| Core | [core/README.md](./core/README.md) |
-| Editor | [editor/README.md](./editor/README.md) |
-| Reducer actions | [core/workspace/reducers/README.md](./core/workspace/reducers/README.md) |
-| Workspace compute | [core/workspace/compute/README.md](./core/workspace/compute/README.md) |
-| Workspace file spec | [core/workspace/WORKSPACE.md](./core/workspace/WORKSPACE.md) |
-| Factory | [factory/README.md](./factory/README.md) |
-| Vocabulary | [GLOSSARY.md](../GLOSSARY.md) |
+| Topic               | Document                                                                 |
+| ------------------- | ------------------------------------------------------------------------ |
+| Core                | [core/README.md](./core/README.md)                                       |
+| Editor              | [editor/README.md](./editor/README.md)                                   |
+| Reducer actions     | [core/workspace/reducers/README.md](./core/workspace/reducers/README.md) |
+| Workspace compute   | [core/workspace/compute/README.md](./core/workspace/compute/README.md)   |
+| Workspace file spec | [core/workspace/WORKSPACE.md](./core/workspace/WORKSPACE.md)             |
+| Factory             | [factory/README.md](./factory/README.md)                                 |
+| Vocabulary          | [GLOSSARY.md](../GLOSSARY.md)                                            |

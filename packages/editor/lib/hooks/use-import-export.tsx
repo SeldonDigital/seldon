@@ -1,6 +1,11 @@
 "use client"
 
 import {
+  buildDefaultSnippet,
+  buildVariantSnippet,
+} from "@lib/copy-schema/build-schema-snippet"
+import { serializeSchemaSnippet } from "@lib/copy-schema/serialize-schema-ts"
+import {
   pickExportDirectory,
   writeExportToDirectory,
 } from "@lib/export/write-export-to-directory"
@@ -10,11 +15,6 @@ import { useCallback } from "react"
 import { orderWorkspaceNodeKeys } from "@seldon/core/workspace/helpers/nodes/order-entry-node-keys"
 import { workspacePropagationService } from "@seldon/core/workspace/services/propagation/workspace-propagation.service"
 import type { Workspace } from "@seldon/core/workspace/types"
-import {
-  buildDefaultSnippet,
-  buildVariantSnippet,
-} from "@lib/copy-schema/build-schema-snippet"
-import { serializeSchemaSnippet } from "@lib/copy-schema/serialize-schema-ts"
 import { useWorkspaceRecord } from "@lib/persistence/hooks/use-workspace-record"
 import { useWorkspaceId } from "@lib/project/hooks/use-workspace-id"
 import { useSelection } from "@lib/workspace/hooks/use-selection"

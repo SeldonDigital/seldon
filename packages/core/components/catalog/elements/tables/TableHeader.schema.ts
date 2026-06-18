@@ -7,15 +7,7 @@ export const schema = {
   id: Seldon.ComponentId.TABLE_HEADER,
   intent:
     "A column header cell that labels a table column and can host a sort indicator.",
-  tags: [
-    "table",
-    "header",
-    "th",
-    "column label",
-    "element",
-    "heading",
-    "grid",
-  ],
+  tags: ["table", "header", "th", "column label", "element", "heading", "grid"],
   level: Seldon.ComponentLevel.ELEMENT,
   icon: Seldon.ComponentIcon.STUB,
   properties: {

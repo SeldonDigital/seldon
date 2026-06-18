@@ -26,11 +26,7 @@ export function getThemeOverridePath(key: string): string | null {
   const [section, id, facet] = key.split(".")
   if (!section || !id) return null
 
-  if (
-    section === "core" ||
-    section === "color" ||
-    section === "fontFamily"
-  ) {
+  if (section === "core" || section === "color" || section === "fontFamily") {
     return key
   }
   if (section === "swatch") {

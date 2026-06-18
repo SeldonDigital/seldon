@@ -42,9 +42,7 @@ function isNonContributingBackgroundColor(value: Value | undefined): boolean {
     return true
   }
 
-  return (
-    value.type === ValueType.OPTION && value.value === Color.TRANSPARENT
-  )
+  return value.type === ValueType.OPTION && value.value === Color.TRANSPARENT
 }
 
 /**

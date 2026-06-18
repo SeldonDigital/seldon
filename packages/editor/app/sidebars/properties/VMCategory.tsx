@@ -1,9 +1,9 @@
-import { Fragment, type MouseEvent } from "react"
 import { MenuEntry } from "@lib/menus"
-import { useRowActionsMenu } from "../shared/use-row-actions-menu"
-import { useSectionHeaderRow } from "../shared/use-section-header-row"
+import { Fragment, type MouseEvent } from "react"
 import { useRowCategory } from "./hooks/use-row-category"
 import { ItemSectionRow } from "@seldon/components/elements/ItemSectionRow"
+import { useRowActionsMenu } from "../shared/use-row-actions-menu"
+import { useSectionHeaderRow } from "../shared/use-section-header-row"
 import { PropertySection } from "./helpers/get-property-sections"
 import { ThemePropertySection } from "./helpers/get-theme-property-sections"
 
@@ -47,7 +47,9 @@ export function VMCategory({ section, actions, onAddCustom }: VMCategoryProps) {
         buttonIconic={buttonIconic}
         icon={{ icon }}
         textLabel={{ children: label }}
-        buttonIconic2={showActionsInMiddle ? actionsMenu.buttonIconic : undefined}
+        buttonIconic2={
+          showActionsInMiddle ? actionsMenu.buttonIconic : undefined
+        }
         icon2={showActionsInMiddle ? actionsMenu.icon : undefined}
         buttonIconic3={addButton ?? actionsMenu.buttonIconic}
         icon3={addButton ? { icon: "material-add" } : actionsMenu.icon}

@@ -38,7 +38,8 @@ export function IndicatorInsert({
     : nodeRetrievalService.getNode(objectId, workspace)
 
   const canHaveChildren =
-    !isBoardObject && canNodeAcceptChildren(object as Variant | Instance, workspace)
+    !isBoardObject &&
+    canNodeAcceptChildren(object as Variant | Instance, workspace)
 
   if (!canHaveChildren && !typeCheckingService.isBoard(object)) return null
 

@@ -23,7 +23,9 @@ export function readNodeLayerArray(
   property: LayeredPaintKey,
   workspace: Workspace,
 ): LayerBag[] {
-  const own = toLayerArray((node.overrides as Record<string, unknown>)[property])
+  const own = toLayerArray(
+    (node.overrides as Record<string, unknown>)[property],
+  )
   const effective = getEffectiveNodeProperties(nodeId, workspace)[property]
   const effectiveCount = toLayerArray(effective).length
   const count = Math.max(own.length, effectiveCount)
@@ -32,7 +34,9 @@ export function readNodeLayerArray(
   for (let i = 0; i < count; i++) {
     const slot = own[i]
     layers.push(
-      slot && typeof slot === "object" && !Array.isArray(slot) ? { ...slot } : {},
+      slot && typeof slot === "object" && !Array.isArray(slot)
+        ? { ...slot }
+        : {},
     )
   }
   return layers

@@ -1,5 +1,5 @@
-import { useCallback } from "react"
 import { nanoid } from "nanoid"
+import { useCallback } from "react"
 import { ComponentId } from "@seldon/core/components/constants"
 import { InstanceId, VariantId } from "@seldon/core/index"
 import { isVariantInUse } from "@seldon/core/workspace/helpers/general/is-variant-in-use"
@@ -206,7 +206,8 @@ export function useAddRemoveCommands() {
       if (selectedNode?.id === nodeId) {
         selectNode(
           nodeRelationshipService.findAdjacent(node, "before", workspace)?.id ??
-            nodeRelationshipService.findAdjacent(node, "after", workspace)?.id ??
+            nodeRelationshipService.findAdjacent(node, "after", workspace)
+              ?.id ??
             null,
         )
       }
@@ -232,7 +233,8 @@ export function useAddRemoveCommands() {
 
   const removeBoard = useCallback(
     (boardKey: BoardKey) => {
-      const board = workspace.boards[boardKey] ?? workspace.playgrounds?.[boardKey]
+      const board =
+        workspace.boards[boardKey] ?? workspace.playgrounds?.[boardKey]
       if (!board) return
 
       // Dispatch the removal that matches the board type. The default Seldon

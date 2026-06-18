@@ -32,11 +32,11 @@ export function orderEntryNodeKeys(node: EntryNode): EntryNode {
   // Preserve any keys not covered by the canonical list, keeping output lossless.
   for (const key of Object.keys(node)) {
     if (!(key in ordered)) {
-      ordered[key] = (node as Record<string, unknown>)[key]
+      ordered[key] = (node as unknown as Record<string, unknown>)[key]
     }
   }
 
-  return ordered as EntryNode
+  return ordered as unknown as EntryNode
 }
 
 /**

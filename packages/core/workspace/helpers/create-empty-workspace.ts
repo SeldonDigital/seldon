@@ -1,5 +1,5 @@
-import type { Workspace } from "../model/workspace"
 import { CURRENT_WORKSPACE_VERSION } from "../middleware/migration/middleware"
+import type { Workspace } from "../model/workspace"
 import { seedDefaultFontCollectionBoard } from "./seed/seed-default-font-collection-board"
 import { seedDefaultIconSetBoard } from "./seed/seed-default-icon-set-board"
 import { seedDefaultThemeBoard } from "./seed/seed-default-theme-board"

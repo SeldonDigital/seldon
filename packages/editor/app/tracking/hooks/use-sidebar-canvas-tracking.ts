@@ -36,7 +36,10 @@ export function useSidebarCanvasTracking(node: Variant | Instance) {
     if (!activeBoard || !nodeExistsInWorkspace) return
 
     try {
-      const nodeBoard = nodeRelationshipService.findBoardForNode(node, workspace)
+      const nodeBoard = nodeRelationshipService.findBoardForNode(
+        node,
+        workspace,
+      )
       if (
         !nodeBoard ||
         getComponentKey(nodeBoard) !== getComponentKey(activeBoard)

@@ -2,6 +2,13 @@
 
 import { useEffect, useRef } from "react"
 import { useTransformContext } from "react-zoom-pan-pinch"
+import { nodeRetrievalService } from "@seldon/core/workspace/services"
+import type {
+  InstanceId,
+  VariantId,
+  Workspace,
+} from "@seldon/core/workspace/types"
+import { useActiveBoard } from "@lib/workspace/hooks/use-active-board"
 import {
   useHoveredId,
   useHoveredKind,
@@ -11,19 +18,16 @@ import {
   useSelectedNodeId,
   useSelectedNodeRootId,
 } from "@lib/workspace/hooks/use-selection"
-import { useActiveBoard } from "@lib/workspace/hooks/use-active-board"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useTool } from "@lib/hooks/use-tool"
-import { nodeRetrievalService } from "@seldon/core/workspace/services"
-import type { InstanceId, VariantId, Workspace } from "@seldon/core/workspace/types"
-import { canNodeAcceptChildren } from "@lib/workspace/can-node-accept-children"
 import type { NodeRect } from "../tracking/hooks/use-node-rects-store"
-import { DEFAULT_OUTLINE_COLORS } from "../tracking/helpers/resolve-outline-surface"
-import type { OutlineColors } from "../tracking/helpers/resolve-outline-surface"
 import { useCanvasOverlayStore } from "./hooks/use-canvas-overlay-store"
 import { useCanvasRemeasureStore } from "./hooks/use-canvas-remeasure-store"
+import { canNodeAcceptChildren } from "@lib/workspace/can-node-accept-children"
 import { useSelectedId } from "@lib/workspace/selection-target"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
+import { DEFAULT_OUTLINE_COLORS } from "../tracking/helpers/resolve-outline-surface"
+import type { OutlineColors } from "../tracking/helpers/resolve-outline-surface"
 import {
   pickOutlineColorsFromSurface,
   resolveOutlineSurfaceForBoard,
@@ -241,7 +245,10 @@ export function CanvasOverlayTracker() {
 
     apply()
     const unsubscribe = transformContextRef.current.onChange(schedule)
-    window.addEventListener("scroll", schedule, { passive: true, capture: true })
+    window.addEventListener("scroll", schedule, {
+      passive: true,
+      capture: true,
+    })
     window.addEventListener("resize", schedule)
 
     return () => {

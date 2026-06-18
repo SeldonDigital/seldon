@@ -63,25 +63,26 @@ const PARAMETER_KEYS_BY_SECTION = {
  * theme or variant fails to author one. Mirrors the reserved keys in
  * `types/theme-token-ids.ts`.
  */
-export const RESERVED_LOOK_IDS: Record<ReservedLookSection, readonly string[]> = {
-  shadow: ["none", "xlight", "light", "moderate", "strong", "xstrong"],
-  gradient: ["primary", "gradient1", "gradient2"],
-  border: ["none", "hairline", "thin", "normal", "thick", "bevel"],
-  font: [
-    "normal",
-    "display",
-    "heading",
-    "subheading",
-    "title",
-    "subtitle",
-    "callout",
-    "body",
-    "label",
-    "tagline",
-    "code",
-  ],
-  scrollbar: ["primary"],
-}
+export const RESERVED_LOOK_IDS: Record<ReservedLookSection, readonly string[]> =
+  {
+    shadow: ["none", "xlight", "light", "moderate", "strong", "xstrong"],
+    gradient: ["primary", "gradient1", "gradient2"],
+    border: ["none", "hairline", "thin", "normal", "thick", "bevel"],
+    font: [
+      "normal",
+      "display",
+      "heading",
+      "subheading",
+      "title",
+      "subtitle",
+      "callout",
+      "body",
+      "label",
+      "tagline",
+      "code",
+    ],
+    scrollbar: ["primary"],
+  }
 
 const RESERVED_LOOK_SECTIONS: readonly ReservedLookSection[] = [
   "shadow",
@@ -145,7 +146,9 @@ export function getBuiltInLookId(section: BuiltInLookSection): string | null {
 }
 
 /** Reserved cleared-look token for a section, or `null` when it has none. */
-export function getBuiltInLookToken(section: BuiltInLookSection): string | null {
+export function getBuiltInLookToken(
+  section: BuiltInLookSection,
+): string | null {
   return isClearedLookSection(section)
     ? BUILT_IN_LOOK_DEFINITIONS[section].token
     : null
@@ -180,12 +183,7 @@ export function getBuiltInLookSectionForPropertyKey(
 function buildReservedLookCell(
   section: ReservedLookSection,
   id: string,
-):
-  | ThemeShadow
-  | ThemeGradient
-  | ThemeBorder
-  | ThemeFont
-  | ThemeScrollbar {
+): ThemeShadow | ThemeGradient | ThemeBorder | ThemeFont | ThemeScrollbar {
   return {
     type: TokenType.LOOK,
     name: humanizeLookId(id),

@@ -27,7 +27,10 @@ export function useSectionHeaderRow({
   )
 
   const handleMouseEnter = useCallback(() => setIsHovered(true), [setIsHovered])
-  const handleMouseLeave = useCallback(() => setIsHovered(false), [setIsHovered])
+  const handleMouseLeave = useCallback(
+    () => setIsHovered(false),
+    [setIsHovered],
+  )
 
   return {
     hoverStyle,

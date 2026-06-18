@@ -26,7 +26,10 @@ function readCount(value: unknown): number | null {
 }
 
 /** Builds the `grid-column` / `grid-row` shorthand from a start line and span. */
-function buildPlacement(start: number | null, span: number | null): string | null {
+function buildPlacement(
+  start: number | null,
+  span: number | null,
+): string | null {
   if (start !== null && span !== null) return `${start} / span ${span}`
   if (start !== null) return `${start}`
   if (span !== null) return `span ${span}`

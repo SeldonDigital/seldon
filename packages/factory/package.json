@@ -3,7 +3,7 @@
   "scripts": {
     "lint": "eslint .",
     "quality": "bun lint && bun tsc",
-    "format": "prettier --write \"./**/*.{ts,tsx,json}\""
+    "format": "node ../../scripts/format.mjs"
   },
   "devDependencies": {
     "@seldon/core": "file:../core",

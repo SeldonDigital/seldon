@@ -44,25 +44,25 @@ flowchart TD
 
 ### Configuration
 
-| Type or Function | File | Purpose and use |
-| --- | --- | --- |
-| `rules` | `config/rules.config.ts` | Exports the full `RulesConfig` object. Imported by workspace reducers, validation, and `TypeCheckingService` before gating or propagating an edit. |
+| Type or Function | File                     | Purpose and use                                                                                                                                    |
+| ---------------- | ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `rules`          | `config/rules.config.ts` | Exports the full `RulesConfig` object. Imported by workspace reducers, validation, and `TypeCheckingService` before gating or propagating an edit. |
 
 ### Types
 
-| Type or Function | File | Purpose and use |
-| --- | --- | --- |
-| `Entity` | `types/rule-config-types.ts` | Union of policy entity keys. Used to index every mutation matrix row. |
-| `Config` | `types/rule-config-types.ts` | Maps each `Entity` to an `EntityConfig`. Used as the shape for non-delete mutation rules. |
-| `Propagation` | `types/rule-config-types.ts` | Union `none`, `downstream`, or `bidirectional`. Passed into propagation service calls from reducers. |
-| `EntityConfig` | `types/rule-config-types.ts` | `allowed` flag plus `propagation` for one entity row. Base shape for most mutation entries. |
-| `RemovalBehavior` | `types/rule-config-types.ts` | Delete-only behavior: plain `delete` or `hide`, or per-origin object for instances. Read by `remove-instance` handlers. |
-| `DeleteInstanceConfig` | `types/rule-config-types.ts` | Extends `EntityConfig` with `removalBehavior`. Types only the `instance` row under `mutations.delete`. |
-| `DeleteConfig` | `types/rule-config-types.ts` | Maps board and variant rows to `EntityConfig` and the instance row to `DeleteInstanceConfig`. Types the delete mutation block. |
-| `MutationRules` | `types/rule-config-types.ts` | Groups all eleven mutation operation configs. Used as the `mutations` field on `RulesConfig`. |
-| `RuleId` | `types/rule-config-types.ts` | `keyof MutationRules`. Names the supported mutation operations in policy. |
-| `ComponentLevelConfig` | `types/rule-config-types.ts` | Holds `mayContain` for one catalog level. Used in `componentLevels` records. |
-| `RulesConfig` | `types/rule-config-types.ts` | Top-level shape for `rules`: `mutations` plus `componentLevels`. Matches the exported config object. |
+| Type or Function       | File                         | Purpose and use                                                                                                                |
+| ---------------------- | ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `Entity`               | `types/rule-config-types.ts` | Union of policy entity keys. Used to index every mutation matrix row.                                                          |
+| `Config`               | `types/rule-config-types.ts` | Maps each `Entity` to an `EntityConfig`. Used as the shape for non-delete mutation rules.                                      |
+| `Propagation`          | `types/rule-config-types.ts` | Union `none`, `downstream`, or `bidirectional`. Passed into propagation service calls from reducers.                           |
+| `EntityConfig`         | `types/rule-config-types.ts` | `allowed` flag plus `propagation` for one entity row. Base shape for most mutation entries.                                    |
+| `RemovalBehavior`      | `types/rule-config-types.ts` | Delete-only behavior: plain `delete` or `hide`, or per-origin object for instances. Read by `remove-instance` handlers.        |
+| `DeleteInstanceConfig` | `types/rule-config-types.ts` | Extends `EntityConfig` with `removalBehavior`. Types only the `instance` row under `mutations.delete`.                         |
+| `DeleteConfig`         | `types/rule-config-types.ts` | Maps board and variant rows to `EntityConfig` and the instance row to `DeleteInstanceConfig`. Types the delete mutation block. |
+| `MutationRules`        | `types/rule-config-types.ts` | Groups all eleven mutation operation configs. Used as the `mutations` field on `RulesConfig`.                                  |
+| `RuleId`               | `types/rule-config-types.ts` | `keyof MutationRules`. Names the supported mutation operations in policy.                                                      |
+| `ComponentLevelConfig` | `types/rule-config-types.ts` | Holds `mayContain` for one catalog level. Used in `componentLevels` records.                                                   |
+| `RulesConfig`          | `types/rule-config-types.ts` | Top-level shape for `rules`: `mutations` plus `componentLevels`. Matches the exported config object.                           |
 
 ---
 

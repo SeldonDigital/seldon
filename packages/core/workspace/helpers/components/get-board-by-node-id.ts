@@ -1,7 +1,7 @@
 import { isDraft } from "immer"
 
-import { getCompositionContainers } from "../general/get-composition-containers"
 import type { Board, EntryNodeId, Workspace } from "../../types"
+import { getCompositionContainers } from "../general/get-composition-containers"
 import { walkBoardTreeRefs } from "./walk-board-tree-refs"
 
 /**

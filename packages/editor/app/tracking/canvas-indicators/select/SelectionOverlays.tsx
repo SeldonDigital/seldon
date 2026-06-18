@@ -68,7 +68,9 @@ export function CanvasHoverOutline({
   wireframe?: boolean
 }) {
   const rect = useCanvasOverlayStore((state) => state.hoverRect)
-  const outlineColors = useCanvasOverlayStore((state) => state.hoverOutlineColors)
+  const outlineColors = useCanvasOverlayStore(
+    (state) => state.hoverOutlineColors,
+  )
   const hoveredId = useHoveredId()
   const hoveredRootId = useHoveredRootId()
   const selectedId = useSelectedId()

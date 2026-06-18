@@ -18,6 +18,7 @@
  */
 import fs from "node:fs"
 import path from "node:path"
+
 import { categoryPaths } from "../../packages/core/icon-sets/constants/categories"
 
 const REPO_ROOT = path.resolve(import.meta.dir, "../..")

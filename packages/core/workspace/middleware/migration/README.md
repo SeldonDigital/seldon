@@ -15,15 +15,15 @@ flowchart TB
 
 ## Major Types And Functions
 
-| Type Or Function                 | File                                             | Purpose                                                                                              |
-| -------------------------------- | ------------------------------------------------ | ---------------------------------------------------------------------------------------------------- |
-| `CURRENT_WORKSPACE_VERSION`      | `migrate-workspace.ts`                           | Current `metadata.version` value. Re-exported from `middleware.ts`.                                  |
-| `migrateWorkspace`               | `migrate-workspace.ts`                           | Runs sequential migration steps from stored version + 1 through current.                             |
-| `migrationMiddleware`            | `middleware.ts`                                  | Migrates on `set_workspace` and stamps version. Registered in `workspaceReducer` post-reducer chain. |
-| `migrateV1BackgroundBlendFilter` | `steps/migrate-00001-background-blend-filter.ts` | v1 step. Normalizes legacy EXACT `blendMode` and `filter` values.                                    |
-| `migrateV2SeedPlaygrounds`       | `steps/migrate-00002-seed-playgrounds.ts`        | v2 step. Seeds the playgrounds section.                                                              |
-| `migrateV3BackgroundKind`        | `steps/migrate-00003-background-kind.ts`         | v3 step. Rewrites background layers to the kind-typed model.                                         |
-| `migrateV4GradientIntoBackground` | `steps/migrate-00004-gradient-into-background.ts` | v4 step. Folds the gradient stack into background as gradient-kind layers.                          |
+| Type Or Function                  | File                                              | Purpose                                                                                              |
+| --------------------------------- | ------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `CURRENT_WORKSPACE_VERSION`       | `migrate-workspace.ts`                            | Current `metadata.version` value. Re-exported from `middleware.ts`.                                  |
+| `migrateWorkspace`                | `migrate-workspace.ts`                            | Runs sequential migration steps from stored version + 1 through current.                             |
+| `migrationMiddleware`             | `middleware.ts`                                   | Migrates on `set_workspace` and stamps version. Registered in `workspaceReducer` post-reducer chain. |
+| `migrateV1BackgroundBlendFilter`  | `steps/migrate-00001-background-blend-filter.ts`  | v1 step. Normalizes legacy EXACT `blendMode` and `filter` values.                                    |
+| `migrateV2SeedPlaygrounds`        | `steps/migrate-00002-seed-playgrounds.ts`         | v2 step. Seeds the playgrounds section.                                                              |
+| `migrateV3BackgroundKind`         | `steps/migrate-00003-background-kind.ts`          | v3 step. Rewrites background layers to the kind-typed model.                                         |
+| `migrateV4GradientIntoBackground` | `steps/migrate-00004-gradient-into-background.ts` | v4 step. Folds the gradient stack into background as gradient-kind layers.                           |
 
 ## Version 1
 

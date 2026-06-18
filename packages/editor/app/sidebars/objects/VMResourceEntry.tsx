@@ -23,16 +23,16 @@ import {
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useTool } from "@lib/hooks/use-tool"
 import { useSidebarRowStyling } from "../../tracking/hooks/use-sidebar-row-styling"
-import { useRowActionsMenu } from "../shared/use-row-actions-menu"
+import { useInlineRename } from "../hooks/use-inline-rename"
 import { useResourceEntryRow } from "./hooks/use-resource-entry-row"
 import { useRowClick } from "./hooks/use-row-click"
 import { SelectionKind } from "@lib/workspace/selection-target"
-import { RowSelectionTarget } from "./RowSelectionTarget"
 import { ItemNodeRow } from "@seldon/components/elements/ItemNodeRow"
 import { IconProps } from "@seldon/components/primitives/Icon"
 import { TextLabelProps } from "@seldon/components/primitives/TextLabel"
 import { rowWrapperStyle } from "../helpers/sidebar-row-styles"
-import { useInlineRename } from "../hooks/use-inline-rename"
+import { useRowActionsMenu } from "../shared/use-row-actions-menu"
+import { RowSelectionTarget } from "./RowSelectionTarget"
 
 type ResolvedEntry = {
   label: string

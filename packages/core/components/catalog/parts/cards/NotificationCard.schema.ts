@@ -1,10 +1,6 @@
-import * as Sdn from "../../../../properties";
-import * as Seldon from "../../../constants";
-import { ComponentExport, ComponentSchema } from "../../../types";
-
-
-
-
+import * as Sdn from "../../../../properties"
+import * as Seldon from "../../../constants"
+import { ComponentExport, ComponentSchema } from "../../../types"
 
 export const schema = {
   name: "Notification Card",
@@ -487,10 +483,7 @@ export const schema = {
                         type: Sdn.ValueType.OPTION,
                         value: Sdn.TextCasing.NORMAL,
                       },
-                      letterSpacing: {
-                        type: Sdn.ValueType.EMPTY,
-                        value: null,
-                      },
+                      letterSpacing: { type: Sdn.ValueType.EMPTY, value: null },
                       preset: {
                         type: Sdn.ValueType.THEME_CATEGORICAL,
                         value: "@font.callout",
@@ -547,14 +540,8 @@ export const schema = {
                       type: Sdn.ValueType.THEME_CATEGORICAL,
                       value: "@swatch.swatch1",
                     },
-                    brightness: {
-                      type: Sdn.ValueType.EMPTY,
-                      value: null,
-                    },
-                    opacity: {
-                      type: Sdn.ValueType.EMPTY,
-                      value: null,
-                    },
+                    brightness: { type: Sdn.ValueType.EMPTY, value: null },
+                    opacity: { type: Sdn.ValueType.EMPTY, value: null },
                   },
                 ],
                 border: {

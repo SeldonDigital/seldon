@@ -14,8 +14,6 @@ import { useActiveBoard } from "@lib/workspace/hooks/use-active-board"
 import { useSetHoveredId } from "@lib/workspace/hooks/use-object-hover"
 import { useSelection } from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
-import { getComponentKey } from "@lib/workspace/workspace-accessors"
-import { canNodeAcceptChildren } from "@lib/workspace/can-node-accept-children"
 import { useDialog } from "@lib/hooks/use-dialog"
 import { usePreview } from "@lib/hooks/use-preview"
 import { useTool } from "@lib/hooks/use-tool"
@@ -23,6 +21,7 @@ import {
   HoverState,
   useCanvasHoverState,
 } from "../../../lib/hooks/use-canvas-hover-state"
+import { canNodeAcceptChildren } from "@lib/workspace/can-node-accept-children"
 import { getNodeOrientation } from "@lib/workspace/get-node-orientation"
 import {
   getNodeCatalogComponentId,
@@ -32,6 +31,7 @@ import {
   getSelectionTarget,
   selectFromTarget,
 } from "@lib/workspace/selection-target"
+import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import { checkInsertionPoint } from "../../tracking/helpers/check-insertion-point"
 import { getBoardIdForEventTarget } from "../helpers/get-board-id-for-event-target"
@@ -206,7 +206,10 @@ export function useCanvas() {
   const insertNextToChild = useCallback(
     (hoverState: HoverState) => {
       const childNodeId = hoverState.lastChildNodeBeforeCursor!
-      const parentNode = nodeTraversalService.findParentNode(childNodeId, workspace)
+      const parentNode = nodeTraversalService.findParentNode(
+        childNodeId,
+        workspace,
+      )
 
       invariant(parentNode, "Container node not found")
       if (!canNodeAcceptChildren(parentNode, workspace)) {
@@ -257,7 +260,10 @@ export function useCanvas() {
         })
       } else {
         // Otherwise, the target is the parent node of the hovered object
-        const parentNode = nodeTraversalService.findParentNode(nodeId, workspace)
+        const parentNode = nodeTraversalService.findParentNode(
+          nodeId,
+          workspace,
+        )
         invariant(parentNode, "Parent node not found for node " + nodeId)
 
         // Prevent insertion into default variants
@@ -315,13 +321,7 @@ export function useCanvas() {
         }
         break
     }
-  }, [
-    hoverState,
-    activeTool,
-    insertNextToChild,
-    insertIntoNode,
-    insertOnBoard,
-  ])
+  }, [hoverState, activeTool, insertNextToChild, insertIntoNode, insertOnBoard])
 
   /**
    * When clicking on a node within the canvas, we want to select it.

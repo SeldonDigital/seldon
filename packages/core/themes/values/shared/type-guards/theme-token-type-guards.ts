@@ -106,12 +106,7 @@ export function isDynamicSwatchToken(v: unknown): v is StockSwatchDynamic {
 
 export function isLookToken(
   v: unknown,
-): v is
-  | ThemeFont
-  | ThemeShadow
-  | ThemeBorder
-  | ThemeGradient
-  | ThemeScrollbar {
+): v is ThemeFont | ThemeShadow | ThemeBorder | ThemeGradient | ThemeScrollbar {
   return (
     typeof v === "object" &&
     v !== null &&

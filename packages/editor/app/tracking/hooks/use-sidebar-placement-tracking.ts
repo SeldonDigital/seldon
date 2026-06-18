@@ -72,7 +72,10 @@ export function useSidebarPlacementTracking(node: Variant | Instance) {
     }
 
     try {
-      const nodeBoard = nodeRelationshipService.findBoardForNode(node, workspace)
+      const nodeBoard = nodeRelationshipService.findBoardForNode(
+        node,
+        workspace,
+      )
       return (
         nodeBoard !== null &&
         getComponentKey(nodeBoard) === getComponentKey(activeBoard)

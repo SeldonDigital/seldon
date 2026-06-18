@@ -94,7 +94,10 @@ export function isInsertionAllowed(
         }
       } else {
         // For "before"/"after" placement, the target is the parent
-        const parentNode = nodeTraversalService.findParentNode(objectId, workspace)
+        const parentNode = nodeTraversalService.findParentNode(
+          objectId,
+          workspace,
+        )
         if (!parentNode) {
           return true // No parent means it's a root variant, allow insertion
         }

@@ -1,7 +1,7 @@
 import { useRowSection } from "./hooks/use-row-section"
-import { useSectionHeaderRow } from "../shared/use-section-header-row"
 import { ItemSectionRow } from "@seldon/components/elements/ItemSectionRow"
 import { BoardSection } from "../helpers/get-board-sections"
+import { useSectionHeaderRow } from "../shared/use-section-header-row"
 
 interface VMSectionProps {
   section: BoardSection

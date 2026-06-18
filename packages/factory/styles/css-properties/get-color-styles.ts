@@ -1,5 +1,5 @@
-import { resolveValue } from "@seldon/core/helpers/resolution/resolve-value"
 import type { Properties } from "@seldon/core"
+import { resolveValue } from "@seldon/core/helpers/resolution/resolve-value"
 import { BackgroundKind } from "@seldon/core/properties/values/appearance/background/background-kind"
 
 import { StyleGenerationContext } from "../types"
@@ -26,7 +26,11 @@ export function getColorStyles({
 
   // Texts may have a gradient in which case the color should not be set
   // Icon colors are set using getIconStyles
-  if (!properties.symbol && !hasGradientBackground(properties) && properties.color) {
+  if (
+    !properties.symbol &&
+    !hasGradientBackground(properties) &&
+    properties.color
+  ) {
     const colorValue = getColorCSSValue({
       color: properties.color,
       brightness: resolveValue(properties.brightness),

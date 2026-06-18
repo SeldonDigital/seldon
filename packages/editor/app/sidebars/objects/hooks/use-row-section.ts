@@ -1,16 +1,16 @@
 import { MouseEvent, useMemo } from "react"
 import { ComponentLevel } from "@seldon/core/components/constants"
 import { getBoardVariantRootIds } from "@seldon/core/workspace/helpers/components/get-board-variant-root-ids"
+import { useAddRemoveCommands } from "@lib/hooks/commands/use-add-remove-commands"
 import { useDialog } from "@lib/hooks/use-dialog"
 import { useTool } from "@lib/hooks/use-tool"
-import { useAddRemoveCommands } from "@lib/hooks/commands/use-add-remove-commands"
 import {
   useIsSectionExpanded,
   useSectionExpansion,
 } from "../../hooks/use-section-expansion"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
-import { ButtonIconicProps } from "@seldon/components/elements/ButtonIconic"
 import { IconProps } from "@seldon/components/custom-components"
+import { ButtonIconicProps } from "@seldon/components/elements/ButtonIconic"
 import { BoardSection } from "../../helpers/get-board-sections"
 import { useExpansion } from "./use-expansion"
 import { useRowToggle } from "./use-row-toggle"

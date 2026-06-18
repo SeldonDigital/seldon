@@ -277,7 +277,9 @@ function assignCompoundLayerStatuses(
 function assignCompoundStatuses(ctx: SubStatusContext): void {
   const { key, node, schemaProperties, effective } = ctx
   const compoundValue = (effective as Record<string, unknown>)[key]
-  const schemaValue = (schemaProperties as Record<string, unknown> | null)?.[key]
+  const schemaValue = (schemaProperties as Record<string, unknown> | null)?.[
+    key
+  ]
 
   if (!isLayeredPaintProperty(key as CorePropertyKey)) {
     assignCompoundLayerStatuses(ctx, compoundValue, schemaValue, 0, false)

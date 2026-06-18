@@ -10,11 +10,11 @@ Core owns design-time state and rules. Factory owns export and production code g
 
 Factory groups three stages that work together:
 
-| Area | Role | Deep reference |
-| --- | --- | --- |
-| **Helpers** | Build the export context and node index, compute node properties through Core | [helpers/](./helpers) |
-| **Styles** | Convert resolved properties into CSS for one class | [styles/css-properties/](./styles/css-properties) |
-| **Export** | Orchestrate React, CSS, and asset generation into files | [export/](./export) |
+| Area        | Role                                                                          | Deep reference                                    |
+| ----------- | ----------------------------------------------------------------------------- | ------------------------------------------------- |
+| **Helpers** | Build the export context and node index, compute node properties through Core | [helpers/](./helpers)                             |
+| **Styles**  | Convert resolved properties into CSS for one class                            | [styles/css-properties/](./styles/css-properties) |
+| **Export**  | Orchestrate React, CSS, and asset generation into files                       | [export/](./export)                               |
 
 The export stage splits into two subsystems with their own guides:
 
@@ -161,14 +161,14 @@ The generated `IconProps["icon"]` union covers every icon turned on in the works
 
 ## Further Reading
 
-| Topic | Document |
-| --- | --- |
-| Core | [../core/README.md](../core/README.md) |
-| Editor | [../editor/README.md](../editor/README.md) |
-| React export | [export/react/README.md](./export/react/README.md) |
-| CSS export | [export/css/README.md](./export/css/README.md) |
-| Code examples | [TECHNICAL.md](./TECHNICAL.md) |
-| Vocabulary | [GLOSSARY.md](../../GLOSSARY.md) |
+| Topic         | Document                                           |
+| ------------- | -------------------------------------------------- |
+| Core          | [../core/README.md](../core/README.md)             |
+| Editor        | [../editor/README.md](../editor/README.md)         |
+| React export  | [export/react/README.md](./export/react/README.md) |
+| CSS export    | [export/css/README.md](./export/css/README.md)     |
+| Code examples | [TECHNICAL.md](./TECHNICAL.md)                     |
+| Vocabulary    | [GLOSSARY.md](../../GLOSSARY.md)                   |
 
 Note: parts of [TECHNICAL.md](./TECHNICAL.md) predate the current API. Treat this document and the source files as the current reference for entry points and options.
 
@@ -208,10 +208,10 @@ Contact:
 
 ### 4. Summary
 
-| Use | Requirement |
-| --- | --- |
+| Use               | Requirement                          |
+| ----------------- | ------------------------------------ |
 | Noncommercial use | PolyForm Noncommercial License 1.0.0 |
-| Commercial use | Paid commercial license |
+| Commercial use    | Paid commercial license              |
 
 ---
 

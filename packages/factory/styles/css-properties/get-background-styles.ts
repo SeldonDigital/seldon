@@ -155,11 +155,7 @@ function resolveBackgroundKind(layer: BackgroundLayer): BackgroundKind {
 /** Resolves a color layer to a CSS color string, or undefined when unset. */
 function resolveColorLayer(
   layer: BackgroundLayer,
-  {
-    theme,
-    useThemeVariableReferences,
-    themeSlug,
-  }: StyleGenerationContext,
+  { theme, useThemeVariableReferences, themeSlug }: StyleGenerationContext,
 ): string | undefined {
   const color = resolveValue(layer.color)
   if (!color || !layer.color) return undefined
@@ -189,7 +185,9 @@ function resolveImageLayer(
   return {
     image: `url(${image.value})`,
     repeat:
-      repeat && typeof repeat.value === "string" ? repeat.value : DEFAULT_REPEAT,
+      repeat && typeof repeat.value === "string"
+        ? repeat.value
+        : DEFAULT_REPEAT,
     position: position ? formatPosition(position) : DEFAULT_POSITION,
     size: size ? formatSize(size) : DEFAULT_SIZE,
     blend:

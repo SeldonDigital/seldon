@@ -1,5 +1,4 @@
 import {
-  assertNever,
   BorderWidth,
   BorderWidthHairlineValue,
   Color,
@@ -18,6 +17,7 @@ import {
   TransparentValue,
   Unit,
   ValueType,
+  assertNever,
 } from "@seldon/core"
 
 /**

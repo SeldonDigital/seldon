@@ -12,10 +12,10 @@
  *
  *****/
 import { HTMLAttributes } from "react"
+import { LabelProps } from "../custom-components/primitives/Label"
 import { Button, ButtonProps } from "../elements/Button"
 import { Frame } from "../frames/Frame"
 import { IconProps } from "../primitives/Icon"
-import { LabelProps } from "../custom-components/primitives/Label"
 import { combineClassNames } from "../utils/class-name"
 
 export interface BarTabsProps extends HTMLAttributes<HTMLElement> {

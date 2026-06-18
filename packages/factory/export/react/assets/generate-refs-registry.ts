@@ -65,7 +65,9 @@ export function generateRefsRegistry(
     .join("\n")
 
   const mapEntries = sortedRefs
-    .map(([ref, entry]) => `  ${JSON.stringify(ref)}: ${JSON.stringify(entry)},`)
+    .map(
+      ([ref, entry]) => `  ${JSON.stringify(ref)}: ${JSON.stringify(entry)},`,
+    )
     .join("\n")
 
   const content = `export type SeldonRef =

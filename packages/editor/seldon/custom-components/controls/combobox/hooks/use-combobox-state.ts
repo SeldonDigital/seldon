@@ -99,7 +99,8 @@ export function useComboboxState<
         if (currentIndex === -1) {
           return items[direction === 1 ? 0 : items.length - 1]?.value
         }
-        const nextIndex = (currentIndex + direction + items.length) % items.length
+        const nextIndex =
+          (currentIndex + direction + items.length) % items.length
         return items[nextIndex]?.value
       })
     },

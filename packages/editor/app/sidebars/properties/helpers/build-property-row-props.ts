@@ -2,6 +2,10 @@ import { CSSProperties, MouseEvent } from "react"
 import { Unit } from "@seldon/core"
 import { IconProps } from "@seldon/components/primitives/Icon"
 import { TextLabelProps } from "@seldon/components/primitives/TextLabel"
+import {
+  ICONIC_BUTTON_ATTR,
+  ICONIC_BUTTON_SELECTOR,
+} from "../../helpers/iconic-button"
 import { FlatProperty } from "./properties-data"
 import {
   getDisclosureButtonStyle,
@@ -23,11 +27,6 @@ const CHEVRON_ICON = "material-chevronRight" as const
 export const FRAME_REF_ATTR = "data-frame-ref"
 export const FRAME_REF_VALUE = "true"
 export const FRAME_REF_SELECTOR = `[${FRAME_REF_ATTR}="${FRAME_REF_VALUE}"]`
-
-import {
-  ICONIC_BUTTON_ATTR,
-  ICONIC_BUTTON_SELECTOR,
-} from "../../helpers/iconic-button"
 
 export { ICONIC_BUTTON_ATTR, ICONIC_BUTTON_SELECTOR }
 

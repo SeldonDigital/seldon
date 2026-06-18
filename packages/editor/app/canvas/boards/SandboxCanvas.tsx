@@ -30,8 +30,7 @@ export function SandboxCanvas({ board }: SandboxCanvasProps) {
   const { workspace } = useWorkspace()
   const playgroundKey = resolveComponentKey(board, workspace)
   const playground = workspace.playgrounds?.[playgroundKey] ?? board
-  const themeId = (getBoardThemeRef(playground) ??
-    "default") as ThemeInstanceId
+  const themeId = (getBoardThemeRef(playground) ?? "default") as ThemeInstanceId
 
   if (playground.variants.length === 0) {
     return (
@@ -45,7 +44,10 @@ export function SandboxCanvas({ board }: SandboxCanvasProps) {
   }
 
   return (
-    <div className={`playground playground-${playgroundKey}`} style={playgroundStyle}>
+    <div
+      className={`playground playground-${playgroundKey}`}
+      style={playgroundStyle}
+    >
       {playground.variants.map((ref) => (
         <CanvasNode
           key={ref.id}

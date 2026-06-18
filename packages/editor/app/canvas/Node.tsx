@@ -28,10 +28,7 @@ import {
   getNodeChildIds,
 } from "@lib/workspace/node-tree"
 import { buildRenderParentIndex } from "@lib/workspace/render-parent-index"
-import {
-  CanvasHtmlAttributes,
-  ComponentRenderer,
-} from "./ComponentRenderer"
+import { CanvasHtmlAttributes, ComponentRenderer } from "./ComponentRenderer"
 
 export type CanvasNodeProps = {
   nodeId: VariantId | InstanceId

@@ -1,15 +1,16 @@
 import { COLORS } from "@lib/helpers/colors"
 import { CSSProperties, ReactNode } from "react"
 import { LayeredPaintKey } from "@seldon/core"
+import { useLayerDragStateStore } from "./hooks/use-layer-drag-state"
+import { useLayerDraggable } from "./hooks/use-layer-draggable"
+import { useLayerDropzone } from "./hooks/use-layer-dropzone"
 import {
+  Box,
   InsertIndicatorLine,
   OverlayLayer,
   PlacementZoneSurface,
   Pointer,
 } from "@seldon/components/custom-components"
-import { useLayerDraggable } from "./hooks/use-layer-draggable"
-import { useLayerDropzone } from "./hooks/use-layer-dropzone"
-import { useLayerDragStateStore } from "./hooks/use-layer-drag-state"
 import type { LayerPlacement } from "./helpers/layer-reorder"
 
 interface LayerDragRowProps {
@@ -44,7 +45,7 @@ export function LayerDragRow({
   })
 
   return (
-    <div ref={ref} style={{ ...wrapperStyle, opacity: dragging ? 0.5 : 1 }}>
+    <Box ref={ref} style={{ ...wrapperStyle, opacity: dragging ? 0.5 : 1 }}>
       {children}
       <LayerDropBand
         property={property}
@@ -58,7 +59,7 @@ export function LayerDragRow({
         layerCount={layerCount}
         placement="after"
       />
-    </div>
+    </Box>
   )
 }
 

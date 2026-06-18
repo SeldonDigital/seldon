@@ -11,7 +11,7 @@
     "lint": "npm run lint --workspace @seldon/editor",
     "format:check": "prettier --check \"**/*.{ts,tsx,json,css,js,mjs,md}\"",
     "quality": "npm run format:check && npm run quality --workspace @seldon/editor",
-    "format": "node scripts/collapse-empty-values.mjs && prettier --write \"**/*.{ts,tsx,json,css,js,mjs,md}\""
+    "format": "node scripts/format.mjs"
   },
   "repository": {
     "type": "git",

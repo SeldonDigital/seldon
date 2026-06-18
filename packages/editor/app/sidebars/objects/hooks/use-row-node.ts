@@ -1,3 +1,8 @@
+import {
+  buildDefaultSnippet,
+  buildVariantSnippet,
+} from "@lib/copy-schema/build-schema-snippet"
+import { serializeSchemaSnippet } from "@lib/copy-schema/serialize-schema-ts"
 import { removeNewLines } from "@lib/helpers/new-lines"
 import { MenuEntry } from "@lib/menus"
 import { CSSProperties } from "react"
@@ -18,13 +23,7 @@ import {
   typeCheckingService,
 } from "@seldon/core/workspace/services"
 import type { EntryNode } from "@seldon/core/workspace/types"
-import {
-  buildDefaultSnippet,
-  buildVariantSnippet,
-} from "@lib/copy-schema/build-schema-snippet"
-import { serializeSchemaSnippet } from "@lib/copy-schema/serialize-schema-ts"
 import { usePropertiesClipboard } from "@lib/workspace/hooks/use-properties-clipboard"
-import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import {
   useSelection,
   useStore as useSelectionStore,
@@ -49,12 +48,13 @@ import {
 } from "@lib/workspace/workspace-accessors"
 import { IconProps } from "@seldon/components/custom-components"
 import { TextLabelProps } from "@seldon/components/primitives/TextLabel"
+import { useAddToast } from "@app/toaster/hooks/use-add-toast"
+import { buildResetMenuEntry } from "../../shared/build-reset-menu-entry"
 import { useDraggable } from "./use-draggable"
 import { useEditState } from "./use-edit-state"
 import { useExpansion, useIsExpanded } from "./use-expansion"
 import { useRowButton } from "./use-row-button"
 import { useRowClick } from "./use-row-click"
-import { buildResetMenuEntry } from "../../shared/build-reset-menu-entry"
 import { useRowToggle } from "./use-row-toggle"
 import { useSelectionRelations } from "./use-selection-relations"
 
@@ -187,7 +187,10 @@ export function useRowNode(
       if (autoScrollToSelection && nodeExistsInWorkspace) {
         const variantNode = getNode(workspace, variantId)
         if (variantNode) {
-          const root = nodeRelationshipService.getRootVariant(variantNode, workspace)
+          const root = nodeRelationshipService.getRootVariant(
+            variantNode,
+            workspace,
+          )
           const rootEntry = getNode(workspace, root.id)
           const rootCatalogId = rootEntry
             ? getNodeCatalogComponentId(rootEntry, workspace)

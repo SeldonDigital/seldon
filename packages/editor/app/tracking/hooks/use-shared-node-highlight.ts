@@ -1,9 +1,9 @@
-import { useEditorConfig } from "@lib/hooks/use-editor-config"
-import { useStore as useSelectionStore } from "@lib/workspace/hooks/use-selection"
-import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
+import { useMemo } from "react"
 import { parseNodeLink } from "@seldon/core/workspace/model/template-ref"
 import type { Workspace } from "@seldon/core/workspace/types"
-import { useMemo } from "react"
+import { useStore as useSelectionStore } from "@lib/workspace/hooks/use-selection"
+import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
+import { useEditorConfig } from "@lib/hooks/use-editor-config"
 
 const EMPTY_IDS: ReadonlySet<string> = new Set()
 
@@ -54,10 +54,7 @@ function buildTemplateGraph(workspace: Workspace): TemplateGraph {
 }
 
 /** Every node reachable downstream of `rootId` by following reverse template links. */
-function collectDownstream(
-  rootId: string,
-  graph: TemplateGraph,
-): Set<string> {
+function collectDownstream(rootId: string, graph: TemplateGraph): Set<string> {
   const result = new Set<string>()
   const queue = [rootId]
 

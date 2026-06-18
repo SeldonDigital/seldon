@@ -3,12 +3,12 @@ import { ComponentId } from "@seldon/core/components/constants"
 import { VariantId, invariant } from "@seldon/core/index"
 import { getBoardOrder } from "@seldon/core/workspace/helpers/components/board-sort-order"
 import { getBoardVariantRootIds } from "@seldon/core/workspace/helpers/components/get-board-variant-root-ids"
-import { canMoveInstance } from "@seldon/core/workspace/services/nodes/node-move-navigation.service"
 import {
   nodeRelationshipService,
   nodeRetrievalService,
   typeCheckingService,
 } from "@seldon/core/workspace/services"
+import { canMoveInstance } from "@seldon/core/workspace/services/nodes/node-move-navigation.service"
 import { useSelection } from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
@@ -57,7 +57,10 @@ export function useMoveCommands() {
         return
       }
 
-      const board = nodeRelationshipService.findBoardForVariant(variant, workspace)
+      const board = nodeRelationshipService.findBoardForVariant(
+        variant,
+        workspace,
+      )
       invariant(board, "Board not found")
 
       const variantRootIds = getBoardVariantRootIds(board)
@@ -153,7 +156,10 @@ export function useMoveCommands() {
 
     if (typeCheckingService.isVariant(selection)) {
       if (typeCheckingService.isDefaultVariant(selection)) return none
-      const board = nodeRelationshipService.findBoardForVariant(selection, workspace)
+      const board = nodeRelationshipService.findBoardForVariant(
+        selection,
+        workspace,
+      )
       if (!board) return none
       const variantRootIds = getBoardVariantRootIds(board)
       const index = variantRootIds.indexOf(selection.id)

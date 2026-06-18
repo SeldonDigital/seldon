@@ -1,8 +1,8 @@
 import { dropTargetForElements } from "@atlaskit/pragmatic-drag-and-drop/element/adapter"
 import { useEffect, useRef, useState } from "react"
 import { LayeredPaintKey, invariant } from "@seldon/core"
-import { LAYER_DRAG_ACTION } from "./use-layer-draggable"
 import type { LayerPlacement } from "../helpers/layer-reorder"
+import { LAYER_DRAG_ACTION } from "./use-layer-draggable"
 
 /**
  * Makes a band of a layered paint parent row a drop target for layer reordering.
