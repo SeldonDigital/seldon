@@ -16,6 +16,7 @@ import {
   getInitialVariantLabel,
   setNodeEditorData,
   setNodeLabel,
+  setNodeRef,
 } from "./label-mutations"
 import {
   resetComponentProperty,
@@ -50,6 +51,14 @@ export class WorkspaceMutationService {
     workspace: Workspace,
   ): Workspace {
     return setNodeLabel(nodeId, label, workspace)
+  }
+
+  public setNodeRef(
+    nodeId: VariantId | InstanceId,
+    ref: string,
+    workspace: Workspace,
+  ): Workspace {
+    return setNodeRef(nodeId, ref, workspace)
   }
 
   public setNodeEditorData(

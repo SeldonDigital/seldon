@@ -140,6 +140,7 @@ export function generateJSXStructure(
       path: node.dataBinding.path,
       propVarName,
       propKeyName,
+      ref: node.ref,
       children: children.length > 0 ? children : undefined,
       condition,
       grandchildProps: grandchildProps.length > 0 ? grandchildProps : undefined,
@@ -156,6 +157,7 @@ export function generateJSXStructure(
     name: config.react.returns || "div",
     path: tree.dataBinding.path,
     propVarName: "props",
+    ref: tree.ref,
     children: rootChildren.length > 0 ? rootChildren : undefined,
   }
 

@@ -89,6 +89,8 @@ function cloneEntryNodeAsInstance(
   clone.type = "instance"
   clone.template = formatNodeLink(templateNodeId)
   clone.origin = "user"
+  // A ref must stay globally unique; never carry it onto a copy.
+  delete clone.ref
   const link = parseNodeLink(row.template)
   if (link?.kind === "node" && idMap.has(link.nodeId)) {
     clone.template = formatNodeLink(idMap.get(link.nodeId)!)
@@ -527,6 +529,7 @@ export class NodeOperationsService {
         if (!row) continue
         const clone = structuredClone(row)
         clone.id = newId
+        delete clone.ref
         const link = parseNodeLink(clone.template)
         if (link?.kind === "node" && idMap.has(link.nodeId)) {
           clone.template = formatNodeLink(idMap.get(link.nodeId)!)
@@ -694,6 +697,7 @@ export class NodeOperationsService {
       template: formatNodeLink(nodeId),
       origin: "user",
     }
+    delete newNodes[newRootId].ref
 
     let newTreeRef: ComponentTreeRef = { id: newRootId }
 

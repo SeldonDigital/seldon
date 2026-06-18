@@ -68,6 +68,7 @@ export interface MutationRules {
   reset: Config
   setTheme: Config
   rename: Config
+  setRef: Config
   reorder: Config
   move: Config
 }

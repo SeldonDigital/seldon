@@ -263,6 +263,15 @@ export function validateNodeMutation(
       })
       break
     }
+    case "set_node_ref": {
+      const nodeId = action.payload.nodeId as InstanceId | VariantId
+      nodeValidators.exists(workspace, nodeId)
+      nodeValidators.refIsUnique(workspace, {
+        nodeId,
+        ref: action.payload.ref,
+      })
+      break
+    }
     case "set_node_editor_data":
     case "reset_node_label":
     case "reset_node_editor_data":

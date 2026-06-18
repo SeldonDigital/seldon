@@ -3616,6 +3616,36 @@
                         "nodeId": {
                             "type": "string"
                         },
+                        "ref": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "nodeId",
+                        "ref"
+                    ],
+                    "type": "object"
+                },
+                "type": {
+                    "const": "set_node_ref",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "payload",
+                "type"
+            ],
+            "type": "object"
+        },
+        {
+            "additionalProperties": false,
+            "properties": {
+                "payload": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "nodeId": {
+                            "type": "string"
+                        },
                         "theme": {
                             "anyOf": [
                                 {

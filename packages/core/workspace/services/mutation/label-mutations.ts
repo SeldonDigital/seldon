@@ -21,6 +21,18 @@ export function setNodeLabel(
   })
 }
 
+export function setNodeRef(
+  nodeId: VariantId | InstanceId,
+  ref: string,
+  workspace: Workspace,
+): Workspace {
+  return withNodeMutation(nodeId, workspace, (node) => {
+    const trimmed = ref.trim()
+    if (trimmed === "") delete node.ref
+    else node.ref = trimmed
+  })
+}
+
 export function setNodeEditorData(
   nodeId: VariantId | InstanceId,
   editorData: Record<string, unknown> | undefined,

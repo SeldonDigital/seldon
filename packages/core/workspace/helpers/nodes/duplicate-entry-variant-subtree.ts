@@ -18,6 +18,15 @@ function collectTreeRefIds(ref: ComponentTreeRef): string[] {
   return ids
 }
 
+/**
+ * Drops the `ref` handle from a node. A reference must stay globally unique, so
+ * duplicates never inherit the source node's ref.
+ */
+function stripRef<T extends EntryNode>(node: T): T {
+  delete node.ref
+  return node
+}
+
 function cloneEntryNodeWithIdRemap(
   row: EntryNode,
   newId: string,
@@ -25,6 +34,7 @@ function cloneEntryNodeWithIdRemap(
 ): EntryNode {
   const clone = structuredClone(row) as EntryNode
   clone.id = newId
+  delete clone.ref
   const link = parseNodeLink(clone.template)
   if (link && idMap.has(link.nodeId)) {
     clone.template = formatNodeLink(idMap.get(link.nodeId)!)
@@ -140,14 +150,14 @@ export function buildDuplicateEntryVariantSubtreePlan(
   const newNodes: Record<string, EntryNode> = {}
 
   if (isEntryNodeDefault(sourceNode)) {
-    newNodes[newRootId] = {
+    newNodes[newRootId] = stripRef({
       ...structuredClone(sourceNode),
       id: newRootId,
       type: "variant",
       label: newVariantLabel,
       template: formatNodeLink(sourceRootId),
       overrides: structuredClone(sourceNode.overrides),
-    }
+    })
     for (const [oldId, newId] of idMap) {
       const row = nodes[oldId]
       if (!row) continue
@@ -159,7 +169,7 @@ export function buildDuplicateEntryVariantSubtreePlan(
       if (link?.kind === "node" && idMap.has(link.nodeId)) {
         template = formatNodeLink(idMap.get(link.nodeId)!)
       }
-      newNodes[newId] = {
+      newNodes[newId] = stripRef({
         ...structuredClone(row),
         id: newId,
         type: "instance",
@@ -167,7 +177,7 @@ export function buildDuplicateEntryVariantSubtreePlan(
         overrides: {},
         origin: "schema",
         __editor: { initialOverrides: {} },
-      }
+      })
     }
   } else {
     const defaultVariantId = board.variants[0]?.id
@@ -181,14 +191,14 @@ export function buildDuplicateEntryVariantSubtreePlan(
       const row = nodes[oldId]
       if (!row) continue
       if (oldId === sourceRootId) {
-        newNodes[newId] = {
+        newNodes[newId] = stripRef({
           ...structuredClone(row),
           id: newId,
           type: "variant",
           label: newVariantLabel,
           template: rootTemplate,
           overrides: structuredClone(row.overrides),
-        }
+        })
       } else {
         newNodes[newId] = cloneEntryNodeWithIdRemap(row, newId, idMap)
       }

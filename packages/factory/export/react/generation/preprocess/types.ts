@@ -15,6 +15,7 @@ export type JSXNode = {
   children?: JSXNode[]
   condition?: string // For conditional rendering (prop name that controls visibility)
   className?: string
+  ref?: string // Node reference handle, emitted as data-seldon-ref
   grandchildProps?: Array<{
     propKeyName: string // child component's slot name, e.g. "icon"
     propVarName: string // parent's variable name, e.g. "buttonIconicIconProps"

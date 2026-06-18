@@ -77,6 +77,8 @@ function cloneNodeEntry(
 ): EntryNode {
   const clone = structuredClone(node) as EntryNode
   clone.id = newId
+  // A ref must stay globally unique; never carry it onto a duplicated node.
+  delete clone.ref
   const link = parseNodeLink(clone.template)
   if (link && idMap.has(link.nodeId)) {
     clone.template = formatNodeLink(idMap.get(link.nodeId)!)

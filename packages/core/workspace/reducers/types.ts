@@ -605,6 +605,13 @@ export type WorkspaceAction =
       }
     }
   | {
+      type: "set_node_ref"
+      payload: {
+        nodeId: VariantId | InstanceId
+        ref: string
+      }
+    }
+  | {
       type: "set_node_theme"
       payload: {
         nodeId: InstanceId | VariantId

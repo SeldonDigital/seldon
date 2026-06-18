@@ -118,6 +118,8 @@ export type JSONTreeNode = {
   componentId: ComponentId
   schemaVariantId: string | null
   nodeId: InstanceId | VariantId
+  /** Unique node reference handle, emitted as `data-seldon-ref` when present. */
+  ref?: string
   children?: null | string | JSONTreeNode[]
   level: ComponentLevel
   dataBinding: DataBinding

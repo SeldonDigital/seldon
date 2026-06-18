@@ -121,6 +121,17 @@ export const nodeValidators = {
   exists: (workspace: Workspace, id: InstanceId | VariantId) => {
     check(workspace.nodes[id], ErrorMessages.nodeNotFound(id))
   },
+  refIsUnique: (
+    workspace: Workspace,
+    { nodeId, ref }: { nodeId: InstanceId | VariantId; ref: string },
+  ) => {
+    const trimmed = ref.trim()
+    if (trimmed === "") return
+    const taken = Object.values(workspace.nodes).some(
+      (node) => node.id !== nodeId && node.ref === trimmed,
+    )
+    check(!taken, ErrorMessages.refNotUnique(trimmed))
+  },
   canHaveChildren: (workspace: Workspace, id: InstanceId | VariantId) => {
     const node = workspace.nodes[id]
     check(node, ErrorMessages.nodeNotFound(id))

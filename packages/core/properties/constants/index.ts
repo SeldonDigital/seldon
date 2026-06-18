@@ -21,9 +21,11 @@ export {
   type PropertyShorthandCatalogKey,
 } from "./shared/shorthand-properties"
 export {
+  NODE_FIELD_DISPLAY_ORDER,
   PropertyDisplayCategory,
   PROPERTY_DISPLAY_META,
   PROPERTY_DISPLAY_ORDER,
   attachPropertyDisplayMetadata,
+  type NodeFieldDisplayId,
   type PropertyDisplayMeta,
 } from "./property-display"
