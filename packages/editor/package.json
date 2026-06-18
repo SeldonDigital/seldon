@@ -11,7 +11,7 @@
     "build": "node scripts/append-chrome-font-fallback.mjs && node scripts/copy-font-licenses.mjs && node scripts/copy-font-files.mjs && node scripts/generate-third-party-notices.mjs && vite build",
     "start": "vite preview",
     "lint": "eslint .",
-    "format": "prettier --write \"./**/*.{ts,tsx,json,css}\"",
+    "format": "node ../../scripts/format.mjs",
     "quality": "tsc -p tsconfig.json"
   },
   "dependencies": {
