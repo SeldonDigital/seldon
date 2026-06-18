@@ -10,6 +10,7 @@ import {
   ThemeValue,
   Value,
 } from "../../properties/types"
+import { isLayeredPaintProperty } from "../../properties/types/property-keys"
 import { HSL } from "../../properties/values/shared/exact/hsl"
 import { TokenType } from "../../themes/constants/token-type"
 import { Theme, ThemeInstanceId, ThemeOption } from "../../themes/types"
@@ -51,6 +52,8 @@ type RemapContext = {
   node: WritableDraft<EntryNode>
   propertyKey: PropertyKey
   subpropertyKey?: SubPropertyKey
+  /** Paint-layer slot when the token sits inside a layered paint stack. */
+  layerIndex?: number
 }
 
 type MatchingResult = {
@@ -89,15 +92,25 @@ function createUpdatedThemeValue(
 }
 
 /**
- * Sets a theme value on a node, handling both regular and sub-properties.
+ * Sets a theme value on a node, handling regular, sub-property, and layered
+ * paint targets.
  */
 function setThemeValueOnNode(
   node: WritableDraft<EntryNode>,
   propertyKey: PropertyKey,
   subpropertyKey: SubPropertyKey | undefined,
-  newValue: ThemeValue,
+  newValue: Value,
+  layerIndex?: number,
 ): void {
-  if (subpropertyKey) {
+  if (subpropertyKey && layerIndex != null) {
+    setNodeLayeredSubProperty(
+      node,
+      propertyKey,
+      layerIndex,
+      subpropertyKey,
+      newValue,
+    )
+  } else if (subpropertyKey) {
     setNodeSubProperty(node, propertyKey, subpropertyKey, newValue)
   } else {
     setNodeProperty(node, propertyKey, newValue)
@@ -185,7 +198,8 @@ function findMatchingThemeOption(
 
 /** Remaps a swatch theme value, carrying over reserved slots when present. */
 function remapSwatchValue(context: RemapContext): boolean {
-  const { value, newTheme, node, propertyKey, subpropertyKey } = context
+  const { value, newTheme, node, propertyKey, subpropertyKey, layerIndex } =
+    context
 
   if (!value.value) {
     return false
@@ -212,7 +226,13 @@ function remapSwatchValue(context: RemapContext): boolean {
 
     if (matchingSlot) {
       const newValue = createUpdatedThemeValue(value, section, optionId)
-      setThemeValueOnNode(node, propertyKey, subpropertyKey, newValue)
+      setThemeValueOnNode(
+        node,
+        propertyKey,
+        subpropertyKey,
+        newValue,
+        layerIndex,
+      )
       return true
     }
   }
@@ -230,7 +250,13 @@ function remapSwatchValue(context: RemapContext): boolean {
         section,
         result.newOptionId,
       )
-      setThemeValueOnNode(node, propertyKey, subpropertyKey, newValue)
+      setThemeValueOnNode(
+        node,
+        propertyKey,
+        subpropertyKey,
+        newValue,
+        layerIndex,
+      )
       return true
     }
   }
@@ -245,8 +271,15 @@ function remapSwatchValue(context: RemapContext): boolean {
 
 /** Remaps a non-swatch theme value to its match in the new theme. */
 function remapNonSwatchValue(context: RemapContext): boolean {
-  const { value, currentTheme, newTheme, node, propertyKey, subpropertyKey } =
-    context
+  const {
+    value,
+    currentTheme,
+    newTheme,
+    node,
+    propertyKey,
+    subpropertyKey,
+    layerIndex,
+  } = context
 
   if (!value.value) {
     return false
@@ -274,7 +307,7 @@ function remapNonSwatchValue(context: RemapContext): boolean {
 
   if (result.matched && result.newOptionId) {
     const newValue = createUpdatedThemeValue(value, section, result.newOptionId)
-    setThemeValueOnNode(node, propertyKey, subpropertyKey, newValue)
+    setThemeValueOnNode(node, propertyKey, subpropertyKey, newValue, layerIndex)
     return true
   }
 
@@ -300,7 +333,14 @@ export function remapNodeThemeTokens(
   for (const [key, value] of Object.entries(properties)) {
     const propertyKey = key as PropertyKey
 
-    if (isCompoundProperty(propertyKey)) {
+    if (isLayeredPaintProperty(propertyKey)) {
+      remapLayeredThemeTokens(value, {
+        currentTheme,
+        newTheme,
+        node,
+        propertyKey,
+      })
+    } else if (isCompoundProperty(propertyKey)) {
       remapCompoundThemeTokens(value, {
         currentTheme,
         newTheme,
@@ -363,6 +403,41 @@ function remapCompoundThemeTokens(
   }
 }
 
+/**
+ * Remaps theme token facets inside a layered paint stack (`background`,
+ * `shadow`). Each layer is its own facet map, so the layer slot is tracked and
+ * carried through to the override write-back. A non-array value is treated as a
+ * single layer at index 0.
+ */
+function remapLayeredThemeTokens(
+  layeredValue: unknown,
+  context: {
+    currentTheme: Theme
+    newTheme: Theme
+    node: WritableDraft<EntryNode>
+    propertyKey: PropertyKey
+  },
+): void {
+  const layers = Array.isArray(layeredValue) ? layeredValue : [layeredValue]
+
+  layers.forEach((layer, layerIndex) => {
+    if (!layer || typeof layer !== "object") return
+
+    for (const [subKey, subProperty] of Object.entries(
+      layer as Record<string, unknown>,
+    )) {
+      const subValue = subProperty as Value
+      if (!isThemeValue(subValue)) continue
+      remapThemeToken({
+        value: subValue,
+        ...context,
+        subpropertyKey: subKey as SubPropertyKey,
+        layerIndex,
+      })
+    }
+  })
+}
+
 /** Remaps one theme token on a node override using slot, name, and value matching. */
 function remapThemeToken({
   value,
@@ -371,6 +446,7 @@ function remapThemeToken({
   node,
   propertyKey,
   subpropertyKey,
+  layerIndex,
 }: {
   value: ThemeValue
   currentTheme: Theme
@@ -378,6 +454,7 @@ function remapThemeToken({
   node: WritableDraft<EntryNode>
   propertyKey: PropertyKey
   subpropertyKey?: SubPropertyKey
+  layerIndex?: number
 }) {
   if (!value.value) {
     return
@@ -396,6 +473,7 @@ function remapThemeToken({
     node,
     propertyKey,
     subpropertyKey,
+    layerIndex,
   }
 
   if (section === "swatch") {
@@ -439,6 +517,42 @@ function setNodeSubProperty(
 }
 
 /**
+ * Sets a facet value on one paint-layer slot of a layered paint property.
+ * Earlier layers are padded with empty bags so the template layers show through
+ * the merge while the targeted layer carries the remapped value.
+ */
+function setNodeLayeredSubProperty(
+  node: WritableDraft<EntryNode>,
+  key: PropertyKey,
+  layerIndex: number,
+  subpropertyKey: SubPropertyKey,
+  value: Value,
+) {
+  if (!node.overrides) {
+    node.overrides = {}
+  }
+
+  const existing = node.overrides[key]
+  const layers = (Array.isArray(existing) ? existing : []) as Record<
+    string,
+    unknown
+  >[]
+
+  while (layers.length <= layerIndex) {
+    layers.push({})
+  }
+
+  const layer =
+    layers[layerIndex] && typeof layers[layerIndex] === "object"
+      ? layers[layerIndex]
+      : {}
+  layer[subpropertyKey] = value
+  layers[layerIndex] = layer
+
+  Object.assign(node.overrides, { [key]: layers })
+}
+
+/**
  * Converts a theme value to an exact value when no matching theme option exists.
  */
 function detachThemeValue({
@@ -447,12 +561,14 @@ function detachThemeValue({
   node,
   propertyKey,
   subpropertyKey,
+  layerIndex,
 }: {
   value: ThemeValue
   currentTheme: Theme
   node: WritableDraft<EntryNode>
   propertyKey: PropertyKey
   subpropertyKey?: SubPropertyKey
+  layerIndex?: number
 }) {
   if (!value.value) {
     return
@@ -477,9 +593,5 @@ function detachThemeValue({
     value: themeOption.value as string | number | HSL,
   }
 
-  if (subpropertyKey) {
-    setNodeSubProperty(node, propertyKey, subpropertyKey, newValue)
-  } else {
-    setNodeProperty(node, propertyKey, newValue)
-  }
+  setThemeValueOnNode(node, propertyKey, subpropertyKey, newValue, layerIndex)
 }

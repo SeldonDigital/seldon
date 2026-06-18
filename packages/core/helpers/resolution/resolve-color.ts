@@ -7,12 +7,11 @@ import type { HSLValue } from "../../properties/values/shared/exact/hsl"
 import type { LCHValue } from "../../properties/values/shared/exact/lch"
 import type { RGBValue } from "../../properties/values/shared/exact/rgb"
 import type { TransparentValue } from "../../properties/values/shared/option/transparent"
-import { Theme } from "../../themes/types"
+import { Theme, ThemeOption } from "../../themes/types"
 import { isSwatchToken } from "../../themes/values"
 import { debugLog } from "../../utils/debug-logger"
 import { themeSwatchToColorValue } from "../color/theme-swatch-to-color-value"
 import { getThemeOption } from "../theme/get-theme-option"
-import { invariant } from "../utils/invariant"
 
 /**
  * Resolves color values to concrete HSLValue, RGBValue, HexValue, LCHValue, TransparentValue, or EmptyValue.
@@ -54,8 +53,21 @@ export function resolveColor({
         `resolveColor received a COMPUTED value. This should have been computed in the compute function.`,
       )
     case ValueType.THEME_CATEGORICAL: {
-      const themeValue = getThemeOption(color.value as string, theme)
-      invariant(themeValue, `Theme value ${color.value} not found`)
+      let themeValue: ThemeOption | undefined
+      try {
+        themeValue = getThemeOption(color.value as string, theme)
+      } catch {
+        // A stale reference to a token the active theme no longer defines (such
+        // as a removed custom swatch slot) resolves to empty so it never aborts
+        // the surrounding compute or CSS generation.
+        debugLog(
+          "Workspace",
+          "resolveColor",
+          "Theme swatch token not found, falling back to empty value",
+          { key: color.value },
+        )
+        return { type: ValueType.EMPTY, value: null }
+      }
       if (!isSwatchToken(themeValue)) {
         debugLog(
           "Workspace",

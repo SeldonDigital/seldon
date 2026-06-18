@@ -61,17 +61,57 @@ function matchesThemeKey(value: AtomicValue, key: ThemeValueKey): boolean {
   return isThemeRefValue(value) && value.value === key
 }
 
-/** True when an atomic or compound value references the given theme token key. */
+/** True when any facet in a layer or compound facet map references the key. */
+function facetMapReferencesThemeKey(
+  facets: Record<string, unknown>,
+  key: ThemeValueKey,
+): boolean {
+  return Object.values(facets).some((sub) =>
+    matchesThemeKey(sub as AtomicValue, key),
+  )
+}
+
+/**
+ * True when an atomic, compound, or layered paint value references the given
+ * theme token key. Layered paint values are arrays of layer facet maps, so each
+ * layer is checked facet by facet.
+ */
 function valueReferencesThemeKey(value: Value, key: ThemeValueKey): boolean {
+  if (Array.isArray(value)) {
+    return value.some(
+      (layer) =>
+        !!layer &&
+        typeof layer === "object" &&
+        facetMapReferencesThemeKey(layer as Record<string, unknown>, key),
+    )
+  }
   if (isCompoundValue(value)) {
-    return Object.values(value).some((sub: AtomicValue) =>
-      matchesThemeKey(sub, key),
+    return facetMapReferencesThemeKey(
+      value as unknown as Record<string, unknown>,
+      key,
     )
   }
   return isAtomicValue(value) && matchesThemeKey(value, key)
 }
 
-/** Rewrites every atomic or compound facet that references `key` to `exactValue`. */
+/** Replaces every facet in a layer or compound facet map that references `key`. */
+function replaceThemeKeyInFacetMap(
+  facets: Record<string, unknown>,
+  key: ThemeSwatchKey,
+  exactValue: AtomicValue,
+): void {
+  for (const [subKey, subValue] of Object.entries(facets)) {
+    if (matchesThemeKey(subValue as AtomicValue, key)) {
+      Object.assign(facets, { [subKey]: exactValue })
+    }
+  }
+}
+
+/**
+ * Rewrites every atomic, compound, or layered paint facet that references `key`
+ * to `exactValue`. Layered paint values are arrays of layer facet maps, so each
+ * layer is rewritten in place.
+ */
 function replaceThemeKeyInProperties(
   bag: Properties,
   key: ThemeSwatchKey,
@@ -79,14 +119,22 @@ function replaceThemeKeyInProperties(
 ): void {
   for (const [propertyKey, rawValue] of Object.entries(bag)) {
     const value = rawValue as Value
-    if (isCompoundValue(value)) {
-      for (const [subKey, subValue] of Object.entries(value)) {
-        if (matchesThemeKey(subValue, key)) {
-          Object.assign(bag[propertyKey as PropertyKey]!, {
-            [subKey]: exactValue,
-          })
+    if (Array.isArray(value)) {
+      for (const layer of value) {
+        if (layer && typeof layer === "object") {
+          replaceThemeKeyInFacetMap(
+            layer as Record<string, unknown>,
+            key,
+            exactValue,
+          )
         }
       }
+    } else if (isCompoundValue(value)) {
+      replaceThemeKeyInFacetMap(
+        bag[propertyKey as PropertyKey] as Record<string, unknown>,
+        key,
+        exactValue,
+      )
     } else if (isAtomicValue(value) && matchesThemeKey(value, key)) {
       Object.assign(bag, { [propertyKey]: exactValue })
     }
