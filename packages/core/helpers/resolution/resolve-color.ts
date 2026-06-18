@@ -24,7 +24,6 @@ import { getThemeOption } from "../theme/get-theme-option"
 export function resolveColor({
   color,
   theme,
-  parentContext,
 }: {
   color: ColorValue | EmptyValue
   theme: Theme

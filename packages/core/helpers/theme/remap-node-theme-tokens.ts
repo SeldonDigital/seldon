@@ -214,7 +214,7 @@ function remapSwatchValue(context: RemapContext): boolean {
   let currentOption: ThemeOption | undefined
   try {
     currentOption = getThemeOption(value.value, context.currentTheme)
-  } catch (error) {
+  } catch {
     return false
   }
 
@@ -294,7 +294,7 @@ function remapNonSwatchValue(context: RemapContext): boolean {
   let currentOption: ThemeOption | undefined
   try {
     currentOption = getThemeOption(value.value, currentTheme)
-  } catch (error) {
+  } catch {
     return false
   }
 
