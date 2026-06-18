@@ -160,6 +160,7 @@ export function validateAction(workspace: Workspace, action: Action): void {
       return
     case "set_node_theme":
     case "set_node_label":
+    case "set_node_ref":
     case "set_node_editor_data":
     case "reset_node_label":
     case "reset_node_editor_data":

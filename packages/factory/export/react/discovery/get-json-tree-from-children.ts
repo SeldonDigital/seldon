@@ -60,6 +60,7 @@ export function getJsonTreeFromChildren(
     componentId,
     schemaVariantId,
     nodeId: variant.id,
+    ref: variant.ref,
     level: componentLevel,
     dataBinding: {
       interfaceName: name + "Props",
@@ -190,6 +191,7 @@ export function getJsonTreeFromChildren(
       componentId: childComponentId,
       schemaVariantId: childSchemaVariantId,
       nodeId: node.id,
+      ref: node.ref,
       level: childSchema.level,
       dataBinding: {
         interfaceName,

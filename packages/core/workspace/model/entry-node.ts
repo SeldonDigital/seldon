@@ -33,6 +33,12 @@ export interface EntryNode {
   template: string
   overrides: EntryNodePropertyOverrides
   origin?: NodeOrigin
+  /**
+   * Stable, user-assigned reference handle for this node. Unique across the
+   * whole workspace and never inherited or merged, so generated code and app
+   * logic can target a specific node regardless of position. Absent until set.
+   */
+  ref?: string
   __editor?: Record<string, unknown>
 }
 

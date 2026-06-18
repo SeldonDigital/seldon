@@ -203,6 +203,17 @@ export const PROPERTY_DISPLAY_ORDER: ReadonlyArray<{
   },
 ]
 
+/**
+ * Leading node-entry fields shown in the inspector before the property rows.
+ * These are node metadata (not `Properties` keys), so they live here as their
+ * own order instead of in `PROPERTY_DISPLAY_ORDER`. Theme is always pinned
+ * first; every other field follows in alphabetical order. The editor renders
+ * one row per id in this order, ahead of the Attributes block.
+ */
+export const NODE_FIELD_DISPLAY_ORDER = ["theme", "reference"] as const
+
+export type NodeFieldDisplayId = (typeof NODE_FIELD_DISPLAY_ORDER)[number]
+
 export type PropertyDisplayMeta = {
   displayCategory: PropertyDisplayCategory
   displayOrder: number

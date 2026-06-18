@@ -280,6 +280,29 @@ export const rules: RulesConfig = {
     },
 
     /**
+     * Rules for setting a node's unique reference handle.
+     * A ref must stay globally unique, so it never propagates to copies.
+     */
+    setRef: {
+      board: {
+        allowed: false,
+        propagation: "none",
+      },
+      userVariant: {
+        allowed: true,
+        propagation: "none",
+      },
+      defaultVariant: {
+        allowed: false,
+        propagation: "none",
+      },
+      instance: {
+        allowed: true,
+        propagation: "none",
+      },
+    },
+
+    /**
      * Rules for reordering entities
      */
     reorder: {

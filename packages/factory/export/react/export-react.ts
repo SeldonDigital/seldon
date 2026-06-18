@@ -9,6 +9,7 @@ import { generateComponentStylesheet } from "../css/generation/generate-css-styl
 import { generateThemeStylesheetFiles } from "../css/generation/insert-theme-variables"
 import { ExportOptions, FileToExport } from "../types"
 import { generateIconIndex } from "./assets/generate-icon-index"
+import { generateRefsRegistry } from "./assets/generate-refs-registry"
 import { getFilesToExportFromImagesToExport } from "./assets/get-files-to-export-from-images-to-export"
 import { getFontsComponent } from "./assets/get-fonts-component"
 import { getIcons } from "./assets/get-icons"
@@ -129,6 +130,19 @@ export async function exportReact(
     filesToExport.push(iconIndexFile)
   } catch {
     // Failed to generate icon index
+  }
+
+  try {
+    const refsRegistryFile = generateRefsRegistry(
+      componentsToExport,
+      nodeIdToClass,
+      options,
+    )
+    if (refsRegistryFile) {
+      filesToExport.push(refsRegistryFile)
+    }
+  } catch {
+    // Failed to generate refs registry
   }
 
   try {

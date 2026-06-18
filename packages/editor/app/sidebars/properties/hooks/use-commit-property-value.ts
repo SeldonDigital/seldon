@@ -17,6 +17,7 @@ import type {
   SubPropertyKey,
 } from "@seldon/core/properties/types/property-keys"
 import type { ThemeInstanceId } from "@seldon/core/themes/types/theme-id"
+import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { useObjectProperties } from "@lib/workspace/hooks/use-object-properties"
 import { useSelection } from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
@@ -39,6 +40,7 @@ import { FlatProperty } from "../helpers/properties-data"
 import { RESET_VALUES } from "../helpers/property-control-constants"
 import { shouldUsePresetPropertyBehavior } from "../helpers/property-types"
 import { updateProperty } from "../helpers/property-update-handler"
+import { useSetObjectReference } from "./use-set-object-reference"
 import { useSetObjectTheme } from "./use-set-object-theme"
 
 interface UseCommitPropertyValueInput {
@@ -79,6 +81,7 @@ export function useCommitPropertyValue({
   const { workspace } = useWorkspace({ usePreview: false })
   const { selection } = useSelection()
   const setObjectTheme = useSetObjectTheme()
+  const setObjectReference = useSetObjectReference()
   const { show: showUploadPanel } = useImageUploadPanel()
 
   const reset = useCallback(() => {
@@ -242,6 +245,12 @@ export function useCommitPropertyValue({
         return
       }
 
+      if (property.key === "reference" && subject && !isBoard(subject)) {
+        setObjectReference(subject, newValue)
+        onDone()
+        return
+      }
+
       if (newValue === "__upload__") {
         const supportsUpload =
           property.key === "source" ||
@@ -365,6 +374,7 @@ export function useCommitPropertyValue({
       workspace,
       setProperties,
       setObjectTheme,
+      setObjectReference,
       showUploadPanel,
       themeEditingContext,
       fontCollectionEditingContext,

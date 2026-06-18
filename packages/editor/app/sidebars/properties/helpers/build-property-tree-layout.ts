@@ -1,5 +1,15 @@
-import { Board, Instance, Theme, Variant, Workspace } from "@seldon/core"
+import {
+  Board,
+  Instance,
+  NODE_FIELD_DISPLAY_ORDER,
+  Theme,
+  Variant,
+  Workspace,
+} from "@seldon/core"
+import { rules } from "@seldon/core/rules/config/rules.config"
+import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { isResourceType } from "@seldon/core/workspace/helpers/components/is-resource-type"
+import { typeCheckingService } from "@seldon/core/workspace/services"
 import {
   PropertySection,
   getPropertySections,
@@ -13,8 +23,36 @@ import {
   iconCategoryLabel,
 } from "./icon-set-properties-data"
 import { FlatProperty } from "./properties-data"
+import { buildReferenceProperty } from "./reference-display"
 import { buildThemeAssignmentProperty } from "./theme-assignment-display"
 import { ThemeEditingContext } from "./editing-contexts"
+
+/** A reference is only editable where `setRef` rules allow it (boards excluded). */
+function isReferenceFieldAllowed(node: Variant | Instance | Board): boolean {
+  if (isBoard(node)) return false
+  const entityType = typeCheckingService.getEntityType(node)
+  return rules.mutations.setRef[entityType].allowed
+}
+
+/**
+ * Builds the leading node-field rows shown before the property rows, in the
+ * core-owned `NODE_FIELD_DISPLAY_ORDER`. Theme applies to every non-resource
+ * node and board; Reference only to nodes where `setRef` is allowed.
+ */
+function buildLeadingNodeFieldRows(
+  node: Variant | Instance | Board,
+  workspace: Workspace,
+): FlatProperty[] {
+  const rows: FlatProperty[] = []
+  for (const field of NODE_FIELD_DISPLAY_ORDER) {
+    if (field === "theme") {
+      rows.push(buildThemeAssignmentProperty(node, workspace))
+    } else if (field === "reference" && isReferenceFieldAllowed(node)) {
+      rows.push(buildReferenceProperty(node))
+    }
+  }
+  return rows
+}
 
 export function buildPropertyTreeSections({
   properties,
@@ -75,17 +113,12 @@ export function buildPropertyTreeSections({
     ] as Array<PropertySection | ThemePropertySection>
   }
 
-  const leadingProperties: FlatProperty[] = []
-  const propertiesWithTheme = isResourceType(node as Board)
-    ? [...leadingProperties, ...properties]
-    : [
-        ...leadingProperties,
-        buildThemeAssignmentProperty(node, workspace),
-        ...properties,
-      ]
+  const propertiesWithLeadingFields = isResourceType(node as Board)
+    ? [...properties]
+    : [...buildLeadingNodeFieldRows(node, workspace), ...properties]
 
   const regularSections = getPropertySections(
-    propertiesWithTheme,
+    propertiesWithLeadingFields,
     node,
     workspace,
   )
@@ -142,12 +175,9 @@ export function buildPropertyTreeAllProperties({
     return properties
   }
 
-  const leadingProperties: FlatProperty[] = []
-
   if (isResourceType(node as Board)) {
-    return [...leadingProperties, ...properties]
+    return [...properties]
   }
 
-  const themeProperty = buildThemeAssignmentProperty(node, workspace)
-  return [...leadingProperties, themeProperty, ...properties]
+  return [...buildLeadingNodeFieldRows(node, workspace), ...properties]
 }

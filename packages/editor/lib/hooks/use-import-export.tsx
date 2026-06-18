@@ -7,6 +7,7 @@ import {
 import { triggerDownload } from "@lib/helpers/trigger-download"
 import { kebabCase } from "change-case"
 import { useCallback } from "react"
+import { orderWorkspaceNodeKeys } from "@seldon/core/workspace/helpers/nodes/order-entry-node-keys"
 import { workspacePropagationService } from "@seldon/core/workspace/services/propagation/workspace-propagation.service"
 import type { Workspace } from "@seldon/core/workspace/types"
 import {
@@ -30,9 +31,12 @@ export function useImportExport() {
   const addToast = useAddToast()
 
   const exportWorkspaceToFile = useCallback(async () => {
-    const blob = new Blob([JSON.stringify(workspace, null, 2)], {
-      type: "application/json",
-    })
+    const blob = new Blob(
+      [JSON.stringify(orderWorkspaceNodeKeys(workspace), null, 2)],
+      {
+        type: "application/json",
+      },
+    )
     const name =
       prompt("Enter name for your exported file", workspaceName) ??
       workspaceName

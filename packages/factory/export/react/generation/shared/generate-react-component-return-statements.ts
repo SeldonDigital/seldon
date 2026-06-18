@@ -3,15 +3,17 @@ import { NATIVE_REACT_PRIMITIVES } from "@seldon/core/components/constants"
 
 import { NodeIdToClass } from "../../../css/types"
 import { ComponentToExport } from "../../../types"
+import { dataSeldonRefAttr } from "./data-ref-attr"
 
 /**
  * Generate the return statement for an iconMap component
  */
 export function generateIconMapReturn(
-  _component: ComponentToExport,
+  component: ComponentToExport,
   _nodeIdToClass: NodeIdToClass,
   classNameVarName: string,
 ): string {
+  const refAttr = dataSeldonRefAttr(component.tree.ref)
   return `
     let Icon = iconMap[icon || "__default__"]
     if (!Icon) {
@@ -20,7 +22,7 @@ export function generateIconMapReturn(
   //
   // React JSX component with merged default and custom properties
   //
-    return <Icon className={${classNameVarName}} {...props} />
+    return <Icon className={${classNameVarName}}${refAttr} {...props} />
   `
 }
 
@@ -33,6 +35,7 @@ export function generateHtmlElementReturn(
   classNameVarName: string,
 ): string {
   const { tree } = component
+  const refAttr = dataSeldonRefAttr(tree.ref)
   const { options, defaultValue } = tree.dataBinding.props.htmlElement
 
   // Validate options and defaultValue
@@ -67,13 +70,13 @@ export function generateHtmlElementReturn(
   //
   // React JSX component with merged default and custom properties
   //
-  return <${Component} className={${classNameVarName}} {...props}>{children}</${Component}> \n`
+  return <${Component} className={${classNameVarName}}${refAttr} {...props}>{children}</${Component}> \n`
       } else {
         content += `case "${option}": 
   //
   // React JSX component with merged default and custom properties
   //
-  return <${Component} className={${classNameVarName}} {...props} /> \n`
+  return <${Component} className={${classNameVarName}}${refAttr} {...props} /> \n`
       }
     })
 
@@ -87,13 +90,13 @@ export function generateHtmlElementReturn(
   //
   // React JSX component with merged default and custom properties
   //
-  return <${Component} className={${classNameVarName}} {...props}>{children}</${Component}> \n`
+  return <${Component} className={${classNameVarName}}${refAttr} {...props}>{children}</${Component}> \n`
   } else {
     content += `default: 
   //
   // React JSX component with merged default and custom properties
   //
-  return <${Component} className={${classNameVarName}} {...props} /> \n`
+  return <${Component} className={${classNameVarName}}${refAttr} {...props} /> \n`
   }
   content += `}`
 
@@ -109,6 +112,7 @@ export function generateWrapperElementReturn(
   classNameVarName: string,
 ): string {
   const { tree } = component
+  const refAttr = dataSeldonRefAttr(tree.ref)
   const { options, defaultValue } = tree.dataBinding.props.wrapperElement
 
   invariant(options, "wrapperElement.options is required to create a switch")
@@ -138,13 +142,13 @@ export function generateWrapperElementReturn(
   //
   // React JSX component with merged default and custom properties
   //
-  return <${Component} className={${classNameVarName}} {...props}>{children}</${Component}> \n`
+  return <${Component} className={${classNameVarName}}${refAttr} {...props}>{children}</${Component}> \n`
       } else {
         content += `case "${option}": 
   //
   // React JSX component with merged default and custom properties
   //
-  return <${Component} className={${classNameVarName}} {...props} /> \n`
+  return <${Component} className={${classNameVarName}}${refAttr} {...props} /> \n`
       }
     })
 
@@ -158,13 +162,13 @@ export function generateWrapperElementReturn(
   //
   // React JSX component with merged default and custom properties
   //
-  return <${Component} className={${classNameVarName}} {...props}>{children}</${Component}> \n`
+  return <${Component} className={${classNameVarName}}${refAttr} {...props}>{children}</${Component}> \n`
   } else {
     content += `default: 
   //
   // React JSX component with merged default and custom properties
   //
-  return <${Component} className={${classNameVarName}} {...props} /> \n`
+  return <${Component} className={${classNameVarName}}${refAttr} {...props} /> \n`
   }
   content += `}`
 
@@ -180,6 +184,7 @@ export function generateSimpleReturn(
   classNameVarName: string,
 ): string {
   const { config, tree } = component
+  const refAttr = dataSeldonRefAttr(tree.ref)
   // Check if children prop exists in rootProps
   const hasChildrenProp = "children" in tree.dataBinding.props
 
@@ -200,12 +205,12 @@ export function generateSimpleReturn(
   //
   // React JSX component with merged default and custom properties
   //
-  return <${config.react.returns} className={${classNameVarName}}${rootPropsString} {...props}>{children}</${config.react.returns}>`
+  return <${config.react.returns} className={${classNameVarName}}${rootPropsString}${refAttr} {...props}>{children}</${config.react.returns}>`
   } else {
     return `
   //
   // React JSX component with merged default and custom properties
   //
-  return <${config.react.returns} className={${classNameVarName}}${rootPropsString} {...props} />`
+  return <${config.react.returns} className={${classNameVarName}}${rootPropsString}${refAttr} {...props} />`
   }
 }

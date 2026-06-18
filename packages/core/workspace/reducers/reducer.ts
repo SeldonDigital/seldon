@@ -136,6 +136,7 @@ import { setNodeEditorData } from "./handlers/set/set-node-editor-data"
 import { setNodeLabel } from "./handlers/set/set-node-label"
 import { setNodeLayerKind } from "./handlers/set/set-node-layer-kind"
 import { setNodeProperties } from "./handlers/set/set-node-properties"
+import { setNodeRef } from "./handlers/set/set-node-ref"
 import { setNodeTheme } from "./handlers/set/set-node-theme"
 import { setThemeCustomTokenName } from "./handlers/set/set-theme-custom-token-name"
 import { setThemeEditorData } from "./handlers/set/set-theme-editor-data"
@@ -303,6 +304,8 @@ function reducer(workspace: Workspace, action: WorkspaceAction): Workspace {
       return setNodeLayerKind(action.payload, workspace)
     case "set_node_label":
       return setNodeLabel(action.payload, workspace)
+    case "set_node_ref":
+      return setNodeRef(action.payload, workspace)
     case "set_node_theme":
       return setNodeTheme(action.payload, workspace)
     case "set_node_editor_data":

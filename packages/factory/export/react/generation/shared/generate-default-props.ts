@@ -46,16 +46,29 @@ export function generateDefaultProps(
 
     if (conditionalPaths.has(node.dataBinding.path)) {
       const className = getClassName(node, nodeIdToClass)
+      const entry: DefaultPropsValue = {}
       if (className) {
-        defaultProps[propName] = { className }
+        entry.className = className
+      }
+      // A child instance has no literal JSX attribute site; its ref rides the
+      // sdn default props through the `{...props}` spread onto the child root.
+      if (node.ref) {
+        entry["data-seldon-ref"] = node.ref
+      }
+      if (Object.keys(entry).length > 0) {
+        defaultProps[propName] = entry
       }
     } else {
-      defaultProps[propName] = flattenProps(
+      const entry = flattenProps(
         node.dataBinding.props,
         node.nodeId,
         nodeIdToClass,
         node.classNames,
       )
+      if (node.ref) {
+        entry["data-seldon-ref"] = node.ref
+      }
+      defaultProps[propName] = entry
     }
 
     if (Array.isArray(node.children)) {

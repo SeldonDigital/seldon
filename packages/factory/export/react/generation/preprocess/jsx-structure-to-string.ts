@@ -1,4 +1,5 @@
 import { ComponentToExport } from "../../../types"
+import { dataSeldonRefAttr } from "../shared/data-ref-attr"
 import { JSXNode } from "./types"
 
 /**
@@ -95,8 +96,9 @@ export function jsxStructureToString(
   // catalog default tree. Without this, nested children passed by a parent
   // generated component (e.g. ItemInputRow nesting into FormControlIconic)
   // would be silently discarded by React's explicit-children precedence.
+  const rootRefAttr = dataSeldonRefAttr(jsxRoot.ref)
   let content = `
-  return (\n    <${config.react.returns} className={${classNameVarName}} {...props}>`
+  return (\n    <${config.react.returns} className={${classNameVarName}}${rootRefAttr} {...props}>`
 
   if (jsxRoot.children && jsxRoot.children.length > 0) {
     content += `\n      {children !== undefined ? (\n        children\n      ) : (\n        <>`
