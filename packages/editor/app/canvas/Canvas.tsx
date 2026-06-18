@@ -166,7 +166,6 @@ const CanvasContainer = () => {
     )
     // This is intentional beacuse setTransform is not stable
     // so adding it to the deps would the canvas to reset the transform on every render
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeBoardKey])
 
   const wrapperStyle: CSSProperties = {

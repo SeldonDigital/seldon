@@ -6,8 +6,8 @@ import { useMemo } from "react"
 import { Board, Properties, Scroll, Unit, ValueType } from "@seldon/core"
 import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
 import { isThemeBoard } from "@seldon/core/workspace/model/components"
-import { workspaceThemeService } from "@seldon/core/workspace/services/theme/theme.service"
 import type { Workspace } from "@seldon/core/workspace/types"
+import { useNodeTheme } from "@lib/themes/hooks/use-node-theme"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { usePreview } from "@lib/hooks/use-preview"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
@@ -36,10 +36,7 @@ export function ThemeBoard({ board }: ThemeBoardProps) {
   // The board chrome renders with the board's own theme so its background and
   // border resolve, independent of which variant (if any) is selected. The
   // per-variant dialogs below are themed individually.
-  const boardTheme = useMemo(
-    () => workspaceThemeService.getObjectTheme(board, workspace),
-    [board, workspace],
-  )
+  const boardTheme = useNodeTheme(board)
 
   const variantEntryIds = isThemeBoard(board)
     ? board.variants.map((variant) => variant.id)

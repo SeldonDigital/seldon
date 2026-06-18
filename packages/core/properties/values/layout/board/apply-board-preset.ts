@@ -6,7 +6,6 @@ import {
   BOARD_DEVICE_PRESETS,
   type BoardDevicePresetId,
   getBoardDevicePreset,
-  isBoardDevicePresetId,
 } from "./device-presets"
 import type { BoardCompound } from "./index"
 

@@ -10,18 +10,6 @@ import {
 import { IconSetId } from "../types"
 
 /**
- * Extracts icon set ID from icon ID
- * Example: "material-add" → "google-material"
- */
-function getIconSetIdFromIconId(iconId: IconId): IconSetId | null {
-  if (iconId.startsWith("material-")) return "google-material"
-  if (iconId.startsWith("carbon-")) return "carbon"
-  if (iconId.startsWith("lucide-")) return "lucide"
-  if (iconId.startsWith("seldon-")) return "seldon"
-  return null
-}
-
-/**
  * Gets the icon ID prefix for an icon set ID
  * Example: "google-material" → "material-"
  */

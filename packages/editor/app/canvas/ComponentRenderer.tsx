@@ -106,7 +106,7 @@ export const ComponentRenderer = ({
   renderAsDiv = false,
   iconUnavailable = false,
 }: TemplateProps) => {
-  const { properties, parentContext: _parentContext } = computeContext // eslint-disable-line @typescript-eslint/no-unused-vars
+  const { properties, parentContext: _parentContext } = computeContext
   const className = `node-${nodeId}`
   const css = useMemo(() => {
     try {
@@ -281,7 +281,6 @@ function isVoidComponent(
 export const PRIMITIVES: Record<
   NativeReactPrimitive,
   // Primitives accept varying prop shapes, so the map is typed loosely.
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   React.ComponentType<any>
 > = {
   HTMLAnchor: HTMLAnchor,

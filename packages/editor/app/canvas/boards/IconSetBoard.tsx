@@ -8,13 +8,12 @@ import { ComponentId } from "@seldon/core/components/constants"
 import type { IconId } from "@seldon/core/icon-sets"
 import { iconLabels } from "@seldon/core/icon-sets"
 import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
-import { isIconSetBoard } from "@seldon/core/workspace/model/components"
-import { workspaceIconSetService } from "@seldon/core/workspace/services/icon-set/icon-set.service"
-import { workspaceThemeService } from "@seldon/core/workspace/services/theme/theme.service"
 import type { Workspace } from "@seldon/core/workspace/types"
+import { useNodeTheme } from "@lib/themes/hooks/use-node-theme"
 import { formatResourceItemKey } from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { usePreview } from "@lib/hooks/use-preview"
+import { useIconSetBoardIcons } from "../hooks/use-icon-set-board-icons"
 import { getNodeCatalogComponentId } from "@lib/workspace/node-tree"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { Frame } from "@seldon/components/chrome/frames/Frame"
@@ -42,21 +41,8 @@ export function IconSetBoard({ board }: IconSetBoardProps) {
   const properties = getNodeProperties(board, workspace)
   const { device, isInPreviewMode } = usePreview()
 
-  const boardTheme = useMemo(
-    () => workspaceThemeService.getObjectTheme(board, workspace),
-    [board, workspace],
-  )
-
-  const icons = useMemo(() => {
-    const entryIds = isIconSetBoard(board)
-      ? board.variants.map((variant) => variant.id)
-      : []
-    return entryIds.flatMap((entryId) =>
-      workspaceIconSetService
-        .getIncludedIcons(entryId, workspace)
-        .map((iconId) => ({ entryId, iconId })),
-    )
-  }, [board, workspace])
+  const boardTheme = useNodeTheme(board)
+  const icons = useIconSetBoardIcons(board)
 
   const computedProperties: Properties = isInPreviewMode
     ? {

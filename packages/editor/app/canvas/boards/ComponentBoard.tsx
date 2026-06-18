@@ -8,7 +8,7 @@ import { ThemeInstanceId } from "@seldon/core/themes/types"
 import { getBoardThemeRef } from "@seldon/core/workspace/helpers/components/get-board-theme-ref"
 import { getBoardVariantRootIds } from "@seldon/core/workspace/helpers/components/get-board-variant-root-ids"
 import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
-import { workspaceThemeService } from "@seldon/core/workspace/services/theme/theme.service"
+import { useNodeTheme } from "@lib/themes/hooks/use-node-theme"
 import { useSelection } from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { usePreview } from "@lib/hooks/use-preview"
@@ -75,7 +75,7 @@ export function ComponentBoard({ board }: ComponentBoardProps) {
   const { selectedBoardId } = useSelection()
   const boardKey = selectedBoardId ?? resolveComponentKey(board, workspace)
   const boardEntry = workspace.boards[boardKey] ?? board
-  const theme = workspaceThemeService.getObjectTheme(boardEntry, workspace)
+  const theme = useNodeTheme(boardEntry)
   const className = `board-${boardKey}`
   const properties = getNodeProperties(boardEntry, workspace)
   const { device, isInPreviewMode } = usePreview()

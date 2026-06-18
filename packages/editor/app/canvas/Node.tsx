@@ -18,7 +18,7 @@ import { ComponentId } from "@seldon/core/components/constants"
 import type { IconId } from "@seldon/core/icon-sets"
 import { ThemeInstanceId } from "@seldon/core/themes/types"
 import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
-import { workspaceThemeService } from "@seldon/core/workspace/services/theme/theme.service"
+import { useThemeById } from "@lib/themes/hooks/use-theme-by-id"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useAddNodeFontFamily } from "./hooks/use-add-node-font-family"
 import { collectDescendantNodeIds } from "@lib/workspace/component-tree"
@@ -82,7 +82,7 @@ export const CanvasNode = memo(function CanvasNode({
    * Note: This only works because we're a standard algorithm that traverses the tree from top to bottom
    */
   const themeId = node.theme || initialThemeId
-  const theme = workspaceThemeService.getTheme(themeId, workspace)
+  const theme = useThemeById(themeId)
   invariant(theme, `Theme ${themeId} not found`)
 
   const catalogComponentId = getNodeCatalogComponentId(node, workspace)

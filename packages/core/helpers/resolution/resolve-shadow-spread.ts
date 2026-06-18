@@ -21,7 +21,6 @@ import { resolveModulatedOrExactLength } from "./resolve-length-token"
 export function resolveShadowSpread({
   spread,
   theme,
-  parentContext,
 }: {
   spread: ShadowSpreadValue
   theme: Theme
