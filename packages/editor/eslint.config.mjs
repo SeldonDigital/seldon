@@ -43,6 +43,14 @@ export default defineConfig([
       ],
     },
   },
+  // Build scripts are CLI tools whose job is to print progress, so console
+  // output is expected here.
+  {
+    files: ["scripts/**"],
+    rules: {
+      "no-console": "off",
+    },
+  },
   // ViewModel hooks authored as .tsx (e.g. context providers) may call Model
   // services; the service-import rule targets view components only.
   {

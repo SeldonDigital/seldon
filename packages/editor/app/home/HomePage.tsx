@@ -8,12 +8,12 @@ import {
 import { useCallback, useEffect, useState } from "react"
 import { Link, useNavigate } from "react-router"
 import { createEmptyWorkspace } from "@seldon/core"
-import { workspacePropagationService } from "@seldon/core/workspace/services/propagation/workspace-propagation.service"
-import type { Workspace } from "@seldon/core/workspace/types"
+import { useParseWorkspace } from "./hooks/use-parse-workspace"
 import "./home.css"
 
 export default function HomePage() {
   const navigate = useNavigate()
+  const parseWorkspace = useParseWorkspace()
   const [workspaces, setWorkspaces] = useState<StoredWorkspace[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -37,13 +37,11 @@ export default function HomePage() {
     if (!result.success) return
     const { file } = result
     const text = await file.text()
-    const workspace = workspacePropagationService.parseWorkspace(
-      text,
-    ) as Workspace
+    const workspace = parseWorkspace(text)
     const name = file.name.replace(/\.json$/i, "") || "Imported workspace"
     const record = await createStoredWorkspace(name, workspace)
     navigate(`/${record.id}`)
-  }, [navigate])
+  }, [navigate, parseWorkspace])
 
   const handleDelete = useCallback(
     async (id: string) => {
