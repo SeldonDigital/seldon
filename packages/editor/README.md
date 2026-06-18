@@ -10,14 +10,14 @@ Core owns design state and rules. The editor owns gestures, undo history, select
 
 The editor groups these areas:
 
-| Area | Role | Deep reference |
-| --- | --- | --- |
-| **App** | Routes and all of the interface: canvas, sidebars, panels, topbar, tracking | [app/](./app) |
-| **Workspace state** | In-memory workspace, history, selection, preview | [lib/workspace/](./lib/workspace) |
-| **Persistence** | Record loading, debounced autosave, workspace name | [lib/persistence/](./lib/persistence) |
-| **Project** | Active workspace id and dirty sync status | [lib/project/](./lib/project) |
-| **Storage** | IndexedDB read and write for stored workspaces | [lib/storage/workspace-store.ts](./lib/storage/workspace-store.ts) |
-| **Export** | Browser folder export through the local export route | [lib/export/](./lib/export) |
+| Area                | Role                                                                        | Deep reference                                                     |
+| ------------------- | --------------------------------------------------------------------------- | ------------------------------------------------------------------ |
+| **App**             | Routes and all of the interface: canvas, sidebars, panels, topbar, tracking | [app/](./app)                                                      |
+| **Workspace state** | In-memory workspace, history, selection, preview                            | [lib/workspace/](./lib/workspace)                                  |
+| **Persistence**     | Record loading, debounced autosave, workspace name                          | [lib/persistence/](./lib/persistence)                              |
+| **Project**         | Active workspace id and dirty sync status                                   | [lib/project/](./lib/project)                                      |
+| **Storage**         | IndexedDB read and write for stored workspaces                              | [lib/storage/workspace-store.ts](./lib/storage/workspace-store.ts) |
+| **Export**          | Browser folder export through the local export route                        | [lib/export/](./lib/export)                                        |
 
 The editor imports and exports code directly from `@seldon/core` and `@seldon/factory`. It does not fork their logic. The package name is `@seldon/editor`.
 
@@ -144,14 +144,14 @@ Pipeline detail lives in [../factory/README.md](../factory/README.md).
 
 ## Further Reading
 
-| Topic | Document |
-| --- | --- |
-| Core | [../core/README.md](../core/README.md) |
-| Factory | [../factory/README.md](../factory/README.md) |
-| Run steps | [Run Steps](#run-steps) |
-| Vocabulary | [GLOSSARY.md](../../GLOSSARY.md) |
-| Workspace file spec | [../core/workspace/WORKSPACE.md](../core/workspace/WORKSPACE.md) |
-| Reducer actions | [../core/workspace/reducers/README.md](../core/workspace/reducers/README.md) |
+| Topic               | Document                                                                     |
+| ------------------- | ---------------------------------------------------------------------------- |
+| Core                | [../core/README.md](../core/README.md)                                       |
+| Factory             | [../factory/README.md](../factory/README.md)                                 |
+| Run steps           | [Run Steps](#run-steps)                                                      |
+| Vocabulary          | [GLOSSARY.md](../../GLOSSARY.md)                                             |
+| Workspace file spec | [../core/workspace/WORKSPACE.md](../core/workspace/WORKSPACE.md)             |
+| Reducer actions     | [../core/workspace/reducers/README.md](../core/workspace/reducers/README.md) |
 
 ---
 
@@ -189,10 +189,10 @@ Contact:
 
 ### 4. Summary
 
-| Use | Requirement |
-| --- | --- |
+| Use               | Requirement                          |
+| ----------------- | ------------------------------------ |
 | Noncommercial use | PolyForm Noncommercial License 1.0.0 |
-| Commercial use | Paid commercial license |
+| Commercial use    | Paid commercial license              |
 
 ---
 

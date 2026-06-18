@@ -1,9 +1,9 @@
 import { ValueType } from "../../constants"
 import { PropertySchema } from "../../types/schema"
 import { EmptyValue } from "../shared/empty/empty"
-import { ImageSourceValue } from "../shared/utilities/image-source"
-import { BooleanValue } from "../shared/option/boolean"
 import { ContentValue } from "../shared/exact/string"
+import { BooleanValue } from "../shared/option/boolean"
+import { ImageSourceValue } from "../shared/utilities/image-source"
 
 /** How much of a media resource the browser should preload before playback. */
 export enum Preload {

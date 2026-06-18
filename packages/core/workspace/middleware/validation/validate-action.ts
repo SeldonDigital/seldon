@@ -7,6 +7,12 @@ import {
 } from "./action-groups/font-collection-mutations"
 import { validateIconSetMutation } from "./action-groups/icon-set-mutations"
 import {
+  validateAddNodeLayer,
+  validateRemoveNodeLayer,
+  validateReorderNodeLayer,
+  validateSetNodeLayerKind,
+} from "./action-groups/node-layers"
+import {
   validateAddVariant,
   validateDuplicateNode,
   validateInsertMutation,
@@ -16,12 +22,6 @@ import {
   validateResetComponentToCatalog,
   validateThemeMutation,
 } from "./action-groups/node-mutations"
-import {
-  validateAddNodeLayer,
-  validateRemoveNodeLayer,
-  validateReorderNodeLayer,
-  validateSetNodeLayerKind,
-} from "./action-groups/node-layers"
 import { isPassthroughAction } from "./action-groups/passthrough"
 import {
   validateAddResourceCatalog,

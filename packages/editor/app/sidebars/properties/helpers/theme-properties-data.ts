@@ -348,9 +348,7 @@ function createFlatPropertyFromSchema(
     schema.key in COLOR_POINT_SWATCHES
       ? "icon-custom-color-value"
       : (schema.icon ??
-        (schema.key.endsWith(".step")
-          ? "seldon-step"
-          : "seldon-component"))
+        (schema.key.endsWith(".step") ? "seldon-step" : "seldon-component"))
 
   const controlType = schema.controlType
     ? CONTROL_TYPE_MAP[schema.controlType]

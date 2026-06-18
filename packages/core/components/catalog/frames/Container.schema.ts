@@ -7,15 +7,7 @@ export const schema = {
   id: Seldon.ComponentId.CONTAINER,
   intent:
     "Grid container schema used to arrange children in a CSS grid with a configurable number of columns and rows. Use it instead of Frame when children should align to a shared grid; Frame remains the flexbox container.",
-  tags: [
-    "container",
-    "layout",
-    "grid",
-    "ui",
-    "box",
-    "content",
-    "sizing",
-  ],
+  tags: ["container", "layout", "grid", "ui", "box", "content", "sizing"],
   level: Seldon.ComponentLevel.FRAME,
   layout: Seldon.ComponentLayout.GRID,
   icon: Seldon.ComponentIcon.FRAME_COLUMNS,

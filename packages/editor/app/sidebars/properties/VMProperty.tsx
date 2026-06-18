@@ -1,13 +1,13 @@
+import { LayeredPaintKey, PropertyKey } from "@seldon/core"
+import { isLayeredPaintProperty } from "@seldon/core/properties/types/property-keys"
+import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { RowPropertyProps, useRowProperty } from "./hooks/use-row-property"
+import { FramerExpandable } from "@seldon/components/custom-components"
 import { ItemInputRow } from "@seldon/components/elements/ItemInputRow"
 import { IconProps } from "@seldon/components/primitives/Icon"
-import { FramerExpandable } from "@seldon/components/custom-components"
-import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
-import { isLayeredPaintProperty } from "@seldon/core/properties/types/property-keys"
-import { LayeredPaintKey, PropertyKey } from "@seldon/core"
 import { useRowActionsMenu } from "../shared/use-row-actions-menu"
-import { PropertyValueCell } from "./PropertyValueCell"
 import { LayerDragRow } from "./LayerDragRow"
+import { PropertyValueCell } from "./PropertyValueCell"
 
 /**
  * View-model for a property row, bound to the generated `ItemInputRow`. The
@@ -80,9 +80,11 @@ export function VMProperty(props: RowPropertyProps) {
  * paint parent (`background`/`shadow`) on a node with more than one layer.
  * Returns null for boards, non-layer rows, facet rows, and single-layer stacks.
  */
-function getLayerDragContext(
-  props: RowPropertyProps,
-): { property: LayeredPaintKey; layerIndex: number; layerCount: number } | null {
+function getLayerDragContext(props: RowPropertyProps): {
+  property: LayeredPaintKey
+  layerIndex: number
+  layerCount: number
+} | null {
   const { property, node, allProperties } = props
   if (isBoard(node)) return null
   if (property.isSubProperty) return null

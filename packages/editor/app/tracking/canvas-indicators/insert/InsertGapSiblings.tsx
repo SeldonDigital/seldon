@@ -1,15 +1,15 @@
 "use client"
 
 import type { CSSProperties } from "react"
-import { Box } from "@seldon/components/custom-components"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useCanvasHoverState } from "@lib/hooks/use-canvas-hover-state"
 import { getNodeOrientation } from "@lib/workspace/get-node-orientation"
+import { Box } from "@seldon/components/custom-components"
+import { getHtmlElementByNodeId } from "../../../canvas/helpers/get-html-element-by-node-id"
 import {
   pickOutlineColorsFromSurface,
   resolveOutlineSurfaceForNode,
 } from "../../helpers/resolve-outline-surface"
-import { getHtmlElementByNodeId } from "../../../canvas/helpers/get-html-element-by-node-id"
 
 /** Seldon accent token used for the edge touching the insertion gap. */
 const ACCENT_COLOR = "var(--sdn-seldon-swatch-accent)"

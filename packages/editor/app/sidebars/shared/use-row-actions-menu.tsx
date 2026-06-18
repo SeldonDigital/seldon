@@ -1,10 +1,17 @@
 "use client"
 
 import { Menu, MenuAlign, MenuEntry } from "@lib/menus"
-import { ICONIC_BUTTON_ATTR } from "../helpers/iconic-button"
-import { CSSProperties, ReactNode, RefObject, Ref, useRef, useState } from "react"
+import {
+  CSSProperties,
+  ReactNode,
+  Ref,
+  RefObject,
+  useRef,
+  useState,
+} from "react"
 import { ButtonIconicProps } from "@seldon/components/elements/ButtonIconic"
 import { IconProps } from "@seldon/components/primitives/Icon"
+import { ICONIC_BUTTON_ATTR } from "../helpers/iconic-button"
 
 interface UseRowActionsMenuOptions {
   align?: MenuAlign
@@ -63,36 +70,38 @@ export function useRowActionsMenu(
     },
   }
 
-  const buttonIconic = (hasActions
-    ? {
-        ref: triggerRef,
-        type: "button" as const,
-        [ICONIC_BUTTON_ATTR]: true,
-        "aria-label": ariaLabel,
-        "aria-haspopup": "menu" as const,
-        "aria-expanded": open,
-        onClick: (event: React.MouseEvent<HTMLButtonElement>) => {
-          event.stopPropagation()
-          setOpen((current) => !current)
-        },
-        onKeyDown: (event: React.KeyboardEvent<HTMLButtonElement>) => {
-          if (event.key === "ArrowDown" || event.key === "ArrowUp") {
-            event.preventDefault()
-            setOpen(true)
-          }
-        },
-        style: {
-          position: "relative",
-          zIndex: 10,
-        },
-      }
-    : {
-        type: "button" as const,
-        disabled: true,
-        tabIndex: -1,
-        inert: true,
-        style: PLACEHOLDER_BUTTON_STYLE,
-      }) as RowActionsMenuSlots["buttonIconic"]
+  const buttonIconic = (
+    hasActions
+      ? {
+          ref: triggerRef,
+          type: "button" as const,
+          [ICONIC_BUTTON_ATTR]: true,
+          "aria-label": ariaLabel,
+          "aria-haspopup": "menu" as const,
+          "aria-expanded": open,
+          onClick: (event: React.MouseEvent<HTMLButtonElement>) => {
+            event.stopPropagation()
+            setOpen((current) => !current)
+          },
+          onKeyDown: (event: React.KeyboardEvent<HTMLButtonElement>) => {
+            if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+              event.preventDefault()
+              setOpen(true)
+            }
+          },
+          style: {
+            position: "relative",
+            zIndex: 10,
+          },
+        }
+      : {
+          type: "button" as const,
+          disabled: true,
+          tabIndex: -1,
+          inert: true,
+          style: PLACEHOLDER_BUTTON_STYLE,
+        }
+  ) as RowActionsMenuSlots["buttonIconic"]
 
   const menu = hasActions ? (
     <Menu

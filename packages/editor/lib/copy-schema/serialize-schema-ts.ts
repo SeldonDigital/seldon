@@ -1,6 +1,6 @@
+import * as Seldon from "@seldon/core/components/constants"
 import * as Sdn from "@seldon/core/properties"
 import { getPresetOptions } from "@seldon/core/properties/schemas/helpers"
-import * as Seldon from "@seldon/core/components/constants"
 import type { SchemaSnippet } from "./build-schema-snippet"
 
 const INDENT = "  "
@@ -12,8 +12,7 @@ function isStringEnumObject(value: unknown): value is Record<string, string> {
   return (
     entries.length > 0 &&
     entries.every(
-      ([key, member]) =>
-        typeof member === "string" && IDENTIFIER_KEY.test(key),
+      ([key, member]) => typeof member === "string" && IDENTIFIER_KEY.test(key),
     )
   )
 }

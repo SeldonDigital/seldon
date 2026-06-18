@@ -14,8 +14,8 @@ import {
   Text,
   ThemeSwatches,
 } from "@seldon/components/custom-components"
-import { PropertyControl } from "./PropertyControl"
 import { ValueChip } from "./helpers/build-property-row-props"
+import { PropertyControl } from "./PropertyControl"
 import {
   FontCollectionEditingContext,
   IconSetEditingContext,

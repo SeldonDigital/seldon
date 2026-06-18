@@ -36,11 +36,11 @@ The code is grouped by pipeline stage:
 **Class names** (`discovery/get-class-name.ts`)
 `getClassNameForNode` builds a class name from the node catalog id and type:
 
-| Node type | Class name |
-| --- | --- |
-| Default variant | `sdn-button` |
-| Custom variant | `sdn-button-iconic` |
-| Instance | `sdn-button-iconic--abc12`, the variant class plus a four-character hash |
+| Node type       | Class name                                                               |
+| --------------- | ------------------------------------------------------------------------ |
+| Default variant | `sdn-button`                                                             |
+| Custom variant  | `sdn-button-iconic`                                                      |
+| Instance        | `sdn-button-iconic--abc12`, the variant class plus a four-character hash |
 
 ---
 
@@ -77,10 +77,10 @@ The code is grouped by pipeline stage:
 
 The CSS pipeline produces:
 
-| Field | Contents |
-| --- | --- |
-| `componentStylesheet` | A formatted stylesheet with reset styles, base styles, and component classes |
-| `themeStylesheets` | An array of `ThemeStylesheetFile`. Each item has a `themeId`, a `path` under the components folder, and the CSS `content` for one theme |
+| Field                 | Contents                                                                                                                                |
+| --------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `componentStylesheet` | A formatted stylesheet with reset styles, base styles, and component classes                                                            |
+| `themeStylesheets`    | An array of `ThemeStylesheetFile`. Each item has a `themeId`, a `path` under the components folder, and the CSS `content` for one theme |
 
 ---
 

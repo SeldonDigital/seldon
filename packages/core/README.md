@@ -10,12 +10,12 @@ Core owns design-time state and rules. Factory owns export and production code g
 
 Core groups four ideas that work together:
 
-| Area | Role | Deep reference |
-| --- | --- | --- |
+| Area           | Role                                                                     | Deep reference                                 |
+| -------------- | ------------------------------------------------------------------------ | ---------------------------------------------- |
 | **Components** | Packaged schemas: identity, level, default properties, composition trees | [components/README.md](./components/README.md) |
-| **Properties** | Typed style and behavior values, merge rules, compute | [properties/README.md](./properties/README.md) |
-| **Themes** | Design tokens components reference with `@` paths | [themes/README.md](./themes/README.md) |
-| **Workspace** | Serialized design file: boards, nodes, themes, resources | [workspace/README.md](./workspace/README.md) |
+| **Properties** | Typed style and behavior values, merge rules, compute                    | [properties/README.md](./properties/README.md) |
+| **Themes**     | Design tokens components reference with `@` paths                        | [themes/README.md](./themes/README.md)         |
+| **Workspace**  | Serialized design file: boards, nodes, themes, resources                 | [workspace/README.md](./workspace/README.md)   |
 
 The **catalog** lives under `packages/core/` (component schemas, stock themes, font collections, icon sets). A workspace **points into** the catalog. It does not replace it. Default nodes and default themes always align with catalog structure. Customization happens through **variants**, **instances**, and **overrides**. See [workspace/README.md](./workspace/README.md) for the file shape and integrity rules.
 
@@ -148,13 +148,13 @@ const files = await exportWorkspace(workspace, {
 
 ## Further Reading
 
-| Topic | Document |
-| --- | --- |
-| Vocabulary | [GLOSSARY.md](../../GLOSSARY.md) |
-| Workspace file spec | [workspace/README.md](./workspace/README.md) |
-| Reducer actions | [workspace/reducers/README.md](./workspace/reducers/README.md) |
-| Rules and propagation | [rules/README.md](./rules/README.md) |
-| Factory | [../factory/README.md](../factory/README.md) |
+| Topic                 | Document                                                       |
+| --------------------- | -------------------------------------------------------------- |
+| Vocabulary            | [GLOSSARY.md](../../GLOSSARY.md)                               |
+| Workspace file spec   | [workspace/README.md](./workspace/README.md)                   |
+| Reducer actions       | [workspace/reducers/README.md](./workspace/reducers/README.md) |
+| Rules and propagation | [rules/README.md](./rules/README.md)                           |
+| Factory               | [../factory/README.md](../factory/README.md)                   |
 
 ---
 
@@ -192,10 +192,10 @@ Contact:
 
 ### 4. Summary
 
-| Use | Requirement |
-| --- | --- |
+| Use               | Requirement                          |
+| ----------------- | ------------------------------------ |
 | Noncommercial use | PolyForm Noncommercial License 1.0.0 |
-| Commercial use | Paid commercial license |
+| Commercial use    | Paid commercial license              |
 
 ---
 

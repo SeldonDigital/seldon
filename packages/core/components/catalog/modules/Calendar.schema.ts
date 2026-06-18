@@ -51,9 +51,18 @@ export const schema = {
     },
     padding: {
       top: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.comfortable" },
-      right: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.comfortable" },
-      bottom: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.comfortable" },
-      left: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.comfortable" },
+      right: {
+        type: Sdn.ValueType.THEME_ORDINAL,
+        value: "@padding.comfortable",
+      },
+      bottom: {
+        type: Sdn.ValueType.THEME_ORDINAL,
+        value: "@padding.comfortable",
+      },
+      left: {
+        type: Sdn.ValueType.THEME_ORDINAL,
+        value: "@padding.comfortable",
+      },
     },
     gap: {
       type: Sdn.ValueType.THEME_ORDINAL,
@@ -444,9 +453,18 @@ export const schema = {
           width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
           padding: {
             top: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.tight" },
-            right: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.tight" },
-            bottom: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.tight" },
-            left: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.tight" },
+            right: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@padding.tight",
+            },
+            bottom: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@padding.tight",
+            },
+            left: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@padding.tight",
+            },
           },
           gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.tight" },
           background: [
@@ -460,7 +478,10 @@ export const schema = {
                 value: "@swatch.primary",
               },
               brightness: { type: Sdn.ValueType.EMPTY, value: null },
-              opacity: { type: Sdn.ValueType.EXACT, value: { unit: Sdn.Unit.PERCENT, value: 10 } },
+              opacity: {
+                type: Sdn.ValueType.EXACT,
+                value: { unit: Sdn.Unit.PERCENT, value: 10 },
+              },
             },
           ],
         },
@@ -1137,7 +1158,10 @@ export const schema = {
                   variant: "label",
                   overrides: {
                     content: { type: Sdn.ValueType.EXACT, value: "Mo" },
-                    width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+                    width: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.Resize.FILL,
+                    },
                     textAlign: {
                       type: Sdn.ValueType.OPTION,
                       value: Sdn.TextAlign.CENTER,
@@ -1149,7 +1173,10 @@ export const schema = {
                   variant: "label",
                   overrides: {
                     content: { type: Sdn.ValueType.EXACT, value: "Tu" },
-                    width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+                    width: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.Resize.FILL,
+                    },
                     textAlign: {
                       type: Sdn.ValueType.OPTION,
                       value: Sdn.TextAlign.CENTER,
@@ -1161,7 +1188,10 @@ export const schema = {
                   variant: "label",
                   overrides: {
                     content: { type: Sdn.ValueType.EXACT, value: "We" },
-                    width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+                    width: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.Resize.FILL,
+                    },
                     textAlign: {
                       type: Sdn.ValueType.OPTION,
                       value: Sdn.TextAlign.CENTER,
@@ -1173,7 +1203,10 @@ export const schema = {
                   variant: "label",
                   overrides: {
                     content: { type: Sdn.ValueType.EXACT, value: "Th" },
-                    width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+                    width: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.Resize.FILL,
+                    },
                     textAlign: {
                       type: Sdn.ValueType.OPTION,
                       value: Sdn.TextAlign.CENTER,
@@ -1185,7 +1218,10 @@ export const schema = {
                   variant: "label",
                   overrides: {
                     content: { type: Sdn.ValueType.EXACT, value: "Fr" },
-                    width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+                    width: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.Resize.FILL,
+                    },
                     textAlign: {
                       type: Sdn.ValueType.OPTION,
                       value: Sdn.TextAlign.CENTER,
@@ -1197,7 +1233,10 @@ export const schema = {
                   variant: "label",
                   overrides: {
                     content: { type: Sdn.ValueType.EXACT, value: "Sa" },
-                    width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+                    width: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.Resize.FILL,
+                    },
                     textAlign: {
                       type: Sdn.ValueType.OPTION,
                       value: Sdn.TextAlign.CENTER,
@@ -1209,7 +1248,10 @@ export const schema = {
                   variant: "label",
                   overrides: {
                     content: { type: Sdn.ValueType.EXACT, value: "Su" },
-                    width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+                    width: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.Resize.FILL,
+                    },
                     textAlign: {
                       type: Sdn.ValueType.OPTION,
                       value: Sdn.TextAlign.CENTER,
@@ -1975,7 +2017,10 @@ export const schema = {
                   variant: "label",
                   overrides: {
                     content: { type: Sdn.ValueType.EXACT, value: "Mo" },
-                    width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+                    width: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.Resize.FILL,
+                    },
                     textAlign: {
                       type: Sdn.ValueType.OPTION,
                       value: Sdn.TextAlign.CENTER,
@@ -1987,7 +2032,10 @@ export const schema = {
                   variant: "label",
                   overrides: {
                     content: { type: Sdn.ValueType.EXACT, value: "Tu" },
-                    width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+                    width: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.Resize.FILL,
+                    },
                     textAlign: {
                       type: Sdn.ValueType.OPTION,
                       value: Sdn.TextAlign.CENTER,
@@ -1999,7 +2047,10 @@ export const schema = {
                   variant: "label",
                   overrides: {
                     content: { type: Sdn.ValueType.EXACT, value: "We" },
-                    width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+                    width: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.Resize.FILL,
+                    },
                     textAlign: {
                       type: Sdn.ValueType.OPTION,
                       value: Sdn.TextAlign.CENTER,
@@ -2011,7 +2062,10 @@ export const schema = {
                   variant: "label",
                   overrides: {
                     content: { type: Sdn.ValueType.EXACT, value: "Th" },
-                    width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+                    width: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.Resize.FILL,
+                    },
                     textAlign: {
                       type: Sdn.ValueType.OPTION,
                       value: Sdn.TextAlign.CENTER,
@@ -2023,7 +2077,10 @@ export const schema = {
                   variant: "label",
                   overrides: {
                     content: { type: Sdn.ValueType.EXACT, value: "Fr" },
-                    width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+                    width: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.Resize.FILL,
+                    },
                     textAlign: {
                       type: Sdn.ValueType.OPTION,
                       value: Sdn.TextAlign.CENTER,
@@ -2035,7 +2092,10 @@ export const schema = {
                   variant: "label",
                   overrides: {
                     content: { type: Sdn.ValueType.EXACT, value: "Sa" },
-                    width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+                    width: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.Resize.FILL,
+                    },
                     textAlign: {
                       type: Sdn.ValueType.OPTION,
                       value: Sdn.TextAlign.CENTER,
@@ -2047,7 +2107,10 @@ export const schema = {
                   variant: "label",
                   overrides: {
                     content: { type: Sdn.ValueType.EXACT, value: "Su" },
-                    width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+                    width: {
+                      type: Sdn.ValueType.OPTION,
+                      value: Sdn.Resize.FILL,
+                    },
                     textAlign: {
                       type: Sdn.ValueType.OPTION,
                       value: Sdn.TextAlign.CENTER,

@@ -10,13 +10,13 @@ export function getListStyles({
   const styles: CSSObject = {}
 
   if (properties.listStyleType?.type === ValueType.OPTION) {
-    styles.listStyleType =
-      properties.listStyleType.value as CSSObject["listStyleType"]
+    styles.listStyleType = properties.listStyleType
+      .value as CSSObject["listStyleType"]
   }
 
   if (properties.listStylePosition?.type === ValueType.OPTION) {
-    styles.listStylePosition =
-      properties.listStylePosition.value as CSSObject["listStylePosition"]
+    styles.listStylePosition = properties.listStylePosition
+      .value as CSSObject["listStylePosition"]
   }
 
   return styles

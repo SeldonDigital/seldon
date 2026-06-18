@@ -1,6 +1,6 @@
 import { create } from "zustand"
-import type { OutlineColors } from "../../tracking/helpers/resolve-outline-surface"
 import type { NodeRect } from "../../tracking/hooks/use-node-rects-store"
+import type { OutlineColors } from "../../tracking/helpers/resolve-outline-surface"
 
 /**
  * Canvas-relative rects for the single hover and selection outlines. Written by

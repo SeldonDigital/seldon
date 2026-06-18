@@ -24,8 +24,8 @@ import {
 } from "@lib/properties/property-paths"
 import {
   BORDER_SIDE_KEYS,
-  BorderSideKey,
   Board,
+  BorderSideKey,
   Instance,
   Properties,
   PropertyKey,

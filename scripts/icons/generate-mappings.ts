@@ -15,13 +15,11 @@
  */
 import fs from "node:fs"
 import path from "node:path"
+
 import { categoryPaths } from "../../packages/core/icon-sets/constants/categories"
 
 const REPO_ROOT = path.resolve(import.meta.dir, "../..")
-const CATALOG_DIR = path.join(
-  REPO_ROOT,
-  "packages/core/icon-sets/catalog",
-)
+const CATALOG_DIR = path.join(REPO_ROOT, "packages/core/icon-sets/catalog")
 
 /** Icon sets to process: catalog folder name -> icon id prefix. */
 const ICON_SETS: Record<string, string> = {

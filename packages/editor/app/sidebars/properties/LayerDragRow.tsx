@@ -1,6 +1,9 @@
 import { COLORS } from "@lib/helpers/colors"
 import { CSSProperties, ReactNode } from "react"
 import { LayeredPaintKey } from "@seldon/core"
+import { useLayerDragStateStore } from "./hooks/use-layer-drag-state"
+import { useLayerDraggable } from "./hooks/use-layer-draggable"
+import { useLayerDropzone } from "./hooks/use-layer-dropzone"
 import {
   Box,
   InsertIndicatorLine,
@@ -8,9 +11,6 @@ import {
   PlacementZoneSurface,
   Pointer,
 } from "@seldon/components/custom-components"
-import { useLayerDraggable } from "./hooks/use-layer-draggable"
-import { useLayerDropzone } from "./hooks/use-layer-dropzone"
-import { useLayerDragStateStore } from "./hooks/use-layer-drag-state"
 import type { LayerPlacement } from "./helpers/layer-reorder"
 
 interface LayerDragRowProps {

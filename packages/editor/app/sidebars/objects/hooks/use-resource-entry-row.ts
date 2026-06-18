@@ -1,9 +1,9 @@
+import { MenuEntry } from "@lib/menus"
 import { useMemo } from "react"
 import { Variant } from "@seldon/core"
-import { MenuEntry } from "@lib/menus"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
-import type { ResourceRowConfig } from "../VMResourceEntry"
 import { buildResetMenuEntry } from "../../shared/build-reset-menu-entry"
+import type { ResourceRowConfig } from "../VMResourceEntry"
 import { useEditState } from "./use-edit-state"
 
 type EntrySnapshot = {

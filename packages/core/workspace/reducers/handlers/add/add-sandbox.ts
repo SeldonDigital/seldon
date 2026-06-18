@@ -30,7 +30,9 @@ export function addSandbox(
   return produce(workspace, (draft) => {
     const container = draft.playgrounds[payload.playgroundKey]
     const nextTop = getNextSandboxTop(container.variants, draft.nodes)
-    const { id, node } = buildSandboxNode(payload.playgroundKey, { top: nextTop })
+    const { id, node } = buildSandboxNode(payload.playgroundKey, {
+      top: nextTop,
+    })
     draft.nodes[id] = node
     container.variants.push({ id })
   })

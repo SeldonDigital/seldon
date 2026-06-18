@@ -64,8 +64,7 @@ export function usePropertyValidation(
     | ((value: string) => boolean)
     | undefined => {
     if (isScaleStep) {
-      return (value: string) =>
-        isNumber(value) || isPx(value) || isRem(value)
+      return (value: string) => isNumber(value) || isPx(value) || isRem(value)
     }
 
     if (property.controlType === "combo" || property.controlType === "menu") {

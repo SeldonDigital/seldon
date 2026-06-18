@@ -230,7 +230,10 @@ const validators = {
 
         const overrides = node.overrides as Record<string, unknown>
         for (const sizeKey of ["width", "height"] as const) {
-          if (sizeKey in overrides && !isExplicitSizeValue(overrides[sizeKey])) {
+          if (
+            sizeKey in overrides &&
+            !isExplicitSizeValue(overrides[sizeKey])
+          ) {
             throw new Error(
               `Sandbox ${ref.id} in playground ${key} must use an explicit ${sizeKey} (no Fit, Fill, or theme size).`,
             )

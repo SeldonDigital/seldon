@@ -1,6 +1,6 @@
 import {
-  isLayeredPaintProperty,
   type LayeredPaintKey,
+  isLayeredPaintProperty,
 } from "../../../../properties"
 import { getEffectiveNodeProperties } from "../../../compute/compute-node-properties"
 import type { Action, InstanceId, VariantId, Workspace } from "../../../types"
@@ -40,7 +40,8 @@ export function validateSetNodeLayerKind(
   )
   const { layerIndex } = action.payload
   check(
-    layerIndex === undefined || (Number.isInteger(layerIndex) && layerIndex >= 0),
+    layerIndex === undefined ||
+      (Number.isInteger(layerIndex) && layerIndex >= 0),
     `set_node_layer_kind layerIndex must be a non-negative integer, got ${layerIndex}`,
   )
 }

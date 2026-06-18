@@ -11,11 +11,11 @@ import {
 } from "@seldon/core"
 import { getEffectiveProperties as coreGetEffectiveProperties } from "@seldon/core/helpers/properties/properties-bridge"
 import { getCompoundSelectorFacet } from "@seldon/core/properties/constants/shared/compound-properties"
-import { backgroundLayerForKind } from "@seldon/core/properties/values/appearance/background/background-seeds"
 import type {
   PropertyKey,
   SubPropertyKey,
 } from "@seldon/core/properties/types/property-keys"
+import { backgroundLayerForKind } from "@seldon/core/properties/values/appearance/background/background-seeds"
 import type { ThemeInstanceId } from "@seldon/core/themes/types/theme-id"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { useObjectProperties } from "@lib/workspace/hooks/use-object-properties"

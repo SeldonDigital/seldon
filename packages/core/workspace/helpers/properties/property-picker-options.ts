@@ -6,12 +6,12 @@ import {
   Workspace,
 } from "@seldon/core"
 import {
+  RESERVED_LOOK_IDS,
   getBuiltInLookSectionForPropertyKey,
   getThemeLookPickerToken,
   getThemeLookSection,
   isThemeLookPresetSchemaName,
   listThemeLookIds,
-  RESERVED_LOOK_IDS,
 } from "@seldon/core/themes/looks"
 import { resolveThemeTokenEntry } from "@seldon/core/themes/schemas"
 

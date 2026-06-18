@@ -136,8 +136,9 @@ export function usePropertyControl({
   const isEditing = externalIsEditing ?? internalIsEditing
   const setIsEditing = onEditChange ?? setInternalIsEditing
 
-  const { getPropertyValueForDisplay, getPlaceholder } =
-    usePropertyControlData({ property, theme })
+  const { getPropertyValueForDisplay, getPlaceholder } = usePropertyControlData(
+    { property, theme },
+  )
   const { validationFunction, units } = usePropertyValidation(property)
 
   const subject = propertySubject ?? selection

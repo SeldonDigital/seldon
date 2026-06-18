@@ -3,15 +3,15 @@ import { getComponentSchema } from "@seldon/core/components/catalog"
 import { ComponentId, isComponentId } from "@seldon/core/components/constants"
 import { isCompoundProperty } from "@seldon/core/helpers/type-guards/compound/is-compound-property"
 import { COMPOUND_FACET_DISPLAY_ORDER } from "@seldon/core/properties/constants"
-import {
-  BACKGROUND_KIND_VALUES,
-  BackgroundKind,
-} from "@seldon/core/properties/values/appearance/background/background-kind"
 import { getPropertyCategory } from "@seldon/core/properties/schemas"
 import {
   type PropertyKey as CorePropertyKey,
   isLayeredPaintProperty,
 } from "@seldon/core/properties/types/property-keys"
+import {
+  BACKGROUND_KIND_VALUES,
+  BackgroundKind,
+} from "@seldon/core/properties/values/appearance/background/background-kind"
 import {
   type WorkspacePropertySource,
   getEffectiveNodeProperties,
@@ -291,7 +291,9 @@ const BACKGROUND_FACETS_BY_KIND: Record<BackgroundKind, readonly string[]> = {
 }
 
 /** Reads the `kind` option from a background layer value, when present. */
-function readBackgroundKind(propertyValue: unknown): BackgroundKind | undefined {
+function readBackgroundKind(
+  propertyValue: unknown,
+): BackgroundKind | undefined {
   const layer = getCompoundLayerValue(propertyValue)
   const kindCell = layer?.["kind"] as
     | { type?: unknown; value?: unknown }

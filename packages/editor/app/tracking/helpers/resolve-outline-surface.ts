@@ -1,16 +1,20 @@
-import { getEffectiveProperties } from "@seldon/core/helpers/properties/properties-bridge"
+import { COLORS } from "@lib/helpers/colors"
 import { isDarkBackgroundColor } from "@seldon/core/helpers/color/contrast"
+import { getEffectiveProperties } from "@seldon/core/helpers/properties/properties-bridge"
 import { resolveColor } from "@seldon/core/helpers/resolution/resolve-color"
-import type { ColorValue } from "@seldon/core/properties/values/appearance/color"
-import type { Properties } from "@seldon/core/properties/types/properties"
 import { ValueType } from "@seldon/core/properties/constants"
+import type { Properties } from "@seldon/core/properties/types/properties"
 import type { BackgroundLayer } from "@seldon/core/properties/values/appearance/background"
+import type { ColorValue } from "@seldon/core/properties/values/appearance/color"
 import { findParentNode } from "@seldon/core/workspace/helpers/nodes/find-parent-node"
 import { nodeRelationshipService } from "@seldon/core/workspace/services"
 import { workspaceThemeService } from "@seldon/core/workspace/services/theme/theme.service"
-import type { Board, EntryNodeId, Workspace } from "@seldon/core/workspace/types"
+import type {
+  Board,
+  EntryNodeId,
+  Workspace,
+} from "@seldon/core/workspace/types"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
-import { COLORS } from "@lib/helpers/colors"
 
 export interface OutlineColors {
   hover: string
@@ -74,11 +78,12 @@ function resolveSurfaceForObjectId(
   return isOpaqueResolved(resolved) ? (resolved as ColorValue) : null
 }
 
-function resolveSurfaceForBoard(board: Board, workspace: Workspace): ColorValue {
+function resolveSurfaceForBoard(
+  board: Board,
+  workspace: Workspace,
+): ColorValue {
   const boardKey = getComponentKey(board)
-  return (
-    resolveSurfaceForObjectId(boardKey, workspace) ?? FALLBACK_SURFACE
-  )
+  return resolveSurfaceForObjectId(boardKey, workspace) ?? FALLBACK_SURFACE
 }
 
 /**
@@ -137,7 +142,9 @@ export function resolveOutlineSurfaceForBoard(
 }
 
 /** Maps a resolved surface to hover and selection outline border colors. */
-export function pickOutlineColorsFromSurface(surface: ColorValue): OutlineColors {
+export function pickOutlineColorsFromSurface(
+  surface: ColorValue,
+): OutlineColors {
   try {
     const dark = isDarkBackgroundColor(surface)
     if (dark) {

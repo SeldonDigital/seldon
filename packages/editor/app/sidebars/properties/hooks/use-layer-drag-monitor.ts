@@ -2,12 +2,12 @@ import { monitorForElements } from "@atlaskit/pragmatic-drag-and-drop/element/ad
 import { useEffect } from "react"
 import { LayeredPaintKey } from "@seldon/core"
 import { useObjectProperties } from "@lib/workspace/hooks/use-object-properties"
-import { LAYER_DRAG_ACTION } from "./use-layer-draggable"
-import { useLayerDragStateStore } from "./use-layer-drag-state"
 import {
-  computeLayerToIndex,
   type LayerPlacement,
+  computeLayerToIndex,
 } from "../helpers/layer-reorder"
+import { useLayerDragStateStore } from "./use-layer-drag-state"
+import { LAYER_DRAG_ACTION } from "./use-layer-draggable"
 
 /**
  * Global monitor for layer reorder drags in the properties sidebar. Tracks an

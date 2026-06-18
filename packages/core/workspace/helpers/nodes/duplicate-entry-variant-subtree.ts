@@ -185,7 +185,7 @@ export function buildDuplicateEntryVariantSubtreePlan(
     // entities. Keep the duplicated Sandbox templating from its own source
     // (`catalog:sandbox`) instead of chaining it to another sandbox.
     const rootTemplate = isPlaygroundBoard(board)
-      ? nodes[sourceRootId]?.template ?? formatNodeLink(sourceRootId)
+      ? (nodes[sourceRootId]?.template ?? formatNodeLink(sourceRootId))
       : formatNodeLink(defaultVariantId ?? sourceRootId)
     for (const [oldId, newId] of idMap) {
       const row = nodes[oldId]

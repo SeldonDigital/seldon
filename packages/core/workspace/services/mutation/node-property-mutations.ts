@@ -159,9 +159,7 @@ function isLayerSlotReset(
   layerIndex: number | undefined,
 ): boolean {
   return (
-    layerIndex != null &&
-    layerIndex > 0 &&
-    isLayeredPaintProperty(propertyKey)
+    layerIndex != null && layerIndex > 0 && isLayeredPaintProperty(propertyKey)
   )
 }
 

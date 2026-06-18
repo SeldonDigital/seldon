@@ -6,14 +6,14 @@ import { HSLObjectToString } from "../../helpers/color/hsl-object-to-string"
 import { LCHObjectToString } from "../../helpers/color/lch-object-to-string"
 import { RGBObjectToString } from "../../helpers/color/rgb-object-to-string"
 import { themeSwatchToColorValue } from "../../helpers/color/theme-swatch-to-color-value"
+import { resolveColor } from "../../helpers/resolution/resolve-color"
+import { resolveValue } from "../../helpers/resolution/resolve-value"
+import { getThemeOption } from "../../helpers/theme/get-theme-option"
 import { isHSLObject } from "../../helpers/type-guards/color/is-hsl-object"
 import { isLCHObject } from "../../helpers/type-guards/color/is-lch-object"
 import { isRGBObject } from "../../helpers/type-guards/color/is-rgb-object"
 import { isCompoundValue } from "../../helpers/type-guards/compound/is-compound-value"
 import { findInObject } from "../../helpers/utils/find-in-object"
-import { resolveColor } from "../../helpers/resolution/resolve-color"
-import { resolveValue } from "../../helpers/resolution/resolve-value"
-import { getThemeOption } from "../../helpers/theme/get-theme-option"
 import { isHex, isHexWithoutHash } from "../../helpers/validation"
 import type { ThemeSwatch } from "../../themes/types"
 import { ValueType } from "../constants"
@@ -21,11 +21,11 @@ import type { AtomicValue } from "../types/value-atomic"
 import type { ColorValue } from "../values/appearance/color"
 import type { ComputedHighContrastValue } from "../values/shared/computed/high-contrast-color"
 import type { EmptyValue } from "../values/shared/empty/empty"
-import type { HexValue, Hex } from "../values/shared/exact/hex"
+import type { Hex, HexValue } from "../values/shared/exact/hex"
 import type { HSL } from "../values/shared/exact/hsl"
 import type { LCH } from "../values/shared/exact/lch"
-import type { RGB } from "../values/shared/exact/rgb"
 import type { PercentageValue } from "../values/shared/exact/percentage"
+import type { RGB } from "../values/shared/exact/rgb"
 import { resolveBasedOnWithAnchor } from "./get-based-on-value"
 import { ComputeContext } from "./types"
 
@@ -104,10 +104,7 @@ export function computeHighContrastColor(
   if (brightness && surface.type === ValueType.EXACT) {
     color = {
       type: ValueType.EXACT as const,
-      value: convertAndApplyBrightness(
-        surface.value,
-        brightness.value.value,
-      ),
+      value: convertAndApplyBrightness(surface.value, brightness.value.value),
     }
   }
 

@@ -92,6 +92,10 @@ export function resolvePreviousSiblingNodeId(
 ): EntryNodeId | null {
   const node = getNodeById(workspace, nodeId)
   if (!node) return null
-  const sibling = nodeRelationshipService.findAdjacent(node, "before", workspace)
+  const sibling = nodeRelationshipService.findAdjacent(
+    node,
+    "before",
+    workspace,
+  )
   return sibling ? sibling.id : null
 }

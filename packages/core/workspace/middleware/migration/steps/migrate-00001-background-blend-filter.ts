@@ -1,14 +1,14 @@
+import { ValueType } from "../../../../properties/constants"
 import {
   BACKGROUND_BLEND_MODE_VALUES,
   BackgroundBlendMode,
 } from "../../../../properties/values/appearance/background/background-blend-mode"
 import { BACKGROUND_FILTER_PRESET_VALUES } from "../../../../properties/values/appearance/background/background-filter"
-import { ValueType } from "../../../../properties/constants"
-import type { Workspace } from "../../../model/workspace"
 import { isComponentBoard, isPlaygroundBoard } from "../../../model"
+import type { Board } from "../../../model/components"
 import type { EntryNode } from "../../../model/entry-node"
 import type { EntryTheme } from "../../../model/entry-theme"
-import type { Board } from "../../../model/components"
+import type { Workspace } from "../../../model/workspace"
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return value != null && typeof value === "object" && !Array.isArray(value)
@@ -22,10 +22,7 @@ function isPresetFilterValue(value: string): boolean {
   return (BACKGROUND_FILTER_PRESET_VALUES as readonly string[]).includes(value)
 }
 
-function migrateBlendOrFilterValue(
-  key: string,
-  value: unknown,
-): unknown {
+function migrateBlendOrFilterValue(key: string, value: unknown): unknown {
   if (!isRecord(value) || typeof value.type !== "string") {
     return value
   }
@@ -66,7 +63,9 @@ function walkValue(value: unknown): unknown {
   return migrated
 }
 
-function migratePropertyBag(bag: Record<string, unknown>): Record<string, unknown> {
+function migratePropertyBag(
+  bag: Record<string, unknown>,
+): Record<string, unknown> {
   const walked = walkValue(bag)
   return isRecord(walked) ? walked : bag
 }
@@ -75,7 +74,9 @@ function migratePropertyBag(bag: Record<string, unknown>): Record<string, unknow
  * v1: normalizes legacy EXACT blendMode and filter values to OPTION where the
  * stored string matches the new catalog enums or filter presets.
  */
-export function migrateV1BackgroundBlendFilter(workspace: Workspace): Workspace {
+export function migrateV1BackgroundBlendFilter(
+  workspace: Workspace,
+): Workspace {
   const next: Workspace = {
     ...workspace,
     nodes: { ...workspace.nodes },

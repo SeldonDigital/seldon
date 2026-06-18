@@ -1,7 +1,7 @@
 import { RefObject, useEffect, useRef } from "react"
 import { Box } from "@seldon/components/custom-components"
-import { Frame } from "@seldon/components/frames/Frame"
 import { InputEditor } from "@seldon/components/custom-components"
+import { Frame } from "@seldon/components/frames/Frame"
 import {
   comboboxFrameStyle,
   comboboxInputStyle,

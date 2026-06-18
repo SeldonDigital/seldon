@@ -122,7 +122,10 @@ export function useMoveObjects() {
   const reorderVariant = useCallback(
     (variantId: VariantId, index: number, isPreview = false) => {
       const variant = getVariantById(variantId, workspace)
-      const board = nodeRelationshipService.findBoardForVariant(variant, workspace)
+      const board = nodeRelationshipService.findBoardForVariant(
+        variant,
+        workspace,
+      )
       invariant(board, "Board not found")
       if (isDefaultVariant(variant) || index === 0) {
         addToast("Default variant cannot be moved or replaced")

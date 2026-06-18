@@ -181,8 +181,7 @@ export const schema = {
     {
       id: "positive",
       label: "Positive Cell",
-      intent:
-        "Numeric cell tinted green to mark a positive or credit value.",
+      intent: "Numeric cell tinted green to mark a positive or credit value.",
       overrides: {
         cellAlign: {
           type: Sdn.ValueType.OPTION,
@@ -197,8 +196,7 @@ export const schema = {
     {
       id: "negative",
       label: "Negative Cell",
-      intent:
-        "Numeric cell tinted red to mark a negative or debit value.",
+      intent: "Numeric cell tinted red to mark a negative or debit value.",
       overrides: {
         cellAlign: {
           type: Sdn.ValueType.OPTION,

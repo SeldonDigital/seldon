@@ -1,14 +1,8 @@
+import { RefObject, useCallback, useEffect, useMemo, useRef } from "react"
 import {
-  RefObject,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-} from "react"
-import {
-  useComboboxState,
   type ComboboxOptionItem,
   type ComboboxOptionItems,
+  useComboboxState,
 } from "@seldon/components/custom-components"
 import type { PropertyPickerResult } from "../helpers/options-utils"
 import { FlatProperty } from "../helpers/properties-data"

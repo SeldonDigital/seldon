@@ -17,28 +17,28 @@ import {
   isReservedTokenName,
 } from "@seldon/core"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
-import { useAddToast } from "@app/toaster/hooks/use-add-toast"
-import { useInlineRename } from "../../hooks/use-inline-rename"
 import { workspaceThemeService } from "@seldon/core/workspace/services/theme/theme.service"
 import { useThemes } from "@lib/themes/hooks/use-themes"
 import { useObjectProperties } from "@lib/workspace/hooks/use-object-properties"
 import { useDebugMode } from "@lib/hooks/use-debug-mode"
+import { useInlineRename } from "../../hooks/use-inline-rename"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
-import { useImageUploadPanel } from "@app/panels/hooks/use-upload-image-panel"
 import { FormControlIconicProps } from "@seldon/components/elements/FormControlIconic"
-import {
-  getBoardPresetIconId,
-  getBoardPresetValue,
-} from "../helpers/board-preset-icon"
-import { buildPropertyOptions } from "../helpers/build-property-options"
+import { useImageUploadPanel } from "@app/panels/hooks/use-upload-image-panel"
+import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import { buildResetMenuEntry } from "../../shared/build-reset-menu-entry"
-import { ICONIC_BUTTON_SELECTOR } from "../../helpers/iconic-button"
+import { buildPropertyOptions } from "../helpers/build-property-options"
 import {
   FRAME_REF_ATTR,
   FRAME_REF_SELECTOR,
   FRAME_REF_VALUE,
   buildPropertyRowProps,
 } from "../helpers/build-property-row-props"
+import { ICONIC_BUTTON_SELECTOR } from "../../helpers/iconic-button"
+import {
+  getBoardPresetIconId,
+  getBoardPresetValue,
+} from "../helpers/board-preset-icon"
 import { getDisplayValue } from "../helpers/display-value-utils"
 import {
   FontCollectionEditingContext,
@@ -117,7 +117,10 @@ export function useRowProperty({
     section: ThemeCustomTokenSection
     key: string
   } | null>(() => {
-    if (!themeEditingContext?.isThemeEditing || !themeEditingContext.canAddCustom) {
+    if (
+      !themeEditingContext?.isThemeEditing ||
+      !themeEditingContext.canAddCustom
+    ) {
       return null
     }
     const parts = property.key.split(".")

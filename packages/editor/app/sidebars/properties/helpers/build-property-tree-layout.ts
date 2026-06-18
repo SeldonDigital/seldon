@@ -10,10 +10,8 @@ import { rules } from "@seldon/core/rules/config/rules.config"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { isResourceType } from "@seldon/core/workspace/helpers/components/is-resource-type"
 import { typeCheckingService } from "@seldon/core/workspace/services"
-import {
-  PropertySection,
-  getPropertySections,
-} from "./get-property-sections"
+import { ThemeEditingContext } from "./editing-contexts"
+import { PropertySection, getPropertySections } from "./get-property-sections"
 import {
   ThemePropertySection,
   getThemePropertySections,
@@ -25,7 +23,6 @@ import {
 import { FlatProperty } from "./properties-data"
 import { buildReferenceProperty } from "./reference-display"
 import { buildThemeAssignmentProperty } from "./theme-assignment-display"
-import { ThemeEditingContext } from "./editing-contexts"
 
 /** A reference is only editable where `setRef` rules allow it (boards excluded). */
 function isReferenceFieldAllowed(node: Variant | Instance | Board): boolean {

@@ -49,7 +49,8 @@ function canPasteInto(
 
 function isDefaultVariantTarget(node: EntryNode): boolean {
   return (
-    typeCheckingService.isVariant(node) && typeCheckingService.isDefaultVariant(node)
+    typeCheckingService.isVariant(node) &&
+    typeCheckingService.isDefaultVariant(node)
   )
 }
 
@@ -118,7 +119,10 @@ export function resolvePasteTarget({
       }
     }
 
-    const board = nodeRelationshipService.findBoardForVariant(subject, workspace)
+    const board = nodeRelationshipService.findBoardForVariant(
+      subject,
+      workspace,
+    )
     if (!board || getComponentKey(board) !== selectedBoardId) {
       return {
         action: "error",

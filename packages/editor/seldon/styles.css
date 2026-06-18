@@ -10,7 +10,7 @@
  * any machine learning or artificial intelligence system without written permission.
  * 
  *****/
- 
+
 /********************************************
  *                                          *
  *              Reset styles                *
@@ -243,7 +243,8 @@ html {
 
 html,
 body {
-  font-family: system-ui,
+  font-family:
+    system-ui,
     -apple-system,
     "Segoe UI",
     Roboto,
@@ -251,7 +252,8 @@ body {
     Cantarell,
     "Open Sans",
     "Helvetica Neue",
-    sans-serif, "IBM Plex Sans";
+    sans-serif,
+    "IBM Plex Sans";
 }
 
 :root {

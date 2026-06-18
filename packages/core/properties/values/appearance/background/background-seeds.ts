@@ -19,8 +19,14 @@ function colorSeed(): BackgroundLayer {
   return {
     kind: { type: ValueType.OPTION, value: BackgroundKind.COLOR },
     color: { type: ValueType.THEME_CATEGORICAL, value: "@swatch.primary" },
-    brightness: { type: ValueType.EXACT, value: { value: 0, unit: Unit.PERCENT } },
-    opacity: { type: ValueType.EXACT, value: { value: 100, unit: Unit.PERCENT } },
+    brightness: {
+      type: ValueType.EXACT,
+      value: { value: 0, unit: Unit.PERCENT },
+    },
+    opacity: {
+      type: ValueType.EXACT,
+      value: { value: 100, unit: Unit.PERCENT },
+    },
   }
 }
 
@@ -30,7 +36,10 @@ function imageSeed(): BackgroundLayer {
     kind: { type: ValueType.OPTION, value: BackgroundKind.IMAGE },
     image: { type: ValueType.EXACT, value: DEFAULT_BACKGROUND_IMAGE },
     blendMode: { type: ValueType.OPTION, value: BackgroundBlendMode.NORMAL },
-    opacity: { type: ValueType.EXACT, value: { value: 100, unit: Unit.PERCENT } },
+    opacity: {
+      type: ValueType.EXACT,
+      value: { value: 100, unit: Unit.PERCENT },
+    },
     position: { type: ValueType.EMPTY, value: null },
     size: { type: ValueType.OPTION, value: ImageFit.COVER },
     repeat: { type: ValueType.OPTION, value: BackgroundRepeat.NO_REPEAT },

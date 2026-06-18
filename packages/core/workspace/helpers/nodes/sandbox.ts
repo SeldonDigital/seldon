@@ -1,10 +1,10 @@
 import { getComponentSchema } from "../../../components/catalog"
 import { ComponentId } from "../../../components/constants"
 import { Unit, ValueType } from "../../../properties"
-import { playgroundSandboxNodeId } from "../components/entry-node-ids"
 import { isPlaygroundContainer } from "../../model/playground"
 import { formatNodeCatalog, parseNodeCatalog } from "../../model/template-ref"
 import type { ComponentTreeRef, EntryNode, Workspace } from "../../types"
+import { playgroundSandboxNodeId } from "../components/entry-node-ids"
 
 /** Horizontal gap between auto-placed sandboxes, in px. */
 export const SANDBOX_PLACEMENT_GAP = 40
@@ -27,7 +27,9 @@ export interface SandboxRect {
 /** Whether a node templates directly from the Sandbox catalog schema. */
 export function isSandboxNode(node: Pick<EntryNode, "template">): boolean {
   const parsed = parseNodeCatalog(node.template)
-  return parsed?.kind === "catalog" && parsed.componentId === ComponentId.SANDBOX
+  return (
+    parsed?.kind === "catalog" && parsed.componentId === ComponentId.SANDBOX
+  )
 }
 
 /** Returns the Sandbox root ids listed by a playground container. */

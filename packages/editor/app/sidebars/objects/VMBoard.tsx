@@ -5,23 +5,20 @@ import { useTool } from "@lib/hooks/use-tool"
 import { useSidebarCanvasTrackingBoard } from "../../tracking/hooks/use-sidebar-canvas-tracking"
 import { useSidebarRowStyling } from "../../tracking/hooks/use-sidebar-row-styling"
 import { IndentationLevel } from "../hooks/use-indentation"
+import { useInlineRename } from "../hooks/use-inline-rename"
 import { useRowBoard } from "./hooks/use-row-board"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
-import { RowSelectionTarget } from "./RowSelectionTarget"
+import { FramerExpandable } from "@seldon/components/custom-components"
 import { ItemNodeRow } from "@seldon/components/elements/ItemNodeRow"
 import { IconProps } from "@seldon/components/primitives/Icon"
 import { TextLabelProps } from "@seldon/components/primitives/TextLabel"
 import { applyTrackingColor } from "../helpers/apply-tracking-color"
 import { rowWrapperStyle } from "../helpers/sidebar-row-styles"
 import { relativeFullWidthStyle } from "../helpers/sidebar-styles"
-import { FramerExpandable } from "@seldon/components/custom-components"
 import { useRowActionsMenu } from "../shared/use-row-actions-menu"
-import { useInlineRename } from "../hooks/use-inline-rename"
+import { RowSelectionTarget } from "./RowSelectionTarget"
 import { VMNode } from "./VMNode"
-import {
-  VMResourceEntry,
-  getBoardResourceRowConfig,
-} from "./VMResourceEntry"
+import { VMResourceEntry, getBoardResourceRowConfig } from "./VMResourceEntry"
 
 const BOARD_SELECTION_KIND = "board"
 
@@ -82,7 +79,13 @@ function VMBoardEmpty({ label }: { label: string }) {
  * Handles board selection, expansion, and canvas tracking. Hover highlight comes
  * from the shared hover bridge via the tree-root controller.
  */
-function VMBoardRow({ board, show = true }: { board: BoardType; show?: boolean }) {
+function VMBoardRow({
+  board,
+  show = true,
+}: {
+  board: BoardType
+  show?: boolean
+}) {
   // Core board data: buttons, icons, handlers, state
   const {
     label: baseLabel,

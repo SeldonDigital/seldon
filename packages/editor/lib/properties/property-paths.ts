@@ -13,7 +13,12 @@ export function isLayeredPaintRoot(
 export type ParsedPropertyPath =
   | { kind: "top-level"; key: string }
   | { kind: "facet"; root: string; facet: string }
-  | { kind: "layered-facet"; root: LayeredPaintKey; facet: string; index: number }
+  | {
+      kind: "layered-facet"
+      root: LayeredPaintKey
+      facet: string
+      index: number
+    }
   | { kind: "layered-parent"; root: LayeredPaintKey; index: number }
 
 /** Matches a non-negative integer used as a paint-layer index segment. */
@@ -63,7 +68,10 @@ export function layeredFacetPath(
 }
 
 /** Parent row key for a paint layer: bare root for index 0, `root.index` above it. */
-export function layeredParentPath(root: LayeredPaintKey, index: number): string {
+export function layeredParentPath(
+  root: LayeredPaintKey,
+  index: number,
+): string {
   return index === 0 ? root : `${root}.${index}`
 }
 

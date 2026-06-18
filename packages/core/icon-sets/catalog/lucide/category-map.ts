@@ -227,8 +227,10 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "lucide-bedSingle": "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-beer": "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-beerOff": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "lucide-betweenHorizontalEnd": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "lucide-betweenVerticalEnd": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "lucide-betweenHorizontalEnd":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "lucide-betweenVerticalEnd":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-bicepsFlexed": "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-bike": "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-binary": "miscellaneous/miscellaneous" as IconCategoryPath,
@@ -238,9 +240,11 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "lucide-birdhouse": "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-blinds": "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-bluetooth": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "lucide-bluetoothConnected": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "lucide-bluetoothConnected":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-bluetoothOff": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "lucide-bluetoothSearching": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "lucide-bluetoothSearching":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-bomb": "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-boomBox": "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-bot": "miscellaneous/miscellaneous" as IconCategoryPath,
@@ -298,7 +302,8 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "lucide-circlePercent": "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-circlePlus": "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-circlePower": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "lucide-circleQuestionMark": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "lucide-circleQuestionMark":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-circleSlash_2": "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-circleX": "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-circuitBoard": "miscellaneous/miscellaneous" as IconCategoryPath,
@@ -365,7 +370,8 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "lucide-eclipse": "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-egg": "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-eggOff": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "lucide-equalApproximately": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "lucide-equalApproximately":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-eraser": "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-ethernetPort": "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-evCharger": "miscellaneous/miscellaneous" as IconCategoryPath,
@@ -398,10 +404,12 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "lucide-funnelPlus": "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-funnelX": "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-galleryHorizontal": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "lucide-galleryHorizontalEnd": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "lucide-galleryHorizontalEnd":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-galleryThumbnails": "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-galleryVertical": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "lucide-galleryVerticalEnd": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "lucide-galleryVerticalEnd":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-gauge": "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-gavel": "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-gem": "miscellaneous/miscellaneous" as IconCategoryPath,
@@ -416,8 +424,10 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "lucide-github": "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-gitMerge": "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-gitPullRequest": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "lucide-gitPullRequestCreate": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "lucide-gitPullRequestDraft": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "lucide-gitPullRequestCreate":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "lucide-gitPullRequestDraft":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-glasses": "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-glassWater": "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-globe": "miscellaneous/miscellaneous" as IconCategoryPath,
@@ -551,7 +561,8 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "lucide-packageSearch": "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-packageX": "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-paintbrush": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "lucide-paintbrushVertical": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "lucide-paintbrushVertical":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-paintBucket": "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-paintRoller": "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-panda": "miscellaneous/miscellaneous" as IconCategoryPath,
@@ -559,7 +570,8 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "lucide-panelBottomDashed": "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-panelBottomOpen": "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-panelTop": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "lucide-panelTopBottomDashed": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "lucide-panelTopBottomDashed":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-panelTopDashed": "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-panelTopOpen": "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-parentheses": "miscellaneous/miscellaneous" as IconCategoryPath,
@@ -576,7 +588,8 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "lucide-piano": "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-pickaxe": "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-pictureInPicture": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "lucide-pictureInPicture_2": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "lucide-pictureInPicture_2":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-piggyBank": "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-pilcrow": "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-pipette": "miscellaneous/miscellaneous" as IconCategoryPath,
@@ -633,7 +646,8 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "lucide-rows_4": "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-rss": "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-ruler": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "lucide-rulerDimensionLine": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "lucide-rulerDimensionLine":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-russianRuble": "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-sailboat": "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-salad": "miscellaneous/miscellaneous" as IconCategoryPath,
@@ -649,13 +663,15 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "lucide-scanLine": "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-scanSearch": "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-scissors": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "lucide-scissorsLineDashed": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "lucide-scissorsLineDashed":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-scroll": "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-search": "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-searchSlash": "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-searchX": "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-section": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "lucide-separatorHorizontal": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "lucide-separatorHorizontal":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-separatorVertical": "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-shovel": "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-showerHead": "miscellaneous/miscellaneous" as IconCategoryPath,
@@ -680,7 +696,8 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "lucide-smile": "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-smilePlus": "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-snail": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "lucide-soapDispenserDroplet": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "lucide-soapDispenserDroplet":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-sofa": "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-solarPanel": "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-space": "miscellaneous/miscellaneous" as IconCategoryPath,
@@ -695,18 +712,24 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "lucide-sprout": "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-squareActivity": "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-squareAsterisk": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "lucide-squareBottomDashedScissors": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "lucide-squareBottomDashedScissors":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-squareDashed": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "lucide-squareDashedBottom": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "lucide-squareDashedKanban": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "lucide-squareDashedMousePointer": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "lucide-squareDashedTopSolid": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "lucide-squareDashedBottom":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "lucide-squareDashedKanban":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "lucide-squareDashedMousePointer":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "lucide-squareDashedTopSolid":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-squareEqual": "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-squareFunction": "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-squareKanban": "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-squareLibrary": "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-squareMinus": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "lucide-squareMousePointer": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "lucide-squareMousePointer":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-squareParking": "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-squareParkingOff": "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-squarePen": "miscellaneous/miscellaneous" as IconCategoryPath,
@@ -720,8 +743,10 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "lucide-squareScissors": "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-squareSigma": "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-squaresIntersect": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "lucide-squareSplitHorizontal": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "lucide-squareSplitVertical": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "lucide-squareSplitHorizontal":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "lucide-squareSplitVertical":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-squaresSubtract": "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-squareStack": "miscellaneous/miscellaneous" as IconCategoryPath,
   "lucide-squareX": "miscellaneous/miscellaneous" as IconCategoryPath,
@@ -1078,26 +1103,42 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "lucide-headphoneOff": "user-interface/communication" as IconCategoryPath,
   "lucide-megaphone": "user-interface/communication" as IconCategoryPath,
   "lucide-megaphoneOff": "user-interface/communication" as IconCategoryPath,
-  "lucide-messageCircleCode": "user-interface/communication" as IconCategoryPath,
-  "lucide-messageCircleDashed": "user-interface/communication" as IconCategoryPath,
-  "lucide-messageCircleMore": "user-interface/communication" as IconCategoryPath,
+  "lucide-messageCircleCode":
+    "user-interface/communication" as IconCategoryPath,
+  "lucide-messageCircleDashed":
+    "user-interface/communication" as IconCategoryPath,
+  "lucide-messageCircleMore":
+    "user-interface/communication" as IconCategoryPath,
   "lucide-messageCircleOff": "user-interface/communication" as IconCategoryPath,
-  "lucide-messageCirclePlus": "user-interface/communication" as IconCategoryPath,
-  "lucide-messageCircleQuestionMark": "user-interface/communication" as IconCategoryPath,
-  "lucide-messageCircleReply": "user-interface/communication" as IconCategoryPath,
+  "lucide-messageCirclePlus":
+    "user-interface/communication" as IconCategoryPath,
+  "lucide-messageCircleQuestionMark":
+    "user-interface/communication" as IconCategoryPath,
+  "lucide-messageCircleReply":
+    "user-interface/communication" as IconCategoryPath,
   "lucide-messageCircleX": "user-interface/communication" as IconCategoryPath,
-  "lucide-messageSquareCode": "user-interface/communication" as IconCategoryPath,
-  "lucide-messageSquareDashed": "user-interface/communication" as IconCategoryPath,
-  "lucide-messageSquareDiff": "user-interface/communication" as IconCategoryPath,
-  "lucide-messageSquareLock": "user-interface/communication" as IconCategoryPath,
-  "lucide-messageSquareMore": "user-interface/communication" as IconCategoryPath,
+  "lucide-messageSquareCode":
+    "user-interface/communication" as IconCategoryPath,
+  "lucide-messageSquareDashed":
+    "user-interface/communication" as IconCategoryPath,
+  "lucide-messageSquareDiff":
+    "user-interface/communication" as IconCategoryPath,
+  "lucide-messageSquareLock":
+    "user-interface/communication" as IconCategoryPath,
+  "lucide-messageSquareMore":
+    "user-interface/communication" as IconCategoryPath,
   "lucide-messageSquareOff": "user-interface/communication" as IconCategoryPath,
-  "lucide-messageSquarePlus": "user-interface/communication" as IconCategoryPath,
-  "lucide-messageSquareQuote": "user-interface/communication" as IconCategoryPath,
-  "lucide-messageSquareReply": "user-interface/communication" as IconCategoryPath,
-  "lucide-messageSquareText": "user-interface/communication" as IconCategoryPath,
+  "lucide-messageSquarePlus":
+    "user-interface/communication" as IconCategoryPath,
+  "lucide-messageSquareQuote":
+    "user-interface/communication" as IconCategoryPath,
+  "lucide-messageSquareReply":
+    "user-interface/communication" as IconCategoryPath,
+  "lucide-messageSquareText":
+    "user-interface/communication" as IconCategoryPath,
   "lucide-messageSquareX": "user-interface/communication" as IconCategoryPath,
-  "lucide-monitorSmartphone": "user-interface/communication" as IconCategoryPath,
+  "lucide-monitorSmartphone":
+    "user-interface/communication" as IconCategoryPath,
   "lucide-phoneCall": "user-interface/communication" as IconCategoryPath,
   "lucide-phoneIncoming": "user-interface/communication" as IconCategoryPath,
   "lucide-phoneMissed": "user-interface/communication" as IconCategoryPath,
@@ -1108,7 +1149,8 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "lucide-send": "user-interface/communication" as IconCategoryPath,
   "lucide-sendHorizontal": "user-interface/communication" as IconCategoryPath,
   "lucide-smartphone": "user-interface/communication" as IconCategoryPath,
-  "lucide-smartphoneCharging": "user-interface/communication" as IconCategoryPath,
+  "lucide-smartphoneCharging":
+    "user-interface/communication" as IconCategoryPath,
   "lucide-smartphoneNfc": "user-interface/communication" as IconCategoryPath,
   "lucide-tabletSmartphone": "user-interface/communication" as IconCategoryPath,
   "lucide-airplay": "user-interface/media" as IconCategoryPath,
@@ -1208,7 +1250,8 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "lucide-chevronsDownUp": "user-interface/navigation" as IconCategoryPath,
   "lucide-chevronsLeft": "user-interface/navigation" as IconCategoryPath,
   "lucide-chevronsLeftRight": "user-interface/navigation" as IconCategoryPath,
-  "lucide-chevronsLeftRightEllipsis": "user-interface/navigation" as IconCategoryPath,
+  "lucide-chevronsLeftRightEllipsis":
+    "user-interface/navigation" as IconCategoryPath,
   "lucide-chevronsRight": "user-interface/navigation" as IconCategoryPath,
   "lucide-chevronsRightLeft": "user-interface/navigation" as IconCategoryPath,
   "lucide-chevronsUp": "user-interface/navigation" as IconCategoryPath,
@@ -1216,10 +1259,14 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "lucide-chevronUp": "user-interface/navigation" as IconCategoryPath,
   "lucide-circleArrowDown": "user-interface/navigation" as IconCategoryPath,
   "lucide-circleArrowLeft": "user-interface/navigation" as IconCategoryPath,
-  "lucide-circleArrowOutDownLeft": "user-interface/navigation" as IconCategoryPath,
-  "lucide-circleArrowOutDownRight": "user-interface/navigation" as IconCategoryPath,
-  "lucide-circleArrowOutUpLeft": "user-interface/navigation" as IconCategoryPath,
-  "lucide-circleArrowOutUpRight": "user-interface/navigation" as IconCategoryPath,
+  "lucide-circleArrowOutDownLeft":
+    "user-interface/navigation" as IconCategoryPath,
+  "lucide-circleArrowOutDownRight":
+    "user-interface/navigation" as IconCategoryPath,
+  "lucide-circleArrowOutUpLeft":
+    "user-interface/navigation" as IconCategoryPath,
+  "lucide-circleArrowOutUpRight":
+    "user-interface/navigation" as IconCategoryPath,
   "lucide-circleArrowRight": "user-interface/navigation" as IconCategoryPath,
   "lucide-circleArrowUp": "user-interface/navigation" as IconCategoryPath,
   "lucide-circleChevronDown": "user-interface/navigation" as IconCategoryPath,
@@ -1248,7 +1295,8 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "lucide-forward": "user-interface/navigation" as IconCategoryPath,
   "lucide-gitCompareArrows": "user-interface/navigation" as IconCategoryPath,
   "lucide-gitPullRequestArrow": "user-interface/navigation" as IconCategoryPath,
-  "lucide-gitPullRequestCreateArrow": "user-interface/navigation" as IconCategoryPath,
+  "lucide-gitPullRequestCreateArrow":
+    "user-interface/navigation" as IconCategoryPath,
   "lucide-group": "user-interface/navigation" as IconCategoryPath,
   "lucide-imageDown": "user-interface/navigation" as IconCategoryPath,
   "lucide-imageUp": "user-interface/navigation" as IconCategoryPath,
@@ -1273,7 +1321,8 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "lucide-panelLeftClose": "user-interface/navigation" as IconCategoryPath,
   "lucide-panelLeftDashed": "user-interface/navigation" as IconCategoryPath,
   "lucide-panelLeftOpen": "user-interface/navigation" as IconCategoryPath,
-  "lucide-panelLeftRightDashed": "user-interface/navigation" as IconCategoryPath,
+  "lucide-panelLeftRightDashed":
+    "user-interface/navigation" as IconCategoryPath,
   "lucide-panelRight": "user-interface/navigation" as IconCategoryPath,
   "lucide-panelRightClose": "user-interface/navigation" as IconCategoryPath,
   "lucide-panelRightDashed": "user-interface/navigation" as IconCategoryPath,
@@ -1294,12 +1343,17 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "lucide-soup": "user-interface/navigation" as IconCategoryPath,
   "lucide-squareArrowDown": "user-interface/navigation" as IconCategoryPath,
   "lucide-squareArrowDownLeft": "user-interface/navigation" as IconCategoryPath,
-  "lucide-squareArrowDownRight": "user-interface/navigation" as IconCategoryPath,
+  "lucide-squareArrowDownRight":
+    "user-interface/navigation" as IconCategoryPath,
   "lucide-squareArrowLeft": "user-interface/navigation" as IconCategoryPath,
-  "lucide-squareArrowOutDownLeft": "user-interface/navigation" as IconCategoryPath,
-  "lucide-squareArrowOutDownRight": "user-interface/navigation" as IconCategoryPath,
-  "lucide-squareArrowOutUpLeft": "user-interface/navigation" as IconCategoryPath,
-  "lucide-squareArrowOutUpRight": "user-interface/navigation" as IconCategoryPath,
+  "lucide-squareArrowOutDownLeft":
+    "user-interface/navigation" as IconCategoryPath,
+  "lucide-squareArrowOutDownRight":
+    "user-interface/navigation" as IconCategoryPath,
+  "lucide-squareArrowOutUpLeft":
+    "user-interface/navigation" as IconCategoryPath,
+  "lucide-squareArrowOutUpRight":
+    "user-interface/navigation" as IconCategoryPath,
   "lucide-squareArrowRight": "user-interface/navigation" as IconCategoryPath,
   "lucide-squareArrowUp": "user-interface/navigation" as IconCategoryPath,
   "lucide-squareArrowUpLeft": "user-interface/navigation" as IconCategoryPath,
@@ -1391,20 +1445,31 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "lucide-alignCenterVertical": "user-interface/text" as IconCategoryPath,
   "lucide-alignEndHorizontal": "user-interface/text" as IconCategoryPath,
   "lucide-alignEndVertical": "user-interface/text" as IconCategoryPath,
-  "lucide-alignHorizontalDistributeCenter": "user-interface/text" as IconCategoryPath,
-  "lucide-alignHorizontalDistributeEnd": "user-interface/text" as IconCategoryPath,
-  "lucide-alignHorizontalDistributeStart": "user-interface/text" as IconCategoryPath,
-  "lucide-alignHorizontalJustifyCenter": "user-interface/text" as IconCategoryPath,
+  "lucide-alignHorizontalDistributeCenter":
+    "user-interface/text" as IconCategoryPath,
+  "lucide-alignHorizontalDistributeEnd":
+    "user-interface/text" as IconCategoryPath,
+  "lucide-alignHorizontalDistributeStart":
+    "user-interface/text" as IconCategoryPath,
+  "lucide-alignHorizontalJustifyCenter":
+    "user-interface/text" as IconCategoryPath,
   "lucide-alignHorizontalJustifyEnd": "user-interface/text" as IconCategoryPath,
-  "lucide-alignHorizontalJustifyStart": "user-interface/text" as IconCategoryPath,
-  "lucide-alignHorizontalSpaceAround": "user-interface/text" as IconCategoryPath,
-  "lucide-alignHorizontalSpaceBetween": "user-interface/text" as IconCategoryPath,
+  "lucide-alignHorizontalJustifyStart":
+    "user-interface/text" as IconCategoryPath,
+  "lucide-alignHorizontalSpaceAround":
+    "user-interface/text" as IconCategoryPath,
+  "lucide-alignHorizontalSpaceBetween":
+    "user-interface/text" as IconCategoryPath,
   "lucide-alignStartHorizontal": "user-interface/text" as IconCategoryPath,
   "lucide-alignStartVertical": "user-interface/text" as IconCategoryPath,
-  "lucide-alignVerticalDistributeCenter": "user-interface/text" as IconCategoryPath,
-  "lucide-alignVerticalDistributeEnd": "user-interface/text" as IconCategoryPath,
-  "lucide-alignVerticalDistributeStart": "user-interface/text" as IconCategoryPath,
-  "lucide-alignVerticalJustifyCenter": "user-interface/text" as IconCategoryPath,
+  "lucide-alignVerticalDistributeCenter":
+    "user-interface/text" as IconCategoryPath,
+  "lucide-alignVerticalDistributeEnd":
+    "user-interface/text" as IconCategoryPath,
+  "lucide-alignVerticalDistributeStart":
+    "user-interface/text" as IconCategoryPath,
+  "lucide-alignVerticalJustifyCenter":
+    "user-interface/text" as IconCategoryPath,
   "lucide-alignVerticalJustifyEnd": "user-interface/text" as IconCategoryPath,
   "lucide-alignVerticalJustifyStart": "user-interface/text" as IconCategoryPath,
   "lucide-alignVerticalSpaceAround": "user-interface/text" as IconCategoryPath,

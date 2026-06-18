@@ -20,7 +20,9 @@ const LAYERED_PAINT_LABELS: Record<LayeredPaintKey, string> = {
  * typed Color, Image, and Gradient seeds; other stacks add a single empty
  * layer. The editor renders these without knowing any property specifics.
  */
-export function getLayerAddOptions(property: LayeredPaintKey): LayerAddOption[] {
+export function getLayerAddOptions(
+  property: LayeredPaintKey,
+): LayerAddOption[] {
   if (property === "background") {
     return [
       {

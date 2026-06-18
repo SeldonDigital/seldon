@@ -16,11 +16,11 @@ Properties flow through a resolution pipeline that merges values from multiple s
 
 Workspaces use three shapes for properties: **Atomic**, **Compound**, and **Shorthand**. Under the hood, **layered paint** (`background`, `shadow`) is stored as **arrays of compound layers** (see `nodeStorage: "layered"` in `constants/shared/compound-properties.ts`); the tables below mark those parents as type `array`.
 
-| Kind | What it is | Access |
-| --- | --- | --- |
-| **Atomic** | One stored value is one style decision. Color, display, and a single length are typical. | One control. Nothing lives under the property name as a separate path. |
-| **Compound** | Several related values belong to one property. Themes ship presets that apply the whole set together. | Dot paths such as `border.color`. Picking a preset writes its values and clears any piece of the compound that the preset does not specify. |
-| **Shorthand** | One property drives several fields of the same kind: four margins, four paddings, four corner radii, and so on. Same idea as CSS shorthand. | You edit an object with named sides or corners, or you set every field at once. The UI may show a single value when all fields match. |
+| Kind          | What it is                                                                                                                                  | Access                                                                                                                                      |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Atomic**    | One stored value is one style decision. Color, display, and a single length are typical.                                                    | One control. Nothing lives under the property name as a separate path.                                                                      |
+| **Compound**  | Several related values belong to one property. Themes ship presets that apply the whole set together.                                       | Dot paths such as `border.color`. Picking a preset writes its values and clears any piece of the compound that the preset does not specify. |
+| **Shorthand** | One property drives several fields of the same kind: four margins, four paddings, four corner radii, and so on. Same idea as CSS shorthand. | You edit an object with named sides or corners, or you set every field at once. The UI may show a single value when all fields match.       |
 
 ### Atomic Properties
 
@@ -125,15 +125,15 @@ Shorthand behavior:
 
 Properties use seven value types to handle different data sources and behaviors:
 
-| Value type | Meaning |
-| --- | --- |
-| `EMPTY` | Unset: resolved by the platform or defaults. Inheritance from parents or platform defaults can apply. |
-| `INHERIT` | Explicitly uses the parent component’s value, forming a direct parent → child inheritance chain. |
-| `EXACT` | A concrete value (color, size, text, etc.) with no reference to another property or theme. |
-| `OPTION` | One of a fixed set of allowed choices. |
-| `COMPUTED` | Derived from other properties (e.g. math or functions), such as width as 80% of the parent. |
-| `THEME_CATEGORICAL` | A theme token from a non-ordered set (e.g. colors, font families). |
-| `THEME_ORDINAL` | A theme token from an ordered scale (e.g. spacing, type size steps). |
+| Value type          | Meaning                                                                                               |
+| ------------------- | ----------------------------------------------------------------------------------------------------- |
+| `EMPTY`             | Unset: resolved by the platform or defaults. Inheritance from parents or platform defaults can apply. |
+| `INHERIT`           | Explicitly uses the parent component’s value, forming a direct parent → child inheritance chain.      |
+| `EXACT`             | A concrete value (color, size, text, etc.) with no reference to another property or theme.            |
+| `OPTION`            | One of a fixed set of allowed choices.                                                                |
+| `COMPUTED`          | Derived from other properties (e.g. math or functions), such as width as 80% of the parent.           |
+| `THEME_CATEGORICAL` | A theme token from a non-ordered set (e.g. colors, font families).                                    |
+| `THEME_ORDINAL`     | A theme token from an ordered scale (e.g. spacing, type size steps).                                  |
 
 ```typescript
 enum ValueType {
@@ -225,13 +225,13 @@ Below are all property values and their fields. They are grouped into categories
 - `name[]` marks a layered array. `name[].facet` is a facet of each layer.
 - The Values column uses the shorthands below for value sets that recur across many properties.
 
-| Shorthand | Expands to |
-| --- | --- |
-| `<color>` | `exact: hex, hsl, rgb, lch` \| `option: transparent` \| `theme.categorical: @swatch.*` \| `computed: highContrastColor, match` |
-| `<percent>` | `exact: %, 0–100` |
-| `<length>` | `exact: px, rem` |
-| `<length%>` | `exact: px, rem, %` |
-| `<bool>` | `exact: boolean` \| `option: true, false` |
+| Shorthand   | Expands to                                                                                                                     |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `<color>`   | `exact: hex, hsl, rgb, lch` \| `option: transparent` \| `theme.categorical: @swatch.*` \| `computed: highContrastColor, match` |
+| `<percent>` | `exact: %, 0–100`                                                                                                              |
+| `<length>`  | `exact: px, rem`                                                                                                               |
+| `<length%>` | `exact: px, rem, %`                                                                                                            |
+| `<bool>`    | `exact: boolean` \| `option: true, false`                                                                                      |
 
 ---
 
@@ -239,30 +239,30 @@ Below are all property values and their fields. They are grouped into categories
 
 Properties that are specific to the selected component type and define its core functionality. This category also includes **accessibility**, **form control** fields, **media** sources, **board** sizing, and **workspace/catalog** knobs (`display`, `size`, `buttonSize`) that are not general CSS layout.
 
-| Property | Type | Values |
-| --- | --- | --- |
-| `display` | `atomic` | `empty` \| `inherit` \| `exact: string` \| `option: show, hide, exclude` |
-| `htmlElement` | `atomic` | `empty` \| `inherit` \| `option: a, h1, h2, h3, h4, h5, h6, p, span, label, div, section, article, header, footer, main, nav, aside, figure, figcaption, form, fieldset, menu, option, optgroup, li, ol, ul` \| `exact: string` |
-| `wrapperElement` | `atomic` | `empty` \| `inherit` \| `option: div, section, article, aside, main, nav, header, footer, ul, ol, li, form, fieldset, figure, menu, blockquote, thead, tbody, tfoot, tr` \| `exact: string` (Frame catalog only) |
-| `content` | `atomic` | `empty` \| `inherit` \| `exact: string` |
-| `symbol` | `atomic` | `empty` \| `inherit` \| `option: iconId` \| `exact: string` |
-| `source` | `atomic` | `empty` \| `inherit` \| `exact: string` |
-| `imageFit` | `atomic` | `empty` \| `inherit` \| `option: original, contain, cover, stretch` \| `exact: string` |
-| `altText` | `atomic` | `empty` \| `inherit` \| `exact: string` |
-| `inputType` | `atomic` | `empty` \| `inherit` \| `option: text, number, email, password, search, tel, url, date, datetime-local, checkbox, radio` \| `exact: string` |
-| `placeholder` | `atomic` | `empty` \| `inherit` \| `exact: string` |
-| `checked` | `atomic` | `empty` \| `inherit` \| `<bool>` |
-| `ariaLabel` | `atomic` | `empty` \| `inherit` \| `exact: string` |
-| `ariaHidden` | `atomic` | `empty` \| `inherit` \| `<bool>` |
-| `size` | `atomic` | `empty` \| `inherit` \| `<length>` \| `theme.ordinal: @size.*` \| `computed: autoFit, match` |
-| `buttonSize` | `atomic` | `empty` \| `inherit` \| `<length>` \| `theme.ordinal: @fontSize.*` |
-| `board` | `compound` | `board.preset, board.width, board.height` |
-| └ `board.preset` | `atomic` | `empty` \| `option: fit, device preset ids` |
-| └ `board.width` | `atomic` | `empty` \| `<length>` \| `option: fit` |
-| └ `board.height` | `atomic` | `empty` \| `<length>` \| `option: fit` |
-| `screenWidth` | `atomic` | `empty` \| `<length>` \| `option: fit, fill, desktop, laptop, tablet, mobile, watch, television` \| `computed: autoFit` |
-| `screenHeight` | `atomic` | `empty` \| `<length>` \| `option: fit, fill, desktop, laptop, tablet, mobile, watch, television` \| `computed: autoFit` |
-| `cursor` | `atomic` | `empty` \| `inherit` \| `option: default, none, context-menu, help, pointer, progress, wait, cell, crosshair, text, vertical-text, alias, copy, move, no-drop, not-allowed, grab, grabbing, e-resize, n-resize, ne-resize, nw-resize, s-resize, se-resize, sw-resize, w-resize, ew-resize, ns-resize, nesw-resize, nwse-resize, col-resize, row-resize, all-scroll, zoom-in, zoom-out` \| `exact: string` |
+| Property         | Type       | Values                                                                                                                                                                                                                                                                                                                                                                                                    |
+| ---------------- | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `display`        | `atomic`   | `empty` \| `inherit` \| `exact: string` \| `option: show, hide, exclude`                                                                                                                                                                                                                                                                                                                                  |
+| `htmlElement`    | `atomic`   | `empty` \| `inherit` \| `option: a, h1, h2, h3, h4, h5, h6, p, span, label, div, section, article, header, footer, main, nav, aside, figure, figcaption, form, fieldset, menu, option, optgroup, li, ol, ul` \| `exact: string`                                                                                                                                                                           |
+| `wrapperElement` | `atomic`   | `empty` \| `inherit` \| `option: div, section, article, aside, main, nav, header, footer, ul, ol, li, form, fieldset, figure, menu, blockquote, thead, tbody, tfoot, tr` \| `exact: string` (Frame catalog only)                                                                                                                                                                                          |
+| `content`        | `atomic`   | `empty` \| `inherit` \| `exact: string`                                                                                                                                                                                                                                                                                                                                                                   |
+| `symbol`         | `atomic`   | `empty` \| `inherit` \| `option: iconId` \| `exact: string`                                                                                                                                                                                                                                                                                                                                               |
+| `source`         | `atomic`   | `empty` \| `inherit` \| `exact: string`                                                                                                                                                                                                                                                                                                                                                                   |
+| `imageFit`       | `atomic`   | `empty` \| `inherit` \| `option: original, contain, cover, stretch` \| `exact: string`                                                                                                                                                                                                                                                                                                                    |
+| `altText`        | `atomic`   | `empty` \| `inherit` \| `exact: string`                                                                                                                                                                                                                                                                                                                                                                   |
+| `inputType`      | `atomic`   | `empty` \| `inherit` \| `option: text, number, email, password, search, tel, url, date, datetime-local, checkbox, radio` \| `exact: string`                                                                                                                                                                                                                                                               |
+| `placeholder`    | `atomic`   | `empty` \| `inherit` \| `exact: string`                                                                                                                                                                                                                                                                                                                                                                   |
+| `checked`        | `atomic`   | `empty` \| `inherit` \| `<bool>`                                                                                                                                                                                                                                                                                                                                                                          |
+| `ariaLabel`      | `atomic`   | `empty` \| `inherit` \| `exact: string`                                                                                                                                                                                                                                                                                                                                                                   |
+| `ariaHidden`     | `atomic`   | `empty` \| `inherit` \| `<bool>`                                                                                                                                                                                                                                                                                                                                                                          |
+| `size`           | `atomic`   | `empty` \| `inherit` \| `<length>` \| `theme.ordinal: @size.*` \| `computed: autoFit, match`                                                                                                                                                                                                                                                                                                              |
+| `buttonSize`     | `atomic`   | `empty` \| `inherit` \| `<length>` \| `theme.ordinal: @fontSize.*`                                                                                                                                                                                                                                                                                                                                        |
+| `board`          | `compound` | `board.preset, board.width, board.height`                                                                                                                                                                                                                                                                                                                                                                 |
+| └ `board.preset` | `atomic`   | `empty` \| `option: fit, device preset ids`                                                                                                                                                                                                                                                                                                                                                               |
+| └ `board.width`  | `atomic`   | `empty` \| `<length>` \| `option: fit`                                                                                                                                                                                                                                                                                                                                                                    |
+| └ `board.height` | `atomic`   | `empty` \| `<length>` \| `option: fit`                                                                                                                                                                                                                                                                                                                                                                    |
+| `screenWidth`    | `atomic`   | `empty` \| `<length>` \| `option: fit, fill, desktop, laptop, tablet, mobile, watch, television` \| `computed: autoFit`                                                                                                                                                                                                                                                                                   |
+| `screenHeight`   | `atomic`   | `empty` \| `<length>` \| `option: fit, fill, desktop, laptop, tablet, mobile, watch, television` \| `computed: autoFit`                                                                                                                                                                                                                                                                                   |
+| `cursor`         | `atomic`   | `empty` \| `inherit` \| `option: default, none, context-menu, help, pointer, progress, wait, cell, crosshair, text, vertical-text, alias, copy, move, no-drop, not-allowed, grab, grabbing, e-resize, n-resize, ne-resize, nw-resize, s-resize, se-resize, sw-resize, w-resize, ew-resize, ns-resize, nesw-resize, nwse-resize, col-resize, row-resize, all-scroll, zoom-in, zoom-out` \| `exact: string` |
 
 ---
 
@@ -270,43 +270,43 @@ Properties that are specific to the selected component type and define its core 
 
 Properties that control the positioning, sizing, and spatial relationships of components.
 
-| Property | Type | Values |
-| --- | --- | --- |
-| `direction` | `atomic` | `empty` \| `inherit` \| `exact: string` \| `option: ltr, rtl` |
-| `placement` | `atomic` | `empty` \| `inherit` \| `option: static, relative, absolute, fixed, sticky` |
-| `position` | `shorthand` | `position.top, position.right, position.bottom, position.left` |
-| └ `position.top` | `atomic` | `empty` \| `inherit` \| `<length%>` |
-| └ `position.right` | `atomic` | `empty` \| `inherit` \| `<length%>` |
-| └ `position.bottom` | `atomic` | `empty` \| `inherit` \| `<length%>` |
-| └ `position.left` | `atomic` | `empty` \| `inherit` \| `<length%>` |
-| `orientation` | `atomic` | `empty` \| `inherit` \| `exact: string` \| `option: horizontal, vertical` |
-| `align` | `atomic` | `empty` \| `inherit` \| `option: auto, top-left, top-center, top-right, left, center, right, bottom-left, bottom-center, bottom-right` \| `exact: string` |
-| `width` | `atomic` | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @dimension.*` \| `option: fit, fill` \| `computed: autoFit, match` |
-| `height` | `atomic` | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @dimension.*` \| `option: fit, fill` \| `computed: autoFit, match` |
-| `margin` | `shorthand` | `margin.top, margin.right, margin.bottom, margin.left` |
-| └ `margin.top` | `atomic` | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @margin.*` \| `option: none` |
-| └ `margin.right` | `atomic` | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @margin.*` \| `option: none` |
-| └ `margin.bottom` | `atomic` | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @margin.*` \| `option: none` |
-| └ `margin.left` | `atomic` | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @margin.*` \| `option: none` |
-| `padding` | `shorthand` | `padding.top, padding.right, padding.bottom, padding.left` |
-| └ `padding.top` | `atomic` | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @padding.*` \| `option: none` \| `computed: opticalPadding, match` |
-| └ `padding.right` | `atomic` | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @padding.*` \| `option: none` \| `computed: opticalPadding, match` |
-| └ `padding.bottom` | `atomic` | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @padding.*` \| `option: none` \| `computed: opticalPadding, match` |
-| └ `padding.left` | `atomic` | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @padding.*` \| `option: none` \| `computed: opticalPadding, match` |
-| `gap` | `atomic` | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @gap.*` \| `option: evenly-spaced, none` \| `computed: match` |
-| `rotation` | `atomic` | `empty` \| `inherit` \| `exact: degrees, −360–360` |
-| `wrapChildren` | `atomic` | `empty` \| `inherit` \| `<bool>` |
-| `clip` | `atomic` | `empty` \| `inherit` \| `<bool>` |
-| `columns` | `atomic` | `empty` \| `inherit` \| `exact: number, 1–100` |
-| `rows` | `atomic` | `empty` \| `inherit` \| `exact: number, 1–100` |
-| `columnStart` | `atomic` | `empty` \| `inherit` \| `exact: number, 1–100` |
-| `columnSpan` | `atomic` | `empty` \| `inherit` \| `exact: number, 1–100` |
-| `rowStart` | `atomic` | `empty` \| `inherit` \| `exact: number, 1–100` |
-| `rowSpan` | `atomic` | `empty` \| `inherit` \| `exact: number, 1–100` |
-| `cellAlign` | `atomic` | `empty` \| `inherit` \| `option: auto, top-left, top-center, top-right, left, center, right, bottom-left, bottom-center, bottom-right` \| `exact: string` |
-| `dimension` | `atomic` | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @dimension.*` \| `option: fit, fill` \| `computed: autoFit, match` |
-| `resize` | `atomic` | `empty` \| `inherit` \| `exact: string` \| `option: fit, fill` |
-| `screenSize` | `atomic` | `empty` \| `inherit` \| `exact: string` \| `option: desktop, laptop, tablet, mobile, watch, television` |
+| Property            | Type        | Values                                                                                                                                                    |
+| ------------------- | ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `direction`         | `atomic`    | `empty` \| `inherit` \| `exact: string` \| `option: ltr, rtl`                                                                                             |
+| `placement`         | `atomic`    | `empty` \| `inherit` \| `option: static, relative, absolute, fixed, sticky`                                                                               |
+| `position`          | `shorthand` | `position.top, position.right, position.bottom, position.left`                                                                                            |
+| └ `position.top`    | `atomic`    | `empty` \| `inherit` \| `<length%>`                                                                                                                       |
+| └ `position.right`  | `atomic`    | `empty` \| `inherit` \| `<length%>`                                                                                                                       |
+| └ `position.bottom` | `atomic`    | `empty` \| `inherit` \| `<length%>`                                                                                                                       |
+| └ `position.left`   | `atomic`    | `empty` \| `inherit` \| `<length%>`                                                                                                                       |
+| `orientation`       | `atomic`    | `empty` \| `inherit` \| `exact: string` \| `option: horizontal, vertical`                                                                                 |
+| `align`             | `atomic`    | `empty` \| `inherit` \| `option: auto, top-left, top-center, top-right, left, center, right, bottom-left, bottom-center, bottom-right` \| `exact: string` |
+| `width`             | `atomic`    | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @dimension.*` \| `option: fit, fill` \| `computed: autoFit, match`                                 |
+| `height`            | `atomic`    | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @dimension.*` \| `option: fit, fill` \| `computed: autoFit, match`                                 |
+| `margin`            | `shorthand` | `margin.top, margin.right, margin.bottom, margin.left`                                                                                                    |
+| └ `margin.top`      | `atomic`    | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @margin.*` \| `option: none`                                                                       |
+| └ `margin.right`    | `atomic`    | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @margin.*` \| `option: none`                                                                       |
+| └ `margin.bottom`   | `atomic`    | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @margin.*` \| `option: none`                                                                       |
+| └ `margin.left`     | `atomic`    | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @margin.*` \| `option: none`                                                                       |
+| `padding`           | `shorthand` | `padding.top, padding.right, padding.bottom, padding.left`                                                                                                |
+| └ `padding.top`     | `atomic`    | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @padding.*` \| `option: none` \| `computed: opticalPadding, match`                                 |
+| └ `padding.right`   | `atomic`    | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @padding.*` \| `option: none` \| `computed: opticalPadding, match`                                 |
+| └ `padding.bottom`  | `atomic`    | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @padding.*` \| `option: none` \| `computed: opticalPadding, match`                                 |
+| └ `padding.left`    | `atomic`    | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @padding.*` \| `option: none` \| `computed: opticalPadding, match`                                 |
+| `gap`               | `atomic`    | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @gap.*` \| `option: evenly-spaced, none` \| `computed: match`                                      |
+| `rotation`          | `atomic`    | `empty` \| `inherit` \| `exact: degrees, −360–360`                                                                                                        |
+| `wrapChildren`      | `atomic`    | `empty` \| `inherit` \| `<bool>`                                                                                                                          |
+| `clip`              | `atomic`    | `empty` \| `inherit` \| `<bool>`                                                                                                                          |
+| `columns`           | `atomic`    | `empty` \| `inherit` \| `exact: number, 1–100`                                                                                                            |
+| `rows`              | `atomic`    | `empty` \| `inherit` \| `exact: number, 1–100`                                                                                                            |
+| `columnStart`       | `atomic`    | `empty` \| `inherit` \| `exact: number, 1–100`                                                                                                            |
+| `columnSpan`        | `atomic`    | `empty` \| `inherit` \| `exact: number, 1–100`                                                                                                            |
+| `rowStart`          | `atomic`    | `empty` \| `inherit` \| `exact: number, 1–100`                                                                                                            |
+| `rowSpan`           | `atomic`    | `empty` \| `inherit` \| `exact: number, 1–100`                                                                                                            |
+| `cellAlign`         | `atomic`    | `empty` \| `inherit` \| `option: auto, top-left, top-center, top-right, left, center, right, bottom-left, bottom-center, bottom-right` \| `exact: string` |
+| `dimension`         | `atomic`    | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @dimension.*` \| `option: fit, fill` \| `computed: autoFit, match`                                 |
+| `resize`            | `atomic`    | `empty` \| `inherit` \| `exact: string` \| `option: fit, fill`                                                                                            |
+| `screenSize`        | `atomic`    | `empty` \| `inherit` \| `exact: string` \| `option: desktop, laptop, tablet, mobile, watch, television`                                                   |
 
 These three keys are **auxiliary layout** fields: they appear on the `Properties` type and in `PROPERTY_SCHEMAS` after the primary layout table keys (see [`schemas/README.md`](./schemas/README.md)).
 
@@ -326,30 +326,30 @@ These three keys are **auxiliary layout** fields: they appear on the `Properties
 
 Properties that control the visual appearance and styling of components.
 
-| Property | Type | Values |
-| --- | --- | --- |
-| `color` | `atomic` | `empty` \| `inherit` \| `<color>` |
-| `accentColor` | `atomic` | `empty` \| `inherit` \| `<color>` |
-| `brightness` | `atomic` | `empty` \| `inherit` \| `<percent>` |
-| `opacity` | `atomic` | `empty` \| `inherit` \| `<percent>` |
-| `background` | `array` | Ordered layers, `background[0]` topmost. Each layer's `kind` picks a facet set. See [Background layers](#background-layers). |
-| `border` | `compound` | `preset, style, color, width, brightness, opacity` |
-| └ `border.preset` | `atomic` | `empty` \| `inherit` \| `theme.categorical: @border.*` (built-in `@border.none`) |
-| └ `border.style` | `atomic` | `empty` \| `inherit` \| `option: none, solid, dashed, dotted, double, groove, ridge, inset, outset, hidden` |
-| └ `border.color` | `atomic` | `empty` \| `inherit` \| `<color>` |
-| └ `border.width` | `atomic` | `empty` \| `inherit` \| `<length>` \| `option: hairline` \| `theme.ordinal: @borderWidth.*` |
-| └ `border.brightness` | `atomic` | `empty` \| `inherit` \| `<percent>` |
-| └ `border.opacity` | `atomic` | `empty` \| `inherit` \| `<percent>` |
-| `borderTop` | `compound` | Same facets as `border.*` |
-| `borderRight` | `compound` | Same facets as `border.*` |
-| `borderBottom` | `compound` | Same facets as `border.*` |
-| `borderLeft` | `compound` | Same facets as `border.*` |
-| `corners` | `shorthand` | `corners.topLeft, corners.topRight, corners.bottomLeft, corners.bottomRight` |
-| └ `corners.topLeft` | `atomic` | `empty` \| `inherit` \| `<length>` \| `option: rounded, squared` \| `theme.ordinal: @corners.*` |
-| └ `corners.topRight` | `atomic` | `empty` \| `inherit` \| `<length>` \| `option: rounded, squared` \| `theme.ordinal: @corners.*` |
-| └ `corners.bottomLeft` | `atomic` | `empty` \| `inherit` \| `<length>` \| `option: rounded, squared` \| `theme.ordinal: @corners.*` |
-| └ `corners.bottomRight` | `atomic` | `empty` \| `inherit` \| `<length>` \| `option: rounded, squared` \| `theme.ordinal: @corners.*` |
-| `borderCollapse` | `atomic` | `empty` \| `inherit` \| `option: separate, collapse` |
+| Property                | Type        | Values                                                                                                                       |
+| ----------------------- | ----------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `color`                 | `atomic`    | `empty` \| `inherit` \| `<color>`                                                                                            |
+| `accentColor`           | `atomic`    | `empty` \| `inherit` \| `<color>`                                                                                            |
+| `brightness`            | `atomic`    | `empty` \| `inherit` \| `<percent>`                                                                                          |
+| `opacity`               | `atomic`    | `empty` \| `inherit` \| `<percent>`                                                                                          |
+| `background`            | `array`     | Ordered layers, `background[0]` topmost. Each layer's `kind` picks a facet set. See [Background layers](#background-layers). |
+| `border`                | `compound`  | `preset, style, color, width, brightness, opacity`                                                                           |
+| └ `border.preset`       | `atomic`    | `empty` \| `inherit` \| `theme.categorical: @border.*` (built-in `@border.none`)                                             |
+| └ `border.style`        | `atomic`    | `empty` \| `inherit` \| `option: none, solid, dashed, dotted, double, groove, ridge, inset, outset, hidden`                  |
+| └ `border.color`        | `atomic`    | `empty` \| `inherit` \| `<color>`                                                                                            |
+| └ `border.width`        | `atomic`    | `empty` \| `inherit` \| `<length>` \| `option: hairline` \| `theme.ordinal: @borderWidth.*`                                  |
+| └ `border.brightness`   | `atomic`    | `empty` \| `inherit` \| `<percent>`                                                                                          |
+| └ `border.opacity`      | `atomic`    | `empty` \| `inherit` \| `<percent>`                                                                                          |
+| `borderTop`             | `compound`  | Same facets as `border.*`                                                                                                    |
+| `borderRight`           | `compound`  | Same facets as `border.*`                                                                                                    |
+| `borderBottom`          | `compound`  | Same facets as `border.*`                                                                                                    |
+| `borderLeft`            | `compound`  | Same facets as `border.*`                                                                                                    |
+| `corners`               | `shorthand` | `corners.topLeft, corners.topRight, corners.bottomLeft, corners.bottomRight`                                                 |
+| └ `corners.topLeft`     | `atomic`    | `empty` \| `inherit` \| `<length>` \| `option: rounded, squared` \| `theme.ordinal: @corners.*`                              |
+| └ `corners.topRight`    | `atomic`    | `empty` \| `inherit` \| `<length>` \| `option: rounded, squared` \| `theme.ordinal: @corners.*`                              |
+| └ `corners.bottomLeft`  | `atomic`    | `empty` \| `inherit` \| `<length>` \| `option: rounded, squared` \| `theme.ordinal: @corners.*`                              |
+| └ `corners.bottomRight` | `atomic`    | `empty` \| `inherit` \| `<length>` \| `option: rounded, squared` \| `theme.ordinal: @corners.*`                              |
+| `borderCollapse`        | `atomic`    | `empty` \| `inherit` \| `option: separate, collapse`                                                                         |
 
 `borderTop`, `borderRight`, `borderBottom`, and `borderLeft` are each a `compound` with the same facets as `border.*`: `preset`, `style`, `color`, `width`, `brightness`, `opacity`.
 
@@ -359,47 +359,47 @@ Properties that control the visual appearance and styling of components.
 
 Each `background[]` layer stores a `kind` plus the facets that kind uses. Facets outside the active kind stay `empty`. Facet paths are `background[].<facet>`.
 
-| Background | Values |
-| --- | --- |
-| `kind` | `empty` \| `inherit` \| `option: none, color, image, gradient` |
+| Background | Values                                                         |
+| ---------- | -------------------------------------------------------------- |
+| `kind`     | `empty` \| `inherit` \| `option: none, color, image, gradient` |
 
 `kind: none` adds no facets.
 
 `kind: color` is a solid fill.
 
-| Color Facet | Values |
-| --- | --- |
-| `color` | `empty` \| `inherit` \| `<color>` |
+| Color Facet  | Values                              |
+| ------------ | ----------------------------------- |
+| `color`      | `empty` \| `inherit` \| `<color>`   |
 | `brightness` | `empty` \| `inherit` \| `<percent>` |
-| `opacity` | `empty` \| `inherit` \| `<percent>` |
+| `opacity`    | `empty` \| `inherit` \| `<percent>` |
 
 `kind: image` is an image fill.
 
-| Image Facet | Values |
-| --- | --- |
-| `image` | `empty` \| `inherit` \| `exact: string` |
-| `blendMode` | `empty` \| `inherit` \| `option: normal, multiply, screen, overlay, darken, lighten, color-dodge, color-burn, hard-light, soft-light, difference, exclusion, hue, saturation, color, luminosity` |
-| `opacity` | `empty` \| `inherit` \| `<percent>` |
-| `position` | `empty` \| `inherit` \| `option: default, top-left, top-center, top-right, center-left, center, center-right, bottom-left, bottom-center, bottom-right` \| `<length%>` \| `exact: DoubleAxisValue` |
-| `size` | `empty` \| `inherit` \| `option: original, contain, cover, stretch` \| `<length%>` \| `exact: paired` |
-| `repeat` | `empty` \| `inherit` \| `option: no-repeat, repeat, repeat-x, repeat-y` |
-| `filter` | `empty` \| `inherit` \| `option: blur(4px), brightness(1.2), contrast(1.1), grayscale(1), saturate(1.2), sepia(0.5), invert(1)` \| `exact: string` |
+| Image Facet | Values                                                                                                                                                                                             |
+| ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `image`     | `empty` \| `inherit` \| `exact: string`                                                                                                                                                            |
+| `blendMode` | `empty` \| `inherit` \| `option: normal, multiply, screen, overlay, darken, lighten, color-dodge, color-burn, hard-light, soft-light, difference, exclusion, hue, saturation, color, luminosity`   |
+| `opacity`   | `empty` \| `inherit` \| `<percent>`                                                                                                                                                                |
+| `position`  | `empty` \| `inherit` \| `option: default, top-left, top-center, top-right, center-left, center, center-right, bottom-left, bottom-center, bottom-right` \| `<length%>` \| `exact: DoubleAxisValue` |
+| `size`      | `empty` \| `inherit` \| `option: original, contain, cover, stretch` \| `<length%>` \| `exact: paired`                                                                                              |
+| `repeat`    | `empty` \| `inherit` \| `option: no-repeat, repeat, repeat-x, repeat-y`                                                                                                                            |
+| `filter`    | `empty` \| `inherit` \| `option: blur(4px), brightness(1.2), contrast(1.1), grayscale(1), saturate(1.2), sepia(0.5), invert(1)` \| `exact: string`                                                 |
 
 `kind: gradient` is a gradient fill. The `preset` facet picks a theme gradient recipe (`@gradient.*`).
 
-| Gradient Facet | Values |
-| --- | --- |
-| `preset` | `empty` \| `inherit` \| `theme.categorical: @gradient.*` |
-| `gradientType` | `empty` \| `inherit` \| `option: linear, radial` |
-| `angle` | `empty` \| `inherit` \| `exact: degrees` |
-| `startColor` | `empty` \| `inherit` \| `<color>` |
-| `startPosition` | `empty` \| `inherit` \| `<percent>` |
-| `startBrightness` | `empty` \| `inherit` \| `<percent>` |
-| `startOpacity` | `empty` \| `inherit` \| `<percent>` |
-| `endColor` | `empty` \| `inherit` \| `<color>` |
-| `endPosition` | `empty` \| `inherit` \| `<percent>` |
-| `endBrightness` | `empty` \| `inherit` \| `<percent>` |
-| `endOpacity` | `empty` \| `inherit` \| `<percent>` |
+| Gradient Facet    | Values                                                   |
+| ----------------- | -------------------------------------------------------- |
+| `preset`          | `empty` \| `inherit` \| `theme.categorical: @gradient.*` |
+| `gradientType`    | `empty` \| `inherit` \| `option: linear, radial`         |
+| `angle`           | `empty` \| `inherit` \| `exact: degrees`                 |
+| `startColor`      | `empty` \| `inherit` \| `<color>`                        |
+| `startPosition`   | `empty` \| `inherit` \| `<percent>`                      |
+| `startBrightness` | `empty` \| `inherit` \| `<percent>`                      |
+| `startOpacity`    | `empty` \| `inherit` \| `<percent>`                      |
+| `endColor`        | `empty` \| `inherit` \| `<color>`                        |
+| `endPosition`     | `empty` \| `inherit` \| `<percent>`                      |
+| `endBrightness`   | `empty` \| `inherit` \| `<percent>`                      |
+| `endOpacity`      | `empty` \| `inherit` \| `<percent>`                      |
 
 **To be implemented:**
 
@@ -411,21 +411,21 @@ Each `background[]` layer stores a `kind` plus the facets that kind uses. Facets
 
 Properties that control text styling, fonts, and typography.
 
-| Property | Type | Values |
-| --- | --- | --- |
-| `font` | `compound` | `preset, family, style, weight, size, lineHeight, textCase, letterSpacing` |
-| └ `font.preset` | `atomic` | `empty` \| `inherit` \| `theme.categorical: @font.*` (built-in `@font.normal`) |
-| └ `font.family` | `atomic` | `empty` \| `inherit` \| `theme.categorical: @fontFamily.*` \| `option: string` \| `exact: string` |
-| └ `font.style` | `atomic` | `empty` \| `inherit` \| `option: normal, italic, oblique` \| `exact: string` |
-| └ `font.weight` | `atomic` | `empty` \| `inherit` \| `exact: number, 100–900` \| `theme.ordinal: @fontWeight.*` |
-| └ `font.size` | `atomic` | `empty` \| `inherit` \| `<length>` \| `theme.ordinal: @fontSize.*` \| `computed: autoFit, match` |
-| └ `font.lineHeight` | `atomic` | `empty` \| `inherit` \| `<length%>` \| `exact: unitless number, >0` \| `theme.ordinal: @lineHeight.*` |
-| └ `font.textCase` | `atomic` | `empty` \| `inherit` \| `option: normal, lowercase, uppercase, capitalize` |
-| └ `font.letterSpacing` | `atomic` | `empty` \| `inherit` \| `<length>` |
-| `textAlign` | `atomic` | `empty` \| `inherit` \| `option: auto, left, right, center, justify` |
-| `textDecoration` | `atomic` | `empty` \| `inherit` \| `option: none, underline, overline, line-through` |
-| `wrapText` | `atomic` | `empty` \| `inherit` \| `<bool>` |
-| `lines` | `atomic` | `empty` \| `inherit` \| `exact: number, integer, ≥0` |
+| Property               | Type       | Values                                                                                                |
+| ---------------------- | ---------- | ----------------------------------------------------------------------------------------------------- |
+| `font`                 | `compound` | `preset, family, style, weight, size, lineHeight, textCase, letterSpacing`                            |
+| └ `font.preset`        | `atomic`   | `empty` \| `inherit` \| `theme.categorical: @font.*` (built-in `@font.normal`)                        |
+| └ `font.family`        | `atomic`   | `empty` \| `inherit` \| `theme.categorical: @fontFamily.*` \| `option: string` \| `exact: string`     |
+| └ `font.style`         | `atomic`   | `empty` \| `inherit` \| `option: normal, italic, oblique` \| `exact: string`                          |
+| └ `font.weight`        | `atomic`   | `empty` \| `inherit` \| `exact: number, 100–900` \| `theme.ordinal: @fontWeight.*`                    |
+| └ `font.size`          | `atomic`   | `empty` \| `inherit` \| `<length>` \| `theme.ordinal: @fontSize.*` \| `computed: autoFit, match`      |
+| └ `font.lineHeight`    | `atomic`   | `empty` \| `inherit` \| `<length%>` \| `exact: unitless number, >0` \| `theme.ordinal: @lineHeight.*` |
+| └ `font.textCase`      | `atomic`   | `empty` \| `inherit` \| `option: normal, lowercase, uppercase, capitalize`                            |
+| └ `font.letterSpacing` | `atomic`   | `empty` \| `inherit` \| `<length>`                                                                    |
+| `textAlign`            | `atomic`   | `empty` \| `inherit` \| `option: auto, left, right, center, justify`                                  |
+| `textDecoration`       | `atomic`   | `empty` \| `inherit` \| `option: none, underline, overline, line-through`                             |
+| `wrapText`             | `atomic`   | `empty` \| `inherit` \| `<bool>`                                                                      |
+| `lines`                | `atomic`   | `empty` \| `inherit` \| `exact: number, integer, ≥0`                                                  |
 
 **To be implemented:**
 
@@ -441,20 +441,19 @@ Properties that control text styling, fonts, and typography.
 
 Properties that control visual effects and interactions.
 
-| Property | Type | Values |
-| --- | --- | --- |
-| `shadow` | `array` | Ordered layers, `shadow[0]` topmost. Each layer is a `compound`. Facet paths are `shadow[].<facet>`. |
-| └ `shadow[].preset` | `atomic` | `empty` \| `inherit` \| `theme.categorical: @shadow.*` (built-in `@shadow.none`) |
-| └ `shadow[].offsetX` | `atomic` | `empty` \| `inherit` \| `<length>` |
-| └ `shadow[].offsetY` | `atomic` | `empty` \| `inherit` \| `<length>` |
-| └ `shadow[].blur` | `atomic` | `empty` \| `inherit` \| `<length>` \| `theme.ordinal: @blur.*` |
-| └ `shadow[].color` | `atomic` | `empty` \| `inherit` \| `<color>` |
-| └ `shadow[].brightness` | `atomic` | `empty` \| `inherit` \| `<percent>` |
-| └ `shadow[].opacity` | `atomic` | `empty` \| `inherit` \| `<percent>` |
-| └ `shadow[].spread` | `atomic` | `empty` \| `inherit` \| `<length>` \| `theme.ordinal: @spread.*` |
-| `scroll` | `atomic` | `empty` \| `inherit` \| `option: none, both, horizontal, vertical` |
-| `scrollbarStyle` | `atomic` | `empty` \| `inherit` \| `option: default, hidden, overlay, thin` |
-
+| Property                | Type     | Values                                                                                               |
+| ----------------------- | -------- | ---------------------------------------------------------------------------------------------------- |
+| `shadow`                | `array`  | Ordered layers, `shadow[0]` topmost. Each layer is a `compound`. Facet paths are `shadow[].<facet>`. |
+| └ `shadow[].preset`     | `atomic` | `empty` \| `inherit` \| `theme.categorical: @shadow.*` (built-in `@shadow.none`)                     |
+| └ `shadow[].offsetX`    | `atomic` | `empty` \| `inherit` \| `<length>`                                                                   |
+| └ `shadow[].offsetY`    | `atomic` | `empty` \| `inherit` \| `<length>`                                                                   |
+| └ `shadow[].blur`       | `atomic` | `empty` \| `inherit` \| `<length>` \| `theme.ordinal: @blur.*`                                       |
+| └ `shadow[].color`      | `atomic` | `empty` \| `inherit` \| `<color>`                                                                    |
+| └ `shadow[].brightness` | `atomic` | `empty` \| `inherit` \| `<percent>`                                                                  |
+| └ `shadow[].opacity`    | `atomic` | `empty` \| `inherit` \| `<percent>`                                                                  |
+| └ `shadow[].spread`     | `atomic` | `empty` \| `inherit` \| `<length>` \| `theme.ordinal: @spread.*`                                     |
+| `scroll`                | `atomic` | `empty` \| `inherit` \| `option: none, both, horizontal, vertical`                                   |
+| `scrollbarStyle`        | `atomic` | `empty` \| `inherit` \| `option: default, hidden, overlay, thin`                                     |
 
 **To be implemented:**
 

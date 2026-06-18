@@ -51,7 +51,9 @@ export const Canvas = () => {
 
   const prevToolRef = useRef(activeTool)
   const savedNodeSelectionRef = useRef<{
-    id: NonNullable<ReturnType<typeof useSelectionStore.getState>["selectedNodeId"]>
+    id: NonNullable<
+      ReturnType<typeof useSelectionStore.getState>["selectedNodeId"]
+    >
     rootId: string | null
   } | null>(null)
 

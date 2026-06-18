@@ -1,27 +1,53 @@
-import { MenuEntry } from "@lib/menus";
-import { LayoutGroup } from "framer-motion";
-import { Fragment, RefObject, useCallback, useMemo } from "react";
-import { Board, Instance, type LayeredPaintKey, Theme, Variant, Workspace, getBorderSideOptions, getLayerAddOptions, isThemeCustomTokenSection } from "@seldon/core";
-import { isBoard } from "@seldon/core/workspace/helpers/components/is-board";
-import { useObjectProperties } from "@lib/workspace/hooks/use-object-properties";
-import { useLayerDragMonitor } from "./hooks/use-layer-drag-monitor";
-import { usePropertiesSidebar } from "./hooks/use-properties-sidebar";
-import { useIsCategoryExpanded } from "./hooks/use-property-expansion";
-import { ScrollerShell, SidebarContainer } from "@seldon/components/custom-components";
-import { FramerExpandable } from "@seldon/components/custom-components";
-import { Frame } from "@seldon/components/frames/Frame";
-import { useAddToast } from "@app/toaster/hooks/use-add-toast";
-import { sidebarNoSelectionStyle, sidebarShellStyle } from "../helpers/sidebar-styles";
-import { CssBlock } from "./CssBlock";
-import { VMCategory } from "./VMCategory";
-import { VMProperty } from "./VMProperty";
-import { FontCollectionEditingContext, IconSetEditingContext, ThemeEditingContext } from "./helpers/editing-contexts";
-import { PropertySection } from "./helpers/get-property-sections";
-import { ThemePropertySection } from "./helpers/get-theme-property-sections";
-import { getIconRowCategory } from "./helpers/icon-set-properties-data";
-import { FlatProperty, getAllowedBorderSides, getPropertiesSubjectId } from "./helpers/properties-data";
-import { useBorderSideVisibility, useRevealedBorderSides } from "./hooks/use-border-side-visibility";
-
+import { MenuEntry } from "@lib/menus"
+import { LayoutGroup } from "framer-motion"
+import { Fragment, RefObject, useCallback, useMemo } from "react"
+import {
+  Board,
+  Instance,
+  type LayeredPaintKey,
+  Theme,
+  Variant,
+  Workspace,
+  getBorderSideOptions,
+  getLayerAddOptions,
+  isThemeCustomTokenSection,
+} from "@seldon/core"
+import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
+import { useObjectProperties } from "@lib/workspace/hooks/use-object-properties"
+import {
+  useBorderSideVisibility,
+  useRevealedBorderSides,
+} from "./hooks/use-border-side-visibility"
+import { useLayerDragMonitor } from "./hooks/use-layer-drag-monitor"
+import { usePropertiesSidebar } from "./hooks/use-properties-sidebar"
+import { useIsCategoryExpanded } from "./hooks/use-property-expansion"
+import {
+  ScrollerShell,
+  SidebarContainer,
+} from "@seldon/components/custom-components"
+import { FramerExpandable } from "@seldon/components/custom-components"
+import { Frame } from "@seldon/components/frames/Frame"
+import { useAddToast } from "@app/toaster/hooks/use-add-toast"
+import {
+  sidebarNoSelectionStyle,
+  sidebarShellStyle,
+} from "../helpers/sidebar-styles"
+import { CssBlock } from "./CssBlock"
+import { VMCategory } from "./VMCategory"
+import { VMProperty } from "./VMProperty"
+import {
+  FontCollectionEditingContext,
+  IconSetEditingContext,
+  ThemeEditingContext,
+} from "./helpers/editing-contexts"
+import { PropertySection } from "./helpers/get-property-sections"
+import { ThemePropertySection } from "./helpers/get-theme-property-sections"
+import { getIconRowCategory } from "./helpers/icon-set-properties-data"
+import {
+  FlatProperty,
+  getAllowedBorderSides,
+  getPropertiesSubjectId,
+} from "./helpers/properties-data"
 
 export interface PropertyTreeProps {
   properties: FlatProperty[]

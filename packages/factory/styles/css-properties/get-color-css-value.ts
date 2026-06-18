@@ -1,9 +1,9 @@
 import {
-  assertNever,
   ColorValue,
   EmptyValue,
   PercentageValue,
   ValueType,
+  assertNever,
 } from "@seldon/core"
 import { applyBrightness } from "@seldon/core/helpers/color/apply-brightness"
 import {

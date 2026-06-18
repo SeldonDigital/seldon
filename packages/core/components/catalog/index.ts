@@ -139,10 +139,6 @@ import {
   schema as barSchema,
 } from "./parts/Bar.schema"
 import {
-  exportConfig as cardStackedExportConfig,
-  schema as cardStackedSchema,
-} from "./parts/cards/Card.schema"
-import {
   exportConfig as fieldsetExportConfig,
   schema as fieldsetSchema,
 } from "./parts/Fieldset.schema"
@@ -154,6 +150,10 @@ import {
   exportConfig as articleCardExportConfig,
   schema as articleCardSchema,
 } from "./parts/cards/ArticleCard.schema"
+import {
+  exportConfig as cardStackedExportConfig,
+  schema as cardStackedSchema,
+} from "./parts/cards/Card.schema"
 import {
   exportConfig as mediaCardExportConfig,
   schema as mediaCardSchema,
@@ -192,6 +192,10 @@ import {
   schema as imageSchema,
 } from "./primitives/Image.schema"
 import {
+  exportConfig as listItemExportConfig,
+  schema as listItemSchema,
+} from "./primitives/ListItem.schema"
+import {
   exportConfig as inputExportConfig,
   schema as inputSchema,
 } from "./primitives/controls/Input.schema"
@@ -199,10 +203,6 @@ import {
   exportConfig as legendExportConfig,
   schema as legendSchema,
 } from "./primitives/controls/Legend.schema"
-import {
-  exportConfig as listItemExportConfig,
-  schema as listItemSchema,
-} from "./primitives/ListItem.schema"
 import {
   exportConfig as blockquoteExportConfig,
   schema as blockquoteSchema,

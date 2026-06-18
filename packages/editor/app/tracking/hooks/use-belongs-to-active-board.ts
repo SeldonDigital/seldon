@@ -36,7 +36,10 @@ export function useNodeBelongsToActiveBoard(): (
 
       try {
         const node = nodeRetrievalService.getNode(nodeId, workspace)
-        const nodeBoard = nodeRelationshipService.findBoardForNode(node, workspace)
+        const nodeBoard = nodeRelationshipService.findBoardForNode(
+          node,
+          workspace,
+        )
         return (
           nodeBoard !== null &&
           getComponentKey(nodeBoard) === getComponentKey(activeBoard)

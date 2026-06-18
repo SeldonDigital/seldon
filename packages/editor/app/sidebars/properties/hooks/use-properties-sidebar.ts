@@ -5,12 +5,6 @@ import { isIconSetEditingSelection } from "@lib/icon-sets/resolve-active-icon-se
 import { resolveActiveThemeEntryId } from "@lib/themes/resolve-active-theme-entry-id"
 import { isThemeEditingSelection } from "@lib/themes/resolve-active-theme-entry-id"
 import { useMemo, useRef } from "react"
-import {
-  buildPropertyTreeAllProperties,
-  buildPropertyTreeSections,
-} from "../helpers/build-property-tree-layout"
-import type { ThemeEditingContext } from "../helpers/editing-contexts"
-import { useCssStrings } from "../helpers/get-calculated-properties"
 import { Board, Instance, Variant } from "@seldon/core"
 import { getComputedTheme } from "@seldon/core/workspace/compute"
 import {
@@ -27,8 +21,14 @@ import {
 } from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useEditorConfig } from "@lib/hooks/use-editor-config"
+import {
+  buildPropertyTreeAllProperties,
+  buildPropertyTreeSections,
+} from "../helpers/build-property-tree-layout"
 import type { PropertyTreeProps } from "../VMPropertiesSidebar"
+import type { ThemeEditingContext } from "../helpers/editing-contexts"
 import { flattenFontCollectionFamilies } from "../helpers/font-collection-properties-data"
+import { useCssStrings } from "../helpers/get-calculated-properties"
 import { getThemePropertyControlType } from "../helpers/get-theme-property-controls"
 import { flattenIconSetCategories } from "../helpers/icon-set-properties-data"
 import { buildMetadataProperties } from "../helpers/metadata-properties-data"
@@ -37,8 +37,8 @@ import {
   flattenNodeProperties,
   getPropertiesSubjectId,
 } from "../helpers/properties-data"
-import { useRevealedBorderSides } from "./use-border-side-visibility"
 import { flattenThemeProperties } from "../helpers/theme-properties-data"
+import { useRevealedBorderSides } from "./use-border-side-visibility"
 import { useFontCollectionProperties } from "./use-font-collection-properties"
 import { useIconSetProperties } from "./use-icon-set-properties"
 import { useThemeProperties } from "./use-theme-properties"
@@ -157,9 +157,7 @@ export function usePropertiesSidebar(): PropertiesSidebarState {
     // Swatches the template theme defines. A swatch missing here was added on
     // the entry itself, so its row is base state rather than an override.
     const baseSwatchIds = entry
-      ? new Set(
-          Object.keys(getComputedTheme(entry.template, workspace).swatch),
-        )
+      ? new Set(Object.keys(getComputedTheme(entry.template, workspace).swatch))
       : undefined
     const flatProps = flattenThemeProperties(
       editedTheme,
