@@ -38,15 +38,15 @@ Why?
 
 **We don't believe you need AI to write button code.**
 
-Wasting large amounts of compute, energy, and money on creating code that is largely a solved problem seems like a massive opportunity cost for everyone. We are spending far more money and time trying to rein in non-deterministic models instead of exploring the new ways AI can help us build products of the future.
+Wasting large amounts of compute, energy, and money on creating code that is largely a solved problem seems like a massive opportunity cost for everyone. We are spending far more money and time trying to reign in non-deterministic models instead of exploring the new ways AI can help us build products of the future.
 
 But if it's solved, what's the issue?
 
 Most front end and product problems lack a rigorous, structured approach to their design definitions, even when using design systems. Teams create some rigor to build products at scale, and yet they inevitably run into the handoff problem. At the heart of this is that design and code are disconnected. They have been for decades now.
 
-Add AI to that mix and what happens is massive overspend and more unnecessary complexity with the front end code as models go off on all sorts of unnecessary tangents. AI handles the v.0 to v.1 jump well, but iterating from v.2 to v.3 and beyond? That's where it breaks down. Throwing more data and compute at this will likely not solve the problem.
+Add AI to that mix and what happens is massive overspend and more unnecessary complexity with the front end code as models go off on all sorts of unnecessary tangents. AI handles the v.0 to v.1 jump well, but iterating to v.2 then to v.3 and beyond? That's where it breaks down. Throwing more data and compute at this will likely not solve the problem.
 
-We need a structured approach to the design of components in the same way PostScript gave print a language and web standards gave browsers dependability. We need a way to define design for digital products that is rooted in code, and based on design practice. As a small bonus, that structure and definition becomes the thing AI can manipulate far more effectively than trying to constantly recreate button code.
+We need a structured approach to the design of components in the same way PostScript gave print a language, and web standards gave browsers dependability. We need a way to define design for digital products that is rooted in code, while based on design practice. As a small bonus, that structure and definition becomes the thing AI can manipulate far more effectively than trying to constantly recreate raw button code.
 
 The purpose of releasing Seldon into the wild is to provide a starting point that can evolve into that while also allowing for as many paths for exploration as possible.
 
@@ -58,7 +58,7 @@ The model Seldon is offering is this:
 
 - A workspace defines the structure needed as simple key value pairs in JSON.
 - A core engine defines how everything can be manipulated in the workspace. It has the code to mutate data, and validation to make sure a workspace file is valid.
-- Editors, AI agents, new creative tools, and new products can focus on new ways to manipulate design data rather than trying to solve low level problems.
+- Editors, AI agents, new creative tools, and new products can focus on new ways to manipulate design data in JSON rather than trying to solve low level design problems.
 - A code factory takes that workspace file and processes it to create code for whatever platform you target, be it React, Swift, Java, or something else.
 
 Code is exported, it's deterministic, and it just works.
@@ -107,7 +107,7 @@ Then open `http://localhost:5173` in your browser. You should now have the edito
 
 ## Where to go from here
 
-At the time of this writing, Seldon is far from complete. It is missing many features, behaviors, code export languages (like Swift and Java), and a host of other things. But rather than wait until it's all done and build it in a closed environment, we're going to build it out in the open and evolve it based on your feedback. Hopefully many of you will become contributors as well.
+At the time of this writing, Seldon is just getting of the ground. It is missing many features, behaviors, code export languages (like Swift and Java), and other core pieces. But rather than wait until it's all done and build it in a closed environment, we're going to build it out in the open and evolve it based on your feedback. Hopefully many of you will become contributors as well.
 
 There's a lot to do, so we also need feedback on what is working, what is not, and what should be added sooner rather than later. "It's a process," as they say.
 
