@@ -445,6 +445,7 @@ Properties that control visual effects and interactions.
 | ----------------------- | -------- | ---------------------------------------------------------------------------------------------------- |
 | `shadow`                | `array`  | Ordered layers, `shadow[0]` topmost. Each layer is a `compound`. Facet paths are `shadow[].<facet>`. |
 | └ `shadow[].preset`     | `atomic` | `empty` \| `inherit` \| `theme.categorical: @shadow.*` (built-in `@shadow.none`)                     |
+| └ `shadow[].type`       | `atomic` | `empty` \| `inherit` \| `option: outer, inner`                                                       |
 | └ `shadow[].offsetX`    | `atomic` | `empty` \| `inherit` \| `<length>`                                                                   |
 | └ `shadow[].offsetY`    | `atomic` | `empty` \| `inherit` \| `<length>`                                                                   |
 | └ `shadow[].blur`       | `atomic` | `empty` \| `inherit` \| `<length>` \| `theme.ordinal: @blur.*`                                       |

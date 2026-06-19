@@ -64,6 +64,7 @@ import { shadowColorSchema } from "../../values/effects/shadow/shadow-color"
 import { shadowOffsetSchema } from "../../values/effects/shadow/shadow-offset"
 import { shadowOpacitySchema } from "../../values/effects/shadow/shadow-opacity"
 import { shadowSpreadSchema } from "../../values/effects/shadow/shadow-spread"
+import { shadowTypeSchema } from "../../values/effects/shadow/shadow-type"
 import { alignSchema } from "../../values/layout/align"
 import { boardHeightSchema } from "../../values/layout/board/board-height"
 import { boardPresetSchema } from "../../values/layout/board/board-preset"
@@ -272,6 +273,7 @@ const PROPERTY_SCHEMAS_RAW = {
   gradientStopOpacity: gradientStopOpacitySchema,
   gradientStopPosition: gradientStopPositionSchema,
   shadowPreset: shadowPresetSchema,
+  shadowType: shadowTypeSchema,
   shadowOffsetX: shadowOffsetSchema,
   shadowOffsetY: shadowOffsetSchema,
   shadowBlur: shadowBlurSchema,

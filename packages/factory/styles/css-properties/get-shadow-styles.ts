@@ -1,6 +1,7 @@
 import { resolveValue } from "@seldon/core/helpers/resolution/resolve-value"
 import { getThemeOption } from "@seldon/core/helpers/theme/get-theme-option"
 import type { ShadowCompound } from "@seldon/core/properties/values/effects/shadow"
+import { ShadowType } from "@seldon/core/properties/values/effects/shadow"
 import { Theme } from "@seldon/core/themes/types"
 
 import { StyleGenerationContext } from "../types"
@@ -56,6 +57,11 @@ function resolveShadowLayer(
 
   const { offsetX, offsetY, opacity, blur, spread, brightness, color } = shadow
 
+  // Inset placement only applies to box shadows; text shadows have no inset.
+  const resolvedType = resolveValue(shadow.type)
+  const insetPrefix =
+    !isText && resolvedType?.value === ShadowType.INNER ? "inset " : ""
+
   const resolvedOffsetX =
     resolveValue(offsetX) || resolveValue(themeShadow?.parameters.offsetX)
   const resolvedOffsetY =
@@ -93,12 +99,12 @@ function resolveShadowLayer(
 
   // Text shadows do not support a spread value.
   if (isText || !spread || !resolvedSpread) {
-    return `${offsetXString} ${offsetYString} ${blurString} ${colorString}`
+    return `${insetPrefix}${offsetXString} ${offsetYString} ${blurString} ${colorString}`
   }
 
   const spreadString = getShadowSpreadCSSValue({
     spread: resolvedSpread,
     theme,
   })
-  return `${offsetXString} ${offsetYString} ${blurString} ${spreadString} ${colorString}`
+  return `${insetPrefix}${offsetXString} ${offsetYString} ${blurString} ${spreadString} ${colorString}`
 }

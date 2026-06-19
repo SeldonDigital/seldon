@@ -584,6 +584,10 @@ const UI_OVERRIDES: PropertyRegistry = {
         icon: "seldon-shadow",
         control: "combo",
       },
+      type: {
+        icon: "seldon-token",
+        control: "menu",
+      },
       offsetX: {
         icon: "seldon-token",
         control: "number",
