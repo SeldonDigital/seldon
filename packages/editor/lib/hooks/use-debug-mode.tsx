@@ -10,6 +10,9 @@ interface DebugState {
   showNodeIds: boolean
   setShowNodeIds: (enabled: boolean) => void
 
+  showNodeTypes: boolean
+  setShowNodeTypes: (enabled: boolean) => void
+
   showPropertyTypes: boolean
   setShowPropertyTypes: (enabled: boolean) => void
 
@@ -34,6 +37,10 @@ const useDebugStore = create<DebugState>()(
       setShowNodeIds: (enabled) =>
         set((state) => ({ ...state, showNodeIds: enabled })),
 
+      showNodeTypes: false,
+      setShowNodeTypes: (enabled) =>
+        set((state) => ({ ...state, showNodeTypes: enabled })),
+
       showPropertyTypes: false,
       setShowPropertyTypes: (enabled) =>
         set((state) => ({ ...state, showPropertyTypes: enabled })),
@@ -55,6 +62,7 @@ const useDebugStore = create<DebugState>()(
       partialize: (state) => ({
         canvasProfiling: state.canvasProfiling,
         showNodeIds: state.showNodeIds,
+        showNodeTypes: state.showNodeTypes,
         showPropertyTypes: state.showPropertyTypes,
         verboseLogging: state.verboseLogging,
         dispatchLogging: state.dispatchLogging,
@@ -70,6 +78,8 @@ export function useDebugMode() {
     setCanvasProfiling,
     showNodeIds,
     setShowNodeIds,
+    showNodeTypes,
+    setShowNodeTypes,
     showPropertyTypes,
     setShowPropertyTypes,
     verboseLogging,
@@ -84,6 +94,8 @@ export function useDebugMode() {
       setCanvasProfiling: state.setCanvasProfiling,
       showNodeIds: state.showNodeIds,
       setShowNodeIds: state.setShowNodeIds,
+      showNodeTypes: state.showNodeTypes,
+      setShowNodeTypes: state.setShowNodeTypes,
       showPropertyTypes: state.showPropertyTypes,
       setShowPropertyTypes: state.setShowPropertyTypes,
       verboseLogging: state.verboseLogging,
@@ -102,6 +114,10 @@ export function useDebugMode() {
   const toggleShowNodeIds = useCallback(() => {
     setShowNodeIds(!showNodeIds)
   }, [setShowNodeIds, showNodeIds])
+
+  const toggleShowNodeTypes = useCallback(() => {
+    setShowNodeTypes(!showNodeTypes)
+  }, [setShowNodeTypes, showNodeTypes])
 
   const toggleShowPropertyTypes = useCallback(() => {
     setShowPropertyTypes(!showPropertyTypes)
@@ -125,6 +141,9 @@ export function useDebugMode() {
 
     showNodeIds,
     toggleShowNodeIds,
+
+    showNodeTypes,
+    toggleShowNodeTypes,
 
     showPropertyTypes,
     toggleShowPropertyTypes,
