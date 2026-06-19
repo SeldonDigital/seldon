@@ -25,6 +25,7 @@ import {
 } from "@seldon/core/properties/schemas/helpers"
 import type { PropertyValueType } from "@seldon/core/properties/types/schema"
 import { getBuiltInLookSectionForPropertyKey } from "@seldon/core/themes/looks"
+import type { NodeState } from "@seldon/core/workspace/model/node-state"
 
 import { matchCompoundPreset } from "./compound-presets"
 import {
@@ -228,8 +229,9 @@ export function formatCompoundDisplay(
   workspace: Workspace,
   theme?: Theme,
   layerIndex: number = 0,
+  state?: NodeState,
 ): string {
-  const effectiveProperties = getEffectiveProperties(nodeId, workspace)
+  const effectiveProperties = getEffectiveProperties(nodeId, workspace, state)
   const parentLayer = getCompoundLayerValue(
     (effectiveProperties as Record<string, unknown>)[propertyKey],
     layerIndex,
@@ -248,6 +250,7 @@ export function formatCompoundDisplay(
     workspace,
     theme,
     layerIndex,
+    state,
   )
   if (matchedPreset) return matchedPreset
 
@@ -269,8 +272,9 @@ export function formatShorthandDisplay(
   nodeId: string,
   workspace: Workspace,
   theme?: Theme,
+  state?: NodeState,
 ): string {
-  const effectiveProperties = getEffectiveProperties(nodeId, workspace)
+  const effectiveProperties = getEffectiveProperties(nodeId, workspace, state)
   const node = getTypedNode(nodeId, workspace)
   const propertyValue = (
     effectiveProperties as Record<string, Record<string, unknown>>

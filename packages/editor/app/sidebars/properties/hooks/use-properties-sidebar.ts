@@ -15,6 +15,7 @@ import {
 import { workspaceFontCollectionService } from "@seldon/core/workspace/services/font-collection/font-collection.service"
 import { workspaceIconSetService } from "@seldon/core/workspace/services/icon-set/icon-set.service"
 import { workspaceThemeService } from "@seldon/core/workspace/services/theme/theme.service"
+import { useNodeActiveState } from "@lib/workspace/hooks/use-node-active-state"
 import {
   useSelectedNodeRootId,
   useSelection,
@@ -174,6 +175,10 @@ export function usePropertiesSidebar(): PropertiesSidebarState {
     selection && !isThemeEditingMode ? getPropertiesSubjectId(selection) : ""
   const shownBorderSides = useRevealedBorderSides(borderSideSubjectId)
 
+  // The board's active interaction state. In a non-Normal state, display values
+  // resolve the node's state override bag so the sidebar matches the canvas.
+  const activeState = useNodeActiveState(selection ?? null)
+
   const flatProperties = useMemo(() => {
     if (!selection && !isThemeEditingMode) return []
     if (isThemeEditingMode) {
@@ -186,6 +191,7 @@ export function usePropertiesSidebar(): PropertiesSidebarState {
       workspace,
       theme,
       shownBorderSides,
+      activeState,
     )
 
     if (!showUnusedProperties) {
@@ -200,6 +206,7 @@ export function usePropertiesSidebar(): PropertiesSidebarState {
     isThemeEditingMode,
     themeProperties,
     shownBorderSides,
+    activeState,
   ])
 
   const theme = useMemo(() => {

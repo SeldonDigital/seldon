@@ -2,11 +2,15 @@ import { COLORS } from "@lib/helpers/colors"
 import { useMemo } from "react"
 import { CSSProperties } from "react"
 import { Instance, Variant } from "@seldon/core"
-import { nodeRelationshipService } from "@seldon/core/workspace/services"
+import {
+  nodeRelationshipService,
+  typeCheckingService,
+} from "@seldon/core/workspace/services"
 import { useActiveBoard } from "@lib/workspace/hooks/use-active-board"
 import { useIsNodeSelected } from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useHoverStateForObject } from "@lib/hooks/use-canvas-hover-state"
+import { useDebugMode } from "@lib/hooks/use-debug-mode"
 import { useTool } from "@lib/hooks/use-tool"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { checkInsertionPoint } from "../helpers/check-insertion-point"
@@ -87,6 +91,21 @@ export function useSidebarRowStyling(
 
   const componentColor = COLORS.accent[500]
 
+  // Show Node Types debug mode tints rows by node type: custom variants use the
+  // Punch orange and instances use a light orange tint. Boards and default
+  // variants keep the default white.
+  const { showNodeTypes } = useDebugMode()
+  const nodeTypeColor = useMemo(() => {
+    if (!showNodeTypes) return undefined
+    if (typeCheckingService.isInstance(currentNode)) {
+      return `color-mix(in srgb, ${COLORS.punch[500]} 50%, ${COLORS.white})`
+    }
+    if (typeCheckingService.isUserVariant(currentNode)) {
+      return COLORS.punch[500]
+    }
+    return undefined
+  }, [showNodeTypes, currentNode])
+
   // Show Downstream / Chain / Family debug highlight. Primary rows are nodes
   // that change when the selection is edited; secondary rows are related
   // lineage that does not change. The selected node keeps its blue border.
@@ -126,14 +145,14 @@ export function useSidebarRowStyling(
   const iconColor = useMemo(() => {
     if (isSelected) return COLORS.primary[500]
     if (isComponentTracked) return componentColor
-    return undefined
-  }, [isSelected, isComponentTracked, componentColor])
+    return nodeTypeColor
+  }, [isSelected, isComponentTracked, componentColor, nodeTypeColor])
 
   const labelColor = useMemo(() => {
     if (isSelected) return COLORS.primary[500]
     if (isComponentTracked) return componentColor
-    return undefined
-  }, [isSelected, isComponentTracked, componentColor])
+    return nodeTypeColor
+  }, [isSelected, isComponentTracked, componentColor, nodeTypeColor])
 
   return {
     rowStyle,

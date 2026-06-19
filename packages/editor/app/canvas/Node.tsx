@@ -18,6 +18,10 @@ import { ComponentId } from "@seldon/core/components/constants"
 import type { IconId } from "@seldon/core/icon-sets"
 import { ThemeInstanceId } from "@seldon/core/themes/types"
 import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
+import {
+  NORMAL_STATE,
+  type NodeState,
+} from "@seldon/core/workspace/model/node-state"
 import { useThemeById } from "@lib/themes/hooks/use-theme-by-id"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useAddNodeFontFamily } from "./hooks/use-add-node-font-family"
@@ -41,12 +45,18 @@ export type CanvasNodeProps = {
    * columns resolves to the clicked copy. Defaults to the node id at a root.
    */
   rootPath?: string
+  /**
+   * Active interaction state for the board. Threaded from the board down so the
+   * whole tree renders the selected state. Defaults to Normal.
+   */
+  activeState?: NodeState
 }
 export const CanvasNode = memo(function CanvasNode({
   nodeId,
   initialThemeId,
   isRoot = false,
   rootPath,
+  activeState = NORMAL_STATE,
 }: CanvasNodeProps) {
   const { workspace } = useWorkspace()
   const node = workspace.nodes[nodeId]
@@ -70,8 +80,8 @@ export const CanvasNode = memo(function CanvasNode({
   // Memoize the compute context so it stays referentially stable while the node
   // and workspace are unchanged, letting ComponentRenderer's CSS memo hit.
   const computeContext = useMemo(
-    () => buildContext(node, workspace, renderParentIndex),
-    [node, workspace, renderParentIndex],
+    () => buildContext(node, workspace, renderParentIndex, activeState),
+    [node, workspace, renderParentIndex, activeState],
   )
 
   /**
@@ -160,6 +170,7 @@ export const CanvasNode = memo(function CanvasNode({
           nodeId={childNodeId as InstanceId | VariantId}
           initialThemeId={themeId as ThemeInstanceId}
           rootPath={`${selfPath}/${childNodeId}`}
+          activeState={activeState}
         />
       ))}
     </ComponentRenderer>

@@ -7,6 +7,7 @@ import {
   BoardKey,
   Instance,
   InstanceId,
+  NodeState,
   Variant,
   VariantId,
   Workspace,
@@ -22,8 +23,11 @@ import {
   resetComponentProperty,
   resetNodeOverrides,
   resetNodeProperty,
+  resetNodeState,
+  resetNodeStateProperty,
   setComponentProperties,
   setNodeProperties,
+  setNodeStateProperties,
 } from "./node-property-mutations"
 import { replaceSwatchRefsWithExactColor } from "./swatch-ref-replacement"
 import {
@@ -95,6 +99,33 @@ export class WorkspaceMutationService {
     workspace: Workspace,
   ): Workspace {
     return resetNodeProperty(nodeId, target, workspace)
+  }
+
+  public setNodeStateProperties(
+    nodeId: VariantId | InstanceId,
+    state: NodeState,
+    properties: Properties,
+    workspace: Workspace,
+    options?: { mergeSubProperties?: boolean },
+  ): Workspace {
+    return setNodeStateProperties(nodeId, state, properties, workspace, options)
+  }
+
+  public resetNodeStateProperty(
+    nodeId: VariantId | InstanceId,
+    state: NodeState,
+    target: PropertyResetTarget,
+    workspace: Workspace,
+  ): Workspace {
+    return resetNodeStateProperty(nodeId, state, target, workspace)
+  }
+
+  public resetNodeState(
+    nodeId: VariantId | InstanceId,
+    state: NodeState,
+    workspace: Workspace,
+  ): Workspace {
+    return resetNodeState(nodeId, state, workspace)
   }
 
   public resetNodeOverrides(

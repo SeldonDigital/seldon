@@ -6,6 +6,7 @@ import {
   isLayeredPaintProperty,
 } from "@seldon/core/properties/types/property-keys"
 import { isBuiltInClearedLookToken } from "@seldon/core/themes/looks"
+import type { NodeState } from "@seldon/core/workspace/model/node-state"
 
 import { getNodeComputeContext } from "../../compute/compute-node-properties"
 import { matchCompoundPreset } from "./compound-presets"
@@ -34,8 +35,9 @@ function hasPropertyOverride(
   node: PropertyPanelSubject,
   key: string,
   subKey?: string,
+  state?: NodeState,
 ): boolean {
-  const bag = getPropertyOverridesBag(node)
+  const bag = getPropertyOverridesBag(node, state)
   if (!bag || !(key in bag)) return false
 
   const propertyValue = (bag as Record<string, unknown>)[key]
@@ -53,8 +55,9 @@ function hasSubPropertyOverride(
   key: string,
   subKey: string,
   layerIndex: number = 0,
+  state?: NodeState,
 ): boolean {
-  const bag = getPropertyOverridesBag(node)
+  const bag = getPropertyOverridesBag(node, state)
   if (!bag || !(key in bag)) return false
   const layer = getCompoundLayerValue(
     (bag as Record<string, unknown>)[key],
@@ -75,8 +78,9 @@ function hasOverriddenSiblingProperties(
   node: PropertyPanelSubject,
   key: string,
   layerIndex: number = 0,
+  state?: NodeState,
 ): boolean {
-  const bag = getPropertyOverridesBag(node)
+  const bag = getPropertyOverridesBag(node, state)
   if (!bag || !(key in bag)) return false
   const layer = getCompoundLayerValue(
     (bag as Record<string, unknown>)[key],
@@ -85,7 +89,9 @@ function hasOverriddenSiblingProperties(
   if (!layer) return false
   return Object.keys(layer)
     .filter((subKey) => subKey !== "preset")
-    .some((subKey) => hasSubPropertyOverride(node, key, subKey, layerIndex))
+    .some((subKey) =>
+      hasSubPropertyOverride(node, key, subKey, layerIndex, state),
+    )
 }
 
 function calculatePropertyStatus(
@@ -95,10 +101,11 @@ function calculatePropertyStatus(
   nodePropertyValue: unknown,
   schemaValue: unknown,
   node: PropertyPanelSubject,
+  state?: NodeState,
 ): PropertyStatus {
   if (hasNodeOverride) {
     if (isCompoundProperty(key as PropertyKey)) {
-      return hasOverriddenSiblingProperties(node, key)
+      return hasOverriddenSiblingProperties(node, key, 0, state)
         ? "override"
         : hasNonEmptySubProperties(nodePropertyValue)
           ? "set"
@@ -208,6 +215,7 @@ type SubStatusContext = {
   effective: Properties
   theme: Theme | undefined
   status: Record<string, PropertyStatus>
+  state?: NodeState
 }
 
 /**
@@ -223,7 +231,16 @@ function assignCompoundLayerStatuses(
   layerIndex: number,
   forceOverride: boolean,
 ): PropertyStatus {
-  const { key, nodeId, workspace, node, schemaProperties, theme, status } = ctx
+  const {
+    key,
+    nodeId,
+    workspace,
+    node,
+    schemaProperties,
+    theme,
+    status,
+    state,
+  } = ctx
   const parentKey = layeredParentPropertyPath(key, layerIndex)
   const compoundLayer = getCompoundLayerValue(compoundValue, layerIndex)
   if (!compoundLayer) {
@@ -245,6 +262,7 @@ function assignCompoundLayerStatuses(
     workspace,
     theme,
     layerIndex,
+    state,
   )
   const subStatuses: PropertyStatus[] = []
 
@@ -254,7 +272,7 @@ function assignCompoundLayerStatuses(
     const subStatus = calculateSubPropertyStatus(
       key,
       subKey,
-      hasSubPropertyOverride(node, key, subKey, layerIndex),
+      hasSubPropertyOverride(node, key, subKey, layerIndex, state),
       hasSubDefault,
       compoundLayer,
       schemaSubValue,
@@ -275,7 +293,7 @@ function assignCompoundLayerStatuses(
 
 /** Writes per-facet status for a compound property and its aggregate status. */
 function assignCompoundStatuses(ctx: SubStatusContext): void {
-  const { key, node, schemaProperties, effective } = ctx
+  const { key, node, schemaProperties, effective, state } = ctx
   const compoundValue = (effective as Record<string, unknown>)[key]
   const schemaValue = (schemaProperties as Record<string, unknown> | null)?.[
     key
@@ -289,7 +307,9 @@ function assignCompoundStatuses(ctx: SubStatusContext): void {
   // Layered paint owns a stack of layers. Layer 0 keeps its bare-key status,
   // upper layers report at `key.index`, and any layer beyond the schema default
   // stack length counts as an override because the node added it.
-  const overrideValue = getPropertyOverridesBag(node)?.[key as keyof Properties]
+  const overrideValue = getPropertyOverridesBag(node, state)?.[
+    key as keyof Properties
+  ]
   const overrideLayerCount = getLayeredPaintLayerCount(overrideValue)
   const schemaLayerCount = Math.max(getLayeredPaintLayerCount(schemaValue), 1)
   const effectiveLayerCount = Math.max(
@@ -312,7 +332,8 @@ function assignCompoundStatuses(ctx: SubStatusContext): void {
 
 /** Writes per-side status for a shorthand property and its aggregate status. */
 function assignShorthandStatuses(ctx: SubStatusContext): void {
-  const { key, workspace, node, schemaProperties, effective, status } = ctx
+  const { key, workspace, node, schemaProperties, effective, status, state } =
+    ctx
   const subKeys = getSubPropertyKeysFromSchema(key, node, workspace)
   const subStatuses: PropertyStatus[] = []
 
@@ -328,7 +349,7 @@ function assignShorthandStatuses(ctx: SubStatusContext): void {
     const subStatus = calculateSubPropertyStatus(
       key,
       subKey,
-      hasSubPropertyOverride(node, key, subKey),
+      hasSubPropertyOverride(node, key, subKey, 0, state),
       hasSubDefault,
       (effective as Record<string, Record<string, unknown> | null>)[key] ??
         null,
@@ -346,18 +367,19 @@ function assignShorthandStatuses(ctx: SubStatusContext): void {
 export function getPropertyStatus(
   nodeId: string,
   workspace: Workspace,
+  state?: NodeState,
 ): Record<string, PropertyStatus> {
   const node = getTypedNode(nodeId, workspace)
   const schemaProperties = getSchemaProperties(node, workspace)
   const status: Record<string, PropertyStatus> = {}
   if (!schemaProperties) return status
 
-  const effective = getEffectiveProperties(nodeId, workspace)
-  const bag = getPropertyOverridesBag(node)
+  const effective = getEffectiveProperties(nodeId, workspace, state)
+  const bag = getPropertyOverridesBag(node, state)
   const { theme } = getNodeComputeContext(nodeId, workspace)
 
   for (const key of Object.keys(effective)) {
-    const hasNodeOverride = hasPropertyOverride(node, key)
+    const hasNodeOverride = hasPropertyOverride(node, key, undefined, state)
     const hasSchemaDefault = key in schemaProperties
     const nodeValue = hasNodeOverride ? bag?.[key as keyof Properties] : null
     const schemaValue = hasSchemaDefault
@@ -371,6 +393,7 @@ export function getPropertyStatus(
       nodeValue,
       schemaValue,
       node,
+      state,
     )
 
     const subStatusContext: SubStatusContext = {
@@ -382,6 +405,7 @@ export function getPropertyStatus(
       effective,
       theme,
       status,
+      state,
     }
 
     if (isCompoundProperty(key as PropertyKey)) {

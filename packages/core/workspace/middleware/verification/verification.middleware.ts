@@ -23,6 +23,7 @@ import {
   isIconSetBoard,
   isThemeBoard,
 } from "../../model/components"
+import { isReservedStateName } from "../../model/node-state"
 import { parseNodeLink } from "../../model/template-ref"
 import { typeCheckingService } from "../../services"
 import { Middleware, Workspace } from "../../types"
@@ -214,6 +215,35 @@ const validators = {
   },
 
   /**
+   * Validates interaction-state integrity: the custom-state registry holds no
+   * reserved names and no duplicate keys, and every node state key resolves to a
+   * reserved name or a registered custom state.
+   */
+  statesAreConsistent: (workspace: Workspace) => {
+    const customStates = workspace.metadata.customStates ?? []
+    const seen = new Set<string>()
+    for (const entry of customStates) {
+      check(
+        !isReservedStateName(entry.key),
+        `Custom state "${entry.key}" collides with a reserved interaction-state name.`,
+      )
+      check(!seen.has(entry.key), `Duplicate custom state key "${entry.key}".`)
+      seen.add(entry.key)
+    }
+
+    const knownStates = new Set<string>(seen)
+    for (const node of Object.values(getWorkspaceNodes(workspace))) {
+      if (!node.states) continue
+      for (const stateKey of Object.keys(node.states)) {
+        check(
+          isReservedStateName(stateKey) || knownStates.has(stateKey),
+          `Node ${node.id} references unknown interaction state "${stateKey}".`,
+        )
+      }
+    }
+  },
+
+  /**
    * Validates each playground's Sandbox roots: width/height overrides must be
    * explicit lengths, position and size stay within the safety cap, and no two
    * sandboxes in the same playground overlap.
@@ -309,6 +339,11 @@ export const workspaceVerificationMiddleware: Middleware =
 
       validators.checkNoVariantsWithComputedProperties(nextWorkspace)
       log("✅ No variants with computed properties referencing parent nodes")
+
+      validators.statesAreConsistent(nextWorkspace)
+      log(
+        "✅ Interaction states resolve to reserved or registered custom states",
+      )
 
       validators.sandboxesAreValid(nextWorkspace)
       log("✅ Sandboxes are explicitly sized, capped, and non-overlapping")

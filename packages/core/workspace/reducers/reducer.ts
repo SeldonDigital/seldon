@@ -6,6 +6,7 @@ import { workspaceVerificationMiddleware } from "../middleware/verification/veri
 import type { Workspace } from "../model/workspace"
 import type { VariantId, WorkspaceAction } from "../types"
 import { addComponent } from "./handlers/add/add-component"
+import { addCustomState } from "./handlers/add/add-custom-state"
 import { addFontCollection } from "./handlers/add/add-font-collection"
 import { addFontCollectionCustomFamily } from "./handlers/add/add-font-collection-custom-family"
 import { addIconSet } from "./handlers/add/add-icon-set"
@@ -49,6 +50,7 @@ import { deleteFontCollection } from "./handlers/remove/delete-font-collection"
 import { deleteIconSet } from "./handlers/remove/delete-icon-set"
 import { deleteTheme } from "./handlers/remove/delete-theme"
 import { removeComponent } from "./handlers/remove/remove-component"
+import { removeCustomState } from "./handlers/remove/remove-custom-state"
 import { removeFontCollection } from "./handlers/remove/remove-font-collection"
 import { removeFontCollectionCustomFamily } from "./handlers/remove/remove-font-collection-custom-family"
 import { removeIconSet } from "./handlers/remove/remove-icon-set"
@@ -102,6 +104,8 @@ import { resetNode } from "./handlers/reset/reset-node"
 import { resetNodeEditorData } from "./handlers/reset/reset-node-editor-data"
 import { resetNodeLabel } from "./handlers/reset/reset-node-label"
 import { resetNodeProperty } from "./handlers/reset/reset-node-property"
+import { resetNodeState } from "./handlers/reset/reset-node-state"
+import { resetNodeStateProperty } from "./handlers/reset/reset-node-state-property"
 import { resetThemeEditorData } from "./handlers/reset/reset-theme-editor-data"
 import { resetThemeLabel } from "./handlers/reset/reset-theme-label"
 import { resetThemeOverride } from "./handlers/reset/reset-theme-override"
@@ -113,6 +117,7 @@ import { resetWorkspaceLastUpdate } from "./handlers/reset/reset-workspace-last-
 import { resetWorkspaceLicense } from "./handlers/reset/reset-workspace-license"
 import { resetWorkspaceOwner } from "./handlers/reset/reset-workspace-owner"
 import { resetWorkspaceTags } from "./handlers/reset/reset-workspace-tags"
+import { renameCustomState } from "./handlers/set/rename-custom-state"
 import { setBoardAuthor } from "./handlers/set/set-board-author"
 import { setBoardCredentials } from "./handlers/set/set-board-credentials"
 import { setBoardEditorData } from "./handlers/set/set-board-editor-data"
@@ -136,6 +141,7 @@ import { setNodeLabel } from "./handlers/set/set-node-label"
 import { setNodeLayerKind } from "./handlers/set/set-node-layer-kind"
 import { setNodeProperties } from "./handlers/set/set-node-properties"
 import { setNodeRef } from "./handlers/set/set-node-ref"
+import { setNodeStateProperties } from "./handlers/set/set-node-state-properties"
 import { setNodeTheme } from "./handlers/set/set-node-theme"
 import { setPlaygroundLabel } from "./handlers/set/set-playground-label"
 import { setThemeCustomTokenName } from "./handlers/set/set-theme-custom-token-name"
@@ -294,6 +300,18 @@ function reducer(workspace: Workspace, action: WorkspaceAction): Workspace {
       return resetNodeProperty(action.payload, workspace)
     case "reset_node":
       return resetNode(action.payload, workspace)
+    case "set_node_state_properties":
+      return setNodeStateProperties(action.payload, workspace)
+    case "reset_node_state_property":
+      return resetNodeStateProperty(action.payload, workspace)
+    case "reset_node_state":
+      return resetNodeState(action.payload, workspace)
+    case "add_custom_state":
+      return addCustomState(action.payload, workspace)
+    case "remove_custom_state":
+      return removeCustomState(action.payload, workspace)
+    case "rename_custom_state":
+      return renameCustomState(action.payload, workspace)
     case "add_node_layer":
       return addNodeLayer(action.payload, workspace)
     case "remove_node_layer":

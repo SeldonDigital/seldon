@@ -57,6 +57,7 @@ import {
 import type { InstanceId, VariantId } from "../helpers/rules/workspace-node-ids"
 import type { BoardKey } from "../model/components"
 import type { EntryNodeId } from "../model/entry-node"
+import type { NodeState } from "../model/node-state"
 import type { WorkspaceStringMap } from "../model/string-maps"
 import type { Workspace } from "../model/workspace"
 
@@ -482,6 +483,56 @@ export type WorkspaceAction =
       type: "reset_node"
       payload: {
         nodeId: InstanceId | VariantId
+      }
+    }
+  | {
+      type: "set_node_state_properties"
+      payload: {
+        nodeId: InstanceId | VariantId
+        state: NodeState
+        properties: Properties
+        options?: {
+          mergeSubProperties?: boolean
+        }
+      }
+    }
+  | {
+      type: "reset_node_state_property"
+      payload: {
+        nodeId: InstanceId | VariantId
+        state: NodeState
+        propertyKey: PropertyKey
+        subpropertyKey?: SubPropertyKey
+        /** Paint-layer slot for layered properties; defaults to layer 0. */
+        layerIndex?: number
+      }
+    }
+  | {
+      type: "reset_node_state"
+      payload: {
+        nodeId: InstanceId | VariantId
+        state: NodeState
+      }
+    }
+  | {
+      type: "add_custom_state"
+      payload: {
+        key: string
+        label: string
+        description?: string
+      }
+    }
+  | {
+      type: "remove_custom_state"
+      payload: {
+        key: string
+      }
+    }
+  | {
+      type: "rename_custom_state"
+      payload: {
+        key: string
+        label: string
       }
     }
   | {

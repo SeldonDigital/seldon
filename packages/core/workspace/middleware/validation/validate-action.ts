@@ -29,6 +29,10 @@ import {
   validateRemoveBoard,
 } from "./action-groups/resource-catalog"
 import {
+  validateCustomStateRegistry,
+  validateStateMutation,
+} from "./action-groups/state-mutations"
+import {
   validateAddThemeCustomToken,
   validateRemoveThemeCustomToken,
   validateSetThemeCustomTokenName,
@@ -167,6 +171,16 @@ export function validateAction(workspace: Workspace, action: Action): void {
     case "reset_user_variant_to_default":
     case "reset_default_variant_to_catalog":
       validateNodeMutation(workspace, action)
+      return
+    case "set_node_state_properties":
+    case "reset_node_state_property":
+    case "reset_node_state":
+      validateStateMutation(workspace, action)
+      return
+    case "add_custom_state":
+    case "remove_custom_state":
+    case "rename_custom_state":
+      validateCustomStateRegistry(workspace, action)
       return
     case "reset_component_to_catalog":
       validateResetComponentToCatalog(workspace, action)

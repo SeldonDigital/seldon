@@ -10,7 +10,9 @@ import { reorderInstanceInParent } from "../workspace/reducers/handlers/reorder/
 import { reorderVariantInBoard } from "../workspace/reducers/handlers/reorder/reorder-variant-in-board"
 import { resetDefaultVariantToCatalog } from "../workspace/reducers/handlers/reset/reset-default-variant-to-catalog"
 import { resetNode } from "../workspace/reducers/handlers/reset/reset-node"
+import { resetNodeState } from "../workspace/reducers/handlers/reset/reset-node-state"
 import { resetUserVariantToDefault } from "../workspace/reducers/handlers/reset/reset-user-variant-to-default"
+import { setNodeStateProperties } from "../workspace/reducers/handlers/set/set-node-state-properties"
 import type { Workspace } from "../workspace/types"
 import { rules } from "./config/rules.config"
 import type { Config } from "./types/rule-config-types"
@@ -96,6 +98,18 @@ describe("rules.config single-source contract", () => {
     expect("removalBehavior" in rules.mutations.delete.defaultVariant).toBe(
       false,
     )
+  })
+
+  it("authors interaction states on variants only", () => {
+    expect(rules.mutations.setStateProperties.defaultVariant.allowed).toBe(true)
+    expect(rules.mutations.setStateProperties.userVariant.allowed).toBe(true)
+    expect(rules.mutations.setStateProperties.instance.allowed).toBe(false)
+    expect(rules.mutations.setStateProperties.board.allowed).toBe(false)
+    for (const entity of ENTITIES) {
+      expect(rules.mutations.setStateProperties[entity].propagation).toBe(
+        "none",
+      )
+    }
   })
 
   it("locks the policy values the handlers depend on", () => {
@@ -200,6 +214,42 @@ describe("structural handlers no-op when their bucket denies the entity", () => 
     const ws = makeWorkspace()
     const result = withDenied("create", "userVariant", () =>
       addVariant({ boardKey: "button" }, ws),
+    )
+    expect(result).toBe(ws)
+  })
+
+  it("setNodeStateProperties no-ops on instances via setStateProperties", () => {
+    const ws = makeWorkspace()
+    const result = setNodeStateProperties(
+      {
+        nodeId: "instance-1",
+        state: "hover",
+        properties: {},
+      },
+      ws,
+    )
+    expect(result).toBe(ws)
+    expect(result.nodes["instance-1"].states).toBeUndefined()
+  })
+
+  it("setNodeStateProperties writes a state bag on a user variant", () => {
+    const ws = makeWorkspace()
+    const result = setNodeStateProperties(
+      {
+        nodeId: "variant-1",
+        state: "hover",
+        properties: {},
+      },
+      ws,
+    )
+    expect(result).not.toBe(ws)
+    expect(result.nodes["variant-1"].states?.hover).toBeDefined()
+  })
+
+  it("resetNodeState no-ops on instances via setStateProperties", () => {
+    const ws = makeWorkspace()
+    const result = withDenied("setStateProperties", "userVariant", () =>
+      resetNodeState({ nodeId: "variant-1", state: "hover" }, ws),
     )
     expect(result).toBe(ws)
   })

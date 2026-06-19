@@ -43,6 +43,19 @@ export {
   isEntryNodeVariant,
 } from "../model"
 export type {
+  CustomState,
+  EntryNodeStates,
+  NodeState,
+  NormalState,
+  ReservedStateName,
+} from "../model"
+export {
+  NORMAL_STATE,
+  RESERVED_STATE_LABELS,
+  RESERVED_STATE_NAMES,
+  isReservedStateName,
+} from "../model"
+export type {
   EntryTheme,
   EntryThemeId,
   EntryThemeOverrides,

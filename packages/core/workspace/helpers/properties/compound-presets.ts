@@ -10,6 +10,7 @@ import {
   resolveBuiltInLookApplyName,
   resolveThemeLook,
 } from "@seldon/core/themes/looks"
+import type { NodeState } from "@seldon/core/workspace/model/node-state"
 
 import {
   type BoardCompound,
@@ -211,8 +212,9 @@ export function matchCompoundPreset(
   workspace: Workspace,
   theme?: Theme,
   layerIndex: number = 0,
+  state?: NodeState,
 ): string | null {
-  const effectiveProperties = getEffectiveProperties(nodeId, workspace)
+  const effectiveProperties = getEffectiveProperties(nodeId, workspace, state)
 
   if (propertyKey === "board") {
     const boardLayer = getCompoundLayerValue(

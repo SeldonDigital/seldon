@@ -211,6 +211,33 @@ export const rules: RulesConfig = {
     },
 
     /**
+     * Rules for authoring per-state property overrides.
+     *
+     * Interaction states are authored on default and user variants only.
+     * Instances inherit their source variant's state and cannot author or clear
+     * a state, so both `instance` and `board` are blocked. Covers
+     * set_node_state_properties, reset_node_state_property, and reset_node_state.
+     */
+    setStateProperties: {
+      board: {
+        allowed: false,
+        propagation: "none",
+      },
+      userVariant: {
+        allowed: true,
+        propagation: "none",
+      },
+      defaultVariant: {
+        allowed: true,
+        propagation: "none",
+      },
+      instance: {
+        allowed: false,
+        propagation: "none",
+      },
+    },
+
+    /**
      * Rules for resetting an entity back to its template baseline.
      * Covers reset_node, reset_node_property, reset_user_variant_to_default,
      * and reset_default_variant_to_catalog. Resets are local to the targeted

@@ -20,8 +20,19 @@ import {
 import { getCssObjectFromProperties } from "../../../styles/css-properties/get-css-object-from-properties"
 import { CSSObject } from "../../../styles/css-properties/types"
 import { getThemeSlug } from "../generation/get-theme-slug"
-import { Classes, NodeIdToClass } from "../types"
+import { Classes, NodeIdToClass, StateClasses } from "../types"
 import { getClassNameForNode } from "./get-class-name"
+
+/** Collects every interaction-state key authored anywhere in the workspace. */
+function collectUsedStates(workspace: Workspace): string[] {
+  const used = new Set<string>()
+  for (const node of Object.values(workspace.nodes)) {
+    if (node.states) {
+      for (const key of Object.keys(node.states)) used.add(key)
+    }
+  }
+  return [...used]
+}
 
 function getNodeTreeDepth(nodeId: string, workspace: Workspace): number {
   const node = workspace.nodes[nodeId]
@@ -72,15 +83,18 @@ export const buildStyleRegistry = (
   parentIndex: NodeParentIndex,
 ): {
   classes: Classes
+  stateClasses: StateClasses
   nodeIdToClass: NodeIdToClass
   classNameToNodeId: Record<string, string>
   nodeTreeDepths: Record<string, number>
 } => {
   const classes: Classes = {}
+  const stateClasses: StateClasses = {}
   const nodeIdToClass: NodeIdToClass = {}
   const classNameToNodeId: Record<string, string> = {}
   const nodeTreeDepths: Record<string, number> = {}
   const classNameToComponentId: Record<string, string> = {}
+  const usedStates = collectUsedStates(workspace)
 
   const sortedNodes = getWorkspaceNodeList(workspace).sort((a, b) => {
     const aIsDefault = typeCheckingService.isVariant(a) && isDefaultVariant(a)
@@ -152,6 +166,35 @@ export const buildStyleRegistry = (
       })
     }
 
+    // Variants and default variants author interaction states. Compute each used
+    // state against the node's Normal CSS and keep the non-empty deltas. The
+    // delta is materialized on the variant's class, so instances inherit it for
+    // free through the variant class they already carry.
+    const nodeStateDeltas: Record<string, CSSObject> = {}
+    if (typeCheckingService.isVariant(node) && !hasTemplateSource) {
+      for (const state of usedStates) {
+        const stateContext = getStyleContext(
+          node.id,
+          workspace,
+          parentIndex,
+          state,
+        )
+        const stateCss = getCssObjectFromProperties(stateContext.properties, {
+          properties: stateContext.properties,
+          parentContext: stateContext.parentContext,
+          theme: stateContext.theme,
+          layoutMode: stateContext.layoutMode,
+          useThemeVariableReferences: true,
+          themeSlug: getThemeSlug(stateContext.theme.id as string, workspace),
+        })
+        const delta = calculateCssDifferences(css, stateCss)
+        if (Object.keys(delta).length > 0) {
+          nodeStateDeltas[state] = delta
+        }
+      }
+    }
+    const hasStateDeltas = Object.keys(nodeStateDeltas).length > 0
+
     const isDefault =
       typeCheckingService.isVariant(node) && isDefaultVariant(node)
 
@@ -159,7 +202,8 @@ export const buildStyleRegistry = (
       !forceRegeneration &&
       Object.keys(css).length === 0 &&
       !isDefault &&
-      !hasTemplateSource
+      !hasTemplateSource &&
+      !hasStateDeltas
     ) {
       return
     }
@@ -179,11 +223,17 @@ export const buildStyleRegistry = (
       if (!classNameToComponentId[existing[0]]) {
         classNameToComponentId[existing[0]] = componentId
       }
+      if (hasStateDeltas && !stateClasses[existing[0]]) {
+        stateClasses[existing[0]] = nodeStateDeltas
+      }
     } else {
       classes[className] = css
       nodeIdToClass[node.id] = className
       classNameToNodeId[className] = node.id
       classNameToComponentId[className] = componentId
+      if (hasStateDeltas) {
+        stateClasses[className] = nodeStateDeltas
+      }
     }
   })
 
@@ -244,5 +294,11 @@ export const buildStyleRegistry = (
     }
   })
 
-  return { classes, nodeIdToClass, classNameToNodeId, nodeTreeDepths }
+  return {
+    classes,
+    stateClasses,
+    nodeIdToClass,
+    classNameToNodeId,
+    nodeTreeDepths,
+  }
 }

@@ -123,15 +123,16 @@ Metadata does not define boards, themes, font collections, icon sets, or media. 
 
 Programs change each metadata field with its own action: `set_workspace_owner`, `set_workspace_label`, `set_workspace_version`, `set_workspace_last_update`, `set_workspace_intent`, `set_workspace_tags`, `set_workspace_license`.
 
-| Field        | Type       | Description                                                                                       |
-| ------------ | ---------- | ------------------------------------------------------------------------------------------------- |
-| `owner`      | `string`   | Party that owns this workspace. Typical values are account ids or organization ids.               |
-| `label`      | `string`   | Display name for the workspace.                                                                   |
-| `version`    | `number`   | Migration or schema version used when loading older files. See [Migration](#migration). Required. |
-| `lastUpdate` | `string`   | Optional ISO-8601 timestamp of the last save.                                                     |
-| `intent`     | `string`   | Optional short description of the workspace purpose.                                              |
-| `tags`       | `string[]` | Optional labels for search or filtering.                                                          |
-| `license`    | `object`   | Optional workspace-level licensing metadata.                                                      |
+| Field          | Type       | Description                                                                                                                                                      |
+| -------------- | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `owner`        | `string`   | Party that owns this workspace. Typical values are account ids or organization ids.                                                                              |
+| `label`        | `string`   | Display name for the workspace.                                                                                                                                  |
+| `version`      | `number`   | Migration or schema version used when loading older files. See [Migration](#migration). Required.                                                                |
+| `lastUpdate`   | `string`   | Optional ISO-8601 timestamp of the last save.                                                                                                                    |
+| `intent`       | `string`   | Optional short description of the workspace purpose.                                                                                                             |
+| `tags`         | `string[]` | Optional labels for search or filtering.                                                                                                                         |
+| `license`      | `object`   | Optional workspace-level licensing metadata.                                                                                                                     |
+| `customStates` | `object[]` | Optional workspace-wide custom interaction states. Each entry is `{ key, label, description? }` with no render data. See **Interaction States** under **Nodes**. |
 
 ```json
 {
@@ -557,17 +558,18 @@ It is important to note that nodes do not attempt to create a tree structure. By
 
 The result of this is that an editor's properties panel will display and edit all node data with a direct 1:1 interface, regardless of where in the tree the edit was made.
 
-| Field       | Type                        | Description                                                                                                                                                                                                                                                                                    |
-| ----------- | --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `id`        | `string`                    | Unique node identifier; must equal the key used for this node in the `nodes` map.                                                                                                                                                                                                              |
-| `type`      | `string`                    | Node type discriminator. One of: `"default"`, `"variant"`, `"instance"`.                                                                                                                                                                                                                       |
-| `level`     | `string`                    | Identifies the atomic level of the component as one of `screen`, `module`, `part`, `element`, `primitive`, or `frame`. This value must match the level value found in its template.                                                                                                            |
-| `label`     | `string`                    | Display name for the node.                                                                                                                                                                                                                                                                     |
-| `theme`     | `ThemeInstanceId` or `null` | The theme used for this node, or `null` to inherit from its parent.                                                                                                                                                                                                                            |
-| `template`  | `string`                    | Where the node gets its metadata, along with its list of **properties** and subsequent default values which are resolved before `overrides` are applied. This value is either `catalog:{ComponentId}` or `node:{nodeId}`. See **Default Node**, **Variant Node**, and **Instance Node** below. |
-| `overrides` | `Properties`                | Property overrides for this node, which is derived from either `catalog:{ComponentId}` or `node:{nodeId}`. Can be an empty object `{}`. If a property is not declared in the `template`, the overridden value is ignored.                                                                      |
-| `origin`    | `string`                    | Optional creation origin, one of `"schema"` or `"user"`. Only meaningful on `type: "instance"` nodes. The engine sets and maintains it, and it drives removal behavior. See **Instance Node** and **Composition Rules** below.                                                                 |
-| `__editor`  | `object`                    | Editor-only metadata.                                                                                                                                                                                                                                                                          |
+| Field       | Type                        | Description                                                                                                                                                                                                                                                                                             |
+| ----------- | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`        | `string`                    | Unique node identifier; must equal the key used for this node in the `nodes` map.                                                                                                                                                                                                                       |
+| `type`      | `string`                    | Node type discriminator. One of: `"default"`, `"variant"`, `"instance"`.                                                                                                                                                                                                                                |
+| `level`     | `string`                    | Identifies the atomic level of the component as one of `screen`, `module`, `part`, `element`, `primitive`, or `frame`. This value must match the level value found in its template.                                                                                                                     |
+| `label`     | `string`                    | Display name for the node.                                                                                                                                                                                                                                                                              |
+| `theme`     | `ThemeInstanceId` or `null` | The theme used for this node, or `null` to inherit from its parent.                                                                                                                                                                                                                                     |
+| `template`  | `string`                    | Where the node gets its metadata, along with its list of **properties** and subsequent default values which are resolved before `overrides` are applied. This value is either `catalog:{ComponentId}` or `node:{nodeId}`. See **Default Node**, **Variant Node**, and **Instance Node** below.          |
+| `overrides` | `Properties`                | Property overrides for this node, which is derived from either `catalog:{ComponentId}` or `node:{nodeId}`. Can be an empty object `{}`. If a property is not declared in the `template`, the overridden value is ignored. This is the Normal state layer.                                               |
+| `states`    | `object`                    | Optional per-state property override bags keyed by interaction-state name. Each bag holds the same `Properties` shape as `overrides`. Sparse: a key exists only when that state carries overrides. Authored on `default` and `variant` nodes only; instances inherit. See **Interaction States** below. |
+| `origin`    | `string`                    | Optional creation origin, one of `"schema"` or `"user"`. Only meaningful on `type: "instance"` nodes. The engine sets and maintains it, and it drives removal behavior. See **Instance Node** and **Composition Rules** below.                                                                          |
+| `__editor`  | `object`                    | Editor-only metadata.                                                                                                                                                                                                                                                                                   |
 
 When code consults [`rules.mutations.*`](../rules/config/rules.config.ts), index by internal [`Entity`](../rules/types/rule-config-types.ts) keys (`defaultVariant`, `userVariant`, …), not raw `type` strings. Map serialized `EntryNode.type` with [`mapEntryNodeTypeToRulesEntity`](./helpers/rules/map-entry-node-type-to-rules-entity.ts); see [Rules README](../rules/README.md) (Entity vocabulary vs workspace `nodes`).
 
@@ -682,6 +684,55 @@ The **`template`** field then chooses how properties are obtained for the instan
   }
 }
 ```
+
+---
+
+### Interaction States
+
+A node's `overrides` field is the Normal state. The optional `states` field adds extra override bags for other interaction states such as hover or disabled. Each state bag holds the same `Properties` shape as `overrides` and layers on top of the Normal layer when that state resolves.
+
+```json
+"nodes": {
+  "component-button-default": {
+    "id": "component-button-default",
+    "type": "default",
+    "level": "element",
+    "label": "Button",
+    "theme": null,
+    "template": "catalog:button",
+    "overrides": {
+      "background": [
+        { "color": { "type": "theme.categorical", "value": "@swatch.primary" } }
+      ]
+    },
+    "states": {
+      "hover": {
+        "background": [
+          { "color": { "type": "theme.categorical", "value": "@swatch.custom6" } }
+        ]
+      }
+    }
+  }
+}
+```
+
+State names are target-agnostic. The workspace stores only the state name keys and their override bags. It never stores CSS, pseudo-classes, attributes, or class names. Each export pipeline maps a state name to its own target construct. The React and CSS factory maps to CSS selectors. A future Swift or Java pipeline maps the same names its own way.
+
+There are two kinds of state name:
+
+- **Reserved states** are a fixed vocabulary shared by every target: `disabled`, `hover`, `focused`, `active`, `dragged`, `error`, `selected`, and `checked`. The names and labels live in [`model/node-state.ts`](./model/node-state.ts).
+- **Custom states** are workspace-wide and live on `metadata.customStates`. Each entry is `{ key, label, description? }` with no render data. A reserved name cannot be a custom-state key.
+
+State authoring is allowed on `default` and `variant` nodes only. Instances inherit their source variant's states and cannot author or clear a state. The [`setStateProperties`](../rules/config/rules.config.ts) rule enforces this: `defaultVariant` and `userVariant` are allowed, `instance` and `board` are blocked.
+
+Programs change states with these actions:
+
+- `set_node_state_properties` merges properties into `states[state]`.
+- `reset_node_state_property` drops one property from `states[state]`, removing the state key when its bag becomes empty.
+- `reset_node_state` clears the whole `states[state]` bag.
+- `add_custom_state`, `rename_custom_state`, and `remove_custom_state` manage the `metadata.customStates` registry. Removing a custom state also strips that key from every node's `states`.
+
+State overrides interleave along the template chain. When a state resolves, each node in the chain contributes its Normal overrides and then its `states[state]` bag, from template to target. State resolution is opt-in: with no state requested, only the Normal layer applies.
 
 ---
 

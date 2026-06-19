@@ -5,6 +5,7 @@ import {
   computeNodeProperties,
   resolveLayoutMode,
 } from "@seldon/core/workspace/compute"
+import type { NodeState } from "@seldon/core/workspace/model/node-state"
 import { workspaceThemeService } from "@seldon/core/workspace/services"
 
 import { StyleGenerationContext } from "../styles/types"
@@ -25,15 +26,17 @@ export function getStyleContext(
   nodeId: string,
   workspace: Workspace,
   parentIndex: NodeParentIndex,
+  state?: NodeState,
 ): StyleGenerationContext {
   const properties = computeNodeProperties(nodeId, workspace, {
     stage: "computed",
     parentIndex,
+    state,
   })
 
   const parentId = parentIndex.get(nodeId)
   const parentContext = parentId
-    ? getStyleContext(parentId, workspace, parentIndex)
+    ? getStyleContext(parentId, workspace, parentIndex, state)
     : null
 
   const theme = workspaceThemeService.getNodeTheme(nodeId, workspace)

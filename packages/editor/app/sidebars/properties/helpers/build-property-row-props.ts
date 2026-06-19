@@ -55,6 +55,8 @@ interface BuildPropertyRowPropsInput {
   isEditingProperty: boolean
   supportsUpload: boolean
   showMenuIcon: boolean
+  /** Instance in a non-Normal state: render the value cell as read-only. */
+  isReadOnly: boolean
   handleToggle: () => void
   handleLabel2Click: (event: MouseEvent) => void
   handleUploadClick: (event: MouseEvent) => void
@@ -82,6 +84,7 @@ export function buildPropertyRowProps({
   isEditingProperty,
   supportsUpload,
   showMenuIcon,
+  isReadOnly,
   handleToggle,
   handleLabel2Click,
   handleUploadClick,
@@ -146,7 +149,8 @@ export function buildPropertyRowProps({
     style: getValueCellStyle({
       labelColor,
       isEditingProperty,
-      isInteractive: hasChildren || Boolean(property.controlType),
+      isInteractive:
+        !isReadOnly && (hasChildren || Boolean(property.controlType)),
     }),
   } as TextLabelProps
 
@@ -183,7 +187,8 @@ export function buildPropertyRowProps({
       isCalculated,
       supportsUpload,
       hasControl: Boolean(property.controlType),
-      showMenuIcon,
+      // A read-only instance row hides the dropdown chevron.
+      showMenuIcon: isReadOnly ? true : showMenuIcon,
       labelColor,
     }),
   }
