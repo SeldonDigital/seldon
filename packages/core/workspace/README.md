@@ -569,6 +569,7 @@ The result of this is that an editor's properties panel will display and edit al
 | `overrides` | `Properties` | Property overrides for this node, which is derived from either `catalog:{ComponentId}` or `node:{nodeId}`. Can be an empty object `{}`. If a property is not declared in the `template`, the overridden value is ignored. This is the Normal state layer. |
 | `states` | `object` | Optional per-state property override bags keyed by interaction-state name. Each bag holds the same `Properties` shape as `overrides`. Sparse: a key exists only when that state carries overrides. Authored on `default` and `variant` nodes only; instances inherit. See **Interaction States** below. |
 | `origin` | `string` | Optional creation origin, one of `"schema"` or `"user"`. Only meaningful on `type: "instance"` nodes. The engine sets and maintains it, and it drives removal behavior. See **Instance Node** and **Composition Rules** below. |
+| `ref` | `string` | Optional stable, user-assigned reference handle. Unique across the whole workspace and never inherited or merged, so generated code and app logic can target a specific node regardless of position. Absent until set via `set_node_ref`. |
 | `__editor` | `object` | Editor-only metadata. |
 
 When code consults [`rules.mutations.*`](../rules/config/rules.config.ts), index by internal [`Entity`](../rules/types/rule-config-types.ts) keys (`defaultVariant`, `userVariant`, …), not raw `type` strings. Map serialized `EntryNode.type` with [`mapEntryNodeTypeToRulesEntity`](./helpers/rules/map-entry-node-type-to-rules-entity.ts); see [Rules README](../rules/README.md) (Entity vocabulary vs workspace `nodes`).
@@ -1232,9 +1233,9 @@ Suffix examples: `component-button-default`, `component-button-{hash}`, or `them
 
 ## Migration
 
-`metadata.version` is managed by the workspace migration system. The migration middleware lives in `packages/core/workspace/middleware/migration/middleware.ts`. On `set_workspace` it runs pending migration steps and stamps `metadata.version` with `CURRENT_WORKSPACE_VERSION` (currently 2).
+`metadata.version` is managed by the workspace migration system. The migration middleware lives in `packages/core/workspace/middleware/migration/middleware.ts`. On `set_workspace` it runs pending migration steps and stamps `metadata.version` with `CURRENT_WORKSPACE_VERSION` (currently 8).
 
-Version 1 normalizes legacy EXACT `blendMode` and `filter` values on node overrides, theme overrides, and board component properties. Version 2 seeds an empty `playgrounds: {}` section on files that predate it. See `packages/core/workspace/middleware/migration/README.md`.
+Version 1 normalizes legacy EXACT `blendMode` and `filter` values on node overrides, theme overrides, and board component properties. Version 2 seeds an empty `playgrounds: {}` section on files that predate it. Version 3 normalizes background layers to the `kind` discriminator. Version 4 folds standalone gradient values into the background paint stack. Version 5 merges former text primitive ids into a host primitive as variants. Version 6 merges former element ids into a host component as variants. Version 7 merges former list and card part ids into a host component as variants. Version 8 renames the `listText` catalog id to `listItem`. See `packages/core/workspace/middleware/migration/README.md`.
 
 The file format specification version is independent of the internal workspace `metadata.version` number. Field `metadata.version` tracks schema evolution for the migration system. This specification documents the overall structure of the serialized format.
 

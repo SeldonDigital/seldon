@@ -86,9 +86,15 @@ The `reducer` switch has no default branch. Validation rejects unknown action ty
 | `set_node_theme` | `setNodeTheme` | `set-node-theme.ts` |
 | `set_node_editor_data` | `setNodeEditorData` | `set-node-editor-data.ts` |
 | `set_node_properties` | `setNodeProperties` | `set-node-properties.ts` |
+| `set_node_state_properties` | `setNodeStateProperties` | `set-node-state-properties.ts` |
+| `set_node_ref` | `setNodeRef` | `set-node-ref.ts` |
+| `set_node_layer_kind` | `setNodeLayerKind` | `set-node-layer-kind.ts` |
+| `rename_custom_state` | `renameCustomState` | `rename-custom-state.ts` |
 | `set_theme_label` | `setThemeLabel` | `set-theme-label.ts` |
 | `set_theme_editor_data` | `setThemeEditorData` | `set-theme-editor-data.ts` |
 | `set_theme_override` | `setThemeOverride` | `set-theme-override.ts` |
+| `set_theme_scale_slot` | `setThemeScaleSlot` | `set-theme-scale-slot.ts` |
+| `set_theme_custom_token_name` | `setThemeCustomTokenName` | `set-theme-custom-token-name.ts` |
 | `set_font_collection_label` | `setFontCollectionLabel` | `set-font-collection-label.ts` |
 | `set_font_collection_editor_data` | `setFontCollectionEditorData` | `set-font-collection-editor-data.ts` |
 | `set_font_collection_override` | `setFontCollectionOverride` | `set-font-collection-override.ts` |
@@ -121,6 +127,8 @@ The `reducer` switch has no default branch. Validation rejects unknown action ty
 | `reset_component_property` | `resetComponentProperty` | `reset-component-property.ts` |
 | `reset_node` | `resetNode` | `reset-node.ts` |
 | `reset_node_property` | `resetNodeProperty` | `reset-node-property.ts` |
+| `reset_node_state` | `resetNodeState` | `reset-node-state.ts` |
+| `reset_node_state_property` | `resetNodeStateProperty` | `reset-node-state-property.ts` |
 | `reset_node_label` | `resetNodeLabel` | `reset-node-label.ts` |
 | `reset_node_editor_data` | `resetNodeEditorData` | `reset-node-editor-data.ts` |
 | `reset_user_variant_to_default` | `resetUserVariantToDefault` | `reset-user-variant-to-default.ts` |
@@ -149,6 +157,9 @@ The reset drops a variant only when the catalog no longer defines it. Validation
 | --- | --- | --- |
 | `add_component` | `addComponent` | `add-component.ts` |
 | `add_variant` | `addVariant` | `add-variant.ts` |
+| `add_sandbox` | `addSandbox` | `add-sandbox.ts` |
+| `add_node_layer` | `addNodeLayer` | `add-node-layer.ts` |
+| `add_custom_state` | `addCustomState` | `add-custom-state.ts` |
 | `add_playground` | `addPlayground` | `add-playground.ts` |
 | `add_theme` | `addTheme` | `add-theme.ts` |
 | `add_font_collection` | `addFontCollection` | `add-font-collection.ts` |
@@ -184,6 +195,8 @@ The reset drops a variant only when the catalog no longer defines it. Validation
 | `remove_playground` | `removePlayground` | `remove-playground.ts` |
 | `remove_instance` | `removeInstance` | `remove-instance.ts` |
 | `remove_variant` | `removeVariant` | `remove-variant.ts` |
+| `remove_node_layer` | `removeNodeLayer` | `remove-node-layer.ts` |
+| `remove_custom_state` | `removeCustomState` | `remove-custom-state.ts` |
 | `remove_theme` | `removeTheme` | `remove-theme.ts` |
 | `delete_theme` | `deleteTheme` | `delete-theme.ts` |
 | `remove_font_collection` | `removeFontCollection` | `remove-font-collection.ts` |
@@ -231,9 +244,11 @@ The reset drops a variant only when the catalog no longer defines it. Validation
 | Action | Handler | File |
 | --- | --- | --- |
 | `move_instance` | `moveInstance` | `move/move-instance.ts` |
+| `move_instance_directional` | `moveInstanceDirectional` | `move/move-instance-directional.ts` |
 | `reorder_board` | `reorderBoard` | `reorder/reorder-board.ts` |
 | `reorder_variant_in_board` | `reorderVariantInBoard` | `reorder/reorder-variant-in-board.ts` |
 | `reorder_instance_in_parent` | `reorderInstanceInParent` | `reorder/reorder-instance-in-parent.ts` |
+| `reorder_node_layer` | `reorderNodeLayer` | `reorder/reorder-node-layer.ts` |
 
 ---
 

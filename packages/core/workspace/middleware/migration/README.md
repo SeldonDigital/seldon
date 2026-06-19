@@ -24,6 +24,10 @@ flowchart TB
 | `migrateV2SeedPlaygrounds` | `steps/migrate-00002-seed-playgrounds.ts` | v2 step. Seeds the playgrounds section. |
 | `migrateV3BackgroundKind` | `steps/migrate-00003-background-kind.ts` | v3 step. Rewrites background layers to the kind-typed model. |
 | `migrateV4GradientIntoBackground` | `steps/migrate-00004-gradient-into-background.ts` | v4 step. Folds the gradient stack into background as gradient-kind layers. |
+| `migrateV5MergeTextPrimitives` | `steps/migrate-00005-merge-text-primitives.ts` | v5 step. Folds former text primitive ids into a host primitive as variants. |
+| `migrateV6MergeElements` | `steps/migrate-00006-merge-elements.ts` | v6 step. Folds former element and list-text ids into a host component as variants. |
+| `migrateV7MergeParts` | `steps/migrate-00007-merge-parts.ts` | v7 step. Folds former list and card part ids into a host component as variants. |
+| `migrateV8RenameListItem` | `steps/migrate-00008-rename-list-item.ts` | v8 step. Renames the `listText` catalog id to `listItem`. |
 
 ## Version 1
 
@@ -59,6 +63,22 @@ Folds the standalone `gradient` paint stack into the `background` stack:
 - Theme `gradient` look tokens are left untouched.
 
 The step walks `nodes[*].overrides` and board `componentProperties`.
+
+## Version 5
+
+Merges former text primitive ids into a host primitive as variants. Each dropped id maps to a host id and the signature property overrides that recreate the variant's look. Signature overrides are layered beneath a node's own overrides, so user edits win.
+
+## Version 6
+
+Merges former element and list-text ids into a host component as variants, using the same host-plus-signature mapping as version 5.
+
+## Version 7
+
+Merges former list and card part ids into a host component as variants. Variant child subtrees survive because nodes reference children by id.
+
+## Version 8
+
+Renames the `listText` catalog id to `listItem`. It rewrites every `catalog:listText` node template and component board `catalogId` to the new id. Node overrides and child subtrees are unaffected.
 
 ## Notes
 

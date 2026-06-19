@@ -105,6 +105,52 @@ Then open `http://localhost:5173` in your browser. You should now have the edito
 
 ---
 
+## Scripts
+
+CI runs four checks on every pull request to `main`. Run them locally before you submit a PR so your branch passes. First install:
+
+```bash
+npm ci
+```
+
+Unit tests run on [Bun](https://bun.sh). Be sure to install **Bun** before you run them.
+
+---
+
+Then run each check.
+
+Format:
+
+```bash
+npm run format:check
+```
+
+To fix formatting instead of only checking it:
+
+```bash
+npm run format
+```
+
+Lint:
+
+```bash
+npm run lint --workspace @seldon/core --workspace @seldon/factory --workspace @seldon/editor
+```
+
+Typecheck:
+
+```bash
+npx tsc --build packages/core/tsconfig.json && npx tsc -p packages/factory/tsconfig.json && npx tsc -p packages/editor/tsconfig.json
+```
+
+Unit tests:
+
+```bash
+npm test --workspace @seldon/core
+```
+
+---
+
 ## Where to go from here
 
 At the time of this writing, Seldon is just getting of the ground. It is missing many features, behaviors, code export languages such as Swift and Java, and other core pieces. But rather than wait until it's all done and build it in a closed environment, we're going to build it out in the open and evolve it based on your feedback. Hopefully many of you will become contributors as well.
@@ -133,9 +179,8 @@ If you want the lowdown, these three documents are a great way to get into what 
 - `packages/core/components` [packages/core/components/README.md](packages/core/components/README.md): Schema shapes, hierarchy, and composition rules
 - `packages/core/properties` [packages/core/properties/README.md](packages/core/properties/README.md): Property types and values
 - `packages/core/themes` [packages/core/themes/README.md](packages/core/themes/README.md): Token sections, references, and stock themes
-- `packages/core/font-collections` [packages/core/font-collections/README.md](packages/core/font-collections/README.md): TBD
-- `packages/core/icon-sets` [packages/core/icon-sets/README.md](packages/core/icon-sets/README.md): TBD
-- `packages/core/media` [packages/core/media/README.md](packages/core/media/README.md): TBD
+- `packages/core/font-collections` [packages/core/font-collections/README.md](packages/core/font-collections/README.md): Font family collections, origins, and stacks
+- `packages/core/icon-sets` [packages/core/icon-sets/README.md](packages/core/icon-sets/README.md): Icon set catalog and icon ids
 
 ---
 

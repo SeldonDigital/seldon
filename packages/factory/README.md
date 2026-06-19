@@ -137,7 +137,7 @@ styles-{slug}.css                      # one stylesheet per workspace theme
 README.md                              # generated usage guide
 ```
 
-The `frames/` folder holds both the generated `Frame.tsx` wrapper and any frame-level components, such as `Container.tsx`. Icon files keep their catalog subfolder path, such as `icons/material/user-interface/navigation/IconMaterialChevronUp.tsx`. The `refs/index.ts` file is emitted only when at least one node carries a ref.
+The `frames/` folder holds both the generated `Frame.tsx` wrapper and any frame-level components, such as `Container.tsx`. Icon files keep their catalog subfolder path, such as `icons/material/user-interface/navigation/IconMaterialChevronUp.tsx`. The `refs/index.ts` file is emitted only when at least one node carries a ref. It exports a `SeldonRef` union and a `SELDON_REFS` map, and each referenced node renders a `data-seldon-ref` attribute so app code can target it by a type-safe ref name.
 
 Factory writes one theme stylesheet for every entry in `workspace.themes`, both default themes and their variants. Each file is named by its slug, such as `styles-seldon.css` and `styles-seldon-red.css`, with no hash. `generateThemeStylesheetFiles` in [export/css/generation/insert-theme-variables.ts](./export/css/generation/insert-theme-variables.ts) produces them.
 

@@ -45,6 +45,8 @@ flowchart LR
 | `PropertyDisplayMeta` | `property-display.ts` | Display category and sort index attached to a schema. Merged onto each `PropertySchema` entry. |
 | `PROPERTY_DISPLAY_META` | `property-display.ts` | Lookup of display metadata by flattened catalog key. Attached when building `PROPERTY_SCHEMAS`. |
 | `attachPropertyDisplayMetadata` | `property-display.ts` | Adds display category and order to a schema map. Called when assembling `PROPERTY_SCHEMAS`. |
+| `NODE_FIELD_DISPLAY_ORDER` | `property-display.ts` | Order of leading node-entry fields shown before the property rows: `theme` then `reference`. These are node metadata, not `Properties` keys. |
+| `NodeFieldDisplayId` | `property-display.ts` | Union of node field ids in `NODE_FIELD_DISPLAY_ORDER`. Types the leading inspector rows for theme and the reference handle. |
 
 ### Typography assets
 

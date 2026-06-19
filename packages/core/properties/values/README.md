@@ -187,7 +187,9 @@ flowchart LR
 | `SingleBackgroundSizeValue` | `appearance/background/background-size.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
 | `BackgroundSizeValue` | `appearance/background/background-size.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
 | `backgroundSizeSchema` | `appearance/background/background-size.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
-| `BackgroundKind` | `appearance/background/background-kind.ts` | Enum of background layer kinds: `none`, `color`, `image`. |
+| `BackgroundKind` | `appearance/background/background-kind.ts` | Enum of background layer kinds: `none`, `color`, `image`, `gradient`. |
+| `BACKGROUND_KIND_VALUES` | `appearance/background/background-kind.ts` | Array of every `BackgroundKind` value. Backs option validation and picker metadata. |
+| `BackgroundKindOptionValue` | `appearance/background/background-kind.ts` | Tagged option cell that stores one `BackgroundKind` choice. |
 | `BackgroundKindValue` | `appearance/background/background-kind.ts` | Union of allowed tagged cells for the `kind` facet. Assigned on workspace overrides and merged before compute or export. |
 | `backgroundKindSchema` | `appearance/background/background-kind.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
 | `BorderBrightnessValue` | `appearance/border/border-brightness.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
@@ -284,6 +286,10 @@ flowchart LR
 | `gradientStopPositionSchema` | `effects/gradients/gradient-stop-position.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
 | `ShadowValue` | `effects/shadow/shadow.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
 | `shadowPresetSchema` | `effects/shadow/shadow.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
+| `ShadowStyle` | `effects/shadow/shadow-style.ts` | Enum of shadow placement choices: `outer` paints outside the box, `inner` paints inset within it. |
+| `ShadowStyleOptionValue` | `effects/shadow/shadow-style.ts` | Tagged option cell that stores one `ShadowStyle` placement choice. |
+| `ShadowStyleValue` | `effects/shadow/shadow-style.ts` | Union of allowed tagged cells for the shadow `style` facet. Assigned on workspace overrides and merged before compute or export. |
+| `shadowStyleSchema` | `effects/shadow/shadow-style.ts` | Defines validation, supported storage shapes, and picker metadata for the shadow `style` facet. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
 | `ShadowOffsetValue` | `effects/shadow/shadow-offset.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
 | `shadowOffsetSchema` | `effects/shadow/shadow-offset.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
 | `ShadowBlurThemeValue` | `effects/shadow/shadow-blur.ts` | Tagged wire shape that stores a theme token reference. Assigned on workspace overrides and merged before compute or export. |

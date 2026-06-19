@@ -30,7 +30,7 @@ flowchart LR
 | `CompoundSubPropertyKey` | `property-keys.ts` | Allowed facet names under compounds and paint layers. Types sub-keys for schema and path helpers. |
 | `ShorthandSubPropertyKey` | `property-keys.ts` | Allowed side or corner names under shorthands. Types margin, padding, and corners facets. |
 | `SubPropertyKey` | `property-keys.ts` | Union of compound and shorthand facet names. Used by `ComputeKeys` and editor path typing. |
-| `LayeredPaintKey` | `property-keys.ts` | Union of `background`, `gradient`, and `shadow`. Marks ordered paint stacks on nodes. |
+| `LayeredPaintKey` | `property-keys.ts` | Union of `background` and `shadow`. Marks ordered paint stacks on nodes. |
 | `LAYERED_PAINT_KEYS` | `property-keys.ts` | Set of layered paint top-level keys. Shared guard for array merge and compute. |
 | `isLayeredPaintProperty` | `property-keys.ts` | Returns true for layered paint stack keys. Called when merging or computing paint arrays. |
 | `CompoundPropertyKey` | `property-keys.ts` | Any top-level key with nested facets or layers. Broad compound key union for tooling. |

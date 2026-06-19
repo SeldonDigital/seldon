@@ -25,7 +25,8 @@ async function exportReact(
 6. Emit one theme file per theme with `generateThemeStylesheetFiles`.
 7. Transform image paths to relative paths with `replaceImagesWithRelativePaths`.
 8. Generate component files, native primitives, the Frame component, icons, the icon index, the Fonts component, the package README, utility files, and image files.
-9. Add a license header to every string file with `insertLicense`.
+9. Generate the `refs/index.ts` registry with `generateRefsRegistry`. It is emitted only when at least one node carries a ref.
+10. Add a license header to every string file with `insertLicense`.
 
 Each generation step runs inside a `try/catch` so one failure does not stop the others.
 
@@ -109,6 +110,7 @@ The code is grouped by pipeline stage:
 | `generate-default-props.ts` | Builds the `sdn` default object. Invalid children contribute no defaults |
 | `generate-jsdoc-comment.ts` | Generates the JSDoc comment with intent, tags, type, and a usage example |
 | `get-conditional-prop-paths.ts` | Collects the node paths of invalid children that render conditionally |
+| `data-ref-attr.ts` | Emits a node's reference handle as a `data-seldon-ref` JSX attribute. Returns an empty string when the node has no ref |
 
 ---
 
@@ -143,6 +145,7 @@ Two predicates classify a component for the `Type` line in the generated JSDoc. 
 | `assets/get-icons.ts` | Reads the icon component file for each used icon id. It resolves each id to a catalog file with `resolveIconExport`, skips ids that do not resolve with a warning, and generates the `IconDefault` component for the default icon |
 | `assets/generate-icon-index.ts` | Writes the icon index file. It writes an export line only for icons that resolve to a catalog file and deduplicates by component name, so the index never references files that were not emitted |
 | `assets/get-fonts-component.ts` | Writes the `Fonts` component. It emits font host links for remote families only when `options.enableRemoteFonts` is set |
+| `assets/generate-refs-registry.ts` | Writes the `refs/index.ts` registry. It exports a `SeldonRef` string-literal union of every node ref and a `SELDON_REFS` map from ref to its component, node id, and class name. Returns `null` when no node carries a ref, so the file is only emitted when it has content |
 
 ---
 
@@ -173,9 +176,11 @@ Two predicates classify a component for the `Type` line in the generated JSDoc. 
 
 ## Generated Output
 
-`exportReact` returns an array of `FileToExport`. The output is a component library grouped by level, plus `styles.css`, one theme file per theme, native primitives under `native-react/`, the `Frame` component, icons under `icons/`, the `Fonts` component, the `utils/class-name.ts` helper, image files, and a package README. Every component file holds a typed interface, a React function, CSS class wiring, and tree-shaken imports.
+`exportReact` returns an array of `FileToExport`. The output is a component library grouped by level, plus `styles.css`, one theme file per theme, native primitives under `native-react/`, the `Frame` component, icons under `icons/`, the `Fonts` component, the `utils/class-name.ts` helper, image files, and a package README. When any node carries a reference handle, it also emits a `refs/index.ts` registry. Every component file holds a typed interface, a React function, CSS class wiring, and tree-shaken imports.
 
 Every child prop in a generated interface is optional and nullable. A schema child renders with its `sdn` defaults when the prop is omitted and does not render when the caller passes `null`. An invalid child renders only when the caller passes the prop.
+
+A node with a reference handle renders a `data-seldon-ref` attribute carrying its ref. The emitted `refs/index.ts` exports a `SeldonRef` union and a `SELDON_REFS` map so app code can target those nodes by a type-safe ref name.
 
 ---
 

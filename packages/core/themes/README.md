@@ -68,7 +68,6 @@ Themes use fixed top-level entries to organize a saved theme file. The entry ord
   /* Looks */
   "font": {},
   "border": {},
-  "background": {},
   "gradient": {},
   "shadow": {},
   "scrollbar": {}
@@ -468,16 +467,16 @@ borderWidth: {
 
 ### Look tokens and parameters
 
-Look tokens describe a compound visual recipe as a set of nested parameters. A look can be a font, a border, a background, a gradient, a shadow, or a scrollbar. Each look has its own `parameters` shape.
+Look tokens describe a compound visual recipe as a set of nested parameters. A look can be a font, a border, a gradient, a shadow, or a scrollbar. Each look has its own `parameters` shape. The component `background` property resolves through the `gradient` look section.
 
-In other systems looks are sometimes called recipes or styles. Seldon uses one word, "look", because the term covers all uniformly. `font` and `border` feel like a style, while `gradient` and `background` feel more like a recipe.
+In other systems looks are sometimes called recipes or styles. Seldon uses one word, "look", because the term covers all uniformly. `font` and `border` feel like a style, while `gradient` and `shadow` feel more like a recipe.
 
 | Field | Required | Type | Notes |
 | --- | --- | --- | --- |
 | `type` | yes | `TokenType.LOOK` | Discriminator. |
 | `name` | no | string | Display label. |
 | `intent` | no | string | Free-text description. |
-| `parameters` | yes | object | Section-specific recipe. See `font`, `border`, `background`, `gradient`, `shadow`, `scrollbar` below. |
+| `parameters` | yes | object | Section-specific recipe. See `font`, `border`, `gradient`, `shadow`, `scrollbar` below. |
 
 ---
 
