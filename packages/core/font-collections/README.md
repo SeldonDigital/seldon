@@ -24,7 +24,7 @@ const collection: StockFontCollection = {
 
 ## Packaged collections
 
-Packaged collection ids (`FontCollectionTemplateId`) are:
+Packaged collection ids, typed as `FontCollectionTemplateId`, are:
 
 - `system`
 - `googleFonts`

@@ -2,7 +2,7 @@
 
 Components are the catalog of design building blocks Seldon ships out of the box. Each component is described by a **schema** that pairs an identity (id, name, intent, icon, tags) with a typed `Properties` block and an optional recursive `children` tree.
 
-Schemas are blueprints. They list the properties a component understands, the default values for those properties, and any children the component instantiates. Workspaces, the editor, and the factory export pipeline all consume these schemas as the canonical source of truth for what a component is and how it composes.
+Schemas are blueprints. They list the properties a component understands, the default values for those properties, and any children the component instantiates. Workspaces, the editor, and the factory export pipeline all consume these schemas as the definition of what a component is and how it composes.
 
 ---
 
@@ -10,13 +10,13 @@ Schemas are blueprints. They list the properties a component understands, the de
 
 A **component schema** is a static, typed record. It does not hold instance state, layout coordinates, or workspace edits. It only declares:
 
-- **Identity** — `id`, `name`, `intent`, `tags`, `icon`.
-- **Place in the hierarchy** — `level`, one of seven levels (Section _Component Hierarchy_).
-- **Layout model** — `layout`, optional. Absent means flexbox. `grid` makes the component a CSS grid container and scopes its LAYOUT properties to the grid vocabulary.
-- **Defaults** — `properties`, the schema-level default values for every property the component exposes. Properties not listed here cannot be set on this component.
-- **Composition** — `children`, an optional tree of nested component references with their own `overrides`.
+- **Identity**: `id`, `name`, `intent`, `tags`, `icon`.
+- **Place in the hierarchy**: `level`, one of seven levels. See the Component Hierarchy section.
+- **Layout model**: `layout`, optional. Absent means flexbox. `grid` makes the component a CSS grid container and scopes its LAYOUT properties to the grid vocabulary.
+- **Defaults**: `properties`, the schema-level default values for every property the component exposes. Properties not listed here cannot be set on this component.
+- **Composition**: `children`, an optional tree of nested component references with their own `overrides`.
 
-When a designer places a button on a screen, that placed button is a _variant_ of the `Button` schema. A schema is the recipe — the list of properties, the defaults, the children it brings along — and a variant is the actual thing sitting in a design, carrying whatever values that particular placement needs. Two buttons on the same screen share one schema, but live as two independent instances with their own values.
+When a designer places a button on a screen, that placed button is a _variant_ of the `Button` schema. A schema is the recipe. It lists the properties, the defaults, and the children it brings along. A variant is the actual thing sitting in a design, carrying whatever values that particular placement needs. Two buttons on the same screen share one schema, but live as two independent instances with their own values.
 
 Every placed variant and every customization a user has made are managed by the workspace. This directory only describes the catalog the workspace draws from.
 
@@ -26,16 +26,16 @@ Every placed variant and every customization a user has made are managed by the 
 
 Seven levels are defined in the catalog. Six are used in composition trees. **Frame** is the cross-level wildcard and may appear anywhere. **Board** is an editor-only shell and is not placed in composition trees.
 
-| Level       | Source                           | May contain                                  |
-| ----------- | -------------------------------- | -------------------------------------------- |
-| `screen`    | `catalog/screens/*.schema.ts`    | Any level, including frames                  |
-| `module`    | `catalog/modules/*.schema.ts`    | Modules, parts, elements, primitives, frames |
-| `part`      | `catalog/parts/*.schema.ts`      | Parts, elements, primitives, frames          |
-| `element`   | `catalog/elements/*.schema.ts`   | Elements, primitives, frames                 |
-| `primitive` | `catalog/primitives/*.schema.ts` | Nothing. Primitives are leaves               |
-| `frame`     | `catalog/frames/*.schema.ts`     | Modules, parts, elements, primitives, frames |
+| Level | Source | May contain |
+| --- | --- | --- |
+| `screen` | `catalog/screens/*.schema.ts` | Any level, including frames |
+| `module` | `catalog/modules/*.schema.ts` | Modules, parts, elements, primitives, frames |
+| `part` | `catalog/parts/*.schema.ts` | Parts, elements, primitives, frames |
+| `element` | `catalog/elements/*.schema.ts` | Elements, primitives, frames |
+| `primitive` | `catalog/primitives/*.schema.ts` | Nothing. Primitives are leaves |
+| `frame` | `catalog/frames/*.schema.ts` | Modules, parts, elements, primitives, frames |
 
-Frames sit outside the hierarchy on purpose. They are not really a "kind" of component the way a button, a list, or a screen is -- they are a container, a grouping mechanism. A frame's job is to wrap and arrange other components, and because grouping is useful at every level, frames are allowed to live at any level and to hold any kind of child except screens.
+Frames sit outside the hierarchy on purpose. They are not really a "kind" of component the way a button, a list, or a screen is. They are a container, a grouping mechanism. A frame's job is to wrap and arrange other components, and because grouping is useful at every level, frames are allowed to live at any level and to hold any kind of child except screens.
 
 ---
 
@@ -86,24 +86,24 @@ interface SchemaChild {
 type ComponentSchema = PrimitiveComponentSchema | ComplexComponentSchema
 ```
 
-The split exists because primitives are leaves. A `Text`, an `Icon`, or an `Image` component cannot hold anything inside it, so its schema has no `default` field. A primitive may still declare leaf `variants` that carry only root property overrides, never child trees. Every complex component declares a `default` composition tree (the canonical shape of the component) and may declare alternate `variants` of itself.
+The split exists because primitives are leaves. A `Text`, an `Icon`, or an `Image` component cannot hold anything inside it, so its schema has no `default` field. A primitive may still declare leaf `variants` that carry only root property overrides, never child trees. Every complex component declares a `default` composition tree as its main shape and may declare alternate `variants` of itself.
 
-A complex schema's first level mirrors how the workspace stores nodes: a board has one default variant plus zero or more user variants ([`workspace/model/entry-node.ts`](../workspace/model/entry-node.ts) — `EntryNodeType = "default" | "variant" | "instance"`). The schema bakes the same split in at authoring time: `default` is the canonical tree, each `variants[]` entry is an alternate complete tree of the same component (e.g. `Button` ships a default tree plus `label`, `iconic`, `tools`, and `segmented` variant trees).
+A complex schema's first level mirrors how the workspace stores nodes. A board has one default variant plus zero or more user variants. See [`workspace/model/entry-node.ts`](../workspace/model/entry-node.ts), where `EntryNodeType = "default" | "variant" | "instance"`. The schema bakes the same split in at authoring time. `default` is the main tree. Each `variants[]` entry is an alternate complete tree of the same component. For example, `Button` ships a default tree plus `label`, `iconic`, `tools`, and `segmented` variant trees.
 
-Composition trees are **fully flattened**: a parent declares the entire descendant tree it owns. An intermediate schema is only kept in the catalog when it is genuinely reusable across multiple parents; single-parent intermediates are dissolved into the parent.
+Composition trees are **fully flattened**. A parent declares the entire descendant tree it owns. An intermediate schema is only kept in the catalog when it is genuinely reusable across multiple parents. Single-parent intermediates are dissolved into the parent.
 
-| Field        | Type               | Notes                                                                                                                                                                                                                           |
-| ------------ | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `id`         | `ComponentId`      | Stable enum identifier emitted by the generator. Used by every workspace, export target, and consumer to refer to this schema.                                                                                                  |
-| `name`       | `string`           | Human-readable label (e.g. `"Button"`, `"Button Bar"`). Free-form.                                                                                                                                                              |
-| `intent`     | `string`           | One-sentence description of when to use the component. Surfaced by editor and AI helpers.                                                                                                                                       |
-| `tags`       | `string[]`         | Search/discovery keywords. Free-form.                                                                                                                                                                                           |
-| `level`      | `ComponentLevel`   | Position in the hierarchy. A primitive schema is locked to `PRIMITIVE`.                                                                                                                                                         |
-| `icon`       | `ComponentIcon`    | Icon shown in editor catalog panels.                                                                                                                                                                                            |
-| `layout`     | `ComponentLayout`  | Optional. Layout model the component arranges children with. Absent means `FLEXBOX`. `GRID` selects a CSS grid container and grid-scoped LAYOUT properties.                                                                     |
-| `properties` | `Properties`       | Default values for every catalog property this component exposes. A property absent from this block cannot be set on instances of this component.                                                                               |
-| `default`    | `SchemaTree`       | Only on complex schemas. The canonical composition tree for the component.                                                                                                                                                      |
-| `variants`   | `SchemaVariant[]?` | Optional. On complex schemas, alternate composition trees of the same component, each with its own `id`, `label`, and `intent`. On primitive schemas, leaf variants that carry only root property overrides and no child trees. |
+| Field | Type | Notes |
+| --- | --- | --- |
+| `id` | `ComponentId` | Stable enum identifier emitted by the generator. Used by every workspace, export target, and consumer to refer to this schema. |
+| `name` | `string` | Human-readable label such as `"Button"` or `"Button Bar"`. Free-form. |
+| `intent` | `string` | One-sentence description of when to use the component. Surfaced by editor and AI helpers. |
+| `tags` | `string[]` | Search and discovery keywords. Free-form. |
+| `level` | `ComponentLevel` | Position in the hierarchy. A primitive schema is locked to `PRIMITIVE`. |
+| `icon` | `ComponentIcon` | Icon shown in editor catalog panels. |
+| `layout` | `ComponentLayout` | Optional. Layout model the component arranges children with. Absent means `FLEXBOX`. `GRID` selects a CSS grid container and grid-scoped LAYOUT properties. |
+| `properties` | `Properties` | Default values for every catalog property this component exposes. A property absent from this block cannot be set on instances of this component. |
+| `default` | `SchemaTree` | Only on complex schemas. The main composition tree for the component. |
+| `variants` | `SchemaVariant[]?` | Optional. On complex schemas, alternate composition trees of the same component, each with its own `id`, `label`, and `intent`. On primitive schemas, leaf variants that carry only root property overrides and no child trees. |
 
 ```typescript
 export const schema = {
@@ -128,13 +128,13 @@ export const schema = {
 } as const satisfies ComponentSchema
 ```
 
-`as const satisfies ComponentSchema` is the standard authoring pattern — it locks the shape while preserving literal types for property keys and option values.
+`as const satisfies ComponentSchema` is the standard authoring pattern. It locks the shape while preserving literal types for property keys and option values.
 
 ---
 
 ## Properties in schemas
 
-Every property a schema declares uses the same tagged shape — a `type` tag drawn from `ValueType` and a `value` payload that fits that tag. The tag tells the system how to read the value; the payload changes shape from one tag to the next.
+Every property a schema declares uses the same tagged shape. A `type` tag drawn from `ValueType` pairs with a `value` payload that fits that tag. The tag tells the system how to read the value. The payload changes shape from one tag to the next.
 
 A few examples:
 
@@ -175,34 +175,34 @@ size: {
 
 A default property value isn't always a literal value. Sometimes the schema wants to say "use the parent's value", or "use whatever the active theme calls primary", or "work it out from another property". The value type on each default tells the system which of those things the schema actually means:
 
-| Value type          | What the default is saying                                                                                                                                             |
-| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `EMPTY`             | "I expose this property, but I have no opinion about it." The value gets filled in elsewhere — usually by inheritance from a parent or a sensible platform default.    |
-| `INHERIT`           | "Whatever my parent has, use that." A direct hand-off, every time.                                                                                                     |
-| `EXACT`             | A plain literal value baked into the schema — a piece of text, a boolean, a dimension.                                                                                 |
-| `OPTION`            | A choice picked from a fixed list of allowed options (e.g. an alignment, a cursor style, an icon symbol).                                                              |
-| `THEME_CATEGORICAL` | A pointer to a theme token chosen from a named set, like a swatch or a font family. Whatever theme is active supplies the real value.                                  |
-| `THEME_ORDINAL`     | A pointer to a theme token chosen from an ordered scale, like type size or spacing. Whatever theme is active supplies the real value.                                  |
-| `COMPUTED`          | A value worked out from another property at compute time — for example, padding sized relative to a font, or a label color picked for contrast against its background. |
+| Value type | What the default is saying |
+| --- | --- |
+| `EMPTY` | "I expose this property, but I have no opinion about it." The value gets filled in elsewhere, usually by inheritance from a parent or a sensible platform default. |
+| `INHERIT` | "Whatever my parent has, use that." A direct hand-off, every time. |
+| `EXACT` | A plain literal value baked into the schema, such as a piece of text, a boolean, or a dimension. |
+| `OPTION` | A choice picked from a fixed list of allowed options, such as an alignment, a cursor style, or an icon symbol. |
+| `THEME_CATEGORICAL` | A pointer to a theme token chosen from a named set, like a swatch or a font family. Whatever theme is active supplies the real value. |
+| `THEME_ORDINAL` | A pointer to a theme token chosen from an ordered scale, like type size or spacing. Whatever theme is active supplies the real value. |
+| `COMPUTED` | A value worked out from another property at compute time, for example padding sized relative to a font, or a label color picked for contrast against its background. |
 
 ---
 
 ### Atomic, Compound, and Layered Shapes
 
-A schema's defaults sit on top of the same four property shapes the rest of the system uses. Some properties hold a single value — a color, a display mode, one length. Some spread across parallel sides, like `margin` and `padding`. Some group related facets under one key, like `font` or `border`. And the paint properties — `background`, `gradient`, `shadow` — stack as ordered layers.
+A schema's defaults sit on top of the same four property shapes the rest of the system uses. Some properties hold a single value, such as a color, a display mode, or one length. Some spread across parallel sides, like `margin` and `padding`. Some group related facets under one key, like `font` or `border`. The paint properties `background`, `gradient`, and `shadow` stack as ordered layers.
 
-| Shape             | Example properties                                                         | How it looks in a schema                                                                                                                                     |
-| ----------------- | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **Atomic**        | `color`, `display`, `opacity`                                              | Single tagged value.                                                                                                                                         |
-| **Compound**      | `font`, `border`, `borderTop`, `borderRight`, `borderBottom`, `borderLeft` | Object whose keys are the compound's facets. Each facet is itself an atomic tagged value.                                                                    |
-| **Shorthand**     | `margin`, `padding`, `corners`, `position`                                 | Object keyed by side/corner. Each side is an atomic tagged value.                                                                                            |
-| **Layered paint** | `background`, `gradient`, `shadow`                                         | An **array** of layer objects. The schema default is always a single layer; additional layers are added per instance by the workspace. Index `0` is topmost. |
+| Shape | Example properties | How it looks in a schema |
+| --- | --- | --- |
+| **Atomic** | `color`, `display`, `opacity` | Single tagged value. |
+| **Compound** | `font`, `border`, `borderTop`, `borderRight`, `borderBottom`, `borderLeft` | Object whose keys are the compound's facets. Each facet is itself an atomic tagged value. |
+| **Shorthand** | `margin`, `padding`, `corners`, `position` | Object keyed by side or corner. Each side is an atomic tagged value. |
+| **Layered paint** | `background`, `gradient`, `shadow` | An **array** of layer objects. The schema default is always a single layer. Additional layers are added per instance by the workspace. Index `0` is topmost. |
 
 ---
 
 ### Border Compounds
 
-Borders are a special case. Most of the time a component just wants one border that wraps the whole element, so a schema declares a single `border` compound and that's the end of it. But some components need to style individual sides differently — a divider line under a row, a left rail on a card, a top stripe on a banner. For those, the schema declares four additional sibling compounds (`borderTop`, `borderRight`, `borderBottom`, `borderLeft`) so each side can carry its own values.
+Borders are a special case. Most of the time a component just wants one border that wraps the whole element, so a schema declares a single `border` compound and that's the end of it. But some components need to style individual sides differently, such as a divider line under a row, a left rail on a card, or a top stripe on a banner. For those, the schema declares four additional sibling compounds `borderTop`, `borderRight`, `borderBottom`, and `borderLeft` so each side can carry its own values.
 
 A component that does not declare the per-side compounds intentionally cannot have its sides styled independently. That is a capability decision made at authoring time, not a runtime restriction.
 
@@ -210,9 +210,9 @@ A component that does not declare the per-side compounds intentionally cannot ha
 
 ## Default tree, variants, and overrides
 
-Complex components are created by listing other components inside `default.children` (and optionally inside `variants[i].children`). Each child is just a reference to another schema, and that schema decides what properties the child has and what their defaults are.
+Complex components are created by listing other components inside `default.children`, and optionally inside `variants[i].children`. Each child is just a reference to another schema, and that schema decides what properties the child has and what their defaults are.
 
-When the parent wants the child to start with values different from its schema defaults, it adds an `overrides` block on the child entry. Anything listed in `overrides` is matched against the target schema's properties and supplied as the starting value. Anything left out uses the child schema's default. Properties that are not declared in the child's schema cannot be overridden — they are simply not part of that component's vocabulary.
+When the parent wants the child to start with values different from its schema defaults, it adds an `overrides` block on the child entry. Anything listed in `overrides` is matched against the target schema's properties and supplied as the starting value. Anything left out uses the child schema's default. Properties that are not declared in the child's schema cannot be overridden. They are simply not part of that component's vocabulary.
 
 A child entry may also set `variant: "..."` to use a named variant from the referenced child schema as its baseline. If `variant` is omitted, the child uses the referenced schema's `default` tree. If `variant` is present, it must match a `SchemaVariant.id` on the referenced child schema or instantiation throws an error.
 
@@ -220,7 +220,7 @@ If a child entry also defines `children`, those nested entries decide which chil
 
 Children can themselves have children. There is no special syntax for reaching further down: nest another `children` entry on a `SchemaChild`. The same matching applies at every level: nested entries merge against the children of the baseline child they matched.
 
-A complex schema always declares its canonical tree under `default`:
+A complex schema always declares its main tree under `default`:
 
 ```typescript
   default: {
@@ -261,7 +261,7 @@ A complex schema always declares its canonical tree under `default`:
   },
 ```
 
-A schema can additionally declare alternate `variants` of itself. Each variant carries the same `SchemaTree` shape as `default`, plus identity metadata (`id`, `label`, `intent`). A variant may also set optional `overrides` for root-level properties such as `width` and `height` on the component board variant node.
+A schema can additionally declare alternate `variants` of itself. Each variant carries the same `SchemaTree` shape as `default`, plus identity metadata `id`, `label`, and `intent`. A variant may also set optional `overrides` for root-level properties such as `width` and `height` on the component board variant node.
 
 ```typescript
   variants: [
@@ -286,7 +286,7 @@ A schema can additionally declare alternate `variants` of itself. Each variant c
   ],
 ```
 
-Variant root and instance node ids in `workspace.json` follow `component-{boardKey}-{suffix}` (see [`workspace/README.md`](../workspace/README.md) · Nodes); the workspace reducer is the single supported way to mint those ids when instantiating from a catalog schema.
+Variant root and instance node ids in `workspace.json` follow `component-{boardKey}-{suffix}`. See [`workspace/README.md`](../workspace/README.md) under Nodes. The workspace reducer is the single supported way to mint those ids when instantiating from a catalog schema.
 
 ---
 
@@ -319,7 +319,7 @@ export function getComponentSchema(id: ComponentId): ComponentSchema
 export function getComponentExportConfig(id: ComponentId): ComponentExport
 ```
 
-`getComponentSchema(id)` looks up a schema by its `ComponentId`, throwing via `invariant` if no schema matches. Use it any time you need a schema by id -- never reach into the per-level arrays directly. `getComponentExportConfig(id)` resolves the matching `exportConfig` the same way.
+`getComponentSchema(id)` looks up a schema by its `ComponentId`, throwing via `invariant` if no schema matches. Use it any time you need a schema by id. Never reach into the per-level arrays directly. `getComponentExportConfig(id)` resolves the matching `exportConfig` the same way.
 
 Usage:
 
@@ -342,9 +342,9 @@ Schemas are validated at compile time. `as const satisfies ComponentSchema` reje
 - A complex schema missing the required `default` tree.
 - Properties whose tagged shape does not match a `Properties` slot.
 - `default` or composition `children` declared on a primitive schema. Leaf `variants` with root overrides are allowed.
-- Option values outside their declared enum (e.g. an unknown `Cursor` literal).
+- Option values outside their declared enum, such as an unknown `Cursor` literal.
 
-Runtime checks happen in the workspace and properties layers (override merging, theme resolution, computed-value evaluation). Nothing in this directory performs runtime validation — schemas are pure data.
+Runtime checks happen in the workspace and properties layers, covering override merging, theme resolution, and computed-value evaluation. Nothing in this directory performs runtime validation. Schemas are pure data.
 
 ---
 
@@ -354,34 +354,34 @@ Runtime checks happen in the workspace and properties layers (override merging, 
 
 ### Optimization Strategies
 
-1. **Resolve schemas once** — call `getComponentSchema` at module load, not inside hot render loops.
-2. **Iterate the right bucket** — `catalog.<level>` is already sliced by level; prefer it over filtering the full set.
-3. **Treat schemas as frozen** — they are `as const`; never mutate them in place.
-4. **Cache derived data** — anything you compute over a schema (icon lookups, prop lists, default snapshots) is safe to memoize across the process lifetime.
+1. **Resolve schemas once**. Call `getComponentSchema` at module load, not inside hot render loops.
+2. **Iterate the right bucket**. `catalog.<level>` is already sliced by level. Prefer it over filtering the full set.
+3. **Treat schemas as frozen**. They are `as const`. Never mutate them in place.
+4. **Cache derived data**. Anything you compute over a schema, such as icon lookups, prop lists, and default snapshots, is safe to memoize across the process lifetime.
 
 ### Memory Management
 
-1. **Share schema references** — one `ComponentSchema` instance per id is enough for the whole process.
-2. **Avoid deep cloning** — `mergeProperties` from `@seldon/core/properties` returns new objects; you do not need to pre-clone the default `properties` block.
-3. **Drop unused buckets** — bundlers can tree-shake unused levels if you import from a specific schema file rather than the catalog.
+1. **Share schema references**. One `ComponentSchema` instance per id is enough for the whole process.
+2. **Avoid deep cloning**. `mergeProperties` from `@seldon/core/properties` returns new objects. You do not need to pre-clone the default `properties` block.
+3. **Drop unused buckets**. Bundlers can tree-shake unused levels if you import from a specific schema file rather than the catalog.
 
 ---
 
 ## Error Handling
 
-**Note:** Describes typical failure modes at a product level (TypeScript, validation, missing ids). Specific error strings depend on the caller.
+**Note:** Describes typical failure modes at a product level, such as TypeScript, validation, and missing ids. Specific error strings depend on the caller.
 
 ### Validation Errors
 
-- **`getComponentSchema` miss** — throws via `invariant` with `Schema <id> not found` when the id is not in the catalog.
-- **Schema shape errors** — TypeScript compilation errors against `ComponentSchema`, `PrimitiveComponentSchema`, or `ComplexComponentSchema`.
-- **Property shape errors** — TypeScript errors from `Properties`, surfaced at `as const satisfies ComponentSchema`.
+- **`getComponentSchema` miss**: throws via `invariant` with `Schema <id> not found` when the id is not in the catalog.
+- **Schema shape errors**: TypeScript compilation errors against `ComponentSchema`, `PrimitiveComponentSchema`, or `ComplexComponentSchema`.
+- **Property shape errors**: TypeScript errors from `Properties`, surfaced at `as const satisfies ComponentSchema`.
 
 ### Graceful Degradation
 
-- **Unknown override keys** — silently dropped at merge time so missing properties stay missing.
-- **Missing theme tokens** — fall back to schema defaults via the theme resolver (see [themes/README.md](../themes/README.md)).
-- **Missing computed inputs** — `COMPUTED` defaults that reference an absent `basedOn` chain fall back to the property's natural inheritance (see [`get-based-on-value.ts`](../properties/compute/get-based-on-value.ts)).
+- **Unknown override keys**: silently dropped at merge time so missing properties stay missing.
+- **Missing theme tokens**: fall back to schema defaults via the theme resolver. See [themes/README.md](../themes/README.md).
+- **Missing computed inputs**: `COMPUTED` defaults that reference an absent `basedOn` chain fall back to the property's natural inheritance. See [`get-based-on-value.ts`](../properties/compute/get-based-on-value.ts).
 
 ---
 
@@ -391,11 +391,11 @@ The high-level recipe; details vary by level.
 
 **1. Pick the bucket**
 
-Decide on the level (`screen`, `module`, `part`, `element`, `primitive`, `frame`) and create the file under the matching directory, grouped by family when one exists (e.g. `catalog/parts/cards/MyCard.schema.ts`).
+Decide on the level, one of `screen`, `module`, `part`, `element`, `primitive`, or `frame`, and create the file under the matching directory, grouped by family when one exists, such as `catalog/parts/cards/MyCard.schema.ts`.
 
 **2. Author the schema**
 
-Start from a sibling schema as a template. Mandatory fields: `id`, `name`, `intent`, `tags`, `level`, `icon`, `properties`. Complex schemas additionally declare `default: { children: [...] }` (always present, can be empty) and may declare `variants: [...]` for alternate trees of the same component.
+Start from a sibling schema as a template. Mandatory fields: `id`, `name`, `intent`, `tags`, `level`, `icon`, `properties`. Complex schemas additionally declare `default: { children: [...] }`, which is always present and can be empty, and may declare `variants: [...]` for alternate trees of the same component.
 
 ```typescript
 import * as Sdn from "../../../properties"

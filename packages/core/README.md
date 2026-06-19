@@ -10,14 +10,14 @@ Core owns design-time state and rules. Factory owns export and production code g
 
 Core groups four ideas that work together:
 
-| Area           | Role                                                                     | Deep reference                                 |
-| -------------- | ------------------------------------------------------------------------ | ---------------------------------------------- |
+| Area | Role | Deep reference |
+| --- | --- | --- |
 | **Components** | Packaged schemas: identity, level, default properties, composition trees | [components/README.md](./components/README.md) |
-| **Properties** | Typed style and behavior values, merge rules, compute                    | [properties/README.md](./properties/README.md) |
-| **Themes**     | Design tokens components reference with `@` paths                        | [themes/README.md](./themes/README.md)         |
-| **Workspace**  | Serialized design file: boards, nodes, themes, resources                 | [workspace/README.md](./workspace/README.md)   |
+| **Properties** | Typed style and behavior values, merge rules, compute | [properties/README.md](./properties/README.md) |
+| **Themes** | Design tokens components reference with `@` paths | [themes/README.md](./themes/README.md) |
+| **Workspace** | Serialized design file: boards, nodes, themes, resources | [workspace/README.md](./workspace/README.md) |
 
-The **catalog** lives under `packages/core/` (component schemas, stock themes, font collections, icon sets). A workspace **points into** the catalog. It does not replace it. Default nodes and default themes always align with catalog structure. Customization happens through **variants**, **instances**, and **overrides**. See [workspace/README.md](./workspace/README.md) for the file shape and integrity rules.
+The **catalog** lives under `packages/core/` as component schemas, stock themes, font collections, and icon sets. A workspace **points into** the catalog. It does not replace it. Default nodes and default themes always align with catalog structure. Customization happens through **variants**, **instances**, and **overrides**. See [workspace/README.md](./workspace/README.md) for the file shape and integrity rules.
 
 ---
 
@@ -28,7 +28,7 @@ An editor and an autonomous agent follow the same contract. Both hold a **worksp
 ### Load
 
 1. Read a workspace JSON file or call `createEmptyWorkspace`.
-2. Dispatch `set_workspace` (or run the reducer through middleware on open) so **migration** can upgrade `metadata.version` and normalize the file.
+2. Dispatch `set_workspace`, or run the reducer through middleware on open, so **migration** can upgrade `metadata.version` and normalize the file.
 3. Keep the returned workspace as the current snapshot.
 
 ### Edit
@@ -78,7 +78,7 @@ Action names and payloads are documented in [workspace/reducers/README.md](./wor
 
 ### Display values
 
-The workspace file stores overrides and templates only. Panels and previews usually need **computed** values — what should actually render on screen.
+The workspace file stores overrides and templates only. Panels and previews usually need **computed** values. These are the values that should render on screen.
 
 Call Core compute and resolve helpers after you load or change workspace state. They merge catalog defaults, templates, themes, and computed property rules using the same types, guards, and validation as export.
 
@@ -114,7 +114,7 @@ Stock themes ship with Core. Workspace theme rows customize them. Full token tab
 
 ### Workspace
 
-A **workspace** is one design file: `metadata`, `boards` (catalog rows), `nodes`, `themes`, `font-collections`, `icon-sets`, and `media`. **Catalog rows** index boards. **Entry nodes** in `nodes` hold `type`, `template`, `theme`, and `overrides`. Variant trees on rows list child node ids; the flat `nodes` map holds each node's payload.
+A **workspace** is one design file: `metadata`, `boards` (catalog rows), `nodes`, `themes`, `font-collections`, `icon-sets`, and `media`. **Catalog rows** index boards. **Entry nodes** in `nodes` hold `type`, `template`, `theme`, and `overrides`. Variant trees on rows list child node ids. The flat `nodes` map holds each node's payload.
 
 Precedence for styling: prefer **variant**-level edits when a change should flow to all instances. Use **instance** overrides only for one-off differences. Instance overrides win over variant values. Theme switching follows the same idea. Details and examples are in [workspace/README.md](./workspace/README.md).
 
@@ -124,9 +124,9 @@ Precedence for styling: prefer **variant**-level edits when a change should flow
 
 Factory consumes a **workspace** object and produces exportable files. The usual path:
 
-1. Finish editing in Core (valid workspace after verification).
+1. Finish editing in Core so the workspace is valid after verification.
 2. Run workspace and property **compute** so inheritance, themes, and `COMPUTED` cells are resolved.
-3. Call `exportWorkspace` from `@seldon/factory` with target options (for example React plus CSS).
+3. Call `exportWorkspace` from `@seldon/factory` with target options such as React plus CSS.
 
 Factory builds style registries, discovers exportable variants, processes assets, and generates components. It does not mutate the workspace file. Pipeline detail lives in [../factory/README.md](../factory/README.md).
 
@@ -148,13 +148,13 @@ const files = await exportWorkspace(workspace, {
 
 ## Further Reading
 
-| Topic                 | Document                                                       |
-| --------------------- | -------------------------------------------------------------- |
-| Vocabulary            | [GLOSSARY.md](../../GLOSSARY.md)                               |
-| Workspace file spec   | [workspace/README.md](./workspace/README.md)                   |
-| Reducer actions       | [workspace/reducers/README.md](./workspace/reducers/README.md) |
-| Rules and propagation | [rules/README.md](./rules/README.md)                           |
-| Factory               | [../factory/README.md](../factory/README.md)                   |
+| Topic | Document |
+| --- | --- |
+| Vocabulary | [GLOSSARY.md](../../GLOSSARY.md) |
+| Workspace file spec | [workspace/README.md](./workspace/README.md) |
+| Reducer actions | [workspace/reducers/README.md](./workspace/reducers/README.md) |
+| Rules and propagation | [rules/README.md](./rules/README.md) |
+| Factory | [../factory/README.md](../factory/README.md) |
 
 ---
 
@@ -166,18 +166,18 @@ Seldon is offered under the **PolyForm Noncommercial License 1.0.0** by default,
 
 The default software license is the **PolyForm Noncommercial License 1.0.0**.
 
-- You may use, copy, and modify this software for **noncommercial purposes** (e.g. research, education, personal projects).
+- You may use, copy, and modify this software for **noncommercial purposes** such as research, education, and personal projects.
 - Commercial use is **not permitted** under this license.
 - See [license/noncommercial/LICENSE.md](../../license/noncommercial/LICENSE.md) for the summary and link to the full PolyForm text.
 
 ### 2. Commercial license
 
-For commercial use (including proprietary software, SaaS platforms, internal business tools, or use as training data for AI or LLMs), you need a **commercial license**.
+Commercial use covers proprietary software, SaaS platforms, internal business tools, and use as training data for AI or LLMs. You need a **commercial license** for these.
 
 The commercial license may grant:
 
 - Use in commercial or for-profit contexts.
-- Ability to create proprietary derivative works (as stated in your agreement).
+- Ability to create proprietary derivative works as stated in your agreement.
 - Long-term support, security updates, and priority bug fixes if offered by the licensor.
 - Optional custom terms negotiated with the licensor.
 
@@ -192,10 +192,10 @@ Contact:
 
 ### 4. Summary
 
-| Use               | Requirement                          |
-| ----------------- | ------------------------------------ |
+| Use | Requirement |
+| --- | --- |
 | Noncommercial use | PolyForm Noncommercial License 1.0.0 |
-| Commercial use    | Paid commercial license              |
+| Commercial use | Paid commercial license |
 
 ---
 

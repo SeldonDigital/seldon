@@ -10,11 +10,11 @@ Core owns design-time state and rules. Factory owns export and production code g
 
 Factory groups three stages that work together:
 
-| Area        | Role                                                                          | Deep reference                                    |
-| ----------- | ----------------------------------------------------------------------------- | ------------------------------------------------- |
-| **Helpers** | Build the export context and node index, compute node properties through Core | [helpers/](./helpers)                             |
-| **Styles**  | Convert resolved properties into CSS for one class                            | [styles/css-properties/](./styles/css-properties) |
-| **Export**  | Orchestrate React, CSS, and asset generation into files                       | [export/](./export)                               |
+| Area | Role | Deep reference |
+| --- | --- | --- |
+| **Helpers** | Build the export context and node index, compute node properties through Core | [helpers/](./helpers) |
+| **Styles** | Convert resolved properties into CSS for one class | [styles/css-properties/](./styles/css-properties) |
+| **Export** | Orchestrate React, CSS, and asset generation into files | [export/](./export) |
 
 The export stage splits into two subsystems with their own guides:
 
@@ -145,7 +145,7 @@ Each component file includes a TypeScript interface, a React component, resolved
 
 ### Child Prop Contract
 
-Every child of a generated component is an optional, nullable prop. The render behavior depends on whether the child is part of the component's schema. The generated interface and function signature show the difference. Schema children carry a default; inline extras do not.
+Every child of a generated component is an optional, nullable prop. The render behavior depends on whether the child is part of the component's schema. The generated interface and function signature show the difference. Schema children carry a default. Inline extras do not.
 
 ```tsx
 export interface ItemNodeRowProps extends HTMLAttributes<HTMLDivElement> {
@@ -200,14 +200,14 @@ The generated `IconProps["icon"]` union covers every icon turned on in the works
 
 ## Further Reading
 
-| Topic         | Document                                           |
-| ------------- | -------------------------------------------------- |
-| Core          | [../core/README.md](../core/README.md)             |
-| Editor        | [../editor/README.md](../editor/README.md)         |
-| React export  | [export/react/README.md](./export/react/README.md) |
-| CSS export    | [export/css/README.md](./export/css/README.md)     |
-| Code examples | [TECHNICAL.md](./TECHNICAL.md)                     |
-| Vocabulary    | [GLOSSARY.md](../../GLOSSARY.md)                   |
+| Topic | Document |
+| --- | --- |
+| Core | [../core/README.md](../core/README.md) |
+| Editor | [../editor/README.md](../editor/README.md) |
+| React export | [export/react/README.md](./export/react/README.md) |
+| CSS export | [export/css/README.md](./export/css/README.md) |
+| Code examples | [TECHNICAL.md](./TECHNICAL.md) |
+| Vocabulary | [GLOSSARY.md](../../GLOSSARY.md) |
 
 Note: parts of [TECHNICAL.md](./TECHNICAL.md) predate the current API. Treat this document and the source files as the current reference for entry points and options.
 
@@ -221,18 +221,18 @@ Seldon is offered under the **PolyForm Noncommercial License 1.0.0** by default,
 
 The default software license is the **PolyForm Noncommercial License 1.0.0**.
 
-- You may use, copy, and modify this software for **noncommercial purposes** (e.g. research, education, personal projects).
+- You may use, copy, and modify this software for **noncommercial purposes** such as research, education, and personal projects.
 - Commercial use is **not permitted** under this license.
 - See [license/noncommercial/LICENSE.md](../../license/noncommercial/LICENSE.md) for the summary and link to the full PolyForm text.
 
 ### 2. Commercial license
 
-For commercial use (including proprietary software, SaaS platforms, internal business tools, or use as training data for AI or LLMs), you need a **commercial license**.
+Commercial use covers proprietary software, SaaS platforms, internal business tools, and use as training data for AI or LLMs. You need a **commercial license** for these.
 
 The commercial license may grant:
 
 - Use in commercial or for-profit contexts.
-- Ability to create proprietary derivative works (as stated in your agreement).
+- Ability to create proprietary derivative works as stated in your agreement.
 - Long-term support, security updates, and priority bug fixes if offered by the licensor.
 - Optional custom terms negotiated with the licensor.
 
@@ -247,10 +247,10 @@ Contact:
 
 ### 4. Summary
 
-| Use               | Requirement                          |
-| ----------------- | ------------------------------------ |
+| Use | Requirement |
+| --- | --- |
 | Noncommercial use | PolyForm Noncommercial License 1.0.0 |
-| Commercial use    | Paid commercial license              |
+| Commercial use | Paid commercial license |
 
 ---
 

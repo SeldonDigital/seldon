@@ -20,7 +20,7 @@ const set: StockIconSet = {
 
 ## Packaged icon sets
 
-Packaged set ids (`IconSetTemplateId`) are:
+Packaged set ids, typed as `IconSetTemplateId`, are:
 
 - `seldonIcons`
 - `googleMaterial`
