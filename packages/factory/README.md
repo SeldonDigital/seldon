@@ -1,6 +1,6 @@
 # Seldon · Factory
 
-Seldon Factory turns a valid Seldon workspace into production code. It consumes a **workspace** object and produces React components, CSS, and processed assets as a list of files. Factory reads design-time state from Core, resolves properties and themes, and generates output. It does not change the workspace file.
+Seldon Factory turns a valid Seldon workspace into production code. It consumes a **workspace** object and produces a list of files. React is the current output target. It produces React components, CSS, and processed assets. Other targets such as Swift and Java are planned. Factory reads design-time state from Core, resolves properties and themes, and generates output. It does not change the workspace file.
 
 Core owns design-time state and rules. Factory owns export and production code generation.
 
@@ -45,7 +45,7 @@ const files = await exportWorkspace(workspace, {
 
 Factory has no `exports` field and no top-level barrel. Import the concrete file paths shown here, not a bare `@seldon/factory` specifier.
 
-`exportWorkspace` resolves an asset reader, normalizes the components and assets folders, and delegates to React generation when `target.framework` is `"react"`. It throws for any other framework.
+`exportWorkspace` resolves an asset reader, normalizes the components and assets folders, and dispatches by `target.framework`. React is the only implemented target today, so it delegates to React generation when `target.framework` is `"react"` and throws for any other framework. Future targets such as Swift and Java add their own generation branches here.
 
 ### Export options
 
@@ -113,7 +113,7 @@ function getCssFromProperties(
 
 It computes property values, applies inheritance from the parent context, resolves theme tokens, and writes optimized CSS. It drops unset values.
 
-Class names use the `sdn-` prefix. The prefix is applied in [export/css/discovery/get-class-name.ts](./export/css/discovery/get-class-name.ts). Theme variables use a per-theme prefix: bare `--sdn-` for the default `seldon` theme and `--sdn-{slug}-` for every other theme. The slug is a stable, human-readable name built from the theme label in [export/css/generation/get-theme-slug.ts](./export/css/generation/get-theme-slug.ts). A default-type theme slugs from its label, such as `seldon`. A variant theme prepends its root slug, such as `seldon-red`.
+Class names use the `sdn-` prefix. The prefix is applied in [export/css/discovery/get-class-name.ts](./export/css/discovery/get-class-name.ts). Theme variables use a per-theme prefix: bare `--sdn-` for the default `seldon` theme and `--sdn-{slug}-` for every other theme. The slug is a stable, human-readable name built in [export/css/generation/get-theme-slug.ts](./export/css/generation/get-theme-slug.ts). A default-type theme slugs from its stock theme catalog id, such as `high-contrast` from `catalog:highContrast`, and falls back to its label or id when the template is missing. A variant theme prepends its root slug and appends its own label, such as `seldon-red`.
 
 ---
 
@@ -122,17 +122,22 @@ Class names use the `sdn-` prefix. The prefix is applied in [export/css/discover
 Factory produces a component library under `output.componentsFolder`, with images under `output.assetsFolder`. Paths below are relative to the components folder.
 
 ```
-{level-plural}/{Name}.tsx   # primitives, elements, parts, modules, frames, screens
-frames/Frame.tsx            # universal container component
-native-react/{stem}.tsx     # native HTML primitive components
-icons/                      # tree-shaken icon components
-icons/index.ts              # icon index
-utils/class-name.ts         # combineClassNames helper
-Fonts.tsx                   # font loading component
-styles.css                  # component stylesheet
-styles-{slug}.css           # one stylesheet per workspace theme
-README.md                   # generated usage guide
+{level-plural}/{Name}.tsx              # primitives, elements, parts, modules, frames, screens
+frames/Frame.tsx                       # generated universal container, wraps HTML.Div
+frames/Container.tsx                   # frame-level component, an instance of {level-plural}/{Name}.tsx
+native-react/HTML.{Tag}.tsx            # native HTML primitive components, such as HTML.Div
+icons/{set}/{category}/Icon{Name}.tsx  # tree-shaken icon components, nested by catalog path
+icons/IconDefault.tsx                  # fallback icon for ids that do not resolve
+icons/index.ts                         # icon index, re-exports the emitted icons
+refs/index.ts                          # ref registry, emitted only when nodes carry refs
+utils/class-name.ts                    # combineClassNames helper
+Fonts.tsx                              # font loading component
+styles.css                             # component stylesheet
+styles-{slug}.css                      # one stylesheet per workspace theme
+README.md                              # generated usage guide
 ```
+
+The `frames/` folder holds both the generated `Frame.tsx` wrapper and any frame-level components, such as `Container.tsx`. Icon files keep their catalog subfolder path, such as `icons/material/user-interface/navigation/IconMaterialChevronUp.tsx`. The `refs/index.ts` file is emitted only when at least one node carries a ref.
 
 Factory writes one theme stylesheet for every entry in `workspace.themes`, both default themes and their variants. Each file is named by its slug, such as `styles-seldon.css` and `styles-seldon-red.css`, with no hash. `generateThemeStylesheetFiles` in [export/css/generation/insert-theme-variables.ts](./export/css/generation/insert-theme-variables.ts) produces them.
 
@@ -140,18 +145,52 @@ Each component file includes a TypeScript interface, a React component, resolved
 
 ### Child Prop Contract
 
-Every child of a generated component is an optional, nullable prop. The render behavior depends on whether the child is part of the component's schema:
-
-- **Schema children** have a default in the function signature, such as `buttonIconic = sdn.buttonIconic`. Omit the prop and the child renders with its defaults. Pass `null` and the child does not render.
-- **Inline extras** are children that the workspace adds outside the schema. They have no default and render only when the caller passes the prop.
+Every child of a generated component is an optional, nullable prop. The render behavior depends on whether the child is part of the component's schema. The generated interface and function signature show the difference. Schema children carry a default; inline extras do not.
 
 ```tsx
-<ItemNodeRow />                       // renders every schema child with defaults
-<ItemNodeRow buttonIconic={null} />   // removes the disclosure button
-<ItemNodeRow textLabel={{ children: "Label" }} /> // renders the inline extra
+export interface ItemNodeRowProps extends HTMLAttributes<HTMLDivElement> {
+  className?: string
+  buttonIconic?: ButtonIconicProps | null // schema child
+  textTitle?: TextProps | null            // schema child
+  textLabel?: TextProps | null            // inline extra
+}
+
+export function ItemNodeRow({
+  className = "",
+  buttonIconic = sdn.buttonIconic, // schema child: default applied
+  textTitle = sdn.textTitle,       // schema child: default applied
+  textLabel,                       // inline extra: no default
+  ...props
+}: ItemNodeRowProps) {
+  /* ... */
+}
 ```
 
-A `null` value also flows into children passed as props. Passing `null` for a button's icon prop suppresses the icon inside that button.
+- **Schema children** have a default sourced from `sdn`, such as `buttonIconic = sdn.buttonIconic`. Omit the prop and the child renders with its defaults. Pass `null` and the child does not render.
+- **Inline extras** are children that the workspace adds outside the schema. They have no default and render only when the caller passes the prop. The render guard is a truthy check, so an empty object still renders the extra with its defaults.
+
+Usage follows directly from the signature:
+
+```tsx
+// Defaults: every schema child renders, no inline extras
+<ItemNodeRow />
+
+// Override one schema child; the rest keep their defaults
+<ItemNodeRow textTitle={{ children: "Renamed node" }} />
+
+// Remove a schema child by passing null
+<ItemNodeRow buttonIconic={null} />
+
+// Add an inline extra by passing its prop
+<ItemNodeRow textLabel={{ children: "Label" }} />
+
+// null flows into nested children: suppress the icon inside the button
+<ItemNodeRow buttonIconic={{ icon: null }} />
+
+// Gotcha: {} is truthy, so an inline extra still renders with defaults.
+// Omit the prop to skip it instead.
+<ItemNodeRow textLabel={{}} />
+```
 
 ### Icon Output
 
