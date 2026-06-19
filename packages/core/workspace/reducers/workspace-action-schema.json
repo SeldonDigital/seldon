@@ -2337,6 +2337,219 @@
             "nodeId": {
               "type": "string"
             },
+            "options": {
+              "additionalProperties": false,
+              "properties": {
+                "mergeSubProperties": {
+                  "type": "boolean"
+                }
+              },
+              "type": "object"
+            },
+            "properties": {
+              "$ref": "#/definitions/Partial<{display:DisplayValue;htmlElement:HtmlElementValue;wrapperElement:WrapperElementValue;content:ContentValue;symbol:SymbolValue;source:ImageSourceValue;imageFit:ImageFitValue;altText:ContentValue;inputType:InputTypeValue;placeholder:ContentValue;checked:CheckedValue;controls:ControlsValue;autoPlay:AutoPlayValue;loop:LoopValue;muted:MutedValue;poster:ImageSourceValue;preload:PreloadValue;trackKind:TrackKindValue;srcLang:ContentValue;trackLabel:ContentValue;trackDefault:TrackDefaultValue;mediaType:ContentValue;mediaQuery:ContentValue;ariaLabel:ContentValue;ariaHidden:EmptyValue|BooleanValue;size:SizeValue;buttonSize:ButtonSizeValue;board:BoardCompound;screenWidth:ScreenWidthValue;screenHeight:ScreenHeightValue;cursor:CursorValue;direction:DirectionValue;placement:PlacementValue;position:PositionValue;orientation:OrientationValue;align:AlignValue;width:DimensionValue;height:DimensionValue;margin:MarginValue;padding:PaddingValue;gap:GapValue;rotation:RotationValue;wrapChildren:EmptyValue|BooleanValue;clip:EmptyValue|BooleanValue;listStyleType:ListStyleTypeValue;listStylePosition:ListStylePositionValue;columns:ColumnCountValue;rows:RowCountValue;columnStart:ColumnStartValue;columnSpan:ColumnSpanValue;rowStart:RowStartValue;rowSpan:RowSpanValue;cellAlign:InheritValue|AlignValue;dimension:DimensionValue;resize:ResizeValue;screenSize:ScreenSizeValue;color:ColorValue;accentColor:ColorValue;brightness:BrightnessValue;opacity:OpacityValue;background:BackgroundLayer[];border:BorderCompound;borderTop:BorderCompound;borderRight:BorderCompound;borderBottom:BorderCompound;borderLeft:BorderCompound;corners:CornersValue;borderCollapse:BorderCollapseValue;font:FontCompound;textAlign:TextAlignValue;textDecoration:TextDecorationValue;wrapText:EmptyValue|BooleanValue;lines:LinesValue;shadow:ShadowCompound[];scroll:ScrollValue;scrollbarStyle:ScrollbarStyleValue;}>"
+            },
+            "state": {
+              "description": "A state name key used inside a node's `states` map. It is either a reserved\nname or a workspace custom-state key. Never `normal`, which lives in\n`overrides`.",
+              "type": "string"
+            }
+          },
+          "required": ["nodeId", "properties", "state"],
+          "type": "object"
+        },
+        "type": {
+          "const": "set_node_state_properties",
+          "type": "string"
+        }
+      },
+      "required": ["payload", "type"],
+      "type": "object"
+    },
+    {
+      "additionalProperties": false,
+      "properties": {
+        "payload": {
+          "additionalProperties": false,
+          "properties": {
+            "layerIndex": {
+              "description": "Paint-layer slot for layered properties; defaults to layer 0.",
+              "type": "number"
+            },
+            "nodeId": {
+              "type": "string"
+            },
+            "propertyKey": {
+              "$ref": "#/definitions/PropertyKey"
+            },
+            "state": {
+              "description": "A state name key used inside a node's `states` map. It is either a reserved\nname or a workspace custom-state key. Never `normal`, which lives in\n`overrides`.",
+              "type": "string"
+            },
+            "subpropertyKey": {
+              "description": "Union of every facet name that may sit under a compound or shorthand.",
+              "enum": [
+                "angle",
+                "blendMode",
+                "blur",
+                "bottom",
+                "bottomLeft",
+                "bottomRight",
+                "brightness",
+                "color",
+                "endBrightness",
+                "endColor",
+                "endOpacity",
+                "endPosition",
+                "family",
+                "filter",
+                "gradientType",
+                "height",
+                "image",
+                "kind",
+                "left",
+                "letterSpacing",
+                "lineHeight",
+                "offsetX",
+                "offsetY",
+                "opacity",
+                "position",
+                "preset",
+                "repeat",
+                "right",
+                "size",
+                "spread",
+                "startBrightness",
+                "startColor",
+                "startOpacity",
+                "startPosition",
+                "style",
+                "textCase",
+                "top",
+                "topLeft",
+                "topRight",
+                "weight",
+                "width"
+              ],
+              "type": "string"
+            }
+          },
+          "required": ["nodeId", "propertyKey", "state"],
+          "type": "object"
+        },
+        "type": {
+          "const": "reset_node_state_property",
+          "type": "string"
+        }
+      },
+      "required": ["payload", "type"],
+      "type": "object"
+    },
+    {
+      "additionalProperties": false,
+      "properties": {
+        "payload": {
+          "additionalProperties": false,
+          "properties": {
+            "nodeId": {
+              "type": "string"
+            },
+            "state": {
+              "description": "A state name key used inside a node's `states` map. It is either a reserved\nname or a workspace custom-state key. Never `normal`, which lives in\n`overrides`.",
+              "type": "string"
+            }
+          },
+          "required": ["nodeId", "state"],
+          "type": "object"
+        },
+        "type": {
+          "const": "reset_node_state",
+          "type": "string"
+        }
+      },
+      "required": ["payload", "type"],
+      "type": "object"
+    },
+    {
+      "additionalProperties": false,
+      "properties": {
+        "payload": {
+          "additionalProperties": false,
+          "properties": {
+            "description": {
+              "type": "string"
+            },
+            "key": {
+              "type": "string"
+            },
+            "label": {
+              "type": "string"
+            }
+          },
+          "required": ["key", "label"],
+          "type": "object"
+        },
+        "type": {
+          "const": "add_custom_state",
+          "type": "string"
+        }
+      },
+      "required": ["payload", "type"],
+      "type": "object"
+    },
+    {
+      "additionalProperties": false,
+      "properties": {
+        "payload": {
+          "additionalProperties": false,
+          "properties": {
+            "key": {
+              "type": "string"
+            }
+          },
+          "required": ["key"],
+          "type": "object"
+        },
+        "type": {
+          "const": "remove_custom_state",
+          "type": "string"
+        }
+      },
+      "required": ["payload", "type"],
+      "type": "object"
+    },
+    {
+      "additionalProperties": false,
+      "properties": {
+        "payload": {
+          "additionalProperties": false,
+          "properties": {
+            "key": {
+              "type": "string"
+            },
+            "label": {
+              "type": "string"
+            }
+          },
+          "required": ["key", "label"],
+          "type": "object"
+        },
+        "type": {
+          "const": "rename_custom_state",
+          "type": "string"
+        }
+      },
+      "required": ["payload", "type"],
+      "type": "object"
+    },
+    {
+      "additionalProperties": false,
+      "properties": {
+        "payload": {
+          "additionalProperties": false,
+          "properties": {
+            "nodeId": {
+              "type": "string"
+            },
             "property": {
               "$ref": "#/definitions/LayeredPaintKey"
             },
@@ -7407,6 +7620,26 @@
         }
       },
       "required": ["type", "value"],
+      "type": "object"
+    },
+    "CustomState": {
+      "additionalProperties": false,
+      "description": "A workspace-defined custom state. Stored on `metadata.customStates` and shared\nacross the whole workspace. Target-agnostic: it carries no render data. Each\nexporter derives its own binding from `key`.",
+      "properties": {
+        "description": {
+          "description": "Optional description for menus and tooling.",
+          "type": "string"
+        },
+        "key": {
+          "description": "Stable identifier used as the key in a node's `states` map.",
+          "type": "string"
+        },
+        "label": {
+          "description": "Human-readable display name.",
+          "type": "string"
+        }
+      },
+      "required": ["key", "label"],
       "type": "object"
     },
     "DimensionResizeOptionValue": {
@@ -16179,6 +16412,29 @@
               "$ref": "#/definitions/ShadowSpreadThemeValue"
             }
           ]
+        },
+        "style": {
+          "anyOf": [
+            {
+              "additionalProperties": false,
+              "description": "The value CAN be set but initially it is not.",
+              "properties": {
+                "type": {
+                  "const": "empty",
+                  "description": "Leave unset so defaults and platform rules apply after merge.",
+                  "type": "string"
+                },
+                "value": {
+                  "type": "null"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            },
+            {
+              "$ref": "#/definitions/ShadowStyleOptionValue"
+            }
+          ]
         }
       },
       "type": "object"
@@ -16729,6 +16985,27 @@
       "required": ["type", "value"],
       "type": "object"
     },
+    "ShadowStyle": {
+      "description": "Whether the shadow paints outside the box or inset within it.",
+      "enum": ["outer", "inner"],
+      "type": "string"
+    },
+    "ShadowStyleOptionValue": {
+      "additionalProperties": false,
+      "description": "Stores one shadow placement choice from the enum.",
+      "properties": {
+        "type": {
+          "const": "option",
+          "description": "Store one allowed enum or list entry defined for the property.",
+          "type": "string"
+        },
+        "value": {
+          "$ref": "#/definitions/ShadowStyle"
+        }
+      },
+      "required": ["type", "value"],
+      "type": "object"
+    },
     "ShadowValue": {
       "additionalProperties": false,
       "description": "Theme categorical reference to a named recipe under `theme.shadow`.",
@@ -17091,6 +17368,13 @@
     "WorkspaceMetadata": {
       "additionalProperties": false,
       "properties": {
+        "customStates": {
+          "description": "Workspace-wide custom interaction states. Target-agnostic: each entry holds\na name and label only, with no render or selector data. Reserved state\nnames cannot appear here.",
+          "items": {
+            "$ref": "#/definitions/CustomState"
+          },
+          "type": "array"
+        },
         "intent": {
           "type": "string"
         },

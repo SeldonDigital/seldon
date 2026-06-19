@@ -149,6 +149,7 @@ export const schema = {
           type: Sdn.ValueType.THEME_CATEGORICAL,
           value: "@shadow.light",
         },
+        style: { type: Sdn.ValueType.EMPTY, value: null },
         offsetX: { type: Sdn.ValueType.EMPTY, value: null },
         offsetY: { type: Sdn.ValueType.EMPTY, value: null },
         blur: { type: Sdn.ValueType.EMPTY, value: null },
