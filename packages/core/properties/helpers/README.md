@@ -17,11 +17,11 @@ flowchart LR
 
 ## Major Types And Functions
 
-| Type or Function            | File                  | Purpose and use                                                                                                                                            |
-| --------------------------- | --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `mergeProperties`           | `merge-properties.ts` | Layers one `Properties` object onto another with optional facet and paint-slot merging. Workspace merge, variant layering, and schema default combination. |
-| `getUnitsForProperty`       | `unit-utils.ts`       | Lists allowed unit suffixes for a property key or facet path. Property editors when inserting measured values.                                             |
-| `getDefaultUnitForProperty` | `unit-utils.ts`       | Returns the default unit for a measured property. New exact values in the inspector.                                                                       |
+| Type or Function | File | Purpose and use |
+| --- | --- | --- |
+| `mergeProperties` | `merge-properties.ts` | Layers one `Properties` object onto another with optional facet and paint-slot merging. Workspace merge, variant layering, and schema default combination. |
+| `getUnitsForProperty` | `unit-utils.ts` | Lists allowed unit suffixes for a property key or facet path. Property editors when inserting measured values. |
+| `getDefaultUnitForProperty` | `unit-utils.ts` | Returns the default unit for a measured property. New exact values in the inspector. |
 
 ---
 

@@ -16,23 +16,23 @@ flowchart LR
 
 ## Major Types And Functions
 
-| Type or Function                   | File                             | Purpose and use                                                                                                           |
-| ---------------------------------- | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| `computeProperties`                | `compute-properties.ts`          | Walks one properties object and resolves every computed cell. Low-level pass after merge when context is already built.   |
-| `getBasedOnValue`                  | `get-based-on-value.ts`          | Resolves one `basedOn` path to a primitive tagged value. Shared input lookup for all compute engines.                     |
-| `computeAutoFit`                   | `compute-auto-fit.ts`            | Scales a numeric or theme ordinal input by `factor`. Dispatched from `computeProperties` for `ComputedFunction.AUTO_FIT`. |
-| `AUTO_FIT_DISPLAY_NAME`            | `compute-auto-fit.ts`            | Editor label for auto fit. Entry in `COMPUTED_FUNCTION_DISPLAY_NAMES`.                                                    |
-| `computeHighContrastColor`         | `compute-high-contrast-color.ts` | Picks a readable foreground swatch against a background color. Dispatched for `ComputedFunction.HIGH_CONTRAST_COLOR`.     |
-| `HIGH_CONTRAST_COLOR_DISPLAY_NAME` | `compute-high-contrast-color.ts` | Editor label for high contrast color. Entry in `COMPUTED_FUNCTION_DISPLAY_NAMES`.                                         |
-| `computeOpticalPadding`            | `compute-optical-padding.ts`     | Maps an input through side-specific ratios and `factor`. Dispatched for `ComputedFunction.OPTICAL_PADDING`.               |
-| `OPTICAL_PADDING_DISPLAY_NAME`     | `compute-optical-padding.ts`     | Editor label for optical padding. Entry in `COMPUTED_FUNCTION_DISPLAY_NAMES`.                                             |
-| `computeMatch`                     | `compute-match.ts`               | Returns the resolved primitive at `basedOn`. Dispatched for `ComputedFunction.MATCH`.                                     |
-| `MATCH_DISPLAY_NAME`               | `compute-match.ts`               | Editor label for match. Entry in `COMPUTED_FUNCTION_DISPLAY_NAMES`.                                                       |
-| `COMPUTED_FUNCTION_DISPLAY_NAMES`  | `index.ts`                       | Maps each `ComputedFunction` to its editor label. Computed property pickers in the UI.                                    |
-| `ComputeContext`                   | `types.ts`                       | Holds node properties, theme, and optional parent context. Argument to every compute engine.                              |
-| `ComputeKeys`                      | `types.ts`                       | Names the property key and optional facet for dispatch. Optical padding reads `subPropertyKey` for side ratios.           |
-| `computeLayeredPaintStack`         | `compute-layered-paint.ts`       | Resolves computed facets on each paint layer in order. Called from `computeProperties` for background and shadow arrays.  |
-| `DispatchComputedFn`               | `compute-layered-paint.ts`       | Function type for delegating one computed cell to an engine. Internal typing for layered paint traversal.                 |
+| Type or Function | File | Purpose and use |
+| --- | --- | --- |
+| `computeProperties` | `compute-properties.ts` | Walks one properties object and resolves every computed cell. Low-level pass after merge when context is already built. |
+| `getBasedOnValue` | `get-based-on-value.ts` | Resolves one `basedOn` path to a primitive tagged value. Shared input lookup for all compute engines. |
+| `computeAutoFit` | `compute-auto-fit.ts` | Scales a numeric or theme ordinal input by `factor`. Dispatched from `computeProperties` for `ComputedFunction.AUTO_FIT`. |
+| `AUTO_FIT_DISPLAY_NAME` | `compute-auto-fit.ts` | Editor label for auto fit. Entry in `COMPUTED_FUNCTION_DISPLAY_NAMES`. |
+| `computeHighContrastColor` | `compute-high-contrast-color.ts` | Picks a readable foreground swatch against a background color. Dispatched for `ComputedFunction.HIGH_CONTRAST_COLOR`. |
+| `HIGH_CONTRAST_COLOR_DISPLAY_NAME` | `compute-high-contrast-color.ts` | Editor label for high contrast color. Entry in `COMPUTED_FUNCTION_DISPLAY_NAMES`. |
+| `computeOpticalPadding` | `compute-optical-padding.ts` | Maps an input through side-specific ratios and `factor`. Dispatched for `ComputedFunction.OPTICAL_PADDING`. |
+| `OPTICAL_PADDING_DISPLAY_NAME` | `compute-optical-padding.ts` | Editor label for optical padding. Entry in `COMPUTED_FUNCTION_DISPLAY_NAMES`. |
+| `computeMatch` | `compute-match.ts` | Returns the resolved primitive at `basedOn`. Dispatched for `ComputedFunction.MATCH`. |
+| `MATCH_DISPLAY_NAME` | `compute-match.ts` | Editor label for match. Entry in `COMPUTED_FUNCTION_DISPLAY_NAMES`. |
+| `COMPUTED_FUNCTION_DISPLAY_NAMES` | `index.ts` | Maps each `ComputedFunction` to its editor label. Computed property pickers in the UI. |
+| `ComputeContext` | `types.ts` | Holds node properties, theme, and optional parent context. Argument to every compute engine. |
+| `ComputeKeys` | `types.ts` | Names the property key and optional facet for dispatch. Optical padding reads `subPropertyKey` for side ratios. |
+| `computeLayeredPaintStack` | `compute-layered-paint.ts` | Resolves computed facets on each paint layer in order. Called from `computeProperties` for background and shadow arrays. |
+| `DispatchComputedFn` | `compute-layered-paint.ts` | Function type for delegating one computed cell to an engine. Internal typing for layered paint traversal. |
 
 ---
 

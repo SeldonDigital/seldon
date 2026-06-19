@@ -16,7 +16,7 @@ Values live in [`config/rules.config.ts`](./config/rules.config.ts).
 
 ## `mutations`
 
-Eleven mutation keys form `RuleId`: `create`, `insertInto`, `instantiate`, `duplicate`, `delete`, `setProperties`, `reset`, `setTheme`, `rename`, `reorder`, and `move`. Each key indexes four [`Entity`](./types/rule-config-types.ts) rows: `board`, `userVariant`, `defaultVariant`, and `instance`.
+Thirteen mutation keys form `RuleId`: `create`, `insertInto`, `instantiate`, `duplicate`, `delete`, `setProperties`, `setStateProperties`, `reset`, `setTheme`, `rename`, `setRef`, `reorder`, and `move`. Each key indexes four [`Entity`](./types/rule-config-types.ts) rows: `board`, `userVariant`, `defaultVariant`, and `instance`.
 
 Every row has `allowed` and `propagation`. The `delete` instance row also sets `removalBehavior` for hide versus delete. The hide branch applies to schema-origin instances inside the default variant. All other instances delete outright, including schema-origin instances in user variants. The other delete rows always delete outright.
 
@@ -44,25 +44,25 @@ flowchart TD
 
 ### Configuration
 
-| Type or Function | File                     | Purpose and use                                                                                                                                    |
-| ---------------- | ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `rules`          | `config/rules.config.ts` | Exports the full `RulesConfig` object. Imported by workspace reducers, validation, and `TypeCheckingService` before gating or propagating an edit. |
+| Type or Function | File | Purpose and use |
+| --- | --- | --- |
+| `rules` | `config/rules.config.ts` | Exports the full `RulesConfig` object. Imported by workspace reducers, validation, and `TypeCheckingService` before gating or propagating an edit. |
 
 ### Types
 
-| Type or Function       | File                         | Purpose and use                                                                                                                |
-| ---------------------- | ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| `Entity`               | `types/rule-config-types.ts` | Union of policy entity keys. Used to index every mutation matrix row.                                                          |
-| `Config`               | `types/rule-config-types.ts` | Maps each `Entity` to an `EntityConfig`. Used as the shape for non-delete mutation rules.                                      |
-| `Propagation`          | `types/rule-config-types.ts` | Union `none`, `downstream`, or `bidirectional`. Passed into propagation service calls from reducers.                           |
-| `EntityConfig`         | `types/rule-config-types.ts` | `allowed` flag plus `propagation` for one entity row. Base shape for most mutation entries.                                    |
-| `RemovalBehavior`      | `types/rule-config-types.ts` | Delete-only behavior: plain `delete` or `hide`, or per-origin object for instances. Read by `remove-instance` handlers.        |
-| `DeleteInstanceConfig` | `types/rule-config-types.ts` | Extends `EntityConfig` with `removalBehavior`. Types only the `instance` row under `mutations.delete`.                         |
-| `DeleteConfig`         | `types/rule-config-types.ts` | Maps board and variant rows to `EntityConfig` and the instance row to `DeleteInstanceConfig`. Types the delete mutation block. |
-| `MutationRules`        | `types/rule-config-types.ts` | Groups all eleven mutation operation configs. Used as the `mutations` field on `RulesConfig`.                                  |
-| `RuleId`               | `types/rule-config-types.ts` | `keyof MutationRules`. Names the supported mutation operations in policy.                                                      |
-| `ComponentLevelConfig` | `types/rule-config-types.ts` | Holds `mayContain` for one catalog level. Used in `componentLevels` records.                                                   |
-| `RulesConfig`          | `types/rule-config-types.ts` | Top-level shape for `rules`: `mutations` plus `componentLevels`. Matches the exported config object.                           |
+| Type or Function | File | Purpose and use |
+| --- | --- | --- |
+| `Entity` | `types/rule-config-types.ts` | Union of policy entity keys. Used to index every mutation matrix row. |
+| `Config` | `types/rule-config-types.ts` | Maps each `Entity` to an `EntityConfig`. Used as the shape for non-delete mutation rules. |
+| `Propagation` | `types/rule-config-types.ts` | Union `none`, `downstream`, or `bidirectional`. Passed into propagation service calls from reducers. |
+| `EntityConfig` | `types/rule-config-types.ts` | `allowed` flag plus `propagation` for one entity row. Base shape for most mutation entries. |
+| `RemovalBehavior` | `types/rule-config-types.ts` | Delete-only behavior: plain `delete` or `hide`, or per-origin object for instances. Read by `remove-instance` handlers. |
+| `DeleteInstanceConfig` | `types/rule-config-types.ts` | Extends `EntityConfig` with `removalBehavior`. Types only the `instance` row under `mutations.delete`. |
+| `DeleteConfig` | `types/rule-config-types.ts` | Maps board and variant rows to `EntityConfig` and the instance row to `DeleteInstanceConfig`. Types the delete mutation block. |
+| `MutationRules` | `types/rule-config-types.ts` | Groups all thirteen mutation operation configs. Used as the `mutations` field on `RulesConfig`. |
+| `RuleId` | `types/rule-config-types.ts` | `keyof MutationRules`. Names the supported mutation operations in policy. |
+| `ComponentLevelConfig` | `types/rule-config-types.ts` | Holds `mayContain` for one catalog level. Used in `componentLevels` records. |
+| `RulesConfig` | `types/rule-config-types.ts` | Top-level shape for `rules`: `mutations` plus `componentLevels`. Matches the exported config object. |
 
 ---
 
@@ -73,6 +73,8 @@ flowchart TD
 - [`rules-node-subject`](../workspace/helpers/rules/rules-node-subject.ts) and `TypeCheckingService` classify boards and entry nodes before policy lookup.
 - `Propagation` includes `bidirectional`, but every row in [`config/rules.config.ts`](./config/rules.config.ts) today uses `none` or `downstream` only.
 - `setProperties` uses `propagation: "none"` for all entities. Instance overrides still merge at read time when resolving node properties.
+- `setStateProperties` gates per-state property overrides for `set_node_state_properties`, `reset_node_state_property`, and `reset_node_state`. It is allowed on `userVariant` and `defaultVariant` only. Boards and instances are blocked, and propagation is `none`.
+- `setRef` gates the unique reference handle set by `set_node_ref`. It is allowed on `userVariant` and `instance` only. A ref must stay globally unique, so propagation is `none`.
 - `reset` uses `propagation: "none"` for all entities. Resets clear overrides or rebuild structure on the targeted subtree only.
 - Rules control mutation policy only. Read-side property and theme materialization lives under [`../workspace/compute/`](../workspace/compute/).
 

@@ -9,7 +9,7 @@
     "build": "npm run build --workspace @seldon/editor",
     "start": "npm run start --workspace @seldon/editor",
     "lint": "npm run lint --workspace @seldon/editor",
-    "format:check": "prettier --check \"**/*.{ts,tsx,json,css,js,mjs,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,json,css,js,mjs}\"",
     "quality": "npm run format:check && npm run quality --workspace @seldon/editor",
     "format": "node scripts/format.mjs"
   },

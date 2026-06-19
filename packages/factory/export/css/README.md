@@ -24,23 +24,23 @@ The code is grouped by pipeline stage:
 2. **Generation** (`generation/`) builds the component stylesheet and theme files.
 3. **Utilities** (`utils/`) holds shared helpers.
 
-`types.ts` defines `Classes` and `NodeIdToClass`.
+`types.ts` defines `Classes`, `NodeIdToClass`, and `StateClasses`.
 
 ---
 
 ## Discovery
 
 **Style registry** (`discovery/get-style-registry.ts`)
-`buildStyleRegistry` walks every workspace node and builds a CSS class for each one. It sorts nodes so defaults come first, then variants, then instances. For an instance that points to a template variant, it stores only the CSS that differs from the variant. It deduplicates classes that share the same CSS and the same catalog id. It skips nodes with empty CSS unless the node is a default variant, has a template source, or `forceRegeneration` is set. It records the tree depth of each node for cascade ordering. It returns `classes`, `nodeIdToClass`, `classNameToNodeId`, and `nodeTreeDepths`.
+`buildStyleRegistry` walks every workspace node and builds a CSS class for each one. It sorts nodes so defaults come first, then variants, then instances. For an instance that points to a template variant, it stores only the CSS that differs from the variant. It deduplicates classes that share the same CSS and the same catalog id. It skips nodes with empty CSS unless the node is a default variant, has a template source, or `forceRegeneration` is set. It records the tree depth of each node for cascade ordering. For default and user variants that author interaction states, it computes each used state against the node's Normal CSS and keeps the non-empty deltas under `stateClasses`. It returns `classes`, `stateClasses`, `nodeIdToClass`, `classNameToNodeId`, and `nodeTreeDepths`.
 
 **Class names** (`discovery/get-class-name.ts`)
 `getClassNameForNode` builds a class name from the node catalog id and type:
 
-| Node type       | Class name                                                               |
-| --------------- | ------------------------------------------------------------------------ |
-| Default variant | `sdn-button`                                                             |
-| Custom variant  | `sdn-button-iconic`                                                      |
-| Instance        | `sdn-button-iconic--abc12`, the variant class plus a four-character hash |
+| Node type | Class name |
+| --- | --- |
+| Default variant | `sdn-button` |
+| Custom variant | `sdn-button-iconic` |
+| Instance | `sdn-button-iconic--abc12`, the variant class plus a four-character hash |
 
 ---
 
@@ -56,7 +56,7 @@ The code is grouped by pipeline stage:
 `insertBaseStyles` sets the base font size to `16px`, sets a default font family on `html` and `body`, and defines a `--hairline` variable with media query overrides for 2x, 3x, and 4x pixel ratios.
 
 **Component styles** (`generation/insert-node-styles.ts`)
-`insertNodeStyles` sorts the registry classes and appends them under a component styles header. Non-instance classes come before instance classes. Among non-instances, variant classes come first, then shallower tree depths, then alphabetical order. Empty rules are dropped.
+`insertNodeStyles` sorts the registry classes and appends them under a component styles header. Non-instance classes come before instance classes. Among non-instances, variant classes come first, then shallower tree depths, then alphabetical order. Empty rules are dropped. When a class carries interaction-state deltas in `stateClasses`, it also appends one CSS rule per state, each selector built from the state's suffixes by `getStateSelectorSuffixes`.
 
 **Theme files** (`generation/insert-theme-variables.ts`)
 `generateThemeStylesheetFiles` writes one CSS file per entry in `workspace.themes`. When the workspace has no themes, it writes a single `seldon` file. Each file is a `:root` block of CSS custom properties for one theme, named `styles-{slug}.css`. The prefix is `--sdn-` for the `seldon` theme and `--sdn-{slug}-` for other themes. Tokens include core values, font families, the color system, swatches, sizes, margins, paddings, gaps, corners, font sizes, font weights, line heights, and border widths. `generateThemeStylesheet` builds the block for one theme.
@@ -77,10 +77,10 @@ The code is grouped by pipeline stage:
 
 The CSS pipeline produces:
 
-| Field                 | Contents                                                                                                                                |
-| --------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-| `componentStylesheet` | A formatted stylesheet with reset styles, base styles, and component classes                                                            |
-| `themeStylesheets`    | An array of `ThemeStylesheetFile`. Each item has a `themeId`, a `path` under the components folder, and the CSS `content` for one theme |
+| Field | Contents |
+| --- | --- |
+| `componentStylesheet` | A formatted stylesheet with reset styles, base styles, and component classes |
+| `themeStylesheets` | An array of `ThemeStylesheetFile`. Each item has a `themeId`, a `path` under the components folder, and the CSS `content` for one theme |
 
 ---
 

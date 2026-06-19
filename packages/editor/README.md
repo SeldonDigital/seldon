@@ -10,14 +10,14 @@ Core owns design state and rules. The editor owns gestures, undo history, select
 
 The editor groups these areas:
 
-| Area                | Role                                                                        | Deep reference                                                     |
-| ------------------- | --------------------------------------------------------------------------- | ------------------------------------------------------------------ |
-| **App**             | Routes and all of the interface: canvas, sidebars, panels, topbar, tracking | [app/](./app)                                                      |
-| **Workspace state** | In-memory workspace, history, selection, preview                            | [lib/workspace/](./lib/workspace)                                  |
-| **Persistence**     | Record loading, debounced autosave, workspace name                          | [lib/persistence/](./lib/persistence)                              |
-| **Project**         | Active workspace id and dirty sync status                                   | [lib/project/](./lib/project)                                      |
-| **Storage**         | IndexedDB read and write for stored workspaces                              | [lib/storage/workspace-store.ts](./lib/storage/workspace-store.ts) |
-| **Export**          | Browser folder export through the local export route                        | [lib/export/](./lib/export)                                        |
+| Area | Role | Deep reference |
+| --- | --- | --- |
+| **App** | Routes and all of the interface: canvas, sidebars, panels, topbar, tracking | [app/](./app) |
+| **Workspace state** | In-memory workspace, history, selection, preview | [lib/workspace/](./lib/workspace) |
+| **Persistence** | Record loading, debounced autosave, workspace name | [lib/persistence/](./lib/persistence) |
+| **Project** | Active workspace id and dirty sync status | [lib/project/](./lib/project) |
+| **Storage** | IndexedDB read and write for stored workspaces | [lib/storage/workspace-store.ts](./lib/storage/workspace-store.ts) |
+| **Export** | Browser folder export through the local export route | [lib/export/](./lib/export) |
 
 The editor imports and exports code directly from `@seldon/core` and `@seldon/factory`. It does not fork their logic. The package name is `@seldon/editor`.
 
@@ -30,7 +30,7 @@ The editor imports and exports code directly from `@seldon/core` and `@seldon/fa
 
 ### Run Steps
 
-- `npm run dev` starts the Vite dev server. It first copies font files, font licenses, and third-party notices.
+- `npm run dev` first appends the Chrome font fallback and copies font licenses and font files, then starts the Vite dev server. Third-party notices are generated separately by `npm run notices:thirdparty`, which `npm run build:release` runs before building. They are not produced by `dev` or `build`.
 - `npm run build` builds the production bundle. `npm start` serves the build with `vite preview`.
 - `npm run quality` type-checks with `tsc`. `npm run lint` runs ESLint.
 
@@ -102,7 +102,7 @@ A debounced autosave in [lib/persistence/hooks/use-workspace-autosave.ts](./lib/
 
 ### Canvas
 
-The canvas is the design surface. `Canvas` handles zoom and pan, `Workspace` renders the active board, and `Node` renders the node tree. `ComponentRenderer` injects per-node CSS through a style portal.
+The canvas is the design surface. `Canvas` handles zoom and pan, `CanvasWorkspace` renders the active board, and `Node` renders the node tree. `ComponentRenderer` injects per-node CSS through a style portal. Each board has an interaction-state switcher. Selecting a non-Normal state routes node edits to that state's overrides, and instances cannot author states.
 
 ### Objects sidebar
 
@@ -120,11 +120,11 @@ The topbar holds the menus and tools. Panels cover catalog inserts and image upl
 
 ## Workflows
 
-- **New workspace** — create an empty workspace and open it.
-- **Open workspace.json** — import a file from disk into a new stored workspace.
-- **Export workspace JSON** — download the current workspace from the File menu.
-- **Export code to a folder** — generate React and CSS files into a chosen directory.
-- **Debug mode** — use Help to enable local logging while developing.
+- **New workspace**: create an empty workspace and open it.
+- **Open workspace.json**: import a file from disk into a new stored workspace.
+- **Export workspace JSON**: download the current workspace from the File menu.
+- **Export code to a folder**: generate React and CSS files into a chosen directory.
+- **Debug mode**: use the **Dev** menu to toggle canvas profiling, node id, type, and property-type overlays, and dispatch, verbose, and workspace logging.
 
 Folder export runs through the local export route. [lib/export/run-local-export.ts](./lib/export/run-local-export.ts) posts the workspace to `/api/export`, which the Vite plugin [vite/export-api-plugin.ts](./vite/export-api-plugin.ts) serves by bundling the Factory export handler. [lib/export/write-export-to-directory.ts](./lib/export/write-export-to-directory.ts) then writes the returned files to the folder the browser picks. The JSON download stays available as the version-control handoff artifact.
 
@@ -144,14 +144,14 @@ Pipeline detail lives in [../factory/README.md](../factory/README.md).
 
 ## Further Reading
 
-| Topic               | Document                                                                     |
-| ------------------- | ---------------------------------------------------------------------------- |
-| Core                | [../core/README.md](../core/README.md)                                       |
-| Factory             | [../factory/README.md](../factory/README.md)                                 |
-| Run steps           | [Run Steps](#run-steps)                                                      |
-| Vocabulary          | [GLOSSARY.md](../../GLOSSARY.md)                                             |
-| Workspace file spec | [../core/workspace/WORKSPACE.md](../core/workspace/WORKSPACE.md)             |
-| Reducer actions     | [../core/workspace/reducers/README.md](../core/workspace/reducers/README.md) |
+| Topic | Document |
+| --- | --- |
+| Core | [../core/README.md](../core/README.md) |
+| Factory | [../factory/README.md](../factory/README.md) |
+| Run steps | [Run Steps](#run-steps) |
+| Vocabulary | [GLOSSARY.md](../../GLOSSARY.md) |
+| Workspace file spec | [../core/workspace/WORKSPACE.md](../core/workspace/WORKSPACE.md) |
+| Reducer actions | [../core/workspace/reducers/README.md](../core/workspace/reducers/README.md) |
 
 ---
 
@@ -163,18 +163,18 @@ Seldon is offered under the **PolyForm Noncommercial License 1.0.0** by default,
 
 The default software license is the **PolyForm Noncommercial License 1.0.0**.
 
-- You may use, copy, and modify this software for **noncommercial purposes** (e.g. research, education, personal projects).
+- You may use, copy, and modify this software for **noncommercial purposes** such as research, education, and personal projects.
 - Commercial use is **not permitted** under this license.
 - See [license/noncommercial/LICENSE.md](../../license/noncommercial/LICENSE.md) for the summary and link to the full PolyForm text.
 
 ### 2. Commercial license
 
-For commercial use (including proprietary software, SaaS platforms, internal business tools, or use as training data for AI or LLMs), you need a **commercial license**.
+Commercial use covers proprietary software, SaaS platforms, internal business tools, and use as training data for AI or LLMs. You need a **commercial license** for these.
 
 The commercial license may grant:
 
 - Use in commercial or for-profit contexts.
-- Ability to create proprietary derivative works (as stated in your agreement).
+- Ability to create proprietary derivative works as stated in your agreement.
 - Long-term support, security updates, and priority bug fixes if offered by the licensor.
 - Optional custom terms negotiated with the licensor.
 
@@ -189,10 +189,10 @@ Contact:
 
 ### 4. Summary
 
-| Use               | Requirement                          |
-| ----------------- | ------------------------------------ |
+| Use | Requirement |
+| --- | --- |
 | Noncommercial use | PolyForm Noncommercial License 1.0.0 |
-| Commercial use    | Paid commercial license              |
+| Commercial use | Paid commercial license |
 
 ---
 

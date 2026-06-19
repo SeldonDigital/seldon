@@ -16,7 +16,7 @@ Core owns design state and rules. Editors, agents, and other tools load a worksp
 
 The [Seldon Factory](packages/factory/README.md) turns a Seldon workspace into production code. It consumes a workspace file and produces components, CSS, and processed assets. Factory reads design-time state from Core, resolves properties and themes, and generates output. It does not change the workspace file.
 
-Factory owns export and production code generation. It can be extended beyond just one platform, as multiple factory pipelines can be supported. (React is the default Factory for now.)
+Factory owns export and production code generation. It can be extended beyond one platform, since multiple factory pipelines can be supported. React is the default Factory for now.
 
 ---
 
@@ -105,9 +105,55 @@ Then open `http://localhost:5173` in your browser. You should now have the edito
 
 ---
 
+## Scripts
+
+CI runs four checks on every pull request to `main`. Run them locally before you submit a PR so your branch passes. First install:
+
+```bash
+npm ci
+```
+
+Unit tests run on [Bun](https://bun.sh). Be sure to install **Bun** before you run them.
+
+---
+
+Then run each check.
+
+Format:
+
+```bash
+npm run format:check
+```
+
+To fix formatting instead of only checking it:
+
+```bash
+npm run format
+```
+
+Lint:
+
+```bash
+npm run lint --workspace @seldon/core --workspace @seldon/factory --workspace @seldon/editor
+```
+
+Typecheck:
+
+```bash
+npx tsc --build packages/core/tsconfig.json && npx tsc -p packages/factory/tsconfig.json && npx tsc -p packages/editor/tsconfig.json
+```
+
+Unit tests:
+
+```bash
+npm test --workspace @seldon/core
+```
+
+---
+
 ## Where to go from here
 
-At the time of this writing, Seldon is just getting of the ground. It is missing many features, behaviors, code export languages (like Swift and Java), and other core pieces. But rather than wait until it's all done and build it in a closed environment, we're going to build it out in the open and evolve it based on your feedback. Hopefully many of you will become contributors as well.
+At the time of this writing, Seldon is just getting of the ground. It is missing many features, behaviors, code export languages such as Swift and Java, and other core pieces. But rather than wait until it's all done and build it in a closed environment, we're going to build it out in the open and evolve it based on your feedback. Hopefully many of you will become contributors as well.
 
 There's a lot to do, so we also need feedback on what is working, what is not, and what should be added sooner rather than later. "It's a process," as they say.
 
@@ -133,9 +179,8 @@ If you want the lowdown, these three documents are a great way to get into what 
 - `packages/core/components` [packages/core/components/README.md](packages/core/components/README.md): Schema shapes, hierarchy, and composition rules
 - `packages/core/properties` [packages/core/properties/README.md](packages/core/properties/README.md): Property types and values
 - `packages/core/themes` [packages/core/themes/README.md](packages/core/themes/README.md): Token sections, references, and stock themes
-- `packages/core/font-collections` [packages/core/font-collections/README.md](packages/core/font-collections/README.md): TBD
-- `packages/core/icon-sets` [packages/core/icon-sets/README.md](packages/core/icon-sets/README.md): TBD
-- `packages/core/media` [packages/core/media/README.md](packages/core/media/README.md): TBD
+- `packages/core/font-collections` [packages/core/font-collections/README.md](packages/core/font-collections/README.md): Font family collections, origins, and stacks
+- `packages/core/icon-sets` [packages/core/icon-sets/README.md](packages/core/icon-sets/README.md): Icon set catalog and icon ids
 
 ---
 
@@ -143,27 +188,27 @@ If you want the lowdown, these three documents are a great way to get into what 
 
 Seldon is offered under the **PolyForm Noncommercial License 1.0.0** by default, with a separate commercial license for commercial use.
 
-| Use               | Requirement                          |
-| ----------------- | ------------------------------------ |
+| Use | Requirement |
+| --- | --- |
 | Noncommercial use | PolyForm Noncommercial License 1.0.0 |
-| Commercial use    | Paid commercial license              |
+| Commercial use | Paid commercial license |
 
 ### 1. Noncommercial license
 
 The default software license is the **PolyForm Noncommercial License 1.0.0**.
 
-- You may use, copy, and modify this software for **noncommercial purposes** (e.g. research, education, personal projects).
+- You may use, copy, and modify this software for **noncommercial purposes** such as research, education, and personal projects.
 - Commercial use is **not permitted** under this license.
 - See [license/noncommercial/LICENSE.md](license/noncommercial/LICENSE.md).
 
 ### 2. Commercial license
 
-For commercial use (including proprietary software, SaaS platforms, internal business tools, or use as training data for AI or LLMs), you need a **commercial license**.
+Commercial use covers proprietary software, SaaS platforms, internal business tools, and use as training data for AI or LLMs. You need a **commercial license** for these.
 
 The commercial license may grant:
 
 - Use in commercial or for-profit contexts.
-- Ability to create proprietary derivative works (as stated in your agreement).
+- Ability to create proprietary derivative works as stated in your agreement.
 - Long-term support, security updates, and priority bug fixes if offered by the licensor.
 - Optional custom terms negotiated with the licensor.
 - See [COMMERCIAL-LICENSE.md](license/commercial/COMMERCIAL-LICENSE.md).

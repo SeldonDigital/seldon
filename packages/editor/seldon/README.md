@@ -13,7 +13,7 @@
 
 # Seldon Components
 
-This guide will help you understand how to use these components in your React application.
+This guide will help you understand how to use these components in your React application. It describes the exported component output. Examples such as `CardProduct` and `Button` are illustrative. This folder itself ships the shared styles, the `Fonts` component, and `custom-components/`.
 
 ## Overview
 
