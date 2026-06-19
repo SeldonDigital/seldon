@@ -1,5 +1,6 @@
 import { type Theme, ValueType, type Workspace } from "@seldon/core"
 import type { Properties } from "@seldon/core/properties/types/properties"
+import type { NodeState } from "@seldon/core/workspace/model/node-state"
 import {
   type ThemeLookPreset,
   convertLookParameterValue,
@@ -211,8 +212,9 @@ export function matchCompoundPreset(
   workspace: Workspace,
   theme?: Theme,
   layerIndex: number = 0,
+  state?: NodeState,
 ): string | null {
-  const effectiveProperties = getEffectiveProperties(nodeId, workspace)
+  const effectiveProperties = getEffectiveProperties(nodeId, workspace, state)
 
   if (propertyKey === "board") {
     const boardLayer = getCompoundLayerValue(

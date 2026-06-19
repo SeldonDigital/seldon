@@ -65,6 +65,7 @@ import type {
 import { getComponentPropertyDefaults } from "@seldon/core/workspace/helpers/components/get-component-property-defaults"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { isPlaygroundBoard } from "@seldon/core/workspace/model/components"
+import type { NodeState } from "@seldon/core/workspace/model/node-state"
 import { getNodeCatalogComponentId } from "@lib/workspace/node-tree"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { ControlType, getPropertyRegistryEntry } from "./properties-registry"
@@ -231,15 +232,18 @@ export function getPropertiesSubjectId(
 export function getNodePropertiesWithStatus(
   node: Variant | Instance | Board,
   workspace: Workspace,
+  state?: NodeState,
 ): { properties: Properties; propertyStatus: Record<string, PropertyStatus> } {
   const subjectId = getPropertiesSubjectId(node)
   const properties = coreGetEffectiveProperties(
     subjectId,
     workspace as unknown as Workspace,
+    state,
   )
   const propertyStatus = coreGetPropertyStatus(
     subjectId,
     workspace as unknown as Workspace,
+    state,
   ) as Record<string, PropertyStatus>
 
   return { properties, propertyStatus }
@@ -372,6 +376,7 @@ export function createFlatProperty(
   node: Variant | Instance | Board,
   workspace: Workspace,
   theme?: Theme,
+  state?: NodeState,
 ): FlatProperty {
   const registryEntry = getPropertyRegistryEntry(propertyKey)
   const isCompound = isCompoundProperty(propertyKey as PropertyKey)
@@ -387,6 +392,8 @@ export function createFlatProperty(
         getPropertiesSubjectId(node),
         workspace,
         theme,
+        0,
+        state,
       )
     } catch {
       actualValue = UNKNOWN_DISPLAY
@@ -399,6 +406,7 @@ export function createFlatProperty(
         getPropertiesSubjectId(node),
         workspace,
         theme,
+        state,
       )
     } catch {
       actualValue = UNKNOWN_DISPLAY
@@ -623,6 +631,7 @@ function buildLayerParentFlatProperty(
   workspace: Workspace,
   propertyStatus: Record<string, PropertyStatus>,
   theme?: Theme,
+  state?: NodeState,
 ): FlatProperty {
   const registryEntry = getPropertyRegistryEntry(propertyKey)
   const usesPresetPicker = hasCompoundSelectorCombo(
@@ -641,6 +650,7 @@ function buildLayerParentFlatProperty(
       workspace,
       theme,
       index,
+      state,
     )
   } catch {
     actualValue = ""
@@ -679,6 +689,7 @@ function flattenLayeredPaintProperty(
   node: Variant | Instance | Board,
   workspace: Workspace,
   theme?: Theme,
+  state?: NodeState,
 ): FlatProperty[] {
   const out: FlatProperty[] = []
   const rawArray = mergedProperties[propertyKey as keyof Properties]
@@ -703,6 +714,7 @@ function flattenLayeredPaintProperty(
         node,
         workspace,
         theme,
+        state,
       )
       parent.layerIndex = 0
       if (count > 1) {
@@ -732,6 +744,7 @@ function flattenLayeredPaintProperty(
           workspace,
           propertyStatus,
           theme,
+          state,
         ),
       )
       out.push(
@@ -778,6 +791,7 @@ function flattenShownBorderSides(
   propertyStatus: Record<string, PropertyStatus>,
   shownSides: Set<BorderSideKey>,
   theme?: Theme,
+  state?: NodeState,
 ): FlatProperty[] {
   const allowed = new Set(getAllowedBorderSides(node, workspace))
   const out: FlatProperty[] = []
@@ -786,7 +800,9 @@ function flattenShownBorderSides(
     const value =
       resolvePropertyValueForDisplay(mergedProperties, side) || EMPTY_VALUE
     const status = propertyStatus[side] || "unset"
-    out.push(createFlatProperty(side, value, status, node, workspace, theme))
+    out.push(
+      createFlatProperty(side, value, status, node, workspace, theme, state),
+    )
     out.push(
       ...getSubProperties(
         side,
@@ -845,6 +861,7 @@ export function flattenNodeProperties(
   workspace: Workspace,
   theme?: Theme,
   shownBorderSides: Set<BorderSideKey> = new Set(),
+  state?: NodeState,
 ): FlatProperty[] {
   // A playground container is a sidebar-only grouping with no editable component
   // properties. Only the theme selector applies, and that row is added
@@ -855,7 +872,7 @@ export function flattenNodeProperties(
 
   const properties: FlatProperty[] = []
   const { properties: mergedProperties, propertyStatus } =
-    getNodePropertiesWithStatus(node, workspace)
+    getNodePropertiesWithStatus(node, workspace, state)
 
   const schemaPropertyKeys = getSchemaPropertyKeysForSubject(node, workspace)
 
@@ -878,6 +895,7 @@ export function flattenNodeProperties(
           node,
           workspace,
           theme,
+          state,
         ),
       )
       continue
@@ -902,6 +920,7 @@ export function flattenNodeProperties(
       node,
       workspace,
       theme,
+      state,
     )
 
     properties.push(flatProperty)
@@ -929,6 +948,7 @@ export function flattenNodeProperties(
             propertyStatus,
             shownBorderSides,
             theme,
+            state,
           ),
         )
       }

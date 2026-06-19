@@ -17,8 +17,14 @@ import {
   isReservedTokenName,
 } from "@seldon/core"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
+import { isEntryNodeInstance } from "@seldon/core/workspace/model/entry-node"
+import { NORMAL_STATE } from "@seldon/core/workspace/model/node-state"
 import { workspaceThemeService } from "@seldon/core/workspace/services/theme/theme.service"
 import { useThemes } from "@lib/themes/hooks/use-themes"
+import {
+  INSTANCE_STATE_EDIT_MESSAGE,
+  useNodeActiveState,
+} from "@lib/workspace/hooks/use-node-active-state"
 import { useObjectProperties } from "@lib/workspace/hooks/use-object-properties"
 import { useDebugMode } from "@lib/hooks/use-debug-mode"
 import { useInlineRename } from "../../hooks/use-inline-rename"
@@ -110,6 +116,15 @@ export function useRowProperty({
   const [isEditingProperty, setIsEditingProperty] = useState(false)
   const [isRenaming, setIsRenaming] = useState(false)
   const addToast = useAddToast()
+
+  // Instances cannot author interaction states. In a non-Normal state their rows
+  // are read-only: no hover outline, no chevron, default cursor, and a click
+  // surfaces the source-component toast instead of entering edit mode.
+  const activeState = useNodeActiveState(node)
+  const isStateReadOnly =
+    !isBoard(node) &&
+    isEntryNodeInstance(node) &&
+    activeState !== NORMAL_STATE
 
   // A custom token row can be renamed in place. Reserved scale/look/swatch keys
   // are not `customN`, so they never match. Only meaningful on a theme variant.
@@ -283,8 +298,8 @@ export function useRowProperty({
   }
 
   const handleFrameMouseEnter = () => {
-    // Don't enable hover for dimmed (read-only) properties.
-    if (!property.isDimmed) {
+    // Don't enable hover for dimmed or read-only (instance state) properties.
+    if (!property.isDimmed && !isStateReadOnly) {
       setIsHovered(true)
     }
   }
@@ -308,6 +323,12 @@ export function useRowProperty({
   }, [setIsHovered])
 
   const handleFrameClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (isStateReadOnly) {
+      event.stopPropagation()
+      addToast(INSTANCE_STATE_EDIT_MESSAGE)
+      return
+    }
+
     if (property.isDimmed || !property.controlType || isEditingProperty) {
       return
     }
@@ -330,12 +351,23 @@ export function useRowProperty({
 
   const handleLabel2Click = useCallback(
     (event: React.MouseEvent) => {
+      if (isStateReadOnly) {
+        event.stopPropagation()
+        addToast(INSTANCE_STATE_EDIT_MESSAGE)
+        return
+      }
       if (!property.isDimmed && property.controlType) {
         event.stopPropagation()
         setIsEditingProperty(true)
       }
     },
-    [property.isDimmed, property.controlType, setIsEditingProperty],
+    [
+      isStateReadOnly,
+      addToast,
+      property.isDimmed,
+      property.controlType,
+      setIsEditingProperty,
+    ],
   )
 
   const handleRowClick = (event: React.MouseEvent<HTMLLIElement>) => {
@@ -377,6 +409,10 @@ export function useRowProperty({
   const handleMenuClick = useCallback(
     (event: React.MouseEvent) => {
       event.stopPropagation()
+      if (isStateReadOnly) {
+        addToast(INSTANCE_STATE_EDIT_MESSAGE)
+        return
+      }
       if (
         !property.isDimmed &&
         !isEditingProperty &&
@@ -385,7 +421,13 @@ export function useRowProperty({
         setIsEditingProperty(true)
       }
     },
-    [property.isDimmed, property.controlType, isEditingProperty],
+    [
+      isStateReadOnly,
+      addToast,
+      property.isDimmed,
+      property.controlType,
+      isEditingProperty,
+    ],
   )
 
   const setFrameRef = useCallback((el: HTMLDivElement | null) => {
@@ -502,6 +544,7 @@ export function useRowProperty({
     isEditingProperty,
     supportsUpload,
     showMenuIcon: shouldShowMenuIcon(),
+    isReadOnly: isStateReadOnly,
     handleToggle,
     handleLabel2Click,
     handleUploadClick,
@@ -515,7 +558,10 @@ export function useRowProperty({
     }
   }
 
-  const rowCursor = hasChildren || property.controlType ? "pointer" : "default"
+  const rowCursor =
+    !isStateReadOnly && (hasChildren || property.controlType)
+      ? "pointer"
+      : "default"
 
   // Suppress the form control's internal icon/input/button slots: the row's
   // child slots (value icon, value cell, menu button) supply the content.

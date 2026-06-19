@@ -20,6 +20,10 @@ import { getComponentPropertyDefaults } from "@seldon/core/workspace/helpers/com
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { getNodeById } from "@seldon/core/workspace/helpers/nodes/get-node-by-id"
 import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-catalog-id"
+import {
+  NORMAL_STATE,
+  type NodeState,
+} from "@seldon/core/workspace/model/node-state"
 import type { Board, EntryNode, Workspace } from "@seldon/core/workspace/types"
 
 type TypedPropertyValue = {
@@ -127,9 +131,15 @@ export function wrapCompoundPropertyValue(
 
 export function getPropertyOverridesBag(
   subject: PropertyPanelSubject,
+  state?: NodeState,
 ): Properties | undefined {
   if (isBoard(subject)) {
     return subject.componentProperties
+  }
+  // In a non-Normal state, the authored overrides live in the state bag. The
+  // Normal layer keeps using `overrides`.
+  if (state && state !== NORMAL_STATE) {
+    return subject.states?.[state]
   }
   return subject.overrides
 }
@@ -196,10 +206,12 @@ export function hasSchemaSubProperty(
 export function getEffectiveProperties(
   nodeId: string,
   workspace: Workspace,
+  state?: NodeState,
 ): Properties {
   return getEffectiveNodeProperties(
     nodeId,
     workspace as WorkspacePropertySource,
+    { state },
   )
 }
 
