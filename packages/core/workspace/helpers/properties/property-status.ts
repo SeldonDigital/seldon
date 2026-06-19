@@ -1,12 +1,12 @@
 import { type PropertyKey, type Theme, type Workspace } from "@seldon/core"
 import { isCompoundProperty } from "@seldon/core/helpers/type-guards/compound/is-compound-property"
 import type { Properties } from "@seldon/core/properties/types/properties"
-import type { NodeState } from "@seldon/core/workspace/model/node-state"
 import {
   type PropertyKey as CorePropertyKey,
   isLayeredPaintProperty,
 } from "@seldon/core/properties/types/property-keys"
 import { isBuiltInClearedLookToken } from "@seldon/core/themes/looks"
+import type { NodeState } from "@seldon/core/workspace/model/node-state"
 
 import { getNodeComputeContext } from "../../compute/compute-node-properties"
 import { matchCompoundPreset } from "./compound-presets"
@@ -231,8 +231,16 @@ function assignCompoundLayerStatuses(
   layerIndex: number,
   forceOverride: boolean,
 ): PropertyStatus {
-  const { key, nodeId, workspace, node, schemaProperties, theme, status, state } =
-    ctx
+  const {
+    key,
+    nodeId,
+    workspace,
+    node,
+    schemaProperties,
+    theme,
+    status,
+    state,
+  } = ctx
   const parentKey = layeredParentPropertyPath(key, layerIndex)
   const compoundLayer = getCompoundLayerValue(compoundValue, layerIndex)
   if (!compoundLayer) {

@@ -149,7 +149,8 @@ export function buildPropertyRowProps({
     style: getValueCellStyle({
       labelColor,
       isEditingProperty,
-      isInteractive: !isReadOnly && (hasChildren || Boolean(property.controlType)),
+      isInteractive:
+        !isReadOnly && (hasChildren || Boolean(property.controlType)),
     }),
   } as TextLabelProps
 

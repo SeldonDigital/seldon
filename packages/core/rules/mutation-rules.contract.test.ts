@@ -106,7 +106,9 @@ describe("rules.config single-source contract", () => {
     expect(rules.mutations.setStateProperties.instance.allowed).toBe(false)
     expect(rules.mutations.setStateProperties.board.allowed).toBe(false)
     for (const entity of ENTITIES) {
-      expect(rules.mutations.setStateProperties[entity].propagation).toBe("none")
+      expect(rules.mutations.setStateProperties[entity].propagation).toBe(
+        "none",
+      )
     }
   })
 

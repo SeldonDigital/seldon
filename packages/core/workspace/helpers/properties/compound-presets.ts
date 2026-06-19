@@ -1,6 +1,5 @@
 import { type Theme, ValueType, type Workspace } from "@seldon/core"
 import type { Properties } from "@seldon/core/properties/types/properties"
-import type { NodeState } from "@seldon/core/workspace/model/node-state"
 import {
   type ThemeLookPreset,
   convertLookParameterValue,
@@ -11,6 +10,7 @@ import {
   resolveBuiltInLookApplyName,
   resolveThemeLook,
 } from "@seldon/core/themes/looks"
+import type { NodeState } from "@seldon/core/workspace/model/node-state"
 
 import {
   type BoardCompound,

@@ -17,11 +17,11 @@ import { getComponentSchema } from "@seldon/core/components/catalog"
 import { ComponentId } from "@seldon/core/components/constants"
 import type { IconId } from "@seldon/core/icon-sets"
 import { ThemeInstanceId } from "@seldon/core/themes/types"
+import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
 import {
   NORMAL_STATE,
   type NodeState,
 } from "@seldon/core/workspace/model/node-state"
-import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
 import { useThemeById } from "@lib/themes/hooks/use-theme-by-id"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useAddNodeFontFamily } from "./hooks/use-add-node-font-family"

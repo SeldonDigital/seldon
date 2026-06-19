@@ -18,7 +18,8 @@ export function setNodeStateProperties(
 ): Workspace {
   const node = nodeRetrievalService.getNode(payload.nodeId, workspace)
   const entityType = typeCheckingService.getEntityType(node)
-  const { allowed, propagation } = rules.mutations.setStateProperties[entityType]
+  const { allowed, propagation } =
+    rules.mutations.setStateProperties[entityType]
 
   if (!allowed) {
     return workspace

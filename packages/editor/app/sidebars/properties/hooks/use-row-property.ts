@@ -122,9 +122,7 @@ export function useRowProperty({
   // surfaces the source-component toast instead of entering edit mode.
   const activeState = useNodeActiveState(node)
   const isStateReadOnly =
-    !isBoard(node) &&
-    isEntryNodeInstance(node) &&
-    activeState !== NORMAL_STATE
+    !isBoard(node) && isEntryNodeInstance(node) && activeState !== NORMAL_STATE
 
   // A custom token row can be renamed in place. Reserved scale/look/swatch keys
   // are not `customN`, so they never match. Only meaningful on a theme variant.

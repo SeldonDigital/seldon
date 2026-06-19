@@ -24,8 +24,8 @@ import {
   getPropertySchema,
 } from "@seldon/core/properties/schemas/helpers"
 import type { PropertyValueType } from "@seldon/core/properties/types/schema"
-import type { NodeState } from "@seldon/core/workspace/model/node-state"
 import { getBuiltInLookSectionForPropertyKey } from "@seldon/core/themes/looks"
+import type { NodeState } from "@seldon/core/workspace/model/node-state"
 
 import { matchCompoundPreset } from "./compound-presets"
 import {

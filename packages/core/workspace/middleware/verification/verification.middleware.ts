@@ -227,10 +227,7 @@ const validators = {
         !isReservedStateName(entry.key),
         `Custom state "${entry.key}" collides with a reserved interaction-state name.`,
       )
-      check(
-        !seen.has(entry.key),
-        `Duplicate custom state key "${entry.key}".`,
-      )
+      check(!seen.has(entry.key), `Duplicate custom state key "${entry.key}".`)
       seen.add(entry.key)
     }
 
@@ -344,7 +341,9 @@ export const workspaceVerificationMiddleware: Middleware =
       log("✅ No variants with computed properties referencing parent nodes")
 
       validators.statesAreConsistent(nextWorkspace)
-      log("✅ Interaction states resolve to reserved or registered custom states")
+      log(
+        "✅ Interaction states resolve to reserved or registered custom states",
+      )
 
       validators.sandboxesAreValid(nextWorkspace)
       log("✅ Sandboxes are explicitly sized, capped, and non-overlapping")

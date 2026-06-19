@@ -5,7 +5,13 @@ import { getWorkspaceNodes } from "../../helpers/general/get-workspace-nodes"
 import { getNodeSubtreeIds } from "../../helpers/nodes/get-node-subtree-ids"
 import { resolveNodePropertyResetPatch } from "../../helpers/nodes/resolve-node-property-reset"
 import { isEntryNodeForRules } from "../../helpers/rules/rules-node-subject"
-import { BoardKey, InstanceId, NodeState, VariantId, Workspace } from "../../types"
+import {
+  BoardKey,
+  InstanceId,
+  NodeState,
+  VariantId,
+  Workspace,
+} from "../../types"
 import { nodeRetrievalService } from "../nodes/node-retrieval.service"
 import { mutateWorkspace } from "../shared/workspace-mutation.helper"
 import {

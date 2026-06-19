@@ -10,8 +10,8 @@ import {
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { isEntryNodeInstance } from "@seldon/core/workspace/model/entry-node"
 import { NORMAL_STATE } from "@seldon/core/workspace/model/node-state"
-import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
+import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import {
   INSTANCE_STATE_EDIT_MESSAGE,
   useNodeActiveState,

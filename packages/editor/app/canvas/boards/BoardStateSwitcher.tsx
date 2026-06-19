@@ -2,18 +2,18 @@
 
 import { CSSProperties, useEffect, useMemo, useRef, useState } from "react"
 import {
-  NORMAL_STATE,
-  RESERVED_STATE_LABELS,
   type CustomState,
+  NORMAL_STATE,
   type NodeState,
+  RESERVED_STATE_LABELS,
   type ReservedStateName,
 } from "@seldon/core/workspace/model/node-state"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
-import { Combobox } from "@seldon/components/custom-components/controls/combobox/Combobox"
 import {
   useActiveBoardState,
   useBoardStateStore,
 } from "../hooks/use-board-state-store"
+import { Combobox } from "@seldon/components/custom-components/controls/combobox/Combobox"
 
 /** Editor-only display order for the reserved states in the switcher menu. */
 const RESERVED_STATE_MENU_ORDER: ReservedStateName[] = [
@@ -228,10 +228,7 @@ export function BoardStateSwitcher({ boardKey }: BoardStateSwitcherProps) {
               </div>
             ) : (
               <div key={entry.key} style={itemStyle}>
-                <span
-                  style={{ flex: 1 }}
-                  onClick={() => select(entry.key)}
-                >
+                <span style={{ flex: 1 }} onClick={() => select(entry.key)}>
                   {entry.label}
                 </span>
                 <button

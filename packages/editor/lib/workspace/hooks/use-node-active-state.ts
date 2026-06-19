@@ -5,8 +5,8 @@ import {
   type NodeState,
 } from "@seldon/core/workspace/model/node-state"
 import { nodeRelationshipService } from "@seldon/core/workspace/services"
-import { useBoardStateStore } from "@app/canvas/hooks/use-board-state-store"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
+import { useBoardStateStore } from "@app/canvas/hooks/use-board-state-store"
 import { useWorkspace } from "./use-workspace"
 
 /** Shown when an instance edit is attempted while a non-Normal state is active. */

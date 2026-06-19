@@ -12,6 +12,7 @@ import { useNodeTheme } from "@lib/themes/hooks/use-node-theme"
 import { useSelection } from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { usePreview } from "@lib/hooks/use-preview"
+import { useActiveBoardState } from "../hooks/use-board-state-store"
 import { useCanvasReorderFlip } from "../hooks/use-canvas-reorder-flip"
 import { resolveComponentKey } from "@lib/workspace/workspace-accessors"
 import {
@@ -19,7 +20,6 @@ import {
   StyleTag,
 } from "@seldon/components/custom-components"
 import { CssPortal } from "../CssPortal"
-import { useActiveBoardState } from "../hooks/use-board-state-store"
 import { CanvasNode } from "../Node"
 import { BoardStateSwitcher } from "./BoardStateSwitcher"
 
