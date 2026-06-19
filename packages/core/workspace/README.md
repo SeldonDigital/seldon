@@ -132,6 +132,7 @@ Programs change each metadata field with its own action: `set_workspace_owner`, 
 | `intent`     | `string`   | Optional short description of the workspace purpose.                                              |
 | `tags`       | `string[]` | Optional labels for search or filtering.                                                          |
 | `license`    | `object`   | Optional workspace-level licensing metadata.                                                      |
+| `customStates` | `object[]` | Optional workspace-wide custom interaction states. Each entry is `{ key, label, description? }` with no render data. See **Interaction States** under **Nodes**. |
 
 ```json
 {
@@ -565,7 +566,8 @@ The result of this is that an editor's properties panel will display and edit al
 | `label`     | `string`                    | Display name for the node.                                                                                                                                                                                                                                                                     |
 | `theme`     | `ThemeInstanceId` or `null` | The theme used for this node, or `null` to inherit from its parent.                                                                                                                                                                                                                            |
 | `template`  | `string`                    | Where the node gets its metadata, along with its list of **properties** and subsequent default values which are resolved before `overrides` are applied. This value is either `catalog:{ComponentId}` or `node:{nodeId}`. See **Default Node**, **Variant Node**, and **Instance Node** below. |
-| `overrides` | `Properties`                | Property overrides for this node, which is derived from either `catalog:{ComponentId}` or `node:{nodeId}`. Can be an empty object `{}`. If a property is not declared in the `template`, the overridden value is ignored.                                                                      |
+| `overrides` | `Properties`                | Property overrides for this node, which is derived from either `catalog:{ComponentId}` or `node:{nodeId}`. Can be an empty object `{}`. If a property is not declared in the `template`, the overridden value is ignored. This is the Normal state layer.                                       |
+| `states`    | `object`                    | Optional per-state property override bags keyed by interaction-state name. Each bag holds the same `Properties` shape as `overrides`. Sparse: a key exists only when that state carries overrides. Authored on `default` and `variant` nodes only; instances inherit. See **Interaction States** below. |
 | `origin`    | `string`                    | Optional creation origin, one of `"schema"` or `"user"`. Only meaningful on `type: "instance"` nodes. The engine sets and maintains it, and it drives removal behavior. See **Instance Node** and **Composition Rules** below.                                                                 |
 | `__editor`  | `object`                    | Editor-only metadata.                                                                                                                                                                                                                                                                          |
 
@@ -682,6 +684,55 @@ The **`template`** field then chooses how properties are obtained for the instan
   }
 }
 ```
+
+---
+
+### Interaction States
+
+A node's `overrides` field is the Normal state. The optional `states` field adds extra override bags for other interaction states such as hover or disabled. Each state bag holds the same `Properties` shape as `overrides` and layers on top of the Normal layer when that state resolves.
+
+```json
+"nodes": {
+  "component-button-default": {
+    "id": "component-button-default",
+    "type": "default",
+    "level": "element",
+    "label": "Button",
+    "theme": null,
+    "template": "catalog:button",
+    "overrides": {
+      "background": [
+        { "color": { "type": "theme.categorical", "value": "@swatch.primary" } }
+      ]
+    },
+    "states": {
+      "hover": {
+        "background": [
+          { "color": { "type": "theme.categorical", "value": "@swatch.custom6" } }
+        ]
+      }
+    }
+  }
+}
+```
+
+State names are target-agnostic. The workspace stores only the state name keys and their override bags. It never stores CSS, pseudo-classes, attributes, or class names. Each export pipeline maps a state name to its own target construct. The React and CSS factory maps to CSS selectors. A future Swift or Java pipeline maps the same names its own way.
+
+There are two kinds of state name:
+
+- **Reserved states** are a fixed vocabulary shared by every target: `disabled`, `hover`, `focused`, `active`, `dragged`, `error`, `selected`, and `checked`. The names and labels live in [`model/node-state.ts`](./model/node-state.ts).
+- **Custom states** are workspace-wide and live on `metadata.customStates`. Each entry is `{ key, label, description? }` with no render data. A reserved name cannot be a custom-state key.
+
+State authoring is allowed on `default` and `variant` nodes only. Instances inherit their source variant's states and cannot author or clear a state. The [`setStateProperties`](../rules/config/rules.config.ts) rule enforces this: `defaultVariant` and `userVariant` are allowed, `instance` and `board` are blocked.
+
+Programs change states with these actions:
+
+- `set_node_state_properties` merges properties into `states[state]`.
+- `reset_node_state_property` drops one property from `states[state]`, removing the state key when its bag becomes empty.
+- `reset_node_state` clears the whole `states[state]` bag.
+- `add_custom_state`, `rename_custom_state`, and `remove_custom_state` manage the `metadata.customStates` registry. Removing a custom state also strips that key from every node's `states`.
+
+State overrides interleave along the template chain. When a state resolves, each node in the chain contributes its Normal overrides and then its `states[state]` bag, from template to target. State resolution is opt-in: with no state requested, only the Normal layer applies.
 
 ---
 

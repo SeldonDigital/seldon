@@ -5,7 +5,7 @@ import { getWorkspaceNodes } from "../../helpers/general/get-workspace-nodes"
 import { getNodeSubtreeIds } from "../../helpers/nodes/get-node-subtree-ids"
 import { resolveNodePropertyResetPatch } from "../../helpers/nodes/resolve-node-property-reset"
 import { isEntryNodeForRules } from "../../helpers/rules/rules-node-subject"
-import { BoardKey, InstanceId, VariantId, Workspace } from "../../types"
+import { BoardKey, InstanceId, NodeState, VariantId, Workspace } from "../../types"
 import { nodeRetrievalService } from "../nodes/node-retrieval.service"
 import { mutateWorkspace } from "../shared/workspace-mutation.helper"
 import {
@@ -40,6 +40,63 @@ export function resetNodeProperty(
   workspace: Workspace,
 ): Workspace {
   return resetObjectProperty(nodeId, target, workspace)
+}
+
+/** Merges properties into a node's override bag for a given interaction state. */
+export function setNodeStateProperties(
+  nodeId: VariantId | InstanceId,
+  state: NodeState,
+  properties: Properties,
+  workspace: Workspace,
+  options?: { mergeSubProperties?: boolean },
+): Workspace {
+  return withNodeMutation(nodeId, workspace, (node) => {
+    if (!isEntryNodeForRules(node)) return
+    const states = node.states ?? {}
+    states[state] = mergeProperties(states[state] ?? {}, properties, options)
+    node.states = states
+  })
+}
+
+/**
+ * Drops one property (or sub-property facet) from a node's state bag. Removes
+ * the state key entirely when its bag becomes empty.
+ */
+export function resetNodeStateProperty(
+  nodeId: VariantId | InstanceId,
+  state: NodeState,
+  { propertyKey, subpropertyKey, layerIndex }: PropertyResetTarget,
+  workspace: Workspace,
+): Workspace {
+  return withNodeMutation(nodeId, workspace, (node) => {
+    if (!isEntryNodeForRules(node)) return
+    const bag = node.states?.[state]
+    if (!bag) return
+
+    if (subpropertyKey) {
+      deleteSubProperty(bag, propertyKey, subpropertyKey, layerIndex)
+    } else if (isLayerSlotReset(propertyKey, layerIndex)) {
+      resetLayerSlot(bag, propertyKey, layerIndex!)
+    } else {
+      delete bag[propertyKey]
+    }
+
+    if (Object.keys(bag).length === 0) {
+      delete node.states![state]
+    }
+  })
+}
+
+/** Clears a node's entire override bag for a given interaction state. */
+export function resetNodeState(
+  nodeId: VariantId | InstanceId,
+  state: NodeState,
+  workspace: Workspace,
+): Workspace {
+  return withNodeMutation(nodeId, workspace, (node) => {
+    if (!isEntryNodeForRules(node)) return
+    if (node.states) delete node.states[state]
+  })
 }
 
 /**

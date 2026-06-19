@@ -33,8 +33,13 @@ export async function exportReact(
 
   const { parentIndex } = buildExportContext(workspace)
 
-  const { nodeIdToClass, classes, classNameToNodeId, nodeTreeDepths } =
-    buildStyleRegistry(workspace, options.publishAll, parentIndex)
+  const {
+    nodeIdToClass,
+    classes,
+    stateClasses,
+    classNameToNodeId,
+    nodeTreeDepths,
+  } = buildStyleRegistry(workspace, options.publishAll, parentIndex)
 
   let componentsToExport = getComponentsToExport(
     workspace,
@@ -70,6 +75,7 @@ export async function exportReact(
       workspace,
       classNameToNodeId,
       nodeTreeDepths,
+      stateClasses,
     ),
   })
 

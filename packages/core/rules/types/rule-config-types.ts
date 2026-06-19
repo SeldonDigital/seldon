@@ -65,6 +65,7 @@ export interface MutationRules {
   duplicate: Config
   delete: DeleteConfig
   setProperties: Config
+  setStateProperties: Config
   reset: Config
   setTheme: Config
   rename: Config

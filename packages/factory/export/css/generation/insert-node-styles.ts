@@ -2,11 +2,33 @@ import { Workspace } from "@seldon/core"
 import { typeCheckingService } from "@seldon/core/workspace/services"
 
 import { getCssStringFromCssObject } from "../../../styles/css-properties/get-css-string-from-css-object"
+import type { CSSObject } from "../../../styles/css-properties/types"
 import {
   TransformStrategy,
   transformSource,
 } from "../../react/utils/transform-source"
-import { Classes } from "../types"
+import { Classes, StateClasses } from "../types"
+import { getStateSelectorSuffixes } from "./state-selectors"
+
+/**
+ * Builds the interaction-state CSS rules for one class. Each state emits a rule
+ * whose selector groups the state's suffixes, so equal-specificity rules resolve
+ * by source order. State rules come after the base rule for the same class.
+ */
+function buildStateRules(
+  className: string,
+  statesByName: { [stateName: string]: CSSObject },
+): string[] {
+  const rules: string[] = []
+  for (const [stateName, css] of Object.entries(statesByName)) {
+    if (Object.keys(css).length === 0) continue
+    const selector = getStateSelectorSuffixes(stateName)
+      .map((suffix) => `.${className}${suffix}`)
+      .join(", ")
+    rules.push(getCssStringFromCssObject(css, className, selector))
+  }
+  return rules
+}
 
 export function insertNodeStyles(
   stylesheet: string,
@@ -14,6 +36,7 @@ export function insertNodeStyles(
   workspace: Workspace,
   classNameToNodeId?: Record<string, string>,
   nodeTreeDepths?: Record<string, number>,
+  stateClasses?: StateClasses,
 ) {
   const sortedEntries = Object.entries(classes).sort(
     ([classNameA], [classNameB]) => {
@@ -71,12 +94,21 @@ export function insertNodeStyles(
     },
   )
 
-  const componentStyles = sortedEntries
-    .map(([className, css]) => getCssStringFromCssObject(css, className))
-    .filter((cssString) => {
-      const isEmptyRule = /^\.\S+\s*\{\s*\}$/.test(cssString.trim())
-      return !isEmptyRule
-    })
+  const componentStyles = sortedEntries.flatMap(([className, css]) => {
+    const rules: string[] = []
+
+    const baseRule = getCssStringFromCssObject(css, className)
+    const isEmptyRule = /^\.\S+\s*\{\s*\}$/.test(baseRule.trim())
+    if (!isEmptyRule) rules.push(baseRule)
+
+    // State rules follow the base rule for the same class so equal-specificity
+    // rules resolve by source order, and the variant carries the state for the
+    // instances that share its class.
+    const statesByName = stateClasses?.[className]
+    if (statesByName) rules.push(...buildStateRules(className, statesByName))
+
+    return rules
+  })
 
   return transformSource({
     source: stylesheet,

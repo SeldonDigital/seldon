@@ -8,13 +8,55 @@ import {
   invariant,
 } from "@seldon/core"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
+import { isEntryNodeInstance } from "@seldon/core/workspace/model/entry-node"
+import {
+  NORMAL_STATE,
+  type NodeState,
+} from "@seldon/core/workspace/model/node-state"
+import { nodeRelationshipService } from "@seldon/core/workspace/services"
+import { useBoardStateStore } from "@app/canvas/hooks/use-board-state-store"
+import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { useSelection } from "./use-selection"
 import { useWorkspace } from "./use-workspace"
 
+const INSTANCE_STATE_EDIT_MESSAGE =
+  "Instances use component states. To make changes, select the original or source component and edit the state there."
+
 export function useObjectProperties() {
-  const { dispatch } = useWorkspace()
+  const { dispatch, workspace } = useWorkspace()
   const { selection } = useSelection()
+  const addToast = useAddToast()
+  const activeStates = useBoardStateStore((store) => store.activeStates)
+
+  // Resolve the active interaction state for the selection's board. Board
+  // selections and Normal state fall back to the regular property path.
+  let activeState: NodeState = NORMAL_STATE
+  if (selection && !isBoard(selection)) {
+    const board = nodeRelationshipService.findBoardForNode(selection, workspace)
+    const boardKey = board ? getComponentKey(board) : undefined
+    if (boardKey) activeState = activeStates[boardKey] ?? NORMAL_STATE
+  }
+
+  const setNodeStateProperties = useCallback(
+    (input: ExtractPayload<"set_node_state_properties">) => {
+      dispatch({
+        type: "set_node_state_properties",
+        payload: input,
+      })
+    },
+    [dispatch],
+  )
+
+  const resetNodeStateProperty = useCallback(
+    (input: ExtractPayload<"reset_node_state_property">) => {
+      dispatch({
+        type: "reset_node_state_property",
+        payload: input,
+      })
+    },
+    [dispatch],
+  )
 
   const setNodeProperties = useCallback(
     (input: ExtractPayload<"set_node_properties">) => {
@@ -64,15 +106,39 @@ export function useObjectProperties() {
           boardKey: getComponentKey(selection),
           properties: properties,
         })
-      } else {
-        setNodeProperties({
+        return
+      }
+
+      // In a non-Normal state, node edits write the state override bag. Instances
+      // cannot author states, so block the edit and explain where to make it.
+      if (activeState !== NORMAL_STATE) {
+        if (isEntryNodeInstance(selection)) {
+          addToast(INSTANCE_STATE_EDIT_MESSAGE)
+          return
+        }
+        setNodeStateProperties({
           nodeId: selection.id,
-          properties: properties,
+          state: activeState,
+          properties,
           options,
         })
+        return
       }
+
+      setNodeProperties({
+        nodeId: selection.id,
+        properties: properties,
+        options,
+      })
     },
-    [selection, setBoardProperties, setNodeProperties],
+    [
+      selection,
+      activeState,
+      addToast,
+      setBoardProperties,
+      setNodeProperties,
+      setNodeStateProperties,
+    ],
   )
 
   const addNodeLayer = useCallback(
@@ -126,16 +192,39 @@ export function useObjectProperties() {
           subpropertyKey,
           layerIndex,
         })
-      } else {
-        resetNodeProperty({
+        return
+      }
+
+      if (activeState !== NORMAL_STATE) {
+        if (isEntryNodeInstance(selection)) {
+          addToast(INSTANCE_STATE_EDIT_MESSAGE)
+          return
+        }
+        resetNodeStateProperty({
           nodeId: selection.id,
+          state: activeState,
           propertyKey,
           subpropertyKey,
           layerIndex,
         })
+        return
       }
+
+      resetNodeProperty({
+        nodeId: selection.id,
+        propertyKey,
+        subpropertyKey,
+        layerIndex,
+      })
     },
-    [selection, resetNodeProperty, resetBoardProperty],
+    [
+      selection,
+      activeState,
+      addToast,
+      resetNodeProperty,
+      resetBoardProperty,
+      resetNodeStateProperty,
+    ],
   )
 
   return {

@@ -19,13 +19,16 @@ import {
   StyleTag,
 } from "@seldon/components/custom-components"
 import { CssPortal } from "../CssPortal"
+import { useActiveBoardState } from "../hooks/use-board-state-store"
 import { CanvasNode } from "../Node"
+import { BoardStateSwitcher } from "./BoardStateSwitcher"
 
 export type ComponentBoardProps = {
   board: Board
 }
 
 const boardRootStyle: CSSProperties = { position: "static" }
+const boardWrapperStyle: CSSProperties = { position: "relative" }
 
 /**
  * Native table-part elements (`<td>`, `<th>`, `<tr>`, `<thead>`, `<tbody>`) are
@@ -77,6 +80,11 @@ export function ComponentBoard({ board }: ComponentBoardProps) {
   const boardEntry = workspace.boards[boardKey] ?? board
   const theme = useNodeTheme(boardEntry)
   const className = `board-${boardKey}`
+  // Key the active interaction state by the displayed board's own identity, not
+  // the current selection, so switching boards always shows that board's state
+  // (Normal until changed) instead of inheriting the previously selected board's.
+  const stateBoardKey = resolveComponentKey(board, workspace)
+  const activeState = useActiveBoardState(stateBoardKey)
   const properties = getNodeProperties(boardEntry, workspace)
   const { device, isInPreviewMode } = usePreview()
   const boardRootRef = useRef<HTMLDivElement>(null)
@@ -118,30 +126,35 @@ export function ComponentBoard({ board }: ComponentBoardProps) {
           )}
         />
       </CssPortal>
-      <BoardCanvasFrame
-        ref={boardRootRef}
-        boardId={boardKey}
-        className={className}
-        style={boardRootStyle}
-      >
-        {wrapTablePartBoard(
-          TABLE_PART_WRAPPERS[boardKey as ComponentId],
-          getBoardVariantRootIds(boardEntry).map((variantId) => {
-            return (
-              <CanvasNode
-                key={variantId}
-                nodeId={variantId}
-                initialThemeId={
-                  (getBoardThemeRef(boardEntry) ?? "default") as ThemeInstanceId
-                }
-                parentNode={boardEntry}
-                rootPath={variantId}
-                isRoot
-              />
-            )
-          }),
-        )}
-      </BoardCanvasFrame>
+      <div style={boardWrapperStyle}>
+        <BoardStateSwitcher boardKey={stateBoardKey} />
+        <BoardCanvasFrame
+          ref={boardRootRef}
+          boardId={boardKey}
+          className={className}
+          style={boardRootStyle}
+        >
+          {wrapTablePartBoard(
+            TABLE_PART_WRAPPERS[boardKey as ComponentId],
+            getBoardVariantRootIds(boardEntry).map((variantId) => {
+              return (
+                <CanvasNode
+                  key={variantId}
+                  nodeId={variantId}
+                  initialThemeId={
+                    (getBoardThemeRef(boardEntry) ??
+                      "default") as ThemeInstanceId
+                  }
+                  parentNode={boardEntry}
+                  rootPath={variantId}
+                  isRoot
+                  activeState={activeState}
+                />
+              )
+            }),
+          )}
+        </BoardCanvasFrame>
+      </div>
     </>
   )
 }

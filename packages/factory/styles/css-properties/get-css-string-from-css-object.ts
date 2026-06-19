@@ -5,6 +5,9 @@ import { CSSObject } from "./types"
  * Convert a CSSObject to a string that can be inserted into a stylesheet
  * @param cssObject
  * @param className
+ * @param selector Optional full selector to use instead of `.${className}`.
+ *   Used to emit interaction-state rules such as `.my-class:hover` or grouped
+ *   selectors like `.my-class:disabled, .my-class[aria-disabled="true"]`.
  * @returns
  *
  * Example (for component styles):
@@ -14,11 +17,9 @@ import { CSSObject } from "./types"
 export function getCssStringFromCssObject(
   cssObject: CSSObject,
   className: string,
+  selector?: string,
 ) {
-  /**
-   * We need to iterate over the cssObject and convert it to a string
-   * Later on we can handle other cases like hover, focus, etc.
-   */
+  const ruleSelector = selector ?? `.${className}`
   const styles: string[] = []
 
   const entries = Object.entries(cssObject)
@@ -33,8 +34,8 @@ export function getCssStringFromCssObject(
 
   // If the css object contains no valid values, return empty rule to ensure classname exists
   if (styles.length === 0) {
-    return `.${className} {}`
+    return `${ruleSelector} {}`
   }
 
-  return `.${className} {${styles.join("\n")}}`
+  return `${ruleSelector} {${styles.join("\n")}}`
 }

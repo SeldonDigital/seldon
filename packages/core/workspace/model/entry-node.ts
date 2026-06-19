@@ -1,4 +1,5 @@
 import type { Properties } from "../../properties/types/properties"
+import type { EntryNodeStates } from "./node-state"
 
 export type EntryNodeId = string
 
@@ -32,6 +33,12 @@ export interface EntryNode {
   theme: EntryNodeThemeRef | null
   template: string
   overrides: EntryNodePropertyOverrides
+  /**
+   * Optional per-state property override bags layered on top of `overrides`
+   * (the Normal layer). Sparse: a state key is present only when it carries
+   * overrides. Authored on default and user variants only; instances inherit.
+   */
+  states?: EntryNodeStates
   origin?: NodeOrigin
   /**
    * Stable, user-assigned reference handle for this node. Unique across the

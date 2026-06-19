@@ -13,6 +13,8 @@ import { getComponentPropertyDefaults } from "../helpers/components/get-componen
 import { getNodeParentIndex } from "../helpers/graph/build-node-parent-index"
 import { getNodeCatalogId } from "../helpers/nodes/get-node-catalog-id"
 import { resolveLayoutMode } from "../helpers/nodes/resolve-layout-mode"
+import type { EntryNodeStates, NodeState } from "../model/node-state"
+import { NORMAL_STATE } from "../model/node-state"
 import { parseNodeTemplate, parseThemeTemplate } from "../model/template-ref"
 import type { Board } from "../types"
 import type { EntryNode, Workspace } from "../types"
@@ -28,6 +30,7 @@ interface WorkspaceNode {
   template?: string
   properties?: Properties
   overrides?: Properties
+  states?: EntryNodeStates
   theme?: string | null
   children?: string[]
   instanceOf?: string
@@ -72,6 +75,13 @@ export interface ComputeNodePropertiesOptions {
    * exported CSS.
    */
   rootParentFallback?: "board"
+  /**
+   * Interaction state to resolve. When omitted or `"normal"`, only the Normal
+   * (`overrides`) layer is used. When set to a reserved or custom state name,
+   * each node's `states[state]` bag is layered on top of its Normal overrides
+   * along the template chain.
+   */
+  state?: NodeState
 }
 
 function getNodes(workspace: WorkspacePropertySource): NodeRecord {
@@ -100,6 +110,20 @@ function getOwnProperties(
       : undefined) ??
     {}
   )
+}
+
+/**
+ * Returns the node's override bag for `state`, or an empty bag when no state is
+ * requested, the state is Normal, or the node has no overrides for it. Boards
+ * carry no states, so they always return an empty bag.
+ */
+function getOwnStateProperties(
+  source: WorkspaceNode | WorkspaceComponent,
+  state: NodeState | undefined,
+): Properties {
+  if (!state || state === NORMAL_STATE) return {}
+  const states = "states" in source ? source.states : undefined
+  return states?.[state] ?? {}
 }
 
 function getComponentThemeRef(board: WorkspaceComponent): string | null {
@@ -243,6 +267,12 @@ export interface EffectivePropertiesOptions {
   theme?: ComputedTheme
   /** Parent index used for theme inheritance when `theme` is omitted. */
   parentIndex?: ReadonlyMap<string, string>
+  /**
+   * Interaction state to resolve. When omitted or `"normal"`, only Normal
+   * overrides are merged. Otherwise each node's `states[state]` bag layers on
+   * top of its Normal overrides along the template chain.
+   */
+  state?: NodeState
 }
 
 /**
@@ -286,14 +316,16 @@ function getTemplatePropertySources(
   node: WorkspaceNode,
   workspace: WorkspacePropertySource,
   visited: Set<string>,
+  state?: NodeState,
 ): Properties[] {
   const templateNode = getTemplateNode(node, workspace)
   if (!templateNode || visited.has(templateNode.id)) return []
 
   visited.add(templateNode.id)
   return [
-    ...getTemplatePropertySources(templateNode, workspace, visited),
+    ...getTemplatePropertySources(templateNode, workspace, visited, state),
     getOwnProperties(templateNode),
+    getOwnStateProperties(templateNode, state),
   ]
 }
 
@@ -315,7 +347,12 @@ export function getInheritedNodeProperties(
     expandPresetSources(
       [
         schemaProperties,
-        ...getTemplatePropertySources(node, workspace, new Set([node.id])),
+        ...getTemplatePropertySources(
+          node,
+          workspace,
+          new Set([node.id]),
+          options.state,
+        ),
       ],
       () =>
         options.theme ?? resolveNodeTheme(node, workspace, options.parentIndex),
@@ -339,7 +376,7 @@ export function getEffectiveNodeProperties(
 ): Properties {
   const theme = options.theme
   if (theme) {
-    const cacheKey = `${targetId}|${theme.id}`
+    const cacheKey = `${targetId}|${theme.id}|${options.state ?? NORMAL_STATE}`
     let byKey = effectivePropertiesCache.get(workspace as object)
     const cached = byKey?.get(cacheKey)
     if (cached) return cached
@@ -382,8 +419,14 @@ function computeEffectiveNodeProperties(
     expandPresetSources(
       [
         schemaProperties,
-        ...getTemplatePropertySources(node, workspace, new Set([node.id])),
+        ...getTemplatePropertySources(
+          node,
+          workspace,
+          new Set([node.id]),
+          options.state,
+        ),
         getOwnProperties(node),
+        getOwnStateProperties(node, options.state),
       ],
       () =>
         options.theme ?? resolveNodeTheme(node, workspace, options.parentIndex),
@@ -424,6 +467,7 @@ function buildComputeContext(
   visited: Set<string>,
   compositionParentByChild: ReadonlyMap<string, string> | undefined,
   rootParentFallback?: "board",
+  state?: NodeState,
 ): ComputeContext {
   const parentNode = findParentNode(node, workspace, compositionParentByChild)
 
@@ -438,6 +482,7 @@ function buildComputeContext(
       visited,
       compositionParentByChild,
       rootParentFallback,
+      state,
     )
     // A node's effective theme is its own theme, otherwise the nearest
     // ancestor's. The parent chain is already resolved here, so inherit the
@@ -461,6 +506,7 @@ function buildComputeContext(
 
   const effectiveProperties = getEffectiveNodeProperties(node.id, workspace, {
     theme,
+    state,
   })
 
   const layoutMode = resolveLayoutMode(
@@ -490,7 +536,7 @@ export function getNodeComputeContext(
   workspace: WorkspacePropertySource,
   options: Pick<
     ComputeNodePropertiesOptions,
-    "parentIndex" | "rootParentFallback"
+    "parentIndex" | "rootParentFallback" | "state"
   > = {},
 ): ComputeContext {
   const node = getNodes(workspace)[targetId]
@@ -519,6 +565,7 @@ export function getNodeComputeContext(
     new Set([node.id]),
     compositionParentByChild,
     options.rootParentFallback,
+    options.state,
   )
 }
 
@@ -530,6 +577,7 @@ export function computeNodeProperties(
   if (options.stage === "effective") {
     return getEffectiveNodeProperties(targetId, workspace, {
       parentIndex: options.parentIndex,
+      state: options.state,
     })
   }
 
@@ -559,6 +607,7 @@ export function computeNodeProperties(
     new Set([node.id]),
     compositionParentByChild,
     options.rootParentFallback,
+    options.state,
   )
   const inputProperties = context.properties
 
