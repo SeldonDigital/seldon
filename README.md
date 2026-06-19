@@ -153,13 +153,9 @@ npm test --workspace @seldon/core
 
 ## Where to go from here
 
-At the time of this writing, Seldon is just getting of the ground. It is missing many features, behaviors, code export languages such as Swift and Java, and other core pieces. But rather than wait until it's all done and build it in a closed environment, we're going to build it out in the open and evolve it based on your feedback. Hopefully many of you will become contributors as well.
+At the time of this writing, Seldon is just getting off the ground. It is missing features, behaviors, code export for Swift and Java, and other pieces. But rather than wait until it's all done—building all of this in a closed environment—we're going to build it out in the open and evolve it based on your feedback. Hopefully many of you will become contributors as well.
 
-There's a lot to do, so we also need feedback on what is working, what is not, and what should be added sooner rather than later. "It's a process," as they say.
-
-By the end of the first year, we expect to have a fairly robust codebase that will be able to do a whole host of things not easily possible today. Even a robust locally run Editor that works as well as anything out there.
-
-As that begins to take shape, we'll all be able to better see where the future is going, and we fully expect that wasting compute, energy, and money on writing Button code will not be a thing.
+There's a lot to do. We need feedback on what is working, what is not, and what should be added sooner rather than later. "It's a process," as they say. By the end of the first year, we expect to have a fairly robust codebase that will be able to do a whole host of things not easily possible today—including a robust, locally run Editor that works as well as any design tool on the market. 
 
 ---
 
