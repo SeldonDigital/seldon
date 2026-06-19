@@ -6,11 +6,11 @@ import { ShadowColorValue } from "./shadow-color"
 import { ShadowOffsetValue } from "./shadow-offset"
 import { ShadowOpacityValue } from "./shadow-opacity"
 import { ShadowSpreadValue } from "./shadow-spread"
-import { ShadowTypeValue } from "./shadow-type"
+import { ShadowStyleValue } from "./shadow-style"
 
 export interface ShadowCompound {
   preset?: ShadowValue | EmptyValue
-  type?: ShadowTypeValue | EmptyValue
+  style?: ShadowStyleValue | EmptyValue
   offsetX?: ShadowOffsetValue | EmptyValue
   offsetY?: ShadowOffsetValue | EmptyValue
   blur?: ShadowBlurValue | EmptyValue
@@ -21,7 +21,7 @@ export interface ShadowCompound {
 }
 
 export * from "./shadow"
-export * from "./shadow-type"
+export * from "./shadow-style"
 export * from "./shadow-offset"
 export * from "./shadow-blur"
 export * from "./shadow-color"

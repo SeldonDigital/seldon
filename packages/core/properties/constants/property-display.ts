@@ -190,7 +190,7 @@ export const PROPERTY_DISPLAY_ORDER: ReadonlyArray<{
       "gradientStopOpacity",
       "gradientStopPosition",
       "shadowPreset",
-      "shadowType",
+      "shadowStyle",
       "shadowOffsetX",
       "shadowOffsetY",
       "shadowBlur",

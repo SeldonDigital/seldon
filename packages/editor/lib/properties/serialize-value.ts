@@ -34,6 +34,7 @@ import {
   ScreenSize,
   Scroll,
   ScrollbarStyle,
+  ShadowStyle,
   TextAlign,
   TextCasing,
   TextDecoration,
@@ -206,6 +207,11 @@ function initializePresetMappings() {
   // Scroll presets
   Object.entries(Scroll).forEach(([key, value]) => {
     PRESET_MAPPINGS.set(value, Scroll[key as keyof typeof Scroll])
+  })
+
+  // Shadow placement (outer/inner) presets
+  Object.entries(ShadowStyle).forEach(([key, value]) => {
+    PRESET_MAPPINGS.set(value, ShadowStyle[key as keyof typeof ShadowStyle])
   })
   Object.entries(ScrollbarStyle).forEach(([key, value]) => {
     PRESET_MAPPINGS.set(
