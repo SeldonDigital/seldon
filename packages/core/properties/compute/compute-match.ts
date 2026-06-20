@@ -1,4 +1,4 @@
-import { ValueType } from "../constants"
+import { EMPTY_VALUE, ValueType } from "../constants"
 import type { ComputedMatchValue } from "../values/shared/computed/match"
 import { getBasedOnValue } from "./get-based-on-value"
 import { ComputeContext } from "./types"
@@ -8,12 +8,12 @@ export const MATCH_DISPLAY_NAME = "Match"
 
 /**
  * Replaces this computed slot with the primitive value at `basedOn`. Missing `basedOn` becomes
- * `#parent.buttonSize`. Throws when the value at `basedOn` is still `COMPUTED`.
+ * `#parent.buttonSize`. Degrades to `EMPTY` when the `basedOn` path cannot be resolved or still
+ * resolves to a `COMPUTED` value, so an unresolved match never breaks compute or CSS generation.
  *
  * @param value - Stored computed match value
  * @param context - Theme and contexts for `getBasedOnValue`
- * @returns The value object returned for the `basedOn` path
- * @throws When the resolved value at `basedOn` has type `COMPUTED`
+ * @returns The value at the `basedOn` path, or `EMPTY` when it cannot be resolved
  */
 export function computeMatch(
   value: ComputedMatchValue,
@@ -29,10 +29,15 @@ export function computeMatch(
     },
   }
 
-  const basedOnValue = getBasedOnValue(valueWithDefaults, context)
+  let basedOnValue
+  try {
+    basedOnValue = getBasedOnValue(valueWithDefaults, context)
+  } catch {
+    return EMPTY_VALUE
+  }
 
   if (basedOnValue.type === ValueType.COMPUTED) {
-    throw new Error("The value being matched cannot be a computed value.")
+    return EMPTY_VALUE
   }
 
   return basedOnValue

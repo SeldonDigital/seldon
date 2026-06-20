@@ -138,7 +138,14 @@ function resolveHighContrastInputs(
       context,
     )
 
-    if (!resolvedValue || isCompoundValue(resolvedValue)) {
+    // A `basedOn` color that is still `COMPUTED` (e.g. the surface uses `MATCH`)
+    // has no resolvable color yet, so fall back to the reference surface instead
+    // of handing a computed value to `resolveColor`, which cannot resolve it.
+    if (
+      !resolvedValue ||
+      isCompoundValue(resolvedValue) ||
+      (resolvedValue as { type?: ValueType }).type === ValueType.COMPUTED
+    ) {
       return {
         basedOnValue: FALLBACK_SURFACE_COLOR,
         brightness: undefined,

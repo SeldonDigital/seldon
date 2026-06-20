@@ -1,11 +1,13 @@
 /**
  * Handles computed value changes for property controls
  */
-import { ComputedFunction, Value, Workspace } from "@seldon/core"
+import { ComputedFunction, Properties, Value, Workspace } from "@seldon/core"
 import { Board, Instance, Variant } from "@seldon/core"
+import { getEffectiveProperties as coreGetEffectiveProperties } from "@seldon/core/helpers/properties/properties-bridge"
 import { getPropertyCategory } from "@seldon/core/properties/schemas"
+import { parsePropertyPath } from "@lib/properties/property-paths"
 import { canApplyComputedSafely, createComputedValue } from "./computed-utils"
-import { FlatProperty } from "./properties-data"
+import { FlatProperty, getPropertiesSubjectId } from "./properties-data"
 import { getSubPropertyKeys } from "./property-types"
 
 interface HandleComputedValueOptions {
@@ -43,6 +45,38 @@ export function handleComputedValueChange({
         `[PropertiesPane] Cannot apply computed function ${newValue} to ${property.key}: required inputs missing.`,
       )
       return false
+    }
+
+    // A layered-paint facet (`background.0.color`, `shadow.0.color`) is not a
+    // plain two-segment compound. Write the computed value into its layer slot
+    // and persist the full stack as an array so the paint property keeps its
+    // layered shape. The generic sub-property path below would collapse the key
+    // to two segments and store the root as an object, breaking the layer.
+    const parsed = parsePropertyPath(property.key)
+    if (parsed.kind === "layered-facet" && selection) {
+      const computedValue = createComputedValue(computedFunction, {
+        currentValue: property.value,
+        workspace,
+        node: selection,
+      })
+
+      const current = coreGetEffectiveProperties(
+        getPropertiesSubjectId(selection),
+        workspace,
+      )[parsed.root as keyof Properties]
+      const layers = Array.isArray(current)
+        ? [...(current as Array<Record<string, unknown>>)]
+        : current
+          ? [current as Record<string, unknown>]
+          : []
+      while (layers.length <= parsed.index) layers.push({})
+      layers[parsed.index] = {
+        ...(layers[parsed.index] as Record<string, unknown>),
+        [parsed.facet]: computedValue,
+      }
+
+      setProperties({ [parsed.root]: layers }, { mergeSubProperties: false })
+      return true
     }
 
     // Apply computed value based on property type
