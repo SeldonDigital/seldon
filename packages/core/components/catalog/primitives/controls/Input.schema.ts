@@ -327,7 +327,10 @@ export const schema = {
           value: Sdn.InputType.TEXT,
         },
         font: {
-          size: { type: Sdn.ValueType.THEME_ORDINAL, value: "@fontSize.xsmall" },
+          size: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@fontSize.xsmall",
+          },
         },
         role: {
           type: Sdn.ValueType.OPTION,

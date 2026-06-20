@@ -143,10 +143,22 @@ export const schema = {
         overrides: {
           width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
           padding: {
-            top: { type: Sdn.ValueType.EXACT, value: { unit: Sdn.Unit.PX, value: 0 } },
-            right: { type: Sdn.ValueType.EXACT, value: { unit: Sdn.Unit.PX, value: 0 } },
-            bottom: { type: Sdn.ValueType.EXACT, value: { unit: Sdn.Unit.PX, value: 0 } },
-            left: { type: Sdn.ValueType.EXACT, value: { unit: Sdn.Unit.PX, value: 0 } },
+            top: {
+              type: Sdn.ValueType.EXACT,
+              value: { unit: Sdn.Unit.PX, value: 0 },
+            },
+            right: {
+              type: Sdn.ValueType.EXACT,
+              value: { unit: Sdn.Unit.PX, value: 0 },
+            },
+            bottom: {
+              type: Sdn.ValueType.EXACT,
+              value: { unit: Sdn.Unit.PX, value: 0 },
+            },
+            left: {
+              type: Sdn.ValueType.EXACT,
+              value: { unit: Sdn.Unit.PX, value: 0 },
+            },
           },
           background: [
             {
@@ -215,10 +227,22 @@ export const schema = {
           overrides: {
             width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
             padding: {
-              top: { type: Sdn.ValueType.EXACT, value: { unit: Sdn.Unit.PX, value: 0 } },
-              right: { type: Sdn.ValueType.EXACT, value: { unit: Sdn.Unit.PX, value: 0 } },
-              bottom: { type: Sdn.ValueType.EXACT, value: { unit: Sdn.Unit.PX, value: 0 } },
-              left: { type: Sdn.ValueType.EXACT, value: { unit: Sdn.Unit.PX, value: 0 } },
+              top: {
+                type: Sdn.ValueType.EXACT,
+                value: { unit: Sdn.Unit.PX, value: 0 },
+              },
+              right: {
+                type: Sdn.ValueType.EXACT,
+                value: { unit: Sdn.Unit.PX, value: 0 },
+              },
+              bottom: {
+                type: Sdn.ValueType.EXACT,
+                value: { unit: Sdn.Unit.PX, value: 0 },
+              },
+              left: {
+                type: Sdn.ValueType.EXACT,
+                value: { unit: Sdn.Unit.PX, value: 0 },
+              },
             },
             background: [
               {

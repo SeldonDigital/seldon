@@ -32,6 +32,10 @@ import {
   schema as chipSchema,
 } from "./elements/Chip.schema"
 import {
+  exportConfig as comboboxTriggerExportConfig,
+  schema as comboboxTriggerSchema,
+} from "./elements/ComboboxTrigger.schema"
+import {
   exportConfig as descriptionListExportConfig,
   schema as descriptionListSchema,
 } from "./elements/DescriptionList.schema"
@@ -51,10 +55,6 @@ import {
   exportConfig as listExportConfig,
   schema as listSchema,
 } from "./elements/List.schema"
-import {
-  exportConfig as comboboxTriggerExportConfig,
-  schema as comboboxTriggerSchema,
-} from "./elements/ComboboxTrigger.schema"
 import {
   exportConfig as listboxOptionExportConfig,
   schema as listboxOptionSchema,
@@ -151,6 +151,10 @@ import {
   schema as barSchema,
 } from "./parts/Bar.schema"
 import {
+  exportConfig as comboboxExportConfig,
+  schema as comboboxSchema,
+} from "./parts/Combobox.schema"
+import {
   exportConfig as fieldsetExportConfig,
   schema as fieldsetSchema,
 } from "./parts/Fieldset.schema"
@@ -158,10 +162,6 @@ import {
   exportConfig as listStandardExportConfig,
   schema as listStandardSchema,
 } from "./parts/ListStandard.schema"
-import {
-  exportConfig as comboboxExportConfig,
-  schema as comboboxSchema,
-} from "./parts/Combobox.schema"
 import {
   exportConfig as listboxExportConfig,
   schema as listboxSchema,
