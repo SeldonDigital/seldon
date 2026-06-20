@@ -1,11 +1,11 @@
 /**
  * Handles computed value changes for property controls
  */
+import { parsePropertyPath } from "@lib/properties/property-paths"
 import { ComputedFunction, Properties, Value, Workspace } from "@seldon/core"
 import { Board, Instance, Variant } from "@seldon/core"
 import { getEffectiveProperties as coreGetEffectiveProperties } from "@seldon/core/helpers/properties/properties-bridge"
 import { getPropertyCategory } from "@seldon/core/properties/schemas"
-import { parsePropertyPath } from "@lib/properties/property-paths"
 import { canApplyComputedSafely, createComputedValue } from "./computed-utils"
 import { FlatProperty, getPropertiesSubjectId } from "./properties-data"
 import { getSubPropertyKeys } from "./property-types"

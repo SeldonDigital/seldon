@@ -269,7 +269,10 @@ export const schema = {
       intent:
         "The current day, outlined with a primary ring while keeping the surface clear.",
       overrides: {
-        ariaCurrent: { type: Sdn.ValueType.OPTION, value: Sdn.AriaCurrent.DATE },
+        ariaCurrent: {
+          type: Sdn.ValueType.OPTION,
+          value: Sdn.AriaCurrent.DATE,
+        },
         background: [
           {
             kind: {
