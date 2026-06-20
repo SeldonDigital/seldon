@@ -52,6 +52,10 @@ import {
   schema as listSchema,
 } from "./elements/List.schema"
 import {
+  exportConfig as comboboxTriggerExportConfig,
+  schema as comboboxTriggerSchema,
+} from "./elements/ComboboxTrigger.schema"
+import {
   exportConfig as listboxOptionExportConfig,
   schema as listboxOptionSchema,
 } from "./elements/ListboxOption.schema"
@@ -154,6 +158,10 @@ import {
   exportConfig as listStandardExportConfig,
   schema as listStandardSchema,
 } from "./parts/ListStandard.schema"
+import {
+  exportConfig as comboboxExportConfig,
+  schema as comboboxSchema,
+} from "./parts/Combobox.schema"
 import {
   exportConfig as listboxExportConfig,
   schema as listboxSchema,
@@ -265,6 +273,7 @@ const elements: ComponentSchema[] = [
   itemSchema,
   menuItemSchema,
   listboxOptionSchema,
+  comboboxTriggerSchema,
   navSchema,
   listSchema,
   sectionSchema,
@@ -300,6 +309,7 @@ const parts: ComponentSchema[] = [
   listStandardSchema,
   listboxSchema,
   menuSchema,
+  comboboxSchema,
   articleCardSchema,
   mediaCardSchema,
   notificationCardSchema,
@@ -376,6 +386,7 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   [ComponentId.ITEM]: itemExportConfig,
   [ComponentId.MENU_ITEM]: menuItemExportConfig,
   [ComponentId.LISTBOX_OPTION]: listboxOptionExportConfig,
+  [ComponentId.COMBOBOX_TRIGGER]: comboboxTriggerExportConfig,
   [ComponentId.NAV]: navExportConfig,
   [ComponentId.LIST]: listExportConfig,
   [ComponentId.SECTION]: sectionExportConfig,
@@ -407,6 +418,7 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   [ComponentId.LIST_STANDARD]: listStandardExportConfig,
   [ComponentId.LISTBOX]: listboxExportConfig,
   [ComponentId.MENU]: menuExportConfig,
+  [ComponentId.COMBOBOX]: comboboxExportConfig,
   [ComponentId.ARTICLE_CARD]: articleCardExportConfig,
   [ComponentId.MEDIA_CARD]: mediaCardExportConfig,
   [ComponentId.NOTIFICATION_CARD]: notificationCardExportConfig,

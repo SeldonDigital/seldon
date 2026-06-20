@@ -17,6 +17,8 @@ export enum ComponentId {
   CALENDAR_DAY = "calendarDay",
   CARD_STACKED = "cardStacked",
   CHIP = "chip",
+  COMBOBOX = "combobox",
+  COMBOBOX_TRIGGER = "comboboxTrigger",
   CONTAINER = "container",
   MEDIA_CARD = "mediaCard",
   NOTIFICATION_CARD = "notificationCard",
