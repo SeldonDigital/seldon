@@ -205,15 +205,26 @@ export const schema = {
       },
       children: [
         {
-          component: Seldon.ComponentId.ICON,
+          component: Seldon.ComponentId.TEXT,
+          variant: "label",
           overrides: {
-            symbol: { type: Sdn.ValueType.OPTION, value: "material-check" },
-            size: { type: Sdn.ValueType.THEME_ORDINAL, value: "@size.small" },
+            content: { type: Sdn.ValueType.EXACT, value: "✓" },
+            width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
             color: {
               type: Sdn.ValueType.COMPUTED,
               value: {
                 function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
                 input: { basedOn: "#parent.background.color" },
+              },
+            },
+            font: {
+              preset: {
+                type: Sdn.ValueType.THEME_CATEGORICAL,
+                value: "@font.normal",
+              },
+              size: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@fontSize.xsmall",
               },
             },
           },
@@ -258,15 +269,26 @@ export const schema = {
       },
       children: [
         {
-          component: Seldon.ComponentId.ICON,
+          component: Seldon.ComponentId.TEXT,
+          variant: "label",
           overrides: {
-            symbol: { type: Sdn.ValueType.OPTION, value: "material-check" },
-            size: { type: Sdn.ValueType.THEME_ORDINAL, value: "@size.small" },
+            content: { type: Sdn.ValueType.EXACT, value: "•" },
+            width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
             color: {
               type: Sdn.ValueType.COMPUTED,
               value: {
                 function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
                 input: { basedOn: "#parent.background.color" },
+              },
+            },
+            font: {
+              preset: {
+                type: Sdn.ValueType.THEME_CATEGORICAL,
+                value: "@font.normal",
+              },
+              size: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@fontSize.xsmall",
               },
             },
           },

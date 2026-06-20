@@ -145,6 +145,7 @@ export const schema = {
         },
       },
       { component: Seldon.ComponentId.MENU_ITEM, variant: "checkbox" },
+      { component: Seldon.ComponentId.MENU_ITEM, variant: "radio" },
     ],
   },
 } as const satisfies ComponentSchema

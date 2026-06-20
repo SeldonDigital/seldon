@@ -129,13 +129,128 @@ export const schema = {
   default: {
     children: [
       { component: Seldon.ComponentId.LISTBOX_OPTION },
-      {
-        component: Seldon.ComponentId.LISTBOX_OPTION,
-        variant: "selected",
-      },
+      { component: Seldon.ComponentId.LISTBOX_OPTION },
       { component: Seldon.ComponentId.LISTBOX_OPTION },
     ],
   },
+  variants: [
+    {
+      id: "grouped",
+      label: "Grouped Listbox",
+      intent: "Listbox whose options are organized into labeled groups.",
+      children: [
+        {
+          component: Seldon.ComponentId.FRAME,
+          overrides: {
+            role: { type: Sdn.ValueType.OPTION, value: Sdn.AriaRole.GROUP },
+            orientation: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.Orientation.VERTICAL,
+            },
+            width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+            height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+            gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.tight" },
+          },
+          children: [
+            {
+              component: Seldon.ComponentId.TEXT,
+              variant: "label",
+              overrides: {
+                content: { type: Sdn.ValueType.EXACT, value: "Group A" },
+                width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+                opacity: {
+                  type: Sdn.ValueType.EXACT,
+                  value: { unit: Sdn.Unit.PERCENT, value: 60 },
+                },
+                color: {
+                  type: Sdn.ValueType.COMPUTED,
+                  value: {
+                    function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+                    input: { basedOn: "#parent.background.color" },
+                  },
+                },
+                font: {
+                  preset: {
+                    type: Sdn.ValueType.THEME_CATEGORICAL,
+                    value: "@font.normal",
+                  },
+                  size: {
+                    type: Sdn.ValueType.THEME_ORDINAL,
+                    value: "@fontSize.xsmall",
+                  },
+                },
+              },
+            },
+            { component: Seldon.ComponentId.LISTBOX_OPTION },
+            { component: Seldon.ComponentId.LISTBOX_OPTION },
+          ],
+        },
+        {
+          component: Seldon.ComponentId.HR,
+          overrides: {
+            margin: {
+              top: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@margin.tight",
+              },
+              right: { type: Sdn.ValueType.EMPTY, value: null },
+              bottom: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@margin.tight",
+              },
+              left: { type: Sdn.ValueType.EMPTY, value: null },
+            },
+          },
+        },
+        {
+          component: Seldon.ComponentId.FRAME,
+          overrides: {
+            role: { type: Sdn.ValueType.OPTION, value: Sdn.AriaRole.GROUP },
+            orientation: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.Orientation.VERTICAL,
+            },
+            width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+            height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+            gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.tight" },
+          },
+          children: [
+            {
+              component: Seldon.ComponentId.TEXT,
+              variant: "label",
+              overrides: {
+                content: { type: Sdn.ValueType.EXACT, value: "Group B" },
+                width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+                opacity: {
+                  type: Sdn.ValueType.EXACT,
+                  value: { unit: Sdn.Unit.PERCENT, value: 60 },
+                },
+                color: {
+                  type: Sdn.ValueType.COMPUTED,
+                  value: {
+                    function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+                    input: { basedOn: "#parent.background.color" },
+                  },
+                },
+                font: {
+                  preset: {
+                    type: Sdn.ValueType.THEME_CATEGORICAL,
+                    value: "@font.normal",
+                  },
+                  size: {
+                    type: Sdn.ValueType.THEME_ORDINAL,
+                    value: "@fontSize.xsmall",
+                  },
+                },
+              },
+            },
+            { component: Seldon.ComponentId.LISTBOX_OPTION },
+            { component: Seldon.ComponentId.LISTBOX_OPTION },
+          ],
+        },
+      ],
+    },
+  ],
 } as const satisfies ComponentSchema
 
 export const exportConfig: ComponentExport = {
