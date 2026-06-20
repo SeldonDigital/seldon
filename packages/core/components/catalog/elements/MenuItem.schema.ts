@@ -15,6 +15,7 @@ export const schema = {
     ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
     ariaHidden: { type: Sdn.ValueType.EXACT, value: false },
     ariaDisabled: { type: Sdn.ValueType.EMPTY, value: null },
+    ariaChecked: { type: Sdn.ValueType.EMPTY, value: null },
     cursor: { type: Sdn.ValueType.OPTION, value: Sdn.Cursor.POINTER },
     orientation: {
       type: Sdn.ValueType.OPTION,

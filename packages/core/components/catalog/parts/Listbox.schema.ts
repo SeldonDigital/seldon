@@ -14,6 +14,7 @@ export const schema = {
     role: { type: Sdn.ValueType.OPTION, value: Sdn.AriaRole.LISTBOX },
     ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
     ariaHidden: { type: Sdn.ValueType.EXACT, value: false },
+    direction: { type: Sdn.ValueType.EMPTY, value: null },
     orientation: {
       type: Sdn.ValueType.OPTION,
       value: Sdn.Orientation.VERTICAL,
@@ -34,6 +35,7 @@ export const schema = {
       left: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.tight" },
     },
     gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.tight" },
+    rotation: { type: Sdn.ValueType.EMPTY, value: null },
     wrapChildren: { type: Sdn.ValueType.EXACT, value: false },
     clip: { type: Sdn.ValueType.EMPTY, value: null },
     color: { type: Sdn.ValueType.EMPTY, value: null },

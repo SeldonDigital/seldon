@@ -28,8 +28,6 @@ export const schema = {
       type: Sdn.ValueType.OPTION,
       value: Sdn.Cursor.POINTER,
     },
-    direction: { type: Sdn.ValueType.EMPTY, value: null },
-    align: { type: Sdn.ValueType.EMPTY, value: null },
     width: { type: Sdn.ValueType.EMPTY, value: null },
     height: { type: Sdn.ValueType.EMPTY, value: null },
     margin: {
@@ -44,10 +42,7 @@ export const schema = {
       bottom: { type: Sdn.ValueType.EMPTY, value: null },
       left: { type: Sdn.ValueType.EMPTY, value: null },
     },
-    gap: { type: Sdn.ValueType.EMPTY, value: null },
     rotation: { type: Sdn.ValueType.EMPTY, value: null },
-    wrapChildren: { type: Sdn.ValueType.EMPTY, value: null },
-    clip: { type: Sdn.ValueType.EMPTY, value: null },
     color: { type: Sdn.ValueType.EMPTY, value: null },
     brightness: { type: Sdn.ValueType.EMPTY, value: null },
     opacity: { type: Sdn.ValueType.EMPTY, value: null },
@@ -114,11 +109,14 @@ export const schema = {
       size: { type: Sdn.ValueType.EMPTY, value: null },
       lineHeight: { type: Sdn.ValueType.EMPTY, value: null },
       textCase: { type: Sdn.ValueType.EMPTY, value: null },
+      letterSpacing: { type: Sdn.ValueType.EMPTY, value: null },
     },
     textDecoration: {
       type: Sdn.ValueType.OPTION,
       value: Sdn.TextDecoration.UNDERLINE,
     },
+    wrapText: { type: Sdn.ValueType.EXACT, value: true },
+    lines: { type: Sdn.ValueType.EMPTY, value: null },
     shadow: [
       {
         preset: {

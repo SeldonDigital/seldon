@@ -37,6 +37,7 @@ export const schema = {
       value: "Placeholder text",
     },
     buttonSize: { type: Sdn.ValueType.EMPTY, value: null },
+    cursor: { type: Sdn.ValueType.EMPTY, value: null },
     width: {
       type: Sdn.ValueType.OPTION,
       value: Sdn.Resize.FILL,
@@ -74,7 +75,7 @@ export const schema = {
       value: {
         function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
         input: {
-          basedOn: "#parent.background.color",
+          basedOn: "#background.color",
         },
       },
     },
