@@ -1,6 +1,7 @@
 import { NATIVE_REACT_PRIMITIVES } from "@seldon/core/components/constants"
 
 import { ComponentToExport } from "../../../types"
+import { isAttributeKey } from "./attribute-props"
 
 /**
  * Get the needed generic type and its parameter for interface generation
@@ -83,7 +84,7 @@ export function generateOwnPropsContent(component: ComponentToExport): string {
   for (const [key, value] of Object.entries(component.tree.dataBinding.props)) {
     // Accessibility attributes are already declared by the element's
     // HTMLAttributes base, and hyphenated keys are not valid TS identifiers.
-    if (key === "role" || key.startsWith("aria-")) {
+    if (isAttributeKey(key)) {
       continue
     }
     if (value.options) {

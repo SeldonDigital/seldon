@@ -1,4 +1,5 @@
 import { ComponentToExport, JSONTreeNode } from "../../../types"
+import { isAttributeKey } from "./attribute-props"
 import { getConditionalPropPaths } from "./get-conditional-prop-paths"
 
 /**
@@ -22,6 +23,11 @@ export function generatePropsSpread(
 
   const rootProps = component.tree.dataBinding.props
   for (const [propKey] of Object.entries(rootProps)) {
+    // Attribute-style keys (role, aria-*) are emitted on the element from `sdn`
+    // and ride `...props` when passed, so they are never destructured by name.
+    if (isAttributeKey(propKey)) {
+      continue
+    }
     if (!used.has(propKey)) {
       used.add(propKey)
       props.push(`${propKey} = sdn.${propKey}`)

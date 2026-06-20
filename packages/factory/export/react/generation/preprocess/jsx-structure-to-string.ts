@@ -1,4 +1,5 @@
 import { ComponentToExport } from "../../../types"
+import { generateRootAttributePropsString } from "../shared/attribute-props"
 import { dataSeldonRefAttr } from "../shared/data-ref-attr"
 import { JSXNode } from "./types"
 
@@ -97,8 +98,9 @@ export function jsxStructureToString(
   // generated component (e.g. ItemInputRow nesting into FormControlIconic)
   // would be silently discarded by React's explicit-children precedence.
   const rootRefAttr = dataSeldonRefAttr(jsxRoot.ref)
+  const rootAttrProps = generateRootAttributePropsString(component)
   let content = `
-  return (\n    <${config.react.returns} className={${classNameVarName}}${rootRefAttr} {...props}>`
+  return (\n    <${config.react.returns} className={${classNameVarName}}${rootRefAttr}${rootAttrProps} {...props}>`
 
   if (jsxRoot.children && jsxRoot.children.length > 0) {
     content += `\n      {children !== undefined ? (\n        children\n      ) : (\n        <>`

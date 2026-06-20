@@ -3,6 +3,10 @@ import { NATIVE_REACT_PRIMITIVES } from "@seldon/core/components/constants"
 
 import { NodeIdToClass } from "../../../css/types"
 import { ComponentToExport } from "../../../types"
+import {
+  generateRootAttributePropsString,
+  isAttributeKey,
+} from "./attribute-props"
 import { dataSeldonRefAttr } from "./data-ref-attr"
 
 /**
@@ -13,7 +17,9 @@ export function generateIconMapReturn(
   _nodeIdToClass: NodeIdToClass,
   classNameVarName: string,
 ): string {
-  const refAttr = dataSeldonRefAttr(component.tree.ref)
+  const refAttr =
+    dataSeldonRefAttr(component.tree.ref) +
+    generateRootAttributePropsString(component)
   return `
     let Icon = iconMap[icon || "__default__"]
     if (!Icon) {
@@ -35,7 +41,8 @@ export function generateHtmlElementReturn(
   classNameVarName: string,
 ): string {
   const { tree } = component
-  const refAttr = dataSeldonRefAttr(tree.ref)
+  const refAttr =
+    dataSeldonRefAttr(tree.ref) + generateRootAttributePropsString(component)
   const { options, defaultValue } = tree.dataBinding.props.htmlElement
 
   // Validate options and defaultValue
@@ -112,7 +119,8 @@ export function generateWrapperElementReturn(
   classNameVarName: string,
 ): string {
   const { tree } = component
-  const refAttr = dataSeldonRefAttr(tree.ref)
+  const refAttr =
+    dataSeldonRefAttr(tree.ref) + generateRootAttributePropsString(component)
   const { options, defaultValue } = tree.dataBinding.props.wrapperElement
 
   invariant(options, "wrapperElement.options is required to create a switch")
@@ -193,24 +201,31 @@ export function generateSimpleReturn(
   const rootProps = tree.dataBinding.props
   const rootLevelProps: string[] = []
   for (const [propKey] of Object.entries(rootProps)) {
-    if (propKey !== "className" && propKey !== "children") {
+    // Attribute-style keys (role, aria-*) are emitted from `sdn` as literals,
+    // not as destructured identifiers.
+    if (
+      propKey !== "className" &&
+      propKey !== "children" &&
+      !isAttributeKey(propKey)
+    ) {
       rootLevelProps.push(`${propKey}={${propKey}}`)
     }
   }
   const rootPropsString =
     rootLevelProps.length > 0 ? " " + rootLevelProps.join(" ") : ""
+  const attrPropsString = generateRootAttributePropsString(component)
 
   if (hasChildrenProp) {
     return `
   //
   // React JSX component with merged default and custom properties
   //
-  return <${config.react.returns} className={${classNameVarName}}${rootPropsString}${refAttr} {...props}>{children}</${config.react.returns}>`
+  return <${config.react.returns} className={${classNameVarName}}${rootPropsString}${refAttr}${attrPropsString} {...props}>{children}</${config.react.returns}>`
   } else {
     return `
   //
   // React JSX component with merged default and custom properties
   //
-  return <${config.react.returns} className={${classNameVarName}}${rootPropsString}${refAttr} {...props} />`
+  return <${config.react.returns} className={${classNameVarName}}${rootPropsString}${refAttr}${attrPropsString} {...props} />`
   }
 }

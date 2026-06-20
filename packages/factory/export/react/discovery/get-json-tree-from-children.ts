@@ -321,7 +321,10 @@ function getVariantProps(
   componentId: ComponentId,
   workspace: Workspace,
 ) {
-  const props: DataBinding["props"] = getChildNodeProps(properties)
+  const props: DataBinding["props"] = {
+    ...getChildNodeProps(properties),
+    ...getAriaAttributeProps(properties),
+  }
   const { symbol, htmlElement, wrapperElement } = schemaProperties
 
   const htmlElementOptions = HTML_ELEMENT_OPTIONS[componentId]
