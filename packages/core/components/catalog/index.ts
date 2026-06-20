@@ -52,6 +52,14 @@ import {
   schema as listSchema,
 } from "./elements/List.schema"
 import {
+  exportConfig as listboxOptionExportConfig,
+  schema as listboxOptionSchema,
+} from "./elements/ListboxOption.schema"
+import {
+  exportConfig as menuItemExportConfig,
+  schema as menuItemSchema,
+} from "./elements/MenuItem.schema"
+import {
   exportConfig as navExportConfig,
   schema as navSchema,
 } from "./elements/Nav.schema"
@@ -146,6 +154,14 @@ import {
   exportConfig as listStandardExportConfig,
   schema as listStandardSchema,
 } from "./parts/ListStandard.schema"
+import {
+  exportConfig as listboxExportConfig,
+  schema as listboxSchema,
+} from "./parts/Listbox.schema"
+import {
+  exportConfig as menuExportConfig,
+  schema as menuSchema,
+} from "./parts/Menu.schema"
 import {
   exportConfig as articleCardExportConfig,
   schema as articleCardSchema,
@@ -247,6 +263,8 @@ const elements: ComponentSchema[] = [
   headerSchema,
   descriptionListSchema,
   itemSchema,
+  menuItemSchema,
+  listboxOptionSchema,
   navSchema,
   listSchema,
   sectionSchema,
@@ -280,6 +298,8 @@ const parts: ComponentSchema[] = [
   cardStackedSchema,
   fieldsetSchema,
   listStandardSchema,
+  listboxSchema,
+  menuSchema,
   articleCardSchema,
   mediaCardSchema,
   notificationCardSchema,
@@ -354,6 +374,8 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   [ComponentId.HEADER]: headerExportConfig,
   [ComponentId.DESCRIPTION_LIST]: descriptionListExportConfig,
   [ComponentId.ITEM]: itemExportConfig,
+  [ComponentId.MENU_ITEM]: menuItemExportConfig,
+  [ComponentId.LISTBOX_OPTION]: listboxOptionExportConfig,
   [ComponentId.NAV]: navExportConfig,
   [ComponentId.LIST]: listExportConfig,
   [ComponentId.SECTION]: sectionExportConfig,
@@ -383,6 +405,8 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   [ComponentId.CARD_STACKED]: cardStackedExportConfig,
   [ComponentId.FIELDSET]: fieldsetExportConfig,
   [ComponentId.LIST_STANDARD]: listStandardExportConfig,
+  [ComponentId.LISTBOX]: listboxExportConfig,
+  [ComponentId.MENU]: menuExportConfig,
   [ComponentId.ARTICLE_CARD]: articleCardExportConfig,
   [ComponentId.MEDIA_CARD]: mediaCardExportConfig,
   [ComponentId.NOTIFICATION_CARD]: notificationCardExportConfig,

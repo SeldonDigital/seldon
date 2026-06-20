@@ -31,6 +31,8 @@ export enum AriaRole {
   MENU = "menu",
   MENUBAR = "menubar",
   MENUITEM = "menuitem",
+  MENUITEMCHECKBOX = "menuitemcheckbox",
+  MENUITEMRADIO = "menuitemradio",
   LISTBOX = "listbox",
   OPTION = "option",
   COMBOBOX = "combobox",
