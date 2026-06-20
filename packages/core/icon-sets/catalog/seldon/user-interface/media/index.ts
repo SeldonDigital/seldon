@@ -1,7 +1,6 @@
 import { IconId } from "@seldon/core/icon-sets"
 
 export { IconSeldonImage } from "./IconSeldonImage"
-export { IconSeldonImageFit } from "./IconSeldonImageFit"
 export { IconSeldonContent } from "./IconSeldonContent"
 export { IconSeldonComponent } from "./IconSeldonComponent"
 export { IconSeldonComponentDefault } from "./IconSeldonComponentDefault"
@@ -17,11 +16,9 @@ export { IconSeldonModules } from "./IconSeldonModules"
 export { IconSeldonElements } from "./IconSeldonElements"
 export { IconSeldonPanels } from "./IconSeldonPanels"
 export { IconSeldonCatalog } from "./IconSeldonCatalog"
-export { IconSeldonPhotograph } from "./IconSeldonPhotograph"
 
 export const seldoncommonmediaIconIds: readonly IconId[] = [
   "seldon-image",
-  "seldon-imageFit",
   "seldon-content",
   "seldon-component",
   "seldon-componentDefault",
@@ -37,5 +34,4 @@ export const seldoncommonmediaIconIds: readonly IconId[] = [
   "seldon-elements",
   "seldon-panels",
   "seldon-catalog",
-  "seldon-photograph",
 ] as const
