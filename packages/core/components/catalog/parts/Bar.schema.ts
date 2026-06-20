@@ -21,6 +21,7 @@ export const schema = {
   icon: Seldon.ComponentIcon.COMPONENT,
   properties: {
     display: { type: Sdn.ValueType.EMPTY, value: null },
+    role: { type: Sdn.ValueType.EMPTY, value: null },
     ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
     ariaHidden: {
       type: Sdn.ValueType.EXACT,
@@ -238,6 +239,7 @@ export const schema = {
       intent:
         "Provides primary navigation controls for traversing sections or views.",
       overrides: {
+        role: { type: Sdn.ValueType.OPTION, value: Sdn.AriaRole.NAVIGATION },
         align: {
           type: Sdn.ValueType.OPTION,
           value: Sdn.Align.CENTER_LEFT,
@@ -860,6 +862,7 @@ export const schema = {
       intent:
         "Provides a horizontal tab bar for organizing content into selectable sections.",
       overrides: {
+        role: { type: Sdn.ValueType.OPTION, value: Sdn.AriaRole.TABLIST },
         align: {
           type: Sdn.ValueType.OPTION,
           value: Sdn.Align.CENTER_LEFT,

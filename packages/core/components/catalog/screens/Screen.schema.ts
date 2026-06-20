@@ -24,6 +24,8 @@ export const schema = {
         unit: Sdn.Unit.PX,
       },
     },
+    role: { type: Sdn.ValueType.EMPTY, value: null },
+    ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
     direction: { type: Sdn.ValueType.EMPTY, value: null },
     orientation: {
       type: Sdn.ValueType.OPTION,

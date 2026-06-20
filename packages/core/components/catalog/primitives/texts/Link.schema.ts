@@ -21,6 +21,9 @@ export const schema = {
       type: Sdn.ValueType.EXACT,
       value: false,
     },
+    ariaCurrent: { type: Sdn.ValueType.EMPTY, value: null },
+    ariaExpanded: { type: Sdn.ValueType.EMPTY, value: null },
+    ariaHasPopup: { type: Sdn.ValueType.EMPTY, value: null },
     cursor: {
       type: Sdn.ValueType.OPTION,
       value: Sdn.Cursor.POINTER,

@@ -25,6 +25,8 @@ export const schema = {
       type: Sdn.ValueType.EXACT,
       value: false,
     },
+    ariaExpanded: { type: Sdn.ValueType.EMPTY, value: null },
+    ariaSelected: { type: Sdn.ValueType.EMPTY, value: null },
     direction: { type: Sdn.ValueType.EMPTY, value: null },
     orientation: {
       type: Sdn.ValueType.OPTION,
@@ -726,6 +728,7 @@ export const schema = {
       label: "Tree Item",
       intent: "List item used for tree-like structures with nested children.",
       overrides: {
+        role: { type: Sdn.ValueType.OPTION, value: Sdn.AriaRole.TREEITEM },
         margin: {
           top: {
             type: Sdn.ValueType.THEME_ORDINAL,

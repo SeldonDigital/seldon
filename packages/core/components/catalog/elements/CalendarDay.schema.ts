@@ -16,11 +16,15 @@ export const schema = {
       type: Sdn.ValueType.OPTION,
       value: Sdn.WrapperElement.DIV,
     },
+    role: { type: Sdn.ValueType.EMPTY, value: null },
     ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
     ariaHidden: {
       type: Sdn.ValueType.EXACT,
       value: false,
     },
+    ariaSelected: { type: Sdn.ValueType.EMPTY, value: null },
+    ariaCurrent: { type: Sdn.ValueType.EMPTY, value: null },
+    ariaDisabled: { type: Sdn.ValueType.EMPTY, value: null },
     cursor: {
       type: Sdn.ValueType.OPTION,
       value: Sdn.Cursor.POINTER,
@@ -226,6 +230,7 @@ export const schema = {
       intent:
         "A day outside the active month or otherwise disabled, dimmed to recede from selectable days.",
       overrides: {
+        ariaDisabled: { type: Sdn.ValueType.EXACT, value: true },
         opacity: {
           type: Sdn.ValueType.EXACT,
           value: { unit: Sdn.Unit.PERCENT, value: 35 },
@@ -238,6 +243,7 @@ export const schema = {
       intent:
         "The chosen day, filled with the primary swatch so its number reads in high contrast.",
       overrides: {
+        ariaSelected: { type: Sdn.ValueType.EXACT, value: true },
         background: [
           {
             kind: {
@@ -263,6 +269,7 @@ export const schema = {
       intent:
         "The current day, outlined with a primary ring while keeping the surface clear.",
       overrides: {
+        ariaCurrent: { type: Sdn.ValueType.OPTION, value: Sdn.AriaCurrent.DATE },
         background: [
           {
             kind: {

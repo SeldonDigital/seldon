@@ -17,6 +17,9 @@ export const schema = {
       type: Sdn.ValueType.EXACT,
       value: false,
     },
+    ariaRequired: { type: Sdn.ValueType.EMPTY, value: null },
+    ariaInvalid: { type: Sdn.ValueType.EMPTY, value: null },
+    ariaDisabled: { type: Sdn.ValueType.EMPTY, value: null },
     cursor: {
       type: Sdn.ValueType.OPTION,
       value: Sdn.Cursor.POINTER,

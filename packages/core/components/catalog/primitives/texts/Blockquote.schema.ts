@@ -15,6 +15,8 @@ export const schema = {
       type: Sdn.ValueType.EXACT,
       value: "Blockquote",
     },
+    ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
+    ariaHidden: { type: Sdn.ValueType.EXACT, value: false },
     color: {
       type: Sdn.ValueType.COMPUTED,
       value: {

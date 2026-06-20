@@ -24,6 +24,11 @@ export const schema = {
       value: Sdn.InputType.TEXT,
     },
     checked: { type: Sdn.ValueType.EMPTY, value: null },
+    ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
+    ariaRequired: { type: Sdn.ValueType.EMPTY, value: null },
+    ariaInvalid: { type: Sdn.ValueType.EMPTY, value: null },
+    ariaReadonly: { type: Sdn.ValueType.EMPTY, value: null },
+    ariaDisabled: { type: Sdn.ValueType.EMPTY, value: null },
     placeholder: {
       type: Sdn.ValueType.EXACT,
       value: "Placeholder text",
