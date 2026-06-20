@@ -15,6 +15,8 @@ export const schema = {
       type: Sdn.ValueType.EXACT,
       value: "Citation",
     },
+    ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
+    ariaHidden: { type: Sdn.ValueType.EXACT, value: false },
     color: {
       type: Sdn.ValueType.COMPUTED,
       value: {
@@ -37,6 +39,7 @@ export const schema = {
       textCase: { type: Sdn.ValueType.EMPTY, value: null },
       letterSpacing: { type: Sdn.ValueType.EMPTY, value: null },
     },
+    textAlign: { type: Sdn.ValueType.EMPTY, value: null },
     textDecoration: {
       type: Sdn.ValueType.OPTION,
       value: Sdn.TextDecoration.NONE,

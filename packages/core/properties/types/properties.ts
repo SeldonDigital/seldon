@@ -1,5 +1,16 @@
 import {
   AlignValue,
+  AriaCurrentValue,
+  AriaDisabledValue,
+  AriaExpandedValue,
+  AriaHasPopupValue,
+  AriaInvalidValue,
+  AriaLiveValue,
+  AriaReadonlyValue,
+  AriaRequiredValue,
+  AriaRoleValue,
+  AriaSelectedValue,
+  AriaTristateValue,
   AutoPlayValue,
   BackgroundLayer,
   BoardCompound,
@@ -94,8 +105,6 @@ export type Properties = Partial<{
   trackDefault: TrackDefaultValue
   mediaType: MediaTypeValue
   mediaQuery: MediaQueryValue
-  ariaLabel: ContentValue | EmptyValue
-  ariaHidden: BooleanValue | EmptyValue
   size: SizeValue | EmptyValue
   buttonSize: ButtonSizeValue | EmptyValue
   board: BoardCompound
@@ -151,4 +160,19 @@ export type Properties = Partial<{
   shadow: ShadowCompound[]
   scroll: ScrollValue | EmptyValue
   scrollbarStyle: ScrollbarStyleValue | EmptyValue
+
+  role: AriaRoleValue
+  ariaLabel: ContentValue | EmptyValue
+  ariaHidden: BooleanValue | EmptyValue
+  ariaDisabled: AriaDisabledValue
+  ariaExpanded: AriaExpandedValue
+  ariaSelected: AriaSelectedValue
+  ariaChecked: AriaTristateValue
+  ariaPressed: AriaTristateValue
+  ariaCurrent: AriaCurrentValue
+  ariaHasPopup: AriaHasPopupValue
+  ariaInvalid: AriaInvalidValue
+  ariaRequired: AriaRequiredValue
+  ariaReadonly: AriaReadonlyValue
+  ariaLive: AriaLiveValue
 }>

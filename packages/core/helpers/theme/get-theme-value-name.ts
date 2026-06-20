@@ -24,6 +24,10 @@ export function getThemeValueName(key: string, theme: Theme): string {
     }
 
     if (isFontFamilyToken(option)) {
+      const slot = key.split(".").pop()
+      if (slot === "primary" || slot === "secondary") {
+        return `${option.parameters} · ${formatRawValueName(slot)}`
+      }
       return option.parameters
     }
 

@@ -17,6 +17,7 @@ export const schema = {
       type: Sdn.ValueType.OPTION,
       value: Sdn.WrapperElement.DIV,
     },
+    role: { type: Sdn.ValueType.EMPTY, value: null },
     ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
     ariaHidden: {
       type: Sdn.ValueType.EXACT,

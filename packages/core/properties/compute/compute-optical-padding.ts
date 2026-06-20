@@ -3,7 +3,7 @@ import { getThemeOption } from "../../helpers/theme/get-theme-option"
 import { isUnitValue } from "../../helpers/type-guards/value/is-unit-value"
 import { invariant } from "../../helpers/utils/invariant"
 import type { ThemeModulation, ThemeValueKey } from "../../themes/types"
-import { Unit, ValueType } from "../constants"
+import { EMPTY_VALUE, Unit, ValueType } from "../constants"
 import type { SubPropertyKey } from "../types/property-keys"
 import type { ComputedOpticalPaddingValue } from "../values/shared/computed/optical-padding"
 import { getBasedOnValue } from "./get-based-on-value"
@@ -22,14 +22,14 @@ const Y_PADDING_RATIO = 0.4
  * becomes `1.5`.
  *
  * Supported resolved based-on types: `EXACT` number, `EXACT` length with `unit` and `value`, or
- * `THEME_ORDINAL` only when the token string uses the `@fontSize` prefix. Any other based-on shape
- * throws after resolution.
+ * `THEME_ORDINAL` only when the token string uses the `@fontSize` prefix. Degrades to `EMPTY` when
+ * the `basedOn` path cannot be resolved or resolves to an unsupported type, so an unresolved input
+ * never breaks compute or CSS generation.
  *
  * @param value - Stored computed optical padding value
  * @param context - Theme and contexts for `getBasedOnValue`
  * @param keys - Which padding facet is computing, from `propertyKey` and optional `subPropertyKey`
- * @returns `EXACT` number, `EXACT` length, or `EXACT` rem from font size modulation
- * @throws When the resolved based-on is not supported
+ * @returns `EXACT` number, `EXACT` length, `EXACT` rem from font size modulation, or `EMPTY`
  */
 export function computeOpticalPadding(
   value: ComputedOpticalPaddingValue,
@@ -47,7 +47,12 @@ export function computeOpticalPadding(
     },
   }
 
-  const basedOnValue = getBasedOnValue(valueWithDefaults, context)
+  let basedOnValue
+  try {
+    basedOnValue = getBasedOnValue(valueWithDefaults, context)
+  } catch {
+    return EMPTY_VALUE
+  }
   const ratio = getRatio(keys.subPropertyKey)
 
   if (basedOnValue.type === ValueType.EXACT) {
@@ -100,9 +105,7 @@ export function computeOpticalPadding(
     }
   }
 
-  throw new Error(
-    `Failed to compute optical padding from ${JSON.stringify(basedOnValue)}`,
-  )
+  return EMPTY_VALUE
 }
 
 /** Maps `subPropertyKey` to left, right, top, or bottom ratio, or uses the left ratio when missing. */

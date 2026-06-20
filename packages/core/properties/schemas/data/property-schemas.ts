@@ -1,4 +1,18 @@
 import { attachPropertyDisplayMetadata } from "../../constants/property-display"
+import { ariaCheckedSchema } from "../../values/accessibility/aria-checked"
+import { ariaCurrentSchema } from "../../values/accessibility/aria-current"
+import { ariaDisabledSchema } from "../../values/accessibility/aria-disabled"
+import { ariaExpandedSchema } from "../../values/accessibility/aria-expanded"
+import { ariaHasPopupSchema } from "../../values/accessibility/aria-has-popup"
+import { ariaHiddenSchema } from "../../values/accessibility/aria-hidden"
+import { ariaInvalidSchema } from "../../values/accessibility/aria-invalid"
+import { ariaLabelSchema } from "../../values/accessibility/aria-label"
+import { ariaLiveSchema } from "../../values/accessibility/aria-live"
+import { ariaPressedSchema } from "../../values/accessibility/aria-pressed"
+import { ariaReadonlySchema } from "../../values/accessibility/aria-readonly"
+import { ariaRequiredSchema } from "../../values/accessibility/aria-required"
+import { ariaSelectedSchema } from "../../values/accessibility/aria-selected"
+import { roleSchema } from "../../values/accessibility/role"
 import { accentColorSchema } from "../../values/appearance/accent-color"
 import { backgroundBlendModeSchema } from "../../values/appearance/background/background-blend-mode"
 import { backgroundBrightnessSchema } from "../../values/appearance/background/background-brightness"
@@ -23,8 +37,6 @@ import { cornersSchema } from "../../values/appearance/corners"
 import { opacitySchema } from "../../values/appearance/opacity"
 import { sizeSchema } from "../../values/appearance/size"
 import { altTextSchema } from "../../values/attributes/alt-text"
-import { ariaHiddenSchema } from "../../values/attributes/aria-hidden"
-import { ariaLabelSchema } from "../../values/attributes/aria-label"
 import { checkedSchema } from "../../values/attributes/checked"
 import { contentSchema } from "../../values/attributes/content"
 import { cursorSchema } from "../../values/attributes/cursor"
@@ -137,8 +149,6 @@ const PROPERTY_SCHEMAS_RAW = {
   trackDefault: trackDefaultSchema,
   mediaType: mediaTypeSchema,
   mediaQuery: mediaQuerySchema,
-  ariaLabel: ariaLabelSchema,
-  ariaHidden: ariaHiddenSchema,
   size: sizeSchema,
   buttonSize: buttonSizeSchema,
   boardPreset: boardPresetSchema,
@@ -283,6 +293,22 @@ const PROPERTY_SCHEMAS_RAW = {
   shadowSpread: shadowSpreadSchema,
   scroll: scrollSchema,
   scrollbarStyle: scrollbarStyleSchema,
+
+  // 6. ACCESSIBILITY (panel order: most used/required first)
+  role: roleSchema,
+  ariaLabel: ariaLabelSchema,
+  ariaHidden: ariaHiddenSchema,
+  ariaDisabled: ariaDisabledSchema,
+  ariaExpanded: ariaExpandedSchema,
+  ariaSelected: ariaSelectedSchema,
+  ariaChecked: ariaCheckedSchema,
+  ariaPressed: ariaPressedSchema,
+  ariaCurrent: ariaCurrentSchema,
+  ariaHasPopup: ariaHasPopupSchema,
+  ariaInvalid: ariaInvalidSchema,
+  ariaRequired: ariaRequiredSchema,
+  ariaReadonly: ariaReadonlySchema,
+  ariaLive: ariaLiveSchema,
 } as const
 
 export const PROPERTY_SCHEMAS =

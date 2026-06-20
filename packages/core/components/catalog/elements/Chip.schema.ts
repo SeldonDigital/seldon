@@ -17,6 +17,7 @@ export const schema = {
       type: Sdn.ValueType.EXACT,
       value: false,
     },
+    ariaPressed: { type: Sdn.ValueType.EMPTY, value: null },
     buttonSize: {
       type: Sdn.ValueType.THEME_ORDINAL,
       value: "@fontSize.xsmall",

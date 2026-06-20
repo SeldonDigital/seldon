@@ -11,6 +11,8 @@ export const schema = {
   icon: Seldon.ComponentIcon.STUB,
   properties: {
     display: { type: Sdn.ValueType.EMPTY, value: null },
+    ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
+    ariaHidden: { type: Sdn.ValueType.EXACT, value: false },
     source: { type: Sdn.ValueType.EMPTY, value: null },
     controls: { type: Sdn.ValueType.EXACT, value: true },
     autoPlay: { type: Sdn.ValueType.EXACT, value: false },

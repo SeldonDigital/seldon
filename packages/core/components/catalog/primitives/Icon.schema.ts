@@ -16,9 +16,11 @@ export const schema = {
       type: Sdn.ValueType.OPTION,
       value: "__default__",
     },
+    role: { type: Sdn.ValueType.EMPTY, value: null },
+    ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
     ariaHidden: {
       type: Sdn.ValueType.EXACT,
-      value: false,
+      value: true,
     },
     size: {
       type: Sdn.ValueType.THEME_ORDINAL,

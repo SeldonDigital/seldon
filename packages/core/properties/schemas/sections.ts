@@ -20,6 +20,7 @@ const CATEGORY_LABEL = {
   [PropertyDisplayCategory.APPEARANCE]: "Appearance",
   [PropertyDisplayCategory.TYPOGRAPHY]: "Typography",
   [PropertyDisplayCategory.EFFECTS]: "Effects",
+  [PropertyDisplayCategory.ACCESSIBILITY]: "Accessibility",
 } as const satisfies Record<PropertyDisplayCategory, string>
 
 /** Panel sections in `PROPERTY_DISPLAY_ORDER` sequence, with stable `order` indices. */

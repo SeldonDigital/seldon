@@ -3,7 +3,7 @@ import { getThemeOption } from "../../helpers/theme/get-theme-option"
 import { isUnitValue } from "../../helpers/type-guards/value/is-unit-value"
 import { invariant } from "../../helpers/utils/invariant"
 import type { ThemeModulation, ThemeValueKey } from "../../themes/types"
-import { Unit, ValueType } from "../constants"
+import { EMPTY_VALUE, Unit, ValueType } from "../constants"
 import type { ComputedAutoFitValue } from "../values/shared/computed/auto-fit"
 import { getBasedOnValue } from "./get-based-on-value"
 import { ComputeContext } from "./types"
@@ -16,13 +16,13 @@ export const AUTO_FIT_DISPLAY_NAME = "Auto Fit"
  * Missing `basedOn` becomes `#parent.buttonSize`. Missing `factor` becomes `1`.
  *
  * Supported resolved based-on types: `EXACT` number, `EXACT` length with `unit` and `value`, or
- * `THEME_ORDINAL` only when the token string uses the `@fontSize` prefix. Resolves other types by
- * throwing.
+ * `THEME_ORDINAL` only when the token string uses the `@fontSize` prefix. Degrades to `EMPTY` when
+ * the `basedOn` path cannot be resolved or resolves to an unsupported type, so an unresolved input
+ * never breaks compute or CSS generation.
  *
  * @param value - Stored computed auto-fit value
  * @param context - Theme and contexts for `getBasedOnValue`
- * @returns `EXACT` number, `EXACT` length, or `EXACT` rem from font size modulation
- * @throws When the resolved based-on is not supported
+ * @returns `EXACT` number, `EXACT` length, `EXACT` rem from font size modulation, or `EMPTY`
  */
 export function computeAutoFit(
   value: ComputedAutoFitValue,
@@ -39,7 +39,12 @@ export function computeAutoFit(
     },
   }
 
-  const basedOnValue = getBasedOnValue(valueWithDefaults, context)
+  let basedOnValue
+  try {
+    basedOnValue = getBasedOnValue(valueWithDefaults, context)
+  } catch {
+    return EMPTY_VALUE
+  }
 
   if (basedOnValue.type === ValueType.EXACT) {
     if (typeof basedOnValue.value === "number") {
@@ -91,7 +96,5 @@ export function computeAutoFit(
     }
   }
 
-  throw new Error(
-    `Failed to compute auto fit from ${JSON.stringify(basedOnValue)}`,
-  )
+  return EMPTY_VALUE
 }

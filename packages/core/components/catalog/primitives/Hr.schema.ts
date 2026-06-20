@@ -13,7 +13,6 @@ export const schema = {
     display: { type: Sdn.ValueType.EMPTY, value: null },
     ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
     ariaHidden: { type: Sdn.ValueType.EXACT, value: false },
-    align: { type: Sdn.ValueType.OPTION, value: Sdn.Align.AUTO },
     width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
     height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
     margin: {

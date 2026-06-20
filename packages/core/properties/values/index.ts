@@ -21,8 +21,6 @@ export * from "./attributes/input-type"
 export * from "./attributes/placeholder"
 export * from "./attributes/checked"
 export * from "./attributes/media"
-export * from "./attributes/aria-label"
-export * from "./attributes/aria-hidden"
 export * from "./appearance/size"
 export * from "./shared/utilities/button-size"
 export * from "./layout/board"
@@ -89,6 +87,25 @@ export * from "./effects/gradients"
 export * from "./effects/shadow"
 export * from "./effects/scroll"
 export * from "./effects/scrollbar-style"
+
+// ========================================
+// 6. Accessibility (PROPERTIES.md)
+// ========================================
+export * from "./accessibility/role"
+export * from "./accessibility/aria-label"
+export * from "./accessibility/aria-hidden"
+export * from "./accessibility/aria-disabled"
+export * from "./accessibility/aria-expanded"
+export * from "./accessibility/aria-selected"
+export * from "./accessibility/aria-tristate"
+export * from "./accessibility/aria-checked"
+export * from "./accessibility/aria-pressed"
+export * from "./accessibility/aria-current"
+export * from "./accessibility/aria-has-popup"
+export * from "./accessibility/aria-invalid"
+export * from "./accessibility/aria-required"
+export * from "./accessibility/aria-readonly"
+export * from "./accessibility/aria-live"
 
 // ========================================
 // Shared wire shapes (exact / option / computed / inherit, etc.)

@@ -24,11 +24,20 @@ export const schema = {
       value: Sdn.InputType.TEXT,
     },
     checked: { type: Sdn.ValueType.EMPTY, value: null },
+    role: { type: Sdn.ValueType.EMPTY, value: null },
+    ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
+    ariaRequired: { type: Sdn.ValueType.EMPTY, value: null },
+    ariaInvalid: { type: Sdn.ValueType.EMPTY, value: null },
+    ariaReadonly: { type: Sdn.ValueType.EMPTY, value: null },
+    ariaDisabled: { type: Sdn.ValueType.EMPTY, value: null },
+    ariaExpanded: { type: Sdn.ValueType.EMPTY, value: null },
+    ariaHasPopup: { type: Sdn.ValueType.EMPTY, value: null },
     placeholder: {
       type: Sdn.ValueType.EXACT,
       value: "Placeholder text",
     },
     buttonSize: { type: Sdn.ValueType.EMPTY, value: null },
+    cursor: { type: Sdn.ValueType.EMPTY, value: null },
     width: {
       type: Sdn.ValueType.OPTION,
       value: Sdn.Resize.FILL,
@@ -66,7 +75,7 @@ export const schema = {
       value: {
         function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
         input: {
-          basedOn: "#parent.background.color",
+          basedOn: "#background.color",
         },
       },
     },
@@ -305,6 +314,32 @@ export const schema = {
           lineHeight: { type: Sdn.ValueType.EMPTY, value: null },
           textCase: { type: Sdn.ValueType.EMPTY, value: null },
           letterSpacing: { type: Sdn.ValueType.EMPTY, value: null },
+        },
+      },
+    },
+    {
+      id: "combobox",
+      label: "Combobox",
+      intent: "Editable text field that opens a listbox of options.",
+      overrides: {
+        inputType: {
+          type: Sdn.ValueType.OPTION,
+          value: Sdn.InputType.TEXT,
+        },
+        font: {
+          size: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@fontSize.xsmall",
+          },
+        },
+        role: {
+          type: Sdn.ValueType.OPTION,
+          value: Sdn.AriaRole.COMBOBOX,
+        },
+        ariaExpanded: { type: Sdn.ValueType.EMPTY, value: null },
+        ariaHasPopup: {
+          type: Sdn.ValueType.OPTION,
+          value: Sdn.AriaHasPopup.LISTBOX,
         },
       },
     },

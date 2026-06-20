@@ -11,6 +11,7 @@ export const PropertyDisplayCategory = {
   APPEARANCE: "appearance",
   TYPOGRAPHY: "typography",
   EFFECTS: "effects",
+  ACCESSIBILITY: "accessibility",
 } as const
 
 export type PropertyDisplayCategory =
@@ -49,8 +50,6 @@ export const PROPERTY_DISPLAY_ORDER: ReadonlyArray<{
       "trackDefault",
       "mediaType",
       "mediaQuery",
-      "ariaLabel",
-      "ariaHidden",
       "size",
       "buttonSize",
       "boardPreset",
@@ -200,6 +199,25 @@ export const PROPERTY_DISPLAY_ORDER: ReadonlyArray<{
       "shadowSpread",
       "scroll",
       "scrollbarStyle",
+    ],
+  },
+  {
+    category: PropertyDisplayCategory.ACCESSIBILITY,
+    keys: [
+      "role",
+      "ariaLabel",
+      "ariaHidden",
+      "ariaDisabled",
+      "ariaExpanded",
+      "ariaSelected",
+      "ariaChecked",
+      "ariaPressed",
+      "ariaCurrent",
+      "ariaHasPopup",
+      "ariaInvalid",
+      "ariaRequired",
+      "ariaReadonly",
+      "ariaLive",
     ],
   },
 ]

@@ -237,7 +237,7 @@ Below are all property values and their fields. They are grouped into categories
 
 ### Attributes
 
-Properties that are specific to the selected component type and define its core functionality. This category also includes **accessibility**, **form control** fields, **media** sources, **board** sizing, and **workspace and catalog** knobs such as `display`, `size`, and `buttonSize` that are not general CSS layout.
+Properties that are specific to the selected component type and define its core functionality. This category also includes **form control** fields, **media** sources, **board** sizing, and **workspace and catalog** knobs such as `display`, `size`, and `buttonSize` that are not general CSS layout. Accessibility attributes live in their own **Accessibility** category.
 
 | Property | Type | Values |
 | --- | --- | --- |
@@ -252,8 +252,6 @@ Properties that are specific to the selected component type and define its core 
 | `inputType` | `atomic` | `empty` \| `inherit` \| `option: text, number, email, password, search, tel, url, date, datetime-local, checkbox, radio` \| `exact: string` |
 | `placeholder` | `atomic` | `empty` \| `inherit` \| `exact: string` |
 | `checked` | `atomic` | `empty` \| `inherit` \| `<bool>` |
-| `ariaLabel` | `atomic` | `empty` \| `inherit` \| `exact: string` |
-| `ariaHidden` | `atomic` | `empty` \| `inherit` \| `<bool>` |
 | `size` | `atomic` | `empty` \| `inherit` \| `<length>` \| `theme.ordinal: @size.*` \| `computed: autoFit, match` |
 | `buttonSize` | `atomic` | `empty` \| `inherit` \| `<length>` \| `theme.ordinal: @fontSize.*` |
 | `board` | `compound` | `board.preset, board.width, board.height` |
@@ -463,6 +461,31 @@ Properties that control visual effects and interactions.
 - `scrollSnapStop` - Scroll snap stop behavior (normal, always)
 - `scrollPadding` - Scroll padding (length values)
 - `scrollMargin` - Scroll margin (length values)
+
+---
+
+### Accessibility
+
+Properties that expose ARIA semantics to assistive technologies. They are plain static properties, available whenever a component schema declares them. Order runs from most used and required to least. Authors set static defaults here; the editor's runtime layer toggles dynamic states such as checked or pressed.
+
+| Property | Type | Values |
+| --- | --- | --- |
+| `role` | `atomic` | `empty` \| `inherit` \| `option: none, presentation, img, button, link, heading, list, listitem, navigation, main, banner, contentinfo, complementary, region, search, form, dialog, alertdialog, alert, status, tooltip, tab, tablist, tabpanel, menu, menubar, menuitem, listbox, option, combobox, checkbox, radio, radiogroup, switch, slider, progressbar, separator, toolbar, group, article, note, table, row, cell, columnheader, rowheader, grid, tree, treeitem` \| `exact: string` |
+| `ariaLabel` | `atomic` | `empty` \| `inherit` \| `exact: string` |
+| `ariaHidden` | `atomic` | `empty` \| `inherit` \| `<bool>` |
+| `ariaDisabled` | `atomic` | `empty` \| `inherit` \| `<bool>` |
+| `ariaExpanded` | `atomic` | `empty` \| `inherit` \| `<bool>` |
+| `ariaSelected` | `atomic` | `empty` \| `inherit` \| `<bool>` |
+| `ariaChecked` | `atomic` | `empty` \| `inherit` \| `option: true, false, mixed` \| `exact: string` |
+| `ariaPressed` | `atomic` | `empty` \| `inherit` \| `option: true, false, mixed` \| `exact: string` |
+| `ariaCurrent` | `atomic` | `empty` \| `inherit` \| `option: false, true, page, step, location, date, time` \| `exact: string` |
+| `ariaHasPopup` | `atomic` | `empty` \| `inherit` \| `option: false, true, menu, listbox, tree, grid, dialog` \| `exact: string` |
+| `ariaInvalid` | `atomic` | `empty` \| `inherit` \| `option: false, true, grammar, spelling` \| `exact: string` |
+| `ariaRequired` | `atomic` | `empty` \| `inherit` \| `<bool>` |
+| `ariaReadonly` | `atomic` | `empty` \| `inherit` \| `<bool>` |
+| `ariaLive` | `atomic` | `empty` \| `inherit` \| `option: off, polite, assertive` \| `exact: string` |
+
+Id-reference attributes such as `aria-labelledby` and `aria-controls`, and focus order via `tabIndex`, are intentionally excluded. Seldon ids are generated, so the editor's runtime layer wires those.
 
 ---
 

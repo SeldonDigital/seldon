@@ -23,14 +23,11 @@ export const schema = {
   icon: Seldon.ComponentIcon.FRAME,
   properties: {
     display: { type: Sdn.ValueType.EMPTY, value: null },
+    role: { type: Sdn.ValueType.EMPTY, value: null },
     ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
     ariaHidden: {
       type: Sdn.ValueType.EXACT,
       value: false,
-    },
-    cursor: {
-      type: Sdn.ValueType.OPTION,
-      value: Sdn.Cursor.DEFAULT,
     },
     direction: { type: Sdn.ValueType.EMPTY, value: null },
     orientation: {

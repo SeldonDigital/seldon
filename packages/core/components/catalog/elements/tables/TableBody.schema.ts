@@ -101,6 +101,7 @@ export const schema = {
       bottomLeft: { type: Sdn.ValueType.EMPTY, value: null },
       bottomRight: { type: Sdn.ValueType.EMPTY, value: null },
     },
+    borderCollapse: { type: Sdn.ValueType.EMPTY, value: null },
     shadow: [
       {
         preset: {
