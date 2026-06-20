@@ -19,6 +19,7 @@ const DEFAULT_REGULAR_CATEGORIES: Partial<
   appearance: true,
   typography: true,
   effects: true,
+  accessibility: true,
   css: true,
 }
 

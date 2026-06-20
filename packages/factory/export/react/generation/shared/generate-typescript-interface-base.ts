@@ -81,6 +81,11 @@ export function generateOwnPropsContent(component: ComponentToExport): string {
   let content = ""
 
   for (const [key, value] of Object.entries(component.tree.dataBinding.props)) {
+    // Accessibility attributes are already declared by the element's
+    // HTMLAttributes base, and hyphenated keys are not valid TS identifiers.
+    if (key === "role" || key.startsWith("aria-")) {
+      continue
+    }
     if (value.options) {
       // If this prop has options, create a union (e.g. "span" | "div")
       content += `${key}?: ${value.options?.map((i) => `'${i}'`).join(" | ")};`

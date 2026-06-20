@@ -626,6 +626,59 @@ const UI_OVERRIDES: PropertyRegistry = {
     icon: "seldon-token",
     control: "menu",
   },
+
+  // ========================================
+  // 6. ACCESSIBILITY
+  // ========================================
+  role: {
+    label: "Role",
+    icon: "seldon-token",
+    control: "menu",
+  },
+  ariaDisabled: {
+    icon: "seldon-radioOff",
+    control: "menu",
+  },
+  ariaExpanded: {
+    icon: "seldon-radioOff",
+    control: "menu",
+  },
+  ariaSelected: {
+    icon: "seldon-radioOff",
+    control: "menu",
+  },
+  ariaChecked: {
+    icon: "seldon-radioOff",
+    control: "menu",
+  },
+  ariaPressed: {
+    icon: "seldon-radioOff",
+    control: "menu",
+  },
+  ariaCurrent: {
+    icon: "seldon-token",
+    control: "menu",
+  },
+  ariaHasPopup: {
+    icon: "seldon-token",
+    control: "menu",
+  },
+  ariaInvalid: {
+    icon: "seldon-token",
+    control: "menu",
+  },
+  ariaRequired: {
+    icon: "seldon-radioOff",
+    control: "menu",
+  },
+  ariaReadonly: {
+    icon: "seldon-radioOff",
+    control: "menu",
+  },
+  ariaLive: {
+    icon: "seldon-token",
+    control: "menu",
+  },
 }
 
 function mapCategoryToType(

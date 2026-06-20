@@ -197,7 +197,10 @@ export function getJsonTreeFromChildren(
         interfaceName,
         referenceName,
         path,
-        props: getChildNodeProps(nodeProperties),
+        props: {
+          ...getChildNodeProps(nodeProperties),
+          ...getAriaAttributeProps(nodeProperties),
+        },
       },
       children,
       classNames: classNamesArray,
@@ -277,6 +280,38 @@ function getChildNodeProps(properties: Properties) {
     props.type = { defaultValue: inputType.value }
   }
 
+  return props
+}
+
+/**
+ * Adds accessibility attributes to a child node's props. These map straight
+ * onto the rendered element and are forwarded through the spread of the child's
+ * `sdn` default props, so the keys can be hyphenated (`aria-*`). They are scoped
+ * to child nodes because a component's own root props are also destructured as
+ * named parameters, where hyphenated keys are not valid identifiers.
+ */
+function getAriaAttributeProps(properties: Properties): DataBinding["props"] {
+  const props: DataBinding["props"] = {}
+  const ariaAttributeValues: Record<string, unknown> = {
+    role: properties.role?.value,
+    "aria-label": properties.ariaLabel?.value,
+    "aria-hidden": properties.ariaHidden?.value,
+    "aria-disabled": properties.ariaDisabled?.value,
+    "aria-expanded": properties.ariaExpanded?.value,
+    "aria-selected": properties.ariaSelected?.value,
+    "aria-checked": properties.ariaChecked?.value,
+    "aria-pressed": properties.ariaPressed?.value,
+    "aria-current": properties.ariaCurrent?.value,
+    "aria-haspopup": properties.ariaHasPopup?.value,
+    "aria-invalid": properties.ariaInvalid?.value,
+    "aria-required": properties.ariaRequired?.value,
+    "aria-readonly": properties.ariaReadonly?.value,
+    "aria-live": properties.ariaLive?.value,
+  }
+  for (const [attribute, value] of Object.entries(ariaAttributeValues)) {
+    if (value == null) continue
+    props[attribute] = { defaultValue: String(value) }
+  }
   return props
 }
 

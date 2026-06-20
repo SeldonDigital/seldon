@@ -47,9 +47,6 @@ flowchart LR
 | `placeholderSchema` | `attributes/placeholder.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
 | `CheckedValue` | `attributes/checked.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
 | `checkedSchema` | `attributes/checked.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
-| `ariaLabelSchema` | `attributes/aria-label.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
-| `AriaHiddenValue` | `attributes/aria-hidden.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
-| `ariaHiddenSchema` | `attributes/aria-hidden.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
 | `SizeThemeValue` | `appearance/size.ts` | Tagged wire shape that stores a theme token reference. Assigned on workspace overrides and merged before compute or export. |
 | `SizeValue` | `appearance/size.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
 | `sizeSchema` | `appearance/size.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
@@ -304,6 +301,43 @@ flowchart LR
 | `ShadowSpreadThemeValue` | `effects/shadow/shadow-spread.ts` | Tagged wire shape that stores a theme token reference. Assigned on workspace overrides and merged before compute or export. |
 | `ShadowSpreadValue` | `effects/shadow/shadow-spread.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
 | `shadowSpreadSchema` | `effects/shadow/shadow-spread.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
+
+### Accessibility
+
+| Type or Function | File | Purpose and use |
+| --- | --- | --- |
+| `AriaRole` | `accessibility/role.ts` | Enum of curated ARIA role keywords offered as picker options. |
+| `AriaRoleValue` | `accessibility/role.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
+| `roleSchema` | `accessibility/role.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
+| `ariaLabelSchema` | `accessibility/aria-label.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
+| `AriaHiddenValue` | `accessibility/aria-hidden.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
+| `ariaHiddenSchema` | `accessibility/aria-hidden.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
+| `AriaDisabledValue` | `accessibility/aria-disabled.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
+| `ariaDisabledSchema` | `accessibility/aria-disabled.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
+| `AriaExpandedValue` | `accessibility/aria-expanded.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
+| `ariaExpandedSchema` | `accessibility/aria-expanded.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
+| `AriaSelectedValue` | `accessibility/aria-selected.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
+| `ariaSelectedSchema` | `accessibility/aria-selected.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
+| `AriaTristate` | `accessibility/aria-tristate.ts` | Enum of `true`, `false`, `mixed` shared by `ariaChecked` and `ariaPressed`. |
+| `AriaTristateValue` | `accessibility/aria-tristate.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
+| `ariaCheckedSchema` | `accessibility/aria-checked.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
+| `ariaPressedSchema` | `accessibility/aria-pressed.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
+| `AriaCurrent` | `accessibility/aria-current.ts` | Enum of `aria-current` keywords offered as picker options. |
+| `AriaCurrentValue` | `accessibility/aria-current.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
+| `ariaCurrentSchema` | `accessibility/aria-current.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
+| `AriaHasPopup` | `accessibility/aria-has-popup.ts` | Enum of `aria-haspopup` keywords offered as picker options. |
+| `AriaHasPopupValue` | `accessibility/aria-has-popup.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
+| `ariaHasPopupSchema` | `accessibility/aria-has-popup.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
+| `AriaInvalid` | `accessibility/aria-invalid.ts` | Enum of `aria-invalid` keywords offered as picker options. |
+| `AriaInvalidValue` | `accessibility/aria-invalid.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
+| `ariaInvalidSchema` | `accessibility/aria-invalid.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
+| `AriaRequiredValue` | `accessibility/aria-required.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
+| `ariaRequiredSchema` | `accessibility/aria-required.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
+| `AriaReadonlyValue` | `accessibility/aria-readonly.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
+| `ariaReadonlySchema` | `accessibility/aria-readonly.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
+| `AriaLive` | `accessibility/aria-live.ts` | Enum of `aria-live` keywords offered as picker options. |
+| `AriaLiveValue` | `accessibility/aria-live.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
+| `ariaLiveSchema` | `accessibility/aria-live.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
 
 ### Shared wire shapes
 
