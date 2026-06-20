@@ -12,7 +12,7 @@ import {
 } from "@seldon/components/custom-components"
 import { IconCustomColorValue } from "@seldon/components/custom-icons"
 import { IconSeldonToken } from "@seldon/components/icons"
-import { LoadEditorIcons } from "@app/LoadEditorIcons"
+import { asSymbolIconId, LoadEditorIcons } from "@app/LoadEditorIcons"
 import { getBoardPresetIconId } from "./board-preset-icon"
 import { FlatProperty } from "./properties-data"
 import { resolveThemeSwatchColors } from "./resolve-theme-swatch-colors"
@@ -75,22 +75,26 @@ export function createPropertyOptionIconRenderer({
     ) {
       // Icon turned off in its workspace set renders as a red Missing icon.
       if (isWorkspaceIconUnavailable(option.value as IconId, workspace)) {
-        return <LoadEditorIcons iconId={option.value as IconId} unavailable />
+        return (
+          <LoadEditorIcons iconId={asSymbolIconId(option.value)} unavailable />
+        )
       }
       // Check if this is an unused icon (missing from iconLabels)
       if (option.name === "[Unused Icon]") {
         return <IconSeldonMissing />
       }
-      return <LoadEditorIcons iconId={option.value as IconId} />
+      return <LoadEditorIcons iconId={asSymbolIconId(option.value)} />
     }
 
     if (
       (property.key === "board" || property.key === "board.preset") &&
       option
     ) {
+      // Board preset icons are editor-local (custom-icons), so they render
+      // through the curated Icon wrapper, not LoadEditorIcons.
       return (
-        <LoadEditorIcons
-          iconId={getBoardPresetIconId(option.value)}
+        <Icon
+          icon={getBoardPresetIconId(option.value)}
           style={{ color: "inherit" }}
         />
       )
