@@ -152,7 +152,7 @@ export const schema = {
           font: {
             preset: {
               type: Sdn.ValueType.THEME_CATEGORICAL,
-              value: "@font.normal",
+              value: "@font.label",
             },
             size: {
               type: Sdn.ValueType.THEME_ORDINAL,
