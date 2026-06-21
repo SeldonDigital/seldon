@@ -171,7 +171,7 @@ export const schema = {
       family: { type: Sdn.ValueType.EMPTY, value: null },
       style: { type: Sdn.ValueType.EMPTY, value: null },
       weight: { type: Sdn.ValueType.EMPTY, value: null },
-      size: { type: Sdn.ValueType.EMPTY, value: null },
+      size: { type: Sdn.ValueType.THEME_ORDINAL, value: "@fontSize.small" },
       lineHeight: { type: Sdn.ValueType.EMPTY, value: null },
       textCase: { type: Sdn.ValueType.EMPTY, value: null },
       letterSpacing: { type: Sdn.ValueType.EMPTY, value: null },
@@ -329,7 +329,7 @@ export const schema = {
         font: {
           size: {
             type: Sdn.ValueType.THEME_ORDINAL,
-            value: "@fontSize.xsmall",
+            value: "@fontSize.small",
           },
         },
         role: {

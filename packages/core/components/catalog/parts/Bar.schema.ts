@@ -280,32 +280,8 @@ export const schema = {
         "Search field bar with a leading search icon and a clear control.",
       children: [
         {
-          component: Seldon.ComponentId.COMBOBOX_TRIGGER,
-          variant: "iconic",
-          children: [
-            {
-              component: Seldon.ComponentId.ICON,
-              overrides: {
-                symbol: {
-                  type: Sdn.ValueType.OPTION,
-                  value: "material-search",
-                },
-              },
-            },
-            {
-              component: Seldon.ComponentId.INPUT,
-              variant: "combobox",
-            },
-            {
-              component: Seldon.ComponentId.ICON,
-              overrides: {
-                symbol: {
-                  type: Sdn.ValueType.OPTION,
-                  value: "material-close",
-                },
-              },
-            },
-          ],
+          component: Seldon.ComponentId.FORM_CONTROL,
+          variant: "search",
         },
       ],
     },
