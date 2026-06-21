@@ -24,6 +24,7 @@ import {
 import { CssPortal } from "../CssPortal"
 import { canvasSelectionId } from "../helpers/canvas-selection-target"
 import { BoardPreviewNode } from "./BoardPreviewNode"
+import { injectBoardBackground } from "./inject-board-background"
 
 export type IconSetBoardProps = {
   board: Board
@@ -111,6 +112,7 @@ export function IconSetBoard({ board }: IconSetBoardProps) {
               iconId={iconId}
               themes={workspace.themes}
               boardThemeId={board.componentTheme}
+              boardBackground={properties.background}
             />
           )
         })}
@@ -126,6 +128,12 @@ type IconPreviewProps = {
   iconId: IconId
   themes: Workspace["themes"]
   boardThemeId: string
+  /**
+   * Board background injected onto the preview workspace's board so the Icon's
+   * `HIGH_CONTRAST_COLOR` resolves against the board surface instead of the
+   * preview component board's transparent default.
+   */
+  boardBackground: Properties["background"]
 }
 
 /**
@@ -143,6 +151,7 @@ function IconPreview({
   iconId,
   themes,
   boardThemeId,
+  boardBackground,
 }: IconPreviewProps) {
   const { workspace: iconBase, rootId } = getIconSheetPreviewBase()
 
@@ -177,8 +186,9 @@ function IconPreview({
       ...iconBase,
       themes,
       nodes,
+      boards: injectBoardBackground(iconBase.boards, boardBackground),
     } as Workspace
-  }, [iconBase, rootId, themes, boardThemeId, iconId])
+  }, [iconBase, rootId, themes, boardThemeId, iconId, boardBackground])
 
   if (!previewWorkspace || !rootId) {
     return null

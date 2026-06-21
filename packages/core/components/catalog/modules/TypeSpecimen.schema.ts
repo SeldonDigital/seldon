@@ -75,8 +75,8 @@ export const schema = {
       {
         kind: { type: Sdn.ValueType.OPTION, value: Sdn.BackgroundKind.COLOR },
         color: {
-          type: Sdn.ValueType.THEME_CATEGORICAL,
-          value: "@swatch.white",
+          type: Sdn.ValueType.OPTION,
+          value: Sdn.Color.TRANSPARENT,
         },
         brightness: { type: Sdn.ValueType.EMPTY, value: null },
         opacity: { type: Sdn.ValueType.EMPTY, value: null },
