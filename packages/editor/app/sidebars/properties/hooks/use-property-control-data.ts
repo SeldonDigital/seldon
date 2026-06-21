@@ -2,6 +2,7 @@ import { Theme, Value, ValueType } from "@seldon/core"
 import { getUnitsForProperty } from "@seldon/core/properties"
 import { FlatProperty } from "../helpers/properties-data"
 import { shouldUsePresetPropertyBehavior } from "../helpers/property-types"
+import { REPEAT_ROW_KEY } from "../helpers/repeat-display"
 import { getPropertyPlaceholder } from "../helpers/shared-utils"
 
 interface UsePropertyControlDataOptions {
@@ -177,7 +178,9 @@ export function usePropertyControlData({
       property.key === "core.ratio" ||
       property.key === "core.size" ||
       property.key.startsWith("fontWeight.") ||
-      property.key.endsWith(".step")
+      property.key.endsWith(".step") ||
+      property.key === REPEAT_ROW_KEY ||
+      property.key.startsWith(`${REPEAT_ROW_KEY}.`)
     ) {
       return undefined
     }

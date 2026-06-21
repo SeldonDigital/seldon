@@ -83,6 +83,28 @@ export function parseRepeatDataRowKey(
 }
 
 /**
+ * Returns the icon descendant a repeat echo symbol row edits, or null when the
+ * key is not a repeat symbol row. Lets the symbol-picker UI treat the echo row
+ * exactly like the real `symbol` property.
+ */
+export function getRepeatSymbolDescendant(
+  key: string,
+  workspace: Workspace,
+): Variant | Instance | null {
+  const repeatRow = parseRepeatDataRowKey(key)
+  if (!repeatRow) return null
+  const descendant = getNode(workspace, repeatRow.descendantId)
+  if (
+    !descendant ||
+    isBoard(descendant) ||
+    getNodeCatalogComponentId(descendant, workspace) !== ComponentId.ICON
+  ) {
+    return null
+  }
+  return descendant
+}
+
+/**
  * Builds the synthetic Repeat rows for a node: a compound count row plus, when
  * the count is above 1, one text row per echo for every text/icon descendant.
  * Returns an empty list for nodes that cannot repeat.
@@ -115,9 +137,14 @@ export function buildRepeatRows(
 
   if (count > 1) {
     const descendants = getRepeatDataDescendants(node, workspace)
-    for (const descendant of descendants) {
-      const values = repeat?.data?.[descendant.id] ?? []
-      for (let echoIndex = 1; echoIndex <= count - 1; echoIndex++) {
+
+    // Cluster by echo (the repeated copy), then by descendant in tree order:
+    // "Icon 2, Label 2, Icon 3, Label 3" rather than grouping all icons first.
+    // Symbol rows render a combo whose options are generated against the icon
+    // descendant in build-property-options, matching the real symbol picker.
+    for (let echoIndex = 1; echoIndex <= count - 1; echoIndex++) {
+      for (const descendant of descendants) {
+        const values = repeat?.data?.[descendant.id] ?? []
         const current = values[echoIndex - 1]
         rows.push({
           key: repeatDataRowKey(descendant.id, echoIndex),
@@ -127,7 +154,7 @@ export function buildRepeatRows(
           value: current ? { type: ValueType.EXACT, value: current } : EMPTY_VALUE,
           actualValue: current ?? "",
           valueType: current ? ValueType.EXACT : ValueType.EMPTY,
-          controlType: "text",
+          controlType: descendant.slot === "symbol" ? "combo" : "text",
           isCompound: false,
           isShorthand: false,
           isSubProperty: true,

@@ -15,6 +15,7 @@ import { IconSeldonToken } from "@seldon/components/icons"
 import { LoadEditorIcons, asSymbolIconId } from "@app/LoadEditorIcons"
 import { getBoardPresetIconId } from "./board-preset-icon"
 import { FlatProperty } from "./properties-data"
+import { getRepeatSymbolDescendant } from "./repeat-display"
 import { resolveThemeSwatchColors } from "./resolve-theme-swatch-colors"
 import { getThemeTokenIconColor } from "./theme-token-icon-color"
 
@@ -66,13 +67,12 @@ export function createPropertyOptionIconRenderer({
     }
 
     // The "Default" ("") and "Inherit" rows are not icon ids; let them fall
-    // through to the property's default icon.
-    if (
-      property.key === "symbol" &&
-      option &&
-      option.value &&
-      option.value !== "inherit"
-    ) {
+    // through to the property's default icon. Repeat echo symbol rows edit an
+    // icon descendant's `symbol`, so they render icon glyphs like the real one.
+    const isSymbolRow =
+      property.key === "symbol" ||
+      !!getRepeatSymbolDescendant(property.key, workspace)
+    if (isSymbolRow && option && option.value && option.value !== "inherit") {
       // Icon turned off in its workspace set renders as a red Missing icon.
       if (isWorkspaceIconUnavailable(option.value as IconId, workspace)) {
         return (

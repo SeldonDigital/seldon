@@ -27,6 +27,7 @@ import {
   type NodeState,
 } from "@seldon/core/workspace/model/node-state"
 import { useThemeById } from "@lib/themes/hooks/use-theme-by-id"
+import { useIsNodeSelected } from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useAddNodeFontFamily } from "./hooks/use-add-node-font-family"
 import { collectDescendantNodeIds } from "@lib/workspace/component-tree"
@@ -92,6 +93,10 @@ export const CanvasNode = memo(function CanvasNode({
 }: CanvasNodeProps) {
   const { workspace } = useWorkspace()
   const node = workspace.nodes[nodeId]
+
+  // Echoes share index 0's node id, so this is true for every copy of a
+  // repeated child whenever that child (index 0) is the current selection.
+  const isSelectedNode = useIsNodeSelected(nodeId)
 
   if (!node) {
     return null
@@ -207,12 +212,18 @@ export const CanvasNode = memo(function CanvasNode({
       ? { position: "absolute" as const }
       : { position: "relative" as const }
     : undefined
+  // The dotted outline marks the echo copies only, and only while the repeat
+  // is selected. Index 0 keeps its normal selection so it does not get dashed.
+  const showRepeatOutline = isRepeatCopy && isSelectedNode
   const styleOverrides =
-    positionOverride || isRepeatCopy
+    positionOverride || showRepeatOutline
       ? {
           ...positionOverride,
-          ...(isRepeatCopy
-            ? { outline: "1px dashed #6366f1", outlineOffset: "1px" }
+          ...(showRepeatOutline
+            ? {
+                outline: "1px dashed var(--sdn-seldon-swatch-primary)",
+                outlineOffset: "1px",
+              }
             : {}),
         }
       : undefined
@@ -261,7 +272,7 @@ export const CanvasNode = memo(function CanvasNode({
               rootPath={childRootPath}
               activeState={activeState}
               repeatOverrides={childOverrides}
-              isRepeatCopy
+              isRepeatCopy={isEcho}
             />
           )
         })

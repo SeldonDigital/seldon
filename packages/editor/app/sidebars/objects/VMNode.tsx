@@ -1,4 +1,5 @@
-import { memo, type ReactElement } from "react"
+import { memo, type CSSProperties, type ReactElement } from "react"
+import { COLORS } from "@lib/helpers/colors"
 import {
   MAX_REPEAT_COUNT,
   getNodeRepeat,
@@ -6,6 +7,7 @@ import {
 } from "@seldon/core"
 import type { EntryNode } from "@seldon/core/workspace/types"
 import { useRowHighlightStyle } from "@lib/workspace/hooks/use-object-hover"
+import { useIsNodeSelected } from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useSidebarCanvasTracking } from "../../tracking/hooks/use-sidebar-canvas-tracking"
 import { useSidebarRowStyling } from "../../tracking/hooks/use-sidebar-row-styling"
@@ -28,6 +30,31 @@ const NODE_SELECTION_KIND = "node"
 /** Most echo rows to list before collapsing the remainder into a summary row. */
 const ECHO_ROW_LIMIT = 6
 
+/**
+ * Selected-echo border. Recolors the row's existing border without touching its
+ * width, so no pixel shift occurs. Sides take the selection color; the top is
+ * colored only on the first echo when index 0 is open, the bottom only on the
+ * last echo. Corners are squared wherever the bracket does not close, so the
+ * stacked rows read as one box.
+ */
+function echoSelectedBorder(
+  isFirst: boolean,
+  isLast: boolean,
+  isExpanded: boolean,
+): CSSProperties {
+  const color = COLORS.primary[500]
+  const showTop = isFirst && isExpanded
+  return {
+    borderStyle: "dashed",
+    borderLeftColor: color,
+    borderRightColor: color,
+    borderTopColor: showTop ? color : "transparent",
+    borderBottomColor: isLast ? color : "transparent",
+    ...(showTop ? {} : { borderTopLeftRadius: 0, borderTopRightRadius: 0 }),
+    ...(isLast ? {} : { borderBottomLeftRadius: 0, borderBottomRightRadius: 0 }),
+  }
+}
+
 interface VMNodeProps {
   nodeId: string
   /**
@@ -44,10 +71,21 @@ interface VMNodeProps {
    * routes selection to the underlying node (index 0 of the repeat).
    */
   isEcho?: boolean
+  /** First row of the echo cluster. */
+  isFirstEcho?: boolean
+  /** Last row of the echo cluster. */
+  isLastEcho?: boolean
 }
 
-/** Muted summary row standing in for echo rows beyond {@link ECHO_ROW_LIMIT}. */
-function RepeatEchoSummaryRow({ count }: { count: number }) {
+/** Summary row standing in for echo rows beyond {@link ECHO_ROW_LIMIT}. */
+function RepeatEchoSummaryRow({
+  nodeId,
+  count,
+}: {
+  nodeId: string
+  count: number
+}) {
+  const isSelected = useIsNodeSelected(nodeId)
   return (
     <div
       style={{
@@ -55,6 +93,9 @@ function RepeatEchoSummaryRow({ count }: { count: number }) {
         fontStyle: "italic",
         opacity: 0.6,
         fontSize: 12,
+        border: "var(--hairline) solid transparent",
+        borderRadius: "var(--sdn-corners-tight)",
+        ...(isSelected ? echoSelectedBorder(false, true, false) : {}),
       }}
     >
       +{count} more
@@ -69,6 +110,8 @@ const VMNodeInner = function VMNodeInner({
   parentIsSelected,
   disableReordering,
   isEcho,
+  isFirstEcho,
+  isLastEcho,
 }: {
   node: EntryNode
   rootId: string
@@ -76,6 +119,8 @@ const VMNodeInner = function VMNodeInner({
   parentIsSelected: boolean
   disableReordering: boolean
   isEcho: boolean
+  isFirstEcho: boolean
+  isLastEcho: boolean
 }) {
   const { workspace } = useWorkspace({ usePreview: false })
   const {
@@ -106,11 +151,18 @@ const VMNodeInner = function VMNodeInner({
     isEcho,
   })
 
+  // Echoes share index 0's node id, so they read as selected with it. They show
+  // the dashed bracket instead of the solid selected box.
+  const rowSelected = isEcho ? false : isSelected
   const { rowStyle, iconColor, labelColor } = useSidebarRowStyling(node, {
-    isSelected,
+    isSelected: rowSelected,
   })
-  const hoverStyle = useRowHighlightStyle(node.id, isSelected, rootId)
-  const combinedRowStyle = { ...hoverStyle, ...rowStyle }
+  const hoverStyle = useRowHighlightStyle(node.id, rowSelected, rootId)
+  const echoBorder =
+    isEcho && isSelected
+      ? echoSelectedBorder(isFirstEcho, isLastEcho, isExpanded)
+      : undefined
+  const combinedRowStyle = { ...hoverStyle, ...rowStyle, ...echoBorder }
 
   const actionsMenu = useRowActionsMenu(actions, {
     color: iconColor,
@@ -150,9 +202,7 @@ const VMNodeInner = function VMNodeInner({
       ? properties.display?.value
       : undefined
 
-  // Expand a repeated child into its index-0 row plus stripped echo rows. Echo
-  // rows reuse index 0's rootId so selecting one routes to the same node and
-  // highlights the same canvas copy.
+  // Expand a repeated child into its index-0 row plus stripped echo rows.
   function renderChildRows(childNodeId: string): ReactElement[] {
     const childRootId = `${rootId}/${childNodeId}`
     const indexZeroRow = (
@@ -173,6 +223,7 @@ const VMNodeInner = function VMNodeInner({
     const echoCount = total - 1
     const shownEchoes = Math.min(echoCount, ECHO_ROW_LIMIT)
 
+    const hasSummary = echoCount > shownEchoes
     const rows: ReactElement[] = [indexZeroRow]
     for (let echoIndex = 1; echoIndex <= shownEchoes; echoIndex++) {
       rows.push(
@@ -183,13 +234,16 @@ const VMNodeInner = function VMNodeInner({
           show={show}
           parentIsSelected={isSelected}
           isEcho
+          isFirstEcho={echoIndex === 1}
+          isLastEcho={!hasSummary && echoIndex === shownEchoes}
         />,
       )
     }
-    if (echoCount > shownEchoes) {
+    if (hasSummary) {
       rows.push(
         <RepeatEchoSummaryRow
           key={`${childNodeId}#more`}
+          nodeId={childNodeId}
           count={echoCount - shownEchoes}
         />,
       )
@@ -259,6 +313,8 @@ export const VMNode = memo(function VMNode({
   parentIsSelected = false,
   disableReordering = false,
   isEcho = false,
+  isFirstEcho = false,
+  isLastEcho = false,
 }: VMNodeProps) {
   const { workspace } = useWorkspace({ usePreview: false })
   const node = getNode(workspace, nodeId)
@@ -273,6 +329,8 @@ export const VMNode = memo(function VMNode({
       parentIsSelected={parentIsSelected}
       disableReordering={disableReordering}
       isEcho={isEcho}
+      isFirstEcho={isFirstEcho}
+      isLastEcho={isLastEcho}
     />
   )
 })
