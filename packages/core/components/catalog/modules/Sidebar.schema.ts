@@ -1,6 +1,10 @@
-import * as Sdn from "../../../properties"
-import * as Seldon from "../../constants"
-import { ComponentExport, ComponentSchema } from "../../types"
+import * as Sdn from "../../../properties";
+import * as Seldon from "../../constants";
+import { ComponentExport, ComponentSchema } from "../../types";
+
+
+
+
 
 export const schema = {
   name: "Sidebar",
@@ -233,20 +237,6 @@ export const schema = {
             type: Sdn.ValueType.OPTION,
             value: Sdn.Resize.FIT,
           },
-          background: [
-            {
-              kind: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.BackgroundKind.COLOR,
-              },
-              color: {
-                type: Sdn.ValueType.THEME_CATEGORICAL,
-                value: "@swatch.primary",
-              },
-              brightness: { type: Sdn.ValueType.EMPTY, value: null },
-              opacity: { type: Sdn.ValueType.EMPTY, value: null },
-            },
-          ],
         },
       },
     ],
