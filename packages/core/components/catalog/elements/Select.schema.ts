@@ -63,14 +63,22 @@ export const schema = {
       value: {
         function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
         input: {
-          basedOn: "#parent.background.color",
+          basedOn: "#self.background.color",
         },
       },
     },
     brightness: { type: Sdn.ValueType.EMPTY, value: null },
     opacity: { type: Sdn.ValueType.EMPTY, value: null },
     background: [
-      { kind: { type: Sdn.ValueType.OPTION, value: Sdn.BackgroundKind.NONE } },
+      {
+        kind: { type: Sdn.ValueType.OPTION, value: Sdn.BackgroundKind.COLOR },
+        color: {
+          type: Sdn.ValueType.THEME_CATEGORICAL,
+          value: "@swatch.white",
+        },
+        brightness: { type: Sdn.ValueType.EMPTY, value: null },
+        opacity: { type: Sdn.ValueType.EMPTY, value: null },
+      },
     ],
     border: {
       preset: {
@@ -83,7 +91,7 @@ export const schema = {
         value: {
           function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
           input: {
-            basedOn: "#parent.background.color",
+            basedOn: "#self.background.color",
           },
         },
       },

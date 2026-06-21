@@ -68,10 +68,9 @@ import { HTMLTrack } from "@seldon/core/components/native-react/HTML.Track"
 import { HTMLUl } from "@seldon/core/components/native-react/HTML.Ul"
 import { HTMLVideo } from "@seldon/core/components/native-react/HTML.Video"
 import { NativeReactPrimitive } from "@seldon/core/components/types"
-import { IconId } from "@seldon/core/icon-sets"
 import { WrapperElement } from "@seldon/core/properties"
 import type { ComputeContext } from "@seldon/core/properties/compute"
-import { LoadEditorIcons } from "@app/LoadEditorIcons"
+import { LoadEditorIcons, asSymbolIconId } from "@app/LoadEditorIcons"
 import { CssPortal } from "./CssPortal"
 
 export type CanvasHtmlAttributes = Record<string, string | boolean>
@@ -138,7 +137,7 @@ export const ComponentRenderer = ({
           <style data-seldon-style-for={className}>{css}</style>
         </CssPortal>
         <LoadEditorIcons
-          iconId={properties.symbol?.value as IconId | undefined}
+          iconId={asSymbolIconId(properties.symbol?.value)}
           unavailable={iconUnavailable}
           className={className}
           {...htmlAttributes}

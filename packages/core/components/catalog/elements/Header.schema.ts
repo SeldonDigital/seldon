@@ -142,13 +142,6 @@ export const schema = {
       {
         component: Seldon.ComponentId.AVATAR,
         overrides: {
-          width: {
-            type: Sdn.ValueType.EXACT,
-            value: {
-              unit: Sdn.Unit.PERCENT,
-              value: 75,
-            },
-          },
           margin: {
             right: {
               type: Sdn.ValueType.THEME_ORDINAL,

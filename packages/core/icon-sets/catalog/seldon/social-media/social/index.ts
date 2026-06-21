@@ -1,7 +1,6 @@
 import { IconId } from "@seldon/core/icon-sets"
 
 export { IconSocialFacebook } from "./IconSocialFacebook"
-export { IconSocialQuora } from "./IconSocialQuora"
 export { IconSocialReddit } from "./IconSocialReddit"
 export { IconSocialPinterest } from "./IconSocialPinterest"
 export { IconSocialTiktok } from "./IconSocialTiktok"
@@ -19,7 +18,6 @@ export { IconSocialGithub } from "./IconSocialGithub"
 
 export const seldonuserSocialsocialIconIds: readonly IconId[] = [
   "seldon-iconSocialFacebook",
-  "seldon-iconSocialQuora",
   "seldon-iconSocialReddit",
   "seldon-iconSocialPinterest",
   "seldon-iconSocialTiktok",

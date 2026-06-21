@@ -91,15 +91,22 @@ export function mergeInlineSlotOverrides(
   return mergeSlot(slot, null, variantFallbacks)
 }
 
-/** The children a slot displaces: its explicit list or its schema fallback. */
+/**
+ * The children a slot displaces. When the slot carries its own children, they
+ * are first resolved against the slot's component defaults so an inline child
+ * that displaces one inherits the baseline child's overrides, not just the
+ * sparse facets the slot author wrote. Otherwise the slot's schema fallback
+ * children stand in.
+ */
 function getDisplacedChildren(
   slot: SchemaChild,
   variantFallbacks?: ReadonlySet<string>,
 ): SchemaChild[] {
   const resolved = applyVariantFallbackToSlot(slot, variantFallbacks)
-  return resolved.children?.length
-    ? resolved.children
-    : resolveSchemaChild(resolved).fallbackChildren
+  if (resolved.children?.length) {
+    return mergeSlot(resolved, null, variantFallbacks).children ?? []
+  }
+  return resolveSchemaChild(resolved).fallbackChildren
 }
 
 function mergeSlot(

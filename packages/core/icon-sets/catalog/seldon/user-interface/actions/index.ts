@@ -1,17 +1,11 @@
 import { IconId } from "@seldon/core/icon-sets"
 
-export { IconSeldonAddChart } from "./IconSeldonAddChart"
-export { IconSeldonAssistantNavigation } from "./IconSeldonAssistantNavigation"
-export { IconSeldonCheckboxOff } from "./IconSeldonCheckboxOff"
-export { IconSeldonCheckboxOn } from "./IconSeldonCheckboxOn"
 export { IconSeldonClip } from "./IconSeldonClip"
 export { IconSeldonIconInput } from "./IconSeldonIconInput"
 export { IconSeldonInputType } from "./IconSeldonInputType"
 export { IconSeldonMinus } from "./IconSeldonMinus"
 export { IconSeldonPlus } from "./IconSeldonPlus"
 export { IconSeldonRetry } from "./IconSeldonRetry"
-export { IconSeldonX } from "./IconSeldonX"
-export { IconSeldonAi } from "./IconSeldonAi"
 export { IconSeldonCursor } from "./IconSeldonCursor"
 export { IconSeldonDefault } from "./IconSeldonDefault"
 export { IconSeldonEdited } from "./IconSeldonEdited"
@@ -27,26 +21,14 @@ export { IconSeldonToolArrow } from "./IconSeldonToolArrow"
 export { IconSeldonToolImageAi } from "./IconSeldonToolImageAi"
 export { IconSeldonToolComponent } from "./IconSeldonToolComponent"
 export { IconSeldonToolSketch } from "./IconSeldonToolSketch"
-export { IconSeldonToken } from "./IconSeldonToken"
-export { IconSeldonUpload } from "./IconSeldonUpload"
-export { IconSeldonDuplicate } from "./IconSeldonDuplicate"
-export { IconSeldonPreview } from "./IconSeldonPreview"
-export { IconSeldonFullScreen } from "./IconSeldonFullScreen"
-export { IconSeldonSpark } from "./IconSeldonSpark"
 
 export const seldoncommonactionsIconIds: readonly IconId[] = [
-  "seldon-addChart",
-  "seldon-assistantNavigation",
-  "seldon-checkboxOff",
-  "seldon-checkboxOn",
   "seldon-clip",
   "seldon-iconInput",
   "seldon-inputType",
   "seldon-minus",
   "seldon-plus",
   "seldon-retry",
-  "seldon-x",
-  "seldon-ai",
   "seldon-cursor",
   "seldon-default",
   "seldon-edited",
@@ -62,10 +44,4 @@ export const seldoncommonactionsIconIds: readonly IconId[] = [
   "seldon-toolImageAi",
   "seldon-toolComponent",
   "seldon-toolSketch",
-  "seldon-token",
-  "seldon-upload",
-  "seldon-duplicate",
-  "seldon-preview",
-  "seldon-fullScreen",
-  "seldon-spark",
 ] as const

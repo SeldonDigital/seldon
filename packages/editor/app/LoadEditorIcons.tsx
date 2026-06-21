@@ -13,8 +13,26 @@ import {
   IconSeldonMissing as IconMissing,
 } from "@seldon/components/icons"
 
+/**
+ * A workspace icon id chosen by the user (a `symbol` property value).
+ *
+ * `LoadEditorIcons` resolves ids against every set's full catalog, so it must
+ * only ever receive a user-selected symbol, never a hardcoded editor-chrome id.
+ * The brand makes feeding a plain `IconId` a compile error: callers mint a
+ * `SymbolIconId` through `asSymbolIconId`, which marks the value as a symbol on
+ * purpose. Render chrome icons with `<Icon>` from custom-components instead.
+ */
+export type SymbolIconId = IconId & { readonly __symbol: unique symbol }
+
+/** Marks a symbol property value as a `SymbolIconId` for `LoadEditorIcons`. */
+export function asSymbolIconId(
+  value: string | null | undefined,
+): SymbolIconId | undefined {
+  return (value ?? undefined) as SymbolIconId | undefined
+}
+
 export type LoadEditorIconsProps = SVGAttributes<SVGSVGElement> & {
-  iconId?: IconId
+  iconId?: SymbolIconId
   /**
    * When true the icon's set is in the workspace but the icon is turned off, so
    * it renders as a red Missing icon regardless of whether the id resolves.
@@ -82,14 +100,16 @@ export function LoadEditorIcons({
     return <IconMissing {...props} />
   }
 
+  const id: string = iconId
+
   // Handle __default__ icon
   // Note: __default__ is a special icon that lives outside icon sets
-  if (iconId === "__default__") {
+  if (id === "__default__") {
     return <IconDefault {...props} />
   }
 
   // Extract icon set prefix (e.g., "material-add" -> "material", "carbon-document" -> "carbon")
-  const iconSetPrefix = iconId.split("-")[0]
+  const iconSetPrefix = id.split("-")[0]
   const iconModule = ICON_MODULES_BY_PREFIX[iconSetPrefix]
   let Icon: React.ComponentType<SVGAttributes<SVGSVGElement>> | undefined
 
@@ -100,7 +120,7 @@ export function LoadEditorIcons({
     // Example: "lucide-file" -> "IconLucideFile"
     // Example: "seldon-alignTop" -> "IconSeldonAlignTop"
     // Example: "seldon-iconSocialFacebook" -> "IconSocialFacebook" (IconSocial* has no Seldon prefix)
-    const iconNameParts = iconId.split("-").slice(1) // ["folderOpen"], ["document"], etc.
+    const iconNameParts = id.split("-").slice(1) // ["folderOpen"], ["document"], etc.
 
     // Capitalize set prefix: "material" -> "Material", "carbon" -> "Carbon", etc.
     const capitalizedSetPrefix =
@@ -126,7 +146,7 @@ export function LoadEditorIcons({
   }
 
   if (!Icon) {
-    console.warn(`[LoadEditorIcons] Icon not found: ${iconId}`)
+    console.warn(`[LoadEditorIcons] Icon not found: ${id}`)
     return <IconMissing {...props} />
   }
 

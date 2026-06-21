@@ -4,6 +4,7 @@ import { invariant } from "../../helpers/utils/invariant"
 import { ComputedFunction, ValueType } from "../constants"
 import type { Value } from "../types/value"
 import type { AtomicValue } from "../types/value-atomic"
+import { BackgroundKind } from "../values/appearance/background/background-kind"
 import { Color } from "../values/appearance/color"
 import type { ComputedValue } from "../values/shared/computed/computed-value"
 import { ComputeContext } from "./types"
@@ -46,6 +47,20 @@ function isNonContributingBackgroundColor(value: Value | undefined): boolean {
 }
 
 /**
+ * A background layer whose `kind` is `none` paints nothing, so it cannot act as a contrast
+ * surface even when its `color` facet still carries a leftover swatch from the catalog default.
+ */
+function isNonContributingBackgroundKind(value: Value | undefined): boolean {
+  return Boolean(
+    value &&
+    typeof value === "object" &&
+    "type" in value &&
+    value.type === ValueType.OPTION &&
+    value.value === BackgroundKind.NONE,
+  )
+}
+
+/**
  * Resolves a `basedOn` path and, for `#parent.*` lookups, walks `parentContext` while the hit is
  * missing, `EMPTY`, `INHERIT`, or explicit `transparent`. Returns the context whose properties
  * supplied the final value as `facetSource`.
@@ -54,27 +69,82 @@ export function resolveBasedOnWithAnchor(
   basedOn: string,
   context: Omit<ComputeContext, "theme">,
 ): ResolvedBasedOnWithAnchor {
-  const lookupPath = normalizeBasedOnLookupPath(basedOn.replace(/^#/, ""))
-  const parentLookupPath = normalizeBasedOnLookupPath(
-    basedOn.replace("#parent.", ""),
+  const colorLookupPath = normalizeBasedOnLookupPath(
+    basedOn.replace(/^#(parent\.|self\.)?/, ""),
   )
 
-  if (basedOn.includes("#parent.") && context.parentContext) {
-    let parent = context.parentContext
+  const kindLookupPath =
+    colorLookupPath.startsWith("background.") &&
+    colorLookupPath.endsWith(".color")
+      ? colorLookupPath.replace(/\.color$/, ".kind")
+      : null
 
-    let value = findInObject<Value>(parent.properties, parentLookupPath)
-
-    while (isNonContributingBackgroundColor(value) && parent.parentContext) {
-      parent = parent.parentContext
-
-      value = findInObject<Value>(parent.properties, parentLookupPath)
+  const isNonContributingLayer = (
+    properties: Omit<ComputeContext, "theme">["properties"],
+    colorValue: Value | undefined,
+  ): boolean => {
+    if (isNonContributingBackgroundColor(colorValue)) {
+      return true
     }
 
-    return { value, facetSource: parent }
+    if (!kindLookupPath) {
+      return false
+    }
+
+    return isNonContributingBackgroundKind(
+      findInObject<Value>(properties, kindLookupPath),
+    )
+  }
+
+  const walkParents = (
+    start: ComputeContext,
+    seed: Value | undefined,
+  ): ResolvedBasedOnWithAnchor => {
+    let cursor = start
+    let value = seed
+
+    while (
+      isNonContributingLayer(cursor.properties, value) &&
+      cursor.parentContext
+    ) {
+      cursor = cursor.parentContext
+
+      value = findInObject<Value>(cursor.properties, colorLookupPath)
+    }
+
+    return { value, facetSource: cursor }
+  }
+
+  if (basedOn.startsWith("#parent.") && context.parentContext) {
+    const parent = context.parentContext
+
+    return walkParents(
+      parent,
+      findInObject<Value>(parent.properties, colorLookupPath),
+    )
+  }
+
+  if (basedOn.startsWith("#self.")) {
+    const selfValue = findInObject<Value>(context.properties, colorLookupPath)
+
+    if (!isNonContributingLayer(context.properties, selfValue)) {
+      return { value: selfValue, facetSource: context }
+    }
+
+    if (!context.parentContext) {
+      return { value: selfValue, facetSource: context }
+    }
+
+    const parent = context.parentContext
+
+    return walkParents(
+      parent,
+      findInObject<Value>(parent.properties, colorLookupPath),
+    )
   }
 
   return {
-    value: findInObject<Value>(context.properties, lookupPath),
+    value: findInObject<Value>(context.properties, colorLookupPath),
     facetSource: context,
   }
 }

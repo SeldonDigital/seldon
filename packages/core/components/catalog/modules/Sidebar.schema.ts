@@ -227,25 +227,12 @@ export const schema = {
       },
       {
         component: Seldon.ComponentId.BAR,
+        variant: "buttonBar",
         overrides: {
           height: {
             type: Sdn.ValueType.OPTION,
             value: Sdn.Resize.FIT,
           },
-          background: [
-            {
-              kind: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.BackgroundKind.COLOR,
-              },
-              color: {
-                type: Sdn.ValueType.THEME_CATEGORICAL,
-                value: "@swatch.primary",
-              },
-              brightness: { type: Sdn.ValueType.EMPTY, value: null },
-              opacity: { type: Sdn.ValueType.EMPTY, value: null },
-            },
-          ],
         },
       },
     ],

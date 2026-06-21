@@ -43,7 +43,7 @@ export const schema = {
       type: Sdn.ValueType.COMPUTED,
       value: {
         function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-        input: { basedOn: "#parent.background.color" },
+        input: { basedOn: "#self.background.color" },
       },
     },
     brightness: { type: Sdn.ValueType.EMPTY, value: null },
@@ -146,7 +146,7 @@ export const schema = {
             type: Sdn.ValueType.COMPUTED,
             value: {
               function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-              input: { basedOn: "#parent.background.color" },
+              input: { basedOn: "#self.background.color" },
             },
           },
           font: {
@@ -175,7 +175,7 @@ export const schema = {
             type: Sdn.ValueType.COMPUTED,
             value: {
               function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-              input: { basedOn: "#parent.background.color" },
+              input: { basedOn: "#self.background.color" },
             },
           },
           font: {
@@ -215,7 +215,7 @@ export const schema = {
               type: Sdn.ValueType.COMPUTED,
               value: {
                 function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-                input: { basedOn: "#parent.background.color" },
+                input: { basedOn: "#self.background.color" },
               },
             },
             font: {
@@ -240,7 +240,7 @@ export const schema = {
               type: Sdn.ValueType.COMPUTED,
               value: {
                 function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-                input: { basedOn: "#parent.background.color" },
+                input: { basedOn: "#self.background.color" },
               },
             },
             font: {
@@ -279,7 +279,7 @@ export const schema = {
               type: Sdn.ValueType.COMPUTED,
               value: {
                 function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-                input: { basedOn: "#parent.background.color" },
+                input: { basedOn: "#self.background.color" },
               },
             },
             font: {
@@ -304,7 +304,7 @@ export const schema = {
               type: Sdn.ValueType.COMPUTED,
               value: {
                 function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-                input: { basedOn: "#parent.background.color" },
+                input: { basedOn: "#self.background.color" },
               },
             },
             font: {

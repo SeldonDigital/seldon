@@ -21,6 +21,7 @@ import {
 import { CssPortal } from "../CssPortal"
 import { canvasSelectionId } from "../helpers/canvas-selection-target"
 import { BoardPreviewNode } from "./BoardPreviewNode"
+import { injectBoardBackground } from "./inject-board-background"
 
 export type FontCollectionBoardProps = {
   board: Board
@@ -108,6 +109,7 @@ export function FontCollectionBoard({ board }: FontCollectionBoardProps) {
               weightsLabel={weightsLabel}
               themes={workspace.themes}
               boardThemeId={board.componentTheme}
+              boardBackground={properties.background}
             />
           )
         })}
@@ -125,6 +127,12 @@ type FontCollectionTypeSpecimenProps = {
   weightsLabel: string
   themes: Workspace["themes"]
   boardThemeId: string
+  /**
+   * Board background injected onto the preview workspace's board so the
+   * specimen's Text nodes resolve `HIGH_CONTRAST_COLOR` against the board
+   * surface instead of the preview component board's transparent default.
+   */
+  boardBackground: Properties["background"]
 }
 
 /**
@@ -143,6 +151,7 @@ function FontCollectionTypeSpecimen({
   weightsLabel,
   themes,
   boardThemeId,
+  boardBackground,
 }: FontCollectionTypeSpecimenProps) {
   const { workspace: typeSpecimenBase, rootId } = getTypeSpecimenPreviewBase()
 
@@ -194,6 +203,7 @@ function FontCollectionTypeSpecimen({
       ...typeSpecimenBase,
       themes,
       nodes,
+      boards: injectBoardBackground(typeSpecimenBase.boards, boardBackground),
     } as Workspace
   }, [
     typeSpecimenBase,
@@ -203,6 +213,7 @@ function FontCollectionTypeSpecimen({
     fontValue,
     family.name,
     weightsLabel,
+    boardBackground,
   ])
 
   if (!previewWorkspace || !rootId) {

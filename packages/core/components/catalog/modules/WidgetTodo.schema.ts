@@ -164,7 +164,6 @@ export const schema = {
     children: [
       {
         component: Seldon.ComponentId.BAR,
-        variant: "title",
         overrides: {
           height: {
             type: Sdn.ValueType.OPTION,
@@ -279,7 +278,7 @@ export const schema = {
                 value: {
                   function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
                   input: {
-                    basedOn: "#parent.background.color",
+                    basedOn: "#self.background.color",
                   },
                 },
               },
