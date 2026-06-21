@@ -307,7 +307,10 @@ export const schema = {
               value: Sdn.AriaHasPopup.MENU,
             },
             corners: {
-              topLeft: { type: Sdn.ValueType.OPTION, value: Sdn.Corner.SQUARED },
+              topLeft: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.Corner.SQUARED,
+              },
               topRight: {
                 type: Sdn.ValueType.OPTION,
                 value: Sdn.Corner.SQUARED,
@@ -344,7 +347,10 @@ export const schema = {
               value: Sdn.AriaHasPopup.MENU,
             },
             corners: {
-              topLeft: { type: Sdn.ValueType.OPTION, value: Sdn.Corner.SQUARED },
+              topLeft: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.Corner.SQUARED,
+              },
               topRight: {
                 type: Sdn.ValueType.OPTION,
                 value: Sdn.Corner.SQUARED,
@@ -381,7 +387,10 @@ export const schema = {
               value: Sdn.AriaHasPopup.MENU,
             },
             corners: {
-              topLeft: { type: Sdn.ValueType.OPTION, value: Sdn.Corner.SQUARED },
+              topLeft: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.Corner.SQUARED,
+              },
               topRight: {
                 type: Sdn.ValueType.OPTION,
                 value: Sdn.Corner.SQUARED,
@@ -418,7 +427,10 @@ export const schema = {
               value: Sdn.AriaHasPopup.MENU,
             },
             corners: {
-              topLeft: { type: Sdn.ValueType.OPTION, value: Sdn.Corner.SQUARED },
+              topLeft: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.Corner.SQUARED,
+              },
               topRight: {
                 type: Sdn.ValueType.OPTION,
                 value: Sdn.Corner.SQUARED,

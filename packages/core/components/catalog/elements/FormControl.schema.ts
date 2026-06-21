@@ -1,10 +1,6 @@
-import * as Sdn from "../../../properties";
-import * as Seldon from "../../constants";
-import { ComponentExport, ComponentSchema } from "../../types";
-
-
-
-
+import * as Sdn from "../../../properties"
+import * as Seldon from "../../constants"
+import { ComponentExport, ComponentSchema } from "../../types"
 
 export const schema = {
   name: "Form Control",
@@ -91,10 +87,7 @@ export const schema = {
     background: [
       {
         kind: { type: Sdn.ValueType.OPTION, value: Sdn.BackgroundKind.NONE },
-        color: {
-          type: Sdn.ValueType.EMPTY,
-          value: null,
-        },
+        color: { type: Sdn.ValueType.EMPTY, value: null },
         brightness: { type: Sdn.ValueType.EMPTY, value: null },
         opacity: { type: Sdn.ValueType.EMPTY, value: null },
       },
