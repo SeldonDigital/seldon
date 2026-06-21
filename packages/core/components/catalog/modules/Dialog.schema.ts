@@ -1,6 +1,10 @@
-import * as Sdn from "../../../properties"
-import * as Seldon from "../../constants"
-import { ComponentExport, ComponentSchema } from "../../types"
+import * as Sdn from "../../../properties";
+import * as Seldon from "../../constants";
+import { ComponentExport, ComponentSchema } from "../../types";
+
+
+
+
 
 export const schema = {
   name: "Dialog",
@@ -296,6 +300,13 @@ export const schema = {
               },
             },
           },
+          {
+            component: Seldon.ComponentId.BUTTON,
+            variant: "iconic",
+          },
+          {
+            component: Seldon.ComponentId.BUTTON,
+          },
         ],
       },
       {
@@ -346,7 +357,12 @@ export const schema = {
       },
       {
         component: Seldon.ComponentId.BAR,
+        variant: "buttonBar",
         overrides: {
+          align: {
+            type: Sdn.ValueType.OPTION,
+            value: Sdn.Align.CENTER_RIGHT,
+          },
           height: {
             type: Sdn.ValueType.OPTION,
             value: Sdn.Resize.FIT,
@@ -440,6 +456,12 @@ export const schema = {
             width: { type: Sdn.ValueType.EMPTY, value: null },
             brightness: { type: Sdn.ValueType.EMPTY, value: null },
             opacity: { type: Sdn.ValueType.EMPTY, value: null },
+          },
+          corners: {
+            topLeft: { type: Sdn.ValueType.OPTION, value: Sdn.Corner.SQUARED },
+            topRight: { type: Sdn.ValueType.OPTION, value: Sdn.Corner.SQUARED },
+            bottomLeft: { type: Sdn.ValueType.EMPTY, value: null },
+            bottomRight: { type: Sdn.ValueType.EMPTY, value: null },
           },
         },
       },

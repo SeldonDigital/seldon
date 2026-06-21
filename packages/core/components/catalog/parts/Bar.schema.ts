@@ -441,43 +441,6 @@ export const schema = {
               overrides: {
                 content: {
                   type: Sdn.ValueType.EXACT,
-                  value: "Component",
-                },
-              },
-            },
-          ],
-        },
-        {
-          component: Seldon.ComponentId.BUTTON,
-          variant: "label",
-          overrides: {
-            ariaHasPopup: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.AriaHasPopup.MENU,
-            },
-            corners: {
-              topLeft: { type: Sdn.ValueType.OPTION, value: Sdn.Corner.SQUARED },
-              topRight: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.Corner.SQUARED,
-              },
-              bottomLeft: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.Corner.SQUARED,
-              },
-              bottomRight: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.Corner.SQUARED,
-              },
-            },
-          },
-          children: [
-            {
-              component: Seldon.ComponentId.TEXT,
-              variant: "label",
-              overrides: {
-                content: {
-                  type: Sdn.ValueType.EXACT,
                   value: "View",
                 },
               },
@@ -692,6 +655,213 @@ export const schema = {
               },
             },
           ],
+        },
+      ],
+    },
+    {
+      id: "breadcrumbs",
+      label: "Breadcrumbs Bar",
+      intent: "Shows the path of pages leading to the current view.",
+      overrides: {
+        role: { type: Sdn.ValueType.OPTION, value: Sdn.AriaRole.NAVIGATION },
+        align: {
+          type: Sdn.ValueType.OPTION,
+          value: Sdn.Align.CENTER_LEFT,
+        },
+        gap: {
+          type: Sdn.ValueType.THEME_ORDINAL,
+          value: "@gap.compact",
+        },
+        background: [
+          {
+            kind: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.BackgroundKind.COLOR,
+            },
+            color: {
+              type: Sdn.ValueType.THEME_CATEGORICAL,
+              value: "@swatch.primary",
+            },
+            brightness: {
+              type: Sdn.ValueType.EXACT,
+              value: { unit: Sdn.Unit.PERCENT, value: 50 },
+            },
+            opacity: { type: Sdn.ValueType.EMPTY, value: null },
+          },
+        ],
+      },
+      children: [
+        {
+          component: Seldon.ComponentId.BUTTON,
+          variant: "iconic",
+          overrides: {
+            border: {
+              preset: {
+                type: Sdn.ValueType.THEME_CATEGORICAL,
+                value: "@border.hairline",
+              },
+              color: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.Color.TRANSPARENT,
+              },
+            },
+          },
+          children: [
+            {
+              component: Seldon.ComponentId.ICON,
+              overrides: {
+                symbol: {
+                  type: Sdn.ValueType.OPTION,
+                  value: "material-home",
+                },
+              },
+            },
+          ],
+        },
+        {
+          component: Seldon.ComponentId.ICON,
+          overrides: {
+            symbol: {
+              type: Sdn.ValueType.OPTION,
+              value: "material-chevronRight",
+            },
+            size: { type: Sdn.ValueType.THEME_ORDINAL, value: "@size.small" },
+            color: {
+              type: Sdn.ValueType.COMPUTED,
+              value: {
+                function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+                input: {
+                  basedOn: "#parent.background.color",
+                },
+              },
+            },
+          },
+        },
+        {
+          component: Seldon.ComponentId.LINK,
+          overrides: {
+            content: {
+              type: Sdn.ValueType.EXACT,
+              value: "Home",
+            },
+            color: {
+              type: Sdn.ValueType.COMPUTED,
+              value: {
+                function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+                input: {
+                  basedOn: "#parent.background.color",
+                },
+              },
+            },
+            font: {
+              preset: {
+                type: Sdn.ValueType.THEME_CATEGORICAL,
+                value: "@font.label",
+              },
+            },
+            textDecoration: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.TextDecoration.NONE,
+            },
+          },
+        },
+        {
+          component: Seldon.ComponentId.ICON,
+          overrides: {
+            symbol: {
+              type: Sdn.ValueType.OPTION,
+              value: "material-chevronRight",
+            },
+            size: { type: Sdn.ValueType.THEME_ORDINAL, value: "@size.small" },
+            color: {
+              type: Sdn.ValueType.COMPUTED,
+              value: {
+                function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+                input: {
+                  basedOn: "#parent.background.color",
+                },
+              },
+            },
+          },
+        },
+        {
+          component: Seldon.ComponentId.LINK,
+          overrides: {
+            content: {
+              type: Sdn.ValueType.EXACT,
+              value: "Profile",
+            },
+            color: {
+              type: Sdn.ValueType.COMPUTED,
+              value: {
+                function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+                input: {
+                  basedOn: "#parent.background.color",
+                },
+              },
+            },
+            font: {
+              preset: {
+                type: Sdn.ValueType.THEME_CATEGORICAL,
+                value: "@font.label",
+              },
+            },
+            textDecoration: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.TextDecoration.NONE,
+            },
+          },
+        },
+        {
+          component: Seldon.ComponentId.ICON,
+          overrides: {
+            symbol: {
+              type: Sdn.ValueType.OPTION,
+              value: "material-chevronRight",
+            },
+            size: { type: Sdn.ValueType.THEME_ORDINAL, value: "@size.small" },
+            color: {
+              type: Sdn.ValueType.COMPUTED,
+              value: {
+                function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+                input: {
+                  basedOn: "#parent.background.color",
+                },
+              },
+            },
+          },
+        },
+        {
+          component: Seldon.ComponentId.LINK,
+          overrides: {
+            content: {
+              type: Sdn.ValueType.EXACT,
+              value: "Settings",
+            },
+            ariaCurrent: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.AriaCurrent.PAGE,
+            },
+            color: {
+              type: Sdn.ValueType.COMPUTED,
+              value: {
+                function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+                input: {
+                  basedOn: "#parent.background.color",
+                },
+              },
+            },
+            font: {
+              preset: {
+                type: Sdn.ValueType.THEME_CATEGORICAL,
+                value: "@font.label",
+              },
+            },
+            textDecoration: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.TextDecoration.NONE,
+            },
+          },
         },
       ],
     },
