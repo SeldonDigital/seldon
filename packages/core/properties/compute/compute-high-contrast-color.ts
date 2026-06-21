@@ -205,9 +205,9 @@ function resolveBackdropColor(
     return undefined
   }
 
-  const parentBasedOn = basedOn.includes("#parent.")
+  const parentBasedOn = basedOn.startsWith("#parent.")
     ? basedOn
-    : `#parent.${basedOn.replace(/^#/, "")}`
+    : `#parent.${basedOn.replace(/^#(parent\.|self\.)?/, "")}`
 
   const { value } = resolveBasedOnWithAnchor(parentBasedOn, facetSource)
 
@@ -236,7 +236,7 @@ function readAnchoredLayerPercentage(
   facet: "brightness" | "opacity",
 ): PercentageValue | undefined {
   const layerPath = normalizeLayerFacetPath(
-    colorBasedOn.replace("#parent.", "").replace(/^#/, ""),
+    colorBasedOn.replace(/^#(parent\.|self\.)?/, ""),
   )
   const facetPath = layerPath.replace(/\.color$/, `.${facet}`)
   const raw = findInObject(facetSource.properties, facetPath)

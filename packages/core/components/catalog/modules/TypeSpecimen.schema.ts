@@ -184,7 +184,7 @@ export const schema = {
             value: {
               function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
               input: {
-                basedOn: "#parent.background.color",
+                basedOn: "#self.background.color",
               },
             },
           },
@@ -220,7 +220,7 @@ export const schema = {
             value: {
               function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
               input: {
-                basedOn: "#parent.background.color",
+                basedOn: "#self.background.color",
               },
             },
           },
@@ -244,7 +244,7 @@ export const schema = {
             value: {
               function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
               input: {
-                basedOn: "#parent.background.color",
+                basedOn: "#self.background.color",
               },
             },
           },
@@ -262,7 +262,7 @@ export const schema = {
             value: {
               function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
               input: {
-                basedOn: "#parent.background.color",
+                basedOn: "#self.background.color",
               },
             },
           },
@@ -281,7 +281,7 @@ export const schema = {
             value: {
               function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
               input: {
-                basedOn: "#parent.background.color",
+                basedOn: "#self.background.color",
               },
             },
           },
@@ -311,7 +311,7 @@ export const schema = {
             value: {
               function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
               input: {
-                basedOn: "#parent.background.color",
+                basedOn: "#self.background.color",
               },
             },
           },

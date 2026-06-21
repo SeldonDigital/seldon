@@ -55,7 +55,7 @@ function getDefaultInput(
         factor: 1.5,
       }
     case ComputedFunction.HIGH_CONTRAST_COLOR:
-      return { basedOn: "#parent.background.color" }
+      return { basedOn: "#self.background.color" }
     case ComputedFunction.MATCH:
       return {
         basedOn: node

@@ -69,15 +69,14 @@ export function resolveBasedOnWithAnchor(
   basedOn: string,
   context: Omit<ComputeContext, "theme">,
 ): ResolvedBasedOnWithAnchor {
-  const lookupPath = normalizeBasedOnLookupPath(basedOn.replace(/^#/, ""))
-  const parentLookupPath = normalizeBasedOnLookupPath(
-    basedOn.replace("#parent.", ""),
+  const colorLookupPath = normalizeBasedOnLookupPath(
+    basedOn.replace(/^#(parent\.|self\.)?/, ""),
   )
 
   const kindLookupPath =
-    parentLookupPath.startsWith("background.") &&
-    parentLookupPath.endsWith(".color")
-      ? parentLookupPath.replace(/\.color$/, ".kind")
+    colorLookupPath.startsWith("background.") &&
+    colorLookupPath.endsWith(".color")
+      ? colorLookupPath.replace(/\.color$/, ".kind")
       : null
 
   const isNonContributingLayer = (
@@ -97,25 +96,55 @@ export function resolveBasedOnWithAnchor(
     )
   }
 
-  if (basedOn.includes("#parent.") && context.parentContext) {
-    let parent = context.parentContext
-
-    let value = findInObject<Value>(parent.properties, parentLookupPath)
+  const walkParents = (
+    start: ComputeContext,
+    seed: Value | undefined,
+  ): ResolvedBasedOnWithAnchor => {
+    let cursor = start
+    let value = seed
 
     while (
-      isNonContributingLayer(parent.properties, value) &&
-      parent.parentContext
+      isNonContributingLayer(cursor.properties, value) &&
+      cursor.parentContext
     ) {
-      parent = parent.parentContext
+      cursor = cursor.parentContext
 
-      value = findInObject<Value>(parent.properties, parentLookupPath)
+      value = findInObject<Value>(cursor.properties, colorLookupPath)
     }
 
-    return { value, facetSource: parent }
+    return { value, facetSource: cursor }
+  }
+
+  if (basedOn.startsWith("#parent.") && context.parentContext) {
+    const parent = context.parentContext
+
+    return walkParents(
+      parent,
+      findInObject<Value>(parent.properties, colorLookupPath),
+    )
+  }
+
+  if (basedOn.startsWith("#self.")) {
+    const selfValue = findInObject<Value>(context.properties, colorLookupPath)
+
+    if (!isNonContributingLayer(context.properties, selfValue)) {
+      return { value: selfValue, facetSource: context }
+    }
+
+    if (!context.parentContext) {
+      return { value: selfValue, facetSource: context }
+    }
+
+    const parent = context.parentContext
+
+    return walkParents(
+      parent,
+      findInObject<Value>(parent.properties, colorLookupPath),
+    )
   }
 
   return {
-    value: findInObject<Value>(context.properties, lookupPath),
+    value: findInObject<Value>(context.properties, colorLookupPath),
     facetSource: context,
   }
 }

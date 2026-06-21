@@ -8,9 +8,18 @@
  * - #parent.color
  * - #background.color
  * - #parent.background.color
+ * - #self.background.color
  *
  * But not:
  * - #border
  * - #parent.border
+ *
+ * Anchor prefixes:
+ * - `#` reads the current node only.
+ * - `#parent.` starts at the parent and walks up the parent chain past
+ *   non-contributing layers.
+ * - `#self.` reads the current node first and falls back to the parent walk
+ *   when the node's own value is non-contributing (missing, `EMPTY`,
+ *   `INHERIT`, explicit `transparent`, or a `none` background layer).
  */
 export type BasedOnPropertyKey = `#${string}` | `#parent.${string}`
