@@ -53,7 +53,7 @@ const useStore = create<PropertyExpansionState>((set) => ({
   properties: {},
   toggleCategory: (category: AllCategoryType, shouldExpand?: boolean) =>
     set((state) => {
-      const expand = shouldExpand ?? !state.categories[category]
+      const expand = shouldExpand ?? !(state.categories[category] ?? true)
       return {
         categories: {
           ...state.categories,
