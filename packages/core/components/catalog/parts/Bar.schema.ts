@@ -209,20 +209,6 @@ export const schema = {
               type: Sdn.ValueType.OPTION,
               value: Sdn.Display.SHOW,
             },
-            background: [
-              {
-                kind: {
-                  type: Sdn.ValueType.OPTION,
-                  value: Sdn.BackgroundKind.COLOR,
-                },
-                color: {
-                  type: Sdn.ValueType.THEME_CATEGORICAL,
-                  value: "@swatch.swatch1",
-                },
-                brightness: { type: Sdn.ValueType.EMPTY, value: null },
-                opacity: { type: Sdn.ValueType.EMPTY, value: null },
-              },
-            ],
           },
           children: [
             {
