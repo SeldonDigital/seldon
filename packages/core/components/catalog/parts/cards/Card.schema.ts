@@ -1,6 +1,10 @@
-import * as Sdn from "../../../../properties"
-import * as Seldon from "../../../constants"
-import { ComponentExport, ComponentSchema } from "../../../types"
+import * as Sdn from "../../../../properties";
+import * as Seldon from "../../../constants";
+import { ComponentExport, ComponentSchema } from "../../../types";
+
+
+
+
 
 export const schema = {
   name: "Card",
@@ -357,6 +361,7 @@ export const schema = {
       },
       {
         component: Seldon.ComponentId.BAR,
+        variant: "buttonBar",
         overrides: {
           align: {
             type: Sdn.ValueType.OPTION,
@@ -380,6 +385,14 @@ export const schema = {
               value: "@margin.cozy",
             },
           },
+          background: [
+            {
+              kind: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.BackgroundKind.NONE,
+              },
+            },
+          ],
         },
       },
     ],
@@ -479,14 +492,6 @@ export const schema = {
                 value: "@margin.cozy",
               },
             },
-            background: [
-              {
-                kind: {
-                  type: Sdn.ValueType.OPTION,
-                  value: Sdn.BackgroundKind.NONE,
-                },
-              },
-            ],
           },
         },
       ],
@@ -608,6 +613,7 @@ export const schema = {
         },
         {
           component: Seldon.ComponentId.BAR,
+          variant: "buttonBar",
           overrides: {
             width: {
               type: Sdn.ValueType.OPTION,
@@ -631,6 +637,32 @@ export const schema = {
                 value: "@margin.cozy",
               },
             },
+            padding: {
+              top: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.Padding.NONE,
+              },
+              right: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.Padding.NONE,
+              },
+              bottom: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.Padding.NONE,
+              },
+              left: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.Padding.NONE,
+              },
+            },
+            background: [
+              {
+                kind: {
+                  type: Sdn.ValueType.OPTION,
+                  value: Sdn.BackgroundKind.NONE,
+                },
+              },
+            ],
           },
         },
       ],

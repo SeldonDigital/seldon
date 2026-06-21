@@ -227,6 +227,7 @@ export const schema = {
       },
       {
         component: Seldon.ComponentId.BAR,
+        variant: "buttonBar",
         overrides: {
           height: {
             type: Sdn.ValueType.OPTION,

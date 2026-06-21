@@ -501,6 +501,7 @@ export const schema = {
         },
         {
           component: Seldon.ComponentId.BAR,
+          variant: "buttonBar",
           overrides: {
             width: {
               type: Sdn.ValueType.OPTION,
