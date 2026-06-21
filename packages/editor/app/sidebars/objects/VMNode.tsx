@@ -1,4 +1,9 @@
-import { memo } from "react"
+import { memo, type ReactElement } from "react"
+import {
+  MAX_REPEAT_COUNT,
+  getNodeRepeat,
+  isMeaningfulRepeat,
+} from "@seldon/core"
 import type { EntryNode } from "@seldon/core/workspace/types"
 import { useRowHighlightStyle } from "@lib/workspace/hooks/use-object-hover"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
@@ -20,6 +25,9 @@ import { RowSelectionTarget } from "./RowSelectionTarget"
 
 const NODE_SELECTION_KIND = "node"
 
+/** Most echo rows to list before collapsing the remainder into a summary row. */
+const ECHO_ROW_LIMIT = 6
+
 interface VMNodeProps {
   nodeId: string
   /**
@@ -31,6 +39,27 @@ interface VMNodeProps {
   show?: boolean
   parentIsSelected?: boolean
   disableReordering?: boolean
+  /**
+   * Render this row as a repeat echo: a stripped leaf with an italic label that
+   * routes selection to the underlying node (index 0 of the repeat).
+   */
+  isEcho?: boolean
+}
+
+/** Muted summary row standing in for echo rows beyond {@link ECHO_ROW_LIMIT}. */
+function RepeatEchoSummaryRow({ count }: { count: number }) {
+  return (
+    <div
+      style={{
+        padding: "2px 8px",
+        fontStyle: "italic",
+        opacity: 0.6,
+        fontSize: 12,
+      }}
+    >
+      +{count} more
+    </div>
+  )
 }
 
 const VMNodeInner = function VMNodeInner({
@@ -39,13 +68,16 @@ const VMNodeInner = function VMNodeInner({
   show,
   parentIsSelected,
   disableReordering,
+  isEcho,
 }: {
   node: EntryNode
   rootId: string
   show: boolean
   parentIsSelected: boolean
   disableReordering: boolean
+  isEcho: boolean
 }) {
+  const { workspace } = useWorkspace({ usePreview: false })
   const {
     label: baseLabel,
     buttonIconic,
@@ -71,6 +103,7 @@ const VMNodeInner = function VMNodeInner({
     show,
     parentIsSelected,
     disableReordering,
+    isEcho,
   })
 
   const { rowStyle, iconColor, labelColor } = useSidebarRowStyling(node, {
@@ -117,18 +150,57 @@ const VMNodeInner = function VMNodeInner({
       ? properties.display?.value
       : undefined
 
+  // Expand a repeated child into its index-0 row plus stripped echo rows. Echo
+  // rows reuse index 0's rootId so selecting one routes to the same node and
+  // highlights the same canvas copy.
+  function renderChildRows(childNodeId: string): ReactElement[] {
+    const childRootId = `${rootId}/${childNodeId}`
+    const indexZeroRow = (
+      <VMNode
+        key={childNodeId}
+        nodeId={childNodeId}
+        rootId={childRootId}
+        show={show}
+        parentIsSelected={isSelected}
+      />
+    )
+
+    const childNode = workspace.nodes[childNodeId]
+    const repeat = childNode ? getNodeRepeat(childNode) : undefined
+    if (!isMeaningfulRepeat(repeat)) return [indexZeroRow]
+
+    const total = Math.min(repeat.count, MAX_REPEAT_COUNT)
+    const echoCount = total - 1
+    const shownEchoes = Math.min(echoCount, ECHO_ROW_LIMIT)
+
+    const rows: ReactElement[] = [indexZeroRow]
+    for (let echoIndex = 1; echoIndex <= shownEchoes; echoIndex++) {
+      rows.push(
+        <VMNode
+          key={`${childNodeId}#echo${echoIndex}`}
+          nodeId={childNodeId}
+          rootId={childRootId}
+          show={show}
+          parentIsSelected={isSelected}
+          isEcho
+        />,
+      )
+    }
+    if (echoCount > shownEchoes) {
+      rows.push(
+        <RepeatEchoSummaryRow
+          key={`${childNodeId}#more`}
+          count={echoCount - shownEchoes}
+        />,
+      )
+    }
+    return rows
+  }
+
   const childrenSection = hasChildren ? (
     <FramerExpandable isExpanded={isExpanded}>
       <IndentationLevel>
-        {children.map((childNodeId) => (
-          <VMNode
-            key={childNodeId}
-            nodeId={childNodeId}
-            rootId={`${rootId}/${childNodeId}`}
-            show={show}
-            parentIsSelected={isSelected}
-          />
-        ))}
+        {children.flatMap((childNodeId) => renderChildRows(childNodeId))}
       </IndentationLevel>
     </FramerExpandable>
   ) : null
@@ -186,6 +258,7 @@ export const VMNode = memo(function VMNode({
   show = true,
   parentIsSelected = false,
   disableReordering = false,
+  isEcho = false,
 }: VMNodeProps) {
   const { workspace } = useWorkspace({ usePreview: false })
   const node = getNode(workspace, nodeId)
@@ -199,6 +272,7 @@ export const VMNode = memo(function VMNode({
       show={show}
       parentIsSelected={parentIsSelected}
       disableReordering={disableReordering}
+      isEcho={isEcho}
     />
   )
 })

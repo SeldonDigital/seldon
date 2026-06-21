@@ -3267,6 +3267,30 @@
           "properties": {
             "nodeId": {
               "type": "string"
+            },
+            "repeat": {
+              "$ref": "#/definitions/RepeatEditorData"
+            }
+          },
+          "required": ["nodeId", "repeat"],
+          "type": "object"
+        },
+        "type": {
+          "const": "set_node_repeat",
+          "type": "string"
+        }
+      },
+      "required": ["payload", "type"],
+      "type": "object"
+    },
+    {
+      "additionalProperties": false,
+      "properties": {
+        "payload": {
+          "additionalProperties": false,
+          "properties": {
+            "nodeId": {
+              "type": "string"
             }
           },
           "required": ["nodeId"],
@@ -15564,6 +15588,26 @@
     },
     "Record<string,unknown>": {
       "additionalProperties": false,
+      "type": "object"
+    },
+    "RepeatEditorData": {
+      "additionalProperties": false,
+      "description": "Editor-only repeat preview state stored on a child node. The node paints `count` times on the canvas. Index 0 is the single real, selectable node; the rest are render-only echoes. `data` carries per-echo placeholder strings keyed by a descendant node id for text/icon prototyping.",
+      "properties": {
+        "count": {
+          "type": "number"
+        },
+        "data": {
+          "additionalProperties": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "type": "object"
+        }
+      },
+      "required": ["count"],
       "type": "object"
     },
     "Resize": {

@@ -3,6 +3,7 @@ import { Properties, PropertyKey, SubPropertyKey } from "../../../properties"
 import { Theme, ThemeInstanceId, ThemeSwatchKey } from "../../../themes/types"
 import { applyResetDefaultVariantToCatalog } from "../../helpers/nodes/apply-reset-default-variant-to-catalog"
 import { applyResetUserVariantToDefaultVariant } from "../../helpers/nodes/apply-reset-user-variant-to-default-variant"
+import type { RepeatEditorData } from "../../helpers/nodes/node-repeat"
 import {
   BoardKey,
   Instance,
@@ -18,6 +19,7 @@ import {
   setNodeEditorData,
   setNodeLabel,
   setNodeRef,
+  setNodeRepeat,
 } from "./label-mutations"
 import {
   resetComponentProperty,
@@ -71,6 +73,14 @@ export class WorkspaceMutationService {
     workspace: Workspace,
   ): Workspace {
     return setNodeEditorData(nodeId, editorData, workspace)
+  }
+
+  public setNodeRepeat(
+    nodeId: VariantId | InstanceId,
+    repeat: RepeatEditorData | undefined,
+    workspace: Workspace,
+  ): Workspace {
+    return setNodeRepeat(nodeId, repeat, workspace)
   }
 
   public getInitialVariantLabel(

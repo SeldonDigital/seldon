@@ -37,6 +37,11 @@ import {
 import type { PropertyPickerResult } from "../helpers/options-utils"
 import { getPropertiesSubjectId } from "../helpers/properties-data"
 import { FlatProperty } from "../helpers/properties-data"
+import {
+  REPEAT_ROW_KEY,
+  parseRepeatDataRowKey,
+} from "../helpers/repeat-display"
+import { useSetNodeRepeat } from "./use-set-node-repeat"
 import { RESET_VALUES } from "../helpers/property-control-constants"
 import { shouldUsePresetPropertyBehavior } from "../helpers/property-types"
 import { updateProperty } from "../helpers/property-update-handler"
@@ -82,6 +87,8 @@ export function useCommitPropertyValue({
   const { selection } = useSelection()
   const setObjectTheme = useSetObjectTheme()
   const setObjectReference = useSetObjectReference()
+  const { setCount: setNodeRepeatCount, setDataValue: setNodeRepeatDataValue } =
+    useSetNodeRepeat()
   const { show: showUploadPanel } = useImageUploadPanel()
 
   const reset = useCallback(() => {
@@ -251,6 +258,28 @@ export function useCommitPropertyValue({
         return
       }
 
+      // The editor-only Repeat row and its per-echo data rows write through the
+      // repeat command, which preserves other `__editor` keys. The count row is
+      // the compound parent; data rows key the descendant id and echo index.
+      if (subject && !isBoard(subject)) {
+        if (property.key === REPEAT_ROW_KEY) {
+          setNodeRepeatCount(subject.id, Number.parseInt(newValue, 10))
+          onDone()
+          return
+        }
+        const dataSlot = parseRepeatDataRowKey(property.key)
+        if (dataSlot) {
+          setNodeRepeatDataValue(
+            subject.id,
+            dataSlot.descendantId,
+            dataSlot.echoIndex,
+            newValue,
+          )
+          onDone()
+          return
+        }
+      }
+
       if (newValue === "__upload__") {
         const supportsUpload =
           property.key === "source" ||
@@ -375,6 +404,8 @@ export function useCommitPropertyValue({
       setProperties,
       setObjectTheme,
       setObjectReference,
+      setNodeRepeatCount,
+      setNodeRepeatDataValue,
       showUploadPanel,
       themeEditingContext,
       fontCollectionEditingContext,

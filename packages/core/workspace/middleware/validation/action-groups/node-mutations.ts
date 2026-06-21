@@ -8,6 +8,11 @@ import { collectExternalVariantUsage } from "../../../helpers/general/collect-ex
 import { isUserVariant } from "../../../helpers/general/is-user-variant"
 import { findBoardContainingTreeNodeId } from "../../../helpers/nodes/duplicate-entry-variant-subtree"
 import {
+  MAX_REPEAT_COUNT,
+  MAX_REPEAT_EXPANSION,
+  getNodeRepeat,
+} from "../../../helpers/nodes/node-repeat"
+import {
   SANDBOX_MAX_MAGNITUDE,
   findPlaygroundKeyForSandbox,
   getPlaygroundSandboxIds,
@@ -278,6 +283,12 @@ export function validateNodeMutation(
     case "reset_node":
       nodeValidators.exists(workspace, action.payload.nodeId)
       break
+    case "set_node_repeat": {
+      const nodeId = action.payload.nodeId as InstanceId | VariantId
+      nodeValidators.exists(workspace, nodeId)
+      assertRepeatConstraints(workspace, action, nodeId)
+      break
+    }
     case "reset_user_variant_to_default": {
       const variantRootId = action.payload.variantRootId as VariantId
       nodeValidators.exists(workspace, variantRootId)
@@ -418,6 +429,51 @@ function getInstanceNodeOrThrow(
     )
   }
   return node
+}
+
+/**
+ * Enforces the editor-only repeat preview cap: a whole count within
+ * 1..{@link MAX_REPEAT_COUNT}, and a nested-expansion ceiling so a repeat set
+ * inside other repeats does not multiply into an unmanageable number of echoes.
+ */
+function assertRepeatConstraints(
+  workspace: Workspace,
+  action: Extract<Action, { type: "set_node_repeat" }>,
+  nodeId: InstanceId | VariantId,
+): void {
+  const repeat = action.payload.repeat
+  if (!repeat) return
+
+  const count = repeat.count
+  if (!Number.isInteger(count) || count < 1) {
+    throw new WorkspaceValidationError(
+      "Repeat count must be a whole number of at least 1.",
+      action,
+    )
+  }
+  if (count > MAX_REPEAT_COUNT) {
+    throw new WorkspaceValidationError(
+      `Repeat count cannot exceed ${MAX_REPEAT_COUNT}.`,
+      action,
+    )
+  }
+
+  let expansion = count
+  let ancestor = nodeTraversalService.findParentNode(nodeId, workspace)
+  while (ancestor) {
+    const ancestorRepeat = getNodeRepeat(ancestor)
+    if (ancestorRepeat && ancestorRepeat.count > 1) {
+      expansion *= ancestorRepeat.count
+    }
+    ancestor = nodeTraversalService.findParentNode(ancestor, workspace)
+  }
+
+  if (expansion > MAX_REPEAT_EXPANSION) {
+    throw new WorkspaceValidationError(
+      `Nested repeats would render ${expansion} copies, above the ${MAX_REPEAT_EXPANSION} limit. Lower a repeat count.`,
+      action,
+    )
+  }
 }
 
 /**

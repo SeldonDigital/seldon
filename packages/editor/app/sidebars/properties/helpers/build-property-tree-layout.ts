@@ -22,6 +22,7 @@ import {
 } from "./icon-set-properties-data"
 import { FlatProperty } from "./properties-data"
 import { buildReferenceProperty } from "./reference-display"
+import { injectRepeatRows } from "./repeat-display"
 import { buildThemeAssignmentProperty } from "./theme-assignment-display"
 
 /** A reference is only editable where `setRef` rules allow it (boards excluded). */
@@ -112,7 +113,10 @@ export function buildPropertyTreeSections({
 
   const propertiesWithLeadingFields = isResourceType(node as Board)
     ? [...properties]
-    : [...buildLeadingNodeFieldRows(node, workspace), ...properties]
+    : [
+        ...buildLeadingNodeFieldRows(node, workspace),
+        ...injectRepeatRows(properties, node, workspace),
+      ]
 
   const regularSections = getPropertySections(
     propertiesWithLeadingFields,
@@ -176,5 +180,8 @@ export function buildPropertyTreeAllProperties({
     return [...properties]
   }
 
-  return [...buildLeadingNodeFieldRows(node, workspace), ...properties]
+  return [
+    ...buildLeadingNodeFieldRows(node, workspace),
+    ...injectRepeatRows(properties, node, workspace),
+  ]
 }
