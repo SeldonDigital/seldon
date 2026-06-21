@@ -70,7 +70,15 @@ export const schema = {
     brightness: { type: Sdn.ValueType.EMPTY, value: null },
     opacity: { type: Sdn.ValueType.EMPTY, value: null },
     background: [
-      { kind: { type: Sdn.ValueType.OPTION, value: Sdn.BackgroundKind.NONE } },
+      {
+        kind: { type: Sdn.ValueType.OPTION, value: Sdn.BackgroundKind.COLOR },
+        color: {
+          type: Sdn.ValueType.THEME_CATEGORICAL,
+          value: "@swatch.white",
+        },
+        brightness: { type: Sdn.ValueType.EMPTY, value: null },
+        opacity: { type: Sdn.ValueType.EMPTY, value: null },
+      },
     ],
     border: {
       preset: {
