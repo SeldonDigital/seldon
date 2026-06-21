@@ -4,6 +4,7 @@ import { invariant } from "../../helpers/utils/invariant"
 import { ComputedFunction, ValueType } from "../constants"
 import type { Value } from "../types/value"
 import type { AtomicValue } from "../types/value-atomic"
+import { BackgroundKind } from "../values/appearance/background/background-kind"
 import { Color } from "../values/appearance/color"
 import type { ComputedValue } from "../values/shared/computed/computed-value"
 import { ComputeContext } from "./types"
@@ -46,6 +47,20 @@ function isNonContributingBackgroundColor(value: Value | undefined): boolean {
 }
 
 /**
+ * A background layer whose `kind` is `none` paints nothing, so it cannot act as a contrast
+ * surface even when its `color` facet still carries a leftover swatch from the catalog default.
+ */
+function isNonContributingBackgroundKind(value: Value | undefined): boolean {
+  return Boolean(
+    value &&
+    typeof value === "object" &&
+    "type" in value &&
+    value.type === ValueType.OPTION &&
+    value.value === BackgroundKind.NONE,
+  )
+}
+
+/**
  * Resolves a `basedOn` path and, for `#parent.*` lookups, walks `parentContext` while the hit is
  * missing, `EMPTY`, `INHERIT`, or explicit `transparent`. Returns the context whose properties
  * supplied the final value as `facetSource`.
@@ -59,12 +74,38 @@ export function resolveBasedOnWithAnchor(
     basedOn.replace("#parent.", ""),
   )
 
+  const kindLookupPath =
+    parentLookupPath.startsWith("background.") &&
+    parentLookupPath.endsWith(".color")
+      ? parentLookupPath.replace(/\.color$/, ".kind")
+      : null
+
+  const isNonContributingLayer = (
+    properties: Omit<ComputeContext, "theme">["properties"],
+    colorValue: Value | undefined,
+  ): boolean => {
+    if (isNonContributingBackgroundColor(colorValue)) {
+      return true
+    }
+
+    if (!kindLookupPath) {
+      return false
+    }
+
+    return isNonContributingBackgroundKind(
+      findInObject<Value>(properties, kindLookupPath),
+    )
+  }
+
   if (basedOn.includes("#parent.") && context.parentContext) {
     let parent = context.parentContext
 
     let value = findInObject<Value>(parent.properties, parentLookupPath)
 
-    while (isNonContributingBackgroundColor(value) && parent.parentContext) {
+    while (
+      isNonContributingLayer(parent.properties, value) &&
+      parent.parentContext
+    ) {
       parent = parent.parentContext
 
       value = findInObject<Value>(parent.properties, parentLookupPath)

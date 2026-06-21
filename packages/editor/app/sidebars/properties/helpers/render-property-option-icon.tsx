@@ -12,7 +12,7 @@ import {
 } from "@seldon/components/custom-components"
 import { IconCustomColorValue } from "@seldon/components/custom-icons"
 import { IconSeldonToken } from "@seldon/components/icons"
-import { asSymbolIconId, LoadEditorIcons } from "@app/LoadEditorIcons"
+import { LoadEditorIcons, asSymbolIconId } from "@app/LoadEditorIcons"
 import { getBoardPresetIconId } from "./board-preset-icon"
 import { FlatProperty } from "./properties-data"
 import { resolveThemeSwatchColors } from "./resolve-theme-swatch-colors"

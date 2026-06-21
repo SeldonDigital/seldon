@@ -70,7 +70,7 @@ import { HTMLVideo } from "@seldon/core/components/native-react/HTML.Video"
 import { NativeReactPrimitive } from "@seldon/core/components/types"
 import { WrapperElement } from "@seldon/core/properties"
 import type { ComputeContext } from "@seldon/core/properties/compute"
-import { asSymbolIconId, LoadEditorIcons } from "@app/LoadEditorIcons"
+import { LoadEditorIcons, asSymbolIconId } from "@app/LoadEditorIcons"
 import { CssPortal } from "./CssPortal"
 
 export type CanvasHtmlAttributes = Record<string, string | boolean>

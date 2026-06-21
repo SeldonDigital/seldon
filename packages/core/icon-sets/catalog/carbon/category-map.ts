@@ -17,8 +17,10 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-gift": "business/commerce" as IconCategoryPath,
   "carbon-hashtag": "business/commerce" as IconCategoryPath,
   "carbon-ibmConsultingAdvantageAgent": "business/commerce" as IconCategoryPath,
-  "carbon-ibmConsultingAdvantageApplication": "business/commerce" as IconCategoryPath,
-  "carbon-ibmConsultingAdvantageAssistant": "business/commerce" as IconCategoryPath,
+  "carbon-ibmConsultingAdvantageApplication":
+    "business/commerce" as IconCategoryPath,
+  "carbon-ibmConsultingAdvantageAssistant":
+    "business/commerce" as IconCategoryPath,
   "carbon-logoInstagram": "business/commerce" as IconCategoryPath,
   "carbon-outage": "business/commerce" as IconCategoryPath,
   "carbon-pentagonOutline": "business/commerce" as IconCategoryPath,
@@ -38,7 +40,8 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-tagExport": "business/commerce" as IconCategoryPath,
   "carbon-tagImport": "business/commerce" as IconCategoryPath,
   "carbon-tagNone": "business/commerce" as IconCategoryPath,
-  "carbon-aiBusinessImpactAssessment": "business/operations" as IconCategoryPath,
+  "carbon-aiBusinessImpactAssessment":
+    "business/operations" as IconCategoryPath,
   "carbon-businessMetrics": "business/operations" as IconCategoryPath,
   "carbon-businessProcesses": "business/operations" as IconCategoryPath,
   "carbon-calculator": "business/operations" as IconCategoryPath,
@@ -168,11 +171,16 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-ibmDataReplication": "content/data" as IconCategoryPath,
   "carbon-ibmDatastage": "content/data" as IconCategoryPath,
   "carbon-ibmPlanningAnalytics": "content/data" as IconCategoryPath,
-  "carbon-ibmSoftwareWatsonxDataAnalyzeAndProcess": "content/data" as IconCategoryPath,
-  "carbon-ibmSoftwareWatsonxDataStructuredEnrichment": "content/data" as IconCategoryPath,
-  "carbon-ibmSoftwareWatsonxDataStructuredImport": "content/data" as IconCategoryPath,
-  "carbon-ibmSoftwareWatsonxDataUnstructuredEnrichment": "content/data" as IconCategoryPath,
-  "carbon-ibmSoftwareWatsonxDataUnstructuredImport": "content/data" as IconCategoryPath,
+  "carbon-ibmSoftwareWatsonxDataAnalyzeAndProcess":
+    "content/data" as IconCategoryPath,
+  "carbon-ibmSoftwareWatsonxDataStructuredEnrichment":
+    "content/data" as IconCategoryPath,
+  "carbon-ibmSoftwareWatsonxDataStructuredImport":
+    "content/data" as IconCategoryPath,
+  "carbon-ibmSoftwareWatsonxDataUnstructuredEnrichment":
+    "content/data" as IconCategoryPath,
+  "carbon-ibmSoftwareWatsonxDataUnstructuredImport":
+    "content/data" as IconCategoryPath,
   "carbon-ibmUnstructuredDataProcessor": "content/data" as IconCategoryPath,
   "carbon-list": "content/data" as IconCategoryPath,
   "carbon-listBoxes": "content/data" as IconCategoryPath,
@@ -273,18 +281,22 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-ibmCloudDedicatedHost": "content/files" as IconCategoryPath,
   "carbon-ibmCloudDirectLink_1Connect": "content/files" as IconCategoryPath,
   "carbon-ibmCloudDirectLink_1Dedicated": "content/files" as IconCategoryPath,
-  "carbon-ibmCloudDirectLink_1DedicatedHosting": "content/files" as IconCategoryPath,
+  "carbon-ibmCloudDirectLink_1DedicatedHosting":
+    "content/files" as IconCategoryPath,
   "carbon-ibmCloudDirectLink_1Exchange": "content/files" as IconCategoryPath,
   "carbon-ibmCloudDirectLink_2Connect": "content/files" as IconCategoryPath,
   "carbon-ibmCloudDirectLink_2Dedicated": "content/files" as IconCategoryPath,
-  "carbon-ibmCloudDirectLink_2DedicatedHosting": "content/files" as IconCategoryPath,
-  "carbon-ibmCloudEssentialSecurityAndObservabilityServices": "content/files" as IconCategoryPath,
+  "carbon-ibmCloudDirectLink_2DedicatedHosting":
+    "content/files" as IconCategoryPath,
+  "carbon-ibmCloudEssentialSecurityAndObservabilityServices":
+    "content/files" as IconCategoryPath,
   "carbon-ibmCloudEventStreams": "content/files" as IconCategoryPath,
   "carbon-ibmCloudForEducation": "content/files" as IconCategoryPath,
   "carbon-ibmCloudGateKeeper": "content/files" as IconCategoryPath,
   "carbon-ibmCloudHpc": "content/files" as IconCategoryPath,
   "carbon-ibmCloudHsm": "content/files" as IconCategoryPath,
-  "carbon-ibmCloudHyperProtectCryptoServices": "content/files" as IconCategoryPath,
+  "carbon-ibmCloudHyperProtectCryptoServices":
+    "content/files" as IconCategoryPath,
   "carbon-ibmCloudHyperProtectDbaas": "content/files" as IconCategoryPath,
   "carbon-ibmCloudHyperProtectVs": "content/files" as IconCategoryPath,
   "carbon-ibmCloudInternetServices": "content/files" as IconCategoryPath,
@@ -298,7 +310,8 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-ibmCloudPakBusinessAutomation": "content/files" as IconCategoryPath,
   "carbon-ibmCloudPakData": "content/files" as IconCategoryPath,
   "carbon-ibmCloudPakIntegration": "content/files" as IconCategoryPath,
-  "carbon-ibmCloudPakMantaAutomatedDataLineage": "content/files" as IconCategoryPath,
+  "carbon-ibmCloudPakMantaAutomatedDataLineage":
+    "content/files" as IconCategoryPath,
   "carbon-ibmCloudPakMulticloudMgmt": "content/files" as IconCategoryPath,
   "carbon-ibmCloudPakNetezza": "content/files" as IconCategoryPath,
   "carbon-ibmCloudPakNetworkAutomation": "content/files" as IconCategoryPath,
@@ -311,24 +324,30 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-ibmCloudResiliency": "content/files" as IconCategoryPath,
   "carbon-ibmCloudSecretsManager": "content/files" as IconCategoryPath,
   "carbon-ibmCloudSecurity": "content/files" as IconCategoryPath,
-  "carbon-ibmCloudSecurityComplianceCenter": "content/files" as IconCategoryPath,
-  "carbon-ibmCloudSecurityComplianceCenterWorkloadProtection": "content/files" as IconCategoryPath,
+  "carbon-ibmCloudSecurityComplianceCenter":
+    "content/files" as IconCategoryPath,
+  "carbon-ibmCloudSecurityComplianceCenterWorkloadProtection":
+    "content/files" as IconCategoryPath,
   "carbon-ibmCloudSubnets": "content/files" as IconCategoryPath,
   "carbon-ibmCloudSysdigSecure": "content/files" as IconCategoryPath,
   "carbon-ibmCloudTransitGateway": "content/files" as IconCategoryPath,
   "carbon-ibmCloudVirtualServerClassic": "content/files" as IconCategoryPath,
   "carbon-ibmCloudVirtualServerVpc": "content/files" as IconCategoryPath,
   "carbon-ibmCloudVpc": "content/files" as IconCategoryPath,
-  "carbon-ibmCloudVpcBlockStorageSnapshots": "content/files" as IconCategoryPath,
+  "carbon-ibmCloudVpcBlockStorageSnapshots":
+    "content/files" as IconCategoryPath,
   "carbon-ibmCloudVpcClientVpn": "content/files" as IconCategoryPath,
   "carbon-ibmCloudVpcEndpoints": "content/files" as IconCategoryPath,
   "carbon-ibmCloudVpcFileStorage": "content/files" as IconCategoryPath,
   "carbon-ibmPowerVsPrivateCloud": "content/files" as IconCategoryPath,
-  "carbon-ibmSoftwareWatsonxDocumentLibrary": "content/files" as IconCategoryPath,
-  "carbon-ibmWebmethodsManagedFileTransfer": "content/files" as IconCategoryPath,
+  "carbon-ibmSoftwareWatsonxDocumentLibrary":
+    "content/files" as IconCategoryPath,
+  "carbon-ibmWebmethodsManagedFileTransfer":
+    "content/files" as IconCategoryPath,
   "carbon-ibmZCloudModStack": "content/files" as IconCategoryPath,
   "carbon-ibmZCloudProvisioning": "content/files" as IconCategoryPath,
-  "carbon-logoRedHatAiInstructlabOnIbmCloud": "content/files" as IconCategoryPath,
+  "carbon-logoRedHatAiInstructlabOnIbmCloud":
+    "content/files" as IconCategoryPath,
   "carbon-mostlyCloudy": "content/files" as IconCategoryPath,
   "carbon-mostlyCloudyNight": "content/files" as IconCategoryPath,
   "carbon-partlyCloudy": "content/files" as IconCategoryPath,
@@ -350,24 +369,34 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-acceptActionUsage": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-accessibility": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-accessibilityAlt": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-accessibilityColor": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-accessibilityColorFilled": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-accessibilityColor":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-accessibilityColorFilled":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-accumulationIce": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-accumulationPrecipitation": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-accumulationPrecipitation":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-actionDefinition": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-actionUsage": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-activity": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-aggregatorCountRows": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-aggregatorRecalculation": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-aggregatorCountRows":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-aggregatorRecalculation":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-ai": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-aiGenerate": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-aiGovernanceLifecycle": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-aiGovernanceTracked": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-aiGovernanceUntracked": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-aiGovernanceLifecycle":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-aiGovernanceTracked":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-aiGovernanceUntracked":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-aiLaunch": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-aiRecommend": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-airlineDigitalGate": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-airlineManageGates": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-airlineDigitalGate":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-airlineManageGates":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-airlineRapidBoard": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-airport_01": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-airport_02": "miscellaneous/miscellaneous" as IconCategoryPath,
@@ -381,7 +410,8 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-appleDash": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-application": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-applicationMobile": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-applicationVirtual": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-applicationVirtual":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-applicationWeb": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-apps": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-area": "miscellaneous/miscellaneous" as IconCategoryPath,
@@ -407,11 +437,13 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-assetDigitalTwin": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-assetMovement": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-assetView": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-assignmentActionUsage": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-assignmentActionUsage":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-asterisk": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-async": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-at": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-attributeDefinition": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-attributeDefinition":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-attributeUsage": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-augmentedReality": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-automatic": "miscellaneous/miscellaneous" as IconCategoryPath,
@@ -453,7 +485,8 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-bottles_02Dash": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-bottlesContainer": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-bottomPanelOpen": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-bottomPanelOpenFilled": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-bottomPanelOpenFilled":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-box": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-boxExtraLarge": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-boxLarge": "miscellaneous/miscellaneous" as IconCategoryPath,
@@ -465,9 +498,12 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-bringToFront": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-bsamQsamZedc": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-building": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-buildingInsights_1": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-buildingInsights_2": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-buildingInsights_3": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-buildingInsights_1":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-buildingInsights_2":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-buildingInsights_3":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-buildRun": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-bullhorn": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-buoy": "miscellaneous/miscellaneous" as IconCategoryPath,
@@ -497,15 +533,21 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-characterDecimal": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-characterFraction": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-characterInteger": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-characterLowerCase": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-characterNegativeNumber": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-characterLowerCase":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-characterNegativeNumber":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-characterPatterns": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-characterSentenceCase": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-characterWholeNumber": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-characterSentenceCase":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-characterWholeNumber":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-chargingStation": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-chargingStationFilled": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-chargingStationFilled":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-chemistry": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-chemistryReference": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-chemistryReference":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-childNode": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-chip": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-choices": "miscellaneous/miscellaneous" as IconCategoryPath,
@@ -529,10 +571,12 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-circleStroke": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-classicBatch": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-classification": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-classifierLanguage": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-classifierLanguage":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-clean": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-collapseAll": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-collapseCategories": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-collapseCategories":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-colorPalette": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-colorSwitch": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-column": "miscellaneous/miscellaneous" as IconCategoryPath,
@@ -540,16 +584,20 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-columnInsert": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-commit": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-commitAlt": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-communicationUnified": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-communicationUnified":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-compare": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-concept": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-conditionPoint": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-conditionWaitPoint": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-conditionWaitPoint":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-connect": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-connectionFlowUsage": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-connectionFlowUsage":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-connectionReceive": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-connectionSignal": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-connectionSignalOff": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-connectionSignalOff":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-connectionTwoWay": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-connectionUsage": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-connectRecursive": "miscellaneous/miscellaneous" as IconCategoryPath,
@@ -561,12 +609,15 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-containerRegistry": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-containerServices": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-containerSoftware": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-contentDeliveryNetwork": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-contentDeliveryNetwork":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-contentView": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-continue": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-continueFilled": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-continuousDeployment": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-continuousIntegration": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-continuousDeployment":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-continuousIntegration":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-contrast": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-cookie": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-corn": "miscellaneous/miscellaneous" as IconCategoryPath,
@@ -600,7 +651,8 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-customer": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-customerService": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-dashboard": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-dashboardReference": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-dashboardReference":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-db2BufferPool": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-debug": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-decisionNode": "miscellaneous/miscellaneous" as IconCategoryPath,
@@ -614,10 +666,14 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-deploymentCanary": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-deploymentPattern": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-deploymentPolicy": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-deploymentUnitInstallation": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-deploymentUnitPresentation": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-deploymentUnitTechnicalInstallation": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-deploymentUnitTechnicalPresentation": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-deploymentUnitInstallation":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-deploymentUnitPresentation":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-deploymentUnitTechnicalInstallation":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-deploymentUnitTechnicalPresentation":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-deployRules": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-development": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-dewPoint": "miscellaneous/miscellaneous" as IconCategoryPath,
@@ -630,25 +686,38 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-diamondSolid": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-digitalIdentity": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-directionCurve": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-directionCurveFilled": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-directionCurveFilled":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-directionFork": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-directionForkFilled": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-directionForkFilled":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-directionMerge": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-directionMergeFilled": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-directionRotaryStraight": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-directionRotaryStraightFilled": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-directionSharpTurn": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-directionSharpTurnFilled": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-directionMergeFilled":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-directionRotaryStraight":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-directionRotaryStraightFilled":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-directionSharpTurn":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-directionSharpTurnFilled":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-directionStraight": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-directionStraightFilled": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-directionStraightFilled":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-directionUTurn": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-directionUTurnFilled": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-directionUTurnFilled":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-directLink": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-directoryDomain": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-distributeHorizontalCenter": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-distributeVerticalBottom": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-distributeVerticalCenter": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-distributeVerticalTop": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-distributeHorizontalCenter":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-distributeVerticalBottom":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-distributeVerticalCenter":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-distributeVerticalTop":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-dnsServices": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-doc": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-dogWalker": "miscellaneous/miscellaneous" as IconCategoryPath,
@@ -666,24 +735,30 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-dvr": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-earth": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-earthAmericas": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-earthAmericasFilled": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-earthAmericasFilled":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-earthFilled": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-earthquake": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-earthSoutheastAsia": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-earthSoutheastAsiaFilled": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-earthSoutheastAsia":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-earthSoutheastAsiaFilled":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-edgeCluster": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-edgeNode": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-edgeNodeAlt": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-edgeService": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-edtLoop": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-elementPicker": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-emissionsManagement": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-emissionsManagement":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-encryption": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-energyRenewable": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-enterprise": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-enumerationDefinition": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-enumerationDefinition":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-enumerationUsage": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-equalApproximately": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-equalApproximately":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-equalizer": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-erase": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-event": "miscellaneous/miscellaneous" as IconCategoryPath,
@@ -699,10 +774,12 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-export": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-extensions": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-faceActivated": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-faceActivatedFilled": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-faceActivatedFilled":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-faceCool": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-faceDissatisfied": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-faceDissatisfiedFilled": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-faceDissatisfiedFilled":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-faceDizzy": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-faceDizzyFilled": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-faceMask": "miscellaneous/miscellaneous" as IconCategoryPath,
@@ -711,7 +788,8 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-facePending": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-facePendingFilled": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-faceSatisfied": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-faceSatisfiedFilled": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-faceSatisfiedFilled":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-faceWink": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-faceWinkFilled": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-factor": "miscellaneous/miscellaneous" as IconCategoryPath,
@@ -737,7 +815,8 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-flashFilled": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-flashOff": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-flashOffFilled": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-flightInternational": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-flightInternational":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-flightRoster": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-floatingIp": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-flood": "miscellaneous/miscellaneous" as IconCategoryPath,
@@ -746,14 +825,17 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-flowConnection": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-flowLogsVpc": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-flowModeler": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-flowModelerReference": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-flowModelerReference":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-flowStream": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-flowStreamReference": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-flowStreamReference":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-fog": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-forecastHail": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-forecastHail_30": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-forecastLightning": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-forecastLightning_30": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-forecastLightning_30":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-fork": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-forkNode": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-forLoop": "miscellaneous/miscellaneous" as IconCategoryPath,
@@ -781,7 +863,8 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-genderMale": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-gif": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-globalFilters": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-globalLoanAndTrial": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-globalLoanAndTrial":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-globe": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-gradient": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-growth": "miscellaneous/miscellaneous" as IconCategoryPath,
@@ -803,8 +886,10 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-helpFilled": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-hexagonOutline": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-hexagonSolid": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-hexagonVerticalOutline": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-hexagonVerticalSolid": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-hexagonVerticalOutline":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-hexagonVerticalSolid":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-horizontalView": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-hotel": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-hourglass": "miscellaneous/miscellaneous" as IconCategoryPath,
@@ -815,93 +900,145 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-humidityAlt": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-hurricane": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-hybridNetworking": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-hybridNetworkingAlt": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-hybridNetworkingAlt":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-ibmAiOnZ": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-ibmAiopsInsights": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-ibmAspera": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-ibmBluepay": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-ibmContentServices": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-ibmContentServices":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-ibmDb2": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-ibmDb2Alt": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-ibmDb2Warehouse": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-ibmDeployableArchitecture": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-ibmDeployableArchitecture":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-ibmDevopsControl": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-ibmEloAutomotiveCompliance": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-ibmEloEngineeringInsights": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-ibmEloMethodComposer": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-ibmEloAutomotiveCompliance":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-ibmEloEngineeringInsights":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-ibmEloMethodComposer":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-ibmEloPublishing": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-ibmEngineeringLifecycleMgmt": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-ibmEngineeringSystemsDesignRhapsody": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-ibmEngineeringSystemsDesignRhapsodyModelManager": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-ibmEngineeringSystemsDesignRhapsodySn1": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-ibmEngineeringSystemsDesignRhapsodySn2": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-ibmEngineeringTestMgmt": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-ibmEngineeringWorkflowMgmt": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-ibmEventAutomation": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-ibmEventEndpointMgmt": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-ibmEventProcessing": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-ibmEngineeringLifecycleMgmt":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-ibmEngineeringSystemsDesignRhapsody":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-ibmEngineeringSystemsDesignRhapsodyModelManager":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-ibmEngineeringSystemsDesignRhapsodySn1":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-ibmEngineeringSystemsDesignRhapsodySn2":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-ibmEngineeringTestMgmt":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-ibmEngineeringWorkflowMgmt":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-ibmEventAutomation":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-ibmEventEndpointMgmt":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-ibmEventProcessing":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-ibmEventStreams": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-ibmFederatedApiManagement": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-ibmFederatedApiManagement":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-ibmGcm": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-ibmGranite": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-ibmHybridControlPlane": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-ibmHybridControlPlane":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-ibmIbv": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-ibmInstana": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-ibmJrs": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-ibmKnowledgeCatalog": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-ibmKnowledgeCatalogPremium": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-ibmKnowledgeCatalogStandard": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-ibmKnowledgeCatalog":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-ibmKnowledgeCatalogPremium":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-ibmKnowledgeCatalogStandard":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-ibmLaunchpadS4": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-ibmLpa": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-ibmLqe": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-ibmMatch_360": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-ibmMaximoApplicationSuite": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-ibmMaximoApplicationSuite":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-ibmMq": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-ibmOpenEnterpriseLanguages": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-ibmOpenshiftContainerPlatformOnVpcForRegulatedIndustries": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-ibmOpenEnterpriseLanguages":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-ibmOpenshiftContainerPlatformOnVpcForRegulatedIndustries":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-ibmPowerVs": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-ibmPowerWithVpc": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-ibmPrivatePathServices": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-ibmPrivatePathServices":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-ibmProcessMining": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-ibmQuantumSafeAdvisor": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-ibmQuantumSafeExplorer": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-ibmQuantumSafeRemediator": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-ibmQuantumSafeAdvisor":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-ibmQuantumSafeExplorer":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-ibmQuantumSafeRemediator":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-ibmSaasConsole": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-ibmSapOnPower": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-ibmSecurity": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-ibmSecurityServices": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-ibmSecurityServices":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-ibmStreamsets": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-ibmTenet": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-ibmTestAcceleratorForZ": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-ibmTestAcceleratorForZ":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-ibmVpnForVpc": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-ibmVsiOnVpcForRegulatedIndustries": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-ibmWatsonAssistant": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-ibmWatsonDiscovery": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-ibmWatsonKnowledgeCatalog": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-ibmWatsonKnowledgeStudio": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-ibmWatsonLanguageTranslator": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-ibmWatsonNaturalLanguageClassifier": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-ibmWatsonNaturalLanguageUnderstanding": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-ibmWatsonOpenscale": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-ibmVsiOnVpcForRegulatedIndustries":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-ibmWatsonAssistant":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-ibmWatsonDiscovery":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-ibmWatsonKnowledgeCatalog":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-ibmWatsonKnowledgeStudio":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-ibmWatsonLanguageTranslator":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-ibmWatsonNaturalLanguageClassifier":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-ibmWatsonNaturalLanguageUnderstanding":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-ibmWatsonOpenscale":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-ibmWatsonOrders": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-ibmWatsonQuery": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-ibmWatsonStudio": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-ibmWatsonToneAnalyzer": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-ibmWatsonxAssistant": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-ibmWatsonxOrchestrate": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-ibmWatsonToneAnalyzer":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-ibmWatsonxAssistant":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-ibmWatsonxOrchestrate":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-ibmWaziDeploy": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-ibmWebmethodsApiGateway": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-ibmWebmethodsApiStudio": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-ibmWebmethodsB2bIntegration": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-ibmWebmethodsDeveloperPortal": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-ibmWebmethodsHybridIntegration": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-ibmWebmethodsIntegration": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-ibmZEnvironmentsDevSecOps": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-ibmWebmethodsApiGateway":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-ibmWebmethodsApiStudio":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-ibmWebmethodsB2bIntegration":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-ibmWebmethodsDeveloperPortal":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-ibmWebmethodsHybridIntegration":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-ibmWebmethodsIntegration":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-ibmZEnvironmentsDevSecOps":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-ibmZOs": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-ibmZOsAiControlInterface": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-ibmZOsAiControlInterface":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-ibmZOsContainers": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-ibmZOsPackageManager": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-ibmZProcessorCapacityReference": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-ibmZOsPackageManager":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-ibmZProcessorCapacityReference":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-iceAccretion": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-iceVision": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-idea": "miscellaneous/miscellaneous" as IconCategoryPath,
@@ -916,7 +1053,8 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-increaseLevel": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-industry": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-infinitySymbol": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-infrastructureClassic": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-infrastructureClassic":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-inProgress": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-insert": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-insertPage": "miscellaneous/miscellaneous" as IconCategoryPath,
@@ -928,22 +1066,32 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-instanceMx": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-instanceVirtual": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-integration": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-intentRequestActive": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-intentRequestCreate": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-intentRequestActive":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-intentRequestCreate":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-intentRequestHeal": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-intentRequestInactive": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-intentRequestScaleIn": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-intentRequestScaleOut": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-intentRequestUninstall": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-intentRequestInactive":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-intentRequestScaleIn":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-intentRequestScaleOut":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-intentRequestUninstall":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-interactions": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-interfaceDefinition": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-interfaceDefinitionAlt": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-interfaceDefinition":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-interfaceDefinitionAlt":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-interfaceUsage": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-interfaceUsage_1": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-interfaceUsageAlt": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-intersect": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-intrusionPrevention": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-inventoryManagement": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-intrusionPrevention":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-inventoryManagement":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-iotConnect": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-iotPlatform": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-ip": "miscellaneous/miscellaneous" as IconCategoryPath,
@@ -966,10 +1114,13 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-keepDry": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-kubelet": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-kubernetes": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-kubernetesControlPlaneNode": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-kubernetesOperator": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-kubernetesControlPlaneNode":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-kubernetesOperator":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-kubernetesPod": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-kubernetesWorkerNode": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-kubernetesWorkerNode":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-language": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-lasso": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-lassoPolygon": "miscellaneous/miscellaneous" as IconCategoryPath,
@@ -1006,10 +1157,13 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-license": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-licenseDraft": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-licenseGlobal": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-licenseMaintenance": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-licenseMaintenanceDraft": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-licenseMaintenance":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-licenseMaintenanceDraft":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-licenseThirdParty": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-licenseThirdPartyDraft": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-licenseThirdPartyDraft":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-light": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-lightFilled": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-lightning": "miscellaneous/miscellaneous" as IconCategoryPath,
@@ -1017,17 +1171,22 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-linux": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-linuxAlt": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-linuxNamespace": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-loadBalancerApplication": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-loadBalancerClassic": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-loadBalancerGlobal": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-loadBalancerApplication":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-loadBalancerClassic":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-loadBalancerGlobal":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-loadBalancerLocal": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-loadBalancerNetwork": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-loadBalancerNetwork":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-loadBalancerPool": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-loadBalancerVpc": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-logicalPartition": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-login": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-logoAngular": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-logoAnsibleCommunity": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-logoAnsibleCommunity":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-logoBluesky": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-logoDigg": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-logoDiscord": "miscellaneous/miscellaneous" as IconCategoryPath,
@@ -1079,9 +1238,11 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-maximize": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-mediaCast": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-mediaLibrary": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-mediaLibraryFilled": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-mediaLibraryFilled":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-medication": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-medicationReminder": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-medicationReminder":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-merge": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-mergeNode": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-meter": "miscellaneous/miscellaneous" as IconCategoryPath,
@@ -1101,12 +1262,14 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-mobileRequest": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-mobileSession": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-mobileView": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-mobileViewOrientation": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-mobileViewOrientation":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-mobilityServices": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-model": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-modelAlt": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-modelBuilder": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-modelBuilderReference": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-modelBuilderReference":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-modelFoundation": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-modelReference": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-modelTuned": "miscellaneous/miscellaneous" as IconCategoryPath,
@@ -1131,7 +1294,8 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-navaidDme": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-navaidHelipad": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-navaidMilitary": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-navaidMilitaryCivil": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-navaidMilitaryCivil":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-navaidNdb": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-navaidNdbDme": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-navaidPrivate": "miscellaneous/miscellaneous" as IconCategoryPath,
@@ -1145,9 +1309,11 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-network_1": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-network_2": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-network_3": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-network_3Reference": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-network_3Reference":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-network_4": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-network_4Reference": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-network_4Reference":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-networkEnterprise": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-networkInterface": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-networkOverlay": "miscellaneous/miscellaneous" as IconCategoryPath,
@@ -1188,8 +1354,10 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-omega": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-opacity": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-openPanelBottom": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-openPanelFilledBottom": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-openPanelFilledTop": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-openPanelFilledBottom":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-openPanelFilledTop":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-openPanelTop": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-operationsField": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-operationsRecord": "miscellaneous/miscellaneous" as IconCategoryPath,
@@ -1214,8 +1382,10 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-parentNode": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-partDefinition": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-partitionAuto": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-partitionCollection": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-partitionRepartition": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-partitionCollection":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-partitionRepartition":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-partitionSame": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-partitionSpecific": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-partUsage": "miscellaneous/miscellaneous" as IconCategoryPath,
@@ -1242,7 +1412,8 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-plane": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-planePrivate": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-planeSea": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-platformAutomation": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-platformAutomation":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-platforms": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-plug": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-plugFilled": "miscellaneous/miscellaneous" as IconCategoryPath,
@@ -1257,15 +1428,19 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-portOutput": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-portUsage": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-power": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-powerEnterprisePoolsMeteredCapacityIntegration": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-powerEnterprisePoolsMeteredCapacityIntegration":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-ppt": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-pressure": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-pressureFilled": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-pricingConsumption": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-pricingConsumption":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-pricingContainer": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-pricingQuickProposal": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-pricingQuickProposal":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-pricingTailored": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-pricingTraditional": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-pricingTraditional":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-process": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-processAutomate": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-product": "miscellaneous/miscellaneous" as IconCategoryPath,
@@ -1297,11 +1472,14 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-recommend": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-recording": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-recordingFilled": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-recordingFilledAlt": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-recordingFilledAlt":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-recycle": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-redefinition": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-referenceArchitecture": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-refEvapotranspiration": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-referenceArchitecture":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-refEvapotranspiration":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-reflectHorizontal": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-reflectVertical": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-reminder": "miscellaneous/miscellaneous" as IconCategoryPath,
@@ -1312,7 +1490,8 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-replicate": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-repoArtifact": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-report": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-requirementDefinition": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-requirementDefinition":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-requirementUsage": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-reset": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-resetAlt": "miscellaneous/miscellaneous" as IconCategoryPath,
@@ -1368,7 +1547,8 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-search": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-searchAdvanced": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-searchLocate": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-searchLocateMirror": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-searchLocateMirror":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-security": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-securityServices": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-select_01": "miscellaneous/miscellaneous" as IconCategoryPath,
@@ -1376,7 +1556,8 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-serviceDesk": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-serviceId": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-serviceLevels": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-sessionBorderControl": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-sessionBorderControl":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-shapeExcept": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-shapeExclude": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-shapeIntersect": "miscellaneous/miscellaneous" as IconCategoryPath,
@@ -1384,18 +1565,22 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-shapes": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-shapeUnite": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-shrinkScreen": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-shrinkScreenFilled": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-shrinkScreenFilled":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-shuffle": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-shuttle": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-sidePanelOpen": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-sidePanelOpenFilled": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-sidePanelOpenFilled":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-sight": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-sigma": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-signalStrength": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-skillLevel": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-skillLevelAdvanced": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-skillLevelAdvanced":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-skillLevelBasic": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-skillLevelIntermediate": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-skillLevelIntermediate":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-sleet": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-slisor": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-slm": "miscellaneous/miscellaneous" as IconCategoryPath,
@@ -1404,17 +1589,22 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-snooze": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-soccer": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-softwareResource": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-softwareResourceCluster": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-softwareResourceResource": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-softwareResourceCluster":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-softwareResourceResource":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-soilMoisture": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-soilMoistureField": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-soilMoistureGlobal": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-soilMoistureGlobal":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-solarPanel": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-sortAscending": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-sortDescending": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-sortingAToZ": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-sortingHighestToLowestNumber": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-sortingLowestToHighestNumber": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-sortingHighestToLowestNumber":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-sortingLowestToHighestNumber":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-sortingZToA": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-sourceControl": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-split": "miscellaneous/miscellaneous" as IconCategoryPath,
@@ -1455,7 +1645,8 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-switcher": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-switchLayer_2": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-switchLayer_3": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-sysplexDistributor": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-sysplexDistributor":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-sysProvision": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-tank": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-task": "miscellaneous/miscellaneous" as IconCategoryPath,
@@ -1488,11 +1679,13 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-trafficCone": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-trafficEvent": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-trafficFlow": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-trafficFlowIncident": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-trafficFlowIncident":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-trafficIncident": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-tram": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-transformBinary": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-transformInstructions": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-transformInstructions":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-transformLanguage": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-transgender": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-translate": "miscellaneous/miscellaneous" as IconCategoryPath,
@@ -1507,7 +1700,8 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-tsq": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-tsv": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-tuning": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-twoFactorAuthentication": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-twoFactorAuthentication":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-txt": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-txtReference": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-typePattern": "miscellaneous/miscellaneous" as IconCategoryPath,
@@ -1519,7 +1713,8 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-unknownFilled": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-unlink": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-url": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-usageIncludedUseCase": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-usageIncludedUseCase":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-usb": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-useCaseDefinition": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-useCaseUsage": "miscellaneous/miscellaneous" as IconCategoryPath,
@@ -1530,7 +1725,8 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-valueVariableAlt": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-van": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-vegetationAsset": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-vegetationEncroachment": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-vegetationEncroachment":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-vegetationHeight": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-vehicleApi": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-vehicleConnected": "miscellaneous/miscellaneous" as IconCategoryPath,
@@ -1568,12 +1764,17 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-waveHeight": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-wavePeriod": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-webhook": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-webServicesCluster": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-webServicesContainer": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-webServicesDefinition": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-webServicesService": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-webServicesCluster":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-webServicesContainer":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-webServicesDefinition":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-webServicesService":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-webServicesTask": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-webServicesTaskDefinitionVersion": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-webServicesTaskDefinitionVersion":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-websheet": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-wheat": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-whileLoop": "miscellaneous/miscellaneous" as IconCategoryPath,
@@ -1585,7 +1786,8 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-wikis": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-wintryMix": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-wmv": "miscellaneous/miscellaneous" as IconCategoryPath,
-  "carbon-workflowAutomation": "miscellaneous/miscellaneous" as IconCategoryPath,
+  "carbon-workflowAutomation":
+    "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-workspace": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-workspaceImport": "miscellaneous/miscellaneous" as IconCategoryPath,
   "carbon-xAxis": "miscellaneous/miscellaneous" as IconCategoryPath,
@@ -1660,8 +1862,10 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-book": "specialized/education" as IconCategoryPath,
   "carbon-certificate": "specialized/education" as IconCategoryPath,
   "carbon-education": "specialized/education" as IconCategoryPath,
-  "carbon-ibmMachineLearningForZos": "specialized/education" as IconCategoryPath,
-  "carbon-ibmWatsonMachineLearning": "specialized/education" as IconCategoryPath,
+  "carbon-ibmMachineLearningForZos":
+    "specialized/education" as IconCategoryPath,
+  "carbon-ibmWatsonMachineLearning":
+    "specialized/education" as IconCategoryPath,
   "carbon-logoFacebook": "specialized/education" as IconCategoryPath,
   "carbon-machineLearning": "specialized/education" as IconCategoryPath,
   "carbon-machineLearningModel": "specialized/education" as IconCategoryPath,
@@ -1705,7 +1909,8 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-rocket": "specialized/science" as IconCategoryPath,
   "carbon-terminal": "specialized/science" as IconCategoryPath,
   "carbon-terminal_3270": "specialized/science" as IconCategoryPath,
-  "carbon-airlinePassengerCare": "specialized/transportation" as IconCategoryPath,
+  "carbon-airlinePassengerCare":
+    "specialized/transportation" as IconCategoryPath,
   "carbon-airportLocation": "specialized/transportation" as IconCategoryPath,
   "carbon-bicycle": "specialized/transportation" as IconCategoryPath,
   "carbon-bus": "specialized/transportation" as IconCategoryPath,
@@ -1716,9 +1921,11 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-carbon": "specialized/transportation" as IconCategoryPath,
   "carbon-carbonForAem": "specialized/transportation" as IconCategoryPath,
   "carbon-carbonForIbmDotcom": "specialized/transportation" as IconCategoryPath,
-  "carbon-carbonForIbmProduct": "specialized/transportation" as IconCategoryPath,
+  "carbon-carbonForIbmProduct":
+    "specialized/transportation" as IconCategoryPath,
   "carbon-carbonForMobile": "specialized/transportation" as IconCategoryPath,
-  "carbon-carbonForSalesforce": "specialized/transportation" as IconCategoryPath,
+  "carbon-carbonForSalesforce":
+    "specialized/transportation" as IconCategoryPath,
   "carbon-carbonUiBuilder": "specialized/transportation" as IconCategoryPath,
   "carbon-caretSort": "specialized/transportation" as IconCategoryPath,
   "carbon-carFront": "specialized/transportation" as IconCategoryPath,
@@ -1727,7 +1934,8 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-choroplethMap": "specialized/transportation" as IconCategoryPath,
   "carbon-constraint": "specialized/transportation" as IconCategoryPath,
   "carbon-featureMembership": "specialized/transportation" as IconCategoryPath,
-  "carbon-featureMembershipFilled": "specialized/transportation" as IconCategoryPath,
+  "carbon-featureMembershipFilled":
+    "specialized/transportation" as IconCategoryPath,
   "carbon-featureTyping": "specialized/transportation" as IconCategoryPath,
   "carbon-friendship": "specialized/transportation" as IconCategoryPath,
   "carbon-heatMap": "specialized/transportation" as IconCategoryPath,
@@ -1735,19 +1943,24 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-heatMap_03": "specialized/transportation" as IconCategoryPath,
   "carbon-heatMapStocks": "specialized/transportation" as IconCategoryPath,
   "carbon-ibmApiConnect": "specialized/transportation" as IconCategoryPath,
-  "carbon-ibmAppConnectEnterprise": "specialized/transportation" as IconCategoryPath,
-  "carbon-ibmApplicationAndDiscoveryDeliveryIntelligence": "specialized/transportation" as IconCategoryPath,
+  "carbon-ibmAppConnectEnterprise":
+    "specialized/transportation" as IconCategoryPath,
+  "carbon-ibmApplicationAndDiscoveryDeliveryIntelligence":
+    "specialized/transportation" as IconCategoryPath,
   "carbon-location": "specialized/transportation" as IconCategoryPath,
   "carbon-locationCompany": "specialized/transportation" as IconCategoryPath,
-  "carbon-locationCompanyFilled": "specialized/transportation" as IconCategoryPath,
+  "carbon-locationCompanyFilled":
+    "specialized/transportation" as IconCategoryPath,
   "carbon-locationCurrent": "specialized/transportation" as IconCategoryPath,
   "carbon-locationFilled": "specialized/transportation" as IconCategoryPath,
   "carbon-locationHazard": "specialized/transportation" as IconCategoryPath,
-  "carbon-locationHazardFilled": "specialized/transportation" as IconCategoryPath,
+  "carbon-locationHazardFilled":
+    "specialized/transportation" as IconCategoryPath,
   "carbon-logoPinterest": "specialized/transportation" as IconCategoryPath,
   "carbon-map": "specialized/transportation" as IconCategoryPath,
   "carbon-mapBoundary": "specialized/transportation" as IconCategoryPath,
-  "carbon-mapBoundaryVegetation": "specialized/transportation" as IconCategoryPath,
+  "carbon-mapBoundaryVegetation":
+    "specialized/transportation" as IconCategoryPath,
   "carbon-mapCenter": "specialized/transportation" as IconCategoryPath,
   "carbon-mapIdentify": "specialized/transportation" as IconCategoryPath,
   "carbon-partnership": "specialized/transportation" as IconCategoryPath,
@@ -1755,7 +1968,8 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-pin": "specialized/transportation" as IconCategoryPath,
   "carbon-pinFilled": "specialized/transportation" as IconCategoryPath,
   "carbon-popIn": "specialized/transportation" as IconCategoryPath,
-  "carbon-propertyRelationship": "specialized/transportation" as IconCategoryPath,
+  "carbon-propertyRelationship":
+    "specialized/transportation" as IconCategoryPath,
   "carbon-roadmap": "specialized/transportation" as IconCategoryPath,
   "carbon-screenMap": "specialized/transportation" as IconCategoryPath,
   "carbon-screenMapSet": "specialized/transportation" as IconCategoryPath,
@@ -1808,7 +2022,8 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-temperatureWater": "specialized/weather" as IconCategoryPath,
   "carbon-thunderstorm": "specialized/weather" as IconCategoryPath,
   "carbon-thunderstormScattered": "specialized/weather" as IconCategoryPath,
-  "carbon-thunderstormScatteredNight": "specialized/weather" as IconCategoryPath,
+  "carbon-thunderstormScatteredNight":
+    "specialized/weather" as IconCategoryPath,
   "carbon-thunderstormSevere": "specialized/weather" as IconCategoryPath,
   "carbon-thunderstormStrong": "specialized/weather" as IconCategoryPath,
   "carbon-trafficWeatherIncident": "specialized/weather" as IconCategoryPath,
@@ -1839,7 +2054,8 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-ibmWebmethodsIntegrationServer": "system/devices" as IconCategoryPath,
   "carbon-kioskDevice": "system/devices" as IconCategoryPath,
   "carbon-laptop": "system/devices" as IconCategoryPath,
-  "carbon-powerVirtualServerDisasterRecoveryAutomation": "system/devices" as IconCategoryPath,
+  "carbon-powerVirtualServerDisasterRecoveryAutomation":
+    "system/devices" as IconCategoryPath,
   "carbon-printer": "system/devices" as IconCategoryPath,
   "carbon-serverDns": "system/devices" as IconCategoryPath,
   "carbon-serverlessFleet": "system/devices" as IconCategoryPath,
@@ -1850,7 +2066,8 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-blockStorage": "system/security" as IconCategoryPath,
   "carbon-blockStorageAlt": "system/security" as IconCategoryPath,
   "carbon-eyedropper": "system/security" as IconCategoryPath,
-  "carbon-ibmSecureInfrastructureOnVpcForRegulatedIndustries": "system/security" as IconCategoryPath,
+  "carbon-ibmSecureInfrastructureOnVpcForRegulatedIndustries":
+    "system/security" as IconCategoryPath,
   "carbon-key": "system/security" as IconCategoryPath,
   "carbon-keyboard": "system/security" as IconCategoryPath,
   "carbon-keyboardOff": "system/security" as IconCategoryPath,
@@ -1864,7 +2081,8 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-rotateClockwiseFilled": "system/security" as IconCategoryPath,
   "carbon-rotateCounterclockwise": "system/security" as IconCategoryPath,
   "carbon-rotateCounterclockwiseAlt": "system/security" as IconCategoryPath,
-  "carbon-rotateCounterclockwiseAltFilled": "system/security" as IconCategoryPath,
+  "carbon-rotateCounterclockwiseAltFilled":
+    "system/security" as IconCategoryPath,
   "carbon-rotateCounterclockwiseFilled": "system/security" as IconCategoryPath,
   "carbon-ruleLocked": "system/security" as IconCategoryPath,
   "carbon-sankeyDiagram": "system/security" as IconCategoryPath,
@@ -1921,8 +2139,10 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-dataShare": "user-interface/actions" as IconCategoryPath,
   "carbon-delete": "user-interface/actions" as IconCategoryPath,
   "carbon-deliveryAdd": "user-interface/actions" as IconCategoryPath,
-  "carbon-deploymentUnitExecution": "user-interface/actions" as IconCategoryPath,
-  "carbon-deploymentUnitTechnicalExecution": "user-interface/actions" as IconCategoryPath,
+  "carbon-deploymentUnitExecution":
+    "user-interface/actions" as IconCategoryPath,
+  "carbon-deploymentUnitTechnicalExecution":
+    "user-interface/actions" as IconCategoryPath,
   "carbon-documentAdd": "user-interface/actions" as IconCategoryPath,
   "carbon-documentDownload": "user-interface/actions" as IconCategoryPath,
   "carbon-download": "user-interface/actions" as IconCategoryPath,
@@ -1991,12 +2211,14 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-phoneBlockFilled": "user-interface/communication" as IconCategoryPath,
   "carbon-phoneFilled": "user-interface/communication" as IconCategoryPath,
   "carbon-phoneIncoming": "user-interface/communication" as IconCategoryPath,
-  "carbon-phoneIncomingFilled": "user-interface/communication" as IconCategoryPath,
+  "carbon-phoneIncomingFilled":
+    "user-interface/communication" as IconCategoryPath,
   "carbon-phoneIp": "user-interface/communication" as IconCategoryPath,
   "carbon-phoneOff": "user-interface/communication" as IconCategoryPath,
   "carbon-phoneOffFilled": "user-interface/communication" as IconCategoryPath,
   "carbon-phoneOutgoing": "user-interface/communication" as IconCategoryPath,
-  "carbon-phoneOutgoingFilled": "user-interface/communication" as IconCategoryPath,
+  "carbon-phoneOutgoingFilled":
+    "user-interface/communication" as IconCategoryPath,
   "carbon-phoneSettings": "user-interface/communication" as IconCategoryPath,
   "carbon-phoneVoice": "user-interface/communication" as IconCategoryPath,
   "carbon-phoneVoiceFilled": "user-interface/communication" as IconCategoryPath,
@@ -2088,7 +2310,8 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-alignBoxTopLeft": "user-interface/navigation" as IconCategoryPath,
   "carbon-alignBoxTopRight": "user-interface/navigation" as IconCategoryPath,
   "carbon-alignHorizontalLeft": "user-interface/navigation" as IconCategoryPath,
-  "carbon-alignHorizontalRight": "user-interface/navigation" as IconCategoryPath,
+  "carbon-alignHorizontalRight":
+    "user-interface/navigation" as IconCategoryPath,
   "carbon-arrowDown": "user-interface/navigation" as IconCategoryPath,
   "carbon-arrowDownLeft": "user-interface/navigation" as IconCategoryPath,
   "carbon-arrowDownRight": "user-interface/navigation" as IconCategoryPath,
@@ -2123,30 +2346,47 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-chevronUp": "user-interface/navigation" as IconCategoryPath,
   "carbon-chevronUpOutline": "user-interface/navigation" as IconCategoryPath,
   "carbon-cicsSystemGroup": "user-interface/navigation" as IconCategoryPath,
-  "carbon-couplingFacilityEncryption": "user-interface/navigation" as IconCategoryPath,
+  "carbon-couplingFacilityEncryption":
+    "user-interface/navigation" as IconCategoryPath,
   "carbon-currencyRupee": "user-interface/navigation" as IconCategoryPath,
   "carbon-dataBackup": "user-interface/navigation" as IconCategoryPath,
   "carbon-db2DataSharingGroup": "user-interface/navigation" as IconCategoryPath,
-  "carbon-directionBearRight_01": "user-interface/navigation" as IconCategoryPath,
-  "carbon-directionBearRight_01Filled": "user-interface/navigation" as IconCategoryPath,
-  "carbon-directionBearRight_02": "user-interface/navigation" as IconCategoryPath,
-  "carbon-directionBearRight_02Filled": "user-interface/navigation" as IconCategoryPath,
+  "carbon-directionBearRight_01":
+    "user-interface/navigation" as IconCategoryPath,
+  "carbon-directionBearRight_01Filled":
+    "user-interface/navigation" as IconCategoryPath,
+  "carbon-directionBearRight_02":
+    "user-interface/navigation" as IconCategoryPath,
+  "carbon-directionBearRight_02Filled":
+    "user-interface/navigation" as IconCategoryPath,
   "carbon-directionLoopLeft": "user-interface/navigation" as IconCategoryPath,
-  "carbon-directionLoopLeftFilled": "user-interface/navigation" as IconCategoryPath,
+  "carbon-directionLoopLeftFilled":
+    "user-interface/navigation" as IconCategoryPath,
   "carbon-directionLoopRight": "user-interface/navigation" as IconCategoryPath,
-  "carbon-directionLoopRightFilled": "user-interface/navigation" as IconCategoryPath,
+  "carbon-directionLoopRightFilled":
+    "user-interface/navigation" as IconCategoryPath,
   "carbon-directionRight_01": "user-interface/navigation" as IconCategoryPath,
-  "carbon-directionRight_01Filled": "user-interface/navigation" as IconCategoryPath,
+  "carbon-directionRight_01Filled":
+    "user-interface/navigation" as IconCategoryPath,
   "carbon-directionRight_02": "user-interface/navigation" as IconCategoryPath,
-  "carbon-directionRight_02Filled": "user-interface/navigation" as IconCategoryPath,
-  "carbon-directionRotaryFirstRight": "user-interface/navigation" as IconCategoryPath,
-  "carbon-directionRotaryFirstRightFilled": "user-interface/navigation" as IconCategoryPath,
-  "carbon-directionRotaryRight": "user-interface/navigation" as IconCategoryPath,
-  "carbon-directionRotaryRightFilled": "user-interface/navigation" as IconCategoryPath,
-  "carbon-directionStraightRight": "user-interface/navigation" as IconCategoryPath,
-  "carbon-directionStraightRightFilled": "user-interface/navigation" as IconCategoryPath,
-  "carbon-distributeHorizontalLeft": "user-interface/navigation" as IconCategoryPath,
-  "carbon-distributeHorizontalRight": "user-interface/navigation" as IconCategoryPath,
+  "carbon-directionRight_02Filled":
+    "user-interface/navigation" as IconCategoryPath,
+  "carbon-directionRotaryFirstRight":
+    "user-interface/navigation" as IconCategoryPath,
+  "carbon-directionRotaryFirstRightFilled":
+    "user-interface/navigation" as IconCategoryPath,
+  "carbon-directionRotaryRight":
+    "user-interface/navigation" as IconCategoryPath,
+  "carbon-directionRotaryRightFilled":
+    "user-interface/navigation" as IconCategoryPath,
+  "carbon-directionStraightRight":
+    "user-interface/navigation" as IconCategoryPath,
+  "carbon-directionStraightRightFilled":
+    "user-interface/navigation" as IconCategoryPath,
+  "carbon-distributeHorizontalLeft":
+    "user-interface/navigation" as IconCategoryPath,
+  "carbon-distributeHorizontalRight":
+    "user-interface/navigation" as IconCategoryPath,
   "carbon-downstream": "user-interface/navigation" as IconCategoryPath,
   "carbon-downToBottom": "user-interface/navigation" as IconCategoryPath,
   "carbon-drillBack": "user-interface/navigation" as IconCategoryPath,
@@ -2164,12 +2404,18 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-groupResource": "user-interface/navigation" as IconCategoryPath,
   "carbon-groupSecurity": "user-interface/navigation" as IconCategoryPath,
   "carbon-home": "user-interface/navigation" as IconCategoryPath,
-  "carbon-ibmCloudBackupAndRecovery": "user-interface/navigation" as IconCategoryPath,
-  "carbon-ibmCloudBackupServiceVpc": "user-interface/navigation" as IconCategoryPath,
-  "carbon-ibmCloudSecurityGroups": "user-interface/navigation" as IconCategoryPath,
-  "carbon-ibmDynamicRouteServer": "user-interface/navigation" as IconCategoryPath,
-  "carbon-ibmEngineeringRequirementsDoorsNext": "user-interface/navigation" as IconCategoryPath,
-  "carbon-intentRequestUpgrade": "user-interface/navigation" as IconCategoryPath,
+  "carbon-ibmCloudBackupAndRecovery":
+    "user-interface/navigation" as IconCategoryPath,
+  "carbon-ibmCloudBackupServiceVpc":
+    "user-interface/navigation" as IconCategoryPath,
+  "carbon-ibmCloudSecurityGroups":
+    "user-interface/navigation" as IconCategoryPath,
+  "carbon-ibmDynamicRouteServer":
+    "user-interface/navigation" as IconCategoryPath,
+  "carbon-ibmEngineeringRequirementsDoorsNext":
+    "user-interface/navigation" as IconCategoryPath,
+  "carbon-intentRequestUpgrade":
+    "user-interface/navigation" as IconCategoryPath,
   "carbon-joinLeft": "user-interface/navigation" as IconCategoryPath,
   "carbon-joinLeftOuter": "user-interface/navigation" as IconCategoryPath,
   "carbon-joinRight": "user-interface/navigation" as IconCategoryPath,
@@ -2180,43 +2426,55 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-nextFilled": "user-interface/navigation" as IconCategoryPath,
   "carbon-nextOutline": "user-interface/navigation" as IconCategoryPath,
   "carbon-openPanelFilledLeft": "user-interface/navigation" as IconCategoryPath,
-  "carbon-openPanelFilledRight": "user-interface/navigation" as IconCategoryPath,
+  "carbon-openPanelFilledRight":
+    "user-interface/navigation" as IconCategoryPath,
   "carbon-openPanelLeft": "user-interface/navigation" as IconCategoryPath,
   "carbon-openPanelRight": "user-interface/navigation" as IconCategoryPath,
   "carbon-pentagonDownOutline": "user-interface/navigation" as IconCategoryPath,
   "carbon-pentagonDownSolid": "user-interface/navigation" as IconCategoryPath,
   "carbon-pentagonLeftOutline": "user-interface/navigation" as IconCategoryPath,
   "carbon-pentagonLeftSolid": "user-interface/navigation" as IconCategoryPath,
-  "carbon-pentagonRightOutline": "user-interface/navigation" as IconCategoryPath,
+  "carbon-pentagonRightOutline":
+    "user-interface/navigation" as IconCategoryPath,
   "carbon-pentagonRightSolid": "user-interface/navigation" as IconCategoryPath,
   "carbon-popup": "user-interface/navigation" as IconCategoryPath,
   "carbon-previousFilled": "user-interface/navigation" as IconCategoryPath,
   "carbon-previousOutline": "user-interface/navigation" as IconCategoryPath,
   "carbon-rightPanelClose": "user-interface/navigation" as IconCategoryPath,
-  "carbon-rightPanelCloseFilled": "user-interface/navigation" as IconCategoryPath,
+  "carbon-rightPanelCloseFilled":
+    "user-interface/navigation" as IconCategoryPath,
   "carbon-rightPanelOpen": "user-interface/navigation" as IconCategoryPath,
-  "carbon-rightPanelOpenFilled": "user-interface/navigation" as IconCategoryPath,
+  "carbon-rightPanelOpenFilled":
+    "user-interface/navigation" as IconCategoryPath,
   "carbon-router": "user-interface/navigation" as IconCategoryPath,
   "carbon-routerVoice": "user-interface/navigation" as IconCategoryPath,
   "carbon-routerWifi": "user-interface/navigation" as IconCategoryPath,
-  "carbon-scisTransparentSupply": "user-interface/navigation" as IconCategoryPath,
+  "carbon-scisTransparentSupply":
+    "user-interface/navigation" as IconCategoryPath,
   "carbon-sendBackward": "user-interface/navigation" as IconCategoryPath,
   "carbon-sendToBack": "user-interface/navigation" as IconCategoryPath,
-  "carbon-shoppingCartArrowDown": "user-interface/navigation" as IconCategoryPath,
+  "carbon-shoppingCartArrowDown":
+    "user-interface/navigation" as IconCategoryPath,
   "carbon-shoppingCartArrowUp": "user-interface/navigation" as IconCategoryPath,
   "carbon-skipBack": "user-interface/navigation" as IconCategoryPath,
   "carbon-skipBackFilled": "user-interface/navigation" as IconCategoryPath,
   "carbon-skipBackOutline": "user-interface/navigation" as IconCategoryPath,
-  "carbon-skipBackOutlineFilled": "user-interface/navigation" as IconCategoryPath,
-  "carbon-skipBackOutlineSolid": "user-interface/navigation" as IconCategoryPath,
+  "carbon-skipBackOutlineFilled":
+    "user-interface/navigation" as IconCategoryPath,
+  "carbon-skipBackOutlineSolid":
+    "user-interface/navigation" as IconCategoryPath,
   "carbon-skipBackSolidFilled": "user-interface/navigation" as IconCategoryPath,
   "carbon-skipForward": "user-interface/navigation" as IconCategoryPath,
   "carbon-skipForwardFilled": "user-interface/navigation" as IconCategoryPath,
   "carbon-skipForwardOutline": "user-interface/navigation" as IconCategoryPath,
-  "carbon-skipForwardOutlineFilled": "user-interface/navigation" as IconCategoryPath,
-  "carbon-skipForwardOutlineSolid": "user-interface/navigation" as IconCategoryPath,
-  "carbon-skipForwardSolidFilled": "user-interface/navigation" as IconCategoryPath,
-  "carbon-supportVectorMachine": "user-interface/navigation" as IconCategoryPath,
+  "carbon-skipForwardOutlineFilled":
+    "user-interface/navigation" as IconCategoryPath,
+  "carbon-skipForwardOutlineSolid":
+    "user-interface/navigation" as IconCategoryPath,
+  "carbon-skipForwardSolidFilled":
+    "user-interface/navigation" as IconCategoryPath,
+  "carbon-supportVectorMachine":
+    "user-interface/navigation" as IconCategoryPath,
   "carbon-tagGroup": "user-interface/navigation" as IconCategoryPath,
   "carbon-textAlignLeft": "user-interface/navigation" as IconCategoryPath,
   "carbon-textAlignRight": "user-interface/navigation" as IconCategoryPath,
@@ -2226,7 +2484,8 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-thumbsDownFilled": "user-interface/navigation" as IconCategoryPath,
   "carbon-thumbsUp": "user-interface/navigation" as IconCategoryPath,
   "carbon-thumbsUpDouble": "user-interface/navigation" as IconCategoryPath,
-  "carbon-thumbsUpDoubleFilled": "user-interface/navigation" as IconCategoryPath,
+  "carbon-thumbsUpDoubleFilled":
+    "user-interface/navigation" as IconCategoryPath,
   "carbon-thumbsUpFilled": "user-interface/navigation" as IconCategoryPath,
   "carbon-touch_1Down": "user-interface/navigation" as IconCategoryPath,
   "carbon-touch_1DownFilled": "user-interface/navigation" as IconCategoryPath,
@@ -2234,7 +2493,8 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-triangleDownSolid": "user-interface/navigation" as IconCategoryPath,
   "carbon-triangleLeftOutline": "user-interface/navigation" as IconCategoryPath,
   "carbon-triangleLeftSolid": "user-interface/navigation" as IconCategoryPath,
-  "carbon-triangleRightOutline": "user-interface/navigation" as IconCategoryPath,
+  "carbon-triangleRightOutline":
+    "user-interface/navigation" as IconCategoryPath,
   "carbon-triangleRightSolid": "user-interface/navigation" as IconCategoryPath,
   "carbon-ungroupObjects": "user-interface/navigation" as IconCategoryPath,
   "carbon-updateComplete": "user-interface/navigation" as IconCategoryPath,
@@ -2252,7 +2512,8 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-volumeUpAlt": "user-interface/navigation" as IconCategoryPath,
   "carbon-volumeUpFilled": "user-interface/navigation" as IconCategoryPath,
   "carbon-volumeUpFilledAlt": "user-interface/navigation" as IconCategoryPath,
-  "carbon-aiFinancialSustainabilityCheck": "user-interface/status" as IconCategoryPath,
+  "carbon-aiFinancialSustainabilityCheck":
+    "user-interface/status" as IconCategoryPath,
   "carbon-badge": "user-interface/status" as IconCategoryPath,
   "carbon-batteryError": "user-interface/status" as IconCategoryPath,
   "carbon-batteryWarning": "user-interface/status" as IconCategoryPath,
@@ -2267,7 +2528,8 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-checkboxChecked": "user-interface/status" as IconCategoryPath,
   "carbon-checkboxCheckedFilled": "user-interface/status" as IconCategoryPath,
   "carbon-checkboxIndeterminate": "user-interface/status" as IconCategoryPath,
-  "carbon-checkboxIndeterminateFilled": "user-interface/status" as IconCategoryPath,
+  "carbon-checkboxIndeterminateFilled":
+    "user-interface/status" as IconCategoryPath,
   "carbon-checkmark": "user-interface/status" as IconCategoryPath,
   "carbon-checkmarkFilled": "user-interface/status" as IconCategoryPath,
   "carbon-checkmarkFilledError": "user-interface/status" as IconCategoryPath,
@@ -2290,7 +2552,8 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-errorOutline": "user-interface/status" as IconCategoryPath,
   "carbon-eventWarning": "user-interface/status" as IconCategoryPath,
   "carbon-floodWarning": "user-interface/status" as IconCategoryPath,
-  "carbon-ibmCloudEventNotification": "user-interface/status" as IconCategoryPath,
+  "carbon-ibmCloudEventNotification":
+    "user-interface/status" as IconCategoryPath,
   "carbon-incompleteError": "user-interface/status" as IconCategoryPath,
   "carbon-incompleteWarning": "user-interface/status" as IconCategoryPath,
   "carbon-information": "user-interface/status" as IconCategoryPath,
@@ -2323,14 +2586,16 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-sidePanelCloseFilled": "user-interface/status" as IconCategoryPath,
   "carbon-spellCheck": "user-interface/status" as IconCategoryPath,
   "carbon-succession": "user-interface/status" as IconCategoryPath,
-  "carbon-successionFlowConnection": "user-interface/status" as IconCategoryPath,
+  "carbon-successionFlowConnection":
+    "user-interface/status" as IconCategoryPath,
   "carbon-tornadoWarning": "user-interface/status" as IconCategoryPath,
   "carbon-tropicalWarning": "user-interface/status" as IconCategoryPath,
   "carbon-warning": "user-interface/status" as IconCategoryPath,
   "carbon-warningAlt": "user-interface/status" as IconCategoryPath,
   "carbon-warningAltFilled": "user-interface/status" as IconCategoryPath,
   "carbon-warningAltInverted": "user-interface/status" as IconCategoryPath,
-  "carbon-warningAltInvertedFilled": "user-interface/status" as IconCategoryPath,
+  "carbon-warningAltInvertedFilled":
+    "user-interface/status" as IconCategoryPath,
   "carbon-warningDiamond": "user-interface/status" as IconCategoryPath,
   "carbon-warningFilled": "user-interface/status" as IconCategoryPath,
   "carbon-warningHex": "user-interface/status" as IconCategoryPath,
@@ -2357,10 +2622,14 @@ export const iconCategoryMapping: Partial<Record<IconId, IconCategoryPath>> = {
   "carbon-ibmWatsonSpeechToText": "user-interface/text" as IconCategoryPath,
   "carbon-ibmWatsonTextToSpeech": "user-interface/text" as IconCategoryPath,
   "carbon-ibmWatsonxCodeAssistant": "user-interface/text" as IconCategoryPath,
-  "carbon-ibmWatsonxCodeAssistantForEnterpriseJavaApplications": "user-interface/text" as IconCategoryPath,
-  "carbon-ibmWatsonxCodeAssistantForZ": "user-interface/text" as IconCategoryPath,
-  "carbon-ibmWatsonxCodeAssistantForZRefactor": "user-interface/text" as IconCategoryPath,
-  "carbon-ibmWatsonxCodeAssistantForZValidationAssistant": "user-interface/text" as IconCategoryPath,
+  "carbon-ibmWatsonxCodeAssistantForEnterpriseJavaApplications":
+    "user-interface/text" as IconCategoryPath,
+  "carbon-ibmWatsonxCodeAssistantForZ":
+    "user-interface/text" as IconCategoryPath,
+  "carbon-ibmWatsonxCodeAssistantForZRefactor":
+    "user-interface/text" as IconCategoryPath,
+  "carbon-ibmWatsonxCodeAssistantForZValidationAssistant":
+    "user-interface/text" as IconCategoryPath,
   "carbon-packageTextAnalysis": "user-interface/text" as IconCategoryPath,
   "carbon-qrCode": "user-interface/text" as IconCategoryPath,
   "carbon-quotes": "user-interface/text" as IconCategoryPath,

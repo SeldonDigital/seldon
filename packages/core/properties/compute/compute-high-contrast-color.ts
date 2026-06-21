@@ -82,10 +82,8 @@ export function computeHighContrastColor(
   value: ComputedHighContrastValue,
   context: ComputeContext,
 ) {
-  const { basedOnValue, brightness, opacity } = resolveHighContrastInputs(
-    value,
-    context,
-  )
+  const { basedOnValue, brightness, opacity, backdrop } =
+    resolveHighContrastInputs(value, context)
 
   const resolved = resolveValue(
     resolveColor({
@@ -109,7 +107,7 @@ export function computeHighContrastColor(
   }
 
   if (opacity && color.type === ValueType.EXACT) {
-    color = applyLayerOpacity(color.value, opacity.value.value)
+    color = applyLayerOpacity(color.value, opacity.value.value, backdrop)
   }
 
   const isDark = isDarkBackgroundColor(color)
@@ -119,7 +117,9 @@ export function computeHighContrastColor(
     context.theme,
   ) as ThemeSwatch
 
-  return themeSwatchToColorValue(themeOption)
+  const output = themeSwatchToColorValue(themeOption)
+
+  return output
 }
 
 function resolveHighContrastInputs(
@@ -129,6 +129,7 @@ function resolveHighContrastInputs(
   basedOnValue: AtomicValue
   brightness: PercentageValue | undefined
   opacity: PercentageValue | undefined
+  backdrop: HSL | LCH | RGB | Hex | undefined
 } {
   const basedOn = value.value.input?.basedOn ?? "#parent.background.color"
 
@@ -150,6 +151,7 @@ function resolveHighContrastInputs(
         basedOnValue: FALLBACK_SURFACE_COLOR,
         brightness: undefined,
         opacity: undefined,
+        backdrop: undefined,
       }
     }
 
@@ -160,8 +162,11 @@ function resolveHighContrastInputs(
         basedOnValue,
         brightness: undefined,
         opacity: undefined,
+        backdrop: undefined,
       }
     }
+
+    const opacity = readAnchoredLayerPercentage(facetSource, basedOn, "opacity")
 
     return {
       basedOnValue,
@@ -170,15 +175,59 @@ function resolveHighContrastInputs(
         basedOn,
         "brightness",
       ),
-      opacity: readAnchoredLayerPercentage(facetSource, basedOn, "opacity"),
+      opacity,
+      backdrop: opacity
+        ? resolveBackdropColor(basedOn, facetSource, context.theme)
+        : undefined,
     }
   } catch {
     return {
       basedOnValue: FALLBACK_SURFACE_COLOR,
       brightness: undefined,
       opacity: undefined,
+      backdrop: undefined,
     }
   }
+}
+
+/**
+ * Resolves the opaque-or-deeper surface beneath the anchored translucent layer so opacity
+ * composites against the real backdrop instead of the white reference surface. Continues the
+ * `#parent` color walk from the anchored layer's parent and returns its resolved color, or
+ * `undefined` when no contributing backdrop exists.
+ */
+function resolveBackdropColor(
+  basedOn: string,
+  facetSource: Omit<ComputeContext, "theme">,
+  theme: ComputeContext["theme"],
+): HSL | LCH | RGB | Hex | undefined {
+  if (!facetSource.parentContext) {
+    return undefined
+  }
+
+  const parentBasedOn = basedOn.includes("#parent.")
+    ? basedOn
+    : `#parent.${basedOn.replace(/^#/, "")}`
+
+  const { value } = resolveBasedOnWithAnchor(parentBasedOn, facetSource)
+
+  if (
+    !value ||
+    isCompoundValue(value) ||
+    (value as { type?: ValueType }).type === ValueType.COMPUTED
+  ) {
+    return undefined
+  }
+
+  const resolved = resolveValue(
+    resolveColor({ color: value as ColorValue, theme }),
+  )
+
+  if (!resolved || resolved.value === "transparent") {
+    return undefined
+  }
+
+  return resolved.value as HSL | LCH | RGB | Hex
 }
 
 function readAnchoredLayerPercentage(
@@ -202,17 +251,14 @@ function readAnchoredLayerPercentage(
 function applyLayerOpacity(
   color: HSL | LCH | RGB | Hex,
   opacityPercent: number,
+  backdrop: HSL | LCH | RGB | Hex = FALLBACK_SURFACE_COLOR.value,
 ): HexValue {
   const colorString = exactColorToChromaInput(color)
+  const backdropString = exactColorToChromaInput(backdrop)
   return {
     type: ValueType.EXACT,
     value: chroma
-      .mix(
-        FALLBACK_SURFACE_COLOR.value,
-        colorString,
-        opacityPercent / 100,
-        "rgb",
-      )
+      .mix(backdropString, colorString, opacityPercent / 100, "rgb")
       .hex() as Hex,
   }
 }
