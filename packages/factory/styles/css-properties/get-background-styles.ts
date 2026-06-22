@@ -158,7 +158,7 @@ function resolveColorLayer(
   { theme, useThemeVariableReferences, themeSlug }: StyleGenerationContext,
 ): string | undefined {
   const color = resolveValue(layer.color)
-  if (!color || !layer.color) return undefined
+  if (!color) return undefined
   return getLayeredPaintColor({
     color,
     brightness: resolveValue(layer.brightness),

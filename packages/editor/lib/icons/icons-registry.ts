@@ -37,7 +37,7 @@ function BORDER_SIDE_REGISTRY_ENTRY(label: string): PropertyRegistryEntry {
     subProperties: {
       preset: { icon: "seldon-borderStyle", control: "combo" },
       style: { icon: "seldon-borderStyle", control: "menu" },
-      color: { icon: "seldon-borderColor", control: "combo" },
+      color: { icon: "seldon-backgroundColor", control: "combo" },
       width: { icon: "seldon-borderStyle", control: "combo" },
       brightness: { icon: "seldon-brightness", control: "number" },
       opacity: { icon: "seldon-opacity", control: "number" },
@@ -383,7 +383,7 @@ const UI_OVERRIDES: PropertyRegistry = {
     control: "combo",
   },
   accentColor: {
-    icon: "icon-custom-color-value",
+    icon: "seldon-backgroundColor",
     control: "combo",
   },
   brightness: {
@@ -420,6 +420,20 @@ const UI_OVERRIDES: PropertyRegistry = {
       position: {
         icon: "seldon-positionCenter",
         control: "menu",
+        // Mirror the top-level `align` 3x3 anchor icons. Background position
+        // names the middle row "center-left"/"center-right" where align uses
+        // "left"/"right", so the keys differ but the icons match.
+        optionIcons: {
+          "top-left": "seldon-positionTopLeft",
+          "top-center": "seldon-positionTop",
+          "top-right": "seldon-positionTopRight",
+          "center-left": "seldon-positionLeft",
+          center: "seldon-positionCenter",
+          "center-right": "seldon-positionRight",
+          "bottom-left": "seldon-positionBottomLeft",
+          "bottom-center": "seldon-positionBottom",
+          "bottom-right": "seldon-positionBottomRight",
+        },
       },
       size: {
         icon: "material-aspectRatio",
@@ -446,7 +460,7 @@ const UI_OVERRIDES: PropertyRegistry = {
         control: "number",
       },
       startColor: {
-        icon: "icon-custom-color-value",
+        icon: "seldon-backgroundColor",
         control: "combo",
       },
       startBrightness: {
@@ -462,7 +476,7 @@ const UI_OVERRIDES: PropertyRegistry = {
         control: "number",
       },
       endColor: {
-        icon: "icon-custom-color-value",
+        icon: "seldon-backgroundColor",
         control: "combo",
       },
       endBrightness: {
@@ -491,7 +505,7 @@ const UI_OVERRIDES: PropertyRegistry = {
         control: "menu",
       },
       color: {
-        icon: "seldon-borderColor",
+        icon: "seldon-backgroundColor",
         control: "combo",
       },
       width: {
@@ -512,7 +526,7 @@ const UI_OVERRIDES: PropertyRegistry = {
         control: "menu",
       },
       topColor: {
-        icon: "seldon-borderColor",
+        icon: "seldon-backgroundColor",
         control: "combo",
       },
       topWidth: {
@@ -532,7 +546,7 @@ const UI_OVERRIDES: PropertyRegistry = {
         control: "menu",
       },
       rightColor: {
-        icon: "seldon-borderColor",
+        icon: "seldon-backgroundColor",
         control: "combo",
       },
       rightWidth: {
@@ -552,7 +566,7 @@ const UI_OVERRIDES: PropertyRegistry = {
         control: "menu",
       },
       bottomColor: {
-        icon: "seldon-borderColor",
+        icon: "seldon-backgroundColor",
         control: "combo",
       },
       bottomWidth: {
@@ -572,7 +586,7 @@ const UI_OVERRIDES: PropertyRegistry = {
         control: "menu",
       },
       leftColor: {
-        icon: "seldon-borderColor",
+        icon: "seldon-backgroundColor",
         control: "combo",
       },
       leftWidth: {
@@ -714,7 +728,7 @@ const UI_OVERRIDES: PropertyRegistry = {
         control: "combo",
       },
       color: {
-        icon: "icon-custom-color-value",
+        icon: "seldon-backgroundColor",
         control: "combo",
       },
       brightness: {
