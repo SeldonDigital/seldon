@@ -37,7 +37,9 @@ export interface RepeatEditorData {
 type EditorBearing = Pick<EntryNode, "__editor">
 
 /** Reads the repeat preview state from a node, or `undefined` when absent. */
-export function getNodeRepeat(node: EditorBearing): RepeatEditorData | undefined {
+export function getNodeRepeat(
+  node: EditorBearing,
+): RepeatEditorData | undefined {
   const raw = node.__editor?.[REPEAT_EDITOR_KEY]
   if (raw == null || typeof raw !== "object") return undefined
   const candidate = raw as Partial<RepeatEditorData>

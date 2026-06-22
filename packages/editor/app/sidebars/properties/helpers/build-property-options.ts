@@ -103,7 +103,10 @@ export function buildPropertyOptions({
   // A repeat echo symbol row edits the `symbol` of an icon descendant. Resolve
   // it to the real symbol property against that descendant so every symbol path
   // below (options, current value, icon glyphs) runs unchanged.
-  const repeatSymbolDescendant = getRepeatSymbolDescendant(property.key, workspace)
+  const repeatSymbolDescendant = getRepeatSymbolDescendant(
+    property.key,
+    workspace,
+  )
   const effectiveProperty = repeatSymbolDescendant
     ? { ...property, key: "symbol" }
     : property
@@ -144,7 +147,11 @@ export function buildPropertyOptions({
     effectiveSubject ?? undefined,
   )
 
-  if (includeCurrentSymbol && effectiveProperty.key === "symbol" && result.options) {
+  if (
+    includeCurrentSymbol &&
+    effectiveProperty.key === "symbol" &&
+    result.options
+  ) {
     addCurrentSymbolOption(result.options, effectiveProperty)
   }
 

@@ -7,8 +7,8 @@ import { getNextVariantLabel } from "../../helpers/general/get-next-variant-labe
 import { getSpecialBoardVariantLabel } from "../../helpers/general/get-special-board-variant-label"
 import { getWorkspaceNodes } from "../../helpers/general/get-workspace-nodes"
 import {
-  applyNodeRepeat,
   type RepeatEditorData,
+  applyNodeRepeat,
 } from "../../helpers/nodes/node-repeat"
 import { Board, InstanceId, VariantId, Workspace } from "../../types"
 import { nodeRetrievalService } from "../nodes/node-retrieval.service"

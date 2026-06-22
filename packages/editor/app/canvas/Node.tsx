@@ -10,9 +10,9 @@ import {
   InstanceId,
   MAX_REPEAT_COUNT,
   Properties,
+  ValueType,
   Variant,
   VariantId,
-  ValueType,
   invariant,
   resolveNodeRepeat,
 } from "@seldon/core"
@@ -264,7 +264,10 @@ export const CanvasNode = memo(function CanvasNode({
         return Array.from({ length: total }, (_, echoIndex) => {
           const isEcho = echoIndex > 0
           const childOverrides = isEcho
-            ? { ...repeatOverrides, ...buildEchoOverrides(childRepeat.data, echoIndex) }
+            ? {
+                ...repeatOverrides,
+                ...buildEchoOverrides(childRepeat.data, echoIndex),
+              }
             : repeatOverrides
           return (
             <CanvasNode

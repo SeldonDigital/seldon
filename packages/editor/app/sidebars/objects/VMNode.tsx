@@ -1,5 +1,5 @@
-import { memo, type CSSProperties, type ReactElement } from "react"
 import { COLORS } from "@lib/helpers/colors"
+import { type CSSProperties, type ReactElement, memo } from "react"
 import { MAX_REPEAT_COUNT, resolveNodeRepeat } from "@seldon/core"
 import type { EntryNode } from "@seldon/core/workspace/types"
 import { useRowHighlightStyle } from "@lib/workspace/hooks/use-object-hover"
@@ -47,7 +47,9 @@ function echoSelectedBorder(
     borderTopColor: showTop ? color : "transparent",
     borderBottomColor: isLast ? color : "transparent",
     ...(showTop ? {} : { borderTopLeftRadius: 0, borderTopRightRadius: 0 }),
-    ...(isLast ? {} : { borderBottomLeftRadius: 0, borderBottomRightRadius: 0 }),
+    ...(isLast
+      ? {}
+      : { borderBottomLeftRadius: 0, borderBottomRightRadius: 0 }),
   }
 }
 

@@ -37,14 +37,14 @@ import {
 import type { PropertyPickerResult } from "../helpers/options-utils"
 import { getPropertiesSubjectId } from "../helpers/properties-data"
 import { FlatProperty } from "../helpers/properties-data"
+import { RESET_VALUES } from "../helpers/property-control-constants"
+import { shouldUsePresetPropertyBehavior } from "../helpers/property-types"
+import { updateProperty } from "../helpers/property-update-handler"
 import {
   REPEAT_ROW_KEY,
   parseRepeatDataRowKey,
 } from "../helpers/repeat-display"
 import { useSetNodeRepeat } from "./use-set-node-repeat"
-import { RESET_VALUES } from "../helpers/property-control-constants"
-import { shouldUsePresetPropertyBehavior } from "../helpers/property-types"
-import { updateProperty } from "../helpers/property-update-handler"
 import { useSetObjectReference } from "./use-set-object-reference"
 import { useSetObjectTheme } from "./use-set-object-theme"
 

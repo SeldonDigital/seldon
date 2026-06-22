@@ -56,16 +56,27 @@ export function getRepeatDataDescendants(
     if (!descendant) continue
     const componentId = getNodeCatalogComponentId(descendant, workspace)
     if (componentId === ComponentId.ICON) {
-      descendants.push({ id: descendantId, label: descendant.label, slot: "symbol" })
+      descendants.push({
+        id: descendantId,
+        label: descendant.label,
+        slot: "symbol",
+      })
     } else if (componentId === ComponentId.TEXT) {
-      descendants.push({ id: descendantId, label: descendant.label, slot: "content" })
+      descendants.push({
+        id: descendantId,
+        label: descendant.label,
+        slot: "content",
+      })
     }
   }
   return descendants
 }
 
 /** Key for a per-echo data row. Uses "#" so the key stays a single child segment. */
-export function repeatDataRowKey(descendantId: string, echoIndex: number): string {
+export function repeatDataRowKey(
+  descendantId: string,
+  echoIndex: number,
+): string {
   return `${REPEAT_ROW_KEY}.${descendantId}#${echoIndex}`
 }
 
@@ -80,7 +91,8 @@ export function parseRepeatDataRowKey(
   if (hashIndex <= 0) return null
   const descendantId = rest.slice(0, hashIndex)
   const echoIndex = Number.parseInt(rest.slice(hashIndex + 1), 10)
-  if (!descendantId || !Number.isInteger(echoIndex) || echoIndex < 1) return null
+  if (!descendantId || !Number.isInteger(echoIndex) || echoIndex < 1)
+    return null
   return { descendantId, echoIndex }
 }
 
@@ -156,7 +168,8 @@ export function buildRepeatRows(
         // repeat). An explicit per-echo value is a deviation from the index[0]
         // base, so it shows blue.
         const ownValue = ownRepeat?.data?.[descendant.id]?.[echoIndex - 1]
-        const inheritedValue = inheritedData[descendant.id]?.[echoIndex - 1] ?? ""
+        const inheritedValue =
+          inheritedData[descendant.id]?.[echoIndex - 1] ?? ""
         const hasOwn = ownValue != null && ownValue !== ""
         const isOverride = hasOwn && ownValue !== inheritedValue
 
@@ -165,7 +178,9 @@ export function buildRepeatRows(
           propertyType: "atomic",
           label: `${descendant.label} ${echoIndex + 1}`,
           icon: "seldon-token",
-          value: current ? { type: ValueType.EXACT, value: current } : EMPTY_VALUE,
+          value: current
+            ? { type: ValueType.EXACT, value: current }
+            : EMPTY_VALUE,
           actualValue: current ?? "",
           valueType: current ? ValueType.EXACT : ValueType.EMPTY,
           controlType: descendant.slot === "symbol" ? "combo" : "text",
@@ -194,7 +209,9 @@ export function injectRepeatRows(
   const repeatRows = buildRepeatRows(node, workspace)
   if (repeatRows.length === 0) return properties
 
-  const cursorIndex = properties.findIndex((property) => property.key === "cursor")
+  const cursorIndex = properties.findIndex(
+    (property) => property.key === "cursor",
+  )
   const insertAt = cursorIndex >= 0 ? cursorIndex : 0
   return [
     ...properties.slice(0, insertAt),

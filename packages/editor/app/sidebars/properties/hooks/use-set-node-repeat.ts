@@ -49,7 +49,12 @@ export function useSetNodeRepeat() {
   )
 
   const setDataValue = useCallback(
-    (nodeId: NodeId, descendantId: string, echoIndex: number, value: string) => {
+    (
+      nodeId: NodeId,
+      descendantId: string,
+      echoIndex: number,
+      value: string,
+    ) => {
       // Echo count is the effective (possibly inherited) value, but the edit is
       // stored as an override on this node only.
       const resolved = resolveNodeRepeat(nodeId, workspace)

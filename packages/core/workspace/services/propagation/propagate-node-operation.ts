@@ -2,6 +2,7 @@ import { invariant } from "../../../index"
 import { componentBoardDefaultNodeId } from "../../helpers/components/entry-node-ids"
 import { getBoardByNodeId } from "../../helpers/components/get-board-by-node-id"
 import { getChildrenIds } from "../../helpers/components/get-children-ids"
+import { findParentNode } from "../../helpers/nodes/find-parent-node"
 import { getChildIndex } from "../../helpers/nodes/get-child-index"
 import { isEntryNodeForRules } from "../../helpers/rules/rules-node-subject"
 import { parseNodeCatalog, parseNodeLink } from "../../model/template-ref"
@@ -13,7 +14,6 @@ import {
   VariantId,
   Workspace,
 } from "../../types"
-import { findParentNode } from "../../helpers/nodes/find-parent-node"
 import { nodeRelationshipService } from "../nodes/node-relationship.service"
 import { nodeRetrievalService } from "../nodes/node-retrieval.service"
 import { typeCheckingService } from "../type-checking/type-checking.service"
