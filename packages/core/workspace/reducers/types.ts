@@ -15,7 +15,7 @@
  * | add_variant | components.variants + nodes |
  * | insert_variant_instance, insert_duplicate_instance, insert_default_instance, add_component_and_insert_default_instance | components tree + nodes |
  * | remove_instance, remove_variant, duplicate_node, move_instance, reorder_instance_in_parent | components tree + nodes |
- * | set_node_properties, reset_node_property, reset_node, set_node_label, set_node_theme, set_node_editor_data | nodes |
+ * | set_node_properties, reset_node_property, reset_node, set_node_label, set_node_theme, set_node_editor_data, set_node_repeat | nodes |
  * | add_node_layer, remove_node_layer, reorder_node_layer, set_node_layer_kind | nodes (background/shadow paint stacks) |
  * | reset_node_label, reset_node_editor_data | nodes |
  * | reset_user_variant_to_default, reset_default_variant_to_catalog, reset_component_to_catalog | components.variants tree + nodes |
@@ -54,6 +54,7 @@ import {
   ThemeInstanceId,
   ThemeSwatchParameters,
 } from "../../themes/types"
+import type { RepeatEditorData } from "../helpers/nodes/node-repeat"
 import type { InstanceId, VariantId } from "../helpers/rules/workspace-node-ids"
 import type { BoardKey } from "../model/components"
 import type { EntryNodeId } from "../model/entry-node"
@@ -674,6 +675,13 @@ export type WorkspaceAction =
       payload: {
         nodeId: InstanceId | VariantId
         editorData: Record<string, unknown> | undefined
+      }
+    }
+  | {
+      type: "set_node_repeat"
+      payload: {
+        nodeId: InstanceId | VariantId
+        repeat: RepeatEditorData | undefined
       }
     }
   | {

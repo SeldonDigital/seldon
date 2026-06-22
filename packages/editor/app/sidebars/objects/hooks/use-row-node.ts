@@ -69,6 +69,12 @@ export function useRowNode(
     show?: boolean
     parentIsSelected?: boolean
     disableReordering?: boolean
+    /**
+     * Render this row as a repeat echo: a stripped leaf (no chevron, no child
+     * rows, no actions) with an italic label. Selection still routes to the
+     * underlying node, which is index 0 of the repeat.
+     */
+    isEcho?: boolean
   },
 ) {
   const { workspace, dispatch } = useWorkspace({ usePreview: false })
@@ -95,6 +101,7 @@ export function useRowNode(
   const show = options?.show ?? true
   const parentIsSelected = options?.parentIsSelected ?? false
   const disableReordering = options?.disableReordering ?? false
+  const isEcho = options?.isEcho ?? false
 
   const nodeExistsInWorkspace = hasNode(workspace, node.id)
   const properties: Properties = nodeExistsInWorkspace
@@ -103,7 +110,10 @@ export function useRowNode(
   const expandedId = node.id
   const isExpandedState = useIsExpanded(expandedId)
 
-  const children = nodeExistsInWorkspace ? getNodeChildIds(node, workspace) : []
+  // Echo rows are leaves: they never disclose children, which also renders an
+  // inert, transparent chevron via useRowButton.
+  const children =
+    !isEcho && nodeExistsInWorkspace ? getNodeChildIds(node, workspace) : []
   const hasChildren = children.length > 0
 
   // A child id is shared across variant columns, so match the selected copy by
@@ -177,6 +187,7 @@ export function useRowNode(
   }
 
   function handleDoubleClick() {
+    if (isEcho) return
     const entityType = typeCheckingService.getEntityType(node)
     if (rules.mutations.rename[entityType].allowed) {
       setEditingName(true)
@@ -504,7 +515,7 @@ export function useRowNode(
     return canReset ? [buildResetAction()] : []
   }
 
-  const actions: MenuEntry[] = buildNodeActions()
+  const actions: MenuEntry[] = isEcho ? [] : buildNodeActions()
 
   function checkIfExcluded(): boolean {
     if (!nodeExistsInWorkspace) {
@@ -540,9 +551,12 @@ export function useRowNode(
     return false
   }
 
-  const labelStyle: CSSProperties | undefined = checkIfExcluded()
+  const baseLabelStyle: CSSProperties | undefined = checkIfExcluded()
     ? { textDecoration: "line-through" }
     : undefined
+  const labelStyle: CSSProperties | undefined = isEcho
+    ? { ...baseLabelStyle, fontStyle: "italic", opacity: 0.7 }
+    : baseLabelStyle
 
   const label = {
     children: getNodeLabel(),

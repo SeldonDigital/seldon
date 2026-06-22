@@ -8,10 +8,13 @@ import {
   Display,
   Instance,
   InstanceId,
+  MAX_REPEAT_COUNT,
   Properties,
+  ValueType,
   Variant,
   VariantId,
   invariant,
+  resolveNodeRepeat,
 } from "@seldon/core"
 import { getComponentSchema } from "@seldon/core/components/catalog"
 import { ComponentId } from "@seldon/core/components/constants"
@@ -23,6 +26,7 @@ import {
   type NodeState,
 } from "@seldon/core/workspace/model/node-state"
 import { useThemeById } from "@lib/themes/hooks/use-theme-by-id"
+import { useIsNodeSelected } from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useAddNodeFontFamily } from "./hooks/use-add-node-font-family"
 import { collectDescendantNodeIds } from "@lib/workspace/component-tree"
@@ -50,16 +54,50 @@ export type CanvasNodeProps = {
    * whole tree renders the selected state. Defaults to Normal.
    */
   activeState?: NodeState
+  /**
+   * Per-echo text/icon preview values keyed by descendant node id, threaded
+   * down a repeated subtree. A matching descendant renders this value for its
+   * `content` (text) or `symbol` (icon) instead of its own. Editor preview only.
+   */
+  repeatOverrides?: Record<string, string>
+  /**
+   * True when this copy is one of a repeated child's renders (index 0 or an
+   * echo). Drives the dotted repeat-group outline. Editor preview only.
+   */
+  isRepeatCopy?: boolean
 }
+
+/** Per-echo override values for a repeated child's text/icon descendants. */
+function buildEchoOverrides(
+  data: Record<string, string[]> | undefined,
+  echoIndex: number,
+): Record<string, string> {
+  const result: Record<string, string> = {}
+  if (!data) return result
+  for (const [descendantId, values] of Object.entries(data)) {
+    const value = values[echoIndex - 1]
+    // An empty slot (including the "" padding written for earlier-index edits)
+    // means "use the node's own value", not "override with an empty string".
+    if (value != null && value !== "") result[descendantId] = value
+  }
+  return result
+}
+
 export const CanvasNode = memo(function CanvasNode({
   nodeId,
   initialThemeId,
   isRoot = false,
   rootPath,
   activeState = NORMAL_STATE,
+  repeatOverrides,
+  isRepeatCopy = false,
 }: CanvasNodeProps) {
   const { workspace } = useWorkspace()
   const node = workspace.nodes[nodeId]
+
+  // Echoes share index 0's node id, so this is true for every copy of a
+  // repeated child whenever that child (index 0) is the current selection.
+  const isSelectedNode = useIsNodeSelected(nodeId)
 
   if (!node) {
     return null
@@ -143,36 +181,108 @@ export const CanvasNode = memo(function CanvasNode({
   // A shared child id renders once per variant column. Scope the style class by
   // render position so each copy's computed CSS (e.g. an icon sized from its own
   // parent's buttonSize) does not collide on a single `node-<id>` selector.
+  // Repeat echoes share index 0's render position, so they intentionally share
+  // its style scope: one node painted N times, identical styling.
   const styleScopeId = selfPath.replace(/[^a-zA-Z0-9_-]/g, "-") as
     | InstanceId
     | VariantId
 
+  // Echoes of a repeated child preview a per-index text/icon value instead of
+  // the node's own. This is a render-only override; the node's stored content
+  // and symbol are untouched.
+  const repeatValue = repeatOverrides?.[nodeId]
+  let renderContext = computeContext
+  if (repeatValue != null) {
+    const overriddenProperties: Properties = { ...computeContext.properties }
+    if (catalogComponentId === ComponentId.ICON) {
+      overriddenProperties.symbol = {
+        type: ValueType.EXACT,
+        value: repeatValue as IconId,
+      }
+    } else {
+      overriddenProperties.content = {
+        type: ValueType.EXACT,
+        value: repeatValue,
+      }
+    }
+    renderContext = { ...computeContext, properties: overriddenProperties }
+  }
+
+  const positionOverride = isRoot
+    ? catalogComponentId === ComponentId.SANDBOX
+      ? { position: "absolute" as const }
+      : { position: "relative" as const }
+    : undefined
+  // The dotted outline marks the echo copies only, and only while the repeat
+  // is selected. Index 0 keeps its normal selection so it does not get dashed.
+  const showRepeatOutline = isRepeatCopy && isSelectedNode
+  const styleOverrides =
+    positionOverride || showRepeatOutline
+      ? {
+          ...positionOverride,
+          ...(showRepeatOutline
+            ? {
+                outline: "1px dashed var(--sdn-seldon-swatch-primary)",
+                outlineOffset: "1px",
+              }
+            : {}),
+        }
+      : undefined
+
   return (
     <ComponentRenderer
-      computeContext={computeContext}
-      styleOverrides={
-        isRoot
-          ? catalogComponentId === ComponentId.SANDBOX
-            ? { position: "absolute" }
-            : { position: "relative" }
-          : undefined
-      }
+      computeContext={renderContext}
+      styleOverrides={styleOverrides}
       componentId={component.id}
       htmlAttributes={getHTMLAttributes(node, nodeProperties)}
       nodeId={styleScopeId}
       renderAsDiv={renderAsDiv}
       iconUnavailable={iconUnavailable}
     >
-      {childNodeIds.map((childNodeId) => (
-        <CanvasNode
-          key={childNodeId}
-          parentNode={node}
-          nodeId={childNodeId as InstanceId | VariantId}
-          initialThemeId={themeId as ThemeInstanceId}
-          rootPath={`${selfPath}/${childNodeId}`}
-          activeState={activeState}
-        />
-      ))}
+      {childNodeIds.flatMap((childNodeId) => {
+        const childNode = workspace.nodes[childNodeId]
+        const childRepeat = childNode
+          ? resolveNodeRepeat(childNodeId, workspace)
+          : undefined
+        const childRootPath = `${selfPath}/${childNodeId}`
+
+        if (!childRepeat || childRepeat.count <= 1) {
+          return [
+            <CanvasNode
+              key={childNodeId}
+              parentNode={node}
+              nodeId={childNodeId as InstanceId | VariantId}
+              initialThemeId={themeId as ThemeInstanceId}
+              rootPath={childRootPath}
+              activeState={activeState}
+              repeatOverrides={repeatOverrides}
+            />,
+          ]
+        }
+
+        const total = Math.min(childRepeat.count, MAX_REPEAT_COUNT)
+        return Array.from({ length: total }, (_, echoIndex) => {
+          const isEcho = echoIndex > 0
+          const childOverrides = isEcho
+            ? {
+                ...repeatOverrides,
+                ...buildEchoOverrides(childRepeat.data, echoIndex),
+              }
+            : repeatOverrides
+          return (
+            <CanvasNode
+              key={isEcho ? `${childNodeId}#echo${echoIndex}` : childNodeId}
+              parentNode={node}
+              nodeId={childNodeId as InstanceId | VariantId}
+              initialThemeId={themeId as ThemeInstanceId}
+              rootPath={childRootPath}
+              activeState={activeState}
+              repeatOverrides={childOverrides}
+              isRepeatCopy={isEcho}
+            />
+          )
+        })
+      })}
     </ComponentRenderer>
   )
 

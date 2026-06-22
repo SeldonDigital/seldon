@@ -166,6 +166,7 @@ export function validateAction(workspace: Workspace, action: Action): void {
     case "set_node_label":
     case "set_node_ref":
     case "set_node_editor_data":
+    case "set_node_repeat":
     case "reset_node_label":
     case "reset_node_editor_data":
     case "reset_user_variant_to_default":

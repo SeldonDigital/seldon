@@ -58,3 +58,19 @@ export {
   ensureWorkspaceEditableThemeEntry,
 } from "./workspace/helpers/themes/workspace-editable-theme"
 export { createEmptyWorkspace } from "./workspace/helpers/create-empty-workspace"
+export {
+  applyNodeRepeat,
+  getNodeRepeat,
+  isMeaningfulRepeat,
+  MAX_REPEAT_COUNT,
+  MAX_REPEAT_EXPANSION,
+  REPEAT_EDITOR_KEY,
+} from "./workspace/helpers/nodes/node-repeat"
+export type { RepeatEditorData } from "./workspace/helpers/nodes/node-repeat"
+export {
+  collectDescendantIdsInOrder,
+  getRepeatInheritanceSourceId,
+  resolveInheritedRepeatData,
+  resolveNodeRepeat,
+} from "./workspace/helpers/nodes/resolve-node-repeat"
+export type { ResolvedRepeat } from "./workspace/helpers/nodes/resolve-node-repeat"

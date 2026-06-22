@@ -85,6 +85,7 @@ The `reducer` switch has no default branch. Validation rejects unknown action ty
 | `set_node_label` | `setNodeLabel` | `set-node-label.ts` |
 | `set_node_theme` | `setNodeTheme` | `set-node-theme.ts` |
 | `set_node_editor_data` | `setNodeEditorData` | `set-node-editor-data.ts` |
+| `set_node_repeat` | `setNodeRepeat` | `set-node-repeat.ts` |
 | `set_node_properties` | `setNodeProperties` | `set-node-properties.ts` |
 | `set_node_state_properties` | `setNodeStateProperties` | `set-node-state-properties.ts` |
 | `set_node_ref` | `setNodeRef` | `set-node-ref.ts` |

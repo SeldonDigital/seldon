@@ -141,6 +141,7 @@ import { setNodeLabel } from "./handlers/set/set-node-label"
 import { setNodeLayerKind } from "./handlers/set/set-node-layer-kind"
 import { setNodeProperties } from "./handlers/set/set-node-properties"
 import { setNodeRef } from "./handlers/set/set-node-ref"
+import { setNodeRepeat } from "./handlers/set/set-node-repeat"
 import { setNodeStateProperties } from "./handlers/set/set-node-state-properties"
 import { setNodeTheme } from "./handlers/set/set-node-theme"
 import { setPlaygroundLabel } from "./handlers/set/set-playground-label"
@@ -328,6 +329,8 @@ function reducer(workspace: Workspace, action: WorkspaceAction): Workspace {
       return setNodeTheme(action.payload, workspace)
     case "set_node_editor_data":
       return setNodeEditorData(action.payload, workspace)
+    case "set_node_repeat":
+      return setNodeRepeat(action.payload, workspace)
     case "reset_node_label":
       return resetNodeLabel(action.payload, workspace)
     case "reset_node_editor_data":

@@ -15,6 +15,7 @@ import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { getComboboxStoredValue } from "./combobox-stored-value"
 import { PropertyPickerResult, generatePropertyOptions } from "./options-utils"
 import { FlatProperty } from "./properties-data"
+import { getRepeatSymbolDescendant } from "./repeat-display"
 
 type PropertyOptions = PropertyPickerResult["options"]
 type MaybePropertyOptions = PropertyOptions | undefined
@@ -99,49 +100,65 @@ export function buildPropertyOptions({
     return undefined
   }
 
+  // A repeat echo symbol row edits the `symbol` of an icon descendant. Resolve
+  // it to the real symbol property against that descendant so every symbol path
+  // below (options, current value, icon glyphs) runs unchanged.
+  const repeatSymbolDescendant = getRepeatSymbolDescendant(
+    property.key,
+    workspace,
+  )
+  const effectiveProperty = repeatSymbolDescendant
+    ? { ...property, key: "symbol" }
+    : property
+  const effectiveSubject = repeatSymbolDescendant ?? subject
+
   // Rows that carry their own options (font collection family rows) are not
   // backed by the property schema, so use the supplied options directly.
-  if (property.options) {
-    return [property.options]
+  if (effectiveProperty.options) {
+    return [effectiveProperty.options]
   }
 
-  if (property.key === "theme") {
+  if (effectiveProperty.key === "theme") {
     return [
       getThemePickerOptions({
         workspace,
-        allowInherit: !(subject && isBoard(subject)),
+        allowInherit: !(effectiveSubject && isBoard(effectiveSubject)),
       }),
     ]
   }
 
   const componentId: ComponentId | undefined =
-    subject && isBoard(subject)
-      ? (getComponentKey(subject) as ComponentId)
-      : subject
-        ? (getNodeCatalogComponentId(subject, workspace) ?? undefined)
+    effectiveSubject && isBoard(effectiveSubject)
+      ? (getComponentKey(effectiveSubject) as ComponentId)
+      : effectiveSubject
+        ? (getNodeCatalogComponentId(effectiveSubject, workspace) ?? undefined)
         : undefined
   const componentLevel: ComponentLevel | undefined =
-    subject && isBoard(subject)
+    effectiveSubject && isBoard(effectiveSubject)
       ? undefined
-      : (subject?.level as ComponentLevel | undefined)
+      : (effectiveSubject?.level as ComponentLevel | undefined)
 
   const result = generatePropertyOptions(
-    property,
+    effectiveProperty,
     theme,
     componentId,
     componentLevel,
     workspace,
-    subject ?? undefined,
+    effectiveSubject ?? undefined,
   )
 
-  if (includeCurrentSymbol && property.key === "symbol" && result.options) {
-    addCurrentSymbolOption(result.options, property)
+  if (
+    includeCurrentSymbol &&
+    effectiveProperty.key === "symbol" &&
+    result.options
+  ) {
+    addCurrentSymbolOption(result.options, effectiveProperty)
   }
 
-  if (property.key === "listStyleType" && result.options) {
+  if (effectiveProperty.key === "listStyleType" && result.options) {
     const htmlElementValue =
-      subject && !isBoard(subject)
-        ? (getNodeProperties(subject, workspace).htmlElement?.value as
+      effectiveSubject && !isBoard(effectiveSubject)
+        ? (getNodeProperties(effectiveSubject, workspace).htmlElement?.value as
             | HtmlElement
             | undefined)
         : undefined

@@ -1,8 +1,13 @@
 import { invariant } from "../../../index"
 import { componentBoardDefaultNodeId } from "../../helpers/components/entry-node-ids"
+import { getBoardByNodeId } from "../../helpers/components/get-board-by-node-id"
+import { getChildrenIds } from "../../helpers/components/get-children-ids"
+import { findParentNode } from "../../helpers/nodes/find-parent-node"
+import { getChildIndex } from "../../helpers/nodes/get-child-index"
 import { isEntryNodeForRules } from "../../helpers/rules/rules-node-subject"
 import { parseNodeCatalog, parseNodeLink } from "../../model/template-ref"
 import {
+  EntryNodeId,
   Instance,
   InstanceId,
   Variant,
@@ -49,6 +54,44 @@ export function propagateNodeOperation<OpResult extends OperationResult>({
     default:
       throw new Error(`Invalid propagation: ${propagation}`)
   }
+}
+
+/**
+ * Applies an operation to a child node and to the positionally matching child
+ * inside every instance of the child's parent. Instance children are independent
+ * clones that template from a shared catalog default rather than back-linking to
+ * the source variant's child, so a child-rooted fan-out cannot reach them. This
+ * roots the fan-out at the parent (mirroring insert) and resolves the matching
+ * child by tree index in each parent instance.
+ */
+export function propagatePositionalChildOperation({
+  childId,
+  propagation,
+  applyToChild,
+  workspace,
+}: {
+  childId: VariantId | InstanceId
+  propagation: Propagation
+  applyToChild: (childId: EntryNodeId, workspace: Workspace) => Workspace
+  workspace: Workspace
+}): Workspace {
+  const parent = findParentNode(childId, workspace)
+  if (!parent) return applyToChild(childId, workspace)
+
+  const index = getChildIndex(childId, workspace)
+
+  return propagateNodeOperation({
+    nodeId: parent.id as VariantId | InstanceId,
+    propagation,
+    apply: (parentNode, currentWorkspace) => {
+      const board = getBoardByNodeId(currentWorkspace, parentNode.id)
+      if (!board) return currentWorkspace
+      const positionalChildId = getChildrenIds(board, parentNode.id)[index]
+      if (!positionalChildId) return currentWorkspace
+      return applyToChild(positionalChildId, currentWorkspace)
+    },
+    workspace,
+  })
 }
 
 function applyDownstream<OpResult extends OperationResult>(
