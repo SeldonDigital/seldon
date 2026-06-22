@@ -84,19 +84,20 @@ export function removeInstance(
     return workspace
   }
 
-  const result = workspacePropagationService.propagateNodeOperation({
-    nodeId: payload.instanceId,
+  const result = workspacePropagationService.propagatePositionalChildOperation({
+    childId: payload.instanceId,
     propagation,
-    apply: (node, workspace) => {
-      if (!typeCheckingService.isInstance(node)) return workspace
+    applyToChild: (childId, workspace) => {
+      const childNode = nodeRetrievalService.getNode(childId, workspace)
+      if (!typeCheckingService.isInstance(childNode)) return workspace
 
       if (removalBehavior === "delete") {
-        return nodeOperationsService.deleteInstance(node.id, workspace)
+        return nodeOperationsService.deleteInstance(childId, workspace)
       }
 
       if (removalBehavior === "hide") {
         return workspaceMutationService.setNodeProperties(
-          node.id,
+          childId,
           {
             display: {
               type: ValueType.OPTION as const,
