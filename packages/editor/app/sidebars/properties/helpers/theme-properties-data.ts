@@ -13,7 +13,7 @@ import {
 } from "@seldon/core/workspace/helpers/themes/theme-override-paths"
 import type { EntryThemeOverrides } from "@seldon/core/workspace/types"
 import { FlatProperty } from "./properties-data"
-import type { ControlType } from "./properties-registry"
+import type { ControlType } from "@lib/icons/icons-registry"
 
 const VALUE_TYPES = new Set<unknown>(Object.values(ValueType))
 

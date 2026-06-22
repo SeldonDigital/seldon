@@ -68,7 +68,7 @@ import { isPlaygroundBoard } from "@seldon/core/workspace/model/components"
 import type { NodeState } from "@seldon/core/workspace/model/node-state"
 import { getNodeCatalogComponentId } from "@lib/workspace/node-tree"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
-import { ControlType, getPropertyRegistryEntry } from "./properties-registry"
+import { ControlType, getPropertyRegistryEntry } from "@lib/icons/icons-registry"
 import { isCompoundProperty, isShorthandProperty } from "./property-types"
 import {
   createSubPropertyLabel,

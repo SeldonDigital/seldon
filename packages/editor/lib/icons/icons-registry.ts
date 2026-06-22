@@ -12,6 +12,10 @@ export interface PropertyRegistryEntry {
   label?: string
   /** Icon id rendered by the custom-components Icon wrapper. */
   icon: string
+  /** Per-option icon override, keyed by option value. Falls back to `icon`. */
+  optionIcons?: Record<string, string>
+  /** Option value is itself an icon id and renders as that glyph. */
+  renderValueAsIcon?: boolean
   control?: ControlType
   subProperties?: {
     [subPropertyKey: string]: PropertyRegistryEntry
@@ -39,6 +43,27 @@ function BORDER_SIDE_REGISTRY_ENTRY(label: string): PropertyRegistryEntry {
       opacity: { icon: "seldon-opacity", control: "number" },
     },
   }
+}
+
+/**
+ * Editor-local device icon per board preset value. Default ("") uses the
+ * desktop icon and "fit" uses the four-arrow align icon. These are
+ * `icon-custom-device-*` ids, not `@seldon/core` catalog ids, so the board
+ * picker stays decoupled from the shipped icon set.
+ */
+const BOARD_PRESET_OPTION_ICONS: Record<string, string> = {
+  "": "icon-custom-device-desktop",
+  fit: "seldon-align",
+  iphone: "icon-custom-device-mobile",
+  androidPhone: "icon-custom-device-mobile",
+  ipad: "icon-custom-device-tablet",
+  androidTablet: "icon-custom-device-tablet",
+  macBook: "icon-custom-device-laptop",
+  windowsLaptop: "icon-custom-device-laptop",
+  desktop: "icon-custom-device-desktop",
+  appleWatch: "icon-custom-device-watch",
+  wearOS: "icon-custom-device-watch",
+  television: "icon-custom-device-tv",
 }
 
 /**
@@ -90,6 +115,7 @@ const UI_OVERRIDES: PropertyRegistry = {
   symbol: {
     icon: "seldon-token",
     control: "combo",
+    renderValueAsIcon: true,
   },
   source: {
     icon: "seldon-image",
@@ -114,10 +140,12 @@ const UI_OVERRIDES: PropertyRegistry = {
   board: {
     icon: "seldon-component",
     control: "menu",
+    optionIcons: BOARD_PRESET_OPTION_ICONS,
     subProperties: {
       preset: {
         icon: "seldon-component",
         control: "menu",
+        optionIcons: BOARD_PRESET_OPTION_ICONS,
       },
       width: {
         icon: "seldon-width",
@@ -697,6 +725,8 @@ function mergeEntry(
   const merged: PropertyRegistryEntry = {
     label: override.label ?? base.label,
     icon: override.icon ?? base.icon,
+    optionIcons: override.optionIcons ?? base.optionIcons,
+    renderValueAsIcon: override.renderValueAsIcon ?? base.renderValueAsIcon,
     control: override.hasOwnProperty("control")
       ? override.control
       : base.control,

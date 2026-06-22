@@ -42,9 +42,10 @@ import {
 } from "../helpers/build-property-row-props"
 import { ICONIC_BUTTON_SELECTOR } from "../../helpers/iconic-button"
 import {
-  getBoardPresetIconId,
-  getBoardPresetValue,
-} from "../helpers/board-preset-icon"
+  THEME_TOKEN_ICON,
+  getCurrentOptionValue,
+  getOptionIcon,
+} from "@lib/icons/resolve-option-icon"
 import { getDisplayValue } from "../helpers/display-value-utils"
 import {
   FontCollectionEditingContext,
@@ -52,7 +53,7 @@ import {
   ThemeEditingContext,
 } from "../helpers/editing-contexts"
 import { FlatProperty } from "../helpers/properties-data"
-import { getPropertyRegistryEntry } from "../helpers/properties-registry"
+import { getPropertyRegistryEntry } from "@lib/icons/icons-registry"
 import {
   getFormControlStyle,
   getRowStyle,
@@ -177,12 +178,21 @@ export function useRowProperty({
   const isThemeAssignment = property.pickerVariant === "themeAssignment"
 
   // Property icons are real icon ids resolved by the custom Icon wrapper. The
-  // board preset row reflects the selected device, fit, or default instead of a
-  // static icon.
+  // closed control mirrors the menu by resolving the current option through the
+  // shared registry: board presets get their device icon, theme tokens get the
+  // token icon, and swatch/glyph rows defer to the property icon (the swatch
+  // chip is painted separately via swatchChipColor).
+  const currentIconDescriptor = getOptionIcon(
+    property.key,
+    getCurrentOptionValue(property.key, property.value),
+    theme,
+  )
   const iconId =
-    property.key === "board"
-      ? getBoardPresetIconId(getBoardPresetValue(property.value))
-      : property.icon
+    currentIconDescriptor.kind === "static"
+      ? currentIconDescriptor.icon
+      : currentIconDescriptor.kind === "themeToken"
+        ? THEME_TOKEN_ICON
+        : property.icon
 
   // Can reset only when overridden. Font collection family rows (`family.*`) and
   // icon set rows (`icon.*`) carry an override status for color only; they have
