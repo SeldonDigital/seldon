@@ -1,4 +1,5 @@
 import * as Sdn from "../../../properties";
+import { ComputedFunction } from "../../../properties";
 import * as Seldon from "../../constants";
 import { ComponentExport, ComponentSchema } from "../../types";
 
@@ -36,6 +37,12 @@ export const schema = {
       value: Sdn.Cursor.DEFAULT,
     },
     direction: { type: Sdn.ValueType.EMPTY, value: null },
+    position: {
+      top: { type: Sdn.ValueType.EMPTY, value: null },
+      right: { type: Sdn.ValueType.EMPTY, value: null },
+      bottom: { type: Sdn.ValueType.EMPTY, value: null },
+      left: { type: Sdn.ValueType.EMPTY, value: null },
+    },
     orientation: {
       type: Sdn.ValueType.OPTION,
       value: Sdn.Orientation.HORIZONTAL,
@@ -83,7 +90,7 @@ export const schema = {
     border: {
       preset: {
         type: Sdn.ValueType.THEME_CATEGORICAL,
-        value: "@border.normal",
+        value: "@border.none",
       },
       style: { type: Sdn.ValueType.EMPTY, value: null },
       color: { type: Sdn.ValueType.EMPTY, value: null },
@@ -124,22 +131,10 @@ export const schema = {
       opacity: { type: Sdn.ValueType.EMPTY, value: null },
     },
     corners: {
-      topLeft: {
-        type: Sdn.ValueType.OPTION,
-        value: Sdn.Corner.ROUNDED,
-      },
-      topRight: {
-        type: Sdn.ValueType.OPTION,
-        value: Sdn.Corner.ROUNDED,
-      },
-      bottomLeft: {
-        type: Sdn.ValueType.OPTION,
-        value: Sdn.Corner.ROUNDED,
-      },
-      bottomRight: {
-        type: Sdn.ValueType.OPTION,
-        value: Sdn.Corner.ROUNDED,
-      },
+      topLeft: { type: Sdn.ValueType.EMPTY, value: null },
+      topRight: { type: Sdn.ValueType.EMPTY, value: null },
+      bottomLeft: { type: Sdn.ValueType.EMPTY, value: null },
+      bottomRight: { type: Sdn.ValueType.EMPTY, value: null },
     },
     shadow: [
       {
@@ -175,62 +170,449 @@ export const schema = {
             type: Sdn.ValueType.THEME_ORDINAL,
             value: "@dimension.large",
           },
+          corners: {
+            topLeft: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.Corner.ROUNDED,
+            },
+            topRight: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.Corner.ROUNDED,
+            },
+            bottomLeft: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.Corner.ROUNDED,
+            },
+            bottomRight: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.Corner.ROUNDED,
+            },
+          },
         },
       },
     ],
   },
   variants: [
     {
-      id: "square",
-      label: "Square Avatar",
+      id: "round",
+      label: "Round Border",
       intent:
-        "Renders a square avatar for representing users, roles, or statuses.",
-      overrides: {
-        corners: {
-          topLeft: {
-            type: Sdn.ValueType.THEME_ORDINAL,
-            value: "@corners.tight",
-          },
-          topRight: {
-            type: Sdn.ValueType.THEME_ORDINAL,
-            value: "@corners.tight",
-          },
-          bottomLeft: {
-            type: Sdn.ValueType.THEME_ORDINAL,
-            value: "@corners.tight",
-          },
-          bottomRight: {
-            type: Sdn.ValueType.THEME_ORDINAL,
-            value: "@corners.tight",
+        "Renders a round bordered avatar for representing users, roles, or statuses.",
+      children: [
+        {
+          component: Seldon.ComponentId.IMAGE,
+          overrides: {
+            source: {
+              type: Sdn.ValueType.EXACT,
+              value: "/avatar-user.png",
+            },
+            width: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@dimension.large",
+            },
+            height: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@dimension.large",
+            },
+            border: {
+              preset: {
+                type: Sdn.ValueType.THEME_CATEGORICAL,
+                value: "@border.normal",
+              },
+            },
+            corners: {
+              topLeft: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.Corner.ROUNDED,
+              },
+              topRight: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.Corner.ROUNDED,
+              },
+              bottomLeft: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.Corner.ROUNDED,
+              },
+              bottomRight: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.Corner.ROUNDED,
+              },
+            },
           },
         },
-      },
+      ],
     },
     {
-      id: "gradient",
-      label: "Gradient Bordered Avatar",
+      id: "square",
+      label: "Square Border",
       intent:
-        "Renders a gradient bordered avatar for representing users, roles, or statuses.",
-      overrides: {
-        corners: {
-          topLeft: {
-            type: Sdn.ValueType.THEME_ORDINAL,
-            value: "@corners.tight",
-          },
-          topRight: {
-            type: Sdn.ValueType.THEME_ORDINAL,
-            value: "@corners.tight",
-          },
-          bottomLeft: {
-            type: Sdn.ValueType.THEME_ORDINAL,
-            value: "@corners.tight",
-          },
-          bottomRight: {
-            type: Sdn.ValueType.THEME_ORDINAL,
-            value: "@corners.tight",
+        "Renders a round bordered avatar for representing users, roles, or statuses.",
+      children: [
+        {
+          component: Seldon.ComponentId.IMAGE,
+          overrides: {
+            source: {
+              type: Sdn.ValueType.EXACT,
+              value: "/avatar-user.png",
+            },
+            width: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@dimension.large",
+            },
+            height: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@dimension.large",
+            },
+            border: {
+              preset: {
+                type: Sdn.ValueType.THEME_CATEGORICAL,
+                value: "@border.normal",
+              },
+            },
+            corners: {
+              topLeft: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@corners.tight",
+              },
+              topRight: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@corners.tight",
+              },
+              bottomLeft: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@corners.tight",
+              },
+              bottomRight: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@corners.tight",
+              },
+            },
           },
         },
+      ],
+    },
+    {
+      id: "badge",
+      label: "Badged",
+      intent: "Renders a badged avatar for representing notifications.",
+      overrides: {
+        clip: {
+          type: Sdn.ValueType.EXACT,
+          value: false,
+        },
       },
+      children: [
+        {
+          component: Seldon.ComponentId.IMAGE,
+          overrides: {
+            source: {
+              type: Sdn.ValueType.EXACT,
+              value: "/avatar-user.png",
+            },
+            width: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@dimension.large",
+            },
+            height: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@dimension.large",
+            },
+            border: {
+              preset: {
+                type: Sdn.ValueType.THEME_CATEGORICAL,
+                value: "@border.normal",
+              },
+            },
+            corners: {
+              topLeft: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.Corner.ROUNDED,
+              },
+              topRight: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.Corner.ROUNDED,
+              },
+              bottomLeft: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.Corner.ROUNDED,
+              },
+              bottomRight: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.Corner.ROUNDED,
+              },
+            },
+          },
+        },
+        {
+          component: Seldon.ComponentId.CHIP,
+          overrides: {
+            buttonSize: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@fontSize.tiny",
+            },
+            position: {
+              right: {
+                type: Sdn.ValueType.EXACT,
+                value: { value: -1, unit: Sdn.Unit.REM },
+              },
+              bottom: {
+                type: Sdn.ValueType.EXACT,
+                value: { value: 0, unit: Sdn.Unit.REM },
+              },
+            },
+            border: {
+              preset: {
+                type: Sdn.ValueType.THEME_CATEGORICAL,
+                value: "@border.normal",
+              },
+              color: {
+                type: Sdn.ValueType.THEME_CATEGORICAL,
+                value: "@swatch.white",
+              },
+            },
+          },
+          children: [
+            {
+              component: Seldon.ComponentId.TEXT,
+              overrides: {
+                content: { type: Sdn.ValueType.EXACT, value: "99" },
+                font: {
+                  size: {
+                    type: Sdn.ValueType.COMPUTED,
+                    value: {
+                      function: ComputedFunction.AUTO_FIT,
+                      input: {
+                        basedOn: "#parent.buttonSize",
+                        factor: 0.8,
+                      },
+                    },
+                  },
+                  weight: {
+                    type: Sdn.ValueType.THEME_ORDINAL,
+                    value: "@fontWeight.bold",
+                  },
+                },
+              },
+            },
+          ],
+        },
+      ],
+    },
+    {
+      id: "stacked",
+      label: "Stacked",
+      intent: "Renders a stacked set of avatars.",
+      overrides: {
+        orientation: {
+          type: Sdn.ValueType.EXACT,
+          value: Sdn.Orientation.HORIZONTAL,
+        },
+        clip: {
+          type: Sdn.ValueType.EXACT,
+          value: false,
+        },
+      },
+      children: [
+        {
+          component: Seldon.ComponentId.IMAGE,
+          overrides: {
+            source: {
+              type: Sdn.ValueType.EXACT,
+              value: "/avatar-user.png",
+            },
+            width: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@dimension.large",
+            },
+            height: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@dimension.large",
+            },
+            border: {
+              preset: {
+                type: Sdn.ValueType.THEME_CATEGORICAL,
+                value: "@border.normal",
+              },
+            },
+            corners: {
+              topLeft: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.Corner.ROUNDED,
+              },
+              topRight: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.Corner.ROUNDED,
+              },
+              bottomLeft: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.Corner.ROUNDED,
+              },
+              bottomRight: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.Corner.ROUNDED,
+              },
+            },
+          },
+        },
+        {
+          component: Seldon.ComponentId.IMAGE,
+          overrides: {
+            source: {
+              type: Sdn.ValueType.EXACT,
+              value: "/avatar-user.png",
+            },
+            position: {
+              right: {
+                type: Sdn.ValueType.EXACT,
+                value: { value: -2.5, unit: Sdn.Unit.REM },
+              },
+            },
+            width: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@dimension.large",
+            },
+            height: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@dimension.large",
+            },
+            border: {
+              preset: {
+                type: Sdn.ValueType.THEME_CATEGORICAL,
+                value: "@border.normal",
+              },
+            },
+            corners: {
+              topLeft: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.Corner.ROUNDED,
+              },
+              topRight: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.Corner.ROUNDED,
+              },
+              bottomLeft: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.Corner.ROUNDED,
+              },
+              bottomRight: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.Corner.ROUNDED,
+              },
+            },
+            shadow: [
+              {
+                preset: {
+                  type: Sdn.ValueType.THEME_CATEGORICAL,
+                  value: "@shadow.moderate",
+                },
+                offsetX: {
+                  type: Sdn.ValueType.EXACT,
+                  value: { value: 0, unit: Sdn.Unit.PX },
+                },
+                offsetY: {
+                  type: Sdn.ValueType.EXACT,
+                  value: { value: 0, unit: Sdn.Unit.PX },
+                },
+                blur: {
+                  type: Sdn.ValueType.EXACT,
+                  value: { value: 0, unit: Sdn.Unit.PX },
+                },
+                color: {
+                  type: Sdn.ValueType.THEME_CATEGORICAL,
+                  value: "@swatch.white",
+                },
+                opacity: {
+                  type: Sdn.ValueType.EXACT,
+                  value: { value: 100, unit: Sdn.Unit.PERCENT },
+                },
+                spread: {
+                  type: Sdn.ValueType.THEME_ORDINAL,
+                  value: "@spread.xsmall",
+                },
+              },
+            ],
+          },
+        },
+        {
+          component: Seldon.ComponentId.IMAGE,
+          overrides: {
+            source: {
+              type: Sdn.ValueType.EXACT,
+              value: "/avatar-user.png",
+            },
+            position: {
+              right: {
+                type: Sdn.ValueType.EXACT,
+                value: { value: -5, unit: Sdn.Unit.REM },
+              },
+            },
+            width: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@dimension.large",
+            },
+            height: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@dimension.large",
+            },
+            border: {
+              preset: {
+                type: Sdn.ValueType.THEME_CATEGORICAL,
+                value: "@border.normal",
+              },
+            },
+            corners: {
+              topLeft: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.Corner.ROUNDED,
+              },
+              topRight: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.Corner.ROUNDED,
+              },
+              bottomLeft: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.Corner.ROUNDED,
+              },
+              bottomRight: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.Corner.ROUNDED,
+              },
+            },
+            shadow: [
+              {
+                preset: {
+                  type: Sdn.ValueType.THEME_CATEGORICAL,
+                  value: "@shadow.moderate",
+                },
+                offsetX: {
+                  type: Sdn.ValueType.EXACT,
+                  value: { value: 0, unit: Sdn.Unit.PX },
+                },
+                offsetY: {
+                  type: Sdn.ValueType.EXACT,
+                  value: { value: 0, unit: Sdn.Unit.PX },
+                },
+                blur: {
+                  type: Sdn.ValueType.EXACT,
+                  value: { value: 0, unit: Sdn.Unit.PX },
+                },
+                color: {
+                  type: Sdn.ValueType.THEME_CATEGORICAL,
+                  value: "@swatch.white",
+                },
+                opacity: {
+                  type: Sdn.ValueType.EXACT,
+                  value: { value: 100, unit: Sdn.Unit.PERCENT },
+                },
+                spread: {
+                  type: Sdn.ValueType.THEME_ORDINAL,
+                  value: "@spread.xsmall",
+                },
+              },
+            ],
+          },
+        },
+      ],
     },
   ],
 } as const satisfies ComponentSchema
