@@ -9,6 +9,7 @@ import {
 } from "@seldon/core/helpers/validation"
 import { isThemeValueKey } from "@seldon/core/helpers/validation/theme"
 import { getUnitsForProperty } from "@seldon/core/properties"
+import { isFreeTextProperty } from "@lib/properties/serialize-value"
 import { FlatProperty } from "../helpers/properties-data"
 
 interface UsePropertyValidationResult {
@@ -75,6 +76,11 @@ export function usePropertyValidation(
             units.some((unit) => value.endsWith(unit)) || !isNaN(Number(value))
           )
         }
+      }
+      // Free-text combos (image source url) accept any non-empty custom value.
+      // Without a validator the combobox rejects typed input outright.
+      if (isFreeTextProperty(property.key)) {
+        return (value: string) => value.trim().length > 0
       }
       return undefined
     }

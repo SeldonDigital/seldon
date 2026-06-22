@@ -30,7 +30,10 @@ import { useDebugMode } from "@lib/hooks/use-debug-mode"
 import { useInlineRename } from "../../hooks/use-inline-rename"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { FormControlIconicProps } from "@seldon/components/elements/FormControlIconic"
-import { useImageUploadPanel } from "@app/panels/hooks/use-upload-image-panel"
+import {
+  imageUploadTargetForKey,
+  useImageUploadPanel,
+} from "@app/panels/hooks/use-upload-image-panel"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import { buildResetMenuEntry } from "../../shared/build-reset-menu-entry"
 import { buildPropertyOptions } from "../helpers/build-property-options"
@@ -52,7 +55,6 @@ import {
   ThemeEditingContext,
 } from "../helpers/editing-contexts"
 import { FlatProperty } from "../helpers/properties-data"
-import { getPropertyRegistryEntry } from "@lib/icons/icons-registry"
 import {
   getFormControlStyle,
   getRowStyle,
@@ -260,10 +262,9 @@ export function useRowProperty({
   const rowColor = rowStyle.color as string | undefined
   const { setIsHovered, style: hoverStyle } = usePropertyFrameHover(rowColor)
 
-  // Check if property supports upload (combo control + image icon).
-  const registryEntry = getPropertyRegistryEntry(property.key)
-  const supportsUpload =
-    registryEntry?.control === "combo" && registryEntry?.icon === "seldon-image"
+  // Image rows (source attribute, background image facet) support upload.
+  const uploadTarget = imageUploadTargetForKey(property.key)
+  const supportsUpload = uploadTarget !== null
 
   const handleToggle = () => {
     if (hasChildren) {
@@ -399,17 +400,11 @@ export function useRowProperty({
   const handleUploadClick = useCallback(
     (event: React.MouseEvent) => {
       event.stopPropagation()
-      if (supportsUpload) {
-        const uploadPanelProperty = property.key.includes(".")
-          ? property.key.replace(/\./g, "-")
-          : property.key
-
-        showUploadPanel({
-          property: uploadPanelProperty as "source" | "background-image",
-        })
+      if (uploadTarget) {
+        showUploadPanel({ property: uploadTarget })
       }
     },
-    [property.key, showUploadPanel, supportsUpload],
+    [uploadTarget, showUploadPanel],
   )
 
   const handleMenuClick = useCallback(

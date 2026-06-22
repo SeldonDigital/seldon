@@ -1,13 +1,34 @@
 import { useRef, useState } from "react"
 import { create } from "zustand"
-import { ValueType } from "@seldon/core/properties"
+import { BackgroundKind, ValueType } from "@seldon/core/properties"
 import { useImageUpload } from "@lib/api/hooks/use-image-upload"
 import { useObjectProperties } from "@lib/workspace/hooks/use-object-properties"
 import { useDialog } from "@lib/hooks/use-dialog"
 
+export type ImageUploadTarget = "source" | "background-image"
+
+/**
+ * Maps a property key to its image upload target. Covers the top-level `source`
+ * attribute and a background `image` facet at any layer index. Returns `null`
+ * for keys that carry no image upload, so callers share one definition of
+ * "this row sets an image".
+ */
+export function imageUploadTargetForKey(
+  propertyKey: string,
+): ImageUploadTarget | null {
+  if (propertyKey === "source") return "source"
+  if (
+    propertyKey === "background.image" ||
+    /^background\.\d+\.image$/.test(propertyKey)
+  ) {
+    return "background-image"
+  }
+  return null
+}
+
 interface ImageUploadPanelState {
-  property: "source" | "background-image" | null
-  setProperty: (property: "source" | "background-image") => void
+  property: ImageUploadTarget | null
+  setProperty: (property: ImageUploadTarget) => void
   reset: () => void
 }
 
@@ -31,7 +52,7 @@ export function useImageUploadPanel() {
     reset: resetUpload,
   } = useImageUpload()
 
-  function show({ property }: { property: "source" | "background-image" }) {
+  function show({ property }: { property: ImageUploadTarget }) {
     setProperty(property)
     openDialog("image-upload")
   }
@@ -56,24 +77,19 @@ export function useImageUploadPanel() {
 
       if (property === "source") {
         setProperties({
-          source: {
-            type: ValueType.EXACT,
-            value: data.url,
-          },
+          source: { type: ValueType.EXACT, value: data.url },
         })
       } else if (property === "background-image") {
+        // Type the layer as an image so it renders even when the slot was a
+        // different kind, and write the uploaded url onto the base layer.
         setProperties({
           background: [
             {
-              image: {
-                type: ValueType.EXACT,
-                value: data.url,
-              },
+              kind: { type: ValueType.OPTION, value: BackgroundKind.IMAGE },
+              image: { type: ValueType.EXACT, value: data.url },
             },
           ],
         })
-      } else {
-        throw new Error("Invalid property " + property)
       }
 
       setCurrentFile(null)

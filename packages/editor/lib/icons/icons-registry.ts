@@ -414,6 +414,7 @@ const UI_OVERRIDES: PropertyRegistry = {
         control: "number",
       },
       image: {
+        label: "Source",
         icon: "seldon-image",
         control: "combo",
       },

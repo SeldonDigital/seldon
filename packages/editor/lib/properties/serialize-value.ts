@@ -397,7 +397,17 @@ const FREE_TEXT_PROPERTY_KEYS = new Set([
   "ariaLabel",
   "placeholder",
   "source",
+  "image",
 ])
+
+/**
+ * True when a property stores raw free text, such as an attribute string or an
+ * image url. Keyed by the leaf segment so layered facets like
+ * `background.0.image` match.
+ */
+export function isFreeTextProperty(propertyKey: string): boolean {
+  return FREE_TEXT_PROPERTY_KEYS.has(propertyKey.split(".").pop() as string)
+}
 
 /**
  * Serializes a string to a PropertyValue object.
@@ -432,10 +442,7 @@ export function serializeValue(
   // Free-text attributes store the raw string. Skip the numeric and theme
   // coercion below so input like "001" stays the literal text rather than being
   // turned into a dimension the property would reject.
-  if (
-    propertyKey &&
-    FREE_TEXT_PROPERTY_KEYS.has(propertyKey.split(".").pop() as string)
-  ) {
+  if (propertyKey && isFreeTextProperty(propertyKey)) {
     return { type: ValueType.EXACT, value }
   }
 
