@@ -4,6 +4,7 @@ import {
   type RepeatEditorData,
   type VariantId,
   getNodeRepeat,
+  resolveNodeRepeat,
 } from "@seldon/core"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 
@@ -49,12 +50,15 @@ export function useSetNodeRepeat() {
 
   const setDataValue = useCallback(
     (nodeId: NodeId, descendantId: string, echoIndex: number, value: string) => {
-      const current = getNodeRepeat(workspace.nodes[nodeId] ?? {})
-      if (!current || current.count <= 1) return
+      // Echo count is the effective (possibly inherited) value, but the edit is
+      // stored as an override on this node only.
+      const resolved = resolveNodeRepeat(nodeId, workspace)
+      if (!resolved || resolved.count <= 1) return
 
-      const echoSlots = current.count - 1
+      const echoSlots = resolved.count - 1
+      const own = getNodeRepeat(workspace.nodes[nodeId] ?? {})
       const data: Record<string, string[]> = {}
-      for (const [key, values] of Object.entries(current.data ?? {})) {
+      for (const [key, values] of Object.entries(own?.data ?? {})) {
         data[key] = [...values]
       }
 
@@ -63,9 +67,15 @@ export function useSetNodeRepeat() {
       slotValues[echoIndex - 1] = value
       data[descendantId] = slotValues.slice(0, echoSlots)
 
+      // Keep an explicit own count only when this node already set one. A node
+      // that inherits its count stores a data-only override so the count keeps
+      // tracking the template.
+      const repeat: RepeatEditorData =
+        own?.count != null ? { count: own.count, data } : { data }
+
       dispatch({
         type: "set_node_repeat",
-        payload: { nodeId, repeat: { count: current.count, data } },
+        payload: { nodeId, repeat },
       })
     },
     [workspace, dispatch],

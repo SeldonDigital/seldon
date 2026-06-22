@@ -20,12 +20,16 @@ export const MAX_REPEAT_EXPANSION = 200
  * keyed by a descendant node id for text/icon prototyping.
  */
 export interface RepeatEditorData {
-  /** Total rendered copies including index 0. Range 1..{@link MAX_REPEAT_COUNT}. */
-  count: number
+  /**
+   * Total rendered copies including index 0. Range 1..{@link MAX_REPEAT_COUNT}.
+   * Optional: an instance may store a data-only override that omits `count` and
+   * inherits it from the template via {@link resolveNodeRepeat}.
+   */
+  count?: number
   /**
    * Optional prototyping strings for text/icon descendants. Keyed by a stable
    * descendant node id. Each array holds values for echoes 1..count-1; index 0
-   * always renders the descendant's own value.
+   * always renders the descendant's own value. An empty slot inherits.
    */
   data?: Record<string, string[]>
 }
@@ -37,20 +41,27 @@ export function getNodeRepeat(node: EditorBearing): RepeatEditorData | undefined
   const raw = node.__editor?.[REPEAT_EDITOR_KEY]
   if (raw == null || typeof raw !== "object") return undefined
   const candidate = raw as Partial<RepeatEditorData>
-  if (typeof candidate.count !== "number") return undefined
+  const hasCount = typeof candidate.count === "number"
+  const hasData = candidate.data != null && typeof candidate.data === "object"
+  if (!hasCount && !hasData) return undefined
   return candidate as RepeatEditorData
 }
 
 /**
  * A repeat is meaningful only when it paints more than once or carries
- * prototyping data. A bare `count <= 1` with no data is equivalent to no repeat.
+ * prototyping override data. A bare `count <= 1` with no data is equivalent to
+ * no repeat. A data-only override (no `count`) is meaningful when it holds at
+ * least one non-empty slot.
  */
 export function isMeaningfulRepeat(
   repeat: RepeatEditorData | undefined,
 ): repeat is RepeatEditorData {
   if (!repeat) return false
-  if (repeat.count > 1) return true
-  return repeat.data != null && Object.keys(repeat.data).length > 0
+  if (repeat.count != null && repeat.count > 1) return true
+  if (!repeat.data) return false
+  return Object.values(repeat.data).some((values) =>
+    values.some((value) => value != null && value !== ""),
+  )
 }
 
 /**

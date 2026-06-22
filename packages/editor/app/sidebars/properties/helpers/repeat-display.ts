@@ -5,6 +5,8 @@ import {
   Variant,
   Workspace,
   getNodeRepeat,
+  resolveInheritedRepeatData,
+  resolveNodeRepeat,
 } from "@seldon/core"
 import { ComponentId } from "@seldon/core/components/constants"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
@@ -115,7 +117,9 @@ export function buildRepeatRows(
 ): FlatProperty[] {
   if (!isRepeatEligible(node)) return []
 
-  const repeat = getNodeRepeat(node)
+  const repeat = resolveNodeRepeat(node.id, workspace)
+  const ownRepeat = getNodeRepeat(node)
+  const inheritedData = resolveInheritedRepeatData(node.id, workspace)
   const count = repeat?.count ?? 1
 
   const parent: FlatProperty = {
@@ -146,6 +150,16 @@ export function buildRepeatRows(
       for (const descendant of descendants) {
         const values = repeat?.data?.[descendant.id] ?? []
         const current = values[echoIndex - 1]
+
+        // A slot is an override when this node sets its own value for the echo and
+        // it diverges from the inherited slot (empty when this node owns the
+        // repeat). An explicit per-echo value is a deviation from the index[0]
+        // base, so it shows blue.
+        const ownValue = ownRepeat?.data?.[descendant.id]?.[echoIndex - 1]
+        const inheritedValue = inheritedData[descendant.id]?.[echoIndex - 1] ?? ""
+        const hasOwn = ownValue != null && ownValue !== ""
+        const isOverride = hasOwn && ownValue !== inheritedValue
+
         rows.push({
           key: repeatDataRowKey(descendant.id, echoIndex),
           propertyType: "atomic",
@@ -158,7 +172,7 @@ export function buildRepeatRows(
           isCompound: false,
           isShorthand: false,
           isSubProperty: true,
-          status: current ? "set" : "unset",
+          status: isOverride ? "override" : current ? "set" : "unset",
         })
       }
     }

@@ -1,10 +1,6 @@
 import { memo, type CSSProperties, type ReactElement } from "react"
 import { COLORS } from "@lib/helpers/colors"
-import {
-  MAX_REPEAT_COUNT,
-  getNodeRepeat,
-  isMeaningfulRepeat,
-} from "@seldon/core"
+import { MAX_REPEAT_COUNT, resolveNodeRepeat } from "@seldon/core"
 import type { EntryNode } from "@seldon/core/workspace/types"
 import { useRowHighlightStyle } from "@lib/workspace/hooks/use-object-hover"
 import { useIsNodeSelected } from "@lib/workspace/hooks/use-selection"
@@ -216,8 +212,10 @@ const VMNodeInner = function VMNodeInner({
     )
 
     const childNode = workspace.nodes[childNodeId]
-    const repeat = childNode ? getNodeRepeat(childNode) : undefined
-    if (!isMeaningfulRepeat(repeat)) return [indexZeroRow]
+    const repeat = childNode
+      ? resolveNodeRepeat(childNodeId, workspace)
+      : undefined
+    if (!repeat || repeat.count <= 1) return [indexZeroRow]
 
     const total = Math.min(repeat.count, MAX_REPEAT_COUNT)
     const echoCount = total - 1

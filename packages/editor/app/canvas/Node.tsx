@@ -13,9 +13,8 @@ import {
   Variant,
   VariantId,
   ValueType,
-  getNodeRepeat,
   invariant,
-  isMeaningfulRepeat,
+  resolveNodeRepeat,
 } from "@seldon/core"
 import { getComponentSchema } from "@seldon/core/components/catalog"
 import { ComponentId } from "@seldon/core/components/constants"
@@ -242,10 +241,12 @@ export const CanvasNode = memo(function CanvasNode({
     >
       {childNodeIds.flatMap((childNodeId) => {
         const childNode = workspace.nodes[childNodeId]
-        const childRepeat = childNode ? getNodeRepeat(childNode) : undefined
+        const childRepeat = childNode
+          ? resolveNodeRepeat(childNodeId, workspace)
+          : undefined
         const childRootPath = `${selfPath}/${childNodeId}`
 
-        if (!isMeaningfulRepeat(childRepeat)) {
+        if (!childRepeat || childRepeat.count <= 1) {
           return [
             <CanvasNode
               key={childNodeId}

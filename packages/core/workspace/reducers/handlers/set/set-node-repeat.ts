@@ -1,19 +1,19 @@
 import type { ExtractPayload, Workspace } from "../../../../index"
-import {
-  workspaceMutationService,
-  workspacePropagationService,
-} from "../../../services"
+import { workspaceMutationService } from "../../../services"
 
-/** Sets or clears the editor-only repeat preview state on a node. */
+/**
+ * Sets or clears the editor-only repeat preview state on a single node. Repeat
+ * follows the override model: instances inherit their template's repeat at read
+ * time via `resolveNodeRepeat`, so this writes only the targeted node and never
+ * propagates to instances.
+ */
 export function setNodeRepeat(
   payload: ExtractPayload<"set_node_repeat">,
   workspace: Workspace,
 ): Workspace {
-  return workspacePropagationService.propagatePositionalChildOperation({
-    childId: payload.nodeId,
-    propagation: "downstream",
-    applyToChild: (childId, workspace) =>
-      workspaceMutationService.setNodeRepeat(childId, payload.repeat, workspace),
+  return workspaceMutationService.setNodeRepeat(
+    payload.nodeId,
+    payload.repeat,
     workspace,
-  })
+  )
 }

@@ -444,7 +444,11 @@ function assertRepeatConstraints(
   const repeat = action.payload.repeat
   if (!repeat) return
 
+  // A data-only override omits count and inherits it from the template, so there
+  // is no count constraint to enforce on this write.
   const count = repeat.count
+  if (count == null) return
+
   if (!Number.isInteger(count) || count < 1) {
     throw new WorkspaceValidationError(
       "Repeat count must be a whole number of at least 1.",
@@ -462,7 +466,7 @@ function assertRepeatConstraints(
   let ancestor = nodeTraversalService.findParentNode(nodeId, workspace)
   while (ancestor) {
     const ancestorRepeat = getNodeRepeat(ancestor)
-    if (ancestorRepeat && ancestorRepeat.count > 1) {
+    if (ancestorRepeat?.count != null && ancestorRepeat.count > 1) {
       expansion *= ancestorRepeat.count
     }
     ancestor = nodeTraversalService.findParentNode(ancestor, workspace)
