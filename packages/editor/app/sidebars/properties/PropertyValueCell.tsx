@@ -133,7 +133,7 @@ function decorateValueContent(
     <>
       {valueChip && (
         <Icon
-          icon="icon-custom-color-value"
+          icon={valueChip.iconId}
           color={valueChip.color}
           style={{
             flexShrink: 0,
