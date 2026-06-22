@@ -23,6 +23,26 @@ Serialized workspaces use these top-level keys in this order:
 
 `boards` is the catalog row index. It does not hold node properties directly. Rows point to entries in `nodes`, `themes`, `font-collections`, `icon-sets`, or `media`.
 
+### Mutations Through Actions
+
+- Change a workspace only through workspace actions and reducer handlers. Do not mutate workspace state with editor-only logic.
+- The editor fires actions. An AI agent fires the same actions. Any new mutation must be available as an action so both paths reach it.
+- Validation middleware rejects an invalid action and returns the workspace unchanged. Verification middleware checks invariants after every action.
+- Persist edits as actions and `overrides`. Do not store design state as editor side state.
+
+### Mutation Policy By Entity
+
+- Operation reach depends on the target entity: board, default variant, user variant, or instance. Read the policy from `packages/core/rules/config/rules.config.ts`.
+- `Local` changes only the target. `Syncs` also applies to linked instances. `Blocked` is a no-op.
+- Default variants are locked against structural change. They accept `setProperties` and `setTheme`, but not create, insert, delete, rename, reorder, or move at index `0`.
+- Reset drops overrides so the value falls back to its template. `setProperties` and `reset` stay `Local`.
+- Deleting a `schema` instance inside the default variant hides it with `display: EXCLUDE`. Every other instance deletes, including `schema` instances in user variants.
+
+### Parallel Entry Handling
+
+- Handle component, theme, font-collection, icon-set, and media entries with parallel reducer logic.
+- When you fix or add behavior for one entry type, apply it to the others that share the pattern. Do not fix one type in isolation.
+
 ### Catalog Rows
 
 `boards` rows may have these `type` values:
@@ -77,6 +97,9 @@ When editing workspace code or docs:
 - Keep component and playground child graphs acyclic.
 - Keep theme template graphs acyclic.
 - Keep top-level map keys unique.
+- Resolve every id in `variants` and nested `children` to a key in the map for the board `type`: `component` and `playground` to `nodes`, `theme` to `themes`, `font-collection` to `font-collections`, `icon-set` to `icon-sets`, `media` to `media`.
+- Resolve every `template` suffix to a key in the map implied by its prefix.
+- After a delete, remove or repoint references so no id dangles. Remove node rows that reference nothing.
 
 ### Naming And Migration
 

@@ -19,7 +19,15 @@ When writing or editing Markdown files:
 - Avoid stock phrases like `source of truth`, `canonical`, and `authoritative` unless the doc states a real ownership rule.
 - When explaining a data shape, show the smallest valid example before long prose or large tables.
 - Prefer `X does Y` over `X is used to Y`. Prefer `Use X to Y` over `It is important to use X`. Prefer concrete subjects over vague ones like `the thing that`.
-- Let tables auto format. Do not pad cells with extra spaces to align columns.
+- Markdown is hand-formatted. Prettier does not format Markdown. `*.md` is listed in `.prettierignore`.
+- Keep tables compact. Use a single space around cell content. Do not pad cells to align columns, because no formatter will fix them.
+
+### Editing Existing Docs
+
+- Match the document's existing voice and structure when you edit it. Do not impose a new style on a rewrite.
+- Update the affected doc in the same change as the code. Check that examples and field names still match the code.
+- When you move, rename, or delete a file or heading, update every link that points to it. Use relative links inside the repo.
+- Keep one doc per topic. When you consolidate, move content into the main doc and delete the duplicate.
 
 ### Before Answering
 

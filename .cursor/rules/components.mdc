@@ -19,6 +19,7 @@ Use `packages/core/properties/README.md` for property shapes, value types, theme
 - `element` may contain elements, primitives, and frames.
 - `primitive` has no `default`, `variants`, or children.
 - `frame` is the cross-level container and may appear anywhere.
+- Choose the level by what the component composes, not by its name. A container of parts is a module or part. A leaf with no children is a primitive.
 
 ### Schema Shapes
 
@@ -31,6 +32,14 @@ Primitives use `level: ComponentLevel.PRIMITIVE` and stop there.
 Complex schemas use `default: { children: [...] }` for the canonical tree and may use `variants: [...]` for alternate trees. A variant may also define root `overrides`. Composition trees should be fully flattened. Keep intermediate schemas only when they are reusable across multiple parents.
 
 Author schemas with `as const satisfies ComponentSchema` so TypeScript validates the shape while preserving literal property and option values.
+
+### Schema Files And Folders
+
+- Use one schema file per component family. Name it `X.schema.ts` after the family default.
+- Put the default tree in `default` and alternate trees in `variants`. Do not keep a separate file per variant.
+- When consolidating, move each old variant schema into the family file as a variant, then delete the old file.
+- Place schema files directly at the root of their level folder, such as `elements/` or `parts/`. Use a subfolder only for a genuine grouping, such as `tables/` or `cards/`.
+- Use `Button.schema.ts` as the reference for a family with multiple variants.
 
 ### Properties
 
@@ -107,6 +116,8 @@ variants: [
 
 Use `overrides` in component schemas. Overrides must use full typed property values and are matched against the target child schema. Unknown override keys are dropped by merge logic. Do not invent child properties that the referenced schema does not expose.
 
+When a child uses a family variant, set `variant: "<variantId>"` to point at it. After consolidating or removing a schema, update every reference to the new family id and variant, and remove the old `ComponentId` entries. Renaming a schema does not rename its `ComponentId`. Change the id only when you intend to update all references.
+
 Use `@token.id` for theme references, e.g. `@swatch.primary`, `@size.medium`, `@font.body`. 
 
 Use `#property.path` for computed-property inputs, e.g. `#parent.buttonSize`.
@@ -125,4 +136,4 @@ When adding a component:
 4. Add `exportConfig`.
 5. Keep property keys and compound facets in documented order from `packages/core/properties/README.md`.
 6. Update `packages/core/components/catalog/index.ts` afterwards to include new components.
-7. Invoke `@components-catalog` to sync `packages/core/components/catalog/index.ts`, `packages/core/components/constants/index.ts`, and `packages/core/components/types/component-id.ts` from the schema files.
+7. Sync the catalog by invoking `@components-catalog`. It updates `packages/core/components/catalog/index.ts`, `packages/core/components/constants/index.ts`, and `packages/core/components/types/component-id.ts` from the schema files. Do not rely on a generation script.
