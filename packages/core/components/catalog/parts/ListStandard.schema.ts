@@ -71,7 +71,7 @@ export const schema = {
     border: {
       preset: {
         type: Sdn.ValueType.THEME_CATEGORICAL,
-        value: "@border.none",
+        value: "@border.hairline",
       },
       style: { type: Sdn.ValueType.EMPTY, value: null },
       color: { type: Sdn.ValueType.EMPTY, value: null },
@@ -112,10 +112,10 @@ export const schema = {
       opacity: { type: Sdn.ValueType.EMPTY, value: null },
     },
     corners: {
-      topLeft: { type: Sdn.ValueType.EMPTY, value: null },
-      topRight: { type: Sdn.ValueType.EMPTY, value: null },
-      bottomLeft: { type: Sdn.ValueType.EMPTY, value: null },
-      bottomRight: { type: Sdn.ValueType.EMPTY, value: null },
+      topLeft: { type: Sdn.ValueType.THEME_ORDINAL, value: "@corners.tight" },
+      topRight: { type: Sdn.ValueType.THEME_ORDINAL, value: "@corners.tight" },
+      bottomLeft: { type: Sdn.ValueType.THEME_ORDINAL, value: "@corners.tight" },
+      bottomRight: { type: Sdn.ValueType.THEME_ORDINAL, value: "@corners.tight" },
     },
     shadow: [
       {
@@ -202,198 +202,6 @@ export const schema = {
             opacity: { type: Sdn.ValueType.EMPTY, value: null },
           },
         },
-      },
-      {
-        component: Seldon.ComponentId.ITEM,
-        overrides: {
-          border: {
-            preset: {
-              type: Sdn.ValueType.THEME_CATEGORICAL,
-              value: "@border.none",
-            },
-            style: { type: Sdn.ValueType.EMPTY, value: null },
-            color: { type: Sdn.ValueType.EMPTY, value: null },
-            width: { type: Sdn.ValueType.EMPTY, value: null },
-            brightness: { type: Sdn.ValueType.EMPTY, value: null },
-            opacity: { type: Sdn.ValueType.EMPTY, value: null },
-          },
-          borderTop: {
-            preset: { type: Sdn.ValueType.EMPTY, value: null },
-            style: { type: Sdn.ValueType.EMPTY, value: null },
-            color: { type: Sdn.ValueType.EMPTY, value: null },
-            width: { type: Sdn.ValueType.EMPTY, value: null },
-            brightness: { type: Sdn.ValueType.EMPTY, value: null },
-            opacity: { type: Sdn.ValueType.EMPTY, value: null },
-          },
-          borderRight: {
-            preset: { type: Sdn.ValueType.EMPTY, value: null },
-            style: { type: Sdn.ValueType.EMPTY, value: null },
-            color: { type: Sdn.ValueType.EMPTY, value: null },
-            width: { type: Sdn.ValueType.EMPTY, value: null },
-            brightness: { type: Sdn.ValueType.EMPTY, value: null },
-            opacity: { type: Sdn.ValueType.EMPTY, value: null },
-          },
-          borderBottom: {
-            preset: { type: Sdn.ValueType.EMPTY, value: null },
-            style: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.BorderStyle.SOLID,
-            },
-            color: {
-              type: Sdn.ValueType.THEME_CATEGORICAL,
-              value: "@swatch.primary",
-            },
-            width: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.BorderWidth.HAIRLINE,
-            },
-            brightness: {
-              type: Sdn.ValueType.EXACT,
-              value: {
-                unit: Sdn.Unit.PERCENT,
-                value: 75,
-              },
-            },
-            opacity: { type: Sdn.ValueType.EMPTY, value: null },
-          },
-          borderLeft: {
-            preset: { type: Sdn.ValueType.EMPTY, value: null },
-            style: { type: Sdn.ValueType.EMPTY, value: null },
-            color: { type: Sdn.ValueType.EMPTY, value: null },
-            width: { type: Sdn.ValueType.EMPTY, value: null },
-            brightness: { type: Sdn.ValueType.EMPTY, value: null },
-            opacity: { type: Sdn.ValueType.EMPTY, value: null },
-          },
-        },
-      },
-      {
-        component: Seldon.ComponentId.ITEM,
-        overrides: {
-          border: {
-            preset: {
-              type: Sdn.ValueType.THEME_CATEGORICAL,
-              value: "@border.none",
-            },
-            style: { type: Sdn.ValueType.EMPTY, value: null },
-            color: { type: Sdn.ValueType.EMPTY, value: null },
-            width: { type: Sdn.ValueType.EMPTY, value: null },
-            brightness: { type: Sdn.ValueType.EMPTY, value: null },
-            opacity: { type: Sdn.ValueType.EMPTY, value: null },
-          },
-          borderTop: {
-            preset: { type: Sdn.ValueType.EMPTY, value: null },
-            style: { type: Sdn.ValueType.EMPTY, value: null },
-            color: { type: Sdn.ValueType.EMPTY, value: null },
-            width: { type: Sdn.ValueType.EMPTY, value: null },
-            brightness: { type: Sdn.ValueType.EMPTY, value: null },
-            opacity: { type: Sdn.ValueType.EMPTY, value: null },
-          },
-          borderRight: {
-            preset: { type: Sdn.ValueType.EMPTY, value: null },
-            style: { type: Sdn.ValueType.EMPTY, value: null },
-            color: { type: Sdn.ValueType.EMPTY, value: null },
-            width: { type: Sdn.ValueType.EMPTY, value: null },
-            brightness: { type: Sdn.ValueType.EMPTY, value: null },
-            opacity: { type: Sdn.ValueType.EMPTY, value: null },
-          },
-          borderBottom: {
-            preset: { type: Sdn.ValueType.EMPTY, value: null },
-            style: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.BorderStyle.SOLID,
-            },
-            color: {
-              type: Sdn.ValueType.THEME_CATEGORICAL,
-              value: "@swatch.primary",
-            },
-            width: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.BorderWidth.HAIRLINE,
-            },
-            brightness: {
-              type: Sdn.ValueType.EXACT,
-              value: {
-                unit: Sdn.Unit.PERCENT,
-                value: 75,
-              },
-            },
-            opacity: { type: Sdn.ValueType.EMPTY, value: null },
-          },
-          borderLeft: {
-            preset: { type: Sdn.ValueType.EMPTY, value: null },
-            style: { type: Sdn.ValueType.EMPTY, value: null },
-            color: { type: Sdn.ValueType.EMPTY, value: null },
-            width: { type: Sdn.ValueType.EMPTY, value: null },
-            brightness: { type: Sdn.ValueType.EMPTY, value: null },
-            opacity: { type: Sdn.ValueType.EMPTY, value: null },
-          },
-        },
-      },
-      {
-        component: Seldon.ComponentId.ITEM,
-        overrides: {
-          border: {
-            preset: {
-              type: Sdn.ValueType.THEME_CATEGORICAL,
-              value: "@border.none",
-            },
-            style: { type: Sdn.ValueType.EMPTY, value: null },
-            color: { type: Sdn.ValueType.EMPTY, value: null },
-            width: { type: Sdn.ValueType.EMPTY, value: null },
-            brightness: { type: Sdn.ValueType.EMPTY, value: null },
-            opacity: { type: Sdn.ValueType.EMPTY, value: null },
-          },
-          borderTop: {
-            preset: { type: Sdn.ValueType.EMPTY, value: null },
-            style: { type: Sdn.ValueType.EMPTY, value: null },
-            color: { type: Sdn.ValueType.EMPTY, value: null },
-            width: { type: Sdn.ValueType.EMPTY, value: null },
-            brightness: { type: Sdn.ValueType.EMPTY, value: null },
-            opacity: { type: Sdn.ValueType.EMPTY, value: null },
-          },
-          borderRight: {
-            preset: { type: Sdn.ValueType.EMPTY, value: null },
-            style: { type: Sdn.ValueType.EMPTY, value: null },
-            color: { type: Sdn.ValueType.EMPTY, value: null },
-            width: { type: Sdn.ValueType.EMPTY, value: null },
-            brightness: { type: Sdn.ValueType.EMPTY, value: null },
-            opacity: { type: Sdn.ValueType.EMPTY, value: null },
-          },
-          borderBottom: {
-            preset: { type: Sdn.ValueType.EMPTY, value: null },
-            style: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.BorderStyle.SOLID,
-            },
-            color: {
-              type: Sdn.ValueType.THEME_CATEGORICAL,
-              value: "@swatch.primary",
-            },
-            width: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.BorderWidth.HAIRLINE,
-            },
-            brightness: {
-              type: Sdn.ValueType.EXACT,
-              value: {
-                unit: Sdn.Unit.PERCENT,
-                value: 75,
-              },
-            },
-            opacity: { type: Sdn.ValueType.EMPTY, value: null },
-          },
-          borderLeft: {
-            preset: { type: Sdn.ValueType.EMPTY, value: null },
-            style: { type: Sdn.ValueType.EMPTY, value: null },
-            color: { type: Sdn.ValueType.EMPTY, value: null },
-            width: { type: Sdn.ValueType.EMPTY, value: null },
-            brightness: { type: Sdn.ValueType.EMPTY, value: null },
-            opacity: { type: Sdn.ValueType.EMPTY, value: null },
-          },
-        },
-      },
-      {
-        component: Seldon.ComponentId.ITEM,
       },
     ],
   },

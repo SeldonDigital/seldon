@@ -1,6 +1,10 @@
-import * as Sdn from "../../../properties"
-import * as Seldon from "../../constants"
-import { ComponentExport, ComponentSchema } from "../../types"
+import * as Sdn from "../../../properties";
+import * as Seldon from "../../constants";
+import { ComponentExport, ComponentSchema } from "../../types";
+
+
+
+
 
 export const schema = {
   name: "Item",
@@ -176,8 +180,8 @@ export const schema = {
             value: Sdn.Resize.FIT,
           },
           gap: {
-            type: Sdn.ValueType.THEME_ORDINAL,
-            value: "@gap.tight",
+            type: Sdn.ValueType.EMPTY,
+            value: null,
           },
           clip: {
             type: Sdn.ValueType.EXACT,
@@ -264,6 +268,45 @@ export const schema = {
               value: Sdn.Resize.FILL,
             },
           },
+          children: [
+            {
+              component: Seldon.ComponentId.FRAME,
+              overrides: {
+                orientation: {
+                  type: Sdn.ValueType.OPTION,
+                  value: Sdn.Orientation.VERTICAL,
+                },
+              },
+              children: [
+                {
+                  component: Seldon.ComponentId.TEXT,
+                  variant: "title",
+                  overrides: {
+                    content: {
+                      type: Sdn.ValueType.EXACT,
+                      value: "Full Name",
+                    },
+                    font: {
+                      weight: {
+                        type: Sdn.ValueType.THEME_ORDINAL,
+                        value: "@fontWeight.medium",
+                      },
+                    },
+                  },
+                },
+                {
+                  component: Seldon.ComponentId.TEXT,
+                  variant: "subtitle",
+                  overrides: {
+                    content: {
+                      type: Sdn.ValueType.EXACT,
+                      value: "Position",
+                    },
+                  },
+                },
+              ],
+            },
+          ],
         },
         {
           component: Seldon.ComponentId.BUTTON,

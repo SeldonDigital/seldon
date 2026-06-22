@@ -1,6 +1,10 @@
-import * as Sdn from "../../../properties"
-import * as Seldon from "../../constants"
-import { ComponentExport, ComponentSchema } from "../../types"
+import * as Sdn from "../../../properties";
+import * as Seldon from "../../constants";
+import { ComponentExport, ComponentSchema } from "../../types";
+
+
+
+
 
 export const schema = {
   name: "Avatar",
@@ -42,7 +46,7 @@ export const schema = {
     },
     width: {
       type: Sdn.ValueType.OPTION,
-      value: Sdn.Resize.FILL,
+      value: Sdn.Resize.FIT,
     },
     height: {
       type: Sdn.ValueType.OPTION,
@@ -60,16 +64,16 @@ export const schema = {
       bottom: { type: Sdn.ValueType.EMPTY, value: null },
       left: { type: Sdn.ValueType.EMPTY, value: null },
     },
-    gap: {
-      type: Sdn.ValueType.THEME_ORDINAL,
-      value: "@gap.cozy",
-    },
+    gap: { type: Sdn.ValueType.EMPTY, value: null },
     rotation: { type: Sdn.ValueType.EMPTY, value: null },
     wrapChildren: {
       type: Sdn.ValueType.EXACT,
       value: false,
     },
-    clip: { type: Sdn.ValueType.EMPTY, value: null },
+    clip: {
+      type: Sdn.ValueType.EXACT,
+      value: true,
+    },
     color: { type: Sdn.ValueType.EMPTY, value: null },
     brightness: { type: Sdn.ValueType.EMPTY, value: null },
     opacity: { type: Sdn.ValueType.EMPTY, value: null },
@@ -79,7 +83,7 @@ export const schema = {
     border: {
       preset: {
         type: Sdn.ValueType.THEME_CATEGORICAL,
-        value: "@border.none",
+        value: "@border.normal",
       },
       style: { type: Sdn.ValueType.EMPTY, value: null },
       color: { type: Sdn.ValueType.EMPTY, value: null },
@@ -120,10 +124,22 @@ export const schema = {
       opacity: { type: Sdn.ValueType.EMPTY, value: null },
     },
     corners: {
-      topLeft: { type: Sdn.ValueType.EMPTY, value: null },
-      topRight: { type: Sdn.ValueType.EMPTY, value: null },
-      bottomLeft: { type: Sdn.ValueType.EMPTY, value: null },
-      bottomRight: { type: Sdn.ValueType.EMPTY, value: null },
+      topLeft: {
+        type: Sdn.ValueType.OPTION,
+        value: Sdn.Corner.ROUNDED,
+      },
+      topRight: {
+        type: Sdn.ValueType.OPTION,
+        value: Sdn.Corner.ROUNDED,
+      },
+      bottomLeft: {
+        type: Sdn.ValueType.OPTION,
+        value: Sdn.Corner.ROUNDED,
+      },
+      bottomRight: {
+        type: Sdn.ValueType.OPTION,
+        value: Sdn.Corner.ROUNDED,
+      },
     },
     shadow: [
       {
@@ -149,338 +165,76 @@ export const schema = {
         overrides: {
           source: {
             type: Sdn.ValueType.EXACT,
-            value: "https://static.seldon.app/avatar-user.jpg",
+            value: "/avatar-user.png",
           },
           width: {
             type: Sdn.ValueType.THEME_ORDINAL,
-            value: "@dimension.medium",
+            value: "@dimension.large",
           },
           height: {
             type: Sdn.ValueType.THEME_ORDINAL,
-            value: "@dimension.medium",
-          },
-          corners: {
-            topLeft: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Corner.ROUNDED,
-            },
-            topRight: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Corner.ROUNDED,
-            },
-            bottomLeft: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Corner.ROUNDED,
-            },
-            bottomRight: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Corner.ROUNDED,
-            },
+            value: "@dimension.large",
           },
         },
-      },
-      {
-        component: Seldon.ComponentId.FRAME,
-        overrides: {
-          orientation: {
-            type: Sdn.ValueType.OPTION,
-            value: Sdn.Orientation.VERTICAL,
-          },
-          width: {
-            type: Sdn.ValueType.OPTION,
-            value: Sdn.Resize.FILL,
-          },
-          height: {
-            type: Sdn.ValueType.OPTION,
-            value: Sdn.Resize.FIT,
-          },
-        },
-        children: [
-          {
-            component: Seldon.ComponentId.TEXT,
-            variant: "title",
-            overrides: {
-              content: {
-                type: Sdn.ValueType.EXACT,
-                value: "Default Title",
-              },
-              color: {
-                type: Sdn.ValueType.COMPUTED,
-                value: {
-                  function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-                  input: {
-                    basedOn: "#self.background.color",
-                  },
-                },
-              },
-              font: {
-                preset: {
-                  type: Sdn.ValueType.THEME_CATEGORICAL,
-                  value: "@font.normal",
-                },
-                family: { type: Sdn.ValueType.EMPTY, value: null },
-                style: { type: Sdn.ValueType.EMPTY, value: null },
-                weight: { type: Sdn.ValueType.EMPTY, value: null },
-                size: {
-                  type: Sdn.ValueType.THEME_ORDINAL,
-                  value: "@fontSize.medium",
-                },
-                lineHeight: { type: Sdn.ValueType.EMPTY, value: null },
-                textCase: { type: Sdn.ValueType.EMPTY, value: null },
-              },
-            },
-          },
-          {
-            component: Seldon.ComponentId.TEXT,
-            variant: "subtitle",
-            overrides: {
-              content: {
-                type: Sdn.ValueType.EXACT,
-                value: "Details",
-              },
-              color: {
-                type: Sdn.ValueType.COMPUTED,
-                value: {
-                  function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-                  input: {
-                    basedOn: "#self.background.color",
-                  },
-                },
-              },
-              font: {
-                preset: {
-                  type: Sdn.ValueType.THEME_CATEGORICAL,
-                  value: "@font.normal",
-                },
-                family: { type: Sdn.ValueType.EMPTY, value: null },
-                style: { type: Sdn.ValueType.EMPTY, value: null },
-                weight: { type: Sdn.ValueType.EMPTY, value: null },
-                size: {
-                  type: Sdn.ValueType.THEME_ORDINAL,
-                  value: "@fontSize.small",
-                },
-                lineHeight: { type: Sdn.ValueType.EMPTY, value: null },
-                textCase: { type: Sdn.ValueType.EMPTY, value: null },
-              },
-            },
-          },
-        ],
       },
     ],
   },
   variants: [
     {
-      id: "icon",
-      label: "Iconic Avatar",
+      id: "square",
+      label: "Square Avatar",
       intent:
-        "Renders an icon-based avatar for representing users, roles, or statuses.",
+        "Renders a square avatar for representing users, roles, or statuses.",
       overrides: {
-        gap: {
-          type: Sdn.ValueType.THEME_ORDINAL,
-          value: "@gap.cozy",
+        corners: {
+          topLeft: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@corners.tight",
+          },
+          topRight: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@corners.tight",
+          },
+          bottomLeft: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@corners.tight",
+          },
+          bottomRight: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@corners.tight",
+          },
         },
       },
-      children: [
-        {
-          component: Seldon.ComponentId.ICON,
-        },
-        {
-          component: Seldon.ComponentId.FRAME,
-          overrides: {
-            orientation: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Orientation.VERTICAL,
-            },
-            width: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FILL,
-            },
-            height: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FIT,
-            },
-          },
-          children: [
-            {
-              component: Seldon.ComponentId.TEXT,
-              variant: "title",
-              overrides: {
-                content: {
-                  type: Sdn.ValueType.EXACT,
-                  value: "Default Title",
-                },
-                color: {
-                  type: Sdn.ValueType.COMPUTED,
-                  value: {
-                    function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-                    input: {
-                      basedOn: "#self.background.color",
-                    },
-                  },
-                },
-                font: {
-                  preset: {
-                    type: Sdn.ValueType.THEME_CATEGORICAL,
-                    value: "@font.normal",
-                  },
-                  size: {
-                    type: Sdn.ValueType.THEME_ORDINAL,
-                    value: "@fontSize.medium",
-                  },
-                },
-              },
-            },
-            {
-              component: Seldon.ComponentId.TEXT,
-              variant: "subtitle",
-              overrides: {
-                content: {
-                  type: Sdn.ValueType.EXACT,
-                  value: "Details",
-                },
-                color: {
-                  type: Sdn.ValueType.COMPUTED,
-                  value: {
-                    function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-                    input: {
-                      basedOn: "#self.background.color",
-                    },
-                  },
-                },
-                font: {
-                  preset: {
-                    type: Sdn.ValueType.THEME_CATEGORICAL,
-                    value: "@font.normal",
-                  },
-                  size: {
-                    type: Sdn.ValueType.THEME_ORDINAL,
-                    value: "@fontSize.small",
-                  },
-                },
-              },
-            },
-          ],
-        },
-      ],
     },
     {
-      id: "product",
-      label: "Product Avatar",
-      intent: "Represents products or items visually using an image or icon.",
-      children: [
-        {
-          component: Seldon.ComponentId.IMAGE,
-          overrides: {
-            width: {
-              type: Sdn.ValueType.THEME_ORDINAL,
-              value: "@dimension.large",
-            },
-            height: {
-              type: Sdn.ValueType.THEME_ORDINAL,
-              value: "@dimension.large",
-            },
-            corners: {
-              topLeft: {
-                type: Sdn.ValueType.THEME_ORDINAL,
-                value: "@corners.tight",
-              },
-              topRight: {
-                type: Sdn.ValueType.THEME_ORDINAL,
-                value: "@corners.tight",
-              },
-              bottomLeft: {
-                type: Sdn.ValueType.THEME_ORDINAL,
-                value: "@corners.tight",
-              },
-              bottomRight: {
-                type: Sdn.ValueType.THEME_ORDINAL,
-                value: "@corners.tight",
-              },
-            },
+      id: "gradient",
+      label: "Gradient Bordered Avatar",
+      intent:
+        "Renders a gradient bordered avatar for representing users, roles, or statuses.",
+      overrides: {
+        corners: {
+          topLeft: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@corners.tight",
+          },
+          topRight: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@corners.tight",
+          },
+          bottomLeft: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@corners.tight",
+          },
+          bottomRight: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@corners.tight",
           },
         },
-        {
-          component: Seldon.ComponentId.FRAME,
-          overrides: {
-            orientation: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Orientation.VERTICAL,
-            },
-            width: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FILL,
-            },
-            height: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FIT,
-            },
-          },
-          children: [
-            {
-              component: Seldon.ComponentId.TEXT,
-              variant: "title",
-              overrides: {
-                content: {
-                  type: Sdn.ValueType.EXACT,
-                  value: "Default Title",
-                },
-                color: {
-                  type: Sdn.ValueType.COMPUTED,
-                  value: {
-                    function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-                    input: {
-                      basedOn: "#self.background.color",
-                    },
-                  },
-                },
-                font: {
-                  preset: {
-                    type: Sdn.ValueType.THEME_CATEGORICAL,
-                    value: "@font.normal",
-                  },
-                  size: {
-                    type: Sdn.ValueType.THEME_ORDINAL,
-                    value: "@fontSize.medium",
-                  },
-                },
-              },
-            },
-            {
-              component: Seldon.ComponentId.TEXT,
-              variant: "subtitle",
-              overrides: {
-                content: {
-                  type: Sdn.ValueType.EXACT,
-                  value: "Details",
-                },
-                color: {
-                  type: Sdn.ValueType.COMPUTED,
-                  value: {
-                    function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-                    input: {
-                      basedOn: "#self.background.color",
-                    },
-                  },
-                },
-                font: {
-                  preset: {
-                    type: Sdn.ValueType.THEME_CATEGORICAL,
-                    value: "@font.normal",
-                  },
-                  size: {
-                    type: Sdn.ValueType.THEME_ORDINAL,
-                    value: "@fontSize.small",
-                  },
-                },
-              },
-            },
-          ],
-        },
-      ],
+      },
     },
   ],
 } as const satisfies ComponentSchema
 
 export const exportConfig: ComponentExport = {
   react: { returns: "Frame" },
-}
+};
