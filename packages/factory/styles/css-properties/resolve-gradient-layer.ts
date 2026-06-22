@@ -121,9 +121,15 @@ export function resolveGradientLayer(
     themeSlug,
   })
 
-  return resolvedType === GradientType.LINEAR
-    ? `linear-gradient(${resolvedAngle}deg, ${startColorString} ${resolvedStartPosition}%, ${endColorString} ${resolvedEndPosition}%)`
-    : `radial-gradient(${startColorString} ${resolvedStartPosition}%, ${endColorString} ${resolvedEndPosition}%)`
+  if (resolvedType === GradientType.LINEAR) {
+    return `linear-gradient(${resolvedAngle}deg, ${startColorString} ${resolvedStartPosition}%, ${endColorString} ${resolvedEndPosition}%)`
+  }
+
+  if (resolvedType === GradientType.CONIC) {
+    return `conic-gradient(from ${resolvedAngle}deg, ${startColorString} ${resolvedStartPosition}%, ${endColorString} ${resolvedEndPosition}%)`
+  }
+
+  return `radial-gradient(${startColorString} ${resolvedStartPosition}%, ${endColorString} ${resolvedEndPosition}%)`
 }
 
 function resolveOpacity(

@@ -6,6 +6,7 @@ import { EmptyValue } from "../../shared/empty/empty"
 export enum GradientType {
   LINEAR = "linear",
   RADIAL = "radial",
+  CONIC = "conic",
 }
 
 /** Stores one gradient type choice from the enum. */
