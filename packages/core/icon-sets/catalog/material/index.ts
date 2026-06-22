@@ -202,8 +202,74 @@ export { IconMaterialInvertColorsOff } from "./user-interface/media/IconMaterial
 export { IconMaterialOpacity } from "./user-interface/status/IconMaterialOpacity"
 export { IconMaterialGradient } from "./user-interface/media/IconMaterialGradient"
 export { IconMaterialTexture } from "./user-interface/text/IconMaterialTexture"
+export { IconMaterialStyle } from "./user-interface/text/IconMaterialStyle"
+export { IconMaterialWidth } from "./miscellaneous/miscellaneous/IconMaterialWidth"
+export { IconMaterialHeight } from "./user-interface/status/IconMaterialHeight"
+export { IconMaterialRoundedCorner } from "./user-interface/actions/IconMaterialRoundedCorner"
+export { IconMaterialLineWeight } from "./user-interface/text/IconMaterialLineWeight"
+export { IconMaterialAlignCenter } from "./user-interface/text/IconMaterialAlignCenter"
+export { IconMaterialAlignEnd } from "./user-interface/text/IconMaterialAlignEnd"
+export { IconMaterialAlignFlexCenter } from "./user-interface/text/IconMaterialAlignFlexCenter"
+export { IconMaterialAlignFlexEnd } from "./user-interface/text/IconMaterialAlignFlexEnd"
+export { IconMaterialAlignFlexStart } from "./user-interface/text/IconMaterialAlignFlexStart"
+export { IconMaterialAlignHorizontalCenter } from "./user-interface/text/IconMaterialAlignHorizontalCenter"
+export { IconMaterialAlignItemsStretch } from "./user-interface/text/IconMaterialAlignItemsStretch"
+export { IconMaterialAlignJustifyCenter } from "./user-interface/text/IconMaterialAlignJustifyCenter"
+export { IconMaterialAlignJustifyFlexEnd } from "./user-interface/text/IconMaterialAlignJustifyFlexEnd"
+export { IconMaterialAlignJustifyFlexStart } from "./user-interface/text/IconMaterialAlignJustifyFlexStart"
+export { IconMaterialAlignJustifySpaceAround } from "./user-interface/text/IconMaterialAlignJustifySpaceAround"
+export { IconMaterialAlignJustifySpaceBetween } from "./user-interface/text/IconMaterialAlignJustifySpaceBetween"
+export { IconMaterialAlignJustifySpaceEven } from "./user-interface/text/IconMaterialAlignJustifySpaceEven"
+export { IconMaterialAlignJustifyStretch } from "./user-interface/text/IconMaterialAlignJustifyStretch"
+export { IconMaterialAlignSelfStretch } from "./user-interface/text/IconMaterialAlignSelfStretch"
+export { IconMaterialAlignSpaceAround } from "./user-interface/text/IconMaterialAlignSpaceAround"
+export { IconMaterialAlignSpaceBetween } from "./user-interface/text/IconMaterialAlignSpaceBetween"
+export { IconMaterialAlignSpaceEven } from "./user-interface/text/IconMaterialAlignSpaceEven"
+export { IconMaterialAlignStart } from "./user-interface/text/IconMaterialAlignStart"
+export { IconMaterialAlignStretch } from "./user-interface/text/IconMaterialAlignStretch"
+export { IconMaterialAlignVerticalBottom } from "./user-interface/text/IconMaterialAlignVerticalBottom"
+export { IconMaterialAlignVerticalCenter } from "./user-interface/text/IconMaterialAlignVerticalCenter"
+export { IconMaterialAlignVerticalTop } from "./user-interface/text/IconMaterialAlignVerticalTop"
+export { IconMaterialAlignHorizontalLeft } from "./user-interface/navigation/IconMaterialAlignHorizontalLeft"
+export { IconMaterialAlignHorizontalRight } from "./user-interface/navigation/IconMaterialAlignHorizontalRight"
+export { IconMaterialDesktopLandscape } from "./user-interface/actions/IconMaterialDesktopLandscape"
+export { IconMaterialDesktopPortrait } from "./user-interface/actions/IconMaterialDesktopPortrait"
+export { IconMaterialFormatTextdirectionLToR } from "./user-interface/text/IconMaterialFormatTextdirectionLToR"
+export { IconMaterialFormatTextdirectionRToL } from "./user-interface/text/IconMaterialFormatTextdirectionRToL"
+export { IconMaterialFormatTextdirectionVertical } from "./user-interface/text/IconMaterialFormatTextdirectionVertical"
+export { IconMaterialCodeOff } from "./user-interface/text/IconMaterialCodeOff"
+export { IconMaterialCodeXml } from "./user-interface/actions/IconMaterialCodeXml"
+export { IconMaterialTextSelectStart } from "./user-interface/text/IconMaterialTextSelectStart"
+export { IconMaterialDeployedCode } from "./user-interface/actions/IconMaterialDeployedCode"
+export { IconMaterialDataObject } from "./content/data/IconMaterialDataObject"
+export { IconMaterialCopyAll } from "./user-interface/actions/IconMaterialCopyAll"
+export { IconMaterialAspectRatio } from "./user-interface/actions/IconMaterialAspectRatio"
+export { IconMaterialMouse } from "./user-interface/actions/IconMaterialMouse"
+export { IconMaterialHighlightMouseCursor } from "./user-interface/actions/IconMaterialHighlightMouseCursor"
+export { IconMaterialHighlightTextCursor } from "./user-interface/actions/IconMaterialHighlightTextCursor"
+export { IconMaterialDragPan } from "./user-interface/actions/IconMaterialDragPan"
+export { IconMaterialResize } from "./user-interface/actions/IconMaterialResize"
+export { IconMaterialAdsClick } from "./user-interface/media/IconMaterialAdsClick"
+export { IconMaterialGridOn } from "./content/data/IconMaterialGridOn"
+export { IconMaterialDriveFileMoveOutline } from "./miscellaneous/miscellaneous/IconMaterialDriveFileMoveOutline"
+export { IconMaterialOpenWith } from "./content/files/IconMaterialOpenWith"
+export { IconMaterialDoNotDisturbOn } from "./user-interface/status/IconMaterialDoNotDisturbOn"
+export { IconMaterialPanTool } from "./system/settings/IconMaterialPanTool"
+export { IconMaterialPanToolAlt } from "./system/settings/IconMaterialPanToolAlt"
+export { IconMaterialSyncAlt } from "./user-interface/actions/IconMaterialSyncAlt"
+export { IconMaterialCircle } from "./user-interface/actions/IconMaterialCircle"
+export { IconMaterialLayers } from "./user-interface/actions/IconMaterialLayers"
+export { IconMaterialLineStartCircle } from "./user-interface/text/IconMaterialLineStartCircle"
+export { IconMaterialLineEndCircle } from "./user-interface/text/IconMaterialLineEndCircle"
+export { IconMaterialFormatAlignLeft } from "./user-interface/navigation/IconMaterialFormatAlignLeft"
+export { IconMaterialFormatAlignRight } from "./user-interface/navigation/IconMaterialFormatAlignRight"
+export { IconMaterialFormatAlignCenter } from "./user-interface/text/IconMaterialFormatAlignCenter"
+export { IconMaterialFormatAlignJustify } from "./user-interface/text/IconMaterialFormatAlignJustify"
+export { IconMaterialMatchCase } from "./user-interface/text/IconMaterialMatchCase"
 export { IconMaterialBlurOn } from "./user-interface/status/IconMaterialBlurOn"
+export { IconMaterialBlurCircular } from "./user-interface/status/IconMaterialBlurCircular"
 export { IconMaterialBlurOff } from "./user-interface/media/IconMaterialBlurOff"
+export { IconMaterialDeblur } from "./user-interface/media/IconMaterialDeblur"
 export { IconMaterialFilter } from "./user-interface/media/IconMaterialFilter"
 export { IconMaterialFilterListOff } from "./content/data/IconMaterialFilterListOff"
 export { IconMaterialTune } from "./user-interface/media/IconMaterialTune"
@@ -464,7 +530,9 @@ export const materialIconIds: readonly IconId[] = [
   "material-gradient",
   "material-texture",
   "material-blurOn",
+  "material-blurCircular",
   "material-blurOff",
+  "material-deblur",
   "material-filter",
   "material-filterListOff",
   "material-tune",
@@ -544,7 +612,41 @@ export const materialIconIds: readonly IconId[] = [
   "material-verticalAlignBottom",
   "material-alignHorizontalLeft",
   "material-alignHorizontalRight",
+  "material-alignCenter",
+  "material-alignEnd",
+  "material-alignFlexCenter",
+  "material-alignFlexEnd",
+  "material-alignFlexStart",
+  "material-alignHorizontalCenter",
+  "material-alignItemsStretch",
+  "material-alignJustifyCenter",
+  "material-alignJustifyFlexEnd",
+  "material-alignJustifyFlexStart",
+  "material-alignJustifySpaceAround",
+  "material-alignJustifySpaceBetween",
+  "material-alignJustifySpaceEven",
+  "material-alignJustifyStretch",
+  "material-alignSelfStretch",
+  "material-alignSpaceAround",
+  "material-alignSpaceBetween",
+  "material-alignSpaceEven",
+  "material-alignStart",
+  "material-alignStretch",
+  "material-alignVerticalBottom",
+  "material-alignVerticalCenter",
+  "material-alignVerticalTop",
+  "material-desktopLandscape",
+  "material-desktopPortrait",
+  "material-formatTextdirectionLToR",
+  "material-formatTextdirectionVertical",
+  "material-codeOff",
+  "material-codeXml",
+  "material-textSelectStart",
+  "material-deployedCode",
+  "material-dataObject",
+  "material-copyAll",
   "material-roundedCorner",
+  "material-lineWeight",
   "material-rotateRight",
   "material-borderAll",
   "material-borderColor",
@@ -555,6 +657,23 @@ export const materialIconIds: readonly IconId[] = [
   "material-margin",
   "material-style",
   "material-aspectRatio",
+  "material-mouse",
+  "material-highlightMouseCursor",
+  "material-highlightTextCursor",
+  "material-dragPan",
+  "material-resize",
+  "material-adsClick",
+  "material-gridOn",
+  "material-driveFileMoveOutline",
+  "material-openWith",
+  "material-doNotDisturbOn",
+  "material-panTool",
+  "material-panToolAlt",
+  "material-syncAlt",
+  "material-circle",
+  "material-layers",
+  "material-lineStartCircle",
+  "material-lineEndCircle",
   "material-fitWidth",
   "material-fitScreen",
   "material-computer",

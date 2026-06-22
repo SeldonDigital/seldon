@@ -42,7 +42,6 @@ import {
 } from "../helpers/build-property-row-props"
 import { ICONIC_BUTTON_SELECTOR } from "../../helpers/iconic-button"
 import {
-  THEME_TOKEN_ICON,
   getCurrentOptionValue,
   getOptionIcon,
 } from "@lib/icons/resolve-option-icon"
@@ -178,10 +177,11 @@ export function useRowProperty({
   const isThemeAssignment = property.pickerVariant === "themeAssignment"
 
   // Property icons are real icon ids resolved by the custom Icon wrapper. The
-  // closed control mirrors the menu by resolving the current option through the
-  // shared registry: board presets get their device icon, theme tokens get the
-  // token icon, and swatch/glyph rows defer to the property icon (the swatch
-  // chip is painted separately via swatchChipColor).
+  // closed control always shows the property's default icon, with one exception:
+  // per-option static icons (e.g. board presets get their device icon). Theme
+  // tokens, glyphs, and swatches defer to the property icon so the row never
+  // swaps to the token icon; the token icon stays in the menu, and the swatch
+  // chip is painted separately via swatchChipColor.
   const currentIconDescriptor = getOptionIcon(
     property.key,
     getCurrentOptionValue(property.key, property.value),
@@ -190,9 +190,7 @@ export function useRowProperty({
   const iconId =
     currentIconDescriptor.kind === "static"
       ? currentIconDescriptor.icon
-      : currentIconDescriptor.kind === "themeToken"
-        ? THEME_TOKEN_ICON
-        : property.icon
+      : property.icon
 
   // Can reset only when overridden. Font collection family rows (`family.*`) and
   // icon set rows (`icon.*`) carry an override status for color only; they have

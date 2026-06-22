@@ -5,7 +5,7 @@ import {
 } from "@lib/icons/resolve-option-icon"
 import React from "react"
 import { Theme, Workspace } from "@seldon/core"
-import { IconId } from "@seldon/core/icon-sets"
+import { IconId, defaultIconId } from "@seldon/core/icon-sets"
 import { IconSeldonMissing } from "@seldon/core/icon-sets/catalog/seldon/user-interface/actions/IconSeldonMissing"
 import { useThemes } from "@lib/themes/hooks/use-themes"
 import {
@@ -65,6 +65,15 @@ export function createPropertyOptionIconRenderer({
       property.key === "symbol" ||
       !!getRepeatSymbolDescendant(property.key, workspace)
     if (isSymbolRow && option && option.value && option.value !== "inherit") {
+      // The default symbol is not a real glyph; show the property icon instead.
+      if (option.value === defaultIconId) {
+        return (
+          <Icon
+            icon={property.icon as IconProps["icon"]}
+            style={{ color: "inherit" }}
+          />
+        )
+      }
       // Icon turned off in its workspace set renders as a red Missing icon.
       if (isWorkspaceIconUnavailable(option.value as IconId, workspace)) {
         return (

@@ -16,6 +16,7 @@ import {
   findComponentForNode,
   getNodeCatalogComponentId,
 } from "@lib/workspace/node-tree"
+import { getPropertyRegistryEntry } from "@lib/icons/icons-registry"
 import { getNode } from "@lib/workspace/workspace-accessors"
 import { FlatProperty } from "./properties-data"
 
@@ -138,7 +139,7 @@ export function buildRepeatRows(
     key: REPEAT_ROW_KEY,
     propertyType: "compound",
     label: "Repeat",
-    icon: "seldon-component",
+    icon: getPropertyRegistryEntry(REPEAT_ROW_KEY)?.icon ?? "seldon-component",
     value: { type: ValueType.EXACT, value: count },
     actualValue: String(count),
     valueType: ValueType.EXACT,

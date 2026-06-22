@@ -75,7 +75,7 @@ const UI_OVERRIDES: PropertyRegistry = {
   // 1. ATTRIBUTES PROPERTIES
   // ========================================
   content: {
-    icon: "seldon-text",
+    icon: "material-textSelectStart",
     control: "text",
   },
   altText: {
@@ -104,16 +104,26 @@ const UI_OVERRIDES: PropertyRegistry = {
   },
   htmlElement: {
     label: "HTML Element",
-    icon: "seldon-token",
+    icon: "material-codeXml",
     control: "menu",
   },
   wrapperElement: {
     label: "Wrapper",
-    icon: "seldon-token",
+    icon: "material-codeXml",
     control: "menu",
   },
+  reference: {
+    label: "Reference",
+    icon: "material-dataObject",
+    control: "text",
+  },
+  repeat: {
+    label: "Repeat",
+    icon: "material-copyAll",
+    control: "number",
+  },
   symbol: {
-    icon: "seldon-token",
+    icon: "material-deployedCode",
     control: "combo",
     renderValueAsIcon: true,
   },
@@ -126,15 +136,20 @@ const UI_OVERRIDES: PropertyRegistry = {
     control: "menu",
   },
   display: {
-    icon: "seldon-display",
+    icon: "material-visibility",
     control: "menu",
+    optionIcons: {
+      show: "material-visibility",
+      hide: "material-visibilityOff",
+      exclude: "material-codeOff",
+    },
   },
   size: {
-    icon: "seldon-size",
+    icon: "material-aspectRatio",
     control: "combo",
   },
   buttonSize: {
-    icon: "seldon-fontSize",
+    icon: "material-aspectRatio",
     control: "combo",
   },
   board: {
@@ -162,8 +177,12 @@ const UI_OVERRIDES: PropertyRegistry = {
   // 2. LAYOUT
   // ========================================
   direction: {
-    icon: "seldon-align",
+    icon: "material-formatTextdirectionLToR",
     control: "menu",
+    optionIcons: {
+      ltr: "material-formatTextdirectionLToR",
+      rtl: "material-formatTextdirectionRToL",
+    },
   },
   position: {
     icon: "seldon-positionTopLeft",
@@ -192,12 +211,29 @@ const UI_OVERRIDES: PropertyRegistry = {
     },
   },
   orientation: {
-    icon: "seldon-token",
+    icon: "material-desktopLandscape",
     control: "menu",
+    optionIcons: {
+      horizontal: "material-desktopLandscape",
+      vertical: "material-desktopPortrait",
+    },
   },
   align: {
-    icon: "seldon-align",
+    icon: "seldon-positionCenter",
     control: "menu",
+    // Seldon 3x3 anchor glyphs for each grid position. `auto` falls back to the
+    // default center-dot icon.
+    optionIcons: {
+      "top-left": "seldon-positionTopLeft",
+      "top-center": "seldon-positionTop",
+      "top-right": "seldon-positionTopRight",
+      left: "seldon-positionLeft",
+      center: "seldon-positionCenter",
+      right: "seldon-positionRight",
+      "bottom-left": "seldon-positionBottomLeft",
+      "bottom-center": "seldon-positionBottom",
+      "bottom-right": "seldon-positionBottomRight",
+    },
   },
   cellAlign: {
     icon: "seldon-align",
@@ -288,8 +324,47 @@ const UI_OVERRIDES: PropertyRegistry = {
     control: "menu",
   },
   cursor: {
-    icon: "seldon-token",
+    icon: "material-mouse",
     control: "menu",
+    // Each CSS cursor keyword maps to the closest available glyph; resize
+    // variants share width/height/diagonal icons. `none` falls back to the
+    // global block icon.
+    optionIcons: {
+      default: "material-mouse",
+      "context-menu": "material-highlightMouseCursor",
+      help: "material-help",
+      pointer: "material-adsClick",
+      progress: "material-mouse",
+      wait: "material-mouse",
+      cell: "material-gridOn",
+      crosshair: "material-adsClick",
+      text: "material-highlightTextCursor",
+      "vertical-text": "material-highlightTextCursor",
+      alias: "material-driveFileMoveOutline",
+      copy: "material-contentCopy",
+      move: "material-openWith",
+      "no-drop": "material-doNotDisturbOn",
+      "not-allowed": "material-block",
+      grab: "material-panTool",
+      grabbing: "material-panToolAlt",
+      "all-scroll": "material-dragPan",
+      "zoom-in": "material-zoomIn",
+      "zoom-out": "material-zoomOut",
+      "e-resize": "material-width",
+      "w-resize": "material-width",
+      "ew-resize": "material-width",
+      "col-resize": "material-width",
+      "n-resize": "material-height",
+      "s-resize": "material-height",
+      "ns-resize": "material-height",
+      "row-resize": "material-height",
+      "ne-resize": "material-resize",
+      "nw-resize": "material-resize",
+      "se-resize": "material-resize",
+      "sw-resize": "material-resize",
+      "nesw-resize": "material-resize",
+      "nwse-resize": "material-resize",
+    },
   },
   columns: {
     icon: "seldon-token",
@@ -304,7 +379,7 @@ const UI_OVERRIDES: PropertyRegistry = {
   // 3. APPEARANCE
   // ========================================
   color: {
-    icon: "icon-custom-color-value",
+    icon: "seldon-backgroundColor",
     control: "combo",
   },
   accentColor: {
@@ -320,7 +395,7 @@ const UI_OVERRIDES: PropertyRegistry = {
     control: "number",
   },
   background: {
-    icon: "icon-custom-color-value",
+    icon: "material-palette",
     subProperties: {
       preset: {
         icon: "seldon-gradient",
@@ -343,23 +418,23 @@ const UI_OVERRIDES: PropertyRegistry = {
         control: "combo",
       },
       position: {
-        icon: "seldon-token",
+        icon: "seldon-positionCenter",
         control: "menu",
       },
       size: {
-        icon: "seldon-token",
+        icon: "material-aspectRatio",
         control: "menu",
       },
       repeat: {
-        icon: "seldon-token",
+        icon: "material-copyAll",
         control: "menu",
       },
       blendMode: {
-        icon: "seldon-token",
+        icon: "material-layers",
         control: "menu",
       },
       filter: {
-        icon: "seldon-token",
+        icon: "material-blurCircular",
         control: "combo",
       },
       gradientType: {
@@ -367,7 +442,7 @@ const UI_OVERRIDES: PropertyRegistry = {
         control: "menu",
       },
       angle: {
-        icon: "seldon-text",
+        icon: "seldon-rotation",
         control: "number",
       },
       startColor: {
@@ -383,7 +458,7 @@ const UI_OVERRIDES: PropertyRegistry = {
         control: "number",
       },
       startPosition: {
-        icon: "seldon-text",
+        icon: "material-lineStartCircle",
         control: "number",
       },
       endColor: {
@@ -399,7 +474,7 @@ const UI_OVERRIDES: PropertyRegistry = {
         control: "number",
       },
       endPosition: {
-        icon: "seldon-text",
+        icon: "material-lineEndCircle",
         control: "number",
       },
     },
@@ -412,7 +487,7 @@ const UI_OVERRIDES: PropertyRegistry = {
         control: "combo",
       },
       style: {
-        icon: "seldon-borderStyle",
+        icon: "material-style",
         control: "menu",
       },
       color: {
@@ -420,7 +495,7 @@ const UI_OVERRIDES: PropertyRegistry = {
         control: "combo",
       },
       width: {
-        icon: "seldon-borderStyle",
+        icon: "material-lineWeight",
         control: "combo",
       },
       brightness: {
@@ -523,23 +598,23 @@ const UI_OVERRIDES: PropertyRegistry = {
     control: "menu",
   },
   corners: {
-    icon: "seldon-corner",
+    icon: "material-roundedCorner",
     control: "combo",
     subProperties: {
       topLeft: {
-        icon: "seldon-corner",
+        icon: "material-roundedCorner",
         control: "combo",
       },
       topRight: {
-        icon: "seldon-corner",
+        icon: "material-roundedCorner",
         control: "combo",
       },
       bottomRight: {
-        icon: "seldon-corner",
+        icon: "material-roundedCorner",
         control: "combo",
       },
       bottomLeft: {
-        icon: "seldon-corner",
+        icon: "material-roundedCorner",
         control: "combo",
       },
     },
@@ -560,7 +635,7 @@ const UI_OVERRIDES: PropertyRegistry = {
         control: "combo",
       },
       style: {
-        icon: "seldon-token",
+        icon: "material-style",
         control: "menu",
       },
       weight: {
@@ -576,7 +651,7 @@ const UI_OVERRIDES: PropertyRegistry = {
         control: "combo",
       },
       textCase: {
-        icon: "seldon-token",
+        icon: "material-matchCase",
         control: "menu",
       },
       letterSpacing: {
@@ -588,6 +663,12 @@ const UI_OVERRIDES: PropertyRegistry = {
   textAlign: {
     icon: "seldon-textAlign",
     control: "menu",
+    optionIcons: {
+      left: "material-formatAlignLeft",
+      right: "material-formatAlignRight",
+      center: "material-formatAlignCenter",
+      justify: "material-formatAlignJustify",
+    },
   },
   textDecoration: {
     icon: "seldon-fontTextDecoration",
@@ -613,23 +694,23 @@ const UI_OVERRIDES: PropertyRegistry = {
         control: "combo",
       },
       style: {
-        icon: "seldon-token",
+        icon: "material-style",
         control: "menu",
       },
       offsetX: {
-        icon: "seldon-token",
+        icon: "material-width",
         control: "number",
       },
       offsetY: {
-        icon: "seldon-token",
+        icon: "material-height",
         control: "number",
       },
       blur: {
-        icon: "seldon-token",
+        icon: "material-blurOn",
         control: "combo",
       },
       spread: {
-        icon: "seldon-token",
+        icon: "material-deblur",
         control: "combo",
       },
       color: {
@@ -647,7 +728,7 @@ const UI_OVERRIDES: PropertyRegistry = {
     },
   },
   scroll: {
-    icon: "seldon-token",
+    icon: "material-mouse",
     control: "menu",
   },
   scrollbarStyle: {

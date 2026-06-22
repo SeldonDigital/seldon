@@ -8,6 +8,18 @@ import { getPropertyRegistryEntry } from "./icons-registry"
 export const THEME_TOKEN_ICON = "seldon-token"
 
 /**
+ * Icon ids shared by an option value across every property. A per-property
+ * `optionIcons` override still wins; this only fills in before the property
+ * default.
+ */
+const GLOBAL_OPTION_ICONS: Record<string, string> = {
+  none: "material-block",
+  match: "material-syncAlt",
+  highContrastColor: "material-contrast",
+  transparent: "material-circle",
+}
+
+/**
  * How a property value's icon should render. `static` is a plain icon id,
  * `glyph` renders the value itself as an icon (symbol pickers), `themeToken`
  * is the shared theme token icon, and `swatchColor` is a live color chip.
@@ -45,7 +57,10 @@ export function getOptionIcon(
   }
 
   const icon =
-    entry?.optionIcons?.[value] ?? entry?.icon ?? THEME_TOKEN_ICON
+    entry?.optionIcons?.[value] ??
+    GLOBAL_OPTION_ICONS[value] ??
+    entry?.icon ??
+    THEME_TOKEN_ICON
   return { kind: "static", icon }
 }
 
