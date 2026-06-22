@@ -29,8 +29,6 @@ export const schema = {
       type: Sdn.ValueType.EXACT,
       value: "List item",
     },
-    ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
-    ariaHidden: { type: Sdn.ValueType.EXACT, value: false },
     width: { type: Sdn.ValueType.EMPTY, value: null },
     height: { type: Sdn.ValueType.EMPTY, value: null },
     margin: {
@@ -147,6 +145,8 @@ export const schema = {
       value: true,
     },
     lines: { type: Sdn.ValueType.EMPTY, value: null },
+    ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
+    ariaHidden: { type: Sdn.ValueType.EXACT, value: false },
   },
   variants: [
     {

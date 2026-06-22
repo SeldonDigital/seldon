@@ -48,8 +48,9 @@ Use `PROPERTY_DISPLAY_ORDER` and `properties/constants/property-display.ts` for 
 3. Appearance
 4. Typography
 5. Effects
+6. Accessibility
 
-Behavior, motion, and data sections are documented as future areas. Do not treat them as implemented property surfaces unless code support exists.
+Accessibility properties (`role`, `aria*`) come last, after effects. Behavior, motion, and data sections are documented as future areas. Do not treat them as implemented property surfaces unless code support exists.
 
 ### Compound And Layer Behavior
 

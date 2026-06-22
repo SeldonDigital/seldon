@@ -16,14 +16,6 @@ export const schema = {
       type: Sdn.ValueType.EXACT,
       value: "Link",
     },
-    ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
-    ariaHidden: {
-      type: Sdn.ValueType.EXACT,
-      value: false,
-    },
-    ariaCurrent: { type: Sdn.ValueType.EMPTY, value: null },
-    ariaExpanded: { type: Sdn.ValueType.EMPTY, value: null },
-    ariaHasPopup: { type: Sdn.ValueType.EMPTY, value: null },
     cursor: {
       type: Sdn.ValueType.OPTION,
       value: Sdn.Cursor.POINTER,
@@ -133,6 +125,14 @@ export const schema = {
         spread: { type: Sdn.ValueType.EMPTY, value: null },
       },
     ],
+    ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
+    ariaHidden: {
+      type: Sdn.ValueType.EXACT,
+      value: false,
+    },
+    ariaExpanded: { type: Sdn.ValueType.EMPTY, value: null },
+    ariaCurrent: { type: Sdn.ValueType.EMPTY, value: null },
+    ariaHasPopup: { type: Sdn.ValueType.EMPTY, value: null },
   },
 } as const satisfies ComponentSchema
 

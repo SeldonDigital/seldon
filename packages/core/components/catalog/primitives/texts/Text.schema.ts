@@ -19,8 +19,6 @@ export const schema = {
       type: Sdn.ValueType.EXACT,
       value: "Body",
     },
-    ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
-    ariaHidden: { type: Sdn.ValueType.EXACT, value: false },
     cursor: {
       type: Sdn.ValueType.INHERIT,
       value: null,
@@ -100,6 +98,8 @@ export const schema = {
         spread: { type: Sdn.ValueType.EMPTY, value: null },
       },
     ],
+    ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
+    ariaHidden: { type: Sdn.ValueType.EXACT, value: false },
   },
   variants: [
     {

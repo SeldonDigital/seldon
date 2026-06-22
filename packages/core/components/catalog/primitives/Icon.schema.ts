@@ -16,12 +16,6 @@ export const schema = {
       type: Sdn.ValueType.OPTION,
       value: "__default__",
     },
-    role: { type: Sdn.ValueType.EMPTY, value: null },
-    ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
-    ariaHidden: {
-      type: Sdn.ValueType.EXACT,
-      value: true,
-    },
     size: {
       type: Sdn.ValueType.THEME_ORDINAL,
       value: "@size.medium",
@@ -56,6 +50,12 @@ export const schema = {
     },
     brightness: { type: Sdn.ValueType.EMPTY, value: null },
     opacity: { type: Sdn.ValueType.EMPTY, value: null },
+    role: { type: Sdn.ValueType.EMPTY, value: null },
+    ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
+    ariaHidden: {
+      type: Sdn.ValueType.EXACT,
+      value: true,
+    },
   },
 } as const satisfies ComponentSchema
 

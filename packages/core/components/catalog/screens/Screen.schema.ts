@@ -24,8 +24,6 @@ export const schema = {
         unit: Sdn.Unit.PX,
       },
     },
-    role: { type: Sdn.ValueType.EMPTY, value: null },
-    ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
     direction: { type: Sdn.ValueType.EMPTY, value: null },
     orientation: {
       type: Sdn.ValueType.OPTION,
@@ -57,6 +55,8 @@ export const schema = {
     background: [
       { kind: { type: Sdn.ValueType.OPTION, value: Sdn.BackgroundKind.NONE } },
     ],
+    role: { type: Sdn.ValueType.EMPTY, value: null },
+    ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
   },
   default: { children: [] },
 } as const satisfies ComponentSchema

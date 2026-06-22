@@ -11,8 +11,6 @@ export const schema = {
   icon: Seldon.ComponentIcon.STUB,
   properties: {
     display: { type: Sdn.ValueType.EMPTY, value: null },
-    ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
-    ariaHidden: { type: Sdn.ValueType.EXACT, value: false },
     width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
     height: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
     margin: {
@@ -109,6 +107,8 @@ export const schema = {
         spread: { type: Sdn.ValueType.EMPTY, value: null },
       },
     ],
+    ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
+    ariaHidden: { type: Sdn.ValueType.EXACT, value: false },
   },
 } as const satisfies ComponentSchema
 

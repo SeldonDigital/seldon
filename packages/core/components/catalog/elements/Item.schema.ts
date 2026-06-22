@@ -24,14 +24,6 @@ export const schema = {
   icon: Seldon.ComponentIcon.STUB,
   properties: {
     display: { type: Sdn.ValueType.EMPTY, value: null },
-    role: { type: Sdn.ValueType.EMPTY, value: null },
-    ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
-    ariaHidden: {
-      type: Sdn.ValueType.EXACT,
-      value: false,
-    },
-    ariaExpanded: { type: Sdn.ValueType.EMPTY, value: null },
-    ariaSelected: { type: Sdn.ValueType.EMPTY, value: null },
     direction: { type: Sdn.ValueType.EMPTY, value: null },
     orientation: {
       type: Sdn.ValueType.OPTION,
@@ -151,6 +143,14 @@ export const schema = {
       },
     ],
     scroll: { type: Sdn.ValueType.EMPTY, value: null },
+    role: { type: Sdn.ValueType.EMPTY, value: null },
+    ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
+    ariaHidden: {
+      type: Sdn.ValueType.EXACT,
+      value: false,
+    },
+    ariaExpanded: { type: Sdn.ValueType.EMPTY, value: null },
+    ariaSelected: { type: Sdn.ValueType.EMPTY, value: null },
   },
   default: {
     children: [

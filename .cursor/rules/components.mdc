@@ -53,7 +53,7 @@ Use these value types in schemas:
 - `THEME_ORDINAL` for ordered token scales like sizes and spacing.
 - `COMPUTED` for values resolved from another property at compute time.
 
-Follow property ordering from `PROPERTY_DISPLAY_ORDER`: attributes, layout, appearance, typography, effects. Within compounds, follow the facet order in `packages/core/properties/README.md`.
+Follow property ordering from `PROPERTY_DISPLAY_ORDER`: attributes, layout, appearance, typography, effects, accessibility. Accessibility properties (`role`, `aria*`) come last, after effects. Within compounds, follow the facet order in `packages/core/properties/README.md`.
 
 ### Children And Overrides
 

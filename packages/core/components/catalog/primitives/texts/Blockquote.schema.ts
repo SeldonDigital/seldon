@@ -15,8 +15,6 @@ export const schema = {
       type: Sdn.ValueType.EXACT,
       value: "Blockquote",
     },
-    ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
-    ariaHidden: { type: Sdn.ValueType.EXACT, value: false },
     color: {
       type: Sdn.ValueType.COMPUTED,
       value: {
@@ -49,6 +47,8 @@ export const schema = {
       value: true,
     },
     lines: { type: Sdn.ValueType.EMPTY, value: null },
+    ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
+    ariaHidden: { type: Sdn.ValueType.EXACT, value: false },
   },
 } as const satisfies ComponentSchema
 
