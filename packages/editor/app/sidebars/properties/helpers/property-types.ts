@@ -1,6 +1,6 @@
+import { getPropertyRegistryEntry } from "@lib/icons/icons-registry"
 import { getParentPathForPreset } from "@lib/properties/property-paths"
 import { getPropertyCategory } from "@seldon/core/properties/schemas"
-import { getPropertyRegistryEntry } from "@lib/icons/icons-registry"
 
 /**
  * UI-specific property type definitions and utilities.

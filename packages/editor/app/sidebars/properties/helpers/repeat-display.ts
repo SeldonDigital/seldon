@@ -1,3 +1,4 @@
+import { getPropertyRegistryEntry } from "@lib/icons/icons-registry"
 import {
   Board,
   Instance,
@@ -16,7 +17,6 @@ import {
   findComponentForNode,
   getNodeCatalogComponentId,
 } from "@lib/workspace/node-tree"
-import { getPropertyRegistryEntry } from "@lib/icons/icons-registry"
 import { getNode } from "@lib/workspace/workspace-accessors"
 import { FlatProperty } from "./properties-data"
 

@@ -1,11 +1,7 @@
-import * as Sdn from "../../../properties";
-import { ComputedFunction } from "../../../properties";
-import * as Seldon from "../../constants";
-import { ComponentExport, ComponentSchema } from "../../types";
-
-
-
-
+import * as Sdn from "../../../properties"
+import { ComputedFunction } from "../../../properties"
+import * as Seldon from "../../constants"
+import { ComponentExport, ComponentSchema } from "../../types"
 
 export const schema = {
   name: "Avatar",
@@ -619,4 +615,4 @@ export const schema = {
 
 export const exportConfig: ComponentExport = {
   react: { returns: "Frame" },
-};
+}

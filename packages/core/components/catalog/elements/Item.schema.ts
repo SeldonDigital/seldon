@@ -1,10 +1,6 @@
-import * as Sdn from "../../../properties";
-import * as Seldon from "../../constants";
-import { ComponentExport, ComponentSchema } from "../../types";
-
-
-
-
+import * as Sdn from "../../../properties"
+import * as Seldon from "../../constants"
+import { ComponentExport, ComponentSchema } from "../../types"
 
 export const schema = {
   name: "Item",
@@ -179,10 +175,7 @@ export const schema = {
             type: Sdn.ValueType.OPTION,
             value: Sdn.Resize.FIT,
           },
-          gap: {
-            type: Sdn.ValueType.EMPTY,
-            value: null,
-          },
+          gap: { type: Sdn.ValueType.EMPTY, value: null },
           clip: {
             type: Sdn.ValueType.EXACT,
             value: true,
@@ -1095,14 +1088,14 @@ export const schema = {
               type: Sdn.ValueType.OPTION,
               value: Sdn.Resize.FILL,
             },
-            margin:{
+            margin: {
               right: {
                 type: Sdn.ValueType.THEME_ORDINAL,
                 value: "@margin.compact",
               },
             },
           },
-          children:[
+          children: [
             {
               component: Seldon.ComponentId.ICON,
               overrides: {
@@ -1133,7 +1126,7 @@ export const schema = {
                 },
               },
             },
-          ]
+          ],
         },
         {
           component: Seldon.ComponentId.BUTTON,

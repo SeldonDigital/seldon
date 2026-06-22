@@ -1,6 +1,7 @@
 /**
  * Hook for property validation logic
  */
+import { isFreeTextProperty } from "@lib/properties/serialize-value"
 import {
   isNumber,
   isPercentage,
@@ -9,7 +10,6 @@ import {
 } from "@seldon/core/helpers/validation"
 import { isThemeValueKey } from "@seldon/core/helpers/validation/theme"
 import { getUnitsForProperty } from "@seldon/core/properties"
-import { isFreeTextProperty } from "@lib/properties/serialize-value"
 import { FlatProperty } from "../helpers/properties-data"
 
 interface UsePropertyValidationResult {

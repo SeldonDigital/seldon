@@ -1,3 +1,7 @@
+import {
+  getCurrentOptionValue,
+  getOptionIcon,
+} from "@lib/icons/resolve-option-icon"
 import { MenuEntry } from "@lib/menus"
 import {
   childPathsUnderCompoundParent,
@@ -44,10 +48,6 @@ import {
   buildPropertyRowProps,
 } from "../helpers/build-property-row-props"
 import { ICONIC_BUTTON_SELECTOR } from "../../helpers/iconic-button"
-import {
-  getCurrentOptionValue,
-  getOptionIcon,
-} from "@lib/icons/resolve-option-icon"
 import { getDisplayValue } from "../helpers/display-value-utils"
 import {
   FontCollectionEditingContext,

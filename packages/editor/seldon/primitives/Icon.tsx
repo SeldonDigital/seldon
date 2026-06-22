@@ -940,7 +940,8 @@ const iconMap = {
   "material-alignJustifyFlexEnd": Icons.IconMaterialAlignJustifyFlexEnd,
   "material-alignJustifyFlexStart": Icons.IconMaterialAlignJustifyFlexStart,
   "material-alignJustifySpaceAround": Icons.IconMaterialAlignJustifySpaceAround,
-  "material-alignJustifySpaceBetween": Icons.IconMaterialAlignJustifySpaceBetween,
+  "material-alignJustifySpaceBetween":
+    Icons.IconMaterialAlignJustifySpaceBetween,
   "material-alignJustifySpaceEven": Icons.IconMaterialAlignJustifySpaceEven,
   "material-alignJustifyStretch": Icons.IconMaterialAlignJustifyStretch,
   "material-alignSelfStretch": Icons.IconMaterialAlignSelfStretch,
@@ -956,10 +957,8 @@ const iconMap = {
   "material-alignHorizontalRight": Icons.IconMaterialAlignHorizontalRight,
   "material-desktopLandscape": Icons.IconMaterialDesktopLandscape,
   "material-desktopPortrait": Icons.IconMaterialDesktopPortrait,
-  "material-formatTextdirectionLToR":
-    Icons.IconMaterialFormatTextdirectionLToR,
-  "material-formatTextdirectionRToL":
-    Icons.IconMaterialFormatTextdirectionRToL,
+  "material-formatTextdirectionLToR": Icons.IconMaterialFormatTextdirectionLToR,
+  "material-formatTextdirectionRToL": Icons.IconMaterialFormatTextdirectionRToL,
   "material-formatTextdirectionVertical":
     Icons.IconMaterialFormatTextdirectionVertical,
   "material-bolt": Icons.IconMaterialBolt,

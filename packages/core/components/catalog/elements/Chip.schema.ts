@@ -1,10 +1,6 @@
-import * as Sdn from "../../../properties";
-import * as Seldon from "../../constants";
-import { ComponentExport, ComponentSchema } from "../../types";
-
-
-
-
+import * as Sdn from "../../../properties"
+import * as Seldon from "../../constants"
+import { ComponentExport, ComponentSchema } from "../../types"
 
 export const schema = {
   name: "Chip",
@@ -329,8 +325,7 @@ export const schema = {
     {
       id: "iconic",
       label: "Iconic",
-      intent:
-        "Iconic chip with a single icon and no label.",
+      intent: "Iconic chip with a single icon and no label.",
       overrides: {
         buttonSize: {
           type: Sdn.ValueType.THEME_ORDINAL,

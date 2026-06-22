@@ -1,6 +1,6 @@
+import { getPropertyRegistryEntry } from "@lib/icons/icons-registry"
 import { Board, Instance, ValueType, Variant } from "@seldon/core"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
-import { getPropertyRegistryEntry } from "@lib/icons/icons-registry"
 import { FlatProperty } from "./properties-data"
 
 /**
