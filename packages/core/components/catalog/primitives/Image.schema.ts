@@ -24,10 +24,11 @@ export const schema = {
       type: Sdn.ValueType.EXACT,
       value: "Default image",
     },
-    ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
-    ariaHidden: {
-      type: Sdn.ValueType.EXACT,
-      value: false,
+    position: {
+      top: { type: Sdn.ValueType.EMPTY, value: null },
+      right: { type: Sdn.ValueType.EMPTY, value: null },
+      bottom: { type: Sdn.ValueType.EMPTY, value: null },
+      left: { type: Sdn.ValueType.EMPTY, value: null },
     },
     width: {
       type: Sdn.ValueType.OPTION,
@@ -119,6 +120,11 @@ export const schema = {
         spread: { type: Sdn.ValueType.EMPTY, value: null },
       },
     ],
+    ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
+    ariaHidden: {
+      type: Sdn.ValueType.EXACT,
+      value: false,
+    },
   },
 } as const satisfies ComponentSchema
 

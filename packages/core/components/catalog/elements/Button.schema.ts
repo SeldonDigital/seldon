@@ -21,11 +21,6 @@ export const schema = {
   icon: Seldon.ComponentIcon.COMPONENT,
   properties: {
     display: { type: Sdn.ValueType.EMPTY, value: null },
-    ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
-    ariaPressed: { type: Sdn.ValueType.EMPTY, value: null },
-    ariaExpanded: { type: Sdn.ValueType.EMPTY, value: null },
-    ariaHasPopup: { type: Sdn.ValueType.EMPTY, value: null },
-    ariaDisabled: { type: Sdn.ValueType.EMPTY, value: null },
     buttonSize: {
       type: Sdn.ValueType.THEME_ORDINAL,
       value: "@fontSize.medium",
@@ -203,6 +198,11 @@ export const schema = {
         spread: { type: Sdn.ValueType.EMPTY, value: null },
       },
     ],
+    ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
+    ariaDisabled: { type: Sdn.ValueType.EMPTY, value: null },
+    ariaExpanded: { type: Sdn.ValueType.EMPTY, value: null },
+    ariaPressed: { type: Sdn.ValueType.EMPTY, value: null },
+    ariaHasPopup: { type: Sdn.ValueType.EMPTY, value: null },
   },
   default: {
     children: [

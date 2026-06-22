@@ -36,6 +36,7 @@ export { ICONIC_BUTTON_ATTR, ICONIC_BUTTON_SELECTOR }
  * so the cell draws the chip itself.
  */
 export interface ValueChip {
+  iconId: IconProps["icon"]
   color: string | undefined
   style: CSSProperties
 }
@@ -138,6 +139,7 @@ export function buildPropertyRowProps({
   const valueChip: ValueChip | null =
     !valueIconHidden && isDynamicValueIcon
       ? {
+          iconId: valueIconId as IconProps["icon"],
           color: getPropertyIcon2Color(property, swatchChipColor, labelColor),
           style: getValueIconStyle({ hidden: false, labelColor }),
         }

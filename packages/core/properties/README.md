@@ -388,7 +388,7 @@ Each `background[]` layer stores a `kind` plus the facets that kind uses. Facets
 | Gradient Facet | Values |
 | --- | --- |
 | `preset` | `empty` \| `inherit` \| `theme.categorical: @gradient.*` |
-| `gradientType` | `empty` \| `inherit` \| `option: linear, radial` |
+| `gradientType` | `empty` \| `inherit` \| `option: linear, radial, conic` |
 | `angle` | `empty` \| `inherit` \| `exact: degrees` |
 | `startColor` | `empty` \| `inherit` \| `<color>` |
 | `startPosition` | `empty` \| `inherit` \| `<percent>` |

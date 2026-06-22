@@ -1,6 +1,6 @@
+import { ControlType } from "@lib/icons/icons-registry"
 import { getThemeTokenSchema } from "@seldon/core/themes/schemas"
 import { FlatProperty } from "./properties-data"
-import { ControlType } from "./properties-registry"
 
 /**
  * Maps theme property keys to appropriate control types using schema system.

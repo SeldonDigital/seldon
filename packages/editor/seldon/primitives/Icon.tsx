@@ -394,6 +394,43 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-volumeUp"
     | "material-batteryAlert"
     | "material-blurOn"
+    | "material-blurCircular"
+    | "material-deblur"
+    | "material-style"
+    | "material-width"
+    | "material-height"
+    | "material-roundedCorner"
+    | "material-lineWeight"
+    | "material-alignCenter"
+    | "material-alignEnd"
+    | "material-alignFlexCenter"
+    | "material-alignFlexEnd"
+    | "material-alignFlexStart"
+    | "material-alignHorizontalCenter"
+    | "material-alignItemsStretch"
+    | "material-alignJustifyCenter"
+    | "material-alignJustifyFlexEnd"
+    | "material-alignJustifyFlexStart"
+    | "material-alignJustifySpaceAround"
+    | "material-alignJustifySpaceBetween"
+    | "material-alignJustifySpaceEven"
+    | "material-alignJustifyStretch"
+    | "material-alignSelfStretch"
+    | "material-alignSpaceAround"
+    | "material-alignSpaceBetween"
+    | "material-alignSpaceEven"
+    | "material-alignStart"
+    | "material-alignStretch"
+    | "material-alignVerticalBottom"
+    | "material-alignVerticalCenter"
+    | "material-alignVerticalTop"
+    | "material-alignHorizontalLeft"
+    | "material-alignHorizontalRight"
+    | "material-desktopLandscape"
+    | "material-desktopPortrait"
+    | "material-formatTextdirectionLToR"
+    | "material-formatTextdirectionRToL"
+    | "material-formatTextdirectionVertical"
     | "material-bolt"
     | "material-check"
     | "material-checkCircle"
@@ -423,6 +460,35 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-unfoldLess"
     | "material-visibility"
     | "material-visibilityOff"
+    | "material-codeOff"
+    | "material-codeXml"
+    | "material-textSelectStart"
+    | "material-deployedCode"
+    | "material-dataObject"
+    | "material-copyAll"
+    | "material-aspectRatio"
+    | "material-mouse"
+    | "material-highlightMouseCursor"
+    | "material-highlightTextCursor"
+    | "material-dragPan"
+    | "material-resize"
+    | "material-adsClick"
+    | "material-gridOn"
+    | "material-driveFileMoveOutline"
+    | "material-openWith"
+    | "material-doNotDisturbOn"
+    | "material-panTool"
+    | "material-panToolAlt"
+    | "material-syncAlt"
+    | "material-circle"
+    | "material-layers"
+    | "material-lineStartCircle"
+    | "material-lineEndCircle"
+    | "material-formatAlignLeft"
+    | "material-formatAlignRight"
+    | "material-formatAlignCenter"
+    | "material-formatAlignJustify"
+    | "material-matchCase"
     | "material-warning"
     | "material-wifi"
     | "material-wifiOff"
@@ -856,6 +922,45 @@ const iconMap = {
   "material-volumeUp": Icons.IconMaterialVolumeUp,
   "material-batteryAlert": Icons.IconMaterialBatteryAlert,
   "material-blurOn": Icons.IconMaterialBlurOn,
+  "material-blurCircular": Icons.IconMaterialBlurCircular,
+  "material-deblur": Icons.IconMaterialDeblur,
+  "material-style": Icons.IconMaterialStyle,
+  "material-width": Icons.IconMaterialWidth,
+  "material-height": Icons.IconMaterialHeight,
+  "material-roundedCorner": Icons.IconMaterialRoundedCorner,
+  "material-lineWeight": Icons.IconMaterialLineWeight,
+  "material-alignCenter": Icons.IconMaterialAlignCenter,
+  "material-alignEnd": Icons.IconMaterialAlignEnd,
+  "material-alignFlexCenter": Icons.IconMaterialAlignFlexCenter,
+  "material-alignFlexEnd": Icons.IconMaterialAlignFlexEnd,
+  "material-alignFlexStart": Icons.IconMaterialAlignFlexStart,
+  "material-alignHorizontalCenter": Icons.IconMaterialAlignHorizontalCenter,
+  "material-alignItemsStretch": Icons.IconMaterialAlignItemsStretch,
+  "material-alignJustifyCenter": Icons.IconMaterialAlignJustifyCenter,
+  "material-alignJustifyFlexEnd": Icons.IconMaterialAlignJustifyFlexEnd,
+  "material-alignJustifyFlexStart": Icons.IconMaterialAlignJustifyFlexStart,
+  "material-alignJustifySpaceAround": Icons.IconMaterialAlignJustifySpaceAround,
+  "material-alignJustifySpaceBetween":
+    Icons.IconMaterialAlignJustifySpaceBetween,
+  "material-alignJustifySpaceEven": Icons.IconMaterialAlignJustifySpaceEven,
+  "material-alignJustifyStretch": Icons.IconMaterialAlignJustifyStretch,
+  "material-alignSelfStretch": Icons.IconMaterialAlignSelfStretch,
+  "material-alignSpaceAround": Icons.IconMaterialAlignSpaceAround,
+  "material-alignSpaceBetween": Icons.IconMaterialAlignSpaceBetween,
+  "material-alignSpaceEven": Icons.IconMaterialAlignSpaceEven,
+  "material-alignStart": Icons.IconMaterialAlignStart,
+  "material-alignStretch": Icons.IconMaterialAlignStretch,
+  "material-alignVerticalBottom": Icons.IconMaterialAlignVerticalBottom,
+  "material-alignVerticalCenter": Icons.IconMaterialAlignVerticalCenter,
+  "material-alignVerticalTop": Icons.IconMaterialAlignVerticalTop,
+  "material-alignHorizontalLeft": Icons.IconMaterialAlignHorizontalLeft,
+  "material-alignHorizontalRight": Icons.IconMaterialAlignHorizontalRight,
+  "material-desktopLandscape": Icons.IconMaterialDesktopLandscape,
+  "material-desktopPortrait": Icons.IconMaterialDesktopPortrait,
+  "material-formatTextdirectionLToR": Icons.IconMaterialFormatTextdirectionLToR,
+  "material-formatTextdirectionRToL": Icons.IconMaterialFormatTextdirectionRToL,
+  "material-formatTextdirectionVertical":
+    Icons.IconMaterialFormatTextdirectionVertical,
   "material-bolt": Icons.IconMaterialBolt,
   "material-check": Icons.IconMaterialCheck,
   "material-checkCircle": Icons.IconMaterialCheckCircle,
@@ -885,6 +990,35 @@ const iconMap = {
   "material-unfoldLess": Icons.IconMaterialUnfoldLess,
   "material-visibility": Icons.IconMaterialVisibility,
   "material-visibilityOff": Icons.IconMaterialVisibilityOff,
+  "material-codeOff": Icons.IconMaterialCodeOff,
+  "material-codeXml": Icons.IconMaterialCodeXml,
+  "material-textSelectStart": Icons.IconMaterialTextSelectStart,
+  "material-deployedCode": Icons.IconMaterialDeployedCode,
+  "material-dataObject": Icons.IconMaterialDataObject,
+  "material-copyAll": Icons.IconMaterialCopyAll,
+  "material-aspectRatio": Icons.IconMaterialAspectRatio,
+  "material-mouse": Icons.IconMaterialMouse,
+  "material-highlightMouseCursor": Icons.IconMaterialHighlightMouseCursor,
+  "material-highlightTextCursor": Icons.IconMaterialHighlightTextCursor,
+  "material-dragPan": Icons.IconMaterialDragPan,
+  "material-resize": Icons.IconMaterialResize,
+  "material-adsClick": Icons.IconMaterialAdsClick,
+  "material-gridOn": Icons.IconMaterialGridOn,
+  "material-driveFileMoveOutline": Icons.IconMaterialDriveFileMoveOutline,
+  "material-openWith": Icons.IconMaterialOpenWith,
+  "material-doNotDisturbOn": Icons.IconMaterialDoNotDisturbOn,
+  "material-panTool": Icons.IconMaterialPanTool,
+  "material-panToolAlt": Icons.IconMaterialPanToolAlt,
+  "material-syncAlt": Icons.IconMaterialSyncAlt,
+  "material-circle": Icons.IconMaterialCircle,
+  "material-layers": Icons.IconMaterialLayers,
+  "material-lineStartCircle": Icons.IconMaterialLineStartCircle,
+  "material-lineEndCircle": Icons.IconMaterialLineEndCircle,
+  "material-formatAlignLeft": Icons.IconMaterialFormatAlignLeft,
+  "material-formatAlignRight": Icons.IconMaterialFormatAlignRight,
+  "material-formatAlignCenter": Icons.IconMaterialFormatAlignCenter,
+  "material-formatAlignJustify": Icons.IconMaterialFormatAlignJustify,
+  "material-matchCase": Icons.IconMaterialMatchCase,
   "material-warning": Icons.IconMaterialWarning,
   "material-wifi": Icons.IconMaterialWifi,
   "material-wifiOff": Icons.IconMaterialWifiOff,

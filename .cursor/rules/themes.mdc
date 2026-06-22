@@ -26,6 +26,8 @@ Stock theme template ids are:
 - `sunsetBlue`
 - `wildberry`
 
+`seldon` is the default stock preset. A workspace always keeps a `seldon` theme entry, and it cannot be removed. Other stock themes are optional.
+
 `ThemeTemplateId` is the stock template id union. `ThemeInstanceId` equals `ThemeTemplateId`. Workspace theme refs and keys in `workspace.themes` are opaque strings at workspace boundaries until workspace theme types are aligned.
 
 ### Theme Structure
@@ -60,13 +62,15 @@ Every token except `@fontFamily.*` can accept `customN` keys. `@fontFamily.*` on
 
 `@swatch.swatch1` through `@swatch.swatch4` are reserved dynamic palette slots, not custom slots.
 
+`computeTheme` injects cleared looks that stock themes do not author: `@font.normal`, `@border.none`, and `@shadow.none`. Each sets every facet to `EMPTY` and appears in the look picker like a stock look. The `@gradient.*` section has no cleared look.
+
 ### Token Types
 
 Theme token cells use `TokenType`:
 
 - `MODULATED` for scale steps against `core.size` and `core.ratio`.
 - `EXACT` for fixed numeric values with units.
-- `DYNAMIC_SWATCH` for palette roles resolved from `color.*` by `computeTheme`.
+- `DYNAMIC_SWATCH` for palette roles resolved from `color.*` by `computeTheme`. The roles are `white`, `gray`, `black`, `primary`, and `swatch1` through `swatch4`. Do not hand-author the eight palette colors. Switching base color or harmony retunes the whole palette.
 - `SWATCH` for explicit color values.
 - `FONT_FAMILY` for `fontFamily.primary` and `fontFamily.secondary`.
 - `OPTION` for discrete option keys.
@@ -83,6 +87,10 @@ Use `instantiateTheme(templateId, overrides, STOCK_THEMES_BY_ID)` to derive a th
 Import `instantiateTheme`, `normalizeThemeInput`, `getDynamicSwatchColors`, `getPalette`, and colorspace helpers from `@seldon/core/themes/compute`. Import `computeTheme`, `normalizeTheme`, `THEMES_BY_ID`, `STOCK_THEMES_BY_ID`, and `defaultTheme` from `@seldon/core/themes`.
 
 Workspace files store raw theme authoring state only. Computed theme rows come from read-side selectors such as `computeWorkspaceThemes` and `getComputedTheme`; they are not persisted.
+
+The editor renders from the computed theme. Only the factory emits CSS variable swatch refs such as `--sdn-*` during export. Do not define theme tokens as CSS variables in core, and do not add editor logic that depends on those variables.
+
+High Contrast is a computed color, not a stored theme token. Property-side resolution derives it from the effective background up the parent chain. A transparent or `NONE` background makes the resolver continue up.
 
 ### Adding Themes And Tokens
 

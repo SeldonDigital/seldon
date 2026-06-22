@@ -54,8 +54,11 @@ export function resolveGradientLayer(
   const resolvedEndColor =
     resolveValue(endColor) ?? resolveValue(themeGradient?.parameters.endColor)
 
-  // Start and end colors are required for the gradient. These do not have defaults.
-  if (!startColor || !endColor || !resolvedStartColor || !resolvedEndColor) {
+  // Start and end colors are required for the gradient. They may come from the
+  // layer's own facets or from its theme preset, so gate on the resolved values
+  // rather than the raw facets, letting a preset-driven gradient render even
+  // when its stop facets are unset.
+  if (!resolvedStartColor || !resolvedEndColor) {
     return undefined
   }
 
@@ -121,9 +124,15 @@ export function resolveGradientLayer(
     themeSlug,
   })
 
-  return resolvedType === GradientType.LINEAR
-    ? `linear-gradient(${resolvedAngle}deg, ${startColorString} ${resolvedStartPosition}%, ${endColorString} ${resolvedEndPosition}%)`
-    : `radial-gradient(${startColorString} ${resolvedStartPosition}%, ${endColorString} ${resolvedEndPosition}%)`
+  if (resolvedType === GradientType.LINEAR) {
+    return `linear-gradient(${resolvedAngle}deg, ${startColorString} ${resolvedStartPosition}%, ${endColorString} ${resolvedEndPosition}%)`
+  }
+
+  if (resolvedType === GradientType.CONIC) {
+    return `conic-gradient(from ${resolvedAngle}deg, ${startColorString} ${resolvedStartPosition}%, ${endColorString} ${resolvedEndPosition}%)`
+  }
+
+  return `radial-gradient(${startColorString} ${resolvedStartPosition}%, ${endColorString} ${resolvedEndPosition}%)`
 }
 
 function resolveOpacity(

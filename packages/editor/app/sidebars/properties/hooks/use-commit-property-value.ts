@@ -21,7 +21,10 @@ import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { useObjectProperties } from "@lib/workspace/hooks/use-object-properties"
 import { useSelection } from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
-import { useImageUploadPanel } from "@app/panels/hooks/use-upload-image-panel"
+import {
+  imageUploadTargetForKey,
+  useImageUploadPanel,
+} from "@app/panels/hooks/use-upload-image-panel"
 import {
   cleanCompoundValue,
   compoundPresetPropertyKey,
@@ -281,20 +284,9 @@ export function useCommitPropertyValue({
       }
 
       if (newValue === "__upload__") {
-        const supportsUpload =
-          property.key === "source" ||
-          property.key === "background.image" ||
-          /^background\.\d+\.image$/.test(property.key)
-
-        if (supportsUpload) {
-          // The upload panel keys image backgrounds as "background-image"
-          // regardless of layer index, and the `source` attribute as "source".
-          const uploadPanelProperty =
-            property.key === "source" ? "source" : "background-image"
-
-          showUploadPanel({
-            property: uploadPanelProperty,
-          })
+        const uploadTarget = imageUploadTargetForKey(property.key)
+        if (uploadTarget) {
+          showUploadPanel({ property: uploadTarget })
           onDone()
           return
         }

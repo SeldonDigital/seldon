@@ -12,12 +12,6 @@ export const schema = {
   icon: Seldon.ComponentIcon.COMPONENT,
   properties: {
     display: { type: Sdn.ValueType.EMPTY, value: null },
-    ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
-    ariaHidden: {
-      type: Sdn.ValueType.EXACT,
-      value: false,
-    },
-    ariaPressed: { type: Sdn.ValueType.EMPTY, value: null },
     buttonSize: {
       type: Sdn.ValueType.THEME_ORDINAL,
       value: "@fontSize.xsmall",
@@ -27,6 +21,12 @@ export const schema = {
       value: Sdn.Cursor.POINTER,
     },
     direction: { type: Sdn.ValueType.EMPTY, value: null },
+    position: {
+      top: { type: Sdn.ValueType.EMPTY, value: null },
+      right: { type: Sdn.ValueType.EMPTY, value: null },
+      bottom: { type: Sdn.ValueType.EMPTY, value: null },
+      left: { type: Sdn.ValueType.EMPTY, value: null },
+    },
     orientation: {
       type: Sdn.ValueType.OPTION,
       value: Sdn.Orientation.HORIZONTAL,
@@ -195,6 +195,12 @@ export const schema = {
         spread: { type: Sdn.ValueType.EMPTY, value: null },
       },
     ],
+    ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
+    ariaHidden: {
+      type: Sdn.ValueType.EXACT,
+      value: false,
+    },
+    ariaPressed: { type: Sdn.ValueType.EMPTY, value: null },
   },
   default: {
     children: [
@@ -310,6 +316,75 @@ export const schema = {
                   function: Sdn.ComputedFunction.AUTO_FIT,
                   input: { basedOn: "#parent.buttonSize", factor: 0.8 },
                 },
+              },
+            },
+          },
+        },
+      ],
+    },
+    {
+      id: "iconic",
+      label: "Iconic",
+      intent: "Iconic chip with a single icon and no label.",
+      overrides: {
+        buttonSize: {
+          type: Sdn.ValueType.THEME_ORDINAL,
+          value: "@fontSize.small",
+        },
+        padding: {
+          top: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@padding.tight",
+          },
+          right: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@padding.tight",
+          },
+          bottom: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@padding.tight",
+          },
+          left: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@padding.tight",
+          },
+        },
+        background: [
+          {
+            kind: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.BackgroundKind.COLOR,
+            },
+            color: {
+              type: Sdn.ValueType.THEME_CATEGORICAL,
+              value: "@swatch.primary",
+            },
+            brightness: { type: Sdn.ValueType.EMPTY, value: null },
+            opacity: { type: Sdn.ValueType.EMPTY, value: null },
+          },
+        ],
+      },
+      children: [
+        {
+          component: Seldon.ComponentId.ICON,
+          overrides: {
+            display: { type: Sdn.ValueType.OPTION, value: Sdn.Display.SHOW },
+            symbol: {
+              type: Sdn.ValueType.OPTION,
+              value: "material-inbox",
+            },
+            size: {
+              type: Sdn.ValueType.COMPUTED,
+              value: {
+                function: Sdn.ComputedFunction.AUTO_FIT,
+                input: { basedOn: "#parent.buttonSize", factor: 0.8 },
+              },
+            },
+            color: {
+              type: Sdn.ValueType.COMPUTED,
+              value: {
+                function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+                input: { basedOn: "#parent.background.color" },
               },
             },
           },

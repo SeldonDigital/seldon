@@ -34,6 +34,39 @@ Use the local code first. Follow nearby patterns, public APIs, and domain rules 
 - Avoid unrelated refactors, formatting churn, and metadata changes.
 - Add abstractions only when they reduce real duplication or match an established local pattern.
 
+### Package Boundaries
+
+- Put behavior and data in `core`. The editor consumes `core` and must not special-case or re-implement core logic.
+- Keep export concerns in the `factory`. CSS variable refs and language-specific output belong to factory export, not to `core` or the editor.
+- When a value or ordering looks wrong in the editor, fix it in `core` so every consumer gets the same result. Do not patch it in the editor.
+- Persist user edits as workspace actions and reducers. Do not store design state as editor-only side state.
+
+### Consistency Over Special Cases
+
+- Follow existing patterns. A new case should behave the same way as its siblings. A new compound property behaves like other compound properties.
+- Do not add special code or special casing when a general pattern already exists.
+- Prefer the simplest change that fits the existing model. Do not over-complicate a fix.
+
+### Tests And Migrations
+
+- Do not add or update tests unless explicitly asked.
+- Do not add or update migrations unless explicitly asked.
+
+### Debugging And Regressions
+
+- When something that worked breaks, first find the specific recent change that caused it. Prefer the smallest targeted fix over a broad refactor.
+- Do not keep code that breaks existing behavior. If a change regresses atomic, shorthand, or compound behavior, revert that part.
+- Do not spiral into deep rewrites for a small regression.
+
+### Verification
+
+- After changes, run `tsc` across the whole repo and resolve all type errors before reporting done.
+- Keep all imports valid and remove dead or redundant code touched by the change.
+
+### Workflow
+
+- Analyze and report a plan before editing. Wait for approval before making file changes.
+
 ### Framework Guidance
 
 Keep React, Next.js, Web Vitals, image, and URL-state guidance out of this global rule. Add a file-scoped rule for app code if the repo needs one later.

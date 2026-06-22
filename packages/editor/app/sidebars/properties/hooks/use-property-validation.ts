@@ -1,6 +1,7 @@
 /**
  * Hook for property validation logic
  */
+import { isFreeTextProperty } from "@lib/properties/serialize-value"
 import {
   isNumber,
   isPercentage,
@@ -75,6 +76,11 @@ export function usePropertyValidation(
             units.some((unit) => value.endsWith(unit)) || !isNaN(Number(value))
           )
         }
+      }
+      // Free-text combos (image source url) accept any non-empty custom value.
+      // Without a validator the combobox rejects typed input outright.
+      if (isFreeTextProperty(property.key)) {
+        return (value: string) => value.trim().length > 0
       }
       return undefined
     }

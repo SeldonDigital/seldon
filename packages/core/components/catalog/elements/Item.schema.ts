@@ -20,14 +20,6 @@ export const schema = {
   icon: Seldon.ComponentIcon.STUB,
   properties: {
     display: { type: Sdn.ValueType.EMPTY, value: null },
-    role: { type: Sdn.ValueType.EMPTY, value: null },
-    ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
-    ariaHidden: {
-      type: Sdn.ValueType.EXACT,
-      value: false,
-    },
-    ariaExpanded: { type: Sdn.ValueType.EMPTY, value: null },
-    ariaSelected: { type: Sdn.ValueType.EMPTY, value: null },
     direction: { type: Sdn.ValueType.EMPTY, value: null },
     orientation: {
       type: Sdn.ValueType.OPTION,
@@ -147,6 +139,14 @@ export const schema = {
       },
     ],
     scroll: { type: Sdn.ValueType.EMPTY, value: null },
+    role: { type: Sdn.ValueType.EMPTY, value: null },
+    ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
+    ariaHidden: {
+      type: Sdn.ValueType.EXACT,
+      value: false,
+    },
+    ariaExpanded: { type: Sdn.ValueType.EMPTY, value: null },
+    ariaSelected: { type: Sdn.ValueType.EMPTY, value: null },
   },
   default: {
     children: [
@@ -175,10 +175,7 @@ export const schema = {
             type: Sdn.ValueType.OPTION,
             value: Sdn.Resize.FIT,
           },
-          gap: {
-            type: Sdn.ValueType.THEME_ORDINAL,
-            value: "@gap.tight",
-          },
+          gap: { type: Sdn.ValueType.EMPTY, value: null },
           clip: {
             type: Sdn.ValueType.EXACT,
             value: true,
@@ -258,12 +255,52 @@ export const schema = {
         },
         {
           component: Seldon.ComponentId.AVATAR,
+          variant: "round",
+        },
+        {
+          component: Seldon.ComponentId.FRAME,
           overrides: {
             width: {
               type: Sdn.ValueType.OPTION,
               value: Sdn.Resize.FILL,
             },
+            height: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.Resize.FIT,
+            },
+            clip: {
+              type: Sdn.ValueType.EXACT,
+              value: true,
+            },
           },
+          children: [
+            {
+              component: Seldon.ComponentId.TEXT,
+              variant: "title",
+              overrides: {
+                content: {
+                  type: Sdn.ValueType.EXACT,
+                  value: "Full Name",
+                },
+                font: {
+                  weight: {
+                    type: Sdn.ValueType.THEME_ORDINAL,
+                    value: "@fontWeight.medium",
+                  },
+                },
+              },
+            },
+            {
+              component: Seldon.ComponentId.TEXT,
+              variant: "subtitle",
+              overrides: {
+                content: {
+                  type: Sdn.ValueType.EXACT,
+                  value: "Position",
+                },
+              },
+            },
+          ],
         },
         {
           component: Seldon.ComponentId.BUTTON,
@@ -280,15 +317,17 @@ export const schema = {
       id: "product",
       label: "Product Item",
       intent: "List item format optimized for showing product-related info.",
+      overrides: {
+        gap: {
+          type: Sdn.ValueType.THEME_ORDINAL,
+          value: "@gap.compact",
+        },
+      },
       children: [
         {
           component: Seldon.ComponentId.INPUT,
           variant: "checkbox",
           overrides: {
-            align: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Align.CENTER,
-            },
             width: {
               type: Sdn.ValueType.OPTION,
               value: Sdn.Resize.FIT,
@@ -297,13 +336,73 @@ export const schema = {
         },
         {
           component: Seldon.ComponentId.AVATAR,
-          variant: "product",
+          variant: "square",
+          overrides: {
+            width: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@dimension.xlarge",
+            },
+            height: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@dimension.xlarge",
+            },
+          },
+          children: [
+            {
+              component: Seldon.ComponentId.IMAGE,
+              overrides: {
+                source: {
+                  type: Sdn.ValueType.EXACT,
+                  value: "/background-default-dark.jpg",
+                },
+              },
+            },
+          ],
+        },
+        {
+          component: Seldon.ComponentId.FRAME,
           overrides: {
             width: {
               type: Sdn.ValueType.OPTION,
               value: Sdn.Resize.FILL,
             },
+            height: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.Resize.FIT,
+            },
+            clip: {
+              type: Sdn.ValueType.EXACT,
+              value: true,
+            },
           },
+          children: [
+            {
+              component: Seldon.ComponentId.TEXT,
+              variant: "title",
+              overrides: {
+                content: {
+                  type: Sdn.ValueType.EXACT,
+                  value: "Product Name",
+                },
+                font: {
+                  weight: {
+                    type: Sdn.ValueType.THEME_ORDINAL,
+                    value: "@fontWeight.medium",
+                  },
+                },
+              },
+            },
+            {
+              component: Seldon.ComponentId.TEXT,
+              variant: "subtitle",
+              overrides: {
+                content: {
+                  type: Sdn.ValueType.EXACT,
+                  value: "Details",
+                },
+              },
+            },
+          ],
         },
         {
           component: Seldon.ComponentId.BUTTON,
@@ -782,7 +881,7 @@ export const schema = {
               overrides: {
                 symbol: {
                   type: Sdn.ValueType.OPTION,
-                  value: "seldon-plus",
+                  value: "material-add",
                 },
                 color: {
                   type: Sdn.ValueType.COMPUTED,
@@ -836,7 +935,7 @@ export const schema = {
               overrides: {
                 symbol: {
                   type: Sdn.ValueType.OPTION,
-                  value: "seldon-more",
+                  value: "material-moreHoriz",
                 },
                 color: {
                   type: Sdn.ValueType.COMPUTED,
@@ -989,7 +1088,45 @@ export const schema = {
               type: Sdn.ValueType.OPTION,
               value: Sdn.Resize.FILL,
             },
+            margin: {
+              right: {
+                type: Sdn.ValueType.THEME_ORDINAL,
+                value: "@margin.compact",
+              },
+            },
           },
+          children: [
+            {
+              component: Seldon.ComponentId.ICON,
+              overrides: {
+                symbol: {
+                  type: Sdn.ValueType.OPTION,
+                  value: "__default__",
+                },
+              },
+            },
+            {
+              component: Seldon.ComponentId.INPUT,
+              variant: "combobox",
+              overrides: {
+                font: {
+                  size: {
+                    type: Sdn.ValueType.THEME_ORDINAL,
+                    value: "@fontSize.xsmall",
+                  },
+                },
+              },
+            },
+            {
+              component: Seldon.ComponentId.ICON,
+              overrides: {
+                symbol: {
+                  type: Sdn.ValueType.OPTION,
+                  value: "material-chevronDown",
+                },
+              },
+            },
+          ],
         },
         {
           component: Seldon.ComponentId.BUTTON,
@@ -1030,7 +1167,7 @@ export const schema = {
               overrides: {
                 symbol: {
                   type: Sdn.ValueType.OPTION,
-                  value: "seldon-plus",
+                  value: "material-add",
                 },
                 color: {
                   type: Sdn.ValueType.COMPUTED,
@@ -1084,7 +1221,7 @@ export const schema = {
               overrides: {
                 symbol: {
                   type: Sdn.ValueType.OPTION,
-                  value: "seldon-more",
+                  value: "material-moreHoriz",
                 },
                 color: {
                   type: Sdn.ValueType.COMPUTED,

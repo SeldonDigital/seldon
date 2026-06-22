@@ -39,6 +39,19 @@ Use the current `ValueType` set:
 
 Do not use `PRESET` as a value type. Preset-like choices use `ValueType.OPTION`, or theme references such as `@border.hairline`, `@font.body`, and `@background.primary` where the property supports them.
 
+### EMPTY, INHERIT, And None
+
+- `EMPTY` means unset. It resolves to the platform or default value. Author it as `{ type: ValueType.EMPTY, value: null }`.
+- Prefer `EMPTY` over `INHERIT` when both produce the same result. Use `INHERIT` only when a property must take the parent value on purpose.
+- `None` is an explicit choice, not the same as `EMPTY`. Author it with `ValueType.OPTION` and a `*.NONE` value, such as `Gap.NONE`.
+- `None` means an explicit absence the user selected. `EMPTY` means the value is unset and falls back to a default. Do not conflate them.
+- For default layered paint, prefer a cleared look such as `@shadow.none` or `@border.none` over a bare `preset: EMPTY` where the property supports it.
+
+### Theme References Over Literals
+
+- Prefer `@token` references and variant styles over hardcoded literals for color, spacing, corners, and shadows.
+- Author theme references with a single prefix, such as `@fontSize.xxlarge`. Never double the prefix, such as `@fontSize.@fontSize.xxlarge`.
+
 ### Categories And Ordering
 
 Use `PROPERTY_DISPLAY_ORDER` and `properties/constants/property-display.ts` for category order:
@@ -48,8 +61,15 @@ Use `PROPERTY_DISPLAY_ORDER` and `properties/constants/property-display.ts` for 
 3. Appearance
 4. Typography
 5. Effects
+6. Accessibility
 
-Behavior, motion, and data sections are documented as future areas. Do not treat them as implemented property surfaces unless code support exists.
+Accessibility properties (`role`, `aria*`) come last, after effects. Behavior, motion, and data sections are documented as future areas. Do not treat them as implemented property surfaces unless code support exists.
+
+### Property Vocabulary And Visibility
+
+- A property absent from a schema is not part of that component's vocabulary. It cannot be set or overridden.
+- When a control is missing in the editor, confirm the schema exposes the property, set to `EMPTY`. Do not add editor-only property logic.
+- Change property order through `PROPERTY_DISPLAY_ORDER` in core so the editor picks it up. Do not reorder in the editor.
 
 ### Compound And Layer Behavior
 
@@ -72,6 +92,10 @@ Authoritative property path unions live in `types/property-keys.ts`. They includ
 Runtime lookup paths used by `findInObject` are dot-separated. Type unions still use bracket indices such as `background[0].color`. Authored computed `basedOn` paths can use schema-style layered paint paths such as `#background.color` and `#parent.background.color`; `getBasedOnValue` normalizes those to layer `0` lookup paths.
 
 Theme references are validated by restricted theme key unions where properties opt in. Use `@` token paths that match the property type.
+
+### Debugging Property Values
+
+- When a resolved or computed value looks wrong, check the authored schema value first. Then check the compute logic.
 
 ### Computed Values
 

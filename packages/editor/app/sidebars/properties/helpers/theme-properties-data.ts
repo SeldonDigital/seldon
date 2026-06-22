@@ -1,3 +1,4 @@
+import type { ControlType } from "@lib/icons/icons-registry"
 import { getFamilyNameByValue } from "@seldon/core"
 import { HSLObjectToString } from "@seldon/core/helpers/color/hsl-object-to-string"
 import { themeSwatchToCssBackground } from "@seldon/core/helpers/color/theme-swatch-to-css-background"
@@ -13,7 +14,6 @@ import {
 } from "@seldon/core/workspace/helpers/themes/theme-override-paths"
 import type { EntryThemeOverrides } from "@seldon/core/workspace/types"
 import { FlatProperty } from "./properties-data"
-import type { ControlType } from "./properties-registry"
 
 const VALUE_TYPES = new Set<unknown>(Object.values(ValueType))
 

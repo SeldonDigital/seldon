@@ -26,8 +26,6 @@ export const schema = {
       type: Sdn.ValueType.OPTION,
       value: Sdn.HtmlElement.UL,
     },
-    ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
-    ariaHidden: { type: Sdn.ValueType.EXACT, value: false },
     direction: { type: Sdn.ValueType.EMPTY, value: null },
     orientation: { type: Sdn.ValueType.EMPTY, value: null },
     align: { type: Sdn.ValueType.EMPTY, value: null },
@@ -126,6 +124,8 @@ export const schema = {
       },
     ],
     textAlign: { type: Sdn.ValueType.EMPTY, value: null },
+    ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
+    ariaHidden: { type: Sdn.ValueType.EXACT, value: false },
   },
   default: {
     children: [

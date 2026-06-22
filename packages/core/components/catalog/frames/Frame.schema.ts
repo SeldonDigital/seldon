@@ -25,13 +25,13 @@ export const schema = {
       type: Sdn.ValueType.OPTION,
       value: Sdn.WrapperElement.DIV,
     },
-    role: { type: Sdn.ValueType.EMPTY, value: null },
-    ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
-    ariaHidden: {
-      type: Sdn.ValueType.EXACT,
-      value: false,
-    },
     direction: { type: Sdn.ValueType.EMPTY, value: null },
+    position: {
+      top: { type: Sdn.ValueType.EMPTY, value: null },
+      right: { type: Sdn.ValueType.EMPTY, value: null },
+      bottom: { type: Sdn.ValueType.EMPTY, value: null },
+      left: { type: Sdn.ValueType.EMPTY, value: null },
+    },
     orientation: {
       type: Sdn.ValueType.OPTION,
       value: Sdn.Orientation.VERTICAL,
@@ -144,6 +144,12 @@ export const schema = {
       },
     ],
     scroll: { type: Sdn.ValueType.EMPTY, value: null },
+    role: { type: Sdn.ValueType.EMPTY, value: null },
+    ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
+    ariaHidden: {
+      type: Sdn.ValueType.EXACT,
+      value: false,
+    },
   },
   default: { children: [] },
 } as const satisfies ComponentSchema

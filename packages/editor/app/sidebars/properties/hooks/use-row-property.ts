@@ -1,3 +1,7 @@
+import {
+  getCurrentOptionValue,
+  getOptionIcon,
+} from "@lib/icons/resolve-option-icon"
 import { MenuEntry } from "@lib/menus"
 import {
   childPathsUnderCompoundParent,
@@ -30,7 +34,10 @@ import { useDebugMode } from "@lib/hooks/use-debug-mode"
 import { useInlineRename } from "../../hooks/use-inline-rename"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { FormControlIconicProps } from "@seldon/components/elements/FormControlIconic"
-import { useImageUploadPanel } from "@app/panels/hooks/use-upload-image-panel"
+import {
+  imageUploadTargetForKey,
+  useImageUploadPanel,
+} from "@app/panels/hooks/use-upload-image-panel"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import { buildResetMenuEntry } from "../../shared/build-reset-menu-entry"
 import { buildPropertyOptions } from "../helpers/build-property-options"
@@ -41,10 +48,6 @@ import {
   buildPropertyRowProps,
 } from "../helpers/build-property-row-props"
 import { ICONIC_BUTTON_SELECTOR } from "../../helpers/iconic-button"
-import {
-  getBoardPresetIconId,
-  getBoardPresetValue,
-} from "../helpers/board-preset-icon"
 import { getDisplayValue } from "../helpers/display-value-utils"
 import {
   FontCollectionEditingContext,
@@ -52,7 +55,6 @@ import {
   ThemeEditingContext,
 } from "../helpers/editing-contexts"
 import { FlatProperty } from "../helpers/properties-data"
-import { getPropertyRegistryEntry } from "../helpers/properties-registry"
 import {
   getFormControlStyle,
   getRowStyle,
@@ -177,11 +179,19 @@ export function useRowProperty({
   const isThemeAssignment = property.pickerVariant === "themeAssignment"
 
   // Property icons are real icon ids resolved by the custom Icon wrapper. The
-  // board preset row reflects the selected device, fit, or default instead of a
-  // static icon.
+  // closed control always shows the property's default icon, with one exception:
+  // per-option static icons (e.g. board presets get their device icon). Theme
+  // tokens, glyphs, and swatches defer to the property icon so the row never
+  // swaps to the token icon; the token icon stays in the menu, and the swatch
+  // chip is painted separately via swatchChipColor.
+  const currentIconDescriptor = getOptionIcon(
+    property.key,
+    getCurrentOptionValue(property.key, property.value),
+    theme,
+  )
   const iconId =
-    property.key === "board"
-      ? getBoardPresetIconId(getBoardPresetValue(property.value))
+    currentIconDescriptor.kind === "static"
+      ? currentIconDescriptor.icon
       : property.icon
 
   // Can reset only when overridden. Font collection family rows (`family.*`) and
@@ -252,10 +262,9 @@ export function useRowProperty({
   const rowColor = rowStyle.color as string | undefined
   const { setIsHovered, style: hoverStyle } = usePropertyFrameHover(rowColor)
 
-  // Check if property supports upload (combo control + image icon).
-  const registryEntry = getPropertyRegistryEntry(property.key)
-  const supportsUpload =
-    registryEntry?.control === "combo" && registryEntry?.icon === "seldon-image"
+  // Image rows (source attribute, background image facet) support upload.
+  const uploadTarget = imageUploadTargetForKey(property.key)
+  const supportsUpload = uploadTarget !== null
 
   const handleToggle = () => {
     if (hasChildren) {
@@ -391,17 +400,11 @@ export function useRowProperty({
   const handleUploadClick = useCallback(
     (event: React.MouseEvent) => {
       event.stopPropagation()
-      if (supportsUpload) {
-        const uploadPanelProperty = property.key.includes(".")
-          ? property.key.replace(/\./g, "-")
-          : property.key
-
-        showUploadPanel({
-          property: uploadPanelProperty as "source" | "background-image",
-        })
+      if (uploadTarget) {
+        showUploadPanel({ property: uploadTarget })
       }
     },
-    [property.key, showUploadPanel, supportsUpload],
+    [uploadTarget, showUploadPanel],
   )
 
   const handleMenuClick = useCallback(

@@ -16,4 +16,10 @@ Use this rule only when the user explicitly invokes `@components-catalog` or ask
 - Update `packages/core/components/types/component-id.ts` directly so `ComponentId` stays aligned with the schema ids and catalog.
 - Do not change schema contents when doing catalog sync unless the user explicitly asks for schema edits too.
 - Sync the affected files directly. Do not instruct the user to run a catalog generator.
+- Treat four artifacts as one set that must agree: the schema file, its `ComponentId` enum entry in `types/component-id.ts`, its `schema` and `exportConfig` imports plus level-array entry in `catalog/index.ts`, and its `exportConfigById` entry. Every schema has all four. Every entry in any of the four has a matching schema file. Remove orphans in either direction.
+- A `ComponentId` value equals the schema `id` in camelCase. The enum key is the SCREAMING_SNAKE_CASE form. Sync aligns membership only. It does not rename an id. To rename, change the schema `id`, update every reference, then sync.
+- Place each `exportConfigById` entry under the comment group that matches the schema's level, and put the schema in the level array that matches its `level`. For example, an element belongs in the `elements` array and the Elements group, not under Primitives.
+- Import aliases follow the component, not the filename: `schema as <component>Schema` and `exportConfig as <component>ExportConfig`. The component name can differ from the filename, such as `Card.schema` imported as `cardStackedSchema`.
+- After syncing, verify every `component` referenced in each schema's `default.children` and `variants[].children` resolves to a `ComponentId` with a catalog entry. A missing child surfaces at runtime as `Schema <id> not found` or `Register for <id> not found`.
+- After syncing, typecheck `@seldon/core`. Confirm `ComponentId` values stay unique and that `getComponentSchema` and `getComponentExportConfig` resolve for every id.
 - If you find mismatches you cannot resolve safely, stop and report them clearly.

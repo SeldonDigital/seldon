@@ -429,7 +429,7 @@ export const exportConfig: ComponentExport = {
 
 **3. Order properties correctly**
 
-Place property keys inside `properties` in [`PROPERTY_DISPLAY_ORDER`](../properties/constants/property-display.ts) order: attributes → layout → appearance → typography → effects. Within compound objects, follow the facet order shown in [properties/README.md](../properties/README.md).
+Place property keys inside `properties` in [`PROPERTY_DISPLAY_ORDER`](../properties/constants/property-display.ts) order: attributes → layout → appearance → typography → effects → accessibility. Accessibility properties (`role`, `aria*`) come last, after effects. Within compound objects, follow the facet order shown in [properties/README.md](../properties/README.md).
 
 **4. Sync the catalog files**
 

@@ -11,11 +11,6 @@ export const schema = {
   icon: Seldon.ComponentIcon.STUB,
   properties: {
     display: { type: Sdn.ValueType.EMPTY, value: null },
-    role: { type: Sdn.ValueType.OPTION, value: Sdn.AriaRole.OPTION },
-    ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
-    ariaHidden: { type: Sdn.ValueType.EXACT, value: false },
-    ariaSelected: { type: Sdn.ValueType.EMPTY, value: null },
-    ariaDisabled: { type: Sdn.ValueType.EMPTY, value: null },
     cursor: { type: Sdn.ValueType.OPTION, value: Sdn.Cursor.POINTER },
     orientation: {
       type: Sdn.ValueType.OPTION,
@@ -119,6 +114,11 @@ export const schema = {
         spread: { type: Sdn.ValueType.EMPTY, value: null },
       },
     ],
+    role: { type: Sdn.ValueType.OPTION, value: Sdn.AriaRole.OPTION },
+    ariaLabel: { type: Sdn.ValueType.EMPTY, value: null },
+    ariaHidden: { type: Sdn.ValueType.EXACT, value: false },
+    ariaDisabled: { type: Sdn.ValueType.EMPTY, value: null },
+    ariaSelected: { type: Sdn.ValueType.EMPTY, value: null },
   },
   default: {
     children: [

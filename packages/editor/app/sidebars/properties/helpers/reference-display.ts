@@ -1,3 +1,4 @@
+import { getPropertyRegistryEntry } from "@lib/icons/icons-registry"
 import { Board, Instance, ValueType, Variant } from "@seldon/core"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { FlatProperty } from "./properties-data"
@@ -15,7 +16,7 @@ export function buildReferenceProperty(
     key: "reference",
     propertyType: "atomic",
     label: "Reference",
-    icon: "seldon-component",
+    icon: getPropertyRegistryEntry("reference")?.icon ?? "seldon-component",
     value: ref
       ? { type: ValueType.EXACT, value: ref }
       : { type: ValueType.EMPTY, value: null },
