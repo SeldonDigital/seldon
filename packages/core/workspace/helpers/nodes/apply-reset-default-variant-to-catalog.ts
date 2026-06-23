@@ -2,20 +2,14 @@ import { produce } from "immer"
 
 import { getComponentSchema } from "../../../components/catalog"
 import { type ComponentId, isComponentId } from "../../../components/constants"
-import { type SchemaChild, isComplexSchema } from "../../../components/types"
-import { mergeProperties } from "../../../properties/helpers/merge-properties"
+import { isComplexSchema } from "../../../components/types"
 import { isComponentBoard, isPlaygroundBoard } from "../../model/components"
-import { formatNodeLink, parseNodeLink } from "../../model/template-ref"
+import { parseNodeLink } from "../../model/template-ref"
 import type { ComponentTreeRef, EntryNode, Workspace } from "../../types"
-import { componentBoardUniqueNodeId } from "../components/entry-node-ids"
 import { walkBoardTreeRefs } from "../components/walk-board-tree-refs"
+import { rebuildDefaultChildren } from "./build-component-variants"
 import { findBoardContainingTreeNodeId } from "./duplicate-entry-variant-subtree"
 import { getNodeCatalogId } from "./get-node-catalog-id"
-import { resolveSchemaChild } from "./resolve-schema-child"
-import {
-  applyVariantFallbackToSlot,
-  mergeInlineSlotOverrides,
-} from "./schema-composition-children"
 
 function collectTreeRefIds(ref: ComponentTreeRef): string[] {
   const ids = [ref.id]
@@ -33,95 +27,6 @@ function collectAllComponentTreeNodeIds(workspace: Workspace): Set<string> {
     })
   }
   return out
-}
-
-/**
- * Finds an unused existing child of the same component and marks it used, so its
- * canonical node id can be reused. Returns null when no match remains.
- */
-function takeReusableChild(
-  existingRefs: ComponentTreeRef[] | undefined,
-  usedExisting: Set<number>,
-  workspace: Workspace,
-  componentId: string,
-): { id: string; children: ComponentTreeRef[] | undefined } | null {
-  if (!existingRefs) return null
-
-  const matchIdx = existingRefs.findIndex((ref, index) => {
-    if (usedExisting.has(index)) return false
-    const node = workspace.nodes[ref.id]
-    return !!node && getNodeCatalogId(node, workspace) === componentId
-  })
-  if (matchIdx < 0) return null
-
-  usedExisting.add(matchIdx)
-  return {
-    id: existingRefs[matchIdx].id,
-    children: existingRefs[matchIdx].children,
-  }
-}
-
-/**
- * Rebuilds the default variant's child tree from `schema.default.children`.
- * Reuses an existing child node id when a child of the same component sits at
- * the same position, so canonical child ids referenced by schema-variant trees
- * and instances stay stable. Restored-but-currently-absent children mint fresh
- * ids. Child overrides are restored to the schema slot's overrides.
- */
-function rebuildDefaultChildren(
-  slots: SchemaChild[],
-  existingRefs: ComponentTreeRef[] | undefined,
-  workspace: Workspace,
-  newNodes: Record<string, EntryNode>,
-): ComponentTreeRef[] {
-  const usedExisting = new Set<number>()
-  const result: ComponentTreeRef[] = []
-
-  for (const rawSlot of slots) {
-    const slot = applyVariantFallbackToSlot(rawSlot, undefined)
-    const resolved = resolveSchemaChild(slot)
-
-    const reused = takeReusableChild(
-      existingRefs,
-      usedExisting,
-      workspace,
-      resolved.componentId,
-    )
-    const existingGrandchildren = reused?.children
-
-    const id = reused?.id ?? componentBoardUniqueNodeId(resolved.schema.id)
-    const overrides = mergeProperties({}, slot.overrides ?? {})
-
-    newNodes[id] = {
-      id,
-      type: "instance",
-      level: resolved.schema.level as EntryNode["level"],
-      label: resolved.label,
-      theme: null,
-      template: formatNodeLink(resolved.templateNodeId),
-      overrides: overrides as EntryNode["overrides"],
-      origin: "schema",
-      __editor: { initialOverrides: structuredClone(overrides) },
-    }
-
-    // Effective slots arrive pre-merged; only the raw schema fallback slots
-    // taken for a childless slot still need their own merge pass.
-    const childSlots: SchemaChild[] = slot.children?.length
-      ? slot.children
-      : resolved.fallbackChildren.map((fallbackSlot) =>
-          mergeInlineSlotOverrides(fallbackSlot),
-        )
-    const childRefs = rebuildDefaultChildren(
-      childSlots,
-      existingGrandchildren,
-      workspace,
-      newNodes,
-    )
-
-    result.push(childRefs.length ? { id, children: childRefs } : { id })
-  }
-
-  return result
 }
 
 /**
@@ -167,12 +72,12 @@ export function applyResetDefaultVariantToCatalog(
     } else {
       const newNodes: Record<string, EntryNode> = {}
       const childRefs = rebuildDefaultChildren(
-        (schema.default.children ?? []).map((slot) =>
-          mergeInlineSlotOverrides(slot),
-        ),
+        schema.default.children ?? [],
         defaultRef.children,
-        draft as unknown as Workspace,
-        newNodes,
+        {
+          workspace: draft as unknown as Workspace,
+          newNodes,
+        },
       )
       board.variants[0] = childRefs.length
         ? { id: defaultVariantRootId, children: childRefs }

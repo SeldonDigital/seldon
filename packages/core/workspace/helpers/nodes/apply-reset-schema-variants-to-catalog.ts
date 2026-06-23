@@ -2,17 +2,14 @@ import { produce } from "immer"
 
 import { getComponentSchema } from "../../../components/catalog"
 import { type ComponentId } from "../../../components/constants"
+import { isComplexSchema } from "../../../components/types"
 import { isComponentBoard } from "../../model/components"
 import { parseNodeLink } from "../../model/template-ref"
 import type { ComponentTreeRef, EntryNode, Workspace } from "../../types"
 import { componentBoardDefaultNodeId } from "../components/entry-node-ids"
 import { walkBoardTreeRefs } from "../components/walk-board-tree-refs"
-import {
-  buildCanonicalInstanceMap,
-  buildComponentRegistry,
-  rebuildSchemaVariant,
-  seedCanonicalNodes,
-} from "./rebuild-schema-variants"
+import { mapTopLevelCanonicals } from "./build-component-variants"
+import { rebuildSchemaVariant } from "./rebuild-schema-variants"
 
 /**
  * Rebuilds every catalog schema variant of a component board to its catalog
@@ -43,15 +40,11 @@ export function applyResetSchemaVariantsToCatalog(
       (ref) => ref.id === defaultVariantRootId,
     ) ?? { id: defaultVariantRootId }
 
-    const registry = buildComponentRegistry(draft)
-    const canonicalInstanceByFingerprint = buildCanonicalInstanceMap(
-      schema,
+    const canonicalMap = mapTopLevelCanonicals(
+      isComplexSchema(schema) ? schema.default.children : undefined,
       defaultRef,
     )
-    const { newNodes, seededIds } = seedCanonicalNodes(
-      draft.nodes,
-      canonicalInstanceByFingerprint,
-    )
+    const newNodes: Record<string, EntryNode> = {}
 
     const schemaVariantRefs: ComponentTreeRef[] = (schema.variants ?? []).map(
       (catalogVariant) =>
@@ -60,14 +53,13 @@ export function applyResetSchemaVariantsToCatalog(
           defaultVariantRootId,
           schema,
           catalogVariant,
-          registry,
+          workspace: draft,
           newNodes,
-          canonicalInstanceByFingerprint,
+          canonicalMap,
         }),
     )
 
     for (const [id, node] of Object.entries(newNodes)) {
-      if (seededIds.has(id)) continue
       draft.nodes[id] = node
     }
 
