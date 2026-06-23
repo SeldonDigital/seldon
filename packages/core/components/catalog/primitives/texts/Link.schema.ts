@@ -1,6 +1,10 @@
-import * as Sdn from "../../../../properties"
-import * as Seldon from "../../../constants"
-import { ComponentExport, ComponentSchema } from "../../../types"
+import * as Sdn from "../../../../properties";
+import * as Seldon from "../../../constants";
+import { ComponentExport, ComponentSchema } from "../../../types";
+
+
+
+
 
 export const schema = {
   name: "Link",
@@ -35,7 +39,10 @@ export const schema = {
       left: { type: Sdn.ValueType.EMPTY, value: null },
     },
     rotation: { type: Sdn.ValueType.EMPTY, value: null },
-    color: { type: Sdn.ValueType.EMPTY, value: null },
+    color: {
+      type: Sdn.ValueType.THEME_CATEGORICAL,
+      value: "@swatch.primary",
+    },
     brightness: { type: Sdn.ValueType.EMPTY, value: null },
     opacity: { type: Sdn.ValueType.EMPTY, value: null },
     background: [
