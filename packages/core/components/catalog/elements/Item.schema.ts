@@ -480,7 +480,6 @@ export const schema = {
                     function: Sdn.ComputedFunction.AUTO_FIT,
                     input: {
                       basedOn: "#parent.buttonSize",
-                      factor: 0.8,
                     },
                   },
                 },
@@ -523,7 +522,6 @@ export const schema = {
                       function: Sdn.ComputedFunction.AUTO_FIT,
                       input: {
                         basedOn: "#parent.buttonSize",
-                        factor: 0.8,
                       },
                     },
                   },
@@ -554,7 +552,6 @@ export const schema = {
                     function: Sdn.ComputedFunction.AUTO_FIT,
                     input: {
                       basedOn: "#parent.buttonSize",
-                      factor: 0.8,
                     },
                   },
                 },
@@ -597,7 +594,6 @@ export const schema = {
                       function: Sdn.ComputedFunction.AUTO_FIT,
                       input: {
                         basedOn: "#parent.buttonSize",
-                        factor: 0.8,
                       },
                     },
                   },
@@ -643,7 +639,6 @@ export const schema = {
                       function: Sdn.ComputedFunction.AUTO_FIT,
                       input: {
                         basedOn: "#parent.buttonSize",
-                        factor: 0.8,
                       },
                     },
                   },

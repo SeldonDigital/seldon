@@ -379,7 +379,6 @@ export const schema = {
                       function: ComputedFunction.AUTO_FIT,
                       input: {
                         basedOn: "#parent.buttonSize",
-                        factor: 0.8,
                       },
                     },
                   },

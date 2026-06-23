@@ -164,7 +164,7 @@ size: {
   type: Sdn.ValueType.COMPUTED,
   value: {
     function: Sdn.ComputedFunction.AUTO_FIT,
-    input: { basedOn: "#parent.buttonSize", factor: 0.8 },
+    input: { basedOn: "#parent.buttonSize" },
   },
 }
 ```

@@ -30,6 +30,7 @@ import {
   BORDER_SIDE_KEYS,
   Board,
   BorderSideKey,
+  ComputedFunction,
   Instance,
   Properties,
   PropertyKey,
@@ -66,6 +67,7 @@ import type {
   PropertyKey as CorePropertyKey,
   LayeredPaintKey,
 } from "@seldon/core/properties/types/property-keys"
+import { computeNodeProperties } from "@seldon/core/workspace/compute"
 import { getComponentPropertyDefaults } from "@seldon/core/workspace/helpers/components/get-component-property-defaults"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { isPlaygroundBoard } from "@seldon/core/workspace/model/components"
@@ -471,6 +473,68 @@ export function createFlatProperty(
 /**
  * Create a flat sub-property
  */
+/** Sibling brightness/opacity facet -> the color facet it mirrors, and which percentage it is. */
+const MATCH_SIBLING_FACETS: Record<
+  string,
+  { colorKey: string; kind: "brightness" | "opacity" }
+> = {
+  brightness: { colorKey: "color", kind: "brightness" },
+  opacity: { colorKey: "color", kind: "opacity" },
+  startBrightness: { colorKey: "startColor", kind: "brightness" },
+  startOpacity: { colorKey: "startColor", kind: "opacity" },
+  endBrightness: { colorKey: "endColor", kind: "brightness" },
+  endOpacity: { colorKey: "endColor", kind: "opacity" },
+}
+
+function isMatchColorValue(value: unknown): boolean {
+  return (
+    !!value &&
+    typeof value === "object" &&
+    (value as { type?: unknown }).type === ValueType.COMPUTED &&
+    (value as { value?: { function?: unknown } }).value?.function ===
+      ComputedFunction.MATCH
+  )
+}
+
+/**
+ * Decides whether a `brightness`/`opacity` facet is locked to a Match color and what value to show.
+ * A facet is locked when its sibling color in `layer` resolves to Match and the node theme's
+ * matching toggle is on. The displayed value comes from the node's computed properties, so the row
+ * shows the mirrored source value rather than the unset authored value.
+ */
+function resolveMatchSiblingLock(
+  subKey: string,
+  subPropertyPath: string,
+  layer: Record<string, unknown> | undefined | null,
+  node: Variant | Instance | Board,
+  workspace: Workspace,
+  theme?: Theme,
+): { displayValue: unknown } | null {
+  const sibling = MATCH_SIBLING_FACETS[subKey]
+  if (!sibling || !layer) return null
+  if (!isMatchColorValue(layer[sibling.colorKey])) return null
+
+  const params = theme?.matchColor?.parameters
+  const enabled =
+    sibling.kind === "brightness"
+      ? !!params?.includeBrightness
+      : !!params?.includeOpacity
+  if (!enabled) return null
+
+  let displayValue: unknown
+  try {
+    const computed = computeNodeProperties(
+      getPropertiesSubjectId(node),
+      workspace as never,
+    )
+    displayValue = findInObject(computed, subPropertyPath)
+  } catch {
+    displayValue = undefined
+  }
+
+  return { displayValue: displayValue ?? EMPTY_VALUE }
+}
+
 export function createFlatSubProperty(
   propertyKey: string,
   subKey: string,
@@ -480,17 +544,23 @@ export function createFlatSubProperty(
   workspace: Workspace,
   theme?: Theme,
   layerIndex: number = 0,
+  matchLock?: { displayValue: unknown } | null,
 ): FlatProperty {
   const subPropertyPath = subPropertyPathFor(propertyKey, subKey, layerIndex)
   const subRegistryEntry = getPropertyRegistryEntry(subPropertyPath)
 
+  if (matchLock) {
+    subValue = matchLock.displayValue
+  }
+
   const isDimmed =
-    subValue &&
-    typeof subValue === "object" &&
-    subValue !== null &&
-    "type" in subValue &&
-    subValue.type === ValueType.COMPUTED &&
-    !facetAllowsAuthoredComputed(subPropertyPath)
+    !!matchLock ||
+    (subValue &&
+      typeof subValue === "object" &&
+      subValue !== null &&
+      "type" in subValue &&
+      subValue.type === ValueType.COMPUTED &&
+      !facetAllowsAuthoredComputed(subPropertyPath))
 
   return {
     key: subPropertyPath,
@@ -602,6 +672,15 @@ function getSubProperties(
     // editor reads it directly instead of fabricating a status for upper layers.
     const status = propertyStatus[subPropertyPath] ?? "not used"
 
+    const matchLock = resolveMatchSiblingLock(
+      subKey,
+      subPropertyPath,
+      layer,
+      node,
+      workspace,
+      theme,
+    )
+
     const flatSubProperty = createFlatSubProperty(
       propertyKey,
       subKey,
@@ -611,6 +690,7 @@ function getSubProperties(
       workspace,
       theme,
       layerIndex,
+      matchLock,
     )
 
     subProperties.push(flatSubProperty)

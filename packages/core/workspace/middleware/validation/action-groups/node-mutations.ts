@@ -1,6 +1,8 @@
 import type { ComponentId } from "../../../../components/constants"
-import { ValueType } from "../../../../properties"
+import { ComputedFunction, ValueType } from "../../../../properties"
 import { mergeProperties } from "../../../../properties/helpers/merge-properties"
+import { getComputedTheme } from "../../../compute"
+import { getEffectiveProperties } from "../../../helpers/properties"
 import { rules } from "../../../../rules/config/rules.config"
 import { ErrorMessages } from "../../../constants"
 import { getBoardVariantRootIds } from "../../../helpers/components/get-board-variant-root-ids"
@@ -233,6 +235,12 @@ export function validateNodeMutation(
         getNodeComponentId(node, workspace),
       )
       propertyValidators.values(action.payload.properties, workspace, themeId)
+      assertMatchColorSiblingsLocked(
+        workspace,
+        nodeId,
+        themeId,
+        action.payload.properties as Record<string, unknown>,
+      )
       if (isSandboxNode(node)) {
         assertSandboxConstraints(workspace, action, node as EntryNode, nodeId)
       }
@@ -600,5 +608,104 @@ function assertThemeDeletable(
       `Theme ${themeId} is still in use (effective theme)`,
       action,
     )
+  }
+}
+
+/** Single-color compounds whose `color` facet has sibling `brightness`/`opacity`. */
+const COLOR_COMPOUND_KEYS = [
+  "border",
+  "borderTop",
+  "borderRight",
+  "borderBottom",
+  "borderLeft",
+] as const
+
+/** Layered-paint keys whose layers carry color (and gradient stop) facets. */
+const COLOR_LAYER_KEYS = ["background", "shadow"] as const
+
+/** Color facet -> sibling brightness/opacity keys, covering single colors and gradient stops. */
+const COLOR_SIBLING_KEYS: Record<
+  string,
+  { brightness: string; opacity: string }
+> = {
+  color: { brightness: "brightness", opacity: "opacity" },
+  startColor: { brightness: "startBrightness", opacity: "startOpacity" },
+  endColor: { brightness: "endBrightness", opacity: "endOpacity" },
+}
+
+function isMatchColorValue(value: unknown): boolean {
+  return (
+    !!value &&
+    typeof value === "object" &&
+    (value as { type?: unknown }).type === ValueType.COMPUTED &&
+    (value as { value?: { function?: unknown } }).value?.function ===
+      ComputedFunction.MATCH
+  )
+}
+
+/**
+ * Rejects setting `brightness`/`opacity` on a compound or layer whose `color` is Match while the
+ * matching theme toggle is on. Those facets mirror the matched source at compute time and must not
+ * be edited directly. Reads the effective color so a partial patch (brightness only) is still
+ * checked, and honors a `color` in the same patch so changing color away from Match is allowed.
+ */
+function assertMatchColorSiblingsLocked(
+  workspace: Workspace,
+  nodeId: InstanceId | VariantId,
+  themeId: string | undefined,
+  properties: Record<string, unknown>,
+): void {
+  const theme = getComputedTheme(themeId ?? "seldon", workspace) as {
+    matchColor?: {
+      parameters?: { includeBrightness?: boolean; includeOpacity?: boolean }
+    }
+  }
+  const includeBrightness = !!theme.matchColor?.parameters?.includeBrightness
+  const includeOpacity = !!theme.matchColor?.parameters?.includeOpacity
+  if (!includeBrightness && !includeOpacity) return
+
+  const effective = getEffectiveProperties(nodeId, workspace) as Record<
+    string,
+    unknown
+  >
+
+  const checkFacets = (
+    patch: Record<string, unknown>,
+    effectiveFacets: Record<string, unknown> | undefined,
+  ): void => {
+    for (const [colorKey, siblingKeys] of Object.entries(COLOR_SIBLING_KEYS)) {
+      const color = colorKey in patch ? patch[colorKey] : effectiveFacets?.[colorKey]
+      if (!isMatchColorValue(color)) continue
+
+      if (includeBrightness && siblingKeys.brightness in patch) {
+        check(false, "Brightness cannot be changed while color is set to Match.")
+      }
+      if (includeOpacity && siblingKeys.opacity in patch) {
+        check(false, "Opacity cannot be changed while color is set to Match.")
+      }
+    }
+  }
+
+  for (const key of COLOR_COMPOUND_KEYS) {
+    const patch = properties[key]
+    if (patch && typeof patch === "object" && !Array.isArray(patch)) {
+      checkFacets(
+        patch as Record<string, unknown>,
+        effective[key] as Record<string, unknown> | undefined,
+      )
+    }
+  }
+
+  for (const key of COLOR_LAYER_KEYS) {
+    const patchLayers = properties[key]
+    if (!Array.isArray(patchLayers)) continue
+    const effectiveLayers = effective[key]
+    patchLayers.forEach((layerPatch, index) => {
+      if (!layerPatch || typeof layerPatch !== "object") return
+      const effectiveLayer = Array.isArray(effectiveLayers)
+        ? (effectiveLayers[index] as Record<string, unknown> | undefined)
+        : undefined
+      checkFacets(layerPatch as Record<string, unknown>, effectiveLayer)
+    })
   }
 }

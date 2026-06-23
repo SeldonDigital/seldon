@@ -20,11 +20,11 @@ flowchart LR
 | --- | --- | --- |
 | `computeProperties` | `compute-properties.ts` | Walks one properties object and resolves every computed cell. Low-level pass after merge when context is already built. |
 | `getBasedOnValue` | `get-based-on-value.ts` | Resolves one `basedOn` path to a primitive tagged value. Shared input lookup for all compute engines. |
-| `computeAutoFit` | `compute-auto-fit.ts` | Scales a numeric or theme ordinal input by `factor`. Dispatched from `computeProperties` for `ComputedFunction.AUTO_FIT`. |
+| `computeAutoFit` | `compute-auto-fit.ts` | Scales a numeric or theme ordinal input by the theme's `autoFit` factor. Dispatched from `computeProperties` for `ComputedFunction.AUTO_FIT`. |
 | `AUTO_FIT_DISPLAY_NAME` | `compute-auto-fit.ts` | Editor label for auto fit. Entry in `COMPUTED_FUNCTION_DISPLAY_NAMES`. |
 | `computeHighContrastColor` | `compute-high-contrast-color.ts` | Picks a readable foreground swatch against a background color. Dispatched for `ComputedFunction.HIGH_CONTRAST_COLOR`. |
 | `HIGH_CONTRAST_COLOR_DISPLAY_NAME` | `compute-high-contrast-color.ts` | Editor label for high contrast color. Entry in `COMPUTED_FUNCTION_DISPLAY_NAMES`. |
-| `computeOpticalPadding` | `compute-optical-padding.ts` | Maps an input through side-specific ratios and `factor`. Dispatched for `ComputedFunction.OPTICAL_PADDING`. |
+| `computeOpticalPadding` | `compute-optical-padding.ts` | Maps an input through the theme's side-specific rhythms. Dispatched for `ComputedFunction.OPTICAL_PADDING`. |
 | `OPTICAL_PADDING_DISPLAY_NAME` | `compute-optical-padding.ts` | Editor label for optical padding. Entry in `COMPUTED_FUNCTION_DISPLAY_NAMES`. |
 | `computeMatch` | `compute-match.ts` | Returns the resolved primitive at `basedOn`. Dispatched for `ComputedFunction.MATCH`. |
 | `MATCH_DISPLAY_NAME` | `compute-match.ts` | Editor label for match. Entry in `COMPUTED_FUNCTION_DISPLAY_NAMES`. |
@@ -44,7 +44,7 @@ flowchart LR
 - When a `#parent.` path resolves to a missing path, `EMPTY`, `INHERIT`, or explicit `transparent`, `getBasedOnValue` walks up the parent chain until a contributing value appears.
 - A `#self.` path reads the current node first. When the node's own value is non-contributing (missing, `EMPTY`, `INHERIT`, explicit `transparent`, or a `none` background layer), it falls back to the same parent walk as `#parent.`. Use it for foreground colors that should contrast against the node's own background when it paints one, otherwise the nearest painting ancestor.
 - `computeHighContrastColor` falls back to the theme's `highContrast.parameters.fallbackColor` when its `basedOn` path cannot be resolved or resolves to an empty or transparent color. A root node with no parent context computes against that surface and returns the theme black swatch.
-- The compute engines read their tunable inputs from the theme Computed groups instead of hardcoded constants: `autoFit.parameters.factor`, `opticalPadding.parameters.{leftRhythm,rightRhythm,verticalRhythm}`, `highContrast.parameters.{contrastRatio,fallbackColor,includeBleed}`, `matchColor.parameters.{includeBrightness,includeOpacity}`, and the `modulation` ratio and base sizes. A per-instance `factor` input still overrides `autoFit`.
+- The compute engines read their tunable values from the theme Computed groups, not from the schema: `autoFit.parameters.factor`, `opticalPadding.parameters.{leftRhythm,rightRhythm,verticalRhythm}`, `highContrast.parameters.{contrastRatio,fallbackColor,includeBleed}`, `matchColor.parameters.{includeBrightness,includeOpacity}`, and the `modulation` ratio and base sizes. A computed schema entry carries only the function and its `basedOn` path. It does not author a `factor`.
 - Pass `{ stage: "effective" }` to `computeNodeProperties` to stop after merge and before computed resolution. The properties UI uses that mode for editor status.
 - Pass `{ rootParentFallback: "board" }` to `computeNodeProperties` or `getNodeComputeContext` to make a node without a composition parent resolve `#parent.*` paths against its owning board. The editor canvas opts in. Export leaves this off, so exported CSS never depends on board styling.
 

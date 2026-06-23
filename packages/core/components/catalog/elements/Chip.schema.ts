@@ -56,7 +56,6 @@ export const schema = {
           function: Sdn.ComputedFunction.OPTICAL_PADDING,
           input: {
             basedOn: "#buttonSize",
-            factor: 0.5,
           },
         },
       },
@@ -66,7 +65,6 @@ export const schema = {
           function: Sdn.ComputedFunction.OPTICAL_PADDING,
           input: {
             basedOn: "#buttonSize",
-            factor: 0.875,
           },
         },
       },
@@ -76,7 +74,6 @@ export const schema = {
           function: Sdn.ComputedFunction.OPTICAL_PADDING,
           input: {
             basedOn: "#buttonSize",
-            factor: 0.5,
           },
         },
       },
@@ -86,7 +83,6 @@ export const schema = {
           function: Sdn.ComputedFunction.OPTICAL_PADDING,
           input: {
             basedOn: "#buttonSize",
-            factor: 0.75,
           },
         },
       },
@@ -236,7 +232,6 @@ export const schema = {
                 function: Sdn.ComputedFunction.AUTO_FIT,
                 input: {
                   basedOn: "#parent.buttonSize",
-                  factor: 0.8,
                 },
               },
             },
@@ -280,7 +275,7 @@ export const schema = {
               type: Sdn.ValueType.COMPUTED,
               value: {
                 function: Sdn.ComputedFunction.AUTO_FIT,
-                input: { basedOn: "#parent.buttonSize", factor: 0.8 },
+                input: { basedOn: "#parent.buttonSize" },
               },
             },
             color: {
@@ -314,7 +309,7 @@ export const schema = {
                 type: Sdn.ValueType.COMPUTED,
                 value: {
                   function: Sdn.ComputedFunction.AUTO_FIT,
-                  input: { basedOn: "#parent.buttonSize", factor: 0.8 },
+                  input: { basedOn: "#parent.buttonSize" },
                 },
               },
             },
@@ -377,7 +372,7 @@ export const schema = {
               type: Sdn.ValueType.COMPUTED,
               value: {
                 function: Sdn.ComputedFunction.AUTO_FIT,
-                input: { basedOn: "#parent.buttonSize", factor: 0.8 },
+                input: { basedOn: "#parent.buttonSize" },
               },
             },
             color: {
@@ -428,7 +423,7 @@ export const schema = {
               type: Sdn.ValueType.COMPUTED,
               value: {
                 function: Sdn.ComputedFunction.AUTO_FIT,
-                input: { basedOn: "#parent.buttonSize", factor: 0.8 },
+                input: { basedOn: "#parent.buttonSize" },
               },
             },
             color: {
@@ -462,7 +457,7 @@ export const schema = {
                 type: Sdn.ValueType.COMPUTED,
                 value: {
                   function: Sdn.ComputedFunction.AUTO_FIT,
-                  input: { basedOn: "#parent.buttonSize", factor: 0.8 },
+                  input: { basedOn: "#parent.buttonSize" },
                 },
               },
             },
@@ -514,7 +509,7 @@ export const schema = {
                 type: Sdn.ValueType.COMPUTED,
                 value: {
                   function: Sdn.ComputedFunction.AUTO_FIT,
-                  input: { basedOn: "#parent.buttonSize", factor: 0.8 },
+                  input: { basedOn: "#parent.buttonSize" },
                 },
               },
             },
@@ -529,7 +524,7 @@ export const schema = {
               type: Sdn.ValueType.COMPUTED,
               value: {
                 function: Sdn.ComputedFunction.AUTO_FIT,
-                input: { basedOn: "#parent.buttonSize", factor: 0.8 },
+                input: { basedOn: "#parent.buttonSize" },
               },
             },
             color: {
@@ -586,7 +581,7 @@ export const schema = {
                 type: Sdn.ValueType.COMPUTED,
                 value: {
                   function: Sdn.ComputedFunction.AUTO_FIT,
-                  input: { basedOn: "#parent.buttonSize", factor: 0.8 },
+                  input: { basedOn: "#parent.buttonSize" },
                 },
               },
             },

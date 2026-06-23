@@ -8,7 +8,6 @@ export type ComputedAutoFitValue = {
     function: ComputedFunction.AUTO_FIT
     input: {
       basedOn: BasedOnPropertyKey
-      factor: number
     }
   }
 }

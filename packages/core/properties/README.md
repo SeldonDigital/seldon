@@ -169,7 +169,7 @@ enum ValueType {
 { type: ValueType.COMPUTED,
   value: {
     function: "autoFit",
-    input: { basedOn: "#parent.size", factor: 0.8 }
+    input: { basedOn: "#parent.size" }
   }
 }
 

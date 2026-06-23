@@ -147,7 +147,7 @@ The Computed section holds the inputs that drive the compute engines and the col
 
 | Token | Type | Values |
 | --- | --- | --- |
-| `autoFit.parameters.factor` | number | Default scale factor when an instance sets no `factor` input |
+| `autoFit.parameters.factor` | number | Scale factor for every `AUTO_FIT` computed value |
 
 ---
 

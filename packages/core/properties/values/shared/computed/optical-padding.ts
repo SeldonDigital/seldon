@@ -8,7 +8,6 @@ export type ComputedOpticalPaddingValue = {
     function: ComputedFunction.OPTICAL_PADDING
     input: {
       basedOn: BasedOnPropertyKey
-      factor: number
     }
   }
 }

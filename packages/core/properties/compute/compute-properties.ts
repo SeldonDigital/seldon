@@ -18,6 +18,7 @@ import { computeAutoFit } from "./compute-auto-fit"
 import { computeHighContrastColor } from "./compute-high-contrast-color"
 import { computeLayeredPaintStack } from "./compute-layered-paint"
 import { computeMatch } from "./compute-match"
+import { applyMatchColorMirror } from "./compute-match-mirror"
 import { computeOpticalPadding } from "./compute-optical-padding"
 import { ComputeContext, ComputeKeys } from "./types"
 
@@ -124,6 +125,14 @@ export function computeProperties(
           )
         }
       })
+
+      const resolvedCompound = getCompoundPropertyValue(
+        computedProperties,
+        propertyKey,
+      ) as Record<string, Value> | undefined
+      if (resolvedCompound) {
+        applyMatchColorMirror(compoundValue, resolvedCompound, context)
+      }
     } else {
       if (
         value &&

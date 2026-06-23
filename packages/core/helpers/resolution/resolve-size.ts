@@ -74,7 +74,9 @@ export function resolveSize({
             type: ValueType.EXACT,
             value: {
               unit: Unit.REM,
-              value: resolvedParentSize.value.value * size.value.input.factor,
+              value:
+                resolvedParentSize.value.value *
+                theme.autoFit.parameters.factor,
             },
           }
 

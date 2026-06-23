@@ -47,11 +47,11 @@ export const theme: StockTheme = {
   },
   opticalPadding: {
     type: TokenType.COMPUTED,
-    parameters: { leftRhythm: 0.64, rightRhythm: 0.8, verticalRhythm: 0.4 },
+    parameters: { leftRhythm: 0.75, rightRhythm: 0.875, verticalRhythm: 0.5 },
   },
   autoFit: {
     type: TokenType.COMPUTED,
-    parameters: { factor: 1 },
+    parameters: { factor: 0.8 },
   },
   fontFamily: {
     type: TokenType.COMPUTED,

@@ -13,9 +13,9 @@ import { ComputeContext, ComputeKeys } from "./types"
 export const OPTICAL_PADDING_DISPLAY_NAME = "Optical Padding"
 
 /**
- * Multiplies the resolved based-on length by `factor` and by a fixed ratio for the padding side
- * named in `keys.subPropertyKey`. Missing `basedOn` becomes `#parent.fontSize`. Missing `factor`
- * becomes `1.5`.
+ * Multiplies the resolved based-on length by the theme's side rhythm for the padding side named in
+ * `keys.subPropertyKey`. Missing `basedOn` becomes `#parent.fontSize`. The side rhythms are theme
+ * Computed values and are not authored per schema.
  *
  * Supported resolved based-on types: `EXACT` number, `EXACT` length with `unit` and `value`, or
  * `THEME_ORDINAL` only when the token string uses the `@fontSize` prefix. Degrades to `EMPTY` when
@@ -33,13 +33,12 @@ export function computeOpticalPadding(
   keys: ComputeKeys,
 ) {
   const basedOn = value.value.input.basedOn || "#parent.fontSize"
-  const factor = value.value.input.factor ?? 1.5
 
   const valueWithDefaults = {
     ...value,
     value: {
       ...value.value,
-      input: { basedOn, factor },
+      input: { basedOn },
     },
   }
 
@@ -55,7 +54,7 @@ export function computeOpticalPadding(
     if (typeof basedOnValue.value === "number") {
       return {
         ...basedOnValue,
-        value: round(basedOnValue.value * ratio * factor),
+        value: round(basedOnValue.value * ratio),
       }
     }
 
@@ -64,7 +63,7 @@ export function computeOpticalPadding(
         ...basedOnValue,
         value: {
           ...basedOnValue.value,
-          value: round(basedOnValue.value.value * ratio * factor),
+          value: round(basedOnValue.value.value * ratio),
         },
       }
     }
@@ -95,7 +94,7 @@ export function computeOpticalPadding(
               step: themeOption.parameters.step,
             },
             { round: false },
-          ) * factor,
+          ) * ratio,
         ),
       },
     }

@@ -12,8 +12,8 @@ import { ComputeContext } from "./types"
 export const AUTO_FIT_DISPLAY_NAME = "Auto Fit"
 
 /**
- * Scales the value at `basedOn` by `factor`, using defaults when those inputs are missing.
- * Missing `basedOn` becomes `#parent.buttonSize`. Missing `factor` becomes `1`.
+ * Scales the value at `basedOn` by the theme's `autoFit` factor. Missing `basedOn` becomes
+ * `#parent.buttonSize`. The factor is a theme Computed value and is not authored per schema.
  *
  * Supported resolved based-on types: `EXACT` number, `EXACT` length with `unit` and `value`, or
  * `THEME_ORDINAL` only when the token string uses the `@fontSize` prefix. Degrades to `EMPTY` when
@@ -29,14 +29,13 @@ export function computeAutoFit(
   context: ComputeContext,
 ) {
   const basedOn = value.value.input.basedOn || "#parent.buttonSize"
-  const factor =
-    value.value.input.factor ?? context.theme.autoFit.parameters.factor
+  const factor = context.theme.autoFit.parameters.factor
 
   const valueWithDefaults = {
     ...value,
     value: {
       ...value.value,
-      input: { basedOn, factor },
+      input: { basedOn },
     },
   }
 

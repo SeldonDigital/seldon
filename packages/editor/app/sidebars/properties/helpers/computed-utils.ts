@@ -46,13 +46,12 @@ function getDefaultInput(
 ): Record<string, unknown> {
   switch (computedFunction) {
     case ComputedFunction.AUTO_FIT:
-      return { basedOn: "#parent.buttonSize", factor: 1 }
+      return { basedOn: "#parent.buttonSize" }
     case ComputedFunction.OPTICAL_PADDING:
       return {
         basedOn: node
           ? getSuggestedBasedOnPath(workspace, node)
           : "#parent.fontSize",
-        factor: 1.5,
       }
     case ComputedFunction.HIGH_CONTRAST_COLOR:
       return { basedOn: "#self.background.color" }
