@@ -1,5 +1,6 @@
 "use client"
 
+import { COLORS } from "@lib/helpers/colors"
 import { CSSProperties, useEffect, useMemo, useRef, useState } from "react"
 import {
   type CustomState,
@@ -9,12 +10,11 @@ import {
   type ReservedStateName,
 } from "@seldon/core/workspace/model/node-state"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
-import { walkComponentTree } from "@lib/workspace/component-tree"
-import { COLORS } from "@lib/helpers/colors"
 import {
   useActiveBoardState,
   useBoardStateStore,
 } from "../hooks/use-board-state-store"
+import { walkComponentTree } from "@lib/workspace/component-tree"
 import { Combobox } from "@seldon/components/custom-components/controls/combobox/Combobox"
 
 /** Editor-only display order for the reserved states in the switcher menu. */

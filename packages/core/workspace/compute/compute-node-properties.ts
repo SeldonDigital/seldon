@@ -371,11 +371,7 @@ export function getInheritedNodeProperties(
 
   return mergeEffectiveProperties(
     expandPresetSources(
-      [
-        schemaProperties,
-        ...templateSources.normal,
-        ...templateSources.state,
-      ],
+      [schemaProperties, ...templateSources.normal, ...templateSources.state],
       () =>
         options.theme ?? resolveNodeTheme(node, workspace, options.parentIndex),
     ),

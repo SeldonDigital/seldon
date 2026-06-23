@@ -22,12 +22,12 @@ import type {
   EntryNodeId,
   Workspace,
 } from "../../types"
-import { getVariantTree } from "../components/get-variant-tree"
 import {
   componentBoardDefaultNodeId,
   componentBoardSchemaVariantNodeId,
   componentBoardUniqueNodeId,
 } from "../components/entry-node-ids"
+import { getVariantTree } from "../components/get-variant-tree"
 import { getNodeCatalogId } from "./get-node-catalog-id"
 import { resolveSchemaChild } from "./resolve-schema-child"
 import {
@@ -297,7 +297,10 @@ export function mapTopLevelCanonicals(
     const child = children[index]
     if (!child) return
     const mergedSlot = mergeInlineSlotOverrides(rawSlot, variantFallbacks)
-    map.set(getSchemaSlotFingerprint(mergedSlot, { variantFallbacks }), child.id)
+    map.set(
+      getSchemaSlotFingerprint(mergedSlot, { variantFallbacks }),
+      child.id,
+    )
   })
   return map
 }

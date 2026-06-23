@@ -19,8 +19,8 @@ import {
   useRevealedBorderSides,
 } from "./hooks/use-border-side-visibility"
 import { useLayerDragMonitor } from "./hooks/use-layer-drag-monitor"
-import { PropertyEditNavigationProvider } from "./hooks/use-property-edit-navigation"
 import { usePropertiesSidebar } from "./hooks/use-properties-sidebar"
+import { PropertyEditNavigationProvider } from "./hooks/use-property-edit-navigation"
 import { useIsCategoryExpanded } from "./hooks/use-property-expansion"
 import {
   ScrollerShell,
