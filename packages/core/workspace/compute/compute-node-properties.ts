@@ -312,21 +312,40 @@ function resolveBoardTheme(
   return getComputedTheme(themeId ?? "seldon", workspace)
 }
 
+/**
+ * Property sources gathered from a node's template chain, split by layer. A
+ * state bag must sit on top of every Normal layer, so the caller merges all
+ * `normal` sources first and then all `state` sources. Both arrays run from the
+ * farthest ancestor to the closest template, so a closer layer overrides a
+ * farther one within its own layer.
+ */
+interface TemplatePropertySources {
+  normal: Properties[]
+  state: Properties[]
+}
+
 function getTemplatePropertySources(
   node: WorkspaceNode,
   workspace: WorkspacePropertySource,
   visited: Set<string>,
   state?: NodeState,
-): Properties[] {
+): TemplatePropertySources {
   const templateNode = getTemplateNode(node, workspace)
-  if (!templateNode || visited.has(templateNode.id)) return []
+  if (!templateNode || visited.has(templateNode.id)) {
+    return { normal: [], state: [] }
+  }
 
   visited.add(templateNode.id)
-  return [
-    ...getTemplatePropertySources(templateNode, workspace, visited, state),
-    getOwnProperties(templateNode),
-    getOwnStateProperties(templateNode, state),
-  ]
+  const ancestor = getTemplatePropertySources(
+    templateNode,
+    workspace,
+    visited,
+    state,
+  )
+  return {
+    normal: [...ancestor.normal, getOwnProperties(templateNode)],
+    state: [...ancestor.state, getOwnStateProperties(templateNode, state)],
+  }
 }
 
 /** Merges catalog schema defaults with the template chain, excluding the target node's overrides. */
@@ -343,16 +362,19 @@ export function getInheritedNodeProperties(
   const componentId = getNodeComponentId(node, workspace)
   const schemaProperties = componentId ? getSchemaProperties(componentId) : {}
 
+  const templateSources = getTemplatePropertySources(
+    node,
+    workspace,
+    new Set([node.id]),
+    options.state,
+  )
+
   return mergeEffectiveProperties(
     expandPresetSources(
       [
         schemaProperties,
-        ...getTemplatePropertySources(
-          node,
-          workspace,
-          new Set([node.id]),
-          options.state,
-        ),
+        ...templateSources.normal,
+        ...templateSources.state,
       ],
       () =>
         options.theme ?? resolveNodeTheme(node, workspace, options.parentIndex),
@@ -415,17 +437,19 @@ function computeEffectiveNodeProperties(
   const componentId = getNodeComponentId(node, workspace)
   const schemaProperties = componentId ? getSchemaProperties(componentId) : {}
 
+  const templateSources = getTemplatePropertySources(
+    node,
+    workspace,
+    new Set([node.id]),
+    options.state,
+  )
   return mergeEffectiveProperties(
     expandPresetSources(
       [
         schemaProperties,
-        ...getTemplatePropertySources(
-          node,
-          workspace,
-          new Set([node.id]),
-          options.state,
-        ),
+        ...templateSources.normal,
         getOwnProperties(node),
+        ...templateSources.state,
         getOwnStateProperties(node, options.state),
       ],
       () =>
