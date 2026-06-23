@@ -3670,7 +3670,51 @@
           "type": "object"
         },
         "type": {
-          "const": "reset_user_variant_to_default",
+          "const": "reset_variant_to_catalog",
+          "type": "string"
+        }
+      },
+      "required": ["payload", "type"],
+      "type": "object"
+    },
+    {
+      "additionalProperties": false,
+      "properties": {
+        "payload": {
+          "additionalProperties": false,
+          "properties": {
+            "instanceId": {
+              "description": "Node id for an instance row (legacy string ids or v2 entry ids).",
+              "type": "string"
+            }
+          },
+          "required": ["instanceId"],
+          "type": "object"
+        },
+        "type": {
+          "const": "reset_instance_to_source",
+          "type": "string"
+        }
+      },
+      "required": ["payload", "type"],
+      "type": "object"
+    },
+    {
+      "additionalProperties": false,
+      "properties": {
+        "payload": {
+          "additionalProperties": false,
+          "properties": {
+            "instanceId": {
+              "description": "Node id for an instance row (legacy string ids or v2 entry ids).",
+              "type": "string"
+            }
+          },
+          "required": ["instanceId"],
+          "type": "object"
+        },
+        "type": {
+          "const": "reset_instance_to_original",
           "type": "string"
         }
       },

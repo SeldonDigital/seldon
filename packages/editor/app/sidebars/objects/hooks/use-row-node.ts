@@ -13,13 +13,15 @@ import { isEmptyValue } from "@seldon/core/helpers/type-guards/value/is-empty-va
 import { IconId, iconLabels } from "@seldon/core/icon-sets"
 import { rules } from "@seldon/core/rules/config/rules.config"
 import { isVariantInUse } from "@seldon/core/workspace/helpers/general/is-variant-in-use"
+import { componentBoardSchemaVariantNodeId } from "@seldon/core/workspace/helpers/components/entry-node-ids"
 import { getNodeProperties } from "@seldon/core/workspace/helpers/nodes/get-node-properties"
-import { nodeSubtreeHasOverrides } from "@seldon/core/workspace/helpers/nodes/get-node-subtree-ids"
 import { isSandboxNode } from "@seldon/core/workspace/helpers/nodes/sandbox"
 import {
   nodeRelationshipService,
   nodeRetrievalService,
   nodeTraversalService,
+  resolveOriginalNodeId,
+  resolveSourceNodeId,
   typeCheckingService,
 } from "@seldon/core/workspace/services"
 import type { EntryNode } from "@seldon/core/workspace/types"
@@ -261,59 +263,105 @@ export function useRowNode(
     icon: getComponentTypeIcon(),
   }
 
-  const isResettableType =
-    typeCheckingService.isDefaultVariant(node) ||
-    typeCheckingService.isUserVariant(node) ||
-    typeCheckingService.isInstance(node)
-  // A catalog-backed default variant can always reset to its catalog schema,
-  // so offer "Reset to Catalog" whenever such a row is selected. The action is
-  // idempotent when the tree already matches the catalog.
   const catalogComponentId = nodeExistsInWorkspace
     ? getNodeCatalogComponentId(node, workspace)
     : null
-  const isCatalogBackedDefaultVariant =
-    typeCheckingService.isDefaultVariant(node) &&
-    !!catalogComponentId &&
-    isComponentId(catalogComponentId)
-  // Detecting subtree overrides walks the variant tree, so only run it for the
-  // selected resettable row rather than on every rendered row.
-  const canReset =
-    isSelected &&
-    isResettableType &&
-    nodeExistsInWorkspace &&
-    (isCatalogBackedDefaultVariant ||
-      nodeSubtreeHasOverrides(node.id, workspace))
 
-  function handleReset() {
+  // A schema-backed user variant has a catalog template in the component schema:
+  // its root id matches a schema variant id. Only those reset to catalog. A user
+  // variant a person built from scratch has no catalog variant to reset to.
+  const isSchemaBackedVariant =
+    typeCheckingService.isUserVariant(node) &&
+    !!catalogComponentId &&
+    isComponentId(catalogComponentId) &&
+    (getComponentSchema(catalogComponentId).variants ?? []).some(
+      (variant) =>
+        componentBoardSchemaVariantNodeId(catalogComponentId, variant.id) ===
+        node.id,
+    )
+
+  // Instance resets walk the template chain. Source is the node one hop up;
+  // Original is the chain terminal. Disable a target that does not resolve to a
+  // different node, and drop Original when it matches Source.
+  const isInstanceNode =
+    nodeExistsInWorkspace && typeCheckingService.isInstance(node)
+  const instanceSourceId = isInstanceNode
+    ? resolveSourceNodeId(workspace, node.id)
+    : null
+  const instanceOriginalId = isInstanceNode
+    ? resolveOriginalNodeId(workspace, node.id)
+    : null
+  const canResetToSource = !!instanceSourceId && instanceSourceId !== node.id
+  const canResetToOriginal =
+    !!instanceOriginalId &&
+    instanceOriginalId !== node.id &&
+    instanceOriginalId !== instanceSourceId
+
+  function handleResetDefaultVariantToCatalog() {
+    dispatch({
+      type: "reset_default_variant_to_catalog",
+      payload: { defaultVariantRootId: node.id as VariantId },
+    })
+  }
+
+  function handleResetVariantToCatalog() {
+    dispatch({
+      type: "reset_variant_to_catalog",
+      payload: { variantRootId: node.id as VariantId },
+    })
+  }
+
+  function handleResetInstanceToSource() {
+    dispatch({
+      type: "reset_instance_to_source",
+      payload: { instanceId: node.id as InstanceId },
+    })
+  }
+
+  function handleResetInstanceToOriginal() {
+    dispatch({
+      type: "reset_instance_to_original",
+      payload: { instanceId: node.id as InstanceId },
+    })
+  }
+
+  // The default variant always resets to its catalog schema. A custom variant
+  // resets to its schema variant, disabled when it has no catalog template.
+  function buildVariantResetAction(): MenuEntry {
     if (typeCheckingService.isDefaultVariant(node)) {
-      dispatch({
-        type: "reset_default_variant_to_catalog",
-        payload: { defaultVariantRootId: node.id as VariantId },
-      })
-    } else if (typeCheckingService.isUserVariant(node)) {
-      dispatch({
-        type: "reset_user_variant_to_default",
-        payload: { variantRootId: node.id as VariantId },
-      })
-    } else {
-      dispatch({
-        type: "reset_node",
-        payload: { nodeId: node.id as VariantId },
+      return buildResetMenuEntry({
+        id: "reset-to-catalog",
+        label: "Reset to Catalog",
+        onSelect: handleResetDefaultVariantToCatalog,
+        testId: `object-panel-node-${node.id}-reset-to-catalog`,
       })
     }
-  }
-
-  function getResetLabel(): string {
-    if (typeCheckingService.isDefaultVariant(node)) return "Reset to Catalog"
-    return "Reset to Default"
-  }
-
-  function buildResetAction(): MenuEntry {
     return buildResetMenuEntry({
-      label: getResetLabel(),
-      onSelect: handleReset,
-      testId: `object-panel-node-${node.id}-reset`,
+      id: "reset-to-catalog",
+      label: "Reset to Catalog",
+      onSelect: handleResetVariantToCatalog,
+      disabled: !isSchemaBackedVariant,
+      testId: `object-panel-node-${node.id}-reset-to-catalog`,
     })
+  }
+
+  function buildInstanceResetActions(): MenuEntry[] {
+    return [
+      buildResetMenuEntry({
+        id: "reset-to-source",
+        label: "Reset to Source",
+        onSelect: handleResetInstanceToSource,
+        disabled: !canResetToSource,
+        testId: `object-panel-node-${node.id}-reset-to-source`,
+      }),
+      buildResetMenuEntry({
+        id: "reset-to-original",
+        label: "Reset to Original",
+        onSelect: handleResetInstanceToOriginal,
+        disabled: !canResetToOriginal,
+        testId: `object-panel-node-${node.id}-reset-to-original`,
+      }),
+    ]
   }
 
   function handleDuplicate() {
@@ -459,7 +507,7 @@ export function useRowNode(
           onSelect: handleDelete,
           testId: `object-panel-node-${node.id}-delete`,
         },
-        buildResetAction(),
+        ...buildInstanceResetActions(),
       ]
     }
 
@@ -508,11 +556,11 @@ export function useRowNode(
         })
       }
 
-      entries.push(buildResetAction())
+      entries.push(buildVariantResetAction())
       return entries
     }
 
-    return canReset ? [buildResetAction()] : []
+    return []
   }
 
   const actions: MenuEntry[] = isEcho ? [] : buildNodeActions()

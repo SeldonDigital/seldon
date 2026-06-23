@@ -239,8 +239,9 @@ export const rules: RulesConfig = {
 
     /**
      * Rules for resetting an entity back to its template baseline.
-     * Covers reset_node, reset_node_property, reset_user_variant_to_default,
-     * and reset_default_variant_to_catalog. Resets are local to the targeted
+     * Covers reset_node, reset_node_property, reset_variant_to_catalog,
+     * reset_instance_to_source, reset_instance_to_original, and
+     * reset_default_variant_to_catalog. Resets are local to the targeted
      * subtree, so propagation stays "none".
      */
     reset: {

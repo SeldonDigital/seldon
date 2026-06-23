@@ -289,16 +289,27 @@ export function validateNodeMutation(
       assertRepeatConstraints(workspace, action, nodeId)
       break
     }
-    case "reset_user_variant_to_default": {
+    case "reset_variant_to_catalog": {
       const variantRootId = action.payload.variantRootId as VariantId
       nodeValidators.exists(workspace, variantRootId)
       const node = nodeRetrievalService.getNode(variantRootId, workspace)
       check(
         isUserVariant(node),
-        "Only a user variant can reset to the default variant tree",
+        "Only a user variant can reset to its catalog schema variant",
       )
       const index = locateResettableBoardVariantIndex(workspace, variantRootId)
       check(index > 0, "The catalog default variant does not use this action")
+      break
+    }
+    case "reset_instance_to_source":
+    case "reset_instance_to_original": {
+      const instanceId = action.payload.instanceId as InstanceId
+      nodeValidators.exists(workspace, instanceId)
+      const node = nodeRetrievalService.getNode(instanceId, workspace)
+      check(
+        typeCheckingService.isInstance(node),
+        "Only an instance can reset to its source or original",
+      )
       break
     }
     case "reset_default_variant_to_catalog": {

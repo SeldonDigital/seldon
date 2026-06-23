@@ -18,7 +18,7 @@
  * | set_node_properties, reset_node_property, reset_node, set_node_label, set_node_theme, set_node_editor_data, set_node_repeat | nodes |
  * | add_node_layer, remove_node_layer, reorder_node_layer, set_node_layer_kind | nodes (background/shadow paint stacks) |
  * | reset_node_label, reset_node_editor_data | nodes |
- * | reset_user_variant_to_default, reset_default_variant_to_catalog, reset_component_to_catalog | components.variants tree + nodes |
+ * | reset_variant_to_catalog, reset_instance_to_source, reset_instance_to_original, reset_default_variant_to_catalog, reset_component_to_catalog | components.variants tree + nodes |
  * | set_theme_label, set_theme_editor_data, set_theme_override, reset_theme_tokens, reset_theme_label, reset_theme_editor_data, reset_theme_override | themes |
  * | set_theme_scale_slot, set_theme_custom_token_name | themes (variant rows only) |
  * | add_theme_custom_{swatch,font,border,gradient,shadow,scrollbar,size,dimension,margin,padding,gap,corners,borderWidth,blur,spread,fontSize,fontWeight,lineHeight} | themes (variant rows only) |
@@ -781,9 +781,21 @@ export type WorkspaceAction =
       payload: { themeId: string; path: string }
     }
   | {
-      type: "reset_user_variant_to_default"
+      type: "reset_variant_to_catalog"
       payload: {
         variantRootId: VariantId
+      }
+    }
+  | {
+      type: "reset_instance_to_source"
+      payload: {
+        instanceId: InstanceId
+      }
+    }
+  | {
+      type: "reset_instance_to_original"
+      payload: {
+        instanceId: InstanceId
       }
     }
   | {

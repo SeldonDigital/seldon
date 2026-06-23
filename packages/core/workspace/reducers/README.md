@@ -132,7 +132,9 @@ The `reducer` switch has no default branch. Validation rejects unknown action ty
 | `reset_node_state_property` | `resetNodeStateProperty` | `reset-node-state-property.ts` |
 | `reset_node_label` | `resetNodeLabel` | `reset-node-label.ts` |
 | `reset_node_editor_data` | `resetNodeEditorData` | `reset-node-editor-data.ts` |
-| `reset_user_variant_to_default` | `resetUserVariantToDefault` | `reset-user-variant-to-default.ts` |
+| `reset_variant_to_catalog` | `resetVariantToCatalog` | `reset-variant-to-catalog.ts` |
+| `reset_instance_to_source` | `resetInstanceToSource` | `reset-instance-to-source.ts` |
+| `reset_instance_to_original` | `resetInstanceToOriginal` | `reset-instance-to-original.ts` |
 | `reset_default_variant_to_catalog` | `resetDefaultVariantToCatalog` | `reset-default-variant-to-catalog.ts` |
 | `reset_component_to_catalog` | `resetComponentToCatalog` | `reset-component-to-catalog.ts` |
 | `reset_theme_tokens` | `resetThemeTokens` | `reset-theme-tokens.ts` |
