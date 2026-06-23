@@ -11,6 +11,7 @@ import type { ThemeModulation } from "../modulated/theme-modulation"
 import type { ThemeBorderWidthOption } from "../option/theme-border-width-option"
 import type { ThemeBorderWidth } from "../ordinal/theme-border-width"
 import type { StockSwatchDynamic, ThemeSwatch } from "../palette/theme-swatch"
+import type { ThemeComputedGroup } from "../../computed/theme-computed-group"
 
 export function isModulatedToken(
   v: ThemeBorderWidth | ThemeModulation | unknown,
@@ -112,5 +113,17 @@ export function isLookToken(
     v !== null &&
     "type" in v &&
     (v as { type: TokenType }).type === TokenType.LOOK
+  )
+}
+
+/** Grouped configuration cell in the Computed section ({@link TokenType.COMPUTED}). */
+export function isComputedGroupToken(
+  v: unknown,
+): v is ThemeComputedGroup<unknown> {
+  return (
+    typeof v === "object" &&
+    v !== null &&
+    "type" in v &&
+    (v as { type: TokenType }).type === TokenType.COMPUTED
   )
 }

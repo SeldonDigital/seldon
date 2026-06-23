@@ -18,29 +18,53 @@ export const theme: StockTheme = {
     intent:
       "To provide a modern and professional look with high contrast and readability, suitable for a wide range of applications.",
   },
-  core: {
-    ratio: 1.333,
-    fontSize: 16,
-    size: 1,
+  modulation: {
+    type: TokenType.COMPUTED,
+    parameters: { ratio: 1.333, baseFontSize: 16, baseSize: 1 },
   },
-  color: {
-    baseColor: {
-      hue: 270,
-      saturation: 100,
-      lightness: 70,
+  colorHarmony: {
+    type: TokenType.COMPUTED,
+    parameters: {
+      baseColor: {
+        hue: 270,
+        saturation: 100,
+        lightness: 70,
+      },
+      harmony: 4,
+      angle: 30,
+      step: 10,
+      whitePoint: 98,
+      grayPoint: 56,
+      blackPoint: 8,
+      bleed: 12,
     },
-    harmony: 4,
-    angle: 30,
-    step: 10,
-    whitePoint: 98,
-    grayPoint: 56,
-    blackPoint: 8,
-    bleed: 12,
-    contrastRatio: 2,
+  },
+  matchColor: {
+    type: TokenType.COMPUTED,
+    parameters: { includeBrightness: true, includeOpacity: true },
+  },
+  highContrast: {
+    type: TokenType.COMPUTED,
+    parameters: {
+      contrastRatio: 2,
+      fallbackColor: { type: ValueType.EXACT, value: "#FFFFFF" },
+      includeBleed: true,
+    },
+  },
+  opticalPadding: {
+    type: TokenType.COMPUTED,
+    parameters: { leftRhythm: 0.64, rightRhythm: 0.8, verticalRhythm: 0.4 },
+  },
+  autoFit: {
+    type: TokenType.COMPUTED,
+    parameters: { factor: 1 },
   },
   fontFamily: {
-    primary: { type: TokenType.FONT_FAMILY, parameters: "DM Sans" },
-    secondary: { type: TokenType.FONT_FAMILY, parameters: "DM Sans" },
+    type: TokenType.COMPUTED,
+    parameters: {
+      primary: { type: TokenType.FONT_FAMILY, parameters: "DM Sans" },
+      secondary: { type: TokenType.FONT_FAMILY, parameters: "DM Sans" },
+    },
   },
   size: {
     tiny: {

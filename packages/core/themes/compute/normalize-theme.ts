@@ -27,15 +27,12 @@ function isThemePipelineInput(
     typeof theme === "object" &&
     theme !== null &&
     ("metadata" in theme || "id" in theme) &&
-    "core" in theme &&
-    "color" in theme &&
-    typeof theme.core === "object" &&
-    theme.core !== null &&
-    "fontSize" in theme.core &&
-    "size" in theme.core &&
-    typeof theme.color === "object" &&
-    theme.color !== null &&
-    "baseColor" in theme.color
+    "modulation" in theme &&
+    "colorHarmony" in theme &&
+    typeof theme.modulation === "object" &&
+    theme.modulation !== null &&
+    typeof theme.colorHarmony === "object" &&
+    theme.colorHarmony !== null
   )
 }
 
@@ -48,7 +45,8 @@ function normalizeTokenType(type: unknown): TokenType | undefined {
     type === TokenType.FONT_FAMILY ||
     type === TokenType.OPTION ||
     type === TokenType.LOOK ||
-    type === TokenType.DYNAMIC_SWATCH
+    type === TokenType.DYNAMIC_SWATCH ||
+    type === TokenType.COMPUTED
   ) {
     return type
   }
@@ -59,30 +57,78 @@ export function normalizeThemeInput(
   theme: ThemePipelineInput | { [key: string]: unknown },
 ): ThemePipelineInput {
   if (!isThemePipelineInput(theme)) {
-    throw new Error("Theme must have core and color properties")
+    throw new Error("Theme must have modulation and colorHarmony properties")
   }
 
-  const themeCore = theme.core
-  const themeColor = theme.color
+  const modulation = theme.modulation as StockTheme["modulation"]
+  const colorHarmony = theme.colorHarmony as StockTheme["colorHarmony"]
 
   const normalized = {
     ...theme,
     metadata: normalizeMetadata(theme),
-    core: {
-      ...themeCore,
-      fontSize: normalizeThemeNumber(themeCore.fontSize),
-      size: normalizeThemeNumber(themeCore.size),
+    modulation: {
+      ...modulation,
+      type: TokenType.COMPUTED,
+      parameters: {
+        ...modulation.parameters,
+        baseFontSize: normalizeThemeNumber(modulation.parameters.baseFontSize),
+        baseSize: normalizeThemeNumber(modulation.parameters.baseSize),
+      },
     },
-    color: {
-      ...themeColor,
-      baseColor: parseColorspaceLiteral(themeColor.baseColor),
-      angle: normalizeThemeNumber(themeColor.angle),
-      step: normalizeThemeNumber(themeColor.step),
-      whitePoint: normalizeThemeNumber(themeColor.whitePoint),
-      grayPoint: normalizeThemeNumber(themeColor.grayPoint),
-      blackPoint: normalizeThemeNumber(themeColor.blackPoint),
-      bleed: normalizeThemeNumber(themeColor.bleed),
-      contrastRatio: normalizeThemeNumber(themeColor.contrastRatio),
+    colorHarmony: {
+      ...colorHarmony,
+      type: TokenType.COMPUTED,
+      parameters: {
+        ...colorHarmony.parameters,
+        baseColor: parseColorspaceLiteral(colorHarmony.parameters.baseColor),
+        angle: normalizeThemeNumber(colorHarmony.parameters.angle),
+        step: normalizeThemeNumber(colorHarmony.parameters.step),
+        whitePoint: normalizeThemeNumber(colorHarmony.parameters.whitePoint),
+        grayPoint: normalizeThemeNumber(colorHarmony.parameters.grayPoint),
+        blackPoint: normalizeThemeNumber(colorHarmony.parameters.blackPoint),
+        bleed: normalizeThemeNumber(colorHarmony.parameters.bleed),
+      },
+    },
+    matchColor: normalizeComputedGroup(
+      theme.matchColor as StockTheme["matchColor"],
+    ),
+    highContrast: {
+      ...(theme.highContrast as StockTheme["highContrast"]),
+      type: TokenType.COMPUTED,
+      parameters: {
+        ...(theme.highContrast as StockTheme["highContrast"]).parameters,
+        contrastRatio: normalizeThemeNumber(
+          (theme.highContrast as StockTheme["highContrast"]).parameters
+            .contrastRatio,
+        ),
+      },
+    },
+    opticalPadding: {
+      ...(theme.opticalPadding as StockTheme["opticalPadding"]),
+      type: TokenType.COMPUTED,
+      parameters: {
+        leftRhythm: normalizeThemeNumber(
+          (theme.opticalPadding as StockTheme["opticalPadding"]).parameters
+            .leftRhythm,
+        ),
+        rightRhythm: normalizeThemeNumber(
+          (theme.opticalPadding as StockTheme["opticalPadding"]).parameters
+            .rightRhythm,
+        ),
+        verticalRhythm: normalizeThemeNumber(
+          (theme.opticalPadding as StockTheme["opticalPadding"]).parameters
+            .verticalRhythm,
+        ),
+      },
+    },
+    autoFit: {
+      ...(theme.autoFit as StockTheme["autoFit"]),
+      type: TokenType.COMPUTED,
+      parameters: {
+        factor: normalizeThemeNumber(
+          (theme.autoFit as StockTheme["autoFit"]).parameters.factor,
+        ),
+      },
     },
     fontFamily: normalizeFontFamily(
       theme.fontFamily as StockTheme["fontFamily"],
@@ -151,12 +197,12 @@ function normalizeMetadata(
   }
 }
 
+type FontFamilySlot = StockTheme["fontFamily"]["parameters"]["primary"]
+
 function normalizeFontFamily(
   ff: StockTheme["fontFamily"],
 ): StockTheme["fontFamily"] {
-  function slot(
-    v: StockTheme["fontFamily"]["primary"] | string,
-  ): StockTheme["fontFamily"]["primary"] {
+  function slot(v: FontFamilySlot | string): FontFamilySlot {
     if (typeof v === "string") {
       return { type: TokenType.FONT_FAMILY, parameters: v }
     }
@@ -176,11 +222,22 @@ function normalizeFontFamily(
     }
     return { type: TokenType.FONT_FAMILY, parameters: "" }
   }
+  const params = ff.parameters
   return {
-    primary: slot(ff.primary as StockTheme["fontFamily"]["primary"] | string),
-    secondary: slot(
-      ff.secondary as StockTheme["fontFamily"]["secondary"] | string,
-    ),
+    ...ff,
+    type: TokenType.COMPUTED,
+    parameters: {
+      primary: slot(params.primary as FontFamilySlot | string),
+      secondary: slot(params.secondary as FontFamilySlot | string),
+    },
+  }
+}
+
+/** Pass-through normalizer for a computed group: force `type`, keep parameters. */
+function normalizeComputedGroup<T extends { parameters: unknown }>(group: T): T {
+  return {
+    ...group,
+    type: TokenType.COMPUTED,
   }
 }
 

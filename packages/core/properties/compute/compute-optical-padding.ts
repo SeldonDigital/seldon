@@ -12,10 +12,6 @@ import { ComputeContext, ComputeKeys } from "./types"
 /** Editor label for `ComputedFunction.OPTICAL_PADDING`. */
 export const OPTICAL_PADDING_DISPLAY_NAME = "Optical Padding"
 
-const LEFT_PADDING_RATIO = 0.64
-const RIGHT_PADDING_RATIO = 0.8
-const Y_PADDING_RATIO = 0.4
-
 /**
  * Multiplies the resolved based-on length by `factor` and by a fixed ratio for the padding side
  * named in `keys.subPropertyKey`. Missing `basedOn` becomes `#parent.fontSize`. Missing `factor`
@@ -53,7 +49,7 @@ export function computeOpticalPadding(
   } catch {
     return EMPTY_VALUE
   }
-  const ratio = getRatio(keys.subPropertyKey)
+  const ratio = getRatio(keys.subPropertyKey, context.theme.opticalPadding.parameters)
 
   if (basedOnValue.type === ValueType.EXACT) {
     if (typeof basedOnValue.value === "number") {
@@ -94,8 +90,8 @@ export function computeOpticalPadding(
         value: round(
           modulate(
             {
-              ratio: context.theme.core.ratio,
-              size: context.theme.core.fontSize / 16,
+              ratio: context.theme.modulation.parameters.ratio,
+              size: context.theme.modulation.parameters.baseFontSize / 16,
               step: themeOption.parameters.step,
             },
             { round: false },
@@ -108,18 +104,21 @@ export function computeOpticalPadding(
   return EMPTY_VALUE
 }
 
-/** Maps `subPropertyKey` to left, right, top, or bottom ratio, or uses the left ratio when missing. */
-function getRatio(side?: SubPropertyKey) {
+/** Maps `subPropertyKey` to the left, right, or vertical rhythm, defaulting to left. */
+function getRatio(
+  side: SubPropertyKey | undefined,
+  rhythm: { leftRhythm: number; rightRhythm: number; verticalRhythm: number },
+) {
   switch (side) {
     case "left":
-      return LEFT_PADDING_RATIO
+      return rhythm.leftRhythm
     case "right":
-      return RIGHT_PADDING_RATIO
+      return rhythm.rightRhythm
     case "top":
-      return Y_PADDING_RATIO
+      return rhythm.verticalRhythm
     case "bottom":
-      return Y_PADDING_RATIO
+      return rhythm.verticalRhythm
     default:
-      return LEFT_PADDING_RATIO
+      return rhythm.leftRhythm
   }
 }

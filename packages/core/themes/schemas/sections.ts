@@ -12,7 +12,7 @@ import type {
 
 const THEME_TOKEN_SECTION_ORDER: Array<Omit<ThemeTokenSectionSchema, "order">> =
   [
-    { id: "core", label: "Core" },
+    { id: "computed", label: "Computed" },
     { id: "swatch", label: "Swatch" },
     { id: "size", label: "Size" },
     { id: "margin", label: "Margin" },

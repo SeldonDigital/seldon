@@ -58,8 +58,8 @@ export async function getFontsComponent(
       const theme = workspaceThemeService.getTheme(themeId, workspace)
       if (!theme?.fontFamily) continue
       for (const slot of [
-        theme.fontFamily.primary,
-        theme.fontFamily.secondary,
+        theme.fontFamily.parameters.primary,
+        theme.fontFamily.parameters.secondary,
       ]) {
         const familyName =
           typeof slot?.parameters === "string" ? slot.parameters : undefined

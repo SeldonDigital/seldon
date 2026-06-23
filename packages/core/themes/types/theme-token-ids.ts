@@ -6,8 +6,6 @@
 
 /** First segment of a `@namespace.option` theme reference (distinct from `ThemeTokenSectionId`). */
 export type ThemeTokenNamespace =
-  | "core"
-  | "color"
   | "iconSet"
   | "borderWidth"
   | "corners"

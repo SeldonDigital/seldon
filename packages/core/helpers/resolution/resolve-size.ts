@@ -88,8 +88,8 @@ export function resolveSize({
       const themeValue = getThemeOption(size.value as string, theme)
       if (isModulatedToken(themeValue)) {
         const n = modulate({
-          ratio: theme.core.ratio,
-          size: theme.core.size,
+          ratio: theme.modulation.parameters.ratio,
+          size: theme.modulation.parameters.baseSize,
           step: themeValue.parameters.step,
         })
         return {

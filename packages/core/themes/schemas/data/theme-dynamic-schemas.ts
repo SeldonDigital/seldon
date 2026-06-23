@@ -12,6 +12,8 @@ import type { ComputedTheme, StockTheme } from "../../types/theme"
 import type { StockThemeSwatch, ThemeSwatch } from "../../values"
 import { isDynamicSwatchToken } from "../../values"
 import { finalizeThemeTokenSchema } from "../helpers/finalize-theme-token-schema"
+import { COMPUTED_GROUPS } from "./theme-computed"
+import type { ComputedGroupFacet } from "./theme-computed"
 import { SCALE_STEP_ROW_CONTROL } from "./theme-static-schemas"
 
 export type ThemeOrStock = StockTheme | ComputedTheme
@@ -89,6 +91,53 @@ export function generateScaleSchemas(
       }),
     )
   }
+  return schemas
+}
+
+/**
+ * Generate schemas for the Computed section.
+ *
+ * Each group emits a parent disclosure row followed by one row per facet from
+ * {@link COMPUTED_GROUPS}. Every facet carries inline `valueType` / `controlType`
+ * and is finalized here. The parent label comes from the group cell `name`,
+ * falling back to the group's default label.
+ */
+export function generateComputedSchemas(
+  theme: ThemeOrStock,
+): ThemeTokenSchemaUnresolved[] {
+  const schemas: ThemeTokenSchemaUnresolved[] = []
+  const themeObj = theme as unknown as Record<string, { name?: string }>
+
+  let order = 0
+  for (const group of COMPUTED_GROUPS) {
+    const cell = themeObj[group.key]
+    schemas.push({
+      key: group.key,
+      label: cell?.name?.trim() || group.label,
+      section: "computed",
+      order: order++,
+      supports: [],
+      validation: {},
+      isLookParent: true,
+    })
+
+    for (const facet of group.facets as readonly ComputedGroupFacet[]) {
+      schemas.push(
+        finalizeThemeTokenSchema({
+          key: `${group.key}.${facet.facet}`,
+          label: facet.label,
+          valueType: facet.valueType,
+          controlType: facet.controlType,
+          ...(facet.options ? { options: [...facet.options] } : {}),
+          ...(facet.unit ? { unit: facet.unit } : {}),
+          section: "computed",
+          order: order++,
+          isSubProperty: true,
+        }),
+      )
+    }
+  }
+
   return schemas
 }
 

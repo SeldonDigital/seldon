@@ -27,24 +27,25 @@ export function usePropertyValidation(
   // This includes properties ending with .step (e.g., dimension.huge.step, margin.cozy.step)
   // and font weight properties (e.g., fontWeight.thin, fontWeight.bold)
   const shouldExcludeUnits =
-    property.key === "core.ratio" ||
-    property.key === "core.size" ||
+    property.key === "modulation.ratio" ||
+    property.key === "modulation.baseSize" ||
     property.key.startsWith("fontWeight.") ||
     property.key.endsWith(".step")
 
   // Force Base Font Size to use PX units
-  const shouldUsePxOnly = property.key === "core.fontSize"
+  const shouldUsePxOnly = property.key === "modulation.baseFontSize"
 
   // Color angle and step should use degrees
   const shouldUseDegOnly =
-    property.key === "color.angle" || property.key === "color.step"
+    property.key === "colorHarmony.angle" ||
+    property.key === "colorHarmony.step"
 
   // Color point properties and bleed should use percentage units
   const shouldUsePercentOnly =
-    property.key === "color.whitePoint" ||
-    property.key === "color.grayPoint" ||
-    property.key === "color.blackPoint" ||
-    property.key === "color.bleed"
+    property.key === "colorHarmony.whitePoint" ||
+    property.key === "colorHarmony.grayPoint" ||
+    property.key === "colorHarmony.blackPoint" ||
+    property.key === "colorHarmony.bleed"
 
   const units = shouldExcludeUnits
     ? []

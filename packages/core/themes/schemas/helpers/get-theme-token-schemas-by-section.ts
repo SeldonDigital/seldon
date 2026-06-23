@@ -6,6 +6,7 @@ import type {
 } from "../../types/schema"
 import type { ComputedTheme, StockTheme } from "../../types/theme"
 import {
+  generateComputedSchemas,
   generateLookSchemas,
   generateScaleSchemas,
   generateSwatchSchemas,
@@ -31,7 +32,9 @@ export function getThemeTokenSchemasBySection(
   if (theme) {
     let dynamicSchemas: ThemeTokenSchemaUnresolved[] = []
 
-    if (sectionId === "swatch") {
+    if (sectionId === "computed") {
+      dynamicSchemas = generateComputedSchemas(theme)
+    } else if (sectionId === "swatch") {
       dynamicSchemas = generateSwatchSchemas(theme)
     } else if (isLookSection(sectionId)) {
       dynamicSchemas = generateLookSchemas(theme, sectionId)

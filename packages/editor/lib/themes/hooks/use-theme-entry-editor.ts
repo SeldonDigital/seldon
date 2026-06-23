@@ -104,27 +104,27 @@ export function useThemeEntryEditor(themeEntryId: EntryThemeId | null) {
   )
 
   const setCoreRatio = useCallback(
-    (value: Ratio) => setOverride("core.ratio", value),
+    (value: Ratio) => setOverride("modulation.parameters.ratio", value),
     [setOverride],
   )
 
   const setCoreSize = useCallback(
-    (value: number) => setOverride("core.size", value),
+    (value: number) => setOverride("modulation.parameters.baseSize", value),
     [setOverride],
   )
 
   const setCoreFontSize = useCallback(
-    (value: number) => setOverride("core.fontSize", value),
+    (value: number) => setOverride("modulation.parameters.baseFontSize", value),
     [setOverride],
   )
 
   const setBaseColor = useCallback(
-    (value: HSL) => setOverride("color.baseColor", value),
+    (value: HSL) => setOverride("colorHarmony.parameters.baseColor", value),
     [setOverride],
   )
 
   const setHarmony = useCallback(
-    (value: Harmony) => setOverride("color.harmony", value),
+    (value: Harmony) => setOverride("colorHarmony.parameters.harmony", value),
     [setOverride],
   )
 
@@ -136,18 +136,25 @@ export function useThemeEntryEditor(themeEntryId: EntryThemeId | null) {
         | "whitePoint"
         | "grayPoint"
         | "blackPoint"
-        | "bleed"
-        | "contrastRatio",
+        | "bleed",
       value: number,
     ) => {
-      mergeOverride("color", { [key]: value })
+      mergeOverride("colorHarmony.parameters", { [key]: value })
     },
     [mergeOverride],
   )
 
   const setFontFamilyValue = useCallback(
     (key: ThemeFontFamilyId, value: string) => {
-      setOverride(`fontFamily.${key}`, value)
+      setOverride(`fontFamily.parameters.${key}`, value)
+    },
+    [setOverride],
+  )
+
+  /** Sets one facet on a Computed-section group (matchColor, highContrast, etc.). */
+  const setComputedValue = useCallback(
+    (group: string, facet: string, value: unknown) => {
+      setOverride(`${group}.parameters.${facet}`, value)
     },
     [setOverride],
   )
@@ -382,6 +389,7 @@ export function useThemeEntryEditor(themeEntryId: EntryThemeId | null) {
     setBaseColor,
     setHarmony,
     setColorValue,
+    setComputedValue,
     setFontFamilyValue,
     setSizeValue,
     setDimensionValue,

@@ -17,15 +17,15 @@ import { FlatProperty } from "./properties-data"
 
 const VALUE_TYPES = new Set<unknown>(Object.values(ValueType))
 
-/** `color.*` keys whose raw cell is a `{ value, unit }` shape shown as a plain number. */
-const SCALAR_COLOR_KEYS = new Set([
-  "angle",
-  "step",
-  "whitePoint",
-  "grayPoint",
-  "blackPoint",
-  "bleed",
-  "contrastRatio",
+/** Top-level group keys in the Computed section; their facets read from `parameters`. */
+const COMPUTED_GROUP_KEYS = new Set([
+  "modulation",
+  "colorHarmony",
+  "fontFamily",
+  "matchColor",
+  "highContrast",
+  "opticalPadding",
+  "autoFit",
 ])
 
 /** Sections whose `.step` slot reads `parameters.step`. `spread` is intentionally excluded. */
@@ -67,9 +67,9 @@ const CALCULATED_SWATCHES = new Set([
 
 /** Color-point keys mapped to the computed swatch that fills their icon. */
 const COLOR_POINT_SWATCHES: Record<string, "white" | "gray" | "black"> = {
-  "color.whitePoint": "white",
-  "color.grayPoint": "gray",
-  "color.blackPoint": "black",
+  "colorHarmony.whitePoint": "white",
+  "colorHarmony.grayPoint": "gray",
+  "colorHarmony.blackPoint": "black",
 }
 
 /** Maps schema control types to the subset supported by `FlatProperty`. */
@@ -103,14 +103,6 @@ function asTaggedValue(value: unknown): Value | null {
   return null
 }
 
-/** Unwraps a `{ value, unit }` cell to its scalar; passes other values through. */
-function unwrapUnit(value: unknown): unknown {
-  if (isRecord(value) && "value" in value && "unit" in value) {
-    return value.value
-  }
-  return value
-}
-
 /** Safely reads a nested object value by path, returning undefined on any miss. */
 function getNestedValue(obj: unknown, path: string[]): unknown {
   let current: unknown = obj
@@ -125,8 +117,8 @@ function getNestedValue(obj: unknown, path: string[]): unknown {
 
 /**
  * Reads a theme value by its dot-notation schema key, e.g.:
- * - "core.ratio" -> theme.core.ratio
- * - "color.whitePoint" -> theme.color.whitePoint scalar
+ * - "modulation.ratio" -> theme.modulation.parameters.ratio
+ * - "colorHarmony.whitePoint" -> theme.colorHarmony.parameters.whitePoint
  * - "swatch.primary" -> theme.swatch.primary.value
  * - "size.medium.step" -> theme.size.medium.parameters.step
  * - "shadow.moderate.offsetX" -> theme.shadow.moderate.parameters.offset.x
@@ -138,29 +130,21 @@ function getThemeValueByKey(theme: Theme, key: string): unknown {
   const [section, id, facet] = key.split(".")
   const themeObj = theme as unknown as Record<string, unknown>
 
-  if (section === "core") {
-    if (id === "ratio") return theme.core.ratio
-    if (id === "fontSize") return theme.core.fontSize
-    if (id === "size") return theme.core.size
-    return undefined
-  }
-
-  if (section === "color") {
-    if (id === "baseColor") return theme.color.baseColor
-    if (id === "harmony") return theme.color.harmony
-    if (SCALAR_COLOR_KEYS.has(id)) {
-      return unwrapUnit((theme.color as Record<string, unknown>)[id])
+  // Computed-section groups store every facet under `parameters[facet]`.
+  if (COMPUTED_GROUP_KEYS.has(section)) {
+    if (!id) return undefined
+    const params = getNestedValue(themeObj, [section, "parameters"])
+    if (!isRecord(params)) return undefined
+    const facetValue = params[id]
+    // Font family slots keep the CSS stack under their own `parameters` string.
+    if (
+      section === "fontFamily" &&
+      isRecord(facetValue) &&
+      "parameters" in facetValue
+    ) {
+      return facetValue.parameters
     }
-    return undefined
-  }
-
-  if (section === "fontFamily" && id) {
-    const family = getNestedValue(themeObj, ["fontFamily", id])
-    if (isRecord(family)) {
-      if ("parameters" in family) return family.parameters
-      if ("value" in family) return family.value
-    }
-    return family
+    return facetValue
   }
 
   if (section === "swatch" && id) {
@@ -313,7 +297,8 @@ function createFlatPropertyFromSchema(
   }
 
   const isColorKey =
-    schema.key === "color.baseColor" || schema.key.startsWith("swatch.")
+    schema.key === "colorHarmony.baseColor" ||
+    schema.key.startsWith("swatch.")
   if (isColorKey && isHslObject(value)) {
     formattedValue = value
     actualValue = HSLObjectToString(value)
@@ -327,14 +312,14 @@ function createFlatPropertyFromSchema(
     actualValue = formattedValue as string
   }
 
-  if (schema.key.includes("rounded") && typeof value === "boolean") {
+  if (typeof value === "boolean") {
     actualValue = value ? "On" : "Off"
   }
 
   // Color-filled icons for swatches and color points. Color-point swatches
   // already incorporate the bleed value; baseColor uses its HSL directly.
   let iconColorValue: string | undefined
-  if (schema.key === "color.baseColor" && isHslObject(value)) {
+  if (schema.key === "colorHarmony.baseColor" && isHslObject(value)) {
     iconColorValue = HSLObjectToString(value)
   } else if (schema.key in COLOR_POINT_SWATCHES) {
     iconColorValue = themeSwatchToCssBackground(
@@ -344,7 +329,7 @@ function createFlatPropertyFromSchema(
 
   const icon =
     schema.key.startsWith("swatch.") ||
-    schema.key === "color.baseColor" ||
+    schema.key === "colorHarmony.baseColor" ||
     schema.key in COLOR_POINT_SWATCHES
       ? "icon-custom-color-value"
       : (schema.icon ??

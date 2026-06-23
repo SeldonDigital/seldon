@@ -16,25 +16,49 @@ export const theme: StockTheme = {
     description: "",
     intent: "",
   },
-  core: {
-    ratio: Ratio.MajorThird,
-    fontSize: 16,
-    size: 1,
+  modulation: {
+    type: TokenType.COMPUTED,
+    parameters: { ratio: Ratio.MajorThird, baseFontSize: 16, baseSize: 1 },
   },
-  color: {
-    baseColor: { hue: 257, saturation: 25, lightness: 45 },
-    harmony: Harmony.Monochromatic,
-    angle: 0,
-    step: 10,
-    whitePoint: 100,
-    grayPoint: 47,
-    blackPoint: 1,
-    bleed: 10,
-    contrastRatio: 2.5,
+  colorHarmony: {
+    type: TokenType.COMPUTED,
+    parameters: {
+      baseColor: { hue: 257, saturation: 25, lightness: 45 },
+      harmony: Harmony.Monochromatic,
+      angle: 0,
+      step: 10,
+      whitePoint: 100,
+      grayPoint: 47,
+      blackPoint: 1,
+      bleed: 10,
+    },
+  },
+  matchColor: {
+    type: TokenType.COMPUTED,
+    parameters: { includeBrightness: true, includeOpacity: true },
+  },
+  highContrast: {
+    type: TokenType.COMPUTED,
+    parameters: {
+      contrastRatio: 2.5,
+      fallbackColor: { type: ValueType.EXACT, value: "#FFFFFF" },
+      includeBleed: true,
+    },
+  },
+  opticalPadding: {
+    type: TokenType.COMPUTED,
+    parameters: { leftRhythm: 0.64, rightRhythm: 0.8, verticalRhythm: 0.4 },
+  },
+  autoFit: {
+    type: TokenType.COMPUTED,
+    parameters: { factor: 1 },
   },
   fontFamily: {
-    primary: { type: TokenType.FONT_FAMILY, parameters: "Roboto" },
-    secondary: { type: TokenType.FONT_FAMILY, parameters: "Roboto" },
+    type: TokenType.COMPUTED,
+    parameters: {
+      primary: { type: TokenType.FONT_FAMILY, parameters: "Roboto" },
+      secondary: { type: TokenType.FONT_FAMILY, parameters: "Roboto" },
+    },
   },
   size: {
     tiny: {

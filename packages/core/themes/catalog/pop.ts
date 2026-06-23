@@ -18,25 +18,49 @@ export const theme: StockTheme = {
     intent:
       "To provide a striking and dynamic look with high contrast and readability, suitable for a wide range of applications.",
   },
-  core: {
-    ratio: Ratio.MajorThird,
-    fontSize: 16,
-    size: 1,
+  modulation: {
+    type: TokenType.COMPUTED,
+    parameters: { ratio: Ratio.MajorThird, baseFontSize: 16, baseSize: 1 },
   },
-  color: {
-    baseColor: { hue: 352, saturation: 85, lightness: 68 },
-    harmony: Harmony.SplitComplementary,
-    angle: 24,
-    step: 12,
-    whitePoint: 98,
-    grayPoint: 56,
-    blackPoint: 8,
-    bleed: 12,
-    contrastRatio: 2.5,
+  colorHarmony: {
+    type: TokenType.COMPUTED,
+    parameters: {
+      baseColor: { hue: 352, saturation: 85, lightness: 68 },
+      harmony: Harmony.SplitComplementary,
+      angle: 24,
+      step: 12,
+      whitePoint: 98,
+      grayPoint: 56,
+      blackPoint: 8,
+      bleed: 12,
+    },
+  },
+  matchColor: {
+    type: TokenType.COMPUTED,
+    parameters: { includeBrightness: true, includeOpacity: true },
+  },
+  highContrast: {
+    type: TokenType.COMPUTED,
+    parameters: {
+      contrastRatio: 2.5,
+      fallbackColor: { type: ValueType.EXACT, value: "#FFFFFF" },
+      includeBleed: true,
+    },
+  },
+  opticalPadding: {
+    type: TokenType.COMPUTED,
+    parameters: { leftRhythm: 0.64, rightRhythm: 0.8, verticalRhythm: 0.4 },
+  },
+  autoFit: {
+    type: TokenType.COMPUTED,
+    parameters: { factor: 1 },
   },
   fontFamily: {
-    primary: { type: TokenType.FONT_FAMILY, parameters: "Playfair Display" },
-    secondary: { type: TokenType.FONT_FAMILY, parameters: "Josefin Sans" },
+    type: TokenType.COMPUTED,
+    parameters: {
+      primary: { type: TokenType.FONT_FAMILY, parameters: "Playfair Display" },
+      secondary: { type: TokenType.FONT_FAMILY, parameters: "Josefin Sans" },
+    },
   },
   size: {
     tiny: {

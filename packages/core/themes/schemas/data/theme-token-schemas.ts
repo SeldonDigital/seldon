@@ -2,7 +2,6 @@ import type { ThemeTokenSchema } from "../../types/schema"
 import {
   blurSchemas,
   borderWidthSchemas,
-  coreSchemas,
   cornersSchemas,
   dimensionSchemas,
   fontSizeSchemas,
@@ -25,7 +24,6 @@ export const THEME_TOKEN_SCHEMAS: Record<string, ThemeTokenSchema> = {}
 export const THEME_TOKEN_SCHEMA_CATALOG = THEME_TOKEN_SCHEMAS
 
 const allStaticSchemas = [
-  ...coreSchemas,
   ...sizeSchemas,
   ...dimensionSchemas,
   ...marginSchemas,

@@ -13,25 +13,49 @@ export const theme: StockTheme = {
     description: "Theme for Seldon's Editor.",
     intent: "Default theme for Seldon's Editor interface.",
   },
-  core: {
-    ratio: Ratio.MajorThird,
-    fontSize: 16,
-    size: 1,
+  modulation: {
+    type: TokenType.COMPUTED,
+    parameters: { ratio: Ratio.MajorThird, baseFontSize: 16, baseSize: 1 },
   },
-  color: {
-    baseColor: { hue: 203, saturation: 100, lightness: 62 }, // Seldon Blue
-    harmony: Harmony.Monochromatic, // Harmony type for the swatches
-    angle: 24, // Used to determine angle from primary hue in harmonies that allow it
-    step: 6, // Steps between tints and shades; (+) values create tints, (-) values create shades
-    whitePoint: 98, // Used to determine lightness value for white
-    grayPoint: 50, // Used to determine lightness value for gray
-    blackPoint: 8, // Used to determine lightness value for black
-    bleed: 0, // Determines how much the hue bleeds into white, gray, and black
-    contrastRatio: 2.5, // Contrast ratio (1-21) at which to switch from black to white text
+  colorHarmony: {
+    type: TokenType.COMPUTED,
+    parameters: {
+      baseColor: { hue: 203, saturation: 100, lightness: 62 }, // Seldon Blue
+      harmony: Harmony.Monochromatic,
+      angle: 24,
+      step: 6,
+      whitePoint: 98,
+      grayPoint: 50,
+      blackPoint: 8,
+      bleed: 0,
+    },
+  },
+  matchColor: {
+    type: TokenType.COMPUTED,
+    parameters: { includeBrightness: true, includeOpacity: true },
+  },
+  highContrast: {
+    type: TokenType.COMPUTED,
+    parameters: {
+      contrastRatio: 2.5,
+      fallbackColor: { type: ValueType.EXACT, value: "#FFFFFF" },
+      includeBleed: true,
+    },
+  },
+  opticalPadding: {
+    type: TokenType.COMPUTED,
+    parameters: { leftRhythm: 0.64, rightRhythm: 0.8, verticalRhythm: 0.4 },
+  },
+  autoFit: {
+    type: TokenType.COMPUTED,
+    parameters: { factor: 1 },
   },
   fontFamily: {
-    primary: { type: TokenType.FONT_FAMILY, parameters: "IBM Plex Sans" },
-    secondary: { type: TokenType.FONT_FAMILY, parameters: "IBM Plex Serif" },
+    type: TokenType.COMPUTED,
+    parameters: {
+      primary: { type: TokenType.FONT_FAMILY, parameters: "IBM Plex Sans" },
+      secondary: { type: TokenType.FONT_FAMILY, parameters: "IBM Plex Serif" },
+    },
   },
   size: {
     tiny: {

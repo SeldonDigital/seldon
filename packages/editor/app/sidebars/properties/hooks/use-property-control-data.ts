@@ -151,7 +151,8 @@ export function usePropertyControlData({
     // This ensures calculated HSL values display correctly instead of showing the raw object
     if (
       property.actualValue &&
-      (property.key.startsWith("swatch.") || property.key === "color.baseColor")
+      (property.key.startsWith("swatch.") ||
+        property.key === "colorHarmony.baseColor")
     ) {
       return { type: ValueType.EXACT, value: property.actualValue }
     }
@@ -175,8 +176,8 @@ export function usePropertyControlData({
     // This includes properties ending with .step (e.g., dimension.huge.step, margin.cozy.step)
     // and font weight properties (e.g., fontWeight.thin, fontWeight.bold)
     if (
-      property.key === "core.ratio" ||
-      property.key === "core.size" ||
+      property.key === "modulation.ratio" ||
+      property.key === "modulation.baseSize" ||
       property.key.startsWith("fontWeight.") ||
       property.key.endsWith(".step") ||
       property.key === REPEAT_ROW_KEY ||
@@ -186,21 +187,24 @@ export function usePropertyControlData({
     }
 
     // Force Base Font Size to use PX units
-    if (property.key === "core.fontSize") {
+    if (property.key === "modulation.baseFontSize") {
       return "PX"
     }
 
     // Color angle and step should use degrees
-    if (property.key === "color.angle" || property.key === "color.step") {
+    if (
+      property.key === "colorHarmony.angle" ||
+      property.key === "colorHarmony.step"
+    ) {
       return "DEG"
     }
 
     // Color point properties and bleed should use percentage units
     if (
-      property.key === "color.whitePoint" ||
-      property.key === "color.grayPoint" ||
-      property.key === "color.blackPoint" ||
-      property.key === "color.bleed"
+      property.key === "colorHarmony.whitePoint" ||
+      property.key === "colorHarmony.grayPoint" ||
+      property.key === "colorHarmony.blackPoint" ||
+      property.key === "colorHarmony.bleed"
     ) {
       return "%"
     }

@@ -18,25 +18,52 @@ export const theme: StockTheme = {
     intent:
       "To provide a sleek and professional look with high contrast and readability, suitable for a wide range of applications.",
   },
-  core: {
-    ratio: Ratio.MajorThird,
-    fontSize: 16,
-    size: 1,
+  modulation: {
+    type: TokenType.COMPUTED,
+    parameters: { ratio: Ratio.MajorThird, baseFontSize: 16, baseSize: 1 },
   },
-  color: {
-    baseColor: { hue: 210, saturation: 30, lightness: 20 },
-    harmony: Harmony.Monochromatic,
-    angle: 20,
-    step: 12,
-    whitePoint: 90,
-    grayPoint: 60,
-    blackPoint: 20,
-    bleed: 80,
-    contrastRatio: 2.5,
+  colorHarmony: {
+    type: TokenType.COMPUTED,
+    parameters: {
+      baseColor: { hue: 210, saturation: 30, lightness: 20 },
+      harmony: Harmony.Monochromatic,
+      angle: 20,
+      step: 12,
+      whitePoint: 90,
+      grayPoint: 60,
+      blackPoint: 20,
+      bleed: 80,
+    },
+  },
+  matchColor: {
+    type: TokenType.COMPUTED,
+    parameters: { includeBrightness: true, includeOpacity: true },
+  },
+  highContrast: {
+    type: TokenType.COMPUTED,
+    parameters: {
+      contrastRatio: 2.5,
+      fallbackColor: { type: ValueType.EXACT, value: "#FFFFFF" },
+      includeBleed: true,
+    },
+  },
+  opticalPadding: {
+    type: TokenType.COMPUTED,
+    parameters: { leftRhythm: 0.64, rightRhythm: 0.8, verticalRhythm: 0.4 },
+  },
+  autoFit: {
+    type: TokenType.COMPUTED,
+    parameters: { factor: 1 },
   },
   fontFamily: {
-    primary: { type: TokenType.FONT_FAMILY, parameters: "Lora" },
-    secondary: { type: TokenType.FONT_FAMILY, parameters: "Barlow Condensed" },
+    type: TokenType.COMPUTED,
+    parameters: {
+      primary: { type: TokenType.FONT_FAMILY, parameters: "Lora" },
+      secondary: {
+        type: TokenType.FONT_FAMILY,
+        parameters: "Barlow Condensed",
+      },
+    },
   },
   size: {
     tiny: {

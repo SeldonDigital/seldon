@@ -29,7 +29,8 @@ export function computeAutoFit(
   context: ComputeContext,
 ) {
   const basedOn = value.value.input.basedOn || "#parent.buttonSize"
-  const factor = value.value.input.factor ?? 1.0
+  const factor =
+    value.value.input.factor ?? context.theme.autoFit.parameters.factor
 
   const valueWithDefaults = {
     ...value,
@@ -85,8 +86,8 @@ export function computeAutoFit(
         value: round(
           modulate(
             {
-              ratio: context.theme.core.ratio,
-              size: context.theme.core.fontSize / 16,
+              ratio: context.theme.modulation.parameters.ratio,
+              size: context.theme.modulation.parameters.baseFontSize / 16,
               step: themeOption.parameters.step,
             },
             { round: false },
