@@ -764,38 +764,11 @@ export const schema = {
           overrides: {
             symbol: {
               type: Sdn.ValueType.OPTION,
-              value: "__default__",
+              value: "seldon-component",
             },
             size: {
               type: Sdn.ValueType.THEME_ORDINAL,
-              value: "@size.small",
-            },
-            margin: {
-              top: {
-                type: Sdn.ValueType.EXACT,
-                value: {
-                  unit: Sdn.Unit.PX,
-                  value: 0,
-                },
-              },
-              right: {
-                type: Sdn.ValueType.THEME_ORDINAL,
-                value: "@margin.tight",
-              },
-              bottom: {
-                type: Sdn.ValueType.EXACT,
-                value: {
-                  unit: Sdn.Unit.PX,
-                  value: 0,
-                },
-              },
-              left: {
-                type: Sdn.ValueType.EXACT,
-                value: {
-                  unit: Sdn.Unit.PX,
-                  value: 0,
-                },
-              },
+              value: "@size.medium",
             },
           },
         },
@@ -1098,12 +1071,6 @@ export const schema = {
           children: [
             {
               component: Seldon.ComponentId.ICON,
-              overrides: {
-                symbol: {
-                  type: Sdn.ValueType.OPTION,
-                  value: "__default__",
-                },
-              },
             },
             {
               component: Seldon.ComponentId.INPUT,

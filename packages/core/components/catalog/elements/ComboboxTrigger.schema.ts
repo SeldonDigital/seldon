@@ -210,8 +210,8 @@ export const schema = {
         {
           component: Seldon.ComponentId.ICON,
           overrides: {
-            symbol: { type: Sdn.ValueType.OPTION, value: "__default__" },
-            size: { type: Sdn.ValueType.THEME_ORDINAL, value: "@size.small" },
+            symbol: { type: Sdn.ValueType.OPTION, value: "seldon-component" },
+            size: { type: Sdn.ValueType.THEME_ORDINAL, value: "@size.medium" },
             color: {
               type: Sdn.ValueType.COMPUTED,
               value: {

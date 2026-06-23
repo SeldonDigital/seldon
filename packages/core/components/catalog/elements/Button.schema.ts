@@ -211,7 +211,7 @@ export const schema = {
         overrides: {
           symbol: {
             type: Sdn.ValueType.OPTION,
-            value: "__default__",
+            value: "seldon-component",
           },
           size: {
             type: Sdn.ValueType.COMPUTED,
@@ -364,7 +364,7 @@ export const schema = {
           overrides: {
             symbol: {
               type: Sdn.ValueType.OPTION,
-              value: "__default__",
+              value: "seldon-component",
             },
             size: {
               type: Sdn.ValueType.COMPUTED,
