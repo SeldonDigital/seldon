@@ -9,6 +9,8 @@ import {
   type ReservedStateName,
 } from "@seldon/core/workspace/model/node-state"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
+import { walkComponentTree } from "@lib/workspace/component-tree"
+import { COLORS } from "@lib/helpers/colors"
 import {
   useActiveBoardState,
   useBoardStateStore,
@@ -78,6 +80,11 @@ const itemStyle: CSSProperties = {
   cursor: "pointer",
 }
 
+const overriddenItemStyle: CSSProperties = {
+  ...itemStyle,
+  color: COLORS.primary[500],
+}
+
 const separatorStyle: CSSProperties = {
   height: 1,
   margin: "4px 0",
@@ -130,6 +137,23 @@ export function BoardStateSwitcher({ boardKey }: BoardStateSwitcherProps) {
     () => workspace.metadata.customStates ?? [],
     [workspace.metadata.customStates],
   )
+
+  // Collect every state key that carries overrides anywhere in the board tree.
+  // The `states` map is sparse, so a present key with a non-empty bag means that
+  // state has authored overrides. The Normal layer lives in `overrides`, not here.
+  const statesWithOverrides = useMemo(() => {
+    const set = new Set<NodeState>()
+    const board = workspace.boards[boardKey]
+    if (!board) return set
+    walkComponentTree(board, (ref) => {
+      const states = workspace.nodes[ref.id]?.states
+      if (!states) return
+      for (const [state, bag] of Object.entries(states)) {
+        if (bag && Object.keys(bag).length > 0) set.add(state)
+      }
+    })
+    return set
+  }, [workspace.boards, workspace.nodes, boardKey])
 
   const closeMenu = () => {
     setOpen(false)
@@ -207,7 +231,13 @@ export function BoardStateSwitcher({ boardKey }: BoardStateSwitcherProps) {
           <div style={separatorStyle} />
 
           {RESERVED_STATE_MENU_ORDER.map((state) => (
-            <div key={state} style={itemStyle} onClick={() => select(state)}>
+            <div
+              key={state}
+              style={
+                statesWithOverrides.has(state) ? overriddenItemStyle : itemStyle
+              }
+              onClick={() => select(state)}
+            >
               {RESERVED_STATE_LABELS[state]}
             </div>
           ))}
@@ -228,7 +258,15 @@ export function BoardStateSwitcher({ boardKey }: BoardStateSwitcherProps) {
               </div>
             ) : (
               <div key={entry.key} style={itemStyle}>
-                <span style={{ flex: 1 }} onClick={() => select(entry.key)}>
+                <span
+                  style={{
+                    flex: 1,
+                    color: statesWithOverrides.has(entry.key)
+                      ? COLORS.primary[500]
+                      : undefined,
+                  }}
+                  onClick={() => select(entry.key)}
+                >
                   {entry.label}
                 </span>
                 <button
