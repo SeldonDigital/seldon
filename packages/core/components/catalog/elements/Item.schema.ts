@@ -703,7 +703,7 @@ export const schema = {
           overrides: {
             buttonSize: {
               type: Sdn.ValueType.THEME_ORDINAL,
-              value: "@fontSize.xsmall",
+              value: "@fontSize.small",
             },
             padding: {
               top: {
@@ -848,7 +848,7 @@ export const schema = {
           overrides: {
             buttonSize: {
               type: Sdn.ValueType.THEME_ORDINAL,
-              value: "@fontSize.xsmall",
+              value: "@fontSize.small",
             },
             padding: {
               top: {
@@ -902,7 +902,7 @@ export const schema = {
           overrides: {
             buttonSize: {
               type: Sdn.ValueType.THEME_ORDINAL,
-              value: "@fontSize.xsmall",
+              value: "@fontSize.small",
             },
             padding: {
               top: {
@@ -991,7 +991,7 @@ export const schema = {
           overrides: {
             buttonSize: {
               type: Sdn.ValueType.THEME_ORDINAL,
-              value: "@fontSize.xsmall",
+              value: "@fontSize.small",
             },
             padding: {
               top: {
@@ -1134,7 +1134,7 @@ export const schema = {
           overrides: {
             buttonSize: {
               type: Sdn.ValueType.THEME_ORDINAL,
-              value: "@fontSize.xsmall",
+              value: "@fontSize.small",
             },
             padding: {
               top: {
@@ -1188,7 +1188,7 @@ export const schema = {
           overrides: {
             buttonSize: {
               type: Sdn.ValueType.THEME_ORDINAL,
-              value: "@fontSize.xsmall",
+              value: "@fontSize.small",
             },
             padding: {
               top: {
