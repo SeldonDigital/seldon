@@ -46,12 +46,7 @@ export const schema = {
     rotation: { type: Sdn.ValueType.EMPTY, value: null },
     color: {
       type: Sdn.ValueType.COMPUTED,
-      value: {
-        function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-        input: {
-          basedOn: "#self.background.color",
-        },
-      },
+      value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
     },
     brightness: { type: Sdn.ValueType.EMPTY, value: null },
     opacity: { type: Sdn.ValueType.EMPTY, value: null },

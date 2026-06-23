@@ -1,3 +1,4 @@
+import { isComputedFunction } from "../../../helpers/type-guards/value/is-computed-value"
 import { Theme } from "../../../themes/types"
 import { ComputedFunction, Unit } from "../../constants"
 import { PropertySchema } from "../../types/schema"
@@ -44,11 +45,7 @@ export const heightSchema: PropertySchema = {
     option: (value: unknown) =>
       typeof value === "string" &&
       (Object.values(Resize) as string[]).includes(value),
-    computed: (value: unknown) =>
-      typeof value === "object" &&
-      value !== null &&
-      "function" in value &&
-      value.function !== undefined,
+    computed: (value: unknown) => isComputedFunction(value),
     themeOrdinal: (value: unknown, theme?: Theme) => {
       if (!theme) return false
       return typeof value === "string" && value in theme.dimension

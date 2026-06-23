@@ -1,5 +1,6 @@
 import type { ComponentId } from "../../../../components/constants"
-import { ComputedFunction, ValueType } from "../../../../properties"
+import { isMatchValue } from "../../../../helpers/type-guards/value/is-computed-value"
+import { ValueType } from "../../../../properties"
 import { mergeProperties } from "../../../../properties/helpers/merge-properties"
 import { getComputedTheme } from "../../../compute"
 import { getEffectiveProperties } from "../../../helpers/properties"
@@ -633,16 +634,6 @@ const COLOR_SIBLING_KEYS: Record<
   endColor: { brightness: "endBrightness", opacity: "endOpacity" },
 }
 
-function isMatchColorValue(value: unknown): boolean {
-  return (
-    !!value &&
-    typeof value === "object" &&
-    (value as { type?: unknown }).type === ValueType.COMPUTED &&
-    (value as { value?: { function?: unknown } }).value?.function ===
-      ComputedFunction.MATCH
-  )
-}
-
 /**
  * Rejects setting `brightness`/`opacity` on a compound or layer whose `color` is Match while the
  * matching theme toggle is on. Those facets mirror the matched source at compute time and must not
@@ -675,7 +666,7 @@ function assertMatchColorSiblingsLocked(
   ): void => {
     for (const [colorKey, siblingKeys] of Object.entries(COLOR_SIBLING_KEYS)) {
       const color = colorKey in patch ? patch[colorKey] : effectiveFacets?.[colorKey]
-      if (!isMatchColorValue(color)) continue
+      if (!isMatchValue(color)) continue
 
       if (includeBrightness && siblingKeys.brightness in patch) {
         check(false, "Brightness cannot be changed while color is set to Match.")

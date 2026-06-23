@@ -169,7 +169,7 @@ function dispatchComputed(
     throw new Error("Value is not a computed value")
   }
 
-  const functionType = value.value.function
+  const functionType = value.value
   switch (functionType) {
     case ComputedFunction.HIGH_CONTRAST_COLOR:
       return computeHighContrastColor(

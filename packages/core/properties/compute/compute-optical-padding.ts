@@ -7,19 +7,21 @@ import { EMPTY_VALUE, Unit, ValueType } from "../constants"
 import type { SubPropertyKey } from "../types/property-keys"
 import type { ComputedOpticalPaddingValue } from "../values/shared/computed/optical-padding"
 import { getBasedOnValue } from "./get-based-on-value"
+import { resolveOpticalPaddingSource } from "./resolve-optical-padding-source"
 import { ComputeContext, ComputeKeys } from "./types"
 
 /** Editor label for `ComputedFunction.OPTICAL_PADDING`. */
 export const OPTICAL_PADDING_DISPLAY_NAME = "Optical Padding"
 
 /**
- * Multiplies the resolved based-on length by the theme's side rhythm for the padding side named in
- * `keys.subPropertyKey`. Missing `basedOn` becomes `#parent.fontSize`. The side rhythms are theme
- * Computed values and are not authored per schema.
+ * Multiplies the resolved source length by the theme's side rhythm for the padding side named in
+ * `keys.subPropertyKey`. The source is derived from self first: `#buttonSize`, else `#font.size`,
+ * else the parent fallback `#parent.fontSize` (see {@link resolveOpticalPaddingSource}). The side
+ * rhythms are theme Computed values and are not authored per schema.
  *
- * Supported resolved based-on types: `EXACT` number, `EXACT` length with `unit` and `value`, or
+ * Supported resolved source types: `EXACT` number, `EXACT` length with `unit` and `value`, or
  * `THEME_ORDINAL` only when the token string uses the `@fontSize` prefix. Degrades to `EMPTY` when
- * the `basedOn` path cannot be resolved or resolves to an unsupported type, so an unresolved input
+ * the source path cannot be resolved or resolves to an unsupported type, so an unresolved input
  * never breaks compute or CSS generation.
  *
  * @param value - Stored computed optical padding value
@@ -32,19 +34,11 @@ export function computeOpticalPadding(
   context: ComputeContext,
   keys: ComputeKeys,
 ) {
-  const basedOn = value.value.input.basedOn || "#parent.fontSize"
-
-  const valueWithDefaults = {
-    ...value,
-    value: {
-      ...value.value,
-      input: { basedOn },
-    },
-  }
+  const basedOn = resolveOpticalPaddingSource(context)
 
   let basedOnValue
   try {
-    basedOnValue = getBasedOnValue(valueWithDefaults, context)
+    basedOnValue = getBasedOnValue(basedOn, context)
   } catch {
     return EMPTY_VALUE
   }

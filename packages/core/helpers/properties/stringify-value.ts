@@ -102,14 +102,8 @@ export function stringifyValue(
 
 /** Returns a display label for a COMPUTED value based on its function. */
 function stringifyComputedValue(value: Value): string {
-  if (
-    typeof value === "object" &&
-    "value" in value &&
-    value.value &&
-    typeof value.value === "object" &&
-    "function" in value.value
-  ) {
-    switch (value.value.function) {
+  if (typeof value === "object" && "value" in value) {
+    switch (value.value) {
       case ComputedFunction.AUTO_FIT:
         return "Auto Fit"
       case ComputedFunction.HIGH_CONTRAST_COLOR:

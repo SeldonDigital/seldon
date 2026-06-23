@@ -30,7 +30,6 @@ import {
   BORDER_SIDE_KEYS,
   Board,
   BorderSideKey,
-  ComputedFunction,
   Instance,
   Properties,
   PropertyKey,
@@ -42,7 +41,7 @@ import {
 } from "@seldon/core"
 import { getComponentSchema } from "@seldon/core/components/catalog"
 import { isComponentId } from "@seldon/core/components/constants"
-import { findInObject } from "@seldon/core/helpers"
+import { findInObject, isMatchValue } from "@seldon/core/helpers"
 import {
   formatCompoundDisplay as coreFormatCompoundDisplay,
   formatShorthandDisplay as coreFormatShorthandDisplay,
@@ -486,16 +485,6 @@ const MATCH_SIBLING_FACETS: Record<
   endOpacity: { colorKey: "endColor", kind: "opacity" },
 }
 
-function isMatchColorValue(value: unknown): boolean {
-  return (
-    !!value &&
-    typeof value === "object" &&
-    (value as { type?: unknown }).type === ValueType.COMPUTED &&
-    (value as { value?: { function?: unknown } }).value?.function ===
-      ComputedFunction.MATCH
-  )
-}
-
 /**
  * Decides whether a `brightness`/`opacity` facet is locked to a Match color and what value to show.
  * A facet is locked when its sibling color in `layer` resolves to Match and the node theme's
@@ -512,7 +501,7 @@ function resolveMatchSiblingLock(
 ): { displayValue: unknown } | null {
   const sibling = MATCH_SIBLING_FACETS[subKey]
   if (!sibling || !layer) return null
-  if (!isMatchColorValue(layer[sibling.colorKey])) return null
+  if (!isMatchValue(layer[sibling.colorKey])) return null
 
   const params = theme?.matchColor?.parameters
   const enabled =

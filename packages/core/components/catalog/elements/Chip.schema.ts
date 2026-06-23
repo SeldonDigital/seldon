@@ -52,39 +52,19 @@ export const schema = {
     padding: {
       top: {
         type: Sdn.ValueType.COMPUTED,
-        value: {
-          function: Sdn.ComputedFunction.OPTICAL_PADDING,
-          input: {
-            basedOn: "#buttonSize",
-          },
-        },
+        value: Sdn.ComputedFunction.OPTICAL_PADDING,
       },
       right: {
         type: Sdn.ValueType.COMPUTED,
-        value: {
-          function: Sdn.ComputedFunction.OPTICAL_PADDING,
-          input: {
-            basedOn: "#buttonSize",
-          },
-        },
+        value: Sdn.ComputedFunction.OPTICAL_PADDING,
       },
       bottom: {
         type: Sdn.ValueType.COMPUTED,
-        value: {
-          function: Sdn.ComputedFunction.OPTICAL_PADDING,
-          input: {
-            basedOn: "#buttonSize",
-          },
-        },
+        value: Sdn.ComputedFunction.OPTICAL_PADDING,
       },
       left: {
         type: Sdn.ValueType.COMPUTED,
-        value: {
-          function: Sdn.ComputedFunction.OPTICAL_PADDING,
-          input: {
-            basedOn: "#buttonSize",
-          },
-        },
+        value: Sdn.ComputedFunction.OPTICAL_PADDING,
       },
     },
     gap: {
@@ -114,12 +94,7 @@ export const schema = {
       style: { type: Sdn.ValueType.EMPTY, value: null },
       color: {
         type: Sdn.ValueType.COMPUTED,
-        value: {
-          function: Sdn.ComputedFunction.MATCH,
-          input: {
-            basedOn: "#background.color",
-          },
-        },
+        value: Sdn.ComputedFunction.MATCH,
       },
       width: { type: Sdn.ValueType.EMPTY, value: null },
       brightness: { type: Sdn.ValueType.EMPTY, value: null },
@@ -214,12 +189,7 @@ export const schema = {
           },
           color: {
             type: Sdn.ValueType.COMPUTED,
-            value: {
-              function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-              input: {
-                basedOn: "#self.background.color",
-              },
-            },
+            value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
           },
           font: {
             preset: {
@@ -228,12 +198,7 @@ export const schema = {
             },
             size: {
               type: Sdn.ValueType.COMPUTED,
-              value: {
-                function: Sdn.ComputedFunction.AUTO_FIT,
-                input: {
-                  basedOn: "#parent.buttonSize",
-                },
-              },
+              value: Sdn.ComputedFunction.AUTO_FIT,
             },
           },
         },
@@ -273,17 +238,11 @@ export const schema = {
             },
             size: {
               type: Sdn.ValueType.COMPUTED,
-              value: {
-                function: Sdn.ComputedFunction.AUTO_FIT,
-                input: { basedOn: "#parent.buttonSize" },
-              },
+              value: Sdn.ComputedFunction.AUTO_FIT,
             },
             color: {
               type: Sdn.ValueType.COMPUTED,
-              value: {
-                function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-                input: { basedOn: "#parent.background.color" },
-              },
+              value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
             },
           },
         },
@@ -295,10 +254,7 @@ export const schema = {
             content: { type: Sdn.ValueType.EXACT, value: "Assist" },
             color: {
               type: Sdn.ValueType.COMPUTED,
-              value: {
-                function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-                input: { basedOn: "#self.background.color" },
-              },
+              value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
             },
             font: {
               preset: {
@@ -307,10 +263,7 @@ export const schema = {
               },
               size: {
                 type: Sdn.ValueType.COMPUTED,
-                value: {
-                  function: Sdn.ComputedFunction.AUTO_FIT,
-                  input: { basedOn: "#parent.buttonSize" },
-                },
+                value: Sdn.ComputedFunction.AUTO_FIT,
               },
             },
           },
@@ -370,17 +323,11 @@ export const schema = {
             },
             size: {
               type: Sdn.ValueType.COMPUTED,
-              value: {
-                function: Sdn.ComputedFunction.AUTO_FIT,
-                input: { basedOn: "#parent.buttonSize" },
-              },
+              value: Sdn.ComputedFunction.AUTO_FIT,
             },
             color: {
               type: Sdn.ValueType.COMPUTED,
-              value: {
-                function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-                input: { basedOn: "#parent.background.color" },
-              },
+              value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
             },
           },
         },
@@ -421,17 +368,11 @@ export const schema = {
             symbol: { type: Sdn.ValueType.OPTION, value: "material-check" },
             size: {
               type: Sdn.ValueType.COMPUTED,
-              value: {
-                function: Sdn.ComputedFunction.AUTO_FIT,
-                input: { basedOn: "#parent.buttonSize" },
-              },
+              value: Sdn.ComputedFunction.AUTO_FIT,
             },
             color: {
               type: Sdn.ValueType.COMPUTED,
-              value: {
-                function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-                input: { basedOn: "#parent.background.color" },
-              },
+              value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
             },
           },
         },
@@ -443,10 +384,7 @@ export const schema = {
             content: { type: Sdn.ValueType.EXACT, value: "Filter" },
             color: {
               type: Sdn.ValueType.COMPUTED,
-              value: {
-                function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-                input: { basedOn: "#self.background.color" },
-              },
+              value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
             },
             font: {
               preset: {
@@ -455,10 +393,7 @@ export const schema = {
               },
               size: {
                 type: Sdn.ValueType.COMPUTED,
-                value: {
-                  function: Sdn.ComputedFunction.AUTO_FIT,
-                  input: { basedOn: "#parent.buttonSize" },
-                },
+                value: Sdn.ComputedFunction.AUTO_FIT,
               },
             },
           },
@@ -495,10 +430,7 @@ export const schema = {
             content: { type: Sdn.ValueType.EXACT, value: "Input" },
             color: {
               type: Sdn.ValueType.COMPUTED,
-              value: {
-                function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-                input: { basedOn: "#self.background.color" },
-              },
+              value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
             },
             font: {
               preset: {
@@ -507,10 +439,7 @@ export const schema = {
               },
               size: {
                 type: Sdn.ValueType.COMPUTED,
-                value: {
-                  function: Sdn.ComputedFunction.AUTO_FIT,
-                  input: { basedOn: "#parent.buttonSize" },
-                },
+                value: Sdn.ComputedFunction.AUTO_FIT,
               },
             },
           },
@@ -522,17 +451,11 @@ export const schema = {
             symbol: { type: Sdn.ValueType.OPTION, value: "material-close" },
             size: {
               type: Sdn.ValueType.COMPUTED,
-              value: {
-                function: Sdn.ComputedFunction.AUTO_FIT,
-                input: { basedOn: "#parent.buttonSize" },
-              },
+              value: Sdn.ComputedFunction.AUTO_FIT,
             },
             color: {
               type: Sdn.ValueType.COMPUTED,
-              value: {
-                function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-                input: { basedOn: "#parent.background.color" },
-              },
+              value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
             },
           },
         },
@@ -567,10 +490,7 @@ export const schema = {
             content: { type: Sdn.ValueType.EXACT, value: "Suggestion" },
             color: {
               type: Sdn.ValueType.COMPUTED,
-              value: {
-                function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-                input: { basedOn: "#self.background.color" },
-              },
+              value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
             },
             font: {
               preset: {
@@ -579,10 +499,7 @@ export const schema = {
               },
               size: {
                 type: Sdn.ValueType.COMPUTED,
-                value: {
-                  function: Sdn.ComputedFunction.AUTO_FIT,
-                  input: { basedOn: "#parent.buttonSize" },
-                },
+                value: Sdn.ComputedFunction.AUTO_FIT,
               },
             },
           },

@@ -1,19 +1,17 @@
 import {
-  ComputedFunction,
   EmptyValue,
   PixelValue,
   RemValue,
   SizeValue,
   Unit,
   ValueType,
-  invariant,
 } from "../../index"
 import type { ComputeContext } from "../../properties/compute/types"
+import { resolveAutoFitSource } from "../../properties/compute/resolve-auto-fit-source"
 import { Theme } from "../../themes/types"
 import { isModulatedToken, isThemeExactToken } from "../../themes/types"
 import { modulate } from "../math/modulate"
 import { getThemeOption } from "../theme/get-theme-option"
-import { findInObject } from "../utils/find-in-object"
 import { exactTokenToLength } from "./resolve-length-token"
 
 /**
@@ -38,53 +36,37 @@ export function resolveSize({
     case ValueType.EMPTY:
     case ValueType.EXACT:
       return size as PixelValue | RemValue | EmptyValue
-    case ValueType.COMPUTED:
+    case ValueType.COMPUTED: {
       if (!parentContext) {
         throw new Error(
           `resolveSize received a COMPUTED value. This should have been computed in the compute function.`,
         )
       }
 
-      const parentSize = findInObject(
-        parentContext.properties,
-        size.value.input.basedOn as string,
-      ) as SizeValue
-
-      invariant(
-        parentSize,
-        `Property ${size.value.input.basedOn as string} not found in parent properties`,
-      )
-
-      const resolvedParentSize = resolveSize({
-        size: parentSize,
+      const source = resolveAutoFitSource({
+        properties: {},
         parentContext,
         theme,
       })
 
-      if (resolvedParentSize.type === ValueType.EMPTY) {
-        throw new Error(`${size.value.input.basedOn as string} is empty`)
+      const resolvedSource = resolveSize({
+        size: source as SizeValue,
+        parentContext,
+        theme,
+      })
+
+      if (resolvedSource.type === ValueType.EMPTY) {
+        throw new Error(`Auto fit source is empty`)
       }
 
-      switch (size.value.function) {
-        case ComputedFunction.MATCH:
-          return resolvedParentSize
-
-        case ComputedFunction.AUTO_FIT:
-          return {
-            type: ValueType.EXACT,
-            value: {
-              unit: Unit.REM,
-              value:
-                resolvedParentSize.value.value *
-                theme.autoFit.parameters.factor,
-            },
-          }
-
-        default:
-          throw new Error(
-            `Invalid computed value function: ${JSON.stringify(size.value)}`,
-          )
+      return {
+        type: ValueType.EXACT,
+        value: {
+          unit: Unit.REM,
+          value: resolvedSource.value.value * theme.autoFit.parameters.factor,
+        },
       }
+    }
 
     case ValueType.THEME_ORDINAL: {
       const themeValue = getThemeOption(size.value as string, theme)

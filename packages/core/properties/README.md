@@ -165,13 +165,8 @@ enum ValueType {
 { type: ValueType.OPTION, value: "center" }
 { type: ValueType.OPTION, value: "bold" }
 
-// COMPUTED - Derived values (`function` matches `ComputedFunction` / stored JSON: camelCase, e.g. autoFit, highContrastColor, opticalPadding, match)
-{ type: ValueType.COMPUTED,
-  value: {
-    function: "autoFit",
-    input: { basedOn: "#parent.size" }
-  }
-}
+// COMPUTED - Derived values (`value` is a `ComputedFunction` / stored JSON: camelCase, e.g. autoFit, highContrastColor, opticalPadding, match)
+{ type: ValueType.COMPUTED, value: "autoFit" }
 
 // THEME_CATEGORICAL - Non-sequential theme values
 { type: ValueType.THEME_CATEGORICAL, value: "@swatch.primary" }

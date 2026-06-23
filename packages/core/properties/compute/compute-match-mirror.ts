@@ -1,10 +1,11 @@
 import { resolveValue } from "../../helpers/resolution/resolve-value"
+import { isMatchValue } from "../../helpers/type-guards/value/is-computed-value"
 import { findInObject } from "../../helpers/utils/find-in-object"
-import { ComputedFunction, EMPTY_VALUE, ValueType } from "../constants"
+import { EMPTY_VALUE, ValueType } from "../constants"
 import type { Value } from "../types/value"
-import type { ComputedMatchValue } from "../values/shared/computed/match"
 import { normalizeLayerFacetPath } from "./compute-layer-color"
 import { resolveBasedOnWithAnchor } from "./get-based-on-value"
+import { resolveMatchSource } from "./resolve-match-source"
 import type { ComputeContext } from "./types"
 
 /**
@@ -19,16 +20,6 @@ const COLOR_SIBLING_KEYS: Record<
   color: { brightness: "brightness", opacity: "opacity" },
   startColor: { brightness: "startBrightness", opacity: "startOpacity" },
   endColor: { brightness: "endBrightness", opacity: "endOpacity" },
-}
-
-function isMatchValue(value: unknown): value is ComputedMatchValue {
-  return (
-    !!value &&
-    typeof value === "object" &&
-    "type" in value &&
-    (value as { type: unknown }).type === ValueType.COMPUTED &&
-    (value as ComputedMatchValue).value?.function === ComputedFunction.MATCH
-  )
 }
 
 /** Rewrites a resolved color lookup path to its sibling brightness/opacity path, or null. */
@@ -88,8 +79,9 @@ function readSourceSiblingFacet(
  * the matched source layer's values. Gated by `theme.matchColor.parameters.includeBrightness` and
  * `includeOpacity`: a toggle that is off leaves that facet untouched. Mutates `resolvedFacets`.
  *
- * `inputFacets` is the pre-resolution compound/layer (it still holds the Match `basedOn`);
- * `resolvedFacets` is the resolved compound/layer to override.
+ * `inputFacets` is the pre-resolution compound/layer (it still holds the Match marker on the color
+ * facet); `resolvedFacets` is the resolved compound/layer to override. The mirrored source is the
+ * Match surface from {@link resolveMatchSource}.
  */
 export function applyMatchColorMirror(
   inputFacets: Record<string, unknown>,
@@ -104,8 +96,7 @@ export function applyMatchColorMirror(
     const colorValue = inputFacets[colorKey]
     if (!isMatchValue(colorValue)) continue
 
-    const basedOn = colorValue.value.input?.basedOn
-    if (!basedOn) continue
+    const basedOn = resolveMatchSource()
 
     if (includeBrightness) {
       resolvedFacets[siblingKeys.brightness] =

@@ -647,12 +647,7 @@ export const schema = {
                 width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
                 color: {
                   type: Sdn.ValueType.COMPUTED,
-                  value: {
-                    function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-                    input: {
-                      basedOn: "#self.color",
-                    },
-                  },
+                  value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
                 },
               },
             },
@@ -822,12 +817,7 @@ export const schema = {
                 width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
                 color: {
                   type: Sdn.ValueType.COMPUTED,
-                  value: {
-                    function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-                    input: {
-                      basedOn: "#self.color",
-                    },
-                  },
+                  value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
                 },
               },
             },

@@ -64,12 +64,7 @@ export const schema = {
     },
     color: {
       type: Sdn.ValueType.COMPUTED,
-      value: {
-        function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-        input: {
-          basedOn: "#background.color",
-        },
-      },
+      value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
     },
     accentColor: { type: Sdn.ValueType.EMPTY, value: null },
     brightness: { type: Sdn.ValueType.EMPTY, value: null },

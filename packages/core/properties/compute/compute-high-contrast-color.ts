@@ -20,6 +20,7 @@ import {
   readAnchoredLayerPercentage,
 } from "./compute-layer-color"
 import { resolveBasedOnWithAnchor } from "./get-based-on-value"
+import { resolveHighContrastSource } from "./resolve-high-contrast-source"
 import { ComputeContext } from "./types"
 
 /** Editor label for `ComputedFunction.HIGH_CONTRAST_COLOR`. */
@@ -29,9 +30,10 @@ export const HIGH_CONTRAST_COLOR_DISPLAY_NAME = "High Contrast"
  * Reads the color at `basedOn`, optionally reads sibling `.brightness` and `.opacity` on the same
  * background layer where the color walk stopped, resolves through the theme, then returns the
  * theme's white or black swatch so text reads on that background. Sibling facets do not walk to
- * grandparents when empty on the anchored layer. `basedOn` is required on the stored value
- * (typically `#parent.background.color` for foreground-on-surface). When the path misses or
- * resolves to an empty or transparent color, the reference surface falls back to pure white.
+ * grandparents when empty on the anchored layer. The source is `#self.background.color`: it reads
+ * the node's own background first and walks ancestors while the layer is empty or transparent. When
+ * the path misses or resolves to an empty or transparent color, the reference surface falls back to
+ * pure white.
  *
  * @param value - Stored computed high-contrast value
  * @param context - Theme and contexts for resolution
@@ -45,7 +47,7 @@ export function computeHighContrastColor(
     context.theme.highContrast.parameters
 
   const { basedOnValue, brightness, opacity, backdrop } =
-    resolveHighContrastInputs(value, context, fallbackColor)
+    resolveHighContrastInputs(context, fallbackColor)
 
   const resolved = resolveValue(
     resolveColor({
@@ -102,7 +104,6 @@ export function computeHighContrastColor(
 }
 
 function resolveHighContrastInputs(
-  value: ComputedHighContrastValue,
   context: ComputeContext,
   fallbackColor: ColorValue,
 ): {
@@ -111,7 +112,7 @@ function resolveHighContrastInputs(
   opacity: PercentageValue | undefined
   backdrop: HSL | LCH | RGB | Hex | undefined
 } {
-  const basedOn = value.value.input?.basedOn ?? "#parent.background.color"
+  const basedOn = resolveHighContrastSource()
 
   try {
     const { value: resolvedValue, facetSource } = resolveBasedOnWithAnchor(

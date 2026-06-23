@@ -36,10 +36,7 @@ export const schema = {
     clip: { type: Sdn.ValueType.EMPTY, value: null },
     color: {
       type: Sdn.ValueType.COMPUTED,
-      value: {
-        function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-        input: { basedOn: "#background.color" },
-      },
+      value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
     },
     brightness: { type: Sdn.ValueType.EMPTY, value: null },
     opacity: { type: Sdn.ValueType.EMPTY, value: null },
@@ -192,10 +189,7 @@ export const schema = {
           size: { type: Sdn.ValueType.THEME_ORDINAL, value: "@size.small" },
           color: {
             type: Sdn.ValueType.COMPUTED,
-            value: {
-              function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-              input: { basedOn: "#parent.background.color" },
-            },
+            value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
           },
         },
       },
@@ -214,10 +208,7 @@ export const schema = {
             size: { type: Sdn.ValueType.THEME_ORDINAL, value: "@size.medium" },
             color: {
               type: Sdn.ValueType.COMPUTED,
-              value: {
-                function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-                input: { basedOn: "#parent.background.color" },
-              },
+              value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
             },
           },
         },
@@ -276,10 +267,7 @@ export const schema = {
             size: { type: Sdn.ValueType.THEME_ORDINAL, value: "@size.small" },
             color: {
               type: Sdn.ValueType.COMPUTED,
-              value: {
-                function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-                input: { basedOn: "#parent.background.color" },
-              },
+              value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
             },
           },
         },

@@ -375,12 +375,7 @@ export const schema = {
                 font: {
                   size: {
                     type: Sdn.ValueType.COMPUTED,
-                    value: {
-                      function: ComputedFunction.AUTO_FIT,
-                      input: {
-                        basedOn: "#parent.buttonSize",
-                      },
-                    },
+                    value: ComputedFunction.AUTO_FIT,
                   },
                   weight: {
                     type: Sdn.ValueType.THEME_ORDINAL,
