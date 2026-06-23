@@ -1,14 +1,10 @@
-import {
-  BorderStyle,
-  BorderWidth,
-  FontStyle,
-  GradientType,
-  TextCasing,
-  Unit,
-  ValueType,
-} from "../../properties"
-import { computeTheme } from "../helpers/compute-theme"
-import { Colorspace, Harmony, Ratio, StockTheme, TokenType } from "../types"
+import { BorderStyle, BorderWidth, FontStyle, GradientType, TextCasing, Unit, ValueType } from "../../properties";
+import { computeTheme } from "../helpers/compute-theme";
+import { Colorspace, Harmony, Ratio, StockTheme, TokenType } from "../types";
+
+
+
+
 
 export const theme: StockTheme = {
   metadata: {
@@ -535,24 +531,6 @@ export const theme: StockTheme = {
       },
     },
     custom1: {
-      name: "Seldon Red",
-      intent: "Seldon Red",
-      type: TokenType.SWATCH,
-      parameters: {
-        colorspace: Colorspace.HSL,
-        value: { hue: 0, saturation: 100, lightness: 65 },
-      },
-    },
-    custom2: {
-      name: "Seldon Green",
-      intent: "Seldon Green",
-      type: TokenType.SWATCH,
-      parameters: {
-        colorspace: Colorspace.HSL,
-        value: { hue: 135, saturation: 76, lightness: 59 },
-      },
-    },
-    custom3: {
       name: "Seldon Blue",
       intent: "Seldon Blue",
       type: TokenType.SWATCH,
@@ -561,22 +539,67 @@ export const theme: StockTheme = {
         value: { hue: 203, saturation: 100, lightness: 62 },
       },
     },
+    custom2: {
+      name: "Seldon Orange",
+      intent: "Seldon Orange",
+      type: TokenType.SWATCH,
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 20, saturation: 95, lightness: 60 },
+      },
+    },
+    custom3: {
+      name: "Seldon Green",
+      intent: "Seldon Green",
+      type: TokenType.SWATCH,
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 135, saturation: 76, lightness: 59 },
+      },
+    },
     custom4: {
+      name: "Seldon Red",
+      intent: "Seldon Red",
+      type: TokenType.SWATCH,
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 0, saturation: 100, lightness: 65 },
+      },
+    },
+    custom5: {
       name: "Seldon Yellow",
       intent: "Seldon Yellow",
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 60, saturation: 100, lightness: 46 },
+        value: { hue: 60, saturation: 100, lightness: 58 },
       },
     },
-    custom5: {
+    custom6: {
       name: "Seldon Purple",
-      intent: "Seldon Purple",
+      intent: "To act as an accent color",
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
         value: { hue: 300, saturation: 76, lightness: 48 },
+      },
+    },
+    custom7: {
+      name: "Seldon Dark Gray",
+      intent: "Seldon Dark Gray",
+      type: TokenType.SWATCH,
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 0, saturation: 0, lightness: 15 },
+      },
+    },
+    custom8: {
+      name: "Seldon Light Gray",
+      intent: "Seldon Light Gray",
+      type: TokenType.SWATCH,
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 0, saturation: 0, lightness: 96 },
       },
     },
   },
