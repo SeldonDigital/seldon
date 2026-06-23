@@ -39,6 +39,8 @@ interface PropertyValueCellProps {
   themeForSwatches: Theme | null
   frameRef: RefObject<HTMLDivElement | null>
   onEditChange: (editing: boolean) => void
+  onTabNext?: () => boolean
+  onTabPrev?: () => boolean
   themeEditingContext?: ThemeEditingContext | null
   fontCollectionEditingContext?: FontCollectionEditingContext | null
   iconSetEditingContext?: IconSetEditingContext | null
@@ -63,6 +65,8 @@ export function PropertyValueCell({
   themeForSwatches,
   frameRef,
   onEditChange,
+  onTabNext,
+  onTabPrev,
   themeEditingContext,
   fontCollectionEditingContext,
   iconSetEditingContext,
@@ -93,6 +97,8 @@ export function PropertyValueCell({
         isEditing={isEditingProperty}
         onEditChange={onEditChange}
         onBlur={() => onEditChange(false)}
+        onTabNext={onTabNext}
+        onTabPrev={onTabPrev}
         color={labelColor}
         themeEditingContext={themeEditingContext}
         fontCollectionEditingContext={fontCollectionEditingContext}

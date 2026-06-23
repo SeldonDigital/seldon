@@ -16,8 +16,10 @@ export interface InputProps {
   inputRef?: RefObject<HTMLInputElement | null>
   open?: boolean
   setOpen?: (open: boolean) => void
-  handleSubmit?: () => void
+  handleSubmit?: (options?: { keepFocus?: boolean }) => void
   onCancel?: () => void
+  onTabNext?: () => boolean
+  onTabPrev?: () => boolean
   onHighlightNext?: () => void
   onHighlightPrev?: () => void
   placeholder?: string
@@ -48,6 +50,8 @@ export function Combobox({
   setOpen,
   handleSubmit,
   onCancel,
+  onTabNext,
+  onTabPrev,
   onHighlightNext,
   onHighlightPrev,
   placeholder,
@@ -128,6 +132,16 @@ export function Combobox({
         onHighlightPrev?.()
         return
       }
+
+      // Tab commits the highlighted/typed value and then moves edit focus to the
+      // adjacent property row. Only suppress the native focus move when a row was
+      // actually activated, so Tab can still leave the list at either end.
+      if (event.key === "Tab") {
+        handleSubmit?.({ keepFocus: true })
+        const moved = event.shiftKey ? onTabPrev?.() : onTabNext?.()
+        if (moved) event.preventDefault()
+        return
+      }
     }
 
     if (event.key === "Enter") {
@@ -163,6 +177,33 @@ export function Combobox({
       }
 
       event.currentTarget.blur()
+      return
+    }
+
+    // Standalone fields commit the typed value on Tab, then hand off edit focus
+    // to the adjacent property row. When no row was activated (start or end of
+    // the list) the input blurs so the browser can move focus out of the list.
+    if (
+      event.key === "Tab" &&
+      mode === "standalone" &&
+      (onTabNext || onTabPrev)
+    ) {
+      event.preventDefault()
+      const trimmedValue = event.currentTarget.value.trim()
+      handledEnterRef.current = true
+
+      if (validate && !validate(trimmedValue)) {
+        onCancel?.()
+      } else {
+        notifyCommit(trimmedValue, onValueChange, onSubmit)
+      }
+
+      const moved = event.shiftKey ? onTabPrev?.() : onTabNext?.()
+      if (!moved) event.currentTarget.blur()
+
+      setTimeout(() => {
+        handledEnterRef.current = false
+      }, 0)
       return
     }
 

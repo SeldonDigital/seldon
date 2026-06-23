@@ -19,6 +19,7 @@ import {
   useRevealedBorderSides,
 } from "./hooks/use-border-side-visibility"
 import { useLayerDragMonitor } from "./hooks/use-layer-drag-monitor"
+import { PropertyEditNavigationProvider } from "./hooks/use-property-edit-navigation"
 import { usePropertiesSidebar } from "./hooks/use-properties-sidebar"
 import { useIsCategoryExpanded } from "./hooks/use-property-expansion"
 import {
@@ -123,25 +124,27 @@ function PropertiesTree({
   return (
     <ScrollerShell ref={scrollerRef} style={styles.scroller}>
       <Frame style={styles.tree}>
-        <LayoutGroup>
-          {sections.map((section) => (
-            <TreeSection
-              key={section.category}
-              section={section}
-              workspace={workspace}
-              node={node}
-              theme={theme}
-              cssStrings={cssStrings}
-              cssSelector={cssSelector}
-              allProperties={allProperties}
-              familyProperties={familyProperties}
-              iconProperties={iconProperties}
-              themeEditingContext={themeEditingContext}
-              fontCollectionEditingContext={fontCollectionEditingContext}
-              iconSetEditingContext={iconSetEditingContext}
-            />
-          ))}
-        </LayoutGroup>
+        <PropertyEditNavigationProvider>
+          <LayoutGroup>
+            {sections.map((section) => (
+              <TreeSection
+                key={section.category}
+                section={section}
+                workspace={workspace}
+                node={node}
+                theme={theme}
+                cssStrings={cssStrings}
+                cssSelector={cssSelector}
+                allProperties={allProperties}
+                familyProperties={familyProperties}
+                iconProperties={iconProperties}
+                themeEditingContext={themeEditingContext}
+                fontCollectionEditingContext={fontCollectionEditingContext}
+                iconSetEditingContext={iconSetEditingContext}
+              />
+            ))}
+          </LayoutGroup>
+        </PropertyEditNavigationProvider>
       </Frame>
     </ScrollerShell>
   )

@@ -35,6 +35,8 @@ export interface PropertyControlProps {
   isEditing?: boolean
   onEditChange?: (editing: boolean) => void
   onBlur?: () => void
+  onTabNext?: () => boolean
+  onTabPrev?: () => boolean
   color?: string
   themeEditingContext?: ThemeEditingContext | null
   fontCollectionEditingContext?: FontCollectionEditingContext | null
@@ -80,7 +82,7 @@ interface ComboboxControlView {
     onValueChange: (value: string) => void
     open: boolean
     setOpen: (open: boolean) => void
-    handleSubmit: () => void
+    handleSubmit: (options?: { keepFocus?: boolean }) => void
     onCancel: () => void
     onHighlightNext: () => void
     onHighlightPrev: () => void
