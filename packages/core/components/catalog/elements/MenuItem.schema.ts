@@ -1,6 +1,10 @@
-import * as Sdn from "../../../properties"
-import * as Seldon from "../../constants"
-import { ComponentExport, ComponentSchema } from "../../types"
+import * as Sdn from "../../../properties";
+import * as Seldon from "../../constants";
+import { ComponentExport, ComponentSchema } from "../../types";
+
+
+
+
 
 export const schema = {
   name: "Menu Item",
@@ -125,7 +129,7 @@ export const schema = {
       {
         component: Seldon.ComponentId.ICON,
         overrides: {
-          symbol: { type: Sdn.ValueType.OPTION, value: "__default__" },
+          symbol: { type: Sdn.ValueType.OPTION, value: "seldon-component" },
           size: { type: Sdn.ValueType.THEME_ORDINAL, value: "@size.small" },
           color: {
             type: Sdn.ValueType.COMPUTED,
@@ -152,11 +156,7 @@ export const schema = {
           font: {
             preset: {
               type: Sdn.ValueType.THEME_CATEGORICAL,
-              value: "@font.normal",
-            },
-            size: {
-              type: Sdn.ValueType.THEME_ORDINAL,
-              value: "@fontSize.xsmall",
+              value: "@font.label",
             },
           },
         },
@@ -181,11 +181,7 @@ export const schema = {
           font: {
             preset: {
               type: Sdn.ValueType.THEME_CATEGORICAL,
-              value: "@font.normal",
-            },
-            size: {
-              type: Sdn.ValueType.THEME_ORDINAL,
-              value: "@fontSize.xsmall",
+              value: "@font.label",
             },
           },
         },
@@ -206,26 +202,18 @@ export const schema = {
       },
       children: [
         {
-          component: Seldon.ComponentId.TEXT,
-          variant: "label",
+          component: Seldon.ComponentId.ICON,
           overrides: {
-            content: { type: Sdn.ValueType.EXACT, value: "✓" },
-            width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+            symbol: {
+              type: Sdn.ValueType.OPTION,
+              value: "material-check",
+            },
+            size: { type: Sdn.ValueType.THEME_ORDINAL, value: "@size.small" },
             color: {
               type: Sdn.ValueType.COMPUTED,
               value: {
                 function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
                 input: { basedOn: "#self.background.color" },
-              },
-            },
-            font: {
-              preset: {
-                type: Sdn.ValueType.THEME_CATEGORICAL,
-                value: "@font.normal",
-              },
-              size: {
-                type: Sdn.ValueType.THEME_ORDINAL,
-                value: "@fontSize.xsmall",
               },
             },
           },
@@ -246,11 +234,7 @@ export const schema = {
             font: {
               preset: {
                 type: Sdn.ValueType.THEME_CATEGORICAL,
-                value: "@font.normal",
-              },
-              size: {
-                type: Sdn.ValueType.THEME_ORDINAL,
-                value: "@fontSize.xsmall",
+                value: "@font.label",
               },
             },
           },
@@ -270,26 +254,18 @@ export const schema = {
       },
       children: [
         {
-          component: Seldon.ComponentId.TEXT,
-          variant: "label",
+          component: Seldon.ComponentId.ICON,
           overrides: {
-            content: { type: Sdn.ValueType.EXACT, value: "•" },
-            width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+            symbol: {
+              type: Sdn.ValueType.OPTION,
+              value: "material-radioButtonChecked",
+            },
+            size: { type: Sdn.ValueType.THEME_ORDINAL, value: "@size.small" },
             color: {
               type: Sdn.ValueType.COMPUTED,
               value: {
                 function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
                 input: { basedOn: "#self.background.color" },
-              },
-            },
-            font: {
-              preset: {
-                type: Sdn.ValueType.THEME_CATEGORICAL,
-                value: "@font.normal",
-              },
-              size: {
-                type: Sdn.ValueType.THEME_ORDINAL,
-                value: "@fontSize.xsmall",
               },
             },
           },
@@ -310,11 +286,7 @@ export const schema = {
             font: {
               preset: {
                 type: Sdn.ValueType.THEME_CATEGORICAL,
-                value: "@font.normal",
-              },
-              size: {
-                type: Sdn.ValueType.THEME_ORDINAL,
-                value: "@fontSize.xsmall",
+                value: "@font.label",
               },
             },
           },

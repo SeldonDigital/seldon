@@ -718,7 +718,7 @@ export const theme: StockTheme = {
           type: ValueType.THEME_CATEGORICAL,
           value: "@fontFamily.primary",
         },
-        weight: { type: ValueType.THEME_ORDINAL, value: "@fontWeight.medium" },
+        weight: { type: ValueType.THEME_ORDINAL, value: "@fontWeight.normal" },
         size: { type: ValueType.THEME_ORDINAL, value: "@fontSize.small" },
         lineHeight: {
           type: ValueType.THEME_ORDINAL,

@@ -1,6 +1,10 @@
-import * as Sdn from "../../../properties"
-import * as Seldon from "../../constants"
-import { ComponentExport, ComponentSchema } from "../../types"
+import * as Sdn from "../../../properties";
+import * as Seldon from "../../constants";
+import { ComponentExport, ComponentSchema } from "../../types";
+
+
+
+
 
 export const schema = {
   name: "Listbox Option",
@@ -125,7 +129,7 @@ export const schema = {
       {
         component: Seldon.ComponentId.ICON,
         overrides: {
-          symbol: { type: Sdn.ValueType.OPTION, value: "__default__" },
+          symbol: { type: Sdn.ValueType.OPTION, value: "seldon-component" },
           size: { type: Sdn.ValueType.THEME_ORDINAL, value: "@size.small" },
           color: {
             type: Sdn.ValueType.COMPUTED,
@@ -153,10 +157,6 @@ export const schema = {
             preset: {
               type: Sdn.ValueType.THEME_CATEGORICAL,
               value: "@font.label",
-            },
-            size: {
-              type: Sdn.ValueType.THEME_ORDINAL,
-              value: "@fontSize.xsmall",
             },
           },
         },

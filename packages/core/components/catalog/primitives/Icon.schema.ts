@@ -14,7 +14,7 @@ export const schema = {
     display: { type: Sdn.ValueType.EMPTY, value: null },
     symbol: {
       type: Sdn.ValueType.OPTION,
-      value: "__default__",
+      value: "seldon-component",
     },
     size: {
       type: Sdn.ValueType.THEME_ORDINAL,
