@@ -127,12 +127,6 @@ export interface FlatProperty {
 }
 
 /**
- * Checks if a compound property has preset options available in the theme
- * @param propertyKey - The compound property key (e.g., "background", "border")
- * @param theme - Optional theme to check for preset options
- * @returns True if the theme has a section for this property with preset options
- */
-/**
  * Whether a compound's parent row renders a selector combo. Compounds whose
  * core selector facet is `kind` (background) always do; other compounds only
  * when the theme offers presets.
@@ -151,6 +145,12 @@ export function hasCompoundSelectorCombo(
   return hasCompoundPresetOptions(propertyKey, theme, workspace)
 }
 
+/**
+ * Checks if a compound property has preset options available in the theme
+ * @param propertyKey - The compound property key (e.g., "background", "border")
+ * @param theme - Optional theme to check for preset options
+ * @returns True if the theme has a section for this property with preset options
+ */
 export function hasCompoundPresetOptions(
   propertyKey: string,
   theme?: Theme,
@@ -478,9 +478,6 @@ export function createFlatProperty(
   }
 }
 
-/**
- * Create a flat sub-property
- */
 /**
  * Sibling brightness/opacity facet -> the color facet it mirrors, and which percentage it is.
  * Derived from the shared core `COLOR_SIBLING_KEYS` so the editor lock stays aligned with the
