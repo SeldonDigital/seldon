@@ -185,6 +185,13 @@ function calculateSubPropertyStatus(
     return isValueEmpty(schemaSubValue) ? "unset" : "set"
   }
 
+  // A facet with no override in the active state and no schema default may still
+  // carry a value inherited from the base (normal) layer. Treat that inherited
+  // value as set so state views keep showing base-authored facets.
+  if (isValueSet(parentProperty?.[subKey])) {
+    return "set"
+  }
+
   return "not used"
 }
 
