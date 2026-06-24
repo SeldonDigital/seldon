@@ -23,9 +23,6 @@ import { resolveBasedOnWithAnchor } from "./get-based-on-value"
 import { resolveHighContrastSource } from "./resolve-high-contrast-source"
 import { ComputeContext } from "./types"
 
-/** Editor label for `ComputedFunction.HIGH_CONTRAST_COLOR`. */
-export const HIGH_CONTRAST_COLOR_DISPLAY_NAME = "High Contrast"
-
 /**
  * Reads the color at `basedOn`, optionally reads sibling `.brightness` and `.opacity` on the same
  * background layer where the color walk stopped, resolves through the theme, then returns the

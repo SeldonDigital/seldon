@@ -10,9 +10,6 @@ import { getBasedOnValue } from "./get-based-on-value"
 import { resolveOpticalPaddingSource } from "./resolve-optical-padding-source"
 import { ComputeContext, ComputeKeys } from "./types"
 
-/** Editor label for `ComputedFunction.OPTICAL_PADDING`. */
-export const OPTICAL_PADDING_DISPLAY_NAME = "Optical Padding"
-
 /**
  * Multiplies the resolved source length by the theme's side rhythm for the padding side named in
  * `keys.subPropertyKey`. The source is derived from self first: `#buttonSize`, else `#font.size`,

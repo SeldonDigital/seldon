@@ -25,14 +25,10 @@ flowchart LR
 | `resolveMatchColorSource` | `resolve-match-color-source.ts` | Returns the `basedOn` path MATCH_COLOR reads: `#self.background.color`. |
 | `resolveOpticalPaddingSource` | `resolve-optical-padding-source.ts` | Derives the OPTICAL_PADDING `basedOn` path from self: `#buttonSize`, then `#font.size`, then `#parent.fontSize`. |
 | `computeAutoFit` | `compute-auto-fit.ts` | Scales a numeric or theme ordinal input by the theme's `autoFit` factor. Dispatched from `computeProperties` for `ComputedFunction.AUTO_FIT`. |
-| `AUTO_FIT_DISPLAY_NAME` | `compute-auto-fit.ts` | Editor label for auto fit. Entry in `COMPUTED_FUNCTION_DISPLAY_NAMES`. |
 | `computeHighContrastColor` | `compute-high-contrast-color.ts` | Picks a readable foreground swatch against a background color. Dispatched for `ComputedFunction.HIGH_CONTRAST_COLOR`. |
-| `HIGH_CONTRAST_COLOR_DISPLAY_NAME` | `compute-high-contrast-color.ts` | Editor label for high contrast color. Entry in `COMPUTED_FUNCTION_DISPLAY_NAMES`. |
 | `computeOpticalPadding` | `compute-optical-padding.ts` | Maps an input through the theme's side-specific rhythms. Dispatched for `ComputedFunction.OPTICAL_PADDING`. |
-| `OPTICAL_PADDING_DISPLAY_NAME` | `compute-optical-padding.ts` | Editor label for optical padding. Entry in `COMPUTED_FUNCTION_DISPLAY_NAMES`. |
 | `computeMatchColor` | `compute-match-color.ts` | Returns the resolved primitive at `basedOn`. Dispatched for `ComputedFunction.MATCH_COLOR`. |
-| `MATCH_COLOR_DISPLAY_NAME` | `compute-match-color.ts` | Editor label for match color. Entry in `COMPUTED_FUNCTION_DISPLAY_NAMES`. |
-| `COMPUTED_FUNCTION_DISPLAY_NAMES` | `index.ts` | Maps each `ComputedFunction` to its editor label. Computed property pickers in the UI. |
+| `COMPUTED_FUNCTION_DISPLAY_NAMES` | `../constants/shared/computed.ts` | Maps each `ComputedFunction` to its editor label. Re-exported from `index.ts`. Read by compute pickers, property formatting, and value stringification. |
 | `ComputeContext` | `types.ts` | Holds node properties, theme, and optional parent context. Argument to every compute engine. |
 | `ComputeKeys` | `types.ts` | Names the property key and optional facet for dispatch. Optical padding reads `subPropertyKey` for side ratios. |
 | `computeLayeredPaintStack` | `compute-layered-paint.ts` | Resolves computed facets on each paint layer in order. Called from `computeProperties` for background and shadow arrays. |

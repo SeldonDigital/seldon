@@ -8,9 +8,6 @@ import type { ComputedAutoFitValue } from "../values/shared/computed/auto-fit"
 import { resolveAutoFitSource } from "./resolve-auto-fit-source"
 import { ComputeContext } from "./types"
 
-/** Editor label for `ComputedFunction.AUTO_FIT`. */
-export const AUTO_FIT_DISPLAY_NAME = "Auto Fit"
-
 /**
  * Scales the ancestor size token by the theme's `autoFit` factor. The source is resolved by walking
  * the ancestor chain for `buttonSize`, then `size`, then the `@fontSize.medium` fallback (see

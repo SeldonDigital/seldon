@@ -4,9 +4,6 @@ import { getBasedOnValue } from "./get-based-on-value"
 import { resolveMatchColorSource } from "./resolve-match-color-source"
 import { ComputeContext } from "./types"
 
-/** Editor label for `ComputedFunction.MATCH_COLOR`. */
-export const MATCH_COLOR_DISPLAY_NAME = "Match Color"
-
 /**
  * Replaces this computed slot with the color at the matched surface. The source comes from
  * {@link resolveMatchColorSource}. Degrades to `EMPTY` when the path cannot be resolved or still
