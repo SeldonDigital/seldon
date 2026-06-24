@@ -151,6 +151,16 @@ export function computeProperties(
     }
   })
 
+  // Mirror the top-level color group the same way compounds and layers are
+  // handled above. When the root `color` is Match Color, its sibling top-level
+  // `brightness`/`opacity` track the matched source. Containers that omit those
+  // facets are skipped by the mirror, so this is a no-op for them.
+  applyMatchColorMirror(
+    inputProperties as Record<string, unknown>,
+    computedProperties as Record<string, Value>,
+    context,
+  )
+
   return computedProperties
 }
 

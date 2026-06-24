@@ -30,6 +30,7 @@ import {
   BORDER_SIDE_KEYS,
   Board,
   BorderSideKey,
+  COLOR_SIBLING_KEYS,
   Instance,
   Properties,
   PropertyKey,
@@ -381,10 +382,17 @@ export function createFlatProperty(
   workspace: Workspace,
   theme?: Theme,
   state?: NodeState,
+  matchLock?: { displayValue: unknown } | null,
 ): FlatProperty {
   const registryEntry = getPropertyRegistryEntry(propertyKey)
   const isCompound = isCompoundProperty(propertyKey as PropertyKey)
   const isShorthand = isShorthandProperty(propertyKey as PropertyKey)
+
+  // A top-level `brightness`/`opacity` locked to a Match Color sibling shows the
+  // mirrored source value and renders dimmed, matching the compound/layer rows.
+  if (matchLock) {
+    propertyValue = matchLock.displayValue
+  }
 
   let actualValue = UNKNOWN_VALUE
   let hasError = false
@@ -466,24 +474,27 @@ export function createFlatProperty(
     propertyType: getPropertyCategory(propertyKey) || "atomic",
     status: finalStatus,
     icon: registryEntry?.icon || "seldon-token",
+    isDimmed: !!matchLock,
   }
 }
 
 /**
  * Create a flat sub-property
  */
-/** Sibling brightness/opacity facet -> the color facet it mirrors, and which percentage it is. */
+/**
+ * Sibling brightness/opacity facet -> the color facet it mirrors, and which percentage it is.
+ * Derived from the shared core `COLOR_SIBLING_KEYS` so the editor lock stays aligned with the
+ * compute mirror and the workspace validation lock.
+ */
 const MATCH_SIBLING_FACETS: Record<
   string,
   { colorKey: string; kind: "brightness" | "opacity" }
-> = {
-  brightness: { colorKey: "color", kind: "brightness" },
-  opacity: { colorKey: "color", kind: "opacity" },
-  startBrightness: { colorKey: "startColor", kind: "brightness" },
-  startOpacity: { colorKey: "startColor", kind: "opacity" },
-  endBrightness: { colorKey: "endColor", kind: "brightness" },
-  endOpacity: { colorKey: "endColor", kind: "opacity" },
-}
+> = Object.fromEntries(
+  Object.entries(COLOR_SIBLING_KEYS).flatMap(([colorKey, siblingKeys]) => [
+    [siblingKeys.brightness, { colorKey, kind: "brightness" as const }],
+    [siblingKeys.opacity, { colorKey, kind: "opacity" as const }],
+  ]),
+)
 
 /**
  * Decides whether a `brightness`/`opacity` facet is locked to a Match Color and what value to show.
@@ -985,6 +996,17 @@ export function flattenNodeProperties(
       : "not used"
     const finalPropertyValue = propertyValue || EMPTY_VALUE
 
+    // Lock a top-level `brightness`/`opacity` whose sibling `color` is Match Color,
+    // the same rule used for compound and layer facets.
+    const matchLock = resolveMatchSiblingLock(
+      propertyKey,
+      propertyKey,
+      mergedProperties,
+      node,
+      workspace,
+      theme,
+    )
+
     const flatProperty = createFlatProperty(
       propertyKey,
       finalPropertyValue,
@@ -993,6 +1015,7 @@ export function flattenNodeProperties(
       workspace,
       theme,
       state,
+      matchLock,
     )
 
     properties.push(flatProperty)

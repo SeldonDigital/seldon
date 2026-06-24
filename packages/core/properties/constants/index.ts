@@ -1,3 +1,8 @@
+export {
+  COLOR_SIBLING_KEYS,
+  COLOR_SIBLING_COMPOUND_KEYS,
+  COLOR_SIBLING_LAYER_KEYS,
+} from "./shared/color-siblings"
 export { ComputedFunction } from "./shared/computed"
 export { EMPTY_VALUE } from "./shared/empty"
 export {

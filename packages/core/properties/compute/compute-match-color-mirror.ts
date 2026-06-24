@@ -1,26 +1,12 @@
 import { resolveValue } from "../../helpers/resolution/resolve-value"
 import { isMatchColorValue } from "../../helpers/type-guards/value/is-computed-value"
 import { findInObject } from "../../helpers/utils/find-in-object"
-import { EMPTY_VALUE, ValueType } from "../constants"
+import { COLOR_SIBLING_KEYS, EMPTY_VALUE, ValueType } from "../constants"
 import type { Value } from "../types/value"
 import { normalizeLayerFacetPath } from "./compute-layer-color"
 import { resolveBasedOnWithAnchor } from "./get-based-on-value"
 import { resolveMatchColorSource } from "./resolve-match-color-source"
 import type { ComputeContext } from "./types"
-
-/**
- * Color facet keys that carry sibling `brightness`/`opacity` on the same compound or layer, mapped
- * to those sibling keys. Single-color compounds (`border`, `background`, `shadow`) use `color`;
- * gradient stops use the `start*`/`end*` prefix.
- */
-const COLOR_SIBLING_KEYS: Record<
-  string,
-  { brightness: string; opacity: string }
-> = {
-  color: { brightness: "brightness", opacity: "opacity" },
-  startColor: { brightness: "startBrightness", opacity: "startOpacity" },
-  endColor: { brightness: "endBrightness", opacity: "endOpacity" },
-}
 
 /** Rewrites a resolved color lookup path to its sibling brightness/opacity path, or null. */
 function siblingSourcePath(
@@ -98,11 +84,14 @@ export function applyMatchColorMirror(
 
     const basedOn = resolveMatchColorSource()
 
-    if (includeBrightness) {
+    // Only mirror a sibling that the container actually exposes. A component that
+    // omits `brightness`/`opacity` has no facet slot to write, so this is a no-op
+    // rather than injecting a property the schema never declared.
+    if (includeBrightness && siblingKeys.brightness in inputFacets) {
       resolvedFacets[siblingKeys.brightness] =
         readSourceSiblingFacet(basedOn, "brightness", context) ?? EMPTY_VALUE
     }
-    if (includeOpacity) {
+    if (includeOpacity && siblingKeys.opacity in inputFacets) {
       resolvedFacets[siblingKeys.opacity] =
         readSourceSiblingFacet(basedOn, "opacity", context) ?? EMPTY_VALUE
     }

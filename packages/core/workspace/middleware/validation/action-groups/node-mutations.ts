@@ -1,6 +1,11 @@
 import type { ComponentId } from "../../../../components/constants"
 import { isMatchColorValue } from "../../../../helpers/type-guards/value/is-computed-value"
-import { ValueType } from "../../../../properties"
+import {
+  COLOR_SIBLING_COMPOUND_KEYS,
+  COLOR_SIBLING_KEYS,
+  COLOR_SIBLING_LAYER_KEYS,
+  ValueType,
+} from "../../../../properties"
 import { mergeProperties } from "../../../../properties/helpers/merge-properties"
 import { getComputedTheme } from "../../../compute"
 import { getEffectiveProperties } from "../../../helpers/properties"
@@ -612,36 +617,16 @@ function assertThemeDeletable(
   }
 }
 
-/** Single-color compounds whose `color` facet has sibling `brightness`/`opacity`. */
-const COLOR_COMPOUND_KEYS = [
-  "border",
-  "borderTop",
-  "borderRight",
-  "borderBottom",
-  "borderLeft",
-] as const
-
-/** Layered-paint keys whose layers carry color (and gradient stop) facets. */
-const COLOR_LAYER_KEYS = ["background", "shadow"] as const
-
-/** Color facet -> sibling brightness/opacity keys, covering single colors and gradient stops. */
-const COLOR_SIBLING_KEYS: Record<
-  string,
-  { brightness: string; opacity: string }
-> = {
-  color: { brightness: "brightness", opacity: "opacity" },
-  startColor: { brightness: "startBrightness", opacity: "startOpacity" },
-  endColor: { brightness: "endBrightness", opacity: "endOpacity" },
-}
-
 /**
- * Rejects setting `brightness`/`opacity` on a compound or layer whose `color` is already Match Color
- * while the matching theme toggle is on. Those facets mirror the matched source at compute time and
- * must not be edited directly. The lock reads the effective color, so a partial patch that touches
- * only brightness or opacity is still checked.
+ * Rejects setting `brightness`/`opacity` whose sibling `color` is already Match Color while the
+ * matching theme toggle is on. Covers every color container the same way: the top-level color group,
+ * single-color compounds (`border*`), and layered paints (`background`, `shadow`, gradient stops).
+ * Those facets mirror the matched source at compute time and must not be edited directly. The lock
+ * reads the effective color, so a partial patch that touches only brightness or opacity is still
+ * checked. A container that does not expose these facets has nothing in the patch, so it is a no-op.
  *
  * A patch that sets the `color` facet in the same commit is always allowed: switching a facet to
- * Match Color resends the layer's existing brightness/opacity, and switching away replaces the
+ * Match Color resends the container's existing brightness/opacity, and switching away replaces the
  * color outright. Either way the mirror reconciles the siblings at compute time.
  */
 function assertMatchColorSiblingsLocked(
@@ -692,7 +677,10 @@ function assertMatchColorSiblingsLocked(
     }
   }
 
-  for (const key of COLOR_COMPOUND_KEYS) {
+  // Top-level color group: the root `color`/`brightness`/`opacity` triple.
+  checkFacets(properties, effective)
+
+  for (const key of COLOR_SIBLING_COMPOUND_KEYS) {
     const patch = properties[key]
     if (patch && typeof patch === "object" && !Array.isArray(patch)) {
       checkFacets(
@@ -702,7 +690,7 @@ function assertMatchColorSiblingsLocked(
     }
   }
 
-  for (const key of COLOR_LAYER_KEYS) {
+  for (const key of COLOR_SIBLING_LAYER_KEYS) {
     const patchLayers = properties[key]
     if (!Array.isArray(patchLayers)) continue
     const effectiveLayers = effective[key]
