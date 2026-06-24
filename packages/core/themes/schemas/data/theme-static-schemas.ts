@@ -145,6 +145,7 @@ export const fontWeightSchemas: ThemeTokenSchema[] = FONT_WEIGHT_ORDER.map(
       unit: { type: "none", min: 100, max: 900, step: 100 },
       section: "fontWeight",
       order: index,
+      icon: "seldon-step",
     }),
 )
 

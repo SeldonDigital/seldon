@@ -40,6 +40,7 @@ export function getOptionIcon(
   propertyKey: string,
   value: string,
   theme?: Theme,
+  fallbackIcon: string = THEME_TOKEN_ICON,
 ): OptionIconDescriptor {
   if (isThemeValueKey(value)) {
     const swatchColor = getThemeTokenIconColor(value, theme)
@@ -56,11 +57,14 @@ export function getOptionIcon(
     return { kind: "glyph", value }
   }
 
+  // Keys absent from the registry (e.g. theme-sidebar token rows) have no
+  // entry icon, so fall back to the row's own icon rather than the generic
+  // token icon.
   const icon =
     entry?.optionIcons?.[value] ??
     GLOBAL_OPTION_ICONS[value] ??
     entry?.icon ??
-    THEME_TOKEN_ICON
+    fallbackIcon
   return { kind: "static", icon }
 }
 

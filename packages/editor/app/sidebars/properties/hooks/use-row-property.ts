@@ -211,6 +211,7 @@ export function useRowProperty({
     property.key,
     getCurrentOptionValue(property.key, property.value),
     theme,
+    property.icon,
   )
   const iconId =
     currentIconDescriptor.kind === "static"

@@ -803,6 +803,17 @@ const UI_OVERRIDES: PropertyRegistry = {
     icon: "seldon-token",
     control: "menu",
   },
+
+  // ========================================
+  // 7. THEME COMPUTED GROUPS
+  // ========================================
+  matchColor: {
+    icon: "seldon-component",
+    subProperties: {
+      includeBrightness: { icon: "seldon-brightness" },
+      includeOpacity: { icon: "seldon-opacity" },
+    },
+  },
 }
 
 function mapCategoryToType(
@@ -899,6 +910,21 @@ function getRootEntry(rootKey: string): PropertyRegistryEntry {
     __rootEntryCache.set(rootKey, entry)
   }
   return entry
+}
+
+/**
+ * Returns the explicitly defined icon for a property or theme key path, or
+ * `undefined` when no override exists. Walks `UI_OVERRIDES` by dot segments
+ * without synthesizing a default entry, so callers (such as the themes sidebar)
+ * can fall back to their own default icon when the registry has no opinion.
+ */
+export function getRegistryIconOverride(key: string): string | undefined {
+  const parts = key.split(".")
+  let entry: PropertyRegistryEntry | undefined = UI_OVERRIDES[parts[0]!]
+  for (let i = 1; i < parts.length && entry; i++) {
+    entry = entry.subProperties?.[parts[i]!]
+  }
+  return entry?.icon
 }
 
 export function getPropertyRegistryEntry(
