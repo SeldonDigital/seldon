@@ -212,7 +212,11 @@ export function BoardStateSwitcher({ boardKey }: BoardStateSwitcherProps) {
   }
 
   return (
-    <div ref={wrapperRef} style={wrapperStyle}>
+    <div
+      ref={wrapperRef}
+      style={wrapperStyle}
+      onClick={(event) => event.stopPropagation()}
+    >
       <button
         type="button"
         style={triggerStyle}
