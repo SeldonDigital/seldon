@@ -234,7 +234,9 @@ function normalizeFontFamily(
 }
 
 /** Pass-through normalizer for a computed group: force `type`, keep parameters. */
-function normalizeComputedGroup<T extends { parameters: unknown }>(group: T): T {
+function normalizeComputedGroup<T extends { parameters: unknown }>(
+  group: T,
+): T {
   return {
     ...group,
     type: TokenType.COMPUTED,

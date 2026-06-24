@@ -187,7 +187,11 @@ export function useThemeProperties(themeEntryId: EntryThemeId | null) {
           facet === "includeOpacity" ||
           facet === "includeBleed"
         ) {
-          setComputedValue(group, facet, newValue === "true" || newValue === "On")
+          setComputedValue(
+            group,
+            facet,
+            newValue === "true" || newValue === "On",
+          )
           return
         }
         const numericValue = parseNumericInput(newValue)

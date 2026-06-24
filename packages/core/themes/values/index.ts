@@ -68,7 +68,10 @@ export type {
   FontFamilyGroupParameters,
   ThemeFontFamilyGroup,
 } from "./computed/font-family"
-export type { MatchColorParameters, ThemeMatchColor } from "./computed/match-color"
+export type {
+  MatchColorParameters,
+  ThemeMatchColor,
+} from "./computed/match-color"
 export type {
   HighContrastParameters,
   ThemeHighContrast,

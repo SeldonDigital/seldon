@@ -1,10 +1,14 @@
-import { BorderStyle, BorderWidth, FontStyle, GradientType, TextCasing, Unit, ValueType } from "../../properties";
-import { computeTheme } from "../helpers/compute-theme";
-import { Colorspace, Harmony, Ratio, StockTheme, TokenType } from "../types";
-
-
-
-
+import {
+  BorderStyle,
+  BorderWidth,
+  FontStyle,
+  GradientType,
+  TextCasing,
+  Unit,
+  ValueType,
+} from "../../properties"
+import { computeTheme } from "../helpers/compute-theme"
+import { Colorspace, Harmony, Ratio, StockTheme, TokenType } from "../types"
 
 export const theme: StockTheme = {
   metadata: {

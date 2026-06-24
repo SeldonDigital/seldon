@@ -297,8 +297,7 @@ function createFlatPropertyFromSchema(
   }
 
   const isColorKey =
-    schema.key === "colorHarmony.baseColor" ||
-    schema.key.startsWith("swatch.")
+    schema.key === "colorHarmony.baseColor" || schema.key.startsWith("swatch.")
   if (isColorKey && isHslObject(value)) {
     formattedValue = value
     actualValue = HSLObjectToString(value)

@@ -9,14 +9,17 @@
  * omitting a facet fails the build.
  */
 import { Harmony, Ratio } from "../../constants"
-import type { ThemeTokenSchema, ThemeTokenSchemaSupport } from "../../types/schema"
+import type {
+  ThemeTokenSchema,
+  ThemeTokenSchemaSupport,
+} from "../../types/schema"
 import type {
   AutoFitParameters,
   ColorHarmonyParameters,
+  ComputedModulationParameters,
   FontFamilyGroupParameters,
   HighContrastParameters,
   MatchColorParameters,
-  ComputedModulationParameters,
   OpticalPaddingParameters,
 } from "../../values"
 
@@ -43,7 +46,9 @@ const RATIO_OPTIONS = Object.entries(Ratio)
     label: name.replace(/([A-Z])/g, " $1").trim(),
     value: String(value),
   }))
-  .filter((opt, index, arr) => arr.findIndex((o) => o.value === opt.value) === index)
+  .filter(
+    (opt, index, arr) => arr.findIndex((o) => o.value === opt.value) === index,
+  )
 
 const HARMONY_OPTIONS = [
   { label: "Monochromatic", value: String(Harmony.Monochromatic) },

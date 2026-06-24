@@ -33,10 +33,7 @@ export function formatComputedDisplayValue(
     return null
   }
 
-  if (
-    "value" in propertyValue &&
-    typeof propertyValue.value === "string"
-  ) {
+  if ("value" in propertyValue && typeof propertyValue.value === "string") {
     const functionName = propertyValue.value as string
 
     if (options) {

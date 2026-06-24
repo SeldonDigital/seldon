@@ -6,8 +6,8 @@ import {
   Unit,
   ValueType,
 } from "../../index"
-import type { ComputeContext } from "../../properties/compute/types"
 import { resolveAutoFitSource } from "../../properties/compute/resolve-auto-fit-source"
+import type { ComputeContext } from "../../properties/compute/types"
 import { Theme } from "../../themes/types"
 import { isModulatedToken, isThemeExactToken } from "../../themes/types"
 import { modulate } from "../math/modulate"

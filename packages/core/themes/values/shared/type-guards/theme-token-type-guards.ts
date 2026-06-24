@@ -1,6 +1,7 @@
 import { Unit } from "../../../../properties/constants/shared/units"
 import { TokenType } from "../../../constants/token-type"
 import type { ThemeBorder } from "../../appearance/border"
+import type { ThemeComputedGroup } from "../../computed/theme-computed-group"
 import type { ThemeGradient } from "../../effects/gradient"
 import type { ThemeScrollbar } from "../../effects/scrollbar"
 import type { ThemeShadow } from "../../effects/shadow"
@@ -11,7 +12,6 @@ import type { ThemeModulation } from "../modulated/theme-modulation"
 import type { ThemeBorderWidthOption } from "../option/theme-border-width-option"
 import type { ThemeBorderWidth } from "../ordinal/theme-border-width"
 import type { StockSwatchDynamic, ThemeSwatch } from "../palette/theme-swatch"
-import type { ThemeComputedGroup } from "../../computed/theme-computed-group"
 
 export function isModulatedToken(
   v: ThemeBorderWidth | ThemeModulation | unknown,

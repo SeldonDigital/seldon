@@ -47,7 +47,9 @@ function collectBoardTreeNodeIds(workspace: Workspace): Set<string> {
  * read self first, so they are not flagged.
  */
 function overrideReferencesParentNode(property: unknown): boolean {
-  return isComputedValue(property) && property.value === ComputedFunction.AUTO_FIT
+  return (
+    isComputedValue(property) && property.value === ComputedFunction.AUTO_FIT
+  )
 }
 
 const validators = {

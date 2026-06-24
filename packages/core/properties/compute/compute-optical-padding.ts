@@ -39,7 +39,10 @@ export function computeOpticalPadding(
   } catch {
     return EMPTY_VALUE
   }
-  const ratio = getRatio(keys.subPropertyKey, context.theme.opticalPadding.parameters)
+  const ratio = getRatio(
+    keys.subPropertyKey,
+    context.theme.opticalPadding.parameters,
+  )
 
   if (basedOnValue.type === ValueType.EXACT) {
     if (typeof basedOnValue.value === "number") {

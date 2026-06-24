@@ -7,9 +7,8 @@ import {
   ValueType,
 } from "../../../../properties"
 import { mergeProperties } from "../../../../properties/helpers/merge-properties"
-import { getComputedTheme } from "../../../compute"
-import { getEffectiveProperties } from "../../../helpers/properties"
 import { rules } from "../../../../rules/config/rules.config"
+import { getComputedTheme } from "../../../compute"
 import { ErrorMessages } from "../../../constants"
 import { getBoardVariantRootIds } from "../../../helpers/components/get-board-variant-root-ids"
 import { collectExternalVariantUsage } from "../../../helpers/general/collect-external-variant-usage"
@@ -29,6 +28,7 @@ import {
   resolveSandboxRect,
   sandboxesOverlap,
 } from "../../../helpers/nodes/sandbox"
+import { getEffectiveProperties } from "../../../helpers/properties"
 import { hasEffectiveThemeReference } from "../../../helpers/removal/effective-theme-references"
 import { isComponentBoard, isPlaygroundBoard } from "../../../model/components"
 import { isEntryThemeDefault } from "../../../model/entry-theme"
