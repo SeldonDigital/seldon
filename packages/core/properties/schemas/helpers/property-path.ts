@@ -58,15 +58,23 @@ export function getCatalogKeyForPropertyPath(path: string): string | undefined {
     return undefined
   }
 
+  // Only layered paint paths (handled above) have more than two segments. Any
+  // other long path is a theme look or token key (e.g. `font.display.style`,
+  // `border.singlePixel.width`), not a node property path. Stop here so a look
+  // id that happens to match a property name does not borrow its icon.
+  if (segments.length > 2) return undefined
+
+  // Shorthand node paths are always two segments (`margin.top`).
   if (isShorthandCatalogProperty(root) && root in PROPERTY_SCHEMAS) {
     return root
   }
 
-  if (isCompoundCatalogProperty(root) && segments.length >= 2) {
+  if (isCompoundCatalogProperty(root)) {
     const facet = segments[1]!
     const joined = joinCompoundFacetKey(root, facet)
     if (joined in PROPERTY_SCHEMAS) return joined
     if (facet in PROPERTY_SCHEMAS) return facet
+    return undefined
   }
 
   const last = segments[segments.length - 1]!

@@ -296,6 +296,22 @@ function createFlatPropertyFromSchema(
     actualValue = getFamilyNameByValue(value) ?? value
   }
 
+  // A font look's family facet references a font slot, e.g. `@fontFamily.secondary`.
+  // Show the slot's friendly name ("Secondary Font") instead of the raw token.
+  const fontFamilyRefValue =
+    taggedValue && "value" in taggedValue && typeof taggedValue.value === "string"
+      ? taggedValue.value
+      : typeof value === "string"
+        ? value
+        : null
+  if (fontFamilyRefValue) {
+    const slotMatch = /^@fontFamily\.(.+)$/.exec(fontFamilyRefValue)
+    if (slotMatch) {
+      const slot = slotMatch[1]!
+      actualValue = `${slot.charAt(0).toUpperCase()}${slot.slice(1)} Font`
+    }
+  }
+
   const isColorKey =
     schema.key === "colorHarmony.baseColor" || schema.key.startsWith("swatch.")
   if (isColorKey && isHslObject(value)) {

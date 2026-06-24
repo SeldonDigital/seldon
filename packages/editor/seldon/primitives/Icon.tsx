@@ -438,6 +438,14 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-close"
     | "material-construction"
     | "material-contrast"
+    | "material-colors"
+    | "material-piano"
+    | "material-formatSize"
+    | "material-textFormat"
+    | "material-titlecase"
+    | "material-asterisk"
+    | "material-article"
+    | "material-attribution"
     | "material-doneAll"
     | "material-dryCleaning"
     | "material-error"
@@ -968,6 +976,14 @@ const iconMap = {
   "material-close": Icons.IconMaterialClose,
   "material-construction": Icons.IconMaterialConstruction,
   "material-contrast": Icons.IconMaterialContrast,
+  "material-colors": Icons.IconMaterialColors,
+  "material-piano": Icons.IconMaterialPiano,
+  "material-formatSize": Icons.IconMaterialFormatSize,
+  "material-textFormat": Icons.IconMaterialTextFormat,
+  "material-titlecase": Icons.IconMaterialTitlecase,
+  "material-asterisk": Icons.IconMaterialAsterisk,
+  "material-article": Icons.IconMaterialArticle,
+  "material-attribution": Icons.IconMaterialAttribution,
   "material-doneAll": Icons.IconMaterialDoneAll,
   "material-dryCleaning": Icons.IconMaterialDryCleaning,
   "material-error": Icons.IconMaterialError,

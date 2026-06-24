@@ -74,7 +74,7 @@ export const PROPERTY_ICONS: Record<string, string> = {
   accentColor: "seldon-backgroundColor",
   brightness: "seldon-brightness",
   opacity: "seldon-opacity",
-  background: "material-palette",
+  background: "material-colors",
   backgroundPreset: "seldon-gradient",
   backgroundColor: "seldon-backgroundColor",
   backgroundBrightness: "seldon-brightness",
@@ -180,6 +180,11 @@ export const PROPERTY_ICONS: Record<string, string> = {
  * before {@link GLOBAL_OPTION_ICONS} and the property default.
  */
 export const PROPERTY_OPTION_ICONS: Record<string, Record<string, string>> = {
+  background: {
+    color: "material-colors",
+    image: "material-image",
+    gradient: "material-gradient",
+  },
   display: {
     show: "material-visibility",
     hide: "material-visibilityOff",
@@ -266,7 +271,7 @@ export const PROPERTY_OPTION_ICONS: Record<string, Record<string, string>> = {
  */
 export const GLOBAL_OPTION_ICONS: Record<string, string> = {
   none: "material-block",
-  match: "material-syncAlt",
+  matchColor: "material-syncAlt",
   highContrastColor: "material-contrast",
   transparent: "material-circle",
 }

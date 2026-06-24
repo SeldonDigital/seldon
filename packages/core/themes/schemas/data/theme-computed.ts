@@ -68,6 +68,7 @@ const MODULATION_FACETS = [
     valueType: "enum",
     controlType: "combo",
     options: RATIO_OPTIONS,
+    icon: "material-piano",
   },
   {
     facet: "baseFontSize",
@@ -75,6 +76,7 @@ const MODULATION_FACETS = [
     valueType: "number",
     controlType: "number",
     unit: { type: "px", min: 8, max: 32, step: 1 },
+    icon: "material-textFormat",
   },
   {
     facet: "baseSize",
@@ -82,6 +84,7 @@ const MODULATION_FACETS = [
     valueType: "number",
     controlType: "number",
     unit: { type: "none", min: 0.5, max: 10, step: 0.1 },
+    icon: "material-resize",
   },
 ] as const satisfies readonly ComputedGroupFacetFor<ComputedModulationParameters>[]
 
@@ -98,6 +101,7 @@ const COLOR_HARMONY_FACETS = [
     valueType: "enum",
     controlType: "combo",
     options: HARMONY_OPTIONS,
+    icon: "material-palette",
   },
   {
     facet: "angle",
@@ -105,6 +109,7 @@ const COLOR_HARMONY_FACETS = [
     valueType: "number",
     controlType: "number",
     unit: { type: "deg", min: 0, max: 360, step: 1 },
+    icon: "seldon-rotation",
   },
   {
     facet: "step",
@@ -112,6 +117,7 @@ const COLOR_HARMONY_FACETS = [
     valueType: "number",
     controlType: "number",
     unit: { type: "none", min: -50, max: 50, step: 1 },
+    icon: "seldon-step",
   },
   {
     facet: "whitePoint",
@@ -140,6 +146,7 @@ const COLOR_HARMONY_FACETS = [
     valueType: "number",
     controlType: "number",
     unit: { type: "none", min: 0, max: 1, step: 0.01 },
+    icon: "material-blurOn",
   },
 ] as const satisfies readonly ComputedGroupFacetFor<ColorHarmonyParameters>[]
 
@@ -149,12 +156,14 @@ const FONT_FAMILY_FACETS = [
     label: "Primary Font",
     valueType: "text",
     controlType: "menu",
+    icon: "material-matchCase",
   },
   {
     facet: "secondary",
     label: "Secondary Font",
     valueType: "text",
     controlType: "menu",
+    icon: "material-titlecase",
   },
 ] as const satisfies readonly ComputedGroupFacetFor<FontFamilyGroupParameters>[]
 
@@ -182,18 +191,21 @@ const HIGH_CONTRAST_FACETS = [
     valueType: "number",
     controlType: "number",
     unit: { type: "none", min: 1, max: 21, step: 0.1 },
+    icon: "material-contrast",
   },
   {
     facet: "fallbackColor",
     label: "Fallback Color",
     valueType: "color",
     controlType: "color",
+    icon: "material-colors",
   },
   {
     facet: "includeBleed",
     label: "Include Bleed",
     valueType: "boolean",
     controlType: "boolean",
+    icon: "material-blurOn",
   },
 ] as const satisfies readonly ComputedGroupFacetFor<HighContrastParameters>[]
 
@@ -204,13 +216,7 @@ const OPTICAL_PADDING_FACETS = [
     valueType: "number",
     controlType: "number",
     unit: { type: "none", min: 0, max: 4, step: 0.01 },
-  },
-  {
-    facet: "rightRhythm",
-    label: "Right Rhythm",
-    valueType: "number",
-    controlType: "number",
-    unit: { type: "none", min: 0, max: 4, step: 0.01 },
+    icon: "material-alignJustifyFlexStart",
   },
   {
     facet: "verticalRhythm",
@@ -218,6 +224,15 @@ const OPTICAL_PADDING_FACETS = [
     valueType: "number",
     controlType: "number",
     unit: { type: "none", min: 0, max: 4, step: 0.01 },
+    icon: "material-alignSpaceAround",
+  },
+  {
+    facet: "rightRhythm",
+    label: "Right Rhythm",
+    valueType: "number",
+    controlType: "number",
+    unit: { type: "none", min: 0, max: 4, step: 0.01 },
+    icon: "material-alignJustifyFlexEnd",
   },
 ] as const satisfies readonly ComputedGroupFacetFor<OpticalPaddingParameters>[]
 
@@ -228,6 +243,7 @@ const AUTO_FIT_FACETS = [
     valueType: "number",
     controlType: "number",
     unit: { type: "none", min: 0, max: 4, step: 0.01 },
+    icon: "material-asterisk",
   },
 ] as const satisfies readonly ComputedGroupFacetFor<AutoFitParameters>[]
 

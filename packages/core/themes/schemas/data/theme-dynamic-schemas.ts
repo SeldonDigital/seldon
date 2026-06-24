@@ -6,7 +6,7 @@
 import { getDynamicSwatchName } from "../../compute/get-dynamic-swatch-names"
 import { getReservedTokenKeys } from "../../helpers/reserved-token-names"
 import { LOOK_FACETS, isBridgedLookFacet } from "../../looks/look-facets"
-import type { LookSection } from "../../looks/look-facets"
+import type { LookFacetEntry, LookSection } from "../../looks/look-facets"
 import type { ThemeTokenSchemaUnresolved } from "../../types/schema"
 import type { ComputedTheme, StockTheme } from "../../types/theme"
 import type { StockThemeSwatch, ThemeSwatch } from "../../values"
@@ -238,7 +238,7 @@ export function generateLookSchemas(
   section: LookSection,
 ): ThemeTokenSchemaUnresolved[] {
   const schemas: ThemeTokenSchemaUnresolved[] = []
-  const facets = LOOK_FACETS[section]
+  const facets = LOOK_FACETS[section] as readonly LookFacetEntry[]
   const stride = facets.length + 1
   const lookTable = (
     theme as unknown as Record<string, Record<string, { name?: string }>>
@@ -267,6 +267,7 @@ export function generateLookSchemas(
         section,
         order: baseOrder + facetIndex + 1,
         isSubProperty: true,
+        ...(facet.icon ? { icon: facet.icon } : {}),
       }
       if (isBridgedLookFacet(facet)) {
         schemas.push({ ...base, propertyKey: facet.propertyKey })

@@ -5,6 +5,7 @@ import {
   HSL,
   Harmony,
   LOOK_FACETS,
+  type LookFacetEntry,
   Ratio,
   type ScaleTokenInput,
   type ScaleTokenSection,
@@ -244,7 +245,9 @@ export function useThemeProperties(themeEntryId: EntryThemeId | null) {
       // parameters under its facet key.
       const [section, lookId, facet] = key.split(".")
       if (isLookSection(section) && lookId && facet) {
-        const entry = LOOK_FACETS[section].find((item) => item.facet === facet)
+        const entry = (LOOK_FACETS[section] as readonly LookFacetEntry[]).find(
+          (item) => item.facet === facet,
+        )
         if (!entry) {
           console.warn(`Unhandled theme look facet: ${key}`)
           return

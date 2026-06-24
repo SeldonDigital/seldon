@@ -72,7 +72,7 @@ export const fontFamilySchema: PropertySchema = {
     },
     themeCategorical: (value: unknown, theme?: Theme) => {
       if (!theme || typeof value !== "string") return false
-      return (Object.keys(theme.fontFamily) as string[]).some(
+      return (Object.keys(theme.fontFamily.parameters) as string[]).some(
         (id) => value === `@fontFamily.${id}`,
       )
     },
@@ -84,7 +84,7 @@ export const fontFamilySchema: PropertySchema = {
     return []
   },
   themeCategoricalKeys: (theme: Theme) =>
-    (Object.keys(theme.fontFamily) as string[]).map(
+    (Object.keys(theme.fontFamily.parameters) as string[]).map(
       (id) => `@fontFamily.${id}` as ThemeFontFamilyKey,
     ),
 }
