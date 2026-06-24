@@ -76,6 +76,7 @@ import {
   getCompoundSubPropertySchema,
   getPropertySchema,
 } from "@seldon/core/properties/schemas/helpers"
+import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { getNodeCatalogId } from "@seldon/core/workspace/helpers/nodes/get-node-catalog-id"
 import {
   Board,
@@ -365,7 +366,7 @@ function getUnitForNumericValue(
     return currentValue.value.unit
   }
 
-  if (node && workspace && !("isBoard" in node) && propertyKey) {
+  if (node && workspace && !isBoard(node) && propertyKey) {
     const catalogId = getNodeCatalogId(node as EntryNode, workspace)
     if (!catalogId) {
       return getDefaultUnitForProperty(propertyKey || "")

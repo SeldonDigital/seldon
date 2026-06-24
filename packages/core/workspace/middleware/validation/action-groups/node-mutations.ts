@@ -635,10 +635,14 @@ const COLOR_SIBLING_KEYS: Record<
 }
 
 /**
- * Rejects setting `brightness`/`opacity` on a compound or layer whose `color` is Match Color while
- * the matching theme toggle is on. Those facets mirror the matched source at compute time and must
- * not be edited directly. Reads the effective color so a partial patch (brightness only) is still
- * checked, and honors a `color` in the same patch so changing color away from Match Color is allowed.
+ * Rejects setting `brightness`/`opacity` on a compound or layer whose `color` is already Match Color
+ * while the matching theme toggle is on. Those facets mirror the matched source at compute time and
+ * must not be edited directly. The lock reads the effective color, so a partial patch that touches
+ * only brightness or opacity is still checked.
+ *
+ * A patch that sets the `color` facet in the same commit is always allowed: switching a facet to
+ * Match Color resends the layer's existing brightness/opacity, and switching away replaces the
+ * color outright. Either way the mirror reconciles the siblings at compute time.
  */
 function assertMatchColorSiblingsLocked(
   workspace: Workspace,
@@ -665,7 +669,12 @@ function assertMatchColorSiblingsLocked(
     effectiveFacets: Record<string, unknown> | undefined,
   ): void => {
     for (const [colorKey, siblingKeys] of Object.entries(COLOR_SIBLING_KEYS)) {
-      const color = colorKey in patch ? patch[colorKey] : effectiveFacets?.[colorKey]
+      // When the same patch sets the color facet, allow any sibling brightness/
+      // opacity that rides along. The lock only guards edits made while the color
+      // is already Match Color from the effective properties.
+      if (colorKey in patch) continue
+
+      const color = effectiveFacets?.[colorKey]
       if (!isMatchColorValue(color)) continue
 
       if (includeBrightness && siblingKeys.brightness in patch) {

@@ -42,6 +42,14 @@ function isNonContributingBackgroundColor(value: Value | undefined): boolean {
     return true
   }
 
+  // A COMPUTED color (Match Color) defers to an ancestor surface, so the layer
+  // contributes no concrete color of its own. Skipping it lets the walk reach
+  // the matched ancestor, so both the resolved color and the mirrored
+  // brightness/opacity come from the same source.
+  if (value.type === ValueType.COMPUTED) {
+    return true
+  }
+
   return value.type === ValueType.OPTION && value.value === Color.TRANSPARENT
 }
 
