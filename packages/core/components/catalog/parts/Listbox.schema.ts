@@ -1,6 +1,10 @@
-import * as Sdn from "../../../properties"
-import * as Seldon from "../../constants"
-import { ComponentExport, ComponentSchema } from "../../types"
+import * as Sdn from "../../../properties";
+import * as Seldon from "../../constants";
+import { ComponentExport, ComponentSchema } from "../../types";
+
+
+
+
 
 export const schema = {
   name: "Listbox",
@@ -31,7 +35,7 @@ export const schema = {
       bottom: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.tight" },
       left: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.tight" },
     },
-    gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.tight" },
+    gap: { type: Sdn.ValueType.OPTION, value: Sdn.Gap.NONE },
     rotation: { type: Sdn.ValueType.EMPTY, value: null },
     wrapChildren: { type: Sdn.ValueType.EXACT, value: false },
     clip: { type: Sdn.ValueType.EMPTY, value: null },
@@ -160,9 +164,19 @@ export const schema = {
               overrides: {
                 content: { type: Sdn.ValueType.EXACT, value: "Group A" },
                 width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
-                opacity: {
+                margin: {
+                  top: {
+                    type: Sdn.ValueType.THEME_ORDINAL,
+                    value: "@margin.tight",
+                  },
+                  left: {
+                    type: Sdn.ValueType.THEME_ORDINAL,
+                    value: "@margin.compact",
+                  },
+                },
+                brightness: {
                   type: Sdn.ValueType.EXACT,
-                  value: { unit: Sdn.Unit.PERCENT, value: 60 },
+                  value: { unit: Sdn.Unit.PERCENT, value: 50 },
                 },
                 color: {
                   type: Sdn.ValueType.COMPUTED,
@@ -190,12 +204,12 @@ export const schema = {
             margin: {
               top: {
                 type: Sdn.ValueType.THEME_ORDINAL,
-                value: "@margin.tight",
+                value: "@margin.compact",
               },
               right: { type: Sdn.ValueType.EMPTY, value: null },
               bottom: {
                 type: Sdn.ValueType.THEME_ORDINAL,
-                value: "@margin.tight",
+                value: "@margin.compact",
               },
               left: { type: Sdn.ValueType.EMPTY, value: null },
             },
@@ -220,9 +234,19 @@ export const schema = {
               overrides: {
                 content: { type: Sdn.ValueType.EXACT, value: "Group B" },
                 width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
-                opacity: {
+                margin: {
+                  top: {
+                    type: Sdn.ValueType.THEME_ORDINAL,
+                    value: "@margin.tight",
+                  },
+                  left: {
+                    type: Sdn.ValueType.THEME_ORDINAL,
+                    value: "@margin.compact",
+                  },
+                },
+                brightness: {
                   type: Sdn.ValueType.EXACT,
-                  value: { unit: Sdn.Unit.PERCENT, value: 60 },
+                  value: { unit: Sdn.Unit.PERCENT, value: 50 },
                 },
                 color: {
                   type: Sdn.ValueType.COMPUTED,
