@@ -827,11 +827,11 @@ export const schema = {
         padding: {
           right: {
             type: Sdn.ValueType.THEME_ORDINAL,
-            value: "@padding.tight",
+            value: "@padding.cozy",
           },
           left: {
             type: Sdn.ValueType.THEME_ORDINAL,
-            value: "@padding.tight",
+            value: "@padding.cozy",
           },
         },
         gap: {
@@ -846,8 +846,17 @@ export const schema = {
           {
             kind: {
               type: Sdn.ValueType.OPTION,
-              value: Sdn.BackgroundKind.NONE,
+              value: Sdn.BackgroundKind.COLOR,
             },
+            color: {
+              type: Sdn.ValueType.THEME_CATEGORICAL,
+              value: "@swatch.primary",
+            },
+            brightness: {
+              type: Sdn.ValueType.EXACT,
+              value: { unit: Sdn.Unit.PERCENT, value: 75 },
+            },
+            opacity: { type: Sdn.ValueType.EMPTY, value: null },
           },
         ],
         corners: {
