@@ -120,7 +120,7 @@ The Computed section holds the inputs that drive the compute engines and the col
 
 `fontFamily` holds the primary and secondary font stacks. Each slot is a `TokenType.FONT_FAMILY` cell, referenced through `@fontFamily.primary` and `@fontFamily.secondary`.
 
-`matchColor` configures the `MATCH` compute function.
+`matchColor` configures the `MATCH_COLOR` compute function.
 
 | Token | Type | Values |
 | --- | --- | --- |

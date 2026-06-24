@@ -110,8 +110,8 @@ function stringifyComputedValue(value: Value): string {
         return "High Contrast Color"
       case ComputedFunction.OPTICAL_PADDING:
         return "Optical Padding"
-      case ComputedFunction.MATCH:
-        return "Match"
+      case ComputedFunction.MATCH_COLOR:
+        return "Match Color"
       default:
         return "Computed"
     }

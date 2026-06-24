@@ -6045,8 +6045,8 @@
                                     "type": "string"
                                 },
                                 "value": {
-                                    "const": "match",
-                                    "description": "Reuse the resolved value from another property path.",
+                                    "const": "matchColor",
+                                    "description": "Match a color facet to another color in the node's own background chain.",
                                     "type": "string"
                                 }
                             },
@@ -6185,8 +6185,8 @@
                                     "type": "string"
                                 },
                                 "value": {
-                                    "const": "match",
-                                    "description": "Reuse the resolved value from another property path.",
+                                    "const": "matchColor",
+                                    "description": "Match a color facet to another color in the node's own background chain.",
                                     "type": "string"
                                 }
                             },
@@ -7238,8 +7238,8 @@
                                     "type": "string"
                                 },
                                 "value": {
-                                    "const": "match",
-                                    "description": "Reuse the resolved value from another property path.",
+                                    "const": "matchColor",
+                                    "description": "Match a color facet to another color in the node's own background chain.",
                                     "type": "string"
                                 }
                             },
@@ -7682,8 +7682,8 @@
                                     "type": "string"
                                 },
                                 "value": {
-                                    "const": "match",
-                                    "description": "Reuse the resolved value from another property path.",
+                                    "const": "matchColor",
+                                    "description": "Match a color facet to another color in the node's own background chain.",
                                     "type": "string"
                                 }
                             },
@@ -8031,8 +8031,8 @@
                                     "type": "string"
                                 },
                                 "value": {
-                                    "const": "match",
-                                    "description": "Reuse the resolved value from another property path.",
+                                    "const": "matchColor",
+                                    "description": "Match a color facet to another color in the node's own background chain.",
                                     "type": "string"
                                 }
                             },
@@ -8515,8 +8515,8 @@
                             "type": "string"
                         },
                         "value": {
-                            "const": "match",
-                            "description": "Reuse the resolved value from another property path.",
+                            "const": "matchColor",
+                            "description": "Match a color facet to another color in the node's own background chain.",
                             "type": "string"
                         }
                     },
@@ -9775,26 +9775,6 @@
                                     "type": "string"
                                 },
                                 "value": {
-                                    "const": "match",
-                                    "description": "Reuse the resolved value from another property path.",
-                                    "type": "string"
-                                }
-                            },
-                            "required": [
-                                "type",
-                                "value"
-                            ],
-                            "type": "object"
-                        },
-                        {
-                            "additionalProperties": false,
-                            "properties": {
-                                "type": {
-                                    "const": "computed",
-                                    "description": "Resolve from a declared function and inputs that reference other values.",
-                                    "type": "string"
-                                },
-                                "value": {
                                     "const": "autoFit",
                                     "description": "Scale a length or size from a reference value and factor.",
                                     "type": "string"
@@ -10377,8 +10357,8 @@
                                     "type": "string"
                                 },
                                 "value": {
-                                    "const": "match",
-                                    "description": "Reuse the resolved value from another property path.",
+                                    "const": "matchColor",
+                                    "description": "Match a color facet to another color in the node's own background chain.",
                                     "type": "string"
                                 }
                             },
@@ -10655,8 +10635,8 @@
                                     "type": "string"
                                 },
                                 "value": {
-                                    "const": "match",
-                                    "description": "Reuse the resolved value from another property path.",
+                                    "const": "matchColor",
+                                    "description": "Match a color facet to another color in the node's own background chain.",
                                     "type": "string"
                                 }
                             },
@@ -11917,26 +11897,6 @@
                             "additionalProperties": false,
                             "properties": {
                                 "type": {
-                                    "const": "computed",
-                                    "description": "Resolve from a declared function and inputs that reference other values.",
-                                    "type": "string"
-                                },
-                                "value": {
-                                    "const": "match",
-                                    "description": "Reuse the resolved value from another property path.",
-                                    "type": "string"
-                                }
-                            },
-                            "required": [
-                                "type",
-                                "value"
-                            ],
-                            "type": "object"
-                        },
-                        {
-                            "additionalProperties": false,
-                            "properties": {
-                                "type": {
                                     "const": "exact",
                                     "description": "Store a literal only, with no pointer to theme tokens or other properties.",
                                     "type": "string"
@@ -12059,7 +12019,7 @@
                             "$ref": "#/definitions/PaddingSideThemeValue"
                         }
                     ],
-                    "description": "One side value: unset, measured lengths, the catalog option, optical padding, match computed, or a theme step."
+                    "description": "One side value: unset, measured lengths, the catalog option, optical padding, or a theme step."
                 },
                 "left": {
                     "anyOf": [
@@ -12086,26 +12046,6 @@
                             "additionalProperties": false,
                             "properties": {
                                 "type": {
-                                    "const": "computed",
-                                    "description": "Resolve from a declared function and inputs that reference other values.",
-                                    "type": "string"
-                                },
-                                "value": {
-                                    "const": "match",
-                                    "description": "Reuse the resolved value from another property path.",
-                                    "type": "string"
-                                }
-                            },
-                            "required": [
-                                "type",
-                                "value"
-                            ],
-                            "type": "object"
-                        },
-                        {
-                            "additionalProperties": false,
-                            "properties": {
-                                "type": {
                                     "const": "exact",
                                     "description": "Store a literal only, with no pointer to theme tokens or other properties.",
                                     "type": "string"
@@ -12228,7 +12168,7 @@
                             "$ref": "#/definitions/PaddingSideThemeValue"
                         }
                     ],
-                    "description": "One side value: unset, measured lengths, the catalog option, optical padding, match computed, or a theme step."
+                    "description": "One side value: unset, measured lengths, the catalog option, optical padding, or a theme step."
                 },
                 "right": {
                     "anyOf": [
@@ -12255,26 +12195,6 @@
                             "additionalProperties": false,
                             "properties": {
                                 "type": {
-                                    "const": "computed",
-                                    "description": "Resolve from a declared function and inputs that reference other values.",
-                                    "type": "string"
-                                },
-                                "value": {
-                                    "const": "match",
-                                    "description": "Reuse the resolved value from another property path.",
-                                    "type": "string"
-                                }
-                            },
-                            "required": [
-                                "type",
-                                "value"
-                            ],
-                            "type": "object"
-                        },
-                        {
-                            "additionalProperties": false,
-                            "properties": {
-                                "type": {
                                     "const": "exact",
                                     "description": "Store a literal only, with no pointer to theme tokens or other properties.",
                                     "type": "string"
@@ -12397,7 +12317,7 @@
                             "$ref": "#/definitions/PaddingSideThemeValue"
                         }
                     ],
-                    "description": "One side value: unset, measured lengths, the catalog option, optical padding, match computed, or a theme step."
+                    "description": "One side value: unset, measured lengths, the catalog option, optical padding, or a theme step."
                 },
                 "top": {
                     "anyOf": [
@@ -12424,26 +12344,6 @@
                             "additionalProperties": false,
                             "properties": {
                                 "type": {
-                                    "const": "computed",
-                                    "description": "Resolve from a declared function and inputs that reference other values.",
-                                    "type": "string"
-                                },
-                                "value": {
-                                    "const": "match",
-                                    "description": "Reuse the resolved value from another property path.",
-                                    "type": "string"
-                                }
-                            },
-                            "required": [
-                                "type",
-                                "value"
-                            ],
-                            "type": "object"
-                        },
-                        {
-                            "additionalProperties": false,
-                            "properties": {
-                                "type": {
                                     "const": "exact",
                                     "description": "Store a literal only, with no pointer to theme tokens or other properties.",
                                     "type": "string"
@@ -12566,7 +12466,7 @@
                             "$ref": "#/definitions/PaddingSideThemeValue"
                         }
                     ],
-                    "description": "One side value: unset, measured lengths, the catalog option, optical padding, match computed, or a theme step."
+                    "description": "One side value: unset, measured lengths, the catalog option, optical padding, or a theme step."
                 }
             },
             "type": "object"
@@ -12633,8 +12533,8 @@
                                     "type": "string"
                                 },
                                 "value": {
-                                    "const": "match",
-                                    "description": "Reuse the resolved value from another property path.",
+                                    "const": "matchColor",
+                                    "description": "Match a color facet to another color in the node's own background chain.",
                                     "type": "string"
                                 }
                             },
@@ -13961,8 +13861,8 @@
                                     "type": "string"
                                 },
                                 "value": {
-                                    "const": "match",
-                                    "description": "Reuse the resolved value from another property path.",
+                                    "const": "matchColor",
+                                    "description": "Match a color facet to another color in the node's own background chain.",
                                     "type": "string"
                                 }
                             },
@@ -14341,26 +14241,6 @@
                                 },
                                 "value": {
                                     "type": "null"
-                                }
-                            },
-                            "required": [
-                                "type",
-                                "value"
-                            ],
-                            "type": "object"
-                        },
-                        {
-                            "additionalProperties": false,
-                            "properties": {
-                                "type": {
-                                    "const": "computed",
-                                    "description": "Resolve from a declared function and inputs that reference other values.",
-                                    "type": "string"
-                                },
-                                "value": {
-                                    "const": "match",
-                                    "description": "Reuse the resolved value from another property path.",
-                                    "type": "string"
                                 }
                             },
                             "required": [
@@ -14934,26 +14814,6 @@
                                             "type": "string"
                                         },
                                         "value": {
-                                            "const": "match",
-                                            "description": "Reuse the resolved value from another property path.",
-                                            "type": "string"
-                                        }
-                                    },
-                                    "required": [
-                                        "type",
-                                        "value"
-                                    ],
-                                    "type": "object"
-                                },
-                                {
-                                    "additionalProperties": false,
-                                    "properties": {
-                                        "type": {
-                                            "const": "computed",
-                                            "description": "Resolve from a declared function and inputs that reference other values.",
-                                            "type": "string"
-                                        },
-                                        "value": {
                                             "const": "autoFit",
                                             "description": "Scale a length or size from a reference value and factor.",
                                             "type": "string"
@@ -15182,26 +15042,6 @@
                             "additionalProperties": false,
                             "properties": {
                                 "type": {
-                                    "const": "computed",
-                                    "description": "Resolve from a declared function and inputs that reference other values.",
-                                    "type": "string"
-                                },
-                                "value": {
-                                    "const": "match",
-                                    "description": "Reuse the resolved value from another property path.",
-                                    "type": "string"
-                                }
-                            },
-                            "required": [
-                                "type",
-                                "value"
-                            ],
-                            "type": "object"
-                        },
-                        {
-                            "additionalProperties": false,
-                            "properties": {
-                                "type": {
                                     "const": "exact",
                                     "description": "Store a literal only, with no pointer to theme tokens or other properties.",
                                     "type": "string"
@@ -15318,26 +15158,6 @@
                                 },
                                 "value": {
                                     "type": "null"
-                                }
-                            },
-                            "required": [
-                                "type",
-                                "value"
-                            ],
-                            "type": "object"
-                        },
-                        {
-                            "additionalProperties": false,
-                            "properties": {
-                                "type": {
-                                    "const": "computed",
-                                    "description": "Resolve from a declared function and inputs that reference other values.",
-                                    "type": "string"
-                                },
-                                "value": {
-                                    "const": "match",
-                                    "description": "Reuse the resolved value from another property path.",
-                                    "type": "string"
                                 }
                             },
                             "required": [
@@ -16848,26 +16668,6 @@
                                     "type": "string"
                                 },
                                 "value": {
-                                    "const": "match",
-                                    "description": "Reuse the resolved value from another property path.",
-                                    "type": "string"
-                                }
-                            },
-                            "required": [
-                                "type",
-                                "value"
-                            ],
-                            "type": "object"
-                        },
-                        {
-                            "additionalProperties": false,
-                            "properties": {
-                                "type": {
-                                    "const": "computed",
-                                    "description": "Resolve from a declared function and inputs that reference other values.",
-                                    "type": "string"
-                                },
-                                "value": {
                                     "const": "autoFit",
                                     "description": "Scale a length or size from a reference value and factor.",
                                     "type": "string"
@@ -17277,26 +17077,6 @@
                                 },
                                 "value": {
                                     "type": "null"
-                                }
-                            },
-                            "required": [
-                                "type",
-                                "value"
-                            ],
-                            "type": "object"
-                        },
-                        {
-                            "additionalProperties": false,
-                            "properties": {
-                                "type": {
-                                    "const": "computed",
-                                    "description": "Resolve from a declared function and inputs that reference other values.",
-                                    "type": "string"
-                                },
-                                "value": {
-                                    "const": "match",
-                                    "description": "Reuse the resolved value from another property path.",
-                                    "type": "string"
                                 }
                             },
                             "required": [
@@ -18965,8 +18745,8 @@
                                     "type": "string"
                                 },
                                 "value": {
-                                    "const": "match",
-                                    "description": "Reuse the resolved value from another property path.",
+                                    "const": "matchColor",
+                                    "description": "Match a color facet to another color in the node's own background chain.",
                                     "type": "string"
                                 }
                             },
@@ -19581,8 +19361,8 @@
                                     "type": "string"
                                 },
                                 "value": {
-                                    "const": "match",
-                                    "description": "Reuse the resolved value from another property path.",
+                                    "const": "matchColor",
+                                    "description": "Match a color facet to another color in the node's own background chain.",
                                     "type": "string"
                                 }
                             },

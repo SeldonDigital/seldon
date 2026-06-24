@@ -199,7 +199,9 @@ export function getLayoutStyles({
         break
 
       default:
-        throw new Error(`Unknown gap type: ${gap.type}`)
+        throw new Error(
+          `Unknown gap type: ${(gap as { type: ValueType }).type}`,
+        )
     }
   }
 

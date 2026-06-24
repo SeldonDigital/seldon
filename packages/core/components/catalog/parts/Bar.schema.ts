@@ -908,7 +908,7 @@ export const schema = {
               },
               color: {
                 type: Sdn.ValueType.COMPUTED,
-                value: Sdn.ComputedFunction.MATCH,
+                value: Sdn.ComputedFunction.MATCH_COLOR,
               },
             },
             corners: {
@@ -1024,7 +1024,7 @@ export const schema = {
               },
               color: {
                 type: Sdn.ValueType.COMPUTED,
-                value: Sdn.ComputedFunction.MATCH,
+                value: Sdn.ComputedFunction.MATCH_COLOR,
               },
             },
             corners: {
@@ -1140,7 +1140,7 @@ export const schema = {
               },
               color: {
                 type: Sdn.ValueType.COMPUTED,
-                value: Sdn.ComputedFunction.MATCH,
+                value: Sdn.ComputedFunction.MATCH_COLOR,
               },
             },
             corners: {
@@ -1256,7 +1256,7 @@ export const schema = {
               },
               color: {
                 type: Sdn.ValueType.COMPUTED,
-                value: Sdn.ComputedFunction.MATCH,
+                value: Sdn.ComputedFunction.MATCH_COLOR,
               },
             },
             corners: {
@@ -1372,7 +1372,7 @@ export const schema = {
               },
               color: {
                 type: Sdn.ValueType.COMPUTED,
-                value: Sdn.ComputedFunction.MATCH,
+                value: Sdn.ComputedFunction.MATCH_COLOR,
               },
             },
             corners: {

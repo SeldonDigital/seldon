@@ -6,7 +6,7 @@ import type {
 } from "../types/property-keys"
 import type { Value } from "../types/value"
 import type { ComputedValue } from "../values/shared/computed/computed-value"
-import { applyMatchColorMirror } from "./compute-match-mirror"
+import { applyMatchColorMirror } from "./compute-match-color-mirror"
 import type { ComputeContext, ComputeKeys } from "./types"
 
 /** Same routing as `compute-properties` for one `COMPUTED` payload (injected to avoid import cycles). */

@@ -1,4 +1,3 @@
-import { isComputedFunction } from "../../../helpers/type-guards/value/is-computed-value"
 import { Theme } from "../../../themes/types"
 import { ComputedFunction, Unit } from "../../constants"
 import { PropertySchema } from "../../types/schema"
@@ -45,7 +44,7 @@ export const widthSchema: PropertySchema = {
     option: (value: unknown) =>
       typeof value === "string" &&
       (Object.values(Resize) as string[]).includes(value),
-    computed: (value: unknown) => isComputedFunction(value),
+    computed: (value: unknown) => value === ComputedFunction.AUTO_FIT,
     themeOrdinal: (value: unknown, theme?: Theme) => {
       if (!theme) return false
       return typeof value === "string" && value in theme.dimension
@@ -54,5 +53,5 @@ export const widthSchema: PropertySchema = {
   presetOptions: () => Object.values(Resize),
   themeOrdinalKeys: (theme: Theme) =>
     Object.keys(theme.dimension).map((id) => `@dimension.${id}`),
-  computedFunctions: () => [ComputedFunction.AUTO_FIT, ComputedFunction.MATCH],
+  computedFunctions: () => [ComputedFunction.AUTO_FIT],
 }

@@ -9,6 +9,6 @@ export enum ComputedFunction {
   /** Adjust padding so perceived spacing lines up with the design. */
   OPTICAL_PADDING = "opticalPadding",
 
-  /** Reuse the resolved value from another property path. */
-  MATCH = "match",
+  /** Match a color facet to another color in the node's own background chain. */
+  MATCH_COLOR = "matchColor",
 }

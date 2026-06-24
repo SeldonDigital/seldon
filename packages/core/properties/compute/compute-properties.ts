@@ -12,13 +12,13 @@ import type { Value } from "../types/value"
 import type { ComputedAutoFitValue } from "../values/shared/computed/auto-fit"
 import type { ComputedValue } from "../values/shared/computed/computed-value"
 import type { ComputedHighContrastValue } from "../values/shared/computed/high-contrast-color"
-import type { ComputedMatchValue } from "../values/shared/computed/match"
+import type { ComputedMatchColorValue } from "../values/shared/computed/match-color"
 import type { ComputedOpticalPaddingValue } from "../values/shared/computed/optical-padding"
 import { computeAutoFit } from "./compute-auto-fit"
 import { computeHighContrastColor } from "./compute-high-contrast-color"
 import { computeLayeredPaintStack } from "./compute-layered-paint"
-import { computeMatch } from "./compute-match"
-import { applyMatchColorMirror } from "./compute-match-mirror"
+import { computeMatchColor } from "./compute-match-color"
+import { applyMatchColorMirror } from "./compute-match-color-mirror"
 import { computeOpticalPadding } from "./compute-optical-padding"
 import { ComputeContext, ComputeKeys } from "./types"
 
@@ -156,7 +156,7 @@ export function computeProperties(
 
 /**
  * Sends the computed value to `computeAutoFit`, `computeHighContrastColor`, `computeOpticalPadding`,
- * or `computeMatch` based on the stored function key.
+ * or `computeMatchColor` based on the stored function key.
  *
  * @throws When the value is not `COMPUTED` or the function key is unknown
  */
@@ -184,8 +184,11 @@ function dispatchComputed(
       ) as Value
     case ComputedFunction.AUTO_FIT:
       return computeAutoFit(value as ComputedAutoFitValue, context) as Value
-    case ComputedFunction.MATCH:
-      return computeMatch(value as ComputedMatchValue, context) as Value
+    case ComputedFunction.MATCH_COLOR:
+      return computeMatchColor(
+        value as ComputedMatchColorValue,
+        context,
+      ) as Value
     default:
       throw new Error(`Unknown computed function: ${functionType}`)
   }

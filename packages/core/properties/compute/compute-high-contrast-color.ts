@@ -120,7 +120,7 @@ function resolveHighContrastInputs(
       context,
     )
 
-    // A `basedOn` color that is still `COMPUTED` (e.g. the surface uses `MATCH`)
+    // A `basedOn` color that is still `COMPUTED` (e.g. the surface uses `MATCH_COLOR`)
     // has no resolvable color yet, so fall back to the reference surface instead
     // of handing a computed value to `resolveColor`, which cannot resolve it.
     if (

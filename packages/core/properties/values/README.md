@@ -371,7 +371,7 @@ flowchart LR
 | `ComputedFunction` | `shared/computed/computed.ts` | Re-exports the compute function enum from constants. Used when authoring computed cell payloads in value modules. |
 | `ComputedValue` | `shared/computed/computed-value.ts` | Typed payload for a ValueType.COMPUTED cell. Stored on nodes with ValueType.COMPUTED and resolved in properties/compute. |
 | `ComputedHighContrastValue` | `shared/computed/high-contrast-color.ts` | Typed payload for a ValueType.COMPUTED cell. Stored on nodes with ValueType.COMPUTED and resolved in properties/compute. |
-| `ComputedMatchValue` | `shared/computed/match.ts` | Typed payload for a ValueType.COMPUTED cell. Stored on nodes with ValueType.COMPUTED and resolved in properties/compute. |
+| `ComputedMatchColorValue` | `shared/computed/match-color.ts` | Typed payload for a ValueType.COMPUTED cell. Stored on nodes with ValueType.COMPUTED and resolved in properties/compute. |
 | `ComputedOpticalPaddingValue` | `shared/computed/optical-padding.ts` | Typed payload for a ValueType.COMPUTED cell. Stored on nodes with ValueType.COMPUTED and resolved in properties/compute. |
 | `ImageSourceValue` | `shared/utilities/image-source.ts` | Shared exact, option, or path payload used across property modules. Assigned on workspace overrides and merged before compute or export. |
 

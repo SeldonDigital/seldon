@@ -43,8 +43,8 @@ function collectBoardTreeNodeIds(workspace: Workspace): Set<string> {
 
 /**
  * Reports whether a variant override depends on an ancestor node. AUTO_FIT scales from an ancestor
- * `buttonSize`/`size`, so it cannot resolve standalone in a variant. HIGH_CONTRAST and MATCH read
- * self first, so they are not flagged.
+ * `buttonSize`/`size`, so it cannot resolve standalone in a variant. HIGH_CONTRAST and MATCH_COLOR
+ * read self first, so they are not flagged.
  */
 function overrideReferencesParentNode(property: unknown): boolean {
   return isComputedValue(property) && property.value === ComputedFunction.AUTO_FIT

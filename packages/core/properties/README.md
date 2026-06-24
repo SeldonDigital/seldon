@@ -165,7 +165,7 @@ enum ValueType {
 { type: ValueType.OPTION, value: "center" }
 { type: ValueType.OPTION, value: "bold" }
 
-// COMPUTED - Derived values (`value` is a `ComputedFunction` / stored JSON: camelCase, e.g. autoFit, highContrastColor, opticalPadding, match)
+// COMPUTED - Derived values (`value` is a `ComputedFunction` / stored JSON: camelCase, e.g. autoFit, highContrastColor, opticalPadding, matchColor)
 { type: ValueType.COMPUTED, value: "autoFit" }
 
 // THEME_CATEGORICAL - Non-sequential theme values
@@ -222,7 +222,7 @@ Below are all property values and their fields. They are grouped into categories
 
 | Shorthand | Expands to |
 | --- | --- |
-| `<color>` | `exact: hex, hsl, rgb, lch` \| `option: transparent` \| `theme.categorical: @swatch.*` \| `computed: highContrastColor, match` |
+| `<color>` | `exact: hex, hsl, rgb, lch` \| `option: transparent` \| `theme.categorical: @swatch.*` \| `computed: highContrastColor, matchColor` |
 | `<percent>` | `exact: %, 0–100` |
 | `<length>` | `exact: px, rem` |
 | `<length%>` | `exact: px, rem, %` |
@@ -247,7 +247,7 @@ Properties that are specific to the selected component type and define its core 
 | `inputType` | `atomic` | `empty` \| `inherit` \| `option: text, number, email, password, search, tel, url, date, datetime-local, checkbox, radio` \| `exact: string` |
 | `placeholder` | `atomic` | `empty` \| `inherit` \| `exact: string` |
 | `checked` | `atomic` | `empty` \| `inherit` \| `<bool>` |
-| `size` | `atomic` | `empty` \| `inherit` \| `<length>` \| `theme.ordinal: @size.*` \| `computed: autoFit, match` |
+| `size` | `atomic` | `empty` \| `inherit` \| `<length>` \| `theme.ordinal: @size.*` \| `computed: autoFit` |
 | `buttonSize` | `atomic` | `empty` \| `inherit` \| `<length>` \| `theme.ordinal: @fontSize.*` |
 | `board` | `compound` | `board.preset, board.width, board.height` |
 | └ `board.preset` | `atomic` | `empty` \| `option: fit, device preset ids` |
@@ -274,19 +274,19 @@ Properties that control the positioning, sizing, and spatial relationships of co
 | └ `position.left` | `atomic` | `empty` \| `inherit` \| `<length%>` |
 | `orientation` | `atomic` | `empty` \| `inherit` \| `exact: string` \| `option: horizontal, vertical` |
 | `align` | `atomic` | `empty` \| `inherit` \| `option: auto, top-left, top-center, top-right, left, center, right, bottom-left, bottom-center, bottom-right` \| `exact: string` |
-| `width` | `atomic` | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @dimension.*` \| `option: fit, fill` \| `computed: autoFit, match` |
-| `height` | `atomic` | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @dimension.*` \| `option: fit, fill` \| `computed: autoFit, match` |
+| `width` | `atomic` | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @dimension.*` \| `option: fit, fill` \| `computed: autoFit` |
+| `height` | `atomic` | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @dimension.*` \| `option: fit, fill` \| `computed: autoFit` |
 | `margin` | `shorthand` | `margin.top, margin.right, margin.bottom, margin.left` |
 | └ `margin.top` | `atomic` | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @margin.*` \| `option: none` |
 | └ `margin.right` | `atomic` | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @margin.*` \| `option: none` |
 | └ `margin.bottom` | `atomic` | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @margin.*` \| `option: none` |
 | └ `margin.left` | `atomic` | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @margin.*` \| `option: none` |
 | `padding` | `shorthand` | `padding.top, padding.right, padding.bottom, padding.left` |
-| └ `padding.top` | `atomic` | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @padding.*` \| `option: none` \| `computed: opticalPadding, match` |
-| └ `padding.right` | `atomic` | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @padding.*` \| `option: none` \| `computed: opticalPadding, match` |
-| └ `padding.bottom` | `atomic` | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @padding.*` \| `option: none` \| `computed: opticalPadding, match` |
-| └ `padding.left` | `atomic` | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @padding.*` \| `option: none` \| `computed: opticalPadding, match` |
-| `gap` | `atomic` | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @gap.*` \| `option: evenly-spaced, none` \| `computed: match` |
+| └ `padding.top` | `atomic` | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @padding.*` \| `option: none` \| `computed: opticalPadding` |
+| └ `padding.right` | `atomic` | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @padding.*` \| `option: none` \| `computed: opticalPadding` |
+| └ `padding.bottom` | `atomic` | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @padding.*` \| `option: none` \| `computed: opticalPadding` |
+| └ `padding.left` | `atomic` | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @padding.*` \| `option: none` \| `computed: opticalPadding` |
+| `gap` | `atomic` | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @gap.*` \| `option: evenly-spaced, none` |
 | `rotation` | `atomic` | `empty` \| `inherit` \| `exact: degrees, −360–360` |
 | `wrapChildren` | `atomic` | `empty` \| `inherit` \| `<bool>` |
 | `clip` | `atomic` | `empty` \| `inherit` \| `<bool>` |
@@ -297,7 +297,7 @@ Properties that control the positioning, sizing, and spatial relationships of co
 | `rowStart` | `atomic` | `empty` \| `inherit` \| `exact: number, 1–100` |
 | `rowSpan` | `atomic` | `empty` \| `inherit` \| `exact: number, 1–100` |
 | `cellAlign` | `atomic` | `empty` \| `inherit` \| `option: auto, top-left, top-center, top-right, left, center, right, bottom-left, bottom-center, bottom-right` \| `exact: string` |
-| `dimension` | `atomic` | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @dimension.*` \| `option: fit, fill` \| `computed: autoFit, match` |
+| `dimension` | `atomic` | `empty` \| `inherit` \| `<length%>` \| `theme.ordinal: @dimension.*` \| `option: fit, fill` \| `computed: autoFit` |
 | `resize` | `atomic` | `empty` \| `inherit` \| `exact: string` \| `option: fit, fill` |
 | `screenSize` | `atomic` | `empty` \| `inherit` \| `exact: string` \| `option: desktop, laptop, tablet, mobile, watch, television` |
 
@@ -411,7 +411,7 @@ Properties that control text styling, fonts, and typography.
 | └ `font.family` | `atomic` | `empty` \| `inherit` \| `theme.categorical: @fontFamily.*` \| `option: string` \| `exact: string` |
 | └ `font.style` | `atomic` | `empty` \| `inherit` \| `option: normal, italic, oblique` \| `exact: string` |
 | └ `font.weight` | `atomic` | `empty` \| `inherit` \| `exact: number, 100–900` \| `theme.ordinal: @fontWeight.*` |
-| └ `font.size` | `atomic` | `empty` \| `inherit` \| `<length>` \| `theme.ordinal: @fontSize.*` \| `computed: autoFit, match` |
+| └ `font.size` | `atomic` | `empty` \| `inherit` \| `<length>` \| `theme.ordinal: @fontSize.*` \| `computed: autoFit` |
 | └ `font.lineHeight` | `atomic` | `empty` \| `inherit` \| `<length%>` \| `exact: unitless number, >0` \| `theme.ordinal: @lineHeight.*` |
 | └ `font.textCase` | `atomic` | `empty` \| `inherit` \| `option: normal, lowercase, uppercase, capitalize` |
 | └ `font.letterSpacing` | `atomic` | `empty` \| `inherit` \| `<length>` |

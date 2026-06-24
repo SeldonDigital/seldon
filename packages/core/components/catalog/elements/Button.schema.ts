@@ -97,7 +97,7 @@ export const schema = {
       style: { type: Sdn.ValueType.EMPTY, value: null },
       color: {
         type: Sdn.ValueType.COMPUTED,
-        value: Sdn.ComputedFunction.MATCH,
+        value: Sdn.ComputedFunction.MATCH_COLOR,
       },
       width: { type: Sdn.ValueType.EMPTY, value: null },
       brightness: { type: Sdn.ValueType.EMPTY, value: null },

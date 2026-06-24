@@ -41,7 +41,7 @@ import {
 } from "@seldon/core"
 import { getComponentSchema } from "@seldon/core/components/catalog"
 import { isComponentId } from "@seldon/core/components/constants"
-import { findInObject, isMatchValue } from "@seldon/core/helpers"
+import { findInObject, isMatchColorValue } from "@seldon/core/helpers"
 import {
   formatCompoundDisplay as coreFormatCompoundDisplay,
   formatShorthandDisplay as coreFormatShorthandDisplay,
@@ -486,8 +486,8 @@ const MATCH_SIBLING_FACETS: Record<
 }
 
 /**
- * Decides whether a `brightness`/`opacity` facet is locked to a Match color and what value to show.
- * A facet is locked when its sibling color in `layer` resolves to Match and the node theme's
+ * Decides whether a `brightness`/`opacity` facet is locked to a Match Color and what value to show.
+ * A facet is locked when its sibling color in `layer` resolves to Match Color and the node theme's
  * matching toggle is on. The displayed value comes from the node's computed properties, so the row
  * shows the mirrored source value rather than the unset authored value.
  */
@@ -501,7 +501,7 @@ function resolveMatchSiblingLock(
 ): { displayValue: unknown } | null {
   const sibling = MATCH_SIBLING_FACETS[subKey]
   if (!sibling || !layer) return null
-  if (!isMatchValue(layer[sibling.colorKey])) return null
+  if (!isMatchColorValue(layer[sibling.colorKey])) return null
 
   const params = theme?.matchColor?.parameters
   const enabled =

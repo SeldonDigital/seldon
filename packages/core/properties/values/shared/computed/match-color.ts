@@ -1,7 +1,7 @@
 import { ValueType } from "../../../constants"
 import { ComputedFunction } from "./computed"
 
-export type ComputedMatchValue = {
+export type ComputedMatchColorValue = {
   type: ValueType.COMPUTED
-  value: ComputedFunction.MATCH
+  value: ComputedFunction.MATCH_COLOR
 }

@@ -1,4 +1,3 @@
-import { isComputedFunction } from "../../../helpers/type-guards/value/is-computed-value"
 import { ComputedFunction, Unit, ValueType } from "../../constants"
 import { PropertySchema } from "../../types/schema"
 import { ComputedAutoFitValue } from "../shared/computed/auto-fit"
@@ -51,7 +50,7 @@ export const screenHeightSchema: PropertySchema = {
       typeof value === "string" &&
       ((Object.values(Resize) as string[]).includes(value) ||
         (Object.values(ScreenSize) as string[]).includes(value)),
-    computed: (value: unknown) => isComputedFunction(value),
+    computed: (value: unknown) => value === ComputedFunction.AUTO_FIT,
   },
   presetOptions: () => [...Object.values(Resize), ...Object.values(ScreenSize)],
   computedFunctions: () => [ComputedFunction.AUTO_FIT],

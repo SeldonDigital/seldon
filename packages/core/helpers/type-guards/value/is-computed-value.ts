@@ -1,16 +1,6 @@
 import { ComputedFunction, ValueType } from "../../../properties/constants"
 import type { ComputedValue } from "../../../properties/values/shared/computed/computed-value"
-import type { ComputedMatchValue } from "../../../properties/values/shared/computed/match"
-
-/**
- * Type guard for the bare `ComputedFunction` payload stored at `value.value` of a COMPUTED value.
- */
-export function isComputedFunction(value: unknown): value is ComputedFunction {
-  return (
-    typeof value === "string" &&
-    (Object.values(ComputedFunction) as string[]).includes(value)
-  )
-}
+import type { ComputedMatchColorValue } from "../../../properties/values/shared/computed/match-color"
 
 /**
  * Type guard for a `COMPUTED` value. The payload `value.value` is a `ComputedFunction`.
@@ -25,11 +15,13 @@ export function isComputedValue(value: unknown): value is ComputedValue {
 }
 
 /**
- * Type guard for a `COMPUTED` value whose function is `MATCH`.
+ * Type guard for a `COMPUTED` value whose function is `MATCH_COLOR`.
  */
-export function isMatchValue(value: unknown): value is ComputedMatchValue {
+export function isMatchColorValue(
+  value: unknown,
+): value is ComputedMatchColorValue {
   return (
     isComputedValue(value) &&
-    (value as ComputedMatchValue).value === ComputedFunction.MATCH
+    (value as ComputedMatchColorValue).value === ComputedFunction.MATCH_COLOR
   )
 }

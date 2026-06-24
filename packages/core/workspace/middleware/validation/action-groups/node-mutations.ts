@@ -1,5 +1,5 @@
 import type { ComponentId } from "../../../../components/constants"
-import { isMatchValue } from "../../../../helpers/type-guards/value/is-computed-value"
+import { isMatchColorValue } from "../../../../helpers/type-guards/value/is-computed-value"
 import { ValueType } from "../../../../properties"
 import { mergeProperties } from "../../../../properties/helpers/merge-properties"
 import { getComputedTheme } from "../../../compute"
@@ -635,10 +635,10 @@ const COLOR_SIBLING_KEYS: Record<
 }
 
 /**
- * Rejects setting `brightness`/`opacity` on a compound or layer whose `color` is Match while the
- * matching theme toggle is on. Those facets mirror the matched source at compute time and must not
- * be edited directly. Reads the effective color so a partial patch (brightness only) is still
- * checked, and honors a `color` in the same patch so changing color away from Match is allowed.
+ * Rejects setting `brightness`/`opacity` on a compound or layer whose `color` is Match Color while
+ * the matching theme toggle is on. Those facets mirror the matched source at compute time and must
+ * not be edited directly. Reads the effective color so a partial patch (brightness only) is still
+ * checked, and honors a `color` in the same patch so changing color away from Match Color is allowed.
  */
 function assertMatchColorSiblingsLocked(
   workspace: Workspace,
@@ -666,13 +666,19 @@ function assertMatchColorSiblingsLocked(
   ): void => {
     for (const [colorKey, siblingKeys] of Object.entries(COLOR_SIBLING_KEYS)) {
       const color = colorKey in patch ? patch[colorKey] : effectiveFacets?.[colorKey]
-      if (!isMatchValue(color)) continue
+      if (!isMatchColorValue(color)) continue
 
       if (includeBrightness && siblingKeys.brightness in patch) {
-        check(false, "Brightness cannot be changed while color is set to Match.")
+        check(
+          false,
+          "Brightness cannot be changed while color is set to Match Color.",
+        )
       }
       if (includeOpacity && siblingKeys.opacity in patch) {
-        check(false, "Opacity cannot be changed while color is set to Match.")
+        check(
+          false,
+          "Opacity cannot be changed while color is set to Match Color.",
+        )
       }
     }
   }

@@ -1,11 +1,11 @@
 import { resolveValue } from "../../helpers/resolution/resolve-value"
-import { isMatchValue } from "../../helpers/type-guards/value/is-computed-value"
+import { isMatchColorValue } from "../../helpers/type-guards/value/is-computed-value"
 import { findInObject } from "../../helpers/utils/find-in-object"
 import { EMPTY_VALUE, ValueType } from "../constants"
 import type { Value } from "../types/value"
 import { normalizeLayerFacetPath } from "./compute-layer-color"
 import { resolveBasedOnWithAnchor } from "./get-based-on-value"
-import { resolveMatchSource } from "./resolve-match-source"
+import { resolveMatchColorSource } from "./resolve-match-color-source"
 import type { ComputeContext } from "./types"
 
 /**
@@ -75,13 +75,13 @@ function readSourceSiblingFacet(
 }
 
 /**
- * Overrides the sibling `brightness`/`opacity` of any color facet that resolves to Match, mirroring
- * the matched source layer's values. Gated by `theme.matchColor.parameters.includeBrightness` and
- * `includeOpacity`: a toggle that is off leaves that facet untouched. Mutates `resolvedFacets`.
+ * Overrides the sibling `brightness`/`opacity` of any color facet that resolves to Match Color,
+ * mirroring the matched source layer's values. Gated by `theme.matchColor.parameters.includeBrightness`
+ * and `includeOpacity`: a toggle that is off leaves that facet untouched. Mutates `resolvedFacets`.
  *
- * `inputFacets` is the pre-resolution compound/layer (it still holds the Match marker on the color
- * facet); `resolvedFacets` is the resolved compound/layer to override. The mirrored source is the
- * Match surface from {@link resolveMatchSource}.
+ * `inputFacets` is the pre-resolution compound/layer (it still holds the Match Color marker on the
+ * color facet); `resolvedFacets` is the resolved compound/layer to override. The mirrored source is
+ * the Match Color surface from {@link resolveMatchColorSource}.
  */
 export function applyMatchColorMirror(
   inputFacets: Record<string, unknown>,
@@ -94,9 +94,9 @@ export function applyMatchColorMirror(
 
   for (const [colorKey, siblingKeys] of Object.entries(COLOR_SIBLING_KEYS)) {
     const colorValue = inputFacets[colorKey]
-    if (!isMatchValue(colorValue)) continue
+    if (!isMatchColorValue(colorValue)) continue
 
-    const basedOn = resolveMatchSource()
+    const basedOn = resolveMatchColorSource()
 
     if (includeBrightness) {
       resolvedFacets[siblingKeys.brightness] =

@@ -2,7 +2,6 @@ import { Theme, ThemeFontSizeKey } from "../../../../themes/types"
 import { ComputedFunction, Unit, ValueType } from "../../../constants"
 import { PropertySchema } from "../../../types/schema"
 import { ComputedAutoFitValue } from "../../shared/computed/auto-fit"
-import { ComputedMatchValue } from "../../shared/computed/match"
 import { EmptyValue } from "../../shared/empty/empty"
 import { PixelValue } from "../../shared/exact/pixel"
 import { RemValue } from "../../shared/exact/rem"
@@ -19,7 +18,6 @@ export type FontSizeValue =
   | PixelValue
   | RemValue
   | ComputedAutoFitValue
-  | ComputedMatchValue
   | FontSizeThemeValue
 
 /** Validates font size payloads for catalog and editor checks. */
@@ -42,11 +40,7 @@ export const fontSizeSchema: PropertySchema = {
       }
       return typeof value === "number" && value > 0
     },
-    computed: (value: unknown) =>
-      typeof value === "object" &&
-      value !== null &&
-      "function" in value &&
-      (value as { function: unknown }).function !== undefined,
+    computed: (value: unknown) => value === ComputedFunction.AUTO_FIT,
     themeOrdinal: (value: unknown, theme?: Theme) => {
       if (!theme || typeof value !== "string") return false
       return (Object.keys(theme.fontSize) as string[]).some(
@@ -58,7 +52,7 @@ export const fontSizeSchema: PropertySchema = {
     (Object.keys(theme.fontSize) as string[]).map(
       (id) => `@fontSize.${id}` as ThemeFontSizeKey,
     ),
-  computedFunctions: () => [ComputedFunction.AUTO_FIT, ComputedFunction.MATCH],
+  computedFunctions: () => [ComputedFunction.AUTO_FIT],
   units: {
     allowed: [Unit.REM, Unit.PX],
     default: Unit.REM,
