@@ -8,27 +8,21 @@ import { resolveBasedOnWithAnchor } from "./get-based-on-value"
 import { resolveMatchColorSource } from "./resolve-match-color-source"
 import type { ComputeContext } from "./types"
 
-/** Rewrites a resolved color lookup path to its sibling brightness/opacity path, or null. */
+/**
+ * Rewrites a resolved color lookup path to its sibling brightness/opacity path, or null when the
+ * path's last segment is not a color facet. Uses the shared `COLOR_SIBLING_KEYS` so the source-side
+ * path mapping stays aligned with the rest of the Match Color logic.
+ */
 function siblingSourcePath(
   colorLookupPath: string,
   facet: "brightness" | "opacity",
 ): string | null {
-  if (colorLookupPath.endsWith("startColor")) {
-    return colorLookupPath.replace(
-      /startColor$/,
-      facet === "brightness" ? "startBrightness" : "startOpacity",
-    )
-  }
-  if (colorLookupPath.endsWith("endColor")) {
-    return colorLookupPath.replace(
-      /endColor$/,
-      facet === "brightness" ? "endBrightness" : "endOpacity",
-    )
-  }
-  if (colorLookupPath.endsWith(".color")) {
-    return colorLookupPath.replace(/\.color$/, `.${facet}`)
-  }
-  return null
+  const lastDot = colorLookupPath.lastIndexOf(".")
+  const colorKey = colorLookupPath.slice(lastDot + 1)
+  const siblingKeys = COLOR_SIBLING_KEYS[colorKey]
+  if (!siblingKeys) return null
+
+  return colorLookupPath.slice(0, lastDot + 1) + siblingKeys[facet]
 }
 
 /** Reads the matched source's sibling `brightness`/`opacity`, or undefined when it contributes none. */
@@ -78,11 +72,11 @@ export function applyMatchColorMirror(
     context.theme.matchColor.parameters
   if (!includeBrightness && !includeOpacity) return
 
+  const basedOn = resolveMatchColorSource()
+
   for (const [colorKey, siblingKeys] of Object.entries(COLOR_SIBLING_KEYS)) {
     const colorValue = inputFacets[colorKey]
     if (!isMatchColorValue(colorValue)) continue
-
-    const basedOn = resolveMatchColorSource()
 
     // Only mirror a sibling that the container actually exposes. A component that
     // omits `brightness`/`opacity` has no facet slot to write, so this is a no-op
