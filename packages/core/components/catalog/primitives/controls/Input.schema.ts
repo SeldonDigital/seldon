@@ -1,6 +1,6 @@
-import * as Sdn from "../../../../properties"
-import * as Seldon from "../../../constants"
-import { ComponentExport, ComponentSchema } from "../../../types"
+import * as Sdn from "../../../../properties";
+import * as Seldon from "../../../constants";
+import { ComponentExport, ComponentSchema } from "../../../types";
 
 export const schema = {
   name: "Input",
@@ -87,8 +87,8 @@ export const schema = {
       },
       style: { type: Sdn.ValueType.EMPTY, value: null },
       color: {
-        type: Sdn.ValueType.THEME_CATEGORICAL,
-        value: "@swatch.black",
+        type: Sdn.ValueType.COMPUTED,
+        value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
       },
       width: { type: Sdn.ValueType.EMPTY, value: null },
       brightness: {
@@ -168,6 +168,11 @@ export const schema = {
       type: Sdn.ValueType.OPTION,
       value: Sdn.TextDecoration.NONE,
     },
+    wrapText: {
+      type: Sdn.ValueType.EXACT,
+      value: false,
+    },
+    lines: { type: Sdn.ValueType.EMPTY, value: null },
     shadow: [
       {
         preset: {
@@ -255,7 +260,7 @@ export const schema = {
     },
     {
       id: "radio",
-      label: "RadioButton",
+      label: "Radio Button",
       intent: "Basic form control for single-option selection in a group.",
       overrides: {
         inputType: {
@@ -309,32 +314,6 @@ export const schema = {
           lineHeight: { type: Sdn.ValueType.EMPTY, value: null },
           textCase: { type: Sdn.ValueType.EMPTY, value: null },
           letterSpacing: { type: Sdn.ValueType.EMPTY, value: null },
-        },
-      },
-    },
-    {
-      id: "combobox",
-      label: "Combobox",
-      intent: "Editable text field that opens a listbox of options.",
-      overrides: {
-        inputType: {
-          type: Sdn.ValueType.OPTION,
-          value: Sdn.InputType.TEXT,
-        },
-        font: {
-          size: {
-            type: Sdn.ValueType.THEME_ORDINAL,
-            value: "@fontSize.small",
-          },
-        },
-        role: {
-          type: Sdn.ValueType.OPTION,
-          value: Sdn.AriaRole.COMBOBOX,
-        },
-        ariaExpanded: { type: Sdn.ValueType.EMPTY, value: null },
-        ariaHasPopup: {
-          type: Sdn.ValueType.OPTION,
-          value: Sdn.AriaHasPopup.LISTBOX,
         },
       },
     },

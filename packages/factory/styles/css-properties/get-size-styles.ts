@@ -71,6 +71,12 @@ export function getSizeStyles({
   // Children of a grid container size to their tracks, not flex item rules.
   const parentIsGrid = parentContext?.layoutMode === "grid"
 
+  // A node that truncates its own text (wrap text off) must be able to shrink
+  // below its content size. Flex items default to `min-width: auto`, which is the
+  // nowrap min-content width, so it overrides the node's width and defeats the
+  // ellipsis unless the automatic minimum is lifted along the main axis.
+  const truncatesText = resolveValue(properties.wrapText)?.value === false
+
   const ownOrientation = properties.orientation
     ? resolveValue(properties.orientation)?.value
     : null
@@ -278,6 +284,21 @@ export function getSizeStyles({
         if (!parentIsGrid && parentOrientation === Orientation.VERTICAL) {
           styles.flexShrink = 0
         }
+      }
+    }
+  }
+
+  // Lift the automatic flex minimum so fill items (`flex: 1 0 0`) and
+  // text-truncating nodes can shrink along the parent's main axis instead of
+  // being pinned to their content size, which is what enables the ellipsis.
+  if (!parentIsGrid) {
+    if (parentOrientation === Orientation.HORIZONTAL) {
+      if (styles.flex === "1 0 0" || truncatesText) {
+        styles.minWidth = 0
+      }
+    } else if (parentOrientation === Orientation.VERTICAL) {
+      if (styles.flex === "1 0 0") {
+        styles.minHeight = 0
       }
     }
   }

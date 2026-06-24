@@ -58,7 +58,6 @@ export const schema = {
       letterSpacing: { type: Sdn.ValueType.EMPTY, value: null },
     },
     textAlign: { type: Sdn.ValueType.EMPTY, value: null },
-
     textDecoration: {
       type: Sdn.ValueType.OPTION,
       value: Sdn.TextDecoration.NONE,

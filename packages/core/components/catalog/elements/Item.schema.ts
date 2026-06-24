@@ -1,6 +1,6 @@
-import * as Sdn from "../../../properties"
-import * as Seldon from "../../constants"
-import { ComponentExport, ComponentSchema } from "../../types"
+import * as Sdn from "../../../properties";
+import * as Seldon from "../../constants";
+import { ComponentExport, ComponentSchema } from "../../types";
 
 export const schema = {
   name: "Item",
@@ -63,7 +63,7 @@ export const schema = {
     },
     gap: {
       type: Sdn.ValueType.THEME_ORDINAL,
-      value: "@gap.cozy",
+      value: "@gap.compact",
     },
     wrapChildren: { type: Sdn.ValueType.EXACT, value: false },
     clip: { type: Sdn.ValueType.EMPTY, value: null },
@@ -607,18 +607,15 @@ export const schema = {
           },
           right: {
             type: Sdn.ValueType.THEME_ORDINAL,
-            value: "@padding.compact",
+            value: "@padding.tight",
           },
           bottom: {
             type: Sdn.ValueType.THEME_ORDINAL,
             value: "@padding.tight",
           },
           left: {
-            type: Sdn.ValueType.EXACT,
-            value: {
-              unit: Sdn.Unit.PX,
-              value: 0,
-            },
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@padding.tight",
           },
         },
         gap: {
@@ -685,55 +682,32 @@ export const schema = {
           ],
         },
         {
-          component: Seldon.ComponentId.ICON,
-          overrides: {
-            symbol: {
-              type: Sdn.ValueType.OPTION,
-              value: "seldon-component",
+          component: Seldon.ComponentId.COMBOBOX_FIELD,
+          children: [
+            {
+              component: Seldon.ComponentId.ICON,
             },
-            size: {
-              type: Sdn.ValueType.THEME_ORDINAL,
-              value: "@size.medium",
-            },
-          },
-        },
-        {
-          component: Seldon.ComponentId.TEXT,
-          variant: "label",
-          overrides: {
-            content: {
-              type: Sdn.ValueType.EXACT,
-              value: "Tree Item",
-            },
-            width: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FILL,
-            },
-            padding: {
-              top: {
-                type: Sdn.ValueType.THEME_ORDINAL,
-                value: "@padding.tight",
-              },
-              bottom: {
-                type: Sdn.ValueType.THEME_ORDINAL,
-                value: "@padding.tight",
+            {
+              component: Seldon.ComponentId.INPUT,
+              overrides: {
+                font: {
+                  size: {
+                    type: Sdn.ValueType.THEME_ORDINAL,
+                    value: "@fontSize.xsmall",
+                  },
+                },
               },
             },
-            color: {
-              type: Sdn.ValueType.COMPUTED,
-              value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+            {
+              component: Seldon.ComponentId.BUTTON,
+              variant: "iconic",
+              children: [
+                {
+                  component: Seldon.ComponentId.ICON,
+                },
+              ],
             },
-            font: {
-              preset: {
-                type: Sdn.ValueType.THEME_CATEGORICAL,
-                value: "@font.normal",
-              },
-              size: {
-                type: Sdn.ValueType.THEME_ORDINAL,
-                value: "@fontSize.xsmall",
-              },
-            },
-          },
+          ],
         },
         {
           component: Seldon.ComponentId.BUTTON,
@@ -841,6 +815,16 @@ export const schema = {
       intent:
         "List item used for input fields with a label and an input field.",
       overrides: {
+        margin: {
+          top: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@margin.tight",
+          },
+          bottom: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@margin.tight",
+          },
+        },
         padding: {
           top: {
             type: Sdn.ValueType.THEME_ORDINAL,
@@ -848,18 +832,15 @@ export const schema = {
           },
           right: {
             type: Sdn.ValueType.THEME_ORDINAL,
-            value: "@padding.compact",
+            value: "@padding.tight",
           },
           bottom: {
             type: Sdn.ValueType.THEME_ORDINAL,
             value: "@padding.tight",
           },
           left: {
-            type: Sdn.ValueType.EXACT,
-            value: {
-              unit: Sdn.Unit.PX,
-              value: 0,
-            },
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@padding.tight",
           },
         },
         gap: {
@@ -926,61 +907,18 @@ export const schema = {
           ],
         },
         {
-          component: Seldon.ComponentId.TEXT,
-          variant: "label",
-          overrides: {
-            content: {
-              type: Sdn.ValueType.EXACT,
-              value: "Label",
-            },
-            width: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FILL,
-            },
-            color: {
-              type: Sdn.ValueType.COMPUTED,
-              value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-            },
-            font: {
-              preset: {
-                type: Sdn.ValueType.THEME_CATEGORICAL,
-                value: "@font.normal",
-              },
-              size: {
-                type: Sdn.ValueType.THEME_ORDINAL,
-                value: "@fontSize.xsmall",
-              },
-            },
-          },
-        },
-        {
-          component: Seldon.ComponentId.COMBOBOX_TRIGGER,
-          variant: "iconic",
+          component: Seldon.ComponentId.FORM_CONTROL,
+          variant: "combobox",
           overrides: {
             width: {
               type: Sdn.ValueType.OPTION,
               value: Sdn.Resize.FILL,
-            },
-            margin: {
-              right: {
-                type: Sdn.ValueType.THEME_ORDINAL,
-                value: "@margin.compact",
-              },
             },
           },
           children: [
             {
-              component: Seldon.ComponentId.ICON,
-              overrides: {
-                size: {
-                  type: Sdn.ValueType.THEME_ORDINAL,
-                  value: "@size.medium",
-                },
-              },
-            },
-            {
-              component: Seldon.ComponentId.INPUT,
-              variant: "combobox",
+              component: Seldon.ComponentId.TEXT,
+              variant: "label",
               overrides: {
                 font: {
                   size: {
@@ -991,13 +929,32 @@ export const schema = {
               },
             },
             {
-              component: Seldon.ComponentId.ICON,
-              overrides: {
-                symbol: {
-                  type: Sdn.ValueType.OPTION,
-                  value: "material-chevronDown",
+              component: Seldon.ComponentId.COMBOBOX_FIELD,
+              children: [
+                {
+                  component: Seldon.ComponentId.ICON,
                 },
-              },
+                {
+                  component: Seldon.ComponentId.INPUT,
+                  overrides: {
+                    font: {
+                      size: {
+                        type: Sdn.ValueType.THEME_ORDINAL,
+                        value: "@fontSize.xsmall",
+                      },
+                    },
+                  },
+                },
+                {
+                  component: Seldon.ComponentId.BUTTON,
+                  variant: "iconic",
+                  children: [
+                    {
+                      component: Seldon.ComponentId.ICON,
+                    },
+                  ],
+                },
+              ],
             },
           ],
         },

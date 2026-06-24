@@ -3,7 +3,7 @@ import * as Seldon from "../../constants"
 import { ComponentExport, ComponentSchema } from "../../types"
 
 export const schema = {
-  name: "Standard List",
+  name: "Item List",
   id: Seldon.ComponentId.LIST_STANDARD,
   intent:
     "General-purpose vertical list schema for rendering repeated content items such as posts, links, or summaries.",
