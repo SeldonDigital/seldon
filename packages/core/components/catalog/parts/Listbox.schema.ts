@@ -30,12 +30,12 @@ export const schema = {
       left: { type: Sdn.ValueType.EMPTY, value: null },
     },
     padding: {
-      top: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.tight" },
+      top: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.compact" },
       right: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.tight" },
-      bottom: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.tight" },
+      bottom: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.compact" },
       left: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.tight" },
     },
-    gap: { type: Sdn.ValueType.OPTION, value: Sdn.Gap.NONE },
+    gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.tight" },
     rotation: { type: Sdn.ValueType.EMPTY, value: null },
     wrapChildren: { type: Sdn.ValueType.EXACT, value: false },
     clip: { type: Sdn.ValueType.EMPTY, value: null },
@@ -165,10 +165,6 @@ export const schema = {
                 content: { type: Sdn.ValueType.EXACT, value: "Group A" },
                 width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
                 margin: {
-                  top: {
-                    type: Sdn.ValueType.THEME_ORDINAL,
-                    value: "@margin.tight",
-                  },
                   left: {
                     type: Sdn.ValueType.THEME_ORDINAL,
                     value: "@margin.compact",
@@ -235,10 +231,6 @@ export const schema = {
                 content: { type: Sdn.ValueType.EXACT, value: "Group B" },
                 width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
                 margin: {
-                  top: {
-                    type: Sdn.ValueType.THEME_ORDINAL,
-                    value: "@margin.tight",
-                  },
                   left: {
                     type: Sdn.ValueType.THEME_ORDINAL,
                     value: "@margin.compact",
