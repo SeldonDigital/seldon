@@ -1187,7 +1187,7 @@ export const schema = {
               overrides: {
                 symbol: {
                   type: Sdn.ValueType.OPTION,
-                  value: "material-favorite",
+                  value: "material-favoriteBorder",
                 },
                 size: {
                   type: Sdn.ValueType.THEME_ORDINAL,

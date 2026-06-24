@@ -971,6 +971,12 @@ export const schema = {
           children: [
             {
               component: Seldon.ComponentId.ICON,
+              overrides: {
+                size: {
+                  type: Sdn.ValueType.THEME_ORDINAL,
+                  value: "@size.medium",
+                },
+              },
             },
             {
               component: Seldon.ComponentId.INPUT,
