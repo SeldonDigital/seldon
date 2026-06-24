@@ -33,6 +33,8 @@ export interface ComputedGroupFacet {
   controlType: ComputedFacetControlType
   options?: Array<{ label: string; value: string | number }>
   unit?: ThemeTokenSchema["unit"]
+  /** Icon id authored on the facet; read by the icon registry and theme sidebar. */
+  icon?: string
 }
 
 /** Constrains authored entries so `facet` must be a real key of the parameters type. */
@@ -162,12 +164,14 @@ const MATCH_COLOR_FACETS = [
     label: "Include Brightness",
     valueType: "boolean",
     controlType: "boolean",
+    icon: "seldon-brightness",
   },
   {
     facet: "includeOpacity",
     label: "Include Opacity",
     valueType: "boolean",
     controlType: "boolean",
+    icon: "seldon-opacity",
   },
 ] as const satisfies readonly ComputedGroupFacetFor<MatchColorParameters>[]
 

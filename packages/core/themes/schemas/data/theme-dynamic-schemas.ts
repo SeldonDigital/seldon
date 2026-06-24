@@ -130,6 +130,7 @@ export function generateComputedSchemas(
           controlType: facet.controlType,
           ...(facet.options ? { options: [...facet.options] } : {}),
           ...(facet.unit ? { unit: facet.unit } : {}),
+          ...(facet.icon ? { icon: facet.icon } : {}),
           section: "computed",
           order: order++,
           isSubProperty: true,

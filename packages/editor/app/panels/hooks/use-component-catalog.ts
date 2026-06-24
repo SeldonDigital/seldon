@@ -2,6 +2,7 @@ import { useMemo, useState } from "react"
 import { catalog } from "@seldon/core/components/catalog"
 import { ComponentId } from "@seldon/core/components/constants"
 import { ComponentSchema } from "@seldon/core/components/types"
+import { getComponentIcon } from "@seldon/core/icon-registry"
 import { VariantId } from "@seldon/core/index"
 import { getBoardVariantRootIds } from "@seldon/core/workspace/helpers/components/get-board-variant-root-ids"
 import { getVariantById } from "@seldon/core/workspace/helpers/general/get-variant-by-id"
@@ -65,7 +66,7 @@ export function useComponentCatalog({
                   componentId: schema.id,
                   variantId,
                   name: schema.name,
-                  icon: schema.icon,
+                  icon: getComponentIcon(schema.id),
                   description,
                 }
               })
@@ -77,7 +78,7 @@ export function useComponentCatalog({
                 id: schema.id,
                 componentId: schema.id,
                 name: schema.name,
-                icon: schema.icon,
+                icon: getComponentIcon(schema.id),
                 description: "Default",
               },
             ]

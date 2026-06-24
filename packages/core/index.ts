@@ -15,6 +15,7 @@ export const Seldon = {
 export * from "./components/constants"
 export * from "./components/types"
 export * from "./components/catalog"
+export * from "./icon-registry"
 export * from "./helpers/utils/get-google-font-url"
 export {
   getRemoteFontUrl,

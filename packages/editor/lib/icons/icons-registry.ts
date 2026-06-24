@@ -1,3 +1,4 @@
+import { getPropertyIcon as coreGetPropertyIcon } from "@seldon/core/icon-registry"
 import { parsePropertyPath } from "@lib/properties/property-paths"
 import { getPropertyCategory } from "@seldon/core/properties/schemas"
 
@@ -8,12 +9,16 @@ export interface PropertyOption {
   name: string
 }
 
+/**
+ * Presentation metadata for a property row. Icons are owned by the core icon
+ * registry; this entry only carries the control type, label, and the
+ * symbol-picker `renderValueAsIcon` flag. The resolved row `icon` is filled from
+ * core when the entry is built.
+ */
 export interface PropertyRegistryEntry {
   label?: string
-  /** Icon id rendered by the custom-components Icon wrapper. */
-  icon: string
-  /** Per-option icon override, keyed by option value. Falls back to `icon`. */
-  optionIcons?: Record<string, string>
+  /** Resolved row icon id, filled from the core registry when the entry is built. */
+  icon?: string
   /** Option value is itself an icon id and renders as that glyph. */
   renderValueAsIcon?: boolean
   control?: ControlType
@@ -27,22 +32,14 @@ export interface PropertyRegistry {
 }
 
 /**
- * Presentation entry for one revealed border side. Mirrors the `border` row's
- * facet icons and controls so a side reads like the shorthand it splits from.
+ * Editor-only row icons for synthetic inspector rows that are not core property
+ * catalog keys. `board` is an inspector grouping; `reference` and `repeat` are
+ * prototyping rows. Real properties get their icon from the core registry.
  */
-function BORDER_SIDE_REGISTRY_ENTRY(label: string): PropertyRegistryEntry {
-  return {
-    label,
-    icon: "seldon-borderStyle",
-    subProperties: {
-      preset: { icon: "seldon-borderStyle", control: "combo" },
-      style: { icon: "seldon-borderStyle", control: "menu" },
-      color: { icon: "seldon-backgroundColor", control: "combo" },
-      width: { icon: "seldon-borderStyle", control: "combo" },
-      brightness: { icon: "seldon-brightness", control: "number" },
-      opacity: { icon: "seldon-opacity", control: "number" },
-    },
-  }
+const EDITOR_ROW_ICON_OVERLAY: Record<string, string> = {
+  board: "seldon-component",
+  reference: "material-dataObject",
+  repeat: "material-copyAll",
 }
 
 /**
@@ -67,753 +64,245 @@ const BOARD_PRESET_OPTION_ICONS: Record<string, string> = {
 }
 
 /**
- * Runtime UI params for property registry
- * These define presentation-only concerns and are deep-merged with core schemas at runtime
+ * Editor-only per-option icon overrides for synthetic rows whose option icons
+ * are not core ids (board preset device icons). Consulted before the core
+ * registry in `getOptionIcon`.
+ */
+export const EDITOR_OPTION_ICON_OVERLAY: Record<
+  string,
+  Record<string, string>
+> = {
+  board: BOARD_PRESET_OPTION_ICONS,
+}
+
+/**
+ * Resolves the icon for a property row path: an editor overlay for synthetic
+ * keys first, then the core registry, then the generic token icon.
+ */
+function resolveRowIcon(path: string): string {
+  return EDITOR_ROW_ICON_OVERLAY[path] ?? coreGetPropertyIcon(path) ?? "seldon-token"
+}
+
+/**
+ * Presentation entry for one revealed border side. Mirrors the `border` row's
+ * facet controls so a side reads like the shorthand it splits from. Icons come
+ * from the core registry by catalog key.
+ */
+function BORDER_SIDE_REGISTRY_ENTRY(label: string): PropertyRegistryEntry {
+  return {
+    label,
+    subProperties: {
+      preset: { control: "combo" },
+      style: { control: "menu" },
+      color: { control: "combo" },
+      width: { control: "combo" },
+      brightness: { control: "number" },
+      opacity: { control: "number" },
+    },
+  }
+}
+
+/**
+ * Runtime UI params for the property registry. Defines presentation-only
+ * concerns (control type, label, symbol glyph flag) and is deep-merged with the
+ * core-sourced icons when an entry is built.
  */
 const UI_OVERRIDES: PropertyRegistry = {
-  // ========================================
-  // 1. ATTRIBUTES PROPERTIES
-  // ========================================
-  content: {
-    icon: "material-textSelectStart",
-    control: "text",
-  },
-  altText: {
-    icon: "seldon-text",
-    control: "text",
-  },
-  ariaLabel: {
-    icon: "seldon-text",
-    control: "text",
-  },
-  ariaHidden: {
-    icon: "seldon-radioOff",
-    control: "menu",
-  },
-  placeholder: {
-    icon: "seldon-text",
-    control: "text",
-  },
-  checked: {
-    icon: "seldon-radioOff",
-    control: "menu",
-  },
-  inputType: {
-    icon: "seldon-inputType",
-    control: "menu",
-  },
-  htmlElement: {
-    label: "HTML Element",
-    icon: "material-codeXml",
-    control: "menu",
-  },
-  wrapperElement: {
-    label: "Wrapper",
-    icon: "material-codeXml",
-    control: "menu",
-  },
-  reference: {
-    label: "Reference",
-    icon: "material-dataObject",
-    control: "text",
-  },
-  repeat: {
-    label: "Repeat",
-    icon: "material-copyAll",
-    control: "number",
-  },
-  symbol: {
-    icon: "material-deployedCode",
-    control: "combo",
-    renderValueAsIcon: true,
-  },
-  source: {
-    icon: "seldon-image",
-    control: "combo",
-  },
-  imageFit: {
-    icon: "seldon-imageFit",
-    control: "menu",
-  },
-  display: {
-    icon: "material-visibility",
-    control: "menu",
-    optionIcons: {
-      show: "material-visibility",
-      hide: "material-visibilityOff",
-      exclude: "material-codeOff",
-    },
-  },
-  size: {
-    icon: "material-aspectRatio",
-    control: "combo",
-  },
-  buttonSize: {
-    icon: "material-aspectRatio",
-    control: "combo",
-  },
+  // 1. ATTRIBUTES
+  content: { control: "text" },
+  altText: { control: "text" },
+  ariaLabel: { control: "text" },
+  ariaHidden: { control: "menu" },
+  placeholder: { control: "text" },
+  checked: { control: "menu" },
+  inputType: { control: "menu" },
+  htmlElement: { label: "HTML Element", control: "menu" },
+  wrapperElement: { label: "Wrapper", control: "menu" },
+  reference: { label: "Reference", control: "text" },
+  repeat: { label: "Repeat", control: "number" },
+  symbol: { control: "combo", renderValueAsIcon: true },
+  source: { control: "combo" },
+  imageFit: { control: "menu" },
+  display: { control: "menu" },
+  size: { control: "combo" },
+  buttonSize: { control: "combo" },
   board: {
-    icon: "seldon-component",
     control: "menu",
-    optionIcons: BOARD_PRESET_OPTION_ICONS,
     subProperties: {
-      preset: {
-        icon: "seldon-component",
-        control: "menu",
-        optionIcons: BOARD_PRESET_OPTION_ICONS,
-      },
-      width: {
-        icon: "seldon-width",
-        control: "combo",
-      },
-      height: {
-        icon: "seldon-height",
-        control: "combo",
-      },
+      preset: { control: "menu" },
+      width: { control: "combo" },
+      height: { control: "combo" },
     },
   },
 
-  // ========================================
   // 2. LAYOUT
-  // ========================================
-  direction: {
-    icon: "material-formatTextdirectionLToR",
-    control: "menu",
-    optionIcons: {
-      ltr: "material-formatTextdirectionLToR",
-      rtl: "material-formatTextdirectionRToL",
-    },
-  },
+  direction: { control: "menu" },
   position: {
-    icon: "seldon-positionTopLeft",
     control: "combo",
     subProperties: {
-      top: {
-        label: "Top",
-        icon: "seldon-positionTop",
-        control: "combo",
-      },
-      right: {
-        label: "Right",
-        icon: "seldon-positionRight",
-        control: "combo",
-      },
-      bottom: {
-        label: "Bottom",
-        icon: "seldon-positionBottom",
-        control: "combo",
-      },
-      left: {
-        label: "Left",
-        icon: "seldon-positionLeft",
-        control: "combo",
-      },
+      top: { label: "Top", control: "combo" },
+      right: { label: "Right", control: "combo" },
+      bottom: { label: "Bottom", control: "combo" },
+      left: { label: "Left", control: "combo" },
     },
   },
-  orientation: {
-    icon: "material-desktopLandscape",
-    control: "menu",
-    optionIcons: {
-      horizontal: "material-desktopLandscape",
-      vertical: "material-desktopPortrait",
-    },
-  },
-  align: {
-    icon: "seldon-positionCenter",
-    control: "menu",
-    // Seldon 3x3 anchor glyphs for each grid position. `auto` falls back to the
-    // default center-dot icon.
-    optionIcons: {
-      "top-left": "seldon-positionTopLeft",
-      "top-center": "seldon-positionTop",
-      "top-right": "seldon-positionTopRight",
-      left: "seldon-positionLeft",
-      center: "seldon-positionCenter",
-      right: "seldon-positionRight",
-      "bottom-left": "seldon-positionBottomLeft",
-      "bottom-center": "seldon-positionBottom",
-      "bottom-right": "seldon-positionBottomRight",
-    },
-  },
-  cellAlign: {
-    icon: "seldon-align",
-    control: "menu",
-  },
-  width: {
-    icon: "seldon-width",
-    control: "combo",
-  },
-  height: {
-    icon: "seldon-height",
-    control: "combo",
-  },
-  screenWidth: {
-    icon: "seldon-width",
-    control: "combo",
-  },
-  screenHeight: {
-    icon: "seldon-height",
-    control: "combo",
-  },
+  orientation: { control: "menu" },
+  align: { control: "menu" },
+  cellAlign: { control: "menu" },
+  width: { control: "combo" },
+  height: { control: "combo" },
+  screenWidth: { control: "combo" },
+  screenHeight: { control: "combo" },
   margin: {
-    icon: "seldon-margin",
     control: "combo",
     subProperties: {
-      top: {
-        icon: "seldon-margin",
-        control: "combo",
-      },
-      right: {
-        icon: "seldon-margin",
-        control: "combo",
-      },
-      bottom: {
-        icon: "seldon-margin",
-        control: "combo",
-      },
-      left: {
-        icon: "seldon-margin",
-        control: "combo",
-      },
+      top: { control: "combo" },
+      right: { control: "combo" },
+      bottom: { control: "combo" },
+      left: { control: "combo" },
     },
   },
   padding: {
-    icon: "seldon-padding",
     control: "combo",
     subProperties: {
-      top: {
-        icon: "seldon-padding",
-        control: "combo",
-      },
-      right: {
-        icon: "seldon-padding",
-        control: "combo",
-      },
-      bottom: {
-        icon: "seldon-padding",
-        control: "combo",
-      },
-      left: {
-        icon: "seldon-padding",
-        control: "combo",
-      },
+      top: { control: "combo" },
+      right: { control: "combo" },
+      bottom: { control: "combo" },
+      left: { control: "combo" },
     },
   },
-  gap: {
-    icon: "seldon-gap",
-    control: "combo",
-  },
-  rotation: {
-    icon: "seldon-rotation",
-    control: "number",
-  },
-  wrapChildren: {
-    icon: "seldon-fontTextWrap",
-    control: "menu",
-  },
-  clip: {
-    icon: "seldon-clip",
-    control: "menu",
-  },
-  listStyleType: {
-    icon: "seldon-token",
-    control: "menu",
-  },
-  listStylePosition: {
-    icon: "seldon-token",
-    control: "menu",
-  },
-  cursor: {
-    icon: "material-mouse",
-    control: "menu",
-    // Each CSS cursor keyword maps to the closest available glyph; resize
-    // variants share width/height/diagonal icons. `none` falls back to the
-    // global block icon.
-    optionIcons: {
-      default: "material-mouse",
-      "context-menu": "material-highlightMouseCursor",
-      help: "material-help",
-      pointer: "material-adsClick",
-      progress: "material-mouse",
-      wait: "material-mouse",
-      cell: "material-gridOn",
-      crosshair: "material-adsClick",
-      text: "material-highlightTextCursor",
-      "vertical-text": "material-highlightTextCursor",
-      alias: "material-driveFileMoveOutline",
-      copy: "material-contentCopy",
-      move: "material-openWith",
-      "no-drop": "material-doNotDisturbOn",
-      "not-allowed": "material-block",
-      grab: "material-panTool",
-      grabbing: "material-panToolAlt",
-      "all-scroll": "material-dragPan",
-      "zoom-in": "material-zoomIn",
-      "zoom-out": "material-zoomOut",
-      "e-resize": "material-width",
-      "w-resize": "material-width",
-      "ew-resize": "material-width",
-      "col-resize": "material-width",
-      "n-resize": "material-height",
-      "s-resize": "material-height",
-      "ns-resize": "material-height",
-      "row-resize": "material-height",
-      "ne-resize": "material-resize",
-      "nw-resize": "material-resize",
-      "se-resize": "material-resize",
-      "sw-resize": "material-resize",
-      "nesw-resize": "material-resize",
-      "nwse-resize": "material-resize",
-    },
-  },
-  columns: {
-    icon: "seldon-token",
-    control: "number",
-  },
-  rows: {
-    icon: "seldon-token",
-    control: "number",
-  },
+  gap: { control: "combo" },
+  rotation: { control: "number" },
+  wrapChildren: { control: "menu" },
+  clip: { control: "menu" },
+  listStyleType: { control: "menu" },
+  listStylePosition: { control: "menu" },
+  cursor: { control: "menu" },
+  columns: { control: "number" },
+  rows: { control: "number" },
 
-  // ========================================
   // 3. APPEARANCE
-  // ========================================
-  color: {
-    icon: "seldon-backgroundColor",
-    control: "combo",
-  },
-  accentColor: {
-    icon: "seldon-backgroundColor",
-    control: "combo",
-  },
-  brightness: {
-    icon: "seldon-brightness",
-    control: "number",
-  },
-  opacity: {
-    icon: "seldon-opacity",
-    control: "number",
-  },
+  color: { control: "combo" },
+  accentColor: { control: "combo" },
+  brightness: { control: "number" },
+  opacity: { control: "number" },
   background: {
-    icon: "material-palette",
     subProperties: {
-      preset: {
-        icon: "seldon-gradient",
-        control: "combo",
-      },
-      color: {
-        icon: "seldon-backgroundColor",
-        control: "combo",
-      },
-      brightness: {
-        icon: "seldon-brightness",
-        control: "number",
-      },
-      opacity: {
-        icon: "seldon-opacity",
-        control: "number",
-      },
-      image: {
-        label: "Source",
-        icon: "seldon-image",
-        control: "combo",
-      },
-      position: {
-        icon: "seldon-positionCenter",
-        control: "menu",
-        // Mirror the top-level `align` 3x3 anchor icons. Background position
-        // names the middle row "center-left"/"center-right" where align uses
-        // "left"/"right", so the keys differ but the icons match.
-        optionIcons: {
-          "top-left": "seldon-positionTopLeft",
-          "top-center": "seldon-positionTop",
-          "top-right": "seldon-positionTopRight",
-          "center-left": "seldon-positionLeft",
-          center: "seldon-positionCenter",
-          "center-right": "seldon-positionRight",
-          "bottom-left": "seldon-positionBottomLeft",
-          "bottom-center": "seldon-positionBottom",
-          "bottom-right": "seldon-positionBottomRight",
-        },
-      },
-      size: {
-        icon: "material-aspectRatio",
-        control: "menu",
-      },
-      repeat: {
-        icon: "material-copyAll",
-        control: "menu",
-      },
-      blendMode: {
-        icon: "material-layers",
-        control: "menu",
-      },
-      filter: {
-        icon: "material-blurCircular",
-        control: "combo",
-      },
-      gradientType: {
-        icon: "seldon-gradient",
-        control: "menu",
-      },
-      angle: {
-        icon: "seldon-rotation",
-        control: "number",
-      },
-      startColor: {
-        icon: "seldon-backgroundColor",
-        control: "combo",
-      },
-      startBrightness: {
-        icon: "seldon-brightness",
-        control: "number",
-      },
-      startOpacity: {
-        icon: "seldon-opacity",
-        control: "number",
-      },
-      startPosition: {
-        icon: "material-lineStartCircle",
-        control: "number",
-      },
-      endColor: {
-        icon: "seldon-backgroundColor",
-        control: "combo",
-      },
-      endBrightness: {
-        icon: "seldon-brightness",
-        control: "number",
-      },
-      endOpacity: {
-        icon: "seldon-opacity",
-        control: "number",
-      },
-      endPosition: {
-        icon: "material-lineEndCircle",
-        control: "number",
-      },
+      preset: { control: "combo" },
+      color: { control: "combo" },
+      brightness: { control: "number" },
+      opacity: { control: "number" },
+      image: { label: "Source", control: "combo" },
+      position: { control: "menu" },
+      size: { control: "menu" },
+      repeat: { control: "menu" },
+      blendMode: { control: "menu" },
+      filter: { control: "combo" },
+      gradientType: { control: "menu" },
+      angle: { control: "number" },
+      startColor: { control: "combo" },
+      startBrightness: { control: "number" },
+      startOpacity: { control: "number" },
+      startPosition: { control: "number" },
+      endColor: { control: "combo" },
+      endBrightness: { control: "number" },
+      endOpacity: { control: "number" },
+      endPosition: { control: "number" },
     },
   },
   border: {
-    icon: "seldon-borderStyle",
     subProperties: {
-      preset: {
-        icon: "seldon-borderStyle",
-        control: "combo",
-      },
-      style: {
-        icon: "material-style",
-        control: "menu",
-      },
-      color: {
-        icon: "seldon-backgroundColor",
-        control: "combo",
-      },
-      width: {
-        icon: "material-lineWeight",
-        control: "combo",
-      },
-      brightness: {
-        icon: "seldon-brightness",
-        control: "number",
-      },
-      opacity: {
-        icon: "seldon-opacity",
-        control: "number",
-      },
-      // Individual border sides
-      topStyle: {
-        icon: "seldon-borderStyle",
-        control: "menu",
-      },
-      topColor: {
-        icon: "seldon-backgroundColor",
-        control: "combo",
-      },
-      topWidth: {
-        icon: "seldon-borderStyle",
-        control: "combo",
-      },
-      topBrightness: {
-        icon: "seldon-brightness",
-        control: "number",
-      },
-      topOpacity: {
-        icon: "seldon-opacity",
-        control: "number",
-      },
-      rightStyle: {
-        icon: "seldon-borderStyle",
-        control: "menu",
-      },
-      rightColor: {
-        icon: "seldon-backgroundColor",
-        control: "combo",
-      },
-      rightWidth: {
-        icon: "seldon-borderStyle",
-        control: "combo",
-      },
-      rightBrightness: {
-        icon: "seldon-brightness",
-        control: "number",
-      },
-      rightOpacity: {
-        icon: "seldon-opacity",
-        control: "number",
-      },
-      bottomStyle: {
-        icon: "seldon-borderStyle",
-        control: "menu",
-      },
-      bottomColor: {
-        icon: "seldon-backgroundColor",
-        control: "combo",
-      },
-      bottomWidth: {
-        icon: "seldon-borderStyle",
-        control: "combo",
-      },
-      bottomBrightness: {
-        icon: "seldon-brightness",
-        control: "number",
-      },
-      bottomOpacity: {
-        icon: "seldon-opacity",
-        control: "number",
-      },
-      leftStyle: {
-        icon: "seldon-borderStyle",
-        control: "menu",
-      },
-      leftColor: {
-        icon: "seldon-backgroundColor",
-        control: "combo",
-      },
-      leftWidth: {
-        icon: "seldon-borderStyle",
-        control: "combo",
-      },
-      leftBrightness: {
-        icon: "seldon-brightness",
-        control: "number",
-      },
-      leftOpacity: {
-        icon: "seldon-opacity",
-        control: "number",
-      },
+      preset: { control: "combo" },
+      style: { control: "menu" },
+      color: { control: "combo" },
+      width: { control: "combo" },
+      brightness: { control: "number" },
+      opacity: { control: "number" },
+      topStyle: { control: "menu" },
+      topColor: { control: "combo" },
+      topWidth: { control: "combo" },
+      topBrightness: { control: "number" },
+      topOpacity: { control: "number" },
+      rightStyle: { control: "menu" },
+      rightColor: { control: "combo" },
+      rightWidth: { control: "combo" },
+      rightBrightness: { control: "number" },
+      rightOpacity: { control: "number" },
+      bottomStyle: { control: "menu" },
+      bottomColor: { control: "combo" },
+      bottomWidth: { control: "combo" },
+      bottomBrightness: { control: "number" },
+      bottomOpacity: { control: "number" },
+      leftStyle: { control: "menu" },
+      leftColor: { control: "combo" },
+      leftWidth: { control: "combo" },
+      leftBrightness: { control: "number" },
+      leftOpacity: { control: "number" },
     },
   },
   borderTop: BORDER_SIDE_REGISTRY_ENTRY("Border Top"),
   borderRight: BORDER_SIDE_REGISTRY_ENTRY("Border Right"),
   borderBottom: BORDER_SIDE_REGISTRY_ENTRY("Border Bottom"),
   borderLeft: BORDER_SIDE_REGISTRY_ENTRY("Border Left"),
-  borderCollapse: {
-    icon: "seldon-token",
-    control: "menu",
-  },
+  borderCollapse: { control: "menu" },
   corners: {
-    icon: "material-roundedCorner",
     control: "combo",
     subProperties: {
-      topLeft: {
-        icon: "material-roundedCorner",
-        control: "combo",
-      },
-      topRight: {
-        icon: "material-roundedCorner",
-        control: "combo",
-      },
-      bottomRight: {
-        icon: "material-roundedCorner",
-        control: "combo",
-      },
-      bottomLeft: {
-        icon: "material-roundedCorner",
-        control: "combo",
-      },
+      topLeft: { control: "combo" },
+      topRight: { control: "combo" },
+      bottomRight: { control: "combo" },
+      bottomLeft: { control: "combo" },
     },
   },
 
-  // ========================================
   // 4. TYPOGRAPHY
-  // ========================================
   font: {
-    icon: "seldon-font",
     subProperties: {
-      preset: {
-        icon: "seldon-font",
-        control: "combo",
-      },
-      family: {
-        icon: "seldon-fontFamily",
-        control: "combo",
-      },
-      style: {
-        icon: "material-style",
-        control: "menu",
-      },
-      weight: {
-        icon: "seldon-fontWeight",
-        control: "combo",
-      },
-      size: {
-        icon: "seldon-fontSize",
-        control: "combo",
-      },
-      lineHeight: {
-        icon: "seldon-fontLineHeight",
-        control: "combo",
-      },
-      textCase: {
-        icon: "material-matchCase",
-        control: "menu",
-      },
-      letterSpacing: {
-        icon: "seldon-fontLetterSpacing",
-        control: "number",
-      },
+      preset: { control: "combo" },
+      family: { control: "combo" },
+      style: { control: "menu" },
+      weight: { control: "combo" },
+      size: { control: "combo" },
+      lineHeight: { control: "combo" },
+      textCase: { control: "menu" },
+      letterSpacing: { control: "number" },
     },
   },
-  textAlign: {
-    icon: "seldon-textAlign",
-    control: "menu",
-    optionIcons: {
-      left: "material-formatAlignLeft",
-      right: "material-formatAlignRight",
-      center: "material-formatAlignCenter",
-      justify: "material-formatAlignJustify",
-    },
-  },
-  textDecoration: {
-    icon: "seldon-fontTextDecoration",
-    control: "menu",
-  },
-  wrapText: {
-    icon: "seldon-fontTextWrap",
-    control: "menu",
-  },
-  lines: {
-    icon: "seldon-lines",
-    control: "number",
-  },
+  textAlign: { control: "menu" },
+  textDecoration: { control: "menu" },
+  wrapText: { control: "menu" },
+  lines: { control: "number" },
 
-  // ========================================
   // 5. EFFECTS
-  // ========================================
   shadow: {
-    icon: "seldon-shadow",
     subProperties: {
-      preset: {
-        icon: "seldon-shadow",
-        control: "combo",
-      },
-      style: {
-        icon: "material-style",
-        control: "menu",
-      },
-      offsetX: {
-        icon: "material-width",
-        control: "number",
-      },
-      offsetY: {
-        icon: "material-height",
-        control: "number",
-      },
-      blur: {
-        icon: "material-blurOn",
-        control: "combo",
-      },
-      spread: {
-        icon: "material-deblur",
-        control: "combo",
-      },
-      color: {
-        icon: "seldon-backgroundColor",
-        control: "combo",
-      },
-      brightness: {
-        icon: "seldon-brightness",
-        control: "number",
-      },
-      opacity: {
-        icon: "seldon-opacity",
-        control: "number",
-      },
+      preset: { control: "combo" },
+      style: { control: "menu" },
+      offsetX: { control: "number" },
+      offsetY: { control: "number" },
+      blur: { control: "combo" },
+      spread: { control: "combo" },
+      color: { control: "combo" },
+      brightness: { control: "number" },
+      opacity: { control: "number" },
     },
   },
-  scroll: {
-    icon: "material-mouse",
-    control: "menu",
-  },
-  scrollbarStyle: {
-    icon: "seldon-token",
-    control: "menu",
-  },
+  scroll: { control: "menu" },
+  scrollbarStyle: { control: "menu" },
 
-  // ========================================
   // 6. ACCESSIBILITY
-  // ========================================
-  role: {
-    label: "Role",
-    icon: "seldon-token",
-    control: "menu",
-  },
-  ariaDisabled: {
-    icon: "seldon-radioOff",
-    control: "menu",
-  },
-  ariaExpanded: {
-    icon: "seldon-radioOff",
-    control: "menu",
-  },
-  ariaSelected: {
-    icon: "seldon-radioOff",
-    control: "menu",
-  },
-  ariaChecked: {
-    icon: "seldon-radioOff",
-    control: "menu",
-  },
-  ariaPressed: {
-    icon: "seldon-radioOff",
-    control: "menu",
-  },
-  ariaCurrent: {
-    icon: "seldon-token",
-    control: "menu",
-  },
-  ariaHasPopup: {
-    icon: "seldon-token",
-    control: "menu",
-  },
-  ariaInvalid: {
-    icon: "seldon-token",
-    control: "menu",
-  },
-  ariaRequired: {
-    icon: "seldon-radioOff",
-    control: "menu",
-  },
-  ariaReadonly: {
-    icon: "seldon-radioOff",
-    control: "menu",
-  },
-  ariaLive: {
-    icon: "seldon-token",
-    control: "menu",
-  },
-
-  // ========================================
-  // 7. THEME COMPUTED GROUPS
-  // ========================================
-  matchColor: {
-    icon: "seldon-component",
-    subProperties: {
-      includeBrightness: { icon: "seldon-brightness" },
-      includeOpacity: { icon: "seldon-opacity" },
-    },
-  },
+  role: { label: "Role", control: "menu" },
+  ariaDisabled: { control: "menu" },
+  ariaExpanded: { control: "menu" },
+  ariaSelected: { control: "menu" },
+  ariaChecked: { control: "menu" },
+  ariaPressed: { control: "menu" },
+  ariaCurrent: { control: "menu" },
+  ariaHasPopup: { control: "menu" },
+  ariaInvalid: { control: "menu" },
+  ariaRequired: { control: "menu" },
+  ariaReadonly: { control: "menu" },
+  ariaLive: { control: "menu" },
 }
 
 function mapCategoryToType(
@@ -832,7 +321,6 @@ function mergeEntry(
   const merged: PropertyRegistryEntry = {
     label: override.label ?? base.label,
     icon: override.icon ?? base.icon,
-    optionIcons: override.optionIcons ?? base.optionIcons,
     renderValueAsIcon: override.renderValueAsIcon ?? base.renderValueAsIcon,
     control: override.hasOwnProperty("control")
       ? override.control
@@ -867,7 +355,7 @@ function buildBaseEntry(propertyKey: string): PropertyRegistryEntry {
   const hasSubPropertiesWithoutControl =
     override?.subProperties && !override?.hasOwnProperty("control")
   const base: PropertyRegistryEntry = {
-    icon: "seldon-token",
+    icon: resolveRowIcon(propertyKey),
     control: hasSubPropertiesWithoutControl
       ? undefined
       : type === "atomic"
@@ -883,7 +371,7 @@ function buildBaseEntry(propertyKey: string): PropertyRegistryEntry {
         const subOverride = overrideSub[subKey]
         subMap[subKey] = {
           label: subOverride?.label,
-          icon: subOverride?.icon ?? "seldon-token",
+          icon: resolveRowIcon(`${propertyKey}.${subKey}`),
           control: subOverride?.control ?? "combo",
         }
       })
@@ -901,7 +389,7 @@ const __rootEntryCache = new Map<string, PropertyRegistryEntry>()
 /**
  * Builds (and caches) the presentation entry for a top-level property key.
  * Works for any catalog key, not only those with a `UI_OVERRIDES` row: schema category
- * supplies the default control and `IconTokenValue` is the default icon.
+ * supplies the default control and the core registry supplies the icon.
  */
 function getRootEntry(rootKey: string): PropertyRegistryEntry {
   let entry = __rootEntryCache.get(rootKey)
@@ -910,21 +398,6 @@ function getRootEntry(rootKey: string): PropertyRegistryEntry {
     __rootEntryCache.set(rootKey, entry)
   }
   return entry
-}
-
-/**
- * Returns the explicitly defined icon for a property or theme key path, or
- * `undefined` when no override exists. Walks `UI_OVERRIDES` by dot segments
- * without synthesizing a default entry, so callers (such as the themes sidebar)
- * can fall back to their own default icon when the registry has no opinion.
- */
-export function getRegistryIconOverride(key: string): string | undefined {
-  const parts = key.split(".")
-  let entry: PropertyRegistryEntry | undefined = UI_OVERRIDES[parts[0]!]
-  for (let i = 1; i < parts.length && entry; i++) {
-    entry = entry.subProperties?.[parts[i]!]
-  }
-  return entry?.icon
 }
 
 export function getPropertyRegistryEntry(

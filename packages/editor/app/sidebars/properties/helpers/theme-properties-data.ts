@@ -1,7 +1,4 @@
-import {
-  type ControlType,
-  getRegistryIconOverride,
-} from "@lib/icons/icons-registry"
+import { type ControlType } from "@lib/icons/icons-registry"
 import { getFamilyNameByValue } from "@seldon/core"
 import { HSLObjectToString } from "@seldon/core/helpers/color/hsl-object-to-string"
 import { themeSwatchToCssBackground } from "@seldon/core/helpers/color/theme-swatch-to-css-background"
@@ -334,7 +331,7 @@ function createFlatPropertyFromSchema(
     schema.key === "colorHarmony.baseColor" ||
     schema.key in COLOR_POINT_SWATCHES
       ? "icon-custom-color-value"
-      : (getRegistryIconOverride(schema.key) ?? schema.icon ?? "seldon-component")
+      : (schema.icon ?? "seldon-component")
 
   const controlType = schema.controlType
     ? CONTROL_TYPE_MAP[schema.controlType]

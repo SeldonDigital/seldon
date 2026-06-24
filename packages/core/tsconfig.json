@@ -21,6 +21,7 @@
     "./components/**/*.*",
     "./font-collections/**/*.*",
     "./helpers/**/*.*",
+    "./icon-registry/**/*.*",
     "./icon-sets/**/*.*",
     "./properties/**/*.*",
     "./rules/**/*.*",

@@ -1,6 +1,7 @@
 import { MenuEntry } from "@lib/menus"
 import { MouseEvent, useState } from "react"
 import { Board as BoardType } from "@seldon/core"
+import { getNodeKindIcon } from "@seldon/core/icon-registry"
 import {
   isFontCollectionBoard,
   isIconSetBoard,
@@ -281,15 +282,15 @@ export function useRowBoard(
   // Component icon (second icon): shows component type
   const getBoardIcon = () => {
     if (isIconSetBoard(board)) {
-      return "seldon-icon"
+      return getNodeKindIcon("iconSet")
     }
     if (isThemeBoard(board)) {
-      return "seldon-theme"
+      return getNodeKindIcon("theme")
     }
     if (isFontCollectionBoard(board)) {
-      return "seldon-text"
+      return getNodeKindIcon("fontCollection")
     }
-    return "seldon-component"
+    return getNodeKindIcon("component")
   }
   const icon2 = createIcon2(getBoardIcon() as IconProps["icon"])
 
