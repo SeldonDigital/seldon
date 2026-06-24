@@ -813,7 +813,7 @@ export const schema = {
         role: { type: Sdn.ValueType.OPTION, value: Sdn.AriaRole.NAVIGATION },
         align: {
           type: Sdn.ValueType.OPTION,
-          value: Sdn.Align.CENTER_LEFT,
+          value: Sdn.Align.CENTER,
         },
         position: {
           bottom: {
@@ -822,6 +822,16 @@ export const schema = {
               value: 0,
               unit: Sdn.Unit.PX,
             },
+          },
+        },
+        padding: {
+          right: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@padding.tight",
+          },
+          left: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@padding.tight",
           },
         },
         gap: {
