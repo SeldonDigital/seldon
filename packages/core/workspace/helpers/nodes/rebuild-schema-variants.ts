@@ -15,9 +15,10 @@ import {
 } from "./build-component-variants"
 
 /**
- * Rebuilds one catalog schema variant against the reset default tree's canonical
- * instances, writing its nodes into `newNodes` and returning its tree ref. Forks
- * the default tree for complex schemas; emits a single leaf for primitives.
+ * Rebuilds one catalog schema variant against the reset default tree, writing its
+ * nodes into `newNodes` and returning its tree ref. Chains the variant's children
+ * to the matching default-tree children for complex schemas; emits a single leaf
+ * for primitives.
  */
 export function rebuildSchemaVariant(params: {
   catalogId: ComponentId
@@ -26,7 +27,7 @@ export function rebuildSchemaVariant(params: {
   catalogVariant: CatalogSchemaVariant
   workspace: Workspace
   newNodes: Record<string, EntryNode>
-  canonicalMap: Map<string, string>
+  defaultRef: ComponentTreeRef | undefined
 }): ComponentTreeRef {
   const {
     catalogId,
@@ -35,7 +36,7 @@ export function rebuildSchemaVariant(params: {
     catalogVariant,
     workspace,
     newNodes,
-    canonicalMap,
+    defaultRef,
   } = params
 
   if (!isComplexSchema(schema)) {
@@ -56,7 +57,7 @@ export function rebuildSchemaVariant(params: {
     catalogVariant,
     schema.default.children,
     ctx,
-    canonicalMap,
+    defaultRef,
     variantRefs,
   )
   return variantRefs[0]

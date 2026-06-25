@@ -2,7 +2,6 @@ import { produce } from "immer"
 
 import { getComponentSchema } from "../../../components/catalog"
 import { type ComponentId } from "../../../components/constants"
-import { isComplexSchema } from "../../../components/types"
 import { isComponentBoard } from "../../model/components"
 import { parseNodeLink } from "../../model/template-ref"
 import type { ComponentTreeRef, EntryNode, Workspace } from "../../types"
@@ -11,7 +10,6 @@ import {
   componentBoardSchemaVariantNodeId,
 } from "../components/entry-node-ids"
 import { walkBoardTreeRefs } from "../components/walk-board-tree-refs"
-import { mapTopLevelCanonicals } from "./build-component-variants"
 import { findBoardContainingTreeNodeId } from "./duplicate-entry-variant-subtree"
 import { rebuildSchemaVariant } from "./rebuild-schema-variants"
 
@@ -36,10 +34,10 @@ function collectReferencedTreeNodeIds(workspace: Workspace): Set<string> {
 /**
  * Rebuilds a single schema-backed variant to its catalog definition while
  * leaving the default variant and other variants untouched. Keeps the variant's
- * deterministic root id so cross-board references stay linked, forks the current
- * default tree's canonical instances so default overrides still cascade into the
- * variant, and prunes the variant's orphaned fork nodes. No-op when the target is
- * not a schema-backed variant.
+ * deterministic root id so cross-board references stay linked, chains the
+ * variant's children to the current default tree's children so default overrides
+ * still cascade into the variant, and prunes the variant's orphaned fork nodes.
+ * No-op when the target is not a schema-backed variant.
  */
 export function applyResetSchemaVariantToCatalog(
   workspace: Workspace,
@@ -68,11 +66,6 @@ export function applyResetSchemaVariantToCatalog(
     const oldIds = collectTreeRefIds(oldRef)
 
     const defaultRef = board.variants[0] ?? { id: defaultVariantRootId }
-
-    const canonicalMap = mapTopLevelCanonicals(
-      isComplexSchema(schema) ? schema.default.children : undefined,
-      defaultRef,
-    )
     const newNodes: Record<string, EntryNode> = {}
 
     const newRef = rebuildSchemaVariant({
@@ -82,7 +75,7 @@ export function applyResetSchemaVariantToCatalog(
       catalogVariant,
       workspace: draft,
       newNodes,
-      canonicalMap,
+      defaultRef,
     })
 
     for (const [id, node] of Object.entries(newNodes)) {

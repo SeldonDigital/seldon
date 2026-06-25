@@ -150,7 +150,12 @@ export function getCssObjectFromProperties(
       }),
     ),
     ...safeGetStyles(() =>
-      getSizeStyles({ properties: computedProperties, parentContext, theme }),
+      getSizeStyles({
+        properties: computedProperties,
+        parentContext,
+        theme,
+        layoutMode,
+      }),
     ),
     ...safeGetStyles(() =>
       getTextStyles({ properties: computedProperties, parentContext, theme }),

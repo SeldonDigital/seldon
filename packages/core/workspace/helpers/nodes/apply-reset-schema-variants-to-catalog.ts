@@ -2,22 +2,20 @@ import { produce } from "immer"
 
 import { getComponentSchema } from "../../../components/catalog"
 import { type ComponentId } from "../../../components/constants"
-import { isComplexSchema } from "../../../components/types"
 import { isComponentBoard } from "../../model/components"
 import { parseNodeLink } from "../../model/template-ref"
 import type { ComponentTreeRef, EntryNode, Workspace } from "../../types"
 import { componentBoardDefaultNodeId } from "../components/entry-node-ids"
 import { walkBoardTreeRefs } from "../components/walk-board-tree-refs"
-import { mapTopLevelCanonicals } from "./build-component-variants"
 import { rebuildSchemaVariant } from "./rebuild-schema-variants"
 
 /**
  * Rebuilds every catalog schema variant of a component board to its catalog
  * definition, after the default variant has been reset. Keeps deterministic
- * variant root ids so other boards that reference them stay linked, rebuilds
- * fork child trees against the reset default tree's canonical instances, drops
- * user variants, normalizes variant order, and prunes orphaned nodes without
- * the cross-board cascade that variant deletion would trigger.
+ * variant root ids so other boards that reference them stay linked, chains
+ * variant child trees to the reset default tree's children, drops user variants,
+ * normalizes variant order, and prunes orphaned nodes without the cross-board
+ * cascade that variant deletion would trigger.
  */
 export function applyResetSchemaVariantsToCatalog(
   workspace: Workspace,
@@ -39,11 +37,6 @@ export function applyResetSchemaVariantsToCatalog(
     const defaultRef = board.variants.find(
       (ref) => ref.id === defaultVariantRootId,
     ) ?? { id: defaultVariantRootId }
-
-    const canonicalMap = mapTopLevelCanonicals(
-      isComplexSchema(schema) ? schema.default.children : undefined,
-      defaultRef,
-    )
     const newNodes: Record<string, EntryNode> = {}
 
     const schemaVariantRefs: ComponentTreeRef[] = (schema.variants ?? []).map(
@@ -55,7 +48,7 @@ export function applyResetSchemaVariantsToCatalog(
           catalogVariant,
           workspace: draft,
           newNodes,
-          canonicalMap,
+          defaultRef,
         }),
     )
 

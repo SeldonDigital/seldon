@@ -15,7 +15,7 @@ import { SchemaChild } from "../../../components/types"
 import { Properties, invariant } from "../../../index"
 import { mergeProperties } from "../../../properties/helpers/merge-properties"
 import { isComponentBoard } from "../../model/components"
-import { formatNodeLink } from "../../model/template-ref"
+import { formatNodeLink, parseNodeLink } from "../../model/template-ref"
 import type {
   ComponentTreeRef,
   EntryNode,
@@ -34,7 +34,6 @@ import {
   applyVariantFallbackToSlot,
   mergeInlineSlotOverrides,
 } from "./schema-composition-children"
-import { getSchemaSlotFingerprint } from "./schema-slot-fingerprint"
 
 export type InstantiateComponentOptions = {
   restrictedVariantIds?: string[]
@@ -282,33 +281,144 @@ function buildComposedChild(
 }
 
 /**
- * Maps each top-level default-tree child to the slot fingerprint that produced
- * it. A variant slot whose fingerprint matches shares that default child by
- * chaining to it, so default-tree edits cascade into the variant tree.
+ * Recursive structural signature of a variant slot: its resolved template node
+ * plus the signatures of its authored children, ignoring override values. Two
+ * slots share a key only when their whole subtrees have the same component and
+ * variant shape.
  */
-export function mapTopLevelCanonicals(
-  defaultChildSlots: SchemaChild[] | undefined,
-  defaultRef: ComponentTreeRef,
+function slotStructureKey(
+  slot: SchemaChild,
   variantFallbacks?: ReadonlySet<string>,
-): Map<string, string> {
-  const map = new Map<string, string>()
-  const children = defaultRef.children ?? []
-  ;(defaultChildSlots ?? []).forEach((rawSlot, index) => {
-    const child = children[index]
-    if (!child) return
-    const mergedSlot = mergeInlineSlotOverrides(rawSlot, variantFallbacks)
-    map.set(
-      getSchemaSlotFingerprint(mergedSlot, { variantFallbacks }),
-      child.id,
-    )
-  })
-  return map
+): string {
+  const resolved = resolveSchemaChild(
+    applyVariantFallbackToSlot(slot, variantFallbacks),
+  )
+  const children = (slot.children ?? [])
+    .map((child) => slotStructureKey(child, variantFallbacks))
+    .join(",")
+  return `${resolved.templateNodeId}[${children}]`
 }
 
 /**
- * Builds one variant root node and its child tree. Top-level child slots that
- * match a canonical default child are cloned from it; the rest are composed from
- * their own component boards. The default tree passes an empty `canonicalMap`.
+ * Recursive structural signature of a built default-tree child, mirroring
+ * `slotStructureKey` so a variant slot matches a default child only when their
+ * full subtrees share the same component and variant shape.
+ */
+function refStructureKey(workspace: Workspace, ref: ComponentTreeRef): string {
+  const node = workspace.nodes[ref.id]
+  const templateNodeId = node ? parseNodeLink(node.template)?.nodeId : null
+  const children = (ref.children ?? [])
+    .map((child) => refStructureKey(workspace, child))
+    .join(",")
+  return `${templateNodeId ?? ""}[${children}]`
+}
+
+/**
+ * Finds the first unused default child whose full structure matches the variant
+ * slot, pairing it with the default-variant child it should chain from. A match
+ * guarantees identical subtree shape, so chained descendants pair positionally.
+ */
+function takeDefaultChildMatch(
+  defaultChildren: ComponentTreeRef[] | undefined,
+  used: Set<number>,
+  workspace: Workspace,
+  slotKey: string,
+): ComponentTreeRef | null {
+  if (!defaultChildren) return null
+  const matchIdx = defaultChildren.findIndex(
+    (ref, index) =>
+      !used.has(index) && refStructureKey(workspace, ref) === slotKey,
+  )
+  if (matchIdx < 0) return null
+  used.add(matchIdx)
+  return defaultChildren[matchIdx]
+}
+
+/**
+ * Builds a variant child that chains to the default-variant child it matches.
+ * The node templates from that default child and stores only the slot's authored
+ * delta overrides, so default-child edits cascade while the variant's own
+ * overrides win locally. Descendants recurse the same way.
+ */
+function buildChainedChild(
+  rawSlot: SchemaChild,
+  defaultChildRef: ComponentTreeRef,
+  ctx: BuildContext,
+  existingRef?: ComponentTreeRef,
+): ComponentTreeRef {
+  const slot = applyVariantFallbackToSlot(rawSlot, ctx.variantFallbacks)
+  const resolved = resolveSchemaChild(slot)
+  const id = existingRef?.id ?? componentBoardUniqueNodeId(resolved.schema.id)
+
+  ctx.newNodes[id] = makeEntryNode({
+    id,
+    type: "instance",
+    level: resolved.schema.level as EntryNode["level"],
+    label: resolved.label,
+    template: formatNodeLink(defaultChildRef.id),
+    overrides: mergeProperties({}, slot.overrides ?? {}),
+    origin: "schema",
+    withInitialOverrides: true,
+  })
+
+  const childRefs = buildVariantChildRefs(
+    slot.children,
+    defaultChildRef.children,
+    ctx,
+    existingRef,
+  )
+
+  return childRefs.length ? { id, children: childRefs } : { id }
+}
+
+/**
+ * Builds the child refs for a variant subtree. A child slot that matches a
+ * default child by template node chains to it carrying its deltas; the rest
+ * compose fresh from their own board. `defaultChildren` is undefined for the
+ * default tree, so its children always compose fresh.
+ */
+function buildVariantChildRefs(
+  slots: SchemaChild[] | undefined,
+  defaultChildren: ComponentTreeRef[] | undefined,
+  ctx: BuildContext,
+  existingRef?: ComponentTreeRef,
+): ComponentTreeRef[] {
+  if (!slots?.length) return []
+  const usedExisting = new Set<number>()
+  const usedDefault = new Set<number>()
+  return slots.map((rawSlot) => {
+    const resolved = resolveSchemaChild(
+      applyVariantFallbackToSlot(rawSlot, ctx.variantFallbacks),
+    )
+    const existingChild =
+      takeRefOfComponent(
+        existingRef?.children,
+        usedExisting,
+        ctx.workspace,
+        resolved.componentId,
+      ) ?? undefined
+    const defaultMatch = takeDefaultChildMatch(
+      defaultChildren,
+      usedDefault,
+      ctx.workspace,
+      slotStructureKey(rawSlot, ctx.variantFallbacks),
+    )
+    if (defaultMatch) {
+      return buildChainedChild(rawSlot, defaultMatch, ctx, existingChild)
+    }
+    return buildComposedChild(
+      mergeInlineSlotOverrides(rawSlot, ctx.variantFallbacks),
+      ctx,
+      existingChild,
+    )
+  })
+}
+
+/**
+ * Builds one variant root node and its child tree. Each top-level child slot that
+ * matches a default-variant child by template node chains to it carrying the
+ * slot's deltas; the rest compose from their own boards. The default tree passes
+ * `undefined` for `defaultRef` so its children always compose fresh.
  */
 export function buildVariantTree(
   componentId: ComponentId,
@@ -321,7 +431,7 @@ export function buildVariantTree(
     children: SchemaChild[] | undefined
   },
   ctx: BuildContext,
-  canonicalMap: Map<string, string>,
+  defaultRef: ComponentTreeRef | undefined,
   existingRef?: ComponentTreeRef,
 ): ComponentTreeRef {
   ctx.newNodes[variantRootId] = makeEntryNode({
@@ -334,39 +444,12 @@ export function buildVariantTree(
     withInitialOverrides: true,
   })
 
-  const usedExisting = new Set<number>()
-  const childRefs: ComponentTreeRef[] = []
-  for (const rawSlot of treeOptions.children ?? []) {
-    const mergedSlot = mergeInlineSlotOverrides(rawSlot, ctx.variantFallbacks)
-    const resolved = resolveSchemaChild(
-      applyVariantFallbackToSlot(mergedSlot, ctx.variantFallbacks),
-    )
-    const existingChild =
-      takeRefOfComponent(
-        existingRef?.children,
-        usedExisting,
-        ctx.workspace,
-        resolved.componentId,
-      ) ?? undefined
-
-    const fingerprint = getSchemaSlotFingerprint(mergedSlot, {
-      variantFallbacks: ctx.variantFallbacks,
-    })
-    const canonicalId = canonicalMap.get(fingerprint)
-    if (canonicalId) {
-      const canonicalRef = getSourceTreeRef(ctx.workspace, canonicalId)
-      invariant(
-        canonicalRef,
-        `Canonical default child ${canonicalId} not found for ${componentId}`,
-      )
-      childRefs.push(
-        cloneSubtreeChainingToSource(canonicalRef, ctx, existingChild),
-      )
-      continue
-    }
-
-    childRefs.push(buildComposedChild(mergedSlot, ctx, existingChild))
-  }
+  const childRefs = buildVariantChildRefs(
+    treeOptions.children,
+    defaultRef?.children,
+    ctx,
+    existingRef,
+  )
 
   return childRefs.length
     ? { id: variantRootId, children: childRefs }
@@ -411,7 +494,7 @@ export function appendComplexSchemaVariant(
   catalogVariant: CatalogSchemaVariant,
   fallbackChildSlots: SchemaChild[] | undefined,
   ctx: BuildContext,
-  canonicalMap: Map<string, string>,
+  defaultRef: ComponentTreeRef | undefined,
   variantTreeRefs: ComponentTreeRef[],
 ): void {
   const variantRootId = componentBoardSchemaVariantNodeId(
@@ -432,7 +515,7 @@ export function appendComplexSchemaVariant(
       children: variantChildSlots,
     },
     ctx,
-    canonicalMap,
+    defaultRef,
   )
   variantTreeRefs.push(variantRef)
 }

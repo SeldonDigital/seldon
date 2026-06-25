@@ -5,6 +5,7 @@ import {
   Orientation,
   Resize,
   ScreenSize,
+  Scroll,
   ValueType,
 } from "@seldon/core"
 import { resolveValue } from "@seldon/core/helpers/resolution/resolve-value"
@@ -61,6 +62,7 @@ export function getSizeStyles({
   properties,
   parentContext,
   theme,
+  layoutMode,
 }: StyleGenerationContext): CSSObject {
   const styles: CSSObject = {}
 
@@ -71,6 +73,11 @@ export function getSizeStyles({
   // Children of a grid container size to their tracks, not flex item rules.
   const parentIsGrid = parentContext?.layoutMode === "grid"
 
+  // A grid container expresses its own shrink through its track template
+  // (`minmax(0, 1fr)`), so its outer box must keep the automatic `min: auto`.
+  // Zeroing it lets the box collapse below its content and the rows overlap.
+  const selfIsGrid = layoutMode === "grid"
+
   // A node that truncates its own text (wrap text off) must be able to shrink
   // below its content size. Flex items default to `min-width: auto`, which is the
   // nowrap min-content width, so it overrides the node's width and defeats the
@@ -80,6 +87,15 @@ export function getSizeStyles({
   const ownOrientation = properties.orientation
     ? resolveValue(properties.orientation)?.value
     : null
+
+  // A node only needs to shrink below its content height when it manages its
+  // own vertical overflow. Without this, a vertical fill item falls back to its
+  // content height instead of collapsing when the parent has no free space.
+  const scroll = resolveValue(properties.scroll)?.value
+  const clipsVertically =
+    scroll === Scroll.NONE ||
+    scroll === Scroll.VERTICAL ||
+    scroll === Scroll.BOTH
 
   const boardWidth = resolveValue(properties.board?.width)
   const boardHeight = resolveValue(properties.board?.height)
@@ -288,16 +304,19 @@ export function getSizeStyles({
     }
   }
 
-  // Lift the automatic flex minimum so fill items (`flex: 1 0 0`) and
-  // text-truncating nodes can shrink along the parent's main axis instead of
-  // being pinned to their content size, which is what enables the ellipsis.
-  if (!parentIsGrid) {
+  // Lift the automatic flex minimum so a node can shrink below its content size
+  // along the parent's main axis. On the inline axis this is what enables the
+  // ellipsis, so fill items and text-truncating nodes both qualify. On the block
+  // axis only a node that clips or scrolls its own vertical overflow qualifies;
+  // a plain fill item keeps `min-height: auto` so it falls back to its content
+  // height instead of collapsing when the parent has no free space to share.
+  if (!parentIsGrid && !selfIsGrid) {
     if (parentOrientation === Orientation.HORIZONTAL) {
       if (styles.flex === "1 0 0" || truncatesText) {
         styles.minWidth = 0
       }
     } else if (parentOrientation === Orientation.VERTICAL) {
-      if (styles.flex === "1 0 0") {
+      if (clipsVertically) {
         styles.minHeight = 0
       }
     }
