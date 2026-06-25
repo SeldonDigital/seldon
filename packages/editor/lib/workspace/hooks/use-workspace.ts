@@ -2,8 +2,8 @@
 
 import { useCallback } from "react"
 import { invariant } from "@seldon/core/index"
-import { useHistory } from "./use-history"
 import { useDispatch } from "./use-dispatch"
+import { useHistory } from "./use-history"
 import { usePreviewStore } from "./use-preview-store"
 
 export function useWorkspace({

@@ -19,7 +19,8 @@ export function useThemes() {
   const previewThemes = usePreviewStore((state) => state.preview?.themes)
 
   return useMemo(() => {
-    const workspace = usePreviewStore.getState().preview ?? getCurrentWorkspace()
+    const workspace =
+      usePreviewStore.getState().preview ?? getCurrentWorkspace()
     return workspaceThemeService.getThemes(workspace)
   }, [committedThemes, previewThemes])
 }

@@ -124,7 +124,8 @@ export const useExpansion = () => {
     expandObjects,
     collapseObjects,
     getAllDescendantNodeIds: useCallback(
-      (nodeId: string) => getAllDescendantNodeIds(nodeId, getCurrentWorkspace()),
+      (nodeId: string) =>
+        getAllDescendantNodeIds(nodeId, getCurrentWorkspace()),
       [],
     ),
   }

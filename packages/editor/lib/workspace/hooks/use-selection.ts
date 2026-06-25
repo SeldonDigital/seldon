@@ -53,7 +53,9 @@ export function getCurrentSelection(): Variant | Instance | Board | null {
   const workspace = getSelectionWorkspace()
   const node = selectedNodeId ? getNode(workspace, selectedNodeId) : null
   if (node) return node
-  return (selectedBoardId ? getComponent(workspace, selectedBoardId) : null) ?? null
+  return (
+    (selectedBoardId ? getComponent(workspace, selectedBoardId) : null) ?? null
+  )
 }
 
 /** Resource board kinds whose rows are selectable items (families, icons, media). */
@@ -245,7 +247,13 @@ export function useSelectionActions() {
         }
       }
     },
-    [selectBoard, toggleSection, toggleObject, autoExpandOnSelection, isExpanded],
+    [
+      selectBoard,
+      toggleSection,
+      toggleObject,
+      autoExpandOnSelection,
+      isExpanded,
+    ],
   )
 
   const _selectNode = useCallback(
@@ -300,7 +308,13 @@ export function useSelectionActions() {
         }
       }
     },
-    [selectNode, toggleObject, toggleSection, autoExpandOnSelection, isExpanded],
+    [
+      selectNode,
+      toggleObject,
+      toggleSection,
+      autoExpandOnSelection,
+      isExpanded,
+    ],
   )
 
   const _selectResourceEntry = useCallback(

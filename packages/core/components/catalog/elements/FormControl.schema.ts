@@ -1,6 +1,6 @@
-import * as Sdn from "../../../properties";
-import * as Seldon from "../../constants";
-import { ComponentExport, ComponentSchema } from "../../types";
+import * as Sdn from "../../../properties"
+import * as Seldon from "../../constants"
+import { ComponentExport, ComponentSchema } from "../../types"
 
 export const schema = {
   name: "Form Control",

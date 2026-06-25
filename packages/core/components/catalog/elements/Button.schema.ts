@@ -622,6 +622,24 @@ export const schema = {
                 value: Sdn.ComputedFunction.OPTICAL_PADDING,
               },
             },
+            corners: {
+              topLeft: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.Corner.SQUARED,
+              },
+              topRight: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.Corner.SQUARED,
+              },
+              bottomLeft: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.Corner.SQUARED,
+              },
+              bottomRight: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.Corner.SQUARED,
+              },
+            },
           },
         },
         {

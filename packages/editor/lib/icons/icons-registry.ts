@@ -1,5 +1,5 @@
-import { getPropertyIcon as coreGetPropertyIcon } from "@seldon/core/icon-registry"
 import { parsePropertyPath } from "@lib/properties/property-paths"
+import { getPropertyIcon as coreGetPropertyIcon } from "@seldon/core/icon-registry"
 import { getPropertyCategory } from "@seldon/core/properties/schemas"
 
 export type ControlType = "combo" | "menu" | "number" | "text" | "error"
@@ -80,7 +80,9 @@ export const EDITOR_OPTION_ICON_OVERLAY: Record<
  * keys first, then the core registry, then the generic token icon.
  */
 function resolveRowIcon(path: string): string {
-  return EDITOR_ROW_ICON_OVERLAY[path] ?? coreGetPropertyIcon(path) ?? "seldon-token"
+  return (
+    EDITOR_ROW_ICON_OVERLAY[path] ?? coreGetPropertyIcon(path) ?? "seldon-token"
+  )
 }
 
 /**

@@ -40,9 +40,7 @@ export const useNodeIcon = (
 
   if (typeCheckingService.isVariant(node)) {
     return getNodeKindIcon(
-      typeCheckingService.isDefaultVariant(node)
-        ? "defaultVariant"
-        : "variant",
+      typeCheckingService.isDefaultVariant(node) ? "defaultVariant" : "variant",
     )
   }
 

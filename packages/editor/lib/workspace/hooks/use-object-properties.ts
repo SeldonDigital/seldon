@@ -12,12 +12,12 @@ import { isEntryNodeInstance } from "@seldon/core/workspace/model/entry-node"
 import { NORMAL_STATE } from "@seldon/core/workspace/model/node-state"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
+import { useDispatch } from "./use-dispatch"
 import {
   INSTANCE_STATE_EDIT_MESSAGE,
   getActiveStateForNode,
 } from "./use-node-active-state"
 import { getCurrentSelection } from "./use-selection"
-import { useDispatch } from "./use-dispatch"
 
 /**
  * Property mutation commands for the selected node or board. The commands read
@@ -124,12 +124,7 @@ export function useObjectProperties() {
         options,
       })
     },
-    [
-      addToast,
-      setBoardProperties,
-      setNodeProperties,
-      setNodeStateProperties,
-    ],
+    [addToast, setBoardProperties, setNodeProperties, setNodeStateProperties],
   )
 
   const addNodeLayer = useCallback(
@@ -213,12 +208,7 @@ export function useObjectProperties() {
         layerIndex,
       })
     },
-    [
-      addToast,
-      resetNodeProperty,
-      resetBoardProperty,
-      resetNodeStateProperty,
-    ],
+    [addToast, resetNodeProperty, resetBoardProperty, resetNodeStateProperty],
   )
 
   return {

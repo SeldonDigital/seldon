@@ -299,7 +299,9 @@ function createFlatPropertyFromSchema(
   // A font look's family facet references a font slot, e.g. `@fontFamily.secondary`.
   // Show the slot's friendly name ("Secondary Font") instead of the raw token.
   const fontFamilyRefValue =
-    taggedValue && "value" in taggedValue && typeof taggedValue.value === "string"
+    taggedValue &&
+    "value" in taggedValue &&
+    typeof taggedValue.value === "string"
       ? taggedValue.value
       : typeof value === "string"
         ? value

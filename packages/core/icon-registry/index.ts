@@ -42,10 +42,7 @@ export function getPropertyIcon(path: string): string | undefined {
  * Icon for one property option value: a per-property override, then a global
  * option icon, then the property's own default icon.
  */
-export function getOptionIcon(
-  path: string,
-  value: string,
-): string | undefined {
+export function getOptionIcon(path: string, value: string): string | undefined {
   const catalogKey = getCatalogKeyForPropertyPath(path) ?? path
   return (
     PROPERTY_OPTION_ICONS[path]?.[value] ??

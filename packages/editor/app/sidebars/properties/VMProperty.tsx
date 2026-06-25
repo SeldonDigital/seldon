@@ -1,3 +1,4 @@
+import { childPathsUnderCompoundParent } from "@lib/properties/property-paths"
 import { memo } from "react"
 import {
   Board,
@@ -8,16 +9,15 @@ import {
 } from "@seldon/core"
 import { isLayeredPaintProperty } from "@seldon/core/properties/types/property-keys"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
-import { childPathsUnderCompoundParent } from "@lib/properties/property-paths"
-import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { RowPropertyProps, useRowProperty } from "./hooks/use-row-property"
-import { FlatProperty } from "./helpers/properties-data"
+import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { FramerExpandable } from "@seldon/components/custom-components"
 import { ItemInputRow } from "@seldon/components/elements/ItemInputRow"
 import { IconProps } from "@seldon/components/primitives/Icon"
 import { useRowActionsMenu } from "../shared/use-row-actions-menu"
 import { LayerDragRow } from "./LayerDragRow"
 import { PropertyValueCell } from "./PropertyValueCell"
+import { FlatProperty } from "./helpers/properties-data"
 
 /**
  * View-model for a property row, bound to the generated `ItemInputRow`. The
