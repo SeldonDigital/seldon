@@ -153,7 +153,8 @@ export function cloneBoard(
     const src = draft.boards[sourceBoardKey]
     invariant(src, `cloneBoard: source board disappeared ${sourceBoardKey}`)
 
-    const newBoard = structuredClone(src) as Board
+    // Clone from the non-draft source: `structuredClone` throws on Immer draft proxies.
+    const newBoard = structuredClone(sourceBoard) as Board
     const maxOrder = Math.max(
       0,
       ...Object.values(draft.boards).map((b) => getBoardOrder(b)),
@@ -269,7 +270,8 @@ export function clonePlayground(
       `clonePlayground: source playground disappeared ${sourcePlaygroundKey}`,
     )
 
-    const newPlayground = structuredClone(src) as PlaygroundBoard
+    // Clone from the non-draft source: `structuredClone` throws on Immer draft proxies.
+    const newPlayground = structuredClone(source) as PlaygroundBoard
     const maxOrder = Math.max(
       -1,
       ...Object.values(draft.playgrounds).map((p) => getBoardOrder(p)),
