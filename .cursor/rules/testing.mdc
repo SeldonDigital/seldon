@@ -1,0 +1,40 @@
+---
+description: Unit testing conventions for Seldon packages
+globs: **/*.{test,spec}.{ts,tsx}
+alwaysApply: false
+---
+
+## Seldon Testing
+
+Vitest is the test runner for the repo. The project moved fully off `bun test`. Do not import from `bun:test`.
+
+### Running Tests
+
+- Run all tests from the repo root with `npm test`.
+- Watch mode is `npm run test:watch`. Coverage is `npm run coverage`.
+- A single package runs through its own script, such as `npm test --workspace @seldon/core`.
+- Coverage is enabled for `core` and `factory`. The editor has no Vitest setup yet.
+
+### Test Files
+
+- Co-locate a test next to its source as `X.test.ts`.
+- Use explicit imports: `import { describe, expect, it } from "vitest"`. Globals are off.
+- Batch trivial type guards from one folder into a single spec.
+
+### No Shared Fixtures
+
+Do not add a shared fixture module or golden JSON files. Hand-maintained copies of workspace, theme, or property shapes drift when `core` changes. Use one of three scoped patterns instead.
+
+1. Pure functions: build inputs as inline literals inside each test. Do not construct a `Workspace`.
+2. Behavior over real state: build inputs through the real `core` API at the top of the test so inputs track `core` automatically. Use `createEmptyWorkspace()`, then `addComponent` and `addVariant`. Resolve schemas with `getComponentSchema(id)`. Use stock themes from `STOCK_THEMES_BY_ID` or `THEMES_BY_ID`.
+3. Narrow config or gate tests: a small inline node literal kept local to the test is fine. The rules contract test follows this pattern.
+
+If a snapshot is ever justified, use a small `toMatchInlineSnapshot`. Never write a file snapshot.
+
+### Resolution Note
+
+The package Vitest configs alias `@seldon/core` to the package source. Node-style package exports do not resolve directory-index files such as `components/catalog/index.ts`, so the alias is required for subpath imports to load in tests.
+
+### Adding Tests Is Opt-In
+
+Follow `engineering.mdc`. Do not add or update tests unless the task explicitly asks for it.

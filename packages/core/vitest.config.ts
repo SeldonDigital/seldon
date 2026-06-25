@@ -32,6 +32,14 @@ export default defineConfig({
         "**/*.json",
         "**/index.ts",
       ],
+      // Regression floor only. Set just below the current measured numbers so a
+      // drop in coverage fails the run, while new tests are free to raise them.
+      thresholds: {
+        statements: 21,
+        branches: 22,
+        functions: 6,
+        lines: 21,
+      },
     },
   },
 })
