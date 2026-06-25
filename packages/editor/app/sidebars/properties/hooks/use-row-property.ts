@@ -16,6 +16,7 @@ import {
   SubPropertyKey,
   Theme,
   type ThemeCustomTokenSection,
+  ValueType,
   Variant,
   Workspace,
   isReservedTokenName,
@@ -238,10 +239,27 @@ export function useRowProperty({
 
   const propertyValue = getPropertyValueForDisplay()
 
+  // A closed row uses `options` only to look up the current value's display
+  // name. Theme tokens, compound and shorthand summaries, and dimmed rows
+  // already resolve to a formatted `actualValue`, which can never match a
+  // picker value (a label like "Primary" is not the token `@swatch.primary`),
+  // so `getDisplayValue` ignores `options` for them. Skipping the build avoids
+  // generating the full swatch/font/size/look lists for every row on each
+  // selection. The editing control rebuilds its own options when the row opens.
+  const displaySkipsOptions =
+    property.isCompound ||
+    property.isShorthand ||
+    property.isDimmed ||
+    property.valueType === ValueType.THEME_ORDINAL ||
+    property.valueType === ValueType.THEME_CATEGORICAL
+
   // Options for theme value matching (UI optimization).
   const options = useMemo(
-    () => buildPropertyOptions({ property, theme, workspace, subject: node }),
-    [property, theme, node, workspace],
+    () =>
+      displaySkipsOptions
+        ? undefined
+        : buildPropertyOptions({ property, theme, workspace, subject: node }),
+    [displaySkipsOptions, property, theme, node, workspace],
   )
 
   const nodeId = isBoard(node) ? getComponentKey(node) : node.id
