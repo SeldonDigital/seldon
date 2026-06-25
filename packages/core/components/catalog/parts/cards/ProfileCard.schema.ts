@@ -1,14 +1,8 @@
-import { Children } from "react";
+import { Children } from "react"
 
-
-
-import * as Sdn from "../../../../properties";
-import * as Seldon from "../../../constants";
-import { ComponentExport, ComponentSchema } from "../../../types";
-
-
-
-
+import * as Sdn from "../../../../properties"
+import * as Seldon from "../../../constants"
+import { ComponentExport, ComponentSchema } from "../../../types"
 
 export const schema = {
   name: "Profile Card",
@@ -307,7 +301,7 @@ export const schema = {
           type: Sdn.ValueType.OPTION,
           value: Sdn.Resize.FILL,
         },
-        gap:{
+        gap: {
           type: Sdn.ValueType.THEME_ORDINAL,
           value: "@gap.cozy",
         },
@@ -329,7 +323,7 @@ export const schema = {
               type: Sdn.ValueType.OPTION,
               value: Sdn.Orientation.VERTICAL,
             },
-            align:{
+            align: {
               type: Sdn.ValueType.OPTION,
               value: Sdn.Align.CENTER_LEFT,
             },
