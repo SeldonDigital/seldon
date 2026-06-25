@@ -3,9 +3,14 @@ import { ComponentId } from "../../../components/constants"
 import { Properties, PropertyKey, SubPropertyKey } from "../../../properties"
 import { mergeProperties } from "../../../properties/helpers/merge-properties"
 import { isLayeredPaintProperty } from "../../../properties/types/property-keys"
+import {
+  getEffectiveNodeProperties,
+  getInheritedNodeProperties,
+} from "../../compute/compute-node-properties"
 import { getComponentPropertyDefaults } from "../../helpers/components/get-component-property-defaults"
 import { getWorkspaceNodes } from "../../helpers/general/get-workspace-nodes"
 import { getNodeSubtreeIds } from "../../helpers/nodes/get-node-subtree-ids"
+import { pruneRedundantOverrides } from "../../helpers/nodes/prune-redundant-overrides"
 import { resolveNodePropertyResetPatch } from "../../helpers/nodes/resolve-node-property-reset"
 import { isEntryNodeForRules } from "../../helpers/rules/rules-node-subject"
 import {
@@ -39,6 +44,14 @@ export function setNodeProperties(
   return withNodeMutation(nodeId, workspace, (node) => {
     if (!isEntryNodeForRules(node)) return
     node.overrides = mergeProperties(node.overrides, properties, options)
+    // Drop any written facet that equals the value the node inherits, so setting
+    // a property to its catalog or upstream value stays a no-op rather than a
+    // stored override that would shadow later changes to that value.
+    pruneRedundantOverrides(
+      node.overrides,
+      properties,
+      getInheritedNodeProperties(node.id, workspace),
+    )
   })
 }
 
@@ -63,6 +76,14 @@ export function setNodeStateProperties(
     if (!isEntryNodeForRules(node)) return
     const states = node.states ?? {}
     states[state] = mergeProperties(states[state] ?? {}, properties, options)
+    // A state override facet that equals the node's resolved Normal value carries
+    // no delta, so drop it the same way the base override path does. The state
+    // bag itself stays registered even when empty, matching a bare state write.
+    pruneRedundantOverrides(
+      states[state],
+      properties,
+      getEffectiveNodeProperties(node.id, workspace),
+    )
     node.states = states
   })
 }
