@@ -1,4 +1,4 @@
-import { getComponentSchema } from "@seldon/core/components/catalog"
+import { getComponentIcon, getNodeKindIcon } from "@seldon/core/icon-registry"
 import { IconId } from "@seldon/core/icon-sets"
 import {
   isFontCollectionBoard,
@@ -27,21 +27,21 @@ export const useNodeIcon = (
 ): IconId => {
   if (typeCheckingService.isBoard(node)) {
     if (isIconSetBoard(node)) {
-      return "seldon-icon"
+      return getNodeKindIcon("iconSet")
     }
     if (isThemeBoard(node)) {
-      return "seldon-theme"
+      return getNodeKindIcon("theme")
     }
     if (isFontCollectionBoard(node)) {
-      return "seldon-text"
+      return getNodeKindIcon("fontCollection")
     }
-    return "seldon-component"
+    return getNodeKindIcon("component")
   }
 
   if (typeCheckingService.isVariant(node)) {
-    return typeCheckingService.isDefaultVariant(node)
-      ? "seldon-componentDefault"
-      : "seldon-componentVariant"
+    return getNodeKindIcon(
+      typeCheckingService.isDefaultVariant(node) ? "defaultVariant" : "variant",
+    )
   }
 
   try {
@@ -52,8 +52,7 @@ export const useNodeIcon = (
     if (!catalogId) {
       return "seldon-component"
     }
-    const component = getComponentSchema(catalogId)
-    return component.icon
+    return getComponentIcon(catalogId)
   } catch (error) {
     console.warn(
       `Skipping node ${node.id} with invalid component ID in useNodeIcon`,

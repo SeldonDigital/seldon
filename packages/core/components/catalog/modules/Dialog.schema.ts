@@ -287,12 +287,7 @@ export const schema = {
               },
               color: {
                 type: Sdn.ValueType.COMPUTED,
-                value: {
-                  function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-                  input: {
-                    basedOn: "#self.background.color",
-                  },
-                },
+                value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
               },
             },
           },
@@ -589,12 +584,7 @@ export const schema = {
                 },
                 color: {
                   type: Sdn.ValueType.COMPUTED,
-                  value: {
-                    function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-                    input: {
-                      basedOn: "#self.background.color",
-                    },
-                  },
+                  value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
                 },
               },
             },
@@ -951,12 +941,7 @@ export const schema = {
                 },
                 color: {
                   type: Sdn.ValueType.COMPUTED,
-                  value: {
-                    function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-                    input: {
-                      basedOn: "#self.background.color",
-                    },
-                  },
+                  value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
                 },
               },
             },

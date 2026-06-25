@@ -12,21 +12,22 @@ import { isEntryNodeInstance } from "@seldon/core/workspace/model/entry-node"
 import { NORMAL_STATE } from "@seldon/core/workspace/model/node-state"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
+import { useDispatch } from "./use-dispatch"
 import {
   INSTANCE_STATE_EDIT_MESSAGE,
-  useNodeActiveState,
+  getActiveStateForNode,
 } from "./use-node-active-state"
-import { useSelection } from "./use-selection"
-import { useWorkspace } from "./use-workspace"
+import { getCurrentSelection } from "./use-selection"
 
+/**
+ * Property mutation commands for the selected node or board. The commands read
+ * the live selection and active state through non-subscribing snapshots at call
+ * time, so consumers (property rows) get stable callbacks and do not re-render
+ * on every workspace edit.
+ */
 export function useObjectProperties() {
-  const { dispatch } = useWorkspace()
-  const { selection } = useSelection()
+  const dispatch = useDispatch()
   const addToast = useAddToast()
-
-  // Active interaction state for the selection's board. Board selections and the
-  // Normal state fall back to the regular property path.
-  const activeState = useNodeActiveState(selection ?? null)
 
   const setNodeStateProperties = useCallback(
     (input: ExtractPayload<"set_node_state_properties">) => {
@@ -90,7 +91,9 @@ export function useObjectProperties() {
 
   const setProperties = useCallback(
     (properties: Properties, options?: { mergeSubProperties?: boolean }) => {
+      const selection = getCurrentSelection()
       invariant(selection, "Nothing selected")
+      const activeState = getActiveStateForNode(selection)
       if (isBoard(selection)) {
         setBoardProperties({
           boardKey: getComponentKey(selection),
@@ -121,18 +124,12 @@ export function useObjectProperties() {
         options,
       })
     },
-    [
-      selection,
-      activeState,
-      addToast,
-      setBoardProperties,
-      setNodeProperties,
-      setNodeStateProperties,
-    ],
+    [addToast, setBoardProperties, setNodeProperties, setNodeStateProperties],
   )
 
   const addNodeLayer = useCallback(
     (property: LayeredPaintKey, seed?: Record<string, unknown>) => {
+      const selection = getCurrentSelection()
       invariant(selection, "Nothing selected")
       if (isBoard(selection)) return
       dispatch({
@@ -140,11 +137,12 @@ export function useObjectProperties() {
         payload: { nodeId: selection.id, property, seed },
       })
     },
-    [selection, dispatch],
+    [dispatch],
   )
 
   const removeNodeLayer = useCallback(
     (property: LayeredPaintKey, index: number) => {
+      const selection = getCurrentSelection()
       invariant(selection, "Nothing selected")
       if (isBoard(selection)) return
       dispatch({
@@ -152,11 +150,12 @@ export function useObjectProperties() {
         payload: { nodeId: selection.id, property, index },
       })
     },
-    [selection, dispatch],
+    [dispatch],
   )
 
   const reorderNodeLayer = useCallback(
     (property: LayeredPaintKey, fromIndex: number, toIndex: number) => {
+      const selection = getCurrentSelection()
       invariant(selection, "Nothing selected")
       if (isBoard(selection)) return
       dispatch({
@@ -164,7 +163,7 @@ export function useObjectProperties() {
         payload: { nodeId: selection.id, property, fromIndex, toIndex },
       })
     },
-    [selection, dispatch],
+    [dispatch],
   )
 
   const resetProperty = useCallback(
@@ -173,7 +172,9 @@ export function useObjectProperties() {
       subpropertyKey?: SubPropertyKey,
       layerIndex?: number,
     ) => {
+      const selection = getCurrentSelection()
       invariant(selection, "Nothing selected")
+      const activeState = getActiveStateForNode(selection)
 
       if (isBoard(selection)) {
         resetBoardProperty({
@@ -207,14 +208,7 @@ export function useObjectProperties() {
         layerIndex,
       })
     },
-    [
-      selection,
-      activeState,
-      addToast,
-      resetNodeProperty,
-      resetBoardProperty,
-      resetNodeStateProperty,
-    ],
+    [addToast, resetNodeProperty, resetBoardProperty, resetNodeStateProperty],
   )
 
   return {

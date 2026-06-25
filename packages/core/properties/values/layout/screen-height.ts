@@ -50,11 +50,7 @@ export const screenHeightSchema: PropertySchema = {
       typeof value === "string" &&
       ((Object.values(Resize) as string[]).includes(value) ||
         (Object.values(ScreenSize) as string[]).includes(value)),
-    computed: (value: unknown) =>
-      typeof value === "object" &&
-      value !== null &&
-      "function" in value &&
-      value.function !== undefined,
+    computed: (value: unknown) => value === ComputedFunction.AUTO_FIT,
   },
   presetOptions: () => [...Object.values(Resize), ...Object.values(ScreenSize)],
   computedFunctions: () => [ComputedFunction.AUTO_FIT],

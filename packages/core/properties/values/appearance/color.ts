@@ -3,7 +3,7 @@ import { Theme, ThemeSwatchKey } from "../../../themes/types"
 import { ComputedFunction, ValueType } from "../../constants"
 import { PropertySchema } from "../../types/schema"
 import { ComputedHighContrastValue } from "../shared/computed/high-contrast-color"
-import { ComputedMatchValue } from "../shared/computed/match"
+import { ComputedMatchColorValue } from "../shared/computed/match-color"
 import { EmptyValue } from "../shared/empty/empty"
 import { HexValue } from "../shared/exact/hex"
 import { HSLValue } from "../shared/exact/hsl"
@@ -39,7 +39,7 @@ export type ColorValue =
   | ColorOptionValue
   | ColorThemeValue
   | ComputedHighContrastValue
-  | ComputedMatchValue
+  | ComputedMatchColorValue
 
 export const colorSchema: PropertySchema = {
   name: "color",
@@ -70,9 +70,8 @@ export const colorSchema: PropertySchema = {
       typeof value === "string" &&
       (Object.values(Color) as string[]).includes(value),
     computed: (value: unknown) =>
-      typeof value === "object" &&
-      value !== null &&
-      (value as { function?: unknown }).function !== undefined,
+      value === ComputedFunction.HIGH_CONTRAST_COLOR ||
+      value === ComputedFunction.MATCH_COLOR,
     themeCategorical: (value: unknown, theme?: Theme) => {
       if (!theme || typeof value !== "string") return false
       return value in theme.swatch
@@ -82,6 +81,6 @@ export const colorSchema: PropertySchema = {
   themeCategoricalKeys: (theme: Theme) => Object.keys(theme.swatch),
   computedFunctions: () => [
     ComputedFunction.HIGH_CONTRAST_COLOR,
-    ComputedFunction.MATCH,
+    ComputedFunction.MATCH_COLOR,
   ],
 }

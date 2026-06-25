@@ -368,11 +368,10 @@ flowchart LR
 | `DoubleAxisValue` | `shared/option/double-axis.ts` | Shared exact, option, or path payload used across property modules. Assigned on workspace overrides and merged before compute or export. |
 | `TransparentValue` | `shared/option/transparent.ts` | Shared exact, option, or path payload used across property modules. Assigned on workspace overrides and merged before compute or export. |
 | `ComputedAutoFitValue` | `shared/computed/auto-fit.ts` | Typed payload for a ValueType.COMPUTED cell. Stored on nodes with ValueType.COMPUTED and resolved in properties/compute. |
-| `BasedOnPropertyKey` | `shared/computed/based-on-property-key.ts` | Shared exact, option, or path payload used across property modules. Imported by property value modules, types, or schema validators. |
 | `ComputedFunction` | `shared/computed/computed.ts` | Re-exports the compute function enum from constants. Used when authoring computed cell payloads in value modules. |
 | `ComputedValue` | `shared/computed/computed-value.ts` | Typed payload for a ValueType.COMPUTED cell. Stored on nodes with ValueType.COMPUTED and resolved in properties/compute. |
 | `ComputedHighContrastValue` | `shared/computed/high-contrast-color.ts` | Typed payload for a ValueType.COMPUTED cell. Stored on nodes with ValueType.COMPUTED and resolved in properties/compute. |
-| `ComputedMatchValue` | `shared/computed/match.ts` | Typed payload for a ValueType.COMPUTED cell. Stored on nodes with ValueType.COMPUTED and resolved in properties/compute. |
+| `ComputedMatchColorValue` | `shared/computed/match-color.ts` | Typed payload for a ValueType.COMPUTED cell. Stored on nodes with ValueType.COMPUTED and resolved in properties/compute. |
 | `ComputedOpticalPaddingValue` | `shared/computed/optical-padding.ts` | Typed payload for a ValueType.COMPUTED cell. Stored on nodes with ValueType.COMPUTED and resolved in properties/compute. |
 | `ImageSourceValue` | `shared/utilities/image-source.ts` | Shared exact, option, or path payload used across property modules. Assigned on workspace overrides and merged before compute or export. |
 

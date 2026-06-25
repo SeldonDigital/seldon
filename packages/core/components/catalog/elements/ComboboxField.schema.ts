@@ -3,8 +3,8 @@ import * as Seldon from "../../constants"
 import { ComponentExport, ComponentSchema } from "../../types"
 
 export const schema = {
-  name: "Combobox Trigger",
-  id: Seldon.ComponentId.COMBOBOX_TRIGGER,
+  name: "Combobox Field",
+  id: Seldon.ComponentId.COMBOBOX_FIELD,
   intent: "Field box that holds the combobox input and opens its listbox.",
   tags: ["combobox", "trigger", "input", "field", "select", "element", "UI"],
   level: Seldon.ComponentLevel.ELEMENT,
@@ -27,7 +27,7 @@ export const schema = {
     },
     padding: {
       top: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.tight" },
-      right: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.compact" },
+      right: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.tight" },
       bottom: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.tight" },
       left: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.compact" },
     },
@@ -36,10 +36,7 @@ export const schema = {
     clip: { type: Sdn.ValueType.EMPTY, value: null },
     color: {
       type: Sdn.ValueType.COMPUTED,
-      value: {
-        function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-        input: { basedOn: "#background.color" },
-      },
+      value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
     },
     brightness: { type: Sdn.ValueType.EMPTY, value: null },
     opacity: { type: Sdn.ValueType.EMPTY, value: null },
@@ -138,8 +135,18 @@ export const schema = {
   default: {
     children: [
       {
+        component: Seldon.ComponentId.ICON,
+        overrides: {
+          symbol: { type: Sdn.ValueType.OPTION, value: "seldon-component" },
+          size: { type: Sdn.ValueType.THEME_ORDINAL, value: "@size.small" },
+          color: {
+            type: Sdn.ValueType.COMPUTED,
+            value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+          },
+        },
+      },
+      {
         component: Seldon.ComponentId.INPUT,
-        variant: "combobox",
         overrides: {
           width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
           padding: {
@@ -180,112 +187,58 @@ export const schema = {
             bottomLeft: { type: Sdn.ValueType.EMPTY, value: null },
             bottomRight: { type: Sdn.ValueType.EMPTY, value: null },
           },
+          role: { type: Sdn.ValueType.OPTION, value: Sdn.AriaRole.COMBOBOX },
+          ariaHasPopup: {
+            type: Sdn.ValueType.OPTION,
+            value: Sdn.AriaHasPopup.LISTBOX,
+          },
         },
       },
       {
-        component: Seldon.ComponentId.ICON,
+        component: Seldon.ComponentId.BUTTON,
+        variant: "iconic",
         overrides: {
-          symbol: {
-            type: Sdn.ValueType.OPTION,
-            value: "material-chevronDown",
+          buttonSize: {
+            type: Sdn.ValueType.THEME_ORDINAL,
+            value: "@fontSize.small",
           },
-          size: { type: Sdn.ValueType.THEME_ORDINAL, value: "@size.small" },
-          color: {
-            type: Sdn.ValueType.COMPUTED,
-            value: {
-              function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-              input: { basedOn: "#parent.background.color" },
+          background: [
+            {
+              kind: {
+                type: Sdn.ValueType.OPTION,
+                value: Sdn.BackgroundKind.NONE,
+              },
+            },
+          ],
+          border: {
+            preset: {
+              type: Sdn.ValueType.THEME_CATEGORICAL,
+              value: "@border.none",
             },
           },
         },
+        children: [
+          {
+            component: Seldon.ComponentId.ICON,
+            overrides: {
+              symbol: {
+                type: Sdn.ValueType.OPTION,
+                value: "material-chevronDown",
+              },
+              size: {
+                type: Sdn.ValueType.COMPUTED,
+                value: Sdn.ComputedFunction.AUTO_FIT,
+              },
+              color: {
+                type: Sdn.ValueType.COMPUTED,
+                value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+              },
+            },
+          },
+        ],
       },
     ],
   },
-  variants: [
-    {
-      id: "iconic",
-      label: "Iconic Combobox Trigger",
-      intent: "Combobox field with a leading icon, input, and chevron.",
-      children: [
-        {
-          component: Seldon.ComponentId.ICON,
-          overrides: {
-            symbol: { type: Sdn.ValueType.OPTION, value: "__default__" },
-            size: { type: Sdn.ValueType.THEME_ORDINAL, value: "@size.small" },
-            color: {
-              type: Sdn.ValueType.COMPUTED,
-              value: {
-                function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-                input: { basedOn: "#parent.background.color" },
-              },
-            },
-          },
-        },
-        {
-          component: Seldon.ComponentId.INPUT,
-          variant: "combobox",
-          overrides: {
-            width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
-            padding: {
-              top: {
-                type: Sdn.ValueType.EXACT,
-                value: { unit: Sdn.Unit.PX, value: 0 },
-              },
-              right: {
-                type: Sdn.ValueType.EXACT,
-                value: { unit: Sdn.Unit.PX, value: 0 },
-              },
-              bottom: {
-                type: Sdn.ValueType.EXACT,
-                value: { unit: Sdn.Unit.PX, value: 0 },
-              },
-              left: {
-                type: Sdn.ValueType.EXACT,
-                value: { unit: Sdn.Unit.PX, value: 0 },
-              },
-            },
-            background: [
-              {
-                kind: {
-                  type: Sdn.ValueType.OPTION,
-                  value: Sdn.BackgroundKind.NONE,
-                },
-              },
-            ],
-            border: {
-              preset: {
-                type: Sdn.ValueType.THEME_CATEGORICAL,
-                value: "@border.none",
-              },
-            },
-            corners: {
-              topLeft: { type: Sdn.ValueType.EMPTY, value: null },
-              topRight: { type: Sdn.ValueType.EMPTY, value: null },
-              bottomLeft: { type: Sdn.ValueType.EMPTY, value: null },
-              bottomRight: { type: Sdn.ValueType.EMPTY, value: null },
-            },
-          },
-        },
-        {
-          component: Seldon.ComponentId.ICON,
-          overrides: {
-            symbol: {
-              type: Sdn.ValueType.OPTION,
-              value: "material-chevronDown",
-            },
-            size: { type: Sdn.ValueType.THEME_ORDINAL, value: "@size.small" },
-            color: {
-              type: Sdn.ValueType.COMPUTED,
-              value: {
-                function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-                input: { basedOn: "#parent.background.color" },
-              },
-            },
-          },
-        },
-      ],
-    },
-  ],
 } as const satisfies ComponentSchema
 
 export const exportConfig: ComponentExport = {

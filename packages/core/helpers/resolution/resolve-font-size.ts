@@ -47,8 +47,8 @@ export function resolveFontSize({
       invariant(themeValue, `Theme value ${fontSize.value} not found`)
       if (isModulatedToken(themeValue)) {
         const n = modulate({
-          ratio: theme.core.ratio,
-          size: theme.core.fontSize / 16,
+          ratio: theme.modulation.parameters.ratio,
+          size: theme.modulation.parameters.baseFontSize / 16,
           step: themeValue.parameters.step,
         })
         return {

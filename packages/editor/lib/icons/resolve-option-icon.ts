@@ -1,23 +1,15 @@
 import { Theme } from "@seldon/core"
 import { isThemeValueKey } from "@seldon/core/helpers/validation/theme"
+import { getOptionIcon as coreGetOptionIcon } from "@seldon/core/icon-registry"
 import { getComboboxStoredValue } from "@app/sidebars/properties/helpers/combobox-stored-value"
 import { getThemeTokenIconColor } from "@app/sidebars/properties/helpers/theme-token-icon-color"
-import { getPropertyRegistryEntry } from "./icons-registry"
+import {
+  EDITOR_OPTION_ICON_OVERLAY,
+  getPropertyRegistryEntry,
+} from "./icons-registry"
 
 /** Icon id rendered for theme token values that are not swatch colors. */
 export const THEME_TOKEN_ICON = "seldon-token"
-
-/**
- * Icon ids shared by an option value across every property. A per-property
- * `optionIcons` override still wins; this only fills in before the property
- * default.
- */
-const GLOBAL_OPTION_ICONS: Record<string, string> = {
-  none: "material-block",
-  match: "material-syncAlt",
-  highContrastColor: "material-contrast",
-  transparent: "material-circle",
-}
 
 /**
  * How a property value's icon should render. `static` is a plain icon id,
@@ -40,6 +32,7 @@ export function getOptionIcon(
   propertyKey: string,
   value: string,
   theme?: Theme,
+  fallbackIcon: string = THEME_TOKEN_ICON,
 ): OptionIconDescriptor {
   if (isThemeValueKey(value)) {
     const swatchColor = getThemeTokenIconColor(value, theme)
@@ -56,11 +49,14 @@ export function getOptionIcon(
     return { kind: "glyph", value }
   }
 
+  // Editor overlay (board preset device ids) wins, then the core registry
+  // (per-option, global, and property defaults). Keys absent from the registry
+  // (e.g. theme-sidebar token rows) fall back to the row's own icon rather than
+  // the generic token icon.
   const icon =
-    entry?.optionIcons?.[value] ??
-    GLOBAL_OPTION_ICONS[value] ??
-    entry?.icon ??
-    THEME_TOKEN_ICON
+    EDITOR_OPTION_ICON_OVERLAY[propertyKey]?.[value] ??
+    coreGetOptionIcon(propertyKey, value) ??
+    fallbackIcon
   return { kind: "static", icon }
 }
 

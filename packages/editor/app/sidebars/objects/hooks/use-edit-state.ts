@@ -1,16 +1,15 @@
 import { useState } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
 import { Instance, Variant } from "@seldon/core"
-import { useSelection } from "@lib/workspace/hooks/use-selection"
+import { useIsNodeSelected } from "@lib/workspace/hooks/use-selection"
 
 /**
  * Centralized edit state management for objects panel.
  * Handles keyboard shortcuts and edit mode state.
  */
 export function useEditState(node: Variant | Instance) {
-  const { selectedId } = useSelection()
+  const isSelected = useIsNodeSelected(node.id)
   const [isEditingName, setEditingName] = useState(false)
-  const isSelected = selectedId === node.id
 
   useHotkeys("mod+r", () => setEditingName(true), {
     enabled: isSelected && !isEditingName,

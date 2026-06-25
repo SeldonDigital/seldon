@@ -110,7 +110,7 @@ export const schema = {
   },
   default: {
     children: [
-      { component: Seldon.ComponentId.COMBOBOX_TRIGGER },
+      { component: Seldon.ComponentId.COMBOBOX_FIELD },
       { component: Seldon.ComponentId.LISTBOX },
     ],
   },
@@ -120,31 +120,7 @@ export const schema = {
       label: "Grouped Combobox",
       intent: "Combobox whose listbox organizes options into labeled groups.",
       children: [
-        { component: Seldon.ComponentId.COMBOBOX_TRIGGER },
-        { component: Seldon.ComponentId.LISTBOX, variant: "grouped" },
-      ],
-    },
-    {
-      id: "iconic",
-      label: "Iconic Combobox",
-      intent: "Combobox whose trigger shows a leading icon before the input.",
-      children: [
-        {
-          component: Seldon.ComponentId.COMBOBOX_TRIGGER,
-          variant: "iconic",
-        },
-        { component: Seldon.ComponentId.LISTBOX },
-      ],
-    },
-    {
-      id: "groupedIconic",
-      label: "Grouped Iconic Combobox",
-      intent: "Iconic combobox whose listbox organizes options into groups.",
-      children: [
-        {
-          component: Seldon.ComponentId.COMBOBOX_TRIGGER,
-          variant: "iconic",
-        },
+        { component: Seldon.ComponentId.COMBOBOX_FIELD },
         { component: Seldon.ComponentId.LISTBOX, variant: "grouped" },
       ],
     },

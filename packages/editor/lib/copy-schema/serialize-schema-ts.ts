@@ -146,10 +146,6 @@ function writeString(
     const ref = componentIdRefByValue.get(value)
     if (ref) return ref
   }
-  if (context.key === "function") {
-    const ref = computedFunctionRefByValue.get(value)
-    if (ref) return ref
-  }
   if (context.key === "unit") {
     const ref = unitRefByValue.get(value)
     if (ref) return ref
@@ -201,12 +197,20 @@ function writeObject(
   const tagged = isTaggedValue(value)
   const isOption =
     tagged && (value as { type: string }).type === Sdn.ValueType.OPTION
+  const isComputed =
+    tagged && (value as { type: string }).type === Sdn.ValueType.COMPUTED
   const inner = INDENT.repeat(depth + 1)
 
   const lines = entries.map(([entryKey, entryValue]) => {
     let written: string
     if (tagged && entryKey === "type") {
       written = valueTypeRefByValue.get(entryValue as string)!
+    } else if (isComputed && entryKey === "value") {
+      written =
+        typeof entryValue === "string"
+          ? (computedFunctionRefByValue.get(entryValue) ??
+            JSON.stringify(entryValue))
+          : writeValue(entryValue, depth + 1, path, { key: entryKey })
     } else if (tagged && entryKey === "value") {
       written = writeValue(entryValue, depth + 1, path, {
         key: entryKey,

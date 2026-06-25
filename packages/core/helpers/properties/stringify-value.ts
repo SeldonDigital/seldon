@@ -1,4 +1,9 @@
-import { ComputedFunction, Unit, ValueType } from "../../properties"
+import {
+  COMPUTED_FUNCTION_DISPLAY_NAMES,
+  ComputedFunction,
+  Unit,
+  ValueType,
+} from "../../properties"
 import { Value } from "../../properties/types/value"
 import { EmptyValue } from "../../properties/values/shared/empty/empty"
 import { HSLObjectToString } from "../color/hsl-object-to-string"
@@ -102,25 +107,11 @@ export function stringifyValue(
 
 /** Returns a display label for a COMPUTED value based on its function. */
 function stringifyComputedValue(value: Value): string {
-  if (
-    typeof value === "object" &&
-    "value" in value &&
-    value.value &&
-    typeof value.value === "object" &&
-    "function" in value.value
-  ) {
-    switch (value.value.function) {
-      case ComputedFunction.AUTO_FIT:
-        return "Auto Fit"
-      case ComputedFunction.HIGH_CONTRAST_COLOR:
-        return "High Contrast Color"
-      case ComputedFunction.OPTICAL_PADDING:
-        return "Optical Padding"
-      case ComputedFunction.MATCH:
-        return "Match"
-      default:
-        return "Computed"
-    }
+  if (typeof value === "object" && "value" in value) {
+    return (
+      COMPUTED_FUNCTION_DISPLAY_NAMES[value.value as ComputedFunction] ??
+      "Computed"
+    )
   }
   return "Computed"
 }

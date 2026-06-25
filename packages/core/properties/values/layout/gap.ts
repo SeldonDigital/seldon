@@ -1,7 +1,6 @@
 import { Theme, ThemeGapKey } from "../../../themes/types"
-import { ComputedFunction, Unit, ValueType } from "../../constants"
+import { Unit, ValueType } from "../../constants"
 import { PropertySchema } from "../../types/schema"
-import { ComputedMatchValue } from "../shared/computed/match"
 import { EmptyValue } from "../shared/empty/empty"
 import { PercentageValue } from "../shared/exact/percentage"
 import { PixelValue } from "../shared/exact/pixel"
@@ -31,22 +30,14 @@ export type GapValue =
   | PixelValue
   | RemValue
   | PercentageValue
-  | ComputedMatchValue
   | GapOptionValue
   | GapThemeValue
 
 export const gapSchema: PropertySchema = {
   name: "gap",
   description:
-    "Sets space between child elements using px, rem, theme steps, the catalog option, or computed match.",
-  supports: [
-    "empty",
-    "inherit",
-    "exact",
-    "option",
-    "computed",
-    "themeOrdinal",
-  ] as const,
+    "Sets space between child elements using px, rem, theme steps, or the catalog option.",
+  supports: ["empty", "inherit", "exact", "option", "themeOrdinal"] as const,
   units: {
     allowed: [Unit.PX, Unit.REM, Unit.PERCENT],
     default: Unit.PX,
@@ -71,11 +62,6 @@ export const gapSchema: PropertySchema = {
     option: (value: unknown) =>
       typeof value === "string" &&
       (Object.values(Gap) as string[]).includes(value),
-    computed: (value: unknown) =>
-      typeof value === "object" &&
-      value !== null &&
-      "function" in value &&
-      value.function !== undefined,
     themeOrdinal: (value: unknown, theme?: Theme) => {
       if (!theme) return false
       return typeof value === "string" && value in theme.gap
@@ -84,5 +70,4 @@ export const gapSchema: PropertySchema = {
   presetOptions: () => Object.values(Gap),
   themeOrdinalKeys: (theme: Theme) =>
     Object.keys(theme.gap).map((id) => `@gap.${id}`),
-  computedFunctions: () => [ComputedFunction.MATCH],
 }

@@ -36,10 +36,7 @@ export const schema = {
     clip: { type: Sdn.ValueType.EMPTY, value: null },
     color: {
       type: Sdn.ValueType.COMPUTED,
-      value: {
-        function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-        input: { basedOn: "#self.background.color" },
-      },
+      value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
     },
     brightness: { type: Sdn.ValueType.EMPTY, value: null },
     opacity: { type: Sdn.ValueType.EMPTY, value: null },
@@ -125,14 +122,11 @@ export const schema = {
       {
         component: Seldon.ComponentId.ICON,
         overrides: {
-          symbol: { type: Sdn.ValueType.OPTION, value: "__default__" },
+          symbol: { type: Sdn.ValueType.OPTION, value: "seldon-component" },
           size: { type: Sdn.ValueType.THEME_ORDINAL, value: "@size.small" },
           color: {
             type: Sdn.ValueType.COMPUTED,
-            value: {
-              function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-              input: { basedOn: "#parent.background.color" },
-            },
+            value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
           },
         },
       },
@@ -144,19 +138,12 @@ export const schema = {
           width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
           color: {
             type: Sdn.ValueType.COMPUTED,
-            value: {
-              function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-              input: { basedOn: "#self.background.color" },
-            },
+            value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
           },
           font: {
             preset: {
               type: Sdn.ValueType.THEME_CATEGORICAL,
-              value: "@font.normal",
-            },
-            size: {
-              type: Sdn.ValueType.THEME_ORDINAL,
-              value: "@fontSize.xsmall",
+              value: "@font.label",
             },
           },
         },
@@ -173,19 +160,12 @@ export const schema = {
           },
           color: {
             type: Sdn.ValueType.COMPUTED,
-            value: {
-              function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-              input: { basedOn: "#self.background.color" },
-            },
+            value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
           },
           font: {
             preset: {
               type: Sdn.ValueType.THEME_CATEGORICAL,
-              value: "@font.normal",
-            },
-            size: {
-              type: Sdn.ValueType.THEME_ORDINAL,
-              value: "@fontSize.xsmall",
+              value: "@font.label",
             },
           },
         },
@@ -206,27 +186,16 @@ export const schema = {
       },
       children: [
         {
-          component: Seldon.ComponentId.TEXT,
-          variant: "label",
+          component: Seldon.ComponentId.ICON,
           overrides: {
-            content: { type: Sdn.ValueType.EXACT, value: "✓" },
-            width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+            symbol: {
+              type: Sdn.ValueType.OPTION,
+              value: "material-check",
+            },
+            size: { type: Sdn.ValueType.THEME_ORDINAL, value: "@size.small" },
             color: {
               type: Sdn.ValueType.COMPUTED,
-              value: {
-                function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-                input: { basedOn: "#self.background.color" },
-              },
-            },
-            font: {
-              preset: {
-                type: Sdn.ValueType.THEME_CATEGORICAL,
-                value: "@font.normal",
-              },
-              size: {
-                type: Sdn.ValueType.THEME_ORDINAL,
-                value: "@fontSize.xsmall",
-              },
+              value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
             },
           },
         },
@@ -238,19 +207,12 @@ export const schema = {
             width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
             color: {
               type: Sdn.ValueType.COMPUTED,
-              value: {
-                function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-                input: { basedOn: "#self.background.color" },
-              },
+              value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
             },
             font: {
               preset: {
                 type: Sdn.ValueType.THEME_CATEGORICAL,
-                value: "@font.normal",
-              },
-              size: {
-                type: Sdn.ValueType.THEME_ORDINAL,
-                value: "@fontSize.xsmall",
+                value: "@font.label",
               },
             },
           },
@@ -270,27 +232,16 @@ export const schema = {
       },
       children: [
         {
-          component: Seldon.ComponentId.TEXT,
-          variant: "label",
+          component: Seldon.ComponentId.ICON,
           overrides: {
-            content: { type: Sdn.ValueType.EXACT, value: "•" },
-            width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
+            symbol: {
+              type: Sdn.ValueType.OPTION,
+              value: "material-radioButtonChecked",
+            },
+            size: { type: Sdn.ValueType.THEME_ORDINAL, value: "@size.small" },
             color: {
               type: Sdn.ValueType.COMPUTED,
-              value: {
-                function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-                input: { basedOn: "#self.background.color" },
-              },
-            },
-            font: {
-              preset: {
-                type: Sdn.ValueType.THEME_CATEGORICAL,
-                value: "@font.normal",
-              },
-              size: {
-                type: Sdn.ValueType.THEME_ORDINAL,
-                value: "@fontSize.xsmall",
-              },
+              value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
             },
           },
         },
@@ -302,19 +253,12 @@ export const schema = {
             width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
             color: {
               type: Sdn.ValueType.COMPUTED,
-              value: {
-                function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-                input: { basedOn: "#self.background.color" },
-              },
+              value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
             },
             font: {
               preset: {
                 type: Sdn.ValueType.THEME_CATEGORICAL,
-                value: "@font.normal",
-              },
-              size: {
-                type: Sdn.ValueType.THEME_ORDINAL,
-                value: "@fontSize.xsmall",
+                value: "@font.label",
               },
             },
           },

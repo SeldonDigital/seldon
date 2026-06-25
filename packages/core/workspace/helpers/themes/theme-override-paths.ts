@@ -1,5 +1,16 @@
 import { isLookSection } from "../../../themes/looks/look-facets"
 
+/** Top-level group keys in the Computed section; facets write to `parameters[facet]`. */
+const COMPUTED_GROUP_SECTIONS = new Set([
+  "modulation",
+  "colorHarmony",
+  "fontFamily",
+  "matchColor",
+  "highContrast",
+  "opticalPadding",
+  "autoFit",
+])
+
 /** Sections whose `.step` row writes to `parameters.step`. */
 const MODULATION_STEP_SECTIONS = new Set([
   "size",
@@ -26,8 +37,8 @@ export function getThemeOverridePath(key: string): string | null {
   const [section, id, facet] = key.split(".")
   if (!section || !id) return null
 
-  if (section === "core" || section === "color" || section === "fontFamily") {
-    return key
+  if (COMPUTED_GROUP_SECTIONS.has(section)) {
+    return `${section}.parameters.${id}`
   }
   if (section === "swatch") {
     return `swatch.${id}`

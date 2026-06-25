@@ -12,12 +12,13 @@ import type { Value } from "../types/value"
 import type { ComputedAutoFitValue } from "../values/shared/computed/auto-fit"
 import type { ComputedValue } from "../values/shared/computed/computed-value"
 import type { ComputedHighContrastValue } from "../values/shared/computed/high-contrast-color"
-import type { ComputedMatchValue } from "../values/shared/computed/match"
+import type { ComputedMatchColorValue } from "../values/shared/computed/match-color"
 import type { ComputedOpticalPaddingValue } from "../values/shared/computed/optical-padding"
 import { computeAutoFit } from "./compute-auto-fit"
 import { computeHighContrastColor } from "./compute-high-contrast-color"
 import { computeLayeredPaintStack } from "./compute-layered-paint"
-import { computeMatch } from "./compute-match"
+import { computeMatchColor } from "./compute-match-color"
+import { applyMatchColorMirror } from "./compute-match-color-mirror"
 import { computeOpticalPadding } from "./compute-optical-padding"
 import { ComputeContext, ComputeKeys } from "./types"
 
@@ -124,6 +125,14 @@ export function computeProperties(
           )
         }
       })
+
+      const resolvedCompound = getCompoundPropertyValue(
+        computedProperties,
+        propertyKey,
+      ) as Record<string, Value> | undefined
+      if (resolvedCompound) {
+        applyMatchColorMirror(compoundValue, resolvedCompound, context)
+      }
     } else {
       if (
         value &&
@@ -142,12 +151,22 @@ export function computeProperties(
     }
   })
 
+  // Mirror the top-level color group the same way compounds and layers are
+  // handled above. When the root `color` is Match Color, its sibling top-level
+  // `brightness`/`opacity` track the matched source. Containers that omit those
+  // facets are skipped by the mirror, so this is a no-op for them.
+  applyMatchColorMirror(
+    inputProperties as Record<string, unknown>,
+    computedProperties as Record<string, Value>,
+    context,
+  )
+
   return computedProperties
 }
 
 /**
  * Sends the computed value to `computeAutoFit`, `computeHighContrastColor`, `computeOpticalPadding`,
- * or `computeMatch` based on the stored function key.
+ * or `computeMatchColor` based on the stored function key.
  *
  * @throws When the value is not `COMPUTED` or the function key is unknown
  */
@@ -160,7 +179,7 @@ function dispatchComputed(
     throw new Error("Value is not a computed value")
   }
 
-  const functionType = value.value.function
+  const functionType = value.value
   switch (functionType) {
     case ComputedFunction.HIGH_CONTRAST_COLOR:
       return computeHighContrastColor(
@@ -175,8 +194,11 @@ function dispatchComputed(
       ) as Value
     case ComputedFunction.AUTO_FIT:
       return computeAutoFit(value as ComputedAutoFitValue, context) as Value
-    case ComputedFunction.MATCH:
-      return computeMatch(value as ComputedMatchValue, context) as Value
+    case ComputedFunction.MATCH_COLOR:
+      return computeMatchColor(
+        value as ComputedMatchColorValue,
+        context,
+      ) as Value
     default:
       throw new Error(`Unknown computed function: ${functionType}`)
   }

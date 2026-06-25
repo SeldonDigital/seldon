@@ -40,7 +40,15 @@ function readBackgroundLayerColor(
   }
   const layer = background[0] as BackgroundLayer | undefined
   const color = layer?.color
-  if (!color || color.type === ValueType.EMPTY) {
+  // A COMPUTED background (Match Color) mirrors an ancestor surface at compute
+  // time. Skip it here so the surface walk falls through to the parent chain,
+  // which is the surface it would resolve to anyway. resolveColor throws on
+  // COMPUTED because effective properties are not run through compute.
+  if (
+    !color ||
+    color.type === ValueType.EMPTY ||
+    color.type === ValueType.COMPUTED
+  ) {
     return undefined
   }
   return color as ColorValue

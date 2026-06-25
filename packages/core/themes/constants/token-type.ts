@@ -9,4 +9,6 @@ export enum TokenType {
   OPTION = "option",
   LOOK = "look",
   DYNAMIC_SWATCH = "dynamic.swatch",
+  /** Grouped configuration cell for the Computed section (modulation, color harmony, compute-function inputs). Not referenceable and not `customN`-extensible. */
+  COMPUTED = "computed.group",
 }

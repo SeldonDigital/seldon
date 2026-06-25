@@ -17,25 +17,49 @@ export const theme: StockTheme = {
     description: "Theme for Seldon's Editor.",
     intent: "Default theme for Seldon's Editor interface.",
   },
-  core: {
-    ratio: Ratio.MajorThird,
-    fontSize: 16,
-    size: 1,
+  modulation: {
+    type: TokenType.COMPUTED,
+    parameters: { ratio: Ratio.MajorThird, baseFontSize: 16, baseSize: 1 },
   },
-  color: {
-    baseColor: { hue: 203, saturation: 100, lightness: 62 }, // Seldon Blue
-    harmony: Harmony.Monochromatic, // Harmony type for the swatches
-    angle: 24, // Used to determine angle from primary hue in harmonies that allow it
-    step: 6, // Steps between tints and shades; (+) values create tints, (-) values create shades
-    whitePoint: 98, // Used to determine lightness value for white
-    grayPoint: 50, // Used to determine lightness value for gray
-    blackPoint: 8, // Used to determine lightness value for black
-    bleed: 0, // Determines how much the hue bleeds into white, gray, and black
-    contrastRatio: 2.5, // Contrast ratio (1-21) at which to switch from black to white text
+  colorHarmony: {
+    type: TokenType.COMPUTED,
+    parameters: {
+      baseColor: { hue: 203, saturation: 100, lightness: 62 }, // Seldon Blue
+      harmony: Harmony.Monochromatic,
+      angle: 24,
+      step: 6,
+      whitePoint: 98,
+      grayPoint: 50,
+      blackPoint: 8,
+      bleed: 0,
+    },
+  },
+  matchColor: {
+    type: TokenType.COMPUTED,
+    parameters: { includeBrightness: true, includeOpacity: true },
+  },
+  highContrast: {
+    type: TokenType.COMPUTED,
+    parameters: {
+      contrastRatio: 2.5,
+      fallbackColor: { type: ValueType.EXACT, value: "#FFFFFF" },
+      includeBleed: true,
+    },
+  },
+  opticalPadding: {
+    type: TokenType.COMPUTED,
+    parameters: { leftRhythm: 0.75, rightRhythm: 0.875, verticalRhythm: 0.5 },
+  },
+  autoFit: {
+    type: TokenType.COMPUTED,
+    parameters: { factor: 0.8 },
   },
   fontFamily: {
-    primary: { type: TokenType.FONT_FAMILY, parameters: "IBM Plex Sans" },
-    secondary: { type: TokenType.FONT_FAMILY, parameters: "IBM Plex Serif" },
+    type: TokenType.COMPUTED,
+    parameters: {
+      primary: { type: TokenType.FONT_FAMILY, parameters: "IBM Plex Sans" },
+      secondary: { type: TokenType.FONT_FAMILY, parameters: "IBM Plex Serif" },
+    },
   },
   size: {
     tiny: {
@@ -533,6 +557,15 @@ export const theme: StockTheme = {
       },
     },
     custom1: {
+      name: "Active",
+      intent: "Active color for all important actions",
+      type: TokenType.SWATCH,
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 203, saturation: 100, lightness: 62 },
+      },
+    },
+    custom2: {
       name: "Punch",
       intent: "Punch color for all important actions",
       type: TokenType.SWATCH,
@@ -541,7 +574,7 @@ export const theme: StockTheme = {
         value: { hue: 20, saturation: 95, lightness: 60 },
       },
     },
-    custom2: {
+    custom3: {
       name: "Positive",
       intent: "Actions that are successful or correct",
       type: TokenType.SWATCH,
@@ -550,7 +583,7 @@ export const theme: StockTheme = {
         value: { hue: 135, saturation: 76, lightness: 59 },
       },
     },
-    custom3: {
+    custom4: {
       name: "Negative",
       intent: "Actions that are unsuccessful or incorrect",
       type: TokenType.SWATCH,
@@ -559,7 +592,7 @@ export const theme: StockTheme = {
         value: { hue: 0, saturation: 100, lightness: 65 },
       },
     },
-    custom4: {
+    custom5: {
       name: "Warning",
       intent: "Used to indicate caution or attention",
       type: TokenType.SWATCH,
@@ -568,7 +601,7 @@ export const theme: StockTheme = {
         value: { hue: 60, saturation: 100, lightness: 58 },
       },
     },
-    custom5: {
+    custom6: {
       name: "Accent",
       intent: "To act as an accent color",
       type: TokenType.SWATCH,
@@ -577,18 +610,18 @@ export const theme: StockTheme = {
         value: { hue: 300, saturation: 76, lightness: 48 },
       },
     },
-    custom6: {
+    custom7: {
       name: "Charcoal",
-      intent: "Background color for dark mode",
+      intent: "Dark color for text on light backgrounds",
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
         value: { hue: 0, saturation: 0, lightness: 15 },
       },
     },
-    custom7: {
+    custom8: {
       name: "Pearl",
-      intent: "Background color for light mode",
+      intent: "Light color for text on dark backgrounds",
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
@@ -753,7 +786,7 @@ export const theme: StockTheme = {
           value: "@fontFamily.primary",
         },
         style: { type: ValueType.OPTION, value: FontStyle.NORMAL },
-        weight: { type: ValueType.THEME_ORDINAL, value: "@fontWeight.medium" },
+        weight: { type: ValueType.THEME_ORDINAL, value: "@fontWeight.normal" },
         size: { type: ValueType.THEME_ORDINAL, value: "@fontSize.small" },
         lineHeight: {
           type: ValueType.THEME_ORDINAL,

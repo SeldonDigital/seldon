@@ -44,11 +44,7 @@ export const widthSchema: PropertySchema = {
     option: (value: unknown) =>
       typeof value === "string" &&
       (Object.values(Resize) as string[]).includes(value),
-    computed: (value: unknown) =>
-      typeof value === "object" &&
-      value !== null &&
-      "function" in value &&
-      value.function !== undefined,
+    computed: (value: unknown) => value === ComputedFunction.AUTO_FIT,
     themeOrdinal: (value: unknown, theme?: Theme) => {
       if (!theme) return false
       return typeof value === "string" && value in theme.dimension
@@ -57,5 +53,5 @@ export const widthSchema: PropertySchema = {
   presetOptions: () => Object.values(Resize),
   themeOrdinalKeys: (theme: Theme) =>
     Object.keys(theme.dimension).map((id) => `@dimension.${id}`),
-  computedFunctions: () => [ComputedFunction.AUTO_FIT, ComputedFunction.MATCH],
+  computedFunctions: () => [ComputedFunction.AUTO_FIT],
 }

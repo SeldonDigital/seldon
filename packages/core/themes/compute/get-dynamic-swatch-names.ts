@@ -30,9 +30,9 @@ export function getDynamicSwatchName(
   }
 
   const swatchId = role
-  const step = theme.color.step
+  const step = theme.colorHarmony.parameters.step
 
-  switch (theme.color.harmony) {
+  switch (theme.colorHarmony.parameters.harmony) {
     case Harmony.Monochromatic:
       switch (swatchId) {
         case "swatch1":

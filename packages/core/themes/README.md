@@ -8,7 +8,7 @@ Component properties reference tokens with `@` paths (for example `@fontSize.med
 
 ## What Are Themes
 
-A theme is a saved set of design tokens organized into fixed sections (core, color, size, typography, looks, and so on). Tokens are addressed by `@<scope>.<key>` references and resolved at compute time. Swapping the active theme on a board or node retunes every component that references those tokens without touching component overrides.
+A theme is a saved set of design tokens organized into fixed sections (computed, size, typography, looks, and so on). Tokens are addressed by `@<scope>.<key>` references and resolved at compute time. Swapping the active theme on a board or node retunes every component that references those tokens without touching component overrides.
 
 ### Stock Themes
 
@@ -37,11 +37,15 @@ Themes use fixed top-level entries to organize a saved theme file. The entry ord
 
 ```json
 {
-  /* Core */
+  /* Computed */
   "metadata": {},
-  "core": {},
-  "color": {},
+  "modulation": {},
+  "colorHarmony": {},
   "fontFamily": {},
+  "matchColor": {},
+  "highContrast": {},
+  "opticalPadding": {},
+  "autoFit": {},
 
   /* Size and Spacing */
   "size": {},
@@ -89,35 +93,61 @@ Metadata identifies the theme. The `id` is how the theme is referenced in code, 
 
 ---
 
-### Core
+### Computed
 
-Core defines the inputs that anchor modulated tokens in the theme: the base font size, the base unit for everything else, and the ratio that scales them up and down. A modulated token's `step` is multiplied against these to produce its final size. Changing one of these values moves every modulated token in the theme together, keeping sizes, spacing, and type in proportion.
+The Computed section holds the inputs that drive the compute engines and the color-harmony generator. Each group is one `TokenType.COMPUTED` cell with a typed `parameters` object. The editor renders each group as a parent row with its facets nested beneath, like a look and its facets. These groups are not referenceable through an `@` path. The compute functions read them directly.
 
-| Token | Type | Values |
-| --- | --- | --- |
-| `core.ratio` | `Ratio` | `option: MinorSecond, MajorSecond, MinorThird, MajorThird, PerfectFourth, AugmentedFourth, PerfectFifth, MinorSixth, GoldenRatio, MajorSixth, MinorSeventh, MajorSeventh, Octave, MajorTenth, MajorEleventh, MajorTwelfth, DoubleOctave` (`themes/constants/enums.ts`) |
-| `core.fontSize` | number | Base font size in pixels |
-| `core.size` | number | Base scale unit for modulation |
-
-**Note:** Many stock themes use `16` and `1` for `core.fontSize` and `core.size`; adjust per target density or tune individual `modulated` steps instead.
-
----
-
-### Color
-
-Color defines the inputs that drive the theme's dynamic swatches: the primary color, four accent colors, and the white, gray, and black neutrals. Pick a base color and a harmony to set the overall direction. The remaining fields adjust how far apart the colors sit, how light or dark the neutrals are, and how much of the base color tints them.
+`modulation` anchors modulated tokens. A modulated token's `step` is multiplied against these to produce its final size. Changing one value moves every modulated token together.
 
 | Token | Type | Values |
 | --- | --- | --- |
-| `color.baseColor` | `ColorSpaceLiteral` | HSL \| RGB \| LCH object \| hex \| CSS string (`properties/values/shared/exact/color-spaces.ts`) |
-| `color.harmony` | `Harmony` | `option: Complementary, SplitComplementary, Triadic, Analogous, Square, Monochromatic` |
-| `color.angle` | number | Hue spacing (degrees) |
-| `color.step` | number | Lightness spacing for palette math |
-| `color.whitePoint` | number | Lightness anchor, white |
-| `color.grayPoint` | number | Lightness anchor, gray |
-| `color.blackPoint` | number | Lightness anchor, black |
-| `color.bleed` | number | Hue bleed into neutrals |
-| `color.contrastRatio` | number | Target contrast (e.g. 1–21) |
+| `modulation.parameters.ratio` | `Ratio` | `option: MinorSecond, MajorSecond, MinorThird, MajorThird, PerfectFourth, AugmentedFourth, PerfectFifth, MinorSixth, GoldenRatio, MajorSixth, MinorSeventh, MajorSeventh, Octave, MajorTenth, MajorEleventh, MajorTwelfth, DoubleOctave` (`themes/constants/enums.ts`) |
+| `modulation.parameters.baseFontSize` | number | Base font size in pixels |
+| `modulation.parameters.baseSize` | number | Base scale unit for modulation |
+
+`colorHarmony` drives the dynamic swatches: the primary color, four accent colors, and the white, gray, and black neutrals.
+
+| Token | Type | Values |
+| --- | --- | --- |
+| `colorHarmony.parameters.baseColor` | `ColorSpaceLiteral` | HSL \| RGB \| LCH object \| hex \| CSS string (`properties/values/shared/exact/color-spaces.ts`) |
+| `colorHarmony.parameters.harmony` | `Harmony` | `option: Complementary, SplitComplementary, Triadic, Analogous, Square, Monochromatic` |
+| `colorHarmony.parameters.angle` | number | Hue spacing (degrees) |
+| `colorHarmony.parameters.step` | number | Lightness spacing for palette math |
+| `colorHarmony.parameters.whitePoint` | number | Lightness anchor, white |
+| `colorHarmony.parameters.grayPoint` | number | Lightness anchor, gray |
+| `colorHarmony.parameters.blackPoint` | number | Lightness anchor, black |
+| `colorHarmony.parameters.bleed` | number | Hue bleed into neutrals |
+
+`fontFamily` holds the primary and secondary font stacks. Each slot is a `TokenType.FONT_FAMILY` cell, referenced through `@fontFamily.primary` and `@fontFamily.secondary`.
+
+`matchColor` configures the `MATCH_COLOR` compute function.
+
+| Token | Type | Values |
+| --- | --- | --- |
+| `matchColor.parameters.includeBrightness` | boolean | Bake the matched layer's brightness into the color |
+| `matchColor.parameters.includeOpacity` | boolean | Bake the matched layer's opacity into the color |
+
+`highContrast` configures the `HIGH_CONTRAST_COLOR` compute function.
+
+| Token | Type | Values |
+| --- | --- | --- |
+| `highContrast.parameters.contrastRatio` | number | Contrast ratio (1-21) at which text switches from black to white |
+| `highContrast.parameters.fallbackColor` | `ColorValue` | Reference surface used when the based-on color cannot be resolved |
+| `highContrast.parameters.includeBleed` | boolean | On returns `@swatch.white`/`@swatch.black`. Off builds a neutral white or black from the color-harmony white/black points with zero saturation |
+
+`opticalPadding` configures the side ratios for the `OPTICAL_PADDING` compute function.
+
+| Token | Type | Values |
+| --- | --- | --- |
+| `opticalPadding.parameters.leftRhythm` | number | Left padding ratio |
+| `opticalPadding.parameters.rightRhythm` | number | Right padding ratio |
+| `opticalPadding.parameters.verticalRhythm` | number | Top and bottom padding ratio |
+
+`autoFit` configures the `AUTO_FIT` compute function.
+
+| Token | Type | Values |
+| --- | --- | --- |
+| `autoFit.parameters.factor` | number | Scale factor for every `AUTO_FIT` computed value |
 
 ---
 
@@ -236,6 +266,7 @@ enum TokenType {
   OPTION = "option",
   LOOK = "look",
   DYNAMIC_SWATCH = "dynamic.swatch",
+  COMPUTED = "computed.group",
 }
 ```
 
@@ -243,18 +274,18 @@ enum TokenType {
 
 ### Modulated tokens and parameters
 
-Modulation tokens keep a whole family of sizes, spacings, line widths, and font sizes in proportion. Instead of writing each value as a fixed number, you give them a `step`, a position on the theme's modular scale, relative to the base size set in `core.size` and `core.ratio`.
+Modulation tokens keep a whole family of sizes, spacings, line widths, and font sizes in proportion. Instead of writing each value as a fixed number, you give them a `step`, a position on the theme's modular scale, relative to the base size set in `modulation.parameters.baseSize` and `modulation.parameters.ratio`.
 
 A step of `0` is the base, positive steps grow larger, negative steps grow smaller. A step has the same meaning across themes. So when you switch the base size or the ratio of a theme, the whole scale moves together. This is what keeps a theme feeling consistent without hand-tuning every token.
 
-The result of a modulated token is `core.size * core.ratio ** parameters.step`.
+The result of a modulated token is `modulation.parameters.baseSize * modulation.parameters.ratio ** parameters.step`.
 
 | Field | Required | Type | Notes |
 | --- | --- | --- | --- |
 | `type` | yes | `TokenType.MODULATED` | Discriminator. |
 | `name` | no | string | Display label for the token. |
 | `intent` | no | string | Free-text description of about this modulated value. |
-| `parameters.step` | yes | number | Position on the modular scale. The allowed range is -20 to 20 in increments of 0.01. `0` returns `core.size`. |
+| `parameters.step` | yes | number | Position on the modular scale. The allowed range is -20 to 20 in increments of 0.01. `0` returns `modulation.parameters.baseSize`. |
 
 ```typescript
 import { TokenType } from "@seldon/core/themes"
@@ -326,7 +357,7 @@ fontWeight: {
 
 ### Dynamic Swatch tokens and parameters
 
-Dynamic swatches keep a theme's color system in alignment. Instead of writing eight individual colors by hand, you pick a `role` for the dynamic swatch and `computeTheme` fills in the actual color using values from the theme's `color` section.
+Dynamic swatches keep a theme's color system in alignment. Instead of writing eight individual colors by hand, you pick a `role` for the dynamic swatch and `computeTheme` fills in the actual color using values from the theme's `colorHarmony` group.
 
 The eight roles are the classic palette every theme exposes:
 
@@ -860,7 +891,7 @@ This is why a missing `customN` color bakes into a fixed color, while a missing 
 
 1. **Prefer the precomputed constants**. Use `THEMES_BY_ID`, `THEMES`, and `defaultTheme` from `themes/catalog` instead of recomputing stock rows on each access.
 2. **Let `instantiateTheme` short-circuit**. Calling it with no `overrides` skips the merge and runs `computeTheme(base)` only.
-3. **Cache dynamic palettes**. Results from `getDynamicSwatchColors` and `getPalette` are stable for a given `core` and `color` block. Reuse the surrounding `ComputedTheme` instance.
+3. **Cache dynamic palettes**. Results from `getDynamicSwatchColors` and `getPalette` are stable for a given `modulation` and `colorHarmony` group. Reuse the surrounding `ComputedTheme` instance.
 4. **Prefer `@token` references**. Reach for stock palette and scale slots before introducing inline `customN` swatches or one-off exact values.
 
 ### Memory Management
@@ -879,7 +910,7 @@ This is why a missing `customN` color bakes into a fixed color, while a missing 
 ### Validation Errors
 
 - **Invalid theme structure**: TypeScript compilation errors against `StockTheme` and `ComputedTheme`.
-- **Missing pipeline shape**: `normalizeThemeInput` throws `"Theme must have core and color properties"` when those blocks are missing.
+- **Missing pipeline shape**: `normalizeThemeInput` throws `"Theme must have modulation and colorHarmony properties"` when those groups are missing.
 - **Missing icon set**: `normalizeThemeInput` throws `"Theme must define iconSet"` when neither `iconSet` nor the legacy `icon` field is present.
 - **Unknown stock template**: `instantiateTheme` throws `Unknown theme template: <id>` when the id is not in the supplied `PresetThemesById` map.
 - **Bad token cell**: `validateThemeTokenValue` returns `false` for unknown keys and shape-mismatched payloads.
@@ -893,7 +924,7 @@ This is why a missing `customN` color bakes into a fixed color, while a missing 
 
 ### Debugging Support
 
-- **Clear error messages** on the throws above name the offending block (`core` / `color` / `iconSet`) or the unknown template id.
+- **Clear error messages** on the throws above name the offending block (`modulation` / `colorHarmony` / `iconSet`) or the unknown template id.
 - **Token-key logging** when bridging to `validatePropertyValue` is the recommended product-level hook for surfacing which `@<scope>.<slot>` failed validation.
 - **Stable palette intents**: `getDynamicSwatchName` provides human-readable labels for dynamic palette slots, useful in editor diagnostics.
 

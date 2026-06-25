@@ -7,10 +7,13 @@ import {
 } from "../../../services"
 
 /**
- * Copies the default variant’s composition tree onto a user variant root and clears that root’s overrides.
+ * Rebuilds a single schema-backed user variant to its catalog schema variant
+ * definition. Keeps the default variant tree as the fork base, so default
+ * overrides still cascade into the variant. No-op for a default variant or a
+ * user variant that has no matching schema variant.
  */
-export function resetUserVariantToDefault(
-  payload: ExtractPayload<"reset_user_variant_to_default">,
+export function resetVariantToCatalog(
+  payload: ExtractPayload<"reset_variant_to_catalog">,
   workspace: Workspace,
 ): Workspace {
   if (rules.mutations.reset.userVariant.allowed === false) {
@@ -22,7 +25,7 @@ export function resetUserVariantToDefault(
     return workspace
   }
 
-  return workspaceMutationService.resetUserVariantToDefaultVariant(
+  return workspaceMutationService.resetSchemaVariantToCatalog(
     payload.variantRootId,
     workspace,
   )

@@ -5,7 +5,7 @@
 import type { PropertyName } from "../../properties/schemas/data/property-schemas"
 
 export type ThemeTokenSectionId =
-  | "core"
+  | "computed"
   | "swatch"
   | "size"
   | "dimension"

@@ -54,11 +54,7 @@ export function handleComputedValueChange({
     // to two segments and store the root as an object, breaking the layer.
     const parsed = parsePropertyPath(property.key)
     if (parsed.kind === "layered-facet" && selection) {
-      const computedValue = createComputedValue(computedFunction, {
-        currentValue: property.value,
-        workspace,
-        node: selection,
-      })
+      const computedValue = createComputedValue(computedFunction)
 
       const current = coreGetEffectiveProperties(
         getPropertiesSubjectId(selection),
@@ -82,15 +78,7 @@ export function handleComputedValueChange({
     // Apply computed value based on property type
     if (property.isSubProperty) {
       const [compoundKey, subKey] = property.key.split(".")
-      const compoundValue =
-        property.value && typeof property.value === "object"
-          ? (property.value as Record<string, unknown>)
-          : undefined
-      const computedValue = createComputedValue(computedFunction, {
-        currentValue: compoundValue?.[subKey],
-        workspace,
-        node: selection,
-      })
+      const computedValue = createComputedValue(computedFunction)
       setProperties({
         [compoundKey]: {
           ...cleanCompoundValue(property.value),
@@ -98,11 +86,7 @@ export function handleComputedValueChange({
         },
       })
     } else {
-      const computedValue = createComputedValue(computedFunction, {
-        currentValue: property.value,
-        workspace,
-        node: selection,
-      })
+      const computedValue = createComputedValue(computedFunction)
       applyComputedValueToProperty(property.key, computedValue, setProperties)
     }
 

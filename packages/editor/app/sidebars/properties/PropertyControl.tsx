@@ -35,6 +35,8 @@ export function PropertyControl(props: PropertyControlProps) {
           onValueChange={view.combobox.onValueChange}
           onSubmit={view.combobox.onSubmit}
           onCancel={view.combobox.onCancel}
+          onTabNext={props.onTabNext}
+          onTabPrev={props.onTabPrev}
           placeholder={view.combobox.placeholder}
           validate={view.combobox.validate}
           disabled={view.combobox.disabled}
@@ -62,6 +64,8 @@ export function PropertyControl(props: PropertyControlProps) {
         setOpen={view.field.setOpen}
         handleSubmit={view.field.handleSubmit}
         onCancel={view.field.onCancel}
+        onTabNext={props.onTabNext}
+        onTabPrev={props.onTabPrev}
         onHighlightNext={view.field.onHighlightNext}
         onHighlightPrev={view.field.onHighlightPrev}
         placeholder={view.field.placeholder}

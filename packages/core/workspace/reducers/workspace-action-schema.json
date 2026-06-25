@@ -1929,7 +1929,7 @@
               "type": "boolean"
             },
             "properties": {
-              "$ref": "#/definitions/Partial<{display:DisplayValue;htmlElement:HtmlElementValue;wrapperElement:WrapperElementValue;content:ContentValue;symbol:SymbolValue;source:ImageSourceValue;imageFit:ImageFitValue;altText:ContentValue;inputType:InputTypeValue;placeholder:ContentValue;checked:CheckedValue;controls:ControlsValue;autoPlay:AutoPlayValue;loop:LoopValue;muted:MutedValue;poster:ImageSourceValue;preload:PreloadValue;trackKind:TrackKindValue;srcLang:ContentValue;trackLabel:ContentValue;trackDefault:TrackDefaultValue;mediaType:ContentValue;mediaQuery:ContentValue;ariaLabel:ContentValue;ariaHidden:EmptyValue|BooleanValue;size:SizeValue;buttonSize:ButtonSizeValue;board:BoardCompound;screenWidth:ScreenWidthValue;screenHeight:ScreenHeightValue;cursor:CursorValue;direction:DirectionValue;placement:PlacementValue;position:PositionValue;orientation:OrientationValue;align:AlignValue;width:DimensionValue;height:DimensionValue;margin:MarginValue;padding:PaddingValue;gap:GapValue;rotation:RotationValue;wrapChildren:EmptyValue|BooleanValue;clip:EmptyValue|BooleanValue;listStyleType:ListStyleTypeValue;listStylePosition:ListStylePositionValue;columns:ColumnCountValue;rows:RowCountValue;columnStart:ColumnStartValue;columnSpan:ColumnSpanValue;rowStart:RowStartValue;rowSpan:RowSpanValue;cellAlign:InheritValue|AlignValue;dimension:DimensionValue;resize:ResizeValue;screenSize:ScreenSizeValue;color:ColorValue;accentColor:ColorValue;brightness:BrightnessValue;opacity:OpacityValue;background:BackgroundLayer[];border:BorderCompound;borderTop:BorderCompound;borderRight:BorderCompound;borderBottom:BorderCompound;borderLeft:BorderCompound;corners:CornersValue;borderCollapse:BorderCollapseValue;font:FontCompound;textAlign:TextAlignValue;textDecoration:TextDecorationValue;wrapText:EmptyValue|BooleanValue;lines:LinesValue;shadow:ShadowCompound[];scroll:ScrollValue;scrollbarStyle:ScrollbarStyleValue;}>",
+              "$ref": "#/definitions/Partial<{display:DisplayValue;htmlElement:HtmlElementValue;wrapperElement:WrapperElementValue;content:ContentValue;symbol:SymbolValue;source:ImageSourceValue;imageFit:ImageFitValue;altText:ContentValue;inputType:InputTypeValue;placeholder:ContentValue;checked:CheckedValue;controls:ControlsValue;autoPlay:AutoPlayValue;loop:LoopValue;muted:MutedValue;poster:ImageSourceValue;preload:PreloadValue;trackKind:TrackKindValue;srcLang:ContentValue;trackLabel:ContentValue;trackDefault:TrackDefaultValue;mediaType:ContentValue;mediaQuery:ContentValue;size:SizeValue;buttonSize:ButtonSizeValue;board:BoardCompound;screenWidth:ScreenWidthValue;screenHeight:ScreenHeightValue;cursor:CursorValue;direction:DirectionValue;placement:PlacementValue;position:PositionValue;orientation:OrientationValue;align:AlignValue;width:DimensionValue;height:DimensionValue;margin:MarginValue;padding:PaddingValue;gap:GapValue;rotation:RotationValue;wrapChildren:EmptyValue|BooleanValue;clip:EmptyValue|BooleanValue;listStyleType:ListStyleTypeValue;listStylePosition:ListStylePositionValue;columns:ColumnCountValue;rows:RowCountValue;columnStart:ColumnStartValue;columnSpan:ColumnSpanValue;rowStart:RowStartValue;rowSpan:RowSpanValue;cellAlign:InheritValue|AlignValue;dimension:DimensionValue;resize:ResizeValue;screenSize:ScreenSizeValue;color:ColorValue;accentColor:ColorValue;brightness:BrightnessValue;opacity:OpacityValue;background:BackgroundLayer[];border:BorderCompound;borderTop:BorderCompound;borderRight:BorderCompound;borderBottom:BorderCompound;borderLeft:BorderCompound;corners:CornersValue;borderCollapse:BorderCollapseValue;font:FontCompound;textAlign:TextAlignValue;textDecoration:TextDecorationValue;wrapText:EmptyValue|BooleanValue;lines:LinesValue;shadow:ShadowCompound[];scroll:ScrollValue;scrollbarStyle:ScrollbarStyleValue;role:AriaRoleValue;ariaLabel:ContentValue;ariaHidden:EmptyValue|BooleanValue;ariaDisabled:AriaDisabledValue;ariaExpanded:AriaExpandedValue;ariaSelected:AriaSelectedValue;ariaChecked:AriaTristateValue;ariaPressed:AriaTristateValue;ariaCurrent:AriaCurrentValue;ariaHasPopup:AriaHasPopupValue;ariaInvalid:AriaInvalidValue;ariaRequired:AriaRequiredValue;ariaReadonly:AriaReadonlyValue;ariaLive:AriaLiveValue;}>",
               "description": "Every catalog property key and the stored value shape for that key on a node.\nKeys follow the same category sequence editors use when grouping fields.\nThe type is partial so each component only declares the keys it supports."
             }
           },
@@ -2218,7 +2218,7 @@
               "type": "object"
             },
             "properties": {
-              "$ref": "#/definitions/Partial<{display:DisplayValue;htmlElement:HtmlElementValue;wrapperElement:WrapperElementValue;content:ContentValue;symbol:SymbolValue;source:ImageSourceValue;imageFit:ImageFitValue;altText:ContentValue;inputType:InputTypeValue;placeholder:ContentValue;checked:CheckedValue;controls:ControlsValue;autoPlay:AutoPlayValue;loop:LoopValue;muted:MutedValue;poster:ImageSourceValue;preload:PreloadValue;trackKind:TrackKindValue;srcLang:ContentValue;trackLabel:ContentValue;trackDefault:TrackDefaultValue;mediaType:ContentValue;mediaQuery:ContentValue;ariaLabel:ContentValue;ariaHidden:EmptyValue|BooleanValue;size:SizeValue;buttonSize:ButtonSizeValue;board:BoardCompound;screenWidth:ScreenWidthValue;screenHeight:ScreenHeightValue;cursor:CursorValue;direction:DirectionValue;placement:PlacementValue;position:PositionValue;orientation:OrientationValue;align:AlignValue;width:DimensionValue;height:DimensionValue;margin:MarginValue;padding:PaddingValue;gap:GapValue;rotation:RotationValue;wrapChildren:EmptyValue|BooleanValue;clip:EmptyValue|BooleanValue;listStyleType:ListStyleTypeValue;listStylePosition:ListStylePositionValue;columns:ColumnCountValue;rows:RowCountValue;columnStart:ColumnStartValue;columnSpan:ColumnSpanValue;rowStart:RowStartValue;rowSpan:RowSpanValue;cellAlign:InheritValue|AlignValue;dimension:DimensionValue;resize:ResizeValue;screenSize:ScreenSizeValue;color:ColorValue;accentColor:ColorValue;brightness:BrightnessValue;opacity:OpacityValue;background:BackgroundLayer[];border:BorderCompound;borderTop:BorderCompound;borderRight:BorderCompound;borderBottom:BorderCompound;borderLeft:BorderCompound;corners:CornersValue;borderCollapse:BorderCollapseValue;font:FontCompound;textAlign:TextAlignValue;textDecoration:TextDecorationValue;wrapText:EmptyValue|BooleanValue;lines:LinesValue;shadow:ShadowCompound[];scroll:ScrollValue;scrollbarStyle:ScrollbarStyleValue;}>"
+              "$ref": "#/definitions/Partial<{display:DisplayValue;htmlElement:HtmlElementValue;wrapperElement:WrapperElementValue;content:ContentValue;symbol:SymbolValue;source:ImageSourceValue;imageFit:ImageFitValue;altText:ContentValue;inputType:InputTypeValue;placeholder:ContentValue;checked:CheckedValue;controls:ControlsValue;autoPlay:AutoPlayValue;loop:LoopValue;muted:MutedValue;poster:ImageSourceValue;preload:PreloadValue;trackKind:TrackKindValue;srcLang:ContentValue;trackLabel:ContentValue;trackDefault:TrackDefaultValue;mediaType:ContentValue;mediaQuery:ContentValue;size:SizeValue;buttonSize:ButtonSizeValue;board:BoardCompound;screenWidth:ScreenWidthValue;screenHeight:ScreenHeightValue;cursor:CursorValue;direction:DirectionValue;placement:PlacementValue;position:PositionValue;orientation:OrientationValue;align:AlignValue;width:DimensionValue;height:DimensionValue;margin:MarginValue;padding:PaddingValue;gap:GapValue;rotation:RotationValue;wrapChildren:EmptyValue|BooleanValue;clip:EmptyValue|BooleanValue;listStyleType:ListStyleTypeValue;listStylePosition:ListStylePositionValue;columns:ColumnCountValue;rows:RowCountValue;columnStart:ColumnStartValue;columnSpan:ColumnSpanValue;rowStart:RowStartValue;rowSpan:RowSpanValue;cellAlign:InheritValue|AlignValue;dimension:DimensionValue;resize:ResizeValue;screenSize:ScreenSizeValue;color:ColorValue;accentColor:ColorValue;brightness:BrightnessValue;opacity:OpacityValue;background:BackgroundLayer[];border:BorderCompound;borderTop:BorderCompound;borderRight:BorderCompound;borderBottom:BorderCompound;borderLeft:BorderCompound;corners:CornersValue;borderCollapse:BorderCollapseValue;font:FontCompound;textAlign:TextAlignValue;textDecoration:TextDecorationValue;wrapText:EmptyValue|BooleanValue;lines:LinesValue;shadow:ShadowCompound[];scroll:ScrollValue;scrollbarStyle:ScrollbarStyleValue;role:AriaRoleValue;ariaLabel:ContentValue;ariaHidden:EmptyValue|BooleanValue;ariaDisabled:AriaDisabledValue;ariaExpanded:AriaExpandedValue;ariaSelected:AriaSelectedValue;ariaChecked:AriaTristateValue;ariaPressed:AriaTristateValue;ariaCurrent:AriaCurrentValue;ariaHasPopup:AriaHasPopupValue;ariaInvalid:AriaInvalidValue;ariaRequired:AriaRequiredValue;ariaReadonly:AriaReadonlyValue;ariaLive:AriaLiveValue;}>"
             }
           },
           "required": ["nodeId", "properties"],
@@ -2347,7 +2347,7 @@
               "type": "object"
             },
             "properties": {
-              "$ref": "#/definitions/Partial<{display:DisplayValue;htmlElement:HtmlElementValue;wrapperElement:WrapperElementValue;content:ContentValue;symbol:SymbolValue;source:ImageSourceValue;imageFit:ImageFitValue;altText:ContentValue;inputType:InputTypeValue;placeholder:ContentValue;checked:CheckedValue;controls:ControlsValue;autoPlay:AutoPlayValue;loop:LoopValue;muted:MutedValue;poster:ImageSourceValue;preload:PreloadValue;trackKind:TrackKindValue;srcLang:ContentValue;trackLabel:ContentValue;trackDefault:TrackDefaultValue;mediaType:ContentValue;mediaQuery:ContentValue;ariaLabel:ContentValue;ariaHidden:EmptyValue|BooleanValue;size:SizeValue;buttonSize:ButtonSizeValue;board:BoardCompound;screenWidth:ScreenWidthValue;screenHeight:ScreenHeightValue;cursor:CursorValue;direction:DirectionValue;placement:PlacementValue;position:PositionValue;orientation:OrientationValue;align:AlignValue;width:DimensionValue;height:DimensionValue;margin:MarginValue;padding:PaddingValue;gap:GapValue;rotation:RotationValue;wrapChildren:EmptyValue|BooleanValue;clip:EmptyValue|BooleanValue;listStyleType:ListStyleTypeValue;listStylePosition:ListStylePositionValue;columns:ColumnCountValue;rows:RowCountValue;columnStart:ColumnStartValue;columnSpan:ColumnSpanValue;rowStart:RowStartValue;rowSpan:RowSpanValue;cellAlign:InheritValue|AlignValue;dimension:DimensionValue;resize:ResizeValue;screenSize:ScreenSizeValue;color:ColorValue;accentColor:ColorValue;brightness:BrightnessValue;opacity:OpacityValue;background:BackgroundLayer[];border:BorderCompound;borderTop:BorderCompound;borderRight:BorderCompound;borderBottom:BorderCompound;borderLeft:BorderCompound;corners:CornersValue;borderCollapse:BorderCollapseValue;font:FontCompound;textAlign:TextAlignValue;textDecoration:TextDecorationValue;wrapText:EmptyValue|BooleanValue;lines:LinesValue;shadow:ShadowCompound[];scroll:ScrollValue;scrollbarStyle:ScrollbarStyleValue;}>"
+              "$ref": "#/definitions/Partial<{display:DisplayValue;htmlElement:HtmlElementValue;wrapperElement:WrapperElementValue;content:ContentValue;symbol:SymbolValue;source:ImageSourceValue;imageFit:ImageFitValue;altText:ContentValue;inputType:InputTypeValue;placeholder:ContentValue;checked:CheckedValue;controls:ControlsValue;autoPlay:AutoPlayValue;loop:LoopValue;muted:MutedValue;poster:ImageSourceValue;preload:PreloadValue;trackKind:TrackKindValue;srcLang:ContentValue;trackLabel:ContentValue;trackDefault:TrackDefaultValue;mediaType:ContentValue;mediaQuery:ContentValue;size:SizeValue;buttonSize:ButtonSizeValue;board:BoardCompound;screenWidth:ScreenWidthValue;screenHeight:ScreenHeightValue;cursor:CursorValue;direction:DirectionValue;placement:PlacementValue;position:PositionValue;orientation:OrientationValue;align:AlignValue;width:DimensionValue;height:DimensionValue;margin:MarginValue;padding:PaddingValue;gap:GapValue;rotation:RotationValue;wrapChildren:EmptyValue|BooleanValue;clip:EmptyValue|BooleanValue;listStyleType:ListStyleTypeValue;listStylePosition:ListStylePositionValue;columns:ColumnCountValue;rows:RowCountValue;columnStart:ColumnStartValue;columnSpan:ColumnSpanValue;rowStart:RowStartValue;rowSpan:RowSpanValue;cellAlign:InheritValue|AlignValue;dimension:DimensionValue;resize:ResizeValue;screenSize:ScreenSizeValue;color:ColorValue;accentColor:ColorValue;brightness:BrightnessValue;opacity:OpacityValue;background:BackgroundLayer[];border:BorderCompound;borderTop:BorderCompound;borderRight:BorderCompound;borderBottom:BorderCompound;borderLeft:BorderCompound;corners:CornersValue;borderCollapse:BorderCollapseValue;font:FontCompound;textAlign:TextAlignValue;textDecoration:TextDecorationValue;wrapText:EmptyValue|BooleanValue;lines:LinesValue;shadow:ShadowCompound[];scroll:ScrollValue;scrollbarStyle:ScrollbarStyleValue;role:AriaRoleValue;ariaLabel:ContentValue;ariaHidden:EmptyValue|BooleanValue;ariaDisabled:AriaDisabledValue;ariaExpanded:AriaExpandedValue;ariaSelected:AriaSelectedValue;ariaChecked:AriaTristateValue;ariaPressed:AriaTristateValue;ariaCurrent:AriaCurrentValue;ariaHasPopup:AriaHasPopupValue;ariaInvalid:AriaInvalidValue;ariaRequired:AriaRequiredValue;ariaReadonly:AriaReadonlyValue;ariaLive:AriaLiveValue;}>"
             },
             "state": {
               "description": "A state name key used inside a node's `states` map. It is either a reserved\nname or a workspace custom-state key. Never `normal`, which lives in\n`overrides`.",
@@ -2668,7 +2668,7 @@
               "type": "string"
             },
             "properties": {
-              "$ref": "#/definitions/Partial<{display:DisplayValue;htmlElement:HtmlElementValue;wrapperElement:WrapperElementValue;content:ContentValue;symbol:SymbolValue;source:ImageSourceValue;imageFit:ImageFitValue;altText:ContentValue;inputType:InputTypeValue;placeholder:ContentValue;checked:CheckedValue;controls:ControlsValue;autoPlay:AutoPlayValue;loop:LoopValue;muted:MutedValue;poster:ImageSourceValue;preload:PreloadValue;trackKind:TrackKindValue;srcLang:ContentValue;trackLabel:ContentValue;trackDefault:TrackDefaultValue;mediaType:ContentValue;mediaQuery:ContentValue;ariaLabel:ContentValue;ariaHidden:EmptyValue|BooleanValue;size:SizeValue;buttonSize:ButtonSizeValue;board:BoardCompound;screenWidth:ScreenWidthValue;screenHeight:ScreenHeightValue;cursor:CursorValue;direction:DirectionValue;placement:PlacementValue;position:PositionValue;orientation:OrientationValue;align:AlignValue;width:DimensionValue;height:DimensionValue;margin:MarginValue;padding:PaddingValue;gap:GapValue;rotation:RotationValue;wrapChildren:EmptyValue|BooleanValue;clip:EmptyValue|BooleanValue;listStyleType:ListStyleTypeValue;listStylePosition:ListStylePositionValue;columns:ColumnCountValue;rows:RowCountValue;columnStart:ColumnStartValue;columnSpan:ColumnSpanValue;rowStart:RowStartValue;rowSpan:RowSpanValue;cellAlign:InheritValue|AlignValue;dimension:DimensionValue;resize:ResizeValue;screenSize:ScreenSizeValue;color:ColorValue;accentColor:ColorValue;brightness:BrightnessValue;opacity:OpacityValue;background:BackgroundLayer[];border:BorderCompound;borderTop:BorderCompound;borderRight:BorderCompound;borderBottom:BorderCompound;borderLeft:BorderCompound;corners:CornersValue;borderCollapse:BorderCollapseValue;font:FontCompound;textAlign:TextAlignValue;textDecoration:TextDecorationValue;wrapText:EmptyValue|BooleanValue;lines:LinesValue;shadow:ShadowCompound[];scroll:ScrollValue;scrollbarStyle:ScrollbarStyleValue;}>"
+              "$ref": "#/definitions/Partial<{display:DisplayValue;htmlElement:HtmlElementValue;wrapperElement:WrapperElementValue;content:ContentValue;symbol:SymbolValue;source:ImageSourceValue;imageFit:ImageFitValue;altText:ContentValue;inputType:InputTypeValue;placeholder:ContentValue;checked:CheckedValue;controls:ControlsValue;autoPlay:AutoPlayValue;loop:LoopValue;muted:MutedValue;poster:ImageSourceValue;preload:PreloadValue;trackKind:TrackKindValue;srcLang:ContentValue;trackLabel:ContentValue;trackDefault:TrackDefaultValue;mediaType:ContentValue;mediaQuery:ContentValue;size:SizeValue;buttonSize:ButtonSizeValue;board:BoardCompound;screenWidth:ScreenWidthValue;screenHeight:ScreenHeightValue;cursor:CursorValue;direction:DirectionValue;placement:PlacementValue;position:PositionValue;orientation:OrientationValue;align:AlignValue;width:DimensionValue;height:DimensionValue;margin:MarginValue;padding:PaddingValue;gap:GapValue;rotation:RotationValue;wrapChildren:EmptyValue|BooleanValue;clip:EmptyValue|BooleanValue;listStyleType:ListStyleTypeValue;listStylePosition:ListStylePositionValue;columns:ColumnCountValue;rows:RowCountValue;columnStart:ColumnStartValue;columnSpan:ColumnSpanValue;rowStart:RowStartValue;rowSpan:RowSpanValue;cellAlign:InheritValue|AlignValue;dimension:DimensionValue;resize:ResizeValue;screenSize:ScreenSizeValue;color:ColorValue;accentColor:ColorValue;brightness:BrightnessValue;opacity:OpacityValue;background:BackgroundLayer[];border:BorderCompound;borderTop:BorderCompound;borderRight:BorderCompound;borderBottom:BorderCompound;borderLeft:BorderCompound;corners:CornersValue;borderCollapse:BorderCollapseValue;font:FontCompound;textAlign:TextAlignValue;textDecoration:TextDecorationValue;wrapText:EmptyValue|BooleanValue;lines:LinesValue;shadow:ShadowCompound[];scroll:ScrollValue;scrollbarStyle:ScrollbarStyleValue;role:AriaRoleValue;ariaLabel:ContentValue;ariaHidden:EmptyValue|BooleanValue;ariaDisabled:AriaDisabledValue;ariaExpanded:AriaExpandedValue;ariaSelected:AriaSelectedValue;ariaChecked:AriaTristateValue;ariaPressed:AriaTristateValue;ariaCurrent:AriaCurrentValue;ariaHasPopup:AriaHasPopupValue;ariaInvalid:AriaInvalidValue;ariaRequired:AriaRequiredValue;ariaReadonly:AriaReadonlyValue;ariaLive:AriaLiveValue;}>"
             }
           },
           "required": ["boardKey", "properties"],
@@ -3670,7 +3670,51 @@
           "type": "object"
         },
         "type": {
-          "const": "reset_user_variant_to_default",
+          "const": "reset_variant_to_catalog",
+          "type": "string"
+        }
+      },
+      "required": ["payload", "type"],
+      "type": "object"
+    },
+    {
+      "additionalProperties": false,
+      "properties": {
+        "payload": {
+          "additionalProperties": false,
+          "properties": {
+            "instanceId": {
+              "description": "Node id for an instance row (legacy string ids or v2 entry ids).",
+              "type": "string"
+            }
+          },
+          "required": ["instanceId"],
+          "type": "object"
+        },
+        "type": {
+          "const": "reset_instance_to_source",
+          "type": "string"
+        }
+      },
+      "required": ["payload", "type"],
+      "type": "object"
+    },
+    {
+      "additionalProperties": false,
+      "properties": {
+        "payload": {
+          "additionalProperties": false,
+          "properties": {
+            "instanceId": {
+              "description": "Node id for an instance row (legacy string ids or v2 entry ids).",
+              "type": "string"
+            }
+          },
+          "required": ["instanceId"],
+          "type": "object"
+        },
+        "type": {
+          "const": "reset_instance_to_original",
           "type": "string"
         }
       },
@@ -4489,6 +4533,184 @@
       "required": ["type", "value"],
       "type": "object"
     },
+    "AriaCurrent": {
+      "description": "Keyword marking which item in a set is the current one.",
+      "enum": ["false", "true", "page", "step", "location", "date", "time"],
+      "type": "string"
+    },
+    "AriaCurrentOptionValue": {
+      "additionalProperties": false,
+      "description": "Records which `aria-current` keyword is selected.",
+      "properties": {
+        "type": {
+          "const": "option",
+          "description": "Store one allowed enum or list entry defined for the property.",
+          "type": "string"
+        },
+        "value": {
+          "$ref": "#/definitions/AriaCurrent"
+        }
+      },
+      "required": ["type", "value"],
+      "type": "object"
+    },
+    "AriaHasPopup": {
+      "description": "Keyword describing the kind of popup a control triggers.",
+      "enum": ["false", "true", "menu", "listbox", "tree", "grid", "dialog"],
+      "type": "string"
+    },
+    "AriaHasPopupOptionValue": {
+      "additionalProperties": false,
+      "description": "Records which `aria-haspopup` keyword is selected.",
+      "properties": {
+        "type": {
+          "const": "option",
+          "description": "Store one allowed enum or list entry defined for the property.",
+          "type": "string"
+        },
+        "value": {
+          "$ref": "#/definitions/AriaHasPopup"
+        }
+      },
+      "required": ["type", "value"],
+      "type": "object"
+    },
+    "AriaInvalid": {
+      "description": "Keyword describing the validity state of an input.",
+      "enum": ["false", "true", "grammar", "spelling"],
+      "type": "string"
+    },
+    "AriaInvalidOptionValue": {
+      "additionalProperties": false,
+      "description": "Records which `aria-invalid` keyword is selected.",
+      "properties": {
+        "type": {
+          "const": "option",
+          "description": "Store one allowed enum or list entry defined for the property.",
+          "type": "string"
+        },
+        "value": {
+          "$ref": "#/definitions/AriaInvalid"
+        }
+      },
+      "required": ["type", "value"],
+      "type": "object"
+    },
+    "AriaLive": {
+      "description": "Keyword describing how a live region announces updates.",
+      "enum": ["off", "polite", "assertive"],
+      "type": "string"
+    },
+    "AriaLiveOptionValue": {
+      "additionalProperties": false,
+      "description": "Records which `aria-live` keyword is selected.",
+      "properties": {
+        "type": {
+          "const": "option",
+          "description": "Store one allowed enum or list entry defined for the property.",
+          "type": "string"
+        },
+        "value": {
+          "$ref": "#/definitions/AriaLive"
+        }
+      },
+      "required": ["type", "value"],
+      "type": "object"
+    },
+    "AriaRole": {
+      "description": "Curated set of ARIA roles the catalog exposes as fixed choices.",
+      "enum": [
+        "none",
+        "presentation",
+        "img",
+        "button",
+        "link",
+        "heading",
+        "list",
+        "listitem",
+        "navigation",
+        "main",
+        "banner",
+        "contentinfo",
+        "complementary",
+        "region",
+        "search",
+        "form",
+        "dialog",
+        "alertdialog",
+        "alert",
+        "status",
+        "tooltip",
+        "tab",
+        "tablist",
+        "tabpanel",
+        "menu",
+        "menubar",
+        "menuitem",
+        "menuitemcheckbox",
+        "menuitemradio",
+        "listbox",
+        "option",
+        "combobox",
+        "checkbox",
+        "radio",
+        "radiogroup",
+        "switch",
+        "slider",
+        "progressbar",
+        "separator",
+        "toolbar",
+        "group",
+        "article",
+        "note",
+        "table",
+        "row",
+        "cell",
+        "columnheader",
+        "rowheader",
+        "grid",
+        "tree",
+        "treeitem"
+      ],
+      "type": "string"
+    },
+    "AriaRoleOptionValue": {
+      "additionalProperties": false,
+      "description": "Records which ARIA role keyword is selected.",
+      "properties": {
+        "type": {
+          "const": "option",
+          "description": "Store one allowed enum or list entry defined for the property.",
+          "type": "string"
+        },
+        "value": {
+          "$ref": "#/definitions/AriaRole"
+        }
+      },
+      "required": ["type", "value"],
+      "type": "object"
+    },
+    "AriaTristate": {
+      "description": "Tristate keyword shared by `ariaChecked` and `ariaPressed`.",
+      "enum": ["true", "false", "mixed"],
+      "type": "string"
+    },
+    "AriaTristateOptionValue": {
+      "additionalProperties": false,
+      "description": "Records which tristate keyword is selected.",
+      "properties": {
+        "type": {
+          "const": "option",
+          "description": "Store one allowed enum or list entry defined for the property.",
+          "type": "string"
+        },
+        "value": {
+          "$ref": "#/definitions/AriaTristate"
+        }
+      },
+      "required": ["type", "value"],
+      "type": "object"
+    },
     "BackgroundBlendMode": {
       "description": "How this layer mixes with content already drawn behind it.",
       "enum": [
@@ -4730,26 +4952,9 @@
                   "type": "string"
                 },
                 "value": {
-                  "additionalProperties": false,
-                  "properties": {
-                    "function": {
-                      "const": "match",
-                      "description": "Reuse the resolved value from another property path.",
-                      "type": "string"
-                    },
-                    "input": {
-                      "additionalProperties": false,
-                      "properties": {
-                        "basedOn": {
-                          "$ref": "#/definitions/BasedOnPropertyKey"
-                        }
-                      },
-                      "required": ["basedOn"],
-                      "type": "object"
-                    }
-                  },
-                  "required": ["function", "input"],
-                  "type": "object"
+                  "const": "matchColor",
+                  "description": "Match a color facet to another color in the node's own background chain.",
+                  "type": "string"
                 }
               },
               "required": ["type", "value"],
@@ -4852,26 +5057,9 @@
                   "type": "string"
                 },
                 "value": {
-                  "additionalProperties": false,
-                  "properties": {
-                    "function": {
-                      "const": "highContrastColor",
-                      "description": "Pick a foreground or background color that stays readable on the base color.",
-                      "type": "string"
-                    },
-                    "input": {
-                      "additionalProperties": false,
-                      "properties": {
-                        "basedOn": {
-                          "$ref": "#/definitions/BasedOnPropertyKey"
-                        }
-                      },
-                      "required": ["basedOn"],
-                      "type": "object"
-                    }
-                  },
-                  "required": ["function", "input"],
-                  "type": "object"
+                  "const": "highContrastColor",
+                  "description": "Pick a foreground or background color that stays readable on the base color.",
+                  "type": "string"
                 }
               },
               "required": ["type", "value"],
@@ -4886,26 +5074,9 @@
                   "type": "string"
                 },
                 "value": {
-                  "additionalProperties": false,
-                  "properties": {
-                    "function": {
-                      "const": "match",
-                      "description": "Reuse the resolved value from another property path.",
-                      "type": "string"
-                    },
-                    "input": {
-                      "additionalProperties": false,
-                      "properties": {
-                        "basedOn": {
-                          "$ref": "#/definitions/BasedOnPropertyKey"
-                        }
-                      },
-                      "required": ["basedOn"],
-                      "type": "object"
-                    }
-                  },
-                  "required": ["function", "input"],
-                  "type": "object"
+                  "const": "matchColor",
+                  "description": "Match a color facet to another color in the node's own background chain.",
+                  "type": "string"
                 }
               },
               "required": ["type", "value"],
@@ -5777,26 +5948,9 @@
                   "type": "string"
                 },
                 "value": {
-                  "additionalProperties": false,
-                  "properties": {
-                    "function": {
-                      "const": "highContrastColor",
-                      "description": "Pick a foreground or background color that stays readable on the base color.",
-                      "type": "string"
-                    },
-                    "input": {
-                      "additionalProperties": false,
-                      "properties": {
-                        "basedOn": {
-                          "$ref": "#/definitions/BasedOnPropertyKey"
-                        }
-                      },
-                      "required": ["basedOn"],
-                      "type": "object"
-                    }
-                  },
-                  "required": ["function", "input"],
-                  "type": "object"
+                  "const": "highContrastColor",
+                  "description": "Pick a foreground or background color that stays readable on the base color.",
+                  "type": "string"
                 }
               },
               "required": ["type", "value"],
@@ -5811,26 +5965,9 @@
                   "type": "string"
                 },
                 "value": {
-                  "additionalProperties": false,
-                  "properties": {
-                    "function": {
-                      "const": "match",
-                      "description": "Reuse the resolved value from another property path.",
-                      "type": "string"
-                    },
-                    "input": {
-                      "additionalProperties": false,
-                      "properties": {
-                        "basedOn": {
-                          "$ref": "#/definitions/BasedOnPropertyKey"
-                        }
-                      },
-                      "required": ["basedOn"],
-                      "type": "object"
-                    }
-                  },
-                  "required": ["function", "input"],
-                  "type": "object"
+                  "const": "matchColor",
+                  "description": "Match a color facet to another color in the node's own background chain.",
+                  "type": "string"
                 }
               },
               "required": ["type", "value"],
@@ -5999,19 +6136,6 @@
       },
       "required": ["type", "value"],
       "type": "object"
-    },
-    "BasedOnPropertyKey": {
-      "anyOf": [
-        {
-          "pattern": "^#.*$",
-          "type": "string"
-        },
-        {
-          "pattern": "^#parent\\..*$",
-          "type": "string"
-        }
-      ],
-      "description": "This type is used in the basedOn property of computed values.\nIt can be a property key or a property key of the parent component.\nSee packages/core/properties/values/shared/computed/auto-fit.ts for an example.\n\nThis basically creates type where you can use:\n- #color\n- #parent.color\n- #background.color\n- #parent.background.color\n\nBut not:\n- #border\n- #parent.border"
     },
     "BoardHeightFitOptionValue": {
       "additionalProperties": false,
@@ -6203,26 +6327,9 @@
                   "type": "string"
                 },
                 "value": {
-                  "additionalProperties": false,
-                  "properties": {
-                    "function": {
-                      "const": "highContrastColor",
-                      "description": "Pick a foreground or background color that stays readable on the base color.",
-                      "type": "string"
-                    },
-                    "input": {
-                      "additionalProperties": false,
-                      "properties": {
-                        "basedOn": {
-                          "$ref": "#/definitions/BasedOnPropertyKey"
-                        }
-                      },
-                      "required": ["basedOn"],
-                      "type": "object"
-                    }
-                  },
-                  "required": ["function", "input"],
-                  "type": "object"
+                  "const": "highContrastColor",
+                  "description": "Pick a foreground or background color that stays readable on the base color.",
+                  "type": "string"
                 }
               },
               "required": ["type", "value"],
@@ -6237,26 +6344,9 @@
                   "type": "string"
                 },
                 "value": {
-                  "additionalProperties": false,
-                  "properties": {
-                    "function": {
-                      "const": "match",
-                      "description": "Reuse the resolved value from another property path.",
-                      "type": "string"
-                    },
-                    "input": {
-                      "additionalProperties": false,
-                      "properties": {
-                        "basedOn": {
-                          "$ref": "#/definitions/BasedOnPropertyKey"
-                        }
-                      },
-                      "required": ["basedOn"],
-                      "type": "object"
-                    }
-                  },
-                  "required": ["function", "input"],
-                  "type": "object"
+                  "const": "matchColor",
+                  "description": "Match a color facet to another color in the node's own background chain.",
+                  "type": "string"
                 }
               },
               "required": ["type", "value"],
@@ -6538,26 +6628,9 @@
                   "type": "string"
                 },
                 "value": {
-                  "additionalProperties": false,
-                  "properties": {
-                    "function": {
-                      "const": "highContrastColor",
-                      "description": "Pick a foreground or background color that stays readable on the base color.",
-                      "type": "string"
-                    },
-                    "input": {
-                      "additionalProperties": false,
-                      "properties": {
-                        "basedOn": {
-                          "$ref": "#/definitions/BasedOnPropertyKey"
-                        }
-                      },
-                      "required": ["basedOn"],
-                      "type": "object"
-                    }
-                  },
-                  "required": ["function", "input"],
-                  "type": "object"
+                  "const": "highContrastColor",
+                  "description": "Pick a foreground or background color that stays readable on the base color.",
+                  "type": "string"
                 }
               },
               "required": ["type", "value"],
@@ -6572,26 +6645,9 @@
                   "type": "string"
                 },
                 "value": {
-                  "additionalProperties": false,
-                  "properties": {
-                    "function": {
-                      "const": "match",
-                      "description": "Reuse the resolved value from another property path.",
-                      "type": "string"
-                    },
-                    "input": {
-                      "additionalProperties": false,
-                      "properties": {
-                        "basedOn": {
-                          "$ref": "#/definitions/BasedOnPropertyKey"
-                        }
-                      },
-                      "required": ["basedOn"],
-                      "type": "object"
-                    }
-                  },
-                  "required": ["function", "input"],
-                  "type": "object"
+                  "const": "matchColor",
+                  "description": "Match a color facet to another color in the node's own background chain.",
+                  "type": "string"
                 }
               },
               "required": ["type", "value"],
@@ -6999,26 +7055,9 @@
               "type": "string"
             },
             "value": {
-              "additionalProperties": false,
-              "properties": {
-                "function": {
-                  "const": "highContrastColor",
-                  "description": "Pick a foreground or background color that stays readable on the base color.",
-                  "type": "string"
-                },
-                "input": {
-                  "additionalProperties": false,
-                  "properties": {
-                    "basedOn": {
-                      "$ref": "#/definitions/BasedOnPropertyKey"
-                    }
-                  },
-                  "required": ["basedOn"],
-                  "type": "object"
-                }
-              },
-              "required": ["function", "input"],
-              "type": "object"
+              "const": "highContrastColor",
+              "description": "Pick a foreground or background color that stays readable on the base color.",
+              "type": "string"
             }
           },
           "required": ["type", "value"],
@@ -7033,26 +7072,9 @@
               "type": "string"
             },
             "value": {
-              "additionalProperties": false,
-              "properties": {
-                "function": {
-                  "const": "match",
-                  "description": "Reuse the resolved value from another property path.",
-                  "type": "string"
-                },
-                "input": {
-                  "additionalProperties": false,
-                  "properties": {
-                    "basedOn": {
-                      "$ref": "#/definitions/BasedOnPropertyKey"
-                    }
-                  },
-                  "required": ["basedOn"],
-                  "type": "object"
-                }
-              },
-              "required": ["function", "input"],
-              "type": "object"
+              "const": "matchColor",
+              "description": "Match a color facet to another color in the node's own background chain.",
+              "type": "string"
             }
           },
           "required": ["type", "value"],
@@ -8123,63 +8145,9 @@
                   "type": "string"
                 },
                 "value": {
-                  "additionalProperties": false,
-                  "properties": {
-                    "function": {
-                      "const": "match",
-                      "description": "Reuse the resolved value from another property path.",
-                      "type": "string"
-                    },
-                    "input": {
-                      "additionalProperties": false,
-                      "properties": {
-                        "basedOn": {
-                          "$ref": "#/definitions/BasedOnPropertyKey"
-                        }
-                      },
-                      "required": ["basedOn"],
-                      "type": "object"
-                    }
-                  },
-                  "required": ["function", "input"],
-                  "type": "object"
-                }
-              },
-              "required": ["type", "value"],
-              "type": "object"
-            },
-            {
-              "additionalProperties": false,
-              "properties": {
-                "type": {
-                  "const": "computed",
-                  "description": "Resolve from a declared function and inputs that reference other values.",
+                  "const": "autoFit",
+                  "description": "Scale a length or size from a reference value and factor.",
                   "type": "string"
-                },
-                "value": {
-                  "additionalProperties": false,
-                  "properties": {
-                    "function": {
-                      "const": "autoFit",
-                      "description": "Scale a length or size from a reference value and factor.",
-                      "type": "string"
-                    },
-                    "input": {
-                      "additionalProperties": false,
-                      "properties": {
-                        "basedOn": {
-                          "$ref": "#/definitions/BasedOnPropertyKey"
-                        },
-                        "factor": {
-                          "type": "number"
-                        }
-                      },
-                      "required": ["basedOn", "factor"],
-                      "type": "object"
-                    }
-                  },
-                  "required": ["function", "input"],
-                  "type": "object"
                 }
               },
               "required": ["type", "value"],
@@ -8663,26 +8631,9 @@
                   "type": "string"
                 },
                 "value": {
-                  "additionalProperties": false,
-                  "properties": {
-                    "function": {
-                      "const": "highContrastColor",
-                      "description": "Pick a foreground or background color that stays readable on the base color.",
-                      "type": "string"
-                    },
-                    "input": {
-                      "additionalProperties": false,
-                      "properties": {
-                        "basedOn": {
-                          "$ref": "#/definitions/BasedOnPropertyKey"
-                        }
-                      },
-                      "required": ["basedOn"],
-                      "type": "object"
-                    }
-                  },
-                  "required": ["function", "input"],
-                  "type": "object"
+                  "const": "highContrastColor",
+                  "description": "Pick a foreground or background color that stays readable on the base color.",
+                  "type": "string"
                 }
               },
               "required": ["type", "value"],
@@ -8697,26 +8648,9 @@
                   "type": "string"
                 },
                 "value": {
-                  "additionalProperties": false,
-                  "properties": {
-                    "function": {
-                      "const": "match",
-                      "description": "Reuse the resolved value from another property path.",
-                      "type": "string"
-                    },
-                    "input": {
-                      "additionalProperties": false,
-                      "properties": {
-                        "basedOn": {
-                          "$ref": "#/definitions/BasedOnPropertyKey"
-                        }
-                      },
-                      "required": ["basedOn"],
-                      "type": "object"
-                    }
-                  },
-                  "required": ["function", "input"],
-                  "type": "object"
+                  "const": "matchColor",
+                  "description": "Match a color facet to another color in the node's own background chain.",
+                  "type": "string"
                 }
               },
               "required": ["type", "value"],
@@ -8936,26 +8870,9 @@
                   "type": "string"
                 },
                 "value": {
-                  "additionalProperties": false,
-                  "properties": {
-                    "function": {
-                      "const": "highContrastColor",
-                      "description": "Pick a foreground or background color that stays readable on the base color.",
-                      "type": "string"
-                    },
-                    "input": {
-                      "additionalProperties": false,
-                      "properties": {
-                        "basedOn": {
-                          "$ref": "#/definitions/BasedOnPropertyKey"
-                        }
-                      },
-                      "required": ["basedOn"],
-                      "type": "object"
-                    }
-                  },
-                  "required": ["function", "input"],
-                  "type": "object"
+                  "const": "highContrastColor",
+                  "description": "Pick a foreground or background color that stays readable on the base color.",
+                  "type": "string"
                 }
               },
               "required": ["type", "value"],
@@ -8970,26 +8887,9 @@
                   "type": "string"
                 },
                 "value": {
-                  "additionalProperties": false,
-                  "properties": {
-                    "function": {
-                      "const": "match",
-                      "description": "Reuse the resolved value from another property path.",
-                      "type": "string"
-                    },
-                    "input": {
-                      "additionalProperties": false,
-                      "properties": {
-                        "basedOn": {
-                          "$ref": "#/definitions/BasedOnPropertyKey"
-                        }
-                      },
-                      "required": ["basedOn"],
-                      "type": "object"
-                    }
-                  },
-                  "required": ["function", "input"],
-                  "type": "object"
+                  "const": "matchColor",
+                  "description": "Match a color facet to another color in the node's own background chain.",
+                  "type": "string"
                 }
               },
               "required": ["type", "value"],
@@ -9108,7 +9008,7 @@
     },
     "GradientType": {
       "description": "How color blends between stops along a line or from a center.",
-      "enum": ["linear", "radial"],
+      "enum": ["linear", "radial", "conic"],
       "type": "string"
     },
     "GradientTypeOptionValue": {
@@ -10059,40 +9959,6 @@
               "additionalProperties": false,
               "properties": {
                 "type": {
-                  "const": "computed",
-                  "description": "Resolve from a declared function and inputs that reference other values.",
-                  "type": "string"
-                },
-                "value": {
-                  "additionalProperties": false,
-                  "properties": {
-                    "function": {
-                      "const": "match",
-                      "description": "Reuse the resolved value from another property path.",
-                      "type": "string"
-                    },
-                    "input": {
-                      "additionalProperties": false,
-                      "properties": {
-                        "basedOn": {
-                          "$ref": "#/definitions/BasedOnPropertyKey"
-                        }
-                      },
-                      "required": ["basedOn"],
-                      "type": "object"
-                    }
-                  },
-                  "required": ["function", "input"],
-                  "type": "object"
-                }
-              },
-              "required": ["type", "value"],
-              "type": "object"
-            },
-            {
-              "additionalProperties": false,
-              "properties": {
-                "type": {
                   "const": "exact",
                   "description": "Store a literal only, with no pointer to theme tokens or other properties.",
                   "type": "string"
@@ -10179,29 +10045,9 @@
                   "type": "string"
                 },
                 "value": {
-                  "additionalProperties": false,
-                  "properties": {
-                    "function": {
-                      "const": "opticalPadding",
-                      "description": "Adjust padding so perceived spacing lines up with the design.",
-                      "type": "string"
-                    },
-                    "input": {
-                      "additionalProperties": false,
-                      "properties": {
-                        "basedOn": {
-                          "$ref": "#/definitions/BasedOnPropertyKey"
-                        },
-                        "factor": {
-                          "type": "number"
-                        }
-                      },
-                      "required": ["basedOn", "factor"],
-                      "type": "object"
-                    }
-                  },
-                  "required": ["function", "input"],
-                  "type": "object"
+                  "const": "opticalPadding",
+                  "description": "Adjust padding so perceived spacing lines up with the design.",
+                  "type": "string"
                 }
               },
               "required": ["type", "value"],
@@ -10214,7 +10060,7 @@
               "$ref": "#/definitions/PaddingSideThemeValue"
             }
           ],
-          "description": "One side value: unset, measured lengths, the catalog option, optical padding, match computed, or a theme step."
+          "description": "One side value: unset, measured lengths, the catalog option, optical padding, or a theme step."
         },
         "left": {
           "anyOf": [
@@ -10238,40 +10084,6 @@
               "additionalProperties": false,
               "properties": {
                 "type": {
-                  "const": "computed",
-                  "description": "Resolve from a declared function and inputs that reference other values.",
-                  "type": "string"
-                },
-                "value": {
-                  "additionalProperties": false,
-                  "properties": {
-                    "function": {
-                      "const": "match",
-                      "description": "Reuse the resolved value from another property path.",
-                      "type": "string"
-                    },
-                    "input": {
-                      "additionalProperties": false,
-                      "properties": {
-                        "basedOn": {
-                          "$ref": "#/definitions/BasedOnPropertyKey"
-                        }
-                      },
-                      "required": ["basedOn"],
-                      "type": "object"
-                    }
-                  },
-                  "required": ["function", "input"],
-                  "type": "object"
-                }
-              },
-              "required": ["type", "value"],
-              "type": "object"
-            },
-            {
-              "additionalProperties": false,
-              "properties": {
-                "type": {
                   "const": "exact",
                   "description": "Store a literal only, with no pointer to theme tokens or other properties.",
                   "type": "string"
@@ -10358,29 +10170,9 @@
                   "type": "string"
                 },
                 "value": {
-                  "additionalProperties": false,
-                  "properties": {
-                    "function": {
-                      "const": "opticalPadding",
-                      "description": "Adjust padding so perceived spacing lines up with the design.",
-                      "type": "string"
-                    },
-                    "input": {
-                      "additionalProperties": false,
-                      "properties": {
-                        "basedOn": {
-                          "$ref": "#/definitions/BasedOnPropertyKey"
-                        },
-                        "factor": {
-                          "type": "number"
-                        }
-                      },
-                      "required": ["basedOn", "factor"],
-                      "type": "object"
-                    }
-                  },
-                  "required": ["function", "input"],
-                  "type": "object"
+                  "const": "opticalPadding",
+                  "description": "Adjust padding so perceived spacing lines up with the design.",
+                  "type": "string"
                 }
               },
               "required": ["type", "value"],
@@ -10393,7 +10185,7 @@
               "$ref": "#/definitions/PaddingSideThemeValue"
             }
           ],
-          "description": "One side value: unset, measured lengths, the catalog option, optical padding, match computed, or a theme step."
+          "description": "One side value: unset, measured lengths, the catalog option, optical padding, or a theme step."
         },
         "right": {
           "anyOf": [
@@ -10417,40 +10209,6 @@
               "additionalProperties": false,
               "properties": {
                 "type": {
-                  "const": "computed",
-                  "description": "Resolve from a declared function and inputs that reference other values.",
-                  "type": "string"
-                },
-                "value": {
-                  "additionalProperties": false,
-                  "properties": {
-                    "function": {
-                      "const": "match",
-                      "description": "Reuse the resolved value from another property path.",
-                      "type": "string"
-                    },
-                    "input": {
-                      "additionalProperties": false,
-                      "properties": {
-                        "basedOn": {
-                          "$ref": "#/definitions/BasedOnPropertyKey"
-                        }
-                      },
-                      "required": ["basedOn"],
-                      "type": "object"
-                    }
-                  },
-                  "required": ["function", "input"],
-                  "type": "object"
-                }
-              },
-              "required": ["type", "value"],
-              "type": "object"
-            },
-            {
-              "additionalProperties": false,
-              "properties": {
-                "type": {
                   "const": "exact",
                   "description": "Store a literal only, with no pointer to theme tokens or other properties.",
                   "type": "string"
@@ -10537,29 +10295,9 @@
                   "type": "string"
                 },
                 "value": {
-                  "additionalProperties": false,
-                  "properties": {
-                    "function": {
-                      "const": "opticalPadding",
-                      "description": "Adjust padding so perceived spacing lines up with the design.",
-                      "type": "string"
-                    },
-                    "input": {
-                      "additionalProperties": false,
-                      "properties": {
-                        "basedOn": {
-                          "$ref": "#/definitions/BasedOnPropertyKey"
-                        },
-                        "factor": {
-                          "type": "number"
-                        }
-                      },
-                      "required": ["basedOn", "factor"],
-                      "type": "object"
-                    }
-                  },
-                  "required": ["function", "input"],
-                  "type": "object"
+                  "const": "opticalPadding",
+                  "description": "Adjust padding so perceived spacing lines up with the design.",
+                  "type": "string"
                 }
               },
               "required": ["type", "value"],
@@ -10572,7 +10310,7 @@
               "$ref": "#/definitions/PaddingSideThemeValue"
             }
           ],
-          "description": "One side value: unset, measured lengths, the catalog option, optical padding, match computed, or a theme step."
+          "description": "One side value: unset, measured lengths, the catalog option, optical padding, or a theme step."
         },
         "top": {
           "anyOf": [
@@ -10596,40 +10334,6 @@
               "additionalProperties": false,
               "properties": {
                 "type": {
-                  "const": "computed",
-                  "description": "Resolve from a declared function and inputs that reference other values.",
-                  "type": "string"
-                },
-                "value": {
-                  "additionalProperties": false,
-                  "properties": {
-                    "function": {
-                      "const": "match",
-                      "description": "Reuse the resolved value from another property path.",
-                      "type": "string"
-                    },
-                    "input": {
-                      "additionalProperties": false,
-                      "properties": {
-                        "basedOn": {
-                          "$ref": "#/definitions/BasedOnPropertyKey"
-                        }
-                      },
-                      "required": ["basedOn"],
-                      "type": "object"
-                    }
-                  },
-                  "required": ["function", "input"],
-                  "type": "object"
-                }
-              },
-              "required": ["type", "value"],
-              "type": "object"
-            },
-            {
-              "additionalProperties": false,
-              "properties": {
-                "type": {
                   "const": "exact",
                   "description": "Store a literal only, with no pointer to theme tokens or other properties.",
                   "type": "string"
@@ -10716,29 +10420,9 @@
                   "type": "string"
                 },
                 "value": {
-                  "additionalProperties": false,
-                  "properties": {
-                    "function": {
-                      "const": "opticalPadding",
-                      "description": "Adjust padding so perceived spacing lines up with the design.",
-                      "type": "string"
-                    },
-                    "input": {
-                      "additionalProperties": false,
-                      "properties": {
-                        "basedOn": {
-                          "$ref": "#/definitions/BasedOnPropertyKey"
-                        },
-                        "factor": {
-                          "type": "number"
-                        }
-                      },
-                      "required": ["basedOn", "factor"],
-                      "type": "object"
-                    }
-                  },
-                  "required": ["function", "input"],
-                  "type": "object"
+                  "const": "opticalPadding",
+                  "description": "Adjust padding so perceived spacing lines up with the design.",
+                  "type": "string"
                 }
               },
               "required": ["type", "value"],
@@ -10751,12 +10435,12 @@
               "$ref": "#/definitions/PaddingSideThemeValue"
             }
           ],
-          "description": "One side value: unset, measured lengths, the catalog option, optical padding, match computed, or a theme step."
+          "description": "One side value: unset, measured lengths, the catalog option, optical padding, or a theme step."
         }
       },
       "type": "object"
     },
-    "Partial<{display:DisplayValue;htmlElement:HtmlElementValue;wrapperElement:WrapperElementValue;content:ContentValue;symbol:SymbolValue;source:ImageSourceValue;imageFit:ImageFitValue;altText:ContentValue;inputType:InputTypeValue;placeholder:ContentValue;checked:CheckedValue;controls:ControlsValue;autoPlay:AutoPlayValue;loop:LoopValue;muted:MutedValue;poster:ImageSourceValue;preload:PreloadValue;trackKind:TrackKindValue;srcLang:ContentValue;trackLabel:ContentValue;trackDefault:TrackDefaultValue;mediaType:ContentValue;mediaQuery:ContentValue;ariaLabel:ContentValue;ariaHidden:EmptyValue|BooleanValue;size:SizeValue;buttonSize:ButtonSizeValue;board:BoardCompound;screenWidth:ScreenWidthValue;screenHeight:ScreenHeightValue;cursor:CursorValue;direction:DirectionValue;placement:PlacementValue;position:PositionValue;orientation:OrientationValue;align:AlignValue;width:DimensionValue;height:DimensionValue;margin:MarginValue;padding:PaddingValue;gap:GapValue;rotation:RotationValue;wrapChildren:EmptyValue|BooleanValue;clip:EmptyValue|BooleanValue;listStyleType:ListStyleTypeValue;listStylePosition:ListStylePositionValue;columns:ColumnCountValue;rows:RowCountValue;columnStart:ColumnStartValue;columnSpan:ColumnSpanValue;rowStart:RowStartValue;rowSpan:RowSpanValue;cellAlign:InheritValue|AlignValue;dimension:DimensionValue;resize:ResizeValue;screenSize:ScreenSizeValue;color:ColorValue;accentColor:ColorValue;brightness:BrightnessValue;opacity:OpacityValue;background:BackgroundLayer[];border:BorderCompound;borderTop:BorderCompound;borderRight:BorderCompound;borderBottom:BorderCompound;borderLeft:BorderCompound;corners:CornersValue;borderCollapse:BorderCollapseValue;font:FontCompound;textAlign:TextAlignValue;textDecoration:TextDecorationValue;wrapText:EmptyValue|BooleanValue;lines:LinesValue;shadow:ShadowCompound[];scroll:ScrollValue;scrollbarStyle:ScrollbarStyleValue;}>": {
+    "Partial<{display:DisplayValue;htmlElement:HtmlElementValue;wrapperElement:WrapperElementValue;content:ContentValue;symbol:SymbolValue;source:ImageSourceValue;imageFit:ImageFitValue;altText:ContentValue;inputType:InputTypeValue;placeholder:ContentValue;checked:CheckedValue;controls:ControlsValue;autoPlay:AutoPlayValue;loop:LoopValue;muted:MutedValue;poster:ImageSourceValue;preload:PreloadValue;trackKind:TrackKindValue;srcLang:ContentValue;trackLabel:ContentValue;trackDefault:TrackDefaultValue;mediaType:ContentValue;mediaQuery:ContentValue;size:SizeValue;buttonSize:ButtonSizeValue;board:BoardCompound;screenWidth:ScreenWidthValue;screenHeight:ScreenHeightValue;cursor:CursorValue;direction:DirectionValue;placement:PlacementValue;position:PositionValue;orientation:OrientationValue;align:AlignValue;width:DimensionValue;height:DimensionValue;margin:MarginValue;padding:PaddingValue;gap:GapValue;rotation:RotationValue;wrapChildren:EmptyValue|BooleanValue;clip:EmptyValue|BooleanValue;listStyleType:ListStyleTypeValue;listStylePosition:ListStylePositionValue;columns:ColumnCountValue;rows:RowCountValue;columnStart:ColumnStartValue;columnSpan:ColumnSpanValue;rowStart:RowStartValue;rowSpan:RowSpanValue;cellAlign:InheritValue|AlignValue;dimension:DimensionValue;resize:ResizeValue;screenSize:ScreenSizeValue;color:ColorValue;accentColor:ColorValue;brightness:BrightnessValue;opacity:OpacityValue;background:BackgroundLayer[];border:BorderCompound;borderTop:BorderCompound;borderRight:BorderCompound;borderBottom:BorderCompound;borderLeft:BorderCompound;corners:CornersValue;borderCollapse:BorderCollapseValue;font:FontCompound;textAlign:TextAlignValue;textDecoration:TextDecorationValue;wrapText:EmptyValue|BooleanValue;lines:LinesValue;shadow:ShadowCompound[];scroll:ScrollValue;scrollbarStyle:ScrollbarStyleValue;role:AriaRoleValue;ariaLabel:ContentValue;ariaHidden:EmptyValue|BooleanValue;ariaDisabled:AriaDisabledValue;ariaExpanded:AriaExpandedValue;ariaSelected:AriaSelectedValue;ariaChecked:AriaTristateValue;ariaPressed:AriaTristateValue;ariaCurrent:AriaCurrentValue;ariaHasPopup:AriaHasPopupValue;ariaInvalid:AriaInvalidValue;ariaRequired:AriaRequiredValue;ariaReadonly:AriaReadonlyValue;ariaLive:AriaLiveValue;}>": {
       "additionalProperties": false,
       "properties": {
         "accentColor": {
@@ -10795,26 +10479,9 @@
                   "type": "string"
                 },
                 "value": {
-                  "additionalProperties": false,
-                  "properties": {
-                    "function": {
-                      "const": "highContrastColor",
-                      "description": "Pick a foreground or background color that stays readable on the base color.",
-                      "type": "string"
-                    },
-                    "input": {
-                      "additionalProperties": false,
-                      "properties": {
-                        "basedOn": {
-                          "$ref": "#/definitions/BasedOnPropertyKey"
-                        }
-                      },
-                      "required": ["basedOn"],
-                      "type": "object"
-                    }
-                  },
-                  "required": ["function", "input"],
-                  "type": "object"
+                  "const": "highContrastColor",
+                  "description": "Pick a foreground or background color that stays readable on the base color.",
+                  "type": "string"
                 }
               },
               "required": ["type", "value"],
@@ -10829,26 +10496,9 @@
                   "type": "string"
                 },
                 "value": {
-                  "additionalProperties": false,
-                  "properties": {
-                    "function": {
-                      "const": "match",
-                      "description": "Reuse the resolved value from another property path.",
-                      "type": "string"
-                    },
-                    "input": {
-                      "additionalProperties": false,
-                      "properties": {
-                        "basedOn": {
-                          "$ref": "#/definitions/BasedOnPropertyKey"
-                        }
-                      },
-                      "required": ["basedOn"],
-                      "type": "object"
-                    }
-                  },
-                  "required": ["function", "input"],
-                  "type": "object"
+                  "const": "matchColor",
+                  "description": "Match a color facet to another color in the node's own background chain.",
+                  "type": "string"
                 }
               },
               "required": ["type", "value"],
@@ -10930,6 +10580,184 @@
             }
           ]
         },
+        "ariaChecked": {
+          "anyOf": [
+            {
+              "additionalProperties": false,
+              "description": "The value CAN be set but initially it is not.",
+              "properties": {
+                "type": {
+                  "const": "empty",
+                  "description": "Leave unset so defaults and platform rules apply after merge.",
+                  "type": "string"
+                },
+                "value": {
+                  "type": "null"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            },
+            {
+              "$ref": "#/definitions/AriaTristateOptionValue"
+            }
+          ],
+          "description": "Empty, or a tristate keyword (`true`, `false`, `mixed`)."
+        },
+        "ariaCurrent": {
+          "anyOf": [
+            {
+              "additionalProperties": false,
+              "description": "The value CAN be set but initially it is not.",
+              "properties": {
+                "type": {
+                  "const": "empty",
+                  "description": "Leave unset so defaults and platform rules apply after merge.",
+                  "type": "string"
+                },
+                "value": {
+                  "type": "null"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            },
+            {
+              "$ref": "#/definitions/AriaCurrentOptionValue"
+            }
+          ],
+          "description": "Empty, or an `aria-current` keyword."
+        },
+        "ariaDisabled": {
+          "anyOf": [
+            {
+              "additionalProperties": false,
+              "description": "The value CAN be set but initially it is not.",
+              "properties": {
+                "type": {
+                  "const": "empty",
+                  "description": "Leave unset so defaults and platform rules apply after merge.",
+                  "type": "string"
+                },
+                "value": {
+                  "type": "null"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "description": "Stores a boolean as a freeform exact value (true/false typed in directly).",
+              "properties": {
+                "type": {
+                  "const": "exact",
+                  "description": "Store a literal only, with no pointer to theme tokens or other properties.",
+                  "type": "string"
+                },
+                "value": {
+                  "type": "boolean"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "description": "Stores a boolean as an option pick from the schema's preset list (true/false).",
+              "properties": {
+                "type": {
+                  "const": "option",
+                  "description": "Store one allowed enum or list entry defined for the property.",
+                  "type": "string"
+                },
+                "value": {
+                  "type": "boolean"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            }
+          ],
+          "description": "Not set, a freeform boolean, or a picked boolean for the disabled state exposed to assistive technologies."
+        },
+        "ariaExpanded": {
+          "anyOf": [
+            {
+              "additionalProperties": false,
+              "description": "The value CAN be set but initially it is not.",
+              "properties": {
+                "type": {
+                  "const": "empty",
+                  "description": "Leave unset so defaults and platform rules apply after merge.",
+                  "type": "string"
+                },
+                "value": {
+                  "type": "null"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "description": "Stores a boolean as a freeform exact value (true/false typed in directly).",
+              "properties": {
+                "type": {
+                  "const": "exact",
+                  "description": "Store a literal only, with no pointer to theme tokens or other properties.",
+                  "type": "string"
+                },
+                "value": {
+                  "type": "boolean"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "description": "Stores a boolean as an option pick from the schema's preset list (true/false).",
+              "properties": {
+                "type": {
+                  "const": "option",
+                  "description": "Store one allowed enum or list entry defined for the property.",
+                  "type": "string"
+                },
+                "value": {
+                  "type": "boolean"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            }
+          ],
+          "description": "Not set, a freeform boolean, or a picked boolean for the expanded state of an expandable node."
+        },
+        "ariaHasPopup": {
+          "anyOf": [
+            {
+              "additionalProperties": false,
+              "description": "The value CAN be set but initially it is not.",
+              "properties": {
+                "type": {
+                  "const": "empty",
+                  "description": "Leave unset so defaults and platform rules apply after merge.",
+                  "type": "string"
+                },
+                "value": {
+                  "type": "null"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            },
+            {
+              "$ref": "#/definitions/AriaHasPopupOptionValue"
+            }
+          ],
+          "description": "Empty, or an `aria-haspopup` keyword."
+        },
         "ariaHidden": {
           "anyOf": [
             {
@@ -10966,6 +10794,30 @@
             }
           ]
         },
+        "ariaInvalid": {
+          "anyOf": [
+            {
+              "additionalProperties": false,
+              "description": "The value CAN be set but initially it is not.",
+              "properties": {
+                "type": {
+                  "const": "empty",
+                  "description": "Leave unset so defaults and platform rules apply after merge.",
+                  "type": "string"
+                },
+                "value": {
+                  "type": "null"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            },
+            {
+              "$ref": "#/definitions/AriaInvalidOptionValue"
+            }
+          ],
+          "description": "Empty, or an `aria-invalid` keyword."
+        },
         "ariaLabel": {
           "anyOf": [
             {
@@ -11001,6 +10853,213 @@
               "type": "object"
             }
           ]
+        },
+        "ariaLive": {
+          "anyOf": [
+            {
+              "additionalProperties": false,
+              "description": "The value CAN be set but initially it is not.",
+              "properties": {
+                "type": {
+                  "const": "empty",
+                  "description": "Leave unset so defaults and platform rules apply after merge.",
+                  "type": "string"
+                },
+                "value": {
+                  "type": "null"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            },
+            {
+              "$ref": "#/definitions/AriaLiveOptionValue"
+            }
+          ],
+          "description": "Empty, or an `aria-live` keyword."
+        },
+        "ariaPressed": {
+          "anyOf": [
+            {
+              "additionalProperties": false,
+              "description": "The value CAN be set but initially it is not.",
+              "properties": {
+                "type": {
+                  "const": "empty",
+                  "description": "Leave unset so defaults and platform rules apply after merge.",
+                  "type": "string"
+                },
+                "value": {
+                  "type": "null"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            },
+            {
+              "$ref": "#/definitions/AriaTristateOptionValue"
+            }
+          ],
+          "description": "Empty, or a tristate keyword (`true`, `false`, `mixed`)."
+        },
+        "ariaReadonly": {
+          "anyOf": [
+            {
+              "additionalProperties": false,
+              "description": "The value CAN be set but initially it is not.",
+              "properties": {
+                "type": {
+                  "const": "empty",
+                  "description": "Leave unset so defaults and platform rules apply after merge.",
+                  "type": "string"
+                },
+                "value": {
+                  "type": "null"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "description": "Stores a boolean as a freeform exact value (true/false typed in directly).",
+              "properties": {
+                "type": {
+                  "const": "exact",
+                  "description": "Store a literal only, with no pointer to theme tokens or other properties.",
+                  "type": "string"
+                },
+                "value": {
+                  "type": "boolean"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "description": "Stores a boolean as an option pick from the schema's preset list (true/false).",
+              "properties": {
+                "type": {
+                  "const": "option",
+                  "description": "Store one allowed enum or list entry defined for the property.",
+                  "type": "string"
+                },
+                "value": {
+                  "type": "boolean"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            }
+          ],
+          "description": "Not set, a freeform boolean, or a picked boolean for the read only state."
+        },
+        "ariaRequired": {
+          "anyOf": [
+            {
+              "additionalProperties": false,
+              "description": "The value CAN be set but initially it is not.",
+              "properties": {
+                "type": {
+                  "const": "empty",
+                  "description": "Leave unset so defaults and platform rules apply after merge.",
+                  "type": "string"
+                },
+                "value": {
+                  "type": "null"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "description": "Stores a boolean as a freeform exact value (true/false typed in directly).",
+              "properties": {
+                "type": {
+                  "const": "exact",
+                  "description": "Store a literal only, with no pointer to theme tokens or other properties.",
+                  "type": "string"
+                },
+                "value": {
+                  "type": "boolean"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "description": "Stores a boolean as an option pick from the schema's preset list (true/false).",
+              "properties": {
+                "type": {
+                  "const": "option",
+                  "description": "Store one allowed enum or list entry defined for the property.",
+                  "type": "string"
+                },
+                "value": {
+                  "type": "boolean"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            }
+          ],
+          "description": "Not set, a freeform boolean, or a picked boolean for whether input is required."
+        },
+        "ariaSelected": {
+          "anyOf": [
+            {
+              "additionalProperties": false,
+              "description": "The value CAN be set but initially it is not.",
+              "properties": {
+                "type": {
+                  "const": "empty",
+                  "description": "Leave unset so defaults and platform rules apply after merge.",
+                  "type": "string"
+                },
+                "value": {
+                  "type": "null"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "description": "Stores a boolean as a freeform exact value (true/false typed in directly).",
+              "properties": {
+                "type": {
+                  "const": "exact",
+                  "description": "Store a literal only, with no pointer to theme tokens or other properties.",
+                  "type": "string"
+                },
+                "value": {
+                  "type": "boolean"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "description": "Stores a boolean as an option pick from the schema's preset list (true/false).",
+              "properties": {
+                "type": {
+                  "const": "option",
+                  "description": "Store one allowed enum or list entry defined for the property.",
+                  "type": "string"
+                },
+                "value": {
+                  "type": "boolean"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            }
+          ],
+          "description": "Not set, a freeform boolean, or a picked boolean for the selected state of a selectable node."
         },
         "autoPlay": {
           "anyOf": [
@@ -11568,26 +11627,9 @@
                   "type": "string"
                 },
                 "value": {
-                  "additionalProperties": false,
-                  "properties": {
-                    "function": {
-                      "const": "highContrastColor",
-                      "description": "Pick a foreground or background color that stays readable on the base color.",
-                      "type": "string"
-                    },
-                    "input": {
-                      "additionalProperties": false,
-                      "properties": {
-                        "basedOn": {
-                          "$ref": "#/definitions/BasedOnPropertyKey"
-                        }
-                      },
-                      "required": ["basedOn"],
-                      "type": "object"
-                    }
-                  },
-                  "required": ["function", "input"],
-                  "type": "object"
+                  "const": "highContrastColor",
+                  "description": "Pick a foreground or background color that stays readable on the base color.",
+                  "type": "string"
                 }
               },
               "required": ["type", "value"],
@@ -11602,26 +11644,9 @@
                   "type": "string"
                 },
                 "value": {
-                  "additionalProperties": false,
-                  "properties": {
-                    "function": {
-                      "const": "match",
-                      "description": "Reuse the resolved value from another property path.",
-                      "type": "string"
-                    },
-                    "input": {
-                      "additionalProperties": false,
-                      "properties": {
-                        "basedOn": {
-                          "$ref": "#/definitions/BasedOnPropertyKey"
-                        }
-                      },
-                      "required": ["basedOn"],
-                      "type": "object"
-                    }
-                  },
-                  "required": ["function", "input"],
-                  "type": "object"
+                  "const": "matchColor",
+                  "description": "Match a color facet to another color in the node's own background chain.",
+                  "type": "string"
                 }
               },
               "required": ["type", "value"],
@@ -11962,63 +11987,9 @@
                   "type": "string"
                 },
                 "value": {
-                  "additionalProperties": false,
-                  "properties": {
-                    "function": {
-                      "const": "match",
-                      "description": "Reuse the resolved value from another property path.",
-                      "type": "string"
-                    },
-                    "input": {
-                      "additionalProperties": false,
-                      "properties": {
-                        "basedOn": {
-                          "$ref": "#/definitions/BasedOnPropertyKey"
-                        }
-                      },
-                      "required": ["basedOn"],
-                      "type": "object"
-                    }
-                  },
-                  "required": ["function", "input"],
-                  "type": "object"
-                }
-              },
-              "required": ["type", "value"],
-              "type": "object"
-            },
-            {
-              "additionalProperties": false,
-              "properties": {
-                "type": {
-                  "const": "computed",
-                  "description": "Resolve from a declared function and inputs that reference other values.",
+                  "const": "autoFit",
+                  "description": "Scale a length or size from a reference value and factor.",
                   "type": "string"
-                },
-                "value": {
-                  "additionalProperties": false,
-                  "properties": {
-                    "function": {
-                      "const": "autoFit",
-                      "description": "Scale a length or size from a reference value and factor.",
-                      "type": "string"
-                    },
-                    "input": {
-                      "additionalProperties": false,
-                      "properties": {
-                        "basedOn": {
-                          "$ref": "#/definitions/BasedOnPropertyKey"
-                        },
-                        "factor": {
-                          "type": "number"
-                        }
-                      },
-                      "required": ["basedOn", "factor"],
-                      "type": "object"
-                    }
-                  },
-                  "required": ["function", "input"],
-                  "type": "object"
                 }
               },
               "required": ["type", "value"],
@@ -12488,63 +12459,9 @@
                       "type": "string"
                     },
                     "value": {
-                      "additionalProperties": false,
-                      "properties": {
-                        "function": {
-                          "const": "match",
-                          "description": "Reuse the resolved value from another property path.",
-                          "type": "string"
-                        },
-                        "input": {
-                          "additionalProperties": false,
-                          "properties": {
-                            "basedOn": {
-                              "$ref": "#/definitions/BasedOnPropertyKey"
-                            }
-                          },
-                          "required": ["basedOn"],
-                          "type": "object"
-                        }
-                      },
-                      "required": ["function", "input"],
-                      "type": "object"
-                    }
-                  },
-                  "required": ["type", "value"],
-                  "type": "object"
-                },
-                {
-                  "additionalProperties": false,
-                  "properties": {
-                    "type": {
-                      "const": "computed",
-                      "description": "Resolve from a declared function and inputs that reference other values.",
+                      "const": "autoFit",
+                      "description": "Scale a length or size from a reference value and factor.",
                       "type": "string"
-                    },
-                    "value": {
-                      "additionalProperties": false,
-                      "properties": {
-                        "function": {
-                          "const": "autoFit",
-                          "description": "Scale a length or size from a reference value and factor.",
-                          "type": "string"
-                        },
-                        "input": {
-                          "additionalProperties": false,
-                          "properties": {
-                            "basedOn": {
-                              "$ref": "#/definitions/BasedOnPropertyKey"
-                            },
-                            "factor": {
-                              "type": "number"
-                            }
-                          },
-                          "required": ["basedOn", "factor"],
-                          "type": "object"
-                        }
-                      },
-                      "required": ["function", "input"],
-                      "type": "object"
                     }
                   },
                   "required": ["type", "value"],
@@ -12737,40 +12654,6 @@
               "additionalProperties": false,
               "properties": {
                 "type": {
-                  "const": "computed",
-                  "description": "Resolve from a declared function and inputs that reference other values.",
-                  "type": "string"
-                },
-                "value": {
-                  "additionalProperties": false,
-                  "properties": {
-                    "function": {
-                      "const": "match",
-                      "description": "Reuse the resolved value from another property path.",
-                      "type": "string"
-                    },
-                    "input": {
-                      "additionalProperties": false,
-                      "properties": {
-                        "basedOn": {
-                          "$ref": "#/definitions/BasedOnPropertyKey"
-                        }
-                      },
-                      "required": ["basedOn"],
-                      "type": "object"
-                    }
-                  },
-                  "required": ["function", "input"],
-                  "type": "object"
-                }
-              },
-              "required": ["type", "value"],
-              "type": "object"
-            },
-            {
-              "additionalProperties": false,
-              "properties": {
-                "type": {
                   "const": "exact",
                   "description": "Store a literal only, with no pointer to theme tokens or other properties.",
                   "type": "string"
@@ -12883,63 +12766,9 @@
                   "type": "string"
                 },
                 "value": {
-                  "additionalProperties": false,
-                  "properties": {
-                    "function": {
-                      "const": "match",
-                      "description": "Reuse the resolved value from another property path.",
-                      "type": "string"
-                    },
-                    "input": {
-                      "additionalProperties": false,
-                      "properties": {
-                        "basedOn": {
-                          "$ref": "#/definitions/BasedOnPropertyKey"
-                        }
-                      },
-                      "required": ["basedOn"],
-                      "type": "object"
-                    }
-                  },
-                  "required": ["function", "input"],
-                  "type": "object"
-                }
-              },
-              "required": ["type", "value"],
-              "type": "object"
-            },
-            {
-              "additionalProperties": false,
-              "properties": {
-                "type": {
-                  "const": "computed",
-                  "description": "Resolve from a declared function and inputs that reference other values.",
+                  "const": "autoFit",
+                  "description": "Scale a length or size from a reference value and factor.",
                   "type": "string"
-                },
-                "value": {
-                  "additionalProperties": false,
-                  "properties": {
-                    "function": {
-                      "const": "autoFit",
-                      "description": "Scale a length or size from a reference value and factor.",
-                      "type": "string"
-                    },
-                    "input": {
-                      "additionalProperties": false,
-                      "properties": {
-                        "basedOn": {
-                          "$ref": "#/definitions/BasedOnPropertyKey"
-                        },
-                        "factor": {
-                          "type": "number"
-                        }
-                      },
-                      "required": ["basedOn", "factor"],
-                      "type": "object"
-                    }
-                  },
-                  "required": ["function", "input"],
-                  "type": "object"
                 }
               },
               "required": ["type", "value"],
@@ -13663,6 +13492,30 @@
             }
           ]
         },
+        "role": {
+          "anyOf": [
+            {
+              "additionalProperties": false,
+              "description": "The value CAN be set but initially it is not.",
+              "properties": {
+                "type": {
+                  "const": "empty",
+                  "description": "Leave unset so defaults and platform rules apply after merge.",
+                  "type": "string"
+                },
+                "value": {
+                  "type": "null"
+                }
+              },
+              "required": ["type", "value"],
+              "type": "object"
+            },
+            {
+              "$ref": "#/definitions/AriaRoleOptionValue"
+            }
+          ],
+          "description": "Empty, or an ARIA role keyword from the curated list."
+        },
         "rotation": {
           "anyOf": [
             {
@@ -13899,29 +13752,9 @@
                   "type": "string"
                 },
                 "value": {
-                  "additionalProperties": false,
-                  "properties": {
-                    "function": {
-                      "const": "autoFit",
-                      "description": "Scale a length or size from a reference value and factor.",
-                      "type": "string"
-                    },
-                    "input": {
-                      "additionalProperties": false,
-                      "properties": {
-                        "basedOn": {
-                          "$ref": "#/definitions/BasedOnPropertyKey"
-                        },
-                        "factor": {
-                          "type": "number"
-                        }
-                      },
-                      "required": ["basedOn", "factor"],
-                      "type": "object"
-                    }
-                  },
-                  "required": ["function", "input"],
-                  "type": "object"
+                  "const": "autoFit",
+                  "description": "Scale a length or size from a reference value and factor.",
+                  "type": "string"
                 }
               },
               "required": ["type", "value"],
@@ -14069,29 +13902,9 @@
                   "type": "string"
                 },
                 "value": {
-                  "additionalProperties": false,
-                  "properties": {
-                    "function": {
-                      "const": "autoFit",
-                      "description": "Scale a length or size from a reference value and factor.",
-                      "type": "string"
-                    },
-                    "input": {
-                      "additionalProperties": false,
-                      "properties": {
-                        "basedOn": {
-                          "$ref": "#/definitions/BasedOnPropertyKey"
-                        },
-                        "factor": {
-                          "type": "number"
-                        }
-                      },
-                      "required": ["basedOn", "factor"],
-                      "type": "object"
-                    }
-                  },
-                  "required": ["function", "input"],
-                  "type": "object"
+                  "const": "autoFit",
+                  "description": "Scale a length or size from a reference value and factor.",
+                  "type": "string"
                 }
               },
               "required": ["type", "value"],
@@ -14236,63 +14049,9 @@
                   "type": "string"
                 },
                 "value": {
-                  "additionalProperties": false,
-                  "properties": {
-                    "function": {
-                      "const": "match",
-                      "description": "Reuse the resolved value from another property path.",
-                      "type": "string"
-                    },
-                    "input": {
-                      "additionalProperties": false,
-                      "properties": {
-                        "basedOn": {
-                          "$ref": "#/definitions/BasedOnPropertyKey"
-                        }
-                      },
-                      "required": ["basedOn"],
-                      "type": "object"
-                    }
-                  },
-                  "required": ["function", "input"],
-                  "type": "object"
-                }
-              },
-              "required": ["type", "value"],
-              "type": "object"
-            },
-            {
-              "additionalProperties": false,
-              "properties": {
-                "type": {
-                  "const": "computed",
-                  "description": "Resolve from a declared function and inputs that reference other values.",
+                  "const": "autoFit",
+                  "description": "Scale a length or size from a reference value and factor.",
                   "type": "string"
-                },
-                "value": {
-                  "additionalProperties": false,
-                  "properties": {
-                    "function": {
-                      "const": "autoFit",
-                      "description": "Scale a length or size from a reference value and factor.",
-                      "type": "string"
-                    },
-                    "input": {
-                      "additionalProperties": false,
-                      "properties": {
-                        "basedOn": {
-                          "$ref": "#/definitions/BasedOnPropertyKey"
-                        },
-                        "factor": {
-                          "type": "number"
-                        }
-                      },
-                      "required": ["basedOn", "factor"],
-                      "type": "object"
-                    }
-                  },
-                  "required": ["function", "input"],
-                  "type": "object"
                 }
               },
               "required": ["type", "value"],
@@ -14656,63 +14415,9 @@
                   "type": "string"
                 },
                 "value": {
-                  "additionalProperties": false,
-                  "properties": {
-                    "function": {
-                      "const": "match",
-                      "description": "Reuse the resolved value from another property path.",
-                      "type": "string"
-                    },
-                    "input": {
-                      "additionalProperties": false,
-                      "properties": {
-                        "basedOn": {
-                          "$ref": "#/definitions/BasedOnPropertyKey"
-                        }
-                      },
-                      "required": ["basedOn"],
-                      "type": "object"
-                    }
-                  },
-                  "required": ["function", "input"],
-                  "type": "object"
-                }
-              },
-              "required": ["type", "value"],
-              "type": "object"
-            },
-            {
-              "additionalProperties": false,
-              "properties": {
-                "type": {
-                  "const": "computed",
-                  "description": "Resolve from a declared function and inputs that reference other values.",
+                  "const": "autoFit",
+                  "description": "Scale a length or size from a reference value and factor.",
                   "type": "string"
-                },
-                "value": {
-                  "additionalProperties": false,
-                  "properties": {
-                    "function": {
-                      "const": "autoFit",
-                      "description": "Scale a length or size from a reference value and factor.",
-                      "type": "string"
-                    },
-                    "input": {
-                      "additionalProperties": false,
-                      "properties": {
-                        "basedOn": {
-                          "$ref": "#/definitions/BasedOnPropertyKey"
-                        },
-                        "factor": {
-                          "type": "number"
-                        }
-                      },
-                      "required": ["basedOn", "factor"],
-                      "type": "object"
-                    }
-                  },
-                  "required": ["function", "input"],
-                  "type": "object"
                 }
               },
               "required": ["type", "value"],
@@ -15447,8 +15152,19 @@
         "accentColor",
         "align",
         "altText",
+        "ariaChecked",
+        "ariaCurrent",
+        "ariaDisabled",
+        "ariaExpanded",
+        "ariaHasPopup",
         "ariaHidden",
+        "ariaInvalid",
         "ariaLabel",
+        "ariaLive",
+        "ariaPressed",
+        "ariaReadonly",
+        "ariaRequired",
+        "ariaSelected",
         "autoPlay",
         "background",
         "board",
@@ -15497,6 +15213,7 @@
         "poster",
         "preload",
         "resize",
+        "role",
         "rotation",
         "rowSpan",
         "rowStart",
@@ -15586,28 +15303,27 @@
       "additionalProperties": false,
       "type": "object"
     },
+    "Record<string,string[]>": {
+      "additionalProperties": false,
+      "type": "object"
+    },
     "Record<string,unknown>": {
       "additionalProperties": false,
       "type": "object"
     },
     "RepeatEditorData": {
       "additionalProperties": false,
-      "description": "Editor-only repeat preview state stored on a child node. The node paints `count` times on the canvas. Index 0 is the single real, selectable node; the rest are render-only echoes. `data` carries per-echo placeholder strings keyed by a descendant node id for text/icon prototyping.",
+      "description": "Editor-only repeat preview state stored on a child node. The node paints\n`count` times on the canvas. Index 0 is the single real, selectable node;\nthe rest are render-only echoes. `data` carries per-echo placeholder strings\nkeyed by a descendant node id for text/icon prototyping.",
       "properties": {
         "count": {
+          "description": "Total rendered copies including index 0. Range 1..{@link MAX_REPEAT_COUNT}.\nOptional: an instance may store a data-only override that omits `count` and\ninherits it from the template via {@link resolveNodeRepeat}.",
           "type": "number"
         },
         "data": {
-          "additionalProperties": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array"
-          },
-          "type": "object"
+          "$ref": "#/definitions/Record<string,string[]>",
+          "description": "Optional prototyping strings for text/icon descendants. Keyed by a stable\ndescendant node id. Each array holds values for echoes 1..count-1; index 0\nalways renders the descendant's own value. An empty slot inherits."
         }
       },
-      "required": ["count"],
       "type": "object"
     },
     "Resize": {
@@ -16089,26 +15805,9 @@
                   "type": "string"
                 },
                 "value": {
-                  "additionalProperties": false,
-                  "properties": {
-                    "function": {
-                      "const": "highContrastColor",
-                      "description": "Pick a foreground or background color that stays readable on the base color.",
-                      "type": "string"
-                    },
-                    "input": {
-                      "additionalProperties": false,
-                      "properties": {
-                        "basedOn": {
-                          "$ref": "#/definitions/BasedOnPropertyKey"
-                        }
-                      },
-                      "required": ["basedOn"],
-                      "type": "object"
-                    }
-                  },
-                  "required": ["function", "input"],
-                  "type": "object"
+                  "const": "highContrastColor",
+                  "description": "Pick a foreground or background color that stays readable on the base color.",
+                  "type": "string"
                 }
               },
               "required": ["type", "value"],
@@ -16123,26 +15822,9 @@
                   "type": "string"
                 },
                 "value": {
-                  "additionalProperties": false,
-                  "properties": {
-                    "function": {
-                      "const": "match",
-                      "description": "Reuse the resolved value from another property path.",
-                      "type": "string"
-                    },
-                    "input": {
-                      "additionalProperties": false,
-                      "properties": {
-                        "basedOn": {
-                          "$ref": "#/definitions/BasedOnPropertyKey"
-                        }
-                      },
-                      "required": ["basedOn"],
-                      "type": "object"
-                    }
-                  },
-                  "required": ["function", "input"],
-                  "type": "object"
+                  "const": "matchColor",
+                  "description": "Match a color facet to another color in the node's own background chain.",
+                  "type": "string"
                 }
               },
               "required": ["type", "value"],
@@ -16646,26 +16328,9 @@
                   "type": "string"
                 },
                 "value": {
-                  "additionalProperties": false,
-                  "properties": {
-                    "function": {
-                      "const": "highContrastColor",
-                      "description": "Pick a foreground or background color that stays readable on the base color.",
-                      "type": "string"
-                    },
-                    "input": {
-                      "additionalProperties": false,
-                      "properties": {
-                        "basedOn": {
-                          "$ref": "#/definitions/BasedOnPropertyKey"
-                        }
-                      },
-                      "required": ["basedOn"],
-                      "type": "object"
-                    }
-                  },
-                  "required": ["function", "input"],
-                  "type": "object"
+                  "const": "highContrastColor",
+                  "description": "Pick a foreground or background color that stays readable on the base color.",
+                  "type": "string"
                 }
               },
               "required": ["type", "value"],
@@ -16680,26 +16345,9 @@
                   "type": "string"
                 },
                 "value": {
-                  "additionalProperties": false,
-                  "properties": {
-                    "function": {
-                      "const": "match",
-                      "description": "Reuse the resolved value from another property path.",
-                      "type": "string"
-                    },
-                    "input": {
-                      "additionalProperties": false,
-                      "properties": {
-                        "basedOn": {
-                          "$ref": "#/definitions/BasedOnPropertyKey"
-                        }
-                      },
-                      "required": ["basedOn"],
-                      "type": "object"
-                    }
-                  },
-                  "required": ["function", "input"],
-                  "type": "object"
+                  "const": "matchColor",
+                  "description": "Match a color facet to another color in the node's own background chain.",
+                  "type": "string"
                 }
               },
               "required": ["type", "value"],

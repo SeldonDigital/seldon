@@ -125,7 +125,7 @@ export function getThemeOption(key: string, theme: Theme): ThemeOption {
 
   switch (section as `@${ThemeTokenNamespace}`) {
     case "@fontFamily":
-      result = theme.fontFamily[optionId as ThemeFontFamilyId]
+      result = theme.fontFamily.parameters[optionId as ThemeFontFamilyId]
       break
     case "@font":
       result = theme.font[optionId as ThemeFontId]

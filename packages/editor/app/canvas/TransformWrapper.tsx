@@ -12,7 +12,7 @@ import { CanvasScrollToSelection } from "./CanvasScrollToSelection"
 import { CanvasTransformRemeasure } from "./CanvasTransformRemeasure"
 
 export const TRANSFORM_WRAPPER_INITIAL_POSITION_X = 0
-export const TRANSFORM_WRAPPER_INITIAL_POSITION_Y = 30
+export const TRANSFORM_WRAPPER_INITIAL_POSITION_Y = 50
 
 type Props = {
   children: React.ReactNode

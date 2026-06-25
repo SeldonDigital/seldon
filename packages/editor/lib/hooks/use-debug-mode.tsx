@@ -26,7 +26,7 @@ interface DebugState {
   setWorkspaceLogging: (enabled: boolean) => void
 }
 
-const useDebugStore = create<DebugState>()(
+export const useDebugStore = create<DebugState>()(
   persist(
     (set) => ({
       canvasProfiling: false,

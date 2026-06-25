@@ -7,23 +7,18 @@ import { EMPTY_VALUE, Unit, ValueType } from "../constants"
 import type { SubPropertyKey } from "../types/property-keys"
 import type { ComputedOpticalPaddingValue } from "../values/shared/computed/optical-padding"
 import { getBasedOnValue } from "./get-based-on-value"
+import { resolveOpticalPaddingSource } from "./resolve-optical-padding-source"
 import { ComputeContext, ComputeKeys } from "./types"
 
-/** Editor label for `ComputedFunction.OPTICAL_PADDING`. */
-export const OPTICAL_PADDING_DISPLAY_NAME = "Optical Padding"
-
-const LEFT_PADDING_RATIO = 0.64
-const RIGHT_PADDING_RATIO = 0.8
-const Y_PADDING_RATIO = 0.4
-
 /**
- * Multiplies the resolved based-on length by `factor` and by a fixed ratio for the padding side
- * named in `keys.subPropertyKey`. Missing `basedOn` becomes `#parent.fontSize`. Missing `factor`
- * becomes `1.5`.
+ * Multiplies the resolved source length by the theme's side rhythm for the padding side named in
+ * `keys.subPropertyKey`. The source is derived from self first: `#buttonSize`, else `#font.size`,
+ * else the parent fallback `#parent.fontSize` (see {@link resolveOpticalPaddingSource}). The side
+ * rhythms are theme Computed values and are not authored per schema.
  *
- * Supported resolved based-on types: `EXACT` number, `EXACT` length with `unit` and `value`, or
+ * Supported resolved source types: `EXACT` number, `EXACT` length with `unit` and `value`, or
  * `THEME_ORDINAL` only when the token string uses the `@fontSize` prefix. Degrades to `EMPTY` when
- * the `basedOn` path cannot be resolved or resolves to an unsupported type, so an unresolved input
+ * the source path cannot be resolved or resolves to an unsupported type, so an unresolved input
  * never breaks compute or CSS generation.
  *
  * @param value - Stored computed optical padding value
@@ -36,30 +31,24 @@ export function computeOpticalPadding(
   context: ComputeContext,
   keys: ComputeKeys,
 ) {
-  const basedOn = value.value.input.basedOn || "#parent.fontSize"
-  const factor = value.value.input.factor ?? 1.5
-
-  const valueWithDefaults = {
-    ...value,
-    value: {
-      ...value.value,
-      input: { basedOn, factor },
-    },
-  }
+  const basedOn = resolveOpticalPaddingSource(context)
 
   let basedOnValue
   try {
-    basedOnValue = getBasedOnValue(valueWithDefaults, context)
+    basedOnValue = getBasedOnValue(basedOn, context)
   } catch {
     return EMPTY_VALUE
   }
-  const ratio = getRatio(keys.subPropertyKey)
+  const ratio = getRatio(
+    keys.subPropertyKey,
+    context.theme.opticalPadding.parameters,
+  )
 
   if (basedOnValue.type === ValueType.EXACT) {
     if (typeof basedOnValue.value === "number") {
       return {
         ...basedOnValue,
-        value: round(basedOnValue.value * ratio * factor),
+        value: round(basedOnValue.value * ratio),
       }
     }
 
@@ -68,7 +57,7 @@ export function computeOpticalPadding(
         ...basedOnValue,
         value: {
           ...basedOnValue.value,
-          value: round(basedOnValue.value.value * ratio * factor),
+          value: round(basedOnValue.value.value * ratio),
         },
       }
     }
@@ -94,12 +83,12 @@ export function computeOpticalPadding(
         value: round(
           modulate(
             {
-              ratio: context.theme.core.ratio,
-              size: context.theme.core.fontSize / 16,
+              ratio: context.theme.modulation.parameters.ratio,
+              size: context.theme.modulation.parameters.baseFontSize / 16,
               step: themeOption.parameters.step,
             },
             { round: false },
-          ) * factor,
+          ) * ratio,
         ),
       },
     }
@@ -108,18 +97,21 @@ export function computeOpticalPadding(
   return EMPTY_VALUE
 }
 
-/** Maps `subPropertyKey` to left, right, top, or bottom ratio, or uses the left ratio when missing. */
-function getRatio(side?: SubPropertyKey) {
+/** Maps `subPropertyKey` to the left, right, or vertical rhythm, defaulting to left. */
+function getRatio(
+  side: SubPropertyKey | undefined,
+  rhythm: { leftRhythm: number; rightRhythm: number; verticalRhythm: number },
+) {
   switch (side) {
     case "left":
-      return LEFT_PADDING_RATIO
+      return rhythm.leftRhythm
     case "right":
-      return RIGHT_PADDING_RATIO
+      return rhythm.rightRhythm
     case "top":
-      return Y_PADDING_RATIO
+      return rhythm.verticalRhythm
     case "bottom":
-      return Y_PADDING_RATIO
+      return rhythm.verticalRhythm
     default:
-      return LEFT_PADDING_RATIO
+      return rhythm.leftRhythm
   }
 }

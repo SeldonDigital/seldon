@@ -4,17 +4,22 @@
 import { IconSetId } from "../../icon-sets"
 import { ColorValue } from "../../properties/values/appearance/color"
 import { SizeValue } from "../../properties/values/appearance/size"
-import { Harmony, Ratio } from "../constants"
 import {
-  ColorSpaceLiteral,
   StockThemeSwatch,
+  ThemeAutoFit,
   ThemeBorder,
   ThemeBorderWidth,
+  ThemeColorHarmony,
   ThemeExact,
   ThemeFont,
+  ThemeFontFamilyGroup,
   ThemeFontFamilyToken,
   ThemeGradient,
+  ThemeHighContrast,
+  ThemeMatchColor,
   ThemeModulation,
+  ThemeModulationGroup,
+  ThemeOpticalPadding,
   ThemePaletteSlot,
   ThemeScaleToken,
   ThemeScrollbar,
@@ -83,33 +88,20 @@ type BaseTheme<
   TLookIds extends ThemeLookTableIdMap = ThemeLookTableIdMap,
 > = {
   metadata: ThemeMetadata<TId>
-  core: {
-    ratio: Ratio
-    fontSize: number
-    size: number
-  }
+  modulation: ThemeModulationGroup
+  colorHarmony: ThemeColorHarmony
+  matchColor: ThemeMatchColor
+  highContrast: ThemeHighContrast
+  opticalPadding: ThemeOpticalPadding
+  autoFit: ThemeAutoFit
   size: ThemeTokenTable<ThemeSizeId, ThemeScaleToken>
   dimension: ThemeTokenTable<ThemeDimensionId, ThemeScaleToken>
   margin: ThemeTokenTable<ThemeSpacingId, ThemeScaleToken>
   padding: ThemeTokenTable<ThemeSpacingId, ThemeScaleToken>
   gap: ThemeTokenTable<ThemeSpacingId, ThemeScaleToken>
   corners: ThemeTokenTable<ThemeCornersId, ThemeScaleToken>
-  color: {
-    baseColor: ColorSpaceLiteral
-    harmony: Harmony
-    angle: number
-    step: number
-    whitePoint: number
-    grayPoint: number
-    blackPoint: number
-    bleed: number
-    contrastRatio: number
-  }
   swatch: TSwatch
-  fontFamily: {
-    primary: ThemeFontFamilyToken
-    secondary: ThemeFontFamilyToken
-  }
+  fontFamily: ThemeFontFamilyGroup
   fontSize: ThemeTokenTable<ThemeFontSizeId, ThemeScaleToken>
   fontWeight: ThemeTokenTable<ThemeFontWeightId, ThemeExact>
   lineHeight: ThemeTokenTable<ThemeLineHeightId, ThemeExact>

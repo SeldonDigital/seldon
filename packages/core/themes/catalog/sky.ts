@@ -17,25 +17,49 @@ export const theme: StockTheme = {
     intent:
       "To provide a fresh and energetic look with high contrast and readability, suitable for a wide range of applications.",
   },
-  core: {
-    ratio: Ratio.MajorThird,
-    fontSize: 16,
-    size: 1,
+  modulation: {
+    type: TokenType.COMPUTED,
+    parameters: { ratio: Ratio.MajorThird, baseFontSize: 16, baseSize: 1 },
   },
-  color: {
-    baseColor: { hue: 197, saturation: 100, lightness: 45 },
-    harmony: Harmony.Complementary,
-    angle: 16,
-    step: 15,
-    whitePoint: 98,
-    grayPoint: 56,
-    blackPoint: 12,
-    bleed: 4,
-    contrastRatio: 2.5,
+  colorHarmony: {
+    type: TokenType.COMPUTED,
+    parameters: {
+      baseColor: { hue: 197, saturation: 100, lightness: 45 },
+      harmony: Harmony.Complementary,
+      angle: 16,
+      step: 15,
+      whitePoint: 98,
+      grayPoint: 56,
+      blackPoint: 12,
+      bleed: 4,
+    },
+  },
+  matchColor: {
+    type: TokenType.COMPUTED,
+    parameters: { includeBrightness: true, includeOpacity: true },
+  },
+  highContrast: {
+    type: TokenType.COMPUTED,
+    parameters: {
+      contrastRatio: 2.5,
+      fallbackColor: { type: ValueType.EXACT, value: "#FFFFFF" },
+      includeBleed: true,
+    },
+  },
+  opticalPadding: {
+    type: TokenType.COMPUTED,
+    parameters: { leftRhythm: 0.75, rightRhythm: 0.875, verticalRhythm: 0.5 },
+  },
+  autoFit: {
+    type: TokenType.COMPUTED,
+    parameters: { factor: 0.8 },
   },
   fontFamily: {
-    primary: { type: TokenType.FONT_FAMILY, parameters: "Open Sans" },
-    secondary: { type: TokenType.FONT_FAMILY, parameters: "Lora" },
+    type: TokenType.COMPUTED,
+    parameters: {
+      primary: { type: TokenType.FONT_FAMILY, parameters: "Open Sans" },
+      secondary: { type: TokenType.FONT_FAMILY, parameters: "Lora" },
+    },
   },
   size: {
     tiny: {
@@ -718,7 +742,7 @@ export const theme: StockTheme = {
           type: ValueType.THEME_CATEGORICAL,
           value: "@fontFamily.primary",
         },
-        weight: { type: ValueType.THEME_ORDINAL, value: "@fontWeight.medium" },
+        weight: { type: ValueType.THEME_ORDINAL, value: "@fontWeight.normal" },
         size: { type: ValueType.THEME_ORDINAL, value: "@fontSize.small" },
         lineHeight: {
           type: ValueType.THEME_ORDINAL,

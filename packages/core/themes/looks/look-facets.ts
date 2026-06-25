@@ -23,6 +23,7 @@ export interface BridgedLookFacet {
   facet: string
   label: string
   propertyKey: PropertyName
+  icon?: string
 }
 
 /** A facet with inline control metadata and no property bridge. */
@@ -31,6 +32,7 @@ export interface InlineLookFacet {
   label: string
   valueType: ThemeTokenSchemaSupport
   controlType: LookFacetControlType
+  icon?: string
 }
 
 export type LookFacetEntry = BridgedLookFacet | InlineLookFacet
@@ -41,84 +43,183 @@ type LookFacetEntryFor<P> =
       facet: Extract<keyof P, string>
       label: string
       propertyKey: PropertyName
+      icon?: string
     }
   | {
       facet: Extract<keyof P, string>
       label: string
       valueType: ThemeTokenSchemaSupport
       controlType: LookFacetControlType
+      icon?: string
     }
 
 const GRADIENT_LOOK_FACETS = [
-  { facet: "gradientType", label: "Type", propertyKey: "gradientType" },
-  { facet: "angle", label: "Angle", propertyKey: "gradientAngle" },
+  {
+    facet: "gradientType",
+    label: "Type",
+    propertyKey: "gradientType",
+    icon: "seldon-gradient",
+  },
+  {
+    facet: "angle",
+    label: "Angle",
+    propertyKey: "gradientAngle",
+    icon: "seldon-rotation",
+  },
+  {
+    facet: "startPosition",
+    label: "Start Position",
+    propertyKey: "gradientStartPosition",
+    icon: "material-lineStartCircle",
+  },
   {
     facet: "startColor",
     label: "Start Color",
     propertyKey: "gradientStartColor",
   },
   {
-    facet: "startOpacity",
-    label: "Start Opacity",
-    propertyKey: "gradientStartOpacity",
-  },
-  {
     facet: "startBrightness",
     label: "Start Brightness",
     propertyKey: "gradientStartBrightness",
+    icon: "seldon-brightness",
   },
   {
-    facet: "startPosition",
-    label: "Start Position",
-    propertyKey: "gradientStartPosition",
-  },
-  { facet: "endColor", label: "End Color", propertyKey: "gradientEndColor" },
-  {
-    facet: "endOpacity",
-    label: "End Opacity",
-    propertyKey: "gradientEndOpacity",
-  },
-  {
-    facet: "endBrightness",
-    label: "End Brightness",
-    propertyKey: "gradientEndBrightness",
+    facet: "startOpacity",
+    label: "Start Opacity",
+    propertyKey: "gradientStartOpacity",
+    icon: "seldon-opacity",
   },
   {
     facet: "endPosition",
     label: "End Position",
     propertyKey: "gradientEndPosition",
+    icon: "material-lineEndCircle",
+  },
+  { facet: "endColor", label: "End Color", propertyKey: "gradientEndColor" },
+  {
+    facet: "endBrightness",
+    label: "End Brightness",
+    propertyKey: "gradientEndBrightness",
+    icon: "seldon-brightness",
+  },
+  {
+    facet: "endOpacity",
+    label: "End Opacity",
+    propertyKey: "gradientEndOpacity",
+    icon: "seldon-opacity",
   },
 ] as const satisfies readonly LookFacetEntryFor<GradientParameters>[]
 
 const SHADOW_LOOK_FACETS = [
-  { facet: "offsetX", label: "Offset X", propertyKey: "shadowOffsetX" },
-  { facet: "offsetY", label: "Offset Y", propertyKey: "shadowOffsetY" },
-  { facet: "blur", label: "Blur", propertyKey: "shadowBlur" },
-  { facet: "spread", label: "Spread", propertyKey: "shadowSpread" },
   { facet: "color", label: "Color", propertyKey: "shadowColor" },
-  { facet: "brightness", label: "Brightness", propertyKey: "shadowBrightness" },
-  { facet: "opacity", label: "Opacity", propertyKey: "shadowOpacity" },
+  {
+    facet: "brightness",
+    label: "Brightness",
+    propertyKey: "shadowBrightness",
+    icon: "seldon-brightness",
+  },
+  {
+    facet: "opacity",
+    label: "Opacity",
+    propertyKey: "shadowOpacity",
+    icon: "seldon-opacity",
+  },
+  {
+    facet: "offsetX",
+    label: "Offset X",
+    propertyKey: "shadowOffsetX",
+    icon: "material-width",
+  },
+  {
+    facet: "offsetY",
+    label: "Offset Y",
+    propertyKey: "shadowOffsetY",
+    icon: "material-height",
+  },
+  {
+    facet: "blur",
+    label: "Blur",
+    propertyKey: "shadowBlur",
+    icon: "material-blurOn",
+  },
+  {
+    facet: "spread",
+    label: "Spread",
+    propertyKey: "shadowSpread",
+    icon: "material-deblur",
+  },
 ] as const satisfies readonly LookFacetEntryFor<ShadowParameters>[]
 
 const BORDER_LOOK_FACETS = [
-  { facet: "width", label: "Width", propertyKey: "borderWidth" },
-  { facet: "style", label: "Style", propertyKey: "borderStyle" },
+  {
+    facet: "width",
+    label: "Width",
+    propertyKey: "borderWidth",
+    icon: "material-lineWeight",
+  },
+  {
+    facet: "style",
+    label: "Style",
+    propertyKey: "borderStyle",
+    icon: "material-style",
+  },
   { facet: "color", label: "Color", propertyKey: "borderColor" },
-  { facet: "brightness", label: "Brightness", propertyKey: "borderBrightness" },
-  { facet: "opacity", label: "Opacity", propertyKey: "borderOpacity" },
+  {
+    facet: "brightness",
+    label: "Brightness",
+    propertyKey: "borderBrightness",
+    icon: "seldon-brightness",
+  },
+  {
+    facet: "opacity",
+    label: "Opacity",
+    propertyKey: "borderOpacity",
+    icon: "seldon-opacity",
+  },
 ] as const satisfies readonly LookFacetEntryFor<BorderParameters>[]
 
 const FONT_LOOK_FACETS = [
-  { facet: "family", label: "Family", propertyKey: "fontFamily" },
-  { facet: "size", label: "Size", propertyKey: "fontSize" },
-  { facet: "weight", label: "Weight", propertyKey: "fontWeight" },
-  { facet: "lineHeight", label: "Line Height", propertyKey: "fontLineHeight" },
-  { facet: "style", label: "Style", propertyKey: "fontStyle" },
-  { facet: "textCase", label: "Text Case", propertyKey: "fontTextCase" },
+  {
+    facet: "family",
+    label: "Family",
+    propertyKey: "fontFamily",
+    icon: "seldon-fontFamily",
+  },
+  {
+    facet: "style",
+    label: "Style",
+    propertyKey: "fontStyle",
+    icon: "material-style",
+  },
+  {
+    facet: "weight",
+    label: "Weight",
+    propertyKey: "fontWeight",
+    icon: "seldon-fontWeight",
+  },
+  {
+    facet: "size",
+    label: "Size",
+    propertyKey: "fontSize",
+    icon: "seldon-fontSize",
+  },
+  {
+    facet: "lineHeight",
+    label: "Line Height",
+    propertyKey: "fontLineHeight",
+    icon: "seldon-fontLineHeight",
+  },
+  {
+    facet: "textCase",
+    label: "Text Case",
+    propertyKey: "fontTextCase",
+    icon: "material-matchCase",
+  },
   {
     facet: "letterSpacing",
     label: "Letter Spacing",
     propertyKey: "fontLetterSpacing",
+    icon: "seldon-fontLetterSpacing",
   },
 ] as const satisfies readonly LookFacetEntryFor<FontParameters>[]
 

@@ -1,7 +1,6 @@
 import { Theme, ThemePaddingKey } from "../../../themes/types"
 import { ComputedFunction, Unit, ValueType } from "../../constants"
 import { PropertySchema } from "../../types/schema"
-import { ComputedMatchValue } from "../shared/computed/match"
 import { ComputedOpticalPaddingValue } from "../shared/computed/optical-padding"
 import { EmptyValue } from "../shared/empty/empty"
 import { PercentageValue } from "../shared/exact/percentage"
@@ -33,7 +32,7 @@ export interface PaddingValue {
   left?: PaddingSideValue
 }
 
-/** One side value: unset, measured lengths, the catalog option, optical padding, match computed, or a theme step. */
+/** One side value: unset, measured lengths, the catalog option, optical padding, or a theme step. */
 export type PaddingSideValue =
   | EmptyValue
   | PixelValue
@@ -41,13 +40,12 @@ export type PaddingSideValue =
   | PercentageValue
   | PaddingSideOptionValue
   | ComputedOpticalPaddingValue
-  | ComputedMatchValue
   | PaddingSideThemeValue
 
 export const paddingSchema: PropertySchema = {
   name: "padding",
   description:
-    "Sets inside spacing on each edge using lengths, the catalog option, optical padding, theme steps, or match.",
+    "Sets inside spacing on each edge using lengths, the catalog option, optical padding, or theme steps.",
   supports: [
     "empty",
     "inherit",
@@ -80,11 +78,7 @@ export const paddingSchema: PropertySchema = {
     option: (value: unknown) =>
       typeof value === "string" &&
       (Object.values(Padding) as string[]).includes(value),
-    computed: (value: unknown) =>
-      typeof value === "object" &&
-      value !== null &&
-      "function" in value &&
-      value.function !== undefined,
+    computed: (value: unknown) => value === ComputedFunction.OPTICAL_PADDING,
     themeOrdinal: (value: unknown, theme?: Theme) => {
       if (!theme) return false
       return typeof value === "string" && value in theme.padding
@@ -93,8 +87,5 @@ export const paddingSchema: PropertySchema = {
   presetOptions: () => Object.values(Padding),
   themeOrdinalKeys: (theme: Theme) =>
     Object.keys(theme.padding).map((id) => `@padding.${id}`),
-  computedFunctions: () => [
-    ComputedFunction.OPTICAL_PADDING,
-    ComputedFunction.MATCH,
-  ],
+  computedFunctions: () => [ComputedFunction.OPTICAL_PADDING],
 }

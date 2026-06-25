@@ -1,7 +1,14 @@
 import type { ComponentId } from "../../../../components/constants"
-import { ValueType } from "../../../../properties"
+import { isMatchColorValue } from "../../../../helpers/type-guards/value/is-computed-value"
+import {
+  COLOR_SIBLING_COMPOUND_KEYS,
+  COLOR_SIBLING_KEYS,
+  COLOR_SIBLING_LAYER_KEYS,
+  ValueType,
+} from "../../../../properties"
 import { mergeProperties } from "../../../../properties/helpers/merge-properties"
 import { rules } from "../../../../rules/config/rules.config"
+import { getComputedTheme } from "../../../compute"
 import { ErrorMessages } from "../../../constants"
 import { getBoardVariantRootIds } from "../../../helpers/components/get-board-variant-root-ids"
 import { collectExternalVariantUsage } from "../../../helpers/general/collect-external-variant-usage"
@@ -21,6 +28,7 @@ import {
   resolveSandboxRect,
   sandboxesOverlap,
 } from "../../../helpers/nodes/sandbox"
+import { getEffectiveProperties } from "../../../helpers/properties"
 import { hasEffectiveThemeReference } from "../../../helpers/removal/effective-theme-references"
 import { isComponentBoard, isPlaygroundBoard } from "../../../model/components"
 import { isEntryThemeDefault } from "../../../model/entry-theme"
@@ -233,6 +241,12 @@ export function validateNodeMutation(
         getNodeComponentId(node, workspace),
       )
       propertyValidators.values(action.payload.properties, workspace, themeId)
+      assertMatchColorSiblingsLocked(
+        workspace,
+        nodeId,
+        themeId,
+        action.payload.properties as Record<string, unknown>,
+      )
       if (isSandboxNode(node)) {
         assertSandboxConstraints(workspace, action, node as EntryNode, nodeId)
       }
@@ -289,16 +303,27 @@ export function validateNodeMutation(
       assertRepeatConstraints(workspace, action, nodeId)
       break
     }
-    case "reset_user_variant_to_default": {
+    case "reset_variant_to_catalog": {
       const variantRootId = action.payload.variantRootId as VariantId
       nodeValidators.exists(workspace, variantRootId)
       const node = nodeRetrievalService.getNode(variantRootId, workspace)
       check(
         isUserVariant(node),
-        "Only a user variant can reset to the default variant tree",
+        "Only a user variant can reset to its catalog schema variant",
       )
       const index = locateResettableBoardVariantIndex(workspace, variantRootId)
       check(index > 0, "The catalog default variant does not use this action")
+      break
+    }
+    case "reset_instance_to_source":
+    case "reset_instance_to_original": {
+      const instanceId = action.payload.instanceId as InstanceId
+      nodeValidators.exists(workspace, instanceId)
+      const node = nodeRetrievalService.getNode(instanceId, workspace)
+      check(
+        typeCheckingService.isInstance(node),
+        "Only an instance can reset to its source or original",
+      )
       break
     }
     case "reset_default_variant_to_catalog": {
@@ -589,5 +614,92 @@ function assertThemeDeletable(
       `Theme ${themeId} is still in use (effective theme)`,
       action,
     )
+  }
+}
+
+/**
+ * Rejects setting `brightness`/`opacity` whose sibling `color` is already Match Color while the
+ * matching theme toggle is on. Covers every color container the same way: the top-level color group,
+ * single-color compounds (`border*`), and layered paints (`background`, `shadow`, gradient stops).
+ * Those facets mirror the matched source at compute time and must not be edited directly. The lock
+ * reads the effective color, so a partial patch that touches only brightness or opacity is still
+ * checked. A container that does not expose these facets has nothing in the patch, so it is a no-op.
+ *
+ * A patch that sets the `color` facet in the same commit is always allowed: switching a facet to
+ * Match Color resends the container's existing brightness/opacity, and switching away replaces the
+ * color outright. Either way the mirror reconciles the siblings at compute time.
+ */
+function assertMatchColorSiblingsLocked(
+  workspace: Workspace,
+  nodeId: InstanceId | VariantId,
+  themeId: string | undefined,
+  properties: Record<string, unknown>,
+): void {
+  const theme = getComputedTheme(themeId ?? "seldon", workspace) as {
+    matchColor?: {
+      parameters?: { includeBrightness?: boolean; includeOpacity?: boolean }
+    }
+  }
+  const includeBrightness = !!theme.matchColor?.parameters?.includeBrightness
+  const includeOpacity = !!theme.matchColor?.parameters?.includeOpacity
+  if (!includeBrightness && !includeOpacity) return
+
+  const effective = getEffectiveProperties(nodeId, workspace) as Record<
+    string,
+    unknown
+  >
+
+  const checkFacets = (
+    patch: Record<string, unknown>,
+    effectiveFacets: Record<string, unknown> | undefined,
+  ): void => {
+    for (const [colorKey, siblingKeys] of Object.entries(COLOR_SIBLING_KEYS)) {
+      // When the same patch sets the color facet, allow any sibling brightness/
+      // opacity that rides along. The lock only guards edits made while the color
+      // is already Match Color from the effective properties.
+      if (colorKey in patch) continue
+
+      const color = effectiveFacets?.[colorKey]
+      if (!isMatchColorValue(color)) continue
+
+      if (includeBrightness && siblingKeys.brightness in patch) {
+        check(
+          false,
+          "Brightness cannot be changed while color is set to Match Color.",
+        )
+      }
+      if (includeOpacity && siblingKeys.opacity in patch) {
+        check(
+          false,
+          "Opacity cannot be changed while color is set to Match Color.",
+        )
+      }
+    }
+  }
+
+  // Top-level color group: the root `color`/`brightness`/`opacity` triple.
+  checkFacets(properties, effective)
+
+  for (const key of COLOR_SIBLING_COMPOUND_KEYS) {
+    const patch = properties[key]
+    if (patch && typeof patch === "object" && !Array.isArray(patch)) {
+      checkFacets(
+        patch as Record<string, unknown>,
+        effective[key] as Record<string, unknown> | undefined,
+      )
+    }
+  }
+
+  for (const key of COLOR_SIBLING_LAYER_KEYS) {
+    const patchLayers = properties[key]
+    if (!Array.isArray(patchLayers)) continue
+    const effectiveLayers = effective[key]
+    patchLayers.forEach((layerPatch, index) => {
+      if (!layerPatch || typeof layerPatch !== "object") return
+      const effectiveLayer = Array.isArray(effectiveLayers)
+        ? (effectiveLayers[index] as Record<string, unknown> | undefined)
+        : undefined
+      checkFacets(layerPatch as Record<string, unknown>, effectiveLayer)
+    })
   }
 }

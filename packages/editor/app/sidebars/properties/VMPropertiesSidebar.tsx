@@ -1,6 +1,12 @@
 import { MenuEntry } from "@lib/menus"
 import { LayoutGroup } from "framer-motion"
-import { Fragment, RefObject, useCallback, useMemo } from "react"
+import {
+  Fragment,
+  RefObject,
+  useCallback,
+  useDeferredValue,
+  useMemo,
+} from "react"
 import {
   Board,
   Instance,
@@ -20,6 +26,7 @@ import {
 } from "./hooks/use-border-side-visibility"
 import { useLayerDragMonitor } from "./hooks/use-layer-drag-monitor"
 import { usePropertiesSidebar } from "./hooks/use-properties-sidebar"
+import { PropertyEditNavigationProvider } from "./hooks/use-property-edit-navigation"
 import { useIsCategoryExpanded } from "./hooks/use-property-expansion"
 import {
   ScrollerShell,
@@ -83,7 +90,16 @@ export interface PropertyTreeProps {
 export function VMPropertiesSidebar() {
   const state = usePropertiesSidebar()
 
-  if (state.kind === "empty") {
+  // Selecting a node rebuilds and remounts the whole inspector, which is heavy
+  // enough to block the triggering click. Render the tree from a deferred copy
+  // of the state so the click commits immediately and the new inspector fills
+  // in at transition priority. While a row is being edited the live value comes
+  // from the control's own input state, so a one-frame-late tree update is not
+  // visible. This works for the external selection store, where startTransition
+  // would not.
+  const deferredState = useDeferredValue(state)
+
+  if (deferredState.kind === "empty") {
     return <SidebarContainer style={sidebarNoSelectionStyle} />
   }
 
@@ -92,7 +108,7 @@ export function VMPropertiesSidebar() {
       style={sidebarShellStyle}
       data-testid="properties-sidebar"
     >
-      <PropertiesTree {...state.treeProps} />
+      <PropertiesTree {...deferredState.treeProps} />
     </SidebarContainer>
   )
 }
@@ -123,25 +139,27 @@ function PropertiesTree({
   return (
     <ScrollerShell ref={scrollerRef} style={styles.scroller}>
       <Frame style={styles.tree}>
-        <LayoutGroup>
-          {sections.map((section) => (
-            <TreeSection
-              key={section.category}
-              section={section}
-              workspace={workspace}
-              node={node}
-              theme={theme}
-              cssStrings={cssStrings}
-              cssSelector={cssSelector}
-              allProperties={allProperties}
-              familyProperties={familyProperties}
-              iconProperties={iconProperties}
-              themeEditingContext={themeEditingContext}
-              fontCollectionEditingContext={fontCollectionEditingContext}
-              iconSetEditingContext={iconSetEditingContext}
-            />
-          ))}
-        </LayoutGroup>
+        <PropertyEditNavigationProvider>
+          <LayoutGroup>
+            {sections.map((section) => (
+              <TreeSection
+                key={section.category}
+                section={section}
+                workspace={workspace}
+                node={node}
+                theme={theme}
+                cssStrings={cssStrings}
+                cssSelector={cssSelector}
+                allProperties={allProperties}
+                familyProperties={familyProperties}
+                iconProperties={iconProperties}
+                themeEditingContext={themeEditingContext}
+                fontCollectionEditingContext={fontCollectionEditingContext}
+                iconSetEditingContext={iconSetEditingContext}
+              />
+            ))}
+          </LayoutGroup>
+        </PropertyEditNavigationProvider>
       </Frame>
     </ScrollerShell>
   )

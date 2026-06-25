@@ -5,46 +5,28 @@ import { invariant } from "../../helpers/utils/invariant"
 import type { ThemeModulation, ThemeValueKey } from "../../themes/types"
 import { EMPTY_VALUE, Unit, ValueType } from "../constants"
 import type { ComputedAutoFitValue } from "../values/shared/computed/auto-fit"
-import { getBasedOnValue } from "./get-based-on-value"
+import { resolveAutoFitSource } from "./resolve-auto-fit-source"
 import { ComputeContext } from "./types"
 
-/** Editor label for `ComputedFunction.AUTO_FIT`. */
-export const AUTO_FIT_DISPLAY_NAME = "Auto Fit"
-
 /**
- * Scales the value at `basedOn` by `factor`, using defaults when those inputs are missing.
- * Missing `basedOn` becomes `#parent.buttonSize`. Missing `factor` becomes `1`.
+ * Scales the ancestor size token by the theme's `autoFit` factor. The source is resolved by walking
+ * the ancestor chain for `buttonSize`, then `size`, then the `@fontSize.medium` fallback (see
+ * {@link resolveAutoFitSource}). The factor is a theme Computed value and is not authored per schema.
  *
- * Supported resolved based-on types: `EXACT` number, `EXACT` length with `unit` and `value`, or
- * `THEME_ORDINAL` only when the token string uses the `@fontSize` prefix. Degrades to `EMPTY` when
- * the `basedOn` path cannot be resolved or resolves to an unsupported type, so an unresolved input
- * never breaks compute or CSS generation.
+ * Supported source types: `EXACT` number, `EXACT` length with `unit` and `value`, or a
+ * `THEME_ORDINAL` using the `@fontSize` or `@size` prefix. Degrades to `EMPTY` when the source
+ * resolves to an unsupported type, so an unresolved input never breaks compute or CSS generation.
  *
  * @param value - Stored computed auto-fit value
- * @param context - Theme and contexts for `getBasedOnValue`
- * @returns `EXACT` number, `EXACT` length, `EXACT` rem from font size modulation, or `EMPTY`
+ * @param context - Theme and contexts for the ancestor walk
+ * @returns `EXACT` number, `EXACT` length, `EXACT` rem from size modulation, or `EMPTY`
  */
 export function computeAutoFit(
   value: ComputedAutoFitValue,
   context: ComputeContext,
 ) {
-  const basedOn = value.value.input.basedOn || "#parent.buttonSize"
-  const factor = value.value.input.factor ?? 1.0
-
-  const valueWithDefaults = {
-    ...value,
-    value: {
-      ...value.value,
-      input: { basedOn, factor },
-    },
-  }
-
-  let basedOnValue
-  try {
-    basedOnValue = getBasedOnValue(valueWithDefaults, context)
-  } catch {
-    return EMPTY_VALUE
-  }
+  const factor = context.theme.autoFit.parameters.factor
+  const basedOnValue = resolveAutoFitSource(context)
 
   if (basedOnValue.type === ValueType.EXACT) {
     if (typeof basedOnValue.value === "number") {
@@ -66,17 +48,25 @@ export function computeAutoFit(
   }
 
   if (basedOnValue.type === ValueType.THEME_ORDINAL) {
+    const token = basedOnValue.value as string
+    const isFontSize = token.includes("@fontSize")
+    const isSize = token.includes("@size")
+
     invariant(
-      basedOnValue.value.includes("@fontSize"),
-      `Auto fit only supports @fontSize theme ordinals, got: ${basedOnValue.value}`,
+      isFontSize || isSize,
+      `Auto fit only supports @fontSize or @size theme ordinals, got: ${token}`,
     )
 
     const themeOption = getThemeOption(
-      basedOnValue.value as ThemeValueKey,
+      token as ThemeValueKey,
       context.theme,
     ) as ThemeModulation
 
-    invariant(themeOption, `Theme option not found for ${basedOnValue.value}`)
+    invariant(themeOption, `Theme option not found for ${token}`)
+
+    const baseSize = isFontSize
+      ? context.theme.modulation.parameters.baseFontSize / 16
+      : context.theme.modulation.parameters.baseSize
 
     return {
       type: ValueType.EXACT,
@@ -85,8 +75,8 @@ export function computeAutoFit(
         value: round(
           modulate(
             {
-              ratio: context.theme.core.ratio,
-              size: context.theme.core.fontSize / 16,
+              ratio: context.theme.modulation.parameters.ratio,
+              size: baseSize,
               step: themeOption.parameters.step,
             },
             { round: false },

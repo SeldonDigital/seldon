@@ -1,5 +1,6 @@
 import { isComponentId } from "../../../components/constants"
-import { ValueType } from "../../../properties"
+import { isComputedValue } from "../../../helpers/type-guards/value/is-computed-value"
+import { ComputedFunction } from "../../../properties"
 import { isWorkspaceLoggingEnabled } from "../../../utils/debug-logger"
 import { ErrorMessages } from "../../constants"
 import { findBoardTreeCycleId } from "../../helpers/components/find-tree-cycle"
@@ -40,21 +41,14 @@ function collectBoardTreeNodeIds(workspace: Workspace): Set<string> {
   return ids
 }
 
-/** Reports whether a variant override computes from a `#parent` reference. */
+/**
+ * Reports whether a variant override depends on an ancestor node. AUTO_FIT scales from an ancestor
+ * `buttonSize`/`size`, so it cannot resolve standalone in a variant. HIGH_CONTRAST and MATCH_COLOR
+ * read self first, so they are not flagged.
+ */
 function overrideReferencesParentNode(property: unknown): boolean {
   return (
-    !!property &&
-    typeof property === "object" &&
-    "type" in property &&
-    property.type === ValueType.COMPUTED &&
-    "value" in property &&
-    !!property.value &&
-    typeof property.value === "object" &&
-    "input" in property.value &&
-    !!property.value.input &&
-    typeof (property.value.input as { basedOn?: string }).basedOn ===
-      "string" &&
-    (property.value.input as { basedOn: string }).basedOn.startsWith("#parent")
+    isComputedValue(property) && property.value === ComputedFunction.AUTO_FIT
   )
 }
 

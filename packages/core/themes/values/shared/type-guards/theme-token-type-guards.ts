@@ -1,6 +1,7 @@
 import { Unit } from "../../../../properties/constants/shared/units"
 import { TokenType } from "../../../constants/token-type"
 import type { ThemeBorder } from "../../appearance/border"
+import type { ThemeComputedGroup } from "../../computed/theme-computed-group"
 import type { ThemeGradient } from "../../effects/gradient"
 import type { ThemeScrollbar } from "../../effects/scrollbar"
 import type { ThemeShadow } from "../../effects/shadow"
@@ -112,5 +113,17 @@ export function isLookToken(
     v !== null &&
     "type" in v &&
     (v as { type: TokenType }).type === TokenType.LOOK
+  )
+}
+
+/** Grouped configuration cell in the Computed section ({@link TokenType.COMPUTED}). */
+export function isComputedGroupToken(
+  v: unknown,
+): v is ThemeComputedGroup<unknown> {
+  return (
+    typeof v === "object" &&
+    v !== null &&
+    "type" in v &&
+    (v as { type: TokenType }).type === TokenType.COMPUTED
   )
 }

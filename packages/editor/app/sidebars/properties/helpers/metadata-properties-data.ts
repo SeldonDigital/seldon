@@ -14,12 +14,13 @@ function createMetadataRow(
   key: string,
   label: string,
   value: string,
+  icon: string,
 ): FlatProperty {
   return {
     key: `metadata.${key}`,
     propertyType: "atomic",
     label,
-    icon: "seldon-text",
+    icon,
     value: { type: ValueType.EXACT, value },
     actualValue: value,
     valueType: ValueType.EXACT,
@@ -42,13 +43,25 @@ export function buildMetadataProperties(
   metadata: MetadataInput,
 ): FlatProperty[] {
   const rows: FlatProperty[] = [
-    createMetadataRow("name", "Name", metadata.name),
-    createMetadataRow("description", "Description", metadata.description),
-    createMetadataRow("intent", "Intent", metadata.intent),
+    createMetadataRow("name", "Name", metadata.name, "material-style"),
+    createMetadataRow(
+      "description",
+      "Description",
+      metadata.description,
+      "material-article",
+    ),
+    createMetadataRow("intent", "Intent", metadata.intent, "material-article"),
   ]
 
   if (metadata.author) {
-    rows.push(createMetadataRow("author", "Author", metadata.author))
+    rows.push(
+      createMetadataRow(
+        "author",
+        "Author",
+        metadata.author,
+        "material-attribution",
+      ),
+    )
   }
 
   return rows

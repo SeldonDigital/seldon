@@ -5,6 +5,7 @@ import {
   HSL,
   Harmony,
   LOOK_FACETS,
+  type LookFacetEntry,
   Ratio,
   type ScaleTokenInput,
   type ScaleTokenSection,
@@ -42,6 +43,39 @@ function isScaleSlotSection(section: string): section is ScaleTokenSection {
   return SCALE_SLOT_SECTIONS.has(section as ScaleTokenSection)
 }
 
+/** Computed-section groups handled by the generic `setComputedValue` path. */
+const COMPUTED_GENERIC_GROUPS = new Set([
+  "matchColor",
+  "highContrast",
+  "opticalPadding",
+  "autoFit",
+])
+
+/** Splits a computed-group facet key into its group and facet, or null. */
+function parseComputedGroupKey(
+  key: string,
+): { group: string; facet: string } | null {
+  const [group, facet] = key.split(".")
+  if (!group || !facet || !COMPUTED_GENERIC_GROUPS.has(group)) return null
+  return { group, facet }
+}
+
+/** Parses a control value to a finite number, stripping unit suffixes. Null on failure. */
+function parseNumericInput(raw: string): number | null {
+  try {
+    const parsed = JSON.parse(raw)
+    if (typeof parsed === "object" && parsed !== null && "value" in parsed) {
+      const n = Number((parsed as { value: unknown }).value)
+      return Number.isFinite(n) ? n : null
+    }
+  } catch {
+    // Not JSON; fall through to plain numeric parsing.
+  }
+  const cleaned = raw.replace(/\s*(%|px|rem|deg|em|vw|vh)\s*$/i, "").trim()
+  const n = Number(cleaned)
+  return Number.isFinite(n) ? n : null
+}
+
 /**
  * Parses a scale `.step` row input. A bare number is a modulated step; a `px`
  * or `rem` suffix makes it an exact length. Returns null for unparseable input.
@@ -72,6 +106,7 @@ export function useThemeProperties(themeEntryId: EntryThemeId | null) {
     setBaseColor,
     setHarmony,
     setColorValue,
+    setComputedValue,
     setFontFamilyValue,
     setLineHeightValue,
     setFontWeightValue,
@@ -88,38 +123,31 @@ export function useThemeProperties(themeEntryId: EntryThemeId | null) {
     (property: FlatProperty, newValue: string) => {
       const key = property.key
 
-      // Core properties
-      if (key === "core.ratio") {
+      // Modulation group
+      if (key === "modulation.ratio") {
         setCoreRatio(Number(newValue) as Ratio)
         return
       }
-      if (key === "core.fontSize") {
+      if (key === "modulation.baseFontSize") {
         setCoreFontSize(Number(newValue))
         return
       }
-      if (key === "core.size") {
+      if (key === "modulation.baseSize") {
         setCoreSize(Number(newValue))
         return
       }
 
-      // Color properties
-      if (key === "color.baseColor") {
+      // Color harmony group
+      if (key === "colorHarmony.baseColor") {
         const hsl = parseHSLString(toHSLString(newValue))
         setBaseColor(hsl)
         return
       }
-      if (key === "color.harmony") {
+      if (key === "colorHarmony.harmony") {
         setHarmony(Number(newValue) as Harmony)
         return
       }
-      if (
-        key.startsWith("color.") &&
-        (key.includes("angle") ||
-          key.includes("step") ||
-          key.includes("Point") ||
-          key.includes("bleed") ||
-          key.includes("contrastRatio"))
-      ) {
+      if (key.startsWith("colorHarmony.")) {
         const colorKey = key.split(".")[1] as
           | "angle"
           | "step"
@@ -127,48 +155,52 @@ export function useThemeProperties(themeEntryId: EntryThemeId | null) {
           | "grayPoint"
           | "blackPoint"
           | "bleed"
-          | "contrastRatio"
-
-        // Extract numeric value - handle both plain strings and serialized unit objects
-        let numericValue: number
-        try {
-          // Try parsing as JSON first (in case it's a serialized unit object)
-          const parsed = JSON.parse(newValue)
-          if (
-            typeof parsed === "object" &&
-            parsed !== null &&
-            "value" in parsed
-          ) {
-            numericValue = Number(parsed.value)
-          } else {
-            numericValue = Number(newValue)
-          }
-        } catch {
-          // Not JSON, parse as plain number string
-          // Remove any unit suffixes like " %", "px", etc.
-          const cleanedValue = newValue
-            .replace(/\s*(%|px|rem|deg|em|vw|vh)\s*$/i, "")
-            .trim()
-          numericValue = Number(cleanedValue)
-        }
-
-        // Validate that we got a valid number
-        if (isNaN(numericValue)) {
+        const numericValue = parseNumericInput(newValue)
+        if (numericValue === null) {
           console.warn(`Invalid numeric value for ${key}: ${newValue}`)
           return
         }
-
         setColorValue(colorKey, numericValue)
         return
       }
 
-      // Font Family properties
+      // Font family group
       if (key === "fontFamily.primary") {
         setFontFamilyValue("primary", newValue)
         return
       }
       if (key === "fontFamily.secondary") {
         setFontFamilyValue("secondary", newValue)
+        return
+      }
+
+      // Other Computed-section groups: matchColor, highContrast,
+      // opticalPadding, autoFit. Each facet writes to `parameters[facet]`.
+      const computedFacet = parseComputedGroupKey(key)
+      if (computedFacet) {
+        const { group, facet } = computedFacet
+        if (facet === "fallbackColor") {
+          setComputedValue(group, facet, serializeColor(newValue))
+          return
+        }
+        if (
+          facet === "includeBrightness" ||
+          facet === "includeOpacity" ||
+          facet === "includeBleed"
+        ) {
+          setComputedValue(
+            group,
+            facet,
+            newValue === "true" || newValue === "On",
+          )
+          return
+        }
+        const numericValue = parseNumericInput(newValue)
+        if (numericValue === null) {
+          console.warn(`Invalid numeric value for ${key}: ${newValue}`)
+          return
+        }
+        setComputedValue(group, facet, numericValue)
         return
       }
 
@@ -213,7 +245,9 @@ export function useThemeProperties(themeEntryId: EntryThemeId | null) {
       // parameters under its facet key.
       const [section, lookId, facet] = key.split(".")
       if (isLookSection(section) && lookId && facet) {
-        const entry = LOOK_FACETS[section].find((item) => item.facet === facet)
+        const entry = (LOOK_FACETS[section] as readonly LookFacetEntry[]).find(
+          (item) => item.facet === facet,
+        )
         if (!entry) {
           console.warn(`Unhandled theme look facet: ${key}`)
           return
@@ -248,6 +282,7 @@ export function useThemeProperties(themeEntryId: EntryThemeId | null) {
       setBaseColor,
       setHarmony,
       setColorValue,
+      setComputedValue,
       setFontFamilyValue,
       setLineHeightValue,
       setFontWeightValue,

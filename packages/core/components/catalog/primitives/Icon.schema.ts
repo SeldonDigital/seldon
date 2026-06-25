@@ -14,7 +14,7 @@ export const schema = {
     display: { type: Sdn.ValueType.EMPTY, value: null },
     symbol: {
       type: Sdn.ValueType.OPTION,
-      value: "__default__",
+      value: "seldon-component",
     },
     size: {
       type: Sdn.ValueType.THEME_ORDINAL,
@@ -41,12 +41,7 @@ export const schema = {
     rotation: { type: Sdn.ValueType.EMPTY, value: null },
     color: {
       type: Sdn.ValueType.COMPUTED,
-      value: {
-        function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-        input: {
-          basedOn: "#parent.background.color",
-        },
-      },
+      value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
     },
     brightness: { type: Sdn.ValueType.EMPTY, value: null },
     opacity: { type: Sdn.ValueType.EMPTY, value: null },

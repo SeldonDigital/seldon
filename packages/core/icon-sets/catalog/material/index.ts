@@ -197,6 +197,7 @@ export { IconMaterialBrightnessAuto } from "./user-interface/navigation/IconMate
 export { IconMaterialContrast } from "./user-interface/status/IconMaterialContrast"
 export { IconMaterialPalette } from "./user-interface/media/IconMaterialPalette"
 export { IconMaterialColorLens } from "./user-interface/media/IconMaterialColorLens"
+export { IconMaterialColors } from "./user-interface/text/IconMaterialColors"
 export { IconMaterialInvertColors } from "./user-interface/status/IconMaterialInvertColors"
 export { IconMaterialInvertColorsOff } from "./user-interface/media/IconMaterialInvertColorsOff"
 export { IconMaterialOpacity } from "./user-interface/status/IconMaterialOpacity"
@@ -249,6 +250,12 @@ export { IconMaterialHighlightMouseCursor } from "./user-interface/actions/IconM
 export { IconMaterialHighlightTextCursor } from "./user-interface/actions/IconMaterialHighlightTextCursor"
 export { IconMaterialDragPan } from "./user-interface/actions/IconMaterialDragPan"
 export { IconMaterialResize } from "./user-interface/actions/IconMaterialResize"
+export { IconMaterialPiano } from "./user-interface/status/IconMaterialPiano"
+export { IconMaterialFormatSize } from "./user-interface/text/IconMaterialFormatSize"
+export { IconMaterialTextFormat } from "./user-interface/text/IconMaterialTextFormat"
+export { IconMaterialAsterisk } from "./user-interface/text/IconMaterialAsterisk"
+export { IconMaterialArticle } from "./content/files/IconMaterialArticle"
+export { IconMaterialAttribution } from "./user-interface/status/IconMaterialAttribution"
 export { IconMaterialAdsClick } from "./user-interface/media/IconMaterialAdsClick"
 export { IconMaterialGridOn } from "./content/data/IconMaterialGridOn"
 export { IconMaterialDriveFileMoveOutline } from "./miscellaneous/miscellaneous/IconMaterialDriveFileMoveOutline"
@@ -266,6 +273,7 @@ export { IconMaterialFormatAlignRight } from "./user-interface/navigation/IconMa
 export { IconMaterialFormatAlignCenter } from "./user-interface/text/IconMaterialFormatAlignCenter"
 export { IconMaterialFormatAlignJustify } from "./user-interface/text/IconMaterialFormatAlignJustify"
 export { IconMaterialMatchCase } from "./user-interface/text/IconMaterialMatchCase"
+export { IconMaterialTitlecase } from "./user-interface/text/IconMaterialTitlecase"
 export { IconMaterialBlurOn } from "./user-interface/status/IconMaterialBlurOn"
 export { IconMaterialBlurCircular } from "./user-interface/status/IconMaterialBlurCircular"
 export { IconMaterialBlurOff } from "./user-interface/media/IconMaterialBlurOff"
@@ -524,6 +532,7 @@ export const materialIconIds: readonly IconId[] = [
   "material-contrast",
   "material-palette",
   "material-colorLens",
+  "material-colors",
   "material-invertColors",
   "material-invertColorsOff",
   "material-opacity",
@@ -606,7 +615,11 @@ export const materialIconIds: readonly IconId[] = [
   "material-formatAlignRight",
   "material-formatTextdirectionRToL",
   "material-matchCase",
+  "material-titlecase",
   "material-textFormat",
+  "material-asterisk",
+  "material-article",
+  "material-attribution",
   "material-fontDownload",
   "material-verticalAlignTop",
   "material-verticalAlignBottom",
@@ -662,6 +675,8 @@ export const materialIconIds: readonly IconId[] = [
   "material-highlightTextCursor",
   "material-dragPan",
   "material-resize",
+  "material-piano",
+  "material-formatSize",
   "material-adsClick",
   "material-gridOn",
   "material-driveFileMoveOutline",

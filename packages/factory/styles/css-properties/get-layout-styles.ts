@@ -193,13 +193,15 @@ export function getLayoutStyles({
         styles.gap =
           modulate({
             step: themeValue.parameters.step,
-            size: theme.core.size,
-            ratio: theme.core.ratio,
+            size: theme.modulation.parameters.baseSize,
+            ratio: theme.modulation.parameters.ratio,
           }) + "rem"
         break
 
       default:
-        throw new Error(`Unknown gap type: ${gap.type}`)
+        throw new Error(
+          `Unknown gap type: ${(gap as { type: ValueType }).type}`,
+        )
     }
   }
 

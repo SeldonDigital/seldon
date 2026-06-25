@@ -162,12 +162,11 @@ color: { type: Sdn.ValueType.THEME_CATEGORICAL, value: "@swatch.black" }
 // Derived from another property at compute time
 size: {
   type: Sdn.ValueType.COMPUTED,
-  value: {
-    function: Sdn.ComputedFunction.AUTO_FIT,
-    input: { basedOn: "#parent.buttonSize", factor: 0.8 },
-  },
+  value: Sdn.ComputedFunction.AUTO_FIT,
 }
 ```
+
+A computed value stores only the function. Each compute function derives its own source at compute time, so schemas do not author a `basedOn` path.
 
 ---
 
@@ -381,7 +380,7 @@ Runtime checks happen in the workspace and properties layers, covering override 
 
 - **Unknown override keys**: silently dropped at merge time so missing properties stay missing.
 - **Missing theme tokens**: fall back to schema defaults via the theme resolver. See [themes/README.md](../themes/README.md).
-- **Missing computed inputs**: `COMPUTED` defaults that reference an absent `basedOn` chain fall back to the property's natural inheritance. See [`get-based-on-value.ts`](../properties/compute/get-based-on-value.ts).
+- **Missing computed source**: a `COMPUTED` default whose derived source chain is absent falls back to the property's natural inheritance. See [`get-based-on-value.ts`](../properties/compute/get-based-on-value.ts).
 
 ---
 

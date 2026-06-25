@@ -35,7 +35,10 @@ export const schema = {
       left: { type: Sdn.ValueType.EMPTY, value: null },
     },
     rotation: { type: Sdn.ValueType.EMPTY, value: null },
-    color: { type: Sdn.ValueType.EMPTY, value: null },
+    color: {
+      type: Sdn.ValueType.THEME_CATEGORICAL,
+      value: "@swatch.primary",
+    },
     brightness: { type: Sdn.ValueType.EMPTY, value: null },
     opacity: { type: Sdn.ValueType.EMPTY, value: null },
     background: [

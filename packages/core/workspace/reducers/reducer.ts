@@ -100,6 +100,8 @@ import { resetFontCollectionLabel } from "./handlers/reset/reset-font-collection
 import { resetFontCollectionOverride } from "./handlers/reset/reset-font-collection-override"
 import { resetIconSet } from "./handlers/reset/reset-icon-set"
 import { resetIconSetOverride } from "./handlers/reset/reset-icon-set-override"
+import { resetInstanceToOriginal } from "./handlers/reset/reset-instance-to-original"
+import { resetInstanceToSource } from "./handlers/reset/reset-instance-to-source"
 import { resetNode } from "./handlers/reset/reset-node"
 import { resetNodeEditorData } from "./handlers/reset/reset-node-editor-data"
 import { resetNodeLabel } from "./handlers/reset/reset-node-label"
@@ -110,7 +112,7 @@ import { resetThemeEditorData } from "./handlers/reset/reset-theme-editor-data"
 import { resetThemeLabel } from "./handlers/reset/reset-theme-label"
 import { resetThemeOverride } from "./handlers/reset/reset-theme-override"
 import { resetThemeTokens } from "./handlers/reset/reset-theme-tokens"
-import { resetUserVariantToDefault } from "./handlers/reset/reset-user-variant-to-default"
+import { resetVariantToCatalog } from "./handlers/reset/reset-variant-to-catalog"
 import { resetWorkspaceIntent } from "./handlers/reset/reset-workspace-intent"
 import { resetWorkspaceLabel } from "./handlers/reset/reset-workspace-label"
 import { resetWorkspaceLastUpdate } from "./handlers/reset/reset-workspace-last-update"
@@ -351,8 +353,12 @@ function reducer(workspace: Workspace, action: WorkspaceAction): Workspace {
       return removeVariant(action.payload, workspace)
     case "duplicate_node":
       return duplicateNode(action.payload, workspace)
-    case "reset_user_variant_to_default":
-      return resetUserVariantToDefault(action.payload, workspace)
+    case "reset_variant_to_catalog":
+      return resetVariantToCatalog(action.payload, workspace)
+    case "reset_instance_to_source":
+      return resetInstanceToSource(action.payload, workspace)
+    case "reset_instance_to_original":
+      return resetInstanceToOriginal(action.payload, workspace)
     case "reset_default_variant_to_catalog":
       return resetDefaultVariantToCatalog(action.payload, workspace)
     case "reset_component_to_catalog":

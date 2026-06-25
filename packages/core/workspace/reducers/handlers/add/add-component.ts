@@ -8,7 +8,7 @@ import { produce } from "immer"
 import { getComponentSchema } from "../../../../components/catalog"
 import { ComponentId } from "../../../../components/constants"
 import { isComplexSchema } from "../../../../components/types"
-import { ExtractPayload, Workspace } from "../../../../index"
+import { ExtractPayload, Workspace, invariant } from "../../../../index"
 import { rules } from "../../../../rules/config/rules.config"
 import { setBoardOrder } from "../../../helpers/components/board-sort-order"
 import {
@@ -17,14 +17,14 @@ import {
 } from "../../../helpers/components/entry-node-ids"
 import { getInitialBoardComponentProperties } from "../../../helpers/components/get-initial-board-component-properties"
 import {
+  type BuildContext,
   type InstantiateComponentOptions,
-  type NodeRegistry,
   appendComplexSchemaVariant,
-  instantiateVariantTree,
+  buildVariantTree,
   makeEntryNode,
   makePrimitiveVariantNode,
+  mapTopLevelCanonicals,
   requireCatalogVariant,
-  variantTreeRefFromRegister,
 } from "../../../helpers/nodes/build-component-variants"
 import { getInstantiationOptionsForComponent } from "../../../helpers/nodes/collect-component-instantiation-plans"
 import { buildComponentAddPlan } from "../../../helpers/nodes/component-add-plan"
@@ -48,27 +48,28 @@ function toVariantFallbackSet(
 }
 
 /**
- * Creates the default variant and every catalog schema variant for one
- * component, recursively ensuring registers exist for schema child components.
+ * Materializes the default variant and every catalog schema variant for one
+ * component into the draft. The board shell for `componentId` must already
+ * exist on the draft so the builder can read it back as a composition source.
+ * The default tree commits before the variant trees so a variant that shares a
+ * default child can chain to it.
  */
-function instantiateComponent(
+function instantiateComponentInto(
   componentId: ComponentId,
-  registry: NodeRegistry,
+  draft: Workspace,
   options: InstantiateComponentOptions = {},
-): {
-  nodesById: Record<string, EntryNode>
-  variantTreeRefs: ComponentTreeRef[]
-} {
+): void {
   const schema = getComponentSchema(componentId)
   const defaultVariantRootId = componentBoardDefaultNodeId(componentId)
-  const newInstancesById: Record<string, EntryNode> = {}
-
-  registry.add(componentId)
+  const board = draft.boards[componentId]
+  invariant(
+    board && isComponentBoard(board),
+    `Board shell for ${componentId} missing during instantiation`,
+  )
 
   if (!isComplexSchema(schema)) {
-    const variantTreeRefs: ComponentTreeRef[] = []
-
-    newInstancesById[defaultVariantRootId] = makeEntryNode({
+    const nodes: Record<string, EntryNode> = {}
+    nodes[defaultVariantRootId] = makeEntryNode({
       id: defaultVariantRootId,
       type: "default",
       level: schema.level as EntryNode["level"],
@@ -76,34 +77,25 @@ function instantiateComponent(
       template: formatNodeCatalog(componentId),
       overrides: {},
     })
-    variantTreeRefs.push({ id: defaultVariantRootId })
+    const variantTreeRefs: ComponentTreeRef[] = [{ id: defaultVariantRootId }]
 
     const primitiveVariantIds =
       options.restrictedVariantIds ??
       (schema.variants ?? []).map((variant) => variant.id)
-
     for (const variantId of primitiveVariantIds) {
-      const catalogVariant = requireCatalogVariant(
-        schema,
-        componentId,
-        variantId,
-      )
       const { id, node } = makePrimitiveVariantNode(
         componentId,
         schema,
-        catalogVariant,
+        requireCatalogVariant(schema, componentId, variantId),
       )
-      newInstancesById[id] = node
+      nodes[id] = node
       variantTreeRefs.push({ id })
     }
 
-    return {
-      nodesById: newInstancesById,
-      variantTreeRefs,
-    }
+    draft.nodes = { ...draft.nodes, ...nodes }
+    board.variants = variantTreeRefs
+    return
   }
-
-  const canonicalInstanceByFingerprint = new Map<string, string>()
 
   // Which child slots each tree materializes must stay in sync with
   // `materializedChildSlots` in component-add-plan.ts, which plans the boards
@@ -120,8 +112,13 @@ function instantiateComponent(
       )
     : (schema.variants ?? [])
 
-  const variantTreeRefs: ComponentTreeRef[] = []
-  const defaultRegister = instantiateVariantTree(
+  const ctx: BuildContext = {
+    workspace: draft,
+    newNodes: {},
+    variantFallbacks: options.variantFallbacks,
+  }
+
+  const defaultRef = buildVariantTree(
     componentId,
     defaultVariantRootId,
     {
@@ -131,13 +128,18 @@ function instantiateComponent(
       overrides: {},
       children: defaultChildSlots,
     },
-    registry,
-    newInstancesById,
-    options,
-    canonicalInstanceByFingerprint,
-    true,
+    ctx,
+    new Map(),
   )
-  variantTreeRefs.push(variantTreeRefFromRegister(defaultRegister))
+  draft.nodes = { ...draft.nodes, ...ctx.newNodes }
+  board.variants = [defaultRef]
+  ctx.newNodes = {}
+
+  const canonicalMap = mapTopLevelCanonicals(
+    defaultChildSlots,
+    defaultRef,
+    options.variantFallbacks,
+  )
 
   for (const catalogVariant of catalogVariants) {
     appendComplexSchemaVariant(
@@ -145,15 +147,13 @@ function instantiateComponent(
       defaultVariantRootId,
       catalogVariant,
       defaultChildSlots,
-      registry,
-      newInstancesById,
-      options,
-      canonicalInstanceByFingerprint,
-      variantTreeRefs,
+      ctx,
+      canonicalMap,
+      board.variants,
     )
+    draft.nodes = { ...draft.nodes, ...ctx.newNodes }
+    ctx.newNodes = {}
   }
-
-  return { nodesById: newInstancesById, variantTreeRefs }
 }
 
 /**
@@ -165,7 +165,6 @@ function instantiateComponent(
 function reconcileComponentBoard(
   componentId: ComponentId,
   draft: Workspace,
-  registry: NodeRegistry,
   options: InstantiateComponentOptions,
 ): void {
   const board = draft.boards[componentId]
@@ -189,48 +188,55 @@ function reconcileComponentBoard(
     return
   }
 
-  const newNodes: Record<string, EntryNode> = {}
+  const ctx: BuildContext = {
+    workspace: draft,
+    newNodes: {},
+    variantFallbacks: options.variantFallbacks,
+  }
   const newRefs: ComponentTreeRef[] = []
 
   if (!isComplexSchema(schema)) {
     for (const variantId of missingVariantIds) {
-      const catalogVariant = requireCatalogVariant(
-        schema,
-        componentId,
-        variantId,
-      )
       const { id, node } = makePrimitiveVariantNode(
         componentId,
         schema,
-        catalogVariant,
+        requireCatalogVariant(schema, componentId, variantId),
       )
-      newNodes[id] = node
+      ctx.newNodes[id] = node
       newRefs.push({ id })
     }
   } else {
     const defaultVariantRootId = componentBoardDefaultNodeId(componentId)
     // Restricted boards have empty default trees, so there are no canonical
-    // instances to link to. A fresh empty map mirrors the original restricted build.
+    // default children to share. An existing full default tree lets reconciled
+    // variants share its children the same way a full build would.
     const fallbackChildSlots = options.restrictedVariantIds?.length
       ? []
       : schema.default.children
-    const canonicalInstanceByFingerprint = new Map<string, string>()
+    const defaultRef = board.variants.find(
+      (ref) => ref.id === defaultVariantRootId,
+    )
+    const canonicalMap = defaultRef
+      ? mapTopLevelCanonicals(
+          fallbackChildSlots,
+          defaultRef,
+          options.variantFallbacks,
+        )
+      : new Map<string, string>()
     for (const variantId of missingVariantIds) {
       appendComplexSchemaVariant(
         componentId,
         defaultVariantRootId,
         requireCatalogVariant(schema, componentId, variantId),
         fallbackChildSlots,
-        registry,
-        newNodes,
-        options,
-        canonicalInstanceByFingerprint,
+        ctx,
+        canonicalMap,
         newRefs,
       )
     }
   }
 
-  draft.nodes = { ...draft.nodes, ...newNodes }
+  draft.nodes = { ...draft.nodes, ...ctx.newNodes }
   board.variants = [...board.variants, ...newRefs]
 }
 
@@ -248,32 +254,16 @@ export function ensureComponentBoards(
 ): void {
   const { orderedComponentIds: components, plans: instantiationPlans } =
     buildComponentAddPlan(rootId, variantFallbacks)
-  const registry: NodeRegistry = new Set()
 
   let order = -1
 
   for (const componentId of components.reverse()) {
     if (draft.boards[componentId]) {
-      registry.add(componentId)
-      reconcileComponentBoard(componentId, draft, registry, {
+      reconcileComponentBoard(componentId, draft, {
         variantFallbacks,
         ...getInstantiationOptionsForComponent(componentId, instantiationPlans),
       })
     } else {
-      const { nodesById, variantTreeRefs } = instantiateComponent(
-        componentId,
-        registry,
-        {
-          variantFallbacks,
-          ...getInstantiationOptionsForComponent(
-            componentId,
-            instantiationPlans,
-          ),
-        },
-      )
-
-      draft.nodes = { ...draft.nodes, ...nodesById }
-
       const schema = getComponentSchema(componentId)
 
       const board: ComponentBoard = {
@@ -284,10 +274,15 @@ export function ensureComponentBoards(
         author: "Seldon Digital",
         componentTheme: WORKSPACE_EDITABLE_THEME_ENTRY_ID,
         componentProperties: getInitialBoardComponentProperties("component"),
-        variants: variantTreeRefs,
+        variants: [],
       }
       setBoardOrder(board, order)
       draft.boards[componentId] = board
+
+      instantiateComponentInto(componentId, draft, {
+        variantFallbacks,
+        ...getInstantiationOptionsForComponent(componentId, instantiationPlans),
+      })
 
       order--
     }

@@ -19,11 +19,12 @@ export function getDynamicSwatchColors(theme: ThemePipelineInput): {
   swatch3: HSL
   swatch4: HSL
 } {
+  const harmony = theme.colorHarmony.parameters
   const palette = getPalette({
-    baseColorHsl: colorspaceLiteralToHsl(theme.color.baseColor),
-    harmony: theme.color.harmony,
-    angle: theme.color.angle,
-    step: theme.color.step,
+    baseColorHsl: colorspaceLiteralToHsl(harmony.baseColor),
+    harmony: harmony.harmony,
+    angle: harmony.angle,
+    step: harmony.step,
   })
 
   return {
@@ -134,11 +135,12 @@ export function selectColorFromPalette({
   theme: ThemePipelineInput
   index: number
 }) {
+  const harmony = theme.colorHarmony.parameters
   return getPalette({
-    baseColorHsl: colorspaceLiteralToHsl(theme.color.baseColor),
-    harmony: theme.color.harmony,
-    angle: theme.color.angle,
-    step: theme.color.step,
+    baseColorHsl: colorspaceLiteralToHsl(harmony.baseColor),
+    harmony: harmony.harmony,
+    angle: harmony.angle,
+    step: harmony.step,
   })[index]
 }
 
@@ -152,11 +154,12 @@ function mod(hue: number): number {
  * @returns HSL white color
  */
 export function getWhiteColor(theme: ThemePipelineInput): HSL {
-  const { hue } = colorspaceLiteralToHsl(theme.color.baseColor)
+  const harmony = theme.colorHarmony.parameters
+  const { hue } = colorspaceLiteralToHsl(harmony.baseColor)
   return {
     hue,
-    saturation: theme.color.bleed,
-    lightness: theme.color.whitePoint,
+    saturation: harmony.bleed,
+    lightness: harmony.whitePoint,
   }
 }
 
@@ -166,11 +169,12 @@ export function getWhiteColor(theme: ThemePipelineInput): HSL {
  * @returns HSL gray color
  */
 export function getGrayColor(theme: ThemePipelineInput): HSL {
-  const { hue } = colorspaceLiteralToHsl(theme.color.baseColor)
+  const harmony = theme.colorHarmony.parameters
+  const { hue } = colorspaceLiteralToHsl(harmony.baseColor)
   return {
     hue,
-    saturation: theme.color.bleed,
-    lightness: theme.color.grayPoint,
+    saturation: harmony.bleed,
+    lightness: harmony.grayPoint,
   }
 }
 
@@ -180,10 +184,11 @@ export function getGrayColor(theme: ThemePipelineInput): HSL {
  * @returns HSL black color
  */
 export function getBlackColor(theme: ThemePipelineInput): HSL {
-  const { hue } = colorspaceLiteralToHsl(theme.color.baseColor)
+  const harmony = theme.colorHarmony.parameters
+  const { hue } = colorspaceLiteralToHsl(harmony.baseColor)
   return {
     hue,
-    saturation: theme.color.bleed,
-    lightness: theme.color.blackPoint,
+    saturation: harmony.bleed,
+    lightness: harmony.blackPoint,
   }
 }

@@ -30,6 +30,7 @@ import {
   BORDER_SIDE_KEYS,
   Board,
   BorderSideKey,
+  COLOR_SIBLING_KEYS,
   Instance,
   Properties,
   PropertyKey,
@@ -41,7 +42,7 @@ import {
 } from "@seldon/core"
 import { getComponentSchema } from "@seldon/core/components/catalog"
 import { isComponentId } from "@seldon/core/components/constants"
-import { findInObject } from "@seldon/core/helpers"
+import { findInObject, isMatchColorValue } from "@seldon/core/helpers"
 import {
   formatCompoundDisplay as coreFormatCompoundDisplay,
   formatShorthandDisplay as coreFormatShorthandDisplay,
@@ -66,6 +67,7 @@ import type {
   PropertyKey as CorePropertyKey,
   LayeredPaintKey,
 } from "@seldon/core/properties/types/property-keys"
+import { computeNodeProperties } from "@seldon/core/workspace/compute"
 import { getComponentPropertyDefaults } from "@seldon/core/workspace/helpers/components/get-component-property-defaults"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { isPlaygroundBoard } from "@seldon/core/workspace/model/components"
@@ -125,12 +127,6 @@ export interface FlatProperty {
 }
 
 /**
- * Checks if a compound property has preset options available in the theme
- * @param propertyKey - The compound property key (e.g., "background", "border")
- * @param theme - Optional theme to check for preset options
- * @returns True if the theme has a section for this property with preset options
- */
-/**
  * Whether a compound's parent row renders a selector combo. Compounds whose
  * core selector facet is `kind` (background) always do; other compounds only
  * when the theme offers presets.
@@ -149,6 +145,12 @@ export function hasCompoundSelectorCombo(
   return hasCompoundPresetOptions(propertyKey, theme, workspace)
 }
 
+/**
+ * Checks if a compound property has preset options available in the theme
+ * @param propertyKey - The compound property key (e.g., "background", "border")
+ * @param theme - Optional theme to check for preset options
+ * @returns True if the theme has a section for this property with preset options
+ */
 export function hasCompoundPresetOptions(
   propertyKey: string,
   theme?: Theme,
@@ -380,10 +382,17 @@ export function createFlatProperty(
   workspace: Workspace,
   theme?: Theme,
   state?: NodeState,
+  matchLock?: { displayValue: unknown } | null,
 ): FlatProperty {
   const registryEntry = getPropertyRegistryEntry(propertyKey)
   const isCompound = isCompoundProperty(propertyKey as PropertyKey)
   const isShorthand = isShorthandProperty(propertyKey as PropertyKey)
+
+  // A top-level `brightness`/`opacity` locked to a Match Color sibling shows the
+  // mirrored source value and renders dimmed, matching the compound/layer rows.
+  if (matchLock) {
+    propertyValue = matchLock.displayValue
+  }
 
   let actualValue = UNKNOWN_VALUE
   let hasError = false
@@ -465,12 +474,64 @@ export function createFlatProperty(
     propertyType: getPropertyCategory(propertyKey) || "atomic",
     status: finalStatus,
     icon: registryEntry?.icon || "seldon-token",
+    isDimmed: !!matchLock,
   }
 }
 
 /**
- * Create a flat sub-property
+ * Sibling brightness/opacity facet -> the color facet it mirrors, and which percentage it is.
+ * Derived from the shared core `COLOR_SIBLING_KEYS` so the editor lock stays aligned with the
+ * compute mirror and the workspace validation lock.
  */
+const MATCH_SIBLING_FACETS: Record<
+  string,
+  { colorKey: string; kind: "brightness" | "opacity" }
+> = Object.fromEntries(
+  Object.entries(COLOR_SIBLING_KEYS).flatMap(([colorKey, siblingKeys]) => [
+    [siblingKeys.brightness, { colorKey, kind: "brightness" as const }],
+    [siblingKeys.opacity, { colorKey, kind: "opacity" as const }],
+  ]),
+)
+
+/**
+ * Decides whether a `brightness`/`opacity` facet is locked to a Match Color and what value to show.
+ * A facet is locked when its sibling color in `layer` resolves to Match Color and the node theme's
+ * matching toggle is on. The displayed value comes from the node's computed properties, so the row
+ * shows the mirrored source value rather than the unset authored value.
+ */
+function resolveMatchSiblingLock(
+  subKey: string,
+  subPropertyPath: string,
+  layer: Record<string, unknown> | undefined | null,
+  node: Variant | Instance | Board,
+  workspace: Workspace,
+  theme?: Theme,
+): { displayValue: unknown } | null {
+  const sibling = MATCH_SIBLING_FACETS[subKey]
+  if (!sibling || !layer) return null
+  if (!isMatchColorValue(layer[sibling.colorKey])) return null
+
+  const params = theme?.matchColor?.parameters
+  const enabled =
+    sibling.kind === "brightness"
+      ? !!params?.includeBrightness
+      : !!params?.includeOpacity
+  if (!enabled) return null
+
+  let displayValue: unknown
+  try {
+    const computed = computeNodeProperties(
+      getPropertiesSubjectId(node),
+      workspace as never,
+    )
+    displayValue = findInObject(computed, subPropertyPath)
+  } catch {
+    displayValue = undefined
+  }
+
+  return { displayValue: displayValue ?? EMPTY_VALUE }
+}
+
 export function createFlatSubProperty(
   propertyKey: string,
   subKey: string,
@@ -480,17 +541,23 @@ export function createFlatSubProperty(
   workspace: Workspace,
   theme?: Theme,
   layerIndex: number = 0,
+  matchLock?: { displayValue: unknown } | null,
 ): FlatProperty {
   const subPropertyPath = subPropertyPathFor(propertyKey, subKey, layerIndex)
   const subRegistryEntry = getPropertyRegistryEntry(subPropertyPath)
 
+  if (matchLock) {
+    subValue = matchLock.displayValue
+  }
+
   const isDimmed =
-    subValue &&
-    typeof subValue === "object" &&
-    subValue !== null &&
-    "type" in subValue &&
-    subValue.type === ValueType.COMPUTED &&
-    !facetAllowsAuthoredComputed(subPropertyPath)
+    !!matchLock ||
+    (subValue &&
+      typeof subValue === "object" &&
+      subValue !== null &&
+      "type" in subValue &&
+      subValue.type === ValueType.COMPUTED &&
+      !facetAllowsAuthoredComputed(subPropertyPath))
 
   return {
     key: subPropertyPath,
@@ -602,6 +669,15 @@ function getSubProperties(
     // editor reads it directly instead of fabricating a status for upper layers.
     const status = propertyStatus[subPropertyPath] ?? "not used"
 
+    const matchLock = resolveMatchSiblingLock(
+      subKey,
+      subPropertyPath,
+      layer,
+      node,
+      workspace,
+      theme,
+    )
+
     const flatSubProperty = createFlatSubProperty(
       propertyKey,
       subKey,
@@ -611,6 +687,7 @@ function getSubProperties(
       workspace,
       theme,
       layerIndex,
+      matchLock,
     )
 
     subProperties.push(flatSubProperty)
@@ -916,6 +993,17 @@ export function flattenNodeProperties(
       : "not used"
     const finalPropertyValue = propertyValue || EMPTY_VALUE
 
+    // Lock a top-level `brightness`/`opacity` whose sibling `color` is Match Color,
+    // the same rule used for compound and layer facets.
+    const matchLock = resolveMatchSiblingLock(
+      propertyKey,
+      propertyKey,
+      mergedProperties,
+      node,
+      workspace,
+      theme,
+    )
+
     const flatProperty = createFlatProperty(
       propertyKey,
       finalPropertyValue,
@@ -924,6 +1012,7 @@ export function flattenNodeProperties(
       workspace,
       theme,
       state,
+      matchLock,
     )
 
     properties.push(flatProperty)

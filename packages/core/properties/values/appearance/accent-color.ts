@@ -37,9 +37,8 @@ export const accentColorSchema: PropertySchema = {
       typeof value === "string" &&
       (Object.values(Color) as string[]).includes(value),
     computed: (value: unknown) =>
-      typeof value === "object" &&
-      value !== null &&
-      (value as { function?: unknown }).function !== undefined,
+      value === ComputedFunction.HIGH_CONTRAST_COLOR ||
+      value === ComputedFunction.MATCH_COLOR,
     themeCategorical: (value: unknown, theme?: Theme) => {
       if (!theme || typeof value !== "string") return false
       return value in theme.swatch
@@ -49,6 +48,6 @@ export const accentColorSchema: PropertySchema = {
   themeCategoricalKeys: (theme: Theme) => Object.keys(theme.swatch),
   computedFunctions: () => [
     ComputedFunction.HIGH_CONTRAST_COLOR,
-    ComputedFunction.MATCH,
+    ComputedFunction.MATCH_COLOR,
   ],
 }

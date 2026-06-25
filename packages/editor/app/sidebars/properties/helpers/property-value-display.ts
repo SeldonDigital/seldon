@@ -68,10 +68,10 @@ export function getPropertyIcon2Color(
     return property.actualValue as string
   }
   if (
-    (property.key === "color.baseColor" ||
-      property.key === "color.whitePoint" ||
-      property.key === "color.grayPoint" ||
-      property.key === "color.blackPoint") &&
+    (property.key === "colorHarmony.baseColor" ||
+      property.key === "colorHarmony.whitePoint" ||
+      property.key === "colorHarmony.grayPoint" ||
+      property.key === "colorHarmony.blackPoint") &&
     property.iconColorValue
   ) {
     return property.iconColorValue

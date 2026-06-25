@@ -3,7 +3,7 @@ import * as Seldon from "../../constants"
 import { ComponentExport, ComponentSchema } from "../../types"
 
 export const schema = {
-  name: "Standard List",
+  name: "Item List",
   id: Seldon.ComponentId.LIST_STANDARD,
   intent:
     "General-purpose vertical list schema for rendering repeated content items such as posts, links, or summaries.",
@@ -647,12 +647,7 @@ export const schema = {
                 width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
                 color: {
                   type: Sdn.ValueType.COMPUTED,
-                  value: {
-                    function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-                    input: {
-                      basedOn: "#self.color",
-                    },
-                  },
+                  value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
                 },
               },
             },
@@ -822,12 +817,7 @@ export const schema = {
                 width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
                 color: {
                   type: Sdn.ValueType.COMPUTED,
-                  value: {
-                    function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-                    input: {
-                      basedOn: "#self.color",
-                    },
-                  },
+                  value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
                 },
               },
             },

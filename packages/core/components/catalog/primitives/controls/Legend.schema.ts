@@ -37,12 +37,7 @@ export const schema = {
     },
     color: {
       type: Sdn.ValueType.COMPUTED,
-      value: {
-        function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-        input: {
-          basedOn: "#parent.background.color",
-        },
-      },
+      value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
     },
     brightness: { type: Sdn.ValueType.EMPTY, value: null },
     opacity: { type: Sdn.ValueType.EMPTY, value: null },
@@ -63,7 +58,6 @@ export const schema = {
       letterSpacing: { type: Sdn.ValueType.EMPTY, value: null },
     },
     textAlign: { type: Sdn.ValueType.EMPTY, value: null },
-
     textDecoration: {
       type: Sdn.ValueType.OPTION,
       value: Sdn.TextDecoration.NONE,

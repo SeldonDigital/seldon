@@ -11,7 +11,7 @@ import { reorderVariantInBoard } from "../workspace/reducers/handlers/reorder/re
 import { resetDefaultVariantToCatalog } from "../workspace/reducers/handlers/reset/reset-default-variant-to-catalog"
 import { resetNode } from "../workspace/reducers/handlers/reset/reset-node"
 import { resetNodeState } from "../workspace/reducers/handlers/reset/reset-node-state"
-import { resetUserVariantToDefault } from "../workspace/reducers/handlers/reset/reset-user-variant-to-default"
+import { resetVariantToCatalog } from "../workspace/reducers/handlers/reset/reset-variant-to-catalog"
 import { setNodeStateProperties } from "../workspace/reducers/handlers/set/set-node-state-properties"
 import type { Workspace } from "../workspace/types"
 import { rules } from "./config/rules.config"
@@ -194,10 +194,10 @@ describe("structural handlers no-op when their bucket denies the entity", () => 
     expect(result).toBe(ws)
   })
 
-  it("resetUserVariantToDefault respects reset.userVariant", () => {
+  it("resetVariantToCatalog respects reset.userVariant", () => {
     const ws = makeWorkspace()
     const result = withDenied("reset", "userVariant", () =>
-      resetUserVariantToDefault({ variantRootId: "variant-1" }, ws),
+      resetVariantToCatalog({ variantRootId: "variant-1" }, ws),
     )
     expect(result).toBe(ws)
   })

@@ -1078,7 +1078,7 @@ Writing any override at a level shadows inherited values from above that point.
 
 Editors can insert, remove, reorder, and move instances inside a user variant, subject to the same hierarchy and self-containment rules above.
 
-The `reset_user_variant_to_default` action rebuilds a user variant back to the default. It rebuilds the user root's children as a fresh instance chain that templates from the default variant's children with empty `overrides`, the same shape produced at creation. It clears any user `overrides`, sets its `theme` to `null`, and removes node rows that reference nothing. The user variant keeps its own `id`.
+The `reset_variant_to_catalog` action rebuilds a schema-backed user variant back to its catalog schema variant. It rebuilds the variant root's children as a fresh fork that templates from the current default variant's children, so default overrides still cascade into the variant. It restores the schema variant's own `overrides`, keeps the variant root `id`, and removes node rows that reference nothing. A user variant with no matching schema variant is left unchanged.
 
 ---
 

@@ -26,9 +26,9 @@ export const schema = {
       left: { type: Sdn.ValueType.EMPTY, value: null },
     },
     padding: {
-      top: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.tight" },
+      top: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.compact" },
       right: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.tight" },
-      bottom: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.tight" },
+      bottom: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.compact" },
       left: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.tight" },
     },
     gap: { type: Sdn.ValueType.THEME_ORDINAL, value: "@gap.tight" },
@@ -160,16 +160,19 @@ export const schema = {
               overrides: {
                 content: { type: Sdn.ValueType.EXACT, value: "Group A" },
                 width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
-                opacity: {
+                margin: {
+                  left: {
+                    type: Sdn.ValueType.THEME_ORDINAL,
+                    value: "@margin.compact",
+                  },
+                },
+                brightness: {
                   type: Sdn.ValueType.EXACT,
-                  value: { unit: Sdn.Unit.PERCENT, value: 60 },
+                  value: { unit: Sdn.Unit.PERCENT, value: 50 },
                 },
                 color: {
                   type: Sdn.ValueType.COMPUTED,
-                  value: {
-                    function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-                    input: { basedOn: "#self.background.color" },
-                  },
+                  value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
                 },
                 font: {
                   preset: {
@@ -193,12 +196,12 @@ export const schema = {
             margin: {
               top: {
                 type: Sdn.ValueType.THEME_ORDINAL,
-                value: "@margin.tight",
+                value: "@margin.compact",
               },
               right: { type: Sdn.ValueType.EMPTY, value: null },
               bottom: {
                 type: Sdn.ValueType.THEME_ORDINAL,
-                value: "@margin.tight",
+                value: "@margin.compact",
               },
               left: { type: Sdn.ValueType.EMPTY, value: null },
             },
@@ -223,16 +226,19 @@ export const schema = {
               overrides: {
                 content: { type: Sdn.ValueType.EXACT, value: "Group B" },
                 width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
-                opacity: {
+                margin: {
+                  left: {
+                    type: Sdn.ValueType.THEME_ORDINAL,
+                    value: "@margin.compact",
+                  },
+                },
+                brightness: {
                   type: Sdn.ValueType.EXACT,
-                  value: { unit: Sdn.Unit.PERCENT, value: 60 },
+                  value: { unit: Sdn.Unit.PERCENT, value: 50 },
                 },
                 color: {
                   type: Sdn.ValueType.COMPUTED,
-                  value: {
-                    function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-                    input: { basedOn: "#self.background.color" },
-                  },
+                  value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
                 },
                 font: {
                   preset: {

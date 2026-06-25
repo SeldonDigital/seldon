@@ -1,4 +1,4 @@
-import { CSSProperties } from "react"
+import { CSSProperties, memo } from "react"
 import { Light as SyntaxHighlighter } from "react-syntax-highlighter"
 import css from "react-syntax-highlighter/dist/esm/languages/hljs/css"
 import { atomOneDarkReasonable } from "react-syntax-highlighter/dist/esm/styles/hljs"
@@ -14,7 +14,7 @@ interface CssBlockProps {
  * Displays CSS properties as syntax-highlighted code.
  * Text is selectable for easy copy-paste.
  */
-export function CssBlock({ cssProperties }: CssBlockProps) {
+function CssBlockInner({ cssProperties }: CssBlockProps) {
   if (cssProperties.length === 0) {
     return null
   }
@@ -31,6 +31,19 @@ export function CssBlock({ cssProperties }: CssBlockProps) {
     </Box>
   )
 }
+
+/**
+ * `cssProperties` gets a new array reference on every sidebar render, but the
+ * highlighter only needs to re-run when the rendered text changes. Comparing the
+ * joined content skips `react-syntax-highlighter`'s expensive re-highlight on
+ * edits and selections that leave the selected node's CSS unchanged.
+ */
+export const CssBlock = memo(CssBlockInner, (prev, next) => {
+  if (prev.cssProperties.length !== next.cssProperties.length) return false
+  return prev.cssProperties.every(
+    (line, index) => line === next.cssProperties[index],
+  )
+})
 
 const styles: Record<string, CSSProperties> = {
   container: {

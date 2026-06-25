@@ -27,8 +27,8 @@ export function getAbsoluteSizeCssValue(
           value: {
             unit: Unit.REM,
             value: modulate({
-              ratio: theme.core.ratio,
-              size: theme.core.size,
+              ratio: theme.modulation.parameters.ratio,
+              size: theme.modulation.parameters.baseSize,
               step: themeValue.parameters.step,
             }),
           },

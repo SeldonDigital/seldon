@@ -1,4 +1,12 @@
-export { ComputedFunction } from "./shared/computed"
+export {
+  COLOR_SIBLING_KEYS,
+  COLOR_SIBLING_COMPOUND_KEYS,
+  COLOR_SIBLING_LAYER_KEYS,
+} from "./shared/color-siblings"
+export {
+  COMPUTED_FUNCTION_DISPLAY_NAMES,
+  ComputedFunction,
+} from "./shared/computed"
 export { EMPTY_VALUE } from "./shared/empty"
 export {
   GOOGLE_FONT_FAMILIES,

@@ -52,12 +52,7 @@ export const schema = {
     clip: { type: Sdn.ValueType.EMPTY, value: null },
     color: {
       type: Sdn.ValueType.COMPUTED,
-      value: {
-        function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-        input: {
-          basedOn: "#self.background.color",
-        },
-      },
+      value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
     },
     brightness: { type: Sdn.ValueType.EMPTY, value: null },
     opacity: { type: Sdn.ValueType.EMPTY, value: null },
@@ -80,12 +75,7 @@ export const schema = {
       style: { type: Sdn.ValueType.EMPTY, value: null },
       color: {
         type: Sdn.ValueType.COMPUTED,
-        value: {
-          function: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
-          input: {
-            basedOn: "#self.background.color",
-          },
-        },
+        value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
       },
       width: { type: Sdn.ValueType.EMPTY, value: null },
       brightness: {
@@ -155,7 +145,7 @@ export const schema = {
       family: { type: Sdn.ValueType.EMPTY, value: null },
       style: { type: Sdn.ValueType.EMPTY, value: null },
       weight: { type: Sdn.ValueType.EMPTY, value: null },
-      size: { type: Sdn.ValueType.EMPTY, value: null },
+      size: { type: Sdn.ValueType.THEME_ORDINAL, value: "@fontSize.small" },
       lineHeight: { type: Sdn.ValueType.EMPTY, value: null },
       textCase: { type: Sdn.ValueType.EMPTY, value: null },
       letterSpacing: { type: Sdn.ValueType.EMPTY, value: null },

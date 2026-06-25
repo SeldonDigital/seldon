@@ -235,7 +235,9 @@ export function getNodeIdAddedByAction(
     case "reorder_board":
     case "set_node_properties":
     case "reset_node_property":
-    case "reset_user_variant_to_default":
+    case "reset_variant_to_catalog":
+    case "reset_instance_to_source":
+    case "reset_instance_to_original":
     case "set_component_properties":
     case "reset_component_property":
     case "set_node_label":

@@ -33,14 +33,8 @@ export function formatComputedDisplayValue(
     return null
   }
 
-  if (
-    "value" in propertyValue &&
-    propertyValue.value &&
-    typeof propertyValue.value === "object" &&
-    "function" in propertyValue.value
-  ) {
-    const functionName = (propertyValue.value as Record<string, unknown>)
-      .function as string
+  if ("value" in propertyValue && typeof propertyValue.value === "string") {
+    const functionName = propertyValue.value as string
 
     if (options) {
       const flatOptions = Array.isArray(options[0])

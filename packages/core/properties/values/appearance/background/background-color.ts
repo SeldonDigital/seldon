@@ -40,11 +40,7 @@ export const backgroundColorSchema: PropertySchema = {
     option: (value: unknown) =>
       typeof value === "string" &&
       (Object.values(Color) as string[]).includes(value),
-    computed: (value: unknown) => {
-      if (typeof value !== "object" || value === null) return false
-      const fn = (value as { function?: unknown }).function
-      return fn === ComputedFunction.MATCH
-    },
+    computed: (value: unknown) => value === ComputedFunction.MATCH_COLOR,
     themeCategorical: (value: unknown, theme?: Theme) => {
       if (!theme || typeof value !== "string") return false
       return value in theme.swatch
@@ -52,5 +48,5 @@ export const backgroundColorSchema: PropertySchema = {
   },
   presetOptions: () => Object.values(Color),
   themeCategoricalKeys: (theme: Theme) => Object.keys(theme.swatch),
-  computedFunctions: () => [ComputedFunction.MATCH],
+  computedFunctions: () => [ComputedFunction.MATCH_COLOR],
 }

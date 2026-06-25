@@ -37,14 +37,9 @@ export const borderColorSchema: PropertySchema = {
     option: (value: unknown) =>
       typeof value === "string" &&
       (Object.values(Color) as string[]).includes(value),
-    computed: (value: unknown) => {
-      if (typeof value !== "object" || value === null) return false
-      const fn = (value as { function?: unknown }).function
-      return (
-        fn === ComputedFunction.MATCH ||
-        fn === ComputedFunction.HIGH_CONTRAST_COLOR
-      )
-    },
+    computed: (value: unknown) =>
+      value === ComputedFunction.MATCH_COLOR ||
+      value === ComputedFunction.HIGH_CONTRAST_COLOR,
     themeCategorical: (value: unknown, theme?: Theme) => {
       if (!theme || typeof value !== "string") return false
       return value in theme.swatch
@@ -54,6 +49,6 @@ export const borderColorSchema: PropertySchema = {
   themeCategoricalKeys: (theme: Theme) => Object.keys(theme.swatch),
   computedFunctions: () => [
     ComputedFunction.HIGH_CONTRAST_COLOR,
-    ComputedFunction.MATCH,
+    ComputedFunction.MATCH_COLOR,
   ],
 }

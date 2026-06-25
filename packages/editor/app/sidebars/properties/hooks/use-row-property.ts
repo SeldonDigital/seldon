@@ -16,6 +16,7 @@ import {
   SubPropertyKey,
   Theme,
   type ThemeCustomTokenSection,
+  ValueType,
   Variant,
   Workspace,
   isReservedTokenName,
@@ -73,6 +74,10 @@ import {
 } from "../helpers/theme-token-icon-color"
 import { usePropertyControlData } from "./use-property-control-data"
 import {
+  usePropertyEditNavigation,
+  usePropertyEditRowRegistration,
+} from "./use-property-edit-navigation"
+import {
   useIsPropertyExpanded,
   usePropertyExpansion,
 } from "./use-property-expansion"
@@ -125,6 +130,25 @@ export function useRowProperty({
   const activeState = useNodeActiveState(node)
   const isStateReadOnly =
     !isBoard(node) && isEntryNodeInstance(node) && activeState !== NORMAL_STATE
+
+  // A row is reachable by Tab when it owns an editable control and is not
+  // dimmed, read-only, a look-parent grouping, or a license link row.
+  const isNavigable =
+    Boolean(property.controlType) &&
+    !property.isDimmed &&
+    !isStateReadOnly &&
+    !property.isLookParent &&
+    !property.linkHref
+
+  const editNavigation = usePropertyEditNavigation()
+  const handleTabNext = useCallback(
+    () => editNavigation?.moveFocus(property.key, 1) ?? false,
+    [editNavigation, property.key],
+  )
+  const handleTabPrev = useCallback(
+    () => editNavigation?.moveFocus(property.key, -1) ?? false,
+    [editNavigation, property.key],
+  )
 
   // A custom token row can be renamed in place. Reserved scale/look/swatch keys
   // are not `customN`, so they never match. Only meaningful on a theme variant.
@@ -188,6 +212,7 @@ export function useRowProperty({
     property.key,
     getCurrentOptionValue(property.key, property.value),
     theme,
+    property.icon,
   )
   const iconId =
     currentIconDescriptor.kind === "static"
@@ -214,10 +239,27 @@ export function useRowProperty({
 
   const propertyValue = getPropertyValueForDisplay()
 
+  // A closed row uses `options` only to look up the current value's display
+  // name. Theme tokens, compound and shorthand summaries, and dimmed rows
+  // already resolve to a formatted `actualValue`, which can never match a
+  // picker value (a label like "Primary" is not the token `@swatch.primary`),
+  // so `getDisplayValue` ignores `options` for them. Skipping the build avoids
+  // generating the full swatch/font/size/look lists for every row on each
+  // selection. The editing control rebuilds its own options when the row opens.
+  const displaySkipsOptions =
+    property.isCompound ||
+    property.isShorthand ||
+    property.isDimmed ||
+    property.valueType === ValueType.THEME_ORDINAL ||
+    property.valueType === ValueType.THEME_CATEGORICAL
+
   // Options for theme value matching (UI optimization).
   const options = useMemo(
-    () => buildPropertyOptions({ property, theme, workspace, subject: node }),
-    [property, theme, node, workspace],
+    () =>
+      displaySkipsOptions
+        ? undefined
+        : buildPropertyOptions({ property, theme, workspace, subject: node }),
+    [displaySkipsOptions, property, theme, node, workspace],
   )
 
   const nodeId = isBoard(node) ? getComponentKey(node) : node.id
@@ -261,6 +303,17 @@ export function useRowProperty({
 
   const rowColor = rowStyle.color as string | undefined
   const { setIsHovered, style: hoverStyle } = usePropertyFrameHover(rowColor)
+
+  // Keyboard Tab moves edit focus without firing pointer events, so the row the
+  // mouse rests on keeps its hover outline. Hand the hover setter to the
+  // navigation coordinator so it can clear the source row and outline the target.
+  usePropertyEditRowRegistration(
+    property.key,
+    frameRef,
+    () => setIsEditingProperty(true),
+    setIsHovered,
+    isNavigable,
+  )
 
   // Image rows (source attribute, background image facet) support upload.
   const uploadTarget = imageUploadTargetForKey(property.key)
@@ -596,6 +649,8 @@ export function useRowProperty({
     themeForSwatches,
     frameRef,
     onEditChange: setIsEditingProperty,
+    onTabNext: handleTabNext,
+    onTabPrev: handleTabPrev,
     themeEditingContext,
     fontCollectionEditingContext,
     iconSetEditingContext,

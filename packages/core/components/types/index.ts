@@ -19,7 +19,8 @@ interface BaseComponentSchema {
   id: ComponentId
   name: string
   intent: string
-  icon: ComponentIcon
+  // Optional. When absent, the icon registry falls back to `seldon-component`.
+  icon?: ComponentIcon
   properties: Properties
   tags: string[]
   // Layout model the component arranges its children with. Optional; absent means

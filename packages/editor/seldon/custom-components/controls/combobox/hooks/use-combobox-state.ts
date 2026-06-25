@@ -133,8 +133,11 @@ export function useComboboxState<
     setInputValue(newValue)
   }
 
-  function handleSubmitInput() {
+  // `keepFocus` commits the value without blurring the input, so Tab can apply
+  // the value and still let the browser move focus to the next control.
+  function handleSubmitInput(options?: { keepFocus?: boolean }) {
     isManualSubmit.current = true
+    const keepFocus = options?.keepFocus ?? false
 
     // After Arrow navigation, Enter commits the highlighted option even when the
     // input still shows the previously selected name.
@@ -146,7 +149,7 @@ export function useComboboxState<
         setInputValue(highlightedOption.name)
         handleValueChange(highlightedOption.value)
         setOpen(false)
-        inputRef.current?.blur()
+        if (!keepFocus) inputRef.current?.blur()
         setTimeout(() => {
           isManualSubmit.current = false
         }, 0)
@@ -171,7 +174,7 @@ export function useComboboxState<
     }
     setOpen(false)
 
-    inputRef.current?.blur()
+    if (!keepFocus) inputRef.current?.blur()
 
     setTimeout(() => {
       isManualSubmit.current = false

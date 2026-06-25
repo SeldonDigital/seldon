@@ -32,9 +32,9 @@ import {
   schema as chipSchema,
 } from "./elements/Chip.schema"
 import {
-  exportConfig as comboboxTriggerExportConfig,
-  schema as comboboxTriggerSchema,
-} from "./elements/ComboboxTrigger.schema"
+  exportConfig as comboboxFieldExportConfig,
+  schema as comboboxFieldSchema,
+} from "./elements/ComboboxField.schema"
 import {
   exportConfig as descriptionListExportConfig,
   schema as descriptionListSchema,
@@ -273,7 +273,7 @@ const elements: ComponentSchema[] = [
   itemSchema,
   menuItemSchema,
   listboxOptionSchema,
-  comboboxTriggerSchema,
+  comboboxFieldSchema,
   navSchema,
   listSchema,
   sectionSchema,
@@ -386,7 +386,7 @@ const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   [ComponentId.ITEM]: itemExportConfig,
   [ComponentId.MENU_ITEM]: menuItemExportConfig,
   [ComponentId.LISTBOX_OPTION]: listboxOptionExportConfig,
-  [ComponentId.COMBOBOX_TRIGGER]: comboboxTriggerExportConfig,
+  [ComponentId.COMBOBOX_FIELD]: comboboxFieldExportConfig,
   [ComponentId.NAV]: navExportConfig,
   [ComponentId.LIST]: listExportConfig,
   [ComponentId.SECTION]: sectionExportConfig,

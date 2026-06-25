@@ -99,7 +99,7 @@ export function createPropertyOptionIconRenderer({
     }
 
     return renderOptionIconDescriptor(
-      getOptionIcon(property.key, option.value, theme),
+      getOptionIcon(property.key, option.value, theme, property.icon),
       property,
     )
   }

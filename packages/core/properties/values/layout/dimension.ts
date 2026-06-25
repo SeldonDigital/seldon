@@ -2,7 +2,6 @@ import { Theme, ThemeDimensionKey } from "../../../themes/types"
 import { ComputedFunction, ValueType } from "../../constants"
 import { PropertySchema } from "../../types/schema"
 import { ComputedAutoFitValue } from "../shared/computed/auto-fit"
-import { ComputedMatchValue } from "../shared/computed/match"
 import { EmptyValue } from "../shared/empty/empty"
 import { PercentageValue } from "../shared/exact/percentage"
 import { PixelValue } from "../shared/exact/pixel"
@@ -30,7 +29,6 @@ export type DimensionValue =
   | RemValue
   | PercentageValue
   | ComputedAutoFitValue
-  | ComputedMatchValue
 
 /** Dimension shapes that exclude theme ordinal picks. */
 export type DimensionResizeValue =
@@ -39,7 +37,6 @@ export type DimensionResizeValue =
   | PixelValue
   | RemValue
   | ComputedAutoFitValue
-  | ComputedMatchValue
 
 export const dimensionSchema: PropertySchema = {
   name: "dimension",
@@ -72,11 +69,7 @@ export const dimensionSchema: PropertySchema = {
     option: (value: unknown) =>
       typeof value === "string" &&
       (Object.values(Resize) as string[]).includes(value),
-    computed: (value: unknown) =>
-      typeof value === "object" &&
-      value !== null &&
-      "function" in value &&
-      value.function !== undefined,
+    computed: (value: unknown) => value === ComputedFunction.AUTO_FIT,
     themeOrdinal: (value: unknown, theme?: Theme) => {
       if (!theme) return false
       return typeof value === "string" && value in theme.dimension
@@ -85,5 +78,5 @@ export const dimensionSchema: PropertySchema = {
   presetOptions: () => Object.values(Resize),
   themeOrdinalKeys: (theme: Theme) =>
     Object.keys(theme.dimension).map((id) => `@dimension.${id}`),
-  computedFunctions: () => [ComputedFunction.AUTO_FIT, ComputedFunction.MATCH],
+  computedFunctions: () => [ComputedFunction.AUTO_FIT],
 }

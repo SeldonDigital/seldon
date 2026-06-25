@@ -19,25 +19,49 @@ export const theme: StockTheme = {
     intent:
       "To provide a modern and professional look with high contrast and readability, suitable for a wide range of applications.",
   },
-  core: {
-    ratio: Ratio.MajorThird,
-    fontSize: 16,
-    size: 1,
+  modulation: {
+    type: TokenType.COMPUTED,
+    parameters: { ratio: Ratio.MajorThird, baseFontSize: 16, baseSize: 1 },
   },
-  color: {
-    baseColor: { hue: 0, saturation: 0, lightness: 0 }, // Base color for the swatches
-    harmony: Harmony.Monochromatic, // Harmony type for the swatches
-    angle: 20, // Used to determine angle from primary hue in harmonies that allow it
-    step: 20, // Steps between tints and shades; (+) values create tints, (-) values create shades
-    whitePoint: 100, // Used to determine lightness value for white
-    grayPoint: 50, // Used to determine lightness value for gray
-    blackPoint: 0, // Used to determine lightness value for black
-    bleed: 0, // Determines how much the hue bleeds into white, gray, and black
-    contrastRatio: 2.5, // Contrast ratio (1-21) at which to switch from black to white text
+  colorHarmony: {
+    type: TokenType.COMPUTED,
+    parameters: {
+      baseColor: { hue: 0, saturation: 0, lightness: 0 },
+      harmony: Harmony.Monochromatic,
+      angle: 20,
+      step: 20,
+      whitePoint: 100,
+      grayPoint: 50,
+      blackPoint: 0,
+      bleed: 0,
+    },
+  },
+  matchColor: {
+    type: TokenType.COMPUTED,
+    parameters: { includeBrightness: true, includeOpacity: true },
+  },
+  highContrast: {
+    type: TokenType.COMPUTED,
+    parameters: {
+      contrastRatio: 2.5,
+      fallbackColor: { type: ValueType.EXACT, value: "#FFFFFF" },
+      includeBleed: true,
+    },
+  },
+  opticalPadding: {
+    type: TokenType.COMPUTED,
+    parameters: { leftRhythm: 0.75, rightRhythm: 0.875, verticalRhythm: 0.5 },
+  },
+  autoFit: {
+    type: TokenType.COMPUTED,
+    parameters: { factor: 0.8 },
   },
   fontFamily: {
-    primary: { type: TokenType.FONT_FAMILY, parameters: "Inter" },
-    secondary: { type: TokenType.FONT_FAMILY, parameters: "Inter" },
+    type: TokenType.COMPUTED,
+    parameters: {
+      primary: { type: TokenType.FONT_FAMILY, parameters: "Inter" },
+      secondary: { type: TokenType.FONT_FAMILY, parameters: "Inter" },
+    },
   },
   size: {
     tiny: {
@@ -535,24 +559,6 @@ export const theme: StockTheme = {
       },
     },
     custom1: {
-      name: "Seldon Red",
-      intent: "Seldon Red",
-      type: TokenType.SWATCH,
-      parameters: {
-        colorspace: Colorspace.HSL,
-        value: { hue: 0, saturation: 100, lightness: 65 },
-      },
-    },
-    custom2: {
-      name: "Seldon Green",
-      intent: "Seldon Green",
-      type: TokenType.SWATCH,
-      parameters: {
-        colorspace: Colorspace.HSL,
-        value: { hue: 135, saturation: 76, lightness: 59 },
-      },
-    },
-    custom3: {
       name: "Seldon Blue",
       intent: "Seldon Blue",
       type: TokenType.SWATCH,
@@ -561,22 +567,67 @@ export const theme: StockTheme = {
         value: { hue: 203, saturation: 100, lightness: 62 },
       },
     },
+    custom2: {
+      name: "Seldon Orange",
+      intent: "Seldon Orange",
+      type: TokenType.SWATCH,
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 20, saturation: 95, lightness: 60 },
+      },
+    },
+    custom3: {
+      name: "Seldon Green",
+      intent: "Seldon Green",
+      type: TokenType.SWATCH,
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 135, saturation: 76, lightness: 59 },
+      },
+    },
     custom4: {
+      name: "Seldon Red",
+      intent: "Seldon Red",
+      type: TokenType.SWATCH,
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 0, saturation: 100, lightness: 65 },
+      },
+    },
+    custom5: {
       name: "Seldon Yellow",
       intent: "Seldon Yellow",
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 60, saturation: 100, lightness: 46 },
+        value: { hue: 60, saturation: 100, lightness: 58 },
       },
     },
-    custom5: {
+    custom6: {
       name: "Seldon Purple",
-      intent: "Seldon Purple",
+      intent: "To act as an accent color",
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
         value: { hue: 300, saturation: 76, lightness: 48 },
+      },
+    },
+    custom7: {
+      name: "Seldon Dark Gray",
+      intent: "Seldon Dark Gray",
+      type: TokenType.SWATCH,
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 0, saturation: 0, lightness: 15 },
+      },
+    },
+    custom8: {
+      name: "Seldon Light Gray",
+      intent: "Seldon Light Gray",
+      type: TokenType.SWATCH,
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 0, saturation: 0, lightness: 96 },
       },
     },
   },
@@ -737,7 +788,7 @@ export const theme: StockTheme = {
           value: "@fontFamily.primary",
         },
         style: { type: ValueType.OPTION, value: FontStyle.NORMAL },
-        weight: { type: ValueType.THEME_ORDINAL, value: "@fontWeight.medium" },
+        weight: { type: ValueType.THEME_ORDINAL, value: "@fontWeight.normal" },
         size: { type: ValueType.THEME_ORDINAL, value: "@fontSize.small" },
         lineHeight: {
           type: ValueType.THEME_ORDINAL,

@@ -2,7 +2,8 @@ import { ComponentId } from "../../../components/constants"
 import { Properties, PropertyKey, SubPropertyKey } from "../../../properties"
 import { Theme, ThemeInstanceId, ThemeSwatchKey } from "../../../themes/types"
 import { applyResetDefaultVariantToCatalog } from "../../helpers/nodes/apply-reset-default-variant-to-catalog"
-import { applyResetUserVariantToDefaultVariant } from "../../helpers/nodes/apply-reset-user-variant-to-default-variant"
+import { applyResetInstanceToOriginal } from "../../helpers/nodes/apply-reset-instance-to-original"
+import { applyResetSchemaVariantToCatalog } from "../../helpers/nodes/apply-reset-schema-variant-to-catalog"
 import type { RepeatEditorData } from "../../helpers/nodes/node-repeat"
 import {
   BoardKey,
@@ -161,12 +162,12 @@ export class WorkspaceMutationService {
     return resetComponentProperty(boardKey, target, workspace)
   }
 
-  /** Replaces a user variant's composition tree with the board's default variant tree. */
-  public resetUserVariantToDefaultVariant(
+  /** Rebuilds a single schema-backed user variant to its catalog schema variant. */
+  public resetSchemaVariantToCatalog(
     variantRootId: VariantId,
     workspace: Workspace,
   ): Workspace {
-    return applyResetUserVariantToDefaultVariant(workspace, variantRootId)
+    return applyResetSchemaVariantToCatalog(workspace, variantRootId)
   }
 
   /** Rebuilds a default variant's composition tree to match its catalog schema default. */
@@ -175,6 +176,18 @@ export class WorkspaceMutationService {
     workspace: Workspace,
   ): Workspace {
     return applyResetDefaultVariantToCatalog(workspace, defaultVariantRootId)
+  }
+
+  /**
+   * Reverts an instance subtree to its most original template, in place. Clears
+   * subtree overrides and repoints each node's template to its resolved original,
+   * so node ids survive and downstream instances keep their overrides.
+   */
+  public resetInstanceToOriginal(
+    instanceId: InstanceId,
+    workspace: Workspace,
+  ): Workspace {
+    return applyResetInstanceToOriginal(workspace, instanceId)
   }
 
   public setComponentTheme(
