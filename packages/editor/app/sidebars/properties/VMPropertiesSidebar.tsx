@@ -1,6 +1,12 @@
 import { MenuEntry } from "@lib/menus"
 import { LayoutGroup } from "framer-motion"
-import { Fragment, RefObject, useCallback, useMemo } from "react"
+import {
+  Fragment,
+  RefObject,
+  useCallback,
+  useDeferredValue,
+  useMemo,
+} from "react"
 import {
   Board,
   Instance,
@@ -84,7 +90,16 @@ export interface PropertyTreeProps {
 export function VMPropertiesSidebar() {
   const state = usePropertiesSidebar()
 
-  if (state.kind === "empty") {
+  // Selecting a node rebuilds and remounts the whole inspector, which is heavy
+  // enough to block the triggering click. Render the tree from a deferred copy
+  // of the state so the click commits immediately and the new inspector fills
+  // in at transition priority. While a row is being edited the live value comes
+  // from the control's own input state, so a one-frame-late tree update is not
+  // visible. This works for the external selection store, where startTransition
+  // would not.
+  const deferredState = useDeferredValue(state)
+
+  if (deferredState.kind === "empty") {
     return <SidebarContainer style={sidebarNoSelectionStyle} />
   }
 
@@ -93,7 +108,7 @@ export function VMPropertiesSidebar() {
       style={sidebarShellStyle}
       data-testid="properties-sidebar"
     >
-      <PropertiesTree {...state.treeProps} />
+      <PropertiesTree {...deferredState.treeProps} />
     </SidebarContainer>
   )
 }
