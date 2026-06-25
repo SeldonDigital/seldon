@@ -9,7 +9,10 @@ import {
   isThemeBoard,
 } from "@seldon/core/workspace/model/components"
 import { useAutoSelectNode } from "@lib/workspace/hooks/use-auto-select-node"
-import { useSelection } from "@lib/workspace/hooks/use-selection"
+import {
+  useSelectionActions,
+  useStore as useSelectionStore,
+} from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useAddRemoveCommands } from "@lib/hooks/commands/use-add-remove-commands"
 import { useTool } from "@lib/hooks/use-tool"
@@ -21,7 +24,7 @@ import { useExpansion, useIsExpanded } from "./use-expansion"
 import { useRowButton } from "./use-row-button"
 import { useRowClick } from "./use-row-click"
 import { useRowToggle } from "./use-row-toggle"
-import { useSelectionRelations } from "./use-selection-relations"
+import { useIsBoardContainingSelection } from "./use-selection-relations"
 
 /**
  * Hook that provides all state and handlers for rendering a board row in the objects sidebar.
@@ -39,13 +42,9 @@ export function useRowBoard(
 ) {
   // Core workspace and tool state
   const { activeTool, setActiveTool } = useTool()
-  const {
-    selectBoard,
-    selectedBoardId,
-    selectedNodeId,
-    selectedResourceEntry,
-  } = useSelection()
-  const { selectedNodeBoardKey } = useSelectionRelations()
+  const boardKey = getComponentKey(board)
+  const variantRootIds = getVariantRootIds(board)
+  const { selectBoard } = useSelectionActions()
   const { dispatch } = useWorkspace({ usePreview: false })
   const { dispatchWithAutoSelect } = useAutoSelectNode()
   const { removeBoard, duplicatePlayground } = useAddRemoveCommands()
@@ -57,23 +56,24 @@ export function useRowBoard(
   // Options and configuration
   const show = options?.show ?? true
 
-  // Selection state: determine if board is selected or contains selected node
-  const boardKey = getComponentKey(board)
-  const variantRootIds = getVariantRootIds(board)
-
-  const isBoardSelected =
-    selectedBoardId === boardKey &&
-    selectedNodeId === null &&
-    selectedResourceEntry === null
+  // Selection state: each derivation is a granular store subscription, so a
+  // board row only re-renders when its own selected/containing status flips.
+  const isBoardSelected = useSelectionStore(
+    (state) =>
+      state.selectedBoardId === boardKey &&
+      state.selectedNodeId === null &&
+      state.selectedResourceEntry === null,
+  )
 
   // Covers any resource board variant entry (theme, font collection, icon set,
   // or media) that lives under this board.
-  const boardContainsSelectedResourceEntry =
-    selectedResourceEntry !== null &&
-    variantRootIds.includes(selectedResourceEntry.id)
+  const boardContainsSelectedResourceEntry = useSelectionStore(
+    (state) =>
+      state.selectedResourceEntry !== null &&
+      variantRootIds.includes(state.selectedResourceEntry.id),
+  )
 
-  const boardContainsSelectedNode =
-    selectedNodeBoardKey !== null && selectedNodeBoardKey === boardKey
+  const boardContainsSelectedNode = useIsBoardContainingSelection(boardKey)
   const boardIsActive =
     isBoardSelected ||
     boardContainsSelectedNode ||

@@ -27,7 +27,7 @@ import {
 import type { EntryNode } from "@seldon/core/workspace/types"
 import { usePropertiesClipboard } from "@lib/workspace/hooks/use-properties-clipboard"
 import {
-  useSelection,
+  useSelectionActions,
   useStore as useSelectionStore,
 } from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
@@ -58,7 +58,10 @@ import { useExpansion, useIsExpanded } from "./use-expansion"
 import { useRowButton } from "./use-row-button"
 import { useRowClick } from "./use-row-click"
 import { useRowToggle } from "./use-row-toggle"
-import { useSelectionRelations } from "./use-selection-relations"
+import {
+  useIsAncestorOfSelection,
+  useIsParentOfSelection,
+} from "./use-selection-relations"
 
 /**
  * Hook that provides all state and handlers for rendering a node row in the objects sidebar.
@@ -82,9 +85,7 @@ export function useRowNode(
   const { workspace, dispatch } = useWorkspace({ usePreview: false })
   const { activeTool } = useTool()
   const { selectNode, selectBoard, selectResourceEntry, selectResourceItem } =
-    useSelection()
-  const { selectedNodeId, parentOfSelectedNodeId, ancestorIdsOfSelected } =
-    useSelectionRelations()
+    useSelectionActions()
   const { showNodeIds } = useDebugMode()
   const { autoScrollToSelection } = useEditorConfig()
   const addToast = useAddToast()
@@ -128,8 +129,8 @@ export function useRowNode(
       (state.selectedNodeRootId == null ||
         state.selectedNodeRootId === selectionPath),
   )
-  const selectedNodeIsWithin = ancestorIdsOfSelected.has(node.id)
-  const isParentOfSelectedNode = parentOfSelectedNodeId === node.id
+  const selectedNodeIsWithin = useIsAncestorOfSelection(node.id)
+  const isParentOfSelectedNode = useIsParentOfSelection(node.id)
   const isNodeActive =
     parentIsSelected || isParentOfSelectedNode || selectedNodeIsWithin
 

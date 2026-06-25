@@ -17,7 +17,7 @@ interface HistoryState {
 
 export const INITIAL_WORKSPACE: Workspace = createEmptyWorkspace()
 
-const useHistoryStore = create<HistoryState>()((set) => ({
+export const useHistoryStore = create<HistoryState>()((set) => ({
   history: [INITIAL_WORKSPACE],
   currentIndex: 0,
 
@@ -56,6 +56,16 @@ const useHistoryStore = create<HistoryState>()((set) => ({
       currentIndex: 0,
     })),
 }))
+
+/**
+ * Reads the current committed workspace without subscribing a component to the
+ * history store. Use inside event handlers and command callbacks that need the
+ * latest workspace at call time but must not re-render on every edit.
+ */
+export function getCurrentWorkspace(): Workspace {
+  const { history, currentIndex } = useHistoryStore.getState()
+  return history[currentIndex]
+}
 
 export function useHistory() {
   const push = useHistoryStore((state) => state.push)

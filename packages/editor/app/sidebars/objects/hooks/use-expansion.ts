@@ -6,7 +6,7 @@ import {
   typeCheckingService,
 } from "@seldon/core/workspace/services"
 import type { EntryNode } from "@seldon/core/workspace/types"
-import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
+import { getCurrentWorkspace } from "@lib/workspace/hooks/use-history"
 import { collectDescendantNodeIds } from "@lib/workspace/component-tree"
 import { findComponentForNode } from "@lib/workspace/node-tree"
 import { getComponentKey, getNode } from "@lib/workspace/workspace-accessors"
@@ -63,7 +63,6 @@ export const useIsExpanded = (id: string): boolean =>
 export const useExpansion = () => {
   const expandObjects = useStore((state) => state.expandObjects)
   const collapseObjects = useStore((state) => state.collapseObjects)
-  const { workspace } = useWorkspace({ usePreview: false })
 
   const toggle = useCallback(
     (
@@ -81,6 +80,7 @@ export const useExpansion = () => {
           collapseObjects([id])
         }
       } else {
+        const workspace = getCurrentWorkspace()
         const node = getNode(workspace, id as InstanceId | VariantId)
         const idsToToggle: string[] = []
 
@@ -112,7 +112,7 @@ export const useExpansion = () => {
         }
       }
     },
-    [expandObjects, collapseObjects, workspace],
+    [expandObjects, collapseObjects],
   )
 
   return {
@@ -124,8 +124,8 @@ export const useExpansion = () => {
     expandObjects,
     collapseObjects,
     getAllDescendantNodeIds: useCallback(
-      (nodeId: string) => getAllDescendantNodeIds(nodeId, workspace),
-      [workspace],
+      (nodeId: string) => getAllDescendantNodeIds(nodeId, getCurrentWorkspace()),
+      [],
     ),
   }
 }
