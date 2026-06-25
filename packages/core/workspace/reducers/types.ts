@@ -9,7 +9,7 @@
  * | add_component, remove_component, reorder_board, duplicate_component | components (+ nodes/themes/resources per type) |
  * | duplicate_playground | playgrounds (+ nodes) |
  * | add_font_collection, remove_font_collection, add_media, remove_media, add_icon_set, remove_icon_set, add_theme, remove_theme, add_playground, remove_playground, set_playground_label | components + section rows / playgrounds |
- * | set_board_label, set_board_intent, set_board_tags, set_board_license, set_board_author, set_board_credentials, set_board_preview, set_board_editor_data, set_component_properties, reset_component_property, set_component_theme | components |
+ * | set_board_label, set_board_intent, set_board_tags, set_board_license, set_board_author, set_board_credentials, set_board_preview, set_board_editor_data, set_component_properties, reset_component_property, apply_component_properties_to_all_boards, set_component_theme | components |
  * | reset_board_label, reset_board_intent, reset_board_tags, reset_board_license, reset_board_author, reset_board_credentials, reset_board_preview, reset_board_editor_data | components |
  * | reorder_variant_in_board | components.variants order |
  * | add_variant | components.variants + nodes |
@@ -588,6 +588,12 @@ export type WorkspaceAction =
         subpropertyKey?: SubPropertyKey
         /** Paint-layer slot for layered properties; defaults to layer 0. */
         layerIndex?: number
+      }
+    }
+  | {
+      type: "apply_component_properties_to_all_boards"
+      payload: {
+        sourceBoardKey: BoardKey
       }
     }
   | {

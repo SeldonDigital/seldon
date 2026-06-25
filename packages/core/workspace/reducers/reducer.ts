@@ -119,6 +119,7 @@ import { resetWorkspaceLastUpdate } from "./handlers/reset/reset-workspace-last-
 import { resetWorkspaceLicense } from "./handlers/reset/reset-workspace-license"
 import { resetWorkspaceOwner } from "./handlers/reset/reset-workspace-owner"
 import { resetWorkspaceTags } from "./handlers/reset/reset-workspace-tags"
+import { applyComponentPropertiesToAllBoards } from "./handlers/set/apply-component-properties-to-all-boards"
 import { renameCustomState } from "./handlers/set/rename-custom-state"
 import { setBoardAuthor } from "./handlers/set/set-board-author"
 import { setBoardCredentials } from "./handlers/set/set-board-credentials"
@@ -258,6 +259,8 @@ function reducer(workspace: Workspace, action: WorkspaceAction): Workspace {
       return setComponentProperties(action.payload, workspace)
     case "reset_component_property":
       return resetComponentProperty(action.payload, workspace)
+    case "apply_component_properties_to_all_boards":
+      return applyComponentPropertiesToAllBoards(action.payload, workspace)
     case "set_board_label":
       return setBoardLabel(action.payload, workspace)
     case "set_playground_label":

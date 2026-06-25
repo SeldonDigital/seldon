@@ -23,6 +23,7 @@ import {
   setNodeRepeat,
 } from "./label-mutations"
 import {
+  applyComponentPropertiesToAllBoards,
   resetComponentProperty,
   resetNodeOverrides,
   resetNodeProperty,
@@ -160,6 +161,13 @@ export class WorkspaceMutationService {
     workspace: Workspace,
   ): Workspace {
     return resetComponentProperty(boardKey, target, workspace)
+  }
+
+  public applyComponentPropertiesToAllBoards(
+    sourceBoardKey: BoardKey,
+    workspace: Workspace,
+  ): Workspace {
+    return applyComponentPropertiesToAllBoards(sourceBoardKey, workspace)
   }
 
   /** Rebuilds a single schema-backed user variant to its catalog schema variant. */

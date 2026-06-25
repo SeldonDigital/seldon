@@ -65,6 +65,10 @@ const PREVIEW_BOARDS = [
   "media",
 ] as const satisfies ReadonlyArray<Board["type"]>
 
+const COMPONENT_BOARDS = ["component"] as const satisfies ReadonlyArray<
+  Board["type"]
+>
+
 export function validateBoardMetadata(
   workspace: Workspace,
   action: Action,
@@ -142,6 +146,14 @@ export function validateBoardMetadata(
       )
       return
     }
+    case "apply_component_properties_to_all_boards":
+      assertBoardHasAllowedKind(
+        workspace,
+        action.payload.sourceBoardKey,
+        action,
+        COMPONENT_BOARDS,
+      )
+      return
     case "set_component_theme":
       boardValidators.exists(workspace, action.payload.boardKey)
       themeValidators.exists(workspace, action.payload.theme)

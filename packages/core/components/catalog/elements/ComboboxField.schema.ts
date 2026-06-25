@@ -239,6 +239,123 @@ export const schema = {
       },
     ],
   },
+  variants: [
+    {
+      id: "search",
+      label: "Search Field",
+      intent:
+        "Specialized input field for entering and submitting search queries.",
+      children: [
+        {
+          component: Seldon.ComponentId.ICON,
+          overrides: {
+            symbol: { type: Sdn.ValueType.OPTION, value: "material-search" },
+            size: { type: Sdn.ValueType.THEME_ORDINAL, value: "@size.small" },
+            color: {
+              type: Sdn.ValueType.COMPUTED,
+              value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+            },
+          },
+        },
+        {
+          component: Seldon.ComponentId.INPUT,
+          overrides: {
+            placeholder: {
+              type: Sdn.ValueType.EXACT,
+              value: "Search for...",
+            },
+            width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FILL },
+            padding: {
+              top: {
+                type: Sdn.ValueType.EXACT,
+                value: { unit: Sdn.Unit.PX, value: 0 },
+              },
+              right: {
+                type: Sdn.ValueType.EXACT,
+                value: { unit: Sdn.Unit.PX, value: 0 },
+              },
+              bottom: {
+                type: Sdn.ValueType.EXACT,
+                value: { unit: Sdn.Unit.PX, value: 0 },
+              },
+              left: {
+                type: Sdn.ValueType.EXACT,
+                value: { unit: Sdn.Unit.PX, value: 0 },
+              },
+            },
+            background: [
+              {
+                kind: {
+                  type: Sdn.ValueType.OPTION,
+                  value: Sdn.BackgroundKind.NONE,
+                },
+              },
+            ],
+            border: {
+              preset: {
+                type: Sdn.ValueType.THEME_CATEGORICAL,
+                value: "@border.none",
+              },
+            },
+            corners: {
+              topLeft: { type: Sdn.ValueType.EMPTY, value: null },
+              topRight: { type: Sdn.ValueType.EMPTY, value: null },
+              bottomLeft: { type: Sdn.ValueType.EMPTY, value: null },
+              bottomRight: { type: Sdn.ValueType.EMPTY, value: null },
+            },
+            role: { type: Sdn.ValueType.OPTION, value: Sdn.AriaRole.COMBOBOX },
+            ariaHasPopup: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.AriaHasPopup.LISTBOX,
+            },
+          },
+        },
+        {
+          component: Seldon.ComponentId.BUTTON,
+          variant: "iconic",
+          overrides: {
+            buttonSize: {
+              type: Sdn.ValueType.THEME_ORDINAL,
+              value: "@fontSize.small",
+            },
+            background: [
+              {
+                kind: {
+                  type: Sdn.ValueType.OPTION,
+                  value: Sdn.BackgroundKind.NONE,
+                },
+              },
+            ],
+            border: {
+              preset: {
+                type: Sdn.ValueType.THEME_CATEGORICAL,
+                value: "@border.none",
+              },
+            },
+          },
+          children: [
+            {
+              component: Seldon.ComponentId.ICON,
+              overrides: {
+                symbol: {
+                  type: Sdn.ValueType.OPTION,
+                  value: "material-close",
+                },
+                size: {
+                  type: Sdn.ValueType.COMPUTED,
+                  value: Sdn.ComputedFunction.AUTO_FIT,
+                },
+                color: {
+                  type: Sdn.ValueType.COMPUTED,
+                  value: Sdn.ComputedFunction.HIGH_CONTRAST_COLOR,
+                },
+              },
+            },
+          ],
+        },
+      ],
+    },
+  ],
 } as const satisfies ComponentSchema
 
 export const exportConfig: ComponentExport = {

@@ -275,7 +275,7 @@ export const schema = {
         "Search field bar with a leading search icon and a clear control.",
       children: [
         {
-          component: Seldon.ComponentId.FORM_CONTROL,
+          component: Seldon.ComponentId.COMBOBOX_FIELD,
           variant: "search",
         },
       ],

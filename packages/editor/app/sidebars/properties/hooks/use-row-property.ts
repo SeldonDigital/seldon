@@ -112,7 +112,8 @@ export function useRowProperty({
   iconSetEditingContext,
 }: RowPropertyProps) {
   const { showPropertyTypes } = useDebugMode()
-  const { resetProperty, removeNodeLayer } = useObjectProperties()
+  const { resetProperty, removeNodeLayer, applyBoardPropertiesToAllBoards } =
+    useObjectProperties()
   const { toggleProperty } = usePropertyExpansion()
   const themes = useThemes()
   const { getPropertyValueForDisplay, getUnit, shouldShowMenuIcon } =
@@ -583,6 +584,31 @@ export function useRowProperty({
           : []),
       ]
 
+  // The board's device row (the `board` compound) can push its board properties
+  // onto every other component board. Append it to the row's actions menu so the
+  // command lives beside the device/viewport setting.
+  const handleApplyToAllBoards = () => {
+    const confirmed = window.confirm(
+      "Apply this board's properties to all other component boards? This overwrites their board properties.",
+    )
+    if (!confirmed) return
+    applyBoardPropertiesToAllBoards({ sourceBoardKey: nodeId })
+  }
+
+  const resetActions: MenuEntry[] =
+    isBoard(node) && property.key === "board"
+      ? [
+          {
+            id: "apply-to-all-boards",
+            label: "Apply to All Boards",
+            onSelect: handleApplyToAllBoards,
+            testId: `property-row-${property.key}-apply-to-all`,
+          },
+          ...(rowActions.length > 0 ? ["separator" as const] : []),
+          ...rowActions,
+        ]
+      : rowActions
+
   const listItemProps = buildPropertyRowProps({
     property,
     isExpanded,
@@ -674,7 +700,7 @@ export function useRowProperty({
     frameProps,
     rowStyleProp,
     valueCellProps,
-    resetActions: rowActions,
+    resetActions,
     focusTargetRef: frameRef,
     labelColor,
     isExpanded,
