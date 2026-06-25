@@ -1,4 +1,4 @@
-import { describe, expect, it } from "bun:test"
+import { describe, expect, it } from "vitest"
 
 import type { EntryNode, EntryNodeType } from "../workspace/model/entry-node"
 import { addVariant } from "../workspace/reducers/handlers/add/add-variant"
