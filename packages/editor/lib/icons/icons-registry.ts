@@ -180,6 +180,10 @@ const UI_OVERRIDES: PropertyRegistry = {
   listStyleType: { control: "menu" },
   listStylePosition: { control: "menu" },
   cursor: { control: "menu" },
+  columnStart: { control: "number" },
+  columnSpan: { control: "number" },
+  rowStart: { control: "number" },
+  rowSpan: { control: "number" },
   columns: { control: "number" },
   rows: { control: "number" },
 

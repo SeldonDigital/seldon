@@ -333,6 +333,10 @@ export { IconMaterialAirlineSeatReclineNormal } from "./specialized/transportati
 export { IconMaterialLocalAirport } from "./specialized/transportation/IconMaterialLocalAirport"
 // Material has no dedicated "ticket" glyph; `confirmation_number` is its ticket icon.
 export { IconMaterialConfirmationNumber as IconMaterialTicket } from "./business/commerce/IconMaterialConfirmationNumber"
+export { IconMaterialFitPageHeight } from "./user-interface/text/IconMaterialFitPageHeight"
+export { IconMaterialFitPageWidth } from "./user-interface/text/IconMaterialFitPageWidth"
+export { IconMaterialSplitscreenAdd } from "./system/connectivity/IconMaterialSplitscreenAdd"
+export { IconMaterialSplitscreenVerticalAdd } from "./system/connectivity/IconMaterialSplitscreenVerticalAdd"
 
 export const materialIconIds: readonly IconId[] = [
   "material-arrowBack",
@@ -705,4 +709,8 @@ export const materialIconIds: readonly IconId[] = [
   "material-batteryHoriz_075",
   "material-thumbUp",
   "material-confirmationNumber",
+  "material-fitPageHeight",
+  "material-fitPageWidth",
+  "material-splitscreenAdd",
+  "material-splitscreenVerticalAdd",
 ] as const
