@@ -1,7 +1,7 @@
 node_modules
 dist
 /build
-/coverage
+coverage/
 /cypress/snapshots/actual
 /cypress/snapshots/diff
 /.pnp
