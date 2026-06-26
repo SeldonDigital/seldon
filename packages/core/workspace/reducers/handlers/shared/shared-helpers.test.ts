@@ -71,9 +71,13 @@ describe("theme custom token bag", () => {
   it("appends then removes a token slot", () => {
     const entry = themeEntry()
     appendCustomToken(entry, "size", "custom1", { name: "s" })
-    expect((entry.overrides as any).size.custom1).toEqual({ name: "s" })
+    expect(
+      (entry.overrides as { size: Record<string, unknown> }).size.custom1,
+    ).toEqual({ name: "s" })
     removeCustomToken(entry, "size", "custom1")
-    expect((entry.overrides as any).size.custom1).toBeUndefined()
+    expect(
+      (entry.overrides as { size: Record<string, unknown> }).size.custom1,
+    ).toBeUndefined()
   })
 })
 
@@ -95,7 +99,10 @@ describe("font collection custom family", () => {
     const entry = fontEntry()
     appendCustomFamily(entry, "family01", { name: "A" } as never)
     removeCustomFamily(entry, "family01")
-    expect((entry.overrides as any).families.family01).toBeUndefined()
+    expect(
+      (entry.overrides as { families: Record<string, unknown> }).families
+        .family01,
+    ).toBeUndefined()
   })
 })
 
@@ -109,7 +116,10 @@ describe("font collection variant selection", () => {
 
     setFamilyVariant(entry, "slot1", "regular", false)
     expect(readFamilyVariantSelection(entry, "slot1")).toEqual({})
-    expect((entry.overrides as any).variantSelection?.slot1).toBeUndefined()
+    expect(
+      (entry.overrides as { variantSelection?: Record<string, unknown> })
+        .variantSelection?.slot1,
+    ).toBeUndefined()
   })
 
   it("applies the all preset and clears with none", () => {

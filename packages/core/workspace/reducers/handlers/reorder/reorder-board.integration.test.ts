@@ -1,7 +1,12 @@
 import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../../components/constants"
-import type { ExtractPayload, Workspace } from "../../../../index"
+import type {
+  ComponentBoard,
+  EntryNode,
+  ExtractPayload,
+  Workspace,
+} from "../../../../index"
 import { getBoardOrder } from "../../../helpers/components/board-sort-order"
 import { createEmptyWorkspace } from "../../../helpers/create-empty-workspace"
 import { addComponent } from "../add/add-component"
@@ -23,10 +28,10 @@ describe("reorderBoard", () => {
       { boardKey, newIndex: 0 } as ExtractPayload<"reorder_board">,
       ws,
     )
-    const movedOrder = getBoardOrder(moved.boards[boardKey] as any)
+    const movedOrder = getBoardOrder(moved.boards[boardKey])
     const others = Object.entries(moved.boards)
       .filter(([k]) => k !== boardKey)
-      .map(([, b]) => getBoardOrder(b as any))
+      .map(([, b]) => getBoardOrder(b))
     expect(Math.min(movedOrder, ...others)).toBe(movedOrder)
   })
 
@@ -43,7 +48,8 @@ describe("reorderBoard", () => {
 describe("reorderVariantInBoard", () => {
   it("is a no-op for the default variant (pinned at index 0)", () => {
     const ws = componentWorkspace()
-    const rootId = (ws.boards[boardKey] as any).variants[0].id as string
+    const rootId = (ws.boards[boardKey] as ComponentBoard).variants[0]
+      .id as string
     const result = reorderVariantInBoard(
       {
         variantRootId: rootId,
@@ -57,7 +63,7 @@ describe("reorderVariantInBoard", () => {
   it("is a no-op for a non-variant node", () => {
     const ws = componentWorkspace()
     const instanceId = Object.values(ws.nodes).find(
-      (n: any) => n.type === "instance",
+      (n: EntryNode) => n.type === "instance",
     )!.id as string
     const result = reorderVariantInBoard(
       {

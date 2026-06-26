@@ -16,14 +16,20 @@ const override = (path: string, value: unknown, ws = workspace) =>
 describe("setThemeOverride", () => {
   it("writes a nested override value into the theme entry", () => {
     const next = override("color.primary.value", "#123456")
-    const overrides = next.themes[themeId]!.overrides as Record<string, any>
+    const overrides = next.themes[themeId]!.overrides as Record<
+      string,
+      Record<string, Record<string, unknown>>
+    >
     expect(overrides.color.primary.value).toBe("#123456")
   })
 
   it("removes a path when the value is null", () => {
     const withValue = override("color.primary.value", "#123456")
     const cleared = override("color.primary.value", null, withValue)
-    const overrides = cleared.themes[themeId]!.overrides as Record<string, any>
+    const overrides = cleared.themes[themeId]!.overrides as Record<
+      string,
+      Record<string, Record<string, unknown>>
+    >
     expect(overrides.color?.primary?.value).toBeUndefined()
   })
 

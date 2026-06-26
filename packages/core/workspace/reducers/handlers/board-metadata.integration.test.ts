@@ -30,9 +30,10 @@ const componentWorkspace = () =>
   )
 
 const boardKeyByType = (ws: Workspace, type: string) =>
-  Object.keys(ws.boards).find((k) => (ws.boards as any)[k].type === type)!
+  Object.keys(ws.boards).find((k) => ws.boards[k].type === type)!
 
-const board = (ws: Workspace, key: string) => (ws.boards as any)[key]
+const board = (ws: Workspace, key: string) =>
+  ws.boards[key] as unknown as Record<string, unknown>
 
 const pay = (extra: Record<string, unknown>) =>
   ({ boardKey, ...extra }) as never

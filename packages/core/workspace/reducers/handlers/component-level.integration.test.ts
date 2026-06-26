@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../components/constants"
-import type { ExtractPayload, Workspace } from "../../../index"
+import type { ComponentBoard, ExtractPayload, Workspace } from "../../../index"
 import { ValueType } from "../../../properties/constants"
 import { createEmptyWorkspace } from "../../helpers/create-empty-workspace"
 import { addComponent } from "./add/add-component"
@@ -23,10 +23,10 @@ const componentWorkspace = () =>
     createEmptyWorkspace(),
   )
 
-const board = (ws: Workspace) => ws.boards[boardKey] as any
+const board = (ws: Workspace) => ws.boards[boardKey] as ComponentBoard
 const rootId = (ws: Workspace) => board(ws).variants[0].id as string
 const instanceId = (ws: Workspace) =>
-  board(ws).variants[0].children[0].id as string
+  board(ws).variants[0].children![0].id as string
 
 const opacity = { opacity: { type: ValueType.EXACT, value: 0.5 } }
 
@@ -87,7 +87,9 @@ describe("resetDefaultVariantToCatalog", () => {
       { defaultVariantRootId: id } as never,
       dirtied,
     )
-    expect((reset.nodes[id]!.overrides as any).opacity).toBeUndefined()
+    expect(
+      (reset.nodes[id]!.overrides as { opacity?: unknown }).opacity,
+    ).toBeUndefined()
   })
 
   it("is a no-op for a non-default-variant node", () => {
@@ -139,7 +141,9 @@ describe("resetInstanceToSource / resetInstanceToOriginal", () => {
       { instanceId: instance } as ExtractPayload<"reset_instance_to_source">,
       dirtied,
     )
-    expect((source.nodes[instance]!.overrides as any).opacity).toBeUndefined()
+    expect(
+      (source.nodes[instance]!.overrides as { opacity?: unknown }).opacity,
+    ).toBeUndefined()
   })
 
   it("reverts an instance to its original template chain", () => {
@@ -153,6 +157,8 @@ describe("resetInstanceToSource / resetInstanceToOriginal", () => {
       { instanceId: instance } as ExtractPayload<"reset_instance_to_original">,
       dirtied,
     )
-    expect((original.nodes[instance]!.overrides as any).opacity).toBeUndefined()
+    expect(
+      (original.nodes[instance]!.overrides as { opacity?: unknown }).opacity,
+    ).toBeUndefined()
   })
 })

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../components/constants"
-import type { ExtractPayload, Workspace } from "../../../index"
+import type { ComponentBoard, ExtractPayload, Workspace } from "../../../index"
 import { createEmptyWorkspace } from "../../helpers/create-empty-workspace"
 import { addComponent } from "../../reducers/handlers/add/add-component"
 import {
@@ -18,7 +18,7 @@ const ws: Workspace = addComponent(
   { boardKey } as ExtractPayload<"add_component">,
   createEmptyWorkspace(),
 )
-const root = (ws.boards[boardKey] as any).variants[0]
+const root = (ws.boards[boardKey] as ComponentBoard).variants[0]
 const rootId = root.id as string
 const childIds = (root.children as { id: string }[]).map((c) => c.id)
 

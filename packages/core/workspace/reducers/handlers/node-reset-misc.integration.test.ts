@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../components/constants"
-import type { ExtractPayload, Workspace } from "../../../index"
+import type { ComponentBoard, ExtractPayload, Workspace } from "../../../index"
 import { ValueType } from "../../../properties/constants"
 import { createEmptyWorkspace } from "../../helpers/create-empty-workspace"
 import { addComponent } from "./add/add-component"
@@ -23,9 +23,9 @@ const componentWorkspace = () =>
   )
 
 const rootId = (ws: Workspace) =>
-  (ws.boards[boardKey] as any).variants[0].id as string
+  (ws.boards[boardKey] as ComponentBoard).variants[0].id as string
 const instanceId = (ws: Workspace) =>
-  (ws.boards[boardKey] as any).variants[0].children[0].id as string
+  (ws.boards[boardKey] as ComponentBoard).variants[0].children![0].id as string
 
 describe("setNodeEditorData / resetNodeEditorData", () => {
   it("sets and clears node editor data", () => {

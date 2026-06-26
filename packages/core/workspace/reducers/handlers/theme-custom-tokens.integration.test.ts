@@ -67,7 +67,7 @@ const removePayload = (themeId: string) =>
   ({ themeId, key: "custom1" }) as never
 
 const section = (ws: Workspace, key: string) =>
-  ((ws.themes[variantThemeId]!.overrides as Record<string, any>)[key] ??
+  ((ws.themes[variantThemeId]!.overrides as Record<string, unknown>)[key] ??
     {}) as Record<string, unknown>
 
 const ADD_CASES: Array<[string, Handler]> = [
@@ -134,10 +134,11 @@ describe("remove_theme_custom_* handlers", () => {
     "%s drops a custom slot from a variant theme",
     (key, handler) => {
       const seeded = produce(variantWorkspace(), (draft) => {
-        ;(draft.themes[variantThemeId]!.overrides as Record<string, any>)[key] =
-          {
-            custom1: { name: "seed" },
-          }
+        ;(draft.themes[variantThemeId]!.overrides as Record<string, unknown>)[
+          key
+        ] = {
+          custom1: { name: "seed" },
+        }
       })
       const removed = handler(removePayload(variantThemeId), seeded)
       expect(section(removed, key).custom1).toBeUndefined()

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../components/constants"
-import type { ExtractPayload, Workspace } from "../../../index"
+import type { ComponentBoard, ExtractPayload, Workspace } from "../../../index"
 import { addComponent } from "../../reducers/handlers/add/add-component"
 import { createEmptyWorkspace } from "../create-empty-workspace"
 import { getNodeById } from "./get-node-by-id"
@@ -13,7 +13,7 @@ const ws: Workspace = addComponent(
   createEmptyWorkspace(),
 )
 const board = ws.boards[boardKey]!
-const rootId = (board as any).variants[0].id as string
+const rootId = (board as ComponentBoard).variants[0].id as string
 
 describe("getNodeById", () => {
   it("returns a node and throws for a missing id", () => {

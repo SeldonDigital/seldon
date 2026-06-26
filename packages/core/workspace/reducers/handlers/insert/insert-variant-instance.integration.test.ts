@@ -1,7 +1,12 @@
 import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../../components/constants"
-import type { ExtractPayload, Workspace } from "../../../../index"
+import type {
+  ComponentBoard,
+  ComponentTreeRef,
+  ExtractPayload,
+  Workspace,
+} from "../../../../index"
 import { createEmptyWorkspace } from "../../../helpers/create-empty-workspace"
 import { addComponent } from "../add/add-component"
 import { addVariant } from "../add/add-variant"
@@ -47,11 +52,13 @@ describe("insertVariantInstance (happy path)", () => {
       { boardKey } as ExtractPayload<"add_component">,
       createEmptyWorkspace(),
     )
-    const baseIds = (ws.boards[boardKey] as any).variants.map((v: any) => v.id)
+    const baseIds = (ws.boards[boardKey] as ComponentBoard).variants.map(
+      (v: ComponentTreeRef) => v.id,
+    )
     ws = addVariant({ boardKey } as ExtractPayload<"add_variant">, ws)
     ws = addVariant({ boardKey } as ExtractPayload<"add_variant">, ws)
-    const newIds = (ws.boards[boardKey] as any).variants
-      .map((v: any) => v.id)
+    const newIds = (ws.boards[boardKey] as ComponentBoard).variants
+      .map((v: ComponentTreeRef) => v.id)
       .filter((id: string) => !baseIds.includes(id))
     return { ws, sourceId: newIds[0], targetId: newIds[1] }
   }
@@ -59,7 +66,9 @@ describe("insertVariantInstance (happy path)", () => {
   it("instantiates a user variant into another user variant", () => {
     const { ws, sourceId, targetId } = twoUserVariants()
     const targetRef = (w: Workspace) =>
-      (w.boards[boardKey] as any).variants.find((v: any) => v.id === targetId)
+      (w.boards[boardKey] as ComponentBoard).variants.find(
+        (v: ComponentTreeRef) => v.id === targetId,
+      )!
     const before = targetRef(ws).children?.length ?? 0
 
     const result = insertVariantInstance(

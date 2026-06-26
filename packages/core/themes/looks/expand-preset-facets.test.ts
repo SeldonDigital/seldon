@@ -60,7 +60,9 @@ describe("hasExpandableLookPreset", () => {
 
 describe("expandLookPresetFacets", () => {
   it("expands a border preset into the look's facets", () => {
-    const result = expandLookPresetFacets(borderPreset, theme) as any
+    const result = expandLookPresetFacets(borderPreset, theme) as {
+      border: { color: unknown; preset: unknown }
+    }
 
     expect(result).not.toBe(borderPreset)
     expect(result.border.color).toEqual({

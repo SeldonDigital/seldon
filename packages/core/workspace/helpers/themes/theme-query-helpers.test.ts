@@ -13,8 +13,7 @@ import {
 
 const defaultThemeId = "theme-seldon-default"
 const empty = () => createEmptyWorkspace()
-const entry = (ws: Workspace, id: string) =>
-  (ws.themes as any)[id] as EntryTheme
+const entry = (ws: Workspace, id: string) => ws.themes[id]
 
 describe("getDefaultThemeEntryLabel", () => {
   it("returns a non-empty label for the default theme entry", () => {

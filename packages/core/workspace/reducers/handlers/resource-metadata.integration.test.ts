@@ -32,10 +32,9 @@ const variantThemeId = "theme-seldon-copy"
 const empty = () => createEmptyWorkspace()
 const fcId = (ws: Workspace) => Object.keys(ws["font-collections"])[0]!
 const iconId = (ws: Workspace) => Object.keys(ws["icon-sets"])[0]!
-const themeEntry = (ws: Workspace, id: string) => (ws.themes as any)[id]
-const fcEntry = (ws: Workspace, id: string) =>
-  (ws["font-collections"] as any)[id]
-const iconEntry = (ws: Workspace, id: string) => (ws["icon-sets"] as any)[id]
+const themeEntry = (ws: Workspace, id: string) => ws.themes[id]
+const fcEntry = (ws: Workspace, id: string) => ws["font-collections"][id]
+const iconEntry = (ws: Workspace, id: string) => ws["icon-sets"][id]
 
 const variantTheme = () =>
   duplicateTheme(

@@ -26,7 +26,8 @@ const withTwoLayers = addNodeLayer(
 )
 
 const backgroundOf = (ws: typeof base) =>
-  (ws.nodes[nodeId]!.overrides as Record<string, any>).background as any[]
+  (ws.nodes[nodeId]!.overrides as Record<string, unknown>)
+    .background as Record<string, unknown>[]
 
 describe("removeNodeLayer", () => {
   it("removes a non-base layer and shortens the stack", () => {

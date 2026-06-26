@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest"
 
 import { Unit, ValueType } from "../../../constants"
 import { Resize } from "../resize"
+import type { BoardCompound } from "."
 import {
   applyBoardDevicePreset,
   applyBoardFitPreset,
@@ -63,8 +64,10 @@ describe("buildBoardCompoundReset", () => {
   it("uses schema-provided facets when present", () => {
     const schemaBoard = {
       preset: { type: ValueType.OPTION, value: "ipad" },
-    } as any
-    expect((buildBoardCompoundReset(schemaBoard).board as any).preset).toEqual({
+    } as BoardCompound
+    expect(
+      (buildBoardCompoundReset(schemaBoard).board as BoardCompound).preset,
+    ).toEqual({
       type: ValueType.OPTION,
       value: "ipad",
     })

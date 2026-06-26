@@ -113,8 +113,7 @@ describe("WorkspacePropagationService.propagateNodeOperation", () => {
     expect(() =>
       service.propagateNodeOperation({
         nodeId: defaultRootId,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        propagation: "sideways" as any,
+        propagation: "sideways" as unknown as "none",
         apply: (_node, current) => current,
         workspace: ws,
       }),

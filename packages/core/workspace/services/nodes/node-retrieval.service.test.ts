@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../components/constants"
-import type { ExtractPayload, Workspace } from "../../../index"
+import type { ComponentBoard, ExtractPayload, Workspace } from "../../../index"
 import { createEmptyWorkspace } from "../../helpers/create-empty-workspace"
 import { addComponent } from "../../reducers/handlers/add/add-component"
 import { nodeRetrievalService as svc } from "./node-retrieval.service"
@@ -12,13 +12,13 @@ const ws: Workspace = addComponent(
   createEmptyWorkspace(),
 )
 const board = ws.boards[boardKey]!
-const rootId = (board as any).variants[0].id as string
-const childId = (board as any).variants[0].children[0].id as string
+const rootId = (board as ComponentBoard).variants[0].id as string
+const childId = (board as ComponentBoard).variants[0].children![0].id as string
 
 describe("getBoard / getObject", () => {
   it("returns boards and throws for unknown keys", () => {
     expect(svc.getBoard(boardKey, ws)).toBe(board)
-    expect(() => svc.getBoard("missing" as any, ws)).toThrow()
+    expect(() => svc.getBoard("missing", ws)).toThrow()
     expect(svc.getObject(boardKey, ws)).toBe(board)
     expect(svc.getObject(rootId, ws)).toBe(ws.nodes[rootId])
   })

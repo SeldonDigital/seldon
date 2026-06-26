@@ -1,7 +1,12 @@
 import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../components/constants"
-import type { ExtractPayload, Workspace } from "../../../index"
+import type {
+  Board,
+  ComponentBoard,
+  ExtractPayload,
+  Workspace,
+} from "../../../index"
 import { addComponent } from "../../reducers/handlers/add/add-component"
 import { createEmptyWorkspace } from "../create-empty-workspace"
 import { areBoardVariantsInUse } from "./are-board-variants-in-use"
@@ -21,13 +26,13 @@ const ws: Workspace = addComponent(
   createEmptyWorkspace(),
 )
 const board = ws.boards[boardKey]!
-const rootId = (board as any).variants[0].id as string
-const childId = (board as any).variants[0].children[0].id as string
+const rootId = (board as ComponentBoard).variants[0].id as string
+const childId = (board as ComponentBoard).variants[0].children![0].id as string
 
 describe("getBoardById", () => {
   it("returns the board and throws for a missing key", () => {
     expect(getBoardById(boardKey, ws).type).toBe("component")
-    expect(() => getBoardById("missing" as any, ws)).toThrow()
+    expect(() => getBoardById("missing", ws)).toThrow()
   })
 })
 
@@ -41,14 +46,16 @@ describe("getBoardByNodeId", () => {
 describe("getBoardKey", () => {
   it("resolves the key by reference", () => {
     expect(getBoardKey(ws, board)).toBe(boardKey)
-    expect(getBoardKey(ws, { variants: [] } as any)).toBeNull()
+    expect(getBoardKey(ws, { variants: [] } as unknown as Board)).toBeNull()
   })
 })
 
 describe("getBoardThemeRef", () => {
   it("reads a non-empty theme ref, undefined otherwise", () => {
     expect(typeof getBoardThemeRef(board)).toBe("string")
-    expect(getBoardThemeRef({ componentTheme: "" } as any)).toBeUndefined()
+    expect(
+      getBoardThemeRef({ componentTheme: "" } as unknown as Board),
+    ).toBeUndefined()
   })
 })
 

@@ -1,7 +1,12 @@
 import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../../components/constants"
-import type { ExtractPayload, Workspace } from "../../../../index"
+import type {
+  ComponentBoard,
+  EntryNode,
+  ExtractPayload,
+  Workspace,
+} from "../../../../index"
 import { createEmptyWorkspace } from "../../../helpers/create-empty-workspace"
 import { addComponent } from "../add/add-component"
 import { insertDefaultInstance } from "./insert-default-instance"
@@ -16,10 +21,11 @@ const componentWorkspace = () =>
   )
 
 const defaultRootId = (ws: Workspace) =>
-  (ws.boards[boardKey] as any).variants[0].id as string
+  (ws.boards[boardKey] as ComponentBoard).variants[0].id as string
 
 const anyInstanceId = (ws: Workspace) =>
-  Object.values(ws.nodes).find((n: any) => n.type === "instance")!.id as string
+  Object.values(ws.nodes).find((n: EntryNode) => n.type === "instance")!
+    .id as string
 
 describe("insertDefaultInstance", () => {
   it("is a no-op when the target parent is a default variant", () => {

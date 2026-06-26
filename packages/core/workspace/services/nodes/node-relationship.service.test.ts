@@ -1,7 +1,13 @@
 import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../components/constants"
-import type { ExtractPayload, Workspace } from "../../../index"
+import type {
+  ComponentBoard,
+  ExtractPayload,
+  Instance,
+  Variant,
+  Workspace,
+} from "../../../index"
 import { createEmptyWorkspace } from "../../helpers/create-empty-workspace"
 import { addComponent } from "../../reducers/handlers/add/add-component"
 import { nodeRelationshipService as svc } from "./node-relationship.service"
@@ -12,10 +18,10 @@ const ws: Workspace = addComponent(
   createEmptyWorkspace(),
 )
 const board = ws.boards[boardKey]!
-const rootId = (board as any).variants[0].id as string
-const childId = (board as any).variants[0].children[0].id as string
-const variant = ws.nodes[rootId] as any
-const instance = ws.nodes[childId] as any
+const rootId = (board as ComponentBoard).variants[0].id as string
+const childId = (board as ComponentBoard).variants[0].children![0].id as string
+const variant = ws.nodes[rootId] as Variant
+const instance = ws.nodes[childId] as Instance
 
 describe("index lookups", () => {
   it("resolves variant and instance indices", () => {

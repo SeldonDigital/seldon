@@ -1,7 +1,12 @@
 import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../components/constants"
-import type { Board, ExtractPayload, Workspace } from "../../../index"
+import type {
+  Board,
+  ComponentBoard,
+  ExtractPayload,
+  Workspace,
+} from "../../../index"
 import { addComponent } from "../../reducers/handlers/add/add-component"
 import { createEmptyWorkspace } from "../create-empty-workspace"
 import { collectExternalVariantUsage } from "./collect-external-variant-usage"
@@ -16,8 +21,8 @@ const ws: Workspace = addComponent(
   { boardKey } as ExtractPayload<"add_component">,
   createEmptyWorkspace(),
 )
-const rootId = (ws.boards[boardKey] as any).variants[0].id as string
-const childId = (ws.boards[boardKey] as any).variants[0].children[0]
+const rootId = (ws.boards[boardKey] as ComponentBoard).variants[0].id as string
+const childId = (ws.boards[boardKey] as ComponentBoard).variants[0].children![0]
   .id as string
 
 describe("getAllVariants", () => {

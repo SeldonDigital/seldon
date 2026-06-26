@@ -33,7 +33,9 @@ const addSwatch = (themeId: string, ws: ReturnType<typeof withVariantTheme>) =>
 const swatchOverrides = (
   ws: ReturnType<typeof withVariantTheme>,
   themeId: string,
-) => (ws.themes[themeId]!.overrides as Record<string, any>).swatch ?? {}
+) =>
+  (ws.themes[themeId]!.overrides as Record<string, Record<string, unknown>>)
+    .swatch ?? {}
 
 describe("addThemeCustomSwatch", () => {
   it("appends a custom swatch cell to a variant theme", () => {

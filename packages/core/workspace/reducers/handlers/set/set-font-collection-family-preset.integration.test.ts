@@ -21,7 +21,7 @@ describe("setFontCollectionFamilyPreset", () => {
       baseWorkspace,
     )
     const populated = enabled["font-collections"][fontCollectionId]!
-      .overrides as Record<string, any>
+      .overrides as Record<string, Record<string, Record<string, unknown>>>
     expect(populated.variantSelection[slot]["400"]).toBe(true)
 
     const cleared = setFontCollectionFamilyPreset(
@@ -33,7 +33,7 @@ describe("setFontCollectionFamilyPreset", () => {
       enabled,
     )
     const overrides = cleared["font-collections"][fontCollectionId]!
-      .overrides as Record<string, any>
+      .overrides as Record<string, Record<string, Record<string, unknown>>>
     expect(overrides.variantSelection).toBeUndefined()
   })
 

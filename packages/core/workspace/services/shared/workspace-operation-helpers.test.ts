@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../components/constants"
-import type { ExtractPayload, Workspace } from "../../../index"
+import type { ComponentBoard, ExtractPayload, Workspace } from "../../../index"
 import { createEmptyWorkspace } from "../../helpers/create-empty-workspace"
 import { addComponent } from "../../reducers/handlers/add/add-component"
 import {
@@ -18,8 +18,8 @@ const ws: Workspace = addComponent(
   createEmptyWorkspace(),
 )
 const board = ws.boards[boardKey]!
-const rootId = (board as any).variants[0].id as string
-const childId = (board as any).variants[0].children[0].id as string
+const rootId = (board as ComponentBoard).variants[0].id as string
+const childId = (board as ComponentBoard).variants[0].children![0].id as string
 
 describe("withNodeMutation", () => {
   it("mutates a node immutably and throws for unknown ids", () => {
@@ -35,9 +35,9 @@ describe("withNodeMutation", () => {
 describe("withBoardMutation", () => {
   it("mutates a board immutably", () => {
     const next = withBoardMutation(boardKey, ws, (b) => {
-      ;(b as any).label = "Board X"
+      b.label = "Board X"
     })
-    expect((next.boards[boardKey] as any).label).toBe("Board X")
+    expect(next.boards[boardKey].label).toBe("Board X")
   })
 })
 
@@ -61,11 +61,11 @@ describe("withVariantAndBoardMutation", () => {
   it("provides the variant and its board", () => {
     let boardLabel: string | undefined
     const next = withVariantAndBoardMutation(rootId, ws, (variant, b) => {
-      boardLabel = (b as any).label
+      boardLabel = b.label
       variant.label = "VarX"
     })
     expect(next.nodes[rootId]!.label).toBe("VarX")
-    expect(boardLabel).toBe((board as any).label)
+    expect(boardLabel).toBe(board.label)
   })
 })
 

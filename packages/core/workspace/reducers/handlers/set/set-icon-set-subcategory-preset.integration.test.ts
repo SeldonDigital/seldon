@@ -24,7 +24,7 @@ describe("setIconSetSubcategoryPreset", () => {
     const next = applyPreset("all")
     const overrides = next["icon-sets"][iconSetId]!.overrides as Record<
       string,
-      any
+      Record<string, unknown>
     >
     expect(overrides.includedIcons[sampleIcon]).toBe(true)
   })
@@ -33,7 +33,7 @@ describe("setIconSetSubcategoryPreset", () => {
     const next = applyPreset("none")
     const overrides = next["icon-sets"][iconSetId]!.overrides as Record<
       string,
-      any
+      Record<string, unknown>
     >
     expect(overrides.includedIcons[sampleIcon]).toBe(false)
   })

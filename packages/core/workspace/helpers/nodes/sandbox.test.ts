@@ -19,7 +19,13 @@ describe("buildSandboxNode", () => {
     expect(node.type).toBe("variant")
     expect(isSandboxNode(node)).toBe(true)
     expect(id).toContain("playground-pg-")
-    expect((node.overrides as any).position.top.value.value).toBe(10)
+    expect(
+      (
+        node.overrides as {
+          position: { top: { value: { value: unknown } } }
+        }
+      ).position.top.value.value,
+    ).toBe(10)
   })
 })
 

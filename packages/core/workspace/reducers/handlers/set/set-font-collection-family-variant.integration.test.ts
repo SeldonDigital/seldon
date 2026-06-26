@@ -22,7 +22,7 @@ describe("setFontCollectionFamilyVariant", () => {
   it("enables a variant under its family slot", () => {
     const next = setVariant(true)
     const overrides = next["font-collections"][fontCollectionId]!
-      .overrides as Record<string, any>
+      .overrides as Record<string, Record<string, Record<string, unknown>>>
     expect(overrides.variantSelection.primary["400"]).toBe(true)
   })
 
@@ -30,7 +30,7 @@ describe("setFontCollectionFamilyVariant", () => {
     const enabled = setVariant(true)
     const disabled = setVariant(false, enabled)
     const overrides = disabled["font-collections"][fontCollectionId]!
-      .overrides as Record<string, any>
+      .overrides as Record<string, Record<string, Record<string, unknown>>>
     expect(overrides.variantSelection).toBeUndefined()
   })
 

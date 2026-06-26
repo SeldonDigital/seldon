@@ -1,7 +1,14 @@
 import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../components/constants"
-import type { ExtractPayload, Workspace } from "../../../index"
+import type {
+  Board,
+  ComponentBoard,
+  ComponentTreeRef,
+  EntryNode,
+  ExtractPayload,
+  Workspace,
+} from "../../../index"
 import { addComponent } from "../../reducers/handlers/add/add-component"
 import { createEmptyWorkspace } from "../create-empty-workspace"
 import { getBoardOrder, setBoardOrder } from "./board-sort-order"
@@ -25,11 +32,11 @@ const componentWorkspace = () =>
   )
 
 const boardKeyByType = (ws: Workspace, type: string) =>
-  Object.keys(ws.boards).find((k) => (ws.boards as any)[k].type === type)!
+  Object.keys(ws.boards).find((k) => ws.boards[k].type === type)!
 
 describe("board-sort-order", () => {
   it("defaults to 0 and round-trips a set value", () => {
-    const board = { variants: [] } as any
+    const board = { variants: [] } as unknown as Board
     expect(getBoardOrder(board)).toBe(0)
     setBoardOrder(board, 5)
     expect(getBoardOrder(board)).toBe(5)
@@ -49,8 +56,10 @@ describe("entry-node-ids", () => {
 
 describe("isBoard", () => {
   it("distinguishes catalog rows from node entries", () => {
-    expect(isBoard({ variants: [] } as any)).toBe(true)
-    expect(isBoard({ id: "n", type: "instance" } as any)).toBe(false)
+    expect(isBoard({ variants: [] } as unknown as Board)).toBe(true)
+    expect(isBoard({ id: "n", type: "instance" } as unknown as EntryNode)).toBe(
+      false,
+    )
   })
 })
 
@@ -58,8 +67,8 @@ describe("isResourceType", () => {
   it("is true for resource boards and false for component boards", () => {
     const ws = componentWorkspace()
     const fcKey = boardKeyByType(ws, "font-collection")
-    expect(isResourceType((ws.boards as any)[fcKey])).toBe(true)
-    expect(isResourceType((ws.boards as any)[ComponentId.BUTTON])).toBe(false)
+    expect(isResourceType(ws.boards[fcKey])).toBe(true)
+    expect(isResourceType(ws.boards[ComponentId.BUTTON])).toBe(false)
   })
 })
 
@@ -69,9 +78,9 @@ describe("findBoardTreeCycleId", () => {
   })
 
   it("finds the back-edge id in a cyclic tree", () => {
-    const a: any = { id: "a", children: [] }
-    const b: any = { id: "b", children: [a] }
-    a.children.push(b)
+    const a: ComponentTreeRef = { id: "a", children: [] }
+    const b: ComponentTreeRef = { id: "b", children: [a] }
+    a.children!.push(b)
     const ws = { boards: { x: { variants: [a] } } } as unknown as Workspace
     expect(findBoardTreeCycleId(ws)).toBe("a")
   })
@@ -80,14 +89,14 @@ describe("findBoardTreeCycleId", () => {
 describe("getChildrenIds", () => {
   it("lists direct children of the default variant root", () => {
     const ws = componentWorkspace()
-    const board = (ws.boards as any)[ComponentId.BUTTON]
+    const board = ws.boards[ComponentId.BUTTON] as ComponentBoard
     const rootId = board.variants[0].id
     expect(getChildrenIds(board, rootId).length).toBeGreaterThan(0)
   })
 
   it("returns an empty array for an unknown parent id", () => {
     const ws = componentWorkspace()
-    const board = (ws.boards as any)[ComponentId.BUTTON]
+    const board = ws.boards[ComponentId.BUTTON] as ComponentBoard
     expect(getChildrenIds(board, "nope")).toEqual([])
   })
 })
@@ -98,7 +107,7 @@ describe("default-board-metadata", () => {
     const ws = componentWorkspace()
     const label = getDefaultBoardLabel(
       ComponentId.BUTTON,
-      (ws.boards as any)[ComponentId.BUTTON],
+      ws.boards[ComponentId.BUTTON],
     )
     expect(typeof label).toBe("string")
     expect(label.length).toBeGreaterThan(0)

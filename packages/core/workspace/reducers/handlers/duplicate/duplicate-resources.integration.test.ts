@@ -1,7 +1,12 @@
 import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../../components/constants"
-import type { ExtractPayload, Workspace } from "../../../../index"
+import type {
+  ComponentBoard,
+  ComponentTreeRef,
+  ExtractPayload,
+  Workspace,
+} from "../../../../index"
 import { createEmptyWorkspace } from "../../../helpers/create-empty-workspace"
 import { addComponent } from "../add/add-component"
 import { duplicateFontCollection } from "./duplicate-font-collection"
@@ -21,7 +26,9 @@ describe("duplicateFontCollection", () => {
     )
     expect(next["font-collections"]["fc-dup"]?.type).toBe("variant")
     expect(
-      (next.boards.system as any).variants.map((r: any) => r.id),
+      (next.boards.system as ComponentBoard).variants.map(
+        (r: ComponentTreeRef) => r.id,
+      ),
     ).toContain("fc-dup")
   })
 
@@ -44,7 +51,9 @@ describe("duplicateIconSet", () => {
     )
     expect(next["icon-sets"]["is-dup"]?.type).toBe("variant")
     expect(
-      (next.boards.seldonIcons as any).variants.map((r: any) => r.id),
+      (next.boards.seldonIcons as ComponentBoard).variants.map(
+        (r: ComponentTreeRef) => r.id,
+      ),
     ).toContain("is-dup")
   })
 
@@ -63,7 +72,7 @@ describe("duplicateNode", () => {
 
   it("duplicates a default variant root into a new board variant", () => {
     const ws = componentWorkspace()
-    const board = ws.boards[ComponentId.BUTTON] as any
+    const board = ws.boards[ComponentId.BUTTON] as ComponentBoard
     const rootId = board.variants[0].id
     const before = board.variants.length
 
@@ -71,7 +80,7 @@ describe("duplicateNode", () => {
       { nodeId: rootId } as ExtractPayload<"duplicate_node">,
       ws,
     )
-    expect((next.boards[ComponentId.BUTTON] as any).variants.length).toBe(
+    expect((next.boards[ComponentId.BUTTON] as ComponentBoard).variants.length).toBe(
       before + 1,
     )
   })

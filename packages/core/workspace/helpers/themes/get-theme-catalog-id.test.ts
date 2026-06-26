@@ -10,7 +10,7 @@ const defaultThemeId = "theme-seldon-default"
 describe("getThemeCatalogId", () => {
   it("resolves a catalog template directly", () => {
     const ws = createEmptyWorkspace()
-    const theme = (ws.themes as any)[defaultThemeId]
+    const theme = ws.themes[defaultThemeId]
     expect(getThemeCatalogId(theme, ws)).toBe("seldon")
   })
 
@@ -22,7 +22,7 @@ describe("getThemeCatalogId", () => {
       } as ExtractPayload<"duplicate_theme">,
       createEmptyWorkspace(),
     )
-    const variant = (ws.themes as any)["theme-seldon-copy"]
+    const variant = ws.themes["theme-seldon-copy"]
     expect(getThemeCatalogId(variant, ws)).toBe("seldon")
   })
 })

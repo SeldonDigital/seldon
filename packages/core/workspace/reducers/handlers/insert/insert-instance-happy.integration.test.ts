@@ -1,7 +1,12 @@
 import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../../components/constants"
-import type { ExtractPayload, Workspace } from "../../../../index"
+import type {
+  ComponentBoard,
+  ComponentTreeRef,
+  ExtractPayload,
+  Workspace,
+} from "../../../../index"
 import { createEmptyWorkspace } from "../../../helpers/create-empty-workspace"
 import { addComponent } from "../add/add-component"
 import { addVariant } from "../add/add-variant"
@@ -15,16 +20,20 @@ const withUserVariant = (): { ws: Workspace; userVariantId: string } => {
     { boardKey } as ExtractPayload<"add_component">,
     createEmptyWorkspace(),
   )
-  const before = (ws.boards[boardKey] as any).variants.map((v: any) => v.id)
+  const before = (ws.boards[boardKey] as ComponentBoard).variants.map(
+    (v: ComponentTreeRef) => v.id,
+  )
   ws = addVariant({ boardKey } as ExtractPayload<"add_variant">, ws)
-  const userVariantId = (ws.boards[boardKey] as any).variants
-    .map((v: any) => v.id)
+  const userVariantId = (ws.boards[boardKey] as ComponentBoard).variants
+    .map((v: ComponentTreeRef) => v.id)
     .find((id: string) => !before.includes(id)) as string
   return { ws, userVariantId }
 }
 
 const variantRef = (ws: Workspace, id: string) =>
-  (ws.boards[boardKey] as any).variants.find((v: any) => v.id === id)
+  (ws.boards[boardKey] as ComponentBoard).variants.find(
+    (v: ComponentTreeRef) => v.id === id,
+  )!
 
 describe("insertDefaultInstance (happy path)", () => {
   it("inserts a default instance into a non-default user variant", () => {

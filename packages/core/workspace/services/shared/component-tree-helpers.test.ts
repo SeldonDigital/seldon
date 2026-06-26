@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest"
 import { ComponentId } from "../../../components/constants"
 import type {
   Board,
+  ComponentBoard,
   ComponentTreeRef,
   ExtractPayload,
   Workspace,
@@ -22,8 +23,8 @@ const ws: Workspace = addComponent(
   { boardKey } as ExtractPayload<"add_component">,
   createEmptyWorkspace(),
 )
-const rootId = (ws.boards[boardKey] as any).variants[0].id as string
-const childId = (ws.boards[boardKey] as any).variants[0].children[0]
+const rootId = (ws.boards[boardKey] as ComponentBoard).variants[0].id as string
+const childId = (ws.boards[boardKey] as ComponentBoard).variants[0].children![0]
   .id as string
 
 const cloneBoard = (): Board => structuredClone(ws.boards[boardKey]) as Board
@@ -31,7 +32,7 @@ const cloneBoard = (): Board => structuredClone(ws.boards[boardKey]) as Board
 describe("collectDescendantTreeIds", () => {
   it("collects the root and every descendant id", () => {
     const ids = collectDescendantTreeIds(
-      (ws.boards[boardKey] as any).variants[0],
+      (ws.boards[boardKey] as ComponentBoard).variants[0],
     )
     expect(ids).toContain(rootId)
     expect(ids).toContain(childId)

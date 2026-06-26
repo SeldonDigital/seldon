@@ -4,7 +4,12 @@ import { ValueType } from "@seldon/core"
 import { BackgroundKind } from "@seldon/core/properties/values/appearance/background/background-kind"
 
 import { ComponentId } from "../../../components/constants"
-import type { ExtractPayload, Workspace } from "../../../index"
+import type {
+  ComponentBoard,
+  ExtractPayload,
+  Properties,
+  Workspace,
+} from "../../../index"
 import { addComponent } from "../../reducers/handlers/add/add-component"
 import { createEmptyWorkspace } from "../create-empty-workspace"
 import { getPropertyStatus } from "./property-status"
@@ -34,7 +39,7 @@ const ws: Workspace = addComponent(
   createEmptyWorkspace(),
 )
 const board = ws.boards[boardKey]!
-const rootId = (board as any).variants[0].id as string
+const rootId = (board as ComponentBoard).variants[0].id as string
 
 describe("value emptiness", () => {
   it("classifies empty and set values", () => {
@@ -95,7 +100,7 @@ describe("value matching", () => {
 
 describe("schema and category helpers", () => {
   it("detects schema sub-properties and shorthand keys", () => {
-    const schema = { border: { width: exact(1) } } as any
+    const schema = { border: { width: exact(1) } } as unknown as Properties
     expect(hasSchemaSubProperty(schema, "border", "width")).toBe(true)
     expect(hasSchemaSubProperty(schema, "border", "color")).toBe(false)
     expect(isShorthandProperty("margin")).toBe(true)

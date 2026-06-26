@@ -1,7 +1,12 @@
 import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../components/constants"
-import type { EntryNode, ExtractPayload, Workspace } from "../../index"
+import type {
+  ComponentBoard,
+  EntryNode,
+  ExtractPayload,
+  Workspace,
+} from "../../index"
 import { addComponent } from "../reducers/handlers/add/add-component"
 import { createEmptyWorkspace } from "./create-empty-workspace"
 import { getVariantIndex } from "./general/get-variant-index"
@@ -17,27 +22,27 @@ const componentWorkspace = () =>
   )
 
 const rootId = (ws: Workspace) =>
-  (ws.boards[ComponentId.BUTTON] as any).variants[0].id as string
+  (ws.boards[ComponentId.BUTTON] as ComponentBoard).variants[0].id as string
 
 describe("getVariantIndex", () => {
   it("returns 0 for the default variant root and -1 for unknown ids", () => {
     const ws = componentWorkspace()
     expect(getVariantIndex(rootId(ws), ws)).toBe(0)
-    expect(getVariantIndex("missing" as any, ws)).toBe(-1)
+    expect(getVariantIndex("missing", ws)).toBe(-1)
   })
 })
 
 describe("getNodeSubtreeIds", () => {
   it("includes the root and its descendants", () => {
     const ws = componentWorkspace()
-    const ids = getNodeSubtreeIds(rootId(ws) as any, ws)
+    const ids = getNodeSubtreeIds(rootId(ws), ws)
     expect(ids).toContain(rootId(ws))
     expect(ids.length).toBeGreaterThan(1)
   })
 
   it("returns just the id for a node with no tree", () => {
     const ws = componentWorkspace()
-    expect(getNodeSubtreeIds("orphan" as any, ws)).toEqual(["orphan"])
+    expect(getNodeSubtreeIds("orphan", ws)).toEqual(["orphan"])
   })
 })
 

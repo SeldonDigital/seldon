@@ -1,7 +1,12 @@
 import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../components/constants"
-import type { EntryNode, ExtractPayload, Workspace } from "../../../index"
+import type {
+  ComponentBoard,
+  EntryNode,
+  ExtractPayload,
+  Workspace,
+} from "../../../index"
 import { addComponent } from "../../reducers/handlers/add/add-component"
 import { createEmptyWorkspace } from "../create-empty-workspace"
 import { findParentNode } from "./find-parent-node"
@@ -16,8 +21,8 @@ const ws: Workspace = addComponent(
   { boardKey } as ExtractPayload<"add_component">,
   createEmptyWorkspace(),
 )
-const rootId = (ws.boards[boardKey] as any).variants[0].id as string
-const childId = (ws.boards[boardKey] as any).variants[0].children[0]
+const rootId = (ws.boards[boardKey] as ComponentBoard).variants[0].id as string
+const childId = (ws.boards[boardKey] as ComponentBoard).variants[0].children![0]
   .id as string
 
 describe("findParentNode", () => {
