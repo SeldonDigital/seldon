@@ -5,7 +5,7 @@ import {
   ImagePreview,
   Text,
 } from "@seldon/components/custom-components"
-import { IconSeldonUpload } from "@seldon/components/icons"
+import { IconMaterialUpload } from "@seldon/components/icons"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 
 export interface ImageDropzoneProps {
@@ -95,7 +95,7 @@ export function ImageDropzone({
     <ImagePreview src={previewUrl} onError={handleImageError} />
   ) : (
     <>
-      <IconSeldonUpload style={styles.uploadIcon} />
+      <IconMaterialUpload style={styles.uploadIcon} />
       <Text style={styles.uploadText}>{dropText}</Text>
     </>
   )

@@ -10,11 +10,11 @@ import { IconSeldonMissing } from "@seldon/core/icon-sets/catalog/seldon/user-in
 import { useThemes } from "@lib/themes/hooks/use-themes"
 import {
   Icon,
+  IconCustomColorValue,
   IconProps,
   ThemeSwatches,
 } from "@seldon/components/custom-components"
-import { IconCustomColorValue } from "@seldon/components/custom-icons"
-import { IconSeldonToken } from "@seldon/components/icons"
+import { IconMaterialToken } from "@seldon/components/icons"
 import { LoadEditorIcons, asSymbolIconId } from "@app/LoadEditorIcons"
 import { FlatProperty } from "./properties-data"
 import { getRepeatSymbolDescendant } from "./repeat-display"
@@ -117,7 +117,7 @@ function renderOptionIconDescriptor(
     case "swatchColor":
       return <IconCustomColorValue color={descriptor.color} />
     case "themeToken":
-      return <IconSeldonToken />
+      return <IconMaterialToken />
     case "glyph":
       // Symbol glyphs are handled before this point; fall back to the property
       // icon for any other value-as-icon row.

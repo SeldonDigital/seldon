@@ -3,13 +3,13 @@
 import { DeviceId } from "@lib/devices/types"
 import { Selectable } from "@seldon/components/custom-components"
 import {
-  IconSeldonDeviceDesktop,
-  IconSeldonDeviceLaptop,
-  IconSeldonDeviceMobile,
-  IconSeldonDeviceTV,
-  IconSeldonDeviceTablet,
-  IconSeldonDeviceWatch,
-  IconSeldonFullScreen,
+  IconMaterialComputer,
+  IconMaterialFullscreen,
+  IconMaterialLaptop,
+  IconMaterialSmartphone,
+  IconMaterialTablet,
+  IconMaterialTv,
+  IconMaterialWatch,
 } from "@seldon/components/icons"
 
 export type Icon =
@@ -50,13 +50,13 @@ export function DeviceButton({
         color: isSelected ? undefined : "rgba(255, 255, 255, 0.4)",
       }}
     >
-      {device === "custom" && <IconSeldonFullScreen />}
-      {device === "desktop" && <IconSeldonDeviceDesktop />}
-      {device === "laptop" && <IconSeldonDeviceLaptop />}
-      {device === "phone" && <IconSeldonDeviceMobile />}
-      {device === "tablet" && <IconSeldonDeviceTablet />}
-      {device === "tv" && <IconSeldonDeviceTV />}
-      {device === "watch" && <IconSeldonDeviceWatch />}
+      {device === "custom" && <IconMaterialFullscreen />}
+      {device === "desktop" && <IconMaterialComputer />}
+      {device === "laptop" && <IconMaterialLaptop />}
+      {device === "phone" && <IconMaterialSmartphone />}
+      {device === "tablet" && <IconMaterialTablet />}
+      {device === "tv" && <IconMaterialTv />}
+      {device === "watch" && <IconMaterialWatch />}
     </Selectable>
   )
 }

@@ -61,11 +61,14 @@ export async function exportReact(
     return aLevelIndex - bLevelIndex
   })
 
-  // Every icon turned on in the workspace's icon sets exports, even when no
-  // component references it, so users can ship complete icon sets.
+  // On by default, every icon turned on in the workspace's icon sets exports,
+  // even when no component references it, so users can ship complete icon sets.
+  // `exportAllIconSetIcons: false` tree-shakes to only the icons components use.
   const usedIconIds = getUsedIconIds(workspace)
-  for (const iconId of getWorkspaceEnabledIcons(workspace)) {
-    usedIconIds.add(iconId)
+  if (options.exportAllIconSetIcons !== false) {
+    for (const iconId of getWorkspaceEnabledIcons(workspace)) {
+      usedIconIds.add(iconId)
+    }
   }
 
   filesToExport.push({

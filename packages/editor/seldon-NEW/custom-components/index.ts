@@ -2,6 +2,11 @@
 // Populated as markup is extracted out of app/ during the MVVM migration.
 export { Icon } from "./primitives/Icon"
 export type { IconProps, DynamicIconId } from "./primitives/Icon"
+export { IconCustomBooleanValue } from "./icons/Boolean"
+export { IconCustomColorValue } from "./icons/Color"
+export { IconCustomSwatchValue } from "./icons/Swatch"
+export { IconCustomThemeColorValue } from "./icons/ThemeColor"
+export { IconCustomThemeGradientValue } from "./icons/ThemeGradient"
 export { Text } from "./primitives/Text"
 export type { TextProps } from "./primitives/Text"
 export { InputEditor } from "./primitives/InputEditor"
