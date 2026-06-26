@@ -60,6 +60,27 @@ function calculateCssDifferences(
 ): CSSObject {
   const differences: CSSObject = {}
 
+  // The base class is applied unconditionally (by the component and the shared
+  // variant class), so any property the base sets but the instance no longer
+  // produces would leak through. This happens for context-dependent layout
+  // props such as `align-self: stretch`, which the base bakes from a vertical
+  // parent but a node reused in a horizontal row drops in favor of `flex`.
+  // Neutralize those base-only keys so base + delta resolve to what the instance
+  // computes in its own context, matching the single-rule output the canvas
+  // renders. `unset` reverts each property to inherit (for inherited props like
+  // font-family) or initial (for the rest), which mirrors an absent declaration.
+  // Resets are written before the instance's own values so a shorthand the
+  // instance does emit (e.g. `flex`) still overrides a longhand reset it implies
+  // (e.g. `flex-shrink`).
+  const writableDifferences = differences as Record<string, string>
+  for (const [key, baseValue] of Object.entries(baseCss)) {
+    if (key in instanceCss) continue
+    if (baseValue === undefined || baseValue === null) continue
+    // Pseudo-selector blocks are nested objects handled elsewhere, not props.
+    if (typeof baseValue === "object") continue
+    writableDifferences[key] = "unset"
+  }
+
   for (const [key, value] of Object.entries(instanceCss)) {
     const baseValue = baseCss[key as keyof CSSObject]
     if (baseValue === undefined || !isEqual(baseValue, value)) {

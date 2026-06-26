@@ -1132,6 +1132,7 @@ body {
 }
 
 .sdn-bar--9xs7 {
+  border-radius: unset;
   background-color: hsl(203 100% 75.3%);
   border-bottom-width: var(--hairline);
   border-bottom-style: solid;
@@ -1144,6 +1145,7 @@ body {
 }
 
 .sdn-bar--yje0 {
+  border-radius: unset;
   background-color: hsl(203 100% 75.3%);
   border-bottom-width: var(--hairline);
   border-bottom-style: solid;
@@ -1153,6 +1155,11 @@ body {
 }
 
 .sdn-bar-button-bar--dabm {
+  padding-top: unset;
+  padding-right: unset;
+  padding-bottom: unset;
+  padding-left: unset;
+  border-radius: unset;
   background-color: hsl(203 100% 75.3%);
   border-top-width: var(--hairline);
   border-top-style: solid;
@@ -1168,6 +1175,7 @@ body {
 }
 
 .sdn-button--4nmh {
+  border-radius: unset;
   border-top-right-radius: 99999px;
   border-bottom-right-radius: 99999px;
 }
@@ -1180,6 +1188,10 @@ body {
 }
 
 .sdn-button--f0df {
+  padding-top: unset;
+  padding-right: unset;
+  padding-bottom: unset;
+  padding-left: unset;
   flex-direction: column;
   padding: 0.5rem;
   border-radius: 0.25rem;
@@ -1190,6 +1202,12 @@ body {
 }
 
 .sdn-button--obir {
+  padding-top: unset;
+  padding-right: unset;
+  padding-bottom: unset;
+  padding-left: unset;
+  width: unset;
+  flex-shrink: unset;
   flex-direction: column;
   flex: 1 0 0;
   min-width: 0;
@@ -1199,6 +1217,12 @@ body {
 }
 
 .sdn-button--uncv {
+  padding-top: unset;
+  padding-right: unset;
+  padding-bottom: unset;
+  padding-left: unset;
+  width: unset;
+  flex-shrink: unset;
   background-color: transparent;
   flex-direction: column;
   flex: 1 0 0;
@@ -1209,6 +1233,7 @@ body {
 }
 
 .sdn-button--wwhx {
+  border-radius: unset;
   border-bottom-left-radius: 99999px;
   border-top-left-radius: 99999px;
 }
@@ -1218,6 +1243,7 @@ body {
 }
 
 .sdn-button-simple--znxu {
+  border-radius: unset;
   border-top-right-radius: 0.25rem;
   border-bottom-right-radius: 0px;
   border-bottom-left-radius: 0px;
@@ -1236,17 +1262,27 @@ body {
 }
 
 .sdn-combobox-field--j44i {
+  align-self: unset;
+  flex-shrink: unset;
   flex: 1 0 0;
   min-width: 0;
 }
 
 .sdn-combobox-field--lmje {
+  padding-top: unset;
+  padding-right: unset;
+  padding-bottom: unset;
+  padding-left: unset;
+  align-self: unset;
+  flex-shrink: unset;
   flex: 1 0 0;
   min-width: 0;
   padding: 0.25rem;
 }
 
 .sdn-combobox-field--o7ct {
+  align-self: unset;
+  flex-shrink: unset;
   padding-top: 0;
   padding-bottom: 0;
   flex: 1 0 0;
@@ -1255,6 +1291,8 @@ body {
 }
 
 .sdn-combobox-field-search-field--vbyg {
+  align-self: unset;
+  flex-shrink: unset;
   color: hsl(203 0% 8%);
   flex: 1 0 0;
   min-width: 0;
@@ -1262,6 +1300,8 @@ body {
 }
 
 .sdn-form-control-combobox-control--qmop {
+  align-self: unset;
+  flex-shrink: unset;
   flex: 1 0 0;
   min-width: 0;
 }
@@ -1272,6 +1312,7 @@ body {
 }
 
 .sdn-frame--nhfs {
+  align-self: unset;
   overflow: hidden;
   height: fit-content;
   min-width: 0;
@@ -1310,6 +1351,8 @@ body {
 }
 
 .sdn-image--9jgp {
+  align-self: unset;
+  flex: unset;
   width: 2.998rem;
   flex-shrink: 0;
   height: 2.998rem;
@@ -1318,6 +1361,8 @@ body {
 }
 
 .sdn-image--hzdf {
+  align-self: unset;
+  flex: unset;
   box-shadow: 0px 0px 0px 0.125rem var(--sdn-swatch-white);
   width: 2.998rem;
   flex-shrink: 0;
@@ -1335,6 +1380,8 @@ body {
 }
 
 .sdn-image--to5v {
+  align-self: unset;
+  flex: unset;
   width: 2.998rem;
   flex-shrink: 0;
   height: 2.998rem;
@@ -1342,6 +1389,8 @@ body {
 }
 
 .sdn-image--yscg {
+  align-self: unset;
+  flex: unset;
   box-shadow: 0px 0px 0px 0.125rem var(--sdn-swatch-white);
   width: 2.998rem;
   flex-shrink: 0;
@@ -1353,6 +1402,8 @@ body {
 }
 
 .sdn-image--zjyq {
+  align-self: unset;
+  flex: unset;
   width: 2.998rem;
   flex-shrink: 0;
   height: 2.998rem;
@@ -1361,11 +1412,18 @@ body {
 }
 
 .sdn-input--8ux3 {
+  align-self: unset;
+  flex-shrink: unset;
   flex: 1 0 0;
   min-width: 0;
 }
 
 .sdn-input--n6aw {
+  background-color: unset;
+  align-self: unset;
+  flex-shrink: unset;
+  border-radius: unset;
+  border: unset;
   flex: 1 0 0;
   min-width: 0;
   font-size: 0.75rem;
@@ -1373,6 +1431,11 @@ body {
 }
 
 .sdn-input--stob {
+  background-color: unset;
+  align-self: unset;
+  flex-shrink: unset;
+  border-radius: unset;
+  border: unset;
   color: hsl(203 0% 8%);
   flex: 1 0 0;
   min-width: 0;
@@ -1380,6 +1443,11 @@ body {
 }
 
 .sdn-input--yoqi {
+  background-color: unset;
+  align-self: unset;
+  flex-shrink: unset;
+  border-radius: unset;
+  border: unset;
   flex: 1 0 0;
   min-width: 0;
   padding: 0px;
@@ -1390,6 +1458,7 @@ body {
 }
 
 .sdn-link--yqey {
+  text-decoration: unset;
   color: hsl(203 0% 8%);
   font-family: IBM Plex Sans;
   font-style: normal;
@@ -1401,6 +1470,12 @@ body {
 }
 
 .sdn-text--0zmi {
+  align-self: unset;
+  flex-shrink: unset;
+  font-family: unset;
+  font-style: unset;
+  font-synthesis-style: unset;
+  line-height: unset;
   color: hsl(203 0% 8%);
   flex: 1 0 0;
   min-width: 0;
@@ -1409,16 +1484,31 @@ body {
 }
 
 .sdn-text-label--fwkw {
+  align-self: unset;
   width: 30%;
   min-width: 0;
 }
 
 .sdn-text-label--lnlb {
+  font-family: unset;
+  font-style: unset;
+  font-synthesis-style: unset;
+  font-weight: unset;
+  line-height: unset;
+  letter-spacing: unset;
   color: hsl(203 0% 8%);
   font-size: 0.75rem;
 }
 
 .sdn-text-label--lug5 {
+  align-self: unset;
+  flex-shrink: unset;
+  font-family: unset;
+  font-style: unset;
+  font-synthesis-style: unset;
+  font-weight: unset;
+  line-height: unset;
+  letter-spacing: unset;
   color: hsl(203 0% 8%);
   flex: 1 0 0;
   min-width: 0;
@@ -1431,6 +1521,7 @@ body {
 }
 
 .sdn-text-label--xg6p {
+  align-self: unset;
   margin-left: 0.25rem;
   width: 35%;
   min-width: 0;
@@ -1438,6 +1529,8 @@ body {
 }
 
 .sdn-text-label--ylte {
+  align-self: unset;
+  flex-shrink: unset;
   color: hsl(203 0% 8%);
   flex: 1 0 0;
   min-width: 0;
@@ -1445,6 +1538,8 @@ body {
 }
 
 .sdn-text-label--yo51 {
+  align-self: unset;
+  flex-shrink: unset;
   color: hsl(203 0% 8%);
   flex: 1 0 0;
   min-width: 0;
@@ -1452,6 +1547,8 @@ body {
 }
 
 .sdn-text-label--z34z {
+  align-self: unset;
+  flex-shrink: unset;
   flex: 1 0 0;
   min-width: 0;
   font-size: 0.75rem;
@@ -1468,6 +1565,8 @@ body {
 }
 
 .sdn-text-title--eodu {
+  align-self: unset;
+  flex-shrink: unset;
   color: hsl(203 0% 8%);
   flex: 1 0 0;
   min-width: 0;
@@ -1479,12 +1578,16 @@ body {
 }
 
 .sdn-text-title--qbtu {
+  align-self: unset;
+  flex-shrink: unset;
   color: hsl(203 0% 8%);
   flex: 1 0 0;
   min-width: 0;
 }
 
 .sdn-text-title--ulid {
+  align-self: unset;
+  flex-shrink: unset;
   color: hsl(203 0% 8%);
   flex: 1 0 0;
   min-width: 0;
