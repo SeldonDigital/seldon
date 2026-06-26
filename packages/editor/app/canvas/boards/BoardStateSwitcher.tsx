@@ -2,6 +2,7 @@
 
 import { COLORS } from "@lib/helpers/colors"
 import { CSSProperties, useEffect, useMemo, useRef, useState } from "react"
+import { createPortal } from "react-dom"
 import {
   type CustomState,
   NORMAL_STATE,
@@ -9,6 +10,7 @@ import {
   RESERVED_STATE_LABELS,
   type ReservedStateName,
 } from "@seldon/core/workspace/model/node-state"
+import { parseNodeLink } from "@seldon/core/workspace/model/template-ref"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import {
   useActiveBoardState,
@@ -54,17 +56,19 @@ const triggerStyle: CSSProperties = {
   cursor: "pointer",
 }
 
+// The menu portals to the document body so it escapes the canvas transform
+// stacking context. Otherwise the selection and hover outlines, which paint at
+// the canvas level, draw over it. A high z-index keeps it above that overlay
+// layer. Positioning is fixed to the trigger's measured rect.
 const menuStyle: CSSProperties = {
-  position: "absolute",
-  top: 26,
-  left: 0,
+  position: "fixed",
   minWidth: 180,
   padding: 4,
   borderRadius: 6,
   background: "#1f1f22",
   border: "1px solid rgba(255,255,255,0.12)",
   boxShadow: "0 8px 24px rgba(0,0,0,0.4)",
-  zIndex: 6,
+  zIndex: 1000,
 }
 
 const itemStyle: CSSProperties = {
@@ -131,7 +135,10 @@ export function BoardStateSwitcher({ boardKey }: BoardStateSwitcherProps) {
   const [addValue, setAddValue] = useState("")
   const [renamingKey, setRenamingKey] = useState<string | null>(null)
   const [renameValue, setRenameValue] = useState("")
+  const [triggerRect, setTriggerRect] = useState<DOMRect | null>(null)
   const wrapperRef = useRef<HTMLDivElement>(null)
+  const triggerRef = useRef<HTMLButtonElement>(null)
+  const menuRef = useRef<HTMLDivElement>(null)
 
   const customStates = useMemo(
     () => workspace.metadata.customStates ?? [],
@@ -139,18 +146,34 @@ export function BoardStateSwitcher({ boardKey }: BoardStateSwitcherProps) {
   )
 
   // Collect every state key that carries overrides anywhere in the board tree.
-  // The `states` map is sparse, so a present key with a non-empty bag means that
-  // state has authored overrides. The Normal layer lives in `overrides`, not here.
+  // Only variants author states; a child instance inherits them from its source
+  // variant. So each tree node is followed up its template chain, and a state is
+  // marked when any node on that chain has a non-empty bag for it. This way a
+  // state lights up when the variant or any of its children show an override in
+  // it. The Normal layer lives in `overrides`, not in `states`.
   const statesWithOverrides = useMemo(() => {
     const set = new Set<NodeState>()
     const board = workspace.boards[boardKey]
     if (!board) return set
-    walkComponentTree(board, (ref) => {
-      const states = workspace.nodes[ref.id]?.states
-      if (!states) return
-      for (const [state, bag] of Object.entries(states)) {
-        if (bag && Object.keys(bag).length > 0) set.add(state)
+
+    const addStatesFromChain = (startId: string) => {
+      const visited = new Set<string>()
+      let currentId: string | null = startId
+      while (currentId && !visited.has(currentId)) {
+        visited.add(currentId)
+        const node = workspace.nodes[currentId]
+        if (!node) break
+        if (node.states) {
+          for (const [state, bag] of Object.entries(node.states)) {
+            if (bag && Object.keys(bag).length > 0) set.add(state)
+          }
+        }
+        currentId = parseNodeLink(node.template)?.nodeId ?? null
       }
+    }
+
+    walkComponentTree(board, (ref) => {
+      addStatesFromChain(ref.id)
     })
     return set
   }, [workspace.boards, workspace.nodes, boardKey])
@@ -164,11 +187,17 @@ export function BoardStateSwitcher({ boardKey }: BoardStateSwitcherProps) {
   }
 
   // Dismiss the menu on an outside click or Escape so it behaves like a popover.
+  // The menu is portaled outside the wrapper, so a click inside it must also
+  // count as inside to keep item handlers from being torn down before they fire.
   useEffect(() => {
     if (!open) return
 
     const handlePointerDown = (event: PointerEvent) => {
-      if (!wrapperRef.current?.contains(event.target as Node)) {
+      const target = event.target as Node
+      if (
+        !wrapperRef.current?.contains(target) &&
+        !menuRef.current?.contains(target)
+      ) {
         closeMenu()
       }
     }
@@ -181,6 +210,26 @@ export function BoardStateSwitcher({ boardKey }: BoardStateSwitcherProps) {
     return () => {
       document.removeEventListener("pointerdown", handlePointerDown, true)
       document.removeEventListener("keydown", handleKeyDown)
+    }
+  }, [open])
+
+  // Track the trigger rect while open so the portaled menu stays anchored to it
+  // through canvas pan, zoom, and window resize.
+  useEffect(() => {
+    if (!open) return
+
+    const updateRect = () => {
+      if (triggerRef.current) {
+        setTriggerRect(triggerRef.current.getBoundingClientRect())
+      }
+    }
+
+    updateRect()
+    window.addEventListener("scroll", updateRect, true)
+    window.addEventListener("resize", updateRect)
+    return () => {
+      window.removeEventListener("scroll", updateRect, true)
+      window.removeEventListener("resize", updateRect)
     }
   }, [open])
 
@@ -218,17 +267,39 @@ export function BoardStateSwitcher({ boardKey }: BoardStateSwitcherProps) {
       onClick={(event) => event.stopPropagation()}
     >
       <button
+        ref={triggerRef}
         type="button"
         style={triggerStyle}
-        onClick={() => (open ? closeMenu() : setOpen(true))}
+        onClick={() => {
+          if (open) {
+            closeMenu()
+            return
+          }
+          if (triggerRef.current) {
+            setTriggerRect(triggerRef.current.getBoundingClientRect())
+          }
+          setOpen(true)
+        }}
       >
         {stateLabel(activeState, customStates)}
         <span aria-hidden>▾</span>
       </button>
 
-      {open && (
-        <div style={menuStyle} role="menu">
-          <div style={itemStyle} onClick={() => select(NORMAL_STATE)}>
+      {open &&
+        triggerRect &&
+        typeof document !== "undefined" &&
+        createPortal(
+          <div
+            ref={menuRef}
+            style={{
+              ...menuStyle,
+              top: triggerRect.bottom + 4,
+              left: triggerRect.left,
+            }}
+            role="menu"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div style={itemStyle} onClick={() => select(NORMAL_STATE)}>
             Normal
           </div>
 
@@ -308,8 +379,9 @@ export function BoardStateSwitcher({ boardKey }: BoardStateSwitcherProps) {
               Add custom state...
             </div>
           )}
-        </div>
-      )}
+          </div>,
+          document.body,
+        )}
     </div>
   )
 }
