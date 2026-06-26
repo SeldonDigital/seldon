@@ -40,4 +40,7 @@
 I have read the CLA and I agree to its terms.
 
 [ NAME ]
-[ GITHUB ACCOUNT ]
+[ ORGANIZATION ]
+
+Github: [ GITHUB ACCOUNT ]
+Organization: [ ORGANIZATION ]
