@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest"
 
+import type { BoardCompound } from "."
 import { Unit, ValueType } from "../../../constants"
 import { Resize } from "../resize"
-import type { BoardCompound } from "."
 import {
   applyBoardDevicePreset,
   applyBoardFitPreset,

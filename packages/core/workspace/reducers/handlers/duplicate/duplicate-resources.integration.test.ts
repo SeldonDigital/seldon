@@ -80,8 +80,8 @@ describe("duplicateNode", () => {
       { nodeId: rootId } as ExtractPayload<"duplicate_node">,
       ws,
     )
-    expect((next.boards[ComponentId.BUTTON] as ComponentBoard).variants.length).toBe(
-      before + 1,
-    )
+    expect(
+      (next.boards[ComponentId.BUTTON] as ComponentBoard).variants.length,
+    ).toBe(before + 1)
   })
 })

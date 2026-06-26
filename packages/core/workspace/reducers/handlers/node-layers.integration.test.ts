@@ -27,8 +27,10 @@ const addLayer = (ws: typeof workspace, value: string) =>
   )
 
 const backgroundOf = (ws: typeof workspace) =>
-  (ws.nodes[nodeId]!.overrides as Record<string, unknown>)
-    .background as Record<string, unknown>[]
+  (ws.nodes[nodeId]!.overrides as Record<string, unknown>).background as Record<
+    string,
+    unknown
+  >[]
 
 describe("addNodeLayer", () => {
   it("appends a seeded layer to the top of the stack", () => {
