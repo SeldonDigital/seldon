@@ -22,6 +22,7 @@ import { combineClassNames } from "../utils/class-name"
 
 export interface BarProps extends HTMLAttributes<HTMLElement> {
   className?: string
+  "data-seldon-ref"?: string
   textTitle?: TextTitleProps | null
   buttonIconic?: ButtonIconicProps | null
   icon?: IconProps | null

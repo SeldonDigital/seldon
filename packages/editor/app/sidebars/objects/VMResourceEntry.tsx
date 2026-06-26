@@ -2,7 +2,7 @@
 
 import { MenuEntry } from "@lib/menus"
 import { useCallback, useRef } from "react"
-import { Board as BoardType, Variant } from "@seldon/core"
+import { Board as BoardType } from "@seldon/core"
 import { Action } from "@seldon/core/index"
 import {
   isFontCollectionBoard,
@@ -14,7 +14,6 @@ import { isEntryFontCollectionDefault } from "@seldon/core/workspace/model/entry
 import { isEntryIconSetDefault } from "@seldon/core/workspace/model/entry-icon-set"
 import { isEntryThemeDefault } from "@seldon/core/workspace/model/entry-theme"
 import type { Workspace } from "@seldon/core/workspace/types"
-import { useRowHighlightStyle } from "@lib/workspace/hooks/use-object-hover"
 import {
   ResourceEntryKind,
   useIsResourceEntrySelected,
@@ -22,15 +21,13 @@ import {
 } from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useTool } from "@lib/hooks/use-tool"
-import { useSidebarRowStyling } from "../../tracking/hooks/use-sidebar-row-styling"
-import { useInlineRename } from "../hooks/use-inline-rename"
+import { useRenameInput } from "../hooks/use-rename-input"
 import { useResourceEntryRow } from "./hooks/use-resource-entry-row"
 import { useRowClick } from "./hooks/use-row-click"
 import { SelectionKind } from "@lib/workspace/selection-target"
-import { ItemNodeRow } from "@seldon/components/elements/ItemNodeRow"
+import { ItemNode } from "@seldon/components/elements/ItemNode"
 import { IconProps } from "@seldon/components/primitives/Icon"
-import { TextLabelProps } from "@seldon/components/primitives/TextLabel"
-import { rowWrapperStyle } from "../helpers/sidebar-row-styles"
+import { withoutStyle } from "../helpers/without-style"
 import { useRowActionsMenu } from "../shared/use-row-actions-menu"
 import { RowSelectionTarget } from "./RowSelectionTarget"
 
@@ -112,69 +109,43 @@ export function VMResourceEntry({
     }
   }, [canRename, setEditingName])
 
-  const { rowStyle, iconColor, labelColor } = useSidebarRowStyling(
-    { id: entryId } as unknown as Variant,
-    { isSelected },
-  )
-  const hoverStyle = useRowHighlightStyle(entryId, isSelected)
-  const combinedRowStyle = { ...hoverStyle, ...rowStyle }
-
   const rowRef = useRef<HTMLDivElement>(null)
 
   const actionsMenu = useRowActionsMenu(actions, {
-    color: iconColor,
     focusTargetRef: rowRef,
   })
 
   if (!show || !entry) return null
 
-  const icon2: IconProps = {
-    icon: config.icon,
-    ...(iconColor ? { style: { color: iconColor } } : {}),
-  }
+  const icon2: IconProps = { icon: config.icon }
 
-  const { labelChildren: renameLabel } = useInlineRename({
+  const nameInput = useRenameInput({
     label: entry?.label ?? "",
     isEditing: isEditingName && Boolean(config.buildLabelAction),
     setEditing: setEditingName,
     onSubmit: submitLabel,
   })
 
-  const labelChildren =
-    isEditingName && config.buildLabelAction ? renameLabel : entry.label
-
-  const textLabel = {
-    children: labelChildren,
-    ...(labelColor ? { style: { color: labelColor } } : {}),
-  } as unknown as TextLabelProps
-
   return (
     <>
       <RowSelectionTarget
         ref={rowRef}
-        style={rowWrapperStyle}
         selectionId={entryId}
         selectionKind={config.selectionKind}
       >
-        <ItemNodeRow
+        <ItemNode
           buttonIconic={{}}
-          icon={{
-            icon: "material-chevronRight",
-            style: { color: "transparent" },
-          }}
-          icon2={icon2}
-          textLabel={textLabel}
-          buttonIconic2={null}
-          icon3={null}
-          buttonIconic3={actionsMenu.buttonIconic}
-          icon4={actionsMenu.icon}
+          comboboxField={{}}
+          icon2={withoutStyle(icon2)}
+          input={nameInput}
+          buttonIconic2={withoutStyle(actionsMenu.buttonIconic)}
+          icon3={withoutStyle(actionsMenu.icon)}
           onClick={onClick}
           onDoubleClick={onDoubleClick}
           data-testid={config.testId}
           data-resource-entry-id={entryId}
           data-resource-kind={config.kind}
           data-active={isActive}
-          style={combinedRowStyle}
         />
       </RowSelectionTarget>
       {actionsMenu.menu}

@@ -12,13 +12,13 @@
  *****/
  
 
-import { HTMLAttributes, ReactNode } from "react"
-import { HTMLDiv } from "../native-react/HTML.Div"
+import { HTMLAttributes, ReactNode, createElement } from "react"
 
-export type FrameProps = HTMLAttributes<HTMLDivElement> & {
+export type FrameProps = HTMLAttributes<HTMLElement> & {
   children?: ReactNode
+  wrapperElement?: string
 }
 
-export function Frame(props: FrameProps) {
-  return <HTMLDiv {...props} />
+export function Frame({ wrapperElement = "div", ...props }: FrameProps) {
+  return createElement(wrapperElement, props)
 }

@@ -18,6 +18,7 @@ import { combineClassNames } from "../utils/class-name"
 
 export interface ButtonSimpleProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string
+  "data-seldon-ref"?: string
   textLabel?: TextLabelProps | null
 }
 

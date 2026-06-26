@@ -24,6 +24,7 @@ import { combineClassNames } from "../utils/class-name"
 
 export interface DialogModalProps extends HTMLAttributes<HTMLElement> {
   className?: string
+  "data-seldon-ref"?: string
   bar?: BarProps | null
   textTitle?: TextTitleProps | null
   frame?: FrameProps | null

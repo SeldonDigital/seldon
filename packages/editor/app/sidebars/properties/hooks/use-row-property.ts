@@ -34,7 +34,7 @@ import { useObjectProperties } from "@lib/workspace/hooks/use-object-properties"
 import { useDebugMode } from "@lib/hooks/use-debug-mode"
 import { useInlineRename } from "../../hooks/use-inline-rename"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
-import { FormControlIconicProps } from "@seldon/components/elements/FormControlIconic"
+import { ComboboxFieldProps } from "@seldon/components/elements/ComboboxField"
 import {
   imageUploadTargetForKey,
   useImageUploadPanel,
@@ -64,10 +64,7 @@ import {
   getPropertyLabelStyle,
   getPropertyRowStyle,
 } from "../helpers/property-styling-tokens"
-import {
-  isNumericPropertyValue,
-  stripDisplayUnitSuffix,
-} from "../helpers/property-value-display"
+import { isNumericPropertyValue } from "../helpers/property-value-display"
 import {
   getThemeTokenIconColorFromPropertyValue,
   isSwatchIconPropertyKey,
@@ -270,19 +267,15 @@ export function useRowProperty({
     [property],
   )
 
-  // Strip the unit suffix from the display value when a separate unit label is
-  // shown, avoiding redundant output like "10px PX".
-  const value = stripDisplayUnitSuffix(
-    getDisplayValue(
-      propertyValue,
-      property.key,
-      nodeId,
-      workspace,
-      theme,
-      options,
-    ),
-    unit,
-    isNumericValue,
+  // The unit is folded into the display string (e.g. "24px") and shown in the
+  // single combobox value field. There is no separate unit element.
+  const value = getDisplayValue(
+    propertyValue,
+    property.key,
+    nodeId,
+    workspace,
+    theme,
+    options,
   )
 
   const rowStyle = useMemo(
@@ -643,12 +636,10 @@ export function useRowProperty({
       ? "pointer"
       : "default"
 
-  // Suppress the form control's internal icon/input/button slots: the row's
-  // child slots (value icon, value cell, menu button) supply the content.
+  // Frame props for the combobox-field value frame. The row supplies its own
+  // children (value icon, value cell, menu button), so the field's default
+  // icon/input/button slots are left to the children path.
   const frameProps = {
-    icon: null,
-    input: null,
-    button: null,
     tabIndex: -1,
     [FRAME_REF_ATTR]: FRAME_REF_VALUE,
     ref: setFrameRef,
@@ -656,7 +647,7 @@ export function useRowProperty({
     onMouseEnter: handleFrameMouseEnter,
     onMouseLeave: handleFrameMouseLeave,
     style: getFormControlStyle({ cursor: rowCursor, hoverStyle }),
-  } as FormControlIconicProps & {
+  } as ComboboxFieldProps & {
     ref?: (el: HTMLDivElement | null) => void
   }
 
@@ -669,7 +660,7 @@ export function useRowProperty({
     theme,
     labelColor,
     valueChip: listItemProps.valueChip,
-    unitLabel: listItemProps.unitLabel,
+    unitLabel: undefined,
     isEditingProperty,
     isThemeAssignment,
     themeForSwatches,

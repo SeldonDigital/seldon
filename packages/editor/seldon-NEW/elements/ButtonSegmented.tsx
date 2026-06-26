@@ -20,6 +20,7 @@ import { combineClassNames } from "../utils/class-name"
 
 export interface ButtonSegmentedProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string
+  "data-seldon-ref"?: string
   button?: ButtonProps | null
   icon?: IconProps | null
   textLabel?: TextLabelProps | null

@@ -69,13 +69,6 @@ export interface ComputeNodePropertiesOptions {
    */
   parentIndex?: ReadonlyMap<string, string>
   /**
-   * `"board"` makes a node without a composition parent resolve `#parent.*` paths against
-   * its owning board, so the board background acts as the surface behind variant roots.
-   * The editor canvas opts in; export leaves this off so board styling never leaks into
-   * exported CSS.
-   */
-  rootParentFallback?: "board"
-  /**
    * Interaction state to resolve. When omitted or `"normal"`, only the Normal
    * (`overrides`) layer is used. When set to a reserved or custom state name,
    * each node's `states[state]` bag is layered on top of its Normal overrides
@@ -486,7 +479,6 @@ function buildComputeContext(
   workspace: WorkspacePropertySource,
   visited: Set<string>,
   compositionParentByChild: ReadonlyMap<string, string> | undefined,
-  rootParentFallback?: "board",
   state?: NodeState,
 ): ComputeContext {
   const parentNode = findParentNode(node, workspace, compositionParentByChild)
@@ -501,7 +493,6 @@ function buildComputeContext(
       workspace,
       visited,
       compositionParentByChild,
-      rootParentFallback,
       state,
     )
     // A node's effective theme is its own theme, otherwise the nearest
@@ -512,10 +503,13 @@ function buildComputeContext(
       ? getComputedTheme(ownThemeId, workspace)
       : parentContext.theme
   } else {
-    parentContext =
-      !parentNode && rootParentFallback === "board"
-        ? buildBoardComputeContext(node, workspace, compositionParentByChild)
-        : null
+    // A variant root's parent is its owning board, so `#parent.*` paths and the
+    // high-contrast / match-color surface walk resolve against the board the
+    // same way for every consumer. A cycle guard hit (parentNode already
+    // visited) has no board to stand in for.
+    parentContext = parentNode
+      ? null
+      : buildBoardComputeContext(node, workspace, compositionParentByChild)
     const themeId = getEffectiveThemeId(
       node,
       workspace,
@@ -554,10 +548,7 @@ function buildComputeContext(
 export function getNodeComputeContext(
   targetId: string,
   workspace: WorkspacePropertySource,
-  options: Pick<
-    ComputeNodePropertiesOptions,
-    "parentIndex" | "rootParentFallback" | "state"
-  > = {},
+  options: Pick<ComputeNodePropertiesOptions, "parentIndex" | "state"> = {},
 ): ComputeContext {
   const node = getNodes(workspace)[targetId]
 
@@ -584,7 +575,6 @@ export function getNodeComputeContext(
     workspace,
     new Set([node.id]),
     compositionParentByChild,
-    options.rootParentFallback,
     options.state,
   )
 }
@@ -626,7 +616,6 @@ export function computeNodeProperties(
     workspace,
     new Set([node.id]),
     compositionParentByChild,
-    options.rootParentFallback,
     options.state,
   )
   const inputProperties = context.properties

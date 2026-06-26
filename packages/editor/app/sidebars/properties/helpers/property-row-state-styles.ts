@@ -170,7 +170,7 @@ function resolveMenuIconOpacity({
 }
 
 /**
- * Form control shell around the value cell. Width comes from the generated
+ * Combobox value field around the value cell. Width comes from the generated
  * form-control classes, so no width is set here. Position anchors the
  * value-cell edit overlay.
  */

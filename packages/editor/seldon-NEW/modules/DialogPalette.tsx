@@ -22,6 +22,7 @@ import { combineClassNames } from "../utils/class-name"
 
 export interface DialogPaletteProps extends HTMLAttributes<HTMLElement> {
   className?: string
+  "data-seldon-ref"?: string
   bar?: BarProps | null
   textTitle?: TextTitleProps | null
   buttonIconic?: ButtonIconicProps | null

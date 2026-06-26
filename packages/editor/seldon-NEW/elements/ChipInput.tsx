@@ -19,6 +19,7 @@ import { combineClassNames } from "../utils/class-name"
 
 export interface ChipInputProps extends HTMLAttributes<HTMLElement> {
   className?: string
+  "data-seldon-ref"?: string
   textLabel?: TextLabelProps | null
   icon?: IconProps | null
 }

@@ -18,6 +18,7 @@ import { combineClassNames } from "../utils/class-name"
 
 export interface ButtonIconicProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string
+  "data-seldon-ref"?: string
   icon?: IconProps | null
 }
 
@@ -72,6 +73,6 @@ const sdn: ButtonIconicProps = {
   icon: {
     icon: "seldon-component",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--umgs",
+    className: "sdn-icon sdn-icon--vsau",
   },
 }

@@ -536,7 +536,7 @@ body {
 
 .sdn-combobox-field {
   cursor: pointer;
-  color: hsl(203 0% 8%);
+  color: hsl(203 0% 98%);
   flex-wrap: nowrap;
   display: flex;
   flex-direction: row;
@@ -551,7 +551,7 @@ body {
   height: fit-content;
   flex-shrink: 0;
   border-radius: 0.25rem;
-  border: var(--hairline) solid hsl(203 0% 98%);
+  border: var(--hairline) solid hsl(0 0% 15%);
 }
 
 .sdn-combobox-field:active {
@@ -568,7 +568,7 @@ body {
 
 .sdn-combobox-field-filter-field {
   cursor: pointer;
-  color: hsl(203 0% 8%);
+  color: hsl(203 0% 98%);
   flex-wrap: nowrap;
   display: flex;
   flex-direction: row;
@@ -596,7 +596,7 @@ body {
 
 .sdn-combobox-field-search-field {
   cursor: pointer;
-  color: hsl(203 0% 8%);
+  color: hsl(203 0% 98%);
   flex-wrap: nowrap;
   display: flex;
   flex-direction: row;
@@ -611,7 +611,7 @@ body {
   height: fit-content;
   flex-shrink: 0;
   border-radius: 0.25rem;
-  border: var(--hairline) solid hsl(203 0% 8% / 25%);
+  border: var(--hairline) solid hsl(203 0% 98% / 25%);
 }
 
 .sdn-combobox-field-search-field:active {
@@ -676,7 +676,7 @@ body {
   height: fit-content;
   flex-shrink: 0;
   font-size: 1rem;
-  color: hsl(203 0% 8%);
+  color: hsl(203 0% 98%);
 }
 
 .sdn-icon:active {
@@ -708,7 +708,7 @@ body {
 
 .sdn-input {
   background-color: transparent;
-  color: hsl(203 0% 8%);
+  color: hsl(203 0% 98%);
   align-self: stretch;
   height: fit-content;
   flex-shrink: 0;
@@ -752,7 +752,7 @@ body {
 }
 
 .sdn-input-checkbox {
-  color: hsl(203 0% 8%);
+  color: hsl(203 0% 98%);
   accent-color: hsl(203 100% 62%);
   width: fit-content;
   height: fit-content;
@@ -920,7 +920,7 @@ body {
 }
 
 .sdn-text {
-  color: hsl(203 0% 8%);
+  color: hsl(203 0% 98%);
   align-self: stretch;
   height: fit-content;
   flex-shrink: 0;
@@ -935,7 +935,7 @@ body {
 }
 
 .sdn-text-callout {
-  color: hsl(203 0% 8%);
+  color: hsl(203 0% 98%);
   align-self: stretch;
   height: fit-content;
   flex-shrink: 0;
@@ -952,7 +952,7 @@ body {
 }
 
 .sdn-text-codeblock {
-  color: hsl(203 0% 8%);
+  color: hsl(203 0% 98%);
   align-self: stretch;
   height: fit-content;
   flex-shrink: 0;
@@ -967,7 +967,7 @@ body {
 }
 
 .sdn-text-display {
-  color: hsl(203 0% 8%);
+  color: hsl(203 0% 98%);
   align-self: stretch;
   height: fit-content;
   flex-shrink: 0;
@@ -985,7 +985,7 @@ body {
 }
 
 .sdn-text-heading {
-  color: hsl(203 0% 8%);
+  color: hsl(203 0% 98%);
   align-self: stretch;
   height: fit-content;
   flex-shrink: 0;
@@ -1002,7 +1002,7 @@ body {
 }
 
 .sdn-text-label {
-  color: hsl(203 0% 8%);
+  color: hsl(203 0% 98%);
   align-self: stretch;
   height: fit-content;
   flex-shrink: 0;
@@ -1041,7 +1041,7 @@ body {
 }
 
 .sdn-text-option {
-  color: hsl(203 0% 8%);
+  color: hsl(203 0% 98%);
   align-self: stretch;
   height: fit-content;
   flex-shrink: 0;
@@ -1059,7 +1059,7 @@ body {
 }
 
 .sdn-text-subheading {
-  color: hsl(203 0% 8%);
+  color: hsl(203 0% 98%);
   align-self: stretch;
   height: fit-content;
   flex-shrink: 0;
@@ -1076,7 +1076,7 @@ body {
 }
 
 .sdn-text-subtitle {
-  color: hsl(203 0% 8%);
+  color: hsl(203 0% 98%);
   align-self: stretch;
   height: fit-content;
   flex-shrink: 0;
@@ -1093,7 +1093,7 @@ body {
 }
 
 .sdn-text-tagline {
-  color: hsl(203 0% 8%);
+  color: hsl(203 0% 98%);
   align-self: stretch;
   height: fit-content;
   flex-shrink: 0;
@@ -1110,7 +1110,7 @@ body {
 }
 
 .sdn-text-title {
-  color: hsl(203 0% 8%);
+  color: hsl(203 0% 98%);
   align-self: stretch;
   height: fit-content;
   flex-shrink: 0;
@@ -1238,14 +1238,12 @@ body {
 .sdn-combobox-field--j44i {
   flex: 1 0 0;
   min-width: 0;
-  border: var(--hairline) solid hsl(203 100% 62%);
 }
 
 .sdn-combobox-field--lmje {
   flex: 1 0 0;
   min-width: 0;
   padding: 0.25rem;
-  border: var(--hairline) solid hsl(203 100% 62%);
 }
 
 .sdn-combobox-field--o7ct {
@@ -1253,12 +1251,14 @@ body {
   padding-bottom: 0;
   flex: 1 0 0;
   min-width: 0;
-  border: var(--hairline) solid hsl(203 0% 31%);
+  border: var(--hairline) solid hsl(203 0% 98.5%);
 }
 
 .sdn-combobox-field-search-field--vbyg {
+  color: hsl(203 0% 8%);
   flex: 1 0 0;
   min-width: 0;
+  border: var(--hairline) solid hsl(203 0% 8% / 25%);
 }
 
 .sdn-form-control-combobox-control--qmop {
@@ -1277,16 +1277,32 @@ body {
   min-width: 0;
 }
 
+.sdn-icon--4k57 {
+  color: hsl(203 0% 8%);
+}
+
 .sdn-icon--eyw9 {
   font-size: 0.6rem;
+  color: hsl(203 0% 8%);
+}
+
+.sdn-icon--ucf5 {
+  font-size: 0.75rem;
+  color: hsl(203 0% 8%);
 }
 
 .sdn-icon--umgs {
+  font-size: 0.8rem;
+  color: hsl(203 0% 8%);
+}
+
+.sdn-icon--vsau {
   font-size: 0.8rem;
 }
 
 .sdn-icon--x7ac {
   font-size: 0.7rem;
+  color: hsl(203 0% 8%);
 }
 
 .sdn-icon--xi68 {
@@ -1315,7 +1331,7 @@ body {
 .sdn-image--rvea {
   min-width: 0;
   border-radius: 0.25rem;
-  border: var(--hairline) solid hsl(203 0% 8%);
+  border: var(--hairline) solid hsl(203 0% 98%);
 }
 
 .sdn-image--to5v {
@@ -1356,6 +1372,13 @@ body {
   padding: 0px;
 }
 
+.sdn-input--stob {
+  color: hsl(203 0% 8%);
+  flex: 1 0 0;
+  min-width: 0;
+  padding: 0px;
+}
+
 .sdn-input--yoqi {
   flex: 1 0 0;
   min-width: 0;
@@ -1378,6 +1401,7 @@ body {
 }
 
 .sdn-text--0zmi {
+  color: hsl(203 0% 8%);
   flex: 1 0 0;
   min-width: 0;
   font-weight: 700;
@@ -1390,16 +1414,19 @@ body {
 }
 
 .sdn-text-label--lnlb {
+  color: hsl(203 0% 8%);
   font-size: 0.75rem;
 }
 
 .sdn-text-label--lug5 {
+  color: hsl(203 0% 8%);
   flex: 1 0 0;
   min-width: 0;
   font-size: 0.6rem;
 }
 
 .sdn-text-label--u00q {
+  color: hsl(203 0% 8%);
   font-size: 0.8rem;
 }
 
@@ -1411,12 +1438,14 @@ body {
 }
 
 .sdn-text-label--ylte {
+  color: hsl(203 0% 8%);
   flex: 1 0 0;
   min-width: 0;
   font-size: 0.8rem;
 }
 
 .sdn-text-label--yo51 {
+  color: hsl(203 0% 8%);
   flex: 1 0 0;
   min-width: 0;
   font-size: 0.7rem;
@@ -1439,6 +1468,7 @@ body {
 }
 
 .sdn-text-title--eodu {
+  color: hsl(203 0% 8%);
   flex: 1 0 0;
   min-width: 0;
   font-size: 0.875rem;
@@ -1449,11 +1479,13 @@ body {
 }
 
 .sdn-text-title--qbtu {
+  color: hsl(203 0% 8%);
   flex: 1 0 0;
   min-width: 0;
 }
 
 .sdn-text-title--ulid {
+  color: hsl(203 0% 8%);
   flex: 1 0 0;
   min-width: 0;
   font-size: 0.75rem;

@@ -26,6 +26,7 @@ import { combineClassNames } from "../utils/class-name"
 
 export interface ItemPropertyProps extends LiHTMLAttributes<HTMLLIElement> {
   className?: string
+  "data-seldon-ref"?: string
   buttonIconic?: ButtonIconicProps | null
   icon?: IconProps | null
   formControlComboboxControl?: FormControlComboboxControlProps | null
@@ -235,7 +236,7 @@ const sdn: ItemPropertyProps = {
   icon: {
     icon: "material-chevronDown",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--umgs",
+    className: "sdn-icon sdn-icon--vsau",
   },
   formControlComboboxControl: {
     "aria-hidden": "false",
@@ -267,7 +268,7 @@ const sdn: ItemPropertyProps = {
   icon3: {
     icon: "material-chevronDown",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--umgs",
+    className: "sdn-icon sdn-icon--vsau",
   },
   buttonIconic3: {
     className: "sdn-button-iconic sdn-button-iconic--pgsr",
@@ -276,6 +277,6 @@ const sdn: ItemPropertyProps = {
   icon4: {
     icon: "seldon-more",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--umgs",
+    className: "sdn-icon sdn-icon--vsau",
   },
 }

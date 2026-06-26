@@ -17,6 +17,7 @@ import { combineClassNames } from "../utils/class-name"
 
 export interface InputRadioButtonProps extends InputHTMLAttributes<HTMLInputElement> {
   className?: string
+  "data-seldon-ref"?: string
   type?: string
 }
 

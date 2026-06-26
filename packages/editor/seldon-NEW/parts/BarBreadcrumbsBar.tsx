@@ -20,6 +20,7 @@ import { combineClassNames } from "../utils/class-name"
 
 export interface BarBreadcrumbsBarProps extends HTMLAttributes<HTMLElement> {
   className?: string
+  "data-seldon-ref"?: string
   buttonIconic?: ButtonIconicProps | null
   icon?: IconProps | null
   icon2?: IconProps | null
@@ -171,7 +172,7 @@ const sdn: BarBreadcrumbsBarProps = {
   icon2: {
     icon: "material-chevronRight",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--xi68",
+    className: "sdn-icon sdn-icon--ucf5",
   },
   link: {
     children: "Home",
@@ -181,7 +182,7 @@ const sdn: BarBreadcrumbsBarProps = {
   icon3: {
     icon: "material-chevronRight",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--xi68",
+    className: "sdn-icon sdn-icon--ucf5",
   },
   link2: {
     children: "Profile",
@@ -191,7 +192,7 @@ const sdn: BarBreadcrumbsBarProps = {
   icon4: {
     icon: "material-chevronRight",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--xi68",
+    className: "sdn-icon sdn-icon--ucf5",
   },
   link3: {
     children: "Settings",

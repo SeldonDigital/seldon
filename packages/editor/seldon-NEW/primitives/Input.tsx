@@ -17,6 +17,7 @@ import { combineClassNames } from "../utils/class-name"
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   className?: string
+  "data-seldon-ref"?: string
   type?: string
 }
 

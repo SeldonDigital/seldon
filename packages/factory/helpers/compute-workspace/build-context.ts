@@ -12,9 +12,8 @@ import type { EntryNode, Instance, Variant } from "@seldon/core/workspace/types"
  * index. The editor passes per-render edges so a shared child resolves
  * `#parent.*` against the parent it is drawn under.
  *
- * Variant roots resolve `#parent.*` against their owning board, so the board
- * background acts as the surface behind them on the canvas. Export builds its
- * contexts without this fallback.
+ * A variant root resolves `#parent.*` against its owning board, so the board
+ * background acts as the surface behind it for every consumer.
  */
 export function buildContext(
   node: Variant | Instance | EntryNode,
@@ -24,7 +23,6 @@ export function buildContext(
 ): ComputeContext {
   return getNodeComputeContext(node.id, workspace, {
     parentIndex,
-    rootParentFallback: "board",
     state,
   })
 }

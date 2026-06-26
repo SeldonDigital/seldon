@@ -18,6 +18,7 @@ import { combineClassNames } from "../utils/class-name"
 
 export interface AvatarStackedProps extends HTMLAttributes<HTMLElement> {
   className?: string
+  "data-seldon-ref"?: string
   image?: ImageProps | null
   image2?: ImageProps | null
   image3?: ImageProps | null

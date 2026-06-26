@@ -17,6 +17,7 @@ import { combineClassNames } from "../utils/class-name"
 
 export interface ImageProps extends ImgHTMLAttributes<HTMLImageElement> {
   className?: string
+  "data-seldon-ref"?: string
   src?: string
 }
 

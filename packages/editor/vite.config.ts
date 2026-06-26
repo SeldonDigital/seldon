@@ -26,7 +26,7 @@ export default defineConfig(({ mode }) => ({
       { find: "@lib", replacement: path.join(editorRoot, "lib") },
       {
         find: "@seldon/components",
-        replacement: path.join(editorRoot, "seldon"),
+        replacement: path.join(editorRoot, "seldon-NEW"),
       },
       { find: "@seldon/core", replacement: corePackageRoot },
       { find: "@seldon/factory", replacement: factoryPackageRoot },

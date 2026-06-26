@@ -1,5 +1,6 @@
 import { useRowSection } from "./hooks/use-row-section"
-import { ItemSectionRow } from "@seldon/components/elements/ItemSectionRow"
+import { ItemSection } from "@seldon/components/elements/ItemSection"
+import { withoutStyle } from "../helpers/without-style"
 import { BoardSection } from "../helpers/get-board-sections"
 import { useSectionHeaderRow } from "../shared/use-section-header-row"
 
@@ -15,16 +16,17 @@ interface VMSectionProps {
 export function VMSection({ section }: VMSectionProps) {
   const { label, icon, buttonIconic, buttonIconic2, onToggle } =
     useRowSection(section)
-  const { hoverStyle, handleClick, handleMouseEnter, handleMouseLeave } =
+  const { handleClick, handleMouseEnter, handleMouseLeave } =
     useSectionHeaderRow({ onToggle })
 
   return (
-    <ItemSectionRow
-      buttonIconic={buttonIconic}
+    <ItemSection
+      buttonIconic={withoutStyle(buttonIconic)}
       icon={{ icon }}
+      formControlComboboxControl={{}}
       textLabel={{ children: label }}
-      buttonIconic2={buttonIconic2}
-      style={hoverStyle}
+      buttonIconic2={buttonIconic2 ? withoutStyle(buttonIconic2) : null}
+      buttonIconic3={null}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onClick={handleClick}

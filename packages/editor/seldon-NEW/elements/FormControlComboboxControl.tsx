@@ -22,6 +22,7 @@ import { combineClassNames } from "../utils/class-name"
 
 export interface FormControlComboboxControlProps extends HTMLAttributes<HTMLElement> {
   className?: string
+  "data-seldon-ref"?: string
   textLabel?: TextLabelProps | null
   comboboxField?: ComboboxFieldProps | null
   icon?: IconProps | null
@@ -177,6 +178,6 @@ const sdn: FormControlComboboxControlProps = {
   icon2: {
     icon: "seldon-component",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--umgs",
+    className: "sdn-icon sdn-icon--vsau",
   },
 }

@@ -21,6 +21,7 @@ import { combineClassNames } from "../utils/class-name"
 
 export interface ItemTreeItemProps extends LiHTMLAttributes<HTMLLIElement> {
   className?: string
+  "data-seldon-ref"?: string
   buttonIconic?: ButtonIconicProps | null
   icon?: IconProps | null
   comboboxField?: ComboboxFieldProps | null
@@ -220,7 +221,7 @@ const sdn: ItemTreeItemProps = {
   icon: {
     icon: "seldon-component",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--umgs",
+    className: "sdn-icon sdn-icon--vsau",
   },
   comboboxField: {
     "aria-hidden": "false",
@@ -243,7 +244,7 @@ const sdn: ItemTreeItemProps = {
   icon3: {
     icon: "seldon-component",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--umgs",
+    className: "sdn-icon sdn-icon--vsau",
   },
   buttonIconic3: {
     className: "sdn-button-iconic sdn-button-iconic--pgsr",
@@ -251,7 +252,7 @@ const sdn: ItemTreeItemProps = {
   icon4: {
     icon: "seldon-component",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--umgs",
+    className: "sdn-icon sdn-icon--vsau",
   },
   buttonIconic4: {
     className: "sdn-button-iconic sdn-button-iconic--pgsr",
@@ -259,6 +260,6 @@ const sdn: ItemTreeItemProps = {
   icon5: {
     icon: "seldon-component",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--umgs",
+    className: "sdn-icon sdn-icon--vsau",
   },
 }

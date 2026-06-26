@@ -18,6 +18,7 @@ import { combineClassNames } from "../utils/class-name"
 
 export interface ChipIconicProps extends HTMLAttributes<HTMLElement> {
   className?: string
+  "data-seldon-ref"?: string
   icon?: IconProps | null
 }
 

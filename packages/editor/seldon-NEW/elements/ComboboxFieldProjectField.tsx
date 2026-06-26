@@ -20,6 +20,7 @@ import { combineClassNames } from "../utils/class-name"
 
 export interface ComboboxFieldProjectFieldProps extends HTMLAttributes<HTMLElement> {
   className?: string
+  "data-seldon-ref"?: string
   icon?: IconProps | null
   input?: InputProps | null
   buttonIconic?: ButtonIconicProps | null
@@ -136,6 +137,6 @@ const sdn: ComboboxFieldProjectFieldProps = {
   icon2: {
     icon: "material-save",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--umgs",
+    className: "sdn-icon sdn-icon--vsau",
   },
 }

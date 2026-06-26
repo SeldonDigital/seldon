@@ -30,8 +30,10 @@ export function insertInterface(
   const ownProps = generateOwnPropsContent(component)
   const childrenProps = generateChildrenProps(component, propNames)
 
-  // Build props array with proper formatting
-  const allProps = ["className?: string"]
+  // Build props array with proper formatting. Every component may be a ref
+  // target, and child refs ride the `sdn` default props through the
+  // `{...props}` spread onto the child root, so declare the ref attribute.
+  const allProps = ["className?: string", `"data-seldon-ref"?: string`]
 
   if (ownProps.trim()) {
     allProps.push(

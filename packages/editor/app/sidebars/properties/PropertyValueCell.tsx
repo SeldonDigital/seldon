@@ -14,6 +14,7 @@ import {
   Text,
   ThemeSwatches,
 } from "@seldon/components/custom-components"
+import { Input } from "@seldon/components/primitives/Input"
 import { ValueChip } from "./helpers/build-property-row-props"
 import { PropertyControl } from "./PropertyControl"
 import {
@@ -87,6 +88,9 @@ export function PropertyValueCell({
   }
 
   const shouldShowControl = Boolean(property.controlType)
+  // Closed rows render the value through the exported combobox `Input` as a
+  // read-only display styled like a label. Single-click opens the editor via
+  // the value cell's click handler, which swaps in the `PropertyControl` menu.
   const valueContent =
     isEditingProperty && shouldShowControl ? (
       <PropertyControl
@@ -105,7 +109,19 @@ export function PropertyValueCell({
         iconSetEditingContext={iconSetEditingContext}
       />
     ) : (
-      (value ?? "")
+      <Input
+        readOnly
+        tabIndex={-1}
+        value={value ?? ""}
+        style={{
+          border: "none",
+          background: "transparent",
+          padding: 0,
+          width: "100%",
+          cursor: "inherit",
+          ...(labelColor ? { color: labelColor } : {}),
+        }}
+      />
     )
 
   if (isThemeAssignment && themeForSwatches) {

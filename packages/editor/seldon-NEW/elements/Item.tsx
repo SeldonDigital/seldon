@@ -24,6 +24,7 @@ import { combineClassNames } from "../utils/class-name"
 
 export interface ItemProps extends LiHTMLAttributes<HTMLLIElement> {
   className?: string
+  "data-seldon-ref"?: string
   inputCheckbox?: InputCheckboxProps | null
   frame?: FrameProps | null
   textTitle?: TextTitleProps | null

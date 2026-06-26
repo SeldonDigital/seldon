@@ -17,6 +17,7 @@ import { combineClassNames } from "../utils/class-name"
 
 export interface IconProps extends SVGAttributes<SVGElement> {
   className?: string
+  "data-seldon-ref"?: string
   icon?:
     | "__default__"
     | "seldon-component"

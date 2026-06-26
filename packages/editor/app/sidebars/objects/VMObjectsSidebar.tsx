@@ -18,7 +18,7 @@ import {
   SidebarContainer,
 } from "@seldon/components/custom-components"
 import { Frame } from "@seldon/components/frames/Frame"
-import { BarTabsProject } from "@seldon/components/parts/BarTabsProject"
+import { BarTabsBar } from "@seldon/components/parts/BarTabsBar"
 import { BoardSection } from "../helpers/get-board-sections"
 import { sidebarShellStyle } from "../helpers/sidebar-styles"
 import { VMBoard } from "./VMBoard"
@@ -60,10 +60,20 @@ export function VMObjectsSidebar() {
 
   return (
     <SidebarContainer style={sidebarShellStyle} data-testid="objects-sidebar">
-      <BarTabsProject
+      <BarTabsBar
         style={{ height: "var(--sdn-size-xlarge)" }}
-        button={{ style: { display: "none" } }}
-        text={{
+        buttonSimple={{
+          style: {
+            background: "none",
+            border: "none",
+            padding: 0,
+            minWidth: 0,
+            width: "100%",
+            justifyContent: "flex-start",
+            cursor: "text",
+          },
+        }}
+        textLabel={{
           children: record.name,
           ...editableNameProps,
           style: {
@@ -75,7 +85,8 @@ export function VMObjectsSidebar() {
             outline: "none",
           },
         }}
-        button2={{ style: { display: "none" } }}
+        buttonSimple2={null}
+        buttonSimple3={null}
       />
       <SelectionRelationsProvider>
         <div

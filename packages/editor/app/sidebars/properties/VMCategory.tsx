@@ -1,7 +1,8 @@
 import { MenuEntry } from "@lib/menus"
 import { Fragment, type MouseEvent } from "react"
 import { useRowCategory } from "./hooks/use-row-category"
-import { ItemSectionRow } from "@seldon/components/elements/ItemSectionRow"
+import { ItemSection } from "@seldon/components/elements/ItemSection"
+import { withoutStyle } from "../helpers/without-style"
 import { useRowActionsMenu } from "../shared/use-row-actions-menu"
 import { useSectionHeaderRow } from "../shared/use-section-header-row"
 import { PropertySection } from "./helpers/get-property-sections"
@@ -21,7 +22,7 @@ interface VMCategoryProps {
  */
 export function VMCategory({ section, actions, onAddCustom }: VMCategoryProps) {
   const { label, icon, buttonIconic, onToggle } = useRowCategory(section)
-  const { hoverStyle, handleClick, handleMouseEnter, handleMouseLeave } =
+  const { handleClick, handleMouseEnter, handleMouseLeave } =
     useSectionHeaderRow({ onToggle })
   const actionsMenu = useRowActionsMenu(actions ?? [], {
     "aria-label": "Section actions",
@@ -37,23 +38,19 @@ export function VMCategory({ section, actions, onAddCustom }: VMCategoryProps) {
       }
     : undefined
 
-  // Keep the "+" in the far-right slot. When it shows, the actions menu moves to
-  // the middle slot, but only when the section actually has actions.
-  const showActionsInMiddle = !!addButton && actionsMenu.hasActions
-
+  // The new section row keeps the "+" add control in its own slot (buttonIconic2)
+  // ahead of the trailing "…" actions menu (buttonIconic3). The actions slot
+  // always binds the hook props so the row footprint stays stable.
   return (
     <Fragment>
-      <ItemSectionRow
-        buttonIconic={buttonIconic}
+      <ItemSection
+        buttonIconic={withoutStyle(buttonIconic)}
         icon={{ icon }}
+        formControlComboboxControl={{}}
         textLabel={{ children: label }}
-        buttonIconic2={
-          showActionsInMiddle ? actionsMenu.buttonIconic : undefined
-        }
-        icon2={showActionsInMiddle ? actionsMenu.icon : undefined}
-        buttonIconic3={addButton ?? actionsMenu.buttonIconic}
-        icon3={addButton ? { icon: "material-add" } : actionsMenu.icon}
-        style={hoverStyle}
+        buttonIconic2={addButton ?? null}
+        buttonIconic3={withoutStyle(actionsMenu.buttonIconic)}
+        icon3={withoutStyle(actionsMenu.icon)}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         onClick={handleClick}

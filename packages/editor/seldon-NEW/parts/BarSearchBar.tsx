@@ -24,6 +24,7 @@ import { combineClassNames } from "../utils/class-name"
 
 export interface BarSearchBarProps extends HTMLAttributes<HTMLElement> {
   className?: string
+  "data-seldon-ref"?: string
   comboboxFieldSearchField?: ComboboxFieldSearchFieldProps | null
   icon?: IconProps | null
   input?: InputProps | null
@@ -145,13 +146,13 @@ const sdn: BarSearchBarProps = {
   icon: {
     icon: "material-search",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--xi68",
+    className: "sdn-icon sdn-icon--ucf5",
   },
   input: {
     type: "text",
     role: "combobox",
     "aria-haspopup": "listbox",
-    className: "sdn-input sdn-input--yoqi",
+    className: "sdn-input sdn-input--stob",
   },
   buttonIconic: {
     className: "sdn-button-iconic sdn-button-iconic--pgsr",

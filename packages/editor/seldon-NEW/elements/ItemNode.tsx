@@ -21,6 +21,7 @@ import { combineClassNames } from "../utils/class-name"
 
 export interface ItemNodeProps extends LiHTMLAttributes<HTMLLIElement> {
   className?: string
+  "data-seldon-ref"?: string
   buttonIconic?: ButtonIconicProps | null
   icon?: IconProps | null
   comboboxField?: ComboboxFieldProps | null
@@ -166,7 +167,7 @@ const sdn: ItemNodeProps = {
   icon: {
     icon: "material-chevronDown",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--umgs",
+    className: "sdn-icon sdn-icon--vsau",
   },
   comboboxField: {
     className: "sdn-combobox-field sdn-combobox-field--lmje",
@@ -189,6 +190,6 @@ const sdn: ItemNodeProps = {
   icon3: {
     icon: "seldon-more",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--umgs",
+    className: "sdn-icon sdn-icon--vsau",
   },
 }

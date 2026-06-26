@@ -43,6 +43,7 @@ export interface TextSubheadingProps extends HTMLAttributes<
   | HTMLElement
 > {
   className?: string
+  "data-seldon-ref"?: string
   children?: string
   htmlElement?:
     | "p"

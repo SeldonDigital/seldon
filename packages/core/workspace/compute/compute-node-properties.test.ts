@@ -69,18 +69,15 @@ describe("getNodeComputeContext", () => {
   )
   const defaultNodeId = workspace.boards[ComponentId.BUTTON]!.variants[0]!.id
 
-  it("resolves a theme and properties with no parent for a variant root", () => {
+  it("resolves a theme and properties for a variant root", () => {
     const context = getNodeComputeContext(defaultNodeId, workspace)
 
     expect(typeof context.theme.id).toBe("string")
     expect(Object.keys(context.properties).length).toBeGreaterThan(0)
-    expect(context.parentContext).toBeNull()
   })
 
-  it("falls back to the owning board as the parent context", () => {
-    const context = getNodeComputeContext(defaultNodeId, workspace, {
-      rootParentFallback: "board",
-    })
+  it("uses the owning board as the parent context for a variant root", () => {
+    const context = getNodeComputeContext(defaultNodeId, workspace)
 
     expect(context.parentContext).not.toBeNull()
     expect(typeof context.parentContext!.theme.id).toBe("string")
