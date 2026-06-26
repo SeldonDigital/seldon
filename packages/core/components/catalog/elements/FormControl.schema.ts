@@ -255,52 +255,6 @@ export const schema = {
       ],
     },
     {
-      id: "search",
-      label: "Search Control",
-      intent:
-        "Specialized input field for entering and submitting search queries.",
-      children: [
-        {
-          component: Seldon.ComponentId.COMBOBOX_FIELD,
-          children: [
-            {
-              component: Seldon.ComponentId.ICON,
-              overrides: {
-                symbol: {
-                  type: Sdn.ValueType.OPTION,
-                  value: "material-search",
-                },
-              },
-            },
-            {
-              component: Seldon.ComponentId.INPUT,
-              overrides: {
-                placeholder: {
-                  type: Sdn.ValueType.EXACT,
-                  value: "Search for...",
-                },
-              },
-            },
-            {
-              component: Seldon.ComponentId.BUTTON,
-              variant: "iconic",
-              children: [
-                {
-                  component: Seldon.ComponentId.ICON,
-                  overrides: {
-                    symbol: {
-                      type: Sdn.ValueType.OPTION,
-                      value: "material-close",
-                    },
-                  },
-                },
-              ],
-            },
-          ],
-        },
-      ],
-    },
-    {
       id: "checkbox",
       label: "Checkbox Control",
       intent: "Allows users to select one or more binary options in a form.",

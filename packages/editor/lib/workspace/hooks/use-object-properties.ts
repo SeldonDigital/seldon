@@ -89,6 +89,16 @@ export function useObjectProperties() {
     [dispatch],
   )
 
+  const applyBoardPropertiesToAllBoards = useCallback(
+    (input: ExtractPayload<"apply_component_properties_to_all_boards">) => {
+      dispatch({
+        type: "apply_component_properties_to_all_boards",
+        payload: input,
+      })
+    },
+    [dispatch],
+  )
+
   const setProperties = useCallback(
     (properties: Properties, options?: { mergeSubProperties?: boolean }) => {
       const selection = getCurrentSelection()
@@ -214,6 +224,7 @@ export function useObjectProperties() {
   return {
     setNodeProperties,
     setBoardProperties,
+    applyBoardPropertiesToAllBoards,
     setProperties,
     addNodeLayer,
     removeNodeLayer,

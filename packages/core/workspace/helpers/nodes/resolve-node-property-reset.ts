@@ -36,7 +36,12 @@ function getBaselineProperties(
   return mergeProperties(inherited, catalogVariantOverrides)
 }
 
-function readPropertySlice(
+/**
+ * Reads the value of one property facet from a properties bag. Handles atomic
+ * top-level keys, compound and shorthand sub-keys, and layered-paint facets
+ * targeted at a layer slot.
+ */
+export function readPropertySlice(
   properties: Properties,
   propertyKey: PropertyKey,
   subpropertyKey?: SubPropertyKey,

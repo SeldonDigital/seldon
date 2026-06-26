@@ -1,3 +1,5 @@
+import { Children } from "react"
+
 import * as Sdn from "../../../../properties"
 import * as Seldon from "../../../constants"
 import { ComponentExport, ComponentSchema } from "../../../types"
@@ -178,7 +180,7 @@ export const schema = {
         overrides: {
           source: {
             type: Sdn.ValueType.EXACT,
-            value: "https://static.seldon.app/avatar-user.jpg",
+            value: "/avatar-user.png",
           },
           imageFit: {
             type: Sdn.ValueType.OPTION,
@@ -299,6 +301,10 @@ export const schema = {
           type: Sdn.ValueType.OPTION,
           value: Sdn.Resize.FILL,
         },
+        gap: {
+          type: Sdn.ValueType.THEME_ORDINAL,
+          value: "@gap.cozy",
+        },
       },
       children: [
         {
@@ -306,9 +312,60 @@ export const schema = {
           overrides: {
             width: {
               type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FILL,
+              value: Sdn.Resize.FIT,
             },
           },
+        },
+        {
+          component: Seldon.ComponentId.FRAME,
+          overrides: {
+            orientation: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.Orientation.VERTICAL,
+            },
+            align: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.Align.CENTER_LEFT,
+            },
+            width: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.Resize.FILL,
+            },
+            height: {
+              type: Sdn.ValueType.OPTION,
+              value: Sdn.Resize.FIT,
+            },
+          },
+          children: [
+            {
+              component: Seldon.ComponentId.TEXT,
+              variant: "title",
+              overrides: {
+                content: {
+                  type: Sdn.ValueType.EXACT,
+                  value: "Jackson Miller",
+                },
+                width: {
+                  type: Sdn.ValueType.OPTION,
+                  value: Sdn.Resize.FIT,
+                },
+              },
+            },
+            {
+              component: Seldon.ComponentId.TEXT,
+              variant: "subtitle",
+              overrides: {
+                content: {
+                  type: Sdn.ValueType.EXACT,
+                  value: "Product Designer",
+                },
+                width: {
+                  type: Sdn.ValueType.OPTION,
+                  value: Sdn.Resize.FIT,
+                },
+              },
+            },
+          ],
         },
         {
           component: Seldon.ComponentId.BUTTON,
@@ -344,7 +401,7 @@ export const schema = {
           overrides: {
             source: {
               type: Sdn.ValueType.EXACT,
-              value: "https://static.seldon.app/avatar-user.jpg",
+              value: "/avatar-user.png",
             },
             imageFit: {
               type: Sdn.ValueType.OPTION,

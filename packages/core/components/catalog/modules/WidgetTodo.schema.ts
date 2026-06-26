@@ -282,7 +282,7 @@ export const schema = {
         ],
       },
       {
-        component: Seldon.ComponentId.FORM_CONTROL,
+        component: Seldon.ComponentId.COMBOBOX_FIELD,
         variant: "search",
         overrides: {
           margin: {

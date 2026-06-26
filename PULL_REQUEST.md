@@ -39,5 +39,5 @@
 
 I have read the CLA and I agree to its terms.
 
-[ NAME ]
-[ GITHUB ACCOUNT ]
+Github: [ GITHUB ACCOUNT ]
+Organization: [ ORGANIZATION ]

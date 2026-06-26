@@ -1,8 +1,16 @@
+import { getComponentSchema } from "../../../components/catalog"
+import { ComponentId } from "../../../components/constants"
 import { Properties, PropertyKey, SubPropertyKey } from "../../../properties"
 import { mergeProperties } from "../../../properties/helpers/merge-properties"
 import { isLayeredPaintProperty } from "../../../properties/types/property-keys"
+import {
+  getEffectiveNodeProperties,
+  getInheritedNodeProperties,
+} from "../../compute/compute-node-properties"
+import { getComponentPropertyDefaults } from "../../helpers/components/get-component-property-defaults"
 import { getWorkspaceNodes } from "../../helpers/general/get-workspace-nodes"
 import { getNodeSubtreeIds } from "../../helpers/nodes/get-node-subtree-ids"
+import { pruneRedundantOverrides } from "../../helpers/nodes/prune-redundant-overrides"
 import { resolveNodePropertyResetPatch } from "../../helpers/nodes/resolve-node-property-reset"
 import { isEntryNodeForRules } from "../../helpers/rules/rules-node-subject"
 import {
@@ -36,6 +44,14 @@ export function setNodeProperties(
   return withNodeMutation(nodeId, workspace, (node) => {
     if (!isEntryNodeForRules(node)) return
     node.overrides = mergeProperties(node.overrides, properties, options)
+    // Drop any written facet that equals the value the node inherits, so setting
+    // a property to its catalog or upstream value stays a no-op rather than a
+    // stored override that would shadow later changes to that value.
+    pruneRedundantOverrides(
+      node.overrides,
+      properties,
+      getInheritedNodeProperties(node.id, workspace),
+    )
   })
 }
 
@@ -60,6 +76,14 @@ export function setNodeStateProperties(
     if (!isEntryNodeForRules(node)) return
     const states = node.states ?? {}
     states[state] = mergeProperties(states[state] ?? {}, properties, options)
+    // A state override facet that equals the node's resolved Normal value carries
+    // no delta, so drop it the same way the base override path does. The state
+    // bag itself stays registered even when empty, matching a bare state write.
+    pruneRedundantOverrides(
+      states[state],
+      properties,
+      getEffectiveNodeProperties(node.id, workspace),
+    )
     node.states = states
   })
 }
@@ -138,6 +162,62 @@ export function setComponentProperties(
       { mergeSubProperties: true },
     )
   })
+}
+
+/**
+ * Copies a source board's component properties onto every other component
+ * board. Each target only receives keys it exposes, so the merge stays valid
+ * for boards whose schemas differ from the source.
+ */
+export function applyComponentPropertiesToAllBoards(
+  sourceBoardKey: BoardKey,
+  workspace: Workspace,
+): Workspace {
+  const source = workspace.boards[sourceBoardKey]
+  if (!source || source.type !== "component") return workspace
+
+  const sourceProperties = source.componentProperties
+  if (!sourceProperties || Object.keys(sourceProperties).length === 0) {
+    return workspace
+  }
+
+  const sharedDefaultKeys = Object.keys(getComponentPropertyDefaults())
+
+  return mutateWorkspace(workspace, (draft) => {
+    for (const [boardKey, board] of Object.entries(draft.boards)) {
+      if (boardKey === sourceBoardKey || board.type !== "component") continue
+
+      const allowedKeys = new Set([
+        ...Object.keys(getComponentSchema(boardKey as ComponentId).properties),
+        ...sharedDefaultKeys,
+      ])
+      const filtered = filterPropertiesToAllowedKeys(
+        sourceProperties,
+        allowedKeys,
+      )
+      if (Object.keys(filtered).length === 0) continue
+
+      board.componentProperties = mergeProperties(
+        board.componentProperties,
+        filtered,
+        { mergeSubProperties: true },
+      )
+    }
+  })
+}
+
+/** Keeps only the properties whose top-level key is in the allowed set. */
+function filterPropertiesToAllowedKeys(
+  properties: Properties,
+  allowedKeys: ReadonlySet<string>,
+): Properties {
+  const result: Record<string, unknown> = {}
+  for (const [key, value] of Object.entries(properties)) {
+    if (allowedKeys.has(key.split(".")[0])) {
+      result[key] = value
+    }
+  }
+  return result as Properties
 }
 
 /** Resets one property (or sub-property facet) on a board to its default. */

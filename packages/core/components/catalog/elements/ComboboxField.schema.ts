@@ -239,6 +239,46 @@ export const schema = {
       },
     ],
   },
+  variants: [
+    {
+      id: "search",
+      label: "Search Field",
+      intent:
+        "Specialized input field for entering and submitting search queries.",
+      children: [
+        {
+          component: Seldon.ComponentId.ICON,
+          overrides: {
+            symbol: { type: Sdn.ValueType.OPTION, value: "material-search" },
+          },
+        },
+        {
+          component: Seldon.ComponentId.INPUT,
+          overrides: {
+            placeholder: {
+              type: Sdn.ValueType.EXACT,
+              value: "Search for...",
+            },
+          },
+        },
+        {
+          component: Seldon.ComponentId.BUTTON,
+          variant: "iconic",
+          children: [
+            {
+              component: Seldon.ComponentId.ICON,
+              overrides: {
+                symbol: {
+                  type: Sdn.ValueType.OPTION,
+                  value: "material-close",
+                },
+              },
+            },
+          ],
+        },
+      ],
+    },
+  ],
 } as const satisfies ComponentSchema
 
 export const exportConfig: ComponentExport = {

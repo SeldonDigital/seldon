@@ -68,6 +68,10 @@ export const PROPERTY_ICONS: Record<string, string> = {
   wrapChildren: "seldon-fontTextWrap",
   clip: "seldon-clip",
   cursor: "material-mouse",
+  columnStart: "material-splitscreenVerticalAdd",
+  columnSpan: "material-fitPageHeight",
+  rowStart: "material-splitscreenAdd",
+  rowSpan: "material-fitPageWidth",
 
   // Appearance
   color: "seldon-backgroundColor",

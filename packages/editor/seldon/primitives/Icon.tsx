@@ -241,6 +241,8 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-verifiedUser"
     | "material-engineering"
     | "material-fitnessCenter"
+    | "material-fitPageHeight"
+    | "material-fitPageWidth"
     | "material-localHospital"
     | "material-localPharmacy"
     | "material-apartment"
@@ -325,6 +327,8 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-search"
     | "material-share"
     | "material-sort"
+    | "material-splitscreenAdd"
+    | "material-splitscreenVerticalAdd"
     | "material-sync"
     | "material-upload"
     | "material-verified"
@@ -775,6 +779,8 @@ const iconMap = {
   "material-verifiedUser": Icons.IconMaterialVerifiedUser,
   "material-engineering": Icons.IconMaterialEngineering,
   "material-fitnessCenter": Icons.IconMaterialFitnessCenter,
+  "material-fitPageHeight": Icons.IconMaterialFitPageHeight,
+  "material-fitPageWidth": Icons.IconMaterialFitPageWidth,
   "material-localHospital": Icons.IconMaterialLocalHospital,
   "material-localPharmacy": Icons.IconMaterialLocalPharmacy,
   "material-apartment": Icons.IconMaterialApartment,
@@ -861,6 +867,8 @@ const iconMap = {
   "material-search": Icons.IconMaterialSearch,
   "material-share": Icons.IconMaterialShare,
   "material-sort": Icons.IconMaterialSort,
+  "material-splitscreenAdd": Icons.IconMaterialSplitscreenAdd,
+  "material-splitscreenVerticalAdd": Icons.IconMaterialSplitscreenVerticalAdd,
   "material-sync": Icons.IconMaterialSync,
   "material-upload": Icons.IconMaterialUpload,
   "material-verified": Icons.IconMaterialVerified,

@@ -11,7 +11,10 @@
     "lint": "npm run lint --workspace @seldon/editor",
     "format:check": "prettier --check \"**/*.{ts,tsx,json,css,js,mjs}\"",
     "quality": "npm run format:check && npm run quality --workspace @seldon/editor",
-    "format": "node scripts/format.mjs"
+    "format": "node scripts/format.mjs",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "coverage": "vitest run --coverage"
   },
   "repository": {
     "type": "git",
@@ -31,9 +34,12 @@
   ],
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^5.2.2",
+    "@vitest/coverage-v8": "^4.1.9",
     "eslint-plugin-react-hooks": "^7.1.1",
+    "happy-dom": "^20.10.6",
     "prettier": "^3.3.3",
-    "typescript-eslint": "^8.61.0"
+    "typescript-eslint": "^8.61.0",
+    "vitest": "^4.1.9"
   },
   "overrides": {
     "esbuild": "^0.28.1"

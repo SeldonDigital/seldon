@@ -3,6 +3,7 @@ import { MouseEvent, useState } from "react"
 import { Board as BoardType } from "@seldon/core"
 import { getNodeKindIcon } from "@seldon/core/icon-registry"
 import {
+  isComponentBoard,
   isFontCollectionBoard,
   isIconSetBoard,
   isPlaygroundBoard,
@@ -216,6 +217,17 @@ export function useRowBoard(
     })
   }
 
+  function handleApplyToAllBoards() {
+    const confirmed = window.confirm(
+      `Apply ${board.label} board properties to all other component boards? This overwrites their board properties.`,
+    )
+    if (!confirmed) return
+    dispatch({
+      type: "apply_component_properties_to_all_boards",
+      payload: { sourceBoardKey: boardKey },
+    })
+  }
+
   function buildBoardActions(): MenuEntry[] {
     if (!boardIsActive) return []
 
@@ -245,7 +257,20 @@ export function useRowBoard(
       ]
     }
 
+    const applyToAllEntries: MenuEntry[] = isComponentBoard(board)
+      ? [
+          {
+            id: "apply-to-all-boards",
+            label: "Apply to All Boards",
+            onSelect: () => handleApplyToAllBoards(),
+            testId: `objects-sidebar-board-${boardKey}-apply-to-all`,
+          },
+          "separator",
+        ]
+      : []
+
     return [
+      ...applyToAllEntries,
       {
         id: "add-variant",
         label: `Add ${board.label} Variant`,

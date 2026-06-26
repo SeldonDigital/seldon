@@ -1233,9 +1233,9 @@ Suffix examples: `component-button-default`, `component-button-{hash}`, or `them
 
 ## Migration
 
-`metadata.version` is managed by the workspace migration system. The migration middleware lives in `packages/core/workspace/middleware/migration/middleware.ts`. On `set_workspace` it runs pending migration steps and stamps `metadata.version` with `CURRENT_WORKSPACE_VERSION` (currently 8).
+`metadata.version` is managed by the workspace migration system. The migration middleware lives in `packages/core/workspace/middleware/migration/middleware.ts`. On `set_workspace` it runs pending migration steps and stamps `metadata.version` with the current baseline value `1`.
 
-Version 1 normalizes legacy EXACT `blendMode` and `filter` values on node overrides, theme overrides, and board component properties. Version 2 seeds an empty `playgrounds: {}` section on files that predate it. Version 3 normalizes background layers to the `kind` discriminator. Version 4 folds standalone gradient values into the background paint stack. Version 5 merges former text primitive ids into a host primitive as variants. Version 6 merges former element ids into a host component as variants. Version 7 merges former list and card part ids into a host component as variants. Version 8 renames the `listText` catalog id to `listItem`. See `packages/core/workspace/middleware/migration/README.md`.
+Version 1 is the baseline of the reset migration chain. It returns the workspace unchanged. Files written before this reset stamp to version 1 without transforms, so older saved shapes may not load. Add later transforms as `migrate-00002-*` steps and bump `CURRENT_WORKSPACE_VERSION`. See `packages/core/workspace/middleware/migration/README.md`.
 
 The file format specification version is independent of the internal workspace `metadata.version` number. Field `metadata.version` tracks schema evolution for the migration system. This specification documents the overall structure of the serialized format.
 

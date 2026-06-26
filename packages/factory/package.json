@@ -1,13 +1,14 @@
 {
   "name": "@seldon/factory",
   "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
     "lint": "eslint .",
     "quality": "bun lint && bun tsc",
     "format": "node ../../scripts/format.mjs"
   },
   "devDependencies": {
     "@seldon/core": "file:../core",
-    "@types/bun": "1.2.10",
     "eslint": "^9.39.4",
     "typescript-eslint": "^8.61.0"
   },

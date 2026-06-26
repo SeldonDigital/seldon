@@ -23,7 +23,6 @@ import {
   buildVariantTree,
   makeEntryNode,
   makePrimitiveVariantNode,
-  mapTopLevelCanonicals,
   requireCatalogVariant,
 } from "../../../helpers/nodes/build-component-variants"
 import { getInstantiationOptionsForComponent } from "../../../helpers/nodes/collect-component-instantiation-plans"
@@ -129,17 +128,11 @@ function instantiateComponentInto(
       children: defaultChildSlots,
     },
     ctx,
-    new Map(),
+    undefined,
   )
   draft.nodes = { ...draft.nodes, ...ctx.newNodes }
   board.variants = [defaultRef]
   ctx.newNodes = {}
-
-  const canonicalMap = mapTopLevelCanonicals(
-    defaultChildSlots,
-    defaultRef,
-    options.variantFallbacks,
-  )
 
   for (const catalogVariant of catalogVariants) {
     appendComplexSchemaVariant(
@@ -148,7 +141,7 @@ function instantiateComponentInto(
       catalogVariant,
       defaultChildSlots,
       ctx,
-      canonicalMap,
+      defaultRef,
       board.variants,
     )
     draft.nodes = { ...draft.nodes, ...ctx.newNodes }
@@ -216,13 +209,6 @@ function reconcileComponentBoard(
     const defaultRef = board.variants.find(
       (ref) => ref.id === defaultVariantRootId,
     )
-    const canonicalMap = defaultRef
-      ? mapTopLevelCanonicals(
-          fallbackChildSlots,
-          defaultRef,
-          options.variantFallbacks,
-        )
-      : new Map<string, string>()
     for (const variantId of missingVariantIds) {
       appendComplexSchemaVariant(
         componentId,
@@ -230,7 +216,7 @@ function reconcileComponentBoard(
         requireCatalogVariant(schema, componentId, variantId),
         fallbackChildSlots,
         ctx,
-        canonicalMap,
+        defaultRef,
         newRefs,
       )
     }
