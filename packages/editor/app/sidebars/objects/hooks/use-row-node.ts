@@ -298,6 +298,17 @@ export function useRowNode(
     instanceOriginalId !== node.id &&
     instanceOriginalId !== instanceSourceId
 
+  // A user variant can reset its instances when at least one instance links
+  // straight to it as its source. Enables the "Reset Instances" action.
+  const canResetVariantInstances =
+    nodeExistsInWorkspace &&
+    typeCheckingService.isUserVariant(node) &&
+    Object.values(workspace.nodes).some(
+      (candidate) =>
+        typeCheckingService.isInstance(candidate) &&
+        resolveSourceNodeId(workspace, candidate.id) === node.id,
+    )
+
   function handleResetDefaultVariantToCatalog() {
     dispatch({
       type: "reset_default_variant_to_catalog",
@@ -308,6 +319,13 @@ export function useRowNode(
   function handleResetVariantToCatalog() {
     dispatch({
       type: "reset_variant_to_catalog",
+      payload: { variantRootId: node.id as VariantId },
+    })
+  }
+
+  function handleResetVariantInstances() {
+    dispatch({
+      type: "reset_variant_instances",
       payload: { variantRootId: node.id as VariantId },
     })
   }
@@ -555,6 +573,18 @@ export function useRowNode(
           onSelect: handleDelete,
           testId: `object-panel-node-${node.id}-delete`,
         })
+      }
+
+      if (isUser) {
+        entries.push(
+          buildResetMenuEntry({
+            id: "reset-variant-instances",
+            label: "Reset Instances",
+            onSelect: handleResetVariantInstances,
+            disabled: !canResetVariantInstances,
+            testId: `object-panel-node-${node.id}-reset-instances`,
+          }),
+        )
       }
 
       entries.push(buildVariantResetAction())

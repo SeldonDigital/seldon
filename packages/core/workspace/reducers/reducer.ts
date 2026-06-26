@@ -112,6 +112,7 @@ import { resetThemeEditorData } from "./handlers/reset/reset-theme-editor-data"
 import { resetThemeLabel } from "./handlers/reset/reset-theme-label"
 import { resetThemeOverride } from "./handlers/reset/reset-theme-override"
 import { resetThemeTokens } from "./handlers/reset/reset-theme-tokens"
+import { resetVariantInstances } from "./handlers/reset/reset-variant-instances"
 import { resetVariantToCatalog } from "./handlers/reset/reset-variant-to-catalog"
 import { resetWorkspaceIntent } from "./handlers/reset/reset-workspace-intent"
 import { resetWorkspaceLabel } from "./handlers/reset/reset-workspace-label"
@@ -358,6 +359,8 @@ function reducer(workspace: Workspace, action: WorkspaceAction): Workspace {
       return duplicateNode(action.payload, workspace)
     case "reset_variant_to_catalog":
       return resetVariantToCatalog(action.payload, workspace)
+    case "reset_variant_instances":
+      return resetVariantInstances(action.payload, workspace)
     case "reset_instance_to_source":
       return resetInstanceToSource(action.payload, workspace)
     case "reset_instance_to_original":

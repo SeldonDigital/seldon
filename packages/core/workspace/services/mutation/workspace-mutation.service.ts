@@ -3,6 +3,8 @@ import { Properties, PropertyKey, SubPropertyKey } from "../../../properties"
 import { Theme, ThemeInstanceId, ThemeSwatchKey } from "../../../themes/types"
 import { applyResetDefaultVariantToCatalog } from "../../helpers/nodes/apply-reset-default-variant-to-catalog"
 import { applyResetInstanceToOriginal } from "../../helpers/nodes/apply-reset-instance-to-original"
+import { applyResetInstanceToSource } from "../../helpers/nodes/apply-reset-instance-to-source"
+import { applyResetVariantInstances } from "../../helpers/nodes/apply-reset-variant-instances"
 import { applyResetSchemaVariantToCatalog } from "../../helpers/nodes/apply-reset-schema-variant-to-catalog"
 import type { RepeatEditorData } from "../../helpers/nodes/node-repeat"
 import {
@@ -184,6 +186,31 @@ export class WorkspaceMutationService {
     workspace: Workspace,
   ): Workspace {
     return applyResetDefaultVariantToCatalog(workspace, defaultVariantRootId)
+  }
+
+  /**
+   * Reverts an instance subtree to its source, the node one hop up its template
+   * chain. Clears subtree overrides and repoints each node's template to the
+   * source's structurally-matching child, so node ids survive and downstream
+   * instances keep their overrides.
+   */
+  public resetInstanceToSource(
+    instanceId: InstanceId,
+    workspace: Workspace,
+  ): Workspace {
+    return applyResetInstanceToSource(workspace, instanceId)
+  }
+
+  /**
+   * Resets every direct instance of a variant back to that variant. Each
+   * instance whose template links straight to the variant is reset to source,
+   * clearing its subtree overrides and repointing to the variant's children.
+   */
+  public resetVariantInstances(
+    variantRootId: VariantId,
+    workspace: Workspace,
+  ): Workspace {
+    return applyResetVariantInstances(workspace, variantRootId)
   }
 
   /**
