@@ -1,0 +1,116 @@
+/*****
+ *
+ * This code was generated using Seldon (https://github.com/SeldonDigital/seldon)
+ *
+ * License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md
+ * Do not redistribute or sublicense without permission.
+ * 
+ * You may not use this software, or any derivative works of it, in whole or in part, 
+ * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly) 
+ * any machine learning or artificial intelligence system without written permission.
+ * 
+ *****/
+ 
+:root {
+  /* Theme: Material */
+  /* Modulation */
+  --sdn-material-ratio: 1.25;
+  --sdn-material-font-size: 16px;
+  --sdn-material-size: 1;
+  /* Font Families */
+  --sdn-material-font-family-primary: Roboto;
+  --sdn-material-font-family-secondary: Roboto;
+  /* Colors */
+  --sdn-material-color-base-hue: 257;
+  --sdn-material-color-base-saturation: 25%;
+  --sdn-material-color-base-lightness: 45%;
+  --sdn-material-color-harmony: 5;
+  --sdn-material-color-angle: 0deg;
+  --sdn-material-color-step: 10;
+  --sdn-material-color-white-point: 100%;
+  --sdn-material-color-gray-point: 47%;
+  --sdn-material-color-black-point: 1%;
+  --sdn-material-color-bleed: 10;
+  --sdn-material-color-contrast-ratio: 2.5;
+  /* Swatches */
+  --sdn-material-swatch-white: hsl(257 10% 100%);
+  --sdn-material-swatch-gray: hsl(257 10% 47%);
+  --sdn-material-swatch-black: hsl(257 10% 1%);
+  --sdn-material-swatch-primary: hsl(257 25% 45%);
+  --sdn-material-swatch-tint-1: hsl(257 25% 55%);
+  --sdn-material-swatch-tint-2: hsl(257 25% 65%);
+  --sdn-material-swatch-tint-3: hsl(257 25% 75%);
+  --sdn-material-swatch-tint-4: hsl(257 25% 85%);
+  --sdn-material-swatch-background: hsl(18 12% 8%);
+  --sdn-material-swatch-secondary: hsl(259 11% 40%);
+  --sdn-material-swatch-tertiary: hsl(340 21% 41%);
+  --sdn-material-swatch-error: hsl(3 71% 41%);
+  /* Sizes */
+  --sdn-material-sizes-tiny: 0.125rem;
+  --sdn-material-sizes-xxsmall: 0.25rem;
+  --sdn-material-sizes-xsmall: 0.5rem;
+  --sdn-material-sizes-small: 0.75rem;
+  --sdn-material-sizes-medium: 1rem;
+  --sdn-material-sizes-large: 1.501rem;
+  --sdn-material-sizes-xlarge: 2.002rem;
+  --sdn-material-sizes-xxlarge: 2.998rem;
+  --sdn-material-sizes-huge: 3.998rem;
+  /* Margins */
+  --sdn-material-margins-tight: 0.25rem;
+  --sdn-material-margins-compact: 0.5rem;
+  --sdn-material-margins-cozy: 1rem;
+  --sdn-material-margins-comfortable: 2.002rem;
+  --sdn-material-margins-open: 3.998rem;
+  /* Paddings */
+  --sdn-material-paddings-tight: 0.25rem;
+  --sdn-material-paddings-compact: 0.5rem;
+  --sdn-material-paddings-cozy: 1rem;
+  --sdn-material-paddings-comfortable: 2.002rem;
+  --sdn-material-paddings-open: 3.998rem;
+  /* Gaps */
+  --sdn-material-gaps-tight: 0.25rem;
+  --sdn-material-gaps-compact: 0.5rem;
+  --sdn-material-gaps-cozy: 1rem;
+  --sdn-material-gaps-comfortable: 2.002rem;
+  --sdn-material-gaps-open: 3.998rem;
+  /* Corners */
+  --sdn-material-corners-tight: 0.25rem;
+  --sdn-material-corners-compact: 0.5rem;
+  --sdn-material-corners-cozy: 1rem;
+  --sdn-material-corners-comfortable: 1.501rem;
+  --sdn-material-corners-open: 2.002rem;
+  /* Font Sizes */
+  --sdn-material-font-size-tiny: 0.5rem;
+  --sdn-material-font-size-xxsmall: 0.624rem;
+  --sdn-material-font-size-xsmall: 0.75rem;
+  --sdn-material-font-size-small: 0.875rem;
+  --sdn-material-font-size-medium: 1rem;
+  --sdn-material-font-size-large: 1.376rem;
+  --sdn-material-font-size-xlarge: 2.002rem;
+  --sdn-material-font-size-xxlarge: 3.56rem;
+  --sdn-material-font-size-huge: 4.5rem;
+  /* Font Weights */
+  --sdn-material-font-weight-thin: 100;
+  --sdn-material-font-weight-xlight: 200;
+  --sdn-material-font-weight-light: 300;
+  --sdn-material-font-weight-normal: 400;
+  --sdn-material-font-weight-medium: 500;
+  --sdn-material-font-weight-semibold: 600;
+  --sdn-material-font-weight-bold: 700;
+  --sdn-material-font-weight-xbold: 800;
+  --sdn-material-font-weight-black: 900;
+  /* Line Heights */
+  --sdn-material-line-height-none: 1;
+  --sdn-material-line-height-solid: 1.15;
+  --sdn-material-line-height-tight: 1.25;
+  --sdn-material-line-height-compact: 1.33;
+  --sdn-material-line-height-cozy: 1.5;
+  --sdn-material-line-height-comfortable: 2;
+  --sdn-material-line-height-open: 2.5;
+  /* Border Widths */
+  --sdn-material-border-width-xsmall: 0.031rem;
+  --sdn-material-border-width-small: 0.069rem;
+  --sdn-material-border-width-medium: 0.125rem;
+  --sdn-material-border-width-large: 0.25rem;
+  --sdn-material-border-width-xlarge: 0.5rem;
+}

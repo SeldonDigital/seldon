@@ -1,0 +1,117 @@
+/*****
+ *
+ * This code was generated using Seldon (https://github.com/SeldonDigital/seldon)
+ *
+ * License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md
+ * Do not redistribute or sublicense without permission.
+ * 
+ * You may not use this software, or any derivative works of it, in whole or in part, 
+ * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly) 
+ * any machine learning or artificial intelligence system without written permission.
+ * 
+ *****/
+ 
+:root {
+  /* Theme: Sky */
+  /* Modulation */
+  --sdn-sky-ratio: 1.25;
+  --sdn-sky-font-size: 16px;
+  --sdn-sky-size: 1;
+  /* Font Families */
+  --sdn-sky-font-family-primary: Open Sans;
+  --sdn-sky-font-family-secondary: Lora;
+  /* Colors */
+  --sdn-sky-color-base-hue: 197;
+  --sdn-sky-color-base-saturation: 100%;
+  --sdn-sky-color-base-lightness: 45%;
+  --sdn-sky-color-harmony: 0;
+  --sdn-sky-color-angle: 16deg;
+  --sdn-sky-color-step: 15;
+  --sdn-sky-color-white-point: 98%;
+  --sdn-sky-color-gray-point: 56%;
+  --sdn-sky-color-black-point: 12%;
+  --sdn-sky-color-bleed: 4;
+  --sdn-sky-color-contrast-ratio: 2.5;
+  /* Swatches */
+  --sdn-sky-swatch-white: hsl(197 4% 98%);
+  --sdn-sky-swatch-gray: hsl(197 4% 56%);
+  --sdn-sky-swatch-black: hsl(197 4% 12%);
+  --sdn-sky-swatch-primary: hsl(197 100% 45%);
+  --sdn-sky-swatch-tint: hsl(197 100% 60%);
+  --sdn-sky-swatch-complement: hsl(17 100% 45%);
+  --sdn-sky-swatch-complement-tint: hsl(17 100% 60%);
+  --sdn-sky-swatch-complement-light: hsl(17 100% 75%);
+  --sdn-sky-swatch-background: hsl(202 8% 8%);
+  --sdn-sky-swatch-crimson: hsl(348 83% 47%);
+  --sdn-sky-swatch-coral: hsl(16 100% 65%);
+  --sdn-sky-swatch-lime-green: hsl(75 100% 50%);
+  --sdn-sky-swatch-charcoal: hsl(197 8% 18%);
+  /* Sizes */
+  --sdn-sky-sizes-tiny: 0.125rem;
+  --sdn-sky-sizes-xxsmall: 0.25rem;
+  --sdn-sky-sizes-xsmall: 0.5rem;
+  --sdn-sky-sizes-small: 0.75rem;
+  --sdn-sky-sizes-medium: 1rem;
+  --sdn-sky-sizes-large: 1.501rem;
+  --sdn-sky-sizes-xlarge: 2.002rem;
+  --sdn-sky-sizes-xxlarge: 2.998rem;
+  --sdn-sky-sizes-huge: 3.998rem;
+  /* Margins */
+  --sdn-sky-margins-tight: 0.25rem;
+  --sdn-sky-margins-compact: 0.5rem;
+  --sdn-sky-margins-cozy: 1rem;
+  --sdn-sky-margins-comfortable: 2.002rem;
+  --sdn-sky-margins-open: 3.998rem;
+  /* Paddings */
+  --sdn-sky-paddings-tight: 0.25rem;
+  --sdn-sky-paddings-compact: 0.5rem;
+  --sdn-sky-paddings-cozy: 1rem;
+  --sdn-sky-paddings-comfortable: 2.002rem;
+  --sdn-sky-paddings-open: 3.998rem;
+  /* Gaps */
+  --sdn-sky-gaps-tight: 0.25rem;
+  --sdn-sky-gaps-compact: 0.5rem;
+  --sdn-sky-gaps-cozy: 1rem;
+  --sdn-sky-gaps-comfortable: 2.002rem;
+  --sdn-sky-gaps-open: 3.998rem;
+  /* Corners */
+  --sdn-sky-corners-tight: 0.25rem;
+  --sdn-sky-corners-compact: 0.5rem;
+  --sdn-sky-corners-cozy: 1rem;
+  --sdn-sky-corners-comfortable: 1.501rem;
+  --sdn-sky-corners-open: 2.002rem;
+  /* Font Sizes */
+  --sdn-sky-font-size-tiny: 0.5rem;
+  --sdn-sky-font-size-xxsmall: 0.624rem;
+  --sdn-sky-font-size-xsmall: 0.75rem;
+  --sdn-sky-font-size-small: 0.875rem;
+  --sdn-sky-font-size-medium: 1rem;
+  --sdn-sky-font-size-large: 1.501rem;
+  --sdn-sky-font-size-xlarge: 2.002rem;
+  --sdn-sky-font-size-xxlarge: 2.998rem;
+  --sdn-sky-font-size-huge: 3.998rem;
+  /* Font Weights */
+  --sdn-sky-font-weight-thin: 100;
+  --sdn-sky-font-weight-xlight: 200;
+  --sdn-sky-font-weight-light: 300;
+  --sdn-sky-font-weight-normal: 400;
+  --sdn-sky-font-weight-medium: 500;
+  --sdn-sky-font-weight-semibold: 600;
+  --sdn-sky-font-weight-bold: 700;
+  --sdn-sky-font-weight-xbold: 800;
+  --sdn-sky-font-weight-black: 900;
+  /* Line Heights */
+  --sdn-sky-line-height-none: 1;
+  --sdn-sky-line-height-solid: 1.15;
+  --sdn-sky-line-height-tight: 1.25;
+  --sdn-sky-line-height-compact: 1.33;
+  --sdn-sky-line-height-cozy: 1.5;
+  --sdn-sky-line-height-comfortable: 2;
+  --sdn-sky-line-height-open: 2.5;
+  /* Border Widths */
+  --sdn-sky-border-width-xsmall: 0.031rem;
+  --sdn-sky-border-width-small: 0.069rem;
+  --sdn-sky-border-width-medium: 0.125rem;
+  --sdn-sky-border-width-large: 0.25rem;
+  --sdn-sky-border-width-xlarge: 0.5rem;
+}

@@ -1,0 +1,252 @@
+/*****
+ *
+ * This code was generated using Seldon (https://github.com/SeldonDigital/seldon)
+ *
+ * License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md
+ * Do not redistribute or sublicense without permission.
+ * 
+ * You may not use this software, or any derivative works of it, in whole or in part, 
+ * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly) 
+ * any machine learning or artificial intelligence system without written permission.
+ * 
+ *****/
+ 
+import { LiHTMLAttributes } from "react"
+import {
+  AvatarSquareBorder,
+  AvatarSquareBorderProps,
+} from "../elements/AvatarSquareBorder"
+import { Button, ButtonProps } from "../elements/Button"
+import { Frame, FrameProps } from "../frames/Frame"
+import { HTMLLi } from "../native-react/HTML.Li"
+import { Icon, IconProps } from "../primitives/Icon"
+import { ImageProps } from "../primitives/Image"
+import { InputCheckbox, InputCheckboxProps } from "../primitives/InputCheckbox"
+import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { TextSubtitle, TextSubtitleProps } from "../primitives/TextSubtitle"
+import { TextTitle, TextTitleProps } from "../primitives/TextTitle"
+import { combineClassNames } from "../utils/class-name"
+
+export interface ItemProductItemProps extends LiHTMLAttributes<HTMLLIElement> {
+  className?: string
+  inputCheckbox?: InputCheckboxProps | null
+  avatarSquareBorder?: AvatarSquareBorderProps | null
+  image?: ImageProps | null
+  frame?: FrameProps | null
+  textTitle?: TextTitleProps | null
+  textSubtitle?: TextSubtitleProps | null
+  button?: ButtonProps | null
+  icon?: IconProps | null
+  textLabel?: TextLabelProps | null
+}
+
+/*****
+ * Item: ItemProductItem
+ * Level: Element
+ * Intent: Default list item used for general content with flexible layout.
+ * Tags: list, item, standard, default, row, UI, layout, general
+ * Type: Inline
+ *
+ * @example
+ * ```tsx
+ * <ItemProductItem
+ *   aria-hidden="false"
+ *   inputCheckbox="{}"
+ *   avatarSquareBorder="/image.jpg"
+ *   image="/image.jpg"
+ *   frame="{}"
+ *   textTitle="Product Title"
+ *   textSubtitle2="Product Title"
+ *   button={() => {}}
+ *   icon="material-star"
+ *   textLabel="{}"
+ * />
+ * ```
+ *****/
+export function ItemProductItem({
+  className = "",
+  inputCheckbox,
+  avatarSquareBorder = sdn.avatarSquareBorder,
+  image = sdn.image,
+  frame = sdn.frame,
+  textTitle,
+  textSubtitle,
+  button = sdn.button,
+  icon = sdn.icon,
+  textLabel,
+  children,
+  ...props
+}: ItemProductItemProps) {
+  const itemProductItemClassName = combineClassNames(
+    "sdn-item-product-item",
+    className,
+  )
+  const inputCheckboxProps =
+    inputCheckbox === null
+      ? null
+      : {
+          ...sdn.inputCheckbox,
+          ...inputCheckbox,
+          className: combineClassNames(
+            sdn.inputCheckbox?.className,
+            inputCheckbox?.className,
+          ),
+        }
+  const avatarSquareBorderProps =
+    avatarSquareBorder === null
+      ? null
+      : {
+          ...sdn.avatarSquareBorder,
+          ...avatarSquareBorder,
+          className: combineClassNames(
+            sdn.avatarSquareBorder?.className,
+            avatarSquareBorder?.className,
+          ),
+        }
+  const imageProps =
+    image === null
+      ? null
+      : {
+          ...sdn.image,
+          ...image,
+          className: combineClassNames(sdn.image?.className, image?.className),
+        }
+  const frameProps =
+    frame === null
+      ? null
+      : {
+          ...sdn.frame,
+          ...frame,
+          className: combineClassNames(sdn.frame?.className, frame?.className),
+        }
+  const textTitleProps =
+    textTitle === null
+      ? null
+      : {
+          ...sdn.textTitle,
+          ...textTitle,
+          className: combineClassNames(
+            sdn.textTitle?.className,
+            textTitle?.className,
+          ),
+        }
+  const textSubtitleProps =
+    textSubtitle === null
+      ? null
+      : {
+          ...sdn.textSubtitle,
+          ...textSubtitle,
+          className: combineClassNames(
+            sdn.textSubtitle?.className,
+            textSubtitle?.className,
+          ),
+        }
+  const buttonProps =
+    button === null
+      ? null
+      : {
+          ...sdn.button,
+          ...button,
+          className: combineClassNames(
+            sdn.button?.className,
+            button?.className,
+          ),
+        }
+  const iconProps =
+    icon === null
+      ? null
+      : {
+          ...sdn.icon,
+          ...icon,
+          className: combineClassNames(sdn.icon?.className, icon?.className),
+        }
+  const textLabelProps =
+    textLabel === null
+      ? null
+      : {
+          ...sdn.textLabel,
+          ...textLabel,
+          className: combineClassNames(
+            sdn.textLabel?.className,
+            textLabel?.className,
+          ),
+        }
+
+  return (
+    <HTMLLi
+      className={itemProductItemClassName}
+      aria-hidden={sdn["aria-hidden"]}
+      {...props}
+    >
+      {children !== undefined ? (
+        children
+      ) : (
+        <>
+          {inputCheckbox && inputCheckboxProps && (
+            <InputCheckbox {...inputCheckboxProps} />
+          )}
+          {avatarSquareBorderProps !== null && (
+            <AvatarSquareBorder
+              {...avatarSquareBorderProps}
+              image={imageProps}
+            />
+          )}
+          <Frame {...frameProps}>
+            {textTitle && textTitleProps && <TextTitle {...textTitleProps} />}
+            {textSubtitle && textSubtitleProps && (
+              <TextSubtitle {...textSubtitleProps} />
+            )}
+          </Frame>
+          {buttonProps !== null && (
+            <Button {...buttonProps}>
+              {icon && iconProps && <Icon {...iconProps} />}
+              {textLabel && textLabelProps && <TextLabel {...textLabelProps} />}
+            </Button>
+          )}
+        </>
+      )}
+    </HTMLLi>
+  )
+}
+
+//
+// Default property values
+//
+const sdn: ItemProductItemProps = {
+  "aria-hidden": "false",
+  className: "sdn-item-product-item sdn-item",
+  inputCheckbox: {
+    className: "sdn-input-checkbox sdn-input-checkbox--vajr",
+  },
+  avatarSquareBorder: {
+    "aria-hidden": "false",
+    className: "sdn-avatar sdn-avatar-square-border--uoep",
+  },
+  image: {
+    src: "/background-default-dark.jpg",
+    "aria-hidden": "false",
+    className: "sdn-image sdn-image--rvea",
+  },
+  frame: {
+    wrapperElement: "div",
+    "aria-hidden": "false",
+    className: "sdn-frame sdn-frame--nhfs",
+  },
+  textTitle: {
+    className: "sdn-text-title sdn-text-title--noun",
+  },
+  textSubtitle: {
+    className: "sdn-text-subtitle sdn-text-subtitle--r4ot",
+  },
+  button: {
+    className: "sdn-button sdn-button-iconic--pgsr",
+  },
+  icon: {
+    icon: "seldon-component",
+    "aria-hidden": "true",
+    className: "sdn-icon sdn-icon--umgs",
+  },
+  textLabel: {
+    className: "sdn-text-label sdn-text-label--ylte",
+  },
+}
