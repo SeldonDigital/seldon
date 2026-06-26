@@ -37,7 +37,9 @@ describe("addTheme", () => {
     const ws = empty()
     const boardKey = freeId(THEME_BOARD_CATALOG_IDS, ws)
     const once = addTheme({ boardKey } as ExtractPayload<"add_theme">, ws)
-    expect(addTheme({ boardKey } as ExtractPayload<"add_theme">, once)).toEqual(once)
+    expect(addTheme({ boardKey } as ExtractPayload<"add_theme">, once)).toEqual(
+      once,
+    )
   })
 })
 
@@ -54,7 +56,9 @@ describe("addFontCollection", () => {
   it("is a no-op for an unknown catalog id", () => {
     const ws = empty()
     const next = addFontCollection(
-      { catalogId: "not-a-real-collection" } as ExtractPayload<"add_font_collection">,
+      {
+        catalogId: "not-a-real-collection",
+      } as ExtractPayload<"add_font_collection">,
       ws,
     )
     expect(next.boards["not-a-real-collection"]).toBeUndefined()
@@ -71,7 +75,8 @@ describe("addFontCollection", () => {
     )
 
     expect(next.boards.googleFonts?.type).toBe("font-collection")
-    const entry = next["font-collections"]["font-collection-googleFonts-default"]
+    const entry =
+      next["font-collections"]["font-collection-googleFonts-default"]
     expect(entry).toBeDefined()
     expect(Object.keys(entry!.overrides).length).toBeGreaterThan(0)
   })
@@ -81,10 +86,7 @@ describe("addIconSet", () => {
   it("creates an icon-set board for a packaged catalog id", () => {
     const ws = empty()
     const catalogId = freeId(ICON_SET_BOARD_CATALOG_IDS, ws)
-    const next = addIconSet(
-      { catalogId } as ExtractPayload<"add_icon_set">,
-      ws,
-    )
+    const next = addIconSet({ catalogId } as ExtractPayload<"add_icon_set">, ws)
     expect(next.boards[catalogId]?.type).toBe("icon-set")
   })
 })
@@ -92,11 +94,17 @@ describe("addIconSet", () => {
 describe("addMedia / removeMedia", () => {
   it("creates a media board with default and custom rows, then removes it", () => {
     const catalogId = "seldonMedia"
-    const added = addMedia({ catalogId } as ExtractPayload<"add_media">, empty())
+    const added = addMedia(
+      { catalogId } as ExtractPayload<"add_media">,
+      empty(),
+    )
     expect(added.boards[catalogId]?.type).toBe("media")
     expect(added.boards[catalogId]?.variants).toHaveLength(2)
 
-    const removed = removeMedia({ catalogId } as ExtractPayload<"remove_media">, added)
+    const removed = removeMedia(
+      { catalogId } as ExtractPayload<"remove_media">,
+      added,
+    )
     expect(removed.boards[catalogId]).toBeUndefined()
   })
 })
@@ -121,7 +129,10 @@ describe("addPlayground / removePlayground", () => {
 describe("removeComponent", () => {
   it("removes a component board and its nodes", () => {
     const boardKey = ComponentId.BUTTON
-    const added = addComponent({ boardKey } as ExtractPayload<"add_component">, empty())
+    const added = addComponent(
+      { boardKey } as ExtractPayload<"add_component">,
+      empty(),
+    )
     const removed = removeComponent(
       { boardKey } as ExtractPayload<"remove_component">,
       added,
@@ -135,7 +146,10 @@ describe("removeTheme", () => {
     const ws = empty()
     const boardKey = freeId(THEME_BOARD_CATALOG_IDS, ws)
     const added = addTheme({ boardKey } as ExtractPayload<"add_theme">, ws)
-    const removed = removeTheme({ boardKey } as ExtractPayload<"remove_theme">, added)
+    const removed = removeTheme(
+      { boardKey } as ExtractPayload<"remove_theme">,
+      added,
+    )
     expect(removed.boards[boardKey]).toBeUndefined()
   })
 })
@@ -143,7 +157,10 @@ describe("removeTheme", () => {
 describe("deleteTheme", () => {
   it("drops a variant theme entry and its board ref", () => {
     const variant = duplicateTheme(
-      { themeId: "theme-seldon-default", newThemeId: "theme-seldon-copy" } as ExtractPayload<"duplicate_theme">,
+      {
+        themeId: "theme-seldon-default",
+        newThemeId: "theme-seldon-copy",
+      } as ExtractPayload<"duplicate_theme">,
       empty(),
     )
     const next = deleteTheme(

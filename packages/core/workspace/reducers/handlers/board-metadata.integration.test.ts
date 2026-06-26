@@ -49,7 +49,9 @@ describe("board tags", () => {
   it("sets, clears, and resets tags", () => {
     const set = setBoardTags(pay({ tags: ["x"] }), componentWorkspace())
     expect(board(set, boardKey).tags).toEqual(["x"])
-    expect(board(setBoardTags(pay({ tags: undefined }), set), boardKey).tags).toBeUndefined()
+    expect(
+      board(setBoardTags(pay({ tags: undefined }), set), boardKey).tags,
+    ).toBeUndefined()
     expect(board(resetBoardTags(pay({}), set), boardKey).tags).toBeUndefined()
   })
 })
@@ -58,7 +60,9 @@ describe("board author", () => {
   it("sets an author and resets to the default", () => {
     const set = setBoardAuthor(pay({ author: "Me" }), componentWorkspace())
     expect(board(set, boardKey).author).toBe("Me")
-    expect(board(resetBoardAuthor(pay({}), set), boardKey).author).not.toBe("Me")
+    expect(board(resetBoardAuthor(pay({}), set), boardKey).author).not.toBe(
+      "Me",
+    )
   })
 })
 
@@ -66,26 +70,46 @@ describe("board intent", () => {
   it("sets, clears, and resets intent", () => {
     const set = setBoardIntent(pay({ intent: "purpose" }), componentWorkspace())
     expect(board(set, boardKey).intent).toBe("purpose")
-    expect(board(setBoardIntent(pay({ intent: undefined }), set), boardKey).intent).toBeUndefined()
-    expect(board(resetBoardIntent(pay({}), set), boardKey).intent).toBeUndefined()
+    expect(
+      board(setBoardIntent(pay({ intent: undefined }), set), boardKey).intent,
+    ).toBeUndefined()
+    expect(
+      board(resetBoardIntent(pay({}), set), boardKey).intent,
+    ).toBeUndefined()
   })
 })
 
 describe("board license", () => {
   it("sets, clears, and resets license", () => {
-    const set = setBoardLicense(pay({ license: { spdx: "MIT" } }), componentWorkspace())
+    const set = setBoardLicense(
+      pay({ license: { spdx: "MIT" } }),
+      componentWorkspace(),
+    )
     expect(board(set, boardKey).license).toEqual({ spdx: "MIT" })
-    expect(board(setBoardLicense(pay({ license: undefined }), set), boardKey).license).toBeUndefined()
-    expect(board(resetBoardLicense(pay({}), set), boardKey).license).toBeUndefined()
+    expect(
+      board(setBoardLicense(pay({ license: undefined }), set), boardKey)
+        .license,
+    ).toBeUndefined()
+    expect(
+      board(resetBoardLicense(pay({}), set), boardKey).license,
+    ).toBeUndefined()
   })
 })
 
 describe("board editor data", () => {
   it("sets, clears, and resets editor data", () => {
-    const set = setBoardEditorData(pay({ editorData: { note: "x" } }), componentWorkspace())
+    const set = setBoardEditorData(
+      pay({ editorData: { note: "x" } }),
+      componentWorkspace(),
+    )
     expect(board(set, boardKey).__editor).toEqual({ note: "x" })
-    expect(board(setBoardEditorData(pay({ editorData: undefined }), set), boardKey).__editor).toBeUndefined()
-    expect(board(resetBoardEditorData(pay({}), set), boardKey).__editor).toBeUndefined()
+    expect(
+      board(setBoardEditorData(pay({ editorData: undefined }), set), boardKey)
+        .__editor,
+    ).toBeUndefined()
+    expect(
+      board(resetBoardEditorData(pay({}), set), boardKey).__editor,
+    ).toBeUndefined()
   })
 })
 
@@ -95,9 +119,14 @@ describe("board credentials (resource boards)", () => {
     const key = boardKeyByType(ws, "font-collection")
     const payload = (extra: Record<string, unknown>) =>
       ({ boardKey: key, ...extra }) as never
-    const set = setBoardCredentials(payload({ credentials: { token: "t" } }), ws)
+    const set = setBoardCredentials(
+      payload({ credentials: { token: "t" } }),
+      ws,
+    )
     expect(board(set, key).credentials).toEqual({ token: "t" })
-    expect(board(resetBoardCredentials(payload({}), set), key).credentials).toBeUndefined()
+    expect(
+      board(resetBoardCredentials(payload({}), set), key).credentials,
+    ).toBeUndefined()
   })
 })
 
@@ -109,8 +138,8 @@ describe("board preview (theme/resource boards)", () => {
       ({ boardKey: key, ...extra }) as never
     const set = setBoardPreview(payload({ preview: "customPreview" }), ws)
     expect(board(set, key).componentPreview).toBe("customPreview")
-    expect(board(resetBoardPreview(payload({}), set), key).componentPreview).toBe(
-      "seldonThemePreview",
-    )
+    expect(
+      board(resetBoardPreview(payload({}), set), key).componentPreview,
+    ).toBe("seldonThemePreview")
   })
 })

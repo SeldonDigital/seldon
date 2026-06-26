@@ -28,8 +28,9 @@ describe("getIconCategoryFromPath", () => {
 
 describe("parseCategoryPath", () => {
   it("splits a category path into category and subcategory", () => {
-    expect(
-      parseCategoryPath("business/commerce" as IconCategoryPath),
-    ).toEqual({ category: "business", subcategory: "commerce" })
+    expect(parseCategoryPath("business/commerce" as IconCategoryPath)).toEqual({
+      category: "business",
+      subcategory: "commerce",
+    })
   })
 })

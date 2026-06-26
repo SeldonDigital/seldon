@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../components/constants"
-import type { Workspace, WorkspaceAction } from "../types"
 import { createEmptyWorkspace } from "../helpers/create-empty-workspace"
+import type { Workspace, WorkspaceAction } from "../types"
 import { applyActions } from "./apply-actions"
 import { workspaceReducer } from "./reducer"
 

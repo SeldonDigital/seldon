@@ -18,7 +18,9 @@ describe("getThemeOverridePath", () => {
   })
 
   it("targets the value cell for fontWeight rows", () => {
-    expect(getThemeOverridePath("fontWeight.bold")).toBe("fontWeight.bold.value")
+    expect(getThemeOverridePath("fontWeight.bold")).toBe(
+      "fontWeight.bold.value",
+    )
   })
 
   it("routes a modulated step row to parameters.step", () => {

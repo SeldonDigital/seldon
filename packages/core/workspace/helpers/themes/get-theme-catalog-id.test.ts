@@ -16,7 +16,10 @@ describe("getThemeCatalogId", () => {
 
   it("resolves through a variant's parent chain", () => {
     const ws = duplicateTheme(
-      { themeId: defaultThemeId, newThemeId: "theme-seldon-copy" } as ExtractPayload<"duplicate_theme">,
+      {
+        themeId: defaultThemeId,
+        newThemeId: "theme-seldon-copy",
+      } as ExtractPayload<"duplicate_theme">,
       createEmptyWorkspace(),
     )
     const variant = (ws.themes as any)["theme-seldon-copy"]

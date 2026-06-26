@@ -17,10 +17,15 @@ import { setPlaygroundLabel } from "./set/set-playground-label"
 
 const boardKey = ComponentId.BUTTON
 const componentWorkspace = () =>
-  addComponent({ boardKey } as ExtractPayload<"add_component">, createEmptyWorkspace())
+  addComponent(
+    { boardKey } as ExtractPayload<"add_component">,
+    createEmptyWorkspace(),
+  )
 
-const rootId = (ws: Workspace) => (ws.boards[boardKey] as any).variants[0].id as string
-const instanceId = (ws: Workspace) => (ws.boards[boardKey] as any).variants[0].children[0].id as string
+const rootId = (ws: Workspace) =>
+  (ws.boards[boardKey] as any).variants[0].id as string
+const instanceId = (ws: Workspace) =>
+  (ws.boards[boardKey] as any).variants[0].children[0].id as string
 
 describe("setNodeEditorData / resetNodeEditorData", () => {
   it("sets and clears node editor data", () => {
@@ -43,7 +48,10 @@ describe("resetNodeLabel", () => {
   it("is a no-op on a default variant (rename blocked)", () => {
     const ws = componentWorkspace()
     expect(
-      resetNodeLabel({ nodeId: rootId(ws) } as ExtractPayload<"reset_node_label">, ws),
+      resetNodeLabel(
+        { nodeId: rootId(ws) } as ExtractPayload<"reset_node_label">,
+        ws,
+      ),
     ).toBe(ws)
   })
 })
@@ -100,7 +108,10 @@ describe("setPlaygroundLabel", () => {
       createEmptyWorkspace(),
     )
     const renamed = setPlaygroundLabel(
-      { playgroundKey: "pg-1", label: "My Playground" } as ExtractPayload<"set_playground_label">,
+      {
+        playgroundKey: "pg-1",
+        label: "My Playground",
+      } as ExtractPayload<"set_playground_label">,
       added,
     )
     expect(renamed.playgrounds["pg-1"]!.label).toBe("My Playground")

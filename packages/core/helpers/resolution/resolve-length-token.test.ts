@@ -27,6 +27,8 @@ describe("exactTokenToLength", () => {
 describe("resolveModulatedOrExactLength", () => {
   it("returns undefined for a token that is neither modulated nor exact", () => {
     const optionToken = { type: "OPTION", name: "x" } as unknown as ThemeOption
-    expect(resolveModulatedOrExactLength(optionToken, defaultTheme)).toBeUndefined()
+    expect(
+      resolveModulatedOrExactLength(optionToken, defaultTheme),
+    ).toBeUndefined()
   })
 })

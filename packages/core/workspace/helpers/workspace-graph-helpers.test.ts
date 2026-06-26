@@ -3,9 +3,9 @@ import { describe, expect, it } from "vitest"
 import { ComponentId } from "../../components/constants"
 import type { EntryNode, ExtractPayload, Workspace } from "../../index"
 import { addComponent } from "../reducers/handlers/add/add-component"
-import { isSpecialBoardVariant } from "./general/is-special-board-variant"
-import { getVariantIndex } from "./general/get-variant-index"
 import { createEmptyWorkspace } from "./create-empty-workspace"
+import { getVariantIndex } from "./general/get-variant-index"
+import { isSpecialBoardVariant } from "./general/is-special-board-variant"
 import { canNodeHaveChildren } from "./nodes/can-node-have-children"
 import { getComponentDescendantIds } from "./nodes/get-descendant-ids"
 import { getNodeSubtreeIds } from "./nodes/get-node-subtree-ids"
@@ -16,7 +16,8 @@ const componentWorkspace = () =>
     createEmptyWorkspace(),
   )
 
-const rootId = (ws: Workspace) => (ws.boards[ComponentId.BUTTON] as any).variants[0].id as string
+const rootId = (ws: Workspace) =>
+  (ws.boards[ComponentId.BUTTON] as any).variants[0].id as string
 
 describe("getVariantIndex", () => {
   it("returns 0 for the default variant root and -1 for unknown ids", () => {
@@ -46,9 +47,7 @@ describe("isSpecialBoardVariant", () => {
     expect(
       isSpecialBoardVariant({ id: "theme-seldon-default" } as EntryNode, ws),
     ).toBe(true)
-    expect(
-      isSpecialBoardVariant(ws.nodes[rootId(ws)]!, ws),
-    ).toBe(false)
+    expect(isSpecialBoardVariant(ws.nodes[rootId(ws)]!, ws)).toBe(false)
   })
 })
 

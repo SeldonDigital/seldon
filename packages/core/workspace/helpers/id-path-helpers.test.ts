@@ -13,12 +13,16 @@ import {
 
 describe("entry id parsing", () => {
   it("derives the board key from a font collection entry id", () => {
-    expect(fontCollectionBoardKeyFromEntryId("font-collection-system-default")).toBe("system")
+    expect(
+      fontCollectionBoardKeyFromEntryId("font-collection-system-default"),
+    ).toBe("system")
     expect(fontCollectionBoardKeyFromEntryId("not-an-id")).toBeNull()
   })
 
   it("derives the board key from an icon set entry id", () => {
-    expect(iconSetBoardKeyFromEntryId("icon-set-seldonIcons-default")).toBe("seldonIcons")
+    expect(iconSetBoardKeyFromEntryId("icon-set-seldonIcons-default")).toBe(
+      "seldonIcons",
+    )
     expect(iconSetBoardKeyFromEntryId("nope")).toBeNull()
   })
 })

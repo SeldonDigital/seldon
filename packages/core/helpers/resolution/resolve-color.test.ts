@@ -12,7 +12,10 @@ const color = (value: unknown) => value as never
 
 describe("resolveColor", () => {
   it("passes EXACT, OPTION, and EMPTY values through", () => {
-    const exact = { type: ValueType.EXACT, value: { hue: 0, saturation: 0, lightness: 0 } }
+    const exact = {
+      type: ValueType.EXACT,
+      value: { hue: 0, saturation: 0, lightness: 0 },
+    }
     const option = { type: ValueType.OPTION, value: "transparent" }
     const empty = { type: ValueType.EMPTY, value: null }
 
@@ -30,13 +33,19 @@ describe("resolveColor", () => {
 
   it("throws on a COMPUTED value", () => {
     expect(() =>
-      resolveColor({ color: color({ type: ValueType.COMPUTED, value: "x" }), theme }),
+      resolveColor({
+        color: color({ type: ValueType.COMPUTED, value: "x" }),
+        theme,
+      }),
     ).toThrow()
   })
 
   it("resolves a swatch token to an EXACT color", () => {
     const result = resolveColor({
-      color: color({ type: ValueType.THEME_CATEGORICAL, value: "@swatch.primary" }),
+      color: color({
+        type: ValueType.THEME_CATEGORICAL,
+        value: "@swatch.primary",
+      }),
       theme,
     })
     expect(result.type).toBe(ValueType.EXACT)
@@ -55,7 +64,10 @@ describe("resolveColor", () => {
 
     expect(
       resolveColor({
-        color: color({ type: ValueType.THEME_CATEGORICAL, value: "@font.body" }),
+        color: color({
+          type: ValueType.THEME_CATEGORICAL,
+          value: "@font.body",
+        }),
         theme,
       }),
     ).toEqual({ type: ValueType.EMPTY, value: null })

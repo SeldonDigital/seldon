@@ -19,7 +19,7 @@ const ctx = (
   properties: Record<string, unknown>,
   parentContext: ComputeContext | null = null,
 ): ComputeContext =>
-  ({ properties, parentContext, theme: computed } as unknown as ComputeContext)
+  ({ properties, parentContext, theme: computed }) as unknown as ComputeContext
 
 describe("computeAutoFit", () => {
   it("scales a numeric ancestor size by the theme factor", () => {

@@ -39,7 +39,10 @@ describe("renameCustomState", () => {
   it("updates the label while keeping the key", () => {
     const workspace = addWarning()
     const renamed = renameCustomState(
-      { key: "warning", label: "Caution" } as ExtractPayload<"rename_custom_state">,
+      {
+        key: "warning",
+        label: "Caution",
+      } as ExtractPayload<"rename_custom_state">,
       workspace,
     )
     expect(renamed.metadata.customStates).toContainEqual({

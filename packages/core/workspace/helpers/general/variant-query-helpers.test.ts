@@ -17,7 +17,8 @@ const ws: Workspace = addComponent(
   createEmptyWorkspace(),
 )
 const rootId = (ws.boards[boardKey] as any).variants[0].id as string
-const childId = (ws.boards[boardKey] as any).variants[0].children[0].id as string
+const childId = (ws.boards[boardKey] as any).variants[0].children[0]
+  .id as string
 
 describe("getAllVariants", () => {
   it("collects component/playground variant roots", () => {
@@ -48,11 +49,15 @@ describe("isVariantInUse", () => {
 
 describe("getSpecialBoardVariantLabel", () => {
   it("labels special boards and returns null for components", () => {
-    expect(getSpecialBoardVariantLabel({ type: "theme" } as Board, true)).toBe("Clean")
-    expect(getSpecialBoardVariantLabel({ type: "icon-set" } as Board, false)).toBe(
-      "custom icon set",
+    expect(getSpecialBoardVariantLabel({ type: "theme" } as Board, true)).toBe(
+      "Clean",
     )
-    expect(getSpecialBoardVariantLabel({ type: "component" } as Board, true)).toBeNull()
+    expect(
+      getSpecialBoardVariantLabel({ type: "icon-set" } as Board, false),
+    ).toBe("custom icon set")
+    expect(
+      getSpecialBoardVariantLabel({ type: "component" } as Board, true),
+    ).toBeNull()
   })
 })
 

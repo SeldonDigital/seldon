@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../components/constants"
+import { createEmptyWorkspace } from "../../helpers/create-empty-workspace"
+import { workspaceReducer } from "../../reducers/reducer"
 import type {
   EntryNodeId,
   Instance,
@@ -9,8 +11,6 @@ import type {
   Workspace,
   WorkspaceAction,
 } from "../../types"
-import { createEmptyWorkspace } from "../../helpers/create-empty-workspace"
-import { workspaceReducer } from "../../reducers/reducer"
 import { workspacePropagationService as service } from "./workspace-propagation.service"
 
 const dispatch = (ws: Workspace, action: WorkspaceAction): Workspace =>
@@ -23,11 +23,17 @@ const BOARD = ComponentId.BUTTON
 
 /** Builds a workspace whose user variant holds an instance of the button default. */
 function buildScenario() {
-  let ws = dispatch(createEmptyWorkspace(), act("add_component", { boardKey: BOARD }))
+  let ws = dispatch(
+    createEmptyWorkspace(),
+    act("add_component", { boardKey: BOARD }),
+  )
   ws = dispatch(ws, act("add_variant", { boardKey: BOARD }))
   const defaultRootId = ws.boards[BOARD]!.variants[0]!.id as VariantId
   const uv1Id = ws.boards[BOARD]!.variants[1]!.id as VariantId
-  ws = dispatch(ws, act("insert_default_instance", { boardKey: BOARD, parentId: uv1Id }))
+  ws = dispatch(
+    ws,
+    act("insert_default_instance", { boardKey: BOARD, parentId: uv1Id }),
+  )
   const childId = ws.boards[BOARD]!.variants[0]!.children![0]!.id as EntryNodeId
   return { ws, defaultRootId, uv1Id, childId }
 }

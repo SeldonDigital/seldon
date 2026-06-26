@@ -9,7 +9,9 @@ import {
 
 describe("normalizeLayerFacetPath", () => {
   it("anchors a bare paint facet path to layer 0", () => {
-    expect(normalizeLayerFacetPath("background.color")).toBe("background.0.color")
+    expect(normalizeLayerFacetPath("background.color")).toBe(
+      "background.0.color",
+    )
     expect(normalizeLayerFacetPath("shadow.blur")).toBe("shadow.0.blur")
   })
 

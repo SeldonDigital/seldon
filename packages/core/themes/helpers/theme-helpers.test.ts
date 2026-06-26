@@ -6,7 +6,10 @@ import { defaultTheme } from "../index"
 import { buildEmptyCustomTokenPayload } from "./build-empty-custom-token-payload"
 import { modulate, modulateWithTheme } from "./modulate"
 import { normalizeTheme } from "./normalize-theme"
-import { getReservedTokenKeys, isReservedTokenName } from "./reserved-token-names"
+import {
+  getReservedTokenKeys,
+  isReservedTokenName,
+} from "./reserved-token-names"
 
 describe("modulateWithTheme", () => {
   const theme = { modulation: { parameters: { ratio: 2, baseSize: 16 } } }

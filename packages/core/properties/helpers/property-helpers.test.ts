@@ -4,10 +4,7 @@ import { Unit } from "../constants"
 import { getBorderSideOptions } from "./border-side-options"
 import { getLayerAddOptions } from "./layer-add-options"
 import { mergeTaggedValues } from "./merge-tagged-value"
-import {
-  getDefaultUnitForProperty,
-  getUnitsForProperty,
-} from "./unit-utils"
+import { getDefaultUnitForProperty, getUnitsForProperty } from "./unit-utils"
 
 describe("mergeTaggedValues", () => {
   it("shallow-merges two records, patch wins on shared keys", () => {

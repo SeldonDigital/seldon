@@ -22,28 +22,41 @@ const p = <T>(value: T) => ({ value }) as never
 describe("workspace metadata string fields", () => {
   const cases: Array<{
     field: "owner" | "label" | "intent" | "lastUpdate"
-    set: (v: string | undefined, ws: ReturnType<typeof empty>) => ReturnType<typeof empty>
+    set: (
+      v: string | undefined,
+      ws: ReturnType<typeof empty>,
+    ) => ReturnType<typeof empty>
     reset: (ws: ReturnType<typeof empty>) => ReturnType<typeof empty>
   }> = [
     {
       field: "owner",
       set: (v, ws) => setWorkspaceOwner(p(v), ws),
-      reset: (ws) => resetWorkspaceOwner({} as ExtractPayload<"reset_workspace_owner">, ws),
+      reset: (ws) =>
+        resetWorkspaceOwner({} as ExtractPayload<"reset_workspace_owner">, ws),
     },
     {
       field: "label",
       set: (v, ws) => setWorkspaceLabel(p(v), ws),
-      reset: (ws) => resetWorkspaceLabel({} as ExtractPayload<"reset_workspace_label">, ws),
+      reset: (ws) =>
+        resetWorkspaceLabel({} as ExtractPayload<"reset_workspace_label">, ws),
     },
     {
       field: "intent",
       set: (v, ws) => setWorkspaceIntent(p(v), ws),
-      reset: (ws) => resetWorkspaceIntent({} as ExtractPayload<"reset_workspace_intent">, ws),
+      reset: (ws) =>
+        resetWorkspaceIntent(
+          {} as ExtractPayload<"reset_workspace_intent">,
+          ws,
+        ),
     },
     {
       field: "lastUpdate",
       set: (v, ws) => setWorkspaceLastUpdate(p(v), ws),
-      reset: (ws) => resetWorkspaceLastUpdate({} as ExtractPayload<"reset_workspace_last_update">, ws),
+      reset: (ws) =>
+        resetWorkspaceLastUpdate(
+          {} as ExtractPayload<"reset_workspace_last_update">,
+          ws,
+        ),
     },
   ]
 
@@ -62,9 +75,12 @@ describe("setWorkspaceTags", () => {
   it("sets and clears tags", () => {
     const assigned = setWorkspaceTags(p(["a", "b"]), empty())
     expect(assigned.metadata.tags).toEqual(["a", "b"])
-    expect(setWorkspaceTags(p(undefined), assigned).metadata.tags).toBeUndefined()
     expect(
-      resetWorkspaceTags({} as ExtractPayload<"reset_workspace_tags">, assigned).metadata.tags,
+      setWorkspaceTags(p(undefined), assigned).metadata.tags,
+    ).toBeUndefined()
+    expect(
+      resetWorkspaceTags({} as ExtractPayload<"reset_workspace_tags">, assigned)
+        .metadata.tags,
     ).toBeUndefined()
   })
 })
@@ -73,10 +89,14 @@ describe("setWorkspaceLicense", () => {
   it("sets and clears license", () => {
     const assigned = setWorkspaceLicense(p({ spdx: "MIT" }), empty())
     expect(assigned.metadata.license).toEqual({ spdx: "MIT" })
-    expect(setWorkspaceLicense(p(undefined), assigned).metadata.license).toBeUndefined()
     expect(
-      resetWorkspaceLicense({} as ExtractPayload<"reset_workspace_license">, assigned).metadata
-        .license,
+      setWorkspaceLicense(p(undefined), assigned).metadata.license,
+    ).toBeUndefined()
+    expect(
+      resetWorkspaceLicense(
+        {} as ExtractPayload<"reset_workspace_license">,
+        assigned,
+      ).metadata.license,
     ).toBeUndefined()
   })
 })

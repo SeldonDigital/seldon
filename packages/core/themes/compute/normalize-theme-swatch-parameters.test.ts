@@ -19,7 +19,10 @@ describe("normalizeThemeSwatchParameters", () => {
         colorspace: Colorspace.RGB,
         value: { red: 1, green: 2, blue: 3 },
       }),
-    ).toEqual({ colorspace: Colorspace.RGB, value: { red: 1, green: 2, blue: 3 } })
+    ).toEqual({
+      colorspace: Colorspace.RGB,
+      value: { red: 1, green: 2, blue: 3 },
+    })
   })
 
   it("accepts valid hex and CSS color names", () => {

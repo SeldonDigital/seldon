@@ -25,7 +25,9 @@ describe("resolveInstanceMoveTarget", () => {
 
   it("returns null for instances inside a default variant", () => {
     const instanceId = defaultRoot.children![0]!.id
-    expect(resolveInstanceMoveTarget(workspace, instanceId, "forward")).toBeNull()
+    expect(
+      resolveInstanceMoveTarget(workspace, instanceId, "forward"),
+    ).toBeNull()
   })
 
   it("resolves a target for a forward move in a user variant", () => {

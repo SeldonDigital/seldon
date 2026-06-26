@@ -1,6 +1,7 @@
+import { describe, expect, it } from "vitest"
+
 import { ValueType } from "@seldon/core"
 import { BackgroundKind } from "@seldon/core/properties/values/appearance/background/background-kind"
-import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../components/constants"
 import type { ExtractPayload, Workspace } from "../../../index"
@@ -86,7 +87,9 @@ describe("value matching", () => {
     expect(propertyValuesMatch(exact(5), exact(5))).toBe(true)
     expect(propertyValuesMatch(exact(5), 6)).toBe(false)
     expect(propertyValuesMatch("not-typed", empty)).toBe(true)
-    expect(compoundFacetMatches({ color: exact("red") }, "color", "red")).toBe(true)
+    expect(compoundFacetMatches({ color: exact("red") }, "color", "red")).toBe(
+      true,
+    )
   })
 })
 

@@ -37,7 +37,10 @@ describe("setNodeLabel rule gate", () => {
     const defaultNodeId = workspace.boards[ComponentId.BUTTON]!.variants[0]!.id
 
     const result = setNodeLabel(
-      { nodeId: defaultNodeId, label: "Renamed" } as ExtractPayload<"set_node_label">,
+      {
+        nodeId: defaultNodeId,
+        label: "Renamed",
+      } as ExtractPayload<"set_node_label">,
       workspace,
     )
 

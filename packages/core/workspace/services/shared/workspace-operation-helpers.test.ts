@@ -71,10 +71,14 @@ describe("withVariantAndBoardMutation", () => {
 
 describe("withInstanceAndParentMutation", () => {
   it("provides the instance and its parent", () => {
-    const next = withInstanceAndParentMutation(childId, ws, (instance, parent) => {
-      expect(parent.id).toBe(rootId)
-      instance.label = "InstX"
-    })
+    const next = withInstanceAndParentMutation(
+      childId,
+      ws,
+      (instance, parent) => {
+        expect(parent.id).toBe(rootId)
+        instance.label = "InstX"
+      },
+    )
     expect(next.nodes[childId]!.label).toBe("InstX")
   })
 })

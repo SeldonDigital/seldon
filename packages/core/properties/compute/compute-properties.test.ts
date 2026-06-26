@@ -15,7 +15,7 @@ const ctx = (
   properties: Record<string, unknown>,
   parentContext: ComputeContext | null = null,
 ): ComputeContext =>
-  ({ properties, parentContext, theme: computed } as unknown as ComputeContext)
+  ({ properties, parentContext, theme: computed }) as unknown as ComputeContext
 
 const props = (value: Record<string, unknown>) =>
   value as unknown as Parameters<typeof computeProperties>[0]

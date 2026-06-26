@@ -18,10 +18,22 @@ import { formatLabelFromCatalogId } from "./format-label-from-catalog-id"
 import { appendCustomToken, removeCustomToken } from "./theme-custom-token"
 
 const fontEntry = (): EntryFontCollection =>
-  ({ id: "fc", type: "variant", label: "fc", template: "theme:fc", overrides: {} }) as never
+  ({
+    id: "fc",
+    type: "variant",
+    label: "fc",
+    template: "theme:fc",
+    overrides: {},
+  }) as never
 
 const themeEntry = (): EntryTheme =>
-  ({ id: "t", type: "variant", label: "t", template: "theme:t", overrides: {} }) as never
+  ({
+    id: "t",
+    type: "variant",
+    label: "t",
+    template: "theme:t",
+    overrides: {},
+  }) as never
 
 describe("formatLabelFromCatalogId", () => {
   it("falls back when the id is empty", () => {
@@ -29,18 +41,28 @@ describe("formatLabelFromCatalogId", () => {
   })
 
   it("capitalizes and replaces separators", () => {
-    expect(formatLabelFromCatalogId("adobe-stock_media", "X")).toBe("Adobe stock media")
+    expect(formatLabelFromCatalogId("adobe-stock_media", "X")).toBe(
+      "Adobe stock media",
+    )
   })
 })
 
 describe("buildScaleCell", () => {
   it("builds a modulated cell", () => {
-    const cell = buildScaleCell({ name: "n", kind: "modulated", parameters: {} as never })
+    const cell = buildScaleCell({
+      name: "n",
+      kind: "modulated",
+      parameters: {} as never,
+    })
     expect(cell.type).toBe(TokenType.MODULATED)
   })
 
   it("builds an exact cell", () => {
-    const cell = buildScaleCell({ name: "n", kind: "exact", parameters: {} as never })
+    const cell = buildScaleCell({
+      name: "n",
+      kind: "exact",
+      parameters: {} as never,
+    })
     expect(cell.type).toBe(TokenType.EXACT)
   })
 })
@@ -81,7 +103,9 @@ describe("font collection variant selection", () => {
   it("enables and disables a variant, dropping an empty slot", () => {
     const entry = fontEntry()
     setFamilyVariant(entry, "slot1", "regular", true)
-    expect(readFamilyVariantSelection(entry, "slot1")).toEqual({ regular: true })
+    expect(readFamilyVariantSelection(entry, "slot1")).toEqual({
+      regular: true,
+    })
 
     setFamilyVariant(entry, "slot1", "regular", false)
     expect(readFamilyVariantSelection(entry, "slot1")).toEqual({})
@@ -91,7 +115,10 @@ describe("font collection variant selection", () => {
   it("applies the all preset and clears with none", () => {
     const entry = fontEntry()
     setFamilyVariantPreset(entry, "slot1", "all", ["a", "b"])
-    expect(readFamilyVariantSelection(entry, "slot1")).toEqual({ a: true, b: true })
+    expect(readFamilyVariantSelection(entry, "slot1")).toEqual({
+      a: true,
+      b: true,
+    })
 
     setFamilyVariantPreset(entry, "slot1", "none", [])
     expect(readFamilyVariantSelection(entry, "slot1")).toEqual({})

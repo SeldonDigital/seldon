@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../../components/constants"
-import type { ExtractPayload } from "../../../types"
 import { createEmptyWorkspace } from "../../../helpers/create-empty-workspace"
+import type { ExtractPayload } from "../../../types"
 import { addComponent } from "../add/add-component"
 import { duplicateComponent } from "./duplicate-component"
 

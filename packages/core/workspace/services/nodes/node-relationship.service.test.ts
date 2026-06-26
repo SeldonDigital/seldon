@@ -48,10 +48,12 @@ describe("ancestry", () => {
   })
 
   it("hasAncestorWithComponentId matches the button ancestor and board", () => {
-    expect(svc.hasAncestorWithComponentId(ComponentId.BUTTON, instance, ws)).toBe(
+    expect(
+      svc.hasAncestorWithComponentId(ComponentId.BUTTON, instance, ws),
+    ).toBe(true)
+    expect(svc.hasAncestorWithComponentId(ComponentId.BUTTON, board, ws)).toBe(
       true,
     )
-    expect(svc.hasAncestorWithComponentId(ComponentId.BUTTON, board, ws)).toBe(true)
   })
 })
 

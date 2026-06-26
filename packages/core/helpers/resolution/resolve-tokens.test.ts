@@ -22,7 +22,10 @@ describe("resolveBorderWidth", () => {
 
   it("resolves a THEME_ORDINAL token to a concrete length", () => {
     const result = resolveBorderWidth({
-      borderWidth: cast({ type: ValueType.THEME_ORDINAL, value: "@borderWidth.small" }),
+      borderWidth: cast({
+        type: ValueType.THEME_ORDINAL,
+        value: "@borderWidth.small",
+      }),
       theme,
     })
     expect(result.type).toBeDefined()
@@ -39,7 +42,10 @@ describe("resolveShadowBlur", () => {
 
   it("throws on an unsupported type", () => {
     expect(() =>
-      resolveShadowBlur({ blur: cast({ type: ValueType.OPTION, value: "x" }), theme }),
+      resolveShadowBlur({
+        blur: cast({ type: ValueType.OPTION, value: "x" }),
+        theme,
+      }),
     ).toThrow()
   })
 })
@@ -48,25 +54,40 @@ describe("resolveFontFamily", () => {
   it("returns undefined for missing, empty, and inherit values", () => {
     expect(resolveFontFamily({ fontFamily: undefined, theme })).toBeUndefined()
     expect(
-      resolveFontFamily({ fontFamily: { type: ValueType.EMPTY, value: null }, theme }),
+      resolveFontFamily({
+        fontFamily: { type: ValueType.EMPTY, value: null },
+        theme,
+      }),
     ).toBeUndefined()
     expect(
-      resolveFontFamily({ fontFamily: cast({ type: ValueType.INHERIT, value: null }), theme }),
+      resolveFontFamily({
+        fontFamily: cast({ type: ValueType.INHERIT, value: null }),
+        theme,
+      }),
     ).toBeUndefined()
   })
 
   it("wraps OPTION and EXACT values as an OPTION", () => {
     expect(
-      resolveFontFamily({ fontFamily: cast({ type: ValueType.OPTION, value: "Inter" }), theme }),
+      resolveFontFamily({
+        fontFamily: cast({ type: ValueType.OPTION, value: "Inter" }),
+        theme,
+      }),
     ).toEqual({ type: ValueType.OPTION, value: "Inter" })
     expect(
-      resolveFontFamily({ fontFamily: cast({ type: ValueType.EXACT, value: "Arial" }), theme }),
+      resolveFontFamily({
+        fontFamily: cast({ type: ValueType.EXACT, value: "Arial" }),
+        theme,
+      }),
     ).toEqual({ type: ValueType.OPTION, value: "Arial" })
   })
 
   it("resolves a THEME_CATEGORICAL token to a font stack option", () => {
     const result = resolveFontFamily({
-      fontFamily: cast({ type: ValueType.THEME_CATEGORICAL, value: "@fontFamily.primary" }),
+      fontFamily: cast({
+        type: ValueType.THEME_CATEGORICAL,
+        value: "@fontFamily.primary",
+      }),
       theme,
     })
     expect(result?.type).toBe(ValueType.OPTION)
@@ -75,7 +96,10 @@ describe("resolveFontFamily", () => {
 
   it("throws on a COMPUTED value", () => {
     expect(() =>
-      resolveFontFamily({ fontFamily: { type: ValueType.COMPUTED, value: "x" }, theme }),
+      resolveFontFamily({
+        fontFamily: { type: ValueType.COMPUTED, value: "x" },
+        theme,
+      }),
     ).toThrow()
   })
 })
@@ -83,7 +107,9 @@ describe("resolveFontFamily", () => {
 describe("resolveSize", () => {
   it("passes EMPTY and EXACT through", () => {
     const empty = { type: ValueType.EMPTY, value: null }
-    expect(resolveSize({ size: cast(empty), parentContext: null, theme })).toBe(empty)
+    expect(resolveSize({ size: cast(empty), parentContext: null, theme })).toBe(
+      empty,
+    )
   })
 
   it("resolves a modulated THEME_ORDINAL token to a rem length", () => {

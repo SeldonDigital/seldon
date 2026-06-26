@@ -26,7 +26,9 @@ describe("shouldBlockDeletableBoardRemoval", () => {
 
 describe("areCatalogIdsUsedInOtherBoardTrees", () => {
   it("is false for an empty candidate set", () => {
-    expect(areCatalogIdsUsedInOtherBoardTrees(ws, boardKey, new Set())).toBe(false)
+    expect(areCatalogIdsUsedInOtherBoardTrees(ws, boardKey, new Set())).toBe(
+      false,
+    )
   })
 
   it("is false when no other board references the ids", () => {

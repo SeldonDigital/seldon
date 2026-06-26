@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest"
 
-import type { ExtractPayload } from "../../../types"
 import { createEmptyWorkspace } from "../../../helpers/create-empty-workspace"
+import type { ExtractPayload } from "../../../types"
 import { addPlayground } from "../add/add-playground"
 import { duplicatePlayground } from "./duplicate-playground"
 

@@ -21,7 +21,9 @@ describe("duplicateTheme", () => {
     expect(clone).toBeDefined()
     expect(clone!.type).toBe("variant")
     expect(clone!.template).toBe(`theme:${sourceThemeId}`)
-    expect(next.boards["seldon"]!.variants.some((v) => v.id === "theme-seldon-copy")).toBe(true)
+    expect(
+      next.boards["seldon"]!.variants.some((v) => v.id === "theme-seldon-copy"),
+    ).toBe(true)
   })
 
   it("is a no-op for an unknown theme id", () => {

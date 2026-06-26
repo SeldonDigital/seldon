@@ -38,8 +38,12 @@ describe("board-sort-order", () => {
 
 describe("entry-node-ids", () => {
   it("formats default and schema-variant node ids", () => {
-    expect(componentBoardDefaultNodeId("button")).toBe("component-button-default")
-    expect(componentBoardSchemaVariantNodeId("button", "v1")).toBe("component-button-v1")
+    expect(componentBoardDefaultNodeId("button")).toBe(
+      "component-button-default",
+    )
+    expect(componentBoardSchemaVariantNodeId("button", "v1")).toBe(
+      "component-button-v1",
+    )
   })
 })
 

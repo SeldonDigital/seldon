@@ -16,10 +16,14 @@ const marker = {
 } as never
 
 const ctx = (properties: Record<string, unknown>): ComputeContext =>
-  ({ properties, parentContext: null, theme: computed } as unknown as ComputeContext)
+  ({
+    properties,
+    parentContext: null,
+    theme: computed,
+  }) as unknown as ComputeContext
 
 const keys = (subPropertyKey: string): ComputeKeys =>
-  ({ propertyKey: "padding", subPropertyKey } as unknown as ComputeKeys)
+  ({ propertyKey: "padding", subPropertyKey }) as unknown as ComputeKeys
 
 describe("computeOpticalPadding", () => {
   it("multiplies the self size by the left rhythm", () => {

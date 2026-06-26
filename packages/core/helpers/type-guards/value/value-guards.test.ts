@@ -72,7 +72,9 @@ describe("isUnitValue", () => {
   })
 
   it("rejects exact values without a unit object", () => {
-    expect(isUnitValue(asValue({ type: ValueType.EXACT, value: 5 }))).toBe(false)
+    expect(isUnitValue(asValue({ type: ValueType.EXACT, value: 5 }))).toBe(
+      false,
+    )
   })
 })
 

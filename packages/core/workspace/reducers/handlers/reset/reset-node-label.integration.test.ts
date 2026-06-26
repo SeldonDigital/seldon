@@ -34,9 +34,9 @@ describe("resetNodeLabel", () => {
 
   it("resets an instance label to its template-derived name", () => {
     const { ws, userVariantId } = withUserVariant()
-    const instanceId = (ws.boards[boardKey] as any).variants
-      .find((v: any) => v.id === userVariantId)
-      .children[0].id as string
+    const instanceId = (ws.boards[boardKey] as any).variants.find(
+      (v: any) => v.id === userVariantId,
+    ).children[0].id as string
 
     const result = resetNodeLabel(
       { nodeId: instanceId } as ExtractPayload<"reset_node_label">,

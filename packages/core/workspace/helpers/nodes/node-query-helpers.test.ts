@@ -17,7 +17,8 @@ const ws: Workspace = addComponent(
   createEmptyWorkspace(),
 )
 const rootId = (ws.boards[boardKey] as any).variants[0].id as string
-const childId = (ws.boards[boardKey] as any).variants[0].children[0].id as string
+const childId = (ws.boards[boardKey] as any).variants[0].children[0]
+  .id as string
 
 describe("findParentNode", () => {
   it("finds the parent of a child and null for a root", () => {
@@ -48,7 +49,9 @@ describe("isVariantNode", () => {
 
 describe("resolveLayoutMode", () => {
   it("resolves to a known layout mode", () => {
-    expect(["flexbox", "grid"]).toContain(resolveLayoutMode(ws.nodes[rootId]!, ws))
+    expect(["flexbox", "grid"]).toContain(
+      resolveLayoutMode(ws.nodes[rootId]!, ws),
+    )
   })
 
   it("falls back to flexbox for a node with no catalog id", () => {

@@ -2,8 +2,8 @@ import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../../components/constants"
 import type { ExtractPayload } from "../../../../index"
-import { getNodeRepeat } from "../../../helpers/nodes/node-repeat"
 import { createEmptyWorkspace } from "../../../helpers/create-empty-workspace"
+import { getNodeRepeat } from "../../../helpers/nodes/node-repeat"
 import { addComponent } from "../add/add-component"
 import { setNodeRepeat } from "./set-node-repeat"
 

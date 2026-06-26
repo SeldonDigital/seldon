@@ -2,9 +2,9 @@ import { produce } from "immer"
 import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../components/constants"
-import type { Board, Workspace, WorkspaceAction } from "../../types"
 import { createEmptyWorkspace } from "../../helpers/create-empty-workspace"
 import { workspaceReducer } from "../../reducers/reducer"
+import type { Board, Workspace, WorkspaceAction } from "../../types"
 import { workspaceThemeService as service } from "./theme.service"
 
 const dispatch = (ws: Workspace, action: WorkspaceAction): Workspace =>
@@ -16,7 +16,10 @@ const act = (type: string, payload: unknown): WorkspaceAction =>
 const BOARD = ComponentId.BUTTON
 
 function withButton(): { ws: Workspace; rootId: string } {
-  const ws = dispatch(createEmptyWorkspace(), act("add_component", { boardKey: BOARD }))
+  const ws = dispatch(
+    createEmptyWorkspace(),
+    act("add_component", { boardKey: BOARD }),
+  )
   return { ws, rootId: ws.boards[BOARD]!.variants[0]!.id }
 }
 
@@ -66,15 +69,29 @@ describe("WorkspaceThemeService.getNextCustomTokenIdForTheme", () => {
   it("returns custom1 for an empty section and the next slot once seeded", () => {
     const base = dispatch(
       createEmptyWorkspace(),
-      act("duplicate_theme", { themeId: "theme-seldon-default", newThemeId: "theme-seldon-copy" }),
+      act("duplicate_theme", {
+        themeId: "theme-seldon-default",
+        newThemeId: "theme-seldon-copy",
+      }),
     )
-    expect(service.getNextCustomTokenIdForTheme(base, "theme-seldon-copy", "swatch")).toBe("custom1")
+    expect(
+      service.getNextCustomTokenIdForTheme(base, "theme-seldon-copy", "swatch"),
+    ).toBe("custom1")
 
     const seeded = produce(base, (draft) => {
-      const overrides = draft.themes["theme-seldon-copy"]!.overrides as Record<string, Record<string, unknown>>
+      const overrides = draft.themes["theme-seldon-copy"]!.overrides as Record<
+        string,
+        Record<string, unknown>
+      >
       overrides.swatch = { custom1: { name: "seed" } }
     })
-    expect(service.getNextCustomTokenIdForTheme(seeded, "theme-seldon-copy", "swatch")).toBe("custom2")
+    expect(
+      service.getNextCustomTokenIdForTheme(
+        seeded,
+        "theme-seldon-copy",
+        "swatch",
+      ),
+    ).toBe("custom2")
   })
 })
 
@@ -86,7 +103,11 @@ describe("WorkspaceThemeService.collectUsedThemes", () => {
   })
 
   it("falls back to seldon when nothing references a theme", () => {
-    const empty: Workspace = { ...createEmptyWorkspace(), boards: {}, nodes: {} }
+    const empty: Workspace = {
+      ...createEmptyWorkspace(),
+      boards: {},
+      nodes: {},
+    }
     expect(service.collectUsedThemes(empty).has("seldon")).toBe(true)
   })
 })

@@ -16,7 +16,10 @@ describe("iconBelongsToIconSet", () => {
 
   it("rejects an icon id from another set", () => {
     expect(
-      iconBelongsToIconSet("lucide-x" as IconId, "google-material" as IconSetId),
+      iconBelongsToIconSet(
+        "lucide-x" as IconId,
+        "google-material" as IconSetId,
+      ),
     ).toBe(false)
   })
 })

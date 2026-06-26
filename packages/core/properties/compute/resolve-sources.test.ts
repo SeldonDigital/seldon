@@ -8,7 +8,10 @@ import { resolveMatchColorSource } from "./resolve-match-color-source"
 import { resolveOpticalPaddingSource } from "./resolve-optical-padding-source"
 import type { ComputeContext } from "./types"
 
-const ctx = (properties: Properties, parent: ComputeContext | null = null): ComputeContext => ({
+const ctx = (
+  properties: Properties,
+  parent: ComputeContext | null = null,
+): ComputeContext => ({
   properties,
   parentContext: parent,
   theme: {} as ComputeContext["theme"],
@@ -25,23 +28,31 @@ describe("resolveAutoFitSource", () => {
   })
 
   it("uses the first ancestor buttonSize", () => {
-    const parent = ctx({ buttonSize: ordinal("@fontSize.large") } as unknown as Properties)
+    const parent = ctx({
+      buttonSize: ordinal("@fontSize.large"),
+    } as unknown as Properties)
     expect(resolveAutoFitSource(ctx({} as Properties, parent))).toEqual(
       ordinal("@fontSize.large"),
     )
   })
 
   it("uses ancestor size when no buttonSize is present", () => {
-    const parent = ctx({ size: ordinal("@fontSize.small") } as unknown as Properties)
+    const parent = ctx({
+      size: ordinal("@fontSize.small"),
+    } as unknown as Properties)
     expect(resolveAutoFitSource(ctx({} as Properties, parent))).toEqual(
       ordinal("@fontSize.small"),
     )
   })
 
   it("skips empty values and walks further up", () => {
-    const grandparent = ctx({ size: ordinal("@fontSize.xlarge") } as unknown as Properties)
+    const grandparent = ctx({
+      size: ordinal("@fontSize.xlarge"),
+    } as unknown as Properties)
     const parent = ctx(
-      { buttonSize: { type: ValueType.EMPTY, value: null } } as unknown as Properties,
+      {
+        buttonSize: { type: ValueType.EMPTY, value: null },
+      } as unknown as Properties,
       grandparent,
     )
     expect(resolveAutoFitSource(ctx({} as Properties, parent))).toEqual(
@@ -53,20 +64,28 @@ describe("resolveAutoFitSource", () => {
 describe("resolveOpticalPaddingSource", () => {
   it("prefers self buttonSize", () => {
     expect(
-      resolveOpticalPaddingSource(ctx({ buttonSize: ordinal("@fontSize.medium") } as unknown as Properties)),
+      resolveOpticalPaddingSource(
+        ctx({
+          buttonSize: ordinal("@fontSize.medium"),
+        } as unknown as Properties),
+      ),
     ).toBe("#buttonSize")
   })
 
   it("uses self font.size next", () => {
     expect(
       resolveOpticalPaddingSource(
-        ctx({ font: { size: ordinal("@fontSize.medium") } } as unknown as Properties),
+        ctx({
+          font: { size: ordinal("@fontSize.medium") },
+        } as unknown as Properties),
       ),
     ).toBe("#font.size")
   })
 
   it("falls back to parent fontSize", () => {
-    expect(resolveOpticalPaddingSource(ctx({} as Properties))).toBe("#parent.fontSize")
+    expect(resolveOpticalPaddingSource(ctx({} as Properties))).toBe(
+      "#parent.fontSize",
+    )
   })
 })
 

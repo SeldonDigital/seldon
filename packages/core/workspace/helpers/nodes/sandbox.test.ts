@@ -25,7 +25,9 @@ describe("buildSandboxNode", () => {
 
 describe("isSandboxNode", () => {
   it("is false for a non-sandbox template", () => {
-    const node = { template: formatNodeCatalog(ComponentId.BUTTON) } as EntryNode
+    const node = {
+      template: formatNodeCatalog(ComponentId.BUTTON),
+    } as EntryNode
     expect(isSandboxNode(node)).toBe(false)
   })
 })
@@ -33,7 +35,9 @@ describe("isSandboxNode", () => {
 describe("isExplicitSizeValue", () => {
   it("is true only for an exact value", () => {
     expect(isExplicitSizeValue({ type: ValueType.EXACT, value: 1 })).toBe(true)
-    expect(isExplicitSizeValue({ type: ValueType.OPTION, value: "fill" })).toBe(false)
+    expect(isExplicitSizeValue({ type: ValueType.OPTION, value: "fill" })).toBe(
+      false,
+    )
     expect(isExplicitSizeValue(null)).toBe(false)
   })
 })
@@ -64,7 +68,12 @@ describe("getNextSandboxTop", () => {
 })
 
 describe("sandboxesOverlap", () => {
-  const rect = (top: number, left: number) => ({ top, left, width: 100, height: 100 })
+  const rect = (top: number, left: number) => ({
+    top,
+    left,
+    width: 100,
+    height: 100,
+  })
 
   it("detects overlap and separation", () => {
     expect(sandboxesOverlap(rect(0, 0), rect(50, 50))).toBe(true)

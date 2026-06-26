@@ -20,7 +20,9 @@ describe("duplicateFontCollection", () => {
       empty(),
     )
     expect(next["font-collections"]["fc-dup"]?.type).toBe("variant")
-    expect((next.boards.system as any).variants.map((r: any) => r.id)).toContain("fc-dup")
+    expect(
+      (next.boards.system as any).variants.map((r: any) => r.id),
+    ).toContain("fc-dup")
   })
 
   it("is a no-op for an unknown id", () => {
@@ -41,7 +43,9 @@ describe("duplicateIconSet", () => {
       empty(),
     )
     expect(next["icon-sets"]["is-dup"]?.type).toBe("variant")
-    expect((next.boards.seldonIcons as any).variants.map((r: any) => r.id)).toContain("is-dup")
+    expect(
+      (next.boards.seldonIcons as any).variants.map((r: any) => r.id),
+    ).toContain("is-dup")
   })
 
   it("is a no-op for an unknown id", () => {
@@ -67,6 +71,8 @@ describe("duplicateNode", () => {
       { nodeId: rootId } as ExtractPayload<"duplicate_node">,
       ws,
     )
-    expect((next.boards[ComponentId.BUTTON] as any).variants.length).toBe(before + 1)
+    expect((next.boards[ComponentId.BUTTON] as any).variants.length).toBe(
+      before + 1,
+    )
   })
 })

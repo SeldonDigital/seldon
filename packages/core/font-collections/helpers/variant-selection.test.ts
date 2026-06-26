@@ -17,10 +17,12 @@ describe("isVariantEnabled", () => {
 describe("getEnabledVariants", () => {
   it("returns the enabled subset in a stable order", () => {
     expect(
-      getEnabledVariants(
-        { "700italic": true, "100": true, "400": true },
-        ["700italic", "100", "400", "900"],
-      ),
+      getEnabledVariants({ "700italic": true, "100": true, "400": true }, [
+        "700italic",
+        "100",
+        "400",
+        "900",
+      ]),
     ).toEqual(["100", "400", "700italic"])
   })
 })

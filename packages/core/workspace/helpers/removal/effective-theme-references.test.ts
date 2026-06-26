@@ -14,9 +14,9 @@ const ws: Workspace = addComponent(
 
 describe("hasEffectiveThemeReference", () => {
   it("is true for the default editable theme entry", () => {
-    expect(hasEffectiveThemeReference(ws, WORKSPACE_EDITABLE_THEME_ENTRY_ID)).toBe(
-      true,
-    )
+    expect(
+      hasEffectiveThemeReference(ws, WORKSPACE_EDITABLE_THEME_ENTRY_ID),
+    ).toBe(true)
   })
 
   it("is false for a theme id no board or node references", () => {

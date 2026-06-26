@@ -1,11 +1,11 @@
 import { describe, expect, it } from "vitest"
 
 import { ValueType } from "../../../constants"
+import { BackgroundKind } from "./background-kind"
 import {
   BACKGROUND_KIND_SEEDS,
   backgroundLayerForKind,
 } from "./background-seeds"
-import { BackgroundKind } from "./background-kind"
 
 describe("BACKGROUND_KIND_SEEDS", () => {
   it("seeds every background kind", () => {

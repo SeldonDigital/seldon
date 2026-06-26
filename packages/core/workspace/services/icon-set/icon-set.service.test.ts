@@ -1,9 +1,9 @@
 import { produce } from "immer"
 import { describe, expect, it } from "vitest"
 
-import type { Workspace, WorkspaceAction } from "../../types"
 import { createEmptyWorkspace } from "../../helpers/create-empty-workspace"
 import { workspaceReducer } from "../../reducers/reducer"
+import type { Workspace, WorkspaceAction } from "../../types"
 import { workspaceIconSetService as service } from "./icon-set.service"
 
 const dispatch = (ws: Workspace, action: WorkspaceAction): Workspace =>
@@ -50,10 +50,15 @@ describe("WorkspaceIconSetService.getInclusion", () => {
     const base = createEmptyWorkspace()
     const dup = dispatch(
       base,
-      act("duplicate_icon_set", { iconSetId: defaultEntryId(base), newIconSetId: "is-copy" }),
+      act("duplicate_icon_set", {
+        iconSetId: defaultEntryId(base),
+        newIconSetId: "is-copy",
+      }),
     )
     const ws = produce(dup, (draft) => {
-      delete (draft["icon-sets"]["is-copy"]!.overrides as Record<string, unknown>).includedIcons
+      delete (
+        draft["icon-sets"]["is-copy"]!.overrides as Record<string, unknown>
+      ).includedIcons
     })
     expect(service.getInclusion("is-copy", ws)).toEqual({})
   })
@@ -92,7 +97,9 @@ describe("WorkspaceIconSetService.getIncludedIcons", () => {
   })
 
   it("returns an empty list for a missing entry", () => {
-    expect(service.getIncludedIcons("ghost", createEmptyWorkspace())).toEqual([])
+    expect(service.getIncludedIcons("ghost", createEmptyWorkspace())).toEqual(
+      [],
+    )
   })
 })
 
@@ -103,7 +110,10 @@ describe("WorkspaceIconSetService.getBoardIconSet", () => {
   })
 
   it("returns null for a non-icon-set board", () => {
-    const ws = dispatch(createEmptyWorkspace(), act("add_playground", { boardKey: "pg-1" }))
+    const ws = dispatch(
+      createEmptyWorkspace(),
+      act("add_playground", { boardKey: "pg-1" }),
+    )
     expect(service.getBoardIconSet("pg-1", ws)).toBeNull()
   })
 })

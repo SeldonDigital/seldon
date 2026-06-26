@@ -14,7 +14,9 @@ describe("themeSwatchToColorValue", () => {
   it("preserves the authoring colorspace value", () => {
     const hsl = { hue: 10, saturation: 20, lightness: 30 }
     expect(
-      themeSwatchToColorValue(swatch({ colorspace: Colorspace.HSL, value: hsl })),
+      themeSwatchToColorValue(
+        swatch({ colorspace: Colorspace.HSL, value: hsl }),
+      ),
     ).toEqual({ type: ValueType.EXACT, value: hsl })
     expect(
       themeSwatchToColorValue(
@@ -36,7 +38,10 @@ describe("themeSwatchToCssBackground", () => {
     ).toBe("hsl(120 50% 50%)")
     expect(
       themeSwatchToCssBackground(
-        swatch({ colorspace: Colorspace.RGB, value: { red: 1, green: 2, blue: 3 } }),
+        swatch({
+          colorspace: Colorspace.RGB,
+          value: { red: 1, green: 2, blue: 3 },
+        }),
       ),
     ).toBe("rgb(1 2 3)")
     expect(
@@ -49,7 +54,9 @@ describe("themeSwatchToCssBackground", () => {
   it("returns undefined for a missing or non-swatch value", () => {
     expect(themeSwatchToCssBackground(undefined)).toBeUndefined()
     expect(
-      themeSwatchToCssBackground({ type: "modulated" } as unknown as ThemeSwatch),
+      themeSwatchToCssBackground({
+        type: "modulated",
+      } as unknown as ThemeSwatch),
     ).toBeUndefined()
   })
 })

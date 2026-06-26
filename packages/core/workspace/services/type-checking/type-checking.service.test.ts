@@ -57,11 +57,14 @@ describe("capability checks", () => {
   })
 
   it("canComponentBeParentOf consults component level rules", () => {
-    expect(svc.canComponentBeParentOf(ComponentId.BUTTON, ComponentId.BUTTON)).toBe(
-      true,
-    )
     expect(
-      svc.canComponentBeParentOf("bogus" as ComponentId, "bogus" as ComponentId),
+      svc.canComponentBeParentOf(ComponentId.BUTTON, ComponentId.BUTTON),
+    ).toBe(true)
+    expect(
+      svc.canComponentBeParentOf(
+        "bogus" as ComponentId,
+        "bogus" as ComponentId,
+      ),
     ).toBe(false)
   })
 

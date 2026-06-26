@@ -13,11 +13,14 @@ const ctx = (
   properties: Record<string, unknown>,
   parentContext: ComputeContext | null = null,
 ): ComputeContext =>
-  ({ properties, parentContext, theme: undefined } as unknown as ComputeContext)
+  ({ properties, parentContext, theme: undefined }) as unknown as ComputeContext
 
 describe("computeMatchColor", () => {
   it("returns the contributing color from an ancestor background", () => {
-    const primary = { type: ValueType.THEME_CATEGORICAL, value: "@swatch.primary" }
+    const primary = {
+      type: ValueType.THEME_CATEGORICAL,
+      value: "@swatch.primary",
+    }
     const parent = ctx({ background: [{ color: primary }] })
 
     expect(computeMatchColor(marker, ctx({}, parent))).toEqual(primary)

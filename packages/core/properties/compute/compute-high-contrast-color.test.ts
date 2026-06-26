@@ -14,7 +14,11 @@ const marker = {
 } as never
 
 const ctx = (properties: Record<string, unknown>): ComputeContext =>
-  ({ properties, parentContext: null, theme: computed } as unknown as ComputeContext)
+  ({
+    properties,
+    parentContext: null,
+    theme: computed,
+  }) as unknown as ComputeContext
 
 describe("computeHighContrastColor", () => {
   it("returns an EXACT color for a light reference surface", () => {
@@ -30,7 +34,12 @@ describe("computeHighContrastColor", () => {
       marker,
       ctx({
         background: [
-          { color: { type: ValueType.THEME_CATEGORICAL, value: "@swatch.black" } },
+          {
+            color: {
+              type: ValueType.THEME_CATEGORICAL,
+              value: "@swatch.black",
+            },
+          },
         ],
       }),
     )

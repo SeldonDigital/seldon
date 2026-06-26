@@ -50,6 +50,8 @@ describe("pruneRedundantOverrides", () => {
     })
 
     pruneRedundantOverrides(overrides, patch, baseline)
-    expect(overrides).toEqual({ border: { width: { type: "exact", value: 2 } } })
+    expect(overrides).toEqual({
+      border: { width: { type: "exact", value: 2 } },
+    })
   })
 })

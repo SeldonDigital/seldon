@@ -9,8 +9,14 @@ import { boardOrderService as svc } from "./board-order.service"
 
 const seed = (): Workspace => {
   let ws = createEmptyWorkspace()
-  ws = addComponent({ boardKey: ComponentId.BUTTON } as ExtractPayload<"add_component">, ws)
-  ws = addComponent({ boardKey: ComponentId.TEXT } as ExtractPayload<"add_component">, ws)
+  ws = addComponent(
+    { boardKey: ComponentId.BUTTON } as ExtractPayload<"add_component">,
+    ws,
+  )
+  ws = addComponent(
+    { boardKey: ComponentId.TEXT } as ExtractPayload<"add_component">,
+    ws,
+  )
   return ws
 }
 

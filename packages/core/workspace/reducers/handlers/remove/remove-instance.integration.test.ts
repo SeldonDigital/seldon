@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../../components/constants"
-import { Display } from "../../../../properties"
 import type { ExtractPayload, Workspace } from "../../../../index"
+import { Display } from "../../../../properties"
 import { createEmptyWorkspace } from "../../../helpers/create-empty-workspace"
 import { addComponent } from "../add/add-component"
 import { addVariant } from "../add/add-variant"
@@ -16,12 +16,13 @@ const baseWithButton = (): Workspace =>
     createEmptyWorkspace(),
   )
 
-const defaultRef = (ws: Workspace) =>
-  (ws.boards[boardKey] as any).variants[0]
+const defaultRef = (ws: Workspace) => (ws.boards[boardKey] as any).variants[0]
 
 const withUserVariant = (): { ws: Workspace; userVariantId: string } => {
   const before = baseWithButton()
-  const beforeIds = (before.boards[boardKey] as any).variants.map((v: any) => v.id)
+  const beforeIds = (before.boards[boardKey] as any).variants.map(
+    (v: any) => v.id,
+  )
   const ws = addVariant({ boardKey } as ExtractPayload<"add_variant">, before)
   const userVariantId = (ws.boards[boardKey] as any).variants
     .map((v: any) => v.id)
@@ -48,7 +49,9 @@ describe("removeInstance", () => {
   it("deletes an instance outright inside a user variant", () => {
     const { ws, userVariantId } = withUserVariant()
     const variant = (w: Workspace) =>
-      (w.boards[boardKey] as any).variants.find((v: any) => v.id === userVariantId)
+      (w.boards[boardKey] as any).variants.find(
+        (v: any) => v.id === userVariantId,
+      )
     const childId = variant(ws).children[0].id as string
     const before = variant(ws).children.length
 
@@ -58,14 +61,19 @@ describe("removeInstance", () => {
     )
 
     expect(variant(result).children.length).toBe(before - 1)
-    expect(variant(result).children.map((c: any) => c.id)).not.toContain(childId)
+    expect(variant(result).children.map((c: any) => c.id)).not.toContain(
+      childId,
+    )
   })
 
   it("is a no-op for a non-instance node", () => {
     const ws = baseWithButton()
     const rootId = defaultRef(ws).id as string
     expect(
-      removeInstance({ instanceId: rootId } as ExtractPayload<"remove_instance">, ws),
+      removeInstance(
+        { instanceId: rootId } as ExtractPayload<"remove_instance">,
+        ws,
+      ),
     ).toBe(ws)
   })
 })

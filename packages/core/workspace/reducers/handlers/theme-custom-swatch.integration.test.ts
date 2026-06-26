@@ -52,7 +52,10 @@ describe("removeThemeCustomSwatch", () => {
   it("drops a custom swatch slot from a variant theme", () => {
     const added = addSwatch(variantThemeId, withVariantTheme())
     const removed = removeThemeCustomSwatch(
-      { themeId: variantThemeId, key: "custom1" } as ExtractPayload<"remove_theme_custom_swatch">,
+      {
+        themeId: variantThemeId,
+        key: "custom1",
+      } as ExtractPayload<"remove_theme_custom_swatch">,
       added,
     )
     expect(swatchOverrides(removed, variantThemeId).custom1).toBeUndefined()
@@ -62,7 +65,10 @@ describe("removeThemeCustomSwatch", () => {
     const workspace = withVariantTheme()
     expect(
       removeThemeCustomSwatch(
-        { themeId: defaultThemeId, key: "custom1" } as ExtractPayload<"remove_theme_custom_swatch">,
+        {
+          themeId: defaultThemeId,
+          key: "custom1",
+        } as ExtractPayload<"remove_theme_custom_swatch">,
         workspace,
       ),
     ).toBe(workspace)

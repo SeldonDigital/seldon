@@ -1,10 +1,14 @@
 import { describe, expect, it } from "vitest"
 
 import type { EntryNode } from "../../model/entry-node"
-import { applyNodeRepeat, getNodeRepeat, isMeaningfulRepeat } from "./node-repeat"
+import {
+  applyNodeRepeat,
+  getNodeRepeat,
+  isMeaningfulRepeat,
+} from "./node-repeat"
 
 const node = (editor?: Record<string, unknown>) =>
-  ({ __editor: editor } as unknown as EntryNode)
+  ({ __editor: editor }) as unknown as EntryNode
 
 describe("getNodeRepeat", () => {
   it("returns undefined when no meaningful repeat is stored", () => {

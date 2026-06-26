@@ -1,13 +1,13 @@
 import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../components/constants"
+import { createEmptyWorkspace } from "../../helpers/create-empty-workspace"
 import type {
   EntryNode,
   ExtractPayload,
   InsertDefaultInstance,
   Workspace,
 } from "../../types"
-import { createEmptyWorkspace } from "../../helpers/create-empty-workspace"
 import { addComponent } from "./add/add-component"
 import { addVariant } from "./add/add-variant"
 import { insertDefaultInstance } from "./insert/insert-default-instance"

@@ -11,7 +11,11 @@ const sampleIcon = "seldon-lines"
 
 const applyPreset = (preset: "all" | "none", ws = baseWorkspace) =>
   setIconSetSubcategoryPreset(
-    { iconSetId, subcategory, preset } as ExtractPayload<"set_icon_set_subcategory_preset">,
+    {
+      iconSetId,
+      subcategory,
+      preset,
+    } as ExtractPayload<"set_icon_set_subcategory_preset">,
     ws,
   )
 

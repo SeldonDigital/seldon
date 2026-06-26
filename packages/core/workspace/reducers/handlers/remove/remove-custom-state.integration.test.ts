@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../../components/constants"
-import { ValueType } from "../../../../properties/constants"
 import type { ExtractPayload } from "../../../../index"
+import { ValueType } from "../../../../properties/constants"
 import { createEmptyWorkspace } from "../../../helpers/create-empty-workspace"
 import { addComponent } from "../add/add-component"
 import { addCustomState } from "../add/add-custom-state"
@@ -18,7 +18,10 @@ describe("removeCustomState", () => {
     const nodeId = withButton.boards[ComponentId.BUTTON]!.variants[0]!.id
 
     const registered = addCustomState(
-      { key: "warning", label: "Warning" } as ExtractPayload<"add_custom_state">,
+      {
+        key: "warning",
+        label: "Warning",
+      } as ExtractPayload<"add_custom_state">,
       withButton,
     )
     const withState = setNodeStateProperties(

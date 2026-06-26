@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../components/constants"
-import type { EntryNode, ExtractPayload, Workspace } from "../../types"
 import { createEmptyWorkspace } from "../../helpers/create-empty-workspace"
+import type { EntryNode, ExtractPayload, Workspace } from "../../types"
 import { addComponent } from "./add/add-component"
 import { addVariant } from "./add/add-variant"
 import { duplicateNode } from "./duplicate/duplicate-node"
@@ -33,7 +33,9 @@ describe("addVariant", () => {
 
     expect(variantIds(after).length).toBe(variantIds(before).length + 1)
 
-    const newId = variantIds(after).find((id) => !variantIds(before).includes(id))
+    const newId = variantIds(after).find(
+      (id) => !variantIds(before).includes(id),
+    )
     expect((after.nodes[newId!] as EntryNode).type).toBe("variant")
   })
 

@@ -5,12 +5,12 @@ import type { ExtractPayload, Workspace } from "../../../index"
 import { ValueType } from "../../../properties/constants"
 import { createEmptyWorkspace } from "../../helpers/create-empty-workspace"
 import { addComponent } from "./add/add-component"
-import { applyComponentPropertiesToAllBoards } from "./set/apply-component-properties-to-all-boards"
 import { resetComponentProperty } from "./reset/reset-component-property"
 import { resetComponentToCatalog } from "./reset/reset-component-to-catalog"
 import { resetDefaultVariantToCatalog } from "./reset/reset-default-variant-to-catalog"
 import { resetInstanceToOriginal } from "./reset/reset-instance-to-original"
 import { resetInstanceToSource } from "./reset/reset-instance-to-source"
+import { applyComponentPropertiesToAllBoards } from "./set/apply-component-properties-to-all-boards"
 import { setBoardLabel } from "./set/set-board-label"
 import { setComponentProperties } from "./set/set-component-properties"
 import { setComponentTheme } from "./set/set-component-theme"
@@ -18,11 +18,15 @@ import { setNodeProperties } from "./set/set-node-properties"
 
 const boardKey = ComponentId.BUTTON
 const componentWorkspace = () =>
-  addComponent({ boardKey } as ExtractPayload<"add_component">, createEmptyWorkspace())
+  addComponent(
+    { boardKey } as ExtractPayload<"add_component">,
+    createEmptyWorkspace(),
+  )
 
 const board = (ws: Workspace) => ws.boards[boardKey] as any
 const rootId = (ws: Workspace) => board(ws).variants[0].id as string
-const instanceId = (ws: Workspace) => board(ws).variants[0].children[0].id as string
+const instanceId = (ws: Workspace) =>
+  board(ws).variants[0].children[0].id as string
 
 const opacity = { opacity: { type: ValueType.EXACT, value: 0.5 } }
 
@@ -114,7 +118,9 @@ describe("resetComponentToCatalog", () => {
     const ws = componentWorkspace()
     expect(
       resetComponentToCatalog(
-        { boardKey: "not-a-board" } as ExtractPayload<"reset_component_to_catalog">,
+        {
+          boardKey: "not-a-board",
+        } as ExtractPayload<"reset_component_to_catalog">,
         ws,
       ),
     ).toBe(ws)

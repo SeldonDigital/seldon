@@ -13,7 +13,8 @@ import {
 
 const defaultThemeId = "theme-seldon-default"
 const empty = () => createEmptyWorkspace()
-const entry = (ws: Workspace, id: string) => (ws.themes as any)[id] as EntryTheme
+const entry = (ws: Workspace, id: string) =>
+  (ws.themes as any)[id] as EntryTheme
 
 describe("getDefaultThemeEntryLabel", () => {
   it("returns a non-empty label for the default theme entry", () => {
@@ -25,10 +26,15 @@ describe("getDefaultThemeEntryLabel", () => {
 
   it("returns Custom for a variant entry", () => {
     const ws = duplicateTheme(
-      { themeId: defaultThemeId, newThemeId: "theme-seldon-copy" } as ExtractPayload<"duplicate_theme">,
+      {
+        themeId: defaultThemeId,
+        newThemeId: "theme-seldon-copy",
+      } as ExtractPayload<"duplicate_theme">,
       empty(),
     )
-    expect(getDefaultThemeEntryLabel(entry(ws, "theme-seldon-copy"), ws)).toBe("Custom")
+    expect(getDefaultThemeEntryLabel(entry(ws, "theme-seldon-copy"), ws)).toBe(
+      "Custom",
+    )
   })
 })
 
@@ -43,7 +49,9 @@ describe("getThemeEntryDisplayName", () => {
 describe("getThemeOverrides", () => {
   it("merges the template chain into one overrides object", () => {
     const ws = empty()
-    expect(typeof getThemeOverrides(entry(ws, defaultThemeId), ws)).toBe("object")
+    expect(typeof getThemeOverrides(entry(ws, defaultThemeId), ws)).toBe(
+      "object",
+    )
   })
 })
 

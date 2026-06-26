@@ -18,7 +18,11 @@ const seed = (value: string) => ({ color: { type: ValueType.EXACT, value } })
 
 const addLayer = (ws: typeof workspace, value: string) =>
   addNodeLayer(
-    { nodeId, property: "background", seed: seed(value) } as ExtractPayload<"add_node_layer">,
+    {
+      nodeId,
+      property: "background",
+      seed: seed(value),
+    } as ExtractPayload<"add_node_layer">,
     ws,
   )
 
@@ -37,7 +41,10 @@ describe("addNodeLayer", () => {
 
   it("is a no-op for a missing node", () => {
     const result = addNodeLayer(
-      { nodeId: "ghost", property: "background" } as ExtractPayload<"add_node_layer">,
+      {
+        nodeId: "ghost",
+        property: "background",
+      } as ExtractPayload<"add_node_layer">,
       workspace,
     )
     expect(result).toBe(workspace)

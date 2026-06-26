@@ -2,8 +2,8 @@ import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../../components/constants"
 import { ValueType } from "../../../../properties/constants"
-import type { EntryNode, ExtractPayload, Workspace } from "../../../types"
 import { createEmptyWorkspace } from "../../../helpers/create-empty-workspace"
+import type { EntryNode, ExtractPayload, Workspace } from "../../../types"
 import { addComponent } from "../add/add-component"
 import { setNodeProperties } from "../set/set-node-properties"
 import { resetVariantToCatalog } from "./reset-variant-to-catalog"
@@ -31,7 +31,9 @@ describe("resetVariantToCatalog", () => {
     expect(overridesOf(withOverride, userVariantId).opacity).toBeDefined()
 
     const reset = resetVariantToCatalog(
-      { variantRootId: userVariantId } as ExtractPayload<"reset_variant_to_catalog">,
+      {
+        variantRootId: userVariantId,
+      } as ExtractPayload<"reset_variant_to_catalog">,
       withOverride,
     )
     expect(overridesOf(reset, userVariantId).opacity).toBeUndefined()
@@ -40,7 +42,9 @@ describe("resetVariantToCatalog", () => {
   it("is a no-op for a default variant root", () => {
     expect(
       resetVariantToCatalog(
-        { variantRootId: defaultRootId } as ExtractPayload<"reset_variant_to_catalog">,
+        {
+          variantRootId: defaultRootId,
+        } as ExtractPayload<"reset_variant_to_catalog">,
         workspace,
       ),
     ).toBe(workspace)

@@ -3,9 +3,9 @@ import { describe, expect, it } from "vitest"
 
 import type { ExtractPayload, Workspace } from "../../../index"
 import { createEmptyWorkspace } from "../../helpers/create-empty-workspace"
+import { addThemeCustomBlur } from "./add/add-theme-custom-blur"
 import { addThemeCustomBorder } from "./add/add-theme-custom-border"
 import { addThemeCustomBorderWidth } from "./add/add-theme-custom-border-width"
-import { addThemeCustomBlur } from "./add/add-theme-custom-blur"
 import { addThemeCustomCorners } from "./add/add-theme-custom-corners"
 import { addThemeCustomDimension } from "./add/add-theme-custom-dimension"
 import { addThemeCustomFont } from "./add/add-theme-custom-font"
@@ -22,9 +22,9 @@ import { addThemeCustomSize } from "./add/add-theme-custom-size"
 import { addThemeCustomSpread } from "./add/add-theme-custom-spread"
 import { duplicateTheme } from "./duplicate/duplicate-theme"
 import { removeThemeCustomBackground } from "./remove/remove-theme-custom-background"
+import { removeThemeCustomBlur } from "./remove/remove-theme-custom-blur"
 import { removeThemeCustomBorder } from "./remove/remove-theme-custom-border"
 import { removeThemeCustomBorderWidth } from "./remove/remove-theme-custom-border-width"
-import { removeThemeCustomBlur } from "./remove/remove-theme-custom-blur"
 import { removeThemeCustomCorners } from "./remove/remove-theme-custom-corners"
 import { removeThemeCustomDimension } from "./remove/remove-theme-custom-dimension"
 import { removeThemeCustomFont } from "./remove/remove-theme-custom-font"
@@ -112,30 +112,43 @@ const REMOVE_CASES: Array<[string, Handler]> = [
 ]
 
 describe("add_theme_custom_* handlers", () => {
-  it.each(ADD_CASES)("%s appends a custom slot to a variant theme", (key, handler) => {
-    const next = handler(addPayload(variantThemeId), variantWorkspace())
-    expect(section(next, key).custom1).toBeDefined()
-  })
+  it.each(ADD_CASES)(
+    "%s appends a custom slot to a variant theme",
+    (key, handler) => {
+      const next = handler(addPayload(variantThemeId), variantWorkspace())
+      expect(section(next, key).custom1).toBeDefined()
+    },
+  )
 
-  it.each(ADD_CASES)("%s is a no-op for a default theme entry", (_key, handler) => {
-    const workspace = variantWorkspace()
-    expect(handler(addPayload(defaultThemeId), workspace)).toBe(workspace)
-  })
+  it.each(ADD_CASES)(
+    "%s is a no-op for a default theme entry",
+    (_key, handler) => {
+      const workspace = variantWorkspace()
+      expect(handler(addPayload(defaultThemeId), workspace)).toBe(workspace)
+    },
+  )
 })
 
 describe("remove_theme_custom_* handlers", () => {
-  it.each(REMOVE_CASES)("%s drops a custom slot from a variant theme", (key, handler) => {
-    const seeded = produce(variantWorkspace(), (draft) => {
-      ;(draft.themes[variantThemeId]!.overrides as Record<string, any>)[key] = {
-        custom1: { name: "seed" },
-      }
-    })
-    const removed = handler(removePayload(variantThemeId), seeded)
-    expect(section(removed, key).custom1).toBeUndefined()
-  })
+  it.each(REMOVE_CASES)(
+    "%s drops a custom slot from a variant theme",
+    (key, handler) => {
+      const seeded = produce(variantWorkspace(), (draft) => {
+        ;(draft.themes[variantThemeId]!.overrides as Record<string, any>)[key] =
+          {
+            custom1: { name: "seed" },
+          }
+      })
+      const removed = handler(removePayload(variantThemeId), seeded)
+      expect(section(removed, key).custom1).toBeUndefined()
+    },
+  )
 
-  it.each(REMOVE_CASES)("%s is a no-op for a default theme entry", (_key, handler) => {
-    const workspace = variantWorkspace()
-    expect(handler(removePayload(defaultThemeId), workspace)).toBe(workspace)
-  })
+  it.each(REMOVE_CASES)(
+    "%s is a no-op for a default theme entry",
+    (_key, handler) => {
+      const workspace = variantWorkspace()
+      expect(handler(removePayload(defaultThemeId), workspace)).toBe(workspace)
+    },
+  )
 })

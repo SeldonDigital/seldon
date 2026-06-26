@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../components/constants"
-import type { Action } from "../../types"
 import { createEmptyWorkspace } from "../../helpers/create-empty-workspace"
 import { addComponent } from "../../reducers/handlers/add/add-component"
+import type { Action } from "../../types"
 import { check } from "./check"
 import { validateAction } from "./validate-action"
 import { WorkspaceValidationError } from "./workspace-validation-error"

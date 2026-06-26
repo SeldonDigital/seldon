@@ -1,9 +1,9 @@
 import { produce } from "immer"
 import { describe, expect, it } from "vitest"
 
-import type { Workspace, WorkspaceAction } from "../../types"
 import { createEmptyWorkspace } from "../../helpers/create-empty-workspace"
 import { workspaceReducer } from "../../reducers/reducer"
+import type { Workspace, WorkspaceAction } from "../../types"
 import { workspaceFontCollectionService as service } from "./font-collection.service"
 
 const dispatch = (ws: Workspace, action: WorkspaceAction): Workspace =>
@@ -24,10 +24,15 @@ function googleDefaultEntryId(ws: Workspace): string {
 }
 
 /** First remote family slot in the Google collection plus one of its variants. */
-function firstRemoteSlot(ws: Workspace): { slot: string; name: string; variant: string } {
+function firstRemoteSlot(ws: Workspace): {
+  slot: string
+  name: string
+  variant: string
+} {
   const collection = service.getFontCollection(googleDefaultEntryId(ws), ws)!
   const found = Object.entries(collection.families).find(
-    ([, family]) => family?.origin === "remote" && (family.variants?.length ?? 0) > 0,
+    ([, family]) =>
+      family?.origin === "remote" && (family.variants?.length ?? 0) > 0,
   )!
   const [slot, family] = found
   return { slot, name: family!.name, variant: family!.variants![0]! }
@@ -42,7 +47,9 @@ describe("WorkspaceFontCollectionService.getFontCollection", () => {
   })
 
   it("returns null for a missing entry", () => {
-    expect(service.getFontCollection("ghost", createEmptyWorkspace())).toBeNull()
+    expect(
+      service.getFontCollection("ghost", createEmptyWorkspace()),
+    ).toBeNull()
   })
 
   it("walks a variant entry's parent link and merges overrides", () => {
@@ -65,7 +72,9 @@ describe("WorkspaceFontCollectionService.getVariantSelection", () => {
   it("returns an empty map when no selection is stored", () => {
     const ws = createEmptyWorkspace()
     // The local System collection stores no per-variant selection.
-    expect(service.getVariantSelection(systemDefaultEntryId(ws), ws)).toEqual({})
+    expect(service.getVariantSelection(systemDefaultEntryId(ws), ws)).toEqual(
+      {},
+    )
   })
 
   it("returns the stored per-family selection", () => {
@@ -90,7 +99,9 @@ describe("WorkspaceFontCollectionService enabled-variant queries", () => {
     const ws = createEmptyWorkspace()
     const byFamily = service.getEnabledVariantsByFamily(ws)
     // The seeded Google collection enables variants on its default families.
-    expect(Object.values(byFamily).some((weights) => weights.length > 0)).toBe(true)
+    expect(Object.values(byFamily).some((weights) => weights.length > 0)).toBe(
+      true,
+    )
     expect(service.getEnabledRemoteFamilies(ws).length).toBeGreaterThan(0)
   })
 
@@ -135,7 +146,9 @@ describe("WorkspaceFontCollectionService family grouping", () => {
         variantSelection: { [slot]: { [variant]: true } },
       }
     })
-    expect(service.collectWorkspaceFamilies(ws).some((f) => f.name === name)).toBe(true)
+    expect(
+      service.collectWorkspaceFamilies(ws).some((f) => f.name === name),
+    ).toBe(true)
   })
 })
 

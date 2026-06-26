@@ -2,8 +2,8 @@ import { describe, expect, it } from "vitest"
 
 import type { ExtractPayload } from "../../../../index"
 import { createEmptyWorkspace } from "../../../helpers/create-empty-workspace"
-import { setFontCollectionFamilyVariant } from "./set-font-collection-family-variant"
 import { setFontCollectionFamilyPreset } from "./set-font-collection-family-preset"
+import { setFontCollectionFamilyVariant } from "./set-font-collection-family-variant"
 
 const baseWorkspace = createEmptyWorkspace()
 const fontCollectionId = Object.keys(baseWorkspace["font-collections"])[0]!
@@ -25,7 +25,11 @@ describe("setFontCollectionFamilyPreset", () => {
     expect(populated.variantSelection[slot]["400"]).toBe(true)
 
     const cleared = setFontCollectionFamilyPreset(
-      { fontCollectionId, slot, preset: "none" } as ExtractPayload<"set_font_collection_family_preset">,
+      {
+        fontCollectionId,
+        slot,
+        preset: "none",
+      } as ExtractPayload<"set_font_collection_family_preset">,
       enabled,
     )
     const overrides = cleared["font-collections"][fontCollectionId]!

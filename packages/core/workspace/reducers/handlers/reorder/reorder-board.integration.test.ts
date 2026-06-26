@@ -23,7 +23,7 @@ describe("reorderBoard", () => {
       { boardKey, newIndex: 0 } as ExtractPayload<"reorder_board">,
       ws,
     )
-    const movedOrder = getBoardOrder((moved.boards[boardKey] as any))
+    const movedOrder = getBoardOrder(moved.boards[boardKey] as any)
     const others = Object.entries(moved.boards)
       .filter(([k]) => k !== boardKey)
       .map(([, b]) => getBoardOrder(b as any))
@@ -45,7 +45,10 @@ describe("reorderVariantInBoard", () => {
     const ws = componentWorkspace()
     const rootId = (ws.boards[boardKey] as any).variants[0].id as string
     const result = reorderVariantInBoard(
-      { variantRootId: rootId, newIndex: 1 } as ExtractPayload<"reorder_variant_in_board">,
+      {
+        variantRootId: rootId,
+        newIndex: 1,
+      } as ExtractPayload<"reorder_variant_in_board">,
       ws,
     )
     expect(result).toBe(ws)
@@ -57,7 +60,10 @@ describe("reorderVariantInBoard", () => {
       (n: any) => n.type === "instance",
     )!.id as string
     const result = reorderVariantInBoard(
-      { variantRootId: instanceId, newIndex: 1 } as ExtractPayload<"reorder_variant_in_board">,
+      {
+        variantRootId: instanceId,
+        newIndex: 1,
+      } as ExtractPayload<"reorder_variant_in_board">,
       ws,
     )
     expect(result).toBe(ws)

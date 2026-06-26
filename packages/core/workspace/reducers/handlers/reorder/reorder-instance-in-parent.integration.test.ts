@@ -21,7 +21,10 @@ describe("reorderInstanceInParent", () => {
     const firstChild = userVariant.children![0]!.id
 
     const next = reorderInstanceInParent(
-      { instanceId: firstChild, newIndex: 1 } as ExtractPayload<"reorder_instance_in_parent">,
+      {
+        instanceId: firstChild,
+        newIndex: 1,
+      } as ExtractPayload<"reorder_instance_in_parent">,
       workspace,
     )
 
@@ -36,7 +39,10 @@ describe("reorderInstanceInParent", () => {
 
   it("is a no-op for a non-instance node", () => {
     const result = reorderInstanceInParent(
-      { instanceId: defaultRoot.id, newIndex: 1 } as ExtractPayload<"reorder_instance_in_parent">,
+      {
+        instanceId: defaultRoot.id,
+        newIndex: 1,
+      } as ExtractPayload<"reorder_instance_in_parent">,
       workspace,
     )
 

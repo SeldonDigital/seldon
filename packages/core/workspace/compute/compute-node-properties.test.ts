@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../components/constants"
+import type { ExtractPayload } from "../../index"
 import { ValueType } from "../../properties/constants"
 import type { Properties } from "../../properties/types/properties"
-import type { ExtractPayload } from "../../index"
 import { createEmptyWorkspace } from "../helpers/create-empty-workspace"
 import { addComponent } from "../reducers/handlers/add/add-component"
 import {

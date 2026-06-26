@@ -73,10 +73,12 @@ describe("theme look validation", () => {
   it("validates refs against a theme", () => {
     expect(themeLookRefIsValid("@border.none", defaultTheme)).toBe(true)
     expect(themeLookRefIsValid("@border.none")).toBe(false)
-    expect(themeLookRefIsValid("@border.none", defaultTheme, "shadow")).toBe(false)
-    expect(validateThemeLookPresetRef("border", "@border.none", defaultTheme)).toBe(
-      true,
+    expect(themeLookRefIsValid("@border.none", defaultTheme, "shadow")).toBe(
+      false,
     )
+    expect(
+      validateThemeLookPresetRef("border", "@border.none", defaultTheme),
+    ).toBe(true)
   })
 })
 
@@ -103,7 +105,9 @@ describe("theme look lookup", () => {
 
 describe("picker token and cleared-look detection", () => {
   it("builds picker tokens from the resolved section", () => {
-    expect(getThemeLookPickerToken("border", "hairline")).toBe("@border.hairline")
+    expect(getThemeLookPickerToken("border", "hairline")).toBe(
+      "@border.hairline",
+    )
     expect(getThemeLookPickerToken("background", "primary")).toBe(
       "@gradient.primary",
     )
