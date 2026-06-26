@@ -35,10 +35,10 @@ export default defineConfig({
       // Regression floor only. Set just below the current measured numbers so a
       // drop in coverage fails the run, while new tests are free to raise them.
       thresholds: {
-        statements: 38,
-        branches: 40,
-        functions: 17,
-        lines: 38,
+        statements: 41,
+        branches: 45,
+        functions: 18,
+        lines: 41,
       },
     },
   },

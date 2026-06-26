@@ -59,6 +59,22 @@ describe("addFontCollection", () => {
     )
     expect(next.boards["not-a-real-collection"]).toBeUndefined()
   })
+
+  it("builds the board and curated families when not yet seeded", () => {
+    const stripped = structuredClone(empty())
+    delete stripped.boards.googleFonts
+    delete stripped["font-collections"]["font-collection-googleFonts-default"]
+
+    const next = addFontCollection(
+      { catalogId: "googleFonts" } as ExtractPayload<"add_font_collection">,
+      stripped,
+    )
+
+    expect(next.boards.googleFonts?.type).toBe("font-collection")
+    const entry = next["font-collections"]["font-collection-googleFonts-default"]
+    expect(entry).toBeDefined()
+    expect(Object.keys(entry!.overrides).length).toBeGreaterThan(0)
+  })
 })
 
 describe("addIconSet", () => {

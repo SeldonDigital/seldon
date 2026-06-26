@@ -36,6 +36,23 @@ describe("addVariant", () => {
     const newId = variantIds(after).find((id) => !variantIds(before).includes(id))
     expect((after.nodes[newId!] as EntryNode).type).toBe("variant")
   })
+
+  it("seeds missing descendant component boards when requested", () => {
+    const before = createEmptyWorkspace()
+    const after = addVariant(
+      {
+        boardKey: ComponentId.BUTTON,
+        ensureDescendantComponents: true,
+      } as ExtractPayload<"add_variant">,
+      before,
+    )
+
+    expect(after.boards[ComponentId.BUTTON]).toBeDefined()
+    expect(Object.keys(after.boards).length).toBeGreaterThan(
+      Object.keys(before.boards).length,
+    )
+    expect(variantIds(after).length).toBeGreaterThan(1)
+  })
 })
 
 describe("reorderVariantInBoard", () => {
