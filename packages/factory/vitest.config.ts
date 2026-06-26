@@ -20,15 +20,7 @@ export default defineConfig({
     include: ["**/*.{test,spec}.{ts,tsx}"],
     // No tests authored yet; keep the project ready without failing the run.
     passWithNoTests: true,
-    coverage: {
-      provider: "v8",
-      include: ["export/**", "helpers/**", "styles/**"],
-      exclude: [
-        "dist/**",
-        "**/*.{test,spec}.{ts,tsx}",
-        "**/*.json",
-        "**/index.ts",
-      ],
-    },
+    // Coverage is configured once at the repo-root vitest.config.ts so the whole
+    // workspace reports to a single /coverage folder.
   },
 })

@@ -12,36 +12,7 @@ export default defineConfig({
     root: __dirname,
     environment: "node",
     include: ["**/*.{test,spec}.{ts,tsx}"],
-    coverage: {
-      provider: "v8",
-      include: [
-        "components/**",
-        "font-collections/**",
-        "helpers/**",
-        "icon-registry/**",
-        "icon-sets/**",
-        "properties/**",
-        "rules/**",
-        "themes/**",
-        "utils/**",
-        "workspace/**",
-      ],
-      exclude: [
-        "dist/**",
-        "**/*.{test,spec}.{ts,tsx}",
-        "**/*.json",
-        "**/*.md",
-        "**/*.mjs",
-        "**/index.ts",
-      ],
-      // Regression floor only. Set just below the current measured numbers so a
-      // drop in coverage fails the run, while new tests are free to raise them.
-      thresholds: {
-        statements: 42,
-        branches: 64,
-        functions: 18,
-        lines: 42,
-      },
-    },
+    // Coverage is configured once at the repo-root vitest.config.ts so the whole
+    // workspace reports to a single /coverage folder.
   },
 })
