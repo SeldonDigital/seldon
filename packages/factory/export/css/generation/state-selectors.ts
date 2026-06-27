@@ -11,6 +11,10 @@ import {
  *
  * A state may bind to more than one suffix. The emitter groups them into a
  * single comma-separated rule, so a delta applies through any of the suffixes.
+ *
+ * The suffix kind matches the state's `RESERVED_STATE_EXPRESSION` in core: a
+ * pseudo state uses a pseudo-class, an aria state an attribute, and a class
+ * state a runtime-toggled `.sdn-state-{name}` class.
  */
 const RESERVED_STATE_SELECTOR_SUFFIXES: Record<ReservedStateName, string[]> = {
   hover: [":hover"],
@@ -21,6 +25,7 @@ const RESERVED_STATE_SELECTOR_SUFFIXES: Record<ReservedStateName, string[]> = {
   error: ['[aria-invalid="true"]'],
   selected: ['[aria-selected="true"]'],
   dragged: [".sdn-state-dragged"],
+  activated: [".sdn-state-activated"],
 }
 
 /**
@@ -44,6 +49,7 @@ const ANCESTOR_STATE_SELECTOR_SUFFIXES: Record<ReservedStateName, string[]> = {
   error: ['[aria-invalid="true"]'],
   selected: ['[aria-selected="true"]'],
   dragged: [".sdn-state-dragged"],
+  activated: [".sdn-state-activated"],
 }
 
 /** Runtime-toggled class prefix for custom states and the dragged state. */

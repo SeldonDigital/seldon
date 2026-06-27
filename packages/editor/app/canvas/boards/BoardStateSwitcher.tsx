@@ -1,12 +1,20 @@
 "use client"
 
 import { COLORS } from "@lib/helpers/colors"
-import { CSSProperties, useEffect, useMemo, useRef, useState } from "react"
+import {
+  CSSProperties,
+  Fragment,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react"
 import { createPortal } from "react-dom"
 import {
   type CustomState,
   NORMAL_STATE,
   type NodeState,
+  RESERVED_STATE_GROUPS,
   RESERVED_STATE_LABELS,
   type ReservedStateName,
 } from "@seldon/core/workspace/model/node-state"
@@ -18,18 +26,6 @@ import {
 } from "../hooks/use-board-state-store"
 import { walkComponentTree } from "@lib/workspace/component-tree"
 import { Combobox } from "@seldon/components/custom-components/controls/combobox/Combobox"
-
-// Editor-only menu groups for the reserved states. Each group is alpha-sorted by
-// label and rendered between separators: browser pseudo-class states first, then
-// the view-set aria-attribute states, then the class-driven dragged state.
-const PSEUDO_STATE_GROUP: ReservedStateName[] = [
-  "active",
-  "checked",
-  "focused",
-  "hover",
-]
-const ARIA_STATE_GROUP: ReservedStateName[] = ["disabled", "error", "selected"]
-const CLASS_STATE_GROUP: ReservedStateName[] = ["dragged"]
 
 interface BoardStateSwitcherProps {
   boardKey: string
@@ -313,17 +309,12 @@ export function BoardStateSwitcher({ boardKey }: BoardStateSwitcherProps) {
             Normal
           </div>
 
-          <div style={separatorStyle} />
-
-          {PSEUDO_STATE_GROUP.map(renderReservedState)}
-
-          <div style={separatorStyle} />
-
-          {ARIA_STATE_GROUP.map(renderReservedState)}
-
-          <div style={separatorStyle} />
-
-          {CLASS_STATE_GROUP.map(renderReservedState)}
+          {RESERVED_STATE_GROUPS.map((group) => (
+            <Fragment key={group.expression}>
+              <div style={separatorStyle} />
+              {group.states.map(renderReservedState)}
+            </Fragment>
+          ))}
 
           {customStates.length > 0 && <div style={separatorStyle} />}
 

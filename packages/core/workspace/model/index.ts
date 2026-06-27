@@ -50,9 +50,12 @@ export type {
   NodeState,
   NormalState,
   ReservedStateName,
+  StateExpression,
 } from "./node-state"
 export {
   NORMAL_STATE,
+  RESERVED_STATE_EXPRESSION,
+  RESERVED_STATE_GROUPS,
   RESERVED_STATE_LABELS,
   RESERVED_STATE_NAMES,
   isReservedStateName,
