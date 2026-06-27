@@ -4,20 +4,24 @@
  *
  * License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md
  * Do not redistribute or sublicense without permission.
- *
- * You may not use this software, or any derivative works of it, in whole or in part,
- * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly)
+ * 
+ * You may not use this software, or any derivative works of it, in whole or in part, 
+ * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly) 
  * any machine learning or artificial intelligence system without written permission.
- *
+ * 
  *****/
+ 
 import { ButtonHTMLAttributes } from "react"
 import { HTMLButton } from "../native-react/HTML.Button"
 import { Icon, IconProps } from "../primitives/Icon"
 import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string
+  "data-seldon-ref"?: string
+  seldonRefs?: Record<string, Record<string, unknown>>
   icon?: IconProps | null
   textLabel?: TextLabelProps | null
 }
@@ -42,18 +46,22 @@ export function Button({
   icon = sdn.icon,
   textLabel,
   children,
+  seldonRefs,
   ...props
 }: ButtonProps) {
   const buttonClassName = combineClassNames("sdn-button", className)
-  const iconProps =
+  const iconProps = applyRef(
+    seldonRefs,
     icon === null
       ? null
       : {
           ...sdn.icon,
           ...icon,
           className: combineClassNames(sdn.icon?.className, icon?.className),
-        }
-  const textLabelProps =
+        },
+  )
+  const textLabelProps = applyRef(
+    seldonRefs,
     textLabel === null
       ? null
       : {
@@ -63,7 +71,8 @@ export function Button({
             sdn.textLabel?.className,
             textLabel?.className,
           ),
-        }
+        },
+  )
 
   return (
     <HTMLButton className={buttonClassName} {...props}>
@@ -84,10 +93,11 @@ export function Button({
 //
 const sdn: ButtonProps = {
   icon: {
-    icon: "__default__",
-    className: "sdn-icon sdn-icon--v1uc",
+    icon: "seldon-component",
+    "aria-hidden": "true",
+    className: "sdn-icon sdn-icon--umgs",
   },
   textLabel: {
-    className: "sdn-text-label sdn-text-label--njzv",
+    className: "sdn-text-label sdn-text-label--ylte",
   },
 }

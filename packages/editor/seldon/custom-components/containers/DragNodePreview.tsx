@@ -1,5 +1,5 @@
 import { CSSProperties } from "react"
-import { ItemNodeRow } from "@seldon/components/elements/ItemNodeRow"
+import { ItemNode } from "@seldon/components/elements/ItemNode"
 import { IconProps } from "@seldon/components/primitives/Icon"
 
 const previewStyle: CSSProperties = {
@@ -17,15 +17,12 @@ interface DragNodePreviewProps {
 
 export function DragNodePreview({ label, icon }: DragNodePreviewProps) {
   return (
-    <ItemNodeRow
+    <ItemNode
       buttonIconic={null}
-      icon={null}
+      comboboxField={{}}
       icon2={{ icon }}
-      textLabel={{ children: label }}
+      input={{ value: label, readOnly: true }}
       buttonIconic2={null}
-      icon3={null}
-      buttonIconic3={null}
-      icon4={null}
       style={previewStyle}
     />
   )

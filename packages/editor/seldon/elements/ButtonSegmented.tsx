@@ -4,21 +4,25 @@
  *
  * License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md
  * Do not redistribute or sublicense without permission.
- *
- * You may not use this software, or any derivative works of it, in whole or in part,
- * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly)
+ * 
+ * You may not use this software, or any derivative works of it, in whole or in part, 
+ * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly) 
  * any machine learning or artificial intelligence system without written permission.
- *
+ * 
  *****/
+ 
 import { ButtonHTMLAttributes } from "react"
 import { Button, ButtonProps } from "../elements/Button"
 import { HTMLButton } from "../native-react/HTML.Button"
 import { Icon, IconProps } from "../primitives/Icon"
 import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
 
 export interface ButtonSegmentedProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string
+  "data-seldon-ref"?: string
+  seldonRefs?: Record<string, Record<string, unknown>>
   button?: ButtonProps | null
   icon?: IconProps | null
   textLabel?: TextLabelProps | null
@@ -60,13 +64,15 @@ export function ButtonSegmented({
   icon3 = sdn.icon3,
   textLabel3,
   children,
+  seldonRefs,
   ...props
 }: ButtonSegmentedProps) {
   const buttonSegmentedClassName = combineClassNames(
     "sdn-button-segmented",
     className,
   )
-  const buttonProps =
+  const buttonProps = applyRef(
+    seldonRefs,
     button === null
       ? null
       : {
@@ -76,16 +82,20 @@ export function ButtonSegmented({
             sdn.button?.className,
             button?.className,
           ),
-        }
-  const iconProps =
+        },
+  )
+  const iconProps = applyRef(
+    seldonRefs,
     icon === null
       ? null
       : {
           ...sdn.icon,
           ...icon,
           className: combineClassNames(sdn.icon?.className, icon?.className),
-        }
-  const textLabelProps =
+        },
+  )
+  const textLabelProps = applyRef(
+    seldonRefs,
     textLabel === null
       ? null
       : {
@@ -95,8 +105,10 @@ export function ButtonSegmented({
             sdn.textLabel?.className,
             textLabel?.className,
           ),
-        }
-  const button2Props =
+        },
+  )
+  const button2Props = applyRef(
+    seldonRefs,
     button2 === null
       ? null
       : {
@@ -106,16 +118,20 @@ export function ButtonSegmented({
             sdn.button2?.className,
             button2?.className,
           ),
-        }
-  const icon2Props =
+        },
+  )
+  const icon2Props = applyRef(
+    seldonRefs,
     icon2 === null
       ? null
       : {
           ...sdn.icon2,
           ...icon2,
           className: combineClassNames(sdn.icon2?.className, icon2?.className),
-        }
-  const textLabel2Props =
+        },
+  )
+  const textLabel2Props = applyRef(
+    seldonRefs,
     textLabel2 === null
       ? null
       : {
@@ -125,8 +141,10 @@ export function ButtonSegmented({
             sdn.textLabel2?.className,
             textLabel2?.className,
           ),
-        }
-  const button3Props =
+        },
+  )
+  const button3Props = applyRef(
+    seldonRefs,
     button3 === null
       ? null
       : {
@@ -136,16 +154,20 @@ export function ButtonSegmented({
             sdn.button3?.className,
             button3?.className,
           ),
-        }
-  const icon3Props =
+        },
+  )
+  const icon3Props = applyRef(
+    seldonRefs,
     icon3 === null
       ? null
       : {
           ...sdn.icon3,
           ...icon3,
           className: combineClassNames(sdn.icon3?.className, icon3?.className),
-        }
-  const textLabel3Props =
+        },
+  )
+  const textLabel3Props = applyRef(
+    seldonRefs,
     textLabel3 === null
       ? null
       : {
@@ -155,7 +177,8 @@ export function ButtonSegmented({
             sdn.textLabel3?.className,
             textLabel3?.className,
           ),
-        }
+        },
+  )
 
   return (
     <HTMLButton className={buttonSegmentedClassName} {...props}>
@@ -196,33 +219,36 @@ export function ButtonSegmented({
 //
 const sdn: ButtonSegmentedProps = {
   button: {
-    className: "sdn-button sdn-button--suj9",
+    className: "sdn-button sdn-button--wwhx",
   },
   icon: {
-    icon: "__default__",
-    className: "sdn-icon sdn-icon--v1uc",
+    icon: "seldon-component",
+    "aria-hidden": "true",
+    className: "sdn-icon sdn-icon--umgs",
   },
   textLabel: {
-    className: "sdn-text-label sdn-text-label--njzv",
+    className: "sdn-text-label sdn-text-label--ylte",
   },
   button2: {
-    className: "sdn-button sdn-button--llun",
+    className: "sdn-button sdn-button--mam0",
   },
   icon2: {
-    icon: "__default__",
-    className: "sdn-icon sdn-icon--v1uc",
+    icon: "seldon-component",
+    "aria-hidden": "true",
+    className: "sdn-icon sdn-icon--umgs",
   },
   textLabel2: {
-    className: "sdn-text-label sdn-text-label--njzv",
+    className: "sdn-text-label sdn-text-label--ylte",
   },
   button3: {
-    className: "sdn-button sdn-button--u50r",
+    className: "sdn-button sdn-button--4nmh",
   },
   icon3: {
-    icon: "__default__",
-    className: "sdn-icon sdn-icon--v1uc",
+    icon: "seldon-component",
+    "aria-hidden": "true",
+    className: "sdn-icon sdn-icon--umgs",
   },
   textLabel3: {
-    className: "sdn-text-label sdn-text-label--njzv",
+    className: "sdn-text-label sdn-text-label--ylte",
   },
 }

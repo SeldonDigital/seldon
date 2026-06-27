@@ -10,10 +10,10 @@
  * any machine learning or artificial intelligence system without written permission.
  * 
  *****/
-
+ 
 :root {
   /* Theme: High Contrast */
-  /* Core */
+  /* Modulation */
   --sdn-high-contrast-ratio: 1.25;
   --sdn-high-contrast-font-size: 16px;
   --sdn-high-contrast-size: 1;
@@ -42,11 +42,14 @@
   --sdn-high-contrast-swatch-tint-3: hsl(0 0% 60%);
   --sdn-high-contrast-swatch-tint-4: hsl(0 0% 80%);
   --sdn-high-contrast-swatch-background: hsl(0 4% 8%);
-  --sdn-high-contrast-swatch-seldon-red: hsl(0 100% 65%);
-  --sdn-high-contrast-swatch-seldon-green: hsl(135 76% 59%);
   --sdn-high-contrast-swatch-seldon-blue: hsl(203 100% 62%);
-  --sdn-high-contrast-swatch-seldon-yellow: hsl(60 100% 46%);
+  --sdn-high-contrast-swatch-seldon-orange: hsl(20 95% 60%);
+  --sdn-high-contrast-swatch-seldon-green: hsl(135 76% 59%);
+  --sdn-high-contrast-swatch-seldon-red: hsl(0 100% 65%);
+  --sdn-high-contrast-swatch-seldon-yellow: hsl(60 100% 58%);
   --sdn-high-contrast-swatch-seldon-purple: hsl(300 76% 48%);
+  --sdn-high-contrast-swatch-seldon-dark-gray: hsl(0 0% 15%);
+  --sdn-high-contrast-swatch-seldon-light-gray: hsl(0 0% 96%);
   /* Sizes */
   --sdn-high-contrast-sizes-tiny: 0.125rem;
   --sdn-high-contrast-sizes-xxsmall: 0.25rem;

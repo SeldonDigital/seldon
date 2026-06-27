@@ -10,10 +10,10 @@
  * any machine learning or artificial intelligence system without written permission.
  * 
  *****/
-
+ 
 :root {
   /* Theme: Seldon Light */
-  /* Core */
+  /* Modulation */
   --sdn-seldon-light-ratio: 1.25;
   --sdn-seldon-light-font-size: 16px;
   --sdn-seldon-light-size: 1;
@@ -23,10 +23,10 @@
   /* Colors */
   --sdn-seldon-light-color-base-hue: 0;
   --sdn-seldon-light-color-base-saturation: 0%;
-  --sdn-seldon-light-color-base-lightness: 96%;
+  --sdn-seldon-light-color-base-lightness: 88%;
   --sdn-seldon-light-color-harmony: 5;
   --sdn-seldon-light-color-angle: 24deg;
-  --sdn-seldon-light-color-step: -12;
+  --sdn-seldon-light-color-step: -8;
   --sdn-seldon-light-color-white-point: 98%;
   --sdn-seldon-light-color-gray-point: 50%;
   --sdn-seldon-light-color-black-point: 8%;
@@ -36,12 +36,13 @@
   --sdn-seldon-light-swatch-white: hsl(0 0% 98%);
   --sdn-seldon-light-swatch-gray: hsl(0 0% 50%);
   --sdn-seldon-light-swatch-black: hsl(0 0% 8%);
-  --sdn-seldon-light-swatch-primary: hsl(0 0% 96%);
-  --sdn-seldon-light-swatch-shade-1: hsl(0 0% 84%);
+  --sdn-seldon-light-swatch-primary: hsl(0 0% 88%);
+  --sdn-seldon-light-swatch-shade-1: hsl(0 0% 80%);
   --sdn-seldon-light-swatch-shade-2: hsl(0 0% 72%);
-  --sdn-seldon-light-swatch-shade-3: hsl(0 0% 60%);
-  --sdn-seldon-light-swatch-shade-4: hsl(0 0% 48%);
+  --sdn-seldon-light-swatch-shade-3: hsl(0 0% 64%);
+  --sdn-seldon-light-swatch-shade-4: hsl(0 0% 56%);
   --sdn-seldon-light-swatch-background: hsl(0 4% 8%);
+  --sdn-seldon-light-swatch-active: hsl(203 100% 62%);
   --sdn-seldon-light-swatch-punch: hsl(20 95% 60%);
   --sdn-seldon-light-swatch-positive: hsl(135 76% 59%);
   --sdn-seldon-light-swatch-negative: hsl(0 100% 65%);

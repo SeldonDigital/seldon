@@ -1,19 +1,19 @@
-/**\***
-
--
-- This code was generated using Seldon (https://github.com/SeldonDigital/seldon)
--
-- License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md
-- Do not redistribute or sublicense without permission.
--
-- You may not use this software, or any derivative works of it, in whole or in part,
-- for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly)
-- any machine learning or artificial intelligence system without written permission.
-- **\***/
-
+/*****
+ *
+ * This code was generated using Seldon (https://github.com/SeldonDigital/seldon)
+ *
+ * License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md
+ * Do not redistribute or sublicense without permission.
+ * 
+ * You may not use this software, or any derivative works of it, in whole or in part, 
+ * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly) 
+ * any machine learning or artificial intelligence system without written permission.
+ * 
+ *****/
+ 
 # Seldon Components
 
-This guide will help you understand how to use these components in your React application. It describes the exported component output. Examples such as `CardProduct` and `Button` are illustrative. This folder itself ships the shared styles, the `Fonts` component, and `custom-components/`.
+This guide will help you understand how to use these components in your React application.
 
 ## Overview
 
@@ -36,7 +36,7 @@ Every Seldon component can be used in these ways:
 <CardProduct />
 
 // 2. Partial customization (override specific content elements)
-<CardProduct
+<CardProduct 
   textTagline={{ children: "New Product" }}
   textTitle={{ children: "Custom Title" }}
 />
@@ -58,27 +58,25 @@ Every Seldon component can be used in these ways:
 Components have two types of elements:
 
 #### Schema Elements
-
 These elements come from the component's schema. They have default values and render by default. Pass `null` to remove one:
 
 ```tsx
 // Every schema element renders because it has a default in the function signature
 <CardProduct />  // frame, textTagline, textTitle, description, and bar all render
 
-<CardProduct
+<CardProduct 
   textTagline={{ children: "Custom tagline" }}  // Will render with custom content
   bar={null}                                    // Suppressed: the action bar will not render
 />
 ```
 
 #### Inline Extras
-
 These elements were added in the workspace outside the component's schema. They have no default and only appear when you pass their prop:
 
 ```tsx
 // An extra fourth button was added to this card's bar in the workspace
 <CardProduct
-  button4={{ onClick: () => alert("Extra action!") }} // Will render
+  button4={{ onClick: () => alert("Extra action!") }}  // Will render
   icon4={{ icon: "material-favorite" }}
   // Omit button4 entirely and the extra button does not render
 />
@@ -92,13 +90,13 @@ The function signature tells you which props are schema elements and which are i
 
 ```tsx
 export function CardProduct({
-  frame = sdn.frame, // ✅ Rendered by default (pass null to remove)
-  textTagline = sdn.textTagline, // ✅ Rendered by default (pass null to remove)
-  textTitle = sdn.textTitle, // ✅ Rendered by default (pass null to remove)
-  description = sdn.description, // ✅ Rendered by default (pass null to remove)
-  bar = sdn.bar, // ✅ Rendered by default (pass null to remove)
-  button = sdn.button, // ✅ Rendered by default (pass null to remove)
-  button4, // ⚠️  Inline extra (renders only when passed)
+  frame = sdn.frame,              // ✅ Rendered by default (pass null to remove)
+  textTagline = sdn.textTagline,  // ✅ Rendered by default (pass null to remove)
+  textTitle = sdn.textTitle,      // ✅ Rendered by default (pass null to remove)
+  description = sdn.description,  // ✅ Rendered by default (pass null to remove)
+  bar = sdn.bar,                  // ✅ Rendered by default (pass null to remove)
+  button = sdn.button,            // ✅ Rendered by default (pass null to remove)
+  button4,                        // ⚠️  Inline extra (renders only when passed)
   // ...
 }: CardProductProps)
 ```
@@ -110,7 +108,7 @@ export function CardProduct({
 ### 1. Customizing Text Content
 
 ```tsx
-<CardProduct
+<CardProduct 
   textTagline={{ children: "Limited Time Offer" }}
   textTitle={{ children: "Premium Headphones" }}
   description={{ children: "High-quality audio experience." }}
@@ -137,13 +135,13 @@ export function CardProduct({
 ```tsx
 <CardProduct
   className="my-custom-card"
-  textTagline={{
+  textTagline={{ 
     children: "New Release",
-    className: "highlight-text",
+    className: "highlight-text"
   }}
-  style={{
+  style={{ 
     maxWidth: 400,
-    margin: "20px auto",
+    margin: "20px auto"
   }}
 />
 ```
@@ -158,10 +156,10 @@ function ProductCard({ showActions, isLoggedIn }) {
     <CardProduct
       textTagline={{ children: "Featured Product" }}
       textTitle={{ children: "Product Name" }}
-
+      
       {/* Remove the whole action bar when actions are disabled */}
       bar={showActions ? undefined : null}
-
+      
       {/* Pass the extra favorite button only when logged in */}
       {...(isLoggedIn && {
         button4: { onClick: () => toggleFavorite() },
@@ -184,7 +182,7 @@ Seldon components use Material Icons by default. Common icons include:
 - `material-check` - Checkmark
 
 ```tsx
-<CardProduct
+<CardProduct 
   icon={{ icon: "material-star" }}
   icon2={{ icon: "material-favorite" }}
   icon3={{ icon: "material-shoppingCart" }}
@@ -199,28 +197,16 @@ Every component includes CSS classes for styling:
 
 ```css
 /* Base component styles (default variant) */
-.sdn-card-product {
-  /* Base card styles */
-}
-.sdn-button {
-  /* Base button styles */
-}
-.sdn-text-tagline {
-  /* Base tagline text styles */
-}
+.sdn-card-product { /* Base card styles */ }
+.sdn-button { /* Base button styles */ }
+.sdn-text-tagline { /* Base tagline text styles */ }
 
 /* Named variant styles */
-.sdn-button-iconic {
-  /* A "iconic" button variant */
-}
+.sdn-button-iconic { /* A "iconic" button variant */ }
 
 /* Instance styles (variant class + -- + short hash) */
-.sdn-button-iconic--abc12 {
-  /* A specific button instance */
-}
-.sdn-text-title--njjv0 {
-  /* A specific title text instance */
-}
+.sdn-button-iconic--abc12 { /* A specific button instance */ }
+.sdn-text-title--njjv0 { /* A specific title text instance */ }
 ```
 
 ### Custom Styling
@@ -231,16 +217,16 @@ You can override styles in several ways:
 // 1. Component-level className
 <CardProduct className="my-custom-card" />
 
-// 2. Element-level className
-<CardProduct
-  textTagline={{
+// 2. Element-level className  
+<CardProduct 
+  textTagline={{ 
     children: "Featured",
     className: "featured-tag"
   }}
 />
 
 // 3. Inline styles
-<CardProduct
+<CardProduct 
   style={{ backgroundColor: "#f0f0f0" }}
   textTagline={{
     children: "Special",
@@ -249,14 +235,14 @@ You can override styles in several ways:
 />
 
 // 4. Using theme variables for consistent styling
-<CardProduct
-  style={{
+<CardProduct 
+  style={{ 
     backgroundColor: "hsl(var(--sdn-swatch-background))",
     border: "1px solid hsl(var(--sdn-swatch-primary))"
   }}
   textTagline={{
     children: "Themed Content",
-    style: {
+    style: { 
       color: "hsl(var(--sdn-swatch-punch))",
       fontSize: "var(--sdn-font-size-medium)"
     }
@@ -274,18 +260,21 @@ The default `seldon` theme uses bare `--sdn-` variables and ships as `styles-sel
 /* Available theme variables include: */
 :root {
   /* Colors */
-  --sdn-swatch-background: /* Dynamic background color */ --sdn-swatch-primary:
-    /* Primary brand color */
-    --sdn-swatch-punch: /* Custom brand colors, named by their theme labels */
-    --sdn-swatch-positive:
-    /* Custom brand colors, named by their theme labels */
-    --sdn-swatch-tint-1: /* Harmony-based palette colors */ /* Typography */
-    --sdn-font-size-small: /* Consistent font sizes */
-    --sdn-font-size-medium: /* Consistent font sizes */
-    --sdn-font-family-primary: /* Brand typography */ /* Spacing */
-    --sdn-margin-tight: /* Consistent spacing */
-    --sdn-padding-cozy: /* Consistent spacing */
-    --sdn-gap-comfortable: /* Consistent spacing */;
+  --sdn-swatch-background: /* Dynamic background color */
+  --sdn-swatch-primary: /* Primary brand color */
+  --sdn-swatch-punch: /* Custom brand colors, named by their theme labels */
+  --sdn-swatch-positive: /* Custom brand colors, named by their theme labels */
+  --sdn-swatch-tint-1: /* Harmony-based palette colors */
+  
+  /* Typography */
+  --sdn-font-size-small: /* Consistent font sizes */
+  --sdn-font-size-medium: /* Consistent font sizes */
+  --sdn-font-family-primary: /* Brand typography */
+  
+  /* Spacing */
+  --sdn-margin-tight: /* Consistent spacing */
+  --sdn-padding-cozy: /* Consistent spacing */
+  --sdn-gap-comfortable: /* Consistent spacing */
 }
 ```
 
@@ -293,13 +282,13 @@ The default `seldon` theme uses bare `--sdn-` variables and ships as `styles-sel
 // Use theme variables in your existing components for consistency
 function MyExistingButton({ children, ...props }) {
   return (
-    <button
+    <button 
       style={{
         backgroundColor: "hsl(var(--sdn-swatch-primary))",
         color: "hsl(var(--sdn-swatch-background))",
         fontSize: "var(--sdn-font-size-medium)",
         padding: "var(--sdn-padding-cozy)",
-        fontFamily: "var(--sdn-font-family-primary)",
+        fontFamily: "var(--sdn-font-family-primary)"
       }}
       {...props}
     >
@@ -309,14 +298,13 @@ function MyExistingButton({ children, ...props }) {
 }
 
 // Your existing components will now match Seldon component styling
-;<div>
+<div>
   <CardProduct textTagline={{ children: "Seldon Card" }} />
   <MyExistingButton>Matching Button</MyExistingButton>
 </div>
 ```
 
 **Benefits of using theme variables:**
-
 - Consistent visual design across all components
 - Automatic updates when themes change
 - Easy integration with existing component libraries
@@ -327,15 +315,15 @@ function MyExistingButton({ children, ...props }) {
 All components are fully typed. Each component and its props interface are exported from their own file under the matching level folder (for example `elements/Button.tsx`, `parts/CardProduct.tsx`). Import them by path:
 
 ```tsx
-import { ButtonProps } from "./elements/Button"
-import { CardProduct, CardProductProps } from "./parts/CardProduct"
+import { CardProduct, CardProductProps } from './parts/CardProduct'
+import { ButtonProps } from './elements/Button'
 
 function CustomProduct(props: CardProductProps) {
   const buttonConfig: ButtonProps = {
     onClick: () => alert("Custom action!"),
-    className: "custom-button",
+    className: "custom-button"
   }
-
+  
   return <CardProduct {...props} button={buttonConfig} />
 }
 ```
@@ -343,7 +331,6 @@ function CustomProduct(props: CardProductProps) {
 ## Best Practices
 
 ### 1. Start Simple
-
 Begin with minimal props and gradually add customizations:
 
 ```tsx
@@ -351,13 +338,13 @@ Begin with minimal props and gradually add customizations:
 <CardProduct />
 
 // Then add content
-<CardProduct
+<CardProduct 
   textTagline={{ children: "My Product" }}
   textTitle={{ children: "Custom Title" }}
 />
 
 // Finally, full customization
-<CardProduct
+<CardProduct 
   textTagline={{ children: "My Product" }}
   textTitle={{ children: "Custom Title" }}
   button={{ onClick: handleClick }}
@@ -367,7 +354,6 @@ Begin with minimal props and gradually add customizations:
 ```
 
 ### 2. Remove Elements With null, Skip Extras By Omission
-
 Pass `null` to remove a schema element. Omit an inline extra's prop to skip it:
 
 ```tsx
@@ -375,7 +361,7 @@ Pass `null` to remove a schema element. Omit an inline extra's prop to skip it:
 <CardProduct button4={{}} />
 
 // ✅ Do this (remove schema elements with null, pass extras with meaningful content)
-<CardProduct
+<CardProduct 
   button2={null}
   button4={{ onClick: handleAction }}
   icon4={{ icon: "material-star" }}
@@ -383,27 +369,25 @@ Pass `null` to remove a schema element. Omit an inline extra's prop to skip it:
 ```
 
 ### 3. Leverage Container Defaults
-
 Take advantage of the containers that render by default (frame, bar):
 
 ```tsx
 // This gets you the full layout structure with custom content
-<CardProduct
+<CardProduct 
   textTagline={{ children: "My Custom Title" }}
   description={{ children: "My description" }}
 />
 ```
 
 ### 4. Maintain Accessibility
-
 Always provide meaningful labels and ARIA attributes:
 
 ```tsx
-<CardProduct
-  button={{
+<CardProduct 
+  button={{ 
     onClick: handlePurchase,
     "aria-label": "Purchase this product",
-    title: "Click to buy now",
+    title: "Click to buy now"
   }}
   textLabel={{ children: "Buy Now" }}
 />
@@ -412,7 +396,6 @@ Always provide meaningful labels and ARIA attributes:
 ## Troubleshooting
 
 ### Elements Not Rendering
-
 - Check if the element has a default value in the function signature (look for `= sdn.something`)
 - Elements without defaults render only when you pass their prop; omit the prop to skip the element
 - Elements with defaults render unless you pass `null` for their prop
@@ -421,13 +404,11 @@ Always provide meaningful labels and ARIA attributes:
 - Verify that required nested props are included (e.g., `children` for labels, `icon` for icons)
 
 ### Styling Issues
-
 - Import `styles.css` and each `styles-{slug}.css` file your workspace exports
 - Check CSS class conflicts with your existing styles
 - Use browser dev tools to inspect generated class names (instance classes end with a short hash like `sdn-button-iconic--abc12`)
 
 ### TypeScript Errors
-
 - Ensure you're importing the correct prop interfaces
 - Check that all required properties are provided
 - Use optional chaining for nested props: `button?.onClick`
@@ -436,8 +417,7 @@ Always provide meaningful labels and ARIA attributes:
 ## Getting Help
 
 Your exported components include:
-
-- `Fonts.tsx` - Font loading component
+- `Fonts.tsx` - Font loading component  
 - `styles.css` - Reset, base, and component styles
 - `styles-{slug}.css` - Theme token variables, one file per workspace theme
 - Individual component files with full TypeScript definitions

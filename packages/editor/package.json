@@ -7,6 +7,7 @@
     "fonts:licenses": "node scripts/copy-font-licenses.mjs",
     "fonts:files": "node scripts/copy-font-files.mjs",
     "notices:thirdparty": "node scripts/generate-third-party-notices.mjs",
+    "export:seldon": "node scripts/export-seldon.mjs",
     "dev": "node scripts/append-chrome-font-fallback.mjs && node scripts/copy-font-licenses.mjs && node scripts/copy-font-files.mjs && vite",
     "build": "node scripts/append-chrome-font-fallback.mjs && node scripts/copy-font-licenses.mjs && node scripts/copy-font-files.mjs && vite build",
     "build:release": "npm run notices:thirdparty && npm run build",
