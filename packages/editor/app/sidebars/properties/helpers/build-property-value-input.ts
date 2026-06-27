@@ -17,8 +17,6 @@ interface BuildPropertyValueInputArgs {
   displayValue: string
   /** Ref attached to the slot input, used for focus and menu anchoring. */
   valueRef: Ref<HTMLInputElement>
-  /** Enter edit mode (single click on the value field). */
-  beginEdit: (event: MouseEvent) => void
   /** Leave edit mode without committing. */
   endEdit: () => void
   onTabNext: () => boolean
@@ -37,19 +35,20 @@ export function buildPropertyValueInput({
   isEditing,
   displayValue,
   valueRef,
-  beginEdit,
   endEdit,
   onTabNext,
   onTabPrev,
 }: BuildPropertyValueInputArgs): ValueInputProps {
-  // Display mode: read-only value; a click flips the row into edit mode. Rows
-  // with no control type (look parents, dimmed) stay inert.
+  // Display mode: read-only and inert, mirroring the objects-sidebar name slot.
+  // `pointerEvents: none` keeps hover and selection on the combobox field, and
+  // the field's own click (wired by the shell) is what flips the row into edit
+  // mode. The field becomes interactive again in the edit branches below.
   if (!isEditing || control.kind === "none") {
     return {
       ref: valueRef,
       value: displayValue,
       readOnly: true,
-      ...(control.kind === "none" ? {} : { onMouseDown: beginEdit }),
+      style: { pointerEvents: "none" },
     }
   }
 

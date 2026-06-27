@@ -35,12 +35,14 @@ function VMPropertyInner(props: RowPropertyProps) {
   }
   if (listItemProps.icon2) seldonRefs.valueIcon = { ...listItemProps.icon2 }
 
-  // Anchor the floating option list to the value field. `ComboboxField` forwards
-  // this ref (React 19 ref-as-prop) to its `Frame` div, which the position hook
-  // measures. Hover, selected, and the rest come from the generated
-  // `ComboboxField` CSS, so no field state is set here.
+  // Anchor the floating option list to the value field and enter edit on a single
+  // click of the field. `ComboboxField` forwards the ref (React 19 ref-as-prop)
+  // to its `Frame` div, which the position hook measures, and forwards `onClick`
+  // to the same div. The display input is inert, so the click lands on the field.
+  // Hover and selected styling come from the generated `ComboboxField` CSS.
   const comboboxField = {
     ref: view.setValueFieldRef,
+    onClick: view.onValueFieldClick,
   } as unknown as ComboboxFieldProps
 
   // Positional enabler: suppress `icon2` with `null` when the value icon is

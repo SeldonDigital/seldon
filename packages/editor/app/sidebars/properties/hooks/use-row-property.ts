@@ -478,7 +478,12 @@ export function useRowProperty({
     setIsEditingProperty(true)
   }
 
-  const handleLabel2Click = useCallback(
+  // Single click on the combobox-field value frame flips the row into edit mode.
+  // The display input is inert (`pointerEvents: none`), so this click lands on
+  // the field, mirroring how a node row's double-click rides the row instead of
+  // its inert name input. Inner buttons stop their own propagation, so a click on
+  // the options-menu button never reaches here.
+  const handleValueFieldClick = useCallback(
     (event: React.MouseEvent) => {
       if (isStateReadOnly) {
         event.stopPropagation()
@@ -504,7 +509,6 @@ export function useRowProperty({
     isEditing: isEditingProperty,
     displayValue: value,
     valueRef,
-    beginEdit: handleLabel2Click,
     endEdit,
     onTabNext: handleTabNext,
     onTabPrev: handleTabPrev,
@@ -705,7 +709,7 @@ export function useRowProperty({
     showMenuIcon: shouldShowMenuIcon(),
     isReadOnly: isStateReadOnly,
     handleToggle,
-    handleLabel2Click,
+    handleLabel2Click: handleValueFieldClick,
     handleUploadClick,
     handleMenuClick,
   })
@@ -781,6 +785,7 @@ export function useRowProperty({
     valueCellProps,
     control,
     valueLabelProps,
+    onValueFieldClick: handleValueFieldClick,
     setValueFieldRef: setFrameRef,
     endEdit,
     isEditingProperty,
