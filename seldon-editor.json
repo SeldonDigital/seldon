@@ -4376,6 +4376,14 @@
               }
             }
           }
+        },
+        "focused": {
+          "border": {
+            "color": {
+              "type": "theme.categorical",
+              "value": "@swatch.custom2"
+            }
+          }
         }
       }
     },
@@ -4722,6 +4730,17 @@
             "color": {
               "type": "option",
               "value": "transparent"
+            }
+          }
+        },
+        "focused": {
+          "border": {
+            "opacity": {
+              "type": "exact",
+              "value": {
+                "unit": "%",
+                "value": 100
+              }
             }
           }
         }
@@ -13712,14 +13731,7 @@
         }
       },
       "states": {
-        "focused": {
-          "border": {
-            "color": {
-              "type": "theme.categorical",
-              "value": "@swatch.custom2"
-            }
-          }
-        }
+        "focused": {}
       }
     },
     "component-button-iVVLVSBT": {
@@ -13775,6 +13787,7 @@
     },
     "component-icon-Aa4AD1wO": {
       "id": "component-icon-Aa4AD1wO",
+      "ref": "propertyToggleIcon",
       "type": "instance",
       "level": "primitive",
       "label": "Icon",
@@ -13829,6 +13842,7 @@
     },
     "component-text-Xg6PReX9": {
       "id": "component-text-Xg6PReX9",
+      "ref": "propertyLabel",
       "type": "instance",
       "level": "primitive",
       "label": "Label",
@@ -13924,6 +13938,7 @@
     },
     "component-input-IeGTgo7S": {
       "id": "component-input-IeGTgo7S",
+      "ref": "valueLabel",
       "type": "instance",
       "level": "primitive",
       "label": "Input",
@@ -14372,14 +14387,7 @@
         }
       },
       "states": {
-        "focused": {
-          "border": {
-            "color": {
-              "type": "theme.categorical",
-              "value": "@swatch.custom2"
-            }
-          }
-        }
+        "focused": {}
       }
     },
     "component-item-HSgjhz6b": {
@@ -14435,6 +14443,7 @@
     },
     "component-item-zn8GFZsT": {
       "id": "component-item-zn8GFZsT",
+      "ref": "nodeToggleIcon",
       "type": "instance",
       "level": "primitive",
       "label": "Icon",
@@ -14486,6 +14495,7 @@
     },
     "component-item-zdDEhaL4": {
       "id": "component-item-zdDEhaL4",
+      "ref": "nodeIcon",
       "type": "instance",
       "level": "primitive",
       "label": "Icon",
@@ -14525,6 +14535,7 @@
     },
     "component-item-pZCfJ3k6": {
       "id": "component-item-pZCfJ3k6",
+      "ref": "nodeLabel",
       "type": "instance",
       "level": "primitive",
       "label": "Input",
@@ -15149,6 +15160,7 @@
     },
     "component-item-7MKLAjub": {
       "id": "component-item-7MKLAjub",
+      "ref": "sectionToggleIcon",
       "type": "instance",
       "level": "primitive",
       "label": "Icon",
@@ -15203,6 +15215,7 @@
     },
     "component-item-Z34z7Dhr": {
       "id": "component-item-Z34z7Dhr",
+      "ref": "sectionLabel",
       "type": "instance",
       "level": "primitive",
       "label": "Label",
@@ -15793,6 +15806,17 @@
               "value": "transparent"
             }
           }
+        },
+        "focused": {
+          "border": {
+            "opacity": {
+              "type": "exact",
+              "value": {
+                "unit": "%",
+                "value": 100
+              }
+            }
+          }
         }
       }
     },
@@ -15944,6 +15968,17 @@
             "color": {
               "type": "theme.categorical",
               "value": "@swatch.custom1"
+            }
+          }
+        },
+        "focused": {
+          "border": {
+            "opacity": {
+              "type": "exact",
+              "value": {
+                "unit": "%",
+                "value": 100
+              }
             }
           }
         }

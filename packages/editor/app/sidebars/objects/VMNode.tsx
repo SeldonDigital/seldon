@@ -185,6 +185,17 @@ const VMNodeInner = function VMNodeInner({
     },
   }
 
+  // Drive every slot through its stable workspace ref. The trailing actions icon
+  // has no ref; it stays on the generated `seldon-more` default and is hidden by
+  // the actions button placeholder (visibility cascades), so it needs none.
+  const seldonRefs = {
+    nodeToggle: { ...buttonIconic },
+    nodeToggleIcon: { ...toggleIcon },
+    nodeIcon: { ...icon2 },
+    nodeLabel: { ...nameInput },
+    nodeActions: { ...actionsMenu.buttonIconic },
+  }
+
   return (
     <>
       <RowSelectionTarget
@@ -202,13 +213,9 @@ const VMNodeInner = function VMNodeInner({
           onCanvasTrackingLeave={handleCanvasTrackingLeave}
         >
           <ItemNode
-            buttonIconic={buttonIconic}
-            icon={toggleIcon}
+            buttonIconic={{}}
             comboboxField={{}}
-            icon2={icon2}
-            input={nameInput}
-            buttonIconic2={actionsMenu.buttonIconic}
-            icon3={actionsMenu.icon}
+            seldonRefs={seldonRefs}
             onClick={onClick}
             onDoubleClick={onDoubleClick}
             onMouseEnter={handleCanvasTrackingEnter}

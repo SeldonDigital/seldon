@@ -18,14 +18,24 @@ export function VMSection({ section }: VMSectionProps) {
   const { handleClick, handleMouseEnter, handleMouseLeave } =
     useSectionHeaderRow({ onToggle })
 
+  // Drive each slot through its stable workspace ref. Conditional slots still
+  // need a positional enabler to render (`{}` to show, `null` to hide); their
+  // data flows through `seldonRefs`. The add control is hidden when absent.
+  const seldonRefs: Record<string, Record<string, unknown>> = {
+    sectionToggle: { ...buttonIconic },
+    sectionToggleIcon: { icon },
+    sectionLabel: { children: label },
+  }
+  if (buttonIconic2) seldonRefs.sectionAdd = { ...buttonIconic2 }
+
   return (
     <ItemSection
-      buttonIconic={buttonIconic}
-      icon={{ icon }}
+      buttonIconic={{}}
       formControlComboboxControl={{}}
-      textLabel={{ children: label }}
-      buttonIconic2={buttonIconic2 ?? null}
+      textLabel={{}}
+      buttonIconic2={buttonIconic2 ? {} : null}
       buttonIconic3={null}
+      seldonRefs={seldonRefs}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onClick={handleClick}

@@ -125,6 +125,15 @@ export function VMResourceEntry({
     onSubmit: submitLabel,
   })
 
+  // Resource rows are leaves: the toggle slot stays an empty spacer, and the
+  // trailing actions icon keeps the generated `seldon-more` default, hidden by
+  // the actions button placeholder. Per-row data flows through stable refs.
+  const seldonRefs = {
+    nodeIcon: { ...icon2 },
+    nodeLabel: { ...nameInput },
+    nodeActions: { ...actionsMenu.buttonIconic },
+  }
+
   return (
     <>
       <RowSelectionTarget
@@ -135,10 +144,7 @@ export function VMResourceEntry({
         <ItemNode
           buttonIconic={{}}
           comboboxField={{}}
-          icon2={icon2}
-          input={nameInput}
-          buttonIconic2={actionsMenu.buttonIconic}
-          icon3={actionsMenu.icon}
+          seldonRefs={seldonRefs}
           onClick={onClick}
           onDoubleClick={onDoubleClick}
           aria-selected={isActive || undefined}

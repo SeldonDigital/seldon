@@ -263,6 +263,7 @@ const sdn: ItemPropertyProps = {
     icon: "material-chevronDown",
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--vsau",
+    "data-seldon-ref": "propertyToggleIcon",
   },
   formControlComboboxControl: {
     "aria-hidden": "false",
@@ -270,6 +271,7 @@ const sdn: ItemPropertyProps = {
   },
   textLabel: {
     className: "sdn-text-label sdn-text-label--xg6p",
+    "data-seldon-ref": "propertyLabel",
   },
   comboboxField: {
     "aria-hidden": "false",
@@ -286,6 +288,7 @@ const sdn: ItemPropertyProps = {
     role: "combobox",
     "aria-haspopup": "listbox",
     className: "sdn-input sdn-input--n6aw",
+    "data-seldon-ref": "valueLabel",
   },
   buttonIconic2: {
     className: "sdn-button-iconic sdn-button-iconic--pgsr",

@@ -30,24 +30,34 @@ function VMPropertyInner(props: RowPropertyProps) {
   const { listItemProps } = view
   const layerDrag = getLayerDragContext(props)
 
-  // Render the exported `ItemProperty` through its slots. Slot props come
-  // straight from the row hook. The value is shown through the combobox `input`
-  // as a read-only display.
+  // Drive each slot through its stable workspace ref. The value displays through
+  // the combobox `input` as read-only. The trailing actions icon keeps the
+  // generated `seldon-more` default, hidden by the actions button placeholder.
+  const seldonRefs: Record<string, Record<string, unknown>> = {
+    propertyToggle: { ...listItemProps.buttonIconic },
+    propertyToggleIcon: { ...listItemProps.icon },
+    propertyLabel: { ...listItemProps.textLabel },
+    valueLabel: {
+      value: view.valueCellProps.value ?? "",
+      readOnly: true,
+      tabIndex: -1,
+    },
+    valueOptionsMenu: { ...listItemProps.buttonIconic2 },
+    propertyActions: { ...actionsMenu.buttonIconic },
+  }
+  if (listItemProps.icon2) seldonRefs.valueIcon = { ...listItemProps.icon2 }
+
+  // Render the exported `ItemProperty` through its slots. `textLabel` is a
+  // conditional slot, so it keeps a positional enabler. `icon2` is suppressed
+  // with a positional `null` when the value icon is hidden or drawn as a dynamic
+  // chip. `icon3` (the options-menu icon) has no workspace ref yet, so it stays
+  // positional; add a `valueOptionsMenuIcon` ref to move it onto `seldonRefs`.
   const row = (
     <ItemProperty
-      buttonIconic={listItemProps.buttonIconic}
-      icon={listItemProps.icon}
-      textLabel={listItemProps.textLabel}
-      icon2={listItemProps.icon2 ?? null}
-      input={{
-        value: view.valueCellProps.value ?? "",
-        readOnly: true,
-        tabIndex: -1,
-      }}
-      buttonIconic2={listItemProps.buttonIconic2}
+      textLabel={{}}
+      icon2={listItemProps.icon2 ? undefined : null}
       icon3={listItemProps.icon3}
-      buttonIconic3={actionsMenu.buttonIconic}
-      icon4={actionsMenu.icon}
+      seldonRefs={seldonRefs}
       onClick={view.onRowClick}
       onDoubleClick={view.onRowDoubleClick}
     />

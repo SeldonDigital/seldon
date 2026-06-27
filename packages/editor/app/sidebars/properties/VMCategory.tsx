@@ -37,19 +37,28 @@ export function VMCategory({ section, actions, onAddCustom }: VMCategoryProps) {
       }
     : undefined
 
-  // The new section row keeps the "+" add control in its own slot (buttonIconic2)
-  // ahead of the trailing "…" actions menu (buttonIconic3). The actions slot
-  // always binds the hook props so the row footprint stays stable.
+  // Drive each slot through its stable workspace ref. Conditional slots keep a
+  // positional enabler to render (`{}` to show, `null` to hide); their data
+  // flows through `seldonRefs`. The actions slot always renders (its placeholder
+  // hides itself when empty), and its trailing icon stays on the generated
+  // `seldon-more` default, hidden by that placeholder, so it needs no ref.
+  const seldonRefs: Record<string, Record<string, unknown>> = {
+    sectionToggle: { ...buttonIconic },
+    sectionToggleIcon: { icon },
+    sectionLabel: { children: label },
+    sectionActions: { ...actionsMenu.buttonIconic },
+  }
+  if (addButton) seldonRefs.sectionAdd = { ...addButton }
+
   return (
     <Fragment>
       <ItemSection
-        buttonIconic={buttonIconic}
-        icon={{ icon }}
+        buttonIconic={{}}
         formControlComboboxControl={{}}
-        textLabel={{ children: label }}
-        buttonIconic2={addButton ?? null}
-        buttonIconic3={actionsMenu.buttonIconic}
-        icon3={actionsMenu.icon}
+        textLabel={{}}
+        buttonIconic2={addButton ? {} : null}
+        buttonIconic3={{}}
+        seldonRefs={seldonRefs}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         onClick={handleClick}

@@ -41,8 +41,8 @@ function VMBoardEmpty({ label }: { label: string }) {
       buttonIconic={null}
       comboboxField={{}}
       icon2={null}
-      input={{ value: label, readOnly: true }}
       buttonIconic2={null}
+      seldonRefs={{ nodeLabel: { value: label, readOnly: true } }}
       aria-disabled
       data-testid="objects-sidebar-empty-section"
     />
@@ -147,6 +147,17 @@ function VMBoardRow({
     },
   }
 
+  // Drive every slot through its stable workspace ref. The trailing actions icon
+  // has no ref; it keeps the generated `seldon-more` default and is hidden by the
+  // actions button placeholder (visibility cascades), so it needs none.
+  const seldonRefs = {
+    nodeToggle: { ...buttonIconic },
+    nodeToggleIcon: { ...toggleIcon },
+    nodeIcon: { ...icon2 },
+    nodeLabel: { ...nameInput },
+    nodeActions: { ...actionsMenu.buttonIconic },
+  }
+
   return (
     <>
       <RowSelectionTarget
@@ -155,13 +166,9 @@ function VMBoardRow({
         selectionKind={BOARD_SELECTION_KIND}
       >
         <ItemNode
-          buttonIconic={buttonIconic}
-          icon={toggleIcon}
+          buttonIconic={{}}
           comboboxField={{}}
-          icon2={icon2}
-          input={nameInput}
-          buttonIconic2={actionsMenu.buttonIconic}
-          icon3={actionsMenu.icon}
+          seldonRefs={seldonRefs}
           onClick={onClick}
           onDoubleClick={onDoubleClick}
           onMouseEnter={handleRowMouseEnter}

@@ -212,12 +212,14 @@ const sdn: ItemSectionProps = {
     icon: "material-unfoldMore",
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--vsau",
+    "data-seldon-ref": "sectionToggleIcon",
   },
   formControlComboboxControl: {
     className: "sdn-form-control sdn-form-control-combobox-control--qmop",
   },
   textLabel: {
     className: "sdn-text-label sdn-text-label--z34z",
+    "data-seldon-ref": "sectionLabel",
   },
   buttonIconic2: {
     className: "sdn-button-iconic sdn-button-iconic--sdjv",

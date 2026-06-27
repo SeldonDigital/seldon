@@ -186,6 +186,7 @@ const sdn: ItemNodeProps = {
     icon: "material-chevronDown",
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--vsau",
+    "data-seldon-ref": "nodeToggleIcon",
   },
   comboboxField: {
     className: "sdn-combobox-field sdn-combobox-field--lmje",
@@ -194,12 +195,14 @@ const sdn: ItemNodeProps = {
     icon: "seldon-component",
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--xi68",
+    "data-seldon-ref": "nodeIcon",
   },
   input: {
     type: "text",
     role: "combobox",
     "aria-haspopup": "listbox",
     className: "sdn-input sdn-input--n6aw",
+    "data-seldon-ref": "nodeLabel",
   },
   buttonIconic2: {
     className: "sdn-button-iconic sdn-button-iconic--pgsr",
