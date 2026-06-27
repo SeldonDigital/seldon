@@ -5,6 +5,10 @@ import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useSidebarCanvasTracking } from "../../tracking/hooks/use-sidebar-canvas-tracking"
 import { IndentationLevel } from "../hooks/use-indentation"
 import { useRenameInput } from "../hooks/use-rename-input"
+import {
+  buildDisabledRefProps,
+  buildFieldStateProps,
+} from "../shared/build-field-state-props"
 import { useRowNode } from "./hooks/use-row-node"
 import { getNode } from "@lib/workspace/workspace-accessors"
 import { FramerExpandable } from "@seldon/components/custom-components"
@@ -140,25 +144,26 @@ const VMNodeInner = function VMNodeInner({
     const hasSummary = echoCount > shownEchoes
     const rows: ReactElement[] = [indexZeroRow]
     for (let echoIndex = 1; echoIndex <= shownEchoes; echoIndex++) {
+      const echoKey = `${childNodeId}#echo${echoIndex}`
+      const isFirstEcho = echoIndex === 1
+      const isLastEcho = !hasSummary && echoIndex === shownEchoes
       rows.push(
         <VMNode
-          key={`${childNodeId}#echo${echoIndex}`}
+          key={echoKey}
           nodeId={childNodeId}
           rootId={childRootId}
           show={show}
           parentIsSelected={isSelected}
           isEcho
-          isFirstEcho={echoIndex === 1}
-          isLastEcho={!hasSummary && echoIndex === shownEchoes}
+          isFirstEcho={isFirstEcho}
+          isLastEcho={isLastEcho}
         />,
       )
     }
     if (hasSummary) {
+      const summaryCount = echoCount - shownEchoes
       rows.push(
-        <RepeatEchoSummaryRow
-          key={`${childNodeId}#more`}
-          count={echoCount - shownEchoes}
-        />,
+        <RepeatEchoSummaryRow key={`${childNodeId}#more`} count={summaryCount} />,
       )
     }
     return rows
@@ -197,15 +202,30 @@ const VMNodeInner = function VMNodeInner({
       }
     : nameInput
 
+  // Disabled is not owned by the combobox-field, so it never cascades from the
+  // field to these leaves. Forward `aria-disabled` onto each leaf ref so their
+  // own `[aria-disabled]` styles dim the row.
+  const disabledRef = buildDisabledRefProps(isDimmed)
+
   // Drive every slot through its stable workspace ref. The trailing actions icon
   // has no ref; it stays on the generated `seldon-more` default and is hidden by
   // the actions button placeholder (visibility cascades), so it needs none.
   const seldonRefs = {
     nodeToggle: { ...buttonIconic },
-    nodeToggleIcon: { ...toggleIcon },
-    nodeIcon: { ...icon2 },
-    nodeLabel: { ...nodeLabel },
+    nodeToggleIcon: { ...toggleIcon, ...disabledRef },
+    nodeIcon: { ...icon2, ...disabledRef },
+    nodeLabel: { ...nodeLabel, ...disabledRef },
     nodeActions: { ...actionsMenu.buttonIconic },
+  }
+
+  // The row's selection is styled on its combobox-field child.
+  const comboboxField = buildFieldStateProps({ selected: isSelected })
+
+  // Root-level row state. Selection lives on the combobox-field and disabled on
+  // the leaves; these mirror the row's logical state for selectors and tests.
+  const itemNodeState = {
+    "aria-selected": isSelected || undefined,
+    "aria-disabled": isDimmed || undefined,
   }
 
   return (
@@ -226,14 +246,13 @@ const VMNodeInner = function VMNodeInner({
         >
           <ItemNode
             buttonIconic={{}}
-            comboboxField={{}}
+            comboboxField={comboboxField}
             seldonRefs={seldonRefs}
             onClick={onClick}
             onDoubleClick={onDoubleClick}
             onMouseEnter={handleCanvasTrackingEnter}
             onMouseLeave={handleCanvasTrackingLeave}
-            aria-selected={isSelected || undefined}
-            aria-disabled={isDimmed || undefined}
+            {...itemNodeState}
             data-testid={dataTestId}
             data-nodeid={dataNodeId}
             data-node-type={dataNodeType}

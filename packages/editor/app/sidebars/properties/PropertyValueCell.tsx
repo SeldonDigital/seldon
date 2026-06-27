@@ -5,7 +5,7 @@
  * styled as a flex row, so the chip, the value, and the unit lay out as flex
  * items. The value item carries the ellipsis truncation.
  */
-import { MouseEvent, ReactNode, RefObject } from "react"
+import { CSSProperties, MouseEvent, ReactNode, RefObject } from "react"
 import { Board, Instance, Theme, Variant } from "@seldon/core"
 import {
   Icon,
@@ -80,14 +80,25 @@ export function PropertyValueCell({
 
   // License rows render their value as an external link.
   if (property.linkHref) {
+    const linkText = value || "View"
     return (
       <LinkValue href={property.linkHref} onClick={stopLinkPropagation}>
-        {value || "View"}
+        {linkText}
       </LinkValue>
     )
   }
 
   const shouldShowControl = Boolean(property.controlType)
+  const handleEditBlur = () => onEditChange(false)
+  const inputValue = value ?? ""
+  const inputStyle: CSSProperties = {
+    border: "none",
+    background: "transparent",
+    padding: 0,
+    width: "100%",
+    cursor: "inherit",
+    ...(labelColor ? { color: labelColor } : {}),
+  }
   // Closed rows render the value through the exported combobox `Input` as a
   // read-only display styled like a label. Single-click opens the editor via
   // the value cell's click handler, which swaps in the `PropertyControl` menu.
@@ -100,7 +111,7 @@ export function PropertyValueCell({
         frameRef={frameRef}
         isEditing={isEditingProperty}
         onEditChange={onEditChange}
-        onBlur={() => onEditChange(false)}
+        onBlur={handleEditBlur}
         onTabNext={onTabNext}
         onTabPrev={onTabPrev}
         color={labelColor}
@@ -112,28 +123,15 @@ export function PropertyValueCell({
       <Input
         readOnly
         tabIndex={-1}
-        value={value ?? ""}
-        style={{
-          border: "none",
-          background: "transparent",
-          padding: 0,
-          width: "100%",
-          cursor: "inherit",
-          ...(labelColor ? { color: labelColor } : {}),
-        }}
+        value={inputValue}
+        style={inputStyle}
       />
     )
 
   if (isThemeAssignment && themeForSwatches) {
-    return (
-      <SwatchValueRow
-        swatch={
-          <ThemeSwatches colors={resolveThemeSwatchColors(themeForSwatches)} />
-        }
-      >
-        {valueContent}
-      </SwatchValueRow>
-    )
+    const swatchColors = resolveThemeSwatchColors(themeForSwatches)
+    const swatch = <ThemeSwatches colors={swatchColors} />
+    return <SwatchValueRow swatch={swatch}>{valueContent}</SwatchValueRow>
   }
 
   return decorateValueContent(valueContent, valueChip, unitLabel, labelColor)
@@ -151,46 +149,42 @@ function decorateValueContent(
   unitLabel: string | undefined,
   labelColor: string | undefined,
 ): ReactNode {
+  const chipStyle: CSSProperties = valueChip
+    ? { flexShrink: 0, marginRight: "0.25rem", ...valueChip.style }
+    : {}
+  const chip = valueChip ? (
+    <Icon icon={valueChip.iconId} color={valueChip.color} style={chipStyle} />
+  ) : null
+
+  const unitStyle: CSSProperties = {
+    flexShrink: 0,
+    marginLeft: "0.25rem",
+    fontSize: "0.5rem",
+    ...(labelColor ? { color: labelColor } : {}),
+  }
+  const unit = unitLabel ? (
+    <Text as="span" style={unitStyle}>
+      {unitLabel}
+    </Text>
+  ) : null
+
   return (
     <>
-      {valueChip && (
-        <Icon
-          icon={valueChip.iconId}
-          color={valueChip.color}
-          style={{
-            flexShrink: 0,
-            marginRight: "0.25rem",
-            ...valueChip.style,
-          }}
-        />
-      )}
-      <Text
-        as="span"
-        style={{
-          flex: 1,
-          minWidth: 0,
-          overflow: "hidden",
-          textOverflow: "ellipsis",
-          whiteSpace: "nowrap",
-        }}
-      >
+      {chip}
+      <Text as="span" style={valueTextStyle}>
         {valueContent}
       </Text>
-      {unitLabel && (
-        <Text
-          as="span"
-          style={{
-            flexShrink: 0,
-            marginLeft: "0.25rem",
-            fontSize: "0.5rem",
-            ...(labelColor ? { color: labelColor } : {}),
-          }}
-        >
-          {unitLabel}
-        </Text>
-      )}
+      {unit}
     </>
   )
+}
+
+const valueTextStyle: CSSProperties = {
+  flex: 1,
+  minWidth: 0,
+  overflow: "hidden",
+  textOverflow: "ellipsis",
+  whiteSpace: "nowrap",
 }
 
 function stopLinkPropagation(event: MouseEvent): void {

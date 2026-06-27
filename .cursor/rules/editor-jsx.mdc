@@ -1,0 +1,17 @@
+---
+description: JSX authoring rules for the editor app
+globs: packages/editor/app/**/*.tsx
+alwaysApply: false
+---
+
+## Editor JSX Authoring
+
+Resolve every JSX value before the `return`. Returned JSX holds element tags and identifier references only. Nothing is computed inside returned JSX.
+
+- Do not write expressions inside returned JSX. This covers ternaries, `&&`, `||`, comparisons, computed objects or arrays, inline `style` objects, function calls that build a value, template literals, and inline arrow or function handlers.
+- Hoist each value into a named `const`, `useCallback`, or `useMemo` above the `return`.
+- A conditional element tree becomes a named constant. Write `const childrenSection = hasChildren ? <Children /> : null`, then render `{childrenSection}`.
+- Resolve lists before the `return`. Precompute the array into a `const`, or extract a child component. A `.map` callback passes identifier or item-field props only, and computes nothing inline.
+- Event handlers are named functions or `useCallback` values. Do not define an arrow handler inside a JSX prop.
+
+Bare literal slot enablers stay inline. A positional `{}`, `null`, or `undefined` that turns a generated slot on or off carries no logic, so it does not need a name.

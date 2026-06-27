@@ -134,6 +134,11 @@ export function VMResourceEntry({
     nodeActions: { ...actionsMenu.buttonIconic },
   }
 
+  // Root-level row state mirrors selection for selectors and tests.
+  const itemNodeState = {
+    "aria-selected": isActive || undefined,
+  }
+
   return (
     <>
       <RowSelectionTarget
@@ -147,7 +152,7 @@ export function VMResourceEntry({
           seldonRefs={seldonRefs}
           onClick={onClick}
           onDoubleClick={onDoubleClick}
-          aria-selected={isActive || undefined}
+          {...itemNodeState}
           data-testid={config.testId}
           data-resource-entry-id={entryId}
           data-resource-kind={config.kind}

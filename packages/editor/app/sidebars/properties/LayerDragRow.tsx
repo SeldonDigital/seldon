@@ -44,8 +44,13 @@ export function LayerDragRow({
     icon,
   })
 
+  const boxStyle: CSSProperties = {
+    ...wrapperStyle,
+    opacity: dragging ? 0.5 : 1,
+  }
+
   return (
-    <Box ref={ref} style={{ ...wrapperStyle, opacity: dragging ? 0.5 : 1 }}>
+    <Box ref={ref} style={boxStyle}>
       {children}
       <LayerDropBand
         property={property}
@@ -84,18 +89,22 @@ function LayerDropBand({
     (state) => state.isLayerDragging,
   )
 
+  const bandStyle = getBandStyle(placement, isLayerDragging)
+  const dropzoneTestId = `layer-${property}-${layerIndex}-dropzone-${placement}`
+  const overlay = isValidDropTarget ? (
+    <OverlayLayer style={nonInteractiveOverlayStyle}>
+      <LayerInsertIndicator placement={placement} />
+    </OverlayLayer>
+  ) : null
+
   return (
     <>
       <PlacementZoneSurface
         ref={ref}
-        style={getBandStyle(placement, isLayerDragging)}
-        dataTestId={`layer-${property}-${layerIndex}-dropzone-${placement}`}
+        style={bandStyle}
+        dataTestId={dropzoneTestId}
       />
-      {isValidDropTarget && (
-        <OverlayLayer style={nonInteractiveOverlayStyle}>
-          <LayerInsertIndicator placement={placement} />
-        </OverlayLayer>
-      )}
+      {overlay}
     </>
   )
 }

@@ -136,29 +136,29 @@ function PropertiesTree({
 }: PropertyTreeProps) {
   useLayerDragMonitor()
 
+  const sectionNodes = sections.map((section) => (
+    <TreeSection
+      key={section.category}
+      section={section}
+      workspace={workspace}
+      node={node}
+      theme={theme}
+      cssStrings={cssStrings}
+      cssSelector={cssSelector}
+      allProperties={allProperties}
+      familyProperties={familyProperties}
+      iconProperties={iconProperties}
+      themeEditingContext={themeEditingContext}
+      fontCollectionEditingContext={fontCollectionEditingContext}
+      iconSetEditingContext={iconSetEditingContext}
+    />
+  ))
+
   return (
     <ScrollerShell ref={scrollerRef} style={styles.scroller}>
       <Frame style={styles.tree}>
         <PropertyEditNavigationProvider>
-          <LayoutGroup>
-            {sections.map((section) => (
-              <TreeSection
-                key={section.category}
-                section={section}
-                workspace={workspace}
-                node={node}
-                theme={theme}
-                cssStrings={cssStrings}
-                cssSelector={cssSelector}
-                allProperties={allProperties}
-                familyProperties={familyProperties}
-                iconProperties={iconProperties}
-                themeEditingContext={themeEditingContext}
-                fontCollectionEditingContext={fontCollectionEditingContext}
-                iconSetEditingContext={iconSetEditingContext}
-              />
-            ))}
-          </LayoutGroup>
+          <LayoutGroup>{sectionNodes}</LayoutGroup>
         </PropertyEditNavigationProvider>
       </Frame>
     </ScrollerShell>

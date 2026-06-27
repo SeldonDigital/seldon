@@ -1,4 +1,4 @@
-import { createContext, useContext } from "react"
+import { CSSProperties, createContext, useContext } from "react"
 
 /**
  * React context for tracking the current indentation level in the tree.
@@ -18,9 +18,10 @@ export const IndentationContextProvider = ({
   children: React.ReactNode
 }) => {
   const indentation = useIndentation()
+  const nextLevel = indentation + 1
 
   return (
-    <IndentationContext.Provider value={indentation + 1}>
+    <IndentationContext.Provider value={nextLevel}>
       {children}
     </IndentationContext.Provider>
   )
@@ -53,13 +54,15 @@ export const IndentationLevel = ({
       ? "var(--sdn-padding-cozy)"
       : `calc(var(--sdn-padding-cozy) + ${indentationGap}px)`
 
+  const wrapperStyle: CSSProperties = {
+    paddingLeft: indentationPadding,
+    width: "100%",
+    minWidth: 0,
+  }
+
   return (
     <IndentationContextProvider>
-      <div
-        style={{ paddingLeft: indentationPadding, width: "100%", minWidth: 0 }}
-      >
-        {children}
-      </div>
+      <div style={wrapperStyle}>{children}</div>
     </IndentationContextProvider>
   )
 }

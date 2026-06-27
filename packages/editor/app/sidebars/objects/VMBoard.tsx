@@ -3,6 +3,7 @@ import { Board as BoardType } from "@seldon/core"
 import { useSidebarCanvasTrackingBoard } from "../../tracking/hooks/use-sidebar-canvas-tracking"
 import { IndentationLevel } from "../hooks/use-indentation"
 import { useRenameInput } from "../hooks/use-rename-input"
+import { buildFieldStateProps } from "../shared/build-field-state-props"
 import { useRowBoard } from "./hooks/use-row-board"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { FramerExpandable } from "@seldon/components/custom-components"
@@ -36,13 +37,14 @@ export const VMBoard = memo(function VMBoard(props: VMBoardProps) {
  * shell with all slots empty, so it reads as a disabled "No <section>" line.
  */
 function VMBoardEmpty({ label }: { label: string }) {
+  const seldonRefs = { nodeLabel: { value: label, readOnly: true } }
   return (
     <ItemNode
       buttonIconic={null}
       comboboxField={{}}
       icon2={null}
       buttonIconic2={null}
-      seldonRefs={{ nodeLabel: { value: label, readOnly: true } }}
+      seldonRefs={seldonRefs}
       aria-disabled
       data-testid="objects-sidebar-empty-section"
     />
@@ -124,16 +126,19 @@ function VMBoardRow({
           parentIsSelected={boardIsActive}
         />
       ))
-    : variants.map((variantId, index) => (
-        <VMNode
-          key={variantId}
-          nodeId={variantId}
-          rootId={variantId}
-          show={show}
-          parentIsSelected={boardIsActive}
-          disableReordering={index === 0}
-        />
-      ))
+    : variants.map((variantId, index) => {
+        const disableReordering = index === 0
+        return (
+          <VMNode
+            key={variantId}
+            nodeId={variantId}
+            rootId={variantId}
+            show={show}
+            parentIsSelected={boardIsActive}
+            disableReordering={disableReordering}
+          />
+        )
+      })
 
   if (!show) return null
 
@@ -158,6 +163,14 @@ function VMBoardRow({
     nodeActions: { ...actionsMenu.buttonIconic },
   }
 
+  // The row's selection state is styled on its combobox-field child.
+  const comboboxField = buildFieldStateProps({ selected: boardIsActive })
+
+  // Root-level row state mirrors selection for selectors and tests.
+  const itemNodeState = {
+    "aria-selected": boardIsActive || undefined,
+  }
+
   return (
     <>
       <RowSelectionTarget
@@ -167,13 +180,13 @@ function VMBoardRow({
       >
         <ItemNode
           buttonIconic={{}}
-          comboboxField={{}}
+          comboboxField={comboboxField}
           seldonRefs={seldonRefs}
           onClick={onClick}
           onDoubleClick={onDoubleClick}
           onMouseEnter={handleRowMouseEnter}
           onMouseLeave={handleRowMouseLeave}
-          aria-selected={boardIsActive || undefined}
+          {...itemNodeState}
           data-testid={dataTestId}
           data-componentid={dataComponentId}
           data-active={boardIsActive}

@@ -28,12 +28,15 @@ export function VMSection({ section }: VMSectionProps) {
   }
   if (buttonIconic2) seldonRefs.sectionAdd = { ...buttonIconic2 }
 
+  // Positional enabler: render the add slot only when the section exposes one.
+  const addSlot = buttonIconic2 ? {} : null
+
   return (
     <ItemSection
       buttonIconic={{}}
       formControlComboboxControl={{}}
       textLabel={{}}
-      buttonIconic2={buttonIconic2 ? {} : null}
+      buttonIconic2={addSlot}
       buttonIconic3={null}
       seldonRefs={seldonRefs}
       onMouseEnter={handleMouseEnter}

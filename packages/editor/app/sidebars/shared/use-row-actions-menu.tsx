@@ -103,14 +103,16 @@ export function useRowActionsMenu(
         }
   ) as RowActionsMenuSlots["buttonIconic"]
 
+  const closeMenu = () => setOpen(false)
+  const menuAlign = options?.align ?? "end"
   const menu = hasActions ? (
     <Menu
       open={open}
       anchorRef={triggerRef}
       focusTargetRef={options?.focusTargetRef}
-      onClose={() => setOpen(false)}
+      onClose={closeMenu}
       items={items}
-      align={options?.align ?? "end"}
+      align={menuAlign}
     />
   ) : null
 

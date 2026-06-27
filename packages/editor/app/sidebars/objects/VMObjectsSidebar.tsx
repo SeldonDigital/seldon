@@ -56,33 +56,22 @@ export function VMObjectsSidebar() {
 
   if (!record) return null
 
+  const nameButton = { style: styles.nameButton }
+  const nameLabel = {
+    children: record.name,
+    ...editableNameProps,
+    style: styles.nameLabel,
+  }
+  const sectionGroups = sections.map((section) => (
+    <ObjectsSectionGroup key={section.label} section={section} />
+  ))
+
   return (
     <SidebarContainer style={sidebarShellStyle} data-testid="objects-sidebar">
       <BarTabsBar
-        style={{ height: "var(--sdn-size-xlarge)" }}
-        buttonSimple={{
-          style: {
-            background: "none",
-            border: "none",
-            padding: 0,
-            minWidth: 0,
-            width: "100%",
-            justifyContent: "flex-start",
-            cursor: "text",
-          },
-        }}
-        textLabel={{
-          children: record.name,
-          ...editableNameProps,
-          style: {
-            alignSelf: "unset",
-            minWidth: 0,
-            display: "block",
-            maxWidth: "100%",
-            cursor: "text",
-            outline: "none",
-          },
-        }}
+        style={styles.nameBar}
+        buttonSimple={nameButton}
+        textLabel={nameLabel}
         buttonSimple2={null}
         buttonSimple3={null}
       />
@@ -94,11 +83,7 @@ export function VMObjectsSidebar() {
           onPointerLeave={handlePointerLeave}
         >
           <Frame style={styles.tree}>
-            <LayoutGroup>
-              {sections.map((section) => (
-                <ObjectsSectionGroup key={section.label} section={section} />
-              ))}
-            </LayoutGroup>
+            <LayoutGroup>{sectionGroups}</LayoutGroup>
           </Frame>
         </div>
       </SelectionRelationsProvider>
@@ -108,24 +93,45 @@ export function VMObjectsSidebar() {
 
 function ObjectsSectionGroup({ section }: { section: BoardSection }) {
   const isExpanded = useIsSectionExpanded(section.level)
+  const emptyLabel = `No ${section.label.toLowerCase()}`
+  const boardRows =
+    section.boards.length === 0 ? (
+      <VMBoard emptyLabel={emptyLabel} />
+    ) : (
+      section.boards.map((board) => (
+        <VMBoard key={getComponentKey(board)} board={board} />
+      ))
+    )
 
   return (
     <>
       <VMSection section={section} />
-      <FramerExpandable isExpanded={isExpanded}>
-        {section.boards.length === 0 ? (
-          <VMBoard emptyLabel={`No ${section.label.toLowerCase()}`} />
-        ) : (
-          section.boards.map((board) => (
-            <VMBoard key={getComponentKey(board)} board={board} />
-          ))
-        )}
-      </FramerExpandable>
+      <FramerExpandable isExpanded={isExpanded}>{boardRows}</FramerExpandable>
     </>
   )
 }
 
 const styles: Record<string, CSSProperties> = {
+  nameBar: {
+    height: "var(--sdn-size-xlarge)",
+  },
+  nameButton: {
+    background: "none",
+    border: "none",
+    padding: 0,
+    minWidth: 0,
+    width: "100%",
+    justifyContent: "flex-start",
+    cursor: "text",
+  },
+  nameLabel: {
+    alignSelf: "unset",
+    minWidth: 0,
+    display: "block",
+    maxWidth: "100%",
+    cursor: "text",
+    outline: "none",
+  },
   scroller: {
     flex: 1,
     width: "100%",

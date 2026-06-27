@@ -50,13 +50,16 @@ export function VMCategory({ section, actions, onAddCustom }: VMCategoryProps) {
   }
   if (addButton) seldonRefs.sectionAdd = { ...addButton }
 
+  // Positional enabler: render the add slot only when a custom-token adder exists.
+  const addSlot = addButton ? {} : null
+
   return (
     <Fragment>
       <ItemSection
         buttonIconic={{}}
         formControlComboboxControl={{}}
         textLabel={{}}
-        buttonIconic2={addButton ? {} : null}
+        buttonIconic2={addSlot}
         buttonIconic3={{}}
         seldonRefs={seldonRefs}
         onMouseEnter={handleMouseEnter}

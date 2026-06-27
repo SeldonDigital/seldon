@@ -69,4 +69,4 @@ Use the local code first. Follow nearby patterns, public APIs, and domain rules 
 
 ### Framework Guidance
 
-Keep React, Next.js, Web Vitals, image, and URL-state guidance out of this global rule. Add a file-scoped rule for app code if the repo needs one later.
+Keep React, Next.js, Web Vitals, image, and URL-state guidance out of this global rule. App-code framework rules live in file-scoped rules. JSX authoring for the editor app lives in `.cursor/rules/editor-jsx.mdc`.

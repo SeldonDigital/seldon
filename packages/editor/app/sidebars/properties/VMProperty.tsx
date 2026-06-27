@@ -1,5 +1,5 @@
 import { childPathsUnderCompoundParent } from "@lib/properties/property-paths"
-import { memo } from "react"
+import { type ReactNode, memo } from "react"
 import {
   Board,
   Instance,
@@ -54,16 +54,19 @@ function VMPropertyInner(props: RowPropertyProps) {
     ref: view.setValueFieldRef,
   } as unknown as ComboboxFieldProps
 
+  // Positional enabler: suppress `icon2` with `null` when the value icon is
+  // hidden or drawn as a dynamic chip; otherwise leave it on its slot default.
+  const valueIconSlot = listItemProps.icon2 ? undefined : null
+
   // Render the exported `ItemProperty` through its slots. `textLabel` is a
-  // conditional slot, so it keeps a positional enabler. `icon2` is suppressed
-  // with a positional `null` when the value icon is hidden or drawn as a dynamic
-  // chip. `icon3` (the options-menu icon) has no workspace ref yet, so it stays
-  // positional; add a `valueOptionsMenuIcon` ref to move it onto `seldonRefs`.
+  // conditional slot, so it keeps a positional enabler. `icon3` (the options-menu
+  // icon) has no workspace ref yet, so it stays positional; add a
+  // `valueOptionsMenuIcon` ref to move it onto `seldonRefs`.
   const row = (
     <ItemProperty
       textLabel={{}}
       comboboxField={comboboxField}
-      icon2={listItemProps.icon2 ? undefined : null}
+      icon2={valueIconSlot}
       icon3={listItemProps.icon3}
       seldonRefs={seldonRefs}
       onClick={view.onRowClick}
@@ -71,41 +74,55 @@ function VMPropertyInner(props: RowPropertyProps) {
     />
   )
 
+  // Wrap the row as a layer drag source only for a multi-layer paint parent.
+  const rowContent = layerDrag ? (
+    <LayerDragRow
+      property={layerDrag.property}
+      layerIndex={layerDrag.layerIndex}
+      layerCount={layerDrag.layerCount}
+      label={props.property.label}
+      icon={props.property.icon}
+    >
+      {row}
+    </LayerDragRow>
+  ) : (
+    row
+  )
+
+  // Floating option list, only while this row edits through a combobox control.
+  let listbox: ReactNode = null
+  if (control.kind === "combobox") {
+    const options = control.options
+    const handleListboxClose = () => {
+      options.handleClose()
+      view.endEdit()
+    }
+    listbox = (
+      <PropertyListbox
+        open={options.open}
+        position={options.position}
+        handleClose={handleListboxClose}
+        onPointerLeave={options.onPointerLeave}
+        {...control.optionList}
+      />
+    )
+  }
+
+  // Sub-property rows for a compound or shorthand parent.
+  const childRows = view.hasChildren ? (
+    <FramerExpandable isExpanded={view.isExpanded}>
+      {view.childItems.map((childProps) => (
+        <VMProperty key={childProps.property.key} {...childProps} />
+      ))}
+    </FramerExpandable>
+  ) : null
+
   return (
     <>
-      {layerDrag ? (
-        <LayerDragRow
-          property={layerDrag.property}
-          layerIndex={layerDrag.layerIndex}
-          layerCount={layerDrag.layerCount}
-          label={props.property.label}
-          icon={props.property.icon}
-        >
-          {row}
-        </LayerDragRow>
-      ) : (
-        row
-      )}
+      {rowContent}
       {actionsMenu.menu}
-      {control.kind === "combobox" && (
-        <PropertyListbox
-          open={control.options.open}
-          position={control.options.position}
-          handleClose={() => {
-            control.options.handleClose()
-            view.endEdit()
-          }}
-          onPointerLeave={control.options.onPointerLeave}
-          {...control.optionList}
-        />
-      )}
-      {view.hasChildren ? (
-        <FramerExpandable isExpanded={view.isExpanded}>
-          {view.childItems.map((childProps) => (
-            <VMProperty key={childProps.property.key} {...childProps} />
-          ))}
-        </FramerExpandable>
-      ) : null}
+      {listbox}
+      {childRows}
     </>
   )
 }

@@ -114,12 +114,14 @@ export function PropertyListbox({
       // The generated `ListboxOption` gates its label behind the positional
       // `textLabel` slot (defaulted off), so enabling it with content is what
       // renders the label; `optionLabel`/`optionIcon` refs alone would not.
+      const iconSlot = { icon: icon.icon as IconProps["icon"] }
+      const textLabelSlot = { children: option.name }
       return (
         <ListboxOption
           key={option.value}
           {...common}
-          icon={{ icon: icon.icon as IconProps["icon"] }}
-          textLabel={{ children: option.name }}
+          icon={iconSlot}
+          textLabel={textLabelSlot}
         />
       )
     }
@@ -133,12 +135,16 @@ export function PropertyListbox({
   }
 
   const content = hasSections
-    ? (filteredOptions as ComboboxOptionItem[][]).map((group, index) => (
-        <Fragment key={index}>
-          {index > 0 && <Hr />}
-          {group.map(renderOption)}
-        </Fragment>
-      ))
+    ? (filteredOptions as ComboboxOptionItem[][]).map((group, index) => {
+        const divider = index > 0 ? <Hr /> : null
+        const options = group.map(renderOption)
+        return (
+          <Fragment key={index}>
+            {divider}
+            {options}
+          </Fragment>
+        )
+      })
     : (filteredOptions as ComboboxOptionItem[]).map(renderOption)
 
   return createPortal(
