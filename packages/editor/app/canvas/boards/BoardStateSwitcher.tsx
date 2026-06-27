@@ -19,17 +19,17 @@ import {
 import { walkComponentTree } from "@lib/workspace/component-tree"
 import { Combobox } from "@seldon/components/custom-components/controls/combobox/Combobox"
 
-/** Editor-only display order for the reserved states in the switcher menu. */
-const RESERVED_STATE_MENU_ORDER: ReservedStateName[] = [
+// Editor-only menu groups for the reserved states. Each group is alpha-sorted by
+// label and rendered between separators: browser pseudo-class states first, then
+// the view-set aria-attribute states, then the class-driven dragged state.
+const PSEUDO_STATE_GROUP: ReservedStateName[] = [
   "active",
-  "disabled",
-  "selected",
-  "hover",
-  "focused",
   "checked",
-  "dragged",
-  "error",
+  "focused",
+  "hover",
 ]
+const ARIA_STATE_GROUP: ReservedStateName[] = ["disabled", "error", "selected"]
+const CLASS_STATE_GROUP: ReservedStateName[] = ["dragged"]
 
 interface BoardStateSwitcherProps {
   boardKey: string
@@ -238,6 +238,16 @@ export function BoardStateSwitcher({ boardKey }: BoardStateSwitcherProps) {
     closeMenu()
   }
 
+  const renderReservedState = (state: ReservedStateName) => (
+    <div
+      key={state}
+      style={statesWithOverrides.has(state) ? overriddenItemStyle : itemStyle}
+      onClick={() => select(state)}
+    >
+      {RESERVED_STATE_LABELS[state]}
+    </div>
+  )
+
   const commitAdd = (value: string) => {
     const key = toStateKey(value)
     const label = value.trim()
@@ -305,17 +315,15 @@ export function BoardStateSwitcher({ boardKey }: BoardStateSwitcherProps) {
 
           <div style={separatorStyle} />
 
-          {RESERVED_STATE_MENU_ORDER.map((state) => (
-            <div
-              key={state}
-              style={
-                statesWithOverrides.has(state) ? overriddenItemStyle : itemStyle
-              }
-              onClick={() => select(state)}
-            >
-              {RESERVED_STATE_LABELS[state]}
-            </div>
-          ))}
+          {PSEUDO_STATE_GROUP.map(renderReservedState)}
+
+          <div style={separatorStyle} />
+
+          {ARIA_STATE_GROUP.map(renderReservedState)}
+
+          <div style={separatorStyle} />
+
+          {CLASS_STATE_GROUP.map(renderReservedState)}
 
           {customStates.length > 0 && <div style={separatorStyle} />}
 

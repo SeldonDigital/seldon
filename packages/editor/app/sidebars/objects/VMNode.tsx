@@ -82,6 +82,8 @@ const VMNodeInner = function VMNodeInner({
     dragging,
     ref,
     properties,
+    isExcluded,
+    isHidden,
     dataNodeType,
   } = useRowNode(node, {
     rootId,
@@ -185,6 +187,16 @@ const VMNodeInner = function VMNodeInner({
     },
   }
 
+  // A hidden or excluded node reads as disabled. Excluded rows also italicize
+  // the name shown in the combobox input.
+  const isDimmed = isHidden || isExcluded
+  const nodeLabel = isExcluded
+    ? {
+        ...nameInput,
+        style: { ...nameInput.style, fontStyle: "italic" as const },
+      }
+    : nameInput
+
   // Drive every slot through its stable workspace ref. The trailing actions icon
   // has no ref; it stays on the generated `seldon-more` default and is hidden by
   // the actions button placeholder (visibility cascades), so it needs none.
@@ -192,7 +204,7 @@ const VMNodeInner = function VMNodeInner({
     nodeToggle: { ...buttonIconic },
     nodeToggleIcon: { ...toggleIcon },
     nodeIcon: { ...icon2 },
-    nodeLabel: { ...nameInput },
+    nodeLabel: { ...nodeLabel },
     nodeActions: { ...actionsMenu.buttonIconic },
   }
 
@@ -221,6 +233,7 @@ const VMNodeInner = function VMNodeInner({
             onMouseEnter={handleCanvasTrackingEnter}
             onMouseLeave={handleCanvasTrackingLeave}
             aria-selected={isSelected || undefined}
+            aria-disabled={isDimmed || undefined}
             data-testid={dataTestId}
             data-nodeid={dataNodeId}
             data-node-type={dataNodeType}
