@@ -2,7 +2,6 @@ import { MenuEntry } from "@lib/menus"
 import { Fragment, type MouseEvent } from "react"
 import { useRowCategory } from "./hooks/use-row-category"
 import { ItemSection } from "@seldon/components/elements/ItemSection"
-import { withoutStyle } from "../helpers/without-style"
 import { useRowActionsMenu } from "../shared/use-row-actions-menu"
 import { useSectionHeaderRow } from "../shared/use-section-header-row"
 import { PropertySection } from "./helpers/get-property-sections"
@@ -44,13 +43,13 @@ export function VMCategory({ section, actions, onAddCustom }: VMCategoryProps) {
   return (
     <Fragment>
       <ItemSection
-        buttonIconic={withoutStyle(buttonIconic)}
+        buttonIconic={buttonIconic}
         icon={{ icon }}
         formControlComboboxControl={{}}
         textLabel={{ children: label }}
         buttonIconic2={addButton ?? null}
-        buttonIconic3={withoutStyle(actionsMenu.buttonIconic)}
-        icon3={withoutStyle(actionsMenu.icon)}
+        buttonIconic3={actionsMenu.buttonIconic}
+        icon3={actionsMenu.icon}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         onClick={handleClick}

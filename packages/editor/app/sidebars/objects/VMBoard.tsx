@@ -7,8 +7,6 @@ import { useRowBoard } from "./hooks/use-row-board"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { FramerExpandable } from "@seldon/components/custom-components"
 import { ItemNode } from "@seldon/components/elements/ItemNode"
-import { IconProps } from "@seldon/components/primitives/Icon"
-import { withoutStyle } from "../helpers/without-style"
 import { useRowActionsMenu } from "../shared/use-row-actions-menu"
 import { RowSelectionTarget } from "./RowSelectionTarget"
 import { VMNode } from "./VMNode"
@@ -139,8 +137,16 @@ function VMBoardRow({
 
   if (!show) return null
 
-  // Board rows never use dynamic icon-custom-* ids, so the casts to the
-  // generated IconProps at the row boundary are safe.
+  // The toggle chevron rotates 90° when the board is expanded. Color, hover, and
+  // selection tints come from the generated component CSS.
+  const toggleIcon = {
+    ...icon,
+    style: {
+      transition: "transform 0.2s ease",
+      ...(isExpanded ? { transform: "rotate(90deg)" } : {}),
+    },
+  }
+
   return (
     <>
       <RowSelectionTarget
@@ -149,13 +155,13 @@ function VMBoardRow({
         selectionKind={BOARD_SELECTION_KIND}
       >
         <ItemNode
-          buttonIconic={withoutStyle(buttonIconic)}
-          icon={withoutStyle(icon) as IconProps}
+          buttonIconic={buttonIconic}
+          icon={toggleIcon}
           comboboxField={{}}
-          icon2={withoutStyle(icon2) as IconProps}
+          icon2={icon2}
           input={nameInput}
-          buttonIconic2={withoutStyle(actionsMenu.buttonIconic)}
-          icon3={withoutStyle(actionsMenu.icon)}
+          buttonIconic2={actionsMenu.buttonIconic}
+          icon3={actionsMenu.icon}
           onClick={onClick}
           onDoubleClick={onDoubleClick}
           onMouseEnter={handleRowMouseEnter}

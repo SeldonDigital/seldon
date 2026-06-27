@@ -1,6 +1,5 @@
 import { useRowSection } from "./hooks/use-row-section"
 import { ItemSection } from "@seldon/components/elements/ItemSection"
-import { withoutStyle } from "../helpers/without-style"
 import { BoardSection } from "../helpers/get-board-sections"
 import { useSectionHeaderRow } from "../shared/use-section-header-row"
 
@@ -21,11 +20,11 @@ export function VMSection({ section }: VMSectionProps) {
 
   return (
     <ItemSection
-      buttonIconic={withoutStyle(buttonIconic)}
+      buttonIconic={buttonIconic}
       icon={{ icon }}
       formControlComboboxControl={{}}
       textLabel={{ children: label }}
-      buttonIconic2={buttonIconic2 ? withoutStyle(buttonIconic2) : null}
+      buttonIconic2={buttonIconic2 ?? null}
       buttonIconic3={null}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}

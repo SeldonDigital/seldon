@@ -5,12 +5,10 @@ import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useSidebarCanvasTracking } from "../../tracking/hooks/use-sidebar-canvas-tracking"
 import { IndentationLevel } from "../hooks/use-indentation"
 import { useRenameInput } from "../hooks/use-rename-input"
-import { withoutStyle } from "../helpers/without-style"
 import { useRowNode } from "./hooks/use-row-node"
 import { getNode } from "@lib/workspace/workspace-accessors"
 import { FramerExpandable } from "@seldon/components/custom-components"
 import { ItemNode } from "@seldon/components/elements/ItemNode"
-import { IconProps } from "@seldon/components/primitives/Icon"
 import { SidebarTracking } from "../../tracking/SidebarTracking"
 import { useRowActionsMenu } from "../shared/use-row-actions-menu"
 import { RowSelectionTarget } from "./RowSelectionTarget"
@@ -172,6 +170,21 @@ const VMNodeInner = function VMNodeInner({
     </FramerExpandable>
   ) : null
 
+  // The nodeToggle chevron rotates 90° when the row is expanded. Leaf rows have
+  // no children to disclose, so the chevron is hidden. Color, hover, and
+  // selection tints come from the generated component CSS.
+  const toggleIcon = {
+    ...icon,
+    style: {
+      transition: "transform 0.2s ease",
+      ...(hasChildren
+        ? isExpanded
+          ? { transform: "rotate(90deg)" }
+          : {}
+        : { opacity: 0 }),
+    },
+  }
+
   return (
     <>
       <RowSelectionTarget
@@ -189,13 +202,13 @@ const VMNodeInner = function VMNodeInner({
           onCanvasTrackingLeave={handleCanvasTrackingLeave}
         >
           <ItemNode
-            buttonIconic={withoutStyle(buttonIconic)}
-            icon={withoutStyle(icon) as IconProps}
+            buttonIconic={buttonIconic}
+            icon={toggleIcon}
             comboboxField={{}}
-            icon2={withoutStyle(icon2) as IconProps}
+            icon2={icon2}
             input={nameInput}
-            buttonIconic2={withoutStyle(actionsMenu.buttonIconic)}
-            icon3={withoutStyle(actionsMenu.icon)}
+            buttonIconic2={actionsMenu.buttonIconic}
+            icon3={actionsMenu.icon}
             onClick={onClick}
             onDoubleClick={onDoubleClick}
             onMouseEnter={handleCanvasTrackingEnter}

@@ -48,7 +48,7 @@ import {
   getNode,
   hasNode,
 } from "@lib/workspace/workspace-accessors"
-import { IconProps } from "@seldon/components/custom-components"
+import { IconProps } from "@seldon/components/primitives/Icon"
 import { TextLabelProps } from "@seldon/components/primitives/TextLabel"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import { buildResetMenuEntry } from "../../shared/build-reset-menu-entry"
@@ -172,7 +172,6 @@ export function useRowNode(
 
   const { createToggleButton, createToggleIcon } = useRowButton({
     isExpanded: isExpandedState,
-    isSelected,
     hasChildren,
     onToggle,
   })

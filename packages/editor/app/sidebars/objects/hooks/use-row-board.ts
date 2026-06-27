@@ -19,7 +19,7 @@ import { useAddRemoveCommands } from "@lib/hooks/commands/use-add-remove-command
 import { useTool } from "@lib/hooks/use-tool"
 import { getVariantRootIds } from "@lib/workspace/component-tree"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
-import { IconProps } from "@seldon/components/custom-components"
+import { IconProps } from "@seldon/components/primitives/Icon"
 import { buildResetMenuEntry } from "../../shared/build-reset-menu-entry"
 import { useExpansion, useIsExpanded } from "./use-expansion"
 import { useRowButton } from "./use-row-button"
@@ -295,7 +295,6 @@ export function useRowBoard(
   // Button and icon creation: toggle button, component icon, add variant button
   const { createToggleButton, createToggleIcon, createIcon2 } = useRowButton({
     isExpanded: isExpandedState,
-    isSelected: boardIsActive,
     hasChildren: hasVariantChildren,
     onToggle,
   })

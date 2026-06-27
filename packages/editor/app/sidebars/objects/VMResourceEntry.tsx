@@ -27,7 +27,6 @@ import { useRowClick } from "./hooks/use-row-click"
 import { SelectionKind } from "@lib/workspace/selection-target"
 import { ItemNode } from "@seldon/components/elements/ItemNode"
 import { IconProps } from "@seldon/components/primitives/Icon"
-import { withoutStyle } from "../helpers/without-style"
 import { useRowActionsMenu } from "../shared/use-row-actions-menu"
 import { RowSelectionTarget } from "./RowSelectionTarget"
 
@@ -136,10 +135,10 @@ export function VMResourceEntry({
         <ItemNode
           buttonIconic={{}}
           comboboxField={{}}
-          icon2={withoutStyle(icon2)}
+          icon2={icon2}
           input={nameInput}
-          buttonIconic2={withoutStyle(actionsMenu.buttonIconic)}
-          icon3={withoutStyle(actionsMenu.icon)}
+          buttonIconic2={actionsMenu.buttonIconic}
+          icon3={actionsMenu.icon}
           onClick={onClick}
           onDoubleClick={onDoubleClick}
           aria-selected={isActive || undefined}

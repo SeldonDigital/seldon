@@ -13,9 +13,7 @@ import { RowPropertyProps, useRowProperty } from "./hooks/use-row-property"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { FramerExpandable } from "@seldon/components/custom-components"
 import { ItemProperty } from "@seldon/components/elements/ItemProperty"
-import { IconProps } from "@seldon/components/primitives/Icon"
 import { useRowActionsMenu } from "../shared/use-row-actions-menu"
-import { withoutStyle } from "../helpers/without-style"
 import { LayerDragRow } from "./LayerDragRow"
 import { FlatProperty } from "./helpers/properties-data"
 
@@ -32,28 +30,24 @@ function VMPropertyInner(props: RowPropertyProps) {
   const { listItemProps } = view
   const layerDrag = getLayerDragContext(props)
 
-  // Render the exported `ItemProperty` through its slots with all inline styling
-  // stripped, so only the generated CSS drives the static look. The value is
-  // shown through the combobox `input` as a read-only display.
+  // Render the exported `ItemProperty` through its slots. Slot props come
+  // straight from the row hook. The value is shown through the combobox `input`
+  // as a read-only display.
   const row = (
     <ItemProperty
-      buttonIconic={withoutStyle(listItemProps.buttonIconic)}
-      icon={withoutStyle(listItemProps.icon) as IconProps}
-      textLabel={withoutStyle(listItemProps.textLabel)}
-      icon2={
-        listItemProps.icon2
-          ? (withoutStyle(listItemProps.icon2) as IconProps)
-          : null
-      }
+      buttonIconic={listItemProps.buttonIconic}
+      icon={listItemProps.icon}
+      textLabel={listItemProps.textLabel}
+      icon2={listItemProps.icon2 ?? null}
       input={{
         value: view.valueCellProps.value ?? "",
         readOnly: true,
         tabIndex: -1,
       }}
-      buttonIconic2={withoutStyle(listItemProps.buttonIconic2)}
-      icon3={withoutStyle(listItemProps.icon3) as IconProps}
-      buttonIconic3={withoutStyle(actionsMenu.buttonIconic)}
-      icon4={withoutStyle(actionsMenu.icon)}
+      buttonIconic2={listItemProps.buttonIconic2}
+      icon3={listItemProps.icon3}
+      buttonIconic3={actionsMenu.buttonIconic}
+      icon4={actionsMenu.icon}
       onClick={view.onRowClick}
       onDoubleClick={view.onRowDoubleClick}
     />
