@@ -2768,12 +2768,6 @@
         }
       },
       "states": {
-        "active": {
-          "color": {
-            "type": "theme.categorical",
-            "value": "@swatch.custom1"
-          }
-        },
         "disabled": {
           "color": {
             "type": "theme.categorical",
@@ -2803,6 +2797,12 @@
               "unit": "%",
               "value": 50
             }
+          }
+        },
+        "activated": {
+          "color": {
+            "type": "theme.categorical",
+            "value": "@swatch.custom1"
           }
         }
       }
@@ -2816,12 +2816,6 @@
       "template": "catalog:icon",
       "overrides": {},
       "states": {
-        "active": {
-          "color": {
-            "type": "theme.categorical",
-            "value": "@swatch.custom1"
-          }
-        },
         "disabled": {
           "color": {
             "type": "theme.categorical",
@@ -2851,6 +2845,12 @@
           "color": {
             "type": "theme.categorical",
             "value": "@swatch.custom4"
+          }
+        },
+        "activated": {
+          "color": {
+            "type": "theme.categorical",
+            "value": "@swatch.custom1"
           }
         }
       }
@@ -3156,6 +3156,14 @@
             "color": {
               "type": "option",
               "value": "transparent"
+            }
+          }
+        },
+        "focused": {
+          "border": {
+            "color": {
+              "type": "theme.categorical",
+              "value": "@swatch.custom2"
             }
           }
         }
@@ -4237,36 +4245,16 @@
             }
           }
         },
-        "active": {
-          "color": {
-            "type": "theme.categorical",
-            "value": "@swatch.custom1"
-          },
-          "brightness": {
-            "type": "exact",
-            "value": {
-              "unit": "%",
-              "value": 0
-            }
-          },
-          "border": {
-            "color": {
-              "type": "theme.categorical",
-              "value": "@swatch.custom1"
-            },
-            "opacity": {
-              "type": "exact",
-              "value": {
-                "unit": "%",
-                "value": 100
-              }
-            }
-          }
-        },
         "disabled": {
           "color": {
             "type": "theme.categorical",
             "value": "@swatch.gray"
+          }
+        },
+        "activated": {
+          "color": {
+            "type": "theme.categorical",
+            "value": "@swatch.custom1"
           }
         }
       }
@@ -4859,33 +4847,33 @@
             }
           }
         },
-        "active": {
+        "focused": {
           "border": {
             "color": {
-              "type": "option",
-              "value": "transparent"
+              "type": "theme.categorical",
+              "value": "@swatch.custom2"
+            }
+          }
+        },
+        "error": {
+          "border": {
+            "color": {
+              "type": "theme.categorical",
+              "value": "@swatch.custom4"
             },
             "brightness": {
               "type": "exact",
               "value": {
                 "unit": "%",
-                "value": 50
+                "value": 0
               }
             },
             "opacity": {
               "type": "exact",
               "value": {
                 "unit": "%",
-                "value": 100
+                "value": 50
               }
-            }
-          }
-        },
-        "focused": {
-          "border": {
-            "color": {
-              "type": "theme.categorical",
-              "value": "@swatch.custom2"
             }
           }
         }
@@ -16270,6 +16258,10 @@
                 "unit": "%",
                 "value": 50
               }
+            },
+            "color": {
+              "type": "theme.categorical",
+              "value": "@swatch.custom4"
             }
           }
         },
@@ -16482,6 +16474,21 @@
               "value": {
                 "unit": "%",
                 "value": 100
+              }
+            }
+          }
+        },
+        "error": {
+          "border": {
+            "color": {
+              "type": "theme.categorical",
+              "value": "@swatch.custom4"
+            },
+            "opacity": {
+              "type": "exact",
+              "value": {
+                "unit": "%",
+                "value": 50
               }
             }
           }
@@ -18033,7 +18040,18 @@
       "label": "Horizontal Rule",
       "theme": null,
       "template": "catalog:hr",
-      "overrides": {}
+      "overrides": {
+        "margin": {
+          "top": {
+            "type": "option",
+            "value": "none"
+          },
+          "bottom": {
+            "type": "option",
+            "value": "none"
+          }
+        }
+      }
     },
     "component-listbox-default": {
       "id": "component-listbox-default",
@@ -18050,7 +18068,16 @@
               "value": "@swatch.custom7"
             }
           }
-        ]
+        ],
+        "border": {
+          "opacity": {
+            "type": "exact",
+            "value": {
+              "unit": "%",
+              "value": 25
+            }
+          }
+        }
       },
       "__editor": {
         "initialOverrides": {}
@@ -18682,6 +18709,36 @@
       "overrides": {},
       "__editor": {
         "initialOverrides": {}
+      },
+      "states": {
+        "hover": {
+          "background": [
+            {
+              "kind": {
+                "type": "option",
+                "value": "color"
+              },
+              "color": {
+                "type": "theme.categorical",
+                "value": "@swatch.primary"
+              },
+              "brightness": {
+                "type": "exact",
+                "value": {
+                  "value": 0,
+                  "unit": "%"
+                }
+              },
+              "opacity": {
+                "type": "exact",
+                "value": {
+                  "unit": "%",
+                  "value": 20
+                }
+              }
+            }
+          ]
+        }
       }
     },
     "component-icon-l8TYSmxF": {
@@ -18747,6 +18804,10 @@
           "preset": {
             "type": "theme.categorical",
             "value": "@font.label"
+          },
+          "size": {
+            "type": "theme.ordinal",
+            "value": "@fontSize.xsmall"
           }
         }
       },
@@ -18805,6 +18866,10 @@
           "preset": {
             "type": "theme.categorical",
             "value": "@font.label"
+          },
+          "size": {
+            "type": "theme.ordinal",
+            "value": "@fontSize.xsmall"
           }
         }
       },
@@ -19070,7 +19135,25 @@
       "label": "Menu",
       "theme": null,
       "template": "catalog:menu",
-      "overrides": {},
+      "overrides": {
+        "background": [
+          {
+            "color": {
+              "type": "theme.categorical",
+              "value": "@swatch.custom7"
+            }
+          }
+        ],
+        "border": {
+          "opacity": {
+            "type": "exact",
+            "value": {
+              "unit": "%",
+              "value": 25
+            }
+          }
+        }
+      },
       "__editor": {
         "initialOverrides": {}
       }
@@ -19263,7 +19346,14 @@
       "label": "Label",
       "theme": null,
       "template": "node:component-text-dTruey7J",
-      "overrides": {},
+      "overrides": {
+        "font": {
+          "size": {
+            "type": "theme.ordinal",
+            "value": "@fontSize.xsmall"
+          }
+        }
+      },
       "origin": "schema",
       "__editor": {
         "initialOverrides": {}
@@ -19302,7 +19392,14 @@
       "label": "Label",
       "theme": null,
       "template": "node:component-text-7yRLs7aW",
-      "overrides": {},
+      "overrides": {
+        "font": {
+          "size": {
+            "type": "theme.ordinal",
+            "value": "@fontSize.xsmall"
+          }
+        }
+      },
       "origin": "schema",
       "__editor": {
         "initialOverrides": {}

@@ -109,6 +109,6 @@ const sdn: MenuItemCheckboxMenuItemProps = {
     className: "sdn-icon sdn-icon--xi68",
   },
   textLabel: {
-    className: "sdn-text-label sdn-text-label--jndm",
+    className: "sdn-text-label sdn-text-label--dtru",
   },
 }

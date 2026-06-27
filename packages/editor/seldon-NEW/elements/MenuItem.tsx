@@ -122,7 +122,7 @@ const sdn: MenuItemProps = {
     className: "sdn-icon sdn-icon--xi68",
   },
   textLabel: {
-    className: "sdn-text-label sdn-text-label--jndm",
+    className: "sdn-text-label sdn-text-label--xohb",
   },
   textLabel2: {
     className: "sdn-text-label sdn-text-label--fdei",

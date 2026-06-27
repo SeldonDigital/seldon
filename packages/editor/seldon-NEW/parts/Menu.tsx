@@ -336,13 +336,13 @@ const sdn: MenuProps = {
   icon: {
     icon: "seldon-component",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--ucf5",
+    className: "sdn-icon sdn-icon--xi68",
   },
   textLabel: {
-    className: "sdn-text-label sdn-text-title--qbtu",
+    className: "sdn-text-label sdn-text-label--xohb",
   },
   textLabel2: {
-    className: "sdn-text-label sdn-text-label--bign",
+    className: "sdn-text-label sdn-text-label--fdei",
   },
   menuItem2: {
     role: "menuitem",
@@ -352,13 +352,13 @@ const sdn: MenuProps = {
   icon2: {
     icon: "seldon-component",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--ucf5",
+    className: "sdn-icon sdn-icon--xi68",
   },
   textLabel3: {
-    className: "sdn-text-label sdn-text-title--qbtu",
+    className: "sdn-text-label sdn-text-label--xohb",
   },
   textLabel4: {
-    className: "sdn-text-label sdn-text-label--bign",
+    className: "sdn-text-label sdn-text-label--fdei",
   },
   hr: {
     "aria-hidden": "false",
@@ -372,10 +372,10 @@ const sdn: MenuProps = {
   icon3: {
     icon: "material-check",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--ucf5",
+    className: "sdn-icon sdn-icon--xi68",
   },
   textLabel5: {
-    className: "sdn-text-label sdn-text-title--qbtu",
+    className: "sdn-text-label sdn-text-label--xohb",
   },
   menuItemRadioMenuItem: {
     role: "menuitemradio",
@@ -385,9 +385,9 @@ const sdn: MenuProps = {
   icon4: {
     icon: "material-radioButtonChecked",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--ucf5",
+    className: "sdn-icon sdn-icon--xi68",
   },
   textLabel6: {
-    className: "sdn-text-label sdn-text-title--qbtu",
+    className: "sdn-text-label sdn-text-label--xohb",
   },
 }
