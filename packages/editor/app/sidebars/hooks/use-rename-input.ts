@@ -34,14 +34,35 @@ export function useRenameInput({
   const [value, setValue] = useState(label)
   const ref = useRef<HTMLInputElement>(null)
 
-  useEffect(() => {
-    if (!isEditing) return
-    setValue(label)
+  // Collapse the input's own selection and drop any document selection. The
+  // double-click that opens edit mode leaves a stray document range over the row
+  // text, which a plain `setSelectionRange` cannot clear.
+  const clearSelection = () => {
     const input = ref.current
-    if (input) {
-      input.focus()
-      input.select()
+    if (input) input.setSelectionRange(0, 0)
+    if (typeof window !== "undefined") {
+      window.getSelection()?.removeAllRanges()
     }
+  }
+
+  useEffect(() => {
+    const input = ref.current
+    if (isEditing) {
+      setValue(label)
+      // Drop the double-click's document selection, then select the contents so
+      // typing replaces the name.
+      if (typeof window !== "undefined") {
+        window.getSelection()?.removeAllRanges()
+      }
+      if (input) {
+        input.focus()
+        input.select()
+      }
+      return
+    }
+    // Leaving edit mode: clear both selections so the readOnly display input does
+    // not stay highlighted after the field blurs.
+    clearSelection()
     // Focus once when entering edit mode; label changes mid-edit must not refocus.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isEditing])
@@ -70,6 +91,9 @@ export function useRenameInput({
         setEditing(false)
       }
     },
-    onBlur: () => onSubmit(value.trim()),
+    onBlur: () => {
+      onSubmit(value.trim())
+      clearSelection()
+    },
   }
 }

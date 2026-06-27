@@ -32,9 +32,7 @@ import {
 } from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useDebugMode } from "@lib/hooks/use-debug-mode"
-import { useEditorConfig } from "@lib/hooks/use-editor-config"
 import { useTool } from "@lib/hooks/use-tool"
-import { useSectionExpansion } from "../../hooks/use-section-expansion"
 import {
   getNodeCatalogComponentId,
   getNodeChildIds,
@@ -45,7 +43,6 @@ import {
 } from "@lib/workspace/selection-target"
 import {
   getComponentKey,
-  getNode,
   hasNode,
 } from "@lib/workspace/workspace-accessors"
 import { IconProps } from "@seldon/components/primitives/Icon"
@@ -87,7 +84,6 @@ export function useRowNode(
   const { selectNode, selectBoard, selectResourceEntry, selectResourceItem } =
     useSelectionActions()
   const { showNodeIds } = useDebugMode()
-  const { autoScrollToSelection } = useEditorConfig()
   const addToast = useAddToast()
   const hasClipboardProperties = usePropertiesClipboard(
     (state) => state.properties !== null,
@@ -95,7 +91,6 @@ export function useRowNode(
 
   const { toggle, expandObjects, collapseObjects, getAllDescendantNodeIds } =
     useExpansion()
-  const { toggleSection } = useSectionExpansion()
 
   const { isEditingName, setEditingName } = useEditState(node)
 
@@ -176,46 +171,15 @@ export function useRowNode(
     onToggle,
   })
 
-  function findOwningVariantId(): string | null {
-    let current: EntryNode | null = node
-    while (current) {
-      if (typeCheckingService.isVariant(current)) {
-        return current.id
-      }
-      const parent = nodeTraversalService.findParentNode(current.id, workspace)
-      current = parent ? (parent as EntryNode) : null
-    }
-    return null
-  }
-
   function handleDoubleClick() {
     if (isEcho) return
     const entityType = typeCheckingService.getEntityType(node)
     if (rules.mutations.rename[entityType].allowed) {
       setEditingName(true)
     } else if (typeCheckingService.isInstance(node)) {
-      const variantId = findOwningVariantId()
-      if (!variantId) return
-
-      if (autoScrollToSelection && nodeExistsInWorkspace) {
-        const variantNode = getNode(workspace, variantId)
-        if (variantNode) {
-          const root = nodeRelationshipService.getRootVariant(
-            variantNode,
-            workspace,
-          )
-          const rootEntry = getNode(workspace, root.id)
-          const rootCatalogId = rootEntry
-            ? getNodeCatalogComponentId(rootEntry, workspace)
-            : null
-          if (rootCatalogId && isComponentId(rootCatalogId)) {
-            toggleSection(getComponentSchema(rootCatalogId).level, true)
-          }
-          toggle(variantId, true, { includeAncestors: true })
-        }
-      }
-
-      selectNode(variantId)
+      // An instance mirrors its source variant, so its name is read-only here.
+      // Renaming happens at the source the user reaches through the row menu.
+      addToast("This name can only be changed at its source")
     }
   }
 
