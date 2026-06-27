@@ -21,6 +21,7 @@ import {
   Workspace,
   isReservedTokenName,
 } from "@seldon/core"
+import { isLayeredPaintProperty } from "@seldon/core/properties/types/property-keys"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { isEntryNodeInstance } from "@seldon/core/workspace/model/entry-node"
 import { NORMAL_STATE } from "@seldon/core/workspace/model/node-state"
@@ -56,6 +57,7 @@ import {
   ThemeEditingContext,
 } from "../helpers/editing-contexts"
 import { FlatProperty } from "../helpers/properties-data"
+import type { LayerDragContext } from "../LayerDragRow"
 import {
   getFormControlStyle,
   getRowStyle,
@@ -91,6 +93,41 @@ export interface RowPropertyProps {
   themeEditingContext?: ThemeEditingContext | null
   fontCollectionEditingContext?: FontCollectionEditingContext | null
   iconSetEditingContext?: IconSetEditingContext | null
+}
+
+/**
+ * Returns the layer-reorder context for a row when it is a draggable layered
+ * paint parent (`background`/`shadow`) on a node with more than one layer.
+ * Returns null for boards, non-layer rows, facet rows, and single-layer stacks.
+ */
+function resolveLayerDrag({
+  property,
+  node,
+  allProperties,
+}: Pick<
+  RowPropertyProps,
+  "property" | "node" | "allProperties"
+>): LayerDragContext | null {
+  if (isBoard(node)) return null
+  if (property.isSubProperty) return null
+  if (property.layerIndex === undefined) return null
+
+  const root = property.key.split(".")[0]
+  if (!isLayeredPaintProperty(root as PropertyKey)) return null
+
+  const layerCount = allProperties.filter(
+    (candidate) =>
+      candidate.layerIndex !== undefined &&
+      !candidate.isSubProperty &&
+      candidate.key.split(".")[0] === root,
+  ).length
+  if (layerCount < 2) return null
+
+  return {
+    property: root as LayeredPaintKey,
+    layerIndex: property.layerIndex,
+    layerCount,
+  }
 }
 
 /**
@@ -722,6 +759,8 @@ export function useRowProperty({
     iconSetEditingContext,
   }
 
+  const layerDrag = resolveLayerDrag({ property, node, allProperties })
+
   const childItems: RowPropertyProps[] = children.map((subProperty) => ({
     property: subProperty,
     workspace,
@@ -751,5 +790,6 @@ export function useRowProperty({
     isExpanded,
     hasChildren,
     childItems,
+    layerDrag,
   }
 }

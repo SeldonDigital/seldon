@@ -11,7 +11,8 @@ import { ItemNode } from "@seldon/components/elements/ItemNode"
 import { useRowActionsMenu } from "../shared/use-row-actions-menu"
 import { RowSelectionTarget } from "./RowSelectionTarget"
 import { VMNode } from "./VMNode"
-import { VMResourceEntry, getBoardResourceRowConfig } from "./VMResourceEntry"
+import { VMResourceEntry } from "./VMResourceEntry"
+import { getBoardResourceRowConfig } from "./helpers/resource-row-config"
 
 const BOARD_SELECTION_KIND = "board"
 

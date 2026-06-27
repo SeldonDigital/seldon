@@ -3,7 +3,7 @@ import { useMemo } from "react"
 import { Variant } from "@seldon/core"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { buildResetMenuEntry } from "../../shared/build-reset-menu-entry"
-import type { ResourceRowConfig } from "../VMResourceEntry"
+import type { ResourceRowConfig } from "../helpers/resource-row-config"
 import { useEditState } from "./use-edit-state"
 
 type EntrySnapshot = {

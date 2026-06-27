@@ -13,10 +13,15 @@ import {
 } from "@seldon/components/custom-components"
 import type { LayerPlacement } from "./helpers/layer-reorder"
 
-interface LayerDragRowProps {
+/** A row's layer-reorder context: which paint stack it belongs to and where. */
+export interface LayerDragContext {
   property: LayeredPaintKey
   layerIndex: number
   layerCount: number
+}
+
+interface LayerDragRowProps {
+  layerDrag: LayerDragContext | null
   label: string
   icon: string
   children: ReactNode
@@ -26,17 +31,48 @@ const wrapperStyle: CSSProperties = { position: "relative", width: "100%" }
 const nonInteractiveOverlayStyle: CSSProperties = { pointerEvents: "none" }
 
 /**
- * Wraps a layered paint parent row to make it a drag source for reordering and
- * to host before/after drop bands with the shared insert indicator.
+ * Renders a property row, making it a layer-reorder drag source when it is a
+ * multi-layer paint parent. Rows without a layer context render their children
+ * unwrapped, so the caller can always mount this without branching.
  */
 export function LayerDragRow({
+  layerDrag,
+  label,
+  icon,
+  children,
+}: LayerDragRowProps) {
+  if (!layerDrag) return <>{children}</>
+  return (
+    <LayerDragSource
+      property={layerDrag.property}
+      layerIndex={layerDrag.layerIndex}
+      layerCount={layerDrag.layerCount}
+      label={label}
+      icon={icon}
+    >
+      {children}
+    </LayerDragSource>
+  )
+}
+
+interface LayerDragSourceProps extends LayerDragContext {
+  label: string
+  icon: string
+  children: ReactNode
+}
+
+/**
+ * Drag-source wrapper for a layered paint parent row. Hosts before/after drop
+ * bands with the shared insert indicator.
+ */
+function LayerDragSource({
   property,
   layerIndex,
   layerCount,
   label,
   icon,
   children,
-}: LayerDragRowProps) {
+}: LayerDragSourceProps) {
   const { ref, dragging } = useLayerDraggable({
     property,
     layerIndex,
