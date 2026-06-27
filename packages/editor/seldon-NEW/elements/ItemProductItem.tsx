@@ -25,11 +25,13 @@ import { InputCheckbox, InputCheckboxProps } from "../primitives/InputCheckbox"
 import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
 import { TextSubtitle, TextSubtitleProps } from "../primitives/TextSubtitle"
 import { TextTitle, TextTitleProps } from "../primitives/TextTitle"
+import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
 
 export interface ItemProductItemProps extends LiHTMLAttributes<HTMLLIElement> {
   className?: string
   "data-seldon-ref"?: string
+  seldonRefs?: Record<string, Record<string, unknown>>
   inputCheckbox?: InputCheckboxProps | null
   avatarSquareBorder?: AvatarSquareBorderProps | null
   image?: ImageProps | null
@@ -76,13 +78,15 @@ export function ItemProductItem({
   icon = sdn.icon,
   textLabel,
   children,
+  seldonRefs,
   ...props
 }: ItemProductItemProps) {
   const itemProductItemClassName = combineClassNames(
     "sdn-item-product-item",
     className,
   )
-  const inputCheckboxProps =
+  const inputCheckboxProps = applyRef(
+    seldonRefs,
     inputCheckbox === null
       ? null
       : {
@@ -92,8 +96,10 @@ export function ItemProductItem({
             sdn.inputCheckbox?.className,
             inputCheckbox?.className,
           ),
-        }
-  const avatarSquareBorderProps =
+        },
+  )
+  const avatarSquareBorderProps = applyRef(
+    seldonRefs,
     avatarSquareBorder === null
       ? null
       : {
@@ -103,24 +109,30 @@ export function ItemProductItem({
             sdn.avatarSquareBorder?.className,
             avatarSquareBorder?.className,
           ),
-        }
-  const imageProps =
+        },
+  )
+  const imageProps = applyRef(
+    seldonRefs,
     image === null
       ? null
       : {
           ...sdn.image,
           ...image,
           className: combineClassNames(sdn.image?.className, image?.className),
-        }
-  const frameProps =
+        },
+  )
+  const frameProps = applyRef(
+    seldonRefs,
     frame === null
       ? null
       : {
           ...sdn.frame,
           ...frame,
           className: combineClassNames(sdn.frame?.className, frame?.className),
-        }
-  const textTitleProps =
+        },
+  )
+  const textTitleProps = applyRef(
+    seldonRefs,
     textTitle === null
       ? null
       : {
@@ -130,8 +142,10 @@ export function ItemProductItem({
             sdn.textTitle?.className,
             textTitle?.className,
           ),
-        }
-  const textSubtitleProps =
+        },
+  )
+  const textSubtitleProps = applyRef(
+    seldonRefs,
     textSubtitle === null
       ? null
       : {
@@ -141,8 +155,10 @@ export function ItemProductItem({
             sdn.textSubtitle?.className,
             textSubtitle?.className,
           ),
-        }
-  const buttonProps =
+        },
+  )
+  const buttonProps = applyRef(
+    seldonRefs,
     button === null
       ? null
       : {
@@ -152,16 +168,20 @@ export function ItemProductItem({
             sdn.button?.className,
             button?.className,
           ),
-        }
-  const iconProps =
+        },
+  )
+  const iconProps = applyRef(
+    seldonRefs,
     icon === null
       ? null
       : {
           ...sdn.icon,
           ...icon,
           className: combineClassNames(sdn.icon?.className, icon?.className),
-        }
-  const textLabelProps =
+        },
+  )
+  const textLabelProps = applyRef(
+    seldonRefs,
     textLabel === null
       ? null
       : {
@@ -171,7 +191,8 @@ export function ItemProductItem({
             sdn.textLabel?.className,
             textLabel?.className,
           ),
-        }
+        },
+  )
 
   return (
     <HTMLLi

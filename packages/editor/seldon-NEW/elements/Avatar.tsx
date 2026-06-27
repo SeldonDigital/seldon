@@ -14,11 +14,13 @@
 import { HTMLAttributes } from "react"
 import { Frame } from "../frames/Frame"
 import { Image, ImageProps } from "../primitives/Image"
+import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
 
 export interface AvatarProps extends HTMLAttributes<HTMLElement> {
   className?: string
   "data-seldon-ref"?: string
+  seldonRefs?: Record<string, Record<string, unknown>>
   image?: ImageProps | null
 }
 
@@ -41,17 +43,20 @@ export function Avatar({
   className = "",
   image = sdn.image,
   children,
+  seldonRefs,
   ...props
 }: AvatarProps) {
   const avatarClassName = combineClassNames("sdn-avatar", className)
-  const imageProps =
+  const imageProps = applyRef(
+    seldonRefs,
     image === null
       ? null
       : {
           ...sdn.image,
           ...image,
           className: combineClassNames(sdn.image?.className, image?.className),
-        }
+        },
+  )
 
   return (
     <Frame

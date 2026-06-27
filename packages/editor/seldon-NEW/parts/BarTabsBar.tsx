@@ -15,11 +15,13 @@ import { HTMLAttributes } from "react"
 import { ButtonSimple, ButtonSimpleProps } from "../elements/ButtonSimple"
 import { Frame } from "../frames/Frame"
 import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
 
 export interface BarTabsBarProps extends HTMLAttributes<HTMLElement> {
   className?: string
   "data-seldon-ref"?: string
+  seldonRefs?: Record<string, Record<string, unknown>>
   buttonSimple?: ButtonSimpleProps | null
   textLabel?: TextLabelProps | null
   buttonSimple2?: ButtonSimpleProps | null
@@ -52,10 +54,12 @@ export function BarTabsBar({
   buttonSimple3 = sdn.buttonSimple3,
   textLabel3,
   children,
+  seldonRefs,
   ...props
 }: BarTabsBarProps) {
   const barTabsBarClassName = combineClassNames("sdn-bar-tabs-bar", className)
-  const buttonSimpleProps =
+  const buttonSimpleProps = applyRef(
+    seldonRefs,
     buttonSimple === null
       ? null
       : {
@@ -65,8 +69,10 @@ export function BarTabsBar({
             sdn.buttonSimple?.className,
             buttonSimple?.className,
           ),
-        }
-  const textLabelProps =
+        },
+  )
+  const textLabelProps = applyRef(
+    seldonRefs,
     textLabel === null
       ? null
       : {
@@ -76,8 +82,10 @@ export function BarTabsBar({
             sdn.textLabel?.className,
             textLabel?.className,
           ),
-        }
-  const buttonSimple2Props =
+        },
+  )
+  const buttonSimple2Props = applyRef(
+    seldonRefs,
     buttonSimple2 === null
       ? null
       : {
@@ -87,8 +95,10 @@ export function BarTabsBar({
             sdn.buttonSimple2?.className,
             buttonSimple2?.className,
           ),
-        }
-  const textLabel2Props =
+        },
+  )
+  const textLabel2Props = applyRef(
+    seldonRefs,
     textLabel2 === null
       ? null
       : {
@@ -98,8 +108,10 @@ export function BarTabsBar({
             sdn.textLabel2?.className,
             textLabel2?.className,
           ),
-        }
-  const buttonSimple3Props =
+        },
+  )
+  const buttonSimple3Props = applyRef(
+    seldonRefs,
     buttonSimple3 === null
       ? null
       : {
@@ -109,8 +121,10 @@ export function BarTabsBar({
             sdn.buttonSimple3?.className,
             buttonSimple3?.className,
           ),
-        }
-  const textLabel3Props =
+        },
+  )
+  const textLabel3Props = applyRef(
+    seldonRefs,
     textLabel3 === null
       ? null
       : {
@@ -120,7 +134,8 @@ export function BarTabsBar({
             sdn.textLabel3?.className,
             textLabel3?.className,
           ),
-        }
+        },
+  )
 
   return (
     <Frame

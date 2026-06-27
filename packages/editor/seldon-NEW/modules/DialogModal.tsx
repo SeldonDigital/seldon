@@ -20,11 +20,13 @@ import { BarButtonBar, BarButtonBarProps } from "../parts/BarButtonBar"
 import { IconProps } from "../primitives/Icon"
 import { TextLabelProps } from "../primitives/TextLabel"
 import { TextTitle, TextTitleProps } from "../primitives/TextTitle"
+import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
 
 export interface DialogModalProps extends HTMLAttributes<HTMLElement> {
   className?: string
   "data-seldon-ref"?: string
+  seldonRefs?: Record<string, Record<string, unknown>>
   bar?: BarProps | null
   textTitle?: TextTitleProps | null
   frame?: FrameProps | null
@@ -65,18 +67,22 @@ export function DialogModal({
   icon2 = sdn.icon2,
   textLabel2,
   children,
+  seldonRefs,
   ...props
 }: DialogModalProps) {
   const dialogModalClassName = combineClassNames("sdn-dialog", className)
-  const barProps =
+  const barProps = applyRef(
+    seldonRefs,
     bar === null
       ? null
       : {
           ...sdn.bar,
           ...bar,
           className: combineClassNames(sdn.bar?.className, bar?.className),
-        }
-  const textTitleProps =
+        },
+  )
+  const textTitleProps = applyRef(
+    seldonRefs,
     textTitle === null
       ? null
       : {
@@ -86,16 +92,20 @@ export function DialogModal({
             sdn.textTitle?.className,
             textTitle?.className,
           ),
-        }
-  const frameProps =
+        },
+  )
+  const frameProps = applyRef(
+    seldonRefs,
     frame === null
       ? null
       : {
           ...sdn.frame,
           ...frame,
           className: combineClassNames(sdn.frame?.className, frame?.className),
-        }
-  const barButtonBarProps =
+        },
+  )
+  const barButtonBarProps = applyRef(
+    seldonRefs,
     barButtonBar === null
       ? null
       : {
@@ -105,8 +115,10 @@ export function DialogModal({
             sdn.barButtonBar?.className,
             barButtonBar?.className,
           ),
-        }
-  const buttonProps =
+        },
+  )
+  const buttonProps = applyRef(
+    seldonRefs,
     button === null
       ? null
       : {
@@ -116,16 +128,20 @@ export function DialogModal({
             sdn.button?.className,
             button?.className,
           ),
-        }
-  const iconProps =
+        },
+  )
+  const iconProps = applyRef(
+    seldonRefs,
     icon === null
       ? null
       : {
           ...sdn.icon,
           ...icon,
           className: combineClassNames(sdn.icon?.className, icon?.className),
-        }
-  const textLabelProps =
+        },
+  )
+  const textLabelProps = applyRef(
+    seldonRefs,
     textLabel === null
       ? null
       : {
@@ -135,8 +151,10 @@ export function DialogModal({
             sdn.textLabel?.className,
             textLabel?.className,
           ),
-        }
-  const button2Props =
+        },
+  )
+  const button2Props = applyRef(
+    seldonRefs,
     button2 === null
       ? null
       : {
@@ -146,16 +164,20 @@ export function DialogModal({
             sdn.button2?.className,
             button2?.className,
           ),
-        }
-  const icon2Props =
+        },
+  )
+  const icon2Props = applyRef(
+    seldonRefs,
     icon2 === null
       ? null
       : {
           ...sdn.icon2,
           ...icon2,
           className: combineClassNames(sdn.icon2?.className, icon2?.className),
-        }
-  const textLabel2Props =
+        },
+  )
+  const textLabel2Props = applyRef(
+    seldonRefs,
     textLabel2 === null
       ? null
       : {
@@ -165,7 +187,8 @@ export function DialogModal({
             sdn.textLabel2?.className,
             textLabel2?.className,
           ),
-        }
+        },
+  )
 
   return (
     <HTMLDiv

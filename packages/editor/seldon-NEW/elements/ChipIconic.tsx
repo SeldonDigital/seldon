@@ -14,11 +14,13 @@
 import { HTMLAttributes } from "react"
 import { HTMLSpan } from "../native-react/HTML.Span"
 import { Icon, IconProps } from "../primitives/Icon"
+import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
 
 export interface ChipIconicProps extends HTMLAttributes<HTMLElement> {
   className?: string
   "data-seldon-ref"?: string
+  seldonRefs?: Record<string, Record<string, unknown>>
   icon?: IconProps | null
 }
 
@@ -41,17 +43,20 @@ export function ChipIconic({
   className = "",
   icon = sdn.icon,
   children,
+  seldonRefs,
   ...props
 }: ChipIconicProps) {
   const chipIconicClassName = combineClassNames("sdn-chip-iconic", className)
-  const iconProps =
+  const iconProps = applyRef(
+    seldonRefs,
     icon === null
       ? null
       : {
           ...sdn.icon,
           ...icon,
           className: combineClassNames(sdn.icon?.className, icon?.className),
-        }
+        },
+  )
 
   return (
     <HTMLSpan

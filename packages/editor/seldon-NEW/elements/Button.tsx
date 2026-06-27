@@ -15,11 +15,13 @@ import { ButtonHTMLAttributes } from "react"
 import { HTMLButton } from "../native-react/HTML.Button"
 import { Icon, IconProps } from "../primitives/Icon"
 import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string
   "data-seldon-ref"?: string
+  seldonRefs?: Record<string, Record<string, unknown>>
   icon?: IconProps | null
   textLabel?: TextLabelProps | null
 }
@@ -44,18 +46,22 @@ export function Button({
   icon = sdn.icon,
   textLabel,
   children,
+  seldonRefs,
   ...props
 }: ButtonProps) {
   const buttonClassName = combineClassNames("sdn-button", className)
-  const iconProps =
+  const iconProps = applyRef(
+    seldonRefs,
     icon === null
       ? null
       : {
           ...sdn.icon,
           ...icon,
           className: combineClassNames(sdn.icon?.className, icon?.className),
-        }
-  const textLabelProps =
+        },
+  )
+  const textLabelProps = applyRef(
+    seldonRefs,
     textLabel === null
       ? null
       : {
@@ -65,7 +71,8 @@ export function Button({
             sdn.textLabel?.className,
             textLabel?.className,
           ),
-        }
+        },
+  )
 
   return (
     <HTMLButton className={buttonClassName} {...props}>

@@ -15,11 +15,13 @@ import { HTMLAttributes } from "react"
 import { HTMLSpan } from "../native-react/HTML.Span"
 import { Icon, IconProps } from "../primitives/Icon"
 import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
 
 export interface ChipFilterProps extends HTMLAttributes<HTMLElement> {
   className?: string
   "data-seldon-ref"?: string
+  seldonRefs?: Record<string, Record<string, unknown>>
   icon?: IconProps | null
   textLabel?: TextLabelProps | null
 }
@@ -45,18 +47,22 @@ export function ChipFilter({
   icon = sdn.icon,
   textLabel,
   children,
+  seldonRefs,
   ...props
 }: ChipFilterProps) {
   const chipFilterClassName = combineClassNames("sdn-chip-filter", className)
-  const iconProps =
+  const iconProps = applyRef(
+    seldonRefs,
     icon === null
       ? null
       : {
           ...sdn.icon,
           ...icon,
           className: combineClassNames(sdn.icon?.className, icon?.className),
-        }
-  const textLabelProps =
+        },
+  )
+  const textLabelProps = applyRef(
+    seldonRefs,
     textLabel === null
       ? null
       : {
@@ -66,7 +72,8 @@ export function ChipFilter({
             sdn.textLabel?.className,
             textLabel?.className,
           ),
-        }
+        },
+  )
 
   return (
     <HTMLSpan

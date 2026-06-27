@@ -16,11 +16,13 @@ import { ButtonIconic, ButtonIconicProps } from "../elements/ButtonIconic"
 import { Frame } from "../frames/Frame"
 import { Icon, IconProps } from "../primitives/Icon"
 import { Link, LinkProps } from "../primitives/Link"
+import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
 
 export interface BarBreadcrumbsBarProps extends HTMLAttributes<HTMLElement> {
   className?: string
   "data-seldon-ref"?: string
+  seldonRefs?: Record<string, Record<string, unknown>>
   buttonIconic?: ButtonIconicProps | null
   icon?: IconProps | null
   icon2?: IconProps | null
@@ -57,10 +59,12 @@ export function BarBreadcrumbsBar({
   icon4 = sdn.icon4,
   link3 = sdn.link3,
   children,
+  seldonRefs,
   ...props
 }: BarBreadcrumbsBarProps) {
   const barBreadcrumbsBarClassName = combineClassNames("sdn-bar", className)
-  const buttonIconicProps =
+  const buttonIconicProps = applyRef(
+    seldonRefs,
     buttonIconic === null
       ? null
       : {
@@ -70,63 +74,78 @@ export function BarBreadcrumbsBar({
             sdn.buttonIconic?.className,
             buttonIconic?.className,
           ),
-        }
-  const iconProps =
+        },
+  )
+  const iconProps = applyRef(
+    seldonRefs,
     icon === null
       ? null
       : {
           ...sdn.icon,
           ...icon,
           className: combineClassNames(sdn.icon?.className, icon?.className),
-        }
-  const icon2Props =
+        },
+  )
+  const icon2Props = applyRef(
+    seldonRefs,
     icon2 === null
       ? null
       : {
           ...sdn.icon2,
           ...icon2,
           className: combineClassNames(sdn.icon2?.className, icon2?.className),
-        }
-  const linkProps =
+        },
+  )
+  const linkProps = applyRef(
+    seldonRefs,
     link === null
       ? null
       : {
           ...sdn.link,
           ...link,
           className: combineClassNames(sdn.link?.className, link?.className),
-        }
-  const icon3Props =
+        },
+  )
+  const icon3Props = applyRef(
+    seldonRefs,
     icon3 === null
       ? null
       : {
           ...sdn.icon3,
           ...icon3,
           className: combineClassNames(sdn.icon3?.className, icon3?.className),
-        }
-  const link2Props =
+        },
+  )
+  const link2Props = applyRef(
+    seldonRefs,
     link2 === null
       ? null
       : {
           ...sdn.link2,
           ...link2,
           className: combineClassNames(sdn.link2?.className, link2?.className),
-        }
-  const icon4Props =
+        },
+  )
+  const icon4Props = applyRef(
+    seldonRefs,
     icon4 === null
       ? null
       : {
           ...sdn.icon4,
           ...icon4,
           className: combineClassNames(sdn.icon4?.className, icon4?.className),
-        }
-  const link3Props =
+        },
+  )
+  const link3Props = applyRef(
+    seldonRefs,
     link3 === null
       ? null
       : {
           ...sdn.link3,
           ...link3,
           className: combineClassNames(sdn.link3?.className, link3?.className),
-        }
+        },
+  )
 
   return (
     <Frame

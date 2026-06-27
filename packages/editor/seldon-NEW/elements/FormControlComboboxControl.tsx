@@ -18,11 +18,13 @@ import { Frame } from "../frames/Frame"
 import { IconProps } from "../primitives/Icon"
 import { InputProps } from "../primitives/Input"
 import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
 
 export interface FormControlComboboxControlProps extends HTMLAttributes<HTMLElement> {
   className?: string
   "data-seldon-ref"?: string
+  seldonRefs?: Record<string, Record<string, unknown>>
   textLabel?: TextLabelProps | null
   comboboxField?: ComboboxFieldProps | null
   icon?: IconProps | null
@@ -59,13 +61,15 @@ export function FormControlComboboxControl({
   buttonIconic = sdn.buttonIconic,
   icon2 = sdn.icon2,
   children,
+  seldonRefs,
   ...props
 }: FormControlComboboxControlProps) {
   const formControlComboboxControlClassName = combineClassNames(
     "sdn-form-control",
     className,
   )
-  const textLabelProps =
+  const textLabelProps = applyRef(
+    seldonRefs,
     textLabel === null
       ? null
       : {
@@ -75,8 +79,10 @@ export function FormControlComboboxControl({
             sdn.textLabel?.className,
             textLabel?.className,
           ),
-        }
-  const comboboxFieldProps =
+        },
+  )
+  const comboboxFieldProps = applyRef(
+    seldonRefs,
     comboboxField === null
       ? null
       : {
@@ -86,24 +92,30 @@ export function FormControlComboboxControl({
             sdn.comboboxField?.className,
             comboboxField?.className,
           ),
-        }
-  const iconProps =
+        },
+  )
+  const iconProps = applyRef(
+    seldonRefs,
     icon === null
       ? null
       : {
           ...sdn.icon,
           ...icon,
           className: combineClassNames(sdn.icon?.className, icon?.className),
-        }
-  const inputProps =
+        },
+  )
+  const inputProps = applyRef(
+    seldonRefs,
     input === null
       ? null
       : {
           ...sdn.input,
           ...input,
           className: combineClassNames(sdn.input?.className, input?.className),
-        }
-  const buttonIconicProps =
+        },
+  )
+  const buttonIconicProps = applyRef(
+    seldonRefs,
     buttonIconic === null
       ? null
       : {
@@ -113,15 +125,18 @@ export function FormControlComboboxControl({
             sdn.buttonIconic?.className,
             buttonIconic?.className,
           ),
-        }
-  const icon2Props =
+        },
+  )
+  const icon2Props = applyRef(
+    seldonRefs,
     icon2 === null
       ? null
       : {
           ...sdn.icon2,
           ...icon2,
           className: combineClassNames(sdn.icon2?.className, icon2?.className),
-        }
+        },
+  )
 
   return (
     <Frame
@@ -140,6 +155,7 @@ export function FormControlComboboxControl({
               icon={iconProps}
               input={inputProps}
               buttonIconic={buttonIconicProps}
+              icon2={icon2Props}
             />
           )}
         </>

@@ -18,11 +18,13 @@ import { HTMLDiv } from "../native-react/HTML.Div"
 import { Bar, BarProps } from "../parts/Bar"
 import { IconProps } from "../primitives/Icon"
 import { TextTitle, TextTitleProps } from "../primitives/TextTitle"
+import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
 
 export interface DialogPaletteProps extends HTMLAttributes<HTMLElement> {
   className?: string
   "data-seldon-ref"?: string
+  seldonRefs?: Record<string, Record<string, unknown>>
   bar?: BarProps | null
   textTitle?: TextTitleProps | null
   buttonIconic?: ButtonIconicProps | null
@@ -53,18 +55,22 @@ export function DialogPalette({
   icon = sdn.icon,
   frame = sdn.frame,
   children,
+  seldonRefs,
   ...props
 }: DialogPaletteProps) {
   const dialogPaletteClassName = combineClassNames("sdn-dialog", className)
-  const barProps =
+  const barProps = applyRef(
+    seldonRefs,
     bar === null
       ? null
       : {
           ...sdn.bar,
           ...bar,
           className: combineClassNames(sdn.bar?.className, bar?.className),
-        }
-  const textTitleProps =
+        },
+  )
+  const textTitleProps = applyRef(
+    seldonRefs,
     textTitle === null
       ? null
       : {
@@ -74,8 +80,10 @@ export function DialogPalette({
             sdn.textTitle?.className,
             textTitle?.className,
           ),
-        }
-  const buttonIconicProps =
+        },
+  )
+  const buttonIconicProps = applyRef(
+    seldonRefs,
     buttonIconic === null
       ? null
       : {
@@ -85,23 +93,28 @@ export function DialogPalette({
             sdn.buttonIconic?.className,
             buttonIconic?.className,
           ),
-        }
-  const iconProps =
+        },
+  )
+  const iconProps = applyRef(
+    seldonRefs,
     icon === null
       ? null
       : {
           ...sdn.icon,
           ...icon,
           className: combineClassNames(sdn.icon?.className, icon?.className),
-        }
-  const frameProps =
+        },
+  )
+  const frameProps = applyRef(
+    seldonRefs,
     frame === null
       ? null
       : {
           ...sdn.frame,
           ...frame,
           className: combineClassNames(sdn.frame?.className, frame?.className),
-        }
+        },
+  )
 
   return (
     <HTMLDiv

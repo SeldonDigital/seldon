@@ -381,6 +381,16 @@ export function insertImports(
   // Always add combineClassNames utility import since we always generate className declarations
   imports["../utils/class-name"] = ["combineClassNames"]
 
+  // Components that compose children wrap each merged slot props with applyRef
+  // to support the ref override channel. Leaf components have no slot props, so
+  // they skip the import to avoid an unused binding.
+  if (
+    Array.isArray(component.tree.children) &&
+    component.tree.children.length > 0
+  ) {
+    imports["../utils/apply-ref"] = ["applyRef"]
+  }
+
   let importString = ""
   for (const [location, modules] of Object.entries(imports)) {
     // Check if this is a wildcard import (only one module and it starts with "*")

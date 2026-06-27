@@ -14,11 +14,13 @@
 import { HTMLAttributes } from "react"
 import { Frame } from "../frames/Frame"
 import { Image, ImageProps } from "../primitives/Image"
+import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
 
 export interface AvatarStackedProps extends HTMLAttributes<HTMLElement> {
   className?: string
   "data-seldon-ref"?: string
+  seldonRefs?: Record<string, Record<string, unknown>>
   image?: ImageProps | null
   image2?: ImageProps | null
   image3?: ImageProps | null
@@ -47,21 +49,25 @@ export function AvatarStacked({
   image2 = sdn.image2,
   image3 = sdn.image3,
   children,
+  seldonRefs,
   ...props
 }: AvatarStackedProps) {
   const avatarStackedClassName = combineClassNames(
     "sdn-avatar-badged",
     className,
   )
-  const imageProps =
+  const imageProps = applyRef(
+    seldonRefs,
     image === null
       ? null
       : {
           ...sdn.image,
           ...image,
           className: combineClassNames(sdn.image?.className, image?.className),
-        }
-  const image2Props =
+        },
+  )
+  const image2Props = applyRef(
+    seldonRefs,
     image2 === null
       ? null
       : {
@@ -71,8 +77,10 @@ export function AvatarStacked({
             sdn.image2?.className,
             image2?.className,
           ),
-        }
-  const image3Props =
+        },
+  )
+  const image3Props = applyRef(
+    seldonRefs,
     image3 === null
       ? null
       : {
@@ -82,7 +90,8 @@ export function AvatarStacked({
             sdn.image3?.className,
             image3?.className,
           ),
-        }
+        },
+  )
 
   return (
     <Frame

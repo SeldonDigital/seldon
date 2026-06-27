@@ -20,11 +20,13 @@ import {
 import { Frame } from "../frames/Frame"
 import { IconProps } from "../primitives/Icon"
 import { InputProps } from "../primitives/Input"
+import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
 
 export interface BarSearchBarProps extends HTMLAttributes<HTMLElement> {
   className?: string
   "data-seldon-ref"?: string
+  seldonRefs?: Record<string, Record<string, unknown>>
   comboboxFieldSearchField?: ComboboxFieldSearchFieldProps | null
   icon?: IconProps | null
   input?: InputProps | null
@@ -58,10 +60,12 @@ export function BarSearchBar({
   buttonIconic = sdn.buttonIconic,
   icon2 = sdn.icon2,
   children,
+  seldonRefs,
   ...props
 }: BarSearchBarProps) {
   const barSearchBarClassName = combineClassNames("sdn-bar", className)
-  const comboboxFieldSearchFieldProps =
+  const comboboxFieldSearchFieldProps = applyRef(
+    seldonRefs,
     comboboxFieldSearchField === null
       ? null
       : {
@@ -71,24 +75,30 @@ export function BarSearchBar({
             sdn.comboboxFieldSearchField?.className,
             comboboxFieldSearchField?.className,
           ),
-        }
-  const iconProps =
+        },
+  )
+  const iconProps = applyRef(
+    seldonRefs,
     icon === null
       ? null
       : {
           ...sdn.icon,
           ...icon,
           className: combineClassNames(sdn.icon?.className, icon?.className),
-        }
-  const inputProps =
+        },
+  )
+  const inputProps = applyRef(
+    seldonRefs,
     input === null
       ? null
       : {
           ...sdn.input,
           ...input,
           className: combineClassNames(sdn.input?.className, input?.className),
-        }
-  const buttonIconicProps =
+        },
+  )
+  const buttonIconicProps = applyRef(
+    seldonRefs,
     buttonIconic === null
       ? null
       : {
@@ -98,15 +108,18 @@ export function BarSearchBar({
             sdn.buttonIconic?.className,
             buttonIconic?.className,
           ),
-        }
-  const icon2Props =
+        },
+  )
+  const icon2Props = applyRef(
+    seldonRefs,
     icon2 === null
       ? null
       : {
           ...sdn.icon2,
           ...icon2,
           className: combineClassNames(sdn.icon2?.className, icon2?.className),
-        }
+        },
+  )
 
   return (
     <Frame
@@ -124,6 +137,7 @@ export function BarSearchBar({
               icon={iconProps}
               input={inputProps}
               buttonIconic={buttonIconicProps}
+              icon2={icon2Props}
             />
           )}
         </>

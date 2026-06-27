@@ -14,11 +14,13 @@
 import { ButtonHTMLAttributes } from "react"
 import { HTMLButton } from "../native-react/HTML.Button"
 import { Icon, IconProps } from "../primitives/Icon"
+import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
 
 export interface ButtonIconicProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string
   "data-seldon-ref"?: string
+  seldonRefs?: Record<string, Record<string, unknown>>
   icon?: IconProps | null
 }
 
@@ -40,20 +42,23 @@ export function ButtonIconic({
   className = "",
   icon = sdn.icon,
   children,
+  seldonRefs,
   ...props
 }: ButtonIconicProps) {
   const buttonIconicClassName = combineClassNames(
     "sdn-button-iconic",
     className,
   )
-  const iconProps =
+  const iconProps = applyRef(
+    seldonRefs,
     icon === null
       ? null
       : {
           ...sdn.icon,
           ...icon,
           className: combineClassNames(sdn.icon?.className, icon?.className),
-        }
+        },
+  )
 
   return (
     <HTMLButton className={buttonIconicClassName} {...props}>

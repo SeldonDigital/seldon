@@ -17,11 +17,13 @@ import { ComboboxField, ComboboxFieldProps } from "../elements/ComboboxField"
 import { HTMLLi } from "../native-react/HTML.Li"
 import { IconProps } from "../primitives/Icon"
 import { InputProps } from "../primitives/Input"
+import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
 
 export interface ItemNodeProps extends LiHTMLAttributes<HTMLLIElement> {
   className?: string
   "data-seldon-ref"?: string
+  seldonRefs?: Record<string, Record<string, unknown>>
   buttonIconic?: ButtonIconicProps | null
   icon?: IconProps | null
   comboboxField?: ComboboxFieldProps | null
@@ -56,10 +58,12 @@ export function ItemNode({
   buttonIconic2 = sdn.buttonIconic2,
   icon3 = sdn.icon3,
   children,
+  seldonRefs,
   ...props
 }: ItemNodeProps) {
   const itemNodeClassName = combineClassNames("sdn-item-node", className)
-  const buttonIconicProps =
+  const buttonIconicProps = applyRef(
+    seldonRefs,
     buttonIconic === null
       ? null
       : {
@@ -69,16 +73,20 @@ export function ItemNode({
             sdn.buttonIconic?.className,
             buttonIconic?.className,
           ),
-        }
-  const iconProps =
+        },
+  )
+  const iconProps = applyRef(
+    seldonRefs,
     icon === null
       ? null
       : {
           ...sdn.icon,
           ...icon,
           className: combineClassNames(sdn.icon?.className, icon?.className),
-        }
-  const comboboxFieldProps =
+        },
+  )
+  const comboboxFieldProps = applyRef(
+    seldonRefs,
     comboboxField === null
       ? null
       : {
@@ -88,24 +96,30 @@ export function ItemNode({
             sdn.comboboxField?.className,
             comboboxField?.className,
           ),
-        }
-  const icon2Props =
+        },
+  )
+  const icon2Props = applyRef(
+    seldonRefs,
     icon2 === null
       ? null
       : {
           ...sdn.icon2,
           ...icon2,
           className: combineClassNames(sdn.icon2?.className, icon2?.className),
-        }
-  const inputProps =
+        },
+  )
+  const inputProps = applyRef(
+    seldonRefs,
     input === null
       ? null
       : {
           ...sdn.input,
           ...input,
           className: combineClassNames(sdn.input?.className, input?.className),
-        }
-  const buttonIconic2Props =
+        },
+  )
+  const buttonIconic2Props = applyRef(
+    seldonRefs,
     buttonIconic2 === null
       ? null
       : {
@@ -115,15 +129,18 @@ export function ItemNode({
             sdn.buttonIconic2?.className,
             buttonIconic2?.className,
           ),
-        }
-  const icon3Props =
+        },
+  )
+  const icon3Props = applyRef(
+    seldonRefs,
     icon3 === null
       ? null
       : {
           ...sdn.icon3,
           ...icon3,
           className: combineClassNames(sdn.icon3?.className, icon3?.className),
-        }
+        },
+  )
 
   return (
     <HTMLLi
@@ -145,6 +162,7 @@ export function ItemNode({
               icon={icon2Props}
               input={inputProps}
               buttonIconic={buttonIconic2Props}
+              icon2={icon3Props}
             />
           )}
         </>

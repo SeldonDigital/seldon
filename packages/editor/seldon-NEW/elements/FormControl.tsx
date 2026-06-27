@@ -15,11 +15,13 @@ import { HTMLAttributes } from "react"
 import { Frame } from "../frames/Frame"
 import { Input, InputProps } from "../primitives/Input"
 import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
 
 export interface FormControlProps extends HTMLAttributes<HTMLElement> {
   className?: string
   "data-seldon-ref"?: string
+  seldonRefs?: Record<string, Record<string, unknown>>
   textLabel?: TextLabelProps | null
   input?: InputProps | null
 }
@@ -45,10 +47,12 @@ export function FormControl({
   textLabel,
   input = sdn.input,
   children,
+  seldonRefs,
   ...props
 }: FormControlProps) {
   const formControlClassName = combineClassNames("sdn-form-control", className)
-  const textLabelProps =
+  const textLabelProps = applyRef(
+    seldonRefs,
     textLabel === null
       ? null
       : {
@@ -58,15 +62,18 @@ export function FormControl({
             sdn.textLabel?.className,
             textLabel?.className,
           ),
-        }
-  const inputProps =
+        },
+  )
+  const inputProps = applyRef(
+    seldonRefs,
     input === null
       ? null
       : {
           ...sdn.input,
           ...input,
           className: combineClassNames(sdn.input?.className, input?.className),
-        }
+        },
+  )
 
   return (
     <Frame

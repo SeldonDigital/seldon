@@ -20,11 +20,13 @@ import {
 import { HTMLLi } from "../native-react/HTML.Li"
 import { IconProps } from "../primitives/Icon"
 import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
 
 export interface ItemSectionProps extends LiHTMLAttributes<HTMLLIElement> {
   className?: string
   "data-seldon-ref"?: string
+  seldonRefs?: Record<string, Record<string, unknown>>
   buttonIconic?: ButtonIconicProps | null
   icon?: IconProps | null
   formControlComboboxControl?: FormControlComboboxControlProps | null
@@ -66,10 +68,12 @@ export function ItemSection({
   buttonIconic3,
   icon3 = sdn.icon3,
   children,
+  seldonRefs,
   ...props
 }: ItemSectionProps) {
   const itemSectionClassName = combineClassNames("sdn-item-section", className)
-  const buttonIconicProps =
+  const buttonIconicProps = applyRef(
+    seldonRefs,
     buttonIconic === null
       ? null
       : {
@@ -79,16 +83,20 @@ export function ItemSection({
             sdn.buttonIconic?.className,
             buttonIconic?.className,
           ),
-        }
-  const iconProps =
+        },
+  )
+  const iconProps = applyRef(
+    seldonRefs,
     icon === null
       ? null
       : {
           ...sdn.icon,
           ...icon,
           className: combineClassNames(sdn.icon?.className, icon?.className),
-        }
-  const formControlComboboxControlProps =
+        },
+  )
+  const formControlComboboxControlProps = applyRef(
+    seldonRefs,
     formControlComboboxControl === null
       ? null
       : {
@@ -98,8 +106,10 @@ export function ItemSection({
             sdn.formControlComboboxControl?.className,
             formControlComboboxControl?.className,
           ),
-        }
-  const textLabelProps =
+        },
+  )
+  const textLabelProps = applyRef(
+    seldonRefs,
     textLabel === null
       ? null
       : {
@@ -109,8 +119,10 @@ export function ItemSection({
             sdn.textLabel?.className,
             textLabel?.className,
           ),
-        }
-  const buttonIconic2Props =
+        },
+  )
+  const buttonIconic2Props = applyRef(
+    seldonRefs,
     buttonIconic2 === null
       ? null
       : {
@@ -120,16 +132,20 @@ export function ItemSection({
             sdn.buttonIconic2?.className,
             buttonIconic2?.className,
           ),
-        }
-  const icon2Props =
+        },
+  )
+  const icon2Props = applyRef(
+    seldonRefs,
     icon2 === null
       ? null
       : {
           ...sdn.icon2,
           ...icon2,
           className: combineClassNames(sdn.icon2?.className, icon2?.className),
-        }
-  const buttonIconic3Props =
+        },
+  )
+  const buttonIconic3Props = applyRef(
+    seldonRefs,
     buttonIconic3 === null
       ? null
       : {
@@ -139,15 +155,18 @@ export function ItemSection({
             sdn.buttonIconic3?.className,
             buttonIconic3?.className,
           ),
-        }
-  const icon3Props =
+        },
+  )
+  const icon3Props = applyRef(
+    seldonRefs,
     icon3 === null
       ? null
       : {
           ...sdn.icon3,
           ...icon3,
           className: combineClassNames(sdn.icon3?.className, icon3?.className),
-        }
+        },
+  )
 
   return (
     <HTMLLi

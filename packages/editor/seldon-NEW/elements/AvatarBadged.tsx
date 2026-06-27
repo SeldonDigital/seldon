@@ -16,11 +16,13 @@ import { Chip, ChipProps } from "../elements/Chip"
 import { Frame } from "../frames/Frame"
 import { Image, ImageProps } from "../primitives/Image"
 import { Text, TextProps } from "../primitives/Text"
+import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
 
 export interface AvatarBadgedProps extends HTMLAttributes<HTMLElement> {
   className?: string
   "data-seldon-ref"?: string
+  seldonRefs?: Record<string, Record<string, unknown>>
   image?: ImageProps | null
   chip?: ChipProps | null
   text?: TextProps | null
@@ -49,36 +51,43 @@ export function AvatarBadged({
   chip = sdn.chip,
   text,
   children,
+  seldonRefs,
   ...props
 }: AvatarBadgedProps) {
   const avatarBadgedClassName = combineClassNames(
     "sdn-avatar-badged",
     className,
   )
-  const imageProps =
+  const imageProps = applyRef(
+    seldonRefs,
     image === null
       ? null
       : {
           ...sdn.image,
           ...image,
           className: combineClassNames(sdn.image?.className, image?.className),
-        }
-  const chipProps =
+        },
+  )
+  const chipProps = applyRef(
+    seldonRefs,
     chip === null
       ? null
       : {
           ...sdn.chip,
           ...chip,
           className: combineClassNames(sdn.chip?.className, chip?.className),
-        }
-  const textProps =
+        },
+  )
+  const textProps = applyRef(
+    seldonRefs,
     text === null
       ? null
       : {
           ...sdn.text,
           ...text,
           className: combineClassNames(sdn.text?.className, text?.className),
-        }
+        },
+  )
 
   return (
     <Frame

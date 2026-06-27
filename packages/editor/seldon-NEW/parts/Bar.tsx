@@ -18,11 +18,13 @@ import { Frame } from "../frames/Frame"
 import { Icon, IconProps } from "../primitives/Icon"
 import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
 import { TextTitle, TextTitleProps } from "../primitives/TextTitle"
+import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
 
 export interface BarProps extends HTMLAttributes<HTMLElement> {
   className?: string
   "data-seldon-ref"?: string
+  seldonRefs?: Record<string, Record<string, unknown>>
   textTitle?: TextTitleProps | null
   buttonIconic?: ButtonIconicProps | null
   icon?: IconProps | null
@@ -59,10 +61,12 @@ export function Bar({
   icon2 = sdn.icon2,
   textLabel,
   children,
+  seldonRefs,
   ...props
 }: BarProps) {
   const barClassName = combineClassNames("sdn-bar", className)
-  const textTitleProps =
+  const textTitleProps = applyRef(
+    seldonRefs,
     textTitle === null
       ? null
       : {
@@ -72,8 +76,10 @@ export function Bar({
             sdn.textTitle?.className,
             textTitle?.className,
           ),
-        }
-  const buttonIconicProps =
+        },
+  )
+  const buttonIconicProps = applyRef(
+    seldonRefs,
     buttonIconic === null
       ? null
       : {
@@ -83,16 +89,20 @@ export function Bar({
             sdn.buttonIconic?.className,
             buttonIconic?.className,
           ),
-        }
-  const iconProps =
+        },
+  )
+  const iconProps = applyRef(
+    seldonRefs,
     icon === null
       ? null
       : {
           ...sdn.icon,
           ...icon,
           className: combineClassNames(sdn.icon?.className, icon?.className),
-        }
-  const buttonProps =
+        },
+  )
+  const buttonProps = applyRef(
+    seldonRefs,
     button === null
       ? null
       : {
@@ -102,16 +112,20 @@ export function Bar({
             sdn.button?.className,
             button?.className,
           ),
-        }
-  const icon2Props =
+        },
+  )
+  const icon2Props = applyRef(
+    seldonRefs,
     icon2 === null
       ? null
       : {
           ...sdn.icon2,
           ...icon2,
           className: combineClassNames(sdn.icon2?.className, icon2?.className),
-        }
-  const textLabelProps =
+        },
+  )
+  const textLabelProps = applyRef(
+    seldonRefs,
     textLabel === null
       ? null
       : {
@@ -121,7 +135,8 @@ export function Bar({
             sdn.textLabel?.className,
             textLabel?.className,
           ),
-        }
+        },
+  )
 
   return (
     <Frame className={barClassName} aria-hidden={sdn["aria-hidden"]} {...props}>

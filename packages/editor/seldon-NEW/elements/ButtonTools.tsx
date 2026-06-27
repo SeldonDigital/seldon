@@ -16,11 +16,13 @@ import { Button, ButtonProps } from "../elements/Button"
 import { HTMLButton } from "../native-react/HTML.Button"
 import { Icon, IconProps } from "../primitives/Icon"
 import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
 
 export interface ButtonToolsProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string
   "data-seldon-ref"?: string
+  seldonRefs?: Record<string, Record<string, unknown>>
   button?: ButtonProps | null
   icon?: IconProps | null
   textLabel?: TextLabelProps | null
@@ -62,10 +64,12 @@ export function ButtonTools({
   icon3 = sdn.icon3,
   textLabel3,
   children,
+  seldonRefs,
   ...props
 }: ButtonToolsProps) {
   const buttonToolsClassName = combineClassNames("sdn-button-tools", className)
-  const buttonProps =
+  const buttonProps = applyRef(
+    seldonRefs,
     button === null
       ? null
       : {
@@ -75,16 +79,20 @@ export function ButtonTools({
             sdn.button?.className,
             button?.className,
           ),
-        }
-  const iconProps =
+        },
+  )
+  const iconProps = applyRef(
+    seldonRefs,
     icon === null
       ? null
       : {
           ...sdn.icon,
           ...icon,
           className: combineClassNames(sdn.icon?.className, icon?.className),
-        }
-  const textLabelProps =
+        },
+  )
+  const textLabelProps = applyRef(
+    seldonRefs,
     textLabel === null
       ? null
       : {
@@ -94,8 +102,10 @@ export function ButtonTools({
             sdn.textLabel?.className,
             textLabel?.className,
           ),
-        }
-  const button2Props =
+        },
+  )
+  const button2Props = applyRef(
+    seldonRefs,
     button2 === null
       ? null
       : {
@@ -105,16 +115,20 @@ export function ButtonTools({
             sdn.button2?.className,
             button2?.className,
           ),
-        }
-  const icon2Props =
+        },
+  )
+  const icon2Props = applyRef(
+    seldonRefs,
     icon2 === null
       ? null
       : {
           ...sdn.icon2,
           ...icon2,
           className: combineClassNames(sdn.icon2?.className, icon2?.className),
-        }
-  const textLabel2Props =
+        },
+  )
+  const textLabel2Props = applyRef(
+    seldonRefs,
     textLabel2 === null
       ? null
       : {
@@ -124,8 +138,10 @@ export function ButtonTools({
             sdn.textLabel2?.className,
             textLabel2?.className,
           ),
-        }
-  const button3Props =
+        },
+  )
+  const button3Props = applyRef(
+    seldonRefs,
     button3 === null
       ? null
       : {
@@ -135,16 +151,20 @@ export function ButtonTools({
             sdn.button3?.className,
             button3?.className,
           ),
-        }
-  const icon3Props =
+        },
+  )
+  const icon3Props = applyRef(
+    seldonRefs,
     icon3 === null
       ? null
       : {
           ...sdn.icon3,
           ...icon3,
           className: combineClassNames(sdn.icon3?.className, icon3?.className),
-        }
-  const textLabel3Props =
+        },
+  )
+  const textLabel3Props = applyRef(
+    seldonRefs,
     textLabel3 === null
       ? null
       : {
@@ -154,7 +174,8 @@ export function ButtonTools({
             sdn.textLabel3?.className,
             textLabel3?.className,
           ),
-        }
+        },
+  )
 
   return (
     <HTMLButton className={buttonToolsClassName} {...props}>

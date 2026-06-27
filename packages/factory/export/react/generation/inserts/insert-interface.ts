@@ -35,6 +35,17 @@ export function insertInterface(
   // `{...props}` spread onto the child root, so declare the ref attribute.
   const allProps = ["className?: string", `"data-seldon-ref"?: string`]
 
+  // Components that compose children expose a ref override channel. A caller
+  // keys overrides by a descendant's `data-seldon-ref` name, and the merged
+  // slot props pick them up via `applyRef`, so view models drive nested slots
+  // by stable ref name instead of positional prop name.
+  const hasChildren =
+    Array.isArray(component.tree.children) &&
+    component.tree.children.length > 0
+  if (hasChildren) {
+    allProps.push("seldonRefs?: Record<string, Record<string, unknown>>")
+  }
+
   if (ownProps.trim()) {
     allProps.push(
       ...ownProps

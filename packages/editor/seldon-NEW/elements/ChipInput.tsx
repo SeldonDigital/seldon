@@ -15,11 +15,13 @@ import { HTMLAttributes } from "react"
 import { HTMLSpan } from "../native-react/HTML.Span"
 import { Icon, IconProps } from "../primitives/Icon"
 import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
 
 export interface ChipInputProps extends HTMLAttributes<HTMLElement> {
   className?: string
   "data-seldon-ref"?: string
+  seldonRefs?: Record<string, Record<string, unknown>>
   textLabel?: TextLabelProps | null
   icon?: IconProps | null
 }
@@ -45,10 +47,12 @@ export function ChipInput({
   textLabel,
   icon = sdn.icon,
   children,
+  seldonRefs,
   ...props
 }: ChipInputProps) {
   const chipInputClassName = combineClassNames("sdn-chip", className)
-  const textLabelProps =
+  const textLabelProps = applyRef(
+    seldonRefs,
     textLabel === null
       ? null
       : {
@@ -58,15 +62,18 @@ export function ChipInput({
             sdn.textLabel?.className,
             textLabel?.className,
           ),
-        }
-  const iconProps =
+        },
+  )
+  const iconProps = applyRef(
+    seldonRefs,
     icon === null
       ? null
       : {
           ...sdn.icon,
           ...icon,
           className: combineClassNames(sdn.icon?.className, icon?.className),
-        }
+        },
+  )
 
   return (
     <HTMLSpan

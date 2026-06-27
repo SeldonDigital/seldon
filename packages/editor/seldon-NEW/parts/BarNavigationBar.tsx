@@ -16,11 +16,13 @@ import { Button, ButtonProps } from "../elements/Button"
 import { Frame } from "../frames/Frame"
 import { Icon, IconProps } from "../primitives/Icon"
 import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
 
 export interface BarNavigationBarProps extends HTMLAttributes<HTMLElement> {
   className?: string
   "data-seldon-ref"?: string
+  seldonRefs?: Record<string, Record<string, unknown>>
   button?: ButtonProps | null
   icon?: IconProps | null
   textLabel?: TextLabelProps | null
@@ -71,13 +73,15 @@ export function BarNavigationBar({
   icon5 = sdn.icon5,
   textLabel5,
   children,
+  seldonRefs,
   ...props
 }: BarNavigationBarProps) {
   const barNavigationBarClassName = combineClassNames(
     "sdn-bar-navigation-bar",
     className,
   )
-  const buttonProps =
+  const buttonProps = applyRef(
+    seldonRefs,
     button === null
       ? null
       : {
@@ -87,16 +91,20 @@ export function BarNavigationBar({
             sdn.button?.className,
             button?.className,
           ),
-        }
-  const iconProps =
+        },
+  )
+  const iconProps = applyRef(
+    seldonRefs,
     icon === null
       ? null
       : {
           ...sdn.icon,
           ...icon,
           className: combineClassNames(sdn.icon?.className, icon?.className),
-        }
-  const textLabelProps =
+        },
+  )
+  const textLabelProps = applyRef(
+    seldonRefs,
     textLabel === null
       ? null
       : {
@@ -106,8 +114,10 @@ export function BarNavigationBar({
             sdn.textLabel?.className,
             textLabel?.className,
           ),
-        }
-  const button2Props =
+        },
+  )
+  const button2Props = applyRef(
+    seldonRefs,
     button2 === null
       ? null
       : {
@@ -117,16 +127,20 @@ export function BarNavigationBar({
             sdn.button2?.className,
             button2?.className,
           ),
-        }
-  const icon2Props =
+        },
+  )
+  const icon2Props = applyRef(
+    seldonRefs,
     icon2 === null
       ? null
       : {
           ...sdn.icon2,
           ...icon2,
           className: combineClassNames(sdn.icon2?.className, icon2?.className),
-        }
-  const textLabel2Props =
+        },
+  )
+  const textLabel2Props = applyRef(
+    seldonRefs,
     textLabel2 === null
       ? null
       : {
@@ -136,8 +150,10 @@ export function BarNavigationBar({
             sdn.textLabel2?.className,
             textLabel2?.className,
           ),
-        }
-  const button3Props =
+        },
+  )
+  const button3Props = applyRef(
+    seldonRefs,
     button3 === null
       ? null
       : {
@@ -147,16 +163,20 @@ export function BarNavigationBar({
             sdn.button3?.className,
             button3?.className,
           ),
-        }
-  const icon3Props =
+        },
+  )
+  const icon3Props = applyRef(
+    seldonRefs,
     icon3 === null
       ? null
       : {
           ...sdn.icon3,
           ...icon3,
           className: combineClassNames(sdn.icon3?.className, icon3?.className),
-        }
-  const textLabel3Props =
+        },
+  )
+  const textLabel3Props = applyRef(
+    seldonRefs,
     textLabel3 === null
       ? null
       : {
@@ -166,8 +186,10 @@ export function BarNavigationBar({
             sdn.textLabel3?.className,
             textLabel3?.className,
           ),
-        }
-  const button4Props =
+        },
+  )
+  const button4Props = applyRef(
+    seldonRefs,
     button4 === null
       ? null
       : {
@@ -177,16 +199,20 @@ export function BarNavigationBar({
             sdn.button4?.className,
             button4?.className,
           ),
-        }
-  const icon4Props =
+        },
+  )
+  const icon4Props = applyRef(
+    seldonRefs,
     icon4 === null
       ? null
       : {
           ...sdn.icon4,
           ...icon4,
           className: combineClassNames(sdn.icon4?.className, icon4?.className),
-        }
-  const textLabel4Props =
+        },
+  )
+  const textLabel4Props = applyRef(
+    seldonRefs,
     textLabel4 === null
       ? null
       : {
@@ -196,8 +222,10 @@ export function BarNavigationBar({
             sdn.textLabel4?.className,
             textLabel4?.className,
           ),
-        }
-  const button5Props =
+        },
+  )
+  const button5Props = applyRef(
+    seldonRefs,
     button5 === null
       ? null
       : {
@@ -207,16 +235,20 @@ export function BarNavigationBar({
             sdn.button5?.className,
             button5?.className,
           ),
-        }
-  const icon5Props =
+        },
+  )
+  const icon5Props = applyRef(
+    seldonRefs,
     icon5 === null
       ? null
       : {
           ...sdn.icon5,
           ...icon5,
           className: combineClassNames(sdn.icon5?.className, icon5?.className),
-        }
-  const textLabel5Props =
+        },
+  )
+  const textLabel5Props = applyRef(
+    seldonRefs,
     textLabel5 === null
       ? null
       : {
@@ -226,7 +258,8 @@ export function BarNavigationBar({
             sdn.textLabel5?.className,
             textLabel5?.className,
           ),
-        }
+        },
+  )
 
   return (
     <Frame

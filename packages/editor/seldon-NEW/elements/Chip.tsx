@@ -14,11 +14,13 @@
 import { HTMLAttributes } from "react"
 import { HTMLSpan } from "../native-react/HTML.Span"
 import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
 
 export interface ChipProps extends HTMLAttributes<HTMLElement> {
   className?: string
   "data-seldon-ref"?: string
+  seldonRefs?: Record<string, Record<string, unknown>>
   textLabel?: TextLabelProps | null
 }
 
@@ -41,10 +43,12 @@ export function Chip({
   className = "",
   textLabel,
   children,
+  seldonRefs,
   ...props
 }: ChipProps) {
   const chipClassName = combineClassNames("sdn-chip", className)
-  const textLabelProps =
+  const textLabelProps = applyRef(
+    seldonRefs,
     textLabel === null
       ? null
       : {
@@ -54,7 +58,8 @@ export function Chip({
             sdn.textLabel?.className,
             textLabel?.className,
           ),
-        }
+        },
+  )
 
   return (
     <HTMLSpan

@@ -15,11 +15,13 @@ import { HTMLAttributes } from "react"
 import { ButtonSimple, ButtonSimpleProps } from "../elements/ButtonSimple"
 import { Frame } from "../frames/Frame"
 import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
 
 export interface BarMenuBarProps extends HTMLAttributes<HTMLElement> {
   className?: string
   "data-seldon-ref"?: string
+  seldonRefs?: Record<string, Record<string, unknown>>
   buttonSimple?: ButtonSimpleProps | null
   textLabel?: TextLabelProps | null
   buttonSimple2?: ButtonSimpleProps | null
@@ -56,10 +58,12 @@ export function BarMenuBar({
   buttonSimple4 = sdn.buttonSimple4,
   textLabel4,
   children,
+  seldonRefs,
   ...props
 }: BarMenuBarProps) {
   const barMenuBarClassName = combineClassNames("sdn-bar-menu-bar", className)
-  const buttonSimpleProps =
+  const buttonSimpleProps = applyRef(
+    seldonRefs,
     buttonSimple === null
       ? null
       : {
@@ -69,8 +73,10 @@ export function BarMenuBar({
             sdn.buttonSimple?.className,
             buttonSimple?.className,
           ),
-        }
-  const textLabelProps =
+        },
+  )
+  const textLabelProps = applyRef(
+    seldonRefs,
     textLabel === null
       ? null
       : {
@@ -80,8 +86,10 @@ export function BarMenuBar({
             sdn.textLabel?.className,
             textLabel?.className,
           ),
-        }
-  const buttonSimple2Props =
+        },
+  )
+  const buttonSimple2Props = applyRef(
+    seldonRefs,
     buttonSimple2 === null
       ? null
       : {
@@ -91,8 +99,10 @@ export function BarMenuBar({
             sdn.buttonSimple2?.className,
             buttonSimple2?.className,
           ),
-        }
-  const textLabel2Props =
+        },
+  )
+  const textLabel2Props = applyRef(
+    seldonRefs,
     textLabel2 === null
       ? null
       : {
@@ -102,8 +112,10 @@ export function BarMenuBar({
             sdn.textLabel2?.className,
             textLabel2?.className,
           ),
-        }
-  const buttonSimple3Props =
+        },
+  )
+  const buttonSimple3Props = applyRef(
+    seldonRefs,
     buttonSimple3 === null
       ? null
       : {
@@ -113,8 +125,10 @@ export function BarMenuBar({
             sdn.buttonSimple3?.className,
             buttonSimple3?.className,
           ),
-        }
-  const textLabel3Props =
+        },
+  )
+  const textLabel3Props = applyRef(
+    seldonRefs,
     textLabel3 === null
       ? null
       : {
@@ -124,8 +138,10 @@ export function BarMenuBar({
             sdn.textLabel3?.className,
             textLabel3?.className,
           ),
-        }
-  const buttonSimple4Props =
+        },
+  )
+  const buttonSimple4Props = applyRef(
+    seldonRefs,
     buttonSimple4 === null
       ? null
       : {
@@ -135,8 +151,10 @@ export function BarMenuBar({
             sdn.buttonSimple4?.className,
             buttonSimple4?.className,
           ),
-        }
-  const textLabel4Props =
+        },
+  )
+  const textLabel4Props = applyRef(
+    seldonRefs,
     textLabel4 === null
       ? null
       : {
@@ -146,7 +164,8 @@ export function BarMenuBar({
             sdn.textLabel4?.className,
             textLabel4?.className,
           ),
-        }
+        },
+  )
 
   return (
     <Frame

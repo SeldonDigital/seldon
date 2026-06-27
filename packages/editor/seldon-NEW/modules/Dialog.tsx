@@ -21,11 +21,13 @@ import { BarButtonBar, BarButtonBarProps } from "../parts/BarButtonBar"
 import { Icon, IconProps } from "../primitives/Icon"
 import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
 import { TextTitle, TextTitleProps } from "../primitives/TextTitle"
+import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
 
 export interface DialogProps extends HTMLAttributes<HTMLElement> {
   className?: string
   "data-seldon-ref"?: string
+  seldonRefs?: Record<string, Record<string, unknown>>
   bar?: BarProps | null
   textTitle?: TextTitleProps | null
   buttonIconic?: ButtonIconicProps | null
@@ -82,18 +84,22 @@ export function Dialog({
   icon5 = sdn.icon5,
   textLabel4,
   children,
+  seldonRefs,
   ...props
 }: DialogProps) {
   const dialogClassName = combineClassNames("sdn-dialog", className)
-  const barProps =
+  const barProps = applyRef(
+    seldonRefs,
     bar === null
       ? null
       : {
           ...sdn.bar,
           ...bar,
           className: combineClassNames(sdn.bar?.className, bar?.className),
-        }
-  const textTitleProps =
+        },
+  )
+  const textTitleProps = applyRef(
+    seldonRefs,
     textTitle === null
       ? null
       : {
@@ -103,8 +109,10 @@ export function Dialog({
             sdn.textTitle?.className,
             textTitle?.className,
           ),
-        }
-  const buttonIconicProps =
+        },
+  )
+  const buttonIconicProps = applyRef(
+    seldonRefs,
     buttonIconic === null
       ? null
       : {
@@ -114,16 +122,20 @@ export function Dialog({
             sdn.buttonIconic?.className,
             buttonIconic?.className,
           ),
-        }
-  const iconProps =
+        },
+  )
+  const iconProps = applyRef(
+    seldonRefs,
     icon === null
       ? null
       : {
           ...sdn.icon,
           ...icon,
           className: combineClassNames(sdn.icon?.className, icon?.className),
-        }
-  const buttonProps =
+        },
+  )
+  const buttonProps = applyRef(
+    seldonRefs,
     button === null
       ? null
       : {
@@ -133,16 +145,20 @@ export function Dialog({
             sdn.button?.className,
             button?.className,
           ),
-        }
-  const icon2Props =
+        },
+  )
+  const icon2Props = applyRef(
+    seldonRefs,
     icon2 === null
       ? null
       : {
           ...sdn.icon2,
           ...icon2,
           className: combineClassNames(sdn.icon2?.className, icon2?.className),
-        }
-  const textLabelProps =
+        },
+  )
+  const textLabelProps = applyRef(
+    seldonRefs,
     textLabel === null
       ? null
       : {
@@ -152,16 +168,20 @@ export function Dialog({
             sdn.textLabel?.className,
             textLabel?.className,
           ),
-        }
-  const frameProps =
+        },
+  )
+  const frameProps = applyRef(
+    seldonRefs,
     frame === null
       ? null
       : {
           ...sdn.frame,
           ...frame,
           className: combineClassNames(sdn.frame?.className, frame?.className),
-        }
-  const barButtonBarProps =
+        },
+  )
+  const barButtonBarProps = applyRef(
+    seldonRefs,
     barButtonBar === null
       ? null
       : {
@@ -171,8 +191,10 @@ export function Dialog({
             sdn.barButtonBar?.className,
             barButtonBar?.className,
           ),
-        }
-  const button2Props =
+        },
+  )
+  const button2Props = applyRef(
+    seldonRefs,
     button2 === null
       ? null
       : {
@@ -182,16 +204,20 @@ export function Dialog({
             sdn.button2?.className,
             button2?.className,
           ),
-        }
-  const icon3Props =
+        },
+  )
+  const icon3Props = applyRef(
+    seldonRefs,
     icon3 === null
       ? null
       : {
           ...sdn.icon3,
           ...icon3,
           className: combineClassNames(sdn.icon3?.className, icon3?.className),
-        }
-  const textLabel2Props =
+        },
+  )
+  const textLabel2Props = applyRef(
+    seldonRefs,
     textLabel2 === null
       ? null
       : {
@@ -201,8 +227,10 @@ export function Dialog({
             sdn.textLabel2?.className,
             textLabel2?.className,
           ),
-        }
-  const button3Props =
+        },
+  )
+  const button3Props = applyRef(
+    seldonRefs,
     button3 === null
       ? null
       : {
@@ -212,16 +240,20 @@ export function Dialog({
             sdn.button3?.className,
             button3?.className,
           ),
-        }
-  const icon4Props =
+        },
+  )
+  const icon4Props = applyRef(
+    seldonRefs,
     icon4 === null
       ? null
       : {
           ...sdn.icon4,
           ...icon4,
           className: combineClassNames(sdn.icon4?.className, icon4?.className),
-        }
-  const textLabel3Props =
+        },
+  )
+  const textLabel3Props = applyRef(
+    seldonRefs,
     textLabel3 === null
       ? null
       : {
@@ -231,8 +263,10 @@ export function Dialog({
             sdn.textLabel3?.className,
             textLabel3?.className,
           ),
-        }
-  const button4Props =
+        },
+  )
+  const button4Props = applyRef(
+    seldonRefs,
     button4 === null
       ? null
       : {
@@ -242,16 +276,20 @@ export function Dialog({
             sdn.button4?.className,
             button4?.className,
           ),
-        }
-  const icon5Props =
+        },
+  )
+  const icon5Props = applyRef(
+    seldonRefs,
     icon5 === null
       ? null
       : {
           ...sdn.icon5,
           ...icon5,
           className: combineClassNames(sdn.icon5?.className, icon5?.className),
-        }
-  const textLabel4Props =
+        },
+  )
+  const textLabel4Props = applyRef(
+    seldonRefs,
     textLabel4 === null
       ? null
       : {
@@ -261,7 +299,8 @@ export function Dialog({
             sdn.textLabel4?.className,
             textLabel4?.className,
           ),
-        }
+        },
+  )
 
   return (
     <HTMLDiv

@@ -61,6 +61,16 @@ export function generatePropsSpread(
     props.push("children")
   }
 
+  // Pull the ref override channel out of the rest so it is never spread onto a
+  // DOM element. Only components that compose children read it through
+  // `applyRef`, so leaf primitives omit it to avoid an unused binding.
+  const hasChildren =
+    Array.isArray(component.tree.children) &&
+    component.tree.children.length > 0
+  if (hasChildren) {
+    props.push("seldonRefs")
+  }
+
   props.push("...props")
   return `{${props.join(",")}}`
 }

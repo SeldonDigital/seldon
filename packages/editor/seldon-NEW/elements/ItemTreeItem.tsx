@@ -17,11 +17,13 @@ import { ComboboxField, ComboboxFieldProps } from "../elements/ComboboxField"
 import { HTMLLi } from "../native-react/HTML.Li"
 import { IconProps } from "../primitives/Icon"
 import { InputProps } from "../primitives/Input"
+import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
 
 export interface ItemTreeItemProps extends LiHTMLAttributes<HTMLLIElement> {
   className?: string
   "data-seldon-ref"?: string
+  seldonRefs?: Record<string, Record<string, unknown>>
   buttonIconic?: ButtonIconicProps | null
   icon?: IconProps | null
   comboboxField?: ComboboxFieldProps | null
@@ -64,13 +66,15 @@ export function ItemTreeItem({
   buttonIconic4 = sdn.buttonIconic4,
   icon5 = sdn.icon5,
   children,
+  seldonRefs,
   ...props
 }: ItemTreeItemProps) {
   const itemTreeItemClassName = combineClassNames(
     "sdn-item-tree-item",
     className,
   )
-  const buttonIconicProps =
+  const buttonIconicProps = applyRef(
+    seldonRefs,
     buttonIconic === null
       ? null
       : {
@@ -80,16 +84,20 @@ export function ItemTreeItem({
             sdn.buttonIconic?.className,
             buttonIconic?.className,
           ),
-        }
-  const iconProps =
+        },
+  )
+  const iconProps = applyRef(
+    seldonRefs,
     icon === null
       ? null
       : {
           ...sdn.icon,
           ...icon,
           className: combineClassNames(sdn.icon?.className, icon?.className),
-        }
-  const comboboxFieldProps =
+        },
+  )
+  const comboboxFieldProps = applyRef(
+    seldonRefs,
     comboboxField === null
       ? null
       : {
@@ -99,24 +107,30 @@ export function ItemTreeItem({
             sdn.comboboxField?.className,
             comboboxField?.className,
           ),
-        }
-  const icon2Props =
+        },
+  )
+  const icon2Props = applyRef(
+    seldonRefs,
     icon2 === null
       ? null
       : {
           ...sdn.icon2,
           ...icon2,
           className: combineClassNames(sdn.icon2?.className, icon2?.className),
-        }
-  const inputProps =
+        },
+  )
+  const inputProps = applyRef(
+    seldonRefs,
     input === null
       ? null
       : {
           ...sdn.input,
           ...input,
           className: combineClassNames(sdn.input?.className, input?.className),
-        }
-  const buttonIconic2Props =
+        },
+  )
+  const buttonIconic2Props = applyRef(
+    seldonRefs,
     buttonIconic2 === null
       ? null
       : {
@@ -126,16 +140,20 @@ export function ItemTreeItem({
             sdn.buttonIconic2?.className,
             buttonIconic2?.className,
           ),
-        }
-  const icon3Props =
+        },
+  )
+  const icon3Props = applyRef(
+    seldonRefs,
     icon3 === null
       ? null
       : {
           ...sdn.icon3,
           ...icon3,
           className: combineClassNames(sdn.icon3?.className, icon3?.className),
-        }
-  const buttonIconic3Props =
+        },
+  )
+  const buttonIconic3Props = applyRef(
+    seldonRefs,
     buttonIconic3 === null
       ? null
       : {
@@ -145,16 +163,20 @@ export function ItemTreeItem({
             sdn.buttonIconic3?.className,
             buttonIconic3?.className,
           ),
-        }
-  const icon4Props =
+        },
+  )
+  const icon4Props = applyRef(
+    seldonRefs,
     icon4 === null
       ? null
       : {
           ...sdn.icon4,
           ...icon4,
           className: combineClassNames(sdn.icon4?.className, icon4?.className),
-        }
-  const buttonIconic4Props =
+        },
+  )
+  const buttonIconic4Props = applyRef(
+    seldonRefs,
     buttonIconic4 === null
       ? null
       : {
@@ -164,15 +186,18 @@ export function ItemTreeItem({
             sdn.buttonIconic4?.className,
             buttonIconic4?.className,
           ),
-        }
-  const icon5Props =
+        },
+  )
+  const icon5Props = applyRef(
+    seldonRefs,
     icon5 === null
       ? null
       : {
           ...sdn.icon5,
           ...icon5,
           className: combineClassNames(sdn.icon5?.className, icon5?.className),
-        }
+        },
+  )
 
   return (
     <HTMLLi
@@ -194,6 +219,7 @@ export function ItemTreeItem({
               icon={icon2Props}
               input={inputProps}
               buttonIconic={buttonIconic2Props}
+              icon2={icon3Props}
             />
           )}
           {buttonIconic3Props !== null && (
