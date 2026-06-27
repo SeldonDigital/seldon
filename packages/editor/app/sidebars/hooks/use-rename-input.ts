@@ -4,9 +4,9 @@ import {
   type Ref,
   useEffect,
   useRef,
-  useState,
 } from "react"
 import { InputProps } from "@seldon/components/primitives/Input"
+import { useRenameValue } from "./use-rename-value"
 
 interface UseRenameInputOptions {
   label: string
@@ -31,7 +31,11 @@ export function useRenameInput({
   setEditing,
   onSubmit,
 }: UseRenameInputOptions): InputProps & { ref?: Ref<HTMLInputElement> } {
-  const [value, setValue] = useState(label)
+  const { value, setValue, cancel } = useRenameValue({
+    label,
+    isEditing,
+    setEditing,
+  })
   const ref = useRef<HTMLInputElement>(null)
 
   // Collapse the input's own selection and drop any document selection. The
@@ -48,7 +52,6 @@ export function useRenameInput({
   useEffect(() => {
     const input = ref.current
     if (isEditing) {
-      setValue(label)
       // Drop the double-click's document selection, then select the contents so
       // typing replaces the name.
       if (typeof window !== "undefined") {
@@ -88,7 +91,7 @@ export function useRenameInput({
         onSubmit(value.trim())
       } else if (event.key === "Escape") {
         event.preventDefault()
-        setEditing(false)
+        cancel()
       }
     },
     onBlur: () => {

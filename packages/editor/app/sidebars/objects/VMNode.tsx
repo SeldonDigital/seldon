@@ -38,10 +38,6 @@ interface VMNodeProps {
    * routes selection to the underlying node (index 0 of the repeat).
    */
   isEcho?: boolean
-  /** First row of the echo cluster. */
-  isFirstEcho?: boolean
-  /** Last row of the echo cluster. */
-  isLastEcho?: boolean
 }
 
 /** Summary row standing in for echo rows beyond {@link ECHO_ROW_LIMIT}. */
@@ -63,8 +59,6 @@ const VMNodeInner = function VMNodeInner({
   parentIsSelected: boolean
   disableReordering: boolean
   isEcho: boolean
-  isFirstEcho: boolean
-  isLastEcho: boolean
 }) {
   const { workspace } = useWorkspace({ usePreview: false })
   const {
@@ -145,8 +139,6 @@ const VMNodeInner = function VMNodeInner({
     const rows: ReactElement[] = [indexZeroRow]
     for (let echoIndex = 1; echoIndex <= shownEchoes; echoIndex++) {
       const echoKey = `${childNodeId}#echo${echoIndex}`
-      const isFirstEcho = echoIndex === 1
-      const isLastEcho = !hasSummary && echoIndex === shownEchoes
       rows.push(
         <VMNode
           key={echoKey}
@@ -155,8 +147,6 @@ const VMNodeInner = function VMNodeInner({
           show={show}
           parentIsSelected={isSelected}
           isEcho
-          isFirstEcho={isFirstEcho}
-          isLastEcho={isLastEcho}
         />,
       )
     }
@@ -276,8 +266,6 @@ export const VMNode = memo(function VMNode({
   parentIsSelected = false,
   disableReordering = false,
   isEcho = false,
-  isFirstEcho = false,
-  isLastEcho = false,
 }: VMNodeProps) {
   const { workspace } = useWorkspace({ usePreview: false })
   const node = getNode(workspace, nodeId)
@@ -292,8 +280,6 @@ export const VMNode = memo(function VMNode({
       parentIsSelected={parentIsSelected}
       disableReordering={disableReordering}
       isEcho={isEcho}
-      isFirstEcho={isFirstEcho}
-      isLastEcho={isLastEcho}
     />
   )
 })

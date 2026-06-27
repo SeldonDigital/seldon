@@ -11,7 +11,7 @@ import type { EntryNode } from "@seldon/core/workspace/types"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { getNodeCatalogComponentId } from "@lib/workspace/node-tree"
 
-export type DropzoneParams = {
+type DropzoneParams = {
   target: Variant | Instance | EntryNode
   placement: Placement
   onDragEnter?: () => void

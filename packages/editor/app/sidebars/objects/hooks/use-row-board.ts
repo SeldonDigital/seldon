@@ -347,15 +347,11 @@ export function useRowBoard(
     actions,
     onClick,
     onDoubleClick,
-    isPlayground,
     isEditingName,
     setEditingName,
     setPlaygroundLabel,
     isExpanded: isExpandedState,
-    isBoardSelected,
     boardIsActive,
-    boardContainsSelectedNode,
-    boardContainsSelectedResourceEntry,
     variants: variantRootIds,
   }
 }

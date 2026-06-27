@@ -14,7 +14,6 @@ type Direction = 1 | -1
 interface PropertyEditRowEntry {
   ref: RefObject<HTMLElement | null>
   activate: () => void
-  setHover: (hovered: boolean) => void
   isNavigable: boolean
 }
 
@@ -79,13 +78,8 @@ export function PropertyEditNavigationProvider({
     const targetIndex = currentIndex + direction
     if (targetIndex < 0 || targetIndex >= ordered.length) return false
 
-    // Clear the stale hover outline on the row being left (the pointer never
-    // moved off it), and outline the target so the active row reads as focused.
-    rowsRef.current.get(currentKey)?.setHover(false)
-
     const [, target] = ordered[targetIndex]
     target.activate()
-    target.setHover(true)
     requestAnimationFrame(() => {
       target.ref.current?.scrollIntoView({ block: "nearest" })
     })
@@ -113,21 +107,17 @@ export function usePropertyEditRowRegistration(
   key: string,
   ref: RefObject<HTMLElement | null>,
   activate: () => void,
-  setHover: (hovered: boolean) => void,
   isNavigable: boolean,
 ) {
   const nav = useContext(PropertyEditNavigationContext)
   const activateRef = useRef(activate)
   activateRef.current = activate
-  const setHoverRef = useRef(setHover)
-  setHoverRef.current = setHover
 
   useEffect(() => {
     if (!nav) return
     nav.register(key, {
       ref,
       activate: () => activateRef.current(),
-      setHover: (hovered) => setHoverRef.current(hovered),
       isNavigable,
     })
     return () => nav.unregister(key)

@@ -41,10 +41,7 @@ import {
   getSelectionTarget,
   selectFromTarget,
 } from "@lib/workspace/selection-target"
-import {
-  getComponentKey,
-  hasNode,
-} from "@lib/workspace/workspace-accessors"
+import { hasNode } from "@lib/workspace/workspace-accessors"
 import { IconProps } from "@seldon/components/primitives/Icon"
 import { TextLabelProps } from "@seldon/components/primitives/TextLabel"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"

@@ -1,5 +1,6 @@
-import { ReactNode, useCallback, useEffect, useState } from "react"
+import { ReactNode } from "react"
 import { Combobox } from "@seldon/components/custom-components"
+import { useRenameValue } from "./use-rename-value"
 
 interface UseInlineRenameInput {
   label: string
@@ -9,8 +10,8 @@ interface UseInlineRenameInput {
 }
 
 /**
- * Controlled rename input for sidebar row labels. Callers pass the result as
- * `textLabel.children` while editing.
+ * Renders a standalone `<Combobox>` rename control into a sidebar row's name
+ * label. Callers pass the result as `textLabel.children` while editing.
  */
 export function useInlineRename({
   label,
@@ -18,30 +19,22 @@ export function useInlineRename({
   setEditing,
   onSubmit,
 }: UseInlineRenameInput): { labelChildren: ReactNode } {
-  const [renameValue, setRenameValue] = useState(label)
+  const { value, setValue, cancel } = useRenameValue({
+    label,
+    isEditing,
+    setEditing,
+  })
 
-  useEffect(() => {
-    if (isEditing) {
-      setRenameValue(label)
-    }
-  }, [isEditing, label])
-
-  const handleCancelRename = useCallback(() => {
-    setRenameValue(label)
-    setEditing(false)
-  }, [label, setEditing])
-
-  const labelChildren = isEditing ? (
+  const editControl = (
     <Combobox
       mode="standalone"
-      value={renameValue}
-      onValueChange={setRenameValue}
+      value={value}
+      onValueChange={setValue}
       onSubmit={onSubmit}
-      onCancel={handleCancelRename}
+      onCancel={cancel}
     />
-  ) : (
-    label
   )
+  const labelChildren = isEditing ? editControl : label
 
   return { labelChildren }
 }

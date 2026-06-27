@@ -38,11 +38,6 @@ export const COLOR_DEBUG_DEFAULT = "var(--sdn-seldon-swatch-positive)"
 export const subPropertyRowBackground =
   "color-mix(in srgb, var(--sdn-seldon-swatch-charcoal) 70%, transparent)"
 
-export const relativeFullWidthStyle: CSSProperties = {
-  position: "relative",
-  width: "100%",
-}
-
 export const propertyControlWrapperStyle: CSSProperties = {
   width: "100%",
   height: "100%",

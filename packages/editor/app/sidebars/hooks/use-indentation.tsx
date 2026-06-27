@@ -4,7 +4,7 @@ import { CSSProperties, createContext, useContext } from "react"
  * React context for tracking the current indentation level in the tree.
  * Defaults to 0 at the root level.
  */
-export const IndentationContext = createContext<number>(0)
+const IndentationContext = createContext<number>(0)
 
 /**
  * Provider component that increments the indentation context for nested children.
@@ -12,7 +12,7 @@ export const IndentationContext = createContext<number>(0)
  *
  * @param children - React children to wrap with incremented indentation context
  */
-export const IndentationContextProvider = ({
+const IndentationContextProvider = ({
   children,
 }: {
   children: React.ReactNode
@@ -32,12 +32,10 @@ export const IndentationContextProvider = ({
  * Calculates padding for the next level (level N+1) that children will see, applies it
  * via a wrapper div, and provides incremented indentation context to nested children.
  *
- * @param children - React children (typically ProjectTreeRow components) to indent
+ * @param children - React children to indent
  * @example
  * ```tsx
- * <IndentationLevel>
- *   <ProjectTreeRow type="node" data={variant} />
- * </IndentationLevel>
+ * <IndentationLevel>{children}</IndentationLevel>
  * ```
  */
 export const IndentationLevel = ({
@@ -45,14 +43,8 @@ export const IndentationLevel = ({
 }: {
   children: React.ReactNode
 }) => {
-  // Apply incremental padding using CSS token for padding tight
-  // This adds padding-tight to the existing padding, not a cumulative total
-  const indentationGap = 0
-  // Apply only the additional padding for this level using the CSS token
-  const indentationPadding =
-    indentationGap === 0
-      ? "var(--sdn-padding-cozy)"
-      : `calc(var(--sdn-padding-cozy) + ${indentationGap}px)`
+  // Each nested level adds one step of cozy padding via the CSS token.
+  const indentationPadding = "var(--sdn-padding-cozy)"
 
   const wrapperStyle: CSSProperties = {
     paddingLeft: indentationPadding,

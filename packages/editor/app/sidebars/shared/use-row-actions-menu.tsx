@@ -32,7 +32,7 @@ const PLACEHOLDER_ICON_STYLE: CSSProperties = {
   visibility: "hidden",
 }
 
-export interface RowActionsMenuSlots {
+interface RowActionsMenuSlots {
   hasActions: boolean
   /**
    * Trailing iconic-button slot props for a generated row. Always defined so

@@ -9,7 +9,7 @@
  * it never cascades to the row's children. Forward disabled onto the leaf refs
  * with {@link buildDisabledRefProps} instead.
  */
-export interface RowFieldState {
+interface RowFieldState {
   selected?: boolean
   invalid?: boolean
 }

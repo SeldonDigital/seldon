@@ -46,7 +46,7 @@ export interface ResourceRowConfig {
 }
 
 /** Per-kind row configuration. Keyed by resource board type. */
-export const RESOURCE_ROW_CONFIG: Record<ResourceEntryKind, ResourceRowConfig> =
+const RESOURCE_ROW_CONFIG: Record<ResourceEntryKind, ResourceRowConfig> =
   {
     theme: {
       kind: "theme",

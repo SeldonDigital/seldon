@@ -4,7 +4,7 @@ import { CSSProperties } from "react"
  * Per-slot state styles for a property row.
  *
  * Each function maps row state (expansion, hover, edit mode, control type,
- * status color) to the inline style of one `ItemInputRow` slot. Generated
+ * status color) to the inline style of one `ItemProperty` slot. Generated
  * components do not support states yet, so these styles live app-side. When
  * state support lands in the generator, each function is a candidate to move
  * into the generated component as state data.
@@ -75,38 +75,6 @@ export function getValueIconStyle({
   return iconStateStyle(labelColor)
 }
 
-/**
- * Value cell label wrapping the injected `PropertyValueCell` node. The cell is
- * a flex row so the chip, value, and unit align vertically. The value item
- * inside the cell carries the ellipsis truncation.
- */
-export function getValueCellStyle({
-  labelColor,
-  isEditingProperty,
-  isInteractive,
-}: {
-  labelColor: string | undefined
-  isEditingProperty: boolean
-  isInteractive: boolean
-}): CSSProperties {
-  return {
-    flex: 1,
-    flexShrink: 1,
-    width: 0,
-    minWidth: 0,
-    display: "flex",
-    alignItems: "center",
-    overflow: "hidden",
-    color: labelColor && !isEditingProperty ? labelColor : "hsl(0 0% 96%)",
-    fontSize: "0.75rem",
-    fontWeight: 300,
-    cursor: isInteractive ? "pointer" : "default",
-    pointerEvents: "auto",
-    userSelect: "none",
-    WebkitUserSelect: "none",
-  }
-}
-
 /** Menu/upload button inside the form control: interactive, hidden, or inert. */
 export function getMenuButtonStyle({
   supportsUpload,
@@ -167,43 +135,4 @@ function resolveMenuIconOpacity({
   if (supportsUpload) return 1 // Always show upload icon for image properties
   if (!hasControl) return 0 // Read-only rows with no control
   return showMenuIcon ? 0 : 1
-}
-
-/**
- * Combobox value field around the value cell. Width comes from the generated
- * form-control classes, so no width is set here. Position anchors the
- * value-cell edit overlay.
- */
-export function getFormControlStyle({
-  cursor,
-  hoverStyle,
-}: {
-  cursor: CSSProperties["cursor"]
-  hoverStyle: CSSProperties
-}): CSSProperties {
-  return {
-    position: "relative",
-    cursor,
-    userSelect: "none",
-    WebkitUserSelect: "none",
-    ...hoverStyle,
-  }
-}
-
-/** Row root: status color tokens plus interaction affordances. */
-export function getRowStyle({
-  rowStyle,
-  hasChildren,
-}: {
-  rowStyle: CSSProperties
-  hasChildren: boolean
-}): CSSProperties {
-  return {
-    ...rowStyle,
-    width: "100%",
-    justifyContent: "flex-start",
-    cursor: hasChildren ? "pointer" : "default",
-    userSelect: "none",
-    WebkitUserSelect: "none",
-  }
 }

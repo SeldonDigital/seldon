@@ -69,16 +69,16 @@ export function VMResourceEntry({
     focusTargetRef: rowRef,
   })
 
-  if (!show || !entry) return null
-
-  const icon2: IconProps = { icon: config.icon }
-
   const nameInput = useRenameInput({
     label: entry?.label ?? "",
     isEditing: isEditingName && Boolean(config.buildLabelAction),
     setEditing: setEditingName,
     onSubmit: submitLabel,
   })
+
+  if (!show || !entry) return null
+
+  const icon2: IconProps = { icon: config.icon }
 
   // Resource rows are leaves: the toggle slot stays an empty spacer, and the
   // trailing actions icon keeps the generated `seldon-more` default, hidden by

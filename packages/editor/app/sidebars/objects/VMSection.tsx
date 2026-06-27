@@ -9,8 +9,8 @@ interface VMSectionProps {
 
 /**
  * View-model for a section header in the objects sidebar (e.g., "Primitives",
- * "Elements"). Sections use useRowHover for hover styling, not the tracking
- * system.
+ * "Elements"). Sections drive hover styling through `useSectionHeaderRow`, not
+ * the canvas tracking system.
  */
 export function VMSection({ section }: VMSectionProps) {
   const { label, icon, buttonIconic, buttonIconic2, onToggle } =
