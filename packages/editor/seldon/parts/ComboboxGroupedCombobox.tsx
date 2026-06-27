@@ -428,7 +428,7 @@ const sdn: ComboboxGroupedComboboxProps = {
   className: "sdn-combobox sdn-combobox",
   comboboxField: {
     "aria-hidden": "false",
-    className: "sdn-combobox-field sdn-combobox-field--qmsn",
+    className: "sdn-combobox-field sdn-combobox-field--z3a0",
   },
   icon: {
     icon: "seldon-component",
@@ -452,7 +452,7 @@ const sdn: ComboboxGroupedComboboxProps = {
   listboxGroupedListbox: {
     role: "listbox",
     "aria-hidden": "false",
-    className: "sdn-listbox sdn-listbox--bra5",
+    className: "sdn-listbox sdn-listbox--4wpg",
   },
   frame: {
     wrapperElement: "div",
@@ -469,10 +469,10 @@ const sdn: ComboboxGroupedComboboxProps = {
   icon3: {
     icon: "seldon-component",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--ucf5",
+    className: "sdn-icon sdn-icon--xi68",
   },
   textLabel2: {
-    className: "sdn-text-label sdn-text-title--qbtu",
+    className: "sdn-text-label sdn-text-label--xohb",
   },
   listboxOption2: {
     className: "sdn-listbox-option sdn-listbox-option--6dxl",
@@ -480,10 +480,10 @@ const sdn: ComboboxGroupedComboboxProps = {
   icon4: {
     icon: "seldon-component",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--ucf5",
+    className: "sdn-icon sdn-icon--xi68",
   },
   textLabel3: {
-    className: "sdn-text-label sdn-text-title--qbtu",
+    className: "sdn-text-label sdn-text-label--xohb",
   },
   hr: {
     "aria-hidden": "false",
@@ -504,10 +504,10 @@ const sdn: ComboboxGroupedComboboxProps = {
   icon5: {
     icon: "seldon-component",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--ucf5",
+    className: "sdn-icon sdn-icon--xi68",
   },
   textLabel5: {
-    className: "sdn-text-label sdn-text-title--qbtu",
+    className: "sdn-text-label sdn-text-label--xohb",
   },
   listboxOption4: {
     className: "sdn-listbox-option sdn-listbox-option--6dxl",
@@ -515,9 +515,9 @@ const sdn: ComboboxGroupedComboboxProps = {
   icon6: {
     icon: "seldon-component",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--ucf5",
+    className: "sdn-icon sdn-icon--xi68",
   },
   textLabel6: {
-    className: "sdn-text-label sdn-text-title--qbtu",
+    className: "sdn-text-label sdn-text-label--xohb",
   },
 }

@@ -308,7 +308,7 @@ const sdn: ComboboxProps = {
   className: "sdn-combobox",
   comboboxField: {
     "aria-hidden": "false",
-    className: "sdn-combobox-field sdn-combobox-field--qmsn",
+    className: "sdn-combobox-field sdn-combobox-field--z3a0",
   },
   icon: {
     icon: "seldon-component",
@@ -332,7 +332,7 @@ const sdn: ComboboxProps = {
   listbox: {
     role: "listbox",
     "aria-hidden": "false",
-    className: "sdn-listbox sdn-listbox--bra5",
+    className: "sdn-listbox sdn-listbox--4wpg",
   },
   listboxOption: {
     role: "option",
@@ -342,10 +342,10 @@ const sdn: ComboboxProps = {
   icon3: {
     icon: "seldon-component",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--ucf5",
+    className: "sdn-icon sdn-icon--xi68",
   },
   textLabel: {
-    className: "sdn-text-label sdn-text-title--qbtu",
+    className: "sdn-text-label sdn-text-label--xohb",
   },
   listboxOption2: {
     role: "option",
@@ -355,10 +355,10 @@ const sdn: ComboboxProps = {
   icon4: {
     icon: "seldon-component",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--ucf5",
+    className: "sdn-icon sdn-icon--xi68",
   },
   textLabel2: {
-    className: "sdn-text-label sdn-text-title--qbtu",
+    className: "sdn-text-label sdn-text-label--xohb",
   },
   listboxOption3: {
     role: "option",
@@ -368,9 +368,9 @@ const sdn: ComboboxProps = {
   icon5: {
     icon: "seldon-component",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--ucf5",
+    className: "sdn-icon sdn-icon--xi68",
   },
   textLabel3: {
-    className: "sdn-text-label sdn-text-title--qbtu",
+    className: "sdn-text-label sdn-text-label--xohb",
   },
 }

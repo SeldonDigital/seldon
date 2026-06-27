@@ -526,6 +526,18 @@ body {
   border: 0.125rem solid hsl(203 100% 62%);
 }
 
+.sdn-combobox {
+  flex-wrap: nowrap;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+  gap: 0.25rem;
+  align-self: stretch;
+  height: fit-content;
+  flex-shrink: 0;
+}
+
 .sdn-combobox-field {
   cursor: pointer;
   color: hsl(203 0% 98%);
@@ -860,11 +872,11 @@ body {
   flex-direction: column;
   align-items: start;
   justify-content: center;
-  gap: 0.25rem;
+  gap: 0;
   padding-top: 0.5rem;
-  padding-right: 0.25rem;
+  padding-right: 0;
   padding-bottom: 0.5rem;
-  padding-left: 0.25rem;
+  padding-left: 0;
   box-shadow: 0px 4px 0.5rem 0.188rem hsl(203 0% 8% / 33%);
   align-self: stretch;
   height: fit-content;
@@ -882,13 +894,10 @@ body {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding-top: 0.25rem;
-  padding-right: 0.5rem;
-  padding-bottom: 0.25rem;
-  padding-left: 0.5rem;
   align-self: stretch;
   height: fit-content;
   flex-shrink: 0;
+  padding: 0.5rem;
   border-radius: 0.25rem;
 }
 
@@ -899,7 +908,7 @@ body {
   flex-direction: column;
   align-items: start;
   justify-content: center;
-  gap: 0.25rem;
+  gap: 0;
   box-shadow: 0px 4px 0.5rem 0.188rem hsl(203 0% 8% / 33%);
   width: fit-content;
   height: fit-content;
@@ -918,13 +927,10 @@ body {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding-top: 0.25rem;
-  padding-right: 0.5rem;
-  padding-bottom: 0.25rem;
-  padding-left: 0.5rem;
   align-self: stretch;
   height: fit-content;
   flex-shrink: 0;
+  padding: 0.5rem;
   border-radius: 0.25rem;
 }
 
@@ -1317,7 +1323,7 @@ body {
 
 .sdn-frame--6o7x {
   flex: unset;
-  gap: 0.25rem;
+  gap: 0;
   height: fit-content;
   flex-shrink: 0;
 }
@@ -1335,13 +1341,17 @@ body {
 }
 
 .sdn-hr--lrmt {
-  margin-top: 0.25rem;
-  margin-bottom: 0.25rem;
+  margin-top: unset;
+  margin-bottom: unset;
+  padding-top: 0;
+  padding-bottom: 0;
+  margin: 0.5rem;
 }
 
 .sdn-hr--xtig {
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
+  margin-top: unset;
+  margin-bottom: unset;
+  margin: 0.5rem;
 }
 
 .sdn-icon--4k57 {
@@ -1564,6 +1574,7 @@ body {
   line-height: unset;
   letter-spacing: unset;
   color: hsl(203 0% 99%);
+  margin-bottom: 0.5rem;
   margin-left: 0.5rem;
   font-size: 0.75rem;
 }
@@ -1739,6 +1750,27 @@ body {
 }
 
 .sdn-menu-item:hover .sdn-icon--xi68 {
+  color: hsl(203 100% 81%);
+}
+
+.sdn-menu:hover {
+  gap: 0.25rem;
+  padding: 0.5rem;
+}
+
+.sdn-menu:hover .sdn-menu-item--rrtt {
+  background-color: hsl(203 100% 62% / 20%);
+}
+
+.sdn-menu:hover .sdn-text-label--xohb {
+  color: hsl(203 100% 81%);
+}
+
+.sdn-menu:hover .sdn-icon--xi68 {
+  color: hsl(203 100% 81%);
+}
+
+.sdn-menu:hover .sdn-text-label--fdei {
   color: hsl(203 100% 81%);
 }
 

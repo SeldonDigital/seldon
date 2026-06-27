@@ -51,7 +51,7 @@
         }
       ],
       "__editor": {
-        "order": 19
+        "order": 20
       }
     },
     "highContrast": {
@@ -68,7 +68,7 @@
         }
       ],
       "__editor": {
-        "order": 20
+        "order": 21
       }
     },
     "material": {
@@ -85,7 +85,7 @@
         }
       ],
       "__editor": {
-        "order": 21
+        "order": 22
       }
     },
     "system": {
@@ -101,7 +101,7 @@
         }
       ],
       "__editor": {
-        "order": 22
+        "order": 23
       }
     },
     "googleFonts": {
@@ -117,7 +117,7 @@
         }
       ],
       "__editor": {
-        "order": 23
+        "order": 24
       }
     },
     "seldonIcons": {
@@ -146,7 +146,7 @@
         }
       ],
       "__editor": {
-        "order": 24
+        "order": 25
       }
     },
     "googleMaterial": {
@@ -175,7 +175,7 @@
         }
       ],
       "__editor": {
-        "order": 25
+        "order": 26
       }
     },
     "text": {
@@ -269,7 +269,7 @@
         }
       ],
       "__editor": {
-        "order": 17
+        "order": 18
       }
     },
     "icon": {
@@ -330,7 +330,7 @@
         }
       ],
       "__editor": {
-        "order": 13
+        "order": 14
       }
     },
     "button": {
@@ -491,7 +491,7 @@
         }
       ],
       "__editor": {
-        "order": 5
+        "order": 6
       }
     },
     "input": {
@@ -558,7 +558,7 @@
         }
       ],
       "__editor": {
-        "order": 15
+        "order": 16
       }
     },
     "comboboxField": {
@@ -692,7 +692,7 @@
         }
       ],
       "__editor": {
-        "order": 7
+        "order": 8
       }
     },
     "link": {
@@ -753,7 +753,7 @@
         }
       ],
       "__editor": {
-        "order": 16
+        "order": 17
       }
     },
     "bar": {
@@ -1118,7 +1118,7 @@
         }
       ],
       "__editor": {
-        "order": 18
+        "order": 19
       }
     },
     "dialog": {
@@ -1377,7 +1377,7 @@
         }
       ],
       "__editor": {
-        "order": 14
+        "order": 15
       }
     },
     "avatar": {
@@ -1489,7 +1489,7 @@
         }
       ],
       "__editor": {
-        "order": 4
+        "order": 5
       }
     },
     "chip": {
@@ -1604,7 +1604,7 @@
         }
       ],
       "__editor": {
-        "order": 6
+        "order": 7
       }
     },
     "formControl": {
@@ -1700,7 +1700,7 @@
         }
       ],
       "__editor": {
-        "order": 8
+        "order": 9
       }
     },
     "item": {
@@ -2026,7 +2026,7 @@
         }
       ],
       "__editor": {
-        "order": 9
+        "order": 10
       }
     },
     "earth": {
@@ -2043,7 +2043,7 @@
         }
       ],
       "__editor": {
-        "order": 26
+        "order": 27
       }
     },
     "industrial": {
@@ -2060,7 +2060,7 @@
         }
       ],
       "__editor": {
-        "order": 27
+        "order": 28
       }
     },
     "pop": {
@@ -2077,7 +2077,7 @@
         }
       ],
       "__editor": {
-        "order": 28
+        "order": 29
       }
     },
     "royalAzure": {
@@ -2094,7 +2094,7 @@
         }
       ],
       "__editor": {
-        "order": 29
+        "order": 30
       }
     },
     "sky": {
@@ -2111,7 +2111,7 @@
         }
       ],
       "__editor": {
-        "order": 30
+        "order": 31
       }
     },
     "sunsetBlue": {
@@ -2128,7 +2128,7 @@
         }
       ],
       "__editor": {
-        "order": 31
+        "order": 32
       }
     },
     "wildberry": {
@@ -2145,7 +2145,7 @@
         }
       ],
       "__editor": {
-        "order": 32
+        "order": 33
       }
     },
     "listboxOption": {
@@ -2214,7 +2214,7 @@
         }
       ],
       "__editor": {
-        "order": 10
+        "order": 11
       }
     },
     "hr": {
@@ -2275,7 +2275,7 @@
         }
       ],
       "__editor": {
-        "order": 12
+        "order": 13
       }
     },
     "listbox": {
@@ -2439,7 +2439,7 @@
         }
       ],
       "__editor": {
-        "order": 2
+        "order": 3
       }
     },
     "menuItem": {
@@ -2533,7 +2533,7 @@
         }
       ],
       "__editor": {
-        "order": 11
+        "order": 12
       }
     },
     "menu": {
@@ -2649,7 +2649,184 @@
         }
       ],
       "__editor": {
-        "order": 3
+        "order": 4
+      }
+    },
+    "combobox": {
+      "type": "component",
+      "level": "part",
+      "catalogId": "combobox",
+      "label": "Comboboxes",
+      "author": "Seldon Digital",
+      "componentTheme": "theme-seldon-default",
+      "componentProperties": {
+        "background": [
+          {
+            "color": {
+              "type": "theme.categorical",
+              "value": "@swatch.custom7"
+            }
+          }
+        ]
+      },
+      "variants": [
+        {
+          "id": "component-combobox-default",
+          "children": [
+            {
+              "id": "component-comboboxField-z3a0KuTH",
+              "children": [
+                {
+                  "id": "component-icon-qO6HpJED"
+                },
+                {
+                  "id": "component-input-CmERJgGk"
+                },
+                {
+                  "id": "component-button-EEQUesbA",
+                  "children": [
+                    {
+                      "id": "component-icon-5YifJUaT"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "component-listbox-4wPgGwW5",
+              "children": [
+                {
+                  "id": "component-listboxOption-fEkCAwV8",
+                  "children": [
+                    {
+                      "id": "component-icon-Lkt36KmQ"
+                    },
+                    {
+                      "id": "component-text-pLvyzwNy"
+                    }
+                  ]
+                },
+                {
+                  "id": "component-listboxOption-BtX2tojS",
+                  "children": [
+                    {
+                      "id": "component-icon-7W1Ax32m"
+                    },
+                    {
+                      "id": "component-text-RuaFtCpV"
+                    }
+                  ]
+                },
+                {
+                  "id": "component-listboxOption-Pjf6EQd0",
+                  "children": [
+                    {
+                      "id": "component-icon-4EbPy2yo"
+                    },
+                    {
+                      "id": "component-text-BmMBmPsp"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "component-combobox-grouped",
+          "children": [
+            {
+              "id": "component-comboboxField-ssskwKzf",
+              "children": [
+                {
+                  "id": "component-icon-NWuE0B2f"
+                },
+                {
+                  "id": "component-input-XRiNaqRk"
+                },
+                {
+                  "id": "component-button-Xtf3CFIF",
+                  "children": [
+                    {
+                      "id": "component-icon-4a9YsXpF"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "component-listbox-062xqcMv",
+              "children": [
+                {
+                  "id": "component-frame-2K3lNgkI",
+                  "children": [
+                    {
+                      "id": "component-text-EdFKJI2N"
+                    },
+                    {
+                      "id": "component-listboxOption-chWh10TW",
+                      "children": [
+                        {
+                          "id": "component-icon-krjw8dyw"
+                        },
+                        {
+                          "id": "component-text-sFQ0wpuK"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "component-listboxOption-GGDFyeoX",
+                      "children": [
+                        {
+                          "id": "component-icon-Xuqb5zbR"
+                        },
+                        {
+                          "id": "component-text-ZbQnls1d"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "component-hr-iyQVjiaa"
+                },
+                {
+                  "id": "component-frame-97vX5tI2",
+                  "children": [
+                    {
+                      "id": "component-text-RXmR01S0"
+                    },
+                    {
+                      "id": "component-listboxOption-Vt2bxytT",
+                      "children": [
+                        {
+                          "id": "component-icon-k73xzlFx"
+                        },
+                        {
+                          "id": "component-text-4Ko4s2aS"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "component-listboxOption-DPS6lbKu",
+                      "children": [
+                        {
+                          "id": "component-icon-er0pH9ua"
+                        },
+                        {
+                          "id": "component-text-0RNOnkQN"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "__editor": {
+        "order": 2
       }
     }
   },
@@ -17902,7 +18079,18 @@
       "label": "Listbox Option",
       "theme": null,
       "template": "catalog:listboxOption",
-      "overrides": {},
+      "overrides": {
+        "padding": {
+          "top": {
+            "type": "theme.ordinal",
+            "value": "@padding.compact"
+          },
+          "bottom": {
+            "type": "theme.ordinal",
+            "value": "@padding.compact"
+          }
+        }
+      },
       "__editor": {
         "initialOverrides": {}
       },
@@ -18077,6 +18265,20 @@
               "value": 25
             }
           }
+        },
+        "padding": {
+          "left": {
+            "type": "option",
+            "value": "none"
+          },
+          "right": {
+            "type": "option",
+            "value": "none"
+          }
+        },
+        "gap": {
+          "type": "option",
+          "value": "none"
         }
       },
       "__editor": {
@@ -18237,8 +18439,8 @@
           "value": "fit"
         },
         "gap": {
-          "type": "theme.ordinal",
-          "value": "@gap.tight"
+          "type": "option",
+          "value": "none"
         }
       },
       "origin": "schema",
@@ -18285,6 +18487,10 @@
         },
         "margin": {
           "left": {
+            "type": "theme.ordinal",
+            "value": "@margin.compact"
+          },
+          "bottom": {
             "type": "theme.ordinal",
             "value": "@margin.compact"
           }
@@ -18444,16 +18650,16 @@
             "value": "@margin.compact"
           },
           "right": {
-            "type": "empty",
-            "value": null
+            "type": "theme.ordinal",
+            "value": "@margin.compact"
           },
           "bottom": {
             "type": "theme.ordinal",
             "value": "@margin.compact"
           },
           "left": {
-            "type": "empty",
-            "value": null
+            "type": "theme.ordinal",
+            "value": "@margin.compact"
           }
         }
       },
@@ -18506,8 +18712,8 @@
           "value": "fit"
         },
         "gap": {
-          "type": "theme.ordinal",
-          "value": "@gap.tight"
+          "type": "option",
+          "value": "none"
         }
       },
       "origin": "schema",
@@ -18554,6 +18760,10 @@
         },
         "margin": {
           "left": {
+            "type": "theme.ordinal",
+            "value": "@margin.compact"
+          },
+          "bottom": {
             "type": "theme.ordinal",
             "value": "@margin.compact"
           }
@@ -18706,7 +18916,18 @@
       "label": "Menu Item",
       "theme": null,
       "template": "catalog:menuItem",
-      "overrides": {},
+      "overrides": {
+        "padding": {
+          "top": {
+            "type": "theme.ordinal",
+            "value": "@padding.compact"
+          },
+          "bottom": {
+            "type": "theme.ordinal",
+            "value": "@padding.compact"
+          }
+        }
+      },
       "__editor": {
         "initialOverrides": {}
       },
@@ -19152,10 +19373,40 @@
               "value": 25
             }
           }
+        },
+        "gap": {
+          "type": "option",
+          "value": "none"
         }
       },
       "__editor": {
         "initialOverrides": {}
+      },
+      "states": {
+        "hover": {
+          "padding": {
+            "top": {
+              "type": "theme.ordinal",
+              "value": "@padding.compact"
+            },
+            "right": {
+              "type": "theme.ordinal",
+              "value": "@padding.compact"
+            },
+            "bottom": {
+              "type": "theme.ordinal",
+              "value": "@padding.compact"
+            },
+            "left": {
+              "type": "theme.ordinal",
+              "value": "@padding.compact"
+            }
+          },
+          "gap": {
+            "type": "theme.ordinal",
+            "value": "@gap.tight"
+          }
+        }
       }
     },
     "component-menuItem-rrtT1Gma": {
@@ -19273,19 +19524,29 @@
         "margin": {
           "top": {
             "type": "theme.ordinal",
-            "value": "@margin.tight"
+            "value": "@margin.compact"
           },
           "right": {
-            "type": "empty",
-            "value": null
+            "type": "theme.ordinal",
+            "value": "@margin.compact"
           },
           "bottom": {
             "type": "theme.ordinal",
-            "value": "@margin.tight"
+            "value": "@margin.compact"
           },
           "left": {
-            "type": "empty",
-            "value": null
+            "type": "theme.ordinal",
+            "value": "@margin.compact"
+          }
+        },
+        "padding": {
+          "top": {
+            "type": "option",
+            "value": "none"
+          },
+          "bottom": {
+            "type": "option",
+            "value": "none"
           }
         }
       },
@@ -19400,6 +19661,524 @@
           }
         }
       },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-combobox-default": {
+      "id": "component-combobox-default",
+      "type": "default",
+      "level": "part",
+      "label": "Combobox",
+      "theme": null,
+      "template": "catalog:combobox",
+      "overrides": {},
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-comboboxField-z3a0KuTH": {
+      "id": "component-comboboxField-z3a0KuTH",
+      "type": "instance",
+      "level": "element",
+      "label": "Combobox Field",
+      "theme": null,
+      "template": "node:component-comboboxField-default",
+      "overrides": {},
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-icon-qO6HpJED": {
+      "id": "component-icon-qO6HpJED",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Icon",
+      "theme": null,
+      "template": "node:component-icon-XI681ReX",
+      "overrides": {},
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-input-CmERJgGk": {
+      "id": "component-input-CmERJgGk",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Input",
+      "theme": null,
+      "template": "node:component-input-YOqIxXXA",
+      "overrides": {},
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-button-EEQUesbA": {
+      "id": "component-button-EEQUesbA",
+      "type": "instance",
+      "level": "element",
+      "label": "Iconic",
+      "theme": null,
+      "template": "node:component-button-pgsRCIQ6",
+      "overrides": {},
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-icon-5YifJUaT": {
+      "id": "component-icon-5YifJUaT",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Icon",
+      "theme": null,
+      "template": "node:component-icon-zuPqThhc",
+      "overrides": {},
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-listbox-4wPgGwW5": {
+      "id": "component-listbox-4wPgGwW5",
+      "type": "instance",
+      "level": "part",
+      "label": "Listbox",
+      "theme": null,
+      "template": "node:component-listbox-default",
+      "overrides": {},
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-listboxOption-fEkCAwV8": {
+      "id": "component-listboxOption-fEkCAwV8",
+      "type": "instance",
+      "level": "element",
+      "label": "Listbox Option",
+      "theme": null,
+      "template": "node:component-listboxOption-6DxlEN7j",
+      "overrides": {},
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-icon-Lkt36KmQ": {
+      "id": "component-icon-Lkt36KmQ",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Icon",
+      "theme": null,
+      "template": "node:component-icon-rdh1ug6y",
+      "overrides": {},
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-text-pLvyzwNy": {
+      "id": "component-text-pLvyzwNy",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-y8URZWqx",
+      "overrides": {},
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-listboxOption-BtX2tojS": {
+      "id": "component-listboxOption-BtX2tojS",
+      "type": "instance",
+      "level": "element",
+      "label": "Listbox Option",
+      "theme": null,
+      "template": "node:component-listboxOption-XnQa4kN7",
+      "overrides": {},
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-icon-7W1Ax32m": {
+      "id": "component-icon-7W1Ax32m",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Icon",
+      "theme": null,
+      "template": "node:component-icon-HtPX6iwu",
+      "overrides": {},
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-text-RuaFtCpV": {
+      "id": "component-text-RuaFtCpV",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-ogX7Vf8l",
+      "overrides": {},
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-listboxOption-Pjf6EQd0": {
+      "id": "component-listboxOption-Pjf6EQd0",
+      "type": "instance",
+      "level": "element",
+      "label": "Listbox Option",
+      "theme": null,
+      "template": "node:component-listboxOption-qYBECaWA",
+      "overrides": {},
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-icon-4EbPy2yo": {
+      "id": "component-icon-4EbPy2yo",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Icon",
+      "theme": null,
+      "template": "node:component-icon-ywPJ2Gj1",
+      "overrides": {},
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-text-BmMBmPsp": {
+      "id": "component-text-BmMBmPsp",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-rtn9j1HA",
+      "overrides": {},
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-combobox-grouped": {
+      "id": "component-combobox-grouped",
+      "type": "variant",
+      "level": "part",
+      "label": "Grouped Combobox",
+      "theme": null,
+      "template": "node:component-combobox-default",
+      "overrides": {},
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-comboboxField-ssskwKzf": {
+      "id": "component-comboboxField-ssskwKzf",
+      "type": "instance",
+      "level": "element",
+      "label": "Combobox Field",
+      "theme": null,
+      "template": "node:component-comboboxField-default",
+      "overrides": {},
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-icon-NWuE0B2f": {
+      "id": "component-icon-NWuE0B2f",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Icon",
+      "theme": null,
+      "template": "node:component-icon-XI681ReX",
+      "overrides": {},
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-input-XRiNaqRk": {
+      "id": "component-input-XRiNaqRk",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Input",
+      "theme": null,
+      "template": "node:component-input-YOqIxXXA",
+      "overrides": {},
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-button-Xtf3CFIF": {
+      "id": "component-button-Xtf3CFIF",
+      "type": "instance",
+      "level": "element",
+      "label": "Iconic",
+      "theme": null,
+      "template": "node:component-button-pgsRCIQ6",
+      "overrides": {},
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-icon-4a9YsXpF": {
+      "id": "component-icon-4a9YsXpF",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Icon",
+      "theme": null,
+      "template": "node:component-icon-zuPqThhc",
+      "overrides": {},
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-listbox-062xqcMv": {
+      "id": "component-listbox-062xqcMv",
+      "type": "instance",
+      "level": "part",
+      "label": "Grouped Listbox",
+      "theme": null,
+      "template": "node:component-listbox-grouped",
+      "overrides": {},
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-frame-2K3lNgkI": {
+      "id": "component-frame-2K3lNgkI",
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-6o7xOe5s",
+      "overrides": {},
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-text-EdFKJI2N": {
+      "id": "component-text-EdFKJI2N",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-oQKB2xnF",
+      "overrides": {},
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-listboxOption-chWh10TW": {
+      "id": "component-listboxOption-chWh10TW",
+      "type": "instance",
+      "level": "element",
+      "label": "Listbox Option",
+      "theme": null,
+      "template": "node:component-listboxOption-TzrpWkwq",
+      "overrides": {},
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-icon-krjw8dyw": {
+      "id": "component-icon-krjw8dyw",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Icon",
+      "theme": null,
+      "template": "node:component-icon-Ivh6BHY8",
+      "overrides": {},
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-text-sFQ0wpuK": {
+      "id": "component-text-sFQ0wpuK",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-xzE6hYQ1",
+      "overrides": {},
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-listboxOption-GGDFyeoX": {
+      "id": "component-listboxOption-GGDFyeoX",
+      "type": "instance",
+      "level": "element",
+      "label": "Listbox Option",
+      "theme": null,
+      "template": "node:component-listboxOption-6sGsj9Qy",
+      "overrides": {},
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-icon-Xuqb5zbR": {
+      "id": "component-icon-Xuqb5zbR",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Icon",
+      "theme": null,
+      "template": "node:component-icon-gYaMmv1j",
+      "overrides": {},
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-text-ZbQnls1d": {
+      "id": "component-text-ZbQnls1d",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-I6yg6O2E",
+      "overrides": {},
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-hr-iyQVjiaa": {
+      "id": "component-hr-iyQVjiaa",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Horizontal Rule",
+      "theme": null,
+      "template": "node:component-hr-XTIgMip9",
+      "overrides": {},
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-frame-97vX5tI2": {
+      "id": "component-frame-97vX5tI2",
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-LDFTF6FY",
+      "overrides": {},
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-text-RXmR01S0": {
+      "id": "component-text-RXmR01S0",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-ptvk5Xrl",
+      "overrides": {},
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-listboxOption-Vt2bxytT": {
+      "id": "component-listboxOption-Vt2bxytT",
+      "type": "instance",
+      "level": "element",
+      "label": "Listbox Option",
+      "theme": null,
+      "template": "node:component-listboxOption-wzC68SbP",
+      "overrides": {},
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-icon-k73xzlFx": {
+      "id": "component-icon-k73xzlFx",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Icon",
+      "theme": null,
+      "template": "node:component-icon-x8NCMPKq",
+      "overrides": {},
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-text-4Ko4s2aS": {
+      "id": "component-text-4Ko4s2aS",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-hhLCBcNx",
+      "overrides": {},
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-listboxOption-DPS6lbKu": {
+      "id": "component-listboxOption-DPS6lbKu",
+      "type": "instance",
+      "level": "element",
+      "label": "Listbox Option",
+      "theme": null,
+      "template": "node:component-listboxOption-UeQfugbm",
+      "overrides": {},
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-icon-er0pH9ua": {
+      "id": "component-icon-er0pH9ua",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Icon",
+      "theme": null,
+      "template": "node:component-icon-XSSKMzIu",
+      "overrides": {},
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-text-0RNOnkQN": {
+      "id": "component-text-0RNOnkQN",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-FbWjIr4W",
+      "overrides": {},
       "origin": "schema",
       "__editor": {
         "initialOverrides": {}

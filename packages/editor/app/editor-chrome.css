@@ -24,6 +24,24 @@ body {
   outline: none;
 }
 
+/*
+ * Generated components paint a focus-within border (e.g. the combobox field
+ * outline). That is a focus visual, so gate it behind Show Keyboard Focus like
+ * the overlay ring. With the toggle off, neutralize the border so focus paints
+ * nothing on its own. The attribute selectors out-specify the generated rules
+ * and cover every focus-within variant in one place.
+ */
+html:not(.sdn-show-focus) .sdn-combobox-field:focus-within,
+html:not(.sdn-show-focus) [class*="sdn-combobox-field"]:focus-within,
+html:not(.sdn-show-focus) .sdn-item-section:focus-within,
+html:not(.sdn-show-focus) .sdn-button-iconic:focus-within {
+  border-color: transparent;
+}
+html:not(.sdn-show-focus) [class*="sdn-combobox-field"]:focus-within .sdn-button-iconic,
+html:not(.sdn-show-focus) .sdn-item-section:focus-within .sdn-button-iconic {
+  border-color: transparent;
+}
+
 /* Unified focus ring drawn by FocusRingOverlay. Geometry is set inline. */
 .editor-focus-ring {
   position: fixed;

@@ -96,6 +96,15 @@ export function FocusRingOverlay() {
   const [rect, setRect] = useState<RingRect | null>(null)
   const rectRef = useRef<RingRect | null>(null)
 
+  // Reflect the toggle to the root so generated component focus styles (e.g.
+  // `.sdn-combobox-field:focus-within`) can be gated in editor-chrome.css, the
+  // same way the overlay ring below is gated.
+  useEffect(() => {
+    const root = document.documentElement
+    root.classList.toggle("sdn-show-focus", showFocus)
+    return () => root.classList.remove("sdn-show-focus")
+  }, [showFocus])
+
   useEffect(() => {
     if (!showFocus) {
       rectRef.current = null

@@ -113,7 +113,7 @@ export function buildPropertyRowProps({
       : {
           icon: valueIconId as IconProps["icon"],
           color: getPropertyIcon2Color(property, swatchChipColor, undefined),
-          style: getValueIconStyle({ hidden: false, labelColor }),
+          style: getValueIconStyle({ hidden: false, labelColor: undefined }),
         }
 
   // The trailing button is interactive only for uploads and menu/combo controls.
@@ -146,7 +146,7 @@ export function buildPropertyRowProps({
       hasControl: Boolean(property.controlType),
       // A read-only instance row hides the dropdown chevron.
       showMenuIcon: isReadOnly ? true : showMenuIcon,
-      labelColor,
+      labelColor: undefined,
     }),
   }
 
