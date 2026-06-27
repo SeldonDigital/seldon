@@ -40,6 +40,7 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-filterList"
     | "material-dataObject"
     | "material-save"
+    | "material-radioButtonChecked"
     | "seldon-iconSocialFacebook"
     | "seldon-iconSocialReddit"
     | "seldon-iconSocialPinterest"
@@ -412,7 +413,6 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-piano"
     | "material-powerOff"
     | "material-print"
-    | "material-radioButtonChecked"
     | "material-radioButtonUnchecked"
     | "material-robot"
     | "material-signalWifiOff"
@@ -553,6 +553,7 @@ const iconMap = {
   "material-filterList": Icons.IconMaterialFilterList,
   "material-dataObject": Icons.IconMaterialDataObject,
   "material-save": Icons.IconMaterialSave,
+  "material-radioButtonChecked": Icons.IconMaterialRadioButtonChecked,
   "seldon-iconSocialFacebook": Icons.IconSocialFacebook,
   "seldon-iconSocialReddit": Icons.IconSocialReddit,
   "seldon-iconSocialPinterest": Icons.IconSocialPinterest,
@@ -927,7 +928,6 @@ const iconMap = {
   "material-piano": Icons.IconMaterialPiano,
   "material-powerOff": Icons.IconMaterialPowerOff,
   "material-print": Icons.IconMaterialPrint,
-  "material-radioButtonChecked": Icons.IconMaterialRadioButtonChecked,
   "material-radioButtonUnchecked": Icons.IconMaterialRadioButtonUnchecked,
   "material-robot": Icons.IconMaterialRobot,
   "material-signalWifiOff": Icons.IconMaterialSignalWifiOff,

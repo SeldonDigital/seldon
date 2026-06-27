@@ -1,7 +1,6 @@
 import {
   CSSProperties,
   MouseEvent,
-  ReactNode,
   Ref,
   RefObject,
   useCallback,
@@ -20,7 +19,10 @@ import {
 } from "../helpers/editing-contexts"
 import { formatControlPlaceholder } from "../helpers/format-control-placeholder"
 import { FlatProperty } from "../helpers/properties-data"
-import { createPropertyOptionIconRenderer } from "../helpers/render-property-option-icon"
+import {
+  OptionIconRender,
+  createPropertyOptionIconResolver,
+} from "../helpers/render-property-option-icon"
 import { useCommitPropertyValue } from "./use-commit-property-value"
 import { usePropertyCombobox } from "./use-property-combobox"
 import { usePropertyControlData } from "./use-property-control-data"
@@ -102,7 +104,7 @@ interface ComboboxControlView {
     hasSections: boolean
     value: string
     highlightedValue?: string
-    renderIcon: (option?: { value: string; name: string }) => ReactNode
+    resolveIcon: (option?: { value: string; name: string }) => OptionIconRender
     onSelect: (value: string) => void
     onHighlight: (value: string | undefined) => void
   }
@@ -226,7 +228,7 @@ export function usePropertyControl({
     }
   }
 
-  const renderIcon = createPropertyOptionIconRenderer({
+  const resolveIcon = createPropertyOptionIconResolver({
     property,
     theme,
     workspace,
@@ -271,7 +273,7 @@ export function usePropertyControl({
       hasSections: combo.hasSections,
       value: display.comboboxStoredValue,
       highlightedValue: combo.highlightedValue,
-      renderIcon,
+      resolveIcon,
       onSelect: combo.handleSelect,
       onHighlight: combo.setHighlightedValue,
     },

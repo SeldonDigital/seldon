@@ -69,6 +69,8 @@ import {
   getThemeTokenIconColorFromPropertyValue,
   isSwatchIconPropertyKey,
 } from "../helpers/theme-token-icon-color"
+import { buildPropertyValueInput } from "../helpers/build-property-value-input"
+import { usePropertyControl } from "./use-property-control"
 import { usePropertyControlData } from "./use-property-control-data"
 import {
   usePropertyEditNavigation,
@@ -118,6 +120,7 @@ export function useRowProperty({
   const { show: showUploadPanel } = useImageUploadPanel()
 
   const frameRef = useRef<HTMLDivElement>(null)
+  const valueInputRef = useRef<HTMLInputElement>(null)
   const [isEditingProperty, setIsEditingProperty] = useState(false)
   const [isRenaming, setIsRenaming] = useState(false)
   const addToast = useAddToast()
@@ -298,6 +301,41 @@ export function useRowProperty({
   const rowColor = rowStyle.color as string | undefined
   const { setIsHovered, style: hoverStyle } = usePropertyFrameHover(rowColor)
 
+  const endEdit = useCallback(() => setIsEditingProperty(false), [])
+
+  // Mount the value control. The view (none / field / combobox) drives the value
+  // `input` slot and, for combobox, the floating option list rendered by the
+  // shell. Editing is owned here so a row click can open it.
+  const control = usePropertyControl({
+    property,
+    propertySubject: node,
+    theme,
+    frameRef,
+    isEditing: isEditingProperty,
+    onEditChange: setIsEditingProperty,
+    onTabNext: handleTabNext,
+    onTabPrev: handleTabPrev,
+    color: labelColor,
+    themeEditingContext,
+    fontCollectionEditingContext,
+    iconSetEditingContext,
+  })
+
+  // The combobox controller owns its own input ref (focus/select/anchoring); a
+  // text/number field has none, so focus it here when the row enters edit mode.
+  useEffect(() => {
+    if (isEditingProperty && control.kind === "field") {
+      const input = valueInputRef.current
+      if (input) {
+        input.focus()
+        input.select()
+      }
+    }
+  }, [isEditingProperty, control.kind])
+
+  const valueRef =
+    control.kind === "combobox" ? control.field.inputRef : valueInputRef
+
   // Keyboard Tab moves edit focus without firing pointer events, so the row the
   // mouse rests on keeps its hover outline. Hand the hover setter to the
   // navigation coordinator so it can clear the source row and outline the target.
@@ -423,6 +461,17 @@ export function useRowProperty({
       setIsEditingProperty,
     ],
   )
+
+  const valueLabelProps = buildPropertyValueInput({
+    control,
+    isEditing: isEditingProperty,
+    displayValue: value,
+    valueRef,
+    beginEdit: handleLabel2Click,
+    endEdit,
+    onTabNext: handleTabNext,
+    onTabPrev: handleTabPrev,
+  })
 
   const handleRowClick = (event: React.MouseEvent<HTMLLIElement>) => {
     const target = event.target as HTMLElement
@@ -691,6 +740,11 @@ export function useRowProperty({
     frameProps,
     rowStyleProp,
     valueCellProps,
+    control,
+    valueLabelProps,
+    setValueFieldRef: setFrameRef,
+    endEdit,
+    isEditingProperty,
     resetActions,
     focusTargetRef: frameRef,
     labelColor,

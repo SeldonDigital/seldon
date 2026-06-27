@@ -6,11 +6,8 @@ import {
   ControlFieldWrapper,
   PropertyControlSurface,
 } from "@seldon/components/custom-components"
-import {
-  Combobox,
-  ComboboxOptionList,
-  ComboboxOptions,
-} from "@seldon/components/custom-components"
+import { Combobox } from "@seldon/components/custom-components"
+import { PropertyListbox } from "./PropertyListbox"
 
 export type { PropertyControlProps }
 
@@ -73,14 +70,13 @@ export function PropertyControl(props: PropertyControlProps) {
         autoFocus={view.field.autoFocus}
         style={view.field.style}
       />
-      <ComboboxOptions
+      <PropertyListbox
         open={view.options.open}
         position={view.options.position}
         handleClose={view.options.handleClose}
         onPointerLeave={view.options.onPointerLeave}
-      >
-        <ComboboxOptionList {...view.optionList} />
-      </ComboboxOptions>
+        {...view.optionList}
+      />
     </PropertyControlSurface>
   )
 }

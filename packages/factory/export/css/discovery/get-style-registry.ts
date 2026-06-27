@@ -135,6 +135,13 @@ export const buildStyleRegistry = (
   const classNameToComponentId: Record<string, string> = {}
   const usedStates = collectUsedStates(workspace)
 
+  // States a variant root authored as its own override. The root-scoped cascade
+  // below only fires for a root's own states, so a container that authors no
+  // state of its own (a listbox whose options own their hover) does not force
+  // that state across its whole subtree. This is a React-export concern; other
+  // platforms may surface descendant states differently.
+  const variantOwnedStates: Record<string, Set<string>> = {}
+
   // A variant id that appears as a composition parent owns children, so its
   // states cascade to descendants (`.sdn-item-node:hover .sdn-combobox-field--lmje`)
   // instead of styling only itself. Leaf variants keep their self-scoped rule.
@@ -286,6 +293,9 @@ export const buildStyleRegistry = (
       }
     }
     const hasStateDeltas = Object.keys(nodeStateDeltas).length > 0
+    if (hasStateDeltas) {
+      variantOwnedStates[node.id] = new Set(Object.keys(nodeStateDeltas))
+    }
 
     // A container variant owns the interaction: its states cascade from the row
     // root, so emit them root-scoped (with the ancestor selector for focus and
@@ -367,6 +377,13 @@ export const buildStyleRegistry = (
   })
 
   for (const root of exportComponentRoots) {
+    // Only cascade the states the root itself authored. A descendant's own state
+    // (a listbox option's hover) stays self-scoped through that component's own
+    // root rule; it does not turn the state on for the container. A root that
+    // owns no state cascades nothing.
+    const ownedStates = variantOwnedStates[root.id]
+    if (!ownedStates || ownedStates.size === 0) continue
+
     // Root the cascade at the variant's own rendered class (`.sdn-item-node`),
     // not the shared family base (`.sdn-item`). The exported root element carries
     // only its variant class, so a family-rooted selector would miss every custom
@@ -384,7 +401,7 @@ export const buildStyleRegistry = (
         nodeIdToClass[descendantId] ??
         getClassNameForNode(descendantNode, workspace)
       const normalCss = computeNodeCss(descendantId)
-      for (const stateName of usedStates) {
+      for (const stateName of ownedStates) {
         const stateCss = computeNodeCss(descendantId, stateName)
         const delta = calculateCssDifferences(normalCss, stateCss)
         if (Object.keys(delta).length > 0) {

@@ -12,9 +12,11 @@ import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { RowPropertyProps, useRowProperty } from "./hooks/use-row-property"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { FramerExpandable } from "@seldon/components/custom-components"
+import { ComboboxFieldProps } from "@seldon/components/elements/ComboboxField"
 import { ItemProperty } from "@seldon/components/elements/ItemProperty"
 import { useRowActionsMenu } from "../shared/use-row-actions-menu"
 import { LayerDragRow } from "./LayerDragRow"
+import { PropertyListbox } from "./PropertyListbox"
 import { FlatProperty } from "./helpers/properties-data"
 
 /**
@@ -27,25 +29,30 @@ function VMPropertyInner(props: RowPropertyProps) {
     focusTargetRef: view.focusTargetRef,
   })
 
-  const { listItemProps } = view
+  const { listItemProps, control } = view
   const layerDrag = getLayerDragContext(props)
 
-  // Drive each slot through its stable workspace ref. The value displays through
-  // the combobox `input` as read-only. The trailing actions icon keeps the
-  // generated `seldon-more` default, hidden by the actions button placeholder.
+  // Drive each slot through its stable workspace ref. The value `input` slot is
+  // both the read-only display and, in edit mode, the live combobox/text control
+  // (see `buildPropertyValueInput`), mirroring the objects-sidebar name slot. The
+  // trailing actions icon keeps the generated `seldon-more` default, hidden by
+  // the actions button placeholder.
   const seldonRefs: Record<string, Record<string, unknown>> = {
     propertyToggle: { ...listItemProps.buttonIconic },
     propertyToggleIcon: { ...listItemProps.icon },
     propertyLabel: { ...listItemProps.textLabel },
-    valueLabel: {
-      value: view.valueCellProps.value ?? "",
-      readOnly: true,
-      tabIndex: -1,
-    },
+    valueLabel: { ...view.valueLabelProps },
     valueOptionsMenu: { ...listItemProps.buttonIconic2 },
     propertyActions: { ...actionsMenu.buttonIconic },
   }
   if (listItemProps.icon2) seldonRefs.valueIcon = { ...listItemProps.icon2 }
+
+  // Anchor the floating option list to the value field. `ComboboxField` forwards
+  // this ref (React 19 ref-as-prop) to its `Frame` div, which the position hook
+  // measures.
+  const comboboxField = {
+    ref: view.setValueFieldRef,
+  } as unknown as ComboboxFieldProps
 
   // Render the exported `ItemProperty` through its slots. `textLabel` is a
   // conditional slot, so it keeps a positional enabler. `icon2` is suppressed
@@ -55,6 +62,7 @@ function VMPropertyInner(props: RowPropertyProps) {
   const row = (
     <ItemProperty
       textLabel={{}}
+      comboboxField={comboboxField}
       icon2={listItemProps.icon2 ? undefined : null}
       icon3={listItemProps.icon3}
       seldonRefs={seldonRefs}
@@ -79,6 +87,18 @@ function VMPropertyInner(props: RowPropertyProps) {
         row
       )}
       {actionsMenu.menu}
+      {control.kind === "combobox" && (
+        <PropertyListbox
+          open={control.options.open}
+          position={control.options.position}
+          handleClose={() => {
+            control.options.handleClose()
+            view.endEdit()
+          }}
+          onPointerLeave={control.options.onPointerLeave}
+          {...control.optionList}
+        />
+      )}
       {view.hasChildren ? (
         <FramerExpandable isExpanded={view.isExpanded}>
           {view.childItems.map((childProps) => (

@@ -17,6 +17,8 @@ export type SeldonRef =
   | "nodeLabel"
   | "nodeToggle"
   | "nodeToggleIcon"
+  | "optionIcon"
+  | "optionLabel"
   | "propertyActions"
   | "propertyLabel"
   | "propertyToggle"
@@ -42,6 +44,8 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   "nodeLabel": {"component":"Input","nodeId":"component-item-pZCfJ3k6","className":"sdn-input sdn-input--n6aw"},
   "nodeToggle": {"component":"ButtonIconic","nodeId":"component-item-HSgjhz6b","className":"sdn-button-iconic sdn-button-iconic--pgsr"},
   "nodeToggleIcon": {"component":"Icon","nodeId":"component-item-zn8GFZsT","className":"sdn-icon sdn-icon--vsau"},
+  "optionIcon": {"component":"Icon","nodeId":"component-icon-3QOuNmn2","className":"sdn-icon sdn-icon--xi68"},
+  "optionLabel": {"component":"TextLabel","nodeId":"component-text-xOhbdtNu","className":"sdn-text-label sdn-text-label--xohb"},
   "propertyActions": {"component":"ButtonIconic","nodeId":"component-button-CGRbb6mm","className":"sdn-button-iconic sdn-button-iconic--pgsr"},
   "propertyLabel": {"component":"TextLabel","nodeId":"component-text-Xg6PReX9","className":"sdn-text-label sdn-text-label--xg6p"},
   "propertyToggle": {"component":"ButtonIconic","nodeId":"component-button-iVVLVSBT","className":"sdn-button-iconic sdn-button-iconic--pgsr"},
