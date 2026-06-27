@@ -160,6 +160,7 @@ function VMBoardRow({
           onDoubleClick={onDoubleClick}
           onMouseEnter={handleRowMouseEnter}
           onMouseLeave={handleRowMouseLeave}
+          aria-selected={boardIsActive || undefined}
           data-testid={dataTestId}
           data-componentid={dataComponentId}
           data-active={boardIsActive}

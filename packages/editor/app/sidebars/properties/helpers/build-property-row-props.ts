@@ -127,12 +127,15 @@ export function buildPropertyRowProps({
 
   // Static value icons render through the generated icon slot. Dynamic chips
   // render inside the value cell, so the slot is suppressed for them.
+  // Pass no label tint as the color fallback: a swatch-token or color-harmony
+  // row keeps its real value color, every other row leaves the icon color to
+  // the generated `.sdn-item-property` CSS so hover and state tints apply.
   const icon2 =
     valueIconHidden || isDynamicValueIcon
       ? null
       : {
           icon: valueIconId as IconProps["icon"],
-          color: getPropertyIcon2Color(property, swatchChipColor, labelColor),
+          color: getPropertyIcon2Color(property, swatchChipColor, undefined),
           style: getValueIconStyle({ hidden: false, labelColor }),
         }
 
@@ -180,11 +183,13 @@ export function buildPropertyRowProps({
       : { tabIndex: -1, inert: true }),
   }
 
+  // No inline color: the trailing menu chevron takes its color from the
+  // generated `.sdn-item-property` CSS so it tints on hover and state like the
+  // rest of the row, instead of a baked-in label tint that overrides them.
   const icon3 = {
     icon: (supportsUpload
       ? "material-upload"
       : "material-chevronDown") as IconProps["icon"],
-    color: labelColor || undefined,
     style: getMenuIconStyle({
       isCalculated,
       supportsUpload,

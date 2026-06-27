@@ -8,6 +8,7 @@ import {
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useDialog } from "@lib/hooks/use-dialog"
 import { useTool } from "@lib/hooks/use-tool"
+import { useDragStateStore } from "@lib/hooks/use-drag-state"
 import { useDropzone } from "../sidebars/objects/hooks/use-dropzone"
 import { useSidebarPlacementTracking } from "./hooks/use-sidebar-placement-tracking"
 import {
@@ -67,6 +68,7 @@ export function SidebarTracking({
   const { workspace } = useWorkspace({ usePreview: false })
   const { openDialog } = useDialog()
   const { activeTool } = useTool()
+  const isDragging = useDragStateStore((state) => state.isDragging)
   const { isPlacementAllowed, parentNode, canHaveChildren } =
     useSidebarPlacementTracking(node)
 
@@ -134,7 +136,12 @@ export function SidebarTracking({
         <DragDropZone
           target={node}
           placement="before"
-          bandStyle={getZoneBandStyle("before", canHaveChildren, isExpanded)}
+          bandStyle={getZoneBandStyle(
+            "before",
+            canHaveChildren,
+            isExpanded,
+            isDragging,
+          )}
           onClick={handleRowClickWrapper}
           onDoubleClick={handleRowDoubleClickWrapper}
           onCanvasTrackingEnter={onCanvasTrackingEnter}
@@ -144,7 +151,12 @@ export function SidebarTracking({
           <DragDropZone
             target={node}
             placement="inside"
-            bandStyle={getZoneBandStyle("inside", canHaveChildren, isExpanded)}
+            bandStyle={getZoneBandStyle(
+              "inside",
+              canHaveChildren,
+              isExpanded,
+              isDragging,
+            )}
             onClick={handleRowClickWrapper}
             onDoubleClick={handleRowDoubleClickWrapper}
             onCanvasTrackingEnter={onCanvasTrackingEnter}
@@ -155,7 +167,12 @@ export function SidebarTracking({
           <DragDropZone
             target={node}
             placement="after"
-            bandStyle={getZoneBandStyle("after", canHaveChildren, isExpanded)}
+            bandStyle={getZoneBandStyle(
+              "after",
+              canHaveChildren,
+              isExpanded,
+              isDragging,
+            )}
             onClick={handleRowClickWrapper}
             onDoubleClick={handleRowDoubleClickWrapper}
             onCanvasTrackingEnter={onCanvasTrackingEnter}
@@ -202,17 +219,22 @@ const rowWrapperStyle: CSSProperties = { position: "relative", width: "100%" }
  * - Container, expanded: before (top 50%), inside (bottom 50%); the after-sibling
  *   position stays reachable through the next sibling's before band.
  * - Leaf: before (top 50%), after (bottom 50%); no inside band is rendered.
+ *
+ * The band only captures pointer events while a drag is active, so its native
+ * drop targets receive the drag. When idle it is non-interactive, letting the
+ * row beneath own `:hover` and click while ItemNode still wires those handlers.
  */
 function getZoneBandStyle(
   placement: Placement,
   canHaveChildren: boolean,
   isExpanded: boolean,
+  isDragging: boolean,
 ): CSSProperties {
   const base: CSSProperties = {
     position: "absolute",
     left: 0,
     right: 0,
-    pointerEvents: "auto",
+    pointerEvents: isDragging ? "auto" : "none",
   }
 
   if (canHaveChildren && !isExpanded) {

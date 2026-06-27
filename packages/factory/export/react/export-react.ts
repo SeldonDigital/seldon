@@ -37,6 +37,7 @@ export async function exportReact(
     nodeIdToClass,
     classes,
     stateClasses,
+    descendantStateClasses,
     classNameToNodeId,
     nodeTreeDepths,
   } = buildStyleRegistry(workspace, options.publishAll, parentIndex)
@@ -79,6 +80,7 @@ export async function exportReact(
       classNameToNodeId,
       nodeTreeDepths,
       stateClasses,
+      descendantStateClasses,
     ),
   })
 

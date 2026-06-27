@@ -200,6 +200,7 @@ const VMNodeInner = function VMNodeInner({
             onDoubleClick={onDoubleClick}
             onMouseEnter={handleCanvasTrackingEnter}
             onMouseLeave={handleCanvasTrackingLeave}
+            aria-selected={isSelected || undefined}
             data-testid={dataTestId}
             data-nodeid={dataNodeId}
             data-node-type={dataNodeType}

@@ -142,6 +142,7 @@ export function VMResourceEntry({
           icon3={withoutStyle(actionsMenu.icon)}
           onClick={onClick}
           onDoubleClick={onDoubleClick}
+          aria-selected={isActive || undefined}
           data-testid={config.testId}
           data-resource-entry-id={entryId}
           data-resource-kind={config.kind}
