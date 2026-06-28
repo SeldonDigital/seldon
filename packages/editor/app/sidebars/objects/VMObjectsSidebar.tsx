@@ -2,9 +2,6 @@
 
 import { LayoutGroup } from "framer-motion"
 import { CSSProperties, PointerEvent, useCallback } from "react"
-import { useEditableWorkspaceName } from "@lib/persistence/hooks/use-editable-workspace-name"
-import { useWorkspaceRecord } from "@lib/persistence/hooks/use-workspace-record"
-import { useWorkspaceId } from "@lib/project/hooks/use-workspace-id"
 import { useSetHoveredId } from "@lib/workspace/hooks/use-object-hover"
 import { useIsSectionExpanded } from "../hooks/use-section-expansion"
 import { useDraggableMonitor } from "./hooks/use-draggable-monitor"
@@ -13,35 +10,23 @@ import { useScrollSelection } from "./hooks/use-scroll-selection"
 import { SelectionRelationsProvider } from "./hooks/use-selection-relations"
 import { getSelectionTarget } from "@lib/workspace/selection-target"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
-import {
-  FramerExpandable,
-  SidebarContainer,
-} from "@seldon/components/custom-components"
-import { Frame } from "@seldon/components/frames/Frame"
-import { BarTabsBar } from "@seldon/components/parts/BarTabsBar"
+import { FramerExpandable } from "@seldon/components/custom-components"
+import { SidebarObjects } from "@seldon/components/modules/SidebarObjects"
 import { BoardSection } from "../helpers/get-board-sections"
-import { sidebarShellStyle } from "../helpers/sidebar-styles"
 import { VMBoard } from "./VMBoard"
 import { VMSection } from "./VMSection"
 
 /**
- * View-model for the objects sidebar. Owns the workspace name bar, the section
- * list, the scroller, and the tree-level hover controller that publishes the
- * hovered row to the shared bridge.
+ * View-model for the objects sidebar. Feeds the generated `SidebarObjects`
+ * view: it renders the inert header combobox and the section list, scroller,
+ * and tree-level hover controller injected into the view's frame.
  */
 export function VMObjectsSidebar() {
-  const workspaceId = useWorkspaceId()
-  const { record, updateRecord } = useWorkspaceRecord(workspaceId)
   const { sections } = useObjectsSidebar()
   const scrollerRef = useScrollSelection()
   const setHoveredId = useSetHoveredId()
 
   useDraggableMonitor()
-
-  const editableNameProps = useEditableWorkspaceName({
-    name: record?.name ?? "",
-    onRename: (name) => updateRecord({ name }),
-  })
 
   const handlePointerMove = useCallback(
     (event: PointerEvent<HTMLDivElement>) => {
@@ -56,40 +41,40 @@ export function VMObjectsSidebar() {
     [setHoveredId],
   )
 
-  if (!record) return null
-
-  const nameButton = { style: styles.nameButton }
-  const nameLabel = {
-    children: record.name,
-    ...editableNameProps,
-    style: styles.nameLabel,
-  }
   const sectionGroups = sections.map((section) => (
     <ObjectsSectionGroup key={section.label} section={section} />
   ))
 
-  return (
-    <SidebarContainer style={sidebarShellStyle} data-testid="objects-sidebar">
-      <BarTabsBar
-        style={styles.nameBar}
-        buttonSimple={nameButton}
-        textLabel={nameLabel}
-        buttonSimple2={null}
-        buttonSimple3={null}
-      />
+  const treeChildren = (
+    <div
+      ref={scrollerRef}
+      style={styles.scroller}
+      onPointerMove={handlePointerMove}
+      onPointerLeave={handlePointerLeave}
+    >
       <SelectionRelationsProvider>
-        <div
-          ref={scrollerRef}
-          style={styles.scroller}
-          onPointerMove={handlePointerMove}
-          onPointerLeave={handlePointerLeave}
-        >
-          <Frame style={styles.tree}>
-            <LayoutGroup>{sectionGroups}</LayoutGroup>
-          </Frame>
+        <div style={styles.tree}>
+          <LayoutGroup>{sectionGroups}</LayoutGroup>
         </div>
       </SelectionRelationsProvider>
-    </SidebarContainer>
+    </div>
+  )
+
+  const seldonRefs = {
+    objectsContainer: {
+      style: styles.frame,
+      children: treeChildren,
+    },
+  }
+
+  return (
+    <SidebarObjects
+      data-testid="objects-sidebar"
+      comboboxFieldProjectField={{}}
+      input={{ readOnly: true }}
+      seldonRefs={seldonRefs}
+      style={styles.sidebar}
+    />
   )
 }
 
@@ -114,25 +99,15 @@ function ObjectsSectionGroup({ section }: { section: BoardSection }) {
 }
 
 const styles: Record<string, CSSProperties> = {
-  nameBar: {
-    height: "var(--sdn-size-xlarge)",
+  sidebar: {
+    height: "100%",
+    minHeight: 0,
   },
-  nameButton: {
-    background: "none",
-    border: "none",
-    padding: 0,
-    minWidth: 0,
-    width: "100%",
-    justifyContent: "flex-start",
-    cursor: "text",
-  },
-  nameLabel: {
-    alignSelf: "unset",
-    minWidth: 0,
-    display: "block",
-    maxWidth: "100%",
-    cursor: "text",
-    outline: "none",
+  frame: {
+    flex: 1,
+    minHeight: 0,
+    display: "flex",
+    flexDirection: "column",
   },
   scroller: {
     flex: 1,

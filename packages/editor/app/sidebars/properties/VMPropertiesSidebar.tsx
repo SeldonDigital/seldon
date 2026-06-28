@@ -28,17 +28,9 @@ import { useLayerDragMonitor } from "./hooks/use-layer-drag-monitor"
 import { usePropertiesSidebar } from "./hooks/use-properties-sidebar"
 import { PropertyEditNavigationProvider } from "./hooks/use-property-edit-navigation"
 import { useIsCategoryExpanded } from "./hooks/use-property-expansion"
-import {
-  ScrollerShell,
-  SidebarContainer,
-} from "@seldon/components/custom-components"
 import { FramerExpandable } from "@seldon/components/custom-components"
-import { Frame } from "@seldon/components/frames/Frame"
+import { SidebarProperties } from "@seldon/components/modules/SidebarProperties"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
-import {
-  sidebarNoSelectionStyle,
-  sidebarShellStyle,
-} from "../helpers/sidebar-styles"
 import { CssBlock } from "./CssBlock"
 import { VMCategory } from "./VMCategory"
 import { VMProperty } from "./VMProperty"
@@ -100,16 +92,31 @@ export function VMPropertiesSidebar() {
   const deferredState = useDeferredValue(state)
 
   if (deferredState.kind === "empty") {
-    return <SidebarContainer style={sidebarNoSelectionStyle} />
+    return (
+      <SidebarProperties
+        data-testid="properties-sidebar"
+        comboboxFieldFilterField={{}}
+        input={{ readOnly: true }}
+        style={styles.sidebar}
+      />
+    )
+  }
+
+  const seldonRefs = {
+    propertiesContainer: {
+      style: styles.frame,
+      children: <PropertiesTree {...deferredState.treeProps} />,
+    },
   }
 
   return (
-    <SidebarContainer
-      style={sidebarShellStyle}
+    <SidebarProperties
       data-testid="properties-sidebar"
-    >
-      <PropertiesTree {...deferredState.treeProps} />
-    </SidebarContainer>
+      comboboxFieldFilterField={{}}
+      input={{ readOnly: true }}
+      seldonRefs={seldonRefs}
+      style={styles.sidebar}
+    />
   )
 }
 
@@ -155,13 +162,13 @@ function PropertiesTree({
   ))
 
   return (
-    <ScrollerShell ref={scrollerRef} style={styles.scroller}>
-      <Frame style={styles.tree}>
+    <div ref={scrollerRef} style={styles.scroller}>
+      <div style={styles.tree}>
         <PropertyEditNavigationProvider>
           <LayoutGroup>{sectionNodes}</LayoutGroup>
         </PropertyEditNavigationProvider>
-      </Frame>
-    </ScrollerShell>
+      </div>
+    </div>
   )
 }
 
@@ -406,8 +413,19 @@ function TreeSection({
 }
 
 const styles = {
-  scroller: {
+  sidebar: {
     height: "100%",
+    minHeight: 0,
+  },
+  frame: {
+    flex: 1,
+    minHeight: 0,
+    display: "flex",
+    flexDirection: "column" as const,
+  },
+  scroller: {
+    flex: 1,
+    minHeight: 0,
     overflowX: "hidden" as const,
     overflowY: "auto" as const,
   },

@@ -12,6 +12,7 @@ import { HTMLAttributes, ReactNode, createElement } from "react"
 export type FrameProps = HTMLAttributes<HTMLElement> & {
   children?: ReactNode
   wrapperElement?: string
+  "data-seldon-ref"?: string
 }
 
 export function Frame({ wrapperElement = "div", ...props }: FrameProps) {
