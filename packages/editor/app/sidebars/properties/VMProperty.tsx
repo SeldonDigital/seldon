@@ -4,6 +4,7 @@ import { FramerExpandable } from "@seldon/components/custom-components"
 import { ComboboxFieldProps } from "@seldon/components/elements/ComboboxField"
 import { ItemProperty } from "@seldon/components/elements/ItemProperty"
 import { useRowActionsMenu } from "../shared/use-row-actions-menu"
+import { mergeStateProps } from "../shared/build-field-state-props"
 import { LayerDragRow } from "./LayerDragRow"
 import { PropertyOptionsListbox } from "./PropertyOptionsListbox"
 import { arePropertyRowPropsEqual } from "./helpers/property-row-memo"
@@ -34,13 +35,13 @@ function VMPropertyInner(props: RowPropertyProps) {
   const seldonRefs: Record<string, Record<string, unknown>> = {
     propertyToggle: { ...listItemProps.buttonIconic },
     propertyToggleIcon: { ...listItemProps.icon },
-    propertyLabel: { ...listItemProps.textLabel, ...stateRef },
-    valueLabel: { ...view.valueLabelProps, ...stateRef },
+    propertyLabel: mergeStateProps(listItemProps.textLabel, stateRef),
+    valueLabel: mergeStateProps(view.valueLabelProps, stateRef),
     valueOptionsMenu: { ...listItemProps.buttonIconic2 },
     propertyActions: { ...optionsMenu.buttonIconic },
   }
   if (listItemProps.icon2) {
-    seldonRefs.valueIcon = { ...listItemProps.icon2, ...stateRef }
+    seldonRefs.valueIcon = mergeStateProps(listItemProps.icon2, stateRef)
   }
 
   // Anchor the floating option list to the value field and enter edit on a single

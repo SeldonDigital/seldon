@@ -6,6 +6,10 @@ import {
   useRef,
 } from "react"
 import { InputProps } from "@seldon/components/primitives/Input"
+import {
+  buildDisplayInputProps,
+  buildEditingRefProps,
+} from "../shared/build-field-state-props"
 import { useRenameValue } from "./use-rename-value"
 
 interface UseRenameInputOptions {
@@ -71,19 +75,14 @@ export function useRenameInput({
   }, [isEditing])
 
   if (!isEditing) {
-    return {
-      ref,
-      value: label,
-      readOnly: true,
-      style: { pointerEvents: "none" },
-    }
+    return buildDisplayInputProps(ref, label)
   }
 
   return {
     ref,
     value,
     readOnly: false,
-    className: "sdn-state-editing",
+    ...buildEditingRefProps(true),
     onChange: (event: ChangeEvent<HTMLInputElement>) =>
       setValue(event.currentTarget.value),
     onKeyDown: (event: KeyboardEvent<HTMLInputElement>) => {

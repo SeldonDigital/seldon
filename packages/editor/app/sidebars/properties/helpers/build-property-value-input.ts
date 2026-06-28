@@ -1,6 +1,10 @@
 import { ChangeEvent, FocusEvent, KeyboardEvent, MouseEvent, Ref } from "react"
 import { PropertyControlView } from "../hooks/use-property-control"
 import { InputProps } from "@seldon/components/primitives/Input"
+import {
+  buildDisplayInputProps,
+  buildEditingRefProps,
+} from "../../shared/build-field-state-props"
 
 export type ValueInputProps = InputProps & { ref?: Ref<HTMLInputElement> }
 
@@ -38,12 +42,7 @@ export function buildPropertyValueInput({
   // the field's own click (wired by the shell) is what flips the row into edit
   // mode. The field becomes interactive again in the edit branches below.
   if (!isEditing || control.kind === "none") {
-    return {
-      ref: valueRef,
-      value: displayValue,
-      readOnly: true,
-      style: { pointerEvents: "none" },
-    }
+    return buildDisplayInputProps(valueRef, displayValue)
   }
 
   // Text/number field: a plain inline editor. All commits route through blur;
@@ -55,7 +54,7 @@ export function buildPropertyValueInput({
       ref: valueRef,
       value: field.value,
       readOnly: false,
-      className: "sdn-state-editing",
+      ...buildEditingRefProps(true),
       autoFocus: field.autoFocus,
       onChange: (event: ChangeEvent<HTMLInputElement>) =>
         field.onValueChange(event.currentTarget.value),
@@ -96,7 +95,7 @@ export function buildPropertyValueInput({
     ref: valueRef,
     value: field.value,
     readOnly: false,
-    className: "sdn-state-editing",
+    ...buildEditingRefProps(true),
     autoFocus: field.autoFocus,
     onChange: (event: ChangeEvent<HTMLInputElement>) =>
       field.onValueChange(event.currentTarget.value),

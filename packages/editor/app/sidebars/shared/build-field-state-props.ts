@@ -1,3 +1,6 @@
+import { Ref } from "react"
+import { InputProps } from "@seldon/components/primitives/Input"
+
 /**
  * Field-owned states for a sidebar row's combobox-field child. The field
  * authors selected, hover, focused, and active, so the row forwards these
@@ -11,17 +14,64 @@
  */
 interface RowFieldState {
   selected?: boolean
-  invalid?: boolean
 }
 
 export function buildFieldStateProps({
   selected,
-  invalid,
 }: RowFieldState): Record<string, boolean | undefined> {
   return {
     "aria-selected": selected || undefined,
-    "aria-invalid": invalid || undefined,
   }
+}
+
+/**
+ * Inert read-only display props for a sidebar value or name `input` slot. The
+ * slot shows the resting value and stays inert (`pointerEvents: none`) so row
+ * selection, hover, and drag pass through it to the combobox field. Every row
+ * family shares this contract, so a new editable row cannot drift from it.
+ */
+export function buildDisplayInputProps(
+  ref: Ref<HTMLInputElement>,
+  value: string,
+): InputProps & { ref: Ref<HTMLInputElement> } {
+  return { ref, value, readOnly: true, style: { pointerEvents: "none" } }
+}
+
+/**
+ * Leaf-owned editing state. The live `input` slot carries its own
+ * `.sdn-state-editing` style (active-swatch outline), so an editing field
+ * forwards the class onto its ref. Mirrors {@link buildActivatedRefProps}.
+ */
+export function buildEditingRefProps(editing?: boolean): {
+  className?: string
+} {
+  return editing ? { className: "sdn-state-editing" } : {}
+}
+
+/**
+ * Merge several state ref-prop fragments into one slot props object. Object
+ * spread overwrites `className`, which silently drops one leaf state when two
+ * apply at once (for example a row that is both editing and an override). This
+ * concatenates every `className` and lets later fragments win other keys, so
+ * the state classes compose instead of clobbering each other.
+ */
+export function mergeStateProps(
+  ...parts: Array<object | undefined>
+): Record<string, unknown> {
+  const merged: Record<string, unknown> = {}
+  const classes: string[] = []
+  for (const part of parts) {
+    if (!part) continue
+    for (const [key, value] of Object.entries(part)) {
+      if (key === "className") {
+        if (typeof value === "string" && value) classes.push(value)
+      } else {
+        merged[key] = value
+      }
+    }
+  }
+  if (classes.length > 0) merged.className = classes.join(" ")
+  return merged
 }
 
 /**

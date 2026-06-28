@@ -10,6 +10,7 @@ import { ItemNode } from "@seldon/components/elements/ItemNode"
 import {
   buildActivatedRefProps,
   buildFieldStateProps,
+  mergeStateProps,
 } from "../shared/build-field-state-props"
 import { useRowActionsMenu } from "../shared/use-row-actions-menu"
 import { RowSelectionTarget } from "./RowSelectionTarget"
@@ -172,8 +173,8 @@ function VMBoardRow({
   const seldonRefs = {
     nodeToggle: { ...buttonIconic },
     nodeToggleIcon: { ...toggleIcon },
-    nodeIcon: { ...icon2, ...activatedRef },
-    nodeLabel: { ...nameInput, ...activatedRef },
+    nodeIcon: mergeStateProps(icon2, activatedRef),
+    nodeLabel: mergeStateProps(nameInput, activatedRef),
     nodeActions: { ...actionsMenu.buttonIconic },
   }
 

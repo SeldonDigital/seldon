@@ -12,6 +12,7 @@ import { ItemNode } from "@seldon/components/elements/ItemNode"
 import {
   buildDisabledRefProps,
   buildFieldStateProps,
+  mergeStateProps,
 } from "../shared/build-field-state-props"
 import { SidebarTracking } from "../../tracking/SidebarTracking"
 import { useRowActionsMenu } from "../shared/use-row-actions-menu"
@@ -205,9 +206,9 @@ const VMNodeInner = function VMNodeInner({
   // the actions button placeholder (visibility cascades), so it needs none.
   const seldonRefs = {
     nodeToggle: { ...buttonIconic },
-    nodeToggleIcon: { ...toggleIcon, ...disabledRef },
-    nodeIcon: { ...icon2, ...disabledRef },
-    nodeLabel: { ...nodeLabel, ...disabledRef },
+    nodeToggleIcon: mergeStateProps(toggleIcon, disabledRef),
+    nodeIcon: mergeStateProps(icon2, disabledRef),
+    nodeLabel: mergeStateProps(nodeLabel, disabledRef),
     nodeActions: { ...actionsMenu.buttonIconic },
   }
 
