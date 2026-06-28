@@ -20,6 +20,12 @@ function VMPropertyInner(props: RowPropertyProps) {
 
   const { listItemProps, control } = view
 
+  // The row's status maps to a generated leaf state (activated, invalid, or
+  // disabled). The state props tint the row's content leaves (name, value,
+  // value icon), replacing inline status colors, the same way the board row
+  // drives activated.
+  const stateRef = view.stateRef
+
   // Drive each slot through its stable workspace ref. The value `input` slot is
   // both the read-only display and, in edit mode, the live combobox/text control
   // (see `buildPropertyValueInput`), mirroring the objects-sidebar name slot. The
@@ -28,12 +34,14 @@ function VMPropertyInner(props: RowPropertyProps) {
   const seldonRefs: Record<string, Record<string, unknown>> = {
     propertyToggle: { ...listItemProps.buttonIconic },
     propertyToggleIcon: { ...listItemProps.icon },
-    propertyLabel: { ...listItemProps.textLabel },
-    valueLabel: { ...view.valueLabelProps },
+    propertyLabel: { ...listItemProps.textLabel, ...stateRef },
+    valueLabel: { ...view.valueLabelProps, ...stateRef },
     valueOptionsMenu: { ...listItemProps.buttonIconic2 },
     propertyActions: { ...optionsMenu.buttonIconic },
   }
-  if (listItemProps.icon2) seldonRefs.valueIcon = { ...listItemProps.icon2 }
+  if (listItemProps.icon2) {
+    seldonRefs.valueIcon = { ...listItemProps.icon2, ...stateRef }
+  }
 
   // Anchor the floating option list to the value field and enter edit on a single
   // click of the field. `ComboboxField` forwards the ref (React 19 ref-as-prop)

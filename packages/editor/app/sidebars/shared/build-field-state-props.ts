@@ -36,3 +36,29 @@ export function buildDisabledRefProps(disabled?: boolean): {
 } {
   return disabled ? { "aria-disabled": true } : {}
 }
+
+/**
+ * Leaf-owned activated state. The combobox-field does not author activated, so
+ * it cannot cascade from the field. Each leaf primitive (icon, input,
+ * text-label) carries its own `.sdn-state-activated` style, so an activated row
+ * forwards the class onto every leaf ref it drives. Spread the result into each
+ * leaf entry of `seldonRefs`.
+ */
+export function buildActivatedRefProps(activated?: boolean): {
+  className?: string
+} {
+  return activated ? { className: "sdn-state-activated" } : {}
+}
+
+/**
+ * Leaf-owned invalid state. The name label sits outside the combobox-field, so
+ * the field's `[aria-invalid]` cascade cannot reach it. Each leaf primitive
+ * (icon, input, text-label) carries its own `[aria-invalid]` style, so an
+ * invalid row forwards `aria-invalid` onto every leaf ref it drives. Spread the
+ * result into each leaf entry of `seldonRefs`.
+ */
+export function buildInvalidRefProps(invalid?: boolean): {
+  "aria-invalid"?: true
+} {
+  return invalid ? { "aria-invalid": true } : {}
+}

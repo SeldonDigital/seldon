@@ -351,6 +351,7 @@ export function useRowBoard(
     setEditingName,
     setPlaygroundLabel,
     isExpanded: isExpandedState,
+    isBoardSelected,
     boardIsActive,
     variants: variantRootIds,
   }

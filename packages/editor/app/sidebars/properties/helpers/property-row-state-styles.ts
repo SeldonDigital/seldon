@@ -58,6 +58,11 @@ export function getNameLabelStyle({
     cursor: hasChildren ? "pointer" : "default",
     userSelect: "none",
     WebkitUserSelect: "none",
+    // The name is a non-interactive label, so keep it inert to the pointer. This
+    // stops the generated `.sdn-text-label:hover` tint from firing on it while
+    // leaving hover to the value field. The inline-rename branch restores
+    // pointer events so its input stays usable.
+    pointerEvents: "none",
   }
 }
 

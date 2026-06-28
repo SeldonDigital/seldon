@@ -3,7 +3,10 @@ import { Board as BoardType } from "@seldon/core"
 import { useSidebarCanvasTrackingBoard } from "../../tracking/hooks/use-sidebar-canvas-tracking"
 import { IndentationLevel } from "../hooks/use-indentation"
 import { useRenameInput } from "../hooks/use-rename-input"
-import { buildFieldStateProps } from "../shared/build-field-state-props"
+import {
+  buildActivatedRefProps,
+  buildFieldStateProps,
+} from "../shared/build-field-state-props"
 import { useRowBoard } from "./hooks/use-row-board"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { FramerExpandable } from "@seldon/components/custom-components"
@@ -77,9 +80,15 @@ function VMBoardRow({
     setEditingName,
     setPlaygroundLabel,
     isExpanded,
+    isBoardSelected,
     boardIsActive,
     variants,
   } = useRowBoard(board, { show })
+
+  // A child node or resource is selected under this board, but the board itself
+  // is not the direct selection. The row shows the subtler activated state
+  // instead of the full selected field highlight.
+  const isActivated = boardIsActive && !isBoardSelected
 
   const boardKey = getComponentKey(board)
 
@@ -153,23 +162,29 @@ function VMBoardRow({
     },
   }
 
+  // Activated tints the field leaves (icon, label) without the selected field
+  // border, so a board with the selection inside it reads as activated.
+  const activatedRef = buildActivatedRefProps(isActivated)
+
   // Drive every slot through its stable workspace ref. The trailing actions icon
   // has no ref; it keeps the generated `seldon-more` default and is hidden by the
   // actions button placeholder (visibility cascades), so it needs none.
   const seldonRefs = {
     nodeToggle: { ...buttonIconic },
     nodeToggleIcon: { ...toggleIcon },
-    nodeIcon: { ...icon2 },
-    nodeLabel: { ...nameInput },
+    nodeIcon: { ...icon2, ...activatedRef },
+    nodeLabel: { ...nameInput, ...activatedRef },
     nodeActions: { ...actionsMenu.buttonIconic },
   }
 
-  // The row's selection state is styled on its combobox-field child.
-  const comboboxField = buildFieldStateProps({ selected: boardIsActive })
+  // Selected (direct board click) is styled on the combobox-field child via the
+  // field cascade. Containing the selection uses activated instead.
+  const comboboxField = buildFieldStateProps({ selected: isBoardSelected })
 
   // Root-level row state mirrors selection for selectors and tests.
   const itemNodeState = {
-    "aria-selected": boardIsActive || undefined,
+    "aria-selected": isBoardSelected || undefined,
+    "data-activated": isActivated || undefined,
   }
 
   return (

@@ -50,6 +50,10 @@ export function getPropertyLabelStyle(
 ): CSSProperties {
   const baseColor = getPropertyDisplayColorValue(property, debugMode)
 
+  // Outside debug mode, property status maps to a generated leaf state
+  // (activated, invalid, disabled) applied on the row's refs, so leave the leaf
+  // color to those state styles instead of baking a status color inline. Debug
+  // mode keeps the inline status colors for its type visualization.
   return {
     fontFamily: "var(--sdn-seldon-font-family-primary)",
     fontSize: "var(--sdn-seldon-font-size-xsmall)",
@@ -59,7 +63,7 @@ export function getPropertyLabelStyle(
     whiteSpace: "nowrap",
     overflow: "hidden",
     textOverflow: "ellipsis",
-    color: baseColor,
+    ...(debugMode ? { color: baseColor } : {}),
     ...(property.isDimmed ? { opacity: 0.5 } : {}),
     ...(property.isSubProperty
       ? { paddingLeft: "var(--sdn-seldon-padding-compact)" }

@@ -39,6 +39,11 @@ import {
 } from "@app/panels/hooks/use-upload-image-panel"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import { buildResetMenuEntry } from "../../shared/build-reset-menu-entry"
+import {
+  buildActivatedRefProps,
+  buildDisabledRefProps,
+  buildInvalidRefProps,
+} from "../../shared/build-field-state-props"
 import { buildPropertyOptions } from "../helpers/build-property-options"
 import {
   FRAME_REF_SELECTOR,
@@ -612,6 +617,9 @@ export function useRowProperty({
     listItemProps.textLabel = {
       ...listItemProps.textLabel,
       children: labelChildren as unknown as string,
+      // The label wraps the live rename input here, so restore pointer events
+      // that the resting name label suppresses.
+      style: { ...listItemProps.textLabel.style, pointerEvents: "auto" },
     }
   }
 
@@ -633,6 +641,18 @@ export function useRowProperty({
     onRowClick: handleRowClick,
     onRowDoubleClick: handleRowDoubleClick,
     control,
+    // Property status maps to a generated leaf state, replacing inline status
+    // colors: override -> activated, error -> invalid, not used -> disabled.
+    // Set and unset stay normal. Debug mode keeps the inline status colors.
+    stateRef: showPropertyTypes
+      ? {}
+      : property.status === "override"
+        ? buildActivatedRefProps(true)
+        : property.status === "error"
+          ? buildInvalidRefProps(true)
+          : property.status === "not used"
+            ? buildDisabledRefProps(true)
+            : {},
     valueLabelProps,
     onValueFieldClick: handleValueFieldClick,
     setValueFieldRef: setFrameRef,
