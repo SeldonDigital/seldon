@@ -332,7 +332,7 @@ body {
   border-radius: 0.25rem;
 }
 
-.sdn-bar-menu-bar {
+.sdn-bar-menus {
   background-color: hsl(203 100% 81%);
   flex-wrap: nowrap;
   display: flex;
@@ -351,12 +351,12 @@ body {
 }
 
 .sdn-bar-navigation-bar {
+  display: flex;
   background-color: hsl(203 100% 90.5%);
   border-top-width: var(--hairline);
   border-top-style: solid;
   border-top-color: hsl(203 100% 62%);
   flex-wrap: nowrap;
-  display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
@@ -373,9 +373,9 @@ body {
 }
 
 .sdn-bar-tabs-bar {
+  display: flex;
   background-color: hsl(203 100% 75.3%);
   flex-wrap: nowrap;
-  display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: start;
@@ -387,6 +387,25 @@ body {
   align-self: stretch;
   height: fit-content;
   flex-shrink: 0;
+}
+
+.sdn-bar-topbar {
+  background-color: var(--sdn-swatch-charcoal);
+  flex-wrap: nowrap;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: start;
+  gap: 0;
+  padding-top: 0.5rem;
+  padding-right: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 1rem;
+  box-shadow: 0px 2px 0.375rem 0.125rem hsl(203 0% 8% / 35%);
+  align-self: stretch;
+  height: fit-content;
+  flex-shrink: 0;
+  border-radius: 0.25rem;
 }
 
 .sdn-button {
@@ -1211,7 +1230,7 @@ body {
   border-top-left-radius: 0.25rem;
 }
 
-.sdn-bar-button-bar--dabm {
+.sdn-bar-buttons--dabm {
   padding-top: unset;
   padding-right: unset;
   padding-bottom: unset;
@@ -1287,6 +1306,12 @@ body {
 
 .sdn-button-iconic--sdjv {
   margin-right: 0.25rem;
+}
+
+.sdn-button-simple--dbgs {
+  background-color: hsl(0 0% 11.25%);
+  border-radius: 0px;
+  border: var(--hairline) solid hsl(0 0% 11.25%);
 }
 
 .sdn-button-simple--znxu {
@@ -1370,6 +1395,15 @@ body {
   padding: 0.25rem;
 }
 
+.sdn-frame--drsa {
+  align-self: unset;
+  flex-direction: row;
+  align-items: center;
+  justify-content: start;
+  height: 100%;
+  min-width: 0;
+}
+
 .sdn-frame--enpy {
   overflow-x: hidden;
   overflow-y: auto;
@@ -1383,6 +1417,18 @@ body {
   overflow: hidden;
   height: fit-content;
   min-width: 0;
+}
+
+.sdn-frame--nzij {
+  align-self: unset;
+  flex: unset;
+  flex-direction: row;
+  align-items: center;
+  justify-content: end;
+  gap: 0.5rem;
+  width: fit-content;
+  flex-shrink: 0;
+  height: 100%;
 }
 
 .sdn-hr--lrmt {
@@ -1435,6 +1481,16 @@ body {
   font-size: 0.75rem;
 }
 
+.sdn-image--33xp {
+  align-self: unset;
+  flex: unset;
+  object-fit: contain;
+  margin-right: 0.25rem;
+  width: fit-content;
+  flex-shrink: 0;
+  height: 1rem;
+}
+
 .sdn-image--9jgp {
   align-self: unset;
   flex: unset;
@@ -1443,6 +1499,17 @@ body {
   height: 2.998rem;
   border-radius: 0.25rem;
   border: 0.125rem solid hsl(203 100% 62%);
+}
+
+.sdn-image--dnok {
+  align-self: unset;
+  flex: unset;
+  object-fit: contain;
+  margin-right: 2.002rem;
+  margin-bottom: 2px;
+  width: fit-content;
+  flex-shrink: 0;
+  height: 1rem;
 }
 
 .sdn-image--hzdf {
@@ -1626,15 +1693,6 @@ body {
   min-width: 0;
 }
 
-.sdn-text-label--itoo {
-  align-self: unset;
-  flex-shrink: unset;
-  color: hsl(203 0% 8%);
-  flex: 1 0 0;
-  min-width: 0;
-  font-size: 0.75rem;
-}
-
 .sdn-text-label--lug5 {
   align-self: unset;
   flex-shrink: unset;
@@ -1770,6 +1828,15 @@ body {
   color: hsl(203 0% 8%);
   flex: 1 0 0;
   min-width: 0;
+}
+
+.sdn-text-title--ulid {
+  align-self: unset;
+  flex-shrink: unset;
+  color: hsl(203 0% 8%);
+  flex: 1 0 0;
+  min-width: 0;
+  font-size: 0.75rem;
 }
 
 .sdn-combobox-field[aria-selected="true"] {

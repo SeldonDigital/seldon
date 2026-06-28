@@ -15,7 +15,9 @@ export type SeldonRef =
   | "filterActions"
   | "filterIcon"
   | "filterLabel"
+  | "menuMode"
   | "menuStates"
+  | "menuTheme"
   | "nodeActions"
   | "nodeIcon"
   | "nodeLabel"
@@ -54,7 +56,9 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   "filterActions": {"component":"ButtonIconic","nodeId":"component-comboboxField-egV44OiP","className":"sdn-button-iconic sdn-button-iconic--pgsr"},
   "filterIcon": {"component":"Icon","nodeId":"component-comboboxField-ta9b5fTa","className":"sdn-icon sdn-icon--xi68"},
   "filterLabel": {"component":"Input","nodeId":"component-comboboxField-TWyxOQad","className":"sdn-input sdn-input--twyx"},
+  "menuMode": {"component":"ButtonMenu","nodeId":"component-bar-JXHsaaaQ","className":"sdn-button-menu sdn-button-iconic--pgsr"},
   "menuStates": {"component":"ButtonMenu","nodeId":"component-button-OTbyoxbN","className":"sdn-button-menu sdn-button"},
+  "menuTheme": {"component":"ButtonMenu","nodeId":"component-button-uIofK8RQ","className":"sdn-button-menu sdn-button-iconic--pgsr"},
   "nodeActions": {"component":"ButtonIconic","nodeId":"component-item-CeZRPCDC","className":"sdn-button-iconic sdn-button-iconic--pgsr"},
   "nodeIcon": {"component":"Icon","nodeId":"component-item-zdDEhaL4","className":"sdn-icon sdn-icon--xi68"},
   "nodeLabel": {"component":"Input","nodeId":"component-item-pZCfJ3k6","className":"sdn-input sdn-input--pzcf"},

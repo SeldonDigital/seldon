@@ -12,21 +12,17 @@
  *****/
  
 import { HTMLAttributes } from "react"
-import { ButtonProps } from "../elements/Button"
-import { Frame, FrameProps } from "../frames/Frame"
-import { HTMLDiv } from "../native-react/HTML.Div"
-import { BarButtons, BarButtonsProps } from "../parts/BarButtons"
-import { IconProps } from "../primitives/Icon"
-import { TextLabelProps } from "../primitives/TextLabel"
+import { Button, ButtonProps } from "../elements/Button"
+import { Frame } from "../frames/Frame"
+import { Icon, IconProps } from "../primitives/Icon"
+import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
 
-export interface SidebarProps extends HTMLAttributes<HTMLElement> {
+export interface BarButtonsProps extends HTMLAttributes<HTMLElement> {
   className?: string
   "data-seldon-ref"?: string
   seldonRefs?: Record<string, Record<string, unknown>>
-  frame?: FrameProps | null
-  barButtons?: BarButtonsProps | null
   button?: ButtonProps | null
   icon?: IconProps | null
   textLabel?: TextLabelProps | null
@@ -39,24 +35,26 @@ export interface SidebarProps extends HTMLAttributes<HTMLElement> {
 }
 
 /*****
- * Sidebar: Sidebar
- * Level: Module
- * Intent: Provides a structured sidebar panel with tabbed navigation, content area, and status footer for application interfaces.
- * Tags: sidebar, panel, module, ui, layout, navigation, tabs, structured
- * Type: Inline
+ * Bar: BarButtons
+ * Level: Part
+ * Intent: Groups related controls in a horizontal bar with buttons, navigation, or tabs layouts.
+ * Tags: bar, controls, buttons, navigation, tabs, UI, layout, group
+ * Type: Custom
  *
  * @example
  * ```tsx
- * <Sidebar
- *   role="complementary"
+ * <BarButtons
  *   aria-hidden="false"
+ *   button={() => {}}
+ *   icon="material-star"
+ *   textLabel="{}"
+ *   button2={() => {}}
+ *   button3={() => {}}
  * />
  * ```
  *****/
-export function Sidebar({
+export function BarButtons({
   className = "",
-  frame = sdn.frame,
-  barButtons = sdn.barButtons,
   button = sdn.button,
   icon = sdn.icon,
   textLabel,
@@ -69,31 +67,8 @@ export function Sidebar({
   children,
   seldonRefs,
   ...props
-}: SidebarProps) {
-  const sidebarClassName = combineClassNames("sdn-sidebar", className)
-  const frameProps = applyRef(
-    seldonRefs,
-    frame === null
-      ? null
-      : {
-          ...sdn.frame,
-          ...frame,
-          className: combineClassNames(sdn.frame?.className, frame?.className),
-        },
-  )
-  const barButtonsProps = applyRef(
-    seldonRefs,
-    barButtons === null
-      ? null
-      : {
-          ...sdn.barButtons,
-          ...barButtons,
-          className: combineClassNames(
-            sdn.barButtons?.className,
-            barButtons?.className,
-          ),
-        },
-  )
+}: BarButtonsProps) {
+  const barButtonsClassName = combineClassNames("sdn-bar", className)
   const buttonProps = applyRef(
     seldonRefs,
     button === null
@@ -204,9 +179,8 @@ export function Sidebar({
   )
 
   return (
-    <HTMLDiv
-      className={sidebarClassName}
-      role={sdn["role"]}
+    <Frame
+      className={barButtonsClassName}
       aria-hidden={sdn["aria-hidden"]}
       {...props}
     >
@@ -214,37 +188,40 @@ export function Sidebar({
         children
       ) : (
         <>
-          <Frame {...frameProps}></Frame>
-          {barButtonsProps !== null && (
-            <BarButtons
-              {...barButtonsProps}
-              button={buttonProps}
-              button2={button2Props}
-              button3={button3Props}
-            />
+          {buttonProps !== null && (
+            <Button {...buttonProps}>
+              {icon && iconProps && <Icon {...iconProps} />}
+              {textLabel && textLabelProps && <TextLabel {...textLabelProps} />}
+            </Button>
+          )}
+          {button2Props !== null && (
+            <Button {...button2Props}>
+              {icon2 && icon2Props && <Icon {...icon2Props} />}
+              {textLabel2 && textLabel2Props && (
+                <TextLabel {...textLabel2Props} />
+              )}
+            </Button>
+          )}
+          {button3Props !== null && (
+            <Button {...button3Props}>
+              {icon3 && icon3Props && <Icon {...icon3Props} />}
+              {textLabel3 && textLabel3Props && (
+                <TextLabel {...textLabel3Props} />
+              )}
+            </Button>
           )}
         </>
       )}
-    </HTMLDiv>
+    </Frame>
   )
 }
 
 //
 // Default property values
 //
-const sdn: SidebarProps = {
-  role: "complementary",
+const sdn: BarButtonsProps = {
   "aria-hidden": "false",
-  className: "sdn-sidebar",
-  frame: {
-    wrapperElement: "div",
-    "aria-hidden": "false",
-    className: "sdn-frame sdn-frame--946h",
-  },
-  barButtons: {
-    "aria-hidden": "false",
-    className: "sdn-bar sdn-bar-tabs-bar--qtpt",
-  },
+  className: "sdn-bar sdn-bar",
   button: {
     className: "sdn-button sdn-button-iconic--pgsr",
   },

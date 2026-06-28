@@ -16,7 +16,7 @@ import { ButtonProps } from "../elements/Button"
 import { Frame, FrameProps } from "../frames/Frame"
 import { HTMLDiv } from "../native-react/HTML.Div"
 import { Bar, BarProps } from "../parts/Bar"
-import { BarButtonBar, BarButtonBarProps } from "../parts/BarButtonBar"
+import { BarButtons, BarButtonsProps } from "../parts/BarButtons"
 import { IconProps } from "../primitives/Icon"
 import { TextLabelProps } from "../primitives/TextLabel"
 import { TextTitle, TextTitleProps } from "../primitives/TextTitle"
@@ -30,7 +30,7 @@ export interface DialogModalProps extends HTMLAttributes<HTMLElement> {
   bar?: BarProps | null
   textTitle?: TextTitleProps | null
   frame?: FrameProps | null
-  barButtonBar?: BarButtonBarProps | null
+  barButtons?: BarButtonsProps | null
   button?: ButtonProps | null
   icon?: IconProps | null
   textLabel?: TextLabelProps | null
@@ -59,7 +59,7 @@ export function DialogModal({
   bar = sdn.bar,
   textTitle,
   frame = sdn.frame,
-  barButtonBar = sdn.barButtonBar,
+  barButtons = sdn.barButtons,
   button = sdn.button,
   icon = sdn.icon,
   textLabel,
@@ -104,16 +104,16 @@ export function DialogModal({
           className: combineClassNames(sdn.frame?.className, frame?.className),
         },
   )
-  const barButtonBarProps = applyRef(
+  const barButtonsProps = applyRef(
     seldonRefs,
-    barButtonBar === null
+    barButtons === null
       ? null
       : {
-          ...sdn.barButtonBar,
-          ...barButtonBar,
+          ...sdn.barButtons,
+          ...barButtons,
           className: combineClassNames(
-            sdn.barButtonBar?.className,
-            barButtonBar?.className,
+            sdn.barButtons?.className,
+            barButtons?.className,
           ),
         },
   )
@@ -207,9 +207,9 @@ export function DialogModal({
             </Bar>
           )}
           <Frame {...frameProps}></Frame>
-          {barButtonBarProps !== null && (
-            <BarButtonBar
-              {...barButtonBarProps}
+          {barButtonsProps !== null && (
+            <BarButtons
+              {...barButtonsProps}
               button={buttonProps}
               button2={button2Props}
             />
@@ -239,9 +239,9 @@ const sdn: DialogModalProps = {
     "aria-hidden": "false",
     className: "sdn-frame sdn-frame--88jo",
   },
-  barButtonBar: {
+  barButtons: {
     "aria-hidden": "false",
-    className: "sdn-bar sdn-bar-button-bar--dabm",
+    className: "sdn-bar sdn-bar-buttons--dabm",
   },
   button: {
     className: "sdn-button sdn-button--cq5m",

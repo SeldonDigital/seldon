@@ -154,7 +154,7 @@ const sdn: DialogPaletteProps = {
     className: "sdn-bar sdn-bar--9xs7",
   },
   textTitle: {
-    className: "sdn-text-title sdn-text-label--itoo",
+    className: "sdn-text-title sdn-text-title--ulid",
   },
   buttonIconic: {
     className: "sdn-button-iconic sdn-button-iconic--pgsr",

@@ -17,7 +17,7 @@ import { ButtonIconic, ButtonIconicProps } from "../elements/ButtonIconic"
 import { Frame, FrameProps } from "../frames/Frame"
 import { HTMLDiv } from "../native-react/HTML.Div"
 import { Bar, BarProps } from "../parts/Bar"
-import { BarButtonBar, BarButtonBarProps } from "../parts/BarButtonBar"
+import { BarButtons, BarButtonsProps } from "../parts/BarButtons"
 import { Icon, IconProps } from "../primitives/Icon"
 import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
 import { TextTitle, TextTitleProps } from "../primitives/TextTitle"
@@ -36,7 +36,7 @@ export interface DialogProps extends HTMLAttributes<HTMLElement> {
   icon2?: IconProps | null
   textLabel?: TextLabelProps | null
   frame?: FrameProps | null
-  barButtonBar?: BarButtonBarProps | null
+  barButtons?: BarButtonsProps | null
   button2?: ButtonProps | null
   icon3?: IconProps | null
   textLabel2?: TextLabelProps | null
@@ -73,7 +73,7 @@ export function Dialog({
   icon2 = sdn.icon2,
   textLabel,
   frame = sdn.frame,
-  barButtonBar = sdn.barButtonBar,
+  barButtons = sdn.barButtons,
   button2 = sdn.button2,
   icon3 = sdn.icon3,
   textLabel2,
@@ -180,16 +180,16 @@ export function Dialog({
           className: combineClassNames(sdn.frame?.className, frame?.className),
         },
   )
-  const barButtonBarProps = applyRef(
+  const barButtonsProps = applyRef(
     seldonRefs,
-    barButtonBar === null
+    barButtons === null
       ? null
       : {
-          ...sdn.barButtonBar,
-          ...barButtonBar,
+          ...sdn.barButtons,
+          ...barButtons,
           className: combineClassNames(
-            sdn.barButtonBar?.className,
-            barButtonBar?.className,
+            sdn.barButtons?.className,
+            barButtons?.className,
           ),
         },
   )
@@ -330,9 +330,9 @@ export function Dialog({
             </Bar>
           )}
           <Frame {...frameProps}></Frame>
-          {barButtonBarProps !== null && (
-            <BarButtonBar
-              {...barButtonBarProps}
+          {barButtonsProps !== null && (
+            <BarButtons
+              {...barButtonsProps}
               button={button2Props}
               button2={button3Props}
               button3={button4Props}
@@ -382,9 +382,9 @@ const sdn: DialogProps = {
     "aria-hidden": "false",
     className: "sdn-frame sdn-frame--88jo",
   },
-  barButtonBar: {
+  barButtons: {
     "aria-hidden": "false",
-    className: "sdn-bar sdn-bar-button-bar--dabm",
+    className: "sdn-bar sdn-bar-buttons--dabm",
   },
   button2: {
     className: "sdn-button sdn-button-iconic--pgsr",
