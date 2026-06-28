@@ -1,4 +1,4 @@
-import { Ref } from "react"
+import { CSSProperties, Ref } from "react"
 import { InputProps } from "@seldon/components/primitives/Input"
 
 /**
@@ -22,6 +22,20 @@ export function buildFieldStateProps({
   return {
     "aria-selected": selected || undefined,
   }
+}
+
+/**
+ * Repeat echo rows carry a dashed field border as a base style. The combobox
+ * field draws its border through the `border` shorthand, so every state rule
+ * (`:hover`, `[aria-selected]`, `[aria-invalid]`) re-asserts `solid`. An inline
+ * `border-style` outranks those author rules while leaving the state color
+ * intact, so hover, selected, and invalid all render the dashed border in their
+ * own color. Spread the result into the row's `comboboxField` props.
+ */
+export function buildRepeatFieldStyleProps(isRepeatEcho?: boolean): {
+  style?: CSSProperties
+} {
+  return isRepeatEcho ? { style: { borderStyle: "dashed" } } : {}
 }
 
 /**

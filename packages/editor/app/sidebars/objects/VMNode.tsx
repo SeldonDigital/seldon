@@ -12,6 +12,7 @@ import { ItemNode } from "@seldon/components/elements/ItemNode"
 import {
   buildDisabledRefProps,
   buildFieldStateProps,
+  buildRepeatFieldStyleProps,
   mergeStateProps,
 } from "../shared/build-field-state-props"
 import { SidebarTracking } from "../../tracking/SidebarTracking"
@@ -212,8 +213,12 @@ const VMNodeInner = function VMNodeInner({
     nodeActions: { ...actionsMenu.buttonIconic },
   }
 
-  // The row's selection is styled on its combobox-field child.
-  const comboboxField = buildFieldStateProps({ selected: isSelected })
+  // The row's selection is styled on its combobox-field child. Repeat echo rows
+  // also carry a dashed base border so every field state renders dashed.
+  const comboboxField = {
+    ...buildFieldStateProps({ selected: isSelected }),
+    ...buildRepeatFieldStyleProps(isEcho),
+  }
 
   // Root-level row state. Selection lives on the combobox-field and disabled on
   // the leaves; these mirror the row's logical state for selectors and tests.
