@@ -424,6 +424,26 @@ body {
   border: var(--hairline) solid transparent;
 }
 
+.sdn-button-menu {
+  background-color: hsl(0 0% 19.25%);
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding-top: 0.25rem;
+  padding-right: 0.5rem;
+  padding-bottom: 0.25rem;
+  padding-left: 0.5rem;
+  box-shadow: 0px 2px 0.375rem 0.125rem hsl(203 0% 8% / 33%);
+  width: fit-content;
+  height: fit-content;
+  flex-shrink: 0;
+  border-radius: 0.25rem;
+  border: var(--hairline) solid hsl(0 0% 36.25%);
+}
+
 .sdn-button-segmented {
   background-color: var(--sdn-swatch-primary);
   cursor: pointer;
@@ -456,21 +476,6 @@ body {
   flex-shrink: 0;
   border-radius: 99999px;
   border: var(--hairline) solid hsl(203 100% 62%);
-}
-
-.sdn-button-tools {
-  background-color: hsl(203 100% 93%);
-  cursor: pointer;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  width: fit-content;
-  height: fit-content;
-  flex-shrink: 0;
-  padding: 0.5rem;
-  border-radius: 0.25rem;
 }
 
 .sdn-chip {
@@ -607,11 +612,12 @@ body {
   flex-direction: column;
   gap: auto;
   justify-content: space-between;
+  box-shadow: 0px 4px 0.5rem 0.188rem hsl(203 0% 8% / 33%);
   width: 450px;
   height: 350px;
   flex-shrink: 0;
   border-radius: 0.5rem;
-  border: var(--hairline) solid hsl(203 0% 77%);
+  border: var(--hairline) solid hsl(0 0% 36.25%);
 }
 
 .sdn-form-control {
@@ -1234,16 +1240,6 @@ body {
   padding-left: 0.656rem;
 }
 
-.sdn-button--f0df {
-  padding-top: unset;
-  padding-right: unset;
-  padding-bottom: unset;
-  padding-left: unset;
-  flex-direction: column;
-  padding: 0.5rem;
-  border-radius: 0.25rem;
-}
-
 .sdn-button--mam0 {
   border-radius: 0px;
 }
@@ -1361,6 +1357,7 @@ body {
 }
 
 .sdn-frame--88jo {
+  background-color: var(--sdn-swatch-white);
   gap: 0.5rem;
   padding: 0.5rem;
 }
@@ -1401,6 +1398,10 @@ body {
 .sdn-icon--eyw9 {
   font-size: 0.6rem;
   color: hsl(203 0% 8%);
+}
+
+.sdn-icon--iqmk {
+  font-size: 0.7rem;
 }
 
 .sdn-icon--ivvi {
@@ -1685,11 +1686,6 @@ body {
   font-size: 0.75rem;
 }
 
-.sdn-text-label--u00q {
-  color: hsl(203 0% 8%);
-  font-size: 0.8rem;
-}
-
 .sdn-text-label--xg6p {
   align-self: unset;
   margin-left: 0.25rem;
@@ -1732,6 +1728,14 @@ body {
   min-width: 0;
   font-size: 0.75rem;
   text-transform: uppercase;
+}
+
+.sdn-text-label--zw0q {
+  align-self: unset;
+  flex-shrink: unset;
+  flex: 1 0 0;
+  min-width: 0;
+  font-size: 0.7rem;
 }
 
 .sdn-text-subtitle--nxwj {
@@ -1851,10 +1855,6 @@ body {
 
 .sdn-button-iconic:focus-within {
   border: var(--hairline) solid hsl(20 95% 60%);
-}
-
-.sdn-button-tools:active {
-  border-width: var(--hairline);
 }
 
 .sdn-button-segmented:active {
@@ -2145,4 +2145,20 @@ body {
 
 .sdn-menu-item-radio-menu-item:hover .sdn-icon--xi68 {
   color: hsl(203 100% 81%);
+}
+
+.sdn-button-menu:hover {
+  border: var(--hairline) solid hsl(203 100% 81%);
+}
+
+.sdn-button-menu:hover .sdn-icon--iqmk {
+  color: hsl(203 100% 81%);
+}
+
+.sdn-button-menu:hover .sdn-text-label--zw0q {
+  color: hsl(203 100% 81%);
+}
+
+.sdn-button-menu:focus-within {
+  border: var(--hairline) solid hsl(20 95% 60%);
 }
