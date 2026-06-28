@@ -65,7 +65,9 @@ export function createPropertyOptionIconResolver({
       if (optionTheme) {
         return {
           kind: "node",
-          node: <ThemeSwatches colors={resolveThemeSwatchColors(optionTheme)} />,
+          node: (
+            <ThemeSwatches colors={resolveThemeSwatchColors(optionTheme)} />
+          ),
         }
       }
       return { kind: "node", node: null }
@@ -86,7 +88,10 @@ export function createPropertyOptionIconResolver({
         return {
           kind: "node",
           node: (
-            <LoadEditorIcons iconId={asSymbolIconId(option.value)} unavailable />
+            <LoadEditorIcons
+              iconId={asSymbolIconId(option.value)}
+              unavailable
+            />
           ),
         }
       }
@@ -124,7 +129,10 @@ function resolveOptionIconDescriptor(
 ): OptionIconRender {
   switch (descriptor.kind) {
     case "swatchColor":
-      return { kind: "node", node: <IconCustomColorValue color={descriptor.color} /> }
+      return {
+        kind: "node",
+        node: <IconCustomColorValue color={descriptor.color} />,
+      }
     case "themeToken":
       // `seldon-token` is an editor-registry id, not an exported slot id, so it
       // renders as a node rather than through the `optionIcon` slot.

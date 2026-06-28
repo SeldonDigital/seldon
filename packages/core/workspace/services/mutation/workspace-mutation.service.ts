@@ -4,8 +4,8 @@ import { Theme, ThemeInstanceId, ThemeSwatchKey } from "../../../themes/types"
 import { applyResetDefaultVariantToCatalog } from "../../helpers/nodes/apply-reset-default-variant-to-catalog"
 import { applyResetInstanceToOriginal } from "../../helpers/nodes/apply-reset-instance-to-original"
 import { applyResetInstanceToSource } from "../../helpers/nodes/apply-reset-instance-to-source"
-import { applyResetVariantInstances } from "../../helpers/nodes/apply-reset-variant-instances"
 import { applyResetSchemaVariantToCatalog } from "../../helpers/nodes/apply-reset-schema-variant-to-catalog"
+import { applyResetVariantInstances } from "../../helpers/nodes/apply-reset-variant-instances"
 import type { RepeatEditorData } from "../../helpers/nodes/node-repeat"
 import {
   BoardKey,

@@ -306,78 +306,78 @@ export function BoardStateSwitcher({ boardKey }: BoardStateSwitcherProps) {
             onClick={(event) => event.stopPropagation()}
           >
             <div style={itemStyle} onClick={() => select(NORMAL_STATE)}>
-            Normal
-          </div>
+              Normal
+            </div>
 
-          {RESERVED_STATE_GROUPS.map((group) => (
-            <Fragment key={group.expression}>
-              <div style={separatorStyle} />
-              {group.states.map(renderReservedState)}
-            </Fragment>
-          ))}
+            {RESERVED_STATE_GROUPS.map((group) => (
+              <Fragment key={group.expression}>
+                <div style={separatorStyle} />
+                {group.states.map(renderReservedState)}
+              </Fragment>
+            ))}
 
-          {customStates.length > 0 && <div style={separatorStyle} />}
+            {customStates.length > 0 && <div style={separatorStyle} />}
 
-          {customStates.map((entry) =>
-            renamingKey === entry.key ? (
-              <div key={entry.key} style={{ padding: "2px 4px" }}>
+            {customStates.map((entry) =>
+              renamingKey === entry.key ? (
+                <div key={entry.key} style={{ padding: "2px 4px" }}>
+                  <Combobox
+                    mode="standalone"
+                    value={renameValue}
+                    onValueChange={setRenameValue}
+                    onSubmit={(value) => commitRename(entry.key, value)}
+                    onCancel={() => setRenamingKey(null)}
+                    placeholder="State name"
+                  />
+                </div>
+              ) : (
+                <div key={entry.key} style={itemStyle}>
+                  <span
+                    style={{
+                      flex: 1,
+                      color: statesWithOverrides.has(entry.key)
+                        ? COLORS.primary[500]
+                        : undefined,
+                    }}
+                    onClick={() => select(entry.key)}
+                  >
+                    {entry.label}
+                  </span>
+                  <button
+                    type="button"
+                    style={editButtonStyle}
+                    onClick={() => {
+                      setRenamingKey(entry.key)
+                      setRenameValue(entry.label)
+                    }}
+                  >
+                    Rename
+                  </button>
+                </div>
+              ),
+            )}
+
+            <div style={separatorStyle} />
+
+            {adding ? (
+              <div style={{ padding: "2px 4px" }}>
                 <Combobox
                   mode="standalone"
-                  value={renameValue}
-                  onValueChange={setRenameValue}
-                  onSubmit={(value) => commitRename(entry.key, value)}
-                  onCancel={() => setRenamingKey(null)}
-                  placeholder="State name"
+                  value={addValue}
+                  onValueChange={setAddValue}
+                  onSubmit={commitAdd}
+                  onCancel={() => {
+                    setAdding(false)
+                    setAddValue("")
+                  }}
+                  placeholder="New state name"
                 />
               </div>
             ) : (
-              <div key={entry.key} style={itemStyle}>
-                <span
-                  style={{
-                    flex: 1,
-                    color: statesWithOverrides.has(entry.key)
-                      ? COLORS.primary[500]
-                      : undefined,
-                  }}
-                  onClick={() => select(entry.key)}
-                >
-                  {entry.label}
-                </span>
-                <button
-                  type="button"
-                  style={editButtonStyle}
-                  onClick={() => {
-                    setRenamingKey(entry.key)
-                    setRenameValue(entry.label)
-                  }}
-                >
-                  Rename
-                </button>
+              <div style={itemStyle} onClick={() => setAdding(true)}>
+                Add custom state...
               </div>
-            ),
-          )}
-
-          <div style={separatorStyle} />
-
-          {adding ? (
-            <div style={{ padding: "2px 4px" }}>
-              <Combobox
-                mode="standalone"
-                value={addValue}
-                onValueChange={setAddValue}
-                onSubmit={commitAdd}
-                onCancel={() => {
-                  setAdding(false)
-                  setAddValue("")
-                }}
-                placeholder="New state name"
-              />
-            </div>
-          ) : (
-            <div style={itemStyle} onClick={() => setAdding(true)}>
-              Add custom state...
-            </div>
-          )}
+            )}
           </div>,
           document.body,
         )}

@@ -38,18 +38,20 @@ import {
   useImageUploadPanel,
 } from "@app/panels/hooks/use-upload-image-panel"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
-import { buildResetMenuEntry } from "../../shared/build-reset-menu-entry"
 import {
   buildActivatedRefProps,
   buildDisabledRefProps,
   buildInvalidRefProps,
 } from "../../shared/build-field-state-props"
+import { buildResetMenuEntry } from "../../shared/build-reset-menu-entry"
 import { buildPropertyOptions } from "../helpers/build-property-options"
 import {
   FRAME_REF_SELECTOR,
   buildPropertyRowProps,
 } from "../helpers/build-property-row-props"
+import { buildPropertyValueInput } from "../helpers/build-property-value-input"
 import { ICONIC_BUTTON_SELECTOR } from "../../helpers/iconic-button"
+import type { LayerDragContext } from "../LayerDragRow"
 import { getDisplayValue } from "../helpers/display-value-utils"
 import {
   FontCollectionEditingContext,
@@ -57,13 +59,11 @@ import {
   ThemeEditingContext,
 } from "../helpers/editing-contexts"
 import { FlatProperty } from "../helpers/properties-data"
-import type { LayerDragContext } from "../LayerDragRow"
 import { getPropertyLabelStyle } from "../helpers/property-styling-tokens"
 import {
   getThemeTokenIconColorFromPropertyValue,
   isSwatchIconPropertyKey,
 } from "../helpers/theme-token-icon-color"
-import { buildPropertyValueInput } from "../helpers/build-property-value-input"
 import { usePropertyControl } from "./use-property-control"
 import { usePropertyControlData } from "./use-property-control-data"
 import {
@@ -74,6 +74,7 @@ import {
   useIsPropertyExpanded,
   usePropertyExpansion,
 } from "./use-property-expansion"
+
 export interface RowPropertyProps {
   property: FlatProperty
   workspace: Workspace

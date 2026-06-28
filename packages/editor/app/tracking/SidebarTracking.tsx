@@ -7,8 +7,8 @@ import {
 } from "@seldon/core/workspace/services"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useDialog } from "@lib/hooks/use-dialog"
-import { useTool } from "@lib/hooks/use-tool"
 import { useDragStateStore } from "@lib/hooks/use-drag-state"
+import { useTool } from "@lib/hooks/use-tool"
 import { useDropzone } from "../sidebars/objects/hooks/use-dropzone"
 import { useSidebarPlacementTracking } from "./hooks/use-sidebar-placement-tracking"
 import {

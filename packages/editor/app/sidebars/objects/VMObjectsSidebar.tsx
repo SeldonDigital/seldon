@@ -1,26 +1,28 @@
-"use client";
+"use client"
 
-import { LayoutGroup } from "framer-motion";
-import { CSSProperties, PointerEvent, useCallback } from "react";
-import { useEditableWorkspaceName } from "@lib/persistence/hooks/use-editable-workspace-name";
-import { useWorkspaceRecord } from "@lib/persistence/hooks/use-workspace-record";
-import { useWorkspaceId } from "@lib/project/hooks/use-workspace-id";
-import { useSetHoveredId } from "@lib/workspace/hooks/use-object-hover";
-import { useIsSectionExpanded } from "../hooks/use-section-expansion";
-import { useDraggableMonitor } from "./hooks/use-draggable-monitor";
-import { useObjectsSidebar } from "./hooks/use-objects-sidebar";
-import { useScrollSelection } from "./hooks/use-scroll-selection";
-import { SelectionRelationsProvider } from "./hooks/use-selection-relations";
-import { getSelectionTarget } from "@lib/workspace/selection-target";
-import { getComponentKey } from "@lib/workspace/workspace-accessors";
-import { FramerExpandable, SidebarContainer } from "@seldon/components/custom-components";
-import { Frame } from "@seldon/components/frames/Frame";
-import { BarTabsBar } from "@seldon/components/parts/BarTabsBar";
-import { BoardSection } from "../helpers/get-board-sections";
-import { sidebarShellStyle } from "../helpers/sidebar-styles";
-import { VMBoard } from "./VMBoard";
-import { VMSection } from "./VMSection";
-
+import { LayoutGroup } from "framer-motion"
+import { CSSProperties, PointerEvent, useCallback } from "react"
+import { useEditableWorkspaceName } from "@lib/persistence/hooks/use-editable-workspace-name"
+import { useWorkspaceRecord } from "@lib/persistence/hooks/use-workspace-record"
+import { useWorkspaceId } from "@lib/project/hooks/use-workspace-id"
+import { useSetHoveredId } from "@lib/workspace/hooks/use-object-hover"
+import { useIsSectionExpanded } from "../hooks/use-section-expansion"
+import { useDraggableMonitor } from "./hooks/use-draggable-monitor"
+import { useObjectsSidebar } from "./hooks/use-objects-sidebar"
+import { useScrollSelection } from "./hooks/use-scroll-selection"
+import { SelectionRelationsProvider } from "./hooks/use-selection-relations"
+import { getSelectionTarget } from "@lib/workspace/selection-target"
+import { getComponentKey } from "@lib/workspace/workspace-accessors"
+import {
+  FramerExpandable,
+  SidebarContainer,
+} from "@seldon/components/custom-components"
+import { Frame } from "@seldon/components/frames/Frame"
+import { BarTabsBar } from "@seldon/components/parts/BarTabsBar"
+import { BoardSection } from "../helpers/get-board-sections"
+import { sidebarShellStyle } from "../helpers/sidebar-styles"
+import { VMBoard } from "./VMBoard"
+import { VMSection } from "./VMSection"
 
 /**
  * View-model for the objects sidebar. Owns the workspace name bar, the section

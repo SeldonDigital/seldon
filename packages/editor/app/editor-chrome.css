@@ -37,7 +37,9 @@ html:not(.sdn-show-focus) .sdn-item-section:focus-within,
 html:not(.sdn-show-focus) .sdn-button-iconic:focus-within {
   border-color: transparent;
 }
-html:not(.sdn-show-focus) [class*="sdn-combobox-field"]:focus-within .sdn-button-iconic,
+html:not(.sdn-show-focus)
+  [class*="sdn-combobox-field"]:focus-within
+  .sdn-button-iconic,
 html:not(.sdn-show-focus) .sdn-item-section:focus-within .sdn-button-iconic {
   border-color: transparent;
 }

@@ -319,10 +319,7 @@ export function validateNodeMutation(
       const variantRootId = action.payload.variantRootId as VariantId
       nodeValidators.exists(workspace, variantRootId)
       const node = nodeRetrievalService.getNode(variantRootId, workspace)
-      check(
-        isUserVariant(node),
-        "Only a user variant can reset its instances",
-      )
+      check(isUserVariant(node), "Only a user variant can reset its instances")
       break
     }
     case "reset_instance_to_source":

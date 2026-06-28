@@ -46,110 +46,109 @@ export interface ResourceRowConfig {
 }
 
 /** Per-kind row configuration. Keyed by resource board type. */
-const RESOURCE_ROW_CONFIG: Record<ResourceEntryKind, ResourceRowConfig> =
-  {
-    theme: {
-      kind: "theme",
-      selectionKind: "theme",
-      icon: "seldon-theme",
-      testId: "objects-sidebar-theme-entry",
-      getEntry: (workspace, entryId) => {
-        const entry = workspace.themes[entryId]
-        if (!entry) return undefined
-        return {
-          label: entry.label,
-          isDefault: isEntryThemeDefault(entry),
-          hasOverrides: Object.keys(entry.overrides).length > 0,
-        }
-      },
-      buildLabelAction: (entryId, label) => ({
-        type: "set_theme_label",
-        payload: { themeId: entryId, label },
-      }),
-      buildResetAction: (entryId) => ({
-        type: "reset_theme_tokens",
-        payload: { themeId: entryId },
-      }),
-      buildDuplicateAction: (entryId) => ({
-        type: "duplicate_theme",
-        payload: { themeId: entryId },
-      }),
-      buildDeleteAction: (entryId) => ({
-        type: "delete_theme",
-        payload: { themeId: entryId },
-      }),
+const RESOURCE_ROW_CONFIG: Record<ResourceEntryKind, ResourceRowConfig> = {
+  theme: {
+    kind: "theme",
+    selectionKind: "theme",
+    icon: "seldon-theme",
+    testId: "objects-sidebar-theme-entry",
+    getEntry: (workspace, entryId) => {
+      const entry = workspace.themes[entryId]
+      if (!entry) return undefined
+      return {
+        label: entry.label,
+        isDefault: isEntryThemeDefault(entry),
+        hasOverrides: Object.keys(entry.overrides).length > 0,
+      }
     },
-    fontCollection: {
-      kind: "fontCollection",
-      selectionKind: "fontCollection",
-      icon: "seldon-text",
-      testId: "objects-sidebar-font-collection-entry",
-      getEntry: (workspace, entryId) => {
-        const entry = workspace["font-collections"][entryId]
-        if (!entry) return undefined
-        return {
-          label: entry.label,
-          isDefault: isEntryFontCollectionDefault(entry),
-        }
-      },
-      buildLabelAction: (entryId, label) => ({
-        type: "set_font_collection_label",
-        payload: { fontCollectionId: entryId, label },
-      }),
-      buildResetAction: (entryId) => ({
-        type: "reset_font_collection",
-        payload: { fontCollectionId: entryId },
-      }),
-      buildDuplicateAction: (entryId) => ({
-        type: "duplicate_font_collection",
-        payload: { fontCollectionId: entryId },
-      }),
-      buildDeleteAction: (entryId) => ({
-        type: "delete_font_collection",
-        payload: { fontCollectionId: entryId },
-      }),
+    buildLabelAction: (entryId, label) => ({
+      type: "set_theme_label",
+      payload: { themeId: entryId, label },
+    }),
+    buildResetAction: (entryId) => ({
+      type: "reset_theme_tokens",
+      payload: { themeId: entryId },
+    }),
+    buildDuplicateAction: (entryId) => ({
+      type: "duplicate_theme",
+      payload: { themeId: entryId },
+    }),
+    buildDeleteAction: (entryId) => ({
+      type: "delete_theme",
+      payload: { themeId: entryId },
+    }),
+  },
+  fontCollection: {
+    kind: "fontCollection",
+    selectionKind: "fontCollection",
+    icon: "seldon-text",
+    testId: "objects-sidebar-font-collection-entry",
+    getEntry: (workspace, entryId) => {
+      const entry = workspace["font-collections"][entryId]
+      if (!entry) return undefined
+      return {
+        label: entry.label,
+        isDefault: isEntryFontCollectionDefault(entry),
+      }
     },
-    iconSet: {
-      kind: "iconSet",
-      selectionKind: "iconSet",
-      icon: "seldon-icon",
-      testId: "objects-sidebar-icon-set-entry",
-      getEntry: (workspace, entryId) => {
-        const entry = workspace["icon-sets"][entryId]
-        if (!entry) return undefined
-        return { label: entry.label, isDefault: isEntryIconSetDefault(entry) }
-      },
-      buildLabelAction: (entryId, label) => ({
-        type: "set_icon_set_label",
-        payload: { iconSetId: entryId, label },
-      }),
-      buildResetAction: (entryId) => ({
-        type: "reset_icon_set",
-        payload: { iconSetId: entryId },
-      }),
-      buildDuplicateAction: (entryId) => ({
-        type: "duplicate_icon_set",
-        payload: { iconSetId: entryId },
-      }),
-      buildDeleteAction: (entryId) => ({
-        type: "delete_icon_set",
-        payload: { iconSetId: entryId },
-      }),
+    buildLabelAction: (entryId, label) => ({
+      type: "set_font_collection_label",
+      payload: { fontCollectionId: entryId, label },
+    }),
+    buildResetAction: (entryId) => ({
+      type: "reset_font_collection",
+      payload: { fontCollectionId: entryId },
+    }),
+    buildDuplicateAction: (entryId) => ({
+      type: "duplicate_font_collection",
+      payload: { fontCollectionId: entryId },
+    }),
+    buildDeleteAction: (entryId) => ({
+      type: "delete_font_collection",
+      payload: { fontCollectionId: entryId },
+    }),
+  },
+  iconSet: {
+    kind: "iconSet",
+    selectionKind: "iconSet",
+    icon: "seldon-icon",
+    testId: "objects-sidebar-icon-set-entry",
+    getEntry: (workspace, entryId) => {
+      const entry = workspace["icon-sets"][entryId]
+      if (!entry) return undefined
+      return { label: entry.label, isDefault: isEntryIconSetDefault(entry) }
     },
-    // Media stub: the media entry model has no label/type yet and no media board
-    // renders, so the row is read-only (no rename) and falls back to the id.
-    media: {
-      kind: "media",
-      selectionKind: "media",
-      icon: "seldon-component",
-      testId: "objects-sidebar-media-entry",
-      getEntry: (workspace, entryId) => {
-        const entry = workspace.media[entryId]
-        if (!entry) return undefined
-        return { label: entry.id, isDefault: true }
-      },
+    buildLabelAction: (entryId, label) => ({
+      type: "set_icon_set_label",
+      payload: { iconSetId: entryId, label },
+    }),
+    buildResetAction: (entryId) => ({
+      type: "reset_icon_set",
+      payload: { iconSetId: entryId },
+    }),
+    buildDuplicateAction: (entryId) => ({
+      type: "duplicate_icon_set",
+      payload: { iconSetId: entryId },
+    }),
+    buildDeleteAction: (entryId) => ({
+      type: "delete_icon_set",
+      payload: { iconSetId: entryId },
+    }),
+  },
+  // Media stub: the media entry model has no label/type yet and no media board
+  // renders, so the row is read-only (no rename) and falls back to the id.
+  media: {
+    kind: "media",
+    selectionKind: "media",
+    icon: "seldon-component",
+    testId: "objects-sidebar-media-entry",
+    getEntry: (workspace, entryId) => {
+      const entry = workspace.media[entryId]
+      if (!entry) return undefined
+      return { label: entry.id, isDefault: true }
     },
-  }
+  },
+}
 
 /**
  * Resolves the resource-entry row config for a board, or null when the board's

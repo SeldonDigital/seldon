@@ -3,14 +3,14 @@ import { Board as BoardType } from "@seldon/core"
 import { useSidebarCanvasTrackingBoard } from "../../tracking/hooks/use-sidebar-canvas-tracking"
 import { IndentationLevel } from "../hooks/use-indentation"
 import { useRenameInput } from "../hooks/use-rename-input"
-import {
-  buildActivatedRefProps,
-  buildFieldStateProps,
-} from "../shared/build-field-state-props"
 import { useRowBoard } from "./hooks/use-row-board"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { FramerExpandable } from "@seldon/components/custom-components"
 import { ItemNode } from "@seldon/components/elements/ItemNode"
+import {
+  buildActivatedRefProps,
+  buildFieldStateProps,
+} from "../shared/build-field-state-props"
 import { useRowActionsMenu } from "../shared/use-row-actions-menu"
 import { RowSelectionTarget } from "./RowSelectionTarget"
 import { VMNode } from "./VMNode"

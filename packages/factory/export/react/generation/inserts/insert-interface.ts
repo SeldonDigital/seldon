@@ -40,8 +40,7 @@ export function insertInterface(
   // slot props pick them up via `applyRef`, so view models drive nested slots
   // by stable ref name instead of positional prop name.
   const hasChildren =
-    Array.isArray(component.tree.children) &&
-    component.tree.children.length > 0
+    Array.isArray(component.tree.children) && component.tree.children.length > 0
   if (hasChildren) {
     allProps.push("seldonRefs?: Record<string, Record<string, unknown>>")
   }

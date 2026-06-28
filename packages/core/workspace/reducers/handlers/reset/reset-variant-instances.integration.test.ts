@@ -2,8 +2,8 @@ import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../../components/constants"
 import { ValueType } from "../../../../properties/constants"
-import { parseNodeLink } from "../../../model/template-ref"
 import { createEmptyWorkspace } from "../../../helpers/create-empty-workspace"
+import { parseNodeLink } from "../../../model/template-ref"
 import type {
   ComponentBoard,
   ComponentTreeRef,

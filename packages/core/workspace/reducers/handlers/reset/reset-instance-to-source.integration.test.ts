@@ -3,8 +3,8 @@ import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../../components/constants"
 import { ValueType } from "../../../../properties/constants"
-import { formatNodeLink } from "../../../model/template-ref"
 import { createEmptyWorkspace } from "../../../helpers/create-empty-workspace"
+import { formatNodeLink } from "../../../model/template-ref"
 import type {
   ComponentBoard,
   ComponentTreeRef,
@@ -93,7 +93,9 @@ describe("resetInstanceToSource", () => {
     expect(overridesOf(withOverrides, instanceChildId).opacity).toBeDefined()
 
     const reset = resetInstanceToSource(
-      { instanceId: instanceRootId } as ExtractPayload<"reset_instance_to_source">,
+      {
+        instanceId: instanceRootId,
+      } as ExtractPayload<"reset_instance_to_source">,
       withOverrides,
     )
 
@@ -117,7 +119,9 @@ describe("resetInstanceToSource", () => {
     )
 
     const reset = resetInstanceToSource(
-      { instanceId: instanceRootId } as ExtractPayload<"reset_instance_to_source">,
+      {
+        instanceId: instanceRootId,
+      } as ExtractPayload<"reset_instance_to_source">,
       drifted,
     )
 

@@ -5,14 +5,14 @@ import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useSidebarCanvasTracking } from "../../tracking/hooks/use-sidebar-canvas-tracking"
 import { IndentationLevel } from "../hooks/use-indentation"
 import { useRenameInput } from "../hooks/use-rename-input"
-import {
-  buildDisabledRefProps,
-  buildFieldStateProps,
-} from "../shared/build-field-state-props"
 import { useRowNode } from "./hooks/use-row-node"
 import { getNode } from "@lib/workspace/workspace-accessors"
 import { FramerExpandable } from "@seldon/components/custom-components"
 import { ItemNode } from "@seldon/components/elements/ItemNode"
+import {
+  buildDisabledRefProps,
+  buildFieldStateProps,
+} from "../shared/build-field-state-props"
 import { SidebarTracking } from "../../tracking/SidebarTracking"
 import { useRowActionsMenu } from "../shared/use-row-actions-menu"
 import { RowSelectionTarget } from "./RowSelectionTarget"
@@ -153,7 +153,10 @@ const VMNodeInner = function VMNodeInner({
     if (hasSummary) {
       const summaryCount = echoCount - shownEchoes
       rows.push(
-        <RepeatEchoSummaryRow key={`${childNodeId}#more`} count={summaryCount} />,
+        <RepeatEchoSummaryRow
+          key={`${childNodeId}#more`}
+          count={summaryCount}
+        />,
       )
     }
     return rows

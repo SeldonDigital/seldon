@@ -1,8 +1,8 @@
 import { childPathsUnderCompoundParent } from "@lib/properties/property-paths"
 import { Board, Instance, Variant } from "@seldon/core"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
-import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { RowPropertyProps } from "../hooks/use-row-property"
+import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { FlatProperty } from "./properties-data"
 
 /** The subject id a row renders against: the board key, or the node id. */
