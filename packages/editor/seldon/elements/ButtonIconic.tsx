@@ -11,7 +11,7 @@
  * 
  *****/
  
-import { ButtonHTMLAttributes } from "react"
+import { ButtonHTMLAttributes, forwardRef } from "react"
 import { HTMLButton } from "../native-react/HTML.Button"
 import { Icon, IconProps } from "../primitives/Icon"
 import { applyRef } from "../utils/apply-ref"
@@ -38,38 +38,37 @@ export interface ButtonIconicProps extends ButtonHTMLAttributes<HTMLButtonElemen
  * />
  * ```
  *****/
-export function ButtonIconic({
-  className = "",
-  icon = sdn.icon,
-  children,
-  seldonRefs,
-  ...props
-}: ButtonIconicProps) {
-  const buttonIconicClassName = combineClassNames(
-    "sdn-button-iconic",
-    className,
-  )
-  const iconProps = applyRef(
-    seldonRefs,
-    icon === null
-      ? null
-      : {
-          ...sdn.icon,
-          ...icon,
-          className: combineClassNames(sdn.icon?.className, icon?.className),
-        },
-  )
+export const ButtonIconic = forwardRef<HTMLButtonElement, ButtonIconicProps>(
+  function ButtonIconic(
+    { className = "", icon = sdn.icon, children, seldonRefs, ...props },
+    ref,
+  ) {
+    const buttonIconicClassName = combineClassNames(
+      "sdn-button-iconic",
+      className,
+    )
+    const iconProps = applyRef(
+      seldonRefs,
+      icon === null
+        ? null
+        : {
+            ...sdn.icon,
+            ...icon,
+            className: combineClassNames(sdn.icon?.className, icon?.className),
+          },
+    )
 
-  return (
-    <HTMLButton className={buttonIconicClassName} {...props}>
-      {children !== undefined ? (
-        children
-      ) : (
-        <>{iconProps !== null && <Icon {...iconProps} />}</>
-      )}
-    </HTMLButton>
-  )
-}
+    return (
+      <HTMLButton className={buttonIconicClassName} ref={ref} {...props}>
+        {children !== undefined ? (
+          children
+        ) : (
+          <>{iconProps !== null && <Icon {...iconProps} />}</>
+        )}
+      </HTMLButton>
+    )
+  },
+)
 
 //
 // Default property values

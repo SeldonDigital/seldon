@@ -1,4 +1,5 @@
 import { isWorkspaceIconUnavailable } from "@lib/icon-sets/icon-availability"
+import { type OptionIconRender } from "@lib/menus"
 import {
   type OptionIconDescriptor,
   getOptionIcon,
@@ -27,15 +28,7 @@ interface RenderPropertyOptionIconDeps {
   themes: ReturnType<typeof useThemes>
 }
 
-/**
- * How a property option's icon binds to the generated `ListboxOption`. An
- * `iconId` flows through the `optionIcon` slot (and its ref); a `node` is a
- * dynamic element (swatch chip, theme token, symbol glyph) the string-based
- * `Icon` slot cannot host, so it renders through the option's children instead.
- */
-export type OptionIconRender =
-  | { kind: "iconId"; icon: string }
-  | { kind: "node"; node: React.ReactNode }
+export type { OptionIconRender } from "@lib/menus"
 
 /**
  * Builds the per-option icon resolver for a property combobox. The theme

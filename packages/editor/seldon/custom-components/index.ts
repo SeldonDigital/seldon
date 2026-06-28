@@ -26,11 +26,5 @@ export { OverlayLayer } from "./indicators/OverlayLayer"
 export { PlacementZoneSurface } from "./indicators/PlacementZoneSurface"
 export { ToastStack } from "./containers/ToastStack"
 export { Toast } from "./feedback/Toast"
-export { Combobox } from "./controls/combobox/Combobox"
-export { useComboboxState } from "./controls/combobox/hooks/use-combobox-state"
-export type {
-  ComboboxOptionItem,
-  ComboboxOptionItems,
-} from "./controls/combobox/types"
 export { FramerExpandable } from "./containers/FramerExpandable"
 export { DragNodePreview } from "./containers/DragNodePreview"

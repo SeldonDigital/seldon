@@ -11,10 +11,10 @@ import {
 } from "@seldon/core/workspace/model/node-state"
 import { parseNodeLink } from "@seldon/core/workspace/model/template-ref"
 import type { EntryNode } from "@seldon/core/workspace/types"
-import { DropdownMenu, MenuEntry, MenuItem } from "@lib/menus"
+import { Combobox, MenuEntry, MenuItem, VMMenu } from "@lib/menus"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { walkComponentTree } from "@lib/workspace/component-tree"
-import { Combobox } from "@seldon/components/custom-components/controls/combobox/Combobox"
+import { ButtonMenu } from "@seldon/components/elements/ButtonMenu"
 import { FloatingPanel } from "../../panels/FloatingPanel"
 import {
   useActiveBoardState,
@@ -30,20 +30,6 @@ const wrapperStyle: CSSProperties = {
   top: -28,
   left: 0,
   zIndex: 5,
-}
-
-const triggerStyle: CSSProperties = {
-  display: "inline-flex",
-  alignItems: "center",
-  gap: 6,
-  height: 22,
-  padding: "0 8px",
-  borderRadius: 4,
-  border: "1px solid rgba(255,255,255,0.18)",
-  background: "rgba(255,255,255,0.06)",
-  color: "rgba(255,255,255,0.85)",
-  font: "500 11px/1 system-ui, sans-serif",
-  cursor: "pointer",
 }
 
 const dialogBodyStyle: CSSProperties = {
@@ -78,7 +64,7 @@ function stateLabel(state: NodeState, customStates: CustomState[]): string {
 /**
  * On-canvas interaction-state switcher. Sits just above the board and selects
  * the active state for the whole board tree. The dropdown chrome, positioning,
- * keyboard navigation, and dismissal come from the shared `DropdownMenu`. Adding
+ * keyboard navigation, and dismissal come from the shared `VMMenu`. Adding
  * and renaming custom states open small dialogs and go only through core
  * actions, never by mutating the registry directly.
  */
@@ -218,13 +204,16 @@ export function BoardStateSwitcher({ boardKey }: BoardStateSwitcherProps) {
       style={wrapperStyle}
       onClick={(event) => event.stopPropagation()}
     >
-      <DropdownMenu
+      <VMMenu
         items={items}
         renderTrigger={({ ref, triggerProps }) => (
-          <button ref={ref} type="button" style={triggerStyle} {...triggerProps}>
-            {stateLabel(activeState, customStates)}
-            <span aria-hidden>▾</span>
-          </button>
+          <ButtonMenu
+            ref={ref}
+            type="button"
+            {...triggerProps}
+            textLabel={{ children: stateLabel(activeState, customStates) }}
+            data-testid="board-state-trigger"
+          />
         )}
       />
 

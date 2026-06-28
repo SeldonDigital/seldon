@@ -3,7 +3,7 @@ import {
   type ComboboxOptionItem,
   type ComboboxOptionItems,
   useComboboxState,
-} from "@seldon/components/custom-components"
+} from "@lib/menus"
 import type { PropertyPickerResult } from "../helpers/options-utils"
 import { FlatProperty } from "../helpers/properties-data"
 import { useComboboxPosition } from "./use-combobox-position"

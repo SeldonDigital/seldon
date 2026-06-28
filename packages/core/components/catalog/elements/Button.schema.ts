@@ -683,5 +683,5 @@ export const schema = {
 } as const satisfies ComponentSchema
 
 export const exportConfig: ComponentExport = {
-  react: { returns: "HTMLButton" },
+  react: { returns: "HTMLButton", forwardRef: "HTMLButtonElement" },
 }

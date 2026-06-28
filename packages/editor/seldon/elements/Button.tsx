@@ -11,7 +11,7 @@
  * 
  *****/
  
-import { ButtonHTMLAttributes } from "react"
+import { ButtonHTMLAttributes, forwardRef } from "react"
 import { HTMLButton } from "../native-react/HTML.Button"
 import { Icon, IconProps } from "../primitives/Icon"
 import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
@@ -41,52 +41,57 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
  * />
  * ```
  *****/
-export function Button({
-  className = "",
-  icon = sdn.icon,
-  textLabel,
-  children,
-  seldonRefs,
-  ...props
-}: ButtonProps) {
-  const buttonClassName = combineClassNames("sdn-button", className)
-  const iconProps = applyRef(
-    seldonRefs,
-    icon === null
-      ? null
-      : {
-          ...sdn.icon,
-          ...icon,
-          className: combineClassNames(sdn.icon?.className, icon?.className),
-        },
-  )
-  const textLabelProps = applyRef(
-    seldonRefs,
-    textLabel === null
-      ? null
-      : {
-          ...sdn.textLabel,
-          ...textLabel,
-          className: combineClassNames(
-            sdn.textLabel?.className,
-            textLabel?.className,
-          ),
-        },
-  )
+export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+  function Button(
+    {
+      className = "",
+      icon = sdn.icon,
+      textLabel,
+      children,
+      seldonRefs,
+      ...props
+    },
+    ref,
+  ) {
+    const buttonClassName = combineClassNames("sdn-button", className)
+    const iconProps = applyRef(
+      seldonRefs,
+      icon === null
+        ? null
+        : {
+            ...sdn.icon,
+            ...icon,
+            className: combineClassNames(sdn.icon?.className, icon?.className),
+          },
+    )
+    const textLabelProps = applyRef(
+      seldonRefs,
+      textLabel === null
+        ? null
+        : {
+            ...sdn.textLabel,
+            ...textLabel,
+            className: combineClassNames(
+              sdn.textLabel?.className,
+              textLabel?.className,
+            ),
+          },
+    )
 
-  return (
-    <HTMLButton className={buttonClassName} {...props}>
-      {children !== undefined ? (
-        children
-      ) : (
-        <>
-          {iconProps !== null && <Icon {...iconProps} />}
-          {textLabel && textLabelProps && <TextLabel {...textLabelProps} />}
-        </>
-      )}
-    </HTMLButton>
-  )
-}
+    return (
+      <HTMLButton className={buttonClassName} ref={ref} {...props}>
+        {children !== undefined ? (
+          children
+        ) : (
+          <>
+            {iconProps !== null && <Icon {...iconProps} />}
+            {textLabel && textLabelProps && <TextLabel {...textLabelProps} />}
+          </>
+        )}
+      </HTMLButton>
+    )
+  },
+)
 
 //
 // Default property values

@@ -1,6 +1,6 @@
 /**
- * Floating option list for a property combobox. Renders the generated `Listbox`
- * (its Frame is the positioned surface) with one generated `ListboxOption` per
+ * Floating option list for a combobox. Renders the generated `Listbox` (its
+ * Frame is the positioned surface) with one generated `ListboxOption` per
  * option. Option rows bind through the `optionIcon`/`optionLabel` slot refs when
  * the icon is a plain id, and fall back to children when the icon is a dynamic
  * node the string-based `Icon` slot cannot host.
@@ -11,13 +11,12 @@
 import { CSSProperties, Fragment, MouseEvent, ReactNode } from "react"
 import { createPortal } from "react-dom"
 import { Backdrop } from "@seldon/components/custom-components"
-import type { ComboboxOptionItem } from "@seldon/components/custom-components"
 import { ListboxOption } from "@seldon/components/elements/ListboxOption"
 import { Listbox } from "@seldon/components/parts/Listbox"
 import { Hr } from "@seldon/components/primitives/Hr"
 import { IconProps } from "@seldon/components/primitives/Icon"
 import { TextLabel } from "@seldon/components/primitives/TextLabel"
-import { OptionIconRender } from "./helpers/render-property-option-icon"
+import { ComboboxOptionItem, OptionIconRender } from "./types"
 
 interface Position {
   x: number
@@ -26,7 +25,7 @@ interface Position {
   positionAbove?: boolean
 }
 
-interface PropertyListboxProps {
+interface ComboboxListboxProps {
   open: boolean
   position: Position
   handleClose: () => void
@@ -55,7 +54,7 @@ const backdropStyle: CSSProperties = {
   zIndex: 9,
 }
 
-export function PropertyListbox({
+export function ComboboxListbox({
   open,
   position,
   handleClose,
@@ -67,7 +66,7 @@ export function PropertyListbox({
   resolveIcon,
   onSelect,
   onHighlight,
-}: PropertyListboxProps) {
+}: ComboboxListboxProps) {
   if (!open) {
     return null
   }

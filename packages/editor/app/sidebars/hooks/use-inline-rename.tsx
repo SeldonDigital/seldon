@@ -1,5 +1,5 @@
 import { ReactNode } from "react"
-import { Combobox } from "@seldon/components/custom-components"
+import { Combobox } from "@lib/menus"
 import { useRenameValue } from "./use-rename-value"
 
 interface UseInlineRenameInput {

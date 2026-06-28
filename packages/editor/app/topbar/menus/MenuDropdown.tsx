@@ -1,6 +1,6 @@
 "use client"
 
-import { DropdownMenu, MenuEntry } from "@lib/menus"
+import { MenuEntry, VMMenu } from "@lib/menus"
 import { useState } from "react"
 import { useAppState } from "@lib/hooks/use-app-state"
 import { MenuDropdown as MenuDropdownType } from "./types"
@@ -39,7 +39,7 @@ export function MenuDropdown({ menu }: MenuDropdownProps) {
   })
 
   return (
-    <DropdownMenu
+    <VMMenu
       items={items}
       align="start"
       minWidth="220px"

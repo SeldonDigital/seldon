@@ -11,7 +11,7 @@
  * 
  *****/
  
-import { ButtonHTMLAttributes } from "react"
+import { ButtonHTMLAttributes, forwardRef } from "react"
 import { Button, ButtonProps } from "../elements/Button"
 import { HTMLButton } from "../native-react/HTML.Button"
 import { Icon, IconProps } from "../primitives/Icon"
@@ -52,21 +52,27 @@ export interface ButtonSegmentedProps extends ButtonHTMLAttributes<HTMLButtonEle
  * />
  * ```
  *****/
-export function ButtonSegmented({
-  className = "",
-  button = sdn.button,
-  icon = sdn.icon,
-  textLabel,
-  button2 = sdn.button2,
-  icon2 = sdn.icon2,
-  textLabel2,
-  button3 = sdn.button3,
-  icon3 = sdn.icon3,
-  textLabel3,
-  children,
-  seldonRefs,
-  ...props
-}: ButtonSegmentedProps) {
+export const ButtonSegmented = forwardRef<
+  HTMLButtonElement,
+  ButtonSegmentedProps
+>(function ButtonSegmented(
+  {
+    className = "",
+    button = sdn.button,
+    icon = sdn.icon,
+    textLabel,
+    button2 = sdn.button2,
+    icon2 = sdn.icon2,
+    textLabel2,
+    button3 = sdn.button3,
+    icon3 = sdn.icon3,
+    textLabel3,
+    children,
+    seldonRefs,
+    ...props
+  },
+  ref,
+) {
   const buttonSegmentedClassName = combineClassNames(
     "sdn-button-segmented",
     className,
@@ -181,7 +187,7 @@ export function ButtonSegmented({
   )
 
   return (
-    <HTMLButton className={buttonSegmentedClassName} {...props}>
+    <HTMLButton className={buttonSegmentedClassName} ref={ref} {...props}>
       {children !== undefined ? (
         children
       ) : (
@@ -212,7 +218,7 @@ export function ButtonSegmented({
       )}
     </HTMLButton>
   )
-}
+})
 
 //
 // Default property values

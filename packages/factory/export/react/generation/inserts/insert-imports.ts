@@ -41,6 +41,14 @@ export function insertImports(
 
   const imports = getReactImports(component)
 
+  // forwardRef components pull the helper from react alongside the props type.
+  if (config.react.forwardRef) {
+    imports["react"] = imports["react"] ?? []
+    if (!imports["react"].includes("forwardRef")) {
+      imports["react"].push("forwardRef")
+    }
+  }
+
   if (config.react.returns === "Frame") {
     imports["../frames/Frame"] = ["Frame"]
   }

@@ -1,5 +1,5 @@
+import { ComboboxListbox } from "@lib/menus"
 import { PropertyControlView } from "./hooks/use-property-control"
-import { PropertyListbox } from "./PropertyListbox"
 
 interface PropertyOptionsListboxProps {
   control: PropertyControlView
@@ -25,7 +25,7 @@ export function PropertyOptionsListbox({
   }
 
   return (
-    <PropertyListbox
+    <ComboboxListbox
       open={open}
       position={position}
       handleClose={handleClose}

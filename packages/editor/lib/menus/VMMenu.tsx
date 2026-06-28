@@ -2,6 +2,7 @@
 
 import {
   CSSProperties,
+  ReactNode,
   RefObject,
   useEffect,
   useMemo,
@@ -58,10 +59,7 @@ function markerIconProps(
   return { icon: glyph, "aria-hidden": "true", style: { visibility: "hidden" } }
 }
 
-interface VMMenuProps {
-  open: boolean
-  anchorRef: RefObject<HTMLElement | null>
-  onClose: () => void
+interface VMMenuCommon {
   items: MenuEntry[]
   align?: MenuAlign
   minWidth?: string
@@ -69,15 +67,115 @@ interface VMMenuProps {
   focusTargetRef?: RefObject<HTMLElement | null>
 }
 
+/** Aria/handler props the caller spreads onto its trigger element. */
+export interface DropdownTriggerProps {
+  "aria-haspopup": "menu"
+  "aria-expanded": boolean
+  onClick: (event: React.MouseEvent) => void
+  onKeyDown: (event: React.KeyboardEvent) => void
+}
+
+/** Arguments passed to `renderTrigger` in the self-managed trigger mode. */
+export interface DropdownRenderTriggerArgs {
+  ref: RefObject<HTMLButtonElement | null>
+  open: boolean
+  toggle: () => void
+  triggerProps: DropdownTriggerProps
+}
+
+/** Controlled mode: the caller owns `open` and the anchor element. */
+type VMMenuControlledProps = VMMenuCommon & {
+  open: boolean
+  anchorRef: RefObject<HTMLElement | null>
+  onClose: () => void
+  renderTrigger?: never
+}
+
+/** Trigger mode: VMMenu owns open state and anchors to its own trigger. */
+type VMMenuTriggerProps = VMMenuCommon & {
+  renderTrigger: (args: DropdownRenderTriggerArgs) => ReactNode
+  open?: never
+  anchorRef?: never
+  onClose?: never
+}
+
+export type VMMenuProps = VMMenuControlledProps | VMMenuTriggerProps
+
 /**
- * View-model for the sidebar actions menu. Owns positioning, roving-focus
- * keyboard navigation, outside-click and Escape to close, and focus restore,
- * then renders the generated `Menu` View. Item state and visuals come from the
- * generated component CSS: hover from `.sdn-menu-item:hover`, disabled from
+ * View-model for menus. In controlled mode the caller owns `open`/`anchorRef`
+ * (used for headless slot triggers like sidebar row actions). In trigger mode
+ * the caller supplies `renderTrigger` and VMMenu owns the open state and trigger
+ * wiring. Both render the same floating `Menu` View.
+ */
+export function VMMenu(props: VMMenuProps) {
+  if (props.renderTrigger) {
+    return <TriggerMenu {...props} />
+  }
+  return <FloatingMenu {...props} />
+}
+
+/**
+ * Self-managed trigger wrapper. Owns the open state and an internal trigger ref,
+ * hands aria/keyboard props to `renderTrigger`, and anchors the floating menu to
+ * that trigger.
+ */
+function TriggerMenu({
+  items,
+  align,
+  minWidth,
+  focusTargetRef,
+  renderTrigger,
+}: VMMenuTriggerProps) {
+  const [open, setOpen] = useState(false)
+  const triggerRef = useRef<HTMLButtonElement | null>(null)
+  const toggle = () => setOpen((current) => !current)
+
+  const triggerProps: DropdownTriggerProps = {
+    "aria-haspopup": "menu",
+    "aria-expanded": open,
+    onClick: (event) => {
+      event.stopPropagation()
+      toggle()
+    },
+    onKeyDown: (event) => {
+      if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+        event.preventDefault()
+        setOpen(true)
+      }
+    },
+  }
+
+  return (
+    <>
+      {renderTrigger({ ref: triggerRef, open, toggle, triggerProps })}
+      <FloatingMenu
+        open={open}
+        anchorRef={triggerRef}
+        onClose={() => setOpen(false)}
+        items={items}
+        align={align}
+        minWidth={minWidth}
+        focusTargetRef={focusTargetRef}
+      />
+    </>
+  )
+}
+
+interface FloatingMenuProps extends VMMenuCommon {
+  open: boolean
+  anchorRef: RefObject<HTMLElement | null>
+  onClose: () => void
+}
+
+/**
+ * The floating menu surface. Owns positioning, roving-focus keyboard navigation,
+ * outside-click and Escape to close, and focus restore, then renders the
+ * generated `Menu` View. Item state and visuals come from the generated
+ * component CSS: hover from `.sdn-menu-item:hover`, disabled from
  * `aria-disabled`, active from `.sdn-state-activated`, and the highlighted item
  * from `aria-selected` on its leaves.
  */
-export function VMMenu({
+function FloatingMenu({
   open,
   anchorRef,
   onClose,
@@ -85,7 +183,7 @@ export function VMMenu({
   align = "start",
   minWidth = "180px",
   focusTargetRef,
-}: VMMenuProps) {
+}: FloatingMenuProps) {
   const position = useMenuPosition({ open, anchorRef, align })
   const menuRef = useRef<HTMLDivElement>(null)
   const [activeIndex, setActiveIndex] = useState(-1)
