@@ -207,7 +207,7 @@ export function useMenuConfig(): HeaderConfig {
     const items = [
       {
         id: "import-file",
-        label: "Import Workspace…",
+        label: "Open Workspace…",
         action: async () => {
           const result = await selectFile()
           if (!result.success) return
@@ -217,7 +217,7 @@ export function useMenuConfig(): HeaderConfig {
       },
       {
         id: "export-workspace",
-        label: "Export Workspace JSON…",
+        label: "Save Workspace As…",
         action: exportWorkspaceToFile,
         visibleIn: ["edit", "preview"],
       },
