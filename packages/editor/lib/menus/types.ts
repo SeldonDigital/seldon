@@ -1,4 +1,5 @@
 import { CSSProperties, ReactNode } from "react"
+import { HSL } from "@seldon/core"
 
 export type MenuItemId = string
 
@@ -34,3 +35,23 @@ export type MenuEntry = MenuItem | "separator"
 
 /** Horizontal alignment of the menu against its trigger. */
 export type MenuAlign = "start" | "end"
+
+/** A single selectable option in a combobox list. */
+export type ComboboxOptionItem = {
+  value: string
+  name: string
+  hidden?: boolean
+  disabled?: boolean
+  color?: HSL
+}
+
+/** A flat option list, or a list of sections. */
+export type ComboboxOptionItems = ComboboxOptionItem[] | ComboboxOptionItem[][]
+
+/**
+ * How an option's leading icon renders: a theme icon id the generated `Icon`
+ * slot can host, or an arbitrary node for dynamic icons the slot cannot.
+ */
+export type OptionIconRender =
+  | { kind: "iconId"; icon: string }
+  | { kind: "node"; node: ReactNode }

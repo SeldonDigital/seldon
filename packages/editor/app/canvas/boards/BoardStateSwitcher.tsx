@@ -11,7 +11,7 @@ import {
 } from "@seldon/core/workspace/model/node-state"
 import { parseNodeLink } from "@seldon/core/workspace/model/template-ref"
 import type { EntryNode } from "@seldon/core/workspace/types"
-import { Combobox, MenuEntry, MenuItem, VMMenu } from "@lib/menus"
+import { MenuEntry, MenuItem, VMCombobox, VMMenu } from "@lib/menus"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { walkComponentTree } from "@lib/workspace/component-tree"
 import { ButtonMenu } from "@seldon/components/elements/ButtonMenu"
@@ -228,7 +228,7 @@ export function BoardStateSwitcher({ boardKey }: BoardStateSwitcherProps) {
         >
           <div style={dialogBodyStyle}>
             <span style={dialogFieldLabelStyle}>State name</span>
-            <Combobox
+            <VMCombobox
               mode="standalone"
               value={addValue}
               onValueChange={setAddValue}
@@ -253,7 +253,7 @@ export function BoardStateSwitcher({ boardKey }: BoardStateSwitcherProps) {
             {customStates.map((entry) => (
               <div key={entry.key} style={{ display: "flex", flexDirection: "column", gap: 4 }}>
                 <span style={dialogFieldLabelStyle}>{entry.key}</span>
-                <Combobox
+                <VMCombobox
                   mode="standalone"
                   value={renameDrafts[entry.key] ?? entry.label}
                   onValueChange={(value) =>

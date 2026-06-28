@@ -1,5 +1,5 @@
 import { ReactNode } from "react"
-import { Combobox } from "@lib/menus"
+import { VMCombobox } from "@lib/menus"
 import { useRenameValue } from "./use-rename-value"
 
 interface UseInlineRenameInput {
@@ -10,7 +10,7 @@ interface UseInlineRenameInput {
 }
 
 /**
- * Renders a standalone `<Combobox>` rename control into a sidebar row's name
+ * Renders a standalone `<VMCombobox>` rename control into a sidebar row's name
  * label. Callers pass the result as `textLabel.children` while editing.
  */
 export function useInlineRename({
@@ -26,7 +26,7 @@ export function useInlineRename({
   })
 
   const editControl = (
-    <Combobox
+    <VMCombobox
       mode="standalone"
       value={value}
       onValueChange={setValue}

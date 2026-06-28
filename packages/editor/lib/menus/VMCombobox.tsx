@@ -1,12 +1,43 @@
-import { RefObject, useEffect, useRef } from "react"
+/**
+ * VMCombobox: the editable combobox VM. It owns the input behavior (focus,
+ * commit, keyboard nav, blur) over the custom `InputEditor` primitive. In
+ * `combobox` mode it anchors the floating `ComboboxListbox`; in `standalone`
+ * mode it is a plain commit-on-blur input used for inline rename and dialog
+ * fields. Option-list rendering lives in `ComboboxListbox`; the selection and
+ * filter engine lives in `useComboboxState`.
+ */
+import { CSSProperties, RefObject, useEffect, useRef } from "react"
 import { Box } from "@seldon/components/custom-components"
 import { InputEditor } from "@seldon/components/custom-components"
 import { Frame } from "@seldon/components/frames/Frame"
-import {
-  comboboxFrameStyle,
-  comboboxInputStyle,
-  comboboxWrapperStyle,
-} from "./combobox-styles"
+
+// Functional resets so the custom `InputEditor` primitive blends into a property
+// row. Appearance theming still comes from authored CSS; these only strip the
+// native input chrome the primitive would otherwise render.
+const comboboxInputStyle: CSSProperties = {
+  flex: 1,
+  padding: 0,
+  border: "none",
+  borderRadius: 0,
+  outline: "none",
+  backgroundColor: "transparent",
+  lineHeight: "var(--sdn-line-height-solid)",
+  fontSize: "var(--sdn-font-size-xsmall)",
+}
+
+const comboboxFrameStyle: CSSProperties = {
+  background: "transparent",
+  border: "none",
+  padding: 0,
+  margin: 0,
+  cursor: "pointer",
+}
+
+const comboboxWrapperStyle: CSSProperties = {
+  flex: 1,
+  display: "flex",
+  cursor: "pointer",
+}
 
 interface InputProps {
   mode?: "combobox" | "standalone"
@@ -40,7 +71,7 @@ function notifyCommit(
   onValueChange?.(value)
 }
 
-export function Combobox({
+export function VMCombobox({
   mode = "standalone",
   value,
   onValueChange,

@@ -4,12 +4,15 @@ export {
   type DropdownRenderTriggerArgs,
   type DropdownTriggerProps,
 } from "./VMMenu"
-export type { MenuAlign, MenuEntry, MenuItem, MenuItemId } from "./types"
-export { Combobox } from "./combobox/Combobox"
-export { ComboboxListbox } from "./combobox/ComboboxListbox"
-export { useComboboxState } from "./combobox/use-combobox-state"
+export { VMCombobox } from "./VMCombobox"
+export { ComboboxListbox } from "./ComboboxListbox"
+export { useComboboxState } from "./use-combobox-state"
 export type {
+  MenuAlign,
+  MenuEntry,
+  MenuItem,
+  MenuItemId,
   ComboboxOptionItem,
   ComboboxOptionItems,
   OptionIconRender,
-} from "./combobox/types"
+} from "./types"

@@ -31,11 +31,14 @@ export function useComboboxState<
   // True while the highlight is being driven by Arrow-key navigation, so Enter
   // selects the highlighted option instead of matching the typed text.
   const keyboardNavRef = useRef(false)
-  const flatOptions = useMemo(() => {
-    return hasSections
-      ? (options as Array<ItemT[]>).flat()
-      : (options as ItemT[])
-  }, [hasSections, options])
+
+  const flatten = useCallback(
+    (opts: OptionsType<ItemT>) =>
+      hasSections ? (opts as Array<ItemT[]>).flat() : (opts as ItemT[]),
+    [hasSections],
+  )
+
+  const flatOptions = useMemo(() => flatten(options), [flatten, options])
 
   const isNavigable = (option: ItemT) =>
     !("hidden" in option && option.hidden) &&
@@ -66,12 +69,10 @@ export function useComboboxState<
 
   // The currently visible, selectable options. Arrow navigation walks these so a
   // filtered combo only steps through results that are actually on screen.
-  const navigableFilteredOptions = useMemo(() => {
-    const flat = hasSections
-      ? (filteredOptions as ItemT[][]).flat()
-      : (filteredOptions as ItemT[])
-    return flat.filter(isNavigable)
-  }, [filteredOptions, hasSections])
+  const navigableFilteredOptions = useMemo(
+    () => flatten(filteredOptions).filter(isNavigable),
+    [flatten, filteredOptions],
+  )
 
   useEffect(() => {
     if (!open) {
@@ -110,6 +111,21 @@ export function useComboboxState<
   const highlightNext = useCallback(() => moveHighlight(1), [moveHighlight])
   const highlightPrev = useCallback(() => moveHighlight(-1), [moveHighlight])
 
+  // Defer clearing the manual-submit guard until after the pending `onSelect`
+  // from the same interaction has been swallowed.
+  function clearManualSubmitSoon() {
+    setTimeout(() => {
+      isManualSubmit.current = false
+    }, 0)
+  }
+
+  // Shared submit tail: close the list, optionally blur, and release the guard.
+  function finishSubmit(keepFocus: boolean) {
+    setOpen(false)
+    if (!keepFocus) inputRef.current?.blur()
+    clearManualSubmitSoon()
+  }
+
   function handleSelect(selectedValue: string) {
     if (isManualSubmit.current) {
       isManualSubmit.current = false
@@ -119,7 +135,7 @@ export function useComboboxState<
     const option = flatOptions.find((o) => o.value === selectedValue)
     if (option) {
       setInputValue(option.name)
-      handleValueChange(option.value)
+      onValueChange(option.value)
     }
 
     setOpen(false)
@@ -147,12 +163,8 @@ export function useComboboxState<
       )
       if (highlightedOption) {
         setInputValue(highlightedOption.name)
-        handleValueChange(highlightedOption.value)
-        setOpen(false)
-        if (!keepFocus) inputRef.current?.blur()
-        setTimeout(() => {
-          isManualSubmit.current = false
-        }, 0)
+        onValueChange(highlightedOption.value)
+        finishSubmit(keepFocus)
         return
       }
     }
@@ -166,23 +178,14 @@ export function useComboboxState<
     )
 
     if (nextSelectedOption) {
-      handleValueChange(nextSelectedOption.value)
+      onValueChange(nextSelectedOption.value)
     } else if (validateCustomValue && validateCustomValue(inputValue)) {
-      handleValueChange(inputValue)
+      onValueChange(inputValue)
     } else {
       setInputValue(currentlySelectedOption?.name || "")
     }
-    setOpen(false)
 
-    if (!keepFocus) inputRef.current?.blur()
-
-    setTimeout(() => {
-      isManualSubmit.current = false
-    }, 0)
-  }
-
-  function handleValueChange(nextValue: string) {
-    onValueChange(nextValue)
+    finishSubmit(keepFocus)
   }
 
   const handleKeyDown = useCallback((event: KeyboardEvent) => {
