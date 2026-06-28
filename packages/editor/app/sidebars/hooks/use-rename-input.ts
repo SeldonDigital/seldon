@@ -83,6 +83,7 @@ export function useRenameInput({
     ref,
     value,
     readOnly: false,
+    className: "sdn-state-editing",
     onChange: (event: ChangeEvent<HTMLInputElement>) =>
       setValue(event.currentTarget.value),
     onKeyDown: (event: KeyboardEvent<HTMLInputElement>) => {

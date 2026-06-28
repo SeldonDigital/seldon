@@ -98,6 +98,11 @@ html,
   outline: none;
 }
 
+/* Inline rename input in edit mode gets the active-swatch outline. */
+.sdn-input.sdn-state-editing {
+  outline: var(--hairline) solid var(--sdn-swatch-active);
+}
+
 .scrollbar-gutter-stable {
   scrollbar-gutter: stable;
 }

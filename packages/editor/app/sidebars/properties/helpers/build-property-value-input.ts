@@ -55,6 +55,7 @@ export function buildPropertyValueInput({
       ref: valueRef,
       value: field.value,
       readOnly: false,
+      className: "sdn-state-editing",
       autoFocus: field.autoFocus,
       onChange: (event: ChangeEvent<HTMLInputElement>) =>
         field.onValueChange(event.currentTarget.value),
@@ -95,6 +96,7 @@ export function buildPropertyValueInput({
     ref: valueRef,
     value: field.value,
     readOnly: false,
+    className: "sdn-state-editing",
     autoFocus: field.autoFocus,
     onChange: (event: ChangeEvent<HTMLInputElement>) =>
       field.onValueChange(event.currentTarget.value),
