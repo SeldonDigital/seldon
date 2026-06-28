@@ -1840,26 +1840,6 @@ body {
   color: hsl(203 100% 81%);
 }
 
-.sdn-menu:hover {
-  padding: 0;
-}
-
-.sdn-menu:hover .sdn-menu-item--rrtt {
-  background-color: hsl(203 100% 62% / 20%);
-}
-
-.sdn-menu:hover .sdn-text-label--xohb {
-  color: hsl(203 100% 81%);
-}
-
-.sdn-menu:hover .sdn-icon--xi68 {
-  color: hsl(203 100% 81%);
-}
-
-.sdn-menu:hover .sdn-text-label--fdei {
-  color: hsl(203 100% 81%);
-}
-
 .sdn-button-iconic:focus-within {
   border: var(--hairline) solid hsl(20 95% 60%);
 }

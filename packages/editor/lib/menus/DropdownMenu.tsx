@@ -1,8 +1,8 @@
 "use client"
 
 import { ReactNode, RefObject, useRef, useState } from "react"
-import { Menu } from "./Menu"
 import { MenuAlign, MenuEntry } from "./types"
+import { VMMenu } from "./VMMenu"
 
 export interface DropdownTriggerProps {
   "aria-haspopup": "menu"
@@ -59,7 +59,7 @@ export function DropdownMenu({
   return (
     <>
       {renderTrigger({ ref: triggerRef, open, toggle, triggerProps })}
-      <Menu
+      <VMMenu
         open={open}
         anchorRef={triggerRef}
         onClose={() => setOpen(false)}

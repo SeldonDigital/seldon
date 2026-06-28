@@ -1,6 +1,6 @@
 "use client"
 
-import { Menu, MenuAlign, MenuEntry } from "@lib/menus"
+import { MenuAlign, MenuEntry, VMMenu } from "@lib/menus"
 import {
   CSSProperties,
   ReactNode,
@@ -106,7 +106,7 @@ export function useRowActionsMenu(
   const closeMenu = () => setOpen(false)
   const menuAlign = options?.align ?? "end"
   const menu = hasActions ? (
-    <Menu
+    <VMMenu
       open={open}
       anchorRef={triggerRef}
       focusTargetRef={options?.focusTargetRef}

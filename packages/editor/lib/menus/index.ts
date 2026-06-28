@@ -1,4 +1,4 @@
-export { Menu } from "./Menu"
+export { VMMenu } from "./VMMenu"
 export {
   DropdownMenu,
   type DropdownRenderTriggerArgs,

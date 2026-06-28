@@ -3,17 +3,17 @@
 import {
   CSSProperties,
   RefObject,
-  forwardRef,
   useEffect,
   useMemo,
   useRef,
   useState,
 } from "react"
 import { createPortal } from "react-dom"
-import { MenuAlign, MenuEntry, MenuItem } from "./types"
+import { MenuItem } from "@seldon/components/elements/MenuItem"
+import { Menu } from "@seldon/components/parts/Menu"
+import { Hr } from "@seldon/components/primitives/Hr"
+import { MenuAlign, MenuEntry, MenuItem as MenuItemModel } from "./types"
 import { useMenuPosition } from "./use-menu-position"
-
-const HIGHLIGHT_BACKGROUND = "hsl(0 0% 100% / 0.1)"
 
 function focusReturnTarget(element: HTMLElement | null | undefined): void {
   if (!element?.isConnected) return
@@ -23,7 +23,7 @@ function focusReturnTarget(element: HTMLElement | null | undefined): void {
   element.focus({ preventScroll: true })
 }
 
-interface MenuProps {
+interface VMMenuProps {
   open: boolean
   anchorRef: RefObject<HTMLElement | null>
   onClose: () => void
@@ -35,11 +35,14 @@ interface MenuProps {
 }
 
 /**
- * A floating menu list rendered in a portal and anchored to a trigger element.
- * Replaces the Radix dropdown menu: handles outside-click and Escape to close,
- * roving-focus keyboard navigation, and restores focus to the trigger on close.
+ * View-model for the sidebar actions menu. Owns positioning, roving-focus
+ * keyboard navigation, outside-click and Escape to close, and focus restore,
+ * then renders the generated `Menu` View. Item state and visuals come from the
+ * generated component CSS: hover from `.sdn-menu-item:hover`, disabled from
+ * `aria-disabled`, active from `.sdn-state-activated`, and the highlighted item
+ * from `aria-selected` on its leaves.
  */
-export function Menu({
+export function VMMenu({
   open,
   anchorRef,
   onClose,
@@ -47,10 +50,9 @@ export function Menu({
   align = "start",
   minWidth = "180px",
   focusTargetRef,
-}: MenuProps) {
+}: VMMenuProps) {
   const position = useMenuPosition({ open, anchorRef, align })
   const menuRef = useRef<HTMLDivElement>(null)
-  const itemRefs = useRef<(HTMLButtonElement | null)[]>([])
   const [activeIndex, setActiveIndex] = useState(-1)
   const closedBySelectRef = useRef(false)
 
@@ -63,10 +65,6 @@ export function Menu({
     [items],
   )
 
-  const hasActiveItem = items.some(
-    (item) => item !== "separator" && item.active,
-  )
-
   // Highlight the first enabled item whenever the menu opens.
   useEffect(() => {
     if (open) setActiveIndex(enabledIndexes[0] ?? -1)
@@ -76,7 +74,9 @@ export function Menu({
   useEffect(() => {
     if (!open) return
     if (activeIndex >= 0) {
-      itemRefs.current[activeIndex]?.focus()
+      menuRef.current
+        ?.querySelector<HTMLElement>(`[data-menu-index="${activeIndex}"]`)
+        ?.focus()
     } else {
       menuRef.current?.focus()
     }
@@ -147,7 +147,7 @@ export function Menu({
 
   // Close before running the action, then move focus off the trigger when the
   // caller supplies a row target (for example after reset removes menu actions).
-  const handleSelect = (item: MenuItem) => {
+  const handleSelect = (item: MenuItemModel) => {
     if (item.disabled) return
     closedBySelectRef.current = true
     onClose()
@@ -166,15 +166,6 @@ export function Menu({
   const containerStyle: CSSProperties = {
     position: "fixed",
     zIndex: 50,
-    minWidth,
-    borderRadius: "0.375rem",
-    border: "1px solid #262626",
-    backgroundColor: "#333333",
-    paddingTop: "var(--sdn-padding-tight)",
-    paddingBottom: "var(--sdn-padding-tight)",
-    color: "#F5F5F5",
-    boxShadow:
-      "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
     outline: "none",
     ...position,
   }
@@ -182,137 +173,42 @@ export function Menu({
   return createPortal(
     <div
       ref={menuRef}
-      role="menu"
       tabIndex={-1}
-      aria-orientation="vertical"
       style={containerStyle}
       onKeyDown={handleKeyDown}
     >
-      {items.map((item, index) => {
-        if (item === "separator") {
-          return <MenuSeparator key={`separator-${index}`} />
-        }
-        return (
-          <MenuItemButton
-            key={item.id}
-            ref={(element) => {
-              itemRefs.current[index] = element
-            }}
-            item={item}
-            highlighted={index === activeIndex}
-            showActiveColumn={hasActiveItem}
-            onSelect={() => handleSelect(item)}
-            onPointerEnter={() => {
-              if (!item.disabled) setActiveIndex(index)
-            }}
-          />
-        )
-      })}
+      <Menu aria-orientation="vertical" style={{ minWidth }}>
+        {items.map((item, index) => {
+          if (item === "separator") {
+            return <Hr key={`separator-${index}`} />
+          }
+          const highlighted = index === activeIndex
+          return (
+            <MenuItem
+              key={item.id}
+              type="button"
+              data-menu-index={index}
+              data-testid={item.testId}
+              disabled={item.disabled}
+              aria-disabled={item.disabled || undefined}
+              tabIndex={highlighted ? 0 : -1}
+              onClick={() => handleSelect(item)}
+              onPointerEnter={() => {
+                if (!item.disabled) setActiveIndex(index)
+              }}
+              icon={null}
+              textLabel={{
+                children: item.label,
+                "aria-disabled": item.disabled ? "true" : undefined,
+                "aria-selected": highlighted ? "true" : undefined,
+                className: item.active ? "sdn-state-activated" : undefined,
+              }}
+              textLabel2={item.shortcut ? { children: item.shortcut } : null}
+            />
+          )
+        })}
+      </Menu>
     </div>,
     document.body,
   )
 }
-
-function MenuSeparator() {
-  return (
-    <div
-      style={{
-        margin: "0.25rem 0.75rem",
-        height: "1px",
-        backgroundColor: HIGHLIGHT_BACKGROUND,
-      }}
-    />
-  )
-}
-
-interface MenuItemButtonProps {
-  item: MenuItem
-  highlighted: boolean
-  showActiveColumn: boolean
-  onSelect: () => void
-  onPointerEnter: () => void
-}
-
-const MenuItemButton = forwardRef<HTMLButtonElement, MenuItemButtonProps>(
-  function MenuItemButton(
-    { item, highlighted, showActiveColumn, onSelect, onPointerEnter },
-    ref,
-  ) {
-    const itemStyle: CSSProperties = {
-      display: "flex",
-      width: "100%",
-      alignItems: "center",
-      justifyContent: "space-between",
-      gap: "1rem",
-      border: "none",
-      background:
-        highlighted && !item.disabled ? HIGHLIGHT_BACKGROUND : "transparent",
-      borderRadius: "0.125rem",
-      padding: "0.5rem 0.75rem",
-      fontSize: "var(--sdn-font-size-xsmall)",
-      textAlign: "left",
-      color: item.active ? "var(--sdn-swatch-seldon-blue)" : "#F5F5F5",
-      cursor: "default",
-      opacity: item.disabled ? 0.5 : undefined,
-      userSelect: "none",
-      outline: "none",
-    }
-
-    return (
-      <button
-        ref={ref}
-        type="button"
-        role="menuitem"
-        disabled={item.disabled}
-        aria-disabled={item.disabled || undefined}
-        tabIndex={highlighted ? 0 : -1}
-        style={itemStyle}
-        onClick={onSelect}
-        onPointerEnter={onPointerEnter}
-        data-testid={item.testId}
-      >
-        <span
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "var(--sdn-gap-compact)",
-            minWidth: 0,
-          }}
-        >
-          {showActiveColumn &&
-            (item.active ? (
-              <span
-                style={{
-                  color: "var(--sdn-swatch-seldon-blue)",
-                  fontWeight: "var(--sdn-font-weight-bold)",
-                  width: "0.75rem",
-                  textAlign: "right",
-                }}
-              >
-                {item.activeMarker === "bullet" ? "•" : "✓"}
-              </span>
-            ) : (
-              <span style={{ width: "0.75rem" }} />
-            ))}
-          {item.icon && (
-            <span style={{ display: "flex", alignItems: "center" }}>
-              {item.icon}
-            </span>
-          )}
-          <span
-            style={{
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              whiteSpace: "nowrap",
-            }}
-          >
-            {item.label}
-          </span>
-        </span>
-        {item.shortcut && (
-          <span style={{ color: "#a3a3a3" }}>{item.shortcut}</span>
-        )}
-      </button>
-    )
-  },
-)

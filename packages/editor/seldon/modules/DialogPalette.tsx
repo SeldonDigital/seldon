@@ -160,7 +160,7 @@ const sdn: DialogPaletteProps = {
     className: "sdn-button-iconic sdn-button-iconic--pgsr",
   },
   icon: {
-    icon: "seldon-component",
+    icon: "material-close",
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--umgs",
   },
