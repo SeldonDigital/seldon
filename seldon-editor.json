@@ -16986,6 +16986,16 @@
         "align": {
           "type": "option",
           "value": "left"
+        },
+        "margin": {
+          "top": {
+            "type": "theme.ordinal",
+            "value": "@margin.tight"
+          },
+          "bottom": {
+            "type": "theme.ordinal",
+            "value": "@margin.tight"
+          }
         }
       },
       "__editor": {
@@ -17835,6 +17845,16 @@
         "align": {
           "type": "option",
           "value": "left"
+        },
+        "margin": {
+          "top": {
+            "type": "theme.ordinal",
+            "value": "@margin.tight"
+          },
+          "bottom": {
+            "type": "theme.ordinal",
+            "value": "@margin.tight"
+          }
         }
       },
       "__editor": {

@@ -901,6 +901,8 @@ body {
   align-items: center;
   justify-content: start;
   gap: 0.5rem;
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
   align-self: stretch;
   height: fit-content;
   flex-shrink: 0;
@@ -935,6 +937,8 @@ body {
   align-items: center;
   justify-content: start;
   gap: 0.5rem;
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
   align-self: stretch;
   height: fit-content;
   flex-shrink: 0;
