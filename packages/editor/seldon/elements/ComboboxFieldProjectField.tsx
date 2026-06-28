@@ -140,7 +140,7 @@ const sdn: ComboboxFieldProjectFieldProps = {
     type: "text",
     role: "combobox",
     "aria-haspopup": "listbox",
-    className: "sdn-input sdn-input--iegt",
+    className: "sdn-input sdn-input--twyx",
   },
   buttonIconic: {
     className: "sdn-button-iconic sdn-button-iconic--pgsr",

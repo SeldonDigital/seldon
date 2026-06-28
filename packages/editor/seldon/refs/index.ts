@@ -41,7 +41,7 @@ export interface SeldonRefEntry {
 export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   "nodeActions": {"component":"ButtonIconic","nodeId":"component-item-CeZRPCDC","className":"sdn-button-iconic sdn-button-iconic--pgsr"},
   "nodeIcon": {"component":"Icon","nodeId":"component-item-zdDEhaL4","className":"sdn-icon sdn-icon--xi68"},
-  "nodeLabel": {"component":"Input","nodeId":"component-item-pZCfJ3k6","className":"sdn-input sdn-input--iegt"},
+  "nodeLabel": {"component":"Input","nodeId":"component-item-pZCfJ3k6","className":"sdn-input sdn-input--pzcf"},
   "nodeToggle": {"component":"ButtonIconic","nodeId":"component-item-HSgjhz6b","className":"sdn-button-iconic sdn-button-iconic--pgsr"},
   "nodeToggleIcon": {"component":"Icon","nodeId":"component-item-zn8GFZsT","className":"sdn-icon sdn-icon--vsau"},
   "optionIcon": {"component":"Icon","nodeId":"component-icon-3QOuNmn2","className":"sdn-icon sdn-icon--xi68"},

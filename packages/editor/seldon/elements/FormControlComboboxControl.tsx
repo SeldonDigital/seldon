@@ -186,7 +186,7 @@ const sdn: FormControlComboboxControlProps = {
     type: "text",
     role: "combobox",
     "aria-haspopup": "listbox",
-    className: "sdn-input sdn-input--yoqi",
+    className: "sdn-input sdn-input--9vqu",
   },
   buttonIconic: {
     className: "sdn-button-iconic sdn-button-iconic--pgsr",

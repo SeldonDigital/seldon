@@ -396,7 +396,7 @@ const sdn: ListboxGroupedListboxProps = {
     className: "sdn-frame sdn-frame--6o7x",
   },
   textLabel4: {
-    className: "sdn-text-label sdn-text-label--oqkb",
+    className: "sdn-text-label sdn-text-label--ptvk",
   },
   listboxOption3: {
     className: "sdn-listbox-option sdn-listbox-option--6dxl",
