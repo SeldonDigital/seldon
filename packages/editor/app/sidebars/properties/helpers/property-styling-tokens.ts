@@ -1,5 +1,4 @@
 import { CSSProperties } from "react"
-import { subPropertyRowBackground } from "../../helpers/sidebar-styles"
 import { FlatProperty } from "./properties-data"
 import { getPropertyDisplayColor } from "./property-styling"
 
@@ -17,28 +16,6 @@ export function getPropertyDisplayColorValue(
   debugMode: boolean = false,
 ): string {
   return getPropertyDisplayColor(property, debugMode)
-}
-
-/**
- * Gets the style object for a property row using Seldon theme tokens
- */
-export function getPropertyRowStyle(
-  property: FlatProperty,
-  debugMode: boolean = false,
-): CSSProperties {
-  const color = getPropertyDisplayColorValue(property, debugMode)
-
-  return {
-    color,
-    paddingRight: "var(--sdn-padding-tight)",
-    paddingTop: "var(--sdn-padding-tight)",
-    paddingBottom: "var(--sdn-padding-tight)",
-    ...(property.isSubProperty
-      ? {
-          backgroundColor: subPropertyRowBackground,
-        }
-      : {}),
-  }
 }
 
 /**

@@ -8,7 +8,7 @@ import {
   comboboxWrapperStyle,
 } from "./combobox-styles"
 
-export interface InputProps {
+interface InputProps {
   mode?: "combobox" | "standalone"
   value: string
   onValueChange: (value: string) => void

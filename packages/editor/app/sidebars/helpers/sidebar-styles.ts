@@ -1,25 +1,5 @@
 import { CSSProperties } from "react"
 
-export const sidebarShellStyle: CSSProperties = {
-  display: "flex",
-  flexDirection: "column",
-  width: "100%",
-  height: "100%",
-  minHeight: 0,
-  minWidth: 0,
-  overflow: "hidden",
-  backgroundColor: "var(--sdn-seldon-swatch-charcoal)",
-}
-
-export const sidebarNoSelectionStyle: CSSProperties = {
-  height: "100%",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  padding: "var(--sdn-padding-cozy, 1rem)",
-  backgroundColor: "var(--sdn-seldon-swatch-charcoal)",
-}
-
 export const propertyControlTextStyle: CSSProperties = {
   fontFamily: "var(--sdn-seldon-font-family-primary)",
   fontSize: "var(--sdn-font-size-xsmall)",

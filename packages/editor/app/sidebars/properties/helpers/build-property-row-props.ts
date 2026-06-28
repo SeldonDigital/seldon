@@ -1,9 +1,6 @@
 import { CSSProperties, MouseEvent } from "react"
 import { IconProps } from "@seldon/components/primitives/Icon"
-import {
-  ICONIC_BUTTON_ATTR,
-  ICONIC_BUTTON_SELECTOR,
-} from "../../helpers/iconic-button"
+import { ICONIC_BUTTON_ATTR } from "../../helpers/iconic-button"
 import { FlatProperty } from "./properties-data"
 import {
   getDisclosureButtonStyle,
@@ -24,8 +21,6 @@ const CHEVRON_ICON = "material-chevronRight" as const
 const FRAME_REF_ATTR = "data-frame-ref"
 const FRAME_REF_VALUE = "true"
 export const FRAME_REF_SELECTOR = `[${FRAME_REF_ATTR}="${FRAME_REF_VALUE}"]`
-
-export { ICONIC_BUTTON_ATTR, ICONIC_BUTTON_SELECTOR }
 
 interface BuildPropertyRowPropsInput {
   property: FlatProperty

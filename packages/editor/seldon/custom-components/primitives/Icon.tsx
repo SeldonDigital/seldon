@@ -23,7 +23,7 @@ import { IconCustomThemeColorValue } from "../icons/ThemeColor"
  * The `icon-custom-device-*` ids back the board device-preset picker and render
  * exported material glyphs from `icons/`.
  */
-export type DynamicIconId =
+type DynamicIconId =
   | "icon-custom-boolean-value"
   | "icon-custom-color-value"
   | "icon-custom-theme-color-value"

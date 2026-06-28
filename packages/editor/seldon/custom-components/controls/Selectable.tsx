@@ -7,12 +7,12 @@ type SelectableProps = {
   variant?: "outline" | "ghost"
 }
 
-export type SelectableButton = ButtonHTMLAttributes<HTMLButtonElement> &
+type SelectableButton = ButtonHTMLAttributes<HTMLButtonElement> &
   SelectableProps & {
     as: "button"
     ref?: Ref<HTMLButtonElement>
   }
-export type SelectableDiv = HTMLAttributes<HTMLDivElement> &
+type SelectableDiv = HTMLAttributes<HTMLDivElement> &
   SelectableProps & {
     as: "div"
     ref?: Ref<HTMLDivElement>

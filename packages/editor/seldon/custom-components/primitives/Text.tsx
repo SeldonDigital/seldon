@@ -22,7 +22,7 @@ type Variant =
   | "headline"
   | "display"
 
-export type TextProps = HTMLAttributes<HTMLElement> & {
+type TextProps = HTMLAttributes<HTMLElement> & {
   variant?: Variant
   as?: As
   htmlFor?: string

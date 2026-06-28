@@ -15,7 +15,7 @@ import { InputHTMLAttributes } from "react"
 import { HTMLInput } from "../../native-react/HTML.Input"
 import { combineClassNames } from "../../utils/class-name"
 
-export interface InputEditorProps extends InputHTMLAttributes<HTMLInputElement> {
+interface InputEditorProps extends InputHTMLAttributes<HTMLInputElement> {
   className?: string
   type?:
     | "text"
