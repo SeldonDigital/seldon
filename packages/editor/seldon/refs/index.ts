@@ -23,10 +23,10 @@ export type SeldonRef =
   | "objectsContainer"
   | "optionIcon"
   | "optionLabel"
-  | "proeprtiesContainer"
   | "projectActions"
   | "projectIcon"
   | "projectLabel"
+  | "propertiesContainer"
   | "propertyActions"
   | "propertyLabel"
   | "propertyToggle"
@@ -61,10 +61,10 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   "objectsContainer": {"component":"Frame","nodeId":"component-sidebar-ENPyLuzb","className":"sdn-frame sdn-frame--enpy"},
   "optionIcon": {"component":"Icon","nodeId":"component-icon-3QOuNmn2","className":"sdn-icon sdn-icon--xi68"},
   "optionLabel": {"component":"TextLabel","nodeId":"component-text-xOhbdtNu","className":"sdn-text-label sdn-text-label--xohb"},
-  "proeprtiesContainer": {"component":"Frame","nodeId":"component-sidebar-evMwxVOP","className":"sdn-frame sdn-frame--enpy"},
   "projectActions": {"component":"ButtonIconic","nodeId":"component-comboboxField-Td9lePEX","className":"sdn-button-iconic sdn-button-iconic--pgsr"},
   "projectIcon": {"component":"Icon","nodeId":"component-comboboxField-h6DYE6Jl","className":"sdn-icon sdn-icon--xi68"},
   "projectLabel": {"component":"Input","nodeId":"component-comboboxField-Umc9UbAs","className":"sdn-input sdn-input--twyx"},
+  "propertiesContainer": {"component":"Frame","nodeId":"component-sidebar-evMwxVOP","className":"sdn-frame sdn-frame--enpy"},
   "propertyActions": {"component":"ButtonIconic","nodeId":"component-button-CGRbb6mm","className":"sdn-button-iconic sdn-button-iconic--pgsr"},
   "propertyLabel": {"component":"TextLabel","nodeId":"component-text-Xg6PReX9","className":"sdn-text-label sdn-text-label--xg6p"},
   "propertyToggle": {"component":"ButtonIconic","nodeId":"component-button-iVVLVSBT","className":"sdn-button-iconic sdn-button-iconic--pgsr"},
