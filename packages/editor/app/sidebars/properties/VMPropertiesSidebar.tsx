@@ -25,6 +25,7 @@ import {
   useRevealedBorderSides,
 } from "./hooks/use-border-side-visibility"
 import { useLayerDragMonitor } from "./hooks/use-layer-drag-monitor"
+import { useFilterInput } from "./hooks/use-filter-input"
 import { usePropertiesSidebar } from "./hooks/use-properties-sidebar"
 import { PropertyEditNavigationProvider } from "./hooks/use-property-edit-navigation"
 import { useIsCategoryExpanded } from "./hooks/use-property-expansion"
@@ -41,6 +42,7 @@ import {
 } from "./helpers/editing-contexts"
 import { PropertySection } from "./helpers/get-property-sections"
 import { ThemePropertySection } from "./helpers/get-theme-property-sections"
+import { filterPropertySections } from "./helpers/filter-property-sections"
 import { getIconRowCategory } from "./helpers/icon-set-properties-data"
 import {
   FlatProperty,
@@ -81,6 +83,7 @@ export interface PropertyTreeProps {
  */
 export function VMPropertiesSidebar() {
   const state = usePropertiesSidebar()
+  const filter = useFilterInput()
 
   // Selecting a node rebuilds and remounts the whole inspector, which is heavy
   // enough to block the triggering click. Render the tree from a deferred copy
@@ -91,12 +94,24 @@ export function VMPropertiesSidebar() {
   // would not.
   const deferredState = useDeferredValue(state)
 
+  // Live-filter the rendered rows by label or current value. The lookup table
+  // (`allProperties`) stays full so a matched compound or shorthand parent can
+  // still resolve its child rows.
+  const sections = useMemo(
+    () =>
+      deferredState.kind === "tree"
+        ? filterPropertySections(deferredState.treeProps.sections, filter.query)
+        : [],
+    [deferredState, filter.query],
+  )
+
   if (deferredState.kind === "empty") {
     return (
       <SidebarProperties
         data-testid="properties-sidebar"
-        comboboxFieldFilterField={{}}
-        input={{ readOnly: true }}
+        comboboxFieldFilterField={filter.comboboxField}
+        input={filter.input}
+        buttonIconic={filter.buttonIconic}
         style={styles.sidebar}
       />
     )
@@ -105,15 +120,16 @@ export function VMPropertiesSidebar() {
   const seldonRefs = {
     propertiesContainer: {
       style: styles.frame,
-      children: <PropertiesTree {...deferredState.treeProps} />,
+      children: <PropertiesTree {...deferredState.treeProps} sections={sections} />,
     },
   }
 
   return (
     <SidebarProperties
       data-testid="properties-sidebar"
-      comboboxFieldFilterField={{}}
-      input={{ readOnly: true }}
+      comboboxFieldFilterField={filter.comboboxField}
+      input={filter.input}
+      buttonIconic={filter.buttonIconic}
       seldonRefs={seldonRefs}
       style={styles.sidebar}
     />
