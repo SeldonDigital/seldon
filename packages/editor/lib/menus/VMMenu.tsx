@@ -25,10 +25,19 @@ function focusReturnTarget(element: HTMLElement | null | undefined): void {
 }
 
 /**
- * Leading marker for the active column. Active items render a check (or radio
- * dot for `bullet` sets) tinted via the activated leaf state; inactive items
- * render the same glyph hidden so labels stay aligned. Returns null when the
- * menu has no markable items, dropping the column entirely.
+ * Whether an item shows the leading marker. `selected` drives it when set, so an
+ * item can be marked without the activated tint or tinted without a marker. When
+ * `selected` is omitted the marker follows `active` for plain toggle menus.
+ */
+function isMarked(item: MenuItemModel): boolean {
+  return item.selected ?? Boolean(item.active)
+}
+
+/**
+ * Leading marker for the active column. Marked items render a check (or radio
+ * dot for `bullet` sets), tinted only when the item is also activated; unmarked
+ * items render the same glyph hidden so labels stay aligned. Returns null when
+ * the menu has no markable items, dropping the column entirely.
  */
 function markerIconProps(
   item: MenuItemModel,
@@ -39,8 +48,12 @@ function markerIconProps(
     item.activeMarker === "bullet"
       ? "material-radioButtonChecked"
       : "material-check"
-  if (item.active) {
-    return { icon: glyph, "aria-hidden": "true", className: "sdn-state-activated" }
+  if (isMarked(item)) {
+    return {
+      icon: glyph,
+      "aria-hidden": "true",
+      className: item.active ? "sdn-state-activated" : undefined,
+    }
   }
   return { icon: glyph, "aria-hidden": "true", style: { visibility: "hidden" } }
 }
@@ -131,7 +144,7 @@ export function VMMenu({
   if (!open) return null
 
   const showMarkerColumn = items.some(
-    (item) => item !== "separator" && Boolean(item.active),
+    (item) => item !== "separator" && isMarked(item),
   )
 
   const moveActive = (direction: 1 | -1) => {
@@ -227,6 +240,7 @@ export function VMMenu({
                 children: item.label,
                 "aria-disabled": item.disabled ? "true" : undefined,
                 className: item.active ? "sdn-state-activated" : undefined,
+                style: item.labelStyle,
               }}
               textLabel2={item.shortcut ? { children: item.shortcut } : null}
             />

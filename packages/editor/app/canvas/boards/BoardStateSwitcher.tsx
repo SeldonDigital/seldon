@@ -1,15 +1,6 @@
 "use client"
 
-import { COLORS } from "@lib/helpers/colors"
-import {
-  CSSProperties,
-  Fragment,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react"
-import { createPortal } from "react-dom"
+import { CSSProperties, useMemo, useState } from "react"
 import {
   type CustomState,
   NORMAL_STATE,
@@ -19,13 +10,16 @@ import {
   type ReservedStateName,
 } from "@seldon/core/workspace/model/node-state"
 import { parseNodeLink } from "@seldon/core/workspace/model/template-ref"
+import type { EntryNode } from "@seldon/core/workspace/types"
+import { DropdownMenu, MenuEntry, MenuItem } from "@lib/menus"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
+import { walkComponentTree } from "@lib/workspace/component-tree"
+import { Combobox } from "@seldon/components/custom-components/controls/combobox/Combobox"
+import { FloatingPanel } from "../../panels/FloatingPanel"
 import {
   useActiveBoardState,
   useBoardStateStore,
 } from "../hooks/use-board-state-store"
-import { walkComponentTree } from "@lib/workspace/component-tree"
-import { Combobox } from "@seldon/components/custom-components/controls/combobox/Combobox"
 
 interface BoardStateSwitcherProps {
   boardKey: string
@@ -52,51 +46,16 @@ const triggerStyle: CSSProperties = {
   cursor: "pointer",
 }
 
-// The menu portals to the document body so it escapes the canvas transform
-// stacking context. Otherwise the selection and hover outlines, which paint at
-// the canvas level, draw over it. A high z-index keeps it above that overlay
-// layer. Positioning is fixed to the trigger's measured rect.
-const menuStyle: CSSProperties = {
-  position: "fixed",
-  minWidth: 180,
-  padding: 4,
-  borderRadius: 6,
-  background: "#1f1f22",
-  border: "1px solid rgba(255,255,255,0.12)",
-  boxShadow: "0 8px 24px rgba(0,0,0,0.4)",
-  zIndex: 1000,
-}
-
-const itemStyle: CSSProperties = {
+const dialogBodyStyle: CSSProperties = {
   display: "flex",
-  alignItems: "center",
-  justifyContent: "space-between",
+  flexDirection: "column",
   gap: 8,
-  height: 24,
-  padding: "0 8px",
-  borderRadius: 4,
-  color: "rgba(255,255,255,0.85)",
-  font: "400 12px/1 system-ui, sans-serif",
-  cursor: "pointer",
+  padding: 12,
 }
 
-const overriddenItemStyle: CSSProperties = {
-  ...itemStyle,
-  color: COLORS.primary[500],
-}
-
-const separatorStyle: CSSProperties = {
-  height: 1,
-  margin: "4px 0",
-  background: "rgba(255,255,255,0.1)",
-}
-
-const editButtonStyle: CSSProperties = {
-  border: "none",
-  background: "transparent",
-  color: "rgba(255,255,255,0.5)",
+const dialogFieldLabelStyle: CSSProperties = {
+  color: "rgba(255,255,255,0.55)",
   font: "400 11px/1 system-ui, sans-serif",
-  cursor: "pointer",
 }
 
 /** Derives a stable custom-state key from a typed name. */
@@ -118,137 +77,77 @@ function stateLabel(state: NodeState, customStates: CustomState[]): string {
 
 /**
  * On-canvas interaction-state switcher. Sits just above the board and selects
- * the active state for the whole board tree. Adding and renaming custom states
- * go only through core actions, never by mutating the registry directly.
+ * the active state for the whole board tree. The dropdown chrome, positioning,
+ * keyboard navigation, and dismissal come from the shared `DropdownMenu`. Adding
+ * and renaming custom states open small dialogs and go only through core
+ * actions, never by mutating the registry directly.
  */
 export function BoardStateSwitcher({ boardKey }: BoardStateSwitcherProps) {
   const { workspace, dispatch } = useWorkspace()
   const activeState = useActiveBoardState(boardKey)
   const setActiveState = useBoardStateStore((store) => store.setActiveState)
 
-  const [open, setOpen] = useState(false)
-  const [adding, setAdding] = useState(false)
+  const [addOpen, setAddOpen] = useState(false)
   const [addValue, setAddValue] = useState("")
-  const [renamingKey, setRenamingKey] = useState<string | null>(null)
-  const [renameValue, setRenameValue] = useState("")
-  const [triggerRect, setTriggerRect] = useState<DOMRect | null>(null)
-  const wrapperRef = useRef<HTMLDivElement>(null)
-  const triggerRef = useRef<HTMLButtonElement>(null)
-  const menuRef = useRef<HTMLDivElement>(null)
+  const [renameOpen, setRenameOpen] = useState(false)
+  const [renameDrafts, setRenameDrafts] = useState<Record<string, string>>({})
 
   const customStates = useMemo(
     () => workspace.metadata.customStates ?? [],
     [workspace.metadata.customStates],
   )
 
-  // Collect every state key that carries overrides anywhere in the board tree.
-  // Only variants author states; a child instance inherits them from its source
-  // variant. So each tree node is followed up its template chain, and a state is
-  // marked when any node on that chain has a non-empty bag for it. This way a
-  // state lights up when the variant or any of its children show an override in
-  // it. The Normal layer lives in `overrides`, not in `states`.
-  const statesWithOverrides = useMemo(() => {
-    const set = new Set<NodeState>()
+  // Split states that carry overrides into two sets so the menu can show a
+  // distinct indicator for each. A state is followed up each node's template
+  // chain, so it lights up when the variant or any of its children author it.
+  // The root ref (no parent) feeds `ownOverride`; descendants feed `childOnly`.
+  // The Normal layer lives in `overrides`, not `states`, so it never appears.
+  const { ownOverrideStates, childOverrideStates } = useMemo(() => {
+    const ownOverride = new Set<NodeState>()
+    const childOverride = new Set<NodeState>()
     const board = workspace.boards[boardKey]
-    if (!board) return set
+    if (!board) return { ownOverrideStates: ownOverride, childOverrideStates: childOverride }
 
-    const addStatesFromChain = (startId: string) => {
+    const addStatesFromChain = (startId: string, target: Set<NodeState>) => {
       const visited = new Set<string>()
       let currentId: string | null = startId
       while (currentId && !visited.has(currentId)) {
         visited.add(currentId)
-        const node = workspace.nodes[currentId]
+        const node: EntryNode | undefined = workspace.nodes[currentId]
         if (!node) break
         if (node.states) {
           for (const [state, bag] of Object.entries(node.states)) {
-            if (bag && Object.keys(bag).length > 0) set.add(state)
+            if (bag && Object.keys(bag).length > 0) target.add(state)
           }
         }
         currentId = parseNodeLink(node.template)?.nodeId ?? null
       }
     }
 
-    walkComponentTree(board, (ref) => {
-      addStatesFromChain(ref.id)
+    walkComponentTree(board, (ref, parent) => {
+      addStatesFromChain(ref.id, parent === null ? ownOverride : childOverride)
     })
-    return set
+    return { ownOverrideStates: ownOverride, childOverrideStates: childOverride }
   }, [workspace.boards, workspace.nodes, boardKey])
 
-  const closeMenu = () => {
-    setOpen(false)
-    setAdding(false)
+  const select = (state: NodeState) => setActiveState(boardKey, state)
+
+  const openAddDialog = () => {
     setAddValue("")
-    setRenamingKey(null)
-    setRenameValue("")
+    setAddOpen(true)
   }
 
-  // Dismiss the menu on an outside click or Escape so it behaves like a popover.
-  // The menu is portaled outside the wrapper, so a click inside it must also
-  // count as inside to keep item handlers from being torn down before they fire.
-  useEffect(() => {
-    if (!open) return
-
-    const handlePointerDown = (event: PointerEvent) => {
-      const target = event.target as Node
-      if (
-        !wrapperRef.current?.contains(target) &&
-        !menuRef.current?.contains(target)
-      ) {
-        closeMenu()
-      }
-    }
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") closeMenu()
-    }
-
-    document.addEventListener("pointerdown", handlePointerDown, true)
-    document.addEventListener("keydown", handleKeyDown)
-    return () => {
-      document.removeEventListener("pointerdown", handlePointerDown, true)
-      document.removeEventListener("keydown", handleKeyDown)
-    }
-  }, [open])
-
-  // Track the trigger rect while open so the portaled menu stays anchored to it
-  // through canvas pan, zoom, and window resize.
-  useEffect(() => {
-    if (!open) return
-
-    const updateRect = () => {
-      if (triggerRef.current) {
-        setTriggerRect(triggerRef.current.getBoundingClientRect())
-      }
-    }
-
-    updateRect()
-    window.addEventListener("scroll", updateRect, true)
-    window.addEventListener("resize", updateRect)
-    return () => {
-      window.removeEventListener("scroll", updateRect, true)
-      window.removeEventListener("resize", updateRect)
-    }
-  }, [open])
-
-  const select = (state: NodeState) => {
-    setActiveState(boardKey, state)
-    closeMenu()
+  const openRenameDialog = () => {
+    setRenameDrafts(
+      Object.fromEntries(customStates.map((entry) => [entry.key, entry.label])),
+    )
+    setRenameOpen(true)
   }
-
-  const renderReservedState = (state: ReservedStateName) => (
-    <div
-      key={state}
-      style={statesWithOverrides.has(state) ? overriddenItemStyle : itemStyle}
-      onClick={() => select(state)}
-    >
-      {RESERVED_STATE_LABELS[state]}
-    </div>
-  )
 
   const commitAdd = (value: string) => {
     const key = toStateKey(value)
     const label = value.trim()
-    setAdding(false)
-    setAddValue("")
+    setAddOpen(false)
     if (!key || key in RESERVED_STATE_LABELS) return
     if (customStates.some((entry) => entry.key === key)) {
       select(key)
@@ -260,127 +159,126 @@ export function BoardStateSwitcher({ boardKey }: BoardStateSwitcherProps) {
 
   const commitRename = (key: string, value: string) => {
     const label = value.trim()
-    setRenamingKey(null)
-    setRenameValue("")
     if (label.length === 0) return
     dispatch({ type: "rename_custom_state", payload: { key, label } })
   }
 
+  // Builds a selectable state row. `selected` drives the leading radio for the
+  // current state, `active` tints rows whose own node carries overrides, and the
+  // punch accent colors rows where only descendants carry overrides.
+  const stateItem = (state: NodeState, label: string): MenuItem => {
+    const childOnly =
+      childOverrideStates.has(state) && !ownOverrideStates.has(state)
+    return {
+      id: `state-${state}`,
+      label,
+      onSelect: () => select(state),
+      selected: state === activeState,
+      activeMarker: "bullet",
+      active: ownOverrideStates.has(state),
+      labelStyle: childOnly ? { color: "var(--sdn-swatch-punch)" } : undefined,
+      testId: `board-state-${state}`,
+    }
+  }
+
+  const items: MenuEntry[] = [stateItem(NORMAL_STATE, "Normal")]
+
+  for (const group of RESERVED_STATE_GROUPS) {
+    items.push("separator")
+    for (const state of group.states) {
+      items.push(stateItem(state, RESERVED_STATE_LABELS[state]))
+    }
+  }
+
+  if (customStates.length > 0) {
+    items.push("separator")
+    for (const entry of customStates) {
+      items.push(stateItem(entry.key, entry.label))
+    }
+  }
+
+  items.push("separator")
+  items.push({
+    id: "add-custom-state",
+    label: "Add custom state...",
+    onSelect: openAddDialog,
+    testId: "board-state-add",
+  })
+  if (customStates.length > 0) {
+    items.push({
+      id: "rename-custom-state",
+      label: "Rename custom state...",
+      onSelect: openRenameDialog,
+      testId: "board-state-rename",
+    })
+  }
+
   return (
     <div
-      ref={wrapperRef}
       style={wrapperStyle}
       onClick={(event) => event.stopPropagation()}
     >
-      <button
-        ref={triggerRef}
-        type="button"
-        style={triggerStyle}
-        onClick={() => {
-          if (open) {
-            closeMenu()
-            return
-          }
-          if (triggerRef.current) {
-            setTriggerRect(triggerRef.current.getBoundingClientRect())
-          }
-          setOpen(true)
-        }}
-      >
-        {stateLabel(activeState, customStates)}
-        <span aria-hidden>▾</span>
-      </button>
+      <DropdownMenu
+        items={items}
+        renderTrigger={({ ref, triggerProps }) => (
+          <button ref={ref} type="button" style={triggerStyle} {...triggerProps}>
+            {stateLabel(activeState, customStates)}
+            <span aria-hidden>▾</span>
+          </button>
+        )}
+      />
 
-      {open &&
-        triggerRect &&
-        typeof document !== "undefined" &&
-        createPortal(
-          <div
-            ref={menuRef}
-            style={{
-              ...menuStyle,
-              top: triggerRect.bottom + 4,
-              left: triggerRect.left,
-            }}
-            role="menu"
-            onClick={(event) => event.stopPropagation()}
-          >
-            <div style={itemStyle} onClick={() => select(NORMAL_STATE)}>
-              Normal
-            </div>
+      {addOpen && (
+        <FloatingPanel
+          handleClose={() => setAddOpen(false)}
+          title="Add custom state"
+          initialWidth={320}
+          initialHeight={150}
+          closeOnClickOutside
+          testId="add-custom-state-dialog"
+        >
+          <div style={dialogBodyStyle}>
+            <span style={dialogFieldLabelStyle}>State name</span>
+            <Combobox
+              mode="standalone"
+              value={addValue}
+              onValueChange={setAddValue}
+              onSubmit={commitAdd}
+              onCancel={() => setAddOpen(false)}
+              placeholder="New state name"
+            />
+          </div>
+        </FloatingPanel>
+      )}
 
-            {RESERVED_STATE_GROUPS.map((group) => (
-              <Fragment key={group.expression}>
-                <div style={separatorStyle} />
-                {group.states.map(renderReservedState)}
-              </Fragment>
-            ))}
-
-            {customStates.length > 0 && <div style={separatorStyle} />}
-
-            {customStates.map((entry) =>
-              renamingKey === entry.key ? (
-                <div key={entry.key} style={{ padding: "2px 4px" }}>
-                  <Combobox
-                    mode="standalone"
-                    value={renameValue}
-                    onValueChange={setRenameValue}
-                    onSubmit={(value) => commitRename(entry.key, value)}
-                    onCancel={() => setRenamingKey(null)}
-                    placeholder="State name"
-                  />
-                </div>
-              ) : (
-                <div key={entry.key} style={itemStyle}>
-                  <span
-                    style={{
-                      flex: 1,
-                      color: statesWithOverrides.has(entry.key)
-                        ? COLORS.primary[500]
-                        : undefined,
-                    }}
-                    onClick={() => select(entry.key)}
-                  >
-                    {entry.label}
-                  </span>
-                  <button
-                    type="button"
-                    style={editButtonStyle}
-                    onClick={() => {
-                      setRenamingKey(entry.key)
-                      setRenameValue(entry.label)
-                    }}
-                  >
-                    Rename
-                  </button>
-                </div>
-              ),
-            )}
-
-            <div style={separatorStyle} />
-
-            {adding ? (
-              <div style={{ padding: "2px 4px" }}>
+      {renameOpen && (
+        <FloatingPanel
+          handleClose={() => setRenameOpen(false)}
+          title="Rename custom state"
+          initialWidth={320}
+          initialHeight={Math.min(140 + customStates.length * 48, 420)}
+          closeOnClickOutside
+          testId="rename-custom-state-dialog"
+        >
+          <div style={dialogBodyStyle}>
+            {customStates.map((entry) => (
+              <div key={entry.key} style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                <span style={dialogFieldLabelStyle}>{entry.key}</span>
                 <Combobox
                   mode="standalone"
-                  value={addValue}
-                  onValueChange={setAddValue}
-                  onSubmit={commitAdd}
-                  onCancel={() => {
-                    setAdding(false)
-                    setAddValue("")
-                  }}
-                  placeholder="New state name"
+                  value={renameDrafts[entry.key] ?? entry.label}
+                  onValueChange={(value) =>
+                    setRenameDrafts((drafts) => ({ ...drafts, [entry.key]: value }))
+                  }
+                  onSubmit={(value) => commitRename(entry.key, value)}
+                  autoFocus={false}
+                  placeholder="State name"
                 />
               </div>
-            ) : (
-              <div style={itemStyle} onClick={() => setAdding(true)}>
-                Add custom state...
-              </div>
-            )}
-          </div>,
-          document.body,
-        )}
+            ))}
+          </div>
+        </FloatingPanel>
+      )}
     </div>
   )
 }

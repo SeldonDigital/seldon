@@ -1,4 +1,4 @@
-import { ReactNode } from "react"
+import { CSSProperties, ReactNode } from "react"
 
 export type MenuItemId = string
 
@@ -11,10 +11,18 @@ export interface MenuItem {
   label: string
   onSelect?: () => void
   disabled?: boolean
-  /** Renders the active marker and accent color for toggled items. */
+  /** Renders the activated accent color (blue tint) on the label. */
   active?: boolean
-  /** Marker shown when `active`. Defaults to a check; `"bullet"` for radio sets. */
+  /**
+   * Renders the leading marker for the chosen item in a radio or checkbox set.
+   * Independent of `active` so an item can be tinted without a marker, or
+   * marked without a tint. When omitted, the marker follows `active`.
+   */
+  selected?: boolean
+  /** Marker glyph when marked. Defaults to a check; `"bullet"` for radio sets. */
   activeMarker?: "check" | "bullet"
+  /** Extra style applied to the item label, e.g. an accent text color. */
+  labelStyle?: CSSProperties
   shortcut?: string
   icon?: ReactNode
   /** Optional value for the rendered item's `data-testid`. */
