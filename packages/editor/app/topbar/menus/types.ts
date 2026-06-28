@@ -43,21 +43,3 @@ export interface MenuDropdown {
  * Configuration for the entire menu bar
  */
 export type MenuConfig = MenuDropdown[]
-
-/**
- * Configuration for the toolbar section
- */
-export interface ToolbarConfig {
-  /** Should the toolbar be shown */
-  visible: boolean
-}
-
-/**
- * Configuration for all header elements
- */
-export interface HeaderConfig {
-  /** Menu bar configuration */
-  menuConfig: MenuConfig
-  /** Toolbar configuration */
-  toolbarConfig: ToolbarConfig
-}

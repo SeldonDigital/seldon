@@ -33,17 +33,12 @@ import { useTool } from "@lib/hooks/use-tool"
 import { useZoomControls } from "@lib/hooks/use-zoom-controls"
 import { resolveComponentKey } from "@lib/workspace/workspace-accessors"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
-import {
-  HeaderConfig,
-  MenuConfig,
-  MenuItem,
-  ToolbarConfig,
-} from "../menus/types"
+import { MenuConfig, MenuItem } from "../menus/types"
 
 /**
- * Builds header configuration with all required menus and actions
+ * Builds the topbar menu configuration with all required menus and actions.
  */
-export function useMenuConfig(): HeaderConfig {
+export function useMenuConfig(): MenuConfig {
   // Import all the necessary hooks for the menu actions
   const navigate = useNavigate()
   const { isInPreviewMode, togglePreviewMode } = usePreview()
@@ -578,6 +573,7 @@ export function useMenuConfig(): HeaderConfig {
             action: togglePreviewMode,
             active: isInPreviewMode,
             shortcut: "P",
+            enabled: false,
           },
           {
             id: "toggle-ui",
@@ -732,16 +728,5 @@ export function useMenuConfig(): HeaderConfig {
     ],
   )
 
-  // Tools render in the header, so the separate toolbar stays hidden.
-  const toolbarConfig: ToolbarConfig = useMemo(
-    () => ({
-      visible: false,
-    }),
-    [],
-  )
-
-  return {
-    menuConfig,
-    toolbarConfig,
-  }
+  return menuConfig
 }

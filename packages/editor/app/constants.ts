@@ -1,5 +1,3 @@
-export const HEADER_HEIGHT = 52
-
 export const PANEL_MIN_WIDTH = 300
 export const PANEL_MIN_HEIGHT = 300
 export const PANEL_INITIAL_WIDTH = 520
