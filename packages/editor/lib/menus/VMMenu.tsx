@@ -12,6 +12,7 @@ import { createPortal } from "react-dom"
 import { MenuItem } from "@seldon/components/elements/MenuItem"
 import { Menu } from "@seldon/components/parts/Menu"
 import { Hr } from "@seldon/components/primitives/Hr"
+import { IconProps } from "@seldon/components/primitives/Icon"
 import { MenuAlign, MenuEntry, MenuItem as MenuItemModel } from "./types"
 import { useMenuPosition } from "./use-menu-position"
 
@@ -21,6 +22,27 @@ function focusReturnTarget(element: HTMLElement | null | undefined): void {
     element.tabIndex = -1
   }
   element.focus({ preventScroll: true })
+}
+
+/**
+ * Leading marker for the active column. Active items render a check (or radio
+ * dot for `bullet` sets) tinted via the activated leaf state; inactive items
+ * render the same glyph hidden so labels stay aligned. Returns null when the
+ * menu has no markable items, dropping the column entirely.
+ */
+function markerIconProps(
+  item: MenuItemModel,
+  showColumn: boolean,
+): IconProps | null {
+  if (!showColumn) return null
+  const glyph =
+    item.activeMarker === "bullet"
+      ? "material-radioButtonChecked"
+      : "material-check"
+  if (item.active) {
+    return { icon: glyph, "aria-hidden": "true", className: "sdn-state-activated" }
+  }
+  return { icon: glyph, "aria-hidden": "true", style: { visibility: "hidden" } }
 }
 
 interface VMMenuProps {
@@ -107,6 +129,10 @@ export function VMMenu({
 
   if (open && typeof document === "undefined") return null
   if (!open) return null
+
+  const showMarkerColumn = items.some(
+    (item) => item !== "separator" && Boolean(item.active),
+  )
 
   const moveActive = (direction: 1 | -1) => {
     if (enabledIndexes.length === 0) return
@@ -196,11 +222,10 @@ export function VMMenu({
               onPointerEnter={() => {
                 if (!item.disabled) setActiveIndex(index)
               }}
-              icon={null}
+              icon={markerIconProps(item, showMarkerColumn)}
               textLabel={{
                 children: item.label,
                 "aria-disabled": item.disabled ? "true" : undefined,
-                "aria-selected": highlighted ? "true" : undefined,
                 className: item.active ? "sdn-state-activated" : undefined,
               }}
               textLabel2={item.shortcut ? { children: item.shortcut } : null}

@@ -527,6 +527,7 @@ body {
 }
 
 .sdn-combobox {
+  cursor: pointer;
   flex-wrap: nowrap;
   display: flex;
   flex-direction: column;
@@ -756,6 +757,7 @@ body {
 }
 
 .sdn-item {
+  cursor: pointer;
   flex-wrap: nowrap;
   display: flex;
   flex-direction: row;
@@ -769,6 +771,7 @@ body {
 }
 
 .sdn-item-node {
+  cursor: pointer;
   flex-wrap: nowrap;
   display: flex;
   flex-direction: row;
@@ -789,6 +792,7 @@ body {
 }
 
 .sdn-item-product-item {
+  cursor: pointer;
   flex-wrap: nowrap;
   display: flex;
   flex-direction: row;
@@ -802,6 +806,7 @@ body {
 }
 
 .sdn-item-property {
+  cursor: pointer;
   flex-wrap: nowrap;
   display: flex;
   flex-direction: row;
@@ -823,6 +828,7 @@ body {
 
 .sdn-item-section {
   background-color: hsl(203 100% 62% / 50%);
+  cursor: pointer;
   flex-wrap: nowrap;
   display: flex;
   flex-direction: row;
@@ -841,6 +847,7 @@ body {
 
 .sdn-item-tree-item {
   display: flex;
+  cursor: pointer;
   flex-wrap: nowrap;
   flex-direction: row;
   align-items: center;
@@ -863,6 +870,7 @@ body {
 
 .sdn-listbox {
   background-color: var(--sdn-swatch-charcoal);
+  cursor: pointer;
   flex-wrap: nowrap;
   display: flex;
   flex-direction: column;
@@ -873,7 +881,7 @@ body {
   align-self: stretch;
   height: fit-content;
   flex-shrink: 0;
-  padding: 0;
+  padding: 0.25rem;
   border-radius: 0.5rem;
   border: var(--hairline) solid hsl(203 100% 62% / 25%);
 }
@@ -896,6 +904,7 @@ body {
 
 .sdn-menu {
   background-color: var(--sdn-swatch-charcoal);
+  cursor: pointer;
   flex-wrap: nowrap;
   display: flex;
   flex-direction: column;
