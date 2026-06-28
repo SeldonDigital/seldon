@@ -48,7 +48,7 @@ export function InputEditor({
   type = sdn.type,
   ...props
 }: InputEditorProps) {
-  const inputEditorClassName = combineClassNames("sdn-input-editor", className)
+  const inputEditorClassName = combineClassNames("sdn-input", className)
 
   //
   // React JSX component with merged default and custom properties
@@ -61,5 +61,5 @@ export function InputEditor({
 //
 const sdn: InputEditorProps = {
   type: "text",
-  className: "sdn-input-editor sdn-input",
+  className: "sdn-input",
 }

@@ -399,21 +399,6 @@ html {
   border: var(--hairline) solid hsl(203 0% 31%);
 }
 
-.sdn-input-editor {
-  background-color: transparent;
-  color: hsl(0 0% 96%);
-  align-self: stretch;
-  height: fit-content;
-  flex-shrink: 0;
-  font-family: IBM Plex Sans;
-  font-weight: 400;
-  font-size: 0.75rem;
-  line-height: 1.25;
-  padding: 0.25rem;
-  border-radius: 0.25rem;
-  border: var(--hairline) solid hsl(0 0% 23.5%);
-}
-
 .sdn-label {
   color: hsl(0 0% 0%);
   width: fit-content;
