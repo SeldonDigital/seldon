@@ -4,12 +4,13 @@
  *
  * License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md
  * Do not redistribute or sublicense without permission.
- *
- * You may not use this software, or any derivative works of it, in whole or in part,
- * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly)
+ * 
+ * You may not use this software, or any derivative works of it, in whole or in part, 
+ * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly) 
  * any machine learning or artificial intelligence system without written permission.
- *
+ * 
  *****/
+ 
 import { HTMLAttributes } from "react"
 import { Button, ButtonProps } from "../elements/Button"
 import { Frame } from "../frames/Frame"
@@ -323,58 +324,58 @@ const sdn: BarNavigationBarProps = {
   "aria-hidden": "false",
   className: "sdn-bar-navigation-bar sdn-bar",
   button: {
-    className: "sdn-button sdn-button--obir",
+    className: "sdn-button sdn-button--rurb",
   },
   icon: {
     icon: "material-home",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--4k57",
+    className: "sdn-icon sdn-icon--ivvi",
   },
   textLabel: {
-    className: "sdn-text-label sdn-text-label--lnlb",
+    className: "sdn-text-label sdn-text-label--p4vx",
   },
   button2: {
-    className: "sdn-button sdn-button--uncv",
+    className: "sdn-button sdn-button--ze8m",
   },
   icon2: {
     icon: "material-search",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--4k57",
+    className: "sdn-icon sdn-icon--ivvi",
   },
   textLabel2: {
-    className: "sdn-text-label sdn-text-label--lnlb",
+    className: "sdn-text-label sdn-text-label--p4vx",
   },
   button3: {
-    className: "sdn-button sdn-button--uncv",
+    className: "sdn-button sdn-button--ze8m",
   },
   icon3: {
     icon: "material-favoriteBorder",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--4k57",
+    className: "sdn-icon sdn-icon--ivvi",
   },
   textLabel3: {
-    className: "sdn-text-label sdn-text-label--lnlb",
+    className: "sdn-text-label sdn-text-label--p4vx",
   },
   button4: {
-    className: "sdn-button sdn-button--uncv",
+    className: "sdn-button sdn-button--ze8m",
   },
   icon4: {
     icon: "material-accountCircle",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--4k57",
+    className: "sdn-icon sdn-icon--ivvi",
   },
   textLabel4: {
-    className: "sdn-text-label sdn-text-label--lnlb",
+    className: "sdn-text-label sdn-text-label--p4vx",
   },
   button5: {
-    className: "sdn-button sdn-button--uncv",
+    className: "sdn-button sdn-button--ze8m",
   },
   icon5: {
     icon: "material-settings",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--4k57",
+    className: "sdn-icon sdn-icon--ivvi",
   },
   textLabel5: {
-    className: "sdn-text-label sdn-text-label--lnlb",
+    className: "sdn-text-label sdn-text-label--p4vx",
   },
 }

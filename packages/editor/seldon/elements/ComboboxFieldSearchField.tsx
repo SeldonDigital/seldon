@@ -4,12 +4,13 @@
  *
  * License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md
  * Do not redistribute or sublicense without permission.
- *
- * You may not use this software, or any derivative works of it, in whole or in part,
- * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly)
+ * 
+ * You may not use this software, or any derivative works of it, in whole or in part, 
+ * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly) 
  * any machine learning or artificial intelligence system without written permission.
- *
+ * 
  *****/
+ 
 import { HTMLAttributes } from "react"
 import { ButtonIconic, ButtonIconicProps } from "../elements/ButtonIconic"
 import { Frame } from "../frames/Frame"
@@ -134,15 +135,18 @@ const sdn: ComboboxFieldSearchFieldProps = {
     icon: "material-search",
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--xi68",
+    "data-seldon-ref": "searchIcon",
   },
   input: {
     type: "text",
     role: "combobox",
     "aria-haspopup": "listbox",
     className: "sdn-input sdn-input--yoqi",
+    "data-seldon-ref": "searchLabel",
   },
   buttonIconic: {
     className: "sdn-button-iconic sdn-button-iconic--pgsr",
+    "data-seldon-ref": "searchActions",
   },
   icon2: {
     icon: "material-close",

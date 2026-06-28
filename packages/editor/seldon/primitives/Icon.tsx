@@ -4,12 +4,13 @@
  *
  * License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md
  * Do not redistribute or sublicense without permission.
- *
- * You may not use this software, or any derivative works of it, in whole or in part,
- * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly)
+ * 
+ * You may not use this software, or any derivative works of it, in whole or in part, 
+ * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly) 
  * any machine learning or artificial intelligence system without written permission.
- *
+ * 
  *****/
+ 
 import { SVGAttributes } from "react"
 import * as Icons from "../icons/index"
 import { combineClassNames } from "../utils/class-name"
@@ -25,10 +26,6 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-add"
     | "material-remove"
     | "material-chevronRight"
-    | "material-home"
-    | "material-favoriteBorder"
-    | "material-accountCircle"
-    | "material-settings"
     | "seldon-none"
     | "material-check"
     | "material-calendarToday"
@@ -40,6 +37,10 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-dataObject"
     | "material-save"
     | "material-radioButtonChecked"
+    | "material-home"
+    | "material-favoriteBorder"
+    | "material-accountCircle"
+    | "material-settings"
     | "seldon-iconSocialFacebook"
     | "seldon-iconSocialReddit"
     | "seldon-iconSocialPinterest"
@@ -538,10 +539,6 @@ const iconMap = {
   "material-add": Icons.IconMaterialAdd,
   "material-remove": Icons.IconMaterialRemove,
   "material-chevronRight": Icons.IconMaterialChevronRight,
-  "material-home": Icons.IconMaterialHome,
-  "material-favoriteBorder": Icons.IconMaterialFavoriteBorder,
-  "material-accountCircle": Icons.IconMaterialAccountCircle,
-  "material-settings": Icons.IconMaterialSettings,
   "seldon-none": Icons.IconSeldonNone,
   "material-check": Icons.IconMaterialCheck,
   "material-calendarToday": Icons.IconMaterialCalendarToday,
@@ -553,6 +550,10 @@ const iconMap = {
   "material-dataObject": Icons.IconMaterialDataObject,
   "material-save": Icons.IconMaterialSave,
   "material-radioButtonChecked": Icons.IconMaterialRadioButtonChecked,
+  "material-home": Icons.IconMaterialHome,
+  "material-favoriteBorder": Icons.IconMaterialFavoriteBorder,
+  "material-accountCircle": Icons.IconMaterialAccountCircle,
+  "material-settings": Icons.IconMaterialSettings,
   "seldon-iconSocialFacebook": Icons.IconSocialFacebook,
   "seldon-iconSocialReddit": Icons.IconSocialReddit,
   "seldon-iconSocialPinterest": Icons.IconSocialPinterest,

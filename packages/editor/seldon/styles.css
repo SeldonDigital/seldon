@@ -10,7 +10,7 @@
  * any machine learning or artificial intelligence system without written permission.
  * 
  *****/
-
+ 
 /********************************************
  *                                          *
  *              Reset styles                *
@@ -927,6 +927,34 @@ body {
   border-radius: 0.25rem;
 }
 
+.sdn-sidebar {
+  background-color: hsl(203 0% 98.7%);
+  overflow: hidden;
+  flex-wrap: nowrap;
+  display: flex;
+  flex-direction: column;
+  gap: auto;
+  justify-content: space-between;
+  align-self: stretch;
+  height: 350px;
+  flex-shrink: 0;
+  border: var(--hairline) solid hsl(203 0% 77%);
+}
+
+.sdn-sidebar-objects {
+  background-color: var(--sdn-swatch-charcoal);
+  overflow: hidden;
+  flex-wrap: nowrap;
+  display: flex;
+  flex-direction: column;
+  gap: auto;
+  justify-content: space-between;
+  align-self: stretch;
+  height: 350px;
+  flex-shrink: 0;
+  border: var(--hairline) solid hsl(0 0% 36.25%);
+}
+
 .sdn-text {
   color: hsl(203 0% 98%);
   align-self: stretch;
@@ -1209,7 +1237,7 @@ body {
   border-radius: 0px;
 }
 
-.sdn-button--obir {
+.sdn-button--rurb {
   padding-top: unset;
   padding-right: unset;
   padding-bottom: unset;
@@ -1224,7 +1252,13 @@ body {
   border: 0.125rem solid hsl(203 100% 62%);
 }
 
-.sdn-button--uncv {
+.sdn-button--wwhx {
+  border-radius: unset;
+  border-bottom-left-radius: 99999px;
+  border-top-left-radius: 99999px;
+}
+
+.sdn-button--ze8m {
   padding-top: unset;
   padding-right: unset;
   padding-bottom: unset;
@@ -1238,12 +1272,6 @@ body {
   padding: 0.5rem;
   border-radius: 0.25rem;
   border: 0.125rem solid hsl(203 100% 90.5%);
-}
-
-.sdn-button--wwhx {
-  border-radius: unset;
-  border-bottom-left-radius: 99999px;
-  border-top-left-radius: 99999px;
 }
 
 .sdn-button-iconic--sdjv {
@@ -1298,6 +1326,17 @@ body {
   border: var(--hairline) solid hsl(203 0% 98.5%);
 }
 
+.sdn-combobox-field-filter-field--lsiw {
+  margin-right: 0.25rem;
+  margin-left: 0.25rem;
+}
+
+.sdn-combobox-field-project-field--rzdy {
+  background-color: var(--sdn-swatch-charcoal);
+  margin-right: 0.25rem;
+  margin-left: 0.25rem;
+}
+
 .sdn-combobox-field-search-field--vbyg {
   align-self: unset;
   flex-shrink: unset;
@@ -1326,6 +1365,17 @@ body {
   padding: 0.5rem;
 }
 
+.sdn-frame--946h {
+  padding: 0.25rem;
+}
+
+.sdn-frame--enpy {
+  overflow-x: hidden;
+  overflow-y: auto;
+  min-height: 0;
+  padding: 0.25rem;
+}
+
 .sdn-frame--nhfs {
   align-self: unset;
   overflow: hidden;
@@ -1347,12 +1397,12 @@ body {
   margin: 0.5rem;
 }
 
-.sdn-icon--4k57 {
+.sdn-icon--eyw9 {
+  font-size: 0.6rem;
   color: hsl(203 0% 8%);
 }
 
-.sdn-icon--eyw9 {
-  font-size: 0.6rem;
+.sdn-icon--ivvi {
   color: hsl(203 0% 8%);
 }
 
@@ -1570,14 +1620,12 @@ body {
   min-width: 0;
 }
 
-.sdn-text-label--lnlb {
-  font-family: unset;
-  font-style: unset;
-  font-synthesis-style: unset;
-  font-weight: unset;
-  line-height: unset;
-  letter-spacing: unset;
+.sdn-text-label--itoo {
+  align-self: unset;
+  flex-shrink: unset;
   color: hsl(203 0% 8%);
+  flex: 1 0 0;
+  min-width: 0;
   font-size: 0.75rem;
 }
 
@@ -1607,6 +1655,19 @@ body {
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
   margin-left: 0.5rem;
+  font-size: 0.75rem;
+}
+
+.sdn-text-label--p4vx {
+  align-self: unset;
+  font-family: unset;
+  font-style: unset;
+  font-synthesis-style: unset;
+  font-weight: unset;
+  line-height: unset;
+  letter-spacing: unset;
+  color: hsl(203 0% 8%);
+  width: fit-content;
   font-size: 0.75rem;
 }
 
@@ -1699,15 +1760,6 @@ body {
   color: hsl(203 0% 8%);
   flex: 1 0 0;
   min-width: 0;
-}
-
-.sdn-text-title--ulid {
-  align-self: unset;
-  flex-shrink: unset;
-  color: hsl(203 0% 8%);
-  flex: 1 0 0;
-  min-width: 0;
-  font-size: 0.75rem;
 }
 
 .sdn-combobox-field[aria-selected="true"] {
