@@ -201,7 +201,7 @@ const sdn: ItemNodeProps = {
     type: "text",
     role: "combobox",
     "aria-haspopup": "listbox",
-    className: "sdn-input sdn-input--n6aw",
+    className: "sdn-input sdn-input--iegt",
     "data-seldon-ref": "nodeLabel",
   },
   buttonIconic2: {

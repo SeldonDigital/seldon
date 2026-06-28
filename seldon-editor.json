@@ -5109,32 +5109,20 @@
         },
         "padding": {
           "top": {
-            "type": "exact",
-            "value": {
-              "unit": "px",
-              "value": 0
-            }
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
           },
           "right": {
-            "type": "exact",
-            "value": {
-              "unit": "px",
-              "value": 0
-            }
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
           },
           "bottom": {
-            "type": "exact",
-            "value": {
-              "unit": "px",
-              "value": 0
-            }
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
           },
           "left": {
-            "type": "exact",
-            "value": {
-              "unit": "px",
-              "value": 0
-            }
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
           }
         },
         "background": [
@@ -5449,6 +5437,24 @@
         "placeholder": {
           "type": "exact",
           "value": "Search for..."
+        },
+        "padding": {
+          "top": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          },
+          "right": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          },
+          "bottom": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          },
+          "left": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          }
         }
       },
       "origin": "schema",
@@ -14619,6 +14625,24 @@
             "type": "theme.ordinal",
             "value": "@fontSize.xsmall"
           }
+        },
+        "padding": {
+          "top": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          },
+          "right": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          },
+          "bottom": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          },
+          "left": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          }
         }
       },
       "origin": "schema",
@@ -15217,32 +15241,20 @@
         },
         "padding": {
           "top": {
-            "type": "exact",
-            "value": {
-              "unit": "px",
-              "value": 0
-            }
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
           },
           "right": {
-            "type": "exact",
-            "value": {
-              "unit": "px",
-              "value": 0
-            }
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
           },
           "bottom": {
-            "type": "exact",
-            "value": {
-              "unit": "px",
-              "value": 0
-            }
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
           },
           "left": {
-            "type": "exact",
-            "value": {
-              "unit": "px",
-              "value": 0
-            }
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
           }
         },
         "background": [
@@ -15254,6 +15266,26 @@
           }
         ],
         "border": {
+          "width": {
+            "type": "empty",
+            "value": null
+          },
+          "style": {
+            "type": "empty",
+            "value": null
+          },
+          "color": {
+            "type": "empty",
+            "value": null
+          },
+          "brightness": {
+            "type": "empty",
+            "value": null
+          },
+          "opacity": {
+            "type": "empty",
+            "value": null
+          },
           "preset": {
             "type": "theme.categorical",
             "value": "@border.none"
@@ -16533,6 +16565,24 @@
             "type": "theme.ordinal",
             "value": "@fontSize.xsmall"
           }
+        },
+        "padding": {
+          "top": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          },
+          "right": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          },
+          "bottom": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          },
+          "left": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          }
         }
       },
       "origin": "schema",
@@ -16711,6 +16761,24 @@
           "size": {
             "type": "theme.ordinal",
             "value": "@fontSize.xsmall"
+          }
+        },
+        "padding": {
+          "top": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          },
+          "right": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          },
+          "bottom": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          },
+          "left": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
           }
         }
       },

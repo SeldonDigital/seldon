@@ -1454,6 +1454,18 @@ body {
   min-width: 0;
 }
 
+.sdn-input--iegt {
+  background-color: unset;
+  align-self: unset;
+  flex-shrink: unset;
+  border-radius: unset;
+  border: unset;
+  flex: 1 0 0;
+  min-width: 0;
+  font-size: 0.75rem;
+  padding: 0.25rem;
+}
+
 .sdn-input--n6aw {
   background-color: unset;
   align-self: unset;
@@ -1475,7 +1487,7 @@ body {
   color: hsl(203 0% 8%);
   flex: 1 0 0;
   min-width: 0;
-  padding: 0px;
+  padding: 0.25rem;
 }
 
 .sdn-input--yoqi {
@@ -1486,7 +1498,7 @@ body {
   border: unset;
   flex: 1 0 0;
   min-width: 0;
-  padding: 0px;
+  padding: 0.25rem;
 }
 
 .sdn-input-checkbox--vajr {
@@ -1944,7 +1956,7 @@ body {
   color: hsl(203 100% 62%);
 }
 
-.sdn-combobox-field-filter-field[aria-selected="true"] .sdn-input--n6aw {
+.sdn-combobox-field-filter-field[aria-selected="true"] .sdn-input--iegt {
   color: hsl(203 100% 62%);
   border-color: hsl(203 100% 62% / 50%);
 }
@@ -1961,7 +1973,7 @@ body {
   color: hsl(0 100% 65%);
 }
 
-.sdn-combobox-field-filter-field[aria-invalid="true"] .sdn-input--n6aw {
+.sdn-combobox-field-filter-field[aria-invalid="true"] .sdn-input--iegt {
   color: hsl(0 100% 65%);
   border-color: hsl(0 100% 65% / 50%);
 }
@@ -1978,7 +1990,7 @@ body {
   color: hsl(203 100% 81%);
 }
 
-.sdn-combobox-field-filter-field:hover .sdn-input--n6aw {
+.sdn-combobox-field-filter-field:hover .sdn-input--iegt {
   color: hsl(203 100% 81%);
   border-color: hsl(203 100% 81%);
 }
@@ -2003,7 +2015,7 @@ body {
   color: hsl(203 100% 62%);
 }
 
-.sdn-combobox-field-project-field[aria-selected="true"] .sdn-input--n6aw {
+.sdn-combobox-field-project-field[aria-selected="true"] .sdn-input--iegt {
   color: hsl(203 100% 62%);
   border-color: hsl(203 100% 62% / 50%);
 }
@@ -2020,7 +2032,7 @@ body {
   color: hsl(0 100% 65%);
 }
 
-.sdn-combobox-field-project-field[aria-invalid="true"] .sdn-input--n6aw {
+.sdn-combobox-field-project-field[aria-invalid="true"] .sdn-input--iegt {
   color: hsl(0 100% 65%);
   border-color: hsl(0 100% 65% / 50%);
 }
@@ -2037,7 +2049,7 @@ body {
   color: hsl(203 100% 81%);
 }
 
-.sdn-combobox-field-project-field:hover .sdn-input--n6aw {
+.sdn-combobox-field-project-field:hover .sdn-input--iegt {
   color: hsl(203 100% 81%);
   border-color: hsl(203 100% 81%);
 }
