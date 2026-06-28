@@ -3899,23 +3899,10 @@
       "states": {
         "active": {},
         "hover": {
-          "border": {
-            "brightness": {
-              "type": "exact",
-              "value": {
-                "unit": "%",
-                "value": 50
-              }
-            }
-          }
+          "border": {}
         },
         "disabled": {
-          "border": {
-            "color": {
-              "type": "option",
-              "value": "transparent"
-            }
-          }
+          "border": {}
         },
         "focused": {
           "border": {
@@ -15218,6 +15205,12 @@
             "type": "option",
             "value": "uppercase"
           }
+        },
+        "margin": {
+          "left": {
+            "type": "theme.ordinal",
+            "value": "@margin.tight"
+          }
         }
       },
       "origin": "schema",
@@ -21306,12 +21299,12 @@
         },
         "gap": {
           "type": "theme.ordinal",
-          "value": "@gap.tight"
+          "value": "@gap.compact"
         },
         "padding": {
           "top": {
             "type": "theme.ordinal",
-            "value": "@padding.tight"
+            "value": "@padding.compact"
           },
           "right": {
             "type": "theme.ordinal",
@@ -21319,7 +21312,7 @@
           },
           "bottom": {
             "type": "theme.ordinal",
-            "value": "@padding.tight"
+            "value": "@padding.cozy"
           },
           "left": {
             "type": "theme.ordinal",
@@ -21414,56 +21407,14 @@
             }
           }
         },
-        "background": [
+        "shadow": [
           {
-            "kind": {
-              "type": "option",
-              "value": "color"
-            },
-            "color": {
-              "type": "theme.categorical",
-              "value": "@swatch.custom7"
-            },
-            "brightness": {
-              "type": "exact",
-              "value": {
-                "value": 0,
-                "unit": "%"
-              }
-            },
-            "opacity": {
-              "type": "exact",
-              "value": {
-                "value": 100,
-                "unit": "%"
-              }
+            "style": {
+              "type": "empty",
+              "value": null
             }
           }
-        ],
-        "margin": {
-          "top": {
-            "type": "option",
-            "value": "none"
-          },
-          "right": {
-            "type": "option",
-            "value": "none"
-          },
-          "bottom": {
-            "type": "option",
-            "value": "none"
-          },
-          "left": {
-            "type": "option",
-            "value": "none"
-          }
-        },
-        "padding": {
-          "right": {
-            "type": "theme.ordinal",
-            "value": "@padding.compact"
-          }
-        }
+        ]
       },
       "origin": "user"
     },
@@ -24181,6 +24132,28 @@
             "type": "theme.categorical",
             "value": "@border.none"
           }
+        },
+        "padding": {
+          "top": {
+            "type": "theme.ordinal",
+            "value": "@padding.compact"
+          },
+          "right": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          },
+          "bottom": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          },
+          "left": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          }
+        },
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.compact"
         }
       },
       "__editor": {
@@ -25780,24 +25753,6 @@
             }
           }
         },
-        "margin": {
-          "top": {
-            "type": "option",
-            "value": "none"
-          },
-          "right": {
-            "type": "option",
-            "value": "none"
-          },
-          "bottom": {
-            "type": "option",
-            "value": "none"
-          },
-          "left": {
-            "type": "option",
-            "value": "none"
-          }
-        },
         "shadow": [
           {
             "style": {
@@ -25805,13 +25760,7 @@
               "value": null
             }
           }
-        ],
-        "padding": {
-          "right": {
-            "type": "theme.ordinal",
-            "value": "@padding.compact"
-          }
-        }
+        ]
       },
       "origin": "user"
     },

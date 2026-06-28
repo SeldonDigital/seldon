@@ -1,9 +1,15 @@
 "use client"
 
 import { LayoutGroup } from "framer-motion"
-import { CSSProperties, PointerEvent, useCallback } from "react"
+import { CSSProperties, PointerEvent, useCallback, useState } from "react"
+import {
+  useSaveWorkspace,
+  useWorkspaceName,
+} from "@lib/persistence/workspace-save-store"
 import { useSetHoveredId } from "@lib/workspace/hooks/use-object-hover"
+import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useIsSectionExpanded } from "../hooks/use-section-expansion"
+import { useRenameInput } from "../hooks/use-rename-input"
 import { useDraggableMonitor } from "./hooks/use-draggable-monitor"
 import { useObjectsSidebar } from "./hooks/use-objects-sidebar"
 import { useScrollSelection } from "./hooks/use-scroll-selection"
@@ -12,6 +18,7 @@ import { getSelectionTarget } from "@lib/workspace/selection-target"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { FramerExpandable } from "@seldon/components/custom-components"
 import { SidebarObjects } from "@seldon/components/modules/SidebarObjects"
+import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import { BoardSection } from "../helpers/get-board-sections"
 import { VMBoard } from "./VMBoard"
 import { VMSection } from "./VMSection"
@@ -25,6 +32,11 @@ export function VMObjectsSidebar() {
   const { sections } = useObjectsSidebar()
   const scrollerRef = useScrollSelection()
   const setHoveredId = useSetHoveredId()
+  const { workspace } = useWorkspace({ usePreview: false })
+  const name = useWorkspaceName()
+  const saveNow = useSaveWorkspace()
+  const addToast = useAddToast()
+  const [isEditingName, setEditingName] = useState(false)
 
   useDraggableMonitor()
 
@@ -40,6 +52,36 @@ export function VMObjectsSidebar() {
     () => setHoveredId(null),
     [setHoveredId],
   )
+
+  // The project name reuses the node-row rename machinery: a read-only display
+  // input until edit mode, then an editable input that commits on Enter/blur.
+  const submitRename = useCallback(
+    (next: string) => {
+      const trimmed = next.trim()
+      if (trimmed && trimmed !== name) void saveNow(workspace, { name: trimmed })
+      setEditingName(false)
+    },
+    [name, saveNow, workspace],
+  )
+
+  const nameInput = useRenameInput({
+    label: name,
+    isEditing: isEditingName,
+    setEditing: setEditingName,
+    onSubmit: submitRename,
+  })
+
+  const enterRename = useCallback(() => setEditingName(true), [])
+
+  // The projectActions button force-saves the live workspace immediately,
+  // bypassing the autosave debounce.
+  const handleForceSave = useCallback(() => {
+    if (workspace) void saveNow(workspace)
+    addToast("Project saved")
+  }, [workspace, saveNow, addToast])
+
+  const projectField = { onDoubleClick: enterRename }
+  const projectActions = { onClick: handleForceSave }
 
   const sectionGroups = sections.map((section) => (
     <ObjectsSectionGroup key={section.label} section={section} />
@@ -70,8 +112,9 @@ export function VMObjectsSidebar() {
   return (
     <SidebarObjects
       data-testid="objects-sidebar"
-      comboboxFieldProjectField={{}}
-      input={{ readOnly: true }}
+      comboboxFieldProjectField={projectField}
+      input={nameInput}
+      buttonIconic={projectActions}
       seldonRefs={seldonRefs}
       style={styles.sidebar}
     />
@@ -122,7 +165,7 @@ const styles: Record<string, CSSProperties> = {
     flexDirection: "column",
     width: "100%",
     minWidth: 0,
-    padding: "0.25rem 0.25rem 0.75rem 0.25rem",
+    padding: "0.25rem 0 0.75rem 0",
     gap: "var(--sdn-gaps-tight)",
   },
 }

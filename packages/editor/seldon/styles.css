@@ -243,7 +243,8 @@ html {
 
 html,
 body {
-  font-family: system-ui,
+  font-family:
+    system-ui,
     -apple-system,
     "Segoe UI",
     Roboto,
@@ -251,7 +252,7 @@ body {
     Cantarell,
     "Open Sans",
     "Helvetica Neue",
-    sans-serif, "IBM Plex Sans";
+    sans-serif;
 }
 
 :root {
@@ -993,7 +994,7 @@ body {
   align-self: stretch;
   height: fit-content;
   flex-shrink: 0;
-  font-family: Inconsolata, "IBM Plex Sans";
+  font-family: Inconsolata;
   font-style: normal;
   font-synthesis-style: none;
   font-weight: 400;
@@ -1008,7 +1009,7 @@ body {
   align-self: stretch;
   height: fit-content;
   flex-shrink: 0;
-  font-family: IBM Plex Serif, "IBM Plex Sans";
+  font-family: IBM Plex Serif;
   font-style: normal;
   font-synthesis-style: none;
   font-weight: 700;
@@ -1026,7 +1027,7 @@ body {
   align-self: stretch;
   height: fit-content;
   flex-shrink: 0;
-  font-family: IBM Plex Serif, "IBM Plex Sans";
+  font-family: IBM Plex Serif;
   font-style: normal;
   font-synthesis-style: none;
   font-weight: 600;
@@ -1100,7 +1101,7 @@ body {
   align-self: stretch;
   height: fit-content;
   flex-shrink: 0;
-  font-family: IBM Plex Serif, "IBM Plex Sans";
+  font-family: IBM Plex Serif;
   font-style: normal;
   font-synthesis-style: none;
   font-weight: 500;
@@ -1325,17 +1326,6 @@ body {
   flex: 1 0 0;
   min-width: 0;
   border: var(--hairline) solid hsl(203 0% 98.5%);
-}
-
-.sdn-combobox-field-filter-field--lsiw {
-  padding-right: 0.5rem;
-  margin: 0;
-}
-
-.sdn-combobox-field-project-field--rzdy {
-  background-color: var(--sdn-swatch-charcoal);
-  padding-right: 0.5rem;
-  margin: 0;
 }
 
 .sdn-combobox-field-search-field--vbyg {
@@ -1590,7 +1580,7 @@ body {
 .sdn-text--0zmi {
   align-self: unset;
   flex-shrink: unset;
-  font-family: unset, "IBM Plex Sans";
+  font-family: unset;
   font-style: unset;
   font-synthesis-style: unset;
   line-height: unset;
@@ -1634,7 +1624,7 @@ body {
 .sdn-text-label--lug5 {
   align-self: unset;
   flex-shrink: unset;
-  font-family: unset, "IBM Plex Sans";
+  font-family: unset;
   font-style: unset;
   font-synthesis-style: unset;
   font-weight: unset;
@@ -1647,7 +1637,7 @@ body {
 }
 
 .sdn-text-label--oqkb {
-  font-family: unset, "IBM Plex Sans";
+  font-family: unset;
   font-style: unset;
   font-synthesis-style: unset;
   font-weight: unset;
@@ -1662,7 +1652,7 @@ body {
 
 .sdn-text-label--p4vx {
   align-self: unset;
-  font-family: unset, "IBM Plex Sans";
+  font-family: unset;
   font-style: unset;
   font-synthesis-style: unset;
   font-weight: unset;
@@ -1674,7 +1664,7 @@ body {
 }
 
 .sdn-text-label--ptvk {
-  font-family: unset, "IBM Plex Sans";
+  font-family: unset;
   font-style: unset;
   font-synthesis-style: unset;
   font-weight: unset;
@@ -1728,6 +1718,7 @@ body {
 .sdn-text-label--z34z {
   align-self: unset;
   flex-shrink: unset;
+  margin-left: 0.25rem;
   flex: 1 0 0;
   min-width: 0;
   font-size: 0.75rem;

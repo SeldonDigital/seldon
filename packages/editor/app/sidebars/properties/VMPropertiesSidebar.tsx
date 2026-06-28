@@ -430,7 +430,7 @@ const styles = {
     overflowY: "auto" as const,
   },
   tree: {
-    padding: "0.25rem 0.25rem 0.75rem 0.25rem",
+    padding: "0.25rem 0 0.75rem 0",
     display: "flex",
     flexDirection: "column" as const,
     gap: "var(--sdn-gaps-tight)",

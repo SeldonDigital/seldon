@@ -169,8 +169,7 @@ const sdn: SidebarObjectsProps = {
   "aria-hidden": "false",
   className: "sdn-sidebar-objects sdn-sidebar",
   comboboxFieldProjectField: {
-    className:
-      "sdn-combobox-field-filter-field sdn-combobox-field-project-field--rzdy",
+    className: "sdn-combobox-field-filter-field sdn-combobox-field--z3a0",
   },
   icon: {
     icon: "material-dataObject",
