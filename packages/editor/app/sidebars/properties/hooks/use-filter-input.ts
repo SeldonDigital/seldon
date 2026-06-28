@@ -25,8 +25,11 @@ export interface FilterInput {
   comboboxField: ComboboxFieldFilterFieldProps
   /** Input slot props: inert display when resting, live text input when editing. */
   input: InputProps & { ref?: Ref<HTMLInputElement> }
-  /** Trailing actions (the X): resets the filter without re-entering edit. */
-  buttonIconic: ButtonIconicProps
+  /**
+   * Trailing actions (the X): resets the filter without re-entering edit. Null
+   * while the filter is empty so the View hides the button until there is text.
+   */
+  buttonIconic: ButtonIconicProps | null
 }
 
 /**
@@ -55,12 +58,16 @@ export function useFilterInput(): FilterInput {
 
   const comboboxField: ComboboxFieldFilterFieldProps = { onClick: enterEdit }
 
-  const buttonIconic: ButtonIconicProps = {
-    onClick: (event: MouseEvent<HTMLElement>) => {
-      event.stopPropagation()
-      reset()
-    },
-  }
+  // Hide the reset button until there is text to clear. Passing `null` makes the
+  // View drop the button entirely rather than render an inert one.
+  const buttonIconic: ButtonIconicProps | null = query
+    ? {
+        onClick: (event: MouseEvent<HTMLElement>) => {
+          event.stopPropagation()
+          reset()
+        },
+      }
+    : null
 
   if (!isEditing) {
     return {
