@@ -40,7 +40,7 @@ function getDropzoneStyle(
           border: "2px solid var(--sdn-swatch-seldon-blue)",
         }
       : { color: "#F5F5F5" }),
-    ...(hasFile ? { position: "relative" } : { gap: "var(--sdn-gap-tight)" }),
+    ...(hasFile ? { position: "relative" } : { gap: "var(--sdn-gaps-tight)" }),
   }
 }
 

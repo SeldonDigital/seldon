@@ -90,7 +90,7 @@ export function useRowHighlightStyle(
   return useMemo(
     () => ({
       ...(isSelected
-        ? { borderColor: "var(--sdn-seldon-swatch-primary)" }
+        ? { borderColor: "var(--sdn-swatch-primary)" }
         : {}),
       // Suppress the default gray hover in insert component mode so only the
       // insertion tracking (accent fill and the line with dot) reads.

@@ -222,7 +222,7 @@ export const CanvasNode = memo(function CanvasNode({
           ...positionOverride,
           ...(showRepeatOutline
             ? {
-                outline: "1px dashed var(--sdn-seldon-swatch-primary)",
+                outline: "1px dashed var(--sdn-swatch-primary)",
                 outlineOffset: "1px",
               }
             : {}),

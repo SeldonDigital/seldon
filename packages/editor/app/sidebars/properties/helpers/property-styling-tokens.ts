@@ -32,9 +32,9 @@ export function getPropertyLabelStyle(
   // color to those state styles instead of baking a status color inline. Debug
   // mode keeps the inline status colors for its type visualization.
   return {
-    fontFamily: "var(--sdn-seldon-font-family-primary)",
-    fontSize: "var(--sdn-seldon-font-size-xsmall)",
-    fontWeight: "var(--sdn-seldon-font-weight-medium)",
+    fontFamily: "var(--sdn-font-family-primary)",
+    fontSize: "var(--sdn-font-size-xsmall)",
+    fontWeight: "var(--sdn-font-weight-medium)",
     lineHeight: 1.15,
     letterSpacing: "0.1px",
     whiteSpace: "nowrap",
@@ -43,7 +43,7 @@ export function getPropertyLabelStyle(
     ...(debugMode ? { color: baseColor } : {}),
     ...(property.isDimmed ? { opacity: 0.5 } : {}),
     ...(property.isSubProperty
-      ? { paddingLeft: "var(--sdn-seldon-padding-compact)" }
+      ? { paddingLeft: "var(--sdn-paddings-compact)" }
       : {}),
   }
 }

@@ -44,7 +44,7 @@ export const IndentationLevel = ({
   children: React.ReactNode
 }) => {
   // Each nested level adds one step of cozy padding via the CSS token.
-  const indentationPadding = "var(--sdn-padding-cozy)"
+  const indentationPadding = "var(--sdn-paddings-cozy)"
 
   const wrapperStyle: CSSProperties = {
     paddingLeft: indentationPadding,

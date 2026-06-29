@@ -12,7 +12,7 @@ import {
 } from "../../helpers/resolve-outline-surface"
 
 /** Seldon accent token used for the edge touching the insertion gap. */
-const ACCENT_COLOR = "var(--sdn-seldon-swatch-accent)"
+const ACCENT_COLOR = "var(--sdn-swatch-accent)"
 
 /** Canvas overlay stroke width (px), matching the wireframe outlines. */
 const BORDER_PX = 1

@@ -48,12 +48,12 @@ export const CssBlock = memo(CssBlockInner, (prev, next) => {
 const styles: Record<string, CSSProperties> = {
   container: {
     padding:
-      "var(--sdn-padding-tight) var(--sdn-padding-compact) var(--sdn-padding-tight) var(--sdn-padding-comfortable)",
+      "var(--sdn-paddings-tight) var(--sdn-paddings-compact) var(--sdn-paddings-tight) var(--sdn-paddings-comfortable)",
     width: "100%",
     overflow: "hidden" as const,
   },
   codeBlock: {
-    fontSize: "var(--sdn-seldon-font-size-xsmall)",
+    fontSize: "var(--sdn-font-size-xsmall)",
     background: "none",
     width: "100%",
     height: "100%",

@@ -78,7 +78,7 @@ export function IndicatorInsert({
     height: "100%",
     zIndex: 10,
     position: "absolute",
-    backgroundColor: "var(--sdn-seldon-swatch-accent)",
+    backgroundColor: "var(--sdn-swatch-accent)",
     opacity: 0.5,
     ...(orientation === "horizontal" && {
       borderRadius: "1.5px 1.5px 0 0",

@@ -50,8 +50,8 @@ export const IndicatorSelect: FC<IndicatorSelectProps> = ({ placement }) => {
 
   const circleStyle: CSSProperties = {
     position: "absolute",
-    height: "var(--sdn-size-xsmall)",
-    width: "var(--sdn-size-xsmall)",
+    height: "var(--sdn-sizes-xsmall)",
+    width: "var(--sdn-sizes-xsmall)",
     borderRadius: "9999px",
     borderWidth: "1px",
     borderStyle: "solid",

@@ -43,7 +43,7 @@ import {
 const MAX_TARGET_FRAMES = 30
 
 /** Seldon accent token used for the insert component tool hover box. */
-const ACCENT_HOVER_COLOR = "var(--sdn-seldon-swatch-accent)"
+const ACCENT_HOVER_COLOR = "var(--sdn-swatch-accent)"
 
 /**
  * Hover outline colors for the insert component tool. A node that can accept

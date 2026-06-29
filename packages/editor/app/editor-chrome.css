@@ -8,6 +8,14 @@
   --color-blue: #3fb5ff;
   --color-pearl: #f5f5f5;
   --color-background: #1f1f1f;
+
+  /* Seldon brand colors used by the editor chrome (e.g. the topbar gradient).
+     These have no generated theme-token equivalent, so they live here. */
+  --sdn-swatch-seldon-red: hsl(0 100% 65%);
+  --sdn-swatch-seldon-green: hsl(135 76% 59%);
+  --sdn-swatch-seldon-blue: hsl(203 100% 62%);
+  --sdn-swatch-seldon-yellow: hsl(60 100% 46%);
+  --sdn-swatch-seldon-purple: hsl(300 76% 48%);
 }
 
 body {
@@ -49,7 +57,7 @@ html:not(.sdn-show-focus) .sdn-item-section:focus-within .sdn-button-iconic {
   position: fixed;
   pointer-events: none;
   z-index: 2147483000;
-  border: 1px solid var(--sdn-seldon-swatch-punch);
+  border: 1px solid var(--sdn-swatch-punch);
   box-sizing: border-box;
 }
 
