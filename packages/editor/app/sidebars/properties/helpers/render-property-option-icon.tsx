@@ -1,9 +1,9 @@
 import { isWorkspaceIconUnavailable } from "@lib/icon-sets/icon-availability"
-import { type OptionIconRender } from "@lib/menus"
 import {
   type OptionIconDescriptor,
   getOptionIcon,
 } from "@lib/icons/resolve-option-icon"
+import { type OptionIconRender } from "@lib/menus"
 import React from "react"
 import { Theme, Workspace } from "@seldon/core"
 import { IconId, defaultIconId } from "@seldon/core/icon-sets"

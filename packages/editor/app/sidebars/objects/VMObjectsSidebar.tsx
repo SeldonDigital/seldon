@@ -1,15 +1,15 @@
 "use client"
 
-import { LayoutGroup } from "framer-motion"
-import { CSSProperties, PointerEvent, useCallback, useState } from "react"
 import {
   useSaveWorkspace,
   useWorkspaceName,
 } from "@lib/persistence/workspace-save-store"
+import { LayoutGroup } from "framer-motion"
+import { CSSProperties, PointerEvent, useCallback, useState } from "react"
 import { useSetHoveredId } from "@lib/workspace/hooks/use-object-hover"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
-import { useIsSectionExpanded } from "../hooks/use-section-expansion"
 import { useRenameInput } from "../hooks/use-rename-input"
+import { useIsSectionExpanded } from "../hooks/use-section-expansion"
 import { useDraggableMonitor } from "./hooks/use-draggable-monitor"
 import { useObjectsSidebar } from "./hooks/use-objects-sidebar"
 import { useScrollSelection } from "./hooks/use-scroll-selection"
@@ -20,9 +20,9 @@ import { FramerExpandable } from "@seldon/components/custom-components"
 import { SidebarObjects } from "@seldon/components/modules/SidebarObjects"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import { BoardSection } from "../helpers/get-board-sections"
-import { OBJECTS_TREE_GAP } from "./objects.bespoke"
 import { VMBoard } from "./VMBoard"
 import { VMSection } from "./VMSection"
+import { OBJECTS_TREE_GAP } from "./objects.bespoke"
 
 /**
  * View-model for the objects sidebar. Feeds the generated `SidebarObjects`
@@ -59,7 +59,8 @@ export function VMObjectsSidebar() {
   const submitRename = useCallback(
     (next: string) => {
       const trimmed = next.trim()
-      if (trimmed && trimmed !== name) void saveNow(workspace, { name: trimmed })
+      if (trimmed && trimmed !== name)
+        void saveNow(workspace, { name: trimmed })
       setEditingName(false)
     },
     [name, saveNow, workspace],

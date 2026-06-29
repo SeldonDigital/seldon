@@ -73,7 +73,10 @@ export function useFilterInput(): FilterInput {
     return {
       query,
       comboboxField,
-      input: { ...buildDisplayInputProps(ref, query), placeholder: PLACEHOLDER },
+      input: {
+        ...buildDisplayInputProps(ref, query),
+        placeholder: PLACEHOLDER,
+      },
       buttonIconic,
     }
   }

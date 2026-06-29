@@ -10,10 +10,9 @@ import { FlatProperty } from "./properties-data"
  * (`PropertySection`) and theme (`ThemePropertySection`) sections, which share
  * a `properties` list.
  */
-export function filterPropertySections<T extends { properties: FlatProperty[] }>(
-  sections: T[],
-  query: string,
-): T[] {
+export function filterPropertySections<
+  T extends { properties: FlatProperty[] },
+>(sections: T[], query: string): T[] {
   const q = query.trim().toLowerCase()
   if (!q) return sections
 

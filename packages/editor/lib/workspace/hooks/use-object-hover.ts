@@ -90,9 +90,7 @@ export function useRowHighlightStyle(
   const { activeTool } = useTool()
   return useMemo(
     () => ({
-      ...(isSelected
-        ? { borderColor: ROW_SELECTED_BORDER }
-        : {}),
+      ...(isSelected ? { borderColor: ROW_SELECTED_BORDER } : {}),
       // Suppress the default gray hover in insert component mode so only the
       // insertion tracking (accent fill and the line with dot) reads.
       ...(isHovered && !isSelected && activeTool !== "component"

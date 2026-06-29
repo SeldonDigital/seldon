@@ -24,8 +24,8 @@ import {
   useBorderSideVisibility,
   useRevealedBorderSides,
 } from "./hooks/use-border-side-visibility"
-import { useLayerDragMonitor } from "./hooks/use-layer-drag-monitor"
 import { useFilterInput } from "./hooks/use-filter-input"
+import { useLayerDragMonitor } from "./hooks/use-layer-drag-monitor"
 import { usePropertiesSidebar } from "./hooks/use-properties-sidebar"
 import { PropertyEditNavigationProvider } from "./hooks/use-property-edit-navigation"
 import { useIsCategoryExpanded } from "./hooks/use-property-expansion"
@@ -33,7 +33,6 @@ import { FramerExpandable } from "@seldon/components/custom-components"
 import { SidebarProperties } from "@seldon/components/modules/SidebarProperties"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import { CssBlock } from "./CssBlock"
-import { PROPERTIES_TREE_GAP } from "./properties.bespoke"
 import { VMCategory } from "./VMCategory"
 import { VMProperty } from "./VMProperty"
 import {
@@ -41,15 +40,16 @@ import {
   IconSetEditingContext,
   ThemeEditingContext,
 } from "./helpers/editing-contexts"
+import { filterPropertySections } from "./helpers/filter-property-sections"
 import { PropertySection } from "./helpers/get-property-sections"
 import { ThemePropertySection } from "./helpers/get-theme-property-sections"
-import { filterPropertySections } from "./helpers/filter-property-sections"
 import { getIconRowCategory } from "./helpers/icon-set-properties-data"
 import {
   FlatProperty,
   getAllowedBorderSides,
   getPropertiesSubjectId,
 } from "./helpers/properties-data"
+import { PROPERTIES_TREE_GAP } from "./properties.bespoke"
 
 export interface PropertyTreeProps {
   properties: FlatProperty[]
@@ -121,7 +121,9 @@ export function VMPropertiesSidebar() {
   const seldonRefs = {
     propertiesContainer: {
       style: styles.frame,
-      children: <PropertiesTree {...deferredState.treeProps} sections={sections} />,
+      children: (
+        <PropertiesTree {...deferredState.treeProps} sections={sections} />
+      ),
     },
   }
 

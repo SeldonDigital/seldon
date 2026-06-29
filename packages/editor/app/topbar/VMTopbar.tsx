@@ -1,5 +1,6 @@
 "use client"
 
+import { MenuEntry, VMMenu } from "@lib/menus"
 import {
   CSSProperties,
   MouseEvent,
@@ -9,15 +10,14 @@ import {
   useRef,
   useState,
 } from "react"
-import { MenuEntry, VMMenu } from "@lib/menus"
 import { AppState, useAppState } from "@lib/hooks/use-app-state"
-import { BarTopbar } from "@seldon/components/parts/BarTopbar"
+import { useMenuConfig } from "./hooks/use-menu-config"
 import { ButtonSimpleProps } from "@seldon/components/elements/ButtonSimple"
+import { BarTopbar } from "@seldon/components/parts/BarTopbar"
 import { ImageProps } from "@seldon/components/primitives/Image"
 import { TextLabelProps } from "@seldon/components/primitives/TextLabel"
-import { useMenuConfig } from "./hooks/use-menu-config"
-import { MenuDropdown } from "./menus/types"
 import { seldonGradientStyle } from "./VMTopbar.bespoke"
+import { MenuDropdown } from "./menus/types"
 
 /**
  * Maps a topbar menu's items into the framework-agnostic `MenuEntry` list the
@@ -84,7 +84,8 @@ export function VMTopbar() {
     return [0, 1, 2, 3, 4].map((index) => {
       const menu = menuConfig[index]
       if (!menu) return EMPTY_SLOT
-      if (menu.visibleIn && !menu.visibleIn.includes(appState)) return EMPTY_SLOT
+      if (menu.visibleIn && !menu.visibleIn.includes(appState))
+        return EMPTY_SLOT
 
       const button = {
         "data-testid": `menu-${menu.id}`,

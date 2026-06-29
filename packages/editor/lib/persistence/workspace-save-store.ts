@@ -4,9 +4,9 @@ import {
   type StoredWorkspace,
   saveStoredWorkspace,
 } from "@lib/storage/workspace-store"
-import { setIsLocalWorkspaceDirty } from "@lib/project/hooks/use-workspace-sync-status"
 import { create } from "zustand"
 import type { Workspace } from "@seldon/core/workspace/types"
+import { setIsLocalWorkspaceDirty } from "@lib/project/hooks/use-workspace-sync-status"
 
 /** Optional record fields a save may patch alongside the workspace snapshot. */
 type SavePatch = Pick<Partial<StoredWorkspace>, "name">

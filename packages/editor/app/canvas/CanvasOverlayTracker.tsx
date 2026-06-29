@@ -33,12 +33,12 @@ import {
   resolveOutlineSurfaceForBoard,
   resolveOutlineSurfaceForNode,
 } from "../tracking/helpers/resolve-outline-surface"
+import { INSERT_HOVER_ACCENT } from "./canvas.bespoke"
 import {
   getCanvasSelectionElements,
   getScopedSelectionElement,
   getUnionRect,
 } from "./helpers/canvas-selection-target"
-import { INSERT_HOVER_ACCENT } from "./canvas.bespoke"
 
 /** Frames to wait for a target to mount after a board switch before giving up. */
 const MAX_TARGET_FRAMES = 30

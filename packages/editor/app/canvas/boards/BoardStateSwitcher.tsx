@@ -1,5 +1,6 @@
 "use client"
 
+import { MenuEntry, MenuItem, VMCombobox, VMMenu } from "@lib/menus"
 import { CSSProperties, useMemo, useState } from "react"
 import {
   type CustomState,
@@ -11,15 +12,14 @@ import {
 } from "@seldon/core/workspace/model/node-state"
 import { parseNodeLink } from "@seldon/core/workspace/model/template-ref"
 import type { EntryNode } from "@seldon/core/workspace/types"
-import { MenuEntry, MenuItem, VMCombobox, VMMenu } from "@lib/menus"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
-import { walkComponentTree } from "@lib/workspace/component-tree"
-import { ButtonMenu } from "@seldon/components/elements/ButtonMenu"
-import { FloatingPanel } from "../../panels/FloatingPanel"
 import {
   useActiveBoardState,
   useBoardStateStore,
 } from "../hooks/use-board-state-store"
+import { walkComponentTree } from "@lib/workspace/component-tree"
+import { ButtonMenu } from "@seldon/components/elements/ButtonMenu"
+import { FloatingPanel } from "../../panels/FloatingPanel"
 import { CHILD_OVERRIDE_COLOR } from "../canvas.bespoke"
 
 interface BoardStateSwitcherProps {
@@ -93,7 +93,11 @@ export function BoardStateSwitcher({ boardKey }: BoardStateSwitcherProps) {
     const ownOverride = new Set<NodeState>()
     const childOverride = new Set<NodeState>()
     const board = workspace.boards[boardKey]
-    if (!board) return { ownOverrideStates: ownOverride, childOverrideStates: childOverride }
+    if (!board)
+      return {
+        ownOverrideStates: ownOverride,
+        childOverrideStates: childOverride,
+      }
 
     const addStatesFromChain = (startId: string, target: Set<NodeState>) => {
       const visited = new Set<string>()
@@ -114,7 +118,10 @@ export function BoardStateSwitcher({ boardKey }: BoardStateSwitcherProps) {
     walkComponentTree(board, (ref, parent) => {
       addStatesFromChain(ref.id, parent === null ? ownOverride : childOverride)
     })
-    return { ownOverrideStates: ownOverride, childOverrideStates: childOverride }
+    return {
+      ownOverrideStates: ownOverride,
+      childOverrideStates: childOverride,
+    }
   }, [workspace.boards, workspace.nodes, boardKey])
 
   const select = (state: NodeState) => setActiveState(boardKey, state)
@@ -201,10 +208,7 @@ export function BoardStateSwitcher({ boardKey }: BoardStateSwitcherProps) {
   }
 
   return (
-    <div
-      style={wrapperStyle}
-      onClick={(event) => event.stopPropagation()}
-    >
+    <div style={wrapperStyle} onClick={(event) => event.stopPropagation()}>
       <VMMenu
         items={items}
         renderTrigger={({ ref, triggerProps }) => (
@@ -252,13 +256,19 @@ export function BoardStateSwitcher({ boardKey }: BoardStateSwitcherProps) {
         >
           <div style={dialogBodyStyle}>
             {customStates.map((entry) => (
-              <div key={entry.key} style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+              <div
+                key={entry.key}
+                style={{ display: "flex", flexDirection: "column", gap: 4 }}
+              >
                 <span style={dialogFieldLabelStyle}>{entry.key}</span>
                 <VMCombobox
                   mode="standalone"
                   value={renameDrafts[entry.key] ?? entry.label}
                   onValueChange={(value) =>
-                    setRenameDrafts((drafts) => ({ ...drafts, [entry.key]: value }))
+                    setRenameDrafts((drafts) => ({
+                      ...drafts,
+                      [entry.key]: value,
+                    }))
                   }
                   onSubmit={(value) => commitRename(entry.key, value)}
                   autoFocus={false}

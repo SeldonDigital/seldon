@@ -10,9 +10,7 @@ export function useRowHover(isSelected: boolean, hoverOpacity: number = 10) {
 
   const style = useMemo(
     () => ({
-      ...(isSelected
-        ? { borderColor: SIDEBAR_SELECTED_BORDER }
-        : {}),
+      ...(isSelected ? { borderColor: SIDEBAR_SELECTED_BORDER } : {}),
       ...(isHovered && !isSelected
         ? {
             backgroundColor: `hsl(0 0% 100% / ${hoverOpacity / 100})`,

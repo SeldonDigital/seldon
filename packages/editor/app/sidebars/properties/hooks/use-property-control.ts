@@ -1,3 +1,4 @@
+import type { ComboboxOptionItems } from "@lib/menus"
 import {
   CSSProperties,
   MouseEvent,
@@ -11,7 +12,6 @@ import { Board, Instance, Theme, Variant } from "@seldon/core"
 import { useThemes } from "@lib/themes/hooks/use-themes"
 import { useSelection } from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
-import type { ComboboxOptionItems } from "@lib/menus"
 import {
   FontCollectionEditingContext,
   IconSetEditingContext,
