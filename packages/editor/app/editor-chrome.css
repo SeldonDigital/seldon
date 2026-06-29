@@ -1,6 +1,12 @@
 /*
- * Editor chrome styles that replaced the former Tailwind utilities. Holds the
- * few design tokens still in use plus the window scrollbar styling.
+ * Permanent editor chrome. This sheet is NOT a bespoke-removal target: it holds
+ * styling that has no workspace-generated View equivalent and will never come
+ * from an export. Window scrollbars, the FocusRingOverlay border, native focus
+ * suppression, and the brand color tokens used by editor-only chrome live here.
+ *
+ * Do NOT add component-level styling here. Hand styling that mirrors what a
+ * generated View should provide belongs in the VM that renders it (inline or a
+ * co-located `*.bespoke.*` helper), so it deletes cleanly once the View ships.
  */
 
 :root {

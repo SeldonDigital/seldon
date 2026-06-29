@@ -1311,6 +1311,25 @@
               "children": [
                 {
                   "id": "component-text-EOdUy3d4"
+                },
+                {
+                  "id": "component-comboboxField-jAw4GwsZ",
+                  "children": [
+                    {
+                      "id": "component-comboboxField-M9Dg2XKE"
+                    },
+                    {
+                      "id": "component-comboboxField-IcjUMKAP"
+                    },
+                    {
+                      "id": "component-comboboxField-0LuU62Qv",
+                      "children": [
+                        {
+                          "id": "component-comboboxField-jbWiiJs4"
+                        }
+                      ]
+                    }
+                  ]
                 }
               ]
             },
@@ -1765,7 +1784,7 @@
       "catalogId": "item",
       "label": "Items",
       "author": "Seldon Digital",
-      "componentTheme": "theme-seldon-default",
+      "componentTheme": "theme-seldon-x7o0x2we",
       "componentProperties": {
         "board": {
           "width": {
@@ -2723,7 +2742,16 @@
               "value": "@swatch.custom7"
             }
           }
-        ]
+        ],
+        "board": {
+          "width": {
+            "type": "exact",
+            "value": {
+              "unit": "px",
+              "value": 500
+            }
+          }
+        }
       },
       "variants": [
         {
@@ -5596,7 +5624,19 @@
       "label": "Bar",
       "theme": null,
       "template": "catalog:bar",
-      "overrides": {},
+      "overrides": {
+        "background": [
+          {
+            "brightness": {
+              "type": "exact",
+              "value": {
+                "unit": "%",
+                "value": 25
+              }
+            }
+          }
+        ]
+      },
       "__editor": {
         "initialOverrides": {}
       }
@@ -7755,13 +7795,6 @@
               "type": "theme.categorical",
               "value": "@swatch.primary"
             },
-            "brightness": {
-              "type": "exact",
-              "value": {
-                "unit": "%",
-                "value": 35
-              }
-            },
             "opacity": {
               "type": "empty",
               "value": null
@@ -8276,7 +8309,7 @@
             },
             "color": {
               "type": "theme.categorical",
-              "value": "@swatch.white"
+              "value": "@swatch.custom7"
             },
             "brightness": {
               "type": "exact",
@@ -8400,13 +8433,6 @@
             "color": {
               "type": "theme.categorical",
               "value": "@swatch.primary"
-            },
-            "brightness": {
-              "type": "exact",
-              "value": {
-                "unit": "%",
-                "value": 35
-              }
             },
             "opacity": {
               "type": "empty",
@@ -8935,13 +8961,6 @@
               "type": "theme.categorical",
               "value": "@swatch.primary"
             },
-            "brightness": {
-              "type": "exact",
-              "value": {
-                "unit": "%",
-                "value": 35
-              }
-            },
             "opacity": {
               "type": "empty",
               "value": null
@@ -9293,8 +9312,11 @@
           "value": "Modal"
         },
         "width": {
-          "type": "option",
-          "value": "fill"
+          "type": "exact",
+          "value": {
+            "unit": "%",
+            "value": 35
+          }
         },
         "color": {
           "type": "computed",
@@ -9501,13 +9523,6 @@
             "color": {
               "type": "theme.categorical",
               "value": "@swatch.primary"
-            },
-            "brightness": {
-              "type": "exact",
-              "value": {
-                "unit": "%",
-                "value": 35
-              }
             },
             "opacity": {
               "type": "empty",
@@ -10160,13 +10175,6 @@
             "color": {
               "type": "theme.categorical",
               "value": "@swatch.primary"
-            },
-            "brightness": {
-              "type": "exact",
-              "value": {
-                "unit": "%",
-                "value": 35
-              }
             },
             "opacity": {
               "type": "empty",
@@ -28156,7 +28164,7 @@
         "margin": {
           "right": {
             "type": "theme.ordinal",
-            "value": "@margin.tight"
+            "value": "@margin.compact"
           }
         }
       },
@@ -28201,6 +28209,143 @@
         }
       },
       "origin": "user"
+    },
+    "component-comboboxField-jAw4GwsZ": {
+      "id": "component-comboboxField-jAw4GwsZ",
+      "type": "instance",
+      "level": "element",
+      "label": "Search Field",
+      "theme": null,
+      "template": "node:component-comboboxField-search",
+      "overrides": {
+        "border": {
+          "color": {
+            "type": "computed",
+            "value": "highContrastColor"
+          },
+          "opacity": {
+            "type": "exact",
+            "value": {
+              "unit": "%",
+              "value": 50
+            }
+          },
+          "brightness": {
+            "type": "exact",
+            "value": {
+              "unit": "%",
+              "value": 0
+            }
+          }
+        }
+      },
+      "origin": "user"
+    },
+    "component-comboboxField-M9Dg2XKE": {
+      "id": "component-comboboxField-M9Dg2XKE",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Icon",
+      "theme": null,
+      "template": "node:component-icon-CHSbwIMc",
+      "overrides": {
+        "symbol": {
+          "type": "option",
+          "value": "material-search"
+        }
+      },
+      "origin": "user",
+      "__editor": {
+        "initialOverrides": {
+          "symbol": {
+            "type": "option",
+            "value": "material-search"
+          }
+        }
+      }
+    },
+    "component-comboboxField-IcjUMKAP": {
+      "id": "component-comboboxField-IcjUMKAP",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Input",
+      "theme": null,
+      "template": "node:component-input-w7F4idVF",
+      "overrides": {
+        "placeholder": {
+          "type": "exact",
+          "value": "Search for..."
+        },
+        "padding": {
+          "top": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          },
+          "right": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          },
+          "bottom": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          },
+          "left": {
+            "type": "theme.ordinal",
+            "value": "@padding.tight"
+          }
+        },
+        "font": {
+          "size": {
+            "type": "theme.ordinal",
+            "value": "@fontSize.xsmall"
+          }
+        }
+      },
+      "origin": "user",
+      "__editor": {
+        "initialOverrides": {
+          "placeholder": {
+            "type": "exact",
+            "value": "Search for..."
+          }
+        }
+      }
+    },
+    "component-comboboxField-0LuU62Qv": {
+      "id": "component-comboboxField-0LuU62Qv",
+      "type": "instance",
+      "level": "element",
+      "label": "Iconic",
+      "theme": null,
+      "template": "node:component-button-q7tCLRdW",
+      "overrides": {},
+      "origin": "user",
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-comboboxField-jbWiiJs4": {
+      "id": "component-comboboxField-jbWiiJs4",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Icon",
+      "theme": null,
+      "template": "node:component-icon-yGm6LzIl",
+      "overrides": {
+        "symbol": {
+          "type": "option",
+          "value": "material-close"
+        }
+      },
+      "origin": "user",
+      "__editor": {
+        "initialOverrides": {
+          "symbol": {
+            "type": "option",
+            "value": "material-close"
+          }
+        }
+      }
     }
   },
   "themes": {

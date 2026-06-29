@@ -38,12 +38,13 @@ import {
   getScopedSelectionElement,
   getUnionRect,
 } from "./helpers/canvas-selection-target"
+import { INSERT_HOVER_ACCENT } from "./canvas.bespoke"
 
 /** Frames to wait for a target to mount after a board switch before giving up. */
 const MAX_TARGET_FRAMES = 30
 
 /** Seldon accent token used for the insert component tool hover box. */
-const ACCENT_HOVER_COLOR = "var(--sdn-swatch-accent)"
+const ACCENT_HOVER_COLOR = INSERT_HOVER_ACCENT
 
 /**
  * Hover outline colors for the insert component tool. A node that can accept

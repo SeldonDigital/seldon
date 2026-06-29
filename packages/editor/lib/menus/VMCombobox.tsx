@@ -10,6 +10,7 @@ import { CSSProperties, RefObject, useEffect, useRef } from "react"
 import { Box } from "@seldon/components/custom-components"
 import { InputEditor } from "@seldon/components/custom-components"
 import { Frame } from "@seldon/components/frames/Frame"
+import { COMBOBOX_FONT_SIZE, COMBOBOX_LINE_HEIGHT } from "./combobox.bespoke"
 
 // Functional resets so the custom `InputEditor` primitive blends into a property
 // row. Appearance theming still comes from authored CSS; these only strip the
@@ -21,8 +22,8 @@ const comboboxInputStyle: CSSProperties = {
   borderRadius: 0,
   outline: "none",
   backgroundColor: "transparent",
-  lineHeight: "var(--sdn-line-height-solid)",
-  fontSize: "var(--sdn-font-size-xsmall)",
+  lineHeight: COMBOBOX_LINE_HEIGHT,
+  fontSize: COMBOBOX_FONT_SIZE,
 }
 
 const comboboxFrameStyle: CSSProperties = {

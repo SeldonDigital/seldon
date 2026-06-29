@@ -59,7 +59,7 @@ import {
   ThemeEditingContext,
 } from "../helpers/editing-contexts"
 import { FlatProperty } from "../helpers/properties-data"
-import { getPropertyLabelStyle } from "../helpers/property-styling-tokens"
+import { getPropertyLabelStyle } from "../helpers/property-styling-tokens.bespoke"
 import {
   getThemeTokenIconColorFromPropertyValue,
   isSwatchIconPropertyKey,

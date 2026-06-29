@@ -12,6 +12,7 @@ import {
   Pointer,
 } from "@seldon/components/custom-components"
 import type { LayerPlacement } from "./helpers/layer-reorder"
+import { LAYER_DRAG_DOT_SIZE } from "./properties.bespoke"
 
 /** A row's layer-reorder context: which paint stack it belongs to and where. */
 export interface LayerDragContext {
@@ -178,8 +179,8 @@ function LayerInsertIndicator({ placement }: { placement: LayerPlacement }) {
     left: "-8px",
     top: "0.5px",
     transform: "translateY(-50%)",
-    height: "var(--sdn-sizes-xsmall)",
-    width: "var(--sdn-sizes-xsmall)",
+    height: LAYER_DRAG_DOT_SIZE,
+    width: LAYER_DRAG_DOT_SIZE,
     borderRadius: "9999px",
     borderWidth: "1px",
     borderStyle: "solid",

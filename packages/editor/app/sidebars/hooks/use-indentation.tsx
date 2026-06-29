@@ -1,4 +1,5 @@
 import { CSSProperties, createContext, useContext } from "react"
+import { SIDEBAR_INDENT_PADDING } from "./sidebar-rows.bespoke"
 
 /**
  * React context for tracking the current indentation level in the tree.
@@ -44,7 +45,7 @@ export const IndentationLevel = ({
   children: React.ReactNode
 }) => {
   // Each nested level adds one step of cozy padding via the CSS token.
-  const indentationPadding = "var(--sdn-paddings-cozy)"
+  const indentationPadding = SIDEBAR_INDENT_PADDING
 
   const wrapperStyle: CSSProperties = {
     paddingLeft: indentationPadding,

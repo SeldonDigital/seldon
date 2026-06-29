@@ -20,6 +20,7 @@ import {
   useActiveBoardState,
   useBoardStateStore,
 } from "../hooks/use-board-state-store"
+import { CHILD_OVERRIDE_COLOR } from "../canvas.bespoke"
 
 interface BoardStateSwitcherProps {
   boardKey: string
@@ -162,7 +163,7 @@ export function BoardStateSwitcher({ boardKey }: BoardStateSwitcherProps) {
       selected: state === activeState,
       activeMarker: "bullet",
       active: ownOverrideStates.has(state),
-      labelStyle: childOnly ? { color: "var(--sdn-swatch-punch)" } : undefined,
+      labelStyle: childOnly ? { color: CHILD_OVERRIDE_COLOR } : undefined,
       testId: `board-state-${state}`,
     }
   }

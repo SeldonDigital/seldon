@@ -6,6 +6,25 @@ import tseslint from "typescript-eslint"
 const APP_VIEW_BOUNDARY_MESSAGE =
   "app/ should render Views only. Move raw DOM markup into seldon/custom-components/ and consume it from there."
 
+// Message for the design-token guardrail.
+const DESIGN_TOKEN_MESSAGE =
+  "Design-token inline styling (var(--sdn-*) / var(--color-*)) must live in a co-located *.bespoke.* file or the permanent editor-chrome sheet, so temporary visuals stay quarantined and removable once a generated View covers them."
+
+// Flags inline design-token references in string and template literals. Shared
+// so every linted scope applies the same guardrail. Generated Views own visual
+// styling via styles.css; hand-coded VM code keeps any required tokens in a
+// co-located *.bespoke.* file (which is exempt below).
+const DESIGN_TOKEN_RESTRICTIONS = [
+  {
+    selector: "Literal[value=/var\\(--(sdn|color)-/]",
+    message: DESIGN_TOKEN_MESSAGE,
+  },
+  {
+    selector: "TemplateElement[value.raw=/var\\(--(sdn|color)-/]",
+    message: DESIGN_TOKEN_MESSAGE,
+  },
+]
+
 export default defineConfig([
   globalIgnores(["seldon/chrome/**", "dist/**", "node_modules/**"]),
   // Parse TypeScript and JSX. Rules stay opt-in below; the recommended
@@ -64,6 +83,7 @@ export default defineConfig([
   // these become errors once the migration completes.
   {
     files: ["app/**/*.tsx"],
+    ignores: ["**/*.bespoke.*"],
     rules: {
       "no-restricted-syntax": [
         "warn",
@@ -71,6 +91,7 @@ export default defineConfig([
           selector: "JSXOpeningElement[name.name=/^[a-z]/]",
           message: APP_VIEW_BOUNDARY_MESSAGE,
         },
+        ...DESIGN_TOKEN_RESTRICTIONS,
       ],
       "no-restricted-imports": [
         "warn",
@@ -110,6 +131,7 @@ export default defineConfig([
   // their markup is migrated.
   {
     files: ["app/tracking/**/*.tsx", "app/toaster/**/*.tsx"],
+    ignores: ["**/*.bespoke.*"],
     rules: {
       "no-restricted-syntax": [
         "error",
@@ -117,6 +139,7 @@ export default defineConfig([
           selector: "JSXOpeningElement[name.name=/^[a-z]/]",
           message: APP_VIEW_BOUNDARY_MESSAGE,
         },
+        ...DESIGN_TOKEN_RESTRICTIONS,
       ],
     },
   },
@@ -124,6 +147,7 @@ export default defineConfig([
   // imports. Lock both boundaries as errors so the area cannot regress.
   {
     files: ["app/sidebars/properties/**/*.tsx"],
+    ignores: ["**/*.bespoke.*"],
     rules: {
       "no-restricted-syntax": [
         "error",
@@ -131,6 +155,7 @@ export default defineConfig([
           selector: "JSXOpeningElement[name.name=/^[a-z]/]",
           message: APP_VIEW_BOUNDARY_MESSAGE,
         },
+        ...DESIGN_TOKEN_RESTRICTIONS,
       ],
       "no-restricted-imports": [
         "error",
@@ -144,6 +169,16 @@ export default defineConfig([
           ],
         },
       ],
+    },
+  },
+  // Design-token guardrail for VM-layer code not covered by the app/**/*.tsx
+  // blocks above: app .ts files and the whole lib/ tree. Bespoke files are the
+  // sanctioned home for design tokens, so they are exempt.
+  {
+    files: ["app/**/*.ts", "lib/**/*.{ts,tsx}"],
+    ignores: ["**/*.bespoke.*"],
+    rules: {
+      "no-restricted-syntax": ["warn", ...DESIGN_TOKEN_RESTRICTIONS],
     },
   },
 ])

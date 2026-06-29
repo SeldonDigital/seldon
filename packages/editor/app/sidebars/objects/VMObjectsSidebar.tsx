@@ -20,6 +20,7 @@ import { FramerExpandable } from "@seldon/components/custom-components"
 import { SidebarObjects } from "@seldon/components/modules/SidebarObjects"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import { BoardSection } from "../helpers/get-board-sections"
+import { OBJECTS_TREE_GAP } from "./objects.bespoke"
 import { VMBoard } from "./VMBoard"
 import { VMSection } from "./VMSection"
 
@@ -166,6 +167,6 @@ const styles: Record<string, CSSProperties> = {
     width: "100%",
     minWidth: 0,
     padding: "0.25rem 0 0.75rem 0",
-    gap: "var(--sdn-gaps-tight)",
+    gap: OBJECTS_TREE_GAP,
   },
 }

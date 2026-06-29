@@ -1,5 +1,6 @@
 import { CSSProperties, Ref } from "react"
 import { InputProps } from "@seldon/components/primitives/Input"
+import { EDITING_OUTLINE } from "./build-field-state-props.bespoke"
 
 /**
  * Field-owned states for a sidebar row's combobox-field child. The field
@@ -52,14 +53,15 @@ export function buildDisplayInputProps(
 }
 
 /**
- * Leaf-owned editing state. The live `input` slot carries its own
- * `.sdn-state-editing` style (active-swatch outline), so an editing field
- * forwards the class onto its ref. Mirrors {@link buildActivatedRefProps}.
+ * Leaf-owned editing state. The live `input` slot gets the active-swatch
+ * outline. The generated input has no editing leaf state, so the outline is
+ * applied as an inline bespoke style (see {@link EDITING_OUTLINE}) rather than a
+ * global class patch.
  */
 export function buildEditingRefProps(editing?: boolean): {
-  className?: string
+  style?: CSSProperties
 } {
-  return editing ? { className: "sdn-state-editing" } : {}
+  return editing ? { style: { outline: EDITING_OUTLINE } } : {}
 }
 
 /**

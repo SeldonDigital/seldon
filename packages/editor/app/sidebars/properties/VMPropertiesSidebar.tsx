@@ -33,6 +33,7 @@ import { FramerExpandable } from "@seldon/components/custom-components"
 import { SidebarProperties } from "@seldon/components/modules/SidebarProperties"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import { CssBlock } from "./CssBlock"
+import { PROPERTIES_TREE_GAP } from "./properties.bespoke"
 import { VMCategory } from "./VMCategory"
 import { VMProperty } from "./VMProperty"
 import {
@@ -449,6 +450,6 @@ const styles = {
     padding: "0.25rem 0 0.75rem 0",
     display: "flex",
     flexDirection: "column" as const,
-    gap: "var(--sdn-gaps-tight)",
+    gap: PROPERTIES_TREE_GAP,
   },
 }

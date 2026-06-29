@@ -10,9 +10,10 @@ import {
   pickOutlineColorsFromSurface,
   resolveOutlineSurfaceForNode,
 } from "../../helpers/resolve-outline-surface"
+import { CANVAS_INSERT_ACCENT } from "./insert-indicators.bespoke"
 
 /** Seldon accent token used for the edge touching the insertion gap. */
-const ACCENT_COLOR = "var(--sdn-swatch-accent)"
+const ACCENT_COLOR = CANVAS_INSERT_ACCENT
 
 /** Canvas overlay stroke width (px), matching the wireframe outlines. */
 const BORDER_PX = 1

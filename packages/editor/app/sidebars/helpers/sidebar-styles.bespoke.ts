@@ -1,3 +1,6 @@
+// BESPOKE: temporary hand styling for sidebar property rows. These token-based
+// styles stand in until the generated workspace Views own this look. Remove this
+// file once the corresponding Views ship; do not add non-bespoke logic here.
 import { CSSProperties } from "react"
 
 export const propertyControlTextStyle: CSSProperties = {

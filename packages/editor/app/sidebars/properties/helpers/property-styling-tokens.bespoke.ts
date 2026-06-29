@@ -1,3 +1,6 @@
+// BESPOKE: temporary hand styling for property labels. The token-based inline
+// styles below stand in until the generated workspace View owns this look.
+// Remove the bespoke styling once the View ships; do not add non-bespoke logic.
 import { CSSProperties } from "react"
 import { FlatProperty } from "./properties-data"
 import { getPropertyDisplayColor } from "./property-styling"

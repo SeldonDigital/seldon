@@ -17,6 +17,7 @@ import { ImageProps } from "@seldon/components/primitives/Image"
 import { TextLabelProps } from "@seldon/components/primitives/TextLabel"
 import { useMenuConfig } from "./hooks/use-menu-config"
 import { MenuDropdown } from "./menus/types"
+import { seldonGradientStyle } from "./VMTopbar.bespoke"
 
 /**
  * Maps a topbar menu's items into the framework-agnostic `MenuEntry` list the
@@ -123,6 +124,7 @@ export function VMTopbar() {
         buttonMenu2={null}
       />
       <VMMenu
+        key={openMenuId ?? "closed"}
         open={openMenuId !== null}
         anchorRef={anchorRef}
         onClose={closeMenu}
@@ -130,7 +132,7 @@ export function VMTopbar() {
         align="start"
         minWidth="220px"
       />
-      <div style={styles.gradient} />
+      <div style={seldonGradientStyle} />
     </header>
   )
 }
@@ -150,14 +152,5 @@ const styles: Record<string, CSSProperties> = {
     position: "relative",
     zIndex: 10,
     flexShrink: 0,
-  },
-  gradient: {
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    height: "1px",
-    width: "100%",
-    backgroundImage:
-      "linear-gradient(90deg, var(--sdn-swatch-seldon-red) 0%, var(--sdn-swatch-seldon-yellow) 20%, var(--sdn-swatch-seldon-green) 40%, var(--sdn-swatch-seldon-blue) 70%, var(--sdn-swatch-seldon-red) 100%)",
   },
 }

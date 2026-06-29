@@ -1,3 +1,5 @@
+// BESPOKE-VIEW: hand-authored transitional View with inline token styling.
+// Replace with a generated workspace component once one covers the toast stack.
 import { CSSProperties, ReactNode } from "react"
 
 interface ToastStackProps {

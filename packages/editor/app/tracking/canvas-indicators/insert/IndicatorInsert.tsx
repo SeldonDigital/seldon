@@ -16,6 +16,7 @@ import {
 import { getHtmlElementByBoardId } from "../../../canvas/helpers/get-html-element-by-board-id"
 import { getHtmlElementByNodeId } from "../../../canvas/helpers/get-html-element-by-node-id"
 import { calculateIndicatorPosition } from "../helpers/calculate-indicator-position"
+import { CANVAS_INSERT_ACCENT } from "./insert-indicators.bespoke"
 
 type IndicatorInsertProps = {
   placement: Placement
@@ -78,7 +79,7 @@ export function IndicatorInsert({
     height: "100%",
     zIndex: 10,
     position: "absolute",
-    backgroundColor: "var(--sdn-swatch-accent)",
+    backgroundColor: CANVAS_INSERT_ACCENT,
     opacity: 0.5,
     ...(orientation === "horizontal" && {
       borderRadius: "1.5px 1.5px 0 0",
