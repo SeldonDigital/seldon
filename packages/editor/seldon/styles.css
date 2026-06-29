@@ -243,8 +243,7 @@ html {
 
 html,
 body {
-  font-family:
-    system-ui,
+  font-family: system-ui,
     -apple-system,
     "Segoe UI",
     Roboto,
@@ -252,7 +251,7 @@ body {
     Cantarell,
     "Open Sans",
     "Helvetica Neue",
-    sans-serif;
+    sans-serif, "IBM Plex Sans";
 }
 
 :root {
@@ -1032,7 +1031,7 @@ body {
   align-self: stretch;
   height: fit-content;
   flex-shrink: 0;
-  font-family: Inconsolata;
+  font-family: Inconsolata, "IBM Plex Sans";
   font-style: normal;
   font-synthesis-style: none;
   font-weight: 400;
@@ -1047,7 +1046,7 @@ body {
   align-self: stretch;
   height: fit-content;
   flex-shrink: 0;
-  font-family: IBM Plex Serif;
+  font-family: IBM Plex Serif, "IBM Plex Sans";
   font-style: normal;
   font-synthesis-style: none;
   font-weight: 700;
@@ -1065,7 +1064,7 @@ body {
   align-self: stretch;
   height: fit-content;
   flex-shrink: 0;
-  font-family: IBM Plex Serif;
+  font-family: IBM Plex Serif, "IBM Plex Sans";
   font-style: normal;
   font-synthesis-style: none;
   font-weight: 600;
@@ -1139,7 +1138,7 @@ body {
   align-self: stretch;
   height: fit-content;
   flex-shrink: 0;
-  font-family: IBM Plex Serif;
+  font-family: IBM Plex Serif, "IBM Plex Sans";
   font-style: normal;
   font-synthesis-style: none;
   font-weight: 500;
@@ -1661,7 +1660,7 @@ body {
 .sdn-text--0zmi {
   align-self: unset;
   flex-shrink: unset;
-  font-family: unset;
+  font-family: unset, "IBM Plex Sans";
   font-style: unset;
   font-synthesis-style: unset;
   line-height: unset;
@@ -1696,7 +1695,7 @@ body {
 .sdn-text-label--lug5 {
   align-self: unset;
   flex-shrink: unset;
-  font-family: unset;
+  font-family: unset, "IBM Plex Sans";
   font-style: unset;
   font-synthesis-style: unset;
   font-weight: unset;
@@ -1709,7 +1708,7 @@ body {
 }
 
 .sdn-text-label--oqkb {
-  font-family: unset;
+  font-family: unset, "IBM Plex Sans";
   font-style: unset;
   font-synthesis-style: unset;
   font-weight: unset;
@@ -1724,7 +1723,7 @@ body {
 
 .sdn-text-label--p4vx {
   align-self: unset;
-  font-family: unset;
+  font-family: unset, "IBM Plex Sans";
   font-style: unset;
   font-synthesis-style: unset;
   font-weight: unset;
@@ -1736,7 +1735,7 @@ body {
 }
 
 .sdn-text-label--ptvk {
-  font-family: unset;
+  font-family: unset, "IBM Plex Sans";
   font-style: unset;
   font-synthesis-style: unset;
   font-weight: unset;
