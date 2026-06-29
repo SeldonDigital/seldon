@@ -1,5 +1,6 @@
-import { HtmlElement } from "@seldon/core/properties"
 import { describe, expect, it } from "vitest"
+
+import { HtmlElement } from "@seldon/core/properties"
 
 import { getNativeFileStemsForUsedElements } from "./native-html-file-stem"
 

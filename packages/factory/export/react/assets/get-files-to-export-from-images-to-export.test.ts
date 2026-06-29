@@ -39,10 +39,7 @@ describe("getFilesToExportFromImagesToExport", () => {
 
   it("returns an empty list when there are no images", async () => {
     expect(
-      await getFilesToExportFromImagesToExport(
-        {} as ImageToExportMap,
-        options,
-      ),
+      await getFilesToExportFromImagesToExport({} as ImageToExportMap, options),
     ).toEqual([])
   })
 })

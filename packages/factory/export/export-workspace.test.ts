@@ -1,14 +1,15 @@
 import path from "node:path"
 import { fileURLToPath } from "node:url"
 
+import { describe, expect, it } from "vitest"
+
 import type { ExtractPayload, Workspace } from "@seldon/core"
 import { ComponentId } from "@seldon/core/components/constants"
 import { createEmptyWorkspace } from "@seldon/core/workspace/helpers/create-empty-workspace"
 import { addComponent } from "@seldon/core/workspace/reducers/handlers/add/add-component"
-import { describe, expect, it } from "vitest"
 
-import { ExportOptions } from "./types"
 import { exportWorkspace } from "./export-workspace"
+import { ExportOptions } from "./types"
 
 const here = path.dirname(fileURLToPath(import.meta.url))
 const repoRoot = path.resolve(here, "../../..")

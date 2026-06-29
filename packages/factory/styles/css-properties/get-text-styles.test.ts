@@ -1,3 +1,5 @@
+import { describe, expect, it } from "vitest"
+
 import {
   Properties,
   TextAlign,
@@ -6,10 +8,9 @@ import {
   ValueType,
 } from "@seldon/core"
 import { defaultTheme } from "@seldon/core/themes"
-import { describe, expect, it } from "vitest"
 
-import { getTextStyles } from "./get-text-styles"
 import { StyleGenerationContext } from "../types"
+import { getTextStyles } from "./get-text-styles"
 
 const context = (properties: Properties): StyleGenerationContext => ({
   properties,

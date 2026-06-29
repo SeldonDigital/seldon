@@ -1,9 +1,10 @@
-import { Properties, Unit, ValueType } from "@seldon/core"
-import { defaultTheme } from "@seldon/core/themes"
 import { describe, expect, it } from "vitest"
 
-import { getIconStyles } from "./get-icon-styles"
+import { Properties, Unit, ValueType } from "@seldon/core"
+import { defaultTheme } from "@seldon/core/themes"
+
 import { StyleGenerationContext } from "../types"
+import { getIconStyles } from "./get-icon-styles"
 
 const context = (properties: Properties): StyleGenerationContext => ({
   properties,

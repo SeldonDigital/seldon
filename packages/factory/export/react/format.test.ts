@@ -17,8 +17,8 @@ describe("format", () => {
     const result = await format(
       `import {b} from "./b";import {a} from "./a";const x=1`,
     )
-    expect(result).toContain('import { a }')
-    expect(result).toContain('import { b }')
+    expect(result).toContain("import { a }")
+    expect(result).toContain("import { b }")
     expect(result.indexOf("./a")).toBeLessThan(result.indexOf("./b"))
   })
 })

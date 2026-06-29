@@ -1,9 +1,10 @@
-import { Display, Properties, Unit, ValueType } from "@seldon/core"
-import { defaultTheme } from "@seldon/core/themes"
 import { describe, expect, it } from "vitest"
 
-import { getCssFromProperties } from "./get-css-from-properties"
+import { Display, Properties, Unit, ValueType } from "@seldon/core"
+import { defaultTheme } from "@seldon/core/themes"
+
 import { StyleGenerationContext } from "../types"
+import { getCssFromProperties } from "./get-css-from-properties"
 
 const context = (properties: Properties): StyleGenerationContext => ({
   properties,

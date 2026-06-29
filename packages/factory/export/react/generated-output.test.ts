@@ -1,14 +1,15 @@
 import path from "node:path"
 import { fileURLToPath } from "node:url"
 
+import { beforeAll, describe, expect, it } from "vitest"
+
 import type { ExtractPayload, Workspace } from "@seldon/core"
 import { ComponentId } from "@seldon/core/components/constants"
 import { createEmptyWorkspace } from "@seldon/core/workspace/helpers/create-empty-workspace"
 import { addComponent } from "@seldon/core/workspace/reducers/handlers/add/add-component"
-import { beforeAll, describe, expect, it } from "vitest"
 
-import { ExportOptions, FileToExport } from "../types"
 import { exportWorkspace } from "../export-workspace"
+import { ExportOptions, FileToExport } from "../types"
 
 const here = path.dirname(fileURLToPath(import.meta.url))
 const repoRoot = path.resolve(here, "../../../..")
@@ -52,7 +53,9 @@ describe("generated Button component", () => {
 
   it("declares the component function", () => {
     const source = content((f) => /\/Button\.tsx$/.test(f.path))
-    expect(source).toMatch(/export (function Button\(|const Button = forwardRef)/)
+    expect(source).toMatch(
+      /export (function Button\(|const Button = forwardRef)/,
+    )
   })
 
   it("wires the className through combineClassNames with the variant class", () => {

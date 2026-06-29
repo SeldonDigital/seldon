@@ -23,7 +23,9 @@ describe("isAttributeKey", () => {
   })
 })
 
-const componentWithProps = (props: Record<string, unknown>): ComponentToExport =>
+const componentWithProps = (
+  props: Record<string, unknown>,
+): ComponentToExport =>
   ({ tree: { dataBinding: { props } } }) as unknown as ComponentToExport
 
 describe("generateRootAttributePropsString", () => {

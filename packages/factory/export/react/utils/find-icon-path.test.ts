@@ -1,5 +1,6 @@
-import { IconId } from "@seldon/core/icon-sets"
 import { describe, expect, it } from "vitest"
+
+import { IconId } from "@seldon/core/icon-sets"
 
 import { getIconSourcePath, resolveIconExport } from "./find-icon-path"
 

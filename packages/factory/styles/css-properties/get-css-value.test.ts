@@ -1,3 +1,5 @@
+import { describe, expect, it } from "vitest"
+
 import {
   BorderWidth,
   Color,
@@ -7,7 +9,6 @@ import {
   Unit,
   ValueType,
 } from "@seldon/core"
-import { describe, expect, it } from "vitest"
 
 import { getCssValue } from "./get-css-value"
 

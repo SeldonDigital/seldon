@@ -1,9 +1,10 @@
-import { Properties, Unit, ValueType } from "@seldon/core"
-import { defaultTheme } from "@seldon/core/themes"
 import { describe, expect, it } from "vitest"
 
-import { getBorderStyles } from "./get-border-styles"
+import { Properties, Unit, ValueType } from "@seldon/core"
+import { defaultTheme } from "@seldon/core/themes"
+
 import { StyleGenerationContext } from "../types"
+import { getBorderStyles } from "./get-border-styles"
 
 const context = (properties: Properties): StyleGenerationContext => ({
   properties,

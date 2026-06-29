@@ -1,6 +1,7 @@
+import { describe, expect, it } from "vitest"
+
 import { BorderWidth, Unit, ValueType } from "@seldon/core"
 import { defaultTheme } from "@seldon/core/themes"
-import { describe, expect, it } from "vitest"
 
 import { getBorderWidthCSSValue } from "./get-border-width-css-value"
 

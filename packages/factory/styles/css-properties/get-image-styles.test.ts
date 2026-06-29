@@ -1,5 +1,6 @@
-import { ImageFit, Properties, ValueType } from "@seldon/core"
 import { describe, expect, it } from "vitest"
+
+import { ImageFit, Properties, ValueType } from "@seldon/core"
 
 import { getImageStyles } from "./get-image-styles"
 

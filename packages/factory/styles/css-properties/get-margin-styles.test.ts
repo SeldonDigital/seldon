@@ -1,6 +1,7 @@
+import { describe, expect, it } from "vitest"
+
 import { Properties, Unit, ValueType } from "@seldon/core"
 import { defaultTheme } from "@seldon/core/themes"
-import { describe, expect, it } from "vitest"
 
 import { getMarginStyles } from "./get-margin-styles"
 

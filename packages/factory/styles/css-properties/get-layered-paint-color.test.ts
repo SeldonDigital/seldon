@@ -1,6 +1,7 @@
+import { describe, expect, it } from "vitest"
+
 import { ValueType } from "@seldon/core"
 import { defaultTheme } from "@seldon/core/themes"
-import { describe, expect, it } from "vitest"
 
 import { getLayeredPaintColor } from "./get-layered-paint-color"
 

@@ -1,5 +1,6 @@
-import { ImageFit } from "@seldon/core"
 import { describe, expect, it } from "vitest"
+
+import { ImageFit } from "@seldon/core"
 
 import { backgroundSizeMap, objectFitMap } from "./image-fit-map"
 

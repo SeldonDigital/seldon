@@ -10,15 +10,15 @@ describe("getCssStringFromCssObject", () => {
   })
 
   it("kebab-cases camelCase property keys", () => {
-    expect(
-      getCssStringFromCssObject({ backgroundColor: "blue" }, "x"),
-    ).toBe(".x {background-color: blue;}")
+    expect(getCssStringFromCssObject({ backgroundColor: "blue" }, "x")).toBe(
+      ".x {background-color: blue;}",
+    )
   })
 
   it("joins multiple declarations with newlines", () => {
-    expect(
-      getCssStringFromCssObject({ color: "red", margin: "0" }, "x"),
-    ).toBe(".x {color: red;\nmargin: 0;}")
+    expect(getCssStringFromCssObject({ color: "red", margin: "0" }, "x")).toBe(
+      ".x {color: red;\nmargin: 0;}",
+    )
   })
 
   it("filters out undefined, null, and empty string values", () => {
@@ -38,15 +38,13 @@ describe("getCssStringFromCssObject", () => {
 
   it("emits an empty rule when no valid values remain", () => {
     expect(getCssStringFromCssObject({}, "x")).toBe(".x {}")
-    expect(
-      getCssStringFromCssObject({ color: undefined }, "x"),
-    ).toBe(".x {}")
+    expect(getCssStringFromCssObject({ color: undefined }, "x")).toBe(".x {}")
   })
 
   it("uses a provided full selector instead of the class", () => {
-    expect(
-      getCssStringFromCssObject({ color: "red" }, "x", ".x:hover"),
-    ).toBe(".x:hover {color: red;}")
+    expect(getCssStringFromCssObject({ color: "red" }, "x", ".x:hover")).toBe(
+      ".x:hover {color: red;}",
+    )
   })
 
   it("uses the provided selector even for an empty rule", () => {

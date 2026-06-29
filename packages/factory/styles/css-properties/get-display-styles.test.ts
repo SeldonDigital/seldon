@@ -1,5 +1,6 @@
-import { Display, Properties, ValueType } from "@seldon/core"
 import { describe, expect, it } from "vitest"
+
+import { Display, Properties, ValueType } from "@seldon/core"
 
 import { getDisplayStyles } from "./get-display-styles"
 

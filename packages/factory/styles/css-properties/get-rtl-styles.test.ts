@@ -1,5 +1,6 @@
-import { Direction, Properties, ValueType } from "@seldon/core"
 import { describe, expect, it } from "vitest"
+
+import { Direction, Properties, ValueType } from "@seldon/core"
 
 import { getRTLStyles } from "./get-rtl-styles"
 

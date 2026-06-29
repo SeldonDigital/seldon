@@ -27,7 +27,9 @@ describe("getUtilityFileContents", () => {
     const file = getUtilityFileContents(options).find((f) =>
       f.path.endsWith("apply-ref.ts"),
     )
-    expect(file?.content).toContain('import { combineClassNames } from "./class-name"')
+    expect(file?.content).toContain(
+      'import { combineClassNames } from "./class-name"',
+    )
     expect(file?.content).toContain("export function applyRef")
   })
 })

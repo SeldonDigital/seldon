@@ -1,6 +1,7 @@
+import { describe, expect, it } from "vitest"
+
 import { ComponentId } from "@seldon/core/components/constants"
 import { HtmlElement } from "@seldon/core/properties"
-import { describe, expect, it } from "vitest"
 
 import { HTML_ELEMENT_OPTIONS } from "./html-element-options"
 

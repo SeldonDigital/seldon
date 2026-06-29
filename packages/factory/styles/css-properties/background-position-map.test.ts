@@ -1,5 +1,6 @@
-import { BackgroundPosition } from "@seldon/core"
 import { describe, expect, it } from "vitest"
+
+import { BackgroundPosition } from "@seldon/core"
 
 import { backgroundPositionMap } from "./background-position-map"
 

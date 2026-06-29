@@ -1,5 +1,6 @@
-import { defaultTheme } from "@seldon/core/themes"
 import { describe, expect, it } from "vitest"
+
+import { defaultTheme } from "@seldon/core/themes"
 
 import {
   getThemeSwatchVarNames,

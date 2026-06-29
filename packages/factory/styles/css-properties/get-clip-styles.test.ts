@@ -1,5 +1,6 @@
-import { Properties, ValueType } from "@seldon/core"
 import { describe, expect, it } from "vitest"
+
+import { Properties, ValueType } from "@seldon/core"
 
 import { getClipStyles } from "./get-clip-styles"
 

@@ -1,5 +1,6 @@
-import { ComponentLevel } from "@seldon/core/components/constants"
 import { describe, expect, it } from "vitest"
+
+import { ComponentLevel } from "@seldon/core/components/constants"
 
 import { pluralizeLevel } from "./pluralize-level"
 

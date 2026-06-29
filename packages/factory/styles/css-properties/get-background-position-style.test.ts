@@ -1,5 +1,11 @@
-import { BackgroundPosition, BackgroundPositionValue, Unit, ValueType } from "@seldon/core"
 import { describe, expect, it } from "vitest"
+
+import {
+  BackgroundPosition,
+  BackgroundPositionValue,
+  Unit,
+  ValueType,
+} from "@seldon/core"
 
 import { getBackgroundPositionStyle } from "./get-background-position-style"
 

@@ -1,5 +1,11 @@
-import { ImageFit, SingleBackgroundSizeValue, Unit, ValueType } from "@seldon/core"
 import { describe, expect, it } from "vitest"
+
+import {
+  ImageFit,
+  SingleBackgroundSizeValue,
+  Unit,
+  ValueType,
+} from "@seldon/core"
 
 import { getBackgroundSizeStyle } from "./get-background-size-style"
 

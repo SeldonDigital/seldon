@@ -1,5 +1,6 @@
-import { Properties, Unit, ValueType } from "@seldon/core"
 import { describe, expect, it } from "vitest"
+
+import { Properties, Unit, ValueType } from "@seldon/core"
 
 import { getRotationStyles } from "./get-rotation-styles"
 

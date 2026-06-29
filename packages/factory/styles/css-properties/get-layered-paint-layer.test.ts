@@ -1,5 +1,6 @@
-import { Properties } from "@seldon/core"
 import { describe, expect, it } from "vitest"
+
+import { Properties } from "@seldon/core"
 
 import { getLayeredPaintLayers } from "./get-layered-paint-layer"
 

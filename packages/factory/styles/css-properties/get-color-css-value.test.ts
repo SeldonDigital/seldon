@@ -1,6 +1,7 @@
+import { describe, expect, it } from "vitest"
+
 import { Color, ValueType } from "@seldon/core"
 import { defaultTheme } from "@seldon/core/themes"
-import { describe, expect, it } from "vitest"
 
 import { getColorCSSValue } from "./get-color-css-value"
 

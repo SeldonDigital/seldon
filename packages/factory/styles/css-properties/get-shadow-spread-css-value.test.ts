@@ -1,6 +1,7 @@
+import { describe, expect, it } from "vitest"
+
 import { Unit, ValueType } from "@seldon/core"
 import { defaultTheme } from "@seldon/core/themes"
-import { describe, expect, it } from "vitest"
 
 import { getShadowSpreadCSSValue } from "./get-shadow-spread-css-value"
 
@@ -8,7 +9,10 @@ describe("getShadowSpreadCSSValue", () => {
   it("serializes an exact rem spread", () => {
     expect(
       getShadowSpreadCSSValue({
-        spread: { type: ValueType.EXACT, value: { unit: Unit.REM, value: 0.5 } },
+        spread: {
+          type: ValueType.EXACT,
+          value: { unit: Unit.REM, value: 0.5 },
+        },
         theme: defaultTheme,
       }),
     ).toBe("0.5rem")

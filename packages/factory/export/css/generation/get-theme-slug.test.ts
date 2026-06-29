@@ -1,5 +1,6 @@
-import type { Workspace } from "@seldon/core/workspace/types"
 import { describe, expect, it } from "vitest"
+
+import type { Workspace } from "@seldon/core/workspace/types"
 
 import { getThemeSlug } from "./get-theme-slug"
 
@@ -8,7 +9,9 @@ const workspaceWith = (themes: Record<string, unknown>): Workspace =>
 
 describe("getThemeSlug", () => {
   it("kebab-cases the id when no theme entry exists", () => {
-    expect(getThemeSlug("highContrast", workspaceWith({}))).toBe("high-contrast")
+    expect(getThemeSlug("highContrast", workspaceWith({}))).toBe(
+      "high-contrast",
+    )
   })
 
   it("slugs a default entry from its catalog template id", () => {
