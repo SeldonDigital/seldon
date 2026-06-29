@@ -97,8 +97,10 @@ export function buildPropertyRowProps({
     valueIconHidden || !swatchChipColor ? iconId : "icon-custom-color-value"
   const isDynamicValueIcon = valueIconId.startsWith("icon-custom-")
 
-  // Static value icons render through the generated icon slot. Dynamic chips
-  // render inside the value cell, so the slot is suppressed for them.
+  // Static value icons render through the generated string-`Icon` slot. Dynamic
+  // chips (swatch color, theme token, theme swatch strip, symbol glyph) cannot
+  // render through that slot, so `VMProperty` paints them as a node via the
+  // value field's children path instead, and the slot is suppressed here.
   // Pass no label tint as the color fallback: a swatch-token or color-harmony
   // row keeps its real value color, every other row leaves the icon color to
   // the generated `.sdn-item-property` CSS so hover and state tints apply.

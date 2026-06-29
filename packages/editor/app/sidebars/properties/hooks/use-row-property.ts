@@ -429,6 +429,21 @@ export function useRowProperty({
     onTabPrev: handleTabPrev,
   })
 
+  // Dynamic value icons (swatch color, theme token, theme swatch strip, symbol
+  // glyph) cannot render through the generated string-`Icon` slot. Resolve the
+  // current value through the same resolver the listbox uses, so the closed
+  // field paints the identical node. A plain icon id keeps the slot path.
+  const valueIconNode = useMemo<React.ReactNode>(() => {
+    if (control.kind !== "combobox") {
+      return null
+    }
+    const rendered = control.optionList.resolveIcon({
+      value: control.optionList.value,
+      name: value,
+    })
+    return rendered.kind === "node" ? rendered.node : null
+  }, [control, value])
+
   const handleRowClick = (event: React.MouseEvent<HTMLLIElement>) => {
     const target = event.target as HTMLElement
     if (
@@ -664,5 +679,6 @@ export function useRowProperty({
     hasChildren,
     childItems,
     layerDrag,
+    valueIconNode,
   }
 }
