@@ -29,7 +29,7 @@ import { useLayerDragMonitor } from "./hooks/use-layer-drag-monitor"
 import { usePropertiesSidebar } from "./hooks/use-properties-sidebar"
 import { PropertyEditNavigationProvider } from "./hooks/use-property-edit-navigation"
 import { useIsCategoryExpanded } from "./hooks/use-property-expansion"
-import { FramerExpandable } from "@seldon/components/custom-components"
+import { Box, FramerExpandable } from "@seldon/components/custom-components"
 import { SidebarProperties } from "@seldon/components/modules/SidebarProperties"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import { CssBlock } from "./CssBlock"
@@ -181,13 +181,13 @@ function PropertiesTree({
   ))
 
   return (
-    <div ref={scrollerRef} style={styles.scroller}>
-      <div style={styles.tree}>
+    <Box ref={scrollerRef} style={styles.scroller}>
+      <Box style={styles.tree}>
         <PropertyEditNavigationProvider>
           <LayoutGroup>{sectionNodes}</LayoutGroup>
         </PropertyEditNavigationProvider>
-      </div>
-    </div>
+      </Box>
+    </Box>
   )
 }
 
