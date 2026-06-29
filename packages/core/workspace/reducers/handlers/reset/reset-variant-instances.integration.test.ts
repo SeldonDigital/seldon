@@ -57,12 +57,10 @@ function buildTwoInstances() {
   )
   const defaultRootId = variantIds(ws)[0]!
 
-  let sourceA: string
-  let sourceB: string
-  let target: string
-  ;[ws, sourceA] = addUserVariant(ws)
-  ;[ws, sourceB] = addUserVariant(ws)
-  ;[ws, target] = addUserVariant(ws)
+  const [wsAfterA, sourceA] = addUserVariant(ws)
+  const [wsAfterB, sourceB] = addUserVariant(wsAfterA)
+  const [wsAfterTarget, target] = addUserVariant(wsAfterB)
+  ws = wsAfterTarget
 
   ws = insertVariantInstance(
     {
