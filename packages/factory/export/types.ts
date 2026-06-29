@@ -25,6 +25,12 @@ export type ExportOptions = {
   skipFormat?: boolean
   /** Opt-in to emitting remote font host links. Off by default to keep exports request-free. */
   enableRemoteFonts?: boolean
+  /**
+   * Export every icon enabled in the workspace's icon sets, even when no
+   * component references it, so the export ships complete icon sets. On by
+   * default. Set to `false` to tree-shake to only the icons components use.
+   */
+  exportAllIconSetIcons?: boolean
 }
 
 type ExportTarget = {

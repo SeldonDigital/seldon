@@ -3,6 +3,7 @@ import type { CSSProperties } from "react"
 import { create } from "zustand"
 import { useTool } from "@lib/hooks/use-tool"
 import type { SelectionKind } from "@lib/workspace/selection-target"
+import { ROW_SELECTED_BORDER } from "./row-highlight.bespoke"
 
 /**
  * The single hovered object across the editor. Both the Objects sidebar and the
@@ -89,9 +90,7 @@ export function useRowHighlightStyle(
   const { activeTool } = useTool()
   return useMemo(
     () => ({
-      ...(isSelected
-        ? { borderColor: "var(--sdn-seldon-swatch-primary)" }
-        : {}),
+      ...(isSelected ? { borderColor: ROW_SELECTED_BORDER } : {}),
       // Suppress the default gray hover in insert component mode so only the
       // insertion tracking (accent fill and the line with dot) reads.
       ...(isHovered && !isSelected && activeTool !== "component"

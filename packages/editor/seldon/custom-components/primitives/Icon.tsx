@@ -1,29 +1,29 @@
 import type { ComponentIcon } from "@seldon/core/components/constants"
 import {
-  IconCustomBooleanValue,
-  IconCustomColorValue,
-  IconCustomDeviceDesktop,
-  IconCustomDeviceLaptop,
-  IconCustomDeviceMobile,
-  IconCustomDeviceTablet,
-  IconCustomDeviceTv,
-  IconCustomDeviceWatch,
-  IconCustomThemeColorValue,
-} from "../../custom-icons"
+  IconMaterialComputer,
+  IconMaterialLaptop,
+  IconMaterialSmartphone,
+  IconMaterialTablet,
+  IconMaterialTv,
+  IconMaterialWatch,
+} from "../../icons"
 import {
   Icon as GeneratedIcon,
   IconProps as GeneratedIconProps,
 } from "../../primitives/Icon"
+import { IconCustomBooleanValue } from "../icons/Boolean"
+import { IconCustomColorValue } from "../icons/Color"
+import { IconCustomThemeColorValue } from "../icons/ThemeColor"
 
 /**
- * Editor-only ids for prop-driven icons. These render dynamic React
- * components, not static catalog SVGs, so the factory can never export them.
+ * Editor-only ids for prop-driven icons. The value icons render dynamic React
+ * components from `custom-components/icons/`, not static catalog SVGs, so the
+ * factory can never export them.
  *
- * The `icon-custom-device-*` ids back the board device-preset picker. Their
- * glyphs live in `custom-icons/` so they stay editor-local and survive icon
- * catalog changes in `@seldon/core`.
+ * The `icon-custom-device-*` ids back the board device-preset picker and render
+ * exported material glyphs from `icons/`.
  */
-export type DynamicIconId =
+type DynamicIconId =
   | "icon-custom-boolean-value"
   | "icon-custom-color-value"
   | "icon-custom-theme-color-value"
@@ -56,17 +56,17 @@ export function Icon({ icon, color, enabled, ...props }: IconProps) {
     case "icon-custom-theme-color-value":
       return <IconCustomThemeColorValue color={color} {...props} />
     case "icon-custom-device-mobile":
-      return <IconCustomDeviceMobile {...props} />
+      return <IconMaterialSmartphone {...props} />
     case "icon-custom-device-tablet":
-      return <IconCustomDeviceTablet {...props} />
+      return <IconMaterialTablet {...props} />
     case "icon-custom-device-laptop":
-      return <IconCustomDeviceLaptop {...props} />
+      return <IconMaterialLaptop {...props} />
     case "icon-custom-device-desktop":
-      return <IconCustomDeviceDesktop {...props} />
+      return <IconMaterialComputer {...props} />
     case "icon-custom-device-tv":
-      return <IconCustomDeviceTv {...props} />
+      return <IconMaterialTv {...props} />
     case "icon-custom-device-watch":
-      return <IconCustomDeviceWatch {...props} />
+      return <IconMaterialWatch {...props} />
     default:
       return (
         <GeneratedIcon

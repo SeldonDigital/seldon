@@ -18,6 +18,7 @@ export function jsxStructureToString(
   jsxRoot: JSXNode,
   component: ComponentToExport,
   classNameVarName: string,
+  withRef: boolean = false,
 ): string {
   const { config } = component
 
@@ -99,8 +100,9 @@ export function jsxStructureToString(
   // would be silently discarded by React's explicit-children precedence.
   const rootRefAttr = dataSeldonRefAttr(jsxRoot.ref)
   const rootAttrProps = generateRootAttributePropsString(component)
+  const forwardedRefProp = withRef ? " ref={ref}" : ""
   let content = `
-  return (\n    <${config.react.returns} className={${classNameVarName}}${rootRefAttr}${rootAttrProps} {...props}>`
+  return (\n    <${config.react.returns} className={${classNameVarName}}${rootRefAttr}${rootAttrProps}${forwardedRefProp} {...props}>`
 
   if (jsxRoot.children && jsxRoot.children.length > 0) {
     content += `\n      {children !== undefined ? (\n        children\n      ) : (\n        <>`

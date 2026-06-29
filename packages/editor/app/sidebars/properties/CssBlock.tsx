@@ -3,6 +3,7 @@ import { Light as SyntaxHighlighter } from "react-syntax-highlighter"
 import css from "react-syntax-highlighter/dist/esm/languages/hljs/css"
 import { atomOneDarkReasonable } from "react-syntax-highlighter/dist/esm/styles/hljs"
 import { Box } from "@seldon/components/custom-components"
+import { CSS_BLOCK_FONT_SIZE, CSS_BLOCK_PADDING } from "./properties.bespoke"
 
 SyntaxHighlighter.registerLanguage("css", css)
 
@@ -47,13 +48,12 @@ export const CssBlock = memo(CssBlockInner, (prev, next) => {
 
 const styles: Record<string, CSSProperties> = {
   container: {
-    padding:
-      "var(--sdn-padding-tight) var(--sdn-padding-compact) var(--sdn-padding-tight) var(--sdn-padding-comfortable)",
+    padding: CSS_BLOCK_PADDING,
     width: "100%",
     overflow: "hidden" as const,
   },
   codeBlock: {
-    fontSize: "var(--sdn-seldon-font-size-xsmall)",
+    fontSize: CSS_BLOCK_FONT_SIZE,
     background: "none",
     width: "100%",
     height: "100%",

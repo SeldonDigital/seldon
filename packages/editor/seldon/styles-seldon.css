@@ -12,7 +12,7 @@
  *****/
 
 :root {
-  /* Core */
+  /* Modulation */
   --sdn-ratio: 1.25;
   --sdn-font-size: 16px;
   --sdn-size: 1;
@@ -41,6 +41,7 @@
   --sdn-swatch-tint-3: hsl(203 100% 80%);
   --sdn-swatch-tint-4: hsl(203 100% 86%);
   --sdn-swatch-background: hsl(0 4% 8%);
+  --sdn-swatch-active: hsl(203 100% 62%);
   --sdn-swatch-punch: hsl(20 95% 60%);
   --sdn-swatch-positive: hsl(135 76% 59%);
   --sdn-swatch-negative: hsl(0 100% 65%);

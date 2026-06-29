@@ -119,14 +119,11 @@ export const Canvas = () => {
     // the tool and returns to select.
     if (activeTool === "component") {
       setActiveTool("select")
-      return
     }
 
-    if (activeBoard) {
-      selectBoard(getComponentKey(activeBoard))
-    } else {
-      selectNode(null)
-    }
+    // Select tool: clicking the empty canvas keeps the current selection. Board
+    // selection happens when clicking the board frame itself, handled inside the
+    // root tree by useCanvas.
   }
 
   return (

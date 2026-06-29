@@ -9,21 +9,20 @@ export type ExpandableSection =
   | "ICON_SET"
   | "MEDIA"
   | "PLAYGROUND"
-type ToggleableSection = ExpandableSection
 
 interface SectionExpansionState {
   // Sparse map of explicit user toggles, persisted to local storage. Sections
   // without an entry are closed, so the first launch starts fully collapsed and
   // later launches restore the user's saved expansions.
   overrides: Partial<Record<ExpandableSection, boolean>>
-  toggleSection: (section: ToggleableSection, expanded: boolean) => void
+  toggleSection: (section: ExpandableSection, expanded: boolean) => void
 }
 
 const useStore = create<SectionExpansionState>()(
   persist(
     (set) => ({
       overrides: {},
-      toggleSection: (section: ToggleableSection, expanded: boolean) =>
+      toggleSection: (section: ExpandableSection, expanded: boolean) =>
         set((state) => ({
           overrides: {
             ...state.overrides,
@@ -43,7 +42,7 @@ const useStore = create<SectionExpansionState>()(
  * selector so only rows for that section re-render on toggle. Sections default
  * to closed until the user expands them.
  */
-export const useIsSectionExpanded = (section: ToggleableSection): boolean =>
+export const useIsSectionExpanded = (section: ExpandableSection): boolean =>
   useStore((state) => state.overrides[section] ?? false)
 
 /**

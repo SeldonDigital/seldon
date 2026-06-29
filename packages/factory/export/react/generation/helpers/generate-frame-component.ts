@@ -7,15 +7,16 @@ export async function generateFrameComponent(
   options: ExportOptions,
 ): Promise<FileToExport> {
   const source = `
-import { HTMLAttributes, ReactNode } from "react"
-import { HTMLDiv } from "../native-react/HTML.Div"
+import { HTMLAttributes, ReactNode, createElement } from "react"
 
-export type FrameProps = HTMLAttributes<HTMLDivElement> & {
+export type FrameProps = HTMLAttributes<HTMLElement> & {
   children?: ReactNode
+  wrapperElement?: string
+  "data-seldon-ref"?: string
 }
 
-export function Frame(props: FrameProps) {
-  return <HTMLDiv {...props} />
+export function Frame({ wrapperElement = "div", ...props }: FrameProps) {
+  return createElement(wrapperElement, props)
 }`
   return {
     path: `${options.output.componentsFolder}/frames/Frame.tsx`,

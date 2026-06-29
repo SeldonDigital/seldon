@@ -37,6 +37,7 @@ import {
 } from "@lib/workspace/node-tree"
 import { buildRenderParentIndex } from "@lib/workspace/render-parent-index"
 import { CanvasHtmlAttributes, ComponentRenderer } from "./ComponentRenderer"
+import { REPEAT_OUTLINE } from "./canvas.bespoke"
 
 export type CanvasNodeProps = {
   nodeId: VariantId | InstanceId
@@ -222,7 +223,7 @@ export const CanvasNode = memo(function CanvasNode({
           ...positionOverride,
           ...(showRepeatOutline
             ? {
-                outline: "1px dashed var(--sdn-seldon-swatch-primary)",
+                outline: REPEAT_OUTLINE,
                 outlineOffset: "1px",
               }
             : {}),

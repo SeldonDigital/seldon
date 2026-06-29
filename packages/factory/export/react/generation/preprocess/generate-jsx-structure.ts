@@ -111,21 +111,41 @@ export function generateJSXStructure(
         // grandchild, derived from the child's own numbering.
         const childSlotNames = assignPropNames(node.children)
 
-        node.children.forEach((grandchild) => {
-          const grandchildPropValue = nodeIdToPropName.get(grandchild.nodeId)
-          const slotName = childSlotNames.get(grandchild.nodeId)
-          if (!grandchildPropValue || !slotName) {
-            throw new Error(
-              `Prop name not found for grandchild "${grandchild.name}" at path "${grandchild.dataBinding.path}" in component "${component.name}". ` +
-                `This indicates a bug in prop name assignment.`,
-            )
-          }
+        // Forward every hoisted descendant whose ancestor chain (up to this
+        // node) is itself flattened into props, not only direct children. This
+        // reaches leaves nested inside an intermediate child component, such as
+        // the icon of a button that lives inside a combobox field. Each
+        // intermediate child component pairs the forwarded leaf onto its own
+        // slot, so the slot name comes from this node's numbering, which matches
+        // the intermediate component's own numbering.
+        const forwardDescendants = (descendants: JSONTreeNode[]) => {
+          descendants.forEach((descendant) => {
+            const grandchildPropValue = nodeIdToPropName.get(descendant.nodeId)
+            const slotName = childSlotNames.get(descendant.nodeId)
+            if (!grandchildPropValue || !slotName) {
+              throw new Error(
+                `Prop name not found for grandchild "${descendant.name}" at path "${descendant.dataBinding.path}" in component "${component.name}". ` +
+                  `This indicates a bug in prop name assignment.`,
+              )
+            }
 
-          grandchildProps.push({
-            propKeyName: slotName,
-            propVarName: `${grandchildPropValue}Props`,
+            grandchildProps.push({
+              propKeyName: slotName,
+              propVarName: `${grandchildPropValue}Props`,
+            })
+
+            if (
+              Array.isArray(descendant.children) &&
+              descendant.children.length > 0 &&
+              descendant.level !== ComponentLevel.FRAME &&
+              validateTreeNodeProps(descendant).invalidProps.length === 0
+            ) {
+              forwardDescendants(descendant.children)
+            }
           })
-        })
+        }
+
+        forwardDescendants(node.children)
       } else {
         // Children should be rendered as JSX children
         node.children.forEach((child) => {

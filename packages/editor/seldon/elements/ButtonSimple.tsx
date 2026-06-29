@@ -10,13 +10,16 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { ButtonHTMLAttributes } from "react"
+import { ButtonHTMLAttributes, forwardRef } from "react"
 import { HTMLButton } from "../native-react/HTML.Button"
 import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
+import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
 
 export interface ButtonSimpleProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string
+  "data-seldon-ref"?: string
+  seldonRefs?: Record<string, Record<string, unknown>>
   textLabel?: TextLabelProps | null
 }
 
@@ -34,44 +37,48 @@ export interface ButtonSimpleProps extends ButtonHTMLAttributes<HTMLButtonElemen
  * />
  * ```
  *****/
-export function ButtonSimple({
-  className = "",
-  textLabel,
-  children,
-  ...props
-}: ButtonSimpleProps) {
-  const buttonSimpleClassName = combineClassNames(
-    "sdn-button-simple",
-    className,
-  )
-  const textLabelProps =
-    textLabel === null
-      ? null
-      : {
-          ...sdn.textLabel,
-          ...textLabel,
-          className: combineClassNames(
-            sdn.textLabel?.className,
-            textLabel?.className,
-          ),
-        }
+export const ButtonSimple = forwardRef<HTMLButtonElement, ButtonSimpleProps>(
+  function ButtonSimple(
+    { className = "", textLabel, children, seldonRefs, ...props },
+    ref,
+  ) {
+    const buttonSimpleClassName = combineClassNames(
+      "sdn-button-simple",
+      className,
+    )
+    const textLabelProps = applyRef(
+      seldonRefs,
+      textLabel === null
+        ? null
+        : {
+            ...sdn.textLabel,
+            ...textLabel,
+            className: combineClassNames(
+              sdn.textLabel?.className,
+              textLabel?.className,
+            ),
+          },
+    )
 
-  return (
-    <HTMLButton className={buttonSimpleClassName} {...props}>
-      {children !== undefined ? (
-        children
-      ) : (
-        <>{textLabel && textLabelProps && <TextLabel {...textLabelProps} />}</>
-      )}
-    </HTMLButton>
-  )
-}
+    return (
+      <HTMLButton className={buttonSimpleClassName} ref={ref} {...props}>
+        {children !== undefined ? (
+          children
+        ) : (
+          <>
+            {textLabel && textLabelProps && <TextLabel {...textLabelProps} />}
+          </>
+        )}
+      </HTMLButton>
+    )
+  },
+)
 
 //
 // Default property values
 //
 const sdn: ButtonSimpleProps = {
   textLabel: {
-    className: "sdn-text-label sdn-text-label--njzv",
+    className: "sdn-text-label sdn-text-label--ylte",
   },
 }

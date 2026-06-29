@@ -21,11 +21,10 @@ import {
   Workspace,
   isReservedTokenName,
 } from "@seldon/core"
+import { isLayeredPaintProperty } from "@seldon/core/properties/types/property-keys"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { isEntryNodeInstance } from "@seldon/core/workspace/model/entry-node"
 import { NORMAL_STATE } from "@seldon/core/workspace/model/node-state"
-import { workspaceThemeService } from "@seldon/core/workspace/services/theme/theme.service"
-import { useThemes } from "@lib/themes/hooks/use-themes"
 import {
   INSTANCE_STATE_EDIT_MESSAGE,
   useNodeActiveState,
@@ -34,21 +33,25 @@ import { useObjectProperties } from "@lib/workspace/hooks/use-object-properties"
 import { useDebugMode } from "@lib/hooks/use-debug-mode"
 import { useInlineRename } from "../../hooks/use-inline-rename"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
-import { FormControlIconicProps } from "@seldon/components/elements/FormControlIconic"
 import {
   imageUploadTargetForKey,
   useImageUploadPanel,
 } from "@app/panels/hooks/use-upload-image-panel"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
+import {
+  buildActivatedRefProps,
+  buildDisabledRefProps,
+  buildInvalidRefProps,
+} from "../../shared/build-field-state-props"
 import { buildResetMenuEntry } from "../../shared/build-reset-menu-entry"
 import { buildPropertyOptions } from "../helpers/build-property-options"
 import {
-  FRAME_REF_ATTR,
   FRAME_REF_SELECTOR,
-  FRAME_REF_VALUE,
   buildPropertyRowProps,
 } from "../helpers/build-property-row-props"
+import { buildPropertyValueInput } from "../helpers/build-property-value-input"
 import { ICONIC_BUTTON_SELECTOR } from "../../helpers/iconic-button"
+import type { LayerDragContext } from "../LayerDragRow"
 import { getDisplayValue } from "../helpers/display-value-utils"
 import {
   FontCollectionEditingContext,
@@ -56,22 +59,12 @@ import {
   ThemeEditingContext,
 } from "../helpers/editing-contexts"
 import { FlatProperty } from "../helpers/properties-data"
-import {
-  getFormControlStyle,
-  getRowStyle,
-} from "../helpers/property-row-state-styles"
-import {
-  getPropertyLabelStyle,
-  getPropertyRowStyle,
-} from "../helpers/property-styling-tokens"
-import {
-  isNumericPropertyValue,
-  stripDisplayUnitSuffix,
-} from "../helpers/property-value-display"
+import { getPropertyLabelStyle } from "../helpers/property-styling-tokens.bespoke"
 import {
   getThemeTokenIconColorFromPropertyValue,
   isSwatchIconPropertyKey,
 } from "../helpers/theme-token-icon-color"
+import { usePropertyControl } from "./use-property-control"
 import { usePropertyControlData } from "./use-property-control-data"
 import {
   usePropertyEditNavigation,
@@ -81,7 +74,6 @@ import {
   useIsPropertyExpanded,
   usePropertyExpansion,
 } from "./use-property-expansion"
-import { usePropertyFrameHover } from "./use-property-frame-hover"
 
 export interface RowPropertyProps {
   property: FlatProperty
@@ -92,6 +84,41 @@ export interface RowPropertyProps {
   themeEditingContext?: ThemeEditingContext | null
   fontCollectionEditingContext?: FontCollectionEditingContext | null
   iconSetEditingContext?: IconSetEditingContext | null
+}
+
+/**
+ * Returns the layer-reorder context for a row when it is a draggable layered
+ * paint parent (`background`/`shadow`) on a node with more than one layer.
+ * Returns null for boards, non-layer rows, facet rows, and single-layer stacks.
+ */
+function resolveLayerDrag({
+  property,
+  node,
+  allProperties,
+}: Pick<
+  RowPropertyProps,
+  "property" | "node" | "allProperties"
+>): LayerDragContext | null {
+  if (isBoard(node)) return null
+  if (property.isSubProperty) return null
+  if (property.layerIndex === undefined) return null
+
+  const root = property.key.split(".")[0]
+  if (!isLayeredPaintProperty(root as PropertyKey)) return null
+
+  const layerCount = allProperties.filter(
+    (candidate) =>
+      candidate.layerIndex !== undefined &&
+      !candidate.isSubProperty &&
+      candidate.key.split(".")[0] === root,
+  ).length
+  if (layerCount < 2) return null
+
+  return {
+    property: root as LayeredPaintKey,
+    layerIndex: property.layerIndex,
+    layerCount,
+  }
 }
 
 /**
@@ -115,12 +142,12 @@ export function useRowProperty({
   const { resetProperty, removeNodeLayer, applyBoardPropertiesToAllBoards } =
     useObjectProperties()
   const { toggleProperty } = usePropertyExpansion()
-  const themes = useThemes()
-  const { getPropertyValueForDisplay, getUnit, shouldShowMenuIcon } =
+  const { getPropertyValueForDisplay, shouldShowMenuIcon } =
     usePropertyControlData({ property, theme })
   const { show: showUploadPanel } = useImageUploadPanel()
 
   const frameRef = useRef<HTMLDivElement>(null)
+  const valueInputRef = useRef<HTMLInputElement>(null)
   const [isEditingProperty, setIsEditingProperty] = useState(false)
   const [isRenaming, setIsRenaming] = useState(false)
   const addToast = useAddToast()
@@ -228,16 +255,6 @@ export function useRowProperty({
     !property.key.startsWith("family.") &&
     !property.key.startsWith("icon.")
 
-  // Resolve the swatch cluster theme for the synthetic Theme-assignment row.
-  const themeForSwatches = useMemo<Theme | null>(() => {
-    if (!isThemeAssignment) return null
-    const displayThemeId = workspaceThemeService.getObjectThemeId(
-      node,
-      workspace,
-    )
-    return themes.find((t) => t.id === displayThemeId) ?? null
-  }, [isThemeAssignment, node, workspace, themes])
-
   const propertyValue = getPropertyValueForDisplay()
 
   // A closed row uses `options` only to look up the current value's display
@@ -264,31 +281,18 @@ export function useRowProperty({
   )
 
   const nodeId = isBoard(node) ? getComponentKey(node) : node.id
-  const unit = getUnit()
-  const isNumericValue = useMemo(
-    () => isNumericPropertyValue(property),
-    [property],
+
+  // The unit is folded into the display string (e.g. "24px") and shown in the
+  // single combobox value field. There is no separate unit element.
+  const value = getDisplayValue(
+    propertyValue,
+    property.key,
+    nodeId,
+    workspace,
+    theme,
+    options,
   )
 
-  // Strip the unit suffix from the display value when a separate unit label is
-  // shown, avoiding redundant output like "10px PX".
-  const value = stripDisplayUnitSuffix(
-    getDisplayValue(
-      propertyValue,
-      property.key,
-      nodeId,
-      workspace,
-      theme,
-      options,
-    ),
-    unit,
-    isNumericValue,
-  )
-
-  const rowStyle = useMemo(
-    () => getPropertyRowStyle(property, showPropertyTypes),
-    [property, showPropertyTypes],
-  )
   const labelStyle = useMemo(
     () => getPropertyLabelStyle(property, showPropertyTypes),
     [property, showPropertyTypes],
@@ -302,8 +306,40 @@ export function useRowProperty({
     return getThemeTokenIconColorFromPropertyValue(property.value, theme)
   }, [property.key, property.value, theme])
 
-  const rowColor = rowStyle.color as string | undefined
-  const { setIsHovered, style: hoverStyle } = usePropertyFrameHover(rowColor)
+  const endEdit = useCallback(() => setIsEditingProperty(false), [])
+
+  // Mount the value control. The view (none / field / combobox) drives the value
+  // `input` slot and, for combobox, the floating option list rendered by the
+  // shell. Editing is owned here so a row click can open it.
+  const control = usePropertyControl({
+    property,
+    propertySubject: node,
+    theme,
+    frameRef,
+    isEditing: isEditingProperty,
+    onEditChange: setIsEditingProperty,
+    onTabNext: handleTabNext,
+    onTabPrev: handleTabPrev,
+    color: labelColor,
+    themeEditingContext,
+    fontCollectionEditingContext,
+    iconSetEditingContext,
+  })
+
+  // The combobox controller owns its own input ref (focus/select/anchoring); a
+  // text/number field has none, so focus it here when the row enters edit mode.
+  useEffect(() => {
+    if (isEditingProperty && control.kind === "field") {
+      const input = valueInputRef.current
+      if (input) {
+        input.focus()
+        input.select()
+      }
+    }
+  }, [isEditingProperty, control.kind])
+
+  const valueRef =
+    control.kind === "combobox" ? control.field.inputRef : valueInputRef
 
   // Keyboard Tab moves edit focus without firing pointer events, so the row the
   // mouse rests on keeps its hover outline. Hand the hover setter to the
@@ -312,7 +348,6 @@ export function useRowProperty({
     property.key,
     frameRef,
     () => setIsEditingProperty(true),
-    setIsHovered,
     isNavigable,
   )
 
@@ -358,59 +393,12 @@ export function useRowProperty({
     }
   }
 
-  const handleFrameMouseEnter = () => {
-    // Don't enable hover for dimmed or read-only (instance state) properties.
-    if (!property.isDimmed && !isStateReadOnly) {
-      setIsHovered(true)
-    }
-  }
-  const handleFrameMouseLeave = () => setIsHovered(false)
-
-  // Reset hover state when clicking outside the frame.
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        frameRef.current &&
-        !frameRef.current.contains(event.target as Node)
-      ) {
-        setIsHovered(false)
-      }
-    }
-
-    document.addEventListener("mousedown", handleClickOutside)
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside)
-    }
-  }, [setIsHovered])
-
-  const handleFrameClick = (event: React.MouseEvent<HTMLDivElement>) => {
-    if (isStateReadOnly) {
-      event.stopPropagation()
-      addToast(INSTANCE_STATE_EDIT_MESSAGE)
-      return
-    }
-
-    if (property.isDimmed || !property.controlType || isEditingProperty) {
-      return
-    }
-
-    const target = event.target as HTMLElement
-    if (target.closest("button") || target.closest(ICONIC_BUTTON_SELECTOR)) {
-      return
-    }
-
-    // Only enter edit mode when clicking the actual control input area; let row
-    // clicks elsewhere handle toggling.
-    const inputElement = target.closest("input, textarea, select")
-    if (!inputElement) {
-      return
-    }
-
-    event.stopPropagation()
-    setIsEditingProperty(true)
-  }
-
-  const handleLabel2Click = useCallback(
+  // Single click on the combobox-field value frame flips the row into edit mode.
+  // The display input is inert (`pointerEvents: none`), so this click lands on
+  // the field, mirroring how a node row's double-click rides the row instead of
+  // its inert name input. Inner buttons stop their own propagation, so a click on
+  // the options-menu button never reaches here.
+  const handleValueFieldClick = useCallback(
     (event: React.MouseEvent) => {
       if (isStateReadOnly) {
         event.stopPropagation()
@@ -430,6 +418,16 @@ export function useRowProperty({
       setIsEditingProperty,
     ],
   )
+
+  const valueLabelProps = buildPropertyValueInput({
+    control,
+    isEditing: isEditingProperty,
+    displayValue: value,
+    valueRef,
+    endEdit,
+    onTabNext: handleTabNext,
+    onTabPrev: handleTabPrev,
+  })
 
   const handleRowClick = (event: React.MouseEvent<HTMLLIElement>) => {
     const target = event.target as HTMLElement
@@ -490,17 +488,6 @@ export function useRowProperty({
       frameRef.current = el
     }
   }, [])
-
-  const handleFrameRefClick = useCallback(
-    (event: React.MouseEvent<HTMLDivElement>) => {
-      const frameElement = event.currentTarget as HTMLDivElement
-      if (frameElement && frameElement !== frameRef.current) {
-        frameRef.current = frameElement
-      }
-      handleFrameClick(event)
-    },
-    [handleFrameClick],
-  )
 
   const handleRenameSubmit = useCallback(
     (value: string) => {
@@ -619,14 +606,10 @@ export function useRowProperty({
     iconId,
     isThemeAssignment,
     swatchChipColor,
-    unit,
-    isNumericValue,
-    isEditingProperty,
     supportsUpload,
     showMenuIcon: shouldShowMenuIcon(),
     isReadOnly: isStateReadOnly,
     handleToggle,
-    handleLabel2Click,
     handleUploadClick,
     handleMenuClick,
   })
@@ -635,52 +618,13 @@ export function useRowProperty({
     listItemProps.textLabel = {
       ...listItemProps.textLabel,
       children: labelChildren as unknown as string,
+      // The label wraps the live rename input here, so restore pointer events
+      // that the resting name label suppresses.
+      style: { ...listItemProps.textLabel.style, pointerEvents: "auto" },
     }
   }
 
-  const rowCursor =
-    !isStateReadOnly && (hasChildren || property.controlType)
-      ? "pointer"
-      : "default"
-
-  // Suppress the form control's internal icon/input/button slots: the row's
-  // child slots (value icon, value cell, menu button) supply the content.
-  const frameProps = {
-    icon: null,
-    input: null,
-    button: null,
-    tabIndex: -1,
-    [FRAME_REF_ATTR]: FRAME_REF_VALUE,
-    ref: setFrameRef,
-    onClick: handleFrameRefClick,
-    onMouseEnter: handleFrameMouseEnter,
-    onMouseLeave: handleFrameMouseLeave,
-    style: getFormControlStyle({ cursor: rowCursor, hoverStyle }),
-  } as FormControlIconicProps & {
-    ref?: (el: HTMLDivElement | null) => void
-  }
-
-  const rowStyleProp = getRowStyle({ rowStyle, hasChildren })
-
-  const valueCellProps = {
-    property,
-    value,
-    node,
-    theme,
-    labelColor,
-    valueChip: listItemProps.valueChip,
-    unitLabel: listItemProps.unitLabel,
-    isEditingProperty,
-    isThemeAssignment,
-    themeForSwatches,
-    frameRef,
-    onEditChange: setIsEditingProperty,
-    onTabNext: handleTabNext,
-    onTabPrev: handleTabPrev,
-    themeEditingContext,
-    fontCollectionEditingContext,
-    iconSetEditingContext,
-  }
+  const layerDrag = resolveLayerDrag({ property, node, allProperties })
 
   const childItems: RowPropertyProps[] = children.map((subProperty) => ({
     property: subProperty,
@@ -697,14 +641,28 @@ export function useRowProperty({
     listItemProps,
     onRowClick: handleRowClick,
     onRowDoubleClick: handleRowDoubleClick,
-    frameProps,
-    rowStyleProp,
-    valueCellProps,
+    control,
+    // Property status maps to a generated leaf state, replacing inline status
+    // colors: override -> activated, error -> invalid, not used -> disabled.
+    // Set and unset stay normal. Debug mode keeps the inline status colors.
+    stateRef: showPropertyTypes
+      ? {}
+      : property.status === "override"
+        ? buildActivatedRefProps(true)
+        : property.status === "error"
+          ? buildInvalidRefProps(true)
+          : property.status === "not used"
+            ? buildDisabledRefProps(true)
+            : {},
+    valueLabelProps,
+    onValueFieldClick: handleValueFieldClick,
+    setValueFieldRef: setFrameRef,
+    endEdit,
     resetActions,
     focusTargetRef: frameRef,
-    labelColor,
     isExpanded,
     hasChildren,
     childItems,
+    layerDrag,
   }
 }

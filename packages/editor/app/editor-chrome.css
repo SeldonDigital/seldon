@@ -1,13 +1,26 @@
 /*
- * Editor chrome styles that replaced the former Tailwind utilities. Holds the
- * few design tokens still in use plus the window scrollbar styling and the
- * Selectable primitive states.
+ * Permanent editor chrome. This sheet is NOT a bespoke-removal target: it holds
+ * styling that has no workspace-generated View equivalent and will never come
+ * from an export. Window scrollbars, the FocusRingOverlay border, native focus
+ * suppression, and the brand color tokens used by editor-only chrome live here.
+ *
+ * Do NOT add component-level styling here. Hand styling that mirrors what a
+ * generated View should provide belongs in the VM that renders it (inline or a
+ * co-located `*.bespoke.*` helper), so it deletes cleanly once the View ships.
  */
 
 :root {
   --color-blue: #3fb5ff;
   --color-pearl: #f5f5f5;
   --color-background: #1f1f1f;
+
+  /* Seldon brand colors used by the editor chrome (e.g. the topbar gradient).
+     These have no generated theme-token equivalent, so they live here. */
+  --sdn-swatch-seldon-red: hsl(0 100% 65%);
+  --sdn-swatch-seldon-green: hsl(135 76% 59%);
+  --sdn-swatch-seldon-blue: hsl(203 100% 62%);
+  --sdn-swatch-seldon-yellow: hsl(60 100% 46%);
+  --sdn-swatch-seldon-purple: hsl(300 76% 48%);
 }
 
 body {
@@ -24,12 +37,32 @@ body {
   outline: none;
 }
 
+/*
+ * Generated components paint a focus-within border (e.g. the combobox field
+ * outline). That is a focus visual, so gate it behind Show Keyboard Focus like
+ * the overlay ring. With the toggle off, neutralize the border so focus paints
+ * nothing on its own. The attribute selectors out-specify the generated rules
+ * and cover every focus-within variant in one place.
+ */
+html:not(.sdn-show-focus) .sdn-combobox-field:focus-within,
+html:not(.sdn-show-focus) [class*="sdn-combobox-field"]:focus-within,
+html:not(.sdn-show-focus) .sdn-item-section:focus-within,
+html:not(.sdn-show-focus) .sdn-button-iconic:focus-within {
+  border-color: transparent;
+}
+html:not(.sdn-show-focus)
+  [class*="sdn-combobox-field"]:focus-within
+  .sdn-button-iconic,
+html:not(.sdn-show-focus) .sdn-item-section:focus-within .sdn-button-iconic {
+  border-color: transparent;
+}
+
 /* Unified focus ring drawn by FocusRingOverlay. Geometry is set inline. */
 .editor-focus-ring {
   position: fixed;
   pointer-events: none;
   z-index: 2147483000;
-  border: 1px solid var(--sdn-seldon-swatch-punch);
+  border: 1px solid var(--sdn-swatch-punch);
   box-sizing: border-box;
 }
 
@@ -46,36 +79,4 @@ html::-webkit-scrollbar-thumb {
   box-shadow:
     0px 1px 0px 0px rgba(255, 255, 255, 0.25) inset,
     0px 1px 1px 0px rgba(0, 0, 0, 0.25);
-}
-
-/* Selectable primitive: variant + state driven by data attributes. */
-.selectable[data-variant="outline"] {
-  font-size: 0.8125rem;
-  border-radius: 0.375rem;
-}
-.selectable[data-variant="outline"]:focus-visible {
-  outline: none;
-}
-.selectable[data-variant="ghost"] {
-  font-size: 0.75rem;
-  font-weight: 500;
-}
-.selectable[data-variant="outline"][data-state="default"]:hover {
-  background: rgba(255, 255, 255, 0.1);
-}
-.selectable[data-variant="ghost"][data-state="default"] {
-  background: rgba(255, 255, 255, 0.1);
-}
-.selectable[data-variant="ghost"][data-state="default"]:hover {
-  background: rgba(255, 255, 255, 0.2);
-}
-.selectable[data-variant="outline"][data-state="active"] {
-  color: var(--color-blue);
-}
-.selectable[data-variant="outline"][data-state="active"]:hover {
-  background: rgba(255, 255, 255, 0.1);
-}
-.selectable[data-variant="outline"][data-state="selected"] {
-  color: var(--color-blue);
-  outline: 1px solid var(--color-blue);
 }

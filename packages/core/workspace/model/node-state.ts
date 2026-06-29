@@ -3,11 +3,14 @@ import type { Properties } from "../../properties/types/properties"
 /**
  * Interaction-state vocabulary for component nodes.
  *
- * This module is target-agnostic. It defines state name keys, display labels,
- * and the custom-state registry shape only. It carries no CSS, pseudo-class,
- * attribute, or class-name data. Each export pipeline owns its own mapping from
- * a state name to a target construct, so adding a new render target needs no
- * change here.
+ * This module defines state name keys, display labels, the expression kind that
+ * groups them, and the custom-state registry shape. It carries no concrete CSS
+ * selector, attribute, or class-name strings. Each export pipeline owns the
+ * mapping from a state name to a target construct, but every web target must
+ * honor the {@link RESERVED_STATE_EXPRESSION} kind so the user and agent mental
+ * model of how a state is expressed stays consistent. A pseudo state is driven
+ * by the browser, an aria state by a view-set attribute, and a class state by a
+ * runtime-toggled class.
  */
 
 /** Reserved interaction-state names shared by every export target. */
@@ -17,13 +20,14 @@ export type ReservedStateName =
   | "focused"
   | "active"
   | "dragged"
+  | "activated"
   | "error"
   | "selected"
   | "checked"
 
 /**
  * Reserved state names with their display labels. Order is not significant;
- * the editor menu owns its own display order.
+ * the editor menu derives its display order from {@link RESERVED_STATE_GROUPS}.
  */
 export const RESERVED_STATE_LABELS: Record<ReservedStateName, string> = {
   disabled: "Disabled",
@@ -31,6 +35,7 @@ export const RESERVED_STATE_LABELS: Record<ReservedStateName, string> = {
   focused: "Focused",
   active: "Active",
   dragged: "Dragged",
+  activated: "Activated",
   error: "Error",
   selected: "Selected",
   checked: "Checked",
@@ -40,6 +45,52 @@ export const RESERVED_STATE_LABELS: Record<ReservedStateName, string> = {
 export const RESERVED_STATE_NAMES = Object.keys(
   RESERVED_STATE_LABELS,
 ) as ReservedStateName[]
+
+/**
+ * How a reserved state is expressed by web export targets. This is the shared
+ * contract behind the grouping:
+ * - `pseudo`: the browser toggles it (a CSS pseudo-class). It cannot be forced
+ *   as a display state by the view.
+ * - `aria`: the view declares it through an aria attribute.
+ * - `class`: the app toggles a runtime state class.
+ */
+export type StateExpression = "pseudo" | "aria" | "class"
+
+/** Expression kind for each reserved state. Web targets must honor this. */
+export const RESERVED_STATE_EXPRESSION: Record<
+  ReservedStateName,
+  StateExpression
+> = {
+  hover: "pseudo",
+  focused: "pseudo",
+  active: "pseudo",
+  checked: "pseudo",
+  disabled: "aria",
+  error: "aria",
+  selected: "aria",
+  dragged: "class",
+  activated: "class",
+}
+
+/** Cluster order for the expression kinds in menus and tooling. */
+const STATE_EXPRESSION_ORDER: StateExpression[] = ["pseudo", "aria", "class"]
+
+/**
+ * Reserved states clustered by expression kind, in expression order, each
+ * cluster alpha-sorted by label. Editors render these clusters as separated
+ * groups so the menu mirrors how each state is expressed during export.
+ */
+export const RESERVED_STATE_GROUPS: {
+  expression: StateExpression
+  states: ReservedStateName[]
+}[] = STATE_EXPRESSION_ORDER.map((expression) => ({
+  expression,
+  states: RESERVED_STATE_NAMES.filter(
+    (name) => RESERVED_STATE_EXPRESSION[name] === expression,
+  ).sort((a, b) =>
+    RESERVED_STATE_LABELS[a].localeCompare(RESERVED_STATE_LABELS[b]),
+  ),
+}))
 
 /** Tells whether a name is a reserved interaction-state name. */
 export function isReservedStateName(name: string): name is ReservedStateName {

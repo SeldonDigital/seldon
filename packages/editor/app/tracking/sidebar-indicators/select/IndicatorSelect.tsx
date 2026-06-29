@@ -9,6 +9,7 @@ import {
   Pointer,
 } from "@seldon/components/custom-components"
 import { calculateIndicatorPosition } from "../helpers/calculate-indicator-position"
+import { SIDEBAR_INDICATOR_DOT_SIZE } from "../sidebar-indicators.bespoke"
 
 type IndicatorSelectProps = {
   placement: Placement
@@ -50,8 +51,8 @@ export const IndicatorSelect: FC<IndicatorSelectProps> = ({ placement }) => {
 
   const circleStyle: CSSProperties = {
     position: "absolute",
-    height: "var(--sdn-size-xsmall)",
-    width: "var(--sdn-size-xsmall)",
+    height: SIDEBAR_INDICATOR_DOT_SIZE,
+    width: SIDEBAR_INDICATOR_DOT_SIZE,
     borderRadius: "9999px",
     borderWidth: "1px",
     borderStyle: "solid",

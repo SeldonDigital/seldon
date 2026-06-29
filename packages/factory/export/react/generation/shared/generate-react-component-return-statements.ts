@@ -190,9 +190,11 @@ export function generateSimpleReturn(
   component: ComponentToExport,
   nodeIdToClass: NodeIdToClass,
   classNameVarName: string,
+  withRef: boolean = false,
 ): string {
   const { config, tree } = component
   const refAttr = dataSeldonRefAttr(tree.ref)
+  const forwardedRefProp = withRef ? " ref={ref}" : ""
   // Check if children prop exists in rootProps
   const hasChildrenProp = "children" in tree.dataBinding.props
 
@@ -220,12 +222,12 @@ export function generateSimpleReturn(
   //
   // React JSX component with merged default and custom properties
   //
-  return <${config.react.returns} className={${classNameVarName}}${rootPropsString}${refAttr}${attrPropsString} {...props}>{children}</${config.react.returns}>`
+  return <${config.react.returns} className={${classNameVarName}}${rootPropsString}${refAttr}${attrPropsString}${forwardedRefProp} {...props}>{children}</${config.react.returns}>`
   } else {
     return `
   //
   // React JSX component with merged default and custom properties
   //
-  return <${config.react.returns} className={${classNameVarName}}${rootPropsString}${refAttr}${attrPropsString} {...props} />`
+  return <${config.react.returns} className={${classNameVarName}}${rootPropsString}${refAttr}${attrPropsString}${forwardedRefProp} {...props} />`
   }
 }

@@ -1,0 +1,118 @@
+/*****
+ *
+ * This code was generated using Seldon (https://github.com/SeldonDigital/seldon)
+ *
+ * License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md
+ * Do not redistribute or sublicense without permission.
+ * 
+ * You may not use this software, or any derivative works of it, in whole or in part, 
+ * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly) 
+ * any machine learning or artificial intelligence system without written permission.
+ * 
+ *****/
+
+:root {
+  /* Theme: Industrial */
+  /* Modulation */
+  --sdn-industrial-ratio: 1.25;
+  --sdn-industrial-font-size: 16px;
+  --sdn-industrial-size: 1;
+  /* Font Families */
+  --sdn-industrial-font-family-primary: Lora;
+  --sdn-industrial-font-family-secondary: Barlow Condensed;
+  /* Colors */
+  --sdn-industrial-color-base-hue: 210;
+  --sdn-industrial-color-base-saturation: 30%;
+  --sdn-industrial-color-base-lightness: 20%;
+  --sdn-industrial-color-harmony: 5;
+  --sdn-industrial-color-angle: 20deg;
+  --sdn-industrial-color-step: 12;
+  --sdn-industrial-color-white-point: 90%;
+  --sdn-industrial-color-gray-point: 60%;
+  --sdn-industrial-color-black-point: 20%;
+  --sdn-industrial-color-bleed: 80;
+  --sdn-industrial-color-contrast-ratio: 2.5;
+  /* Swatches */
+  --sdn-industrial-swatch-white: hsl(210 80% 90%);
+  --sdn-industrial-swatch-gray: hsl(210 80% 60%);
+  --sdn-industrial-swatch-black: hsl(210 80% 20%);
+  --sdn-industrial-swatch-primary: hsl(210 30% 20%);
+  --sdn-industrial-swatch-tint-1: hsl(210 30% 32%);
+  --sdn-industrial-swatch-tint-2: hsl(210 30% 44%);
+  --sdn-industrial-swatch-tint-3: hsl(210 30% 56%);
+  --sdn-industrial-swatch-tint-4: hsl(210 30% 68%);
+  --sdn-industrial-swatch-background: hsl(210 80% 20%);
+  --sdn-industrial-swatch-red: hsl(0 100% 65%);
+  --sdn-industrial-swatch-green: hsl(135 76% 59%);
+  --sdn-industrial-swatch-blue: hsl(203 100% 62%);
+  --sdn-industrial-swatch-yellow: hsl(60 100% 46%);
+  --sdn-industrial-swatch-charcoal: hsl(0 0% 15%);
+  /* Sizes */
+  --sdn-industrial-sizes-tiny: 0.125rem;
+  --sdn-industrial-sizes-xxsmall: 0.25rem;
+  --sdn-industrial-sizes-xsmall: 0.5rem;
+  --sdn-industrial-sizes-small: 0.75rem;
+  --sdn-industrial-sizes-medium: 1rem;
+  --sdn-industrial-sizes-large: 1.501rem;
+  --sdn-industrial-sizes-xlarge: 2.002rem;
+  --sdn-industrial-sizes-xxlarge: 2.998rem;
+  --sdn-industrial-sizes-huge: 3.998rem;
+  /* Margins */
+  --sdn-industrial-margins-tight: 0.25rem;
+  --sdn-industrial-margins-compact: 0.5rem;
+  --sdn-industrial-margins-cozy: 1rem;
+  --sdn-industrial-margins-comfortable: 2.002rem;
+  --sdn-industrial-margins-open: 3.998rem;
+  /* Paddings */
+  --sdn-industrial-paddings-tight: 0.25rem;
+  --sdn-industrial-paddings-compact: 0.5rem;
+  --sdn-industrial-paddings-cozy: 1rem;
+  --sdn-industrial-paddings-comfortable: 2.002rem;
+  --sdn-industrial-paddings-open: 3.998rem;
+  /* Gaps */
+  --sdn-industrial-gaps-tight: 0.25rem;
+  --sdn-industrial-gaps-compact: 0.5rem;
+  --sdn-industrial-gaps-cozy: 1rem;
+  --sdn-industrial-gaps-comfortable: 2.002rem;
+  --sdn-industrial-gaps-open: 3.998rem;
+  /* Corners */
+  --sdn-industrial-corners-tight: 0.25rem;
+  --sdn-industrial-corners-compact: 0.5rem;
+  --sdn-industrial-corners-cozy: 1rem;
+  --sdn-industrial-corners-comfortable: 1.501rem;
+  --sdn-industrial-corners-open: 2.002rem;
+  /* Font Sizes */
+  --sdn-industrial-font-size-tiny: 0.5rem;
+  --sdn-industrial-font-size-xxsmall: 0.624rem;
+  --sdn-industrial-font-size-xsmall: 0.75rem;
+  --sdn-industrial-font-size-small: 0.875rem;
+  --sdn-industrial-font-size-medium: 1rem;
+  --sdn-industrial-font-size-large: 1.501rem;
+  --sdn-industrial-font-size-xlarge: 2.002rem;
+  --sdn-industrial-font-size-xxlarge: 2.998rem;
+  --sdn-industrial-font-size-huge: 3.998rem;
+  /* Font Weights */
+  --sdn-industrial-font-weight-thin: 100;
+  --sdn-industrial-font-weight-xlight: 200;
+  --sdn-industrial-font-weight-light: 300;
+  --sdn-industrial-font-weight-normal: 400;
+  --sdn-industrial-font-weight-medium: 500;
+  --sdn-industrial-font-weight-semibold: 600;
+  --sdn-industrial-font-weight-bold: 700;
+  --sdn-industrial-font-weight-xbold: 800;
+  --sdn-industrial-font-weight-black: 900;
+  /* Line Heights */
+  --sdn-industrial-line-height-none: 1;
+  --sdn-industrial-line-height-solid: 1.15;
+  --sdn-industrial-line-height-tight: 1.25;
+  --sdn-industrial-line-height-compact: 1.33;
+  --sdn-industrial-line-height-cozy: 1.5;
+  --sdn-industrial-line-height-comfortable: 2;
+  --sdn-industrial-line-height-open: 2.5;
+  /* Border Widths */
+  --sdn-industrial-border-width-xsmall: 0.031rem;
+  --sdn-industrial-border-width-small: 0.069rem;
+  --sdn-industrial-border-width-medium: 0.125rem;
+  --sdn-industrial-border-width-large: 0.25rem;
+  --sdn-industrial-border-width-xlarge: 0.5rem;
+}

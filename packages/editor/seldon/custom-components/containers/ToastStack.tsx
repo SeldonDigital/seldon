@@ -1,3 +1,5 @@
+// BESPOKE-VIEW: hand-authored transitional View with inline token styling.
+// Replace with a generated workspace component once one covers the toast stack.
 import { CSSProperties, ReactNode } from "react"
 
 interface ToastStackProps {
@@ -11,7 +13,7 @@ const stackStyle: CSSProperties = {
   zIndex: 50,
   display: "flex",
   flexDirection: "column",
-  gap: "var(--sdn-gap-compact)",
+  gap: "var(--sdn-gaps-compact)",
   transform: "translateX(-50%)",
 }
 

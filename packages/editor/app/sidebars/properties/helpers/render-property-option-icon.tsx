@@ -3,18 +3,17 @@ import {
   type OptionIconDescriptor,
   getOptionIcon,
 } from "@lib/icons/resolve-option-icon"
+import { type OptionIconRender } from "@lib/menus"
 import React from "react"
 import { Theme, Workspace } from "@seldon/core"
 import { IconId, defaultIconId } from "@seldon/core/icon-sets"
 import { IconSeldonMissing } from "@seldon/core/icon-sets/catalog/seldon/user-interface/actions/IconSeldonMissing"
 import { useThemes } from "@lib/themes/hooks/use-themes"
 import {
-  Icon,
-  IconProps,
+  IconCustomColorValue,
   ThemeSwatches,
 } from "@seldon/components/custom-components"
-import { IconCustomColorValue } from "@seldon/components/custom-icons"
-import { IconSeldonToken } from "@seldon/components/icons"
+import { IconSeldonToken } from "@seldon/components/icons/seldon/user-interface/actions/IconSeldonToken"
 import { LoadEditorIcons, asSymbolIconId } from "@app/LoadEditorIcons"
 import { FlatProperty } from "./properties-data"
 import { getRepeatSymbolDescendant } from "./repeat-display"
@@ -29,13 +28,16 @@ interface RenderPropertyOptionIconDeps {
   themes: ReturnType<typeof useThemes>
 }
 
+export type { OptionIconRender } from "@lib/menus"
+
 /**
- * Builds the per-option icon renderer for a property combobox. The theme
+ * Builds the per-option icon resolver for a property combobox. The theme
  * assignment row and symbol glyphs stay here because they depend on workspace
  * state; every other icon decision comes from `getOptionIcon`, which reads the
- * shared icons registry.
+ * shared icons registry. Most options resolve to a plain icon id; only the
+ * dynamic cases return a node.
  */
-export function createPropertyOptionIconRenderer({
+export function createPropertyOptionIconResolver({
   property,
   theme,
   workspace,
@@ -43,20 +45,25 @@ export function createPropertyOptionIconRenderer({
 }: RenderPropertyOptionIconDeps): (option?: {
   value: string
   name: string
-}) => React.ReactNode {
-  return function renderPropertyOptionIcon(
+}) => OptionIconRender {
+  return function resolvePropertyOptionIcon(
     option: OptionIcon,
-  ): React.ReactNode {
+  ): OptionIconRender {
     // Theme-assignment row renders the theme's swatch strip.
     if (property.key === "theme" && option) {
       if (option.value === "none") {
-        return null
+        return { kind: "node", node: null }
       }
       const optionTheme = themes.find((t) => t.id === option.value)
       if (optionTheme) {
-        return <ThemeSwatches colors={resolveThemeSwatchColors(optionTheme)} />
+        return {
+          kind: "node",
+          node: (
+            <ThemeSwatches colors={resolveThemeSwatchColors(optionTheme)} />
+          ),
+        }
       }
-      return null
+      return { kind: "node", node: null }
     }
 
     // Symbol rows (including repeat echo symbol rows) render the option value as
@@ -67,38 +74,37 @@ export function createPropertyOptionIconRenderer({
     if (isSymbolRow && option && option.value && option.value !== "inherit") {
       // The default symbol is not a real glyph; show the property icon instead.
       if (option.value === defaultIconId) {
-        return (
-          <Icon
-            icon={property.icon as IconProps["icon"]}
-            style={{ color: "inherit" }}
-          />
-        )
+        return { kind: "iconId", icon: property.icon }
       }
       // Icon turned off in its workspace set renders as a red Missing icon.
       if (isWorkspaceIconUnavailable(option.value as IconId, workspace)) {
-        return (
-          <LoadEditorIcons iconId={asSymbolIconId(option.value)} unavailable />
-        )
+        return {
+          kind: "node",
+          node: (
+            <LoadEditorIcons
+              iconId={asSymbolIconId(option.value)}
+              unavailable
+            />
+          ),
+        }
       }
       // Check if this is an unused icon (missing from iconLabels)
       if (option.name === "[Unused Icon]") {
-        return <IconSeldonMissing />
+        return { kind: "node", node: <IconSeldonMissing /> }
       }
-      return <LoadEditorIcons iconId={asSymbolIconId(option.value)} />
+      return {
+        kind: "node",
+        node: <LoadEditorIcons iconId={asSymbolIconId(option.value)} />,
+      }
     }
 
     // The "Default" ("") and "Inherit" rows are not icon ids; let them fall
     // through to the property's default icon.
     if (!option) {
-      return (
-        <Icon
-          icon={property.icon as IconProps["icon"]}
-          style={{ color: "inherit" }}
-        />
-      )
+      return { kind: "iconId", icon: property.icon }
     }
 
-    return renderOptionIconDescriptor(
+    return resolveOptionIconDescriptor(
       getOptionIcon(property.key, option.value, theme, property.icon),
       property,
     )
@@ -106,33 +112,29 @@ export function createPropertyOptionIconRenderer({
 }
 
 /**
- * Renders one resolved option icon. The generated icon class pins a dark color,
- * so static icons inherit the menu text color instead.
+ * Maps one resolved icon descriptor to its binding. Static and glyph values are
+ * plain icon ids that flow through the `optionIcon` slot; swatch chips and theme
+ * tokens are dynamic nodes.
  */
-function renderOptionIconDescriptor(
+function resolveOptionIconDescriptor(
   descriptor: OptionIconDescriptor,
   property: FlatProperty,
-): React.ReactNode {
+): OptionIconRender {
   switch (descriptor.kind) {
     case "swatchColor":
-      return <IconCustomColorValue color={descriptor.color} />
+      return {
+        kind: "node",
+        node: <IconCustomColorValue color={descriptor.color} />,
+      }
     case "themeToken":
-      return <IconSeldonToken />
+      // `seldon-token` is an editor-registry id, not an exported slot id, so it
+      // renders as a node rather than through the `optionIcon` slot.
+      return { kind: "node", node: <IconSeldonToken /> }
     case "glyph":
       // Symbol glyphs are handled before this point; fall back to the property
       // icon for any other value-as-icon row.
-      return (
-        <Icon
-          icon={property.icon as IconProps["icon"]}
-          style={{ color: "inherit" }}
-        />
-      )
+      return { kind: "iconId", icon: property.icon }
     case "static":
-      return (
-        <Icon
-          icon={descriptor.icon as IconProps["icon"]}
-          style={{ color: "inherit" }}
-        />
-      )
+      return { kind: "iconId", icon: descriptor.icon }
   }
 }

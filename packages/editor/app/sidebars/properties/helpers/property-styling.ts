@@ -7,7 +7,7 @@ import {
   COLOR_OVERRIDE,
   COLOR_SET,
   COLOR_UNSET,
-} from "../../helpers/sidebar-styles"
+} from "../../helpers/sidebar-styles.bespoke"
 import { isCompoundProperty, isShorthandProperty } from "./property-types"
 
 export {

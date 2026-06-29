@@ -1,69 +1,20 @@
 "use client"
 
-import { MenuEntry } from "@lib/menus"
 import { useCallback, useRef } from "react"
-import { Board as BoardType, Variant } from "@seldon/core"
-import { Action } from "@seldon/core/index"
 import {
-  isFontCollectionBoard,
-  isIconSetBoard,
-  isMediaBoard,
-  isThemeBoard,
-} from "@seldon/core/workspace/model/components"
-import { isEntryFontCollectionDefault } from "@seldon/core/workspace/model/entry-font-collection"
-import { isEntryIconSetDefault } from "@seldon/core/workspace/model/entry-icon-set"
-import { isEntryThemeDefault } from "@seldon/core/workspace/model/entry-theme"
-import type { Workspace } from "@seldon/core/workspace/types"
-import { useRowHighlightStyle } from "@lib/workspace/hooks/use-object-hover"
-import {
-  ResourceEntryKind,
   useIsResourceEntrySelected,
   useSelection,
 } from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useTool } from "@lib/hooks/use-tool"
-import { useSidebarRowStyling } from "../../tracking/hooks/use-sidebar-row-styling"
-import { useInlineRename } from "../hooks/use-inline-rename"
+import { useRenameInput } from "../hooks/use-rename-input"
 import { useResourceEntryRow } from "./hooks/use-resource-entry-row"
 import { useRowClick } from "./hooks/use-row-click"
-import { SelectionKind } from "@lib/workspace/selection-target"
-import { ItemNodeRow } from "@seldon/components/elements/ItemNodeRow"
+import { ItemNode } from "@seldon/components/elements/ItemNode"
 import { IconProps } from "@seldon/components/primitives/Icon"
-import { TextLabelProps } from "@seldon/components/primitives/TextLabel"
-import { rowWrapperStyle } from "../helpers/sidebar-row-styles"
 import { useRowActionsMenu } from "../shared/use-row-actions-menu"
 import { RowSelectionTarget } from "./RowSelectionTarget"
-
-type ResolvedEntry = {
-  label: string
-  isDefault: boolean
-  /** Whether the entry carries its own overrides; gates variant reset. */
-  hasOverrides?: boolean
-}
-
-/**
- * Per-resource variation points for an entry row. The row body is identical
- * across resources; only data access, selection kind, icon, and the rename
- * action differ. Omitting `buildLabelAction` disables rename (media stub).
- */
-export interface ResourceRowConfig {
-  kind: ResourceEntryKind
-  selectionKind: SelectionKind
-  icon: IconProps["icon"]
-  testId: string
-  getEntry: (workspace: Workspace, entryId: string) => ResolvedEntry | undefined
-  buildLabelAction?: (entryId: string, label: string) => Action
-  /**
-   * Gives the selected entry a reset row action, mirroring resettable variant
-   * nodes: "Reset to Catalog" on the default entry, "Reset to Default" on a
-   * variant entry with overrides. Omitting it disables reset.
-   */
-  buildResetAction?: (entryId: string) => Action
-  /** Duplicates the entry into a new variant. Available on default and custom entries. */
-  buildDuplicateAction?: (entryId: string) => Action
-  /** Deletes a custom variant entry. Never offered on the default entry. */
-  buildDeleteAction?: (entryId: string) => Action
-}
+import type { ResourceRowConfig } from "./helpers/resource-row-config"
 
 type VMResourceEntryProps = {
   config: ResourceRowConfig
@@ -112,192 +63,58 @@ export function VMResourceEntry({
     }
   }, [canRename, setEditingName])
 
-  const { rowStyle, iconColor, labelColor } = useSidebarRowStyling(
-    { id: entryId } as unknown as Variant,
-    { isSelected },
-  )
-  const hoverStyle = useRowHighlightStyle(entryId, isSelected)
-  const combinedRowStyle = { ...hoverStyle, ...rowStyle }
-
   const rowRef = useRef<HTMLDivElement>(null)
 
   const actionsMenu = useRowActionsMenu(actions, {
-    color: iconColor,
     focusTargetRef: rowRef,
   })
 
-  if (!show || !entry) return null
-
-  const icon2: IconProps = {
-    icon: config.icon,
-    ...(iconColor ? { style: { color: iconColor } } : {}),
-  }
-
-  const { labelChildren: renameLabel } = useInlineRename({
+  const nameInput = useRenameInput({
     label: entry?.label ?? "",
     isEditing: isEditingName && Boolean(config.buildLabelAction),
     setEditing: setEditingName,
     onSubmit: submitLabel,
   })
 
-  const labelChildren =
-    isEditingName && config.buildLabelAction ? renameLabel : entry.label
+  if (!show || !entry) return null
 
-  const textLabel = {
-    children: labelChildren,
-    ...(labelColor ? { style: { color: labelColor } } : {}),
-  } as unknown as TextLabelProps
+  const icon2: IconProps = { icon: config.icon }
+
+  // Resource rows are leaves: the toggle slot stays an empty spacer, and the
+  // trailing actions icon keeps the generated `seldon-more` default, hidden by
+  // the actions button placeholder. Per-row data flows through stable refs.
+  const seldonRefs = {
+    nodeIcon: { ...icon2 },
+    nodeLabel: { ...nameInput },
+    nodeActions: { ...actionsMenu.buttonIconic },
+  }
+
+  // Root-level row state mirrors selection for selectors and tests.
+  const itemNodeState = {
+    "aria-selected": isActive || undefined,
+  }
 
   return (
     <>
       <RowSelectionTarget
         ref={rowRef}
-        style={rowWrapperStyle}
         selectionId={entryId}
         selectionKind={config.selectionKind}
       >
-        <ItemNodeRow
+        <ItemNode
           buttonIconic={{}}
-          icon={{
-            icon: "material-chevronRight",
-            style: { color: "transparent" },
-          }}
-          icon2={icon2}
-          textLabel={textLabel}
-          buttonIconic2={null}
-          icon3={null}
-          buttonIconic3={actionsMenu.buttonIconic}
-          icon4={actionsMenu.icon}
+          comboboxField={{}}
+          seldonRefs={seldonRefs}
           onClick={onClick}
           onDoubleClick={onDoubleClick}
+          {...itemNodeState}
           data-testid={config.testId}
           data-resource-entry-id={entryId}
           data-resource-kind={config.kind}
           data-active={isActive}
-          style={combinedRowStyle}
         />
       </RowSelectionTarget>
       {actionsMenu.menu}
     </>
   )
-}
-
-/** Per-kind row configuration. Keyed by resource board type. */
-export const RESOURCE_ROW_CONFIG: Record<ResourceEntryKind, ResourceRowConfig> =
-  {
-    theme: {
-      kind: "theme",
-      selectionKind: "theme",
-      icon: "seldon-theme",
-      testId: "objects-sidebar-theme-entry",
-      getEntry: (workspace, entryId) => {
-        const entry = workspace.themes[entryId]
-        if (!entry) return undefined
-        return {
-          label: entry.label,
-          isDefault: isEntryThemeDefault(entry),
-          hasOverrides: Object.keys(entry.overrides).length > 0,
-        }
-      },
-      buildLabelAction: (entryId, label) => ({
-        type: "set_theme_label",
-        payload: { themeId: entryId, label },
-      }),
-      buildResetAction: (entryId) => ({
-        type: "reset_theme_tokens",
-        payload: { themeId: entryId },
-      }),
-      buildDuplicateAction: (entryId) => ({
-        type: "duplicate_theme",
-        payload: { themeId: entryId },
-      }),
-      buildDeleteAction: (entryId) => ({
-        type: "delete_theme",
-        payload: { themeId: entryId },
-      }),
-    },
-    fontCollection: {
-      kind: "fontCollection",
-      selectionKind: "fontCollection",
-      icon: "seldon-text",
-      testId: "objects-sidebar-font-collection-entry",
-      getEntry: (workspace, entryId) => {
-        const entry = workspace["font-collections"][entryId]
-        if (!entry) return undefined
-        return {
-          label: entry.label,
-          isDefault: isEntryFontCollectionDefault(entry),
-        }
-      },
-      buildLabelAction: (entryId, label) => ({
-        type: "set_font_collection_label",
-        payload: { fontCollectionId: entryId, label },
-      }),
-      buildResetAction: (entryId) => ({
-        type: "reset_font_collection",
-        payload: { fontCollectionId: entryId },
-      }),
-      buildDuplicateAction: (entryId) => ({
-        type: "duplicate_font_collection",
-        payload: { fontCollectionId: entryId },
-      }),
-      buildDeleteAction: (entryId) => ({
-        type: "delete_font_collection",
-        payload: { fontCollectionId: entryId },
-      }),
-    },
-    iconSet: {
-      kind: "iconSet",
-      selectionKind: "iconSet",
-      icon: "seldon-icon",
-      testId: "objects-sidebar-icon-set-entry",
-      getEntry: (workspace, entryId) => {
-        const entry = workspace["icon-sets"][entryId]
-        if (!entry) return undefined
-        return { label: entry.label, isDefault: isEntryIconSetDefault(entry) }
-      },
-      buildLabelAction: (entryId, label) => ({
-        type: "set_icon_set_label",
-        payload: { iconSetId: entryId, label },
-      }),
-      buildResetAction: (entryId) => ({
-        type: "reset_icon_set",
-        payload: { iconSetId: entryId },
-      }),
-      buildDuplicateAction: (entryId) => ({
-        type: "duplicate_icon_set",
-        payload: { iconSetId: entryId },
-      }),
-      buildDeleteAction: (entryId) => ({
-        type: "delete_icon_set",
-        payload: { iconSetId: entryId },
-      }),
-    },
-    // Media stub: the media entry model has no label/type yet and no media board
-    // renders, so the row is read-only (no rename) and falls back to the id.
-    media: {
-      kind: "media",
-      selectionKind: "media",
-      icon: "seldon-component",
-      testId: "objects-sidebar-media-entry",
-      getEntry: (workspace, entryId) => {
-        const entry = workspace.media[entryId]
-        if (!entry) return undefined
-        return { label: entry.id, isDefault: true }
-      },
-    },
-  }
-
-/**
- * Resolves the resource-entry row config for a board, or null when the board's
- * children are component variants rather than resource entries.
- */
-export function getBoardResourceRowConfig(
-  board: BoardType,
-): ResourceRowConfig | null {
-  if (isThemeBoard(board)) return RESOURCE_ROW_CONFIG.theme
-  if (isFontCollectionBoard(board)) return RESOURCE_ROW_CONFIG.fontCollection
-  if (isIconSetBoard(board)) return RESOURCE_ROW_CONFIG.iconSet
-  if (isMediaBoard(board)) return RESOURCE_ROW_CONFIG.media
-  return null
 }

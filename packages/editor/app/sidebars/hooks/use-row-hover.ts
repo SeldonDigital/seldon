@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react"
+import { SIDEBAR_SELECTED_BORDER } from "./sidebar-rows.bespoke"
 
 /**
  * Local hover state and style for non-selectable header rows (sections and
@@ -9,9 +10,7 @@ export function useRowHover(isSelected: boolean, hoverOpacity: number = 10) {
 
   const style = useMemo(
     () => ({
-      ...(isSelected
-        ? { borderColor: "var(--sdn-seldon-swatch-primary)" }
-        : {}),
+      ...(isSelected ? { borderColor: SIDEBAR_SELECTED_BORDER } : {}),
       ...(isHovered && !isSelected
         ? {
             backgroundColor: `hsl(0 0% 100% / ${hoverOpacity / 100})`,

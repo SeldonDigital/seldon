@@ -19,13 +19,18 @@ import { useAddRemoveCommands } from "@lib/hooks/commands/use-add-remove-command
 import { useTool } from "@lib/hooks/use-tool"
 import { getVariantRootIds } from "@lib/workspace/component-tree"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
-import { IconProps } from "@seldon/components/custom-components"
+import { IconProps } from "@seldon/components/primitives/Icon"
+import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import { buildResetMenuEntry } from "../../shared/build-reset-menu-entry"
 import { useExpansion, useIsExpanded } from "./use-expansion"
 import { useRowButton } from "./use-row-button"
 import { useRowClick } from "./use-row-click"
 import { useRowToggle } from "./use-row-toggle"
 import { useIsBoardContainingSelection } from "./use-selection-relations"
+
+/** Shown when a rename is attempted on a board whose name reflects the catalog. */
+const RENAME_BOARD_BLOCKED_MESSAGE =
+  "Component board names come from the catalog and can't be renamed"
 
 /**
  * Hook that provides all state and handlers for rendering a board row in the objects sidebar.
@@ -49,6 +54,7 @@ export function useRowBoard(
   const { dispatch } = useWorkspace({ usePreview: false })
   const { dispatchWithAutoSelect } = useAutoSelectNode()
   const { removeBoard, duplicatePlayground } = useAddRemoveCommands()
+  const addToast = useAddToast()
 
   // Expansion state: toggle, expand/collapse, get descendants
   const { toggle, expandObjects, collapseObjects, getAllDescendantNodeIds } =
@@ -115,7 +121,13 @@ export function useRowBoard(
   const [isEditingName, setEditingName] = useState(false)
 
   function onDoubleClick() {
-    if (isPlayground) setEditingName(true)
+    if (isPlayground) {
+      setEditingName(true)
+    } else {
+      // Component, screen, and resource board names mirror the catalog, so the
+      // rename gesture is rejected with the same feedback an instance edit gives.
+      addToast(RENAME_BOARD_BLOCKED_MESSAGE)
+    }
   }
 
   function setPlaygroundLabel(label: string) {
@@ -295,7 +307,6 @@ export function useRowBoard(
   // Button and icon creation: toggle button, component icon, add variant button
   const { createToggleButton, createToggleIcon, createIcon2 } = useRowButton({
     isExpanded: isExpandedState,
-    isSelected: boardIsActive,
     hasChildren: hasVariantChildren,
     onToggle,
   })
@@ -336,15 +347,12 @@ export function useRowBoard(
     actions,
     onClick,
     onDoubleClick,
-    isPlayground,
     isEditingName,
     setEditingName,
     setPlaygroundLabel,
     isExpanded: isExpandedState,
     isBoardSelected,
     boardIsActive,
-    boardContainsSelectedNode,
-    boardContainsSelectedResourceEntry,
     variants: variantRootIds,
   }
 }

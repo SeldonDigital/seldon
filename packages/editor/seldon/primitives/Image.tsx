@@ -16,6 +16,7 @@ import { combineClassNames } from "../utils/class-name"
 
 export interface ImageProps extends ImgHTMLAttributes<HTMLImageElement> {
   className?: string
+  "data-seldon-ref"?: string
   src?: string
 }
 
@@ -30,6 +31,7 @@ export interface ImageProps extends ImgHTMLAttributes<HTMLImageElement> {
  * ```tsx
  * <Image
  *   src="https://static.seldon.app/background-default-dark.jpg"
+ *   aria-hidden="false"
  * />
  * ```
  *****/
@@ -39,7 +41,14 @@ export function Image({ className = "", src = sdn.src, ...props }: ImageProps) {
   //
   // React JSX component with merged default and custom properties
   //
-  return <HTMLImg className={imageClassName} src={src} {...props} />
+  return (
+    <HTMLImg
+      className={imageClassName}
+      src={src}
+      aria-hidden={sdn["aria-hidden"]}
+      {...props}
+    />
+  )
 }
 
 //
@@ -47,5 +56,6 @@ export function Image({ className = "", src = sdn.src, ...props }: ImageProps) {
 //
 const sdn: ImageProps = {
   src: "https://static.seldon.app/background-default-dark.jpg",
+  "aria-hidden": "false",
   className: "sdn-image",
 }

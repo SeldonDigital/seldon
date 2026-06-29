@@ -1,6 +1,6 @@
 import { Workspace } from "@seldon/core"
 
-import { Classes, StateClasses } from "../types"
+import { Classes, DescendantStateClasses, StateClasses } from "../types"
 import { format } from "../utils/format"
 import { insertBaseStyles } from "./insert-base-styles"
 import { insertNodeStyles } from "./insert-node-styles"
@@ -12,6 +12,7 @@ export async function generateComponentStylesheet(
   classNameToNodeId?: Record<string, string>,
   nodeTreeDepths?: Record<string, number>,
   stateClasses?: StateClasses,
+  descendantStateClasses?: DescendantStateClasses,
 ): Promise<string> {
   let stylesheet = ""
 
@@ -24,6 +25,7 @@ export async function generateComponentStylesheet(
     classNameToNodeId,
     nodeTreeDepths,
     stateClasses,
+    descendantStateClasses,
   )
 
   return format(stylesheet)

@@ -1,7 +1,7 @@
 import { MenuEntry } from "@lib/menus"
 import { Fragment, type MouseEvent } from "react"
 import { useRowCategory } from "./hooks/use-row-category"
-import { ItemSectionRow } from "@seldon/components/elements/ItemSectionRow"
+import { ItemSection } from "@seldon/components/elements/ItemSection"
 import { useRowActionsMenu } from "../shared/use-row-actions-menu"
 import { useSectionHeaderRow } from "../shared/use-section-header-row"
 import { PropertySection } from "./helpers/get-property-sections"
@@ -21,7 +21,7 @@ interface VMCategoryProps {
  */
 export function VMCategory({ section, actions, onAddCustom }: VMCategoryProps) {
   const { label, icon, buttonIconic, onToggle } = useRowCategory(section)
-  const { hoverStyle, handleClick, handleMouseEnter, handleMouseLeave } =
+  const { handleClick, handleMouseEnter, handleMouseLeave } =
     useSectionHeaderRow({ onToggle })
   const actionsMenu = useRowActionsMenu(actions ?? [], {
     "aria-label": "Section actions",
@@ -37,23 +37,31 @@ export function VMCategory({ section, actions, onAddCustom }: VMCategoryProps) {
       }
     : undefined
 
-  // Keep the "+" in the far-right slot. When it shows, the actions menu moves to
-  // the middle slot, but only when the section actually has actions.
-  const showActionsInMiddle = !!addButton && actionsMenu.hasActions
+  // Drive each slot through its stable workspace ref. Conditional slots keep a
+  // positional enabler to render (`{}` to show, `null` to hide); their data
+  // flows through `seldonRefs`. The actions slot always renders (its placeholder
+  // hides itself when empty), and its trailing icon stays on the generated
+  // `seldon-more` default, hidden by that placeholder, so it needs no ref.
+  const seldonRefs: Record<string, Record<string, unknown>> = {
+    sectionToggle: { ...buttonIconic },
+    sectionToggleIcon: { icon },
+    sectionLabel: { children: label },
+    sectionActions: { ...actionsMenu.buttonIconic },
+  }
+  if (addButton) seldonRefs.sectionAdd = { ...addButton }
+
+  // Positional enabler: render the add slot only when a custom-token adder exists.
+  const addSlot = addButton ? {} : null
 
   return (
     <Fragment>
-      <ItemSectionRow
-        buttonIconic={buttonIconic}
-        icon={{ icon }}
-        textLabel={{ children: label }}
-        buttonIconic2={
-          showActionsInMiddle ? actionsMenu.buttonIconic : undefined
-        }
-        icon2={showActionsInMiddle ? actionsMenu.icon : undefined}
-        buttonIconic3={addButton ?? actionsMenu.buttonIconic}
-        icon3={addButton ? { icon: "material-add" } : actionsMenu.icon}
-        style={hoverStyle}
+      <ItemSection
+        buttonIconic={{}}
+        formControlComboboxControl={{}}
+        textLabel={{}}
+        buttonIconic2={addSlot}
+        buttonIconic3={{}}
+        seldonRefs={seldonRefs}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         onClick={handleClick}

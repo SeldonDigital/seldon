@@ -1,3 +1,5 @@
+// BESPOKE-VIEW: hand-authored transitional View. Replace with a generated
+// workspace component once one covers the theme swatch cluster.
 import { CSSProperties } from "react"
 import { SwatchDot } from "./SwatchDot"
 

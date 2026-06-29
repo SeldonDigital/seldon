@@ -1,38 +1,24 @@
-import { CSSProperties, memo, useCallback, useRef } from "react"
-import { Board as BoardType, Variant } from "@seldon/core"
-import { useRowHighlightStyle } from "@lib/workspace/hooks/use-object-hover"
-import { useTool } from "@lib/hooks/use-tool"
+import { memo, useCallback, useRef } from "react"
+import { Board as BoardType } from "@seldon/core"
 import { useSidebarCanvasTrackingBoard } from "../../tracking/hooks/use-sidebar-canvas-tracking"
-import { useSidebarRowStyling } from "../../tracking/hooks/use-sidebar-row-styling"
 import { IndentationLevel } from "../hooks/use-indentation"
-import { useInlineRename } from "../hooks/use-inline-rename"
+import { useRenameInput } from "../hooks/use-rename-input"
 import { useRowBoard } from "./hooks/use-row-board"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { FramerExpandable } from "@seldon/components/custom-components"
-import { ItemNodeRow } from "@seldon/components/elements/ItemNodeRow"
-import { IconProps } from "@seldon/components/primitives/Icon"
-import { TextLabelProps } from "@seldon/components/primitives/TextLabel"
-import { applyTrackingColor } from "../helpers/apply-tracking-color"
-import { rowWrapperStyle } from "../helpers/sidebar-row-styles"
-import { relativeFullWidthStyle } from "../helpers/sidebar-styles"
+import { ItemNode } from "@seldon/components/elements/ItemNode"
+import {
+  buildActivatedRefProps,
+  buildFieldStateProps,
+  mergeStateProps,
+} from "../shared/build-field-state-props"
 import { useRowActionsMenu } from "../shared/use-row-actions-menu"
 import { RowSelectionTarget } from "./RowSelectionTarget"
 import { VMNode } from "./VMNode"
-import { VMResourceEntry, getBoardResourceRowConfig } from "./VMResourceEntry"
+import { VMResourceEntry } from "./VMResourceEntry"
+import { getBoardResourceRowConfig } from "./helpers/resource-row-config"
 
 const BOARD_SELECTION_KIND = "board"
-
-const emptyRowWrapperStyle: CSSProperties = {
-  ...rowWrapperStyle,
-  position: "relative",
-}
-
-const emptyLabelStyle: CSSProperties = {
-  fontFamily: "var(--sdn-seldon-font-family-primary)",
-  fontSize: "var(--sdn-font-size-xsmall)",
-  color: "var(--sdn-seldon-swatch-white)",
-  paddingInlineStart: "var(--sdn-padding-compact)",
-}
 
 type VMBoardProps =
   | { board: BoardType; show?: boolean }
@@ -56,21 +42,17 @@ export const VMBoard = memo(function VMBoard(props: VMBoardProps) {
  * shell with all slots empty, so it reads as a disabled "No <section>" line.
  */
 function VMBoardEmpty({ label }: { label: string }) {
+  const seldonRefs = { nodeLabel: { value: label, readOnly: true } }
   return (
-    <div style={emptyRowWrapperStyle}>
-      <ItemNodeRow
-        buttonIconic={null}
-        icon={null}
-        icon2={null}
-        textLabel={{ children: label, style: emptyLabelStyle }}
-        buttonIconic2={null}
-        icon3={null}
-        buttonIconic3={null}
-        icon4={null}
-        aria-disabled
-        data-testid="objects-sidebar-empty-section"
-      />
-    </div>
+    <ItemNode
+      buttonIconic={null}
+      comboboxField={{}}
+      icon2={null}
+      buttonIconic2={null}
+      seldonRefs={seldonRefs}
+      aria-disabled
+      data-testid="objects-sidebar-empty-section"
+    />
   )
 }
 
@@ -101,39 +83,19 @@ function VMBoardRow({
     isExpanded,
     isBoardSelected,
     boardIsActive,
-    boardContainsSelectedNode,
-    boardContainsSelectedResourceEntry,
     variants,
   } = useRowBoard(board, { show })
 
-  // Styling: row colors, icon colors, hover effects
+  // A child node or resource is selected under this board, but the board itself
+  // is not the direct selection. The row shows the subtler activated state
+  // instead of the full selected field highlight.
+  const isActivated = boardIsActive && !isBoardSelected
+
   const boardKey = getComponentKey(board)
-  const { activeTool } = useTool()
-  const hoverStyle = useRowHighlightStyle(boardKey, isBoardSelected)
-  const { rowStyle, iconColor, labelColor } = useSidebarRowStyling(
-    board as unknown as Variant,
-    { isSelected: boardIsActive },
-  )
-  // The insert component tool highlights the selected board in the accent color
-  // to signal it as the active insertion context, recoloring the whole row
-  // (border, icons, and label) instead of the default primary selection color.
-  const accentActive = isBoardSelected && activeTool === "component"
-  const accentColor = "var(--sdn-seldon-swatch-accent)"
-  const effectiveIconColor = accentActive ? accentColor : iconColor
-  const effectiveLabelColor = accentActive ? accentColor : labelColor
-  const selectedBorderStyle: CSSProperties = accentActive
-    ? { borderColor: accentColor }
-    : {}
-  const combinedRowStyle =
-    (boardContainsSelectedNode || boardContainsSelectedResourceEntry) &&
-    !isBoardSelected
-      ? { ...hoverStyle, ...rowStyle, borderColor: undefined }
-      : { ...hoverStyle, ...rowStyle, ...selectedBorderStyle }
 
   // Trailing "..." actions menu for the board row.
   const rowRef = useRef<HTMLDivElement>(null)
   const actionsMenu = useRowActionsMenu(actions, {
-    color: effectiveIconColor,
     focusTargetRef: rowRef,
   })
 
@@ -153,26 +115,12 @@ function VMBoardRow({
     handleCanvasTrackingLeave()
   }, [handleCanvasTrackingLeave])
 
-  // Apply tracking colors: icons get color
-  const coloredIcon = applyTrackingColor(icon, "color", effectiveIconColor)
-  const coloredIcon2 = applyTrackingColor(icon2, "color", effectiveIconColor)
-
-  const { labelChildren: renameLabel } = useInlineRename({
+  const nameInput = useRenameInput({
     label: String(baseLabel.children),
     isEditing: isEditingName,
     setEditing: setEditingName,
     onSubmit: setPlaygroundLabel,
   })
-
-  // Label: apply tracking color if provided
-  const textLabel: TextLabelProps = {
-    ...baseLabel,
-    children: isEditingName ? renameLabel : baseLabel.children,
-    style: {
-      ...("style" in baseLabel && baseLabel.style ? baseLabel.style : {}),
-      ...(effectiveLabelColor ? { color: effectiveLabelColor } : {}),
-    },
-  } as TextLabelProps
 
   // Data attributes
   const dataTestId = "objects-sidebar-board"
@@ -189,47 +137,76 @@ function VMBoardRow({
           parentIsSelected={boardIsActive}
         />
       ))
-    : variants.map((variantId, index) => (
-        <VMNode
-          key={variantId}
-          nodeId={variantId}
-          rootId={variantId}
-          show={show}
-          parentIsSelected={boardIsActive}
-          disableReordering={index === 0}
-        />
-      ))
+    : variants.map((variantId, index) => {
+        const disableReordering = index === 0
+        return (
+          <VMNode
+            key={variantId}
+            nodeId={variantId}
+            rootId={variantId}
+            show={show}
+            parentIsSelected={boardIsActive}
+            disableReordering={disableReordering}
+          />
+        )
+      })
 
   if (!show) return null
 
-  // Board rows never use dynamic icon-custom-* ids, so the casts to the
-  // generated IconProps at the row boundary are safe.
+  // The toggle chevron rotates 90° when the board is expanded. Color, hover, and
+  // selection tints come from the generated component CSS.
+  const toggleIcon = {
+    ...icon,
+    style: {
+      transition: "transform 0.2s ease",
+      ...(isExpanded ? { transform: "rotate(90deg)" } : {}),
+    },
+  }
+
+  // Activated tints the field leaves (icon, label) without the selected field
+  // border, so a board with the selection inside it reads as activated.
+  const activatedRef = buildActivatedRefProps(isActivated)
+
+  // Drive every slot through its stable workspace ref. The trailing actions icon
+  // has no ref; it keeps the generated `seldon-more` default and is hidden by the
+  // actions button placeholder (visibility cascades), so it needs none.
+  const seldonRefs = {
+    nodeToggle: { ...buttonIconic },
+    nodeToggleIcon: { ...toggleIcon },
+    nodeIcon: mergeStateProps(icon2, activatedRef),
+    nodeLabel: mergeStateProps(nameInput, activatedRef),
+    nodeActions: { ...actionsMenu.buttonIconic },
+  }
+
+  // Selected (direct board click) is styled on the combobox-field child via the
+  // field cascade. Containing the selection uses activated instead.
+  const comboboxField = buildFieldStateProps({ selected: isBoardSelected })
+
+  // Root-level row state mirrors selection for selectors and tests.
+  const itemNodeState = {
+    "aria-selected": isBoardSelected || undefined,
+    "data-activated": isActivated || undefined,
+  }
+
   return (
     <>
       <RowSelectionTarget
         ref={rowRef}
-        style={rowWrapperStyle}
-        innerStyle={relativeFullWidthStyle}
         selectionId={boardKey}
         selectionKind={BOARD_SELECTION_KIND}
       >
-        <ItemNodeRow
-          buttonIconic={buttonIconic}
-          icon={coloredIcon as IconProps}
-          icon2={coloredIcon2 as IconProps}
-          textLabel={textLabel}
-          buttonIconic2={null}
-          icon3={null}
-          buttonIconic3={actionsMenu.buttonIconic}
-          icon4={actionsMenu.icon}
+        <ItemNode
+          buttonIconic={{}}
+          comboboxField={comboboxField}
+          seldonRefs={seldonRefs}
           onClick={onClick}
           onDoubleClick={onDoubleClick}
           onMouseEnter={handleRowMouseEnter}
           onMouseLeave={handleRowMouseLeave}
+          {...itemNodeState}
           data-testid={dataTestId}
           data-componentid={dataComponentId}
           data-active={boardIsActive}
-          style={combinedRowStyle}
         />
       </RowSelectionTarget>
       {actionsMenu.menu}

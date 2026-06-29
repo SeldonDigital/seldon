@@ -162,5 +162,12 @@ export interface ComponentExport {
       | "wrapperElement"
       | "iconMap"
       | "Frame"
+    /**
+     * When set, the component is generated with `React.forwardRef` targeting
+     * this element type (e.g. "HTMLButtonElement"), so callers can attach a ref
+     * to the rendered root element. Supported for slot-tree and simple-return
+     * components; not for `htmlElement`, `wrapperElement`, or `iconMap`.
+     */
+    forwardRef?: string
   }
 }

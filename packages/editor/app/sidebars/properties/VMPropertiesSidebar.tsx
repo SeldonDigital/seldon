@@ -24,21 +24,14 @@ import {
   useBorderSideVisibility,
   useRevealedBorderSides,
 } from "./hooks/use-border-side-visibility"
+import { useFilterInput } from "./hooks/use-filter-input"
 import { useLayerDragMonitor } from "./hooks/use-layer-drag-monitor"
 import { usePropertiesSidebar } from "./hooks/use-properties-sidebar"
 import { PropertyEditNavigationProvider } from "./hooks/use-property-edit-navigation"
 import { useIsCategoryExpanded } from "./hooks/use-property-expansion"
-import {
-  ScrollerShell,
-  SidebarContainer,
-} from "@seldon/components/custom-components"
-import { FramerExpandable } from "@seldon/components/custom-components"
-import { Frame } from "@seldon/components/frames/Frame"
+import { Box, FramerExpandable } from "@seldon/components/custom-components"
+import { SidebarProperties } from "@seldon/components/modules/SidebarProperties"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
-import {
-  sidebarNoSelectionStyle,
-  sidebarShellStyle,
-} from "../helpers/sidebar-styles"
 import { CssBlock } from "./CssBlock"
 import { VMCategory } from "./VMCategory"
 import { VMProperty } from "./VMProperty"
@@ -47,6 +40,7 @@ import {
   IconSetEditingContext,
   ThemeEditingContext,
 } from "./helpers/editing-contexts"
+import { filterPropertySections } from "./helpers/filter-property-sections"
 import { PropertySection } from "./helpers/get-property-sections"
 import { ThemePropertySection } from "./helpers/get-theme-property-sections"
 import { getIconRowCategory } from "./helpers/icon-set-properties-data"
@@ -55,6 +49,7 @@ import {
   getAllowedBorderSides,
   getPropertiesSubjectId,
 } from "./helpers/properties-data"
+import { PROPERTIES_TREE_GAP } from "./properties.bespoke"
 
 export interface PropertyTreeProps {
   properties: FlatProperty[]
@@ -89,6 +84,7 @@ export interface PropertyTreeProps {
  */
 export function VMPropertiesSidebar() {
   const state = usePropertiesSidebar()
+  const filter = useFilterInput()
 
   // Selecting a node rebuilds and remounts the whole inspector, which is heavy
   // enough to block the triggering click. Render the tree from a deferred copy
@@ -99,17 +95,47 @@ export function VMPropertiesSidebar() {
   // would not.
   const deferredState = useDeferredValue(state)
 
+  // Live-filter the rendered rows by label or current value. The lookup table
+  // (`allProperties`) stays full so a matched compound or shorthand parent can
+  // still resolve its child rows.
+  const sections = useMemo(
+    () =>
+      deferredState.kind === "tree"
+        ? filterPropertySections(deferredState.treeProps.sections, filter.query)
+        : [],
+    [deferredState, filter.query],
+  )
+
   if (deferredState.kind === "empty") {
-    return <SidebarContainer style={sidebarNoSelectionStyle} />
+    return (
+      <SidebarProperties
+        data-testid="properties-sidebar"
+        comboboxFieldFilterField={filter.comboboxField}
+        input={filter.input}
+        buttonIconic={filter.buttonIconic}
+        style={styles.sidebar}
+      />
+    )
+  }
+
+  const seldonRefs = {
+    propertiesContainer: {
+      style: styles.frame,
+      children: (
+        <PropertiesTree {...deferredState.treeProps} sections={sections} />
+      ),
+    },
   }
 
   return (
-    <SidebarContainer
-      style={sidebarShellStyle}
+    <SidebarProperties
       data-testid="properties-sidebar"
-    >
-      <PropertiesTree {...deferredState.treeProps} />
-    </SidebarContainer>
+      comboboxFieldFilterField={filter.comboboxField}
+      input={filter.input}
+      buttonIconic={filter.buttonIconic}
+      seldonRefs={seldonRefs}
+      style={styles.sidebar}
+    />
   )
 }
 
@@ -136,32 +162,32 @@ function PropertiesTree({
 }: PropertyTreeProps) {
   useLayerDragMonitor()
 
+  const sectionNodes = sections.map((section) => (
+    <TreeSection
+      key={section.category}
+      section={section}
+      workspace={workspace}
+      node={node}
+      theme={theme}
+      cssStrings={cssStrings}
+      cssSelector={cssSelector}
+      allProperties={allProperties}
+      familyProperties={familyProperties}
+      iconProperties={iconProperties}
+      themeEditingContext={themeEditingContext}
+      fontCollectionEditingContext={fontCollectionEditingContext}
+      iconSetEditingContext={iconSetEditingContext}
+    />
+  ))
+
   return (
-    <ScrollerShell ref={scrollerRef} style={styles.scroller}>
-      <Frame style={styles.tree}>
+    <Box ref={scrollerRef} style={styles.scroller}>
+      <Box style={styles.tree}>
         <PropertyEditNavigationProvider>
-          <LayoutGroup>
-            {sections.map((section) => (
-              <TreeSection
-                key={section.category}
-                section={section}
-                workspace={workspace}
-                node={node}
-                theme={theme}
-                cssStrings={cssStrings}
-                cssSelector={cssSelector}
-                allProperties={allProperties}
-                familyProperties={familyProperties}
-                iconProperties={iconProperties}
-                themeEditingContext={themeEditingContext}
-                fontCollectionEditingContext={fontCollectionEditingContext}
-                iconSetEditingContext={iconSetEditingContext}
-              />
-            ))}
-          </LayoutGroup>
+          <LayoutGroup>{sectionNodes}</LayoutGroup>
         </PropertyEditNavigationProvider>
-      </Frame>
-    </ScrollerShell>
+      </Box>
+    </Box>
   )
 }
 
@@ -406,15 +432,26 @@ function TreeSection({
 }
 
 const styles = {
-  scroller: {
+  sidebar: {
     height: "100%",
+    minHeight: 0,
+  },
+  frame: {
+    flex: 1,
+    minHeight: 0,
+    display: "flex",
+    flexDirection: "column" as const,
+  },
+  scroller: {
+    flex: 1,
+    minHeight: 0,
     overflowX: "hidden" as const,
     overflowY: "auto" as const,
   },
   tree: {
-    padding: "0.25rem 0.25rem 0.75rem 0.25rem",
+    padding: "0.25rem 0 0.75rem 0",
     display: "flex",
     flexDirection: "column" as const,
-    gap: "var(--sdn-gaps-tight)",
+    gap: PROPERTIES_TREE_GAP,
   },
 }

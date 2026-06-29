@@ -10,13 +10,16 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { ButtonHTMLAttributes } from "react"
+import { ButtonHTMLAttributes, forwardRef } from "react"
 import { HTMLButton } from "../native-react/HTML.Button"
 import { Icon, IconProps } from "../primitives/Icon"
+import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
 
 export interface ButtonIconicProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string
+  "data-seldon-ref"?: string
+  seldonRefs?: Record<string, Record<string, unknown>>
   icon?: IconProps | null
 }
 
@@ -34,42 +37,45 @@ export interface ButtonIconicProps extends ButtonHTMLAttributes<HTMLButtonElemen
  * />
  * ```
  *****/
-export function ButtonIconic({
-  className = "",
-  icon = sdn.icon,
-  children,
-  ...props
-}: ButtonIconicProps) {
-  const buttonIconicClassName = combineClassNames(
-    "sdn-button-iconic",
-    className,
-  )
-  const iconProps =
-    icon === null
-      ? null
-      : {
-          ...sdn.icon,
-          ...icon,
-          className: combineClassNames(sdn.icon?.className, icon?.className),
-        }
+export const ButtonIconic = forwardRef<HTMLButtonElement, ButtonIconicProps>(
+  function ButtonIconic(
+    { className = "", icon = sdn.icon, children, seldonRefs, ...props },
+    ref,
+  ) {
+    const buttonIconicClassName = combineClassNames(
+      "sdn-button-iconic",
+      className,
+    )
+    const iconProps = applyRef(
+      seldonRefs,
+      icon === null
+        ? null
+        : {
+            ...sdn.icon,
+            ...icon,
+            className: combineClassNames(sdn.icon?.className, icon?.className),
+          },
+    )
 
-  return (
-    <HTMLButton className={buttonIconicClassName} {...props}>
-      {children !== undefined ? (
-        children
-      ) : (
-        <>{iconProps !== null && <Icon {...iconProps} />}</>
-      )}
-    </HTMLButton>
-  )
-}
+    return (
+      <HTMLButton className={buttonIconicClassName} ref={ref} {...props}>
+        {children !== undefined ? (
+          children
+        ) : (
+          <>{iconProps !== null && <Icon {...iconProps} />}</>
+        )}
+      </HTMLButton>
+    )
+  },
+)
 
 //
 // Default property values
 //
 const sdn: ButtonIconicProps = {
   icon: {
-    icon: "__default__",
-    className: "sdn-icon sdn-icon--kuax",
+    icon: "seldon-component",
+    "aria-hidden": "true",
+    className: "sdn-icon sdn-icon--vsau",
   },
 }

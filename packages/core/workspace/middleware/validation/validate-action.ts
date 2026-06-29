@@ -170,6 +170,7 @@ export function validateAction(workspace: Workspace, action: Action): void {
     case "reset_node_label":
     case "reset_node_editor_data":
     case "reset_variant_to_catalog":
+    case "reset_variant_instances":
     case "reset_instance_to_source":
     case "reset_instance_to_original":
     case "reset_default_variant_to_catalog":

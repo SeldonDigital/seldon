@@ -47,7 +47,7 @@ flowchart LR
 - The compute engines read their tunable values from the theme Computed groups, not from the schema: `autoFit.parameters.factor`, `opticalPadding.parameters.{leftRhythm,rightRhythm,verticalRhythm}`, `highContrast.parameters.{contrastRatio,fallbackColor,includeBleed}`, `matchColor.parameters.{includeBrightness,includeOpacity}`, and the `modulation` ratio and base sizes. A computed schema entry carries only the function. It does not author a `basedOn` path or a `factor`.
 - Each engine derives its own source at compute time, so the editor and an AI agent resolve identically from the same bare value: AUTO_FIT walks the ancestor chain for the first `buttonSize`, then `size`, then `@fontSize.medium`. HIGH_CONTRAST_COLOR and MATCH_COLOR read `#self.background.color` first, then walk ancestors for a contributing color. OPTICAL_PADDING derives `#buttonSize`, then `#font.size`, then `#parent.fontSize`.
 - Pass `{ stage: "effective" }` to `computeNodeProperties` to stop after merge and before computed resolution. The properties UI uses that mode for editor status.
-- Pass `{ rootParentFallback: "board" }` to `computeNodeProperties` or `getNodeComputeContext` to make a node without a composition parent resolve `#parent.*` paths against its owning board. The editor canvas opts in. Export leaves this off, so exported CSS never depends on board styling.
+- A node without a composition parent resolves `#parent.*` paths against its owning board, so the board surface backs every variant root the same way for the canvas, the editor, and export.
 
 ---
 

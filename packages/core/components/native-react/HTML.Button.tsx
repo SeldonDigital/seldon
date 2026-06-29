@@ -1,5 +1,10 @@
-import { ButtonHTMLAttributes } from "react"
+import { ButtonHTMLAttributes, forwardRef } from "react"
 
-export const HTMLButton = (props: ButtonHTMLAttributes<HTMLButtonElement>) => {
-  return <button {...props} />
-}
+export const HTMLButton = forwardRef<
+  HTMLButtonElement,
+  ButtonHTMLAttributes<HTMLButtonElement>
+>((props, ref) => {
+  return <button ref={ref} {...props} />
+})
+
+HTMLButton.displayName = "HTMLButton"

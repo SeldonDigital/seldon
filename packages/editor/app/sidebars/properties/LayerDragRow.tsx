@@ -12,11 +12,17 @@ import {
   Pointer,
 } from "@seldon/components/custom-components"
 import type { LayerPlacement } from "./helpers/layer-reorder"
+import { LAYER_DRAG_DOT_SIZE } from "./properties.bespoke"
 
-interface LayerDragRowProps {
+/** A row's layer-reorder context: which paint stack it belongs to and where. */
+export interface LayerDragContext {
   property: LayeredPaintKey
   layerIndex: number
   layerCount: number
+}
+
+interface LayerDragRowProps {
+  layerDrag: LayerDragContext | null
   label: string
   icon: string
   children: ReactNode
@@ -26,17 +32,48 @@ const wrapperStyle: CSSProperties = { position: "relative", width: "100%" }
 const nonInteractiveOverlayStyle: CSSProperties = { pointerEvents: "none" }
 
 /**
- * Wraps a layered paint parent row to make it a drag source for reordering and
- * to host before/after drop bands with the shared insert indicator.
+ * Renders a property row, making it a layer-reorder drag source when it is a
+ * multi-layer paint parent. Rows without a layer context render their children
+ * unwrapped, so the caller can always mount this without branching.
  */
 export function LayerDragRow({
+  layerDrag,
+  label,
+  icon,
+  children,
+}: LayerDragRowProps) {
+  if (!layerDrag) return <>{children}</>
+  return (
+    <LayerDragSource
+      property={layerDrag.property}
+      layerIndex={layerDrag.layerIndex}
+      layerCount={layerDrag.layerCount}
+      label={label}
+      icon={icon}
+    >
+      {children}
+    </LayerDragSource>
+  )
+}
+
+interface LayerDragSourceProps extends LayerDragContext {
+  label: string
+  icon: string
+  children: ReactNode
+}
+
+/**
+ * Drag-source wrapper for a layered paint parent row. Hosts before/after drop
+ * bands with the shared insert indicator.
+ */
+function LayerDragSource({
   property,
   layerIndex,
   layerCount,
   label,
   icon,
   children,
-}: LayerDragRowProps) {
+}: LayerDragSourceProps) {
   const { ref, dragging } = useLayerDraggable({
     property,
     layerIndex,
@@ -44,8 +81,13 @@ export function LayerDragRow({
     icon,
   })
 
+  const boxStyle: CSSProperties = {
+    ...wrapperStyle,
+    opacity: dragging ? 0.5 : 1,
+  }
+
   return (
-    <Box ref={ref} style={{ ...wrapperStyle, opacity: dragging ? 0.5 : 1 }}>
+    <Box ref={ref} style={boxStyle}>
       {children}
       <LayerDropBand
         property={property}
@@ -84,18 +126,22 @@ function LayerDropBand({
     (state) => state.isLayerDragging,
   )
 
+  const bandStyle = getBandStyle(placement, isLayerDragging)
+  const dropzoneTestId = `layer-${property}-${layerIndex}-dropzone-${placement}`
+  const overlay = isValidDropTarget ? (
+    <OverlayLayer style={nonInteractiveOverlayStyle}>
+      <LayerInsertIndicator placement={placement} />
+    </OverlayLayer>
+  ) : null
+
   return (
     <>
       <PlacementZoneSurface
         ref={ref}
-        style={getBandStyle(placement, isLayerDragging)}
-        dataTestId={`layer-${property}-${layerIndex}-dropzone-${placement}`}
+        style={bandStyle}
+        dataTestId={dropzoneTestId}
       />
-      {isValidDropTarget && (
-        <OverlayLayer style={nonInteractiveOverlayStyle}>
-          <LayerInsertIndicator placement={placement} />
-        </OverlayLayer>
-      )}
+      {overlay}
     </>
   )
 }
@@ -133,8 +179,8 @@ function LayerInsertIndicator({ placement }: { placement: LayerPlacement }) {
     left: "-8px",
     top: "0.5px",
     transform: "translateY(-50%)",
-    height: "var(--sdn-size-xsmall)",
-    width: "var(--sdn-size-xsmall)",
+    height: LAYER_DRAG_DOT_SIZE,
+    width: LAYER_DRAG_DOT_SIZE,
     borderRadius: "9999px",
     borderWidth: "1px",
     borderStyle: "solid",

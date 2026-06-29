@@ -3,7 +3,7 @@
 import { CSSProperties, PropsWithChildren } from "react"
 import { useAppState } from "@lib/hooks/use-app-state"
 import { useEditorConfig } from "@lib/hooks/use-editor-config"
-import { Topbar } from "./topbar/Topbar"
+import { VMTopbar } from "./topbar/VMTopbar"
 
 export function Layout({
   children,
@@ -16,7 +16,7 @@ export function Layout({
 
   return (
     <div style={styles.layout} data-testid={testId}>
-      {shouldShowHeader && <Topbar />}
+      {shouldShowHeader && <VMTopbar />}
       {children}
     </div>
   )

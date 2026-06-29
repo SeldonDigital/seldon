@@ -1,4 +1,4 @@
-import { CSSProperties, ReactNode, Ref } from "react"
+import { ReactNode, Ref } from "react"
 
 interface RowSelectionTargetProps {
   selectionId: string
@@ -9,9 +9,6 @@ interface RowSelectionTargetProps {
    * resolver can tell apart copies of a child id reused across variants.
    */
   selectionRootId?: string
-  style?: CSSProperties
-  /** When set, wraps children in a second positioned div. */
-  innerStyle?: CSSProperties
   ref?: Ref<HTMLDivElement>
   children: ReactNode
 }
@@ -25,26 +22,18 @@ export function RowSelectionTarget({
   selectionId,
   selectionKind,
   selectionRootId,
-  style,
-  innerStyle,
   ref,
   children,
 }: RowSelectionTargetProps) {
-  const content = innerStyle ? (
-    <div style={innerStyle}>{children}</div>
-  ) : (
-    children
-  )
   return (
     <div
       ref={ref}
       tabIndex={-1}
-      style={style}
       data-selection-id={selectionId}
       data-selection-kind={selectionKind}
       data-selection-root-id={selectionRootId}
     >
-      {content}
+      {children}
     </div>
   )
 }

@@ -74,6 +74,9 @@ export async function runExport(
     // Default off so exports stay request-free. Flip to true (or override via
     // body.options once the export options UI exists) to emit Google font links.
     enableRemoteFonts: false,
+    // Default on so the export ships every icon enabled in the workspace's icon
+    // sets. Override via body.options to tree-shake to only icons components use.
+    exportAllIconSetIcons: true,
     ...body.options,
   }
 

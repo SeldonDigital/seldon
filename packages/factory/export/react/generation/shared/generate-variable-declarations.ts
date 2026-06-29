@@ -47,8 +47,11 @@ export function generateVariableDeclarations(
     const propsVarName = `${propsName}Props`
     if (!declared.has(propsVarName)) {
       declared.add(propsVarName)
+      // Wrap the merged slot props with `applyRef` so a caller can override this
+      // slot by its `data-seldon-ref` name. The ref rides on the merged object,
+      // so `applyRef` resolves and layers the matching override last.
       declarations.push(
-        `const ${propsVarName} = ${propsName} === null ? null : { ...sdn.${propsName}, ...${propsName}, className: combineClassNames(sdn.${propsName}?.className, ${propsName}?.className) }`,
+        `const ${propsVarName} = applyRef(seldonRefs, ${propsName} === null ? null : { ...sdn.${propsName}, ...${propsName}, className: combineClassNames(sdn.${propsName}?.className, ${propsName}?.className) })`,
       )
     }
 

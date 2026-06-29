@@ -15,7 +15,7 @@ import {
 } from "@seldon/core/workspace/model"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 
-export const SECTION_LABELS: Record<ComponentLevel, string> = {
+const SECTION_LABELS: Record<ComponentLevel, string> = {
   [ComponentLevel.FRAME]: "Frames",
   [ComponentLevel.PRIMITIVE]: "Primitives",
   [ComponentLevel.ELEMENT]: "Elements",

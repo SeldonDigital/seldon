@@ -9,7 +9,7 @@ import {
   propertyControlTextStyle,
   propertyControlTextWrapperStyle,
   propertyControlWrapperStyle,
-} from "../../helpers/sidebar-styles"
+} from "../../helpers/sidebar-styles.bespoke"
 import { getComboboxStoredValue } from "../helpers/combobox-stored-value"
 import { getDisplayValue } from "../helpers/display-value-utils"
 import type { PropertyPickerResult } from "../helpers/options-utils"

@@ -5,8 +5,14 @@ import {
   ImagePreview,
   Text,
 } from "@seldon/components/custom-components"
-import { IconSeldonUpload } from "@seldon/components/icons"
+import { IconMaterialUpload } from "@seldon/components/icons"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
+import {
+  DROPZONE_DRAG_ACCENT,
+  DROPZONE_DRAG_BORDER,
+  DROPZONE_GAP,
+  DROPZONE_TEXT_SIZE,
+} from "./image-dropzone.bespoke"
 
 export interface ImageDropzoneProps {
   onFileChange: (file: File | null) => void
@@ -16,7 +22,7 @@ export interface ImageDropzoneProps {
 
 const styles: Record<string, CSSProperties> = {
   uploadIcon: { fontSize: "1.125rem" },
-  uploadText: { fontSize: "var(--sdn-font-size-small)" },
+  uploadText: { fontSize: DROPZONE_TEXT_SIZE },
 }
 
 const dropzoneBaseStyle: CSSProperties = {
@@ -36,11 +42,11 @@ function getDropzoneStyle(
     ...dropzoneBaseStyle,
     ...(isDragging
       ? {
-          color: "var(--sdn-swatch-seldon-blue)",
-          border: "2px solid var(--sdn-swatch-seldon-blue)",
+          color: DROPZONE_DRAG_ACCENT,
+          border: DROPZONE_DRAG_BORDER,
         }
       : { color: "#F5F5F5" }),
-    ...(hasFile ? { position: "relative" } : { gap: "var(--sdn-gap-tight)" }),
+    ...(hasFile ? { position: "relative" } : { gap: DROPZONE_GAP }),
   }
 }
 
@@ -95,7 +101,7 @@ export function ImageDropzone({
     <ImagePreview src={previewUrl} onError={handleImageError} />
   ) : (
     <>
-      <IconSeldonUpload style={styles.uploadIcon} />
+      <IconMaterialUpload style={styles.uploadIcon} />
       <Text style={styles.uploadText}>{dropText}</Text>
     </>
   )

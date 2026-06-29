@@ -7,8 +7,11 @@ import {
   TransformStrategy,
   transformSource,
 } from "../../react/utils/transform-source"
-import { Classes, StateClasses } from "../types"
-import { getStateSelectorSuffixes } from "./state-selectors"
+import { Classes, DescendantStateClasses, StateClasses } from "../types"
+import {
+  getAncestorStateSelectorSuffixes,
+  getStateSelectorSuffixes,
+} from "./state-selectors"
 
 /**
  * Builds the interaction-state CSS rules for one class. Each state emits a rule
@@ -30,6 +33,37 @@ function buildStateRules(
   return rules
 }
 
+/**
+ * Builds the root-scoped interaction-state rules. A container row owns the
+ * interaction, so a descendant rule reads `.{root}{ancestorSuffix} .{descendant}`
+ * and the root's own delta reads `.{root}{ancestorSuffix}`. The ancestor suffix
+ * cascades the state from the row to its subtree, matching the canvas preview.
+ */
+function buildDescendantStateRules(
+  descendantStateClasses: DescendantStateClasses,
+): string[] {
+  const rules: string[] = []
+  for (const [rootClass, statesByName] of Object.entries(
+    descendantStateClasses,
+  )) {
+    for (const [stateName, stateRules] of Object.entries(statesByName)) {
+      const suffixes = getAncestorStateSelectorSuffixes(stateName)
+      for (const { descendantClass, css } of stateRules) {
+        if (Object.keys(css).length === 0) continue
+        const selector = suffixes
+          .map((suffix) =>
+            descendantClass
+              ? `.${rootClass}${suffix} .${descendantClass}`
+              : `.${rootClass}${suffix}`,
+          )
+          .join(", ")
+        rules.push(getCssStringFromCssObject(css, rootClass, selector))
+      }
+    }
+  }
+  return rules
+}
+
 export function insertNodeStyles(
   stylesheet: string,
   classes: Classes,
@@ -37,6 +71,7 @@ export function insertNodeStyles(
   classNameToNodeId?: Record<string, string>,
   nodeTreeDepths?: Record<string, number>,
   stateClasses?: StateClasses,
+  descendantStateClasses?: DescendantStateClasses,
 ) {
   const sortedEntries = Object.entries(classes).sort(
     ([classNameA], [classNameB]) => {
@@ -110,6 +145,12 @@ export function insertNodeStyles(
     return rules
   })
 
+  // Root-scoped state rules come after every base and self-state rule so the
+  // higher-specificity descendant selectors resolve last by source order.
+  const descendantStateRules = descendantStateClasses
+    ? buildDescendantStateRules(descendantStateClasses)
+    : []
+
   return transformSource({
     source: stylesheet,
     strategy: TransformStrategy.APPEND,
@@ -122,6 +163,6 @@ export function insertNodeStyles(
  ********************************************/
 
 ${componentStyles.join("\n\n")}
-`,
+${descendantStateRules.length > 0 ? `\n${descendantStateRules.join("\n\n")}\n` : ""}`,
   })
 }

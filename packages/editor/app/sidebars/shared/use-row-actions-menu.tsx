@@ -1,6 +1,6 @@
 "use client"
 
-import { Menu, MenuAlign, MenuEntry } from "@lib/menus"
+import { MenuAlign, MenuEntry, VMMenu } from "@lib/menus"
 import {
   CSSProperties,
   ReactNode,
@@ -32,7 +32,7 @@ const PLACEHOLDER_ICON_STYLE: CSSProperties = {
   visibility: "hidden",
 }
 
-export interface RowActionsMenuSlots {
+interface RowActionsMenuSlots {
   hasActions: boolean
   /**
    * Trailing iconic-button slot props for a generated row. Always defined so
@@ -103,14 +103,16 @@ export function useRowActionsMenu(
         }
   ) as RowActionsMenuSlots["buttonIconic"]
 
+  const closeMenu = () => setOpen(false)
+  const menuAlign = options?.align ?? "end"
   const menu = hasActions ? (
-    <Menu
+    <VMMenu
       open={open}
       anchorRef={triggerRef}
       focusTargetRef={options?.focusTargetRef}
-      onClose={() => setOpen(false)}
+      onClose={closeMenu}
       items={items}
-      align={options?.align ?? "end"}
+      align={menuAlign}
     />
   ) : null
 

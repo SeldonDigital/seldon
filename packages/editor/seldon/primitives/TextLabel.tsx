@@ -12,6 +12,7 @@
  *****/
 import { HTMLAttributes } from "react"
 import { HTMLAnchor } from "../native-react/HTML.Anchor"
+import { HTMLCode } from "../native-react/HTML.Code"
 import { HTMLHeading1 } from "../native-react/HTML.Heading1"
 import { HTMLHeading2 } from "../native-react/HTML.Heading2"
 import { HTMLHeading3 } from "../native-react/HTML.Heading3"
@@ -19,12 +20,15 @@ import { HTMLHeading4 } from "../native-react/HTML.Heading4"
 import { HTMLHeading5 } from "../native-react/HTML.Heading5"
 import { HTMLHeading6 } from "../native-react/HTML.Heading6"
 import { HTMLLabel } from "../native-react/HTML.Label"
+import { HTMLOption } from "../native-react/HTML.Option"
 import { HTMLParagraph } from "../native-react/HTML.Paragraph"
+import { HTMLPre } from "../native-react/HTML.Pre"
 import { HTMLSpan } from "../native-react/HTML.Span"
 import { combineClassNames } from "../utils/class-name"
 
 export interface TextLabelProps extends HTMLAttributes<
   | HTMLAnchorElement
+  | HTMLElement
   | HTMLHeadingElement
   | HTMLHeadingElement
   | HTMLHeadingElement
@@ -32,10 +36,13 @@ export interface TextLabelProps extends HTMLAttributes<
   | HTMLHeadingElement
   | HTMLHeadingElement
   | HTMLLabelElement
+  | HTMLOptionElement
   | HTMLParagraphElement
+  | HTMLPreElement
   | HTMLElement
 > {
   className?: string
+  "data-seldon-ref"?: string
   children?: string
   htmlElement?:
     | "p"
@@ -48,6 +55,9 @@ export interface TextLabelProps extends HTMLAttributes<
     | "h4"
     | "h5"
     | "h6"
+    | "pre"
+    | "code"
+    | "option"
 }
 
 /*****
@@ -62,6 +72,7 @@ export interface TextLabelProps extends HTMLAttributes<
  * <TextLabel
  *   children="Label"
  *   htmlElement="label"
+ *   aria-hidden="false"
  * />
  * ```
  *****/
@@ -79,7 +90,11 @@ export function TextLabel({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLParagraph className={textLabelClassName} {...props}>
+        <HTMLParagraph
+          className={textLabelClassName}
+          aria-hidden={sdn["aria-hidden"]}
+          {...props}
+        >
           {children}
         </HTMLParagraph>
       )
@@ -88,7 +103,11 @@ export function TextLabel({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLSpan className={textLabelClassName} {...props}>
+        <HTMLSpan
+          className={textLabelClassName}
+          aria-hidden={sdn["aria-hidden"]}
+          {...props}
+        >
           {children}
         </HTMLSpan>
       )
@@ -97,7 +116,11 @@ export function TextLabel({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLAnchor className={textLabelClassName} {...props}>
+        <HTMLAnchor
+          className={textLabelClassName}
+          aria-hidden={sdn["aria-hidden"]}
+          {...props}
+        >
           {children}
         </HTMLAnchor>
       )
@@ -106,7 +129,11 @@ export function TextLabel({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLHeading1 className={textLabelClassName} {...props}>
+        <HTMLHeading1
+          className={textLabelClassName}
+          aria-hidden={sdn["aria-hidden"]}
+          {...props}
+        >
           {children}
         </HTMLHeading1>
       )
@@ -115,7 +142,11 @@ export function TextLabel({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLHeading2 className={textLabelClassName} {...props}>
+        <HTMLHeading2
+          className={textLabelClassName}
+          aria-hidden={sdn["aria-hidden"]}
+          {...props}
+        >
           {children}
         </HTMLHeading2>
       )
@@ -124,7 +155,11 @@ export function TextLabel({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLHeading3 className={textLabelClassName} {...props}>
+        <HTMLHeading3
+          className={textLabelClassName}
+          aria-hidden={sdn["aria-hidden"]}
+          {...props}
+        >
           {children}
         </HTMLHeading3>
       )
@@ -133,7 +168,11 @@ export function TextLabel({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLHeading4 className={textLabelClassName} {...props}>
+        <HTMLHeading4
+          className={textLabelClassName}
+          aria-hidden={sdn["aria-hidden"]}
+          {...props}
+        >
           {children}
         </HTMLHeading4>
       )
@@ -142,7 +181,11 @@ export function TextLabel({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLHeading5 className={textLabelClassName} {...props}>
+        <HTMLHeading5
+          className={textLabelClassName}
+          aria-hidden={sdn["aria-hidden"]}
+          {...props}
+        >
           {children}
         </HTMLHeading5>
       )
@@ -151,16 +194,63 @@ export function TextLabel({
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLHeading6 className={textLabelClassName} {...props}>
+        <HTMLHeading6
+          className={textLabelClassName}
+          aria-hidden={sdn["aria-hidden"]}
+          {...props}
+        >
           {children}
         </HTMLHeading6>
+      )
+    case "pre":
+      //
+      // React JSX component with merged default and custom properties
+      //
+      return (
+        <HTMLPre
+          className={textLabelClassName}
+          aria-hidden={sdn["aria-hidden"]}
+          {...props}
+        >
+          {children}
+        </HTMLPre>
+      )
+    case "code":
+      //
+      // React JSX component with merged default and custom properties
+      //
+      return (
+        <HTMLCode
+          className={textLabelClassName}
+          aria-hidden={sdn["aria-hidden"]}
+          {...props}
+        >
+          {children}
+        </HTMLCode>
+      )
+    case "option":
+      //
+      // React JSX component with merged default and custom properties
+      //
+      return (
+        <HTMLOption
+          className={textLabelClassName}
+          aria-hidden={sdn["aria-hidden"]}
+          {...props}
+        >
+          {children}
+        </HTMLOption>
       )
     default:
       //
       // React JSX component with merged default and custom properties
       //
       return (
-        <HTMLLabel className={textLabelClassName} {...props}>
+        <HTMLLabel
+          className={textLabelClassName}
+          aria-hidden={sdn["aria-hidden"]}
+          {...props}
+        >
           {children}
         </HTMLLabel>
       )
@@ -173,5 +263,6 @@ export function TextLabel({
 const sdn: TextLabelProps = {
   children: "Label",
   htmlElement: "label",
+  "aria-hidden": "false",
   className: "sdn-text-label sdn-text",
 }

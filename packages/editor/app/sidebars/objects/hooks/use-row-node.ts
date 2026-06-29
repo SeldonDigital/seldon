@@ -32,9 +32,7 @@ import {
 } from "@lib/workspace/hooks/use-selection"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useDebugMode } from "@lib/hooks/use-debug-mode"
-import { useEditorConfig } from "@lib/hooks/use-editor-config"
 import { useTool } from "@lib/hooks/use-tool"
-import { useSectionExpansion } from "../../hooks/use-section-expansion"
 import {
   getNodeCatalogComponentId,
   getNodeChildIds,
@@ -43,12 +41,8 @@ import {
   getSelectionTarget,
   selectFromTarget,
 } from "@lib/workspace/selection-target"
-import {
-  getComponentKey,
-  getNode,
-  hasNode,
-} from "@lib/workspace/workspace-accessors"
-import { IconProps } from "@seldon/components/custom-components"
+import { hasNode } from "@lib/workspace/workspace-accessors"
+import { IconProps } from "@seldon/components/primitives/Icon"
 import { TextLabelProps } from "@seldon/components/primitives/TextLabel"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import { buildResetMenuEntry } from "../../shared/build-reset-menu-entry"
@@ -87,7 +81,6 @@ export function useRowNode(
   const { selectNode, selectBoard, selectResourceEntry, selectResourceItem } =
     useSelectionActions()
   const { showNodeIds } = useDebugMode()
-  const { autoScrollToSelection } = useEditorConfig()
   const addToast = useAddToast()
   const hasClipboardProperties = usePropertiesClipboard(
     (state) => state.properties !== null,
@@ -95,7 +88,6 @@ export function useRowNode(
 
   const { toggle, expandObjects, collapseObjects, getAllDescendantNodeIds } =
     useExpansion()
-  const { toggleSection } = useSectionExpansion()
 
   const { isEditingName, setEditingName } = useEditState(node)
 
@@ -172,22 +164,9 @@ export function useRowNode(
 
   const { createToggleButton, createToggleIcon } = useRowButton({
     isExpanded: isExpandedState,
-    isSelected,
     hasChildren,
     onToggle,
   })
-
-  function findOwningVariantId(): string | null {
-    let current: EntryNode | null = node
-    while (current) {
-      if (typeCheckingService.isVariant(current)) {
-        return current.id
-      }
-      const parent = nodeTraversalService.findParentNode(current.id, workspace)
-      current = parent ? (parent as EntryNode) : null
-    }
-    return null
-  }
 
   function handleDoubleClick() {
     if (isEcho) return
@@ -195,28 +174,9 @@ export function useRowNode(
     if (rules.mutations.rename[entityType].allowed) {
       setEditingName(true)
     } else if (typeCheckingService.isInstance(node)) {
-      const variantId = findOwningVariantId()
-      if (!variantId) return
-
-      if (autoScrollToSelection && nodeExistsInWorkspace) {
-        const variantNode = getNode(workspace, variantId)
-        if (variantNode) {
-          const root = nodeRelationshipService.getRootVariant(
-            variantNode,
-            workspace,
-          )
-          const rootEntry = getNode(workspace, root.id)
-          const rootCatalogId = rootEntry
-            ? getNodeCatalogComponentId(rootEntry, workspace)
-            : null
-          if (rootCatalogId && isComponentId(rootCatalogId)) {
-            toggleSection(getComponentSchema(rootCatalogId).level, true)
-          }
-          toggle(variantId, true, { includeAncestors: true })
-        }
-      }
-
-      selectNode(variantId)
+      // An instance mirrors its source variant, so its name is read-only here.
+      // Renaming happens at the source the user reaches through the row menu.
+      addToast("This name can only be changed at its source")
     }
   }
 
@@ -298,6 +258,17 @@ export function useRowNode(
     instanceOriginalId !== node.id &&
     instanceOriginalId !== instanceSourceId
 
+  // A user variant can reset its instances when at least one instance links
+  // straight to it as its source. Enables the "Reset Instances" action.
+  const canResetVariantInstances =
+    nodeExistsInWorkspace &&
+    typeCheckingService.isUserVariant(node) &&
+    Object.values(workspace.nodes).some(
+      (candidate) =>
+        typeCheckingService.isInstance(candidate) &&
+        resolveSourceNodeId(workspace, candidate.id) === node.id,
+    )
+
   function handleResetDefaultVariantToCatalog() {
     dispatch({
       type: "reset_default_variant_to_catalog",
@@ -308,6 +279,13 @@ export function useRowNode(
   function handleResetVariantToCatalog() {
     dispatch({
       type: "reset_variant_to_catalog",
+      payload: { variantRootId: node.id as VariantId },
+    })
+  }
+
+  function handleResetVariantInstances() {
+    dispatch({
+      type: "reset_variant_instances",
       payload: { variantRootId: node.id as VariantId },
     })
   }
@@ -557,6 +535,18 @@ export function useRowNode(
         })
       }
 
+      if (isUser) {
+        entries.push(
+          buildResetMenuEntry({
+            id: "reset-variant-instances",
+            label: "Reset Instances",
+            onSelect: handleResetVariantInstances,
+            disabled: !canResetVariantInstances,
+            testId: `object-panel-node-${node.id}-reset-instances`,
+          }),
+        )
+      }
+
       entries.push(buildVariantResetAction())
       return entries
     }
@@ -600,8 +590,13 @@ export function useRowNode(
     return false
   }
 
-  const baseLabelStyle: CSSProperties | undefined = checkIfExcluded()
-    ? { textDecoration: "line-through" }
+  // Excluded rows (own display or an excluded ancestor) read as italic. Hidden
+  // rows use the node's own display only. Both drive the disabled look.
+  const isExcluded = checkIfExcluded()
+  const isHidden = properties?.display?.value === Display.HIDE
+
+  const baseLabelStyle: CSSProperties | undefined = isExcluded
+    ? { fontStyle: "italic" }
     : undefined
   const labelStyle: CSSProperties | undefined = isEcho
     ? { ...baseLabelStyle, fontStyle: "italic", opacity: 0.7 }
@@ -642,6 +637,8 @@ export function useRowNode(
     dragging,
     ref,
     properties,
+    isExcluded,
+    isHidden,
     dataNodeType: typeCheckingService.getEntityType(node),
   }
 }

@@ -1,3 +1,5 @@
+// BESPOKE-VIEW: hand-authored transitional View with inline token styling.
+// Replace with a generated workspace component once one covers the toast card.
 import { motion } from "framer-motion"
 
 interface ToastProps {
