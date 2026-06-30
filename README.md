@@ -38,33 +38,33 @@ Why?
 
 **We don't believe you need AI to write button code.**
 
-In fact, given the past nine months I've spent in the trenches getting Seldon to this point, I'm even more convinced that having AI and LLMs waste tokens, cycles, energy, and money on writing front end code from scratch is largely a waste of time and money.
+In fact, given the past nine months I've spent in the trenches getting Seldon to this point, I'm even more convinced that having AI and LLMs waste tokens, cycles, energy, and money on writing front-end code from scratch is largely a waste of time and money.
 
-Wasting large amounts of compute, energy, and money on creating code that is largely a solved problem seems like a massive opportunity cost for everyone involved. We are spending far more time and money trying to reign in non-deterministic models instead of exploring the new ways AI can help us build products of the future.
+Wasting large amounts of compute, energy, and money on creating code that is largely a solved problem seems like a massive opportunity cost for everyone involved. We are spending far more time and money trying to rein in non-deterministic models instead of exploring the new ways AI can help us build products of the future.
 
 But if it's solved, what's the issue?
 
-Most front-end product problems lack a rigorous, structured approach to their design definitions, even when using design systems. Teams create some rigor to build products at scale, and yet they inevitably run into the handoff problem. At the heart of this is that design and code are disconnected. 
+Most front-end product problems lack a rigorous, structured approach to their design definitions, even when using design systems. Teams create some rigor to build products at scale, and yet they inevitably run into the handoff problem. At the heart of this is that design and code are disconnected.
 
 They have been for decades now.
 
-Add AI to that mix and what happens is massive overspend and more unnecessary complexity with the front end code as models go off on all sorts of unnecessary tangents. AI handles the v.0 to v.1 jump amazingly well, but iterating past that to v.2 then to v.3 and beyond? That's where it crashes ands burns. Throwing more data and compute at all of this will not solve the problem.
+Add AI to that mix and what happens is massive overspend and more unnecessary complexity with the front-end code as models go off on all sorts of unnecessary tangents. AI handles the v.0 to v.1 jump amazingly well, but iterating past that to v.2, then to v.3 and beyond? That's where it crashes and burns. Throwing more data and compute at all of this will not solve the problem.
 
-**It's not a problem that needs solving.**
+It's not a problem that needs solving.
 
-What we do need a structured approach to the design of components in the same way PostScript gave print a language, and web standards gave browsers dependability. We need a way to define design for digital products that is rooted in code, while based on design practice. 
+What we do need is a structured approach to the design of components, in the same way PostScript gave print a language, and web standards gave browsers dependability. We need a way to define design for digital products that is rooted in code, while based on design practice.
 
-Once we have that structured approach with a standard JSON artifact, then we have the thing AI can manipulate. At this task LLMs really shine. Rather than attempting to make pseudo-random number generators try to behave deterministically by throwing massive amount of data, energy, and money at them, all you need is for LLMs to manipulate JSON through an engine. Standardized data as the input processed through a machine generates deterministic output. It's the model we all use today in printers, web browsers, and telecommunications.
+Once we have that structured approach with a standard JSON artifact, then we have the thing AI can manipulate. At this task LLMs really shine. Rather than attempting to make pseudo-random number generators try to behave deterministically by throwing massive amounts of data, energy, and money at them, all you need is for LLMs to manipulate JSON through an engine. Standardized data as the input, processed through a machine, generates deterministic output. It's the model we all use today in printers, web browsers, and telecommunications.
 
 The purpose of releasing Seldon into the wild is to provide a starting point that can evolve into that structure and architecture while also allowing for as many paths of exploration as possible. Paths that are far more interesting and include human beings as the ones driving what new tools and processes they need out of the technology.
 
 ---
 
-No one knows where the future will land. 
+No one knows where the future will land.
 
 There are a lot of opinions out there about what LLMs and AI mean for humanity. Most of those opinions are based on a thin understanding of technology, or a cynical view of human beings. Many opinions about AI are just plain wrong and need to be called out directly. A few have real value.
 
-One thing that should become clear over time however is that humanity doesn't need AI or LLMs to waste enormous amounts of energy and money to write the code for a Button component.
+One thing that should become clear over time, however, is that humanity doesn't need AI or LLMs to waste enormous amounts of energy and money to write the code for a Button component.
 
 ---
 
@@ -72,12 +72,12 @@ This is what Seldon offers:
 
 - A design workspace that is structured as a standard JSON file. This workspace contains components, playgrounds, themes, font collections, icon collections, and media.
 - A core engine that defines how everything in that JSON file can be manipulated. The Core engine has the code to create components, mutate data, transform data, and process it all to make sure a workspace is validated.
-- An editor run locally that works like traditional apps. The actions the editor can take is the same set of actions an AI AI agent can take.
+- An editor run locally that works like traditional apps. The actions the editor can take are the same set of actions an AI agent can take.
 - A code factory that takes a workspace file and processes it to create code for targeted platforms. For starters, React. Later Swift, Java, or something else.
 
-Seldon is a machine. 
+Seldon is a machine.
 
-You give it an input, Seldon processes that input, and returns to you an output. Output that is entirely deterministic. 
+You give it an input, Seldon processes that input, and returns to you an output. Output that is entirely deterministic.
 
 Code that is deterministic. It just works.
 
