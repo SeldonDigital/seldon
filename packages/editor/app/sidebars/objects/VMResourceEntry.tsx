@@ -13,6 +13,7 @@ import { useRowClick } from "./hooks/use-row-click"
 import { ItemNode } from "@seldon/components/elements/ItemNode"
 import { IconProps } from "@seldon/components/primitives/Icon"
 import { useRowActionsMenu } from "../shared/use-row-actions-menu"
+import { buildFieldStateProps } from "../shared/build-field-state-props"
 import { RowSelectionTarget } from "./RowSelectionTarget"
 import type { ResourceRowConfig } from "./helpers/resource-row-config"
 
@@ -92,6 +93,10 @@ export function VMResourceEntry({
     nodeActions: { ...actionsMenu.buttonIconic },
   }
 
+  // The row's selection is styled on its combobox-field child, matching `VMNode`
+  // and `VMBoard`.
+  const comboboxField = buildFieldStateProps({ selected: isSelected })
+
   // Root-level row state mirrors selection for selectors and tests.
   const itemNodeState = {
     "aria-selected": isActive || undefined,
@@ -106,7 +111,7 @@ export function VMResourceEntry({
       >
         <ItemNode
           buttonIconic={{}}
-          comboboxField={{}}
+          comboboxField={comboboxField}
           seldonRefs={seldonRefs}
           onClick={onClick}
           onDoubleClick={onDoubleClick}

@@ -6,7 +6,9 @@ alwaysApply: false
 
 ## Editor JSX Authoring
 
-Resolve every JSX value before the `return`. Returned JSX holds element tags and identifier references only. Nothing is computed inside returned JSX.
+Important: This is a hard rule. No exceptions. Resolve every JSX value before the `return`. Returned JSX holds element tags and identifier references only. Nothing is computed inside returned JSX.
+
+A helper or function call inside a JSX prop is a violation, even a short one. `comboboxField={buildFieldStateProps({ selected })}` is wrong. Hoist it: `const comboboxField = buildFieldStateProps({ selected })`, then `comboboxField={comboboxField}`.
 
 - Do not write expressions inside returned JSX. This covers ternaries, `&&`, `||`, comparisons, computed objects or arrays, inline `style` objects, function calls that build a value, template literals, and inline arrow or function handlers.
 - Hoist each value into a named `const`, `useCallback`, or `useMemo` above the `return`.
