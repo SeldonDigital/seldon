@@ -80,10 +80,13 @@ export function VMResourceEntry({
 
   const icon2: IconProps = { icon: config.icon }
 
-  // Resource rows are leaves: the toggle slot stays an empty spacer, and the
-  // trailing actions icon keeps the generated `seldon-more` default, hidden by
-  // the actions button placeholder. Per-row data flows through stable refs.
+  // Resource rows are always leaves, so the toggle slot stays a spacer with its
+  // chevron hidden (mirrors the childless `VMNode` treatment) to keep label
+  // indentation aligned. The trailing actions icon keeps the generated
+  // `seldon-more` default, hidden by the actions button placeholder. Per-row
+  // data flows through stable refs.
   const seldonRefs = {
+    nodeToggleIcon: { style: { opacity: 0 } },
     nodeIcon: { ...icon2 },
     nodeLabel: { ...nameInput },
     nodeActions: { ...actionsMenu.buttonIconic },
