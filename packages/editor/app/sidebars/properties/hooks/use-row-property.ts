@@ -59,11 +59,13 @@ import {
   ThemeEditingContext,
 } from "../helpers/editing-contexts"
 import { FlatProperty } from "../helpers/properties-data"
+import { getPropertyIcon2Color } from "../helpers/property-value-display"
 import { getPropertyLabelStyle } from "../helpers/property-styling-tokens.bespoke"
 import {
   getThemeTokenIconColorFromPropertyValue,
   isSwatchIconPropertyKey,
 } from "../helpers/theme-token-icon-color"
+import { IconCustomColorValue } from "@seldon/components/custom-components"
 import { usePropertyControl } from "./use-property-control"
 import { usePropertyControlData } from "./use-property-control-data"
 import {
@@ -283,15 +285,12 @@ export function useRowProperty({
   const nodeId = isBoard(node) ? getComponentKey(node) : node.id
 
   // The unit is folded into the display string (e.g. "24px") and shown in the
-  // single combobox value field. There is no separate unit element.
-  const value = getDisplayValue(
-    propertyValue,
-    property.key,
-    nodeId,
-    workspace,
-    theme,
-    options,
-  )
+  // single combobox value field. There is no separate unit element. A look-parent
+  // row (theme look groups and computed groups like Modulation) owns no value, so
+  // it shows nothing rather than formatting EMPTY into a "Default" placeholder.
+  const value = property.isLookParent
+    ? ""
+    : getDisplayValue(propertyValue, property.key, nodeId, workspace, theme, options)
 
   const labelStyle = useMemo(
     () => getPropertyLabelStyle(property, showPropertyTypes),
@@ -434,15 +433,23 @@ export function useRowProperty({
   // current value through the same resolver the listbox uses, so the closed
   // field paints the identical node. A plain icon id keeps the slot path.
   const valueIconNode = useMemo<React.ReactNode>(() => {
-    if (control.kind !== "combobox") {
-      return null
+    if (control.kind === "combobox") {
+      const rendered = control.optionList.resolveIcon({
+        value: control.optionList.value,
+        name: value,
+      })
+      return rendered.kind === "node" ? rendered.node : null
     }
-    const rendered = control.optionList.resolveIcon({
-      value: control.optionList.value,
-      name: value,
-    })
-    return rendered.kind === "node" ? rendered.node : null
-  }, [control, value])
+    // Color rows render their preview circle even as a read-only or text field
+    // (theme swatch tokens and color-harmony points). The value-cell refactor
+    // moved chips onto the combobox `iconNode` path, so field-control color rows
+    // need this branch to keep their circle. Non-color field rows resolve no
+    // color and render nothing.
+    const circleColor = getPropertyIcon2Color(property, swatchChipColor, undefined)
+    return circleColor
+      ? React.createElement(IconCustomColorValue, { color: circleColor })
+      : null
+  }, [control, value, property, swatchChipColor])
 
   const handleRowClick = (event: React.MouseEvent<HTMLLIElement>) => {
     const target = event.target as HTMLElement

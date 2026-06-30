@@ -1784,7 +1784,7 @@
       "catalogId": "item",
       "label": "Items",
       "author": "Seldon Digital",
-      "componentTheme": "theme-seldon-x7o0x2we",
+      "componentTheme": "theme-seldon-default",
       "componentProperties": {
         "board": {
           "width": {
