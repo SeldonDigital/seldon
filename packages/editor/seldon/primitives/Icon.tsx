@@ -4,12 +4,13 @@
  *
  * License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md
  * Do not redistribute or sublicense without permission.
- *
- * You may not use this software, or any derivative works of it, in whole or in part,
- * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly)
+ * 
+ * You may not use this software, or any derivative works of it, in whole or in part, 
+ * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly) 
  * any machine learning or artificial intelligence system without written permission.
- *
+ * 
  *****/
+ 
 import { SVGAttributes } from "react"
 import * as Icons from "../icons/index"
 import { combineClassNames } from "../utils/class-name"
@@ -40,6 +41,9 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-favoriteBorder"
     | "material-accountCircle"
     | "material-settings"
+    | "material-chevronDoubleLeft"
+    | "material-chevronLeft"
+    | "material-chevronDoubleRight"
     | "seldon-iconSocialFacebook"
     | "seldon-iconSocialReddit"
     | "seldon-iconSocialPinterest"
@@ -347,10 +351,7 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-brightnessLow"
     | "material-brightnessMedium"
     | "material-chevronDoubleDown"
-    | "material-chevronDoubleLeft"
-    | "material-chevronDoubleRight"
     | "material-chevronDoubleUp"
-    | "material-chevronLeft"
     | "material-chevronUp"
     | "material-event"
     | "material-fastForward"
@@ -553,6 +554,9 @@ const iconMap = {
   "material-favoriteBorder": Icons.IconMaterialFavoriteBorder,
   "material-accountCircle": Icons.IconMaterialAccountCircle,
   "material-settings": Icons.IconMaterialSettings,
+  "material-chevronDoubleLeft": Icons.IconMaterialChevronDoubleLeft,
+  "material-chevronLeft": Icons.IconMaterialChevronLeft,
+  "material-chevronDoubleRight": Icons.IconMaterialChevronDoubleRight,
   "seldon-iconSocialFacebook": Icons.IconSocialFacebook,
   "seldon-iconSocialReddit": Icons.IconSocialReddit,
   "seldon-iconSocialPinterest": Icons.IconSocialPinterest,
@@ -862,10 +866,7 @@ const iconMap = {
   "material-brightnessLow": Icons.IconMaterialBrightnessLow,
   "material-brightnessMedium": Icons.IconMaterialBrightnessMedium,
   "material-chevronDoubleDown": Icons.IconMaterialChevronDoubleDown,
-  "material-chevronDoubleLeft": Icons.IconMaterialChevronDoubleLeft,
-  "material-chevronDoubleRight": Icons.IconMaterialChevronDoubleRight,
   "material-chevronDoubleUp": Icons.IconMaterialChevronDoubleUp,
-  "material-chevronLeft": Icons.IconMaterialChevronLeft,
   "material-chevronUp": Icons.IconMaterialChevronUp,
   "material-event": Icons.IconMaterialEvent,
   "material-fastForward": Icons.IconMaterialFastForward,

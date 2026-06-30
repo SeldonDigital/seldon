@@ -86,11 +86,10 @@ export function buildPropertyRowProps({
     style: getDisclosureIconStyle({ isExpanded, hasChildren, labelColor }),
   }
 
-  const textLabel = {
-    children: labelText,
-    htmlElement: "label" as const,
-    style: getNameLabelStyle({ labelStyle, hasChildren }),
-  }
+  // The name slot is an `Input` (driven by the rename-in-place hook), so the row
+  // contributes only its resting style; the value and edit state come from the
+  // hook. Mirrors how object-name rows feed `useRenameInput`.
+  const nameLabelStyle = getNameLabelStyle({ labelStyle, hasChildren })
 
   const valueIconHidden = isThemeAssignment || Boolean(property.isLookParent)
   const valueIconId =
@@ -150,7 +149,7 @@ export function buildPropertyRowProps({
   return {
     buttonIconic,
     icon,
-    textLabel,
+    nameLabelStyle,
     icon2,
     buttonIconic2,
     icon3,

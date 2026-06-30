@@ -4,19 +4,26 @@
  *
  * License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md
  * Do not redistribute or sublicense without permission.
- *
- * You may not use this software, or any derivative works of it, in whole or in part,
- * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly)
+ * 
+ * You may not use this software, or any derivative works of it, in whole or in part, 
+ * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly) 
  * any machine learning or artificial intelligence system without written permission.
- *
+ * 
  *****/
+ 
 import { HTMLAttributes } from "react"
 import { ButtonProps } from "../elements/Button"
+import { ButtonIconicProps } from "../elements/ButtonIconic"
+import {
+  ComboboxFieldSearchField,
+  ComboboxFieldSearchFieldProps,
+} from "../elements/ComboboxFieldSearchField"
 import { Frame, FrameProps } from "../frames/Frame"
 import { HTMLDiv } from "../native-react/HTML.Div"
 import { Bar, BarProps } from "../parts/Bar"
 import { BarButtons, BarButtonsProps } from "../parts/BarButtons"
 import { IconProps } from "../primitives/Icon"
+import { InputProps } from "../primitives/Input"
 import { TextLabelProps } from "../primitives/TextLabel"
 import { TextTitle, TextTitleProps } from "../primitives/TextTitle"
 import { applyRef } from "../utils/apply-ref"
@@ -28,13 +35,18 @@ export interface DialogModalProps extends HTMLAttributes<HTMLElement> {
   seldonRefs?: Record<string, Record<string, unknown>>
   bar?: BarProps | null
   textTitle?: TextTitleProps | null
+  comboboxFieldSearchField?: ComboboxFieldSearchFieldProps | null
+  icon?: IconProps | null
+  input?: InputProps | null
+  buttonIconic?: ButtonIconicProps | null
+  icon2?: IconProps | null
   frame?: FrameProps | null
   barButtons?: BarButtonsProps | null
   button?: ButtonProps | null
-  icon?: IconProps | null
+  icon3?: IconProps | null
   textLabel?: TextLabelProps | null
   button2?: ButtonProps | null
-  icon2?: IconProps | null
+  icon4?: IconProps | null
   textLabel2?: TextLabelProps | null
 }
 
@@ -57,13 +69,18 @@ export function DialogModal({
   className = "",
   bar = sdn.bar,
   textTitle,
+  comboboxFieldSearchField,
+  icon = sdn.icon,
+  input = sdn.input,
+  buttonIconic = sdn.buttonIconic,
+  icon2 = sdn.icon2,
   frame = sdn.frame,
   barButtons = sdn.barButtons,
   button = sdn.button,
-  icon = sdn.icon,
+  icon3 = sdn.icon3,
   textLabel,
   button2 = sdn.button2,
-  icon2 = sdn.icon2,
+  icon4 = sdn.icon4,
   textLabel2,
   children,
   seldonRefs,
@@ -91,6 +108,62 @@ export function DialogModal({
             sdn.textTitle?.className,
             textTitle?.className,
           ),
+        },
+  )
+  const comboboxFieldSearchFieldProps = applyRef(
+    seldonRefs,
+    comboboxFieldSearchField === null
+      ? null
+      : {
+          ...sdn.comboboxFieldSearchField,
+          ...comboboxFieldSearchField,
+          className: combineClassNames(
+            sdn.comboboxFieldSearchField?.className,
+            comboboxFieldSearchField?.className,
+          ),
+        },
+  )
+  const iconProps = applyRef(
+    seldonRefs,
+    icon === null
+      ? null
+      : {
+          ...sdn.icon,
+          ...icon,
+          className: combineClassNames(sdn.icon?.className, icon?.className),
+        },
+  )
+  const inputProps = applyRef(
+    seldonRefs,
+    input === null
+      ? null
+      : {
+          ...sdn.input,
+          ...input,
+          className: combineClassNames(sdn.input?.className, input?.className),
+        },
+  )
+  const buttonIconicProps = applyRef(
+    seldonRefs,
+    buttonIconic === null
+      ? null
+      : {
+          ...sdn.buttonIconic,
+          ...buttonIconic,
+          className: combineClassNames(
+            sdn.buttonIconic?.className,
+            buttonIconic?.className,
+          ),
+        },
+  )
+  const icon2Props = applyRef(
+    seldonRefs,
+    icon2 === null
+      ? null
+      : {
+          ...sdn.icon2,
+          ...icon2,
+          className: combineClassNames(sdn.icon2?.className, icon2?.className),
         },
   )
   const frameProps = applyRef(
@@ -129,14 +202,14 @@ export function DialogModal({
           ),
         },
   )
-  const iconProps = applyRef(
+  const icon3Props = applyRef(
     seldonRefs,
-    icon === null
+    icon3 === null
       ? null
       : {
-          ...sdn.icon,
-          ...icon,
-          className: combineClassNames(sdn.icon?.className, icon?.className),
+          ...sdn.icon3,
+          ...icon3,
+          className: combineClassNames(sdn.icon3?.className, icon3?.className),
         },
   )
   const textLabelProps = applyRef(
@@ -165,14 +238,14 @@ export function DialogModal({
           ),
         },
   )
-  const icon2Props = applyRef(
+  const icon4Props = applyRef(
     seldonRefs,
-    icon2 === null
+    icon4 === null
       ? null
       : {
-          ...sdn.icon2,
-          ...icon2,
-          className: combineClassNames(sdn.icon2?.className, icon2?.className),
+          ...sdn.icon4,
+          ...icon4,
+          className: combineClassNames(sdn.icon4?.className, icon4?.className),
         },
   )
   const textLabel2Props = applyRef(
@@ -203,6 +276,15 @@ export function DialogModal({
           {barProps !== null && (
             <Bar {...barProps}>
               {textTitle && textTitleProps && <TextTitle {...textTitleProps} />}
+              {comboboxFieldSearchField && comboboxFieldSearchFieldProps && (
+                <ComboboxFieldSearchField
+                  {...comboboxFieldSearchFieldProps}
+                  icon={iconProps}
+                  input={inputProps}
+                  buttonIconic={buttonIconicProps}
+                  icon2={icon2Props}
+                />
+              )}
             </Bar>
           )}
           <Frame {...frameProps}></Frame>
@@ -233,6 +315,29 @@ const sdn: DialogModalProps = {
   textTitle: {
     className: "sdn-text-title sdn-text-title--eodu",
   },
+  comboboxFieldSearchField: {
+    className:
+      "sdn-combobox-field-search-field sdn-combobox-field-search-field--jaw4",
+  },
+  icon: {
+    icon: "material-search",
+    "aria-hidden": "true",
+    className: "sdn-icon sdn-icon--ucf5",
+  },
+  input: {
+    type: "text",
+    role: "combobox",
+    "aria-haspopup": "listbox",
+    className: "sdn-input sdn-input--icju",
+  },
+  buttonIconic: {
+    className: "sdn-button-iconic sdn-button-iconic--pgsr",
+  },
+  icon2: {
+    icon: "material-close",
+    "aria-hidden": "true",
+    className: "sdn-icon sdn-icon--umgs",
+  },
   frame: {
     wrapperElement: "div",
     "aria-hidden": "false",
@@ -245,7 +350,7 @@ const sdn: DialogModalProps = {
   button: {
     className: "sdn-button sdn-button--cq5m",
   },
-  icon: {
+  icon3: {
     icon: "seldon-none",
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--x7ac",
@@ -256,7 +361,7 @@ const sdn: DialogModalProps = {
   button2: {
     className: "sdn-button sdn-button--cq5m",
   },
-  icon2: {
+  icon4: {
     icon: "material-check",
     "aria-hidden": "true",
     className: "sdn-icon sdn-icon--x7ac",

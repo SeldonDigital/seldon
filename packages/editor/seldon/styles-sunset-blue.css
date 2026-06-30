@@ -10,7 +10,7 @@
  * any machine learning or artificial intelligence system without written permission.
  * 
  *****/
-
+ 
 :root {
   /* Theme: Sunset Blue */
   /* Modulation */
@@ -42,12 +42,15 @@
   --sdn-sunset-blue-swatch-complement2: hsl(352 100% 63%);
   --sdn-sunset-blue-swatch-complement-tint2: hsl(352 100% 78%);
   --sdn-sunset-blue-swatch-background: hsl(0 4% 98%);
-  --sdn-sunset-blue-swatch-grey-1: hsl(0 0% 25%);
-  --sdn-sunset-blue-swatch-seldon-green: hsl(135 100% 35%);
-  --sdn-sunset-blue-swatch-seldon-blue: hsl(203 100% 62%);
-  --sdn-sunset-blue-swatch-seldon-yellow: hsl(60 100% 46%);
-  --sdn-sunset-blue-swatch-seldon-purple: hsl(300 76% 48%);
-  --sdn-sunset-blue-swatch-gray93: hsl(0 0% 93%);
+  --sdn-sunset-blue-swatch-active: hsl(203 100% 62%);
+  --sdn-sunset-blue-swatch-positive: hsl(135 100% 35%);
+  --sdn-sunset-blue-swatch-warning: hsl(60 100% 46%);
+  --sdn-sunset-blue-swatch-accent: hsl(300 76% 48%);
+  --sdn-sunset-blue-swatch-offBlack: hsl(0 0% 25%);
+  --sdn-sunset-blue-swatch-offWhite: hsl(0 0% 93%);
+  --sdn-sunset-blue-swatch-foreground: hsl(0 0% 100%);
+  --sdn-sunset-blue-swatch-punch: hsl(20 95% 60%);
+  --sdn-sunset-blue-swatch-negative: hsl(0 100% 65%);
   /* Sizes */
   --sdn-sunset-blue-sizes-tiny: 0.125rem;
   --sdn-sunset-blue-sizes-xxsmall: 0.25rem;

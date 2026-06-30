@@ -10,7 +10,7 @@
  * any machine learning or artificial intelligence system without written permission.
  * 
  *****/
-
+ 
 :root {
   /* Theme: High Contrast */
   /* Modulation */
@@ -42,14 +42,15 @@
   --sdn-high-contrast-swatch-tint-3: hsl(0 0% 60%);
   --sdn-high-contrast-swatch-tint-4: hsl(0 0% 80%);
   --sdn-high-contrast-swatch-background: hsl(0 4% 8%);
-  --sdn-high-contrast-swatch-seldon-blue: hsl(203 100% 62%);
-  --sdn-high-contrast-swatch-seldon-orange: hsl(20 95% 60%);
-  --sdn-high-contrast-swatch-seldon-green: hsl(135 76% 59%);
-  --sdn-high-contrast-swatch-seldon-red: hsl(0 100% 65%);
-  --sdn-high-contrast-swatch-seldon-yellow: hsl(60 100% 58%);
-  --sdn-high-contrast-swatch-seldon-purple: hsl(300 76% 48%);
-  --sdn-high-contrast-swatch-seldon-dark-gray: hsl(0 0% 15%);
-  --sdn-high-contrast-swatch-seldon-light-gray: hsl(0 0% 96%);
+  --sdn-high-contrast-swatch-active: hsl(203 100% 62%);
+  --sdn-high-contrast-swatch-punch: hsl(20 95% 60%);
+  --sdn-high-contrast-swatch-positive: hsl(135 76% 59%);
+  --sdn-high-contrast-swatch-negative: hsl(0 100% 65%);
+  --sdn-high-contrast-swatch-warning: hsl(60 100% 58%);
+  --sdn-high-contrast-swatch-accent: hsl(300 76% 48%);
+  --sdn-high-contrast-swatch-offBlack: hsl(0 0% 15%);
+  --sdn-high-contrast-swatch-offWhite: hsl(0 0% 96%);
+  --sdn-high-contrast-swatch-foreground: hsl(0 0% 100%);
   /* Sizes */
   --sdn-high-contrast-sizes-tiny: 0.125rem;
   --sdn-high-contrast-sizes-xxsmall: 0.25rem;

@@ -10,7 +10,7 @@
  * any machine learning or artificial intelligence system without written permission.
  * 
  *****/
-
+ 
 :root {
   /* Theme: Industrial */
   /* Modulation */
@@ -42,11 +42,15 @@
   --sdn-industrial-swatch-tint-3: hsl(210 30% 56%);
   --sdn-industrial-swatch-tint-4: hsl(210 30% 68%);
   --sdn-industrial-swatch-background: hsl(210 80% 20%);
-  --sdn-industrial-swatch-red: hsl(0 100% 65%);
-  --sdn-industrial-swatch-green: hsl(135 76% 59%);
-  --sdn-industrial-swatch-blue: hsl(203 100% 62%);
-  --sdn-industrial-swatch-yellow: hsl(60 100% 46%);
-  --sdn-industrial-swatch-charcoal: hsl(0 0% 15%);
+  --sdn-industrial-swatch-active: hsl(203 100% 62%);
+  --sdn-industrial-swatch-positive: hsl(135 76% 59%);
+  --sdn-industrial-swatch-negative: hsl(0 100% 65%);
+  --sdn-industrial-swatch-warning: hsl(60 100% 46%);
+  --sdn-industrial-swatch-offBlack: hsl(0 0% 15%);
+  --sdn-industrial-swatch-foreground: hsl(0 0% 100%);
+  --sdn-industrial-swatch-punch: hsl(20 95% 60%);
+  --sdn-industrial-swatch-accent: hsl(300 76% 48%);
+  --sdn-industrial-swatch-offWhite: hsl(0 0% 96%);
   /* Sizes */
   --sdn-industrial-sizes-tiny: 0.125rem;
   --sdn-industrial-sizes-xxsmall: 0.25rem;

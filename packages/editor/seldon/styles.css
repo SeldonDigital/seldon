@@ -10,7 +10,7 @@
  * any machine learning or artificial intelligence system without written permission.
  * 
  *****/
-
+ 
 /********************************************
  *                                          *
  *              Reset styles                *
@@ -252,8 +252,7 @@ body {
     Cantarell,
     "Open Sans",
     "Helvetica Neue",
-    sans-serif,
-    "IBM Plex Sans";
+    sans-serif;
 }
 
 :root {
@@ -316,7 +315,7 @@ body {
 }
 
 .sdn-bar {
-  background-color: hsl(203 100% 81%);
+  background-color: hsl(203 100% 71.5%);
   flex-wrap: nowrap;
   display: flex;
   flex-direction: row;
@@ -333,8 +332,26 @@ body {
   border-radius: 0.25rem;
 }
 
-.sdn-bar-menus {
+.sdn-bar-breadcrumbs-bar {
+  display: flex;
   background-color: hsl(203 100% 81%);
+  flex-wrap: nowrap;
+  flex-direction: row;
+  align-items: center;
+  justify-content: start;
+  gap: 0.5rem;
+  padding-top: 0.5rem;
+  padding-right: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 1rem;
+  align-self: stretch;
+  height: fit-content;
+  flex-shrink: 0;
+  border-radius: 0.25rem;
+}
+
+.sdn-bar-menus {
+  background-color: hsl(203 100% 71.5%);
   flex-wrap: nowrap;
   display: flex;
   flex-direction: row;
@@ -391,7 +408,7 @@ body {
 }
 
 .sdn-bar-topbar {
-  background-color: var(--sdn-swatch-charcoal);
+  background-color: var(--sdn-swatch-offBlack);
   flex-wrap: nowrap;
   display: flex;
   flex-direction: row;
@@ -495,6 +512,113 @@ body {
   height: fit-content;
   flex-shrink: 0;
   border-radius: 99999px;
+  border: var(--hairline) solid hsl(203 100% 62%);
+}
+
+.sdn-calendar {
+  background-color: var(--sdn-swatch-white);
+  flex-wrap: nowrap;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2.002rem;
+  width: fit-content;
+  height: fit-content;
+  flex-shrink: 0;
+  padding: 2.002rem;
+  border-radius: 0.5rem;
+  border: var(--hairline) solid hsl(203 100% 62%);
+}
+
+.sdn-calendar-day {
+  cursor: pointer;
+  flex-wrap: nowrap;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  align-self: stretch;
+  flex: 1 0 0;
+  padding: 0.5rem;
+  border-radius: 99999px;
+}
+
+.sdn-calendar-day-grid-cell-day {
+  background-color: var(--sdn-swatch-white);
+  cursor: pointer;
+  flex-wrap: nowrap;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  align-self: stretch;
+  flex: 1 0 0;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+}
+
+.sdn-calendar-day-muted-day {
+  cursor: pointer;
+  flex-wrap: nowrap;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  opacity: 0.35;
+  align-self: stretch;
+  flex: 1 0 0;
+  padding: 0.5rem;
+  border-radius: 99999px;
+}
+
+.sdn-calendar-day-selected-day {
+  background-color: var(--sdn-swatch-primary);
+  cursor: pointer;
+  flex-wrap: nowrap;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  align-self: stretch;
+  flex: 1 0 0;
+  padding: 0.5rem;
+  border-radius: 99999px;
+}
+
+.sdn-calendar-day-today {
+  background-color: var(--sdn-swatch-white);
+  cursor: pointer;
+  flex-wrap: nowrap;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  align-self: stretch;
+  flex: 1 0 0;
+  padding: 0.5rem;
+  border-radius: 99999px;
+  border: var(--hairline) solid hsl(203 100% 62%);
+}
+
+.sdn-calendar-range {
+  background-color: var(--sdn-swatch-white);
+  flex-wrap: nowrap;
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+  justify-content: start;
+  gap: 3.998rem;
+  width: fit-content;
+  height: fit-content;
+  flex-shrink: 0;
+  padding: 2.002rem;
+  border-radius: 0.5rem;
   border: var(--hairline) solid hsl(203 100% 62%);
 }
 
@@ -622,6 +746,13 @@ body {
   flex-shrink: 0;
   border-radius: 0.25rem;
   border: var(--hairline) solid hsl(203 0% 98% / 25%);
+}
+
+.sdn-container {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  align-self: stretch;
+  flex: 1 0 0;
 }
 
 .sdn-dialog {
@@ -853,7 +984,7 @@ body {
 }
 
 .sdn-item-section {
-  background-color: hsl(203 100% 62% / 50%);
+  background-color: hsl(203 100% 62% / 75%);
   cursor: pointer;
   flex-wrap: nowrap;
   display: flex;
@@ -863,12 +994,12 @@ body {
   gap: 0;
   margin-top: 0;
   margin-bottom: 0;
-  box-shadow: 0px 1px 0.125rem 0.031rem hsl(203 0% 8% / 20%);
   align-self: stretch;
   height: fit-content;
   flex-shrink: 0;
   padding: 0.25rem;
   border-radius: 0.25rem;
+  border: var(--hairline) solid transparent;
 }
 
 .sdn-item-tree-item {
@@ -895,7 +1026,7 @@ body {
 }
 
 .sdn-listbox {
-  background-color: var(--sdn-swatch-charcoal);
+  background-color: var(--sdn-swatch-offBlack);
   cursor: pointer;
   flex-wrap: nowrap;
   display: flex;
@@ -931,7 +1062,7 @@ body {
 }
 
 .sdn-menu {
-  background-color: var(--sdn-swatch-charcoal);
+  background-color: var(--sdn-swatch-offBlack);
   cursor: pointer;
   flex-wrap: nowrap;
   display: flex;
@@ -981,7 +1112,7 @@ body {
 }
 
 .sdn-sidebar-objects {
-  background-color: var(--sdn-swatch-charcoal);
+  background-color: var(--sdn-swatch-offBlack);
   overflow: hidden;
   flex-wrap: nowrap;
   display: flex;
@@ -1033,7 +1164,7 @@ body {
   align-self: stretch;
   height: fit-content;
   flex-shrink: 0;
-  font-family: Inconsolata, "IBM Plex Sans";
+  font-family: Inconsolata;
   font-style: normal;
   font-synthesis-style: none;
   font-weight: 400;
@@ -1048,9 +1179,7 @@ body {
   align-self: stretch;
   height: fit-content;
   flex-shrink: 0;
-  font-family:
-    IBM Plex Serif,
-    "IBM Plex Sans";
+  font-family: IBM Plex Serif;
   font-style: normal;
   font-synthesis-style: none;
   font-weight: 700;
@@ -1068,9 +1197,7 @@ body {
   align-self: stretch;
   height: fit-content;
   flex-shrink: 0;
-  font-family:
-    IBM Plex Serif,
-    "IBM Plex Sans";
+  font-family: IBM Plex Serif;
   font-style: normal;
   font-synthesis-style: none;
   font-weight: 600;
@@ -1144,9 +1271,7 @@ body {
   align-self: stretch;
   height: fit-content;
   flex-shrink: 0;
-  font-family:
-    IBM Plex Serif,
-    "IBM Plex Sans";
+  font-family: IBM Plex Serif;
   font-style: normal;
   font-synthesis-style: none;
   font-weight: 500;
@@ -1216,7 +1341,6 @@ body {
 
 .sdn-bar--9xs7 {
   border-radius: unset;
-  background-color: hsl(203 100% 75.3%);
   border-bottom-width: var(--hairline);
   border-bottom-style: solid;
   border-bottom-color: hsl(203 100% 62%);
@@ -1229,7 +1353,6 @@ body {
 
 .sdn-bar--yje0 {
   border-radius: unset;
-  background-color: hsl(203 100% 75.3%);
   border-bottom-width: var(--hairline);
   border-bottom-style: solid;
   border-bottom-color: hsl(203 100% 62%);
@@ -1243,7 +1366,6 @@ body {
   padding-bottom: unset;
   padding-left: unset;
   border-radius: unset;
-  background-color: hsl(203 100% 75.3%);
   border-top-width: var(--hairline);
   border-top-style: solid;
   border-top-color: hsl(203 100% 62%);
@@ -1311,6 +1433,11 @@ body {
   border: 0.125rem solid hsl(203 100% 90.5%);
 }
 
+.sdn-button-iconic--8tzd {
+  background-color: unset;
+  border: unset;
+}
+
 .sdn-button-iconic--sdjv {
   margin-right: 0.25rem;
 }
@@ -1327,6 +1454,62 @@ body {
   border-bottom-right-radius: 0px;
   border-bottom-left-radius: 0px;
   border-top-left-radius: 0.25rem;
+}
+
+.sdn-calendar-day--2hoh {
+  align-self: unset;
+  flex: unset;
+  grid-column: span 6;
+}
+
+.sdn-calendar-day--bh5j {
+  align-self: unset;
+  flex: unset;
+  grid-column: span 3;
+}
+
+.sdn-calendar-day--i3zq {
+  align-self: unset;
+  flex: unset;
+  grid-column: span 5;
+}
+
+.sdn-calendar-day--omg8 {
+  align-self: unset;
+  flex: unset;
+  background-color: hsl(203 100% 62% / 25%);
+  border-radius: 0px;
+}
+
+.sdn-calendar-day-grid-cell-day--iysx {
+  align-self: unset;
+  flex: unset;
+}
+
+.sdn-calendar-day-muted-day--vns2 {
+  align-self: unset;
+  flex: unset;
+  justify-content: start;
+}
+
+.sdn-calendar-day-selected-day--dulb {
+  align-self: unset;
+  flex: unset;
+  border-radius: unset;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 99999px;
+  border-top-left-radius: 99999px;
+}
+
+.sdn-calendar-day-selected-day--zit2 {
+  align-self: unset;
+  flex: unset;
+  border-radius: unset;
+  border-top-right-radius: 99999px;
+  border-bottom-right-radius: 99999px;
+  border-bottom-left-radius: 0px;
+  border-top-left-radius: 0px;
 }
 
 .sdn-chip--3r55 {
@@ -1369,6 +1552,15 @@ body {
   border: var(--hairline) solid hsl(203 0% 98.5%);
 }
 
+.sdn-combobox-field-search-field--jaw4 {
+  align-self: unset;
+  flex-shrink: unset;
+  color: hsl(203 0% 8%);
+  flex: 1 0 0;
+  min-width: 0;
+  border: var(--hairline) solid hsl(203 0% 8% / 50%);
+}
+
 .sdn-combobox-field-search-field--vbyg {
   align-self: unset;
   flex-shrink: unset;
@@ -1378,11 +1570,25 @@ body {
   border: var(--hairline) solid hsl(203 0% 8% / 25%);
 }
 
+.sdn-container--edpm {
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0.25rem;
+}
+
+.sdn-container--npgy {
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0;
+}
+
 .sdn-form-control-combobox-control--qmop {
   align-self: unset;
   flex-shrink: unset;
   flex: 1 0 0;
   min-width: 0;
+}
+
+.sdn-frame--0bj3 {
+  gap: 1rem;
 }
 
 .sdn-frame--6o7x {
@@ -1393,9 +1599,16 @@ body {
 }
 
 .sdn-frame--88jo {
-  background-color: var(--sdn-swatch-white);
+  background-color: var(--sdn-swatch-offBlack);
   gap: 0.5rem;
   padding: 0.5rem;
+}
+
+.sdn-frame--8xlb {
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
 .sdn-frame--946h {
@@ -1419,6 +1632,13 @@ body {
   margin: 0;
 }
 
+.sdn-frame--hskv {
+  background-color: hsl(203 100% 62% / 10%);
+  gap: 0.25rem;
+  padding: 0.25rem;
+  border-radius: 0.25rem;
+}
+
 .sdn-frame--nhfs {
   align-self: unset;
   overflow: hidden;
@@ -1436,6 +1656,17 @@ body {
   width: fit-content;
   flex-shrink: 0;
   height: 100%;
+}
+
+.sdn-frame--rpjl {
+  gap: 0.5rem;
+}
+
+.sdn-frame--zjsr {
+  align-self: unset;
+  gap: 2.002rem;
+  height: 100%;
+  min-width: 0;
 }
 
 .sdn-hr--lrmt {
@@ -1465,6 +1696,11 @@ body {
   color: hsl(203 0% 8%);
 }
 
+.sdn-icon--np61 {
+  font-size: 0.8rem;
+  color: hsl(203 100% 62%);
+}
+
 .sdn-icon--ucf5 {
   font-size: 0.75rem;
   color: hsl(203 0% 8%);
@@ -1492,7 +1728,7 @@ body {
   align-self: unset;
   flex: unset;
   object-fit: contain;
-  margin-right: 0.25rem;
+  margin-right: 0.5rem;
   width: fit-content;
   flex-shrink: 0;
   height: 1rem;
@@ -1586,11 +1822,31 @@ body {
   padding: 0.25rem;
 }
 
+.sdn-input--icju {
+  background-color: unset;
+  align-self: unset;
+  flex-shrink: unset;
+  border-radius: unset;
+  color: hsl(203 0% 8%);
+  flex: 1 0 0;
+  min-width: 0;
+  font-size: 0.75rem;
+  padding: 0.25rem;
+}
+
 .sdn-input--iegt {
   background-color: unset;
   align-self: unset;
   flex-shrink: unset;
   flex: 1 0 0;
+  min-width: 0;
+  font-size: 0.75rem;
+  padding: 0.25rem;
+}
+
+.sdn-input--jvsw {
+  align-self: unset;
+  width: 35%;
   min-width: 0;
   font-size: 0.75rem;
   padding: 0.25rem;
@@ -1653,6 +1909,12 @@ body {
   min-width: 0;
 }
 
+.sdn-item-section--ymri {
+  border: unset;
+  background-color: hsl(203 100% 62% / 50%);
+  box-shadow: 0px 1px 0.125rem 0.031rem hsl(203 0% 8% / 20%);
+}
+
 .sdn-link--yqey {
   text-decoration: unset;
   color: hsl(203 0% 8%);
@@ -1668,7 +1930,7 @@ body {
 .sdn-text--0zmi {
   align-self: unset;
   flex-shrink: unset;
-  font-family: unset, "IBM Plex Sans";
+  font-family: unset;
   font-style: unset;
   font-synthesis-style: unset;
   line-height: unset;
@@ -1677,6 +1939,13 @@ body {
   min-width: 0;
   font-weight: 700;
   font-size: 0.4rem;
+}
+
+.sdn-text-label--bwn4 {
+  align-self: unset;
+  color: hsl(203 100% 62%);
+  width: fit-content;
+  text-align: center;
 }
 
 .sdn-text-label--dtru {
@@ -1700,10 +1969,23 @@ body {
   min-width: 0;
 }
 
+.sdn-text-label--g3ro {
+  align-self: unset;
+  color: hsl(203 0% 8%);
+  width: fit-content;
+  text-align: center;
+}
+
+.sdn-text-label--k3ye {
+  align-self: unset;
+  width: fit-content;
+  text-align: center;
+}
+
 .sdn-text-label--lug5 {
   align-self: unset;
   flex-shrink: unset;
-  font-family: unset, "IBM Plex Sans";
+  font-family: unset;
   font-style: unset;
   font-synthesis-style: unset;
   font-weight: unset;
@@ -1715,8 +1997,15 @@ body {
   font-size: 0.6rem;
 }
 
+.sdn-text-label--mqlk {
+  align-self: unset;
+  color: hsl(203 0% 8%);
+  width: fit-content;
+  font-size: 0.5rem;
+}
+
 .sdn-text-label--oqkb {
-  font-family: unset, "IBM Plex Sans";
+  font-family: unset;
   font-style: unset;
   font-synthesis-style: unset;
   font-weight: unset;
@@ -1731,7 +2020,7 @@ body {
 
 .sdn-text-label--p4vx {
   align-self: unset;
-  font-family: unset, "IBM Plex Sans";
+  font-family: unset;
   font-style: unset;
   font-synthesis-style: unset;
   font-weight: unset;
@@ -1743,7 +2032,7 @@ body {
 }
 
 .sdn-text-label--ptvk {
-  font-family: unset, "IBM Plex Sans";
+  font-family: unset;
   font-style: unset;
   font-synthesis-style: unset;
   font-weight: unset;
@@ -1753,6 +2042,21 @@ body {
   margin-bottom: 0.5rem;
   margin-left: 0.5rem;
   font-size: 0.75rem;
+}
+
+.sdn-text-label--sxr5 {
+  align-self: unset;
+  flex-shrink: unset;
+  color: hsl(203 0% 8%);
+  text-align: center;
+}
+
+.sdn-text-label--wrw4 {
+  align-self: unset;
+  flex-shrink: unset;
+  color: hsl(203 0% 50%);
+  flex: 1 0 0;
+  min-width: 0;
 }
 
 .sdn-text-label--xg6p {
@@ -1816,17 +2120,36 @@ body {
   max-height: 3lh;
 }
 
-.sdn-text-title--eodu {
+.sdn-text-title--blaq {
   align-self: unset;
   flex-shrink: unset;
+  max-height: unset;
   color: hsl(203 0% 8%);
   flex: 1 0 0;
   min-width: 0;
+  text-align: center;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.sdn-text-title--eodu {
+  align-self: unset;
+  color: hsl(203 0% 8%);
+  width: 35%;
   font-size: 0.875rem;
 }
 
 .sdn-text-title--noun {
   font-size: 0.875rem;
+}
+
+.sdn-text-title--pmi9 {
+  align-self: unset;
+  flex-shrink: unset;
+  color: hsl(203 0% 8%);
+  flex: 1 0 0;
+  min-width: 0;
+  text-align: center;
 }
 
 .sdn-text-title--qbtu {
@@ -2041,6 +2364,30 @@ body {
   color: hsl(203 0% 50%);
 }
 
+.sdn-item-section[aria-selected="true"] {
+  background-color: hsl(203 100% 62% / 50%);
+}
+
+.sdn-item-section[aria-selected="true"] .sdn-icon--vsau {
+  color: hsl(203 100% 62%);
+}
+
+.sdn-item-section[aria-selected="true"] .sdn-combobox-field--o7ct {
+  border: var(--hairline) solid hsl(203 100% 62% / 50%);
+}
+
+.sdn-item-section[aria-selected="true"] .sdn-input--n6aw {
+  color: hsl(203 100% 62%);
+}
+
+.sdn-item-section[aria-selected="true"] .sdn-icon--xi68 {
+  color: hsl(203 100% 62%);
+}
+
+.sdn-item-section[aria-selected="true"] .sdn-text-label--z34z {
+  color: hsl(203 100% 62%);
+}
+
 .sdn-item-section[aria-invalid="true"] {
   background-color: hsl(0 100% 65% / 50%);
 }
@@ -2066,13 +2413,36 @@ body {
   color: hsl(0 100% 65%);
 }
 
+.sdn-item-section:hover {
+  background-color: hsl(203 100% 62% / 50%);
+}
+
+.sdn-item-section:hover .sdn-icon--vsau {
+  color: hsl(203 100% 81%);
+}
+
+.sdn-item-section:hover .sdn-combobox-field--o7ct {
+  border: var(--hairline) solid hsl(203 100% 81%);
+}
+
+.sdn-item-section:hover .sdn-input--n6aw {
+  color: hsl(203 100% 81%);
+}
+
+.sdn-item-section:hover .sdn-icon--xi68 {
+  color: hsl(203 100% 81%);
+}
+
+.sdn-item-section:hover .sdn-text-label--z34z {
+  color: hsl(203 100% 81%);
+}
+
 .sdn-item-section:active {
-  background-color: hsl(203 100% 62% / 20%);
+  background-color: hsl(203 100% 62% / 25%);
 }
 
 .sdn-item-section:focus-within {
-  border-width: var(--hairline);
-  border-color: hsl(20 95% 60%);
+  border: var(--hairline) solid hsl(20 95% 60%);
 }
 
 .sdn-item-section:focus-within .sdn-button-iconic--pgsr {

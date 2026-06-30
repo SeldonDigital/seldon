@@ -10,7 +10,7 @@
  * any machine learning or artificial intelligence system without written permission.
  * 
  *****/
-
+ 
 :root {
   /* Theme: Royal Azure */
   /* Modulation */
@@ -42,12 +42,15 @@
   --sdn-royal-azure-swatch-complement-tint: hsl(53 96% 70%);
   --sdn-royal-azure-swatch-complement-light: hsl(53 96% 90%);
   --sdn-royal-azure-swatch-background: hsl(0 4% 98%);
-  --sdn-royal-azure-swatch-grey-1: hsl(0 0% 25%);
-  --sdn-royal-azure-swatch-seldon-green: hsl(135 100% 35%);
-  --sdn-royal-azure-swatch-seldon-blue: hsl(203 100% 62%);
-  --sdn-royal-azure-swatch-seldon-yellow: hsl(60 100% 46%);
-  --sdn-royal-azure-swatch-seldon-purple: hsl(300 76% 48%);
-  --sdn-royal-azure-swatch-gray93: hsl(0 0% 93%);
+  --sdn-royal-azure-swatch-active: hsl(203 100% 62%);
+  --sdn-royal-azure-swatch-positive: hsl(135 100% 35%);
+  --sdn-royal-azure-swatch-warning: hsl(60 100% 46%);
+  --sdn-royal-azure-swatch-accent: hsl(300 76% 48%);
+  --sdn-royal-azure-swatch-offBlack: hsl(0 0% 25%);
+  --sdn-royal-azure-swatch-offWhite: hsl(0 0% 93%);
+  --sdn-royal-azure-swatch-foreground: hsl(0 0% 100%);
+  --sdn-royal-azure-swatch-punch: hsl(20 95% 60%);
+  --sdn-royal-azure-swatch-negative: hsl(0 100% 65%);
   /* Sizes */
   --sdn-royal-azure-sizes-tiny: 0.183rem;
   --sdn-royal-azure-sizes-xxsmall: 0.322rem;

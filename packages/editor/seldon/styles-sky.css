@@ -10,7 +10,7 @@
  * any machine learning or artificial intelligence system without written permission.
  * 
  *****/
-
+ 
 :root {
   /* Theme: Sky */
   /* Modulation */
@@ -42,10 +42,15 @@
   --sdn-sky-swatch-complement-tint: hsl(17 100% 60%);
   --sdn-sky-swatch-complement-light: hsl(17 100% 75%);
   --sdn-sky-swatch-background: hsl(202 8% 8%);
-  --sdn-sky-swatch-crimson: hsl(348 83% 47%);
-  --sdn-sky-swatch-coral: hsl(16 100% 65%);
-  --sdn-sky-swatch-lime-green: hsl(75 100% 50%);
-  --sdn-sky-swatch-charcoal: hsl(197 8% 18%);
+  --sdn-sky-swatch-punch: hsl(16 100% 65%);
+  --sdn-sky-swatch-positive: hsl(75 100% 50%);
+  --sdn-sky-swatch-negative: hsl(348 83% 47%);
+  --sdn-sky-swatch-offBlack: hsl(197 8% 18%);
+  --sdn-sky-swatch-foreground: hsl(0 0% 100%);
+  --sdn-sky-swatch-active: hsl(203 100% 62%);
+  --sdn-sky-swatch-warning: hsl(60 100% 58%);
+  --sdn-sky-swatch-accent: hsl(300 76% 48%);
+  --sdn-sky-swatch-offWhite: hsl(0 0% 96%);
   /* Sizes */
   --sdn-sky-sizes-tiny: 0.125rem;
   --sdn-sky-sizes-xxsmall: 0.25rem;

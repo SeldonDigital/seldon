@@ -10,7 +10,7 @@
  * any machine learning or artificial intelligence system without written permission.
  * 
  *****/
-
+ 
 :root {
   /* Modulation */
   --sdn-ratio: 1.25;
@@ -40,15 +40,16 @@
   --sdn-swatch-tint-2: hsl(203 100% 74%);
   --sdn-swatch-tint-3: hsl(203 100% 80%);
   --sdn-swatch-tint-4: hsl(203 100% 86%);
-  --sdn-swatch-background: hsl(0 4% 8%);
+  --sdn-swatch-foreground: hsl(0 0% 100%);
+  --sdn-swatch-background: hsl(0 0% 0%);
   --sdn-swatch-active: hsl(203 100% 62%);
   --sdn-swatch-punch: hsl(20 95% 60%);
   --sdn-swatch-positive: hsl(135 76% 59%);
   --sdn-swatch-negative: hsl(0 100% 65%);
   --sdn-swatch-warning: hsl(60 100% 58%);
   --sdn-swatch-accent: hsl(300 76% 48%);
-  --sdn-swatch-charcoal: hsl(0 0% 15%);
-  --sdn-swatch-pearl: hsl(0 0% 96%);
+  --sdn-swatch-offBlack: hsl(0 0% 15%);
+  --sdn-swatch-offWhite: hsl(0 0% 96%);
   /* Sizes */
   --sdn-sizes-tiny: 0.125rem;
   --sdn-sizes-xxsmall: 0.25rem;

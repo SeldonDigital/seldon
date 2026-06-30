@@ -10,7 +10,7 @@
  * any machine learning or artificial intelligence system without written permission.
  * 
  *****/
-
+ 
 :root {
   /* Theme: Wildberry */
   /* Modulation */
@@ -42,12 +42,15 @@
   --sdn-wildberry-swatch-right-complement: hsl(0 100% 70%);
   --sdn-wildberry-swatch-left-complement: hsl(180 100% 70%);
   --sdn-wildberry-swatch-background: hsl(0 4% 8%);
-  --sdn-wildberry-swatch-grey-1: hsl(0 0% 25%);
-  --sdn-wildberry-swatch-seldon-green: hsl(135 100% 35%);
-  --sdn-wildberry-swatch-seldon-blue: hsl(203 100% 62%);
-  --sdn-wildberry-swatch-seldon-yellow: hsl(60 100% 46%);
-  --sdn-wildberry-swatch-seldon-purple: hsl(300 76% 48%);
-  --sdn-wildberry-swatch-gray93: hsl(0 0% 93%);
+  --sdn-wildberry-swatch-active: hsl(203 100% 62%);
+  --sdn-wildberry-swatch-positive: hsl(135 100% 35%);
+  --sdn-wildberry-swatch-warning: hsl(60 100% 46%);
+  --sdn-wildberry-swatch-accent: hsl(300 76% 48%);
+  --sdn-wildberry-swatch-offBlack: hsl(0 0% 25%);
+  --sdn-wildberry-swatch-offWhite: hsl(0 0% 93%);
+  --sdn-wildberry-swatch-foreground: hsl(0 0% 100%);
+  --sdn-wildberry-swatch-punch: hsl(20 95% 60%);
+  --sdn-wildberry-swatch-negative: hsl(0 100% 65%);
   /* Sizes */
   --sdn-wildberry-sizes-tiny: 0.069rem;
   --sdn-wildberry-sizes-xxsmall: 0.168rem;

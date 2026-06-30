@@ -10,7 +10,7 @@
  * any machine learning or artificial intelligence system without written permission.
  * 
  *****/
-
+ 
 :root {
   /* Theme: Seldon Dark */
   /* Modulation */
@@ -41,15 +41,17 @@
   --sdn-seldon-dark-swatch-tint-2: hsl(0 0% 44%);
   --sdn-seldon-dark-swatch-tint-3: hsl(0 0% 60%);
   --sdn-seldon-dark-swatch-tint-4: hsl(0 0% 76%);
-  --sdn-seldon-dark-swatch-background: hsl(0 4% 8%);
+  --sdn-seldon-dark-swatch-foreground: hsl(0 0% 100%);
+  --sdn-seldon-dark-swatch-background: hsl(0 0% 0%);
   --sdn-seldon-dark-swatch-active: hsl(203 100% 62%);
   --sdn-seldon-dark-swatch-punch: hsl(20 95% 60%);
   --sdn-seldon-dark-swatch-positive: hsl(135 76% 59%);
   --sdn-seldon-dark-swatch-negative: hsl(0 100% 65%);
   --sdn-seldon-dark-swatch-warning: hsl(60 100% 58%);
   --sdn-seldon-dark-swatch-accent: hsl(300 76% 48%);
-  --sdn-seldon-dark-swatch-charcoal: hsl(0 0% 15%);
-  --sdn-seldon-dark-swatch-pearl: hsl(0 0% 96%);
+  --sdn-seldon-dark-swatch-offBlack: hsl(0 0% 15%);
+  --sdn-seldon-dark-swatch-offWhite: hsl(0 0% 96%);
+  --sdn-seldon-dark-swatch-new-token: hsl(0 0% 0%);
   /* Sizes */
   --sdn-seldon-dark-sizes-tiny: 0.125rem;
   --sdn-seldon-dark-sizes-xxsmall: 0.25rem;

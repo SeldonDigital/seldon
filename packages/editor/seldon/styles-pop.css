@@ -10,7 +10,7 @@
  * any machine learning or artificial intelligence system without written permission.
  * 
  *****/
-
+ 
 :root {
   /* Theme: Pop */
   /* Modulation */
@@ -42,7 +42,15 @@
   --sdn-pop-swatch-complement2: hsl(148 85% 68%);
   --sdn-pop-swatch-complement-tint2: hsl(148 85% 80%);
   --sdn-pop-swatch-background: hsl(352 12% 8%);
-  --sdn-pop-swatch-charcoal: hsl(197 8% 18%);
+  --sdn-pop-swatch-offBlack: hsl(197 8% 18%);
+  --sdn-pop-swatch-foreground: hsl(0 0% 100%);
+  --sdn-pop-swatch-active: hsl(203 100% 62%);
+  --sdn-pop-swatch-punch: hsl(20 95% 60%);
+  --sdn-pop-swatch-positive: hsl(135 76% 59%);
+  --sdn-pop-swatch-negative: hsl(0 100% 65%);
+  --sdn-pop-swatch-warning: hsl(60 100% 58%);
+  --sdn-pop-swatch-accent: hsl(300 76% 48%);
+  --sdn-pop-swatch-offWhite: hsl(0 0% 96%);
   /* Sizes */
   --sdn-pop-sizes-tiny: 0.125rem;
   --sdn-pop-sizes-xxsmall: 0.25rem;

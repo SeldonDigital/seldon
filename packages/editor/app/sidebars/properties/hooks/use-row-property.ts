@@ -31,7 +31,7 @@ import {
 } from "@lib/workspace/hooks/use-node-active-state"
 import { useObjectProperties } from "@lib/workspace/hooks/use-object-properties"
 import { useDebugMode } from "@lib/hooks/use-debug-mode"
-import { useInlineRename } from "../../hooks/use-inline-rename"
+import { useRenameInput } from "../../hooks/use-rename-input"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import {
   imageUploadTargetForKey,
@@ -550,7 +550,10 @@ export function useRowProperty({
     }
   }, [customTokenTarget])
 
-  const { labelChildren } = useInlineRename({
+  // The property name slot is an `Input`, so a renameable row reuses the same
+  // edit-in-place hook as object names. Non-renameable rows keep `isRenaming`
+  // false, so the input stays a read-only, inert display of the label.
+  const nameInput = useRenameInput({
     label: labelText,
     isEditing: isRenaming,
     setEditing: setIsRenaming,
@@ -642,14 +645,12 @@ export function useRowProperty({
     handleMenuClick,
   })
 
-  if (customTokenTarget && isRenaming) {
-    listItemProps.textLabel = {
-      ...listItemProps.textLabel,
-      children: labelChildren as unknown as string,
-      // The label wraps the live rename input here, so restore pointer events
-      // that the resting name label suppresses.
-      style: { ...listItemProps.textLabel.style, pointerEvents: "auto" },
-    }
+  // The name `Input` slot carries the rename hook's display or edit props plus
+  // the row's resting name style. The hook owns `pointerEvents` (inert while
+  // displaying, live while editing), so its style is spread last.
+  const nameLabelProps = {
+    ...nameInput,
+    style: { ...listItemProps.nameLabelStyle, ...nameInput.style },
   }
 
   const layerDrag = resolveLayerDrag({ property, node, allProperties })
@@ -667,6 +668,7 @@ export function useRowProperty({
 
   return {
     listItemProps,
+    nameLabelProps,
     onRowClick: handleRowClick,
     onRowDoubleClick: handleRowDoubleClick,
     control,

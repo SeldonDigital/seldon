@@ -39,7 +39,7 @@ function VMPropertyInner(props: RowPropertyProps) {
   const seldonRefs: Record<string, Record<string, unknown>> = {
     propertyToggle: { ...listItemProps.buttonIconic },
     propertyToggleIcon: { ...listItemProps.icon },
-    propertyLabel: mergeStateProps(listItemProps.textLabel, stateRef),
+    propertyLabel: mergeStateProps(view.nameLabelProps, stateRef),
     valueLabel: mergeStateProps(view.valueLabelProps, stateRef),
     valueOptionsMenu: { ...listItemProps.buttonIconic2 },
     propertyActions: { ...optionsMenu.buttonIconic },
@@ -87,10 +87,10 @@ function VMPropertyInner(props: RowPropertyProps) {
 
   // Render the exported `ItemProperty` through its slots. `LayerDragRow` wraps a
   // multi-layer paint parent as a drag source and passes other rows through
-  // unwrapped. `textLabel` is a conditional slot, so it keeps a positional
-  // enabler. `icon3` (the options-menu icon) has no workspace ref yet, so it
-  // stays positional; add a `valueOptionsMenuIcon` ref to move it onto
-  // `seldonRefs`.
+  // unwrapped. `input` (the property-name slot) is conditional, so it keeps a
+  // positional enabler. `icon3` (the options-menu icon) has no workspace ref
+  // yet, so it stays positional; add a `valueOptionsMenuIcon` ref to move it
+  // onto `seldonRefs`.
   return (
     <>
       <LayerDragRow
@@ -99,7 +99,7 @@ function VMPropertyInner(props: RowPropertyProps) {
         icon={props.property.icon}
       >
         <ItemProperty
-          textLabel={{}}
+          input={{}}
           comboboxField={comboboxField}
           icon2={valueIconSlot}
           icon3={listItemProps.icon3}

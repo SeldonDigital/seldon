@@ -132,7 +132,7 @@ export const NATIVE_REACT_PRIMITIVES: Record<
   HTMLBlockquote: {
     types: {
       generic: "BlockquoteHTMLAttributes",
-      parameter: "HTMLBlockquoteElement",
+      parameter: "HTMLQuoteElement",
     },
     wrapperElementOption: WrapperElement.BLOCKQUOTE,
   },
@@ -187,7 +187,7 @@ export const NATIVE_REACT_PRIMITIVES: Record<
   HTMLFieldset: {
     types: {
       generic: "FieldsetHTMLAttributes",
-      parameter: "HTMLFieldsetElement",
+      parameter: "HTMLFieldSetElement",
     },
     htmlElementOption: HtmlElement.FIELDSET,
     wrapperElementOption: WrapperElement.FIELDSET,

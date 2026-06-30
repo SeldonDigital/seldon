@@ -4,12 +4,13 @@
  *
  * License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md
  * Do not redistribute or sublicense without permission.
- *
- * You may not use this software, or any derivative works of it, in whole or in part,
- * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly)
+ * 
+ * You may not use this software, or any derivative works of it, in whole or in part, 
+ * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly) 
  * any machine learning or artificial intelligence system without written permission.
- *
+ * 
  *****/
+ 
 import { HTMLAttributes } from "react"
 import { ButtonIconic, ButtonIconicProps } from "../elements/ButtonIconic"
 import { Frame } from "../frames/Frame"
@@ -61,7 +62,10 @@ export function BarBreadcrumbsBar({
   seldonRefs,
   ...props
 }: BarBreadcrumbsBarProps) {
-  const barBreadcrumbsBarClassName = combineClassNames("sdn-bar", className)
+  const barBreadcrumbsBarClassName = combineClassNames(
+    "sdn-bar-breadcrumbs-bar",
+    className,
+  )
   const buttonIconicProps = applyRef(
     seldonRefs,
     buttonIconic === null
@@ -178,7 +182,7 @@ export function BarBreadcrumbsBar({
 const sdn: BarBreadcrumbsBarProps = {
   role: "navigation",
   "aria-hidden": "false",
-  className: "sdn-bar sdn-bar",
+  className: "sdn-bar-breadcrumbs-bar sdn-bar",
   buttonIconic: {
     className: "sdn-button-iconic sdn-button-iconic--pgsr",
   },
