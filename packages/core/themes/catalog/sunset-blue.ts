@@ -723,54 +723,54 @@ export const theme: StockTheme = {
         value: { hue: 0, saturation: 4, lightness: 98 },
       },
     },
-    custom1: {
-      name: "Grey 1",
-      intent: "Seldon Red",
-      type: TokenType.SWATCH,
-      parameters: {
-        colorspace: Colorspace.HSL,
-        value: { hue: 0, saturation: 0, lightness: 25 },
-      },
-    },
-    custom2: {
-      name: "Seldon Green",
-      intent: "Seldon Green",
-      type: TokenType.SWATCH,
-      parameters: {
-        colorspace: Colorspace.HSL,
-        value: { hue: 135, saturation: 100, lightness: 35 },
-      },
-    },
-    custom3: {
-      name: "Seldon Blue",
-      intent: "Seldon Blue",
+    active: {
+      name: "Active",
+      intent: "Active color for all important actions",
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
         value: { hue: 203, saturation: 100, lightness: 62 },
       },
     },
-    custom4: {
-      name: "Seldon Yellow",
-      intent: "Seldon Yellow",
+    positive: {
+      name: "Positive",
+      intent: "Actions that are successful or correct",
+      type: TokenType.SWATCH,
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 135, saturation: 100, lightness: 35 },
+      },
+    },
+    warning: {
+      name: "Warning",
+      intent: "Used to indicate caution or attention",
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
         value: { hue: 60, saturation: 100, lightness: 46 },
       },
     },
-    custom5: {
-      name: "Seldon Purple",
-      intent: "Seldon Purple",
+    accent: {
+      name: "Accent",
+      intent: "To act as an accent color",
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
         value: { hue: 300, saturation: 76, lightness: 48 },
       },
     },
-    custom6: {
-      name: "Gray93",
-      intent: "Custom Swatch",
+    offBlack: {
+      name: "Off Black",
+      intent: "Dark color for text on light backgrounds",
+      type: TokenType.SWATCH,
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 0, saturation: 0, lightness: 25 },
+      },
+    },
+    offWhite: {
+      name: "Off White",
+      intent: "Light color for text on dark backgrounds",
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,

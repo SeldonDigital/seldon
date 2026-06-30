@@ -235,7 +235,7 @@ export const schema = {
               },
               color: {
                 type: Sdn.ValueType.THEME_CATEGORICAL,
-                value: "@swatch.custom2",
+                value: "@swatch.punch",
               },
             },
           },
@@ -249,7 +249,7 @@ export const schema = {
               },
               color: {
                 type: Sdn.ValueType.THEME_CATEGORICAL,
-                value: "@swatch.custom2",
+                value: "@swatch.punch",
               },
             },
           },
@@ -342,7 +342,7 @@ export const schema = {
                 },
                 color: {
                   type: Sdn.ValueType.THEME_CATEGORICAL,
-                  value: "@swatch.custom2",
+                  value: "@swatch.punch",
                 },
               },
             },
@@ -356,7 +356,7 @@ export const schema = {
                 },
                 color: {
                   type: Sdn.ValueType.THEME_CATEGORICAL,
-                  value: "@swatch.custom2",
+                  value: "@swatch.punch",
                 },
               },
             },

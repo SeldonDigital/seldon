@@ -195,7 +195,13 @@ export function useRowProperty({
     const parts = property.key.split(".")
     const section = parts[0]
     let id: string | undefined
-    if (parts.length === 2) {
+    if (section === "swatch") {
+      // Swatch rows nest under a group: `swatch.<group>.<id>`. Only a custom
+      // swatch (`swatch.custom.customN`) can be renamed in place.
+      if (parts.length === 3 && parts[1] === "custom") {
+        id = parts[2]
+      }
+    } else if (parts.length === 2) {
       id = parts[1]
     } else if (parts.length === 3 && parts[2] === "step") {
       id = parts[1]

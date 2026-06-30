@@ -560,26 +560,8 @@ export const theme: StockTheme = {
         value: { hue: 210, saturation: 80, lightness: 20 },
       },
     },
-    custom1: {
-      name: "Red",
-      intent: "Used mostly for error conditions",
-      type: TokenType.SWATCH,
-      parameters: {
-        colorspace: Colorspace.HSL,
-        value: { hue: 0, saturation: 100, lightness: 65 },
-      },
-    },
-    custom2: {
-      name: "Green",
-      intent: "Used mostly for positive conditions",
-      type: TokenType.SWATCH,
-      parameters: {
-        colorspace: Colorspace.HSL,
-        value: { hue: 135, saturation: 76, lightness: 59 },
-      },
-    },
-    custom3: {
-      name: "Blue",
+    active: {
+      name: "Active",
       intent: "A calming color for backgrounds",
       type: TokenType.SWATCH,
       parameters: {
@@ -587,8 +569,26 @@ export const theme: StockTheme = {
         value: { hue: 203, saturation: 100, lightness: 62 },
       },
     },
-    custom4: {
-      name: "Yellow",
+    positive: {
+      name: "Positive",
+      intent: "Used mostly for positive conditions",
+      type: TokenType.SWATCH,
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 135, saturation: 76, lightness: 59 },
+      },
+    },
+    negative: {
+      name: "Negative",
+      intent: "Used mostly for error conditions",
+      type: TokenType.SWATCH,
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 0, saturation: 100, lightness: 65 },
+      },
+    },
+    warning: {
+      name: "Warning",
       intent: "A call to action color",
       type: TokenType.SWATCH,
       parameters: {
@@ -596,8 +596,8 @@ export const theme: StockTheme = {
         value: { hue: 60, saturation: 100, lightness: 46 },
       },
     },
-    custom5: {
-      name: "Charcoal",
+    offBlack: {
+      name: "Off Black",
       intent: "Off black to temper the overall color of the palette.",
       type: TokenType.SWATCH,
       parameters: {

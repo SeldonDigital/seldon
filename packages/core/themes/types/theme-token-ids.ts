@@ -122,7 +122,24 @@ export type ThemeSpacingId =
   | "open"
   | `custom${number}`
 
-export type ThemeStaticSwatchId = "background" | ThemeCustomSwatchId
+/**
+ * Reserved interface swatch roles. Authored fixed colors that stay slot-stable
+ * across themes, so a node reference like `@swatch.active` reconnects to the new
+ * theme's `active` slot on a theme switch. `background` is part of this group.
+ */
+export type ThemeInterfaceSwatchId =
+  | "foreground"
+  | "background"
+  | "active"
+  | "punch"
+  | "positive"
+  | "negative"
+  | "warning"
+  | "accent"
+  | "offBlack"
+  | "offWhite"
+
+export type ThemeStaticSwatchId = ThemeInterfaceSwatchId | ThemeCustomSwatchId
 
 export type ThemeSwatchId =
   | "white"

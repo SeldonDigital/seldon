@@ -16,6 +16,10 @@ import {
   SIZE_ORDER,
   SPACING_ORDER,
 } from "../schemas/data/theme-step-orders"
+import {
+  THEME_INTERFACE_SLOTS,
+  THEME_PALETTE_SLOTS,
+} from "../values/shared/palette/theme-swatch"
 
 /** Reserved ordinal step / slot names per scale section. */
 const SCALE_RESERVED_KEYS: Record<string, readonly string[]> = {
@@ -33,17 +37,10 @@ const SCALE_RESERVED_KEYS: Record<string, readonly string[]> = {
   fontWeight: FONT_WEIGHT_ORDER,
 }
 
-/** Reserved swatch slot ids (dynamic palette roles plus the fixed `background`). */
+/** Reserved swatch slot ids (dynamic palette roles plus the interface roles). */
 const SWATCH_RESERVED_KEYS: readonly string[] = [
-  "white",
-  "gray",
-  "black",
-  "primary",
-  "swatch1",
-  "swatch2",
-  "swatch3",
-  "swatch4",
-  "background",
+  ...THEME_PALETTE_SLOTS,
+  ...THEME_INTERFACE_SLOTS,
 ]
 
 /** Returns the reserved key ids for a custom-capable section, or an empty list. */

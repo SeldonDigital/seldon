@@ -10,7 +10,11 @@ import type { LookFacetEntry, LookSection } from "../../looks/look-facets"
 import type { ThemeTokenSchemaUnresolved } from "../../types/schema"
 import type { ComputedTheme, StockTheme } from "../../types/theme"
 import type { StockThemeSwatch, ThemeSwatch } from "../../values"
-import { isDynamicSwatchToken } from "../../values"
+import {
+  THEME_INTERFACE_SLOTS,
+  THEME_PALETTE_SLOTS,
+  isDynamicSwatchToken,
+} from "../../values"
 import { finalizeThemeTokenSchema } from "../helpers/finalize-theme-token-schema"
 import { COMPUTED_GROUPS } from "./theme-computed"
 import type { ComputedGroupFacet } from "./theme-computed"
@@ -162,6 +166,17 @@ function swatchSchemaLabel(
  *   3. Free-named user swatches — any other key in the swatch table. The cell's
  *      `name` is the source of truth; an empty string falls back here.
  */
+/**
+ * Generate schemas for the Swatches section.
+ *
+ * Swatches render in three collapsible groups - Harmony, Interface, Custom -
+ * mirroring how Computed groups nest. Each group emits an `isLookParent`
+ * disclosure parent (`swatch.harmony`, `swatch.interface`, `swatch.custom`)
+ * followed by its swatch rows keyed under the group (`swatch.harmony.white`,
+ * `swatch.interface.active`, `swatch.custom.custom1`). The three-segment key
+ * drives the editor's parent/child nesting; the trailing segment is the swatch
+ * id read from `theme.swatch`.
+ */
 export function generateSwatchSchemas(
   theme: ThemeOrStock,
 ): ThemeTokenSchemaUnresolved[] {
@@ -172,54 +187,49 @@ export function generateSwatchSchemas(
     StockThemeSwatch | ThemeSwatch
   >
 
-  const dynamicSlots = [
-    "white",
-    "gray",
-    "black",
-    "primary",
-    "swatch1",
-    "swatch2",
-    "swatch3",
-    "swatch4",
-  ]
-  const RESERVED_SLOTS = ["background"]
+  const harmonySlots = THEME_PALETTE_SLOTS as readonly string[]
+  const interfaceSlots = THEME_INTERFACE_SLOTS as readonly string[]
+  const reservedSlots = new Set([...harmonySlots, ...interfaceSlots])
 
-  for (const swatchId of dynamicSlots) {
-    const swatch = swatchTable[swatchId]
-    if (swatch) {
-      schemas.push({
-        key: `swatch.${swatchId}`,
-        propertyKey: "color",
-        label: swatchSchemaLabel(swatch, theme),
-        section: "swatch",
-        order: order++,
-      })
-    }
-  }
-
-  for (const swatchId of RESERVED_SLOTS) {
-    const swatch = swatchTable[swatchId]
-    if (swatch) {
-      schemas.push({
-        key: `swatch.${swatchId}`,
-        propertyKey: "color",
-        label: swatchSchemaLabel(swatch, theme),
-        section: "swatch",
-        order: order++,
-      })
-    }
-  }
-
-  for (const [key, swatch] of Object.entries(swatchTable)) {
-    if (dynamicSlots.includes(key)) continue
-    if (RESERVED_SLOTS.includes(key)) continue
+  const pushGroup = (group: string, label: string) => {
     schemas.push({
-      key: `swatch.${key}`,
-      propertyKey: "color",
-      label: swatchSchemaLabel(swatch as StockThemeSwatch | ThemeSwatch, theme),
+      key: `swatch.${group}`,
+      label,
       section: "swatch",
       order: order++,
+      supports: [],
+      validation: {},
+      isLookParent: true,
     })
+  }
+
+  const pushSwatchRow = (group: string, swatchId: string) => {
+    const swatch = swatchTable[swatchId]
+    if (!swatch) return
+    schemas.push({
+      key: `swatch.${group}.${swatchId}`,
+      propertyKey: "color",
+      label: swatchSchemaLabel(swatch, theme),
+      section: "swatch",
+      order: order++,
+      isSubProperty: true,
+    })
+  }
+
+  pushGroup("harmony", "Harmony")
+  for (const swatchId of harmonySlots) {
+    pushSwatchRow("harmony", swatchId)
+  }
+
+  pushGroup("interface", "Interface")
+  for (const swatchId of interfaceSlots) {
+    pushSwatchRow("interface", swatchId)
+  }
+
+  pushGroup("custom", "Custom")
+  for (const key of Object.keys(swatchTable)) {
+    if (reservedSlots.has(key)) continue
+    pushSwatchRow("custom", key)
   }
 
   return schemas

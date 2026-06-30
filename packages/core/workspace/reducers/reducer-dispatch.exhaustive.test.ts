@@ -166,9 +166,21 @@ function buildBase() {
       Record<string, unknown>
     >
     for (const section of REMOVE_THEME_SECTIONS) {
+      // A swatch seed needs a resolvable color so removing it can inline the
+      // value into referencing nodes; other sections only need a name stub.
+      const seed =
+        section === "swatch"
+          ? {
+              name: "seed",
+              parameters: {
+                colorspace: Colorspace.HSL,
+                value: { hue: 0, saturation: 0, lightness: 50 },
+              },
+            }
+          : { name: "seed" }
       overrides[section] = {
         ...(overrides[section] ?? {}),
-        custom1: { name: "seed" },
+        custom1: seed,
       }
     }
     const fcOverrides = draft["font-collections"][FC_VARIANT_ID]!

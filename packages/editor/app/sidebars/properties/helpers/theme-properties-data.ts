@@ -53,16 +53,16 @@ const PARAMETER_SECTIONS = new Set([
   "scrollbar",
 ])
 
-/** Read-only swatch slots resolved from the theme's color computation. */
+/** Read-only harmony swatch rows resolved from the theme's color computation. */
 const CALCULATED_SWATCHES = new Set([
-  "swatch.white",
-  "swatch.gray",
-  "swatch.black",
-  "swatch.primary",
-  "swatch.swatch1",
-  "swatch.swatch2",
-  "swatch.swatch3",
-  "swatch.swatch4",
+  "swatch.harmony.white",
+  "swatch.harmony.gray",
+  "swatch.harmony.black",
+  "swatch.harmony.primary",
+  "swatch.harmony.swatch1",
+  "swatch.harmony.swatch2",
+  "swatch.harmony.swatch3",
+  "swatch.harmony.swatch4",
 ])
 
 /** Color-point keys mapped to the computed swatch that fills their icon. */
@@ -147,8 +147,12 @@ function getThemeValueByKey(theme: Theme, key: string): unknown {
     return facetValue
   }
 
-  if (section === "swatch" && id) {
-    const swatch = getNestedValue(themeObj, ["swatch", id])
+  if (section === "swatch") {
+    // Swatch rows nest under a group: `swatch.<group>.<id>`. The trailing segment
+    // is the swatch id. A bare group parent (`swatch.harmony`) has no value.
+    const swatchId = key.split(".").slice(2).join(".")
+    if (!swatchId) return undefined
+    const swatch = getNestedValue(themeObj, ["swatch", swatchId])
     // Computed dynamic swatches expose a resolved top-level `value`. Custom
     // `TokenType.SWATCH` cells keep their color under `parameters.value`.
     if (isRecord(swatch)) {
@@ -224,7 +228,9 @@ function isThemeKeyOverridden(
   if (!path) return false
   if (getOverrideAtPath(overrides, path) === undefined) return false
   if (key.startsWith("swatch.")) {
-    const swatchId = key.split(".")[1]
+    // Swatch rows nest under a group: `swatch.<group>.<id>`. The id is the last
+    // segment.
+    const swatchId = key.split(".").slice(2).join(".")
     return baseSwatchIds?.has(swatchId) ?? false
   }
   return true

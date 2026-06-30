@@ -15,6 +15,10 @@ import { HSL } from "../../properties/values/shared/exact/hsl"
 import { TokenType } from "../../themes/constants/token-type"
 import { Theme, ThemeInstanceId, ThemeOption } from "../../themes/types"
 import type { ThemeFontFamilyToken } from "../../themes/values"
+import {
+  THEME_INTERFACE_SLOTS,
+  THEME_PALETTE_SLOTS,
+} from "../../themes/values"
 import { getEffectiveNodeProperties } from "../../workspace/compute"
 import { getBoardByNodeId } from "../../workspace/helpers/components/get-board-by-node-id"
 import { getChildrenIds } from "../../workspace/helpers/components/get-children-ids"
@@ -31,19 +35,19 @@ import { isThemeValueKey } from "../validation/theme"
 import { getThemeKeyComponents } from "./get-theme-key-components"
 import { getThemeOption } from "./get-theme-option"
 
-const SWATCH_PRESET_SLOTS = [
+/**
+ * Swatch slots that carry across a theme switch by keeping the same slot id.
+ * Both harmony and interface roles reconnect by index, so a node reference like
+ * `@swatch.active` snaps to the new theme's `active` slot. `background` is part
+ * of the interface set. Only `customN` falls through to name/value matching or
+ * detaches to a literal.
+ */
+const SWATCH_PRESET_SLOTS: readonly string[] = [
   "none",
   "transparent",
-  "background",
-  "black",
-  "gray",
-  "white",
-  "primary",
-  "swatch1",
-  "swatch2",
-  "swatch3",
-  "swatch4",
-] as const
+  ...THEME_PALETTE_SLOTS,
+  ...THEME_INTERFACE_SLOTS,
+]
 
 type RemapContext = {
   value: ThemeValue
@@ -218,7 +222,7 @@ function remapSwatchValue(context: RemapContext): boolean {
     return false
   }
 
-  if ((SWATCH_PRESET_SLOTS as readonly string[]).includes(optionId)) {
+  if (SWATCH_PRESET_SLOTS.includes(optionId)) {
     const newThemeEntries = Object.entries(
       newTheme[section as keyof Theme],
     ) as [string, ThemeOption][]

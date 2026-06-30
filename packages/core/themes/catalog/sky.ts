@@ -556,17 +556,8 @@ export const theme: StockTheme = {
         value: { hue: 202, saturation: 8, lightness: 8 },
       },
     },
-    custom1: {
-      name: "Crimson",
-      intent: "Used for all error states",
-      type: TokenType.SWATCH,
-      parameters: {
-        colorspace: Colorspace.HSL,
-        value: { hue: 348, saturation: 83, lightness: 47 },
-      },
-    },
-    custom2: {
-      name: "Coral",
+    punch: {
+      name: "Punch",
       intent: "Used for high contrast elements",
       type: TokenType.SWATCH,
       parameters: {
@@ -574,17 +565,26 @@ export const theme: StockTheme = {
         value: { hue: 16, saturation: 100, lightness: 65 },
       },
     },
-    custom3: {
-      name: "Lime Green",
-      intent: "To be iused for supporting text or iconography",
+    positive: {
+      name: "Positive",
+      intent: "To be used for supporting text or iconography",
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
         value: { hue: 75, saturation: 100, lightness: 50 },
       },
     },
-    custom4: {
-      name: "Charcoal",
+    negative: {
+      name: "Negative",
+      intent: "Used for all error states",
+      type: TokenType.SWATCH,
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 348, saturation: 83, lightness: 47 },
+      },
+    },
+    offBlack: {
+      name: "Off Black",
       intent: "A low contrast black color.",
       type: TokenType.SWATCH,
       parameters: {

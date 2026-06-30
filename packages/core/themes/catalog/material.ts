@@ -573,8 +573,8 @@ export const theme: StockTheme = {
         value: { hue: 340, saturation: 21, lightness: 41 },
       },
     },
-    custom3: {
-      name: "Error",
+    negative: {
+      name: "Negative",
       intent: "Google M3 error color for alert states",
       type: TokenType.SWATCH,
       parameters: {

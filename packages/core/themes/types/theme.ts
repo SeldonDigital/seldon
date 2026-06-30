@@ -43,6 +43,7 @@ import {
   ThemeGradientId,
   ThemeLineHeightId,
   ThemeScrollbarId,
+  ThemeInterfaceSwatchId,
   ThemeShadowId,
   ThemeSizeId,
   ThemeSpacingId,
@@ -67,13 +68,17 @@ type StockThemeLookTableIdMap = {
  * Swatch table on a stock theme.
  * - Palette slots (`white, gray, black, primary, swatch1..4`) and the reserved
  *   `background` slot are required.
+ * - Interface roles (`foreground, active, punch, ...`) are optional. A theme
+ *   omits the ones it does not author; `computeTheme` fills them from the Seldon
+ *   interface defaults.
  * - Free-named user swatches use the `custom1, custom2, ...` convention; their
  *   `name` field is the editor-visible label.
  */
 export type StockThemeSwatches = ThemeTokenTable<
   ThemePaletteSlot | "background",
   StockThemeSwatch
->
+> &
+  Partial<Record<Exclude<ThemeInterfaceSwatchId, "background">, StockThemeSwatch>>
 
 export interface ThemeMetadata<TId extends string = ThemeTemplateId> {
   id: TId

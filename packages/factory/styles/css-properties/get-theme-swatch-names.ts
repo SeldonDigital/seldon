@@ -1,5 +1,20 @@
 import { getDynamicSwatchName } from "@seldon/core/themes/compute"
 import { Theme } from "@seldon/core/themes/types"
+import {
+  THEME_INTERFACE_SLOTS,
+  THEME_PALETTE_SLOTS,
+} from "@seldon/core/themes/values"
+
+/**
+ * Reserved swatch slots that emit a stable `var(--sdn-...swatch-*)` reference.
+ * Harmony and interface roles align across themes by slot id, so a reference
+ * carries over when the active theme switches. Custom swatches are arbitrary per
+ * theme, so callers fall back to the resolved literal for them.
+ */
+const REFERENCEABLE_SWATCH_SLOTS = new Set<string>([
+  ...THEME_PALETTE_SLOTS,
+  ...THEME_INTERFACE_SLOTS,
+])
 
 function slugify(name: string): string {
   return name
@@ -78,6 +93,7 @@ export function getThemeSwatchVarReference(
 ): string | undefined {
   if (!swatchKey.startsWith("@swatch.")) return undefined
   const id = swatchKey.slice("@swatch.".length)
+  if (!REFERENCEABLE_SWATCH_SLOTS.has(id)) return undefined
   if (!theme.swatch || !theme.swatch[id as keyof typeof theme.swatch]) {
     return undefined
   }

@@ -7,7 +7,6 @@ import {
   Unit,
   ValueType,
 } from "../../properties"
-import { computeTheme } from "../helpers/compute-theme"
 import { Colorspace, Harmony, Ratio, StockTheme, TokenType } from "../types"
 
 export const theme: StockTheme = {
@@ -546,6 +545,15 @@ export const theme: StockTheme = {
       role: "swatch4",
       intent: "A tint of the primary color",
     },
+    foreground: {
+      name: "Foreground",
+      intent: "The default color used for text and foreground content.",
+      type: TokenType.SWATCH,
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 0, saturation: 0, lightness: 100 },
+      },
+    },
     background: {
       name: "Background",
       intent:
@@ -553,10 +561,10 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 0, saturation: 4, lightness: 8 },
+        value: { hue: 0, saturation: 0, lightness: 0 },
       },
     },
-    custom1: {
+    active: {
       name: "Active",
       intent: "Active color for all important actions",
       type: TokenType.SWATCH,
@@ -565,7 +573,7 @@ export const theme: StockTheme = {
         value: { hue: 203, saturation: 100, lightness: 62 },
       },
     },
-    custom2: {
+    punch: {
       name: "Punch",
       intent: "Punch color for all important actions",
       type: TokenType.SWATCH,
@@ -574,7 +582,7 @@ export const theme: StockTheme = {
         value: { hue: 20, saturation: 95, lightness: 60 },
       },
     },
-    custom3: {
+    positive: {
       name: "Positive",
       intent: "Actions that are successful or correct",
       type: TokenType.SWATCH,
@@ -583,7 +591,7 @@ export const theme: StockTheme = {
         value: { hue: 135, saturation: 76, lightness: 59 },
       },
     },
-    custom4: {
+    negative: {
       name: "Negative",
       intent: "Actions that are unsuccessful or incorrect",
       type: TokenType.SWATCH,
@@ -592,7 +600,7 @@ export const theme: StockTheme = {
         value: { hue: 0, saturation: 100, lightness: 65 },
       },
     },
-    custom5: {
+    warning: {
       name: "Warning",
       intent: "Used to indicate caution or attention",
       type: TokenType.SWATCH,
@@ -601,7 +609,7 @@ export const theme: StockTheme = {
         value: { hue: 60, saturation: 100, lightness: 58 },
       },
     },
-    custom6: {
+    accent: {
       name: "Accent",
       intent: "To act as an accent color",
       type: TokenType.SWATCH,
@@ -610,8 +618,8 @@ export const theme: StockTheme = {
         value: { hue: 300, saturation: 76, lightness: 48 },
       },
     },
-    custom7: {
-      name: "Charcoal",
+    offBlack: {
+      name: "Off Black",
       intent: "Dark color for text on light backgrounds",
       type: TokenType.SWATCH,
       parameters: {
@@ -619,8 +627,8 @@ export const theme: StockTheme = {
         value: { hue: 0, saturation: 0, lightness: 15 },
       },
     },
-    custom8: {
-      name: "Pearl",
+    offWhite: {
+      name: "Off White",
       intent: "Light color for text on dark backgrounds",
       type: TokenType.SWATCH,
       parameters: {
@@ -1114,5 +1122,3 @@ export const theme: StockTheme = {
     },
   },
 }
-
-export const defaultTheme = computeTheme(theme)

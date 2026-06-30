@@ -41,7 +41,9 @@ export function getThemeOverridePath(key: string): string | null {
     return `${section}.parameters.${id}`
   }
   if (section === "swatch") {
-    return `swatch.${id}`
+    // Swatch rows nest under a group: `swatch.<group>.<id>`. The cell is owned by
+    // the trailing id; a bare group parent (`swatch.harmony`) owns no override.
+    return facet ? `swatch.${facet}` : null
   }
   if (section === "fontWeight") {
     return `fontWeight.${id}.value`

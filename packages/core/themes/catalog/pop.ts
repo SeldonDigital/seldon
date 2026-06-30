@@ -557,8 +557,8 @@ export const theme: StockTheme = {
         value: { hue: 352, saturation: 12, lightness: 8 },
       },
     },
-    custom4: {
-      name: "Charcoal",
+    offBlack: {
+      name: "Off Black",
       intent: "A low contrast black color.",
       type: TokenType.SWATCH,
       parameters: {

@@ -7,7 +7,7 @@ import { theme as industrialStock } from "./industrial"
 import { theme as materialStock } from "./material"
 import { theme as popStock } from "./pop"
 import { theme as royalAzureStock } from "./royal-azure"
-import { theme as defaultStock, defaultTheme } from "./seldon"
+import { theme as defaultStock } from "./seldon"
 import { theme as skyStock } from "./sky"
 import { theme as sunsetBlueStock } from "./sunset-blue"
 import { theme as wildberryStock } from "./wildberry"
@@ -37,5 +37,7 @@ export const THEMES_BY_ID = Object.fromEntries(
   THEMES.map((theme) => [theme.id, theme]),
 ) as Record<ThemeTemplateId, ComputedTheme>
 
+/** Computed Seldon theme, the shipped default preset. */
+export const defaultTheme: ComputedTheme = computeTheme(defaultStock)
+
 export { computeTheme }
-export { defaultTheme }

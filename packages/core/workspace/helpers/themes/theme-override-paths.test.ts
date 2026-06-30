@@ -14,7 +14,14 @@ describe("getThemeOverridePath", () => {
   })
 
   it("owns the whole cell for swatch rows", () => {
-    expect(getThemeOverridePath("swatch.custom1")).toBe("swatch.custom1")
+    expect(getThemeOverridePath("swatch.custom.custom1")).toBe("swatch.custom1")
+    expect(getThemeOverridePath("swatch.interface.active")).toBe(
+      "swatch.active",
+    )
+  })
+
+  it("returns null for a swatch group parent row", () => {
+    expect(getThemeOverridePath("swatch.harmony")).toBeNull()
   })
 
   it("targets the value cell for fontWeight rows", () => {

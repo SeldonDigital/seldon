@@ -7,7 +7,6 @@ import {
   Unit,
   ValueType,
 } from "../../properties"
-import { computeTheme } from "../helpers/compute-theme"
 import { Colorspace, Harmony, Ratio, StockTheme, TokenType } from "../types"
 
 export const theme: StockTheme = {
@@ -558,53 +557,53 @@ export const theme: StockTheme = {
         value: { hue: 0, saturation: 4, lightness: 8 },
       },
     },
-    custom1: {
-      name: "Seldon Blue",
-      intent: "Seldon Blue",
+    active: {
+      name: "Active",
+      intent: "Active color for all important actions",
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
         value: { hue: 203, saturation: 100, lightness: 62 },
       },
     },
-    custom2: {
-      name: "Seldon Orange",
-      intent: "Seldon Orange",
+    punch: {
+      name: "Punch",
+      intent: "Punch color for all important actions",
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
         value: { hue: 20, saturation: 95, lightness: 60 },
       },
     },
-    custom3: {
-      name: "Seldon Green",
-      intent: "Seldon Green",
+    positive: {
+      name: "Positive",
+      intent: "Actions that are successful or correct",
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
         value: { hue: 135, saturation: 76, lightness: 59 },
       },
     },
-    custom4: {
-      name: "Seldon Red",
-      intent: "Seldon Red",
+    negative: {
+      name: "Negative",
+      intent: "Actions that are unsuccessful or incorrect",
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
         value: { hue: 0, saturation: 100, lightness: 65 },
       },
     },
-    custom5: {
-      name: "Seldon Yellow",
-      intent: "Seldon Yellow",
+    warning: {
+      name: "Warning",
+      intent: "Used to indicate caution or attention",
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
         value: { hue: 60, saturation: 100, lightness: 58 },
       },
     },
-    custom6: {
-      name: "Seldon Purple",
+    accent: {
+      name: "Accent",
       intent: "To act as an accent color",
       type: TokenType.SWATCH,
       parameters: {
@@ -612,18 +611,18 @@ export const theme: StockTheme = {
         value: { hue: 300, saturation: 76, lightness: 48 },
       },
     },
-    custom7: {
-      name: "Seldon Dark Gray",
-      intent: "Seldon Dark Gray",
+    offBlack: {
+      name: "Off Black",
+      intent: "Dark color for text on light backgrounds",
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
         value: { hue: 0, saturation: 0, lightness: 15 },
       },
     },
-    custom8: {
-      name: "Seldon Light Gray",
-      intent: "Seldon Light Gray",
+    offWhite: {
+      name: "Off White",
+      intent: "Light color for text on dark backgrounds",
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
@@ -1116,5 +1115,3 @@ export const theme: StockTheme = {
     },
   },
 }
-
-export const highContrastTheme = computeTheme(theme)

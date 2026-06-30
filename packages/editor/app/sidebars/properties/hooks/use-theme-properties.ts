@@ -204,9 +204,13 @@ export function useThemeProperties(themeEntryId: EntryThemeId | null) {
         return
       }
 
-      // Swatch values are stored as HSL objects on the swatch cell
+      // Swatch values are stored as HSL objects on the swatch cell. Swatch rows
+      // nest under a group: `swatch.<group>.<id>`, so the id is the last segment.
       if (key.startsWith("swatch.")) {
-        const swatchId = key.split(".")[1] as ThemeCustomSwatchId
+        const swatchId = key
+          .split(".")
+          .slice(2)
+          .join(".") as ThemeCustomSwatchId
         setSwatchValue(swatchId, parseHSLString(toHSLString(newValue)))
         return
       }

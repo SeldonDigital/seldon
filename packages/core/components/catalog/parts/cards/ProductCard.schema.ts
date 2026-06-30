@@ -233,7 +233,7 @@ export const schema = {
                   },
                   color: {
                     type: Sdn.ValueType.THEME_CATEGORICAL,
-                    value: "@swatch.custom1",
+                    value: "@swatch.active",
                   },
                   brightness: { type: Sdn.ValueType.EMPTY, value: null },
                   opacity: { type: Sdn.ValueType.EMPTY, value: null },
