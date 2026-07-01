@@ -23,7 +23,7 @@ export function Toast({ message }: ToastProps) {
       exit="exit"
       style={{
         padding: "1rem 1.5rem",
-        backgroundColor: "#F5F5F5",
+        backgroundColor: "var(--sdn-swatch-white)",
         borderRadius: "0.75rem",
         boxShadow:
           "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",

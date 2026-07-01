@@ -13,7 +13,10 @@ import {
   useState,
 } from "react"
 import { AppState, useAppState } from "@lib/hooks/use-app-state"
-import { useEditorConfig } from "@lib/hooks/use-editor-config"
+import {
+  InterfaceMode,
+  useEditorConfig,
+} from "@lib/hooks/use-editor-config"
 import { useMenuConfig } from "./hooks/use-menu-config"
 import { ButtonMenuProps } from "@seldon/components/elements/ButtonMenu"
 import { ButtonSimpleProps } from "@seldon/components/elements/ButtonSimple"
@@ -25,6 +28,16 @@ import { MenuDropdown } from "./menus/types"
 
 /** Menu id for the chrome-theme dropdown, distinct from the config menus. */
 const CHROME_THEME_MENU_ID = "chrome-theme"
+
+/** Menu id for the interface light/dark mode dropdown. */
+const INTERFACE_MODE_MENU_ID = "interface-mode"
+
+/** Interface mode options, in menu order. */
+const INTERFACE_MODES: { id: InterfaceMode; label: string }[] = [
+  { id: "system", label: "System" },
+  { id: "light", label: "Light" },
+  { id: "dark", label: "Dark" },
+]
 
 /**
  * Maps a topbar menu's items into the framework-agnostic `MenuEntry` list the
@@ -61,14 +74,15 @@ const EMPTY_SLOT: MenuSlot = { button: null, label: null }
  * View-model for the topbar. Feeds the generated `BarTopbar` view: it injects
  * the logo/wordmark images and maps each menu from `useMenuConfig` onto a
  * `buttonSimple` trigger slot, then overlays a single controlled floating
- * `VMMenu` anchored to whichever trigger is open. The right-side theme/mode
- * dropdowns are hidden, and the rainbow gradient strip is a custom overlay
- * because the view has no slot for it.
+ * `VMMenu` anchored to whichever trigger is open. The right-side slots hold the
+ * chrome-theme and interface-mode dropdowns, and the rainbow gradient strip is a
+ * custom overlay because the view has no slot for it.
  */
 export function VMTopbar() {
   const menuConfig = useMenuConfig()
   const { appState } = useAppState()
-  const { chromeTheme, setChromeTheme } = useEditorConfig()
+  const { chromeTheme, setChromeTheme, interfaceMode, setInterfaceMode } =
+    useEditorConfig()
   const { workspace } = useWorkspace()
   const chromeThemes = useMemo(() => getChromeThemes(workspace), [workspace])
   const [openMenuId, setOpenMenuId] = useState<string | null>(null)
@@ -143,16 +157,54 @@ export function VMTopbar() {
     [activeThemeLabel],
   )
 
+  const modeMenuItems = useMemo<MenuEntry[]>(() => {
+    return INTERFACE_MODES.map((mode) => ({
+      id: mode.id,
+      label: mode.label,
+      onSelect: () => setInterfaceMode(mode.id),
+      active: mode.id === interfaceMode,
+      activeMarker: mode.id === interfaceMode ? "bullet" : undefined,
+      testId: `interface-mode-${mode.id}`,
+    }))
+  }, [interfaceMode, setInterfaceMode])
+
+  const activeModeLabel = useMemo(() => {
+    const active = INTERFACE_MODES.find((mode) => mode.id === interfaceMode)
+    return active?.label ?? "System"
+  }, [interfaceMode])
+
+  const modeButton = useMemo<ButtonMenuProps>(
+    () =>
+      ({
+        "data-testid": `menu-${INTERFACE_MODE_MENU_ID}`,
+        "aria-haspopup": "menu",
+        "aria-expanded": openMenuId === INTERFACE_MODE_MENU_ID,
+        onClick: (event: MouseEvent<HTMLButtonElement>) =>
+          handleTriggerClick(INTERFACE_MODE_MENU_ID, event.currentTarget),
+      }) as ButtonMenuProps,
+    [openMenuId, handleTriggerClick],
+  )
+
+  const modeLabel = useMemo<TextLabelProps>(
+    () => ({ children: activeModeLabel }),
+    [activeModeLabel],
+  )
+
   const openMenuItems = useMemo<MenuEntry[]>(() => {
     if (openMenuId === CHROME_THEME_MENU_ID) return themeMenuItems
+    if (openMenuId === INTERFACE_MODE_MENU_ID) return modeMenuItems
     const menu = menuConfig.find((entry) => entry.id === openMenuId)
     return menu ? toMenuEntries(menu, appState) : []
-  }, [menuConfig, openMenuId, appState, themeMenuItems])
+  }, [menuConfig, openMenuId, appState, themeMenuItems, modeMenuItems])
 
-  // The theme trigger sits at the right edge, so its menu aligns to the trigger's
-  // right and opens leftward. The left-side config menus align to their left.
+  // The theme and mode triggers sit at the right edge, so their menus align to
+  // the trigger's right and open leftward. The left-side config menus align to
+  // their left.
   const menuAlign: MenuAlign =
-    openMenuId === CHROME_THEME_MENU_ID ? "end" : "start"
+    openMenuId === CHROME_THEME_MENU_ID ||
+    openMenuId === INTERFACE_MODE_MENU_ID
+      ? "end"
+      : "start"
 
   return (
     <header style={styles.header}>
@@ -172,7 +224,8 @@ export function VMTopbar() {
         textLabel5={menuSlots[4].label}
         buttonMenu={themeButton}
         textLabel6={themeLabel}
-        buttonMenu2={null}
+        buttonMenu2={modeButton}
+        textLabel7={modeLabel}
       />
       <VMMenu
         key={openMenuId ?? "closed"}

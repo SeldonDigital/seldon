@@ -243,8 +243,7 @@ html {
 
 html,
 body {
-  font-family:
-    system-ui,
+  font-family: system-ui,
     -apple-system,
     "Segoe UI",
     Roboto,
@@ -252,7 +251,7 @@ body {
     Cantarell,
     "Open Sans",
     "Helvetica Neue",
-    sans-serif;
+    sans-serif, "IBM Plex Sans";
 }
 
 :root {
@@ -918,7 +917,7 @@ body {
   align-self: stretch;
   height: fit-content;
   flex-shrink: 0;
-  font-family: var(--sdn-font-family-primary);
+  font-family: var(--sdn-font-family-primary), "IBM Plex Sans";
   font-style: normal;
   font-synthesis-style: none;
   font-weight: var(--sdn-font-weight-normal);
@@ -1274,7 +1273,7 @@ body {
   align-self: stretch;
   height: fit-content;
   flex-shrink: 0;
-  font-family: var(--sdn-font-family-primary);
+  font-family: var(--sdn-font-family-primary), "IBM Plex Sans";
   font-style: normal;
   font-synthesis-style: none;
   font-weight: var(--sdn-font-weight-normal);
@@ -1289,7 +1288,7 @@ body {
   align-self: stretch;
   height: fit-content;
   flex-shrink: 0;
-  font-family: var(--sdn-font-family-primary);
+  font-family: var(--sdn-font-family-primary), "IBM Plex Sans";
   font-style: normal;
   font-synthesis-style: none;
   font-weight: var(--sdn-font-weight-light);
@@ -1306,7 +1305,7 @@ body {
   align-self: stretch;
   height: fit-content;
   flex-shrink: 0;
-  font-family: Inconsolata;
+  font-family: Inconsolata, "IBM Plex Sans";
   font-style: normal;
   font-synthesis-style: none;
   font-weight: var(--sdn-font-weight-normal);
@@ -1321,7 +1320,7 @@ body {
   align-self: stretch;
   height: fit-content;
   flex-shrink: 0;
-  font-family: var(--sdn-font-family-secondary);
+  font-family: var(--sdn-font-family-secondary), "IBM Plex Sans";
   font-style: normal;
   font-synthesis-style: none;
   font-weight: var(--sdn-font-weight-bold);
@@ -1339,7 +1338,7 @@ body {
   align-self: stretch;
   height: fit-content;
   flex-shrink: 0;
-  font-family: var(--sdn-font-family-secondary);
+  font-family: var(--sdn-font-family-secondary), "IBM Plex Sans";
   font-style: normal;
   font-synthesis-style: none;
   font-weight: var(--sdn-font-weight-semibold);
@@ -1356,7 +1355,7 @@ body {
   align-self: stretch;
   height: fit-content;
   flex-shrink: 0;
-  font-family: var(--sdn-font-family-primary);
+  font-family: var(--sdn-font-family-primary), "IBM Plex Sans";
   font-style: normal;
   font-synthesis-style: none;
   font-weight: var(--sdn-font-weight-normal);
@@ -1395,7 +1394,7 @@ body {
   align-self: stretch;
   height: fit-content;
   flex-shrink: 0;
-  font-family: var(--sdn-font-family-primary);
+  font-family: var(--sdn-font-family-primary), "IBM Plex Sans";
   font-style: normal;
   font-synthesis-style: none;
   font-weight: var(--sdn-font-weight-normal);
@@ -1413,7 +1412,7 @@ body {
   align-self: stretch;
   height: fit-content;
   flex-shrink: 0;
-  font-family: var(--sdn-font-family-secondary);
+  font-family: var(--sdn-font-family-secondary), "IBM Plex Sans";
   font-style: normal;
   font-synthesis-style: none;
   font-weight: var(--sdn-font-weight-medium);
@@ -1430,7 +1429,7 @@ body {
   align-self: stretch;
   height: fit-content;
   flex-shrink: 0;
-  font-family: var(--sdn-font-family-primary);
+  font-family: var(--sdn-font-family-primary), "IBM Plex Sans";
   font-style: normal;
   font-synthesis-style: none;
   font-weight: var(--sdn-font-weight-normal);
@@ -1447,7 +1446,7 @@ body {
   align-self: stretch;
   height: fit-content;
   flex-shrink: 0;
-  font-family: var(--sdn-font-family-primary);
+  font-family: var(--sdn-font-family-primary), "IBM Plex Sans";
   font-style: normal;
   font-synthesis-style: none;
   font-weight: var(--sdn-font-weight-medium);
@@ -1464,7 +1463,7 @@ body {
   align-self: stretch;
   height: fit-content;
   flex-shrink: 0;
-  font-family: var(--sdn-font-family-primary);
+  font-family: var(--sdn-font-family-primary), "IBM Plex Sans";
   font-style: normal;
   font-synthesis-style: none;
   font-weight: var(--sdn-font-weight-medium);
@@ -2268,7 +2267,7 @@ body {
 .sdn-link--yqey {
   text-decoration: unset;
   color: hsl(203 0% 8%);
-  font-family: var(--sdn-font-family-primary);
+  font-family: var(--sdn-font-family-primary), "IBM Plex Sans";
   font-style: normal;
   font-synthesis-style: none;
   font-weight: var(--sdn-font-weight-normal);
@@ -2280,7 +2279,7 @@ body {
 .sdn-text--0zmi {
   align-self: unset;
   flex-shrink: unset;
-  font-family: unset;
+  font-family: unset, "IBM Plex Sans";
   font-style: unset;
   font-synthesis-style: unset;
   line-height: unset;
@@ -2299,13 +2298,13 @@ body {
 
 .sdn-text-heading--xkk9 {
   color: var(--sdn-hc-on-white);
-  font-family: Playfair Display;
+  font-family: Playfair Display, "IBM Plex Sans";
   max-height: 2lh;
 }
 
 .sdn-text-label--4mii {
   align-self: unset;
-  font-family: unset;
+  font-family: unset, "IBM Plex Sans";
   font-style: unset;
   font-synthesis-style: unset;
   font-weight: unset;
@@ -2326,7 +2325,7 @@ body {
 .sdn-text-label--7oyz {
   align-self: unset;
   flex-shrink: unset;
-  font-family: unset;
+  font-family: unset, "IBM Plex Sans";
   font-style: unset;
   font-synthesis-style: unset;
   font-weight: unset;
@@ -2415,7 +2414,7 @@ body {
 .sdn-text-label--lug5 {
   align-self: unset;
   flex-shrink: unset;
-  font-family: unset;
+  font-family: unset, "IBM Plex Sans";
   font-style: unset;
   font-synthesis-style: unset;
   font-weight: unset;
@@ -2435,7 +2434,7 @@ body {
 }
 
 .sdn-text-label--oqkb {
-  font-family: unset;
+  font-family: unset, "IBM Plex Sans";
   font-style: unset;
   font-synthesis-style: unset;
   font-weight: unset;
@@ -2449,7 +2448,7 @@ body {
 
 .sdn-text-label--p4vx {
   align-self: unset;
-  font-family: unset;
+  font-family: unset, "IBM Plex Sans";
   font-style: unset;
   font-synthesis-style: unset;
   font-weight: unset;
@@ -2461,7 +2460,7 @@ body {
 }
 
 .sdn-text-label--ptvk {
-  font-family: unset;
+  font-family: unset, "IBM Plex Sans";
   font-style: unset;
   font-synthesis-style: unset;
   font-weight: unset;
@@ -2559,7 +2558,7 @@ body {
 .sdn-text-title--8nvl {
   color: var(--sdn-hc-on-white);
   margin-bottom: var(--sdn-margins-compact);
-  font-family: var(--sdn-font-family-secondary);
+  font-family: var(--sdn-font-family-secondary), "IBM Plex Sans";
   font-weight: var(--sdn-font-weight-semibold);
   font-size: var(--sdn-font-size-xlarge);
 }
@@ -2570,7 +2569,7 @@ body {
 
 .sdn-text-title--bems {
   color: var(--sdn-hc-on-white);
-  font-family: var(--sdn-font-family-secondary);
+  font-family: var(--sdn-font-family-secondary), "IBM Plex Sans";
   font-weight: var(--sdn-font-weight-semibold);
   font-size: var(--sdn-font-size-xlarge);
 }

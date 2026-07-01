@@ -11,6 +11,13 @@ import { useShallow } from "zustand/react/shallow"
  */
 export type ComponentHighlightMode = "selection" | "leaves" | "branch" | "tree"
 
+/**
+ * Editor interface light/dark mode. `"system"` follows the OS appearance,
+ * resolving to light or dark at runtime. Applies to the editor chrome only; it
+ * is never written to the workspace and never affects the canvas.
+ */
+export type InterfaceMode = "system" | "light" | "dark"
+
 interface EditorConfigState {
   // Canvas selection and hover overlay boxes in select mode
   showSelection: boolean
@@ -65,6 +72,10 @@ interface EditorConfigState {
   // affects the canvas.
   chromeTheme: string
   setChromeTheme: (slug: string) => void
+
+  // Editor interface light/dark mode (chrome only). `"system"` follows the OS.
+  interfaceMode: InterfaceMode
+  setInterfaceMode: (mode: InterfaceMode) => void
 }
 
 const useStore = create<EditorConfigState>()(
@@ -139,6 +150,11 @@ const useStore = create<EditorConfigState>()(
       chromeTheme: "seldon",
       setChromeTheme: (slug) =>
         set((state) => ({ ...state, chromeTheme: slug })),
+
+      // Editor interface mode (defaults to dark, matching current behavior)
+      interfaceMode: "dark",
+      setInterfaceMode: (mode) =>
+        set((state) => ({ ...state, interfaceMode: mode })),
     }),
     {
       name: "editor-config",
@@ -156,6 +172,7 @@ const useStore = create<EditorConfigState>()(
         showPlayground: state.showPlayground,
         useRefactoredSidebars: state.useRefactoredSidebars,
         chromeTheme: state.chromeTheme,
+        interfaceMode: state.interfaceMode,
       }),
     },
   ),
@@ -189,6 +206,8 @@ export function useEditorConfig() {
     setUseRefactoredSidebars,
     chromeTheme,
     setChromeTheme,
+    interfaceMode,
+    setInterfaceMode,
   } = useStore(
     useShallow((state) => ({
       showSelection: state.showSelection,
@@ -217,6 +236,8 @@ export function useEditorConfig() {
       setUseRefactoredSidebars: state.setUseRefactoredSidebars,
       chromeTheme: state.chromeTheme,
       setChromeTheme: state.setChromeTheme,
+      interfaceMode: state.interfaceMode,
+      setInterfaceMode: state.setInterfaceMode,
     })),
   )
 
@@ -321,5 +342,9 @@ export function useEditorConfig() {
     // Editor chrome theme
     chromeTheme,
     setChromeTheme,
+
+    // Editor interface mode
+    interfaceMode,
+    setInterfaceMode,
   }
 }

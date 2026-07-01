@@ -13,7 +13,7 @@ const styles: Record<string, CSSProperties> = {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#101011",
+    backgroundColor: "var(--sdn-swatch-black)",
   },
   hiddenButtonIcon: { display: "none" },
 }

@@ -8,7 +8,7 @@
  * Only functional placement (fixed position, scroll) is applied inline; all
  * appearance comes from the authored component CSS.
  */
-import { CSSProperties, Fragment, MouseEvent, ReactNode } from "react"
+import { CSSProperties, Fragment, MouseEvent, ReactNode, useRef } from "react"
 import { createPortal } from "react-dom"
 import { Backdrop } from "@seldon/components/custom-components"
 import { ListboxOption } from "@seldon/components/elements/ListboxOption"
@@ -17,6 +17,7 @@ import { Hr } from "@seldon/components/primitives/Hr"
 import { IconProps } from "@seldon/components/primitives/Icon"
 import { TextLabel } from "@seldon/components/primitives/TextLabel"
 import { useEditorConfig } from "@lib/hooks/use-editor-config"
+import { useInterfaceModeVars } from "@lib/theme/use-interface-mode-vars"
 import { ComboboxOptionItem, OptionIconRender } from "./types"
 
 interface Position {
@@ -69,6 +70,8 @@ export function ComboboxListbox({
   onHighlight,
 }: ComboboxListboxProps) {
   const { chromeTheme } = useEditorConfig()
+  const listboxRef = useRef<HTMLDivElement>(null)
+  useInterfaceModeVars(listboxRef)
   if (!open) {
     return null
   }
@@ -149,7 +152,11 @@ export function ComboboxListbox({
     : (filteredOptions as ComboboxOptionItem[]).map(renderOption)
 
   return createPortal(
-    <div data-theme={chromeTheme} style={{ display: "contents" }}>
+    <div
+      ref={listboxRef}
+      data-theme={chromeTheme}
+      style={{ display: "contents" }}
+    >
       <Backdrop onClick={handleClose} style={backdropStyle} />
       <Listbox style={panelStyle} onMouseLeave={onPointerLeave}>
         {content}

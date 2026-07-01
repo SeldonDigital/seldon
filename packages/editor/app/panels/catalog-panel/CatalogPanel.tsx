@@ -213,7 +213,8 @@ const styles: Record<string, CSSProperties> = {
     height: "100%",
   },
   inputWrapper: {
-    border: "var(--hairline) solid hsl(0deg 4% 98% / 10%)",
+    border:
+      "var(--hairline) solid color-mix(in srgb, var(--sdn-swatch-white) 10%, transparent)",
   },
   spinner: {
     position: "absolute",

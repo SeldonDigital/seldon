@@ -15,6 +15,7 @@ import { Menu } from "@seldon/components/parts/Menu"
 import { Hr } from "@seldon/components/primitives/Hr"
 import { IconProps } from "@seldon/components/primitives/Icon"
 import { useEditorConfig } from "@lib/hooks/use-editor-config"
+import { useInterfaceModeVars } from "@lib/theme/use-interface-mode-vars"
 import { MenuAlign, MenuEntry, MenuItem as MenuItemModel } from "./types"
 import { useMenuPosition } from "./use-menu-position"
 
@@ -188,6 +189,7 @@ function FloatingMenu({
   const { chromeTheme } = useEditorConfig()
   const position = useMenuPosition({ open, anchorRef, align })
   const menuRef = useRef<HTMLDivElement>(null)
+  useInterfaceModeVars(menuRef)
   const [activeIndex, setActiveIndex] = useState(-1)
   const closedBySelectRef = useRef(false)
 

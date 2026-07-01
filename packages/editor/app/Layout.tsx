@@ -1,8 +1,9 @@
 "use client"
 
-import { CSSProperties, PropsWithChildren } from "react"
+import { CSSProperties, PropsWithChildren, useRef } from "react"
 import { useAppState } from "@lib/hooks/use-app-state"
 import { useEditorConfig } from "@lib/hooks/use-editor-config"
+import { useInterfaceModeVars } from "@lib/theme/use-interface-mode-vars"
 import { VMTopbar } from "./topbar/VMTopbar"
 
 export function Layout({
@@ -11,13 +12,20 @@ export function Layout({
 }: PropsWithChildren<{ testId?: string }>) {
   const { showPanels, chromeTheme } = useEditorConfig()
   const { appState } = useAppState()
+  const layoutRef = useRef<HTMLDivElement>(null)
+  useInterfaceModeVars(layoutRef)
 
   const shouldShowHeader = appState === "project" || showPanels
 
   // The chrome theme scopes the editor interface only. The canvas pins itself
   // back to the default theme so it never follows this attribute.
   return (
-    <div style={styles.layout} data-testid={testId} data-theme={chromeTheme}>
+    <div
+      ref={layoutRef}
+      style={styles.layout}
+      data-testid={testId}
+      data-theme={chromeTheme}
+    >
       {shouldShowHeader && <VMTopbar />}
       {children}
     </div>
@@ -30,7 +38,7 @@ const styles: Record<string, CSSProperties> = {
     height: "100vh",
     flexDirection: "column",
     overflowY: "auto",
-    color: "white",
-    backgroundColor: "black",
+    color: "var(--sdn-swatch-white)",
+    backgroundColor: "var(--sdn-swatch-black)",
   },
 }

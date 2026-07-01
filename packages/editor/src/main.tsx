@@ -23,7 +23,11 @@ const router = createBrowserRouter([
     path: "/:id",
     element: (
       <Suspense
-        fallback={<p style={{ padding: "2rem", color: "#fff" }}>Loading…</p>}
+        fallback={
+          <p style={{ padding: "2rem", color: "var(--sdn-swatch-white)" }}>
+            Loading…
+          </p>
+        }
       >
         <EditorPage />
       </Suspense>

@@ -109,7 +109,7 @@ export function FloatingPanelSurface({
 const styles: Record<string, CSSProperties> = {
   title: {
     alignSelf: "center",
-    color: "white",
+    color: "var(--sdn-swatch-white)",
     flex: "1 0 0",
     fontSize: "14px",
   },
