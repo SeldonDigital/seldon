@@ -25,7 +25,6 @@ import {
 import { getCssObjectFromProperties } from "../../../styles/css-properties/get-css-object-from-properties"
 import { CSSObject } from "../../../styles/css-properties/types"
 import { kebabCase } from "../../react/utils/case-utils"
-import { getThemeSlug } from "../generation/get-theme-slug"
 import {
   Classes,
   DescendantStateClasses,
@@ -169,7 +168,6 @@ export const buildStyleRegistry = (
       theme: context.theme,
       layoutMode: context.layoutMode,
       useThemeVariableReferences: true,
-      themeSlug: getThemeSlug(context.theme.id as string, workspace),
     })
   }
 
@@ -234,7 +232,6 @@ export const buildStyleRegistry = (
         theme: variantContext.theme,
         layoutMode: variantContext.layoutMode,
         useThemeVariableReferences: true,
-        themeSlug: getThemeSlug(variantContext.theme.id as string, workspace),
       })
 
       const instanceCss = getCssObjectFromProperties(
@@ -245,10 +242,6 @@ export const buildStyleRegistry = (
           theme: instanceContext.theme,
           layoutMode: instanceContext.layoutMode,
           useThemeVariableReferences: true,
-          themeSlug: getThemeSlug(
-            instanceContext.theme.id as string,
-            workspace,
-          ),
         },
       )
 
@@ -261,7 +254,6 @@ export const buildStyleRegistry = (
         theme: context.theme,
         layoutMode: context.layoutMode,
         useThemeVariableReferences: true,
-        themeSlug: getThemeSlug(context.theme.id as string, workspace),
       })
     }
 
@@ -284,7 +276,6 @@ export const buildStyleRegistry = (
           theme: stateContext.theme,
           layoutMode: stateContext.layoutMode,
           useThemeVariableReferences: true,
-          themeSlug: getThemeSlug(stateContext.theme.id as string, workspace),
         })
         const delta = calculateCssDifferences(css, stateCss)
         if (Object.keys(delta).length > 0) {

@@ -21,6 +21,7 @@ function hasGradientBackground(properties: Properties): boolean {
 export function getColorStyles({
   properties,
   theme,
+  useThemeVariableReferences,
 }: StyleGenerationContext): CSSObject {
   const styles: CSSObject = {}
 
@@ -35,6 +36,7 @@ export function getColorStyles({
       color: properties.color,
       brightness: resolveValue(properties.brightness),
       theme,
+      useThemeVariableReferences,
     })
     // Only set the color if it's not transparent (which indicates an invalid color)
     if (colorValue !== "transparent") {
@@ -46,6 +48,7 @@ export function getColorStyles({
     const accentColorValue = getColorCSSValue({
       color: properties.accentColor,
       theme,
+      useThemeVariableReferences,
     })
     // Only set the accent color if it's not transparent (which indicates an invalid color)
     if (accentColorValue !== "transparent") {

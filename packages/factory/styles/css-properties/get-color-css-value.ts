@@ -28,8 +28,17 @@ import {
 import { Theme } from "@seldon/core/themes/types"
 import { debugLog } from "@seldon/core/utils/debug-logger"
 
+import { getThemeSwatchVarReference } from "./get-theme-swatch-names"
+
 /**
  * Retrieves the CSS color value based on the provided color value and theme.
+ *
+ * In export mode (`useThemeVariableReferences`), a swatch color becomes a
+ * `var(--sdn-swatch-*)` reference so it swaps with the active theme. A plain
+ * swatch emits the bare reference. An opacity-only swatch wraps the reference in
+ * `color-mix(... transparent)` so the alpha applies while the base color still
+ * swaps. A brightness transform cannot live in a variable, so those still
+ * resolve to a literal.
  *
  * @param {ColorValue | ForegroundColorValue} params.colorValue - The color value to convert to CSS color.
  * @param {PercentageValue | null} params.opacity - The opacity value to convert to CSS color opacity.
@@ -41,12 +50,43 @@ export function getColorCSSValue({
   opacity,
   brightness,
   theme,
+  useThemeVariableReferences = false,
 }: {
   color: ColorValue | EmptyValue
   opacity?: PercentageValue | EmptyValue | number
   brightness?: PercentageValue | EmptyValue
   theme: Theme
+  useThemeVariableReferences?: boolean
 }): string {
+  if (useThemeVariableReferences) {
+    const brightnessNum =
+      typeof brightness === "number"
+        ? brightness
+        : (resolveValue(brightness)?.value.value ?? 0)
+    const opacityNum =
+      typeof opacity === "number"
+        ? opacity
+        : (resolveValue(opacity)?.value.value ?? 100)
+
+    const isSwatch =
+      !!color &&
+      typeof color === "object" &&
+      color.type === ValueType.THEME_CATEGORICAL
+
+    // A brightness transform cannot be expressed against a variable, so those
+    // fall through to a resolved literal. Opacity applies with color-mix.
+    if (isSwatch && brightnessNum === 0) {
+      const reference = getThemeSwatchVarReference(
+        String((color as { value: unknown }).value),
+        theme,
+      )
+      if (reference) {
+        if (opacityNum === 100) return reference
+        return `color-mix(in srgb, ${reference} ${opacityNum}%, transparent)`
+      }
+    }
+  }
+
   const resolvedColor = resolveColor({ color, theme })
   const resolvedOpacity =
     typeof opacity === "number"

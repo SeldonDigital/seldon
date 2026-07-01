@@ -53,7 +53,7 @@ type PaintEntry = {
 export function getBackgroundStyles(
   context: StyleGenerationContext,
 ): CSSObject {
-  const { properties, theme, useThemeVariableReferences, themeSlug } = context
+  const { properties, theme, useThemeVariableReferences } = context
   const layers = getLayeredPaintLayers(properties, "background")
 
   const paint: PaintEntry[] = []
@@ -93,7 +93,6 @@ export function getBackgroundStyles(
         layer,
         theme,
         useThemeVariableReferences,
-        themeSlug,
       )
       if (!gradient) return
       hasGradient = true
@@ -155,7 +154,7 @@ function resolveBackgroundKind(layer: BackgroundLayer): BackgroundKind {
 /** Resolves a color layer to a CSS color string, or undefined when unset. */
 function resolveColorLayer(
   layer: BackgroundLayer,
-  { theme, useThemeVariableReferences, themeSlug }: StyleGenerationContext,
+  { theme, useThemeVariableReferences }: StyleGenerationContext,
 ): string | undefined {
   const color = resolveValue(layer.color)
   if (!color) return undefined
@@ -165,7 +164,6 @@ function resolveColorLayer(
     opacity: resolveValue(layer.opacity),
     theme,
     useThemeVariableReferences,
-    themeSlug,
   })
 }
 

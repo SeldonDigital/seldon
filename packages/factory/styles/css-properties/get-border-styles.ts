@@ -41,6 +41,7 @@ const SIDE_COMPOUND_KEY: Record<
 export function getBorderStyles({
   properties,
   theme,
+  useThemeVariableReferences,
 }: StyleGenerationContext): CSSObject {
   const styles: CSSObject = {}
 
@@ -51,7 +52,13 @@ export function getBorderStyles({
     const sideBorder = properties[SIDE_COMPOUND_KEY[side]]
     Object.assign(
       styles,
-      getBorderSideStyles(side, sideBorder, shorthand, theme),
+      getBorderSideStyles(
+        side,
+        sideBorder,
+        shorthand,
+        theme,
+        useThemeVariableReferences,
+      ),
     )
   })
 
@@ -67,6 +74,7 @@ function getBorderSideStyles(
   sideBorder: BorderCompound | undefined,
   shorthand: BorderCompound | undefined,
   theme: Theme,
+  useThemeVariableReferences?: boolean,
 ): CSSObject {
   const capitalizedSide = side.charAt(0).toUpperCase() + side.slice(1)
   const styles: CSSObject = {}
@@ -84,7 +92,11 @@ function getBorderSideStyles(
 
   if (width) {
     styles[`border${capitalizedSide}Width` as BorderWidthKey] =
-      getBorderWidthCSSValue(width, theme) as CSSObject["borderWidth"]
+      getBorderWidthCSSValue(
+        width,
+        theme,
+        useThemeVariableReferences,
+      ) as CSSObject["borderWidth"]
   }
 
   const style =
@@ -118,6 +130,7 @@ function getBorderSideStyles(
         brightness,
         opacity,
         theme,
+        useThemeVariableReferences,
       })
   }
 

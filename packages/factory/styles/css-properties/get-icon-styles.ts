@@ -10,6 +10,7 @@ export function getIconStyles({
   properties,
   parentContext,
   theme,
+  useThemeVariableReferences,
 }: StyleGenerationContext): CSSObject {
   const styles: CSSObject = {}
 
@@ -20,6 +21,7 @@ export function getIconStyles({
       size: resolveValue(properties.size) ?? theme.iconSet.defaultSize,
       parentContext,
       theme,
+      useThemeVariableReferences,
     })
   }
 
@@ -30,6 +32,7 @@ export function getIconStyles({
         color: resolvedColor,
         brightness: resolveValue(properties.brightness),
         theme,
+        useThemeVariableReferences,
       })
     }
   }

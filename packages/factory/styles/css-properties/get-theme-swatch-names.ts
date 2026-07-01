@@ -1,4 +1,3 @@
-import { getDynamicSwatchName } from "@seldon/core/themes/compute"
 import { Theme } from "@seldon/core/themes/types"
 import {
   THEME_INTERFACE_SLOTS,
@@ -53,7 +52,10 @@ function ensureUniqueSwatchNames(
 
 /**
  * Maps each swatch id in a theme to the CSS variable suffix used by the
- * generated theme stylesheet (for example `background`, `primary`, `accent1`).
+ * generated theme stylesheet. Reserved harmony and interface slots (including
+ * `swatch1`-`swatch4`) use their slot id so the name aligns across themes and a
+ * reference swaps with the active theme. Custom swatches use their display name
+ * for readability, since references fall back to a literal for them.
  */
 export function getThemeSwatchVarNames(theme: Theme): Record<string, string> {
   const swatchNames: Record<string, string> = {}
@@ -62,18 +64,6 @@ export function getThemeSwatchVarNames(theme: Theme): Record<string, string> {
     if (!value) return
     if (key.startsWith("custom") && value.name) {
       swatchNames[key] = slugify(value.name)
-    } else if (
-      key === "swatch1" ||
-      key === "swatch2" ||
-      key === "swatch3" ||
-      key === "swatch4"
-    ) {
-      swatchNames[key] = slugify(
-        getDynamicSwatchName(
-          key as "swatch1" | "swatch2" | "swatch3" | "swatch4",
-          theme,
-        ),
-      )
     } else {
       swatchNames[key] = key
     }
@@ -83,13 +73,14 @@ export function getThemeSwatchVarNames(theme: Theme): Record<string, string> {
 }
 
 /**
- * Returns a `var(--sdn-...swatch-*)` reference for a `@swatch.*` theme key, or
- * undefined when the key does not name a swatch in the theme.
+ * Returns a `var(--sdn-swatch-*)` reference for a `@swatch.*` theme key, or
+ * undefined when the key does not name a reserved swatch in the theme. Every
+ * theme file defines these variables under the same unprefixed names, scoped by
+ * `[data-theme]`, so the reference swaps with the active theme.
  */
 export function getThemeSwatchVarReference(
   swatchKey: string,
   theme: Theme,
-  themeSlug?: string,
 ): string | undefined {
   if (!swatchKey.startsWith("@swatch.")) return undefined
   const id = swatchKey.slice("@swatch.".length)
@@ -101,7 +92,5 @@ export function getThemeSwatchVarReference(
   const name = getThemeSwatchVarNames(theme)[id]
   if (!name) return undefined
 
-  const slug = themeSlug || (theme.id as string) || "seldon"
-  const prefix = slug === "seldon" ? "--sdn-" : `--sdn-${slug}-`
-  return `var(${prefix}swatch-${name})`
+  return `var(--sdn-swatch-${name})`
 }

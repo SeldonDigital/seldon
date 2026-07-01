@@ -8,9 +8,11 @@ import { CSSObject } from "./types"
 export function getMarginStyles({
   properties,
   theme,
+  useThemeVariableReferences,
 }: {
   properties: Properties
   theme: Theme
+  useThemeVariableReferences?: boolean
 }): CSSObject {
   const styles: CSSObject = {}
 
@@ -21,16 +23,32 @@ export function getMarginStyles({
     const left = resolveValue(properties.margin.left)
 
     if (top) {
-      styles.marginTop = getAbsoluteSizeCssValue(top, theme)
+      styles.marginTop = getAbsoluteSizeCssValue(
+        top,
+        theme,
+        useThemeVariableReferences,
+      )
     }
     if (right) {
-      styles.marginRight = getAbsoluteSizeCssValue(right, theme)
+      styles.marginRight = getAbsoluteSizeCssValue(
+        right,
+        theme,
+        useThemeVariableReferences,
+      )
     }
     if (bottom) {
-      styles.marginBottom = getAbsoluteSizeCssValue(bottom, theme)
+      styles.marginBottom = getAbsoluteSizeCssValue(
+        bottom,
+        theme,
+        useThemeVariableReferences,
+      )
     }
     if (left) {
-      styles.marginLeft = getAbsoluteSizeCssValue(left, theme)
+      styles.marginLeft = getAbsoluteSizeCssValue(
+        left,
+        theme,
+        useThemeVariableReferences,
+      )
     }
   }
 

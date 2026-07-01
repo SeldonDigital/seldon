@@ -21,7 +21,6 @@ describe("getLayeredPaintColor", () => {
         color: { type: ValueType.THEME_CATEGORICAL, value: "@swatch.primary" },
         theme: defaultTheme,
         useThemeVariableReferences: true,
-        themeSlug: "seldon",
       }),
     ).toBe("var(--sdn-swatch-primary)")
   })
@@ -32,7 +31,6 @@ describe("getLayeredPaintColor", () => {
       brightness: { type: ValueType.EXACT, value: { unit: "%", value: 50 } },
       theme: defaultTheme,
       useThemeVariableReferences: true,
-      themeSlug: "seldon",
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any)
     expect(result.startsWith("var(")).toBe(false)

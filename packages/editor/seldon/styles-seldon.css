@@ -11,7 +11,8 @@
  * 
  *****/
  
-:root {
+:root,
+[data-theme="seldon"] {
   /* Modulation */
   --sdn-ratio: 1.25;
   --sdn-font-size: 16px;
@@ -36,10 +37,10 @@
   --sdn-swatch-gray: hsl(203 0% 50%);
   --sdn-swatch-black: hsl(203 0% 8%);
   --sdn-swatch-primary: hsl(203 100% 62%);
-  --sdn-swatch-tint-1: hsl(203 100% 68%);
-  --sdn-swatch-tint-2: hsl(203 100% 74%);
-  --sdn-swatch-tint-3: hsl(203 100% 80%);
-  --sdn-swatch-tint-4: hsl(203 100% 86%);
+  --sdn-swatch-swatch1: hsl(203 100% 68%);
+  --sdn-swatch-swatch2: hsl(203 100% 74%);
+  --sdn-swatch-swatch3: hsl(203 100% 80%);
+  --sdn-swatch-swatch4: hsl(203 100% 86%);
   --sdn-swatch-foreground: hsl(0 0% 100%);
   --sdn-swatch-background: hsl(0 0% 0%);
   --sdn-swatch-active: hsl(203 100% 62%);

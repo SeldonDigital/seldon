@@ -1,6 +1,7 @@
 "use client"
 
-import { MenuEntry, VMMenu } from "@lib/menus"
+import { MenuAlign, MenuEntry, VMMenu } from "@lib/menus"
+import { CHROME_THEMES } from "@lib/theme/chrome-themes"
 import {
   CSSProperties,
   MouseEvent,
@@ -11,13 +12,18 @@ import {
   useState,
 } from "react"
 import { AppState, useAppState } from "@lib/hooks/use-app-state"
+import { useEditorConfig } from "@lib/hooks/use-editor-config"
 import { useMenuConfig } from "./hooks/use-menu-config"
+import { ButtonMenuProps } from "@seldon/components/elements/ButtonMenu"
 import { ButtonSimpleProps } from "@seldon/components/elements/ButtonSimple"
 import { BarTopbar } from "@seldon/components/parts/BarTopbar"
 import { ImageProps } from "@seldon/components/primitives/Image"
 import { TextLabelProps } from "@seldon/components/primitives/TextLabel"
 import { seldonGradientStyle } from "./VMTopbar.bespoke"
 import { MenuDropdown } from "./menus/types"
+
+/** Menu id for the chrome-theme dropdown, distinct from the config menus. */
+const CHROME_THEME_MENU_ID = "chrome-theme"
 
 /**
  * Maps a topbar menu's items into the framework-agnostic `MenuEntry` list the
@@ -61,6 +67,7 @@ const EMPTY_SLOT: MenuSlot = { button: null, label: null }
 export function VMTopbar() {
   const menuConfig = useMenuConfig()
   const { appState } = useAppState()
+  const { chromeTheme, setChromeTheme } = useEditorConfig()
   const [openMenuId, setOpenMenuId] = useState<string | null>(null)
   const anchorRef = useRef<HTMLElement | null>(null)
 
@@ -100,10 +107,49 @@ export function VMTopbar() {
     })
   }, [menuConfig, appState, openMenuId, handleTriggerClick, handleTriggerEnter])
 
+  const themeMenuItems = useMemo<MenuEntry[]>(() => {
+    return CHROME_THEMES.map((theme) => ({
+      id: theme.slug,
+      label: theme.label,
+      onSelect: () => setChromeTheme(theme.slug),
+      active: theme.slug === chromeTheme,
+      activeMarker: theme.slug === chromeTheme ? "bullet" : undefined,
+      testId: `chrome-theme-${theme.slug}`,
+    }))
+  }, [chromeTheme, setChromeTheme])
+
+  const activeThemeLabel = useMemo(() => {
+    const active = CHROME_THEMES.find((theme) => theme.slug === chromeTheme)
+    return active?.label ?? chromeTheme
+  }, [chromeTheme])
+
+  const themeButton = useMemo<ButtonMenuProps>(
+    () =>
+      ({
+        "data-testid": `menu-${CHROME_THEME_MENU_ID}`,
+        "aria-haspopup": "menu",
+        "aria-expanded": openMenuId === CHROME_THEME_MENU_ID,
+        onClick: (event: MouseEvent<HTMLButtonElement>) =>
+          handleTriggerClick(CHROME_THEME_MENU_ID, event.currentTarget),
+      }) as ButtonMenuProps,
+    [openMenuId, handleTriggerClick],
+  )
+
+  const themeLabel = useMemo<TextLabelProps>(
+    () => ({ children: activeThemeLabel }),
+    [activeThemeLabel],
+  )
+
   const openMenuItems = useMemo<MenuEntry[]>(() => {
+    if (openMenuId === CHROME_THEME_MENU_ID) return themeMenuItems
     const menu = menuConfig.find((entry) => entry.id === openMenuId)
     return menu ? toMenuEntries(menu, appState) : []
-  }, [menuConfig, openMenuId, appState])
+  }, [menuConfig, openMenuId, appState, themeMenuItems])
+
+  // The theme trigger sits at the right edge, so its menu aligns to the trigger's
+  // right and opens leftward. The left-side config menus align to their left.
+  const menuAlign: MenuAlign =
+    openMenuId === CHROME_THEME_MENU_ID ? "end" : "start"
 
   return (
     <header style={styles.header}>
@@ -121,7 +167,8 @@ export function VMTopbar() {
         textLabel4={menuSlots[3].label}
         buttonSimple5={menuSlots[4].button}
         textLabel5={menuSlots[4].label}
-        buttonMenu={null}
+        buttonMenu={themeButton}
+        textLabel6={themeLabel}
         buttonMenu2={null}
       />
       <VMMenu
@@ -130,7 +177,7 @@ export function VMTopbar() {
         anchorRef={anchorRef}
         onClose={closeMenu}
         items={openMenuItems}
-        align="start"
+        align={menuAlign}
         minWidth="220px"
       />
       <div style={seldonGradientStyle} />

@@ -1,5 +1,6 @@
 "use client"
 
+import { DEFAULT_CHROME_THEME } from "@lib/theme/chrome-themes"
 import React, { CSSProperties, useEffect, useRef } from "react"
 import { isHotkeyPressed } from "react-hotkeys-hook"
 import {
@@ -132,6 +133,7 @@ export const Canvas = () => {
       onClick={handleCanvasClick}
       style={canvasStyle}
       onMouseMove={activeDialog ? undefined : onMouseMove}
+      data-theme={DEFAULT_CHROME_THEME}
     >
       <CanvasTracking />
       <TransformWrapper>

@@ -62,7 +62,6 @@ export function getCssObjectFromProperties(
     theme,
     layoutMode,
     useThemeVariableReferences,
-    themeSlug,
   } = context
 
   // Helper function to safely generate styles - returns empty object if error occurs
@@ -95,7 +94,6 @@ export function getCssObjectFromProperties(
         parentContext,
         theme,
         useThemeVariableReferences,
-        themeSlug,
       }),
     ),
     ...safeGetStyles(() => getCursorStyles({ properties: computedProperties })),
@@ -104,15 +102,25 @@ export function getCssObjectFromProperties(
         properties: computedProperties,
         parentContext,
         theme,
+        useThemeVariableReferences,
       }),
     ),
     ...safeGetStyles(() => getScrollStyles({ properties: computedProperties })),
     ...safeGetStyles(() => getClipStyles({ properties: computedProperties })),
     ...safeGetStyles(() =>
-      getColorStyles({ properties: computedProperties, parentContext, theme }),
+      getColorStyles({
+        properties: computedProperties,
+        parentContext,
+        theme,
+        useThemeVariableReferences,
+      }),
     ),
     ...safeGetStyles(() =>
-      getCornersStyles({ properties: computedProperties, theme }),
+      getCornersStyles({
+        properties: computedProperties,
+        theme,
+        useThemeVariableReferences,
+      }),
     ),
     ...safeGetStyles(() => getImageStyles({ properties: computedProperties })),
     ...safeGetStyles(() =>
@@ -121,6 +129,7 @@ export function getCssObjectFromProperties(
         nodeProperties: originalProperties,
         theme,
         layoutMode,
+        useThemeVariableReferences,
       }),
     ),
     ...safeGetStyles(() =>
@@ -128,13 +137,21 @@ export function getCssObjectFromProperties(
     ),
     ...safeGetStyles(() => getListStyles({ properties: computedProperties })),
     ...safeGetStyles(() =>
-      getMarginStyles({ properties: computedProperties, theme }),
+      getMarginStyles({
+        properties: computedProperties,
+        theme,
+        useThemeVariableReferences,
+      }),
     ),
     ...safeGetStyles(() =>
       getOpacityStyles({ properties: computedProperties }),
     ),
     ...safeGetStyles(() =>
-      getPaddingStyles({ properties: computedProperties, theme }),
+      getPaddingStyles({
+        properties: computedProperties,
+        theme,
+        useThemeVariableReferences,
+      }),
     ),
     ...safeGetStyles(() =>
       getRotationStyles({ properties: computedProperties }),
@@ -146,7 +163,6 @@ export function getCssObjectFromProperties(
         parentContext,
         theme,
         useThemeVariableReferences,
-        themeSlug,
       }),
     ),
     ...safeGetStyles(() =>
@@ -155,19 +171,34 @@ export function getCssObjectFromProperties(
         parentContext,
         theme,
         layoutMode,
+        useThemeVariableReferences,
       }),
     ),
     ...safeGetStyles(() =>
-      getTextStyles({ properties: computedProperties, parentContext, theme }),
+      getTextStyles({
+        properties: computedProperties,
+        parentContext,
+        theme,
+        useThemeVariableReferences,
+      }),
     ),
     ...safeGetStyles(() =>
-      getIconStyles({ properties: computedProperties, parentContext, theme }),
+      getIconStyles({
+        properties: computedProperties,
+        parentContext,
+        theme,
+        useThemeVariableReferences,
+      }),
     ),
     ...safeGetStyles(() =>
       getTableStyles({ properties: computedProperties, theme }),
     ),
     ...safeGetStyles(() =>
-      getPositionStyles({ properties: computedProperties, theme }),
+      getPositionStyles({
+        properties: computedProperties,
+        theme,
+        useThemeVariableReferences,
+      }),
     ),
   }
 

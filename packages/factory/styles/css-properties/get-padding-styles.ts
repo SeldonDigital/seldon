@@ -8,9 +8,11 @@ import { CSSObject } from "./types"
 export function getPaddingStyles({
   properties,
   theme,
+  useThemeVariableReferences,
 }: {
   properties: Properties
   theme: Theme
+  useThemeVariableReferences?: boolean
 }): CSSObject {
   const styles: CSSObject = {}
 
@@ -21,19 +23,35 @@ export function getPaddingStyles({
     const left = resolveValue(properties.padding.left)
 
     if (top) {
-      styles.paddingTop = getAbsoluteSizeCssValue(top, theme)
+      styles.paddingTop = getAbsoluteSizeCssValue(
+        top,
+        theme,
+        useThemeVariableReferences,
+      )
     }
 
     if (right) {
-      styles.paddingRight = getAbsoluteSizeCssValue(right, theme)
+      styles.paddingRight = getAbsoluteSizeCssValue(
+        right,
+        theme,
+        useThemeVariableReferences,
+      )
     }
 
     if (bottom) {
-      styles.paddingBottom = getAbsoluteSizeCssValue(bottom, theme)
+      styles.paddingBottom = getAbsoluteSizeCssValue(
+        bottom,
+        theme,
+        useThemeVariableReferences,
+      )
     }
 
     if (left) {
-      styles.paddingLeft = getAbsoluteSizeCssValue(left, theme)
+      styles.paddingLeft = getAbsoluteSizeCssValue(
+        left,
+        theme,
+        useThemeVariableReferences,
+      )
     }
   }
   return styles

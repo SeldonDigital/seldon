@@ -12,6 +12,7 @@ import type { LayoutMode } from "@seldon/core/properties/compute"
 import { Theme, ThemeModulation } from "@seldon/core/themes/types"
 
 import { getCssValue } from "./get-css-value"
+import { getThemeTokenVarReference } from "./get-theme-token-reference"
 import { CSSObject } from "./types"
 
 /** Reads a positive integer track count from a resolved number value. */
@@ -41,11 +42,13 @@ export function getLayoutStyles({
   nodeProperties,
   theme,
   layoutMode,
+  useThemeVariableReferences,
 }: {
   computedProperties: Properties
   nodeProperties: Properties
   theme: Theme
   layoutMode?: LayoutMode
+  useThemeVariableReferences?: boolean
 }): CSSObject {
   const styles: CSSObject = {}
 
@@ -188,15 +191,23 @@ export function getLayoutStyles({
         }
         break
 
-      case ValueType.THEME_ORDINAL:
-        const themeValue = getThemeOption(gap.value, theme) as ThemeModulation
-        styles.gap =
-          modulate({
-            step: themeValue.parameters.step,
-            size: theme.modulation.parameters.baseSize,
-            ratio: theme.modulation.parameters.ratio,
-          }) + "rem"
+      case ValueType.THEME_ORDINAL: {
+        const reference = useThemeVariableReferences
+          ? getThemeTokenVarReference(gap.value)
+          : undefined
+        if (reference) {
+          styles.gap = reference
+        } else {
+          const themeValue = getThemeOption(gap.value, theme) as ThemeModulation
+          styles.gap =
+            modulate({
+              step: themeValue.parameters.step,
+              size: theme.modulation.parameters.baseSize,
+              ratio: theme.modulation.parameters.ratio,
+            }) + "rem"
+        }
         break
+      }
 
       default:
         throw new Error(

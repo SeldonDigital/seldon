@@ -1,8 +1,9 @@
-import { BorderWidth, BorderWidthValue } from "@seldon/core"
+import { BorderWidth, BorderWidthValue, ValueType } from "@seldon/core"
 import { resolveBorderWidth } from "@seldon/core/helpers/resolution/resolve-border-width"
 import { Theme } from "@seldon/core/themes/types"
 
 import { getCssValue } from "./get-css-value"
+import { getThemeTokenVarReference } from "./get-theme-token-reference"
 import { CSSObject } from "./types"
 
 /**
@@ -16,9 +17,18 @@ import { CSSObject } from "./types"
 export function getBorderWidthCSSValue(
   borderWidth: BorderWidthValue,
   theme: Theme,
+  useThemeVariableReferences?: boolean,
 ): CSSObject["borderWidth"] {
   if (borderWidth.value === BorderWidth.HAIRLINE) {
     return "var(--hairline)"
+  }
+
+  if (
+    useThemeVariableReferences &&
+    borderWidth.type === ValueType.THEME_ORDINAL
+  ) {
+    const reference = getThemeTokenVarReference(borderWidth.value)
+    if (reference) return reference
   }
 
   const resolvedBorderWidth = resolveBorderWidth({

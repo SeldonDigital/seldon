@@ -59,6 +59,12 @@ interface EditorConfigState {
   // Sidebar refactor settings
   useRefactoredSidebars: boolean
   setUseRefactoredSidebars: (enabled: boolean) => void
+
+  // Editor chrome theme (slug of an exported theme stylesheet). This re-themes
+  // the editor interface only; it is never written to the workspace and never
+  // affects the canvas.
+  chromeTheme: string
+  setChromeTheme: (slug: string) => void
 }
 
 const useStore = create<EditorConfigState>()(
@@ -128,6 +134,11 @@ const useStore = create<EditorConfigState>()(
       useRefactoredSidebars: false,
       setUseRefactoredSidebars: (enabled) =>
         set((state) => ({ ...state, useRefactoredSidebars: enabled })),
+
+      // Editor chrome theme
+      chromeTheme: "seldon",
+      setChromeTheme: (slug) =>
+        set((state) => ({ ...state, chromeTheme: slug })),
     }),
     {
       name: "editor-config",
@@ -144,6 +155,7 @@ const useStore = create<EditorConfigState>()(
         showUnusedIcons: state.showUnusedIcons,
         showPlayground: state.showPlayground,
         useRefactoredSidebars: state.useRefactoredSidebars,
+        chromeTheme: state.chromeTheme,
       }),
     },
   ),
@@ -175,6 +187,8 @@ export function useEditorConfig() {
     setShowPlayground,
     useRefactoredSidebars,
     setUseRefactoredSidebars,
+    chromeTheme,
+    setChromeTheme,
   } = useStore(
     useShallow((state) => ({
       showSelection: state.showSelection,
@@ -201,6 +215,8 @@ export function useEditorConfig() {
       setShowPlayground: state.setShowPlayground,
       useRefactoredSidebars: state.useRefactoredSidebars,
       setUseRefactoredSidebars: state.setUseRefactoredSidebars,
+      chromeTheme: state.chromeTheme,
+      setChromeTheme: state.setChromeTheme,
     })),
   )
 
@@ -301,5 +317,9 @@ export function useEditorConfig() {
     useRefactoredSidebars,
     setUseRefactoredSidebars,
     toggleRefactoredSidebars,
+
+    // Editor chrome theme
+    chromeTheme,
+    setChromeTheme,
   }
 }

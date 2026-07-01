@@ -46,7 +46,10 @@ function exactTokenCss(token: ThemeScaleToken): string {
 }
 
 function generateThemeCSSVariables(theme: Theme, slug: string): string {
-  const prefix = slug === "seldon" ? `--sdn-` : `--sdn-${slug}-`
+  // Every theme defines the same unprefixed variable names. The stylesheet
+  // scopes them by `[data-theme]`, so a consumer switches the active theme by
+  // setting that attribute rather than by rewriting component references.
+  const prefix = `--sdn-`
   let cssVariables = ""
 
   if (slug !== "seldon") {
@@ -175,7 +178,17 @@ function generateThemeCSSVariables(theme: Theme, slug: string): string {
 
 export function generateThemeStylesheet(slug: string, theme: Theme): string {
   const variables = generateThemeCSSVariables(theme, slug)
-  return `:root {\n${variables}}\n`
+
+  // The default theme also answers `:root` so unscoped subtrees (and any node
+  // that never sets `data-theme`) resolve to it. Every theme, default included,
+  // answers its own `[data-theme="{slug}"]` selector so a consumer can switch to
+  // it explicitly.
+  const selector =
+    slug === "seldon"
+      ? `:root,\n[data-theme="seldon"]`
+      : `[data-theme="${slug}"]`
+
+  return `${selector} {\n${variables}}\n`
 }
 
 export type ThemeStylesheetFile = {

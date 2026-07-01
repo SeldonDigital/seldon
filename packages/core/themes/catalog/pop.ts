@@ -12,7 +12,7 @@ import { Colorspace, Harmony, Ratio, StockTheme, TokenType } from "../types"
 export const theme: StockTheme = {
   metadata: {
     id: "pop",
-    name: "Pop punk",
+    name: "Pop Punk",
     description:
       "A bold and energetic theme with a vibrant color palette inspired by pop punk. It features customizable typography, layout, and color options to suit various design needs.",
     intent:

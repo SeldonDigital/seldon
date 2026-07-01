@@ -9,13 +9,15 @@ export function Layout({
   children,
   testId,
 }: PropsWithChildren<{ testId?: string }>) {
-  const { showPanels } = useEditorConfig()
+  const { showPanels, chromeTheme } = useEditorConfig()
   const { appState } = useAppState()
 
   const shouldShowHeader = appState === "project" || showPanels
 
+  // The chrome theme scopes the editor interface only. The canvas pins itself
+  // back to the default theme so it never follows this attribute.
   return (
-    <div style={styles.layout} data-testid={testId}>
+    <div style={styles.layout} data-testid={testId} data-theme={chromeTheme}>
       {shouldShowHeader && <VMTopbar />}
       {children}
     </div>

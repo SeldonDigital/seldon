@@ -7,11 +7,13 @@ import { ThemeFont } from "@seldon/core/themes/types"
 
 import { StyleGenerationContext } from "../types"
 import { getCssValue } from "./get-css-value"
+import { getThemeTokenVarReference } from "./get-theme-token-reference"
 import { CSSObject } from "./types"
 
 export function getTextStyles({
   properties,
   theme,
+  useThemeVariableReferences,
 }: StyleGenerationContext): CSSObject {
   const styles: CSSObject = {}
   const preset = resolveValue(properties.font?.preset)
@@ -61,7 +63,12 @@ export function getTextStyles({
 
   // Only apply if font.family is defined in the schema
   if (family && properties.font?.family) {
-    styles.fontFamily = family.value
+    const familyReference =
+      useThemeVariableReferences &&
+      properties.font.family.type === ValueType.THEME_CATEGORICAL
+        ? getThemeTokenVarReference(properties.font.family.value)
+        : undefined
+    styles.fontFamily = familyReference ?? family.value
   }
 
   // Only apply if font.style is defined in the schema
@@ -77,19 +84,34 @@ export function getTextStyles({
       styles.fontWeight =
         typeof weight.value === "number" ? weight.value : weight.value.value
     } else if (weight.type === ValueType.THEME_ORDINAL) {
-      const themeValue = getThemeOption(weight.value, theme)
-      styles.fontWeight = themeValue.parameters.value
+      const reference = useThemeVariableReferences
+        ? getThemeTokenVarReference(weight.value)
+        : undefined
+      if (reference) {
+        styles.fontWeight = reference
+      } else {
+        const themeValue = getThemeOption(weight.value, theme)
+        styles.fontWeight = themeValue.parameters.value
+      }
     }
   }
 
   // Only apply if font.size is defined in the schema
   if (size && properties.font?.size) {
-    const resolvedFontSize = resolveFontSize({
-      fontSize: size,
-      theme,
-    })
+    const reference =
+      useThemeVariableReferences && size.type === ValueType.THEME_ORDINAL
+        ? getThemeTokenVarReference(size.value)
+        : undefined
 
-    styles.fontSize = getCssValue(resolvedFontSize) as string // We're sure that the value is a string since its an EmptyValue, PixelValue or RemValue
+    if (reference) {
+      styles.fontSize = reference
+    } else {
+      const resolvedFontSize = resolveFontSize({
+        fontSize: size,
+        theme,
+      })
+      styles.fontSize = getCssValue(resolvedFontSize) as string // We're sure that the value is a string since its an EmptyValue, PixelValue or RemValue
+    }
   }
 
   // Only apply if font.lineHeight is defined in the schema
@@ -97,8 +119,15 @@ export function getTextStyles({
     if (lineHeight.type === ValueType.EXACT) {
       styles.lineHeight = getCssValue(lineHeight)
     } else if (lineHeight.type === ValueType.THEME_ORDINAL) {
-      const themeValue = getThemeOption(lineHeight.value, theme)
-      styles.lineHeight = themeValue.parameters.value
+      const reference = useThemeVariableReferences
+        ? getThemeTokenVarReference(lineHeight.value)
+        : undefined
+      if (reference) {
+        styles.lineHeight = reference
+      } else {
+        const themeValue = getThemeOption(lineHeight.value, theme)
+        styles.lineHeight = themeValue.parameters.value
+      }
     }
   }
 

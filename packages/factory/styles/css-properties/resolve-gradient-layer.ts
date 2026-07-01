@@ -30,7 +30,6 @@ export function resolveGradientLayer(
   gradient: GradientCompound,
   theme: Theme,
   useThemeVariableReferences?: boolean,
-  themeSlug?: string,
 ): string | undefined {
   const {
     gradientType,
@@ -112,7 +111,6 @@ export function resolveGradientLayer(
     opacity: resolvedStartOpacity,
     theme,
     useThemeVariableReferences,
-    themeSlug,
   })
 
   const endColorString = getLayeredPaintColor({
@@ -121,7 +119,6 @@ export function resolveGradientLayer(
     opacity: resolvedEndOpacity,
     theme,
     useThemeVariableReferences,
-    themeSlug,
   })
 
   if (resolvedType === GradientType.LINEAR) {

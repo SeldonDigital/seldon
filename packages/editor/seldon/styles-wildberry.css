@@ -11,112 +11,112 @@
  * 
  *****/
  
-:root {
+[data-theme="wildberry"] {
   /* Theme: Wildberry */
   /* Modulation */
-  --sdn-wildberry-ratio: 1.333;
-  --sdn-wildberry-font-size: 16px;
-  --sdn-wildberry-size: 1;
+  --sdn-ratio: 1.333;
+  --sdn-font-size: 16px;
+  --sdn-size: 1;
   /* Font Families */
-  --sdn-wildberry-font-family-primary: DM Sans;
-  --sdn-wildberry-font-family-secondary: DM Sans;
+  --sdn-font-family-primary: DM Sans;
+  --sdn-font-family-secondary: DM Sans;
   /* Colors */
-  --sdn-wildberry-color-base-hue: 270;
-  --sdn-wildberry-color-base-saturation: 100%;
-  --sdn-wildberry-color-base-lightness: 70%;
-  --sdn-wildberry-color-harmony: 4;
-  --sdn-wildberry-color-angle: 30deg;
-  --sdn-wildberry-color-step: 10;
-  --sdn-wildberry-color-white-point: 98%;
-  --sdn-wildberry-color-gray-point: 56%;
-  --sdn-wildberry-color-black-point: 8%;
-  --sdn-wildberry-color-bleed: 12;
-  --sdn-wildberry-color-contrast-ratio: 2;
+  --sdn-color-base-hue: 270;
+  --sdn-color-base-saturation: 100%;
+  --sdn-color-base-lightness: 70%;
+  --sdn-color-harmony: 4;
+  --sdn-color-angle: 30deg;
+  --sdn-color-step: 10;
+  --sdn-color-white-point: 98%;
+  --sdn-color-gray-point: 56%;
+  --sdn-color-black-point: 8%;
+  --sdn-color-bleed: 12;
+  --sdn-color-contrast-ratio: 2;
   /* Swatches */
-  --sdn-wildberry-swatch-white: hsl(270 12% 98%);
-  --sdn-wildberry-swatch-gray: hsl(270 12% 56%);
-  --sdn-wildberry-swatch-black: hsl(270 12% 8%);
-  --sdn-wildberry-swatch-primary: hsl(270 100% 70%);
-  --sdn-wildberry-swatch-tint: hsl(270 100% 80%);
-  --sdn-wildberry-swatch-direct-complement: hsl(90 100% 70%);
-  --sdn-wildberry-swatch-right-complement: hsl(0 100% 70%);
-  --sdn-wildberry-swatch-left-complement: hsl(180 100% 70%);
-  --sdn-wildberry-swatch-background: hsl(0 4% 8%);
-  --sdn-wildberry-swatch-active: hsl(203 100% 62%);
-  --sdn-wildberry-swatch-positive: hsl(135 100% 35%);
-  --sdn-wildberry-swatch-warning: hsl(60 100% 46%);
-  --sdn-wildberry-swatch-accent: hsl(300 76% 48%);
-  --sdn-wildberry-swatch-offBlack: hsl(0 0% 25%);
-  --sdn-wildberry-swatch-offWhite: hsl(0 0% 93%);
-  --sdn-wildberry-swatch-foreground: hsl(0 0% 100%);
-  --sdn-wildberry-swatch-punch: hsl(20 95% 60%);
-  --sdn-wildberry-swatch-negative: hsl(0 100% 65%);
+  --sdn-swatch-white: hsl(270 12% 98%);
+  --sdn-swatch-gray: hsl(270 12% 56%);
+  --sdn-swatch-black: hsl(270 12% 8%);
+  --sdn-swatch-primary: hsl(270 100% 70%);
+  --sdn-swatch-swatch1: hsl(270 100% 80%);
+  --sdn-swatch-swatch2: hsl(90 100% 70%);
+  --sdn-swatch-swatch3: hsl(0 100% 70%);
+  --sdn-swatch-swatch4: hsl(180 100% 70%);
+  --sdn-swatch-background: hsl(0 4% 8%);
+  --sdn-swatch-active: hsl(203 100% 62%);
+  --sdn-swatch-positive: hsl(135 100% 35%);
+  --sdn-swatch-warning: hsl(60 100% 46%);
+  --sdn-swatch-accent: hsl(300 76% 48%);
+  --sdn-swatch-offBlack: hsl(0 0% 25%);
+  --sdn-swatch-offWhite: hsl(0 0% 93%);
+  --sdn-swatch-foreground: hsl(0 0% 100%);
+  --sdn-swatch-punch: hsl(20 95% 60%);
+  --sdn-swatch-negative: hsl(0 100% 65%);
   /* Sizes */
-  --sdn-wildberry-sizes-tiny: 0.069rem;
-  --sdn-wildberry-sizes-xxsmall: 0.168rem;
-  --sdn-wildberry-sizes-xsmall: 0.409rem;
-  --sdn-wildberry-sizes-small: 0.69rem;
-  --sdn-wildberry-sizes-medium: 1rem;
-  --sdn-wildberry-sizes-large: 1.687rem;
-  --sdn-wildberry-sizes-xlarge: 2.445rem;
-  --sdn-wildberry-sizes-xxlarge: 4.113rem;
-  --sdn-wildberry-sizes-huge: 5.959rem;
+  --sdn-sizes-tiny: 0.069rem;
+  --sdn-sizes-xxsmall: 0.168rem;
+  --sdn-sizes-xsmall: 0.409rem;
+  --sdn-sizes-small: 0.69rem;
+  --sdn-sizes-medium: 1rem;
+  --sdn-sizes-large: 1.687rem;
+  --sdn-sizes-xlarge: 2.445rem;
+  --sdn-sizes-xxlarge: 4.113rem;
+  --sdn-sizes-huge: 5.959rem;
   /* Margins */
-  --sdn-wildberry-margins-tight: 0.168rem;
-  --sdn-wildberry-margins-compact: 0.409rem;
-  --sdn-wildberry-margins-cozy: 1rem;
-  --sdn-wildberry-margins-comfortable: 2.445rem;
-  --sdn-wildberry-margins-open: 5.959rem;
+  --sdn-margins-tight: 0.168rem;
+  --sdn-margins-compact: 0.409rem;
+  --sdn-margins-cozy: 1rem;
+  --sdn-margins-comfortable: 2.445rem;
+  --sdn-margins-open: 5.959rem;
   /* Paddings */
-  --sdn-wildberry-paddings-tight: 0.168rem;
-  --sdn-wildberry-paddings-compact: 0.409rem;
-  --sdn-wildberry-paddings-cozy: 1rem;
-  --sdn-wildberry-paddings-comfortable: 2.445rem;
-  --sdn-wildberry-paddings-open: 5.959rem;
+  --sdn-paddings-tight: 0.168rem;
+  --sdn-paddings-compact: 0.409rem;
+  --sdn-paddings-cozy: 1rem;
+  --sdn-paddings-comfortable: 2.445rem;
+  --sdn-paddings-open: 5.959rem;
   /* Gaps */
-  --sdn-wildberry-gaps-tight: 0.168rem;
-  --sdn-wildberry-gaps-compact: 0.409rem;
-  --sdn-wildberry-gaps-cozy: 1rem;
-  --sdn-wildberry-gaps-comfortable: 2.445rem;
-  --sdn-wildberry-gaps-open: 5.959rem;
+  --sdn-gaps-tight: 0.168rem;
+  --sdn-gaps-compact: 0.409rem;
+  --sdn-gaps-cozy: 1rem;
+  --sdn-gaps-comfortable: 2.445rem;
+  --sdn-gaps-open: 5.959rem;
   /* Corners */
-  --sdn-wildberry-corners-tight: 0.168rem;
-  --sdn-wildberry-corners-compact: 0.409rem;
-  --sdn-wildberry-corners-cozy: 1rem;
-  --sdn-wildberry-corners-comfortable: 1.687rem;
-  --sdn-wildberry-corners-open: 5.61rem;
+  --sdn-corners-tight: 0.168rem;
+  --sdn-corners-compact: 0.409rem;
+  --sdn-corners-cozy: 1rem;
+  --sdn-corners-comfortable: 1.687rem;
+  --sdn-corners-open: 5.61rem;
   /* Font Sizes */
-  --sdn-wildberry-font-size-tiny: 0.409rem;
-  --sdn-wildberry-font-size-xxsmall: 0.545rem;
-  --sdn-wildberry-font-size-xsmall: 0.69rem;
-  --sdn-wildberry-font-size-small: 0.842rem;
-  --sdn-wildberry-font-size-medium: 1rem;
-  --sdn-wildberry-font-size-large: 1.777rem;
-  --sdn-wildberry-font-size-xlarge: 2.445rem;
-  --sdn-wildberry-font-size-xxlarge: 4.113rem;
-  --sdn-wildberry-font-size-huge: 5.959rem;
+  --sdn-font-size-tiny: 0.409rem;
+  --sdn-font-size-xxsmall: 0.545rem;
+  --sdn-font-size-xsmall: 0.69rem;
+  --sdn-font-size-small: 0.842rem;
+  --sdn-font-size-medium: 1rem;
+  --sdn-font-size-large: 1.777rem;
+  --sdn-font-size-xlarge: 2.445rem;
+  --sdn-font-size-xxlarge: 4.113rem;
+  --sdn-font-size-huge: 5.959rem;
   /* Font Weights */
-  --sdn-wildberry-font-weight-thin: 100;
-  --sdn-wildberry-font-weight-xlight: 200;
-  --sdn-wildberry-font-weight-light: 300;
-  --sdn-wildberry-font-weight-normal: 400;
-  --sdn-wildberry-font-weight-medium: 500;
-  --sdn-wildberry-font-weight-semibold: 600;
-  --sdn-wildberry-font-weight-bold: 700;
-  --sdn-wildberry-font-weight-xbold: 800;
-  --sdn-wildberry-font-weight-black: 900;
+  --sdn-font-weight-thin: 100;
+  --sdn-font-weight-xlight: 200;
+  --sdn-font-weight-light: 300;
+  --sdn-font-weight-normal: 400;
+  --sdn-font-weight-medium: 500;
+  --sdn-font-weight-semibold: 600;
+  --sdn-font-weight-bold: 700;
+  --sdn-font-weight-xbold: 800;
+  --sdn-font-weight-black: 900;
   /* Line Heights */
-  --sdn-wildberry-line-height-none: 1;
-  --sdn-wildberry-line-height-solid: 1.15;
-  --sdn-wildberry-line-height-tight: 1.25;
-  --sdn-wildberry-line-height-compact: 1.33;
-  --sdn-wildberry-line-height-cozy: 1.5;
-  --sdn-wildberry-line-height-comfortable: 2;
-  --sdn-wildberry-line-height-open: 2.5;
+  --sdn-line-height-none: 1;
+  --sdn-line-height-solid: 1.15;
+  --sdn-line-height-tight: 1.25;
+  --sdn-line-height-compact: 1.33;
+  --sdn-line-height-cozy: 1.5;
+  --sdn-line-height-comfortable: 2;
+  --sdn-line-height-open: 2.5;
   /* Border Widths */
-  --sdn-wildberry-border-width-xsmall: 0.012rem;
-  --sdn-wildberry-border-width-small: 0.032rem;
-  --sdn-wildberry-border-width-medium: 0.069rem;
-  --sdn-wildberry-border-width-large: 0.168rem;
-  --sdn-wildberry-border-width-xlarge: 0.409rem;
+  --sdn-border-width-xsmall: 0.012rem;
+  --sdn-border-width-small: 0.032rem;
+  --sdn-border-width-medium: 0.069rem;
+  --sdn-border-width-large: 0.168rem;
+  --sdn-border-width-xlarge: 0.409rem;
 }

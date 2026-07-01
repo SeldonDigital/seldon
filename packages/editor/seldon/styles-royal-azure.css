@@ -11,112 +11,112 @@
  * 
  *****/
  
-:root {
+[data-theme="royal-azure"] {
   /* Theme: Royal Azure */
   /* Modulation */
-  --sdn-royal-azure-ratio: 1.2;
-  --sdn-royal-azure-font-size: 16px;
-  --sdn-royal-azure-size: 1;
+  --sdn-ratio: 1.2;
+  --sdn-font-size: 16px;
+  --sdn-size: 1;
   /* Font Families */
-  --sdn-royal-azure-font-family-primary: Noto Sans;
-  --sdn-royal-azure-font-family-secondary: Oswald;
+  --sdn-font-family-primary: Noto Sans;
+  --sdn-font-family-secondary: Oswald;
   /* Colors */
-  --sdn-royal-azure-color-base-hue: 233;
-  --sdn-royal-azure-color-base-saturation: 96%;
-  --sdn-royal-azure-color-base-lightness: 50%;
-  --sdn-royal-azure-color-harmony: 0;
-  --sdn-royal-azure-color-angle: 60deg;
-  --sdn-royal-azure-color-step: 20;
-  --sdn-royal-azure-color-white-point: 98%;
-  --sdn-royal-azure-color-gray-point: 56%;
-  --sdn-royal-azure-color-black-point: 8%;
-  --sdn-royal-azure-color-bleed: 12;
-  --sdn-royal-azure-color-contrast-ratio: 2;
+  --sdn-color-base-hue: 233;
+  --sdn-color-base-saturation: 96%;
+  --sdn-color-base-lightness: 50%;
+  --sdn-color-harmony: 0;
+  --sdn-color-angle: 60deg;
+  --sdn-color-step: 20;
+  --sdn-color-white-point: 98%;
+  --sdn-color-gray-point: 56%;
+  --sdn-color-black-point: 8%;
+  --sdn-color-bleed: 12;
+  --sdn-color-contrast-ratio: 2;
   /* Swatches */
-  --sdn-royal-azure-swatch-white: hsl(233 12% 98%);
-  --sdn-royal-azure-swatch-gray: hsl(233 12% 56%);
-  --sdn-royal-azure-swatch-black: hsl(233 12% 8%);
-  --sdn-royal-azure-swatch-primary: hsl(233 96% 50%);
-  --sdn-royal-azure-swatch-tint: hsl(233 96% 70%);
-  --sdn-royal-azure-swatch-complement: hsl(53 96% 50%);
-  --sdn-royal-azure-swatch-complement-tint: hsl(53 96% 70%);
-  --sdn-royal-azure-swatch-complement-light: hsl(53 96% 90%);
-  --sdn-royal-azure-swatch-background: hsl(0 4% 98%);
-  --sdn-royal-azure-swatch-active: hsl(203 100% 62%);
-  --sdn-royal-azure-swatch-positive: hsl(135 100% 35%);
-  --sdn-royal-azure-swatch-warning: hsl(60 100% 46%);
-  --sdn-royal-azure-swatch-accent: hsl(300 76% 48%);
-  --sdn-royal-azure-swatch-offBlack: hsl(0 0% 25%);
-  --sdn-royal-azure-swatch-offWhite: hsl(0 0% 93%);
-  --sdn-royal-azure-swatch-foreground: hsl(0 0% 100%);
-  --sdn-royal-azure-swatch-punch: hsl(20 95% 60%);
-  --sdn-royal-azure-swatch-negative: hsl(0 100% 65%);
+  --sdn-swatch-white: hsl(233 12% 98%);
+  --sdn-swatch-gray: hsl(233 12% 56%);
+  --sdn-swatch-black: hsl(233 12% 8%);
+  --sdn-swatch-primary: hsl(233 96% 50%);
+  --sdn-swatch-swatch1: hsl(233 96% 70%);
+  --sdn-swatch-swatch2: hsl(53 96% 50%);
+  --sdn-swatch-swatch3: hsl(53 96% 70%);
+  --sdn-swatch-swatch4: hsl(53 96% 90%);
+  --sdn-swatch-background: hsl(0 4% 98%);
+  --sdn-swatch-active: hsl(203 100% 62%);
+  --sdn-swatch-positive: hsl(135 100% 35%);
+  --sdn-swatch-warning: hsl(60 100% 46%);
+  --sdn-swatch-accent: hsl(300 76% 48%);
+  --sdn-swatch-offBlack: hsl(0 0% 25%);
+  --sdn-swatch-offWhite: hsl(0 0% 93%);
+  --sdn-swatch-foreground: hsl(0 0% 100%);
+  --sdn-swatch-punch: hsl(20 95% 60%);
+  --sdn-swatch-negative: hsl(0 100% 65%);
   /* Sizes */
-  --sdn-royal-azure-sizes-tiny: 0.183rem;
-  --sdn-royal-azure-sizes-xxsmall: 0.322rem;
-  --sdn-royal-azure-sizes-xsmall: 0.567rem;
-  --sdn-royal-azure-sizes-small: 0.79rem;
-  --sdn-royal-azure-sizes-medium: 1rem;
-  --sdn-royal-azure-sizes-large: 1.394rem;
-  --sdn-royal-azure-sizes-xlarge: 1.763rem;
-  --sdn-royal-azure-sizes-xxlarge: 2.452rem;
-  --sdn-royal-azure-sizes-huge: 3.103rem;
+  --sdn-sizes-tiny: 0.183rem;
+  --sdn-sizes-xxsmall: 0.322rem;
+  --sdn-sizes-xsmall: 0.567rem;
+  --sdn-sizes-small: 0.79rem;
+  --sdn-sizes-medium: 1rem;
+  --sdn-sizes-large: 1.394rem;
+  --sdn-sizes-xlarge: 1.763rem;
+  --sdn-sizes-xxlarge: 2.452rem;
+  --sdn-sizes-huge: 3.103rem;
   /* Margins */
-  --sdn-royal-azure-margins-tight: 0.322rem;
-  --sdn-royal-azure-margins-compact: 0.567rem;
-  --sdn-royal-azure-margins-cozy: 1rem;
-  --sdn-royal-azure-margins-comfortable: 1.763rem;
-  --sdn-royal-azure-margins-open: 3.103rem;
+  --sdn-margins-tight: 0.322rem;
+  --sdn-margins-compact: 0.567rem;
+  --sdn-margins-cozy: 1rem;
+  --sdn-margins-comfortable: 1.763rem;
+  --sdn-margins-open: 3.103rem;
   /* Paddings */
-  --sdn-royal-azure-paddings-tight: 0.322rem;
-  --sdn-royal-azure-paddings-compact: 0.567rem;
-  --sdn-royal-azure-paddings-cozy: 1rem;
-  --sdn-royal-azure-paddings-comfortable: 1.763rem;
-  --sdn-royal-azure-paddings-open: 3.103rem;
+  --sdn-paddings-tight: 0.322rem;
+  --sdn-paddings-compact: 0.567rem;
+  --sdn-paddings-cozy: 1rem;
+  --sdn-paddings-comfortable: 1.763rem;
+  --sdn-paddings-open: 3.103rem;
   /* Gaps */
-  --sdn-royal-azure-gaps-tight: 0.322rem;
-  --sdn-royal-azure-gaps-compact: 0.567rem;
-  --sdn-royal-azure-gaps-cozy: 1rem;
-  --sdn-royal-azure-gaps-comfortable: 1.763rem;
-  --sdn-royal-azure-gaps-open: 3.103rem;
+  --sdn-gaps-tight: 0.322rem;
+  --sdn-gaps-compact: 0.567rem;
+  --sdn-gaps-cozy: 1rem;
+  --sdn-gaps-comfortable: 1.763rem;
+  --sdn-gaps-open: 3.103rem;
   /* Corners */
-  --sdn-royal-azure-corners-tight: 0.322rem;
-  --sdn-royal-azure-corners-compact: 0.567rem;
-  --sdn-royal-azure-corners-cozy: 1rem;
-  --sdn-royal-azure-corners-comfortable: 1.394rem;
-  --sdn-royal-azure-corners-open: 2.986rem;
+  --sdn-corners-tight: 0.322rem;
+  --sdn-corners-compact: 0.567rem;
+  --sdn-corners-cozy: 1rem;
+  --sdn-corners-comfortable: 1.394rem;
+  --sdn-corners-open: 2.986rem;
   /* Font Sizes */
-  --sdn-royal-azure-font-size-tiny: 0.567rem;
-  --sdn-royal-azure-font-size-xxsmall: 0.681rem;
-  --sdn-royal-azure-font-size-xsmall: 0.79rem;
-  --sdn-royal-azure-font-size-small: 0.896rem;
-  --sdn-royal-azure-font-size-medium: 1rem;
-  --sdn-royal-azure-font-size-large: 1.44rem;
-  --sdn-royal-azure-font-size-xlarge: 1.763rem;
-  --sdn-royal-azure-font-size-xxlarge: 2.452rem;
-  --sdn-royal-azure-font-size-huge: 3.103rem;
+  --sdn-font-size-tiny: 0.567rem;
+  --sdn-font-size-xxsmall: 0.681rem;
+  --sdn-font-size-xsmall: 0.79rem;
+  --sdn-font-size-small: 0.896rem;
+  --sdn-font-size-medium: 1rem;
+  --sdn-font-size-large: 1.44rem;
+  --sdn-font-size-xlarge: 1.763rem;
+  --sdn-font-size-xxlarge: 2.452rem;
+  --sdn-font-size-huge: 3.103rem;
   /* Font Weights */
-  --sdn-royal-azure-font-weight-thin: 100;
-  --sdn-royal-azure-font-weight-xlight: 200;
-  --sdn-royal-azure-font-weight-light: 300;
-  --sdn-royal-azure-font-weight-normal: 400;
-  --sdn-royal-azure-font-weight-medium: 500;
-  --sdn-royal-azure-font-weight-semibold: 600;
-  --sdn-royal-azure-font-weight-bold: 700;
-  --sdn-royal-azure-font-weight-xbold: 800;
-  --sdn-royal-azure-font-weight-black: 900;
+  --sdn-font-weight-thin: 100;
+  --sdn-font-weight-xlight: 200;
+  --sdn-font-weight-light: 300;
+  --sdn-font-weight-normal: 400;
+  --sdn-font-weight-medium: 500;
+  --sdn-font-weight-semibold: 600;
+  --sdn-font-weight-bold: 700;
+  --sdn-font-weight-xbold: 800;
+  --sdn-font-weight-black: 900;
   /* Line Heights */
-  --sdn-royal-azure-line-height-none: 1;
-  --sdn-royal-azure-line-height-solid: 1.15;
-  --sdn-royal-azure-line-height-tight: 1.25;
-  --sdn-royal-azure-line-height-compact: 1.33;
-  --sdn-royal-azure-line-height-cozy: 1.5;
-  --sdn-royal-azure-line-height-comfortable: 2;
-  --sdn-royal-azure-line-height-open: 2.5;
+  --sdn-line-height-none: 1;
+  --sdn-line-height-solid: 1.15;
+  --sdn-line-height-tight: 1.25;
+  --sdn-line-height-compact: 1.33;
+  --sdn-line-height-cozy: 1.5;
+  --sdn-line-height-comfortable: 2;
+  --sdn-line-height-open: 2.5;
   /* Border Widths */
-  --sdn-royal-azure-border-width-xsmall: 0.059rem;
-  --sdn-royal-azure-border-width-small: 0.112rem;
-  --sdn-royal-azure-border-width-medium: 0.183rem;
-  --sdn-royal-azure-border-width-large: 0.322rem;
-  --sdn-royal-azure-border-width-xlarge: 0.567rem;
+  --sdn-border-width-xsmall: 0.059rem;
+  --sdn-border-width-small: 0.112rem;
+  --sdn-border-width-medium: 0.183rem;
+  --sdn-border-width-large: 0.322rem;
+  --sdn-border-width-xlarge: 0.567rem;
 }
