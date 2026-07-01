@@ -8,6 +8,7 @@ import type { ThemeScaleToken, ThemeSwatch } from "@seldon/core/themes/values"
 import { workspaceThemeService } from "@seldon/core/workspace/services"
 import { Workspace } from "@seldon/core/workspace/types"
 
+import { emitComputedThemeVariables } from "../../../styles/computed-variables"
 import { getThemeSwatchVarNames } from "../../../styles/css-properties/get-theme-swatch-names"
 import { format } from "../utils/format"
 import { getThemeSlug } from "./get-theme-slug"
@@ -172,6 +173,12 @@ function generateThemeCSSVariables(theme: Theme, slug: string): string {
       })
     cssVariables += `  ${prefix}border-width-${key}: ${calculatedBorderWidth}rem;\n`
   })
+
+  // Computed functions that bake a derived per-theme value (high contrast, auto
+  // fit, optical padding) publish their own variable families here, scoped by the
+  // same `[data-theme]` selector, so a computed value swaps with the active theme
+  // just like a token. Match Color needs none because it reuses swatch variables.
+  cssVariables += emitComputedThemeVariables(theme)
 
   return cssVariables
 }

@@ -3200,7 +3200,7 @@ const sdn: CalendarRangeProps = {
   icon: {
     icon: "material-chevronLeft",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--umgs",
+    className: "sdn-icon sdn-icon--nlt7",
   },
   textTitle: {
     className: "sdn-text-title sdn-text-title--pmi9",
@@ -3361,20 +3361,20 @@ const sdn: CalendarRangeProps = {
       "sdn-calendar-day-selected-day sdn-calendar-day-selected-day--dulb",
   },
   textLabel24: {
-    className: "sdn-text-label sdn-text-label--g3ro",
+    className: "sdn-text-label sdn-text-label--fye8",
   },
   calendarDay8: {
     className: "sdn-calendar-day sdn-calendar-day--omg8",
   },
   textLabel25: {
-    className: "sdn-text-label sdn-text-label--g3ro",
+    className: "sdn-text-label sdn-text-label--6f2j",
   },
   calendarDaySelectedDay2: {
     className:
       "sdn-calendar-day-selected-day sdn-calendar-day-selected-day--zit2",
   },
   textLabel26: {
-    className: "sdn-text-label sdn-text-label--g3ro",
+    className: "sdn-text-label sdn-text-label--fye8",
   },
   container5: {
     wrapperElement: "div",
@@ -3489,7 +3489,7 @@ const sdn: CalendarRangeProps = {
   icon2: {
     icon: "material-chevronRight",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--umgs",
+    className: "sdn-icon sdn-icon--nlt7",
   },
   container7: {
     wrapperElement: "div",

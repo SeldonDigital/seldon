@@ -1681,7 +1681,7 @@ const sdn: CalendarEventMarkersProps = {
     className: "sdn-calendar-day-selected-day sdn-calendar-day-muted-day--vns2",
   },
   textLabel10: {
-    className: "sdn-text-label sdn-text-label--g3ro",
+    className: "sdn-text-label sdn-text-label--fye8",
   },
   textLabel11: {
     className: "sdn-text-label sdn-text-label--mqlk",

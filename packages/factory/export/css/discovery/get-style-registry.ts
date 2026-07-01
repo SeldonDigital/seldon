@@ -163,10 +163,7 @@ export const buildStyleRegistry = (
   const computeNodeCss = (nodeId: string, state?: string): CSSObject => {
     const context = getStyleContext(nodeId, workspace, parentIndex, state)
     return getCssObjectFromProperties(context.properties, {
-      properties: context.properties,
-      parentContext: context.parentContext,
-      theme: context.theme,
-      layoutMode: context.layoutMode,
+      ...context,
       useThemeVariableReferences: true,
     })
   }
@@ -227,20 +224,14 @@ export const buildStyleRegistry = (
       const instanceContext = getStyleContext(node.id, workspace, parentIndex)
 
       const variantCss = getCssObjectFromProperties(variantContext.properties, {
-        properties: variantContext.properties,
-        parentContext: variantContext.parentContext,
-        theme: variantContext.theme,
-        layoutMode: variantContext.layoutMode,
+        ...variantContext,
         useThemeVariableReferences: true,
       })
 
       const instanceCss = getCssObjectFromProperties(
         instanceContext.properties,
         {
-          properties: instanceContext.properties,
-          parentContext: instanceContext.parentContext,
-          theme: instanceContext.theme,
-          layoutMode: instanceContext.layoutMode,
+          ...instanceContext,
           useThemeVariableReferences: true,
         },
       )
@@ -249,10 +240,7 @@ export const buildStyleRegistry = (
     } else {
       const context = getStyleContext(node.id, workspace, parentIndex)
       css = getCssObjectFromProperties(context.properties, {
-        properties: context.properties,
-        parentContext: context.parentContext,
-        theme: context.theme,
-        layoutMode: context.layoutMode,
+        ...context,
         useThemeVariableReferences: true,
       })
     }
@@ -271,10 +259,7 @@ export const buildStyleRegistry = (
           state,
         )
         const stateCss = getCssObjectFromProperties(stateContext.properties, {
-          properties: stateContext.properties,
-          parentContext: stateContext.parentContext,
-          theme: stateContext.theme,
-          layoutMode: stateContext.layoutMode,
+          ...stateContext,
           useThemeVariableReferences: true,
         })
         const delta = calculateCssDifferences(css, stateCss)

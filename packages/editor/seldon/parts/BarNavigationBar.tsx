@@ -340,10 +340,10 @@ const sdn: BarNavigationBarProps = {
   icon2: {
     icon: "material-search",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--ivvi",
+    className: "sdn-icon sdn-icon--pbp5",
   },
   textLabel2: {
-    className: "sdn-text-label sdn-text-label--p4vx",
+    className: "sdn-text-label sdn-text-label--4mii",
   },
   button3: {
     className: "sdn-button sdn-button--ze8m",
@@ -351,10 +351,10 @@ const sdn: BarNavigationBarProps = {
   icon3: {
     icon: "material-favoriteBorder",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--ivvi",
+    className: "sdn-icon sdn-icon--pbp5",
   },
   textLabel3: {
-    className: "sdn-text-label sdn-text-label--p4vx",
+    className: "sdn-text-label sdn-text-label--4mii",
   },
   button4: {
     className: "sdn-button sdn-button--ze8m",
@@ -362,10 +362,10 @@ const sdn: BarNavigationBarProps = {
   icon4: {
     icon: "material-accountCircle",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--ivvi",
+    className: "sdn-icon sdn-icon--pbp5",
   },
   textLabel4: {
-    className: "sdn-text-label sdn-text-label--p4vx",
+    className: "sdn-text-label sdn-text-label--4mii",
   },
   button5: {
     className: "sdn-button sdn-button--ze8m",
@@ -373,9 +373,9 @@ const sdn: BarNavigationBarProps = {
   icon5: {
     icon: "material-settings",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--ivvi",
+    className: "sdn-icon sdn-icon--pbp5",
   },
   textLabel5: {
-    className: "sdn-text-label sdn-text-label--p4vx",
+    className: "sdn-text-label sdn-text-label--4mii",
   },
 }

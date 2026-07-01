@@ -82,7 +82,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   "sectionAdd": {"component":"ButtonIconic","nodeId":"component-item-sDjvfAPl","className":"sdn-button-iconic sdn-button-iconic--sdjv"},
   "sectionLabel": {"component":"TextLabel","nodeId":"component-item-Z34z7Dhr","className":"sdn-text-label sdn-text-label--z34z"},
   "sectionToggle": {"component":"ButtonIconic","nodeId":"component-item-OCtkZUuF","className":"sdn-button-iconic sdn-button-iconic--pgsr"},
-  "sectionToggleIcon": {"component":"Icon","nodeId":"component-item-7MKLAjub","className":"sdn-icon sdn-icon--vsau"},
+  "sectionToggleIcon": {"component":"Icon","nodeId":"component-item-7MKLAjub","className":"sdn-icon sdn-icon--7mkl"},
   "valueIcon": {"component":"Icon","nodeId":"component-icon-V1g4W5fN","className":"sdn-icon sdn-icon--xi68"},
   "valueLabel": {"component":"Input","nodeId":"component-input-IeGTgo7S","className":"sdn-input sdn-input--iegt"},
   "valueOptionsMenu": {"component":"ButtonIconic","nodeId":"component-button-HqmnST2I","className":"sdn-button-iconic sdn-button-iconic--pgsr"},

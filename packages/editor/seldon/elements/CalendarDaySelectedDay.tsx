@@ -113,6 +113,6 @@ const sdn: CalendarDaySelectedDayProps = {
   "aria-selected": "true",
   className: "sdn-calendar-day-selected-day sdn-calendar-day",
   textLabel: {
-    className: "sdn-text-label sdn-text-label--g3ro",
+    className: "sdn-text-label sdn-text-label--fye8",
   },
 }

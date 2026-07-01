@@ -1,8 +1,16 @@
 import { Properties, Theme } from "@seldon/core"
-import type { LayoutMode } from "@seldon/core/properties/compute"
+import type { ComputeContext, LayoutMode } from "@seldon/core/properties/compute"
 
 export type StyleGenerationContext = {
   properties: Properties
+  /**
+   * The same effective (pre-compute) {@link ComputeContext} the core compute engine runs against,
+   * as built by `getNodeComputeContext`. Style helpers read it in `useThemeVariableReferences` mode
+   * to detect a `ValueType.COMPUTED` cell (high contrast, auto fit, optical padding) and to resolve
+   * its source exactly as core does, so the emitted theme variable matches the baked value. Absent
+   * on live rendering, where computed values stay concrete.
+   */
+  computeContext?: ComputeContext
   parentContext: StyleGenerationContext | null
   theme: Theme
   /**

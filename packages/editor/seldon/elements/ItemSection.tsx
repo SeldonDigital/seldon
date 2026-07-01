@@ -211,7 +211,7 @@ const sdn: ItemSectionProps = {
   icon: {
     icon: "material-unfoldMore",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--vsau",
+    className: "sdn-icon sdn-icon--7mkl",
     "data-seldon-ref": "sectionToggleIcon",
   },
   formControlComboboxControl: {
@@ -228,7 +228,7 @@ const sdn: ItemSectionProps = {
   icon2: {
     icon: "material-add",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--vsau",
+    className: "sdn-icon sdn-icon--7mkl",
   },
   buttonIconic3: {
     className: "sdn-button-iconic sdn-button-iconic--pgsr",
@@ -237,6 +237,6 @@ const sdn: ItemSectionProps = {
   icon3: {
     icon: "seldon-more",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--vsau",
+    className: "sdn-icon sdn-icon--7mkl",
   },
 }

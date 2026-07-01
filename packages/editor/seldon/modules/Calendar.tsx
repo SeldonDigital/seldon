@@ -1758,7 +1758,7 @@ const sdn: CalendarProps = {
   icon: {
     icon: "material-chevronDoubleLeft",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--umgs",
+    className: "sdn-icon sdn-icon--nlt7",
   },
   buttonIconic2: {
     className: "sdn-button-iconic sdn-button-iconic--8tzd",
@@ -1766,7 +1766,7 @@ const sdn: CalendarProps = {
   icon2: {
     icon: "material-chevronLeft",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--umgs",
+    className: "sdn-icon sdn-icon--nlt7",
   },
   textTitle: {
     className: "sdn-text-title sdn-text-title--blaq",
@@ -1777,7 +1777,7 @@ const sdn: CalendarProps = {
   icon3: {
     icon: "material-chevronRight",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--umgs",
+    className: "sdn-icon sdn-icon--nlt7",
   },
   buttonIconic4: {
     className: "sdn-button-iconic sdn-button-iconic--8tzd",
@@ -1785,7 +1785,7 @@ const sdn: CalendarProps = {
   icon4: {
     icon: "material-chevronDoubleRight",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--umgs",
+    className: "sdn-icon sdn-icon--nlt7",
   },
   container: {
     wrapperElement: "div",
@@ -1827,7 +1827,7 @@ const sdn: CalendarProps = {
     className: "sdn-calendar-day sdn-calendar-day--i3zq",
   },
   textLabel8: {
-    className: "sdn-text-label sdn-text-label--g3ro",
+    className: "sdn-text-label sdn-text-label--6f2j",
   },
   calendarDayGridCellDay: {
     className:
@@ -1981,7 +1981,7 @@ const sdn: CalendarProps = {
       "sdn-calendar-day-selected-day sdn-calendar-day-grid-cell-day--iysx",
   },
   textLabel28: {
-    className: "sdn-text-label sdn-text-label--g3ro",
+    className: "sdn-text-label sdn-text-label--fye8",
   },
   calendarDayGridCellDay19: {
     className:
@@ -2074,6 +2074,6 @@ const sdn: CalendarProps = {
     className: "sdn-calendar-day sdn-calendar-day--2hoh",
   },
   textLabel40: {
-    className: "sdn-text-label sdn-text-label--g3ro",
+    className: "sdn-text-label sdn-text-label--6f2j",
   },
 }

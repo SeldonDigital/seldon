@@ -40,8 +40,7 @@ export function computeHighContrastColor(
   value: ComputedHighContrastValue,
   context: ComputeContext,
 ) {
-  const { contrastRatio, fallbackColor, includeBleed } =
-    context.theme.highContrast.parameters
+  const { fallbackColor } = context.theme.highContrast.parameters
 
   const { basedOnValue, brightness, opacity, backdrop } =
     resolveHighContrastInputs(context, fallbackColor)
@@ -76,20 +75,38 @@ export function computeHighContrastColor(
     )
   }
 
-  const isDark = isDarkBackgroundColor(color, contrastRatio)
+  return resolveHighContrastForeground(color, context.theme)
+}
 
-  // With bleed, return the computed white/black swatch (which carries the hue
-  // bleed). Without bleed, build a neutral white/black from the color-harmony
-  // white/black points with zero saturation.
+/**
+ * Given a resolved surface color, returns the readable foreground swatch for it against `theme`.
+ * With bleed, returns the theme's white or black swatch (which carries the hue bleed). Without
+ * bleed, builds a neutral white or black from the color-harmony white/black points with zero
+ * saturation. The white/black choice comes from the surface luminance against the theme contrast
+ * ratio. This is the theme-parameterized core of high contrast, shared by the compute engine and by
+ * factory export so a theme can bake its own answer per surface.
+ *
+ * @param surface - Resolved surface color the foreground must read on
+ * @param theme - Theme supplying contrast ratio, bleed, harmony, and white/black swatches
+ * @returns `EXACT` foreground color taken from `@swatch.white`/`@swatch.black` or the harmony points
+ */
+export function resolveHighContrastForeground(
+  surface: ColorValue | HexValue,
+  theme: ComputeContext["theme"],
+): ColorValue | HexValue {
+  const { contrastRatio, includeBleed } = theme.highContrast.parameters
+
+  const isDark = isDarkBackgroundColor(surface, contrastRatio)
+
   if (includeBleed) {
     const themeOption = getThemeOption(
       isDark ? "@swatch.white" : "@swatch.black",
-      context.theme,
+      theme,
     ) as ThemeSwatch
     return themeSwatchToColorValue(themeOption)
   }
 
-  const harmony = context.theme.colorHarmony.parameters
+  const harmony = theme.colorHarmony.parameters
   return {
     type: ValueType.EXACT as const,
     value: {

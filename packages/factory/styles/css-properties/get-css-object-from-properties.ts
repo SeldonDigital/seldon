@@ -58,6 +58,7 @@ export function getCssObjectFromProperties(
 
   const {
     properties: originalProperties,
+    computeContext,
     parentContext,
     theme,
     layoutMode,
@@ -110,6 +111,7 @@ export function getCssObjectFromProperties(
     ...safeGetStyles(() =>
       getColorStyles({
         properties: computedProperties,
+        computeContext,
         parentContext,
         theme,
         useThemeVariableReferences,
@@ -149,6 +151,7 @@ export function getCssObjectFromProperties(
     ...safeGetStyles(() =>
       getPaddingStyles({
         properties: computedProperties,
+        computeContext,
         theme,
         useThemeVariableReferences,
       }),
@@ -177,6 +180,7 @@ export function getCssObjectFromProperties(
     ...safeGetStyles(() =>
       getTextStyles({
         properties: computedProperties,
+        computeContext,
         parentContext,
         theme,
         useThemeVariableReferences,
@@ -185,6 +189,7 @@ export function getCssObjectFromProperties(
     ...safeGetStyles(() =>
       getIconStyles({
         properties: computedProperties,
+        computeContext,
         parentContext,
         theme,
         useThemeVariableReferences,

@@ -5,6 +5,7 @@ import { resolveValue } from "@seldon/core/helpers/resolution/resolve-value"
 import { getThemeOption } from "@seldon/core/helpers/theme/get-theme-option"
 import { ThemeFont } from "@seldon/core/themes/types"
 
+import { getComputedCssValue } from "../computed-variables"
 import { StyleGenerationContext } from "../types"
 import { getCssValue } from "./get-css-value"
 import { getThemeTokenVarReference } from "./get-theme-token-reference"
@@ -12,6 +13,7 @@ import { CSSObject } from "./types"
 
 export function getTextStyles({
   properties,
+  computeContext,
   theme,
   useThemeVariableReferences,
 }: StyleGenerationContext): CSSObject {
@@ -103,15 +105,25 @@ export function getTextStyles({
         ? getThemeTokenVarReference(size.value)
         : undefined
 
+    let fontSize: string | number
     if (reference) {
-      styles.fontSize = reference
+      fontSize = reference
     } else {
       const resolvedFontSize = resolveFontSize({
         fontSize: size,
         theme,
       })
-      styles.fontSize = getCssValue(resolvedFontSize) as string // We're sure that the value is a string since its an EmptyValue, PixelValue or RemValue
+      fontSize = getCssValue(resolvedFontSize) as string // We're sure that the value is a string since its an EmptyValue, PixelValue or RemValue
     }
+
+    const themed =
+      useThemeVariableReferences && computeContext
+        ? getComputedCssValue({
+            original: computeContext.properties.font?.size,
+            context: computeContext,
+          })
+        : null
+    styles.fontSize = themed ?? fontSize
   }
 
   // Only apply if font.lineHeight is defined in the schema
