@@ -38,10 +38,10 @@ Each module exports one `StockTheme` as the named export `theme`. `metadata.id` 
 | `theme` | `earth.ts` | Warm natural preset. |
 | `theme` | `high-contrast.ts` | Neutral high-contrast preset. |
 | `theme` | `industrial.ts` | Cool dense preset. |
-| `theme` | `material.ts` | App-oriented vivid preset. |
+| `theme` | `google-material.ts` | Material Design 3 aligned preset. |
 | `theme` | `pop.ts` | High-contrast expressive preset. |
-| `theme` | `royal-azure.ts` | Deep blue complementary preset. |
-| `theme` | `sky.ts` | Light airy preset. |
+| `theme` | `ibm-carbon.ts` | IBM Carbon-inspired preset. |
+| `theme` | `adobe-spectrum.ts` | Adobe Spectrum-inspired preset. |
 | `theme` | `sunset-blue.ts` | Warm-cool split preset. |
 | `theme` | `wildberry.ts` | Saturated square-harmony preset. |
 

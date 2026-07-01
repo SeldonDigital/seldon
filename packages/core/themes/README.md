@@ -20,14 +20,14 @@ Stock themes ship with Seldon as starting points and reference implementations. 
 | `earth` | Warm natural swatches with analogous harmony, humanist type tone, and comfortable scales. |
 | `highContrast` | Neutral high-contrast theme with simple typography and strong readability. |
 | `industrial` | Cool steel tones with monochromatic harmony, dense rhythm, and stronger weight choices. |
-| `material` | Vivid app-oriented theme inspired by Material-style type and spacing. |
+| `googleMaterial` | Theme aligned with Material Design 3, using Roboto and the M3 baseline palette. |
 | `pop` | Expressive split-complementary theme with high contrast and punchy scales. |
-| `royalAzure` | Deep blue complementary theme with refined typography and stable scales. |
-| `sky` | Light complementary theme with airy contrast and open spacing. |
+| `ibmCarbon` | IBM Carbon-inspired theme with neutral grays, IBM Blue, IBM Plex type, and square corners. |
+| `adobeSpectrum` | Adobe Spectrum-inspired theme with neutral grays, Spectrum blue, Source type, and rounded corners. |
 | `sunsetBlue` | Warm-cool split-complementary theme with relaxed typography. |
 | `wildberry` | Rich square-harmony theme with saturated berry colors and bold styling. |
 
-`metadata.id` and catalog template ids use the same string as **Stock Theme ID**. For example: `catalog:sky`, `catalog:royalAzure`.
+`metadata.id` and catalog template ids use the same string as **Stock Theme ID**. For example: `catalog:earth`, `catalog:ibmCarbon`.
 
 ---
 
@@ -700,7 +700,7 @@ const branded = instantiateTheme(
 )
 
 const layered = computeTheme(
-  merge({}, STOCK_THEMES_BY_ID.material, brandOverrides, scaleOverrides),
+  merge({}, STOCK_THEMES_BY_ID.googleMaterial, brandOverrides, scaleOverrides),
 )
 ```
 
@@ -708,7 +708,7 @@ Workspace pipelines pick a stock template by id and apply user-supplied override
 
 ### Workspace serialization
 
-[`workspace.json`](../workspace/README.md) holds **raw authoring state** only: each board / node references a theme by an opaque string ref (for example `theme-sky-default`) and the editable theme source rows live under the top-level `themes` map. Computed theme rows are produced by read-side selectors (`computeWorkspaceThemes`, `getComputedTheme`); they are **not** persisted back into the file.
+[`workspace.json`](../workspace/README.md) holds **raw authoring state** only: each board / node references a theme by an opaque string ref (for example `theme-earth-default`) and the editable theme source rows live under the top-level `themes` map. Computed theme rows are produced by read-side selectors (`computeWorkspaceThemes`, `getComputedTheme`); they are **not** persisted back into the file.
 
 [`catalog-ids.ts`](./catalog-ids.ts) exports `packagedThemeCatalogIds` and `resolvePackagedThemeByCatalogId`. Workspace validation uses the ids to check theme board `catalogId` values.
 
@@ -759,17 +759,17 @@ export type ThemeTemplateId =
   | "earth"
   | "highContrast"
   | "industrial"
-  | "material"
+  | "googleMaterial"
   | "popPunk"
-  | "royalAzure"
-  | "sky"
+  | "ibmCarbon"
+  | "adobeSpectrum"
   | "sunsetBlue"
   | "wildberry"
 
 export type ThemeInstanceId = ThemeTemplateId
 ```
 
-In a workspace file, **board theme refs, node `theme` fields, and keys in the `themes` map** are opaque **strings** (for example `theme-sky-default`); resolution happens through `getComputedTheme` / `computeWorkspaceThemes`. Treat those refs as `string` at workspace boundaries until workspace types are aligned.
+In a workspace file, **board theme refs, node `theme` fields, and keys in the `themes` map** are opaque **strings** (for example `theme-earth-default`); resolution happens through `getComputedTheme` / `computeWorkspaceThemes`. Treat those refs as `string` at workspace boundaries until workspace types are aligned.
 
 ### Token Table Shape
 

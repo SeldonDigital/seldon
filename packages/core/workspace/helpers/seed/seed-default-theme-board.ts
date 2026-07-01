@@ -17,7 +17,7 @@ export const DEFAULT_THEME_ENTRY_ID = "theme-seldon-default" as const
 /** Extra theme boards seeded into every new workspace alongside the Seldon default. Deletable. */
 export const ADDITIONAL_THEME_BOARD_KEYS = [
   "highContrast",
-  "material",
+  "googleMaterial",
 ] as const satisfies ThemeTemplateId[]
 
 /** Builds the default theme entry (the editable workspace theme row). */
@@ -33,7 +33,7 @@ export function createDefaultThemeEntry(): EntryTheme {
 
 /**
  * Adds the default Seldon theme board plus the extra stock theme boards
- * (`highContrast`, `material`) when missing.
+ * (`highContrast`, `googleMaterial`) when missing.
  *
  * Idempotent per board: skips any theme board that already exists. Mutates the
  * passed workspace in place. The Seldon board is the protected base; the extras

@@ -1,20 +1,39 @@
 import type { Workspace } from "../../model/workspace"
 import { migrateV1Baseline } from "./steps/migrate-00001-baseline"
 import { migrateV2InterfaceSwatches } from "./steps/migrate-00002-interface-swatches"
-import { migrateV3PopPunkRename } from "./steps/migrate-00003-pop-punk-rename"
+import { migrateV3ThemeRenames } from "./steps/migrate-00003-theme-renames"
+import { migrateV4EnableDefaultFonts } from "./steps/migrate-00004-enable-default-fonts"
+import { migrateV5EnableQuicksandFont } from "./steps/migrate-00005-enable-quicksand-font"
 
 /** Current workspace file version after migration steps on load. */
-export const CURRENT_WORKSPACE_VERSION = 3
+export const CURRENT_WORKSPACE_VERSION = 5
 
 type MigrationStep = (workspace: Workspace) => Workspace
 
 const MIGRATION_STEPS: Partial<Record<number, MigrationStep>> = {
   1: migrateV1Baseline,
   2: migrateV2InterfaceSwatches,
-  3: migrateV3PopPunkRename,
+  3: migrateV3ThemeRenames,
+  4: migrateV4EnableDefaultFonts,
+  5: migrateV5EnableQuicksandFont,
 }
 
-/** Runs versioned migration steps from storedVersion + 1 through CURRENT. */
+/**
+ * Idempotent repairs that run on every load, regardless of stored version.
+ *
+ * Versioned steps only run once, when a file crosses their version. Stock theme
+ * renames must also reach files already stamped at the current version: a
+ * persisted workspace that still points at a renamed template would otherwise
+ * fail to open. Each repair guards itself and only rewrites the references it
+ * matches, so it is safe to re-run and applies each rename independently rather
+ * than all-or-nothing.
+ */
+const REPAIR_STEPS: MigrationStep[] = [migrateV3ThemeRenames]
+
+/**
+ * Runs versioned migration steps from storedVersion + 1 through CURRENT, then
+ * applies idempotent repair steps on every load.
+ */
 export function migrateWorkspace(workspace: Workspace): Workspace {
   const storedVersion = workspace.metadata.version ?? 0
   let current = workspace
@@ -28,6 +47,10 @@ export function migrateWorkspace(workspace: Workspace): Workspace {
     if (step) {
       current = step(current)
     }
+  }
+
+  for (const repair of REPAIR_STEPS) {
+    current = repair(current)
   }
 
   return current

@@ -14,9 +14,9 @@ export const theme: StockTheme = {
     id: "sunsetBlue",
     name: "Sunset Blue",
     description:
-      "A clean and versatile theme with a vibrant color palette. It features a range of customizable typography, layout, and color options to suit various design needs.",
+      "A clean, airline-inspired theme built around a bright signature blue, unified grotesque typography, and soft rounded shapes.",
     intent:
-      "To provide a modern and professional look with high contrast and readability, suitable for a wide range of applications.",
+      "To provide a modern, accessible brand experience with a confident blue palette, generous rounding, and clear, legible type.",
   },
   modulation: {
     type: TokenType.COMPUTED,
@@ -28,7 +28,7 @@ export const theme: StockTheme = {
       baseColor: {
         hue: 197,
         saturation: 100,
-        lightness: 63,
+        lightness: 44,
       },
       harmony: 1,
       angle: 25,
@@ -63,7 +63,7 @@ export const theme: StockTheme = {
     type: TokenType.COMPUTED,
     parameters: {
       primary: { type: TokenType.FONT_FAMILY, parameters: "Inter" },
-      secondary: { type: TokenType.FONT_FAMILY, parameters: "Outfit" },
+      secondary: { type: TokenType.FONT_FAMILY, parameters: "Inter" },
     },
   },
   size: {
@@ -319,28 +319,28 @@ export const theme: StockTheme = {
       type: TokenType.MODULATED,
       name: "Compact",
       parameters: {
-        step: -3.11,
+        step: -4.4,
       },
     },
     cozy: {
       type: TokenType.MODULATED,
       name: "Cozy",
       parameters: {
-        step: 0,
+        step: -3.11,
       },
     },
     comfortable: {
       type: TokenType.MODULATED,
       name: "Comfortable",
       parameters: {
-        step: 1.82,
+        step: -2.11,
       },
     },
     open: {
       type: TokenType.MODULATED,
       name: "Open",
       parameters: {
-        step: 6,
+        step: 0,
       },
     },
   },
@@ -720,7 +720,7 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 0, saturation: 4, lightness: 98 },
+        value: { hue: 200, saturation: 30, lightness: 99 },
       },
     },
     active: {
@@ -729,7 +729,7 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 197, saturation: 100, lightness: 60 },
+        value: { hue: 197, saturation: 100, lightness: 44 },
       },
     },
     punch: {
@@ -738,7 +738,7 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 17, saturation: 100, lightness: 62 },
+        value: { hue: 10, saturation: 88, lightness: 60 },
       },
     },
     positive: {
@@ -774,7 +774,7 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 330, saturation: 85, lightness: 62 },
+        value: { hue: 211, saturation: 70, lightness: 34 },
       },
     },
     offBlack: {
@@ -783,7 +783,7 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 0, saturation: 0, lightness: 25 },
+        value: { hue: 210, saturation: 28, lightness: 16 },
       },
     },
     offWhite: {
@@ -812,7 +812,7 @@ export const theme: StockTheme = {
         },
         weight: {
           type: ValueType.THEME_ORDINAL,
-          value: "@fontWeight.semibold",
+          value: "@fontWeight.bold",
         },
         size: {
           type: ValueType.THEME_ORDINAL,
@@ -841,8 +841,8 @@ export const theme: StockTheme = {
       intent: "For heading text, often H2",
       parameters: {
         family: {
-          type: ValueType.OPTION,
-          value: "Outfit",
+          type: ValueType.THEME_CATEGORICAL,
+          value: "@fontFamily.secondary",
         },
         style: {
           type: ValueType.OPTION,
@@ -946,8 +946,8 @@ export const theme: StockTheme = {
       intent: "For subtitle text, often H5",
       parameters: {
         family: {
-          type: ValueType.OPTION,
-          value: "Inter",
+          type: ValueType.THEME_CATEGORICAL,
+          value: "@fontFamily.primary",
         },
         style: {
           type: ValueType.OPTION,
@@ -1051,8 +1051,8 @@ export const theme: StockTheme = {
       intent: "For labels on form elements",
       parameters: {
         family: {
-          type: ValueType.OPTION,
-          value: "Outfit",
+          type: ValueType.THEME_CATEGORICAL,
+          value: "@fontFamily.secondary",
         },
         style: {
           type: ValueType.OPTION,
@@ -1125,7 +1125,7 @@ export const theme: StockTheme = {
       parameters: {
         family: {
           type: ValueType.OPTION,
-          value: "Inconsolata",
+          value: "JetBrains Mono",
         },
         style: {
           type: ValueType.OPTION,
@@ -1476,7 +1476,7 @@ export const theme: StockTheme = {
         opacity: {
           type: ValueType.EXACT,
           value: {
-            value: 33,
+            value: 16,
             unit: Unit.PERCENT,
           },
         },
@@ -1515,7 +1515,7 @@ export const theme: StockTheme = {
         opacity: {
           type: ValueType.EXACT,
           value: {
-            value: 33,
+            value: 16,
             unit: Unit.PERCENT,
           },
         },
@@ -1554,7 +1554,7 @@ export const theme: StockTheme = {
         opacity: {
           type: ValueType.EXACT,
           value: {
-            value: 33,
+            value: 16,
             unit: Unit.PERCENT,
           },
         },
@@ -1593,7 +1593,7 @@ export const theme: StockTheme = {
         opacity: {
           type: ValueType.EXACT,
           value: {
-            value: 33,
+            value: 16,
             unit: Unit.PERCENT,
           },
         },
@@ -1632,7 +1632,7 @@ export const theme: StockTheme = {
         opacity: {
           type: ValueType.EXACT,
           value: {
-            value: 33,
+            value: 16,
             unit: Unit.PERCENT,
           },
         },

@@ -3205,14 +3205,14 @@
               "anyOf": [
                 {
                   "enum": [
+                    "adobeSpectrum",
                     "earth",
+                    "googleMaterial",
                     "highContrast",
+                    "ibmCarbon",
                     "industrial",
-                    "material",
                     "popPunk",
-                    "royalAzure",
                     "seldon",
-                    "sky",
                     "sunsetBlue",
                     "wildberry"
                   ],
@@ -16889,16 +16889,16 @@
       "type": "string"
     },
     "ThemeInstanceId": {
-      "description": "Packaged theme catalog ids (`ThemeTemplateId`).\n\n**`ThemeTemplateId`** — Use these exact strings as the suffix in `catalog:{id}` template\nreferences (see [THEMES.md](../THEMES.md) and [WORKSPACE.md](../../workspace/WORKSPACE.md)).\nThey match `metadata.id` on stock themes under `themes/catalog/`.\n\n**`ThemeInstanceId`** — TypeScript models the **catalog** identity of a computed stock row\n(`ThemeTemplateId`). In a workspace file, **node `theme` fields, board theme refs, and keys in\nthe `themes` map** are opaque **strings** (for example `theme-sky-default`); resolution happens\nthrough `getComputedTheme` / `computeWorkspaceThemes`, not through this union alone. Prefer\ntreating those refs as `string` at workspace boundaries until workspace types are aligned.",
+      "description": "Packaged theme catalog ids (`ThemeTemplateId`).\n\n**`ThemeTemplateId`** — Use these exact strings as the suffix in `catalog:{id}` template\nreferences (see [THEMES.md](../THEMES.md) and [WORKSPACE.md](../../workspace/WORKSPACE.md)).\nThey match `metadata.id` on stock themes under `themes/catalog/`.\n\n**`ThemeInstanceId`** — TypeScript models the **catalog** identity of a computed stock row\n(`ThemeTemplateId`). In a workspace file, **node `theme` fields, board theme refs, and keys in\nthe `themes` map** are opaque **strings** (for example `theme-earth-default`); resolution happens\nthrough `getComputedTheme` / `computeWorkspaceThemes`, not through this union alone. Prefer\ntreating those refs as `string` at workspace boundaries until workspace types are aligned.",
       "enum": [
+        "adobeSpectrum",
         "earth",
+        "googleMaterial",
         "highContrast",
+        "ibmCarbon",
         "industrial",
-        "material",
         "popPunk",
-        "royalAzure",
         "seldon",
-        "sky",
         "sunsetBlue",
         "wildberry"
       ],

@@ -19,11 +19,11 @@
   --sdn-size: 1;
   /* Font Families */
   --sdn-font-family-primary: Inter;
-  --sdn-font-family-secondary: Outfit;
+  --sdn-font-family-secondary: Inter;
   /* Colors */
   --sdn-color-base-hue: 197;
   --sdn-color-base-saturation: 100%;
-  --sdn-color-base-lightness: 63%;
+  --sdn-color-base-lightness: 44%;
   --sdn-color-harmony: 1;
   --sdn-color-angle: 25deg;
   --sdn-color-step: 15;
@@ -36,19 +36,19 @@
   --sdn-swatch-white: hsl(197 12% 98%);
   --sdn-swatch-gray: hsl(197 12% 56%);
   --sdn-swatch-black: hsl(197 12% 8%);
-  --sdn-swatch-primary: hsl(197 100% 63%);
-  --sdn-swatch-swatch1: hsl(42 100% 63%);
-  --sdn-swatch-swatch2: hsl(42 100% 78%);
-  --sdn-swatch-swatch3: hsl(352 100% 63%);
-  --sdn-swatch-swatch4: hsl(352 100% 78%);
-  --sdn-swatch-background: hsl(0 4% 98%);
-  --sdn-swatch-active: hsl(197 100% 60%);
-  --sdn-swatch-punch: hsl(17 100% 62%);
+  --sdn-swatch-primary: hsl(197 100% 44%);
+  --sdn-swatch-swatch1: hsl(42 100% 44%);
+  --sdn-swatch-swatch2: hsl(42 100% 59%);
+  --sdn-swatch-swatch3: hsl(352 100% 44%);
+  --sdn-swatch-swatch4: hsl(352 100% 59%);
+  --sdn-swatch-background: hsl(200 30% 99%);
+  --sdn-swatch-active: hsl(197 100% 44%);
+  --sdn-swatch-punch: hsl(10 88% 60%);
   --sdn-swatch-positive: hsl(150 85% 45%);
   --sdn-swatch-negative: hsl(358 88% 58%);
   --sdn-swatch-warning: hsl(42 100% 56%);
-  --sdn-swatch-accent: hsl(330 85% 62%);
-  --sdn-swatch-offBlack: hsl(0 0% 25%);
+  --sdn-swatch-accent: hsl(211 70% 34%);
+  --sdn-swatch-offBlack: hsl(210 28% 16%);
   --sdn-swatch-offWhite: hsl(0 0% 93%);
   --sdn-swatch-foreground: hsl(0 0% 100%);
   /* Sizes */
@@ -81,10 +81,10 @@
   --sdn-gaps-open: 3.998rem;
   /* Corners */
   --sdn-corners-tight: 0.25rem;
-  --sdn-corners-compact: 0.5rem;
-  --sdn-corners-cozy: 1rem;
-  --sdn-corners-comfortable: 1.501rem;
-  --sdn-corners-open: 3.815rem;
+  --sdn-corners-compact: 0.375rem;
+  --sdn-corners-cozy: 0.5rem;
+  --sdn-corners-comfortable: 0.624rem;
+  --sdn-corners-open: 1rem;
   /* Font Sizes */
   --sdn-font-size-tiny: 0.5rem;
   --sdn-font-size-xxsmall: 0.624rem;
@@ -123,14 +123,14 @@
   --sdn-hc-on-white: hsl(197 12% 8%);
   --sdn-hc-on-gray: hsl(197 12% 98%);
   --sdn-hc-on-black: hsl(197 12% 98%);
-  --sdn-hc-on-primary: hsl(197 12% 8%);
-  --sdn-hc-on-swatch1: hsl(197 12% 8%);
+  --sdn-hc-on-primary: hsl(197 12% 98%);
+  --sdn-hc-on-swatch1: hsl(197 12% 98%);
   --sdn-hc-on-swatch2: hsl(197 12% 8%);
   --sdn-hc-on-swatch3: hsl(197 12% 98%);
   --sdn-hc-on-swatch4: hsl(197 12% 98%);
   --sdn-hc-on-foreground: hsl(197 12% 8%);
   --sdn-hc-on-background: hsl(197 12% 8%);
-  --sdn-hc-on-active: hsl(197 12% 8%);
+  --sdn-hc-on-active: hsl(197 12% 98%);
   --sdn-hc-on-punch: hsl(197 12% 98%);
   --sdn-hc-on-positive: hsl(197 12% 8%);
   --sdn-hc-on-negative: hsl(197 12% 98%);

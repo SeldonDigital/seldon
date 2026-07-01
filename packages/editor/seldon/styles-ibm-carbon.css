@@ -11,19 +11,19 @@
  * 
  *****/
  
-[data-theme="royal-azure"] {
-  /* Theme: Royal Azure */
+[data-theme="ibm-carbon"] {
+  /* Theme: Ibm Carbon */
   /* Modulation */
   --sdn-ratio: 1.2;
   --sdn-font-size: 16px;
   --sdn-size: 1;
   /* Font Families */
-  --sdn-font-family-primary: Noto Sans;
-  --sdn-font-family-secondary: Oswald;
+  --sdn-font-family-primary: IBM Plex Sans;
+  --sdn-font-family-secondary: IBM Plex Sans;
   /* Colors */
-  --sdn-color-base-hue: 233;
-  --sdn-color-base-saturation: 96%;
-  --sdn-color-base-lightness: 50%;
+  --sdn-color-base-hue: 220;
+  --sdn-color-base-saturation: 98%;
+  --sdn-color-base-lightness: 53%;
   --sdn-color-harmony: 0;
   --sdn-color-angle: 60deg;
   --sdn-color-step: 20;
@@ -33,23 +33,23 @@
   --sdn-color-bleed: 12;
   --sdn-color-contrast-ratio: 2;
   /* Swatches */
-  --sdn-swatch-white: hsl(233 12% 98%);
-  --sdn-swatch-gray: hsl(233 12% 56%);
-  --sdn-swatch-black: hsl(233 12% 8%);
-  --sdn-swatch-primary: hsl(233 96% 50%);
-  --sdn-swatch-swatch1: hsl(233 96% 70%);
-  --sdn-swatch-swatch2: hsl(53 96% 50%);
-  --sdn-swatch-swatch3: hsl(53 96% 70%);
-  --sdn-swatch-swatch4: hsl(53 96% 90%);
-  --sdn-swatch-background: hsl(0 4% 98%);
-  --sdn-swatch-active: hsl(233 90% 60%);
-  --sdn-swatch-punch: hsl(48 100% 56%);
-  --sdn-swatch-positive: hsl(145 80% 42%);
-  --sdn-swatch-negative: hsl(356 85% 55%);
-  --sdn-swatch-warning: hsl(45 100% 54%);
-  --sdn-swatch-accent: hsl(280 75% 62%);
-  --sdn-swatch-offBlack: hsl(0 0% 25%);
-  --sdn-swatch-offWhite: hsl(0 0% 93%);
+  --sdn-swatch-white: hsl(220 12% 98%);
+  --sdn-swatch-gray: hsl(220 12% 56%);
+  --sdn-swatch-black: hsl(220 12% 8%);
+  --sdn-swatch-primary: hsl(220 98% 53%);
+  --sdn-swatch-swatch1: hsl(220 98% 73%);
+  --sdn-swatch-swatch2: hsl(40 98% 53%);
+  --sdn-swatch-swatch3: hsl(40 98% 73%);
+  --sdn-swatch-swatch4: hsl(40 98% 93%);
+  --sdn-swatch-background: hsl(0 0% 100%);
+  --sdn-swatch-active: hsl(220 98% 53%);
+  --sdn-swatch-punch: hsl(203 86% 49%);
+  --sdn-swatch-positive: hsl(137 63% 39%);
+  --sdn-swatch-negative: hsl(357 76% 49%);
+  --sdn-swatch-warning: hsl(48 88% 53%);
+  --sdn-swatch-accent: hsl(262 96% 62%);
+  --sdn-swatch-offBlack: hsl(0 0% 13%);
+  --sdn-swatch-offWhite: hsl(0 0% 96%);
   --sdn-swatch-foreground: hsl(0 0% 100%);
   /* Sizes */
   --sdn-sizes-tiny: 0.183rem;
@@ -80,11 +80,11 @@
   --sdn-gaps-comfortable: 1.763rem;
   --sdn-gaps-open: 3.103rem;
   /* Corners */
-  --sdn-corners-tight: 0.322rem;
-  --sdn-corners-compact: 0.567rem;
-  --sdn-corners-cozy: 1rem;
-  --sdn-corners-comfortable: 1.394rem;
-  --sdn-corners-open: 2.986rem;
+  --sdn-corners-tight: 0.104rem;
+  --sdn-corners-compact: 0.183rem;
+  --sdn-corners-cozy: 0.322rem;
+  --sdn-corners-comfortable: 0.567rem;
+  --sdn-corners-open: 1rem;
   /* Font Sizes */
   --sdn-font-size-tiny: 0.567rem;
   --sdn-font-size-xxsmall: 0.681rem;
@@ -120,24 +120,24 @@
   --sdn-border-width-large: 0.322rem;
   --sdn-border-width-xlarge: 0.567rem;
   /* High Contrast */
-  --sdn-hc-on-white: hsl(233 12% 8%);
-  --sdn-hc-on-gray: hsl(233 12% 98%);
-  --sdn-hc-on-black: hsl(233 12% 98%);
-  --sdn-hc-on-primary: hsl(233 12% 98%);
-  --sdn-hc-on-swatch1: hsl(233 12% 98%);
-  --sdn-hc-on-swatch2: hsl(233 12% 8%);
-  --sdn-hc-on-swatch3: hsl(233 12% 8%);
-  --sdn-hc-on-swatch4: hsl(233 12% 8%);
-  --sdn-hc-on-foreground: hsl(233 12% 8%);
-  --sdn-hc-on-background: hsl(233 12% 8%);
-  --sdn-hc-on-active: hsl(233 12% 98%);
-  --sdn-hc-on-punch: hsl(233 12% 8%);
-  --sdn-hc-on-positive: hsl(233 12% 98%);
-  --sdn-hc-on-negative: hsl(233 12% 98%);
-  --sdn-hc-on-warning: hsl(233 12% 8%);
-  --sdn-hc-on-accent: hsl(233 12% 98%);
-  --sdn-hc-on-offBlack: hsl(233 12% 98%);
-  --sdn-hc-on-offWhite: hsl(233 12% 8%);
+  --sdn-hc-on-white: hsl(220 12% 8%);
+  --sdn-hc-on-gray: hsl(220 12% 98%);
+  --sdn-hc-on-black: hsl(220 12% 98%);
+  --sdn-hc-on-primary: hsl(220 12% 98%);
+  --sdn-hc-on-swatch1: hsl(220 12% 98%);
+  --sdn-hc-on-swatch2: hsl(220 12% 8%);
+  --sdn-hc-on-swatch3: hsl(220 12% 8%);
+  --sdn-hc-on-swatch4: hsl(220 12% 8%);
+  --sdn-hc-on-foreground: hsl(220 12% 8%);
+  --sdn-hc-on-background: hsl(220 12% 8%);
+  --sdn-hc-on-active: hsl(220 12% 98%);
+  --sdn-hc-on-punch: hsl(220 12% 98%);
+  --sdn-hc-on-positive: hsl(220 12% 98%);
+  --sdn-hc-on-negative: hsl(220 12% 98%);
+  --sdn-hc-on-warning: hsl(220 12% 8%);
+  --sdn-hc-on-accent: hsl(220 12% 98%);
+  --sdn-hc-on-offBlack: hsl(220 12% 98%);
+  --sdn-hc-on-offWhite: hsl(220 12% 8%);
   /* Auto Fit */
   --sdn-cmp-auto-fit-font-size-tiny: 0.454rem;
   --sdn-cmp-auto-fit-font-size-xxsmall: 0.545rem;

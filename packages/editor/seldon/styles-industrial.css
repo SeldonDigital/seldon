@@ -18,11 +18,11 @@
   --sdn-font-size: 16px;
   --sdn-size: 1;
   /* Font Families */
-  --sdn-font-family-primary: Lora;
-  --sdn-font-family-secondary: Barlow Condensed;
+  --sdn-font-family-primary: Sora;
+  --sdn-font-family-secondary: Oswald;
   /* Colors */
-  --sdn-color-base-hue: 210;
-  --sdn-color-base-saturation: 30%;
+  --sdn-color-base-hue: 186;
+  --sdn-color-base-saturation: 42%;
   --sdn-color-base-lightness: 20%;
   --sdn-color-harmony: 5;
   --sdn-color-angle: 20deg;
@@ -33,22 +33,22 @@
   --sdn-color-bleed: 80;
   --sdn-color-contrast-ratio: 2.5;
   /* Swatches */
-  --sdn-swatch-white: hsl(210 80% 90%);
-  --sdn-swatch-gray: hsl(210 80% 60%);
-  --sdn-swatch-black: hsl(210 80% 20%);
-  --sdn-swatch-primary: hsl(210 30% 20%);
-  --sdn-swatch-swatch1: hsl(210 30% 32%);
-  --sdn-swatch-swatch2: hsl(210 30% 44%);
-  --sdn-swatch-swatch3: hsl(210 30% 56%);
-  --sdn-swatch-swatch4: hsl(210 30% 68%);
-  --sdn-swatch-background: hsl(210 80% 20%);
-  --sdn-swatch-active: hsl(210 80% 55%);
-  --sdn-swatch-punch: hsl(28 85% 55%);
-  --sdn-swatch-positive: hsl(140 60% 48%);
+  --sdn-swatch-white: hsl(186 80% 90%);
+  --sdn-swatch-gray: hsl(186 80% 60%);
+  --sdn-swatch-black: hsl(186 80% 20%);
+  --sdn-swatch-primary: hsl(186 42% 20%);
+  --sdn-swatch-swatch1: hsl(186 42% 32%);
+  --sdn-swatch-swatch2: hsl(186 42% 44%);
+  --sdn-swatch-swatch3: hsl(186 42% 56%);
+  --sdn-swatch-swatch4: hsl(186 42% 68%);
+  --sdn-swatch-background: hsl(188 55% 9%);
+  --sdn-swatch-active: hsl(180 90% 50%);
+  --sdn-swatch-punch: hsl(150 85% 48%);
+  --sdn-swatch-positive: hsl(152 72% 45%);
   --sdn-swatch-negative: hsl(358 85% 55%);
   --sdn-swatch-warning: hsl(45 90% 50%);
-  --sdn-swatch-accent: hsl(265 60% 58%);
-  --sdn-swatch-offBlack: hsl(0 0% 15%);
+  --sdn-swatch-accent: hsl(200 90% 58%);
+  --sdn-swatch-offBlack: hsl(188 30% 10%);
   --sdn-swatch-foreground: hsl(0 0% 100%);
   --sdn-swatch-offWhite: hsl(0 0% 96%);
   /* Sizes */
@@ -80,11 +80,11 @@
   --sdn-gaps-comfortable: 2.002rem;
   --sdn-gaps-open: 3.998rem;
   /* Corners */
-  --sdn-corners-tight: 0.25rem;
-  --sdn-corners-compact: 0.5rem;
-  --sdn-corners-cozy: 1rem;
-  --sdn-corners-comfortable: 1.501rem;
-  --sdn-corners-open: 2.002rem;
+  --sdn-corners-tight: 0.031rem;
+  --sdn-corners-compact: 0.062rem;
+  --sdn-corners-cozy: 0.125rem;
+  --sdn-corners-comfortable: 0.25rem;
+  --sdn-corners-open: 0.5rem;
   /* Font Sizes */
   --sdn-font-size-tiny: 0.5rem;
   --sdn-font-size-xxsmall: 0.624rem;
@@ -120,24 +120,24 @@
   --sdn-border-width-large: 0.25rem;
   --sdn-border-width-xlarge: 0.5rem;
   /* High Contrast */
-  --sdn-hc-on-white: hsl(210 80% 20%);
-  --sdn-hc-on-gray: hsl(210 80% 90%);
-  --sdn-hc-on-black: hsl(210 80% 90%);
-  --sdn-hc-on-primary: hsl(210 80% 90%);
-  --sdn-hc-on-swatch1: hsl(210 80% 90%);
-  --sdn-hc-on-swatch2: hsl(210 80% 90%);
-  --sdn-hc-on-swatch3: hsl(210 80% 90%);
-  --sdn-hc-on-swatch4: hsl(210 80% 20%);
-  --sdn-hc-on-foreground: hsl(210 80% 20%);
-  --sdn-hc-on-background: hsl(210 80% 90%);
-  --sdn-hc-on-active: hsl(210 80% 90%);
-  --sdn-hc-on-punch: hsl(210 80% 90%);
-  --sdn-hc-on-positive: hsl(210 80% 20%);
-  --sdn-hc-on-negative: hsl(210 80% 90%);
-  --sdn-hc-on-warning: hsl(210 80% 20%);
-  --sdn-hc-on-accent: hsl(210 80% 90%);
-  --sdn-hc-on-offBlack: hsl(210 80% 90%);
-  --sdn-hc-on-offWhite: hsl(210 80% 20%);
+  --sdn-hc-on-white: hsl(186 80% 20%);
+  --sdn-hc-on-gray: hsl(186 80% 20%);
+  --sdn-hc-on-black: hsl(186 80% 90%);
+  --sdn-hc-on-primary: hsl(186 80% 90%);
+  --sdn-hc-on-swatch1: hsl(186 80% 90%);
+  --sdn-hc-on-swatch2: hsl(186 80% 90%);
+  --sdn-hc-on-swatch3: hsl(186 80% 20%);
+  --sdn-hc-on-swatch4: hsl(186 80% 20%);
+  --sdn-hc-on-foreground: hsl(186 80% 20%);
+  --sdn-hc-on-background: hsl(186 80% 90%);
+  --sdn-hc-on-active: hsl(186 80% 20%);
+  --sdn-hc-on-punch: hsl(186 80% 20%);
+  --sdn-hc-on-positive: hsl(186 80% 20%);
+  --sdn-hc-on-negative: hsl(186 80% 90%);
+  --sdn-hc-on-warning: hsl(186 80% 20%);
+  --sdn-hc-on-accent: hsl(186 80% 20%);
+  --sdn-hc-on-offBlack: hsl(186 80% 90%);
+  --sdn-hc-on-offWhite: hsl(186 80% 20%);
   /* Auto Fit */
   --sdn-cmp-auto-fit-font-size-tiny: 0.4rem;
   --sdn-cmp-auto-fit-font-size-xxsmall: 0.5rem;

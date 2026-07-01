@@ -1,7 +1,6 @@
 import {
   BorderStyle,
   BorderWidth,
-  FontStyle,
   GradientType,
   TextCasing,
   Unit,
@@ -11,26 +10,28 @@ import { Colorspace, Harmony, Ratio, StockTheme, TokenType } from "../types"
 
 export const theme: StockTheme = {
   metadata: {
-    id: "material",
-    name: "Google Material",
-    description: "",
-    intent: "",
+    id: "adobeSpectrum",
+    name: "Adobe Spectrum",
+    description:
+      "A clean, product-focused theme based on Adobe's Spectrum design system. It pairs neutral grays with Spectrum blue, the Source type family, rounded corners, and restrained elevation.",
+    intent:
+      "To provide a calm, accessible application look with clear hierarchy, strong contrast, and highly legible typography.",
   },
   modulation: {
     type: TokenType.COMPUTED,
-    parameters: { ratio: Ratio.MajorThird, baseFontSize: 16, baseSize: 1 },
+    parameters: { ratio: Ratio.MinorThird, baseFontSize: 16, baseSize: 1 },
   },
   colorHarmony: {
     type: TokenType.COMPUTED,
     parameters: {
-      baseColor: { hue: 257, saturation: 25, lightness: 45 },
+      baseColor: { hue: 213, saturation: 82, lightness: 54 },
       harmony: Harmony.Monochromatic,
-      angle: 0,
-      step: 10,
-      whitePoint: 100,
-      grayPoint: 47,
-      blackPoint: 1,
-      bleed: 10,
+      angle: 16,
+      step: 15,
+      whitePoint: 98,
+      grayPoint: 56,
+      blackPoint: 12,
+      bleed: 4,
     },
   },
   matchColor: {
@@ -56,8 +57,8 @@ export const theme: StockTheme = {
   fontFamily: {
     type: TokenType.COMPUTED,
     parameters: {
-      primary: { type: TokenType.FONT_FAMILY, parameters: "Roboto" },
-      secondary: { type: TokenType.FONT_FAMILY, parameters: "Roboto" },
+      primary: { type: TokenType.FONT_FAMILY, parameters: "Source Sans 3" },
+      secondary: { type: TokenType.FONT_FAMILY, parameters: "Source Sans 3" },
     },
   },
   size: {
@@ -234,16 +235,20 @@ export const theme: StockTheme = {
       name: "Compact",
       parameters: { step: -3.11 },
     },
-    cozy: { type: TokenType.MODULATED, name: "Cozy", parameters: { step: 0 } },
+    cozy: {
+      type: TokenType.MODULATED,
+      name: "Cozy",
+      parameters: { step: 1.82 },
+    },
     comfortable: {
       type: TokenType.MODULATED,
       name: "Comfortable",
-      parameters: { step: 1.82 },
+      parameters: { step: 3.11 },
     },
     open: {
       type: TokenType.MODULATED,
       name: "Open",
-      parameters: { step: 3.11 },
+      parameters: { step: 4.92 },
     },
   },
   borderWidth: {
@@ -396,7 +401,7 @@ export const theme: StockTheme = {
     large: {
       type: TokenType.MODULATED,
       name: "Large",
-      parameters: { step: 1.43 },
+      parameters: { step: 1.82 },
     },
     xlarge: {
       type: TokenType.MODULATED,
@@ -406,12 +411,12 @@ export const theme: StockTheme = {
     xxlarge: {
       type: TokenType.MODULATED,
       name: "Big",
-      parameters: { step: 5.69 },
+      parameters: { step: 4.92 },
     },
     huge: {
       type: TokenType.MODULATED,
       name: "Huge",
-      parameters: { step: 6.74 },
+      parameters: { step: 6.21 },
     },
   },
   fontWeight: {
@@ -552,7 +557,7 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 18, saturation: 12, lightness: 8 },
+        value: { hue: 210, saturation: 6, lightness: 98 },
       },
     },
     active: {
@@ -561,25 +566,34 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 257, saturation: 45, lightness: 55 },
+        value: { hue: 213, saturation: 82, lightness: 54 },
       },
     },
     punch: {
       name: "Punch",
-      intent: "Punch color for all important actions",
+      intent: "Used for high contrast elements",
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 25, saturation: 75, lightness: 55 },
+        value: { hue: 327, saturation: 62, lightness: 53 },
       },
     },
     positive: {
       name: "Positive",
-      intent: "Actions that are successful or correct",
+      intent: "To be used for supporting text or iconography",
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 140, saturation: 45, lightness: 42 },
+        value: { hue: 159, saturation: 56, lightness: 40 },
+      },
+    },
+    negative: {
+      name: "Negative",
+      intent: "Used for all error states",
+      type: TokenType.SWATCH,
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 357, saturation: 66, lightness: 53 },
       },
     },
     warning: {
@@ -588,7 +602,7 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 40, saturation: 80, lightness: 50 },
+        value: { hue: 33, saturation: 80, lightness: 50 },
       },
     },
     accent: {
@@ -597,34 +611,16 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 330, saturation: 40, lightness: 52 },
+        value: { hue: 240, saturation: 70, lightness: 63 },
       },
     },
-    custom1: {
-      name: "Secondary",
-      intent: "Google M3 color for secondary objects",
+    offBlack: {
+      name: "Off Black",
+      intent: "A low contrast black color.",
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 259, saturation: 11, lightness: 40 },
-      },
-    },
-    custom2: {
-      name: "Tertiary",
-      intent: "Google M3 color for tertiary objects",
-      type: TokenType.SWATCH,
-      parameters: {
-        colorspace: Colorspace.HSL,
-        value: { hue: 340, saturation: 21, lightness: 41 },
-      },
-    },
-    negative: {
-      name: "Negative",
-      intent: "Google M3 error color for alert states",
-      type: TokenType.SWATCH,
-      parameters: {
-        colorspace: Colorspace.HSL,
-        value: { hue: 3, saturation: 71, lightness: 41 },
+        value: { hue: 0, saturation: 0, lightness: 15 },
       },
     },
   },
@@ -638,9 +634,8 @@ export const theme: StockTheme = {
           type: ValueType.THEME_CATEGORICAL,
           value: "@fontFamily.secondary",
         },
-        weight: { type: ValueType.THEME_ORDINAL, value: "@fontWeight.medium" },
+        weight: { type: ValueType.THEME_ORDINAL, value: "@fontWeight.bold" },
         size: { type: ValueType.THEME_ORDINAL, value: "@fontSize.xxlarge" },
-        style: { type: ValueType.OPTION, value: FontStyle.NORMAL },
         lineHeight: {
           type: ValueType.THEME_ORDINAL,
           value: "@lineHeight.solid",
@@ -661,9 +656,11 @@ export const theme: StockTheme = {
           type: ValueType.THEME_CATEGORICAL,
           value: "@fontFamily.secondary",
         },
-        weight: { type: ValueType.THEME_ORDINAL, value: "@fontWeight.medium" },
+        weight: {
+          type: ValueType.THEME_ORDINAL,
+          value: "@fontWeight.semibold",
+        },
         size: { type: ValueType.THEME_ORDINAL, value: "@fontSize.xlarge" },
-        style: { type: ValueType.OPTION, value: FontStyle.NORMAL },
         lineHeight: {
           type: ValueType.THEME_ORDINAL,
           value: "@lineHeight.tight",
@@ -683,7 +680,6 @@ export const theme: StockTheme = {
         },
         weight: { type: ValueType.THEME_ORDINAL, value: "@fontWeight.medium" },
         size: { type: ValueType.THEME_ORDINAL, value: "@fontSize.large" },
-        style: { type: ValueType.OPTION, value: FontStyle.NORMAL },
         lineHeight: {
           type: ValueType.THEME_ORDINAL,
           value: "@lineHeight.tight",
@@ -699,11 +695,10 @@ export const theme: StockTheme = {
       parameters: {
         family: {
           type: ValueType.THEME_CATEGORICAL,
-          value: "@fontFamily.primary",
+          value: "@fontFamily.secondary",
         },
         weight: { type: ValueType.THEME_ORDINAL, value: "@fontWeight.medium" },
         size: { type: ValueType.THEME_ORDINAL, value: "@fontSize.medium" },
-        style: { type: ValueType.OPTION, value: FontStyle.NORMAL },
         lineHeight: {
           type: ValueType.THEME_ORDINAL,
           value: "@lineHeight.tight",
@@ -719,11 +714,10 @@ export const theme: StockTheme = {
       parameters: {
         family: {
           type: ValueType.THEME_CATEGORICAL,
-          value: "@fontFamily.primary",
+          value: "@fontFamily.secondary",
         },
         weight: { type: ValueType.THEME_ORDINAL, value: "@fontWeight.normal" },
         size: { type: ValueType.THEME_ORDINAL, value: "@fontSize.small" },
-        style: { type: ValueType.OPTION, value: FontStyle.NORMAL },
         lineHeight: {
           type: ValueType.THEME_ORDINAL,
           value: "@lineHeight.tight",
@@ -739,11 +733,10 @@ export const theme: StockTheme = {
       parameters: {
         family: {
           type: ValueType.THEME_CATEGORICAL,
-          value: "@fontFamily.primary",
+          value: "@fontFamily.secondary",
         },
         weight: { type: ValueType.THEME_ORDINAL, value: "@fontWeight.light" },
         size: { type: ValueType.THEME_ORDINAL, value: "@fontSize.xsmall" },
-        style: { type: ValueType.OPTION, value: FontStyle.NORMAL },
         lineHeight: {
           type: ValueType.THEME_ORDINAL,
           value: "@lineHeight.compact",
@@ -763,16 +756,12 @@ export const theme: StockTheme = {
         },
         weight: { type: ValueType.THEME_ORDINAL, value: "@fontWeight.normal" },
         size: { type: ValueType.THEME_ORDINAL, value: "@fontSize.medium" },
-        style: { type: ValueType.OPTION, value: FontStyle.NORMAL },
         lineHeight: {
           type: ValueType.THEME_ORDINAL,
           value: "@lineHeight.tight",
         },
         textCase: { type: ValueType.OPTION, value: TextCasing.NORMAL },
-        letterSpacing: {
-          type: ValueType.EXACT,
-          value: { unit: Unit.PX, value: 0.5 },
-        },
+        letterSpacing: { type: ValueType.EMPTY, value: null },
       },
     },
     label: {
@@ -786,7 +775,6 @@ export const theme: StockTheme = {
         },
         weight: { type: ValueType.THEME_ORDINAL, value: "@fontWeight.normal" },
         size: { type: ValueType.THEME_ORDINAL, value: "@fontSize.small" },
-        style: { type: ValueType.OPTION, value: FontStyle.NORMAL },
         lineHeight: {
           type: ValueType.THEME_ORDINAL,
           value: "@lineHeight.solid",
@@ -809,10 +797,9 @@ export const theme: StockTheme = {
         },
         weight: { type: ValueType.THEME_ORDINAL, value: "@fontWeight.medium" },
         size: { type: ValueType.THEME_ORDINAL, value: "@fontSize.xsmall" },
-        style: { type: ValueType.OPTION, value: FontStyle.NORMAL },
         lineHeight: {
           type: ValueType.THEME_ORDINAL,
-          value: "@lineHeight.cozy",
+          value: "@lineHeight.tight",
         },
         textCase: { type: ValueType.OPTION, value: TextCasing.NORMAL },
         letterSpacing: { type: ValueType.EMPTY, value: null },
@@ -823,13 +810,12 @@ export const theme: StockTheme = {
       name: "Code",
       intent: "For displaying code-like snippets",
       parameters: {
-        family: { type: ValueType.EXACT, value: "Roboto Mono" },
+        family: { type: ValueType.EXACT, value: "Source Code Pro" },
         weight: { type: ValueType.THEME_ORDINAL, value: "@fontWeight.normal" },
         size: { type: ValueType.THEME_ORDINAL, value: "@fontSize.medium" },
-        style: { type: ValueType.OPTION, value: FontStyle.NORMAL },
         lineHeight: {
           type: ValueType.THEME_ORDINAL,
-          value: "@lineHeight.cozy",
+          value: "@lineHeight.tight",
         },
         textCase: { type: ValueType.OPTION, value: TextCasing.NORMAL },
         letterSpacing: { type: ValueType.EMPTY, value: null },
@@ -1022,7 +1008,7 @@ export const theme: StockTheme = {
         color: { type: ValueType.THEME_CATEGORICAL, value: "@swatch.black" },
         opacity: {
           type: ValueType.EXACT,
-          value: { value: 33, unit: Unit.PERCENT },
+          value: { value: 22, unit: Unit.PERCENT },
         },
       },
     },
@@ -1037,7 +1023,7 @@ export const theme: StockTheme = {
         color: { type: ValueType.THEME_CATEGORICAL, value: "@swatch.black" },
         opacity: {
           type: ValueType.EXACT,
-          value: { value: 33, unit: Unit.PERCENT },
+          value: { value: 22, unit: Unit.PERCENT },
         },
       },
     },
@@ -1052,7 +1038,7 @@ export const theme: StockTheme = {
         color: { type: ValueType.THEME_CATEGORICAL, value: "@swatch.black" },
         opacity: {
           type: ValueType.EXACT,
-          value: { value: 33, unit: Unit.PERCENT },
+          value: { value: 22, unit: Unit.PERCENT },
         },
       },
     },
@@ -1067,7 +1053,7 @@ export const theme: StockTheme = {
         color: { type: ValueType.THEME_CATEGORICAL, value: "@swatch.black" },
         opacity: {
           type: ValueType.EXACT,
-          value: { value: 33, unit: Unit.PERCENT },
+          value: { value: 22, unit: Unit.PERCENT },
         },
       },
     },
@@ -1082,7 +1068,7 @@ export const theme: StockTheme = {
         color: { type: ValueType.THEME_CATEGORICAL, value: "@swatch.black" },
         opacity: {
           type: ValueType.EXACT,
-          value: { value: 33, unit: Unit.PERCENT },
+          value: { value: 22, unit: Unit.PERCENT },
         },
       },
     },

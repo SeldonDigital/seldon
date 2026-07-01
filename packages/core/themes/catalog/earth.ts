@@ -20,12 +20,12 @@ export const theme: StockTheme = {
   },
   modulation: {
     type: TokenType.COMPUTED,
-    parameters: { ratio: Ratio.MajorThird, baseFontSize: 16, baseSize: 1 },
+    parameters: { ratio: Ratio.PerfectFourth, baseFontSize: 16, baseSize: 1 },
   },
   colorHarmony: {
     type: TokenType.COMPUTED,
     parameters: {
-      baseColor: { hue: 18, saturation: 60, lightness: 45 },
+      baseColor: { hue: 16, saturation: 52, lightness: 50 },
       harmony: Harmony.Analogous,
       angle: 9,
       step: 12,
@@ -58,8 +58,8 @@ export const theme: StockTheme = {
   fontFamily: {
     type: TokenType.COMPUTED,
     parameters: {
-      primary: { type: TokenType.FONT_FAMILY, parameters: "Raleway" },
-      secondary: { type: TokenType.FONT_FAMILY, parameters: "Raleway" },
+      primary: { type: TokenType.FONT_FAMILY, parameters: "Inter" },
+      secondary: { type: TokenType.FONT_FAMILY, parameters: "Fraunces" },
     },
   },
   size: {
@@ -176,7 +176,7 @@ export const theme: StockTheme = {
     open: {
       type: TokenType.MODULATED,
       name: "Open",
-      parameters: { step: 6.21 },
+      parameters: { step: 9.32 },
     },
   },
   padding: {
@@ -199,7 +199,7 @@ export const theme: StockTheme = {
     open: {
       type: TokenType.MODULATED,
       name: "Open",
-      parameters: { step: 6.21 },
+      parameters: { step: 9.32 },
     },
   },
   gap: {
@@ -222,7 +222,7 @@ export const theme: StockTheme = {
     open: {
       type: TokenType.MODULATED,
       name: "Open",
-      parameters: { step: 6.21 },
+      parameters: { step: 9.32 },
     },
   },
   corners: {
@@ -236,16 +236,20 @@ export const theme: StockTheme = {
       name: "Compact",
       parameters: { step: -3.11 },
     },
-    cozy: { type: TokenType.MODULATED, name: "Cozy", parameters: { step: 0 } },
+    cozy: {
+      type: TokenType.MODULATED,
+      name: "Cozy",
+      parameters: { step: 0.9 },
+    },
     comfortable: {
       type: TokenType.MODULATED,
       name: "Comfortable",
-      parameters: { step: 1.82 },
+      parameters: { step: 3.11 },
     },
     open: {
       type: TokenType.MODULATED,
       name: "Open",
-      parameters: { step: 3.11 },
+      parameters: { step: 4.92 },
     },
   },
   borderWidth: {
@@ -554,7 +558,7 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 18, saturation: 12, lightness: 8 },
+        value: { hue: 36, saturation: 30, lightness: 95 },
       },
     },
     active: {
@@ -563,7 +567,7 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 18, saturation: 65, lightness: 50 },
+        value: { hue: 16, saturation: 55, lightness: 48 },
       },
     },
     punch: {
@@ -572,7 +576,7 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 198, saturation: 70, lightness: 50 },
+        value: { hue: 95, saturation: 22, lightness: 42 },
       },
     },
     positive: {
@@ -608,7 +612,7 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 168, saturation: 55, lightness: 45 },
+        value: { hue: 158, saturation: 30, lightness: 40 },
       },
     },
     custom1: {
@@ -1033,7 +1037,7 @@ export const theme: StockTheme = {
         color: { type: ValueType.THEME_CATEGORICAL, value: "@swatch.black" },
         opacity: {
           type: ValueType.EXACT,
-          value: { value: 33, unit: Unit.PERCENT },
+          value: { value: 18, unit: Unit.PERCENT },
         },
       },
     },
@@ -1048,7 +1052,7 @@ export const theme: StockTheme = {
         color: { type: ValueType.THEME_CATEGORICAL, value: "@swatch.black" },
         opacity: {
           type: ValueType.EXACT,
-          value: { value: 33, unit: Unit.PERCENT },
+          value: { value: 18, unit: Unit.PERCENT },
         },
       },
     },
@@ -1063,7 +1067,7 @@ export const theme: StockTheme = {
         color: { type: ValueType.THEME_CATEGORICAL, value: "@swatch.black" },
         opacity: {
           type: ValueType.EXACT,
-          value: { value: 33, unit: Unit.PERCENT },
+          value: { value: 18, unit: Unit.PERCENT },
         },
       },
     },
@@ -1078,7 +1082,7 @@ export const theme: StockTheme = {
         color: { type: ValueType.THEME_CATEGORICAL, value: "@swatch.black" },
         opacity: {
           type: ValueType.EXACT,
-          value: { value: 33, unit: Unit.PERCENT },
+          value: { value: 18, unit: Unit.PERCENT },
         },
       },
     },
@@ -1093,7 +1097,7 @@ export const theme: StockTheme = {
         color: { type: ValueType.THEME_CATEGORICAL, value: "@swatch.black" },
         opacity: {
           type: ValueType.EXACT,
-          value: { value: 33, unit: Unit.PERCENT },
+          value: { value: 18, unit: Unit.PERCENT },
         },
       },
     },

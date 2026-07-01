@@ -4,11 +4,11 @@ import type { ThemeTemplateId } from "../types/theme-id"
 import { theme as earthStock } from "./earth"
 import { theme as highContrastStock } from "./high-contrast"
 import { theme as industrialStock } from "./industrial"
-import { theme as materialStock } from "./material"
+import { theme as googleMaterialStock } from "./google-material"
+import { theme as adobeSpectrumStock } from "./adobe-spectrum"
+import { theme as ibmCarbonStock } from "./ibm-carbon"
 import { theme as popPunkStock } from "./pop-punk"
-import { theme as royalAzureStock } from "./royal-azure"
 import { theme as defaultStock } from "./seldon"
-import { theme as skyStock } from "./sky"
 import { theme as sunsetBlueStock } from "./sunset-blue"
 import { theme as wildberryStock } from "./wildberry"
 
@@ -18,10 +18,10 @@ export const STOCK_THEMES: StockTheme[] = [
   earthStock,
   highContrastStock,
   industrialStock,
-  materialStock,
+  googleMaterialStock,
   popPunkStock,
-  royalAzureStock,
-  skyStock,
+  ibmCarbonStock,
+  adobeSpectrumStock,
   sunsetBlueStock,
   wildberryStock,
 ]

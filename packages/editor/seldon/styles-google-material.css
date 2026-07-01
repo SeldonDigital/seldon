@@ -11,45 +11,47 @@
  * 
  *****/
  
-[data-theme="sky"] {
-  /* Theme: Sky */
+[data-theme="google-material"] {
+  /* Theme: Google Material */
   /* Modulation */
   --sdn-ratio: 1.25;
   --sdn-font-size: 16px;
   --sdn-size: 1;
   /* Font Families */
-  --sdn-font-family-primary: Open Sans;
-  --sdn-font-family-secondary: Lora;
+  --sdn-font-family-primary: Roboto;
+  --sdn-font-family-secondary: Roboto;
   /* Colors */
-  --sdn-color-base-hue: 197;
-  --sdn-color-base-saturation: 100%;
-  --sdn-color-base-lightness: 45%;
-  --sdn-color-harmony: 0;
-  --sdn-color-angle: 16deg;
-  --sdn-color-step: 15;
-  --sdn-color-white-point: 98%;
-  --sdn-color-gray-point: 56%;
-  --sdn-color-black-point: 12%;
-  --sdn-color-bleed: 4;
+  --sdn-color-base-hue: 256;
+  --sdn-color-base-saturation: 35%;
+  --sdn-color-base-lightness: 48%;
+  --sdn-color-harmony: 5;
+  --sdn-color-angle: 0deg;
+  --sdn-color-step: 10;
+  --sdn-color-white-point: 100%;
+  --sdn-color-gray-point: 47%;
+  --sdn-color-black-point: 1%;
+  --sdn-color-bleed: 10;
   --sdn-color-contrast-ratio: 2.5;
   /* Swatches */
-  --sdn-swatch-white: hsl(197 4% 98%);
-  --sdn-swatch-gray: hsl(197 4% 56%);
-  --sdn-swatch-black: hsl(197 4% 12%);
-  --sdn-swatch-primary: hsl(197 100% 45%);
-  --sdn-swatch-swatch1: hsl(197 100% 60%);
-  --sdn-swatch-swatch2: hsl(17 100% 45%);
-  --sdn-swatch-swatch3: hsl(17 100% 60%);
-  --sdn-swatch-swatch4: hsl(17 100% 75%);
-  --sdn-swatch-background: hsl(202 8% 8%);
-  --sdn-swatch-active: hsl(197 100% 50%);
-  --sdn-swatch-punch: hsl(16 100% 65%);
-  --sdn-swatch-positive: hsl(150 90% 42%);
-  --sdn-swatch-negative: hsl(348 83% 47%);
-  --sdn-swatch-warning: hsl(45 100% 52%);
-  --sdn-swatch-accent: hsl(317 85% 55%);
-  --sdn-swatch-offBlack: hsl(197 8% 18%);
+  --sdn-swatch-white: hsl(256 10% 100%);
+  --sdn-swatch-gray: hsl(256 10% 47%);
+  --sdn-swatch-black: hsl(256 10% 1%);
+  --sdn-swatch-primary: hsl(256 35% 48%);
+  --sdn-swatch-swatch1: hsl(256 35% 58%);
+  --sdn-swatch-swatch2: hsl(256 35% 68%);
+  --sdn-swatch-swatch3: hsl(256 35% 78%);
+  --sdn-swatch-swatch4: hsl(256 35% 88%);
+  --sdn-swatch-background: hsl(260 12% 9%);
+  --sdn-swatch-active: hsl(256 35% 48%);
+  --sdn-swatch-punch: hsl(25 75% 55%);
+  --sdn-swatch-positive: hsl(140 45% 42%);
+  --sdn-swatch-warning: hsl(40 80% 50%);
+  --sdn-swatch-accent: hsl(330 40% 52%);
+  --sdn-swatch-secondary: hsl(259 11% 40%);
+  --sdn-swatch-tertiary: hsl(340 21% 41%);
+  --sdn-swatch-negative: hsl(3 71% 41%);
   --sdn-swatch-foreground: hsl(0 0% 100%);
+  --sdn-swatch-offBlack: hsl(0 0% 15%);
   --sdn-swatch-offWhite: hsl(0 0% 96%);
   /* Sizes */
   --sdn-sizes-tiny: 0.125rem;
@@ -91,10 +93,10 @@
   --sdn-font-size-xsmall: 0.75rem;
   --sdn-font-size-small: 0.875rem;
   --sdn-font-size-medium: 1rem;
-  --sdn-font-size-large: 1.501rem;
+  --sdn-font-size-large: 1.376rem;
   --sdn-font-size-xlarge: 2.002rem;
-  --sdn-font-size-xxlarge: 2.998rem;
-  --sdn-font-size-huge: 3.998rem;
+  --sdn-font-size-xxlarge: 3.56rem;
+  --sdn-font-size-huge: 4.5rem;
   /* Font Weights */
   --sdn-font-weight-thin: 100;
   --sdn-font-weight-xlight: 200;
@@ -120,34 +122,34 @@
   --sdn-border-width-large: 0.25rem;
   --sdn-border-width-xlarge: 0.5rem;
   /* High Contrast */
-  --sdn-hc-on-white: hsl(197 4% 12%);
-  --sdn-hc-on-gray: hsl(197 4% 98%);
-  --sdn-hc-on-black: hsl(197 4% 98%);
-  --sdn-hc-on-primary: hsl(197 4% 98%);
-  --sdn-hc-on-swatch1: hsl(197 4% 12%);
-  --sdn-hc-on-swatch2: hsl(197 4% 98%);
-  --sdn-hc-on-swatch3: hsl(197 4% 98%);
-  --sdn-hc-on-swatch4: hsl(197 4% 12%);
-  --sdn-hc-on-foreground: hsl(197 4% 12%);
-  --sdn-hc-on-background: hsl(197 4% 98%);
-  --sdn-hc-on-active: hsl(197 4% 12%);
-  --sdn-hc-on-punch: hsl(197 4% 98%);
-  --sdn-hc-on-positive: hsl(197 4% 12%);
-  --sdn-hc-on-negative: hsl(197 4% 98%);
-  --sdn-hc-on-warning: hsl(197 4% 12%);
-  --sdn-hc-on-accent: hsl(197 4% 98%);
-  --sdn-hc-on-offBlack: hsl(197 4% 98%);
-  --sdn-hc-on-offWhite: hsl(197 4% 12%);
+  --sdn-hc-on-white: hsl(256 10% 1%);
+  --sdn-hc-on-gray: hsl(256 10% 100%);
+  --sdn-hc-on-black: hsl(256 10% 100%);
+  --sdn-hc-on-primary: hsl(256 10% 100%);
+  --sdn-hc-on-swatch1: hsl(256 10% 100%);
+  --sdn-hc-on-swatch2: hsl(256 10% 100%);
+  --sdn-hc-on-swatch3: hsl(256 10% 1%);
+  --sdn-hc-on-swatch4: hsl(256 10% 1%);
+  --sdn-hc-on-foreground: hsl(256 10% 1%);
+  --sdn-hc-on-background: hsl(256 10% 100%);
+  --sdn-hc-on-active: hsl(256 10% 100%);
+  --sdn-hc-on-punch: hsl(256 10% 100%);
+  --sdn-hc-on-positive: hsl(256 10% 100%);
+  --sdn-hc-on-negative: hsl(256 10% 100%);
+  --sdn-hc-on-warning: hsl(256 10% 1%);
+  --sdn-hc-on-accent: hsl(256 10% 100%);
+  --sdn-hc-on-offBlack: hsl(256 10% 100%);
+  --sdn-hc-on-offWhite: hsl(256 10% 1%);
   /* Auto Fit */
   --sdn-cmp-auto-fit-font-size-tiny: 0.4rem;
   --sdn-cmp-auto-fit-font-size-xxsmall: 0.5rem;
   --sdn-cmp-auto-fit-font-size-xsmall: 0.6rem;
   --sdn-cmp-auto-fit-font-size-small: 0.7rem;
   --sdn-cmp-auto-fit-font-size-medium: 0.8rem;
-  --sdn-cmp-auto-fit-font-size-large: 1.201rem;
+  --sdn-cmp-auto-fit-font-size-large: 1.101rem;
   --sdn-cmp-auto-fit-font-size-xlarge: 1.601rem;
-  --sdn-cmp-auto-fit-font-size-xxlarge: 2.398rem;
-  --sdn-cmp-auto-fit-font-size-huge: 3.198rem;
+  --sdn-cmp-auto-fit-font-size-xxlarge: 2.848rem;
+  --sdn-cmp-auto-fit-font-size-huge: 3.6rem;
   --sdn-cmp-auto-fit-size-tiny: 0.1rem;
   --sdn-cmp-auto-fit-size-xxsmall: 0.2rem;
   --sdn-cmp-auto-fit-size-xsmall: 0.4rem;
@@ -163,26 +165,26 @@
   --sdn-cmp-optical-padding-left-xsmall: 0.562rem;
   --sdn-cmp-optical-padding-left-small: 0.656rem;
   --sdn-cmp-optical-padding-left-medium: 0.75rem;
-  --sdn-cmp-optical-padding-left-large: 1.126rem;
+  --sdn-cmp-optical-padding-left-large: 1.032rem;
   --sdn-cmp-optical-padding-left-xlarge: 1.501rem;
-  --sdn-cmp-optical-padding-left-xxlarge: 2.248rem;
-  --sdn-cmp-optical-padding-left-huge: 2.998rem;
+  --sdn-cmp-optical-padding-left-xxlarge: 2.67rem;
+  --sdn-cmp-optical-padding-left-huge: 3.375rem;
   --sdn-cmp-optical-padding-right-tiny: 0.437rem;
   --sdn-cmp-optical-padding-right-xxsmall: 0.546rem;
   --sdn-cmp-optical-padding-right-xsmall: 0.656rem;
   --sdn-cmp-optical-padding-right-small: 0.765rem;
   --sdn-cmp-optical-padding-right-medium: 0.875rem;
-  --sdn-cmp-optical-padding-right-large: 1.313rem;
+  --sdn-cmp-optical-padding-right-large: 1.204rem;
   --sdn-cmp-optical-padding-right-xlarge: 1.751rem;
-  --sdn-cmp-optical-padding-right-xxlarge: 2.623rem;
-  --sdn-cmp-optical-padding-right-huge: 3.498rem;
+  --sdn-cmp-optical-padding-right-xxlarge: 3.115rem;
+  --sdn-cmp-optical-padding-right-huge: 3.937rem;
   --sdn-cmp-optical-padding-vertical-tiny: 0.25rem;
   --sdn-cmp-optical-padding-vertical-xxsmall: 0.312rem;
   --sdn-cmp-optical-padding-vertical-xsmall: 0.375rem;
   --sdn-cmp-optical-padding-vertical-small: 0.437rem;
   --sdn-cmp-optical-padding-vertical-medium: 0.5rem;
-  --sdn-cmp-optical-padding-vertical-large: 0.75rem;
+  --sdn-cmp-optical-padding-vertical-large: 0.688rem;
   --sdn-cmp-optical-padding-vertical-xlarge: 1.001rem;
-  --sdn-cmp-optical-padding-vertical-xxlarge: 1.499rem;
-  --sdn-cmp-optical-padding-vertical-huge: 1.999rem;
+  --sdn-cmp-optical-padding-vertical-xxlarge: 1.78rem;
+  --sdn-cmp-optical-padding-vertical-huge: 2.25rem;
 }

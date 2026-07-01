@@ -7,36 +7,32 @@ import {
   Unit,
   ValueType,
 } from "../../properties"
-import { Colorspace, StockTheme, TokenType } from "../types"
+import { Colorspace, Harmony, Ratio, StockTheme, TokenType } from "../types"
 
 export const theme: StockTheme = {
   metadata: {
-    id: "royalAzure",
-    name: "Royal Azure",
+    id: "googleMaterial",
+    name: "Google Material",
     description:
-      "A clean and versatile theme with a royal color palette. It features a range of customizable typography, layout, and color options to suit various design needs.",
+      "A theme aligned with Material Design 3. It pairs the Roboto type family with the M3 baseline palette of purple primary, neutral secondary, and muted tertiary tones, set on a dark neutral surface with restrained elevation.",
     intent:
-      "To provide a modern and professional look with high contrast and readability, suitable for a wide range of applications.",
+      "To provide a clean, systematic look based on Material Design 3 tokens, suitable for product and application interfaces.",
   },
   modulation: {
     type: TokenType.COMPUTED,
-    parameters: { ratio: 1.2, baseFontSize: 16, baseSize: 1 },
+    parameters: { ratio: Ratio.MajorThird, baseFontSize: 16, baseSize: 1 },
   },
   colorHarmony: {
     type: TokenType.COMPUTED,
     parameters: {
-      baseColor: {
-        hue: 233,
-        saturation: 96,
-        lightness: 50,
-      },
-      harmony: 0,
-      angle: 60,
-      step: 20,
-      whitePoint: 98,
-      grayPoint: 56,
-      blackPoint: 8,
-      bleed: 12,
+      baseColor: { hue: 256, saturation: 35, lightness: 48 },
+      harmony: Harmony.Monochromatic,
+      angle: 0,
+      step: 10,
+      whitePoint: 100,
+      grayPoint: 47,
+      blackPoint: 1,
+      bleed: 10,
     },
   },
   matchColor: {
@@ -46,7 +42,7 @@ export const theme: StockTheme = {
   highContrast: {
     type: TokenType.COMPUTED,
     parameters: {
-      contrastRatio: 2,
+      contrastRatio: 2.5,
       fallbackColor: { type: ValueType.EXACT, value: "#FFFFFF" },
       includeBleed: true,
     },
@@ -62,518 +58,362 @@ export const theme: StockTheme = {
   fontFamily: {
     type: TokenType.COMPUTED,
     parameters: {
-      primary: { type: TokenType.FONT_FAMILY, parameters: "Noto Sans" },
-      secondary: { type: TokenType.FONT_FAMILY, parameters: "Oswald" },
+      primary: { type: TokenType.FONT_FAMILY, parameters: "Roboto" },
+      secondary: { type: TokenType.FONT_FAMILY, parameters: "Roboto" },
     },
   },
   size: {
     tiny: {
       type: TokenType.MODULATED,
       name: "Tiny",
-      parameters: {
-        step: -9.32,
-      },
+      parameters: { step: -9.32 },
     },
     xxsmall: {
       type: TokenType.MODULATED,
       name: "Compact",
-      parameters: {
-        step: -6.21,
-      },
+      parameters: { step: -6.21 },
     },
     xsmall: {
       type: TokenType.MODULATED,
       name: "Extra small",
-      parameters: {
-        step: -3.11,
-      },
+      parameters: { step: -3.11 },
     },
     small: {
       type: TokenType.MODULATED,
       name: "Small",
-      parameters: {
-        step: -1.29,
-      },
+      parameters: { step: -1.29 },
     },
     medium: {
       type: TokenType.MODULATED,
       name: "Medium",
-      parameters: {
-        step: 0,
-      },
+      parameters: { step: 0 },
     },
     large: {
       type: TokenType.MODULATED,
       name: "Large",
-      parameters: {
-        step: 1.82,
-      },
+      parameters: { step: 1.82 },
     },
     xlarge: {
       type: TokenType.MODULATED,
       name: "Extra large",
-      parameters: {
-        step: 3.11,
-      },
+      parameters: { step: 3.11 },
     },
     xxlarge: {
       type: TokenType.MODULATED,
       name: "Big",
-      parameters: {
-        step: 4.92,
-      },
+      parameters: { step: 4.92 },
     },
     huge: {
       type: TokenType.MODULATED,
       name: "Huge",
-      parameters: {
-        step: 6.21,
-      },
+      parameters: { step: 6.21 },
     },
   },
   dimension: {
     tiny: {
       type: TokenType.MODULATED,
       name: "Tiny",
-      parameters: {
-        step: -6.21,
-      },
+      parameters: { step: -6.21 },
     },
     xxsmall: {
       type: TokenType.MODULATED,
       name: "Compact",
-      parameters: {
-        step: -3.11,
-      },
+      parameters: { step: -3.11 },
     },
     xsmall: {
       type: TokenType.MODULATED,
       name: "Extra small",
-      parameters: {
-        step: 0,
-      },
+      parameters: { step: 0 },
     },
     small: {
       type: TokenType.MODULATED,
       name: "Small",
-      parameters: {
-        step: 1.82,
-      },
+      parameters: { step: 1.82 },
     },
     medium: {
       type: TokenType.MODULATED,
       name: "Medium",
-      parameters: {
-        step: 3.11,
-      },
+      parameters: { step: 3.11 },
     },
     large: {
       type: TokenType.MODULATED,
       name: "Large",
-      parameters: {
-        step: 4.92,
-      },
+      parameters: { step: 4.92 },
     },
     xlarge: {
       type: TokenType.MODULATED,
       name: "Extra large",
-      parameters: {
-        step: 6.21,
-      },
+      parameters: { step: 6.21 },
     },
     xxlarge: {
       type: TokenType.MODULATED,
       name: "Big",
-      parameters: {
-        step: 8.03,
-      },
+      parameters: { step: 8.03 },
     },
     huge: {
       type: TokenType.MODULATED,
       name: "Huge",
-      parameters: {
-        step: 9.32,
-      },
+      parameters: { step: 9.32 },
     },
   },
   margin: {
     tight: {
       type: TokenType.MODULATED,
       name: "Tight",
-      parameters: {
-        step: -6.21,
-      },
+      parameters: { step: -6.21 },
     },
     compact: {
       type: TokenType.MODULATED,
       name: "Compact",
-      parameters: {
-        step: -3.11,
-      },
+      parameters: { step: -3.11 },
     },
-    cozy: {
-      type: TokenType.MODULATED,
-      name: "Cozy",
-      parameters: {
-        step: 0,
-      },
-    },
+    cozy: { type: TokenType.MODULATED, name: "Cozy", parameters: { step: 0 } },
     comfortable: {
       type: TokenType.MODULATED,
       name: "Comfortable",
-      parameters: {
-        step: 3.11,
-      },
+      parameters: { step: 3.11 },
     },
     open: {
       type: TokenType.MODULATED,
       name: "Open",
-      parameters: {
-        step: 6.21,
-      },
+      parameters: { step: 6.21 },
     },
   },
   padding: {
     tight: {
       type: TokenType.MODULATED,
       name: "Tight",
-      parameters: {
-        step: -6.21,
-      },
+      parameters: { step: -6.21 },
     },
     compact: {
       type: TokenType.MODULATED,
       name: "Compact",
-      parameters: {
-        step: -3.11,
-      },
+      parameters: { step: -3.11 },
     },
-    cozy: {
-      type: TokenType.MODULATED,
-      name: "Cozy",
-      parameters: {
-        step: 0,
-      },
-    },
+    cozy: { type: TokenType.MODULATED, name: "Cozy", parameters: { step: 0 } },
     comfortable: {
       type: TokenType.MODULATED,
       name: "Comfortable",
-      parameters: {
-        step: 3.11,
-      },
+      parameters: { step: 3.11 },
     },
     open: {
       type: TokenType.MODULATED,
       name: "Open",
-      parameters: {
-        step: 6.21,
-      },
+      parameters: { step: 6.21 },
     },
   },
   gap: {
     tight: {
       type: TokenType.MODULATED,
       name: "Tight",
-      parameters: {
-        step: -6.21,
-      },
+      parameters: { step: -6.21 },
     },
     compact: {
       type: TokenType.MODULATED,
       name: "Compact",
-      parameters: {
-        step: -3.11,
-      },
+      parameters: { step: -3.11 },
     },
-    cozy: {
-      type: TokenType.MODULATED,
-      name: "Cozy",
-      parameters: {
-        step: 0,
-      },
-    },
+    cozy: { type: TokenType.MODULATED, name: "Cozy", parameters: { step: 0 } },
     comfortable: {
       type: TokenType.MODULATED,
       name: "Comfortable",
-      parameters: {
-        step: 3.11,
-      },
+      parameters: { step: 3.11 },
     },
     open: {
       type: TokenType.MODULATED,
       name: "Open",
-      parameters: {
-        step: 6.21,
-      },
+      parameters: { step: 6.21 },
     },
   },
   corners: {
     tight: {
       type: TokenType.MODULATED,
       name: "Tight",
-      parameters: {
-        step: -6.21,
-      },
+      parameters: { step: -6.21 },
     },
     compact: {
       type: TokenType.MODULATED,
       name: "Compact",
-      parameters: {
-        step: -3.11,
-      },
+      parameters: { step: -3.11 },
     },
-    cozy: {
-      type: TokenType.MODULATED,
-      name: "Cozy",
-      parameters: {
-        step: 0,
-      },
-    },
+    cozy: { type: TokenType.MODULATED, name: "Cozy", parameters: { step: 0 } },
     comfortable: {
       type: TokenType.MODULATED,
       name: "Comfortable",
-      parameters: {
-        step: 1.82,
-      },
+      parameters: { step: 1.82 },
     },
     open: {
       type: TokenType.MODULATED,
       name: "Open",
-      parameters: {
-        step: 6,
-      },
+      parameters: { step: 3.11 },
     },
   },
   borderWidth: {
     xsmall: {
       type: TokenType.MODULATED,
       name: "Extra small",
-      parameters: {
-        step: -15.53,
-      },
+      parameters: { step: -15.53 },
     },
     small: {
       type: TokenType.MODULATED,
       name: "Small",
-      parameters: {
-        step: -12,
-      },
+      parameters: { step: -12 },
     },
     medium: {
       type: TokenType.MODULATED,
       name: "Medium",
-      parameters: {
-        step: -9.32,
-      },
+      parameters: { step: -9.32 },
     },
     large: {
       type: TokenType.MODULATED,
       name: "Large",
-      parameters: {
-        step: -6.21,
-      },
+      parameters: { step: -6.21 },
     },
     xlarge: {
       type: TokenType.MODULATED,
       name: "Extra large",
-      parameters: {
-        step: -3.11,
-      },
+      parameters: { step: -3.11 },
     },
   },
   blur: {
     tiny: {
       type: TokenType.MODULATED,
       name: "Tiny",
-      parameters: {
-        step: -12.43,
-      },
+      parameters: { step: -12.43 },
     },
     xxsmall: {
       type: TokenType.MODULATED,
       name: "Compact",
-      parameters: {
-        step: -9.32,
-      },
+      parameters: { step: -9.32 },
     },
     xsmall: {
       type: TokenType.MODULATED,
       name: "Extra small",
-      parameters: {
-        step: -6.21,
-      },
+      parameters: { step: -6.21 },
     },
     small: {
       type: TokenType.MODULATED,
       name: "Small",
-      parameters: {
-        step: -4.4,
-      },
+      parameters: { step: -4.4 },
     },
     medium: {
       type: TokenType.MODULATED,
       name: "Medium",
-      parameters: {
-        step: -3.11,
-      },
+      parameters: { step: -3.11 },
     },
     large: {
       type: TokenType.MODULATED,
       name: "Large",
-      parameters: {
-        step: -1.29,
-      },
+      parameters: { step: -1.29 },
     },
     xlarge: {
       type: TokenType.MODULATED,
       name: "Extra large",
-      parameters: {
-        step: 0,
-      },
+      parameters: { step: 0 },
     },
     xxlarge: {
       type: TokenType.MODULATED,
       name: "Big",
-      parameters: {
-        step: 1.82,
-      },
+      parameters: { step: 1.82 },
     },
     huge: {
       type: TokenType.MODULATED,
       name: "Huge",
-      parameters: {
-        step: 3.11,
-      },
+      parameters: { step: 3.11 },
     },
   },
   spread: {
     tiny: {
       type: TokenType.MODULATED,
       name: "Tiny",
-      parameters: {
-        step: -15.53,
-      },
+      parameters: { step: -15.53 },
     },
     xxsmall: {
       type: TokenType.MODULATED,
       name: "Compact",
-      parameters: {
-        step: -12.43,
-      },
+      parameters: { step: -12.43 },
     },
     xsmall: {
       type: TokenType.MODULATED,
       name: "Extra small",
-      parameters: {
-        step: -9.32,
-      },
+      parameters: { step: -9.32 },
     },
     small: {
       type: TokenType.MODULATED,
       name: "Small",
-      parameters: {
-        step: -7.5,
-      },
+      parameters: { step: -7.5 },
     },
     medium: {
       type: TokenType.MODULATED,
       name: "Medium",
-      parameters: {
-        step: -6.21,
-      },
+      parameters: { step: -6.21 },
     },
     large: {
       type: TokenType.MODULATED,
       name: "Large",
-      parameters: {
-        step: -4.4,
-      },
+      parameters: { step: -4.4 },
     },
     xlarge: {
       type: TokenType.MODULATED,
       name: "Extra large",
-      parameters: {
-        step: -3.11,
-      },
+      parameters: { step: -3.11 },
     },
     xxlarge: {
       type: TokenType.MODULATED,
       name: "Big",
-      parameters: {
-        step: -2.11,
-      },
+      parameters: { step: -2.11 },
     },
     huge: {
       type: TokenType.MODULATED,
       name: "Huge",
-      parameters: {
-        step: -1.29,
-      },
+      parameters: { step: -1.29 },
     },
   },
   fontSize: {
     tiny: {
       type: TokenType.MODULATED,
       name: "Tiny",
-      parameters: {
-        step: -3.11,
-      },
+      parameters: { step: -3.11 },
     },
     xxsmall: {
       type: TokenType.MODULATED,
       name: "Petite",
-      parameters: {
-        step: -2.11,
-      },
+      parameters: { step: -2.11 },
     },
     xsmall: {
       type: TokenType.MODULATED,
       name: "Extra small",
-      parameters: {
-        step: -1.29,
-      },
+      parameters: { step: -1.29 },
     },
     small: {
       type: TokenType.MODULATED,
       name: "Small",
-      parameters: {
-        step: -0.6,
-      },
+      parameters: { step: -0.6 },
     },
     medium: {
       type: TokenType.MODULATED,
       name: "Medium",
-      parameters: {
-        step: 0,
-      },
+      parameters: { step: 0 },
     },
     large: {
       type: TokenType.MODULATED,
       name: "Large",
-      parameters: {
-        step: 2,
-      },
+      parameters: { step: 1.43 },
     },
     xlarge: {
       type: TokenType.MODULATED,
       name: "Extra large",
-      parameters: {
-        step: 3.11,
-      },
+      parameters: { step: 3.11 },
     },
     xxlarge: {
       type: TokenType.MODULATED,
       name: "Big",
-      parameters: {
-        step: 4.92,
-      },
+      parameters: { step: 5.69 },
     },
     huge: {
       type: TokenType.MODULATED,
       name: "Huge",
-      parameters: {
-        step: 6.21,
-      },
+      parameters: { step: 6.74 },
     },
   },
   fontWeight: {
@@ -627,7 +467,7 @@ export const theme: StockTheme = {
     none: {
       type: TokenType.EXACT,
       name: "None",
-      parameters: { unit: Unit.NUMBER, value: 1 },
+      parameters: { unit: Unit.NUMBER, value: 1.0 },
     },
     solid: {
       type: TokenType.EXACT,
@@ -652,7 +492,7 @@ export const theme: StockTheme = {
     comfortable: {
       type: TokenType.EXACT,
       name: "Comfortable",
-      parameters: { unit: Unit.NUMBER, value: 2 },
+      parameters: { unit: Unit.NUMBER, value: 2.0 },
     },
     open: {
       type: TokenType.EXACT,
@@ -663,14 +503,8 @@ export const theme: StockTheme = {
   iconSet: {
     intent: "General purpose icon set",
     set: "google-material",
-    defaultColor: {
-      type: ValueType.THEME_CATEGORICAL,
-      value: "@swatch.black",
-    },
-    defaultSize: {
-      type: ValueType.THEME_ORDINAL,
-      value: "@size.medium",
-    },
+    defaultColor: { type: ValueType.THEME_CATEGORICAL, value: "@swatch.black" },
+    defaultSize: { type: ValueType.THEME_ORDINAL, value: "@size.medium" },
   },
   swatch: {
     white: {
@@ -720,7 +554,7 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 0, saturation: 4, lightness: 98 },
+        value: { hue: 260, saturation: 12, lightness: 9 },
       },
     },
     active: {
@@ -729,7 +563,7 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 233, saturation: 90, lightness: 60 },
+        value: { hue: 256, saturation: 35, lightness: 48 },
       },
     },
     punch: {
@@ -738,7 +572,7 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 48, saturation: 100, lightness: 56 },
+        value: { hue: 25, saturation: 75, lightness: 55 },
       },
     },
     positive: {
@@ -747,16 +581,7 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 145, saturation: 80, lightness: 42 },
-      },
-    },
-    negative: {
-      name: "Negative",
-      intent: "Actions that are unsuccessful or incorrect",
-      type: TokenType.SWATCH,
-      parameters: {
-        colorspace: Colorspace.HSL,
-        value: { hue: 356, saturation: 85, lightness: 55 },
+        value: { hue: 140, saturation: 45, lightness: 42 },
       },
     },
     warning: {
@@ -765,7 +590,7 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 45, saturation: 100, lightness: 54 },
+        value: { hue: 40, saturation: 80, lightness: 50 },
       },
     },
     accent: {
@@ -774,25 +599,34 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 280, saturation: 75, lightness: 62 },
+        value: { hue: 330, saturation: 40, lightness: 52 },
       },
     },
-    offBlack: {
-      name: "Off Black",
-      intent: "Dark color for text on light backgrounds",
+    custom1: {
+      name: "Secondary",
+      intent: "Google M3 color for secondary objects",
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 0, saturation: 0, lightness: 25 },
+        value: { hue: 259, saturation: 11, lightness: 40 },
       },
     },
-    offWhite: {
-      name: "Off White",
-      intent: "Light color for text on dark backgrounds",
+    custom2: {
+      name: "Tertiary",
+      intent: "Google M3 color for tertiary objects",
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 0, saturation: 0, lightness: 93 },
+        value: { hue: 340, saturation: 21, lightness: 41 },
+      },
+    },
+    negative: {
+      name: "Negative",
+      intent: "Google M3 error color for alert states",
+      type: TokenType.SWATCH,
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 3, saturation: 71, lightness: 41 },
       },
     },
   },
@@ -806,32 +640,17 @@ export const theme: StockTheme = {
           type: ValueType.THEME_CATEGORICAL,
           value: "@fontFamily.secondary",
         },
-        style: {
-          type: ValueType.OPTION,
-          value: FontStyle.NORMAL,
-        },
-        weight: {
-          type: ValueType.THEME_ORDINAL,
-          value: "@fontWeight.bold",
-        },
-        size: {
-          type: ValueType.THEME_ORDINAL,
-          value: "@fontSize.huge",
-        },
+        weight: { type: ValueType.THEME_ORDINAL, value: "@fontWeight.normal" },
+        size: { type: ValueType.THEME_ORDINAL, value: "@fontSize.xxlarge" },
+        style: { type: ValueType.OPTION, value: FontStyle.NORMAL },
         lineHeight: {
           type: ValueType.THEME_ORDINAL,
           value: "@lineHeight.solid",
         },
-        textCase: {
-          type: ValueType.OPTION,
-          value: TextCasing.NORMAL,
-        },
+        textCase: { type: ValueType.OPTION, value: TextCasing.NORMAL },
         letterSpacing: {
           type: ValueType.EXACT,
-          value: {
-            unit: Unit.PX,
-            value: -0.25,
-          },
+          value: { unit: Unit.PX, value: -0.25 },
         },
       },
     },
@@ -844,30 +663,15 @@ export const theme: StockTheme = {
           type: ValueType.THEME_CATEGORICAL,
           value: "@fontFamily.secondary",
         },
-        style: {
-          type: ValueType.OPTION,
-          value: FontStyle.NORMAL,
-        },
-        weight: {
-          type: ValueType.THEME_ORDINAL,
-          value: "@fontWeight.semibold",
-        },
-        size: {
-          type: ValueType.THEME_ORDINAL,
-          value: "@fontSize.xxlarge",
-        },
+        weight: { type: ValueType.THEME_ORDINAL, value: "@fontWeight.normal" },
+        size: { type: ValueType.THEME_ORDINAL, value: "@fontSize.xlarge" },
+        style: { type: ValueType.OPTION, value: FontStyle.NORMAL },
         lineHeight: {
           type: ValueType.THEME_ORDINAL,
           value: "@lineHeight.tight",
         },
-        textCase: {
-          type: ValueType.OPTION,
-          value: TextCasing.NORMAL,
-        },
-        letterSpacing: {
-          type: ValueType.EMPTY,
-          value: null,
-        },
+        textCase: { type: ValueType.OPTION, value: TextCasing.NORMAL },
+        letterSpacing: { type: ValueType.EMPTY, value: null },
       },
     },
     subheading: {
@@ -879,30 +683,15 @@ export const theme: StockTheme = {
           type: ValueType.THEME_CATEGORICAL,
           value: "@fontFamily.secondary",
         },
-        style: {
-          type: ValueType.OPTION,
-          value: FontStyle.NORMAL,
-        },
-        weight: {
-          type: ValueType.THEME_ORDINAL,
-          value: "@fontWeight.medium",
-        },
-        size: {
-          type: ValueType.THEME_ORDINAL,
-          value: "@fontSize.xlarge",
-        },
+        weight: { type: ValueType.THEME_ORDINAL, value: "@fontWeight.normal" },
+        size: { type: ValueType.THEME_ORDINAL, value: "@fontSize.large" },
+        style: { type: ValueType.OPTION, value: FontStyle.NORMAL },
         lineHeight: {
           type: ValueType.THEME_ORDINAL,
           value: "@lineHeight.tight",
         },
-        textCase: {
-          type: ValueType.OPTION,
-          value: TextCasing.NORMAL,
-        },
-        letterSpacing: {
-          type: ValueType.EMPTY,
-          value: null,
-        },
+        textCase: { type: ValueType.OPTION, value: TextCasing.NORMAL },
+        letterSpacing: { type: ValueType.EMPTY, value: null },
       },
     },
     title: {
@@ -912,32 +701,17 @@ export const theme: StockTheme = {
       parameters: {
         family: {
           type: ValueType.THEME_CATEGORICAL,
-          value: "@fontFamily.secondary",
+          value: "@fontFamily.primary",
         },
-        style: {
-          type: ValueType.OPTION,
-          value: FontStyle.NORMAL,
-        },
-        weight: {
-          type: ValueType.THEME_ORDINAL,
-          value: "@fontWeight.medium",
-        },
-        size: {
-          type: ValueType.THEME_ORDINAL,
-          value: "@fontSize.large",
-        },
+        weight: { type: ValueType.THEME_ORDINAL, value: "@fontWeight.medium" },
+        size: { type: ValueType.THEME_ORDINAL, value: "@fontSize.medium" },
+        style: { type: ValueType.OPTION, value: FontStyle.NORMAL },
         lineHeight: {
           type: ValueType.THEME_ORDINAL,
           value: "@lineHeight.tight",
         },
-        textCase: {
-          type: ValueType.OPTION,
-          value: TextCasing.NORMAL,
-        },
-        letterSpacing: {
-          type: ValueType.EMPTY,
-          value: null,
-        },
+        textCase: { type: ValueType.OPTION, value: TextCasing.NORMAL },
+        letterSpacing: { type: ValueType.EMPTY, value: null },
       },
     },
     subtitle: {
@@ -949,30 +723,15 @@ export const theme: StockTheme = {
           type: ValueType.THEME_CATEGORICAL,
           value: "@fontFamily.primary",
         },
-        style: {
-          type: ValueType.OPTION,
-          value: FontStyle.NORMAL,
-        },
-        weight: {
-          type: ValueType.THEME_ORDINAL,
-          value: "@fontWeight.normal",
-        },
-        size: {
-          type: ValueType.THEME_ORDINAL,
-          value: "@fontSize.small",
-        },
+        weight: { type: ValueType.THEME_ORDINAL, value: "@fontWeight.medium" },
+        size: { type: ValueType.THEME_ORDINAL, value: "@fontSize.small" },
+        style: { type: ValueType.OPTION, value: FontStyle.NORMAL },
         lineHeight: {
           type: ValueType.THEME_ORDINAL,
           value: "@lineHeight.tight",
         },
-        textCase: {
-          type: ValueType.OPTION,
-          value: TextCasing.NORMAL,
-        },
-        letterSpacing: {
-          type: ValueType.EMPTY,
-          value: null,
-        },
+        textCase: { type: ValueType.OPTION, value: TextCasing.NORMAL },
+        letterSpacing: { type: ValueType.EMPTY, value: null },
       },
     },
     callout: {
@@ -984,30 +743,15 @@ export const theme: StockTheme = {
           type: ValueType.THEME_CATEGORICAL,
           value: "@fontFamily.primary",
         },
-        style: {
-          type: ValueType.OPTION,
-          value: FontStyle.NORMAL,
-        },
-        weight: {
-          type: ValueType.THEME_ORDINAL,
-          value: "@fontWeight.light",
-        },
-        size: {
-          type: ValueType.THEME_ORDINAL,
-          value: "@fontSize.xsmall",
-        },
+        weight: { type: ValueType.THEME_ORDINAL, value: "@fontWeight.light" },
+        size: { type: ValueType.THEME_ORDINAL, value: "@fontSize.xsmall" },
+        style: { type: ValueType.OPTION, value: FontStyle.NORMAL },
         lineHeight: {
           type: ValueType.THEME_ORDINAL,
           value: "@lineHeight.compact",
         },
-        textCase: {
-          type: ValueType.OPTION,
-          value: TextCasing.NORMAL,
-        },
-        letterSpacing: {
-          type: ValueType.EMPTY,
-          value: null,
-        },
+        textCase: { type: ValueType.OPTION, value: TextCasing.NORMAL },
+        letterSpacing: { type: ValueType.EMPTY, value: null },
       },
     },
     body: {
@@ -1019,29 +763,17 @@ export const theme: StockTheme = {
           type: ValueType.THEME_CATEGORICAL,
           value: "@fontFamily.primary",
         },
-        style: {
-          type: ValueType.OPTION,
-          value: FontStyle.NORMAL,
-        },
-        weight: {
-          type: ValueType.THEME_ORDINAL,
-          value: "@fontWeight.normal",
-        },
-        size: {
-          type: ValueType.THEME_ORDINAL,
-          value: "@fontSize.medium",
-        },
+        weight: { type: ValueType.THEME_ORDINAL, value: "@fontWeight.normal" },
+        size: { type: ValueType.THEME_ORDINAL, value: "@fontSize.medium" },
+        style: { type: ValueType.OPTION, value: FontStyle.NORMAL },
         lineHeight: {
           type: ValueType.THEME_ORDINAL,
-          value: "@lineHeight.tight",
+          value: "@lineHeight.cozy",
         },
-        textCase: {
-          type: ValueType.OPTION,
-          value: TextCasing.NORMAL,
-        },
+        textCase: { type: ValueType.OPTION, value: TextCasing.NORMAL },
         letterSpacing: {
-          type: ValueType.EMPTY,
-          value: null,
+          type: ValueType.EXACT,
+          value: { unit: Unit.PX, value: 0.5 },
         },
       },
     },
@@ -1054,32 +786,17 @@ export const theme: StockTheme = {
           type: ValueType.THEME_CATEGORICAL,
           value: "@fontFamily.primary",
         },
-        style: {
-          type: ValueType.OPTION,
-          value: FontStyle.NORMAL,
-        },
-        weight: {
-          type: ValueType.THEME_ORDINAL,
-          value: "@fontWeight.semibold",
-        },
-        size: {
-          type: ValueType.THEME_ORDINAL,
-          value: "@fontSize.medium",
-        },
+        weight: { type: ValueType.THEME_ORDINAL, value: "@fontWeight.medium" },
+        size: { type: ValueType.THEME_ORDINAL, value: "@fontSize.small" },
+        style: { type: ValueType.OPTION, value: FontStyle.NORMAL },
         lineHeight: {
           type: ValueType.THEME_ORDINAL,
           value: "@lineHeight.solid",
         },
-        textCase: {
-          type: ValueType.OPTION,
-          value: TextCasing.NORMAL,
-        },
+        textCase: { type: ValueType.OPTION, value: TextCasing.NORMAL },
         letterSpacing: {
           type: ValueType.EXACT,
-          value: {
-            unit: Unit.PX,
-            value: 0.1,
-          },
+          value: { unit: Unit.PX, value: 0.1 },
         },
       },
     },
@@ -1092,30 +809,15 @@ export const theme: StockTheme = {
           type: ValueType.THEME_CATEGORICAL,
           value: "@fontFamily.primary",
         },
-        style: {
-          type: ValueType.OPTION,
-          value: FontStyle.NORMAL,
-        },
-        weight: {
-          type: ValueType.THEME_ORDINAL,
-          value: "@fontWeight.medium",
-        },
-        size: {
-          type: ValueType.THEME_ORDINAL,
-          value: "@fontSize.xsmall",
-        },
+        weight: { type: ValueType.THEME_ORDINAL, value: "@fontWeight.medium" },
+        size: { type: ValueType.THEME_ORDINAL, value: "@fontSize.xsmall" },
+        style: { type: ValueType.OPTION, value: FontStyle.NORMAL },
         lineHeight: {
           type: ValueType.THEME_ORDINAL,
-          value: "@lineHeight.tight",
+          value: "@lineHeight.cozy",
         },
-        textCase: {
-          type: ValueType.OPTION,
-          value: TextCasing.NORMAL,
-        },
-        letterSpacing: {
-          type: ValueType.EMPTY,
-          value: null,
-        },
+        textCase: { type: ValueType.OPTION, value: TextCasing.NORMAL },
+        letterSpacing: { type: ValueType.EMPTY, value: null },
       },
     },
     code: {
@@ -1123,34 +825,16 @@ export const theme: StockTheme = {
       name: "Code",
       intent: "For displaying code-like snippets",
       parameters: {
-        family: {
-          type: ValueType.OPTION,
-          value: "Inconsolata",
-        },
-        style: {
-          type: ValueType.OPTION,
-          value: FontStyle.NORMAL,
-        },
-        weight: {
-          type: ValueType.THEME_ORDINAL,
-          value: "@fontWeight.normal",
-        },
-        size: {
-          type: ValueType.THEME_ORDINAL,
-          value: "@fontSize.medium",
-        },
+        family: { type: ValueType.EXACT, value: "Roboto Mono" },
+        weight: { type: ValueType.THEME_ORDINAL, value: "@fontWeight.normal" },
+        size: { type: ValueType.THEME_ORDINAL, value: "@fontSize.medium" },
+        style: { type: ValueType.OPTION, value: FontStyle.NORMAL },
         lineHeight: {
           type: ValueType.THEME_ORDINAL,
-          value: "@lineHeight.tight",
+          value: "@lineHeight.cozy",
         },
-        textCase: {
-          type: ValueType.OPTION,
-          value: TextCasing.NORMAL,
-        },
-        letterSpacing: {
-          type: ValueType.EMPTY,
-          value: null,
-        },
+        textCase: { type: ValueType.OPTION, value: TextCasing.NORMAL },
+        letterSpacing: { type: ValueType.EMPTY, value: null },
       },
     },
   },
@@ -1159,24 +843,12 @@ export const theme: StockTheme = {
       type: TokenType.LOOK,
       name: "Single Pixel",
       parameters: {
-        width: {
-          type: ValueType.OPTION,
-          value: BorderWidth.HAIRLINE,
-        },
-        style: {
-          type: ValueType.OPTION,
-          value: BorderStyle.SOLID,
-        },
-        color: {
-          type: ValueType.THEME_CATEGORICAL,
-          value: "@swatch.primary",
-        },
+        width: { type: ValueType.OPTION, value: BorderWidth.HAIRLINE },
+        style: { type: ValueType.OPTION, value: BorderStyle.SOLID },
+        color: { type: ValueType.THEME_CATEGORICAL, value: "@swatch.primary" },
         opacity: {
           type: ValueType.EXACT,
-          value: {
-            value: 100,
-            unit: Unit.PERCENT,
-          },
+          value: { value: 100, unit: Unit.PERCENT },
         },
       },
     },
@@ -1184,24 +856,12 @@ export const theme: StockTheme = {
       type: TokenType.LOOK,
       name: "Thin line",
       parameters: {
-        width: {
-          type: ValueType.THEME_ORDINAL,
-          value: "@borderWidth.small",
-        },
-        style: {
-          type: ValueType.OPTION,
-          value: BorderStyle.SOLID,
-        },
-        color: {
-          type: ValueType.THEME_CATEGORICAL,
-          value: "@swatch.primary",
-        },
+        width: { type: ValueType.THEME_ORDINAL, value: "@borderWidth.small" },
+        style: { type: ValueType.OPTION, value: BorderStyle.SOLID },
+        color: { type: ValueType.THEME_CATEGORICAL, value: "@swatch.primary" },
         opacity: {
           type: ValueType.EXACT,
-          value: {
-            value: 100,
-            unit: Unit.PERCENT,
-          },
+          value: { value: 100, unit: Unit.PERCENT },
         },
       },
     },
@@ -1209,24 +869,12 @@ export const theme: StockTheme = {
       type: TokenType.LOOK,
       name: "Solid line",
       parameters: {
-        width: {
-          type: ValueType.THEME_ORDINAL,
-          value: "@borderWidth.medium",
-        },
-        style: {
-          type: ValueType.OPTION,
-          value: BorderStyle.SOLID,
-        },
-        color: {
-          type: ValueType.THEME_CATEGORICAL,
-          value: "@swatch.primary",
-        },
+        width: { type: ValueType.THEME_ORDINAL, value: "@borderWidth.medium" },
+        style: { type: ValueType.OPTION, value: BorderStyle.SOLID },
+        color: { type: ValueType.THEME_CATEGORICAL, value: "@swatch.primary" },
         opacity: {
           type: ValueType.EXACT,
-          value: {
-            value: 100,
-            unit: Unit.PERCENT,
-          },
+          value: { value: 100, unit: Unit.PERCENT },
         },
       },
     },
@@ -1234,24 +882,12 @@ export const theme: StockTheme = {
       type: TokenType.LOOK,
       name: "Thick line",
       parameters: {
-        width: {
-          type: ValueType.THEME_ORDINAL,
-          value: "@borderWidth.large",
-        },
-        style: {
-          type: ValueType.OPTION,
-          value: BorderStyle.SOLID,
-        },
-        color: {
-          type: ValueType.THEME_CATEGORICAL,
-          value: "@swatch.primary",
-        },
+        width: { type: ValueType.THEME_ORDINAL, value: "@borderWidth.large" },
+        style: { type: ValueType.OPTION, value: BorderStyle.SOLID },
+        color: { type: ValueType.THEME_CATEGORICAL, value: "@swatch.primary" },
         opacity: {
           type: ValueType.EXACT,
-          value: {
-            value: 100,
-            unit: Unit.PERCENT,
-          },
+          value: { value: 100, unit: Unit.PERCENT },
         },
       },
     },
@@ -1259,24 +895,12 @@ export const theme: StockTheme = {
       type: TokenType.LOOK,
       name: "Bevel",
       parameters: {
-        width: {
-          type: ValueType.THEME_ORDINAL,
-          value: "@borderWidth.medium",
-        },
-        style: {
-          type: ValueType.OPTION,
-          value: BorderStyle.GROOVE,
-        },
-        color: {
-          type: ValueType.THEME_CATEGORICAL,
-          value: "@swatch.primary",
-        },
+        width: { type: ValueType.THEME_ORDINAL, value: "@borderWidth.medium" },
+        style: { type: ValueType.OPTION, value: BorderStyle.GROOVE },
+        color: { type: ValueType.THEME_CATEGORICAL, value: "@swatch.primary" },
         opacity: {
           type: ValueType.EXACT,
-          value: {
-            value: 90,
-            unit: Unit.PERCENT,
-          },
+          value: { value: 90, unit: Unit.PERCENT },
         },
       },
     },
@@ -1286,16 +910,10 @@ export const theme: StockTheme = {
       type: TokenType.LOOK,
       name: "Ramp",
       parameters: {
-        gradientType: {
-          type: ValueType.OPTION,
-          value: GradientType.LINEAR,
-        },
+        gradientType: { type: ValueType.OPTION, value: GradientType.LINEAR },
         angle: {
           type: ValueType.EXACT,
-          value: {
-            unit: Unit.DEGREES,
-            value: 0,
-          },
+          value: { unit: Unit.DEGREES, value: 0 },
         },
         startColor: {
           type: ValueType.THEME_CATEGORICAL,
@@ -1303,17 +921,11 @@ export const theme: StockTheme = {
         },
         startOpacity: {
           type: ValueType.EXACT,
-          value: {
-            unit: Unit.PERCENT,
-            value: 100,
-          },
+          value: { unit: Unit.PERCENT, value: 100 },
         },
         startPosition: {
           type: ValueType.EXACT,
-          value: {
-            unit: Unit.PERCENT,
-            value: 0,
-          },
+          value: { unit: Unit.PERCENT, value: 0 },
         },
         endColor: {
           type: ValueType.THEME_CATEGORICAL,
@@ -1321,17 +933,11 @@ export const theme: StockTheme = {
         },
         endOpacity: {
           type: ValueType.EXACT,
-          value: {
-            unit: Unit.PERCENT,
-            value: 100,
-          },
+          value: { unit: Unit.PERCENT, value: 100 },
         },
         endPosition: {
           type: ValueType.EXACT,
-          value: {
-            unit: Unit.PERCENT,
-            value: 100,
-          },
+          value: { unit: Unit.PERCENT, value: 100 },
         },
       },
     },
@@ -1339,16 +945,10 @@ export const theme: StockTheme = {
       type: TokenType.LOOK,
       name: "Fade Out",
       parameters: {
-        gradientType: {
-          type: ValueType.OPTION,
-          value: GradientType.LINEAR,
-        },
+        gradientType: { type: ValueType.OPTION, value: GradientType.LINEAR },
         angle: {
           type: ValueType.EXACT,
-          value: {
-            unit: Unit.DEGREES,
-            value: 0,
-          },
+          value: { unit: Unit.DEGREES, value: 0 },
         },
         startColor: {
           type: ValueType.THEME_CATEGORICAL,
@@ -1356,17 +956,11 @@ export const theme: StockTheme = {
         },
         startOpacity: {
           type: ValueType.EXACT,
-          value: {
-            unit: Unit.PERCENT,
-            value: 100,
-          },
+          value: { unit: Unit.PERCENT, value: 100 },
         },
         startPosition: {
           type: ValueType.EXACT,
-          value: {
-            unit: Unit.PERCENT,
-            value: 0,
-          },
+          value: { unit: Unit.PERCENT, value: 0 },
         },
         endColor: {
           type: ValueType.THEME_CATEGORICAL,
@@ -1374,17 +968,11 @@ export const theme: StockTheme = {
         },
         endOpacity: {
           type: ValueType.EXACT,
-          value: {
-            unit: Unit.PERCENT,
-            value: 0,
-          },
+          value: { unit: Unit.PERCENT, value: 0 },
         },
         endPosition: {
           type: ValueType.EXACT,
-          value: {
-            unit: Unit.PERCENT,
-            value: 100,
-          },
+          value: { unit: Unit.PERCENT, value: 100 },
         },
       },
     },
@@ -1392,16 +980,10 @@ export const theme: StockTheme = {
       type: TokenType.LOOK,
       name: "Burst",
       parameters: {
-        gradientType: {
-          type: ValueType.OPTION,
-          value: GradientType.RADIAL,
-        },
+        gradientType: { type: ValueType.OPTION, value: GradientType.RADIAL },
         angle: {
           type: ValueType.EXACT,
-          value: {
-            unit: Unit.DEGREES,
-            value: 0,
-          },
+          value: { unit: Unit.DEGREES, value: 0 },
         },
         startColor: {
           type: ValueType.THEME_CATEGORICAL,
@@ -1409,17 +991,11 @@ export const theme: StockTheme = {
         },
         startOpacity: {
           type: ValueType.EXACT,
-          value: {
-            unit: Unit.PERCENT,
-            value: 100,
-          },
+          value: { unit: Unit.PERCENT, value: 100 },
         },
         startPosition: {
           type: ValueType.EXACT,
-          value: {
-            unit: Unit.PERCENT,
-            value: 0,
-          },
+          value: { unit: Unit.PERCENT, value: 0 },
         },
         endColor: {
           type: ValueType.THEME_CATEGORICAL,
@@ -1427,17 +1003,11 @@ export const theme: StockTheme = {
         },
         endOpacity: {
           type: ValueType.EXACT,
-          value: {
-            unit: Unit.PERCENT,
-            value: 0,
-          },
+          value: { unit: Unit.PERCENT, value: 0 },
         },
         endPosition: {
           type: ValueType.EXACT,
-          value: {
-            unit: Unit.PERCENT,
-            value: 100,
-          },
+          value: { unit: Unit.PERCENT, value: 100 },
         },
       },
     },
@@ -1447,38 +1017,14 @@ export const theme: StockTheme = {
       type: TokenType.LOOK,
       name: "Subtle",
       parameters: {
-        offsetX: {
-          type: ValueType.EXACT,
-          value: {
-            unit: Unit.PX,
-            value: 0,
-          },
-        },
-        offsetY: {
-          type: ValueType.EXACT,
-          value: {
-            unit: Unit.PX,
-            value: 1,
-          },
-        },
-        blur: {
-          type: ValueType.THEME_ORDINAL,
-          value: "@blur.xxsmall",
-        },
-        spread: {
-          type: ValueType.THEME_ORDINAL,
-          value: "@spread.tiny",
-        },
-        color: {
-          type: ValueType.THEME_CATEGORICAL,
-          value: "@swatch.black",
-        },
+        offsetX: { type: ValueType.EXACT, value: { unit: Unit.PX, value: 0 } },
+        offsetY: { type: ValueType.EXACT, value: { unit: Unit.PX, value: 1 } },
+        blur: { type: ValueType.THEME_ORDINAL, value: "@blur.xxsmall" },
+        spread: { type: ValueType.THEME_ORDINAL, value: "@spread.tiny" },
+        color: { type: ValueType.THEME_CATEGORICAL, value: "@swatch.black" },
         opacity: {
           type: ValueType.EXACT,
-          value: {
-            value: 33,
-            unit: Unit.PERCENT,
-          },
+          value: { value: 20, unit: Unit.PERCENT },
         },
       },
     },
@@ -1486,38 +1032,14 @@ export const theme: StockTheme = {
       type: TokenType.LOOK,
       name: "Soft",
       parameters: {
-        offsetX: {
-          type: ValueType.EXACT,
-          value: {
-            unit: Unit.PX,
-            value: 0,
-          },
-        },
-        offsetY: {
-          type: ValueType.EXACT,
-          value: {
-            unit: Unit.PX,
-            value: 2,
-          },
-        },
-        blur: {
-          type: ValueType.THEME_ORDINAL,
-          value: "@blur.small",
-        },
-        spread: {
-          type: ValueType.THEME_ORDINAL,
-          value: "@spread.xsmall",
-        },
-        color: {
-          type: ValueType.THEME_CATEGORICAL,
-          value: "@swatch.black",
-        },
+        offsetX: { type: ValueType.EXACT, value: { unit: Unit.PX, value: 0 } },
+        offsetY: { type: ValueType.EXACT, value: { unit: Unit.PX, value: 2 } },
+        blur: { type: ValueType.THEME_ORDINAL, value: "@blur.small" },
+        spread: { type: ValueType.THEME_ORDINAL, value: "@spread.xsmall" },
+        color: { type: ValueType.THEME_CATEGORICAL, value: "@swatch.black" },
         opacity: {
           type: ValueType.EXACT,
-          value: {
-            value: 33,
-            unit: Unit.PERCENT,
-          },
+          value: { value: 20, unit: Unit.PERCENT },
         },
       },
     },
@@ -1525,38 +1047,14 @@ export const theme: StockTheme = {
       type: TokenType.LOOK,
       name: "Light",
       parameters: {
-        offsetX: {
-          type: ValueType.EXACT,
-          value: {
-            unit: Unit.PX,
-            value: 0,
-          },
-        },
-        offsetY: {
-          type: ValueType.EXACT,
-          value: {
-            unit: Unit.PX,
-            value: 4,
-          },
-        },
-        blur: {
-          type: ValueType.THEME_ORDINAL,
-          value: "@blur.medium",
-        },
-        spread: {
-          type: ValueType.THEME_ORDINAL,
-          value: "@spread.small",
-        },
-        color: {
-          type: ValueType.THEME_CATEGORICAL,
-          value: "@swatch.black",
-        },
+        offsetX: { type: ValueType.EXACT, value: { unit: Unit.PX, value: 0 } },
+        offsetY: { type: ValueType.EXACT, value: { unit: Unit.PX, value: 4 } },
+        blur: { type: ValueType.THEME_ORDINAL, value: "@blur.medium" },
+        spread: { type: ValueType.THEME_ORDINAL, value: "@spread.small" },
+        color: { type: ValueType.THEME_CATEGORICAL, value: "@swatch.black" },
         opacity: {
           type: ValueType.EXACT,
-          value: {
-            value: 33,
-            unit: Unit.PERCENT,
-          },
+          value: { value: 20, unit: Unit.PERCENT },
         },
       },
     },
@@ -1564,38 +1062,14 @@ export const theme: StockTheme = {
       type: TokenType.LOOK,
       name: "Moderate",
       parameters: {
-        offsetX: {
-          type: ValueType.EXACT,
-          value: {
-            unit: Unit.PX,
-            value: 0,
-          },
-        },
-        offsetY: {
-          type: ValueType.EXACT,
-          value: {
-            unit: Unit.PX,
-            value: 6,
-          },
-        },
-        blur: {
-          type: ValueType.THEME_ORDINAL,
-          value: "@blur.large",
-        },
-        spread: {
-          type: ValueType.THEME_ORDINAL,
-          value: "@spread.medium",
-        },
-        color: {
-          type: ValueType.THEME_CATEGORICAL,
-          value: "@swatch.black",
-        },
+        offsetX: { type: ValueType.EXACT, value: { unit: Unit.PX, value: 0 } },
+        offsetY: { type: ValueType.EXACT, value: { unit: Unit.PX, value: 6 } },
+        blur: { type: ValueType.THEME_ORDINAL, value: "@blur.large" },
+        spread: { type: ValueType.THEME_ORDINAL, value: "@spread.medium" },
+        color: { type: ValueType.THEME_CATEGORICAL, value: "@swatch.black" },
         opacity: {
           type: ValueType.EXACT,
-          value: {
-            value: 33,
-            unit: Unit.PERCENT,
-          },
+          value: { value: 20, unit: Unit.PERCENT },
         },
       },
     },
@@ -1603,38 +1077,14 @@ export const theme: StockTheme = {
       type: TokenType.LOOK,
       name: "Strong",
       parameters: {
-        offsetX: {
-          type: ValueType.EXACT,
-          value: {
-            unit: Unit.PX,
-            value: 0,
-          },
-        },
-        offsetY: {
-          type: ValueType.EXACT,
-          value: {
-            unit: Unit.PX,
-            value: 8,
-          },
-        },
-        blur: {
-          type: ValueType.THEME_ORDINAL,
-          value: "@blur.large",
-        },
-        spread: {
-          type: ValueType.THEME_ORDINAL,
-          value: "@spread.large",
-        },
-        color: {
-          type: ValueType.THEME_CATEGORICAL,
-          value: "@swatch.black",
-        },
+        offsetX: { type: ValueType.EXACT, value: { unit: Unit.PX, value: 0 } },
+        offsetY: { type: ValueType.EXACT, value: { unit: Unit.PX, value: 8 } },
+        blur: { type: ValueType.THEME_ORDINAL, value: "@blur.large" },
+        spread: { type: ValueType.THEME_ORDINAL, value: "@spread.large" },
+        color: { type: ValueType.THEME_CATEGORICAL, value: "@swatch.black" },
         opacity: {
           type: ValueType.EXACT,
-          value: {
-            value: 33,
-            unit: Unit.PERCENT,
-          },
+          value: { value: 20, unit: Unit.PERCENT },
         },
       },
     },
@@ -1658,10 +1108,7 @@ export const theme: StockTheme = {
         },
         trackSize: {
           type: ValueType.EXACT,
-          value: {
-            unit: Unit.REM,
-            value: 0.5,
-          },
+          value: { unit: Unit.REM, value: 0.5 },
         },
         rounded: { type: ValueType.EXACT, value: true },
       },

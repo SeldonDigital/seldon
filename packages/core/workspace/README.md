@@ -64,7 +64,7 @@ Full customization beyond overrides is done with **`variants`**, a **`node`** wi
     "searchField": { "...": "..." },
     "productCard": { "...": "..." },
     "seldon": { "...": "..." },
-    "sky": { "...": "..." },
+    "earth": { "...": "..." },
     "system": { "...": "..." },
     "googleFonts": { "...": "..." },
     "seldonIcons": { "...": "..." },
@@ -91,9 +91,9 @@ Full customization beyond overrides is done with **`variants`**, a **`node`** wi
   },
   "themes": {
     "theme-seldon-default": { "...": "..." },
-    "theme-sky-default": { "...": "..." },
-    "theme-sky-4b1c0e2a": { "...": "..." },
-    "theme-sky-6d903c11": { "...": "..." }
+    "theme-earth-default": { "...": "..." },
+    "theme-earth-4b1c0e2a": { "...": "..." },
+    "theme-earth-6d903c11": { "...": "..." }
   },
   "font-collections": {
     "font-collection-system-default": { "...": "..." },
@@ -176,7 +176,7 @@ There are five catalog row types:
 | Board type | Description | Example rows |
 | --- | --- | --- |
 | `component` | A component based on a `core/components/` component schema. Only one catalog row is used per component, with variants and instances of that component stored as references from `nodes`. | `button`, `searchField`, `productCard`, `calendar` |
-| `theme` | A theme definition including its design tokens. A base `seldon` theme defined in the workspace is initially created from `core/themes/` and is non-deletable. | `seldon`, `sky` |
+| `theme` | A theme definition including its design tokens. A base `seldon` theme defined in the workspace is initially created from `core/themes/` and is non-deletable. | `seldon`, `earth` |
 | `font-collection` | A set of fonts, including font families, weights, and emphasis. A base `system` font collection in the workspace is initially created from `core/font-collections/` and is non-deletable. | `system`, `googleFonts` |
 | `icon-set` | A set of icons, with all icons in that set created using SVG. A base `seldonIcons` set defined in the workspace is initially created from `core/icon-sets/` and is non-deletable. | `seldonIcons`, `googleMaterial`, `ibmCarbon` |
 | `media` | Media assets and variants that include images, video, or 3D content. Media rows are created in the editor through `add_media`. New workspaces start with an empty `media` map. | `productPhotos`, `adobeStockMedia` |
@@ -286,10 +286,10 @@ Theme rows hold theme definition variants that reference data in the `themes` se
 
 ```json
 "boards": {
-  "sky": {
+  "earth": {
     "type": "theme",
-    "catalogId": "sky",
-    "label": "Sky Blue",
+    "catalogId": "earth",
+    "label": "Earthtones",
     "author": "Seldon Digital",
     "intent": "...",
     "tags": [ "...", "...", "..." ],
@@ -297,10 +297,10 @@ Theme rows hold theme definition variants that reference data in the `themes` se
     "componentTheme": "theme-seldon-default",
     "componentProperties": { /* ... properties */ },
     "variants": [
-      { "id": "theme-sky-default" },
-      { "id": "theme-sky-4b1c0e2a" },
-      { "id": "theme-sky-6d903c11" },
-      /* ...other sky blue variants */
+      { "id": "theme-earth-default" },
+      { "id": "theme-earth-4b1c0e2a" },
+      { "id": "theme-earth-6d903c11" },
+      /* ...other earthtones variants */
     ]
   }
 }
@@ -766,11 +766,11 @@ The root for a theme catalog row, with `type` set to `"default"`. Whenever an ed
 
 ```json
 "themes": {
-  "theme-sky-default": {
-    "id": "theme-sky-default",
+  "theme-earth-default": {
+    "id": "theme-earth-default",
     "type": "default",
-    "label": "Sky Blue",
-    "template": "catalog:sky",
+    "label": "Earthtones",
+    "template": "catalog:earth",
     "overrides": {
       "color": {
         "angle": 16,
@@ -798,11 +798,11 @@ A user-created variant, with `type` set to `"variant"`. Whenever an editor modif
 
 ```json
 "themes": {
-  "theme-sky-4b1c0e2a": {
-    "id": "theme-sky-4b1c0e2a",
+  "theme-earth-4b1c0e2a": {
+    "id": "theme-earth-4b1c0e2a",
     "type": "variant",
-    "label": "Sky Blue",
-    "template": "theme:theme-sky-default",
+    "label": "Earthtones",
+    "template": "theme:theme-earth-default",
     "overrides": { /* ... token overrides */ }
   }
 }
@@ -1227,7 +1227,7 @@ The **`template`** field uses a `{prefix}:{suffix}` combination to identify temp
 
 Prefix examples: `catalog`, `node`, `theme`, `font-collection`, `icon-set`, or `media`.
 
-Suffix examples: `component-button-default`, `component-button-{hash}`, or `theme-sky-{hash}`
+Suffix examples: `component-button-default`, `component-button-{hash}`, or `theme-earth-{hash}`
 
 ---
 

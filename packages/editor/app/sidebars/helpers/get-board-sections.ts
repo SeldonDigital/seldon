@@ -6,6 +6,7 @@ import {
   isComponentId,
 } from "@seldon/core/components/constants"
 import { isResourceType } from "@seldon/core/workspace/helpers/components/is-resource-type"
+import { sortThemeBoardsForDisplay } from "@seldon/core/workspace/helpers/themes/sort-theme-boards"
 import {
   isComponentBoard,
   isFontCollectionBoard,
@@ -55,7 +56,7 @@ export function getBoardSections(
   boards: BoardType[],
   playgrounds: BoardType[] = [],
 ): BoardSection[] {
-  const themeBoards = boards.filter((board) => isThemeBoard(board))
+  const themeBoards = sortThemeBoardsForDisplay(boards.filter(isThemeBoard))
 
   const fontCollectionBoards = boards.filter((board) =>
     isFontCollectionBoard(board),
