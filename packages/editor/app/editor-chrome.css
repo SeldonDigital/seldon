@@ -47,6 +47,7 @@ body {
 html:not(.sdn-show-focus) .sdn-combobox-field:focus-within,
 html:not(.sdn-show-focus) [class*="sdn-combobox-field"]:focus-within,
 html:not(.sdn-show-focus) .sdn-item-section:focus-within,
+html:not(.sdn-show-focus) .sdn-button-menu:focus-within,
 html:not(.sdn-show-focus) .sdn-button-iconic:focus-within {
   border-color: transparent;
 }

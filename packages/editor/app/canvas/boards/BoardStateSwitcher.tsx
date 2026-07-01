@@ -84,6 +84,20 @@ export function BoardStateSwitcher({ boardKey }: BoardStateSwitcherProps) {
     [workspace.metadata.customStates],
   )
 
+  // Option-1 (Normal) through Option-0 (Dragged), matching menu order and the
+  // hotkeys in `useEditorShortcuts`.
+  const stateShortcuts = useMemo(() => {
+    const order = [
+      NORMAL_STATE,
+      ...RESERVED_STATE_GROUPS.flatMap((group) => group.states),
+    ]
+    const map: Record<string, string> = {}
+    order.forEach((state, index) => {
+      map[state] = `⌥${(index + 1) % 10}`
+    })
+    return map
+  }, [])
+
   // Split states that carry overrides into two sets so the menu can show a
   // distinct indicator for each. A state is followed up each node's template
   // chain, so it lights up when the variant or any of its children author it.
@@ -171,6 +185,7 @@ export function BoardStateSwitcher({ boardKey }: BoardStateSwitcherProps) {
       activeMarker: "bullet",
       active: ownOverrideStates.has(state),
       labelStyle: childOnly ? { color: CHILD_OVERRIDE_COLOR } : undefined,
+      shortcut: stateShortcuts[state],
       testId: `board-state-${state}`,
     }
   }
