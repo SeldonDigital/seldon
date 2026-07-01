@@ -4,9 +4,10 @@ import { migrateV2InterfaceSwatches } from "./steps/migrate-00002-interface-swat
 import { migrateV3ThemeRenames } from "./steps/migrate-00003-theme-renames"
 import { migrateV4EnableDefaultFonts } from "./steps/migrate-00004-enable-default-fonts"
 import { migrateV5EnableQuicksandFont } from "./steps/migrate-00005-enable-quicksand-font"
+import { migrateV6IconSetRenames } from "./steps/migrate-00006-icon-set-renames"
 
 /** Current workspace file version after migration steps on load. */
-export const CURRENT_WORKSPACE_VERSION = 5
+export const CURRENT_WORKSPACE_VERSION = 6
 
 type MigrationStep = (workspace: Workspace) => Workspace
 
@@ -16,19 +17,24 @@ const MIGRATION_STEPS: Partial<Record<number, MigrationStep>> = {
   3: migrateV3ThemeRenames,
   4: migrateV4EnableDefaultFonts,
   5: migrateV5EnableQuicksandFont,
+  6: migrateV6IconSetRenames,
 }
 
 /**
  * Idempotent repairs that run on every load, regardless of stored version.
  *
  * Versioned steps only run once, when a file crosses their version. Stock theme
- * renames must also reach files already stamped at the current version: a
- * persisted workspace that still points at a renamed template would otherwise
- * fail to open. Each repair guards itself and only rewrites the references it
- * matches, so it is safe to re-run and applies each rename independently rather
- * than all-or-nothing.
+ * and icon set renames must also reach files already stamped at the current
+ * version: a persisted workspace that still points at a renamed template, or
+ * that keeps two boards under the same catalog key, would otherwise fail to
+ * open or select the wrong board. Each repair guards itself and only rewrites
+ * the references it matches, so it is safe to re-run and applies each rename
+ * independently rather than all-or-nothing.
  */
-const REPAIR_STEPS: MigrationStep[] = [migrateV3ThemeRenames]
+const REPAIR_STEPS: MigrationStep[] = [
+  migrateV3ThemeRenames,
+  migrateV6IconSetRenames,
+]
 
 /**
  * Runs versioned migration steps from storedVersion + 1 through CURRENT, then

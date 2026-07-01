@@ -116,9 +116,9 @@
         "order": 58
       }
     },
-    "googleMaterial": {
+    "googleSymbols": {
       "type": "icon-set",
-      "catalogId": "googleMaterial",
+      "catalogId": "googleSymbols",
       "label": "Google Symbols",
       "componentPreview": "seldonIconsPreview",
       "componentTheme": "theme-seldon-default",
@@ -138,7 +138,7 @@
       },
       "variants": [
         {
-          "id": "icon-set-googleMaterial-default"
+          "id": "icon-set-googleSymbols-default"
         }
       ],
       "__editor": {
@@ -64179,11 +64179,11 @@
         }
       }
     },
-    "icon-set-googleMaterial-default": {
-      "id": "icon-set-googleMaterial-default",
+    "icon-set-googleSymbols-default": {
+      "id": "icon-set-googleSymbols-default",
       "type": "default",
       "label": "Default",
-      "template": "catalog:googleMaterial",
+      "template": "catalog:googleSymbols",
       "overrides": {}
     }
   },

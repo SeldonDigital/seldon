@@ -45,6 +45,101 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-chevronDoubleLeft"
     | "material-chevronLeft"
     | "material-chevronDoubleRight"
+    | "material-playArrow"
+    | "material-star"
+    | "material-shoppingCart"
+    | "seldon-iconSocialFacebook"
+    | "seldon-iconSocialReddit"
+    | "seldon-iconSocialPinterest"
+    | "seldon-iconSocialTiktok"
+    | "seldon-iconSocialWhatsapp"
+    | "seldon-iconSocialLinkedin"
+    | "seldon-iconSocialSpotify"
+    | "seldon-iconSocialTwitch"
+    | "seldon-iconSocialYoutube"
+    | "seldon-iconSocialDiscord"
+    | "seldon-iconSocialTwitter"
+    | "seldon-iconSocialMedium"
+    | "seldon-iconSocialTelegram"
+    | "seldon-iconSocialInstagram"
+    | "seldon-iconSocialGithub"
+    | "seldon-deviceCustom"
+    | "seldon-codeCube"
+    | "seldon-background"
+    | "seldon-angle"
+    | "seldon-color"
+    | "seldon-computed"
+    | "seldon-custom"
+    | "seldon-display"
+    | "seldon-empty"
+    | "seldon-frameColumns"
+    | "seldon-frameRows"
+    | "seldon-gap"
+    | "seldon-hexagon"
+    | "seldon-hidden"
+    | "seldon-positionBottom"
+    | "seldon-positionCenter"
+    | "seldon-positionTop"
+    | "seldon-positionBottomLeft"
+    | "seldon-positionBottomRight"
+    | "seldon-positionLeft"
+    | "seldon-positionRight"
+    | "seldon-positionTopLeft"
+    | "seldon-positionTopRight"
+    | "seldon-frameBackground"
+    | "seldon-screen"
+    | "seldon-shadow"
+    | "seldon-spread"
+    | "seldon-step"
+    | "seldon-stub"
+    | "seldon-theme"
+    | "seldon-valuePx"
+    | "seldon-valueRem"
+    | "seldon-orientationHorizontal"
+    | "seldon-orientationVertical"
+    | "seldon-swatch"
+    | "seldon-backgroundColor"
+    | "seldon-align"
+    | "seldon-toolComponent"
+    | "seldon-toolSketch"
+    | "seldon-cursor"
+    | "seldon-default"
+    | "seldon-edited"
+    | "seldon-frame"
+    | "seldon-missing"
+    | "seldon-reset"
+    | "seldon-size"
+    | "seldon-sketchCircle"
+    | "seldon-sketchPencil"
+    | "seldon-sketchRectangle"
+    | "seldon-sketchText"
+    | "seldon-toolArrow"
+    | "seldon-toolImageAi"
+    | "seldon-clip"
+    | "seldon-iconInput"
+    | "seldon-inputType"
+    | "seldon-minus"
+    | "seldon-plus"
+    | "seldon-retry"
+    | "seldon-componentDefault"
+    | "seldon-componentVariant"
+    | "seldon-icon"
+    | "seldon-input"
+    | "seldon-image"
+    | "seldon-content"
+    | "seldon-iconFrame"
+    | "seldon-iconImage"
+    | "seldon-vector"
+    | "seldon-parts"
+    | "seldon-primitives"
+    | "seldon-modules"
+    | "seldon-elements"
+    | "seldon-panels"
+    | "seldon-catalog"
+    | "seldon-heartPlus"
+    | "seldon-lines"
+    | "seldon-text"
+    | "seldon-iconText"
     | "material-confirmationNumber"
     | "material-monetizationOn"
     | "material-payment"
@@ -53,7 +148,6 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-restoreFromTrash"
     | "material-sdCard"
     | "material-shoppingBag"
-    | "material-shoppingCart"
     | "material-simCard"
     | "material-store"
     | "material-storefront"
@@ -96,7 +190,6 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-grade"
     | "material-mood"
     | "material-moodBad"
-    | "material-star"
     | "material-starBorder"
     | "material-person"
     | "material-verifiedUser"
@@ -278,7 +371,6 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-more"
     | "material-moreHoriz"
     | "material-moreVert"
-    | "material-playArrow"
     | "material-rotateRight"
     | "material-router"
     | "material-skipNext"
@@ -396,98 +488,6 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-sentimentNeutral"
     | "material-sentimentSatisfied"
     | "material-watch"
-    | "seldon-iconSocialFacebook"
-    | "seldon-iconSocialReddit"
-    | "seldon-iconSocialPinterest"
-    | "seldon-iconSocialTiktok"
-    | "seldon-iconSocialWhatsapp"
-    | "seldon-iconSocialLinkedin"
-    | "seldon-iconSocialSpotify"
-    | "seldon-iconSocialTwitch"
-    | "seldon-iconSocialYoutube"
-    | "seldon-iconSocialDiscord"
-    | "seldon-iconSocialTwitter"
-    | "seldon-iconSocialMedium"
-    | "seldon-iconSocialTelegram"
-    | "seldon-iconSocialInstagram"
-    | "seldon-iconSocialGithub"
-    | "seldon-deviceCustom"
-    | "seldon-codeCube"
-    | "seldon-background"
-    | "seldon-angle"
-    | "seldon-color"
-    | "seldon-computed"
-    | "seldon-custom"
-    | "seldon-display"
-    | "seldon-empty"
-    | "seldon-frameColumns"
-    | "seldon-frameRows"
-    | "seldon-gap"
-    | "seldon-hexagon"
-    | "seldon-hidden"
-    | "seldon-positionBottom"
-    | "seldon-positionCenter"
-    | "seldon-positionTop"
-    | "seldon-positionBottomLeft"
-    | "seldon-positionBottomRight"
-    | "seldon-positionLeft"
-    | "seldon-positionRight"
-    | "seldon-positionTopLeft"
-    | "seldon-positionTopRight"
-    | "seldon-frameBackground"
-    | "seldon-screen"
-    | "seldon-shadow"
-    | "seldon-spread"
-    | "seldon-step"
-    | "seldon-stub"
-    | "seldon-theme"
-    | "seldon-valuePx"
-    | "seldon-valueRem"
-    | "seldon-orientationHorizontal"
-    | "seldon-orientationVertical"
-    | "seldon-swatch"
-    | "seldon-backgroundColor"
-    | "seldon-align"
-    | "seldon-toolComponent"
-    | "seldon-toolSketch"
-    | "seldon-cursor"
-    | "seldon-default"
-    | "seldon-edited"
-    | "seldon-frame"
-    | "seldon-missing"
-    | "seldon-reset"
-    | "seldon-size"
-    | "seldon-sketchCircle"
-    | "seldon-sketchPencil"
-    | "seldon-sketchRectangle"
-    | "seldon-sketchText"
-    | "seldon-toolArrow"
-    | "seldon-toolImageAi"
-    | "seldon-clip"
-    | "seldon-iconInput"
-    | "seldon-inputType"
-    | "seldon-minus"
-    | "seldon-plus"
-    | "seldon-retry"
-    | "seldon-componentDefault"
-    | "seldon-componentVariant"
-    | "seldon-icon"
-    | "seldon-input"
-    | "seldon-image"
-    | "seldon-content"
-    | "seldon-iconFrame"
-    | "seldon-iconImage"
-    | "seldon-vector"
-    | "seldon-parts"
-    | "seldon-primitives"
-    | "seldon-modules"
-    | "seldon-elements"
-    | "seldon-panels"
-    | "seldon-catalog"
-    | "seldon-heartPlus"
-    | "seldon-lines"
-    | "seldon-text"
-    | "seldon-iconText"
 }
 
 /*****
@@ -573,6 +573,101 @@ const iconMap = {
   "material-chevronDoubleLeft": Icons.IconMaterialChevronDoubleLeft,
   "material-chevronLeft": Icons.IconMaterialChevronLeft,
   "material-chevronDoubleRight": Icons.IconMaterialChevronDoubleRight,
+  "material-playArrow": Icons.IconMaterialPlayArrow,
+  "material-star": Icons.IconMaterialStar,
+  "material-shoppingCart": Icons.IconMaterialShoppingCart,
+  "seldon-iconSocialFacebook": Icons.IconSocialFacebook,
+  "seldon-iconSocialReddit": Icons.IconSocialReddit,
+  "seldon-iconSocialPinterest": Icons.IconSocialPinterest,
+  "seldon-iconSocialTiktok": Icons.IconSocialTiktok,
+  "seldon-iconSocialWhatsapp": Icons.IconSocialWhatsapp,
+  "seldon-iconSocialLinkedin": Icons.IconSocialLinkedin,
+  "seldon-iconSocialSpotify": Icons.IconSocialSpotify,
+  "seldon-iconSocialTwitch": Icons.IconSocialTwitch,
+  "seldon-iconSocialYoutube": Icons.IconSocialYoutube,
+  "seldon-iconSocialDiscord": Icons.IconSocialDiscord,
+  "seldon-iconSocialTwitter": Icons.IconSocialTwitter,
+  "seldon-iconSocialMedium": Icons.IconSocialMedium,
+  "seldon-iconSocialTelegram": Icons.IconSocialTelegram,
+  "seldon-iconSocialInstagram": Icons.IconSocialInstagram,
+  "seldon-iconSocialGithub": Icons.IconSocialGithub,
+  "seldon-deviceCustom": Icons.IconSeldonDeviceCustom,
+  "seldon-codeCube": Icons.IconSeldonCodeCube,
+  "seldon-background": Icons.IconSeldonBackground,
+  "seldon-angle": Icons.IconSeldonAngle,
+  "seldon-color": Icons.IconSeldonColor,
+  "seldon-computed": Icons.IconSeldonComputed,
+  "seldon-custom": Icons.IconSeldonCustom,
+  "seldon-display": Icons.IconSeldonDisplay,
+  "seldon-empty": Icons.IconSeldonEmpty,
+  "seldon-frameColumns": Icons.IconSeldonFrameColumns,
+  "seldon-frameRows": Icons.IconSeldonFrameRows,
+  "seldon-gap": Icons.IconSeldonGap,
+  "seldon-hexagon": Icons.IconSeldonHexagon,
+  "seldon-hidden": Icons.IconSeldonHidden,
+  "seldon-positionBottom": Icons.IconSeldonPositionBottom,
+  "seldon-positionCenter": Icons.IconSeldonPositionCenter,
+  "seldon-positionTop": Icons.IconSeldonPositionTop,
+  "seldon-positionBottomLeft": Icons.IconSeldonPositionBottomLeft,
+  "seldon-positionBottomRight": Icons.IconSeldonPositionBottomRight,
+  "seldon-positionLeft": Icons.IconSeldonPositionLeft,
+  "seldon-positionRight": Icons.IconSeldonPositionRight,
+  "seldon-positionTopLeft": Icons.IconSeldonPositionTopLeft,
+  "seldon-positionTopRight": Icons.IconSeldonPositionTopRight,
+  "seldon-frameBackground": Icons.IconSeldonFrameBackground,
+  "seldon-screen": Icons.IconSeldonScreen,
+  "seldon-shadow": Icons.IconSeldonShadow,
+  "seldon-spread": Icons.IconSeldonSpread,
+  "seldon-step": Icons.IconSeldonStep,
+  "seldon-stub": Icons.IconSeldonStub,
+  "seldon-theme": Icons.IconSeldonTheme,
+  "seldon-valuePx": Icons.IconSeldonValuePx,
+  "seldon-valueRem": Icons.IconSeldonValueRem,
+  "seldon-orientationHorizontal": Icons.IconSeldonOrientationHorizontal,
+  "seldon-orientationVertical": Icons.IconSeldonOrientationVertical,
+  "seldon-swatch": Icons.IconSeldonSwatch,
+  "seldon-backgroundColor": Icons.IconSeldonBackgroundColor,
+  "seldon-align": Icons.IconSeldonAlign,
+  "seldon-toolComponent": Icons.IconSeldonToolComponent,
+  "seldon-toolSketch": Icons.IconSeldonToolSketch,
+  "seldon-cursor": Icons.IconSeldonCursor,
+  "seldon-default": Icons.IconSeldonDefault,
+  "seldon-edited": Icons.IconSeldonEdited,
+  "seldon-frame": Icons.IconSeldonFrame,
+  "seldon-missing": Icons.IconSeldonMissing,
+  "seldon-reset": Icons.IconSeldonReset,
+  "seldon-size": Icons.IconSeldonSize,
+  "seldon-sketchCircle": Icons.IconSeldonSketchCircle,
+  "seldon-sketchPencil": Icons.IconSeldonSketchPencil,
+  "seldon-sketchRectangle": Icons.IconSeldonSketchRectangle,
+  "seldon-sketchText": Icons.IconSeldonSketchText,
+  "seldon-toolArrow": Icons.IconSeldonToolArrow,
+  "seldon-toolImageAi": Icons.IconSeldonToolImageAi,
+  "seldon-clip": Icons.IconSeldonClip,
+  "seldon-iconInput": Icons.IconSeldonIconInput,
+  "seldon-inputType": Icons.IconSeldonInputType,
+  "seldon-minus": Icons.IconSeldonMinus,
+  "seldon-plus": Icons.IconSeldonPlus,
+  "seldon-retry": Icons.IconSeldonRetry,
+  "seldon-componentDefault": Icons.IconSeldonComponentDefault,
+  "seldon-componentVariant": Icons.IconSeldonComponentVariant,
+  "seldon-icon": Icons.IconSeldonIcon,
+  "seldon-input": Icons.IconSeldonInput,
+  "seldon-image": Icons.IconSeldonImage,
+  "seldon-content": Icons.IconSeldonContent,
+  "seldon-iconFrame": Icons.IconSeldonIconFrame,
+  "seldon-iconImage": Icons.IconSeldonIconImage,
+  "seldon-vector": Icons.IconSeldonVector,
+  "seldon-parts": Icons.IconSeldonParts,
+  "seldon-primitives": Icons.IconSeldonPrimitives,
+  "seldon-modules": Icons.IconSeldonModules,
+  "seldon-elements": Icons.IconSeldonElements,
+  "seldon-panels": Icons.IconSeldonPanels,
+  "seldon-catalog": Icons.IconSeldonCatalog,
+  "seldon-heartPlus": Icons.IconSeldonHeartPlus,
+  "seldon-lines": Icons.IconSeldonLines,
+  "seldon-text": Icons.IconSeldonText,
+  "seldon-iconText": Icons.IconSeldonIconText,
   "material-confirmationNumber": Icons.IconMaterialConfirmationNumber,
   "material-monetizationOn": Icons.IconMaterialMonetizationOn,
   "material-payment": Icons.IconMaterialPayment,
@@ -581,7 +676,6 @@ const iconMap = {
   "material-restoreFromTrash": Icons.IconMaterialRestoreFromTrash,
   "material-sdCard": Icons.IconMaterialSdCard,
   "material-shoppingBag": Icons.IconMaterialShoppingBag,
-  "material-shoppingCart": Icons.IconMaterialShoppingCart,
   "material-simCard": Icons.IconMaterialSimCard,
   "material-store": Icons.IconMaterialStore,
   "material-storefront": Icons.IconMaterialStorefront,
@@ -624,7 +718,6 @@ const iconMap = {
   "material-grade": Icons.IconMaterialGrade,
   "material-mood": Icons.IconMaterialMood,
   "material-moodBad": Icons.IconMaterialMoodBad,
-  "material-star": Icons.IconMaterialStar,
   "material-starBorder": Icons.IconMaterialStarBorder,
   "material-person": Icons.IconMaterialPerson,
   "material-verifiedUser": Icons.IconMaterialVerifiedUser,
@@ -808,7 +901,6 @@ const iconMap = {
   "material-more": Icons.IconMaterialMore,
   "material-moreHoriz": Icons.IconMaterialMoreHoriz,
   "material-moreVert": Icons.IconMaterialMoreVert,
-  "material-playArrow": Icons.IconMaterialPlayArrow,
   "material-rotateRight": Icons.IconMaterialRotateRight,
   "material-router": Icons.IconMaterialRouter,
   "material-skipNext": Icons.IconMaterialSkipNext,
@@ -928,96 +1020,4 @@ const iconMap = {
   "material-sentimentNeutral": Icons.IconMaterialSentimentNeutral,
   "material-sentimentSatisfied": Icons.IconMaterialSentimentSatisfied,
   "material-watch": Icons.IconMaterialWatch,
-  "seldon-iconSocialFacebook": Icons.IconSocialFacebook,
-  "seldon-iconSocialReddit": Icons.IconSocialReddit,
-  "seldon-iconSocialPinterest": Icons.IconSocialPinterest,
-  "seldon-iconSocialTiktok": Icons.IconSocialTiktok,
-  "seldon-iconSocialWhatsapp": Icons.IconSocialWhatsapp,
-  "seldon-iconSocialLinkedin": Icons.IconSocialLinkedin,
-  "seldon-iconSocialSpotify": Icons.IconSocialSpotify,
-  "seldon-iconSocialTwitch": Icons.IconSocialTwitch,
-  "seldon-iconSocialYoutube": Icons.IconSocialYoutube,
-  "seldon-iconSocialDiscord": Icons.IconSocialDiscord,
-  "seldon-iconSocialTwitter": Icons.IconSocialTwitter,
-  "seldon-iconSocialMedium": Icons.IconSocialMedium,
-  "seldon-iconSocialTelegram": Icons.IconSocialTelegram,
-  "seldon-iconSocialInstagram": Icons.IconSocialInstagram,
-  "seldon-iconSocialGithub": Icons.IconSocialGithub,
-  "seldon-deviceCustom": Icons.IconSeldonDeviceCustom,
-  "seldon-codeCube": Icons.IconSeldonCodeCube,
-  "seldon-background": Icons.IconSeldonBackground,
-  "seldon-angle": Icons.IconSeldonAngle,
-  "seldon-color": Icons.IconSeldonColor,
-  "seldon-computed": Icons.IconSeldonComputed,
-  "seldon-custom": Icons.IconSeldonCustom,
-  "seldon-display": Icons.IconSeldonDisplay,
-  "seldon-empty": Icons.IconSeldonEmpty,
-  "seldon-frameColumns": Icons.IconSeldonFrameColumns,
-  "seldon-frameRows": Icons.IconSeldonFrameRows,
-  "seldon-gap": Icons.IconSeldonGap,
-  "seldon-hexagon": Icons.IconSeldonHexagon,
-  "seldon-hidden": Icons.IconSeldonHidden,
-  "seldon-positionBottom": Icons.IconSeldonPositionBottom,
-  "seldon-positionCenter": Icons.IconSeldonPositionCenter,
-  "seldon-positionTop": Icons.IconSeldonPositionTop,
-  "seldon-positionBottomLeft": Icons.IconSeldonPositionBottomLeft,
-  "seldon-positionBottomRight": Icons.IconSeldonPositionBottomRight,
-  "seldon-positionLeft": Icons.IconSeldonPositionLeft,
-  "seldon-positionRight": Icons.IconSeldonPositionRight,
-  "seldon-positionTopLeft": Icons.IconSeldonPositionTopLeft,
-  "seldon-positionTopRight": Icons.IconSeldonPositionTopRight,
-  "seldon-frameBackground": Icons.IconSeldonFrameBackground,
-  "seldon-screen": Icons.IconSeldonScreen,
-  "seldon-shadow": Icons.IconSeldonShadow,
-  "seldon-spread": Icons.IconSeldonSpread,
-  "seldon-step": Icons.IconSeldonStep,
-  "seldon-stub": Icons.IconSeldonStub,
-  "seldon-theme": Icons.IconSeldonTheme,
-  "seldon-valuePx": Icons.IconSeldonValuePx,
-  "seldon-valueRem": Icons.IconSeldonValueRem,
-  "seldon-orientationHorizontal": Icons.IconSeldonOrientationHorizontal,
-  "seldon-orientationVertical": Icons.IconSeldonOrientationVertical,
-  "seldon-swatch": Icons.IconSeldonSwatch,
-  "seldon-backgroundColor": Icons.IconSeldonBackgroundColor,
-  "seldon-align": Icons.IconSeldonAlign,
-  "seldon-toolComponent": Icons.IconSeldonToolComponent,
-  "seldon-toolSketch": Icons.IconSeldonToolSketch,
-  "seldon-cursor": Icons.IconSeldonCursor,
-  "seldon-default": Icons.IconSeldonDefault,
-  "seldon-edited": Icons.IconSeldonEdited,
-  "seldon-frame": Icons.IconSeldonFrame,
-  "seldon-missing": Icons.IconSeldonMissing,
-  "seldon-reset": Icons.IconSeldonReset,
-  "seldon-size": Icons.IconSeldonSize,
-  "seldon-sketchCircle": Icons.IconSeldonSketchCircle,
-  "seldon-sketchPencil": Icons.IconSeldonSketchPencil,
-  "seldon-sketchRectangle": Icons.IconSeldonSketchRectangle,
-  "seldon-sketchText": Icons.IconSeldonSketchText,
-  "seldon-toolArrow": Icons.IconSeldonToolArrow,
-  "seldon-toolImageAi": Icons.IconSeldonToolImageAi,
-  "seldon-clip": Icons.IconSeldonClip,
-  "seldon-iconInput": Icons.IconSeldonIconInput,
-  "seldon-inputType": Icons.IconSeldonInputType,
-  "seldon-minus": Icons.IconSeldonMinus,
-  "seldon-plus": Icons.IconSeldonPlus,
-  "seldon-retry": Icons.IconSeldonRetry,
-  "seldon-componentDefault": Icons.IconSeldonComponentDefault,
-  "seldon-componentVariant": Icons.IconSeldonComponentVariant,
-  "seldon-icon": Icons.IconSeldonIcon,
-  "seldon-input": Icons.IconSeldonInput,
-  "seldon-image": Icons.IconSeldonImage,
-  "seldon-content": Icons.IconSeldonContent,
-  "seldon-iconFrame": Icons.IconSeldonIconFrame,
-  "seldon-iconImage": Icons.IconSeldonIconImage,
-  "seldon-vector": Icons.IconSeldonVector,
-  "seldon-parts": Icons.IconSeldonParts,
-  "seldon-primitives": Icons.IconSeldonPrimitives,
-  "seldon-modules": Icons.IconSeldonModules,
-  "seldon-elements": Icons.IconSeldonElements,
-  "seldon-panels": Icons.IconSeldonPanels,
-  "seldon-catalog": Icons.IconSeldonCatalog,
-  "seldon-heartPlus": Icons.IconSeldonHeartPlus,
-  "seldon-lines": Icons.IconSeldonLines,
-  "seldon-text": Icons.IconSeldonText,
-  "seldon-iconText": Icons.IconSeldonIconText,
 }

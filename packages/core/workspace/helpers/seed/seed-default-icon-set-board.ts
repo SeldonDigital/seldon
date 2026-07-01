@@ -20,7 +20,7 @@ export const DEFAULT_ICON_SET_ENTRY_ID = "icon-set-seldonIcons-default" as const
 
 /** Extra icon set boards seeded into every new workspace alongside Seldon. Deletable. */
 export const ADDITIONAL_ICON_SET_BOARD_KEYS = [
-  "googleMaterial",
+  "googleSymbols",
 ] as const satisfies IconSetTemplateId[]
 
 /**
@@ -53,7 +53,7 @@ export function createDefaultIconSetEntry(): EntryIconSet {
 
 /**
  * Adds the default Seldon icon set board plus the extra stock icon sets
- * (`googleMaterial`) when missing.
+ * (`googleSymbols`) when missing.
  *
  * Idempotent per board: skips any icon set board that already exists. Mutates
  * the passed workspace in place. Seldon is the protected base; the extras are
@@ -76,7 +76,7 @@ export function seedDefaultIconSetBoard(workspace: SeedableWorkspace): void {
   )
 
   // Extra sets seed with empty overrides so inclusion falls back to the set's
-  // defaults, such as the curated `defaultEnabledIcons` of `googleMaterial`.
+  // defaults, such as the curated `defaultEnabledIcons` of `googleSymbols`.
   for (const boardKey of ADDITIONAL_ICON_SET_BOARD_KEYS) {
     seedIconSetBoard(workspace, boardKey, {
       id: `icon-set-${boardKey}-default`,

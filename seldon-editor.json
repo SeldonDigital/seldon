@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "version": 2,
+    "version": 6,
     "label": ""
   },
   "boards": {
@@ -37,7 +37,20 @@
               }
             }
           }
-        ]
+        ],
+        "board": {
+          "width": {
+            "type": "exact",
+            "value": {
+              "unit": "px",
+              "value": 500
+            }
+          }
+        },
+        "align": {
+          "type": "option",
+          "value": "top-center"
+        }
       },
       "variants": [
         {
@@ -51,7 +64,7 @@
         }
       ],
       "__editor": {
-        "order": 24
+        "order": 27
       }
     },
     "highContrast": {
@@ -61,31 +74,36 @@
       "author": "Seldon Digital",
       "componentPreview": "seldonThemePreview",
       "componentTheme": "theme-seldon-default",
-      "componentProperties": {},
+      "componentProperties": {
+        "board": {
+          "width": {
+            "type": "exact",
+            "value": {
+              "unit": "px",
+              "value": 500
+            }
+          }
+        },
+        "background": [
+          {
+            "color": {
+              "type": "theme.categorical",
+              "value": "@swatch.offBlack"
+            }
+          }
+        ],
+        "align": {
+          "type": "option",
+          "value": "top-center"
+        }
+      },
       "variants": [
         {
           "id": "theme-highContrast-default"
         }
       ],
       "__editor": {
-        "order": 25
-      }
-    },
-    "googleMaterial": {
-      "type": "theme",
-      "catalogId": "googleMaterial",
-      "label": "Google Material",
-      "author": "Seldon Digital",
-      "componentPreview": "seldonThemePreview",
-      "componentTheme": "theme-seldon-default",
-      "componentProperties": {},
-      "variants": [
-        {
-          "id": "theme-googleMaterial-default"
-        }
-      ],
-      "__editor": {
-        "order": 26
+        "order": 28
       }
     },
     "system": {
@@ -94,14 +112,24 @@
       "label": "System",
       "componentPreview": "seldonFontsPreview",
       "componentTheme": "theme-seldon-default",
-      "componentProperties": {},
+      "componentProperties": {
+        "board": {
+          "width": {
+            "type": "exact",
+            "value": {
+              "unit": "px",
+              "value": 500
+            }
+          }
+        }
+      },
       "variants": [
         {
           "id": "font-collection-system-default"
         }
       ],
       "__editor": {
-        "order": 27
+        "order": 30
       }
     },
     "googleFonts": {
@@ -110,14 +138,24 @@
       "label": "Google Fonts",
       "componentPreview": "seldonFontsPreview",
       "componentTheme": "theme-seldon-default",
-      "componentProperties": {},
+      "componentProperties": {
+        "board": {
+          "width": {
+            "type": "exact",
+            "value": {
+              "unit": "px",
+              "value": 500
+            }
+          }
+        }
+      },
       "variants": [
         {
           "id": "font-collection-googleFonts-default"
         }
       ],
       "__editor": {
-        "order": 28
+        "order": 31
       }
     },
     "seldonIcons": {
@@ -138,6 +176,15 @@
         "clip": {
           "type": "exact",
           "value": false
+        },
+        "board": {
+          "width": {
+            "type": "exact",
+            "value": {
+              "unit": "px",
+              "value": 500
+            }
+          }
         }
       },
       "variants": [
@@ -146,36 +193,7 @@
         }
       ],
       "__editor": {
-        "order": 29
-      }
-    },
-    "googleMaterial": {
-      "type": "icon-set",
-      "catalogId": "googleMaterial",
-      "label": "Google Symbols",
-      "componentPreview": "seldonIconsPreview",
-      "componentTheme": "theme-seldon-default",
-      "componentProperties": {
-        "orientation": {
-          "type": "option",
-          "value": "horizontal"
-        },
-        "wrapChildren": {
-          "type": "exact",
-          "value": true
-        },
-        "clip": {
-          "type": "exact",
-          "value": false
-        }
-      },
-      "variants": [
-        {
-          "id": "icon-set-googleMaterial-default"
-        }
-      ],
-      "__editor": {
-        "order": 30
+        "order": 32
       }
     },
     "text": {
@@ -269,7 +287,7 @@
         }
       ],
       "__editor": {
-        "order": 21
+        "order": 24
       }
     },
     "icon": {
@@ -330,7 +348,7 @@
         }
       ],
       "__editor": {
-        "order": 17
+        "order": 20
       }
     },
     "button": {
@@ -461,10 +479,48 @@
               ]
             }
           ]
+        },
+        {
+          "id": "component-button-tools",
+          "children": [
+            {
+              "id": "component-button-Xjs6PF9t",
+              "children": [
+                {
+                  "id": "component-icon-8lkvbpN8"
+                },
+                {
+                  "id": "component-text-hthmTnL8"
+                }
+              ]
+            },
+            {
+              "id": "component-button-S3ri1xuX",
+              "children": [
+                {
+                  "id": "component-icon-G32oh0lC"
+                },
+                {
+                  "id": "component-text-MdIrpcpX"
+                }
+              ]
+            },
+            {
+              "id": "component-button-giTTZedo",
+              "children": [
+                {
+                  "id": "component-icon-sAG5hOE8"
+                },
+                {
+                  "id": "component-text-SKczamOK"
+                }
+              ]
+            }
+          ]
         }
       ],
       "__editor": {
-        "order": 8
+        "order": 11
       }
     },
     "input": {
@@ -531,7 +587,7 @@
         }
       ],
       "__editor": {
-        "order": 19
+        "order": 22
       }
     },
     "comboboxField": {
@@ -665,7 +721,7 @@
         }
       ],
       "__editor": {
-        "order": 11
+        "order": 14
       }
     },
     "link": {
@@ -726,7 +782,7 @@
         }
       ],
       "__editor": {
-        "order": 20
+        "order": 23
       }
     },
     "bar": {
@@ -1113,7 +1169,7 @@
         }
       ],
       "__editor": {
-        "order": 3
+        "order": 4
       }
     },
     "frame": {
@@ -1174,7 +1230,7 @@
         }
       ],
       "__editor": {
-        "order": 23
+        "order": 26
       }
     },
     "dialog": {
@@ -1452,7 +1508,7 @@
         }
       ],
       "__editor": {
-        "order": 18
+        "order": 21
       }
     },
     "avatar": {
@@ -1564,7 +1620,7 @@
         }
       ],
       "__editor": {
-        "order": 7
+        "order": 10
       }
     },
     "chip": {
@@ -1679,7 +1735,7 @@
         }
       ],
       "__editor": {
-        "order": 10
+        "order": 13
       }
     },
     "formControl": {
@@ -1775,7 +1831,7 @@
         }
       ],
       "__editor": {
-        "order": 12
+        "order": 15
       }
     },
     "item": {
@@ -1804,13 +1860,6 @@
             "color": {
               "type": "theme.categorical",
               "value": "@swatch.offBlack"
-            },
-            "brightness": {
-              "type": "exact",
-              "value": {
-                "value": 0,
-                "unit": "%"
-              }
             },
             "opacity": {
               "type": "exact",
@@ -1948,6 +1997,62 @@
           ]
         },
         {
+          "id": "component-item-qfPj12HJ",
+          "children": [
+            {
+              "id": "component-item-OCtkZUuF",
+              "children": [
+                {
+                  "id": "component-item-7MKLAjub"
+                }
+              ]
+            },
+            {
+              "id": "component-item-GqRllIqj",
+              "children": [
+                {
+                  "id": "component-item-Z34z7Dhr"
+                },
+                {
+                  "id": "component-item-O7CtNVBH",
+                  "children": [
+                    {
+                      "id": "component-item-0qVCFngD"
+                    },
+                    {
+                      "id": "component-item-sHhIabuo"
+                    },
+                    {
+                      "id": "component-item-8zOXA1We",
+                      "children": [
+                        {
+                          "id": "component-item-dE8vlG8d"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "component-item-sDjvfAPl",
+              "children": [
+                {
+                  "id": "component-item-CMEf5HDL"
+                }
+              ]
+            },
+            {
+              "id": "component-item-m1G2OAIO",
+              "children": [
+                {
+                  "id": "component-item-X0ybtMzs"
+                }
+              ]
+            }
+          ]
+        },
+        {
           "id": "component-item-TnD6GN06",
           "children": [
             {
@@ -2050,66 +2155,10 @@
               ]
             }
           ]
-        },
-        {
-          "id": "component-item-qfPj12HJ",
-          "children": [
-            {
-              "id": "component-item-OCtkZUuF",
-              "children": [
-                {
-                  "id": "component-item-7MKLAjub"
-                }
-              ]
-            },
-            {
-              "id": "component-item-GqRllIqj",
-              "children": [
-                {
-                  "id": "component-item-Z34z7Dhr"
-                },
-                {
-                  "id": "component-item-O7CtNVBH",
-                  "children": [
-                    {
-                      "id": "component-item-0qVCFngD"
-                    },
-                    {
-                      "id": "component-item-sHhIabuo"
-                    },
-                    {
-                      "id": "component-item-8zOXA1We",
-                      "children": [
-                        {
-                          "id": "component-item-dE8vlG8d"
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              "id": "component-item-sDjvfAPl",
-              "children": [
-                {
-                  "id": "component-item-CMEf5HDL"
-                }
-              ]
-            },
-            {
-              "id": "component-item-m1G2OAIO",
-              "children": [
-                {
-                  "id": "component-item-X0ybtMzs"
-                }
-              ]
-            }
-          ]
         }
       ],
       "__editor": {
-        "order": 13
+        "order": 16
       }
     },
     "earth": {
@@ -2119,14 +2168,36 @@
       "author": "Seldon Digital",
       "componentPreview": "seldonThemePreview",
       "componentTheme": "theme-seldon-default",
-      "componentProperties": {},
+      "componentProperties": {
+        "board": {
+          "width": {
+            "type": "exact",
+            "value": {
+              "unit": "px",
+              "value": 500
+            }
+          }
+        },
+        "align": {
+          "type": "option",
+          "value": "top-center"
+        },
+        "background": [
+          {
+            "color": {
+              "type": "theme.categorical",
+              "value": "@swatch.offBlack"
+            }
+          }
+        ]
+      },
       "variants": [
         {
           "id": "theme-earth-default"
         }
       ],
       "__editor": {
-        "order": 31
+        "order": 34
       }
     },
     "industrial": {
@@ -2136,61 +2207,32 @@
       "author": "Seldon Digital",
       "componentPreview": "seldonThemePreview",
       "componentTheme": "theme-seldon-default",
-      "componentProperties": {},
+      "componentProperties": {
+        "board": {
+          "width": {
+            "type": "exact",
+            "value": {
+              "unit": "px",
+              "value": 500
+            }
+          }
+        },
+        "align": {
+          "type": "option",
+          "value": "top-center"
+        },
+        "background": [
+          {
+            "color": {
+              "type": "theme.categorical",
+              "value": "@swatch.offBlack"
+            }
+          }
+        ]
+      },
       "variants": [
         {
           "id": "theme-industrial-default"
-        }
-      ],
-      "__editor": {
-        "order": 32
-      }
-    },
-    "popPunk": {
-      "type": "theme",
-      "catalogId": "popPunk",
-      "label": "Pop Punk",
-      "author": "Seldon Digital",
-      "componentPreview": "seldonThemePreview",
-      "componentTheme": "theme-seldon-default",
-      "componentProperties": {},
-      "variants": [
-        {
-          "id": "theme-pop-default"
-        }
-      ],
-      "__editor": {
-        "order": 33
-      }
-    },
-    "ibmCarbon": {
-      "type": "theme",
-      "catalogId": "ibmCarbon",
-      "label": "IBM Carbon",
-      "author": "Seldon Digital",
-      "componentPreview": "seldonThemePreview",
-      "componentTheme": "theme-seldon-default",
-      "componentProperties": {},
-      "variants": [
-        {
-          "id": "theme-ibmCarbon-default"
-        }
-      ],
-      "__editor": {
-        "order": 34
-      }
-    },
-    "adobeSpectrum": {
-      "type": "theme",
-      "catalogId": "adobeSpectrum",
-      "label": "Adobe Spectrum",
-      "author": "Seldon Digital",
-      "componentPreview": "seldonThemePreview",
-      "componentTheme": "theme-seldon-default",
-      "componentProperties": {},
-      "variants": [
-        {
-          "id": "theme-adobeSpectrum-default"
         }
       ],
       "__editor": {
@@ -2204,14 +2246,36 @@
       "author": "Seldon Digital",
       "componentPreview": "seldonThemePreview",
       "componentTheme": "theme-seldon-default",
-      "componentProperties": {},
+      "componentProperties": {
+        "board": {
+          "width": {
+            "type": "exact",
+            "value": {
+              "unit": "px",
+              "value": 500
+            }
+          }
+        },
+        "align": {
+          "type": "option",
+          "value": "top-center"
+        },
+        "background": [
+          {
+            "color": {
+              "type": "theme.categorical",
+              "value": "@swatch.offBlack"
+            }
+          }
+        ]
+      },
       "variants": [
         {
           "id": "theme-sunsetBlue-default"
         }
       ],
       "__editor": {
-        "order": 36
+        "order": 39
       }
     },
     "wildberry": {
@@ -2221,14 +2285,36 @@
       "author": "Seldon Digital",
       "componentPreview": "seldonThemePreview",
       "componentTheme": "theme-seldon-default",
-      "componentProperties": {},
+      "componentProperties": {
+        "board": {
+          "width": {
+            "type": "exact",
+            "value": {
+              "unit": "px",
+              "value": 500
+            }
+          }
+        },
+        "align": {
+          "type": "option",
+          "value": "top-center"
+        },
+        "background": [
+          {
+            "color": {
+              "type": "theme.categorical",
+              "value": "@swatch.offBlack"
+            }
+          }
+        ]
+      },
       "variants": [
         {
           "id": "theme-wildberry-default"
         }
       ],
       "__editor": {
-        "order": 37
+        "order": 40
       }
     },
     "listboxOption": {
@@ -2297,7 +2383,7 @@
         }
       ],
       "__editor": {
-        "order": 14
+        "order": 17
       }
     },
     "hr": {
@@ -2358,7 +2444,7 @@
         }
       ],
       "__editor": {
-        "order": 16
+        "order": 19
       }
     },
     "listbox": {
@@ -2522,7 +2608,7 @@
         }
       ],
       "__editor": {
-        "order": 5
+        "order": 6
       }
     },
     "menuItem": {
@@ -2616,7 +2702,7 @@
         }
       ],
       "__editor": {
-        "order": 15
+        "order": 18
       }
     },
     "menu": {
@@ -2732,7 +2818,7 @@
         }
       ],
       "__editor": {
-        "order": 6
+        "order": 8
       }
     },
     "combobox": {
@@ -2918,7 +3004,7 @@
         }
       ],
       "__editor": {
-        "order": 4
+        "order": 5
       }
     },
     "sidebar": {
@@ -3532,7 +3618,7 @@
         }
       ],
       "__editor": {
-        "order": 22
+        "order": 25
       }
     },
     "calendarDay": {
@@ -3604,7 +3690,7 @@
         }
       ],
       "__editor": {
-        "order": 9
+        "order": 12
       }
     },
     "calendar": {
@@ -5023,6 +5109,585 @@
       "__editor": {
         "order": 0
       }
+    },
+    "popPunk": {
+      "type": "theme",
+      "catalogId": "popPunk",
+      "label": "Pop Punk",
+      "author": "Seldon Digital",
+      "componentPreview": "seldonThemePreview",
+      "componentTheme": "theme-seldon-default",
+      "componentProperties": {
+        "board": {
+          "width": {
+            "type": "exact",
+            "value": {
+              "unit": "px",
+              "value": 500
+            }
+          }
+        },
+        "align": {
+          "type": "option",
+          "value": "top-center"
+        },
+        "background": [
+          {
+            "color": {
+              "type": "theme.categorical",
+              "value": "@swatch.offBlack"
+            }
+          }
+        ]
+      },
+      "variants": [
+        {
+          "id": "theme-pop-default"
+        }
+      ],
+      "__editor": {
+        "order": 36
+      }
+    },
+    "ibmCarbon": {
+      "type": "theme",
+      "catalogId": "ibmCarbon",
+      "label": "IBM Carbon",
+      "author": "Seldon Digital",
+      "componentPreview": "seldonThemePreview",
+      "componentTheme": "theme-seldon-default",
+      "componentProperties": {
+        "board": {
+          "width": {
+            "type": "exact",
+            "value": {
+              "unit": "px",
+              "value": 500
+            }
+          }
+        },
+        "align": {
+          "type": "option",
+          "value": "top-center"
+        },
+        "background": [
+          {
+            "color": {
+              "type": "theme.categorical",
+              "value": "@swatch.offBlack"
+            }
+          }
+        ]
+      },
+      "variants": [
+        {
+          "id": "theme-royalAzure-default"
+        }
+      ],
+      "__editor": {
+        "order": 37
+      }
+    },
+    "mediaCard": {
+      "type": "component",
+      "level": "part",
+      "catalogId": "mediaCard",
+      "label": "Media Cards",
+      "author": "Seldon Digital",
+      "componentTheme": "theme-seldon-default",
+      "componentProperties": {
+        "board": {
+          "width": {
+            "type": "exact",
+            "value": {
+              "unit": "px",
+              "value": 500
+            }
+          }
+        },
+        "align": {
+          "type": "option",
+          "value": "top-center"
+        },
+        "background": [
+          {
+            "color": {
+              "type": "theme.categorical",
+              "value": "@swatch.offBlack"
+            }
+          }
+        ]
+      },
+      "variants": [
+        {
+          "id": "component-mediaCard-default",
+          "children": [
+            {
+              "id": "component-image-p3O3CcKB"
+            },
+            {
+              "id": "component-frame-M0WpJK2v",
+              "children": [
+                {
+                  "id": "component-text-adfua07Y"
+                },
+                {
+                  "id": "component-frame-9CdQzyxC",
+                  "children": [
+                    {
+                      "id": "component-image-FlHU2Gra"
+                    },
+                    {
+                      "id": "component-frame-Ew9FwtUo",
+                      "children": [
+                        {
+                          "id": "component-text-P1KQ8FF4"
+                        },
+                        {
+                          "id": "component-text-nLqrRwl0"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "component-button-HeIR5BAT",
+                  "children": [
+                    {
+                      "id": "component-icon-zHnOxOMG"
+                    },
+                    {
+                      "id": "component-text-brAyyuLx"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "component-mediaCard-compact",
+          "children": [
+            {
+              "id": "component-image-vavBWYNJ"
+            },
+            {
+              "id": "component-frame-CqNHEycp",
+              "children": [
+                {
+                  "id": "component-text-pvmTdp62"
+                },
+                {
+                  "id": "component-text-FhgbKyvo"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "__editor": {
+        "order": 7
+      }
+    },
+    "productCard": {
+      "type": "component",
+      "level": "part",
+      "catalogId": "productCard",
+      "label": "Product Cards",
+      "author": "Seldon Digital",
+      "componentTheme": "theme-seldon-default",
+      "componentProperties": {
+        "board": {
+          "width": {
+            "type": "exact",
+            "value": {
+              "unit": "px",
+              "value": 500
+            }
+          }
+        },
+        "align": {
+          "type": "option",
+          "value": "top-center"
+        },
+        "background": [
+          {
+            "color": {
+              "type": "theme.categorical",
+              "value": "@swatch.offBlack"
+            }
+          }
+        ]
+      },
+      "variants": [
+        {
+          "id": "component-productCard-default",
+          "children": [
+            {
+              "id": "component-image-v8N4WwYD"
+            },
+            {
+              "id": "component-frame-OVgwOn3u",
+              "children": [
+                {
+                  "id": "component-chip-xv4CdA7x",
+                  "children": [
+                    {
+                      "id": "component-text-7OYzRCLT"
+                    }
+                  ]
+                },
+                {
+                  "id": "component-text-ChAEkjLX"
+                },
+                {
+                  "id": "component-text-BEmSJFoL"
+                },
+                {
+                  "id": "component-frame-yN2ej9pa",
+                  "children": [
+                    {
+                      "id": "component-icon-GSdGPr3n"
+                    },
+                    {
+                      "id": "component-icon-7m5qK1jg"
+                    },
+                    {
+                      "id": "component-icon-i4Ue7uFz"
+                    },
+                    {
+                      "id": "component-icon-ajKuzoE7"
+                    },
+                    {
+                      "id": "component-icon-b9HSRdc0"
+                    }
+                  ]
+                },
+                {
+                  "id": "component-button-VQrSyrRB",
+                  "children": [
+                    {
+                      "id": "component-icon-KyVkGZIj"
+                    },
+                    {
+                      "id": "component-text-v5HiklPA"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "component-productCard-minimal",
+          "children": [
+            {
+              "id": "component-image-yBOiNfoT"
+            },
+            {
+              "id": "component-frame-JBlbNZzc",
+              "children": [
+                {
+                  "id": "component-text-ehoejqam"
+                },
+                {
+                  "id": "component-text-K5abLY1V"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "component-productCard-horizontal",
+          "children": [
+            {
+              "id": "component-image-Jk3CvKmQ"
+            },
+            {
+              "id": "component-frame-3HfoRqfh",
+              "children": [
+                {
+                  "id": "component-text-6cZdtVdU"
+                },
+                {
+                  "id": "component-text-8nVlmOWW"
+                },
+                {
+                  "id": "component-button-7CzaLtTe",
+                  "children": [
+                    {
+                      "id": "component-icon-zAFSDZct"
+                    },
+                    {
+                      "id": "component-text-ZiRtGWB4"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "__editor": {
+        "order": 9
+      }
+    },
+    "adobeSpectrum": {
+      "type": "theme",
+      "catalogId": "adobeSpectrum",
+      "label": "Adobe Spectrum",
+      "author": "Seldon Digital",
+      "componentPreview": "seldonThemePreview",
+      "componentTheme": "theme-seldon-default",
+      "componentProperties": {
+        "background": [
+          {
+            "color": {
+              "type": "theme.categorical",
+              "value": "@swatch.offBlack"
+            }
+          }
+        ],
+        "board": {
+          "width": {
+            "type": "exact",
+            "value": {
+              "unit": "px",
+              "value": 500
+            }
+          }
+        },
+        "align": {
+          "type": "option",
+          "value": "top-center"
+        }
+      },
+      "variants": [
+        {
+          "id": "theme-sky-default"
+        }
+      ],
+      "__editor": {
+        "order": 38
+      }
+    },
+    "googleSymbols": {
+      "type": "icon-set",
+      "catalogId": "googleSymbols",
+      "label": "Google Symbols",
+      "componentPreview": "seldonIconsPreview",
+      "componentTheme": "theme-seldon-default",
+      "componentProperties": {
+        "orientation": {
+          "type": "option",
+          "value": "horizontal"
+        },
+        "wrapChildren": {
+          "type": "exact",
+          "value": true
+        },
+        "clip": {
+          "type": "exact",
+          "value": false
+        },
+        "board": {
+          "width": {
+            "type": "exact",
+            "value": {
+              "unit": "px",
+              "value": 500
+            }
+          }
+        }
+      },
+      "variants": [
+        {
+          "id": "icon-set-googleMaterial-default"
+        }
+      ],
+      "__editor": {
+        "order": 33
+      }
+    },
+    "googleMaterial": {
+      "type": "theme",
+      "catalogId": "googleMaterial",
+      "label": "Google Material",
+      "author": "Seldon Digital",
+      "componentPreview": "seldonThemePreview",
+      "componentTheme": "theme-seldon-default",
+      "componentProperties": {
+        "board": {
+          "width": {
+            "type": "exact",
+            "value": {
+              "unit": "px",
+              "value": 500
+            }
+          }
+        },
+        "align": {
+          "type": "option",
+          "value": "top-center"
+        },
+        "background": [
+          {
+            "color": {
+              "type": "theme.categorical",
+              "value": "@swatch.offBlack"
+            }
+          }
+        ]
+      },
+      "variants": [
+        {
+          "id": "theme-material-default"
+        }
+      ],
+      "__editor": {
+        "order": 29
+      }
+    },
+    "articleCard": {
+      "type": "component",
+      "level": "part",
+      "catalogId": "articleCard",
+      "label": "Article Cards",
+      "author": "Seldon Digital",
+      "componentTheme": "theme-seldon-default",
+      "componentProperties": {
+        "board": {
+          "width": {
+            "type": "exact",
+            "value": {
+              "unit": "px",
+              "value": 500
+            }
+          }
+        },
+        "align": {
+          "type": "option",
+          "value": "top-center"
+        },
+        "background": [
+          {
+            "color": {
+              "type": "theme.categorical",
+              "value": "@swatch.offBlack"
+            }
+          }
+        ]
+      },
+      "variants": [
+        {
+          "id": "component-articleCard-default",
+          "children": [
+            {
+              "id": "component-image-j9Of31QA"
+            },
+            {
+              "id": "component-frame-mCLMJYnt",
+              "children": [
+                {
+                  "id": "component-chip-O0xbCSfq",
+                  "children": [
+                    {
+                      "id": "component-text-76K1059I"
+                    }
+                  ]
+                },
+                {
+                  "id": "component-text-XKk98Nl2"
+                },
+                {
+                  "id": "component-text-w5Ysgfmq"
+                },
+                {
+                  "id": "component-frame-L25C6h85",
+                  "children": [
+                    {
+                      "id": "component-image-w1ApkryL"
+                    },
+                    {
+                      "id": "component-frame-blp5FkG8",
+                      "children": [
+                        {
+                          "id": "component-text-f3YMcFa2"
+                        },
+                        {
+                          "id": "component-text-yqndSNgN"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "component-button-mRdk8FKv",
+                      "children": [
+                        {
+                          "id": "component-text-GtWpy0oZ"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "component-articleCard-minimal",
+          "children": [
+            {
+              "id": "component-image-FxMrSQn4"
+            },
+            {
+              "id": "component-frame-5YdyLQ2r",
+              "children": [
+                {
+                  "id": "component-chip-eVvWIk2D",
+                  "children": [
+                    {
+                      "id": "component-text-rEmi5AfS"
+                    }
+                  ]
+                },
+                {
+                  "id": "component-text-fWG2Dkpm"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "component-articleCard-horizontal",
+          "children": [
+            {
+              "id": "component-image-OAMKSqWv"
+            },
+            {
+              "id": "component-frame-4deT9xog",
+              "children": [
+                {
+                  "id": "component-chip-sXLZ1XES",
+                  "children": [
+                    {
+                      "id": "component-text-ZEMdN1UQ"
+                    }
+                  ]
+                },
+                {
+                  "id": "component-text-PHNzTfnx"
+                },
+                {
+                  "id": "component-text-ZDMZ04RD"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "__editor": {
+        "order": 3
+      }
     }
   },
   "playgrounds": {},
@@ -5034,7 +5699,34 @@
       "label": "Text",
       "theme": null,
       "template": "catalog:text",
-      "overrides": {}
+      "overrides": {
+        "font": {
+          "preset": {
+            "type": "theme.categorical",
+            "value": "@font.body"
+          },
+          "weight": {
+            "type": "theme.ordinal",
+            "value": "@fontWeight.normal"
+          },
+          "size": {
+            "type": "theme.ordinal",
+            "value": "@fontSize.medium"
+          },
+          "lineHeight": {
+            "type": "theme.ordinal",
+            "value": "@lineHeight.tight"
+          }
+        },
+        "shadow": [
+          {
+            "preset": {
+              "type": "theme.categorical",
+              "value": "@shadow.none"
+            }
+          }
+        ]
+      }
     },
     "component-text-title": {
       "id": "component-text-title",
@@ -5056,12 +5748,32 @@
           "preset": {
             "type": "theme.categorical",
             "value": "@font.title"
+          },
+          "weight": {
+            "type": "theme.ordinal",
+            "value": "@fontWeight.medium"
+          },
+          "size": {
+            "type": "theme.ordinal",
+            "value": "@fontSize.medium"
+          },
+          "lineHeight": {
+            "type": "theme.ordinal",
+            "value": "@lineHeight.tight"
           }
         },
         "lines": {
           "type": "exact",
           "value": 2
-        }
+        },
+        "shadow": [
+          {
+            "preset": {
+              "type": "theme.categorical",
+              "value": "@shadow.none"
+            }
+          }
+        ]
       },
       "__editor": {
         "initialOverrides": {
@@ -5106,12 +5818,32 @@
           "preset": {
             "type": "theme.categorical",
             "value": "@font.label"
+          },
+          "weight": {
+            "type": "theme.ordinal",
+            "value": "@fontWeight.normal"
+          },
+          "size": {
+            "type": "theme.ordinal",
+            "value": "@fontSize.small"
+          },
+          "lineHeight": {
+            "type": "theme.ordinal",
+            "value": "@lineHeight.solid"
           }
         },
         "wrapText": {
           "type": "exact",
           "value": false
-        }
+        },
+        "shadow": [
+          {
+            "preset": {
+              "type": "theme.categorical",
+              "value": "@shadow.none"
+            }
+          }
+        ]
       },
       "__editor": {
         "initialOverrides": {
@@ -12343,12 +13075,32 @@
           "preset": {
             "type": "theme.categorical",
             "value": "@font.subtitle"
+          },
+          "weight": {
+            "type": "theme.ordinal",
+            "value": "@fontWeight.normal"
+          },
+          "size": {
+            "type": "theme.ordinal",
+            "value": "@fontSize.small"
+          },
+          "lineHeight": {
+            "type": "theme.ordinal",
+            "value": "@lineHeight.tight"
           }
         },
         "lines": {
           "type": "exact",
           "value": 2
-        }
+        },
+        "shadow": [
+          {
+            "preset": {
+              "type": "theme.categorical",
+              "value": "@shadow.none"
+            }
+          }
+        ]
       },
       "__editor": {
         "initialOverrides": {
@@ -13344,6 +14096,10 @@
             "unit": "%",
             "value": 30
           }
+        },
+        "cursor": {
+          "type": "option",
+          "value": "pointer"
         }
       },
       "origin": "schema",
@@ -13376,6 +14132,10 @@
             "type": "theme.ordinal",
             "value": "@fontSize.small"
           }
+        },
+        "cursor": {
+          "type": "option",
+          "value": "pointer"
         }
       },
       "origin": "schema",
@@ -13420,6 +14180,10 @@
             "unit": "%",
             "value": 30
           }
+        },
+        "cursor": {
+          "type": "option",
+          "value": "pointer"
         }
       },
       "origin": "schema",
@@ -13844,7 +14608,11 @@
               "value": "@shadow.none"
             }
           }
-        ]
+        ],
+        "display": {
+          "type": "option",
+          "value": "exclude"
+        }
       },
       "__editor": {
         "initialOverrides": {
@@ -16123,7 +16891,52 @@
             "type": "theme.categorical",
             "value": "@border.hairline"
           }
-        }
+        },
+        "shadow": [
+          {
+            "offsetX": {
+              "type": "exact",
+              "value": {
+                "unit": "px",
+                "value": 0
+              }
+            },
+            "offsetY": {
+              "type": "exact",
+              "value": {
+                "unit": "px",
+                "value": 2
+              }
+            },
+            "blur": {
+              "type": "theme.ordinal",
+              "value": "@blur.small"
+            },
+            "spread": {
+              "type": "theme.ordinal",
+              "value": "@spread.xsmall"
+            },
+            "color": {
+              "type": "theme.categorical",
+              "value": "@swatch.black"
+            },
+            "opacity": {
+              "type": "exact",
+              "value": {
+                "unit": "%",
+                "value": 25
+              }
+            },
+            "preset": {
+              "type": "theme.categorical",
+              "value": "@shadow.light"
+            },
+            "style": {
+              "type": "empty",
+              "value": null
+            }
+          }
+        ]
       },
       "__editor": {
         "initialOverrides": {
@@ -17312,12 +18125,32 @@
           "preset": {
             "type": "theme.categorical",
             "value": "@font.display"
+          },
+          "weight": {
+            "type": "theme.ordinal",
+            "value": "@fontWeight.bold"
+          },
+          "size": {
+            "type": "theme.ordinal",
+            "value": "@fontSize.xxlarge"
+          },
+          "lineHeight": {
+            "type": "theme.ordinal",
+            "value": "@lineHeight.solid"
           }
         },
         "lines": {
           "type": "exact",
           "value": 3
-        }
+        },
+        "shadow": [
+          {
+            "preset": {
+              "type": "theme.categorical",
+              "value": "@shadow.none"
+            }
+          }
+        ]
       },
       "__editor": {
         "initialOverrides": {
@@ -17362,12 +18195,32 @@
           "preset": {
             "type": "theme.categorical",
             "value": "@font.heading"
+          },
+          "weight": {
+            "type": "theme.ordinal",
+            "value": "@fontWeight.semibold"
+          },
+          "size": {
+            "type": "theme.ordinal",
+            "value": "@fontSize.xlarge"
+          },
+          "lineHeight": {
+            "type": "theme.ordinal",
+            "value": "@lineHeight.tight"
           }
         },
         "lines": {
           "type": "exact",
           "value": 3
-        }
+        },
+        "shadow": [
+          {
+            "preset": {
+              "type": "theme.categorical",
+              "value": "@shadow.none"
+            }
+          }
+        ]
       },
       "__editor": {
         "initialOverrides": {
@@ -17412,12 +18265,32 @@
           "preset": {
             "type": "theme.categorical",
             "value": "@font.subheading"
+          },
+          "weight": {
+            "type": "theme.ordinal",
+            "value": "@fontWeight.medium"
+          },
+          "size": {
+            "type": "theme.ordinal",
+            "value": "@fontSize.large"
+          },
+          "lineHeight": {
+            "type": "theme.ordinal",
+            "value": "@lineHeight.tight"
           }
         },
         "lines": {
           "type": "exact",
           "value": 3
-        }
+        },
+        "shadow": [
+          {
+            "preset": {
+              "type": "theme.categorical",
+              "value": "@shadow.none"
+            }
+          }
+        ]
       },
       "__editor": {
         "initialOverrides": {
@@ -17462,12 +18335,32 @@
           "preset": {
             "type": "theme.categorical",
             "value": "@font.callout"
+          },
+          "weight": {
+            "type": "theme.ordinal",
+            "value": "@fontWeight.light"
+          },
+          "size": {
+            "type": "theme.ordinal",
+            "value": "@fontSize.xsmall"
+          },
+          "lineHeight": {
+            "type": "theme.ordinal",
+            "value": "@lineHeight.compact"
           }
         },
         "lines": {
           "type": "exact",
           "value": 2
-        }
+        },
+        "shadow": [
+          {
+            "preset": {
+              "type": "theme.categorical",
+              "value": "@shadow.none"
+            }
+          }
+        ]
       },
       "__editor": {
         "initialOverrides": {
@@ -17512,12 +18405,32 @@
           "preset": {
             "type": "theme.categorical",
             "value": "@font.tagline"
+          },
+          "weight": {
+            "type": "theme.ordinal",
+            "value": "@fontWeight.medium"
+          },
+          "size": {
+            "type": "theme.ordinal",
+            "value": "@fontSize.xsmall"
+          },
+          "lineHeight": {
+            "type": "theme.ordinal",
+            "value": "@lineHeight.tight"
           }
         },
         "lines": {
           "type": "exact",
           "value": 2
-        }
+        },
+        "shadow": [
+          {
+            "preset": {
+              "type": "theme.categorical",
+              "value": "@shadow.none"
+            }
+          }
+        ]
       },
       "__editor": {
         "initialOverrides": {
@@ -17562,8 +18475,28 @@
           "preset": {
             "type": "theme.categorical",
             "value": "@font.body"
+          },
+          "weight": {
+            "type": "theme.ordinal",
+            "value": "@fontWeight.normal"
+          },
+          "size": {
+            "type": "theme.ordinal",
+            "value": "@fontSize.medium"
+          },
+          "lineHeight": {
+            "type": "theme.ordinal",
+            "value": "@lineHeight.tight"
           }
-        }
+        },
+        "shadow": [
+          {
+            "preset": {
+              "type": "theme.categorical",
+              "value": "@shadow.none"
+            }
+          }
+        ]
       },
       "__editor": {
         "initialOverrides": {
@@ -17604,8 +18537,28 @@
           "preset": {
             "type": "theme.categorical",
             "value": "@font.code"
+          },
+          "weight": {
+            "type": "theme.ordinal",
+            "value": "@fontWeight.normal"
+          },
+          "size": {
+            "type": "theme.ordinal",
+            "value": "@fontSize.medium"
+          },
+          "lineHeight": {
+            "type": "theme.ordinal",
+            "value": "@lineHeight.tight"
           }
-        }
+        },
+        "shadow": [
+          {
+            "preset": {
+              "type": "theme.categorical",
+              "value": "@shadow.none"
+            }
+          }
+        ]
       },
       "__editor": {
         "initialOverrides": {
@@ -17646,12 +18599,32 @@
           "preset": {
             "type": "theme.categorical",
             "value": "@font.label"
+          },
+          "weight": {
+            "type": "theme.ordinal",
+            "value": "@fontWeight.normal"
+          },
+          "size": {
+            "type": "theme.ordinal",
+            "value": "@fontSize.small"
+          },
+          "lineHeight": {
+            "type": "theme.ordinal",
+            "value": "@lineHeight.solid"
           }
         },
         "lines": {
           "type": "exact",
           "value": 2
-        }
+        },
+        "shadow": [
+          {
+            "preset": {
+              "type": "theme.categorical",
+              "value": "@shadow.none"
+            }
+          }
+        ]
       },
       "__editor": {
         "initialOverrides": {
@@ -42194,6 +43167,4180 @@
           }
         }
       }
+    },
+    "component-button-tools": {
+      "id": "component-button-tools",
+      "type": "variant",
+      "level": "element",
+      "label": "Tool Buttons",
+      "theme": null,
+      "template": "node:component-button-default",
+      "overrides": {
+        "orientation": {
+          "type": "option",
+          "value": "vertical"
+        },
+        "padding": {
+          "top": {
+            "type": "theme.ordinal",
+            "value": "@padding.compact"
+          },
+          "right": {
+            "type": "theme.ordinal",
+            "value": "@padding.compact"
+          },
+          "bottom": {
+            "type": "theme.ordinal",
+            "value": "@padding.compact"
+          },
+          "left": {
+            "type": "theme.ordinal",
+            "value": "@padding.compact"
+          }
+        },
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.compact"
+        },
+        "corners": {
+          "topLeft": {
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
+          },
+          "topRight": {
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
+          },
+          "bottomLeft": {
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
+          },
+          "bottomRight": {
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
+          }
+        },
+        "background": [
+          {
+            "kind": {
+              "type": "option",
+              "value": "color"
+            },
+            "color": {
+              "type": "theme.categorical",
+              "value": "@swatch.swatch4"
+            },
+            "brightness": {
+              "type": "exact",
+              "value": {
+                "unit": "%",
+                "value": 50
+              }
+            },
+            "opacity": {
+              "type": "empty",
+              "value": null
+            }
+          }
+        ],
+        "border": {
+          "preset": {
+            "type": "theme.categorical",
+            "value": "@border.none"
+          }
+        }
+      },
+      "__editor": {
+        "initialOverrides": {
+          "orientation": {
+            "type": "option",
+            "value": "vertical"
+          },
+          "padding": {
+            "top": {
+              "type": "theme.ordinal",
+              "value": "@padding.compact"
+            },
+            "right": {
+              "type": "theme.ordinal",
+              "value": "@padding.compact"
+            },
+            "bottom": {
+              "type": "theme.ordinal",
+              "value": "@padding.compact"
+            },
+            "left": {
+              "type": "theme.ordinal",
+              "value": "@padding.compact"
+            }
+          },
+          "gap": {
+            "type": "theme.ordinal",
+            "value": "@gap.compact"
+          },
+          "corners": {
+            "topLeft": {
+              "type": "theme.ordinal",
+              "value": "@corners.tight"
+            },
+            "topRight": {
+              "type": "theme.ordinal",
+              "value": "@corners.tight"
+            },
+            "bottomLeft": {
+              "type": "theme.ordinal",
+              "value": "@corners.tight"
+            },
+            "bottomRight": {
+              "type": "theme.ordinal",
+              "value": "@corners.tight"
+            }
+          },
+          "background": [
+            {
+              "kind": {
+                "type": "option",
+                "value": "color"
+              },
+              "color": {
+                "type": "theme.categorical",
+                "value": "@swatch.swatch4"
+              },
+              "brightness": {
+                "type": "exact",
+                "value": {
+                  "unit": "%",
+                  "value": 50
+                }
+              },
+              "opacity": {
+                "type": "empty",
+                "value": null
+              }
+            }
+          ],
+          "border": {
+            "preset": {
+              "type": "theme.categorical",
+              "value": "@border.none"
+            }
+          }
+        }
+      }
+    },
+    "component-button-Xjs6PF9t": {
+      "id": "component-button-Xjs6PF9t",
+      "type": "instance",
+      "level": "element",
+      "label": "Button",
+      "theme": null,
+      "template": "node:component-button-default",
+      "overrides": {
+        "orientation": {
+          "type": "option",
+          "value": "vertical"
+        },
+        "padding": {
+          "top": {
+            "type": "theme.ordinal",
+            "value": "@padding.compact"
+          },
+          "right": {
+            "type": "theme.ordinal",
+            "value": "@padding.compact"
+          },
+          "bottom": {
+            "type": "theme.ordinal",
+            "value": "@padding.compact"
+          },
+          "left": {
+            "type": "theme.ordinal",
+            "value": "@padding.compact"
+          }
+        },
+        "corners": {
+          "topLeft": {
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
+          },
+          "topRight": {
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
+          },
+          "bottomLeft": {
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
+          },
+          "bottomRight": {
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
+          }
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "orientation": {
+            "type": "option",
+            "value": "vertical"
+          },
+          "padding": {
+            "top": {
+              "type": "theme.ordinal",
+              "value": "@padding.compact"
+            },
+            "right": {
+              "type": "theme.ordinal",
+              "value": "@padding.compact"
+            },
+            "bottom": {
+              "type": "theme.ordinal",
+              "value": "@padding.compact"
+            },
+            "left": {
+              "type": "theme.ordinal",
+              "value": "@padding.compact"
+            }
+          },
+          "corners": {
+            "topLeft": {
+              "type": "theme.ordinal",
+              "value": "@corners.tight"
+            },
+            "topRight": {
+              "type": "theme.ordinal",
+              "value": "@corners.tight"
+            },
+            "bottomLeft": {
+              "type": "theme.ordinal",
+              "value": "@corners.tight"
+            },
+            "bottomRight": {
+              "type": "theme.ordinal",
+              "value": "@corners.tight"
+            }
+          }
+        }
+      }
+    },
+    "component-icon-8lkvbpN8": {
+      "id": "component-icon-8lkvbpN8",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Icon",
+      "theme": null,
+      "template": "node:component-icon-umGs9Mqw",
+      "overrides": {},
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-text-hthmTnL8": {
+      "id": "component-text-hthmTnL8",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-yLTEEYXq",
+      "overrides": {},
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-button-S3ri1xuX": {
+      "id": "component-button-S3ri1xuX",
+      "type": "instance",
+      "level": "element",
+      "label": "Button",
+      "theme": null,
+      "template": "node:component-button-default",
+      "overrides": {
+        "orientation": {
+          "type": "option",
+          "value": "vertical"
+        },
+        "padding": {
+          "top": {
+            "type": "theme.ordinal",
+            "value": "@padding.compact"
+          },
+          "right": {
+            "type": "theme.ordinal",
+            "value": "@padding.compact"
+          },
+          "bottom": {
+            "type": "theme.ordinal",
+            "value": "@padding.compact"
+          },
+          "left": {
+            "type": "theme.ordinal",
+            "value": "@padding.compact"
+          }
+        },
+        "corners": {
+          "topLeft": {
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
+          },
+          "topRight": {
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
+          },
+          "bottomLeft": {
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
+          },
+          "bottomRight": {
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
+          }
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "orientation": {
+            "type": "option",
+            "value": "vertical"
+          },
+          "padding": {
+            "top": {
+              "type": "theme.ordinal",
+              "value": "@padding.compact"
+            },
+            "right": {
+              "type": "theme.ordinal",
+              "value": "@padding.compact"
+            },
+            "bottom": {
+              "type": "theme.ordinal",
+              "value": "@padding.compact"
+            },
+            "left": {
+              "type": "theme.ordinal",
+              "value": "@padding.compact"
+            }
+          },
+          "corners": {
+            "topLeft": {
+              "type": "theme.ordinal",
+              "value": "@corners.tight"
+            },
+            "topRight": {
+              "type": "theme.ordinal",
+              "value": "@corners.tight"
+            },
+            "bottomLeft": {
+              "type": "theme.ordinal",
+              "value": "@corners.tight"
+            },
+            "bottomRight": {
+              "type": "theme.ordinal",
+              "value": "@corners.tight"
+            }
+          }
+        }
+      }
+    },
+    "component-icon-G32oh0lC": {
+      "id": "component-icon-G32oh0lC",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Icon",
+      "theme": null,
+      "template": "node:component-icon-umGs9Mqw",
+      "overrides": {},
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-text-MdIrpcpX": {
+      "id": "component-text-MdIrpcpX",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-yLTEEYXq",
+      "overrides": {},
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-button-giTTZedo": {
+      "id": "component-button-giTTZedo",
+      "type": "instance",
+      "level": "element",
+      "label": "Button",
+      "theme": null,
+      "template": "node:component-button-default",
+      "overrides": {
+        "orientation": {
+          "type": "option",
+          "value": "vertical"
+        },
+        "padding": {
+          "top": {
+            "type": "theme.ordinal",
+            "value": "@padding.compact"
+          },
+          "right": {
+            "type": "theme.ordinal",
+            "value": "@padding.compact"
+          },
+          "bottom": {
+            "type": "theme.ordinal",
+            "value": "@padding.compact"
+          },
+          "left": {
+            "type": "theme.ordinal",
+            "value": "@padding.compact"
+          }
+        },
+        "corners": {
+          "topLeft": {
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
+          },
+          "topRight": {
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
+          },
+          "bottomLeft": {
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
+          },
+          "bottomRight": {
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
+          }
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "orientation": {
+            "type": "option",
+            "value": "vertical"
+          },
+          "padding": {
+            "top": {
+              "type": "theme.ordinal",
+              "value": "@padding.compact"
+            },
+            "right": {
+              "type": "theme.ordinal",
+              "value": "@padding.compact"
+            },
+            "bottom": {
+              "type": "theme.ordinal",
+              "value": "@padding.compact"
+            },
+            "left": {
+              "type": "theme.ordinal",
+              "value": "@padding.compact"
+            }
+          },
+          "corners": {
+            "topLeft": {
+              "type": "theme.ordinal",
+              "value": "@corners.tight"
+            },
+            "topRight": {
+              "type": "theme.ordinal",
+              "value": "@corners.tight"
+            },
+            "bottomLeft": {
+              "type": "theme.ordinal",
+              "value": "@corners.tight"
+            },
+            "bottomRight": {
+              "type": "theme.ordinal",
+              "value": "@corners.tight"
+            }
+          }
+        }
+      }
+    },
+    "component-icon-sAG5hOE8": {
+      "id": "component-icon-sAG5hOE8",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Icon",
+      "theme": null,
+      "template": "node:component-icon-umGs9Mqw",
+      "overrides": {},
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-text-SKczamOK": {
+      "id": "component-text-SKczamOK",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-yLTEEYXq",
+      "overrides": {},
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-mediaCard-default": {
+      "id": "component-mediaCard-default",
+      "type": "default",
+      "level": "part",
+      "label": "Media Card",
+      "theme": null,
+      "template": "catalog:mediaCard",
+      "overrides": {
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.tight"
+        },
+        "background": [
+          {
+            "color": {
+              "type": "theme.categorical",
+              "value": "@swatch.white"
+            }
+          }
+        ],
+        "border": {
+          "preset": {
+            "type": "theme.categorical",
+            "value": "@border.hairline"
+          },
+          "color": {
+            "type": "theme.categorical",
+            "value": "@swatch.primary"
+          }
+        },
+        "shadow": [
+          {
+            "preset": {
+              "type": "theme.categorical",
+              "value": "@shadow.xlight"
+            },
+            "color": {
+              "type": "theme.categorical",
+              "value": "@swatch.black"
+            },
+            "blur": {
+              "type": "theme.ordinal",
+              "value": "@blur.xxsmall"
+            },
+            "spread": {
+              "type": "theme.ordinal",
+              "value": "@spread.tiny"
+            }
+          }
+        ]
+      },
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-image-p3O3CcKB": {
+      "id": "component-image-p3O3CcKB",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Image",
+      "theme": null,
+      "template": "node:component-image-default",
+      "overrides": {
+        "source": {
+          "type": "exact",
+          "value": "https://static.seldon.app/background-default-dark.jpg"
+        },
+        "imageFit": {
+          "type": "option",
+          "value": "cover"
+        },
+        "width": {
+          "type": "option",
+          "value": "fill"
+        },
+        "height": {
+          "type": "exact",
+          "value": {
+            "unit": "px",
+            "value": 200
+          }
+        },
+        "border": {
+          "preset": {
+            "type": "theme.categorical",
+            "value": "@border.none"
+          }
+        },
+        "shadow": [
+          {
+            "preset": {
+              "type": "theme.categorical",
+              "value": "@shadow.none"
+            }
+          }
+        ]
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "source": {
+            "type": "exact",
+            "value": "https://static.seldon.app/background-default-dark.jpg"
+          },
+          "imageFit": {
+            "type": "option",
+            "value": "cover"
+          },
+          "width": {
+            "type": "option",
+            "value": "fill"
+          },
+          "height": {
+            "type": "exact",
+            "value": {
+              "unit": "px",
+              "value": 200
+            }
+          }
+        }
+      }
+    },
+    "component-frame-M0WpJK2v": {
+      "id": "component-frame-M0WpJK2v",
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-default",
+      "overrides": {
+        "orientation": {
+          "type": "option",
+          "value": "vertical"
+        },
+        "width": {
+          "type": "option",
+          "value": "fill"
+        },
+        "height": {
+          "type": "option",
+          "value": "fit"
+        },
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.cozy"
+        },
+        "padding": {
+          "top": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          },
+          "right": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          },
+          "bottom": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          },
+          "left": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          }
+        },
+        "border": {
+          "preset": {
+            "type": "theme.categorical",
+            "value": "@border.none"
+          }
+        },
+        "shadow": [
+          {
+            "preset": {
+              "type": "theme.categorical",
+              "value": "@shadow.none"
+            }
+          }
+        ]
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "orientation": {
+            "type": "option",
+            "value": "vertical"
+          },
+          "width": {
+            "type": "option",
+            "value": "fill"
+          },
+          "height": {
+            "type": "option",
+            "value": "fit"
+          },
+          "gap": {
+            "type": "theme.ordinal",
+            "value": "@gap.cozy"
+          },
+          "padding": {
+            "top": {
+              "type": "theme.ordinal",
+              "value": "@padding.cozy"
+            },
+            "right": {
+              "type": "theme.ordinal",
+              "value": "@padding.cozy"
+            },
+            "bottom": {
+              "type": "theme.ordinal",
+              "value": "@padding.cozy"
+            },
+            "left": {
+              "type": "theme.ordinal",
+              "value": "@padding.cozy"
+            }
+          }
+        }
+      }
+    },
+    "component-text-adfua07Y": {
+      "id": "component-text-adfua07Y",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Title",
+      "theme": null,
+      "template": "node:component-text-title",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "Designing with cards"
+        },
+        "lines": {
+          "type": "exact",
+          "value": 2
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "content": {
+            "type": "exact",
+            "value": "Designing with cards"
+          },
+          "lines": {
+            "type": "exact",
+            "value": 2
+          }
+        }
+      }
+    },
+    "component-frame-9CdQzyxC": {
+      "id": "component-frame-9CdQzyxC",
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-default",
+      "overrides": {
+        "orientation": {
+          "type": "option",
+          "value": "horizontal"
+        },
+        "align": {
+          "type": "option",
+          "value": "left"
+        },
+        "width": {
+          "type": "option",
+          "value": "fill"
+        },
+        "height": {
+          "type": "option",
+          "value": "fit"
+        },
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.compact"
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "orientation": {
+            "type": "option",
+            "value": "horizontal"
+          },
+          "align": {
+            "type": "option",
+            "value": "left"
+          },
+          "width": {
+            "type": "option",
+            "value": "fill"
+          },
+          "height": {
+            "type": "option",
+            "value": "fit"
+          },
+          "gap": {
+            "type": "theme.ordinal",
+            "value": "@gap.compact"
+          }
+        }
+      }
+    },
+    "component-image-FlHU2Gra": {
+      "id": "component-image-FlHU2Gra",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Image",
+      "theme": null,
+      "template": "node:component-image-default",
+      "overrides": {
+        "source": {
+          "type": "exact",
+          "value": "https://static.seldon.app/avatar-user.jpg"
+        },
+        "imageFit": {
+          "type": "option",
+          "value": "cover"
+        },
+        "width": {
+          "type": "theme.ordinal",
+          "value": "@dimension.small"
+        },
+        "height": {
+          "type": "theme.ordinal",
+          "value": "@dimension.small"
+        },
+        "corners": {
+          "topLeft": {
+            "type": "option",
+            "value": "rounded"
+          },
+          "topRight": {
+            "type": "option",
+            "value": "rounded"
+          },
+          "bottomLeft": {
+            "type": "option",
+            "value": "rounded"
+          },
+          "bottomRight": {
+            "type": "option",
+            "value": "rounded"
+          }
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "source": {
+            "type": "exact",
+            "value": "https://static.seldon.app/avatar-user.jpg"
+          },
+          "imageFit": {
+            "type": "option",
+            "value": "cover"
+          },
+          "width": {
+            "type": "theme.ordinal",
+            "value": "@dimension.small"
+          },
+          "height": {
+            "type": "theme.ordinal",
+            "value": "@dimension.small"
+          },
+          "corners": {
+            "topLeft": {
+              "type": "option",
+              "value": "rounded"
+            },
+            "topRight": {
+              "type": "option",
+              "value": "rounded"
+            },
+            "bottomLeft": {
+              "type": "option",
+              "value": "rounded"
+            },
+            "bottomRight": {
+              "type": "option",
+              "value": "rounded"
+            }
+          }
+        }
+      }
+    },
+    "component-frame-Ew9FwtUo": {
+      "id": "component-frame-Ew9FwtUo",
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-default",
+      "overrides": {
+        "orientation": {
+          "type": "option",
+          "value": "vertical"
+        },
+        "width": {
+          "type": "option",
+          "value": "fill"
+        },
+        "height": {
+          "type": "option",
+          "value": "fit"
+        },
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.tight"
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "orientation": {
+            "type": "option",
+            "value": "vertical"
+          },
+          "width": {
+            "type": "option",
+            "value": "fill"
+          },
+          "height": {
+            "type": "option",
+            "value": "fit"
+          },
+          "gap": {
+            "type": "theme.ordinal",
+            "value": "@gap.tight"
+          }
+        }
+      }
+    },
+    "component-text-P1KQ8FF4": {
+      "id": "component-text-P1KQ8FF4",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-label",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "Seldon Studio"
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "content": {
+            "type": "exact",
+            "value": "Seldon Studio"
+          }
+        }
+      }
+    },
+    "component-text-nLqrRwl0": {
+      "id": "component-text-nLqrRwl0",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-label",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "1.2M views · 2 days ago"
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "content": {
+            "type": "exact",
+            "value": "1.2M views · 2 days ago"
+          }
+        }
+      }
+    },
+    "component-button-HeIR5BAT": {
+      "id": "component-button-HeIR5BAT",
+      "type": "instance",
+      "level": "element",
+      "label": "Button",
+      "theme": null,
+      "template": "node:component-button-default",
+      "overrides": {},
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "width": {
+            "type": "option",
+            "value": "fill"
+          }
+        }
+      }
+    },
+    "component-icon-zHnOxOMG": {
+      "id": "component-icon-zHnOxOMG",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Icon",
+      "theme": null,
+      "template": "node:component-icon-default",
+      "overrides": {
+        "symbol": {
+          "type": "option",
+          "value": "material-playArrow"
+        },
+        "size": {
+          "type": "computed",
+          "value": "autoFit"
+        },
+        "color": {
+          "type": "computed",
+          "value": "highContrastColor"
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "symbol": {
+            "type": "option",
+            "value": "material-playArrow"
+          },
+          "size": {
+            "type": "computed",
+            "value": "autoFit"
+          },
+          "color": {
+            "type": "computed",
+            "value": "highContrastColor"
+          }
+        }
+      }
+    },
+    "component-text-brAyyuLx": {
+      "id": "component-text-brAyyuLx",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-label",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "Play now"
+        },
+        "color": {
+          "type": "computed",
+          "value": "highContrastColor"
+        },
+        "font": {
+          "preset": {
+            "type": "theme.categorical",
+            "value": "@font.label"
+          },
+          "size": {
+            "type": "computed",
+            "value": "autoFit"
+          }
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "content": {
+            "type": "exact",
+            "value": "Play now"
+          },
+          "color": {
+            "type": "computed",
+            "value": "highContrastColor"
+          },
+          "font": {
+            "preset": {
+              "type": "theme.categorical",
+              "value": "@font.label"
+            },
+            "size": {
+              "type": "computed",
+              "value": "autoFit"
+            }
+          }
+        }
+      }
+    },
+    "component-mediaCard-compact": {
+      "id": "component-mediaCard-compact",
+      "type": "variant",
+      "level": "part",
+      "label": "Compact Media Card",
+      "theme": null,
+      "template": "node:component-mediaCard-default",
+      "overrides": {
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.tight"
+        },
+        "background": [
+          {
+            "color": {
+              "type": "theme.categorical",
+              "value": "@swatch.white"
+            }
+          }
+        ],
+        "border": {
+          "preset": {
+            "type": "theme.categorical",
+            "value": "@border.hairline"
+          },
+          "color": {
+            "type": "theme.categorical",
+            "value": "@swatch.primary"
+          }
+        },
+        "shadow": [
+          {
+            "preset": {
+              "type": "theme.categorical",
+              "value": "@shadow.xlight"
+            },
+            "color": {
+              "type": "theme.categorical",
+              "value": "@swatch.black"
+            },
+            "blur": {
+              "type": "theme.ordinal",
+              "value": "@blur.xxsmall"
+            },
+            "spread": {
+              "type": "theme.ordinal",
+              "value": "@spread.tiny"
+            }
+          }
+        ]
+      },
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-image-vavBWYNJ": {
+      "id": "component-image-vavBWYNJ",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Image",
+      "theme": null,
+      "template": "node:component-image-p3O3CcKB",
+      "overrides": {
+        "source": {
+          "type": "exact",
+          "value": "https://static.seldon.app/background-default-dark.jpg"
+        },
+        "imageFit": {
+          "type": "option",
+          "value": "cover"
+        },
+        "width": {
+          "type": "option",
+          "value": "fill"
+        },
+        "height": {
+          "type": "exact",
+          "value": {
+            "unit": "px",
+            "value": 160
+          }
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "source": {
+            "type": "exact",
+            "value": "https://static.seldon.app/background-default-dark.jpg"
+          },
+          "imageFit": {
+            "type": "option",
+            "value": "cover"
+          },
+          "width": {
+            "type": "option",
+            "value": "fill"
+          },
+          "height": {
+            "type": "exact",
+            "value": {
+              "unit": "px",
+              "value": 160
+            }
+          }
+        }
+      }
+    },
+    "component-frame-CqNHEycp": {
+      "id": "component-frame-CqNHEycp",
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-default",
+      "overrides": {
+        "orientation": {
+          "type": "option",
+          "value": "vertical"
+        },
+        "width": {
+          "type": "option",
+          "value": "fill"
+        },
+        "height": {
+          "type": "option",
+          "value": "fit"
+        },
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.tight"
+        },
+        "padding": {
+          "top": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          },
+          "right": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          },
+          "bottom": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          },
+          "left": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          }
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "orientation": {
+            "type": "option",
+            "value": "vertical"
+          },
+          "width": {
+            "type": "option",
+            "value": "fill"
+          },
+          "height": {
+            "type": "option",
+            "value": "fit"
+          },
+          "gap": {
+            "type": "theme.ordinal",
+            "value": "@gap.tight"
+          },
+          "padding": {
+            "top": {
+              "type": "theme.ordinal",
+              "value": "@padding.cozy"
+            },
+            "right": {
+              "type": "theme.ordinal",
+              "value": "@padding.cozy"
+            },
+            "bottom": {
+              "type": "theme.ordinal",
+              "value": "@padding.cozy"
+            },
+            "left": {
+              "type": "theme.ordinal",
+              "value": "@padding.cozy"
+            }
+          }
+        }
+      }
+    },
+    "component-text-pvmTdp62": {
+      "id": "component-text-pvmTdp62",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Title",
+      "theme": null,
+      "template": "node:component-text-title",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "Designing with cards"
+        },
+        "lines": {
+          "type": "exact",
+          "value": 2
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "content": {
+            "type": "exact",
+            "value": "Designing with cards"
+          },
+          "lines": {
+            "type": "exact",
+            "value": 2
+          }
+        }
+      }
+    },
+    "component-text-FhgbKyvo": {
+      "id": "component-text-FhgbKyvo",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-label",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "Seldon Studio"
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "content": {
+            "type": "exact",
+            "value": "Seldon Studio"
+          }
+        }
+      }
+    },
+    "component-productCard-default": {
+      "id": "component-productCard-default",
+      "type": "default",
+      "level": "part",
+      "label": "Product Card",
+      "theme": null,
+      "template": "catalog:productCard",
+      "overrides": {
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.tight"
+        },
+        "background": [
+          {
+            "color": {
+              "type": "theme.categorical",
+              "value": "@swatch.white"
+            }
+          }
+        ],
+        "border": {
+          "preset": {
+            "type": "theme.categorical",
+            "value": "@border.hairline"
+          },
+          "color": {
+            "type": "theme.categorical",
+            "value": "@swatch.primary"
+          }
+        },
+        "shadow": [
+          {
+            "preset": {
+              "type": "theme.categorical",
+              "value": "@shadow.xlight"
+            },
+            "color": {
+              "type": "theme.categorical",
+              "value": "@swatch.black"
+            },
+            "blur": {
+              "type": "theme.ordinal",
+              "value": "@blur.xxsmall"
+            },
+            "spread": {
+              "type": "theme.ordinal",
+              "value": "@spread.tiny"
+            }
+          }
+        ]
+      },
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-image-v8N4WwYD": {
+      "id": "component-image-v8N4WwYD",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Image",
+      "theme": null,
+      "template": "node:component-image-default",
+      "overrides": {
+        "source": {
+          "type": "exact",
+          "value": "https://static.seldon.app/background-default-light.jpg"
+        },
+        "imageFit": {
+          "type": "option",
+          "value": "cover"
+        },
+        "width": {
+          "type": "option",
+          "value": "fill"
+        },
+        "height": {
+          "type": "exact",
+          "value": {
+            "unit": "px",
+            "value": 220
+          }
+        },
+        "border": {
+          "preset": {
+            "type": "theme.categorical",
+            "value": "@border.none"
+          }
+        },
+        "shadow": [
+          {
+            "preset": {
+              "type": "theme.categorical",
+              "value": "@shadow.none"
+            }
+          }
+        ]
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "source": {
+            "type": "exact",
+            "value": "https://static.seldon.app/background-default-light.jpg"
+          },
+          "imageFit": {
+            "type": "option",
+            "value": "cover"
+          },
+          "width": {
+            "type": "option",
+            "value": "fill"
+          },
+          "height": {
+            "type": "exact",
+            "value": {
+              "unit": "px",
+              "value": 220
+            }
+          }
+        }
+      }
+    },
+    "component-frame-OVgwOn3u": {
+      "id": "component-frame-OVgwOn3u",
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-default",
+      "overrides": {
+        "orientation": {
+          "type": "option",
+          "value": "vertical"
+        },
+        "width": {
+          "type": "option",
+          "value": "fill"
+        },
+        "height": {
+          "type": "option",
+          "value": "fit"
+        },
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.tight"
+        },
+        "padding": {
+          "top": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          },
+          "right": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          },
+          "bottom": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          },
+          "left": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          }
+        },
+        "border": {
+          "preset": {
+            "type": "theme.categorical",
+            "value": "@border.none"
+          }
+        },
+        "shadow": [
+          {
+            "preset": {
+              "type": "theme.categorical",
+              "value": "@shadow.none"
+            }
+          }
+        ]
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "orientation": {
+            "type": "option",
+            "value": "vertical"
+          },
+          "width": {
+            "type": "option",
+            "value": "fill"
+          },
+          "height": {
+            "type": "option",
+            "value": "fit"
+          },
+          "gap": {
+            "type": "theme.ordinal",
+            "value": "@gap.tight"
+          },
+          "padding": {
+            "top": {
+              "type": "theme.ordinal",
+              "value": "@padding.cozy"
+            },
+            "right": {
+              "type": "theme.ordinal",
+              "value": "@padding.cozy"
+            },
+            "bottom": {
+              "type": "theme.ordinal",
+              "value": "@padding.cozy"
+            },
+            "left": {
+              "type": "theme.ordinal",
+              "value": "@padding.cozy"
+            }
+          }
+        }
+      }
+    },
+    "component-chip-xv4CdA7x": {
+      "id": "component-chip-xv4CdA7x",
+      "type": "instance",
+      "level": "element",
+      "label": "Chip",
+      "theme": null,
+      "template": "node:component-chip-default",
+      "overrides": {
+        "width": {
+          "type": "option",
+          "value": "fit"
+        },
+        "background": [
+          {
+            "kind": {
+              "type": "option",
+              "value": "color"
+            },
+            "color": {
+              "type": "theme.categorical",
+              "value": "@swatch.active"
+            },
+            "brightness": {
+              "type": "empty",
+              "value": null
+            },
+            "opacity": {
+              "type": "empty",
+              "value": null
+            }
+          }
+        ]
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "width": {
+            "type": "option",
+            "value": "fit"
+          },
+          "background": [
+            {
+              "kind": {
+                "type": "option",
+                "value": "color"
+              },
+              "color": {
+                "type": "theme.categorical",
+                "value": "@swatch.active"
+              },
+              "brightness": {
+                "type": "empty",
+                "value": null
+              },
+              "opacity": {
+                "type": "empty",
+                "value": null
+              }
+            }
+          ]
+        }
+      }
+    },
+    "component-text-7OYzRCLT": {
+      "id": "component-text-7OYzRCLT",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-label",
+      "overrides": {
+        "display": {
+          "type": "option",
+          "value": "show"
+        },
+        "content": {
+          "type": "exact",
+          "value": "Sale"
+        },
+        "color": {
+          "type": "computed",
+          "value": "highContrastColor"
+        },
+        "font": {
+          "preset": {
+            "type": "theme.categorical",
+            "value": "@font.normal"
+          },
+          "size": {
+            "type": "computed",
+            "value": "autoFit"
+          }
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "display": {
+            "type": "option",
+            "value": "show"
+          },
+          "content": {
+            "type": "exact",
+            "value": "Sale"
+          },
+          "color": {
+            "type": "computed",
+            "value": "highContrastColor"
+          },
+          "font": {
+            "preset": {
+              "type": "theme.categorical",
+              "value": "@font.normal"
+            },
+            "size": {
+              "type": "computed",
+              "value": "autoFit"
+            }
+          }
+        }
+      }
+    },
+    "component-text-ChAEkjLX": {
+      "id": "component-text-ChAEkjLX",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Subtitle",
+      "theme": null,
+      "template": "node:component-text-subtitle",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "Product Name"
+        },
+        "margin": {
+          "top": {
+            "type": "theme.ordinal",
+            "value": "@margin.cozy"
+          }
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "content": {
+            "type": "exact",
+            "value": "Product Name"
+          },
+          "margin": {
+            "top": {
+              "type": "theme.ordinal",
+              "value": "@margin.cozy"
+            }
+          }
+        }
+      }
+    },
+    "component-text-BEmSJFoL": {
+      "id": "component-text-BEmSJFoL",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Title",
+      "theme": null,
+      "template": "node:component-text-title",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "$49.00"
+        },
+        "font": {
+          "preset": {
+            "type": "theme.categorical",
+            "value": "@font.heading"
+          }
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "content": {
+            "type": "exact",
+            "value": "$49.00"
+          },
+          "font": {
+            "preset": {
+              "type": "theme.categorical",
+              "value": "@font.heading"
+            }
+          }
+        }
+      }
+    },
+    "component-frame-yN2ej9pa": {
+      "id": "component-frame-yN2ej9pa",
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-default",
+      "overrides": {
+        "orientation": {
+          "type": "option",
+          "value": "horizontal"
+        },
+        "width": {
+          "type": "option",
+          "value": "fit"
+        },
+        "height": {
+          "type": "option",
+          "value": "fit"
+        },
+        "margin": {
+          "top": {
+            "type": "theme.ordinal",
+            "value": "@margin.tight"
+          },
+          "bottom": {
+            "type": "theme.ordinal",
+            "value": "@margin.cozy"
+          }
+        },
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.tight"
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "orientation": {
+            "type": "option",
+            "value": "horizontal"
+          },
+          "width": {
+            "type": "option",
+            "value": "fit"
+          },
+          "height": {
+            "type": "option",
+            "value": "fit"
+          },
+          "margin": {
+            "top": {
+              "type": "theme.ordinal",
+              "value": "@margin.tight"
+            },
+            "bottom": {
+              "type": "theme.ordinal",
+              "value": "@margin.cozy"
+            }
+          },
+          "gap": {
+            "type": "theme.ordinal",
+            "value": "@gap.tight"
+          }
+        }
+      }
+    },
+    "component-icon-GSdGPr3n": {
+      "id": "component-icon-GSdGPr3n",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Icon",
+      "theme": null,
+      "template": "node:component-icon-default",
+      "overrides": {
+        "symbol": {
+          "type": "option",
+          "value": "material-star"
+        },
+        "size": {
+          "type": "theme.ordinal",
+          "value": "@size.medium"
+        },
+        "color": {
+          "type": "theme.categorical",
+          "value": "@swatch.primary"
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "symbol": {
+            "type": "option",
+            "value": "material-star"
+          },
+          "size": {
+            "type": "theme.ordinal",
+            "value": "@size.medium"
+          },
+          "color": {
+            "type": "theme.categorical",
+            "value": "@swatch.primary"
+          }
+        }
+      }
+    },
+    "component-icon-7m5qK1jg": {
+      "id": "component-icon-7m5qK1jg",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Icon",
+      "theme": null,
+      "template": "node:component-icon-default",
+      "overrides": {
+        "symbol": {
+          "type": "option",
+          "value": "material-star"
+        },
+        "size": {
+          "type": "theme.ordinal",
+          "value": "@size.medium"
+        },
+        "color": {
+          "type": "theme.categorical",
+          "value": "@swatch.primary"
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "symbol": {
+            "type": "option",
+            "value": "material-star"
+          },
+          "size": {
+            "type": "theme.ordinal",
+            "value": "@size.medium"
+          },
+          "color": {
+            "type": "theme.categorical",
+            "value": "@swatch.primary"
+          }
+        }
+      }
+    },
+    "component-icon-i4Ue7uFz": {
+      "id": "component-icon-i4Ue7uFz",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Icon",
+      "theme": null,
+      "template": "node:component-icon-default",
+      "overrides": {
+        "symbol": {
+          "type": "option",
+          "value": "material-star"
+        },
+        "size": {
+          "type": "theme.ordinal",
+          "value": "@size.medium"
+        },
+        "color": {
+          "type": "theme.categorical",
+          "value": "@swatch.primary"
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "symbol": {
+            "type": "option",
+            "value": "material-star"
+          },
+          "size": {
+            "type": "theme.ordinal",
+            "value": "@size.medium"
+          },
+          "color": {
+            "type": "theme.categorical",
+            "value": "@swatch.primary"
+          }
+        }
+      }
+    },
+    "component-icon-ajKuzoE7": {
+      "id": "component-icon-ajKuzoE7",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Icon",
+      "theme": null,
+      "template": "node:component-icon-default",
+      "overrides": {
+        "symbol": {
+          "type": "option",
+          "value": "material-star"
+        },
+        "size": {
+          "type": "theme.ordinal",
+          "value": "@size.medium"
+        },
+        "color": {
+          "type": "theme.categorical",
+          "value": "@swatch.primary"
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "symbol": {
+            "type": "option",
+            "value": "material-star"
+          },
+          "size": {
+            "type": "theme.ordinal",
+            "value": "@size.medium"
+          },
+          "color": {
+            "type": "theme.categorical",
+            "value": "@swatch.primary"
+          }
+        }
+      }
+    },
+    "component-icon-b9HSRdc0": {
+      "id": "component-icon-b9HSRdc0",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Icon",
+      "theme": null,
+      "template": "node:component-icon-default",
+      "overrides": {
+        "symbol": {
+          "type": "option",
+          "value": "material-star"
+        },
+        "size": {
+          "type": "theme.ordinal",
+          "value": "@size.medium"
+        },
+        "color": {
+          "type": "theme.categorical",
+          "value": "@swatch.gray"
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "symbol": {
+            "type": "option",
+            "value": "material-star"
+          },
+          "size": {
+            "type": "theme.ordinal",
+            "value": "@size.medium"
+          },
+          "color": {
+            "type": "theme.categorical",
+            "value": "@swatch.gray"
+          }
+        }
+      }
+    },
+    "component-button-VQrSyrRB": {
+      "id": "component-button-VQrSyrRB",
+      "type": "instance",
+      "level": "element",
+      "label": "Button",
+      "theme": null,
+      "template": "node:component-button-default",
+      "overrides": {},
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "width": {
+            "type": "option",
+            "value": "fill"
+          }
+        }
+      }
+    },
+    "component-icon-KyVkGZIj": {
+      "id": "component-icon-KyVkGZIj",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Icon",
+      "theme": null,
+      "template": "node:component-icon-default",
+      "overrides": {
+        "symbol": {
+          "type": "option",
+          "value": "material-shoppingCart"
+        },
+        "size": {
+          "type": "computed",
+          "value": "autoFit"
+        },
+        "color": {
+          "type": "computed",
+          "value": "highContrastColor"
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "symbol": {
+            "type": "option",
+            "value": "material-shoppingCart"
+          },
+          "size": {
+            "type": "computed",
+            "value": "autoFit"
+          },
+          "color": {
+            "type": "computed",
+            "value": "highContrastColor"
+          }
+        }
+      }
+    },
+    "component-text-v5HiklPA": {
+      "id": "component-text-v5HiklPA",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-label",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "Add to cart"
+        },
+        "color": {
+          "type": "computed",
+          "value": "highContrastColor"
+        },
+        "font": {
+          "preset": {
+            "type": "theme.categorical",
+            "value": "@font.label"
+          },
+          "size": {
+            "type": "computed",
+            "value": "autoFit"
+          }
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "content": {
+            "type": "exact",
+            "value": "Add to cart"
+          },
+          "color": {
+            "type": "computed",
+            "value": "highContrastColor"
+          },
+          "font": {
+            "preset": {
+              "type": "theme.categorical",
+              "value": "@font.label"
+            },
+            "size": {
+              "type": "computed",
+              "value": "autoFit"
+            }
+          }
+        }
+      }
+    },
+    "component-productCard-minimal": {
+      "id": "component-productCard-minimal",
+      "type": "variant",
+      "level": "part",
+      "label": "Minimal Product Card",
+      "theme": null,
+      "template": "node:component-productCard-default",
+      "overrides": {
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.tight"
+        },
+        "background": [
+          {
+            "color": {
+              "type": "theme.categorical",
+              "value": "@swatch.white"
+            }
+          }
+        ],
+        "border": {
+          "preset": {
+            "type": "theme.categorical",
+            "value": "@border.hairline"
+          },
+          "color": {
+            "type": "theme.categorical",
+            "value": "@swatch.primary"
+          }
+        },
+        "shadow": [
+          {
+            "preset": {
+              "type": "theme.categorical",
+              "value": "@shadow.xlight"
+            },
+            "color": {
+              "type": "theme.categorical",
+              "value": "@swatch.black"
+            },
+            "blur": {
+              "type": "theme.ordinal",
+              "value": "@blur.xxsmall"
+            },
+            "spread": {
+              "type": "theme.ordinal",
+              "value": "@spread.tiny"
+            }
+          }
+        ]
+      },
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-image-yBOiNfoT": {
+      "id": "component-image-yBOiNfoT",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Image",
+      "theme": null,
+      "template": "node:component-image-v8N4WwYD",
+      "overrides": {
+        "source": {
+          "type": "exact",
+          "value": "https://static.seldon.app/background-default-light.jpg"
+        },
+        "imageFit": {
+          "type": "option",
+          "value": "cover"
+        },
+        "width": {
+          "type": "option",
+          "value": "fill"
+        },
+        "height": {
+          "type": "exact",
+          "value": {
+            "unit": "px",
+            "value": 220
+          }
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "source": {
+            "type": "exact",
+            "value": "https://static.seldon.app/background-default-light.jpg"
+          },
+          "imageFit": {
+            "type": "option",
+            "value": "cover"
+          },
+          "width": {
+            "type": "option",
+            "value": "fill"
+          },
+          "height": {
+            "type": "exact",
+            "value": {
+              "unit": "px",
+              "value": 220
+            }
+          }
+        }
+      }
+    },
+    "component-frame-JBlbNZzc": {
+      "id": "component-frame-JBlbNZzc",
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-default",
+      "overrides": {
+        "orientation": {
+          "type": "option",
+          "value": "vertical"
+        },
+        "width": {
+          "type": "option",
+          "value": "fill"
+        },
+        "height": {
+          "type": "option",
+          "value": "fit"
+        },
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.tight"
+        },
+        "padding": {
+          "top": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          },
+          "right": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          },
+          "bottom": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          },
+          "left": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          }
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "orientation": {
+            "type": "option",
+            "value": "vertical"
+          },
+          "width": {
+            "type": "option",
+            "value": "fill"
+          },
+          "height": {
+            "type": "option",
+            "value": "fit"
+          },
+          "gap": {
+            "type": "theme.ordinal",
+            "value": "@gap.tight"
+          },
+          "padding": {
+            "top": {
+              "type": "theme.ordinal",
+              "value": "@padding.cozy"
+            },
+            "right": {
+              "type": "theme.ordinal",
+              "value": "@padding.cozy"
+            },
+            "bottom": {
+              "type": "theme.ordinal",
+              "value": "@padding.cozy"
+            },
+            "left": {
+              "type": "theme.ordinal",
+              "value": "@padding.cozy"
+            }
+          }
+        }
+      }
+    },
+    "component-text-ehoejqam": {
+      "id": "component-text-ehoejqam",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Subtitle",
+      "theme": null,
+      "template": "node:component-text-subtitle",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "Product Name"
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "content": {
+            "type": "exact",
+            "value": "Product Name"
+          }
+        }
+      }
+    },
+    "component-text-K5abLY1V": {
+      "id": "component-text-K5abLY1V",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Title",
+      "theme": null,
+      "template": "node:component-text-title",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "$49.00"
+        },
+        "font": {
+          "preset": {
+            "type": "theme.categorical",
+            "value": "@font.heading"
+          }
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "content": {
+            "type": "exact",
+            "value": "$49.00"
+          },
+          "font": {
+            "preset": {
+              "type": "theme.categorical",
+              "value": "@font.heading"
+            }
+          }
+        }
+      }
+    },
+    "component-productCard-horizontal": {
+      "id": "component-productCard-horizontal",
+      "type": "variant",
+      "level": "part",
+      "label": "Horizontal Product Card",
+      "theme": null,
+      "template": "node:component-productCard-default",
+      "overrides": {
+        "orientation": {
+          "type": "option",
+          "value": "horizontal"
+        },
+        "align": {
+          "type": "option",
+          "value": "left"
+        },
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.tight"
+        },
+        "background": [
+          {
+            "color": {
+              "type": "theme.categorical",
+              "value": "@swatch.white"
+            }
+          }
+        ],
+        "border": {
+          "preset": {
+            "type": "theme.categorical",
+            "value": "@border.hairline"
+          },
+          "color": {
+            "type": "theme.categorical",
+            "value": "@swatch.primary"
+          }
+        },
+        "shadow": [
+          {
+            "preset": {
+              "type": "theme.categorical",
+              "value": "@shadow.xlight"
+            },
+            "color": {
+              "type": "theme.categorical",
+              "value": "@swatch.black"
+            },
+            "blur": {
+              "type": "theme.ordinal",
+              "value": "@blur.xxsmall"
+            },
+            "spread": {
+              "type": "theme.ordinal",
+              "value": "@spread.tiny"
+            }
+          }
+        ]
+      },
+      "__editor": {
+        "initialOverrides": {
+          "orientation": {
+            "type": "option",
+            "value": "horizontal"
+          },
+          "width": {
+            "type": "option",
+            "value": "fill"
+          },
+          "align": {
+            "type": "option",
+            "value": "left"
+          }
+        }
+      }
+    },
+    "component-image-Jk3CvKmQ": {
+      "id": "component-image-Jk3CvKmQ",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Image",
+      "theme": null,
+      "template": "node:component-image-v8N4WwYD",
+      "overrides": {
+        "source": {
+          "type": "exact",
+          "value": "https://static.seldon.app/background-default-light.jpg"
+        },
+        "imageFit": {
+          "type": "option",
+          "value": "cover"
+        },
+        "width": {
+          "type": "exact",
+          "value": {
+            "unit": "px",
+            "value": 160
+          }
+        },
+        "height": {
+          "type": "option",
+          "value": "fill"
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "source": {
+            "type": "exact",
+            "value": "https://static.seldon.app/background-default-light.jpg"
+          },
+          "imageFit": {
+            "type": "option",
+            "value": "cover"
+          },
+          "width": {
+            "type": "exact",
+            "value": {
+              "unit": "px",
+              "value": 160
+            }
+          },
+          "height": {
+            "type": "option",
+            "value": "fill"
+          }
+        }
+      }
+    },
+    "component-frame-3HfoRqfh": {
+      "id": "component-frame-3HfoRqfh",
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-default",
+      "overrides": {
+        "orientation": {
+          "type": "option",
+          "value": "vertical"
+        },
+        "width": {
+          "type": "option",
+          "value": "fill"
+        },
+        "height": {
+          "type": "option",
+          "value": "fit"
+        },
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.tight"
+        },
+        "padding": {
+          "top": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          },
+          "right": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          },
+          "bottom": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          },
+          "left": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          }
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "orientation": {
+            "type": "option",
+            "value": "vertical"
+          },
+          "width": {
+            "type": "option",
+            "value": "fill"
+          },
+          "height": {
+            "type": "option",
+            "value": "fit"
+          },
+          "gap": {
+            "type": "theme.ordinal",
+            "value": "@gap.tight"
+          },
+          "padding": {
+            "top": {
+              "type": "theme.ordinal",
+              "value": "@padding.cozy"
+            },
+            "right": {
+              "type": "theme.ordinal",
+              "value": "@padding.cozy"
+            },
+            "bottom": {
+              "type": "theme.ordinal",
+              "value": "@padding.cozy"
+            },
+            "left": {
+              "type": "theme.ordinal",
+              "value": "@padding.cozy"
+            }
+          }
+        }
+      }
+    },
+    "component-text-6cZdtVdU": {
+      "id": "component-text-6cZdtVdU",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Subtitle",
+      "theme": null,
+      "template": "node:component-text-subtitle",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "Product Name"
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "content": {
+            "type": "exact",
+            "value": "Product Name"
+          }
+        }
+      }
+    },
+    "component-text-8nVlmOWW": {
+      "id": "component-text-8nVlmOWW",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Title",
+      "theme": null,
+      "template": "node:component-text-title",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "$49.00"
+        },
+        "font": {
+          "preset": {
+            "type": "theme.categorical",
+            "value": "@font.heading"
+          }
+        },
+        "margin": {
+          "bottom": {
+            "type": "theme.ordinal",
+            "value": "@margin.compact"
+          }
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "content": {
+            "type": "exact",
+            "value": "$49.00"
+          },
+          "font": {
+            "preset": {
+              "type": "theme.categorical",
+              "value": "@font.heading"
+            }
+          },
+          "margin": {
+            "bottom": {
+              "type": "theme.ordinal",
+              "value": "@margin.compact"
+            }
+          }
+        }
+      }
+    },
+    "component-button-7CzaLtTe": {
+      "id": "component-button-7CzaLtTe",
+      "type": "instance",
+      "level": "element",
+      "label": "Button",
+      "theme": null,
+      "template": "node:component-button-default",
+      "overrides": {
+        "width": {
+          "type": "option",
+          "value": "fit"
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "width": {
+            "type": "option",
+            "value": "fit"
+          }
+        }
+      }
+    },
+    "component-icon-zAFSDZct": {
+      "id": "component-icon-zAFSDZct",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Icon",
+      "theme": null,
+      "template": "node:component-icon-default",
+      "overrides": {
+        "symbol": {
+          "type": "option",
+          "value": "material-shoppingCart"
+        },
+        "size": {
+          "type": "computed",
+          "value": "autoFit"
+        },
+        "color": {
+          "type": "computed",
+          "value": "highContrastColor"
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "symbol": {
+            "type": "option",
+            "value": "material-shoppingCart"
+          },
+          "size": {
+            "type": "computed",
+            "value": "autoFit"
+          },
+          "color": {
+            "type": "computed",
+            "value": "highContrastColor"
+          }
+        }
+      }
+    },
+    "component-text-ZiRtGWB4": {
+      "id": "component-text-ZiRtGWB4",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-label",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "Add to cart"
+        },
+        "color": {
+          "type": "computed",
+          "value": "highContrastColor"
+        },
+        "font": {
+          "preset": {
+            "type": "theme.categorical",
+            "value": "@font.label"
+          },
+          "size": {
+            "type": "computed",
+            "value": "autoFit"
+          }
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "content": {
+            "type": "exact",
+            "value": "Add to cart"
+          },
+          "color": {
+            "type": "computed",
+            "value": "highContrastColor"
+          },
+          "font": {
+            "preset": {
+              "type": "theme.categorical",
+              "value": "@font.label"
+            },
+            "size": {
+              "type": "computed",
+              "value": "autoFit"
+            }
+          }
+        }
+      }
+    },
+    "component-articleCard-default": {
+      "id": "component-articleCard-default",
+      "type": "default",
+      "level": "part",
+      "label": "Article Card",
+      "theme": null,
+      "template": "catalog:articleCard",
+      "overrides": {},
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-image-j9Of31QA": {
+      "id": "component-image-j9Of31QA",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Image",
+      "theme": null,
+      "template": "node:component-image-default",
+      "overrides": {
+        "source": {
+          "type": "exact",
+          "value": "https://static.seldon.app/background-default-light.jpg"
+        },
+        "imageFit": {
+          "type": "option",
+          "value": "cover"
+        },
+        "width": {
+          "type": "option",
+          "value": "fill"
+        },
+        "height": {
+          "type": "exact",
+          "value": {
+            "unit": "px",
+            "value": 200
+          }
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "source": {
+            "type": "exact",
+            "value": "https://static.seldon.app/background-default-light.jpg"
+          },
+          "imageFit": {
+            "type": "option",
+            "value": "cover"
+          },
+          "width": {
+            "type": "option",
+            "value": "fill"
+          },
+          "height": {
+            "type": "exact",
+            "value": {
+              "unit": "px",
+              "value": 200
+            }
+          }
+        }
+      }
+    },
+    "component-frame-mCLMJYnt": {
+      "id": "component-frame-mCLMJYnt",
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-default",
+      "overrides": {
+        "orientation": {
+          "type": "option",
+          "value": "vertical"
+        },
+        "width": {
+          "type": "option",
+          "value": "fill"
+        },
+        "height": {
+          "type": "option",
+          "value": "fit"
+        },
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.compact"
+        },
+        "padding": {
+          "top": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          },
+          "right": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          },
+          "bottom": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          },
+          "left": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          }
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "orientation": {
+            "type": "option",
+            "value": "vertical"
+          },
+          "width": {
+            "type": "option",
+            "value": "fill"
+          },
+          "height": {
+            "type": "option",
+            "value": "fit"
+          },
+          "gap": {
+            "type": "theme.ordinal",
+            "value": "@gap.compact"
+          },
+          "padding": {
+            "top": {
+              "type": "theme.ordinal",
+              "value": "@padding.cozy"
+            },
+            "right": {
+              "type": "theme.ordinal",
+              "value": "@padding.cozy"
+            },
+            "bottom": {
+              "type": "theme.ordinal",
+              "value": "@padding.cozy"
+            },
+            "left": {
+              "type": "theme.ordinal",
+              "value": "@padding.cozy"
+            }
+          }
+        }
+      }
+    },
+    "component-chip-O0xbCSfq": {
+      "id": "component-chip-O0xbCSfq",
+      "type": "instance",
+      "level": "element",
+      "label": "Chip",
+      "theme": null,
+      "template": "node:component-chip-default",
+      "overrides": {
+        "width": {
+          "type": "option",
+          "value": "fit"
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "width": {
+            "type": "option",
+            "value": "fit"
+          }
+        }
+      }
+    },
+    "component-text-76K1059I": {
+      "id": "component-text-76K1059I",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-label",
+      "overrides": {
+        "display": {
+          "type": "option",
+          "value": "show"
+        },
+        "content": {
+          "type": "exact",
+          "value": "Design"
+        },
+        "color": {
+          "type": "computed",
+          "value": "highContrastColor"
+        },
+        "font": {
+          "preset": {
+            "type": "theme.categorical",
+            "value": "@font.normal"
+          },
+          "size": {
+            "type": "computed",
+            "value": "autoFit"
+          }
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "display": {
+            "type": "option",
+            "value": "show"
+          },
+          "content": {
+            "type": "exact",
+            "value": "Design"
+          },
+          "color": {
+            "type": "computed",
+            "value": "highContrastColor"
+          },
+          "font": {
+            "preset": {
+              "type": "theme.categorical",
+              "value": "@font.normal"
+            },
+            "size": {
+              "type": "computed",
+              "value": "autoFit"
+            }
+          }
+        }
+      }
+    },
+    "component-text-XKk98Nl2": {
+      "id": "component-text-XKk98Nl2",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Heading",
+      "theme": null,
+      "template": "node:component-text-heading",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "How to design better cards"
+        },
+        "lines": {
+          "type": "exact",
+          "value": 2
+        },
+        "font": {
+          "preset": {
+            "type": "theme.categorical",
+            "value": "@font.heading"
+          },
+          "family": {
+            "type": "option",
+            "value": "Playfair Display"
+          },
+          "style": {
+            "type": "empty",
+            "value": null
+          },
+          "weight": {
+            "type": "empty",
+            "value": null
+          },
+          "size": {
+            "type": "empty",
+            "value": null
+          },
+          "lineHeight": {
+            "type": "empty",
+            "value": null
+          },
+          "textCase": {
+            "type": "empty",
+            "value": null
+          }
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "content": {
+            "type": "exact",
+            "value": "How to design better cards"
+          },
+          "lines": {
+            "type": "exact",
+            "value": 2
+          },
+          "font": {
+            "preset": {
+              "type": "theme.categorical",
+              "value": "@font.heading"
+            },
+            "family": {
+              "type": "option",
+              "value": "Playfair Display"
+            },
+            "style": {
+              "type": "empty",
+              "value": null
+            },
+            "weight": {
+              "type": "empty",
+              "value": null
+            },
+            "size": {
+              "type": "empty",
+              "value": null
+            },
+            "lineHeight": {
+              "type": "empty",
+              "value": null
+            },
+            "textCase": {
+              "type": "empty",
+              "value": null
+            }
+          }
+        }
+      }
+    },
+    "component-text-w5Ysgfmq": {
+      "id": "component-text-w5Ysgfmq",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Description",
+      "theme": null,
+      "template": "node:component-text-description",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "A short, two-line excerpt written for the card earns the click without giving everything away."
+        },
+        "lines": {
+          "type": "exact",
+          "value": 2
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "content": {
+            "type": "exact",
+            "value": "A short, two-line excerpt written for the card earns the click without giving everything away."
+          },
+          "lines": {
+            "type": "exact",
+            "value": 2
+          }
+        }
+      }
+    },
+    "component-frame-L25C6h85": {
+      "id": "component-frame-L25C6h85",
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-default",
+      "overrides": {
+        "orientation": {
+          "type": "option",
+          "value": "horizontal"
+        },
+        "align": {
+          "type": "option",
+          "value": "left"
+        },
+        "width": {
+          "type": "option",
+          "value": "fill"
+        },
+        "height": {
+          "type": "option",
+          "value": "fit"
+        },
+        "margin": {
+          "top": {
+            "type": "theme.ordinal",
+            "value": "@margin.cozy"
+          }
+        },
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.compact"
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "orientation": {
+            "type": "option",
+            "value": "horizontal"
+          },
+          "align": {
+            "type": "option",
+            "value": "left"
+          },
+          "width": {
+            "type": "option",
+            "value": "fill"
+          },
+          "height": {
+            "type": "option",
+            "value": "fit"
+          },
+          "margin": {
+            "top": {
+              "type": "theme.ordinal",
+              "value": "@margin.cozy"
+            }
+          },
+          "gap": {
+            "type": "theme.ordinal",
+            "value": "@gap.compact"
+          }
+        }
+      }
+    },
+    "component-image-w1ApkryL": {
+      "id": "component-image-w1ApkryL",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Image",
+      "theme": null,
+      "template": "node:component-image-default",
+      "overrides": {
+        "source": {
+          "type": "exact",
+          "value": "https://static.seldon.app/avatar-user.jpg"
+        },
+        "imageFit": {
+          "type": "option",
+          "value": "cover"
+        },
+        "width": {
+          "type": "theme.ordinal",
+          "value": "@dimension.small"
+        },
+        "height": {
+          "type": "theme.ordinal",
+          "value": "@dimension.small"
+        },
+        "corners": {
+          "topLeft": {
+            "type": "option",
+            "value": "rounded"
+          },
+          "topRight": {
+            "type": "option",
+            "value": "rounded"
+          },
+          "bottomLeft": {
+            "type": "option",
+            "value": "rounded"
+          },
+          "bottomRight": {
+            "type": "option",
+            "value": "rounded"
+          }
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "source": {
+            "type": "exact",
+            "value": "https://static.seldon.app/avatar-user.jpg"
+          },
+          "imageFit": {
+            "type": "option",
+            "value": "cover"
+          },
+          "width": {
+            "type": "theme.ordinal",
+            "value": "@dimension.small"
+          },
+          "height": {
+            "type": "theme.ordinal",
+            "value": "@dimension.small"
+          },
+          "corners": {
+            "topLeft": {
+              "type": "option",
+              "value": "rounded"
+            },
+            "topRight": {
+              "type": "option",
+              "value": "rounded"
+            },
+            "bottomLeft": {
+              "type": "option",
+              "value": "rounded"
+            },
+            "bottomRight": {
+              "type": "option",
+              "value": "rounded"
+            }
+          }
+        }
+      }
+    },
+    "component-frame-blp5FkG8": {
+      "id": "component-frame-blp5FkG8",
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-default",
+      "overrides": {
+        "orientation": {
+          "type": "option",
+          "value": "vertical"
+        },
+        "width": {
+          "type": "option",
+          "value": "fill"
+        },
+        "height": {
+          "type": "option",
+          "value": "fit"
+        },
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.tight"
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "orientation": {
+            "type": "option",
+            "value": "vertical"
+          },
+          "width": {
+            "type": "option",
+            "value": "fill"
+          },
+          "height": {
+            "type": "option",
+            "value": "fit"
+          },
+          "gap": {
+            "type": "theme.ordinal",
+            "value": "@gap.tight"
+          }
+        }
+      }
+    },
+    "component-text-f3YMcFa2": {
+      "id": "component-text-f3YMcFa2",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-label",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "Jane Cooper"
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "content": {
+            "type": "exact",
+            "value": "Jane Cooper"
+          }
+        }
+      }
+    },
+    "component-text-yqndSNgN": {
+      "id": "component-text-yqndSNgN",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-label",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "Mar 30 · 5 min read"
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "content": {
+            "type": "exact",
+            "value": "Mar 30 · 5 min read"
+          }
+        }
+      }
+    },
+    "component-button-mRdk8FKv": {
+      "id": "component-button-mRdk8FKv",
+      "type": "instance",
+      "level": "element",
+      "label": "Simple Button",
+      "theme": null,
+      "template": "node:component-button-label",
+      "overrides": {
+        "width": {
+          "type": "option",
+          "value": "fit"
+        },
+        "background": [
+          {
+            "kind": {
+              "type": "option",
+              "value": "none"
+            }
+          }
+        ],
+        "border": {
+          "color": {
+            "type": "theme.categorical",
+            "value": "@swatch.primary"
+          },
+          "preset": {
+            "type": "theme.categorical",
+            "value": "@border.hairline"
+          }
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "width": {
+            "type": "option",
+            "value": "fit"
+          },
+          "background": [
+            {
+              "kind": {
+                "type": "option",
+                "value": "none"
+              }
+            }
+          ],
+          "border": {
+            "preset": {
+              "type": "theme.categorical",
+              "value": "@border.none"
+            }
+          }
+        }
+      }
+    },
+    "component-text-GtWpy0oZ": {
+      "id": "component-text-GtWpy0oZ",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-label",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "Read more"
+        },
+        "color": {
+          "type": "computed",
+          "value": "highContrastColor"
+        },
+        "font": {
+          "preset": {
+            "type": "theme.categorical",
+            "value": "@font.label"
+          },
+          "size": {
+            "type": "computed",
+            "value": "autoFit"
+          }
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "content": {
+            "type": "exact",
+            "value": "Read more"
+          },
+          "color": {
+            "type": "computed",
+            "value": "highContrastColor"
+          },
+          "font": {
+            "preset": {
+              "type": "theme.categorical",
+              "value": "@font.label"
+            },
+            "size": {
+              "type": "computed",
+              "value": "autoFit"
+            }
+          }
+        }
+      }
+    },
+    "component-articleCard-minimal": {
+      "id": "component-articleCard-minimal",
+      "type": "variant",
+      "level": "part",
+      "label": "Minimal Article Card",
+      "theme": null,
+      "template": "node:component-articleCard-default",
+      "overrides": {},
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-image-FxMrSQn4": {
+      "id": "component-image-FxMrSQn4",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Image",
+      "theme": null,
+      "template": "node:component-image-j9Of31QA",
+      "overrides": {
+        "source": {
+          "type": "exact",
+          "value": "https://static.seldon.app/background-default-light.jpg"
+        },
+        "imageFit": {
+          "type": "option",
+          "value": "cover"
+        },
+        "width": {
+          "type": "option",
+          "value": "fill"
+        },
+        "height": {
+          "type": "exact",
+          "value": {
+            "unit": "px",
+            "value": 200
+          }
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "source": {
+            "type": "exact",
+            "value": "https://static.seldon.app/background-default-light.jpg"
+          },
+          "imageFit": {
+            "type": "option",
+            "value": "cover"
+          },
+          "width": {
+            "type": "option",
+            "value": "fill"
+          },
+          "height": {
+            "type": "exact",
+            "value": {
+              "unit": "px",
+              "value": 200
+            }
+          }
+        }
+      }
+    },
+    "component-frame-5YdyLQ2r": {
+      "id": "component-frame-5YdyLQ2r",
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-default",
+      "overrides": {
+        "orientation": {
+          "type": "option",
+          "value": "vertical"
+        },
+        "width": {
+          "type": "option",
+          "value": "fill"
+        },
+        "height": {
+          "type": "option",
+          "value": "fit"
+        },
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.compact"
+        },
+        "padding": {
+          "top": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          },
+          "right": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          },
+          "bottom": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          },
+          "left": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          }
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "orientation": {
+            "type": "option",
+            "value": "vertical"
+          },
+          "width": {
+            "type": "option",
+            "value": "fill"
+          },
+          "height": {
+            "type": "option",
+            "value": "fit"
+          },
+          "gap": {
+            "type": "theme.ordinal",
+            "value": "@gap.compact"
+          },
+          "padding": {
+            "top": {
+              "type": "theme.ordinal",
+              "value": "@padding.cozy"
+            },
+            "right": {
+              "type": "theme.ordinal",
+              "value": "@padding.cozy"
+            },
+            "bottom": {
+              "type": "theme.ordinal",
+              "value": "@padding.cozy"
+            },
+            "left": {
+              "type": "theme.ordinal",
+              "value": "@padding.cozy"
+            }
+          }
+        }
+      }
+    },
+    "component-chip-eVvWIk2D": {
+      "id": "component-chip-eVvWIk2D",
+      "type": "instance",
+      "level": "element",
+      "label": "Chip",
+      "theme": null,
+      "template": "node:component-chip-default",
+      "overrides": {
+        "width": {
+          "type": "option",
+          "value": "fit"
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "width": {
+            "type": "option",
+            "value": "fit"
+          }
+        }
+      }
+    },
+    "component-text-rEmi5AfS": {
+      "id": "component-text-rEmi5AfS",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-label",
+      "overrides": {
+        "display": {
+          "type": "option",
+          "value": "show"
+        },
+        "content": {
+          "type": "exact",
+          "value": "Design"
+        },
+        "color": {
+          "type": "computed",
+          "value": "highContrastColor"
+        },
+        "font": {
+          "preset": {
+            "type": "theme.categorical",
+            "value": "@font.normal"
+          },
+          "size": {
+            "type": "computed",
+            "value": "autoFit"
+          }
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "display": {
+            "type": "option",
+            "value": "show"
+          },
+          "content": {
+            "type": "exact",
+            "value": "Design"
+          },
+          "color": {
+            "type": "computed",
+            "value": "highContrastColor"
+          },
+          "font": {
+            "preset": {
+              "type": "theme.categorical",
+              "value": "@font.normal"
+            },
+            "size": {
+              "type": "computed",
+              "value": "autoFit"
+            }
+          }
+        }
+      }
+    },
+    "component-text-fWG2Dkpm": {
+      "id": "component-text-fWG2Dkpm",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Heading",
+      "theme": null,
+      "template": "node:component-text-heading",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "How to design better cards"
+        },
+        "lines": {
+          "type": "exact",
+          "value": 2
+        },
+        "font": {
+          "preset": {
+            "type": "theme.categorical",
+            "value": "@font.heading"
+          },
+          "family": {
+            "type": "option",
+            "value": "Playfair Display"
+          },
+          "style": {
+            "type": "empty",
+            "value": null
+          },
+          "weight": {
+            "type": "empty",
+            "value": null
+          },
+          "size": {
+            "type": "empty",
+            "value": null
+          },
+          "lineHeight": {
+            "type": "empty",
+            "value": null
+          },
+          "textCase": {
+            "type": "empty",
+            "value": null
+          }
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "content": {
+            "type": "exact",
+            "value": "How to design better cards"
+          },
+          "lines": {
+            "type": "exact",
+            "value": 2
+          },
+          "font": {
+            "preset": {
+              "type": "theme.categorical",
+              "value": "@font.heading"
+            },
+            "family": {
+              "type": "option",
+              "value": "Playfair Display"
+            },
+            "style": {
+              "type": "empty",
+              "value": null
+            },
+            "weight": {
+              "type": "empty",
+              "value": null
+            },
+            "size": {
+              "type": "empty",
+              "value": null
+            },
+            "lineHeight": {
+              "type": "empty",
+              "value": null
+            },
+            "textCase": {
+              "type": "empty",
+              "value": null
+            }
+          }
+        }
+      }
+    },
+    "component-articleCard-horizontal": {
+      "id": "component-articleCard-horizontal",
+      "type": "variant",
+      "level": "part",
+      "label": "Horizontal Article Card",
+      "theme": null,
+      "template": "node:component-articleCard-default",
+      "overrides": {
+        "orientation": {
+          "type": "option",
+          "value": "horizontal"
+        },
+        "width": {
+          "type": "option",
+          "value": "fill"
+        }
+      },
+      "__editor": {
+        "initialOverrides": {
+          "orientation": {
+            "type": "option",
+            "value": "horizontal"
+          },
+          "width": {
+            "type": "option",
+            "value": "fill"
+          }
+        }
+      }
+    },
+    "component-image-OAMKSqWv": {
+      "id": "component-image-OAMKSqWv",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Image",
+      "theme": null,
+      "template": "node:component-image-j9Of31QA",
+      "overrides": {
+        "source": {
+          "type": "exact",
+          "value": "https://static.seldon.app/background-default-light.jpg"
+        },
+        "imageFit": {
+          "type": "option",
+          "value": "cover"
+        },
+        "width": {
+          "type": "exact",
+          "value": {
+            "unit": "px",
+            "value": 200
+          }
+        },
+        "height": {
+          "type": "option",
+          "value": "fill"
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "source": {
+            "type": "exact",
+            "value": "https://static.seldon.app/background-default-light.jpg"
+          },
+          "imageFit": {
+            "type": "option",
+            "value": "cover"
+          },
+          "width": {
+            "type": "exact",
+            "value": {
+              "unit": "px",
+              "value": 200
+            }
+          },
+          "height": {
+            "type": "option",
+            "value": "fill"
+          }
+        }
+      }
+    },
+    "component-frame-4deT9xog": {
+      "id": "component-frame-4deT9xog",
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-default",
+      "overrides": {
+        "orientation": {
+          "type": "option",
+          "value": "vertical"
+        },
+        "width": {
+          "type": "option",
+          "value": "fill"
+        },
+        "height": {
+          "type": "option",
+          "value": "fit"
+        },
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.compact"
+        },
+        "padding": {
+          "top": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          },
+          "right": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          },
+          "bottom": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          },
+          "left": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          }
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "orientation": {
+            "type": "option",
+            "value": "vertical"
+          },
+          "width": {
+            "type": "option",
+            "value": "fill"
+          },
+          "height": {
+            "type": "option",
+            "value": "fit"
+          },
+          "gap": {
+            "type": "theme.ordinal",
+            "value": "@gap.compact"
+          },
+          "padding": {
+            "top": {
+              "type": "theme.ordinal",
+              "value": "@padding.cozy"
+            },
+            "right": {
+              "type": "theme.ordinal",
+              "value": "@padding.cozy"
+            },
+            "bottom": {
+              "type": "theme.ordinal",
+              "value": "@padding.cozy"
+            },
+            "left": {
+              "type": "theme.ordinal",
+              "value": "@padding.cozy"
+            }
+          }
+        }
+      }
+    },
+    "component-chip-sXLZ1XES": {
+      "id": "component-chip-sXLZ1XES",
+      "type": "instance",
+      "level": "element",
+      "label": "Chip",
+      "theme": null,
+      "template": "node:component-chip-default",
+      "overrides": {
+        "width": {
+          "type": "option",
+          "value": "fit"
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "width": {
+            "type": "option",
+            "value": "fit"
+          }
+        }
+      }
+    },
+    "component-text-ZEMdN1UQ": {
+      "id": "component-text-ZEMdN1UQ",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-label",
+      "overrides": {
+        "display": {
+          "type": "option",
+          "value": "show"
+        },
+        "content": {
+          "type": "exact",
+          "value": "Design"
+        },
+        "color": {
+          "type": "computed",
+          "value": "highContrastColor"
+        },
+        "font": {
+          "preset": {
+            "type": "theme.categorical",
+            "value": "@font.normal"
+          },
+          "size": {
+            "type": "computed",
+            "value": "autoFit"
+          }
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "display": {
+            "type": "option",
+            "value": "show"
+          },
+          "content": {
+            "type": "exact",
+            "value": "Design"
+          },
+          "color": {
+            "type": "computed",
+            "value": "highContrastColor"
+          },
+          "font": {
+            "preset": {
+              "type": "theme.categorical",
+              "value": "@font.normal"
+            },
+            "size": {
+              "type": "computed",
+              "value": "autoFit"
+            }
+          }
+        }
+      }
+    },
+    "component-text-PHNzTfnx": {
+      "id": "component-text-PHNzTfnx",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Heading",
+      "theme": null,
+      "template": "node:component-text-heading",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "How to design better cards"
+        },
+        "lines": {
+          "type": "exact",
+          "value": 2
+        },
+        "font": {
+          "preset": {
+            "type": "theme.categorical",
+            "value": "@font.heading"
+          },
+          "family": {
+            "type": "option",
+            "value": "Playfair Display"
+          },
+          "style": {
+            "type": "empty",
+            "value": null
+          },
+          "weight": {
+            "type": "empty",
+            "value": null
+          },
+          "size": {
+            "type": "empty",
+            "value": null
+          },
+          "lineHeight": {
+            "type": "empty",
+            "value": null
+          },
+          "textCase": {
+            "type": "empty",
+            "value": null
+          }
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "content": {
+            "type": "exact",
+            "value": "How to design better cards"
+          },
+          "lines": {
+            "type": "exact",
+            "value": 2
+          },
+          "font": {
+            "preset": {
+              "type": "theme.categorical",
+              "value": "@font.heading"
+            },
+            "family": {
+              "type": "option",
+              "value": "Playfair Display"
+            },
+            "style": {
+              "type": "empty",
+              "value": null
+            },
+            "weight": {
+              "type": "empty",
+              "value": null
+            },
+            "size": {
+              "type": "empty",
+              "value": null
+            },
+            "lineHeight": {
+              "type": "empty",
+              "value": null
+            },
+            "textCase": {
+              "type": "empty",
+              "value": null
+            }
+          }
+        }
+      }
+    },
+    "component-text-ZDMZ04RD": {
+      "id": "component-text-ZDMZ04RD",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Description",
+      "theme": null,
+      "template": "node:component-text-description",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "A short, two-line excerpt written for the card earns the click without giving everything away."
+        },
+        "lines": {
+          "type": "exact",
+          "value": 2
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "content": {
+            "type": "exact",
+            "value": "A short, two-line excerpt written for the card earns the click without giving everything away."
+          },
+          "lines": {
+            "type": "exact",
+            "value": 2
+          }
+        }
+      }
     }
   },
   "themes": {
@@ -42211,8 +47358,8 @@
       "template": "catalog:highContrast",
       "overrides": {}
     },
-    "theme-googleMaterial-default": {
-      "id": "theme-googleMaterial-default",
+    "theme-material-default": {
+      "id": "theme-material-default",
       "type": "default",
       "label": "Default",
       "template": "catalog:googleMaterial",
@@ -42239,15 +47386,15 @@
       "template": "catalog:popPunk",
       "overrides": {}
     },
-    "theme-ibmCarbon-default": {
-      "id": "theme-ibmCarbon-default",
+    "theme-royalAzure-default": {
+      "id": "theme-royalAzure-default",
       "type": "default",
       "label": "Default",
       "template": "catalog:ibmCarbon",
       "overrides": {}
     },
-    "theme-adobeSpectrum-default": {
-      "id": "theme-adobeSpectrum-default",
+    "theme-sky-default": {
+      "id": "theme-sky-default",
       "type": "default",
       "label": "Default",
       "template": "catalog:adobeSpectrum",
@@ -42721,6 +47868,50 @@
             "700italic": true,
             "800italic": true,
             "900italic": true
+          },
+          "fraunces": {
+            "100": true,
+            "200": true,
+            "300": true,
+            "400": true,
+            "500": true,
+            "600": true,
+            "700": true,
+            "800": true,
+            "900": true,
+            "100italic": true,
+            "200italic": true,
+            "300italic": true,
+            "400italic": true,
+            "500italic": true,
+            "600italic": true,
+            "700italic": true,
+            "800italic": true,
+            "900italic": true
+          },
+          "sora": {
+            "100": true,
+            "200": true,
+            "300": true,
+            "500": true,
+            "600": true,
+            "700": true,
+            "800": true,
+            "regular": true
+          },
+          "space-grotesk": {
+            "300": true,
+            "500": true,
+            "600": true,
+            "700": true,
+            "regular": true
+          },
+          "quicksand": {
+            "300": true,
+            "500": true,
+            "600": true,
+            "700": true,
+            "regular": true
           }
         }
       }
@@ -42836,7 +48027,7 @@
       "id": "icon-set-googleMaterial-default",
       "type": "default",
       "label": "Default",
-      "template": "catalog:googleMaterial",
+      "template": "catalog:googleSymbols",
       "overrides": {}
     }
   },

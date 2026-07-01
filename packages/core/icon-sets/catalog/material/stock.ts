@@ -5,7 +5,7 @@ import { materialAllIconIds } from "./index-all"
 
 export const iconSet: StockIconSet = {
   metadata: {
-    id: "googleMaterial",
+    id: "googleSymbols",
     name: "Google Symbols",
     description: "Google Material Symbols icon set.",
     intent: "Provides Google Material Symbols for interface and content icons.",
