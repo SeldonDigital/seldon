@@ -557,6 +557,60 @@ export const theme: StockTheme = {
         value: { hue: 18, saturation: 12, lightness: 8 },
       },
     },
+    active: {
+      name: "Active",
+      intent: "Active color for all important actions",
+      type: TokenType.SWATCH,
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 18, saturation: 65, lightness: 50 },
+      },
+    },
+    punch: {
+      name: "Punch",
+      intent: "Punch color for all important actions",
+      type: TokenType.SWATCH,
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 198, saturation: 70, lightness: 50 },
+      },
+    },
+    positive: {
+      name: "Positive",
+      intent: "Actions that are successful or correct",
+      type: TokenType.SWATCH,
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 130, saturation: 55, lightness: 40 },
+      },
+    },
+    negative: {
+      name: "Negative",
+      intent: "Actions that are unsuccessful or incorrect",
+      type: TokenType.SWATCH,
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 356, saturation: 78, lightness: 50 },
+      },
+    },
+    warning: {
+      name: "Warning",
+      intent: "Used to indicate caution or attention",
+      type: TokenType.SWATCH,
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 48, saturation: 95, lightness: 52 },
+      },
+    },
+    accent: {
+      name: "Accent",
+      intent: "To act as an accent color",
+      type: TokenType.SWATCH,
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 168, saturation: 55, lightness: 45 },
+      },
+    },
     custom1: {
       name: "Soft Green",
       intent: "A softer version of RIJKS green.",

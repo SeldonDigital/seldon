@@ -729,7 +729,16 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 203, saturation: 100, lightness: 62 },
+        value: { hue: 233, saturation: 90, lightness: 60 },
+      },
+    },
+    punch: {
+      name: "Punch",
+      intent: "Punch color for all important actions",
+      type: TokenType.SWATCH,
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 48, saturation: 100, lightness: 56 },
       },
     },
     positive: {
@@ -738,7 +747,16 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 135, saturation: 100, lightness: 35 },
+        value: { hue: 145, saturation: 80, lightness: 42 },
+      },
+    },
+    negative: {
+      name: "Negative",
+      intent: "Actions that are unsuccessful or incorrect",
+      type: TokenType.SWATCH,
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 356, saturation: 85, lightness: 55 },
       },
     },
     warning: {
@@ -747,7 +765,7 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 60, saturation: 100, lightness: 46 },
+        value: { hue: 45, saturation: 100, lightness: 54 },
       },
     },
     accent: {
@@ -756,7 +774,7 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 300, saturation: 76, lightness: 48 },
+        value: { hue: 280, saturation: 75, lightness: 62 },
       },
     },
     offBlack: {

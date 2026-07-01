@@ -555,6 +555,51 @@ export const theme: StockTheme = {
         value: { hue: 18, saturation: 12, lightness: 8 },
       },
     },
+    active: {
+      name: "Active",
+      intent: "Active color for all important actions",
+      type: TokenType.SWATCH,
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 257, saturation: 45, lightness: 55 },
+      },
+    },
+    punch: {
+      name: "Punch",
+      intent: "Punch color for all important actions",
+      type: TokenType.SWATCH,
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 25, saturation: 75, lightness: 55 },
+      },
+    },
+    positive: {
+      name: "Positive",
+      intent: "Actions that are successful or correct",
+      type: TokenType.SWATCH,
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 140, saturation: 45, lightness: 42 },
+      },
+    },
+    warning: {
+      name: "Warning",
+      intent: "Used to indicate caution or attention",
+      type: TokenType.SWATCH,
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 40, saturation: 80, lightness: 50 },
+      },
+    },
+    accent: {
+      name: "Accent",
+      intent: "To act as an accent color",
+      type: TokenType.SWATCH,
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 330, saturation: 40, lightness: 52 },
+      },
+    },
     custom1: {
       name: "Secondary",
       intent: "Google M3 color for secondary objects",

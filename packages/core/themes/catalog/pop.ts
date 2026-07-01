@@ -557,6 +557,60 @@ export const theme: StockTheme = {
         value: { hue: 352, saturation: 12, lightness: 8 },
       },
     },
+    active: {
+      name: "Active",
+      intent: "Active color for all important actions",
+      type: TokenType.SWATCH,
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 352, saturation: 88, lightness: 62 },
+      },
+    },
+    punch: {
+      name: "Punch",
+      intent: "Punch color for all important actions",
+      type: TokenType.SWATCH,
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 172, saturation: 80, lightness: 50 },
+      },
+    },
+    positive: {
+      name: "Positive",
+      intent: "Actions that are successful or correct",
+      type: TokenType.SWATCH,
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 145, saturation: 68, lightness: 48 },
+      },
+    },
+    negative: {
+      name: "Negative",
+      intent: "Actions that are unsuccessful or incorrect",
+      type: TokenType.SWATCH,
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 358, saturation: 92, lightness: 52 },
+      },
+    },
+    warning: {
+      name: "Warning",
+      intent: "Used to indicate caution or attention",
+      type: TokenType.SWATCH,
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 42, saturation: 100, lightness: 56 },
+      },
+    },
+    accent: {
+      name: "Accent",
+      intent: "To act as an accent color",
+      type: TokenType.SWATCH,
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 280, saturation: 78, lightness: 62 },
+      },
+    },
     offBlack: {
       name: "Off Black",
       intent: "A low contrast black color.",
