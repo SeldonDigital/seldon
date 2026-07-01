@@ -1,7 +1,8 @@
 "use client"
 
 import { MenuAlign, MenuEntry, VMMenu } from "@lib/menus"
-import { CHROME_THEMES } from "@lib/theme/chrome-themes"
+import { getChromeThemes } from "@lib/theme/chrome-themes"
+import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import {
   CSSProperties,
   MouseEvent,
@@ -68,6 +69,8 @@ export function VMTopbar() {
   const menuConfig = useMenuConfig()
   const { appState } = useAppState()
   const { chromeTheme, setChromeTheme } = useEditorConfig()
+  const { workspace } = useWorkspace()
+  const chromeThemes = useMemo(() => getChromeThemes(workspace), [workspace])
   const [openMenuId, setOpenMenuId] = useState<string | null>(null)
   const anchorRef = useRef<HTMLElement | null>(null)
 
@@ -108,7 +111,7 @@ export function VMTopbar() {
   }, [menuConfig, appState, openMenuId, handleTriggerClick, handleTriggerEnter])
 
   const themeMenuItems = useMemo<MenuEntry[]>(() => {
-    return CHROME_THEMES.map((theme) => ({
+    return chromeThemes.map((theme) => ({
       id: theme.slug,
       label: theme.label,
       onSelect: () => setChromeTheme(theme.slug),
@@ -116,12 +119,12 @@ export function VMTopbar() {
       activeMarker: theme.slug === chromeTheme ? "bullet" : undefined,
       testId: `chrome-theme-${theme.slug}`,
     }))
-  }, [chromeTheme, setChromeTheme])
+  }, [chromeThemes, chromeTheme, setChromeTheme])
 
   const activeThemeLabel = useMemo(() => {
-    const active = CHROME_THEMES.find((theme) => theme.slug === chromeTheme)
+    const active = chromeThemes.find((theme) => theme.slug === chromeTheme)
     return active?.label ?? chromeTheme
-  }, [chromeTheme])
+  }, [chromeThemes, chromeTheme])
 
   const themeButton = useMemo<ButtonMenuProps>(
     () =>
