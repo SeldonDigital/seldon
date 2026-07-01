@@ -547,6 +547,15 @@ export const theme: StockTheme = {
       role: "swatch4",
       intent: "A tint of the primary color",
     },
+    foreground: {
+      name: "Foreground",
+      intent: "The default color used for text and foreground content.",
+      type: TokenType.SWATCH,
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 260, saturation: 10, lightness: 95 },
+      },
+    },
     background: {
       name: "Background",
       intent:
@@ -627,6 +636,24 @@ export const theme: StockTheme = {
       parameters: {
         colorspace: Colorspace.HSL,
         value: { hue: 3, saturation: 71, lightness: 41 },
+      },
+    },
+    offBlack: {
+      name: "Off Black",
+      intent: "Dark color for text on light backgrounds",
+      type: TokenType.SWATCH,
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 260, saturation: 10, lightness: 12 },
+      },
+    },
+    offWhite: {
+      name: "Off White",
+      intent: "Light color for text on dark backgrounds",
+      type: TokenType.SWATCH,
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 260, saturation: 8, lightness: 96 },
       },
     },
   },
