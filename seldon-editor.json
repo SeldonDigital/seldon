@@ -18691,6 +18691,10 @@
         "color": {
           "type": "computed",
           "value": "highContrastColor"
+        },
+        "cursor": {
+          "type": "option",
+          "value": "pointer"
         }
       },
       "origin": "schema",
@@ -18741,6 +18745,10 @@
             "type": "theme.ordinal",
             "value": "@fontSize.xsmall"
           }
+        },
+        "cursor": {
+          "type": "option",
+          "value": "pointer"
         }
       },
       "origin": "schema",
@@ -19549,6 +19557,10 @@
         "color": {
           "type": "computed",
           "value": "highContrastColor"
+        },
+        "cursor": {
+          "type": "option",
+          "value": "pointer"
         }
       },
       "origin": "schema",
@@ -19598,6 +19610,10 @@
             "type": "theme.ordinal",
             "value": "@fontSize.xsmall"
           }
+        },
+        "cursor": {
+          "type": "option",
+          "value": "pointer"
         }
       },
       "origin": "schema",
@@ -19660,6 +19676,10 @@
             "type": "theme.ordinal",
             "value": "@fontSize.xsmall"
           }
+        },
+        "cursor": {
+          "type": "option",
+          "value": "pointer"
         }
       },
       "origin": "schema",

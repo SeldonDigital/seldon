@@ -1683,6 +1683,11 @@ body {
   margin: 0.5rem;
 }
 
+.sdn-icon--3qou {
+  cursor: pointer;
+  font-size: 0.75rem;
+}
+
 .sdn-icon--eyw9 {
   font-size: 0.6rem;
   color: hsl(203 0% 8%);
@@ -1951,12 +1956,14 @@ body {
 .sdn-text-label--dtru {
   align-self: unset;
   flex-shrink: unset;
+  cursor: pointer;
   flex: 1 0 0;
   min-width: 0;
 }
 
 .sdn-text-label--fdei {
   align-self: unset;
+  cursor: pointer;
   opacity: 0.6;
   width: fit-content;
   min-width: 0;
@@ -1980,6 +1987,14 @@ body {
   align-self: unset;
   width: fit-content;
   text-align: center;
+}
+
+.sdn-text-label--lbxv {
+  align-self: unset;
+  flex-shrink: unset;
+  flex: 1 0 0;
+  min-width: 0;
+  font-size: 0.75rem;
 }
 
 .sdn-text-label--lug5 {
@@ -2070,6 +2085,7 @@ body {
 .sdn-text-label--xohb {
   align-self: unset;
   flex-shrink: unset;
+  cursor: pointer;
   flex: 1 0 0;
   min-width: 0;
   font-size: 0.75rem;
@@ -2234,7 +2250,7 @@ body {
   color: hsl(203 100% 81%);
 }
 
-.sdn-listbox-option:hover .sdn-icon--xi68 {
+.sdn-listbox-option:hover .sdn-icon--3qou {
   color: hsl(203 100% 81%);
 }
 
@@ -2250,7 +2266,7 @@ body {
   color: hsl(203 100% 81%);
 }
 
-.sdn-menu-item:hover .sdn-icon--xi68 {
+.sdn-menu-item:hover .sdn-icon--3qou {
   color: hsl(203 100% 81%);
 }
 
@@ -2579,7 +2595,7 @@ body {
   color: hsl(203 100% 81%);
 }
 
-.sdn-menu-item-checkbox-menu-item:hover .sdn-icon--xi68 {
+.sdn-menu-item-checkbox-menu-item:hover .sdn-icon--3qou {
   color: hsl(203 100% 81%);
 }
 
@@ -2591,7 +2607,7 @@ body {
   color: hsl(203 100% 81%);
 }
 
-.sdn-menu-item-radio-menu-item:hover .sdn-icon--xi68 {
+.sdn-menu-item-radio-menu-item:hover .sdn-icon--3qou {
   color: hsl(203 100% 81%);
 }
 

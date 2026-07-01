@@ -228,7 +228,7 @@ const sdn: ListboxProps = {
   icon: {
     icon: "seldon-component",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--xi68",
+    className: "sdn-icon sdn-icon--3qou",
   },
   textLabel: {
     className: "sdn-text-label sdn-text-label--xohb",
@@ -241,7 +241,7 @@ const sdn: ListboxProps = {
   icon2: {
     icon: "seldon-component",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--xi68",
+    className: "sdn-icon sdn-icon--3qou",
   },
   textLabel2: {
     className: "sdn-text-label sdn-text-label--xohb",
@@ -254,7 +254,7 @@ const sdn: ListboxProps = {
   icon3: {
     icon: "seldon-component",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--xi68",
+    className: "sdn-icon sdn-icon--3qou",
   },
   textLabel3: {
     className: "sdn-text-label sdn-text-label--xohb",

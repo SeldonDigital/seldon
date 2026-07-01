@@ -469,7 +469,7 @@ const sdn: ComboboxGroupedComboboxProps = {
   icon3: {
     icon: "seldon-component",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--xi68",
+    className: "sdn-icon sdn-icon--3qou",
   },
   textLabel2: {
     className: "sdn-text-label sdn-text-label--xohb",
@@ -480,7 +480,7 @@ const sdn: ComboboxGroupedComboboxProps = {
   icon4: {
     icon: "seldon-component",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--xi68",
+    className: "sdn-icon sdn-icon--3qou",
   },
   textLabel3: {
     className: "sdn-text-label sdn-text-label--xohb",
@@ -504,7 +504,7 @@ const sdn: ComboboxGroupedComboboxProps = {
   icon5: {
     icon: "seldon-component",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--xi68",
+    className: "sdn-icon sdn-icon--3qou",
   },
   textLabel5: {
     className: "sdn-text-label sdn-text-label--xohb",
@@ -515,7 +515,7 @@ const sdn: ComboboxGroupedComboboxProps = {
   icon6: {
     icon: "seldon-component",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--xi68",
+    className: "sdn-icon sdn-icon--3qou",
   },
   textLabel6: {
     className: "sdn-text-label sdn-text-label--xohb",

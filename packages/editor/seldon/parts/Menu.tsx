@@ -336,7 +336,7 @@ const sdn: MenuProps = {
   icon: {
     icon: "seldon-component",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--xi68",
+    className: "sdn-icon sdn-icon--3qou",
   },
   textLabel: {
     className: "sdn-text-label sdn-text-label--xohb",
@@ -352,7 +352,7 @@ const sdn: MenuProps = {
   icon2: {
     icon: "seldon-component",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--xi68",
+    className: "sdn-icon sdn-icon--3qou",
   },
   textLabel3: {
     className: "sdn-text-label sdn-text-label--xohb",
@@ -372,7 +372,7 @@ const sdn: MenuProps = {
   icon3: {
     icon: "material-check",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--xi68",
+    className: "sdn-icon sdn-icon--3qou",
   },
   textLabel5: {
     className: "sdn-text-label sdn-text-label--xohb",
@@ -385,7 +385,7 @@ const sdn: MenuProps = {
   icon4: {
     icon: "material-radioButtonChecked",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--xi68",
+    className: "sdn-icon sdn-icon--3qou",
   },
   textLabel6: {
     className: "sdn-text-label sdn-text-label--xohb",

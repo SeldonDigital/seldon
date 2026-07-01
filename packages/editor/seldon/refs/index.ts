@@ -65,7 +65,7 @@ export const SELDON_REFS: Record<SeldonRef, SeldonRefEntry> = {
   "nodeToggle": {"component":"ButtonIconic","nodeId":"component-item-HSgjhz6b","className":"sdn-button-iconic sdn-button-iconic--pgsr"},
   "nodeToggleIcon": {"component":"Icon","nodeId":"component-item-zn8GFZsT","className":"sdn-icon sdn-icon--vsau"},
   "objectsContainer": {"component":"Frame","nodeId":"component-sidebar-ENPyLuzb","className":"sdn-frame sdn-frame--enpy"},
-  "optionIcon": {"component":"Icon","nodeId":"component-icon-3QOuNmn2","className":"sdn-icon sdn-icon--xi68"},
+  "optionIcon": {"component":"Icon","nodeId":"component-icon-3QOuNmn2","className":"sdn-icon sdn-icon--3qou"},
   "optionLabel": {"component":"TextLabel","nodeId":"component-text-xOhbdtNu","className":"sdn-text-label sdn-text-label--xohb"},
   "projectActions": {"component":"ButtonIconic","nodeId":"component-comboboxField-Td9lePEX","className":"sdn-button-iconic sdn-button-iconic--pgsr"},
   "projectIcon": {"component":"Icon","nodeId":"component-comboboxField-h6DYE6Jl","className":"sdn-icon sdn-icon--xi68"},

@@ -434,31 +434,31 @@ const sdn: BarTopbarProps = {
     className: "sdn-button-simple sdn-button-simple--dbgs",
   },
   textLabel: {
-    className: "sdn-text-label sdn-text-label--xohb",
+    className: "sdn-text-label sdn-text-label--lbxv",
   },
   buttonSimple2: {
     className: "sdn-button-simple sdn-button-simple--dbgs",
   },
   textLabel2: {
-    className: "sdn-text-label sdn-text-label--xohb",
+    className: "sdn-text-label sdn-text-label--lbxv",
   },
   buttonSimple3: {
     className: "sdn-button-simple sdn-button-simple--dbgs",
   },
   textLabel3: {
-    className: "sdn-text-label sdn-text-label--xohb",
+    className: "sdn-text-label sdn-text-label--lbxv",
   },
   buttonSimple4: {
     className: "sdn-button-simple sdn-button-simple--dbgs",
   },
   textLabel4: {
-    className: "sdn-text-label sdn-text-label--xohb",
+    className: "sdn-text-label sdn-text-label--lbxv",
   },
   buttonSimple5: {
     className: "sdn-button-simple sdn-button-simple--dbgs",
   },
   textLabel5: {
-    className: "sdn-text-label sdn-text-label--xohb",
+    className: "sdn-text-label sdn-text-label--lbxv",
   },
   frame2: {
     wrapperElement: "div",
