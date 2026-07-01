@@ -243,8 +243,7 @@ html {
 
 html,
 body {
-  font-family:
-    system-ui,
+  font-family: system-ui,
     -apple-system,
     "Segoe UI",
     Roboto,
@@ -252,8 +251,7 @@ body {
     Cantarell,
     "Open Sans",
     "Helvetica Neue",
-    sans-serif,
-    "IBM Plex Sans";
+    sans-serif, "IBM Plex Sans";
 }
 
 :root {
@@ -2300,9 +2298,7 @@ body {
 
 .sdn-text-heading--xkk9 {
   color: var(--sdn-hc-on-white);
-  font-family:
-    Playfair Display,
-    "IBM Plex Sans";
+  font-family: Playfair Display, "IBM Plex Sans";
   max-height: 2lh;
 }
 
