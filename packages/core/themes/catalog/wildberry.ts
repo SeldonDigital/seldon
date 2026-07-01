@@ -20,7 +20,7 @@ export const theme: StockTheme = {
   },
   modulation: {
     type: TokenType.COMPUTED,
-    parameters: { ratio: 1.333, baseFontSize: 16, baseSize: 1 },
+    parameters: { ratio: 1.2, baseFontSize: 18, baseSize: 1.2 },
   },
   colorHarmony: {
     type: TokenType.COMPUTED,

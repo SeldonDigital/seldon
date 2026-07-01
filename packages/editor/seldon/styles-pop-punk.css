@@ -41,6 +41,7 @@
   --sdn-swatch-swatch2: hsl(189 75% 74%);
   --sdn-swatch-swatch3: hsl(141 75% 62%);
   --sdn-swatch-swatch4: hsl(141 75% 74%);
+  --sdn-swatch-foreground: hsl(345 12% 12%);
   --sdn-swatch-background: hsl(350 50% 98%);
   --sdn-swatch-active: hsl(345 75% 60%);
   --sdn-swatch-punch: hsl(170 85% 45%);
@@ -49,8 +50,7 @@
   --sdn-swatch-warning: hsl(42 100% 56%);
   --sdn-swatch-accent: hsl(212 90% 55%);
   --sdn-swatch-offBlack: hsl(345 8% 12%);
-  --sdn-swatch-foreground: hsl(0 0% 100%);
-  --sdn-swatch-offWhite: hsl(0 0% 96%);
+  --sdn-swatch-offWhite: hsl(345 25% 97%);
   /* Sizes */
   --sdn-sizes-tiny: 0.069rem;
   --sdn-sizes-xxsmall: 0.168rem;
@@ -128,7 +128,7 @@
   --sdn-hc-on-swatch2: hsl(345 12% 8%);
   --sdn-hc-on-swatch3: hsl(345 12% 8%);
   --sdn-hc-on-swatch4: hsl(345 12% 8%);
-  --sdn-hc-on-foreground: hsl(345 12% 8%);
+  --sdn-hc-on-foreground: hsl(345 12% 98%);
   --sdn-hc-on-background: hsl(345 12% 8%);
   --sdn-hc-on-active: hsl(345 12% 98%);
   --sdn-hc-on-punch: hsl(345 12% 8%);
