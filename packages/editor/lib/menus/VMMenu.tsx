@@ -14,6 +14,7 @@ import { MenuItem } from "@seldon/components/elements/MenuItem"
 import { Menu } from "@seldon/components/parts/Menu"
 import { Hr } from "@seldon/components/primitives/Hr"
 import { IconProps } from "@seldon/components/primitives/Icon"
+import { useEditorConfig } from "@lib/hooks/use-editor-config"
 import { MenuAlign, MenuEntry, MenuItem as MenuItemModel } from "./types"
 import { useMenuPosition } from "./use-menu-position"
 
@@ -184,6 +185,7 @@ function FloatingMenu({
   minWidth = "180px",
   focusTargetRef,
 }: FloatingMenuProps) {
+  const { chromeTheme } = useEditorConfig()
   const position = useMenuPosition({ open, anchorRef, align })
   const menuRef = useRef<HTMLDivElement>(null)
   const [activeIndex, setActiveIndex] = useState(-1)
@@ -313,6 +315,7 @@ function FloatingMenu({
       tabIndex={-1}
       style={containerStyle}
       onKeyDown={handleKeyDown}
+      data-theme={chromeTheme}
     >
       <Menu aria-orientation="vertical" style={{ minWidth }}>
         {items.map((item, index) => {

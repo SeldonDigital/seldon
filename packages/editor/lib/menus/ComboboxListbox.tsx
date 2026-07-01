@@ -16,6 +16,7 @@ import { Listbox } from "@seldon/components/parts/Listbox"
 import { Hr } from "@seldon/components/primitives/Hr"
 import { IconProps } from "@seldon/components/primitives/Icon"
 import { TextLabel } from "@seldon/components/primitives/TextLabel"
+import { useEditorConfig } from "@lib/hooks/use-editor-config"
 import { ComboboxOptionItem, OptionIconRender } from "./types"
 
 interface Position {
@@ -67,6 +68,7 @@ export function ComboboxListbox({
   onSelect,
   onHighlight,
 }: ComboboxListboxProps) {
+  const { chromeTheme } = useEditorConfig()
   if (!open) {
     return null
   }
@@ -147,12 +149,12 @@ export function ComboboxListbox({
     : (filteredOptions as ComboboxOptionItem[]).map(renderOption)
 
   return createPortal(
-    <>
+    <div data-theme={chromeTheme} style={{ display: "contents" }}>
       <Backdrop onClick={handleClose} style={backdropStyle} />
       <Listbox style={panelStyle} onMouseLeave={onPointerLeave}>
         {content}
       </Listbox>
-    </>,
+    </div>,
     document.body,
   )
 }
