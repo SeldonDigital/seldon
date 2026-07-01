@@ -14,6 +14,7 @@
 import { SVGAttributes } from "react"
 import * as Icons from "../icons/index"
 import { combineClassNames } from "../utils/class-name"
+import { getRegisteredIcon } from "../utils/icon-registry"
 
 export interface IconProps extends SVGAttributes<SVGElement> {
   className?: string
@@ -509,6 +510,21 @@ export function Icon({ className = "", icon = sdn.icon, ...props }: IconProps) {
 
   let Icon = iconMap[icon || "__default__"]
   if (!Icon) {
+    // Ids absent from the static map may be registered at runtime as dynamic,
+    // prop-driven icons (e.g. color chips) the factory cannot emit as SVGs.
+    const RegisteredIcon = getRegisteredIcon(icon)
+    if (RegisteredIcon) {
+      //
+      // React JSX component resolved from the runtime icon registry
+      //
+      return (
+        <RegisteredIcon
+          className={iconClassName}
+          aria-hidden={sdn["aria-hidden"]}
+          {...props}
+        />
+      )
+    }
     Icon = iconMap["__default__"]
   }
   //

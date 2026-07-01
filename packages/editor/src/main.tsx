@@ -5,10 +5,15 @@ import "allotment/dist/style.css"
 import { LoadEditorFonts } from "@app/LoadEditorFonts"
 import { Providers } from "@app/Providers"
 import { Toasts } from "@app/toaster/Toaster"
+import { registerDynamicIcons } from "@lib/icons/register-dynamic-icons"
 import HomePage from "../app/home/HomePage"
 import "../app/globals.css"
 import "../app/plex/fonts.css"
 import "../app/editor-chrome.css"
+
+// Register editor-only, prop-driven icons so the generated `Icon` can resolve
+// their `icon-custom-*` ids from its runtime registry.
+registerDynamicIcons()
 
 const EditorPage = lazy(() => import("../app/editor/EditorPage"))
 

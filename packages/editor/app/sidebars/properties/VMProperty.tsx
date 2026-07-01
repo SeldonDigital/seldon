@@ -1,4 +1,4 @@
-import { ReactElement, cloneElement, isValidElement, memo } from "react"
+import { memo } from "react"
 import { RowPropertyProps, useRowProperty } from "./hooks/use-row-property"
 import { FramerExpandable } from "@seldon/components/custom-components"
 import { ComboboxFieldProps } from "@seldon/components/elements/ComboboxField"
@@ -8,10 +8,6 @@ import { useRowActionsMenu } from "../shared/use-row-actions-menu"
 import { LayerDragRow } from "./LayerDragRow"
 import { PropertyOptionsListbox } from "./PropertyOptionsListbox"
 import { arePropertyRowPropsEqual } from "./helpers/property-row-memo"
-
-// Value-icon leaf class, applied to a dynamic chip node so it sizes and aligns
-// like the static string-`Icon` slot it replaces.
-const VALUE_ICON_CLASS = "sdn-icon sdn-icon--xi68"
 
 /**
  * View-model for a property row, bound to the generated `ItemProperty`. The
@@ -48,18 +44,6 @@ function VMPropertyInner(props: RowPropertyProps) {
     seldonRefs.valueIcon = mergeStateProps(listItemProps.icon2, stateRef)
   }
 
-  // A dynamic value icon (swatch chip, theme token, theme swatch strip, symbol
-  // glyph) is a node the generated string-`Icon` slot cannot render, so pass it
-  // to `ComboboxField` as `iconNode`. The field renders it in its own icon
-  // position and keeps its real input and trailing button. The chip takes the
-  // value-icon leaf class so it sizes and aligns like a static slot icon. A
-  // plain icon id leaves `iconNode` unset so the string-`Icon` slot renders it.
-  const valueChipNode = isValidElement(view.valueIconNode)
-    ? cloneElement(view.valueIconNode as ReactElement<{ className?: string }>, {
-        className: VALUE_ICON_CLASS,
-      })
-    : undefined
-
   // Anchor the floating option list to the value field and enter edit on a single
   // click of the field. `ComboboxField` forwards the ref (React 19 ref-as-prop)
   // to its `Frame` div, which the position hook measures, and forwards `onClick`
@@ -68,12 +52,12 @@ function VMPropertyInner(props: RowPropertyProps) {
   const comboboxField = {
     ref: view.setValueFieldRef,
     onClick: view.onValueFieldClick,
-    iconNode: valueChipNode,
-  } as unknown as ComboboxFieldProps
+  } as ComboboxFieldProps
 
   // Positional enabler: suppress `icon2` with `null` when the value icon is
-  // hidden or rendered as a dynamic node via `iconNode`; otherwise leave it on
-  // its slot default so the bound `valueIcon` ref paints the static glyph.
+  // hidden; otherwise leave it on its slot default so the bound `valueIcon` ref
+  // paints the glyph. Dynamic color chips (`icon-custom-color-value`) resolve
+  // through the same slot via the generated `Icon`'s runtime registry.
   const valueIconSlot = listItemProps.icon2 ? undefined : null
 
   // Sub-property rows for a compound or shorthand parent.

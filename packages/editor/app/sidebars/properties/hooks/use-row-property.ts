@@ -59,13 +59,12 @@ import {
   ThemeEditingContext,
 } from "../helpers/editing-contexts"
 import { FlatProperty } from "../helpers/properties-data"
-import { getPropertyIcon2Color } from "../helpers/property-value-display"
 import { getPropertyLabelStyle } from "../helpers/property-styling-tokens.bespoke"
+import { resolveThemeSwatchColors } from "../helpers/resolve-theme-swatch-colors"
 import {
   getThemeTokenIconColorFromPropertyValue,
   isSwatchIconPropertyKey,
 } from "../helpers/theme-token-icon-color"
-import { IconCustomColorValue } from "@seldon/components/custom-components"
 import { usePropertyControl } from "./use-property-control"
 import { usePropertyControlData } from "./use-property-control-data"
 import {
@@ -311,6 +310,14 @@ export function useRowProperty({
     return getThemeTokenIconColorFromPropertyValue(property.value, theme)
   }, [property.key, property.value, theme])
 
+  // The theme-assignment row's closed value paints the assigned theme's swatch
+  // cluster, the same strip its menu options show. Resolved from the row's theme,
+  // exactly like `swatchChipColor`.
+  const themeSwatchColors = useMemo(() => {
+    if (!isThemeAssignment || !theme) return undefined
+    return resolveThemeSwatchColors(theme)
+  }, [isThemeAssignment, theme])
+
   const endEdit = useCallback(() => setIsEditingProperty(false), [])
 
   // Mount the value control. The view (none / field / combobox) drives the value
@@ -433,29 +440,6 @@ export function useRowProperty({
     onTabNext: handleTabNext,
     onTabPrev: handleTabPrev,
   })
-
-  // Dynamic value icons (swatch color, theme token, theme swatch strip, symbol
-  // glyph) cannot render through the generated string-`Icon` slot. Resolve the
-  // current value through the same resolver the listbox uses, so the closed
-  // field paints the identical node. A plain icon id keeps the slot path.
-  const valueIconNode = useMemo<React.ReactNode>(() => {
-    if (control.kind === "combobox") {
-      const rendered = control.optionList.resolveIcon({
-        value: control.optionList.value,
-        name: value,
-      })
-      return rendered.kind === "node" ? rendered.node : null
-    }
-    // Color rows render their preview circle even as a read-only or text field
-    // (theme swatch tokens and color-harmony points). The value-cell refactor
-    // moved chips onto the combobox `iconNode` path, so field-control color rows
-    // need this branch to keep their circle. Non-color field rows resolve no
-    // color and render nothing.
-    const circleColor = getPropertyIcon2Color(property, swatchChipColor, undefined)
-    return circleColor
-      ? React.createElement(IconCustomColorValue, { color: circleColor })
-      : null
-  }, [control, value, property, swatchChipColor])
 
   const handleRowClick = (event: React.MouseEvent<HTMLLIElement>) => {
     const target = event.target as HTMLElement
@@ -636,6 +620,7 @@ export function useRowProperty({
     labelColor,
     iconId,
     isThemeAssignment,
+    themeSwatchColors,
     swatchChipColor,
     supportsUpload,
     showMenuIcon: shouldShowMenuIcon(),
@@ -694,6 +679,5 @@ export function useRowProperty({
     hasChildren,
     childItems,
     layerDrag,
-    valueIconNode,
   }
 }

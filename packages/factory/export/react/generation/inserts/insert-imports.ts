@@ -93,6 +93,8 @@ export function insertImports(
   if (config.react.returns === "iconMap") {
     // Icon component: use wildcard import from index
     imports["../icons/index"] = ["* as Icons"]
+    // Consult the runtime registry for ids absent from the static map.
+    imports["../utils/icon-registry"] = ["getRegisteredIcon"]
   } else if (tree.dataBinding.props.icon?.options) {
     // Other components: use individual icon imports
     for (const option of tree.dataBinding.props.icon.options) {

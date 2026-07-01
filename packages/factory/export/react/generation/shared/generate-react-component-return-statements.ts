@@ -23,6 +23,15 @@ export function generateIconMapReturn(
   return `
     let Icon = iconMap[icon || "__default__"]
     if (!Icon) {
+      // Ids absent from the static map may be registered at runtime as dynamic,
+      // prop-driven icons (e.g. color chips) the factory cannot emit as SVGs.
+      const RegisteredIcon = getRegisteredIcon(icon)
+      if (RegisteredIcon) {
+  //
+  // React JSX component resolved from the runtime icon registry
+  //
+        return <RegisteredIcon className={${classNameVarName}}${refAttr} {...props} />
+      }
       Icon = iconMap["__default__"]
     }
   //
