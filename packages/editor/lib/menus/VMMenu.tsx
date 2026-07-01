@@ -1,5 +1,6 @@
 "use client"
 
+import { useInterfaceModeVars } from "@lib/theme/use-interface-mode-vars"
 import {
   CSSProperties,
   ReactNode,
@@ -10,12 +11,11 @@ import {
   useState,
 } from "react"
 import { createPortal } from "react-dom"
+import { useEditorConfig } from "@lib/hooks/use-editor-config"
 import { MenuItem } from "@seldon/components/elements/MenuItem"
 import { Menu } from "@seldon/components/parts/Menu"
 import { Hr } from "@seldon/components/primitives/Hr"
 import { IconProps } from "@seldon/components/primitives/Icon"
-import { useEditorConfig } from "@lib/hooks/use-editor-config"
-import { useInterfaceModeVars } from "@lib/theme/use-interface-mode-vars"
 import { MenuAlign, MenuEntry, MenuItem as MenuItemModel } from "./types"
 import { useMenuPosition } from "./use-menu-position"
 

@@ -8,16 +8,16 @@
  * Only functional placement (fixed position, scroll) is applied inline; all
  * appearance comes from the authored component CSS.
  */
+import { useInterfaceModeVars } from "@lib/theme/use-interface-mode-vars"
 import { CSSProperties, Fragment, MouseEvent, ReactNode, useRef } from "react"
 import { createPortal } from "react-dom"
+import { useEditorConfig } from "@lib/hooks/use-editor-config"
 import { Backdrop } from "@seldon/components/custom-components"
 import { ListboxOption } from "@seldon/components/elements/ListboxOption"
 import { Listbox } from "@seldon/components/parts/Listbox"
 import { Hr } from "@seldon/components/primitives/Hr"
 import { IconProps } from "@seldon/components/primitives/Icon"
 import { TextLabel } from "@seldon/components/primitives/TextLabel"
-import { useEditorConfig } from "@lib/hooks/use-editor-config"
-import { useInterfaceModeVars } from "@lib/theme/use-interface-mode-vars"
 import { ComboboxOptionItem, OptionIconRender } from "./types"
 
 interface Position {

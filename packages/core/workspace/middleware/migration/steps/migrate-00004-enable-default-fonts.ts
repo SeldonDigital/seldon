@@ -41,7 +41,8 @@ function pendingFamilies(
   for (const [slot, family] of Object.entries(stock.families)) {
     if (!family.variants || family.variants.length === 0) continue
     if (!families.has(family.name)) continue
-    if (Object.keys(readFamilyVariantSelection(entry, slot)).length > 0) continue
+    if (Object.keys(readFamilyVariantSelection(entry, slot)).length > 0)
+      continue
     pending.push([slot, family.variants])
   }
   return pending

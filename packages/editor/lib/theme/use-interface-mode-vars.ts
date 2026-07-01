@@ -1,5 +1,4 @@
 import { RefObject, useLayoutEffect } from "react"
-
 import { useEditorConfig } from "@lib/hooks/use-editor-config"
 import { useResolvedInterfaceMode } from "@lib/hooks/use-system-color-scheme"
 
@@ -39,9 +38,7 @@ const SWAP_PAIRS: readonly [string, string][] = [
  * Re-runs when the chrome theme or resolved mode changes. Only call this for
  * chrome surfaces; the canvas is pinned to the default theme and must not swap.
  */
-export function useInterfaceModeVars(
-  ref: RefObject<HTMLElement | null>,
-): void {
+export function useInterfaceModeVars(ref: RefObject<HTMLElement | null>): void {
   const { chromeTheme } = useEditorConfig()
   const resolvedMode = useResolvedInterfaceMode()
 

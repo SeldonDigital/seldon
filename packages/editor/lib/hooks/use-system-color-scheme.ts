@@ -1,5 +1,4 @@
 import { useSyncExternalStore } from "react"
-
 import { useEditorConfig } from "./use-editor-config"
 
 /** Resolved appearance after mapping `"system"` to the OS preference. */

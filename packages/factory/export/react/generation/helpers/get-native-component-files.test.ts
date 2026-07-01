@@ -70,8 +70,6 @@ describe("getNativeComponentFiles", () => {
     const written = stems(
       htmlElementComponent([HtmlElement.UL, HtmlElement.OL]),
     )
-    expect(written).toEqual(
-      expect.arrayContaining(["HTML.Ul", "HTML.Ol"]),
-    )
+    expect(written).toEqual(expect.arrayContaining(["HTML.Ul", "HTML.Ol"]))
   })
 })

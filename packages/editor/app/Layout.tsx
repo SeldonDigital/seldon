@@ -1,9 +1,9 @@
 "use client"
 
+import { useInterfaceModeVars } from "@lib/theme/use-interface-mode-vars"
 import { CSSProperties, PropsWithChildren, useRef } from "react"
 import { useAppState } from "@lib/hooks/use-app-state"
 import { useEditorConfig } from "@lib/hooks/use-editor-config"
-import { useInterfaceModeVars } from "@lib/theme/use-interface-mode-vars"
 import { VMTopbar } from "./topbar/VMTopbar"
 
 export function Layout({

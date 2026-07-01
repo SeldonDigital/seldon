@@ -295,7 +295,14 @@ export function useRowProperty({
   // it shows nothing rather than formatting EMPTY into a "Default" placeholder.
   const value = property.isLookParent
     ? ""
-    : getDisplayValue(propertyValue, property.key, nodeId, workspace, theme, options)
+    : getDisplayValue(
+        propertyValue,
+        property.key,
+        nodeId,
+        workspace,
+        theme,
+        options,
+      )
 
   const labelStyle = useMemo(
     () => getPropertyLabelStyle(property, showPropertyTypes),

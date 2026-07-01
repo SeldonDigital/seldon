@@ -2,7 +2,6 @@
 
 import { MenuAlign, MenuEntry, VMMenu } from "@lib/menus"
 import { getChromeThemes } from "@lib/theme/chrome-themes"
-import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import {
   CSSProperties,
   MouseEvent,
@@ -12,11 +11,9 @@ import {
   useRef,
   useState,
 } from "react"
+import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { AppState, useAppState } from "@lib/hooks/use-app-state"
-import {
-  InterfaceMode,
-  useEditorConfig,
-} from "@lib/hooks/use-editor-config"
+import { InterfaceMode, useEditorConfig } from "@lib/hooks/use-editor-config"
 import { useMenuConfig } from "./hooks/use-menu-config"
 import { ButtonMenuProps } from "@seldon/components/elements/ButtonMenu"
 import { ButtonSimpleProps } from "@seldon/components/elements/ButtonSimple"
@@ -176,7 +173,8 @@ export function VMTopbar() {
   }, [chromeThemes, chromeTheme])
 
   const themeButton = useMemo<ButtonMenuProps>(
-    () => buildMenuTrigger(CHROME_THEME_MENU_ID, openMenuId, handleTriggerClick),
+    () =>
+      buildMenuTrigger(CHROME_THEME_MENU_ID, openMenuId, handleTriggerClick),
     [openMenuId, handleTriggerClick],
   )
 
@@ -223,8 +221,7 @@ export function VMTopbar() {
   // the trigger's right and open leftward. The left-side config menus align to
   // their left.
   const menuAlign: MenuAlign =
-    openMenuId === CHROME_THEME_MENU_ID ||
-    openMenuId === INTERFACE_MODE_MENU_ID
+    openMenuId === CHROME_THEME_MENU_ID || openMenuId === INTERFACE_MODE_MENU_ID
       ? "end"
       : "start"
 

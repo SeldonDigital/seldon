@@ -50,7 +50,10 @@ export function registerDynamicIcons(): void {
     toRegistered(IconCustomThemeColorValue),
   )
   registerIcon("icon-custom-theme-swatches", toRegistered(ThemeSwatches))
-  registerIcon("icon-custom-device-mobile", toRegistered(IconMaterialSmartphone))
+  registerIcon(
+    "icon-custom-device-mobile",
+    toRegistered(IconMaterialSmartphone),
+  )
   registerIcon("icon-custom-device-tablet", toRegistered(IconMaterialTablet))
   registerIcon("icon-custom-device-laptop", toRegistered(IconMaterialLaptop))
   registerIcon("icon-custom-device-desktop", toRegistered(IconMaterialComputer))

@@ -4,11 +4,11 @@ import {
   NORMAL_STATE,
   RESERVED_STATE_GROUPS,
 } from "@seldon/core/workspace/model/node-state"
-import { resolveComponentKey } from "@lib/workspace/workspace-accessors"
 import { useActiveBoard } from "@lib/workspace/hooks/use-active-board"
-import { useBoardStateStore } from "@app/canvas/hooks/use-board-state-store"
-import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useHistory } from "@lib/workspace/hooks/use-history"
+import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
+import { resolveComponentKey } from "@lib/workspace/workspace-accessors"
+import { useBoardStateStore } from "@app/canvas/hooks/use-board-state-store"
 import { useAddRemoveCommands } from "./commands/use-add-remove-commands"
 import { useMoveCommands } from "./commands/use-move-commands"
 import { useSelectCommands } from "./commands/use-select-commands"

@@ -11,9 +11,9 @@
  * labels stay identical to that menu. Each entry is mapped to its exported CSS
  * slug via `getThemeSlug`, keeping only themes that were actually exported.
  */
+import { getThemeSlug } from "@seldon/factory/export/css/generation/get-theme-slug"
 import { getThemePickerOptions } from "@seldon/core/helpers/properties/properties-bridge"
 import type { Workspace } from "@seldon/core/workspace/types"
-import { getThemeSlug } from "@seldon/factory/export/css/generation/get-theme-slug"
 
 const themeStylesheets = import.meta.glob("../../seldon/styles-*.css", {
   eager: true,

@@ -31,7 +31,14 @@ export const autoFitStrategy: ComputedVariableStrategy = {
     const factor = theme.autoFit.parameters.factor
 
     let out = "  /* Auto Fit */\n"
-    out += emitScale(theme, "fontSize", theme.fontSize, baseFontSize / 16, ratio, factor)
+    out += emitScale(
+      theme,
+      "fontSize",
+      theme.fontSize,
+      baseFontSize / 16,
+      ratio,
+      factor,
+    )
     out += emitScale(theme, "size", theme.size, baseSize, ratio, factor)
     return out
   },
@@ -49,8 +56,10 @@ function emitScale(
   for (const [key, token] of Object.entries(table)) {
     if (!token || !isModulatedToken(token)) continue
     const value = round(
-      modulate({ ratio, size: base, step: token.parameters.step }, { round: false }) *
-        factor,
+      modulate(
+        { ratio, size: base, step: token.parameters.step },
+        { round: false },
+      ) * factor,
     )
     out += `  ${autoFitVarName(scale, key)}: ${value}rem;\n`
   }

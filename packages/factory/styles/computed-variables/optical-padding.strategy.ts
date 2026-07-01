@@ -24,7 +24,10 @@ export const opticalPaddingStrategy: ComputedVariableStrategy = {
   reference({ context, keys }) {
     let basedOnValue
     try {
-      basedOnValue = getBasedOnValue(resolveOpticalPaddingSource(context), context)
+      basedOnValue = getBasedOnValue(
+        resolveOpticalPaddingSource(context),
+        context,
+      )
     } catch {
       return null
     }

@@ -1,5 +1,8 @@
-import { ComputedFunction, ValueType, type Value } from "@seldon/core"
-import type { ComputeContext, ComputeKeys } from "@seldon/core/properties/compute"
+import { ComputedFunction, type Value, ValueType } from "@seldon/core"
+import type {
+  ComputeContext,
+  ComputeKeys,
+} from "@seldon/core/properties/compute"
 import type { Theme } from "@seldon/core/themes/types"
 
 import { autoFitStrategy } from "./auto-fit.strategy"

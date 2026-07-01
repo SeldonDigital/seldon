@@ -15,10 +15,7 @@ import { HSL } from "../../properties/values/shared/exact/hsl"
 import { TokenType } from "../../themes/constants/token-type"
 import { Theme, ThemeInstanceId, ThemeOption } from "../../themes/types"
 import type { ThemeFontFamilyToken } from "../../themes/values"
-import {
-  THEME_INTERFACE_SLOTS,
-  THEME_PALETTE_SLOTS,
-} from "../../themes/values"
+import { THEME_INTERFACE_SLOTS, THEME_PALETTE_SLOTS } from "../../themes/values"
 import { getEffectiveNodeProperties } from "../../workspace/compute"
 import { getBoardByNodeId } from "../../workspace/helpers/components/get-board-by-node-id"
 import { getChildrenIds } from "../../workspace/helpers/components/get-children-ids"

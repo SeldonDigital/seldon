@@ -49,7 +49,11 @@ export const highContrastStrategy: ComputedVariableStrategy = {
         "brightness",
       )
       if (brightness && brightness.value.value !== 0) return null
-      const opacity = readAnchoredLayerPercentage(facetSource, basedOn, "opacity")
+      const opacity = readAnchoredLayerPercentage(
+        facetSource,
+        basedOn,
+        "opacity",
+      )
       if (opacity && opacity.value.value !== 100) return null
     }
 
