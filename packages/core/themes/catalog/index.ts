@@ -5,7 +5,7 @@ import { theme as earthStock } from "./earth"
 import { theme as highContrastStock } from "./high-contrast"
 import { theme as industrialStock } from "./industrial"
 import { theme as materialStock } from "./material"
-import { theme as popStock } from "./pop"
+import { theme as popPunkStock } from "./pop-punk"
 import { theme as royalAzureStock } from "./royal-azure"
 import { theme as defaultStock } from "./seldon"
 import { theme as skyStock } from "./sky"
@@ -19,7 +19,7 @@ export const STOCK_THEMES: StockTheme[] = [
   highContrastStock,
   industrialStock,
   materialStock,
-  popStock,
+  popPunkStock,
   royalAzureStock,
   skyStock,
   sunsetBlueStock,

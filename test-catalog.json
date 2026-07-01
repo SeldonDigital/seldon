@@ -7172,10 +7172,10 @@
         "order": 61
       }
     },
-    "pop": {
+    "popPunk": {
       "type": "theme",
-      "catalogId": "pop",
-      "label": "Pop punk",
+      "catalogId": "popPunk",
+      "label": "Pop Punk",
       "author": "Seldon Digital",
       "componentPreview": "seldonThemePreview",
       "componentTheme": "theme-seldon-default",
@@ -63637,7 +63637,7 @@
       "id": "theme-pop-default",
       "type": "default",
       "label": "Default",
-      "template": "catalog:pop",
+      "template": "catalog:popPunk",
       "overrides": {}
     },
     "theme-royalAzure-default": {

@@ -18,7 +18,7 @@ export type ThemeTemplateId =
   | "highContrast"
   | "industrial"
   | "material"
-  | "pop"
+  | "popPunk"
   | "royalAzure"
   | "sky"
   | "sunsetBlue"
