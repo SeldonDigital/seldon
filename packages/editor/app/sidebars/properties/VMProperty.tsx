@@ -49,10 +49,20 @@ function VMPropertyInner(props: RowPropertyProps) {
   // to its `Frame` div, which the position hook measures, and forwards `onClick`
   // to the same div. The display input is inert, so the click lands on the field.
   // Hover and selected styling come from the generated `ComboboxField` CSS.
-  const comboboxField = {
-    ref: view.setValueFieldRef,
-    onClick: view.onValueFieldClick,
-  } as ComboboxFieldProps
+  // Group rows (look-parent: Modulation, Color Harmony, Font Family, swatch
+  // groups, etc.) own no value. Keep the frame in place so row layout stays
+  // aligned, but disable it: `aria-disabled` marks the state, and
+  // `pointerEvents: none` stops both the hover styling and click-into-edit, so
+  // the row body's own click still toggles the disclosure.
+  const comboboxField = props.property.isLookParent
+    ? ({
+        "aria-disabled": true,
+        style: { pointerEvents: "none" },
+      } as ComboboxFieldProps)
+    : ({
+        ref: view.setValueFieldRef,
+        onClick: view.onValueFieldClick,
+      } as ComboboxFieldProps)
 
   // Positional enabler: suppress `icon2` with `null` when the value icon is
   // hidden; otherwise leave it on its slot default so the bound `valueIcon` ref
