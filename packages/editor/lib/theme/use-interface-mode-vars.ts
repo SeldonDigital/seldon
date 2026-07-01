@@ -6,7 +6,9 @@ import { useResolvedInterfaceMode } from "@lib/hooks/use-system-color-scheme"
 /**
  * Variable pairs exchanged in light mode. The chrome reads color through these
  * scoped variables, so swapping them flips a dark-baseline theme to light
- * without touching the generated stylesheets.
+ * without touching the generated stylesheets. The chrome is built on the neutral
+ * `black`/`white` and `offBlack`/`offWhite` surfaces, so those are the pairs
+ * that drive the interface.
  *
  * Each neutral surface pair needs two swaps:
  * - the `--sdn-swatch-*` surface itself, so a dark surface becomes light, and
@@ -23,10 +25,8 @@ import { useResolvedInterfaceMode } from "@lib/hooks/use-system-color-scheme"
 const SWAP_PAIRS: readonly [string, string][] = [
   ["--sdn-swatch-black", "--sdn-swatch-white"],
   ["--sdn-swatch-offBlack", "--sdn-swatch-offWhite"],
-  ["--sdn-swatch-foreground", "--sdn-swatch-background"],
   ["--sdn-hc-on-black", "--sdn-hc-on-white"],
   ["--sdn-hc-on-offBlack", "--sdn-hc-on-offWhite"],
-  ["--sdn-hc-on-foreground", "--sdn-hc-on-background"],
 ]
 
 /**

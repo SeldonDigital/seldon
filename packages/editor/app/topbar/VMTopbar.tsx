@@ -40,6 +40,41 @@ const INTERFACE_MODES: { id: InterfaceMode; label: string }[] = [
 ]
 
 /**
+ * Builds the `MenuEntry` list for a right-side dropdown (chrome theme or mode),
+ * marking the active option with a bullet.
+ */
+function buildDropdownItems<T extends string>(
+  options: { id: T; label: string }[],
+  activeId: T,
+  onSelect: (id: T) => void,
+  testIdPrefix: string,
+): MenuEntry[] {
+  return options.map((option) => ({
+    id: option.id,
+    label: option.label,
+    onSelect: () => onSelect(option.id),
+    active: option.id === activeId,
+    activeMarker: option.id === activeId ? "bullet" : undefined,
+    testId: `${testIdPrefix}-${option.id}`,
+  }))
+}
+
+/** Builds a right-side dropdown trigger wired to open or close its menu. */
+function buildMenuTrigger(
+  menuId: string,
+  openMenuId: string | null,
+  onTriggerClick: (menuId: string, anchor: HTMLElement) => void,
+): ButtonMenuProps {
+  return {
+    "data-testid": `menu-${menuId}`,
+    "aria-haspopup": "menu",
+    "aria-expanded": openMenuId === menuId,
+    onClick: (event: MouseEvent<HTMLButtonElement>) =>
+      onTriggerClick(menuId, event.currentTarget),
+  } as ButtonMenuProps
+}
+
+/**
  * Maps a topbar menu's items into the framework-agnostic `MenuEntry` list the
  * floating `VMMenu` consumes, dropping items hidden in the current app state.
  */
@@ -124,16 +159,16 @@ export function VMTopbar() {
     })
   }, [menuConfig, appState, openMenuId, handleTriggerClick, handleTriggerEnter])
 
-  const themeMenuItems = useMemo<MenuEntry[]>(() => {
-    return chromeThemes.map((theme) => ({
-      id: theme.slug,
-      label: theme.label,
-      onSelect: () => setChromeTheme(theme.slug),
-      active: theme.slug === chromeTheme,
-      activeMarker: theme.slug === chromeTheme ? "bullet" : undefined,
-      testId: `chrome-theme-${theme.slug}`,
-    }))
-  }, [chromeThemes, chromeTheme, setChromeTheme])
+  const themeMenuItems = useMemo<MenuEntry[]>(
+    () =>
+      buildDropdownItems(
+        chromeThemes.map((theme) => ({ id: theme.slug, label: theme.label })),
+        chromeTheme,
+        setChromeTheme,
+        CHROME_THEME_MENU_ID,
+      ),
+    [chromeThemes, chromeTheme, setChromeTheme],
+  )
 
   const activeThemeLabel = useMemo(() => {
     const active = chromeThemes.find((theme) => theme.slug === chromeTheme)
@@ -141,14 +176,7 @@ export function VMTopbar() {
   }, [chromeThemes, chromeTheme])
 
   const themeButton = useMemo<ButtonMenuProps>(
-    () =>
-      ({
-        "data-testid": `menu-${CHROME_THEME_MENU_ID}`,
-        "aria-haspopup": "menu",
-        "aria-expanded": openMenuId === CHROME_THEME_MENU_ID,
-        onClick: (event: MouseEvent<HTMLButtonElement>) =>
-          handleTriggerClick(CHROME_THEME_MENU_ID, event.currentTarget),
-      }) as ButtonMenuProps,
+    () => buildMenuTrigger(CHROME_THEME_MENU_ID, openMenuId, handleTriggerClick),
     [openMenuId, handleTriggerClick],
   )
 
@@ -157,16 +185,16 @@ export function VMTopbar() {
     [activeThemeLabel],
   )
 
-  const modeMenuItems = useMemo<MenuEntry[]>(() => {
-    return INTERFACE_MODES.map((mode) => ({
-      id: mode.id,
-      label: mode.label,
-      onSelect: () => setInterfaceMode(mode.id),
-      active: mode.id === interfaceMode,
-      activeMarker: mode.id === interfaceMode ? "bullet" : undefined,
-      testId: `interface-mode-${mode.id}`,
-    }))
-  }, [interfaceMode, setInterfaceMode])
+  const modeMenuItems = useMemo<MenuEntry[]>(
+    () =>
+      buildDropdownItems(
+        INTERFACE_MODES,
+        interfaceMode,
+        setInterfaceMode,
+        INTERFACE_MODE_MENU_ID,
+      ),
+    [interfaceMode, setInterfaceMode],
+  )
 
   const activeModeLabel = useMemo(() => {
     const active = INTERFACE_MODES.find((mode) => mode.id === interfaceMode)
@@ -175,13 +203,7 @@ export function VMTopbar() {
 
   const modeButton = useMemo<ButtonMenuProps>(
     () =>
-      ({
-        "data-testid": `menu-${INTERFACE_MODE_MENU_ID}`,
-        "aria-haspopup": "menu",
-        "aria-expanded": openMenuId === INTERFACE_MODE_MENU_ID,
-        onClick: (event: MouseEvent<HTMLButtonElement>) =>
-          handleTriggerClick(INTERFACE_MODE_MENU_ID, event.currentTarget),
-      }) as ButtonMenuProps,
+      buildMenuTrigger(INTERFACE_MODE_MENU_ID, openMenuId, handleTriggerClick),
     [openMenuId, handleTriggerClick],
   )
 
@@ -206,6 +228,8 @@ export function VMTopbar() {
       ? "end"
       : "start"
 
+  const menuKey = openMenuId ?? "closed"
+
   return (
     <header style={styles.header}>
       <BarTopbar
@@ -228,7 +252,7 @@ export function VMTopbar() {
         textLabel7={modeLabel}
       />
       <VMMenu
-        key={openMenuId ?? "closed"}
+        key={menuKey}
         open={openMenuId !== null}
         anchorRef={anchorRef}
         onClose={closeMenu}

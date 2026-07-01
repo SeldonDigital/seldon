@@ -56,6 +56,9 @@ const backdropStyle: CSSProperties = {
   zIndex: 9,
 }
 
+// The portal root only scopes the chrome theme and mode swap; it lays out nothing.
+const themeScopeStyle: CSSProperties = { display: "contents" }
+
 export function ComboboxListbox({
   open,
   position,
@@ -152,11 +155,7 @@ export function ComboboxListbox({
     : (filteredOptions as ComboboxOptionItem[]).map(renderOption)
 
   return createPortal(
-    <div
-      ref={listboxRef}
-      data-theme={chromeTheme}
-      style={{ display: "contents" }}
-    >
+    <div ref={listboxRef} data-theme={chromeTheme} style={themeScopeStyle}>
       <Backdrop onClick={handleClose} style={backdropStyle} />
       <Listbox style={panelStyle} onMouseLeave={onPointerLeave}>
         {content}
