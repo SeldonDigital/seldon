@@ -173,7 +173,7 @@ const MATCH_COLOR_FACETS = [
     label: "Include Brightness",
     valueType: "boolean",
     controlType: "boolean",
-    icon: "seldon-brightness",
+    icon: "material-brightnessMedium",
   },
   {
     facet: "includeOpacity",

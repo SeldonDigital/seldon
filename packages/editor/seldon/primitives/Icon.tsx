@@ -66,6 +66,9 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "seldon-codeCube"
     | "seldon-background"
     | "seldon-angle"
+    | "seldon-gradient"
+    | "seldon-opacity"
+    | "seldon-rotation"
     | "seldon-color"
     | "seldon-computed"
     | "seldon-custom"
@@ -594,6 +597,9 @@ const iconMap = {
   "seldon-codeCube": Icons.IconSeldonCodeCube,
   "seldon-background": Icons.IconSeldonBackground,
   "seldon-angle": Icons.IconSeldonAngle,
+  "seldon-gradient": Icons.IconSeldonGradient,
+  "seldon-opacity": Icons.IconSeldonOpacity,
+  "seldon-rotation": Icons.IconSeldonRotation,
   "seldon-color": Icons.IconSeldonColor,
   "seldon-computed": Icons.IconSeldonComputed,
   "seldon-custom": Icons.IconSeldonCustom,

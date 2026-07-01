@@ -81,7 +81,7 @@ const GRADIENT_LOOK_FACETS = [
     facet: "startBrightness",
     label: "Start Brightness",
     propertyKey: "gradientStartBrightness",
-    icon: "seldon-brightness",
+    icon: "material-brightnessMedium",
   },
   {
     facet: "startOpacity",
@@ -100,7 +100,7 @@ const GRADIENT_LOOK_FACETS = [
     facet: "endBrightness",
     label: "End Brightness",
     propertyKey: "gradientEndBrightness",
-    icon: "seldon-brightness",
+    icon: "material-brightnessMedium",
   },
   {
     facet: "endOpacity",
@@ -116,7 +116,7 @@ const SHADOW_LOOK_FACETS = [
     facet: "brightness",
     label: "Brightness",
     propertyKey: "shadowBrightness",
-    icon: "seldon-brightness",
+    icon: "material-brightnessMedium",
   },
   {
     facet: "opacity",
@@ -168,7 +168,7 @@ const BORDER_LOOK_FACETS = [
     facet: "brightness",
     label: "Brightness",
     propertyKey: "borderBrightness",
-    icon: "seldon-brightness",
+    icon: "material-brightnessMedium",
   },
   {
     facet: "opacity",
@@ -183,7 +183,7 @@ const FONT_LOOK_FACETS = [
     facet: "family",
     label: "Family",
     propertyKey: "fontFamily",
-    icon: "seldon-fontFamily",
+    icon: "material-fontDownload",
   },
   {
     facet: "style",
@@ -195,19 +195,19 @@ const FONT_LOOK_FACETS = [
     facet: "weight",
     label: "Weight",
     propertyKey: "fontWeight",
-    icon: "seldon-fontWeight",
+    icon: "material-formatBold",
   },
   {
     facet: "size",
     label: "Size",
     propertyKey: "fontSize",
-    icon: "seldon-fontSize",
+    icon: "material-formatSize",
   },
   {
     facet: "lineHeight",
     label: "Line Height",
     propertyKey: "fontLineHeight",
-    icon: "seldon-fontLineHeight",
+    icon: "material-formatLineSpacing",
   },
   {
     facet: "textCase",
@@ -219,7 +219,7 @@ const FONT_LOOK_FACETS = [
     facet: "letterSpacing",
     label: "Letter Spacing",
     propertyKey: "fontLetterSpacing",
-    icon: "seldon-fontLetterSpacing",
+    icon: "material-formatLetterSpacing",
   },
 ] as const satisfies readonly LookFacetEntryFor<FontParameters>[]
 

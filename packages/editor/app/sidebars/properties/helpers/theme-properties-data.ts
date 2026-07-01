@@ -3,6 +3,7 @@ import { getFamilyNameByValue } from "@seldon/core"
 import { HSLObjectToString } from "@seldon/core/helpers/color/hsl-object-to-string"
 import { themeSwatchToCssBackground } from "@seldon/core/helpers/color/theme-swatch-to-css-background"
 import { stringifyValue } from "@seldon/core/helpers/properties/stringify-value"
+import { getThemeValueName } from "@seldon/core/helpers/theme/get-theme-value-name"
 import { ValueType } from "@seldon/core/properties"
 import type { Value } from "@seldon/core/properties/types/value"
 import { getAllThemeTokenSchemas } from "@seldon/core/themes/schemas"
@@ -276,6 +277,19 @@ function createFlatPropertyFromSchema(
   const taggedValue = asTaggedValue(value)
   if (taggedValue) {
     actualValue = stringifyValue(taggedValue) ?? ""
+    // Theme token references show their friendly name (e.g. `@swatch.white` ->
+    // "White", `@fontWeight.medium` -> "Medium") instead of the raw token. The
+    // fontFamily special cases below override this with the slot name.
+    if (
+      "type" in taggedValue &&
+      (taggedValue.type === ValueType.THEME_CATEGORICAL ||
+        taggedValue.type === ValueType.THEME_ORDINAL) &&
+      "value" in taggedValue &&
+      typeof taggedValue.value === "string" &&
+      taggedValue.value.startsWith("@")
+    ) {
+      actualValue = getThemeValueName(taggedValue.value, theme)
+    }
   }
 
   if (
