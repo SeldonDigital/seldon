@@ -112,11 +112,12 @@ function calculatePropertyStatus(
           : "unset"
     }
 
-    if (
+    const atomicMatched = !!(
       hasSchemaDefault &&
       schemaValue &&
       propertyValuesMatch(nodePropertyValue, schemaValue)
-    ) {
+    )
+    if (atomicMatched) {
       return "set"
     }
 

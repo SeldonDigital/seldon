@@ -215,7 +215,11 @@ export function usePropertyControl({
       onBlur,
       wrapperStyle: display.textWrapperStyle,
       combobox: {
-        value: fieldDraft,
+        // While editing, show the in-flight draft. Once editing ends, render the
+        // workspace-resolved value directly so a committed value that resolves to
+        // a different display (e.g. a pruned override falling back to Default)
+        // never paints the typed text for a frame before the sync effect runs.
+        value: isEditing ? fieldDraft : display.displayValue,
         onValueChange: setFieldDraft,
         onSubmit: commit,
         onCancel: () => setFieldDraft(display.displayValue),

@@ -153,6 +153,55 @@ export function useRowProperty({
   const [isRenaming, setIsRenaming] = useState(false)
   const addToast = useAddToast()
 
+  // The row's local edit state flips a render before the workspace-derived
+  // `property.value` prop reflects a commit, so dropping straight to display
+  // mode paints the stale pre-commit value for a frame. Hold edit mode (which
+  // shows the value the user just entered) until `property.value` changes, then
+  // switch to display. A timer guards no-op commits that never change the value.
+  const deferredCloseBaselineRef = useRef<string | null>(null)
+  const deferredCloseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(
+    null,
+  )
+
+  const cancelDeferredClose = useCallback(() => {
+    if (deferredCloseTimerRef.current !== null) {
+      clearTimeout(deferredCloseTimerRef.current)
+      deferredCloseTimerRef.current = null
+    }
+    deferredCloseBaselineRef.current = null
+  }, [])
+
+  const setEditing = useCallback(
+    (editing: boolean) => {
+      if (editing) {
+        cancelDeferredClose()
+        setIsEditingProperty(true)
+        return
+      }
+      deferredCloseBaselineRef.current = JSON.stringify(property.value ?? null)
+      if (deferredCloseTimerRef.current !== null) {
+        clearTimeout(deferredCloseTimerRef.current)
+      }
+      deferredCloseTimerRef.current = setTimeout(() => {
+        deferredCloseTimerRef.current = null
+        deferredCloseBaselineRef.current = null
+        setIsEditingProperty(false)
+      }, 600)
+    },
+    [cancelDeferredClose, property.value],
+  )
+
+  useEffect(() => {
+    if (deferredCloseBaselineRef.current === null) return
+    const currentKey = JSON.stringify(property.value ?? null)
+    if (currentKey !== deferredCloseBaselineRef.current) {
+      cancelDeferredClose()
+      setIsEditingProperty(false)
+    }
+  }, [property.value, cancelDeferredClose])
+
+  useEffect(() => cancelDeferredClose, [cancelDeferredClose])
+
   // Instances cannot author interaction states. In a non-Normal state their rows
   // are read-only: no hover outline, no chevron, default cursor, and a click
   // surfaces the source-component toast instead of entering edit mode.
@@ -304,6 +353,15 @@ export function useRowProperty({
         options,
       )
 
+  // #region agent log
+  if (
+    typeof property.key === "string" &&
+    /brightness|opacity|width|height/.test(property.key)
+  ) {
+    fetch('http://127.0.0.1:7317/ingest/81a77911-750f-4747-9cde-12499a10af15',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'da20e2'},body:JSON.stringify({sessionId:'da20e2',hypothesisId:'FLICKER',location:'use-row-property.ts:render',message:'row render',data:{key:property.key,isEditing:isEditingProperty,status:property.status,displayValue:value,propertyValue:property.value},timestamp:Date.now()})}).catch(()=>{})
+  }
+  // #endregion
+
   const labelStyle = useMemo(
     () => getPropertyLabelStyle(property, showPropertyTypes),
     [property, showPropertyTypes],
@@ -325,7 +383,7 @@ export function useRowProperty({
     return resolveThemeSwatchColors(theme)
   }, [isThemeAssignment, theme])
 
-  const endEdit = useCallback(() => setIsEditingProperty(false), [])
+  const endEdit = useCallback(() => setEditing(false), [setEditing])
 
   // Mount the value control. The view (none / field / combobox) drives the value
   // `input` slot and, for combobox, the floating option list rendered by the
@@ -336,7 +394,7 @@ export function useRowProperty({
     theme,
     frameRef,
     isEditing: isEditingProperty,
-    onEditChange: setIsEditingProperty,
+    onEditChange: setEditing,
     onTabNext: handleTabNext,
     onTabPrev: handleTabPrev,
     color: labelColor,
@@ -366,7 +424,7 @@ export function useRowProperty({
   usePropertyEditRowRegistration(
     property.key,
     frameRef,
-    () => setIsEditingProperty(true),
+    () => setEditing(true),
     isNavigable,
   )
 
@@ -426,7 +484,7 @@ export function useRowProperty({
       }
       if (!property.isDimmed && property.controlType) {
         event.stopPropagation()
-        setIsEditingProperty(true)
+        setEditing(true)
       }
     },
     [
@@ -434,7 +492,7 @@ export function useRowProperty({
       addToast,
       property.isDimmed,
       property.controlType,
-      setIsEditingProperty,
+      setEditing,
     ],
   )
 
@@ -490,7 +548,7 @@ export function useRowProperty({
         !isEditingProperty &&
         (property.controlType === "menu" || property.controlType === "combo")
       ) {
-        setIsEditingProperty(true)
+        setEditing(true)
       }
     },
     [
@@ -499,6 +557,7 @@ export function useRowProperty({
       property.isDimmed,
       property.controlType,
       isEditingProperty,
+      setEditing,
     ],
   )
 

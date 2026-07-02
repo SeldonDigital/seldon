@@ -128,8 +128,13 @@ export function usePropertyCombobox({
     }
   }, [comboboxOpen, comboboxStoredValue])
 
+  // Mirror the stored value into the closed input only when the row is not
+  // editing. While editing is held open (including the beat after a selection
+  // while the workspace-derived value catches up), the input keeps the value the
+  // user just chose instead of briefly resyncing to the stale stored value. This
+  // matches how the field path owns its draft until editing ends.
   useEffect(() => {
-    if (!comboboxOpen) {
+    if (!comboboxOpen && !isEditing) {
       const option = flatOptions.find((o) => o.value === comboboxControlValue)
       setInputValue(option ? option.name : displayValue || "")
     }
@@ -139,6 +144,7 @@ export function usePropertyCombobox({
     flatOptions,
     setInputValue,
     comboboxOpen,
+    isEditing,
   ])
 
   const hasSections =

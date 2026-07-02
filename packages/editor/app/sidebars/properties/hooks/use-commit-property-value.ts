@@ -124,6 +124,9 @@ export function useCommitPropertyValue({
 
   const commit = useCallback(
     (newValue: string) => {
+      // #region agent log
+      fetch('http://127.0.0.1:7317/ingest/81a77911-750f-4747-9cde-12499a10af15',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'da20e2'},body:JSON.stringify({sessionId:'da20e2',hypothesisId:'FLICKER',location:'use-commit-property-value.ts:commit',message:'commit fired',data:{key:property.key,newValue},timestamp:Date.now()})}).catch(()=>{})
+      // #endregion
       const subject = propertySubject ?? selection ?? null
 
       // A layered paint parent row (Background/Shadow N) retypes its own layer
