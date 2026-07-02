@@ -11,7 +11,6 @@ import {
   useRef,
   useState,
 } from "react"
-import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { AppState, useAppState } from "@lib/hooks/use-app-state"
 import { InterfaceMode, useEditorConfig } from "@lib/hooks/use-editor-config"
 import { useMenuConfig } from "./hooks/use-menu-config"
@@ -115,8 +114,7 @@ export function VMTopbar() {
   const { appState } = useAppState()
   const { chromeTheme, setChromeTheme, interfaceMode, setInterfaceMode } =
     useEditorConfig()
-  const { workspace } = useWorkspace()
-  const chromeThemes = useMemo(() => getChromeThemes(workspace), [workspace])
+  const chromeThemes = useMemo(() => getChromeThemes(), [])
   const [openMenuId, setOpenMenuId] = useState<string | null>(null)
   const anchorRef = useRef<HTMLElement | null>(null)
 

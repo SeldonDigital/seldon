@@ -5,27 +5,15 @@ import { useResolvedInterfaceMode } from "@lib/hooks/use-system-color-scheme"
 /**
  * Variable pairs exchanged in light mode. The chrome reads color through these
  * scoped variables, so swapping them flips a dark-baseline theme to light
- * without touching the generated stylesheets. The chrome is built on the neutral
- * `black`/`white` and `offBlack`/`offWhite` surfaces, so those are the pairs
- * that drive the interface.
- *
- * Each neutral surface pair needs two swaps:
- * - the `--sdn-swatch-*` surface itself, so a dark surface becomes light, and
- * - the matching `--sdn-hc-on-*` high-contrast ink, which the factory bakes per
- *   surface slot (`--sdn-hc-on-offBlack` is the white text picked against the
- *   dark offBlack surface). Without swapping the ink, a flipped-to-light surface
- *   keeps its baked white text and reads as faint white-on-light.
- *
- * The ink value for the opposite surface is already emitted in the same
- * stylesheet (`--sdn-hc-on-offWhite` is black), so swapping the pair makes the
- * flipped surface pull the correct dark ink. Only the neutral surfaces flip;
- * accent inks such as `--sdn-hc-on-primary` are left alone.
+ * without touching the generated stylesheets. Only the three neutral surface
+ * pairs flip: `white`/`black`, `foreground`/`background`, and
+ * `offWhite`/`offBlack`. Everything else, including accent swatches and the
+ * high-contrast inks, is left alone.
  */
 const SWAP_PAIRS: readonly [string, string][] = [
-  ["--sdn-swatch-black", "--sdn-swatch-white"],
-  ["--sdn-swatch-offBlack", "--sdn-swatch-offWhite"],
-  ["--sdn-hc-on-black", "--sdn-hc-on-white"],
-  ["--sdn-hc-on-offBlack", "--sdn-hc-on-offWhite"],
+  ["--sdn-swatch-white", "--sdn-swatch-black"],
+  ["--sdn-swatch-foreground", "--sdn-swatch-background"],
+  ["--sdn-swatch-offWhite", "--sdn-swatch-offBlack"],
 ]
 
 /**

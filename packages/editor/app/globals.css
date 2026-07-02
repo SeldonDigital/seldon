@@ -72,7 +72,7 @@ html,
 }
 
 :root {
-  --separator-border: #000 !important;
+  --separator-border: var(--sdn-swatch-black) !important;
   --hairline: 1px;
 }
 
