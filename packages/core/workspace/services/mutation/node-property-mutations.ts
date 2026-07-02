@@ -10,7 +10,10 @@ import {
 import { getComponentPropertyDefaults } from "../../helpers/components/get-component-property-defaults"
 import { getWorkspaceNodes } from "../../helpers/general/get-workspace-nodes"
 import { getNodeSubtreeIds } from "../../helpers/nodes/get-node-subtree-ids"
-import { pruneRedundantOverrides } from "../../helpers/nodes/prune-redundant-overrides"
+import {
+  pruneRedundantOverrides,
+  stripPatchFacets,
+} from "../../helpers/nodes/prune-redundant-overrides"
 import { resolveNodePropertyResetPatch } from "../../helpers/nodes/resolve-node-property-reset"
 import { isEntryNodeForRules } from "../../helpers/rules/rules-node-subject"
 import {
@@ -72,19 +75,22 @@ export function setNodeStateProperties(
   workspace: Workspace,
   options?: { mergeSubProperties?: boolean },
 ): Workspace {
-  return withNodeMutation(nodeId, workspace, (node) => {
+  return withNodeMutation(nodeId, workspace, (node, draft) => {
     if (!isEntryNodeForRules(node)) return
     const states = node.states ?? {}
-    states[state] = mergeProperties(states[state] ?? {}, properties, options)
-    // A state override facet that equals the node's resolved Normal value carries
-    // no delta, so drop it the same way the base override path does. The state
-    // bag itself stays registered even when empty, matching a bare state write.
-    pruneRedundantOverrides(
-      states[state],
-      properties,
-      getEffectiveNodeProperties(node.id, workspace),
-    )
+    const mergedBag = mergeProperties(states[state] ?? {}, properties, options)
+    states[state] = mergedBag
     node.states = states
+    // A state override facet carries no delta when it equals the value the state
+    // resolves to without that facet, so drop it. The baseline strips only the
+    // written facets from the state bag, leaving sibling facets such as a preset
+    // in play, so a facet the preset would re-derive is not pruned just because
+    // it equals the Normal value. The state bag itself stays registered even when
+    // empty, matching a bare state write.
+    states[state] = stripPatchFacets(mergedBag, properties)
+    const baseline = getEffectiveNodeProperties(node.id, draft, { state })
+    states[state] = mergedBag
+    pruneRedundantOverrides(states[state], properties, baseline)
   })
 }
 

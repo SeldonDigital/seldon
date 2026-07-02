@@ -181,6 +181,21 @@ function dropEmptyOverride(overrides: Properties, key: PropertyKey): void {
 }
 
 /**
+ * Returns a deep clone of `bag` with every leaf facet named in `patch` removed.
+ * Used to compute the baseline a state write falls back to when its own facets
+ * are absent, so sibling facets like a `preset` still contribute. Cloning goes
+ * through JSON because a merged bag can carry Immer draft proxies on its leaf
+ * values, which `structuredClone` rejects. Property bags are pure JSON data.
+ */
+export function stripPatchFacets(bag: Properties, patch: Properties): Properties {
+  const reduced = JSON.parse(JSON.stringify(bag)) as Properties
+  for (const facet of enumeratePatchFacets(patch)) {
+    deleteFacet(reduced, facet)
+  }
+  return reduced
+}
+
+/**
  * Removes override facets that match the baseline a node would resolve to
  * without them, so a write that equals the inherited value stays a no-op instead
  * of a stored override. Only facets present in `patch` are considered, leaving
