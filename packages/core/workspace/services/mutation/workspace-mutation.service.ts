@@ -37,7 +37,6 @@ import {
 } from "./node-property-mutations"
 import { replaceSwatchRefsWithExactColor } from "./swatch-ref-replacement"
 import {
-  getInheritedTheme,
   getNodeTheme,
   setComponentTheme,
   setNodeTheme,
@@ -246,13 +245,6 @@ export class WorkspaceMutationService {
     workspace: Workspace,
   ): ThemeInstanceId {
     return getNodeTheme(node, workspace)
-  }
-
-  public getInheritedTheme(
-    node: Variant | Instance,
-    workspace: Workspace,
-  ): ThemeInstanceId {
-    return getInheritedTheme(node, workspace)
   }
 
   public replaceSwatchRefsWithExactColor(

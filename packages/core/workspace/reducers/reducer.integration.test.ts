@@ -26,18 +26,6 @@ describe("workspaceReducer dispatch", () => {
     expect(result.metadata.label).toBe("My Workspace")
   })
 
-  it("treats transcript_add_message as a no-op", () => {
-    const labeled = dispatch(createEmptyWorkspace(), {
-      type: "set_workspace_label",
-      payload: { value: "Keep" },
-    } as WorkspaceAction)
-    const result = dispatch(labeled, {
-      type: "transcript_add_message",
-      payload: {},
-    } as unknown as WorkspaceAction)
-    expect(result.metadata.label).toBe("Keep")
-  })
-
   it("treats a stubbed resource-map action as a no-op", () => {
     const ws = createEmptyWorkspace()
     const result = dispatch(ws, {

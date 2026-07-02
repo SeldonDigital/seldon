@@ -9,8 +9,9 @@ import { getNodeCatalogComponentId } from "./node-tree"
  * recognized, then applies the level containment rule. Primitives and any level
  * with an empty `mayContain` return false.
  *
- * This differs from `typeCheckingService.canNodeHaveChildren`, which only inspects
- * the immediate template and so reports false for `node:` linked containers.
+ * This differs from `typeCheckingService.canNodeHaveChildren`, which only checks
+ * that the node resolves to a component catalog id without applying the level
+ * containment rule.
  */
 export function canNodeAcceptChildren(
   node: EntryNode,

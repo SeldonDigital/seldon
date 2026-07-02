@@ -89,7 +89,7 @@ export class NodeRelationshipService {
     return result
   }
 
-  public findAdjacentVariant(
+  private findAdjacentVariant(
     node: Variant,
     placement: "before" | "after",
     workspace: Workspace,
@@ -132,7 +132,7 @@ export class NodeRelationshipService {
         : node
 
     while (currentNode) {
-      if (typeCheckingService.canNodeHaveChildren(currentNode)) {
+      if (typeCheckingService.canNodeHaveChildren(currentNode, workspace)) {
         return currentNode
       }
 
@@ -190,35 +190,6 @@ export class NodeRelationshipService {
         typeCheckingService.isInstance(row) &&
         templateSourceNodeId(row) === sourceId
       )
-    })
-  }
-
-  public findOtherNodesWithSameVariant(
-    node: Instance | Variant,
-    workspace: Workspace,
-  ): (Variant | Instance)[] {
-    if (typeCheckingService.isVariant(node)) {
-      return Object.values(workspace.nodes).filter((candidate) => {
-        return (
-          typeCheckingService.isInstance(candidate) &&
-          templateSourceNodeId(candidate) === node.id &&
-          candidate.id !== node.id
-        )
-      })
-    }
-
-    const sourceId = templateSourceNodeId(node)
-    if (!sourceId) return []
-
-    return Object.values(workspace.nodes).filter((candidate) => {
-      if (candidate.id === node.id) return false
-      if (typeCheckingService.isInstance(candidate)) {
-        return templateSourceNodeId(candidate) === sourceId
-      }
-      if (typeCheckingService.isVariant(candidate)) {
-        return candidate.id === sourceId
-      }
-      return false
     })
   }
 

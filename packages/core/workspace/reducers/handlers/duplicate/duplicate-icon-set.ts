@@ -1,14 +1,12 @@
 import { current, isDraft, produce } from "immer"
 
 import type { ExtractPayload, Workspace } from "../../../../index"
+import { formatEntryId } from "../../../helpers/general/entry-id"
 import { getNextVariantLabel } from "../../../helpers/general/get-next-variant-label"
 import { iconSetBoardKeyFromEntryId } from "../../../helpers/icon-sets/icon-set-id"
 import type { EntryIconSet } from "../../../model/entry-icon-set"
 import { formatIconSetLink } from "../../../model/template-ref"
-
-function randomSuffix(): string {
-  return Math.random().toString(36).slice(2, 10)
-}
+import { randomSuffix } from "../shared/random-suffix"
 
 /**
  * Clones an `icon-sets` entry, points its template at the source, and appends it
@@ -32,7 +30,7 @@ export function duplicateIconSet(
     if (!boardKey) return
 
     const newId =
-      payload.newIconSetId ?? `icon-set-${boardKey}-${randomSuffix()}`
+      payload.newIconSetId ?? formatEntryId("icon-set", boardKey, randomSuffix())
 
     if (draft["icon-sets"][newId]) return
 

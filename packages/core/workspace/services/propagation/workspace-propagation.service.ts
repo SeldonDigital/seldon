@@ -42,11 +42,6 @@ export class WorkspacePropagationService {
   }): Workspace {
     return propagatePositionalChildOperation(args)
   }
-
-  /** Parses a JSON string into a workspace. */
-  public parseWorkspace(json: string): Workspace {
-    return JSON.parse(json)
-  }
 }
 
 export const workspacePropagationService = new WorkspacePropagationService()

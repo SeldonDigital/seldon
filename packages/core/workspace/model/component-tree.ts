@@ -18,9 +18,3 @@ export interface IconSetEntryRef {
 export interface MediaEntryRef {
   id: string
 }
-
-export type ComponentResourceRef =
-  | ThemeEntryRef
-  | FontCollectionEntryRef
-  | IconSetEntryRef
-  | MediaEntryRef

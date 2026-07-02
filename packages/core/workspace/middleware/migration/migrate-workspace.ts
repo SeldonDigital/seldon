@@ -20,6 +20,12 @@ const MIGRATION_STEPS: Partial<Record<number, MigrationStep>> = {
   6: migrateV6IconSetRenames,
 }
 
+if (!MIGRATION_STEPS[CURRENT_WORKSPACE_VERSION]) {
+  throw new Error(
+    `CURRENT_WORKSPACE_VERSION is ${CURRENT_WORKSPACE_VERSION} but no migration step is registered for it.`,
+  )
+}
+
 /**
  * Idempotent repairs that run on every load, regardless of stored version.
  *
@@ -38,10 +44,19 @@ const REPAIR_STEPS: MigrationStep[] = [
 
 /**
  * Runs versioned migration steps from storedVersion + 1 through CURRENT, then
- * applies idempotent repair steps on every load.
+ * applies idempotent repair steps on every load. Throws when the file was
+ * saved by a newer app version, because stamping it down would silently
+ * discard data this version cannot understand.
  */
 export function migrateWorkspace(workspace: Workspace): Workspace {
   const storedVersion = workspace.metadata.version ?? 0
+
+  if (storedVersion > CURRENT_WORKSPACE_VERSION) {
+    throw new Error(
+      `Workspace file version ${storedVersion} is newer than the supported version ${CURRENT_WORKSPACE_VERSION}. Update the app to open this file.`,
+    )
+  }
+
   let current = workspace
 
   for (

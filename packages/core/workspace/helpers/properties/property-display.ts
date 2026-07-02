@@ -68,39 +68,6 @@ function pickerEntryToString(entry: unknown): string {
   return String(entry)
 }
 
-function getAllowedValuesForPath(
-  path: string,
-  workspace: Workspace,
-  theme?: Theme,
-): string[] {
-  const catalogKey = getCatalogKeyForPropertyPath(path)
-  if (!catalogKey) return []
-
-  const schema = getPropertySchema(catalogKey)
-  if (!schema) return []
-
-  const values = new Set<string>()
-  for (const valueType of schema.supports) {
-    if (!PICKER_VALUE_TYPES.includes(valueType)) continue
-    if (
-      (valueType === "themeCategorical" || valueType === "themeOrdinal") &&
-      !theme
-    ) {
-      continue
-    }
-    for (const entry of getPropertyOptions(
-      catalogKey,
-      valueType,
-      theme,
-      workspace,
-    )) {
-      values.add(pickerEntryToString(entry))
-    }
-  }
-
-  return [...values]
-}
-
 function isDimensionValue(value: unknown): value is DimensionValue {
   return !!(
     value &&
@@ -205,15 +172,6 @@ function formatDisplayValue(value: unknown, theme?: Theme): string {
   }
 
   return "Has value"
-}
-
-export function getAllowedValues(
-  path: string,
-  _nodeId: string,
-  workspace: Workspace,
-  theme?: Theme,
-): string[] {
-  return getAllowedValuesForPath(path, workspace, theme)
 }
 
 export function formatValue(

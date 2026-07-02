@@ -11,6 +11,7 @@ import { isComplexSchema } from "../../../../components/types"
 import { ExtractPayload, Workspace, invariant } from "../../../../index"
 import { rules } from "../../../../rules/config/rules.config"
 import { setBoardOrder } from "../../../helpers/components/board-sort-order"
+import { DEFAULT_THEME_BOARD_AUTHOR } from "../../../helpers/components/default-board-metadata"
 import {
   componentBoardDefaultNodeId,
   componentBoardSchemaVariantNodeId,
@@ -257,7 +258,7 @@ export function ensureComponentBoards(
         level: schema.level as ComponentBoard["level"],
         catalogId: componentId,
         label: workspaceMutationService.getInitialComponentLabel(componentId),
-        author: "Seldon Digital",
+        author: DEFAULT_THEME_BOARD_AUTHOR,
         componentTheme: WORKSPACE_EDITABLE_THEME_ENTRY_ID,
         componentProperties: getInitialBoardComponentProperties("component"),
         variants: [],

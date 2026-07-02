@@ -10,7 +10,6 @@ import type {
 import { addComponent } from "../../reducers/handlers/add/add-component"
 import { createEmptyWorkspace } from "../create-empty-workspace"
 import { areBoardVariantsInUse } from "./are-board-variants-in-use"
-import { getBoardById } from "./get-board-by-id"
 import { getBoardByNodeId } from "./get-board-by-node-id"
 import { getBoardKey } from "./get-board-keys"
 import { getBoardThemeRef } from "./get-board-theme-ref"
@@ -28,13 +27,6 @@ const ws: Workspace = addComponent(
 const board = ws.boards[boardKey]!
 const rootId = (board as ComponentBoard).variants[0].id as string
 const childId = (board as ComponentBoard).variants[0].children![0].id as string
-
-describe("getBoardById", () => {
-  it("returns the board and throws for a missing key", () => {
-    expect(getBoardById(boardKey, ws).type).toBe("component")
-    expect(() => getBoardById("missing", ws)).toThrow()
-  })
-})
 
 describe("getBoardByNodeId", () => {
   it("resolves the owning board, null when unknown", () => {

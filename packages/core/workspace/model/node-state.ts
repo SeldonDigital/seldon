@@ -120,7 +120,6 @@ export function isReservedStateName(name: string): name is ReservedStateName {
  * the `states` map. Editors use this sentinel to mean "edit the base layer".
  */
 export const NORMAL_STATE = "normal" as const
-export type NormalState = typeof NORMAL_STATE
 
 /**
  * A workspace-defined custom state. Stored on `metadata.customStates` and shared

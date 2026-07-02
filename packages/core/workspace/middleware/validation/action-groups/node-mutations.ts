@@ -9,7 +9,7 @@ import {
 import { mergeProperties } from "../../../../properties/helpers/merge-properties"
 import { rules } from "../../../../rules/config/rules.config"
 import { getComputedTheme } from "../../../compute"
-import { ErrorMessages } from "../../../constants"
+import { DEFAULT_THEME_ID, ErrorMessages } from "../../../constants"
 import { getBoardVariantRootIds } from "../../../helpers/components/get-board-variant-root-ids"
 import { collectExternalVariantUsage } from "../../../helpers/general/collect-external-variant-usage"
 import { isUserVariant } from "../../../helpers/general/is-user-variant"
@@ -642,7 +642,7 @@ function assertMatchColorSiblingsLocked(
   themeId: string | undefined,
   properties: Record<string, unknown>,
 ): void {
-  const theme = getComputedTheme(themeId ?? "seldon", workspace) as {
+  const theme = getComputedTheme(themeId ?? DEFAULT_THEME_ID, workspace) as {
     matchColor?: {
       parameters?: { includeBrightness?: boolean; includeOpacity?: boolean }
     }

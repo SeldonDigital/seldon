@@ -33,7 +33,6 @@
  * | delete_icon_set | icon-sets (variant rows only; drops board ref) |
  * | duplicate_icon_set | icon-sets (+ components.variants for icon-set row) |
  * | stubs_* (font / media) | reserved — no-op until spec |
- * | transcript_add_message | none (no-op) |
  */
 import type { FontOrigin } from "../../font-collections/types"
 import {
@@ -106,7 +105,6 @@ export type ThemeCustomTokenSection =
   | "swatch"
   | "font"
   | "border"
-  | "background"
   | "gradient"
   | "shadow"
   | "scrollbar"
@@ -128,7 +126,6 @@ export const THEME_CUSTOM_TOKEN_SECTIONS = [
   "swatch",
   "font",
   "border",
-  "background",
   "gradient",
   "shadow",
   "scrollbar",
@@ -233,7 +230,6 @@ export type RemoveCustomToken =
   | { type: "remove_theme_custom_swatch"; payload: RemoveThemeCustomBase }
   | { type: "remove_theme_custom_font"; payload: RemoveThemeCustomBase }
   | { type: "remove_theme_custom_border"; payload: RemoveThemeCustomBase }
-  | { type: "remove_theme_custom_background"; payload: RemoveThemeCustomBase }
   | { type: "remove_theme_custom_gradient"; payload: RemoveThemeCustomBase }
   | { type: "remove_theme_custom_shadow"; payload: RemoveThemeCustomBase }
   | { type: "remove_theme_custom_scrollbar"; payload: RemoveThemeCustomBase }
@@ -967,16 +963,6 @@ export type WorkspaceAction =
   | { type: "stubs_set_media_field"; payload: { id?: string } }
   /** @internal */
   | { type: "stubs_duplicate_media_row"; payload: { id?: string } }
-  /**
-   * @deprecated Not persisted in workspace.json. Editor/agent narration will move to a separate channel; dispatch is a no-op until then.
-   */
-  | {
-      type: "transcript_add_message"
-      payload: {
-        chatMessage: string
-        expectUserAnswer: boolean
-      }
-    }
 
 export type ExtractPayload<T extends WorkspaceAction["type"]> = Extract<
   WorkspaceAction,

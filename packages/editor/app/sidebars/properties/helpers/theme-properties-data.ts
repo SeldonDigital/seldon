@@ -9,10 +9,8 @@ import type { Value } from "@seldon/core/properties/types/value"
 import { getAllThemeTokenSchemas } from "@seldon/core/themes/schemas"
 import type { ThemeTokenSchema } from "@seldon/core/themes/schemas"
 import { Theme } from "@seldon/core/themes/types"
-import {
-  getOverrideAtPath,
-  getThemeOverridePath,
-} from "@seldon/core/workspace/helpers/themes/theme-override-paths"
+import { getOverrideAtPath } from "@seldon/core/workspace/helpers/general/override-paths"
+import { getThemeOverridePath } from "@seldon/core/workspace/helpers/themes/theme-override-paths"
 import type { EntryThemeOverrides } from "@seldon/core/workspace/types"
 import { FlatProperty } from "./properties-data"
 

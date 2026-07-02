@@ -255,7 +255,7 @@ Every token cell uses a single input field named `parameters`. The shape of `par
 | `swatch` | `{ colorspace: "hsl" \| "rgb" \| "lch" \| "hex" \| "name", value: <payload for that colorspace> }` |
 | `font.family` | string (font family name) |
 | `option` | string option key (e.g. `"hairline"`); the set of allowed keys is per-table |
-| `look` | object of nested parameters specific to the look (font, shadow, border, gradient, background, scrollbar) |
+| `look` | object of nested parameters specific to the look (font, shadow, border, gradient, scrollbar) |
 
 ```typescript
 enum TokenType {

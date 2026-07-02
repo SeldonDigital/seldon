@@ -9,14 +9,7 @@ import { getVariantTree } from "../components/get-variant-tree"
 import { walkBoardTreeRefs } from "../components/walk-board-tree-refs"
 import { getCompositionContainerEntries } from "../general/get-composition-containers"
 import { getWorkspaceNodes } from "../general/get-workspace-nodes"
-
-function collectTreeRefIds(ref: ComponentTreeRef): string[] {
-  const ids = [ref.id]
-  for (const child of ref.children ?? []) {
-    ids.push(...collectTreeRefIds(child))
-  }
-  return ids
-}
+import { collectTreeRefIds } from "./collect-tree-ref-ids"
 
 /**
  * Drops the `ref` handle from a node. A reference must stay globally unique, so

@@ -9,9 +9,9 @@ import type {
   Workspace,
 } from "../../../index"
 import { createEmptyWorkspace } from "../../helpers/create-empty-workspace"
+import { collectTreeRefIds } from "../../helpers/nodes/collect-tree-ref-ids"
 import { addComponent } from "../../reducers/handlers/add/add-component"
 import {
-  collectDescendantTreeIds,
   collectReferencedTreeIdsExcludingSubtree,
   findTreeRef,
   insertComponentTreeChild,
@@ -29,9 +29,9 @@ const childId = (ws.boards[boardKey] as ComponentBoard).variants[0].children![0]
 
 const cloneBoard = (): Board => structuredClone(ws.boards[boardKey]) as Board
 
-describe("collectDescendantTreeIds", () => {
+describe("collectTreeRefIds", () => {
   it("collects the root and every descendant id", () => {
-    const ids = collectDescendantTreeIds(
+    const ids = collectTreeRefIds(
       (ws.boards[boardKey] as ComponentBoard).variants[0],
     )
     expect(ids).toContain(rootId)

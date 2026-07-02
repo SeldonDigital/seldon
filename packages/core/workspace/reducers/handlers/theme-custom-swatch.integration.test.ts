@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest"
 import type { ExtractPayload } from "../../../index"
 import { Colorspace } from "../../../themes/constants/colorspace"
 import { createEmptyWorkspace } from "../../helpers/create-empty-workspace"
-import { addThemeCustomSwatch } from "./add/add-theme-custom-swatch"
+import { addThemeCustomToken } from "./add/add-theme-custom-token"
 import { duplicateTheme } from "./duplicate/duplicate-theme"
 import { removeThemeCustomSwatch } from "./remove/remove-theme-custom-swatch"
 
@@ -20,7 +20,8 @@ const withVariantTheme = () =>
   )
 
 const addSwatch = (themeId: string, ws: ReturnType<typeof withVariantTheme>) =>
-  addThemeCustomSwatch(
+  addThemeCustomToken(
+    "swatch",
     {
       themeId,
       name: "My Swatch",
@@ -37,7 +38,7 @@ const swatchOverrides = (
   (ws.themes[themeId]!.overrides as Record<string, Record<string, unknown>>)
     .swatch ?? {}
 
-describe("addThemeCustomSwatch", () => {
+describe("addThemeCustomToken swatch", () => {
   it("appends a custom swatch cell to a variant theme", () => {
     const next = addSwatch(variantThemeId, withVariantTheme())
     const swatch = swatchOverrides(next, variantThemeId)

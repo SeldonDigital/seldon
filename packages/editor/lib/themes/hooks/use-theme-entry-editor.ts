@@ -22,7 +22,7 @@ import {
 } from "@seldon/core"
 import { getComputedTheme } from "@seldon/core/workspace/compute"
 import { getThemeOverrides } from "@seldon/core/workspace/helpers/themes/get-theme-overrides"
-import { getOverrideAtPath } from "@seldon/core/workspace/helpers/themes/theme-override-paths"
+import { getOverrideAtPath } from "@seldon/core/workspace/helpers/general/override-paths"
 import type { EntryThemeId } from "@seldon/core/workspace/types"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 

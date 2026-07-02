@@ -9,6 +9,7 @@ import {
 } from "../../../helpers/components/board-sort-order"
 import { getInitialBoardComponentProperties } from "../../../helpers/components/get-initial-board-component-properties"
 import { ICON_SET_BOARD_CATALOG_IDS } from "../../../helpers/components/resource-board-catalog-ids"
+import { formatEntryId } from "../../../helpers/general/entry-id"
 import { DEFAULT_ICON_SET_BOARD_KEY } from "../../../helpers/seed/seed-default-icon-set-board"
 import { WORKSPACE_EDITABLE_THEME_ENTRY_ID } from "../../../helpers/themes/workspace-editable-theme"
 import type { EntryIconSet } from "../../../model/entry-icon-set"
@@ -52,7 +53,7 @@ export function addIconSet(
         ? Math.max(...existingBoards.map((b) => getBoardOrder(b)))
         : -1
 
-    const defaultEntryId = `icon-set-${boardKey}-default`
+    const defaultEntryId = formatEntryId("icon-set", boardKey, "default")
 
     const stock =
       STOCK_ICON_SETS_BY_ID[boardKey as keyof typeof STOCK_ICON_SETS_BY_ID]

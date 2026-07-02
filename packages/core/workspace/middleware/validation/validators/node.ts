@@ -18,10 +18,8 @@ import {
   nodeTraversalService,
   typeCheckingService,
 } from "../../../services"
-import {
-  collectDescendantTreeIds,
-  findTreeRef,
-} from "../../../services/shared/component-tree-helpers"
+import { collectTreeRefIds } from "../../../helpers/nodes/collect-tree-ref-ids"
+import { findTreeRef } from "../../../services/shared/component-tree-helpers"
 import type {
   Action,
   EntryNode,
@@ -94,9 +92,9 @@ export const nodeValidators = {
     if (!board) return
     const treeRef = findTreeRef(board, nodeId)
     if (!treeRef) return
-    // `collectDescendantTreeIds` includes the node itself, so this also rejects
+    // `collectTreeRefIds` includes the node itself, so this also rejects
     // moving a node directly under itself.
-    const subtreeIds = new Set(collectDescendantTreeIds(treeRef))
+    const subtreeIds = new Set(collectTreeRefIds(treeRef))
     check(
       !subtreeIds.has(parentId),
       ErrorMessages.cannotMoveIntoOwnSubtree(nodeId),

@@ -1,7 +1,8 @@
 import { getComponentSchema } from "../../../components/catalog"
-import { ComponentId, isComponentId } from "../../../components/constants"
+import { ComponentId } from "../../../components/constants"
 import { rules } from "../../../rules/config/rules.config"
 import type { Entity } from "../../../rules/types/rule-config-types"
+import { canNodeHaveChildren } from "../../helpers/nodes/can-node-have-children"
 import { mapEntryNodeTypeToRulesEntity } from "../../helpers/rules/map-entry-node-type-to-rules-entity"
 import {
   type DefaultVariant,
@@ -11,8 +12,7 @@ import {
   type Variant,
   isEntryNodeForRules,
 } from "../../helpers/rules/rules-node-subject"
-import { parseNodeTemplate } from "../../model/template-ref"
-import type { Board } from "../../types"
+import type { Board, Workspace } from "../../types"
 
 export class TypeCheckingService {
   /**
@@ -108,20 +108,19 @@ export class TypeCheckingService {
   }
 
   /**
-   * Checks if a node can have children based on its component catalog template.
+   * Checks if a node can have children based on its resolved component catalog
+   * template, following `node:` template chains to the catalog root.
    * @param node - The node to check
-   * @returns True if the node maps to a component catalog id
+   * @param workspace - Workspace that contains the node chain
+   * @returns True if the node resolves to a component catalog id
    */
-  public canNodeHaveChildren(node: RulesNodeOrComponent): boolean {
+  public canNodeHaveChildren(
+    node: RulesNodeOrComponent,
+    workspace: Workspace,
+  ): boolean {
     if (this.isBoard(node)) return false
     if (!isEntryNodeForRules(node)) return false
-
-    try {
-      const parsed = parseNodeTemplate(node.template)
-      return parsed?.kind === "catalog" && isComponentId(parsed.componentId)
-    } catch {
-      return false
-    }
+    return canNodeHaveChildren(node, workspace)
   }
 
   /**

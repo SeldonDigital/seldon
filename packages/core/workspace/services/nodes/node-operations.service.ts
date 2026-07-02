@@ -50,8 +50,8 @@ import {
 } from "../../types"
 import { boardOrderService } from "../components/board-order.service"
 import { workspaceMutationService } from "../mutation/workspace-mutation.service"
+import { collectTreeRefIds } from "../../helpers/nodes/collect-tree-ref-ids"
 import {
-  collectDescendantTreeIds,
   collectReferencedTreeIdsExcludingSubtree,
   findTreeRef,
   insertComponentTreeChild,
@@ -175,7 +175,7 @@ export class NodeOperationsService {
     }
   }
 
-  public deleteBoard(
+  private deleteBoard(
     componentId: ComponentId,
     workspace: Workspace,
   ): Workspace {
@@ -315,7 +315,7 @@ export class NodeOperationsService {
       // Reinserting a live subtree under its own descendant would make the tree
       // ref contain itself, which overflows Immer when it freezes the draft.
       // Validation rejects this earlier; bail out as a no-op if it slips through.
-      if (collectDescendantTreeIds(treeRef).includes(newPosition.parentId)) {
+      if (collectTreeRefIds(treeRef).includes(newPosition.parentId)) {
         return
       }
 
@@ -388,7 +388,7 @@ export class NodeOperationsService {
       nodeId,
     )
     const treeRef = board ? findTreeRef(board, nodeId) : null
-    const idsToDelete = treeRef ? collectDescendantTreeIds(treeRef) : [nodeId]
+    const idsToDelete = treeRef ? collectTreeRefIds(treeRef) : [nodeId]
 
     if (board && treeRef) {
       const isTopLevelRoot = board.variants.some((ref) => ref.id === nodeId)
@@ -517,7 +517,7 @@ export class NodeOperationsService {
 
       let newTreeRef: ComponentTreeRef = { id: newRootId }
       if (tree) {
-        for (const id of collectDescendantTreeIds(tree)) {
+        for (const id of collectTreeRefIds(tree)) {
           if (id === node.id) continue
           idMap.set(id, componentBoardUniqueNodeId(located.boardKey))
         }
@@ -645,7 +645,7 @@ export class NodeOperationsService {
     const idMap = new Map<string, string>()
     const newRootId = componentBoardUniqueNodeId(boardKey)
 
-    for (const id of collectDescendantTreeIds(tree)) {
+    for (const id of collectTreeRefIds(tree)) {
       if (id === nodeId) continue
       idMap.set(id, componentBoardUniqueNodeId(boardKey))
     }
@@ -704,7 +704,7 @@ export class NodeOperationsService {
     if (tree) {
       const nodes = getWorkspaceNodes(workspace)
       const idMap = new Map<string, string>()
-      for (const id of collectDescendantTreeIds(tree)) {
+      for (const id of collectTreeRefIds(tree)) {
         if (id === nodeId) continue
         idMap.set(id, componentBoardUniqueNodeId(boardKey))
       }

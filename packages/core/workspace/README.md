@@ -1233,9 +1233,9 @@ Suffix examples: `component-button-default`, `component-button-{hash}`, or `them
 
 ## Migration
 
-`metadata.version` is managed by the workspace migration system. The migration middleware lives in `packages/core/workspace/middleware/migration/middleware.ts`. On `set_workspace` it runs pending migration steps and stamps `metadata.version` with the current baseline value `1`.
+`metadata.version` is managed by the workspace migration system. The migration middleware lives in `packages/core/workspace/middleware/migration/middleware.ts`. On `set_workspace` it runs pending migration steps and stamps `metadata.version` with `CURRENT_WORKSPACE_VERSION`.
 
-Version 1 is the baseline of the reset migration chain. It returns the workspace unchanged. Files written before this reset stamp to version 1 without transforms, so older saved shapes may not load. Add later transforms as `migrate-00002-*` steps and bump `CURRENT_WORKSPACE_VERSION`. See `packages/core/workspace/middleware/migration/README.md`.
+Version 1 is the baseline of the reset migration chain. It returns the workspace unchanged. Files written before this reset stamp to version 1 without transforms, so older saved shapes may not load. Later versions add their transforms as `migrate-NNNNN-*` steps. A file with a version newer than `CURRENT_WORKSPACE_VERSION` fails to load instead of being stamped down. See `packages/core/workspace/middleware/migration/README.md`.
 
 The file format specification version is independent of the internal workspace `metadata.version` number. Field `metadata.version` tracks schema evolution for the migration system. This specification documents the overall structure of the serialized format.
 

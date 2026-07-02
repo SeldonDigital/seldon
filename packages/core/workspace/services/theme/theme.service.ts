@@ -5,6 +5,7 @@ import {
   ThemeInstanceId,
 } from "../../../themes/types"
 import { computeWorkspaceThemes, getComputedTheme } from "../../compute"
+import { DEFAULT_THEME_ID } from "../../constants"
 import { getBoardThemeRef } from "../../helpers/components/get-board-theme-ref"
 import {
   Board,
@@ -31,7 +32,7 @@ export class WorkspaceThemeService {
     workspace: Workspace,
   ): ThemeInstanceId {
     if (typeCheckingService.isBoard(object)) {
-      return getBoardThemeRef(object) ?? ("seldon" as ThemeInstanceId)
+      return getBoardThemeRef(object) ?? DEFAULT_THEME_ID
     }
 
     return this.getNodeThemeId(object.id, workspace)
@@ -89,7 +90,7 @@ export class WorkspaceThemeService {
 
     invariant(board, `Unable to find board for variant ${rootNode.id}`)
 
-    return getBoardThemeRef(board) ?? ("seldon" as ThemeInstanceId)
+    return getBoardThemeRef(board) ?? DEFAULT_THEME_ID
   }
 
   /**
@@ -140,19 +141,14 @@ export class WorkspaceThemeService {
   ): ThemeCustomSwatchId {
     const entry = workspace.themes[themeId]
     const bag = (entry?.overrides?.[section] ?? {}) as Record<string, unknown>
-    const customIds = Object.keys(bag).filter((id) => id.startsWith("custom"))
+    const highest = Object.keys(bag)
+      .filter((id) => id.startsWith("custom"))
+      .map((id) => parseInt(id.replace("custom", ""), 10))
+      .filter((n) => !Number.isNaN(n))
+      .sort((a, b) => a - b)
+      .at(-1)
 
-    if (customIds.length === 0) return "custom1"
-
-    const sortedIds = customIds.sort((a, b) => {
-      return (
-        parseInt(a.replace("custom", "")) - parseInt(b.replace("custom", ""))
-      )
-    })
-
-    const highest = parseInt(sortedIds.at(-1)!.replace("custom", ""))
-
-    return `custom${highest + 1}` as ThemeCustomSwatchId
+    return `custom${(highest ?? 0) + 1}` as ThemeCustomSwatchId
   }
 
   /**
@@ -177,7 +173,7 @@ export class WorkspaceThemeService {
     })
 
     if (usedThemeIds.size === 0) {
-      usedThemeIds.add("seldon")
+      usedThemeIds.add(DEFAULT_THEME_ID)
     }
 
     return usedThemeIds

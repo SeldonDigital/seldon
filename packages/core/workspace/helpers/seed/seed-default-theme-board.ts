@@ -5,7 +5,9 @@ import { isThemeBoard } from "../../model/components"
 import type { EntryTheme } from "../../model/entry-theme"
 import { formatThemeCatalog } from "../../model/template-ref"
 import { setBoardOrder } from "../components/board-sort-order"
+import { DEFAULT_THEME_BOARD_AUTHOR } from "../components/default-board-metadata"
 import { getInitialBoardComponentProperties } from "../components/get-initial-board-component-properties"
+import { formatEntryId } from "../general/entry-id"
 import { type SeedableWorkspace, nextBoardOrder } from "./seedable-workspace"
 
 /** Catalog row key for the default theme board (matches the `default` stock template id). */
@@ -15,7 +17,7 @@ export const DEFAULT_THEME_BOARD_KEY = "seldon" as const
 export const DEFAULT_THEME_ENTRY_ID = "theme-seldon-default" as const
 
 /** Extra theme boards seeded into every new workspace alongside the Seldon default. Deletable. */
-export const ADDITIONAL_THEME_BOARD_KEYS = [
+const ADDITIONAL_THEME_BOARD_KEYS = [
   "highContrast",
   "googleMaterial",
 ] as const satisfies ThemeTemplateId[]
@@ -51,7 +53,7 @@ export function seedDefaultThemeBoard(workspace: SeedableWorkspace): void {
 
   for (const boardKey of ADDITIONAL_THEME_BOARD_KEYS) {
     seedThemeBoard(workspace, boardKey, {
-      id: `theme-${boardKey}-default`,
+      id: formatEntryId("theme", boardKey, "default"),
       type: "default",
       label: "Default",
       template: formatThemeCatalog(boardKey),
@@ -80,7 +82,7 @@ function seedThemeBoard(
     type: "theme",
     catalogId: boardKey,
     label: STOCK_THEMES_BY_ID[boardKey].metadata.name,
-    author: "Seldon Digital",
+    author: DEFAULT_THEME_BOARD_AUTHOR,
     componentPreview: "seldonThemePreview",
     componentTheme: DEFAULT_THEME_ENTRY_ID,
     componentProperties: getInitialBoardComponentProperties("theme"),

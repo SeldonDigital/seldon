@@ -7,7 +7,6 @@ import type {
   ThemeInstanceId,
   ThemeTemplateId,
 } from "../../themes/types/theme-id"
-import { WORKSPACE_EDITABLE_THEME_ENTRY_ID } from "../helpers/themes/workspace-editable-theme"
 import { parseThemeTemplate } from "../model/template-ref"
 
 interface WorkspaceThemeEntry {
@@ -154,18 +153,11 @@ export function computeWorkspaceThemes(
  * Resolves a theme id or workspace theme ref to a computed in-memory theme.
  * Throws when the ref cannot be resolved from workspace entries or stock themes.
  */
-function resolveThemeRef(themeId: string): string {
-  if (themeId === "seldonTheme") {
-    return WORKSPACE_EDITABLE_THEME_ENTRY_ID
-  }
-  return themeId
-}
-
 export function getComputedTheme(
   themeId: ThemeInstanceId | string,
   workspace: WorkspaceThemeSource,
 ): ComputedTheme {
-  const normalizedThemeId = normalizeThemeId(resolveThemeRef(themeId))
+  const normalizedThemeId = normalizeThemeId(themeId)
   const theme =
     computeWorkspaceThemes(workspace).find(
       (theme) => theme.id === normalizedThemeId,

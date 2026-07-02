@@ -8,16 +8,9 @@ import { parseNodeLink } from "../../model/template-ref"
 import type { ComponentTreeRef, EntryNode, Workspace } from "../../types"
 import { walkBoardTreeRefs } from "../components/walk-board-tree-refs"
 import { rebuildDefaultChildren } from "./build-component-variants"
+import { collectTreeRefIds } from "./collect-tree-ref-ids"
 import { findBoardContainingTreeNodeId } from "./duplicate-entry-variant-subtree"
 import { getNodeCatalogId } from "./get-node-catalog-id"
-
-function collectTreeRefIds(ref: ComponentTreeRef): string[] {
-  const ids = [ref.id]
-  for (const child of ref.children ?? []) {
-    ids.push(...collectTreeRefIds(child))
-  }
-  return ids
-}
 
 function collectAllComponentTreeNodeIds(workspace: Workspace): Set<string> {
   const out = new Set<string>()

@@ -4,7 +4,11 @@ import { debugMiddleware } from "../middleware/observability/debug.middleware"
 import { validationMiddleware } from "../middleware/validation/validation.middleware"
 import { workspaceVerificationMiddleware } from "../middleware/verification/verification.middleware"
 import type { Workspace } from "../model/workspace"
-import type { VariantId, WorkspaceAction } from "../types"
+import type {
+  ThemeCustomTokenSection,
+  VariantId,
+  WorkspaceAction,
+} from "../types"
 import { addComponent } from "./handlers/add/add-component"
 import { addCustomState } from "./handlers/add/add-custom-state"
 import { addFontCollection } from "./handlers/add/add-font-collection"
@@ -15,24 +19,7 @@ import { addNodeLayer } from "./handlers/add/add-node-layer"
 import { addPlayground } from "./handlers/add/add-playground"
 import { addSandbox } from "./handlers/add/add-sandbox"
 import { addTheme } from "./handlers/add/add-theme"
-import { addThemeCustomBlur } from "./handlers/add/add-theme-custom-blur"
-import { addThemeCustomBorder } from "./handlers/add/add-theme-custom-border"
-import { addThemeCustomBorderWidth } from "./handlers/add/add-theme-custom-border-width"
-import { addThemeCustomCorners } from "./handlers/add/add-theme-custom-corners"
-import { addThemeCustomDimension } from "./handlers/add/add-theme-custom-dimension"
-import { addThemeCustomFont } from "./handlers/add/add-theme-custom-font"
-import { addThemeCustomFontSize } from "./handlers/add/add-theme-custom-font-size"
-import { addThemeCustomFontWeight } from "./handlers/add/add-theme-custom-font-weight"
-import { addThemeCustomGap } from "./handlers/add/add-theme-custom-gap"
-import { addThemeCustomGradient } from "./handlers/add/add-theme-custom-gradient"
-import { addThemeCustomLineHeight } from "./handlers/add/add-theme-custom-line-height"
-import { addThemeCustomMargin } from "./handlers/add/add-theme-custom-margin"
-import { addThemeCustomPadding } from "./handlers/add/add-theme-custom-padding"
-import { addThemeCustomScrollbar } from "./handlers/add/add-theme-custom-scrollbar"
-import { addThemeCustomShadow } from "./handlers/add/add-theme-custom-shadow"
-import { addThemeCustomSize } from "./handlers/add/add-theme-custom-size"
-import { addThemeCustomSpread } from "./handlers/add/add-theme-custom-spread"
-import { addThemeCustomSwatch } from "./handlers/add/add-theme-custom-swatch"
+import { addThemeCustomToken } from "./handlers/add/add-theme-custom-token"
 import { addVariant } from "./handlers/add/add-variant"
 import { duplicateComponent } from "./handlers/duplicate/duplicate-component"
 import { duplicateFontCollection } from "./handlers/duplicate/duplicate-font-collection"
@@ -59,25 +46,8 @@ import { removeMedia } from "./handlers/remove/remove-media"
 import { removeNodeLayer } from "./handlers/remove/remove-node-layer"
 import { removePlayground } from "./handlers/remove/remove-playground"
 import { removeTheme } from "./handlers/remove/remove-theme"
-import { removeThemeCustomBackground } from "./handlers/remove/remove-theme-custom-background"
-import { removeThemeCustomBlur } from "./handlers/remove/remove-theme-custom-blur"
-import { removeThemeCustomBorder } from "./handlers/remove/remove-theme-custom-border"
-import { removeThemeCustomBorderWidth } from "./handlers/remove/remove-theme-custom-border-width"
-import { removeThemeCustomCorners } from "./handlers/remove/remove-theme-custom-corners"
-import { removeThemeCustomDimension } from "./handlers/remove/remove-theme-custom-dimension"
-import { removeThemeCustomFont } from "./handlers/remove/remove-theme-custom-font"
-import { removeThemeCustomFontSize } from "./handlers/remove/remove-theme-custom-font-size"
-import { removeThemeCustomFontWeight } from "./handlers/remove/remove-theme-custom-font-weight"
-import { removeThemeCustomGap } from "./handlers/remove/remove-theme-custom-gap"
-import { removeThemeCustomGradient } from "./handlers/remove/remove-theme-custom-gradient"
-import { removeThemeCustomLineHeight } from "./handlers/remove/remove-theme-custom-line-height"
-import { removeThemeCustomMargin } from "./handlers/remove/remove-theme-custom-margin"
-import { removeThemeCustomPadding } from "./handlers/remove/remove-theme-custom-padding"
-import { removeThemeCustomScrollbar } from "./handlers/remove/remove-theme-custom-scrollbar"
-import { removeThemeCustomShadow } from "./handlers/remove/remove-theme-custom-shadow"
-import { removeThemeCustomSize } from "./handlers/remove/remove-theme-custom-size"
-import { removeThemeCustomSpread } from "./handlers/remove/remove-theme-custom-spread"
 import { removeThemeCustomSwatch } from "./handlers/remove/remove-theme-custom-swatch"
+import { removeThemeCustomToken } from "./handlers/remove/remove-theme-custom-token"
 import { removeVariant } from "./handlers/remove/remove-variant"
 import { reorderBoard } from "./handlers/reorder/reorder-board"
 import { reorderInstanceInParent } from "./handlers/reorder/reorder-instance-in-parent"
@@ -391,79 +361,57 @@ function reducer(workspace: Workspace, action: WorkspaceAction): Workspace {
     case "reset_theme_override":
       return resetThemeOverride(action.payload, workspace)
     case "add_theme_custom_swatch":
-      return addThemeCustomSwatch(action.payload, workspace)
     case "add_theme_custom_font":
-      return addThemeCustomFont(action.payload, workspace)
     case "add_theme_custom_border":
-      return addThemeCustomBorder(action.payload, workspace)
     case "add_theme_custom_gradient":
-      return addThemeCustomGradient(action.payload, workspace)
     case "add_theme_custom_shadow":
-      return addThemeCustomShadow(action.payload, workspace)
     case "add_theme_custom_scrollbar":
-      return addThemeCustomScrollbar(action.payload, workspace)
     case "add_theme_custom_size":
-      return addThemeCustomSize(action.payload, workspace)
     case "add_theme_custom_dimension":
-      return addThemeCustomDimension(action.payload, workspace)
     case "add_theme_custom_margin":
-      return addThemeCustomMargin(action.payload, workspace)
     case "add_theme_custom_padding":
-      return addThemeCustomPadding(action.payload, workspace)
     case "add_theme_custom_gap":
-      return addThemeCustomGap(action.payload, workspace)
     case "add_theme_custom_corners":
-      return addThemeCustomCorners(action.payload, workspace)
     case "add_theme_custom_borderWidth":
-      return addThemeCustomBorderWidth(action.payload, workspace)
     case "add_theme_custom_blur":
-      return addThemeCustomBlur(action.payload, workspace)
     case "add_theme_custom_spread":
-      return addThemeCustomSpread(action.payload, workspace)
     case "add_theme_custom_fontSize":
-      return addThemeCustomFontSize(action.payload, workspace)
     case "add_theme_custom_fontWeight":
-      return addThemeCustomFontWeight(action.payload, workspace)
     case "add_theme_custom_lineHeight":
-      return addThemeCustomLineHeight(action.payload, workspace)
+      return addThemeCustomToken(
+        action.type.slice(
+          "add_theme_custom_".length,
+        ) as ThemeCustomTokenSection,
+        action.payload,
+        workspace,
+      )
     case "remove_theme_custom_swatch":
       return removeThemeCustomSwatch(action.payload, workspace)
     case "remove_theme_custom_font":
-      return removeThemeCustomFont(action.payload, workspace)
     case "remove_theme_custom_border":
-      return removeThemeCustomBorder(action.payload, workspace)
-    case "remove_theme_custom_background":
-      return removeThemeCustomBackground(action.payload, workspace)
     case "remove_theme_custom_gradient":
-      return removeThemeCustomGradient(action.payload, workspace)
     case "remove_theme_custom_shadow":
-      return removeThemeCustomShadow(action.payload, workspace)
     case "remove_theme_custom_scrollbar":
-      return removeThemeCustomScrollbar(action.payload, workspace)
     case "remove_theme_custom_size":
-      return removeThemeCustomSize(action.payload, workspace)
     case "remove_theme_custom_dimension":
-      return removeThemeCustomDimension(action.payload, workspace)
     case "remove_theme_custom_margin":
-      return removeThemeCustomMargin(action.payload, workspace)
     case "remove_theme_custom_padding":
-      return removeThemeCustomPadding(action.payload, workspace)
     case "remove_theme_custom_gap":
-      return removeThemeCustomGap(action.payload, workspace)
     case "remove_theme_custom_corners":
-      return removeThemeCustomCorners(action.payload, workspace)
     case "remove_theme_custom_borderWidth":
-      return removeThemeCustomBorderWidth(action.payload, workspace)
     case "remove_theme_custom_blur":
-      return removeThemeCustomBlur(action.payload, workspace)
     case "remove_theme_custom_spread":
-      return removeThemeCustomSpread(action.payload, workspace)
     case "remove_theme_custom_fontSize":
-      return removeThemeCustomFontSize(action.payload, workspace)
     case "remove_theme_custom_fontWeight":
-      return removeThemeCustomFontWeight(action.payload, workspace)
     case "remove_theme_custom_lineHeight":
-      return removeThemeCustomLineHeight(action.payload, workspace)
+      return removeThemeCustomToken(
+        action.type.slice("remove_theme_custom_".length) as Exclude<
+          ThemeCustomTokenSection,
+          "swatch"
+        >,
+        action.payload,
+        workspace,
+      )
     case "delete_theme":
       return deleteTheme(action.payload, workspace)
     case "duplicate_theme":
@@ -520,9 +468,6 @@ function reducer(workspace: Workspace, action: WorkspaceAction): Workspace {
     case "stubs_set_media_field":
     case "stubs_duplicate_media_row":
       return stubsResourceMapNoop(workspace)
-
-    case "transcript_add_message":
-      return workspace
   }
 }
 

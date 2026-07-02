@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest"
 
 import { ComponentId } from "../../../components/constants"
 import { createEmptyWorkspace } from "../../helpers/create-empty-workspace"
+import { parseWorkspace } from "../../helpers/parse-workspace"
 import { workspaceReducer } from "../../reducers/reducer"
 import type {
   EntryNodeId,
@@ -154,9 +155,14 @@ describe("WorkspacePropagationService.propagatePositionalChildOperation", () => 
   })
 })
 
-describe("WorkspacePropagationService.parseWorkspace", () => {
+describe("parseWorkspace", () => {
   it("parses a JSON string back into a workspace", () => {
     const ws = createEmptyWorkspace()
-    expect(service.parseWorkspace(JSON.stringify(ws))).toEqual(ws)
+    expect(parseWorkspace(JSON.stringify(ws))).toEqual(ws)
+  })
+
+  it("rejects JSON that is not a workspace object", () => {
+    expect(() => parseWorkspace("[]")).toThrow(/JSON object/)
+    expect(() => parseWorkspace('{"metadata":{}}')).toThrow(/"boards" map/)
   })
 })

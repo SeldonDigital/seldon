@@ -1,7 +1,7 @@
 import { produce } from "immer"
 
 import { ExtractPayload, Workspace } from "../../../../index"
-import { deleteFontCollectionOverrideAtPath } from "../../../helpers/font-collections/font-collection-id"
+import { deleteOverrideAtPath } from "../../../helpers/general/override-paths"
 import {
   WORKSPACE_EDITABLE_FONT_COLLECTION_ENTRY_ID,
   ensureWorkspaceEditableFontCollectionEntry,
@@ -26,7 +26,7 @@ export function resetFontCollectionOverride(
     const overrides: Record<string, unknown> = {
       ...(entry.overrides as Record<string, unknown>),
     }
-    deleteFontCollectionOverrideAtPath(overrides, payload.path)
+    deleteOverrideAtPath(overrides, payload.path)
     entry.overrides = overrides
   })
 }
