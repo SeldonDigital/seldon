@@ -415,14 +415,10 @@ export const GOOGLE_FONT_FAMILIES: GoogleFontFamily[] = [
       "500",
       "600",
       "700",
-      "800",
-      "900",
       "400italic",
       "500italic",
       "600italic",
       "700italic",
-      "800italic",
-      "900italic",
     ],
   },
   {
@@ -744,59 +740,19 @@ export const GOOGLE_FONT_FAMILIES: GoogleFontFamily[] = [
   },
   {
     family: "Noto Sans JP",
-    variants: [
-      "100",
-      "200",
-      "300",
-      "regular",
-      "500",
-      "600",
-      "700",
-      "800",
-      "900",
-    ],
+    variants: ["300", "regular", "700"],
   },
   {
     family: "Noto Sans KR",
-    variants: [
-      "100",
-      "200",
-      "300",
-      "regular",
-      "500",
-      "600",
-      "700",
-      "800",
-      "900",
-    ],
+    variants: ["300", "regular", "700"],
   },
   {
     family: "Noto Sans SC",
-    variants: [
-      "100",
-      "200",
-      "300",
-      "regular",
-      "500",
-      "600",
-      "700",
-      "800",
-      "900",
-    ],
+    variants: ["300", "regular", "700"],
   },
   {
     family: "Noto Sans TC",
-    variants: [
-      "100",
-      "200",
-      "300",
-      "regular",
-      "500",
-      "600",
-      "700",
-      "800",
-      "900",
-    ],
+    variants: ["300", "regular", "700"],
   },
   {
     family: "Noto Serif",
@@ -823,7 +779,7 @@ export const GOOGLE_FONT_FAMILIES: GoogleFontFamily[] = [
   },
   {
     family: "Noto Serif JP",
-    variants: ["200", "300", "regular", "500", "600", "700", "800", "900"],
+    variants: ["300", "regular", "700"],
   },
   {
     family: "Nunito",
@@ -1328,7 +1284,7 @@ export const GOOGLE_FONT_FAMILIES: GoogleFontFamily[] = [
   },
   {
     family: "Syne",
-    variants: ["300", "400", "500", "600", "800"],
+    variants: ["400", "500", "600", "800"],
   },
   {
     family: "Tajawal",
@@ -1340,7 +1296,7 @@ export const GOOGLE_FONT_FAMILIES: GoogleFontFamily[] = [
   },
   {
     family: "TikTok Sans",
-    variants: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+    variants: ["300", "400", "500", "600", "700", "800", "900"],
   },
   {
     family: "Titillium Web",
