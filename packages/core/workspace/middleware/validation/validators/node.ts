@@ -8,6 +8,7 @@ import { getVariantById } from "../../../helpers/general/get-variant-by-id"
 import { isDefaultVariant } from "../../../helpers/general/is-default-variant"
 import { isVariantInUse } from "../../../helpers/general/is-variant-in-use"
 import { canNodeHaveChildren } from "../../../helpers/nodes/can-node-have-children"
+import { collectTreeRefIds } from "../../../helpers/nodes/collect-tree-ref-ids"
 import type {
   Instance,
   Variant,
@@ -18,7 +19,6 @@ import {
   nodeTraversalService,
   typeCheckingService,
 } from "../../../services"
-import { collectTreeRefIds } from "../../../helpers/nodes/collect-tree-ref-ids"
 import { findTreeRef } from "../../../services/shared/component-tree-helpers"
 import type {
   Action,

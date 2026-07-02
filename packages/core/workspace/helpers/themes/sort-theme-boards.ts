@@ -7,10 +7,7 @@ import { DEFAULT_THEME_BOARD_KEY } from "../seed/seed-default-theme-board"
  * consumer. Shared by the theme picker menus and the Themes board section so the
  * order stays identical.
  */
-function compareThemeBoardsForDisplay(
-  a: ThemeBoard,
-  b: ThemeBoard,
-): number {
+function compareThemeBoardsForDisplay(a: ThemeBoard, b: ThemeBoard): number {
   const aSeldon = a.catalogId === DEFAULT_THEME_BOARD_KEY
   const bSeldon = b.catalogId === DEFAULT_THEME_BOARD_KEY
   if (aSeldon !== bSeldon) {

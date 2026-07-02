@@ -234,7 +234,6 @@ export class WorkspaceFontCollectionService {
     }
     return used
   }
-
 }
 
 export const workspaceFontCollectionService =

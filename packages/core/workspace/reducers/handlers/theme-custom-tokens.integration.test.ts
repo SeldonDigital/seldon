@@ -76,9 +76,9 @@ describe("addThemeCustomToken", () => {
 
   it.each(ADD_SECTIONS)("%s is a no-op for a default theme entry", (key) => {
     const workspace = variantWorkspace()
-    expect(addThemeCustomToken(key, addPayload(defaultThemeId), workspace)).toBe(
-      workspace,
-    )
+    expect(
+      addThemeCustomToken(key, addPayload(defaultThemeId), workspace),
+    ).toBe(workspace)
   })
 })
 

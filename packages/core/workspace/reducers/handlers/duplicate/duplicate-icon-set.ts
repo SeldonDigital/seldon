@@ -30,7 +30,8 @@ export function duplicateIconSet(
     if (!boardKey) return
 
     const newId =
-      payload.newIconSetId ?? formatEntryId("icon-set", boardKey, randomSuffix())
+      payload.newIconSetId ??
+      formatEntryId("icon-set", boardKey, randomSuffix())
 
     if (draft["icon-sets"][newId]) return
 

@@ -187,7 +187,10 @@ function dropEmptyOverride(overrides: Properties, key: PropertyKey): void {
  * through JSON because a merged bag can carry Immer draft proxies on its leaf
  * values, which `structuredClone` rejects. Property bags are pure JSON data.
  */
-export function stripPatchFacets(bag: Properties, patch: Properties): Properties {
+export function stripPatchFacets(
+  bag: Properties,
+  patch: Properties,
+): Properties {
   const reduced = JSON.parse(JSON.stringify(bag)) as Properties
   for (const facet of enumeratePatchFacets(patch)) {
     deleteFacet(reduced, facet)

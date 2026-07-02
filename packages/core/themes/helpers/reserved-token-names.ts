@@ -8,7 +8,6 @@
  */
 import type { ScaleStepSection } from "../constants/scale-sections"
 import { RESERVED_LOOK_IDS } from "../looks/built-in-looks"
-import { capitalize } from "./capitalize"
 import {
   BORDER_WIDTH_ORDER,
   DIMENSION_ORDER,
@@ -22,6 +21,7 @@ import {
   THEME_INTERFACE_SLOTS,
   THEME_PALETTE_SLOTS,
 } from "../values/shared/palette/theme-swatch"
+import { capitalize } from "./capitalize"
 
 /** Reserved ordinal step / slot names per scale section. */
 const SCALE_RESERVED_KEYS: Record<string, readonly string[]> = {

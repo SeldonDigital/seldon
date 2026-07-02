@@ -90,4 +90,3 @@ export function isDynamicSwatchToken(v: unknown): v is StockSwatchDynamic {
     (v as StockSwatchDynamic).type === TokenType.DYNAMIC_SWATCH
   )
 }
-

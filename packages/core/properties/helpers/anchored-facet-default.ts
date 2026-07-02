@@ -8,17 +8,19 @@ import type { PercentageValue } from "../values/shared/exact/percentage"
  * non-contributing for the same reason, and the background color seed writes
  * these same literals, so this is the one shared source both consumers agree on.
  */
-const ANCHORED_FACET_DEFAULTS: Record<"brightness" | "opacity", PercentageValue> =
-  {
-    brightness: {
-      type: ValueType.EXACT,
-      value: { value: 0, unit: Unit.PERCENT },
-    },
-    opacity: {
-      type: ValueType.EXACT,
-      value: { value: 100, unit: Unit.PERCENT },
-    },
-  }
+const ANCHORED_FACET_DEFAULTS: Record<
+  "brightness" | "opacity",
+  PercentageValue
+> = {
+  brightness: {
+    type: ValueType.EXACT,
+    value: { value: 0, unit: Unit.PERCENT },
+  },
+  opacity: {
+    type: ValueType.EXACT,
+    value: { value: 100, unit: Unit.PERCENT },
+  },
+}
 
 /**
  * Canonical value an unset brightness or opacity facet resolves to at render.

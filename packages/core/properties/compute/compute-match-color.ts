@@ -1,5 +1,9 @@
 import { InvariantError } from "../../helpers/utils/invariant"
-import { COLOR_SIBLING_COMPOUND_KEYS, EMPTY_VALUE, ValueType } from "../constants"
+import {
+  COLOR_SIBLING_COMPOUND_KEYS,
+  EMPTY_VALUE,
+  ValueType,
+} from "../constants"
 import { Color } from "../values/appearance/color"
 import type { ComputedMatchColorValue } from "../values/shared/computed/match-color"
 import { getBasedOnValue } from "./get-based-on-value"

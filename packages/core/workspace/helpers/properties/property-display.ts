@@ -101,7 +101,9 @@ function formatThemeValue(value: unknown, theme?: Theme): string {
 
 function formatComputedValue(value: unknown): string {
   if (typeof value === "string") {
-    return COMPUTED_FUNCTION_DISPLAY_NAMES[value as ComputedFunction] ?? "Computed"
+    return (
+      COMPUTED_FUNCTION_DISPLAY_NAMES[value as ComputedFunction] ?? "Computed"
+    )
   }
   if (value && typeof value === "object" && "function" in value) {
     const functionName = (value as ComputedValueLike).function

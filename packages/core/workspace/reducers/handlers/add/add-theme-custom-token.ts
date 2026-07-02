@@ -57,9 +57,7 @@ function buildCustomTokenCell(
       parameters: (payload as { parameters: unknown }).parameters,
     }
   }
-  return buildScaleCell(
-    payload as Parameters<typeof buildScaleCell>[0],
-  )
+  return buildScaleCell(payload as Parameters<typeof buildScaleCell>[0])
 }
 
 /**
@@ -83,6 +81,11 @@ export function addThemeCustomToken(
       section,
     )
 
-    appendCustomToken(entry, section, id, buildCustomTokenCell(section, payload))
+    appendCustomToken(
+      entry,
+      section,
+      id,
+      buildCustomTokenCell(section, payload),
+    )
   })
 }

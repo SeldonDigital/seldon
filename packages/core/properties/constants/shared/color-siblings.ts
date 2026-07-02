@@ -10,7 +10,6 @@
  * A container that does not expose a given facet simply has no entry for it, so every consumer
  * treats a missing facet as a no-op rather than a block or a crash.
  */
-
 import { BORDER_SIDE_KEYS } from "../../helpers/border-side-options"
 import { PROPERTY_COMPOUND_CATALOG } from "./compound-properties"
 

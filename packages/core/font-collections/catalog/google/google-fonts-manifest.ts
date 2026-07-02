@@ -943,15 +943,7 @@ export const GOOGLE_MANIFEST_FAMILIES: GoogleFontFamily[] = [
   },
   {
     family: "Assistant",
-    variants: [
-      "200",
-      "300",
-      "regular",
-      "500",
-      "600",
-      "700",
-      "800",
-    ],
+    variants: ["200", "300", "regular", "500", "600", "700", "800"],
   },
   {
     family: "Atkinson Hyperlegible Next",
@@ -982,15 +974,7 @@ export const GOOGLE_MANIFEST_FAMILIES: GoogleFontFamily[] = [
   },
   {
     family: "Bricolage Grotesque",
-    variants: [
-      "200",
-      "300",
-      "400",
-      "500",
-      "600",
-      "700",
-      "800",
-    ],
+    variants: ["200", "300", "400", "500", "600", "700", "800"],
   },
   {
     family: "Caveat",
@@ -1021,15 +1005,7 @@ export const GOOGLE_MANIFEST_FAMILIES: GoogleFontFamily[] = [
   },
   {
     family: "Dosis",
-    variants: [
-      "200",
-      "300",
-      "regular",
-      "500",
-      "600",
-      "700",
-      "800",
-    ],
+    variants: ["200", "300", "regular", "500", "600", "700", "800"],
   },
   {
     family: "Exo 2",
@@ -1083,17 +1059,7 @@ export const GOOGLE_MANIFEST_FAMILIES: GoogleFontFamily[] = [
   },
   {
     family: "Geist",
-    variants: [
-      "100",
-      "200",
-      "300",
-      "400",
-      "500",
-      "600",
-      "700",
-      "800",
-      "900",
-    ],
+    variants: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
   },
   {
     family: "Hanken Grotesk",
@@ -1142,16 +1108,7 @@ export const GOOGLE_MANIFEST_FAMILIES: GoogleFontFamily[] = [
   },
   {
     family: "Inconsolata",
-    variants: [
-      "200",
-      "300",
-      "regular",
-      "500",
-      "600",
-      "700",
-      "800",
-      "900",
-    ],
+    variants: ["200", "300", "regular", "500", "600", "700", "800", "900"],
   },
   {
     family: "Instrument Sans",
@@ -1216,15 +1173,7 @@ export const GOOGLE_MANIFEST_FAMILIES: GoogleFontFamily[] = [
   },
   {
     family: "Mukta",
-    variants: [
-      "200",
-      "300",
-      "regular",
-      "500",
-      "600",
-      "700",
-      "800",
-    ],
+    variants: ["200", "300", "regular", "500", "600", "700", "800"],
   },
   {
     family: "Nanum Gothic",
@@ -1232,29 +1181,11 @@ export const GOOGLE_MANIFEST_FAMILIES: GoogleFontFamily[] = [
   },
   {
     family: "National Park",
-    variants: [
-      "200",
-      "300",
-      "400",
-      "500",
-      "600",
-      "700",
-      "800",
-    ],
+    variants: ["200", "300", "400", "500", "600", "700", "800"],
   },
   {
     family: "Onest",
-    variants: [
-      "100",
-      "200",
-      "300",
-      "400",
-      "500",
-      "600",
-      "700",
-      "800",
-      "900",
-    ],
+    variants: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
   },
   {
     family: "Overpass",
