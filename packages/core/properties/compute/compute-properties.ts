@@ -198,6 +198,7 @@ function dispatchComputed(
       return computeMatchColor(
         value as ComputedMatchColorValue,
         context,
+        keys,
       ) as Value
     default:
       throw new Error(`Unknown computed function: ${functionType}`)
