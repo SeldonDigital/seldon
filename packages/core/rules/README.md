@@ -16,7 +16,7 @@ Values live in [`config/rules.config.ts`](./config/rules.config.ts).
 
 ## `mutations`
 
-Thirteen mutation keys form `RuleId`: `create`, `insertInto`, `instantiate`, `duplicate`, `delete`, `setProperties`, `setStateProperties`, `reset`, `setTheme`, `rename`, `setRef`, `reorder`, and `move`. Each key indexes four [`Entity`](./types/rule-config-types.ts) rows: `board`, `userVariant`, `defaultVariant`, and `instance`.
+`MutationRules` holds thirteen mutation keys: `create`, `insertInto`, `instantiate`, `duplicate`, `delete`, `setProperties`, `setStateProperties`, `reset`, `setTheme`, `rename`, `setRef`, `reorder`, and `move`. Each key indexes four [`Entity`](./types/rule-config-types.ts) rows: `board`, `userVariant`, `defaultVariant`, and `instance`.
 
 Every row has `allowed` and `propagation`. The `delete` instance row also sets `removalBehavior` for hide versus delete. The hide branch applies to schema-origin instances inside the default variant. All other instances delete outright, including schema-origin instances in user variants. The other delete rows always delete outright.
 
@@ -60,7 +60,6 @@ flowchart TD
 | `DeleteInstanceConfig` | `types/rule-config-types.ts` | Extends `EntityConfig` with `removalBehavior`. Types only the `instance` row under `mutations.delete`. |
 | `DeleteConfig` | `types/rule-config-types.ts` | Maps board and variant rows to `EntityConfig` and the instance row to `DeleteInstanceConfig`. Types the delete mutation block. |
 | `MutationRules` | `types/rule-config-types.ts` | Groups all thirteen mutation operation configs. Used as the `mutations` field on `RulesConfig`. |
-| `RuleId` | `types/rule-config-types.ts` | `keyof MutationRules`. Names the supported mutation operations in policy. |
 | `ComponentLevelConfig` | `types/rule-config-types.ts` | Holds `mayContain` for one catalog level. Used in `componentLevels` records. |
 | `RulesConfig` | `types/rule-config-types.ts` | Top-level shape for `rules`: `mutations` plus `componentLevels`. Matches the exported config object. |
 

@@ -9,7 +9,7 @@ import { ComponentLevel } from "../../components/constants"
 export type Entity = "board" | "userVariant" | "defaultVariant" | "instance"
 
 /**
- * Base rule interface with conditional config based on appliesTo
+ * Maps each policy entity to its rule row. Shape for non-delete mutation rules.
  */
 export interface Config {
   board: EntityConfig
@@ -73,8 +73,6 @@ export interface MutationRules {
   reorder: Config
   move: Config
 }
-
-export type RuleId = keyof MutationRules
 
 export interface ComponentLevelConfig {
   mayContain: ComponentLevel[]
