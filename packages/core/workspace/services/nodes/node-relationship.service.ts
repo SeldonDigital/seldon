@@ -1,10 +1,11 @@
-import { getComponentSchema } from "../../../components/catalog"
+import { findComponentSchema } from "../../../components/catalog"
 import { ComponentId, isComponentId } from "../../../components/constants"
 import { invariant } from "../../../index"
 import { ErrorMessages } from "../../constants"
 import { getBoardByNodeId } from "../../helpers/components/get-board-by-node-id"
 import { getChildrenIds } from "../../helpers/components/get-children-ids"
 import { getImmediateParentIdInWorkspace } from "../../helpers/components/get-node-parent-id"
+import { getWorkspaceNodes } from "../../helpers/general/get-workspace-nodes"
 import { isEntryNodeForRules } from "../../helpers/rules/rules-node-subject"
 import { parseNodeCatalog, parseNodeLink } from "../../model/template-ref"
 import {
@@ -229,24 +230,13 @@ export class NodeRelationshipService {
     nodeId: InstanceId | VariantId | ComponentId,
     workspace: Workspace,
   ): string {
-    try {
-      const schema = getComponentSchema(nodeId as ComponentId)
-      return schema.name
-    } catch {
-      try {
-        const node = nodeRetrievalService.getNode(
-          nodeId as InstanceId | VariantId,
-          workspace,
-        )
-        const componentId = nodeCatalogComponentId(node)
-        if (componentId) {
-          return getComponentSchema(componentId).name
-        }
-      } catch {
-        return "Unknown Component"
-      }
-      return "Unknown Component"
-    }
+    const directSchema = findComponentSchema(nodeId)
+    if (directSchema) return directSchema.name
+
+    const node = getWorkspaceNodes(workspace)[nodeId as InstanceId | VariantId]
+    const componentId = node ? nodeCatalogComponentId(node) : null
+    const schema = componentId ? findComponentSchema(componentId) : undefined
+    return schema?.name ?? "Unknown Component"
   }
 
   /** True when the node, or any of its ancestors, maps to the given component id. */

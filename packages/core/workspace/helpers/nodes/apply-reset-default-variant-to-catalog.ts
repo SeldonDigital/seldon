@@ -50,7 +50,7 @@ export function applyResetDefaultVariantToCatalog(
     const rootNode = draft.nodes[defaultVariantRootId]
     if (!rootNode || rootNode.type !== "default") return
 
-    const catalogId = getNodeCatalogId(rootNode, draft as unknown as Workspace)
+    const catalogId = getNodeCatalogId(rootNode, draft)
     if (!catalogId || !isComponentId(catalogId)) return
     const schema = getComponentSchema(catalogId as ComponentId)
 
@@ -68,7 +68,7 @@ export function applyResetDefaultVariantToCatalog(
         schema.default.children ?? [],
         defaultRef.children,
         {
-          workspace: draft as unknown as Workspace,
+          workspace: draft,
           newNodes,
         },
       )
@@ -81,9 +81,7 @@ export function applyResetDefaultVariantToCatalog(
     }
 
     const newIds = new Set(collectTreeRefIds(board.variants[0]))
-    const referenced = collectAllComponentTreeNodeIds(
-      draft as unknown as Workspace,
-    )
+    const referenced = collectAllComponentTreeNodeIds(draft)
 
     // Schema-variant trees hold forked copies whose `node:` templates point at
     // the default tree's canonical instances. Protect those targets so a reset

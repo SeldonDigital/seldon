@@ -1,6 +1,6 @@
 import { plural } from "pluralize"
 
-import { getComponentSchema } from "../../../components/catalog"
+import { findComponentSchema } from "../../../components/catalog"
 import { ComponentId } from "../../../components/constants"
 import { walkBoardTreeRefs } from "../../helpers/components/walk-board-tree-refs"
 import { getNextVariantLabel } from "../../helpers/general/get-next-variant-label"
@@ -111,11 +111,8 @@ export function getInitialVariantLabel(
 
 /** Pluralizes the component schema name for a new board label, such as "Buttons". */
 export function getInitialComponentLabel(componentId: ComponentId): string {
-  try {
-    return plural(getComponentSchema(componentId).name)
-  } catch {
-    return `Unknown Component (${componentId})`
-  }
+  const schema = findComponentSchema(componentId)
+  return schema ? plural(schema.name) : `Unknown Component (${componentId})`
 }
 
 function collectVariantNodeIdsOnBoard(board: Board): Set<string> {

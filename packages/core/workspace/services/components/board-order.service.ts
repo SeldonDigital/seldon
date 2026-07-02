@@ -1,4 +1,4 @@
-import { getComponentSchema } from "../../../components/catalog"
+import { findComponentSchema } from "../../../components/catalog"
 import {
   ComponentId,
   ComponentLevel,
@@ -57,18 +57,20 @@ function compareBoardOrder(
   bId: ComponentId,
   bBoard: Board,
 ): number {
-  try {
-    const aLevelIndex = componentLevelIndex(getComponentSchema(aId).level)
-    const bLevelIndex = componentLevelIndex(getComponentSchema(bId).level)
+  const aSchema = findComponentSchema(aId)
+  const bSchema = findComponentSchema(bId)
+
+  if (aSchema && bSchema) {
+    const aLevelIndex = componentLevelIndex(aSchema.level)
+    const bLevelIndex = componentLevelIndex(bSchema.level)
     if (aLevelIndex !== bLevelIndex) {
       return aLevelIndex - bLevelIndex
     }
     if (isComponentBoard(aBoard) && isComponentBoard(bBoard)) {
       return aBoard.label.localeCompare(bBoard.label)
     }
-  } catch {
-    // Fall through to stored order below.
   }
+
   return getBoardOrder(aBoard) - getBoardOrder(bBoard)
 }
 

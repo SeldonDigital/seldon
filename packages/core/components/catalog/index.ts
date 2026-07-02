@@ -373,6 +373,14 @@ export function getComponentSchema(id: ComponentId): ComponentSchema {
   return match
 }
 
+/**
+ * Non-throwing schema lookup for ids that may not resolve, such as catalog ids
+ * read from a workspace file authored against an older component set.
+ */
+export function findComponentSchema(id: string): ComponentSchema | undefined {
+  return schemasById[id]
+}
+
 const exportConfigById: Partial<Record<ComponentId, ComponentExport>> = {
   // Elements
   [ComponentId.AVATAR]: avatarExportConfig,

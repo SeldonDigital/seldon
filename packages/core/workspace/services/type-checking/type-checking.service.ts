@@ -1,4 +1,4 @@
-import { getComponentSchema } from "../../../components/catalog"
+import { findComponentSchema } from "../../../components/catalog"
 import { ComponentId } from "../../../components/constants"
 import { rules } from "../../../rules/config/rules.config"
 import type { Entity } from "../../../rules/types/rule-config-types"
@@ -124,7 +124,9 @@ export class TypeCheckingService {
   }
 
   /**
-   * Validates if a component can be a parent of another component based on component level rules.
+   * Validates if a component can be a parent of another component based on
+   * component level rules. Fails closed when either id has no catalog schema,
+   * such as a stale id read from an older workspace file.
    * @param parentId - The parent component ID
    * @param childId - The child component ID
    * @returns True if the parent can contain the child
@@ -133,14 +135,13 @@ export class TypeCheckingService {
     parentId: ComponentId,
     childId: ComponentId,
   ): boolean {
-    try {
-      const parentLevel = getComponentSchema(parentId).level
-      const childLevel = getComponentSchema(childId).level
+    const parentSchema = findComponentSchema(parentId)
+    const childSchema = findComponentSchema(childId)
+    if (!parentSchema || !childSchema) return false
 
-      return rules.componentLevels[parentLevel].mayContain.includes(childLevel)
-    } catch {
-      return false
-    }
+    return rules.componentLevels[parentSchema.level].mayContain.includes(
+      childSchema.level,
+    )
   }
 }
 
