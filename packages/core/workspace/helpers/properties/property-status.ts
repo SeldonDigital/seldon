@@ -199,6 +199,14 @@ function calculateSubPropertyStatus(
     return "set"
   }
 
+  // A compound facet reaches here only when it belongs to the layer's structure
+  // (e.g. brightness/opacity on a color layer). It is part of the vocabulary, so
+  // an unset one is "unset", not "not used". Marking it "not used" would poison
+  // the compound's aggregate and hide the whole row.
+  if (isCompoundProperty(key as PropertyKey)) {
+    return "unset"
+  }
+
   return "not used"
 }
 
