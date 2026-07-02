@@ -76,19 +76,37 @@ export const RESERVED_STATE_EXPRESSION: Record<
 const STATE_EXPRESSION_ORDER: StateExpression[] = ["pseudo", "aria", "class"]
 
 /**
+ * Intended menu display order within the expression clusters. States are grouped
+ * contiguously by expression so cluster filtering keeps this order inside each
+ * group. This is the display order only; keyboard shortcuts follow
+ * {@link RESERVED_STATE_SHORTCUT_ORDER}.
+ */
+const RESERVED_STATE_DISPLAY_ORDER: ReservedStateName[] = [
+  "active",
+  "hover",
+  "focused",
+  "checked",
+  "selected",
+  "disabled",
+  "error",
+  "activated",
+  "dragged",
+]
+
+/**
  * Reserved states clustered by expression kind, in expression order, each
- * cluster alpha-sorted by label. Editors render these clusters as separated
- * groups so the menu mirrors how each state is expressed during export.
+ * cluster following {@link RESERVED_STATE_DISPLAY_ORDER}. Editors render these
+ * clusters as separated groups so the menu mirrors how each state is expressed
+ * during export. The flattened order also drives the Option-number shortcuts,
+ * which run Option-1 (Normal) through Option-0 top to bottom.
  */
 export const RESERVED_STATE_GROUPS: {
   expression: StateExpression
   states: ReservedStateName[]
 }[] = STATE_EXPRESSION_ORDER.map((expression) => ({
   expression,
-  states: RESERVED_STATE_NAMES.filter(
+  states: RESERVED_STATE_DISPLAY_ORDER.filter(
     (name) => RESERVED_STATE_EXPRESSION[name] === expression,
-  ).sort((a, b) =>
-    RESERVED_STATE_LABELS[a].localeCompare(RESERVED_STATE_LABELS[b]),
   ),
 }))
 

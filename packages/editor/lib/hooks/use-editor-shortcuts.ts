@@ -21,7 +21,7 @@ import { useTool } from "./use-tool"
 /**
  * Reserved states in menu order, matching `BoardStateSwitcher`. Index 0 is
  * Normal and the rest follow `RESERVED_STATE_GROUPS`, so Option-1 through
- * Option-0 map to Normal through Dragged.
+ * Option-0 map top to bottom to Normal through Dragged.
  */
 const STATE_SHORTCUT_ORDER = [
   NORMAL_STATE,

@@ -84,8 +84,8 @@ export function BoardStateSwitcher({ boardKey }: BoardStateSwitcherProps) {
     [workspace.metadata.customStates],
   )
 
-  // Option-1 (Normal) through Option-0 (Dragged), matching menu order and the
-  // hotkeys in `useEditorShortcuts`.
+  // Option-1 (Normal) through Option-0 (Dragged), numbered top to bottom in menu
+  // display order, matching the hotkeys in `useEditorShortcuts`.
   const stateShortcuts = useMemo(() => {
     const order = [
       NORMAL_STATE,
