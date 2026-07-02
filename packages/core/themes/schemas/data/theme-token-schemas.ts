@@ -20,9 +20,6 @@ import {
  */
 export const THEME_TOKEN_SCHEMAS: Record<string, ThemeTokenSchema> = {}
 
-/** Static theme token schema catalog: same map as {@link THEME_TOKEN_SCHEMAS}. */
-export const THEME_TOKEN_SCHEMA_CATALOG = THEME_TOKEN_SCHEMAS
-
 const allStaticSchemas = [
   ...sizeSchemas,
   ...dimensionSchemas,

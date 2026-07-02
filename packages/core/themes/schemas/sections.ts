@@ -39,12 +39,6 @@ export const THEME_TOKEN_SECTIONS: ThemeTokenSectionSchema[] =
     order: index,
   }))
 
-export function getThemeTokenSectionSchema(
-  sectionId: ThemeTokenSectionId,
-): ThemeTokenSectionSchema | undefined {
-  return THEME_TOKEN_SECTIONS.find((section) => section.id === sectionId)
-}
-
 export function getAllThemeTokenSectionSchemas(): ThemeTokenSectionSchema[] {
   return [...THEME_TOKEN_SECTIONS].sort((a, b) => a.order - b.order)
 }

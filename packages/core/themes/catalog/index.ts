@@ -38,6 +38,6 @@ export const THEMES_BY_ID = Object.fromEntries(
 ) as Record<ThemeTemplateId, ComputedTheme>
 
 /** Computed Seldon theme, the shipped default preset. */
-export const defaultTheme: ComputedTheme = computeTheme(defaultStock)
+export const defaultTheme: ComputedTheme = THEMES_BY_ID.seldon
 
 export { computeTheme }

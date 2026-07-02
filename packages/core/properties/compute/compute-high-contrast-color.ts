@@ -5,6 +5,7 @@ import { resolveColor } from "../../helpers/resolution/resolve-color"
 import { resolveValue } from "../../helpers/resolution/resolve-value"
 import { getThemeOption } from "../../helpers/theme/get-theme-option"
 import { isCompoundValue } from "../../helpers/type-guards/compound/is-compound-value"
+import { InvariantError } from "../../helpers/utils/invariant"
 import type { ThemeSwatch } from "../../themes/types"
 import { ValueType } from "../constants"
 import type { AtomicValue } from "../types/value-atomic"
@@ -20,6 +21,7 @@ import {
   readAnchoredLayerPercentage,
 } from "./compute-layer-color"
 import { resolveBasedOnWithAnchor } from "./get-based-on-value"
+import { parseBasedOnPath } from "./parse-based-on-path"
 import { resolveHighContrastSource } from "./resolve-high-contrast-source"
 import { ComputeContext } from "./types"
 
@@ -175,7 +177,10 @@ function resolveHighContrastInputs(
         ? resolveBackdropColor(basedOn, facetSource, context.theme)
         : undefined,
     }
-  } catch {
+  } catch (error) {
+    // An unresolved source falls back to the reference surface; an invariant
+    // violation is an authoring bug and must surface.
+    if (error instanceof InvariantError) throw error
     return {
       basedOnValue: fallbackColor as AtomicValue,
       brightness: undefined,
@@ -202,7 +207,7 @@ function resolveBackdropColor(
 
   const parentBasedOn = basedOn.startsWith("#parent.")
     ? basedOn
-    : `#parent.${basedOn.replace(/^#(parent\.|self\.)?/, "")}`
+    : `#parent.${parseBasedOnPath(basedOn).lookupPath}`
 
   const { value } = resolveBasedOnWithAnchor(parentBasedOn, facetSource)
 

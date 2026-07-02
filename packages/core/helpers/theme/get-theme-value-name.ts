@@ -1,6 +1,8 @@
 import { Theme } from "../../themes/types"
 import { isFontFamilyToken } from "../../themes/values"
+import { formatPresetValue } from "../properties/format-preset-value"
 import { isThemeValueKey } from "../validation/theme"
+import { parseThemeRef } from "./get-theme-key-components"
 import { getThemeOption } from "./get-theme-option"
 
 /**
@@ -24,7 +26,7 @@ export function getThemeValueName(key: string, theme: Theme): string {
     }
 
     if (isFontFamilyToken(option)) {
-      const slot = key.split(".").pop()
+      const slot = parseThemeRef(key)?.optionId
       if (slot === "primary" || slot === "secondary") {
         return `${option.parameters} · ${formatRawValueName(slot)}`
       }
@@ -38,41 +40,22 @@ export function getThemeValueName(key: string, theme: Theme): string {
     }
 
     // Fallback for unexpected option types
-    return formatRawValueName(key.split(".").pop() || key)
+    return formatRawValueName(parseThemeRef(key)?.optionId ?? key)
   } catch {
     // Fallback if theme option lookup fails
-    return formatRawValueName(key.split(".").pop() || key)
+    return formatRawValueName(parseThemeRef(key)?.optionId ?? key)
   }
 }
 
 /**
- * Formats raw value names (without @ prefix) into friendly display names
- * Converts camelCase to PascalCase (e.g., "fontSize" → "FontSize")
- * @param valueName - The raw value name to format
- * @returns Formatted display name
+ * Formats raw value names into friendly display names via
+ * {@link formatPresetValue}. Malformed theme keys that still carry an `@`
+ * prefix (e.g. `@fontSize` without a dot) pass through unchanged.
  */
 function formatRawValueName(valueName: string): string {
-  if (!valueName) return valueName
-
-  // Handle malformed theme keys that start with @ but don't have a dot
-  // Preserve them as-is (e.g., "@fontSize" → "@fontSize")
   if (valueName.startsWith("@")) {
     return valueName
   }
 
-  // Handle custom values
-  if (valueName.startsWith("custom")) {
-    const number = valueName.replace("custom", "")
-    return `Custom ${number}`
-  }
-
-  // Convert camelCase to PascalCase (capitalize first letter, keep rest as-is)
-  // e.g., "fontSize" → "FontSize", "lineHeight" → "LineHeight"
-  const camelCaseRegex = /^[a-z]/
-  if (camelCaseRegex.test(valueName)) {
-    return valueName.charAt(0).toUpperCase() + valueName.slice(1)
-  }
-
-  // If already starts with uppercase, return as-is
-  return valueName
+  return formatPresetValue(valueName)
 }

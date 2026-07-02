@@ -1,11 +1,5 @@
 import { Unit } from "../../../../properties/constants/shared/units"
 import { TokenType } from "../../../constants/token-type"
-import type { ThemeBorder } from "../../appearance/border"
-import type { ThemeComputedGroup } from "../../computed/theme-computed-group"
-import type { ThemeGradient } from "../../effects/gradient"
-import type { ThemeScrollbar } from "../../effects/scrollbar"
-import type { ThemeShadow } from "../../effects/shadow"
-import type { ThemeFont } from "../../typography/font"
 import type { ThemeExact } from "../exact/theme-exact"
 import type { ThemeFontFamilyToken } from "../font-stack/theme-font-family-token"
 import type { ThemeModulation } from "../modulated/theme-modulation"
@@ -22,14 +16,6 @@ export function isModulatedToken(
     "type" in v &&
     (v as ThemeModulation).type === TokenType.MODULATED
   )
-}
-
-/** `TokenType.EXACT` with `unit: number` — `fontWeight` / `lineHeight` cells. */
-export function isThemeExactNumberToken(v: unknown): v is ThemeExact {
-  if (!isThemeExactToken(v)) {
-    return false
-  }
-  return (v as ThemeExact).parameters.unit === Unit.NUMBER
 }
 
 /**
@@ -105,25 +91,3 @@ export function isDynamicSwatchToken(v: unknown): v is StockSwatchDynamic {
   )
 }
 
-export function isLookToken(
-  v: unknown,
-): v is ThemeFont | ThemeShadow | ThemeBorder | ThemeGradient | ThemeScrollbar {
-  return (
-    typeof v === "object" &&
-    v !== null &&
-    "type" in v &&
-    (v as { type: TokenType }).type === TokenType.LOOK
-  )
-}
-
-/** Grouped configuration cell in the Computed section ({@link TokenType.COMPUTED}). */
-export function isComputedGroupToken(
-  v: unknown,
-): v is ThemeComputedGroup<unknown> {
-  return (
-    typeof v === "object" &&
-    v !== null &&
-    "type" in v &&
-    (v as { type: TokenType }).type === TokenType.COMPUTED
-  )
-}

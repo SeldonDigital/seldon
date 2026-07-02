@@ -48,7 +48,7 @@ function setSubPropertyValue(
 /**
  * Returns a new `Properties` object with the same top-level keys as `inputProperties`. Every
  * `COMPUTED` value at the top level, under object facet maps (`border`, `font`, `margin`, …) per
- * {@link isObjectFacetMapProperty}, or inside each entry of `background` / `gradient` / `shadow`
+ * {@link isObjectFacetMapProperty}, or inside each entry of `background` / `shadow`
  * layer arrays (see {@link computeLayeredPaintStack}), is replaced by the engine result. Other
  * values are copied through. Does not mutate `inputProperties`.
  *

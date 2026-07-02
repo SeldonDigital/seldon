@@ -21,7 +21,7 @@ Stock themes ship with Seldon as starting points and reference implementations. 
 | `highContrast` | Neutral high-contrast theme with simple typography and strong readability. |
 | `industrial` | Cool steel tones with monochromatic harmony, dense rhythm, and stronger weight choices. |
 | `googleMaterial` | Theme aligned with Material Design 3, using Roboto and the M3 baseline palette. |
-| `pop` | Expressive split-complementary theme with high contrast and punchy scales. |
+| `popPunk` | Expressive split-complementary theme with high contrast and punchy scales. |
 | `ibmCarbon` | IBM Carbon-inspired theme with neutral grays, IBM Blue, IBM Plex type, and square corners. |
 | `adobeSpectrum` | Adobe Spectrum-inspired theme with neutral grays, Spectrum blue, Source type, and rounded corners. |
 | `sunsetBlue` | Warm-cool split-complementary theme with relaxed typography. |
@@ -200,7 +200,7 @@ When adding a **custom** key to a theme:
 
 Custom tokens do not participate in either ordinal or categorical behaviors. They are loose extensions that components reference directly by their key. If a property references a key that is missing from the active theme, the property's default value is used.
 
-Every token except `@fontFamily.*` accepts custom keys. Stock themes ship without authoring any so color palettes and scale tokens stay consistent across themes, but a theme is free to add `custom1`, `custom2`, ... wherever they make sense.
+Every token except `@fontFamily.*` accepts custom keys. Most stock themes ship without authoring any so color palettes and scale tokens stay consistent across themes. `earth` and `googleMaterial` author custom swatches as examples. A theme is free to add `custom1`, `custom2`, ... wherever they make sense.
 
 ---
 
@@ -221,7 +221,7 @@ Every token except `@fontFamily.*` accepts custom keys. Stock themes ship withou
 | `@fontSize.*` | `theme.ordinal` | `tiny` \| `xxsmall` \| `xsmall` \| `small` \| `medium` \| `large` \| `xlarge` \| `xxlarge` \| `huge` | `custom1` \| `custom2` \| ... |
 | `@fontWeight.*` | `theme.ordinal` | `thin` \| `xlight` \| `light` \| `normal` \| `medium` \| `semibold` \| `bold` \| `xbold` \| `black` | `custom1` \| `custom2` \| ... |
 | `@lineHeight.*` | `theme.ordinal` | `solid` \| `tight` \| `compact` \| `cozy` \| `comfortable` \| `open` \| `none` | `custom1` \| `custom2` \| ... |
-| `@swatch.*` | `theme.categorical` | `white` \| `gray` \| `black` \| `primary` \| `swatch1` \| `swatch2` \| `swatch3` \| `swatch4` \| `background` | `custom1` \| `custom2` \| ... |
+| `@swatch.*` | `theme.categorical` | `white` \| `gray` \| `black` \| `primary` \| `swatch1` \| `swatch2` \| `swatch3` \| `swatch4` \| `foreground` \| `background` \| `active` \| `punch` \| `positive` \| `negative` \| `warning` \| `accent` \| `offBlack` \| `offWhite` | `custom1` \| `custom2` \| ... |
 | `@font.*` | `theme.categorical` | `display` \| `heading` \| `subheading` \| `title` \| `subtitle` \| `callout` \| `body` \| `label` \| `tagline` \| `code` | `custom1` \| `custom2` \| ... |
 | `@border.*` | `theme.categorical` | `hairline` \| `thin` \| `normal` \| `thick` \| `bevel` | `custom1` \| `custom2` \| ... |
 | `@gradient.*` | `theme.categorical` | `primary` \| `gradient1` \| `gradient2` | `custom1` \| `custom2` \| ... |
@@ -396,7 +396,7 @@ swatch: {
 
 Swatch tokens hold a specified color, defined in one of the supported colorspaces. Use swatches for defining color as needed. Note that when switching themes, dynamic colors will always switch based on a matching dynamic color while custom swatches will follow the rules outlined in copying and pasting components.
 
-`background` is the only reserved swatch key. All other swatch keys are completely custom, with the `name` field being the main identifier for users, so use a meaningful value.
+The reserved fixed-color swatch keys are the ten interface slots: `foreground`, `background`, `active`, `punch`, `positive`, `negative`, `warning`, `accent`, `offBlack`, and `offWhite`. They stay slot-stable across themes, and missing slots fall back to the Seldon interface defaults during `computeTheme`. All other authored swatch keys are custom, with the `name` field being the main identifier for users, so use a meaningful value.
 
 | Field | Required | Type | Notes |
 | --- | --- | --- | --- |
@@ -695,7 +695,11 @@ import { instantiateTheme } from "@seldon/core/themes/compute"
 
 const branded = instantiateTheme(
   "seldon",
-  { color: { baseColor: { hue: 200, saturation: 70, lightness: 45 } } },
+  {
+    colorHarmony: {
+      parameters: { baseColor: { hue: 200, saturation: 70, lightness: 45 } },
+    },
+  },
   STOCK_THEMES_BY_ID,
 )
 
@@ -710,7 +714,7 @@ Workspace pipelines pick a stock template by id and apply user-supplied override
 
 [`workspace.json`](../workspace/README.md) holds **raw authoring state** only: each board / node references a theme by an opaque string ref (for example `theme-earth-default`) and the editable theme source rows live under the top-level `themes` map. Computed theme rows are produced by read-side selectors (`computeWorkspaceThemes`, `getComputedTheme`); they are **not** persisted back into the file.
 
-[`catalog-ids.ts`](./catalog-ids.ts) exports `packagedThemeCatalogIds` and `resolvePackagedThemeByCatalogId`. Workspace validation uses the ids to check theme board `catalogId` values.
+[`catalog-ids.ts`](./catalog-ids.ts) exports `packagedThemeCatalogIds`. Workspace validation uses the ids to check theme board `catalogId` values.
 
 ### Computed resolution (imports)
 
@@ -742,7 +746,7 @@ const invalidRef: BorderColorValue = {
 }
 ```
 
-`validateThemeTokenValue` in [`schemas/helpers/validate-theme-token-value.ts`](./schemas/helpers/validate-theme-token-value.ts) is the runtime counterpart: when an entry has a `propertyKey`, it delegates to `validatePropertyValue` (same `valueType` and `theme` arguments as on the property side); for unbridged entries it checks the value against the entry's primary `ThemeTokenSchema.supports` shape.
+At runtime, workspace validation middleware checks token values when a theme action is dispatched. There is no standalone token validator in this package.
 
 ---
 
@@ -822,7 +826,7 @@ export type ThemeSwatchId =
   | "swatch2"
   | "swatch3"
   | "swatch4"
-  | ThemeStaticSwatchId // "background" | `custom${number}`
+  | ThemeStaticSwatchId // the ten interface slots | `custom${number}`
 ```
 
 ### Theme Reference Validation
@@ -913,13 +917,12 @@ This is why a missing `customN` color bakes into a fixed color, while a missing 
 - **Missing pipeline shape**: `normalizeThemeInput` throws `"Theme must have modulation and colorHarmony properties"` when those groups are missing.
 - **Missing icon set**: `normalizeThemeInput` throws `"Theme must define iconSet"` when neither `iconSet` nor the legacy `icon` field is present.
 - **Unknown stock template**: `instantiateTheme` throws `Unknown theme template: <id>` when the id is not in the supplied `PresetThemesById` map.
-- **Bad token cell**: `validateThemeTokenValue` returns `false` for unknown keys and shape-mismatched payloads.
+- **Bad token cell**: workspace validation middleware rejects unknown keys and shape-mismatched payloads when a theme action is dispatched.
 
 ### Graceful Degradation
 
 - **Missing `customN` keys**: properties that reference an absent custom slot fall back to their schema default.
-- **Partial color overrides**: dynamic swatches recompute from whatever `color.*` inputs are provided. Unset fields keep the stock value.
-- **Unbridged token entries**: `validateThemeTokenValue` falls through to the entry's primary `ThemeTokenSchema.supports` shape when no `propertyKey` is set.
+- **Partial color overrides**: dynamic swatches recompute from whatever `colorHarmony` inputs are provided. Unset fields keep the stock value.
 - **Legacy theme JSON**: `normalizeThemeInput` coerces missing `TokenType` tags and unit-shaped numbers before palette math runs.
 
 ### Debugging Support
@@ -993,11 +996,11 @@ Most theme work goes through this sub-recipe rather than touching token kinds:
 
 **6. Add tests**
 
-Create test files following the existing patterns alongside [`test/test-theme.ts`](./test/test-theme.ts):
+Create test files following the existing patterns in this package:
 
 ```typescript
 // /packages/core/themes/catalog/<id>.test.ts
-import { describe, expect, it } from "bun:test"
+import { describe, expect, it } from "vitest"
 
 import { STOCK_THEMES_BY_ID, computeTheme } from "@seldon/core/themes"
 

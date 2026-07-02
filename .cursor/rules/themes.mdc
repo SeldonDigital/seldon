@@ -35,14 +35,12 @@ Stock theme template ids are:
 Theme files use fixed top-level sections in this order:
 
 1. `metadata`
-2. `core`
-3. `color`
-4. `fontFamily`
-5. `size`, `dimension`, `margin`, `padding`, `gap`, `corners`, `borderWidth`, `blur`, `spread`
-6. `fontSize`, `fontWeight`, `lineHeight`
-7. `iconSet`
-8. `swatch`
-9. `font`, `border`, `background`, `gradient`, `shadow`, `scrollbar`
+2. `modulation`, `colorHarmony`, `fontFamily`, `matchColor`, `highContrast`, `opticalPadding`, `autoFit`
+3. `size`, `dimension`, `margin`, `padding`, `gap`, `corners`, `borderWidth`, `blur`, `spread`
+4. `fontSize`, `fontWeight`, `lineHeight`
+5. `iconSet`
+6. `swatch`
+7. `font`, `border`, `gradient`, `shadow`, `scrollbar`
 
 `iconSet` is not a token table. It has no `TokenType`, no `@iconSet.*` reference path, no `customN` slots, and no `THEME_TOKEN_SECTIONS` entry. It selects the active icon set and default render values.
 
@@ -50,7 +48,7 @@ Theme files use fixed top-level sections in this order:
 
 Use `ValueType.THEME_ORDINAL` for ordered scales, such as `@fontSize.medium`, `@margin.compact`, and `@borderWidth.small`.
 
-Use `ValueType.THEME_CATEGORICAL` for named sets, such as `@swatch.primary`, `@font.body`, `@background.background1`, and `@shadow.moderate`.
+Use `ValueType.THEME_CATEGORICAL` for named sets, such as `@swatch.primary`, `@font.body`, `@gradient.primary`, and `@shadow.moderate`.
 
 Reference types live in `types/theme-reference-keys.ts`. Token id unions live in `types/theme-token-ids.ts`.
 
@@ -68,13 +66,13 @@ Every token except `@fontFamily.*` can accept `customN` keys. `@fontFamily.*` on
 
 Theme token cells use `TokenType`:
 
-- `MODULATED` for scale steps against `core.size` and `core.ratio`.
+- `MODULATED` for scale steps against `modulation.parameters.baseSize` and `modulation.parameters.ratio`.
 - `EXACT` for fixed numeric values with units.
-- `DYNAMIC_SWATCH` for palette roles resolved from `color.*` by `computeTheme`. The roles are `white`, `gray`, `black`, `primary`, and `swatch1` through `swatch4`. Do not hand-author the eight palette colors. Switching base color or harmony retunes the whole palette.
+- `DYNAMIC_SWATCH` for palette roles resolved from `colorHarmony` by `computeTheme`. The roles are `white`, `gray`, `black`, `primary`, and `swatch1` through `swatch4`. Do not hand-author the eight palette colors. Switching base color or harmony retunes the whole palette.
 - `SWATCH` for explicit color values.
 - `FONT_FAMILY` for `fontFamily.primary` and `fontFamily.secondary`.
 - `OPTION` for discrete option keys.
-- `LOOK` for compound recipes under `font`, `border`, `background`, `gradient`, `shadow`, and `scrollbar`.
+- `LOOK` for compound recipes under `font`, `border`, `gradient`, `shadow`, and `scrollbar`.
 
 Look token `parameters` contain property-style tagged values. Resolving an `@<scope>.<key>` reference into CSS values is property-side work in `helpers/resolution`, not the themes module.
 

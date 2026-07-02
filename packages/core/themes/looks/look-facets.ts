@@ -8,6 +8,7 @@
  * reading, and editing so the three stay in sync. Each list is typed against
  * `keyof <Parameters>`, so omitting a facet fails the build.
  */
+import { ValueType } from "../../properties/constants/shared/value-types"
 import type { PropertyName } from "../../properties/schemas/data/property-schemas"
 import type { ThemeTokenSchema, ThemeTokenSchemaSupport } from "../types/schema"
 import type { BorderParameters } from "../values/appearance/border"
@@ -275,6 +276,19 @@ export function isBridgedLookFacet(
   facet: LookFacetEntry,
 ): facet is BridgedLookFacet {
   return "propertyKey" in facet
+}
+
+const EMPTY_FACET_VALUE = { type: ValueType.EMPTY, value: null } as const
+
+/** Every facet of `section` set to the EMPTY property value, in facet order. */
+export function buildEmptyLookParameters(
+  section: LookSection,
+): Record<string, typeof EMPTY_FACET_VALUE> {
+  const parameters: Record<string, typeof EMPTY_FACET_VALUE> = {}
+  for (const facet of LOOK_FACETS[section]) {
+    parameters[facet.facet] = EMPTY_FACET_VALUE
+  }
+  return parameters
 }
 
 /**

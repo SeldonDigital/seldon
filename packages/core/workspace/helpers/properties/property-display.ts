@@ -11,6 +11,7 @@ import {
   RGBObjectToString,
 } from "@seldon/core/helpers/color"
 import { formatPresetValue } from "@seldon/core/helpers/properties/format-preset-value"
+import { parseThemeRef } from "@seldon/core/helpers/theme/get-theme-key-components"
 import { getThemeValueName } from "@seldon/core/helpers/theme/get-theme-value-name"
 import {
   isHSLObject,
@@ -91,12 +92,9 @@ function formatThemeValue(value: unknown, theme?: Theme): string {
   if (token.startsWith("@") && theme) {
     return getThemeValueName(token, theme)
   }
-  if (token.startsWith("@")) {
-    const parts = token.split(".")
-    if (parts.length >= 2) {
-      const lastSegment = parts[parts.length - 1]
-      return lastSegment.charAt(0).toUpperCase() + lastSegment.slice(1)
-    }
+  const optionId = parseThemeRef(token)?.optionId
+  if (optionId) {
+    return optionId.charAt(0).toUpperCase() + optionId.slice(1)
   }
   return token
 }

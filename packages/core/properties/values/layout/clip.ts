@@ -1,9 +1,4 @@
 import { PropertySchema } from "../../types/schema"
-import { EmptyValue } from "../shared/empty/empty"
-import { BooleanOptionValue, BooleanValue } from "../shared/option/boolean"
-
-/** Unset, a freeform boolean, or a picked boolean option that turns clipping of overflow on or off. */
-export type ClipValue = EmptyValue | BooleanValue | BooleanOptionValue
 
 export const clipSchema: PropertySchema = {
   name: "clip",

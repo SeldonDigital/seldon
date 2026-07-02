@@ -12,16 +12,6 @@ export enum ImageFit {
   STRETCH = "stretch",
 }
 
-/**
- * Readable image fit options for interface.
- */
-export const IMAGE_FIT_OPTIONS: { name: string; value: ImageFit }[] = [
-  { name: "Original", value: ImageFit.ORIGINAL },
-  { name: "Cover", value: ImageFit.COVER },
-  { name: "Contain", value: ImageFit.CONTAIN },
-  { name: "Stretch", value: ImageFit.STRETCH },
-]
-
 /** Stores an image fit keyword as a freeform exact value from the ImageFit enum. */
 export interface ImageFitExactValue {
   type: ValueType.EXACT

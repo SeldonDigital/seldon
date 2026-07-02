@@ -1,3 +1,4 @@
+import { InvariantError } from "../../helpers/utils/invariant"
 import { COLOR_SIBLING_COMPOUND_KEYS, EMPTY_VALUE, ValueType } from "../constants"
 import { Color } from "../values/appearance/color"
 import type { ComputedMatchColorValue } from "../values/shared/computed/match-color"
@@ -43,7 +44,10 @@ export function computeMatchColor(
   let basedOnValue
   try {
     basedOnValue = getBasedOnValue(resolveMatchColorSource(), context)
-  } catch {
+  } catch (error) {
+    // An unresolved source degrades to EMPTY; a compound value at the path is
+    // an authoring bug and must surface.
+    if (error instanceof InvariantError) throw error
     return EMPTY_VALUE
   }
 

@@ -10,7 +10,7 @@ function isResolvedThemeSwatch(
 }
 
 /** A computed `Theme` has concrete swatches; stock uses `TokenType.DYNAMIC_SWATCH` there. */
-export function isResolvedTheme(
+function isResolvedTheme(
   theme: StockTheme | ComputedTheme,
 ): theme is ComputedTheme {
   const w = theme.swatch.white
@@ -20,7 +20,7 @@ export function isResolvedTheme(
 }
 
 /** Turn a computed theme back into stock-shaped input so palette + neutrals recompute. */
-export function toRecomputableStock(theme: ComputedTheme): StockTheme {
+function toRecomputableStock(theme: ComputedTheme): StockTheme {
   const swatch: { [key: string]: StockThemeSwatch | undefined } = {
     ...theme.swatch,
   }

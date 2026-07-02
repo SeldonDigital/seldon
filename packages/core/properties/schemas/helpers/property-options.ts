@@ -71,18 +71,6 @@ export function getPresetOptionsAsLabelValue(
   })
 }
 
-/** Maps arbitrary option values to `{ label, value }` for dropdowns. */
-export function formatOptionsForUI(
-  options: unknown[],
-): Array<{ label: string; value: unknown }> {
-  return options.map((entry) => {
-    if (isLabeledOption(entry)) {
-      return { label: entry.name, value: entry.value }
-    }
-    return { label: formatLabel(entry), value: entry }
-  })
-}
-
 /** True for `{ value, name }` schema entries that already carry their own display label. */
 function isLabeledOption(
   entry: unknown,
@@ -94,14 +82,6 @@ function isLabeledOption(
     "name" in entry &&
     typeof (entry as { name: unknown }).name === "string"
   )
-}
-
-/** Returns a copy of `supports` for the property, or an empty array when there is no schema. */
-export function getPropertySupportedValueTypes(
-  propertyName: string,
-): PropertyValueType[] {
-  const schema = getPropertySchema(propertyName)
-  return schema?.supports ? [...schema.supports] : []
 }
 
 /** Title-cases hyphenated strings; otherwise stringifies the value. */

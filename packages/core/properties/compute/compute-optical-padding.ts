@@ -1,8 +1,9 @@
 import { modulate, round } from "../../helpers/math"
 import { getThemeOption } from "../../helpers/theme/get-theme-option"
 import { isUnitValue } from "../../helpers/type-guards/value/is-unit-value"
-import { invariant } from "../../helpers/utils/invariant"
-import type { ThemeModulation, ThemeValueKey } from "../../themes/types"
+import { InvariantError, invariant } from "../../helpers/utils/invariant"
+import type { ThemeValueKey } from "../../themes/types"
+import { isModulatedToken } from "../../themes/values"
 import { EMPTY_VALUE, Unit, ValueType } from "../constants"
 import type { SubPropertyKey } from "../types/property-keys"
 import type { ComputedOpticalPaddingValue } from "../values/shared/computed/optical-padding"
@@ -36,7 +37,10 @@ export function computeOpticalPadding(
   let basedOnValue
   try {
     basedOnValue = getBasedOnValue(basedOn, context)
-  } catch {
+  } catch (error) {
+    // An unresolved source degrades to EMPTY; a compound value at the path is
+    // an authoring bug and must surface.
+    if (error instanceof InvariantError) throw error
     return EMPTY_VALUE
   }
   const ratio = getRatio(
@@ -65,16 +69,22 @@ export function computeOpticalPadding(
 
   if (basedOnValue.type === ValueType.THEME_ORDINAL) {
     invariant(
-      basedOnValue.value.includes("@fontSize"),
+      basedOnValue.value.startsWith("@fontSize."),
       `Optical padding only supports @fontSize theme ordinals, got: ${basedOnValue.value}`,
     )
 
     const themeOption = getThemeOption(
       basedOnValue.value as ThemeValueKey,
       context.theme,
-    ) as ThemeModulation
+    )
 
     invariant(themeOption, `Theme option not found for ${basedOnValue.value}`)
+
+    // Custom tokens may be EXACT cells without a modulation step. Skip them so
+    // modulate() never runs against an undefined step and produces NaN rem.
+    if (!isModulatedToken(themeOption)) {
+      return EMPTY_VALUE
+    }
 
     return {
       type: ValueType.EXACT,

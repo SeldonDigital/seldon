@@ -122,28 +122,6 @@ export function getPalette({
   }
 }
 
-/**
- * Selects a single color from the generated palette by index.
- * @param theme - Theme configuration
- * @param index - Index of the color to select (0-4)
- * @returns HSL color from the palette
- */
-export function selectColorFromPalette({
-  theme,
-  index,
-}: {
-  theme: ThemePipelineInput
-  index: number
-}) {
-  const harmony = theme.colorHarmony.parameters
-  return getPalette({
-    baseColorHsl: colorspaceLiteralToHsl(harmony.baseColor),
-    harmony: harmony.harmony,
-    angle: harmony.angle,
-    step: harmony.step,
-  })[index]
-}
-
 function mod(hue: number): number {
   return (hue + 360) % 360
 }
@@ -153,7 +131,7 @@ function mod(hue: number): number {
  * @param theme - Theme configuration
  * @returns HSL white color
  */
-export function getWhiteColor(theme: ThemePipelineInput): HSL {
+function getWhiteColor(theme: ThemePipelineInput): HSL {
   const harmony = theme.colorHarmony.parameters
   const { hue } = colorspaceLiteralToHsl(harmony.baseColor)
   return {
@@ -168,7 +146,7 @@ export function getWhiteColor(theme: ThemePipelineInput): HSL {
  * @param theme - Theme configuration
  * @returns HSL gray color
  */
-export function getGrayColor(theme: ThemePipelineInput): HSL {
+function getGrayColor(theme: ThemePipelineInput): HSL {
   const harmony = theme.colorHarmony.parameters
   const { hue } = colorspaceLiteralToHsl(harmony.baseColor)
   return {
@@ -183,7 +161,7 @@ export function getGrayColor(theme: ThemePipelineInput): HSL {
  * @param theme - Theme configuration
  * @returns HSL black color
  */
-export function getBlackColor(theme: ThemePipelineInput): HSL {
+function getBlackColor(theme: ThemePipelineInput): HSL {
   const harmony = theme.colorHarmony.parameters
   const { hue } = colorspaceLiteralToHsl(harmony.baseColor)
   return {

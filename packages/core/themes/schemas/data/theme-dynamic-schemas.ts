@@ -4,6 +4,7 @@
  * see `helpers/resolve-theme-token-schema.ts`. Static entries live in `theme-static-schemas.ts`.
  */
 import { getDynamicSwatchName } from "../../compute/get-dynamic-swatch-names"
+import { SCALE_STEP_SECTIONS } from "../../constants/scale-sections"
 import { getReservedTokenKeys } from "../../helpers/reserved-token-names"
 import { LOOK_FACETS, isBridgedLookFacet } from "../../looks/look-facets"
 import type { LookFacetEntry, LookSection } from "../../looks/look-facets"
@@ -21,21 +22,6 @@ import type { ComputedGroupFacet } from "./theme-computed"
 import { SCALE_STEP_ROW_CONTROL } from "./theme-static-schemas"
 
 export type ThemeOrStock = StockTheme | ComputedTheme
-
-/** Scale sections whose custom rows render as a `.step` input. */
-const SCALE_STEP_SECTIONS = [
-  "size",
-  "dimension",
-  "margin",
-  "padding",
-  "gap",
-  "corners",
-  "fontSize",
-  "blur",
-  "spread",
-  "borderWidth",
-  "lineHeight",
-] as const
 
 /** Sections whose custom rows render as a bare unitless number (no `.step` suffix). */
 const SCALE_BARE_SECTIONS = ["fontWeight"] as const

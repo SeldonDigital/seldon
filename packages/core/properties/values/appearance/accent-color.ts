@@ -2,11 +2,7 @@ import { isValidColor } from "../../../helpers/validation/color"
 import { Theme } from "../../../themes/types"
 import { ComputedFunction } from "../../constants"
 import { PropertySchema } from "../../types/schema"
-import { EmptyValue } from "../shared/empty/empty"
-import { Color, ColorValue } from "./color"
-
-/** Unset or a color value for control accents. */
-export type AccentColorValue = EmptyValue | ColorValue
+import { Color } from "./color"
 
 export const accentColorSchema: PropertySchema = {
   name: "accentColor",

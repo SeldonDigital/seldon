@@ -49,11 +49,9 @@ export { BORDER_WIDTH_OPTIONS } from "../values"
 export {
   isDynamicSwatchToken,
   isFontFamilyToken,
-  isLookToken,
   isModulatedToken,
   isOptionToken,
   isSwatchToken,
-  isThemeExactNumberToken,
   isThemeExactToken,
 } from "../values"
 

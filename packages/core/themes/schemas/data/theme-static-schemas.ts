@@ -1,7 +1,8 @@
 /**
- * Static theme token catalog entries for fixed `StockTheme` paths (core, modulation steps, font stacks).
+ * Static theme token catalog entries for fixed `StockTheme` paths (modulation steps and slot scales).
  * Entries that vary per theme instance are built in `theme-dynamic-schemas.ts`.
  */
+import { capitalize } from "../../helpers/capitalize"
 import type { ThemeTokenSchema } from "../../types/schema"
 import { finalizeThemeTokenSchema } from "../helpers/finalize-theme-token-schema"
 import {
@@ -45,7 +46,7 @@ function makeScaleSlotSchemas<
   keys: readonly string[]
 }): ThemeTokenSchema[] {
   return keys.flatMap((key, index) => {
-    const label = key.charAt(0).toUpperCase() + key.slice(1)
+    const label = capitalize(key)
     const baseOrder = index * 2
     return [
       finalizeThemeTokenSchema({
@@ -101,7 +102,7 @@ export const borderWidthSchemas: ThemeTokenSchema[] = BORDER_WIDTH_ORDER.map(
   (key, index) =>
     finalizeThemeTokenSchema({
       key: `borderWidth.${key}.step`,
-      label: key.charAt(0).toUpperCase() + key.slice(1),
+      label: capitalize(key),
       valueType: SCALE_STEP_ROW_CONTROL.valueType,
       controlType: SCALE_STEP_ROW_CONTROL.controlType,
       unit: SCALE_STEP_ROW_CONTROL.unit,
@@ -125,7 +126,7 @@ export const lineHeightSchemas: ThemeTokenSchema[] = LINE_HEIGHT_ORDER.map(
   (key, index) =>
     finalizeThemeTokenSchema({
       key: `lineHeight.${key}.step`,
-      label: key.charAt(0).toUpperCase() + key.slice(1),
+      label: capitalize(key),
       valueType: SCALE_STEP_ROW_CONTROL.valueType,
       controlType: SCALE_STEP_ROW_CONTROL.controlType,
       unit: SCALE_STEP_ROW_CONTROL.unit,
@@ -139,7 +140,7 @@ export const fontWeightSchemas: ThemeTokenSchema[] = FONT_WEIGHT_ORDER.map(
   (key, index) =>
     finalizeThemeTokenSchema({
       key: `fontWeight.${key}`,
-      label: key.charAt(0).toUpperCase() + key.slice(1),
+      label: capitalize(key),
       valueType: "number",
       controlType: "number",
       unit: { type: "none", min: 100, max: 900, step: 100 },

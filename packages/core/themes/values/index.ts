@@ -45,14 +45,11 @@ export type { ThemeSwatchParameters } from "./shared/palette/theme-swatch-parame
 export type { ThemeFontFamilyToken } from "./shared/font-stack/theme-font-family-token"
 
 export {
-  isComputedGroupToken,
   isDynamicSwatchToken,
   isFontFamilyToken,
-  isLookToken,
   isModulatedToken,
   isOptionToken,
   isSwatchToken,
-  isThemeExactNumberToken,
   isThemeExactToken,
 } from "./shared/type-guards/theme-token-type-guards"
 

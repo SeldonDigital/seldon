@@ -1,13 +1,13 @@
 /**
  * Re-exports property value modules for `@seldon/core/properties/values`.
  *
- * Numbered `// N. …` blocks follow **PROPERTIES.md** catalog categories (Attributes, Layout,
+ * Numbered `// N. …` blocks follow the properties README catalog categories (Attributes, Layout,
  * Appearance, Typography, Effects), not the on-disk folder tree — for example `display` is
  * implemented under `layout/display` but is listed with Attributes in the spec.
  */
 
 // ========================================
-// 1. Attributes (PROPERTIES.md — may import from layout/, appearance/, etc.)
+// 1. Attributes (properties README — may import from layout/, appearance/, etc.)
 // ========================================
 export * from "./layout/display"
 export * from "./attributes/html-element"
@@ -29,7 +29,7 @@ export * from "./layout/screen-height"
 export * from "./attributes/cursor"
 
 // ========================================
-// 2. Layout (PROPERTIES.md)
+// 2. Layout (properties README)
 // ========================================
 export * from "./layout/direction"
 export * from "./layout/placement"
@@ -58,7 +58,7 @@ export * from "./layout/resize"
 export * from "./layout/screen-size"
 
 // ========================================
-// 3. Appearance (PROPERTIES.md)
+// 3. Appearance (properties README)
 // ========================================
 export * from "./appearance/color"
 export * from "./appearance/accent-color"
@@ -70,7 +70,7 @@ export * from "./appearance/border-collapse"
 export * from "./appearance/corners"
 
 // ========================================
-// 4. Typography (PROPERTIES.md)
+// 4. Typography (properties README)
 // ========================================
 export * from "./typography/font"
 export * from "./typography/text-align"
@@ -81,7 +81,7 @@ export * from "./typography/wrap-text"
 export * from "./typography/lines"
 
 // ========================================
-// 5. Effects (PROPERTIES.md)
+// 5. Effects (properties README)
 // ========================================
 export * from "./effects/gradients"
 export * from "./effects/shadow"
@@ -89,7 +89,7 @@ export * from "./effects/scroll"
 export * from "./effects/scrollbar-style"
 
 // ========================================
-// 6. Accessibility (PROPERTIES.md)
+// 6. Accessibility (properties README)
 // ========================================
 export * from "./accessibility/role"
 export * from "./accessibility/aria-label"
