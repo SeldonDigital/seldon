@@ -353,15 +353,6 @@ export function useRowProperty({
         options,
       )
 
-  // #region agent log
-  if (
-    typeof property.key === "string" &&
-    /brightness|opacity|width|height/.test(property.key)
-  ) {
-    fetch('http://127.0.0.1:7317/ingest/81a77911-750f-4747-9cde-12499a10af15',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'da20e2'},body:JSON.stringify({sessionId:'da20e2',hypothesisId:'FLICKER',location:'use-row-property.ts:render',message:'row render',data:{key:property.key,isEditing:isEditingProperty,status:property.status,displayValue:value,propertyValue:property.value},timestamp:Date.now()})}).catch(()=>{})
-  }
-  // #endregion
-
   const labelStyle = useMemo(
     () => getPropertyLabelStyle(property, showPropertyTypes),
     [property, showPropertyTypes],
