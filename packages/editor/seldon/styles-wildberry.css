@@ -32,7 +32,7 @@
   --sdn-color-black-point: 8%;
   --sdn-color-bleed: 12;
   --sdn-color-mode: light;
-  --sdn-color-chroma-change: -10%;
+  --sdn-color-chroma-change: 10%;
   --sdn-color-contrast-ratio: 2;
   /* Swatches */
   --sdn-swatch-white: hsl(327 12% 98%);
@@ -194,19 +194,19 @@
   --sdn-swatch-white: hsl(327 12% 8%);
   --sdn-swatch-gray: hsl(327 12% 42%);
   --sdn-swatch-black: hsl(327 12% 98%);
-  --sdn-swatch-primary: hsl(326 70% 45%);
-  --sdn-swatch-swatch1: hsl(324 63% 38%);
-  --sdn-swatch-swatch2: hsl(120 100% 11%);
-  --sdn-swatch-swatch3: hsl(44 100% 9%);
-  --sdn-swatch-swatch4: hsl(250 100% 74%);
+  --sdn-swatch-primary: hsl(325 92% 54%);
+  --sdn-swatch-swatch1: hsl(326 93% 67%);
+  --sdn-swatch-swatch2: hsl(152 100% 47%);
+  --sdn-swatch-swatch3: hsl(58 89% 49%);
+  --sdn-swatch-swatch4: hsl(246 100% 73%);
   --sdn-swatch-foreground: hsl(285 22% 9%);
   --sdn-swatch-background: hsl(285 12% 95%);
-  --sdn-swatch-active: hsl(326 67% 45%);
-  --sdn-swatch-punch: hsl(191 100% 17%);
-  --sdn-swatch-positive: hsl(120 100% 18%);
-  --sdn-swatch-negative: hsl(3 62% 50%);
-  --sdn-swatch-warning: hsl(26 100% 24%);
-  --sdn-swatch-accent: hsl(38 100% 14%);
+  --sdn-swatch-active: hsl(325 90% 56%);
+  --sdn-swatch-punch: hsl(185 100% 45%);
+  --sdn-swatch-positive: hsl(123 100% 39%);
+  --sdn-swatch-negative: hsl(1 86% 56%);
+  --sdn-swatch-warning: hsl(34 100% 48%);
+  --sdn-swatch-accent: hsl(48 100% 47%);
   --sdn-swatch-offBlack: hsl(0 0% 93%);
   --sdn-swatch-offWhite: hsl(0 0% 25%);
   /* High Contrast */
@@ -215,17 +215,17 @@
   --sdn-hc-on-black: hsl(327 12% 8%);
   --sdn-hc-on-primary: hsl(327 12% 98%);
   --sdn-hc-on-swatch1: hsl(327 12% 98%);
-  --sdn-hc-on-swatch2: hsl(327 12% 98%);
-  --sdn-hc-on-swatch3: hsl(327 12% 98%);
+  --sdn-hc-on-swatch2: hsl(327 12% 8%);
+  --sdn-hc-on-swatch3: hsl(327 12% 8%);
   --sdn-hc-on-swatch4: hsl(327 12% 98%);
   --sdn-hc-on-foreground: hsl(327 12% 98%);
   --sdn-hc-on-background: hsl(327 12% 8%);
   --sdn-hc-on-active: hsl(327 12% 98%);
-  --sdn-hc-on-punch: hsl(327 12% 98%);
+  --sdn-hc-on-punch: hsl(327 12% 8%);
   --sdn-hc-on-positive: hsl(327 12% 98%);
   --sdn-hc-on-negative: hsl(327 12% 98%);
   --sdn-hc-on-warning: hsl(327 12% 98%);
-  --sdn-hc-on-accent: hsl(327 12% 98%);
+  --sdn-hc-on-accent: hsl(327 12% 8%);
   --sdn-hc-on-offBlack: hsl(327 12% 8%);
   --sdn-hc-on-offWhite: hsl(327 12% 98%);
 }

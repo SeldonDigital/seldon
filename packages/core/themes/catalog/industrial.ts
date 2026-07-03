@@ -32,7 +32,7 @@ export const theme: StockTheme = {
       whitePoint: 90,
       grayPoint: 60,
       blackPoint: 20,
-      bleed: 80,
+      bleed: 40,
       mode: "dark",
       chromaChange: 0,
     },

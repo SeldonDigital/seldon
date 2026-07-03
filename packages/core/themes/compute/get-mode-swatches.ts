@@ -84,22 +84,31 @@ function chromaToHsl(color: chroma.Color): HSL {
 /**
  * Derives the opposite-mode color for one swatch. The color moves through LCH:
  * lightness inverts, and non-neutral swatches scale chroma by `chromaChange`
- * percent. The result comes back as HSL for stylesheet output.
+ * percent. Non-neutral swatches whose authored lightness already contrasts
+ * with the target mode's surfaces keep it instead of inverting: brighter than
+ * mid-tone when deriving dark mode, darker than mid-tone when deriving light
+ * mode. The result comes back as HSL for stylesheet output.
  */
 export function getOppositeModeSwatchColor(
   swatch: ThemeSwatch,
   swatchId: string,
   chromaChange: number,
+  targetMode: ThemeMode,
 ): HSL {
   const [lightness, chromaValue, rawHue] = swatchToChroma(swatch).lch()
   const hue = Number.isFinite(rawHue) ? rawHue : 0
 
-  const invertedLightness = Math.max(0, Math.min(100, 100 - lightness))
-  const adjustedChroma = MODE_NEUTRAL_SWATCH_IDS.has(swatchId)
+  const isNeutral = MODE_NEUTRAL_SWATCH_IDS.has(swatchId)
+  const keepsAuthoredLightness =
+    !isNeutral && (targetMode === "dark" ? lightness > 50 : lightness < 50)
+  const targetLightness = keepsAuthoredLightness
+    ? lightness
+    : Math.max(0, Math.min(100, 100 - lightness))
+  const adjustedChroma = isNeutral
     ? chromaValue
     : Math.max(0, chromaValue * (1 + chromaChange / 100))
 
-  return chromaToHsl(chroma.lch(invertedLightness, adjustedChroma, hue))
+  return chromaToHsl(chroma.lch(targetLightness, adjustedChroma, hue))
 }
 
 /** Returns a swatch's authored color as HSL without any transformation. */
@@ -148,7 +157,7 @@ export function getModeSwatches(
     result[swatchId] =
       targetMode === authoredMode
         ? swatchToHsl(swatch)
-        : getOppositeModeSwatchColor(swatch, swatchId, chromaChange)
+        : getOppositeModeSwatchColor(swatch, swatchId, chromaChange, targetMode)
   }
 
   return result

@@ -32,7 +32,7 @@
   --sdn-color-black-point: 12%;
   --sdn-color-bleed: 4;
   --sdn-color-mode: light;
-  --sdn-color-chroma-change: -10%;
+  --sdn-color-chroma-change: 10%;
   --sdn-color-contrast-ratio: 2.5;
   /* Swatches */
   --sdn-swatch-white: hsl(210 4% 98%);
@@ -194,19 +194,19 @@
   --sdn-swatch-white: hsl(210 4% 12%);
   --sdn-swatch-gray: hsl(210 4% 38%);
   --sdn-swatch-black: hsl(210 4% 98%);
-  --sdn-swatch-primary: hsl(213 68% 48%);
-  --sdn-swatch-swatch1: hsl(206 100% 30%);
-  --sdn-swatch-swatch2: hsl(203 100% 18%);
-  --sdn-swatch-swatch3: hsl(205 53% 8%);
-  --sdn-swatch-swatch4: hsl(359 0% 0%);
+  --sdn-swatch-primary: hsl(209 100% 46%);
+  --sdn-swatch-swatch1: hsl(208 94% 61%);
+  --sdn-swatch-swatch2: hsl(210 94% 78%);
+  --sdn-swatch-swatch3: hsl(210 95% 93%);
+  --sdn-swatch-swatch4: hsl(240 0% 100%);
   --sdn-swatch-foreground: hsl(210 6% 98%);
   --sdn-swatch-background: hsl(210 8% 14%);
-  --sdn-swatch-active: hsl(213 68% 48%);
-  --sdn-swatch-punch: hsl(328 57% 56%);
-  --sdn-swatch-positive: hsl(161 80% 27%);
-  --sdn-swatch-negative: hsl(0 68% 60%);
-  --sdn-swatch-warning: hsl(30 100% 28%);
-  --sdn-swatch-accent: hsl(244 79% 70%);
+  --sdn-swatch-active: hsl(209 100% 46%);
+  --sdn-swatch-punch: hsl(326 72% 55%);
+  --sdn-swatch-positive: hsl(163 100% 29%);
+  --sdn-swatch-negative: hsl(357 85% 59%);
+  --sdn-swatch-warning: hsl(34 100% 43%);
+  --sdn-swatch-accent: hsl(240 100% 72%);
   --sdn-swatch-offBlack: hsl(210 10% 97%);
   --sdn-swatch-offWhite: hsl(0 0% 15%);
   /* High Contrast */
@@ -215,9 +215,9 @@
   --sdn-hc-on-black: hsl(210 4% 12%);
   --sdn-hc-on-primary: hsl(210 4% 98%);
   --sdn-hc-on-swatch1: hsl(210 4% 98%);
-  --sdn-hc-on-swatch2: hsl(210 4% 98%);
-  --sdn-hc-on-swatch3: hsl(210 4% 98%);
-  --sdn-hc-on-swatch4: hsl(210 4% 98%);
+  --sdn-hc-on-swatch2: hsl(210 4% 12%);
+  --sdn-hc-on-swatch3: hsl(210 4% 12%);
+  --sdn-hc-on-swatch4: hsl(210 4% 12%);
   --sdn-hc-on-foreground: hsl(210 4% 12%);
   --sdn-hc-on-background: hsl(210 4% 98%);
   --sdn-hc-on-active: hsl(210 4% 98%);

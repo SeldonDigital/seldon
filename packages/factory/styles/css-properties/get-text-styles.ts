@@ -1,4 +1,10 @@
-import { TextAlign, TextCasing, TextDecoration, ValueType } from "@seldon/core"
+import {
+  FontStyle,
+  TextAlign,
+  TextCasing,
+  TextDecoration,
+  ValueType,
+} from "@seldon/core"
 import { resolveFontFamily } from "@seldon/core/helpers/resolution/resolve-font-family"
 import { resolveFontSize } from "@seldon/core/helpers/resolution/resolve-font-size"
 import { resolveValue } from "@seldon/core/helpers/resolution/resolve-value"
@@ -73,11 +79,13 @@ export function getTextStyles({
     styles.fontFamily = familyReference ?? family.value
   }
 
-  // Only apply if font.style is defined in the schema
+  // Only apply if font.style is defined in the schema. Italic emits as
+  // `oblique 14deg`: font matching prefers a real oblique or italic face when
+  // the family ships one and otherwise synthesizes the 14 degree slant, so the
+  // style stays visible in fonts without an italic face.
   if (style && properties.font?.style) {
-    styles.fontStyle = style.value
-    // Only display text in italic if the font supports it
-    styles.fontSynthesisStyle = "none"
+    styles.fontStyle =
+      style.value === FontStyle.ITALIC ? "oblique 14deg" : style.value
   }
 
   // Only apply if font.weight is defined in the schema

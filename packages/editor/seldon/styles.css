@@ -466,7 +466,7 @@ body {
   padding-bottom: var(--sdn-paddings-compact);
   padding-left: var(--sdn-paddings-cozy);
   box-shadow: 0px 2px 0.375rem 0.125rem
-    color-mix(in srgb, var(--sdn-swatch-black) 35%, transparent);
+    color-mix(in srgb, var(--sdn-swatch-black) 10%, transparent);
   align-self: stretch;
   height: fit-content;
   flex-shrink: 0;
@@ -779,7 +779,7 @@ body {
   gap: auto;
   justify-content: space-between;
   box-shadow: 0px 4px 0.5rem 0.188rem
-    color-mix(in srgb, var(--sdn-swatch-black) 33%, transparent);
+    color-mix(in srgb, var(--sdn-swatch-black) 10%, transparent);
   width: 450px;
   height: 350px;
   flex-shrink: 0;
@@ -892,7 +892,6 @@ body {
   flex-shrink: 0;
   font-family: var(--sdn-font-family-primary);
   font-style: normal;
-  font-synthesis-style: none;
   font-weight: var(--sdn-font-weight-normal);
   font-size: var(--sdn-font-size-small);
   line-height: var(--sdn-line-height-tight);
@@ -1284,7 +1283,6 @@ body {
   flex-shrink: 0;
   font-family: var(--sdn-font-family-primary);
   font-style: normal;
-  font-synthesis-style: none;
   font-weight: var(--sdn-font-weight-normal);
   font-size: var(--sdn-font-size-medium);
   line-height: var(--sdn-line-height-tight);
@@ -1299,7 +1297,6 @@ body {
   flex-shrink: 0;
   font-family: var(--sdn-font-family-primary);
   font-style: normal;
-  font-synthesis-style: none;
   font-weight: var(--sdn-font-weight-light);
   font-size: var(--sdn-font-size-xsmall);
   line-height: var(--sdn-line-height-compact);
@@ -1316,7 +1313,6 @@ body {
   flex-shrink: 0;
   font-family: Inconsolata;
   font-style: normal;
-  font-synthesis-style: none;
   font-weight: var(--sdn-font-weight-normal);
   font-size: var(--sdn-font-size-medium);
   line-height: var(--sdn-line-height-tight);
@@ -1331,7 +1327,6 @@ body {
   flex-shrink: 0;
   font-family: var(--sdn-font-family-secondary);
   font-style: normal;
-  font-synthesis-style: none;
   font-weight: var(--sdn-font-weight-bold);
   font-size: var(--sdn-font-size-xxlarge);
   line-height: var(--sdn-line-height-solid);
@@ -1349,7 +1344,6 @@ body {
   flex-shrink: 0;
   font-family: var(--sdn-font-family-secondary);
   font-style: normal;
-  font-synthesis-style: none;
   font-weight: var(--sdn-font-weight-semibold);
   font-size: var(--sdn-font-size-xlarge);
   line-height: var(--sdn-line-height-tight);
@@ -1366,7 +1360,6 @@ body {
   flex-shrink: 0;
   font-family: var(--sdn-font-family-primary);
   font-style: normal;
-  font-synthesis-style: none;
   font-weight: var(--sdn-font-weight-normal);
   font-size: var(--sdn-font-size-small);
   line-height: var(--sdn-line-height-solid);
@@ -1413,7 +1406,6 @@ body {
   flex-shrink: 0;
   font-family: var(--sdn-font-family-primary);
   font-style: normal;
-  font-synthesis-style: none;
   font-weight: var(--sdn-font-weight-normal);
   font-size: var(--sdn-font-size-small);
   line-height: var(--sdn-line-height-solid);
@@ -1431,7 +1423,6 @@ body {
   flex-shrink: 0;
   font-family: var(--sdn-font-family-secondary);
   font-style: normal;
-  font-synthesis-style: none;
   font-weight: var(--sdn-font-weight-medium);
   font-size: var(--sdn-font-size-large);
   line-height: var(--sdn-line-height-tight);
@@ -1448,7 +1439,6 @@ body {
   flex-shrink: 0;
   font-family: var(--sdn-font-family-primary);
   font-style: normal;
-  font-synthesis-style: none;
   font-weight: var(--sdn-font-weight-normal);
   font-size: var(--sdn-font-size-small);
   line-height: var(--sdn-line-height-tight);
@@ -1465,7 +1455,6 @@ body {
   flex-shrink: 0;
   font-family: var(--sdn-font-family-primary);
   font-style: normal;
-  font-synthesis-style: none;
   font-weight: var(--sdn-font-weight-medium);
   font-size: var(--sdn-font-size-xsmall);
   line-height: var(--sdn-line-height-tight);
@@ -1482,7 +1471,6 @@ body {
   flex-shrink: 0;
   font-family: var(--sdn-font-family-primary);
   font-style: normal;
-  font-synthesis-style: none;
   font-weight: var(--sdn-font-weight-medium);
   font-size: var(--sdn-font-size-medium);
   line-height: var(--sdn-line-height-tight);
@@ -1993,6 +1981,7 @@ body {
 }
 
 .sdn-icon--iqmk {
+  cursor: pointer;
   font-size: var(--sdn-cmp-auto-fit-font-size-small);
 }
 
@@ -2292,7 +2281,6 @@ body {
   color: var(--sdn-hc-on-primary);
   font-family: var(--sdn-font-family-primary);
   font-style: normal;
-  font-synthesis-style: none;
   font-weight: var(--sdn-font-weight-normal);
   font-size: var(--sdn-font-size-small);
   line-height: var(--sdn-line-height-solid);
@@ -2304,7 +2292,6 @@ body {
   flex-shrink: unset;
   font-family: unset;
   font-style: unset;
-  font-synthesis-style: unset;
   line-height: unset;
   color: var(--sdn-hc-on-primary);
   flex: 1 0 0;
@@ -2330,7 +2317,6 @@ body {
   flex-shrink: unset;
   font-family: unset;
   font-style: unset;
-  font-synthesis-style: unset;
   font-weight: unset;
   line-height: unset;
   letter-spacing: unset;
@@ -2405,7 +2391,6 @@ body {
   flex-shrink: unset;
   font-family: unset;
   font-style: unset;
-  font-synthesis-style: unset;
   font-weight: unset;
   line-height: unset;
   letter-spacing: unset;
@@ -2425,7 +2410,6 @@ body {
 .sdn-text-label--oqkb {
   font-family: unset;
   font-style: unset;
-  font-synthesis-style: unset;
   font-weight: unset;
   line-height: unset;
   letter-spacing: unset;
@@ -2439,7 +2423,6 @@ body {
   align-self: unset;
   font-family: unset;
   font-style: unset;
-  font-synthesis-style: unset;
   font-weight: unset;
   line-height: unset;
   letter-spacing: unset;
@@ -2451,7 +2434,6 @@ body {
 .sdn-text-label--ptvk {
   font-family: unset;
   font-style: unset;
-  font-synthesis-style: unset;
   font-weight: unset;
   line-height: unset;
   letter-spacing: unset;
@@ -2525,6 +2507,7 @@ body {
 .sdn-text-label--zw0q {
   align-self: unset;
   flex-shrink: unset;
+  cursor: pointer;
   flex: 1 0 0;
   min-width: 0;
   font-size: var(--sdn-cmp-auto-fit-font-size-small);
