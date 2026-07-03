@@ -1,9 +1,9 @@
 "use client"
 
-import { useInterfaceModeAttribute } from "@lib/chrome/use-interface-mode-attribute"
-import { CSSProperties, PropsWithChildren, useRef } from "react"
+import { CSSProperties, PropsWithChildren } from "react"
 import { useAppState } from "@lib/hooks/use-app-state"
 import { useEditorConfig } from "@lib/hooks/use-editor-config"
+import { useResolvedInterfaceMode } from "@lib/hooks/use-system-color-scheme"
 import { VMTopbar } from "./topbar/VMTopbar"
 
 export function Layout({
@@ -12,19 +12,18 @@ export function Layout({
 }: PropsWithChildren<{ testId?: string }>) {
   const { showPanels, chromeTheme } = useEditorConfig()
   const { appState } = useAppState()
-  const layoutRef = useRef<HTMLDivElement>(null)
-  useInterfaceModeAttribute(layoutRef)
+  const resolvedMode = useResolvedInterfaceMode()
 
   const shouldShowHeader = appState === "project" || showPanels
 
-  // The chrome theme scopes the editor interface only. The canvas pins itself
-  // back to the default theme so it never follows this attribute.
+  // The chrome theme and mode scope the editor interface only. The canvas pins
+  // itself back to the default theme so it never follows these attributes.
   return (
     <div
-      ref={layoutRef}
       style={styles.layout}
       data-testid={testId}
       data-theme={chromeTheme}
+      data-mode={resolvedMode}
     >
       {shouldShowHeader && <VMTopbar />}
       {children}

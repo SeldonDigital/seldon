@@ -69,3 +69,5 @@ export function emitComputedThemeVariables(theme: Theme): string {
   }
   return out
 }
+
+export { emitHighContrastVariables } from "./high-contrast.strategy"

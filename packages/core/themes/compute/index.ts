@@ -6,6 +6,7 @@ export { computeTheme } from "../helpers/compute-theme"
 export { getDynamicSwatchColors, getPalette } from "./get-dynamic-swatch-color"
 export {
   MODE_NEUTRAL_SWATCH_IDS,
+  MODE_SWAPPED_SWATCH_PAIRS,
   getOppositeModeSwatchColor,
   getOppositeModeSwatches,
 } from "./get-mode-swatches"

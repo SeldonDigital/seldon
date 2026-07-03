@@ -191,22 +191,41 @@
 
 [data-theme="ibm-carbon"][data-mode="dark"] {
   /* Swatches */
-  --sdn-swatch-white: hsl(220 11% 3%);
+  --sdn-swatch-white: hsl(220 12% 8%);
   --sdn-swatch-gray: hsl(220 12% 41%);
-  --sdn-swatch-black: hsl(221 20% 94%);
+  --sdn-swatch-black: hsl(220 12% 98%);
   --sdn-swatch-primary: hsl(225 100% 63%);
   --sdn-swatch-swatch1: hsl(210 100% 30%);
   --sdn-swatch-swatch2: hsl(26 100% 19%);
   --sdn-swatch-swatch3: hsl(32 100% 11%);
   --sdn-swatch-swatch4: hsl(32 100% 5%);
-  --sdn-swatch-foreground: hsl(221 17% 89%);
-  --sdn-swatch-background: hsl(359 0% 0%);
+  --sdn-swatch-foreground: hsl(0 0% 100%);
+  --sdn-swatch-background: hsl(220 12% 12%);
   --sdn-swatch-active: hsl(225 100% 63%);
   --sdn-swatch-punch: hsl(206 100% 35%);
   --sdn-swatch-positive: hsl(135 100% 23%);
   --sdn-swatch-negative: hsl(0 84% 57%);
   --sdn-swatch-warning: hsl(37 100% 13%);
   --sdn-swatch-accent: hsl(265 100% 66%);
-  --sdn-swatch-offBlack: hsl(160 0% 86%);
-  --sdn-swatch-offWhite: hsl(344 0% 5%);
+  --sdn-swatch-offBlack: hsl(0 0% 96%);
+  --sdn-swatch-offWhite: hsl(0 0% 13%);
+  /* High Contrast */
+  --sdn-hc-on-white: hsl(220 12% 98%);
+  --sdn-hc-on-gray: hsl(220 12% 8%);
+  --sdn-hc-on-black: hsl(220 12% 8%);
+  --sdn-hc-on-primary: hsl(220 12% 8%);
+  --sdn-hc-on-swatch1: hsl(220 12% 8%);
+  --sdn-hc-on-swatch2: hsl(220 12% 98%);
+  --sdn-hc-on-swatch3: hsl(220 12% 98%);
+  --sdn-hc-on-swatch4: hsl(220 12% 98%);
+  --sdn-hc-on-foreground: hsl(220 12% 8%);
+  --sdn-hc-on-background: hsl(220 12% 98%);
+  --sdn-hc-on-active: hsl(220 12% 8%);
+  --sdn-hc-on-punch: hsl(220 12% 8%);
+  --sdn-hc-on-positive: hsl(220 12% 8%);
+  --sdn-hc-on-negative: hsl(220 12% 8%);
+  --sdn-hc-on-warning: hsl(220 12% 98%);
+  --sdn-hc-on-accent: hsl(220 12% 8%);
+  --sdn-hc-on-offBlack: hsl(220 12% 8%);
+  --sdn-hc-on-offWhite: hsl(220 12% 98%);
 }

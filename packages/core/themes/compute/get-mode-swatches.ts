@@ -6,8 +6,21 @@ import type { Theme } from "../types/theme"
 import type { ThemeSwatch } from "../values/shared/palette/theme-swatch"
 
 /**
- * Swatches that flip between modes by lightness inversion only. The
- * `chromaChange` adjustment never applies to them.
+ * Neutral slots that flip between modes by exchanging their authored colors.
+ * No derivation applies to them: in the opposite mode each slot takes its
+ * partner's authored value verbatim.
+ */
+export const MODE_SWAPPED_SWATCH_PAIRS: ReadonlyArray<
+  readonly [string, string]
+> = [
+  ["white", "black"],
+  ["foreground", "background"],
+  ["offBlack", "offWhite"],
+]
+
+/**
+ * Swatches that never take the `chromaChange` adjustment. The paired slots
+ * swap authored colors at the table level; `gray` inverts lightness only.
  */
 export const MODE_NEUTRAL_SWATCH_IDS = new Set<string>([
   "white",
@@ -81,16 +94,40 @@ export function getOppositeModeSwatchColor(
   return chromaToHsl(chroma.lch(invertedLightness, adjustedChroma, hue))
 }
 
+/** Returns a swatch's authored color as HSL without any transformation. */
+function swatchToHsl(swatch: ThemeSwatch): HSL {
+  if (swatch.parameters.colorspace === Colorspace.HSL) {
+    return swatch.parameters.value
+  }
+  return chromaToHsl(swatchToChroma(swatch))
+}
+
 /**
  * Computes the opposite-mode color for every swatch on a computed theme, keyed
- * by swatch id. `chromaChange` comes from the theme's color harmony parameters.
+ * by swatch id. Paired neutral slots exchange their authored colors. Every
+ * other swatch derives through LCH, with `chromaChange` coming from the
+ * theme's color harmony parameters.
  */
 export function getOppositeModeSwatches(theme: Theme): Record<string, HSL> {
   const chromaChange = theme.colorHarmony.parameters.chromaChange ?? 0
   const result: Record<string, HSL> = {}
 
+  const swapPartner = new Map<string, string>()
+  for (const [a, b] of MODE_SWAPPED_SWATCH_PAIRS) {
+    swapPartner.set(a, b)
+    swapPartner.set(b, a)
+  }
+
   for (const [swatchId, swatch] of Object.entries(theme.swatch)) {
     if (!swatch) continue
+
+    const partnerId = swapPartner.get(swatchId)
+    if (partnerId) {
+      const partner = theme.swatch[partnerId as keyof Theme["swatch"]]
+      result[swatchId] = swatchToHsl(partner ?? swatch)
+      continue
+    }
+
     result[swatchId] = getOppositeModeSwatchColor(swatch, swatchId, chromaChange)
   }
 

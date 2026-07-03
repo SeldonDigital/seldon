@@ -11,7 +11,10 @@ import type { ThemeScaleToken, ThemeSwatch } from "@seldon/core/themes/values"
 import { workspaceThemeService } from "@seldon/core/workspace/services"
 import { Workspace } from "@seldon/core/workspace/types"
 
-import { emitComputedThemeVariables } from "../../../styles/computed-variables"
+import {
+  emitComputedThemeVariables,
+  emitHighContrastVariables,
+} from "../../../styles/computed-variables"
 import { getThemeSwatchVarNames } from "../../../styles/css-properties/get-theme-swatch-names"
 import { format } from "../utils/format"
 import { getThemeSlug } from "./get-theme-slug"
@@ -189,9 +192,10 @@ function generateThemeCSSVariables(theme: Theme, slug: string): string {
 }
 
 /**
- * Swatch variables for the mode opposite to the theme's authored `mode`. Each
- * color moves through LCH: lightness inverts, and non-neutral swatches scale
- * chroma by the theme's `chromaChange` percentage.
+ * Swatch variables for the mode opposite to the theme's authored `mode`. The
+ * neutral pairs (foreground/background, white/black, offBlack/offWhite) swap
+ * their authored colors. Every other color moves through LCH: lightness
+ * inverts and chroma scales by the theme's `chromaChange` percentage.
  */
 function generateOppositeModeCSSVariables(theme: Theme): string {
   const swatches = getOppositeModeSwatches(theme)
@@ -203,6 +207,11 @@ function generateOppositeModeCSSVariables(theme: Theme): string {
     if (!swatchName) return
     cssVariables += `  --sdn-swatch-${swatchName}: ${HSLObjectToString(hsl)};\n`
   })
+
+  // Mode switching swaps the authored neutral pairs, so each surface's
+  // readable foreground is the partner of the base pick. Re-emit the
+  // high-contrast family with every choice flipped.
+  cssVariables += emitHighContrastVariables(theme, true)
 
   return cssVariables
 }

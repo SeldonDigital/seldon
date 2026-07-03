@@ -10630,7 +10630,7 @@
             },
             "color": {
               "type": "theme.categorical",
-              "value": "@swatch.offBlack"
+              "value": "@swatch.offWhite"
             },
             "brightness": {
               "type": "exact",
@@ -17636,6 +17636,10 @@
             "type": "theme.ordinal",
             "value": "@margin.tight"
           }
+        },
+        "cursor": {
+          "type": "option",
+          "value": "pointer"
         }
       },
       "origin": "schema",
@@ -30172,7 +30176,25 @@
               "value": null
             }
           }
-        ]
+        ],
+        "corners": {
+          "topLeft": {
+            "type": "option",
+            "value": "squared"
+          },
+          "topRight": {
+            "type": "option",
+            "value": "squared"
+          },
+          "bottomRight": {
+            "type": "option",
+            "value": "squared"
+          },
+          "bottomLeft": {
+            "type": "option",
+            "value": "squared"
+          }
+        }
       },
       "__editor": {
         "initialOverrides": {

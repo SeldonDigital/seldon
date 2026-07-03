@@ -191,22 +191,41 @@
 
 [data-theme="sunset-blue"][data-mode="dark"] {
   /* Swatches */
-  --sdn-swatch-white: hsl(197 13% 2%);
+  --sdn-swatch-white: hsl(197 12% 8%);
   --sdn-swatch-gray: hsl(197 14% 36%);
-  --sdn-swatch-black: hsl(198 16% 92%);
+  --sdn-swatch-black: hsl(197 12% 98%);
   --sdn-swatch-primary: hsl(202 100% 31%);
   --sdn-swatch-swatch1: hsl(33 100% 21%);
   --sdn-swatch-swatch2: hsl(29 100% 15%);
   --sdn-swatch-swatch3: hsl(359 91% 56%);
   --sdn-swatch-swatch4: hsl(347 100% 43%);
-  --sdn-swatch-foreground: hsl(213 34% 84%);
-  --sdn-swatch-background: hsl(200 32% 1%);
+  --sdn-swatch-foreground: hsl(200 30% 99%);
+  --sdn-swatch-background: hsl(210 28% 15%);
   --sdn-swatch-active: hsl(202 100% 31%);
   --sdn-swatch-punch: hsl(7 80% 40%);
   --sdn-swatch-positive: hsl(120 100% 15%);
   --sdn-swatch-negative: hsl(353 84% 46%);
   --sdn-swatch-warning: hsl(28 100% 16%);
   --sdn-swatch-accent: hsl(218 66% 67%);
-  --sdn-swatch-offBlack: hsl(213 33% 83%);
-  --sdn-swatch-offWhite: hsl(200 0% 8%);
+  --sdn-swatch-offBlack: hsl(0 0% 93%);
+  --sdn-swatch-offWhite: hsl(210 28% 16%);
+  /* High Contrast */
+  --sdn-hc-on-white: hsl(197 12% 98%);
+  --sdn-hc-on-gray: hsl(197 12% 8%);
+  --sdn-hc-on-black: hsl(197 12% 8%);
+  --sdn-hc-on-primary: hsl(197 12% 8%);
+  --sdn-hc-on-swatch1: hsl(197 12% 8%);
+  --sdn-hc-on-swatch2: hsl(197 12% 98%);
+  --sdn-hc-on-swatch3: hsl(197 12% 8%);
+  --sdn-hc-on-swatch4: hsl(197 12% 8%);
+  --sdn-hc-on-foreground: hsl(197 12% 8%);
+  --sdn-hc-on-background: hsl(197 12% 98%);
+  --sdn-hc-on-active: hsl(197 12% 8%);
+  --sdn-hc-on-punch: hsl(197 12% 8%);
+  --sdn-hc-on-positive: hsl(197 12% 98%);
+  --sdn-hc-on-negative: hsl(197 12% 8%);
+  --sdn-hc-on-warning: hsl(197 12% 98%);
+  --sdn-hc-on-accent: hsl(197 12% 8%);
+  --sdn-hc-on-offBlack: hsl(197 12% 8%);
+  --sdn-hc-on-offWhite: hsl(197 12% 98%);
 }

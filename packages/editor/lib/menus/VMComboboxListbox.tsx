@@ -9,10 +9,10 @@
  * Only functional placement (fixed position, scroll) is applied inline; all
  * appearance comes from the authored component CSS.
  */
-import { useInterfaceModeAttribute } from "@lib/chrome/use-interface-mode-attribute"
-import { CSSProperties, Fragment, MouseEvent, ReactNode, useRef } from "react"
+import { CSSProperties, Fragment, MouseEvent, ReactNode } from "react"
 import { createPortal } from "react-dom"
 import { useEditorConfig } from "@lib/hooks/use-editor-config"
+import { useResolvedInterfaceMode } from "@lib/hooks/use-system-color-scheme"
 import { Backdrop } from "@seldon/components/custom-components"
 import { ListboxOption } from "@seldon/components/elements/ListboxOption"
 import { Listbox } from "@seldon/components/parts/Listbox"
@@ -74,8 +74,7 @@ export function VMComboboxListbox({
   onHighlight,
 }: VMComboboxListboxProps) {
   const { chromeTheme } = useEditorConfig()
-  const listboxRef = useRef<HTMLDivElement>(null)
-  useInterfaceModeAttribute(listboxRef)
+  const resolvedMode = useResolvedInterfaceMode()
   if (!open) {
     return null
   }
@@ -156,7 +155,7 @@ export function VMComboboxListbox({
     : (filteredOptions as ComboboxOptionItem[]).map(renderOption)
 
   return createPortal(
-    <div ref={listboxRef} data-theme={chromeTheme} style={themeScopeStyle}>
+    <div data-theme={chromeTheme} data-mode={resolvedMode} style={themeScopeStyle}>
       <Backdrop onClick={handleClose} style={backdropStyle} />
       <Listbox style={panelStyle} onMouseLeave={onPointerLeave}>
         {content}

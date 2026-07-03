@@ -6,7 +6,7 @@ import {
   resolveHighContrastForeground,
   resolveHighContrastSource,
 } from "@seldon/core/properties/compute"
-import type { ThemeSwatch } from "@seldon/core/themes/types"
+import type { Theme, ThemeSwatch } from "@seldon/core/themes/types"
 
 import { getColorCSSValue } from "../css-properties/get-color-css-value"
 import {
@@ -61,23 +61,37 @@ export const highContrastStrategy: ComputedVariableStrategy = {
   },
 
   emit(theme) {
-    let out = "  /* High Contrast */\n"
-    for (const slot of REFERENCEABLE_SWATCH_SLOTS) {
-      const swatch = theme.swatch[slot as keyof typeof theme.swatch] as
-        | ThemeSwatch
-        | undefined
-      if (!swatch) continue
-      const foreground = resolveHighContrastForeground(
-        themeSwatchToColorValue(swatch),
-        theme,
-      )
-      const css = getColorCSSValue({
-        color: foreground as ColorValue,
-        theme,
-        useThemeVariableReferences: false,
-      })
-      out += `  ${highContrastVarName(slot)}: ${css};\n`
-    }
-    return out
+    return emitHighContrastVariables(theme)
   },
+}
+
+/**
+ * Emits one `--sdn-hc-on-{slot}` line per referenceable surface swatch, evaluated against the
+ * authored swatch colors. With `pickOpposite`, each line takes the partner of the base pick: mode
+ * switching swaps the authored neutral pairs, so the opposite-mode block flips every choice
+ * instead of evaluating derived colors.
+ */
+export function emitHighContrastVariables(
+  theme: Theme,
+  pickOpposite = false,
+): string {
+  let out = "  /* High Contrast */\n"
+  for (const slot of REFERENCEABLE_SWATCH_SLOTS) {
+    const swatch = theme.swatch[slot as keyof typeof theme.swatch] as
+      | ThemeSwatch
+      | undefined
+    if (!swatch) continue
+    const foreground = resolveHighContrastForeground(
+      themeSwatchToColorValue(swatch),
+      theme,
+      pickOpposite,
+    )
+    const css = getColorCSSValue({
+      color: foreground as ColorValue,
+      theme,
+      useThemeVariableReferences: false,
+    })
+    out += `  ${highContrastVarName(slot)}: ${css};\n`
+  }
+  return out
 }

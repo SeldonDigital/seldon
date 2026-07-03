@@ -470,7 +470,7 @@ body {
   align-self: stretch;
   height: fit-content;
   flex-shrink: 0;
-  border-radius: var(--sdn-corners-tight);
+  border-radius: 0px;
 }
 
 .sdn-button {
@@ -1797,7 +1797,7 @@ body {
 }
 
 .sdn-frame--88jo {
-  background-color: var(--sdn-swatch-offBlack);
+  background-color: var(--sdn-swatch-offWhite);
   gap: var(--sdn-gaps-compact);
   padding: var(--sdn-paddings-compact);
 }
@@ -2517,6 +2517,7 @@ body {
 .sdn-text-label--rcpl {
   align-self: unset;
   flex-shrink: unset;
+  cursor: pointer;
   color: hsl(203 0% 8%);
   margin-left: var(--sdn-margins-tight);
   flex: 1 0 0;
@@ -2578,6 +2579,7 @@ body {
 .sdn-text-label--z34z {
   align-self: unset;
   flex-shrink: unset;
+  cursor: pointer;
   color: var(--sdn-hc-on-primary);
   margin-left: var(--sdn-margins-tight);
   flex: 1 0 0;
