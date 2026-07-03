@@ -7,6 +7,8 @@ import {
   getEffectiveNodeProperties,
   getInheritedNodeProperties,
 } from "../../compute/compute-node-properties"
+import { DEFAULT_THEME_ID } from "../../constants"
+import { getBoardThemeRef } from "../../helpers/components/get-board-theme-ref"
 import { getComponentPropertyDefaults } from "../../helpers/components/get-component-property-defaults"
 import { getWorkspaceNodes } from "../../helpers/general/get-workspace-nodes"
 import { getNodeSubtreeIds } from "../../helpers/nodes/get-node-subtree-ids"
@@ -29,6 +31,7 @@ import {
   withBoardMutation,
   withNodeMutation,
 } from "../shared/workspace-operation-helpers"
+import { setComponentTheme } from "./theme-mutations"
 
 interface PropertyResetTarget {
   propertyKey: PropertyKey
@@ -171,9 +174,11 @@ export function setComponentProperties(
 }
 
 /**
- * Copies a source board's component properties onto every other component
- * board. Each target only receives keys it exposes, so the merge stays valid
- * for boards whose schemas differ from the source.
+ * Copies a source board's component properties and theme onto every other
+ * component board. Each target only receives property keys it exposes, so the
+ * merge stays valid for boards whose schemas differ from the source. The theme
+ * applies through the same path as `set_component_theme`, so variants that
+ * inherit the board theme keep valid token references.
  */
 export function applyComponentPropertiesToAllBoards(
   sourceBoardKey: BoardKey,
@@ -183,33 +188,66 @@ export function applyComponentPropertiesToAllBoards(
   if (!source || source.type !== "component") return workspace
 
   const sourceProperties = source.componentProperties
-  if (!sourceProperties || Object.keys(sourceProperties).length === 0) {
-    return workspace
-  }
-
   const sharedDefaultKeys = Object.keys(getComponentPropertyDefaults())
 
-  return mutateWorkspace(workspace, (draft) => {
-    for (const [boardKey, board] of Object.entries(draft.boards)) {
-      if (boardKey === sourceBoardKey || board.type !== "component") continue
+  let result = workspace
+  if (sourceProperties && Object.keys(sourceProperties).length > 0) {
+    result = mutateWorkspace(workspace, (draft) => {
+      for (const [boardKey, board] of Object.entries(draft.boards)) {
+        if (boardKey === sourceBoardKey || board.type !== "component") continue
 
-      const allowedKeys = new Set([
-        ...Object.keys(getComponentSchema(boardKey as ComponentId).properties),
-        ...sharedDefaultKeys,
-      ])
-      const filtered = filterPropertiesToAllowedKeys(
-        sourceProperties,
-        allowedKeys,
-      )
-      if (Object.keys(filtered).length === 0) continue
+        const allowedKeys = new Set([
+          ...Object.keys(
+            getComponentSchema(boardKey as ComponentId).properties,
+          ),
+          ...sharedDefaultKeys,
+        ])
+        const filtered = filterPropertiesToAllowedKeys(
+          sourceProperties,
+          allowedKeys,
+        )
+        if (Object.keys(filtered).length === 0) continue
 
-      board.componentProperties = mergeProperties(
-        board.componentProperties,
-        filtered,
-        { mergeSubProperties: true },
-      )
-    }
+        board.componentProperties = mergeProperties(
+          board.componentProperties,
+          filtered,
+          { mergeSubProperties: true },
+        )
+      }
+    })
+  }
+
+  const sourceTheme = getBoardThemeRef(source) ?? DEFAULT_THEME_ID
+  for (const [boardKey, board] of Object.entries(result.boards)) {
+    if (boardKey === sourceBoardKey || board.type !== "component") continue
+    const targetTheme = getBoardThemeRef(board) ?? DEFAULT_THEME_ID
+    if (targetTheme === sourceTheme) continue
+    result = setComponentTheme(boardKey as BoardKey, sourceTheme, result)
+  }
+  return result
+}
+
+/**
+ * Resets a component board to its defaults: clears every component property
+ * override and returns the board theme to the workspace default, remapping
+ * tokens on variants that inherit the board theme.
+ */
+export function resetComponentBoard(
+  boardKey: BoardKey,
+  workspace: Workspace,
+): Workspace {
+  const board = workspace.boards[boardKey]
+  if (!board || board.type !== "component") return workspace
+
+  const result = mutateWorkspace(workspace, (draft) => {
+    const draftBoard = draft.boards[boardKey]
+    if (!draftBoard || draftBoard.type !== "component") return
+    draftBoard.componentProperties = {}
   })
+
+  const currentTheme = getBoardThemeRef(board) ?? DEFAULT_THEME_ID
+  if (currentTheme === DEFAULT_THEME_ID) return result
+  return setComponentTheme(boardKey, DEFAULT_THEME_ID, result)
 }
 
 /** Keeps only the properties whose top-level key is in the allowed set. */

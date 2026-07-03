@@ -18,7 +18,9 @@ import {
   getLayerAddOptions,
   isThemeCustomTokenSection,
 } from "@seldon/core"
+import { PropertyDisplayCategory } from "@seldon/core/properties/schemas"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
+import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { useObjectProperties } from "@lib/workspace/hooks/use-object-properties"
 import {
   useBorderSideVisibility,
@@ -276,10 +278,54 @@ function TreeSection({
     return () => themeEditingContext.addCustomToken(themeSection)
   }, [themeEditingContext, section.category])
 
-  const { addNodeLayer } = useObjectProperties()
+  const { addNodeLayer, applyBoardPropertiesToAllBoards, resetComponentBoard } =
+    useObjectProperties()
   const { toggleBorderSide } = useBorderSideVisibility()
   const borderSubjectId = getPropertiesSubjectId(node)
   const shownBorderSides = useRevealedBorderSides(borderSubjectId)
+
+  // A board's header section (the attributes category) carries the board-level
+  // commands: pushing this board's setup (properties and theme) onto every
+  // other component board, and resetting the board back to its defaults. Both
+  // are single workspace actions, so an AI agent fires the same mutations.
+  const boardActions = useMemo<MenuEntry[]>(() => {
+    if (!isBoard(node)) return []
+    if (section.category !== PropertyDisplayCategory.ATTRIBUTES) return []
+
+    const boardKey = getComponentKey(node)
+    return [
+      {
+        id: "apply-to-all-boards",
+        label: "Apply to All Boards",
+        onSelect: () => {
+          const confirmed = window.confirm(
+            "Apply this board's properties and theme to all other component boards? This overwrites their board setup.",
+          )
+          if (!confirmed) return
+          applyBoardPropertiesToAllBoards({ sourceBoardKey: boardKey })
+        },
+        testId: "board-apply-to-all",
+      },
+      "separator",
+      {
+        id: "reset-board",
+        label: "Reset Board",
+        onSelect: () => {
+          const confirmed = window.confirm(
+            "Reset this board's properties and theme to their defaults?",
+          )
+          if (!confirmed) return
+          resetComponentBoard({ boardKey })
+        },
+        testId: "board-reset",
+      },
+    ]
+  }, [
+    node,
+    section.category,
+    applyBoardPropertiesToAllBoards,
+    resetComponentBoard,
+  ])
 
   // A component node can stack extra paint layers. Offer "Add Background/Gradient/
   // Shadow" on the category that owns each exposed layered property.
@@ -362,6 +408,7 @@ function TreeSection({
   ])
 
   const sectionActions = useMemo((): MenuEntry[] | undefined => {
+    if (boardActions.length > 0) return boardActions
     if (section.category === "css" && cssStrings.length > 0) {
       const actions: MenuEntry[] = [
         {
@@ -396,6 +443,7 @@ function TreeSection({
     cssSelector,
     handleCopyCss,
     handleCopySelector,
+    boardActions,
     layerAddActions,
     borderSideActions,
   ])

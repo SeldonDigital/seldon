@@ -140,8 +140,7 @@ export function useRowProperty({
   iconSetEditingContext,
 }: RowPropertyProps) {
   const { showPropertyTypes } = useDebugMode()
-  const { resetProperty, removeNodeLayer, applyBoardPropertiesToAllBoards } =
-    useObjectProperties()
+  const { resetProperty, removeNodeLayer } = useObjectProperties()
   const { toggleProperty } = usePropertyExpansion()
   const { getPropertyValueForDisplay, shouldShowMenuIcon } =
     usePropertyControlData({ property, theme })
@@ -643,30 +642,11 @@ export function useRowProperty({
           : []),
       ]
 
-  // The board's device row (the `board` compound) can push its board properties
-  // onto every other component board. Append it to the row's actions menu so the
-  // command lives beside the device/viewport setting.
-  const handleApplyToAllBoards = () => {
-    const confirmed = window.confirm(
-      "Apply this board's properties to all other component boards? This overwrites their board properties.",
-    )
-    if (!confirmed) return
-    applyBoardPropertiesToAllBoards({ sourceBoardKey: nodeId })
-  }
-
+  // The board-level commands (Apply to All Boards, Reset Board) live on the
+  // board category header's actions menu, so the board compound row itself
+  // carries no menu entries.
   const resetActions: MenuEntry[] =
-    isBoard(node) && property.key === "board"
-      ? [
-          {
-            id: "apply-to-all-boards",
-            label: "Apply to All Boards",
-            onSelect: handleApplyToAllBoards,
-            testId: `property-row-${property.key}-apply-to-all`,
-          },
-          ...(rowActions.length > 0 ? ["separator" as const] : []),
-          ...rowActions,
-        ]
-      : rowActions
+    isBoard(node) && property.key === "board" ? [] : rowActions
 
   const listItemProps = buildPropertyRowProps({
     property,

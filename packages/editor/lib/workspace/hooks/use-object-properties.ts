@@ -99,6 +99,16 @@ export function useObjectProperties() {
     [dispatch],
   )
 
+  const resetComponentBoard = useCallback(
+    (input: ExtractPayload<"reset_component_board">) => {
+      dispatch({
+        type: "reset_component_board",
+        payload: input,
+      })
+    },
+    [dispatch],
+  )
+
   const setProperties = useCallback(
     (properties: Properties, options?: { mergeSubProperties?: boolean }) => {
       const selection = getCurrentSelection()
@@ -225,6 +235,7 @@ export function useObjectProperties() {
     setNodeProperties,
     setBoardProperties,
     applyBoardPropertiesToAllBoards,
+    resetComponentBoard,
     setProperties,
     addNodeLayer,
     removeNodeLayer,

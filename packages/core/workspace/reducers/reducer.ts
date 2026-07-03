@@ -61,6 +61,7 @@ import { resetBoardLabel } from "./handlers/reset/reset-board-label"
 import { resetBoardLicense } from "./handlers/reset/reset-board-license"
 import { resetBoardPreview } from "./handlers/reset/reset-board-preview"
 import { resetBoardTags } from "./handlers/reset/reset-board-tags"
+import { resetComponentBoard } from "./handlers/reset/reset-component-board"
 import { resetComponentProperty } from "./handlers/reset/reset-component-property"
 import { resetComponentToCatalog } from "./handlers/reset/reset-component-to-catalog"
 import { resetDefaultVariantToCatalog } from "./handlers/reset/reset-default-variant-to-catalog"
@@ -230,6 +231,8 @@ function reducer(workspace: Workspace, action: WorkspaceAction): Workspace {
       return setComponentProperties(action.payload, workspace)
     case "reset_component_property":
       return resetComponentProperty(action.payload, workspace)
+    case "reset_component_board":
+      return resetComponentBoard(action.payload, workspace)
     case "apply_component_properties_to_all_boards":
       return applyComponentPropertiesToAllBoards(action.payload, workspace)
     case "set_board_label":

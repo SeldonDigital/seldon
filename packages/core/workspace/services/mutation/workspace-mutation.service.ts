@@ -26,6 +26,7 @@ import {
 } from "./label-mutations"
 import {
   applyComponentPropertiesToAllBoards,
+  resetComponentBoard,
   resetComponentProperty,
   resetNodeOverrides,
   resetNodeProperty,
@@ -169,6 +170,13 @@ export class WorkspaceMutationService {
     workspace: Workspace,
   ): Workspace {
     return applyComponentPropertiesToAllBoards(sourceBoardKey, workspace)
+  }
+
+  public resetComponentBoard(
+    boardKey: BoardKey,
+    workspace: Workspace,
+  ): Workspace {
+    return resetComponentBoard(boardKey, workspace)
   }
 
   /** Rebuilds a single schema-backed user variant to its catalog schema variant. */

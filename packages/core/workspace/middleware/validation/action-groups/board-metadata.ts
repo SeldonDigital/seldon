@@ -146,6 +146,14 @@ export function validateBoardMetadata(
       )
       return
     }
+    case "reset_component_board":
+      assertBoardHasAllowedKind(
+        workspace,
+        action.payload.boardKey,
+        action,
+        COMPONENT_BOARDS,
+      )
+      return
     case "apply_component_properties_to_all_boards":
       assertBoardHasAllowedKind(
         workspace,
