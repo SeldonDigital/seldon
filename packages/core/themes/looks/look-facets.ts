@@ -59,13 +59,13 @@ const GRADIENT_LOOK_FACETS = [
     facet: "gradientType",
     label: "Type",
     propertyKey: "gradientType",
-    icon: "seldon-gradient",
+    icon: "material-gradient",
   },
   {
     facet: "angle",
     label: "Angle",
     propertyKey: "gradientAngle",
-    icon: "seldon-rotation",
+    icon: "material-rotateRight",
   },
   {
     facet: "startPosition",
@@ -88,7 +88,7 @@ const GRADIENT_LOOK_FACETS = [
     facet: "startOpacity",
     label: "Start Opacity",
     propertyKey: "gradientStartOpacity",
-    icon: "seldon-opacity",
+    icon: "material-opacity",
   },
   {
     facet: "endPosition",
@@ -107,7 +107,7 @@ const GRADIENT_LOOK_FACETS = [
     facet: "endOpacity",
     label: "End Opacity",
     propertyKey: "gradientEndOpacity",
-    icon: "seldon-opacity",
+    icon: "material-opacity",
   },
 ] as const satisfies readonly LookFacetEntryFor<GradientParameters>[]
 
@@ -123,7 +123,7 @@ const SHADOW_LOOK_FACETS = [
     facet: "opacity",
     label: "Opacity",
     propertyKey: "shadowOpacity",
-    icon: "seldon-opacity",
+    icon: "material-opacity",
   },
   {
     facet: "offsetX",
@@ -175,7 +175,7 @@ const BORDER_LOOK_FACETS = [
     facet: "opacity",
     label: "Opacity",
     propertyKey: "borderOpacity",
-    icon: "seldon-opacity",
+    icon: "material-opacity",
   },
 ] as const satisfies readonly LookFacetEntryFor<BorderParameters>[]
 

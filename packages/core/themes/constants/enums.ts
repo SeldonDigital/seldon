@@ -30,3 +30,12 @@ export enum Harmony {
   Square,
   Monochromatic,
 }
+
+/** Color modes a theme can be authored in. */
+export const THEME_MODES = ["light", "dark"] as const
+
+/**
+ * The mode a theme's authored colors represent. Factory export derives the
+ * opposite mode from it. It does not change how theme colors compute.
+ */
+export type ThemeMode = (typeof THEME_MODES)[number]

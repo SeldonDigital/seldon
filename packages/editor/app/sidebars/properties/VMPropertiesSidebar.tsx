@@ -110,7 +110,7 @@ export function VMPropertiesSidebar() {
     return (
       <SidebarProperties
         data-testid="properties-sidebar"
-        comboboxFieldFilterField={filter.comboboxField}
+        comboboxFieldFilter={filter.comboboxField}
         input={filter.input}
         buttonIconic={filter.buttonIconic}
         style={styles.sidebar}
@@ -130,7 +130,7 @@ export function VMPropertiesSidebar() {
   return (
     <SidebarProperties
       data-testid="properties-sidebar"
-      comboboxFieldFilterField={filter.comboboxField}
+      comboboxFieldFilter={filter.comboboxField}
       input={filter.input}
       buttonIconic={filter.buttonIconic}
       seldonRefs={seldonRefs}

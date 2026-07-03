@@ -4,23 +4,24 @@
  *
  * License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md
  * Do not redistribute or sublicense without permission.
- *
- * You may not use this software, or any derivative works of it, in whole or in part,
- * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly)
+ * 
+ * You may not use this software, or any derivative works of it, in whole or in part, 
+ * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly) 
  * any machine learning or artificial intelligence system without written permission.
- *
+ * 
  *****/
+ 
 import { HTMLAttributes } from "react"
 import { ButtonIconic, ButtonIconicProps } from "../elements/ButtonIconic"
 import { CalendarDay, CalendarDayProps } from "../elements/CalendarDay"
 import {
-  CalendarDayMutedDay,
-  CalendarDayMutedDayProps,
-} from "../elements/CalendarDayMutedDay"
+  CalendarDayMuted,
+  CalendarDayMutedProps,
+} from "../elements/CalendarDayMuted"
 import {
-  CalendarDaySelectedDay,
-  CalendarDaySelectedDayProps,
-} from "../elements/CalendarDaySelectedDay"
+  CalendarDaySelected,
+  CalendarDaySelectedProps,
+} from "../elements/CalendarDaySelected"
 import { Container, ContainerProps } from "../frames/Container"
 import { Frame, FrameProps } from "../frames/Frame"
 import { IconProps } from "../primitives/Icon"
@@ -48,9 +49,9 @@ export interface CalendarEventMarkersProps extends HTMLAttributes<HTMLElement> {
   textLabel8?: TextLabelProps | null
   frame2?: FrameProps | null
   container2?: ContainerProps | null
-  calendarDayMutedDay?: CalendarDayMutedDayProps | null
+  calendarDayMuted?: CalendarDayMutedProps | null
   textLabel9?: TextLabelProps | null
-  calendarDaySelectedDay?: CalendarDaySelectedDayProps | null
+  calendarDaySelected?: CalendarDaySelectedProps | null
   textLabel10?: TextLabelProps | null
   textLabel11?: TextLabelProps | null
   calendarDay?: CalendarDayProps | null
@@ -61,57 +62,57 @@ export interface CalendarEventMarkersProps extends HTMLAttributes<HTMLElement> {
   textLabel14?: TextLabelProps | null
   calendarDay4?: CalendarDayProps | null
   textLabel15?: TextLabelProps | null
-  calendarDayMutedDay2?: CalendarDayMutedDayProps | null
+  calendarDayMuted2?: CalendarDayMutedProps | null
   textLabel16?: TextLabelProps | null
   container3?: ContainerProps | null
-  calendarDayMutedDay3?: CalendarDayMutedDayProps | null
+  calendarDayMuted3?: CalendarDayMutedProps | null
   textLabel17?: TextLabelProps | null
-  calendarDayMutedDay4?: CalendarDayMutedDayProps | null
+  calendarDayMuted4?: CalendarDayMutedProps | null
   textLabel18?: TextLabelProps | null
-  calendarDayMutedDay5?: CalendarDayMutedDayProps | null
+  calendarDayMuted5?: CalendarDayMutedProps | null
   textLabel19?: TextLabelProps | null
-  calendarDayMutedDay6?: CalendarDayMutedDayProps | null
+  calendarDayMuted6?: CalendarDayMutedProps | null
   textLabel20?: TextLabelProps | null
-  calendarDayMutedDay7?: CalendarDayMutedDayProps | null
+  calendarDayMuted7?: CalendarDayMutedProps | null
   textLabel21?: TextLabelProps | null
-  calendarDayMutedDay8?: CalendarDayMutedDayProps | null
+  calendarDayMuted8?: CalendarDayMutedProps | null
   textLabel22?: TextLabelProps | null
-  calendarDayMutedDay9?: CalendarDayMutedDayProps | null
+  calendarDayMuted9?: CalendarDayMutedProps | null
   textLabel23?: TextLabelProps | null
   container4?: ContainerProps | null
-  calendarDayMutedDay10?: CalendarDayMutedDayProps | null
+  calendarDayMuted10?: CalendarDayMutedProps | null
   textLabel24?: TextLabelProps | null
-  calendarDayMutedDay11?: CalendarDayMutedDayProps | null
+  calendarDayMuted11?: CalendarDayMutedProps | null
   textLabel25?: TextLabelProps | null
-  calendarDayMutedDay12?: CalendarDayMutedDayProps | null
+  calendarDayMuted12?: CalendarDayMutedProps | null
   textLabel26?: TextLabelProps | null
-  calendarDayMutedDay13?: CalendarDayMutedDayProps | null
+  calendarDayMuted13?: CalendarDayMutedProps | null
   textLabel27?: TextLabelProps | null
-  calendarDayMutedDay14?: CalendarDayMutedDayProps | null
+  calendarDayMuted14?: CalendarDayMutedProps | null
   textLabel28?: TextLabelProps | null
-  calendarDayMutedDay15?: CalendarDayMutedDayProps | null
+  calendarDayMuted15?: CalendarDayMutedProps | null
   textLabel29?: TextLabelProps | null
-  calendarDayMutedDay16?: CalendarDayMutedDayProps | null
+  calendarDayMuted16?: CalendarDayMutedProps | null
   textLabel30?: TextLabelProps | null
   container5?: ContainerProps | null
-  calendarDayMutedDay17?: CalendarDayMutedDayProps | null
+  calendarDayMuted17?: CalendarDayMutedProps | null
   textLabel31?: TextLabelProps | null
-  calendarDayMutedDay18?: CalendarDayMutedDayProps | null
+  calendarDayMuted18?: CalendarDayMutedProps | null
   textLabel32?: TextLabelProps | null
-  calendarDayMutedDay19?: CalendarDayMutedDayProps | null
+  calendarDayMuted19?: CalendarDayMutedProps | null
   textLabel33?: TextLabelProps | null
-  calendarDayMutedDay20?: CalendarDayMutedDayProps | null
+  calendarDayMuted20?: CalendarDayMutedProps | null
   textLabel34?: TextLabelProps | null
-  calendarDayMutedDay21?: CalendarDayMutedDayProps | null
+  calendarDayMuted21?: CalendarDayMutedProps | null
   textLabel35?: TextLabelProps | null
-  calendarDayMutedDay22?: CalendarDayMutedDayProps | null
+  calendarDayMuted22?: CalendarDayMutedProps | null
   textLabel36?: TextLabelProps | null
-  calendarDayMutedDay23?: CalendarDayMutedDayProps | null
+  calendarDayMuted23?: CalendarDayMutedProps | null
   textLabel37?: TextLabelProps | null
   container6?: ContainerProps | null
-  calendarDayMutedDay24?: CalendarDayMutedDayProps | null
+  calendarDayMuted24?: CalendarDayMutedProps | null
   textLabel38?: TextLabelProps | null
-  calendarDayMutedDay25?: CalendarDayMutedDayProps | null
+  calendarDayMuted25?: CalendarDayMutedProps | null
   textLabel39?: TextLabelProps | null
   calendarDay5?: CalendarDayProps | null
   textLabel40?: TextLabelProps | null
@@ -141,19 +142,19 @@ export interface CalendarEventMarkersProps extends HTMLAttributes<HTMLElement> {
  *   textLabel6="{}"
  *   textLabel7="{}"
  *   frame2="{}"
- *   calendarDayMutedDay="{}"
- *   calendarDaySelectedDay2="{}"
+ *   calendarDayMuted="{}"
+ *   calendarDaySelected2="{}"
  *   calendarDay3="{}"
  *   calendarDay4="{}"
  *   calendarDay5="{}"
  *   calendarDay6="{}"
- *   calendarDayMutedDay7="{}"
+ *   calendarDayMuted7="{}"
  *   container2="{}"
- *   calendarDayMutedDay2="{}"
- *   calendarDayMutedDay3="{}"
- *   calendarDayMutedDay4="{}"
- *   calendarDayMutedDay5="{}"
- *   calendarDayMutedDay6="{}"
+ *   calendarDayMuted2="{}"
+ *   calendarDayMuted3="{}"
+ *   calendarDayMuted4="{}"
+ *   calendarDayMuted5="{}"
+ *   calendarDayMuted6="{}"
  *   container3="{}"
  *   container4="{}"
  *   container5="{}"
@@ -178,9 +179,9 @@ export function CalendarEventMarkers({
   textLabel8,
   frame2 = sdn.frame2,
   container2 = sdn.container2,
-  calendarDayMutedDay,
+  calendarDayMuted,
   textLabel9,
-  calendarDaySelectedDay,
+  calendarDaySelected,
   textLabel10,
   textLabel11,
   calendarDay,
@@ -191,57 +192,57 @@ export function CalendarEventMarkers({
   textLabel14,
   calendarDay4,
   textLabel15,
-  calendarDayMutedDay2,
+  calendarDayMuted2,
   textLabel16,
   container3 = sdn.container3,
-  calendarDayMutedDay3,
+  calendarDayMuted3,
   textLabel17,
-  calendarDayMutedDay4,
+  calendarDayMuted4,
   textLabel18,
-  calendarDayMutedDay5,
+  calendarDayMuted5,
   textLabel19,
-  calendarDayMutedDay6,
+  calendarDayMuted6,
   textLabel20,
-  calendarDayMutedDay7,
+  calendarDayMuted7,
   textLabel21,
-  calendarDayMutedDay8,
+  calendarDayMuted8,
   textLabel22,
-  calendarDayMutedDay9,
+  calendarDayMuted9,
   textLabel23,
   container4 = sdn.container4,
-  calendarDayMutedDay10,
+  calendarDayMuted10,
   textLabel24,
-  calendarDayMutedDay11,
+  calendarDayMuted11,
   textLabel25,
-  calendarDayMutedDay12,
+  calendarDayMuted12,
   textLabel26,
-  calendarDayMutedDay13,
+  calendarDayMuted13,
   textLabel27,
-  calendarDayMutedDay14,
+  calendarDayMuted14,
   textLabel28,
-  calendarDayMutedDay15,
+  calendarDayMuted15,
   textLabel29,
-  calendarDayMutedDay16,
+  calendarDayMuted16,
   textLabel30,
   container5 = sdn.container5,
-  calendarDayMutedDay17,
+  calendarDayMuted17,
   textLabel31,
-  calendarDayMutedDay18,
+  calendarDayMuted18,
   textLabel32,
-  calendarDayMutedDay19,
+  calendarDayMuted19,
   textLabel33,
-  calendarDayMutedDay20,
+  calendarDayMuted20,
   textLabel34,
-  calendarDayMutedDay21,
+  calendarDayMuted21,
   textLabel35,
-  calendarDayMutedDay22,
+  calendarDayMuted22,
   textLabel36,
-  calendarDayMutedDay23,
+  calendarDayMuted23,
   textLabel37,
   container6 = sdn.container6,
-  calendarDayMutedDay24,
+  calendarDayMuted24,
   textLabel38,
-  calendarDayMutedDay25,
+  calendarDayMuted25,
   textLabel39,
   calendarDay5,
   textLabel40,
@@ -452,16 +453,16 @@ export function CalendarEventMarkers({
           ),
         },
   )
-  const calendarDayMutedDayProps = applyRef(
+  const calendarDayMutedProps = applyRef(
     seldonRefs,
-    calendarDayMutedDay === null
+    calendarDayMuted === null
       ? null
       : {
-          ...sdn.calendarDayMutedDay,
-          ...calendarDayMutedDay,
+          ...sdn.calendarDayMuted,
+          ...calendarDayMuted,
           className: combineClassNames(
-            sdn.calendarDayMutedDay?.className,
-            calendarDayMutedDay?.className,
+            sdn.calendarDayMuted?.className,
+            calendarDayMuted?.className,
           ),
         },
   )
@@ -478,16 +479,16 @@ export function CalendarEventMarkers({
           ),
         },
   )
-  const calendarDaySelectedDayProps = applyRef(
+  const calendarDaySelectedProps = applyRef(
     seldonRefs,
-    calendarDaySelectedDay === null
+    calendarDaySelected === null
       ? null
       : {
-          ...sdn.calendarDaySelectedDay,
-          ...calendarDaySelectedDay,
+          ...sdn.calendarDaySelected,
+          ...calendarDaySelected,
           className: combineClassNames(
-            sdn.calendarDaySelectedDay?.className,
-            calendarDaySelectedDay?.className,
+            sdn.calendarDaySelected?.className,
+            calendarDaySelected?.className,
           ),
         },
   )
@@ -621,16 +622,16 @@ export function CalendarEventMarkers({
           ),
         },
   )
-  const calendarDayMutedDay2Props = applyRef(
+  const calendarDayMuted2Props = applyRef(
     seldonRefs,
-    calendarDayMutedDay2 === null
+    calendarDayMuted2 === null
       ? null
       : {
-          ...sdn.calendarDayMutedDay2,
-          ...calendarDayMutedDay2,
+          ...sdn.calendarDayMuted2,
+          ...calendarDayMuted2,
           className: combineClassNames(
-            sdn.calendarDayMutedDay2?.className,
-            calendarDayMutedDay2?.className,
+            sdn.calendarDayMuted2?.className,
+            calendarDayMuted2?.className,
           ),
         },
   )
@@ -660,16 +661,16 @@ export function CalendarEventMarkers({
           ),
         },
   )
-  const calendarDayMutedDay3Props = applyRef(
+  const calendarDayMuted3Props = applyRef(
     seldonRefs,
-    calendarDayMutedDay3 === null
+    calendarDayMuted3 === null
       ? null
       : {
-          ...sdn.calendarDayMutedDay3,
-          ...calendarDayMutedDay3,
+          ...sdn.calendarDayMuted3,
+          ...calendarDayMuted3,
           className: combineClassNames(
-            sdn.calendarDayMutedDay3?.className,
-            calendarDayMutedDay3?.className,
+            sdn.calendarDayMuted3?.className,
+            calendarDayMuted3?.className,
           ),
         },
   )
@@ -686,16 +687,16 @@ export function CalendarEventMarkers({
           ),
         },
   )
-  const calendarDayMutedDay4Props = applyRef(
+  const calendarDayMuted4Props = applyRef(
     seldonRefs,
-    calendarDayMutedDay4 === null
+    calendarDayMuted4 === null
       ? null
       : {
-          ...sdn.calendarDayMutedDay4,
-          ...calendarDayMutedDay4,
+          ...sdn.calendarDayMuted4,
+          ...calendarDayMuted4,
           className: combineClassNames(
-            sdn.calendarDayMutedDay4?.className,
-            calendarDayMutedDay4?.className,
+            sdn.calendarDayMuted4?.className,
+            calendarDayMuted4?.className,
           ),
         },
   )
@@ -712,16 +713,16 @@ export function CalendarEventMarkers({
           ),
         },
   )
-  const calendarDayMutedDay5Props = applyRef(
+  const calendarDayMuted5Props = applyRef(
     seldonRefs,
-    calendarDayMutedDay5 === null
+    calendarDayMuted5 === null
       ? null
       : {
-          ...sdn.calendarDayMutedDay5,
-          ...calendarDayMutedDay5,
+          ...sdn.calendarDayMuted5,
+          ...calendarDayMuted5,
           className: combineClassNames(
-            sdn.calendarDayMutedDay5?.className,
-            calendarDayMutedDay5?.className,
+            sdn.calendarDayMuted5?.className,
+            calendarDayMuted5?.className,
           ),
         },
   )
@@ -738,16 +739,16 @@ export function CalendarEventMarkers({
           ),
         },
   )
-  const calendarDayMutedDay6Props = applyRef(
+  const calendarDayMuted6Props = applyRef(
     seldonRefs,
-    calendarDayMutedDay6 === null
+    calendarDayMuted6 === null
       ? null
       : {
-          ...sdn.calendarDayMutedDay6,
-          ...calendarDayMutedDay6,
+          ...sdn.calendarDayMuted6,
+          ...calendarDayMuted6,
           className: combineClassNames(
-            sdn.calendarDayMutedDay6?.className,
-            calendarDayMutedDay6?.className,
+            sdn.calendarDayMuted6?.className,
+            calendarDayMuted6?.className,
           ),
         },
   )
@@ -764,16 +765,16 @@ export function CalendarEventMarkers({
           ),
         },
   )
-  const calendarDayMutedDay7Props = applyRef(
+  const calendarDayMuted7Props = applyRef(
     seldonRefs,
-    calendarDayMutedDay7 === null
+    calendarDayMuted7 === null
       ? null
       : {
-          ...sdn.calendarDayMutedDay7,
-          ...calendarDayMutedDay7,
+          ...sdn.calendarDayMuted7,
+          ...calendarDayMuted7,
           className: combineClassNames(
-            sdn.calendarDayMutedDay7?.className,
-            calendarDayMutedDay7?.className,
+            sdn.calendarDayMuted7?.className,
+            calendarDayMuted7?.className,
           ),
         },
   )
@@ -790,16 +791,16 @@ export function CalendarEventMarkers({
           ),
         },
   )
-  const calendarDayMutedDay8Props = applyRef(
+  const calendarDayMuted8Props = applyRef(
     seldonRefs,
-    calendarDayMutedDay8 === null
+    calendarDayMuted8 === null
       ? null
       : {
-          ...sdn.calendarDayMutedDay8,
-          ...calendarDayMutedDay8,
+          ...sdn.calendarDayMuted8,
+          ...calendarDayMuted8,
           className: combineClassNames(
-            sdn.calendarDayMutedDay8?.className,
-            calendarDayMutedDay8?.className,
+            sdn.calendarDayMuted8?.className,
+            calendarDayMuted8?.className,
           ),
         },
   )
@@ -816,16 +817,16 @@ export function CalendarEventMarkers({
           ),
         },
   )
-  const calendarDayMutedDay9Props = applyRef(
+  const calendarDayMuted9Props = applyRef(
     seldonRefs,
-    calendarDayMutedDay9 === null
+    calendarDayMuted9 === null
       ? null
       : {
-          ...sdn.calendarDayMutedDay9,
-          ...calendarDayMutedDay9,
+          ...sdn.calendarDayMuted9,
+          ...calendarDayMuted9,
           className: combineClassNames(
-            sdn.calendarDayMutedDay9?.className,
-            calendarDayMutedDay9?.className,
+            sdn.calendarDayMuted9?.className,
+            calendarDayMuted9?.className,
           ),
         },
   )
@@ -855,16 +856,16 @@ export function CalendarEventMarkers({
           ),
         },
   )
-  const calendarDayMutedDay10Props = applyRef(
+  const calendarDayMuted10Props = applyRef(
     seldonRefs,
-    calendarDayMutedDay10 === null
+    calendarDayMuted10 === null
       ? null
       : {
-          ...sdn.calendarDayMutedDay10,
-          ...calendarDayMutedDay10,
+          ...sdn.calendarDayMuted10,
+          ...calendarDayMuted10,
           className: combineClassNames(
-            sdn.calendarDayMutedDay10?.className,
-            calendarDayMutedDay10?.className,
+            sdn.calendarDayMuted10?.className,
+            calendarDayMuted10?.className,
           ),
         },
   )
@@ -881,16 +882,16 @@ export function CalendarEventMarkers({
           ),
         },
   )
-  const calendarDayMutedDay11Props = applyRef(
+  const calendarDayMuted11Props = applyRef(
     seldonRefs,
-    calendarDayMutedDay11 === null
+    calendarDayMuted11 === null
       ? null
       : {
-          ...sdn.calendarDayMutedDay11,
-          ...calendarDayMutedDay11,
+          ...sdn.calendarDayMuted11,
+          ...calendarDayMuted11,
           className: combineClassNames(
-            sdn.calendarDayMutedDay11?.className,
-            calendarDayMutedDay11?.className,
+            sdn.calendarDayMuted11?.className,
+            calendarDayMuted11?.className,
           ),
         },
   )
@@ -907,16 +908,16 @@ export function CalendarEventMarkers({
           ),
         },
   )
-  const calendarDayMutedDay12Props = applyRef(
+  const calendarDayMuted12Props = applyRef(
     seldonRefs,
-    calendarDayMutedDay12 === null
+    calendarDayMuted12 === null
       ? null
       : {
-          ...sdn.calendarDayMutedDay12,
-          ...calendarDayMutedDay12,
+          ...sdn.calendarDayMuted12,
+          ...calendarDayMuted12,
           className: combineClassNames(
-            sdn.calendarDayMutedDay12?.className,
-            calendarDayMutedDay12?.className,
+            sdn.calendarDayMuted12?.className,
+            calendarDayMuted12?.className,
           ),
         },
   )
@@ -933,16 +934,16 @@ export function CalendarEventMarkers({
           ),
         },
   )
-  const calendarDayMutedDay13Props = applyRef(
+  const calendarDayMuted13Props = applyRef(
     seldonRefs,
-    calendarDayMutedDay13 === null
+    calendarDayMuted13 === null
       ? null
       : {
-          ...sdn.calendarDayMutedDay13,
-          ...calendarDayMutedDay13,
+          ...sdn.calendarDayMuted13,
+          ...calendarDayMuted13,
           className: combineClassNames(
-            sdn.calendarDayMutedDay13?.className,
-            calendarDayMutedDay13?.className,
+            sdn.calendarDayMuted13?.className,
+            calendarDayMuted13?.className,
           ),
         },
   )
@@ -959,16 +960,16 @@ export function CalendarEventMarkers({
           ),
         },
   )
-  const calendarDayMutedDay14Props = applyRef(
+  const calendarDayMuted14Props = applyRef(
     seldonRefs,
-    calendarDayMutedDay14 === null
+    calendarDayMuted14 === null
       ? null
       : {
-          ...sdn.calendarDayMutedDay14,
-          ...calendarDayMutedDay14,
+          ...sdn.calendarDayMuted14,
+          ...calendarDayMuted14,
           className: combineClassNames(
-            sdn.calendarDayMutedDay14?.className,
-            calendarDayMutedDay14?.className,
+            sdn.calendarDayMuted14?.className,
+            calendarDayMuted14?.className,
           ),
         },
   )
@@ -985,16 +986,16 @@ export function CalendarEventMarkers({
           ),
         },
   )
-  const calendarDayMutedDay15Props = applyRef(
+  const calendarDayMuted15Props = applyRef(
     seldonRefs,
-    calendarDayMutedDay15 === null
+    calendarDayMuted15 === null
       ? null
       : {
-          ...sdn.calendarDayMutedDay15,
-          ...calendarDayMutedDay15,
+          ...sdn.calendarDayMuted15,
+          ...calendarDayMuted15,
           className: combineClassNames(
-            sdn.calendarDayMutedDay15?.className,
-            calendarDayMutedDay15?.className,
+            sdn.calendarDayMuted15?.className,
+            calendarDayMuted15?.className,
           ),
         },
   )
@@ -1011,16 +1012,16 @@ export function CalendarEventMarkers({
           ),
         },
   )
-  const calendarDayMutedDay16Props = applyRef(
+  const calendarDayMuted16Props = applyRef(
     seldonRefs,
-    calendarDayMutedDay16 === null
+    calendarDayMuted16 === null
       ? null
       : {
-          ...sdn.calendarDayMutedDay16,
-          ...calendarDayMutedDay16,
+          ...sdn.calendarDayMuted16,
+          ...calendarDayMuted16,
           className: combineClassNames(
-            sdn.calendarDayMutedDay16?.className,
-            calendarDayMutedDay16?.className,
+            sdn.calendarDayMuted16?.className,
+            calendarDayMuted16?.className,
           ),
         },
   )
@@ -1050,16 +1051,16 @@ export function CalendarEventMarkers({
           ),
         },
   )
-  const calendarDayMutedDay17Props = applyRef(
+  const calendarDayMuted17Props = applyRef(
     seldonRefs,
-    calendarDayMutedDay17 === null
+    calendarDayMuted17 === null
       ? null
       : {
-          ...sdn.calendarDayMutedDay17,
-          ...calendarDayMutedDay17,
+          ...sdn.calendarDayMuted17,
+          ...calendarDayMuted17,
           className: combineClassNames(
-            sdn.calendarDayMutedDay17?.className,
-            calendarDayMutedDay17?.className,
+            sdn.calendarDayMuted17?.className,
+            calendarDayMuted17?.className,
           ),
         },
   )
@@ -1076,16 +1077,16 @@ export function CalendarEventMarkers({
           ),
         },
   )
-  const calendarDayMutedDay18Props = applyRef(
+  const calendarDayMuted18Props = applyRef(
     seldonRefs,
-    calendarDayMutedDay18 === null
+    calendarDayMuted18 === null
       ? null
       : {
-          ...sdn.calendarDayMutedDay18,
-          ...calendarDayMutedDay18,
+          ...sdn.calendarDayMuted18,
+          ...calendarDayMuted18,
           className: combineClassNames(
-            sdn.calendarDayMutedDay18?.className,
-            calendarDayMutedDay18?.className,
+            sdn.calendarDayMuted18?.className,
+            calendarDayMuted18?.className,
           ),
         },
   )
@@ -1102,16 +1103,16 @@ export function CalendarEventMarkers({
           ),
         },
   )
-  const calendarDayMutedDay19Props = applyRef(
+  const calendarDayMuted19Props = applyRef(
     seldonRefs,
-    calendarDayMutedDay19 === null
+    calendarDayMuted19 === null
       ? null
       : {
-          ...sdn.calendarDayMutedDay19,
-          ...calendarDayMutedDay19,
+          ...sdn.calendarDayMuted19,
+          ...calendarDayMuted19,
           className: combineClassNames(
-            sdn.calendarDayMutedDay19?.className,
-            calendarDayMutedDay19?.className,
+            sdn.calendarDayMuted19?.className,
+            calendarDayMuted19?.className,
           ),
         },
   )
@@ -1128,16 +1129,16 @@ export function CalendarEventMarkers({
           ),
         },
   )
-  const calendarDayMutedDay20Props = applyRef(
+  const calendarDayMuted20Props = applyRef(
     seldonRefs,
-    calendarDayMutedDay20 === null
+    calendarDayMuted20 === null
       ? null
       : {
-          ...sdn.calendarDayMutedDay20,
-          ...calendarDayMutedDay20,
+          ...sdn.calendarDayMuted20,
+          ...calendarDayMuted20,
           className: combineClassNames(
-            sdn.calendarDayMutedDay20?.className,
-            calendarDayMutedDay20?.className,
+            sdn.calendarDayMuted20?.className,
+            calendarDayMuted20?.className,
           ),
         },
   )
@@ -1154,16 +1155,16 @@ export function CalendarEventMarkers({
           ),
         },
   )
-  const calendarDayMutedDay21Props = applyRef(
+  const calendarDayMuted21Props = applyRef(
     seldonRefs,
-    calendarDayMutedDay21 === null
+    calendarDayMuted21 === null
       ? null
       : {
-          ...sdn.calendarDayMutedDay21,
-          ...calendarDayMutedDay21,
+          ...sdn.calendarDayMuted21,
+          ...calendarDayMuted21,
           className: combineClassNames(
-            sdn.calendarDayMutedDay21?.className,
-            calendarDayMutedDay21?.className,
+            sdn.calendarDayMuted21?.className,
+            calendarDayMuted21?.className,
           ),
         },
   )
@@ -1180,16 +1181,16 @@ export function CalendarEventMarkers({
           ),
         },
   )
-  const calendarDayMutedDay22Props = applyRef(
+  const calendarDayMuted22Props = applyRef(
     seldonRefs,
-    calendarDayMutedDay22 === null
+    calendarDayMuted22 === null
       ? null
       : {
-          ...sdn.calendarDayMutedDay22,
-          ...calendarDayMutedDay22,
+          ...sdn.calendarDayMuted22,
+          ...calendarDayMuted22,
           className: combineClassNames(
-            sdn.calendarDayMutedDay22?.className,
-            calendarDayMutedDay22?.className,
+            sdn.calendarDayMuted22?.className,
+            calendarDayMuted22?.className,
           ),
         },
   )
@@ -1206,16 +1207,16 @@ export function CalendarEventMarkers({
           ),
         },
   )
-  const calendarDayMutedDay23Props = applyRef(
+  const calendarDayMuted23Props = applyRef(
     seldonRefs,
-    calendarDayMutedDay23 === null
+    calendarDayMuted23 === null
       ? null
       : {
-          ...sdn.calendarDayMutedDay23,
-          ...calendarDayMutedDay23,
+          ...sdn.calendarDayMuted23,
+          ...calendarDayMuted23,
           className: combineClassNames(
-            sdn.calendarDayMutedDay23?.className,
-            calendarDayMutedDay23?.className,
+            sdn.calendarDayMuted23?.className,
+            calendarDayMuted23?.className,
           ),
         },
   )
@@ -1245,16 +1246,16 @@ export function CalendarEventMarkers({
           ),
         },
   )
-  const calendarDayMutedDay24Props = applyRef(
+  const calendarDayMuted24Props = applyRef(
     seldonRefs,
-    calendarDayMutedDay24 === null
+    calendarDayMuted24 === null
       ? null
       : {
-          ...sdn.calendarDayMutedDay24,
-          ...calendarDayMutedDay24,
+          ...sdn.calendarDayMuted24,
+          ...calendarDayMuted24,
           className: combineClassNames(
-            sdn.calendarDayMutedDay24?.className,
-            calendarDayMutedDay24?.className,
+            sdn.calendarDayMuted24?.className,
+            calendarDayMuted24?.className,
           ),
         },
   )
@@ -1271,16 +1272,16 @@ export function CalendarEventMarkers({
           ),
         },
   )
-  const calendarDayMutedDay25Props = applyRef(
+  const calendarDayMuted25Props = applyRef(
     seldonRefs,
-    calendarDayMutedDay25 === null
+    calendarDayMuted25 === null
       ? null
       : {
-          ...sdn.calendarDayMutedDay25,
-          ...calendarDayMutedDay25,
+          ...sdn.calendarDayMuted25,
+          ...calendarDayMuted25,
           className: combineClassNames(
-            sdn.calendarDayMutedDay25?.className,
-            calendarDayMutedDay25?.className,
+            sdn.calendarDayMuted25?.className,
+            calendarDayMuted25?.className,
           ),
         },
   )
@@ -1368,22 +1369,22 @@ export function CalendarEventMarkers({
           </Frame>
           <Frame {...frame2Props}>
             <Frame {...container2Props}>
-              {calendarDayMutedDay && calendarDayMutedDayProps && (
-                <CalendarDayMutedDay {...calendarDayMutedDayProps}>
+              {calendarDayMuted && calendarDayMutedProps && (
+                <CalendarDayMuted {...calendarDayMutedProps}>
                   {textLabel9 && textLabel9Props && (
                     <TextLabel {...textLabel9Props} />
                   )}
-                </CalendarDayMutedDay>
+                </CalendarDayMuted>
               )}
-              {calendarDaySelectedDay && calendarDaySelectedDayProps && (
-                <CalendarDaySelectedDay {...calendarDaySelectedDayProps}>
+              {calendarDaySelected && calendarDaySelectedProps && (
+                <CalendarDaySelected {...calendarDaySelectedProps}>
                   {textLabel10 && textLabel10Props && (
                     <TextLabel {...textLabel10Props} />
                   )}
                   {textLabel11 && textLabel11Props && (
                     <TextLabel {...textLabel11Props} />
                   )}
-                </CalendarDaySelectedDay>
+                </CalendarDaySelected>
               )}
               {calendarDay && calendarDayProps && (
                 <CalendarDay {...calendarDayProps}>
@@ -1413,181 +1414,181 @@ export function CalendarEventMarkers({
                   )}
                 </CalendarDay>
               )}
-              {calendarDayMutedDay2 && calendarDayMutedDay2Props && (
-                <CalendarDayMutedDay {...calendarDayMutedDay2Props}>
+              {calendarDayMuted2 && calendarDayMuted2Props && (
+                <CalendarDayMuted {...calendarDayMuted2Props}>
                   {textLabel16 && textLabel16Props && (
                     <TextLabel {...textLabel16Props} />
                   )}
-                </CalendarDayMutedDay>
+                </CalendarDayMuted>
               )}
             </Frame>
             <Frame {...container3Props}>
-              {calendarDayMutedDay3 && calendarDayMutedDay3Props && (
-                <CalendarDayMutedDay {...calendarDayMutedDay3Props}>
+              {calendarDayMuted3 && calendarDayMuted3Props && (
+                <CalendarDayMuted {...calendarDayMuted3Props}>
                   {textLabel17 && textLabel17Props && (
                     <TextLabel {...textLabel17Props} />
                   )}
-                </CalendarDayMutedDay>
+                </CalendarDayMuted>
               )}
-              {calendarDayMutedDay4 && calendarDayMutedDay4Props && (
-                <CalendarDayMutedDay {...calendarDayMutedDay4Props}>
+              {calendarDayMuted4 && calendarDayMuted4Props && (
+                <CalendarDayMuted {...calendarDayMuted4Props}>
                   {textLabel18 && textLabel18Props && (
                     <TextLabel {...textLabel18Props} />
                   )}
-                </CalendarDayMutedDay>
+                </CalendarDayMuted>
               )}
-              {calendarDayMutedDay5 && calendarDayMutedDay5Props && (
-                <CalendarDayMutedDay {...calendarDayMutedDay5Props}>
+              {calendarDayMuted5 && calendarDayMuted5Props && (
+                <CalendarDayMuted {...calendarDayMuted5Props}>
                   {textLabel19 && textLabel19Props && (
                     <TextLabel {...textLabel19Props} />
                   )}
-                </CalendarDayMutedDay>
+                </CalendarDayMuted>
               )}
-              {calendarDayMutedDay6 && calendarDayMutedDay6Props && (
-                <CalendarDayMutedDay {...calendarDayMutedDay6Props}>
+              {calendarDayMuted6 && calendarDayMuted6Props && (
+                <CalendarDayMuted {...calendarDayMuted6Props}>
                   {textLabel20 && textLabel20Props && (
                     <TextLabel {...textLabel20Props} />
                   )}
-                </CalendarDayMutedDay>
+                </CalendarDayMuted>
               )}
-              {calendarDayMutedDay7 && calendarDayMutedDay7Props && (
-                <CalendarDayMutedDay {...calendarDayMutedDay7Props}>
+              {calendarDayMuted7 && calendarDayMuted7Props && (
+                <CalendarDayMuted {...calendarDayMuted7Props}>
                   {textLabel21 && textLabel21Props && (
                     <TextLabel {...textLabel21Props} />
                   )}
-                </CalendarDayMutedDay>
+                </CalendarDayMuted>
               )}
-              {calendarDayMutedDay8 && calendarDayMutedDay8Props && (
-                <CalendarDayMutedDay {...calendarDayMutedDay8Props}>
+              {calendarDayMuted8 && calendarDayMuted8Props && (
+                <CalendarDayMuted {...calendarDayMuted8Props}>
                   {textLabel22 && textLabel22Props && (
                     <TextLabel {...textLabel22Props} />
                   )}
-                </CalendarDayMutedDay>
+                </CalendarDayMuted>
               )}
-              {calendarDayMutedDay9 && calendarDayMutedDay9Props && (
-                <CalendarDayMutedDay {...calendarDayMutedDay9Props}>
+              {calendarDayMuted9 && calendarDayMuted9Props && (
+                <CalendarDayMuted {...calendarDayMuted9Props}>
                   {textLabel23 && textLabel23Props && (
                     <TextLabel {...textLabel23Props} />
                   )}
-                </CalendarDayMutedDay>
+                </CalendarDayMuted>
               )}
             </Frame>
             <Frame {...container4Props}>
-              {calendarDayMutedDay10 && calendarDayMutedDay10Props && (
-                <CalendarDayMutedDay {...calendarDayMutedDay10Props}>
+              {calendarDayMuted10 && calendarDayMuted10Props && (
+                <CalendarDayMuted {...calendarDayMuted10Props}>
                   {textLabel24 && textLabel24Props && (
                     <TextLabel {...textLabel24Props} />
                   )}
-                </CalendarDayMutedDay>
+                </CalendarDayMuted>
               )}
-              {calendarDayMutedDay11 && calendarDayMutedDay11Props && (
-                <CalendarDayMutedDay {...calendarDayMutedDay11Props}>
+              {calendarDayMuted11 && calendarDayMuted11Props && (
+                <CalendarDayMuted {...calendarDayMuted11Props}>
                   {textLabel25 && textLabel25Props && (
                     <TextLabel {...textLabel25Props} />
                   )}
-                </CalendarDayMutedDay>
+                </CalendarDayMuted>
               )}
-              {calendarDayMutedDay12 && calendarDayMutedDay12Props && (
-                <CalendarDayMutedDay {...calendarDayMutedDay12Props}>
+              {calendarDayMuted12 && calendarDayMuted12Props && (
+                <CalendarDayMuted {...calendarDayMuted12Props}>
                   {textLabel26 && textLabel26Props && (
                     <TextLabel {...textLabel26Props} />
                   )}
-                </CalendarDayMutedDay>
+                </CalendarDayMuted>
               )}
-              {calendarDayMutedDay13 && calendarDayMutedDay13Props && (
-                <CalendarDayMutedDay {...calendarDayMutedDay13Props}>
+              {calendarDayMuted13 && calendarDayMuted13Props && (
+                <CalendarDayMuted {...calendarDayMuted13Props}>
                   {textLabel27 && textLabel27Props && (
                     <TextLabel {...textLabel27Props} />
                   )}
-                </CalendarDayMutedDay>
+                </CalendarDayMuted>
               )}
-              {calendarDayMutedDay14 && calendarDayMutedDay14Props && (
-                <CalendarDayMutedDay {...calendarDayMutedDay14Props}>
+              {calendarDayMuted14 && calendarDayMuted14Props && (
+                <CalendarDayMuted {...calendarDayMuted14Props}>
                   {textLabel28 && textLabel28Props && (
                     <TextLabel {...textLabel28Props} />
                   )}
-                </CalendarDayMutedDay>
+                </CalendarDayMuted>
               )}
-              {calendarDayMutedDay15 && calendarDayMutedDay15Props && (
-                <CalendarDayMutedDay {...calendarDayMutedDay15Props}>
+              {calendarDayMuted15 && calendarDayMuted15Props && (
+                <CalendarDayMuted {...calendarDayMuted15Props}>
                   {textLabel29 && textLabel29Props && (
                     <TextLabel {...textLabel29Props} />
                   )}
-                </CalendarDayMutedDay>
+                </CalendarDayMuted>
               )}
-              {calendarDayMutedDay16 && calendarDayMutedDay16Props && (
-                <CalendarDayMutedDay {...calendarDayMutedDay16Props}>
+              {calendarDayMuted16 && calendarDayMuted16Props && (
+                <CalendarDayMuted {...calendarDayMuted16Props}>
                   {textLabel30 && textLabel30Props && (
                     <TextLabel {...textLabel30Props} />
                   )}
-                </CalendarDayMutedDay>
+                </CalendarDayMuted>
               )}
             </Frame>
             <Frame {...container5Props}>
-              {calendarDayMutedDay17 && calendarDayMutedDay17Props && (
-                <CalendarDayMutedDay {...calendarDayMutedDay17Props}>
+              {calendarDayMuted17 && calendarDayMuted17Props && (
+                <CalendarDayMuted {...calendarDayMuted17Props}>
                   {textLabel31 && textLabel31Props && (
                     <TextLabel {...textLabel31Props} />
                   )}
-                </CalendarDayMutedDay>
+                </CalendarDayMuted>
               )}
-              {calendarDayMutedDay18 && calendarDayMutedDay18Props && (
-                <CalendarDayMutedDay {...calendarDayMutedDay18Props}>
+              {calendarDayMuted18 && calendarDayMuted18Props && (
+                <CalendarDayMuted {...calendarDayMuted18Props}>
                   {textLabel32 && textLabel32Props && (
                     <TextLabel {...textLabel32Props} />
                   )}
-                </CalendarDayMutedDay>
+                </CalendarDayMuted>
               )}
-              {calendarDayMutedDay19 && calendarDayMutedDay19Props && (
-                <CalendarDayMutedDay {...calendarDayMutedDay19Props}>
+              {calendarDayMuted19 && calendarDayMuted19Props && (
+                <CalendarDayMuted {...calendarDayMuted19Props}>
                   {textLabel33 && textLabel33Props && (
                     <TextLabel {...textLabel33Props} />
                   )}
-                </CalendarDayMutedDay>
+                </CalendarDayMuted>
               )}
-              {calendarDayMutedDay20 && calendarDayMutedDay20Props && (
-                <CalendarDayMutedDay {...calendarDayMutedDay20Props}>
+              {calendarDayMuted20 && calendarDayMuted20Props && (
+                <CalendarDayMuted {...calendarDayMuted20Props}>
                   {textLabel34 && textLabel34Props && (
                     <TextLabel {...textLabel34Props} />
                   )}
-                </CalendarDayMutedDay>
+                </CalendarDayMuted>
               )}
-              {calendarDayMutedDay21 && calendarDayMutedDay21Props && (
-                <CalendarDayMutedDay {...calendarDayMutedDay21Props}>
+              {calendarDayMuted21 && calendarDayMuted21Props && (
+                <CalendarDayMuted {...calendarDayMuted21Props}>
                   {textLabel35 && textLabel35Props && (
                     <TextLabel {...textLabel35Props} />
                   )}
-                </CalendarDayMutedDay>
+                </CalendarDayMuted>
               )}
-              {calendarDayMutedDay22 && calendarDayMutedDay22Props && (
-                <CalendarDayMutedDay {...calendarDayMutedDay22Props}>
+              {calendarDayMuted22 && calendarDayMuted22Props && (
+                <CalendarDayMuted {...calendarDayMuted22Props}>
                   {textLabel36 && textLabel36Props && (
                     <TextLabel {...textLabel36Props} />
                   )}
-                </CalendarDayMutedDay>
+                </CalendarDayMuted>
               )}
-              {calendarDayMutedDay23 && calendarDayMutedDay23Props && (
-                <CalendarDayMutedDay {...calendarDayMutedDay23Props}>
+              {calendarDayMuted23 && calendarDayMuted23Props && (
+                <CalendarDayMuted {...calendarDayMuted23Props}>
                   {textLabel37 && textLabel37Props && (
                     <TextLabel {...textLabel37Props} />
                   )}
-                </CalendarDayMutedDay>
+                </CalendarDayMuted>
               )}
             </Frame>
             <Frame {...container6Props}>
-              {calendarDayMutedDay24 && calendarDayMutedDay24Props && (
-                <CalendarDayMutedDay {...calendarDayMutedDay24Props}>
+              {calendarDayMuted24 && calendarDayMuted24Props && (
+                <CalendarDayMuted {...calendarDayMuted24Props}>
                   {textLabel38 && textLabel38Props && (
                     <TextLabel {...textLabel38Props} />
                   )}
-                </CalendarDayMutedDay>
+                </CalendarDayMuted>
               )}
-              {calendarDayMutedDay25 && calendarDayMutedDay25Props && (
-                <CalendarDayMutedDay {...calendarDayMutedDay25Props}>
+              {calendarDayMuted25 && calendarDayMuted25Props && (
+                <CalendarDayMuted {...calendarDayMuted25Props}>
                   {textLabel39 && textLabel39Props && (
                     <TextLabel {...textLabel39Props} />
                   )}
-                </CalendarDayMutedDay>
+                </CalendarDayMuted>
               )}
               {calendarDay5 && calendarDay5Props && (
                 <CalendarDay {...calendarDay5Props}>
@@ -1670,14 +1671,14 @@ const sdn: CalendarEventMarkersProps = {
     "aria-hidden": "false",
     className: "sdn-container sdn-container--npgy",
   },
-  calendarDayMutedDay: {
-    className: "sdn-calendar-day-muted-day sdn-calendar-day-muted-day--vns2",
+  calendarDayMuted: {
+    className: "sdn-calendar-day-muted sdn-calendar-day-muted--vns2",
   },
   textLabel9: {
     className: "sdn-text-label sdn-text-label--g3ro",
   },
-  calendarDaySelectedDay: {
-    className: "sdn-calendar-day-selected-day sdn-calendar-day-muted-day--vns2",
+  calendarDaySelected: {
+    className: "sdn-calendar-day-selected sdn-calendar-day-muted--vns2",
   },
   textLabel10: {
     className: "sdn-text-label sdn-text-label--fye8",
@@ -1686,31 +1687,31 @@ const sdn: CalendarEventMarkersProps = {
     className: "sdn-text-label sdn-text-label--mqlk",
   },
   calendarDay: {
-    className: "sdn-calendar-day sdn-calendar-day-muted-day--vns2",
+    className: "sdn-calendar-day sdn-calendar-day-muted--vns2",
   },
   textLabel12: {
     className: "sdn-text-label sdn-text-label--bwn4",
   },
   calendarDay2: {
-    className: "sdn-calendar-day sdn-calendar-day-muted-day--vns2",
+    className: "sdn-calendar-day sdn-calendar-day-muted--vns2",
   },
   textLabel13: {
     className: "sdn-text-label sdn-text-label--bwn4",
   },
   calendarDay3: {
-    className: "sdn-calendar-day sdn-calendar-day-muted-day--vns2",
+    className: "sdn-calendar-day sdn-calendar-day-muted--vns2",
   },
   textLabel14: {
     className: "sdn-text-label sdn-text-label--bwn4",
   },
   calendarDay4: {
-    className: "sdn-calendar-day sdn-calendar-day-muted-day--vns2",
+    className: "sdn-calendar-day sdn-calendar-day-muted--vns2",
   },
   textLabel15: {
     className: "sdn-text-label sdn-text-label--bwn4",
   },
-  calendarDayMutedDay2: {
-    className: "sdn-calendar-day-muted-day sdn-calendar-day-muted-day--vns2",
+  calendarDayMuted2: {
+    className: "sdn-calendar-day-muted sdn-calendar-day-muted--vns2",
   },
   textLabel16: {
     className: "sdn-text-label sdn-text-label--g3ro",
@@ -1720,44 +1721,44 @@ const sdn: CalendarEventMarkersProps = {
     "aria-hidden": "false",
     className: "sdn-container sdn-container--npgy",
   },
-  calendarDayMutedDay3: {
-    className: "sdn-calendar-day-muted-day sdn-calendar-day-muted-day--vns2",
+  calendarDayMuted3: {
+    className: "sdn-calendar-day-muted sdn-calendar-day-muted--vns2",
   },
   textLabel17: {
     className: "sdn-text-label sdn-text-label--g3ro",
   },
-  calendarDayMutedDay4: {
-    className: "sdn-calendar-day-muted-day sdn-calendar-day-muted-day--vns2",
+  calendarDayMuted4: {
+    className: "sdn-calendar-day-muted sdn-calendar-day-muted--vns2",
   },
   textLabel18: {
     className: "sdn-text-label sdn-text-label--g3ro",
   },
-  calendarDayMutedDay5: {
-    className: "sdn-calendar-day-muted-day sdn-calendar-day-muted-day--vns2",
+  calendarDayMuted5: {
+    className: "sdn-calendar-day-muted sdn-calendar-day-muted--vns2",
   },
   textLabel19: {
     className: "sdn-text-label sdn-text-label--g3ro",
   },
-  calendarDayMutedDay6: {
-    className: "sdn-calendar-day-muted-day sdn-calendar-day-muted-day--vns2",
+  calendarDayMuted6: {
+    className: "sdn-calendar-day-muted sdn-calendar-day-muted--vns2",
   },
   textLabel20: {
     className: "sdn-text-label sdn-text-label--g3ro",
   },
-  calendarDayMutedDay7: {
-    className: "sdn-calendar-day-muted-day sdn-calendar-day-muted-day--vns2",
+  calendarDayMuted7: {
+    className: "sdn-calendar-day-muted sdn-calendar-day-muted--vns2",
   },
   textLabel21: {
     className: "sdn-text-label sdn-text-label--g3ro",
   },
-  calendarDayMutedDay8: {
-    className: "sdn-calendar-day-muted-day sdn-calendar-day-muted-day--vns2",
+  calendarDayMuted8: {
+    className: "sdn-calendar-day-muted sdn-calendar-day-muted--vns2",
   },
   textLabel22: {
     className: "sdn-text-label sdn-text-label--g3ro",
   },
-  calendarDayMutedDay9: {
-    className: "sdn-calendar-day-muted-day sdn-calendar-day-muted-day--vns2",
+  calendarDayMuted9: {
+    className: "sdn-calendar-day-muted sdn-calendar-day-muted--vns2",
   },
   textLabel23: {
     className: "sdn-text-label sdn-text-label--g3ro",
@@ -1767,44 +1768,44 @@ const sdn: CalendarEventMarkersProps = {
     "aria-hidden": "false",
     className: "sdn-container sdn-container--npgy",
   },
-  calendarDayMutedDay10: {
-    className: "sdn-calendar-day-muted-day sdn-calendar-day-muted-day--vns2",
+  calendarDayMuted10: {
+    className: "sdn-calendar-day-muted sdn-calendar-day-muted--vns2",
   },
   textLabel24: {
     className: "sdn-text-label sdn-text-label--g3ro",
   },
-  calendarDayMutedDay11: {
-    className: "sdn-calendar-day-muted-day sdn-calendar-day-muted-day--vns2",
+  calendarDayMuted11: {
+    className: "sdn-calendar-day-muted sdn-calendar-day-muted--vns2",
   },
   textLabel25: {
     className: "sdn-text-label sdn-text-label--g3ro",
   },
-  calendarDayMutedDay12: {
-    className: "sdn-calendar-day-muted-day sdn-calendar-day-muted-day--vns2",
+  calendarDayMuted12: {
+    className: "sdn-calendar-day-muted sdn-calendar-day-muted--vns2",
   },
   textLabel26: {
     className: "sdn-text-label sdn-text-label--g3ro",
   },
-  calendarDayMutedDay13: {
-    className: "sdn-calendar-day-muted-day sdn-calendar-day-muted-day--vns2",
+  calendarDayMuted13: {
+    className: "sdn-calendar-day-muted sdn-calendar-day-muted--vns2",
   },
   textLabel27: {
     className: "sdn-text-label sdn-text-label--g3ro",
   },
-  calendarDayMutedDay14: {
-    className: "sdn-calendar-day-muted-day sdn-calendar-day-muted-day--vns2",
+  calendarDayMuted14: {
+    className: "sdn-calendar-day-muted sdn-calendar-day-muted--vns2",
   },
   textLabel28: {
     className: "sdn-text-label sdn-text-label--g3ro",
   },
-  calendarDayMutedDay15: {
-    className: "sdn-calendar-day-muted-day sdn-calendar-day-muted-day--vns2",
+  calendarDayMuted15: {
+    className: "sdn-calendar-day-muted sdn-calendar-day-muted--vns2",
   },
   textLabel29: {
     className: "sdn-text-label sdn-text-label--g3ro",
   },
-  calendarDayMutedDay16: {
-    className: "sdn-calendar-day-muted-day sdn-calendar-day-muted-day--vns2",
+  calendarDayMuted16: {
+    className: "sdn-calendar-day-muted sdn-calendar-day-muted--vns2",
   },
   textLabel30: {
     className: "sdn-text-label sdn-text-label--g3ro",
@@ -1814,44 +1815,44 @@ const sdn: CalendarEventMarkersProps = {
     "aria-hidden": "false",
     className: "sdn-container sdn-container--npgy",
   },
-  calendarDayMutedDay17: {
-    className: "sdn-calendar-day-muted-day sdn-calendar-day-muted-day--vns2",
+  calendarDayMuted17: {
+    className: "sdn-calendar-day-muted sdn-calendar-day-muted--vns2",
   },
   textLabel31: {
     className: "sdn-text-label sdn-text-label--g3ro",
   },
-  calendarDayMutedDay18: {
-    className: "sdn-calendar-day-muted-day sdn-calendar-day-muted-day--vns2",
+  calendarDayMuted18: {
+    className: "sdn-calendar-day-muted sdn-calendar-day-muted--vns2",
   },
   textLabel32: {
     className: "sdn-text-label sdn-text-label--g3ro",
   },
-  calendarDayMutedDay19: {
-    className: "sdn-calendar-day-muted-day sdn-calendar-day-muted-day--vns2",
+  calendarDayMuted19: {
+    className: "sdn-calendar-day-muted sdn-calendar-day-muted--vns2",
   },
   textLabel33: {
     className: "sdn-text-label sdn-text-label--g3ro",
   },
-  calendarDayMutedDay20: {
-    className: "sdn-calendar-day-muted-day sdn-calendar-day-muted-day--vns2",
+  calendarDayMuted20: {
+    className: "sdn-calendar-day-muted sdn-calendar-day-muted--vns2",
   },
   textLabel34: {
     className: "sdn-text-label sdn-text-label--g3ro",
   },
-  calendarDayMutedDay21: {
-    className: "sdn-calendar-day-muted-day sdn-calendar-day-muted-day--vns2",
+  calendarDayMuted21: {
+    className: "sdn-calendar-day-muted sdn-calendar-day-muted--vns2",
   },
   textLabel35: {
     className: "sdn-text-label sdn-text-label--g3ro",
   },
-  calendarDayMutedDay22: {
-    className: "sdn-calendar-day-muted-day sdn-calendar-day-muted-day--vns2",
+  calendarDayMuted22: {
+    className: "sdn-calendar-day-muted sdn-calendar-day-muted--vns2",
   },
   textLabel36: {
     className: "sdn-text-label sdn-text-label--g3ro",
   },
-  calendarDayMutedDay23: {
-    className: "sdn-calendar-day-muted-day sdn-calendar-day-muted-day--vns2",
+  calendarDayMuted23: {
+    className: "sdn-calendar-day-muted sdn-calendar-day-muted--vns2",
   },
   textLabel37: {
     className: "sdn-text-label sdn-text-label--g3ro",
@@ -1861,14 +1862,14 @@ const sdn: CalendarEventMarkersProps = {
     "aria-hidden": "false",
     className: "sdn-container sdn-container--npgy",
   },
-  calendarDayMutedDay24: {
-    className: "sdn-calendar-day-muted-day sdn-calendar-day-muted-day--vns2",
+  calendarDayMuted24: {
+    className: "sdn-calendar-day-muted sdn-calendar-day-muted--vns2",
   },
   textLabel38: {
     className: "sdn-text-label sdn-text-label--g3ro",
   },
-  calendarDayMutedDay25: {
-    className: "sdn-calendar-day-muted-day sdn-calendar-day-muted-day--vns2",
+  calendarDayMuted25: {
+    className: "sdn-calendar-day-muted sdn-calendar-day-muted--vns2",
   },
   textLabel39: {
     className: "sdn-text-label sdn-text-label--g3ro",

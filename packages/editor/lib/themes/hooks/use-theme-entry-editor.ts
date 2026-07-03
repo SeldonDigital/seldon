@@ -15,6 +15,7 @@ import {
   type ThemeFontId,
   type ThemeFontSizeId,
   type ThemeLineHeightId,
+  type ThemeMode,
   type ThemeSizeId,
   type ThemeSpacingId,
   type WorkspaceAction,
@@ -128,6 +129,11 @@ export function useThemeEntryEditor(themeEntryId: EntryThemeId | null) {
     [setOverride],
   )
 
+  const setColorMode = useCallback(
+    (value: ThemeMode) => setOverride("colorHarmony.parameters.mode", value),
+    [setOverride],
+  )
+
   const setColorValue = useCallback(
     (
       key:
@@ -136,7 +142,8 @@ export function useThemeEntryEditor(themeEntryId: EntryThemeId | null) {
         | "whitePoint"
         | "grayPoint"
         | "blackPoint"
-        | "bleed",
+        | "bleed"
+        | "chromaChange",
       value: number,
     ) => {
       mergeOverride("colorHarmony.parameters", { [key]: value })
@@ -388,6 +395,7 @@ export function useThemeEntryEditor(themeEntryId: EntryThemeId | null) {
     setCoreFontSize,
     setBaseColor,
     setHarmony,
+    setColorMode,
     setColorValue,
     setComputedValue,
     setFontFamilyValue,

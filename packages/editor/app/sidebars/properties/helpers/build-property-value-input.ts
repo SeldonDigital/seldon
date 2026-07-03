@@ -4,7 +4,7 @@ import { InputProps } from "@seldon/components/primitives/Input"
 import {
   buildDisplayInputProps,
   buildEditingRefProps,
-} from "../../shared/build-field-state-props"
+} from "@lib/views/state-props"
 
 export type ValueInputProps = InputProps & { ref?: Ref<HTMLInputElement> }
 

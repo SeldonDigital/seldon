@@ -2,8 +2,8 @@ import { MenuEntry } from "@lib/menus"
 import { Fragment, type MouseEvent } from "react"
 import { useRowCategory } from "./hooks/use-row-category"
 import { ItemSection } from "@seldon/components/elements/ItemSection"
-import { useRowActionsMenu } from "../shared/use-row-actions-menu"
-import { useSectionHeaderRow } from "../shared/use-section-header-row"
+import { useRowActionsMenu } from "@lib/menus/use-row-actions-menu"
+import { useSectionHeaderRow } from "../hooks/use-section-header-row"
 import { PropertySection } from "./helpers/get-property-sections"
 import { ThemePropertySection } from "./helpers/get-theme-property-sections"
 
@@ -62,7 +62,7 @@ export function VMCategory({ section, actions, onAddCustom }: VMCategoryProps) {
     <Fragment>
       <ItemSection
         buttonIconic={{}}
-        formControlComboboxControl={{}}
+        formControlCombobox={{}}
         textLabel={{}}
         buttonIconic2={addSlot}
         buttonIconic3={actionsSlot}

@@ -31,6 +31,8 @@ export const theme: StockTheme = {
       grayPoint: 50,
       blackPoint: 8,
       bleed: 0,
+      mode: "light",
+      chromaChange: 0,
     },
   },
   matchColor: {

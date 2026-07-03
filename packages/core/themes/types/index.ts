@@ -12,7 +12,8 @@
 export * from "./helpers"
 
 // Enums: canonical definitions live in `themes/constants`; re-exported here for one-stop theme imports.
-export { Colorspace, Harmony, Ratio } from "../constants"
+export { Colorspace, Harmony, Ratio, THEME_MODES } from "../constants"
+export type { ThemeMode } from "../constants"
 
 export { TokenType } from "../constants"
 

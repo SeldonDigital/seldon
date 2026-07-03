@@ -114,7 +114,7 @@ export function VMObjectsSidebar() {
   return (
     <SidebarObjects
       data-testid="objects-sidebar"
-      comboboxFieldProjectField={projectField}
+      comboboxFieldProject={projectField}
       input={nameInput}
       buttonIconic={projectActions}
       seldonRefs={seldonRefs}

@@ -1,6 +1,6 @@
 "use client"
 
-import { useInterfaceModeVars } from "@lib/theme/use-interface-mode-vars"
+import { useInterfaceModeAttribute } from "@lib/chrome/use-interface-mode-attribute"
 import {
   CSSProperties,
   ReactNode,
@@ -189,7 +189,7 @@ function FloatingMenu({
   const { chromeTheme } = useEditorConfig()
   const position = useMenuPosition({ open, anchorRef, align })
   const menuRef = useRef<HTMLDivElement>(null)
-  useInterfaceModeVars(menuRef)
+  useInterfaceModeAttribute(menuRef)
   const [activeIndex, setActiveIndex] = useState(-1)
   const closedBySelectRef = useRef(false)
 

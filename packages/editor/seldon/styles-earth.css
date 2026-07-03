@@ -10,7 +10,7 @@
  * any machine learning or artificial intelligence system without written permission.
  * 
  *****/
-
+ 
 [data-theme="earth"] {
   /* Theme: Earth */
   /* Modulation */
@@ -31,6 +31,8 @@
   --sdn-color-gray-point: 56%;
   --sdn-color-black-point: 8%;
   --sdn-color-bleed: 12;
+  --sdn-color-mode: light;
+  --sdn-color-chroma-change: 0%;
   --sdn-color-contrast-ratio: 2.5;
   /* Swatches */
   --sdn-swatch-white: hsl(16 12% 98%);
@@ -188,4 +190,29 @@
   --sdn-cmp-optical-padding-vertical-xlarge: 1.222rem;
   --sdn-cmp-optical-padding-vertical-xxlarge: 2.057rem;
   --sdn-cmp-optical-padding-vertical-huge: 2.98rem;
+}
+
+[data-theme="earth"][data-mode="dark"] {
+  /* Swatches */
+  --sdn-swatch-white: hsl(16 12% 3%);
+  --sdn-swatch-gray: hsl(16 12% 39%);
+  --sdn-swatch-black: hsl(15 18% 93%);
+  --sdn-swatch-primary: hsl(16 56% 46%);
+  --sdn-swatch-swatch1: hsl(26 68% 36%);
+  --sdn-swatch-swatch2: hsl(38 100% 25%);
+  --sdn-swatch-swatch3: hsl(7 57% 54%);
+  --sdn-swatch-swatch4: hsl(360 65% 59%);
+  --sdn-swatch-foreground: hsl(23 39% 86%);
+  --sdn-swatch-background: hsl(39 33% 5%);
+  --sdn-swatch-active: hsl(16 56% 47%);
+  --sdn-swatch-punch: hsl(95 23% 39%);
+  --sdn-swatch-positive: hsl(134 100% 23%);
+  --sdn-swatch-negative: hsl(358 84% 54%);
+  --sdn-swatch-warning: hsl(34 100% 13%);
+  --sdn-swatch-accent: hsl(158 31% 38%);
+  --sdn-swatch-offBlack: hsl(23 21% 82%);
+  --sdn-swatch-offWhite: hsl(38 35% 4%);
+  --sdn-swatch-soft-green: hsl(39 18% 18%);
+  --sdn-swatch-green: hsl(73 27% 27%);
+  --sdn-swatch-pure-green: hsl(157 14% 49%);
 }

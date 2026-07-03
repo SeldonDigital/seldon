@@ -14,9 +14,9 @@ import {
   buildFieldStateProps,
   buildRepeatFieldStyleProps,
   mergeStateProps,
-} from "../shared/build-field-state-props"
+} from "@lib/views/state-props"
 import { SidebarTracking } from "../../tracking/SidebarTracking"
-import { useRowActionsMenu } from "../shared/use-row-actions-menu"
+import { useRowActionsMenu } from "@lib/menus/use-row-actions-menu"
 import { RowSelectionTarget } from "./RowSelectionTarget"
 
 const NODE_SELECTION_KIND = "node"

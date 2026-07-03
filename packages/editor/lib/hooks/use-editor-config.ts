@@ -151,8 +151,8 @@ const useStore = create<EditorConfigState>()(
       setChromeTheme: (slug) =>
         set((state) => ({ ...state, chromeTheme: slug })),
 
-      // Editor interface mode (defaults to dark, matching current behavior)
-      interfaceMode: "dark",
+      // Editor interface mode (defaults to light; persisted across sessions)
+      interfaceMode: "light",
       setInterfaceMode: (mode) =>
         set((state) => ({ ...state, interfaceMode: mode })),
     }),

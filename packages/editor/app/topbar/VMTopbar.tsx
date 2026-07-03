@@ -1,7 +1,7 @@
 "use client"
 
 import { MenuAlign, MenuEntry, VMMenu } from "@lib/menus"
-import { getChromeThemes } from "@lib/theme/chrome-themes"
+import { getChromeThemes } from "@lib/chrome/chrome-themes"
 import {
   CSSProperties,
   MouseEvent,

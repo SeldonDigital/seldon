@@ -1,4 +1,5 @@
 import { getPropertyRegistryEntry } from "@lib/icons/icons-registry"
+import { THEME_TOKEN_ICON } from "@lib/icons/resolve-option-icon"
 import {
   Board,
   Instance,
@@ -178,7 +179,7 @@ export function buildRepeatRows(
           key: repeatDataRowKey(descendant.id, echoIndex),
           propertyType: "atomic",
           label: `${descendant.label} ${echoIndex + 1}`,
-          icon: "seldon-token",
+          icon: THEME_TOKEN_ICON,
           value: current
             ? { type: ValueType.EXACT, value: current }
             : EMPTY_VALUE,

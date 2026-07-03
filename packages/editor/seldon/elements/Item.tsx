@@ -4,12 +4,13 @@
  *
  * License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md
  * Do not redistribute or sublicense without permission.
- *
- * You may not use this software, or any derivative works of it, in whole or in part,
- * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly)
+ * 
+ * You may not use this software, or any derivative works of it, in whole or in part, 
+ * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly) 
  * any machine learning or artificial intelligence system without written permission.
- *
+ * 
  *****/
+ 
 import { LiHTMLAttributes } from "react"
 import { Button, ButtonProps } from "../elements/Button"
 import { Frame, FrameProps } from "../frames/Frame"
@@ -208,7 +209,7 @@ const sdn: ItemProps = {
     className: "sdn-text-subtitle sdn-text-subtitle--nxwj",
   },
   button: {
-    className: "sdn-button sdn-button--1bc9",
+    className: "sdn-button sdn-button-iconic--pgsr",
   },
   icon: {
     icon: "seldon-component",

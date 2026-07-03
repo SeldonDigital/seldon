@@ -11,8 +11,8 @@ import {
   buildActivatedRefProps,
   buildFieldStateProps,
   mergeStateProps,
-} from "../shared/build-field-state-props"
-import { useRowActionsMenu } from "../shared/use-row-actions-menu"
+} from "@lib/views/state-props"
+import { useRowActionsMenu } from "@lib/menus/use-row-actions-menu"
 import { RowSelectionTarget } from "./RowSelectionTarget"
 import { VMNode } from "./VMNode"
 import { VMResourceEntry } from "./VMResourceEntry"

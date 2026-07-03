@@ -9,12 +9,12 @@ import {
   useState,
 } from "react"
 import { ButtonIconicProps } from "@seldon/components/elements/ButtonIconic"
-import { ComboboxFieldFilterFieldProps } from "@seldon/components/elements/ComboboxFieldFilterField"
+import { ComboboxFieldFilterProps } from "@seldon/components/elements/ComboboxFieldFilter"
 import { InputProps } from "@seldon/components/primitives/Input"
 import {
   buildDisplayInputProps,
   buildEditingRefProps,
-} from "../../shared/build-field-state-props"
+} from "@lib/views/state-props"
 
 const PLACEHOLDER = "Filter..."
 
@@ -22,7 +22,7 @@ export interface FilterInput {
   /** Active filter text, trimmed by the caller when matching. */
   query: string
   /** Field props: a single click enters edit and focuses the input. */
-  comboboxField: ComboboxFieldFilterFieldProps
+  comboboxField: ComboboxFieldFilterProps
   /** Input slot props: inert display when resting, live text input when editing. */
   input: InputProps & { ref?: Ref<HTMLInputElement> }
   /**
@@ -37,7 +37,7 @@ export interface FilterInput {
  * the resting input is an inert read-only display (`pointerEvents: none`) so a
  * single click lands on the combobox field and flips it into edit mode, where
  * the input becomes a live text box. Hover and selected styling come from the
- * `ComboboxFieldFilterField` CSS. Typing updates `query` for live filtering;
+ * `ComboboxFieldFilter` CSS. Typing updates `query` for live filtering;
  * clearing the text, pressing Escape, or clicking the X resets.
  */
 export function useFilterInput(): FilterInput {
@@ -56,7 +56,7 @@ export function useFilterInput(): FilterInput {
     setEditing(false)
   }, [])
 
-  const comboboxField: ComboboxFieldFilterFieldProps = { onClick: enterEdit }
+  const comboboxField: ComboboxFieldFilterProps = { onClick: enterEdit }
 
   // Hide the reset button until there is text to clear. Passing `null` makes the
   // View drop the button entirely rather than render an inert one.

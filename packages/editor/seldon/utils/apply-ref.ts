@@ -4,12 +4,13 @@
  *
  * License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md
  * Do not redistribute or sublicense without permission.
- *
- * You may not use this software, or any derivative works of it, in whole or in part,
- * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly)
+ * 
+ * You may not use this software, or any derivative works of it, in whole or in part, 
+ * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly) 
  * any machine learning or artificial intelligence system without written permission.
- *
+ * 
  *****/
+ 
 import { combineClassNames } from "./class-name"
 
 /**
@@ -35,17 +36,11 @@ export function applyRef<T extends Record<string, unknown> | null>(
   const override = seldonRefs[ref]
   if (!override) return props
 
-  const merged: Record<string, unknown> = {
-    ...(props as Record<string, unknown>),
-    ...override,
-  }
+  const merged: Record<string, unknown> = { ...(props as Record<string, unknown>), ...override }
 
   const baseClassName = (props as Record<string, unknown>)["className"]
   const overrideClassName = override["className"]
-  if (
-    typeof baseClassName === "string" ||
-    typeof overrideClassName === "string"
-  ) {
+  if (typeof baseClassName === "string" || typeof overrideClassName === "string") {
     merged["className"] = combineClassNames(
       typeof baseClassName === "string" ? baseClassName : undefined,
       typeof overrideClassName === "string" ? overrideClassName : undefined,

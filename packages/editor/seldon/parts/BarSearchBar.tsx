@@ -4,18 +4,19 @@
  *
  * License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md
  * Do not redistribute or sublicense without permission.
- *
- * You may not use this software, or any derivative works of it, in whole or in part,
- * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly)
+ * 
+ * You may not use this software, or any derivative works of it, in whole or in part, 
+ * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly) 
  * any machine learning or artificial intelligence system without written permission.
- *
+ * 
  *****/
+ 
 import { HTMLAttributes } from "react"
 import { ButtonIconicProps } from "../elements/ButtonIconic"
 import {
-  ComboboxFieldSearchField,
-  ComboboxFieldSearchFieldProps,
-} from "../elements/ComboboxFieldSearchField"
+  ComboboxFieldSearch,
+  ComboboxFieldSearchProps,
+} from "../elements/ComboboxFieldSearch"
 import { Frame } from "../frames/Frame"
 import { IconProps } from "../primitives/Icon"
 import { InputProps } from "../primitives/Input"
@@ -26,7 +27,7 @@ export interface BarSearchBarProps extends HTMLAttributes<HTMLElement> {
   className?: string
   "data-seldon-ref"?: string
   seldonRefs?: Record<string, Record<string, unknown>>
-  comboboxFieldSearchField?: ComboboxFieldSearchFieldProps | null
+  comboboxFieldSearch?: ComboboxFieldSearchProps | null
   icon?: IconProps | null
   input?: InputProps | null
   buttonIconic?: ButtonIconicProps | null
@@ -44,7 +45,7 @@ export interface BarSearchBarProps extends HTMLAttributes<HTMLElement> {
  * ```tsx
  * <BarSearchBar
  *   aria-hidden="false"
- *   comboboxFieldSearchField="{}"
+ *   comboboxFieldSearch="{}"
  *   icon="material-star"
  *   input="{}"
  *   buttonIconic={() => {}}
@@ -53,7 +54,7 @@ export interface BarSearchBarProps extends HTMLAttributes<HTMLElement> {
  *****/
 export function BarSearchBar({
   className = "",
-  comboboxFieldSearchField = sdn.comboboxFieldSearchField,
+  comboboxFieldSearch = sdn.comboboxFieldSearch,
   icon = sdn.icon,
   input = sdn.input,
   buttonIconic = sdn.buttonIconic,
@@ -63,16 +64,16 @@ export function BarSearchBar({
   ...props
 }: BarSearchBarProps) {
   const barSearchBarClassName = combineClassNames("sdn-bar", className)
-  const comboboxFieldSearchFieldProps = applyRef(
+  const comboboxFieldSearchProps = applyRef(
     seldonRefs,
-    comboboxFieldSearchField === null
+    comboboxFieldSearch === null
       ? null
       : {
-          ...sdn.comboboxFieldSearchField,
-          ...comboboxFieldSearchField,
+          ...sdn.comboboxFieldSearch,
+          ...comboboxFieldSearch,
           className: combineClassNames(
-            sdn.comboboxFieldSearchField?.className,
-            comboboxFieldSearchField?.className,
+            sdn.comboboxFieldSearch?.className,
+            comboboxFieldSearch?.className,
           ),
         },
   )
@@ -130,9 +131,9 @@ export function BarSearchBar({
         children
       ) : (
         <>
-          {comboboxFieldSearchFieldProps !== null && (
-            <ComboboxFieldSearchField
-              {...comboboxFieldSearchFieldProps}
+          {comboboxFieldSearchProps !== null && (
+            <ComboboxFieldSearch
+              {...comboboxFieldSearchProps}
               icon={iconProps}
               input={inputProps}
               buttonIconic={buttonIconicProps}
@@ -151,10 +152,9 @@ export function BarSearchBar({
 const sdn: BarSearchBarProps = {
   "aria-hidden": "false",
   className: "sdn-bar sdn-bar",
-  comboboxFieldSearchField: {
+  comboboxFieldSearch: {
     "aria-hidden": "false",
-    className:
-      "sdn-combobox-field-search-field sdn-combobox-field-search-field--vbyg",
+    className: "sdn-combobox-field-search sdn-combobox-field-search--vbyg",
   },
   icon: {
     icon: "material-search",

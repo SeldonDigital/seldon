@@ -4,12 +4,13 @@
  *
  * License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md
  * Do not redistribute or sublicense without permission.
- *
- * You may not use this software, or any derivative works of it, in whole or in part,
- * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly)
+ * 
+ * You may not use this software, or any derivative works of it, in whole or in part, 
+ * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly) 
  * any machine learning or artificial intelligence system without written permission.
- *
+ * 
  *****/
+ 
 import { HTMLAttributes } from "react"
 import { ButtonIconic, ButtonIconicProps } from "../elements/ButtonIconic"
 import { Frame, FrameProps } from "../frames/Frame"
@@ -57,7 +58,10 @@ export function DialogPalette({
   seldonRefs,
   ...props
 }: DialogPaletteProps) {
-  const dialogPaletteClassName = combineClassNames("sdn-dialog", className)
+  const dialogPaletteClassName = combineClassNames(
+    "sdn-dialog-modal",
+    className,
+  )
   const barProps = applyRef(
     seldonRefs,
     bar === null
@@ -147,7 +151,7 @@ export function DialogPalette({
 const sdn: DialogPaletteProps = {
   role: "dialog",
   "aria-hidden": "false",
-  className: "sdn-dialog sdn-dialog",
+  className: "sdn-dialog-modal sdn-dialog",
   bar: {
     "aria-hidden": "false",
     className: "sdn-bar sdn-bar--9xs7",

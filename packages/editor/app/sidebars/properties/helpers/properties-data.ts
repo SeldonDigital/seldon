@@ -20,6 +20,7 @@ import {
   ControlType,
   getPropertyRegistryEntry,
 } from "@lib/icons/icons-registry"
+import { THEME_TOKEN_ICON } from "@lib/icons/resolve-option-icon"
 import {
   getCompoundLayerValue,
   isLayeredPaintRoot,
@@ -473,7 +474,7 @@ export function createFlatProperty(
     isSubProperty: propertyKey.includes(".") && !isCompound && !isShorthand,
     propertyType: getPropertyCategory(propertyKey) || "atomic",
     status: finalStatus,
-    icon: registryEntry?.icon || "seldon-token",
+    icon: registryEntry?.icon || THEME_TOKEN_ICON,
     isDimmed: !!matchLock,
   }
 }
@@ -563,7 +564,7 @@ export function createFlatSubProperty(
     key: subPropertyPath,
     propertyType: "atomic", // Sub-properties are always atomic
     label: createSubPropertyLabel(propertyKey, subKey, subRegistryEntry?.label),
-    icon: subRegistryEntry?.icon || "seldon-token",
+    icon: subRegistryEntry?.icon || THEME_TOKEN_ICON,
     value: subValue || EMPTY_VALUE,
     actualValue: (() => {
       let hasError = false
@@ -751,7 +752,7 @@ function buildLayerParentFlatProperty(
     isSubProperty: false,
     propertyType: "compound",
     status: parentStatus,
-    icon: registryEntry?.icon || "seldon-token",
+    icon: registryEntry?.icon || THEME_TOKEN_ICON,
     layerIndex: index,
   }
 }

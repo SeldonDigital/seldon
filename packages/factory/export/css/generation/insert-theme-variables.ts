@@ -1,7 +1,10 @@
 import { Theme } from "@seldon/core"
 import { HSLObjectToString } from "@seldon/core/helpers/color/hsl-object-to-string"
 import { modulate } from "@seldon/core/helpers/math/modulate"
-import { colorspaceLiteralToHsl } from "@seldon/core/themes/compute"
+import {
+  colorspaceLiteralToHsl,
+  getOppositeModeSwatches,
+} from "@seldon/core/themes/compute"
 import { Colorspace } from "@seldon/core/themes/constants/colorspace"
 import { isModulatedToken, isThemeExactToken } from "@seldon/core/themes/values"
 import type { ThemeScaleToken, ThemeSwatch } from "@seldon/core/themes/values"
@@ -90,6 +93,8 @@ function generateThemeCSSVariables(theme: Theme, slug: string): string {
   cssVariables += `  ${prefix}color-gray-point: ${harmony.grayPoint}%;\n`
   cssVariables += `  ${prefix}color-black-point: ${harmony.blackPoint}%;\n`
   cssVariables += `  ${prefix}color-bleed: ${harmony.bleed};\n`
+  cssVariables += `  ${prefix}color-mode: ${harmony.mode};\n`
+  cssVariables += `  ${prefix}color-chroma-change: ${harmony.chromaChange}%;\n`
   cssVariables += `  ${prefix}color-contrast-ratio: ${theme.highContrast.parameters.contrastRatio};\n`
 
   cssVariables += `  /* Swatches */\n`
@@ -183,6 +188,25 @@ function generateThemeCSSVariables(theme: Theme, slug: string): string {
   return cssVariables
 }
 
+/**
+ * Swatch variables for the mode opposite to the theme's authored `mode`. Each
+ * color moves through LCH: lightness inverts, and non-neutral swatches scale
+ * chroma by the theme's `chromaChange` percentage.
+ */
+function generateOppositeModeCSSVariables(theme: Theme): string {
+  const swatches = getOppositeModeSwatches(theme)
+  const uniqueSwatchNames = getThemeSwatchVarNames(theme)
+  let cssVariables = `  /* Swatches */\n`
+
+  Object.entries(swatches).forEach(([key, hsl]) => {
+    const swatchName = uniqueSwatchNames[key]
+    if (!swatchName) return
+    cssVariables += `  --sdn-swatch-${swatchName}: ${HSLObjectToString(hsl)};\n`
+  })
+
+  return cssVariables
+}
+
 export function generateThemeStylesheet(slug: string, theme: Theme): string {
   const variables = generateThemeCSSVariables(theme, slug)
 
@@ -195,7 +219,18 @@ export function generateThemeStylesheet(slug: string, theme: Theme): string {
       ? `:root,\n[data-theme="seldon"]`
       : `[data-theme="${slug}"]`
 
-  return `${selector} {\n${variables}}\n`
+  // Every theme ships its opposite mode as a swatch-only block behind
+  // `data-mode`. Setting `data-mode` to the authored mode matches nothing and
+  // falls back to the base block, so consumers always set the resolved mode.
+  const mode = theme.colorHarmony.parameters.mode
+  const oppositeMode = mode === "dark" ? "light" : "dark"
+  const modeSelector =
+    slug === "seldon"
+      ? `:root[data-mode="${oppositeMode}"],\n[data-theme="seldon"][data-mode="${oppositeMode}"]`
+      : `[data-theme="${slug}"][data-mode="${oppositeMode}"]`
+  const modeVariables = generateOppositeModeCSSVariables(theme)
+
+  return `${selector} {\n${variables}}\n\n${modeSelector} {\n${modeVariables}}\n`
 }
 
 export type ThemeStylesheetFile = {

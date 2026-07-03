@@ -4,19 +4,20 @@
  *
  * License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md
  * Do not redistribute or sublicense without permission.
- *
- * You may not use this software, or any derivative works of it, in whole or in part,
- * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly)
+ * 
+ * You may not use this software, or any derivative works of it, in whole or in part, 
+ * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly) 
  * any machine learning or artificial intelligence system without written permission.
- *
+ * 
  *****/
+ 
 import { HTMLAttributes } from "react"
 import { ButtonProps } from "../elements/Button"
 import { ButtonIconicProps } from "../elements/ButtonIconic"
 import {
-  ComboboxFieldSearchField,
-  ComboboxFieldSearchFieldProps,
-} from "../elements/ComboboxFieldSearchField"
+  ComboboxFieldSearch,
+  ComboboxFieldSearchProps,
+} from "../elements/ComboboxFieldSearch"
 import { Frame, FrameProps } from "../frames/Frame"
 import { HTMLDiv } from "../native-react/HTML.Div"
 import { Bar, BarProps } from "../parts/Bar"
@@ -34,7 +35,7 @@ export interface DialogModalProps extends HTMLAttributes<HTMLElement> {
   seldonRefs?: Record<string, Record<string, unknown>>
   bar?: BarProps | null
   textTitle?: TextTitleProps | null
-  comboboxFieldSearchField?: ComboboxFieldSearchFieldProps | null
+  comboboxFieldSearch?: ComboboxFieldSearchProps | null
   icon?: IconProps | null
   input?: InputProps | null
   buttonIconic?: ButtonIconicProps | null
@@ -68,7 +69,7 @@ export function DialogModal({
   className = "",
   bar = sdn.bar,
   textTitle,
-  comboboxFieldSearchField,
+  comboboxFieldSearch,
   icon = sdn.icon,
   input = sdn.input,
   buttonIconic = sdn.buttonIconic,
@@ -85,7 +86,7 @@ export function DialogModal({
   seldonRefs,
   ...props
 }: DialogModalProps) {
-  const dialogModalClassName = combineClassNames("sdn-dialog", className)
+  const dialogModalClassName = combineClassNames("sdn-dialog-modal", className)
   const barProps = applyRef(
     seldonRefs,
     bar === null
@@ -109,16 +110,16 @@ export function DialogModal({
           ),
         },
   )
-  const comboboxFieldSearchFieldProps = applyRef(
+  const comboboxFieldSearchProps = applyRef(
     seldonRefs,
-    comboboxFieldSearchField === null
+    comboboxFieldSearch === null
       ? null
       : {
-          ...sdn.comboboxFieldSearchField,
-          ...comboboxFieldSearchField,
+          ...sdn.comboboxFieldSearch,
+          ...comboboxFieldSearch,
           className: combineClassNames(
-            sdn.comboboxFieldSearchField?.className,
-            comboboxFieldSearchField?.className,
+            sdn.comboboxFieldSearch?.className,
+            comboboxFieldSearch?.className,
           ),
         },
   )
@@ -275,9 +276,9 @@ export function DialogModal({
           {barProps !== null && (
             <Bar {...barProps}>
               {textTitle && textTitleProps && <TextTitle {...textTitleProps} />}
-              {comboboxFieldSearchField && comboboxFieldSearchFieldProps && (
-                <ComboboxFieldSearchField
-                  {...comboboxFieldSearchFieldProps}
+              {comboboxFieldSearch && comboboxFieldSearchProps && (
+                <ComboboxFieldSearch
+                  {...comboboxFieldSearchProps}
                   icon={iconProps}
                   input={inputProps}
                   buttonIconic={buttonIconicProps}
@@ -306,7 +307,7 @@ export function DialogModal({
 const sdn: DialogModalProps = {
   role: "dialog",
   "aria-hidden": "false",
-  className: "sdn-dialog sdn-dialog",
+  className: "sdn-dialog-modal sdn-dialog",
   bar: {
     "aria-hidden": "false",
     className: "sdn-bar sdn-bar--yje0",
@@ -314,9 +315,8 @@ const sdn: DialogModalProps = {
   textTitle: {
     className: "sdn-text-title sdn-text-title--eodu",
   },
-  comboboxFieldSearchField: {
-    className:
-      "sdn-combobox-field-search-field sdn-combobox-field-search-field--jaw4",
+  comboboxFieldSearch: {
+    className: "sdn-combobox-field-search sdn-combobox-field-search--jaw4",
   },
   icon: {
     icon: "material-search",

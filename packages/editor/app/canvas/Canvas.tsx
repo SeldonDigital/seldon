@@ -1,6 +1,6 @@
 "use client"
 
-import { DEFAULT_CHROME_THEME } from "@lib/theme/chrome-themes"
+import { DEFAULT_CHROME_THEME } from "@lib/chrome/chrome-themes"
 import React, { CSSProperties, useEffect, useRef } from "react"
 import { isHotkeyPressed } from "react-hotkeys-hook"
 import {
@@ -16,6 +16,7 @@ import {
 } from "@lib/workspace/hooks/use-selection"
 import { useSetHoverState } from "@lib/hooks/use-canvas-hover-state"
 import { useDialog } from "@lib/hooks/use-dialog"
+import { useResolvedInterfaceMode } from "@lib/hooks/use-system-color-scheme"
 import { useTool } from "@lib/hooks/use-tool"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { CanvasTracking } from "../tracking/CanvasTracking"
@@ -148,6 +149,7 @@ const CanvasContainer = () => {
   const { setTransform } = useControls()
   const { isPanning } = useTransformContext()
   const { activeBoard } = useActiveBoard()
+  const resolvedMode = useResolvedInterfaceMode()
 
   // Key the reset on the board's stable key, not the object reference. The
   // board entry is recreated on structural edits (delete, paste), and resetting
@@ -167,10 +169,19 @@ const CanvasContainer = () => {
     // so adding it to the deps would the canvas to reset the transform on every render
   }, [activeBoardKey])
 
+  // The canvas is pinned to the default theme and never switches modes, so its
+  // swatch variables always hold the authored values. The backdrop follows the
+  // interface mode by picking the swatch: the theme background in dark mode,
+  // the theme foreground in light mode.
+  const backdropColor =
+    resolvedMode === "dark"
+      ? "var(--sdn-swatch-background)"
+      : "var(--sdn-swatch-foreground)"
+
   const wrapperStyle: CSSProperties = {
     width: "100%",
     height: "100%",
-    backgroundColor: "#141414",
+    backgroundColor: backdropColor,
     display: "flex",
     alignItems: "flex-start",
     justifyContent: "center",

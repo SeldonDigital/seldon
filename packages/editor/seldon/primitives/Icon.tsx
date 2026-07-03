@@ -4,12 +4,13 @@
  *
  * License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md
  * Do not redistribute or sublicense without permission.
- *
- * You may not use this software, or any derivative works of it, in whole or in part,
- * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly)
+ * 
+ * You may not use this software, or any derivative works of it, in whole or in part, 
+ * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly) 
  * any machine learning or artificial intelligence system without written permission.
- *
+ * 
  *****/
+ 
 import { SVGAttributes } from "react"
 import * as Icons from "../icons/index"
 import { combineClassNames } from "../utils/class-name"
@@ -66,9 +67,6 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "seldon-codeCube"
     | "seldon-background"
     | "seldon-angle"
-    | "seldon-gradient"
-    | "seldon-opacity"
-    | "seldon-rotation"
     | "seldon-color"
     | "seldon-computed"
     | "seldon-custom"
@@ -597,9 +595,6 @@ const iconMap = {
   "seldon-codeCube": Icons.IconSeldonCodeCube,
   "seldon-background": Icons.IconSeldonBackground,
   "seldon-angle": Icons.IconSeldonAngle,
-  "seldon-gradient": Icons.IconSeldonGradient,
-  "seldon-opacity": Icons.IconSeldonOpacity,
-  "seldon-rotation": Icons.IconSeldonRotation,
   "seldon-color": Icons.IconSeldonColor,
   "seldon-computed": Icons.IconSeldonComputed,
   "seldon-custom": Icons.IconSeldonCustom,

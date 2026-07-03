@@ -1,6 +1,6 @@
 "use client"
 
-import { useInterfaceModeVars } from "@lib/theme/use-interface-mode-vars"
+import { useInterfaceModeAttribute } from "@lib/chrome/use-interface-mode-attribute"
 import { CSSProperties, PropsWithChildren, useRef } from "react"
 import { useAppState } from "@lib/hooks/use-app-state"
 import { useEditorConfig } from "@lib/hooks/use-editor-config"
@@ -13,7 +13,7 @@ export function Layout({
   const { showPanels, chromeTheme } = useEditorConfig()
   const { appState } = useAppState()
   const layoutRef = useRef<HTMLDivElement>(null)
-  useInterfaceModeVars(layoutRef)
+  useInterfaceModeAttribute(layoutRef)
 
   const shouldShowHeader = appState === "project" || showPanels
 

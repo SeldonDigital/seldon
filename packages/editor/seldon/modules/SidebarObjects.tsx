@@ -4,18 +4,19 @@
  *
  * License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md
  * Do not redistribute or sublicense without permission.
- *
- * You may not use this software, or any derivative works of it, in whole or in part,
- * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly)
+ * 
+ * You may not use this software, or any derivative works of it, in whole or in part, 
+ * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly) 
  * any machine learning or artificial intelligence system without written permission.
- *
+ * 
  *****/
+ 
 import { HTMLAttributes } from "react"
 import { ButtonIconicProps } from "../elements/ButtonIconic"
 import {
-  ComboboxFieldProjectField,
-  ComboboxFieldProjectFieldProps,
-} from "../elements/ComboboxFieldProjectField"
+  ComboboxFieldProject,
+  ComboboxFieldProjectProps,
+} from "../elements/ComboboxFieldProject"
 import { Frame, FrameProps } from "../frames/Frame"
 import { HTMLDiv } from "../native-react/HTML.Div"
 import { IconProps } from "../primitives/Icon"
@@ -27,7 +28,7 @@ export interface SidebarObjectsProps extends HTMLAttributes<HTMLElement> {
   className?: string
   "data-seldon-ref"?: string
   seldonRefs?: Record<string, Record<string, unknown>>
-  comboboxFieldProjectField?: ComboboxFieldProjectFieldProps | null
+  comboboxFieldProject?: ComboboxFieldProjectProps | null
   icon?: IconProps | null
   input?: InputProps | null
   buttonIconic?: ButtonIconicProps | null
@@ -52,7 +53,7 @@ export interface SidebarObjectsProps extends HTMLAttributes<HTMLElement> {
  *****/
 export function SidebarObjects({
   className = "",
-  comboboxFieldProjectField,
+  comboboxFieldProject,
   icon = sdn.icon,
   input = sdn.input,
   buttonIconic = sdn.buttonIconic,
@@ -66,16 +67,16 @@ export function SidebarObjects({
     "sdn-sidebar-objects",
     className,
   )
-  const comboboxFieldProjectFieldProps = applyRef(
+  const comboboxFieldProjectProps = applyRef(
     seldonRefs,
-    comboboxFieldProjectField === null
+    comboboxFieldProject === null
       ? null
       : {
-          ...sdn.comboboxFieldProjectField,
-          ...comboboxFieldProjectField,
+          ...sdn.comboboxFieldProject,
+          ...comboboxFieldProject,
           className: combineClassNames(
-            sdn.comboboxFieldProjectField?.className,
-            comboboxFieldProjectField?.className,
+            sdn.comboboxFieldProject?.className,
+            comboboxFieldProject?.className,
           ),
         },
   )
@@ -144,9 +145,9 @@ export function SidebarObjects({
         children
       ) : (
         <>
-          {comboboxFieldProjectField && comboboxFieldProjectFieldProps && (
-            <ComboboxFieldProjectField
-              {...comboboxFieldProjectFieldProps}
+          {comboboxFieldProject && comboboxFieldProjectProps && (
+            <ComboboxFieldProject
+              {...comboboxFieldProjectProps}
               icon={iconProps}
               input={inputProps}
               buttonIconic={buttonIconicProps}
@@ -167,8 +168,8 @@ const sdn: SidebarObjectsProps = {
   role: "complementary",
   "aria-hidden": "false",
   className: "sdn-sidebar-objects sdn-sidebar",
-  comboboxFieldProjectField: {
-    className: "sdn-combobox-field-filter-field sdn-combobox-field--z3a0",
+  comboboxFieldProject: {
+    className: "sdn-combobox-field sdn-combobox-field--z3a0",
   },
   icon: {
     icon: "material-dataObject",

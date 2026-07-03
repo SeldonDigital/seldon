@@ -35,14 +35,18 @@ const RESERVED_STATE_SELECTOR_SUFFIXES: Record<ReservedStateName, string[]> = {
  * matching the canvas board preview that forces the state across the subtree.
  *
  * The suffixes differ from {@link RESERVED_STATE_SELECTOR_SUFFIXES} only where a
- * self pseudo-class does not propagate from a descendant: `focused` uses
- * `:focus-within` and `checked` uses `:has(:checked)`. The rest already match
- * the ancestor when a descendant is in that state, or are attribute/class hooks
- * the view sets on the root.
+ * self pseudo-class does not propagate from a descendant: `focused` adds
+ * `:has(:focus-visible)` and `checked` uses `:has(:checked)`. The rest already
+ * match the ancestor when a descendant is in that state, or are attribute/class
+ * hooks the view sets on the root.
+ *
+ * `focused` binds to visible focus only, not bare `:focus-within`, so a mouse
+ * click paints `active` while it is held and leaves no lingering focus paint;
+ * keyboard focus still styles the whole interaction root.
  */
 const ANCESTOR_STATE_SELECTOR_SUFFIXES: Record<ReservedStateName, string[]> = {
   hover: [":hover"],
-  focused: [":focus-within"],
+  focused: [":focus-visible", ":has(:focus-visible)"],
   active: [":active"],
   disabled: [":disabled", '[aria-disabled="true"]'],
   checked: [":has(:checked)"],

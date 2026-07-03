@@ -1,6 +1,6 @@
 import { CSSProperties, MouseEvent } from "react"
 import { IconProps } from "@seldon/components/primitives/Icon"
-import { ICONIC_BUTTON_ATTR } from "../../helpers/iconic-button"
+import { ICONIC_BUTTON_ATTR } from "@lib/menus/iconic-button"
 import { FlatProperty } from "./properties-data"
 import {
   getDisclosureButtonStyle,

@@ -42,15 +42,15 @@ import {
   buildActivatedRefProps,
   buildDisabledRefProps,
   buildInvalidRefProps,
-} from "../../shared/build-field-state-props"
-import { buildResetMenuEntry } from "../../shared/build-reset-menu-entry"
+} from "@lib/views/state-props"
+import { buildResetMenuEntry } from "@lib/menus/build-reset-menu-entry"
 import { buildPropertyOptions } from "../helpers/build-property-options"
 import {
   FRAME_REF_SELECTOR,
   buildPropertyRowProps,
 } from "../helpers/build-property-row-props"
 import { buildPropertyValueInput } from "../helpers/build-property-value-input"
-import { ICONIC_BUTTON_SELECTOR } from "../../helpers/iconic-button"
+import { ICONIC_BUTTON_SELECTOR } from "@lib/menus/iconic-button"
 import type { LayerDragContext } from "../LayerDragRow"
 import { getDisplayValue } from "../helpers/display-value-utils"
 import {

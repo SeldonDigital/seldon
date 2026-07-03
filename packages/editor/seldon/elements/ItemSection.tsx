@@ -4,18 +4,19 @@
  *
  * License: https://github.com/SeldonDigital/seldon/blob/main/LICENSE.md
  * Do not redistribute or sublicense without permission.
- *
- * You may not use this software, or any derivative works of it, in whole or in part,
- * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly)
+ * 
+ * You may not use this software, or any derivative works of it, in whole or in part, 
+ * for the purposes of training, fine-tuning, or otherwise improving (directly or indirectly) 
  * any machine learning or artificial intelligence system without written permission.
- *
+ * 
  *****/
+ 
 import { LiHTMLAttributes } from "react"
 import { ButtonIconic, ButtonIconicProps } from "../elements/ButtonIconic"
 import {
-  FormControlComboboxControl,
-  FormControlComboboxControlProps,
-} from "../elements/FormControlComboboxControl"
+  FormControlCombobox,
+  FormControlComboboxProps,
+} from "../elements/FormControlCombobox"
 import { HTMLLi } from "../native-react/HTML.Li"
 import { IconProps } from "../primitives/Icon"
 import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
@@ -28,7 +29,7 @@ export interface ItemSectionProps extends LiHTMLAttributes<HTMLLIElement> {
   seldonRefs?: Record<string, Record<string, unknown>>
   buttonIconic?: ButtonIconicProps | null
   icon?: IconProps | null
-  formControlComboboxControl?: FormControlComboboxControlProps | null
+  formControlCombobox?: FormControlComboboxProps | null
   textLabel?: TextLabelProps | null
   buttonIconic2?: ButtonIconicProps | null
   icon2?: IconProps | null
@@ -49,7 +50,7 @@ export interface ItemSectionProps extends LiHTMLAttributes<HTMLLIElement> {
  *   aria-hidden="false"
  *   buttonIconic={() => {}}
  *   icon="material-star"
- *   formControlComboboxControl="{}"
+ *   formControlCombobox="{}"
  *   textLabel="{}"
  *   buttonIconic2={() => {}}
  *   buttonIconic3={() => {}}
@@ -60,7 +61,7 @@ export function ItemSection({
   className = "",
   buttonIconic,
   icon = sdn.icon,
-  formControlComboboxControl,
+  formControlCombobox,
   textLabel,
   buttonIconic2,
   icon2 = sdn.icon2,
@@ -94,16 +95,16 @@ export function ItemSection({
           className: combineClassNames(sdn.icon?.className, icon?.className),
         },
   )
-  const formControlComboboxControlProps = applyRef(
+  const formControlComboboxProps = applyRef(
     seldonRefs,
-    formControlComboboxControl === null
+    formControlCombobox === null
       ? null
       : {
-          ...sdn.formControlComboboxControl,
-          ...formControlComboboxControl,
+          ...sdn.formControlCombobox,
+          ...formControlCombobox,
           className: combineClassNames(
-            sdn.formControlComboboxControl?.className,
-            formControlComboboxControl?.className,
+            sdn.formControlCombobox?.className,
+            formControlCombobox?.className,
           ),
         },
   )
@@ -180,10 +181,10 @@ export function ItemSection({
           {buttonIconic && buttonIconicProps && (
             <ButtonIconic {...buttonIconicProps} icon={iconProps} />
           )}
-          {formControlComboboxControl && formControlComboboxControlProps && (
-            <FormControlComboboxControl {...formControlComboboxControlProps}>
+          {formControlCombobox && formControlComboboxProps && (
+            <FormControlCombobox {...formControlComboboxProps}>
               {textLabel && textLabelProps && <TextLabel {...textLabelProps} />}
-            </FormControlComboboxControl>
+            </FormControlCombobox>
           )}
           {buttonIconic2 && buttonIconic2Props && (
             <ButtonIconic {...buttonIconic2Props} icon={icon2Props} />
@@ -210,11 +211,11 @@ const sdn: ItemSectionProps = {
   icon: {
     icon: "material-unfoldMore",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--7mkl",
+    className: "sdn-icon sdn-icon--umgs",
     "data-seldon-ref": "sectionToggleIcon",
   },
-  formControlComboboxControl: {
-    className: "sdn-form-control sdn-form-control-combobox-control--qmop",
+  formControlCombobox: {
+    className: "sdn-form-control sdn-form-control-combobox--gqrl",
   },
   textLabel: {
     className: "sdn-text-label sdn-text-label--z34z",
@@ -227,7 +228,7 @@ const sdn: ItemSectionProps = {
   icon2: {
     icon: "material-add",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--7mkl",
+    className: "sdn-icon sdn-icon--umgs",
   },
   buttonIconic3: {
     className: "sdn-button-iconic sdn-button-iconic--pgsr",
@@ -236,6 +237,6 @@ const sdn: ItemSectionProps = {
   icon3: {
     icon: "seldon-more",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--7mkl",
+    className: "sdn-icon sdn-icon--umgs",
   },
 }

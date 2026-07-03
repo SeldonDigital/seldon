@@ -117,6 +117,10 @@ The Computed section holds the inputs that drive the compute engines and the col
 | `colorHarmony.parameters.grayPoint` | number | Lightness anchor, gray |
 | `colorHarmony.parameters.blackPoint` | number | Lightness anchor, black |
 | `colorHarmony.parameters.bleed` | number | Hue bleed into neutrals |
+| `colorHarmony.parameters.mode` | `ThemeMode` | `option: light, dark` (`themes/constants/enums.ts`) |
+| `colorHarmony.parameters.chromaChange` | number | Chroma shift in percent, -100 through 100 |
+
+`mode` names the mode the theme's authored colors represent. `chromaChange` shifts the chroma of derived opposite-mode colors. Neither changes how theme colors compute. Factory export uses them to derive the opposite-mode swatch block through `getOppositeModeSwatches` in `compute/get-mode-swatches.ts`: each swatch converts to LCH, lightness inverts, and non-neutral swatches scale chroma by `chromaChange` percent. The neutral swatches `white`, `gray`, `black`, `foreground`, `background`, `offBlack`, and `offWhite` invert without a chroma shift.
 
 `fontFamily` holds the primary and secondary font stacks. Each slot is a `TokenType.FONT_FAMILY` cell, referenced through `@fontFamily.primary` and `@fontFamily.secondary`.
 
