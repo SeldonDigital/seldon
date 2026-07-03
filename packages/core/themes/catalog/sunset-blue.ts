@@ -26,9 +26,9 @@ export const theme: StockTheme = {
     type: TokenType.COMPUTED,
     parameters: {
       baseColor: {
-        hue: 197,
+        hue: 198,
         saturation: 100,
-        lightness: 44,
+        lightness: 42,
       },
       harmony: 1,
       angle: 25,
@@ -740,7 +740,7 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 197, saturation: 100, lightness: 44 },
+        value: { hue: 198, saturation: 100, lightness: 42 },
       },
     },
     punch: {
@@ -749,7 +749,7 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 10, saturation: 88, lightness: 60 },
+        value: { hue: 10, saturation: 79, lightness: 56 },
       },
     },
     positive: {
@@ -758,7 +758,7 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 150, saturation: 85, lightness: 45 },
+        value: { hue: 151, saturation: 100, lightness: 39 },
       },
     },
     negative: {
@@ -767,7 +767,7 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 358, saturation: 88, lightness: 58 },
+        value: { hue: 356, saturation: 80, lightness: 53 },
       },
     },
     warning: {
@@ -776,7 +776,7 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 42, saturation: 100, lightness: 56 },
+        value: { hue: 44, saturation: 99, lightness: 47 },
       },
     },
     accent: {
@@ -785,7 +785,7 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 211, saturation: 70, lightness: 34 },
+        value: { hue: 209, saturation: 81, lightness: 31 },
       },
     },
     offBlack: {

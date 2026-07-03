@@ -25,7 +25,7 @@ export const theme: StockTheme = {
   colorHarmony: {
     type: TokenType.COMPUTED,
     parameters: {
-      baseColor: { hue: 256, saturation: 35, lightness: 48 },
+      baseColor: { hue: 256, saturation: 37, lightness: 46 },
       harmony: Harmony.Monochromatic,
       angle: 0,
       step: 10,
@@ -574,7 +574,7 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 256, saturation: 35, lightness: 48 },
+        value: { hue: 256, saturation: 37, lightness: 46 },
       },
     },
     punch: {
@@ -583,7 +583,7 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 25, saturation: 75, lightness: 55 },
+        value: { hue: 25, saturation: 68, lightness: 51 },
       },
     },
     positive: {
@@ -592,7 +592,7 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 140, saturation: 45, lightness: 42 },
+        value: { hue: 141, saturation: 50, lightness: 38 },
       },
     },
     warning: {
@@ -601,7 +601,7 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 40, saturation: 80, lightness: 50 },
+        value: { hue: 42, saturation: 98, lightness: 43 },
       },
     },
     accent: {
@@ -610,7 +610,7 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 330, saturation: 40, lightness: 52 },
+        value: { hue: 330, saturation: 39, lightness: 49 },
       },
     },
     custom1: {
@@ -619,7 +619,7 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 259, saturation: 11, lightness: 40 },
+        value: { hue: 259, saturation: 12, lightness: 38 },
       },
     },
     custom2: {
@@ -628,7 +628,7 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 340, saturation: 21, lightness: 41 },
+        value: { hue: 340, saturation: 22, lightness: 39 },
       },
     },
     negative: {
@@ -637,7 +637,7 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 3, saturation: 71, lightness: 41 },
+        value: { hue: 2, saturation: 74, lightness: 39 },
       },
     },
     offBlack: {

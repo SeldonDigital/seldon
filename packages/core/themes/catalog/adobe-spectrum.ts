@@ -24,7 +24,7 @@ export const theme: StockTheme = {
   colorHarmony: {
     type: TokenType.COMPUTED,
     parameters: {
-      baseColor: { hue: 213, saturation: 82, lightness: 54 },
+      baseColor: { hue: 210, saturation: 85, lightness: 48 },
       harmony: Harmony.Monochromatic,
       angle: 16,
       step: 15,
@@ -577,7 +577,7 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 213, saturation: 82, lightness: 54 },
+        value: { hue: 210, saturation: 85, lightness: 48 },
       },
     },
     punch: {
@@ -586,7 +586,7 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 327, saturation: 62, lightness: 53 },
+        value: { hue: 326, saturation: 59, lightness: 49 },
       },
     },
     positive: {
@@ -595,7 +595,7 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 159, saturation: 56, lightness: 40 },
+        value: { hue: 160, saturation: 66, lightness: 35 },
       },
     },
     negative: {
@@ -604,7 +604,7 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 357, saturation: 66, lightness: 53 },
+        value: { hue: 356, saturation: 63, lightness: 49 },
       },
     },
     warning: {
@@ -613,7 +613,7 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 33, saturation: 80, lightness: 50 },
+        value: { hue: 34, saturation: 93, lightness: 44 },
       },
     },
     accent: {
@@ -622,7 +622,7 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 240, saturation: 70, lightness: 63 },
+        value: { hue: 239, saturation: 65, lightness: 60 },
       },
     },
     offBlack: {

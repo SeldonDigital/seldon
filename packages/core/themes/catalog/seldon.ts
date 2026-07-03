@@ -23,7 +23,7 @@ export const theme: StockTheme = {
   colorHarmony: {
     type: TokenType.COMPUTED,
     parameters: {
-      baseColor: { hue: 203, saturation: 100, lightness: 62 }, // Seldon Blue
+      baseColor: { hue: 202, saturation: 89, lightness: 55 }, // Seldon Blue
       harmony: Harmony.Monochromatic,
       angle: 24,
       step: 6,
@@ -572,7 +572,7 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 203, saturation: 100, lightness: 62 },
+        value: { hue: 202, saturation: 89, lightness: 55 },
       },
     },
     punch: {
@@ -581,7 +581,7 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 20, saturation: 95, lightness: 60 },
+        value: { hue: 20, saturation: 84, lightness: 56 },
       },
     },
     positive: {
@@ -590,7 +590,7 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 135, saturation: 76, lightness: 59 },
+        value: { hue: 137, saturation: 68, lightness: 52 },
       },
     },
     negative: {
@@ -599,7 +599,7 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 0, saturation: 100, lightness: 65 },
+        value: { hue: 359, saturation: 89, lightness: 61 },
       },
     },
     warning: {
@@ -608,7 +608,7 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 60, saturation: 100, lightness: 58 },
+        value: { hue: 60, saturation: 100, lightness: 47 },
       },
     },
     accent: {
@@ -617,7 +617,7 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 300, saturation: 76, lightness: 48 },
+        value: { hue: 300, saturation: 97, lightness: 41 },
       },
     },
     offBlack: {

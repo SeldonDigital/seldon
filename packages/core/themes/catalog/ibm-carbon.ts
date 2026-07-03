@@ -26,9 +26,9 @@ export const theme: StockTheme = {
     type: TokenType.COMPUTED,
     parameters: {
       baseColor: {
-        hue: 220,
-        saturation: 98,
-        lightness: 53,
+        hue: 218,
+        saturation: 100,
+        lightness: 48,
       },
       harmony: 0,
       angle: 60,
@@ -740,7 +740,7 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 220, saturation: 98, lightness: 53 },
+        value: { hue: 218, saturation: 100, lightness: 48 },
       },
     },
     punch: {
@@ -749,7 +749,7 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 203, saturation: 86, lightness: 49 },
+        value: { hue: 202, saturation: 100, lightness: 44 },
       },
     },
     positive: {
@@ -758,7 +758,7 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 137, saturation: 63, lightness: 39 },
+        value: { hue: 140, saturation: 78, lightness: 34 },
       },
     },
     negative: {
@@ -767,7 +767,7 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 357, saturation: 76, lightness: 49 },
+        value: { hue: 354, saturation: 89, lightness: 44 },
       },
     },
     warning: {
@@ -776,7 +776,7 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 48, saturation: 88, lightness: 53 },
+        value: { hue: 49, saturation: 100, lightness: 44 },
       },
     },
     accent: {
@@ -785,7 +785,7 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 262, saturation: 96, lightness: 62 },
+        value: { hue: 262, saturation: 88, lightness: 59 },
       },
     },
     offBlack: {
