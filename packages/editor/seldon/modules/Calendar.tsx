@@ -1827,7 +1827,7 @@ const sdn: CalendarProps = {
     className: "sdn-calendar-day sdn-calendar-day--i3zq",
   },
   textLabel8: {
-    className: "sdn-text-label sdn-text-label--6f2j",
+    className: "sdn-text-label sdn-text-label--g3ro",
   },
   calendarDayGridCell: {
     className: "sdn-calendar-day-grid-cell sdn-calendar-day-grid-cell--iysx",
@@ -2044,6 +2044,6 @@ const sdn: CalendarProps = {
     className: "sdn-calendar-day sdn-calendar-day--2hoh",
   },
   textLabel40: {
-    className: "sdn-text-label sdn-text-label--6f2j",
+    className: "sdn-text-label sdn-text-label--g3ro",
   },
 }

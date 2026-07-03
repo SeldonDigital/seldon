@@ -20263,7 +20263,18 @@
         "align": {
           "type": "option",
           "value": "top-left"
-        }
+        },
+        "shadow": [
+          {
+            "opacity": {
+              "type": "exact",
+              "value": {
+                "unit": "%",
+                "value": 10
+              }
+            }
+          }
+        ]
       },
       "__editor": {
         "initialOverrides": {}
@@ -21438,7 +21449,18 @@
         "gap": {
           "type": "option",
           "value": "none"
-        }
+        },
+        "shadow": [
+          {
+            "opacity": {
+              "type": "exact",
+              "value": {
+                "unit": "%",
+                "value": 10
+              }
+            }
+          }
+        ]
       },
       "__editor": {
         "initialOverrides": {}
@@ -47447,70 +47469,130 @@
       "type": "default",
       "label": "Seldon",
       "template": "catalog:seldon",
-      "overrides": {}
+      "overrides": {
+        "colorHarmony": {
+          "parameters": {
+            "chromaChange": -10
+          }
+        }
+      }
     },
     "theme-highContrast-default": {
       "id": "theme-highContrast-default",
       "type": "default",
       "label": "Default",
       "template": "catalog:highContrast",
-      "overrides": {}
+      "overrides": {
+        "colorHarmony": {
+          "parameters": {
+            "chromaChange": -10
+          }
+        }
+      }
     },
     "theme-material-default": {
       "id": "theme-material-default",
       "type": "default",
       "label": "Default",
       "template": "catalog:googleMaterial",
-      "overrides": {}
+      "overrides": {
+        "colorHarmony": {
+          "parameters": {
+            "chromaChange": -10
+          }
+        }
+      }
     },
     "theme-earth-default": {
       "id": "theme-earth-default",
       "type": "default",
       "label": "Default",
       "template": "catalog:earth",
-      "overrides": {}
+      "overrides": {
+        "colorHarmony": {
+          "parameters": {
+            "chromaChange": -10
+          }
+        }
+      }
     },
     "theme-industrial-default": {
       "id": "theme-industrial-default",
       "type": "default",
       "label": "Default",
       "template": "catalog:industrial",
-      "overrides": {}
+      "overrides": {
+        "colorHarmony": {
+          "parameters": {
+            "chromaChange": 10
+          }
+        }
+      }
     },
     "theme-pop-default": {
       "id": "theme-pop-default",
       "type": "default",
       "label": "Default",
       "template": "catalog:popPunk",
-      "overrides": {}
+      "overrides": {
+        "colorHarmony": {
+          "parameters": {
+            "chromaChange": -10
+          }
+        }
+      }
     },
     "theme-royalAzure-default": {
       "id": "theme-royalAzure-default",
       "type": "default",
       "label": "Default",
       "template": "catalog:ibmCarbon",
-      "overrides": {}
+      "overrides": {
+        "colorHarmony": {
+          "parameters": {
+            "chromaChange": -10
+          }
+        }
+      }
     },
     "theme-sky-default": {
       "id": "theme-sky-default",
       "type": "default",
       "label": "Default",
       "template": "catalog:adobeSpectrum",
-      "overrides": {}
+      "overrides": {
+        "colorHarmony": {
+          "parameters": {
+            "chromaChange": -10
+          }
+        }
+      }
     },
     "theme-sunsetBlue-default": {
       "id": "theme-sunsetBlue-default",
       "type": "default",
       "label": "Default",
       "template": "catalog:sunsetBlue",
-      "overrides": {}
+      "overrides": {
+        "colorHarmony": {
+          "parameters": {
+            "chromaChange": -10
+          }
+        }
+      }
     },
     "theme-wildberry-default": {
       "id": "theme-wildberry-default",
       "type": "default",
       "label": "Default",
       "template": "catalog:wildberry",
-      "overrides": {}
+      "overrides": {
+        "colorHarmony": {
+          "parameters": {
+            "chromaChange": -10
+          }
+        }
+      }
     }
   },
   "font-collections": {

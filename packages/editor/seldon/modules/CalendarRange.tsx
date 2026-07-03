@@ -3357,7 +3357,7 @@ const sdn: CalendarRangeProps = {
     className: "sdn-calendar-day sdn-calendar-day--omg8",
   },
   textLabel25: {
-    className: "sdn-text-label sdn-text-label--6f2j",
+    className: "sdn-text-label sdn-text-label--g3ro",
   },
   calendarDaySelected2: {
     className: "sdn-calendar-day-selected sdn-calendar-day-selected--zit2",

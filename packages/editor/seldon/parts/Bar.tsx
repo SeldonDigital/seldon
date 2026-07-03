@@ -175,7 +175,7 @@ const sdn: BarProps = {
   icon: {
     icon: "seldon-component",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--rezm",
+    className: "sdn-icon sdn-icon--umgs",
   },
   button: {
     className: "sdn-button sdn-button-iconic--pgsr",

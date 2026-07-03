@@ -165,7 +165,7 @@ const sdn: DialogPaletteProps = {
   icon: {
     icon: "material-close",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--rezm",
+    className: "sdn-icon sdn-icon--umgs",
   },
   frame: {
     wrapperElement: "div",

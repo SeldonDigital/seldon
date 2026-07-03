@@ -120,7 +120,11 @@ The Computed section holds the inputs that drive the compute engines and the col
 | `colorHarmony.parameters.mode` | `ThemeMode` | `option: light, dark` (`themes/constants/enums.ts`) |
 | `colorHarmony.parameters.chromaChange` | number | Chroma shift in percent, -100 through 100 |
 
-`mode` names the mode the theme's authored colors represent. `chromaChange` shifts the chroma of derived opposite-mode colors. Neither changes how theme colors compute. Factory export uses them to derive the opposite-mode swatch block through `getOppositeModeSwatches` in `compute/get-mode-swatches.ts`: each swatch converts to LCH, lightness inverts, and non-neutral swatches scale chroma by `chromaChange` percent. The neutral swatches `white`, `gray`, `black`, `foreground`, `background`, `offBlack`, and `offWhite` invert without a chroma shift.
+`mode` names the mode the theme's authored colored swatches represent. `chromaChange` shifts the chroma of derived opposite-mode colors. Neither changes how theme colors compute. Factory export builds each mode's swatch table through `getModeSwatches` in `compute/get-mode-swatches.ts`.
+
+Every theme authors its neutral pairs literally: `offWhite` holds a light color and `offBlack` a dark one. The pairs `white`/`black`, `foreground`/`background`, and `offBlack`/`offWhite` never derive. The light table serves them as authored. The dark table serves each slot its partner's authored value. This assignment does not depend on the theme's `mode`.
+
+Every other swatch stays authored in the theme's own `mode` and derives for the opposite mode: the color converts to LCH, lightness inverts, and chroma scales by `chromaChange` percent. `gray` inverts without a chroma shift.
 
 `fontFamily` holds the primary and secondary font stacks. Each slot is a `TokenType.FONT_FAMILY` cell, referenced through `@fontFamily.primary` and `@fontFamily.secondary`.
 

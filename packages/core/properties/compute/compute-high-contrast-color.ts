@@ -88,24 +88,17 @@ export function computeHighContrastColor(
  * ratio. This is the theme-parameterized core of high contrast, shared by the compute engine and by
  * factory export so a theme can bake its own answer per surface.
  *
- * `pickOpposite` returns the partner of the normal choice. The opposite-mode export block uses it:
- * mode switching swaps the authored neutral pairs, so each surface's readable foreground is the
- * partner of the base pick. No evaluation runs against derived colors.
- *
  * @param surface - Resolved surface color the foreground must read on
  * @param theme - Theme supplying contrast ratio, bleed, harmony, and white/black swatches
- * @param pickOpposite - Flip the white/black choice for the opposite mode
  * @returns `EXACT` foreground color taken from `@swatch.white`/`@swatch.black` or the harmony points
  */
 export function resolveHighContrastForeground(
   surface: ColorValue | HexValue,
   theme: ComputeContext["theme"],
-  pickOpposite = false,
 ): ColorValue | HexValue {
   const { contrastRatio, includeBleed } = theme.highContrast.parameters
 
-  const isDark = isDarkBackgroundColor(surface, contrastRatio)
-  const useWhite = pickOpposite ? !isDark : isDark
+  const useWhite = isDarkBackgroundColor(surface, contrastRatio)
 
   if (includeBleed) {
     const themeOption = getThemeOption(

@@ -61,7 +61,14 @@ export function getColorStyles({
     })
     // Only set the accent color if it's not transparent (which indicates an invalid color)
     if (accentColorValue !== "transparent") {
-      styles.accentColor = accentColorValue
+      const themed =
+        useThemeVariableReferences && computeContext
+          ? getComputedCssValue({
+              original: computeContext.properties.accentColor,
+              context: computeContext,
+            })
+          : null
+      styles.accentColor = themed ?? accentColorValue
     }
   }
 

@@ -3,11 +3,11 @@ import { HSLObjectToString } from "@seldon/core/helpers/color/hsl-object-to-stri
 import { modulate } from "@seldon/core/helpers/math/modulate"
 import {
   colorspaceLiteralToHsl,
-  getOppositeModeSwatches,
+  getModeSwatches,
 } from "@seldon/core/themes/compute"
-import { Colorspace } from "@seldon/core/themes/constants/colorspace"
+import type { ThemeMode } from "@seldon/core/themes/constants"
 import { isModulatedToken, isThemeExactToken } from "@seldon/core/themes/values"
-import type { ThemeScaleToken, ThemeSwatch } from "@seldon/core/themes/values"
+import type { ThemeScaleToken } from "@seldon/core/themes/values"
 import { workspaceThemeService } from "@seldon/core/workspace/services"
 import { Workspace } from "@seldon/core/workspace/types"
 
@@ -18,20 +18,6 @@ import {
 import { getThemeSwatchVarNames } from "../../../styles/css-properties/get-theme-swatch-names"
 import { format } from "../utils/format"
 import { getThemeSlug } from "./get-theme-slug"
-
-function swatchToCssString(swatch: ThemeSwatch): string {
-  const { parameters } = swatch
-  if (parameters.colorspace === Colorspace.HSL) {
-    return HSLObjectToString(parameters.value)
-  }
-  if (parameters.colorspace === Colorspace.HEX) {
-    return parameters.value
-  }
-  if (parameters.colorspace === Colorspace.NAME) {
-    return parameters.value
-  }
-  return String(parameters.value)
-}
 
 function exactTokenCss(token: ThemeScaleToken): string {
   if (isThemeExactToken(token)) {
@@ -100,16 +86,9 @@ function generateThemeCSSVariables(theme: Theme, slug: string): string {
   cssVariables += `  ${prefix}color-chroma-change: ${harmony.chromaChange}%;\n`
   cssVariables += `  ${prefix}color-contrast-ratio: ${theme.highContrast.parameters.contrastRatio};\n`
 
-  cssVariables += `  /* Swatches */\n`
-
-  const uniqueSwatchNames = getThemeSwatchVarNames(theme)
-
-  Object.entries(theme.swatch).forEach(([key, value]) => {
-    if (!value) return
-    const colorString = swatchToCssString(value)
-    const swatchName = uniqueSwatchNames[key]
-    cssVariables += `  ${prefix}swatch-${swatchName}: ${colorString};\n`
-  })
+  // The base block serves the theme's authored mode, so its swatch table comes
+  // from the mode assignment: literal neutral pairs for light, swapped for dark.
+  cssVariables += generateModeSwatchVariables(theme, harmony.mode ?? "light")
 
   const writeModulatedScale = (
     label: string,
@@ -192,13 +171,15 @@ function generateThemeCSSVariables(theme: Theme, slug: string): string {
 }
 
 /**
- * Swatch variables for the mode opposite to the theme's authored `mode`. The
- * neutral pairs (foreground/background, white/black, offBlack/offWhite) swap
- * their authored colors. Every other color moves through LCH: lightness
- * inverts and chroma scales by the theme's `chromaChange` percentage.
+ * Swatch variables for one target appearance. The neutral pairs
+ * (foreground/background, white/black, offBlack/offWhite) carry authored
+ * colors as-is: the literal assignment for light, the swapped assignment for
+ * dark. Every other color is authored in the theme's own mode and moves
+ * through LCH for the opposite one: lightness inverts and chroma scales by
+ * the theme's `chromaChange` percentage.
  */
-function generateOppositeModeCSSVariables(theme: Theme): string {
-  const swatches = getOppositeModeSwatches(theme)
+function generateModeSwatchVariables(theme: Theme, mode: ThemeMode): string {
+  const swatches = getModeSwatches(theme, mode)
   const uniqueSwatchNames = getThemeSwatchVarNames(theme)
   let cssVariables = `  /* Swatches */\n`
 
@@ -208,12 +189,22 @@ function generateOppositeModeCSSVariables(theme: Theme): string {
     cssVariables += `  --sdn-swatch-${swatchName}: ${HSLObjectToString(hsl)};\n`
   })
 
-  // Mode switching swaps the authored neutral pairs, so each surface's
-  // readable foreground is the partner of the base pick. Re-emit the
-  // high-contrast family with every choice flipped.
-  cssVariables += emitHighContrastVariables(theme, true)
-
   return cssVariables
+}
+
+/**
+ * Full variable set for the mode opposite to the theme's authored `mode`:
+ * the opposite-appearance swatch table plus the high-contrast picks that
+ * read on it. Size-based families stay mode-independent.
+ */
+function generateOppositeModeCSSVariables(theme: Theme): string {
+  const authoredMode = theme.colorHarmony.parameters.mode ?? "light"
+  const oppositeMode = authoredMode === "dark" ? "light" : "dark"
+
+  return (
+    generateModeSwatchVariables(theme, oppositeMode) +
+    emitHighContrastVariables(theme, oppositeMode)
+  )
 }
 
 export function generateThemeStylesheet(slug: string, theme: Theme): string {

@@ -101,6 +101,7 @@ export function getCssObjectFromProperties(
     ...safeGetStyles(() =>
       getBorderStyles({
         properties: computedProperties,
+        computeContext,
         parentContext,
         theme,
         useThemeVariableReferences,

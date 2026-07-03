@@ -31,6 +31,35 @@ import { debugLog } from "@seldon/core/utils/debug-logger"
 import { getThemeSwatchVarReference } from "./get-theme-swatch-names"
 
 /**
+ * Wraps a CSS color reference (a `var(--sdn-...)` or any color expression) with
+ * runtime brightness and opacity transforms. Opacity applies with `color-mix`
+ * so the alpha applies while the base color still swaps. Brightness applies
+ * with relative color syntax (`hsl(from <ref> h s calc(l ...))`), which shifts
+ * the reference's lightness at runtime while preserving hue and saturation
+ * (mirrors `applyBrightness`).
+ */
+export function applyTransformsToColorReference(
+  reference: string,
+  brightnessNum: number,
+  opacityNum: number,
+): string {
+  if (brightnessNum === 0) {
+    if (opacityNum === 100) return reference
+    return `color-mix(in srgb, ${reference} ${opacityNum}%, transparent)`
+  }
+
+  // `applyBrightness`: tint adds a share of the range to white, shade removes
+  // a share of the range to black. Channel keywords resolve to unitless
+  // numbers (100 = 100%), so the offset carries no unit.
+  const lightness =
+    brightnessNum > 0
+      ? `calc(l + (100 - l) * ${brightnessNum / 100})`
+      : `calc(l + l * ${brightnessNum / 100})`
+  const alpha = opacityNum === 100 ? "" : ` / ${opacityNum}%`
+  return `hsl(from ${reference} h s ${lightness}${alpha})`
+}
+
+/**
  * Retrieves the CSS color value based on the provided color value and theme.
  *
  * In export mode (`useThemeVariableReferences`), a swatch color becomes a
@@ -75,29 +104,17 @@ export function getColorCSSValue({
       color.type === ValueType.THEME_CATEGORICAL
 
     // Keep the swatch as a theme variable so it swaps with the active theme.
-    // Opacity applies with color-mix; brightness applies with relative color
-    // syntax, which shifts the variable's lightness at runtime while preserving
-    // hue and saturation (mirrors `applyBrightness`).
     if (isSwatch) {
       const reference = getThemeSwatchVarReference(
         String((color as { value: unknown }).value),
         theme,
       )
       if (reference) {
-        if (brightnessNum === 0) {
-          if (opacityNum === 100) return reference
-          return `color-mix(in srgb, ${reference} ${opacityNum}%, transparent)`
-        }
-
-        // `applyBrightness`: tint adds a share of the range to white, shade
-        // removes a share of the range to black. Channel keywords resolve to
-        // unitless numbers (100 = 100%), so the offset carries no unit.
-        const lightness =
-          brightnessNum > 0
-            ? `calc(l + (100 - l) * ${brightnessNum / 100})`
-            : `calc(l + l * ${brightnessNum / 100})`
-        const alpha = opacityNum === 100 ? "" : ` / ${opacityNum}%`
-        return `hsl(from ${reference} h s ${lightness}${alpha})`
+        return applyTransformsToColorReference(
+          reference,
+          brightnessNum,
+          opacityNum,
+        )
       }
     }
   }

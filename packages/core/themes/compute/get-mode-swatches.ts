@@ -2,13 +2,16 @@ import chroma from "chroma-js"
 
 import type { HSL } from "../../properties/values/shared/exact/hsl"
 import { Colorspace } from "../constants/colorspace"
+import type { ThemeMode } from "../constants/enums"
 import type { Theme } from "../types/theme"
 import type { ThemeSwatch } from "../values/shared/palette/theme-swatch"
 
 /**
- * Neutral slots that flip between modes by exchanging their authored colors.
- * No derivation applies to them: in the opposite mode each slot takes its
- * partner's authored value verbatim.
+ * Neutral slots that flip between appearances by exchanging their authored
+ * colors. Every theme authors them literally: `offWhite` holds a light color
+ * and `offBlack` a dark one. The light appearance serves the literal
+ * assignment and the dark appearance serves the swapped assignment, regardless
+ * of the theme's authored mode. No derivation ever applies to them.
  */
 export const MODE_SWAPPED_SWATCH_PAIRS: ReadonlyArray<
   readonly [string, string]
@@ -17,6 +20,11 @@ export const MODE_SWAPPED_SWATCH_PAIRS: ReadonlyArray<
   ["foreground", "background"],
   ["offBlack", "offWhite"],
 ]
+
+/** Flat set of the paired neutral slot ids. */
+export const MODE_SWAPPED_SWATCH_IDS: ReadonlySet<string> = new Set(
+  MODE_SWAPPED_SWATCH_PAIRS.flat(),
+)
 
 /**
  * Swatches that never take the `chromaChange` adjustment. The paired slots
@@ -103,12 +111,18 @@ function swatchToHsl(swatch: ThemeSwatch): HSL {
 }
 
 /**
- * Computes the opposite-mode color for every swatch on a computed theme, keyed
- * by swatch id. Paired neutral slots exchange their authored colors. Every
- * other swatch derives through LCH, with `chromaChange` coming from the
- * theme's color harmony parameters.
+ * Computes the full swatch table for one target appearance, keyed by swatch
+ * id. Paired neutral slots carry authored values as-is: the literal assignment
+ * for light, the swapped assignment for dark, independent of the authored
+ * mode. Every other swatch stays authored when the target matches the
+ * authored mode and derives through LCH otherwise, with `chromaChange` coming
+ * from the theme's color harmony parameters.
  */
-export function getOppositeModeSwatches(theme: Theme): Record<string, HSL> {
+export function getModeSwatches(
+  theme: Theme,
+  targetMode: ThemeMode,
+): Record<string, HSL> {
+  const authoredMode = theme.colorHarmony.parameters.mode ?? "light"
   const chromaChange = theme.colorHarmony.parameters.chromaChange ?? 0
   const result: Record<string, HSL> = {}
 
@@ -123,12 +137,18 @@ export function getOppositeModeSwatches(theme: Theme): Record<string, HSL> {
 
     const partnerId = swapPartner.get(swatchId)
     if (partnerId) {
-      const partner = theme.swatch[partnerId as keyof Theme["swatch"]]
-      result[swatchId] = swatchToHsl(partner ?? swatch)
+      const partner =
+        targetMode === "dark"
+          ? (theme.swatch[partnerId as keyof Theme["swatch"]] ?? swatch)
+          : swatch
+      result[swatchId] = swatchToHsl(partner)
       continue
     }
 
-    result[swatchId] = getOppositeModeSwatchColor(swatch, swatchId, chromaChange)
+    result[swatchId] =
+      targetMode === authoredMode
+        ? swatchToHsl(swatch)
+        : getOppositeModeSwatchColor(swatch, swatchId, chromaChange)
   }
 
   return result
