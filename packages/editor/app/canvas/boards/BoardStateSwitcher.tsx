@@ -12,6 +12,8 @@ import {
 } from "@seldon/core/workspace/model/node-state"
 import { parseNodeLink } from "@seldon/core/workspace/model/template-ref"
 import type { EntryNode } from "@seldon/core/workspace/types"
+import { useEditorConfig } from "@lib/hooks/use-editor-config"
+import { useResolvedInterfaceMode } from "@lib/hooks/use-system-color-scheme"
 import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import {
   useActiveBoardState,
@@ -45,6 +47,10 @@ const dialogFieldLabelStyle: CSSProperties = {
   font: "400 11px/1 system-ui, sans-serif",
 }
 
+function stopClickPropagation(event: React.MouseEvent) {
+  event.stopPropagation()
+}
+
 /** Derives a stable custom-state key from a typed name. */
 function toStateKey(name: string): string {
   return name
@@ -71,6 +77,11 @@ function stateLabel(state: NodeState, customStates: CustomState[]): string {
  */
 export function BoardStateSwitcher({ boardKey }: BoardStateSwitcherProps) {
   const { workspace, dispatch } = useWorkspace()
+  // The canvas root pins data-theme to the default chrome theme so board
+  // rendering reads authored swatch values. The switcher is chrome, so it
+  // re-scopes to the live chrome theme and mode, matching the topbar.
+  const { chromeTheme } = useEditorConfig()
+  const resolvedMode = useResolvedInterfaceMode()
   const activeState = useActiveBoardState(boardKey)
   const setActiveState = useBoardStateStore((store) => store.setActiveState)
 
@@ -223,7 +234,12 @@ export function BoardStateSwitcher({ boardKey }: BoardStateSwitcherProps) {
   }
 
   return (
-    <div style={wrapperStyle} onClick={(event) => event.stopPropagation()}>
+    <div
+      style={wrapperStyle}
+      onClick={stopClickPropagation}
+      data-theme={chromeTheme}
+      data-mode={resolvedMode}
+    >
       <VMMenu
         items={items}
         renderTrigger={({ ref, triggerProps }) => (

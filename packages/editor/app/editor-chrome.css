@@ -28,6 +28,21 @@ body {
 }
 
 /*
+ * The topbar wordmark ships as an <img> with a hardcoded fill, so it cannot
+ * follow the interface mode on its own. Repaint it through a mask filled with
+ * the offWhite swatch: the neutral swatches invert per mode, so the letters
+ * render off-white on the dark logo pill in light mode and off-black on the
+ * light pill in dark mode. object-position pushes the img's own pixels out of
+ * the content box so only the painted mask shows.
+ */
+[data-seldon-ref="logo"] img[src="/word-mark.svg"] {
+  -webkit-mask: url("/word-mark.svg") no-repeat left center / contain;
+  mask: url("/word-mark.svg") no-repeat left center / contain;
+  background-color: var(--sdn-swatch-offWhite);
+  object-position: -10000px 0;
+}
+
+/*
  * Focus visuals are drawn by the FocusRingOverlay, not the browser. Suppress
  * native focus rings everywhere so nothing double-draws. Programmatic and
  * keyboard focus still work; the overlay shows the ring when Show Focus is on.

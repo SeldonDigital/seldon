@@ -10037,8 +10037,8 @@
             "opacity": {
               "type": "exact",
               "value": {
-                "value": 33,
-                "unit": "%"
+                "unit": "%",
+                "value": 10
               }
             },
             "preset": {
@@ -30094,6 +30094,10 @@
         "symbol": {
           "type": "option",
           "value": "material-chevronDown"
+        },
+        "cursor": {
+          "type": "option",
+          "value": "pointer"
         }
       },
       "origin": "schema",
@@ -30112,6 +30116,10 @@
         "content": {
           "type": "exact",
           "value": "Button Menu"
+        },
+        "cursor": {
+          "type": "option",
+          "value": "pointer"
         }
       },
       "origin": "schema",
@@ -30186,7 +30194,7 @@
               "type": "exact",
               "value": {
                 "unit": "%",
-                "value": 35
+                "value": 10
               }
             },
             "preset": {
@@ -47472,7 +47480,7 @@
       "overrides": {
         "colorHarmony": {
           "parameters": {
-            "chromaChange": -10
+            "chromaChange": 10
           }
         }
       }
@@ -47485,7 +47493,7 @@
       "overrides": {
         "colorHarmony": {
           "parameters": {
-            "chromaChange": -10
+            "chromaChange": 10
           }
         }
       }
@@ -47498,7 +47506,7 @@
       "overrides": {
         "colorHarmony": {
           "parameters": {
-            "chromaChange": -10
+            "chromaChange": 10
           }
         }
       }
@@ -47511,7 +47519,7 @@
       "overrides": {
         "colorHarmony": {
           "parameters": {
-            "chromaChange": -10
+            "chromaChange": 10
           }
         }
       }
@@ -47524,7 +47532,7 @@
       "overrides": {
         "colorHarmony": {
           "parameters": {
-            "chromaChange": 10
+            "chromaChange": -10
           }
         }
       }
@@ -47537,7 +47545,7 @@
       "overrides": {
         "colorHarmony": {
           "parameters": {
-            "chromaChange": -10
+            "chromaChange": 10
           }
         }
       }
@@ -47550,7 +47558,7 @@
       "overrides": {
         "colorHarmony": {
           "parameters": {
-            "chromaChange": -10
+            "chromaChange": 10
           }
         }
       }
@@ -47563,7 +47571,7 @@
       "overrides": {
         "colorHarmony": {
           "parameters": {
-            "chromaChange": -10
+            "chromaChange": 10
           }
         }
       }
@@ -47576,7 +47584,7 @@
       "overrides": {
         "colorHarmony": {
           "parameters": {
-            "chromaChange": -10
+            "chromaChange": 10
           }
         }
       }
@@ -47589,7 +47597,7 @@
       "overrides": {
         "colorHarmony": {
           "parameters": {
-            "chromaChange": -10
+            "chromaChange": 10
           }
         }
       }
