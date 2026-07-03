@@ -13,13 +13,13 @@
  * tree and inserts the new ids and labels into the registry in
  * `packages/core/icon-sets/index.ts`.
  *
- * Run with: bun scripts/icons/import-material-symbols.ts
- * Follow with: bun scripts/icons/generate-mappings.ts
+ * Run with: bun scripts/import-material-symbols.ts
+ * Follow with: bun scripts/generate-mappings.ts
  */
 import fs from "node:fs"
 import path from "node:path"
 
-import { categoryPaths } from "../../packages/core/icon-sets/constants/categories"
+import { categoryPaths } from "../packages/core/icon-sets/constants/categories"
 
 const REPO_ROOT = path.resolve(import.meta.dir, "../..")
 const MATERIAL_DIR = path.join(
