@@ -137,12 +137,12 @@ const sdn: MediaCardCompactProps = {
   image: {
     src: "https://static.seldon.app/background-default-dark.jpg",
     "aria-hidden": "false",
-    className: "sdn-image sdn-image--vavb",
+    className: "sdn-image sdn-image--eukc",
   },
   frame: {
     wrapperElement: "div",
     "aria-hidden": "false",
-    className: "sdn-frame sdn-frame--cqnh",
+    className: "sdn-frame sdn-frame--ovgw",
   },
   textTitle: {
     className: "sdn-text-title sdn-text-title--adfu",

@@ -144,7 +144,7 @@ const sdn: ProductCardMinimalProps = {
   frame: {
     wrapperElement: "div",
     "aria-hidden": "false",
-    className: "sdn-frame sdn-frame--cqnh",
+    className: "sdn-frame sdn-frame--ovgw",
   },
   textSubtitle: {
     className: "sdn-text-subtitle sdn-text-title--adfu",

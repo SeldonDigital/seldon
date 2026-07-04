@@ -14,12 +14,16 @@ import { HTMLAttributes } from "react"
 import { Chip, ChipProps } from "../elements/Chip"
 import { Frame, FrameProps } from "../frames/Frame"
 import { Image, ImageProps } from "../primitives/Image"
+import {
+  TextDescription,
+  TextDescriptionProps,
+} from "../primitives/TextDescription"
 import { TextHeading, TextHeadingProps } from "../primitives/TextHeading"
 import { TextLabel, TextLabelProps } from "../primitives/TextLabel"
 import { applyRef } from "../utils/apply-ref"
 import { combineClassNames } from "../utils/class-name"
 
-export interface ArticleCardMinimalArticleCardProps extends HTMLAttributes<HTMLElement> {
+export interface ArticleCardHorizontalProps extends HTMLAttributes<HTMLElement> {
   className?: string
   "data-seldon-ref"?: string
   seldonRefs?: Record<string, Record<string, unknown>>
@@ -28,10 +32,11 @@ export interface ArticleCardMinimalArticleCardProps extends HTMLAttributes<HTMLE
   chip?: ChipProps | null
   textLabel?: TextLabelProps | null
   textHeading?: TextHeadingProps | null
+  textDescription?: TextDescriptionProps | null
 }
 
 /*****
- * Article Card: ArticleCardMinimalArticleCard
+ * Article Card: ArticleCardHorizontal
  * Level: Part
  * Intent: Content preview card with a featured image, headline, short excerpt, and author metadata to drive click-throughs.
  * Tags: card, article, blog, preview, excerpt, author, content, UI
@@ -39,29 +44,31 @@ export interface ArticleCardMinimalArticleCardProps extends HTMLAttributes<HTMLE
  *
  * @example
  * ```tsx
- * <ArticleCardMinimalArticleCard
+ * <ArticleCardHorizontal
  *   aria-hidden="false"
  *   image="/image.jpg"
  *   frame="{}"
  *   chip="{}"
  *   textLabel="{}"
  *   textHeading="{}"
+ *   textDescription2="{}"
  * />
  * ```
  *****/
-export function ArticleCardMinimalArticleCard({
+export function ArticleCardHorizontal({
   className = "",
   image = sdn.image,
   frame = sdn.frame,
   chip,
   textLabel,
   textHeading,
+  textDescription,
   children,
   seldonRefs,
   ...props
-}: ArticleCardMinimalArticleCardProps) {
-  const articleCardMinimalArticleCardClassName = combineClassNames(
-    "sdn-article-card",
+}: ArticleCardHorizontalProps) {
+  const articleCardHorizontalClassName = combineClassNames(
+    "sdn-article-card-horizontal",
     className,
   )
   const imageProps = applyRef(
@@ -120,10 +127,23 @@ export function ArticleCardMinimalArticleCard({
           ),
         },
   )
+  const textDescriptionProps = applyRef(
+    seldonRefs,
+    textDescription === null
+      ? null
+      : {
+          ...sdn.textDescription,
+          ...textDescription,
+          className: combineClassNames(
+            sdn.textDescription?.className,
+            textDescription?.className,
+          ),
+        },
+  )
 
   return (
     <Frame
-      className={articleCardMinimalArticleCardClassName}
+      className={articleCardHorizontalClassName}
       aria-hidden={sdn["aria-hidden"]}
       {...props}
     >
@@ -143,6 +163,9 @@ export function ArticleCardMinimalArticleCard({
             {textHeading && textHeadingProps && (
               <TextHeading {...textHeadingProps} />
             )}
+            {textDescription && textDescriptionProps && (
+              <TextDescription {...textDescriptionProps} />
+            )}
           </Frame>
         </>
       )}
@@ -153,18 +176,18 @@ export function ArticleCardMinimalArticleCard({
 //
 // Default property values
 //
-const sdn: ArticleCardMinimalArticleCardProps = {
+const sdn: ArticleCardHorizontalProps = {
   "aria-hidden": "false",
-  className: "sdn-article-card sdn-article-card",
+  className: "sdn-article-card-horizontal sdn-article-card",
   image: {
     src: "https://static.seldon.app/background-default-light.jpg",
     "aria-hidden": "false",
-    className: "sdn-image sdn-image--p3o3",
+    className: "sdn-image sdn-image--rwhb",
   },
   frame: {
     wrapperElement: "div",
     "aria-hidden": "false",
-    className: "sdn-frame sdn-frame--mclm",
+    className: "sdn-frame sdn-frame--ozkl",
   },
   chip: {
     className: "sdn-chip sdn-chip--o0xb",
@@ -174,5 +197,8 @@ const sdn: ArticleCardMinimalArticleCardProps = {
   },
   textHeading: {
     className: "sdn-text-heading sdn-text-heading--xkk9",
+  },
+  textDescription: {
+    className: "sdn-text sdn-text-description--w5ys",
   },
 }

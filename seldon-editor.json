@@ -435,6 +435,82 @@
               "id": "component-icon-VSAubWrH"
             }
           ]
+        },
+        {
+          "id": "component-button-tools",
+          "children": [
+            {
+              "id": "component-button-ngdEUTLG",
+              "children": [
+                {
+                  "id": "component-icon-XTKwq2pq"
+                },
+                {
+                  "id": "component-text-x7WqOtWb"
+                }
+              ]
+            },
+            {
+              "id": "component-button-9oF7hHST",
+              "children": [
+                {
+                  "id": "component-icon-4vzPQhod"
+                },
+                {
+                  "id": "component-text-DjFYE2WA"
+                }
+              ]
+            },
+            {
+              "id": "component-button-mmVR7Fqg",
+              "children": [
+                {
+                  "id": "component-icon-tO1tX86o"
+                },
+                {
+                  "id": "component-text-qVXKBNn6"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "component-button-segmented",
+          "children": [
+            {
+              "id": "component-button-fIXt7iCr",
+              "children": [
+                {
+                  "id": "component-icon-5e2rWu9Y"
+                },
+                {
+                  "id": "component-text-0tOITP8Q"
+                }
+              ]
+            },
+            {
+              "id": "component-button-9gvw0ZlX",
+              "children": [
+                {
+                  "id": "component-icon-1cIeVtNq"
+                },
+                {
+                  "id": "component-text-Es9P2Ol3"
+                }
+              ]
+            },
+            {
+              "id": "component-button-Y4uFgX9R",
+              "children": [
+                {
+                  "id": "component-icon-SxetdTQi"
+                },
+                {
+                  "id": "component-text-yRIBWNY8"
+                }
+              ]
+            }
+          ]
         }
       ],
       "__editor": {
@@ -5296,7 +5372,12 @@
                   "id": "component-frame-9CdQzyxC",
                   "children": [
                     {
-                      "id": "component-image-FlHU2Gra"
+                      "id": "component-avatar-4DjaZ9Rv",
+                      "children": [
+                        {
+                          "id": "component-image-OHvB0KzS"
+                        }
+                      ]
                     },
                     {
                       "id": "component-frame-Ew9FwtUo",
@@ -5330,16 +5411,16 @@
           "id": "component-mediaCard-compact",
           "children": [
             {
-              "id": "component-image-vavBWYNJ"
+              "id": "component-image-EukcsMa8"
             },
             {
-              "id": "component-frame-CqNHEycp",
+              "id": "component-frame-EDdIDNRJ",
               "children": [
                 {
-                  "id": "component-text-pvmTdp62"
+                  "id": "component-text-oZVzn3zn"
                 },
                 {
-                  "id": "component-text-FhgbKyvo"
+                  "id": "component-text-Z3NDJHIg"
                 }
               ]
             }
@@ -5458,16 +5539,16 @@
           "id": "component-productCard-minimal",
           "children": [
             {
-              "id": "component-image-yBOiNfoT"
+              "id": "component-image-kEcOsobc"
             },
             {
-              "id": "component-frame-JBlbNZzc",
+              "id": "component-frame-UmaCEFav",
               "children": [
                 {
-                  "id": "component-text-ehoejqam"
+                  "id": "component-text-j5BKMxjK"
                 },
                 {
-                  "id": "component-text-K5abLY1V"
+                  "id": "component-text-18faXoHN"
                 }
               ]
             }
@@ -5477,25 +5558,25 @@
           "id": "component-productCard-horizontal",
           "children": [
             {
-              "id": "component-image-Jk3CvKmQ"
+              "id": "component-image-95OOFHT8"
             },
             {
-              "id": "component-frame-3HfoRqfh",
+              "id": "component-frame-KnUGRyxF",
               "children": [
                 {
-                  "id": "component-text-6cZdtVdU"
+                  "id": "component-text-UIocA9MX"
                 },
                 {
-                  "id": "component-text-8nVlmOWW"
+                  "id": "component-text-KxXvNBmX"
                 },
                 {
-                  "id": "component-button-7CzaLtTe",
+                  "id": "component-button-Y7vNEQDu",
                   "children": [
                     {
-                      "id": "component-icon-zAFSDZct"
+                      "id": "component-icon-TM0Iycio"
                     },
                     {
-                      "id": "component-text-ZiRtGWB4"
+                      "id": "component-text-VtvQ3YNp"
                     }
                   ]
                 }
@@ -5503,10 +5584,7 @@
             }
           ]
         }
-      ],
-      "__editor": {
-        "order": 9
-      }
+      ]
     },
     "adobeSpectrum": {
       "type": "theme",
@@ -5697,7 +5775,12 @@
                   "id": "component-frame-L25C6h85",
                   "children": [
                     {
-                      "id": "component-image-w1ApkryL"
+                      "id": "component-avatar-a890LhqH",
+                      "children": [
+                        {
+                          "id": "component-image-ZC5teScu"
+                        }
+                      ]
                     },
                     {
                       "id": "component-frame-blp5FkG8",
@@ -5728,21 +5811,21 @@
           "id": "component-articleCard-minimal",
           "children": [
             {
-              "id": "component-image-FxMrSQn4"
+              "id": "component-image-IRK4s0Mp"
             },
             {
-              "id": "component-frame-5YdyLQ2r",
+              "id": "component-frame-UO4V51aA",
               "children": [
                 {
-                  "id": "component-chip-eVvWIk2D",
+                  "id": "component-chip-ZVDLwjtk",
                   "children": [
                     {
-                      "id": "component-text-rEmi5AfS"
+                      "id": "component-text-jlfxniH2"
                     }
                   ]
                 },
                 {
-                  "id": "component-text-fWG2Dkpm"
+                  "id": "component-text-9Ayfyr3a"
                 }
               ]
             }
@@ -5752,24 +5835,24 @@
           "id": "component-articleCard-horizontal",
           "children": [
             {
-              "id": "component-image-OAMKSqWv"
+              "id": "component-image-RwHBEzzK"
             },
             {
-              "id": "component-frame-4deT9xog",
+              "id": "component-frame-OzKLHFev",
               "children": [
                 {
-                  "id": "component-chip-sXLZ1XES",
+                  "id": "component-chip-QQGRDbmg",
                   "children": [
                     {
-                      "id": "component-text-ZEMdN1UQ"
+                      "id": "component-text-dU6CfgUh"
                     }
                   ]
                 },
                 {
-                  "id": "component-text-PHNzTfnx"
+                  "id": "component-text-oc9BITyk"
                 },
                 {
-                  "id": "component-text-ZDMZ04RD"
+                  "id": "component-text-vFzx86za"
                 }
               ]
             }
@@ -10031,14 +10114,18 @@
               "value": "@spread.small"
             },
             "color": {
-              "type": "theme.categorical",
-              "value": "@swatch.black"
+              "type": "exact",
+              "value": {
+                "hue": 0,
+                "saturation": 0,
+                "lightness": 0
+              }
             },
             "opacity": {
               "type": "exact",
               "value": {
                 "unit": "%",
-                "value": 10
+                "value": 20
               }
             },
             "preset": {
@@ -11275,27 +11362,7 @@
             "type": "theme.categorical",
             "value": "@swatch.offBlack"
           }
-        },
-        "shadow": [
-          {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@shadow.moderate"
-            },
-            "color": {
-              "type": "theme.categorical",
-              "value": "@swatch.black"
-            },
-            "blur": {
-              "type": "theme.ordinal",
-              "value": "@blur.medium"
-            },
-            "spread": {
-              "type": "theme.ordinal",
-              "value": "@spread.small"
-            }
-          }
-        ]
+        }
       },
       "__editor": {
         "initialOverrides": {}
@@ -12529,27 +12596,7 @@
             "type": "theme.categorical",
             "value": "@swatch.offBlack"
           }
-        },
-        "shadow": [
-          {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@shadow.moderate"
-            },
-            "color": {
-              "type": "theme.categorical",
-              "value": "@swatch.black"
-            },
-            "blur": {
-              "type": "theme.ordinal",
-              "value": "@blur.medium"
-            },
-            "spread": {
-              "type": "theme.ordinal",
-              "value": "@spread.small"
-            }
-          }
-        ]
+        }
       },
       "__editor": {
         "initialOverrides": {}
@@ -17168,14 +17215,18 @@
               "value": "@spread.tiny"
             },
             "color": {
-              "type": "theme.categorical",
-              "value": "@swatch.offBlack"
+              "type": "exact",
+              "value": {
+                "hue": 0,
+                "saturation": 0,
+                "lightness": 0
+              }
             },
             "opacity": {
               "type": "exact",
               "value": {
                 "unit": "%",
-                "value": 25
+                "value": 20
               }
             },
             "preset": {
@@ -17193,8 +17244,12 @@
               "value": "@shadow.light"
             },
             "color": {
-              "type": "theme.categorical",
-              "value": "@swatch.offWhite"
+              "type": "exact",
+              "value": {
+                "hue": 0,
+                "saturation": 0,
+                "lightness": 96
+              }
             },
             "brightness": {
               "type": "empty",
@@ -17240,8 +17295,12 @@
               "value": "@shadow.light"
             },
             "color": {
-              "type": "theme.categorical",
-              "value": "@swatch.offBlack"
+              "type": "exact",
+              "value": {
+                "hue": 0,
+                "saturation": 0,
+                "lightness": 15
+              }
             },
             "brightness": {
               "type": "empty",
@@ -20272,6 +20331,14 @@
                 "unit": "%",
                 "value": 10
               }
+            },
+            "color": {
+              "type": "exact",
+              "value": {
+                "hue": 0,
+                "saturation": 0,
+                "lightness": 0
+              }
             }
           }
         ]
@@ -21457,6 +21524,14 @@
               "value": {
                 "unit": "%",
                 "value": 10
+              }
+            },
+            "color": {
+              "type": "exact",
+              "value": {
+                "hue": 0,
+                "saturation": 0,
+                "lightness": 0
               }
             }
           }
@@ -30187,14 +30262,18 @@
               "value": "@spread.xsmall"
             },
             "color": {
-              "type": "theme.categorical",
-              "value": "@swatch.black"
+              "type": "exact",
+              "value": {
+                "hue": 0,
+                "saturation": 0,
+                "lightness": 0
+              }
             },
             "opacity": {
               "type": "exact",
               "value": {
                 "unit": "%",
-                "value": 10
+                "value": 15
               }
             },
             "preset": {
@@ -43619,50 +43698,7 @@
       "label": "Media Card",
       "theme": null,
       "template": "catalog:mediaCard",
-      "overrides": {
-        "gap": {
-          "type": "theme.ordinal",
-          "value": "@gap.tight"
-        },
-        "background": [
-          {
-            "color": {
-              "type": "theme.categorical",
-              "value": "@swatch.white"
-            }
-          }
-        ],
-        "border": {
-          "preset": {
-            "type": "theme.categorical",
-            "value": "@border.hairline"
-          },
-          "color": {
-            "type": "theme.categorical",
-            "value": "@swatch.primary"
-          }
-        },
-        "shadow": [
-          {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@shadow.xlight"
-            },
-            "color": {
-              "type": "theme.categorical",
-              "value": "@swatch.black"
-            },
-            "blur": {
-              "type": "theme.ordinal",
-              "value": "@blur.xxsmall"
-            },
-            "spread": {
-              "type": "theme.ordinal",
-              "value": "@spread.tiny"
-            }
-          }
-        ]
-      },
+      "overrides": {},
       "__editor": {
         "initialOverrides": {}
       }
@@ -43693,21 +43729,7 @@
             "unit": "px",
             "value": 200
           }
-        },
-        "border": {
-          "preset": {
-            "type": "theme.categorical",
-            "value": "@border.none"
-          }
-        },
-        "shadow": [
-          {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@shadow.none"
-            }
-          }
-        ]
+        }
       },
       "origin": "schema",
       "__editor": {
@@ -43775,21 +43797,7 @@
             "type": "theme.ordinal",
             "value": "@padding.cozy"
           }
-        },
-        "border": {
-          "preset": {
-            "type": "theme.categorical",
-            "value": "@border.none"
-          }
-        },
-        "shadow": [
-          {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@shadow.none"
-            }
-          }
-        ]
+        }
       },
       "origin": "schema",
       "__editor": {
@@ -43886,6 +43894,12 @@
           "type": "option",
           "value": "fit"
         },
+        "margin": {
+          "top": {
+            "type": "theme.ordinal",
+            "value": "@margin.cozy"
+          }
+        },
         "gap": {
           "type": "theme.ordinal",
           "value": "@gap.compact"
@@ -43910,92 +43924,15 @@
             "type": "option",
             "value": "fit"
           },
+          "margin": {
+            "top": {
+              "type": "theme.ordinal",
+              "value": "@margin.cozy"
+            }
+          },
           "gap": {
             "type": "theme.ordinal",
             "value": "@gap.compact"
-          }
-        }
-      }
-    },
-    "component-image-FlHU2Gra": {
-      "id": "component-image-FlHU2Gra",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Image",
-      "theme": null,
-      "template": "node:component-image-default",
-      "overrides": {
-        "source": {
-          "type": "exact",
-          "value": "https://static.seldon.app/avatar-user.jpg"
-        },
-        "imageFit": {
-          "type": "option",
-          "value": "cover"
-        },
-        "width": {
-          "type": "theme.ordinal",
-          "value": "@dimension.small"
-        },
-        "height": {
-          "type": "theme.ordinal",
-          "value": "@dimension.small"
-        },
-        "corners": {
-          "topLeft": {
-            "type": "option",
-            "value": "rounded"
-          },
-          "topRight": {
-            "type": "option",
-            "value": "rounded"
-          },
-          "bottomLeft": {
-            "type": "option",
-            "value": "rounded"
-          },
-          "bottomRight": {
-            "type": "option",
-            "value": "rounded"
-          }
-        }
-      },
-      "origin": "schema",
-      "__editor": {
-        "initialOverrides": {
-          "source": {
-            "type": "exact",
-            "value": "https://static.seldon.app/avatar-user.jpg"
-          },
-          "imageFit": {
-            "type": "option",
-            "value": "cover"
-          },
-          "width": {
-            "type": "theme.ordinal",
-            "value": "@dimension.small"
-          },
-          "height": {
-            "type": "theme.ordinal",
-            "value": "@dimension.small"
-          },
-          "corners": {
-            "topLeft": {
-              "type": "option",
-              "value": "rounded"
-            },
-            "topRight": {
-              "type": "option",
-              "value": "rounded"
-            },
-            "bottomLeft": {
-              "type": "option",
-              "value": "rounded"
-            },
-            "bottomRight": {
-              "type": "option",
-              "value": "rounded"
-            }
           }
         }
       }
@@ -44057,7 +43994,13 @@
       "overrides": {
         "content": {
           "type": "exact",
-          "value": "Seldon Studio"
+          "value": "Sir Bentley"
+        },
+        "font": {
+          "weight": {
+            "type": "theme.ordinal",
+            "value": "@fontWeight.medium"
+          }
         }
       },
       "origin": "schema",
@@ -44065,7 +44008,13 @@
         "initialOverrides": {
           "content": {
             "type": "exact",
-            "value": "Seldon Studio"
+            "value": "Sir Bentley"
+          },
+          "font": {
+            "weight": {
+              "type": "theme.ordinal",
+              "value": "@fontWeight.medium"
+            }
           }
         }
       }
@@ -44081,6 +44030,12 @@
         "content": {
           "type": "exact",
           "value": "1.2M views · 2 days ago"
+        },
+        "font": {
+          "size": {
+            "type": "theme.ordinal",
+            "value": "@fontSize.xsmall"
+          }
         }
       },
       "origin": "schema",
@@ -44089,6 +44044,12 @@
           "content": {
             "type": "exact",
             "value": "1.2M views · 2 days ago"
+          },
+          "font": {
+            "size": {
+              "type": "theme.ordinal",
+              "value": "@fontSize.xsmall"
+            }
           }
         }
       }
@@ -44100,7 +44061,12 @@
       "label": "Button",
       "theme": null,
       "template": "node:component-button-default",
-      "overrides": {},
+      "overrides": {
+        "width": {
+          "type": "option",
+          "value": "fill"
+        }
+      },
       "origin": "schema",
       "__editor": {
         "initialOverrides": {
@@ -44208,242 +44174,9 @@
       "label": "Compact",
       "theme": null,
       "template": "node:component-mediaCard-default",
-      "overrides": {
-        "gap": {
-          "type": "theme.ordinal",
-          "value": "@gap.tight"
-        },
-        "background": [
-          {
-            "color": {
-              "type": "theme.categorical",
-              "value": "@swatch.white"
-            }
-          }
-        ],
-        "border": {
-          "preset": {
-            "type": "theme.categorical",
-            "value": "@border.hairline"
-          },
-          "color": {
-            "type": "theme.categorical",
-            "value": "@swatch.primary"
-          }
-        },
-        "shadow": [
-          {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@shadow.xlight"
-            },
-            "color": {
-              "type": "theme.categorical",
-              "value": "@swatch.black"
-            },
-            "blur": {
-              "type": "theme.ordinal",
-              "value": "@blur.xxsmall"
-            },
-            "spread": {
-              "type": "theme.ordinal",
-              "value": "@spread.tiny"
-            }
-          }
-        ]
-      },
+      "overrides": {},
       "__editor": {
         "initialOverrides": {}
-      }
-    },
-    "component-image-vavBWYNJ": {
-      "id": "component-image-vavBWYNJ",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Image",
-      "theme": null,
-      "template": "node:component-image-p3O3CcKB",
-      "overrides": {
-        "source": {
-          "type": "exact",
-          "value": "https://static.seldon.app/background-default-dark.jpg"
-        },
-        "imageFit": {
-          "type": "option",
-          "value": "cover"
-        },
-        "width": {
-          "type": "option",
-          "value": "fill"
-        },
-        "height": {
-          "type": "exact",
-          "value": {
-            "unit": "px",
-            "value": 160
-          }
-        }
-      },
-      "origin": "schema",
-      "__editor": {
-        "initialOverrides": {
-          "source": {
-            "type": "exact",
-            "value": "https://static.seldon.app/background-default-dark.jpg"
-          },
-          "imageFit": {
-            "type": "option",
-            "value": "cover"
-          },
-          "width": {
-            "type": "option",
-            "value": "fill"
-          },
-          "height": {
-            "type": "exact",
-            "value": {
-              "unit": "px",
-              "value": 160
-            }
-          }
-        }
-      }
-    },
-    "component-frame-CqNHEycp": {
-      "id": "component-frame-CqNHEycp",
-      "type": "instance",
-      "level": "frame",
-      "label": "Frame",
-      "theme": null,
-      "template": "node:component-frame-default",
-      "overrides": {
-        "orientation": {
-          "type": "option",
-          "value": "vertical"
-        },
-        "width": {
-          "type": "option",
-          "value": "fill"
-        },
-        "height": {
-          "type": "option",
-          "value": "fit"
-        },
-        "gap": {
-          "type": "theme.ordinal",
-          "value": "@gap.tight"
-        },
-        "padding": {
-          "top": {
-            "type": "theme.ordinal",
-            "value": "@padding.cozy"
-          },
-          "right": {
-            "type": "theme.ordinal",
-            "value": "@padding.cozy"
-          },
-          "bottom": {
-            "type": "theme.ordinal",
-            "value": "@padding.cozy"
-          },
-          "left": {
-            "type": "theme.ordinal",
-            "value": "@padding.cozy"
-          }
-        }
-      },
-      "origin": "schema",
-      "__editor": {
-        "initialOverrides": {
-          "orientation": {
-            "type": "option",
-            "value": "vertical"
-          },
-          "width": {
-            "type": "option",
-            "value": "fill"
-          },
-          "height": {
-            "type": "option",
-            "value": "fit"
-          },
-          "gap": {
-            "type": "theme.ordinal",
-            "value": "@gap.tight"
-          },
-          "padding": {
-            "top": {
-              "type": "theme.ordinal",
-              "value": "@padding.cozy"
-            },
-            "right": {
-              "type": "theme.ordinal",
-              "value": "@padding.cozy"
-            },
-            "bottom": {
-              "type": "theme.ordinal",
-              "value": "@padding.cozy"
-            },
-            "left": {
-              "type": "theme.ordinal",
-              "value": "@padding.cozy"
-            }
-          }
-        }
-      }
-    },
-    "component-text-pvmTdp62": {
-      "id": "component-text-pvmTdp62",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Title",
-      "theme": null,
-      "template": "node:component-text-title",
-      "overrides": {
-        "content": {
-          "type": "exact",
-          "value": "Designing with cards"
-        },
-        "lines": {
-          "type": "exact",
-          "value": 2
-        }
-      },
-      "origin": "schema",
-      "__editor": {
-        "initialOverrides": {
-          "content": {
-            "type": "exact",
-            "value": "Designing with cards"
-          },
-          "lines": {
-            "type": "exact",
-            "value": 2
-          }
-        }
-      }
-    },
-    "component-text-FhgbKyvo": {
-      "id": "component-text-FhgbKyvo",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Label",
-      "theme": null,
-      "template": "node:component-text-label",
-      "overrides": {
-        "content": {
-          "type": "exact",
-          "value": "Seldon Studio"
-        }
-      },
-      "origin": "schema",
-      "__editor": {
-        "initialOverrides": {
-          "content": {
-            "type": "exact",
-            "value": "Seldon Studio"
-          }
-        }
       }
     },
     "component-productCard-default": {
@@ -44453,50 +44186,7 @@
       "label": "Product Card",
       "theme": null,
       "template": "catalog:productCard",
-      "overrides": {
-        "gap": {
-          "type": "theme.ordinal",
-          "value": "@gap.tight"
-        },
-        "background": [
-          {
-            "color": {
-              "type": "theme.categorical",
-              "value": "@swatch.white"
-            }
-          }
-        ],
-        "border": {
-          "preset": {
-            "type": "theme.categorical",
-            "value": "@border.hairline"
-          },
-          "color": {
-            "type": "theme.categorical",
-            "value": "@swatch.primary"
-          }
-        },
-        "shadow": [
-          {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@shadow.xlight"
-            },
-            "color": {
-              "type": "theme.categorical",
-              "value": "@swatch.black"
-            },
-            "blur": {
-              "type": "theme.ordinal",
-              "value": "@blur.xxsmall"
-            },
-            "spread": {
-              "type": "theme.ordinal",
-              "value": "@spread.tiny"
-            }
-          }
-        ]
-      },
+      "overrides": {},
       "__editor": {
         "initialOverrides": {}
       }
@@ -44527,21 +44217,7 @@
             "unit": "px",
             "value": 220
           }
-        },
-        "border": {
-          "preset": {
-            "type": "theme.categorical",
-            "value": "@border.none"
-          }
-        },
-        "shadow": [
-          {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@shadow.none"
-            }
-          }
-        ]
+        }
       },
       "origin": "schema",
       "__editor": {
@@ -44609,21 +44285,7 @@
             "type": "theme.ordinal",
             "value": "@padding.cozy"
           }
-        },
-        "border": {
-          "preset": {
-            "type": "theme.categorical",
-            "value": "@border.none"
-          }
-        },
-        "shadow": [
-          {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@shadow.none"
-            }
-          }
-        ]
+        }
       },
       "origin": "schema",
       "__editor": {
@@ -45126,7 +44788,12 @@
       "label": "Button",
       "theme": null,
       "template": "node:component-button-default",
-      "overrides": {},
+      "overrides": {
+        "width": {
+          "type": "option",
+          "value": "fill"
+        }
+      },
       "origin": "schema",
       "__editor": {
         "initialOverrides": {
@@ -45234,246 +44901,9 @@
       "label": "Minimal",
       "theme": null,
       "template": "node:component-productCard-default",
-      "overrides": {
-        "gap": {
-          "type": "theme.ordinal",
-          "value": "@gap.tight"
-        },
-        "background": [
-          {
-            "color": {
-              "type": "theme.categorical",
-              "value": "@swatch.white"
-            }
-          }
-        ],
-        "border": {
-          "preset": {
-            "type": "theme.categorical",
-            "value": "@border.hairline"
-          },
-          "color": {
-            "type": "theme.categorical",
-            "value": "@swatch.primary"
-          }
-        },
-        "shadow": [
-          {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@shadow.xlight"
-            },
-            "color": {
-              "type": "theme.categorical",
-              "value": "@swatch.black"
-            },
-            "blur": {
-              "type": "theme.ordinal",
-              "value": "@blur.xxsmall"
-            },
-            "spread": {
-              "type": "theme.ordinal",
-              "value": "@spread.tiny"
-            }
-          }
-        ]
-      },
+      "overrides": {},
       "__editor": {
         "initialOverrides": {}
-      }
-    },
-    "component-image-yBOiNfoT": {
-      "id": "component-image-yBOiNfoT",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Image",
-      "theme": null,
-      "template": "node:component-image-v8N4WwYD",
-      "overrides": {
-        "source": {
-          "type": "exact",
-          "value": "https://static.seldon.app/background-default-light.jpg"
-        },
-        "imageFit": {
-          "type": "option",
-          "value": "cover"
-        },
-        "width": {
-          "type": "option",
-          "value": "fill"
-        },
-        "height": {
-          "type": "exact",
-          "value": {
-            "unit": "px",
-            "value": 220
-          }
-        }
-      },
-      "origin": "schema",
-      "__editor": {
-        "initialOverrides": {
-          "source": {
-            "type": "exact",
-            "value": "https://static.seldon.app/background-default-light.jpg"
-          },
-          "imageFit": {
-            "type": "option",
-            "value": "cover"
-          },
-          "width": {
-            "type": "option",
-            "value": "fill"
-          },
-          "height": {
-            "type": "exact",
-            "value": {
-              "unit": "px",
-              "value": 220
-            }
-          }
-        }
-      }
-    },
-    "component-frame-JBlbNZzc": {
-      "id": "component-frame-JBlbNZzc",
-      "type": "instance",
-      "level": "frame",
-      "label": "Frame",
-      "theme": null,
-      "template": "node:component-frame-default",
-      "overrides": {
-        "orientation": {
-          "type": "option",
-          "value": "vertical"
-        },
-        "width": {
-          "type": "option",
-          "value": "fill"
-        },
-        "height": {
-          "type": "option",
-          "value": "fit"
-        },
-        "gap": {
-          "type": "theme.ordinal",
-          "value": "@gap.tight"
-        },
-        "padding": {
-          "top": {
-            "type": "theme.ordinal",
-            "value": "@padding.cozy"
-          },
-          "right": {
-            "type": "theme.ordinal",
-            "value": "@padding.cozy"
-          },
-          "bottom": {
-            "type": "theme.ordinal",
-            "value": "@padding.cozy"
-          },
-          "left": {
-            "type": "theme.ordinal",
-            "value": "@padding.cozy"
-          }
-        }
-      },
-      "origin": "schema",
-      "__editor": {
-        "initialOverrides": {
-          "orientation": {
-            "type": "option",
-            "value": "vertical"
-          },
-          "width": {
-            "type": "option",
-            "value": "fill"
-          },
-          "height": {
-            "type": "option",
-            "value": "fit"
-          },
-          "gap": {
-            "type": "theme.ordinal",
-            "value": "@gap.tight"
-          },
-          "padding": {
-            "top": {
-              "type": "theme.ordinal",
-              "value": "@padding.cozy"
-            },
-            "right": {
-              "type": "theme.ordinal",
-              "value": "@padding.cozy"
-            },
-            "bottom": {
-              "type": "theme.ordinal",
-              "value": "@padding.cozy"
-            },
-            "left": {
-              "type": "theme.ordinal",
-              "value": "@padding.cozy"
-            }
-          }
-        }
-      }
-    },
-    "component-text-ehoejqam": {
-      "id": "component-text-ehoejqam",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Subtitle",
-      "theme": null,
-      "template": "node:component-text-subtitle",
-      "overrides": {
-        "content": {
-          "type": "exact",
-          "value": "Product Name"
-        }
-      },
-      "origin": "schema",
-      "__editor": {
-        "initialOverrides": {
-          "content": {
-            "type": "exact",
-            "value": "Product Name"
-          }
-        }
-      }
-    },
-    "component-text-K5abLY1V": {
-      "id": "component-text-K5abLY1V",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Title",
-      "theme": null,
-      "template": "node:component-text-title",
-      "overrides": {
-        "content": {
-          "type": "exact",
-          "value": "$49.00"
-        },
-        "font": {
-          "preset": {
-            "type": "theme.categorical",
-            "value": "@font.heading"
-          }
-        }
-      },
-      "origin": "schema",
-      "__editor": {
-        "initialOverrides": {
-          "content": {
-            "type": "exact",
-            "value": "$49.00"
-          },
-          "font": {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@font.heading"
-            }
-          }
-        }
       }
     },
     "component-productCard-horizontal": {
@@ -45488,52 +44918,14 @@
           "type": "option",
           "value": "horizontal"
         },
+        "width": {
+          "type": "option",
+          "value": "fill"
+        },
         "align": {
           "type": "option",
           "value": "left"
-        },
-        "gap": {
-          "type": "theme.ordinal",
-          "value": "@gap.tight"
-        },
-        "background": [
-          {
-            "color": {
-              "type": "theme.categorical",
-              "value": "@swatch.white"
-            }
-          }
-        ],
-        "border": {
-          "preset": {
-            "type": "theme.categorical",
-            "value": "@border.hairline"
-          },
-          "color": {
-            "type": "theme.categorical",
-            "value": "@swatch.primary"
-          }
-        },
-        "shadow": [
-          {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@shadow.xlight"
-            },
-            "color": {
-              "type": "theme.categorical",
-              "value": "@swatch.black"
-            },
-            "blur": {
-              "type": "theme.ordinal",
-              "value": "@blur.xxsmall"
-            },
-            "spread": {
-              "type": "theme.ordinal",
-              "value": "@spread.tiny"
-            }
-          }
-        ]
+        }
       },
       "__editor": {
         "initialOverrides": {
@@ -45548,325 +44940,6 @@
           "align": {
             "type": "option",
             "value": "left"
-          }
-        }
-      }
-    },
-    "component-image-Jk3CvKmQ": {
-      "id": "component-image-Jk3CvKmQ",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Image",
-      "theme": null,
-      "template": "node:component-image-v8N4WwYD",
-      "overrides": {
-        "source": {
-          "type": "exact",
-          "value": "https://static.seldon.app/background-default-light.jpg"
-        },
-        "imageFit": {
-          "type": "option",
-          "value": "cover"
-        },
-        "width": {
-          "type": "exact",
-          "value": {
-            "unit": "px",
-            "value": 160
-          }
-        },
-        "height": {
-          "type": "option",
-          "value": "fill"
-        }
-      },
-      "origin": "schema",
-      "__editor": {
-        "initialOverrides": {
-          "source": {
-            "type": "exact",
-            "value": "https://static.seldon.app/background-default-light.jpg"
-          },
-          "imageFit": {
-            "type": "option",
-            "value": "cover"
-          },
-          "width": {
-            "type": "exact",
-            "value": {
-              "unit": "px",
-              "value": 160
-            }
-          },
-          "height": {
-            "type": "option",
-            "value": "fill"
-          }
-        }
-      }
-    },
-    "component-frame-3HfoRqfh": {
-      "id": "component-frame-3HfoRqfh",
-      "type": "instance",
-      "level": "frame",
-      "label": "Frame",
-      "theme": null,
-      "template": "node:component-frame-default",
-      "overrides": {
-        "orientation": {
-          "type": "option",
-          "value": "vertical"
-        },
-        "width": {
-          "type": "option",
-          "value": "fill"
-        },
-        "height": {
-          "type": "option",
-          "value": "fit"
-        },
-        "gap": {
-          "type": "theme.ordinal",
-          "value": "@gap.tight"
-        },
-        "padding": {
-          "top": {
-            "type": "theme.ordinal",
-            "value": "@padding.cozy"
-          },
-          "right": {
-            "type": "theme.ordinal",
-            "value": "@padding.cozy"
-          },
-          "bottom": {
-            "type": "theme.ordinal",
-            "value": "@padding.cozy"
-          },
-          "left": {
-            "type": "theme.ordinal",
-            "value": "@padding.cozy"
-          }
-        }
-      },
-      "origin": "schema",
-      "__editor": {
-        "initialOverrides": {
-          "orientation": {
-            "type": "option",
-            "value": "vertical"
-          },
-          "width": {
-            "type": "option",
-            "value": "fill"
-          },
-          "height": {
-            "type": "option",
-            "value": "fit"
-          },
-          "gap": {
-            "type": "theme.ordinal",
-            "value": "@gap.tight"
-          },
-          "padding": {
-            "top": {
-              "type": "theme.ordinal",
-              "value": "@padding.cozy"
-            },
-            "right": {
-              "type": "theme.ordinal",
-              "value": "@padding.cozy"
-            },
-            "bottom": {
-              "type": "theme.ordinal",
-              "value": "@padding.cozy"
-            },
-            "left": {
-              "type": "theme.ordinal",
-              "value": "@padding.cozy"
-            }
-          }
-        }
-      }
-    },
-    "component-text-6cZdtVdU": {
-      "id": "component-text-6cZdtVdU",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Subtitle",
-      "theme": null,
-      "template": "node:component-text-subtitle",
-      "overrides": {
-        "content": {
-          "type": "exact",
-          "value": "Product Name"
-        }
-      },
-      "origin": "schema",
-      "__editor": {
-        "initialOverrides": {
-          "content": {
-            "type": "exact",
-            "value": "Product Name"
-          }
-        }
-      }
-    },
-    "component-text-8nVlmOWW": {
-      "id": "component-text-8nVlmOWW",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Title",
-      "theme": null,
-      "template": "node:component-text-title",
-      "overrides": {
-        "content": {
-          "type": "exact",
-          "value": "$49.00"
-        },
-        "font": {
-          "preset": {
-            "type": "theme.categorical",
-            "value": "@font.heading"
-          }
-        },
-        "margin": {
-          "bottom": {
-            "type": "theme.ordinal",
-            "value": "@margin.compact"
-          }
-        }
-      },
-      "origin": "schema",
-      "__editor": {
-        "initialOverrides": {
-          "content": {
-            "type": "exact",
-            "value": "$49.00"
-          },
-          "font": {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@font.heading"
-            }
-          },
-          "margin": {
-            "bottom": {
-              "type": "theme.ordinal",
-              "value": "@margin.compact"
-            }
-          }
-        }
-      }
-    },
-    "component-button-7CzaLtTe": {
-      "id": "component-button-7CzaLtTe",
-      "type": "instance",
-      "level": "element",
-      "label": "Button",
-      "theme": null,
-      "template": "node:component-button-default",
-      "overrides": {
-        "width": {
-          "type": "option",
-          "value": "fit"
-        }
-      },
-      "origin": "schema",
-      "__editor": {
-        "initialOverrides": {
-          "width": {
-            "type": "option",
-            "value": "fit"
-          }
-        }
-      }
-    },
-    "component-icon-zAFSDZct": {
-      "id": "component-icon-zAFSDZct",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Icon",
-      "theme": null,
-      "template": "node:component-icon-default",
-      "overrides": {
-        "symbol": {
-          "type": "option",
-          "value": "material-shoppingCart"
-        },
-        "size": {
-          "type": "computed",
-          "value": "autoFit"
-        },
-        "color": {
-          "type": "computed",
-          "value": "highContrastColor"
-        }
-      },
-      "origin": "schema",
-      "__editor": {
-        "initialOverrides": {
-          "symbol": {
-            "type": "option",
-            "value": "material-shoppingCart"
-          },
-          "size": {
-            "type": "computed",
-            "value": "autoFit"
-          },
-          "color": {
-            "type": "computed",
-            "value": "highContrastColor"
-          }
-        }
-      }
-    },
-    "component-text-ZiRtGWB4": {
-      "id": "component-text-ZiRtGWB4",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Label",
-      "theme": null,
-      "template": "node:component-text-label",
-      "overrides": {
-        "content": {
-          "type": "exact",
-          "value": "Add to cart"
-        },
-        "color": {
-          "type": "computed",
-          "value": "highContrastColor"
-        },
-        "font": {
-          "preset": {
-            "type": "theme.categorical",
-            "value": "@font.label"
-          },
-          "size": {
-            "type": "computed",
-            "value": "autoFit"
-          }
-        }
-      },
-      "origin": "schema",
-      "__editor": {
-        "initialOverrides": {
-          "content": {
-            "type": "exact",
-            "value": "Add to cart"
-          },
-          "color": {
-            "type": "computed",
-            "value": "highContrastColor"
-          },
-          "font": {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@font.label"
-            },
-            "size": {
-              "type": "computed",
-              "value": "autoFit"
-            }
           }
         }
       }
@@ -46026,7 +45099,12 @@
       "label": "Chip",
       "theme": null,
       "template": "node:component-chip-default",
-      "overrides": {},
+      "overrides": {
+        "width": {
+          "type": "option",
+          "value": "fit"
+        }
+      },
       "origin": "schema",
       "__editor": {
         "initialOverrides": {
@@ -46043,11 +45121,29 @@
       "level": "primitive",
       "label": "Label",
       "theme": null,
-      "template": "node:component-text-lUG5bq8I",
+      "template": "node:component-text-label",
       "overrides": {
+        "display": {
+          "type": "option",
+          "value": "show"
+        },
         "content": {
           "type": "exact",
           "value": "Design"
+        },
+        "color": {
+          "type": "computed",
+          "value": "highContrastColor"
+        },
+        "font": {
+          "preset": {
+            "type": "theme.categorical",
+            "value": "@font.normal"
+          },
+          "size": {
+            "type": "computed",
+            "value": "autoFit"
+          }
         }
       },
       "origin": "schema",
@@ -46267,89 +45363,6 @@
         }
       }
     },
-    "component-image-w1ApkryL": {
-      "id": "component-image-w1ApkryL",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Image",
-      "theme": null,
-      "template": "node:component-image-default",
-      "overrides": {
-        "source": {
-          "type": "exact",
-          "value": "https://static.seldon.app/avatar-user.jpg"
-        },
-        "imageFit": {
-          "type": "option",
-          "value": "cover"
-        },
-        "width": {
-          "type": "theme.ordinal",
-          "value": "@dimension.small"
-        },
-        "height": {
-          "type": "theme.ordinal",
-          "value": "@dimension.small"
-        },
-        "corners": {
-          "topLeft": {
-            "type": "option",
-            "value": "rounded"
-          },
-          "topRight": {
-            "type": "option",
-            "value": "rounded"
-          },
-          "bottomLeft": {
-            "type": "option",
-            "value": "rounded"
-          },
-          "bottomRight": {
-            "type": "option",
-            "value": "rounded"
-          }
-        }
-      },
-      "origin": "schema",
-      "__editor": {
-        "initialOverrides": {
-          "source": {
-            "type": "exact",
-            "value": "https://static.seldon.app/avatar-user.jpg"
-          },
-          "imageFit": {
-            "type": "option",
-            "value": "cover"
-          },
-          "width": {
-            "type": "theme.ordinal",
-            "value": "@dimension.small"
-          },
-          "height": {
-            "type": "theme.ordinal",
-            "value": "@dimension.small"
-          },
-          "corners": {
-            "topLeft": {
-              "type": "option",
-              "value": "rounded"
-            },
-            "topRight": {
-              "type": "option",
-              "value": "rounded"
-            },
-            "bottomLeft": {
-              "type": "option",
-              "value": "rounded"
-            },
-            "bottomRight": {
-              "type": "option",
-              "value": "rounded"
-            }
-          }
-        }
-      }
-    },
     "component-frame-blp5FkG8": {
       "id": "component-frame-blp5FkG8",
       "type": "instance",
@@ -46407,7 +45420,13 @@
       "overrides": {
         "content": {
           "type": "exact",
-          "value": "Jane Cooper"
+          "value": "Sir Bentley"
+        },
+        "font": {
+          "weight": {
+            "type": "theme.ordinal",
+            "value": "@fontWeight.medium"
+          }
         }
       },
       "origin": "schema",
@@ -46415,7 +45434,13 @@
         "initialOverrides": {
           "content": {
             "type": "exact",
-            "value": "Jane Cooper"
+            "value": "Sir Bentley"
+          },
+          "font": {
+            "weight": {
+              "type": "theme.ordinal",
+              "value": "@fontWeight.medium"
+            }
           }
         }
       }
@@ -46464,13 +45489,9 @@
           }
         ],
         "border": {
-          "color": {
-            "type": "theme.categorical",
-            "value": "@swatch.primary"
-          },
           "preset": {
             "type": "theme.categorical",
-            "value": "@border.hairline"
+            "value": "@border.none"
           }
         }
       },
@@ -46553,7 +45574,7 @@
       "id": "component-articleCard-minimal",
       "type": "variant",
       "level": "part",
-      "label": "Minimal Article Card",
+      "label": "Minimal",
       "theme": null,
       "template": "node:component-articleCard-default",
       "overrides": {},
@@ -46561,320 +45582,11 @@
         "initialOverrides": {}
       }
     },
-    "component-image-FxMrSQn4": {
-      "id": "component-image-FxMrSQn4",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Image",
-      "theme": null,
-      "template": "node:component-image-j9Of31QA",
-      "overrides": {
-        "source": {
-          "type": "exact",
-          "value": "https://static.seldon.app/background-default-light.jpg"
-        },
-        "imageFit": {
-          "type": "option",
-          "value": "cover"
-        },
-        "width": {
-          "type": "option",
-          "value": "fill"
-        },
-        "height": {
-          "type": "exact",
-          "value": {
-            "unit": "px",
-            "value": 200
-          }
-        }
-      },
-      "origin": "schema",
-      "__editor": {
-        "initialOverrides": {
-          "source": {
-            "type": "exact",
-            "value": "https://static.seldon.app/background-default-light.jpg"
-          },
-          "imageFit": {
-            "type": "option",
-            "value": "cover"
-          },
-          "width": {
-            "type": "option",
-            "value": "fill"
-          },
-          "height": {
-            "type": "exact",
-            "value": {
-              "unit": "px",
-              "value": 200
-            }
-          }
-        }
-      }
-    },
-    "component-frame-5YdyLQ2r": {
-      "id": "component-frame-5YdyLQ2r",
-      "type": "instance",
-      "level": "frame",
-      "label": "Frame",
-      "theme": null,
-      "template": "node:component-frame-default",
-      "overrides": {
-        "orientation": {
-          "type": "option",
-          "value": "vertical"
-        },
-        "width": {
-          "type": "option",
-          "value": "fill"
-        },
-        "height": {
-          "type": "option",
-          "value": "fit"
-        },
-        "gap": {
-          "type": "theme.ordinal",
-          "value": "@gap.compact"
-        },
-        "padding": {
-          "top": {
-            "type": "theme.ordinal",
-            "value": "@padding.cozy"
-          },
-          "right": {
-            "type": "theme.ordinal",
-            "value": "@padding.cozy"
-          },
-          "bottom": {
-            "type": "theme.ordinal",
-            "value": "@padding.cozy"
-          },
-          "left": {
-            "type": "theme.ordinal",
-            "value": "@padding.cozy"
-          }
-        }
-      },
-      "origin": "schema",
-      "__editor": {
-        "initialOverrides": {
-          "orientation": {
-            "type": "option",
-            "value": "vertical"
-          },
-          "width": {
-            "type": "option",
-            "value": "fill"
-          },
-          "height": {
-            "type": "option",
-            "value": "fit"
-          },
-          "gap": {
-            "type": "theme.ordinal",
-            "value": "@gap.compact"
-          },
-          "padding": {
-            "top": {
-              "type": "theme.ordinal",
-              "value": "@padding.cozy"
-            },
-            "right": {
-              "type": "theme.ordinal",
-              "value": "@padding.cozy"
-            },
-            "bottom": {
-              "type": "theme.ordinal",
-              "value": "@padding.cozy"
-            },
-            "left": {
-              "type": "theme.ordinal",
-              "value": "@padding.cozy"
-            }
-          }
-        }
-      }
-    },
-    "component-chip-eVvWIk2D": {
-      "id": "component-chip-eVvWIk2D",
-      "type": "instance",
-      "level": "element",
-      "label": "Chip",
-      "theme": null,
-      "template": "node:component-chip-default",
-      "overrides": {
-        "width": {
-          "type": "option",
-          "value": "fit"
-        }
-      },
-      "origin": "schema",
-      "__editor": {
-        "initialOverrides": {
-          "width": {
-            "type": "option",
-            "value": "fit"
-          }
-        }
-      }
-    },
-    "component-text-rEmi5AfS": {
-      "id": "component-text-rEmi5AfS",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Label",
-      "theme": null,
-      "template": "node:component-text-label",
-      "overrides": {
-        "display": {
-          "type": "option",
-          "value": "show"
-        },
-        "content": {
-          "type": "exact",
-          "value": "Design"
-        },
-        "color": {
-          "type": "computed",
-          "value": "highContrastColor"
-        },
-        "font": {
-          "preset": {
-            "type": "theme.categorical",
-            "value": "@font.normal"
-          },
-          "size": {
-            "type": "computed",
-            "value": "autoFit"
-          }
-        }
-      },
-      "origin": "schema",
-      "__editor": {
-        "initialOverrides": {
-          "display": {
-            "type": "option",
-            "value": "show"
-          },
-          "content": {
-            "type": "exact",
-            "value": "Design"
-          },
-          "color": {
-            "type": "computed",
-            "value": "highContrastColor"
-          },
-          "font": {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@font.normal"
-            },
-            "size": {
-              "type": "computed",
-              "value": "autoFit"
-            }
-          }
-        }
-      }
-    },
-    "component-text-fWG2Dkpm": {
-      "id": "component-text-fWG2Dkpm",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Heading",
-      "theme": null,
-      "template": "node:component-text-heading",
-      "overrides": {
-        "content": {
-          "type": "exact",
-          "value": "How to design better cards"
-        },
-        "lines": {
-          "type": "exact",
-          "value": 2
-        },
-        "font": {
-          "preset": {
-            "type": "theme.categorical",
-            "value": "@font.heading"
-          },
-          "family": {
-            "type": "option",
-            "value": "Playfair Display"
-          },
-          "style": {
-            "type": "empty",
-            "value": null
-          },
-          "weight": {
-            "type": "empty",
-            "value": null
-          },
-          "size": {
-            "type": "empty",
-            "value": null
-          },
-          "lineHeight": {
-            "type": "empty",
-            "value": null
-          },
-          "textCase": {
-            "type": "empty",
-            "value": null
-          }
-        }
-      },
-      "origin": "schema",
-      "__editor": {
-        "initialOverrides": {
-          "content": {
-            "type": "exact",
-            "value": "How to design better cards"
-          },
-          "lines": {
-            "type": "exact",
-            "value": 2
-          },
-          "font": {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@font.heading"
-            },
-            "family": {
-              "type": "option",
-              "value": "Playfair Display"
-            },
-            "style": {
-              "type": "empty",
-              "value": null
-            },
-            "weight": {
-              "type": "empty",
-              "value": null
-            },
-            "size": {
-              "type": "empty",
-              "value": null
-            },
-            "lineHeight": {
-              "type": "empty",
-              "value": null
-            },
-            "textCase": {
-              "type": "empty",
-              "value": null
-            }
-          }
-        }
-      }
-    },
     "component-articleCard-horizontal": {
       "id": "component-articleCard-horizontal",
       "type": "variant",
       "level": "part",
-      "label": "Horizontal Article Card",
+      "label": "Horizontal",
       "theme": null,
       "template": "node:component-articleCard-default",
       "overrides": {
@@ -46896,346 +45608,6 @@
           "width": {
             "type": "option",
             "value": "fill"
-          }
-        }
-      }
-    },
-    "component-image-OAMKSqWv": {
-      "id": "component-image-OAMKSqWv",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Image",
-      "theme": null,
-      "template": "node:component-image-j9Of31QA",
-      "overrides": {
-        "source": {
-          "type": "exact",
-          "value": "https://static.seldon.app/background-default-light.jpg"
-        },
-        "imageFit": {
-          "type": "option",
-          "value": "cover"
-        },
-        "width": {
-          "type": "exact",
-          "value": {
-            "unit": "px",
-            "value": 200
-          }
-        },
-        "height": {
-          "type": "option",
-          "value": "fill"
-        }
-      },
-      "origin": "schema",
-      "__editor": {
-        "initialOverrides": {
-          "source": {
-            "type": "exact",
-            "value": "https://static.seldon.app/background-default-light.jpg"
-          },
-          "imageFit": {
-            "type": "option",
-            "value": "cover"
-          },
-          "width": {
-            "type": "exact",
-            "value": {
-              "unit": "px",
-              "value": 200
-            }
-          },
-          "height": {
-            "type": "option",
-            "value": "fill"
-          }
-        }
-      }
-    },
-    "component-frame-4deT9xog": {
-      "id": "component-frame-4deT9xog",
-      "type": "instance",
-      "level": "frame",
-      "label": "Frame",
-      "theme": null,
-      "template": "node:component-frame-default",
-      "overrides": {
-        "orientation": {
-          "type": "option",
-          "value": "vertical"
-        },
-        "width": {
-          "type": "option",
-          "value": "fill"
-        },
-        "height": {
-          "type": "option",
-          "value": "fit"
-        },
-        "gap": {
-          "type": "theme.ordinal",
-          "value": "@gap.compact"
-        },
-        "padding": {
-          "top": {
-            "type": "theme.ordinal",
-            "value": "@padding.cozy"
-          },
-          "right": {
-            "type": "theme.ordinal",
-            "value": "@padding.cozy"
-          },
-          "bottom": {
-            "type": "theme.ordinal",
-            "value": "@padding.cozy"
-          },
-          "left": {
-            "type": "theme.ordinal",
-            "value": "@padding.cozy"
-          }
-        }
-      },
-      "origin": "schema",
-      "__editor": {
-        "initialOverrides": {
-          "orientation": {
-            "type": "option",
-            "value": "vertical"
-          },
-          "width": {
-            "type": "option",
-            "value": "fill"
-          },
-          "height": {
-            "type": "option",
-            "value": "fit"
-          },
-          "gap": {
-            "type": "theme.ordinal",
-            "value": "@gap.compact"
-          },
-          "padding": {
-            "top": {
-              "type": "theme.ordinal",
-              "value": "@padding.cozy"
-            },
-            "right": {
-              "type": "theme.ordinal",
-              "value": "@padding.cozy"
-            },
-            "bottom": {
-              "type": "theme.ordinal",
-              "value": "@padding.cozy"
-            },
-            "left": {
-              "type": "theme.ordinal",
-              "value": "@padding.cozy"
-            }
-          }
-        }
-      }
-    },
-    "component-chip-sXLZ1XES": {
-      "id": "component-chip-sXLZ1XES",
-      "type": "instance",
-      "level": "element",
-      "label": "Chip",
-      "theme": null,
-      "template": "node:component-chip-default",
-      "overrides": {
-        "width": {
-          "type": "option",
-          "value": "fit"
-        }
-      },
-      "origin": "schema",
-      "__editor": {
-        "initialOverrides": {
-          "width": {
-            "type": "option",
-            "value": "fit"
-          }
-        }
-      }
-    },
-    "component-text-ZEMdN1UQ": {
-      "id": "component-text-ZEMdN1UQ",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Label",
-      "theme": null,
-      "template": "node:component-text-label",
-      "overrides": {
-        "display": {
-          "type": "option",
-          "value": "show"
-        },
-        "content": {
-          "type": "exact",
-          "value": "Design"
-        },
-        "color": {
-          "type": "computed",
-          "value": "highContrastColor"
-        },
-        "font": {
-          "preset": {
-            "type": "theme.categorical",
-            "value": "@font.normal"
-          },
-          "size": {
-            "type": "computed",
-            "value": "autoFit"
-          }
-        }
-      },
-      "origin": "schema",
-      "__editor": {
-        "initialOverrides": {
-          "display": {
-            "type": "option",
-            "value": "show"
-          },
-          "content": {
-            "type": "exact",
-            "value": "Design"
-          },
-          "color": {
-            "type": "computed",
-            "value": "highContrastColor"
-          },
-          "font": {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@font.normal"
-            },
-            "size": {
-              "type": "computed",
-              "value": "autoFit"
-            }
-          }
-        }
-      }
-    },
-    "component-text-PHNzTfnx": {
-      "id": "component-text-PHNzTfnx",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Heading",
-      "theme": null,
-      "template": "node:component-text-heading",
-      "overrides": {
-        "content": {
-          "type": "exact",
-          "value": "How to design better cards"
-        },
-        "lines": {
-          "type": "exact",
-          "value": 2
-        },
-        "font": {
-          "preset": {
-            "type": "theme.categorical",
-            "value": "@font.heading"
-          },
-          "family": {
-            "type": "option",
-            "value": "Playfair Display"
-          },
-          "style": {
-            "type": "empty",
-            "value": null
-          },
-          "weight": {
-            "type": "empty",
-            "value": null
-          },
-          "size": {
-            "type": "empty",
-            "value": null
-          },
-          "lineHeight": {
-            "type": "empty",
-            "value": null
-          },
-          "textCase": {
-            "type": "empty",
-            "value": null
-          }
-        }
-      },
-      "origin": "schema",
-      "__editor": {
-        "initialOverrides": {
-          "content": {
-            "type": "exact",
-            "value": "How to design better cards"
-          },
-          "lines": {
-            "type": "exact",
-            "value": 2
-          },
-          "font": {
-            "preset": {
-              "type": "theme.categorical",
-              "value": "@font.heading"
-            },
-            "family": {
-              "type": "option",
-              "value": "Playfair Display"
-            },
-            "style": {
-              "type": "empty",
-              "value": null
-            },
-            "weight": {
-              "type": "empty",
-              "value": null
-            },
-            "size": {
-              "type": "empty",
-              "value": null
-            },
-            "lineHeight": {
-              "type": "empty",
-              "value": null
-            },
-            "textCase": {
-              "type": "empty",
-              "value": null
-            }
-          }
-        }
-      }
-    },
-    "component-text-ZDMZ04RD": {
-      "id": "component-text-ZDMZ04RD",
-      "type": "instance",
-      "level": "primitive",
-      "label": "Description",
-      "theme": null,
-      "template": "node:component-text-description",
-      "overrides": {
-        "content": {
-          "type": "exact",
-          "value": "A short, two-line excerpt written for the card earns the click without giving everything away."
-        },
-        "lines": {
-          "type": "exact",
-          "value": 2
-        }
-      },
-      "origin": "schema",
-      "__editor": {
-        "initialOverrides": {
-          "content": {
-            "type": "exact",
-            "value": "A short, two-line excerpt written for the card earns the click without giving everything away."
-          },
-          "lines": {
-            "type": "exact",
-            "value": 2
           }
         }
       }
@@ -47469,6 +45841,2466 @@
         }
       },
       "origin": "user"
+    },
+    "component-avatar-a890LhqH": {
+      "id": "component-avatar-a890LhqH",
+      "type": "instance",
+      "level": "element",
+      "label": "Avatar",
+      "theme": null,
+      "template": "node:component-avatar-default",
+      "overrides": {},
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-image-ZC5teScu": {
+      "id": "component-image-ZC5teScu",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Image",
+      "theme": null,
+      "template": "node:component-image-default",
+      "overrides": {
+        "source": {
+          "type": "exact",
+          "value": "/avatar-bentley.png"
+        },
+        "width": {
+          "type": "theme.ordinal",
+          "value": "@dimension.large"
+        },
+        "height": {
+          "type": "theme.ordinal",
+          "value": "@dimension.large"
+        },
+        "corners": {
+          "topLeft": {
+            "type": "option",
+            "value": "rounded"
+          },
+          "topRight": {
+            "type": "option",
+            "value": "rounded"
+          },
+          "bottomLeft": {
+            "type": "option",
+            "value": "rounded"
+          },
+          "bottomRight": {
+            "type": "option",
+            "value": "rounded"
+          }
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "source": {
+            "type": "exact",
+            "value": "/avatar-bentley.png"
+          },
+          "width": {
+            "type": "theme.ordinal",
+            "value": "@dimension.large"
+          },
+          "height": {
+            "type": "theme.ordinal",
+            "value": "@dimension.large"
+          },
+          "corners": {
+            "topLeft": {
+              "type": "option",
+              "value": "rounded"
+            },
+            "topRight": {
+              "type": "option",
+              "value": "rounded"
+            },
+            "bottomLeft": {
+              "type": "option",
+              "value": "rounded"
+            },
+            "bottomRight": {
+              "type": "option",
+              "value": "rounded"
+            }
+          }
+        }
+      }
+    },
+    "component-image-IRK4s0Mp": {
+      "id": "component-image-IRK4s0Mp",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Image",
+      "theme": null,
+      "template": "node:component-image-j9Of31QA",
+      "overrides": {
+        "source": {
+          "type": "exact",
+          "value": "https://static.seldon.app/background-default-light.jpg"
+        },
+        "imageFit": {
+          "type": "option",
+          "value": "cover"
+        },
+        "width": {
+          "type": "option",
+          "value": "fill"
+        },
+        "height": {
+          "type": "exact",
+          "value": {
+            "unit": "px",
+            "value": 200
+          }
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "source": {
+            "type": "exact",
+            "value": "https://static.seldon.app/background-default-light.jpg"
+          },
+          "imageFit": {
+            "type": "option",
+            "value": "cover"
+          },
+          "width": {
+            "type": "option",
+            "value": "fill"
+          },
+          "height": {
+            "type": "exact",
+            "value": {
+              "unit": "px",
+              "value": 200
+            }
+          }
+        }
+      }
+    },
+    "component-frame-UO4V51aA": {
+      "id": "component-frame-UO4V51aA",
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-default",
+      "overrides": {
+        "orientation": {
+          "type": "option",
+          "value": "vertical"
+        },
+        "width": {
+          "type": "option",
+          "value": "fill"
+        },
+        "height": {
+          "type": "option",
+          "value": "fit"
+        },
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.compact"
+        },
+        "padding": {
+          "top": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          },
+          "right": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          },
+          "bottom": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          },
+          "left": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          }
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "orientation": {
+            "type": "option",
+            "value": "vertical"
+          },
+          "width": {
+            "type": "option",
+            "value": "fill"
+          },
+          "height": {
+            "type": "option",
+            "value": "fit"
+          },
+          "gap": {
+            "type": "theme.ordinal",
+            "value": "@gap.compact"
+          },
+          "padding": {
+            "top": {
+              "type": "theme.ordinal",
+              "value": "@padding.cozy"
+            },
+            "right": {
+              "type": "theme.ordinal",
+              "value": "@padding.cozy"
+            },
+            "bottom": {
+              "type": "theme.ordinal",
+              "value": "@padding.cozy"
+            },
+            "left": {
+              "type": "theme.ordinal",
+              "value": "@padding.cozy"
+            }
+          }
+        }
+      }
+    },
+    "component-chip-ZVDLwjtk": {
+      "id": "component-chip-ZVDLwjtk",
+      "type": "instance",
+      "level": "element",
+      "label": "Chip",
+      "theme": null,
+      "template": "node:component-chip-default",
+      "overrides": {
+        "width": {
+          "type": "option",
+          "value": "fit"
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "width": {
+            "type": "option",
+            "value": "fit"
+          }
+        }
+      }
+    },
+    "component-text-jlfxniH2": {
+      "id": "component-text-jlfxniH2",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-label",
+      "overrides": {
+        "display": {
+          "type": "option",
+          "value": "show"
+        },
+        "content": {
+          "type": "exact",
+          "value": "Design"
+        },
+        "color": {
+          "type": "computed",
+          "value": "highContrastColor"
+        },
+        "font": {
+          "preset": {
+            "type": "theme.categorical",
+            "value": "@font.normal"
+          },
+          "size": {
+            "type": "computed",
+            "value": "autoFit"
+          }
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "display": {
+            "type": "option",
+            "value": "show"
+          },
+          "content": {
+            "type": "exact",
+            "value": "Design"
+          },
+          "color": {
+            "type": "computed",
+            "value": "highContrastColor"
+          },
+          "font": {
+            "preset": {
+              "type": "theme.categorical",
+              "value": "@font.normal"
+            },
+            "size": {
+              "type": "computed",
+              "value": "autoFit"
+            }
+          }
+        }
+      }
+    },
+    "component-text-9Ayfyr3a": {
+      "id": "component-text-9Ayfyr3a",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Heading",
+      "theme": null,
+      "template": "node:component-text-heading",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "How to design better cards"
+        },
+        "lines": {
+          "type": "exact",
+          "value": 2
+        },
+        "font": {
+          "preset": {
+            "type": "theme.categorical",
+            "value": "@font.heading"
+          },
+          "family": {
+            "type": "option",
+            "value": "Playfair Display"
+          },
+          "style": {
+            "type": "empty",
+            "value": null
+          },
+          "weight": {
+            "type": "empty",
+            "value": null
+          },
+          "size": {
+            "type": "empty",
+            "value": null
+          },
+          "lineHeight": {
+            "type": "empty",
+            "value": null
+          },
+          "textCase": {
+            "type": "empty",
+            "value": null
+          }
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "content": {
+            "type": "exact",
+            "value": "How to design better cards"
+          },
+          "lines": {
+            "type": "exact",
+            "value": 2
+          },
+          "font": {
+            "preset": {
+              "type": "theme.categorical",
+              "value": "@font.heading"
+            },
+            "family": {
+              "type": "option",
+              "value": "Playfair Display"
+            },
+            "style": {
+              "type": "empty",
+              "value": null
+            },
+            "weight": {
+              "type": "empty",
+              "value": null
+            },
+            "size": {
+              "type": "empty",
+              "value": null
+            },
+            "lineHeight": {
+              "type": "empty",
+              "value": null
+            },
+            "textCase": {
+              "type": "empty",
+              "value": null
+            }
+          }
+        }
+      }
+    },
+    "component-image-RwHBEzzK": {
+      "id": "component-image-RwHBEzzK",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Image",
+      "theme": null,
+      "template": "node:component-image-j9Of31QA",
+      "overrides": {
+        "source": {
+          "type": "exact",
+          "value": "https://static.seldon.app/background-default-light.jpg"
+        },
+        "imageFit": {
+          "type": "option",
+          "value": "cover"
+        },
+        "width": {
+          "type": "exact",
+          "value": {
+            "unit": "px",
+            "value": 200
+          }
+        },
+        "height": {
+          "type": "option",
+          "value": "fill"
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "source": {
+            "type": "exact",
+            "value": "https://static.seldon.app/background-default-light.jpg"
+          },
+          "imageFit": {
+            "type": "option",
+            "value": "cover"
+          },
+          "width": {
+            "type": "exact",
+            "value": {
+              "unit": "px",
+              "value": 200
+            }
+          },
+          "height": {
+            "type": "option",
+            "value": "fill"
+          }
+        }
+      }
+    },
+    "component-frame-OzKLHFev": {
+      "id": "component-frame-OzKLHFev",
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-default",
+      "overrides": {
+        "orientation": {
+          "type": "option",
+          "value": "vertical"
+        },
+        "width": {
+          "type": "option",
+          "value": "fill"
+        },
+        "height": {
+          "type": "option",
+          "value": "fit"
+        },
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.compact"
+        },
+        "padding": {
+          "top": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          },
+          "right": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          },
+          "bottom": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          },
+          "left": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          }
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "orientation": {
+            "type": "option",
+            "value": "vertical"
+          },
+          "width": {
+            "type": "option",
+            "value": "fill"
+          },
+          "height": {
+            "type": "option",
+            "value": "fit"
+          },
+          "gap": {
+            "type": "theme.ordinal",
+            "value": "@gap.compact"
+          },
+          "padding": {
+            "top": {
+              "type": "theme.ordinal",
+              "value": "@padding.cozy"
+            },
+            "right": {
+              "type": "theme.ordinal",
+              "value": "@padding.cozy"
+            },
+            "bottom": {
+              "type": "theme.ordinal",
+              "value": "@padding.cozy"
+            },
+            "left": {
+              "type": "theme.ordinal",
+              "value": "@padding.cozy"
+            }
+          }
+        }
+      }
+    },
+    "component-chip-QQGRDbmg": {
+      "id": "component-chip-QQGRDbmg",
+      "type": "instance",
+      "level": "element",
+      "label": "Chip",
+      "theme": null,
+      "template": "node:component-chip-default",
+      "overrides": {
+        "width": {
+          "type": "option",
+          "value": "fit"
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "width": {
+            "type": "option",
+            "value": "fit"
+          }
+        }
+      }
+    },
+    "component-text-dU6CfgUh": {
+      "id": "component-text-dU6CfgUh",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-label",
+      "overrides": {
+        "display": {
+          "type": "option",
+          "value": "show"
+        },
+        "content": {
+          "type": "exact",
+          "value": "Design"
+        },
+        "color": {
+          "type": "computed",
+          "value": "highContrastColor"
+        },
+        "font": {
+          "preset": {
+            "type": "theme.categorical",
+            "value": "@font.normal"
+          },
+          "size": {
+            "type": "computed",
+            "value": "autoFit"
+          }
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "display": {
+            "type": "option",
+            "value": "show"
+          },
+          "content": {
+            "type": "exact",
+            "value": "Design"
+          },
+          "color": {
+            "type": "computed",
+            "value": "highContrastColor"
+          },
+          "font": {
+            "preset": {
+              "type": "theme.categorical",
+              "value": "@font.normal"
+            },
+            "size": {
+              "type": "computed",
+              "value": "autoFit"
+            }
+          }
+        }
+      }
+    },
+    "component-text-oc9BITyk": {
+      "id": "component-text-oc9BITyk",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Heading",
+      "theme": null,
+      "template": "node:component-text-heading",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "How to design better cards"
+        },
+        "lines": {
+          "type": "exact",
+          "value": 2
+        },
+        "font": {
+          "preset": {
+            "type": "theme.categorical",
+            "value": "@font.heading"
+          },
+          "family": {
+            "type": "option",
+            "value": "Playfair Display"
+          },
+          "style": {
+            "type": "empty",
+            "value": null
+          },
+          "weight": {
+            "type": "empty",
+            "value": null
+          },
+          "size": {
+            "type": "empty",
+            "value": null
+          },
+          "lineHeight": {
+            "type": "empty",
+            "value": null
+          },
+          "textCase": {
+            "type": "empty",
+            "value": null
+          }
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "content": {
+            "type": "exact",
+            "value": "How to design better cards"
+          },
+          "lines": {
+            "type": "exact",
+            "value": 2
+          },
+          "font": {
+            "preset": {
+              "type": "theme.categorical",
+              "value": "@font.heading"
+            },
+            "family": {
+              "type": "option",
+              "value": "Playfair Display"
+            },
+            "style": {
+              "type": "empty",
+              "value": null
+            },
+            "weight": {
+              "type": "empty",
+              "value": null
+            },
+            "size": {
+              "type": "empty",
+              "value": null
+            },
+            "lineHeight": {
+              "type": "empty",
+              "value": null
+            },
+            "textCase": {
+              "type": "empty",
+              "value": null
+            }
+          }
+        }
+      }
+    },
+    "component-text-vFzx86za": {
+      "id": "component-text-vFzx86za",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Description",
+      "theme": null,
+      "template": "node:component-text-description",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "A short, two-line excerpt written for the card earns the click without giving everything away."
+        },
+        "lines": {
+          "type": "exact",
+          "value": 2
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "content": {
+            "type": "exact",
+            "value": "A short, two-line excerpt written for the card earns the click without giving everything away."
+          },
+          "lines": {
+            "type": "exact",
+            "value": 2
+          }
+        }
+      }
+    },
+    "component-button-tools": {
+      "id": "component-button-tools",
+      "type": "variant",
+      "level": "element",
+      "label": "Tool Buttons",
+      "theme": null,
+      "template": "node:component-button-default",
+      "overrides": {
+        "orientation": {
+          "type": "option",
+          "value": "vertical"
+        },
+        "padding": {
+          "top": {
+            "type": "theme.ordinal",
+            "value": "@padding.compact"
+          },
+          "right": {
+            "type": "theme.ordinal",
+            "value": "@padding.compact"
+          },
+          "bottom": {
+            "type": "theme.ordinal",
+            "value": "@padding.compact"
+          },
+          "left": {
+            "type": "theme.ordinal",
+            "value": "@padding.compact"
+          }
+        },
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.compact"
+        },
+        "corners": {
+          "topLeft": {
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
+          },
+          "topRight": {
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
+          },
+          "bottomLeft": {
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
+          },
+          "bottomRight": {
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
+          }
+        },
+        "background": [
+          {
+            "kind": {
+              "type": "option",
+              "value": "color"
+            },
+            "color": {
+              "type": "theme.categorical",
+              "value": "@swatch.swatch4"
+            },
+            "brightness": {
+              "type": "exact",
+              "value": {
+                "unit": "%",
+                "value": 50
+              }
+            },
+            "opacity": {
+              "type": "empty",
+              "value": null
+            }
+          }
+        ],
+        "border": {
+          "preset": {
+            "type": "theme.categorical",
+            "value": "@border.none"
+          }
+        }
+      },
+      "__editor": {
+        "initialOverrides": {
+          "orientation": {
+            "type": "option",
+            "value": "vertical"
+          },
+          "padding": {
+            "top": {
+              "type": "theme.ordinal",
+              "value": "@padding.compact"
+            },
+            "right": {
+              "type": "theme.ordinal",
+              "value": "@padding.compact"
+            },
+            "bottom": {
+              "type": "theme.ordinal",
+              "value": "@padding.compact"
+            },
+            "left": {
+              "type": "theme.ordinal",
+              "value": "@padding.compact"
+            }
+          },
+          "gap": {
+            "type": "theme.ordinal",
+            "value": "@gap.compact"
+          },
+          "corners": {
+            "topLeft": {
+              "type": "theme.ordinal",
+              "value": "@corners.tight"
+            },
+            "topRight": {
+              "type": "theme.ordinal",
+              "value": "@corners.tight"
+            },
+            "bottomLeft": {
+              "type": "theme.ordinal",
+              "value": "@corners.tight"
+            },
+            "bottomRight": {
+              "type": "theme.ordinal",
+              "value": "@corners.tight"
+            }
+          },
+          "background": [
+            {
+              "kind": {
+                "type": "option",
+                "value": "color"
+              },
+              "color": {
+                "type": "theme.categorical",
+                "value": "@swatch.swatch4"
+              },
+              "brightness": {
+                "type": "exact",
+                "value": {
+                  "unit": "%",
+                  "value": 50
+                }
+              },
+              "opacity": {
+                "type": "empty",
+                "value": null
+              }
+            }
+          ],
+          "border": {
+            "preset": {
+              "type": "theme.categorical",
+              "value": "@border.none"
+            }
+          }
+        }
+      }
+    },
+    "component-button-ngdEUTLG": {
+      "id": "component-button-ngdEUTLG",
+      "type": "instance",
+      "level": "element",
+      "label": "Button",
+      "theme": null,
+      "template": "node:component-button-default",
+      "overrides": {
+        "orientation": {
+          "type": "option",
+          "value": "vertical"
+        },
+        "padding": {
+          "top": {
+            "type": "theme.ordinal",
+            "value": "@padding.compact"
+          },
+          "right": {
+            "type": "theme.ordinal",
+            "value": "@padding.compact"
+          },
+          "bottom": {
+            "type": "theme.ordinal",
+            "value": "@padding.compact"
+          },
+          "left": {
+            "type": "theme.ordinal",
+            "value": "@padding.compact"
+          }
+        },
+        "corners": {
+          "topLeft": {
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
+          },
+          "topRight": {
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
+          },
+          "bottomLeft": {
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
+          },
+          "bottomRight": {
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
+          }
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "orientation": {
+            "type": "option",
+            "value": "vertical"
+          },
+          "padding": {
+            "top": {
+              "type": "theme.ordinal",
+              "value": "@padding.compact"
+            },
+            "right": {
+              "type": "theme.ordinal",
+              "value": "@padding.compact"
+            },
+            "bottom": {
+              "type": "theme.ordinal",
+              "value": "@padding.compact"
+            },
+            "left": {
+              "type": "theme.ordinal",
+              "value": "@padding.compact"
+            }
+          },
+          "corners": {
+            "topLeft": {
+              "type": "theme.ordinal",
+              "value": "@corners.tight"
+            },
+            "topRight": {
+              "type": "theme.ordinal",
+              "value": "@corners.tight"
+            },
+            "bottomLeft": {
+              "type": "theme.ordinal",
+              "value": "@corners.tight"
+            },
+            "bottomRight": {
+              "type": "theme.ordinal",
+              "value": "@corners.tight"
+            }
+          }
+        }
+      }
+    },
+    "component-icon-XTKwq2pq": {
+      "id": "component-icon-XTKwq2pq",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Icon",
+      "theme": null,
+      "template": "node:component-icon-umGs9Mqw",
+      "overrides": {},
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-text-x7WqOtWb": {
+      "id": "component-text-x7WqOtWb",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-yLTEEYXq",
+      "overrides": {},
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-button-9oF7hHST": {
+      "id": "component-button-9oF7hHST",
+      "type": "instance",
+      "level": "element",
+      "label": "Button",
+      "theme": null,
+      "template": "node:component-button-default",
+      "overrides": {
+        "orientation": {
+          "type": "option",
+          "value": "vertical"
+        },
+        "padding": {
+          "top": {
+            "type": "theme.ordinal",
+            "value": "@padding.compact"
+          },
+          "right": {
+            "type": "theme.ordinal",
+            "value": "@padding.compact"
+          },
+          "bottom": {
+            "type": "theme.ordinal",
+            "value": "@padding.compact"
+          },
+          "left": {
+            "type": "theme.ordinal",
+            "value": "@padding.compact"
+          }
+        },
+        "corners": {
+          "topLeft": {
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
+          },
+          "topRight": {
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
+          },
+          "bottomLeft": {
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
+          },
+          "bottomRight": {
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
+          }
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "orientation": {
+            "type": "option",
+            "value": "vertical"
+          },
+          "padding": {
+            "top": {
+              "type": "theme.ordinal",
+              "value": "@padding.compact"
+            },
+            "right": {
+              "type": "theme.ordinal",
+              "value": "@padding.compact"
+            },
+            "bottom": {
+              "type": "theme.ordinal",
+              "value": "@padding.compact"
+            },
+            "left": {
+              "type": "theme.ordinal",
+              "value": "@padding.compact"
+            }
+          },
+          "corners": {
+            "topLeft": {
+              "type": "theme.ordinal",
+              "value": "@corners.tight"
+            },
+            "topRight": {
+              "type": "theme.ordinal",
+              "value": "@corners.tight"
+            },
+            "bottomLeft": {
+              "type": "theme.ordinal",
+              "value": "@corners.tight"
+            },
+            "bottomRight": {
+              "type": "theme.ordinal",
+              "value": "@corners.tight"
+            }
+          }
+        }
+      }
+    },
+    "component-icon-4vzPQhod": {
+      "id": "component-icon-4vzPQhod",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Icon",
+      "theme": null,
+      "template": "node:component-icon-umGs9Mqw",
+      "overrides": {},
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-text-DjFYE2WA": {
+      "id": "component-text-DjFYE2WA",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-yLTEEYXq",
+      "overrides": {},
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-button-mmVR7Fqg": {
+      "id": "component-button-mmVR7Fqg",
+      "type": "instance",
+      "level": "element",
+      "label": "Button",
+      "theme": null,
+      "template": "node:component-button-default",
+      "overrides": {
+        "orientation": {
+          "type": "option",
+          "value": "vertical"
+        },
+        "padding": {
+          "top": {
+            "type": "theme.ordinal",
+            "value": "@padding.compact"
+          },
+          "right": {
+            "type": "theme.ordinal",
+            "value": "@padding.compact"
+          },
+          "bottom": {
+            "type": "theme.ordinal",
+            "value": "@padding.compact"
+          },
+          "left": {
+            "type": "theme.ordinal",
+            "value": "@padding.compact"
+          }
+        },
+        "corners": {
+          "topLeft": {
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
+          },
+          "topRight": {
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
+          },
+          "bottomLeft": {
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
+          },
+          "bottomRight": {
+            "type": "theme.ordinal",
+            "value": "@corners.tight"
+          }
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "orientation": {
+            "type": "option",
+            "value": "vertical"
+          },
+          "padding": {
+            "top": {
+              "type": "theme.ordinal",
+              "value": "@padding.compact"
+            },
+            "right": {
+              "type": "theme.ordinal",
+              "value": "@padding.compact"
+            },
+            "bottom": {
+              "type": "theme.ordinal",
+              "value": "@padding.compact"
+            },
+            "left": {
+              "type": "theme.ordinal",
+              "value": "@padding.compact"
+            }
+          },
+          "corners": {
+            "topLeft": {
+              "type": "theme.ordinal",
+              "value": "@corners.tight"
+            },
+            "topRight": {
+              "type": "theme.ordinal",
+              "value": "@corners.tight"
+            },
+            "bottomLeft": {
+              "type": "theme.ordinal",
+              "value": "@corners.tight"
+            },
+            "bottomRight": {
+              "type": "theme.ordinal",
+              "value": "@corners.tight"
+            }
+          }
+        }
+      }
+    },
+    "component-icon-tO1tX86o": {
+      "id": "component-icon-tO1tX86o",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Icon",
+      "theme": null,
+      "template": "node:component-icon-umGs9Mqw",
+      "overrides": {},
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-text-qVXKBNn6": {
+      "id": "component-text-qVXKBNn6",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-yLTEEYXq",
+      "overrides": {},
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-button-segmented": {
+      "id": "component-button-segmented",
+      "type": "variant",
+      "level": "element",
+      "label": "Segmented Button",
+      "theme": null,
+      "template": "node:component-button-default",
+      "overrides": {
+        "padding": {
+          "top": {
+            "type": "option",
+            "value": "none"
+          },
+          "right": {
+            "type": "option",
+            "value": "none"
+          },
+          "bottom": {
+            "type": "option",
+            "value": "none"
+          },
+          "left": {
+            "type": "option",
+            "value": "none"
+          }
+        },
+        "gap": {
+          "type": "option",
+          "value": "evenly-spaced"
+        },
+        "border": {
+          "preset": {
+            "type": "theme.categorical",
+            "value": "@border.none"
+          }
+        }
+      },
+      "__editor": {
+        "initialOverrides": {
+          "padding": {
+            "top": {
+              "type": "option",
+              "value": "none"
+            },
+            "right": {
+              "type": "option",
+              "value": "none"
+            },
+            "bottom": {
+              "type": "option",
+              "value": "none"
+            },
+            "left": {
+              "type": "option",
+              "value": "none"
+            }
+          },
+          "gap": {
+            "type": "option",
+            "value": "evenly-spaced"
+          },
+          "border": {
+            "preset": {
+              "type": "theme.categorical",
+              "value": "@border.none"
+            }
+          }
+        }
+      }
+    },
+    "component-button-fIXt7iCr": {
+      "id": "component-button-fIXt7iCr",
+      "type": "instance",
+      "level": "element",
+      "label": "Button",
+      "theme": null,
+      "template": "node:component-button-default",
+      "overrides": {
+        "padding": {
+          "top": {
+            "type": "computed",
+            "value": "opticalPadding"
+          },
+          "right": {
+            "type": "computed",
+            "value": "opticalPadding"
+          },
+          "bottom": {
+            "type": "computed",
+            "value": "opticalPadding"
+          },
+          "left": {
+            "type": "computed",
+            "value": "opticalPadding"
+          }
+        },
+        "corners": {
+          "topLeft": {
+            "type": "option",
+            "value": "rounded"
+          },
+          "topRight": {
+            "type": "empty",
+            "value": null
+          },
+          "bottomLeft": {
+            "type": "option",
+            "value": "rounded"
+          },
+          "bottomRight": {
+            "type": "empty",
+            "value": null
+          }
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "padding": {
+            "top": {
+              "type": "computed",
+              "value": "opticalPadding"
+            },
+            "right": {
+              "type": "computed",
+              "value": "opticalPadding"
+            },
+            "bottom": {
+              "type": "computed",
+              "value": "opticalPadding"
+            },
+            "left": {
+              "type": "computed",
+              "value": "opticalPadding"
+            }
+          },
+          "corners": {
+            "topLeft": {
+              "type": "option",
+              "value": "rounded"
+            },
+            "topRight": {
+              "type": "empty",
+              "value": null
+            },
+            "bottomLeft": {
+              "type": "option",
+              "value": "rounded"
+            },
+            "bottomRight": {
+              "type": "empty",
+              "value": null
+            }
+          }
+        }
+      }
+    },
+    "component-icon-5e2rWu9Y": {
+      "id": "component-icon-5e2rWu9Y",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Icon",
+      "theme": null,
+      "template": "node:component-icon-umGs9Mqw",
+      "overrides": {},
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-text-0tOITP8Q": {
+      "id": "component-text-0tOITP8Q",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-yLTEEYXq",
+      "overrides": {},
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-button-9gvw0ZlX": {
+      "id": "component-button-9gvw0ZlX",
+      "type": "instance",
+      "level": "element",
+      "label": "Button",
+      "theme": null,
+      "template": "node:component-button-default",
+      "overrides": {
+        "padding": {
+          "top": {
+            "type": "computed",
+            "value": "opticalPadding"
+          },
+          "right": {
+            "type": "computed",
+            "value": "opticalPadding"
+          },
+          "bottom": {
+            "type": "computed",
+            "value": "opticalPadding"
+          },
+          "left": {
+            "type": "computed",
+            "value": "opticalPadding"
+          }
+        },
+        "corners": {
+          "topLeft": {
+            "type": "option",
+            "value": "squared"
+          },
+          "topRight": {
+            "type": "option",
+            "value": "squared"
+          },
+          "bottomLeft": {
+            "type": "option",
+            "value": "squared"
+          },
+          "bottomRight": {
+            "type": "option",
+            "value": "squared"
+          }
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "padding": {
+            "top": {
+              "type": "computed",
+              "value": "opticalPadding"
+            },
+            "right": {
+              "type": "computed",
+              "value": "opticalPadding"
+            },
+            "bottom": {
+              "type": "computed",
+              "value": "opticalPadding"
+            },
+            "left": {
+              "type": "computed",
+              "value": "opticalPadding"
+            }
+          },
+          "corners": {
+            "topLeft": {
+              "type": "option",
+              "value": "squared"
+            },
+            "topRight": {
+              "type": "option",
+              "value": "squared"
+            },
+            "bottomLeft": {
+              "type": "option",
+              "value": "squared"
+            },
+            "bottomRight": {
+              "type": "option",
+              "value": "squared"
+            }
+          }
+        }
+      }
+    },
+    "component-icon-1cIeVtNq": {
+      "id": "component-icon-1cIeVtNq",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Icon",
+      "theme": null,
+      "template": "node:component-icon-umGs9Mqw",
+      "overrides": {},
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-text-Es9P2Ol3": {
+      "id": "component-text-Es9P2Ol3",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-yLTEEYXq",
+      "overrides": {},
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-button-Y4uFgX9R": {
+      "id": "component-button-Y4uFgX9R",
+      "type": "instance",
+      "level": "element",
+      "label": "Button",
+      "theme": null,
+      "template": "node:component-button-default",
+      "overrides": {
+        "padding": {
+          "top": {
+            "type": "computed",
+            "value": "opticalPadding"
+          },
+          "right": {
+            "type": "computed",
+            "value": "opticalPadding"
+          },
+          "bottom": {
+            "type": "computed",
+            "value": "opticalPadding"
+          },
+          "left": {
+            "type": "computed",
+            "value": "opticalPadding"
+          }
+        },
+        "corners": {
+          "topLeft": {
+            "type": "empty",
+            "value": null
+          },
+          "topRight": {
+            "type": "option",
+            "value": "rounded"
+          },
+          "bottomLeft": {
+            "type": "empty",
+            "value": null
+          },
+          "bottomRight": {
+            "type": "option",
+            "value": "rounded"
+          }
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "padding": {
+            "top": {
+              "type": "computed",
+              "value": "opticalPadding"
+            },
+            "right": {
+              "type": "computed",
+              "value": "opticalPadding"
+            },
+            "bottom": {
+              "type": "computed",
+              "value": "opticalPadding"
+            },
+            "left": {
+              "type": "computed",
+              "value": "opticalPadding"
+            }
+          },
+          "corners": {
+            "topLeft": {
+              "type": "empty",
+              "value": null
+            },
+            "topRight": {
+              "type": "option",
+              "value": "rounded"
+            },
+            "bottomLeft": {
+              "type": "empty",
+              "value": null
+            },
+            "bottomRight": {
+              "type": "option",
+              "value": "rounded"
+            }
+          }
+        }
+      }
+    },
+    "component-icon-SxetdTQi": {
+      "id": "component-icon-SxetdTQi",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Icon",
+      "theme": null,
+      "template": "node:component-icon-umGs9Mqw",
+      "overrides": {},
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-text-yRIBWNY8": {
+      "id": "component-text-yRIBWNY8",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-yLTEEYXq",
+      "overrides": {},
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-avatar-4DjaZ9Rv": {
+      "id": "component-avatar-4DjaZ9Rv",
+      "type": "instance",
+      "level": "element",
+      "label": "Avatar",
+      "theme": null,
+      "template": "node:component-avatar-default",
+      "overrides": {},
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {}
+      }
+    },
+    "component-image-OHvB0KzS": {
+      "id": "component-image-OHvB0KzS",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Image",
+      "theme": null,
+      "template": "node:component-image-default",
+      "overrides": {
+        "source": {
+          "type": "exact",
+          "value": "/avatar-bentley.png"
+        },
+        "width": {
+          "type": "theme.ordinal",
+          "value": "@dimension.medium"
+        },
+        "height": {
+          "type": "theme.ordinal",
+          "value": "@dimension.medium"
+        },
+        "corners": {
+          "topLeft": {
+            "type": "option",
+            "value": "rounded"
+          },
+          "topRight": {
+            "type": "option",
+            "value": "rounded"
+          },
+          "bottomLeft": {
+            "type": "option",
+            "value": "rounded"
+          },
+          "bottomRight": {
+            "type": "option",
+            "value": "rounded"
+          }
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "source": {
+            "type": "exact",
+            "value": "/avatar-bentley.png"
+          },
+          "width": {
+            "type": "theme.ordinal",
+            "value": "@dimension.medium"
+          },
+          "height": {
+            "type": "theme.ordinal",
+            "value": "@dimension.medium"
+          },
+          "corners": {
+            "topLeft": {
+              "type": "option",
+              "value": "rounded"
+            },
+            "topRight": {
+              "type": "option",
+              "value": "rounded"
+            },
+            "bottomLeft": {
+              "type": "option",
+              "value": "rounded"
+            },
+            "bottomRight": {
+              "type": "option",
+              "value": "rounded"
+            }
+          }
+        }
+      }
+    },
+    "component-image-EukcsMa8": {
+      "id": "component-image-EukcsMa8",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Image",
+      "theme": null,
+      "template": "node:component-image-p3O3CcKB",
+      "overrides": {
+        "source": {
+          "type": "exact",
+          "value": "https://static.seldon.app/background-default-dark.jpg"
+        },
+        "imageFit": {
+          "type": "option",
+          "value": "cover"
+        },
+        "width": {
+          "type": "option",
+          "value": "fill"
+        },
+        "height": {
+          "type": "exact",
+          "value": {
+            "unit": "px",
+            "value": 160
+          }
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "source": {
+            "type": "exact",
+            "value": "https://static.seldon.app/background-default-dark.jpg"
+          },
+          "imageFit": {
+            "type": "option",
+            "value": "cover"
+          },
+          "width": {
+            "type": "option",
+            "value": "fill"
+          },
+          "height": {
+            "type": "exact",
+            "value": {
+              "unit": "px",
+              "value": 160
+            }
+          }
+        }
+      }
+    },
+    "component-frame-EDdIDNRJ": {
+      "id": "component-frame-EDdIDNRJ",
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-default",
+      "overrides": {
+        "orientation": {
+          "type": "option",
+          "value": "vertical"
+        },
+        "width": {
+          "type": "option",
+          "value": "fill"
+        },
+        "height": {
+          "type": "option",
+          "value": "fit"
+        },
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.tight"
+        },
+        "padding": {
+          "top": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          },
+          "right": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          },
+          "bottom": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          },
+          "left": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          }
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "orientation": {
+            "type": "option",
+            "value": "vertical"
+          },
+          "width": {
+            "type": "option",
+            "value": "fill"
+          },
+          "height": {
+            "type": "option",
+            "value": "fit"
+          },
+          "gap": {
+            "type": "theme.ordinal",
+            "value": "@gap.tight"
+          },
+          "padding": {
+            "top": {
+              "type": "theme.ordinal",
+              "value": "@padding.cozy"
+            },
+            "right": {
+              "type": "theme.ordinal",
+              "value": "@padding.cozy"
+            },
+            "bottom": {
+              "type": "theme.ordinal",
+              "value": "@padding.cozy"
+            },
+            "left": {
+              "type": "theme.ordinal",
+              "value": "@padding.cozy"
+            }
+          }
+        }
+      }
+    },
+    "component-text-oZVzn3zn": {
+      "id": "component-text-oZVzn3zn",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Title",
+      "theme": null,
+      "template": "node:component-text-title",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "Designing with cards"
+        },
+        "lines": {
+          "type": "exact",
+          "value": 2
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "content": {
+            "type": "exact",
+            "value": "Designing with cards"
+          },
+          "lines": {
+            "type": "exact",
+            "value": 2
+          }
+        }
+      }
+    },
+    "component-text-Z3NDJHIg": {
+      "id": "component-text-Z3NDJHIg",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-label",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "Seldon Studio"
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "content": {
+            "type": "exact",
+            "value": "Seldon Studio"
+          }
+        }
+      }
+    },
+    "component-image-kEcOsobc": {
+      "id": "component-image-kEcOsobc",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Image",
+      "theme": null,
+      "template": "node:component-image-v8N4WwYD",
+      "overrides": {
+        "source": {
+          "type": "exact",
+          "value": "https://static.seldon.app/background-default-light.jpg"
+        },
+        "imageFit": {
+          "type": "option",
+          "value": "cover"
+        },
+        "width": {
+          "type": "option",
+          "value": "fill"
+        },
+        "height": {
+          "type": "exact",
+          "value": {
+            "unit": "px",
+            "value": 220
+          }
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "source": {
+            "type": "exact",
+            "value": "https://static.seldon.app/background-default-light.jpg"
+          },
+          "imageFit": {
+            "type": "option",
+            "value": "cover"
+          },
+          "width": {
+            "type": "option",
+            "value": "fill"
+          },
+          "height": {
+            "type": "exact",
+            "value": {
+              "unit": "px",
+              "value": 220
+            }
+          }
+        }
+      }
+    },
+    "component-frame-UmaCEFav": {
+      "id": "component-frame-UmaCEFav",
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-default",
+      "overrides": {
+        "orientation": {
+          "type": "option",
+          "value": "vertical"
+        },
+        "width": {
+          "type": "option",
+          "value": "fill"
+        },
+        "height": {
+          "type": "option",
+          "value": "fit"
+        },
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.tight"
+        },
+        "padding": {
+          "top": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          },
+          "right": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          },
+          "bottom": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          },
+          "left": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          }
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "orientation": {
+            "type": "option",
+            "value": "vertical"
+          },
+          "width": {
+            "type": "option",
+            "value": "fill"
+          },
+          "height": {
+            "type": "option",
+            "value": "fit"
+          },
+          "gap": {
+            "type": "theme.ordinal",
+            "value": "@gap.tight"
+          },
+          "padding": {
+            "top": {
+              "type": "theme.ordinal",
+              "value": "@padding.cozy"
+            },
+            "right": {
+              "type": "theme.ordinal",
+              "value": "@padding.cozy"
+            },
+            "bottom": {
+              "type": "theme.ordinal",
+              "value": "@padding.cozy"
+            },
+            "left": {
+              "type": "theme.ordinal",
+              "value": "@padding.cozy"
+            }
+          }
+        }
+      }
+    },
+    "component-text-j5BKMxjK": {
+      "id": "component-text-j5BKMxjK",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Subtitle",
+      "theme": null,
+      "template": "node:component-text-subtitle",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "Product Name"
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "content": {
+            "type": "exact",
+            "value": "Product Name"
+          }
+        }
+      }
+    },
+    "component-text-18faXoHN": {
+      "id": "component-text-18faXoHN",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Title",
+      "theme": null,
+      "template": "node:component-text-title",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "$49.00"
+        },
+        "font": {
+          "preset": {
+            "type": "theme.categorical",
+            "value": "@font.heading"
+          }
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "content": {
+            "type": "exact",
+            "value": "$49.00"
+          },
+          "font": {
+            "preset": {
+              "type": "theme.categorical",
+              "value": "@font.heading"
+            }
+          }
+        }
+      }
+    },
+    "component-image-95OOFHT8": {
+      "id": "component-image-95OOFHT8",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Image",
+      "theme": null,
+      "template": "node:component-image-v8N4WwYD",
+      "overrides": {
+        "source": {
+          "type": "exact",
+          "value": "https://static.seldon.app/background-default-light.jpg"
+        },
+        "imageFit": {
+          "type": "option",
+          "value": "cover"
+        },
+        "width": {
+          "type": "exact",
+          "value": {
+            "unit": "px",
+            "value": 160
+          }
+        },
+        "height": {
+          "type": "option",
+          "value": "fill"
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "source": {
+            "type": "exact",
+            "value": "https://static.seldon.app/background-default-light.jpg"
+          },
+          "imageFit": {
+            "type": "option",
+            "value": "cover"
+          },
+          "width": {
+            "type": "exact",
+            "value": {
+              "unit": "px",
+              "value": 160
+            }
+          },
+          "height": {
+            "type": "option",
+            "value": "fill"
+          }
+        }
+      }
+    },
+    "component-frame-KnUGRyxF": {
+      "id": "component-frame-KnUGRyxF",
+      "type": "instance",
+      "level": "frame",
+      "label": "Frame",
+      "theme": null,
+      "template": "node:component-frame-default",
+      "overrides": {
+        "orientation": {
+          "type": "option",
+          "value": "vertical"
+        },
+        "width": {
+          "type": "option",
+          "value": "fill"
+        },
+        "height": {
+          "type": "option",
+          "value": "fit"
+        },
+        "gap": {
+          "type": "theme.ordinal",
+          "value": "@gap.tight"
+        },
+        "padding": {
+          "top": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          },
+          "right": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          },
+          "bottom": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          },
+          "left": {
+            "type": "theme.ordinal",
+            "value": "@padding.cozy"
+          }
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "orientation": {
+            "type": "option",
+            "value": "vertical"
+          },
+          "width": {
+            "type": "option",
+            "value": "fill"
+          },
+          "height": {
+            "type": "option",
+            "value": "fit"
+          },
+          "gap": {
+            "type": "theme.ordinal",
+            "value": "@gap.tight"
+          },
+          "padding": {
+            "top": {
+              "type": "theme.ordinal",
+              "value": "@padding.cozy"
+            },
+            "right": {
+              "type": "theme.ordinal",
+              "value": "@padding.cozy"
+            },
+            "bottom": {
+              "type": "theme.ordinal",
+              "value": "@padding.cozy"
+            },
+            "left": {
+              "type": "theme.ordinal",
+              "value": "@padding.cozy"
+            }
+          }
+        }
+      }
+    },
+    "component-text-UIocA9MX": {
+      "id": "component-text-UIocA9MX",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Subtitle",
+      "theme": null,
+      "template": "node:component-text-subtitle",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "Product Name"
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "content": {
+            "type": "exact",
+            "value": "Product Name"
+          }
+        }
+      }
+    },
+    "component-text-KxXvNBmX": {
+      "id": "component-text-KxXvNBmX",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Title",
+      "theme": null,
+      "template": "node:component-text-title",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "$49.00"
+        },
+        "font": {
+          "preset": {
+            "type": "theme.categorical",
+            "value": "@font.heading"
+          }
+        },
+        "margin": {
+          "bottom": {
+            "type": "theme.ordinal",
+            "value": "@margin.compact"
+          }
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "content": {
+            "type": "exact",
+            "value": "$49.00"
+          },
+          "font": {
+            "preset": {
+              "type": "theme.categorical",
+              "value": "@font.heading"
+            }
+          },
+          "margin": {
+            "bottom": {
+              "type": "theme.ordinal",
+              "value": "@margin.compact"
+            }
+          }
+        }
+      }
+    },
+    "component-button-Y7vNEQDu": {
+      "id": "component-button-Y7vNEQDu",
+      "type": "instance",
+      "level": "element",
+      "label": "Button",
+      "theme": null,
+      "template": "node:component-button-default",
+      "overrides": {
+        "width": {
+          "type": "option",
+          "value": "fit"
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "width": {
+            "type": "option",
+            "value": "fit"
+          }
+        }
+      }
+    },
+    "component-icon-TM0Iycio": {
+      "id": "component-icon-TM0Iycio",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Icon",
+      "theme": null,
+      "template": "node:component-icon-default",
+      "overrides": {
+        "symbol": {
+          "type": "option",
+          "value": "material-shoppingCart"
+        },
+        "size": {
+          "type": "computed",
+          "value": "autoFit"
+        },
+        "color": {
+          "type": "computed",
+          "value": "highContrastColor"
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "symbol": {
+            "type": "option",
+            "value": "material-shoppingCart"
+          },
+          "size": {
+            "type": "computed",
+            "value": "autoFit"
+          },
+          "color": {
+            "type": "computed",
+            "value": "highContrastColor"
+          }
+        }
+      }
+    },
+    "component-text-VtvQ3YNp": {
+      "id": "component-text-VtvQ3YNp",
+      "type": "instance",
+      "level": "primitive",
+      "label": "Label",
+      "theme": null,
+      "template": "node:component-text-label",
+      "overrides": {
+        "content": {
+          "type": "exact",
+          "value": "Add to cart"
+        },
+        "color": {
+          "type": "computed",
+          "value": "highContrastColor"
+        },
+        "font": {
+          "preset": {
+            "type": "theme.categorical",
+            "value": "@font.label"
+          },
+          "size": {
+            "type": "computed",
+            "value": "autoFit"
+          }
+        }
+      },
+      "origin": "schema",
+      "__editor": {
+        "initialOverrides": {
+          "content": {
+            "type": "exact",
+            "value": "Add to cart"
+          },
+          "color": {
+            "type": "computed",
+            "value": "highContrastColor"
+          },
+          "font": {
+            "preset": {
+              "type": "theme.categorical",
+              "value": "@font.label"
+            },
+            "size": {
+              "type": "computed",
+              "value": "autoFit"
+            }
+          }
+        }
+      }
     }
   },
   "themes": {
@@ -48055,6 +48887,15 @@
             "700": true,
             "800": true,
             "900": true,
+            "regular": true
+          },
+          "dosis": {
+            "200": true,
+            "300": true,
+            "500": true,
+            "600": true,
+            "700": true,
+            "800": true,
             "regular": true
           }
         }

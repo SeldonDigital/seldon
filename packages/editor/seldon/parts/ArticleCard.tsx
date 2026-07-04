@@ -11,6 +11,7 @@
  *
  *****/
 import { HTMLAttributes } from "react"
+import { Avatar, AvatarProps } from "../elements/Avatar"
 import { ButtonSimple, ButtonSimpleProps } from "../elements/ButtonSimple"
 import { Chip, ChipProps } from "../elements/Chip"
 import { Frame, FrameProps } from "../frames/Frame"
@@ -35,6 +36,7 @@ export interface ArticleCardProps extends HTMLAttributes<HTMLElement> {
   textHeading?: TextHeadingProps | null
   textDescription?: TextDescriptionProps | null
   frame2?: FrameProps | null
+  avatar?: AvatarProps | null
   image2?: ImageProps | null
   frame3?: FrameProps | null
   textLabel2?: TextLabelProps | null
@@ -60,6 +62,7 @@ export interface ArticleCardProps extends HTMLAttributes<HTMLElement> {
  *   textLabel="{}"
  *   textHeading="{}"
  *   textDescription2="{}"
+ *   avatar="/image.jpg"
  *   textLabel2="{}"
  *   buttonSimple={() => {}}
  * />
@@ -74,7 +77,8 @@ export function ArticleCard({
   textHeading,
   textDescription,
   frame2 = sdn.frame2,
-  image2,
+  avatar,
+  image2 = sdn.image2,
   frame3 = sdn.frame3,
   textLabel2,
   textLabel3,
@@ -164,6 +168,19 @@ export function ArticleCard({
           className: combineClassNames(
             sdn.frame2?.className,
             frame2?.className,
+          ),
+        },
+  )
+  const avatarProps = applyRef(
+    seldonRefs,
+    avatar === null
+      ? null
+      : {
+          ...sdn.avatar,
+          ...avatar,
+          className: combineClassNames(
+            sdn.avatar?.className,
+            avatar?.className,
           ),
         },
   )
@@ -272,7 +289,9 @@ export function ArticleCard({
               <TextDescription {...textDescriptionProps} />
             )}
             <Frame {...frame2Props}>
-              {image2 && image2Props && <Image {...image2Props} />}
+              {avatar && avatarProps && (
+                <Avatar {...avatarProps} image={image2Props} />
+              )}
               <Frame {...frame3Props}>
                 {textLabel2 && textLabel2Props && (
                   <TextLabel {...textLabel2Props} />
@@ -327,10 +346,15 @@ const sdn: ArticleCardProps = {
   frame2: {
     wrapperElement: "div",
     "aria-hidden": "false",
-    className: "sdn-frame sdn-frame--l25c",
+    className: "sdn-frame sdn-frame--9cdq",
+  },
+  avatar: {
+    className: "sdn-avatar sdn-avatar--a890",
   },
   image2: {
-    className: "sdn-image sdn-image--flhu",
+    src: "/avatar-bentley.png",
+    "aria-hidden": "false",
+    className: "sdn-image sdn-image--to5v",
   },
   frame3: {
     wrapperElement: "div",
@@ -338,13 +362,13 @@ const sdn: ArticleCardProps = {
     className: "sdn-frame sdn-frame--ew9f",
   },
   textLabel2: {
-    className: "sdn-text-label sdn-text-title--adfu",
+    className: "sdn-text-label sdn-text-label--p1kq",
   },
   textLabel3: {
     className: "sdn-text-label sdn-text-title--adfu",
   },
   buttonSimple: {
-    className: "sdn-button-simple sdn-button-simple--mrdk",
+    className: "sdn-button-simple sdn-button-iconic--8tzd",
   },
   textLabel4: {
     className: "sdn-text-label sdn-text-label--gtwp",

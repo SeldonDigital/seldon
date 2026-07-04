@@ -11,6 +11,7 @@
  *
  *****/
 import { HTMLAttributes } from "react"
+import { Avatar, AvatarProps } from "../elements/Avatar"
 import { Button, ButtonProps } from "../elements/Button"
 import { Frame, FrameProps } from "../frames/Frame"
 import { Icon, IconProps } from "../primitives/Icon"
@@ -28,6 +29,7 @@ export interface MediaCardProps extends HTMLAttributes<HTMLElement> {
   frame?: FrameProps | null
   textTitle?: TextTitleProps | null
   frame2?: FrameProps | null
+  avatar?: AvatarProps | null
   image2?: ImageProps | null
   frame3?: FrameProps | null
   textLabel?: TextLabelProps | null
@@ -51,6 +53,7 @@ export interface MediaCardProps extends HTMLAttributes<HTMLElement> {
  *   image="/image.jpg"
  *   frame="{}"
  *   textTitle="Product Title"
+ *   avatar="/image.jpg"
  *   textLabel="{}"
  *   textLabel2="{}"
  *   button={() => {}}
@@ -64,7 +67,8 @@ export function MediaCard({
   frame = sdn.frame,
   textTitle,
   frame2 = sdn.frame2,
-  image2,
+  avatar,
+  image2 = sdn.image2,
   frame3 = sdn.frame3,
   textLabel,
   textLabel2,
@@ -119,6 +123,19 @@ export function MediaCard({
           className: combineClassNames(
             sdn.frame2?.className,
             frame2?.className,
+          ),
+        },
+  )
+  const avatarProps = applyRef(
+    seldonRefs,
+    avatar === null
+      ? null
+      : {
+          ...sdn.avatar,
+          ...avatar,
+          className: combineClassNames(
+            sdn.avatar?.className,
+            avatar?.className,
           ),
         },
   )
@@ -225,7 +242,9 @@ export function MediaCard({
           <Frame {...frameProps}>
             {textTitle && textTitleProps && <TextTitle {...textTitleProps} />}
             <Frame {...frame2Props}>
-              {image2 && image2Props && <Image {...image2Props} />}
+              {avatar && avatarProps && (
+                <Avatar {...avatarProps} image={image2Props} />
+              )}
               <Frame {...frame3Props}>
                 {textLabel && textLabelProps && (
                   <TextLabel {...textLabelProps} />
@@ -274,8 +293,13 @@ const sdn: MediaCardProps = {
     "aria-hidden": "false",
     className: "sdn-frame sdn-frame--9cdq",
   },
+  avatar: {
+    className: "sdn-avatar sdn-avatar--a890",
+  },
   image2: {
-    className: "sdn-image sdn-image--flhu",
+    src: "/avatar-bentley.png",
+    "aria-hidden": "false",
+    className: "sdn-image sdn-image--ohvb",
   },
   frame3: {
     wrapperElement: "div",
@@ -283,13 +307,13 @@ const sdn: MediaCardProps = {
     className: "sdn-frame sdn-frame--ew9f",
   },
   textLabel: {
-    className: "sdn-text-label sdn-text-title--adfu",
+    className: "sdn-text-label sdn-text-label--p1kq",
   },
   textLabel2: {
-    className: "sdn-text-label sdn-text-title--adfu",
+    className: "sdn-text-label sdn-text-label--nlqr",
   },
   button: {
-    className: "sdn-button sdn-button-iconic--pgsr",
+    className: "sdn-button sdn-button--heir",
   },
   icon: {
     icon: "material-playArrow",

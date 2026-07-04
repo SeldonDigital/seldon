@@ -319,7 +319,7 @@ const sdn: ProductCardProps = {
   frame: {
     wrapperElement: "div",
     "aria-hidden": "false",
-    className: "sdn-frame sdn-frame--cqnh",
+    className: "sdn-frame sdn-frame--ovgw",
   },
   chip: {
     className: "sdn-chip sdn-chip--xv4c",
@@ -354,7 +354,7 @@ const sdn: ProductCardProps = {
     className: "sdn-icon sdn-icon--b9hs",
   },
   button: {
-    className: "sdn-button sdn-button-iconic--pgsr",
+    className: "sdn-button sdn-button--heir",
   },
   icon6: {
     icon: "material-shoppingCart",
