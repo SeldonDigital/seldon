@@ -48530,6 +48530,22 @@
             "600italic": true,
             "700italic": true
           },
+          "ibm-plex-serif": {
+            "100": true,
+            "200": true,
+            "300": true,
+            "500": true,
+            "600": true,
+            "700": true,
+            "regular": true,
+            "100italic": true,
+            "200italic": true,
+            "300italic": true,
+            "italic": true,
+            "500italic": true,
+            "600italic": true,
+            "700italic": true
+          },
           "inter": {
             "100": true,
             "200": true,
