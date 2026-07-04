@@ -1,14 +1,8 @@
-import { Children } from "react";
+import { Children } from "react"
 
-
-
-import * as Sdn from "../../../../properties";
-import * as Seldon from "../../../constants";
-import { ComponentExport, ComponentSchema } from "../../../types";
-
-
-
-
+import * as Sdn from "../../../../properties"
+import * as Seldon from "../../../constants"
+import { ComponentExport, ComponentSchema } from "../../../types"
 
 export const schema = {
   name: "Profile Card",

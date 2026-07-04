@@ -67,4 +67,3 @@ export function getValueType(value: unknown): ValueType {
     ? (value.type as ValueType)
     : ValueType.EMPTY
 }
-

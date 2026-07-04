@@ -4,10 +4,7 @@
 import { parsePropertyPath } from "@lib/properties/property-paths"
 import { Properties, Value } from "@seldon/core"
 import { FlatProperty } from "./properties-data"
-import {
-  getSubPropertyKeys,
-  isShorthandProperty,
-} from "./property-types"
+import { getSubPropertyKeys, isShorthandProperty } from "./property-types"
 
 interface UpdatePropertyOptions {
   property: FlatProperty

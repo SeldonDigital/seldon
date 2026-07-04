@@ -47,4 +47,3 @@ export function getSubPropertyKeys(propertyKey: string): string[] {
   }
   return []
 }
-

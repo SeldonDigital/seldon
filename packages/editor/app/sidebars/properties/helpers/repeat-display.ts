@@ -37,9 +37,7 @@ interface RepeatDataDescendant {
  * Repeat is an instance-only (child) capability. Default and user variant roots
  * are the component itself and never repeat.
  */
-function isRepeatEligible(
-  node: Variant | Instance | Board,
-): node is Instance {
+function isRepeatEligible(node: Variant | Instance | Board): node is Instance {
   if (isBoard(node)) return false
   return typeCheckingService.isInstance(node)
 }
@@ -74,10 +72,7 @@ function getRepeatDataDescendants(
 }
 
 /** Key for a per-echo data row. Uses "#" so the key stays a single child segment. */
-function repeatDataRowKey(
-  descendantId: string,
-  echoIndex: number,
-): string {
+function repeatDataRowKey(descendantId: string, echoIndex: number): string {
   return `${REPEAT_ROW_KEY}.${descendantId}#${echoIndex}`
 }
 

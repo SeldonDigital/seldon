@@ -261,7 +261,11 @@ export function usePropertiesSidebar(): PropertiesSidebarState {
   const metadataProperties = useMemo<FlatProperty[] | undefined>(() => {
     if (isThemeEditingMode && editedTheme && activeThemeEntryId) {
       const entry = workspace.themes[activeThemeEntryId]
-      const board = findBoardForEntry(workspace, isThemeBoard, activeThemeEntryId)
+      const board = findBoardForEntry(
+        workspace,
+        isThemeBoard,
+        activeThemeEntryId,
+      )
       const author = board?.author
       return buildMetadataProperties({
         name: entry?.label ?? editedTheme.metadata.name,
@@ -386,7 +390,11 @@ export function usePropertiesSidebar(): PropertiesSidebarState {
       return selection as Variant | Instance | Board
     }
     if (isThemeEditingMode && activeThemeEntryId) {
-      const board = findBoardForEntry(workspace, isThemeBoard, activeThemeEntryId)
+      const board = findBoardForEntry(
+        workspace,
+        isThemeBoard,
+        activeThemeEntryId,
+      )
       if (board) return board
     }
     if (isFontCollectionEditingMode && activeFontCollectionEntryId) {

@@ -41,23 +41,20 @@ import {
 } from "@app/panels/hooks/use-upload-image-panel"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import { buildPropertyOptions } from "../helpers/build-property-options"
-import { dispatchPropertyReset } from "../helpers/commit-helpers"
 import {
   FRAME_REF_SELECTOR,
   buildPropertyRowProps,
 } from "../helpers/build-property-row-props"
 import { buildPropertyValueInput } from "../helpers/build-property-value-input"
 import type { LayerDragContext } from "../LayerDragRow"
+import { dispatchPropertyReset } from "../helpers/commit-helpers"
 import { getDisplayValue } from "../helpers/display-value-utils"
 import {
   FontCollectionEditingContext,
   IconSetEditingContext,
   ThemeEditingContext,
 } from "../helpers/editing-contexts"
-import {
-  FlatProperty,
-  getCompoundChildRows,
-} from "../helpers/properties-data"
+import { FlatProperty, getCompoundChildRows } from "../helpers/properties-data"
 import { getPropertyDebugColor } from "../helpers/property-styling"
 import { resolveThemeSwatchColors } from "../helpers/resolve-theme-swatch-colors"
 import {

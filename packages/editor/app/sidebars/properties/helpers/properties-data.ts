@@ -45,7 +45,6 @@ import {
 import { getComponentSchema } from "@seldon/core/components/catalog"
 import { isComponentId } from "@seldon/core/components/constants"
 import { findInObject, isMatchColorValue } from "@seldon/core/helpers"
-import { EMPTY_VALUE } from "@seldon/core/properties"
 import {
   formatCompoundDisplay as coreFormatCompoundDisplay,
   formatShorthandDisplay as coreFormatShorthandDisplay,
@@ -54,6 +53,7 @@ import {
   getPropertyStatus as coreGetPropertyStatus,
   getCompoundPropertyStructure,
 } from "@seldon/core/helpers/properties/properties-bridge"
+import { EMPTY_VALUE } from "@seldon/core/properties"
 import {
   getCompoundSubPropertySchema,
   getPropertyCategory,
