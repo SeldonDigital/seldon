@@ -15,6 +15,7 @@ export const GOOGLE_DEFAULT_ENABLED_FAMILIES: ReadonlySet<string> = new Set([
   "Nunito Sans",
   "Source Sans 3",
   "IBM Plex Sans",
+  "IBM Plex Serif",
   "DM Sans",
   "Figtree",
   "Manrope",
