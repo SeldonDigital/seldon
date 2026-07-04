@@ -532,7 +532,7 @@ export const schema = {
     },
     {
       id: "segmented",
-      label: "Segmented Button",
+      label: "Segmented",
       intent:
         "Combines related actions into a segmented control with selectable options.",
       overrides: {

@@ -10,7 +10,7 @@
  * any machine learning or artificial intelligence system without written permission.
  * 
  *****/
-
+ 
 /********************************************
  *                                          *
  *              Reset styles                *
@@ -519,8 +519,7 @@ body {
   padding-right: var(--sdn-paddings-compact);
   padding-bottom: var(--sdn-paddings-tight);
   padding-left: var(--sdn-paddings-compact);
-  box-shadow: 0px 1px 0.062rem 0.062rem
-    color-mix(in srgb, var(--sdn-swatch-offBlack) 10%, transparent);
+  box-shadow: 0px 1px 0.062rem 0.062rem hsl(0 0% 0% / 10%);
   width: fit-content;
   height: fit-content;
   flex-shrink: 0;

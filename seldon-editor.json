@@ -30098,8 +30098,12 @@
               "value": "@spread.xxsmall"
             },
             "color": {
-              "type": "theme.categorical",
-              "value": "@swatch.offBlack"
+              "type": "exact",
+              "value": {
+                "hue": 0,
+                "saturation": 0,
+                "lightness": 0
+              }
             },
             "opacity": {
               "type": "exact",
@@ -48325,7 +48329,7 @@
       "overrides": {
         "colorHarmony": {
           "parameters": {
-            "chromaChange": 10
+            "chromaChange": -5
           }
         }
       }
@@ -48338,7 +48342,7 @@
       "overrides": {
         "colorHarmony": {
           "parameters": {
-            "chromaChange": 10
+            "chromaChange": -10
           }
         }
       }
@@ -48351,7 +48355,7 @@
       "overrides": {
         "colorHarmony": {
           "parameters": {
-            "chromaChange": 10
+            "chromaChange": -5
           }
         }
       }
@@ -48364,7 +48368,7 @@
       "overrides": {
         "colorHarmony": {
           "parameters": {
-            "chromaChange": -10
+            "chromaChange": 10
           }
         }
       }
@@ -48377,7 +48381,7 @@
       "overrides": {
         "colorHarmony": {
           "parameters": {
-            "chromaChange": 10
+            "chromaChange": -10
           }
         }
       }
@@ -48390,7 +48394,7 @@
       "overrides": {
         "colorHarmony": {
           "parameters": {
-            "chromaChange": 10
+            "chromaChange": -15
           }
         }
       }
@@ -48403,7 +48407,7 @@
       "overrides": {
         "colorHarmony": {
           "parameters": {
-            "chromaChange": 10
+            "chromaChange": -10
           }
         }
       }
@@ -48416,7 +48420,7 @@
       "overrides": {
         "colorHarmony": {
           "parameters": {
-            "chromaChange": 10
+            "chromaChange": -5
           }
         }
       }
@@ -48429,7 +48433,7 @@
       "overrides": {
         "colorHarmony": {
           "parameters": {
-            "chromaChange": 10
+            "chromaChange": -5
           }
         }
       }

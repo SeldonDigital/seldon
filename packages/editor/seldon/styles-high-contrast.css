@@ -10,7 +10,7 @@
  * any machine learning or artificial intelligence system without written permission.
  * 
  *****/
-
+ 
 [data-theme="high-contrast"] {
   /* Theme: High Contrast */
   /* Modulation */
@@ -32,7 +32,7 @@
   --sdn-color-black-point: 0%;
   --sdn-color-bleed: 0;
   --sdn-color-mode: light;
-  --sdn-color-chroma-change: 10%;
+  --sdn-color-chroma-change: -5%;
   --sdn-color-contrast-ratio: 2.5;
   /* Swatches */
   --sdn-swatch-white: hsl(0 0% 100%);
@@ -201,12 +201,12 @@
   --sdn-swatch-swatch4: hsl(300 0% 80%);
   --sdn-swatch-foreground: hsl(0 4% 8%);
   --sdn-swatch-background: hsl(0 0% 100%);
-  --sdn-swatch-active: hsl(203 99% 62%);
-  --sdn-swatch-punch: hsl(20 100% 59%);
-  --sdn-swatch-positive: hsl(140 81% 52%);
-  --sdn-swatch-negative: hsl(0 100% 65%);
+  --sdn-swatch-active: hsl(204 95% 64%);
+  --sdn-swatch-punch: hsl(20 91% 60%);
+  --sdn-swatch-positive: hsl(133 74% 61%);
+  --sdn-swatch-negative: hsl(1 95% 65%);
   --sdn-swatch-warning: hsl(54 100% 88%);
-  --sdn-swatch-accent: hsl(300 100% 43%);
+  --sdn-swatch-accent: hsl(300 66% 50%);
   --sdn-swatch-offBlack: hsl(0 0% 96%);
   --sdn-swatch-offWhite: hsl(0 0% 15%);
   /* High Contrast */

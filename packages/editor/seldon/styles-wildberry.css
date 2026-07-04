@@ -10,7 +10,7 @@
  * any machine learning or artificial intelligence system without written permission.
  * 
  *****/
-
+ 
 [data-theme="wildberry"] {
   /* Theme: Wildberry */
   /* Modulation */
@@ -32,7 +32,7 @@
   --sdn-color-black-point: 8%;
   --sdn-color-bleed: 12;
   --sdn-color-mode: light;
-  --sdn-color-chroma-change: 10%;
+  --sdn-color-chroma-change: -5%;
   --sdn-color-contrast-ratio: 2;
   /* Swatches */
   --sdn-swatch-white: hsl(327 12% 98%);
@@ -194,19 +194,19 @@
   --sdn-swatch-white: hsl(327 12% 8%);
   --sdn-swatch-gray: hsl(327 12% 42%);
   --sdn-swatch-black: hsl(327 12% 98%);
-  --sdn-swatch-primary: hsl(325 92% 54%);
-  --sdn-swatch-swatch1: hsl(326 93% 67%);
-  --sdn-swatch-swatch2: hsl(153 100% 47%);
-  --sdn-swatch-swatch3: hsl(58 89% 49%);
-  --sdn-swatch-swatch4: hsl(231 97% 55%);
+  --sdn-swatch-primary: hsl(328 78% 58%);
+  --sdn-swatch-swatch1: hsl(327 78% 67%);
+  --sdn-swatch-swatch2: hsl(145 81% 60%);
+  --sdn-swatch-swatch3: hsl(57 82% 59%);
+  --sdn-swatch-swatch4: hsl(239 76% 57%);
   --sdn-swatch-foreground: hsl(285 22% 9%);
   --sdn-swatch-background: hsl(285 12% 95%);
-  --sdn-swatch-active: hsl(325 90% 56%);
-  --sdn-swatch-punch: hsl(185 99% 44%);
-  --sdn-swatch-positive: hsl(130 99% 39%);
-  --sdn-swatch-negative: hsl(1 86% 56%);
-  --sdn-swatch-warning: hsl(35 100% 48%);
-  --sdn-swatch-accent: hsl(48 99% 47%);
+  --sdn-swatch-active: hsl(328 76% 58%);
+  --sdn-swatch-punch: hsl(186 73% 52%);
+  --sdn-swatch-positive: hsl(122 62% 47%);
+  --sdn-swatch-negative: hsl(4 75% 56%);
+  --sdn-swatch-warning: hsl(32 86% 54%);
+  --sdn-swatch-accent: hsl(46 85% 56%);
   --sdn-swatch-offBlack: hsl(0 0% 93%);
   --sdn-swatch-offWhite: hsl(0 0% 25%);
   /* High Contrast */
