@@ -276,7 +276,7 @@ export const schema = {
   variants: [
     {
       id: "withSparkline",
-      label: "Stat Card With Sparkline",
+      label: "Sparkline",
       intent:
         "Stat card that adds a sparkline image beneath the metric to show the trend over time.",
       children: [

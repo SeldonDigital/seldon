@@ -544,7 +544,7 @@ export const schema = {
   variants: [
     {
       id: "popular",
-      label: "Popular Pricing Card",
+      label: "Popular",
       intent:
         "Highlighted middle-tier pricing card with a Most Popular badge and stronger elevation.",
       overrides: {

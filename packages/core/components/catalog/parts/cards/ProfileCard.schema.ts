@@ -1,8 +1,14 @@
-import { Children } from "react"
+import { Children } from "react";
 
-import * as Sdn from "../../../../properties"
-import * as Seldon from "../../../constants"
-import { ComponentExport, ComponentSchema } from "../../../types"
+
+
+import * as Sdn from "../../../../properties";
+import * as Seldon from "../../../constants";
+import { ComponentExport, ComponentSchema } from "../../../types";
+
+
+
+
 
 export const schema = {
   name: "Profile Card",
@@ -176,55 +182,18 @@ export const schema = {
   default: {
     children: [
       {
-        component: Seldon.ComponentId.IMAGE,
-        overrides: {
-          source: {
-            type: Sdn.ValueType.EXACT,
-            value: "/avatar-user.png",
-          },
-          imageFit: {
-            type: Sdn.ValueType.OPTION,
-            value: Sdn.ImageFit.COVER,
-          },
-          width: {
-            type: Sdn.ValueType.THEME_ORDINAL,
-            value: "@dimension.large",
-          },
-          height: {
-            type: Sdn.ValueType.THEME_ORDINAL,
-            value: "@dimension.large",
-          },
-          corners: {
-            topLeft: { type: Sdn.ValueType.OPTION, value: Sdn.Corner.ROUNDED },
-            topRight: { type: Sdn.ValueType.OPTION, value: Sdn.Corner.ROUNDED },
-            bottomLeft: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Corner.ROUNDED,
-            },
-            bottomRight: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Corner.ROUNDED,
+        component: Seldon.ComponentId.AVATAR,
+        children: [
+          {
+            component: Seldon.ComponentId.IMAGE,
+            overrides: {
+              source: {
+                type: Sdn.ValueType.EXACT,
+                value: "/avatar-bentley.png",
+              },
             },
           },
-        },
-      },
-      {
-        component: Seldon.ComponentId.TEXT,
-        variant: "title",
-        overrides: {
-          content: {
-            type: Sdn.ValueType.EXACT,
-            value: "Jackson Miller",
-          },
-          width: {
-            type: Sdn.ValueType.OPTION,
-            value: Sdn.Resize.FIT,
-          },
-          textAlign: {
-            type: Sdn.ValueType.OPTION,
-            value: Sdn.TextAlign.CENTER,
-          },
-        },
+        ],
       },
       {
         component: Seldon.ComponentId.TEXT,
@@ -285,7 +254,7 @@ export const schema = {
   variants: [
     {
       id: "compact",
-      label: "Compact Profile Card",
+      label: "Compact",
       intent:
         "Horizontal hover-style profile card with avatar, identity, and a single message action.",
       overrides: {
@@ -309,12 +278,17 @@ export const schema = {
       children: [
         {
           component: Seldon.ComponentId.AVATAR,
-          overrides: {
-            width: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.Resize.FIT,
+          children: [
+            {
+              component: Seldon.ComponentId.IMAGE,
+              overrides: {
+                source: {
+                  type: Sdn.ValueType.EXACT,
+                  value: "/avatar-bentley.png",
+                },
+              },
             },
-          },
+          ],
         },
         {
           component: Seldon.ComponentId.FRAME,
@@ -343,7 +317,7 @@ export const schema = {
               overrides: {
                 content: {
                   type: Sdn.ValueType.EXACT,
-                  value: "Jackson Miller",
+                  value: "Sir Bentley",
                 },
                 width: {
                   type: Sdn.ValueType.OPTION,
@@ -392,48 +366,23 @@ export const schema = {
     },
     {
       id: "withStats",
-      label: "Profile Card With Stats",
+      label: "Stats",
       intent:
         "Profile card that adds a compact stats row beneath the identity block.",
       children: [
         {
-          component: Seldon.ComponentId.IMAGE,
-          overrides: {
-            source: {
-              type: Sdn.ValueType.EXACT,
-              value: "/avatar-user.png",
-            },
-            imageFit: {
-              type: Sdn.ValueType.OPTION,
-              value: Sdn.ImageFit.COVER,
-            },
-            width: {
-              type: Sdn.ValueType.THEME_ORDINAL,
-              value: "@dimension.large",
-            },
-            height: {
-              type: Sdn.ValueType.THEME_ORDINAL,
-              value: "@dimension.large",
-            },
-            corners: {
-              topLeft: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.Corner.ROUNDED,
-              },
-              topRight: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.Corner.ROUNDED,
-              },
-              bottomLeft: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.Corner.ROUNDED,
-              },
-              bottomRight: {
-                type: Sdn.ValueType.OPTION,
-                value: Sdn.Corner.ROUNDED,
+          component: Seldon.ComponentId.AVATAR,
+          children: [
+            {
+              component: Seldon.ComponentId.IMAGE,
+              overrides: {
+                source: {
+                  type: Sdn.ValueType.EXACT,
+                  value: "/avatar-bentley.png",
+                },
               },
             },
-          },
+          ],
         },
         {
           component: Seldon.ComponentId.TEXT,
@@ -441,7 +390,7 @@ export const schema = {
           overrides: {
             content: {
               type: Sdn.ValueType.EXACT,
-              value: "Jackson Miller",
+              value: "Sir Bentley",
             },
             width: {
               type: Sdn.ValueType.OPTION,

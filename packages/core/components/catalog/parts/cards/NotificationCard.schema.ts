@@ -1,6 +1,10 @@
-import * as Sdn from "../../../../properties"
-import * as Seldon from "../../../constants"
-import { ComponentExport, ComponentSchema } from "../../../types"
+import * as Sdn from "../../../../properties";
+import * as Seldon from "../../../constants";
+import { ComponentExport, ComponentSchema } from "../../../types";
+
+
+
+
 
 export const schema = {
   name: "Notification Card",
@@ -174,7 +178,7 @@ export const schema = {
           },
           size: {
             type: Sdn.ValueType.THEME_ORDINAL,
-            value: "@size.medium",
+            value: "@size.large",
           },
           color: {
             type: Sdn.ValueType.THEME_CATEGORICAL,
@@ -280,7 +284,7 @@ export const schema = {
   variants: [
     {
       id: "success",
-      label: "Success Notification",
+      label: "Success",
       intent:
         "Positive confirmation toast with a success icon and a single acknowledge action.",
       children: [
@@ -290,10 +294,6 @@ export const schema = {
             symbol: {
               type: Sdn.ValueType.OPTION,
               value: "material-checkCircle",
-            },
-            size: {
-              type: Sdn.ValueType.THEME_ORDINAL,
-              value: "@size.medium",
             },
             color: {
               type: Sdn.ValueType.THEME_CATEGORICAL,
@@ -384,7 +384,7 @@ export const schema = {
     },
     {
       id: "alertNotification",
-      label: "Alert Notification",
+      label: "Alert",
       intent:
         "Warning alert with a status icon, message, and two actions for dismiss or act.",
       overrides: {

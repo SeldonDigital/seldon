@@ -440,7 +440,7 @@ export const schema = {
   variants: [
     {
       id: "minimal",
-      label: "Minimal Product Card",
+      label: "Minimal",
       intent:
         "Stripped-down product card showing only image, name, and price for dense grids.",
       children: [
@@ -536,7 +536,7 @@ export const schema = {
     },
     {
       id: "horizontal",
-      label: "Horizontal Product Card",
+      label: "Horizontal",
       intent:
         "Side-by-side product card with the image on the left and details on the right for list views.",
       overrides: {

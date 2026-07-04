@@ -1,6 +1,10 @@
-import * as Sdn from "../../../../properties"
-import * as Seldon from "../../../constants"
-import { ComponentExport, ComponentSchema } from "../../../types"
+import * as Sdn from "../../../../properties";
+import * as Seldon from "../../../constants";
+import { ComponentExport, ComponentSchema } from "../../../types";
+
+
+
+
 
 export const schema = {
   name: "Media Card",
@@ -251,6 +255,12 @@ export const schema = {
                 type: Sdn.ValueType.OPTION,
                 value: Sdn.Resize.FIT,
               },
+              margin: {
+                top: {
+                  type: Sdn.ValueType.THEME_ORDINAL,
+                  value: "@margin.cozy",
+                },
+              },
               gap: {
                 type: Sdn.ValueType.THEME_ORDINAL,
                 value: "@gap.compact",
@@ -258,43 +268,26 @@ export const schema = {
             },
             children: [
               {
-                component: Seldon.ComponentId.IMAGE,
-                overrides: {
-                  source: {
-                    type: Sdn.ValueType.EXACT,
-                    value: "https://static.seldon.app/avatar-user.jpg",
-                  },
-                  imageFit: {
-                    type: Sdn.ValueType.OPTION,
-                    value: Sdn.ImageFit.COVER,
-                  },
-                  width: {
-                    type: Sdn.ValueType.THEME_ORDINAL,
-                    value: "@dimension.small",
-                  },
-                  height: {
-                    type: Sdn.ValueType.THEME_ORDINAL,
-                    value: "@dimension.small",
-                  },
-                  corners: {
-                    topLeft: {
-                      type: Sdn.ValueType.OPTION,
-                      value: Sdn.Corner.ROUNDED,
-                    },
-                    topRight: {
-                      type: Sdn.ValueType.OPTION,
-                      value: Sdn.Corner.ROUNDED,
-                    },
-                    bottomLeft: {
-                      type: Sdn.ValueType.OPTION,
-                      value: Sdn.Corner.ROUNDED,
-                    },
-                    bottomRight: {
-                      type: Sdn.ValueType.OPTION,
-                      value: Sdn.Corner.ROUNDED,
+                component: Seldon.ComponentId.AVATAR,
+                children: [
+                  {
+                    component: Seldon.ComponentId.IMAGE,
+                    overrides: {
+                      source: {
+                        type: Sdn.ValueType.EXACT,
+                        value: "/avatar-bentley.png",
+                      },
+                      width: {
+                        type: Sdn.ValueType.THEME_ORDINAL,
+                        value: "@dimension.medium",
+                      },
+                      height: {
+                        type: Sdn.ValueType.THEME_ORDINAL,
+                        value: "@dimension.medium",
+                      },
                     },
                   },
-                },
+                ],
               },
               {
                 component: Seldon.ComponentId.FRAME,
@@ -323,7 +316,13 @@ export const schema = {
                     overrides: {
                       content: {
                         type: Sdn.ValueType.EXACT,
-                        value: "Seldon Studio",
+                        value: "Sir Bentley",
+                      },
+                      font: {
+                        weight: {
+                          type: Sdn.ValueType.THEME_ORDINAL,
+                          value: "@fontWeight.medium",
+                        },
                       },
                     },
                   },
@@ -334,6 +333,12 @@ export const schema = {
                       content: {
                         type: Sdn.ValueType.EXACT,
                         value: "1.2M views · 2 days ago",
+                      },
+                      font: {
+                        size: {
+                          type: Sdn.ValueType.THEME_ORDINAL,
+                          value: "@fontSize.xsmall",
+                        },
                       },
                     },
                   },
@@ -378,7 +383,7 @@ export const schema = {
   variants: [
     {
       id: "compact",
-      label: "Compact Media Card",
+      label: "Compact",
       intent:
         "Dense media card showing only the thumbnail, title, and creator for browse grids.",
       children: [
