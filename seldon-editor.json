@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "version": 7,
+    "version": 8,
     "label": ""
   },
   "boards": {
@@ -30098,8 +30098,12 @@
               "value": "@spread.xxsmall"
             },
             "color": {
-              "type": "theme.categorical",
-              "value": "@swatch.offBlack"
+              "type": "exact",
+              "value": {
+                "hue": 0,
+                "saturation": 0,
+                "lightness": 0
+              }
             },
             "opacity": {
               "type": "exact",
@@ -48311,9 +48315,7 @@
       "template": "catalog:seldon",
       "overrides": {
         "colorHarmony": {
-          "parameters": {
-            "chromaChange": 10
-          }
+          "parameters": {}
         }
       }
     },
@@ -48324,9 +48326,7 @@
       "template": "catalog:highContrast",
       "overrides": {
         "colorHarmony": {
-          "parameters": {
-            "chromaChange": 10
-          }
+          "parameters": {}
         }
       }
     },
@@ -48337,9 +48337,7 @@
       "template": "catalog:googleMaterial",
       "overrides": {
         "colorHarmony": {
-          "parameters": {
-            "chromaChange": 10
-          }
+          "parameters": {}
         }
       }
     },
@@ -48350,9 +48348,7 @@
       "template": "catalog:earth",
       "overrides": {
         "colorHarmony": {
-          "parameters": {
-            "chromaChange": 10
-          }
+          "parameters": {}
         }
       }
     },
@@ -48363,9 +48359,7 @@
       "template": "catalog:industrial",
       "overrides": {
         "colorHarmony": {
-          "parameters": {
-            "chromaChange": -10
-          }
+          "parameters": {}
         }
       }
     },
@@ -48376,9 +48370,7 @@
       "template": "catalog:popPunk",
       "overrides": {
         "colorHarmony": {
-          "parameters": {
-            "chromaChange": 10
-          }
+          "parameters": {}
         }
       }
     },
@@ -48389,9 +48381,7 @@
       "template": "catalog:ibmCarbon",
       "overrides": {
         "colorHarmony": {
-          "parameters": {
-            "chromaChange": 10
-          }
+          "parameters": {}
         }
       }
     },
@@ -48402,9 +48392,7 @@
       "template": "catalog:adobeSpectrum",
       "overrides": {
         "colorHarmony": {
-          "parameters": {
-            "chromaChange": 10
-          }
+          "parameters": {}
         }
       }
     },
@@ -48416,7 +48404,7 @@
       "overrides": {
         "colorHarmony": {
           "parameters": {
-            "chromaChange": 10
+            "chromaChange": -5
           }
         }
       }
@@ -48428,9 +48416,7 @@
       "template": "catalog:wildberry",
       "overrides": {
         "colorHarmony": {
-          "parameters": {
-            "chromaChange": 10
-          }
+          "parameters": {}
         }
       }
     }

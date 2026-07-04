@@ -14,13 +14,42 @@
   --color-pearl: #f5f5f5;
   --color-background: #1f1f1f;
 
-  /* Seldon brand colors used by the editor chrome (e.g. the topbar gradient).
-     These have no generated theme-token equivalent, so they live here. */
+  /* Seldon brand colors used by the editor chrome. These have no generated
+     theme-token equivalent, so they live here. */
   --sdn-swatch-seldon-red: hsl(0 100% 65%);
   --sdn-swatch-seldon-green: hsl(135 76% 59%);
   --sdn-swatch-seldon-blue: hsl(203 100% 62%);
   --sdn-swatch-seldon-yellow: hsl(60 100% 46%);
   --sdn-swatch-seldon-purple: hsl(300 76% 48%);
+}
+
+/*
+ * Topbar rainbow strip. The resting strip is a static interface gradient. During
+ * a local export the strip grows and `useTopbarGradientAnimation` repaints the
+ * `background-image` each frame, cross-fading the stops in place. The resting
+ * stops here must match TOPBAR_RESTING_TOKENS so the handoff back to CSS is
+ * seamless when the animation clears its inline paint.
+ */
+.topbar-gradient {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 1px;
+  width: 100%;
+  background-image: linear-gradient(
+    90deg,
+    var(--sdn-swatch-negative) 0%,
+    var(--sdn-swatch-warning) 20%,
+    var(--sdn-swatch-positive) 40%,
+    var(--sdn-swatch-active) 70%,
+    var(--sdn-swatch-negative) 100%
+  );
+  transition: height 0.3s ease;
+}
+
+/* Grows the strip while an export animates; transitions back when it ends. */
+.topbar-gradient--active {
+  height: 3px;
 }
 
 body {

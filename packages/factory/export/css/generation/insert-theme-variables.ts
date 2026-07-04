@@ -70,6 +70,7 @@ function generateThemeCSSVariables(theme: Theme, slug: string): string {
   }
 
   const harmony = theme.colorHarmony.parameters
+  const displayMode = theme.displayMode.parameters
   const baseHsl = colorspaceLiteralToHsl(harmony.baseColor)
   cssVariables += `  /* Colors */\n`
   cssVariables += `  ${prefix}color-base-hue: ${baseHsl.hue};\n`
@@ -82,13 +83,17 @@ function generateThemeCSSVariables(theme: Theme, slug: string): string {
   cssVariables += `  ${prefix}color-gray-point: ${harmony.grayPoint}%;\n`
   cssVariables += `  ${prefix}color-black-point: ${harmony.blackPoint}%;\n`
   cssVariables += `  ${prefix}color-bleed: ${harmony.bleed};\n`
-  cssVariables += `  ${prefix}color-mode: ${harmony.mode};\n`
-  cssVariables += `  ${prefix}color-chroma-change: ${harmony.chromaChange}%;\n`
+  cssVariables += `  ${prefix}color-mode: ${displayMode.mode};\n`
+  cssVariables += `  ${prefix}color-chroma-change: ${displayMode.chromaChange}%;\n`
+  cssVariables += `  ${prefix}color-lightness-change: ${displayMode.lightnessChange}%;\n`
   cssVariables += `  ${prefix}color-contrast-ratio: ${theme.highContrast.parameters.contrastRatio};\n`
 
   // The base block serves the theme's authored mode, so its swatch table comes
   // from the mode assignment: literal neutral pairs for light, swapped for dark.
-  cssVariables += generateModeSwatchVariables(theme, harmony.mode ?? "light")
+  cssVariables += generateModeSwatchVariables(
+    theme,
+    displayMode.mode ?? "light",
+  )
 
   const writeModulatedScale = (
     label: string,
@@ -175,8 +180,9 @@ function generateThemeCSSVariables(theme: Theme, slug: string): string {
  * (foreground/background, white/black, offBlack/offWhite) carry authored
  * colors as-is: the literal assignment for light, the swapped assignment for
  * dark. Every other color is authored in the theme's own mode and moves
- * through LCH for the opposite one: lightness inverts and chroma scales by
- * the theme's `chromaChange` percentage.
+ * through LCH for the opposite one: neutral `gray` inverts its lightness, while
+ * non-neutral swatches shift lightness by the theme's `lightnessChange` and
+ * scale chroma by its `chromaChange` percentage.
  */
 function generateModeSwatchVariables(theme: Theme, mode: ThemeMode): string {
   const swatches = getModeSwatches(theme, mode)
@@ -198,7 +204,7 @@ function generateModeSwatchVariables(theme: Theme, mode: ThemeMode): string {
  * read on it. Size-based families stay mode-independent.
  */
 function generateOppositeModeCSSVariables(theme: Theme): string {
-  const authoredMode = theme.colorHarmony.parameters.mode ?? "light"
+  const authoredMode = theme.displayMode.parameters.mode ?? "light"
   const oppositeMode = authoredMode === "dark" ? "light" : "dark"
 
   return (
@@ -222,7 +228,7 @@ export function generateThemeStylesheet(slug: string, theme: Theme): string {
   // Every theme ships its opposite mode as a swatch-only block behind
   // `data-mode`. Setting `data-mode` to the authored mode matches nothing and
   // falls back to the base block, so consumers always set the resolved mode.
-  const mode = theme.colorHarmony.parameters.mode
+  const mode = theme.displayMode.parameters.mode
   const oppositeMode = mode === "dark" ? "light" : "dark"
   const modeSelector =
     slug === "seldon"

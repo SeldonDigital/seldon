@@ -5,6 +5,7 @@ import {
   buildVariantSnippet,
 } from "@lib/copy-schema/build-schema-snippet"
 import { serializeSchemaSnippet } from "@lib/copy-schema/serialize-schema-ts"
+import { useExportStatusStore } from "@lib/export/export-status-store"
 import {
   pickExportDirectory,
   writeExportToDirectory,
@@ -108,18 +109,22 @@ export function useImportExport() {
   )
 
   const exportToFolder = useCallback(async () => {
+    const { setExporting } = useExportStatusStore.getState()
     try {
       const directory = await pickExportDirectory()
       if (!directory) {
         addToast("Folder picker is not supported in this browser")
         return
       }
+      setExporting(true)
       const { runLocalExport } = await import("@lib/export/run-local-export")
       const files = await runLocalExport(workspace)
       const count = await writeExportToDirectory(directory, files)
       addToast(`Exported ${count} files`)
     } catch (error) {
       addToast(error instanceof Error ? error.message : "Export failed")
+    } finally {
+      setExporting(false)
     }
   }, [addToast, workspace])
 

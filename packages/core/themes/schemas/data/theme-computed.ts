@@ -17,6 +17,7 @@ import type {
   AutoFitParameters,
   ColorHarmonyParameters,
   ComputedModulationParameters,
+  DisplayModeParameters,
   FontFamilyGroupParameters,
   HighContrastParameters,
   MatchColorParameters,
@@ -148,11 +149,14 @@ const COLOR_HARMONY_FACETS = [
   {
     facet: "bleed",
     label: "Bleed",
-    valueType: "number",
+    valueType: "percentage",
     controlType: "number",
-    unit: { type: "none", min: 0, max: 1, step: 0.01 },
+    unit: { type: "%", min: 0, max: 100, step: 1 },
     icon: "material-blurOn",
   },
+] as const satisfies readonly ComputedGroupFacetFor<ColorHarmonyParameters>[]
+
+const DISPLAY_MODE_FACETS = [
   {
     facet: "mode",
     label: "Mode",
@@ -169,7 +173,15 @@ const COLOR_HARMONY_FACETS = [
     unit: { type: "%", min: -100, max: 100, step: 1 },
     icon: "material-invertColors",
   },
-] as const satisfies readonly ComputedGroupFacetFor<ColorHarmonyParameters>[]
+  {
+    facet: "lightnessChange",
+    label: "Lightness Change",
+    valueType: "percentage",
+    controlType: "number",
+    unit: { type: "%", min: -100, max: 100, step: 1 },
+    icon: "material-brightnessHigh",
+  },
+] as const satisfies readonly ComputedGroupFacetFor<DisplayModeParameters>[]
 
 const FONT_FAMILY_FACETS = [
   {
@@ -272,6 +284,7 @@ const AUTO_FIT_FACETS = [
 export const COMPUTED_GROUPS = [
   { key: "modulation", label: "Modulation", facets: MODULATION_FACETS },
   { key: "colorHarmony", label: "Color Harmony", facets: COLOR_HARMONY_FACETS },
+  { key: "displayMode", label: "Display Mode", facets: DISPLAY_MODE_FACETS },
   { key: "fontFamily", label: "Font Family", facets: FONT_FAMILY_FACETS },
   { key: "matchColor", label: "Match Color", facets: MATCH_COLOR_FACETS },
   { key: "highContrast", label: "High Contrast", facets: HIGH_CONTRAST_FACETS },

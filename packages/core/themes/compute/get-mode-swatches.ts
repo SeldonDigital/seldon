@@ -103,15 +103,17 @@ function chromaToHsl(color: chroma.Color): HSL {
 /**
  * Derives the opposite-mode color for one swatch. Neutral swatches invert
  * their LCH lightness to serve the opposite surface. Every other swatch is an
- * identity color: it keeps its authored lightness and hue in both directions,
- * and only scales chroma by `chromaChange` percent, capped at the sRGB gamut
- * for its lightness so the conversion cannot clip channels and drift the hue.
- * The result comes back as HSL for stylesheet output.
+ * identity color: it keeps its authored hue in both directions, shifts its
+ * lightness by `lightnessChange` percent, and scales chroma by `chromaChange`
+ * percent, capped at the sRGB gamut for its adjusted lightness so the
+ * conversion cannot clip channels and drift the hue. The result comes back as
+ * HSL for stylesheet output.
  */
 export function getOppositeModeSwatchColor(
   swatch: ThemeSwatch,
   swatchId: string,
   chromaChange: number,
+  lightnessChange: number,
 ): HSL {
   const [lightness, chromaValue, rawHue] = swatchToChroma(swatch).lch()
   const hue = Number.isFinite(rawHue) ? rawHue : 0
@@ -119,12 +121,12 @@ export function getOppositeModeSwatchColor(
   const isNeutral = MODE_NEUTRAL_SWATCH_IDS.has(swatchId)
   const targetLightness = isNeutral
     ? Math.max(0, Math.min(100, 100 - lightness))
-    : lightness
+    : Math.max(0, Math.min(100, lightness + lightnessChange))
   const adjustedChroma = isNeutral
     ? chromaValue
     : Math.min(
         Math.max(0, chromaValue * (1 + chromaChange / 100)),
-        getMaxChromaInGamut(lightness, hue),
+        getMaxChromaInGamut(targetLightness, hue),
       )
 
   return chromaToHsl(chroma.lch(targetLightness, adjustedChroma, hue))
@@ -150,8 +152,9 @@ export function getModeSwatches(
   theme: Theme,
   targetMode: ThemeMode,
 ): Record<string, HSL> {
-  const authoredMode = theme.colorHarmony.parameters.mode ?? "light"
-  const chromaChange = theme.colorHarmony.parameters.chromaChange ?? 0
+  const authoredMode = theme.displayMode.parameters.mode ?? "light"
+  const chromaChange = theme.displayMode.parameters.chromaChange ?? 0
+  const lightnessChange = theme.displayMode.parameters.lightnessChange ?? 0
   const result: Record<string, HSL> = {}
 
   const swapPartner = new Map<string, string>()
@@ -176,7 +179,12 @@ export function getModeSwatches(
     result[swatchId] =
       targetMode === authoredMode
         ? swatchToHsl(swatch)
-        : getOppositeModeSwatchColor(swatch, swatchId, chromaChange)
+        : getOppositeModeSwatchColor(
+            swatch,
+            swatchId,
+            chromaChange,
+            lightnessChange,
+          )
   }
 
   return result

@@ -117,14 +117,20 @@ The Computed section holds the inputs that drive the compute engines and the col
 | `colorHarmony.parameters.grayPoint` | number | Lightness anchor, gray |
 | `colorHarmony.parameters.blackPoint` | number | Lightness anchor, black |
 | `colorHarmony.parameters.bleed` | number | Hue bleed into neutrals |
-| `colorHarmony.parameters.mode` | `ThemeMode` | `option: light, dark` (`themes/constants/enums.ts`) |
-| `colorHarmony.parameters.chromaChange` | number | Chroma shift in percent, -100 through 100 |
 
-`mode` names the mode the theme's authored colored swatches represent. `chromaChange` shifts the chroma of derived opposite-mode colors. Neither changes how theme colors compute. Factory export builds each mode's swatch table through `getModeSwatches` in `compute/get-mode-swatches.ts`.
+`displayMode` controls the light and dark appearance of the derived swatches.
+
+| Token | Type | Values |
+| --- | --- | --- |
+| `displayMode.parameters.mode` | `ThemeMode` | `option: light, dark` (`themes/constants/enums.ts`) |
+| `displayMode.parameters.chromaChange` | number | Chroma shift in percent, -100 through 100 |
+| `displayMode.parameters.lightnessChange` | number | Lightness shift in percent, -100 through 100 |
+
+`mode` names the mode the theme's authored colored swatches represent. `chromaChange` shifts the chroma of derived opposite-mode colors. `lightnessChange` shifts the lightness of derived opposite-mode colors. Neither changes how theme colors compute. Factory export builds each mode's swatch table through `getModeSwatches` in `compute/get-mode-swatches.ts`.
 
 Every theme authors its neutral pairs literally: `offWhite` holds a light color and `offBlack` a dark one. The pairs `white`/`black`, `foreground`/`background`, and `offBlack`/`offWhite` never derive. The light table serves them as authored. The dark table serves each slot its partner's authored value. This assignment does not depend on the theme's `mode`.
 
-Every other swatch stays authored in the theme's own `mode` and derives for the opposite mode. `gray` converts to LCH and inverts its lightness without a chroma shift. Colored swatches are identity colors: they keep their authored lightness and hue in both modes, and only scale chroma by `chromaChange` percent, capped at the sRGB gamut so the conversion cannot drift the hue.
+Every other swatch stays authored in the theme's own `mode` and derives for the opposite mode. `gray` converts to LCH and inverts its lightness without a chroma shift. Colored swatches are identity colors: they keep their authored hue in both modes, shift their lightness by `lightnessChange` percent, and scale chroma by `chromaChange` percent, capped at the sRGB gamut for the shifted lightness so the conversion cannot drift the hue.
 
 `fontFamily` holds the primary and secondary font stacks. Each slot is a `TokenType.FONT_FAMILY` cell, referenced through `@fontFamily.primary` and `@fontFamily.secondary`.
 

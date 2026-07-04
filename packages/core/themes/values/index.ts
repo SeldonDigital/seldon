@@ -63,6 +63,10 @@ export type {
   ThemeColorHarmony,
 } from "./computed/color-harmony"
 export type {
+  DisplayModeParameters,
+  ThemeDisplayMode,
+} from "./computed/display-mode"
+export type {
   FontFamilyGroupParameters,
   ThemeFontFamilyGroup,
 } from "./computed/font-family"

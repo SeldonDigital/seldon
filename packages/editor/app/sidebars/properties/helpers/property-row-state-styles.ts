@@ -48,24 +48,21 @@ export function getDisclosureIconStyle({
 /**
  * Property name label: interaction affordances plus row-state styling. The
  * label's typography comes from the generated `.sdn-input` CSS; only the
- * debug-mode status color, the dimmed opacity, and the sub-property indent
- * are applied inline.
+ * debug-mode status color and the dimmed opacity are applied inline. Row
+ * indentation comes from the `IndentationLevel` wrapper, not this label.
  */
 export function getNameLabelStyle({
   labelColor,
   isDimmed,
-  isSubProperty,
   hasChildren,
 }: {
   labelColor: string | undefined
   isDimmed: boolean
-  isSubProperty: boolean
   hasChildren: boolean
 }): CSSProperties {
   return {
     ...(labelColor ? { color: labelColor } : {}),
     ...(isDimmed ? { opacity: 0.5 } : {}),
-    ...(isSubProperty ? { paddingLeft: "var(--sdn-paddings-compact)" } : {}),
     cursor: hasChildren ? "pointer" : "default",
     userSelect: "none",
     WebkitUserSelect: "none",
