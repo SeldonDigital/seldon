@@ -10,10 +10,10 @@ import {
 } from "../seldon-gradient"
 
 /** One running segment (one random color hop) lasts this long. */
-const SEGMENT_MS = 200
+const SEGMENT_MS = 800
 
 /** Settle-back transition when an export ends: fade every stop to resting. */
-const SETTLE_MS = 400
+const SETTLE_MS = 1500
 
 interface Hsl {
   h: number
