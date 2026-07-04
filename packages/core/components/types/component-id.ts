@@ -64,6 +64,7 @@ export enum ComponentId {
   TABLE_HEADER = "tableHeader",
   TABLE_ROW_DATA = "tableRowData",
   TEXT = "text",
+  TEXTAREA = "textarea",
   TRACK = "track",
   TYPE_SPECIMEN = "typeSpecimen",
   VIDEO = "video",
