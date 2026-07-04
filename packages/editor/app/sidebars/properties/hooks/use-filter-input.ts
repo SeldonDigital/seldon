@@ -1,4 +1,8 @@
 import {
+  buildDisplayInputProps,
+  buildEditingRefProps,
+} from "@lib/views/state-props"
+import {
   type ChangeEvent,
   type KeyboardEvent,
   type MouseEvent,
@@ -11,10 +15,6 @@ import {
 import { ButtonIconicProps } from "@seldon/components/elements/ButtonIconic"
 import { ComboboxFieldFilterProps } from "@seldon/components/elements/ComboboxFieldFilter"
 import { InputProps } from "@seldon/components/primitives/Input"
-import {
-  buildDisplayInputProps,
-  buildEditingRefProps,
-} from "@lib/views/state-props"
 
 const PLACEHOLDER = "Filter..."
 

@@ -12,9 +12,9 @@ import {
 } from "@seldon/core/workspace/model/node-state"
 import { parseNodeLink } from "@seldon/core/workspace/model/template-ref"
 import type { EntryNode } from "@seldon/core/workspace/types"
+import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import { useEditorConfig } from "@lib/hooks/use-editor-config"
 import { useResolvedInterfaceMode } from "@lib/hooks/use-system-color-scheme"
-import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
 import {
   useActiveBoardState,
   useBoardStateStore,

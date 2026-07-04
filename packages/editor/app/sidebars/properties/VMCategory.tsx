@@ -1,9 +1,9 @@
 import { MenuEntry } from "@lib/menus"
+import { useRowActionsMenu } from "@lib/menus/use-row-actions-menu"
 import { Fragment, type MouseEvent } from "react"
+import { useSectionHeaderRow } from "../hooks/use-section-header-row"
 import { useRowCategory } from "./hooks/use-row-category"
 import { ItemSection } from "@seldon/components/elements/ItemSection"
-import { useRowActionsMenu } from "@lib/menus/use-row-actions-menu"
-import { useSectionHeaderRow } from "../hooks/use-section-header-row"
 import { PropertySection } from "./helpers/get-property-sections"
 import { ThemePropertySection } from "./helpers/get-theme-property-sections"
 

@@ -3,10 +3,17 @@ import {
   getOptionIcon,
 } from "@lib/icons/resolve-option-icon"
 import { MenuEntry } from "@lib/menus"
+import { buildResetMenuEntry } from "@lib/menus/build-reset-menu-entry"
+import { ICONIC_BUTTON_SELECTOR } from "@lib/menus/iconic-button"
 import {
   childPathsUnderCompoundParent,
   parsePropertyPath,
 } from "@lib/properties/property-paths"
+import {
+  buildActivatedRefProps,
+  buildDisabledRefProps,
+  buildInvalidRefProps,
+} from "@lib/views/state-props"
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import {
   Board,
@@ -38,19 +45,12 @@ import {
   useImageUploadPanel,
 } from "@app/panels/hooks/use-upload-image-panel"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
-import {
-  buildActivatedRefProps,
-  buildDisabledRefProps,
-  buildInvalidRefProps,
-} from "@lib/views/state-props"
-import { buildResetMenuEntry } from "@lib/menus/build-reset-menu-entry"
 import { buildPropertyOptions } from "../helpers/build-property-options"
 import {
   FRAME_REF_SELECTOR,
   buildPropertyRowProps,
 } from "../helpers/build-property-row-props"
 import { buildPropertyValueInput } from "../helpers/build-property-value-input"
-import { ICONIC_BUTTON_SELECTOR } from "@lib/menus/iconic-button"
 import type { LayerDragContext } from "../LayerDragRow"
 import { getDisplayValue } from "../helpers/display-value-utils"
 import {

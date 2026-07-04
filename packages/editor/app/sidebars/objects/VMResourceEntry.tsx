@@ -1,5 +1,7 @@
 "use client"
 
+import { useRowActionsMenu } from "@lib/menus/use-row-actions-menu"
+import { buildFieldStateProps } from "@lib/views/state-props"
 import { useCallback, useRef } from "react"
 import {
   useIsResourceEntrySelected,
@@ -12,8 +14,6 @@ import { useResourceEntryRow } from "./hooks/use-resource-entry-row"
 import { useRowClick } from "./hooks/use-row-click"
 import { ItemNode } from "@seldon/components/elements/ItemNode"
 import { IconProps } from "@seldon/components/primitives/Icon"
-import { buildFieldStateProps } from "@lib/views/state-props"
-import { useRowActionsMenu } from "@lib/menus/use-row-actions-menu"
 import { RowSelectionTarget } from "./RowSelectionTarget"
 import type { ResourceRowConfig } from "./helpers/resource-row-config"
 

@@ -1,3 +1,10 @@
+import { useRowActionsMenu } from "@lib/menus/use-row-actions-menu"
+import {
+  buildDisabledRefProps,
+  buildFieldStateProps,
+  buildRepeatFieldStyleProps,
+  mergeStateProps,
+} from "@lib/views/state-props"
 import { type ReactElement, memo } from "react"
 import { MAX_REPEAT_COUNT, resolveNodeRepeat } from "@seldon/core"
 import type { EntryNode } from "@seldon/core/workspace/types"
@@ -9,14 +16,7 @@ import { useRowNode } from "./hooks/use-row-node"
 import { getNode } from "@lib/workspace/workspace-accessors"
 import { FramerExpandable } from "@seldon/components/custom-components"
 import { ItemNode } from "@seldon/components/elements/ItemNode"
-import {
-  buildDisabledRefProps,
-  buildFieldStateProps,
-  buildRepeatFieldStyleProps,
-  mergeStateProps,
-} from "@lib/views/state-props"
 import { SidebarTracking } from "../../tracking/SidebarTracking"
-import { useRowActionsMenu } from "@lib/menus/use-row-actions-menu"
 import { RowSelectionTarget } from "./RowSelectionTarget"
 
 const NODE_SELECTION_KIND = "node"

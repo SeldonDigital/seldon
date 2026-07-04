@@ -20,7 +20,6 @@ import {
 } from "@seldon/core"
 import { PropertyDisplayCategory } from "@seldon/core/properties/schemas"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
-import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { useObjectProperties } from "@lib/workspace/hooks/use-object-properties"
 import {
   useBorderSideVisibility,
@@ -31,6 +30,7 @@ import { useLayerDragMonitor } from "./hooks/use-layer-drag-monitor"
 import { usePropertiesSidebar } from "./hooks/use-properties-sidebar"
 import { PropertyEditNavigationProvider } from "./hooks/use-property-edit-navigation"
 import { useIsCategoryExpanded } from "./hooks/use-property-expansion"
+import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { Box, FramerExpandable } from "@seldon/components/custom-components"
 import { SidebarProperties } from "@seldon/components/modules/SidebarProperties"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"

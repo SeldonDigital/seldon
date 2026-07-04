@@ -108,9 +108,7 @@ export function migrateV7ThemeModeChroma(workspace: Workspace): Workspace {
     if (needsMode) {
       const templateId = resolveThemeTemplateId(entry.id, themes)
       parameters.mode =
-        templateId && DARK_STOCK_TEMPLATE_IDS.has(templateId)
-          ? "dark"
-          : "light"
+        templateId && DARK_STOCK_TEMPLATE_IDS.has(templateId) ? "dark" : "light"
     }
     if (needsChroma) {
       parameters.chromaChange = 0

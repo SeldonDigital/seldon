@@ -1,3 +1,9 @@
+import { useRowActionsMenu } from "@lib/menus/use-row-actions-menu"
+import {
+  buildActivatedRefProps,
+  buildFieldStateProps,
+  mergeStateProps,
+} from "@lib/views/state-props"
 import { memo, useCallback, useRef } from "react"
 import { Board as BoardType } from "@seldon/core"
 import { useSidebarCanvasTrackingBoard } from "../../tracking/hooks/use-sidebar-canvas-tracking"
@@ -7,12 +13,6 @@ import { useRowBoard } from "./hooks/use-row-board"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { FramerExpandable } from "@seldon/components/custom-components"
 import { ItemNode } from "@seldon/components/elements/ItemNode"
-import {
-  buildActivatedRefProps,
-  buildFieldStateProps,
-  mergeStateProps,
-} from "@lib/views/state-props"
-import { useRowActionsMenu } from "@lib/menus/use-row-actions-menu"
 import { RowSelectionTarget } from "./RowSelectionTarget"
 import { VMNode } from "./VMNode"
 import { VMResourceEntry } from "./VMResourceEntry"

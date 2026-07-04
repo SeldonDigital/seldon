@@ -1,7 +1,5 @@
 "use client"
 
-import { MenuAlign, MenuEntry } from "./types"
-import { VMMenu } from "./VMMenu"
 import {
   CSSProperties,
   ReactNode,
@@ -12,7 +10,9 @@ import {
 } from "react"
 import { ButtonIconicProps } from "@seldon/components/elements/ButtonIconic"
 import { IconProps } from "@seldon/components/primitives/Icon"
+import { VMMenu } from "./VMMenu"
 import { ICONIC_BUTTON_ATTR } from "./iconic-button"
+import { MenuAlign, MenuEntry } from "./types"
 
 interface UseRowActionsMenuOptions {
   align?: MenuAlign

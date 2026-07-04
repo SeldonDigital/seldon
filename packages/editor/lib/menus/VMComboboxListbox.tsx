@@ -155,7 +155,11 @@ export function VMComboboxListbox({
     : (filteredOptions as ComboboxOptionItem[]).map(renderOption)
 
   return createPortal(
-    <div data-theme={chromeTheme} data-mode={resolvedMode} style={themeScopeStyle}>
+    <div
+      data-theme={chromeTheme}
+      data-mode={resolvedMode}
+      style={themeScopeStyle}
+    >
       <Backdrop onClick={handleClose} style={backdropStyle} />
       <Listbox style={panelStyle} onMouseLeave={onPointerLeave}>
         {content}
