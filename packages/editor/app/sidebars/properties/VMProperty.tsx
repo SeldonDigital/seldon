@@ -2,6 +2,7 @@ import { useRowActionsMenu } from "@lib/menus/use-row-actions-menu"
 import { mergeStateProps } from "@lib/views/state-props"
 import { memo } from "react"
 import { RowPropertyProps, useRowProperty } from "./hooks/use-row-property"
+import { IndentationLevel } from "../hooks/use-indentation"
 import { FramerExpandable } from "@seldon/components/custom-components"
 import { ComboboxFieldProps } from "@seldon/components/elements/ComboboxField"
 import { ItemProperty } from "@seldon/components/elements/ItemProperty"
@@ -70,12 +71,16 @@ function VMPropertyInner(props: RowPropertyProps) {
   // through the same slot via the generated `Icon`'s runtime registry.
   const valueIconSlot = listItemProps.icon2 ? undefined : null
 
-  // Sub-property rows for a compound or shorthand parent.
+  // Sub-property rows for a compound or shorthand parent. Wrapped in
+  // `IndentationLevel` so each nesting depth adds one indent step and shifts the
+  // whole row, matching the objects-sidebar tree.
   const childRows = view.hasChildren ? (
     <FramerExpandable isExpanded={view.isExpanded}>
-      {view.childItems.map((childProps) => (
-        <VMProperty key={childProps.property.key} {...childProps} />
-      ))}
+      <IndentationLevel>
+        {view.childItems.map((childProps) => (
+          <VMProperty key={childProps.property.key} {...childProps} />
+        ))}
+      </IndentationLevel>
     </FramerExpandable>
   ) : null
 

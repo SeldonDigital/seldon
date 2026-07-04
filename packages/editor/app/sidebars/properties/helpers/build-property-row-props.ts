@@ -93,7 +93,6 @@ export function buildPropertyRowProps({
   const nameLabelStyle = getNameLabelStyle({
     labelColor,
     isDimmed: Boolean(property.isDimmed),
-    isSubProperty: property.isSubProperty,
     hasChildren,
   })
 

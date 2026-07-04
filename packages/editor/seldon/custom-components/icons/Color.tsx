@@ -11,11 +11,16 @@
  * or artificial intelligence system.
  *
  *****/
-import { SVGProps } from "react"
+import { CSSProperties, SVGProps } from "react"
 
 interface Props extends Omit<SVGProps<SVGSVGElement>, "color"> {
   color?: string | null | undefined
 }
+
+// The chip ring reads against the panel, not the swatch: the mode block inverts
+// swatch lightness, so `offBlack` renders dark in light mode and near-white in
+// dark mode. This is the same token the panel's `--separator-border` uses.
+const ringStyle: CSSProperties = { stroke: "var(--sdn-swatch-offBlack)" }
 
 export function IconCustomColorValue(props: Props) {
   const { color, ...svgProps } = props
@@ -48,7 +53,7 @@ export function IconCustomColorValue(props: Props) {
             height={12.5}
             x={1.75}
             y={1.75}
-            stroke="#fff"
+            style={ringStyle}
             strokeWidth={1.5}
             rx={6.25}
           />
