@@ -255,6 +255,7 @@ const VOID_NATIVE_REACT_PRIMITIVES = new Set<NativeReactPrimitive>([
   "HTMLImg",
   "HTMLInput",
   "HTMLSource",
+  "HTMLTextarea",
   "HTMLTrack",
 ])
 
