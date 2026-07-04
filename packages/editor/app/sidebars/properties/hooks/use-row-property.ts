@@ -59,7 +59,7 @@ import {
   ThemeEditingContext,
 } from "../helpers/editing-contexts"
 import { FlatProperty } from "../helpers/properties-data"
-import { getPropertyLabelStyle } from "../helpers/property-styling-tokens.bespoke"
+import { getPropertyDebugColor } from "../helpers/property-styling"
 import { resolveThemeSwatchColors } from "../helpers/resolve-theme-swatch-colors"
 import {
   getThemeTokenIconColorFromPropertyValue,
@@ -352,11 +352,13 @@ export function useRowProperty({
         options,
       )
 
-  const labelStyle = useMemo(
-    () => getPropertyLabelStyle(property, showPropertyTypes),
-    [property, showPropertyTypes],
-  )
-  const labelColor = labelStyle.color
+  // Outside debug mode, property status maps to a generated leaf state
+  // (activated, invalid, disabled) applied on the row's refs, so the label
+  // carries no inline status color. Debug mode keeps the inline status colors
+  // for its type visualization.
+  const labelColor = showPropertyTypes
+    ? getPropertyDebugColor(property)
+    : undefined
 
   const swatchChipColor = useMemo(() => {
     if (!theme || !isSwatchIconPropertyKey(property.key)) {
@@ -387,7 +389,6 @@ export function useRowProperty({
     onEditChange: setEditing,
     onTabNext: handleTabNext,
     onTabPrev: handleTabPrev,
-    color: labelColor,
     themeEditingContext,
     fontCollectionEditingContext,
     iconSetEditingContext,
@@ -653,7 +654,6 @@ export function useRowProperty({
     isExpanded,
     hasChildren,
     labelText,
-    labelStyle,
     labelColor,
     iconId,
     isThemeAssignment,

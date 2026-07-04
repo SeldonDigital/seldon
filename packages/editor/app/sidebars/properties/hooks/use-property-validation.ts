@@ -14,11 +14,11 @@ import { FlatProperty } from "../helpers/properties-data"
 
 interface UsePropertyValidationResult {
   validationFunction: ((value: string) => boolean) | undefined
-  units: string[]
 }
 
 /**
- * Returns validation function and units for a property
+ * Returns the validation function for a property. Unit lists are derived
+ * internally to validate typed values against the property's allowed units.
  */
 export function usePropertyValidation(
   property: FlatProperty,
@@ -117,6 +117,5 @@ export function usePropertyValidation(
 
   return {
     validationFunction: getValidationFunction(),
-    units,
   }
 }

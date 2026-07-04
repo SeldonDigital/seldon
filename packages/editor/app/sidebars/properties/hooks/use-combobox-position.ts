@@ -13,7 +13,6 @@ interface Position {
 interface UseComboboxPositionOptions {
   open: boolean
   frameRef?: RefObject<HTMLDivElement | null>
-  comboboxRef: RefObject<HTMLDivElement | null>
 }
 
 /**
@@ -22,7 +21,6 @@ interface UseComboboxPositionOptions {
 export function useComboboxPosition({
   open,
   frameRef,
-  comboboxRef,
 }: UseComboboxPositionOptions): Position {
   const [optionsPosition, setOptionsPosition] = useState<Position>({
     x: 0,
@@ -33,28 +31,7 @@ export function useComboboxPosition({
   useEffect(() => {
     if (!open) return
 
-    let frameElement: HTMLElement | null = null
-
-    // First try to use frameRef if available
-    if (frameRef?.current) {
-      frameElement = frameRef.current
-    } else if (comboboxRef.current) {
-      // Find the Frame element by looking for the data attribute
-      // The Frame should be an ancestor of the combobox
-      let current: HTMLElement | null = comboboxRef.current
-      while (current) {
-        if (current.getAttribute("data-frame-ref") === "true") {
-          frameElement = current
-          break
-        }
-        current = current.parentElement
-      }
-
-      // Fallback: use comboboxRef if Frame not found
-      if (!frameElement) {
-        frameElement = comboboxRef.current
-      }
-    }
+    const frameElement = frameRef?.current
 
     if (frameElement) {
       const rect = frameElement.getBoundingClientRect()
@@ -78,7 +55,7 @@ export function useComboboxPosition({
         positionAbove: isInBottomThird, // Flag to indicate positioning above
       })
     }
-  }, [open, frameRef, comboboxRef])
+  }, [open, frameRef])
 
   return optionsPosition
 }

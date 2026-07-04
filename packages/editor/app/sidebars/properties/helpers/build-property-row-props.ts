@@ -1,5 +1,5 @@
 import { ICONIC_BUTTON_ATTR } from "@lib/menus/iconic-button"
-import { CSSProperties, MouseEvent } from "react"
+import { MouseEvent } from "react"
 import { IconProps } from "@seldon/components/primitives/Icon"
 import { FlatProperty } from "./properties-data"
 import {
@@ -27,7 +27,6 @@ interface BuildPropertyRowPropsInput {
   isExpanded: boolean
   hasChildren: boolean
   labelText: string
-  labelStyle: CSSProperties
   labelColor: string | undefined
   iconId: string
   isThemeAssignment: boolean
@@ -53,7 +52,6 @@ export function buildPropertyRowProps({
   isExpanded,
   hasChildren,
   labelText,
-  labelStyle,
   labelColor,
   iconId,
   isThemeAssignment,
@@ -92,7 +90,12 @@ export function buildPropertyRowProps({
   // The name slot is an `Input` (driven by the rename-in-place hook), so the row
   // contributes only its resting style; the value and edit state come from the
   // hook. Mirrors how object-name rows feed `useRenameInput`.
-  const nameLabelStyle = getNameLabelStyle({ labelStyle, hasChildren })
+  const nameLabelStyle = getNameLabelStyle({
+    labelColor,
+    isDimmed: Boolean(property.isDimmed),
+    isSubProperty: property.isSubProperty,
+    hasChildren,
+  })
 
   const valueIconStyle = getValueIconStyle({
     hidden: false,

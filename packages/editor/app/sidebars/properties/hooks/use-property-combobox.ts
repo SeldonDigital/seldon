@@ -35,7 +35,6 @@ interface UsePropertyComboboxInput {
 
 interface UsePropertyComboboxResult {
   inputRef: RefObject<HTMLInputElement | null>
-  comboboxRef: RefObject<HTMLDivElement | null>
   open: boolean
   setOpen: (open: boolean) => void
   inputValue: string
@@ -51,7 +50,6 @@ interface UsePropertyComboboxResult {
   hasSections: boolean
   hasFilteredOptions: boolean
   position: Position
-  handleControlClick: (event: React.MouseEvent) => void
   handleComboboxClose: () => void
   openComboboxWithFocus: () => void
 }
@@ -78,7 +76,6 @@ export function usePropertyCombobox({
   commit,
 }: UsePropertyComboboxInput): UsePropertyComboboxResult {
   const inputRef = useRef<HTMLInputElement>(null)
-  const comboboxRef = useRef<HTMLDivElement>(null)
   const originalValueRef = useRef<string | undefined>(undefined)
   const hasSelectionRef = useRef(false)
 
@@ -187,15 +184,7 @@ export function usePropertyCombobox({
   const position = useComboboxPosition({
     open: comboboxOpen,
     frameRef,
-    comboboxRef,
   })
-
-  const handleControlClick = (event: React.MouseEvent) => {
-    if (isMenuOrComboType && !comboboxOpen && !property.isDimmed) {
-      event.stopPropagation()
-      openComboboxWithFocus()
-    }
-  }
 
   const restoreInputIfNeeded = () => {
     if (!hasSelectionRef.current && originalValueRef.current !== undefined) {
@@ -221,7 +210,6 @@ export function usePropertyCombobox({
 
   return {
     inputRef,
-    comboboxRef,
     open: comboboxOpen,
     setOpen: setComboboxOpen,
     inputValue,
@@ -237,7 +225,6 @@ export function usePropertyCombobox({
     hasSections,
     hasFilteredOptions,
     position,
-    handleControlClick,
     handleComboboxClose,
     openComboboxWithFocus,
   }
