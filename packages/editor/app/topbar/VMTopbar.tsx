@@ -1,6 +1,7 @@
 "use client"
 
 import { getChromeThemes } from "@lib/chrome/chrome-themes"
+import { useExportStatusStore } from "@lib/export/export-status-store"
 import { MenuAlign, MenuEntry, VMMenu } from "@lib/menus"
 import {
   CSSProperties,
@@ -14,15 +15,14 @@ import {
 import { AppState, useAppState } from "@lib/hooks/use-app-state"
 import { InterfaceMode, useEditorConfig } from "@lib/hooks/use-editor-config"
 import { useMenuConfig } from "./hooks/use-menu-config"
+import { useTopbarGradientAnimation } from "./hooks/use-topbar-gradient-animation"
 import { ButtonMenuProps } from "@seldon/components/elements/ButtonMenu"
 import { ButtonSimpleProps } from "@seldon/components/elements/ButtonSimple"
 import { BarTopbar } from "@seldon/components/parts/BarTopbar"
 import { ImageProps } from "@seldon/components/primitives/Image"
 import { TextLabelProps } from "@seldon/components/primitives/TextLabel"
-import { useExportStatusStore } from "@lib/export/export-status-store"
-import { useTopbarGradientAnimation } from "./hooks/use-topbar-gradient-animation"
-import { TOPBAR_GRADIENT_CLASS } from "./seldon-gradient"
 import { MenuDropdown } from "./menus/types"
+import { TOPBAR_GRADIENT_CLASS } from "./seldon-gradient"
 
 /** Menu id for the chrome-theme dropdown, distinct from the config menus. */
 const CHROME_THEME_MENU_ID = "chrome-theme"

@@ -5,11 +5,11 @@ import {
   buildVariantSnippet,
 } from "@lib/copy-schema/build-schema-snippet"
 import { serializeSchemaSnippet } from "@lib/copy-schema/serialize-schema-ts"
+import { useExportStatusStore } from "@lib/export/export-status-store"
 import {
   pickExportDirectory,
   writeExportToDirectory,
 } from "@lib/export/write-export-to-directory"
-import { useExportStatusStore } from "@lib/export/export-status-store"
 import { triggerDownload } from "@lib/helpers/trigger-download"
 import { kebabCase } from "change-case"
 import { useCallback } from "react"

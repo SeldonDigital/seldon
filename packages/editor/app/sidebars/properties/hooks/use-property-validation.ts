@@ -79,7 +79,11 @@ export function usePropertyValidation(
             if (unit === "rem" && isRem(value)) return true
             // `isPercentage` above rejects negatives, so a signed percentage
             // (e.g. a `-5%` chroma shift) is accepted here.
-            if (unit === "%" && value.endsWith("%") && !isNaN(parseFloat(value))) {
+            if (
+              unit === "%" &&
+              value.endsWith("%") &&
+              !isNaN(parseFloat(value))
+            ) {
               return true
             }
             if (

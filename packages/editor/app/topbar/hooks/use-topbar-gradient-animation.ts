@@ -1,7 +1,7 @@
 "use client"
 
-import { useEffect, useRef } from "react"
 import { useExportStatus } from "@lib/export/export-status-store"
+import { useEffect, useRef } from "react"
 import {
   INTERFACE_SWATCH_TOKENS,
   TOPBAR_GRADIENT_ACTIVE_CLASS,
@@ -136,7 +136,9 @@ function createController(element: HTMLElement) {
   let nextIndex = createIndexBag(INTERFACE_SWATCH_TOKENS.length)
 
   const paint = () => {
-    element.style.backgroundImage = buildGradient(stops.map((stop) => stop.current))
+    element.style.backgroundImage = buildGradient(
+      stops.map((stop) => stop.current),
+    )
   }
 
   const beginSegment = (now: number, chooseTargets: () => void) => {
@@ -167,7 +169,8 @@ function createController(element: HTMLElement) {
   const frame = (now: number) => {
     const t = Math.min((now - segmentStart) / segmentMs, 1)
     const eased = easeInOut(t)
-    for (const stop of stops) stop.current = lerpHsl(stop.start, stop.target, eased)
+    for (const stop of stops)
+      stop.current = lerpHsl(stop.start, stop.target, eased)
     paint()
     if (t >= 1) {
       if (phase === "running") {

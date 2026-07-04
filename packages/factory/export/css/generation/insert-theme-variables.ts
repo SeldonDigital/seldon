@@ -90,7 +90,10 @@ function generateThemeCSSVariables(theme: Theme, slug: string): string {
 
   // The base block serves the theme's authored mode, so its swatch table comes
   // from the mode assignment: literal neutral pairs for light, swapped for dark.
-  cssVariables += generateModeSwatchVariables(theme, displayMode.mode ?? "light")
+  cssVariables += generateModeSwatchVariables(
+    theme,
+    displayMode.mode ?? "light",
+  )
 
   const writeModulatedScale = (
     label: string,

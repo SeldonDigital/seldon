@@ -97,9 +97,7 @@ type HslObject = { hue: number; saturation: number; lightness: number }
  * declared unit return undefined, which lets validation keep its existing path.
  * A `rem` length row accepts both `px` and `rem`; a `none` unit is unitless.
  */
-function themeUnitsFromSchema(
-  schema: ThemeTokenSchema,
-): string[] | undefined {
+function themeUnitsFromSchema(schema: ThemeTokenSchema): string[] | undefined {
   if (schema.controlType !== "number") return undefined
   switch (schema.unit?.type) {
     case "none":
@@ -377,11 +375,7 @@ function createFlatPropertyFromSchema(
   // dimension value renders. Unitless facets (`none`) stay plain numbers, and
   // values that already carry their unit (exact lengths, look facets) are left
   // untouched above. The commit path strips the suffix back to a number.
-  if (
-    typeof value === "number" &&
-    schema.unit &&
-    schema.unit.type !== "none"
-  ) {
+  if (typeof value === "number" && schema.unit && schema.unit.type !== "none") {
     formattedValue = { unit: schema.unit.type, value }
     actualValue = `${value}${schema.unit.type}`
   }
