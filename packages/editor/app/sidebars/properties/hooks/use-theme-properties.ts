@@ -130,11 +130,15 @@ export function useThemeProperties(themeEntryId: EntryThemeId | null) {
         return
       }
       if (key === "modulation.baseFontSize") {
-        setCoreFontSize(Number(newValue))
+        const numericValue = parseNumericInput(newValue)
+        if (numericValue === null) return
+        setCoreFontSize(numericValue)
         return
       }
       if (key === "modulation.baseSize") {
-        setCoreSize(Number(newValue))
+        const numericValue = parseNumericInput(newValue)
+        if (numericValue === null) return
+        setCoreSize(numericValue)
         return
       }
 

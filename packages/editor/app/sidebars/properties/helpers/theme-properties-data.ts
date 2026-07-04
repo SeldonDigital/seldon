@@ -90,6 +90,33 @@ const CONTROL_TYPE_MAP: Record<
 
 type HslObject = { hue: number; saturation: number; lightness: number }
 
+/**
+ * Resolves the allowed unit suffixes for a numeric theme row from its core token
+ * schema, so display and validation share one source instead of hardcoded
+ * per-key lists. Non-numeric rows (colors, enums, free text) and rows without a
+ * declared unit return undefined, which lets validation keep its existing path.
+ * A `rem` length row accepts both `px` and `rem`; a `none` unit is unitless.
+ */
+function themeUnitsFromSchema(
+  schema: ThemeTokenSchema,
+): string[] | undefined {
+  if (schema.controlType !== "number") return undefined
+  switch (schema.unit?.type) {
+    case "none":
+      return []
+    case "%":
+      return ["%"]
+    case "deg":
+      return ["deg"]
+    case "px":
+      return ["px"]
+    case "rem":
+      return ["px", "rem"]
+    default:
+      return undefined
+  }
+}
+
 function isRecord(value: unknown): value is Record<string, unknown> {
   return value != null && typeof value === "object"
 }
@@ -345,12 +372,18 @@ function createFlatPropertyFromSchema(
     actualValue = value ? "On" : "Off"
   }
 
-  // Percentage facets fold their `%` unit into the value so the row displays and
-  // edits as `10%`, matching how dimension values render. The commit path strips
-  // the suffix back to a bare number.
-  if (schema.unit?.type === "%" && typeof value === "number") {
-    formattedValue = { unit: "%", value }
-    actualValue = `${value}%`
+  // A bare numeric facet that declares a display unit folds it into the value so
+  // the row renders and edits as `10%`, `24deg`, or `16px`, the same way a
+  // dimension value renders. Unitless facets (`none`) stay plain numbers, and
+  // values that already carry their unit (exact lengths, look facets) are left
+  // untouched above. The commit path strips the suffix back to a number.
+  if (
+    typeof value === "number" &&
+    schema.unit &&
+    schema.unit.type !== "none"
+  ) {
+    formattedValue = { unit: schema.unit.type, value }
+    actualValue = `${value}${schema.unit.type}`
   }
 
   // Color-filled icons for swatches and color points. Color-point swatches
@@ -395,6 +428,11 @@ function createFlatPropertyFromSchema(
 
   if (iconColorValue) {
     flatProperty.iconColorValue = iconColorValue
+  }
+
+  const units = themeUnitsFromSchema(schema)
+  if (units) {
+    flatProperty.units = units
   }
 
   return flatProperty

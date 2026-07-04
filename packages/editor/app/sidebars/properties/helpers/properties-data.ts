@@ -109,6 +109,12 @@ export interface FlatProperty {
   actualValue: string
   valueType: ValueType
   controlType?: ControlType
+  /**
+   * Allowed unit suffixes for a measured theme value, resolved from the core
+   * token schema. Present only on theme rows that declare a unit; absent on node
+   * properties, which resolve units through the property schema instead.
+   */
+  units?: string[]
   isCompound: boolean
   isShorthand: boolean
   isSubProperty: boolean

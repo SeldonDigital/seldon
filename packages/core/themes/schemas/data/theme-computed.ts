@@ -149,9 +149,9 @@ const COLOR_HARMONY_FACETS = [
   {
     facet: "bleed",
     label: "Bleed",
-    valueType: "number",
+    valueType: "percentage",
     controlType: "number",
-    unit: { type: "none", min: 0, max: 1, step: 0.01 },
+    unit: { type: "%", min: 0, max: 100, step: 1 },
     icon: "material-blurOn",
   },
 ] as const satisfies readonly ComputedGroupFacetFor<ColorHarmonyParameters>[]
