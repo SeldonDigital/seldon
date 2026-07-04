@@ -9,6 +9,7 @@ import {
   pickExportDirectory,
   writeExportToDirectory,
 } from "@lib/export/write-export-to-directory"
+import { useExportStatusStore } from "@lib/export/export-status-store"
 import { triggerDownload } from "@lib/helpers/trigger-download"
 import { kebabCase } from "change-case"
 import { useCallback } from "react"
@@ -108,18 +109,22 @@ export function useImportExport() {
   )
 
   const exportToFolder = useCallback(async () => {
+    const { setExporting } = useExportStatusStore.getState()
     try {
       const directory = await pickExportDirectory()
       if (!directory) {
         addToast("Folder picker is not supported in this browser")
         return
       }
+      setExporting(true)
       const { runLocalExport } = await import("@lib/export/run-local-export")
       const files = await runLocalExport(workspace)
       const count = await writeExportToDirectory(directory, files)
       addToast(`Exported ${count} files`)
     } catch (error) {
       addToast(error instanceof Error ? error.message : "Export failed")
+    } finally {
+      setExporting(false)
     }
   }, [addToast, workspace])
 

@@ -19,7 +19,9 @@ import { ButtonSimpleProps } from "@seldon/components/elements/ButtonSimple"
 import { BarTopbar } from "@seldon/components/parts/BarTopbar"
 import { ImageProps } from "@seldon/components/primitives/Image"
 import { TextLabelProps } from "@seldon/components/primitives/TextLabel"
-import { seldonGradientStyle } from "./VMTopbar.bespoke"
+import { useExportStatusStore } from "@lib/export/export-status-store"
+import { useTopbarGradientAnimation } from "./hooks/use-topbar-gradient-animation"
+import { TOPBAR_GRADIENT_CLASS } from "./seldon-gradient"
 import { MenuDropdown } from "./menus/types"
 
 /** Menu id for the chrome-theme dropdown, distinct from the config menus. */
@@ -117,6 +119,23 @@ export function VMTopbar() {
   const chromeThemes = useMemo(() => getChromeThemes(), [])
   const [openMenuId, setOpenMenuId] = useState<string | null>(null)
   const anchorRef = useRef<HTMLElement | null>(null)
+
+  const gradientRef = useTopbarGradientAnimation()
+
+  // Alt+Shift+click anywhere on the logo frame (cube + wordmark) toggles the
+  // export rainbow, a hidden gesture for previewing the animation without
+  // running an export. A plain click is inert.
+  const handleLogoClick = useCallback((event: MouseEvent<HTMLDivElement>) => {
+    if (!event.altKey || !event.shiftKey) return
+    const { isExporting, setExporting } = useExportStatusStore.getState()
+    setExporting(!isExporting)
+  }, [])
+
+  // Inject the gesture onto the generated `logo` frame that wraps both images.
+  const seldonRefs = useMemo(
+    () => ({ logo: { onClick: handleLogoClick } }),
+    [handleLogoClick],
+  )
 
   const closeMenu = useCallback(() => setOpenMenuId(null), [])
 
@@ -229,6 +248,7 @@ export function VMTopbar() {
     <header style={styles.header}>
       <BarTopbar
         data-testid="topbar"
+        seldonRefs={seldonRefs}
         image={logoProps}
         image2={wordmarkProps}
         buttonSimple={menuSlots[0].button}
@@ -255,7 +275,7 @@ export function VMTopbar() {
         align={menuAlign}
         minWidth="220px"
       />
-      <div style={seldonGradientStyle} />
+      <div ref={gradientRef} className={TOPBAR_GRADIENT_CLASS} />
     </header>
   )
 }
