@@ -13,8 +13,14 @@ export const EDITING_OUTLINE = "var(--hairline) solid var(--sdn-swatch-active)"
  * activated as a tint-only leaf state (override rows, the board containing the
  * selection); the only border a resting row shows is the edit-mode
  * {@link EDITING_OUTLINE}.
+ *
+ * Override only `border-color`, not the `border` shorthand. This shared value
+ * lands on leaves with different base widths (the input leaf has a 1px border,
+ * the icon leaf has none). Clearing the color hides the activated border on
+ * both while preserving each leaf's own box, so activating a row never shifts
+ * layout by a pixel.
  */
-const ACTIVATED_TINT_ONLY: CSSProperties = { border: "none" }
+const ACTIVATED_TINT_ONLY: CSSProperties = { borderColor: "transparent" }
 
 /**
  * Field-owned states for a sidebar row's combobox-field child. The field
