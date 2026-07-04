@@ -1,20 +1,19 @@
 "use client"
 
 import { CSSProperties, KeyboardEvent, useCallback } from "react"
-import { DialogPalette } from "@seldon/components/modules/DialogPalette"
 import { useAiChat } from "@lib/hooks/use-ai-chat"
 import { FloatingPanel } from "@app/panels/FloatingPanel"
 
 const styles: Record<string, CSSProperties> = {
   textarea: {
+    flex: 1,
+    minHeight: 0,
     width: "100%",
-    height: "100%",
-    minHeight: 120,
+    boxSizing: "border-box",
     resize: "none",
     border: "none",
     outline: "none",
     padding: 12,
-    background: "transparent",
     color: "white",
     fontFamily: "inherit",
     fontSize: 14,
@@ -52,15 +51,13 @@ export function AiChatPanel({ handleClose }: { handleClose: () => void }) {
       initialWidth={420}
       initialHeight={220}
     >
-      <DialogPalette bar={null}>
-        <textarea
-          autoFocus
-          onKeyDown={handleKeyDown}
-          placeholder={placeholder}
-          disabled={isPending}
-          style={styles.textarea}
-        />
-      </DialogPalette>
+      <textarea
+        autoFocus
+        onKeyDown={handleKeyDown}
+        placeholder={placeholder}
+        disabled={isPending}
+        style={styles.textarea}
+      />
     </FloatingPanel>
   )
 }
