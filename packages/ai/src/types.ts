@@ -17,6 +17,10 @@ export interface ChatToActionsInput {
   history?: ChatMessage[]
   /** Board the user is looking at. Its node tree is summarized for grounding. */
   activeBoardKey?: BoardKey
+  /** Node the user has selected on the canvas, surfaced as the primary target. */
+  selectedNodeId?: string
+  /** Variant-root column of the selected node, for disambiguating shared ids. */
+  selectedNodeRootId?: string
   /** Model id override. Defaults to `SELDON_AI_MODEL` env or `qwen3`. */
   model?: string
 }

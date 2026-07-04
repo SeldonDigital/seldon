@@ -2,8 +2,10 @@ import type { WorkspaceAction } from "@seldon/core/workspace/types"
 import { ollamaChat, type OllamaChatMessage } from "./ollama-client"
 import { buildContext } from "./prompt/build-context"
 import { buildSystemPrompt } from "./prompt/system-prompt"
-import { RESPONSE_FORMAT } from "./schema/action-schema"
+import { ALL_ACTION_TYPES, RESPONSE_FORMAT } from "./schema/action-schema"
 import type { ChatToActionsInput, ChatToActionsResult } from "./types"
+
+const KNOWN_ACTION_TYPES = new Set(ALL_ACTION_TYPES)
 
 /**
  * Dev-only logging. Prints the grounding context and raw model output to the
@@ -43,7 +45,11 @@ function parseEnvelope(raw: string): AgentEnvelope {
 export async function chatToActions(
   input: ChatToActionsInput,
 ): Promise<ChatToActionsResult> {
-  const context = buildContext(input.workspace, input.activeBoardKey)
+  const context = buildContext(input.workspace, {
+    activeBoardKey: input.activeBoardKey,
+    selectedNodeId: input.selectedNodeId,
+    selectedNodeRootId: input.selectedNodeRootId,
+  })
   debugLog("user request", input.message)
   debugLog("grounding context", context)
 
@@ -70,11 +76,27 @@ export async function chatToActions(
 
   const envelope = parseEnvelope(raw)
 
-  const actions = Array.isArray(envelope.actions) ? envelope.actions : []
+  const parsed = Array.isArray(envelope.actions) ? envelope.actions : []
   debugLog(
     "parsed actions",
-    `${actions.length} action(s): ${actions.map((action) => action.type).join(", ") || "none"}`,
+    `${parsed.length} action(s): ${parsed.map((action) => action.type).join(", ") || "none"}`,
   )
+
+  // Structural guard: drop actions whose type is not in the allowed set. The
+  // reducer validates each payload deeply when the editor applies it, so this
+  // only filters hallucinated or excluded action types.
+  const actions = parsed.filter((action) =>
+    KNOWN_ACTION_TYPES.has(action?.type),
+  )
+  const dropped = parsed.filter(
+    (action) => !KNOWN_ACTION_TYPES.has(action?.type),
+  )
+  if (dropped.length > 0) {
+    debugLog(
+      "dropped unknown actions",
+      dropped.map((action) => String(action?.type)).join(", "),
+    )
+  }
 
   return {
     actions,

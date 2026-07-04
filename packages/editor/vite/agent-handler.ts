@@ -10,6 +10,8 @@ export type AgentRequestBody = {
   message: string
   history?: ChatMessage[]
   activeBoardKey?: BoardKey
+  selectedNodeId?: string
+  selectedNodeRootId?: string
   model?: string
 }
 
@@ -37,6 +39,8 @@ export async function runAgent(body: AgentRequestBody): Promise<AgentResult> {
     message: body.message,
     history: body.history,
     activeBoardKey: body.activeBoardKey,
+    selectedNodeId: body.selectedNodeId,
+    selectedNodeRootId: body.selectedNodeRootId,
     model: body.model,
   })
 

@@ -10,6 +10,8 @@ export type AgentChatRequest = {
   message: string
   history?: ChatMessage[]
   activeBoardKey?: BoardKey
+  selectedNodeId?: string
+  selectedNodeRootId?: string
 }
 
 export type AgentChatResponse = {
