@@ -57,8 +57,8 @@ describe("type guards", () => {
 
 describe("capability checks", () => {
   it("canNodeHaveChildren follows the catalog template", () => {
-    expect(svc.canNodeHaveChildren(variant)).toBe(true)
-    expect(svc.canNodeHaveChildren(board)).toBe(false)
+    expect(svc.canNodeHaveChildren(variant, ws)).toBe(true)
+    expect(svc.canNodeHaveChildren(board, ws)).toBe(false)
   })
 
   it("canComponentBeParentOf consults component level rules", () => {

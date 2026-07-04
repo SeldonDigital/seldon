@@ -105,6 +105,7 @@ export function useThemeProperties(themeEntryId: EntryThemeId | null) {
     setCoreFontSize,
     setBaseColor,
     setHarmony,
+    setColorMode,
     setColorValue,
     setComputedValue,
     setFontFamilyValue,
@@ -147,6 +148,10 @@ export function useThemeProperties(themeEntryId: EntryThemeId | null) {
         setHarmony(Number(newValue) as Harmony)
         return
       }
+      if (key === "colorHarmony.mode") {
+        setColorMode(newValue === "dark" ? "dark" : "light")
+        return
+      }
       if (key.startsWith("colorHarmony.")) {
         const colorKey = key.split(".")[1] as
           | "angle"
@@ -155,6 +160,7 @@ export function useThemeProperties(themeEntryId: EntryThemeId | null) {
           | "grayPoint"
           | "blackPoint"
           | "bleed"
+          | "chromaChange"
         const numericValue = parseNumericInput(newValue)
         if (numericValue === null) {
           console.warn(`Invalid numeric value for ${key}: ${newValue}`)
@@ -204,9 +210,13 @@ export function useThemeProperties(themeEntryId: EntryThemeId | null) {
         return
       }
 
-      // Swatch values are stored as HSL objects on the swatch cell
+      // Swatch values are stored as HSL objects on the swatch cell. Swatch rows
+      // nest under a group: `swatch.<group>.<id>`, so the id is the last segment.
       if (key.startsWith("swatch.")) {
-        const swatchId = key.split(".")[1] as ThemeCustomSwatchId
+        const swatchId = key
+          .split(".")
+          .slice(2)
+          .join(".") as ThemeCustomSwatchId
         setSwatchValue(swatchId, parseHSLString(toHSLString(newValue)))
         return
       }
@@ -281,6 +291,7 @@ export function useThemeProperties(themeEntryId: EntryThemeId | null) {
       setCoreFontSize,
       setBaseColor,
       setHarmony,
+      setColorMode,
       setColorValue,
       setComputedValue,
       setFontFamilyValue,

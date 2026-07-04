@@ -1,6 +1,6 @@
-import { CSSProperties, MouseEvent } from "react"
+import { ICONIC_BUTTON_ATTR } from "@lib/menus/iconic-button"
+import { MouseEvent } from "react"
 import { IconProps } from "@seldon/components/primitives/Icon"
-import { ICONIC_BUTTON_ATTR } from "../../helpers/iconic-button"
 import { FlatProperty } from "./properties-data"
 import {
   getDisclosureButtonStyle,
@@ -27,10 +27,11 @@ interface BuildPropertyRowPropsInput {
   isExpanded: boolean
   hasChildren: boolean
   labelText: string
-  labelStyle: CSSProperties
   labelColor: string | undefined
   iconId: string
   isThemeAssignment: boolean
+  /** Swatch cluster colors for the theme-assignment row's value strip. */
+  themeSwatchColors: string[] | undefined
   swatchChipColor: string | undefined
   supportsUpload: boolean
   showMenuIcon: boolean
@@ -51,10 +52,10 @@ export function buildPropertyRowProps({
   isExpanded,
   hasChildren,
   labelText,
-  labelStyle,
   labelColor,
   iconId,
   isThemeAssignment,
+  themeSwatchColors,
   swatchChipColor,
   supportsUpload,
   showMenuIcon,
@@ -86,32 +87,56 @@ export function buildPropertyRowProps({
     style: getDisclosureIconStyle({ isExpanded, hasChildren, labelColor }),
   }
 
-  const textLabel = {
-    children: labelText,
-    htmlElement: "label" as const,
-    style: getNameLabelStyle({ labelStyle, hasChildren }),
-  }
+  // The name slot is an `Input` (driven by the rename-in-place hook), so the row
+  // contributes only its resting style; the value and edit state come from the
+  // hook. Mirrors how object-name rows feed `useRenameInput`.
+  const nameLabelStyle = getNameLabelStyle({
+    labelColor,
+    isDimmed: Boolean(property.isDimmed),
+    isSubProperty: property.isSubProperty,
+    hasChildren,
+  })
 
-  const valueIconHidden = isThemeAssignment || Boolean(property.isLookParent)
-  const valueIconId =
-    valueIconHidden || !swatchChipColor ? iconId : "icon-custom-color-value"
-  const isDynamicValueIcon = valueIconId.startsWith("icon-custom-")
+  const valueIconStyle = getValueIconStyle({
+    hidden: false,
+    labelColor: undefined,
+  })
 
-  // Static value icons render through the generated string-`Icon` slot. Dynamic
-  // chips (swatch color, theme token, theme swatch strip, symbol glyph) cannot
-  // render through that slot, so `VMProperty` paints them as a node via the
-  // value field's children path instead, and the slot is suppressed here.
-  // Pass no label tint as the color fallback: a swatch-token or color-harmony
-  // row keeps its real value color, every other row leaves the icon color to
-  // the generated `.sdn-item-property` CSS so hover and state tints apply.
-  const icon2 =
-    valueIconHidden || isDynamicValueIcon
-      ? null
-      : {
-          icon: valueIconId as IconProps["icon"],
-          color: getPropertyIcon2Color(property, swatchChipColor, undefined),
-          style: getValueIconStyle({ hidden: false, labelColor: undefined }),
+  // Look-parent grouping rows (theme look groups, computed groups) own no value,
+  // so they show no value icon.
+  //
+  // The theme-assignment row paints the assigned theme's swatch cluster, the
+  // same strip its menu options show. A row that resolves to an actual color (a
+  // swatch token chip, a swatch definition, or a color-harmony point) paints a
+  // color circle. Both are dynamic ids the factory cannot emit as static SVGs;
+  // the generated `Icon` renders them from the runtime icon registry (see
+  // `lib/icons`). Every other row keeps its static property icon and leaves the
+  // tint to the generated `.sdn-item-property` CSS so hover and state apply.
+  const chipColor = getPropertyIcon2Color(property, swatchChipColor, undefined)
+
+  let icon2: Record<string, unknown> | null
+  if (property.isLookParent) {
+    icon2 = null
+  } else if (isThemeAssignment) {
+    icon2 = themeSwatchColors?.length
+      ? {
+          icon: "icon-custom-theme-swatches",
+          colors: themeSwatchColors,
+          style: valueIconStyle,
         }
+      : null
+  } else if (chipColor) {
+    icon2 = {
+      icon: "icon-custom-color-value",
+      color: chipColor,
+      style: valueIconStyle,
+    }
+  } else {
+    icon2 = {
+      icon: iconId,
+      style: valueIconStyle,
+    }
+  }
 
   // The trailing button is interactive only for uploads and menu/combo controls.
   // Otherwise it has no visible icon, so render it inert to keep it out of focus
@@ -150,7 +175,7 @@ export function buildPropertyRowProps({
   return {
     buttonIconic,
     icon,
-    textLabel,
+    nameLabelStyle,
     icon2,
     buttonIconic2,
     icon3,

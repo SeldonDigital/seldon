@@ -1,12 +1,7 @@
 import { Theme } from "../../../themes/types"
 import { ComputedFunction, Unit } from "../../constants"
 import { PropertySchema } from "../../types/schema"
-import { EmptyValue } from "../shared/empty/empty"
-import { DimensionValue } from "./dimension"
 import { Resize } from "./resize"
-
-/** Horizontal edge length using the same value shapes as the shared dimension model. */
-export type WidthValue = EmptyValue | DimensionValue
 
 export const widthSchema: PropertySchema = {
   name: "width",

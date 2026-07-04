@@ -34,7 +34,6 @@ flowchart LR
 | `symbolSchema` | `attributes/symbol.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
 | `sourceSchema` | `attributes/source.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
 | `ImageFit` | `shared/utilities/image-fit.ts` | Fixed enum choices for ValueType.OPTION storage. Imported by property value modules, types, or schema validators. |
-| `IMAGE_FIT_OPTIONS` | `shared/utilities/image-fit.ts` | Shared constant list re-exported for pickers or compute wiring. Imported by property value modules, types, or schema validators. |
 | `ImageFitExactValue` | `shared/utilities/image-fit.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
 | `ImageFitOptionValue` | `shared/utilities/image-fit.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
 | `ImageFitValue` | `shared/utilities/image-fit.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
@@ -88,9 +87,7 @@ flowchart LR
 | `Align` | `layout/align.ts` | Fixed enum choices for ValueType.OPTION storage. Imported by property value modules, types, or schema validators. |
 | `AlignValue` | `layout/align.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
 | `alignSchema` | `layout/align.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
-| `WidthValue` | `layout/width.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
 | `widthSchema` | `layout/width.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
-| `HeightValue` | `layout/height.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
 | `heightSchema` | `layout/height.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
 | `Margin` | `layout/margin.ts` | Fixed enum choices for ValueType.OPTION storage. Imported by property value modules, types, or schema validators. |
 | `MarginSideOptionValue` | `layout/margin.ts` | Tagged wire shape that stores a Margin option choice. Assigned on workspace overrides and merged before compute or export. |
@@ -111,9 +108,7 @@ flowchart LR
 | `gapSchema` | `layout/gap.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
 | `RotationValue` | `layout/rotation.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
 | `rotationSchema` | `layout/rotation.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
-| `WrapChildrenValue` | `layout/wrap-children.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
 | `wrapChildrenSchema` | `layout/wrap-children.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
-| `ClipValue` | `layout/clip.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
 | `clipSchema` | `layout/clip.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
 | `ColumnCountValue` | `layout/columns.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
 | `columnsSchema` | `layout/columns.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
@@ -123,7 +118,6 @@ flowchart LR
 | `DimensionThemeValue` | `layout/dimension.ts` | Tagged wire shape that stores a theme token reference. Assigned on workspace overrides and merged before compute or export. |
 | `DimensionResizeOptionValue` | `layout/dimension.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
 | `DimensionValue` | `layout/dimension.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
-| `DimensionResizeValue` | `layout/dimension.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
 | `dimensionSchema` | `layout/dimension.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
 | `Resize` | `layout/resize.ts` | Fixed enum choices for ValueType.OPTION storage. Imported by property value modules, types, or schema validators. |
 | `ResizeOptionValue` | `layout/resize.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
@@ -143,7 +137,6 @@ flowchart LR
 | `ColorThemeValue` | `appearance/color.ts` | Tagged wire shape that stores a theme token reference. Assigned on workspace overrides and merged before compute or export. |
 | `ColorValue` | `appearance/color.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
 | `colorSchema` | `appearance/color.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
-| `AccentColorValue` | `appearance/accent-color.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
 | `accentColorSchema` | `appearance/accent-color.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
 | `BrightnessValue` | `appearance/brightness.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
 | `brightnessSchema` | `appearance/brightness.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
@@ -226,7 +219,6 @@ flowchart LR
 | `TextDecorationOptionValue` | `typography/text-decoration.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
 | `TextDecorationValue` | `typography/text-decoration.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
 | `textDecorationSchema` | `typography/text-decoration.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
-| `WrapTextValue` | `typography/wrap-text.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
 | `wrapTextSchema` | `typography/wrap-text.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
 | `LinesValue` | `typography/lines.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
 | `linesSchema` | `typography/lines.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
@@ -310,7 +302,6 @@ flowchart LR
 | `AriaRoleValue` | `accessibility/role.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
 | `roleSchema` | `accessibility/role.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
 | `ariaLabelSchema` | `accessibility/aria-label.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
-| `AriaHiddenValue` | `accessibility/aria-hidden.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
 | `ariaHiddenSchema` | `accessibility/aria-hidden.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |
 | `AriaDisabledValue` | `accessibility/aria-disabled.ts` | Union of allowed tagged cells for one property or facet. Assigned on workspace overrides and merged before compute or export. |
 | `ariaDisabledSchema` | `accessibility/aria-disabled.ts` | Defines validation, supported storage shapes, and picker metadata for one catalog key. Imported into schemas/data/property-schemas.ts and read through getPropertySchema. |

@@ -1,6 +1,5 @@
 @import "../seldon/chrome/styles.css";
 @import "../seldon/styles-seldon.css";
-@import "../seldon/styles-seldon-dark.css";
 @import "../seldon/styles.css";
 
 /*
@@ -72,7 +71,7 @@ html,
 }
 
 :root {
-  --separator-border: #000 !important;
+  --separator-border: var(--sdn-swatch-black) !important;
   --hairline: 1px;
 }
 

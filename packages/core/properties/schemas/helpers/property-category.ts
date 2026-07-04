@@ -2,6 +2,7 @@ import { isCompoundCatalogProperty } from "../../constants/shared/compound-prope
 import { isShorthandCatalogProperty } from "../../constants/shared/shorthand-properties"
 import type { PropertySchema } from "../../types/schema"
 import { getPropertySchema } from "./get-property-schema"
+import { joinCompoundFacetKey } from "./property-path"
 
 /** Catalog grouping for a top-level property key. */
 export type PropertyCategory = "atomic" | "compound" | "shorthand"
@@ -27,23 +28,11 @@ export function getPropertyCategory(
 }
 
 /**
- * Returns the schema registered for a shorthand parent; the same schema applies to each sub-key.
- */
-export function getSubPropertySchema(
-  parentProperty: string,
-  _subProperty: string,
-): PropertySchema | undefined {
-  const schema = getPropertySchema(parentProperty)
-  return schema
-}
-
-/**
  * Resolves `parentProperty` + `subProperty` to the flattened catalog key and returns that schema.
  */
 export function getCompoundSubPropertySchema(
   parentProperty: string,
   subProperty: string,
 ): PropertySchema | undefined {
-  const schemaKey = `${parentProperty}${subProperty.charAt(0).toUpperCase()}${subProperty.slice(1)}`
-  return getPropertySchema(schemaKey)
+  return getPropertySchema(joinCompoundFacetKey(parentProperty, subProperty))
 }

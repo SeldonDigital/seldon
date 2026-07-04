@@ -5,6 +5,7 @@ import { resolveColor } from "../../helpers/resolution/resolve-color"
 import { resolveValue } from "../../helpers/resolution/resolve-value"
 import { getThemeOption } from "../../helpers/theme/get-theme-option"
 import { isCompoundValue } from "../../helpers/type-guards/compound/is-compound-value"
+import { InvariantError } from "../../helpers/utils/invariant"
 import type { ThemeSwatch } from "../../themes/types"
 import { ValueType } from "../constants"
 import type { AtomicValue } from "../types/value-atomic"
@@ -20,6 +21,7 @@ import {
   readAnchoredLayerPercentage,
 } from "./compute-layer-color"
 import { resolveBasedOnWithAnchor } from "./get-based-on-value"
+import { parseBasedOnPath } from "./parse-based-on-path"
 import { resolveHighContrastSource } from "./resolve-high-contrast-source"
 import { ComputeContext } from "./types"
 
@@ -40,8 +42,7 @@ export function computeHighContrastColor(
   value: ComputedHighContrastValue,
   context: ComputeContext,
 ) {
-  const { contrastRatio, fallbackColor, includeBleed } =
-    context.theme.highContrast.parameters
+  const { fallbackColor } = context.theme.highContrast.parameters
 
   const { basedOnValue, brightness, opacity, backdrop } =
     resolveHighContrastInputs(context, fallbackColor)
@@ -76,26 +77,44 @@ export function computeHighContrastColor(
     )
   }
 
-  const isDark = isDarkBackgroundColor(color, contrastRatio)
+  return resolveHighContrastForeground(color, context.theme)
+}
 
-  // With bleed, return the computed white/black swatch (which carries the hue
-  // bleed). Without bleed, build a neutral white/black from the color-harmony
-  // white/black points with zero saturation.
+/**
+ * Given a resolved surface color, returns the readable foreground swatch for it against `theme`.
+ * With bleed, returns the theme's white or black swatch (which carries the hue bleed). Without
+ * bleed, builds a neutral white or black from the color-harmony white/black points with zero
+ * saturation. The white/black choice comes from the surface luminance against the theme contrast
+ * ratio. This is the theme-parameterized core of high contrast, shared by the compute engine and by
+ * factory export so a theme can bake its own answer per surface.
+ *
+ * @param surface - Resolved surface color the foreground must read on
+ * @param theme - Theme supplying contrast ratio, bleed, harmony, and white/black swatches
+ * @returns `EXACT` foreground color taken from `@swatch.white`/`@swatch.black` or the harmony points
+ */
+export function resolveHighContrastForeground(
+  surface: ColorValue | HexValue,
+  theme: ComputeContext["theme"],
+): ColorValue | HexValue {
+  const { contrastRatio, includeBleed } = theme.highContrast.parameters
+
+  const useWhite = isDarkBackgroundColor(surface, contrastRatio)
+
   if (includeBleed) {
     const themeOption = getThemeOption(
-      isDark ? "@swatch.white" : "@swatch.black",
-      context.theme,
+      useWhite ? "@swatch.white" : "@swatch.black",
+      theme,
     ) as ThemeSwatch
     return themeSwatchToColorValue(themeOption)
   }
 
-  const harmony = context.theme.colorHarmony.parameters
+  const harmony = theme.colorHarmony.parameters
   return {
     type: ValueType.EXACT as const,
     value: {
       hue: 0,
       saturation: 0,
-      lightness: isDark ? harmony.whitePoint : harmony.blackPoint,
+      lightness: useWhite ? harmony.whitePoint : harmony.blackPoint,
     },
   }
 }
@@ -158,7 +177,10 @@ function resolveHighContrastInputs(
         ? resolveBackdropColor(basedOn, facetSource, context.theme)
         : undefined,
     }
-  } catch {
+  } catch (error) {
+    // An unresolved source falls back to the reference surface; an invariant
+    // violation is an authoring bug and must surface.
+    if (error instanceof InvariantError) throw error
     return {
       basedOnValue: fallbackColor as AtomicValue,
       brightness: undefined,
@@ -185,7 +207,7 @@ function resolveBackdropColor(
 
   const parentBasedOn = basedOn.startsWith("#parent.")
     ? basedOn
-    : `#parent.${basedOn.replace(/^#(parent\.|self\.)?/, "")}`
+    : `#parent.${parseBasedOnPath(basedOn).lookupPath}`
 
   const { value } = resolveBasedOnWithAnchor(parentBasedOn, facetSource)
 

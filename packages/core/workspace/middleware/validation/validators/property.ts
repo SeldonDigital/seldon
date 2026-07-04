@@ -1,8 +1,10 @@
 import { getComponentSchema } from "../../../../components/catalog"
 import type { ComponentId } from "../../../../components/constants"
+import { parseThemeRef } from "../../../../helpers/theme/get-theme-key-components"
 import { Properties, ValueType } from "../../../../properties"
 import { validatePropertyValue } from "../../../../properties/schemas/helpers"
 import { getComputedTheme } from "../../../compute"
+import { DEFAULT_THEME_ID } from "../../../constants"
 import type { Workspace } from "../../../types"
 import { check } from "../check"
 import { boardValidators } from "./board"
@@ -50,15 +52,20 @@ function checkThemeTokenExists(
   workspace: Workspace,
   themeId?: string,
 ): void {
-  const [namespace, tokenId] = tokenRef.replace(/^@/, "").split(".")
-  const theme = getComputedTheme(themeId ?? "default", workspace) as Record<
+  const ref = parseThemeRef(tokenRef)
+  const effectiveThemeId = themeId ?? DEFAULT_THEME_ID
+  check(
+    Boolean(ref),
+    `Theme token ${tokenRef} not found in theme ${effectiveThemeId}`,
+  )
+  const theme = getComputedTheme(effectiveThemeId, workspace) as Record<
     string,
     unknown
   >
-  const section = theme[namespace] as Record<string, unknown> | undefined
+  const section = theme[ref!.section] as Record<string, unknown> | undefined
   check(
-    Boolean(section?.[tokenId]),
-    `Theme token ${tokenRef} not found in theme ${themeId ?? "default"}`,
+    Boolean(section?.[ref!.optionId]),
+    `Theme token ${tokenRef} not found in theme ${effectiveThemeId}`,
   )
 }
 

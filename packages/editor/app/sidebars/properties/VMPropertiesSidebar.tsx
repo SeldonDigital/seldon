@@ -1,12 +1,6 @@
 import { MenuEntry } from "@lib/menus"
 import { LayoutGroup } from "framer-motion"
-import {
-  Fragment,
-  RefObject,
-  useCallback,
-  useDeferredValue,
-  useMemo,
-} from "react"
+import { Fragment, useCallback, useDeferredValue, useMemo } from "react"
 import {
   Board,
   Instance,
@@ -18,6 +12,7 @@ import {
   getLayerAddOptions,
   isThemeCustomTokenSection,
 } from "@seldon/core"
+import { PropertyDisplayCategory } from "@seldon/core/properties/schemas"
 import { isBoard } from "@seldon/core/workspace/helpers/components/is-board"
 import { useObjectProperties } from "@lib/workspace/hooks/use-object-properties"
 import {
@@ -29,7 +24,9 @@ import { useLayerDragMonitor } from "./hooks/use-layer-drag-monitor"
 import { usePropertiesSidebar } from "./hooks/use-properties-sidebar"
 import { PropertyEditNavigationProvider } from "./hooks/use-property-edit-navigation"
 import { useIsCategoryExpanded } from "./hooks/use-property-expansion"
-import { Box, FramerExpandable } from "@seldon/components/custom-components"
+import { getComponentKey } from "@lib/workspace/workspace-accessors"
+import { FramerExpandable } from "@seldon/components/custom-components"
+import { Frame } from "@seldon/components/frames/Frame"
 import { SidebarProperties } from "@seldon/components/modules/SidebarProperties"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import { CssBlock } from "./CssBlock"
@@ -49,19 +46,16 @@ import {
   getAllowedBorderSides,
   getPropertiesSubjectId,
 } from "./helpers/properties-data"
-import { PROPERTIES_TREE_GAP } from "./properties.bespoke"
+
+const PROPERTIES_TREE_GAP = "var(--sdn-gaps-tight)"
 
 export interface PropertyTreeProps {
-  properties: FlatProperty[]
   workspace: Workspace
   node: Variant | Instance | Board
   theme?: Theme
-  scrollerRef?: RefObject<HTMLDivElement | null>
   themeEditingContext?: ThemeEditingContext | null
   fontCollectionEditingContext?: FontCollectionEditingContext | null
   iconSetEditingContext?: IconSetEditingContext | null
-  /** Read-only Metadata rows rendered as the first section, when provided. */
-  metadataProperties?: FlatProperty[]
   /**
    * Families rows for the Families section, when provided. Holds parent family
    * rows and their child variant and license rows in one flat list.
@@ -110,7 +104,7 @@ export function VMPropertiesSidebar() {
     return (
       <SidebarProperties
         data-testid="properties-sidebar"
-        comboboxFieldFilterField={filter.comboboxField}
+        comboboxFieldFilter={filter.comboboxField}
         input={filter.input}
         buttonIconic={filter.buttonIconic}
         style={styles.sidebar}
@@ -130,7 +124,7 @@ export function VMPropertiesSidebar() {
   return (
     <SidebarProperties
       data-testid="properties-sidebar"
-      comboboxFieldFilterField={filter.comboboxField}
+      comboboxFieldFilter={filter.comboboxField}
       input={filter.input}
       buttonIconic={filter.buttonIconic}
       seldonRefs={seldonRefs}
@@ -144,15 +138,12 @@ export function VMPropertiesSidebar() {
  * structure. Groups properties into sections and handles expansion state.
  */
 function PropertiesTree({
-  properties,
   workspace,
   node,
   theme,
-  scrollerRef,
   themeEditingContext,
   fontCollectionEditingContext,
   iconSetEditingContext,
-  metadataProperties,
   familyProperties,
   iconProperties,
   sections,
@@ -181,13 +172,13 @@ function PropertiesTree({
   ))
 
   return (
-    <Box ref={scrollerRef} style={styles.scroller}>
-      <Box style={styles.tree}>
+    <Frame style={styles.scroller}>
+      <Frame style={styles.tree}>
         <PropertyEditNavigationProvider>
           <LayoutGroup>{sectionNodes}</LayoutGroup>
         </PropertyEditNavigationProvider>
-      </Box>
-    </Box>
+      </Frame>
+    </Frame>
   )
 }
 
@@ -276,10 +267,54 @@ function TreeSection({
     return () => themeEditingContext.addCustomToken(themeSection)
   }, [themeEditingContext, section.category])
 
-  const { addNodeLayer } = useObjectProperties()
+  const { addNodeLayer, applyBoardPropertiesToAllBoards, resetComponentBoard } =
+    useObjectProperties()
   const { toggleBorderSide } = useBorderSideVisibility()
   const borderSubjectId = getPropertiesSubjectId(node)
   const shownBorderSides = useRevealedBorderSides(borderSubjectId)
+
+  // A board's header section (the attributes category) carries the board-level
+  // commands: pushing this board's setup (properties and theme) onto every
+  // other component board, and resetting the board back to its defaults. Both
+  // are single workspace actions, so an AI agent fires the same mutations.
+  const boardActions = useMemo<MenuEntry[]>(() => {
+    if (!isBoard(node)) return []
+    if (section.category !== PropertyDisplayCategory.ATTRIBUTES) return []
+
+    const boardKey = getComponentKey(node)
+    return [
+      {
+        id: "apply-to-all-boards",
+        label: "Apply to All Boards",
+        onSelect: () => {
+          const confirmed = window.confirm(
+            "Apply this board's properties and theme to all other component boards? This overwrites their board setup.",
+          )
+          if (!confirmed) return
+          applyBoardPropertiesToAllBoards({ sourceBoardKey: boardKey })
+        },
+        testId: "board-apply-to-all",
+      },
+      "separator",
+      {
+        id: "reset-board",
+        label: "Reset Board",
+        onSelect: () => {
+          const confirmed = window.confirm(
+            "Reset this board's properties and theme to their defaults?",
+          )
+          if (!confirmed) return
+          resetComponentBoard({ boardKey })
+        },
+        testId: "board-reset",
+      },
+    ]
+  }, [
+    node,
+    section.category,
+    applyBoardPropertiesToAllBoards,
+    resetComponentBoard,
+  ])
 
   // A component node can stack extra paint layers. Offer "Add Background/Gradient/
   // Shadow" on the category that owns each exposed layered property.
@@ -362,6 +397,7 @@ function TreeSection({
   ])
 
   const sectionActions = useMemo((): MenuEntry[] | undefined => {
+    if (boardActions.length > 0) return boardActions
     if (section.category === "css" && cssStrings.length > 0) {
       const actions: MenuEntry[] = [
         {
@@ -396,6 +432,7 @@ function TreeSection({
     cssSelector,
     handleCopyCss,
     handleCopySelector,
+    boardActions,
     layerAddActions,
     borderSideActions,
   ])
@@ -449,7 +486,7 @@ const styles = {
     overflowY: "auto" as const,
   },
   tree: {
-    padding: "0.25rem 0 0.75rem 0",
+    padding: "var(--sdn-paddings-tight) 0 var(--sdn-paddings-cozy) 0",
     display: "flex",
     flexDirection: "column" as const,
     gap: PROPERTIES_TREE_GAP,

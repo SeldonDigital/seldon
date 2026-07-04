@@ -40,7 +40,7 @@ function isDebugFlagEnabled(flag: string): boolean {
  * Client-side: checks the persisted verboseLogging flag.
  * Server-side: checks DEBUG_MODE in the environment.
  */
-export function isDebugEnabled(): boolean {
+function isDebugEnabled(): boolean {
   return isDebugFlagEnabled("verboseLogging")
 }
 

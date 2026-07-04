@@ -40,18 +40,16 @@ export type {
   ThemeSwatch,
 } from "./shared/palette/theme-swatch"
 export { THEME_PALETTE_SLOTS } from "./shared/palette/theme-swatch"
+export { THEME_INTERFACE_SLOTS } from "./shared/palette/theme-swatch"
 export type { ThemeSwatchParameters } from "./shared/palette/theme-swatch-parameters"
 export type { ThemeFontFamilyToken } from "./shared/font-stack/theme-font-family-token"
 
 export {
-  isComputedGroupToken,
   isDynamicSwatchToken,
   isFontFamilyToken,
-  isLookToken,
   isModulatedToken,
   isOptionToken,
   isSwatchToken,
-  isThemeExactNumberToken,
   isThemeExactToken,
 } from "./shared/type-guards/theme-token-type-guards"
 

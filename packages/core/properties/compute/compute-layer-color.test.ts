@@ -1,11 +1,8 @@
 import { describe, expect, it } from "vitest"
 
 import { ValueType } from "../constants"
-import {
-  applyLayerOpacity,
-  exactColorToChromaInput,
-  normalizeLayerFacetPath,
-} from "./compute-layer-color"
+import { applyLayerOpacity } from "./compute-layer-color"
+import { normalizeLayerFacetPath } from "./parse-based-on-path"
 
 describe("normalizeLayerFacetPath", () => {
   it("anchors a bare paint facet path to layer 0", () => {
@@ -40,21 +37,18 @@ describe("applyLayerOpacity", () => {
     expect(result.type).toBe(ValueType.EXACT)
     expect(result.value).toMatch(/^#[0-9a-f]{6}$/i)
   })
-})
 
-describe("exactColorToChromaInput", () => {
-  it("passes hex through and adds a missing hash", () => {
-    expect(exactColorToChromaInput("#fff")).toBe("#fff")
-    expect(exactColorToChromaInput("abcabc" as never)).toBe("#abcabc")
-  })
-
-  it("stringifies an rgb object", () => {
-    expect(exactColorToChromaInput({ red: 255, green: 0, blue: 0 })).toBe(
-      "rgb(255 0 0)",
+  it("accepts object colors and hex without a hash", () => {
+    const result = applyLayerOpacity(
+      { red: 255, green: 0, blue: 0 },
+      50,
+      "abcabc" as never,
     )
+    expect(result.type).toBe(ValueType.EXACT)
+    expect(result.value).toMatch(/^#[0-9a-f]{6}$/i)
   })
 
   it("throws on an unparseable color", () => {
-    expect(() => exactColorToChromaInput({ foo: 1 } as never)).toThrow()
+    expect(() => applyLayerOpacity({ foo: 1 } as never, 50)).toThrow()
   })
 })

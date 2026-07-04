@@ -45,16 +45,27 @@ export function getDisclosureIconStyle({
   }
 }
 
-/** Property name label: status color tokens plus interaction affordances. */
+/**
+ * Property name label: interaction affordances plus row-state styling. The
+ * label's typography comes from the generated `.sdn-input` CSS; only the
+ * debug-mode status color, the dimmed opacity, and the sub-property indent
+ * are applied inline.
+ */
 export function getNameLabelStyle({
-  labelStyle,
+  labelColor,
+  isDimmed,
+  isSubProperty,
   hasChildren,
 }: {
-  labelStyle: CSSProperties
+  labelColor: string | undefined
+  isDimmed: boolean
+  isSubProperty: boolean
   hasChildren: boolean
 }): CSSProperties {
   return {
-    ...labelStyle,
+    ...(labelColor ? { color: labelColor } : {}),
+    ...(isDimmed ? { opacity: 0.5 } : {}),
+    ...(isSubProperty ? { paddingLeft: "var(--sdn-paddings-compact)" } : {}),
     cursor: hasChildren ? "pointer" : "default",
     userSelect: "none",
     WebkitUserSelect: "none",

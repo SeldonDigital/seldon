@@ -61,7 +61,10 @@ export function BarBreadcrumbsBar({
   seldonRefs,
   ...props
 }: BarBreadcrumbsBarProps) {
-  const barBreadcrumbsBarClassName = combineClassNames("sdn-bar", className)
+  const barBreadcrumbsBarClassName = combineClassNames(
+    "sdn-bar-breadcrumbs-bar",
+    className,
+  )
   const buttonIconicProps = applyRef(
     seldonRefs,
     buttonIconic === null
@@ -178,7 +181,7 @@ export function BarBreadcrumbsBar({
 const sdn: BarBreadcrumbsBarProps = {
   role: "navigation",
   "aria-hidden": "false",
-  className: "sdn-bar sdn-bar",
+  className: "sdn-bar-breadcrumbs-bar sdn-bar",
   buttonIconic: {
     className: "sdn-button-iconic sdn-button-iconic--pgsr",
   },

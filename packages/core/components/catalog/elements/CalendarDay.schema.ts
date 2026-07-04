@@ -45,9 +45,9 @@ export const schema = {
     },
     padding: {
       top: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.compact" },
-      right: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.cozy" },
+      right: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.compact" },
       bottom: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.compact" },
-      left: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.cozy" },
+      left: { type: Sdn.ValueType.THEME_ORDINAL, value: "@padding.compact" },
     },
     gap: {
       type: Sdn.ValueType.THEME_ORDINAL,
@@ -163,6 +163,7 @@ export const schema = {
         variant: "label",
         overrides: {
           content: { type: Sdn.ValueType.EXACT, value: "00" },
+          width: { type: Sdn.ValueType.OPTION, value: Sdn.Resize.FIT },
           textAlign: {
             type: Sdn.ValueType.OPTION,
             value: Sdn.TextAlign.CENTER,

@@ -4,7 +4,7 @@
  */
 export type IconSetTemplateId =
   | "seldonIcons"
-  | "googleMaterial"
+  | "googleSymbols"
   | "ibmCarbon"
   | "lucideIcons"
 

@@ -2,13 +2,13 @@ import { produce } from "immer"
 
 import { ExtractPayload, Workspace } from "../../../../index"
 import {
-  deleteFontCollectionOverrideAtPath,
-  setFontCollectionOverrideAtPath,
-} from "../../../helpers/font-collections/font-collection-id"
-import {
   WORKSPACE_EDITABLE_FONT_COLLECTION_ENTRY_ID,
   ensureWorkspaceEditableFontCollectionEntry,
 } from "../../../helpers/font-collections/workspace-editable-font-collection"
+import {
+  deleteOverrideAtPath,
+  setOverrideAtPath,
+} from "../../../helpers/general/override-paths"
 import type { EntryFontCollection } from "../../../model/entry-font-collection"
 
 /**
@@ -33,9 +33,9 @@ export function setFontCollectionOverride(
       ...(entry.overrides as Record<string, unknown>),
     }
     if (payload.value === null) {
-      deleteFontCollectionOverrideAtPath(overrides, payload.path)
+      deleteOverrideAtPath(overrides, payload.path)
     } else {
-      setFontCollectionOverrideAtPath(overrides, payload.path, payload.value)
+      setOverrideAtPath(overrides, payload.path, payload.value)
     }
     entry.overrides = overrides
   })

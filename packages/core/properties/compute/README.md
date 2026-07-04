@@ -19,7 +19,8 @@ flowchart LR
 | Type or Function | File | Purpose and use |
 | --- | --- | --- |
 | `computeProperties` | `compute-properties.ts` | Walks one properties object and resolves every computed cell. Low-level pass after merge when context is already built. |
-| `getBasedOnValue` | `get-based-on-value.ts` | Resolves one `basedOn` path to a primitive tagged value. Shared input lookup for all compute engines. |
+| `getBasedOnValue` | `get-based-on-value.ts` | Resolves one `basedOn` path to a primitive tagged value. Input lookup for AUTO_FIT, OPTICAL_PADDING, and MATCH_COLOR. HIGH_CONTRAST_COLOR and the match-color mirror resolve through `resolveBasedOnWithAnchor` in the same file. |
+| `parseBasedOnPath` | `parse-based-on-path.ts` | Splits a `basedOn` path into its `#parent.` or `#self.` anchor and a layer-0-anchored lookup path. Shared by the compute engines. |
 | `resolveAutoFitSource` | `resolve-auto-fit-source.ts` | Walks the ancestor chain for the size token AUTO_FIT scales from: first `buttonSize`, then `size`, then `@fontSize.medium`. Returns a value because the walk picks a token across depths. |
 | `resolveHighContrastSource` | `resolve-high-contrast-source.ts` | Returns the `basedOn` path HIGH_CONTRAST_COLOR contrasts against: `#self.background.color`. |
 | `resolveMatchColorSource` | `resolve-match-color-source.ts` | Returns the `basedOn` path MATCH_COLOR reads: `#self.background.color`. |

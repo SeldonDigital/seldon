@@ -341,7 +341,7 @@ const sdn: ComboboxProps = {
   icon3: {
     icon: "seldon-component",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--xi68",
+    className: "sdn-icon sdn-icon--3qou",
   },
   textLabel: {
     className: "sdn-text-label sdn-text-label--xohb",
@@ -354,7 +354,7 @@ const sdn: ComboboxProps = {
   icon4: {
     icon: "seldon-component",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--xi68",
+    className: "sdn-icon sdn-icon--3qou",
   },
   textLabel2: {
     className: "sdn-text-label sdn-text-label--xohb",
@@ -367,7 +367,7 @@ const sdn: ComboboxProps = {
   icon5: {
     icon: "seldon-component",
     "aria-hidden": "true",
-    className: "sdn-icon sdn-icon--xi68",
+    className: "sdn-icon sdn-icon--3qou",
   },
   textLabel3: {
     className: "sdn-text-label sdn-text-label--xohb",

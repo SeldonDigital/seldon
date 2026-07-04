@@ -21,20 +21,20 @@ describe("getLayeredPaintColor", () => {
         color: { type: ValueType.THEME_CATEGORICAL, value: "@swatch.primary" },
         theme: defaultTheme,
         useThemeVariableReferences: true,
-        themeSlug: "seldon",
       }),
     ).toBe("var(--sdn-swatch-primary)")
   })
 
-  it("falls back to a literal when brightness is adjusted, even in export mode", () => {
+  it("emits relative color syntax when brightness is adjusted in export mode", () => {
     const result = getLayeredPaintColor({
       color: { type: ValueType.THEME_CATEGORICAL, value: "@swatch.primary" },
       brightness: { type: ValueType.EXACT, value: { unit: "%", value: 50 } },
       theme: defaultTheme,
       useThemeVariableReferences: true,
-      themeSlug: "seldon",
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any)
-    expect(result.startsWith("var(")).toBe(false)
+    expect(result).toBe(
+      "hsl(from var(--sdn-swatch-primary) h s calc(l + (100 - l) * 0.5))",
+    )
   })
 })

@@ -21,7 +21,7 @@ export interface PropertySchema {
   name: string
   description: string
   /**
-   * Panel grouping per `PROPERTIES.md` categories (`PROPERTY_DISPLAY_ORDER`).
+   * Panel grouping per the properties README categories (`PROPERTY_DISPLAY_ORDER`).
    * Always set on merged `PROPERTY_SCHEMAS` entries; optional on raw per-value modules.
    */
   displayCategory?: PropertyDisplayCategory

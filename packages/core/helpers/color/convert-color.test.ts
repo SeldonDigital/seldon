@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest"
 
 import {
-  hexToRGBObject,
+  hexToHSLObject,
   parseHSLString,
   parseLCHString,
   parseRGBString,
@@ -32,10 +32,18 @@ describe("rgbToHSL", () => {
   })
 })
 
-describe("hexToRGBObject", () => {
+describe("hexToHSLObject", () => {
   it("parses hex with and without a hash", () => {
-    expect(hexToRGBObject("#ff0000")).toEqual({ red: 255, green: 0, blue: 0 })
-    expect(hexToRGBObject("00ff00")).toEqual({ red: 0, green: 255, blue: 0 })
+    expect(hexToHSLObject("#ff0000")).toEqual({
+      hue: 0,
+      saturation: 100,
+      lightness: 50,
+    })
+    expect(hexToHSLObject("00ff00")).toEqual({
+      hue: 120,
+      saturation: 100,
+      lightness: 50,
+    })
   })
 })
 

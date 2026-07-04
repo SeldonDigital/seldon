@@ -1,6 +1,6 @@
 # Schemas
 
-Theme token catalog entries describe how editors present and validate values on a `StockTheme` or `ComputedTheme`. Each `ThemeTokenSchema` maps a stable key such as `core.ratio` or `shadow.medium.offsetX` to supports, validation, and UI metadata. These entries are not component `PropertySchema` rows, though many entries bridge into `PROPERTY_SCHEMAS` through `propertyKey`.
+Theme token catalog entries describe how editors present and validate values on a `StockTheme` or `ComputedTheme`. Each `ThemeTokenSchema` maps a stable key such as `size.medium.step` or `shadow.medium.offsetX` to supports, validation, and UI metadata. These entries are not component `PropertySchema` rows, though many entries bridge into `PROPERTY_SCHEMAS` through `propertyKey`.
 
 ---
 
@@ -13,7 +13,7 @@ flowchart LR
   theme[StockTheme or ComputedTheme] --> dynamic[generate*Schemas]
   static --> resolve[resolveThemeTokenEntry]
   dynamic --> resolve
-  resolve --> validate[validateThemeTokenValue]
+  resolve --> schema[resolveThemeTokenSchema]
 ```
 
 ---
@@ -25,22 +25,18 @@ flowchart LR
 | Type or Function | File | Purpose and use |
 | --- | --- | --- |
 | `THEME_TOKEN_SCHEMAS` | `data/theme-token-schemas.ts` | Static key to `ThemeTokenSchema` map. Populated at module load from static schema arrays. |
-| `THEME_TOKEN_SCHEMA_CATALOG` | `data/theme-token-schemas.ts` | Alias of `THEME_TOKEN_SCHEMAS`. |
 | `THEME_TOKEN_SECTIONS` | `sections.ts` | Ordered UI sections for token lists. Order is defined explicitly in `THEME_TOKEN_SECTION_ORDER`. |
-| `getThemeTokenSectionSchema` | `sections.ts` | Returns one section definition by id. |
 | `getAllThemeTokenSectionSchemas` | `sections.ts` | Returns every section definition. |
 
 ### Lookup, resolve, and validate
 
 | Type or Function | File | Purpose and use |
 | --- | --- | --- |
-| `getStoredThemeTokenSchema` | `helpers/get-theme-token-schema.ts` | Static catalog entry only, without property merge. |
 | `getThemeTokenSchema` | `helpers/get-theme-token-schema.ts` | Static entry with `propertyKey` defaults merged. |
 | `getAllThemeTokenSchemas` | `helpers/get-all-theme-token-schemas.ts` | Static plus dynamic schemas for one optional theme. |
 | `getThemeTokenSchemasBySection` | `helpers/get-theme-token-schemas-by-section.ts` | Schemas grouped for one `ThemeTokenSectionId`. |
 | `resolveThemeTokenSchema` | `helpers/resolve-theme-token-schema.ts` | Fills label, supports, validation, and control hints from property schema when bridged. |
 | `resolveThemeTokenEntry` | `helpers/resolve-theme-token-entry.ts` | Resolves static or per-theme dynamic entry by key. |
-| `validateThemeTokenValue` | `helpers/validate-theme-token-value.ts` | Validates raw token storage. Delegates to `validatePropertyValue` when `propertyKey` is set. |
 | `buildThemeTokenValidation` | `helpers/finalize-theme-token-schema.ts` | Builds per-support validators from a draft `valueType`. |
 | `finalizeThemeTokenSchema` | `helpers/finalize-theme-token-schema.ts` | Expands a catalog draft into full `ThemeTokenSchema`. |
 
@@ -56,7 +52,6 @@ flowchart LR
 
 | Type or Function | File | Purpose and use |
 | --- | --- | --- |
-| `coreSchemas` | `data/theme-static-schemas.ts` | Finalized schemas for `core.*` and `color.*` inputs. |
 | `sizeSchemas` | `data/theme-static-schemas.ts` | Modulated size slot step and parameters keys. |
 | `dimensionSchemas` | `data/theme-static-schemas.ts` | Dimension scale slot schemas. |
 | `marginSchemas` | `data/theme-static-schemas.ts` | Margin scale slot schemas. |

@@ -50,8 +50,8 @@ const ADD_THEME_SECTIONS = [
   "lineHeight",
 ] as const
 
-/** Sections that accept a `remove_theme_custom_*` action (adds `background`). */
-const REMOVE_THEME_SECTIONS = [...ADD_THEME_SECTIONS, "background"] as const
+/** Sections that accept a `remove_theme_custom_*` action (same as add). */
+const REMOVE_THEME_SECTIONS = ADD_THEME_SECTIONS
 
 function firstEntryIdOfType(
   map: Record<string, { type: string }>,
@@ -166,9 +166,21 @@ function buildBase() {
       Record<string, unknown>
     >
     for (const section of REMOVE_THEME_SECTIONS) {
+      // A swatch seed needs a resolvable color so removing it can inline the
+      // value into referencing nodes; other sections only need a name stub.
+      const seed =
+        section === "swatch"
+          ? {
+              name: "seed",
+              parameters: {
+                colorspace: Colorspace.HSL,
+                value: { hue: 0, saturation: 0, lightness: 50 },
+              },
+            }
+          : { name: "seed" }
       overrides[section] = {
         ...(overrides[section] ?? {}),
-        custom1: { name: "seed" },
+        custom1: seed,
       }
     }
     const fcOverrides = draft["font-collections"][FC_VARIANT_ID]!
@@ -801,7 +813,7 @@ const CASES: Array<[string, WorkspaceAction, Workspace?]> = [
     }),
   ],
 
-  // Reserved stub maps and transcript no-ops.
+  // Reserved stub maps.
   ["stubs_add_font_collection_row", act("stubs_add_font_collection_row", {})],
   [
     "stubs_remove_font_collection_row",
@@ -819,13 +831,6 @@ const CASES: Array<[string, WorkspaceAction, Workspace?]> = [
   ["stubs_remove_media_row", act("stubs_remove_media_row", {})],
   ["stubs_set_media_field", act("stubs_set_media_field", {})],
   ["stubs_duplicate_media_row", act("stubs_duplicate_media_row", {})],
-  [
-    "transcript_add_message",
-    act("transcript_add_message", {
-      chatMessage: "hi",
-      expectUserAnswer: false,
-    }),
-  ],
 ]
 
 describe("workspaceReducer exhaustive dispatch", () => {

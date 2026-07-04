@@ -13,7 +13,7 @@ import { triggerDownload } from "@lib/helpers/trigger-download"
 import { kebabCase } from "change-case"
 import { useCallback } from "react"
 import { orderWorkspaceNodeKeys } from "@seldon/core/workspace/helpers/nodes/order-entry-node-keys"
-import { workspacePropagationService } from "@seldon/core/workspace/services/propagation/workspace-propagation.service"
+import { parseWorkspace } from "@seldon/core/workspace/helpers/parse-workspace"
 import type { Workspace } from "@seldon/core/workspace/types"
 import { useWorkspaceRecord } from "@lib/persistence/hooks/use-workspace-record"
 import { useWorkspaceId } from "@lib/project/hooks/use-workspace-id"
@@ -97,12 +97,14 @@ export function useImportExport() {
   const importWorkspaceFromFile = useCallback(
     async (file: File) => {
       const text = await file.text()
-      const parsed = workspacePropagationService.parseWorkspace(
-        text,
-      ) as Workspace
-      await importWorkspace(parsed)
+      try {
+        const parsed = parseWorkspace(text)
+        await importWorkspace(parsed)
+      } catch (error) {
+        addToast(error instanceof Error ? error.message : "Import failed")
+      }
     },
-    [importWorkspace],
+    [addToast, importWorkspace],
   )
 
   const exportToFolder = useCallback(async () => {

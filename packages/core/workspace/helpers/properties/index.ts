@@ -3,11 +3,9 @@ export {
   formatCompoundDisplay,
   formatShorthandDisplay,
   formatValue,
-  getAllowedValues,
   getCompoundPropertyStructure,
   getEffectiveProperties,
   getPropertyStatus,
-  matchCompoundPreset,
 } from "./properties"
 export {
   getPropertyPickerOptions,

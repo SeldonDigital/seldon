@@ -2,9 +2,9 @@ import { produce } from "immer"
 
 import { ExtractPayload, Workspace } from "../../../../index"
 import {
-  deleteIconSetOverrideAtPath,
-  setIconSetOverrideAtPath,
-} from "../../../helpers/icon-sets/icon-set-id"
+  deleteOverrideAtPath,
+  setOverrideAtPath,
+} from "../../../helpers/general/override-paths"
 import type { EntryIconSet } from "../../../model/entry-icon-set"
 
 /**
@@ -25,9 +25,9 @@ export function setIconSetOverride(
       ...(entry.overrides as Record<string, unknown>),
     }
     if (payload.value === null) {
-      deleteIconSetOverrideAtPath(overrides, payload.path)
+      deleteOverrideAtPath(overrides, payload.path)
     } else {
-      setIconSetOverrideAtPath(overrides, payload.path, payload.value)
+      setOverrideAtPath(overrides, payload.path, payload.value)
     }
     entry.overrides = overrides
   })

@@ -34,9 +34,6 @@ flowchart LR
 | `LAYERED_PAINT_KEYS` | `property-keys.ts` | Set of layered paint top-level keys. Shared guard for array merge and compute. |
 | `isLayeredPaintProperty` | `property-keys.ts` | Returns true for layered paint stack keys. Called when merging or computing paint arrays. |
 | `CompoundPropertyKey` | `property-keys.ts` | Any top-level key with nested facets or layers. Broad compound key union for tooling. |
-| `CompoundPropertyPath` | `property-keys.ts` | Type-level paths for compound facets including bracket indices. Editor and validator path unions. |
-| `ShorthandPropertyPath` | `property-keys.ts` | Type-level paths for shorthand sides and corners. Editor path unions for margin, padding, corners. |
-| `PropertyPath` | `property-keys.ts` | Union of all accepted nested property paths. Static path validation across the property system. |
 
 ### Value shapes
 

@@ -5,7 +5,10 @@ import Editor from "@app/editor/Editor"
 import { LocalWorkspaceShell } from "@app/editor/LocalWorkspaceShell"
 import { ProjectInitialize } from "@app/editor/ProjectInitialize"
 
-const message: CSSProperties = { padding: "2rem", color: "#fff" }
+const message: CSSProperties = {
+  padding: "2rem",
+  color: "var(--sdn-swatch-white)",
+}
 
 export default function EditorPage() {
   const workspaceId = useWorkspaceId()

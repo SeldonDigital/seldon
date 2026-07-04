@@ -12,7 +12,8 @@ import {
   Pointer,
 } from "@seldon/components/custom-components"
 import type { LayerPlacement } from "./helpers/layer-reorder"
-import { LAYER_DRAG_DOT_SIZE } from "./properties.bespoke"
+
+const LAYER_DRAG_DOT_SIZE = "var(--sdn-sizes-xsmall)"
 
 /** A row's layer-reorder context: which paint stack it belongs to and where. */
 export interface LayerDragContext {

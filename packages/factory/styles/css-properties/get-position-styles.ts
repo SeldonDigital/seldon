@@ -8,9 +8,11 @@ import { CSSObject } from "./types"
 export function getPositionStyles({
   properties,
   theme,
+  useThemeVariableReferences,
 }: {
   properties: Properties
   theme: Theme
+  useThemeVariableReferences?: boolean
 }): CSSObject {
   const styles: CSSObject = {}
 
@@ -21,19 +23,35 @@ export function getPositionStyles({
     const left = resolveValue(properties.position.left)
 
     if (top) {
-      styles.top = getAbsoluteSizeCssValue(top, theme)
+      styles.top = getAbsoluteSizeCssValue(
+        top,
+        theme,
+        useThemeVariableReferences,
+      )
     }
 
     if (right) {
-      styles.right = getAbsoluteSizeCssValue(right, theme)
+      styles.right = getAbsoluteSizeCssValue(
+        right,
+        theme,
+        useThemeVariableReferences,
+      )
     }
 
     if (bottom) {
-      styles.bottom = getAbsoluteSizeCssValue(bottom, theme)
+      styles.bottom = getAbsoluteSizeCssValue(
+        bottom,
+        theme,
+        useThemeVariableReferences,
+      )
     }
 
     if (left) {
-      styles.left = getAbsoluteSizeCssValue(left, theme)
+      styles.left = getAbsoluteSizeCssValue(
+        left,
+        theme,
+        useThemeVariableReferences,
+      )
     }
 
     if (top || right || bottom || left) {

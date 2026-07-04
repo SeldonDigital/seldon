@@ -19,6 +19,7 @@ import { HSLObjectToString } from "../../../helpers/color/hsl-object-to-string"
 import { LCHObjectToString } from "../../../helpers/color/lch-object-to-string"
 import { RGBObjectToString } from "../../../helpers/color/rgb-object-to-string"
 import { stringifyValue } from "../../../helpers/properties/stringify-value"
+import { parseThemeRef } from "../../../helpers/theme/get-theme-key-components"
 import { getThemeValueName } from "../../../helpers/theme/get-theme-value-name"
 import { isHSLObject } from "../../../helpers/type-guards/color/is-hsl-object"
 import { isLCHObject } from "../../../helpers/type-guards/color/is-lch-object"
@@ -363,7 +364,7 @@ function buildComputedOptions(
 
 /** Custom token ordinal (`custom3` -> 3), or -1 when the key is a reserved token. */
 function customTokenIndex(key: string): number {
-  const id = key.startsWith("@") ? (key.split(".").pop() ?? key) : key
+  const id = parseThemeRef(key)?.optionId ?? key
   const match = /^custom(\d+)$/.exec(id)
   return match ? parseInt(match[1]!, 10) : -1
 }
@@ -399,11 +400,9 @@ function getThemeSectionFromSchema(
   // so derive it directly. This avoids matching a property name against the theme
   // and works for any schema that returns `@`-prefixed keys.
   const firstKey = keys[0]!
-  if (firstKey.startsWith("@")) {
-    const section = firstKey.slice(1).split(".")[0]
-    if (section && theme[section as keyof Theme]) {
-      return section
-    }
+  const section = parseThemeRef(firstKey)?.section
+  if (section && theme[section as keyof Theme]) {
+    return section
   }
 
   for (const [sectionName, sectionData] of Object.entries(theme)) {

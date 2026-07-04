@@ -13,6 +13,12 @@ describe("getThemeSwatchVarNames", () => {
     expect(names.primary).toBe("primary")
     expect(names.white).toBe("white")
   })
+
+  it("maps dynamic palette slots to their slot id so they align across themes", () => {
+    const names = getThemeSwatchVarNames(defaultTheme)
+    expect(names.swatch1).toBe("swatch1")
+    expect(names.swatch4).toBe("swatch4")
+  })
 })
 
 describe("getThemeSwatchVarReference", () => {
@@ -28,15 +34,9 @@ describe("getThemeSwatchVarReference", () => {
     ).toBeUndefined()
   })
 
-  it("emits a bare --sdn- variable for the default theme slug", () => {
-    expect(
-      getThemeSwatchVarReference("@swatch.primary", defaultTheme, "seldon"),
-    ).toBe("var(--sdn-swatch-primary)")
-  })
-
-  it("prefixes the slug for non-default themes", () => {
-    expect(
-      getThemeSwatchVarReference("@swatch.primary", defaultTheme, "seldon-red"),
-    ).toBe("var(--sdn-seldon-red-swatch-primary)")
+  it("emits a bare --sdn- swatch variable that aligns across themes", () => {
+    expect(getThemeSwatchVarReference("@swatch.primary", defaultTheme)).toBe(
+      "var(--sdn-swatch-primary)",
+    )
   })
 })

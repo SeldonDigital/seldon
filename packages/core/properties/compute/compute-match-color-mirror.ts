@@ -1,10 +1,11 @@
 import { resolveValue } from "../../helpers/resolution/resolve-value"
 import { isMatchColorValue } from "../../helpers/type-guards/value/is-computed-value"
 import { findInObject } from "../../helpers/utils/find-in-object"
+import { InvariantError } from "../../helpers/utils/invariant"
 import { COLOR_SIBLING_KEYS, EMPTY_VALUE, ValueType } from "../constants"
 import type { Value } from "../types/value"
-import { normalizeLayerFacetPath } from "./compute-layer-color"
 import { resolveBasedOnWithAnchor } from "./get-based-on-value"
+import { parseBasedOnPath } from "./parse-based-on-path"
 import { resolveMatchColorSource } from "./resolve-match-color-source"
 import type { ComputeContext } from "./types"
 
@@ -34,14 +35,15 @@ function readSourceSiblingFacet(
   let facetSource: Omit<ComputeContext, "theme"> | null = null
   try {
     facetSource = resolveBasedOnWithAnchor(basedOn, context).facetSource
-  } catch {
+  } catch (error) {
+    // An unresolved source contributes nothing; an invariant violation is an
+    // authoring bug and must surface.
+    if (error instanceof InvariantError) throw error
     facetSource = null
   }
   if (!facetSource) return undefined
 
-  const colorLookupPath = normalizeLayerFacetPath(
-    basedOn.replace(/^#(parent\.|self\.)?/, ""),
-  )
+  const colorLookupPath = parseBasedOnPath(basedOn).lookupPath
   const facetPath = siblingSourcePath(colorLookupPath, facet)
   if (!facetPath) return undefined
 

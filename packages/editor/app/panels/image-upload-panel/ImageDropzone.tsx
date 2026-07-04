@@ -45,7 +45,7 @@ function getDropzoneStyle(
           color: DROPZONE_DRAG_ACCENT,
           border: DROPZONE_DRAG_BORDER,
         }
-      : { color: "#F5F5F5" }),
+      : { color: "var(--sdn-swatch-white)" }),
     ...(hasFile ? { position: "relative" } : { gap: DROPZONE_GAP }),
   }
 }

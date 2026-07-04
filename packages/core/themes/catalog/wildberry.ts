@@ -14,21 +14,21 @@ export const theme: StockTheme = {
     id: "wildberry",
     name: "Wildberry",
     description:
-      "A clean and versatile theme with a fruit and juciy color palette. It features a range of customizable typography, layout, and color options to suit various design needs.",
+      "A bright, playful theme with a juicy berry primary and a rainbow of candy-bright accents on a dark canvas. Rounded shapes and friendly type give it a fun, kid-ready feel.",
     intent:
-      "To provide a modern and professional look with high contrast and readability, suitable for a wide range of applications.",
+      "To provide a cheerful, approachable look for playful and youthful products, with bold color, generous rounding, and rounded, legible type.",
   },
   modulation: {
     type: TokenType.COMPUTED,
-    parameters: { ratio: 1.333, baseFontSize: 16, baseSize: 1 },
+    parameters: { ratio: 1.2, baseFontSize: 18, baseSize: 1.2 },
   },
   colorHarmony: {
     type: TokenType.COMPUTED,
     parameters: {
       baseColor: {
-        hue: 270,
-        saturation: 100,
-        lightness: 70,
+        hue: 327,
+        saturation: 83,
+        lightness: 57,
       },
       harmony: 4,
       angle: 30,
@@ -37,6 +37,8 @@ export const theme: StockTheme = {
       grayPoint: 56,
       blackPoint: 8,
       bleed: 12,
+      mode: "light",
+      chromaChange: 0,
     },
   },
   matchColor: {
@@ -62,8 +64,8 @@ export const theme: StockTheme = {
   fontFamily: {
     type: TokenType.COMPUTED,
     parameters: {
-      primary: { type: TokenType.FONT_FAMILY, parameters: "DM Sans" },
-      secondary: { type: TokenType.FONT_FAMILY, parameters: "DM Sans" },
+      primary: { type: TokenType.FONT_FAMILY, parameters: "Nunito" },
+      secondary: { type: TokenType.FONT_FAMILY, parameters: "Quicksand" },
     },
   },
   size: {
@@ -312,14 +314,14 @@ export const theme: StockTheme = {
       type: TokenType.MODULATED,
       name: "Tight",
       parameters: {
-        step: -6.21,
+        step: -2.41,
       },
     },
     compact: {
       type: TokenType.MODULATED,
       name: "Compact",
       parameters: {
-        step: -3.11,
+        step: -1.0,
       },
     },
     cozy: {
@@ -333,14 +335,14 @@ export const theme: StockTheme = {
       type: TokenType.MODULATED,
       name: "Comfortable",
       parameters: {
-        step: 1.82,
+        step: 1.95,
       },
     },
     open: {
       type: TokenType.MODULATED,
       name: "Open",
       parameters: {
-        step: 6,
+        step: 4.82,
       },
     },
   },
@@ -713,6 +715,15 @@ export const theme: StockTheme = {
       role: "swatch4",
       intent: "A tint of the primary color",
     },
+    foreground: {
+      name: "Foreground",
+      intent: "The default color used for text and foreground content.",
+      type: TokenType.SWATCH,
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 285, saturation: 12, lightness: 95 },
+      },
+    },
     background: {
       name: "Background",
       intent:
@@ -720,57 +731,75 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 0, saturation: 4, lightness: 8 },
+        value: { hue: 285, saturation: 22, lightness: 9 },
       },
     },
-    custom1: {
-      name: "Grey 1",
-      intent: "Seldon Red",
+    active: {
+      name: "Active",
+      intent: "Active color for all important actions",
+      type: TokenType.SWATCH,
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 327, saturation: 81, lightness: 58 },
+      },
+    },
+    punch: {
+      name: "Punch",
+      intent: "Punch color for all important actions",
+      type: TokenType.SWATCH,
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 185, saturation: 100, lightness: 44 },
+      },
+    },
+    positive: {
+      name: "Positive",
+      intent: "Actions that are successful or correct",
+      type: TokenType.SWATCH,
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 126, saturation: 79, lightness: 43 },
+      },
+    },
+    negative: {
+      name: "Negative",
+      intent: "Actions that are unsuccessful or incorrect",
+      type: TokenType.SWATCH,
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 3, saturation: 79, lightness: 56 },
+      },
+    },
+    warning: {
+      name: "Warning",
+      intent: "Used to indicate caution or attention",
+      type: TokenType.SWATCH,
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 33, saturation: 89, lightness: 52 },
+      },
+    },
+    accent: {
+      name: "Accent",
+      intent: "To act as an accent color",
+      type: TokenType.SWATCH,
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 47, saturation: 87, lightness: 53 },
+      },
+    },
+    offBlack: {
+      name: "Off Black",
+      intent: "Dark color for text on light backgrounds",
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
         value: { hue: 0, saturation: 0, lightness: 25 },
       },
     },
-    custom2: {
-      name: "Seldon Green",
-      intent: "Seldon Green",
-      type: TokenType.SWATCH,
-      parameters: {
-        colorspace: Colorspace.HSL,
-        value: { hue: 135, saturation: 100, lightness: 35 },
-      },
-    },
-    custom3: {
-      name: "Seldon Blue",
-      intent: "Seldon Blue",
-      type: TokenType.SWATCH,
-      parameters: {
-        colorspace: Colorspace.HSL,
-        value: { hue: 203, saturation: 100, lightness: 62 },
-      },
-    },
-    custom4: {
-      name: "Seldon Yellow",
-      intent: "Seldon Yellow",
-      type: TokenType.SWATCH,
-      parameters: {
-        colorspace: Colorspace.HSL,
-        value: { hue: 60, saturation: 100, lightness: 46 },
-      },
-    },
-    custom5: {
-      name: "Seldon Purple",
-      intent: "Seldon Purple",
-      type: TokenType.SWATCH,
-      parameters: {
-        colorspace: Colorspace.HSL,
-        value: { hue: 300, saturation: 76, lightness: 48 },
-      },
-    },
-    custom6: {
-      name: "Gray93",
-      intent: "Custom Swatch",
+    offWhite: {
+      name: "Off White",
+      intent: "Light color for text on dark backgrounds",
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
@@ -832,7 +861,7 @@ export const theme: StockTheme = {
         },
         weight: {
           type: ValueType.THEME_ORDINAL,
-          value: "@fontWeight.semibold",
+          value: "@fontWeight.bold",
         },
         size: {
           type: ValueType.THEME_ORDINAL,
@@ -1107,7 +1136,7 @@ export const theme: StockTheme = {
       parameters: {
         family: {
           type: ValueType.OPTION,
-          value: "Inconsolata",
+          value: "JetBrains Mono",
         },
         style: {
           type: ValueType.OPTION,
@@ -1458,7 +1487,7 @@ export const theme: StockTheme = {
         opacity: {
           type: ValueType.EXACT,
           value: {
-            value: 33,
+            value: 20,
             unit: Unit.PERCENT,
           },
         },
@@ -1497,7 +1526,7 @@ export const theme: StockTheme = {
         opacity: {
           type: ValueType.EXACT,
           value: {
-            value: 33,
+            value: 20,
             unit: Unit.PERCENT,
           },
         },
@@ -1536,7 +1565,7 @@ export const theme: StockTheme = {
         opacity: {
           type: ValueType.EXACT,
           value: {
-            value: 33,
+            value: 20,
             unit: Unit.PERCENT,
           },
         },
@@ -1575,7 +1604,7 @@ export const theme: StockTheme = {
         opacity: {
           type: ValueType.EXACT,
           value: {
-            value: 33,
+            value: 20,
             unit: Unit.PERCENT,
           },
         },
@@ -1614,7 +1643,7 @@ export const theme: StockTheme = {
         opacity: {
           type: ValueType.EXACT,
           value: {
-            value: 33,
+            value: 20,
             unit: Unit.PERCENT,
           },
         },

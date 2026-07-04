@@ -2,6 +2,7 @@ import type { Properties } from "@seldon/core"
 import { resolveValue } from "@seldon/core/helpers/resolution/resolve-value"
 import { BackgroundKind } from "@seldon/core/properties/values/appearance/background/background-kind"
 
+import { getComputedCssValue } from "../computed-variables"
 import { StyleGenerationContext } from "../types"
 import { getColorCSSValue } from "./get-color-css-value"
 import { getLayeredPaintLayers } from "./get-layered-paint-layer"
@@ -20,7 +21,9 @@ function hasGradientBackground(properties: Properties): boolean {
 
 export function getColorStyles({
   properties,
+  computeContext,
   theme,
+  useThemeVariableReferences,
 }: StyleGenerationContext): CSSObject {
   const styles: CSSObject = {}
 
@@ -35,10 +38,18 @@ export function getColorStyles({
       color: properties.color,
       brightness: resolveValue(properties.brightness),
       theme,
+      useThemeVariableReferences,
     })
     // Only set the color if it's not transparent (which indicates an invalid color)
     if (colorValue !== "transparent") {
-      styles.color = colorValue
+      const themed =
+        useThemeVariableReferences && computeContext
+          ? getComputedCssValue({
+              original: computeContext.properties.color,
+              context: computeContext,
+            })
+          : null
+      styles.color = themed ?? colorValue
     }
   }
 
@@ -46,10 +57,18 @@ export function getColorStyles({
     const accentColorValue = getColorCSSValue({
       color: properties.accentColor,
       theme,
+      useThemeVariableReferences,
     })
     // Only set the accent color if it's not transparent (which indicates an invalid color)
     if (accentColorValue !== "transparent") {
-      styles.accentColor = accentColorValue
+      const themed =
+        useThemeVariableReferences && computeContext
+          ? getComputedCssValue({
+              original: computeContext.properties.accentColor,
+              context: computeContext,
+            })
+          : null
+      styles.accentColor = themed ?? accentColorValue
     }
   }
 

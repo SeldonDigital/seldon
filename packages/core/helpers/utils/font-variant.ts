@@ -3,7 +3,7 @@
  * `"700italic"`. A variant pairs a numeric weight with an italic flag.
  */
 
-export interface ParsedFontVariant {
+interface ParsedFontVariant {
   weight: number
   italic: boolean
 }

@@ -9,7 +9,7 @@ import { IconSetId } from "../types"
 
 const ICON_SET_CATALOG_TO_SET_ID: Record<string, IconSetId> = {
   seldonIcons: "seldon",
-  googleMaterial: "google-material",
+  googleSymbols: "google-material",
   ibmCarbon: "carbon",
   lucideIcons: "lucide",
 }

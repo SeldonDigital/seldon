@@ -1,4 +1,4 @@
-export type InvariantErrorContext = Record<string, unknown>
+type InvariantErrorContext = Record<string, unknown>
 
 /**
  * Custom error class for invariant violations with optional context data.

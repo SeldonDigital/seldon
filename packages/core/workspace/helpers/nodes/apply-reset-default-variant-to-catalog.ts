@@ -8,16 +8,9 @@ import { parseNodeLink } from "../../model/template-ref"
 import type { ComponentTreeRef, EntryNode, Workspace } from "../../types"
 import { walkBoardTreeRefs } from "../components/walk-board-tree-refs"
 import { rebuildDefaultChildren } from "./build-component-variants"
+import { collectTreeRefIds } from "./collect-tree-ref-ids"
 import { findBoardContainingTreeNodeId } from "./duplicate-entry-variant-subtree"
 import { getNodeCatalogId } from "./get-node-catalog-id"
-
-function collectTreeRefIds(ref: ComponentTreeRef): string[] {
-  const ids = [ref.id]
-  for (const child of ref.children ?? []) {
-    ids.push(...collectTreeRefIds(child))
-  }
-  return ids
-}
 
 function collectAllComponentTreeNodeIds(workspace: Workspace): Set<string> {
   const out = new Set<string>()
@@ -57,7 +50,7 @@ export function applyResetDefaultVariantToCatalog(
     const rootNode = draft.nodes[defaultVariantRootId]
     if (!rootNode || rootNode.type !== "default") return
 
-    const catalogId = getNodeCatalogId(rootNode, draft as unknown as Workspace)
+    const catalogId = getNodeCatalogId(rootNode, draft)
     if (!catalogId || !isComponentId(catalogId)) return
     const schema = getComponentSchema(catalogId as ComponentId)
 
@@ -75,7 +68,7 @@ export function applyResetDefaultVariantToCatalog(
         schema.default.children ?? [],
         defaultRef.children,
         {
-          workspace: draft as unknown as Workspace,
+          workspace: draft,
           newNodes,
         },
       )
@@ -88,9 +81,7 @@ export function applyResetDefaultVariantToCatalog(
     }
 
     const newIds = new Set(collectTreeRefIds(board.variants[0]))
-    const referenced = collectAllComponentTreeNodeIds(
-      draft as unknown as Workspace,
-    )
+    const referenced = collectAllComponentTreeNodeIds(draft)
 
     // Schema-variant trees hold forked copies whose `node:` templates point at
     // the default tree's canonical instances. Protect those targets so a reset

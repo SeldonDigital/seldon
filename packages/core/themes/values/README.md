@@ -64,13 +64,11 @@ flowchart LR
 | Type or Function | File | Purpose and use |
 | --- | --- | --- |
 | `isModulatedToken` | `shared/type-guards/theme-token-type-guards.ts` | Narrows to `ThemeModulation`. Used in compute and validation. |
-| `isThemeExactNumberToken` | `shared/type-guards/theme-token-type-guards.ts` | Narrows to numeric exact cells. |
 | `isThemeExactToken` | `shared/type-guards/theme-token-type-guards.ts` | Narrows to any `ThemeExact` cell. |
 | `isSwatchToken` | `shared/type-guards/theme-token-type-guards.ts` | Narrows to explicit swatch cells. Used when preserving static swatches in `computeTheme`. |
 | `isFontFamilyToken` | `shared/type-guards/theme-token-type-guards.ts` | Narrows to font family stack cells. |
 | `isOptionToken` | `shared/type-guards/theme-token-type-guards.ts` | Narrows to option cells such as hairline border width. |
 | `isDynamicSwatchToken` | `shared/type-guards/theme-token-type-guards.ts` | Narrows to `StockSwatchDynamic`. Used to replace roles with computed HSL. |
-| `isLookToken` | `shared/type-guards/theme-token-type-guards.ts` | Narrows to font, border, shadow, and related look rows. |
 
 ### Barrel re-exports
 

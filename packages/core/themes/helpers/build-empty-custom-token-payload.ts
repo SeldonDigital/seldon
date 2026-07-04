@@ -6,40 +6,15 @@
  * the same shapes available to agents.
  */
 import { Unit } from "../../properties/constants/shared/units"
-import { ValueType } from "../../properties/constants/shared/value-types"
 import { Colorspace } from "../constants/colorspace"
-import { LOOK_FACETS, isLookSection } from "../looks/look-facets"
+import { MODULATED_SCALE_SECTIONS } from "../constants/scale-sections"
+import { buildEmptyLookParameters, isLookSection } from "../looks/look-facets"
 
 /** Add-action payload without the `themeId` field. */
 export type EmptyCustomTokenPayload = {
   name: string
   intent?: string
 } & Record<string, unknown>
-
-const EMPTY_FACET_VALUE = { type: ValueType.EMPTY, value: null } as const
-
-/** Scale sections whose default cell is a modulated step on the scale. */
-const MODULATED_SCALE_SECTIONS: readonly string[] = [
-  "size",
-  "dimension",
-  "margin",
-  "padding",
-  "gap",
-  "corners",
-  "fontSize",
-  "blur",
-  "spread",
-]
-
-function buildEmptyLookParameters(
-  section: keyof typeof LOOK_FACETS,
-): Record<string, typeof EMPTY_FACET_VALUE> {
-  const parameters: Record<string, typeof EMPTY_FACET_VALUE> = {}
-  for (const facet of LOOK_FACETS[section]) {
-    parameters[facet.facet] = EMPTY_FACET_VALUE
-  }
-  return parameters
-}
 
 /** Builds the default add payload (minus `themeId`) for a custom token. */
 export function buildEmptyCustomTokenPayload(
@@ -66,7 +41,7 @@ export function buildEmptyCustomTokenPayload(
     }
   }
 
-  if (MODULATED_SCALE_SECTIONS.includes(section)) {
+  if ((MODULATED_SCALE_SECTIONS as readonly string[]).includes(section)) {
     return {
       name,
       intent: "Custom token",

@@ -1,3 +1,4 @@
+import { parseThemeRef } from "../../helpers/theme/get-theme-key-components"
 import { ValueType } from "../../properties/constants"
 import type { Theme } from "../types"
 import {
@@ -26,20 +27,11 @@ export function isThemeLookPreset(value: unknown): value is ThemeLookPreset {
 export function parseThemeLookRef(
   value: unknown,
 ): { section: BuiltInLookSection; id: string } | null {
-  if (typeof value !== "string" || !value.startsWith("@")) {
+  const ref = parseThemeRef(value)
+  if (!ref || !isBuiltInLookSection(ref.section)) {
     return null
   }
-  const path = value.slice(1)
-  const dot = path.indexOf(".")
-  if (dot <= 0) {
-    return null
-  }
-  const section = path.slice(0, dot)
-  const id = path.slice(dot + 1)
-  if (!isBuiltInLookSection(section) || !id) {
-    return null
-  }
-  return { section, id }
+  return { section: ref.section, id: ref.optionId }
 }
 
 export function themeLookRefIsValid(

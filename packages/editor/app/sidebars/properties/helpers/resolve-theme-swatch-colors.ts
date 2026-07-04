@@ -2,7 +2,6 @@ import { Theme, ThemeSwatchKey } from "@seldon/core"
 import { themeSwatchToCssBackground } from "@seldon/core/helpers/color/theme-swatch-to-css-background"
 import { getThemeOption } from "@seldon/core/helpers/theme/get-theme-option"
 import { isSwatchToken } from "@seldon/core/themes/values"
-import { SWATCH_FALLBACK_COLOR } from "../properties.bespoke"
 
 const SWATCH_KEYS: ThemeSwatchKey[] = [
   "@swatch.primary",
@@ -12,7 +11,7 @@ const SWATCH_KEYS: ThemeSwatchKey[] = [
   "@swatch.swatch4",
 ]
 
-const FALLBACK_COLOR = SWATCH_FALLBACK_COLOR
+const FALLBACK_COLOR = "var(--color-blue)"
 
 /**
  * Resolves the swatch cluster of a theme into background CSS colors, ready to

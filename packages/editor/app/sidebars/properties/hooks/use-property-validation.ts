@@ -1,12 +1,16 @@
 /**
  * Hook for property validation logic
  */
-import { isFreeTextProperty } from "@lib/properties/serialize-value"
+import {
+  isColorProperty,
+  isFreeTextProperty,
+} from "@lib/properties/serialize-value"
 import {
   isNumber,
   isPercentage,
   isPx,
   isRem,
+  isValidColor,
 } from "@seldon/core/helpers/validation"
 import { isThemeValueKey } from "@seldon/core/helpers/validation/theme"
 import { getUnitsForProperty } from "@seldon/core/properties"
@@ -14,11 +18,11 @@ import { FlatProperty } from "../helpers/properties-data"
 
 interface UsePropertyValidationResult {
   validationFunction: ((value: string) => boolean) | undefined
-  units: string[]
 }
 
 /**
- * Returns validation function and units for a property
+ * Returns the validation function for a property. Unit lists are derived
+ * internally to validate typed values against the property's allowed units.
  */
 export function usePropertyValidation(
   property: FlatProperty,
@@ -70,6 +74,13 @@ export function usePropertyValidation(
     }
 
     if (property.controlType === "combo" || property.controlType === "menu") {
+      // Color combos accept typed hex/hsl/rgb/lch and `@swatch.*` values, which
+      // the commit path serializes through `serializeColor`. This precedes the
+      // unit check because color schemas carry no units and fall back to the
+      // default px/rem/% list, which would otherwise reject color strings.
+      if (isColorProperty(property.key)) {
+        return (value: string) => isValidColor(value.trim())
+      }
       if (units.length > 0) {
         return (value: string) => {
           if (isThemeValueKey(value)) return true
@@ -108,15 +119,10 @@ export function usePropertyValidation(
       }
     }
 
-    if (property.controlType === "text") {
-      return undefined
-    }
-
     return undefined
   }
 
   return {
     validationFunction: getValidationFunction(),
-    units,
   }
 }

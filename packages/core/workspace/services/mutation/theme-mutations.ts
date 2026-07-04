@@ -1,5 +1,6 @@
 import { remapNodeThemeTokens } from "../../../helpers/theme/remap-node-theme-tokens"
 import { ThemeInstanceId } from "../../../themes/types"
+import { DEFAULT_THEME_ID } from "../../constants"
 import { getBoardThemeRef } from "../../helpers/components/get-board-theme-ref"
 import { getWorkspaceNodes } from "../../helpers/general/get-workspace-nodes"
 import {
@@ -18,8 +19,6 @@ import {
   withNodeMutation,
 } from "../shared/workspace-operation-helpers"
 
-const DEFAULT_THEME = "seldon" as ThemeInstanceId
-
 /** Sets a board's theme and remaps tokens for variants that inherit from it. */
 export function setComponentTheme(
   boardKey: BoardKey,
@@ -27,7 +26,7 @@ export function setComponentTheme(
   workspace: Workspace,
 ): Workspace {
   return withBoardMutation(boardKey, workspace, (board, draft) => {
-    const currentTheme = getBoardThemeRef(board) ?? DEFAULT_THEME
+    const currentTheme = getBoardThemeRef(board) ?? DEFAULT_THEME_ID
     board.componentTheme = theme
 
     for (const ref of board.variants) {
@@ -85,7 +84,7 @@ export function getInheritedTheme(
 
   const board = nodeRelationshipService.findBoardForNode(node, workspace)
   if (!board) {
-    return DEFAULT_THEME
+    return DEFAULT_THEME_ID
   }
-  return getBoardThemeRef(board) ?? DEFAULT_THEME
+  return getBoardThemeRef(board) ?? DEFAULT_THEME_ID
 }

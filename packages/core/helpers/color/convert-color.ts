@@ -154,7 +154,7 @@ export function parseLCHString(value: string): LCH {
  * @param value - The hex color value to convert
  * @returns An HSL string
  */
-export function hexToHSLString(value: string): string {
+function hexToHSLString(value: string): string {
   const hsl = hexToHSLObject(value)
   return HSLObjectToString(hsl)
 }
@@ -223,12 +223,21 @@ function computeHue(
 }
 
 /**
- * Convert a hex color value to an RGB object.
+ * Convert a hex color value to an RGB object. Accepts 3- and 6-digit hex,
+ * with or without a leading hash. Short hex expands each digit before pairing.
  *
- * @param value - The hex color value to convert (e.g., "#ff0000" or "ff0000")
+ * @param value - The hex color value to convert (e.g., "#ff0000", "ff0000", or "#f00")
  * @returns An RGB object with red, green, and blue properties (0-255)
  */
-export function hexToRGBObject(value: string): RGB {
-  const [r, g, b] = value.match(/\w\w/g)!.map((hex) => parseInt(hex, 16))
+function hexToRGBObject(value: string): RGB {
+  const hex = value.replace(/^#/, "")
+  const full =
+    hex.length === 3
+      ? hex
+          .split("")
+          .map((char) => char + char)
+          .join("")
+      : hex
+  const [r, g, b] = full.match(/\w\w/g)!.map((pair) => parseInt(pair, 16))
   return { red: r, green: g, blue: b }
 }

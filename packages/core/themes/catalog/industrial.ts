@@ -14,9 +14,9 @@ export const theme: StockTheme = {
     id: "industrial",
     name: "Industrial",
     description:
-      "A modern and versatile theme with a cool, monochromatic color palette inspired by steel. It features a range of customizable typography, layout, and color options to suit various design needs.",
+      "A dark, high-energy theme inspired by cyber and rave aesthetics. It pairs a near-black teal background with a glowing cyan primary and electric green and blue accents, set in condensed uppercase display type with hard, angular shapes.",
     intent:
-      "To provide a sleek and professional look with high contrast and readability, suitable for a wide range of applications.",
+      "To provide a bold, futuristic look with strong contrast and neon accents, suitable for events, media, and technical interfaces.",
   },
   modulation: {
     type: TokenType.COMPUTED,
@@ -25,14 +25,16 @@ export const theme: StockTheme = {
   colorHarmony: {
     type: TokenType.COMPUTED,
     parameters: {
-      baseColor: { hue: 210, saturation: 30, lightness: 20 },
+      baseColor: { hue: 186, saturation: 34, lightness: 24 },
       harmony: Harmony.Monochromatic,
       angle: 20,
       step: 12,
       whitePoint: 90,
       grayPoint: 60,
       blackPoint: 20,
-      bleed: 80,
+      bleed: 40,
+      mode: "dark",
+      chromaChange: 0,
     },
   },
   matchColor: {
@@ -58,10 +60,10 @@ export const theme: StockTheme = {
   fontFamily: {
     type: TokenType.COMPUTED,
     parameters: {
-      primary: { type: TokenType.FONT_FAMILY, parameters: "Lora" },
+      primary: { type: TokenType.FONT_FAMILY, parameters: "Sora" },
       secondary: {
         type: TokenType.FONT_FAMILY,
-        parameters: "Barlow Condensed",
+        parameters: "Oswald",
       },
     },
   },
@@ -232,23 +234,27 @@ export const theme: StockTheme = {
     tight: {
       type: TokenType.MODULATED,
       name: "Tight",
-      parameters: { step: -6.21 },
+      parameters: { step: -15.53 },
     },
     compact: {
       type: TokenType.MODULATED,
       name: "Compact",
-      parameters: { step: -3.11 },
+      parameters: { step: -12.43 },
     },
-    cozy: { type: TokenType.MODULATED, name: "Cozy", parameters: { step: 0 } },
+    cozy: {
+      type: TokenType.MODULATED,
+      name: "Cozy",
+      parameters: { step: -9.32 },
+    },
     comfortable: {
       type: TokenType.MODULATED,
       name: "Comfortable",
-      parameters: { step: 1.82 },
+      parameters: { step: -6.21 },
     },
     open: {
       type: TokenType.MODULATED,
       name: "Open",
-      parameters: { step: 3.11 },
+      parameters: { step: -3.11 },
     },
   },
   borderWidth: {
@@ -550,6 +556,15 @@ export const theme: StockTheme = {
       role: "swatch4",
       intent: "A tint of the primary color",
     },
+    foreground: {
+      name: "Foreground",
+      intent: "The default color used for text and foreground content.",
+      type: TokenType.SWATCH,
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 186, saturation: 25, lightness: 92 },
+      },
+    },
     background: {
       name: "Background",
       intent:
@@ -557,52 +572,79 @@ export const theme: StockTheme = {
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 210, saturation: 80, lightness: 20 },
+        value: { hue: 188, saturation: 55, lightness: 9 },
       },
     },
-    custom1: {
-      name: "Red",
-      intent: "Used mostly for error conditions",
-      type: TokenType.SWATCH,
-      parameters: {
-        colorspace: Colorspace.HSL,
-        value: { hue: 0, saturation: 100, lightness: 65 },
-      },
-    },
-    custom2: {
-      name: "Green",
-      intent: "Used mostly for positive conditions",
-      type: TokenType.SWATCH,
-      parameters: {
-        colorspace: Colorspace.HSL,
-        value: { hue: 135, saturation: 76, lightness: 59 },
-      },
-    },
-    custom3: {
-      name: "Blue",
+    active: {
+      name: "Active",
       intent: "A calming color for backgrounds",
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 203, saturation: 100, lightness: 62 },
+        value: { hue: 180, saturation: 87, lightness: 46 },
       },
     },
-    custom4: {
-      name: "Yellow",
+    punch: {
+      name: "Punch",
+      intent: "Punch color for all important actions",
+      type: TokenType.SWATCH,
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 151, saturation: 92, lightness: 42 },
+      },
+    },
+    positive: {
+      name: "Positive",
+      intent: "Used mostly for positive conditions",
+      type: TokenType.SWATCH,
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 155, saturation: 99, lightness: 36 },
+      },
+    },
+    negative: {
+      name: "Negative",
+      intent: "Used mostly for error conditions",
+      type: TokenType.SWATCH,
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 356, saturation: 80, lightness: 51 },
+      },
+    },
+    warning: {
+      name: "Warning",
       intent: "A call to action color",
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 60, saturation: 100, lightness: 46 },
+        value: { hue: 46, saturation: 98, lightness: 44 },
       },
     },
-    custom5: {
-      name: "Charcoal",
+    accent: {
+      name: "Accent",
+      intent: "To act as an accent color",
+      type: TokenType.SWATCH,
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 197, saturation: 87, lightness: 48 },
+      },
+    },
+    offBlack: {
+      name: "Off Black",
       intent: "Off black to temper the overall color of the palette.",
       type: TokenType.SWATCH,
       parameters: {
         colorspace: Colorspace.HSL,
-        value: { hue: 0, saturation: 0, lightness: 15 },
+        value: { hue: 188, saturation: 30, lightness: 10 },
+      },
+    },
+    offWhite: {
+      name: "Off White",
+      intent: "Light color for text on dark backgrounds",
+      type: TokenType.SWATCH,
+      parameters: {
+        colorspace: Colorspace.HSL,
+        value: { hue: 186, saturation: 22, lightness: 94 },
       },
     },
   },
@@ -623,10 +665,10 @@ export const theme: StockTheme = {
           type: ValueType.THEME_ORDINAL,
           value: "@lineHeight.solid",
         },
-        textCase: { type: ValueType.OPTION, value: TextCasing.NORMAL },
+        textCase: { type: ValueType.OPTION, value: TextCasing.UPPERCASE },
         letterSpacing: {
           type: ValueType.EXACT,
-          value: { unit: Unit.PX, value: -0.25 },
+          value: { unit: Unit.PX, value: 1 },
         },
       },
     },
@@ -649,8 +691,11 @@ export const theme: StockTheme = {
           type: ValueType.THEME_ORDINAL,
           value: "@lineHeight.tight",
         },
-        textCase: { type: ValueType.OPTION, value: TextCasing.NORMAL },
-        letterSpacing: { type: ValueType.EMPTY, value: null },
+        textCase: { type: ValueType.OPTION, value: TextCasing.UPPERCASE },
+        letterSpacing: {
+          type: ValueType.EXACT,
+          value: { unit: Unit.PX, value: 0.5 },
+        },
       },
     },
     subheading: {
@@ -801,7 +846,7 @@ export const theme: StockTheme = {
       name: "Code",
       intent: "For displaying code-like snippets",
       parameters: {
-        family: { type: ValueType.EXACT, value: "Inconsolata" },
+        family: { type: ValueType.EXACT, value: "IBM Plex Mono" },
         weight: { type: ValueType.THEME_ORDINAL, value: "@fontWeight.normal" },
         size: { type: ValueType.THEME_ORDINAL, value: "@fontSize.medium" },
         style: { type: ValueType.OPTION, value: FontStyle.NORMAL },

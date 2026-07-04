@@ -90,5 +90,42 @@ export function applyRef<T extends Record<string, unknown> | null>(
     content: applyRefUtilsContent,
   })
 
+  // Generate the icon-registry file. The generated `Icon` renders static catalog
+  // ids from its `iconMap`. A consumer can register extra ids at runtime that map
+  // to arbitrary React components (dynamic, prop-driven icons the factory cannot
+  // emit as static SVGs). `Icon` consults this registry for any id absent from
+  // `iconMap` before falling back to the default icon.
+  const iconRegistryUtilsContent = `import type { ComponentType } from "react"
+
+/** Props any registered icon may receive; the generated \`Icon\` spreads its own props through. */
+export type RegisteredIconProps = Record<string, unknown>
+
+const registry = new Map<string, ComponentType<RegisteredIconProps>>()
+
+/**
+ * Registers a React component under an icon id. Call this at startup for each
+ * dynamic icon the generated \`Icon\` should render but that has no catalog SVG.
+ */
+export function registerIcon(
+  id: string,
+  component: ComponentType<RegisteredIconProps>,
+): void {
+  registry.set(id, component)
+}
+
+/** Returns the component registered for an icon id, or undefined when none is. */
+export function getRegisteredIcon(
+  id: string | undefined,
+): ComponentType<RegisteredIconProps> | undefined {
+  if (!id) return undefined
+  return registry.get(id)
+}
+`
+
+  utilityFiles.push({
+    path: `${options.output.componentsFolder}/utils/icon-registry.ts`,
+    content: iconRegistryUtilsContent,
+  })
+
   return utilityFiles
 }

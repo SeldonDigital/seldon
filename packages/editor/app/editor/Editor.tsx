@@ -89,7 +89,7 @@ const styles: Record<string, CSSProperties> = {
     zIndex: 1,
     height: "100%",
     width: "100%",
-    backgroundColor: "#1F1F1F",
+    backgroundColor: "var(--sdn-swatch-offBlack)",
   },
 }
 

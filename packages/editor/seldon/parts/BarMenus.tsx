@@ -218,28 +218,28 @@ const sdn: BarMenusProps = {
   className: "sdn-bar-menus sdn-bar",
   buttonSimple: {
     "aria-haspopup": "menu",
-    className: "sdn-button-simple sdn-button--mam0",
+    className: "sdn-button-simple sdn-button-simple--fjtm",
   },
   textLabel: {
     className: "sdn-text-label sdn-text-label--ylte",
   },
   buttonSimple2: {
     "aria-haspopup": "menu",
-    className: "sdn-button-simple sdn-button--mam0",
+    className: "sdn-button-simple sdn-button-simple--fjtm",
   },
   textLabel2: {
     className: "sdn-text-label sdn-text-label--ylte",
   },
   buttonSimple3: {
     "aria-haspopup": "menu",
-    className: "sdn-button-simple sdn-button--mam0",
+    className: "sdn-button-simple sdn-button-simple--fjtm",
   },
   textLabel3: {
     className: "sdn-text-label sdn-text-label--ylte",
   },
   buttonSimple4: {
     "aria-haspopup": "menu",
-    className: "sdn-button-simple sdn-button--mam0",
+    className: "sdn-button-simple sdn-button-simple--fjtm",
   },
   textLabel4: {
     className: "sdn-text-label sdn-text-label--ylte",

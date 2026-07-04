@@ -2,7 +2,7 @@ import { produce } from "immer"
 
 import { getIconsInSubcategory } from "../../../../icon-sets/helpers"
 import { ExtractPayload, Workspace } from "../../../../index"
-import { setIconSetOverrideAtPath } from "../../../helpers/icon-sets/icon-set-id"
+import { setOverrideAtPath } from "../../../helpers/general/override-paths"
 import type { EntryIconSet } from "../../../model/entry-icon-set"
 import { workspaceIconSetService } from "../../../services"
 
@@ -28,7 +28,7 @@ export function setIconSetSubcategoryPreset(
     }
     const value = payload.preset === "all"
     for (const iconId of icons) {
-      setIconSetOverrideAtPath(overrides, `includedIcons.${iconId}`, value)
+      setOverrideAtPath(overrides, `includedIcons.${iconId}`, value)
     }
     entry.overrides = overrides
   })

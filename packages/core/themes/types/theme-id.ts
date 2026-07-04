@@ -7,7 +7,7 @@
  *
  * **`ThemeInstanceId`** — TypeScript models the **catalog** identity of a computed stock row
  * (`ThemeTemplateId`). In a workspace file, **node `theme` fields, board theme refs, and keys in
- * the `themes` map** are opaque **strings** (for example `theme-sky-default`); resolution happens
+ * the `themes` map** are opaque **strings** (for example `theme-earth-default`); resolution happens
  * through `getComputedTheme` / `computeWorkspaceThemes`, not through this union alone. Prefer
  * treating those refs as `string` at workspace boundaries until workspace types are aligned.
  */
@@ -17,10 +17,10 @@ export type ThemeTemplateId =
   | "earth"
   | "highContrast"
   | "industrial"
-  | "material"
-  | "pop"
-  | "royalAzure"
-  | "sky"
+  | "googleMaterial"
+  | "popPunk"
+  | "ibmCarbon"
+  | "adobeSpectrum"
   | "sunsetBlue"
   | "wildberry"
 

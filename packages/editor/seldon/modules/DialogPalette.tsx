@@ -57,7 +57,10 @@ export function DialogPalette({
   seldonRefs,
   ...props
 }: DialogPaletteProps) {
-  const dialogPaletteClassName = combineClassNames("sdn-dialog", className)
+  const dialogPaletteClassName = combineClassNames(
+    "sdn-dialog-modal",
+    className,
+  )
   const barProps = applyRef(
     seldonRefs,
     bar === null
@@ -147,7 +150,7 @@ export function DialogPalette({
 const sdn: DialogPaletteProps = {
   role: "dialog",
   "aria-hidden": "false",
-  className: "sdn-dialog sdn-dialog",
+  className: "sdn-dialog-modal sdn-dialog",
   bar: {
     "aria-hidden": "false",
     className: "sdn-bar sdn-bar--9xs7",

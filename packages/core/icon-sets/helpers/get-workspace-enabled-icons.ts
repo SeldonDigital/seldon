@@ -17,7 +17,7 @@ import { type IconInclusion, getIncludedIcons } from "./icon-selection"
 /** Maps an icon-set board catalog id to the icon-id prefix it contributes. */
 const CATALOG_TO_ICON_PREFIX: Record<string, string> = {
   seldonIcons: "seldon",
-  googleMaterial: "material",
+  googleSymbols: "material",
   ibmCarbon: "carbon",
   lucideIcons: "lucide",
 }

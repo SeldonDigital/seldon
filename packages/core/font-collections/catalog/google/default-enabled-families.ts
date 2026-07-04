@@ -20,6 +20,7 @@ export const GOOGLE_DEFAULT_ENABLED_FAMILIES: ReadonlySet<string> = new Set([
   "Manrope",
   "Merriweather",
   "Playfair Display",
+  "Fraunces",
   "Lora",
   "Source Serif 4",
   "Noto Serif",
@@ -31,4 +32,7 @@ export const GOOGLE_DEFAULT_ENABLED_FAMILIES: ReadonlySet<string> = new Set([
   "Anton",
   "Archivo",
   "Oswald",
+  "Space Grotesk",
+  "Sora",
+  "Quicksand",
 ])

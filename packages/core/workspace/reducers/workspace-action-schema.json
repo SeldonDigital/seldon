@@ -917,32 +917,6 @@
           "type": "object"
         },
         "type": {
-          "const": "remove_theme_custom_background",
-          "type": "string"
-        }
-      },
-      "required": ["payload", "type"],
-      "type": "object"
-    },
-    {
-      "additionalProperties": false,
-      "properties": {
-        "payload": {
-          "additionalProperties": false,
-          "description": "Payload shared by every `remove_theme_custom_*` action. Targets one `customN` slot inside a variant theme entry.",
-          "properties": {
-            "key": {
-              "pattern": "^custom[0-9]*$",
-              "type": "string"
-            },
-            "themeId": {
-              "type": "string"
-            }
-          },
-          "required": ["key", "themeId"],
-          "type": "object"
-        },
-        "type": {
           "const": "remove_theme_custom_gradient",
           "type": "string"
         }
@@ -2763,6 +2737,27 @@
         "payload": {
           "additionalProperties": false,
           "properties": {
+            "sourceBoardKey": {
+              "type": "string"
+            }
+          },
+          "required": ["sourceBoardKey"],
+          "type": "object"
+        },
+        "type": {
+          "const": "apply_component_properties_to_all_boards",
+          "type": "string"
+        }
+      },
+      "required": ["payload", "type"],
+      "type": "object"
+    },
+    {
+      "additionalProperties": false,
+      "properties": {
+        "payload": {
+          "additionalProperties": false,
+          "properties": {
             "boardKey": {
               "type": "string"
             },
@@ -3205,14 +3200,14 @@
               "anyOf": [
                 {
                   "enum": [
+                    "adobeSpectrum",
                     "earth",
+                    "googleMaterial",
                     "highContrast",
+                    "ibmCarbon",
                     "industrial",
-                    "material",
-                    "pop",
-                    "royalAzure",
+                    "popPunk",
                     "seldon",
-                    "sky",
                     "sunsetBlue",
                     "wildberry"
                   ],
@@ -3671,6 +3666,28 @@
         },
         "type": {
           "const": "reset_variant_to_catalog",
+          "type": "string"
+        }
+      },
+      "required": ["payload", "type"],
+      "type": "object"
+    },
+    {
+      "additionalProperties": false,
+      "properties": {
+        "payload": {
+          "additionalProperties": false,
+          "properties": {
+            "variantRootId": {
+              "description": "Node id for a variant row (legacy string ids or v2 entry ids).",
+              "type": "string"
+            }
+          },
+          "required": ["variantRootId"],
+          "type": "object"
+        },
+        "type": {
+          "const": "reset_variant_instances",
           "type": "string"
         }
       },
@@ -4455,30 +4472,6 @@
         },
         "type": {
           "const": "stubs_duplicate_media_row",
-          "type": "string"
-        }
-      },
-      "required": ["payload", "type"],
-      "type": "object"
-    },
-    {
-      "additionalProperties": false,
-      "properties": {
-        "payload": {
-          "additionalProperties": false,
-          "properties": {
-            "chatMessage": {
-              "type": "string"
-            },
-            "expectUserAnswer": {
-              "type": "boolean"
-            }
-          },
-          "required": ["chatMessage", "expectUserAnswer"],
-          "type": "object"
-        },
-        "type": {
-          "const": "transcript_add_message",
           "type": "string"
         }
       },
@@ -7001,14 +6994,23 @@
             },
             {
               "enum": [
+                "@swatch.accent",
+                "@swatch.active",
                 "@swatch.background",
                 "@swatch.black",
+                "@swatch.foreground",
                 "@swatch.gray",
+                "@swatch.negative",
+                "@swatch.offBlack",
+                "@swatch.offWhite",
+                "@swatch.positive",
                 "@swatch.primary",
+                "@swatch.punch",
                 "@swatch.swatch1",
                 "@swatch.swatch2",
                 "@swatch.swatch3",
                 "@swatch.swatch4",
+                "@swatch.warning",
                 "@swatch.white"
               ],
               "type": "string"
@@ -16847,7 +16849,6 @@
     "ThemeCustomTokenSection": {
       "description": "Every section that accepts user-added `customN` tokens (matches the `add_theme_custom_*` tables).",
       "enum": [
-        "background",
         "blur",
         "border",
         "borderWidth",
@@ -16889,16 +16890,16 @@
       "type": "string"
     },
     "ThemeInstanceId": {
-      "description": "Packaged theme catalog ids (`ThemeTemplateId`).\n\n**`ThemeTemplateId`** — Use these exact strings as the suffix in `catalog:{id}` template\nreferences (see [THEMES.md](../THEMES.md) and [WORKSPACE.md](../../workspace/WORKSPACE.md)).\nThey match `metadata.id` on stock themes under `themes/catalog/`.\n\n**`ThemeInstanceId`** — TypeScript models the **catalog** identity of a computed stock row\n(`ThemeTemplateId`). In a workspace file, **node `theme` fields, board theme refs, and keys in\nthe `themes` map** are opaque **strings** (for example `theme-sky-default`); resolution happens\nthrough `getComputedTheme` / `computeWorkspaceThemes`, not through this union alone. Prefer\ntreating those refs as `string` at workspace boundaries until workspace types are aligned.",
+      "description": "Packaged theme catalog ids (`ThemeTemplateId`).\n\n**`ThemeTemplateId`** — Use these exact strings as the suffix in `catalog:{id}` template\nreferences (see [THEMES.md](../THEMES.md) and [WORKSPACE.md](../../workspace/WORKSPACE.md)).\nThey match `metadata.id` on stock themes under `themes/catalog/`.\n\n**`ThemeInstanceId`** — TypeScript models the **catalog** identity of a computed stock row\n(`ThemeTemplateId`). In a workspace file, **node `theme` fields, board theme refs, and keys in\nthe `themes` map** are opaque **strings** (for example `theme-earth-default`); resolution happens\nthrough `getComputedTheme` / `computeWorkspaceThemes`, not through this union alone. Prefer\ntreating those refs as `string` at workspace boundaries until workspace types are aligned.",
       "enum": [
+        "adobeSpectrum",
         "earth",
+        "googleMaterial",
         "highContrast",
+        "ibmCarbon",
         "industrial",
-        "material",
-        "pop",
-        "royalAzure",
+        "popPunk",
         "seldon",
-        "sky",
         "sunsetBlue",
         "wildberry"
       ],

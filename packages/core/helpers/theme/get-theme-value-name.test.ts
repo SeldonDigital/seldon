@@ -4,9 +4,9 @@ import { defaultTheme } from "../../themes"
 import { getThemeValueName } from "./get-theme-value-name"
 
 describe("getThemeValueName", () => {
-  it("formats raw camelCase names to PascalCase", () => {
-    expect(getThemeValueName("fontSize", defaultTheme)).toBe("FontSize")
-    expect(getThemeValueName("lineHeight", defaultTheme)).toBe("LineHeight")
+  it("formats raw camelCase names to Title Case", () => {
+    expect(getThemeValueName("fontSize", defaultTheme)).toBe("Font Size")
+    expect(getThemeValueName("lineHeight", defaultTheme)).toBe("Line Height")
   })
 
   it("formats custom slot names", () => {

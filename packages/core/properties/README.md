@@ -619,29 +619,7 @@ const invalidProps: Properties = {
 
 ### Property Path Validation
 
-**Authoritative path unions** live in [`types/property-keys.ts`](types/property-keys.ts) as `CompoundPropertyPath`, `ShorthandPropertyPath`, and their union `PropertyPath`. They include every top-level key, compound facets such as `border.*`, `font.*`, per-side borders, and `position.*`, shorthand sides such as `margin.*`, `padding.*`, and `corners.*`, and layered paint facets with **bracket indices** in the type literal:
-
-```typescript
-// Abbreviated from `types/property-keys.ts` — see source for full definitions keyed by BorderCompound, FontCompound, etc.
-export type CompoundPropertyPath =
-  | PropertyKey
-  | `border.${keyof BorderCompound & string}`
-  | `borderTop.${keyof BorderCompound & string}`
-  | `borderRight.${keyof BorderCompound & string}`
-  | `borderBottom.${keyof BorderCompound & string}`
-  | `borderLeft.${keyof BorderCompound & string}`
-  | `font.${keyof FontCompound & string}`
-  | `position.${keyof PositionValue & string}`
-  | `background[${number}].${keyof BackgroundLayer & string}`
-  | `shadow[${number}].${keyof ShadowCompound & string}`
-
-export type ShorthandPropertyPath =
-  | `margin.${keyof MarginValue & string}`
-  | `padding.${keyof PaddingValue & string}`
-  | `corners.${keyof CornersValue & string}`
-
-export type PropertyPath = CompoundPropertyPath | ShorthandPropertyPath
-```
+**Authoritative property key unions** live in [`types/property-keys.ts`](types/property-keys.ts): `PropertyKey` for top-level keys plus `CompoundPropertyKey`, `ShorthandPropertyKey`, and `LayeredPaintKey` with the `LAYERED_PAINT_KEYS` runtime set for the compound, shorthand, and layered paint groupings.
 
 **Runtime paths** used by `getBasedOnValue` and `findInObject` are **dot-separated only**: array indices are numeric path segments, not brackets. Use `background.0.color`, `shadow.0.offsetX`, not `background[0].color`.
 

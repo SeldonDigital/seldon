@@ -1,10 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import {
-  deleteOverrideAtPath,
-  getOverrideAtPath,
-  getThemeOverridePath,
-} from "./theme-override-paths"
+import { getThemeOverridePath } from "./theme-override-paths"
 
 describe("getThemeOverridePath", () => {
   it("routes computed group sections to a parameters subtree", () => {
@@ -14,7 +10,14 @@ describe("getThemeOverridePath", () => {
   })
 
   it("owns the whole cell for swatch rows", () => {
-    expect(getThemeOverridePath("swatch.custom1")).toBe("swatch.custom1")
+    expect(getThemeOverridePath("swatch.custom.custom1")).toBe("swatch.custom1")
+    expect(getThemeOverridePath("swatch.interface.active")).toBe(
+      "swatch.active",
+    )
+  })
+
+  it("returns null for a swatch group parent row", () => {
+    expect(getThemeOverridePath("swatch.harmony")).toBeNull()
   })
 
   it("targets the value cell for fontWeight rows", () => {
@@ -38,31 +41,5 @@ describe("getThemeOverridePath", () => {
   it("returns null for keys with no override path", () => {
     expect(getThemeOverridePath("bad")).toBeNull()
     expect(getThemeOverridePath("size.medium")).toBeNull()
-  })
-})
-
-describe("getOverrideAtPath", () => {
-  it("reads a nested value", () => {
-    expect(getOverrideAtPath({ a: { b: { c: 1 } } }, "a.b.c")).toBe(1)
-  })
-
-  it("returns undefined for a missing path or an array segment", () => {
-    expect(getOverrideAtPath({ a: {} }, "a.b.c")).toBeUndefined()
-    expect(getOverrideAtPath({ a: [1] }, "a.0")).toBeUndefined()
-  })
-})
-
-describe("deleteOverrideAtPath", () => {
-  it("removes a leaf key", () => {
-    const target = { a: { b: 1, c: 2 } }
-    deleteOverrideAtPath(target, "a.b")
-    expect(target).toEqual({ a: { c: 2 } })
-  })
-
-  it("no-ops on a missing path or an empty path", () => {
-    const target = { a: {} }
-    deleteOverrideAtPath(target, "a.x.y")
-    deleteOverrideAtPath(target, "")
-    expect(target).toEqual({ a: {} })
   })
 })

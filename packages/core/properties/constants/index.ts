@@ -20,13 +20,10 @@ export {
   getCompoundSelectorFacet,
   isCompoundCatalogProperty,
   PROPERTY_COMPOUND_CATALOG,
-  type PropertyCompoundCatalogEntry,
-  type PropertyCompoundCatalogKey,
 } from "./shared/compound-properties"
 export {
   isShorthandCatalogProperty,
   PROPERTY_SHORTHAND_KEYS,
-  type PropertyShorthandCatalogKey,
 } from "./shared/shorthand-properties"
 export {
   NODE_FIELD_DISPLAY_ORDER,
@@ -34,6 +31,4 @@ export {
   PROPERTY_DISPLAY_META,
   PROPERTY_DISPLAY_ORDER,
   attachPropertyDisplayMetadata,
-  type NodeFieldDisplayId,
-  type PropertyDisplayMeta,
 } from "./property-display"

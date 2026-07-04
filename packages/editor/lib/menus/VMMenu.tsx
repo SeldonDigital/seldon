@@ -10,6 +10,8 @@ import {
   useState,
 } from "react"
 import { createPortal } from "react-dom"
+import { useEditorConfig } from "@lib/hooks/use-editor-config"
+import { useResolvedInterfaceMode } from "@lib/hooks/use-system-color-scheme"
 import { MenuItem } from "@seldon/components/elements/MenuItem"
 import { Menu } from "@seldon/components/parts/Menu"
 import { Hr } from "@seldon/components/primitives/Hr"
@@ -184,6 +186,8 @@ function FloatingMenu({
   minWidth = "180px",
   focusTargetRef,
 }: FloatingMenuProps) {
+  const { chromeTheme } = useEditorConfig()
+  const resolvedMode = useResolvedInterfaceMode()
   const position = useMenuPosition({ open, anchorRef, align })
   const menuRef = useRef<HTMLDivElement>(null)
   const [activeIndex, setActiveIndex] = useState(-1)
@@ -313,6 +317,8 @@ function FloatingMenu({
       tabIndex={-1}
       style={containerStyle}
       onKeyDown={handleKeyDown}
+      data-theme={chromeTheme}
+      data-mode={resolvedMode}
     >
       <Menu aria-orientation="vertical" style={{ minWidth }}>
         {items.map((item, index) => {

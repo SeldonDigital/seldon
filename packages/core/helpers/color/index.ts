@@ -1,15 +1,13 @@
 // Color processing utilities
 export { applyBrightness, convertAndApplyBrightness } from "./apply-brightness"
-export { isDarkBackgroundColor, getContrastRatio } from "./contrast"
+export { isDarkBackgroundColor } from "./contrast"
 export {
   toHSLString,
   parseHSLString,
   parseRGBString,
   parseLCHString,
-  hexToHSLString,
   hexToHSLObject,
   rgbToHSL,
-  hexToRGBObject,
 } from "./convert-color"
 export { HSLObjectToString } from "./hsl-object-to-string"
 export { LCHObjectToString } from "./lch-object-to-string"

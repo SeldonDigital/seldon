@@ -9,7 +9,6 @@ export interface ThemeEditingContext {
   isThemeEditing: true
   updateThemeProperty: (property: FlatProperty, newValue: string) => void
   resetThemeProperty: (property: FlatProperty) => void
-  themeProperties: FlatProperty[]
   /** Adds a custom token to a section. Only meaningful when `canAddCustom`. */
   addCustomToken: (section: ThemeCustomTokenSection) => void
   /** Renames a custom token's cell. The `customN` key stays stable. */

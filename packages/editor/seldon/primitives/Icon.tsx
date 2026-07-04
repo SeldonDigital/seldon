@@ -13,6 +13,7 @@
 import { SVGAttributes } from "react"
 import * as Icons from "../icons/index"
 import { combineClassNames } from "../utils/class-name"
+import { getRegisteredIcon } from "../utils/icon-registry"
 
 export interface IconProps extends SVGAttributes<SVGElement> {
   className?: string
@@ -40,6 +41,12 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-favoriteBorder"
     | "material-accountCircle"
     | "material-settings"
+    | "material-chevronDoubleLeft"
+    | "material-chevronLeft"
+    | "material-chevronDoubleRight"
+    | "material-playArrow"
+    | "material-star"
+    | "material-shoppingCart"
     | "seldon-iconSocialFacebook"
     | "seldon-iconSocialReddit"
     | "seldon-iconSocialPinterest"
@@ -140,7 +147,6 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-restoreFromTrash"
     | "material-sdCard"
     | "material-shoppingBag"
-    | "material-shoppingCart"
     | "material-simCard"
     | "material-store"
     | "material-storefront"
@@ -183,7 +189,6 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-grade"
     | "material-mood"
     | "material-moodBad"
-    | "material-star"
     | "material-starBorder"
     | "material-person"
     | "material-verifiedUser"
@@ -347,10 +352,7 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-brightnessLow"
     | "material-brightnessMedium"
     | "material-chevronDoubleDown"
-    | "material-chevronDoubleLeft"
-    | "material-chevronDoubleRight"
     | "material-chevronDoubleUp"
-    | "material-chevronLeft"
     | "material-chevronUp"
     | "material-event"
     | "material-fastForward"
@@ -368,7 +370,6 @@ export interface IconProps extends SVGAttributes<SVGElement> {
     | "material-more"
     | "material-moreHoriz"
     | "material-moreVert"
-    | "material-playArrow"
     | "material-rotateRight"
     | "material-router"
     | "material-skipNext"
@@ -508,6 +509,21 @@ export function Icon({ className = "", icon = sdn.icon, ...props }: IconProps) {
 
   let Icon = iconMap[icon || "__default__"]
   if (!Icon) {
+    // Ids absent from the static map may be registered at runtime as dynamic,
+    // prop-driven icons (e.g. color chips) the factory cannot emit as SVGs.
+    const RegisteredIcon = getRegisteredIcon(icon)
+    if (RegisteredIcon) {
+      //
+      // React JSX component resolved from the runtime icon registry
+      //
+      return (
+        <RegisteredIcon
+          className={iconClassName}
+          aria-hidden={sdn["aria-hidden"]}
+          {...props}
+        />
+      )
+    }
     Icon = iconMap["__default__"]
   }
   //
@@ -553,6 +569,12 @@ const iconMap = {
   "material-favoriteBorder": Icons.IconMaterialFavoriteBorder,
   "material-accountCircle": Icons.IconMaterialAccountCircle,
   "material-settings": Icons.IconMaterialSettings,
+  "material-chevronDoubleLeft": Icons.IconMaterialChevronDoubleLeft,
+  "material-chevronLeft": Icons.IconMaterialChevronLeft,
+  "material-chevronDoubleRight": Icons.IconMaterialChevronDoubleRight,
+  "material-playArrow": Icons.IconMaterialPlayArrow,
+  "material-star": Icons.IconMaterialStar,
+  "material-shoppingCart": Icons.IconMaterialShoppingCart,
   "seldon-iconSocialFacebook": Icons.IconSocialFacebook,
   "seldon-iconSocialReddit": Icons.IconSocialReddit,
   "seldon-iconSocialPinterest": Icons.IconSocialPinterest,
@@ -653,7 +675,6 @@ const iconMap = {
   "material-restoreFromTrash": Icons.IconMaterialRestoreFromTrash,
   "material-sdCard": Icons.IconMaterialSdCard,
   "material-shoppingBag": Icons.IconMaterialShoppingBag,
-  "material-shoppingCart": Icons.IconMaterialShoppingCart,
   "material-simCard": Icons.IconMaterialSimCard,
   "material-store": Icons.IconMaterialStore,
   "material-storefront": Icons.IconMaterialStorefront,
@@ -696,7 +717,6 @@ const iconMap = {
   "material-grade": Icons.IconMaterialGrade,
   "material-mood": Icons.IconMaterialMood,
   "material-moodBad": Icons.IconMaterialMoodBad,
-  "material-star": Icons.IconMaterialStar,
   "material-starBorder": Icons.IconMaterialStarBorder,
   "material-person": Icons.IconMaterialPerson,
   "material-verifiedUser": Icons.IconMaterialVerifiedUser,
@@ -862,10 +882,7 @@ const iconMap = {
   "material-brightnessLow": Icons.IconMaterialBrightnessLow,
   "material-brightnessMedium": Icons.IconMaterialBrightnessMedium,
   "material-chevronDoubleDown": Icons.IconMaterialChevronDoubleDown,
-  "material-chevronDoubleLeft": Icons.IconMaterialChevronDoubleLeft,
-  "material-chevronDoubleRight": Icons.IconMaterialChevronDoubleRight,
   "material-chevronDoubleUp": Icons.IconMaterialChevronDoubleUp,
-  "material-chevronLeft": Icons.IconMaterialChevronLeft,
   "material-chevronUp": Icons.IconMaterialChevronUp,
   "material-event": Icons.IconMaterialEvent,
   "material-fastForward": Icons.IconMaterialFastForward,
@@ -883,7 +900,6 @@ const iconMap = {
   "material-more": Icons.IconMaterialMore,
   "material-moreHoriz": Icons.IconMaterialMoreHoriz,
   "material-moreVert": Icons.IconMaterialMoreVert,
-  "material-playArrow": Icons.IconMaterialPlayArrow,
   "material-rotateRight": Icons.IconMaterialRotateRight,
   "material-router": Icons.IconMaterialRouter,
   "material-skipNext": Icons.IconMaterialSkipNext,

@@ -1,6 +1,6 @@
 /**
  * Property **types** for workspace nodes and boards.
- * Top-level keys and categories match `properties/PROPERTIES.md`.
+ * Top-level keys and categories match `properties/README.md`.
  *
  * File roles:
  * - `properties.ts` — `Properties` document type (composite, parallels `themes/types/theme.ts`)

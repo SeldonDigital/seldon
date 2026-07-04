@@ -1,17 +1,18 @@
 import { type ControlType } from "@lib/icons/icons-registry"
 import { getFamilyNameByValue } from "@seldon/core"
+import { findInObject } from "@seldon/core/helpers"
 import { HSLObjectToString } from "@seldon/core/helpers/color/hsl-object-to-string"
 import { themeSwatchToCssBackground } from "@seldon/core/helpers/color/theme-swatch-to-css-background"
 import { stringifyValue } from "@seldon/core/helpers/properties/stringify-value"
+import { getThemeValueName } from "@seldon/core/helpers/theme/get-theme-value-name"
 import { ValueType } from "@seldon/core/properties"
 import type { Value } from "@seldon/core/properties/types/value"
+import { capitalize } from "@seldon/core/themes/helpers/capitalize"
 import { getAllThemeTokenSchemas } from "@seldon/core/themes/schemas"
 import type { ThemeTokenSchema } from "@seldon/core/themes/schemas"
 import { Theme } from "@seldon/core/themes/types"
-import {
-  getOverrideAtPath,
-  getThemeOverridePath,
-} from "@seldon/core/workspace/helpers/themes/theme-override-paths"
+import { getOverrideAtPath } from "@seldon/core/workspace/helpers/general/override-paths"
+import { getThemeOverridePath } from "@seldon/core/workspace/helpers/themes/theme-override-paths"
 import type { EntryThemeOverrides } from "@seldon/core/workspace/types"
 import { FlatProperty } from "./properties-data"
 
@@ -28,7 +29,9 @@ const COMPUTED_GROUP_KEYS = new Set([
   "autoFit",
 ])
 
-/** Sections whose `.step` slot reads `parameters.step`. `spread` is intentionally excluded. */
+// Sections whose `.step` slot reads `parameters.step`. `lineHeight` is absent
+// because its dedicated branch in `getThemeValueByKey` handles every
+// `lineHeight.*.step` key first.
 const MODULATION_STEP_SECTIONS = new Set([
   "size",
   "dimension",
@@ -36,7 +39,6 @@ const MODULATION_STEP_SECTIONS = new Set([
   "padding",
   "gap",
   "fontSize",
-  "lineHeight",
   "borderWidth",
   "corners",
   "blur",
@@ -53,16 +55,16 @@ const PARAMETER_SECTIONS = new Set([
   "scrollbar",
 ])
 
-/** Read-only swatch slots resolved from the theme's color computation. */
+/** Read-only harmony swatch rows resolved from the theme's color computation. */
 const CALCULATED_SWATCHES = new Set([
-  "swatch.white",
-  "swatch.gray",
-  "swatch.black",
-  "swatch.primary",
-  "swatch.swatch1",
-  "swatch.swatch2",
-  "swatch.swatch3",
-  "swatch.swatch4",
+  "swatch.harmony.white",
+  "swatch.harmony.gray",
+  "swatch.harmony.black",
+  "swatch.harmony.primary",
+  "swatch.harmony.swatch1",
+  "swatch.harmony.swatch2",
+  "swatch.harmony.swatch3",
+  "swatch.harmony.swatch4",
 ])
 
 /** Color-point keys mapped to the computed swatch that fills their icon. */
@@ -103,18 +105,6 @@ function asTaggedValue(value: unknown): Value | null {
   return null
 }
 
-/** Safely reads a nested object value by path, returning undefined on any miss. */
-function getNestedValue(obj: unknown, path: string[]): unknown {
-  let current: unknown = obj
-  for (const key of path) {
-    if (!isRecord(current) || !(key in current)) {
-      return undefined
-    }
-    current = current[key]
-  }
-  return current
-}
-
 /**
  * Reads a theme value by its dot-notation schema key, e.g.:
  * - "modulation.ratio" -> theme.modulation.parameters.ratio
@@ -133,7 +123,7 @@ function getThemeValueByKey(theme: Theme, key: string): unknown {
   // Computed-section groups store every facet under `parameters[facet]`.
   if (COMPUTED_GROUP_KEYS.has(section)) {
     if (!id) return undefined
-    const params = getNestedValue(themeObj, [section, "parameters"])
+    const params = findInObject(themeObj, `${section}.parameters`)
     if (!isRecord(params)) return undefined
     const facetValue = params[id]
     // Font family slots keep the CSS stack under their own `parameters` string.
@@ -147,8 +137,15 @@ function getThemeValueByKey(theme: Theme, key: string): unknown {
     return facetValue
   }
 
-  if (section === "swatch" && id) {
-    const swatch = getNestedValue(themeObj, ["swatch", id])
+  if (section === "swatch") {
+    // Swatch rows nest under a group: `swatch.<group>.<id>`. The trailing segment
+    // is the swatch id. A bare group parent (`swatch.harmony`) has no value.
+    // The swatch id may itself contain a dot, so read the two levels directly
+    // instead of going through a dot-path lookup.
+    const swatchId = key.split(".").slice(2).join(".")
+    if (!swatchId) return undefined
+    const swatchTable = themeObj["swatch"]
+    const swatch = isRecord(swatchTable) ? swatchTable[swatchId] : undefined
     // Computed dynamic swatches expose a resolved top-level `value`. Custom
     // `TokenType.SWATCH` cells keep their color under `parameters.value`.
     if (isRecord(swatch)) {
@@ -161,7 +158,7 @@ function getThemeValueByKey(theme: Theme, key: string): unknown {
   }
 
   if (section === "fontWeight" && id) {
-    const fontWeight = getNestedValue(themeObj, ["fontWeight", id])
+    const fontWeight = findInObject(themeObj, `fontWeight.${id}`)
     // Font weight cells are `EXACT`, with the numeric weight at `parameters.value`.
     if (isRecord(fontWeight) && isRecord(fontWeight.parameters)) {
       return fontWeight.parameters.value
@@ -172,7 +169,7 @@ function getThemeValueByKey(theme: Theme, key: string): unknown {
   // Line height cells are `EXACT` with the value at `parameters.value`, even
   // though the schema keys them under a `.step` facet like the modulated scales.
   if (section === "lineHeight" && id && facet === "step") {
-    const item = getNestedValue(themeObj, [section, id])
+    const item = findInObject(themeObj, `${section}.${id}`)
     if (isRecord(item) && isRecord(item.parameters)) {
       return item.parameters.value
     }
@@ -180,7 +177,7 @@ function getThemeValueByKey(theme: Theme, key: string): unknown {
   }
 
   if (MODULATION_STEP_SECTIONS.has(section) && id && facet === "step") {
-    const item = getNestedValue(themeObj, [section, id])
+    const item = findInObject(themeObj, `${section}.${id}`)
     if (isRecord(item) && isRecord(item.parameters)) {
       if ("step" in item.parameters) {
         return item.parameters.step
@@ -195,7 +192,7 @@ function getThemeValueByKey(theme: Theme, key: string): unknown {
   }
 
   if (PARAMETER_SECTIONS.has(section) && id && facet) {
-    const item = getNestedValue(themeObj, [section, id])
+    const item = findInObject(themeObj, `${section}.${id}`)
     if (!isRecord(item) || !isRecord(item.parameters)) return undefined
     const params = item.parameters
 
@@ -224,7 +221,9 @@ function isThemeKeyOverridden(
   if (!path) return false
   if (getOverrideAtPath(overrides, path) === undefined) return false
   if (key.startsWith("swatch.")) {
-    const swatchId = key.split(".")[1]
+    // Swatch rows nest under a group: `swatch.<group>.<id>`. The id is the last
+    // segment.
+    const swatchId = key.split(".").slice(2).join(".")
     return baseSwatchIds?.has(swatchId) ?? false
   }
   return true
@@ -270,6 +269,19 @@ function createFlatPropertyFromSchema(
   const taggedValue = asTaggedValue(value)
   if (taggedValue) {
     actualValue = stringifyValue(taggedValue) ?? ""
+    // Theme token references show their friendly name (e.g. `@swatch.white` ->
+    // "White", `@fontWeight.medium` -> "Medium") instead of the raw token. The
+    // fontFamily special cases below override this with the slot name.
+    if (
+      "type" in taggedValue &&
+      (taggedValue.type === ValueType.THEME_CATEGORICAL ||
+        taggedValue.type === ValueType.THEME_ORDINAL) &&
+      "value" in taggedValue &&
+      typeof taggedValue.value === "string" &&
+      taggedValue.value.startsWith("@")
+    ) {
+      actualValue = getThemeValueName(taggedValue.value, theme)
+    }
   }
 
   if (
@@ -310,14 +322,13 @@ function createFlatPropertyFromSchema(
     const slotMatch = /^@fontFamily\.(.+)$/.exec(fontFamilyRefValue)
     if (slotMatch) {
       const slot = slotMatch[1]!
-      actualValue = `${slot.charAt(0).toUpperCase()}${slot.slice(1)} Font`
+      actualValue = `${capitalize(slot)} Font`
     }
   }
 
   const isColorKey =
     schema.key === "colorHarmony.baseColor" || schema.key.startsWith("swatch.")
   if (isColorKey && isHslObject(value)) {
-    formattedValue = value
     actualValue = HSLObjectToString(value)
   }
 

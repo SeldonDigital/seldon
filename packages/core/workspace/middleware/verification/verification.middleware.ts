@@ -88,7 +88,7 @@ const validators = {
         continue
       }
       walkBoardTreeRefs(board.variants, (ref) => {
-        check(nodes[ref.id], ErrorMessages.missingVariant(ref.id))
+        check(nodes[ref.id], ErrorMessages.variantNotFound(ref.id))
       })
     }
   },

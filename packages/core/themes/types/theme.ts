@@ -41,6 +41,7 @@ import {
   ThemeFontSizeId,
   ThemeFontWeightId,
   ThemeGradientId,
+  ThemeInterfaceSwatchId,
   ThemeLineHeightId,
   ThemeScrollbarId,
   ThemeShadowId,
@@ -65,15 +66,29 @@ type StockThemeLookTableIdMap = {
 
 /**
  * Swatch table on a stock theme.
- * - Palette slots (`white, gray, black, primary, swatch1..4`) and the reserved
- *   `background` slot are required.
+ * - Palette slots (`white, gray, black, primary, swatch1..4`) are required.
+ * - The `background`, `foreground`, `offBlack`, and `offWhite` interface roles
+ *   are required. They anchor light and dark surfaces and their readable text,
+ *   so every theme must author them instead of inheriting the Seldon defaults.
+ * - The remaining interface roles (`active, punch, ...`) are optional. A theme
+ *   omits the ones it does not author; `computeTheme` fills them from the Seldon
+ *   interface defaults.
  * - Free-named user swatches use the `custom1, custom2, ...` convention; their
  *   `name` field is the editor-visible label.
  */
 export type StockThemeSwatches = ThemeTokenTable<
-  ThemePaletteSlot | "background",
+  ThemePaletteSlot | "background" | "foreground" | "offBlack" | "offWhite",
   StockThemeSwatch
->
+> &
+  Partial<
+    Record<
+      Exclude<
+        ThemeInterfaceSwatchId,
+        "background" | "foreground" | "offBlack" | "offWhite"
+      >,
+      StockThemeSwatch
+    >
+  >
 
 export interface ThemeMetadata<TId extends string = ThemeTemplateId> {
   id: TId

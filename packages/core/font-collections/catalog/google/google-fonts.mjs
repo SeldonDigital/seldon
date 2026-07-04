@@ -21,6 +21,11 @@ const GOOGLE_DIR = dirname(fileURLToPath(import.meta.url))
 const GWFH_API = "https://gwfh.mranftl.com/api/fonts"
 const GOOGLE_FONTS_RAW = "https://raw.githubusercontent.com/google/fonts/main"
 
+// google-webfonts-helper names weight 400 `regular` and 400 italic `italic`.
+// Some manifest families author those variants as `400`/`400italic`, so map to
+// the gwfh id for lookup while keeping the manifest variant as the file name.
+const GWFH_VARIANT_ALIAS = { 400: "regular", "400italic": "italic" }
+
 // google-webfonts-helper subset to request per family. Latin covers the
 // general-purpose set; the multilingual families need their primary script.
 const SUBSET_BY_FAMILY = {
@@ -125,7 +130,7 @@ async function downloadFamily(entry) {
   const wanted = []
   const missing = []
   for (const variant of variants) {
-    const match = available.get(variant)
+    const match = available.get(GWFH_VARIANT_ALIAS[variant] ?? variant)
     if (match && match.woff2) wanted.push({ variant, url: match.woff2 })
     else missing.push(variant)
   }

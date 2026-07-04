@@ -174,7 +174,7 @@ export const schema = {
           },
           size: {
             type: Sdn.ValueType.THEME_ORDINAL,
-            value: "@size.medium",
+            value: "@size.large",
           },
           color: {
             type: Sdn.ValueType.THEME_CATEGORICAL,
@@ -280,7 +280,7 @@ export const schema = {
   variants: [
     {
       id: "success",
-      label: "Success Notification",
+      label: "Success",
       intent:
         "Positive confirmation toast with a success icon and a single acknowledge action.",
       children: [
@@ -291,13 +291,9 @@ export const schema = {
               type: Sdn.ValueType.OPTION,
               value: "material-checkCircle",
             },
-            size: {
-              type: Sdn.ValueType.THEME_ORDINAL,
-              value: "@size.medium",
-            },
             color: {
               type: Sdn.ValueType.THEME_CATEGORICAL,
-              value: "@swatch.custom2",
+              value: "@swatch.punch",
             },
           },
         },
@@ -384,7 +380,7 @@ export const schema = {
     },
     {
       id: "alertNotification",
-      label: "Alert Notification",
+      label: "Alert",
       intent:
         "Warning alert with a status icon, message, and two actions for dismiss or act.",
       overrides: {
@@ -433,7 +429,7 @@ export const schema = {
                 },
                 color: {
                   type: Sdn.ValueType.THEME_CATEGORICAL,
-                  value: "@swatch.custom1",
+                  value: "@swatch.active",
                 },
               },
             },

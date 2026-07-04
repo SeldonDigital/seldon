@@ -10,7 +10,7 @@
  * any machine learning or artificial intelligence system without written permission.
  *
  *****/
-import { HTMLAttributes, ReactNode } from "react"
+import { HTMLAttributes } from "react"
 import { ButtonIconic, ButtonIconicProps } from "../elements/ButtonIconic"
 import { Frame } from "../frames/Frame"
 import { Icon, IconProps } from "../primitives/Icon"
@@ -23,13 +23,6 @@ export interface ComboboxFieldProps extends HTMLAttributes<HTMLElement> {
   "data-seldon-ref"?: string
   seldonRefs?: Record<string, Record<string, unknown>>
   icon?: IconProps | null
-  /**
-   * Editor-only leading icon rendered as a node instead of the string `icon`
-   * slot. The string `Icon` map cannot host runtime nodes such as a live color
-   * chip or theme swatch strip, so callers pass them here. When set, it replaces
-   * the `icon` slot while the input and trailing button keep their own layout.
-   */
-  iconNode?: ReactNode
   input?: InputProps | null
   buttonIconic?: ButtonIconicProps | null
   icon2?: IconProps | null
@@ -55,7 +48,6 @@ export interface ComboboxFieldProps extends HTMLAttributes<HTMLElement> {
 export function ComboboxField({
   className = "",
   icon = sdn.icon,
-  iconNode,
   input = sdn.input,
   buttonIconic = sdn.buttonIconic,
   icon2 = sdn.icon2,
@@ -121,9 +113,7 @@ export function ComboboxField({
         children
       ) : (
         <>
-          {iconNode != null
-            ? iconNode
-            : iconProps !== null && <Icon {...iconProps} />}
+          {iconProps !== null && <Icon {...iconProps} />}
           {inputProps !== null && <Input {...inputProps} />}
           {buttonIconicProps !== null && (
             <ButtonIconic {...buttonIconicProps} icon={icon2Props} />

@@ -81,7 +81,7 @@ export const EDITOR_OPTION_ICON_OVERLAY: Record<
  */
 function resolveRowIcon(path: string): string {
   return (
-    EDITOR_ROW_ICON_OVERLAY[path] ?? coreGetPropertyIcon(path) ?? "seldon-token"
+    EDITOR_ROW_ICON_OVERLAY[path] ?? coreGetPropertyIcon(path) ?? "seldon-theme"
   )
 }
 

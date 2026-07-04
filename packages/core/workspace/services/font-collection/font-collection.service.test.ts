@@ -158,19 +158,4 @@ describe("WorkspaceFontCollectionService misc", () => {
     expect(used.has(SYSTEM_BOARD)).toBe(true)
     expect(used.has(GOOGLE_BOARD)).toBe(true)
   })
-
-  it("returns the next free familyNN slot id", () => {
-    const base = createEmptyWorkspace()
-    const entryId = systemDefaultEntryId(base)
-    expect(service.getNextCustomFamilyId(base, entryId)).toBe("family01")
-
-    const seeded = produce(base, (draft) => {
-      const entry = draft["font-collections"][entryId]!
-      entry.overrides = {
-        ...(entry.overrides ?? {}),
-        families: { family01: { name: "Seed", origin: "custom" } },
-      }
-    })
-    expect(service.getNextCustomFamilyId(seeded, entryId)).toBe("family02")
-  })
 })

@@ -30,14 +30,6 @@ export type DimensionValue =
   | PercentageValue
   | ComputedAutoFitValue
 
-/** Dimension shapes that exclude theme ordinal picks. */
-export type DimensionResizeValue =
-  | EmptyValue
-  | DimensionResizeOptionValue
-  | PixelValue
-  | RemValue
-  | ComputedAutoFitValue
-
 export const dimensionSchema: PropertySchema = {
   name: "dimension",
   description:

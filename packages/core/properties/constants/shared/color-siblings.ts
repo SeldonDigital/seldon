@@ -10,6 +10,8 @@
  * A container that does not expose a given facet simply has no entry for it, so every consumer
  * treats a missing facet as a no-op rather than a block or a crash.
  */
+import { BORDER_SIDE_KEYS } from "../../helpers/border-side-options"
+import { PROPERTY_COMPOUND_CATALOG } from "./compound-properties"
 
 /** Color facet key -> its sibling brightness and opacity keys within the same container. */
 export const COLOR_SIBLING_KEYS: Record<
@@ -24,11 +26,11 @@ export const COLOR_SIBLING_KEYS: Record<
 /** Single-color compounds whose `color` facet carries sibling brightness and opacity. */
 export const COLOR_SIBLING_COMPOUND_KEYS = [
   "border",
-  "borderTop",
-  "borderRight",
-  "borderBottom",
-  "borderLeft",
+  ...BORDER_SIDE_KEYS,
 ] as const
 
 /** Layered-paint roots whose layers carry color and gradient-stop facets. */
-export const COLOR_SIBLING_LAYER_KEYS = ["background", "shadow"] as const
+export const COLOR_SIBLING_LAYER_KEYS: readonly ("background" | "shadow")[] =
+  PROPERTY_COMPOUND_CATALOG.filter(
+    (entry) => entry.nodeStorage === "layered",
+  ).map((entry) => entry.key as "background" | "shadow")

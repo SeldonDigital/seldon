@@ -4,6 +4,5 @@ export {
   formatCompoundDisplay,
   formatShorthandDisplay,
   formatValue,
-  getAllowedValues,
 } from "./property-display"
-export { applyCompoundPreset, matchCompoundPreset } from "./compound-presets"
+export { applyCompoundPreset } from "./compound-presets"

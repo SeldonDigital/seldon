@@ -61,6 +61,11 @@ const HARMONY_OPTIONS = [
   { label: "Square", value: String(Harmony.Square) },
 ]
 
+const THEME_MODE_OPTIONS = [
+  { label: "Light", value: "light" },
+  { label: "Dark", value: "dark" },
+]
+
 const MODULATION_FACETS = [
   {
     facet: "ratio",
@@ -109,7 +114,7 @@ const COLOR_HARMONY_FACETS = [
     valueType: "number",
     controlType: "number",
     unit: { type: "deg", min: 0, max: 360, step: 1 },
-    icon: "seldon-rotation",
+    icon: "material-rotateRight",
   },
   {
     facet: "step",
@@ -148,6 +153,22 @@ const COLOR_HARMONY_FACETS = [
     unit: { type: "none", min: 0, max: 1, step: 0.01 },
     icon: "material-blurOn",
   },
+  {
+    facet: "mode",
+    label: "Mode",
+    valueType: "enum",
+    controlType: "combo",
+    options: THEME_MODE_OPTIONS,
+    icon: "material-brightnessMedium",
+  },
+  {
+    facet: "chromaChange",
+    label: "Chroma Change",
+    valueType: "percentage",
+    controlType: "number",
+    unit: { type: "%", min: -100, max: 100, step: 1 },
+    icon: "material-invertColors",
+  },
 ] as const satisfies readonly ComputedGroupFacetFor<ColorHarmonyParameters>[]
 
 const FONT_FAMILY_FACETS = [
@@ -173,14 +194,14 @@ const MATCH_COLOR_FACETS = [
     label: "Include Brightness",
     valueType: "boolean",
     controlType: "boolean",
-    icon: "seldon-brightness",
+    icon: "material-brightnessMedium",
   },
   {
     facet: "includeOpacity",
     label: "Include Opacity",
     valueType: "boolean",
     controlType: "boolean",
-    icon: "seldon-opacity",
+    icon: "material-opacity",
   },
 ] as const satisfies readonly ComputedGroupFacetFor<MatchColorParameters>[]
 

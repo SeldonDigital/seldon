@@ -7,7 +7,7 @@ import type { ComponentTreeRef, EntryNode, Workspace } from "../../types"
 import { playgroundSandboxNodeId } from "../components/entry-node-ids"
 
 /** Horizontal gap between auto-placed sandboxes, in px. */
-export const SANDBOX_PLACEMENT_GAP = 40
+const SANDBOX_PLACEMENT_GAP = 40
 
 /**
  * Safety cap for sandbox position offsets and sizes. The canvas is the infinite

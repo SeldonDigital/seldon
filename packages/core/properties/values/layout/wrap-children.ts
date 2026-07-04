@@ -1,9 +1,4 @@
 import { PropertySchema } from "../../types/schema"
-import { EmptyValue } from "../shared/empty/empty"
-import { BooleanValue } from "../shared/option/boolean"
-
-/** Unset or a boolean that turns child wrapping on or off. */
-export type WrapChildrenValue = EmptyValue | BooleanValue
 
 export const wrapChildrenSchema: PropertySchema = {
   name: "wrapChildren",

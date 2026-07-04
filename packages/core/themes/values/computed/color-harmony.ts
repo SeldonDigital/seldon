@@ -1,4 +1,4 @@
-import { Harmony } from "../../constants"
+import { Harmony, type ThemeMode } from "../../constants"
 import type { ColorSpaceLiteral } from "../shared/exact/color-spaces"
 import type { ThemeComputedGroup } from "./theme-computed-group"
 
@@ -12,6 +12,10 @@ export interface ColorHarmonyParameters {
   grayPoint: number
   blackPoint: number
   bleed: number
+  /** Mode the authored colors represent. Export derives the opposite mode. */
+  mode: ThemeMode
+  /** Chroma shift in percent, -100 through 100, applied to derived opposite-mode colors. */
+  chromaChange: number
 }
 
 export type ThemeColorHarmony = ThemeComputedGroup<ColorHarmonyParameters>

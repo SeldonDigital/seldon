@@ -11,45 +11,10 @@ interface PropertyExpansionState {
   toggleProperty: (propertyKey: string, shouldExpand?: boolean) => void
 }
 
-const DEFAULT_REGULAR_CATEGORIES: Partial<
-  Record<PropertyCategoryType, boolean>
-> = {
-  attributes: true,
-  layout: true,
-  appearance: true,
-  typography: true,
-  effects: true,
-  accessibility: true,
-  css: true,
-}
-
-const DEFAULT_THEME_CATEGORIES: Record<ThemePropertyCategoryType, boolean> = {
-  core: true,
-  swatch: true,
-  size: true,
-  dimension: true,
-  margin: true,
-  padding: true,
-  gap: true,
-  background: true,
-  border: true,
-  borderWidth: true,
-  corners: true,
-  font: true,
-  fontSize: true,
-  fontWeight: true,
-  lineHeight: true,
-  gradient: true,
-  shadow: true,
-  blur: true,
-  scrollbar: true,
-}
-
+// Categories default to expanded: reads and toggles fall back with `?? true`,
+// so the store only tracks explicit collapses.
 const useStore = create<PropertyExpansionState>((set) => ({
-  categories: {
-    ...DEFAULT_REGULAR_CATEGORIES,
-    ...DEFAULT_THEME_CATEGORIES,
-  },
+  categories: {},
   properties: {},
   toggleCategory: (category: AllCategoryType, shouldExpand?: boolean) =>
     set((state) => {

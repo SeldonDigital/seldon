@@ -2,13 +2,11 @@ import { current, isDraft, produce } from "immer"
 
 import type { ExtractPayload, Workspace } from "../../../../index"
 import { fontCollectionBoardKeyFromEntryId } from "../../../helpers/font-collections/font-collection-id"
+import { formatEntryId } from "../../../helpers/general/entry-id"
 import { getNextVariantLabel } from "../../../helpers/general/get-next-variant-label"
 import type { EntryFontCollection } from "../../../model/entry-font-collection"
 import { formatFontCollectionLink } from "../../../model/template-ref"
-
-function randomSuffix(): string {
-  return Math.random().toString(36).slice(2, 10)
-}
+import { randomSuffix } from "../shared/random-suffix"
 
 /**
  * Clones a `font-collections` entry, points its template at the source, and appends it
@@ -33,7 +31,7 @@ export function duplicateFontCollection(
 
     const newId =
       payload.newFontCollectionId ??
-      `font-collection-${boardKey}-${randomSuffix()}`
+      formatEntryId("font-collection", boardKey, randomSuffix())
 
     if (draft["font-collections"][newId]) return
 

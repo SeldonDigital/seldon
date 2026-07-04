@@ -26,30 +26,22 @@ type BoardRecord = Record<string, WorkspaceComponent>
 
 interface WorkspaceNode {
   id: string
-  component?: string
   template?: string
-  properties?: Properties
   overrides?: Properties
   states?: EntryNodeStates
   theme?: string | null
-  children?: string[]
-  instanceOf?: string
-  variant?: string
 }
 
 interface WorkspaceComponent {
   id?: string
   type?: Board["type"]
   catalogId?: string
-  properties?: Properties
   componentProperties?: Properties
-  theme?: string | null
   componentTheme?: string | null
   variants?: Array<string | { id: string }>
 }
 
 interface WorkspacePropertySource {
-  byId?: NodeRecord
   nodes?: NodeRecord
   boards?: BoardRecord
   playgrounds?: BoardRecord
@@ -78,7 +70,7 @@ export interface ComputeNodePropertiesOptions {
 }
 
 function getNodes(workspace: WorkspacePropertySource): NodeRecord {
-  return workspace.byId ?? workspace.nodes ?? {}
+  return workspace.nodes ?? {}
 }
 
 /**
@@ -96,7 +88,6 @@ function getOwnProperties(
   source: WorkspaceNode | WorkspaceComponent,
 ): Properties {
   return (
-    ("properties" in source ? source.properties : undefined) ??
     ("overrides" in source ? source.overrides : undefined) ??
     ("componentProperties" in source
       ? source.componentProperties
@@ -120,15 +111,13 @@ function getOwnStateProperties(
 }
 
 function getComponentThemeRef(board: WorkspaceComponent): string | null {
-  return board.theme ?? board.componentTheme ?? null
+  return board.componentTheme ?? null
 }
 
 function getNodeComponentId(
   node: WorkspaceNode,
   workspace: WorkspacePropertySource,
 ): ComponentId | null {
-  if (node.component && isComponentId(node.component)) return node.component
-
   const parsed = node.template ? parseNodeTemplate(node.template) : null
   if (parsed?.kind === "catalog" && isComponentId(parsed.componentId)) {
     return parsed.componentId
@@ -173,12 +162,6 @@ function findParentNode(
   compositionParentByChild: ReadonlyMap<string, string> | undefined,
 ): WorkspaceNode | null {
   const nodes = getNodes(workspace)
-  const legacyParent =
-    Object.values(nodes).find((possibleParent) =>
-      possibleParent.children?.includes(node.id),
-    ) ?? null
-  if (legacyParent) return legacyParent
-
   const parentId = compositionParentByChild?.get(node.id)
   if (parentId) {
     const fromIndex = nodes[parentId]
@@ -193,9 +176,6 @@ function getTemplateNode(
   workspace: WorkspacePropertySource,
 ): WorkspaceNode | null {
   const nodes = getNodes(workspace)
-  if (node.instanceOf && nodes[node.instanceOf]) return nodes[node.instanceOf]
-  if (node.variant && nodes[node.variant]) return nodes[node.variant]
-
   const parsed = node.template ? parseNodeTemplate(node.template) : null
   if (parsed?.kind === "node") return nodes[parsed.nodeId] ?? null
 

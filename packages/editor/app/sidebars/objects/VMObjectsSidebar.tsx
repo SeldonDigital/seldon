@@ -114,7 +114,7 @@ export function VMObjectsSidebar() {
   return (
     <SidebarObjects
       data-testid="objects-sidebar"
-      comboboxFieldProjectField={projectField}
+      comboboxFieldProject={projectField}
       input={nameInput}
       buttonIconic={projectActions}
       seldonRefs={seldonRefs}
@@ -167,7 +167,7 @@ const styles: Record<string, CSSProperties> = {
     flexDirection: "column",
     width: "100%",
     minWidth: 0,
-    padding: "0.25rem 0 0.75rem 0",
+    padding: "var(--sdn-paddings-tight) 0 var(--sdn-paddings-cozy) 0",
     gap: OBJECTS_TREE_GAP,
   },
 }

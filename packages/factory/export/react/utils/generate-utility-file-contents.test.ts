@@ -8,12 +8,21 @@ const options = {
 } as unknown as ExportOptions
 
 describe("getUtilityFileContents", () => {
-  it("emits the class-name and apply-ref utility files", () => {
+  it("emits the class-name, apply-ref, and icon-registry utility files", () => {
     const files = getUtilityFileContents(options)
     expect(files.map((f) => f.path)).toEqual([
       "/src/components/utils/class-name.ts",
       "/src/components/utils/apply-ref.ts",
+      "/src/components/utils/icon-registry.ts",
     ])
+  })
+
+  it("exports the icon registry helpers from the icon-registry file", () => {
+    const file = getUtilityFileContents(options).find((f) =>
+      f.path.endsWith("icon-registry.ts"),
+    )
+    expect(file?.content).toContain("export function registerIcon")
+    expect(file?.content).toContain("export function getRegisteredIcon")
   })
 
   it("exports combineClassNames from the class-name file", () => {

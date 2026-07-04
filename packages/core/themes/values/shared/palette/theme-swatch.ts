@@ -1,4 +1,5 @@
 import { TokenType } from "../../../constants/token-type"
+import type { ThemeInterfaceSwatchId } from "../../../types/theme-token-ids"
 import type { ThemeSwatchParameters } from "./theme-swatch-parameters"
 
 /** Resolved or author-fixed swatch color. */
@@ -8,6 +9,24 @@ export interface ThemeSwatch {
   intent?: string
   parameters: ThemeSwatchParameters
 }
+
+/**
+ * Canonical interface swatch slots. Authored fixed colors that stay slot-stable
+ * across themes. `background` is part of this group. Missing slots fall back to
+ * the Seldon interface defaults during `computeTheme`.
+ */
+export const THEME_INTERFACE_SLOTS = [
+  "foreground",
+  "background",
+  "active",
+  "punch",
+  "positive",
+  "negative",
+  "warning",
+  "accent",
+  "offBlack",
+  "offWhite",
+] as const satisfies readonly ThemeInterfaceSwatchId[]
 
 /** Slots filled from `getDynamicSwatchColors` during `computeTheme`. */
 export type ThemePaletteSlot =

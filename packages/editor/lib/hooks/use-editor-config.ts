@@ -11,6 +11,13 @@ import { useShallow } from "zustand/react/shallow"
  */
 export type ComponentHighlightMode = "selection" | "leaves" | "branch" | "tree"
 
+/**
+ * Editor interface light/dark mode. `"system"` follows the OS appearance,
+ * resolving to light or dark at runtime. Applies to the editor chrome only; it
+ * is never written to the workspace and never affects the canvas.
+ */
+export type InterfaceMode = "system" | "light" | "dark"
+
 interface EditorConfigState {
   // Canvas selection and hover overlay boxes in select mode
   showSelection: boolean
@@ -59,6 +66,16 @@ interface EditorConfigState {
   // Sidebar refactor settings
   useRefactoredSidebars: boolean
   setUseRefactoredSidebars: (enabled: boolean) => void
+
+  // Editor chrome theme (slug of an exported theme stylesheet). This re-themes
+  // the editor interface only; it is never written to the workspace and never
+  // affects the canvas.
+  chromeTheme: string
+  setChromeTheme: (slug: string) => void
+
+  // Editor interface light/dark mode (chrome only). `"system"` follows the OS.
+  interfaceMode: InterfaceMode
+  setInterfaceMode: (mode: InterfaceMode) => void
 }
 
 const useStore = create<EditorConfigState>()(
@@ -128,6 +145,16 @@ const useStore = create<EditorConfigState>()(
       useRefactoredSidebars: false,
       setUseRefactoredSidebars: (enabled) =>
         set((state) => ({ ...state, useRefactoredSidebars: enabled })),
+
+      // Editor chrome theme
+      chromeTheme: "seldon",
+      setChromeTheme: (slug) =>
+        set((state) => ({ ...state, chromeTheme: slug })),
+
+      // Editor interface mode (defaults to light; persisted across sessions)
+      interfaceMode: "light",
+      setInterfaceMode: (mode) =>
+        set((state) => ({ ...state, interfaceMode: mode })),
     }),
     {
       name: "editor-config",
@@ -144,6 +171,8 @@ const useStore = create<EditorConfigState>()(
         showUnusedIcons: state.showUnusedIcons,
         showPlayground: state.showPlayground,
         useRefactoredSidebars: state.useRefactoredSidebars,
+        chromeTheme: state.chromeTheme,
+        interfaceMode: state.interfaceMode,
       }),
     },
   ),
@@ -175,6 +204,10 @@ export function useEditorConfig() {
     setShowPlayground,
     useRefactoredSidebars,
     setUseRefactoredSidebars,
+    chromeTheme,
+    setChromeTheme,
+    interfaceMode,
+    setInterfaceMode,
   } = useStore(
     useShallow((state) => ({
       showSelection: state.showSelection,
@@ -201,6 +234,10 @@ export function useEditorConfig() {
       setShowPlayground: state.setShowPlayground,
       useRefactoredSidebars: state.useRefactoredSidebars,
       setUseRefactoredSidebars: state.setUseRefactoredSidebars,
+      chromeTheme: state.chromeTheme,
+      setChromeTheme: state.setChromeTheme,
+      interfaceMode: state.interfaceMode,
+      setInterfaceMode: state.setInterfaceMode,
     })),
   )
 
@@ -301,5 +338,13 @@ export function useEditorConfig() {
     useRefactoredSidebars,
     setUseRefactoredSidebars,
     toggleRefactoredSidebars,
+
+    // Editor chrome theme
+    chromeTheme,
+    setChromeTheme,
+
+    // Editor interface mode
+    interfaceMode,
+    setInterfaceMode,
   }
 }

@@ -91,10 +91,15 @@ export function useRowHighlightStyle(
   return useMemo(
     () => ({
       ...(isSelected ? { borderColor: ROW_SELECTED_BORDER } : {}),
-      // Suppress the default gray hover in insert component mode so only the
-      // insertion tracking (accent fill and the line with dot) reads.
+      // Suppress the default hover in insert component mode so only the
+      // insertion tracking (accent fill and the line with dot) reads. The hover
+      // tint tracks the chrome theme's active swatch instead of a fixed white,
+      // so it stays visible on both light and dark themes.
       ...(isHovered && !isSelected && activeTool !== "component"
-        ? { backgroundColor: "hsl(0 0% 100% / 0.1)" }
+        ? {
+            backgroundColor:
+              "color-mix(in srgb, var(--sdn-swatch-active) 10%, transparent)",
+          }
         : {}),
     }),
     [isHovered, isSelected, activeTool],

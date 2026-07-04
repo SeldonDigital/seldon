@@ -1,7 +1,7 @@
 import { produce } from "immer"
 
 import { ExtractPayload, Workspace } from "../../../../index"
-import { deleteIconSetOverrideAtPath } from "../../../helpers/icon-sets/icon-set-id"
+import { deleteOverrideAtPath } from "../../../helpers/general/override-paths"
 import type { EntryIconSet } from "../../../model/entry-icon-set"
 
 /** Removes one dot-path from `overrides` on an `icon-sets` entry. */
@@ -17,7 +17,7 @@ export function resetIconSetOverride(
     const overrides: Record<string, unknown> = {
       ...(entry.overrides as Record<string, unknown>),
     }
-    deleteIconSetOverrideAtPath(overrides, payload.path)
+    deleteOverrideAtPath(overrides, payload.path)
     entry.overrides = overrides
   })
 }

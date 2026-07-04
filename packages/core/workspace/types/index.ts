@@ -4,10 +4,9 @@
  * This module intentionally re-exports only the model surface defined by
  * `WORKSPACE.md` and `workspace/model/*`.
  */
-export { WORKSPACE_SPEC_VERSION } from "../model"
 export type { WorkspaceStringMap } from "../model"
 export type { WorkspaceMetadata } from "../model"
-export type { ComponentResourceRef, ComponentTreeRef } from "../model"
+export type { ComponentTreeRef } from "../model"
 export type {
   Board,
   ComponentBoard,
@@ -46,7 +45,6 @@ export type {
   CustomState,
   EntryNodeStates,
   NodeState,
-  NormalState,
   ReservedStateName,
   StateExpression,
 } from "../model"
@@ -90,7 +88,6 @@ export { isEntryNodeForRules } from "../helpers/rules/rules-node-subject"
 export type {
   InstanceId,
   NodePath,
-  ReferenceId,
   VariantId,
 } from "../helpers/rules/workspace-node-ids"
 export type {

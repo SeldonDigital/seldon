@@ -2,7 +2,8 @@ import { modulate, round } from "../../helpers/math"
 import { getThemeOption } from "../../helpers/theme/get-theme-option"
 import { isUnitValue } from "../../helpers/type-guards/value/is-unit-value"
 import { invariant } from "../../helpers/utils/invariant"
-import type { ThemeModulation, ThemeValueKey } from "../../themes/types"
+import type { ThemeValueKey } from "../../themes/types"
+import { isModulatedToken } from "../../themes/values"
 import { EMPTY_VALUE, Unit, ValueType } from "../constants"
 import type { ComputedAutoFitValue } from "../values/shared/computed/auto-fit"
 import { resolveAutoFitSource } from "./resolve-auto-fit-source"
@@ -49,20 +50,23 @@ export function computeAutoFit(
 
   if (basedOnValue.type === ValueType.THEME_ORDINAL) {
     const token = basedOnValue.value as string
-    const isFontSize = token.includes("@fontSize")
-    const isSize = token.includes("@size")
+    const isFontSize = token.startsWith("@fontSize.")
+    const isSize = token.startsWith("@size.")
 
     invariant(
       isFontSize || isSize,
       `Auto fit only supports @fontSize or @size theme ordinals, got: ${token}`,
     )
 
-    const themeOption = getThemeOption(
-      token as ThemeValueKey,
-      context.theme,
-    ) as ThemeModulation
+    const themeOption = getThemeOption(token as ThemeValueKey, context.theme)
 
     invariant(themeOption, `Theme option not found for ${token}`)
+
+    // Custom tokens may be EXACT cells without a modulation step. Skip them so
+    // modulate() never runs against an undefined step and produces NaN rem.
+    if (!isModulatedToken(themeOption)) {
+      return EMPTY_VALUE
+    }
 
     const baseSize = isFontSize
       ? context.theme.modulation.parameters.baseFontSize / 16

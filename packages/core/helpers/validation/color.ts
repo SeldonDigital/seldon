@@ -108,6 +108,6 @@ export function isHex(value: string): value is `#${string}` {
  * @param value - The string to validate
  * @returns True if the value is a valid hex color without hash
  */
-export function isHexWithoutHash(value: string): value is `#${string}` {
+export function isHexWithoutHash(value: string): boolean {
   return /^([0-9a-f]{3}){1,2}$/i.test(value)
 }

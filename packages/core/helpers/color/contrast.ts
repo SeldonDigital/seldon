@@ -40,7 +40,7 @@ export function isDarkBackgroundColor(
  * @param color - The color to calculate contrast against white
  * @returns The contrast ratio (1.0 to 21.0, where higher values indicate better contrast)
  */
-export function getContrastRatio(color: ColorValue) {
+function getContrastRatio(color: ColorValue) {
   return chroma.contrast("white", toString(color))
 }
 

@@ -9,6 +9,7 @@ import type {
 import { formatIconSetCatalog } from "../../model/template-ref"
 import { setBoardOrder } from "../components/board-sort-order"
 import { getInitialBoardComponentProperties } from "../components/get-initial-board-component-properties"
+import { formatEntryId } from "../general/entry-id"
 import { WORKSPACE_EDITABLE_THEME_ENTRY_ID } from "../themes/workspace-editable-theme"
 import { type SeedableWorkspace, nextBoardOrder } from "./seedable-workspace"
 
@@ -19,8 +20,8 @@ export const DEFAULT_ICON_SET_BOARD_KEY = "seldonIcons" as const
 export const DEFAULT_ICON_SET_ENTRY_ID = "icon-set-seldonIcons-default" as const
 
 /** Extra icon set boards seeded into every new workspace alongside Seldon. Deletable. */
-export const ADDITIONAL_ICON_SET_BOARD_KEYS = [
-  "googleMaterial",
+const ADDITIONAL_ICON_SET_BOARD_KEYS = [
+  "googleSymbols",
 ] as const satisfies IconSetTemplateId[]
 
 /**
@@ -41,7 +42,7 @@ function createAllIncludedIconsOverrides(
  * Builds the default Seldon icon set entry with every icon enabled, so all
  * subcategories start on `all`.
  */
-export function createDefaultIconSetEntry(): EntryIconSet {
+function createDefaultIconSetEntry(): EntryIconSet {
   return {
     id: DEFAULT_ICON_SET_ENTRY_ID,
     type: "default",
@@ -53,7 +54,7 @@ export function createDefaultIconSetEntry(): EntryIconSet {
 
 /**
  * Adds the default Seldon icon set board plus the extra stock icon sets
- * (`googleMaterial`) when missing.
+ * (`googleSymbols`) when missing.
  *
  * Idempotent per board: skips any icon set board that already exists. Mutates
  * the passed workspace in place. Seldon is the protected base; the extras are
@@ -76,10 +77,10 @@ export function seedDefaultIconSetBoard(workspace: SeedableWorkspace): void {
   )
 
   // Extra sets seed with empty overrides so inclusion falls back to the set's
-  // defaults, such as the curated `defaultEnabledIcons` of `googleMaterial`.
+  // defaults, such as the curated `defaultEnabledIcons` of `googleSymbols`.
   for (const boardKey of ADDITIONAL_ICON_SET_BOARD_KEYS) {
     seedIconSetBoard(workspace, boardKey, {
-      id: `icon-set-${boardKey}-default`,
+      id: formatEntryId("icon-set", boardKey, "default"),
       type: "default",
       label: "Default",
       template: formatIconSetCatalog(boardKey),

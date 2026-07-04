@@ -123,9 +123,9 @@ import { textCaseSchema } from "../../values/typography/text-casing"
 import { textDecorationSchema } from "../../values/typography/text-decoration"
 import { wrapTextSchema } from "../../values/typography/wrap-text"
 
-/** Flat catalog map keyed by joined facet names; see `PROPERTY-SCHEMAS.md`. */
+/** Flat catalog map keyed by joined facet names; see `properties/schemas/README.md`. */
 const PROPERTY_SCHEMAS_RAW = {
-  // 1. ATTRIBUTES (PROPERTIES.md table order)
+  // 1. ATTRIBUTES (properties README table order)
   display: displaySchema,
   htmlElement: htmlElementSchema,
   wrapperElement: wrapperElementSchema,
@@ -158,7 +158,7 @@ const PROPERTY_SCHEMAS_RAW = {
   screenHeight: screenHeightSchema,
   cursor: cursorSchema,
 
-  // 2. LAYOUT (PROPERTIES.md table order; then auxiliary layout schemas)
+  // 2. LAYOUT (properties README table order; then auxiliary layout schemas)
   direction: directionSchema,
   placement: placementSchema,
   position: positionSchema,
@@ -185,7 +185,7 @@ const PROPERTY_SCHEMAS_RAW = {
   resize: resizeSchema,
   screenSize: screenSizeSchema,
 
-  // 3. APPEARANCE (PROPERTIES.md: color → opacity → background[] → border* → corners → borderCollapse)
+  // 3. APPEARANCE (properties README: color → opacity → background[] → border* → corners → borderCollapse)
   color: colorSchema,
   accentColor: accentColorSchema,
   brightness: brightnessSchema,
@@ -247,7 +247,7 @@ const PROPERTY_SCHEMAS_RAW = {
   corners: cornersSchema,
   borderCollapse: borderCollapseSchema,
 
-  // 4. TYPOGRAPHY (PROPERTIES.md: font.* then textAlign → lines)
+  // 4. TYPOGRAPHY (properties README: font.* then textAlign → lines)
   fontPreset: fontPresetSchema,
   fontFamily: fontFamilySchema,
   fontStyle: fontStyleSchema,
@@ -261,7 +261,7 @@ const PROPERTY_SCHEMAS_RAW = {
   wrapText: wrapTextSchema,
   lines: linesSchema,
 
-  // EFFECTS (PROPERTIES.md — gradient[], shadow[], scroll, scrollbarStyle)
+  // EFFECTS (properties README: gradient look facets, shadow[], scroll, scrollbarStyle)
   gradientPreset: gradientPresetSchema,
   // `getCompoundSubPropertySchema("gradient", "gradientType")` joins parent + PascalCase facet →
   // `gradientGradientType` (facet name repeats "gradient"). Same schema is also under `gradientType`
@@ -313,8 +313,5 @@ const PROPERTY_SCHEMAS_RAW = {
 
 export const PROPERTY_SCHEMAS =
   attachPropertyDisplayMetadata(PROPERTY_SCHEMAS_RAW)
-
-/** The property schema catalog: same object as {@link PROPERTY_SCHEMAS}. */
-export const PROPERTY_SCHEMA_CATALOG = PROPERTY_SCHEMAS
 
 export type PropertyName = keyof typeof PROPERTY_SCHEMAS

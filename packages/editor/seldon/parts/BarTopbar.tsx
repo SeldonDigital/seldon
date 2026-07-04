@@ -25,8 +25,10 @@ export interface BarTopbarProps extends HTMLAttributes<HTMLElement> {
   "data-seldon-ref"?: string
   seldonRefs?: Record<string, Record<string, unknown>>
   frame?: FrameProps | null
+  frame2?: FrameProps | null
   image?: ImageProps | null
   image2?: ImageProps | null
+  frame3?: FrameProps | null
   buttonSimple?: ButtonSimpleProps | null
   textLabel?: TextLabelProps | null
   buttonSimple2?: ButtonSimpleProps | null
@@ -37,7 +39,7 @@ export interface BarTopbarProps extends HTMLAttributes<HTMLElement> {
   textLabel4?: TextLabelProps | null
   buttonSimple5?: ButtonSimpleProps | null
   textLabel5?: TextLabelProps | null
-  frame2?: FrameProps | null
+  frame4?: FrameProps | null
   buttonMenu?: ButtonMenuProps | null
   textLabel6?: TextLabelProps | null
   icon?: IconProps | null
@@ -64,8 +66,10 @@ export interface BarTopbarProps extends HTMLAttributes<HTMLElement> {
 export function BarTopbar({
   className = "",
   frame = sdn.frame,
+  frame2 = sdn.frame2,
   image,
   image2,
+  frame3 = sdn.frame3,
   buttonSimple,
   textLabel,
   buttonSimple2,
@@ -76,7 +80,7 @@ export function BarTopbar({
   textLabel4,
   buttonSimple5,
   textLabel5,
-  frame2 = sdn.frame2,
+  frame4 = sdn.frame4,
   buttonMenu,
   textLabel6,
   icon = sdn.icon,
@@ -96,6 +100,19 @@ export function BarTopbar({
           ...sdn.frame,
           ...frame,
           className: combineClassNames(sdn.frame?.className, frame?.className),
+        },
+  )
+  const frame2Props = applyRef(
+    seldonRefs,
+    frame2 === null
+      ? null
+      : {
+          ...sdn.frame2,
+          ...frame2,
+          className: combineClassNames(
+            sdn.frame2?.className,
+            frame2?.className,
+          ),
         },
   )
   const imageProps = applyRef(
@@ -118,6 +135,19 @@ export function BarTopbar({
           className: combineClassNames(
             sdn.image2?.className,
             image2?.className,
+          ),
+        },
+  )
+  const frame3Props = applyRef(
+    seldonRefs,
+    frame3 === null
+      ? null
+      : {
+          ...sdn.frame3,
+          ...frame3,
+          className: combineClassNames(
+            sdn.frame3?.className,
+            frame3?.className,
           ),
         },
   )
@@ -251,16 +281,16 @@ export function BarTopbar({
           ),
         },
   )
-  const frame2Props = applyRef(
+  const frame4Props = applyRef(
     seldonRefs,
-    frame2 === null
+    frame4 === null
       ? null
       : {
-          ...sdn.frame2,
-          ...frame2,
+          ...sdn.frame4,
+          ...frame4,
           className: combineClassNames(
-            sdn.frame2?.className,
-            frame2?.className,
+            sdn.frame4?.className,
+            frame4?.className,
           ),
         },
   )
@@ -349,45 +379,49 @@ export function BarTopbar({
       ) : (
         <>
           <Frame {...frameProps}>
-            {image && imageProps && <Image {...imageProps} />}
-            {image2 && image2Props && <Image {...image2Props} />}
-            {buttonSimple && buttonSimpleProps && (
-              <ButtonSimple {...buttonSimpleProps}>
-                {textLabel && textLabelProps && (
-                  <TextLabel {...textLabelProps} />
-                )}
-              </ButtonSimple>
-            )}
-            {buttonSimple2 && buttonSimple2Props && (
-              <ButtonSimple {...buttonSimple2Props}>
-                {textLabel2 && textLabel2Props && (
-                  <TextLabel {...textLabel2Props} />
-                )}
-              </ButtonSimple>
-            )}
-            {buttonSimple3 && buttonSimple3Props && (
-              <ButtonSimple {...buttonSimple3Props}>
-                {textLabel3 && textLabel3Props && (
-                  <TextLabel {...textLabel3Props} />
-                )}
-              </ButtonSimple>
-            )}
-            {buttonSimple4 && buttonSimple4Props && (
-              <ButtonSimple {...buttonSimple4Props}>
-                {textLabel4 && textLabel4Props && (
-                  <TextLabel {...textLabel4Props} />
-                )}
-              </ButtonSimple>
-            )}
-            {buttonSimple5 && buttonSimple5Props && (
-              <ButtonSimple {...buttonSimple5Props}>
-                {textLabel5 && textLabel5Props && (
-                  <TextLabel {...textLabel5Props} />
-                )}
-              </ButtonSimple>
-            )}
+            <Frame {...frame2Props}>
+              {image && imageProps && <Image {...imageProps} />}
+              {image2 && image2Props && <Image {...image2Props} />}
+            </Frame>
+            <Frame {...frame3Props}>
+              {buttonSimple && buttonSimpleProps && (
+                <ButtonSimple {...buttonSimpleProps}>
+                  {textLabel && textLabelProps && (
+                    <TextLabel {...textLabelProps} />
+                  )}
+                </ButtonSimple>
+              )}
+              {buttonSimple2 && buttonSimple2Props && (
+                <ButtonSimple {...buttonSimple2Props}>
+                  {textLabel2 && textLabel2Props && (
+                    <TextLabel {...textLabel2Props} />
+                  )}
+                </ButtonSimple>
+              )}
+              {buttonSimple3 && buttonSimple3Props && (
+                <ButtonSimple {...buttonSimple3Props}>
+                  {textLabel3 && textLabel3Props && (
+                    <TextLabel {...textLabel3Props} />
+                  )}
+                </ButtonSimple>
+              )}
+              {buttonSimple4 && buttonSimple4Props && (
+                <ButtonSimple {...buttonSimple4Props}>
+                  {textLabel4 && textLabel4Props && (
+                    <TextLabel {...textLabel4Props} />
+                  )}
+                </ButtonSimple>
+              )}
+              {buttonSimple5 && buttonSimple5Props && (
+                <ButtonSimple {...buttonSimple5Props}>
+                  {textLabel5 && textLabel5Props && (
+                    <TextLabel {...textLabel5Props} />
+                  )}
+                </ButtonSimple>
+              )}
+            </Frame>
           </Frame>
-          <Frame {...frame2Props}>
+          <Frame {...frame4Props}>
             {buttonMenu && buttonMenuProps && (
               <ButtonMenu {...buttonMenuProps}>
                 {textLabel6 && textLabel6Props && (
@@ -421,7 +455,13 @@ const sdn: BarTopbarProps = {
   frame: {
     wrapperElement: "div",
     "aria-hidden": "false",
-    className: "sdn-frame sdn-frame--drsa",
+    className: "sdn-frame sdn-frame--33uo",
+  },
+  frame2: {
+    wrapperElement: "div",
+    "aria-hidden": "false",
+    className: "sdn-frame sdn-frame--ajnq",
+    "data-seldon-ref": "logo",
   },
   image: {
     className: "sdn-image sdn-image--33xp",
@@ -429,37 +469,48 @@ const sdn: BarTopbarProps = {
   image2: {
     className: "sdn-image sdn-image--dnok",
   },
+  frame3: {
+    wrapperElement: "div",
+    "aria-hidden": "false",
+    className: "sdn-frame sdn-frame--drsa",
+    "data-seldon-ref": "menus",
+  },
   buttonSimple: {
     className: "sdn-button-simple sdn-button-simple--dbgs",
+    "data-seldon-ref": "menuFile",
   },
   textLabel: {
-    className: "sdn-text-label sdn-text-label--xohb",
+    className: "sdn-text-label sdn-text-label--lbxv",
   },
   buttonSimple2: {
     className: "sdn-button-simple sdn-button-simple--dbgs",
+    "data-seldon-ref": "menuEdit",
   },
   textLabel2: {
-    className: "sdn-text-label sdn-text-label--xohb",
+    className: "sdn-text-label sdn-text-label--lbxv",
   },
   buttonSimple3: {
     className: "sdn-button-simple sdn-button-simple--dbgs",
+    "data-seldon-ref": "menuComponent",
   },
   textLabel3: {
-    className: "sdn-text-label sdn-text-label--xohb",
+    className: "sdn-text-label sdn-text-label--lbxv",
   },
   buttonSimple4: {
     className: "sdn-button-simple sdn-button-simple--dbgs",
+    "data-seldon-ref": "menuView",
   },
   textLabel4: {
-    className: "sdn-text-label sdn-text-label--xohb",
+    className: "sdn-text-label sdn-text-label--lbxv",
   },
   buttonSimple5: {
     className: "sdn-button-simple sdn-button-simple--dbgs",
+    "data-seldon-ref": "menuDev",
   },
   textLabel5: {
-    className: "sdn-text-label sdn-text-label--xohb",
+    className: "sdn-text-label sdn-text-label--lbxv",
   },
-  frame2: {
+  frame4: {
     wrapperElement: "div",
     "aria-hidden": "false",
     className: "sdn-frame sdn-frame--nzij",

@@ -2,7 +2,6 @@ import { parsePropertyPath } from "@lib/properties/property-paths"
 import { ComponentId, ComponentLevel, Theme, Workspace } from "@seldon/core"
 import {
   type PropertyPickerInput,
-  type PropertyPickerOption,
   type PropertyPickerResult,
   getPropertyPickerOptions,
 } from "@seldon/core/helpers/properties/properties-bridge"
@@ -11,7 +10,7 @@ import { Board, Instance, Variant } from "@seldon/core/workspace/types"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
 import { FlatProperty } from "./properties-data"
 
-export type { PropertyPickerOption, PropertyPickerResult }
+export type { PropertyPickerResult }
 
 function resolveSubjectId(
   node: Variant | Instance | Board | undefined,
@@ -34,7 +33,7 @@ export function generatePropertyOptions(
   theme: Theme | undefined,
   componentId: ComponentId | undefined,
   componentLevel: ComponentLevel | undefined,
-  workspace: Workspace | undefined,
+  workspace: Workspace,
   node: Variant | Instance | Board | undefined,
 ): PropertyPickerResult {
   // An upper paint layer parent (`gradient.1`) resolves its preset options
@@ -47,7 +46,7 @@ export function generatePropertyOptions(
     path: optionPath,
     value: property.value,
     subjectId: resolveSubjectId(node, componentId),
-    workspace: workspace ?? ({ boards: {}, nodes: {} } as Workspace),
+    workspace,
     theme,
     componentLevel,
   }

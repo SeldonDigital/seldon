@@ -26,6 +26,7 @@ import {
 } from "./label-mutations"
 import {
   applyComponentPropertiesToAllBoards,
+  resetComponentBoard,
   resetComponentProperty,
   resetNodeOverrides,
   resetNodeProperty,
@@ -37,7 +38,6 @@ import {
 } from "./node-property-mutations"
 import { replaceSwatchRefsWithExactColor } from "./swatch-ref-replacement"
 import {
-  getInheritedTheme,
   getNodeTheme,
   setComponentTheme,
   setNodeTheme,
@@ -172,6 +172,13 @@ export class WorkspaceMutationService {
     return applyComponentPropertiesToAllBoards(sourceBoardKey, workspace)
   }
 
+  public resetComponentBoard(
+    boardKey: BoardKey,
+    workspace: Workspace,
+  ): Workspace {
+    return resetComponentBoard(boardKey, workspace)
+  }
+
   /** Rebuilds a single schema-backed user variant to its catalog schema variant. */
   public resetSchemaVariantToCatalog(
     variantRootId: VariantId,
@@ -246,13 +253,6 @@ export class WorkspaceMutationService {
     workspace: Workspace,
   ): ThemeInstanceId {
     return getNodeTheme(node, workspace)
-  }
-
-  public getInheritedTheme(
-    node: Variant | Instance,
-    workspace: Workspace,
-  ): ThemeInstanceId {
-    return getInheritedTheme(node, workspace)
   }
 
   public replaceSwatchRefsWithExactColor(

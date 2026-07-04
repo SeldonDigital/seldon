@@ -38,9 +38,9 @@
         "order": 54
       }
     },
-    "material": {
+    "googleMaterial": {
       "type": "theme",
-      "catalogId": "material",
+      "catalogId": "googleMaterial",
       "label": "Google Material",
       "author": "Seldon Digital",
       "componentPreview": "seldonThemePreview",
@@ -48,7 +48,7 @@
       "componentProperties": {},
       "variants": [
         {
-          "id": "theme-material-default"
+          "id": "theme-googleMaterial-default"
         }
       ],
       "__editor": {
@@ -116,9 +116,9 @@
         "order": 58
       }
     },
-    "googleMaterial": {
+    "googleSymbols": {
       "type": "icon-set",
-      "catalogId": "googleMaterial",
+      "catalogId": "googleSymbols",
       "label": "Google Symbols",
       "componentPreview": "seldonIconsPreview",
       "componentTheme": "theme-seldon-default",
@@ -138,7 +138,7 @@
       },
       "variants": [
         {
-          "id": "icon-set-googleMaterial-default"
+          "id": "icon-set-googleSymbols-default"
         }
       ],
       "__editor": {
@@ -7172,10 +7172,10 @@
         "order": 61
       }
     },
-    "pop": {
+    "popPunk": {
       "type": "theme",
-      "catalogId": "pop",
-      "label": "Pop punk",
+      "catalogId": "popPunk",
+      "label": "Pop Punk",
       "author": "Seldon Digital",
       "componentPreview": "seldonThemePreview",
       "componentTheme": "theme-seldon-default",
@@ -7189,34 +7189,34 @@
         "order": 62
       }
     },
-    "royalAzure": {
+    "ibmCarbon": {
       "type": "theme",
-      "catalogId": "royalAzure",
-      "label": "Royal Azure",
+      "catalogId": "ibmCarbon",
+      "label": "IBM Carbon",
       "author": "Seldon Digital",
       "componentPreview": "seldonThemePreview",
       "componentTheme": "theme-seldon-default",
       "componentProperties": {},
       "variants": [
         {
-          "id": "theme-royalAzure-default"
+          "id": "theme-ibmCarbon-default"
         }
       ],
       "__editor": {
         "order": 63
       }
     },
-    "sky": {
+    "adobeSpectrum": {
       "type": "theme",
-      "catalogId": "sky",
-      "label": "Sky Blue",
+      "catalogId": "adobeSpectrum",
+      "label": "Adobe Spectrum",
       "author": "Seldon Digital",
       "componentPreview": "seldonThemePreview",
       "componentTheme": "theme-seldon-default",
       "componentProperties": {},
       "variants": [
         {
-          "id": "theme-sky-default"
+          "id": "theme-adobeSpectrum-default"
         }
       ],
       "__editor": {
@@ -63612,11 +63612,11 @@
       "template": "catalog:highContrast",
       "overrides": {}
     },
-    "theme-material-default": {
-      "id": "theme-material-default",
+    "theme-googleMaterial-default": {
+      "id": "theme-googleMaterial-default",
       "type": "default",
       "label": "Default",
-      "template": "catalog:material",
+      "template": "catalog:googleMaterial",
       "overrides": {}
     },
     "theme-earth-default": {
@@ -63637,21 +63637,21 @@
       "id": "theme-pop-default",
       "type": "default",
       "label": "Default",
-      "template": "catalog:pop",
+      "template": "catalog:popPunk",
       "overrides": {}
     },
-    "theme-royalAzure-default": {
-      "id": "theme-royalAzure-default",
+    "theme-ibmCarbon-default": {
+      "id": "theme-ibmCarbon-default",
       "type": "default",
       "label": "Default",
-      "template": "catalog:royalAzure",
+      "template": "catalog:ibmCarbon",
       "overrides": {}
     },
-    "theme-sky-default": {
-      "id": "theme-sky-default",
+    "theme-adobeSpectrum-default": {
+      "id": "theme-adobeSpectrum-default",
       "type": "default",
       "label": "Default",
-      "template": "catalog:sky",
+      "template": "catalog:adobeSpectrum",
       "overrides": {}
     },
     "theme-sunsetBlue-default": {
@@ -64179,11 +64179,11 @@
         }
       }
     },
-    "icon-set-googleMaterial-default": {
-      "id": "icon-set-googleMaterial-default",
+    "icon-set-googleSymbols-default": {
+      "id": "icon-set-googleSymbols-default",
       "type": "default",
       "label": "Default",
-      "template": "catalog:googleMaterial",
+      "template": "catalog:googleSymbols",
       "overrides": {}
     }
   },
