@@ -161,6 +161,7 @@ export function useThemeProperties(themeEntryId: EntryThemeId | null) {
           | "blackPoint"
           | "bleed"
           | "chromaChange"
+          | "lightnessChange"
         const numericValue = parseNumericInput(newValue)
         if (numericValue === null) {
           console.warn(`Invalid numeric value for ${key}: ${newValue}`)

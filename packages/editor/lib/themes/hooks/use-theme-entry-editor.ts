@@ -143,7 +143,8 @@ export function useThemeEntryEditor(themeEntryId: EntryThemeId | null) {
         | "grayPoint"
         | "blackPoint"
         | "bleed"
-        | "chromaChange",
+        | "chromaChange"
+        | "lightnessChange",
       value: number,
     ) => {
       mergeOverride("colorHarmony.parameters", { [key]: value })

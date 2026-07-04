@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "version": 7,
+    "version": 8,
     "label": ""
   },
   "boards": {
@@ -48315,9 +48315,7 @@
       "template": "catalog:seldon",
       "overrides": {
         "colorHarmony": {
-          "parameters": {
-            "chromaChange": 10
-          }
+          "parameters": {}
         }
       }
     },
@@ -48328,9 +48326,7 @@
       "template": "catalog:highContrast",
       "overrides": {
         "colorHarmony": {
-          "parameters": {
-            "chromaChange": -5
-          }
+          "parameters": {}
         }
       }
     },
@@ -48341,9 +48337,7 @@
       "template": "catalog:googleMaterial",
       "overrides": {
         "colorHarmony": {
-          "parameters": {
-            "chromaChange": -10
-          }
+          "parameters": {}
         }
       }
     },
@@ -48354,9 +48348,7 @@
       "template": "catalog:earth",
       "overrides": {
         "colorHarmony": {
-          "parameters": {
-            "chromaChange": -5
-          }
+          "parameters": {}
         }
       }
     },
@@ -48367,9 +48359,7 @@
       "template": "catalog:industrial",
       "overrides": {
         "colorHarmony": {
-          "parameters": {
-            "chromaChange": 10
-          }
+          "parameters": {}
         }
       }
     },
@@ -48380,9 +48370,7 @@
       "template": "catalog:popPunk",
       "overrides": {
         "colorHarmony": {
-          "parameters": {
-            "chromaChange": -10
-          }
+          "parameters": {}
         }
       }
     },
@@ -48393,9 +48381,7 @@
       "template": "catalog:ibmCarbon",
       "overrides": {
         "colorHarmony": {
-          "parameters": {
-            "chromaChange": -15
-          }
+          "parameters": {}
         }
       }
     },
@@ -48406,9 +48392,7 @@
       "template": "catalog:adobeSpectrum",
       "overrides": {
         "colorHarmony": {
-          "parameters": {
-            "chromaChange": -10
-          }
+          "parameters": {}
         }
       }
     },
@@ -48432,9 +48416,7 @@
       "template": "catalog:wildberry",
       "overrides": {
         "colorHarmony": {
-          "parameters": {
-            "chromaChange": -5
-          }
+          "parameters": {}
         }
       }
     }

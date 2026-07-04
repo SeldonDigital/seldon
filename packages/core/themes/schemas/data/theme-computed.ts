@@ -169,6 +169,14 @@ const COLOR_HARMONY_FACETS = [
     unit: { type: "%", min: -100, max: 100, step: 1 },
     icon: "material-invertColors",
   },
+  {
+    facet: "lightnessChange",
+    label: "Lightness Change",
+    valueType: "percentage",
+    controlType: "number",
+    unit: { type: "%", min: -100, max: 100, step: 1 },
+    icon: "material-brightnessHigh",
+  },
 ] as const satisfies readonly ComputedGroupFacetFor<ColorHarmonyParameters>[]
 
 const FONT_FAMILY_FACETS = [

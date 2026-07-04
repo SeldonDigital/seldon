@@ -84,6 +84,7 @@ function generateThemeCSSVariables(theme: Theme, slug: string): string {
   cssVariables += `  ${prefix}color-bleed: ${harmony.bleed};\n`
   cssVariables += `  ${prefix}color-mode: ${harmony.mode};\n`
   cssVariables += `  ${prefix}color-chroma-change: ${harmony.chromaChange}%;\n`
+  cssVariables += `  ${prefix}color-lightness-change: ${harmony.lightnessChange}%;\n`
   cssVariables += `  ${prefix}color-contrast-ratio: ${theme.highContrast.parameters.contrastRatio};\n`
 
   // The base block serves the theme's authored mode, so its swatch table comes
@@ -175,8 +176,9 @@ function generateThemeCSSVariables(theme: Theme, slug: string): string {
  * (foreground/background, white/black, offBlack/offWhite) carry authored
  * colors as-is: the literal assignment for light, the swapped assignment for
  * dark. Every other color is authored in the theme's own mode and moves
- * through LCH for the opposite one: lightness inverts and chroma scales by
- * the theme's `chromaChange` percentage.
+ * through LCH for the opposite one: neutral `gray` inverts its lightness, while
+ * non-neutral swatches shift lightness by the theme's `lightnessChange` and
+ * scale chroma by its `chromaChange` percentage.
  */
 function generateModeSwatchVariables(theme: Theme, mode: ThemeMode): string {
   const swatches = getModeSwatches(theme, mode)

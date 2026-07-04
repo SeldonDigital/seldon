@@ -16,6 +16,8 @@ export interface ColorHarmonyParameters {
   mode: ThemeMode
   /** Chroma shift in percent, -100 through 100, applied to derived opposite-mode colors. */
   chromaChange: number
+  /** Lightness shift in percent, -100 through 100, applied to derived opposite-mode colors. */
+  lightnessChange: number
 }
 
 export type ThemeColorHarmony = ThemeComputedGroup<ColorHarmonyParameters>

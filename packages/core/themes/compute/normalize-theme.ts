@@ -87,10 +87,14 @@ export function normalizeThemeInput(
         grayPoint: normalizeThemeNumber(colorHarmony.parameters.grayPoint),
         blackPoint: normalizeThemeNumber(colorHarmony.parameters.blackPoint),
         bleed: normalizeThemeNumber(colorHarmony.parameters.bleed),
-        // Files saved before mode and chromaChange existed omit them.
+        // Files saved before mode, chromaChange, and lightnessChange existed
+        // omit them.
         mode: colorHarmony.parameters.mode === "dark" ? "dark" : "light",
         chromaChange: normalizeThemeNumber(
           colorHarmony.parameters.chromaChange ?? 0,
+        ),
+        lightnessChange: normalizeThemeNumber(
+          colorHarmony.parameters.lightnessChange ?? 0,
         ),
       },
     },

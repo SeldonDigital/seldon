@@ -33,6 +33,7 @@
   --sdn-color-bleed: 12;
   --sdn-color-mode: light;
   --sdn-color-chroma-change: -5%;
+  --sdn-color-lightness-change: 4%;
   --sdn-color-contrast-ratio: 2;
   /* Swatches */
   --sdn-swatch-white: hsl(198 12% 98%);
@@ -194,19 +195,19 @@
   --sdn-swatch-white: hsl(198 12% 8%);
   --sdn-swatch-gray: hsl(198 14% 36%);
   --sdn-swatch-black: hsl(198 12% 98%);
-  --sdn-swatch-primary: hsl(201 72% 48%);
-  --sdn-swatch-swatch1: hsl(41 81% 46%);
-  --sdn-swatch-swatch2: hsl(42 99% 59%);
-  --sdn-swatch-swatch3: hsl(358 80% 46%);
-  --sdn-swatch-swatch4: hsl(355 95% 59%);
+  --sdn-swatch-primary: hsl(202 72% 54%);
+  --sdn-swatch-swatch1: hsl(41 76% 51%);
+  --sdn-swatch-swatch2: hsl(39 100% 73%);
+  --sdn-swatch-swatch3: hsl(1 74% 51%);
+  --sdn-swatch-swatch4: hsl(359 100% 65%);
   --sdn-swatch-foreground: hsl(200 30% 99%);
   --sdn-swatch-background: hsl(210 28% 15%);
-  --sdn-swatch-active: hsl(201 72% 48%);
-  --sdn-swatch-punch: hsl(10 76% 56%);
-  --sdn-swatch-positive: hsl(146 69% 46%);
-  --sdn-swatch-negative: hsl(358 76% 54%);
-  --sdn-swatch-warning: hsl(42 85% 52%);
-  --sdn-swatch-accent: hsl(211 69% 32%);
+  --sdn-swatch-active: hsl(202 72% 54%);
+  --sdn-swatch-punch: hsl(11 85% 60%);
+  --sdn-swatch-positive: hsl(144 63% 52%);
+  --sdn-swatch-negative: hsl(359 85% 59%);
+  --sdn-swatch-warning: hsl(42 95% 57%);
+  --sdn-swatch-accent: hsl(213 57% 38%);
   --sdn-swatch-offBlack: hsl(0 0% 93%);
   --sdn-swatch-offWhite: hsl(210 28% 16%);
   /* High Contrast */
@@ -222,7 +223,7 @@
   --sdn-hc-on-background: hsl(198 12% 98%);
   --sdn-hc-on-active: hsl(198 12% 98%);
   --sdn-hc-on-punch: hsl(198 12% 98%);
-  --sdn-hc-on-positive: hsl(198 12% 98%);
+  --sdn-hc-on-positive: hsl(198 12% 8%);
   --sdn-hc-on-negative: hsl(198 12% 98%);
   --sdn-hc-on-warning: hsl(198 12% 8%);
   --sdn-hc-on-accent: hsl(198 12% 98%);

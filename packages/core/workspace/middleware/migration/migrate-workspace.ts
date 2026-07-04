@@ -6,9 +6,10 @@ import { migrateV4EnableDefaultFonts } from "./steps/migrate-00004-enable-defaul
 import { migrateV5EnableQuicksandFont } from "./steps/migrate-00005-enable-quicksand-font"
 import { migrateV6IconSetRenames } from "./steps/migrate-00006-icon-set-renames"
 import { migrateV7ThemeModeChroma } from "./steps/migrate-00007-theme-mode-chroma"
+import { migrateV8ThemeLightnessChange } from "./steps/migrate-00008-theme-lightness-change"
 
 /** Current workspace file version after migration steps on load. */
-export const CURRENT_WORKSPACE_VERSION = 7
+export const CURRENT_WORKSPACE_VERSION = 8
 
 type MigrationStep = (workspace: Workspace) => Workspace
 
@@ -20,6 +21,7 @@ const MIGRATION_STEPS: Partial<Record<number, MigrationStep>> = {
   5: migrateV5EnableQuicksandFont,
   6: migrateV6IconSetRenames,
   7: migrateV7ThemeModeChroma,
+  8: migrateV8ThemeLightnessChange,
 }
 
 if (!MIGRATION_STEPS[CURRENT_WORKSPACE_VERSION]) {
