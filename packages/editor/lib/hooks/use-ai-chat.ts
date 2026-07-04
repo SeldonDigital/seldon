@@ -6,7 +6,9 @@ import type {
   Workspace,
   WorkspaceAction,
 } from "@seldon/core/workspace/types"
+import type { AgentDebug } from "@seldon/ai"
 import { runAgentChat } from "@lib/ai/run-agent-chat"
+import { useDebugStore } from "@lib/hooks/use-debug-mode"
 import { useActiveBoard } from "@lib/workspace/hooks/use-active-board"
 import { useDispatch } from "@lib/workspace/hooks/use-dispatch"
 import { getCurrentWorkspace } from "@lib/workspace/hooks/use-history"
@@ -64,6 +66,8 @@ interface ApplyReport {
   applied: string[]
   ineffective: string[]
   rejected: RejectedAction[]
+  /** Actions that produced a real change, kept for the console change summary. */
+  appliedActions: WorkspaceAction[]
 }
 
 /** True when applying an action left the workspace effectively unchanged. */
@@ -88,6 +92,7 @@ function applyActionsWithReport(
   const applied: string[] = []
   const ineffective: string[] = []
   const rejected: RejectedAction[] = []
+  const appliedActions: WorkspaceAction[] = []
 
   for (const action of actions) {
     try {
@@ -96,6 +101,7 @@ function applyActionsWithReport(
         ineffective.push(action.type)
       } else {
         applied.push(action.type)
+        appliedActions.push(action)
         workspace = next
       }
     } catch (caught) {
@@ -106,7 +112,144 @@ function applyActionsWithReport(
     }
   }
 
-  return { workspace, applied, ineffective, rejected }
+  return { workspace, applied, ineffective, rejected, appliedActions }
+}
+
+/** Resolves the primary target id from an action payload. */
+function targetIdOf(payload: unknown): string | undefined {
+  if (!payload || typeof payload !== "object") return undefined
+  const bag = payload as Record<string, unknown>
+  for (const key of ["nodeId", "instanceId", "variantId", "boardKey"]) {
+    if (typeof bag[key] === "string") return bag[key] as string
+  }
+  const target = bag.target
+  if (target && typeof target === "object") {
+    const parentId = (target as Record<string, unknown>).parentId
+    if (typeof parentId === "string") return parentId
+  }
+  return undefined
+}
+
+/** Human-readable label/level for a target id, resolved as a node then a board. */
+function describeTarget(
+  workspace: Workspace,
+  id: string | undefined,
+): string {
+  if (!id) return "(no target id)"
+  const node = workspace.nodes?.[id]
+  if (node) {
+    const label = node.label ? ` "${node.label}"` : ""
+    return `${id}${label} [${node.level}]`
+  }
+  const board = workspace.boards?.[id]
+  if (board) return `${id} "${board.label}" [board]`
+  return `${id} (not found)`
+}
+
+/** Compact serialization of a tagged property value. */
+function summarizeValue(value: unknown): string {
+  if (value && typeof value === "object" && "type" in value) {
+    const tagged = value as { type?: unknown; value?: unknown }
+    return `${String(tagged.type)}:${JSON.stringify(tagged.value)}`
+  }
+  const json = JSON.stringify(value)
+  return json && json.length > 60 ? `${json.slice(0, 60)}…` : String(json)
+}
+
+/** The property key/value pairs an action sets, if any. */
+function changedProperties(action: WorkspaceAction): [string, unknown][] {
+  const payload = (action as { payload?: unknown }).payload
+  if (!payload || typeof payload !== "object") return []
+  const properties = (payload as Record<string, unknown>).properties
+  if (!properties || typeof properties !== "object") return []
+  return Object.entries(properties as Record<string, unknown>)
+}
+
+/**
+ * Logs a focused "what changed" subsection: each applied action's target id,
+ * label, and level so the object is identifiable in the editor, plus the
+ * before -> after value of each property it set.
+ */
+function logChanges(
+  before: Workspace,
+  after: Workspace,
+  appliedActions: WorkspaceAction[],
+): void {
+  if (appliedActions.length === 0) return
+  console.groupCollapsed("🎯 Changed")
+  for (const action of appliedActions) {
+    const id = targetIdOf(action.payload)
+    console.log(`${action.type} → ${describeTarget(after, id)}`)
+    for (const [key, nextValue] of changedProperties(action)) {
+      const overrides = id
+        ? (before.nodes?.[id]?.overrides as
+            | Record<string, unknown>
+            | undefined)
+        : undefined
+      const previous = overrides?.[key]
+      console.log(
+        `    ${key}: ${summarizeValue(previous)} → ${summarizeValue(nextValue)}`,
+      )
+    }
+  }
+  console.groupEnd()
+}
+
+/**
+ * Emits one collapsed console group per turn when AI Logging is enabled in the
+ * Dev menu. Groups keep the console tidy: the summary line shows collapsed, and
+ * the grounding context and raw model response are nested groups the user can
+ * expand on demand.
+ */
+function logAiTurn(
+  message: string,
+  debug: AgentDebug | undefined,
+  actions: WorkspaceAction[],
+  report: ApplyReport,
+  before: Workspace,
+): void {
+  if (!useDebugStore.getState().aiLogging) return
+
+  const outcomeIcon =
+    report.rejected.length > 0
+      ? "❌"
+      : report.applied.length === 0 && report.ineffective.length > 0
+        ? "⚠️"
+        : report.applied.length > 0
+          ? "✅"
+          : "➖"
+
+  console.groupCollapsed(
+    `%c[seldon/ai]%c 💬 ${message}`,
+    "color:#a855f7;font-weight:bold",
+    "",
+  )
+  if (debug) {
+    console.groupCollapsed("🧭 Grounding context")
+    console.log(debug.context)
+    console.groupEnd()
+    console.groupCollapsed("📥 Raw model response")
+    console.log(debug.rawResponse)
+    console.groupEnd()
+  }
+  console.log(
+    "⚙️ Parsed actions",
+    actions.map((action) => action.type),
+    actions,
+  )
+  logChanges(before, report.workspace, report.appliedActions)
+  console.groupCollapsed("🗂 Workspace before")
+  console.log(before)
+  console.groupEnd()
+  console.groupCollapsed("🗂 Workspace after")
+  console.log(report.workspace)
+  console.groupEnd()
+  console.log(`${outcomeIcon} Outcome`, {
+    applied: report.applied,
+    ineffective: report.ineffective,
+    rejected: report.rejected,
+  })
+  console.groupEnd()
 }
 
 /** Builds the assistant transcript line from the model reply and apply report. */
@@ -162,7 +305,7 @@ export function useAiChat() {
         const { selectedNodeId, selectedNodeRootId } =
           useSelectionStore.getState()
 
-        const { actions, reply } = await runAgentChat({
+        const { actions, reply, debug } = await runAgentChat({
           workspace: current,
           message,
           history,
@@ -172,6 +315,7 @@ export function useAiChat() {
         })
 
         const outcome = applyActionsWithReport(current, actions)
+        logAiTurn(message, debug, actions, outcome, current)
 
         if (outcome.applied.length > 0) {
           dispatch({

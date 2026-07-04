@@ -290,6 +290,83 @@ const validators = {
     }
   },
 }
+/** Payload keys worth surfacing in the verification header, in priority order. */
+const ACTION_HINT_KEYS = [
+  "nodeId",
+  "boardKey",
+  "instanceId",
+  "variantId",
+  "themeId",
+  "playgroundKey",
+]
+
+/** Short, single-line description of an action for the verification log header. */
+function describeAction(action: { type: string; payload?: unknown }): string {
+  const hints: string[] = []
+  const payload = action.payload
+  if (payload && typeof payload === "object") {
+    const bag = payload as Record<string, unknown>
+    for (const key of ACTION_HINT_KEYS) {
+      const value = bag[key]
+      if (typeof value === "string") hints.push(`${key}=${value}`)
+    }
+    const target = bag.target
+    if (target && typeof target === "object") {
+      const parentId = (target as Record<string, unknown>).parentId
+      if (typeof parentId === "string") hints.push(`parentId=${parentId}`)
+    }
+  }
+  return hints.length > 0 ? `${action.type} (${hints.join(", ")})` : action.type
+}
+
+/** One-line shape summary of a workspace for orientation in the log. */
+function summarizeWorkspace(workspace: Workspace): string {
+  const boards = Object.keys(workspace.boards ?? {}).length
+  const nodes = Object.keys(workspace.nodes ?? {}).length
+  const themes = Object.keys(workspace.themes ?? {}).length
+  return `📦 ${boards} boards, ${nodes} nodes, ${themes} themes`
+}
+
+/** True when the action produced an effective change to the workspace. */
+function workspaceChanged(before: Workspace, after: Workspace): boolean {
+  if (before === after) return false
+  return JSON.stringify(before) !== JSON.stringify(after)
+}
+
+/** Ordered integrity checks. Each throws on failure. */
+const VERIFICATION_CHECKS: Array<[string, (workspace: Workspace) => void]> = [
+  ["No cyclic component trees", (w) => validators.noCyclicTrees(w)],
+  ["All children exist", (w) => validators.allChildrenExist(w)],
+  ["All variants exist", (w) => validators.allVariantsExist(w)],
+  [
+    "All node template targets exist",
+    (w) => validators.allNodeTemplateTargetsExist(w),
+  ],
+  [
+    "One default variant per board",
+    (w) => validators.oneDefaultVariantPerBoard(w),
+  ],
+  ["All node map IDs are unique", (w) => validators.uniqueIds(w)],
+  ["No dangling variants", (w) => validators.noDanglingVariants(w)],
+  ["No dangling child nodes", (w) => validators.noDanglingChildNodes(w)],
+  [
+    "All instances have an origin classification",
+    (w) => validators.instancesHaveOrigin(w),
+  ],
+  [
+    "No variants with computed properties referencing parent nodes",
+    (w) => validators.checkNoVariantsWithComputedProperties(w),
+  ],
+  [
+    "Interaction states resolve to reserved or registered custom states",
+    (w) => validators.statesAreConsistent(w),
+  ],
+  [
+    "Sandboxes are explicitly sized, capped, and non-overlapping",
+    (w) => validators.sandboxesAreValid(w),
+  ],
+]
+
 /**
  * Middleware that verifies workspace integrity after every action.
  * Runs comprehensive validation checks and logs results in development.
@@ -297,57 +374,21 @@ const validators = {
 export const workspaceVerificationMiddleware: Middleware =
   (next) => (workspace, action) => {
     const nextWorkspace = next(workspace, action)
+    const shouldLog =
+      process.env.NODE_ENV === "development" && isWorkspaceLoggingEnabled()
+    const startedAt = shouldLog ? performance.now() : 0
 
+    let currentCheck = ""
     try {
-      const shouldLogVerification =
-        process.env.NODE_ENV === "development" && isWorkspaceLoggingEnabled()
-      if (shouldLogVerification)
-        console.groupCollapsed("🔍 Verifying workspace")
-
-      validators.noCyclicTrees(nextWorkspace)
-      log("✅ No cyclic component trees")
-
-      validators.allChildrenExist(nextWorkspace)
-      log("✅ All children exist")
-
-      validators.allVariantsExist(nextWorkspace)
-      log("✅ All variants exist")
-
-      validators.allNodeTemplateTargetsExist(nextWorkspace)
-      log("✅ All node template targets exist")
-
-      validators.oneDefaultVariantPerBoard(nextWorkspace)
-      log("✅ One default variant per board")
-
-      validators.uniqueIds(nextWorkspace)
-      log("✅ All node map ids are unique")
-
-      validators.noDanglingVariants(nextWorkspace)
-      log("✅ No dangling variants found")
-
-      validators.noDanglingChildNodes(nextWorkspace)
-      log("✅ No dangling child nodes found")
-
-      validators.instancesHaveOrigin(nextWorkspace)
-      log("✅ All instances have an origin classification")
-
-      validators.checkNoVariantsWithComputedProperties(nextWorkspace)
-      log("✅ No variants with computed properties referencing parent nodes")
-
-      validators.statesAreConsistent(nextWorkspace)
-      log(
-        "✅ Interaction states resolve to reserved or registered custom states",
-      )
-
-      validators.sandboxesAreValid(nextWorkspace)
-      log("✅ Sandboxes are explicitly sized, capped, and non-overlapping")
-
-      if (shouldLogVerification) console.groupEnd()
+      for (const [name, run] of VERIFICATION_CHECKS) {
+        currentCheck = name
+        run(nextWorkspace)
+      }
     } catch (error) {
       if (error instanceof Error) {
         const actionString = JSON.stringify(action, null, 2)
         logError(
-          `The following action caused an error:\n\n${actionString}`,
+          `Check "${currentCheck}" failed for ${describeAction(action)}. The following action caused an error:\n\n${actionString}`,
           error,
         )
         throw new WorkspaceValidationError(error.message, action)
@@ -355,17 +396,41 @@ export const workspaceVerificationMiddleware: Middleware =
       throw error
     }
 
+    if (shouldLog) {
+      const durationMs = (performance.now() - startedAt).toFixed(1)
+      const changed = workspaceChanged(workspace, nextWorkspace)
+      console.groupCollapsed(
+        ...coreTag(
+          `🔍 Verifying workspace · ${describeAction(action)}${changed ? "" : " · ⚠️ no change"}`,
+        ),
+      )
+      log(
+        `✅ ${VERIFICATION_CHECKS.length}/${VERIFICATION_CHECKS.length} checks passed (${durationMs}ms)`,
+      )
+      log(summarizeWorkspace(nextWorkspace))
+      for (const [name] of VERIFICATION_CHECKS) {
+        log(`✅ ${name}`)
+      }
+      console.groupEnd()
+    }
+
     return nextWorkspace
   }
 
+/** Blue `[seldon/core]` prefix, mirroring the purple `[seldon/ai]` chat logs. */
+const CORE_LOG_STYLE = "color:#3b82f6;font-weight:bold"
+
+/** Builds console args for a styled, tagged core log line. */
+function coreTag(message: string): [string, string, string] {
+  return [`%c[seldon/core]%c ${message}`, CORE_LOG_STYLE, ""]
+}
+
 const log = (message: string) => {
   if (!isWorkspaceLoggingEnabled()) return
-  console.log(`🐶 verificationMiddleware · ${message}`)
+  console.log(...coreTag(message))
 }
 
 const logError = (message: string, error: Error) => {
   if (!isWorkspaceLoggingEnabled()) return
-  console.log(`🐶 verificationMiddleware · ${message}`, {
-    error: error.message,
-  })
+  console.log(...coreTag(message), { error: error.message })
 }

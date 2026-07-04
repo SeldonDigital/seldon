@@ -7,20 +7,6 @@ import type { ChatToActionsInput, ChatToActionsResult } from "./types"
 
 const KNOWN_ACTION_TYPES = new Set(ALL_ACTION_TYPES)
 
-/**
- * Dev-only logging. Prints the grounding context and raw model output to the
- * process that runs the agent (the Vite `npm run dev` terminal). On by default
- * outside production; set `SELDON_AI_DEBUG=0` to silence it.
- */
-const DEBUG =
-  process.env.SELDON_AI_DEBUG !== "0" &&
-  process.env.NODE_ENV !== "production"
-
-function debugLog(label: string, value: string): void {
-  if (!DEBUG) return
-  console.info(`\n[seldon/ai] ${label}:\n${value}`)
-}
-
 interface AgentEnvelope {
   reply?: string
   actions?: WorkspaceAction[]
@@ -50,8 +36,6 @@ export async function chatToActions(
     selectedNodeId: input.selectedNodeId,
     selectedNodeRootId: input.selectedNodeRootId,
   })
-  debugLog("user request", input.message)
-  debugLog("grounding context", context)
 
   const messages: OllamaChatMessage[] = [
     { role: "system", content: buildSystemPrompt() },
@@ -72,15 +56,9 @@ export async function chatToActions(
     format: RESPONSE_FORMAT,
   })
 
-  debugLog("raw model response", raw)
-
   const envelope = parseEnvelope(raw)
 
   const parsed = Array.isArray(envelope.actions) ? envelope.actions : []
-  debugLog(
-    "parsed actions",
-    `${parsed.length} action(s): ${parsed.map((action) => action.type).join(", ") || "none"}`,
-  )
 
   // Structural guard: drop actions whose type is not in the allowed set. The
   // reducer validates each payload deeply when the editor applies it, so this
@@ -88,18 +66,10 @@ export async function chatToActions(
   const actions = parsed.filter((action) =>
     KNOWN_ACTION_TYPES.has(action?.type),
   )
-  const dropped = parsed.filter(
-    (action) => !KNOWN_ACTION_TYPES.has(action?.type),
-  )
-  if (dropped.length > 0) {
-    debugLog(
-      "dropped unknown actions",
-      dropped.map((action) => String(action?.type)).join(", "),
-    )
-  }
 
   return {
     actions,
     reply: typeof envelope.reply === "string" ? envelope.reply : "",
+    debug: { context, rawResponse: raw },
   }
 }

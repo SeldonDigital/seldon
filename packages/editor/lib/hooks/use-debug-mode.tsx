@@ -24,6 +24,9 @@ interface DebugState {
 
   workspaceLogging: boolean
   setWorkspaceLogging: (enabled: boolean) => void
+
+  aiLogging: boolean
+  setAiLogging: (enabled: boolean) => void
 }
 
 export const useDebugStore = create<DebugState>()(
@@ -56,6 +59,10 @@ export const useDebugStore = create<DebugState>()(
       workspaceLogging: false,
       setWorkspaceLogging: (enabled) =>
         set((state) => ({ ...state, workspaceLogging: enabled })),
+
+      aiLogging: false,
+      setAiLogging: (enabled) =>
+        set((state) => ({ ...state, aiLogging: enabled })),
     }),
     {
       name: "debug-mode",
@@ -67,6 +74,7 @@ export const useDebugStore = create<DebugState>()(
         verboseLogging: state.verboseLogging,
         dispatchLogging: state.dispatchLogging,
         workspaceLogging: state.workspaceLogging,
+        aiLogging: state.aiLogging,
       }),
     },
   ),
@@ -88,6 +96,8 @@ export function useDebugMode() {
     setDispatchLogging,
     workspaceLogging,
     setWorkspaceLogging,
+    aiLogging,
+    setAiLogging,
   } = useDebugStore(
     useShallow((state) => ({
       canvasProfiling: state.canvasProfiling,
@@ -104,6 +114,8 @@ export function useDebugMode() {
       setDispatchLogging: state.setDispatchLogging,
       workspaceLogging: state.workspaceLogging,
       setWorkspaceLogging: state.setWorkspaceLogging,
+      aiLogging: state.aiLogging,
+      setAiLogging: state.setAiLogging,
     })),
   )
 
@@ -135,6 +147,10 @@ export function useDebugMode() {
     setWorkspaceLogging(!workspaceLogging)
   }, [setWorkspaceLogging, workspaceLogging])
 
+  const toggleAiLogging = useCallback(() => {
+    setAiLogging(!aiLogging)
+  }, [setAiLogging, aiLogging])
+
   return {
     canvasProfiling,
     toggleCanvasProfiling,
@@ -156,5 +172,8 @@ export function useDebugMode() {
 
     workspaceLogging,
     toggleWorkspaceLogging,
+
+    aiLogging,
+    toggleAiLogging,
   }
 }

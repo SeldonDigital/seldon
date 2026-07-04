@@ -1,4 +1,4 @@
-import { chatToActions, type ChatMessage } from "@seldon/ai"
+import { chatToActions, type AgentDebug, type ChatMessage } from "@seldon/ai"
 import type {
   BoardKey,
   Workspace,
@@ -18,6 +18,7 @@ export type AgentRequestBody = {
 export type AgentResult = {
   actions: WorkspaceAction[]
   reply: string
+  debug: AgentDebug
 }
 
 /**
@@ -34,7 +35,7 @@ export async function runAgent(body: AgentRequestBody): Promise<AgentResult> {
     throw new Error("Missing message in request body.")
   }
 
-  const { actions, reply } = await chatToActions({
+  const { actions, reply, debug } = await chatToActions({
     workspace: body.workspace,
     message: body.message,
     history: body.history,
@@ -44,5 +45,5 @@ export async function runAgent(body: AgentRequestBody): Promise<AgentResult> {
     model: body.model,
   })
 
-  return { actions, reply }
+  return { actions, reply, debug }
 }

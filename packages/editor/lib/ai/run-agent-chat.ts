@@ -1,4 +1,4 @@
-import type { ChatMessage } from "@seldon/ai"
+import type { AgentDebug, ChatMessage } from "@seldon/ai"
 import type {
   BoardKey,
   Workspace,
@@ -17,6 +17,7 @@ export type AgentChatRequest = {
 export type AgentChatResponse = {
   actions: WorkspaceAction[]
   reply: string
+  debug: AgentDebug
 }
 
 /**

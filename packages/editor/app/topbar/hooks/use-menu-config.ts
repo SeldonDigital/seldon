@@ -82,6 +82,8 @@ export function useMenuConfig(): MenuConfig {
     toggleDispatchLogging,
     workspaceLogging,
     toggleWorkspaceLogging,
+    aiLogging,
+    toggleAiLogging,
   } = useDebugMode()
   const { copyNode, cutNode, pasteNode } = useNodeClipboardActions()
   const {
@@ -322,6 +324,13 @@ export function useMenuConfig(): MenuConfig {
         active: workspaceLogging,
         visibleIn: ["edit", "preview"],
       },
+      {
+        id: "ai-logging",
+        label: "AI Logging",
+        action: toggleAiLogging,
+        active: aiLogging,
+        visibleIn: ["edit", "preview"],
+      },
     ]
 
     if (process.env.NODE_ENV === "development") {
@@ -357,6 +366,8 @@ export function useMenuConfig(): MenuConfig {
     toggleDispatchLogging,
     workspaceLogging,
     toggleWorkspaceLogging,
+    aiLogging,
+    toggleAiLogging,
   ])
 
   const editMenuItems = useMemo(() => {

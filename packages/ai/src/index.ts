@@ -8,6 +8,7 @@ export {
 export { buildContext } from "./prompt/build-context"
 export { buildSystemPrompt } from "./prompt/system-prompt"
 export type {
+  AgentDebug,
   ChatMessage,
   ChatToActionsInput,
   ChatToActionsResult,

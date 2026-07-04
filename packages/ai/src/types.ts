@@ -25,8 +25,17 @@ export interface ChatToActionsInput {
   model?: string
 }
 
+/** Grounding and model output captured for debugging. Logged by the editor console. */
+export interface AgentDebug {
+  /** The compact grounding summary sent to the model. */
+  context: string
+  /** The raw JSON string the model returned before parsing. */
+  rawResponse: string
+}
+
 /** Result of {@link chatToActions}. Actions are applied by the caller through the workspace reducer. */
 export interface ChatToActionsResult {
   actions: WorkspaceAction[]
   reply: string
+  debug: AgentDebug
 }
