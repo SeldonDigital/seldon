@@ -1,9 +1,16 @@
 import { CSSProperties, memo } from "react"
 import { Light as SyntaxHighlighter } from "react-syntax-highlighter"
 import css from "react-syntax-highlighter/dist/esm/languages/hljs/css"
-import { atomOneDarkReasonable } from "react-syntax-highlighter/dist/esm/styles/hljs"
-import { Box } from "@seldon/components/custom-components"
-import { CSS_BLOCK_FONT_SIZE, CSS_BLOCK_PADDING } from "./properties.bespoke"
+import {
+  atomOneDarkReasonable,
+  atomOneLight,
+} from "react-syntax-highlighter/dist/esm/styles/hljs"
+import { Frame } from "@seldon/components/frames/Frame"
+import { useResolvedInterfaceMode } from "@lib/hooks/use-system-color-scheme"
+
+const CSS_BLOCK_PADDING =
+  "var(--sdn-paddings-tight) var(--sdn-paddings-compact) var(--sdn-paddings-tight) var(--sdn-paddings-comfortable)"
+const CSS_BLOCK_FONT_SIZE = "var(--sdn-font-size-xsmall)"
 
 SyntaxHighlighter.registerLanguage("css", css)
 
@@ -14,22 +21,29 @@ interface CssBlockProps {
 /**
  * Displays CSS properties as syntax-highlighted code.
  * Text is selectable for easy copy-paste.
+ *
+ * The highlighter theme follows the editor interface mode, so the code stays
+ * legible against the sidebar background in both light and dark chrome.
  */
 function CssBlockInner({ cssProperties }: CssBlockProps) {
+  const mode = useResolvedInterfaceMode()
+  const highlighterStyle =
+    mode === "dark" ? atomOneDarkReasonable : atomOneLight
+
   if (cssProperties.length === 0) {
     return null
   }
 
   return (
-    <Box style={styles.container}>
+    <Frame style={styles.container}>
       <SyntaxHighlighter
         language="css"
-        style={atomOneDarkReasonable}
+        style={highlighterStyle}
         customStyle={styles.codeBlock}
       >
         {cssProperties.join("\n")}
       </SyntaxHighlighter>
-    </Box>
+    </Frame>
   )
 }
 

@@ -25,7 +25,8 @@ import { usePropertiesSidebar } from "./hooks/use-properties-sidebar"
 import { PropertyEditNavigationProvider } from "./hooks/use-property-edit-navigation"
 import { useIsCategoryExpanded } from "./hooks/use-property-expansion"
 import { getComponentKey } from "@lib/workspace/workspace-accessors"
-import { Box, FramerExpandable } from "@seldon/components/custom-components"
+import { FramerExpandable } from "@seldon/components/custom-components"
+import { Frame } from "@seldon/components/frames/Frame"
 import { SidebarProperties } from "@seldon/components/modules/SidebarProperties"
 import { useAddToast } from "@app/toaster/hooks/use-add-toast"
 import { CssBlock } from "./CssBlock"
@@ -45,7 +46,8 @@ import {
   getAllowedBorderSides,
   getPropertiesSubjectId,
 } from "./helpers/properties-data"
-import { PROPERTIES_TREE_GAP } from "./properties.bespoke"
+
+const PROPERTIES_TREE_GAP = "var(--sdn-gaps-tight)"
 
 export interface PropertyTreeProps {
   workspace: Workspace
@@ -170,13 +172,13 @@ function PropertiesTree({
   ))
 
   return (
-    <Box style={styles.scroller}>
-      <Box style={styles.tree}>
+    <Frame style={styles.scroller}>
+      <Frame style={styles.tree}>
         <PropertyEditNavigationProvider>
           <LayoutGroup>{sectionNodes}</LayoutGroup>
         </PropertyEditNavigationProvider>
-      </Box>
-    </Box>
+      </Frame>
+    </Frame>
   )
 }
 
@@ -484,7 +486,7 @@ const styles = {
     overflowY: "auto" as const,
   },
   tree: {
-    padding: "0.25rem 0 0.75rem 0",
+    padding: "var(--sdn-paddings-tight) 0 var(--sdn-paddings-cozy) 0",
     display: "flex",
     flexDirection: "column" as const,
     gap: PROPERTIES_TREE_GAP,

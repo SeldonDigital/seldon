@@ -1,28 +1,26 @@
-"use client"
+"use client";
 
-import {
-  useSaveWorkspace,
-  useWorkspaceName,
-} from "@lib/persistence/workspace-save-store"
-import { LayoutGroup } from "framer-motion"
-import { CSSProperties, PointerEvent, useCallback, useState } from "react"
-import { useSetHoveredId } from "@lib/workspace/hooks/use-object-hover"
-import { useWorkspace } from "@lib/workspace/hooks/use-workspace"
-import { useRenameInput } from "../hooks/use-rename-input"
-import { useIsSectionExpanded } from "../hooks/use-section-expansion"
-import { useDraggableMonitor } from "./hooks/use-draggable-monitor"
-import { useObjectsSidebar } from "./hooks/use-objects-sidebar"
-import { useScrollSelection } from "./hooks/use-scroll-selection"
-import { SelectionRelationsProvider } from "./hooks/use-selection-relations"
-import { getSelectionTarget } from "@lib/workspace/selection-target"
-import { getComponentKey } from "@lib/workspace/workspace-accessors"
-import { FramerExpandable } from "@seldon/components/custom-components"
-import { SidebarObjects } from "@seldon/components/modules/SidebarObjects"
-import { useAddToast } from "@app/toaster/hooks/use-add-toast"
-import { BoardSection } from "../helpers/get-board-sections"
-import { VMBoard } from "./VMBoard"
-import { VMSection } from "./VMSection"
-import { OBJECTS_TREE_GAP } from "./objects.bespoke"
+import { useSaveWorkspace, useWorkspaceName } from "@lib/persistence/workspace-save-store";
+import { LayoutGroup } from "framer-motion";
+import { CSSProperties, PointerEvent, useCallback, useState } from "react";
+import { useSetHoveredId } from "@lib/workspace/hooks/use-object-hover";
+import { useWorkspace } from "@lib/workspace/hooks/use-workspace";
+import { useRenameInput } from "../hooks/use-rename-input";
+import { useIsSectionExpanded } from "../hooks/use-section-expansion";
+import { useDraggableMonitor } from "./hooks/use-draggable-monitor";
+import { useObjectsSidebar } from "./hooks/use-objects-sidebar";
+import { useScrollSelection } from "./hooks/use-scroll-selection";
+import { SelectionRelationsProvider } from "./hooks/use-selection-relations";
+import { getSelectionTarget } from "@lib/workspace/selection-target";
+import { getComponentKey } from "@lib/workspace/workspace-accessors";
+import { FramerExpandable } from "@seldon/components/custom-components";
+import { SidebarObjects } from "@seldon/components/modules/SidebarObjects";
+import { useAddToast } from "@app/toaster/hooks/use-add-toast";
+import { BoardSection } from "../helpers/get-board-sections";
+import { VMBoard } from "./VMBoard";
+import { VMSection } from "./VMSection";
+import { OBJECTS_TREE_GAP } from "./objects.bespoke";
+
 
 /**
  * View-model for the objects sidebar. Feeds the generated `SidebarObjects`
@@ -167,7 +165,7 @@ const styles: Record<string, CSSProperties> = {
     flexDirection: "column",
     width: "100%",
     minWidth: 0,
-    padding: "0.25rem 0 0.75rem 0",
+    padding: "var(--sdn-paddings-tight) 0 var(--sdn-paddings-cozy) 0",
     gap: OBJECTS_TREE_GAP,
   },
 }
